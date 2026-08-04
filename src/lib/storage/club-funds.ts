@@ -110,7 +110,8 @@ export function mergeClubFundsFromCloud(cloud: ClubFundsState | null): void {
     cloud.totalEarned ?? cloud.balance
   );
 
-  const isStorePurchaseId = (id: string) => id.startsWith("theme-");
+  const isStorePurchaseId = (id: string) =>
+    id.startsWith("theme-") || id.startsWith("boost-");
   const localHasUnsyncedStoreSpend = localExclusiveIds.some(isStorePurchaseId);
   const cloudHasStoreSpend = cloudExclusiveIds.some(isStorePurchaseId);
 

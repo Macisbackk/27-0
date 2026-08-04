@@ -458,12 +458,24 @@ export function getMatchesForRound(
   return state.matches.filter((m) => m.round === round);
 }
 
+/**
+ * Earliest unresolved cup round — never jumps to Final just because nothing is
+ * `ready` yet (next round may still be `pending` after a completed early round).
+ */
 export function getActiveRound(state: ChallengeCupBracketState): number {
-  const maxRound = Math.max(4, ...state.matches.map((m) => m.round));
+  const rounds = state.matches.map((m) => m.round);
+  const maxRound = rounds.length > 0 ? Math.max(...rounds) : 1;
+
   for (let r = 1; r <= maxRound; r++) {
     const roundMatches = getMatchesForRound(state, r);
     if (roundMatches.some((m) => m.status === "ready")) return r;
   }
+
+  for (let r = 1; r <= maxRound; r++) {
+    const roundMatches = getMatchesForRound(state, r);
+    if (roundMatches.some((m) => m.status !== "complete")) return r;
+  }
+
   return maxRound;
 }
 
@@ -1055,8 +1067,15 @@ export function buildChallengeCupResult(
   };
 }
 
-export function getCupRoundLabel(round: number): CupRoundName {
-  return CUP_ROUND_NAMES[round - 1] ?? "Final";
+export function getCupRoundLabel(round: number): string {
+  const named = CUP_ROUND_NAMES[round - 1];
+  if (named) return named;
+  if (process.env.NODE_ENV !== "production") {
+    console.warn(
+      `[challenge-cup] Legacy getCupRoundLabel has no name for round ${round}`
+    );
+  }
+  return `Round ${round}`;
 }
 
 export function bracketMatchToDisplayFixture(match: BracketMatch): {

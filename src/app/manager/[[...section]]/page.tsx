@@ -28,6 +28,7 @@ const ManagerPlayGame = dynamic(
 );
 import { ManagerMatchReview } from "@/components/manager/ManagerMatchReview";
 import { ManagerSeasonReview } from "@/components/manager/ManagerSeasonReview";
+import { ManagerChooseNextClub } from "@/components/manager/ManagerChooseNextClub";
 import { ManagerDevelopmentReview } from "@/components/manager/ManagerDevelopmentReview";
 import { ManagerSeasonRewards } from "@/components/manager/ManagerSeasonRewards";
 import { ManagerTrophyModal } from "@/components/manager/ManagerTrophyModal";
@@ -65,6 +66,7 @@ import {
   listManagerSaveSlots,
   type ManagerSaveSlotSummary,
 } from "@/lib/manager/managerState";
+import { takeOverClub } from "@/lib/manager/managerClubChange";
 import {
   advanceManagerMatchWeek,
   getNextManagerFixture,
@@ -179,6 +181,7 @@ const SCROLL_TOP_VIEWS: ManagerView[] = [
   "season-review",
   "development-review",
   "season-rewards",
+  "choose-next-club",
 ];
 
 function scrollManagerPageToTop() {
@@ -315,7 +318,8 @@ export default function ManagerPage() {
         next === "match-review" ||
         next === "season-review" ||
         next === "development-review" ||
-        next === "season-rewards"
+        next === "season-rewards" ||
+        next === "choose-next-club"
       ) {
         setManagerView(setView, next);
         return;
@@ -1543,6 +1547,17 @@ export default function ManagerPage() {
     goToView("hub");
   };
 
+  const handleTakeOverClub = (newClub: string) => {
+    if (!career) return;
+    let base = career;
+    if (base.isSeasonComplete) {
+      base = hydrateManagerCareer(advanceToNextSeason(base));
+    }
+    const next = hydrateManagerCareer(takeOverClub(base, newClub, "sacked"));
+    persist(next);
+    goToView("hub");
+  };
+
   const handleClubStarRiseModalContinue = () => {
     if (!career) return;
     persist(acknowledgeClubStarRiseCelebration(career));
@@ -1781,10 +1796,20 @@ export default function ManagerPage() {
         <ManagerSeasonReview
           career={career}
           onViewRewards={() => goToView("development-review", { syncUrl: false })}
+          onChooseNextClub={() => goToView("choose-next-club", { syncUrl: false })}
+          onCareerUpdate={persist}
           onHome={() => {
             playUiClick();
             router.push("/");
           }}
+        />
+      )}
+
+      {career && view === "choose-next-club" && (
+        <ManagerChooseNextClub
+          career={career}
+          onTakeOver={handleTakeOverClub}
+          onBack={() => goToView("season-review", { syncUrl: false })}
         />
       )}
 

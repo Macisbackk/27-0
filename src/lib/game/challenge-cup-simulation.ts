@@ -192,6 +192,13 @@ export function formatCupFixtureScore(
   return `${fixture.opponent} ${fixture.pointsAgainst} - ${fixture.pointsFor} ${userClub}`;
 }
 
-export function getCupRoundLabel(round: number): CupRoundName {
-  return CUP_ROUND_NAMES[round - 1] ?? "Final";
+export function getCupRoundLabel(round: number): string {
+  const named = CUP_ROUND_NAMES[round - 1];
+  if (named) return named;
+  if (process.env.NODE_ENV !== "production") {
+    console.warn(
+      `[challenge-cup] Legacy getCupRoundLabel has no name for round ${round}`
+    );
+  }
+  return `Round ${round}`;
 }

@@ -9,12 +9,17 @@ import {
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
+import {
+  CalendarSimAnimation,
+  type CalendarSimAnimationPhase,
+} from "@/components/manager/CalendarSimAnimation";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import {
   buildManagerSeasonCalendar,
   CALENDAR_HIGHLIGHT_STYLES,
+  getDateKeyForGameWeek,
   getEventsForDate,
   getSimTargetGameWeekForDate,
   toDateKey,
@@ -80,6 +85,12 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
   const [simConfirm, setSimConfirm] = useState(false);
   const [simBusy, setSimBusy] = useState(false);
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
+  const [simAnim, setSimAnim] = useState<{
+    status: CalendarSimAnimationPhase;
+    startDate: string | null;
+    reachedDate: string | null;
+    message: string | null;
+  }>({ status: "idle", startDate: null, reachedDate: null, message: null });
 
   const selectedEvents = selectedDate
     ? getEventsForDate(events, selectedDate)
@@ -121,25 +132,81 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
   };
 
   const runSimToDate = () => {
-    if (!selectedDate) return;
+    if (!selectedDate || simBusy) return;
     const target = getSimTargetGameWeekForDate(events, selectedDate);
     if (target == null) {
       setStatusMsg("No fixtures on or before that date.");
       setSimConfirm(false);
       return;
     }
+
+    const startDate =
+      getDateKeyForGameWeek(events, career.gameWeek) ?? selectedDate;
+
     setSimBusy(true);
+    setSimConfirm(false);
+    setSimAnim({
+      status: "processing",
+      startDate,
+      reachedDate: null,
+      message: null,
+    });
+
     try {
       const result = simulateCareerToGameWeek(career, target);
+      const reachedDate =
+        getDateKeyForGameWeek(
+          buildManagerSeasonCalendar(result.career),
+          result.career.gameWeek
+        ) ?? selectedDate;
+
+      if (!result.ok) {
+        setSimAnim({
+          status: "error",
+          startDate,
+          reachedDate: startDate,
+          message: result.error ?? "Could not simulate to that date.",
+        });
+        setStatusMsg(result.error ?? "Could not simulate to that date.");
+        return;
+      }
+
       onUpdate(result.career);
       setStatusMsg(
-        result.ok
-          ? `Simulated ${result.matchesSimulated} match${result.matchesSimulated === 1 ? "" : "es"} · advanced ${result.weeksAdvanced} week${result.weeksAdvanced === 1 ? "" : "s"}.${result.error && result.stoppedEarly ? ` (${result.error})` : ""}`
-          : result.error ?? "Could not simulate to that date."
+        `Simulated ${result.matchesSimulated} match${result.matchesSimulated === 1 ? "" : "es"} · advanced ${result.weeksAdvanced} week${result.weeksAdvanced === 1 ? "" : "s"}.${result.error && result.stoppedEarly ? ` (${result.error})` : ""}`
       );
+
+      if (startDate === reachedDate) {
+        setSimAnim({
+          status: "complete",
+          startDate,
+          reachedDate,
+          message: "Already at that date.",
+        });
+      } else {
+        setSimAnim({
+          status: "animating",
+          startDate,
+          reachedDate,
+          message: null,
+        });
+        window.setTimeout(() => {
+          setSimAnim((prev) =>
+            prev.status === "animating"
+              ? { ...prev, status: "complete" }
+              : prev
+          );
+        }, 1600);
+      }
+    } catch (err) {
+      setSimAnim({
+        status: "error",
+        startDate,
+        reachedDate: startDate,
+        message: err instanceof Error ? err.message : "Simulation failed.",
+      });
     } finally {
       setSimBusy(false);
-      setSimConfirm(false);
     }
   };
 
@@ -296,9 +363,25 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
           confirmLabel={simBusy ? "Simulating…" : "Sim to date"}
           cancelLabel="Cancel"
           onConfirm={runSimToDate}
-          onCancel={() => setSimConfirm(false)}
+          onCancel={() => (!simBusy ? setSimConfirm(false) : undefined)}
         />
       </ManagerSection>
+
+      <CalendarSimAnimation
+        open={simAnim.status !== "idle"}
+        startDateKey={simAnim.startDate}
+        reachedDateKey={simAnim.reachedDate}
+        status={simAnim.status}
+        statusMessage={simAnim.message}
+        onDismiss={() =>
+          setSimAnim({
+            status: "idle",
+            startDate: null,
+            reachedDate: null,
+            message: null,
+          })
+        }
+      />
     </ManagerPage>
   );
 }

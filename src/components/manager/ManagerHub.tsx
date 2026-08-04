@@ -73,6 +73,7 @@ import {
 import { MANAGER_HUB_SCROLL_TARGET_ID } from "@/lib/manager/managerHubScroll";
 import { autoFixMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { isWageOverBudget } from "@/lib/manager/managerFinance";
+import { ManagerBoostsPanel } from "@/components/manager/ManagerBoostsPanel";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
 import { ManagerLeagueTable } from "@/components/manager/ManagerLeagueTable";
@@ -837,6 +838,14 @@ export function ManagerHub({
 
   const clubDetailsSections = (
     <div className="stat-section-stack">
+      {onUpdate && (
+        <ManagerBoostsPanel
+          career={career}
+          stage={["manager-career", "manager-medical"]}
+          onApplied={onUpdate}
+          compact
+        />
+      )}
       <ManagerClubFinancesPanel career={career} collapsible />
       <HubBoardBudgetAttendance
         career={career}

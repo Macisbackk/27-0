@@ -285,10 +285,10 @@ function attendanceInterestForFriendlyOpponent(
     return "low";
   }
   if (hasPoorAwayFollowing(opponentClub)) {
-    return teamRating >= 78 ? "medium" : "low";
+    return teamRating >= 84 ? "medium" : "low";
   }
-  if (teamRating >= 82) return "high";
-  if (teamRating >= 74) return "medium";
+  if (teamRating >= 88) return "high";
+  if (teamRating >= 84) return "medium";
   return "low";
 }
 

@@ -347,6 +347,63 @@ export interface SeasonHighlightResult {
   margin: number;
 }
 
+export type ManagerDepartureReason =
+  | "sacked"
+  | "resigned"
+  | "club-change"
+  | "season_complete"
+  | "user_choice";
+
+export interface ManagerCareerHistoryEntry {
+  id: string;
+  clubId: string;
+  clubName: string;
+  joinedSeason: number;
+  joinedWeek: number;
+  joinedDate: string;
+  leftSeason?: number;
+  leftWeek?: number;
+  leftDate?: string;
+  departureReason?: ManagerDepartureReason;
+  boardExpectationAtJoin?: string;
+  finalBoardConfidence?: number;
+}
+
+export type BoardObjectiveStatus = "achieved" | "failed" | "partial" | "na";
+
+export interface BoardSeasonEvaluation {
+  seasonId: string;
+  clubId: string;
+  managerId: string;
+  objectiveResults: {
+    id: string;
+    label: string;
+    status: BoardObjectiveStatus;
+    weight: number;
+  }[];
+  boardConfidence: number;
+  performanceScore: number;
+  recommendation: "retain" | "sack";
+  finalDecision: "retain" | "sack";
+  protectedByNoSacking: boolean;
+  explanation: string[];
+  decisionId: string;
+}
+
+export interface ManagerBoostUsage {
+  futureStarBySeason?: Record<string, boolean>;
+  financialTakeoverBySeason?: Record<string, boolean>;
+  trainingBoostPlayerIds?: string[];
+  unlockedPotentialPlayerIds?: string[];
+  selectionBoostsUsed?: number;
+}
+
+export interface ManagerProtection {
+  noSacking: boolean;
+  activatedByBoostId?: string;
+  activatedAtSeason?: number;
+}
+
 export interface ManagerSeasonSummary {
   seasonYear: number;
   position: number;
@@ -397,7 +454,8 @@ export type ManagerView =
   | "match-review"
   | "season-review"
   | "development-review"
-  | "season-rewards";
+  | "season-rewards"
+  | "choose-next-club";
 
 export type ManagerAutoRenewContractYears = 1 | 2 | 3 | 4;
 
@@ -784,6 +842,11 @@ export interface ManagerCareer {
   leagueClubStatesWeek?: number;
   /** Persisted AI club squads — transfers and youth intake update these each season. */
   leagueClubRosters?: Record<string, string[]>;
+  /**
+   * Full reserve lists for clubs the user has managed (and snapshot on leave).
+   * Used so club changes continue the same world instead of regenerating opening reserves.
+   */
+  leagueClubReserves?: Record<string, ManagerReservePlayer[]>;
   /** Reserve squad headcount per club — used for walkovers across the save. */
   leagueClubReserveCounts?: Record<string, number>;
   /** Club appearances/tries accumulated across seasons in this save. */
@@ -791,12 +854,18 @@ export interface ManagerCareer {
   retiredPlayers?: RetiredPlayer[];
   /** Save schema version for migrations. */
   saveVersion?: number;
+  /** Player ability scale migration (4 = Championship restored to floor 70). */
+  playerRatingSchemaVersion?: number;
+  /** Championship-only rating scale correction (2 = post mistaken floor-80 remap). */
+  championshipRatingScaleVersion?: number;
   /** Generated Championship squads (500 players) — persisted once per career. */
   championshipSquads?: import("./championship/championshipSquads").ChampionshipSquadState;
   /** Simulated Championship league competition. */
   championshipCompetition?: import("./championship/championshipLeague").ChampionshipCompetitionState;
   /** Schema markers for Championship / expanded cup migrations. */
   challengeCupSchemaVersion?: number;
+  /** Round-label migration version (legacy string → CupRoundKey). */
+  challengeCupRoundSchemaVersion?: number;
   generatedChampionshipSquadsVersion?: number;
   championshipCompetitionVersion?: number;
   aiChampionshipTransferVersion?: number;
@@ -819,6 +888,25 @@ export interface ManagerCareer {
   previousSeasonChampionshipTable?: { team: string; position: number }[];
   /** Per-save manager preferences. */
   managerSettings?: ManagerSettings;
+  /** Board cannot sack the manager while active (No Sacking boost). */
+  managerProtection?: ManagerProtection;
+  /** Latest end-of-season board evaluation. */
+  boardSeasonEvaluation?: BoardSeasonEvaluation;
+  /** Persisted board evaluations keyed by season id — avoids re-roll on refresh. */
+  boardSeasonEvaluations?: Record<string, BoardSeasonEvaluation>;
+  /** Manager tenure history across clubs in this save. */
+  managerCareerHistory?: ManagerCareerHistoryEntry[];
+  /** Club the user controls (may differ from `club` after future features). */
+  userControlledClubId?: string;
+  /** Stable manager identity within the save. */
+  managerId?: string;
+  /** World/save identity for boost usage tracking. */
+  worldSaveId?: string;
+  boostUsage?: ManagerBoostUsage;
+  /** Board sacking evaluation schema version. */
+  boardSackingSchemaVersion?: number;
+  /** Manager world / career-history schema version. */
+  managerCareerWorldSchemaVersion?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -858,14 +946,14 @@ export const DEFAULT_RESERVE_DEVELOPMENT_SETTINGS: ManagerReserveDevelopmentSett
   {
     releaseAfterYearsEnabled: false,
     releaseAfterYears: 2,
-    releaseIfRatingBelow: 60,
+    releaseIfRatingBelow: 81,
     releaseIfGrowthBelowEnabled: false,
     growthCheckAfterYears: 2,
     releaseIfGrowthBelow: 3,
     flagLowPotentialEnabled: true,
-    flagPotentialBelow: 68,
+    flagPotentialBelow: 83,
     flagForFullTimeEnabled: true,
-    fullTimeRatingThreshold: 72,
+    fullTimeRatingThreshold: 85,
     protectUnderAge: 18,
     protectHighPotentialPlayers: true,
     minimumReserveSquadSize: 22,

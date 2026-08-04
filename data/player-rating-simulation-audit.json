@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 3,
+  "elapsedMs": 174560,
+  "volumes": {
+    "matchesSampled": 2511,
+    "slSeasons": 93,
+    "champSeasons": 200,
+    "cups": 200,
+    "fullMode": false
+  },
+  "invalidOrNanRatings": 0,
+  "unresolvedPlayerIds": 0,
+  "fakeScorerPlaceholders": 0,
+  "monopolyTryMatches": 0,
+  "upsetMatches": 37,
+  "upsetFrequencyPct": 1.4735165272799682,
+  "averageScoreMargin": 16.248108323377142,
+  "averageTriesPerMatch": 8.294305057745918,
+  "topScorerSeasonTriesAvg": 15.516129032258064,
+  "winRatesByRatingDiff": {
+    "-3-5": {
+      "n": 628,
+      "favWinPct": 100,
+      "avgMargin": 17.523885350318473,
+      "avgTries": 7.722929936305732
+    },
+    "-6+": {
+      "n": 288,
+      "favWinPct": 100,
+      "avgMargin": 26.8125,
+      "avgTries": 8.07986111111111
+    },
+    "+3-5": {
+      "n": 490,
+      "favWinPct": 100,
+      "avgMargin": 14.222448979591837,
+      "avgTries": 9.23265306122449
+    },
+    "+6+": {
+      "n": 405,
+      "favWinPct": 100,
+      "avgMargin": 27.77283950617284,
+      "avgTries": 7.822222222222222
+    },
+    "0±2": {
+      "n": 162,
+      "favWinPct": 93.82716049382717,
+      "avgMargin": 7.216049382716049,
+      "avgTries": 7.851851851851852
+    },
+    "+1-2": {
+      "n": 538,
+      "favWinPct": 100,
+      "avgMargin": 4.992565055762082,
+      "avgTries": 8.71003717472119
+    }
+  },
+  "triesByRatingBand": {
+    "80-82": 2140,
+    "83-85": 2140,
+    "86-88": 2782,
+    "89-91": 3420
+  },
+  "triesByPosition": {
+    "SECOND_ROW": 1562,
+    "FULLBACK": 695,
+    "HOOKER": 1272,
+    "PROP": 4263,
+    "CENTRE": 486,
+    "WING": 805,
+    "STAND_OFF": 683,
+    "LOOSE_FORWARD": 152,
+    "SCRUM_HALF": 564
+  },
+  "teamRatingAverages": {
+    "superLeagueCurrent": 86.28089887640449,
+    "championshipGenerated": 83.03835
+  },
+  "championship": {
+    "invalidSheetsOrRatings": 0,
+    "fixturesPlayed": 38000
+  },
+  "cupsProcessed": 200,
+  "lowEndScoringNote": "Try shares by band should rise with rating; 80–82 must not dominate.",
+  "oldScaleThresholdsRemaining": "Scorer ability uses rating/83^2.35; Champ/opponent baselines use 80."
+}

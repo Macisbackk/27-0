@@ -54,7 +54,7 @@ function pickWeightedIndexSafe(weights, rng) {
 function abilityFactor(rating, form, fitness) {
   const formMul = 0.72 + (form / 100) * 0.56;
   const fitMul = 0.55 + (fitness / 100) * 0.45;
-  return Math.pow(rating / 70, 1.55) * formMul * fitMul;
+  return Math.pow(Math.max(80, rating) / 83, 2.35) * formMul * fitMul;
 }
 
 function multiTry(already, position, rating, teamTries) {
@@ -70,19 +70,19 @@ function multiTry(already, position, rating, teamTries) {
 
 function buildSquad() {
   const lineup = [
-    { id: "fb", name: "Fullback A", position: "FULLBACK", rating: 82, form: 60, fitness: 95, reserve: false },
-    { id: "w1", name: "Wing Elite", position: "WING", rating: 88, form: 65, fitness: 92, reserve: false },
-    { id: "c1", name: "Centre A", position: "CENTRE", rating: 80, form: 55, fitness: 90, reserve: false },
-    { id: "c2", name: "Centre B", position: "CENTRE", rating: 76, form: 50, fitness: 88, reserve: false },
-    { id: "w2", name: "Wing Reserve", position: "WING", rating: 58, form: 52, fitness: 90, reserve: true },
-    { id: "so", name: "Stand-off", position: "STAND_OFF", rating: 84, form: 58, fitness: 93, reserve: false },
-    { id: "sh", name: "Scrum-half", position: "SCRUM_HALF", rating: 83, form: 57, fitness: 94, reserve: false },
-    { id: "p1", name: "Prop A", position: "PROP", rating: 78, form: 50, fitness: 85, reserve: false },
-    { id: "hk", name: "Hooker", position: "HOOKER", rating: 79, form: 54, fitness: 88, reserve: false },
-    { id: "p2", name: "Prop B", position: "PROP", rating: 74, form: 48, fitness: 84, reserve: false },
-    { id: "sr1", name: "Second-row A", position: "SECOND_ROW", rating: 77, form: 52, fitness: 87, reserve: false },
-    { id: "sr2", name: "Second-row Low", position: "SECOND_ROW", rating: 55, form: 50, fitness: 90, reserve: true },
-    { id: "lf", name: "Loose forward", position: "LOOSE_FORWARD", rating: 81, form: 56, fitness: 89, reserve: false },
+    { id: "fb", name: "Fullback A", position: "FULLBACK", rating: 86, form: 60, fitness: 95, reserve: false },
+    { id: "w1", name: "Wing Elite", position: "WING", rating: 92, form: 65, fitness: 92, reserve: false },
+    { id: "c1", name: "Centre A", position: "CENTRE", rating: 86, form: 55, fitness: 90, reserve: false },
+    { id: "c2", name: "Centre B", position: "CENTRE", rating: 84, form: 50, fitness: 88, reserve: false },
+    { id: "w2", name: "Wing Reserve", position: "WING", rating: 81, form: 52, fitness: 90, reserve: true },
+    { id: "so", name: "Stand-off", position: "STAND_OFF", rating: 88, form: 58, fitness: 93, reserve: false },
+    { id: "sh", name: "Scrum-half", position: "SCRUM_HALF", rating: 87, form: 57, fitness: 94, reserve: false },
+    { id: "p1", name: "Prop A", position: "PROP", rating: 85, form: 50, fitness: 85, reserve: false },
+    { id: "hk", name: "Hooker", position: "HOOKER", rating: 85, form: 54, fitness: 88, reserve: false },
+    { id: "p2", name: "Prop B", position: "PROP", rating: 83, form: 48, fitness: 84, reserve: false },
+    { id: "sr1", name: "Second-row A", position: "SECOND_ROW", rating: 85, form: 52, fitness: 87, reserve: false },
+    { id: "sr2", name: "Second-row Low", position: "SECOND_ROW", rating: 80, form: 50, fitness: 90, reserve: true },
+    { id: "lf", name: "Loose forward", position: "LOOSE_FORWARD", rating: 86, form: 56, fitness: 89, reserve: false },
   ];
   return lineup.map((p) => ({
     ...p,

@@ -19,6 +19,7 @@ import {
   applyShowcasePipeline,
   computeShowcaseDbStats,
   getUniqueClubs,
+  RATING_FILTER_LABELS,
   TIER_FILTER_LABELS,
   type RatingFilter,
   type ShowcaseFilters,
@@ -227,7 +228,7 @@ export function PlayerShowcase() {
     if (filters.ratingMin !== "all") {
       chips.push({
         key: "rating",
-        label: `Rating: ${filters.ratingMin}+`,
+        label: `Rating: ${RATING_FILTER_LABELS[filters.ratingMin]}`,
         clear: () => updateFilters((f) => ({ ...f, ratingMin: "all" })),
       });
     }
@@ -431,10 +432,12 @@ export function PlayerShowcase() {
               className={FILTER.input}
             >
               <option value="all">Any Rating</option>
-              <option value="70">70+</option>
-              <option value="80">80+</option>
-              <option value="90">90+</option>
-              <option value="95">95+</option>
+              <option value="80-82">80–82</option>
+              <option value="83-85">83–85</option>
+              <option value="86-88">86–88</option>
+              <option value="89-91">89–91</option>
+              <option value="92-94">92–94</option>
+              <option value="95+">95+</option>
             </select>
           </FilterField>
 

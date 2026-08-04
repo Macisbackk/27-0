@@ -1,43 +1,20 @@
-import sl2026Squads from "../../../data/sl-2026-squads.json";
-import sl2026ApplyReport from "../../../data/sl-2026-squads-apply-report.json";
+import currentSquads from "../../../data/current-squads.json";
 import { PLAYER_RATING_OVERRIDES } from "../../../data/player-rating-overrides";
 import type { Player } from "../types";
 import { syncPlayerValueFromRating } from "../players/ratings";
 
-type Sl2026Entry = { name: string; positions: string; rating: number };
-type RatingsChangedEntry = {
-  id: string;
-  name: string;
-  from: number;
-  to: number;
-};
-
+/**
+ * Canonical manager-mode ratings: current-squads peakRating, then explicit overrides.
+ * Do not use stale SL-2026 apply-report numbers after the v3 (floor-80) rebalance.
+ */
 const MANAGER_RATING_BY_PLAYER_ID = new Map<string, number>();
 
 function buildManagerRatingMap(): void {
-  const squads = sl2026Squads as Record<string, Sl2026Entry[]>;
-  const report = sl2026ApplyReport as {
-    ratingsChanged?: RatingsChangedEntry[];
-    teams?: Record<string, { playerIds: string[] }>;
-  };
-
-  for (const change of report.ratingsChanged ?? []) {
-    MANAGER_RATING_BY_PLAYER_ID.set(change.id, change.to);
-  }
-
-  for (const [club, team] of Object.entries(report.teams ?? {})) {
-    const roster = squads[club];
-    if (!roster?.length) continue;
-    const ids = team.playerIds ?? [];
-    for (let i = 0; i < Math.min(roster.length, ids.length); i++) {
-      const id = ids[i]!;
-      const entry = roster[i]!;
-      if (!MANAGER_RATING_BY_PLAYER_ID.has(id)) {
-        MANAGER_RATING_BY_PLAYER_ID.set(id, entry.rating);
-      }
+  for (const raw of currentSquads as { id: string; peakRating: number }[]) {
+    if (typeof raw.peakRating === "number") {
+      MANAGER_RATING_BY_PLAYER_ID.set(raw.id, raw.peakRating);
     }
   }
-
   for (const [id, rating] of Object.entries(PLAYER_RATING_OVERRIDES)) {
     MANAGER_RATING_BY_PLAYER_ID.set(id, rating);
   }
@@ -48,7 +25,7 @@ buildManagerRatingMap();
 /** 2026 Super League squad ratings for manager mode display and strength. */
 export function getManagerModePlayerRating(
   playerId: string,
-  playerName: string,
+  _playerName: string,
   fallback: number
 ): number {
   const byId = MANAGER_RATING_BY_PLAYER_ID.get(playerId);
@@ -64,9 +41,9 @@ export function applyManagerModeRatingToPlayer(player: Player): Player {
   let next = player;
   if (hasManagerModeRating(player.id)) {
     const mgrRating = MANAGER_RATING_BY_PLAYER_ID.get(player.id)!;
-    const peakRating = Math.max(mgrRating, player.peakRating);
-    if (peakRating !== player.peakRating) {
-      next = { ...player, peakRating };
+    // Prefer canonical rebalanced rating (not max with a stale save copy).
+    if (mgrRating !== player.peakRating) {
+      next = { ...player, peakRating: mgrRating };
     }
   }
   return syncPlayerValueFromRating(next);

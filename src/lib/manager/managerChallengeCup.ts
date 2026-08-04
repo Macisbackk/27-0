@@ -25,6 +25,10 @@ import type {
 } from "./types";
 import { CUP_ROUND_LABELS } from "./types";
 import {
+  getChallengeCupRoundLabel,
+  isChallengeCupFinalRound,
+} from "./challengeCupRounds";
+import {
   needsPreSeasonFriendlies,
 } from "./managerFriendlies";
 
@@ -60,9 +64,18 @@ export function getManagerBracketRoundLabel(
   round: number
 ): string {
   if (cup && isExpandedChallengeCup(cup)) {
-    return getExpandedCupRoundLabel(round);
+    const key = BRACKET_ROUND_TO_KEY[round];
+    if (key) return getChallengeCupRoundLabel(key);
+    const short = getExpandedCupRoundLabel(round);
+    return short.startsWith("Challenge Cup")
+      ? short
+      : `Challenge Cup ${short}`;
   }
-  return getCupRoundLabel(round);
+  const legacy = getCupRoundLabel(round);
+  if (/^final$/i.test(legacy)) return getChallengeCupRoundLabel("final");
+  return legacy.startsWith("Challenge Cup")
+    ? legacy
+    : `Challenge Cup ${legacy}`;
 }
 
 export const CHALLENGE_CUP_FINAL_VENUE = "Wembley Stadium";
@@ -76,7 +89,8 @@ export function isChallengeCupFinalFixture(
   >
 ): boolean {
   return (
-    fixture.competition === "challenge_cup" && fixture.cupRound === "final"
+    fixture.competition === "challenge_cup" &&
+    isChallengeCupFinalRound(fixture.cupRound)
   );
 }
 
@@ -799,8 +813,24 @@ export function shouldShowChallengeCupBracketOnHub(
   nextFixture: ManagerScheduledFixture | null
 ): boolean {
   if (!career.challengeCup?.matches?.length) return false;
+
+  // User's next match is a Challenge Cup tie — show the compact bracket.
   if (nextFixture?.competition === "challenge_cup") return true;
-  if (getPendingCupBracketRound(career) !== null) return true;
+
+  // Eliminated / tournament done: never keep the Hub on the cup bracket for
+  // later AI-only rounds.
+  if (career.challengeCup.userEliminated || career.challengeCup.tournamentComplete) {
+    return false;
+  }
+
+  // Cup week waiting for the user to play (bracket prepared, next is cup).
+  const pending = getPendingCupBracketRound(career);
+  if (pending !== null) {
+    const prepared = prepareCupRound(career);
+    if (prepared && getUserCupMatch(prepared, pending)) return true;
+  }
+
+  // Just finished a cup tie — keep the bracket visible until week advance.
   const last =
     career.lastMatchFixture ??
     career.fixtures[career.fixtures.length - 1] ??

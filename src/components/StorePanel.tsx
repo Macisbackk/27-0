@@ -32,6 +32,15 @@ import {
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
+import { GameTabs } from "./ui/GameTabs";
+import { StoreBoostsPanel } from "./StoreBoostsPanel";
+
+type StoreTab = "themes" | "boosts";
+
+const STORE_TABS = [
+  { id: "themes" as const, label: "Themes" },
+  { id: "boosts" as const, label: "Boosts" },
+];
 
 function ThemePalette({ theme }: { theme: UiThemeDefinition }) {
   const swatches = [
@@ -42,26 +51,47 @@ function ThemePalette({ theme }: { theme: UiThemeDefinition }) {
 
   return (
     <div
-      className="grid grid-cols-3 gap-1.5 border-b border-pitch-700/40 bg-pitch-950/80 px-2 py-2"
+      className="border-b border-pitch-700/40 bg-pitch-950/80 px-2 py-2"
       aria-label={`${theme.label} colour palette`}
     >
-      {swatches.map((swatch) => (
-        <div key={swatch.label} className="min-w-0 text-center">
-          <span
-            className="mb-0.5 block h-6 w-full rounded border border-white/20"
-            style={{ backgroundColor: swatch.colour }}
-            title={swatch.label}
-          />
-          <span className="block truncate text-[9px] font-semibold uppercase tracking-wide text-gray-400">
-            {swatch.label}
-          </span>
-        </div>
-      ))}
+      <div className="grid grid-cols-3 gap-1.5">
+        {swatches.map((swatch) => (
+          <div key={swatch.label} className="min-w-0 text-center">
+            <span
+              className="mb-0.5 block h-6 w-full rounded border border-white/20"
+              style={{ backgroundColor: swatch.colour }}
+              title={swatch.label}
+            />
+            <span className="block truncate text-[9px] font-semibold uppercase tracking-wide text-gray-400">
+              {swatch.label}
+            </span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-2 flex gap-1.5">
+        <span
+          className="flex-1 rounded-md px-2 py-1.5 text-center text-[10px] font-bold uppercase tracking-wide"
+          style={{
+            backgroundColor: theme.primary,
+            color: theme.textOnPrimary,
+            border: `1px solid ${theme.tertiary}`,
+          }}
+        >
+          Primary btn
+        </span>
+        <span
+          className="flex-1 rounded-md border px-2 py-1.5 text-center text-[10px] font-bold uppercase tracking-wide text-gray-200"
+          style={{ borderColor: theme.tertiary }}
+        >
+          Secondary
+        </span>
+      </div>
     </div>
   );
 }
 
 export function StorePanel() {
+  const [tab, setTab] = useState<StoreTab>("themes");
   const [balance, setBalance] = useState(0);
   const [selectedId, setSelectedId] = useState("default");
   const [unlocked, setUnlocked] = useState<string[]>(["default"]);
@@ -131,6 +161,22 @@ export function StorePanel() {
 
   return (
     <div>
+      <GameTabs
+        tabs={STORE_TABS}
+        active={tab}
+        onChange={(next) => {
+          playUiClick();
+          setTab(next);
+          setPurchaseError(null);
+        }}
+        ariaLabel="Store sections"
+        className="mb-6"
+      />
+
+      {tab === "boosts" ? (
+        <StoreBoostsPanel />
+      ) : (
+        <>
       <div
         className={`${CARD.inset} flex flex-wrap items-center justify-between gap-3 ${SPACING.cardPaddingSm}`}
       >
@@ -212,6 +258,8 @@ export function StorePanel() {
           );
         })}
       </ul>
+        </>
+      )}
     </div>
   );
 }

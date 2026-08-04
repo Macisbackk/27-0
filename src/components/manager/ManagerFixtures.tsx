@@ -53,6 +53,7 @@ import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadShee
 import {
   buildWorldClubChallengeScheduledFixture,
   getCurrentSeasonWccResult,
+  getLatestUserWorldClubChallengeResult,
   getWccStats,
   isValidWorldClubChallengeFixture,
   pickNrlChampion,
@@ -64,7 +65,6 @@ import { ManagerChallengeCupBracket } from "@/components/manager/ManagerChalleng
 
 type FixtureFilter =
   | "all"
-  | "upcoming"
   | "results"
   | "league"
   | "cup"
@@ -102,7 +102,6 @@ const FILTERS: {
   title?: string;
 }[] = [
   { id: "all", label: "All" },
-  { id: "upcoming", label: "Upcoming", shortLabel: "Next" },
   { id: "results", label: "Results" },
   { id: "league", label: "League" },
   { id: "cup", label: "Cup" },
@@ -132,7 +131,7 @@ function matchesCompetitionFilter(
   competition: ManagerFixtureRecord["competition"] | ManagerScheduledFixture["competition"],
   filter: FixtureFilter
 ): boolean {
-  if (filter === "all" || filter === "upcoming" || filter === "results") {
+  if (filter === "all" || filter === "results") {
     return true;
   }
   if (filter === "league") return competition === "league" || !competition;
@@ -149,7 +148,7 @@ function shouldShowNextMatch(
   if (!nextFixture) return false;
   if (filter === "results") return false;
   const comp = nextFixture.competition ?? "league";
-  if (filter === "all" || filter === "upcoming") return true;
+  if (filter === "all") return true;
   if (filter === "wcc") return comp === "world_club_challenge";
   if (filter === "cup") return comp === "challenge_cup";
   if (filter === "league") return comp === "league" || !nextFixture.competition;
@@ -384,6 +383,8 @@ function buildFixtureList(
   for (const result of career.worldClubChallenge?.history ?? []) {
     // Past WCC only belongs in the WCC tab — skip previous seasons here.
     if (result.seasonYear !== career.seasonYear) continue;
+    // AI showcase (user not involved) stays on the WCC tab only.
+    if (result.userResult === "not_involved") continue;
     if (matchedFixtureIds.has(result.id)) continue;
     const alreadyListed = items.some(
       (i) =>
@@ -691,9 +692,7 @@ export function ManagerFixtures({
       matchesCompetitionFilter(itemCompetition(item), filter)
     );
 
-    if (filter === "upcoming") {
-      items = sortUpcomingFirst(items.filter((i) => i.kind === "upcoming"));
-    } else if (filter === "results") {
+    if (filter === "results") {
       items = sortResultsNewestFirst(items.filter((i) => i.kind === "played"));
     }
 
@@ -740,22 +739,35 @@ export function ManagerFixtures({
     [filteredItems]
   );
 
-  /** Filter past-season WCC out of normal Results / All lists. */
+  /** Filter past-season / non-user WCC out of normal Results / All lists. */
   const filterNormalPlayed = useCallback(
     (items: FixtureListItem[]) => {
-      const currentWccId = getCurrentSeasonWccResult(career)?.id;
+      const currentUserWcc = getLatestUserWorldClubChallengeResult(career);
+      const currentWccId = currentUserWcc?.id;
       let sawCurrentWcc = false;
       return items.filter((i) => {
         if (i.kind !== "played") return true;
         if (itemCompetition(i) !== "world_club_challenge") return true;
         const id = i.fixture.fixtureId ?? i.key;
+        const historyEntry = career.worldClubChallenge?.history?.find(
+          (r) => r.id === id
+        );
+        if (historyEntry?.userResult === "not_involved") return false;
+        if (
+          !historyEntry &&
+          i.fixture.userClub != null &&
+          i.fixture.userClub !== career.club
+        ) {
+          return false;
+        }
         const isCurrent =
           id === currentWccId ||
           (currentWccId == null &&
             career.fixtures.some(
               (f) =>
                 f.competition === "world_club_challenge" &&
-                (f.fixtureId === id || f.fixtureId === i.key)
+                (f.fixtureId === id || f.fixtureId === i.key) &&
+                (f.userClub == null || f.userClub === career.club)
             ));
         if (!isCurrent) return false;
         if (sawCurrentWcc) return false;
@@ -787,7 +799,6 @@ export function ManagerFixtures({
   const showChallengeCup = filter === "cup";
   const showSuperLeague = filter === "league";
   const showPlayoffs = filter === "playoffs" && playoffItems.length > 0;
-  const showUpcomingFilter = filter === "upcoming" && upcomingItems.length > 0;
   const showCompletedResults =
     filter === "results" && completedResultsItems.length > 0;
 
@@ -935,7 +946,6 @@ export function ManagerFixtures({
     (showChallengeCup && challengeCupItems.length > 0) ||
     (showSuperLeague && leagueUpcomingItems.length > 0) ||
     showPlayoffs ||
-    showUpcomingFilter ||
     showCompletedResults;
 
   return (
@@ -1110,17 +1120,6 @@ export function ManagerFixtures({
         <GamePanel padded label={`Play-offs (${playoffItems.length})`}>
           <FixtureItemList
             items={playoffItems}
-            club={career.club}
-            onSelectFixture={onSelectFixture}
-            compact={career.managerSettings?.compactFixtureRows}
-          />
-        </GamePanel>
-      )}
-
-      {showUpcomingFilter && (
-        <GamePanel padded label={`Upcoming (${upcomingItems.length})`}>
-          <FixtureItemList
-            items={upcomingItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
             compact={career.managerSettings?.compactFixtureRows}

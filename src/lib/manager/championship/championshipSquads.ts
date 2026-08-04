@@ -11,8 +11,20 @@ import {
   normalizePlayerFullName,
   type ChampNationalityCode,
 } from "./championshipNamePools";
+import {
+  championshipTransferValue,
+  ratingForChampionshipClub,
+} from "./championshipRatingScale";
+import {
+  CHAMPIONSHIP_PLAYER_MAX_RATING,
+  CHAMPIONSHIP_PLAYER_MIN_RATING,
+} from "../../players/rating-floors";
 
-export const GENERATED_CHAMPIONSHIP_SQUADS_VERSION = 1;
+/**
+ * v3: Championship uses a separate 70–89 scale (not the Super League floor of 80).
+ * Existing careers are remapped by migratePlayerRatingsV4 — squads are not regenerated.
+ */
+export const GENERATED_CHAMPIONSHIP_SQUADS_VERSION = 3;
 
 export const CHAMP_NATIONALITY_QUOTA: Record<ChampNationalityCode, number> = {
   ENG: 425,
@@ -101,7 +113,8 @@ export function createChampionshipReplacementPlayer(
   const name = pickUniqueName(nationalityCode, rng, used);
   const uniqueId = `r${Math.floor(rng() * 1_000_000)}`;
   const id = `generated-championship-${clubId}-${uniqueId}`;
-  const peakRating = 52 + Math.floor(rng() * 12);
+  // Depth / developing Championship replacements (70–75)
+  const peakRating = 70 + Math.floor(rng() * 6);
   return {
     id,
     name,
@@ -194,31 +207,22 @@ function pickUniqueName(
   throw new Error(`Could not allocate unique name for nationality ${code}`);
 }
 
+/**
+ * Championship ratings use a separate 70–89 scale.
+ * Targets: squad avg ~75–78 · strong clubs ~78–80 · SL remains ~86–88.
+ */
 function ratingForClub(
   club: ChampionshipClub,
   slotIndex: number,
   rng: () => number
 ): number {
-  const strength = club.baseStrength;
-  // Elite slots rare and tied to stronger clubs
-  const roll = rng();
-  if (roll > 0.97 && strength >= 68) {
-    return Math.round(78 + rng() * 4); // 78–82
-  }
-  if (roll > 0.88 && strength >= 64) {
-    return Math.round(70 + rng() * 7); // 70–77
-  }
-  if (slotIndex < 17) {
-    const mid = strength - 4 + rng() * 10;
-    return Math.max(60, Math.min(77, Math.round(mid)));
-  }
-  const low = strength - 12 + rng() * 10;
-  return Math.max(50, Math.min(68, Math.round(low)));
+  return ratingForChampionshipClub(club, slotIndex, rng);
 }
 
 function ageForRating(rating: number, rng: () => number): number {
-  if (rating >= 78) return 22 + Math.floor(rng() * 8);
-  if (rating >= 70) return 20 + Math.floor(rng() * 12);
+  if (rating >= 85) return 22 + Math.floor(rng() * 8);
+  if (rating >= 82) return 20 + Math.floor(rng() * 12);
+  if (rating <= 72) return 18 + Math.floor(rng() * 6);
   return 18 + Math.floor(rng() * 14);
 }
 
@@ -320,7 +324,11 @@ export function validateChampionshipSquadGeneration(
       throw new Error(`Duplicate Championship name: ${p.name}`);
     }
     names.add(key);
-    if (!Number.isFinite(p.peakRating) || p.peakRating < 40 || p.peakRating > 99) {
+    if (
+      !Number.isFinite(p.peakRating) ||
+      p.peakRating < CHAMPIONSHIP_PLAYER_MIN_RATING ||
+      p.peakRating > CHAMPIONSHIP_PLAYER_MAX_RATING
+    ) {
       throw new Error(`Invalid rating for ${p.id}: ${p.peakRating}`);
     }
   }
@@ -354,7 +362,8 @@ export function championshipPlayerToPlayer(
     category: "current",
     availableInGame: true,
     yearsActive: String(p.age),
-    value: Math.round(p.peakRating * 1200),
+    // Champ fees stay below SL bands for the same numeric rating.
+    value: championshipTransferValue(p.peakRating),
     intlCaps: 0,
   };
 }

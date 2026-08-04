@@ -5,7 +5,7 @@ import type {
   ManagerFixtureRecord,
   ManagerScheduledFixture,
 } from "./types";
-import { CUP_ROUND_LABELS } from "./types";
+import { getChallengeCupRoundLabel } from "./challengeCupRounds";
 import { isMagicWeekendFixture } from "./managerMagicWeekend";
 import { isChallengeCupFinalFixture } from "./managerChallengeCup";
 
@@ -16,8 +16,7 @@ export function isChallengeCupFixture(
 }
 
 export function getManagerCupRoundLabel(cupRound?: CupRoundKey): string {
-  if (!cupRound) return "Challenge Cup";
-  return CUP_ROUND_LABELS[cupRound] ?? "Challenge Cup";
+  return getChallengeCupRoundLabel(cupRound);
 }
 
 export function getManagerCompetitionLabel(
@@ -49,9 +48,11 @@ export function getManagerScheduledFixtureHeadline(
 ): string {
   if (sched.competition === "challenge_cup") {
     if (isChallengeCupFinalFixture(sched)) {
-      return sched.label ?? "Challenge Cup Final";
+      return getManagerCupRoundLabel("final");
     }
-    return sched.label ?? getManagerCupRoundLabel(sched.cupRound);
+    return sched.label && !/final/i.test(sched.label)
+      ? sched.label
+      : getManagerCupRoundLabel(sched.cupRound);
   }
   if (isMagicWeekendFixture(sched)) {
     return sched.label ?? "Magic Weekend";

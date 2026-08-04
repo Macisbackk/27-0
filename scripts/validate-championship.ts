@@ -86,27 +86,45 @@ assert(
 assert(competition.standings.length === 20, "20 standings rows");
 
 const cup = createExpandedChallengeCupBracket("validate-cup", "Wigan Warriors");
-assert(isExpandedChallengeCup(cup), "Expanded cup schema v2");
+assert(isExpandedChallengeCup(cup), "Expanded cup schema");
 assert(
-  cup.expandedMeta.roundOneByes.length === 16,
-  "16 Round One byes"
+  cup.expandedMeta.schemaVersion === 4,
+  "Expanded cup schemaVersion = 4"
 );
 assert(
-  cup.expandedMeta.roundOneParticipants.length === 4,
-  "4 Round One participants"
+  cup.expandedMeta.roundOneByes.length === 0,
+  "0 Championship Round One byes (all Champ clubs play R1)"
 );
 assert(
-  cup.matches.filter((m) => m.round === 1).length === 2,
-  "2 Round One ties"
+  cup.expandedMeta.roundOneParticipants.length === 20,
+  "20 Round One participants"
 );
 assert(
-  cup.matches.filter((m) => m.round === 2).length === 16,
-  "16 Round Two ties"
+  cup.matches.filter((m) => m.round === 1).length === 10,
+  "10 Round One ties"
 );
 assert(
-  cup.matches.filter((m) => m.round === 2 && (m.feederIds?.length ?? 0) === 1)
+  cup.matches.filter((m) => m.round === 2).length === 8,
+  "8 Round Two ties"
+);
+assert(
+  (cup.expandedMeta.roundTwoByes?.length ?? 0) === 8,
+  "8 Super League Last-16 byes"
+);
+assert(
+  cup.matches
+    .filter((m) => m.round === 2 && (m.feederIds?.length ?? 0) === 1)
     .every((m) => m.homeTeam !== null && m.awayTeam === null),
-  "R2 feeder ties: fixed club home, TBD away from R1"
+  "R2 SL-vs-Champ feeder ties: fixed club home, TBD away from R1"
+);
+assert(
+  cup.matches.filter((m) => m.round === 2 && (m.feederIds?.length ?? 0) === 2)
+    .length === 2,
+  "2 Round Two Champ-vs-Champ feeder ties"
+);
+assert(
+  cup.matches.filter((m) => m.round === 3).length === 8,
+  "8 Last 16 ties"
 );
 assert(CURRENT_PLAYABLE_CLUBS.length === 14, "14 Super League clubs");
 
@@ -115,9 +133,22 @@ for (const m of cup.matches.filter((x) => x.round === 2)) {
   if (m.homeTeam) r2Teams.add(m.homeTeam);
   if (m.awayTeam) r2Teams.add(m.awayTeam);
 }
-// Plus 2 pending from R1 feeders
-assert(r2Teams.size === 30, `Round Two fixed teams = 30 (got ${r2Teams.size})`);
+// Round Two places 6 fixed Super League entrants; remaining sides are R1 winners.
+assert(r2Teams.size === 6, `Round Two fixed teams = 6 (got ${r2Teams.size})`);
 
+// Seeding check: Round One pairs best vs worst (seed 1 vs 20, …).
+const r1 = cup.matches
+  .filter((m) => m.round === 1)
+  .sort((a, b) => a.slot - b.slot);
+const order = cup.expandedMeta.roundOneParticipants;
+assert(
+  r1.length === 10 &&
+    r1.every(
+      (m, i) =>
+        m.homeTeam === order[i] && m.awayTeam === order[19 - i]
+    ),
+  "Round One seeded 1v20 … 10v11"
+);
 for (const name of [...CHAMPIONSHIP_CLUBS.map((c) => c.name), ...CURRENT_PLAYABLE_CLUBS]) {
   assert(!getNrlClubByName(name), `No NRL club in cup pool: ${name}`);
 }

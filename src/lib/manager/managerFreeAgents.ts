@@ -116,9 +116,9 @@ function inferFreeAgentSource(
   preferred?: FreeAgentSource
 ): FreeAgentSource {
   if (preferred) return preferred;
-  if (age <= 25 && rating < 72) return "trialist";
+  if (age <= 25 && rating < 82) return "trialist";
   if (age >= 28) return "returning_player";
-  if (rating <= 72) return "higher_club_depth";
+  if (rating <= 82) return "higher_club_depth";
   return "released_by_club";
 }
 
@@ -157,8 +157,8 @@ function contractExpiryChanceForCareer(career: ManagerCareer): number {
 }
 
 function releaseRatingCapForCareer(career: ManagerCareer): number {
-  // Softer than before — avoid dumping mid-70s depth every year.
-  return 74 + Math.min(5, Math.floor(getLeagueSeasonIndex(career) / 2));
+  // Soft releases around the new floor — avoid dumping mid-80s depth every year.
+  return 82 + Math.min(3, Math.floor(getLeagueSeasonIndex(career) / 2));
 }
 
 export function getFreeAgentIds(career: ManagerCareer): Set<string> {
@@ -384,7 +384,7 @@ export function evaluateFreeAgentOffer(
   if (offer.wagePerYear < signing.minAcceptableWage) {
     return { accepted: false, reason: "Wage offer too low." };
   }
-  if (offer.yearsRequested < signing.yearsRequested && rating >= 75) {
+  if (offer.yearsRequested < signing.yearsRequested && rating >= 84) {
     return {
       accepted: false,
       reason: "Player wants a longer contract.",
@@ -517,7 +517,7 @@ export function simulateAiContractExpiries(career: ManagerCareer): ManagerCareer
       const pick =
         candidates[Math.floor(rng() * Math.min(4, candidates.length))]!;
       const source: FreeAgentSource =
-        pick.rating <= 72
+        pick.rating <= 82
           ? "higher_club_depth"
           : pick.age >= 30
             ? "contract_expired"

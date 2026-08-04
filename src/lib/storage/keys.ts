@@ -19,6 +19,8 @@ export const STORAGE_KEYS = {
   uiThemeStore: "27-0-ui-theme-store",
   /** Cached CSS vars for pre-hydration theme bootstrap */
   uiThemeCssCache: "27-0-ui-theme-css-cache",
+  /** Account Store boost inventory */
+  boostInventory: "27-0-boost-inventory",
   coachbeardMergeComplete: "27-0-coachbeard-merge-v1",
   statsSchemaVersion: "27-0-stats-schema-version",
   /** @deprecated Legacy single save — migrated to slot 0 */

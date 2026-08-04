@@ -86,10 +86,10 @@ export function ManagerChallengeCupBracket({
 
   if (!cup) return null;
 
+  const compact = variant === "hub-compact";
   const roundLabel = nextFixture?.cupRound
     ? getManagerCupRoundLabel(nextFixture.cupRound)
     : getManagerBracketRoundLabel(cup, activeRound);
-  const compact = variant === "hub-compact";
 
   return (
     <div

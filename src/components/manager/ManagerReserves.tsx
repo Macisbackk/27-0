@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { ManagerBoostsPanel } from "@/components/manager/ManagerBoostsPanel";
 import { GameButton } from "@/components/ui/GameButton";
 import { GamePanel } from "@/components/ui/GamePanel";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
@@ -277,6 +278,12 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         />
       ) : (
       <>
+      <ManagerBoostsPanel
+        career={career}
+        stage={["manager-reserves", "manager-youth-generation"]}
+        onApplied={onUpdate}
+        compact
+      />
       {message && (
         <p className={`${TYPO.bodySm} text-theme-primary`}>{message}</p>
       )}

@@ -80,7 +80,7 @@ function tryWeight(
   played: Position
 ): number {
   const posW = POSITION_TRY_WEIGHT[played] ?? 0.5;
-  const ratingMod = 1 + (player.peakRating - 65) * 0.012;
+  const ratingMod = 1 + (player.peakRating - 75) * 0.016;
   return Math.max(0.05, posW * ratingMod);
 }
 

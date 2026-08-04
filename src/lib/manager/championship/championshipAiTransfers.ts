@@ -14,7 +14,12 @@ import {
 /** Target ~4–8 notable Champ→SL moves per full season. */
 const WEEKLY_SCAN_CHANCE = 0.22;
 const MAX_TRANSFERS_PER_SEASON = 8;
-const MIN_ELITE_RATING = 76;
+/** Normal interest floor on the Championship 70–89 scale. */
+const MIN_INTEREST_RATING = 81;
+/** Strong interest / preferred targets. */
+const STRONG_INTEREST_RATING = 84;
+/** Elite targets (usually 85–89). */
+const MIN_ELITE_RATING = 85;
 const INTEREST_COOLDOWN_WEEKS = 6;
 
 const HEADLINE_PATTERNS = [
@@ -46,14 +51,28 @@ function eliteChampionshipPlayers(
 ): ChampionshipGeneratedPlayer[] {
   const squads = career.championshipSquads;
   if (!squads) return [];
-  return Object.values(squads.players).filter(
-    (p) =>
-      p.peakRating >= MIN_ELITE_RATING &&
-      p.age >= 20 &&
-      p.age <= 30 &&
-      p.clubId !== "super-league" &&
-      (career.championshipTransferCooldowns?.[p.id] ?? 0) <= career.gameWeek
-  );
+  return Object.values(squads.players).filter((p) => {
+    if (p.clubId === "super-league") return false;
+    if (p.age < 19 || p.age > 30) return false;
+    if ((career.championshipTransferCooldowns?.[p.id] ?? 0) > career.gameWeek) {
+      return false;
+    }
+    // Exceptional younger prospects can attract interest slightly below 81.
+    const youngProspect =
+      p.age <= 22 && p.peakRating >= 79 && p.peakRating < MIN_INTEREST_RATING;
+    return p.peakRating >= MIN_INTEREST_RATING || youngProspect;
+  });
+}
+
+function transferInterestWeight(player: ChampionshipGeneratedPlayer): number {
+  let w = 1;
+  if (player.peakRating >= MIN_ELITE_RATING) w += 3;
+  else if (player.peakRating >= STRONG_INTEREST_RATING) w += 2;
+  else if (player.peakRating >= MIN_INTEREST_RATING) w += 1;
+  if (player.age <= 23) w += 0.75;
+  if (player.age >= 28) w -= 0.35;
+  if (player.form >= 60) w += 0.35;
+  return Math.max(0.15, w);
 }
 
 function clubNeedsPosition(
@@ -131,9 +150,26 @@ export function maybeAiSignChampionshipElite(
   const elites = eliteChampionshipPlayers(career);
   if (elites.length === 0) return career;
 
-  elites.sort((a, b) => b.peakRating - a.peakRating);
-  const top = elites.slice(0, Math.min(8, elites.length));
-  const player = top[Math.floor(rng() * top.length)]!;
+  // Prefer stronger / younger targets; do not auto-sign every 80+.
+  const weighted = elites.flatMap((p) => {
+    const copies = Math.max(1, Math.round(transferInterestWeight(p) * 2));
+    return Array.from({ length: copies }, () => p);
+  });
+  const player = weighted[Math.floor(rng() * weighted.length)]!;
+
+  // Soft reject: normal-interest (81–83) less often unless squad need is acute.
+  if (
+    player.peakRating < STRONG_INTEREST_RATING &&
+    rng() > 0.45
+  ) {
+    return {
+      ...career,
+      championshipTransferCooldowns: {
+        ...(career.championshipTransferCooldowns ?? {}),
+        [player.id]: career.gameWeek + INTEREST_COOLDOWN_WEEKS,
+      },
+    };
+  }
 
   const buyers = shuffle(
     [...CURRENT_PLAYABLE_CLUBS].filter((c) => c !== career.club),
@@ -141,7 +177,9 @@ export function maybeAiSignChampionshipElite(
   );
   const buyer =
     buyers.find((club) => clubNeedsPosition(career, club, player.position)) ??
-    (rng() < 0.15 ? buyers[0] : undefined);
+    (player.peakRating >= MIN_ELITE_RATING && rng() < 0.2
+      ? buyers[0]
+      : undefined);
   if (!buyer) {
     return {
       ...career,
@@ -153,7 +191,10 @@ export function maybeAiSignChampionshipElite(
   }
 
   const fee = Math.round(
-    80_000 + (player.peakRating - 76) * 35_000 + rng() * 40_000
+    55_000 +
+      Math.max(0, player.peakRating - 70) * 14_000 +
+      (player.peakRating >= STRONG_INTEREST_RATING ? 25_000 : 0) +
+      rng() * 35_000
   );
   const sellerClubId = player.clubId;
   const sellerName = player.clubName;

@@ -1,7 +1,7 @@
 "use client";
 
 import type { SquadSlot } from "@/lib/types";
-import { getClubColors, getPlayerCardColours } from "@/lib/clubs";
+import { getClubColors } from "@/lib/clubs";
 import { formatPitchSlotPlayerName } from "@/lib/players/display-name";
 import { getPlayerColorClub } from "@/lib/players/run-club";
 import { getEffectivePeakRating } from "@/lib/squad-analysis";
@@ -39,7 +39,6 @@ export function PitchSlotCard({
   const player = slot.player!;
   const colorClub = getPlayerColorClub(player, clubColorOverride);
   const colors = getClubColors(colorClub);
-  const cardColours = getPlayerCardColours(colorClub);
   const isReviewSheet = fullPlayerNames;
   const isMatchdayPitch = !compact && !fullPlayerNames;
   const isTeamSheet = compact || fullPlayerNames;
@@ -59,8 +58,7 @@ export function PitchSlotCard({
 
   return (
     <div
-      className={`pitch-slot-card flex shrink-0 flex-col rounded-md border bg-[rgba(5,12,10,0.92)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_4px_10px_rgba(0,0,0,0.35)] ${sizeClass} overflow-hidden ${className}`}
-      style={cardColours.style}
+      className={`pitch-slot-card flex shrink-0 flex-col overflow-hidden rounded-lg border border-white/10 bg-[rgba(8,12,13,0.96)] shadow-[0_8px_22px_rgba(0,0,0,0.28)] ${sizeClass} ${className}`}
       title={player.name}
     >
       <div

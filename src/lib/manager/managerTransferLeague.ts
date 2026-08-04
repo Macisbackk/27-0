@@ -509,7 +509,7 @@ export function evaluateBuyOffer(
   if (offer.wagePerYear < signing.minAcceptableWage) {
     return { accepted: false, reason: "Wage offer too low." };
   }
-  if (offer.yearsRequested < signing.yearsRequested && rating >= 75) {
+  if (offer.yearsRequested < signing.yearsRequested && rating >= 84) {
     return {
       accepted: false,
       reason: "Player wants a longer contract.",
@@ -639,8 +639,8 @@ export function generateIncomingTransferOffers(
     let chance = 0.12 + seasonBoost;
     if (priceRatio <= 1.1) chance += 0.2;
     if (priceRatio > 1.5) chance -= 0.1;
-    if (rating >= 82) chance += 0.1;
-    if (rating < 74) chance -= 0.05;
+    if (rating >= 84) chance += 0.1;
+    if (rating < 82) chance -= 0.05;
 
     if (rng() > chance) continue;
 
@@ -719,7 +719,7 @@ export function generateUnsolicitedTransferOffers(
       const triesBoost = Math.min(ps.seasonTries * 0.18, 0.55);
       const appsBoost = ps.seasonAppearances >= 3 ? 0.12 : 0;
       const ratingBoost =
-        rating >= 85 ? 0.3 : rating >= 80 ? 0.18 : rating >= 76 ? 0.08 : 0;
+        rating >= 90 ? 0.3 : rating >= 86 ? 0.18 : rating >= 83 ? 0.08 : 0;
       const weight = 0.35 + formBoost + triesBoost + appsBoost + ratingBoost;
 
       return { ps, player, weight };

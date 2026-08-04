@@ -3,15 +3,19 @@
 interface ReviewSubmissionNoticeProps {
   submittedOnline: boolean;
   specialRun?: boolean;
+  boostedRun?: boolean;
 }
 
 export function ReviewSubmissionNotice({
   submittedOnline,
   specialRun = false,
+  boostedRun = false,
 }: ReviewSubmissionNoticeProps) {
   const offlineMessage = specialRun
     ? "Bonus mode result — this run is kept separate from public records."
-    : "Run stored locally — not submitted to online leaderboard.";
+    : boostedRun
+      ? "Boosted run — excluded from competitive leaderboards."
+      : "Run stored locally — not submitted to online leaderboard.";
 
   return (
     <p

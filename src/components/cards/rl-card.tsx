@@ -1,16 +1,12 @@
 import type { CSSProperties, ReactNode } from "react";
-import {
-  CLUB_CHOICE_CARD_CLASS,
-  getClubChoiceCardStyle,
-  getPlayerCardColours,
-} from "@/lib/clubs";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 /** Shared Rugby League card design tokens — bridged to design-system. */
 export const RL_CARD_SHADOW = "shadow-lg";
 export const RL_CARD_RADIUS = "rounded-lg";
-export const RL_CARD_BORDER = "border-2 border-solid";
+/** @deprecated Prefer CARD.player (1px neutral chrome). */
+export const RL_CARD_BORDER = "border border-solid";
 export const RL_INFO_BOX_CLASS = CARD.stat;
 export const RL_STAT_LABEL_CLASS = TYPO.statLabel;
 export const RL_SECTION_TITLE_CLASS = TYPO.sectionTitle;
@@ -108,28 +104,18 @@ interface RLCardShellProps {
 }
 
 export function RLCardShell({
-  club,
-  clubColorOverride,
-  clubAccent = "full",
+  club: _club,
+  clubColorOverride: _clubColorOverride,
+  clubAccent: _clubAccent = "full",
   children,
   className = "",
   style,
 }: RLCardShellProps) {
-  const colorClub = clubColorOverride ?? club;
-  const clubThemed = clubAccent === "full";
-  const playerColours = clubThemed ? null : getPlayerCardColours(colorClub);
+  // Club kit identity lives on TeamColourStrip / ClubColourBar — neutral chrome only.
   return (
     <div
-      className={`rl-player-card rl-card-shell flex flex-col overflow-hidden ${
-        clubThemed
-          ? `${RL_CARD_RADIUS} ${RL_CARD_BORDER} ${RL_CARD_SHADOW} ${CLUB_CHOICE_CARD_CLASS}`
-          : CARD.player
-      } ${className}`}
-      style={
-        clubThemed
-          ? { ...getClubChoiceCardStyle(colorClub), ...style }
-          : { ...playerColours?.style, ...style }
-      }
+      className={`rl-player-card rl-card-shell flex flex-col overflow-hidden ${CARD.player} ${className}`}
+      style={style}
     >
       {children}
     </div>

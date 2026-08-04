@@ -15,7 +15,6 @@ import { getValueTier } from "@/lib/players/ratings";
 import { getNationalityAbbrev } from "@/lib/players/nationality";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
-import { getClubColors, getPlayerCardColours } from "@/lib/clubs";
 import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import { getPlayerColorClub } from "@/lib/players/run-club";
 import { AchievementChipList } from "./cards/AchievementChipList";
@@ -42,10 +41,10 @@ interface SlotRecruitPlayerCardProps {
 }
 
 function ratingBadgeClass(rating: number): string {
-  if (rating >= 85) {
+  if (rating >= 90) {
     return "bg-accent-gold/15 text-accent-gold ring-accent-gold/40";
   }
-  if (rating >= 78) {
+  if (rating >= 84) {
     return "bg-[color:var(--rating)]/15 text-[color:var(--rating)] ring-[color:var(--rating)]/40";
   }
   return "bg-pitch-800/90 text-pitch-100 ring-pitch-600/50";
@@ -64,8 +63,6 @@ export function SlotRecruitPlayerCard({
   onToggleStats,
 }: SlotRecruitPlayerCardProps) {
   const colorClub = getPlayerColorClub(player, clubColorOverride);
-  const colors = getClubColors(colorClub);
-  const cardColours = getPlayerCardColours(colorClub);
   const displayName = formatPlayerDisplayName(player);
   const status = resolvePlayerStatus(player);
   const isGoat = isGoatPlayer(player);
@@ -94,16 +91,15 @@ export function SlotRecruitPlayerCard({
   return (
     <div
       className={`${CARD.player} flex h-full min-w-0 flex-col overflow-hidden transition ${
-        topPick ? "border-accent-gold/45 ring-1 ring-accent-gold/25" : ""
+        topPick ? "border-accent-gold/40 ring-1 ring-accent-gold/20" : ""
       } ${disabled ? "opacity-50" : ""}`}
-      style={topPick ? undefined : cardColours.style}
     >
       <TeamColourStrip club={colorClub} />
       <div className="flex min-w-0 flex-1 flex-col px-3 pt-3 pb-2 sm:px-4 sm:pt-4">
         <div className="flex min-w-0 items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
             {topPick && (
-              <span className="mb-1.5 inline-block rounded-md border border-accent-gold/40 bg-accent-gold/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent-gold">
+              <span className="mb-1.5 inline-block rounded-md border border-accent-gold/35 bg-accent-gold/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent-gold">
                 Top rating
               </span>
             )}
@@ -111,16 +107,16 @@ export function SlotRecruitPlayerCard({
               {displayName}
             </h3>
             <div className="mt-2 flex flex-wrap gap-1.5">
-              <span className="rounded-md border border-pitch-600/55 bg-pitch-950/70 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-sky-300">
+              <span className="rounded-md border border-white/10 bg-pitch-950/70 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-sky-300">
                 {positionLabel}
               </span>
               {!hardMode && (
-                <span className="rounded-md border border-pitch-600/55 bg-pitch-950/70 px-1.5 py-0.5 text-[10px] font-semibold text-gray-400">
+                <span className="rounded-md border border-white/10 bg-pitch-950/70 px-1.5 py-0.5 text-[10px] font-semibold text-gray-400">
                   {getNationalityAbbrev(player.nationality)}
                 </span>
               )}
               {!hardMode && (
-                <span className="rounded-md border border-pitch-600/55 bg-pitch-950/70 px-1.5 py-0.5 text-[10px] font-semibold text-gray-400">
+                <span className="rounded-md border border-white/10 bg-pitch-950/70 px-1.5 py-0.5 text-[10px] font-semibold text-gray-400">
                   {tier}
                 </span>
               )}
@@ -149,7 +145,7 @@ export function SlotRecruitPlayerCard({
         )}
       </div>
 
-      <div className="mt-auto space-y-2 border-t border-pitch-700/45 px-3 py-3 sm:px-4">
+      <div className="mt-auto space-y-2 border-t border-pitch-700/40 px-3 py-3 sm:px-4">
         <GameButton
           variant="theme"
           size="sm"
@@ -164,7 +160,7 @@ export function SlotRecruitPlayerCard({
           disabled={disabled}
           aria-expanded={statsExpanded}
           onClick={onToggleStats}
-          className="w-full rounded-lg border border-theme-primary/35 bg-theme-primary/5 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-theme-primary transition hover:border-theme-primary/55 hover:bg-theme-primary/12 disabled:cursor-not-allowed disabled:opacity-50 sm:text-[11px]"
+          className="w-full rounded-lg border border-white/10 bg-pitch-950/50 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-theme-primary transition hover:border-theme-primary/40 hover:bg-theme-primary/10 disabled:cursor-not-allowed disabled:opacity-50 sm:text-[11px]"
         >
           {statsExpanded ? "Hide stats" : "View full stats"}
         </button>

@@ -169,6 +169,7 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     challengeCupWinner: raw.challengeCupWinner as boolean | undefined,
     superLeagueWinner: raw.superLeagueWinner as boolean | undefined,
     lanceToddTrophy: raw.lanceToddTrophy as boolean | undefined,
+    hallOfFame: raw.hallOfFame === true ? true : undefined,
     dreamTeamYears: getDreamTeamYears(id),
     goldenBootYears: getGoldenBootYears(id),
     availableInGame:

@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { StatsPanel } from "@/components/StatsPanel";
-import { PageShell, PageShellBody } from "@/components/ui/PageShell";
+import { PageShellBody } from "@/components/ui/PageShell";
+import { StandardPageShell } from "@/components/ui/StandardPageShell";
 import { useAuth } from "@/lib/auth-context";
 import { getAllStats } from "@/lib/storage/stats";
 import { importLocalStatsToCloud } from "@/lib/storage/stats-cloud";
@@ -34,7 +35,7 @@ export default function StatsPage() {
   };
 
   return (
-    <PageShell withLights compact desktopFit>
+    <StandardPageShell desktopFit>
       <PageShellBody>
       <div className={PAGE.section}>
         <header>
@@ -74,6 +75,6 @@ export default function StatsPage() {
         <StatsPanel />
       </div>
       </PageShellBody>
-    </PageShell>
+    </StandardPageShell>
   );
 }

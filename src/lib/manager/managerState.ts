@@ -1,9 +1,11 @@
+import { migrateCareerHistory } from "./managerClubChange";
 import type { ChallengeCupBracketState } from "../game/challenge-cup-bracket";
 import type { ManagerCareer, ManagerSettings } from "./types";
 import { DEFAULT_MANAGER_SETTINGS, DEFAULT_TACTICS } from "./types";
 import { EMPTY_TEAM_SEASON_STATS, sanitizePlayerSeasonStats } from "./managerCareerStats";
 import { sanitizeInvalidScorerData } from "./managerScorerSanitize";
 import { migrateMatchWeekFields } from "./managerMatchWeek";
+import { migrateChallengeCupRoundLabels } from "./challengeCupRounds";
 import { ensureFreeAgentPool } from "./managerFreeAgents";
 import { hydrateReserveTenure } from "./managerReserveRelease";
 import { initLeagueClubStates, ensureLeagueClubStates } from "./managerLeagueState";
@@ -37,6 +39,7 @@ import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubR
 import { sanitizeWorldClubChallengeState, ensureWorldClubChallengeScheduled } from "./worldClubChallenge";
 import { ensureChampionshipSystems } from "./championship/ensureChampionship";
 import { stampManagerSaveVersion } from "./managerSaveVersion";
+import { migratePlayerRatingsV4 } from "./migratePlayerRatingsV4";
 import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
 import {
   applyYearlyYouthIntake,
@@ -325,6 +328,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     leagueClubStatesWeek: raw.leagueClubStatesWeek ?? 0,
     leagueClubRosters: raw.leagueClubRosters,
     leagueClubReserveCounts: raw.leagueClubReserveCounts,
+    leagueClubReserves: raw.leagueClubReserves,
     playerDevelopment: raw.playerDevelopment ?? {},
     playerLearnedPositions: raw.playerLearnedPositions ?? {},
     playerPositionRetraining: raw.playerPositionRetraining ?? {},
@@ -379,7 +383,10 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = hydrateReserveTenure(career);
   career = ensureFreeAgentPool(career);
   career = migrateMatchWeekFields(career);
+  career = migratePlayerRatingsV4(career);
   career = ensureChampionshipSystems(career);
+  career = migrateChallengeCupRoundLabels(career);
+  career = migrateCareerHistory(career);
   return syncManagerInboxMessages(career);
 }
 
@@ -565,6 +572,24 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     leagueClubRosters: initLeagueClubRosters(club),
     leagueClubReserveCounts: initLeagueClubReserveCounts(),
     managerSettings: { ...DEFAULT_MANAGER_SETTINGS },
+    managerId: seed,
+    worldSaveId: seed,
+    userControlledClubId: club,
+    managerCareerHistory: [
+      {
+        id: `hist-${seed}-${club}`,
+        clubId: club,
+        clubName: club,
+        joinedSeason: new Date().getFullYear(),
+        joinedWeek: 0,
+        joinedDate: new Date().toISOString(),
+        boardExpectationAtJoin:
+          MANAGER_EXPECTATION_LABELS[expectationTierFromStars(config.difficulty)],
+      },
+    ],
+    managerCareerWorldSchemaVersion: 2,
+    boostUsage: {},
+    boardSackingSchemaVersion: 1,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

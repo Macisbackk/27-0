@@ -7,15 +7,12 @@ import { GameButton } from "@/components/ui/GameButton";
 import type { Player } from "@/lib/types";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { getClubColors } from "@/lib/clubs";
-import {
-  getSlotRevealBio,
-  type SlotTeamYearPlayer,
-} from "@/lib/game/slot-team-year-pick";
+import type { SlotTeamYearPlayer } from "@/lib/game/slot-team-year-pick";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import { playPlayerSelect, playUiClick } from "@/lib/sound";
 import { CARD, LINK, SPACING, MOBILE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { CollapsibleDetails, StickyActionBar } from "@/components/ui/MobileLayout";
+import { StickyActionBar } from "@/components/ui/MobileLayout";
 import { SlotRecruitPlayerCard } from "./SlotRecruitPlayerCard";
 
 interface SlotTeamYearPickerProps {
@@ -44,10 +41,6 @@ export function SlotTeamYearPicker({
   const [statsPlayerId, setStatsPlayerId] = useState<string | null>(null);
   const [respinLocked, setRespinLocked] = useState(false);
 
-  const bio = useMemo(
-    () => getSlotRevealBio(target.team, target.year),
-    [target.team, target.year]
-  );
   const clubColors = useMemo(
     () => getClubColors(target.team),
     [target.team]
@@ -85,13 +78,13 @@ export function SlotTeamYearPicker({
       transition={{ duration: 0.32, ease: "easeOut" }}
     >
       <div
-        className={`${CARD.elevated} overflow-hidden border border-pitch-600/50`}
+        className={`${CARD.elevated} game-panel--flush overflow-hidden`}
         style={{
-          boxShadow: `inset 4px 0 0 ${clubColors.primary}`,
+          boxShadow: `inset 3px 0 0 ${clubColors.primary}`,
         }}
       >
         <div
-          className="border-b border-pitch-700/50 px-4 py-4 sm:px-6 sm:py-5"
+          className="border-b border-pitch-700/40 px-4 py-4 sm:px-6 sm:py-5"
           style={{
             background: `linear-gradient(135deg, ${clubColors.primary}1a 0%, transparent 55%)`,
           }}
@@ -126,19 +119,15 @@ export function SlotTeamYearPicker({
                 {target.team}
               </h2>
               <div className="mt-2 flex flex-wrap items-center gap-2">
-                <span className="rounded-lg border border-theme-primary/35 bg-theme-primary/12 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-theme-primary">
+                <span className="rounded-md border border-white/10 bg-pitch-950/70 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-theme-primary">
                   {shortYear}
                 </span>
-                <span className="rounded-lg border border-pitch-600/60 bg-pitch-950/70 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-gray-300">
+                <span className="rounded-md border border-white/10 bg-pitch-950/70 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-gray-300">
                   {entries.length} available
                 </span>
               </div>
             </div>
           </div>
-
-          <CollapsibleDetails summary="Squad context">
-            <p className={`${TYPO.bodySm} leading-snug text-gray-400`}>{bio}</p>
-          </CollapsibleDetails>
         </div>
 
         <div className={`${SPACING.cardPadding} pt-3 sm:pt-5 ${onRespin ? MOBILE.actionBarPad : ""}`}>

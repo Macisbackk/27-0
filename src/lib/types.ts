@@ -105,6 +105,8 @@ export interface Player extends PlayerAchievements {
   availableInGame?: boolean;
   /** When false, hidden from Super League gameplay pools (pre-1996-only careers). */
   superLeagueEligible?: boolean;
+  /** Rugby League Hall of Fame inductee (from data flags). */
+  hallOfFame?: boolean;
 }
 
 export interface SquadSlot {

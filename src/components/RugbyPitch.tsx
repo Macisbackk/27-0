@@ -316,10 +316,10 @@ function GoalPosts({ end }: { end: "top" | "bottom" }) {
 }
 
 const EMPTY_SLOT_BASE_CLASS =
-  "squad-marker-empty flex shrink-0 flex-col items-center justify-center gap-0 rounded-lg border-2 px-0.5 py-0.5 box-border";
+  "squad-marker-empty flex shrink-0 flex-col items-center justify-center gap-0 rounded-lg border px-0.5 py-0.5 box-border";
 
 const EMPTY_SLOT_INTERACTIVE_CLASS =
-  "cursor-pointer border-theme-primary/50 bg-black/60 hover:border-theme-primary hover:bg-theme-primary/10 focus-visible:border-theme-primary focus-visible:bg-theme-primary/10";
+  "cursor-pointer border-pitch-500/55 bg-pitch-950/70 hover:border-theme-primary/55 hover:bg-theme-primary/10 focus-visible:border-theme-primary focus-visible:bg-theme-primary/10";
 
 const SquadMarker = memo(function SquadMarker({
   slot,
@@ -363,19 +363,19 @@ const SquadMarker = memo(function SquadMarker({
     const shirtNumber = FORMATION_SLOT_NUMBER[slot.slotIndex];
 
     let stateClass =
-      "border-dashed border-theme-primary/30 bg-black/40 text-white/40";
+      "border-dashed border-white/15 bg-pitch-950/55 text-white/40";
     if (accent === "source") {
       stateClass =
-        "border-theme-primary bg-theme-primary/12";
+        "border-theme-primary/60 bg-theme-primary/12";
     } else if (accent === "target") {
       stateClass =
-        "border-accent-gold bg-accent-gold/10 ring-1 ring-accent-gold/50 animate-pulse motion-reduce:animate-none";
+        "border-accent-gold/55 bg-accent-gold/10 ring-1 ring-accent-gold/40 animate-pulse motion-reduce:animate-none";
     } else if (selected) {
       stateClass =
-        "border-accent-gold bg-accent-gold/20 shadow-[0_0_16px_rgba(251,191,36,0.45)]";
+        "border-accent-gold/55 bg-accent-gold/15 ring-1 ring-accent-gold/35";
     } else if (highlighted) {
       stateClass =
-        "border-accent-gold/80 bg-accent-gold/10 shadow-[0_0_10px_rgba(251,191,36,0.3)]";
+        "border-accent-gold/45 bg-accent-gold/10";
     } else if (interactive) {
       stateClass = EMPTY_SLOT_INTERACTIVE_CLASS;
     }

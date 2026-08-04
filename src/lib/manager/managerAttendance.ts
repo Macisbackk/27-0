@@ -314,16 +314,16 @@ function awayTravelCrowdMultiplier(
     if (competition === "friendly") {
       if (isFrenchSuperLeagueClub(homeClub)) {
         const visitorStrength = getClubBaseStrength(visitingClub);
-        if (visitorStrength >= 80) return 1.12;
-        if (visitorStrength >= 75) return 1.06;
+        if (visitorStrength >= 88) return 1.12;
+        if (visitorStrength >= 84) return 1.06;
         return 1.02;
       }
       return 0.76;
     }
     if (isFrenchSuperLeagueClub(homeClub)) {
       const visitorStrength = getClubBaseStrength(visitingClub);
-      if (visitorStrength >= 80) return 1.16;
-      if (visitorStrength >= 75) return 1.1;
+      if (visitorStrength >= 88) return 1.16;
+      if (visitorStrength >= 84) return 1.1;
       return 1.06;
     }
     return 0.96;

@@ -13,7 +13,7 @@ import {
   getOverallView,
 } from "@/lib/stats-views";
 import { SectionCard } from "@/components/ui/SectionCard";
-import { PageShell } from "@/components/ui/PageShell";
+import { StandardPageShell } from "@/components/ui/StandardPageShell";
 import { RL_INFO_BOX_CLASS } from "@/components/cards/rl-card";
 import { BTN, CARD, LINK, PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -151,22 +151,22 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <PageShell compact>
+      <StandardPageShell compact>
         <p className={TYPO.bodySm}>Loading profile…</p>
-      </PageShell>
+      </StandardPageShell>
     );
   }
 
   if (!isLoggedIn) {
     return (
-      <PageShell compact>
+      <StandardPageShell compact>
         <div className={`${CARD.hero} p-4 sm:p-6`}>
           <p className={TYPO.body}>Log in to view your coach profile.</p>
           <Link href="/login?redirect=/profile" className={`mt-3 inline-block ${LINK.accent}`}>
             Log in →
           </Link>
         </div>
-      </PageShell>
+      </StandardPageShell>
     );
   }
 
@@ -185,7 +185,7 @@ export default function ProfilePage() {
     : "—";
 
   return (
-    <PageShell withLights compact>
+    <StandardPageShell withLights compact>
       <div className={PAGE.section}>
         <header>
           <p className={TYPO.sectionLabel}>Account</p>
@@ -353,6 +353,6 @@ export default function ProfilePage() {
         </div>
         </div>
       </div>
-    </PageShell>
+    </StandardPageShell>
   );
 }

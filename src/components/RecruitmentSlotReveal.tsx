@@ -39,7 +39,6 @@ export function RecruitmentSlotReveal({
   const teamReelRef = useRef<SlotReelHandle>(null);
   const yearReelRef = useRef<SlotReelHandle>(null);
   const shellRef = useRef<HTMLDivElement>(null);
-  const resultRef = useRef<HTMLDivElement>(null);
   const onCompleteRef = useRef(onComplete);
   const clubPrimaryRef = useRef(getClubColors(target.team).primary);
   const [isSpinning, setIsSpinning] = useState(true);
@@ -88,9 +87,6 @@ export function RecruitmentSlotReveal({
         shell.classList.remove("border-pitch-600/70", "bg-pitch-950/80");
         shell.classList.add("border-theme-primary/55", "bg-pitch-950/95");
         (shell as HTMLElement).style.borderTopColor = clubPrimaryRef.current;
-      }
-      if (resultRef.current) {
-        resultRef.current.hidden = false;
       }
     };
 
@@ -222,7 +218,7 @@ export function RecruitmentSlotReveal({
           }}
         >
           <p className={TYPO.sectionLabel}>Recruitment draw</p>
-          <p className="mt-1 font-display text-lg font-bold text-white sm:text-xl">
+          <p className="mt-1 min-h-[1.75rem] font-display text-lg font-bold text-white sm:min-h-[1.875rem] sm:text-xl">
             {isSpinning ? "Spinning…" : "You landed on"}
           </p>
         </div>
@@ -241,9 +237,7 @@ export function RecruitmentSlotReveal({
               <SlotReel
                 ref={teamReelRef}
                 strip={teamPlan.strip}
-                formatItem={(team) =>
-                  isEraSpin ? formatSpinReelTeamName(team) : team
-                }
+                formatItem={formatSpinReelTeamName}
                 textClassName="slot-reveal-team-name"
                 useClubColors
               />
@@ -264,8 +258,14 @@ export function RecruitmentSlotReveal({
             )}
           </div>
 
-          <div ref={resultRef} hidden className="mt-5 text-center">
-            <p className="font-display text-xl font-black text-white sm:text-2xl">
+          {/* Always reserve height so the panel does not jump when the result fades in. */}
+          <div
+            className={`mt-5 min-h-[4.25rem] text-center transition-opacity duration-300 sm:min-h-[4.75rem] ${
+              landed ? "opacity-100" : "opacity-0"
+            }`}
+            aria-hidden={!landed}
+          >
+            <p className="truncate px-1 font-display text-xl font-black text-white sm:text-2xl">
               {target.team}
               {isEraSpin && (
                 <>

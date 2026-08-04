@@ -174,16 +174,16 @@ function ratingForAge(
   youthLevel = 0
 ): number {
   const boost = getYouthIntakeRatingBoost(youthLevel);
-  if (age <= 18) return 55 + Math.floor(rng() * 14) + boost;
-  if (age <= 20) return 60 + Math.floor(rng() * 13) + boost;
-  return 63 + Math.floor(rng() * 13) + boost;
+  if (age <= 18) return 80 + Math.floor(rng() * 3) + Math.min(2, boost);
+  if (age <= 20) return 80 + Math.floor(rng() * 4) + Math.min(2, boost);
+  return 81 + Math.floor(rng() * 4) + Math.min(2, boost);
 }
 
 export function getPotentialTier(potential: number): string {
-  if (potential >= 85) return "Elite Prospect";
-  if (potential >= 80) return "High Potential";
-  if (potential >= 75) return "Good Prospect";
-  if (potential >= 70) return "Squad Potential";
+  if (potential >= 92) return "Elite Prospect";
+  if (potential >= 88) return "High Potential";
+  if (potential >= 85) return "Good Prospect";
+  if (potential >= 82) return "Squad Potential";
   return "Depth Potential";
 }
 
@@ -222,7 +222,7 @@ function computeDevelopmentRateForPotential(
   potential: number,
   rng: () => number
 ): number {
-  const normalized = Math.max(0, Math.min(1, (potential - 65) / 30));
+  const normalized = Math.max(0, Math.min(1, (potential - 80) / 16));
   return 0.5 + normalized * 0.42 + rng() * 0.12;
 }
 
@@ -251,7 +251,7 @@ export function computeYouthGrowthChance(input: YouthGrowthInput): number {
   else if (input.age <= 29) ageFactor = 0.48;
   else ageFactor = 0.18;
 
-  const potentialFactor = 0.82 + (input.potentialRating - 65) / 55;
+  const potentialFactor = 0.82 + (input.potentialRating - 80) / 40;
   const gapFactor = 1 + Math.min(gap / 24, 0.35);
 
   let chance =
@@ -511,7 +511,11 @@ export function reconcileLeagueClubReserveCounts(
     ...(career.leagueClubReserveCounts ?? initLeagueClubReserveCounts()),
     [career.club]: career.reserves.length,
   };
-  return { ...career, leagueClubReserveCounts: counts };
+  const leagueClubReserves = {
+    ...(career.leagueClubReserves ?? {}),
+    [career.club]: career.reserves.map((r) => ({ ...r })),
+  };
+  return { ...career, leagueClubReserveCounts: counts, leagueClubReserves };
 }
 
 /** Seeded reserve-list churn for AI clubs between reserve rounds. */

@@ -18,8 +18,7 @@ import { formatValue } from "@/lib/players";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { formatSeasonWinPercentageOrDash } from "@/lib/stats-views";
 import { playGradeSound, playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
-import { ReviewPlayAgain } from "./ReviewPlayAgain";
-import { ReturnHomeButton } from "./ReturnHomeButton";
+import { MatchReviewActions } from "./MatchReviewActions";
 import { GameButton } from "./ui/GameButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
 import { FixtureResultRow } from "./FixtureResultRow";
@@ -52,6 +51,7 @@ interface SeasonReviewProps {
   normalEraMode?: boolean;
   runRank?: number;
   submittedOnline?: boolean;
+  boostedRun?: boolean;
   clubFundsPayout?: ClubFundsPayoutResult | null;
   onContinuePlayoffs?: () => void;
   onPlayAgain: () => void;
@@ -71,6 +71,7 @@ export function SeasonReview({
   normalEraMode = false,
   runRank,
   submittedOnline = false,
+  boostedRun = false,
   clubFundsPayout = null,
   onContinuePlayoffs,
   onPlayAgain,
@@ -220,6 +221,7 @@ export function SeasonReview({
               <ReviewSubmissionNotice
                 submittedOnline={submittedOnline}
                 specialRun={isSpecialMode}
+                boostedRun={boostedRun}
               />
 
               <motion.div
@@ -277,55 +279,38 @@ export function SeasonReview({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
             >
-              {!showPlayoffPrompt && (
-                <ReturnHomeButton onBeforeNavigate={onReturnHome} />
-              )}
-              {showPlayoffPrompt && (
-                <div className="space-y-3">
-                  <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
-                    You qualified for the play-offs — complete the knockout stage
-                    to finish your season.
-                  </p>
-                  <GameButton
-                    variant="theme"
-                    className="w-full"
-                    onClick={() => {
+              {showPlayoffPrompt ? (
+                <MatchReviewActions
+                  compact
+                  notice={
+                    <p className={TYPO.bodySm}>
+                      You qualified for the play-offs — complete the knockout
+                      stage to finish your season.
+                    </p>
+                  }
+                  primaryAction={{
+                    label: "Continue to Play-Offs →",
+                    onClick: () => {
                       playUiClick();
                       onContinuePlayoffs?.();
-                    }}
-                  >
-                    Continue to Play-Offs →
-                  </GameButton>
-                </div>
-              )}
-            </motion.div>
-
-            {!hideEndOfRunNav && (
-              <motion.div
-                className="mt-6 w-full"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <ReviewPlayAgain
-                  onPlayAgain={handlePlayAgain}
-                  leaderboardHref="/leaderboard"
-                  compact
-                  hideReturnHome
+                    },
+                  }}
+                  hideEndOfRunNav
                 />
-                <ClubFundsEarned payout={clubFundsPayout} />
-              </motion.div>
-            )}
-            {hideEndOfRunNav && clubFundsPayout && (
-              <motion.div
-                className="mt-6 w-full"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <ClubFundsEarned payout={clubFundsPayout} />
-              </motion.div>
-            )}
+              ) : (
+                <MatchReviewActions
+                  compact
+                  onPlayAgain={handlePlayAgain}
+                  onReturnHome={onReturnHome}
+                  leaderboardHref="/leaderboard"
+                />
+              )}
+              {clubFundsPayout ? (
+                <div className="mt-4">
+                  <ClubFundsEarned payout={clubFundsPayout} />
+                </div>
+              ) : null}
+            </motion.div>
 
             <CollapsibleReviewSection title="Season Summary" delay={0.32} defaultOpen>
               <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
@@ -453,27 +438,22 @@ export function SeasonReview({
                   <GuestSaveNudge context="quick-season" />
                 )}
                 {showPlayoffPrompt ? (
-                  <GameButton
-                    variant="theme"
-                    className="w-full"
-                    onClick={() => {
-                      playUiClick();
-                      onContinuePlayoffs?.();
+                  <MatchReviewActions
+                    primaryAction={{
+                      label: "Continue to Play-Offs →",
+                      onClick: () => {
+                        playUiClick();
+                        onContinuePlayoffs?.();
+                      },
                     }}
-                  >
-                    Continue to Play-Offs →
-                  </GameButton>
+                    hideEndOfRunNav
+                  />
                 ) : (
-                  <>
-                    {!hideEndOfRunNav && (
-                      <ReviewPlayAgain
-                        onPlayAgain={handlePlayAgain}
-                        leaderboardHref="/leaderboard"
-                        hideReturnHome
-                      />
-                    )}
-                    <ReturnHomeButton onBeforeNavigate={onReturnHome} />
-                  </>
+                  <MatchReviewActions
+                    onPlayAgain={handlePlayAgain}
+                    onReturnHome={onReturnHome}
+                    leaderboardHref="/leaderboard"
+                  />
                 )}
               </div>
             </motion.footer>

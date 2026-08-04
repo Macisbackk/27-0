@@ -41,10 +41,10 @@ function buildSquadForTargetRating(target: number): SquadSlot[] {
 }
 
 function tierTarget(tier: Tier): number {
-  if (tier === "weak") return 74;
-  if (tier === "average") return 79;
-  if (tier === "good") return 84;
-  return 89;
+  if (tier === "weak") return 82;
+  if (tier === "average") return 86;
+  if (tier === "good") return 89;
+  return 93;
 }
 
 function simulateTier(tier: Tier): {

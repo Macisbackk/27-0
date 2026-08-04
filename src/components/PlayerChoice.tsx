@@ -214,7 +214,7 @@ function ChoiceCard({
             <span
               role="button"
               tabIndex={0}
-              className="inline-flex min-h-[28px] items-center rounded-full border border-pitch-600/50 px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-theme-primary/40 hover:text-theme-primary sm:min-h-0 sm:text-[10px]"
+              className="inline-flex min-h-[28px] items-center rounded-md border border-white/10 px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-theme-primary/40 hover:text-theme-primary sm:min-h-0 sm:text-[10px]"
               onClick={(e) => {
                 e.stopPropagation();
                 onViewDetails();

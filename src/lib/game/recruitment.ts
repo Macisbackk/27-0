@@ -1,5 +1,9 @@
 import seedrandom from "seedrandom";
 import {
+  isGoatOrHallOfFamePlayer,
+  isNinetyPlusPlayer,
+} from "../boosts/applyQuickModeBoost";
+import {
   CURRENT_PLAYERS,
   HISTORIC_PLAYERS,
   LEGEND_PLAYERS,
@@ -27,6 +31,11 @@ export interface RecruitmentOptions {
   draftMode?: boolean;
   /** Challenge Cup — only offer players from this club. */
   clubFilter?: string;
+  /**
+   * Armed Quick Mode selection boost.
+   * Applied during pair generation — never after animation.
+   */
+  selectionBoostId?: "qm-90-plus-player" | "qm-goat-hall-of-fame";
 }
 
 const CURRENT_RATIO = 0.8;
@@ -482,7 +491,39 @@ function pickPairForPosition(
 
   const pair = pickBalancedPair(primaryPool, rng, options, recency);
   if (!pair) return null;
+
+  if (options?.selectionBoostId) {
+    const boostedPair = applySelectionBoostToPool(
+      options.selectionBoostId,
+      primaryPool,
+      usedIds,
+      rng
+    );
+    if (!boostedPair) return null;
+    return [boostedPair[0].id, boostedPair[1].id];
+  }
+
   return [pair[0].id, pair[1].id];
+}
+
+function applySelectionBoostToPool(
+  boostId: "qm-90-plus-player" | "qm-goat-hall-of-fame",
+  pool: Player[],
+  usedIds: Set<string>,
+  rng: () => number
+): [Player, Player] | null {
+  const available = pool.filter((p) => !usedIds.has(p.id));
+  const match =
+    boostId === "qm-90-plus-player"
+      ? isNinetyPlusPlayer
+      : isGoatOrHallOfFamePlayer;
+  const boosted = available.filter(match);
+  if (boosted.length === 0) return null;
+  const guaranteed = boosted[Math.floor(rng() * boosted.length)]!;
+  const others = available.filter((p) => p.id !== guaranteed.id);
+  if (others.length === 0) return null;
+  const partner = others[Math.floor(rng() * others.length)]!;
+  return rng() < 0.5 ? [guaranteed, partner] : [partner, guaranteed];
 }
 
 function roundHasCategory(
@@ -1459,6 +1500,25 @@ export function generateDraftOfferForPick(
   const rng = seedrandom(`${seed}-draft-offer-${pickIndex}`);
   const usedIds = new Set([...signedPlayerIds, ...lockedPlayerIds]);
 
+  if (options?.selectionBoostId) {
+    const boostedPair = applySelectionBoostToPool(
+      options.selectionBoostId,
+      basePlayerPool(options),
+      usedIds,
+      rng
+    );
+    if (!boostedPair) return null;
+    const playerA = boostedPair[0];
+    return {
+      roundIndex: pickIndex,
+      slotIndex: -1,
+      position: playerA.position,
+      slotLabel: `Pick ${pickIndex + 1}`,
+      optionA: boostedPair[0].id,
+      optionB: boostedPair[1].id,
+    };
+  }
+
   let pair: [string, string] | null = null;
   if (
     options?.draftMode &&
@@ -1538,6 +1598,23 @@ export function rerollDraftOffer(
     `${seed}-draft-reroll-${pickIndex}-${discardedIds.size}`
   );
   const blocked = new Set([...usedIds, ...discardedIds]);
+
+  if (options?.selectionBoostId) {
+    const boostedPair = applySelectionBoostToPool(
+      options.selectionBoostId,
+      basePlayerPool(options),
+      blocked,
+      rng
+    );
+    if (!boostedPair) return null;
+    return {
+      ...currentRound,
+      position: boostedPair[0].position,
+      optionA: boostedPair[0].id,
+      optionB: boostedPair[1].id,
+    };
+  }
+
   const pair = pickImprovedDraftRerollPair(
     rng,
     blocked,

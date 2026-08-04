@@ -141,18 +141,8 @@ export function ManagerClubSelect({
       <div className={SPACING.stackMd}>
         {starGroups.map(({ stars, clubs }) => (
           <section key={stars}>
-            <h2
-              className={`mb-1 flex items-center gap-2 ${TYPO.sectionLabel}`}
-            >
-              <span
-                className="font-mono text-accent-gold"
-                aria-label={`${stars} out of 5 stars`}
-              >
-                {formatSquadRatingStars(stars)}
-              </span>
-              <span className="text-pitch-500">
-                {clubs.length} club{clubs.length === 1 ? "" : "s"}
-              </span>
+            <h2 className={`mb-1 ${TYPO.sectionLabel} text-accent-gold`}>
+              {stars} star
             </h2>
             <p className={`mb-1.5 ${TYPO.bodySm} text-pitch-400`}>
               {MANAGER_STAR_TIER_BIOS[stars] ??

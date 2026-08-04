@@ -1,5 +1,8 @@
 import type { ManagerCareer } from "../types";
-import { generateChampionshipSquads } from "./championshipSquads";
+import {
+  generateChampionshipSquads,
+  GENERATED_CHAMPIONSHIP_SQUADS_VERSION,
+} from "./championshipSquads";
 import {
   advanceChampionshipToGameWeek,
   createChampionshipCompetition,
@@ -15,6 +18,7 @@ import { countCupFixturesPlayed } from "../managerChallengeCup";
 /**
  * Ensure Championship squads, league, and expanded cup schema exist on a career.
  * Safe for mid-season: does not redraw an in-progress legacy cup.
+ * Rating-scale upgrades for existing squads are handled by migratePlayerRatingsV4.
  */
 export function ensureChampionshipSystems(
   career: ManagerCareer
@@ -31,6 +35,18 @@ export function ensureChampionshipSystems(
       ...next,
       championshipSquads: squads,
       generatedChampionshipSquadsVersion: squads.version,
+    };
+  } else if (
+    next.championshipSquads.version < GENERATED_CHAMPIONSHIP_SQUADS_VERSION
+  ) {
+    // Ratings already migrated; bump schema marker so we don't regenerate mid-career.
+    next = {
+      ...next,
+      championshipSquads: {
+        ...next.championshipSquads,
+        version: GENERATED_CHAMPIONSHIP_SQUADS_VERSION,
+      },
+      generatedChampionshipSquadsVersion: GENERATED_CHAMPIONSHIP_SQUADS_VERSION,
     };
   }
 

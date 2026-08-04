@@ -35,10 +35,10 @@ export function inferSquadRole(
   inStartingXiii: boolean,
   age?: number
 ): SquadRole {
-  if (rating >= 86) return "Star";
-  if (rating >= 82 && inStartingXiii) return "Starter";
-  if (rating >= 78 && inStartingXiii) return "Starter";
-  if (rating >= 74) return "Rotation";
+  if (rating >= 90) return "Star";
+  if (rating >= 86 && inStartingXiii) return "Starter";
+  if (rating >= 84 && inStartingXiii) return "Starter";
+  if (rating >= 82) return "Rotation";
   if (age !== undefined && age <= 22) return "Prospect";
   return "Depth";
 }
@@ -52,13 +52,21 @@ const MAX_DEMAND_BY_ROLE: Record<SquadRole, number> = {
 };
 
 function baseWageFromRating(rating: number, age?: number): number {
-  if (rating >= 90) return 250_000 + (rating - 90) * 20_000;
-  if (rating >= 86) return 180_000 + (rating - 86) * 15_000;
-  if (rating >= 82) return 120_000 + (rating - 82) * 12_000;
-  if (rating >= 78) return 80_000 + (rating - 78) * 8_000;
-  if (rating >= 74) return 45_000 + (rating - 74) * 5_000;
-  if (age !== undefined && age <= 22) return 20_000 + rating * 350;
-  return 15_000 + rating * 300;
+  // Super League / Historic floor 80.
+  if (rating >= 94) return 280_000 + (rating - 94) * 25_000;
+  if (rating >= 90) return 220_000 + (rating - 90) * 15_000;
+  if (rating >= 86) return 150_000 + (rating - 86) * 15_000;
+  if (rating >= 83) return 95_000 + (rating - 83) * 12_000;
+  if (rating >= 80) return 45_000 + (rating - 80) * 12_000;
+  // Championship-scale wages (70–79).
+  if (rating >= 76) return 22_000 + (rating - 76) * 4_500;
+  if (rating >= 73) return 15_000 + (rating - 73) * 2_200;
+  if (rating >= 70) {
+    const youth = age !== undefined && age <= 21 ? 0.9 : 1;
+    return Math.round((10_000 + (rating - 70) * 1_600) * youth);
+  }
+  if (age !== undefined && age <= 22) return 25_000 + rating * 200;
+  return 20_000 + rating * 200;
 }
 
 export function calculateWageForPlayer(
@@ -112,7 +120,7 @@ export function generateInitialContract(
     clubReputation,
     career
   );
-  const yearsRemaining = rating >= 85 ? 2 + Math.floor(Math.random() * 2) : 1 + Math.floor(Math.random() * 3);
+  const yearsRemaining = rating >= 88 ? 2 + Math.floor(Math.random() * 2) : 1 + Math.floor(Math.random() * 3);
 
   return {
     wagePerYear: wage,
@@ -148,7 +156,7 @@ export function getLeagueClubPlayerContract(
 
   const rng = seedrandom(`${career.seed}-league-contract-${club}-${playerId}`);
   const yearsRemaining =
-    rating >= 85
+    rating >= 88
       ? 2 + Math.floor(rng() * 2)
       : 1 + Math.floor(rng() * 3);
 
@@ -176,12 +184,12 @@ export function generateRenewalDemand(
   if (happiness >= 70) wageBump += 0.03;
   if (appearances >= 10) wageBump += 0.03;
   if (career.boardConfidence >= 70) wageBump += 0.02;
-  if (rating >= 85) wageBump += 0.04;
+  if (rating >= 88) wageBump += 0.04;
 
   const yearsRequested =
-    rating >= 85 && (age === undefined || age <= 30) ? 2 : 1;
+    rating >= 88 && (age === undefined || age <= 30) ? 2 : 1;
   const role =
-    appearances >= 8 && rating >= 80
+    appearances >= 8 && rating >= 84
       ? "Starter"
       : contract.squadRole;
 

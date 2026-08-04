@@ -8,8 +8,8 @@ import {
 import type { ManagerCareer } from "./types";
 import { getManagerPlayer, getManagerPlayerEligiblePositions } from "./managerPlayers";
 
-/** Conservative ability when rating is missing — never elite. */
-export const CONSERVATIVE_FALLBACK_RATING = 55;
+/** Conservative ability when rating is missing — floor of new professional scale. */
+export const CONSERVATIVE_FALLBACK_RATING = 80;
 
 export interface ScorerCandidate {
   id: string;
@@ -68,11 +68,12 @@ export function computeAbilityScorerFactor(
   form: number,
   fitness: number
 ): number {
-  const r = Math.max(1, rating);
+  const r = Math.max(80, rating);
   const formMul = 0.72 + (Math.max(1, Math.min(99, form)) / 100) * 0.56;
   const fitMul = 0.55 + (Math.max(1, Math.min(100, fitness)) / 100) * 0.45;
-  // Squared-ish curve so elite players outscore low-rated reserves without zeroing them.
-  return Math.pow(r / 70, 1.55) * formMul * fitMul;
+  // Baseline 83 (squad/rotation on the floor-80 scale). Exponent keeps 82 vs 92 meaningful
+  // without treating every 80 as an old-scale elite.
+  return Math.pow(r / 83, 2.35) * formMul * fitMul;
 }
 
 export { sanitizeWeight, pickWeightedIndexSafe } from "./managerTryScoring";

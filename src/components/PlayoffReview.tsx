@@ -13,8 +13,7 @@ import {
   getPlayoffPotyNarrative,
   getPlayoffWorstNarrative,
 } from "@/lib/game/tournament-awards";
-import { ReviewPlayAgain } from "./ReviewPlayAgain";
-import { ReturnHomeButton } from "./ReturnHomeButton";
+import { MatchReviewActions } from "./MatchReviewActions";
 import { ClubFundsEarned } from "./ClubFundsEarned";
 import { mergeClubFundsPayouts } from "@/lib/club-funds";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
@@ -168,7 +167,12 @@ export function PlayoffReview({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <ReturnHomeButton onBeforeNavigate={onReturnHome} />
+          <MatchReviewActions
+            compact
+            onPlayAgain={onPlayAgain}
+            onReturnHome={onReturnHome}
+            leaderboardHref="/leaderboard"
+          />
         </motion.div>
 
         <motion.div
@@ -256,17 +260,16 @@ export function PlayoffReview({
         </CollapsibleReviewSection>
 
         <motion.footer
-          className="mt-8 w-full space-y-3"
+          className="mt-8 w-full"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <ReviewPlayAgain
+          <MatchReviewActions
             onPlayAgain={onPlayAgain}
+            onReturnHome={onReturnHome}
             leaderboardHref="/leaderboard"
-            hideReturnHome
           />
-          <ReturnHomeButton onBeforeNavigate={onReturnHome} />
         </motion.footer>
         </div>
       </div>

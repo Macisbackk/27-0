@@ -168,8 +168,8 @@ export function ensureManagerFixtureScoring(
         Number.isFinite(e.player.peakRating) &&
         e.player.peakRating > 0
           ? e.player.peakRating
-          : 55;
-      const ability = Math.pow(rating / 70, 1.55);
+          : 80;
+      const ability = Math.pow(Math.max(80, rating) / 83, 2.35);
       return Math.max(
         0.05,
         ability * e.tryWeightMultiplier * (0.9 + rng() * 0.2)
@@ -182,7 +182,7 @@ export function ensureManagerFixtureScoring(
         Number.isFinite(e.player.peakRating) &&
         e.player.peakRating > 0
           ? e.player.peakRating
-          : 55
+          : 80
       ),
     });
     const userTryScorers = entries

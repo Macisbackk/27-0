@@ -330,6 +330,20 @@ export function getSimTargetGameWeekForDate(
   return Math.max(...onOrBefore.map((e) => e.progressGameWeek));
 }
 
+/** Calendar date for a career game week (nearest event on or before). */
+export function getDateKeyForGameWeek(
+  events: ManagerCalendarEvent[],
+  gameWeek: number
+): string | null {
+  const exact = events.find((e) => e.progressGameWeek === gameWeek);
+  if (exact) return exact.dateKey;
+  const before = events
+    .filter((e) => e.progressGameWeek <= gameWeek)
+    .sort((a, b) => a.progressGameWeek - b.progressGameWeek);
+  if (before.length > 0) return before[before.length - 1]!.dateKey;
+  return events[0]?.dateKey ?? null;
+}
+
 export const CALENDAR_HIGHLIGHT_STYLES: Record<
   CalendarHighlightKind,
   { chip: string; label: string }

@@ -1297,16 +1297,17 @@ body {
   }
 
   .game-button--theme {
-    border: 1px solid color-mix(in srgb, var(--theme-tertiary) 55%, var(--theme-primary));
-    background: var(--theme-primary);
+    border: 1px solid var(--theme-button-primary-border, color-mix(in srgb, var(--theme-tertiary) 55%, var(--theme-primary)));
+    background: var(--theme-button-primary-bg, var(--theme-primary));
     background-image: none;
-    color: var(--theme-text-on-primary);
+    color: var(--theme-button-primary-text, var(--theme-text-on-primary));
     box-shadow: 0 8px 20px color-mix(in srgb, var(--theme-primary) 22%, transparent);
   }
 
   .game-button--theme:hover:not(:disabled) {
     filter: brightness(1.05);
     transform: translateY(-1px);
+    background: var(--theme-button-primary-hover-bg, var(--theme-secondary));
   }
 
   .game-button--current {
@@ -2216,10 +2217,10 @@ button.game-button,
 a.game-button--theme,
 button.game-button--theme,
 .game-button--theme {
-  background-color: var(--theme-primary) !important;
+  background-color: var(--theme-button-primary-bg, var(--theme-primary)) !important;
   background-image: none !important;
-  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 55%, var(--theme-primary)) !important;
-  color: var(--theme-text-on-primary) !important;
+  border: 1px solid var(--theme-button-primary-border, color-mix(in srgb, var(--theme-tertiary) 55%, var(--theme-primary))) !important;
+  color: var(--theme-button-primary-text, var(--theme-text-on-primary)) !important;
   box-shadow: 0 8px 20px color-mix(in srgb, var(--theme-primary) 22%, transparent) !important;
 }
 
@@ -2227,15 +2228,16 @@ a.game-button--theme:hover:not(:disabled),
 button.game-button--theme:hover:not(:disabled),
 .game-button--theme:hover:not(:disabled) {
   filter: brightness(1.05);
+  background-color: var(--theme-button-primary-hover-bg, var(--theme-secondary)) !important;
 }
 
 a.game-button--secondary,
 button.game-button--secondary,
 .game-button--secondary {
-  background-color: rgba(7, 12, 11, 0.94) !important;
+  background-color: var(--theme-button-secondary-bg, rgba(7, 12, 11, 0.94)) !important;
   background-image: none !important;
-  border: 1px solid color-mix(in srgb, var(--theme-tertiary) 40%, transparent) !important;
-  color: #e5e7eb !important;
+  border: 1px solid var(--theme-button-secondary-border, color-mix(in srgb, var(--theme-tertiary) 40%, transparent)) !important;
+  color: var(--theme-button-secondary-text, #e5e7eb) !important;
   box-shadow: none !important;
 }
 
@@ -2243,7 +2245,7 @@ a.game-button--secondary:hover:not(:disabled),
 button.game-button--secondary:hover:not(:disabled),
 .game-button--secondary:hover:not(:disabled) {
   color: #fff !important;
-  background-color: color-mix(in srgb, var(--theme-primary) 10%, rgba(7, 12, 11, 0.94)) !important;
+  background-color: var(--theme-button-secondary-hover-bg, color-mix(in srgb, var(--theme-primary) 10%, rgba(7, 12, 11, 0.94))) !important;
   border-color: color-mix(in srgb, var(--theme-tertiary) 55%, transparent) !important;
 }
 

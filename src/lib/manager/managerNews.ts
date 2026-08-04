@@ -213,7 +213,7 @@ export function generateWeeklyNews(career: ManagerCareer): LatestNewsItem[] {
 
   const topReserve = [...career.reserves]
     .sort((a, b) => b.rating - a.rating)
-    .find((r) => r.rating >= 70 && r.form >= 55);
+    .find((r) => r.rating >= 84 && r.form >= 55);
   if (topReserve && rng() < 0.45) {
     items.push({
       id: `news-reserve-${week}-${topReserve.id}`,

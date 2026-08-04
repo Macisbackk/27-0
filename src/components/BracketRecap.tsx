@@ -71,6 +71,15 @@ function getActiveRoundFromMatches(
       return round;
     }
   }
+  for (let round = 1; round <= maxRound; round++) {
+    if (
+      matches
+        .filter((m) => m.round === round)
+        .some((match) => match.status !== "complete")
+    ) {
+      return round;
+    }
+  }
   return maxRound;
 }
 
@@ -166,8 +175,7 @@ export function BracketRecap({
             (r) =>
               r === activeRound ||
               r === activeRound - 1 ||
-              r === activeRound + 1 ||
-              r === maxRound
+              r === activeRound + 1
           )
         )
       ).sort((a, b) => a - b)

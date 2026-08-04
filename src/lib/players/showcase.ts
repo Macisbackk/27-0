@@ -12,7 +12,25 @@ export type ShowcaseSortKey =
 
 export type ShowcaseSortDir = "asc" | "desc";
 
-export type RatingFilter = "all" | "70" | "80" | "90" | "95";
+/** Rating band filters for the post-floor-80 Current/Historic scale. */
+export type RatingFilter =
+  | "all"
+  | "80-82"
+  | "83-85"
+  | "86-88"
+  | "89-91"
+  | "92-94"
+  | "95+";
+
+/** Rating band filters for the Championship 70–89 scale. */
+export type ChampionshipRatingFilter =
+  | "all"
+  | "70-72"
+  | "73-75"
+  | "76-78"
+  | "79-81"
+  | "82-84"
+  | "85+";
 
 export type TierFilter =
   | "all"
@@ -28,6 +46,28 @@ export const TIER_FILTER_LABELS: Record<Exclude<TierFilter, "all">, string> = {
   star: "Star",
   starter: "Starter",
   squad: "Squad Player",
+};
+
+export const RATING_FILTER_LABELS: Record<Exclude<RatingFilter, "all">, string> =
+  {
+    "80-82": "80–82",
+    "83-85": "83–85",
+    "86-88": "86–88",
+    "89-91": "89–91",
+    "92-94": "92–94",
+    "95+": "95+",
+  };
+
+export const CHAMPIONSHIP_RATING_FILTER_LABELS: Record<
+  Exclude<ChampionshipRatingFilter, "all">,
+  string
+> = {
+  "70-72": "70–72 · Development",
+  "73-75": "73–75 · Squad",
+  "76-78": "76–78 · Established",
+  "79-81": "79–81 · Good",
+  "82-84": "82–84 · Leading",
+  "85+": "85+ · Elite",
 };
 
 export interface ShowcaseFilters {
@@ -46,7 +86,7 @@ export function getPlayerTier(
   if (player.category === "legend") return "legend";
   if (player.peakRating >= 94) return "elite";
   if (player.peakRating >= 90) return "star";
-  if (player.peakRating >= 85) return "starter";
+  if (player.peakRating >= 86) return "starter";
   return "squad";
 }
 
@@ -88,19 +128,55 @@ export function getUniqueClubs(players: Player[]): string[] {
   );
 }
 
-function ratingThreshold(filter: RatingFilter): number {
+function ratingInBand(rating: number, filter: RatingFilter): boolean {
   switch (filter) {
-    case "70":
-      return 70;
-    case "80":
-      return 80;
-    case "90":
-      return 90;
-    case "95":
-      return 95;
+    case "80-82":
+      return rating >= 80 && rating <= 82;
+    case "83-85":
+      return rating >= 83 && rating <= 85;
+    case "86-88":
+      return rating >= 86 && rating <= 88;
+    case "89-91":
+      return rating >= 89 && rating <= 91;
+    case "92-94":
+      return rating >= 92 && rating <= 94;
+    case "95+":
+      return rating >= 95;
     default:
-      return 0;
+      return true;
   }
+}
+
+export function championshipRatingInBand(
+  rating: number,
+  filter: ChampionshipRatingFilter
+): boolean {
+  switch (filter) {
+    case "70-72":
+      return rating >= 70 && rating <= 72;
+    case "73-75":
+      return rating >= 73 && rating <= 75;
+    case "76-78":
+      return rating >= 76 && rating <= 78;
+    case "79-81":
+      return rating >= 79 && rating <= 81;
+    case "82-84":
+      return rating >= 82 && rating <= 84;
+    case "85+":
+      return rating >= 85;
+    default:
+      return true;
+  }
+}
+
+/** Championship-aware tier labels (do not treat 80 as “low rated”). */
+export function getChampionshipPlayerTier(
+  peakRating: number
+): Exclude<TierFilter, "all" | "legend"> {
+  if (peakRating >= 85) return "elite";
+  if (peakRating >= 82) return "star";
+  if (peakRating >= 79) return "starter";
+  return "squad";
 }
 
 function matchesSearch(player: Player, query: string): boolean {
@@ -137,12 +213,16 @@ function passesSecondaryFilters(
   player: Player,
   filters: ShowcaseFilters
 ): boolean {
-  const minRating = ratingThreshold(filters.ratingMin);
   if (filters.position !== "all") {
     const eligible = getPlayerEligiblePositions(player);
     if (!eligible.includes(filters.position)) return false;
   }
-  if (minRating > 0 && player.peakRating < minRating) return false;
+  if (
+    filters.ratingMin !== "all" &&
+    !ratingInBand(player.peakRating, filters.ratingMin)
+  ) {
+    return false;
+  }
   if (filters.tier !== "all" && getPlayerTier(player) !== filters.tier) {
     return false;
   }

@@ -1,6 +1,7 @@
 import type { Player, Position } from "../types";
 import { POSITION_LABELS, POSITION_SHORT } from "../positions";
 import { normalizePosition } from "./position-utils";
+import { outOfPositionRatingFloor } from "./rating-floors";
 
 const ABBREV_TO_POSITION: Record<string, Position> = {
   FB: "FULLBACK",
@@ -222,7 +223,7 @@ export function applyOutOfPositionPenalty(
   rating: number,
   penalty = OUT_OF_POSITION_PENALTY
 ): number {
-  return Math.max(75, rating - penalty);
+  return Math.max(outOfPositionRatingFloor(rating), rating - penalty);
 }
 
 export function getPlayerRatingForPosition(

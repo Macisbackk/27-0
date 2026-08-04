@@ -22,6 +22,7 @@ import {
 } from "@/lib/manager/managerMatchdaySquad";
 import { ManagerMatchdayFormation } from "@/components/manager/ManagerMatchdayFormation";
 import { ManagerSquadPlayerModal } from "@/components/manager/ManagerSquadPlayerModal";
+import { ManagerBoostsPanel } from "@/components/manager/ManagerBoostsPanel";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { autoFixMatchdaySquad, autoSortMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
@@ -517,6 +518,12 @@ export function ManagerSquad({
         </ClipboardPanel>
       ) : (
         <>
+      <ManagerBoostsPanel
+        career={career}
+        stage="manager-squad"
+        onApplied={onUpdate}
+        compact
+      />
       {assignmentNotice && (
         <div className={managerAlertPanelClass("red")} role="status">
           <p className={`${TYPO.bodySm} text-red-200`}>{assignmentNotice}</p>

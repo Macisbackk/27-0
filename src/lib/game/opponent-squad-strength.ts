@@ -75,13 +75,13 @@ function pickWeightedClubSquad(
 
   while (picks.length < target && remaining.length > 0) {
     const totalWeight = remaining.reduce(
-      (sum, player) => sum + 1 + Math.max(0, (player.peakRating - 74) * 0.01),
+      (sum, player) => sum + 1 + Math.max(0, (player.peakRating - 80) * 0.012),
       0
     );
     let roll = rng() * totalWeight;
     let index = remaining.length - 1;
     for (let i = 0; i < remaining.length; i++) {
-      roll -= 1 + Math.max(0, (remaining[i]!.peakRating - 74) * 0.01);
+      roll -= 1 + Math.max(0, (remaining[i]!.peakRating - 80) * 0.012);
       if (roll <= 0) {
         index = i;
         break;

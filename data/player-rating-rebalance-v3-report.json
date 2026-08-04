@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 3,
+  "current": {
+    "count": 267,
+    "min": 80,
+    "max": 96,
+    "avg": 86.28,
+    "bands": {
+      "80-82": 41,
+      "83-85": 76,
+      "86-88": 85,
+      "89-91": 36,
+      "92-94": 22,
+      "95-96": 7,
+      "97-99": 0,
+      "below80": 0
+    },
+    "below80": 0
+  },
+  "historic": {
+    "count": 2280,
+    "min": 80,
+    "max": 97,
+    "avg": 86.14,
+    "bands": {
+      "80-82": 409,
+      "83-85": 678,
+      "86-88": 639,
+      "89-91": 334,
+      "92-94": 151,
+      "95-96": 58,
+      "97-99": 11,
+      "below80": 0
+    },
+    "below80": 0
+  },
+  "exactCounts": {
+    "80": 142,
+    "81": 158,
+    "82": 150,
+    "83": 241,
+    "84": 256,
+    "85": 257,
+    "86": 254,
+    "87": 238,
+    "88": 232,
+    "89": 119,
+    "90": 119,
+    "91": 132,
+    "92": 64,
+    "93": 54,
+    "94": 55,
+    "95": 36,
+    "96": 29,
+    "97": 11
+  },
+  "overridesApplied": 294,
+  "lowConfidence": 155,
+  "topCurrent": [
+    {
+      "name": "Jake Connor",
+      "rating": 96,
+      "note": "Man of Steel (2025)"
+    },
+    {
+      "name": "Bevan French",
+      "rating": 96,
+      "note": "Man of Steel (2023)"
+    },
+    {
+      "name": "Liam Farrell",
+      "rating": 95,
+      "note": "Dream Team ×6"
+    },
+    {
+      "name": "Liam Marshall",
+      "rating": 95,
+      "note": "Dream Team ×2"
+    },
+    {
+      "name": "Daryl Clark",
+      "rating": 95,
+      "note": "Man of Steel (2014)"
+    },
+    {
+      "name": "Jai Field",
+      "rating": 95,
+      "note": "Dream Team ×2"
+    },
+    {
+      "name": "Zak Hardaker",
+      "rating": 95,
+      "note": "Man of Steel (2015)"
+    },
+    {
+      "name": "Mike McMeeken",
+      "rating": 94,
+      "note": "Dream Team ×2"
+    },
+    {
+      "name": "Dean Hadley",
+      "rating": 94,
+      "note": "Dream Team ×1"
+    },
+    {
+      "name": "Paul McShane",
+      "rating": 94,
+      "note": "Man of Steel (2020)"
+    },
+    {
+      "name": "Peta Hiku",
+      "rating": 94,
+      "note": "Dream Team ×1"
+    },
+    {
+      "name": "Tommy Makinson",
+      "rating": 94,
+      "note": "Dream Team ×1"
+    },
+    {
+      "name": "Mikey Lewis",
+      "rating": 94,
+      "note": "Man of Steel (2024)"
+    },
+    {
+      "name": "Elliot Minchella",
+      "rating": 93,
+      "note": "Dream Team ×1"
+    },
+    {
+      "name": "Luke Thompson",
+      "rating": 93,
+      "note": "Dream Team ×3"
+    }
+  ],
+  "bottomCurrent": [
+    {
+      "name": "Kai Morgan",
+      "rating": 80
+    },
+    {
+      "name": "Mitch Souter",
+      "rating": 80
+    },
+    {
+      "name": "Ellis Robson",
+      "rating": 80
+    },
+    {
+      "name": "James Bentley",
+      "rating": 80
+    },
+    {
+      "name": "Liam Hood",
+      "rating": 80
+    },
+    {
+      "name": "Jacob Jones",
+      "rating": 80
+    },
+    {
+      "name": "Nathan Connell",
+      "rating": 80
+    },
+    {
+      "name": "Jordan Dezaria",
+      "rating": 80
+    },
+    {
+      "name": "Ebon Scurr",
+      "rating": 80
+    },
+    {
+      "name": "Harry Aldous",
+      "rating": 80
+    }
+  ]
+}

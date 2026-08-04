@@ -28,6 +28,11 @@ import {
 } from "./player-pool-eligibility";
 import { pickClubUniformTeamYearPool } from "./spin-club-pick";
 import { pickLegendTeamYearForSlot } from "./legend-spin";
+import {
+  isGoatOrHallOfFamePlayer,
+  isNinetyPlusPlayer,
+  playerMatchesSelectionBoost,
+} from "../boosts/applyQuickModeBoost";
 import { spinTimingMark } from "./spin-timing";
 import {
   buildTeamYearId,
@@ -76,6 +81,8 @@ export interface SlotPlayerPrepareOptions {
   legendOnly?: boolean;
   /** Run seed — shuffles eligible recruits deterministically before capping choices. */
   seed?: string;
+  /** Force at least one matching Quick Mode selection-boost player into the choice list. */
+  selectionBoostId?: "qm-90-plus-player" | "qm-goat-hall-of-fame";
 }
 
 export const MAX_SLOT_RECRUIT_CHOICES = 3;
@@ -209,7 +216,65 @@ export function prepareSlotTeamYearPlayers(
   );
   const seed = options.seed ?? `${target.teamYearKey}-${slotIndex}`;
   const rng = seedrandom(`${seed}-slot-recruit-choices-${slotIndex}-${target.teamYearKey}`);
-  return shuffleSlotRecruitEntries(sorted, rng).slice(0, MAX_SLOT_RECRUIT_CHOICES);
+  let chosen = shuffleSlotRecruitEntries(sorted, rng).slice(
+    0,
+    MAX_SLOT_RECRUIT_CHOICES
+  );
+
+  if (options.selectionBoostId) {
+    const match = (p: Player) =>
+      playerMatchesSelectionBoost(p, options.selectionBoostId!);
+    if (!chosen.some((e) => match(e.player))) {
+      const boosted = sorted.find((e) => match(e.player));
+      if (!boosted) return [];
+      chosen = [
+        boosted,
+        ...chosen.filter((e) => e.player.id !== boosted.player.id),
+      ].slice(0, MAX_SLOT_RECRUIT_CHOICES);
+    }
+  }
+
+  return chosen;
+}
+
+/** Find a team/year whose eligible slot pool contains a matching selection boost player. */
+export function findSlotTeamYearTargetForSelectionBoost(
+  seed: string,
+  spinIndex: number,
+  usedIds: Set<string>,
+  squad: SquadSlot[],
+  slotIndex: number,
+  boostId: "qm-90-plus-player" | "qm-goat-hall-of-fame",
+  usedTeamYearKeys: ReadonlySet<string> = new Set(),
+  options: SlotSpinPickOptions = {}
+): SlotRevealTarget | null {
+  const variant = options.spinVariant ?? "current";
+  const match =
+    boostId === "qm-90-plus-player"
+      ? isNinetyPlusPlayer
+      : isGoatOrHallOfFamePlayer;
+
+  const validatePool = (pool: TeamYearPool) =>
+    eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).some(match);
+
+  const eligible = filterSpinPools(
+    getSpinTeamYearPoolsCached(variant),
+    validatePool
+  );
+  const pools = preferUnusedTeamYearPools(eligible, usedTeamYearKeys);
+  if (pools.length === 0) return null;
+
+  const rng = seedrandom(
+    `${seed}-slot-boost-${boostId}-${slotIndex}-${spinIndex}`
+  );
+  const { pool: pick } = pickClubUniformTeamYearPool(
+    pools,
+    rng,
+    validatePool,
+    variant
+  );
+  if (!pick) return null;
+  return buildSlotRevealTarget(pick.team, pick.year);
 }
 
 function poolHasEligiblePlayers(

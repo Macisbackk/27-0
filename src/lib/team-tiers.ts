@@ -1,21 +1,21 @@
 /**
- * Squad quality tiers from average adjusted OVR.
+ * Squad quality tiers from average adjusted OVR (floor-80 scale).
  * Value is optional secondary signal for tie-breaks only.
  */
 export function getTeamTier(averageRating: number): string {
-  if (averageRating >= 99) return "Immortal XIII";
-  if (averageRating >= 97) return "All-Time Greats";
-  if (averageRating >= 95) return "Generational Squad";
-  if (averageRating >= 93) return "Title Favourites";
-  if (averageRating >= 91) return "Grand Final Contenders";
-  if (averageRating >= 89) return "Trophy Contenders";
-  if (averageRating >= 87) return "Top Six Contender";
+  if (averageRating >= 96) return "Immortal XIII";
+  if (averageRating >= 94) return "All-Time Greats";
+  if (averageRating >= 92) return "Generational Squad";
+  if (averageRating >= 90) return "Title Favourites";
+  if (averageRating >= 88) return "Grand Final Contenders";
+  if (averageRating >= 87) return "Trophy Contenders";
+  if (averageRating >= 86) return "Top Six Contender";
   if (averageRating >= 85) return "Competitive Outfit";
-  if (averageRating >= 83) return "Dangerous Underdogs";
-  if (averageRating >= 81) return "Mid-Table Side";
-  if (averageRating >= 79) return "Inconsistent Squad";
-  if (averageRating >= 77) return "Rebuild Project";
-  if (averageRating >= 75) return "Basement Battlers";
+  if (averageRating >= 84) return "Dangerous Underdogs";
+  if (averageRating >= 83) return "Mid-Table Side";
+  if (averageRating >= 82) return "Inconsistent Squad";
+  if (averageRating >= 81) return "Rebuild Project";
+  if (averageRating >= 80) return "Basement Battlers";
   return "Wooden Spoon Side";
 }
 
