@@ -20,7 +20,7 @@ export function ManagerLeagueTable({
   onViewClub,
   defaultExpanded = false,
   rows: rowsProp,
-  showDraws = false,
+  showDraws = true,
 }: {
   career: ManagerCareer;
   title?: string;
@@ -104,7 +104,9 @@ export function ManagerLeagueTable({
                 {row.team}
               </span>
               <span className="text-xs text-pitch-400">
-                {row.wins}W-{row.losses}L
+                {showDraws
+                  ? `${row.wins}W-${row.draws ?? 0}D-${row.losses}L`
+                  : `${row.wins}W-${row.losses}L`}
               </span>
               <span className="font-semibold text-accent-gold">{row.leaguePoints}pts</span>
             </>
@@ -163,7 +165,8 @@ export function ManagerLeagueTable({
           <tbody>
             {displayRows.map((row) => {
               const indicatorColor = getClubIndicatorColor(row.team);
-              const draws = Math.max(0, row.played - row.wins - row.losses);
+              const draws =
+                row.draws ?? Math.max(0, row.played - row.wins - row.losses);
               return (
                 <tr
                   key={row.team}

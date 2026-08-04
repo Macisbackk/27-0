@@ -152,6 +152,8 @@ export interface ReserveFixtureResult {
   userScore: number;
   oppScore: number;
   userWon: boolean;
+  /** Match finished level — reserve fixtures permit regulation draws. */
+  isDraw?: boolean;
   topPerformer?: string;
   userTries: number;
   walkover?: boolean;
@@ -176,6 +178,8 @@ export interface ManagerTeamSeasonStats {
   played: number;
   wins: number;
   losses: number;
+  /** Regulation draws (league / friendly / reserve / championship permit ties). */
+  draws: number;
   pointsFor: number;
   pointsAgainst: number;
   pointsDifference: number;
@@ -236,6 +240,8 @@ export interface ManagerLeagueRow {
   played: number;
   wins: number;
   losses: number;
+  /** Regulation draws (Super League / Championship both permit ties). */
+  draws: number;
   pointsFor: number;
   pointsAgainst: number;
   pointsDifference: number;
@@ -409,6 +415,8 @@ export interface ManagerSeasonSummary {
   position: number;
   wins: number;
   losses: number;
+  /** Regulation draws recorded this season. */
+  draws?: number;
   pointsFor: number;
   pointsAgainst: number;
   pointsDifference: number;
@@ -537,6 +545,13 @@ export interface LeagueTransferActivity {
   playerId: string;
   playerName: string;
   fee: number;
+  /** Which squad the player moved from — defaults to senior-squad style moves. */
+  sourceSquad?: "senior" | "reserve" | "free-agent";
+  /** Competition id the player moved from (e.g. "super-league", "championship"). */
+  fromCompetitionId?: string;
+  /** Competition id the player moved to. */
+  toCompetitionId?: string;
+  transferType?: "permanent" | "free" | "loan";
 }
 
 export interface FriendlyOpponentChoice {
@@ -630,6 +645,8 @@ export interface InboxMessage {
   askingPrice?: number;
   /** Unsolicited bid for an unlisted player — surfaced as a post-match popup. */
   unsolicited?: boolean;
+  /** Championship-club bid for a reserve-squad player (accept moves them out of reserves). */
+  reserveOffer?: boolean;
   /** Dual-position retraining completion — surfaced as a post-match popup. */
   retrainingFrom?: import("../types").Position;
   retrainingTo?: import("../types").Position;
@@ -809,6 +826,8 @@ export interface ManagerCareer {
   clubFunds: Record<string, number>;
   wins: number;
   losses: number;
+  /** Regulation draws recorded this season (league permits ties). */
+  draws?: number;
   teamSeasonStats: ManagerTeamSeasonStats;
   playerSeasonStats: Record<string, ManagerPlayerSeasonStats>;
   recentForm: string[];
@@ -883,6 +902,20 @@ export interface ManagerCareer {
   championshipToSlTransfersThisSeason?: number;
   /** Player IDs recently rejected / cooled down for AI Champ→SL interest. */
   championshipTransferCooldowns?: Record<string, number>;
+  /** Schema marker for the centralised AI transfer-activity tuning (transferActivityConfig.ts). */
+  aiTransferActivityVersion?: number;
+  /** Completed transfer records include competition IDs + sourceSquad. */
+  completedTransferRecordVersion?: number;
+  /** Explicit match resolution rules (draws vs knockout extra-time). */
+  matchResolutionRulesVersion?: number;
+  /** Shared Manager Mode alignment / centering layout tokens. */
+  managerAlignmentSystemVersion?: number;
+  /** Schema marker for Championship clubs bidding on Super League reserve players. */
+  reserveToChampionshipTransfersVersion?: number;
+  /** Reserve player IDs recently rejected / cooled down for Championship interest. */
+  reserveToChampionshipCooldowns?: Record<string, number>;
+  /** Reserve → Championship signings completed this season (across all Championship clubs). */
+  championshipReserveSigningsThisSeason?: number;
   /** World Club Challenge fixture + history (from season 2 onwards). */
   worldClubChallenge?: WorldClubChallengeState;
   /** Club that won Super League last season — drives WCC scheduling. */

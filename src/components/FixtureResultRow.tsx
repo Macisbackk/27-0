@@ -88,7 +88,9 @@ export function FixtureResultRow({
             className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-black sm:h-7 sm:w-7 sm:text-xs ${
               fixture.result === "W"
                 ? "bg-theme-primary/25 text-theme-primary"
-                : "bg-red-500/25 text-red-400"
+                : fixture.result === "D"
+                  ? "bg-gray-500/25 text-gray-300"
+                  : "bg-red-500/25 text-red-400"
             }`}
           >
             {fixture.result}

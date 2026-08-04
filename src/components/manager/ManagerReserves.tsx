@@ -6,7 +6,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { GamePanel } from "@/components/ui/GamePanel";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { GameTableRow } from "@/components/ui/GameTableRow";
-import { FILTER, SPACING } from "@/lib/ui/design-system";
+import { FILTER, MANAGER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { CollapsibleDetails } from "@/components/ui/MobileLayout";
 import type { ManagerCareer, ManagerReservePlayer } from "@/lib/manager/types";
@@ -288,7 +288,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         <p className={`${TYPO.bodySm} text-theme-primary`}>{message}</p>
       )}
 
-      <GamePanel padded label="Reserve fixtures">
+      <GamePanel padded label="Reserve fixtures" className={MANAGER.panelCenter}>
         {!career.isSeasonComplete && upcomingOpp ? (
           <div>
             <p className={TYPO.sectionLabel}>Next fixture</p>
@@ -345,8 +345,8 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         )}
       </GamePanel>
 
-      <GamePanel padded label="Reserve squad summary">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <GamePanel padded label="Reserve squad summary" className={MANAGER.panelCenter}>
+        <div className="grid grid-cols-2 justify-items-center gap-3 sm:grid-cols-3">
           <ManagerStat
             label="Squad size"
             value={`${career.reserves.length} / ${RESERVE_MIN_PLAYERS}`}
@@ -368,7 +368,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             />
           )}
         </div>
-        <div className="mt-3 flex justify-center">
+        <div className={MANAGER.actionRow}>
           <GameButton
             variant="secondary"
             size="sm"
@@ -502,8 +502,8 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         </GamePanel>
       )}
 
-      <GamePanel padded label="Filters">
-        <div className="flex flex-wrap gap-2">
+      <GamePanel padded label="Filters" className={MANAGER.panelCenter}>
+        <div className={MANAGER.chipRow}>
           {(
             [
               ["all", "All"],
@@ -524,7 +524,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             </button>
           ))}
         </div>
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className={`mt-2 ${MANAGER.chipRow}`}>
           <button
             type="button"
             onClick={() => setPositionFilter("all")}

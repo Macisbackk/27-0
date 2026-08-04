@@ -8,7 +8,12 @@ import {
   getYouthIntakeRollShift,
 } from "./managerFacilities";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
-import { decomposeRLScore, pickRLScore, snapToRLScore } from "../game/rl-scores";
+import {
+  decomposeRLScore,
+  pickRLScore,
+  pickScorePairAllowingDraw,
+  snapToRLScore,
+} from "../game/rl-scores";
 import type { Position } from "../types";
 import { POSITION_SHORT, SQUAD_STRUCTURE } from "../positions";
 import type {
@@ -153,7 +158,7 @@ function pickReserveNationality(rng: () => number, club?: string): string {
   return NATIONALITIES[Math.floor(rng() * NATIONALITIES.length)]!;
 }
 
-function pickPotential(
+export function pickPotential(
   age: number,
   rng: () => number,
   youthLevel = 0
@@ -183,22 +188,25 @@ function ratingForAge(
   youthLevel = 0
 ): number {
   const boost = getYouthIntakeRatingBoost(youthLevel);
-  // Current ability bands for reserves (70–84 typical). Promotion does not raise this.
+  // Current ability bands for reserves — target a generated average around
+  // 74–76 with the bulk of the pool sitting in the 70–78 range.
   let base: number;
   const roll = rng();
   if (age <= 18) {
-    if (roll < 0.45) base = 70 + Math.floor(rng() * 3); // 70–72
-    else if (roll < 0.8) base = 73 + Math.floor(rng() * 3); // 73–75
-    else base = 76 + Math.floor(rng() * 3); // 76–78
+    if (roll < 0.2) base = 70 + Math.floor(rng() * 3); // 70–72 (20%)
+    else if (roll < 0.55) base = 73 + Math.floor(rng() * 3); // 73–75 (35%)
+    else base = 76 + Math.floor(rng() * 3); // 76–78 (45%)
   } else if (age <= 20) {
-    if (roll < 0.35) base = 72 + Math.floor(rng() * 3);
-    else if (roll < 0.75) base = 75 + Math.floor(rng() * 4);
-    else base = 79 + Math.floor(rng() * 3);
+    if (roll < 0.1) base = 70 + Math.floor(rng() * 3); // 70–72 (10%)
+    else if (roll < 0.35) base = 73 + Math.floor(rng() * 3); // 73–75 (25%)
+    else if (roll < 0.8) base = 76 + Math.floor(rng() * 3); // 76–78 (45%)
+    else base = 79 + Math.floor(rng() * 3); // 79–81 (20%)
   } else {
-    if (roll < 0.3) base = 74 + Math.floor(rng() * 3);
-    else if (roll < 0.7) base = 77 + Math.floor(rng() * 4);
-    else if (roll < 0.95) base = 81 + Math.floor(rng() * 3);
-    else base = 84 + Math.floor(rng() * 2); // rare high-quality reserve
+    if (roll < 0.05) base = 70 + Math.floor(rng() * 3); // 70–72 (5%)
+    else if (roll < 0.25) base = 73 + Math.floor(rng() * 3); // 73–75 (20%)
+    else if (roll < 0.65) base = 76 + Math.floor(rng() * 3); // 76–78 (40%)
+    else if (roll < 0.9) base = 79 + Math.floor(rng() * 3); // 79–81 (25%)
+    else base = 82 + Math.floor(rng() * 3); // 82–84 (10%, rare high-quality reserve)
   }
   return clampReservePlayerRating(base + Math.min(2, boost));
 }
@@ -820,14 +828,22 @@ export function simulateReserveFixture(
 
   let userScore: number;
   let oppScore: number;
-  if (userWins) {
-    userScore = snapToRLScore(pickRLScore(14, 32, rng), false);
-    oppScore = snapToRLScore(pickRLScore(0, 20, rng), false);
-    if (userScore <= oppScore) userScore = oppScore + 2;
+  const { winner, loser, isDraw } = pickScorePairAllowingDraw(
+    14,
+    32,
+    0,
+    20,
+    rng
+  );
+  if (isDraw) {
+    userScore = winner;
+    oppScore = loser;
+  } else if (userWins) {
+    userScore = winner;
+    oppScore = loser;
   } else {
-    oppScore = snapToRLScore(pickRLScore(14, 32, rng), false);
-    userScore = snapToRLScore(pickRLScore(0, 20, rng), false);
-    if (oppScore <= userScore) oppScore = userScore + 2;
+    userScore = loser;
+    oppScore = winner;
   }
 
   const userTries = decomposeRLScore(userScore).tries;
@@ -842,7 +858,8 @@ export function simulateReserveFixture(
     opponentClub,
     userScore,
     oppScore,
-    userWon: userWins,
+    userWon: !isDraw && userWins,
+    isDraw,
     topPerformer: tryScorer,
     userTries,
   };
@@ -865,6 +882,7 @@ export function applyReserveMatchDevelopment(
   const reserves = career.reserves.map((r) => {
     let next = { ...r };
     if (result.userWon) next.form = Math.min(99, next.form + 2);
+    else if (result.isDraw) next.form = Math.max(1, Math.min(99, next.form));
     else next.form = Math.max(1, next.form - 1);
 
     const played = rng() < 0.35 + result.userTries * 0.05;

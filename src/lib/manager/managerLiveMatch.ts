@@ -12,6 +12,10 @@ import type {
   ManagerScheduledFixture,
   LiveMatchEvent,
 } from "./types";
+import {
+  competitionAllowsDraw,
+  getMatchResolutionRules,
+} from "./matchResolutionRules";
 import { computeManagerTeamRating } from "./managerRating";
 import {
   getManagerPlayer,
@@ -788,7 +792,13 @@ export function advanceLiveTick(
   const atHalftime = minute >= HALFTIME_MINUTE && maxMinute <= HALFTIME_MINUTE;
   let finalUser = userScore;
   let finalOpp = oppScore;
-  if (isComplete && finalUser === finalOpp) {
+  // Only force a winner when competition rules require it (cup / playoffs / WCC).
+  // League and friendlies may finish level — no synthetic full-time penalty.
+  if (
+    isComplete &&
+    finalUser === finalOpp &&
+    !competitionAllowsDraw(state.competition)
+  ) {
     finalUser += 2;
     const rng = seedrandom(`${state.seed}-live-ft-${state.fixtureId}`);
     const kicker = pickKicker(career, rng);
@@ -896,7 +906,8 @@ export function advanceLiveToFullTime(
 function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
   let userScore = snapToRLScore(state.userScore, false);
   let oppScore = snapToRLScore(state.oppScore, false);
-  if (userScore === oppScore) {
+  // League / friendly may finish level; only force a winner for knockouts.
+  if (userScore === oppScore && !competitionAllowsDraw(state.competition)) {
     const rng = seedrandom(`${state.seed}-live-finalize-${state.fixtureId}`);
     userScore = snapToRLScore(userScore + pickWinningMargin(rng), false);
   }
@@ -970,6 +981,7 @@ export function liveMatchToFixture(
       : decomposeRLScore(pointsAgainst);
 
   const won = pointsFor > pointsAgainst;
+  const isDraw = pointsFor === pointsAgainst;
 
   const scoringFor = {
     tries: triesFor,
@@ -996,7 +1008,7 @@ export function liveMatchToFixture(
     triesAgainst,
     scoringFor,
     scoringAgainst,
-    result: won ? "W" : "L",
+    result: isDraw ? "D" : won ? "W" : "L",
     isUpset: false,
     isThrashing: Math.abs(pointsFor - pointsAgainst) >= 20,
   };

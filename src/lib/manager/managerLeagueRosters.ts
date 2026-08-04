@@ -1,5 +1,10 @@
 import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS, isSameManagerClub } from "../clubs/super-league-display";
+import {
+  getChampionshipClubByName,
+  isChampionshipClubName,
+} from "../clubs/championship-clubs";
+import { getClubBaseStrength } from "../game/club-strength";
 import { getPlayerById } from "../players";
 import type { OpponentPoolOptions } from "../game/opponent-squad-strength";
 import type { Player, Position } from "../types";
@@ -13,6 +18,9 @@ import {
 } from "./managerLeagueSeason";
 import { getManagerPlayer, reserveToPlayer } from "./managerPlayers";
 import { createYouthProspect } from "./managerReserves";
+import {
+  championshipPlayerToPlayer,
+} from "./championship/championshipSquads";
 import type { ManagerCareer } from "./types";
 
 export type LeagueClubRosters = Record<string, string[]>;
@@ -85,7 +93,20 @@ export function getLeagueClubPlayerPool(
     const player = getManagerPlayer(career, id) ?? getPlayerById(id);
     if (player) players.push(player);
   }
-  return players;
+  if (players.length > 0) return players;
+
+  // Challenge Cup lower-league sides live on championshipSquads, not league rosters.
+  if (isChampionshipClubName(club) && career.championshipSquads) {
+    const champ = getChampionshipClubByName(club);
+    if (!champ) return [];
+    const roster = career.championshipSquads.rosterByClub[champ.id] ?? [];
+    return roster
+      .map((id) => career.championshipSquads!.players[id])
+      .filter((p): p is NonNullable<typeof p> => Boolean(p))
+      .map(championshipPlayerToPlayer);
+  }
+
+  return [];
 }
 
 export function getManagerOpponentPoolOptions(
@@ -105,12 +126,28 @@ export function getLeagueClubStableRating(
   club: string
 ): number {
   const pool = getLeagueClubPlayerPool(career, club);
-  if (pool.length === 0) return getManagerClubTeamRating(club);
+  if (pool.length === 0) {
+    if (isChampionshipClubName(club)) {
+      // Shared cup strength scale (already tier-offset below Super League).
+      return getClubBaseStrength(club);
+    }
+    return getManagerClubTeamRating(club);
+  }
 
   const ranked = [...pool].sort((a, b) => b.peakRating - a.peakRating);
   const sample = ranked.slice(0, 17);
   const total = sample.reduce((sum, player) => sum + player.peakRating, 0);
-  return Math.round(total / sample.length);
+  const avg = Math.round(total / sample.length);
+
+  // Championship peak ratings (70–89) sit on a lower competition band than
+  // Super League (80+). Pull cup/opponent ratings toward the tier-offset
+  // club strength so SL sides still dominate on scoreboard.
+  if (isChampionshipClubName(club)) {
+    const tier = getClubBaseStrength(club);
+    return Math.round(avg * 0.45 + tier * 0.55);
+  }
+
+  return avg;
 }
 
 /** Match-day opponent rating anchored to squad quality — limits random XIII variance. */

@@ -49,7 +49,7 @@ function LeagueTableGrid({
         <tbody>
           {rows.map((row) => {
             const indicatorColor = getClubIndicatorColor(row.team);
-            const draws = Math.max(
+            const draws = row.draws ?? Math.max(
               0,
               row.played - row.wins - row.losses
             );
@@ -170,10 +170,7 @@ export function ManagerTable({ career }: ManagerTableProps) {
             ? `Season ${career.seasonYear} Super League standings`
             : `Season ${career.seasonYear} Championship standings`}
         </p>
-        <LeagueTableGrid
-          rows={rows}
-          showDraws={competition === "championship"}
-        />
+        <LeagueTableGrid rows={rows} showDraws />
       </ManagerSection>
     </ManagerPage>
   );

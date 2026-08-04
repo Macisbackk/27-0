@@ -497,12 +497,14 @@ function CalendarEventRow({
   club: string;
 }) {
   const style = CALENDAR_HIGHLIGHT_STYLES[event.highlight];
-  const venue =
-    event.competition === "world_club_challenge" && event.label.includes("AI")
-      ? event.opponent
-      : event.isHome
-        ? `vs ${event.opponent}`
-        : `@ ${event.opponent}`;
+  const isAiWcc =
+    event.competition === "world_club_challenge" &&
+    (event.label.includes("AI") || event.opponent.includes(" vs "));
+  const matchupLine = isAiWcc
+    ? event.opponent
+    : event.isHome
+      ? `${club} vs ${event.opponent}`
+      : `${club} @ ${event.opponent}`;
   return (
     <li
       className={`${CARD.inset} ${SPACING.cardPaddingSm} flex items-start gap-3`}
@@ -514,9 +516,7 @@ function CalendarEventRow({
       </span>
       <div className="min-w-0 flex-1">
         <p className="font-semibold text-white">{event.label}</p>
-        <p className={`${TYPO.bodySm} text-pitch-400`}>
-          {club} {venue}
-        </p>
+        <p className={`${TYPO.bodySm} text-pitch-400`}>{matchupLine}</p>
         {event.played && event.scoreline ? (
           <p className={`${TYPO.bodySm} text-theme-primary`}>
             {event.result ? `${event.result} ` : ""}

@@ -18,6 +18,10 @@ import {
   negotiateIncomingOffer,
   rejectIncomingOffer,
 } from "@/lib/manager/managerTransferLeague";
+import {
+  acceptReserveTransferOffer,
+  rejectReserveTransferOffer,
+} from "@/lib/manager/championshipBidForSlReserves";
 import { resolveInboxMessage, viewAllInboxAsSeen, canViewAllInboxAsSeen } from "@/lib/manager/managerInbox";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { playUiClick } from "@/lib/sound";
@@ -117,7 +121,10 @@ export function ManagerInbox({
   const resolved = career.inboxMessages.filter((m) => m.resolved).slice(0, 10);
 
   const handleAccept = (id: string) => {
-    const result = acceptIncomingOffer(career, id);
+    const msg = career.inboxMessages.find((m) => m.id === id);
+    const result = msg?.reserveOffer
+      ? acceptReserveTransferOffer(career, id)
+      : acceptIncomingOffer(career, id);
     if (result.ok && result.career) {
       setFeedback(null);
       onUpdate(result.career);
@@ -125,12 +132,21 @@ export function ManagerInbox({
     }
     setFeedback(result.error ?? "Could not complete this transfer.");
     if (result.error?.includes("no longer")) {
-      onUpdate(rejectIncomingOffer(career, id));
+      onUpdate(
+        msg?.reserveOffer
+          ? rejectReserveTransferOffer(career, id)
+          : rejectIncomingOffer(career, id)
+      );
     }
   };
 
   const handleReject = (id: string) => {
-    onUpdate(rejectIncomingOffer(career, id));
+    const msg = career.inboxMessages.find((m) => m.id === id);
+    onUpdate(
+      msg?.reserveOffer
+        ? rejectReserveTransferOffer(career, id)
+        : rejectIncomingOffer(career, id)
+    );
     setNegotiatingId(null);
     setFeedback(null);
   };

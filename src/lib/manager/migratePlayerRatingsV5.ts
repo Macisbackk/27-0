@@ -15,12 +15,18 @@ import {
 import { CLUB_REPUTATION_SCHEMA_VERSION } from "../../../data/club-reputation";
 import type { ManagerCareer, ManagerReservePlayer } from "./types";
 import { migratePlayerRatingsV4 } from "./migratePlayerRatingsV4";
+import { pickPotential } from "./managerReserves";
 
 /** Schema 5: reserve floor correction + Current 90+ audit + FA band clamp. */
 export const PLAYER_RATING_SCHEMA_VERSION = 5;
 
-/** Reserve scale after mistaken V3 floor-80 pass. */
-export const RESERVE_RATING_SCALE_VERSION = 2;
+/**
+ * Reserve scale version.
+ * 2 = mistaken V3 floor-80 pass corrected (partial — potential left ≥80).
+ * 3 = tighter 70–78 generation bands + potential pile-up-at-80 repair, with
+ *     earned in-save development preserved on top of the remapped base.
+ */
+export const RESERVE_RATING_SCALE_VERSION = 3;
 
 export const MANAGER_BOOST_HUB_VERSION = 1;
 
@@ -43,23 +49,20 @@ export function recalculateReserveRatingFromProfile(
   let base: number;
   const roll = rng();
   if (age <= 18) {
-    if (roll < 0.45) base = 70 + Math.floor(rng() * 3);
-    else if (roll < 0.8) base = 73 + Math.floor(rng() * 3);
-    else base = 76 + Math.floor(rng() * 3);
+    if (roll < 0.2) base = 70 + Math.floor(rng() * 3); // 70–72 (20%)
+    else if (roll < 0.55) base = 73 + Math.floor(rng() * 3); // 73–75 (35%)
+    else base = 76 + Math.floor(rng() * 3); // 76–78 (45%)
   } else if (age <= 20) {
-    if (roll < 0.35) base = 72 + Math.floor(rng() * 3);
-    else if (roll < 0.75) base = 75 + Math.floor(rng() * 4);
-    else base = 79 + Math.floor(rng() * 3);
-  } else if (age <= 23) {
-    if (roll < 0.3) base = 74 + Math.floor(rng() * 3);
-    else if (roll < 0.7) base = 77 + Math.floor(rng() * 4);
-    else if (roll < 0.95) base = 81 + Math.floor(rng() * 3);
-    else base = 84 + Math.floor(rng() * 2);
+    if (roll < 0.1) base = 70 + Math.floor(rng() * 3); // 70–72 (10%)
+    else if (roll < 0.35) base = 73 + Math.floor(rng() * 3); // 73–75 (25%)
+    else if (roll < 0.8) base = 76 + Math.floor(rng() * 3); // 76–78 (45%)
+    else base = 79 + Math.floor(rng() * 3); // 79–81 (20%)
   } else {
-    // Older reserves kept nearer prior ability but pulled out of false 80 floor.
-    if (roll < 0.4) base = 76 + Math.floor(rng() * 4);
-    else if (roll < 0.8) base = 80 + Math.floor(rng() * 4);
-    else base = 84 + Math.floor(rng() * 2);
+    if (roll < 0.05) base = 70 + Math.floor(rng() * 3); // 70–72 (5%)
+    else if (roll < 0.25) base = 73 + Math.floor(rng() * 3); // 73–75 (20%)
+    else if (roll < 0.65) base = 76 + Math.floor(rng() * 3); // 76–78 (40%)
+    else if (roll < 0.9) base = 79 + Math.floor(rng() * 3); // 79–81 (25%)
+    else base = 82 + Math.floor(rng() * 3); // 82–84 (10%, rare)
   }
 
   // High potential pulls current ability up slightly within reserve bands.
@@ -85,8 +88,29 @@ function wasMistakenlyFloor80Reserve(reserve: ManagerReservePlayer): boolean {
   return false;
 }
 
+/**
+ * Broader detection for scale v3: also catches reserves that survived the
+ * v5 partial remap piled up at/near 80 because their potential was left on
+ * the old floored 80+ scale (age<=22, current rating>=78, potential>=80).
+ */
+function needsReserveRescaleV3(reserve: ManagerReservePlayer): boolean {
+  if (wasMistakenlyFloor80Reserve(reserve)) return true;
+  const rating = Math.round(reserve.rating);
+  const potential = Math.round(reserve.potentialRating);
+  if (rating >= 78 && reserve.age <= 22 && potential >= 80) return true;
+  return false;
+}
+
+/** Re-roll a potential that looks like the V3 floor-80 pass (exactly 80). */
+function repairFlooredPotential(reserve: ManagerReservePlayer): number {
+  const potential = Math.round(reserve.potentialRating);
+  if (potential !== 80) return clampReservePlayerRating(reserve.potentialRating);
+  const rng = seedrandom(`${reserve.id}-v6-potential`);
+  return pickPotential(reserve.age, rng, 0);
+}
+
 function migrateReserveV5(reserve: ManagerReservePlayer): ManagerReservePlayer {
-  if (!wasMistakenlyFloor80Reserve(reserve)) {
+  if (!needsReserveRescaleV3(reserve)) {
     // Still enforce reserve floor 70 if somehow below.
     if (reserve.rating < RESERVE_MIN_RATING) {
       const rating = clampReservePlayerRating(reserve.rating);
@@ -108,17 +132,30 @@ function migrateReserveV5(reserve: ManagerReservePlayer): ManagerReservePlayer {
     return reserve;
   }
 
-  const rating = recalculateReserveRatingFromProfile(reserve);
-  const potentialRating = Math.max(
-    rating,
-    clampReservePlayerRating(reserve.potentialRating)
+  const potentialRating = repairFlooredPotential(reserve);
+  const recalculatedBase = recalculateReserveRatingFromProfile({
+    ...reserve,
+    potentialRating,
+  });
+
+  // Preserve any in-save development earned above the old (floored) base,
+  // applied on top of the remapped base, capped modestly.
+  const priorBase = reserve.baseRating ?? reserve.signedRating ?? reserve.rating;
+  const earnedDelta = Math.max(
+    0,
+    Math.round(reserve.rating) - Math.round(priorBase)
   );
+  const cappedDelta = Math.min(4, earnedDelta);
+  const rating = clampReservePlayerRating(
+    Math.min(potentialRating, recalculatedBase + cappedDelta)
+  );
+
   return {
     ...reserve,
     rating,
-    potentialRating,
-    baseRating: rating,
-    signedRating: rating,
+    potentialRating: Math.max(rating, potentialRating),
+    baseRating: recalculatedBase,
+    signedRating: recalculatedBase,
   };
 }
 
@@ -218,7 +255,7 @@ export function migratePlayerRatingsV5(career: ManagerCareer): ManagerCareer {
         baseRating: saved.peakRating,
         signedRating: saved.peakRating,
       };
-      if (!wasMistakenlyFloor80Reserve(asReserve)) continue;
+      if (!needsReserveRescaleV3(asReserve)) continue;
       const rating = recalculateReserveRatingFromProfile(asReserve);
       playerRegistry[id] = syncPlayerValueFromRating({
         ...saved,

@@ -13,6 +13,11 @@ export const CHAMPIONSHIP_PLAYER_MIN_RATING = CHAMPIONSHIP_MIN_RATING;
 export const RESERVE_MIN_RATING = 70;
 export const RANDOM_FREE_AGENT_MIN_RATING = 70;
 
+/** Alias — generated reserves (academy/youth) use the same 70 floor as all reserves. */
+export const GENERATED_RESERVE_MIN_RATING = RESERVE_MIN_RATING;
+/** Alias — reserve-origin free agents use the same 70 floor as random free agents. */
+export const RESERVE_ORIGIN_FREE_AGENT_MIN_RATING = RESERVE_MIN_RATING;
+
 export const CURRENT_HISTORIC_MAX_RATING = 99;
 export const CHAMPIONSHIP_PLAYER_MAX_RATING = 89;
 export const RESERVE_MAX_RATING = 92;

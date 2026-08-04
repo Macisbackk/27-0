@@ -153,6 +153,44 @@ export function pickDecisiveScorePair(
   return { winner, loser };
 }
 
+/**
+ * Pick a scoreline pair that may finish level (regulation draw).
+ * With `drawChance` probability, returns an equal score for both sides
+ * (a realistic single RL total). Otherwise behaves like `pickDecisiveScorePair`.
+ * Use only for competitions whose resolution rules allow a draw
+ * (see `getMatchResolutionRules` — never for knockout ties).
+ */
+export function pickScorePairAllowingDraw(
+  winnerMin: number,
+  winnerMax: number,
+  loserMin: number,
+  loserMax: number,
+  rng: () => number,
+  options: ScorePickContext & { drawChance?: number } = {}
+): { winner: number; loser: number; isDraw: boolean } {
+  const drawChance = options.drawChance ?? 0.1;
+  if (rng() < drawChance) {
+    const allowDropGoal = options.allowDropGoal ?? false;
+    const level = pickRLScore(
+      Math.max(loserMin, Math.round(winnerMin * 0.6)),
+      Math.round((winnerMax + loserMax) / 2),
+      rng,
+      { allowDropGoal: false }
+    );
+    const snapped = snapToRLScore(level, allowDropGoal);
+    return { winner: snapped, loser: snapped, isDraw: true };
+  }
+  const pair = pickDecisiveScorePair(
+    winnerMin,
+    winnerMax,
+    loserMin,
+    loserMax,
+    rng,
+    options
+  );
+  return { ...pair, isDraw: false };
+}
+
 export interface ScoreBreakdown {
   tries: number;
   conversions: number;

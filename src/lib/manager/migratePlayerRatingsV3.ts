@@ -3,6 +3,7 @@ import { syncPlayerValueFromRating } from "../players/ratings";
 import type { ManagerCareer, ManagerReservePlayer } from "./types";
 import type { ChampionshipGeneratedPlayer } from "./championship/championshipSquads";
 import { GENERATED_CHAMPIONSHIP_SQUADS_VERSION } from "./championship/championshipSquads";
+import { clampReservePlayerRating } from "../players/rating-floors";
 
 /** Save marker — Current/Historic floor 80 rebalance. */
 export const PLAYER_RATING_SCHEMA_VERSION = 3;
@@ -24,18 +25,19 @@ export function migrateChampionshipGeneratedRating(oldRating: number): number {
 }
 
 function migrateReserve(reserve: ManagerReservePlayer): ManagerReservePlayer {
-  const rating = Math.max(80, Math.min(99, Math.round(reserve.rating)));
+  // Reserves use a separate 70–92 scale — do not lift onto the Current 80 floor.
+  const rating = clampReservePlayerRating(reserve.rating);
   const potentialRating = Math.max(
     rating,
-    Math.max(80, Math.min(99, Math.round(reserve.potentialRating)))
+    clampReservePlayerRating(reserve.potentialRating)
   );
   const signedRating =
     reserve.signedRating != null
-      ? Math.max(80, Math.min(99, Math.round(reserve.signedRating)))
+      ? clampReservePlayerRating(reserve.signedRating)
       : reserve.signedRating;
   const baseRating =
     reserve.baseRating != null
-      ? Math.max(80, Math.min(99, Math.round(reserve.baseRating)))
+      ? clampReservePlayerRating(reserve.baseRating)
       : reserve.baseRating;
   return {
     ...reserve,
@@ -136,26 +138,23 @@ export function migratePlayerRatingsV3(career: ManagerCareer): ManagerCareer {
 
   const reserves = (career.reserves ?? []).map(migrateReserve);
 
+  // Reserve development thresholds live on the 70–92 reserve scale, not the
+  // Current 80 floor — only lift a threshold that was already below 80 if it's
+  // missing entirely; never force an existing sub-80 value upward.
   const settings = career.managerSettings
     ? {
         ...career.managerSettings,
         reserveDevelopmentSettings: {
           ...career.managerSettings.reserveDevelopmentSettings,
-          releaseIfRatingBelow: Math.max(
-            80,
+          releaseIfRatingBelow:
             career.managerSettings.reserveDevelopmentSettings
-              ?.releaseIfRatingBelow ?? 80
-          ),
-          flagPotentialBelow: Math.max(
-            82,
+              ?.releaseIfRatingBelow ?? 74,
+          flagPotentialBelow:
             career.managerSettings.reserveDevelopmentSettings
-              ?.flagPotentialBelow ?? 82
-          ),
-          fullTimeRatingThreshold: Math.max(
-            84,
+              ?.flagPotentialBelow ?? 76,
+          fullTimeRatingThreshold:
             career.managerSettings.reserveDevelopmentSettings
-              ?.fullTimeRatingThreshold ?? 84
-          ),
+              ?.fullTimeRatingThreshold ?? 78,
         },
       }
     : career.managerSettings;

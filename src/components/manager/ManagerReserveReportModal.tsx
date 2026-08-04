@@ -180,7 +180,11 @@ export function ManagerReserveReportModal({
                     </span>
                     <span
                       className={`shrink-0 font-semibold tabular-nums ${
-                        result.userWon ? "text-theme-primary" : "text-pitch-500"
+                        result.userWon
+                          ? "text-theme-primary"
+                          : result.isDraw
+                            ? "text-gray-300"
+                            : "text-pitch-500"
                       }`}
                     >
                       {result.walkover

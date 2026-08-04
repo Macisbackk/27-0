@@ -4,7 +4,7 @@ import {
   CHAMPIONSHIP_CLUB_NAMES,
   getChampionshipClubByName,
 } from "../../clubs/championship-clubs";
-import { decomposeRLScore, pickDecisiveScorePair } from "../../game/rl-scores";
+import { decomposeRLScore, pickScorePairAllowingDraw } from "../../game/rl-scores";
 import type { ManagerLeagueRow, ManagerRoundMatch } from "../types";
 import type { ChampionshipSquadState } from "./championshipSquads";
 import {
@@ -155,12 +155,12 @@ export function buildChampionshipTable(
       played: s.played,
       wins: s.wins,
       losses: s.losses,
+      draws: s.draws,
       pointsFor: s.pointsFor,
       pointsAgainst: s.pointsAgainst,
       pointsDifference: s.pointsFor - s.pointsAgainst,
       leaguePoints: s.wins * 2 + s.draws,
       isUserTeam: userClub != null && team === userClub,
-      // draws carried via leaguePoints; ManagerLeagueRow has no draws field historically
     };
   });
 
@@ -207,7 +207,7 @@ export function simulateChampionshipFixtureScores(
   const diff = homeStr - awayStr;
   const homeWinChance = 0.5 + Math.max(-0.28, Math.min(0.28, diff / 40));
   const homeWins = rng() < homeWinChance;
-  const pair = pickDecisiveScorePair(16, 48, 4, 28, rng);
+  const pair = pickScorePairAllowingDraw(16, 48, 4, 28, rng);
   const homeScore = homeWins ? pair.winner : pair.loser;
   const awayScore = homeWins ? pair.loser : pair.winner;
   return {

@@ -404,7 +404,7 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
                     {ordinal(row.position)}
                   </td>
                   <td className="px-3 py-2 text-center text-pitch-300">
-                    {row.wins}W-{row.losses}L
+                    {row.wins}W-{row.draws}D-{row.losses}L
                   </td>
                   <td className="px-3 py-2 text-pitch-300">
                     {row.trophies.length > 0 ? row.trophies.join(", ") : "—"}

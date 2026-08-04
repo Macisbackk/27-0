@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { CARD, SPACING, MANAGER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { CollapsibleDetails } from "@/components/ui/MobileLayout";
 import { POSITION_SHORT, getFullPositionName, getFullPositionNames } from "@/lib/positions";
 import type { Position } from "@/lib/types";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -572,7 +571,8 @@ export function ManagerSquad({
             onFilledSlotDoubleClick={handleMatchdayPlayerDoubleClick}
           />
 
-          <CollapsibleDetails summary="Interchange (14–17)" defaultOpen={false}>
+          <div>
+            <p className={`${TYPO.sectionLabel} mb-2`}>Interchange (14–17)</p>
             <div className="grid grid-cols-2 auto-rows-fr items-stretch gap-2 sm:grid-cols-4">
               {Array.from({ length: 4 }, (_, i) => {
                 const playerId = career.matchdayInterchange[i] ?? "";
@@ -668,7 +668,7 @@ export function ManagerSquad({
                 );
               })}
             </div>
-          </CollapsibleDetails>
+          </div>
         </div>
 
         <div ref={squadPoolPanelRef} className={`min-w-0 w-full ${CARD.clipboard} ${SPACING.cardPadding}`}>

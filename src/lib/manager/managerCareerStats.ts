@@ -14,6 +14,7 @@ export const EMPTY_TEAM_SEASON_STATS: ManagerTeamSeasonStats = {
   played: 0,
   wins: 0,
   losses: 0,
+  draws: 0,
   pointsFor: 0,
   pointsAgainst: 0,
   pointsDifference: 0,
@@ -88,10 +89,12 @@ export function updateStatsAfterMatch(
   matchRatingsByPlayer: Record<string, number>;
 } {
   const won = fixture.result === "W";
+  const isDraw = fixture.result === "D";
   const teamSeasonStats: ManagerTeamSeasonStats = {
     played: career.teamSeasonStats.played + 1,
     wins: career.teamSeasonStats.wins + (won ? 1 : 0),
-    losses: career.teamSeasonStats.losses + (won ? 0 : 1),
+    losses: career.teamSeasonStats.losses + (!won && !isDraw ? 1 : 0),
+    draws: (career.teamSeasonStats.draws ?? 0) + (isDraw ? 1 : 0),
     pointsFor: career.teamSeasonStats.pointsFor + fixture.pointsFor,
     pointsAgainst: career.teamSeasonStats.pointsAgainst + fixture.pointsAgainst,
     pointsDifference:
@@ -100,7 +103,8 @@ export function updateStatsAfterMatch(
       (career.teamSeasonStats.pointsAgainst + fixture.pointsAgainst),
     triesFor: career.teamSeasonStats.triesFor + fixture.triesFor,
     triesAgainst: career.teamSeasonStats.triesAgainst + fixture.triesAgainst,
-    leaguePoints: career.teamSeasonStats.leaguePoints + (won ? 2 : 0),
+    leaguePoints:
+      career.teamSeasonStats.leaguePoints + (won ? 2 : isDraw ? 1 : 0),
   };
 
   const playerSeasonStats = { ...career.playerSeasonStats };

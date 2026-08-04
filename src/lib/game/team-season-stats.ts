@@ -1,7 +1,7 @@
 import seedrandom from "seedrandom";
 import {
   decomposeRLScore,
-  pickDecisiveScorePair,
+  pickScorePairAllowingDraw,
 } from "./rl-scores";
 import {
   DREAM_TEAM_NAME,
@@ -31,6 +31,7 @@ export interface TeamSeasonStats {
   played: number;
   wins: number;
   losses: number;
+  draws: number;
   pointsFor: number;
   pointsAgainst: number;
   pointsDifference: number;
@@ -44,6 +45,7 @@ interface TeamAccumulator {
   played: number;
   wins: number;
   losses: number;
+  draws: number;
   pointsFor: number;
   pointsAgainst: number;
   triesFor: number;
@@ -59,6 +61,7 @@ function emptyAccumulator(): TeamAccumulator {
     played: 0,
     wins: 0,
     losses: 0,
+    draws: 0,
     pointsFor: 0,
     pointsAgainst: 0,
     triesFor: 0,
@@ -92,9 +95,12 @@ function recordMatch(
   if (scoreA > scoreB) {
     a.wins++;
     b.losses++;
-  } else {
+  } else if (scoreA < scoreB) {
     b.wins++;
     a.losses++;
+  } else {
+    a.draws++;
+    b.draws++;
   }
 
   stats.set(teamA, a);
@@ -132,7 +138,7 @@ function simulateClubFixture(
   const loserMin = 0;
   const loserMax = 28;
 
-  const { winner, loser } = pickDecisiveScorePair(
+  const { winner, loser } = pickScorePairAllowingDraw(
     winnerMin,
     winnerMax,
     loserMin,
@@ -245,7 +251,8 @@ export function buildTeamSeasonStats(
   const dreamTeam = stats.get(DREAM_TEAM_NAME)!;
   dreamTeam.wins = seasonResult.wins;
   dreamTeam.losses = seasonResult.losses;
-  dreamTeam.played = seasonResult.wins + seasonResult.losses;
+  dreamTeam.draws = seasonResult.draws ?? 0;
+  dreamTeam.played = seasonResult.wins + seasonResult.losses + dreamTeam.draws;
   dreamTeam.pointsFor = seasonResult.pointsFor;
   dreamTeam.pointsAgainst = seasonResult.pointsAgainst;
   dreamTeam.triesFor = getSeasonTryTotal(seasonResult.fixtures);
@@ -263,12 +270,13 @@ export function buildTeamSeasonStats(
       played: s.played,
       wins: s.wins,
       losses: s.losses,
+      draws: s.draws,
       pointsFor: s.pointsFor,
       pointsAgainst: s.pointsAgainst,
       pointsDifference: s.pointsFor - s.pointsAgainst,
       triesFor: s.triesFor,
       triesAgainst: s.triesAgainst,
-      leaguePoints: s.wins * 2,
+      leaguePoints: s.wins * 2 + s.draws,
       isUserTeam: team === DREAM_TEAM_NAME,
     });
   }

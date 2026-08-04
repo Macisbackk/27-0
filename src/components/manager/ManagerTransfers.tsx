@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import {
+  ManagerLeagueTransferCard,
   ManagerTransferPlayerCard,
 } from "@/components/manager/ManagerTransferPlayerCard";
 import {
@@ -747,6 +748,31 @@ export function ManagerTransfers({
 
       {tab === "unlisted" && (
       <section className="space-y-3">
+        {(career.leagueTransfers ?? []).length > 0 ? (
+          <ManagerSectionCard
+            title="Completed transfer market"
+            variant="inset"
+            className="!p-2.5 sm:!p-4"
+          >
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+              Permanent and free moves recorded this season — including Super League
+              reserve signings by Championship clubs.
+            </p>
+            <ul className="mt-3 max-h-56 space-y-2 overflow-y-auto">
+              {(career.leagueTransfers ?? []).slice(0, 16).map((tx) => (
+                <ManagerLeagueTransferCard
+                  key={tx.id}
+                  playerName={tx.playerName}
+                  fromClub={tx.fromClub}
+                  toClub={tx.toClub}
+                  fee={tx.fee}
+                  week={tx.week}
+                  compact
+                />
+              ))}
+            </ul>
+          </ManagerSectionCard>
+        ) : null}
         <input
           type="search"
           placeholder="Search by name or club…"

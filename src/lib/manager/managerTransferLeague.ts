@@ -41,6 +41,7 @@ import {
 } from "./managerInbox";
 import { addBoardTransferMilestoneInbox } from "./managerBoardInbox";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
+import { DEFAULT_TRANSFER_ACTIVITY_CONFIG } from "./transferActivityConfig";
 
 function invalidatePlayerTransferOffers(
   career: ManagerCareer,
@@ -625,7 +626,11 @@ export function generateIncomingTransferOffers(
   const rng = seedrandom(`${career.seed}-offers-w${career.gameWeek}`);
   const messages = [...career.inboxMessages];
   const clubFunds = { ...career.clubFunds };
-  const seasonBoost = getLeagueSeasonIndex(career) >= 1 ? 0.08 : 0;
+  const cfg = DEFAULT_TRANSFER_ACTIVITY_CONFIG.incomingOffers;
+  const heat = DEFAULT_TRANSFER_ACTIVITY_CONFIG.gameWeekActivityMultiplier(
+    career.gameWeek
+  );
+  const seasonBoost = getLeagueSeasonIndex(career) >= 1 ? cfg.seasonBoost : 0;
 
   for (const [playerId, status] of Object.entries(career.playerTransferStatus)) {
     if (!status.listed) continue;
@@ -636,7 +641,7 @@ export function generateIncomingTransferOffers(
 
     const rating = player.peakRating;
     const priceRatio = status.askingPrice / Math.max(1, player.value);
-    let chance = 0.12 + seasonBoost;
+    let chance = Math.min(0.7, (cfg.baseChance + seasonBoost) * heat);
     if (priceRatio <= 1.1) chance += 0.2;
     if (priceRatio > 1.5) chance -= 0.1;
     if (rating >= 84) chance += 0.1;
@@ -683,11 +688,19 @@ export function generateUnsolicitedTransferOffers(
 ): ManagerCareer {
   const rng = seedrandom(`${career.seed}-unsolicited-w${career.gameWeek}`);
   const seasonIndex = getLeagueSeasonIndex(career);
+  const cfg = DEFAULT_TRANSFER_ACTIVITY_CONFIG.unsolicitedOffers;
+  const heat = DEFAULT_TRANSFER_ACTIVITY_CONFIG.gameWeekActivityMultiplier(
+    career.gameWeek
+  );
   // Quiet in year one; from season two approaches land more often.
-  const approachChance =
+  const baseChance =
     seasonIndex <= 0
-      ? 0.05
-      : Math.min(0.14, 0.09 + (seasonIndex - 1) * 0.02);
+      ? cfg.baseChance
+      : Math.min(
+          cfg.maxChance,
+          cfg.seasonRampStart + (seasonIndex - 1) * cfg.seasonRampStep
+        );
+  const approachChance = Math.min(0.32, baseChance * heat);
 
   if (rng() > approachChance) return career;
 

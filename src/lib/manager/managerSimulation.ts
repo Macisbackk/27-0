@@ -3,6 +3,7 @@ import { getManagerPlayer } from "./managerPlayers";
 import { getManagerOpponentMatchRating, pruneLeagueListedPlayers } from "./managerLeagueRosters";
 import { getWccOpponentTeamRating } from "./managerOpponentRating";
 import { simulateOneFixture } from "../game/season-simulation";
+import { getMatchResolutionRules } from "./matchResolutionRules";
 import type { ManagerCareer, ManagerFixtureRecord } from "./types";
 import { generateEventsFromFixture } from "./matchEventGenerator";
 import {
@@ -179,6 +180,7 @@ import {
   tickChampionshipOnAdvance,
 } from "./championship/ensureChampionship";
 import { maybeAiSignChampionshipElite } from "./championship/championshipAiTransfers";
+import { maybeChampionshipBidForSlReserves } from "./championshipBidForSlReserves";
 import {
   addMatchKeyMomentInboxMessage,
   getManagerMatchKeyMoment,
@@ -430,6 +432,7 @@ export function applyManagerMatchResult(
   );
 
   const won = fixture.result === "W";
+  const isDraw = fixture.result === "D";
 
   let roundResults = career.roundMatches;
   let leagueTable = career.leagueTable;
@@ -626,6 +629,7 @@ export function applyManagerMatchResult(
 
   let boardConfidence = career.boardConfidence;
   if (won) boardConfidence = Math.min(100, boardConfidence + 3);
+  else if (isDraw) boardConfidence = Math.max(0, boardConfidence - 1);
   else boardConfidence = Math.max(0, boardConfidence - 4);
   if (position <= 4) boardConfidence = Math.min(100, boardConfidence + 1);
   if (position >= 12) boardConfidence = Math.max(0, boardConfidence - 2);
@@ -666,10 +670,14 @@ export function applyManagerMatchResult(
         (isFriendly
           ? won
             ? 4_000
-            : 2_000
+            : isDraw
+              ? 3_000
+              : 2_000
           : won
             ? 15_000
-            : 6_000) * commercialMult
+            : isDraw
+              ? 9_000
+              : 6_000) * commercialMult
       );
   const cupBonus = isCup && won ? 30_000 : 0;
   const wccBonus = isWcc && won ? 40_000 : 0;
@@ -695,7 +703,11 @@ export function applyManagerMatchResult(
     losses:
       skipsLeagueProgress
         ? career.losses
-        : career.losses + (won ? 0 : 1),
+        : career.losses + (!won && !isDraw ? 1 : 0),
+    draws:
+      skipsLeagueProgress
+        ? (career.draws ?? 0)
+        : (career.draws ?? 0) + (isDraw ? 1 : 0),
     boardConfidence,
     teamSeasonStats,
     playerSeasonStats: statsUpdate.playerSeasonStats,
@@ -897,6 +909,7 @@ export function advanceManagerMatchWeek(
   next = maybeAddReserveReport(next);
   next = tickChampionshipOnAdvance(next);
   next = maybeAiSignChampionshipElite(next);
+  next = maybeChampionshipBidForSlReserves(next);
   next = rotateLatestNews(next);
 
   next = maybeGenerateAiTransfers(next, 0);
@@ -1041,6 +1054,10 @@ export function previewManagerMatchScoreline(
     opponentInjuryPenalty +
     difficultyAdj.opponentRatingDelta;
 
+  const allowDraw = getMatchResolutionRules({
+    competition: sched.competition,
+  }).allowsDraw;
+
   const { fixture } = simulateOneFixture(
     squad,
     sched.opponent,
@@ -1058,6 +1075,7 @@ export function previewManagerMatchScoreline(
       cupMode: sched.competition === "challenge_cup",
       managerCareerMode: true,
       matchKey: isFriendly || isWcc ? `${simCareer.seed}-${sched.id}` : undefined,
+      allowDraw,
     }
   );
 
@@ -1137,7 +1155,9 @@ export function simulateManagerNextMatch(
     form:
       fixture.result === "W"
         ? Math.min(8, combinedForm + 1.5)
-        : Math.max(-4, combinedForm - 1.5),
+        : fixture.result === "D"
+          ? combinedForm
+          : Math.max(-4, combinedForm - 1.5),
     seasonDropGoals:
       ready.matchSimState.seasonDropGoals +
       (fixture.scoringFor?.dropGoals ?? 0) +

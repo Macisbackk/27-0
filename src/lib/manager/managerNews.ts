@@ -117,16 +117,27 @@ function championshipNewsItems(
     });
   }
 
-  const champTransfers = (career.leagueTransfers ?? []).filter(
-    (tx) => tx.week >= week - 1 && !isCurrentPlayableClub(tx.fromClub)
+  const recentTransfers = (career.leagueTransfers ?? []).filter(
+    (tx) => tx.week >= week - 1
   );
-  for (const tx of champTransfers.slice(0, 1)) {
-    items.push({
-      id: `news-champ-tx-${tx.id}`,
-      week: tx.week,
-      type: "transfer",
-      text: `Championship exit: ${tx.playerName} leaves ${tx.fromClub} for Super League side ${tx.toClub}.`,
-    });
+  for (const tx of recentTransfers.slice(0, 2)) {
+    const fromSl = isCurrentPlayableClub(tx.fromClub);
+    const toSl = isCurrentPlayableClub(tx.toClub);
+    if (tx.sourceSquad === "reserve" && fromSl && !toSl) {
+      items.push({
+        id: `news-champ-tx-${tx.id}`,
+        week: tx.week,
+        type: "transfer",
+        text: `${tx.toClub} hand ${tx.fromClub} reserve a first-team opportunity – ${tx.playerName}.`,
+      });
+    } else if (!fromSl && toSl) {
+      items.push({
+        id: `news-champ-tx-${tx.id}`,
+        week: tx.week,
+        type: "transfer",
+        text: `Championship exit: ${tx.playerName} leaves ${tx.fromClub} for Super League side ${tx.toClub}.`,
+      });
+    }
   }
 
   return items;

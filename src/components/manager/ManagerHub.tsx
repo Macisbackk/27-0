@@ -563,6 +563,8 @@ export function ManagerHub({
             <span className="text-pitch-500">Record: </span>
             <span className="font-semibold text-theme-primary">{ts.wins}W</span>
             <span className="text-pitch-500">-</span>
+            <span className="font-semibold text-gray-300">{ts.draws ?? 0}D</span>
+            <span className="text-pitch-500">-</span>
             <span className="font-semibold text-red-300">{ts.losses}L</span>
           </span>
           <span>

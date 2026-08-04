@@ -2,6 +2,7 @@ import seedrandom from "seedrandom";
 import type { SquadSlot } from "../types";
 import { getActiveSuperLeagueClubNames } from "../clubs/super-league-display";
 import { getClubStrength } from "./club-strength";
+import { isChampionshipClubName } from "../clubs/championship-clubs";
 import { buildOpponentScoringDetail, buildEraTeamScoringDetail } from "./opponent-scorers";
 import {
   decomposeRLScore,
@@ -555,6 +556,24 @@ function getBracketTeamStrength(
   return getClubStrength(resolveBracketClub(team, state), rng);
 }
 
+/**
+ * AI cup win chance from strength gap.
+ * Cross-tier (Super League vs Championship) uses a steeper curve so large
+ * rating gaps produce decisive favourites instead of coin-flip upsets.
+ */
+function cupAiWinProbability(
+  homeStr: number,
+  awayStr: number,
+  homeAdvantage: number,
+  crossTier: boolean
+): number {
+  const diff = homeStr + homeAdvantage - awayStr;
+  const scale = crossTier ? 0.028 : 0.014;
+  const floor = crossTier ? 0.06 : 0.12;
+  const ceil = crossTier ? 0.94 : 0.88;
+  return Math.max(floor, Math.min(ceil, 0.5 + diff * scale));
+}
+
 function simulateClubVsClub(
   home: string,
   away: string,
@@ -574,13 +593,20 @@ function simulateClubVsClub(
   const homeStr = getBracketTeamStrength(home, state, rng);
   const awayStr = getBracketTeamStrength(away, state, rng);
   const homeAdvantage = 3;
+  const resolvedHome = resolveBracketClub(home, state);
+  const resolvedAway = resolveBracketClub(away, state);
+  const crossTier =
+    isChampionshipClubName(resolvedHome) !==
+    isChampionshipClubName(resolvedAway);
   const homeWins =
     rng() <
-    0.5 + ((homeStr + homeAdvantage - awayStr) / 100) * 0.65;
+    cupAiWinProbability(homeStr, awayStr, homeAdvantage, crossTier);
 
   const winnerStrength = homeWins ? homeStr + homeAdvantage : awayStr;
   const loserStrength = homeWins ? awayStr : homeStr + homeAdvantage;
-  const ratingGap = Math.abs(winnerStrength - loserStrength);
+  // Cross-tier mismatches also inflate score bounds so SL put bigger scores on Champ.
+  const ratingGap =
+    Math.abs(winnerStrength - loserStrength) + (crossTier ? 8 : 0);
   const bounds = getWinnerLoserScoreBounds(ratingGap, rng);
   const { winner: winScore, loser: lossScore } = pickDecisiveScorePair(
     bounds.winnerMin,

@@ -11,6 +11,7 @@ export interface ManagerCareerSaveStats {
   completedSeasons: number;
   wins: number;
   losses: number;
+  draws: number;
   leagueTitles: number;
   superLeagueTitles: number;
   challengeCups: number;
@@ -31,6 +32,7 @@ export interface ManagerCareerSeasonRow {
   position: number;
   wins: number;
   losses: number;
+  draws: number;
   trophies: string[];
   inProgress: boolean;
 }
@@ -134,6 +136,7 @@ export function computeManagerCareerSaveStats(
     completedSeasons: career.seasonHistory.length,
     wins: 0,
     losses: 0,
+    draws: 0,
     leagueTitles: 0,
     superLeagueTitles: 0,
     challengeCups: 0,
@@ -152,6 +155,7 @@ export function computeManagerCareerSaveStats(
   for (const s of career.seasonHistory) {
     stats.wins += s.wins;
     stats.losses += s.losses;
+    stats.draws += s.draws ?? 0;
 
     const cupWon = s.trophies.includes("Challenge Cup");
     const cupFinal =
@@ -178,6 +182,7 @@ export function computeManagerCareerSaveStats(
 
   stats.wins += career.wins;
   stats.losses += career.losses;
+  stats.draws += career.draws ?? 0;
 
   const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
   const currentPosition = getUserLeagueTablePosition(career);
@@ -214,6 +219,7 @@ export function buildManagerCareerSeasonRows(
     position: s.position,
     wins: s.wins,
     losses: s.losses,
+    draws: s.draws ?? 0,
     trophies: getSeasonSummaryTrophyLabels(s),
     inProgress: false,
   }));
@@ -232,6 +238,7 @@ export function buildManagerCareerSeasonRows(
       position,
       wins: career.wins,
       losses: career.losses,
+      draws: career.draws ?? 0,
       trophies,
       inProgress: !career.isSeasonComplete,
     });
@@ -256,7 +263,7 @@ export function getManagerCareerSaveView(career: ManagerCareer) {
     worstRecordLabel: stats.worstRecord
       ? `${stats.worstRecord.wins}W-${stats.worstRecord.losses}L`
       : "—",
-    totalRecordLabel: `${stats.wins}W-${stats.losses}L`,
+    totalRecordLabel: `${stats.wins}W-${stats.draws}D-${stats.losses}L`,
     earningsLabel:
       stats.totalEarnings > 0
         ? `£${(stats.totalEarnings / 1000).toFixed(0)}k`

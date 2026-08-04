@@ -110,6 +110,29 @@ export function ensureChampionshipSystems(
     next = { ...next, aiChampionshipTransferVersion: 1 };
   }
 
+  if ((next.aiTransferActivityVersion ?? 0) < 3) {
+    next = { ...next, aiTransferActivityVersion: 3 };
+  }
+  if ((next.matchResolutionRulesVersion ?? 0) < 2) {
+    next = { ...next, matchResolutionRulesVersion: 2 };
+  }
+  if ((next.completedTransferRecordVersion ?? 0) < 2) {
+    next = { ...next, completedTransferRecordVersion: 2 };
+  }
+  if ((next.managerAlignmentSystemVersion ?? 0) < 1) {
+    next = { ...next, managerAlignmentSystemVersion: 1 };
+  }
+
+  if (next.reserveToChampionshipTransfersVersion == null) {
+    next = {
+      ...next,
+      reserveToChampionshipTransfersVersion: 1,
+      reserveToChampionshipCooldowns: next.reserveToChampionshipCooldowns ?? {},
+      championshipReserveSigningsThisSeason:
+        next.championshipReserveSigningsThisSeason ?? 0,
+    };
+  }
+
   return next;
 }
 

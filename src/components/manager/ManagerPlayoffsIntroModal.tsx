@@ -88,7 +88,7 @@ export function ManagerPlayoffsIntroModal({
             />
             <ManagerStat
               label="Record"
-              value={`${career.wins}W-${career.losses}L`}
+              value={`${career.wins}W-${career.draws ?? 0}D-${career.losses}L`}
               tone="default"
             />
             <ManagerStat

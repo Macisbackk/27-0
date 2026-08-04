@@ -167,7 +167,7 @@ export function ManagerSeasonReview({
         <div className={`mt-2 ${SPACING.stackMd}`}>
           <ManagerInfoRow
             label="Record"
-            value={`${summary.wins}W - ${summary.losses}L`}
+            value={`${summary.wins}W - ${summary.draws ?? 0}D - ${summary.losses}L`}
             tone="primary"
           />
           <ManagerInfoRow

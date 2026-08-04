@@ -16,8 +16,9 @@ import {
   ManagerSectionCard,
 } from "@/components/manager/manager-ui";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
+import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import { CollapsibleDetails } from "@/components/ui/MobileLayout";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CARD, SPACING, SUB_TAB_BAR_SHELL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { formatWage } from "@/lib/manager/managerContracts";
 import {
@@ -39,7 +40,6 @@ import { getChampionshipPlayer } from "@/lib/manager/championship/championshipSq
 import { isChampionshipClubName } from "@/lib/clubs/championship-clubs";
 import { isCurrentPlayableClub } from "@/lib/clubs/super-league-display";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
-import { playUiClick } from "@/lib/sound";
 
 export type AcrossTheLeagueCompetitionId = "super-league" | "championship";
 
@@ -99,7 +99,6 @@ export function ManagerAcrossLeague({
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
   const [selectedCompetitionId, setSelectedCompetitionId] =
     useState<AcrossTheLeagueCompetitionId>("super-league");
-  const [tableMenuOpen, setTableMenuOpen] = useState(false);
 
   const withChamp = useMemo(() => ensureChampionshipSystems(career), [career]);
 
@@ -213,61 +212,25 @@ export function ManagerAcrossLeague({
         />
 
         <div className="stat-section-stack">
+        <div className={`${SUB_TAB_BAR_SHELL} mb-3`}>
+          <GameSegmentedControl
+            ariaLabel="Competition"
+            value={selectedCompetitionId}
+            onChange={setSelectedCompetitionId}
+            fullWidth
+            options={[
+              { id: "super-league", label: "Super League", shortLabel: "SL" },
+              { id: "championship", label: "Championship", shortLabel: "Champ" },
+            ]}
+          />
+        </div>
+
         {selectedCompetitionId === "super-league" ? (
           <ManagerClubSquadBrowser
             career={career}
             onViewUserSquad={onNavigate ? () => onNavigate("squad") : undefined}
           />
         ) : null}
-
-        <div className="relative z-20">
-          <button
-            type="button"
-            className={`${TYPO.sectionLabel} btn-press mb-2 inline-flex max-w-full items-center gap-2 text-left text-white`}
-            aria-haspopup="menu"
-            aria-expanded={tableMenuOpen}
-            onClick={() => {
-              playUiClick();
-              setTableMenuOpen((o) => !o);
-            }}
-          >
-            <span className="truncate">{competitionLabel}</span>
-            <span className="text-xs font-normal text-pitch-400" aria-hidden>
-              ▾
-            </span>
-          </button>
-          {tableMenuOpen ? (
-            <div
-              role="menu"
-              className="absolute left-0 right-auto z-30 mt-0.5 min-w-[12rem] max-w-[min(100%,18rem)] rounded-lg border border-pitch-600/70 bg-pitch-950 p-1 shadow-xl"
-            >
-              {(
-                [
-                  ["super-league", "Super League"],
-                  ["championship", "Championship"],
-                ] as const
-              ).map(([id, label]) => (
-                <button
-                  key={id}
-                  type="button"
-                  role="menuitem"
-                  className={`btn-press block w-full rounded-md px-3 py-2 text-left text-sm ${
-                    selectedCompetitionId === id
-                      ? "bg-theme-primary/15 text-theme-primary"
-                      : "text-white hover:bg-pitch-800"
-                  }`}
-                  onClick={() => {
-                    playUiClick();
-                    setSelectedCompetitionId(id);
-                    setTableMenuOpen(false);
-                  }}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          ) : null}
-        </div>
 
         <ManagerSectionCard
           title={
@@ -302,7 +265,7 @@ export function ManagerAcrossLeague({
               : `Season ${career.seasonYear} Championship`
           }
           rows={tableRows}
-          showDraws={selectedCompetitionId === "championship"}
+          showDraws
           onViewClub={
             selectedCompetitionId === "super-league"
               ? setViewClubSheet

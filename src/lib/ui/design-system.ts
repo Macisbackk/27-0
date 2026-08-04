@@ -140,6 +140,12 @@ export const MANAGER = {
     "flex snap-x snap-mandatory gap-1.5 overflow-x-auto pb-0.5 scroll-pl-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-4 sm:gap-2 sm:overflow-visible sm:pb-0 sm:snap-none lg:grid-cols-8",
   modalTitle: "font-display text-lg font-bold text-white sm:text-xl",
   buttonRow: "flex flex-wrap gap-2",
+  /** Centred row of filter/status chips (wraps on mobile, no page scroll). */
+  chipRow: "flex flex-wrap justify-center gap-2",
+  /** Centred readable panel content — mirrors youth intake style summaries. */
+  panelCenter: "mx-auto max-w-2xl text-center",
+  /** Centred row of action buttons under a panel/summary. */
+  actionRow: "mt-3 flex flex-wrap justify-center gap-2",
 } as const;
 
 /** Form & filter inputs. */

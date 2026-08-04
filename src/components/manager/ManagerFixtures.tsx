@@ -278,7 +278,7 @@ function WccScheduledBox({
     <div className={compact ? "space-y-1" : SPACING.stackSm}>
       <UpcomingFixtureRow
         sched={sched}
-        club={club}
+        club={wcc.userInvolved ? club : wcc.superLeagueChampionName}
         isNext={isNext}
         compact={compact}
       />
@@ -855,8 +855,10 @@ export function ManagerFixtures({
               compact={career.managerSettings?.compactFixtureRows}
             />
             <p className={TYPO.bodySm}>
-              Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear}{" "}
-              · Team rating {wccScheduled.nrlChampionRating}
+              Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear}
+              {wccScheduled.userInvolved
+                ? ` · NRL rating ${wccScheduled.nrlChampionRating}`
+                : ""}
             </p>
             {wccScheduled.userInvolved ? (
               <p className={`${TYPO.bodySm} text-accent-gold`}>
@@ -913,8 +915,10 @@ export function ManagerFixtures({
           compact={career.managerSettings?.compactFixtureRows}
         />
         <p className={TYPO.bodySm}>
-          Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear} ·
-          Team rating {wccScheduled.nrlChampionRating}
+          Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear}
+          {wccScheduled.userInvolved
+            ? ` · NRL rating ${wccScheduled.nrlChampionRating}`
+            : ""}
         </p>
         {wccScheduled.userInvolved ? (
           <p className={`${TYPO.bodySm} text-accent-gold`}>

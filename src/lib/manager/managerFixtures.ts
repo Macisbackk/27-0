@@ -8,7 +8,7 @@ import {
 import { getManagerClubTeamRating } from "./managerRating";
 import {
   decomposeRLScore,
-  pickDecisiveScorePair,
+  pickScorePairAllowingDraw,
 } from "../game/rl-scores";
 import { MANAGER_SEASON_GAMES } from "./types";
 import type {
@@ -151,7 +151,7 @@ function simulateClubFixture(
   const loserMin = 0;
   const loserMax = 28;
 
-  const { winner, loser } = pickDecisiveScorePair(
+  const { winner, loser } = pickScorePairAllowingDraw(
     winnerMin,
     winnerMax,
     loserMin,
@@ -219,6 +219,7 @@ export function buildLeagueTableFromMatches(
       played: number;
       wins: number;
       losses: number;
+      draws: number;
       pointsFor: number;
       pointsAgainst: number;
     }
@@ -229,6 +230,7 @@ export function buildLeagueTableFromMatches(
       played: 0,
       wins: 0,
       losses: 0,
+      draws: 0,
       pointsFor: 0,
       pointsAgainst: 0,
     });
@@ -249,9 +251,12 @@ export function buildLeagueTableFromMatches(
     if (m.homeScore > m.awayScore) {
       home.wins++;
       away.losses++;
-    } else {
+    } else if (m.awayScore > m.homeScore) {
       away.wins++;
       home.losses++;
+    } else {
+      home.draws++;
+      away.draws++;
     }
   }
 
@@ -263,10 +268,11 @@ export function buildLeagueTableFromMatches(
       played: s.played,
       wins: s.wins,
       losses: s.losses,
+      draws: s.draws,
       pointsFor: s.pointsFor,
       pointsAgainst: s.pointsAgainst,
       pointsDifference: s.pointsFor - s.pointsAgainst,
-      leaguePoints: s.wins * 2,
+      leaguePoints: s.wins * 2 + s.draws,
       isUserTeam: team === userClub,
     };
   });

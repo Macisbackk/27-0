@@ -10,17 +10,14 @@ import {
   championshipPlayerToPlayer,
   createChampionshipReplacementPlayer,
 } from "./championshipSquads";
+import { DEFAULT_TRANSFER_ACTIVITY_CONFIG } from "../transferActivityConfig";
 
-/** Target ~4–8 notable Champ→SL moves per full season. */
-const WEEKLY_SCAN_CHANCE = 0.22;
-const MAX_TRANSFERS_PER_SEASON = 8;
 /** Normal interest floor on the Championship 70–89 scale. */
 const MIN_INTEREST_RATING = 81;
 /** Strong interest / preferred targets. */
 const STRONG_INTEREST_RATING = 84;
 /** Elite targets (usually 85–89). */
 const MIN_ELITE_RATING = 85;
-const INTEREST_COOLDOWN_WEEKS = 6;
 
 const HEADLINE_PATTERNS = [
   (sl: string, ch: string, player: string) =>
@@ -140,12 +137,16 @@ function topUpChampionshipRoster(
 export function maybeAiSignChampionshipElite(
   career: ManagerCareer
 ): ManagerCareer {
+  const cfg = DEFAULT_TRANSFER_ACTIVITY_CONFIG.championshipEliteToSl;
+  const heat = DEFAULT_TRANSFER_ACTIVITY_CONFIG.gameWeekActivityMultiplier(
+    career.gameWeek
+  );
   const rng = seedrandom(
     `${career.seed}-champ-sl-tx-w${career.gameWeek}-s${career.seasonYear}`
   );
   const seasonCount = career.championshipToSlTransfersThisSeason ?? 0;
-  if (seasonCount >= MAX_TRANSFERS_PER_SEASON) return career;
-  if (rng() > WEEKLY_SCAN_CHANCE) return career;
+  if (seasonCount >= cfg.maxTransfersPerSeason) return career;
+  if (rng() > Math.min(0.9, cfg.weeklyScanChance * heat)) return career;
 
   const elites = eliteChampionshipPlayers(career);
   if (elites.length === 0) return career;
@@ -166,7 +167,7 @@ export function maybeAiSignChampionshipElite(
       ...career,
       championshipTransferCooldowns: {
         ...(career.championshipTransferCooldowns ?? {}),
-        [player.id]: career.gameWeek + INTEREST_COOLDOWN_WEEKS,
+        [player.id]: career.gameWeek + cfg.cooldownWeeks,
       },
     };
   }
@@ -185,7 +186,7 @@ export function maybeAiSignChampionshipElite(
       ...career,
       championshipTransferCooldowns: {
         ...(career.championshipTransferCooldowns ?? {}),
-        [player.id]: career.gameWeek + INTEREST_COOLDOWN_WEEKS,
+        [player.id]: career.gameWeek + cfg.cooldownWeeks,
       },
     };
   }
@@ -265,6 +266,9 @@ export function maybeAiSignChampionshipElite(
     fromClub: sellerName,
     toClub: buyer,
     fee,
+    fromCompetitionId: "championship",
+    toCompetitionId: "super-league",
+    transferType: "permanent",
   };
 
   const newsItem = {
@@ -281,7 +285,7 @@ export function maybeAiSignChampionshipElite(
     championshipToSlTransfersThisSeason: seasonCount + 1,
     championshipTransferCooldowns: {
       ...(next.championshipTransferCooldowns ?? {}),
-      [player.id]: career.gameWeek + INTEREST_COOLDOWN_WEEKS,
+      [player.id]: career.gameWeek + cfg.cooldownWeeks,
     },
     aiChampionshipTransferVersion: 1,
   };

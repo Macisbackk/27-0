@@ -138,7 +138,7 @@ export interface MatchFixture {
   triesAgainst: number;
   scoringFor: ScoreBreakdown;
   scoringAgainst: ScoreBreakdown;
-  result: "W" | "L";
+  result: "W" | "L" | "D";
   isUpset?: boolean;
   isThrashing?: boolean;
   scoringDetail?: FixtureScoringDetail;
@@ -150,6 +150,8 @@ export interface MatchFixture {
 export interface SeasonResult {
   wins: number;
   losses: number;
+  /** Regulation draws (league permits ties — never set outside league/friendly modes). */
+  draws?: number;
   pointsFor: number;
   pointsAgainst: number;
   pointsDifference: number;
@@ -157,7 +159,7 @@ export interface SeasonResult {
   isPerfect: boolean;
   longestWinStreak: number;
   longestLosingStreak: number;
-  gameResults: ("W" | "L")[];
+  gameResults: ("W" | "L" | "D")[];
   fixtures: MatchFixture[];
   squadStrength: number;
   tryScorers: PlayerTryTotal[];
@@ -241,12 +243,15 @@ function ensureDecisive(
   pointsAgainst: number,
   won: boolean,
   allowDropGoal: boolean,
-  rng: () => number
+  rng: () => number,
+  allowDraw = false
 ): { pointsFor: number; pointsAgainst: number } {
   let pf = snapToRLScore(pointsFor, allowDropGoal);
   let pa = snapToRLScore(pointsAgainst, allowDropGoal);
 
   if (pf === pa) {
+    // League / friendly / reserve competitions may finish level — no forced winner.
+    if (allowDraw) return { pointsFor: pf, pointsAgainst: pa };
     const margin = pickWinningMargin(rng);
     return won
       ? {
@@ -326,7 +331,8 @@ function generateScoreline(
   ratingGap: number,
   rng: () => number,
   seasonDropGoals: number,
-  form: number
+  form: number,
+  allowDraw = false
 ): {
   pointsFor: number;
   pointsAgainst: number;
@@ -543,7 +549,8 @@ function generateScoreline(
     pointsAgainst,
     won,
     allowDg,
-    rng
+    rng,
+    allowDraw
   );
   if (
     won &&
@@ -587,11 +594,19 @@ export interface SimulateFixtureOptions {
   managerCareerMode?: boolean;
   /** Override RNG key when round alone is not unique (e.g. pre-season friendlies). */
   matchKey?: string;
+  /**
+   * Regulation draws permitted (league / friendly / reserve / championship).
+   * Knockout ties (Challenge Cup, play-offs, WCC) must never set this — they
+   * always force a winner via `ensureDecisive`. Defaults to false.
+   */
+  allowDraw?: boolean;
 }
 
 export interface SimulateSeasonOptions {
   draftMode?: boolean;
   currentSeasonOnly?: boolean;
+  /** Quick Mode league season permits regulation draws (default true). */
+  allowDraw?: boolean;
 }
 
 export interface ScheduledFixture {
@@ -1005,7 +1020,9 @@ export function simulateOneFixture(
     rng
   );
 
-  const scoreline = generateScoreline(
+  const allowDraw = options.allowDraw ?? false;
+
+  let scoreline = generateScoreline(
     strength,
     opponentStrength,
     initialWon,
@@ -1013,11 +1030,34 @@ export function simulateOneFixture(
     ratingGap,
     rng,
     state.seasonDropGoals,
-    state.form
+    state.form,
+    allowDraw
   );
 
+  // Close matches occasionally settle level — only when the competition allows it.
+  if (allowDraw && scoreline.pointsFor !== scoreline.pointsAgainst) {
+    const absGap = Math.abs(ratingGap);
+    if (absGap < 5) {
+      const drawChance = 0.08 + (1 - absGap / 5) * 0.04; // ~8–12%
+      if (rng() < drawChance) {
+        const level = scoreline.pointsFor;
+        const scoringLevel = decomposeRLScore(level);
+        scoreline = {
+          ...scoreline,
+          pointsAgainst: level,
+          triesAgainst: scoringLevel.tries,
+          scoringAgainst: scoringLevel,
+        };
+      }
+    }
+  }
+
+  const isDraw = scoreline.pointsFor === scoreline.pointsAgainst;
+
   let form = state.form;
-  if (initialWon) {
+  if (isDraw) {
+    form = Math.max(-10, Math.min(10, form + (form >= 0 ? -0.5 : 0.5)));
+  } else if (initialWon) {
     form = Math.min(10, form + 2);
   } else {
     form = Math.max(-10, form - 2);
@@ -1033,8 +1073,8 @@ export function simulateOneFixture(
     triesAgainst: scoreline.triesAgainst,
     scoringFor: scoreline.scoringFor,
     scoringAgainst: scoreline.scoringAgainst,
-    result: initialWon ? "W" : "L",
-    isUpset: initialUpset,
+    result: isDraw ? "D" : initialWon ? "W" : "L",
+    isUpset: initialUpset && !isDraw,
     isThrashing: scoreline.isThrashing,
   };
 
@@ -1056,17 +1096,21 @@ export function simulateSeason(
   const { schedule: opponents, replacedTeam } = buildSeasonSchedule(seed);
   const draftMode = options.draftMode ?? false;
   const currentSeasonOnly = options.currentSeasonOnly ?? false;
+  // Quick Mode league season permits regulation draws by default.
+  const allowDraw = options.allowDraw ?? true;
   const fixtureOptions: SimulateFixtureOptions = {
     ...(draftMode ? { draftMode: true } : {}),
     ...(currentSeasonOnly ? { currentSeasonOnly: true } : {}),
+    ...(allowDraw ? { allowDraw: true } : {}),
   };
 
   let wins = 0;
   let losses = 0;
+  let draws = 0;
   let pointsFor = 0;
   let pointsAgainst = 0;
   let state: MatchSimState = { form: 0, seasonDropGoals: 0 };
-  const gameResults: ("W" | "L")[] = [];
+  const gameResults: ("W" | "L" | "D")[] = [];
   const fixtures: MatchFixture[] = [];
 
   for (let i = 0; i < SEASON_GAMES; i++) {
@@ -1098,6 +1142,9 @@ export function simulateSeason(
     if (fixture.result === "W") {
       wins++;
       gameResults.push("W");
+    } else if (fixture.result === "D") {
+      draws++;
+      gameResults.push("D");
     } else {
       losses++;
       gameResults.push("L");
@@ -1119,6 +1166,7 @@ export function simulateSeason(
   const partialResult: SeasonResult = {
     wins,
     losses,
+    draws,
     pointsFor,
     pointsAgainst,
     pointsDifference,

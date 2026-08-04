@@ -39,7 +39,11 @@ import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubR
 import { sanitizeWorldClubChallengeState, ensureWorldClubChallengeScheduled } from "./worldClubChallenge";
 import { ensureChampionshipSystems } from "./championship/ensureChampionship";
 import { stampManagerSaveVersion } from "./managerSaveVersion";
-import { migratePlayerRatingsV5 } from "./migratePlayerRatingsV5";
+import {
+  migratePlayerRatingsV5,
+  PLAYER_RATING_SCHEMA_VERSION,
+  RESERVE_RATING_SCALE_VERSION,
+} from "./migratePlayerRatingsV5";
 import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
 import {
   applyYearlyYouthIntake,
@@ -329,6 +333,9 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     leagueClubRosters: raw.leagueClubRosters,
     leagueClubReserveCounts: raw.leagueClubReserveCounts,
     leagueClubReserves: raw.leagueClubReserves,
+    reserveToChampionshipCooldowns: raw.reserveToChampionshipCooldowns ?? {},
+    championshipReserveSigningsThisSeason:
+      raw.championshipReserveSigningsThisSeason ?? 0,
     playerDevelopment: raw.playerDevelopment ?? {},
     playerLearnedPositions: raw.playerLearnedPositions ?? {},
     playerPositionRetraining: raw.playerPositionRetraining ?? {},
@@ -550,6 +557,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     playerPositionRetraining: {},
     wins: 0,
     losses: 0,
+    draws: 0,
     teamSeasonStats: { ...EMPTY_TEAM_SEASON_STATS },
     playerSeasonStats: {},
     recentForm: [],
@@ -590,6 +598,11 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     managerCareerWorldSchemaVersion: 2,
     boostUsage: {},
     boardSackingSchemaVersion: 1,
+    // Freshly generated reserves/players already use the current rating
+    // scales — stamp the latest versions so hydrate's migration passes
+    // don't re-floor them onto the legacy Current 80 floor.
+    playerRatingSchemaVersion: PLAYER_RATING_SCHEMA_VERSION,
+    reserveRatingScaleVersion: RESERVE_RATING_SCALE_VERSION,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

@@ -182,6 +182,7 @@ export function buildManagerSeasonCalendar(
       month: wccWhen.month,
       day: wccWhen.day,
       label: involved ? "World Club Challenge" : "WCC (AI)",
+      // AI showcase is a third-party matchup — never the user's club name.
       opponent: involved ? nrl : `${sl} vs ${nrl}`,
       competition: "world_club_challenge",
       highlight: "wcc",
@@ -196,7 +197,7 @@ export function buildManagerSeasonCalendar(
       scoreline: wccHistory
         ? `${wccHistory.homeScore}-${wccHistory.awayScore}`
         : undefined,
-      isHome: true,
+      isHome: involved,
       fixtureId: wccCurrent?.id ?? `wcc-${seasonYear}`,
     });
   }

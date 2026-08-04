@@ -42,7 +42,7 @@ export function ManagerSeasonRecapCard({
                   ? "rd"
                   : "th"}
           </span>{" "}
-          · {summary.wins}W-{summary.losses}L
+          · {summary.wins}W-{summary.draws ?? 0}D-{summary.losses}L
         </p>
         <p>Trophies: {trophyLine}</p>
         {summary.averageAttendance > 0 && (

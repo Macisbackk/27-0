@@ -11,6 +11,7 @@ export interface LeagueTableRow {
   played: number;
   wins: number;
   losses: number;
+  draws: number;
   pointsFor: number;
   pointsAgainst: number;
   pointsDifference: number;
@@ -29,6 +30,7 @@ function toLeagueRow(stats: TeamSeasonStats): LeagueTableRow {
     played: stats.played,
     wins: stats.wins,
     losses: stats.losses,
+    draws: stats.draws,
     pointsFor: stats.pointsFor,
     pointsAgainst: stats.pointsAgainst,
     pointsDifference: stats.pointsDifference,
@@ -67,6 +69,7 @@ export function buildLeagueTable(
       played: 0,
       wins: 0,
       losses: 0,
+      draws: 0,
       pointsFor: 0,
       pointsAgainst: 0,
       pointsDifference: 0,

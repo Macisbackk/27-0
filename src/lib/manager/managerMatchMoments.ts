@@ -41,6 +41,7 @@ export function getManagerMatchKeyMoment(
 ): ManagerMatchKeyMoment | null {
   const won = fixture.result === "W";
   const lost = fixture.result === "L";
+  const isDraw = fixture.result === "D";
   const margin = Math.abs(fixture.pointsFor - fixture.pointsAgainst);
   const comp = competitionLabel(competition).toLowerCase();
   const vs = fixture.opponent;
@@ -52,10 +53,16 @@ export function getManagerMatchKeyMoment(
     return {
       id: "friendly",
       label: "Friendly",
-      headline: won ? "Pre-season run-out" : "Friendly defeat",
+      headline: won
+        ? "Pre-season run-out"
+        : isDraw
+          ? "Friendly stalemate"
+          : "Friendly defeat",
       body: won
         ? `Useful minutes against ${vs} — no league points on the line.`
-        : `${clubName} lost a friendly to ${vs}; nothing that defines the season.`,
+        : isDraw
+          ? `${clubName} shared the points in a friendly with ${vs}; nothing that defines the season.`
+          : `${clubName} lost a friendly to ${vs}; nothing that defines the season.`,
       tone: "muted",
     };
   }
@@ -242,6 +249,16 @@ export function getManagerMatchKeyMoment(
       label: "Defeat",
       headline: fixture.isHome ? "Home disappointment" : "Away day defeat",
       body: `${clubName} lost a ${comp} fixture to ${vs}${fixture.isHome ? " at home" : ""}.`,
+      tone: "muted",
+    };
+  }
+
+  if (isDraw) {
+    return {
+      id: "draw",
+      label: "Draw",
+      headline: close ? "Shared spoils" : "Honours even",
+      body: `${clubName} and ${vs} shared the points in a ${comp} draw.`,
       tone: "muted",
     };
   }
