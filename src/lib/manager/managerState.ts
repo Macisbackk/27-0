@@ -39,7 +39,7 @@ import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubR
 import { sanitizeWorldClubChallengeState, ensureWorldClubChallengeScheduled } from "./worldClubChallenge";
 import { ensureChampionshipSystems } from "./championship/ensureChampionship";
 import { stampManagerSaveVersion } from "./managerSaveVersion";
-import { migratePlayerRatingsV4 } from "./migratePlayerRatingsV4";
+import { migratePlayerRatingsV5 } from "./migratePlayerRatingsV5";
 import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
 import {
   applyYearlyYouthIntake,
@@ -383,7 +383,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = hydrateReserveTenure(career);
   career = ensureFreeAgentPool(career);
   career = migrateMatchWeekFields(career);
-  career = migratePlayerRatingsV4(career);
+  career = migratePlayerRatingsV5(career);
   career = ensureChampionshipSystems(career);
   career = migrateChallengeCupRoundLabels(career);
   career = migrateCareerHistory(career);

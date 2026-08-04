@@ -12,9 +12,9 @@ import { generateSimulatedMatchEvents } from "./matchEventGenerator";
 import { validateMatchEvents } from "../game/validateMatchEvents";
 import type { MatchEventType } from "../game/match-events";
 import { pickWinningMargin, snapToRLScore } from "../game/rl-scores";
-import { getClubBaseStrength } from "../game/club-strength";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { SUPER_LEAGUE_CLUBS } from "../clubs";
+import { getManagerClubStarRating } from "./club-config";
 import {
   generateNrlSquadNames,
   getNrlClubByName,
@@ -31,12 +31,14 @@ export {
   NRL_WORLD_CLUB_CHALLENGE_TEAMS,
 } from "../nrl/nrlClubs";
 
-/** Minimum base strength for season-one WCC Super League invitees. */
-const SEASON_ONE_WCC_SL_MIN_STRENGTH = 78;
+/** Season-one WCC Super League invitees must be five-star clubs only. */
+export const INITIAL_WCC_ELIGIBILITY_VERSION = 2;
+export const SEASON_ONE_WCC_REQUIRED_STARS = 5 as const;
 
 /**
- * Pick a top-tier Super League club for the season-one World Club Challenge.
+ * Pick a five-star Super League club for the season-one World Club Challenge.
  * Excludes the user's club so the opener is always an AI showcase match.
+ * Uses canonical club reputation stars — never in-season squad OVR or base strength.
  */
 export function pickTopTierSuperLeagueChampion(
   seed: string,
@@ -45,15 +47,25 @@ export function pickTopTierSuperLeagueChampion(
 ): string {
   const pool = CURRENT_PLAYABLE_CLUBS.filter(
     (c) =>
-      getClubBaseStrength(c) >= SEASON_ONE_WCC_SL_MIN_STRENGTH &&
+      getManagerClubStarRating(c) === SEASON_ONE_WCC_REQUIRED_STARS &&
       c !== excludeClub
   );
-  const rng = seedrandom(`${seed}-sl-wcc-invite-${seasonYear}`);
+  const rng = seedrandom(`${seed}-sl-wcc-invite-v2-${seasonYear}`);
   if (pool.length === 0) {
-    const fallback = CURRENT_PLAYABLE_CLUBS.filter((c) => c !== excludeClub);
-    return fallback[Math.floor(rng() * fallback.length)] ?? "Wigan Warriors";
+    // Should never happen while Leeds / Saints / Wigan remain five-star.
+    const fiveStarFallback = ["Leeds Rhinos", "St Helens", "Wigan Warriors"].filter(
+      (c) => c !== excludeClub
+    );
+    return (
+      fiveStarFallback[Math.floor(rng() * fiveStarFallback.length)] ??
+      "Wigan Warriors"
+    );
   }
   return pool[Math.floor(rng() * pool.length)]!;
+}
+
+export function isSeasonOneWccEligibleClub(clubName: string): boolean {
+  return getManagerClubStarRating(clubName) === SEASON_ONE_WCC_REQUIRED_STARS;
 }
 
 export function rollNrlChampionRating(
@@ -134,6 +146,33 @@ export function sanitizeWorldClubChallengeState(
     };
   }
 
+  // First-season unplayed WCC assigned to a non-five-star SL club — repair once.
+  const isFirstSeason = career.seasonHistory.length === 0;
+  const eligibilityVersion =
+    (career as ManagerCareer & { initialWCCEligibilityVersion?: number })
+      .initialWCCEligibilityVersion ?? 0;
+  if (
+    isFirstSeason &&
+    eligibilityVersion < INITIAL_WCC_ELIGIBILITY_VERSION &&
+    currentFixture &&
+    currentFixture.status === "scheduled" &&
+    !currentFixture.userInvolved
+  ) {
+    const sl = currentFixture.superLeagueChampionName;
+    if (!isSeasonOneWccEligibleClub(sl)) {
+      const replacement = pickTopTierSuperLeagueChampion(
+        career.seed,
+        career.seasonYear,
+        career.club
+      );
+      currentFixture = {
+        ...currentFixture,
+        superLeagueChampionTeamId: replacement,
+        superLeagueChampionName: replacement,
+      };
+    }
+  }
+
   const history = (state.history ?? []).map((r) => {
     if (isNrlWorldClubChallengeTeam(r.nrlChampionName)) return r;
     const nrlChampion = pickNrlChampion(career.seed, r.seasonYear);
@@ -146,6 +185,7 @@ export function sanitizeWorldClubChallengeState(
 
   return {
     ...career,
+    initialWCCEligibilityVersion: INITIAL_WCC_ELIGIBILITY_VERSION,
     worldClubChallenge: {
       history,
       currentFixture,

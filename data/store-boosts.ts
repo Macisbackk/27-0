@@ -72,7 +72,7 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
     id: "mgr-future-star",
     name: "Future Star",
     description:
-      "Adds one genuine youth player with 90–95 potential to your reserve pathway (current rating stays 80–84).",
+      "Adds one genuine youth player with 90–95 potential to your reserve pathway (current rating stays developmental, potential 90–95).",
     category: "manager-mode",
     compatibleModes: ["MANAGER"],
     price: 2_000_000,
@@ -145,7 +145,7 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
       "Clears active injuries from your senior and reserve squads. Suspensions remain. Not consumed if nobody is injured.",
     category: "manager-mode",
     compatibleModes: ["MANAGER"],
-    price: 3_000_000,
+    price: 500_000,
     activationStage: "manager-medical",
     stackable: true,
     maxPerGame: 99,

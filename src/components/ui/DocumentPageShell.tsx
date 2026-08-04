@@ -9,6 +9,7 @@ import {
   clearStaleBodyScrollLocks,
   logDocumentScrollDiagnostics,
 } from "@/lib/ui/document-page-scroll";
+import { clearAbandonedAnimationScrollLocks } from "@/lib/ui/scroll-lock";
 
 type DocumentPageShellProps = {
   children: ReactNode;
@@ -29,6 +30,7 @@ export function DocumentPageShell({
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    clearAbandonedAnimationScrollLocks();
     clearStaleBodyScrollLocks();
     const root = rootRef.current;
     logDocumentScrollDiagnostics(diagnoseLabel, root);

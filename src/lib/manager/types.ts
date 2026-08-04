@@ -854,10 +854,20 @@ export interface ManagerCareer {
   retiredPlayers?: RetiredPlayer[];
   /** Save schema version for migrations. */
   saveVersion?: number;
-  /** Player ability scale migration (4 = Championship restored to floor 70). */
+  /** Player ability scale migration (5 = reserve floor + Current 90+ audit). */
   playerRatingSchemaVersion?: number;
   /** Championship-only rating scale correction (2 = post mistaken floor-80 remap). */
   championshipRatingScaleVersion?: number;
+  /** Reserve rating scale after mistaken floor-80 clamp (2 = age/potential remap). */
+  reserveRatingScaleVersion?: number;
+  /** Current Super League 90+ ability audit application marker. */
+  currentNinetyPlusAuditVersion?: number;
+  /** Club reputation stars schema (see data/club-reputation.ts). */
+  clubReputationSchemaVersion?: number;
+  /** World Club Challenge season-one eligibility repair marker. */
+  initialWCCEligibilityVersion?: number;
+  /** Club Office manager boosts hub available (1 = Boosts section live). */
+  managerBoostHubVersion?: number;
   /** Generated Championship squads (500 players) — persisted once per career. */
   championshipSquads?: import("./championship/championshipSquads").ChampionshipSquadState;
   /** Simulated Championship league competition. */

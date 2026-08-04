@@ -1,8 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
+import {
+  acquireScrollLock,
+  releaseScrollLock,
+  type ScrollLockId,
+} from "@/lib/ui/scroll-lock";
 import { TYPO } from "@/lib/ui/typography";
 
 const MONTH_NAMES = [
@@ -87,6 +92,7 @@ function buildDateTrail(start: string, end: string): string[] {
 /**
  * Compact calendar progression for Sim to Date — presentation only.
  * Must finish on the real reached date from the simulation result.
+ * Centred viewport overlay; scroll locked while open.
  */
 export function CalendarSimAnimation({
   open,
@@ -96,6 +102,7 @@ export function CalendarSimAnimation({
   statusMessage,
   onDismiss,
 }: CalendarSimAnimationProps) {
+  const scrollLockIdRef = useRef<ScrollLockId | null>(null);
   const prefersReduced =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -106,6 +113,21 @@ export function CalendarSimAnimation({
   }, [startDateKey, reachedDateKey]);
 
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (!open) {
+      releaseScrollLock(scrollLockIdRef.current);
+      scrollLockIdRef.current = null;
+      return;
+    }
+    if (!scrollLockIdRef.current) {
+      scrollLockIdRef.current = acquireScrollLock("calendar-sim");
+    }
+    return () => {
+      releaseScrollLock(scrollLockIdRef.current);
+      scrollLockIdRef.current = null;
+    };
+  }, [open]);
 
   useEffect(() => {
     if (!open || status !== "animating" || trail.length === 0) {
@@ -142,43 +164,66 @@ export function CalendarSimAnimation({
     status === "animating" &&
     (prefersReduced || trail.length <= 1 || index >= trail.length - 1);
 
+  const statusText =
+    status === "processing"
+      ? "Simulating match weeks…"
+      : status === "error"
+        ? statusMessage ?? "Simulation failed"
+        : status === "complete" || animDone
+          ? reachedDateKey
+            ? `Reached ${formatDateKey(reachedDateKey)}`
+            : "Simulation complete"
+          : "Advancing calendar…";
+
   return (
     <div
-      className="fixed inset-x-0 bottom-20 z-40 flex justify-center px-3 pointer-events-none sm:bottom-8"
+      className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 px-4"
       role="status"
       aria-live="polite"
+      aria-modal="true"
     >
       <div
-        className={`${CARD.elevated} pointer-events-auto w-full max-w-sm ${SPACING.cardPaddingSm} shadow-[0_12px_40px_rgba(0,0,0,0.45)]`}
+        className={`${CARD.elevated} w-full max-w-sm ${SPACING.cardPaddingSm} shadow-[0_12px_40px_rgba(0,0,0,0.45)]`}
       >
         <p className={TYPO.sectionLabel}>Sim to Date</p>
-        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-          {status === "processing"
-            ? "Simulating…"
-            : status === "error"
-              ? statusMessage ?? "Simulation failed"
-              : status === "complete" || animDone
-                ? `Advanced to ${reachedDateKey ? formatDateKey(reachedDateKey) : "—"}`
-                : "Advancing calendar…"}
-        </p>
 
-        <div className="mt-3 rounded-xl border border-white/10 bg-pitch-950/80 px-4 py-3 text-center">
+        {startDateKey ? (
+          <p className={`mt-1 ${TYPO.meta} text-pitch-400`}>
+            From {formatDateKey(startDateKey)}
+          </p>
+        ) : null}
+
+        <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>{statusText}</p>
+
+        <div className="mt-3 rounded-xl border border-theme-primary/25 bg-pitch-950/80 px-4 py-3 text-center">
           <p className="font-display text-[10px] font-bold uppercase tracking-wider text-theme-primary">
             {parsed ? MONTH_NAMES[parsed.m - 1] : "—"}
           </p>
-          <p className="mt-1 font-display text-4xl font-black tabular-nums text-white">
+          <p
+            className={`mt-1 font-display text-4xl font-black tabular-nums text-white ${
+              prefersReduced || status === "processing"
+                ? ""
+                : "transition-opacity duration-200"
+            }`}
+            key={displayed ?? "empty"}
+          >
             {parsed?.d ?? "—"}
           </p>
           <p className={`mt-0.5 ${TYPO.meta}`}>{parsed?.y ?? ""}</p>
         </div>
 
+        {reachedDateKey &&
+        startDateKey &&
+        reachedDateKey !== startDateKey &&
+        (done || animDone) ? (
+          <p className={`mt-2 text-center ${TYPO.meta} text-theme-primary`}>
+            {formatDateKey(startDateKey)} → {formatDateKey(reachedDateKey)}
+          </p>
+        ) : null}
+
         {(done || animDone) && (
           <div className="mt-3 flex justify-center">
-            <GameButton
-              variant="theme"
-              size="sm"
-              onClick={onDismiss}
-            >
+            <GameButton variant="theme" size="sm" onClick={onDismiss}>
               Continue
             </GameButton>
           </div>

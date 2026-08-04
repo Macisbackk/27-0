@@ -1069,7 +1069,33 @@ export function simulateManagerMatchLive(
   career: ManagerCareer,
   sched: NonNullable<ReturnType<typeof getNextManagerFixture>>
 ): { fixture: MatchFixture; liveEvents: import("./types").LiveMatchEvent[] } {
-  const fixture = previewManagerMatchScoreline(career, sched);
+  let fixture = previewManagerMatchScoreline(career, sched);
+
+  // Root-cause fix: scoreline-only simulateOneFixture leaves scoringDetail empty.
+  // Allocate per-try scorers BEFORE event generation so Match Story / stats share IDs.
+  const squad = buildSquadSlotsFromMatchday(
+    career.matchdayXiii,
+    career.xiiiSlotPositions,
+    career
+  );
+  enrichManagerFixtureScoring(
+    squad,
+    fixture,
+    career.seed,
+    career.tactics,
+    {
+      currentSeasonOnly:
+        sched.competition !== "friendly" &&
+        sched.competition !== "world_club_challenge",
+      fixtureKey: sched.id,
+      career,
+    }
+  );
+  if (process.env.NODE_ENV === "development") {
+    (fixture as MatchFixture & { __simEngine?: string }).__simEngine =
+      "manager-instant-v2";
+  }
+
   const liveEvents = generateEventsFromFixture(career, fixture, sched.id, sched);
   return { fixture, liveEvents };
 }

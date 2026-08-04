@@ -32,6 +32,10 @@ import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 import { SQUAD_STRUCTURE } from "../positions";
 import type { Position } from "../types";
 import { computePlayerValue } from "../players/ratings";
+import {
+  RANDOM_FREE_AGENT_MIN_RATING,
+  clampRandomFreeAgentRating,
+} from "../players/rating-floors";
 
 const MAX_TRANSFER_HISTORY = 32;
 /** Mid-season FA activity — kept high enough that AI clubs replace leavers. */
@@ -76,11 +80,16 @@ export function pickWeightedFreeAgentAge(rng: () => number): number {
 }
 
 function pickFreeAgentRating(rng: () => number): number {
+  // Random / reserve-origin free agents use the 70 floor — not senior Current 80.
   const roll = rng();
-  if (roll < 0.45) return 58 + Math.floor(rng() * 11); // 58–68
-  if (roll < 0.85) return 69 + Math.floor(rng() * 7); // 69–75
-  if (roll < 0.97) return 76 + Math.floor(rng() * 5); // 76–80
-  return 81 + Math.floor(rng() * 3); // 81–83 rare
+  let rating: number;
+  if (roll < 0.35) rating = 70 + Math.floor(rng() * 3); // 70–72 development
+  else if (roll < 0.65) rating = 73 + Math.floor(rng() * 3); // 73–75
+  else if (roll < 0.85) rating = 76 + Math.floor(rng() * 3); // 76–78
+  else if (roll < 0.95) rating = 79 + Math.floor(rng() * 3); // 79–81
+  else if (roll < 0.99) rating = 82 + Math.floor(rng() * 3); // 82–84 rare
+  else rating = 85; // exceptional rare
+  return clampRandomFreeAgentRating(rating);
 }
 
 function ageBandForSource(source: FreeAgentSource, rng: () => number): number {

@@ -68,11 +68,11 @@ export function computeAbilityScorerFactor(
   form: number,
   fitness: number
 ): number {
-  const r = Math.max(80, rating);
+  // Do not floor at senior 80 — reserves/FAs at 70–79 must not get elite weight.
+  const r = Math.max(1, rating);
   const formMul = 0.72 + (Math.max(1, Math.min(99, form)) / 100) * 0.56;
   const fitMul = 0.55 + (Math.max(1, Math.min(100, fitness)) / 100) * 0.45;
-  // Baseline 83 (squad/rotation on the floor-80 scale). Exponent keeps 82 vs 92 meaningful
-  // without treating every 80 as an old-scale elite.
+  // Baseline 83 (squad/rotation on the senior scale). Lower ratings stay meaningful.
   return Math.pow(r / 83, 2.35) * formMul * fitMul;
 }
 

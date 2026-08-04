@@ -32,6 +32,10 @@ import { reconcileLeagueRosters } from "./managerLeagueRosters";
 import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import type { Player } from "../types";
 import type { PlayerDevelopmentState } from "./types";
+import {
+  RESERVE_MIN_RATING,
+  clampReservePlayerRating,
+} from "../players/rating-floors";
 
 const FIRST_NAMES = [
   "Jack", "Tom", "Liam", "Ethan", "Noah", "Mason", "Harvey", "Finn",
@@ -157,12 +161,17 @@ function pickPotential(
   const shift = getYouthIntakeRollShift(youthLevel);
   const roll = Math.min(0.99, rng() - shift);
   let potential: number;
-  if (roll < 0.04) potential = 85 + Math.floor(rng() * 6);
-  else if (roll < 0.14) potential = 80 + Math.floor(rng() * 5);
-  else if (roll < 0.35) potential = 75 + Math.floor(rng() * 5);
-  else if (roll < 0.65) potential = 70 + Math.floor(rng() * 5);
-  else potential = 65 + Math.floor(rng() * 5);
-  const floor = getYouthIntakePotentialFloor(youthLevel);
+  // Reserves may have high potential while current rating stays lower (70+).
+  if (roll < 0.03) potential = 88 + Math.floor(rng() * 5); // 88–92 rare
+  else if (roll < 0.1) potential = 84 + Math.floor(rng() * 4); // 84–87
+  else if (roll < 0.28) potential = 80 + Math.floor(rng() * 4); // 80–83
+  else if (roll < 0.55) potential = 76 + Math.floor(rng() * 4); // 76–79
+  else if (roll < 0.8) potential = 73 + Math.floor(rng() * 3); // 73–75
+  else potential = 70 + Math.floor(rng() * 3); // 70–72
+  const floor = Math.max(
+    RESERVE_MIN_RATING,
+    getYouthIntakePotentialFloor(youthLevel)
+  );
   const bonus = getYouthIntakePotentialBonus(youthLevel);
   return Math.min(92, Math.max(floor, potential + bonus));
 }
@@ -174,9 +183,24 @@ function ratingForAge(
   youthLevel = 0
 ): number {
   const boost = getYouthIntakeRatingBoost(youthLevel);
-  if (age <= 18) return 80 + Math.floor(rng() * 3) + Math.min(2, boost);
-  if (age <= 20) return 80 + Math.floor(rng() * 4) + Math.min(2, boost);
-  return 81 + Math.floor(rng() * 4) + Math.min(2, boost);
+  // Current ability bands for reserves (70–84 typical). Promotion does not raise this.
+  let base: number;
+  const roll = rng();
+  if (age <= 18) {
+    if (roll < 0.45) base = 70 + Math.floor(rng() * 3); // 70–72
+    else if (roll < 0.8) base = 73 + Math.floor(rng() * 3); // 73–75
+    else base = 76 + Math.floor(rng() * 3); // 76–78
+  } else if (age <= 20) {
+    if (roll < 0.35) base = 72 + Math.floor(rng() * 3);
+    else if (roll < 0.75) base = 75 + Math.floor(rng() * 4);
+    else base = 79 + Math.floor(rng() * 3);
+  } else {
+    if (roll < 0.3) base = 74 + Math.floor(rng() * 3);
+    else if (roll < 0.7) base = 77 + Math.floor(rng() * 4);
+    else if (roll < 0.95) base = 81 + Math.floor(rng() * 3);
+    else base = 84 + Math.floor(rng() * 2); // rare high-quality reserve
+  }
+  return clampReservePlayerRating(base + Math.min(2, boost));
 }
 
 export function getPotentialTier(potential: number): string {
@@ -400,9 +424,8 @@ export function generateReservePlayer(
   const rng = seedrandom(`${seed}-reserve-${index}`);
   const age = 17 + Math.floor(rng() * 6);
   const potential = pickPotential(age, rng, youthLevel);
-  const rating = Math.min(
-    potential,
-    ratingForAge(age, potential, rng, youthLevel)
+  const rating = clampReservePlayerRating(
+    Math.min(potential, ratingForAge(age, potential, rng, youthLevel))
   );
   const { first, last } = pickReserveName(rng, club);
 

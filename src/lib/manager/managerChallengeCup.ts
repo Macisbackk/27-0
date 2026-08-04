@@ -517,6 +517,15 @@ export function getNextLeagueOrCupFixture(
       cupResolved.userMatch
     );
   }
+  // Active cup window without a ready user tie yet — do not schedule a league
+  // match over the Challenge Cup (Hub still shows the compact bracket).
+  if (
+    cupResolved.pendingRound !== null &&
+    !cupResolved.career.challengeCup?.userEliminated &&
+    !cupResolved.career.challengeCup?.tournamentComplete
+  ) {
+    return null;
+  }
 
   const idx = career.currentFixtureIndex;
   const sched = career.schedule[idx];
@@ -814,21 +823,22 @@ export function shouldShowChallengeCupBracketOnHub(
 ): boolean {
   if (!career.challengeCup?.matches?.length) return false;
 
-  // User's next match is a Challenge Cup tie — show the compact bracket.
-  if (nextFixture?.competition === "challenge_cup") return true;
-
   // Eliminated / tournament done: never keep the Hub on the cup bracket for
   // later AI-only rounds.
-  if (career.challengeCup.userEliminated || career.challengeCup.tournamentComplete) {
+  if (
+    career.challengeCup.userEliminated ||
+    career.challengeCup.tournamentComplete
+  ) {
     return false;
   }
 
-  // Cup week waiting for the user to play (bracket prepared, next is cup).
+  // User's next match is a Challenge Cup tie — show the compact bracket.
+  if (nextFixture?.competition === "challenge_cup") return true;
+
+  // Cup week is unlocked (pending round) even if the user tie is still preparing.
+  // Do NOT fall back to the league table during an active cup window.
   const pending = getPendingCupBracketRound(career);
-  if (pending !== null) {
-    const prepared = prepareCupRound(career);
-    if (prepared && getUserCupMatch(prepared, pending)) return true;
-  }
+  if (pending !== null) return true;
 
   // Just finished a cup tie — keep the bracket visible until week advance.
   const last =

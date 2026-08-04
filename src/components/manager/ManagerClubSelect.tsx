@@ -7,12 +7,12 @@ import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
-  formatSquadRatingStars,
   getAllManagerClubConfigs,
   MANAGER_STAR_TIER_BIOS,
   type ManagerClubConfig,
 } from "@/lib/manager/club-config";
 import { getClubAttendanceProfile } from "@/lib/manager/managerAttendance";
+import { ClubStarRatingDisplay } from "@/components/ui/ClubStarRating";
 import { playUiClick } from "@/lib/sound";
 
 interface ManagerClubSelectProps {
@@ -67,32 +67,25 @@ function ClubSelectRow({
         />
 
         <div className="min-w-0 flex-1">
-          <div className="flex items-center justify-between gap-2">
-            <p className="truncate text-sm font-semibold text-white">
-              {club.name}
-            </p>
-            <span
-              className="shrink-0 font-mono text-[11px] tracking-wide text-accent-gold"
-              aria-label={`${ratingStars} out of 5 stars`}
-            >
-              {formatSquadRatingStars(ratingStars)}
+          <p className="truncate text-sm font-semibold text-white">
+            {club.name}
+          </p>
+          <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+            <ClubStarRatingDisplay
+              stars={ratingStars}
+              label={`Club rating: ${ratingStars} out of 5 stars`}
+              size="sm"
+            />
+            <span className="text-[10px] uppercase tracking-wide text-pitch-500">
+              OVR {club.squadRating}
             </span>
           </div>
-          <p className="truncate text-xs text-pitch-400">
+          <p className="mt-0.5 truncate text-xs text-pitch-400">
             {club.expectation}
             <span className="text-pitch-600"> · </span>
             £{(club.budget / 1000).toFixed(0)}k
             <span className="text-pitch-600"> · </span>
             ~{(attendance.base / 1000).toFixed(1)}k home
-          </p>
-        </div>
-
-        <div className="shrink-0 text-right">
-          <p className="text-sm font-bold leading-none text-theme-primary">
-            {club.squadRating}
-          </p>
-          <p className="mt-0.5 text-[10px] uppercase tracking-wide text-pitch-500">
-            OVR
           </p>
         </div>
       </button>

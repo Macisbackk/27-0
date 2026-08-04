@@ -18,6 +18,11 @@ import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { playSlotLand, playSlotSpinStart, playSlotSpinTick } from "@/lib/sound";
 import { CARD, SPACING } from "@/lib/ui/design-system";
+import {
+  acquireScrollLock,
+  releaseScrollLock,
+  type ScrollLockId,
+} from "@/lib/ui/scroll-lock";
 import { TYPO } from "@/lib/ui/typography";
 import { SlotReel, type SlotReelHandle } from "./SlotReel";
 
@@ -41,8 +46,14 @@ export function RecruitmentSlotReveal({
   const shellRef = useRef<HTMLDivElement>(null);
   const onCompleteRef = useRef(onComplete);
   const clubPrimaryRef = useRef(getClubColors(target.team).primary);
+  const scrollLockIdRef = useRef<ScrollLockId | null>(null);
   const [isSpinning, setIsSpinning] = useState(true);
   const [landed, setLanded] = useState(false);
+
+  const releaseSpinScrollLock = () => {
+    releaseScrollLock(scrollLockIdRef.current);
+    scrollLockIdRef.current = null;
+  };
 
   const clubColors = useMemo(
     () => getClubColors(target.team),
@@ -74,6 +85,8 @@ export function RecruitmentSlotReveal({
   }, [target.team, target.year, target.teamYearId, spinVariant, isEraSpin]);
 
   useEffect(() => {
+    scrollLockIdRef.current = acquireScrollLock("quick-mode-spin");
+
     const prefersReducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -90,14 +103,24 @@ export function RecruitmentSlotReveal({
       }
     };
 
+    const completeAndRelease = () => {
+      releaseSpinScrollLock();
+      onCompleteRef.current();
+    };
+
     if (prefersReducedMotion) {
       teamReelRef.current?.setScrollIndex(teamPlan.finalIndex, false);
       if (isEraSpin && yearPlan) {
         yearReelRef.current?.setScrollIndex(yearPlan.finalIndex, false);
       }
       lockReels();
-      const timeoutId = window.setTimeout(() => onCompleteRef.current(), 120);
-      return () => window.clearTimeout(timeoutId);
+      const timeoutId = window.setTimeout(() => {
+        completeAndRelease();
+      }, 120);
+      return () => {
+        window.clearTimeout(timeoutId);
+        releaseSpinScrollLock();
+      };
     }
 
     let cancelled = false;
@@ -140,7 +163,7 @@ export function RecruitmentSlotReveal({
       lockReels();
       spinTimingMark("animation-end", tAnimStart);
       holdTimeout = window.setTimeout(() => {
-        if (!cancelled) onCompleteRef.current();
+        if (!cancelled) completeAndRelease();
       }, LAND_HOLD_MS);
     };
 
@@ -185,6 +208,7 @@ export function RecruitmentSlotReveal({
       cancelled = true;
       window.cancelAnimationFrame(rafId);
       if (holdTimeout) window.clearTimeout(holdTimeout);
+      releaseSpinScrollLock();
     };
   }, [teamPlan, yearPlan, isEraSpin]);
 

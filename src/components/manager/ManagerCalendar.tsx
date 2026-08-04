@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ManagerPage,
   ManagerSection,
@@ -45,6 +45,18 @@ const MONTH_NAMES = [
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
+const IDLE_SIM_ANIM: {
+  status: CalendarSimAnimationPhase;
+  startDate: string | null;
+  reachedDate: string | null;
+  message: string | null;
+} = {
+  status: "idle",
+  startDate: null,
+  reachedDate: null,
+  message: null,
+};
+
 interface ManagerCalendarProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
@@ -85,12 +97,17 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
   const [simConfirm, setSimConfirm] = useState(false);
   const [simBusy, setSimBusy] = useState(false);
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
-  const [simAnim, setSimAnim] = useState<{
-    status: CalendarSimAnimationPhase;
-    startDate: string | null;
-    reachedDate: string | null;
-    message: string | null;
-  }>({ status: "idle", startDate: null, reachedDate: null, message: null });
+  const [simAnim, setSimAnim] = useState(IDLE_SIM_ANIM);
+  const animCompleteTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (animCompleteTimerRef.current != null) {
+        window.clearTimeout(animCompleteTimerRef.current);
+        animCompleteTimerRef.current = null;
+      }
+    };
+  }, []);
 
   const selectedEvents = selectedDate
     ? getEventsForDate(events, selectedDate)
@@ -131,8 +148,17 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
     setSelectedDate(null);
   };
 
+  const dismissSimAnim = () => {
+    if (animCompleteTimerRef.current != null) {
+      window.clearTimeout(animCompleteTimerRef.current);
+      animCompleteTimerRef.current = null;
+    }
+    // Close overlay first; any follow-up weekly UI continues only after this.
+    setSimAnim(IDLE_SIM_ANIM);
+  };
+
   const runSimToDate = () => {
-    if (!selectedDate || simBusy) return;
+    if (!selectedDate || simBusy || simAnim.status !== "idle") return;
     const target = getSimTargetGameWeekForDate(events, selectedDate);
     if (target == null) {
       setStatusMsg("No fixtures on or before that date.");
@@ -190,7 +216,11 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
           reachedDate,
           message: null,
         });
-        window.setTimeout(() => {
+        if (animCompleteTimerRef.current != null) {
+          window.clearTimeout(animCompleteTimerRef.current);
+        }
+        animCompleteTimerRef.current = window.setTimeout(() => {
+          animCompleteTimerRef.current = null;
           setSimAnim((prev) =>
             prev.status === "animating"
               ? { ...prev, status: "complete" }
@@ -332,7 +362,11 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
               <GameButton
                 variant="theme"
                 size="sm"
-                disabled={simBusy || selectedEvents.every((e) => e.played)}
+                disabled={
+                  simBusy ||
+                  simAnim.status !== "idle" ||
+                  selectedEvents.every((e) => e.played)
+                }
                 onClick={() => {
                   playUiClick();
                   setSimConfirm(true);
@@ -373,14 +407,7 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
         reachedDateKey={simAnim.reachedDate}
         status={simAnim.status}
         statusMessage={simAnim.message}
-        onDismiss={() =>
-          setSimAnim({
-            status: "idle",
-            startDate: null,
-            reachedDate: null,
-            message: null,
-          })
-        }
+        onDismiss={dismissSimAnim}
       />
     </ManagerPage>
   );

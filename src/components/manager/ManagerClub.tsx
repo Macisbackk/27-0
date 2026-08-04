@@ -32,11 +32,15 @@ import {
   patchManagerCareerSettings,
   resolveManagerSettings,
 } from "@/components/manager/ManagerSettings";
+import { ManagerBoostsPanel } from "@/components/manager/ManagerBoostsPanel";
+import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 
 interface ManagerClubProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
 }
+
+type ClubOfficeSubTab = "boosts" | "facilities" | "settings";
 
 const FACILITY_ORDER: FacilityType[] = [
   "youth",
@@ -54,6 +58,7 @@ const FACILITY_ICONS: Record<FacilityType, string> = {
 
 export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
   const [error, setError] = useState<string | null>(null);
+  const [subTab, setSubTab] = useState<ClubOfficeSubTab>("boosts");
   const settings = resolveManagerSettings(career);
   const facilities = getClubFacilities(career);
   const transferFund = getTransferBudget(career);
@@ -92,11 +97,38 @@ export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
       <ManagerSection>
       <GameSectionHeader
         size="page"
-        label="Facilities"
+        label="Club Office"
         title="Club"
-        subtitle="Invest transfer funds to improve facilities — each area upgrades one star at a time (0–5)."
+        subtitle="Boosts, facilities and club preferences for your managerial career."
       />
 
+      <ManagerSubTabBar
+        ariaLabel="Club Office sections"
+        active={subTab}
+        onChange={setSubTab}
+        tabs={[
+          { id: "boosts", label: "Boosts" },
+          { id: "facilities", label: "Facilities" },
+          { id: "settings", label: "Settings" },
+        ]}
+      />
+
+      {subTab === "boosts" ? (
+        <ManagerBoostsPanel
+          career={career}
+          stage="all-manager"
+          title="Boosts"
+          onApplied={onUpdate}
+        />
+      ) : subTab === "settings" ? (
+        <GameplaySettingsCard
+          settings={settings}
+          onPatch={(patch) =>
+            patchManagerCareerSettings(career, onUpdate, settings, patch)
+          }
+        />
+      ) : (
+        <>
       <ManagerSectionCard title="Investment fund" variant="elevated" accent="primary">
         <div className="mt-2 grid grid-cols-2 gap-3">
           <ManagerStat
@@ -184,13 +216,8 @@ export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
           </ManagerSectionCard>
         ))}
       </div>
-
-      <GameplaySettingsCard
-        settings={settings}
-        onPatch={(patch) =>
-          patchManagerCareerSettings(career, onUpdate, settings, patch)
-        }
-      />
+        </>
+      )}
       </ManagerSection>
     </ManagerPage>
   );

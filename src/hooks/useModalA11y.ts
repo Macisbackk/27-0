@@ -1,4 +1,9 @@
 import { useEffect, useRef, type RefObject } from "react";
+import {
+  acquireScrollLock,
+  releaseScrollLock,
+  type ScrollLockId,
+} from "@/lib/ui/scroll-lock";
 
 const FOCUSABLE_SELECTOR =
   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
@@ -10,13 +15,13 @@ export function useModalA11y(
 ): RefObject<HTMLDivElement | null> {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const scrollLockIdRef = useRef<ScrollLockId | null>(null);
 
   useEffect(() => {
     if (!open) return;
 
     previousFocusRef.current = document.activeElement as HTMLElement | null;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    scrollLockIdRef.current = acquireScrollLock("modal");
 
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -58,7 +63,8 @@ export function useModalA11y(
     });
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      releaseScrollLock(scrollLockIdRef.current);
+      scrollLockIdRef.current = null;
       window.removeEventListener("keydown", onKey);
       previousFocusRef.current?.focus?.();
     };

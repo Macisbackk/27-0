@@ -24,14 +24,33 @@ import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerSectionCard } from "@/components/manager/manager-ui";
 import { playUiClick } from "@/lib/sound";
 
+const ALL_MANAGER_STAGES: BoostActivationStage[] = [
+  "manager-career",
+  "manager-squad",
+  "manager-reserves",
+  "manager-youth-generation",
+  "manager-medical",
+  "manager-end-season",
+];
+
+export type ManagerBoostsStageProp =
+  | BoostActivationStage
+  | BoostActivationStage[]
+  | "all-manager";
+
 interface ManagerBoostsPanelProps {
   career: ManagerCareer;
-  stage: BoostActivationStage | BoostActivationStage[];
+  stage: ManagerBoostsStageProp;
   onApplied: (career: ManagerCareer) => void;
   compact?: boolean;
+  /** Override card title (defaults to Career Boosts / Boosts). */
+  title?: string;
 }
 
-function stagesForView(stage: BoostActivationStage | BoostActivationStage[]): Set<BoostActivationStage> {
+function stagesForView(stage: ManagerBoostsStageProp): Set<BoostActivationStage> {
+  if (stage === "all-manager") {
+    return new Set(ALL_MANAGER_STAGES);
+  }
   const list = Array.isArray(stage) ? stage : [stage];
   const set = new Set(list);
   if (set.has("manager-career")) {
@@ -52,8 +71,11 @@ export function ManagerBoostsPanel({
   stage,
   onApplied,
   compact = false,
+  title,
 }: ManagerBoostsPanelProps) {
   const allowedStages = useMemo(() => stagesForView(stage), [stage]);
+  const panelTitle =
+    title ?? (stage === "all-manager" ? "Boosts" : "Career Boosts");
 
   const boosts = useMemo(
     () =>
@@ -79,8 +101,13 @@ export function ManagerBoostsPanel({
   );
 
   const ownedBoosts = boosts.filter((b: GameBoost) => getBoostQuantity(b.id) > 0);
+  const alwaysShow = stage === "all-manager" || Boolean(title);
 
-  if (ownedBoosts.length === 0 && !career.managerProtection?.noSacking) {
+  if (
+    ownedBoosts.length === 0 &&
+    !career.managerProtection?.noSacking &&
+    !alwaysShow
+  ) {
     return null;
   }
 
@@ -149,7 +176,7 @@ export function ManagerBoostsPanel({
   return (
     <>
       <ManagerSectionCard
-        title="Career Boosts"
+        title={panelTitle}
         accent={career.managerProtection?.noSacking ? "gold" : undefined}
         className={compact ? "mt-3" : undefined}
       >

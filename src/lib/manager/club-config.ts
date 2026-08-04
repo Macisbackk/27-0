@@ -13,6 +13,14 @@ import {
   getManagerClubTeamRating,
   getManagerRosterIds,
 } from "./managerRating";
+import {
+  CLUB_REPUTATION_BY_NAME,
+  CLUB_REPUTATION_SCHEMA_VERSION,
+  getClubReputationStars,
+  type ClubStarRating,
+} from "../../../data/club-reputation";
+
+export { CLUB_REPUTATION_SCHEMA_VERSION, type ClubStarRating };
 
 export interface ManagerClubConfig {
   name: string;
@@ -64,17 +72,6 @@ export const MANAGER_STAR_TIER_BIOS: Record<number, string> = {
   3: "Make the play-offs — finish in the top six",
   2: "Mid-table finish — solid Super League campaign",
   1: "Survive — stay clear of the bottom places",
-};
-
-/** Fixed board star ratings for select clubs; others derive from squad OVR rank. */
-const CLUB_STAR_OVERRIDES: Record<string, number> = {
-  "Leeds Rhinos": 5,
-  "St Helens": 5,
-  "Wigan Warriors": 5,
-  "Hull KR": 4,
-  "Warrington Wolves": 4,
-  "Huddersfield Giants": 2,
-  "York Knights": 1,
 };
 
 const TRANSFER_BUDGET_MID_BY_STARS: Record<number, number> = {
@@ -182,10 +179,26 @@ export function getAllManagerClubConfigs(): ManagerClubConfig[] {
   return CURRENT_PLAYABLE_CLUBS.map((name) => getManagerClubConfig(name));
 }
 
-/** Club prestige stars (1–5) — overrides for named clubs, else from squad OVR rank. */
-export function getManagerClubStarRating(clubName: string): number {
-  const override = CLUB_STAR_OVERRIDES[clubName];
-  if (override !== undefined) return override;
+/**
+ * Canonical club prestige stars (1–5).
+ * Reads fixed reputation data — never in-season squad OVR.
+ */
+export function getManagerClubStarRating(clubName: string): ClubStarRating {
+  const fromCanon = getClubReputationStars(clubName);
+  if (fromCanon != null) return fromCanon;
+  // Unknown clubs: mid-tier default (should not happen for playable clubs).
+  if (process.env.NODE_ENV === "development") {
+    console.warn(`[club-reputation] missing stars for ${clubName}`);
+  }
+  return 3;
+}
+
+/** @deprecated Prefer getManagerClubStarRating — kept for callers that used OVR mapping. */
+export function getManagerClubStarRatingLegacyDerived(
+  clubName: string
+): number {
+  const fromCanon = CLUB_REPUTATION_BY_NAME[clubName];
+  if (fromCanon != null) return fromCanon;
   const allRatings = getLeagueSquadRatings();
   return squadRatingToStars(getManagerClubRating(clubName), allRatings);
 }

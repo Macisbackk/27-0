@@ -4,18 +4,29 @@
  * document — never via a nested fixed overflow container.
  */
 
+import {
+  clearAbandonedAnimationScrollLocks,
+  hasActiveScrollLocks,
+} from "@/lib/ui/scroll-lock";
+
 export function isModalBodyLockActive(): boolean {
   if (typeof document === "undefined") return false;
   return Boolean(document.querySelector('[aria-modal="true"]'));
 }
 
 /**
- * Clear temporary body/html overflow locks left by popups or overlays,
- * but never while a real modal is open.
+ * Clear temporary body/html overflow locks left by abandoned animations,
+ * but never while a scroll-lock service lock or real aria-modal is active.
  */
 export function clearStaleBodyScrollLocks(): void {
   if (typeof document === "undefined") return;
+
+  // Drop spin / calendar locks left behind by refresh or interrupted overlays.
+  clearAbandonedAnimationScrollLocks();
+
+  if (hasActiveScrollLocks()) return;
   if (isModalBodyLockActive()) return;
+
   document.body.style.overflow = "";
   document.documentElement.style.overflow = "";
 }
