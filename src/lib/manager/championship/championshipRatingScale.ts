@@ -1,4 +1,4 @@
-import type { Position } from "../types";
+import type { Position } from "../../types";
 import {
   CHAMPIONSHIP_PLAYER_MAX_RATING,
   CHAMPIONSHIP_PLAYER_MIN_RATING,
