@@ -15,7 +15,6 @@ import { ManagerInbox } from "@/components/manager/ManagerInbox";
 import { ManagerTransfers } from "@/components/manager/ManagerTransfers";
 import { ManagerClub } from "@/components/manager/ManagerClub";
 import { ManagerFixtures } from "@/components/manager/ManagerFixtures";
-import { ManagerCalendar } from "@/components/manager/ManagerCalendar";
 import { ManagerAcrossLeague } from "@/components/manager/ManagerAcrossLeague";
 import { ManagerStatsView } from "@/components/manager/ManagerStatsView";
 import { ManagerSettings } from "@/components/manager/ManagerSettings";
@@ -285,7 +284,7 @@ export default function ManagerPage() {
     useState(false);
   const [advancingWeek, setAdvancingWeek] = useState(false);
   const [fixturesInitialFilter, setFixturesInitialFilter] = useState<
-    "all" | "cup" | null
+    "calendar" | "all" | "cup" | null
   >(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleteSlot, setDeleteSlot] = useState<number | null>(null);
@@ -1737,9 +1736,10 @@ export default function ManagerPage() {
                 )}
                 {displayView === "fixtures" && (
                   <ManagerFixtures
-                    key={fixturesInitialFilter ?? "all"}
+                    key={fixturesInitialFilter ?? "calendar"}
                     career={career}
-                    initialFilter={fixturesInitialFilter ?? "all"}
+                    onUpdate={persist}
+                    initialFilter={fixturesInitialFilter ?? "calendar"}
                     onOpenMatchPrep={() => {
                       setPendingHubNextFixtureScroll(true);
                       handleNavNavigate("hub");
@@ -1751,9 +1751,6 @@ export default function ManagerPage() {
                       goToView("match-review", { syncUrl: false });
                     }}
                   />
-                )}
-                {displayView === "calendar" && (
-                  <ManagerCalendar career={career} onUpdate={persist} />
                 )}
                 {displayView === "across-league" && (
                   <ManagerAcrossLeague

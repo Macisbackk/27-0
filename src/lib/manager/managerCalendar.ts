@@ -335,6 +335,13 @@ export function getDateKeyForGameWeek(
   events: ManagerCalendarEvent[],
   gameWeek: number
 ): string | null {
+  if (events.length === 0) return null;
+  // Pre-season / week 0: day before the first fixture so Sim-to-Date can count forward.
+  if (gameWeek <= 0) {
+    const first = events[0]!;
+    const prior = addDays(first.year, first.month, first.day, -7);
+    return prior.dateKey;
+  }
   const exact = events.find((e) => e.progressGameWeek === gameWeek);
   if (exact) return exact.dateKey;
   const before = events

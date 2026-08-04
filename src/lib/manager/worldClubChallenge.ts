@@ -498,6 +498,42 @@ export function simulateWorldClubChallenge(
   };
 }
 
+/**
+ * AI (non-user) WCC stays scheduled until Game Week 3 has been reached —
+ * i.e. the calendar Friday before round 3 has passed on the career clock.
+ */
+export function isAiWorldClubChallengeDue(
+  career: ManagerCareer,
+  fixture: WorldClubChallengeFixture
+): boolean {
+  if (fixture.userInvolved || fixture.status !== "scheduled") return false;
+  if (fixture.seasonYear !== career.seasonYear) return false;
+  return career.gameWeek >= fixture.gameWeek || Boolean(career.isSeasonComplete);
+}
+
+/** Complete a scheduled AI WCC once its gameday has passed; no-op otherwise. */
+export function resolveAiWorldClubChallengeIfDue(
+  career: ManagerCareer
+): ManagerCareer {
+  const fixture = career.worldClubChallenge?.currentFixture;
+  if (!fixture || !isAiWorldClubChallengeDue(career, fixture)) return career;
+
+  const result = simulateWorldClubChallenge(career, {
+    ...fixture,
+    status: "complete",
+  });
+  const history = (career.worldClubChallenge?.history ?? []).filter(
+    (r) => r.seasonYear !== fixture.seasonYear
+  );
+  return {
+    ...career,
+    worldClubChallenge: {
+      history: [...history, result],
+      currentFixture: undefined,
+    },
+  };
+}
+
 export function scheduleWorldClubChallengeForSeason(
   career: ManagerCareer
 ): ManagerCareer {
@@ -512,38 +548,72 @@ export function scheduleWorldClubChallengeForSeason(
     };
   }
 
-  // AI auto-sim if user not involved
-  if (!fixture.userInvolved) {
-    const result = simulateWorldClubChallenge(career, {
-      ...fixture,
-      status: "complete",
-    });
-    return {
-      ...career,
-      worldClubChallenge: {
-        history: [...(career.worldClubChallenge?.history ?? []), result],
-        currentFixture: undefined,
-      },
-    };
-  }
-
-  return {
+  // Keep AI showcase fixtures scheduled until Game Week 3 — do not auto-sim
+  // on schedule so the result is not visible at career start.
+  return resolveAiWorldClubChallengeIfDue({
     ...career,
     worldClubChallenge: {
       history: career.worldClubChallenge?.history ?? [],
       currentFixture: fixture,
     },
-  };
+  });
 }
 
 /** Schedule this season's WCC when missing (covers season-one careers and older saves). */
 export function ensureWorldClubChallengeScheduled(
   career: ManagerCareer
 ): ManagerCareer {
-  if (career.isSeasonComplete) return career;
+  if (career.isSeasonComplete) {
+    return resolveAiWorldClubChallengeIfDue(career);
+  }
   const history = career.worldClubChallenge?.history ?? [];
   const current = career.worldClubChallenge?.currentFixture;
   const isFirstSeason = career.seasonHistory.length === 0;
+
+  // Older saves auto-simmed AI WCC at career start. Hide the result again until
+  // Game Week 3 so the showcase does not appear before gameday.
+  if (
+    !current &&
+    career.gameWeek < 3 &&
+    !career.isSeasonComplete
+  ) {
+    const earlyAi = history.find(
+      (r) =>
+        r.seasonYear === career.seasonYear &&
+        r.userResult === "not_involved"
+    );
+    if (earlyAi) {
+      const ratingRng = seedrandom(
+        `${career.seed}-wcc-rating-${career.seasonYear}-${earlyAi.nrlChampionName}`
+      );
+      const rolled = rollNrlChampionRating(ratingRng, earlyAi.nrlChampionName);
+      const lineup = buildNrlMatchdayLineup({
+        seed: career.seed,
+        teamName: earlyAi.nrlChampionName,
+        teamRating: rolled,
+        seasonYear: career.seasonYear,
+      });
+      const fixture: WorldClubChallengeFixture = {
+        id: earlyAi.id,
+        seasonYear: earlyAi.seasonYear,
+        gameWeek: 3,
+        superLeagueChampionTeamId: earlyAi.superLeagueChampionName,
+        superLeagueChampionName: earlyAi.superLeagueChampionName,
+        nrlChampionName: earlyAi.nrlChampionName,
+        nrlChampionId: getNrlClubByName(earlyAi.nrlChampionName)?.id,
+        nrlChampionRating: lineup.teamRating,
+        status: "scheduled",
+        userInvolved: false,
+      };
+      return {
+        ...career,
+        worldClubChallenge: {
+          history: history.filter((r) => r.seasonYear !== career.seasonYear),
+          currentFixture: fixture,
+        },
+      };
+    }
+  }
 
   // Season one must never force the user into a playable WCC — convert any
   // leftover invitation into the AI showcase match.
@@ -561,7 +631,7 @@ export function ensureWorldClubChallengeScheduled(
   }
 
   // Repair saves where the user was wrongly forced into WCC despite not being
-  // the Super League champion — simulate the AI fixture instead.
+  // the Super League champion — keep as scheduled AI until gameday passes.
   if (
     current &&
     current.seasonYear === career.seasonYear &&
@@ -577,24 +647,20 @@ export function ensureWorldClubChallengeScheduled(
       current.userInvolved !== shouldInvolveUser
     ) {
       if (!shouldInvolveUser) {
-        const fixture = {
+        const fixture: WorldClubChallengeFixture = {
           ...current,
           superLeagueChampionName: trueChampion,
           superLeagueChampionTeamId: trueChampion,
           userInvolved: false,
-          status: "complete" as const,
+          status: "scheduled",
         };
-        const result = simulateWorldClubChallenge(career, fixture);
-        return {
+        return resolveAiWorldClubChallengeIfDue({
           ...career,
           worldClubChallenge: {
-            history: [
-              ...history.filter((r) => r.seasonYear !== career.seasonYear),
-              result,
-            ],
-            currentFixture: undefined,
+            history: history.filter((r) => r.seasonYear !== career.seasonYear),
+            currentFixture: fixture,
           },
-        };
+        });
       }
       return scheduleWorldClubChallengeForSeason({
         ...career,
@@ -606,7 +672,7 @@ export function ensureWorldClubChallengeScheduled(
   const hasThisSeason =
     current?.seasonYear === career.seasonYear ||
     history.some((r) => r.seasonYear === career.seasonYear);
-  if (hasThisSeason) return career;
+  if (hasThisSeason) return resolveAiWorldClubChallengeIfDue(career);
   return scheduleWorldClubChallengeForSeason(career);
 }
 

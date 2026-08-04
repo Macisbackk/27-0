@@ -199,7 +199,7 @@ export function CalendarSimAnimation({
 
   return (
     <div
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 px-4"
+      className="fixed inset-0 z-[110] flex items-center justify-center bg-black/50 px-4"
       role="status"
       aria-live="polite"
       aria-modal="true"

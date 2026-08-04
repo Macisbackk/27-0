@@ -13,6 +13,7 @@ import {
   CalendarSimAnimation,
   type CalendarSimAnimationPhase,
 } from "@/components/manager/CalendarSimAnimation";
+import { BodyPortal } from "@/components/ui/BodyPortal";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -60,6 +61,8 @@ const IDLE_SIM_ANIM: {
 interface ManagerCalendarProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
+  /** When nested under Fixtures — skip page chrome (parent owns the header). */
+  embedded?: boolean;
 }
 
 function daysInMonth(year: number, month: number): number {
@@ -72,7 +75,11 @@ function mondayFirstOffset(year: number, month: number): number {
   return dow === 0 ? 6 : dow - 1;
 }
 
-export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
+export function ManagerCalendar({
+  career,
+  onUpdate,
+  embedded = false,
+}: ManagerCalendarProps) {
   const events = useMemo(() => buildManagerSeasonCalendar(career), [career]);
   const bounds = useMemo(() => {
     if (events.length === 0) {
@@ -99,12 +106,20 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
   const [simAnim, setSimAnim] = useState(IDLE_SIM_ANIM);
   const animCompleteTimerRef = useRef<number | null>(null);
+  const pendingCareerRef = useRef<ManagerCareer | null>(null);
+  const onUpdateRef = useRef(onUpdate);
+  onUpdateRef.current = onUpdate;
 
   useEffect(() => {
     return () => {
       if (animCompleteTimerRef.current != null) {
         window.clearTimeout(animCompleteTimerRef.current);
         animCompleteTimerRef.current = null;
+      }
+      const pending = pendingCareerRef.current;
+      if (pending) {
+        pendingCareerRef.current = null;
+        onUpdateRef.current(pending);
       }
     };
   }, []);
@@ -153,8 +168,11 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
       window.clearTimeout(animCompleteTimerRef.current);
       animCompleteTimerRef.current = null;
     }
-    // Close overlay first; any follow-up weekly UI continues only after this.
+    const pending = pendingCareerRef.current;
+    pendingCareerRef.current = null;
+    // Close overlay first; apply career after so remounts cannot kill the animation.
     setSimAnim(IDLE_SIM_ANIM);
+    if (pending) onUpdate(pending);
   };
 
   const runSimToDate = () => {
@@ -178,38 +196,70 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
       message: null,
     });
 
-    try {
-      const result = simulateCareerToGameWeek(career, target);
-      const reachedDate =
-        getDateKeyForGameWeek(
-          buildManagerSeasonCalendar(result.career),
-          result.career.gameWeek
-        ) ?? selectedDate;
+    // Let React paint the processing overlay before the sync sim blocks the main thread.
+    window.setTimeout(() => {
+      try {
+        const result = simulateCareerToGameWeek(career, target);
+        const resultEvents = buildManagerSeasonCalendar(result.career);
+        const reachedDate =
+          getDateKeyForGameWeek(resultEvents, result.career.gameWeek) ??
+          selectedDate;
 
-      if (!result.ok) {
-        setSimAnim({
-          status: "error",
-          startDate,
-          reachedDate: startDate,
-          message: result.error ?? "Could not simulate to that date.",
-        });
-        setStatusMsg(result.error ?? "Could not simulate to that date.");
-        return;
-      }
+        const progressed =
+          result.matchesSimulated > 0 ||
+          result.weeksAdvanced > 0 ||
+          result.career.gameWeek !== career.gameWeek;
 
-      onUpdate(result.career);
-      setStatusMsg(
-        `Simulated ${result.matchesSimulated} match${result.matchesSimulated === 1 ? "" : "es"} · advanced ${result.weeksAdvanced} week${result.weeksAdvanced === 1 ? "" : "s"}.${result.error && result.stoppedEarly ? ` (${result.error})` : ""}`
-      );
+        if (progressed) {
+          pendingCareerRef.current = result.career;
+        }
 
-      if (startDate === reachedDate) {
-        setSimAnim({
-          status: "complete",
-          startDate,
-          reachedDate,
-          message: "Already at that date.",
-        });
-      } else {
+        if (!result.ok) {
+          setStatusMsg(result.error ?? "Could not simulate to that date.");
+          if (progressed && startDate !== reachedDate) {
+            setSimAnim({
+              status: "animating",
+              startDate,
+              reachedDate,
+              message: result.error ?? "Stopped early.",
+            });
+            if (animCompleteTimerRef.current != null) {
+              window.clearTimeout(animCompleteTimerRef.current);
+            }
+            animCompleteTimerRef.current = window.setTimeout(() => {
+              animCompleteTimerRef.current = null;
+              setSimAnim((prev) =>
+                prev.status === "animating"
+                  ? { ...prev, status: "error" }
+                  : prev
+              );
+            }, 2800);
+          } else {
+            setSimAnim({
+              status: "error",
+              startDate,
+              reachedDate: progressed ? reachedDate : startDate,
+              message: result.error ?? "Could not simulate to that date.",
+            });
+          }
+          return;
+        }
+
+        setStatusMsg(
+          `Simulated ${result.matchesSimulated} match${result.matchesSimulated === 1 ? "" : "es"} · advanced ${result.weeksAdvanced} week${result.weeksAdvanced === 1 ? "" : "s"}.${result.error && result.stoppedEarly ? ` (${result.error})` : ""}`
+        );
+
+        if (!progressed || startDate === reachedDate) {
+          pendingCareerRef.current = result.career;
+          setSimAnim({
+            status: "complete",
+            startDate,
+            reachedDate,
+            message: progressed ? null : "Already at that date.",
+          });
+          return;
+        }
+
         setSimAnim({
           status: "animating",
           startDate,
@@ -227,28 +277,29 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
               : prev
           );
         }, 2800);
+      } catch (err) {
+        setSimAnim({
+          status: "error",
+          startDate,
+          reachedDate: startDate,
+          message: err instanceof Error ? err.message : "Simulation failed.",
+        });
+      } finally {
+        setSimBusy(false);
       }
-    } catch (err) {
-      setSimAnim({
-        status: "error",
-        startDate,
-        reachedDate: startDate,
-        message: err instanceof Error ? err.message : "Simulation failed.",
-      });
-    } finally {
-      setSimBusy(false);
-    }
+    }, 32);
   };
 
-  return (
-    <ManagerPage>
-      <ManagerSection>
-        <GameSectionHeader
-          size="page"
-          label="Schedule"
-          title="Calendar"
-          subtitle={`Season ${career.seasonYear} · select a date to review fixtures or sim forward`}
-        />
+  const body = (
+    <>
+        {!embedded ? (
+          <GameSectionHeader
+            size="page"
+            label="Schedule"
+            title="Calendar"
+            subtitle={`Season ${career.seasonYear} · select a date to review fixtures or sim forward`}
+          />
+        ) : null}
 
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <GameButton
@@ -399,27 +450,41 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
           onConfirm={runSimToDate}
           onCancel={() => (!simBusy ? setSimConfirm(false) : undefined)}
         />
-      </ManagerSection>
 
-      <CalendarSimAnimation
-        open={simAnim.status !== "idle"}
-        startDateKey={simAnim.startDate}
-        reachedDateKey={simAnim.reachedDate}
-        status={simAnim.status}
-        statusMessage={simAnim.message}
-        onDismiss={dismissSimAnim}
-        onTrailComplete={() => {
-          if (animCompleteTimerRef.current != null) {
-            window.clearTimeout(animCompleteTimerRef.current);
-            animCompleteTimerRef.current = null;
-          }
-          setSimAnim((prev) =>
-            prev.status === "animating"
-              ? { ...prev, status: "complete" }
-              : prev
-          );
-        }}
-      />
+        <BodyPortal>
+          <CalendarSimAnimation
+            open={simAnim.status !== "idle"}
+            startDateKey={simAnim.startDate}
+            reachedDateKey={simAnim.reachedDate}
+            status={simAnim.status}
+            statusMessage={simAnim.message}
+            onDismiss={dismissSimAnim}
+            onTrailComplete={() => {
+              if (animCompleteTimerRef.current != null) {
+                window.clearTimeout(animCompleteTimerRef.current);
+                animCompleteTimerRef.current = null;
+              }
+              setSimAnim((prev) =>
+                prev.status === "animating"
+                  ? {
+                      ...prev,
+                      status: prev.message ? "error" : "complete",
+                    }
+                  : prev
+              );
+            }}
+          />
+        </BodyPortal>
+    </>
+  );
+
+  if (embedded) {
+    return <div className={SPACING.stackMd}>{body}</div>;
+  }
+
+  return (
+    <ManagerPage>
+      <ManagerSection>{body}</ManagerSection>
     </ManagerPage>
   );
 }

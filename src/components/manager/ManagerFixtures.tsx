@@ -62,8 +62,10 @@ import {
 } from "@/lib/manager/worldClubChallenge";
 import { GamePanel } from "@/components/ui/GamePanel";
 import { ManagerChallengeCupBracket } from "@/components/manager/ManagerChallengeCupBracket";
+import { ManagerCalendar } from "@/components/manager/ManagerCalendar";
 
 type FixtureFilter =
+  | "calendar"
   | "all"
   | "results"
   | "league"
@@ -74,6 +76,8 @@ type FixtureFilter =
 interface ManagerFixturesProps {
   career: ManagerCareer;
   onSelectFixture: (fixtureId: string) => void;
+  /** Career updates (required for Calendar Sim to Date). */
+  onUpdate?: (career: ManagerCareer) => void;
   /** When opening from Hub "View Full Bracket", start on Cup. */
   initialFilter?: FixtureFilter;
   onOpenMatchPrep?: () => void;
@@ -101,6 +105,7 @@ const FILTERS: {
   shortLabel?: string;
   title?: string;
 }[] = [
+  { id: "calendar", label: "Calendar" },
   { id: "all", label: "All" },
   { id: "results", label: "Results" },
   { id: "league", label: "League" },
@@ -131,6 +136,7 @@ function matchesCompetitionFilter(
   competition: ManagerFixtureRecord["competition"] | ManagerScheduledFixture["competition"],
   filter: FixtureFilter
 ): boolean {
+  if (filter === "calendar") return false;
   if (filter === "all" || filter === "results") {
     return true;
   }
@@ -146,7 +152,7 @@ function shouldShowNextMatch(
   nextFixture: ManagerScheduledFixture | null
 ): boolean {
   if (!nextFixture) return false;
-  if (filter === "results") return false;
+  if (filter === "results" || filter === "calendar") return false;
   const comp = nextFixture.competition ?? "league";
   if (filter === "all") return true;
   if (filter === "wcc") return comp === "world_club_challenge";
@@ -360,7 +366,7 @@ function buildFixtureList(
   }
 
   const wccCurrent = career.worldClubChallenge?.currentFixture;
-  if (wccCurrent?.status === "scheduled") {
+  if (wccCurrent?.status === "scheduled" && wccCurrent.userInvolved) {
     const wcc = resolveWccFixtureForDisplay(career, wccCurrent);
     const sched = buildWorldClubChallengeScheduledFixture(wcc);
     const alreadyListed = items.some(
@@ -632,7 +638,8 @@ function FixtureItemList({
 export function ManagerFixtures({
   career,
   onSelectFixture,
-  initialFilter = "all",
+  onUpdate,
+  initialFilter = "calendar",
   onOpenMatchPrep,
 }: ManagerFixturesProps) {
   const [filter, setFilter] = useState<FixtureFilter>(initialFilter);
@@ -860,8 +867,8 @@ export function ManagerFixtures({
             ) : (
               <p className={TYPO.bodySm}>
                 {career.seasonHistory.length === 0
-                  ? "Season-one showcase — a top-tier Super League club faces the NRL. Open the result below when it completes (AI match)."
-                  : "Another Super League club is involved this year — view the AI result when available."}
+                  ? "Season-one showcase — a top-tier Super League club faces the NRL. The AI result appears after Game Week 3."
+                  : "Another Super League club is involved this year — the AI result appears after Game Week 3."}
               </p>
             )}
           </div>
@@ -955,7 +962,11 @@ export function ManagerFixtures({
         size="page"
         label="Fixtures"
         title="Fixtures"
-        subtitle={`Season ${career.seasonYear} · ${career.club}`}
+        subtitle={
+          filter === "calendar"
+            ? `Season ${career.seasonYear} · select a date to review fixtures or sim forward`
+            : `Season ${career.seasonYear} · ${career.club}`
+        }
       />
 
       <div className="flex w-full min-w-0 justify-center">
@@ -964,10 +975,19 @@ export function ManagerFixtures({
           active={filter}
           onChange={setFilter}
           scrollable
-          ariaLabel="Filter fixtures"
+          ariaLabel="Fixtures views"
         />
       </div>
 
+      {filter === "calendar" ? (
+        onUpdate ? (
+          <ManagerCalendar career={career} onUpdate={onUpdate} embedded />
+        ) : (
+          <p className={`${TYPO.bodySm} text-pitch-400`}>
+            Calendar is unavailable in this view.
+          </p>
+        )
+      ) : (
       <div className="flex w-full min-w-0 flex-col gap-4 sm:gap-5">
       {showNextMatch && nextFixture && nextMatchOccasion && (
         <ScoreboardPanel
@@ -1157,6 +1177,7 @@ export function ManagerFixtures({
         />
       )}
       </div>
+      )}
       </ManagerSection>
     </ManagerPage>
   );

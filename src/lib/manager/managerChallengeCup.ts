@@ -270,7 +270,8 @@ export function prepareCupRound(
     career.xiiiSlotPositions,
     career
   );
-  return simulateAiUntilUserReady(career.challengeCup, squad);
+  const revived = reviveFilledUserEntryMatch(career.challengeCup);
+  return simulateAiUntilUserReady(revived, squad);
 }
 
 /** After the user plays a cup tie, resolve other ready AI games so the bracket can progress. */
@@ -808,12 +809,44 @@ export function getCupBracketDisplayRound(career: ManagerCareer): number {
   const maxRound = getCupBracketMaxRound(cup);
   if (cup.userEliminated || cup.tournamentComplete) return maxRound;
 
+  // Bye clubs enter after the calendar trigger round (e.g. pending=1, first
+  // user tie in round 2). Clip/display must include that entry round or
+  // ensureCupBracketReady demotes a prepared ready tie back to pending and
+  // Sim-to-Date / Matchday get stuck with no fixture.
+  const userEntryRound = cup.matches
+    .filter((m) => m.isUserMatch && m.status !== "complete")
+    .sort((a, b) => a.round - b.round)[0]?.round;
+
   const pending = getPendingCupBracketRound(career);
-  if (pending !== null) return pending;
+  if (pending !== null) {
+    return Math.min(
+      maxRound,
+      Math.max(pending, userEntryRound ?? pending)
+    );
+  }
 
   const cupPlayed = countCupFixturesPlayed(career);
-  if (cupPlayed === 0) return 1;
-  return Math.min(maxRound, cupPlayed + 1);
+  if (cupPlayed === 0) {
+    return Math.min(maxRound, userEntryRound ?? 1);
+  }
+  return Math.min(maxRound, Math.max(cupPlayed + 1, userEntryRound ?? 0));
+}
+
+/** Re-ready a bye-entry user tie that still has both teams after a bad clip. */
+function reviveFilledUserEntryMatch(
+  bracket: ChallengeCupBracketState
+): ChallengeCupBracketState {
+  const entry = bracket.matches
+    .filter((m) => m.isUserMatch && m.status !== "complete")
+    .sort((a, b) => a.round - b.round)[0];
+  if (!entry || entry.status !== "pending") return bracket;
+  if (!entry.homeTeam || !entry.awayTeam) return bracket;
+  return {
+    ...bracket,
+    matches: bracket.matches.map((m) =>
+      m.id === entry.id ? { ...m, status: "ready" as const } : m
+    ),
+  };
 }
 
 /** Whether Hub should show the Challenge Cup bracket instead of the league table. */

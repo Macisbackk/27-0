@@ -10,7 +10,6 @@ export const MANAGER_ROUTE_SECTIONS: Partial<Record<ManagerView, string>> = {
   transfers: "transfers",
   club: "club",
   fixtures: "fixtures",
-  calendar: "calendar",
   "across-league": "across-league",
   stats: "stats",
   settings: "settings",
@@ -42,7 +41,6 @@ export const MANAGER_NAV_VIEWS: ManagerView[] = [
   "transfers",
   "club",
   "fixtures",
-  "calendar",
   "across-league",
   "stats",
   "settings",
@@ -81,6 +79,8 @@ export function parseManagerPathname(pathname: string): ParsedManagerPath {
 export function managerPathForView(view: ManagerView): string {
   if (view === "landing") return "/manager";
   if (view === "tactics") return managerPathForSquadTab("tactics");
+  // Calendar is nested under Fixtures — never expose a standalone calendar route.
+  if (view === "calendar") return "/manager/fixtures";
   const section = MANAGER_ROUTE_SECTIONS[view];
   if (section === undefined) return "/manager";
   return `/manager/${section}`;
@@ -148,8 +148,11 @@ export function resolveManagerScreenFromPathname(pathname: string): ManagerView 
   if (fromPath === "club-select") return "club-select";
   // Legacy Settings URL → Club (preferences moved to Club / Contracts / Reserves).
   if (fromPath === "settings") return "club";
+  // Legacy Calendar URL → Fixtures (calendar lives under Fixtures).
+  if (fromPath === "calendar") return "fixtures";
   const normalized = pathname.replace(/\/+$/, "") || "/manager";
   if (normalized === "/manager") return "landing";
+  if (normalized === "/manager/calendar") return "fixtures";
   if (fromPath && isManagerNavView(fromPath)) return fromPath;
   return null;
 }

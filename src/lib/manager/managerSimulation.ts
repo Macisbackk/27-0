@@ -67,6 +67,7 @@ import {
 import {
   buildWorldClubChallengeScheduledFixture,
   completeUserWorldClubChallenge,
+  resolveAiWorldClubChallengeIfDue,
 } from "./worldClubChallenge";
 import { validateMatchEvents } from "../game/validateMatchEvents";
 import type { MatchEventType } from "../game/match-events";
@@ -958,6 +959,9 @@ export function advanceManagerMatchWeek(
   if (next.isSeasonComplete) {
     next = ensureBoardEndOfSeasonReviewInbox(next);
   }
+
+  // AI WCC result only after Game Week 3 (gameday) has passed.
+  next = resolveAiWorldClubChallengeIfDue(next);
 
   return { ok: true, career: next };
 }
