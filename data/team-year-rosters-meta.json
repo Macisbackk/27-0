@@ -147,6 +147,14 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2008_Wigan_Warriors_season"
     },
+    "2009": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (Wigan Warriors 2009 jersey 1–13)"
+    },
     "2015": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -174,6 +182,14 @@
     }
   },
   "Warrington Wolves": {
+    "2009": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (Warrington Wolves 2009 jersey 1–13)"
+    },
     "2015": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -292,6 +308,14 @@
     }
   },
   "Huddersfield Giants": {
+    "2009": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (Huddersfield Giants 2009 jersey 1–13)"
+    },
     "2013": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -299,6 +323,14 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2013_Huddersfield_Giants_season"
+    },
+    "2016": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (Huddersfield Giants 2016 jersey 1–13)"
     },
     "2026": {
       "source": "current-squad",
@@ -315,7 +347,7 @@
       "source": "verified",
       "isSuperLeagueSeason": true,
       "playableInNormalSpin": false,
-      "playableInEra": false,
+      "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2009_Castleford_Tigers_season"
     },
@@ -361,6 +393,14 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2010_Wakefield_Trinity_Wildcats_season"
+    },
+    "2016": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (Wakefield Trinity 2016 jersey 1–13)"
     },
     "2026": {
       "source": "current-squad",
@@ -440,6 +480,14 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2013_Hull_FC_season"
     },
+    "2016": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (Hull FC 2016 jersey 1–13)"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -455,7 +503,7 @@
       "source": "verified",
       "isSuperLeagueSeason": true,
       "playableInNormalSpin": false,
-      "playableInEra": false,
+      "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2009_Salford_City_Reds_season"
     },
@@ -474,9 +522,25 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2015_Salford_Red_Devils_season"
+    },
+    "2016": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (Salford Red Devils 2016 jersey 1–13)"
     }
   },
   "London Broncos": {
+    "2009": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (London Broncos 2009 jersey 1–13)"
+    },
     "2018": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -519,6 +583,14 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final"
     },
+    "2009": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (St Helens 2009 jersey 1–13)"
+    },
     "2014": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -534,6 +606,14 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2015_St_Helens_R.F.C._season"
+    },
+    "2016": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (St Helens 2016 jersey 1–13)"
     },
     "2019": {
       "source": "verified",
@@ -570,6 +650,14 @@
     }
   },
   "Hull KR": {
+    "2009": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (Hull KR 2009 jersey 1–13)"
+    },
     "2020": {
       "source": "verified",
       "isSuperLeagueSeason": true,

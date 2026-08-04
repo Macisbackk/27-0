@@ -1096,8 +1096,9 @@ export function simulateSeason(
   const { schedule: opponents, replacedTeam } = buildSeasonSchedule(seed);
   const draftMode = options.draftMode ?? false;
   const currentSeasonOnly = options.currentSeasonOnly ?? false;
-  // Quick Mode league season permits regulation draws by default.
-  const allowDraw = options.allowDraw ?? true;
+  // Quick Mode never draws — level scores resolve via golden point / decisive
+  // margin. Manager Mode league passes allowDraw explicitly when needed.
+  const allowDraw = options.allowDraw ?? false;
   const fixtureOptions: SimulateFixtureOptions = {
     ...(draftMode ? { draftMode: true } : {}),
     ...(currentSeasonOnly ? { currentSeasonOnly: true } : {}),

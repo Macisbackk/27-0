@@ -1,22 +1,24 @@
 /**
- * Regulation draw support smoke test.
+ * Regulation draw / golden-point smoke test.
  * Run: npx tsx scripts/test-match-draws.ts
  *
  * Verifies:
- *  - League / friendly (season-simulation simulateOneFixture with allowDraw:true)
- *    can finish level — draws show up at a reasonable rate and are never
- *    forced to a winner.
- *  - Championship league fixtures (simulateChampionshipFixtureScores) can draw.
- *  - Reserve fixtures (simulateReserveFixture) can draw.
- *  - Challenge Cup / play-offs (simulateOneFixture without allowDraw, cupMode)
- *    NEVER finish level — a winner is always forced.
+ *  - Manager league (simulateOneFixture with allowDraw:true) can finish level.
+ *  - Quick Mode / friendlies (no allowDraw) NEVER draw — winner forced.
+ *  - Championship league + reserve fixtures can draw.
+ *  - Challenge Cup / play-offs NEVER finish level.
+ *  - getMatchResolutionRules: league/champ/reserve allow draws;
+ *    quick_league / friendly / cup / playoffs / WCC use golden point.
  *  - pickScorePairAllowingDraw produces roughly the requested draw rate.
  */
-import { simulateOneFixture } from "../src/lib/game/season-simulation";
+import { simulateOneFixture, simulateSeason } from "../src/lib/game/season-simulation";
 import { pickScorePairAllowingDraw } from "../src/lib/game/rl-scores";
 import { simulateChampionshipFixtureScores } from "../src/lib/manager/championship/championshipLeague";
 import { simulateReserveFixture } from "../src/lib/manager/managerReserves";
 import { createNewCareer } from "../src/lib/manager/managerState";
+import {
+  getMatchResolutionRules,
+} from "../src/lib/manager/matchResolutionRules";
 import { CURRENT_PLAYABLE_CLUBS } from "../src/lib/clubs/super-league-display";
 import { CHAMPIONSHIP_CLUB_NAMES } from "../src/lib/clubs/championship-clubs";
 import seedrandom from "seedrandom";
@@ -107,7 +109,7 @@ function runFixtureBatch(allowDraw: boolean, cupMode: boolean, label: string) {
   return { draws, wins, losses, neverEqualScoreWithForcedWinner };
 }
 
-console.log("\nLeague (simulateOneFixture, allowDraw: true)");
+console.log("\nManager league (simulateOneFixture, allowDraw: true)");
 {
   const { draws, wins, losses, neverEqualScoreWithForcedWinner } =
     runFixtureBatch(true, false, "league");
@@ -121,20 +123,13 @@ console.log("\nLeague (simulateOneFixture, allowDraw: true)");
   );
 }
 
-console.log("\nFriendly (simulateOneFixture, allowDraw: true)");
+console.log("\nFriendly / Quick Mode style (simulateOneFixture, no allowDraw)");
 {
-  // Friendlies route through the same simulateOneFixture allowDraw path —
-  // Manager wires allowDraw via getMatchResolutionRules for competition "friendly".
-  const { draws, wins, losses, neverEqualScoreWithForcedWinner } =
-    runFixtureBatch(true, false, "friendly");
-  console.log(
-    `  W:${wins} D:${draws} L:${losses} (draw rate ${((draws / N) * 100).toFixed(1)}%)`
-  );
-  assert(draws > 0, "at least one regulation draw occurs across the sample");
-  assert(
-    neverEqualScoreWithForcedWinner,
-    "result label (W/D/L) always matches whether the score is level"
-  );
+  // Friendlies and Quick Mode require a winner (golden point) — no draws.
+  const { draws, wins, losses } = runFixtureBatch(false, false, "friendly");
+  console.log(`  W:${wins} D:${draws} L:${losses}`);
+  assert(draws === 0, "friendlies / Quick Mode never finish as draws");
+  assert(wins + losses === N, "every fixture produces a decisive W or L");
 }
 
 // ---------------------------------------------------------------------------
@@ -216,6 +211,64 @@ console.log("\nReserve fixtures (simulateReserveFixture)");
     drawFlagMismatch === 0,
     "isDraw flag and userWon always agree with the score"
   );
+}
+
+// ---------------------------------------------------------------------------
+// 6. Central rules + Quick Mode season (simulateSeason defaults to no draws).
+// ---------------------------------------------------------------------------
+console.log("\ngetMatchResolutionRules");
+{
+  assert(
+    getMatchResolutionRules({ competition: "league" }).allowsDraw,
+    "Manager league allows draws"
+  );
+  assert(
+    getMatchResolutionRules({ fixtureKind: "championship_league" }).allowsDraw,
+    "Championship league allows draws"
+  );
+  assert(
+    getMatchResolutionRules({ fixtureKind: "reserve" }).allowsDraw,
+    "Reserve league allows draws"
+  );
+  assert(
+    !getMatchResolutionRules({ fixtureKind: "quick_league" }).allowsDraw &&
+      getMatchResolutionRules({ fixtureKind: "quick_league" }).goldenPointEnabled,
+    "Quick Mode requires golden point (no draws)"
+  );
+  assert(
+    !getMatchResolutionRules({ competition: "friendly" }).allowsDraw &&
+      getMatchResolutionRules({ competition: "friendly" }).goldenPointEnabled,
+    "Friendlies require golden point (no draws)"
+  );
+  for (const competition of [
+    "challenge_cup",
+    "playoffs",
+    "world_club_challenge",
+  ] as const) {
+    const rules = getMatchResolutionRules({ competition });
+    assert(
+      !rules.allowsDraw && rules.goldenPointEnabled,
+      `${competition} requires golden point (no draws)`
+    );
+  }
+}
+
+console.log("\nQuick Mode simulateSeason (default allowDraw false)");
+{
+  let anyDraw = false;
+  for (let i = 0; i < 20; i++) {
+    const season = simulateSeason([], `quick-no-draw-${i}`, {
+      currentSeasonOnly: true,
+    });
+    if ((season.draws ?? 0) > 0) anyDraw = true;
+    if (season.fixtures.some((f) => f.result === "D")) anyDraw = true;
+    if (
+      season.fixtures.some((f) => f.pointsFor === f.pointsAgainst)
+    ) {
+      anyDraw = true;
+    }
+  }
+  assert(!anyDraw, "Quick Mode seasons never produce draws or level scores");
 }
 
 // ---------------------------------------------------------------------------

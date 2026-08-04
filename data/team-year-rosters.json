@@ -276,6 +276,21 @@
       "wigan-hist-thomas-leuluai-2008",
       "wigan-hist-trent-barrett-2008"
     ],
+    "2009": [
+      "wigan-hist-amos-roberts-2009",
+      "wigan-hist-andy-coley-2009",
+      "wigan-hist-cameron-phelps-2009",
+      "wigan-hist-gareth-hock-2009",
+      "wigan-hist-george-carmont-2009",
+      "wigan-hist-harrison-hansen-2009",
+      "wigan-hist-mark-riddell-2009",
+      "wigan-hist-martin-gleeson-2009",
+      "wigan-hist-pat-richards-2009",
+      "wigan-hist-paul-prescott-2009",
+      "wigan-hist-sam-tomkins-2009",
+      "wigan-hist-sean-o-loughlin-2009",
+      "wigan-hist-thomas-leuluai-2009"
+    ],
     "2015": [
       "wigan-hist-anthony-gelling-2015",
       "wigan-hist-george-williams-2015",
@@ -327,6 +342,21 @@
     ]
   },
   "Warrington Wolves": {
+    "2009": [
+      "warrington-hist-adrian-morley-2009",
+      "warrington-hist-ben-harrison-2009",
+      "warrington-hist-ben-westwood-2009",
+      "warrington-hist-chris-bridge-2009",
+      "warrington-hist-chris-hicks-2009",
+      "warrington-hist-chris-riley-2009",
+      "warrington-hist-garreth-carvell-2009",
+      "warrington-hist-john-clarke-2009",
+      "warrington-hist-lee-briers-2009",
+      "warrington-hist-louis-anderson-2009",
+      "warrington-hist-matt-king-2009",
+      "warrington-hist-michael-monaghan-2009",
+      "warrington-hist-richie-mathers-2009"
+    ],
     "2015": [
       "warrington-hist-anthony-england-2015",
       "warrington-hist-ben-currie-2015",
@@ -532,6 +562,7 @@
       "catalans-cur-alrix-da-costa",
       "catalans-cur-arthur-romano",
       "catalans-cur-bayley-sironen",
+      "catalans-cur-ben-condon",
       "catalans-cur-benjamin-garcia",
       "catalans-cur-cesar-rouge",
       "catalans-cur-charlie-staines",
@@ -543,12 +574,26 @@
       "catalans-cur-nick-cotric",
       "catalans-cur-paul-seguier",
       "catalans-cur-solomona-faataape",
-      "catalans-cur-ben-condon",
       "catalans-cur-toby-sexton",
       "catalans-cur-tommy-makinson"
     ]
   },
   "Huddersfield Giants": {
+    "2009": [
+      "huddersfield-hist-andy-raleigh-2009",
+      "huddersfield-hist-brett-hodgson-2009",
+      "huddersfield-hist-david-hodgson-2009",
+      "huddersfield-hist-keith-mason-2009",
+      "huddersfield-hist-kevin-brown-2009",
+      "huddersfield-hist-leroy-cudjoe-2009",
+      "huddersfield-hist-luke-robinson-2009",
+      "huddersfield-hist-michael-lawrence-2009",
+      "huddersfield-hist-paul-jackson-2009",
+      "huddersfield-hist-paul-whatuira-2009",
+      "huddersfield-hist-scott-moore-2009",
+      "huddersfield-hist-simon-finnigan-2009",
+      "huddersfield-hist-stephen-wild-2009"
+    ],
     "2013": [
       "huddersfield-hist-aaron-murphy-2013",
       "huddersfield-hist-brett-ferres-2013",
@@ -563,6 +608,21 @@
       "huddersfield-hist-scott-grix-2013",
       "huddersfield-hist-shaun-lunt-2013",
       "huddersfield-leg-stuart-fielden-2013"
+    ],
+    "2016": [
+      "huddersfield-hist-aaron-murphy-2016",
+      "huddersfield-hist-craig-huby-2016",
+      "huddersfield-hist-danny-brough-2016",
+      "huddersfield-hist-jake-connor-2016",
+      "huddersfield-hist-jamie-ellis-2016",
+      "huddersfield-hist-jermaine-mcgillvary-2016",
+      "huddersfield-hist-larne-patrick-2016",
+      "huddersfield-hist-leroy-cudjoe-2016",
+      "huddersfield-hist-michael-lawrence-2016",
+      "huddersfield-hist-ryan-brierley-2016",
+      "huddersfield-hist-ryan-hinchcliffe-2016",
+      "huddersfield-hist-sam-rapira-2016",
+      "huddersfield-hist-ukuma-ta-ai-2016"
     ],
     "2026": [
       "huddersfield-cur-adam-clune",
@@ -585,6 +645,21 @@
     ]
   },
   "Castleford Tigers": {
+    "2009": [
+      "castleford-cur-joe-westerman-2009",
+      "castleford-cur-jordan-thompson-2009",
+      "castleford-hist-brent-sherwin-2009",
+      "castleford-hist-brett-ferres-2009",
+      "castleford-hist-craig-huby-2009",
+      "castleford-hist-james-evans-2009",
+      "castleford-hist-kirk-dixon-2009",
+      "castleford-hist-kirk-netherton-2009",
+      "castleford-hist-liam-higgins-2009",
+      "castleford-hist-michael-shenton-2009",
+      "castleford-hist-michael-wainwright-2009",
+      "castleford-hist-ryan-clayton-2009",
+      "rangi-chase"
+    ],
     "2012": [
       "castleford-cur-daryl-clark-2012",
       "castleford-cur-joe-arundel-2012",
@@ -665,6 +740,21 @@
       "wakefield-hist-paul-johnson-2010",
       "wakefield-hist-paul-king-2010",
       "wakefield-hist-sam-obst-2010"
+    ],
+    "2016": [
+      "wakefield-hist-anthony-england-2016",
+      "wakefield-hist-ben-jones-bishop-2016",
+      "wakefield-hist-jacob-miller-2016",
+      "wakefield-hist-joe-arundel-2016",
+      "wakefield-hist-jon-molloy-2016",
+      "wakefield-hist-liam-finn-2016",
+      "wakefield-hist-mat-ashurst-2016",
+      "wakefield-hist-max-jowitt-2016",
+      "wakefield-hist-michael-sio-2016",
+      "wakefield-hist-nick-scruton-2016",
+      "wakefield-hist-reece-lyne-2016",
+      "wakefield-hist-scott-moore-2016",
+      "wakefield-hist-tom-johnstone-2016"
     ],
     "2026": [
       "wakefield-cur-caleb-hamlin-uele",
@@ -809,6 +899,21 @@
       "hull-fc-hist-tom-briscoe-2013",
       "hull-fc-hist-tom-lineham-2013"
     ],
+    "2016": [
+      "hull-fc-hist-carlos-tuimavave-2016",
+      "hull-fc-hist-danny-houghton-2016",
+      "hull-fc-hist-fetuli-talanoa-2016",
+      "hull-fc-hist-gareth-ellis-2016",
+      "hull-fc-hist-jamie-shaul-2016",
+      "hull-fc-hist-kirk-yeaman-2016",
+      "hull-fc-hist-liam-watts-2016",
+      "hull-fc-hist-mahe-fonua-2016",
+      "hull-fc-hist-marc-sneyd-2016",
+      "hull-fc-hist-mark-minichiello-2016",
+      "hull-fc-hist-scott-taylor-2016",
+      "hull-fc-hist-sika-manu-2016",
+      "hull-fc-hist-steve-michaels-2016"
+    ],
     "2026": [
       "hull-fc-cur-aidan-sezer",
       "hull-fc-cur-amir-bourouh",
@@ -830,6 +935,21 @@
     ]
   },
   "Salford Red Devils": {
+    "2009": [
+      "salford-cur-jordan-turner-2009",
+      "salford-hist-adam-sidlow-2009",
+      "salford-hist-jeremy-smith-2009",
+      "salford-hist-john-wilshire",
+      "salford-hist-karl-fitzpatrick-2009",
+      "salford-hist-luke-adamson-2009",
+      "salford-hist-mark-henry-2009",
+      "salford-hist-paul-white-2009",
+      "salford-hist-ray-cashmere-2009",
+      "salford-hist-rob-parker-2009",
+      "salford-hist-stefan-ratchford-2009",
+      "salford-hist-willie-talau-2009",
+      "salford-leg-robbie-hunter-paul-2009"
+    ],
     "2014": [
       "salford-hist-andrew-dixon-2014",
       "salford-hist-danny-williams-2014",
@@ -859,9 +979,39 @@
       "salford-hist-olsi-krasniqi-2015",
       "salford-hist-rangi-chase-2015",
       "salford-hist-reni-maitua-2015"
+    ],
+    "2016": [
+      "salford-hist-ben-murdoch-masila-2016",
+      "salford-hist-craig-kopczak-2016",
+      "salford-hist-gareth-o-brien-2016",
+      "salford-hist-george-griffin-2016",
+      "salford-hist-greg-johnson-2016",
+      "salford-hist-josh-griffin-2016",
+      "salford-hist-josh-jones-2016",
+      "salford-hist-junior-sa-u-2016",
+      "salford-hist-justin-carney-2016",
+      "salford-hist-logan-tomkins-2016",
+      "salford-hist-mark-flanagan-2016",
+      "salford-hist-michael-dobson-2016",
+      "salford-hist-robert-lui-2016"
     ]
   },
   "London Broncos": {
+    "2009": [
+      "london-hist-chad-randall-2009",
+      "london-hist-chris-melling-2009",
+      "london-hist-danny-orr-2009",
+      "london-hist-danny-ward-2009",
+      "london-hist-david-howell-2009",
+      "london-hist-era-chad-robinson",
+      "london-hist-jon-wells-2009",
+      "london-hist-karl-te-mata-2009",
+      "london-hist-luke-dorn-2009",
+      "london-hist-luke-williamson-2009",
+      "london-hist-matt-gafa-2009",
+      "london-hist-robert-purdham-2009",
+      "london-hist-will-sharp-2009"
+    ],
     "2018": [
       "london-hist-alex-walker-2018",
       "london-hist-api-pewhairangi-2018",
@@ -924,6 +1074,21 @@
       "st-helens-leg-paul-sculthorpe-2002",
       "st-helens-leg-sean-long-2002"
     ],
+    "2009": [
+      "st-helens-hist-ade-gardner-2009",
+      "st-helens-hist-bryn-hargreaves-2009",
+      "st-helens-hist-chris-flannery-2009",
+      "st-helens-hist-francis-meli-2009",
+      "st-helens-hist-james-graham-2009",
+      "st-helens-hist-jon-wilkin-2009",
+      "st-helens-hist-keiron-cunningham-2009",
+      "st-helens-hist-lee-gilmour-2009",
+      "st-helens-hist-leon-pryce-2009",
+      "st-helens-hist-matt-gidley-2009",
+      "st-helens-hist-paul-clough-2009",
+      "st-helens-hist-paul-wellens-2009",
+      "st-helens-hist-sean-long-2009"
+    ],
     "2015": [
       "st-helens-hist-adam-swift-2015",
       "st-helens-hist-alex-walmsley-2015",
@@ -938,6 +1103,21 @@
       "st-helens-hist-paul-wellens-2015",
       "st-helens-hist-thomas-makinson-2015",
       "st-helens-hist-travis-burns-2015"
+    ],
+    "2016": [
+      "st-helens-hist-adam-swift-2016",
+      "st-helens-hist-alex-walmsley-2016",
+      "st-helens-hist-dominique-peyroux-2016",
+      "st-helens-hist-jack-owens-2016",
+      "st-helens-hist-james-roby-2016",
+      "st-helens-hist-joe-greenwood-2016",
+      "st-helens-hist-jon-wilkin-2016",
+      "st-helens-hist-jonny-lomax-2016",
+      "st-helens-hist-jordan-turner-2016",
+      "st-helens-hist-kyle-amor-2016",
+      "st-helens-hist-louie-mccarthy-scarsbrook-2016",
+      "st-helens-hist-luke-walsh-2016",
+      "st-helens-hist-mark-percival-2016"
     ],
     "2019": [
       "st-helens-cur-alex-walmsley-2019",
@@ -1005,6 +1185,21 @@
     ]
   },
   "Hull KR": {
+    "2009": [
+      "hull-kr-hist-ben-fisher-2009",
+      "hull-kr-hist-ben-galea-2009",
+      "hull-kr-hist-clint-newton-2009",
+      "hull-kr-hist-jake-webster-2009",
+      "hull-kr-hist-kris-welham-2009",
+      "hull-kr-hist-liam-colbon-2009",
+      "hull-kr-hist-michael-dobson-2009",
+      "hull-kr-hist-nick-fozzard-2009",
+      "hull-kr-hist-paul-cooke-2009",
+      "hull-kr-hist-peter-fox-2009",
+      "hull-kr-hist-scott-murrell-2009",
+      "hull-kr-hist-scott-wheeldon-2009",
+      "hull-kr-hist-shaun-briscoe-2009"
+    ],
     "2020": [
       "hull-kr-hist-ben-crooks-2020",
       "hull-kr-hist-dean-hadley-2020",

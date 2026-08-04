@@ -1080,6 +1080,55 @@
       ],
       "verifiedAt": "2026-06-21"
     },
+    "2009": {
+      "playerIds": [
+        "wigan-hist-cameron-phelps-2009",
+        "wigan-hist-amos-roberts-2009",
+        "wigan-hist-george-carmont-2009",
+        "wigan-hist-martin-gleeson-2009",
+        "wigan-hist-pat-richards-2009",
+        "wigan-hist-sam-tomkins-2009",
+        "wigan-hist-thomas-leuluai-2009",
+        "wigan-hist-andy-coley-2009",
+        "wigan-hist-mark-riddell-2009",
+        "wigan-hist-paul-prescott-2009",
+        "wigan-hist-harrison-hansen-2009",
+        "wigan-hist-gareth-hock-2009",
+        "wigan-hist-sean-o-loughlin-2009"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "era-starting-17s.json (Wigan Warriors 2009 jersey 1–13)",
+      "wikipediaPlayers": [
+        "Cameron Phelps",
+        "Amos Roberts",
+        "George Carmont",
+        "Martin Gleeson",
+        "Pat Richards",
+        "Sam Tomkins",
+        "Thomas Leuluai",
+        "Andy Coley",
+        "Mark Riddell",
+        "Paul Prescott",
+        "Harrison Hansen",
+        "Gareth Hock",
+        "Sean O'Loughlin"
+      ],
+      "verifiedAt": "2026-08-04"
+    },
     "2015": {
       "playerIds": [
         "wigan-hist-ryan-hampshire-2015",
@@ -1180,6 +1229,55 @@
     }
   },
   "Warrington Wolves": {
+    "2009": {
+      "playerIds": [
+        "warrington-hist-richie-mathers-2009",
+        "warrington-hist-chris-hicks-2009",
+        "warrington-hist-matt-king-2009",
+        "warrington-hist-chris-bridge-2009",
+        "warrington-hist-chris-riley-2009",
+        "warrington-hist-lee-briers-2009",
+        "warrington-hist-michael-monaghan-2009",
+        "warrington-hist-adrian-morley-2009",
+        "warrington-hist-john-clarke-2009",
+        "warrington-hist-garreth-carvell-2009",
+        "warrington-hist-louis-anderson-2009",
+        "warrington-hist-ben-westwood-2009",
+        "warrington-hist-ben-harrison-2009"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "era-starting-17s.json (Warrington Wolves 2009 jersey 1–13)",
+      "wikipediaPlayers": [
+        "Richard Mathers",
+        "Chris Hicks",
+        "Matt King",
+        "Chris Bridge",
+        "Chris Riley",
+        "Lee Briers",
+        "Michael Monaghan",
+        "Adrian Morley",
+        "Jon Clarke",
+        "Garreth Carvell",
+        "Louis Anderson",
+        "Ben Westwood",
+        "Ben Harrison"
+      ],
+      "verifiedAt": "2026-08-04"
+    },
     "2015": {
       "playerIds": [
         "warrington-hist-matty-russell-2015",
@@ -1772,6 +1870,55 @@
     }
   },
   "Huddersfield Giants": {
+    "2009": {
+      "playerIds": [
+        "huddersfield-hist-brett-hodgson-2009",
+        "huddersfield-hist-david-hodgson-2009",
+        "huddersfield-hist-paul-whatuira-2009",
+        "huddersfield-hist-michael-lawrence-2009",
+        "huddersfield-hist-leroy-cudjoe-2009",
+        "huddersfield-hist-kevin-brown-2009",
+        "huddersfield-hist-luke-robinson-2009",
+        "huddersfield-hist-keith-mason-2009",
+        "huddersfield-hist-scott-moore-2009",
+        "huddersfield-hist-paul-jackson-2009",
+        "huddersfield-hist-stephen-wild-2009",
+        "huddersfield-hist-andy-raleigh-2009",
+        "huddersfield-hist-simon-finnigan-2009"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "era-starting-17s.json (Huddersfield Giants 2009 jersey 1–13)",
+      "wikipediaPlayers": [
+        "Brett Hodgson",
+        "David Hodgson",
+        "Paul Whatuira",
+        "Michael Lawrence",
+        "Leroy Cudjoe",
+        "Kevin Brown",
+        "Luke Robinson",
+        "Keith Mason",
+        "Scott Moore",
+        "Paul Jackson",
+        "Stephen Wild",
+        "Andy Raleigh",
+        "Simon Finnigan"
+      ],
+      "verifiedAt": "2026-08-04"
+    },
     "2013": {
       "playerIds": [
         "huddersfield-hist-scott-grix-2013",
@@ -1820,12 +1967,61 @@
         "David Faiumu"
       ],
       "verifiedAt": "2026-06-20"
+    },
+    "2016": {
+      "playerIds": [
+        "huddersfield-hist-ryan-brierley-2016",
+        "huddersfield-hist-jermaine-mcgillvary-2016",
+        "huddersfield-hist-leroy-cudjoe-2016",
+        "huddersfield-hist-jake-connor-2016",
+        "huddersfield-hist-aaron-murphy-2016",
+        "huddersfield-hist-danny-brough-2016",
+        "huddersfield-hist-jamie-ellis-2016",
+        "huddersfield-hist-sam-rapira-2016",
+        "huddersfield-hist-ryan-hinchcliffe-2016",
+        "huddersfield-hist-craig-huby-2016",
+        "huddersfield-hist-ukuma-ta-ai-2016",
+        "huddersfield-hist-michael-lawrence-2016",
+        "huddersfield-hist-larne-patrick-2016"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "era-starting-17s.json (Huddersfield Giants 2016 jersey 1–13)",
+      "wikipediaPlayers": [
+        "Ryan Brierley",
+        "Jermaine Mcgillvary",
+        "Leroy Cudjoe",
+        "Jake Connor",
+        "Aaron Murphy",
+        "Danny Brough",
+        "Jamie Ellis",
+        "Sam Rapira",
+        "Ryan Hinchcliffe",
+        "Craig Huby",
+        "Ukuma Ta'Ai",
+        "Michael Lawrence",
+        "Larne Patrick"
+      ],
+      "verifiedAt": "2026-08-04"
     }
   },
   "Castleford Tigers": {
     "2009": {
       "playerIds": [
-        "york-cur-jordan-thompson",
+        "castleford-cur-jordan-thompson-2009",
         "castleford-hist-kirk-dixon-2009",
         "castleford-hist-michael-wainwright-2009",
         "castleford-hist-james-evans-2009",
@@ -1837,7 +2033,7 @@
         "castleford-hist-kirk-netherton-2009",
         "castleford-hist-brett-ferres-2009",
         "castleford-hist-ryan-clayton-2009",
-        "castleford-cur-joe-westerman"
+        "castleford-cur-joe-westerman-2009"
       ],
       "positions": [
         "FULLBACK",
@@ -2069,6 +2265,55 @@
         "Jason Demetriou"
       ],
       "verifiedAt": "2026-06-21"
+    },
+    "2016": {
+      "playerIds": [
+        "wakefield-hist-max-jowitt-2016",
+        "wakefield-hist-tom-johnstone-2016",
+        "wakefield-hist-joe-arundel-2016",
+        "wakefield-hist-reece-lyne-2016",
+        "wakefield-hist-ben-jones-bishop-2016",
+        "wakefield-hist-jacob-miller-2016",
+        "wakefield-hist-liam-finn-2016",
+        "wakefield-hist-nick-scruton-2016",
+        "wakefield-hist-scott-moore-2016",
+        "wakefield-hist-anthony-england-2016",
+        "wakefield-hist-mat-ashurst-2016",
+        "wakefield-hist-jon-molloy-2016",
+        "wakefield-hist-michael-sio-2016"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "era-starting-17s.json (Wakefield Trinity 2016 jersey 1–13)",
+      "wikipediaPlayers": [
+        "Max Jowitt",
+        "Tom Johnstone",
+        "Joe Arundel",
+        "Reece Lyne",
+        "Ben Jones-Bishop",
+        "Jacob Miller",
+        "Liam Finn",
+        "Nick Scruton",
+        "Scott Moore",
+        "Anthony England",
+        "Mat Ashurst",
+        "Jon Molloy",
+        "Michael Sio"
+      ],
+      "verifiedAt": "2026-08-04"
     }
   },
   "Widnes Vikings": {
@@ -2565,6 +2810,55 @@
         "Paul Johnson"
       ],
       "verifiedAt": "2026-06-20"
+    },
+    "2016": {
+      "playerIds": [
+        "hull-fc-hist-jamie-shaul-2016",
+        "hull-fc-hist-steve-michaels-2016",
+        "hull-fc-hist-kirk-yeaman-2016",
+        "hull-fc-hist-mahe-fonua-2016",
+        "hull-fc-hist-fetuli-talanoa-2016",
+        "hull-fc-hist-carlos-tuimavave-2016",
+        "hull-fc-hist-marc-sneyd-2016",
+        "hull-fc-hist-scott-taylor-2016",
+        "hull-fc-hist-danny-houghton-2016",
+        "hull-fc-hist-liam-watts-2016",
+        "hull-fc-hist-sika-manu-2016",
+        "hull-fc-hist-mark-minichiello-2016",
+        "hull-fc-hist-gareth-ellis-2016"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "era-starting-17s.json (Hull FC 2016 jersey 1–13)",
+      "wikipediaPlayers": [
+        "Jamie Shaul",
+        "Steve Michaels",
+        "Kirk Yeaman",
+        "Mahe Fonua",
+        "Fetuli Talanoa",
+        "Carlos Tuimavave",
+        "Marc Sneyd",
+        "Scott Taylor",
+        "Danny Houghton",
+        "Liam Watts",
+        "Sika Manu",
+        "Mark Minichiello",
+        "Gareth Ellis"
+      ],
+      "verifiedAt": "2026-08-04"
     }
   },
   "Salford Red Devils": {
@@ -2582,7 +2876,7 @@
         "salford-hist-stefan-ratchford-2009",
         "salford-hist-rob-parker-2009",
         "salford-hist-luke-adamson-2009",
-        "st-helens-hist-jordan-turner"
+        "salford-cur-jordan-turner-2009"
       ],
       "positions": [
         "FULLBACK",
@@ -2714,9 +3008,107 @@
         "James Greenwood"
       ],
       "verifiedAt": "2026-06-21"
+    },
+    "2016": {
+      "playerIds": [
+        "salford-hist-gareth-o-brien-2016",
+        "salford-hist-justin-carney-2016",
+        "salford-hist-junior-sa-u-2016",
+        "salford-hist-josh-griffin-2016",
+        "salford-hist-greg-johnson-2016",
+        "salford-hist-robert-lui-2016",
+        "salford-hist-michael-dobson-2016",
+        "salford-hist-george-griffin-2016",
+        "salford-hist-logan-tomkins-2016",
+        "salford-hist-craig-kopczak-2016",
+        "salford-hist-ben-murdoch-masila-2016",
+        "salford-hist-josh-jones-2016",
+        "salford-hist-mark-flanagan-2016"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "era-starting-17s.json (Salford Red Devils 2016 jersey 1–13)",
+      "wikipediaPlayers": [
+        "Gareth O'Brien",
+        "Justin Carney",
+        "Junior Sa'U",
+        "Josh Griffin",
+        "Greg Johnson",
+        "Robert Lui",
+        "Michael Dobson",
+        "George Griffin",
+        "Logan Tomkins",
+        "Craig Kopczak",
+        "Ben Murdoch-Masila",
+        "Josh Jones",
+        "Mark Flanagan"
+      ],
+      "verifiedAt": "2026-08-04"
     }
   },
   "London Broncos": {
+    "2009": {
+      "playerIds": [
+        "london-hist-chris-melling-2009",
+        "london-hist-will-sharp-2009",
+        "london-hist-matt-gafa-2009",
+        "london-hist-david-howell-2009",
+        "london-hist-jon-wells-2009",
+        "london-hist-luke-dorn-2009",
+        "london-hist-danny-orr-2009",
+        "london-hist-danny-ward-2009",
+        "london-hist-chad-randall-2009",
+        "london-hist-karl-te-mata-2009",
+        "london-hist-luke-williamson-2009",
+        "london-hist-era-chad-robinson",
+        "london-hist-robert-purdham-2009"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "era-starting-17s.json (London Broncos 2009 jersey 1–13)",
+      "wikipediaPlayers": [
+        "Chris Melling",
+        "Will Sharp",
+        "Matt Gafa",
+        "David Howell",
+        "Jon Wells",
+        "Luke Dorn",
+        "Danny Orr",
+        "Danny Ward",
+        "Chad Randall",
+        "Karl Te Mata",
+        "Luke Williamson",
+        "Chad Robinson",
+        "Robert Purdham"
+      ],
+      "verifiedAt": "2026-08-04"
+    },
     "2018": {
       "playerIds": [
         "london-hist-alex-walker-2018",
@@ -2964,6 +3356,55 @@
       ],
       "verifiedAt": "2026-06-21"
     },
+    "2009": {
+      "playerIds": [
+        "st-helens-hist-paul-wellens-2009",
+        "st-helens-hist-ade-gardner-2009",
+        "st-helens-hist-matt-gidley-2009",
+        "st-helens-hist-lee-gilmour-2009",
+        "st-helens-hist-francis-meli-2009",
+        "st-helens-hist-leon-pryce-2009",
+        "st-helens-hist-sean-long-2009",
+        "st-helens-hist-james-graham-2009",
+        "st-helens-hist-keiron-cunningham-2009",
+        "st-helens-hist-bryn-hargreaves-2009",
+        "st-helens-hist-chris-flannery-2009",
+        "st-helens-hist-jon-wilkin-2009",
+        "st-helens-hist-paul-clough-2009"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "era-starting-17s.json (St Helens 2009 jersey 1–13)",
+      "wikipediaPlayers": [
+        "Paul Wellens",
+        "Ade Gardner",
+        "Matthew Gidley",
+        "Lee Gilmour",
+        "Francis Meli",
+        "Leon Pryce",
+        "Sean Long",
+        "James Graham",
+        "Keiron Cunningham",
+        "Bryn Hargreaves",
+        "Chris Flannery",
+        "Jon Wilkin",
+        "Paul Clough"
+      ],
+      "verifiedAt": "2026-08-04"
+    },
     "2014": {
       "playerIds": [
         "st-helens-cur-jonny-lomax",
@@ -3061,6 +3502,55 @@
         "Louie McCarthy-Scarsbrook"
       ],
       "verifiedAt": "2026-06-21"
+    },
+    "2016": {
+      "playerIds": [
+        "st-helens-hist-jonny-lomax-2016",
+        "st-helens-hist-jack-owens-2016",
+        "st-helens-hist-dominique-peyroux-2016",
+        "st-helens-hist-mark-percival-2016",
+        "st-helens-hist-adam-swift-2016",
+        "st-helens-hist-jordan-turner-2016",
+        "st-helens-hist-luke-walsh-2016",
+        "st-helens-hist-alex-walmsley-2016",
+        "st-helens-hist-james-roby-2016",
+        "st-helens-hist-kyle-amor-2016",
+        "st-helens-hist-joe-greenwood-2016",
+        "st-helens-hist-louie-mccarthy-scarsbrook-2016",
+        "st-helens-hist-jon-wilkin-2016"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "era-starting-17s.json (St Helens 2016 jersey 1–13)",
+      "wikipediaPlayers": [
+        "Jonny Lomax",
+        "Jack Owens",
+        "Dominique Peyroux",
+        "Mark Percival",
+        "Adam Swift",
+        "Jordan Turner",
+        "Luke Walsh",
+        "Alex Walmsley",
+        "James Roby",
+        "Kyle Amor",
+        "Joe Greenwood",
+        "Louie Mccarthy-Scarsbrook",
+        "Jon Wilkin"
+      ],
+      "verifiedAt": "2026-08-04"
     },
     "2019": {
       "playerIds": [
@@ -3211,6 +3701,55 @@
     }
   },
   "Hull KR": {
+    "2009": {
+      "playerIds": [
+        "hull-kr-hist-shaun-briscoe-2009",
+        "hull-kr-hist-peter-fox-2009",
+        "hull-kr-hist-kris-welham-2009",
+        "hull-kr-hist-jake-webster-2009",
+        "hull-kr-hist-liam-colbon-2009",
+        "hull-kr-hist-paul-cooke-2009",
+        "hull-kr-hist-michael-dobson-2009",
+        "hull-kr-hist-nick-fozzard-2009",
+        "hull-kr-hist-ben-fisher-2009",
+        "hull-kr-hist-scott-wheeldon-2009",
+        "hull-kr-hist-clint-newton-2009",
+        "hull-kr-hist-ben-galea-2009",
+        "hull-kr-hist-scott-murrell-2009"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "source": "era-starting-17s.json (Hull KR 2009 jersey 1–13)",
+      "wikipediaPlayers": [
+        "Shaun Briscoe",
+        "Peter Fox",
+        "Kris Welham",
+        "Jake Webster",
+        "Liam Colbon",
+        "Paul Cooke",
+        "Michael Dobson",
+        "Nick Fozzard",
+        "Ben Fisher",
+        "Scott Wheeldon",
+        "Clint Newton",
+        "Ben Galea",
+        "Scott Murrell"
+      ],
+      "verifiedAt": "2026-08-04"
+    },
     "2020": {
       "playerIds": [
         "hull-kr-hist-will-dagger-2020",

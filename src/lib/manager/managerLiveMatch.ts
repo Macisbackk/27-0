@@ -1,6 +1,6 @@
 import seedrandom from "seedrandom";
 import type { MatchFixture } from "../game/season-simulation";
-import { snapToRLScore, decomposeRLScore, pickWinningMargin } from "../game/rl-scores";
+import { snapToRLScore, decomposeRLScore } from "../game/rl-scores";
 import { getDisplayedOpponentTeamRating } from "./managerOpponentRating";
 import { buildNrlMatchdayLineup } from "../nrl/nrlMatchdayLineup";
 import type { Position } from "../types";
@@ -14,7 +14,6 @@ import type {
 } from "./types";
 import {
   competitionAllowsDraw,
-  getMatchResolutionRules,
 } from "./matchResolutionRules";
 import { computeManagerTeamRating } from "./managerRating";
 import {
@@ -792,45 +791,43 @@ export function advanceLiveTick(
   const atHalftime = minute >= HALFTIME_MINUTE && maxMinute <= HALFTIME_MINUTE;
   let finalUser = userScore;
   let finalOpp = oppScore;
-  // Only force a winner when competition rules require it (cup / playoffs / WCC).
-  // League and friendlies may finish level — no synthetic full-time penalty.
+  // Cup / playoffs / WCC / friendlies: level at full time → golden point.
+  // Manager league may finish as a draw — no golden point there.
   if (
     isComplete &&
     finalUser === finalOpp &&
     !competitionAllowsDraw(state.competition)
   ) {
-    finalUser += 2;
-    const rng = seedrandom(`${state.seed}-live-ft-${state.fixtureId}`);
+    const rng = seedrandom(`${state.seed}-live-gp-${state.fixtureId}`);
     const kicker = pickKicker(career, rng);
+    const userWinsGp = rng() < 0.52;
+    if (userWinsGp) finalUser += 1;
+    else finalOpp += 1;
+    const winnerTeam = userWinsGp ? "user" : "opponent";
+    const winnerName = userWinsGp ? career.club : state.opponent;
     events.push({
       minute: 80,
-      type: "penalty_goal",
-      team: "user",
-      kickerName: kicker,
+      type: "note",
+      team: winnerTeam,
       description: eventMinutePrefix(
         80,
-        buildCommentaryLine(
-          "penalty_goal",
-          {
-            team: career.club,
-            opponent: state.opponent,
-            kicker,
-            minute: 80,
-            area: territoryForMinute(80),
-            score: `${finalUser}-${finalOpp}`,
-          },
-          memoryFromEvents(
-            events.map((e) => ({
-              type: e.type as MatchEventType,
-              description: e.description,
-              playerName: e.playerName,
-            }))
-          ),
-          rng
-        )
+        "Full time — scores are level. Golden Point."
       ),
-      points: 2,
-      teamName: career.club,
+      points: 0,
+      teamName: winnerName,
+      importance: "high",
+    });
+    events.push({
+      minute: 81,
+      type: "drop_goal",
+      team: winnerTeam,
+      kickerName: kicker,
+      description: eventMinutePrefix(
+        81,
+        `${kicker} lands the Golden Point drop-goal! ${winnerName} prevail ${finalUser}-${finalOpp}.`
+      ),
+      points: 1,
+      teamName: winnerName,
       importance: "high",
     });
   }
@@ -906,10 +903,13 @@ export function advanceLiveToFullTime(
 function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
   let userScore = snapToRLScore(state.userScore, false);
   let oppScore = snapToRLScore(state.oppScore, false);
-  // League / friendly may finish level; only force a winner for knockouts.
+  // League may finish level; knockouts / friendlies resolve via golden point
+  // earlier in the tick — keep a decisive fallback here if scores are still tied.
   if (userScore === oppScore && !competitionAllowsDraw(state.competition)) {
     const rng = seedrandom(`${state.seed}-live-finalize-${state.fixtureId}`);
-    userScore = snapToRLScore(userScore + pickWinningMargin(rng), false);
+    // Golden Point is a single drop-goal (1 point), not a multi-point margin.
+    if (rng() < 0.52) userScore += 1;
+    else oppScore += 1;
   }
 
   const userTries = state.events.filter(

@@ -55,14 +55,10 @@ export function getManagerMatchKeyMoment(
       label: "Friendly",
       headline: won
         ? "Pre-season run-out"
-        : isDraw
-          ? "Friendly stalemate"
-          : "Friendly defeat",
+        : "Friendly defeat",
       body: won
         ? `Useful minutes against ${vs} — no league points on the line.`
-        : isDraw
-          ? `${clubName} shared the points in a friendly with ${vs}; nothing that defines the season.`
-          : `${clubName} lost a friendly to ${vs}; nothing that defines the season.`,
+        : `${clubName} lost a friendly to ${vs}; nothing that defines the season.`,
       tone: "muted",
     };
   }

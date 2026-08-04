@@ -29,7 +29,6 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
   const [gameIndex, setGameIndex] = useState(0);
   const [wins, setWins] = useState(0);
   const [losses, setLosses] = useState(0);
-  const [draws, setDraws] = useState(0);
   const [phase, setPhase] = useState<"simulating" | "complete">("simulating");
   const seasonCompleteSoundPlayed = useRef(false);
 
@@ -61,8 +60,6 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
         } else {
           playMatchNarrowWin();
         }
-      } else if (fixture.result === "D") {
-        setDraws((d) => d + 1);
       } else {
         setLosses((l) => l + 1);
         playMatchDefeat();
@@ -111,20 +108,6 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
                 animate={{ scale: 1 }}
               >
                 {wins}
-              </motion.p>
-            </div>
-            <div className="text-xl text-gray-600">—</div>
-            <div>
-              <p className={TYPO.statLabel}>
-                Draws
-              </p>
-              <motion.p
-                key={draws}
-                className="font-display text-2xl font-black text-gray-300 sm:text-4xl"
-                initial={{ scale: 1.2 }}
-                animate={{ scale: 1 }}
-              >
-                {draws}
               </motion.p>
             </div>
             <div className="text-xl text-gray-600">—</div>
@@ -184,7 +167,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               className="mt-6"
             >
               <p className="font-display text-2xl font-black">
-                Final Record: {result.wins}-{result.draws ?? 0}-{result.losses}
+                Final Record: {result.wins}-{result.losses}
               </p>
               <p className="mt-2 text-sm text-gray-400">
                 League Position: #{result.leaguePosition}

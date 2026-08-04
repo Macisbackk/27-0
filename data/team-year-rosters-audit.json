@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-06-26T04:37:45.769Z",
+  "generatedAt": "2026-08-04T23:12:55.666Z",
   "sources": [
     "Verified Wikipedia/manual XIII only (era-wikipedia-squads.json, sl-era-verified-squads.json)",
     "Current squad for 2026 only (current-squads.json)",
     "Super League season gate (super-league-club-years.json)"
   ],
   "minPlayers": 13,
-  "verifiedSquadsMerged": 72,
-  "verifiedPlayersRejected": 198,
+  "verifiedSquadsMerged": 83,
+  "verifiedPlayersRejected": 195,
   "unresolvedSquads": [
     {
       "team": "Toulouse Olympique",
@@ -22,8 +22,8 @@
     }
   ],
   "currentYearSquadsBuilt": 13,
-  "playableCount": 69,
-  "hiddenCount": 4,
+  "playableCount": 82,
+  "hiddenCount": 2,
   "playable": [
     {
       "team": "Bradford Bulls",
@@ -107,6 +107,11 @@
     },
     {
       "team": "Castleford Tigers",
+      "year": "2009",
+      "count": 13
+    },
+    {
+      "team": "Castleford Tigers",
       "year": "2012",
       "count": 13
     },
@@ -177,7 +182,17 @@
     },
     {
       "team": "Huddersfield Giants",
+      "year": "2009",
+      "count": 13
+    },
+    {
+      "team": "Huddersfield Giants",
       "year": "2013",
+      "count": 13
+    },
+    {
+      "team": "Huddersfield Giants",
+      "year": "2016",
       "count": 13
     },
     {
@@ -202,8 +217,18 @@
     },
     {
       "team": "Hull FC",
+      "year": "2016",
+      "count": 13
+    },
+    {
+      "team": "Hull FC",
       "year": "2026",
       "count": 17
+    },
+    {
+      "team": "Hull KR",
+      "year": "2009",
+      "count": 13
     },
     {
       "team": "Hull KR",
@@ -247,6 +272,11 @@
     },
     {
       "team": "London Broncos",
+      "year": "2009",
+      "count": 13
+    },
+    {
+      "team": "London Broncos",
       "year": "2018",
       "count": 13
     },
@@ -257,12 +287,22 @@
     },
     {
       "team": "Salford Red Devils",
+      "year": "2009",
+      "count": 13
+    },
+    {
+      "team": "Salford Red Devils",
       "year": "2014",
       "count": 13
     },
     {
       "team": "Salford Red Devils",
       "year": "2015",
+      "count": 13
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2016",
       "count": 13
     },
     {
@@ -277,7 +317,17 @@
     },
     {
       "team": "St Helens",
+      "year": "2009",
+      "count": 13
+    },
+    {
+      "team": "St Helens",
       "year": "2015",
+      "count": 13
+    },
+    {
+      "team": "St Helens",
+      "year": "2016",
       "count": 13
     },
     {
@@ -322,8 +372,18 @@
     },
     {
       "team": "Wakefield Trinity",
+      "year": "2016",
+      "count": 13
+    },
+    {
+      "team": "Wakefield Trinity",
       "year": "2026",
       "count": 17
+    },
+    {
+      "team": "Warrington Wolves",
+      "year": "2009",
+      "count": 13
     },
     {
       "team": "Warrington Wolves",
@@ -352,6 +412,11 @@
     },
     {
       "team": "Wigan Warriors",
+      "year": "2009",
+      "count": 13
+    },
+    {
+      "team": "Wigan Warriors",
       "year": "2015",
       "count": 13
     },
@@ -372,16 +437,6 @@
     }
   ],
   "hidden": [
-    {
-      "team": "Castleford Tigers",
-      "year": "2009",
-      "reason": "verified squad failed playability gate"
-    },
-    {
-      "team": "Salford Red Devils",
-      "year": "2009",
-      "reason": "verified squad failed playability gate"
-    },
     {
       "team": "St Helens",
       "year": "2006",

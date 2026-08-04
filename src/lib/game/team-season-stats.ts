@@ -1,7 +1,7 @@
 import seedrandom from "seedrandom";
 import {
   decomposeRLScore,
-  pickScorePairAllowingDraw,
+  pickDecisiveScorePair,
 } from "./rl-scores";
 import {
   DREAM_TEAM_NAME,
@@ -138,7 +138,8 @@ function simulateClubFixture(
   const loserMin = 0;
   const loserMax = 28;
 
-  const { winner, loser } = pickScorePairAllowingDraw(
+  // Quick Mode background fixtures never draw — always a decisive scoreline.
+  const { winner, loser } = pickDecisiveScorePair(
     winnerMin,
     winnerMax,
     loserMin,

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-24T03:01:21.352Z",
+  "generatedAt": "2026-08-04T23:13:16.558Z",
   "summary": {
-    "playableTeamYears": 72,
-    "errors": 4,
+    "playableTeamYears": 82,
+    "errors": 7,
     "warnings": 0
   },
   "hiddenNonSuperLeagueSeasons": [],
@@ -12,11 +12,23 @@
   "unsupportedClubsInRosters": [
     {
       "team": "Salford Red Devils",
+      "year": "2009"
+    },
+    {
+      "team": "Salford Red Devils",
       "year": "2014"
     },
     {
       "team": "Salford Red Devils",
       "year": "2015"
+    },
+    {
+      "team": "Salford Red Devils",
+      "year": "2016"
+    },
+    {
+      "team": "London Broncos",
+      "year": "2009"
     },
     {
       "team": "London Broncos",
@@ -32,6 +44,13 @@
       "severity": "error",
       "code": "UNSUPPORTED_CLUB_IN_ROSTERS",
       "team": "Salford Red Devils",
+      "year": "2009",
+      "message": "Salford Red Devils must not appear in team-year rosters"
+    },
+    {
+      "severity": "error",
+      "code": "UNSUPPORTED_CLUB_IN_ROSTERS",
+      "team": "Salford Red Devils",
       "year": "2014",
       "message": "Salford Red Devils must not appear in team-year rosters"
     },
@@ -41,6 +60,20 @@
       "team": "Salford Red Devils",
       "year": "2015",
       "message": "Salford Red Devils must not appear in team-year rosters"
+    },
+    {
+      "severity": "error",
+      "code": "UNSUPPORTED_CLUB_IN_ROSTERS",
+      "team": "Salford Red Devils",
+      "year": "2016",
+      "message": "Salford Red Devils must not appear in team-year rosters"
+    },
+    {
+      "severity": "error",
+      "code": "UNSUPPORTED_CLUB_IN_ROSTERS",
+      "team": "London Broncos",
+      "year": "2009",
+      "message": "London Broncos must not appear in team-year rosters"
     },
     {
       "severity": "error",
