@@ -46,7 +46,7 @@ export function QuickModeBoostsPanel({
   return (
     <div className="mb-4 rounded-xl border border-pitch-700/50 bg-pitch-900/60 px-3 py-3">
       <div className="mb-2 flex items-baseline justify-between gap-2">
-        <p className={`${TYPO.label} text-pitch-300`}>Boosts</p>
+        <p className={`${TYPO.sectionLabel} text-pitch-300`}>Boosts</p>
         <p className="text-[11px] text-pitch-500">
           {selectionBoostsUsedThisRun}/{maxPerRun} used this run
         </p>
