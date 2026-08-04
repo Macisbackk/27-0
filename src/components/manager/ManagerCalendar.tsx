@@ -226,7 +226,7 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
               ? { ...prev, status: "complete" }
               : prev
           );
-        }, 1600);
+        }, 2800);
       }
     } catch (err) {
       setSimAnim({
@@ -408,6 +408,17 @@ export function ManagerCalendar({ career, onUpdate }: ManagerCalendarProps) {
         status={simAnim.status}
         statusMessage={simAnim.message}
         onDismiss={dismissSimAnim}
+        onTrailComplete={() => {
+          if (animCompleteTimerRef.current != null) {
+            window.clearTimeout(animCompleteTimerRef.current);
+            animCompleteTimerRef.current = null;
+          }
+          setSimAnim((prev) =>
+            prev.status === "animating"
+              ? { ...prev, status: "complete" }
+              : prev
+          );
+        }}
       />
     </ManagerPage>
   );

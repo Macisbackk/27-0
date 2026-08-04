@@ -243,7 +243,13 @@ export const PLAYER_RATING_OVERRIDES: Record<string, number> = {
   "wigan-hist-tony-mestrov": 92,
 
   // ── Current Super League ───────────────────────────────────────────────
+  "bradford-cur-caleb-aekins": 87,
+  "bradford-cur-ed-chamberlain": 83,
+  "bradford-cur-ethan-ryan": 87,
+  "bradford-cur-jayden-okunbor": 84,
   "bradford-cur-joe-mellor": 83,
+  "bradford-cur-rowan-milnes": 85,
+  "bradford-cur-waqa-blake": 86,
   "catalans-cur-tommy-makinson": 85,
   "huddersfield-cur-adam-swift": 83,
   "huddersfield-cur-george-flanagan-jr": 83,

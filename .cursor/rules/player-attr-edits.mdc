@@ -1,0 +1,41 @@
+---
+description: How to change Current player ratings and potentials quickly
+alwaysApply: true
+---
+
+# Player rating / potential edits
+
+When the user asks to change Current player **ratings** or **potentials**, do **not** hand-edit multiple JSON/TS files.
+
+## One command
+
+```bash
+npx tsx scripts/apply-player-attrs.ts --batch data/player-attr-batch.json
+```
+
+Or inline:
+
+```bash
+npx tsx scripts/apply-player-attrs.ts --rating "Caleb Aekins"=87 --potential "Loghan Lewis"=86
+```
+
+## Batch file
+
+Edit `data/player-attr-batch.json`:
+
+```json
+{
+  "ratings": { "Player Name or id": 87 },
+  "potentials": { "Player Name or id": 91 }
+}
+```
+
+Then run the command above. Names resolve against Current chunk players; IDs are preferred when unambiguous.
+
+## What the script updates
+
+- `data/player-rating-overrides.ts` + `.json` (ratings)
+- `data/player-potential-overrides.ts` + `potentialOverrides` in the JSON mirror (potentials)
+- `peakRating` / `value` in the Current club chunk and `data/current-squads.json`
+
+Do not also rewrite historic/era cards unless the user asks.

@@ -40,6 +40,8 @@ export interface CalendarSimAnimationProps {
   status: CalendarSimAnimationPhase;
   statusMessage?: string | null;
   onDismiss: () => void;
+  /** Fired once the date-count animation reaches the final date. */
+  onTrailComplete?: () => void;
 }
 
 function parseDateKey(key: string): { y: number; m: number; d: number } | null {
@@ -54,8 +56,17 @@ function formatDateKey(key: string): string {
   return `${p.d} ${MONTH_NAMES[p.m - 1]} ${p.y}`;
 }
 
-/** Sample start → few intermediate → end for a concise flip animation. */
-function buildDateTrail(start: string, end: string): string[] {
+function toDateKey(utcMs: number): string {
+  const dt = new Date(utcMs);
+  return `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, "0")}-${String(dt.getUTCDate()).padStart(2, "0")}`;
+}
+
+/**
+ * Count from the current game date to the reached date.
+ * Short spans: every day. Longer spans: evenly spaced steps so the counter still
+ * reads as a continuous advance without a multi-minute animation.
+ */
+export function buildDateTrail(start: string, end: string): string[] {
   if (start === end) return [end];
   const a = parseDateKey(start);
   const b = parseDateKey(end);
@@ -65,25 +76,15 @@ function buildDateTrail(start: string, end: string): string[] {
   const endUtc = Date.UTC(b.y, b.m - 1, b.d);
   const dayMs = 86_400_000;
   const days = Math.max(0, Math.round((endUtc - startUtc) / dayMs));
+  if (days <= 0) return [end];
 
-  if (days <= 2) return [start, end];
-  if (days <= 14) {
-    const mid = new Date(startUtc + Math.round(days / 2) * dayMs);
-    return [
-      start,
-      `${mid.getUTCFullYear()}-${String(mid.getUTCMonth() + 1).padStart(2, "0")}-${String(mid.getUTCDate()).padStart(2, "0")}`,
-      end,
-    ];
-  }
+  // Cap frames so UI stays snappy (~1.5–2.5s at adaptive interval).
+  const maxFrames = 24;
+  const stepDays = days <= maxFrames ? 1 : Math.ceil(days / maxFrames);
 
   const trail: string[] = [start];
-  const steps = Math.min(4, Math.ceil(days / 7));
-  for (let i = 1; i < steps; i++) {
-    const t = startUtc + Math.round((days * i) / steps) * dayMs;
-    const dt = new Date(t);
-    trail.push(
-      `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, "0")}-${String(dt.getUTCDate()).padStart(2, "0")}`
-    );
+  for (let day = stepDays; day < days; day += stepDays) {
+    trail.push(toDateKey(startUtc + day * dayMs));
   }
   if (trail[trail.length - 1] !== end) trail.push(end);
   return trail;
@@ -91,7 +92,7 @@ function buildDateTrail(start: string, end: string): string[] {
 
 /**
  * Compact calendar progression for Sim to Date — presentation only.
- * Must finish on the real reached date from the simulation result.
+ * Counts from the current game date to the real reached date.
  * Centred viewport overlay; scroll locked while open.
  */
 export function CalendarSimAnimation({
@@ -101,8 +102,10 @@ export function CalendarSimAnimation({
   status,
   statusMessage,
   onDismiss,
+  onTrailComplete,
 }: CalendarSimAnimationProps) {
   const scrollLockIdRef = useRef<ScrollLockId | null>(null);
+  const completedRef = useRef(false);
   const prefersReduced =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -130,27 +133,42 @@ export function CalendarSimAnimation({
   }, [open]);
 
   useEffect(() => {
+    completedRef.current = false;
     if (!open || status !== "animating" || trail.length === 0) {
       setIndex(0);
       return;
     }
     if (prefersReduced || trail.length <= 1) {
       setIndex(trail.length - 1);
+      if (!completedRef.current) {
+        completedRef.current = true;
+        onTrailComplete?.();
+      }
       return;
     }
+
     setIndex(0);
+    // Keep total count duration roughly 1.6–2.4s regardless of span length.
+    const intervalMs = Math.max(
+      45,
+      Math.min(160, Math.round(2000 / Math.max(1, trail.length - 1)))
+    );
     let i = 0;
     const id = window.setInterval(() => {
       i += 1;
       if (i >= trail.length) {
         window.clearInterval(id);
         setIndex(trail.length - 1);
+        if (!completedRef.current) {
+          completedRef.current = true;
+          onTrailComplete?.();
+        }
         return;
       }
       setIndex(i);
-    }, 280);
+    }, intervalMs);
     return () => window.clearInterval(id);
-  }, [open, status, trail, prefersReduced]);
+  }, [open, status, trail, prefersReduced, onTrailComplete]);
 
   if (!open) return null;
 
@@ -163,6 +181,8 @@ export function CalendarSimAnimation({
   const animDone =
     status === "animating" &&
     (prefersReduced || trail.length <= 1 || index >= trail.length - 1);
+  const progress =
+    trail.length > 1 ? Math.min(1, index / (trail.length - 1)) : 1;
 
   const statusText =
     status === "processing"
@@ -173,7 +193,9 @@ export function CalendarSimAnimation({
           ? reachedDateKey
             ? `Reached ${formatDateKey(reachedDateKey)}`
             : "Simulation complete"
-          : "Advancing calendar…";
+          : startDateKey && reachedDateKey
+            ? `Counting ${formatDateKey(startDateKey)} → ${formatDateKey(reachedDateKey)}`
+            : "Advancing calendar…";
 
   return (
     <div
@@ -190,6 +212,7 @@ export function CalendarSimAnimation({
         {startDateKey ? (
           <p className={`mt-1 ${TYPO.meta} text-pitch-400`}>
             From {formatDateKey(startDateKey)}
+            {reachedDateKey ? ` · to ${formatDateKey(reachedDateKey)}` : ""}
           </p>
         ) : null}
 
@@ -200,11 +223,7 @@ export function CalendarSimAnimation({
             {parsed ? MONTH_NAMES[parsed.m - 1] : "—"}
           </p>
           <p
-            className={`mt-1 font-display text-4xl font-black tabular-nums text-white ${
-              prefersReduced || status === "processing"
-                ? ""
-                : "transition-opacity duration-200"
-            }`}
+            className="mt-1 font-display text-4xl font-black tabular-nums text-white"
             key={displayed ?? "empty"}
           >
             {parsed?.d ?? "—"}
@@ -212,13 +231,13 @@ export function CalendarSimAnimation({
           <p className={`mt-0.5 ${TYPO.meta}`}>{parsed?.y ?? ""}</p>
         </div>
 
-        {reachedDateKey &&
-        startDateKey &&
-        reachedDateKey !== startDateKey &&
-        (done || animDone) ? (
-          <p className={`mt-2 text-center ${TYPO.meta} text-theme-primary`}>
-            {formatDateKey(startDateKey)} → {formatDateKey(reachedDateKey)}
-          </p>
+        {status === "animating" && trail.length > 1 ? (
+          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-pitch-800">
+            <div
+              className="h-full rounded-full bg-theme-primary transition-[width] duration-75"
+              style={{ width: `${Math.round(progress * 100)}%` }}
+            />
+          </div>
         ) : null}
 
         {(done || animDone) && (

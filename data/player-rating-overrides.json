@@ -8,7 +8,11 @@
     "wigan-hist-matt-bowen": 87
   },
   "potentialOverrides": {
-    "huddersfield-cur-george-flanagan-jr": 89
+    "huddersfield-cur-george-flanagan-jr": 89,
+    "bradford-cur-loghan-lewis": 86,
+    "bradford-cur-ethan-ryan": 91,
+    "bradford-cur-eribe-doro": 91,
+    "bradford-cur-zac-fulton": 89
   },
   "overrides": {
     "hull-kr-cur-arthur-mourgue": 87,
@@ -304,6 +308,12 @@
     "brett-hodgson": 96,
     "jamie-lyon": 97,
     "kris-radlinski": 97,
-    "paul-wellens": 97
+    "paul-wellens": 97,
+    "bradford-cur-caleb-aekins": 87,
+    "bradford-cur-ed-chamberlain": 83,
+    "bradford-cur-jayden-okunbor": 84,
+    "bradford-cur-ethan-ryan": 87,
+    "bradford-cur-rowan-milnes": 85,
+    "bradford-cur-waqa-blake": 86
   }
 }
