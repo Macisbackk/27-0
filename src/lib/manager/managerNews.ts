@@ -262,16 +262,16 @@ export function generateWeeklyNews(career: ManagerCareer): LatestNewsItem[] {
 
   const listed = career.leagueListedPlayers[0];
   if (listed && rng() < 0.35) {
+    // Skip stale listings whose player can no longer be resolved by id.
     const player = listed.playerId
       ? getManagerPlayer(career, listed.playerId)
       : undefined;
-    const playerLabel = player?.name ?? listed.playerName;
-    if (playerLabel) {
+    if (player) {
       items.push({
-        id: `news-transfer-${week}-${listed.playerId ?? listed.club}`,
+        id: `news-transfer-${week}-${listed.playerId}`,
         week,
         type: "transfer",
-        text: `${listed.club} have listed ${playerLabel} for around ${formatWage(listed.askingPrice)}.`,
+        text: `${listed.club} have listed ${player.name} for around ${formatWage(listed.askingPrice)}.`,
       });
     }
   }

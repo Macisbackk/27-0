@@ -73,7 +73,15 @@ import {
 import { MANAGER_HUB_SCROLL_TARGET_ID } from "@/lib/manager/managerHubScroll";
 import { autoFixMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { isWageOverBudget } from "@/lib/manager/managerFinance";
-import { ManagerClubFinancesPanel } from "@/components/manager/manager-ui";
+import { ManagerDialog } from "@/components/manager/ManagerDialog";
+import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
+import { ManagerLeagueTable } from "@/components/manager/ManagerLeagueTable";
+import { ManagerHubStickyActions } from "@/components/manager/ManagerHubStickyActions";
+import { MobileDetailsAccordion } from "@/components/MobileDetailsAccordion";
+import { formatWage } from "@/lib/manager/managerContracts";
+import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
+import {
+  ManagerClubFinancesPanel,
   ManagerFormStrip,
   ManagerNewsItem,
   ManagerPage,
