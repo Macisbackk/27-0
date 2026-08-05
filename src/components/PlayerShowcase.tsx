@@ -259,7 +259,6 @@ export function PlayerShowcase() {
     setSortKey("rating");
     setSortDir("desc");
     setCurrentPage(1);
-    setExpandedPlayerId(null);
   };
 
   return (
