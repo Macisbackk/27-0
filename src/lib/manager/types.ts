@@ -77,7 +77,7 @@ export interface PlayerContract {
   retiringAtSeasonEnd?: boolean;
   /** Season when retirement intent was last evaluated. */
   retirementIntentSeason?: number;
-  /** One-time convince-to-stay used — extra year at same wage, then retire. */
+  /** One-time convince-to-stay attempt used (accepted or refused). */
   convincedToStayUsed?: boolean;
   /** Retire when the current deal ends (after a convince-to-stay extension). */
   retireAfterContract?: boolean;

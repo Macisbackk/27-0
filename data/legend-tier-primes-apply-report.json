@@ -1,0 +1,117 @@
+{
+  "dryRun": false,
+  "updated": [
+    {
+      "id": "st-helens-leg-paul-sculthorpe-2002",
+      "pool": "historic",
+      "rating": 99
+    },
+    {
+      "id": "bradford-leg-jamie-peacock-2003",
+      "pool": "historic",
+      "rating": 99
+    },
+    {
+      "id": "st-helens-leg-sean-long-2000",
+      "pool": "historic",
+      "rating": 98
+    },
+    {
+      "id": "st-helens-hist-keiron-cunningham-2000",
+      "pool": "historic",
+      "rating": 98
+    },
+    {
+      "id": "st-helens-hist-paul-wellens-2006",
+      "pool": "historic",
+      "rating": 97
+    },
+    {
+      "id": "leeds-hist-danny-mcguire-2015",
+      "pool": "historic",
+      "rating": 97
+    },
+    {
+      "id": "st-helens-hist-leon-pryce-2006",
+      "pool": "historic",
+      "rating": 96
+    },
+    {
+      "id": "huddersfield-hist-danny-brough-2013",
+      "pool": "historic",
+      "rating": 96
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2020",
+      "pool": "historic",
+      "rating": 95
+    }
+  ],
+  "created": [
+    {
+      "id": "leeds-leg-kevin-sinfield-2012",
+      "rating": 98
+    },
+    {
+      "id": "wigan-leg-sam-tomkins-2012",
+      "rating": 98
+    },
+    {
+      "id": "wigan-leg-andy-farrell-1996",
+      "rating": 99
+    },
+    {
+      "id": "st-helens-leg-james-roby-2007",
+      "rating": 98
+    },
+    {
+      "id": "st-helens-leg-james-graham-2008",
+      "rating": 97
+    },
+    {
+      "id": "wigan-leg-sean-o-loughlin-2013",
+      "rating": 97
+    },
+    {
+      "id": "st-helens-leg-jamie-lyon-2005",
+      "rating": 97
+    },
+    {
+      "id": "leeds-leg-rob-burrow-2007",
+      "rating": 96
+    },
+    {
+      "id": "warrington-leg-adrian-morley-2010",
+      "rating": 96
+    },
+    {
+      "id": "leeds-leg-gareth-ellis-2007",
+      "rating": 96
+    },
+    {
+      "id": "wigan-leg-jason-robinson-1998",
+      "rating": 96
+    },
+    {
+      "id": "wigan-leg-kris-radlinski-2002",
+      "rating": 96
+    },
+    {
+      "id": "leeds-leg-iestyn-harris-1998",
+      "rating": 96
+    },
+    {
+      "id": "bradford-leg-stuart-fielden-2003",
+      "rating": 96
+    },
+    {
+      "id": "wigan-leg-pat-richards-2010",
+      "rating": 96
+    },
+    {
+      "id": "warrington-leg-lee-briers-2011",
+      "rating": 95
+    }
+  ],
+  "unmatched": []
+}

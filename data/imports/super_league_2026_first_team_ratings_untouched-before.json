@@ -1,0 +1,22 @@
+﻿{
+    "data\\championship-clubs.json":  {
+                                          "mtime":  "2026-08-03T02:02:22.6464615Z",
+                                          "hash":  "1A368284BA0DB397D24950990E02F69EBD2745CA577B29DCC285FF1410DBC1FA",
+                                          "length":  6944
+                                      },
+    "data/historic-players.json":  {
+                                       "mtime":  "2026-08-04T23:12:33.9880997Z",
+                                       "hash":  "4AC9ECCD8ADA469E3F93EDA3CB5188319F7336C568F5A0054654CF00833D7F3B",
+                                       "length":  2054292
+                                   },
+    "data\\championship-rating-scale-report.json":  {
+                                                        "mtime":  "2026-08-04T12:30:49.7338333Z",
+                                                        "hash":  "519124019D956D5968CD4F1ADA29943007DD6D47D80A73EBDC61E62AFA8ABAE8",
+                                                        "length":  4506
+                                                    },
+    "data/legends.json":  {
+                              "mtime":  "2026-08-04T04:49:11.1458659Z",
+                              "hash":  "BA0E5AB7D6EDD5C91AAAEF7C85618206D6D52690B2F5D9E43FFCC2C36D2E3DED",
+                              "length":  14063
+                          }
+}

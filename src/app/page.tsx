@@ -16,7 +16,14 @@ export default function HomePage() {
       <div className={PAGE.sectionHero}>
         <GameHeader
           eyebrow="Super League"
-          title={<LogoMark size="lg" className="justify-center" />}
+          title={
+            <span className="flex flex-col items-center gap-1.5">
+              <LogoMark size="lg" className="justify-center" />
+              <span className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-pitch-400 sm:text-xs">
+                Work in progress
+              </span>
+            </span>
+          }
           subtitle={
             <>
               Manager Mode is the main career. Quick Mode builds a squad fast —

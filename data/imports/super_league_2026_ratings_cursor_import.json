@@ -1,0 +1,4645 @@
+{
+  "dataset": "2026 Super League FIFA-style ratings — first-team import only",
+  "scope": {
+    "competition": "Super League",
+    "playerType": "real current first-team players only",
+    "minimumOverall": 75,
+    "minimumPotential": 75,
+    "eligibleSquadStatuses": [
+      "First Team",
+      "First Team / Rotation",
+      "First-Team Squad",
+      "Rotation",
+      "Squad"
+    ],
+    "excludedSquadStatuses": [
+      "Academy / Extended",
+      "Development"
+    ]
+  },
+  "hardExclusions": [
+    "Reserve-team player records",
+    "Academy-only player records",
+    "Development player records",
+    "Extended-squad records that are not in the first-team database",
+    "Randomly generated Championship players",
+    "Procedurally generated players in any competition",
+    "Generated-player templates, factories, name pools or rating ranges",
+    "Historic players",
+    "Legends",
+    "Existing save-generated player instances"
+  ],
+  "matchingRules": [
+    "Only search inside the real current Super League first-team player collection.",
+    "Match by normalised name plus club first.",
+    "Use unique normalised name only when the target is confirmed as a real current Super League first-team player.",
+    "Never match globally across reserve, academy, generated-player or Championship collections.",
+    "Never update an ambiguous match automatically."
+  ],
+  "notes": [
+    "Joe Mellor is intentionally rated 87 overall and 89 potential.",
+    "Players listed under excludedPlayers are supplied only as an audit list and must never be written to the game database.",
+    "Do not create missing players from this import."
+  ],
+  "eligiblePlayerCount": 345,
+  "excludedPlayerCount": 149,
+  "players": [
+    {
+      "name": "Bevan French",
+      "club": "Wigan Warriors",
+      "position": "Outside Back",
+      "overall": 93,
+      "potential": 93,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Mikey Lewis",
+      "club": "Hull KR",
+      "position": "Half Back",
+      "overall": 92,
+      "potential": 94,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jake Connor",
+      "club": "Leeds Rhinos",
+      "position": "Stand-Off",
+      "overall": 91,
+      "potential": 91,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Maika Sivo",
+      "club": "Leeds Rhinos",
+      "position": "Winger",
+      "overall": 91,
+      "potential": 91,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Tristan Sailor",
+      "club": "St Helens",
+      "position": "Five-Eighth",
+      "overall": 90,
+      "potential": 92,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Brodie Croft",
+      "club": "Leeds Rhinos",
+      "position": "Half Back",
+      "overall": 90,
+      "potential": 90,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Lachlan Miller",
+      "club": "Leeds Rhinos",
+      "position": "Fullback",
+      "overall": 90,
+      "potential": 90,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "James McDonnell",
+      "club": "Leeds Rhinos",
+      "position": "Back Row",
+      "overall": 89,
+      "potential": 91,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Charlie Staines",
+      "club": "Catalans Dragons",
+      "position": "Winger",
+      "overall": 89,
+      "potential": 90,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Kaide Ellis",
+      "club": "Wigan Warriors",
+      "position": "Prop",
+      "overall": 89,
+      "potential": 89,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jai Field",
+      "club": "Wigan Warriors",
+      "position": "Fullback",
+      "overall": 89,
+      "potential": 89,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Herman Ese'ese",
+      "club": "Hull FC",
+      "position": "Prop",
+      "overall": 89,
+      "potential": 89,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jackson Hastings",
+      "club": "St Helens",
+      "position": "Half Back",
+      "overall": 89,
+      "potential": 89,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Zach Eckersley",
+      "club": "Wigan Warriors",
+      "position": "Centre",
+      "overall": 88,
+      "potential": 92,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Adam Cook",
+      "club": "Leigh Leopards",
+      "position": "Half Back",
+      "overall": 88,
+      "potential": 89,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Jake Trueman",
+      "club": "Wakefield Trinity",
+      "position": "Half Back",
+      "overall": 88,
+      "potential": 89,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Ben Currie",
+      "club": "Warrington Wolves",
+      "position": "Second Row",
+      "overall": 88,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Caleb Hamlin-Uele",
+      "club": "Wakefield Trinity",
+      "position": "Prop",
+      "overall": 88,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Mathieu Jussaume",
+      "club": "Toulouse Olympique",
+      "position": "Centre",
+      "overall": 88,
+      "potential": 88,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Mike McMeeken",
+      "club": "Wakefield Trinity",
+      "position": "Prop",
+      "overall": 88,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jack Welsby",
+      "club": "St Helens",
+      "position": "Half Back",
+      "overall": 87,
+      "potential": 91,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Joe Mellor",
+      "club": "Bradford Bulls",
+      "position": "Half Back",
+      "overall": 87,
+      "potential": 89,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Oliver Ashall-Bott",
+      "club": "Toulouse Olympique",
+      "position": "Outside Back",
+      "overall": 87,
+      "potential": 89,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Danny Walker",
+      "club": "Warrington Wolves",
+      "position": "Hooker",
+      "overall": 87,
+      "potential": 89,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Edwin Ipape",
+      "club": "Leigh Leopards",
+      "position": "Hooker",
+      "overall": 87,
+      "potential": 89,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Matty Ashton",
+      "club": "Warrington Wolves",
+      "position": "Outside Back",
+      "overall": 87,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "George Williams",
+      "club": "Warrington Wolves",
+      "position": "Half Back",
+      "overall": 87,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Paul Vaughan",
+      "club": "York Knights",
+      "position": "Prop",
+      "overall": 87,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Junior Nsemba",
+      "club": "Wigan Warriors",
+      "position": "Prop",
+      "overall": 86,
+      "potential": 91,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Zac Lipowicz",
+      "club": "Catalans Dragons",
+      "position": "Second Row",
+      "overall": 86,
+      "potential": 90,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Lachlan Lam",
+      "club": "Leigh Leopards",
+      "position": "Five-Eighth",
+      "overall": 86,
+      "potential": 90,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Tom Johnstone",
+      "club": "Wakefield Trinity",
+      "position": "Outside Back",
+      "overall": 86,
+      "potential": 89,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Umyla Hanley",
+      "club": "Leigh Leopards",
+      "position": "Fullback",
+      "overall": 86,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Ash Handley",
+      "club": "Leeds Rhinos",
+      "position": "Winger",
+      "overall": 86,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Harry Smith",
+      "club": "Wigan Warriors",
+      "position": "Half Back",
+      "overall": 86,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Matty Lees",
+      "club": "St Helens",
+      "position": "Prop",
+      "overall": 86,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Tyrone May",
+      "club": "Hull KR",
+      "position": "Five-Eighth",
+      "overall": 86,
+      "potential": 86,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Andy Ackers",
+      "club": "Bradford Bulls",
+      "position": "Hooker",
+      "overall": 86,
+      "potential": 86,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Daryl Clark",
+      "club": "St Helens",
+      "position": "Hooker",
+      "overall": 86,
+      "potential": 86,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Mark Percival",
+      "club": "St Helens",
+      "position": "Centre",
+      "overall": 86,
+      "potential": 86,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Liam Marshall",
+      "club": "Wigan Warriors",
+      "position": "Winger",
+      "overall": 86,
+      "potential": 86,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Peta Hiku",
+      "club": "Hull KR",
+      "position": "Centre",
+      "overall": 86,
+      "potential": 86,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Tevita Pangai Junior",
+      "club": "Hull KR",
+      "position": "Prop",
+      "overall": 86,
+      "potential": 86,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jake Arthur",
+      "club": "Hull FC",
+      "position": "Half Back",
+      "overall": 85,
+      "potential": 90,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Will Pryce",
+      "club": "Hull FC",
+      "position": "Five-Eighth",
+      "overall": 85,
+      "potential": 89,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jacob Alick-Wiencke",
+      "club": "Leigh Leopards",
+      "position": "Second Row",
+      "overall": 85,
+      "potential": 88,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jacob Gagai",
+      "club": "Huddersfield Giants",
+      "position": "Fullback",
+      "overall": 85,
+      "potential": 88,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Tom Davies",
+      "club": "Hull KR",
+      "position": "Winger",
+      "overall": 85,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Josh Charnley",
+      "club": "Leigh Leopards",
+      "position": "Winger",
+      "overall": 85,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Taane Milne",
+      "club": "Huddersfield Giants",
+      "position": "Centre",
+      "overall": 85,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Ethan Havard",
+      "club": "Wigan Warriors",
+      "position": "Prop",
+      "overall": 85,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Luke Thompson",
+      "club": "Wigan Warriors",
+      "position": "Prop",
+      "overall": 85,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Marc Sneyd",
+      "club": "Warrington Wolves",
+      "position": "Half Back",
+      "overall": 85,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Harry Newman",
+      "club": "Leeds Rhinos",
+      "position": "Winger",
+      "overall": 85,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Elliot Minchella",
+      "club": "Hull KR",
+      "position": "Back Row",
+      "overall": 85,
+      "potential": 85,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Kallum Watkins",
+      "club": "Leeds Rhinos",
+      "position": "Centre",
+      "overall": 85,
+      "potential": 85,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Oliver Partington",
+      "club": "Wigan Warriors",
+      "position": "Back Row",
+      "overall": 85,
+      "potential": 85,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Jarrod O'Connor",
+      "club": "Leeds Rhinos",
+      "position": "Back Row",
+      "overall": 85,
+      "potential": 85,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Liam Farrell",
+      "club": "Wigan Warriors",
+      "position": "Second Row",
+      "overall": 85,
+      "potential": 85,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Max Jowitt",
+      "club": "Wakefield Trinity",
+      "position": "Outside Back",
+      "overall": 85,
+      "potential": 85,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Brad O'Neill",
+      "club": "Wigan Warriors",
+      "position": "Hooker",
+      "overall": 84,
+      "potential": 91,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Oliver Field",
+      "club": "York Knights",
+      "position": "Five-Eighth",
+      "overall": 84,
+      "potential": 90,
+      "sourceSquadStatus": "First-Team Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Jack Broadbent",
+      "club": "Hull KR",
+      "position": "Outside Back",
+      "overall": 84,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jake Wardle",
+      "club": "Wigan Warriors",
+      "position": "Outside Back",
+      "overall": 84,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Lewis Martin",
+      "club": "Hull FC",
+      "position": "Winger",
+      "overall": 84,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Lewis Dodd",
+      "club": "Catalans Dragons",
+      "position": "Half Back",
+      "overall": 84,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Mikolaj Oledzki",
+      "club": "Leeds Rhinos",
+      "position": "Prop",
+      "overall": 84,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Toby Sexton",
+      "club": "Catalans Dragons",
+      "position": "Five-Eighth",
+      "overall": 84,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Daejarn Asi",
+      "club": "Castleford Tigers",
+      "position": "Centre",
+      "overall": 84,
+      "potential": 86,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Amir Bourouh",
+      "club": "Hull FC",
+      "position": "Hooker",
+      "overall": 84,
+      "potential": 86,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Tom Amone",
+      "club": "Hull KR",
+      "position": "Prop",
+      "overall": 84,
+      "potential": 85,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Nick Cotric",
+      "club": "Catalans Dragons",
+      "position": "Winger",
+      "overall": 84,
+      "potential": 85,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "James Batchelor",
+      "club": "Hull KR",
+      "position": "Back Row",
+      "overall": 84,
+      "potential": 84,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Caleb Aekins",
+      "club": "Bradford Bulls",
+      "position": "Fullback",
+      "overall": 84,
+      "potential": 84,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Josh Allen",
+      "club": "Catalans Dragons",
+      "position": "Prop",
+      "overall": 84,
+      "potential": 84,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Curtis Sironen",
+      "club": "St Helens",
+      "position": "Second Row",
+      "overall": 84,
+      "potential": 84,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Luke Yates",
+      "club": "Warrington Wolves",
+      "position": "Back Row",
+      "overall": 84,
+      "potential": 84,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Alex Walmsley",
+      "club": "St Helens",
+      "position": "Prop",
+      "overall": 84,
+      "potential": 84,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Nene Macdonald",
+      "club": "St Helens",
+      "position": "Centre",
+      "overall": 84,
+      "potential": 84,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Rhyse Martin",
+      "club": "Hull KR",
+      "position": "Back Row",
+      "overall": 84,
+      "potential": 84,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Tui Lolohea",
+      "club": "Huddersfield Giants",
+      "position": "Stand-Off",
+      "overall": 84,
+      "potential": 84,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "George Flanagan",
+      "club": "Huddersfield Giants",
+      "position": "Half Back",
+      "overall": 83,
+      "potential": 91,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Josh Thewlis",
+      "club": "Warrington Wolves",
+      "position": "Fullback",
+      "overall": 83,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Arthur Mourgue",
+      "club": "Hull KR",
+      "position": "Fullback",
+      "overall": 83,
+      "potential": 86,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Ky Rodwell",
+      "club": "Wakefield Trinity",
+      "position": "Prop",
+      "overall": 83,
+      "potential": 86,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Ben Condon",
+      "club": "Catalans Dragons",
+      "position": "Second Row",
+      "overall": 83,
+      "potential": 85,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Jez Litten",
+      "club": "Hull KR",
+      "position": "Hooker",
+      "overall": 83,
+      "potential": 85,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Zac Fulton",
+      "club": "Bradford Bulls",
+      "position": "Second Row",
+      "overall": 83,
+      "potential": 84,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Robbie Mulhern",
+      "club": "Leigh Leopards",
+      "position": "Prop",
+      "overall": 83,
+      "potential": 84,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Chris Atkin",
+      "club": "Bradford Bulls",
+      "position": "Half Back",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Joe Cator",
+      "club": "Toulouse Olympique",
+      "position": "Back Row",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Liam Byrne",
+      "club": "Warrington Wolves",
+      "position": "Prop",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Joe Batchelor",
+      "club": "Hull FC",
+      "position": "Back Row",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jay Pitts",
+      "club": "Wakefield Trinity",
+      "position": "Back Row",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Isaac Liu",
+      "club": "Leigh Leopards",
+      "position": "Lock",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Aidan Sezer",
+      "club": "Hull FC",
+      "position": "Half Back",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "David Klemmer",
+      "club": "St Helens",
+      "position": "Prop",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Esan Marsters",
+      "club": "Bradford Bulls",
+      "position": "Centre",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jazz Tevaga",
+      "club": "Wakefield Trinity",
+      "position": "Lock",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Joe Ofahengaue",
+      "club": "Leigh Leopards",
+      "position": "Lock",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jonny Lomax",
+      "club": "St Helens",
+      "position": "Utility",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Kyle Feldt",
+      "club": "St Helens",
+      "position": "Winger",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Ryan Hall",
+      "club": "Leeds Rhinos",
+      "position": "Winger",
+      "overall": 83,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jack Farrimond",
+      "club": "Wigan Warriors",
+      "position": "Half Back",
+      "overall": 82,
+      "potential": 92,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Logan Moy",
+      "club": "Hull FC",
+      "position": "Fullback",
+      "overall": 82,
+      "potential": 91,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Denive Balmforth",
+      "club": "York Knights",
+      "position": "Hooker",
+      "overall": 82,
+      "potential": 88,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "George Delaney",
+      "club": "St Helens",
+      "position": "Prop",
+      "overall": 82,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Tom Holroyd",
+      "club": "Leeds Rhinos",
+      "position": "Prop",
+      "overall": 82,
+      "potential": 86,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Tyler Dupree",
+      "club": "Castleford Tigers",
+      "position": "Prop",
+      "overall": 82,
+      "potential": 86,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Tiaki Chan",
+      "club": "Toulouse Olympique",
+      "position": "Prop",
+      "overall": 82,
+      "potential": 84,
+      "sourceSquadStatus": "First-Team Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Tesi Niu",
+      "club": "Leigh Leopards",
+      "position": "Centre",
+      "overall": 82,
+      "potential": 84,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Albert Hopoate",
+      "club": "Warrington Wolves",
+      "position": "Centre",
+      "overall": 82,
+      "potential": 83,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Cameron Scott",
+      "club": "Wakefield Trinity",
+      "position": "Centre",
+      "overall": 82,
+      "potential": 83,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Jake Shorrocks",
+      "club": "Toulouse Olympique",
+      "position": "Half Back",
+      "overall": 82,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Keenan Palasia",
+      "club": "Leeds Rhinos",
+      "position": "Prop",
+      "overall": 82,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Liam Harris",
+      "club": "York Knights",
+      "position": "Half Back",
+      "overall": 82,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Tom Briscoe",
+      "club": "Hull FC",
+      "position": "Winger",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Joe Burgess",
+      "club": "Hull KR",
+      "position": "Winger",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Julian Bousquet",
+      "club": "Catalans Dragons",
+      "position": "Prop",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jed Cartwright",
+      "club": "St Helens",
+      "position": "Second Row",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Zac Woolford",
+      "club": "Huddersfield Giants",
+      "position": "Hooker",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Oliver Wilson",
+      "club": "Wigan Warriors",
+      "position": "Prop",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Josh Griffin",
+      "club": "York Knights",
+      "position": "Centre",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Mason Lino",
+      "club": "Wakefield Trinity",
+      "position": "Half Back",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Adam Keighran",
+      "club": "Wigan Warriors",
+      "position": "Five-Eighth",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Ben Garcia",
+      "club": "Catalans Dragons",
+      "position": "Second Row",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Cam Smith",
+      "club": "Leeds Rhinos",
+      "position": "Loose Forward",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Dean Hadley",
+      "club": "Hull KR",
+      "position": "Second Row",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jack Bird",
+      "club": "Leeds Rhinos",
+      "position": "Lock",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Sauaso Sue",
+      "club": "Hull KR",
+      "position": "Prop",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Toby King",
+      "club": "Warrington Wolves",
+      "position": "Centre",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Tommy Makinson",
+      "club": "Catalans Dragons",
+      "position": "Winger",
+      "overall": 82,
+      "potential": 82,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "George Whitby",
+      "club": "St Helens",
+      "position": "Half Back",
+      "overall": 81,
+      "potential": 90,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Harvey Barron",
+      "club": "Hull FC",
+      "position": "Winger",
+      "overall": 81,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "David Armstrong",
+      "club": "Leigh Leopards",
+      "position": "Fullback",
+      "overall": 81,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Corey Hall",
+      "club": "Wakefield Trinity",
+      "position": "Outside Back",
+      "overall": 81,
+      "potential": 85,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Loghan Lewis",
+      "club": "Bradford Bulls",
+      "position": "Lock",
+      "overall": 81,
+      "potential": 84,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Abbas Miski",
+      "club": "Wigan Warriors",
+      "position": "Winger",
+      "overall": 81,
+      "potential": 84,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Tom Burgess",
+      "club": "Huddersfield Giants",
+      "position": "Prop",
+      "overall": 81,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Matty Storton",
+      "club": "Wakefield Trinity",
+      "position": "Back Row",
+      "overall": 81,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Oliver Gildart",
+      "club": "Hull KR",
+      "position": "Outside Back",
+      "overall": 81,
+      "potential": 83,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Tyson Smoothy",
+      "club": "Wakefield Trinity",
+      "position": "Hooker",
+      "overall": 81,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Kruise Leeming",
+      "club": "Catalans Dragons",
+      "position": "Hooker",
+      "overall": 81,
+      "potential": 82,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Renouf Atoni",
+      "club": "Castleford Tigers",
+      "position": "Prop",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Waqa Blake",
+      "club": "Bradford Bulls",
+      "position": "Centre",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "James Bell",
+      "club": "Hull FC",
+      "position": "Back Row",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Yusuf Aydin",
+      "club": "Hull FC",
+      "position": "Prop",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Zac Cini",
+      "club": "Castleford Tigers",
+      "position": "Centre",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Ethan O'Neill",
+      "club": "Hull FC",
+      "position": "Second Row",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Chris Satae",
+      "club": "Catalans Dragons",
+      "position": "Prop",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Danny Levi",
+      "club": "Leeds Rhinos",
+      "position": "Hooker",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Kelepi Tanginoa",
+      "club": "Warrington Wolves",
+      "position": "Back Row",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Matt Whitley",
+      "club": "St Helens",
+      "position": "Second Row",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Niall Evalds",
+      "club": "Huddersfield Giants",
+      "position": "Fullback",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Ryan Sutton",
+      "club": "Bradford Bulls",
+      "position": "Prop",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Taofofoa Sipley",
+      "club": "Warrington Wolves",
+      "position": "Prop",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Zak Hardaker",
+      "club": "Hull FC",
+      "position": "Centre",
+      "overall": 81,
+      "potential": 81,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Fletcher Rooney",
+      "club": "Castleford Tigers",
+      "position": "Fullback",
+      "overall": 80,
+      "potential": 89,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Harry Robertson",
+      "club": "St Helens",
+      "position": "Fullback",
+      "overall": 80,
+      "potential": 89,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Leon Hayes",
+      "club": "Warrington Wolves",
+      "position": "Half Back",
+      "overall": 80,
+      "potential": 89,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Riley Lumb",
+      "club": "Leeds Rhinos",
+      "position": "Fullback",
+      "overall": 80,
+      "potential": 89,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Cai Taylor-Wray",
+      "club": "Warrington Wolves",
+      "position": "Fullback",
+      "overall": 80,
+      "potential": 88,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Adam Holroyd",
+      "club": "Warrington Wolves",
+      "position": "Second Row",
+      "overall": 80,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Oliver Pratt",
+      "club": "Wakefield Trinity",
+      "position": "Centre",
+      "overall": 80,
+      "potential": 87,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Sam Halsall",
+      "club": "Huddersfield Giants",
+      "position": "Winger",
+      "overall": 80,
+      "potential": 85,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Sam Walters",
+      "club": "Wigan Warriors",
+      "position": "Back Row",
+      "overall": 80,
+      "potential": 85,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Cooper Jenkins",
+      "club": "Leeds Rhinos",
+      "position": "Prop",
+      "overall": 80,
+      "potential": 84,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Lewis Murphy",
+      "club": "St Helens",
+      "position": "Winger",
+      "overall": 80,
+      "potential": 84,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Patrick Mago",
+      "club": "Wigan Warriors",
+      "position": "Prop",
+      "overall": 80,
+      "potential": 84,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Blake Taaffe",
+      "club": "Castleford Tigers",
+      "position": "Fullback",
+      "overall": 80,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Frankie Halton",
+      "club": "Leigh Leopards",
+      "position": "Second Row",
+      "overall": 80,
+      "potential": 82,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "James Harrison",
+      "club": "Warrington Wolves",
+      "position": "Second Row",
+      "overall": 80,
+      "potential": 82,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Max Simpson",
+      "club": "Leeds Rhinos",
+      "position": "Centre",
+      "overall": 80,
+      "potential": 82,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Guillermo Aispuro-Bichet",
+      "club": "Catalans Dragons",
+      "position": "Centre",
+      "overall": 80,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Caius Faatili",
+      "club": "Wakefield Trinity",
+      "position": "Prop",
+      "overall": 80,
+      "potential": 81,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Joe Shorrocks",
+      "club": "St Helens",
+      "position": "Loose Forward",
+      "overall": 80,
+      "potential": 81,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Paul Ulberg",
+      "club": "Toulouse Olympique",
+      "position": "Winger",
+      "overall": 80,
+      "potential": 81,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Shane Wright",
+      "club": "St Helens",
+      "position": "Second Row",
+      "overall": 80,
+      "potential": 81,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Rob Butler",
+      "club": "Toulouse Olympique",
+      "position": "Prop",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Lambert Belmas",
+      "club": "Toulouse Olympique",
+      "position": "Prop",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Jack Brown",
+      "club": "Hull KR",
+      "position": "Prop",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Ed Chamberlain",
+      "club": "Bradford Bulls",
+      "position": "Winger",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "James Bentley",
+      "club": "Warrington Wolves",
+      "position": "Back Row",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Innes Senior",
+      "club": "Leigh Leopards",
+      "position": "Outside Back",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Isaiah Vagana",
+      "club": "Wakefield Trinity",
+      "position": "Second Row",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Agnatius Paasi",
+      "club": "St Helens",
+      "position": "Prop",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Ata Hingano",
+      "club": "York Knights",
+      "position": "Half Back",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Danny Richardson",
+      "club": "York Knights",
+      "position": "Half Back",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "David Nofoaluma",
+      "club": "York Knights",
+      "position": "Winger",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jacob Host",
+      "club": "St Helens",
+      "position": "Second Row",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jayden Nikorima",
+      "club": "Bradford Bulls",
+      "position": "Five-Eighth",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Joe Philbin",
+      "club": "Warrington Wolves",
+      "position": "Prop",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Mikaele Ravalawa",
+      "club": "Castleford Tigers",
+      "position": "Winger",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Owen Trout",
+      "club": "Leigh Leopards",
+      "position": "Loose Forward",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Sam Lisone",
+      "club": "Hull FC",
+      "position": "Prop",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Sam Powell",
+      "club": "Warrington Wolves",
+      "position": "Hooker",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Sam Stone",
+      "club": "Warrington Wolves",
+      "position": "Second Row",
+      "overall": 80,
+      "potential": 80,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Jack Charles",
+      "club": "Hull KR",
+      "position": "Half Back",
+      "overall": 79,
+      "potential": 89,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Jenson Windley",
+      "club": "Castleford Tigers",
+      "position": "Half Back",
+      "overall": 79,
+      "potential": 88,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Seth Nikotemo",
+      "club": "Wakefield Trinity",
+      "position": "Second Row",
+      "overall": 79,
+      "potential": 86,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Asher O'Donnell",
+      "club": "Huddersfield Giants",
+      "position": "Second Row",
+      "overall": 79,
+      "potential": 84,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "John Asiata",
+      "club": "Hull FC",
+      "position": "Lock",
+      "overall": 79,
+      "potential": 83,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Adam Clune",
+      "club": "Huddersfield Giants",
+      "position": "Half Back",
+      "overall": 79,
+      "potential": 82,
+      "sourceSquadStatus": "First Team / Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Deon Cross",
+      "club": "St Helens",
+      "position": "Winger",
+      "overall": 79,
+      "potential": 81,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Ashton Golding",
+      "club": "Castleford Tigers",
+      "position": "Fullback",
+      "overall": 79,
+      "potential": 80,
+      "sourceSquadStatus": "First-Team Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Brendan Hands",
+      "club": "Toulouse Olympique",
+      "position": "Hooker",
+      "overall": 79,
+      "potential": 80,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Jai Whitbread",
+      "club": "Hull KR",
+      "position": "Prop",
+      "overall": 79,
+      "potential": 80,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Olly Russell",
+      "club": "Huddersfield Giants",
+      "position": "Half Back",
+      "overall": 79,
+      "potential": 80,
+      "sourceSquadStatus": "First-Team Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Reubenn Rennie",
+      "club": "Toulouse Olympique",
+      "position": "Centre",
+      "overall": 79,
+      "potential": 80,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Sam Luckley",
+      "club": "Hull KR",
+      "position": "Prop",
+      "overall": 79,
+      "potential": 80,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Aaron Pene",
+      "club": "Leigh Leopards",
+      "position": "Prop",
+      "overall": 79,
+      "potential": 79,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Anthony Marion",
+      "club": "Toulouse Olympique",
+      "position": "Lock",
+      "overall": 79,
+      "potential": 79,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Cade Cust",
+      "club": "Hull FC",
+      "position": "Hooker",
+      "overall": 79,
+      "potential": 79,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Chris Hankinson",
+      "club": "Leeds Rhinos",
+      "position": "Outside Back",
+      "overall": 79,
+      "potential": 79,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "George King",
+      "club": "Huddersfield Giants",
+      "position": "Prop",
+      "overall": 79,
+      "potential": 79,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jack Hughes",
+      "club": "Leigh Leopards",
+      "position": "Second Row",
+      "overall": 79,
+      "potential": 79,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Jordan Lipp",
+      "club": "York Knights",
+      "position": "Centre",
+      "overall": 79,
+      "potential": 79,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Liam Sutcliffe",
+      "club": "Huddersfield Giants",
+      "position": "Loose Forward",
+      "overall": 79,
+      "potential": 79,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Matt Davis",
+      "club": "Leigh Leopards",
+      "position": "Lock",
+      "overall": 79,
+      "potential": 79,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Paul McShane",
+      "club": "York Knights",
+      "position": "Hooker",
+      "overall": 79,
+      "potential": 79,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Arron Lindop",
+      "club": "Warrington Wolves",
+      "position": "Centre",
+      "overall": 78,
+      "potential": 87,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Harry Rushton",
+      "club": "Huddersfield Giants",
+      "position": "Back Row",
+      "overall": 78,
+      "potential": 85,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Jon Bennison",
+      "club": "York Knights",
+      "position": "Centre",
+      "overall": 78,
+      "potential": 84,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Davy Litten",
+      "club": "Hull FC",
+      "position": "Fullback",
+      "overall": 78,
+      "potential": 83,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Josh Rourke",
+      "club": "Wakefield Trinity",
+      "position": "Fullback",
+      "overall": 78,
+      "potential": 83,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Ned McCormack",
+      "club": "Leeds Rhinos",
+      "position": "Centre",
+      "overall": 78,
+      "potential": 83,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Ryan Hampshire",
+      "club": "Hull KR",
+      "position": "Utility",
+      "overall": 78,
+      "potential": 83,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Thomas Lacans",
+      "club": "Toulouse Olympique",
+      "position": "Half Back",
+      "overall": 78,
+      "potential": 83,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Tom Forber",
+      "club": "Wigan Warriors",
+      "position": "Hooker",
+      "overall": 78,
+      "potential": 83,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Jake Wingfield",
+      "club": "St Helens",
+      "position": "Back Row",
+      "overall": 78,
+      "potential": 82,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Rowan Milnes",
+      "club": "Bradford Bulls",
+      "position": "Half Back",
+      "overall": 78,
+      "potential": 82,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Kieran Buchanan",
+      "club": "York Knights",
+      "position": "Outside Back",
+      "overall": 78,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Connor Bailey",
+      "club": "Hull FC",
+      "position": "Back Row",
+      "overall": 78,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Keanan Brand",
+      "club": "Leigh Leopards",
+      "position": "Outside Back",
+      "overall": 78,
+      "potential": 81,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Kian McDermott",
+      "club": "Wigan Warriors",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Sam Hewitt",
+      "club": "Huddersfield Giants",
+      "position": "Back Row",
+      "overall": 78,
+      "potential": 81,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "James Roumanos",
+      "club": "Toulouse Olympique",
+      "position": "Second Row",
+      "overall": 78,
+      "potential": 80,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Jordan Crowther",
+      "club": "Warrington Wolves",
+      "position": "Lock",
+      "overall": 78,
+      "potential": 80,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jordan Lane",
+      "club": "Castleford Tigers",
+      "position": "Second Row",
+      "overall": 78,
+      "potential": 80,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Lazarus Vaalepu",
+      "club": "Leigh Leopards",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 80,
+      "sourceSquadStatus": "First-Team Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Liam Horne",
+      "club": "Leigh Leopards",
+      "position": "Hooker",
+      "overall": 78,
+      "potential": 80,
+      "sourceSquadStatus": "First-Team Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Sam Wood",
+      "club": "York Knights",
+      "position": "Centre",
+      "overall": 78,
+      "potential": 80,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Harvie Hill",
+      "club": "Hull FC",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 79,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Ethan Ryan",
+      "club": "Bradford Bulls",
+      "position": "Outside Back",
+      "overall": 78,
+      "potential": 79,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Ewan Irwin",
+      "club": "Warrington Wolves",
+      "position": "Half Back",
+      "overall": 78,
+      "potential": 79,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jack Martin",
+      "club": "York Knights",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 79,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Justin Sangare",
+      "club": "York Knights",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 79,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Toa Mata'afa",
+      "club": "York Knights",
+      "position": "Fullback",
+      "overall": 78,
+      "potential": 79,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Guy Armitage",
+      "club": "Bradford Bulls",
+      "position": "Outside Back",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Jack Ashworth",
+      "club": "Castleford Tigers",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Louis Senior",
+      "club": "Castleford Tigers",
+      "position": "Centre",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Adam Swift",
+      "club": "Huddersfield Giants",
+      "position": "Winger",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Alex Mellor",
+      "club": "Castleford Tigers",
+      "position": "Centre",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Ben Jones-Bishop",
+      "club": "York Knights",
+      "position": "Outside Back",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Benjamin Laguerre",
+      "club": "Toulouse Olympique",
+      "position": "Winger",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Brad Fash",
+      "club": "Hull FC",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Dan Russell",
+      "club": "Bradford Bulls",
+      "position": "Second Row",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Daniel Suluka-Fifita",
+      "club": "St Helens",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First-Team Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Darnell McIntosh",
+      "club": "Castleford Tigers",
+      "position": "Fullback",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Franck Maria",
+      "club": "Catalans Dragons",
+      "position": "Lock",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Gareth O'Brien",
+      "club": "Leigh Leopards",
+      "position": "Fullback",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "George Lawler",
+      "club": "Castleford Tigers",
+      "position": "Back Row",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Jayden Okunbor",
+      "club": "Bradford Bulls",
+      "position": "Winger",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Jesse Dee",
+      "club": "York Knights",
+      "position": "Second Row",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Joe Keyes",
+      "club": "Bradford Bulls",
+      "position": "Half Back",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Joe Stimson",
+      "club": "Castleford Tigers",
+      "position": "Second Row",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Joe Westerman",
+      "club": "Castleford Tigers",
+      "position": "Loose Forward",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jordan Thompson",
+      "club": "York Knights",
+      "position": "Second Row",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "King Vuniyayawa",
+      "club": "York Knights",
+      "position": "Back Row",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First-Team Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Liam Hood",
+      "club": "Castleford Tigers",
+      "position": "Hooker",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Liam Knight",
+      "club": "Hull FC",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Ligi Sao",
+      "club": "Hull FC",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Matty Russell",
+      "club": "Catalans Dragons",
+      "position": "Winger",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First-Team Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Maxime Stefani",
+      "club": "Toulouse Olympique",
+      "position": "Second Row",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Mitch Clark",
+      "club": "York Knights",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First-Team Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Paul Marcon",
+      "club": "Toulouse Olympique",
+      "position": "Winger",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Romain Navarrete",
+      "club": "Catalans Dragons",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Scott Galeano",
+      "club": "York Knights",
+      "position": "Winger",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Semi Valemei",
+      "club": "Castleford Tigers",
+      "position": "Winger",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Solomona Faataape",
+      "club": "Catalans Dragons",
+      "position": "Centre",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Tom Weaver",
+      "club": "Castleford Tigers",
+      "position": "Half Back",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Tristan Powell",
+      "club": "Huddersfield Giants",
+      "position": "Prop",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "First Team",
+      "updateEligible": true
+    },
+    {
+      "name": "Will Dagger",
+      "club": "York Knights",
+      "position": "Outside Back",
+      "overall": 78,
+      "potential": 78,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Noah Booth",
+      "club": "Hull KR",
+      "position": "Fullback",
+      "overall": 77,
+      "potential": 88,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Xavier Va'a",
+      "club": "York Knights",
+      "position": "Prop",
+      "overall": 77,
+      "potential": 86,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Presley Cassell",
+      "club": "Leeds Rhinos",
+      "position": "Lock",
+      "overall": 77,
+      "potential": 84,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Harvey Smith",
+      "club": "Wakefield Trinity",
+      "position": "Hooker",
+      "overall": 77,
+      "potential": 84,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Harvey Wilson",
+      "club": "Catalans Dragons",
+      "position": "Prop",
+      "overall": 77,
+      "potential": 84,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Baptiste Rodriguez",
+      "club": "Toulouse Olympique",
+      "position": "Hooker",
+      "overall": 77,
+      "potential": 83,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Ebon Scurr",
+      "club": "Bradford Bulls",
+      "position": "Prop",
+      "overall": 77,
+      "potential": 82,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Kieran Rush",
+      "club": "Huddersfield Giants",
+      "position": "Hooker",
+      "overall": 77,
+      "potential": 81,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Bailey Hodgson",
+      "club": "Leigh Leopards",
+      "position": "Outside Back",
+      "overall": 77,
+      "potential": 79,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Joe Bretherton",
+      "club": "Toulouse Olympique",
+      "position": "Prop",
+      "overall": 77,
+      "potential": 78,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Alrix Da Costa",
+      "club": "Catalans Dragons",
+      "position": "Hooker",
+      "overall": 77,
+      "potential": 78,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Arthur Romano",
+      "club": "Hull FC",
+      "position": "Centre",
+      "overall": 77,
+      "potential": 78,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Brad Dwyer",
+      "club": "Castleford Tigers",
+      "position": "Hooker",
+      "overall": 77,
+      "potential": 77,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Brad Singleton",
+      "club": "Castleford Tigers",
+      "position": "Prop",
+      "overall": 77,
+      "potential": 77,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Brock Greacen",
+      "club": "Castleford Tigers",
+      "position": "Prop",
+      "overall": 77,
+      "potential": 77,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Calum Gahan",
+      "club": "Toulouse Olympique",
+      "position": "Hooker",
+      "overall": 77,
+      "potential": 77,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Eribe Doro",
+      "club": "Bradford Bulls",
+      "position": "Prop",
+      "overall": 77,
+      "potential": 77,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Fenton Rogers",
+      "club": "Huddersfield Giants",
+      "position": "Prop",
+      "overall": 77,
+      "potential": 77,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Iszac Fa'asuamaleaui",
+      "club": "Catalans Dragons",
+      "position": "Prop",
+      "overall": 77,
+      "potential": 77,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jack Ormondroyd",
+      "club": "Bradford Bulls",
+      "position": "Prop",
+      "overall": 77,
+      "potential": 77,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Joe Greenwood",
+      "club": "Huddersfield Giants",
+      "position": "Back Row",
+      "overall": 77,
+      "potential": 77,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Kieran Hudson",
+      "club": "York Knights",
+      "position": "Prop",
+      "overall": 77,
+      "potential": 77,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Mitch Souter",
+      "club": "Bradford Bulls",
+      "position": "Hooker",
+      "overall": 77,
+      "potential": 77,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Phoenix Laulu-Togaga'e",
+      "club": "Castleford Tigers",
+      "position": "Fullback",
+      "overall": 77,
+      "potential": 77,
+      "sourceSquadStatus": "Rotation",
+      "updateEligible": true
+    },
+    {
+      "name": "Jack Sinfield",
+      "club": "Wakefield Trinity",
+      "position": "Five-Eighth",
+      "overall": 76,
+      "potential": 85,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Jason Qareqare",
+      "club": "Castleford Tigers",
+      "position": "Winger",
+      "overall": 76,
+      "potential": 85,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "AJ Towse",
+      "club": "Leigh Leopards",
+      "position": "Winger",
+      "overall": 76,
+      "potential": 84,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Sam Eseh",
+      "club": "Wigan Warriors",
+      "position": "Prop",
+      "overall": 76,
+      "potential": 84,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Bill Leyland",
+      "club": "Hull KR",
+      "position": "Hooker",
+      "overall": 76,
+      "potential": 82,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Jake Burns",
+      "club": "St Helens",
+      "position": "Hooker",
+      "overall": 76,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Jack Billington",
+      "club": "Huddersfield Giants",
+      "position": "Prop",
+      "overall": 76,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Jayden Myers",
+      "club": "Wakefield Trinity",
+      "position": "Winger",
+      "overall": 76,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Tray Lolesio",
+      "club": "Wakefield Trinity",
+      "position": "Prop",
+      "overall": 76,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Andrew Badrock",
+      "club": "Leigh Leopards",
+      "position": "Second Row",
+      "overall": 76,
+      "potential": 79,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Jordan Dezaria",
+      "club": "Hull KR",
+      "position": "Back Row",
+      "overall": 76,
+      "potential": 79,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Josh Simm",
+      "club": "Catalans Dragons",
+      "position": "Winger",
+      "overall": 76,
+      "potential": 79,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Karl Lawton",
+      "club": "Hull KR",
+      "position": "Second Row",
+      "overall": 76,
+      "potential": 79,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Lachlan Walmsley",
+      "club": "Wakefield Trinity",
+      "position": "Winger",
+      "overall": 76,
+      "potential": 79,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Mathieu Cozza",
+      "club": "Huddersfield Giants",
+      "position": "Prop",
+      "overall": 76,
+      "potential": 79,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Lee Kershaw",
+      "club": "Huddersfield Giants",
+      "position": "Outside Back",
+      "overall": 76,
+      "potential": 77,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Greg Eden",
+      "club": "Bradford Bulls",
+      "position": "Winger",
+      "overall": 76,
+      "potential": 76,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Alfie Edgell",
+      "club": "Leeds Rhinos",
+      "position": "Fullback",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Noah Stephens",
+      "club": "St Helens",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "AJ Wallace",
+      "club": "Toulouse Olympique",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Connor Wynne",
+      "club": "Bradford Bulls",
+      "position": "Outside Back",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Ellis Gillam",
+      "club": "Toulouse Olympique",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Samuel Hallas",
+      "club": "Bradford Bulls",
+      "position": "Lock",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Connor Carr",
+      "club": "Huddersfield Giants",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Brandon Douglas",
+      "club": "Bradford Bulls",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Connor Wrench",
+      "club": "Huddersfield Giants",
+      "position": "Back Row",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Henry O'Kane",
+      "club": "Toulouse Olympique",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Luke Hooley",
+      "club": "Bradford Bulls",
+      "position": "Fullback",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Pierre-Jean Lima",
+      "club": "Toulouse Olympique",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Romeo Tropis",
+      "club": "Toulouse Olympique",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Ben McNamara",
+      "club": "Leigh Leopards",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 77,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Jeremiah Mata'utia",
+      "club": "Hull FC",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 77,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Aiden Doolan",
+      "club": "Castleford Tigers",
+      "position": "Hooker",
+      "overall": 75,
+      "potential": 75,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Chris Patolo",
+      "club": "Huddersfield Giants",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 75,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "John Sagaga",
+      "club": "York Knights",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 75,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Matthieu Laguerre",
+      "club": "Catalans Dragons",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 75,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Riley Dean",
+      "club": "Bradford Bulls",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 75,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    },
+    {
+      "name": "Will Gardiner",
+      "club": "Bradford Bulls",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 75,
+      "sourceSquadStatus": "Squad",
+      "updateEligible": true
+    }
+  ],
+  "excludedPlayers": [
+    {
+      "name": "Louis Brogan",
+      "club": "Leigh Leopards",
+      "position": "Second Row",
+      "overall": 81,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Will Tate",
+      "club": "Wakefield Trinity",
+      "position": "Fullback",
+      "overall": 79,
+      "potential": 88,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Harvey Horne",
+      "club": "Hull KR",
+      "position": "Winger",
+      "overall": 79,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Lennon Clark",
+      "club": "Hull FC",
+      "position": "Second Row",
+      "overall": 76,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Fergus McCormack",
+      "club": "Leeds Rhinos",
+      "position": "Half Back",
+      "overall": 76,
+      "potential": 85,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "George Brown",
+      "club": "Leeds Rhinos",
+      "position": "Half Back",
+      "overall": 76,
+      "potential": 84,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Ryan Brown",
+      "club": "Leigh Leopards",
+      "position": "Prop",
+      "overall": 76,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Lukas Mason",
+      "club": "Wigan Warriors",
+      "position": "Second Row",
+      "overall": 76,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Hugo Salabio",
+      "club": "Hull FC",
+      "position": "Prop",
+      "overall": 76,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Noah Hodkinson",
+      "club": "Wigan Warriors",
+      "position": "Fullback",
+      "overall": 76,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Taylor Kerr",
+      "club": "Wigan Warriors",
+      "position": "Lock",
+      "overall": 76,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Alfie Leake",
+      "club": "Bradford Bulls",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Austin Daniel",
+      "club": "Wigan Warriors",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Christopher Matagi",
+      "club": "St Helens",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Cody Hunter",
+      "club": "York Knights",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Deacon Swarbrick",
+      "club": "St Helens",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Evan Buckley",
+      "club": "Wigan Warriors",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Hugo Cellier",
+      "club": "Catalans Dragons",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Joe Butterfield",
+      "club": "Leeds Rhinos",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Joe Diskin",
+      "club": "Leeds Rhinos",
+      "position": "Hooker",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "John Toleafoa",
+      "club": "Toulouse Olympique",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Lachlan Webster",
+      "club": "Warrington Wolves",
+      "position": "Winger",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Louis Grossemy",
+      "club": "Toulouse Olympique",
+      "position": "Lock",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Luca Walsh",
+      "club": "St Helens",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Manase Kaho",
+      "club": "Catalans Dragons",
+      "position": "Winger",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Marcus Qareqare",
+      "club": "Leeds Rhinos",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Marshall Land",
+      "club": "Huddersfield Giants",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Myles Harrison",
+      "club": "York Knights",
+      "position": "Fullback",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Oscar Brown",
+      "club": "Leeds Rhinos",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Robbie Brook",
+      "club": "Wakefield Trinity",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Shea Connor",
+      "club": "Wigan Warriors",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Tyler McGann",
+      "club": "St Helens",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Zack Clegg",
+      "club": "Wakefield Trinity",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Zak Lloyd",
+      "club": "Leeds Rhinos",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Zane Dunford",
+      "club": "Huddersfield Giants",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 85,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Alex Chippendale",
+      "club": "Huddersfield Giants",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Alfie Tate",
+      "club": "St Helens",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Anthony Munico",
+      "club": "Toulouse Olympique",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Ben Johnson",
+      "club": "Hull FC",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Billy Keeley",
+      "club": "St Helens",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Cameron Bate",
+      "club": "Bradford Bulls",
+      "position": "Lock",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Cesar Rouge",
+      "club": "Toulouse Olympique",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Charlie McKler",
+      "club": "Warrington Wolves",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Cole Geyer",
+      "club": "Huddersfield Giants",
+      "position": "Hooker",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Dayon Sambou",
+      "club": "Wigan Warriors",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Eliot Peposhi",
+      "club": "Bradford Bulls",
+      "position": "Lock",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Ethan Quai",
+      "club": "Toulouse Olympique",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Ewan Smith",
+      "club": "Warrington Wolves",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Finn McMillan",
+      "club": "Wigan Warriors",
+      "position": "Lock",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Frankie Dearlove",
+      "club": "Hull KR",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "George Marsden",
+      "club": "Wigan Warriors",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Harry Smith",
+      "club": "Leeds Rhinos",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Harvey Ward",
+      "club": "Bradford Bulls",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jacob Hardy",
+      "club": "Leeds Rhinos",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jonny Vaughan",
+      "club": "Wigan Warriors",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Joshua Cartwright",
+      "club": "Wigan Warriors",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Kalum Rathbone",
+      "club": "Wigan Warriors",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Lewis Daniels",
+      "club": "Wigan Warriors",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Lewis Jagger",
+      "club": "Huddersfield Giants",
+      "position": "Winger",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Matthew Hanley",
+      "club": "Huddersfield Giants",
+      "position": "Winger",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Monty Lumb",
+      "club": "Huddersfield Giants",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Phoenix Steinwede",
+      "club": "Bradford Bulls",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Sam Cook",
+      "club": "York Knights",
+      "position": "Hooker",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Tommy Rhodes",
+      "club": "Warrington Wolves",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Ugo Tison",
+      "club": "Catalans Dragons",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Zach Brown",
+      "club": "Huddersfield Giants",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 84,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Adrian Delarose",
+      "club": "Catalans Dragons",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Ben Hartill",
+      "club": "Warrington Wolves",
+      "position": "Hooker",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Ben Littlewood",
+      "club": "Leeds Rhinos",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Cain Robb",
+      "club": "Castleford Tigers",
+      "position": "Hooker",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Callum Kemp",
+      "club": "Hull FC",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Charlie Yeomans",
+      "club": "Wigan Warriors",
+      "position": "Unknown",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Cole Marsh",
+      "club": "St Helens",
+      "position": "Hooker",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Declan Murphy",
+      "club": "Hull KR",
+      "position": "Fullback",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Edenn Rogers-Smith",
+      "club": "Catalans Dragons",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Ellis Lingard",
+      "club": "Wakefield Trinity",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Finlay Yeomans",
+      "club": "Wigan Warriors",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "George Hirst",
+      "club": "Castleford Tigers",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "George O'Loughlin",
+      "club": "Wigan Warriors",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Giovanni Descalzi",
+      "club": "Catalans Dragons",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Harley Thomas",
+      "club": "Leeds Rhinos",
+      "position": "Fullback",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Harvey Reynolds",
+      "club": "York Knights",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jack Campbell",
+      "club": "St Helens",
+      "position": "Fullback",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jacob Stead",
+      "club": "Leeds Rhinos",
+      "position": "Lock",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jake Davies",
+      "club": "St Helens",
+      "position": "Lock",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jake Thewlis",
+      "club": "Warrington Wolves",
+      "position": "Winger",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jimmy Beckett",
+      "club": "Castleford Tigers",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Joe Phillips",
+      "club": "Hull FC",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Joe Ward",
+      "club": "Hull FC",
+      "position": "Winger",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jumah Sambou",
+      "club": "Hull KR",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Leo Darrelatour",
+      "club": "Catalans Dragons",
+      "position": "Winger",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Leon Cowen",
+      "club": "St Helens",
+      "position": "Lock",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Leon Ruan",
+      "club": "Bradford Bulls",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Logan Blacker",
+      "club": "Huddersfield Giants",
+      "position": "Fullback",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Mathieu Pons",
+      "club": "Toulouse Olympique",
+      "position": "Winger",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Matthew Evans",
+      "club": "St Helens",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Matty Foster",
+      "club": "York Knights",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Max Wood",
+      "club": "Hull FC",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Nathan Lowe",
+      "club": "Wigan Warriors",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Nikau Williams",
+      "club": "York Knights",
+      "position": "Five-Eighth",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Oliver Polec",
+      "club": "Leigh Leopards",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Oliver Smart",
+      "club": "Leeds Rhinos",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Ronan Michael",
+      "club": "Bradford Bulls",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Ryan Westerman",
+      "club": "Hull FC",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Tanguy Zenon",
+      "club": "Huddersfield Giants",
+      "position": "Winger",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Taylor Pemberton",
+      "club": "York Knights",
+      "position": "Hooker",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Thomas Inman",
+      "club": "York Knights",
+      "position": "Hooker",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Thomas McKinney",
+      "club": "Warrington Wolves",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Tom Humphreys",
+      "club": "St Helens",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Will Hutchinson",
+      "club": "Hull FC",
+      "position": "Hooker",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Will Roberts",
+      "club": "York Knights",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 83,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Alexis Lis",
+      "club": "Catalans Dragons",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Alfie Lindsey",
+      "club": "Castleford Tigers",
+      "position": "Winger",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Alfie Sinclair",
+      "club": "St Helens",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Archie Sykes",
+      "club": "Huddersfield Giants",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Cobie Wainhouse",
+      "club": "Hull KR",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "George Hill",
+      "club": "Castleford Tigers",
+      "position": "Hooker",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Hugo Garrigues",
+      "club": "Toulouse Olympique",
+      "position": "Hooker",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jacob Algar",
+      "club": "Huddersfield Giants",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jordan Williams",
+      "club": "Wakefield Trinity",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Kavan Rothwell",
+      "club": "Leigh Leopards",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Kian McGann",
+      "club": "Wakefield Trinity",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Lenny Marc",
+      "club": "Catalans Dragons",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Lloyd Kemp",
+      "club": "Hull FC",
+      "position": "Fullback",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Luke Polselli",
+      "club": "Toulouse Olympique",
+      "position": "Fullback",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Luke Thomas",
+      "club": "Warrington Wolves",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Myles Lawford",
+      "club": "Wakefield Trinity",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Nathan Wilde",
+      "club": "Leigh Leopards",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Noah High",
+      "club": "Wakefield Trinity",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Oli Leyland",
+      "club": "Warrington Wolves",
+      "position": "Half Back",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Roman Dawson",
+      "club": "Hull FC",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Academy / Extended",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Ryan Jackson",
+      "club": "York Knights",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Sam Hall",
+      "club": "Castleford Tigers",
+      "position": "Back Row",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Will Kirby",
+      "club": "Hull FC",
+      "position": "Lock",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Zack Gardner",
+      "club": "Warrington Wolves",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 82,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Will Brough",
+      "club": "Leigh Leopards",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Clement Martin",
+      "club": "Catalans Dragons",
+      "position": "Winger",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jack Smith",
+      "club": "York Knights",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jacob Douglas",
+      "club": "St Helens",
+      "position": "Winger",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Jamie Gill",
+      "club": "Bradford Bulls",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Josh Smith",
+      "club": "Warrington Wolves",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Krystian Mapapalangi",
+      "club": "Castleford Tigers",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Louix Gorman",
+      "club": "Hull KR",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Matty Laidlaw",
+      "club": "Hull FC",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Owen Dagnall",
+      "club": "St Helens",
+      "position": "Centre",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Thomas Nicholson-Watton",
+      "club": "Leeds Rhinos",
+      "position": "Lock",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Tom Whitehead",
+      "club": "Hull KR",
+      "position": "Second Row",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Trevor Chiffolleau",
+      "club": "Toulouse Olympique",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    },
+    {
+      "name": "Zach Fishwick",
+      "club": "Hull KR",
+      "position": "Prop",
+      "overall": 75,
+      "potential": 81,
+      "sourceSquadStatus": "Development",
+      "updateEligible": false,
+      "exclusionReason": "Development, academy or extended-squad player; do not update reserve records."
+    }
+  ]
+}

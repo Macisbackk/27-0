@@ -67,7 +67,10 @@ function validatePlayers(
       throw new Error(`Missing yearsActive in ${source}: ${p.id}`);
     }
 
-    if (p.peakRating < 80 || p.peakRating > 99) {
+    // Current first-team import allows 75–99 (overrides apply after compress).
+    // Historic / legend cards remain on the 80–99 stored scale.
+    const minRating = p.category === "current" ? 75 : 80;
+    if (p.peakRating < minRating || p.peakRating > 99) {
       throw new Error(`Invalid rating for ${p.name}: ${p.peakRating}`);
     }
 

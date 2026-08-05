@@ -1,0 +1,3486 @@
+{
+  "dataset": "Historic Super League ratings with adjacent-season smoothing",
+  "years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "seasonCount": 6,
+  "potentialIncluded": false,
+  "ratingFloor": 80,
+  "ratingCeiling": 93,
+  "maximumConsecutiveYearChange": 4,
+  "players": [
+    {
+      "name": "Michael Lawrence",
+      "rating": 89,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Aidan Sezer",
+      "rating": 88,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Jermaine McGillvary",
+      "rating": 85,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Adam O'Brien",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Ashton Golding",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Jacob Wardle",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Joe Wardle",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Kenny Edwards",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Leroy Cudjoe",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Suaia Matagi",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Darnell McIntosh",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Lee Gaskell",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Matty English",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "James Gavet",
+      "rating": 81,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Jordan Turner",
+      "rating": 80,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Sam Wood",
+      "rating": 80,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Tom Holmes",
+      "rating": 80,
+      "club": "Huddersfield Giants",
+      "year": 2020
+    },
+    {
+      "name": "Carlos Tuimavave",
+      "rating": 87,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Jake Connor",
+      "rating": 87,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Josh Griffin",
+      "rating": 87,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Ligi Sao",
+      "rating": 87,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Joe Cator",
+      "rating": 86,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Jordan Lane",
+      "rating": 85,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Bureta Faraimo",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Jamie Shaul",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Manu Ma'U",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Marc Sneyd",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Ratu Naulago",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Scott Taylor",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Danny Houghton",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Jordan Johnstone",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Brad Fash",
+      "rating": 82,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Tevita Satae",
+      "rating": 82,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Mahe Fonua",
+      "rating": 81,
+      "club": "Hull FC",
+      "year": 2020
+    },
+    {
+      "name": "Cameron Smith",
+      "rating": 90,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Ash Handley",
+      "rating": 88,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Rhyse Martin",
+      "rating": 88,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Mikolaj Oledzki",
+      "rating": 87,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Kruise Leeming",
+      "rating": 85,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Alex Mellor",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Ava Seumanufagai",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Jack Walker",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Konrad Hurrell",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Liam Sutcliffe",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Luke Briscoe",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Luke Gale",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Matt Prior",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Robert Lui",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Richard Myler",
+      "rating": 82,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Brad Dwyer",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "James Donaldson",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2020
+    },
+    {
+      "name": "Daryl Clark",
+      "rating": 91,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Mike Cooper",
+      "rating": 89,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Ben Currie",
+      "rating": 88,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Blake Austin",
+      "rating": 88,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Toby King",
+      "rating": 88,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Chris Hill",
+      "rating": 85,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Jack Hughes",
+      "rating": 85,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Stefan Ratchford",
+      "rating": 85,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Anthony Gelling",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Gareth Widdop",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Jason Clark",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Josh Charnley",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Tom Lineham",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Ben Murdoch-Masila",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Danny Walker",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Joe Philbin",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Matthew Ashton",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2020
+    },
+    {
+      "name": "Liam Farrell",
+      "rating": 92,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Bevan French",
+      "rating": 90,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Sam Powell",
+      "rating": 90,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Jackson Hastings",
+      "rating": 89,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Morgan Smithies",
+      "rating": 88,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Sean O'Loughlin",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Dominic Manfredi",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Jake Bibby",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Joe Burgess",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Oliver Partington",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Thomas Leuluai",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Willie Isa",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Zak Hardaker",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Joe Bullock",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Ethan Havard",
+      "rating": 83,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Harry Smith",
+      "rating": 83,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Liam Byrne",
+      "rating": 83,
+      "club": "Wigan Warriors",
+      "year": 2020
+    },
+    {
+      "name": "Luke Yates",
+      "rating": 88,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Chris McQueen",
+      "rating": 86,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Michael Lawrence",
+      "rating": 86,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Ashton Golding",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Jacob Wardle",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Jermaine McGillvary",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Josh Jones",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Nathan Peats",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Oliver Russell",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Jack Cogger",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "James Gavet",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Louis Senior",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Ricky Leutele",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Matty English",
+      "rating": 82,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Owen Trout",
+      "rating": 82,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Joe Greenwood",
+      "rating": 81,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Sam Wood",
+      "rating": 80,
+      "club": "Huddersfield Giants",
+      "year": 2021
+    },
+    {
+      "name": "Jake Connor",
+      "rating": 87,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Carlos Tuimavave",
+      "rating": 85,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Josh Griffin",
+      "rating": 85,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Ligi Sao",
+      "rating": 85,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Adam Swift",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Andre Savelio",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Danny Houghton",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Jordan Lane",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Manu Ma'U",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Marc Sneyd",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Bureta Faraimo",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Josh Reynolds",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Brad Fash",
+      "rating": 82,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Jordan Johnstone",
+      "rating": 82,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Tevita Satae",
+      "rating": 82,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Cameron Scott",
+      "rating": 81,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Mahe Fonua",
+      "rating": 80,
+      "club": "Hull FC",
+      "year": 2021
+    },
+    {
+      "name": "Cameron Smith",
+      "rating": 86,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Mikolaj Oledzki",
+      "rating": 86,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Rhyse Martin",
+      "rating": 86,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Ash Handley",
+      "rating": 85,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Kruise Leeming",
+      "rating": 85,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Alex Mellor",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Harry Newman",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Liam Sutcliffe",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Luke Briscoe",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Luke Gale",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Matt Prior",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Tom Briscoe",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Zane Tetevano",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Richard Myler",
+      "rating": 83,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Bodene Thompson",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Brad Dwyer",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "James Donaldson",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2021
+    },
+    {
+      "name": "Daryl Clark",
+      "rating": 90,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Ben Currie",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Blake Austin",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Mike Cooper",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Toby King",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Chris Hill",
+      "rating": 85,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Jack Hughes",
+      "rating": 85,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Gareth Widdop",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Jake Mamo",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Josh Charnley",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Matt Davis",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Stefan Ratchford",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Tom Lineham",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Jason Clark",
+      "rating": 83,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Danny Walker",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Joe Philbin",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Robbie Mulhern",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2021
+    },
+    {
+      "name": "Liam Farrell",
+      "rating": 90,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Sam Powell",
+      "rating": 87,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Jackson Hastings",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Willie Isa",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Brad Singleton",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Harry Smith",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Jake Bibby",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "John Bateman",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Liam Marshall",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Oliver Gildart",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Oliver Partington",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Tony Clubb",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Zak Hardaker",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Liam Byrne",
+      "rating": 83,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Ethan Havard",
+      "rating": 82,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Joe Bullock",
+      "rating": 82,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Joe Shorrocks",
+      "rating": 81,
+      "club": "Wigan Warriors",
+      "year": 2021
+    },
+    {
+      "name": "Théo Fages",
+      "rating": 88,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Tui Lolohea",
+      "rating": 88,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Chris McQueen",
+      "rating": 87,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Luke Yates",
+      "rating": 86,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Chris Hill",
+      "rating": 85,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Leroy Cudjoe",
+      "rating": 85,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Oliver Russell",
+      "rating": 85,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Danny Levi",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Innes Senior",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Jermaine McGillvary",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Josh Jones",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Owen Trout",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Ricky Leutele",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Ashton Golding",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Oliver Wilson",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Joe Greenwood",
+      "rating": 82,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Matty English",
+      "rating": 82,
+      "club": "Huddersfield Giants",
+      "year": 2022
+    },
+    {
+      "name": "Jake Connor",
+      "rating": 85,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Adam Swift",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Danny Houghton",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Jordan Lane",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Josh Griffin",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Kane Evans",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Ligi Sao",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Luke Gale",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Manu Ma'U",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Brad Fash",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Connor Wynne",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Darnell McIntosh",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Josh Reynolds",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Tevita Satae",
+      "rating": 82,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Jordan Johnstone",
+      "rating": 81,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Jack Brown",
+      "rating": 80,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Joe Lovodua",
+      "rating": 80,
+      "club": "Hull FC",
+      "year": 2022
+    },
+    {
+      "name": "Cameron Smith",
+      "rating": 86,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Kruise Leeming",
+      "rating": 85,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Mikolaj Oledzki",
+      "rating": 85,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Rhyse Martin",
+      "rating": 85,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Aidan Sezer",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Ash Handley",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Blake Austin",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "David Fusitu'A",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "James Bentley",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Jarrod O'Connor",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Liam Sutcliffe",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Matt Prior",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Richard Myler",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Zak Hardaker",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Brad Dwyer",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "James Donaldson",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Morgan Gannon",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2022
+    },
+    {
+      "name": "Jacob Miller",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Jai Whitbread",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "James Batchelor",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Jay Pitts",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Liam Hood",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Mason Lino",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Mat Ashurst",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Max Jowitt",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Tinirau Arona",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Corey Hall",
+      "rating": 82,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Lewis Murphy",
+      "rating": 82,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Reece Lyne",
+      "rating": 82,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Tom Johnstone",
+      "rating": 82,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Jordan Crowther",
+      "rating": 81,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "David Fifita",
+      "rating": 80,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Eddie Battye",
+      "rating": 80,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Kelepi Tanginoa",
+      "rating": 80,
+      "club": "Wakefield Trinity",
+      "year": 2022
+    },
+    {
+      "name": "Daryl Clark",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "George Williams",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Toby King",
+      "rating": 85,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Ben Currie",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Mike Cooper",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Stefan Ratchford",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Jason Clark",
+      "rating": 83,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Josh Charnley",
+      "rating": 83,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Josh Thewlis",
+      "rating": 83,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Matthew Ashton",
+      "rating": 83,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Oliver Holmes",
+      "rating": 83,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Peter Mata'Utia",
+      "rating": 83,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Robbie Mulhern",
+      "rating": 83,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Danny Walker",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Joe Philbin",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Connor Wrench",
+      "rating": 80,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Joe Bullock",
+      "rating": 80,
+      "club": "Warrington Wolves",
+      "year": 2022
+    },
+    {
+      "name": "Bevan French",
+      "rating": 91,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Jai Field",
+      "rating": 90,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Liam Farrell",
+      "rating": 88,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Harry Smith",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Sam Powell",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Brad Singleton",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Cade Cust",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Jake Bibby",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "John Bateman",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Kai Pearce-Paul",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Liam Byrne",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Liam Marshall",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Morgan Smithies",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Ethan Havard",
+      "rating": 83,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Kaide Ellis",
+      "rating": 83,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Oliver Partington",
+      "rating": 83,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Patrick Mago",
+      "rating": 82,
+      "club": "Wigan Warriors",
+      "year": 2022
+    },
+    {
+      "name": "Chris McQueen",
+      "rating": 86,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Tui Lolohea",
+      "rating": 85,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Chris Hill",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Jake Connor",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Leroy Cudjoe",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Luke Yates",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Nathan Peats",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Esan Marsters",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Jermaine McGillvary",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Kevin Naiqama",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Oliver Wilson",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Sam Halsall",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Will Pryce",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Joe Greenwood",
+      "rating": 82,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Matty English",
+      "rating": 81,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Sam Hewitt",
+      "rating": 81,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Sebastine Ikahihifo",
+      "rating": 80,
+      "club": "Huddersfield Giants",
+      "year": 2023
+    },
+    {
+      "name": "Adam Swift",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Danny Houghton",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Jordan Lane",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Josh Griffin",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Brad Fash",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Carlos Tuimavave",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Darnell McIntosh",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Jacob Trueman",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Jake Clifford",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Joe Cator",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Liam Sutcliffe",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Scott Taylor",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Tex Hoy",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Brad Dwyer",
+      "rating": 80,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Cameron Scott",
+      "rating": 80,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Joe Lovodua",
+      "rating": 80,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Tevita Satae",
+      "rating": 80,
+      "club": "Hull FC",
+      "year": 2023
+    },
+    {
+      "name": "Cameron Smith",
+      "rating": 89,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Jarrod O'Connor",
+      "rating": 87,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Aidan Sezer",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Ash Handley",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Blake Austin",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "James McDonnell",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Mikolaj Oledzki",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Rhyse Martin",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Richard Myler",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Tom Holroyd",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "David Fusitu'A",
+      "rating": 83,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Harry Newman",
+      "rating": 83,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "James Bentley",
+      "rating": 83,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "James Donaldson",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Justin Sangaré",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Sam Lisone",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Corey Johnson",
+      "rating": 80,
+      "club": "Leeds Rhinos",
+      "year": 2023
+    },
+    {
+      "name": "Jai Whitbread",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Jay Pitts",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Josh Bowden",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Liam Hood",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Mason Lino",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Mat Ashurst",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Max Jowitt",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Morgan Smith",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Tom Lineham",
+      "rating": 83,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Jordan Crowther",
+      "rating": 82,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Lee Kershaw",
+      "rating": 82,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Reece Lyne",
+      "rating": 82,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Samisoni Langi",
+      "rating": 82,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Eddie Battye",
+      "rating": 80,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Kevin Proctor",
+      "rating": 80,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Liam Kay",
+      "rating": 80,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "Renouf Atoni",
+      "rating": 80,
+      "club": "Wakefield Trinity",
+      "year": 2023
+    },
+    {
+      "name": "George Williams",
+      "rating": 89,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Paul Vaughan",
+      "rating": 89,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Matt Dufty",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Ben Currie",
+      "rating": 85,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Danny Walker",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "James Harrison",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Josh Drinkwater",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Josh Thewlis",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Matthew Ashton",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Matty Nicholson",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Stefan Ratchford",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Thomas Mikaele",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Peter Mata'Utia",
+      "rating": 83,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Daryl Clark",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Joe Philbin",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Joe Bullock",
+      "rating": 81,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Sam Kasiano",
+      "rating": 81,
+      "club": "Warrington Wolves",
+      "year": 2023
+    },
+    {
+      "name": "Bevan French",
+      "rating": 91,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Harry Smith",
+      "rating": 89,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Liam Farrell",
+      "rating": 89,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Jai Field",
+      "rating": 87,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Toby King",
+      "rating": 87,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Jacob Wardle",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Liam Marshall",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Morgan Smithies",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Abbas Miski",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Kai Pearce-Paul",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Kaide Ellis",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Liam Byrne",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Sam Powell",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Bradley O'Neill",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Ethan Havard",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Patrick Mago",
+      "rating": 83,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Joe Shorrocks",
+      "rating": 82,
+      "club": "Wigan Warriors",
+      "year": 2023
+    },
+    {
+      "name": "Adam Swift",
+      "rating": 86,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Jake Connor",
+      "rating": 85,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Adam Milner",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Chris Hill",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Harry Rushton",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Leroy Cudjoe",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Tui Lolohea",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Adam Clune",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Elliot Wallis",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Esan Marsters",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Joe Greenwood",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Kevin Naiqama",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Oliver Wilson",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Sam Hewitt",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Ashton Golding",
+      "rating": 81,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Oliver Russell",
+      "rating": 81,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Sebastine Ikahihifo",
+      "rating": 80,
+      "club": "Huddersfield Giants",
+      "year": 2024
+    },
+    {
+      "name": "Herman Ese'Ese",
+      "rating": 90,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Danny Houghton",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Jordan Lane",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Carlos Tuimavave",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Jack Charles",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Jayden Okunbor",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Liam Sutcliffe",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Ligi Sao",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Logan Moy",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Morgan Smith",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Yusuf Aydin",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Brad Fash",
+      "rating": 82,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Harvey Barron",
+      "rating": 82,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Lewis Martin",
+      "rating": 82,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Jack Ashworth",
+      "rating": 81,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Denive Balmforth",
+      "rating": 80,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Will Gardiner",
+      "rating": 80,
+      "club": "Hull FC",
+      "year": 2024
+    },
+    {
+      "name": "Cameron Smith",
+      "rating": 87,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "James McDonnell",
+      "rating": 85,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Jarrod O'Connor",
+      "rating": 85,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Lachlan Miller",
+      "rating": 85,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Andy Ackers",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Ash Handley",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Brodie Croft",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Mikolaj Oledzki",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Rhyse Martin",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "David Fusitu'A",
+      "rating": 83,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Harry Newman",
+      "rating": 83,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Justin Sangaré",
+      "rating": 83,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Matt Frawley",
+      "rating": 83,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Paul Momirovski",
+      "rating": 83,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "James Bentley",
+      "rating": 82,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Sam Lisone",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "Mickaël Goudemand",
+      "rating": 80,
+      "club": "Leeds Rhinos",
+      "year": 2024
+    },
+    {
+      "name": "George Williams",
+      "rating": 90,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Matt Dufty",
+      "rating": 87,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Paul Vaughan",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Toby King",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Ben Currie",
+      "rating": 85,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Danny Walker",
+      "rating": 85,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "James Harrison",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Josh Drinkwater",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Josh Thewlis",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Lachlan Fitzgibbon",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Matthew Ashton",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Matty Nicholson",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Rodrick Tai",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Sam Powell",
+      "rating": 83,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Joe Philbin",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Jordan Crowther",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Zane Musgrove",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2024
+    },
+    {
+      "name": "Bevan French",
+      "rating": 91,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Junior Nsemba",
+      "rating": 89,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Harry Smith",
+      "rating": 87,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Liam Farrell",
+      "rating": 87,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Jacob Wardle",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Jai Field",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Kaide Ellis",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Liam Marshall",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Luke Thompson",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Abbas Miski",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Adam Keighran",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Bradley O'Neill",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Ethan Havard",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Liam Byrne",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Kruise Leeming",
+      "rating": 83,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Patrick Mago",
+      "rating": 83,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Tyler Dupree",
+      "rating": 82,
+      "club": "Wigan Warriors",
+      "year": 2024
+    },
+    {
+      "name": "Zac Woolford",
+      "rating": 87,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Adam Swift",
+      "rating": 85,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Oliver Wilson",
+      "rating": 85,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Joe Greenwood",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Leroy Cudjoe",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "George Flanagan Jr",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Harry Rushton",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Jake Bibby",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Matt Frawley",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Tristan Powell",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Tui Lolohea",
+      "rating": 83,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Sam Halsall",
+      "rating": 82,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Taane Milne",
+      "rating": 82,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Ashton Golding",
+      "rating": 81,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Matty English",
+      "rating": 81,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Kieran Rush",
+      "rating": 80,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Thomas Burgess",
+      "rating": 80,
+      "club": "Huddersfield Giants",
+      "year": 2025
+    },
+    {
+      "name": "Herman Ese'Ese",
+      "rating": 90,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Will Pryce",
+      "rating": 87,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Aidan Sezer",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Amir Bourouh",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Ed Chamberlain",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "John Asiata",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Jordan Lane",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Liam Knight",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Yusuf Aydin",
+      "rating": 84,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Cade Cust",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Davy Litten",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Harvey Barron",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Lewis Martin",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Tom Briscoe",
+      "rating": 83,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Jack Ashworth",
+      "rating": 82,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Brad Fash",
+      "rating": 81,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Sam Eseh",
+      "rating": 80,
+      "club": "Hull FC",
+      "year": 2025
+    },
+    {
+      "name": "Kallum Watkins",
+      "rating": 88,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Lachlan Miller",
+      "rating": 88,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "James McDonnell",
+      "rating": 87,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Ash Handley",
+      "rating": 86,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Brodie Croft",
+      "rating": 86,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Jake Connor",
+      "rating": 86,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Jarrod O'Connor",
+      "rating": 86,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Mikolaj Oledzki",
+      "rating": 85,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Cooper Jenkins",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Harry Newman",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Morgan Gannon",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Riley Lumb",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Ryan Hall",
+      "rating": 84,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "James Bentley",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Keenan Palasia",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Sam Lisone",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Tom Holroyd",
+      "rating": 81,
+      "club": "Leeds Rhinos",
+      "year": 2025
+    },
+    {
+      "name": "Ethan O'Neill",
+      "rating": 87,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Umyla Hanley",
+      "rating": 87,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Edwin Ipape",
+      "rating": 86,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Isaac Liu",
+      "rating": 85,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Lachlan Lam",
+      "rating": 85,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Owen Trout",
+      "rating": 85,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Robbie Mulhern",
+      "rating": 85,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Bailey Hodgson",
+      "rating": 84,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Frankie Halton",
+      "rating": 84,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Gareth O'Brien",
+      "rating": 84,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Josh Charnley",
+      "rating": 84,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Keanan Brand",
+      "rating": 84,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Tesi Niu",
+      "rating": 84,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Alec Tuitavake",
+      "rating": 82,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Jack Hughes",
+      "rating": 82,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Joe Ofahengaue",
+      "rating": 82,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Matt Davis",
+      "rating": 82,
+      "club": "Leigh Leopards",
+      "year": 2025
+    },
+    {
+      "name": "Mike McMeeken",
+      "rating": 88,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Jay Pitts",
+      "rating": 87,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Josh Griffin",
+      "rating": 85,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Mason Lino",
+      "rating": 85,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Tom Johnstone",
+      "rating": 85,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Caius Faatili",
+      "rating": 84,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Corey Hall",
+      "rating": 84,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Isaiah Vagana",
+      "rating": 84,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Jacob Trueman",
+      "rating": 84,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Lachlan Walmsley",
+      "rating": 84,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Liam Hood",
+      "rating": 84,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Matthew Storton",
+      "rating": 84,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Max Jowitt",
+      "rating": 84,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Oliver Pratt",
+      "rating": 84,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Cameron Scott",
+      "rating": 81,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Harvey Smith",
+      "rating": 81,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "Renouf Atoni",
+      "rating": 81,
+      "club": "Wakefield Trinity",
+      "year": 2025
+    },
+    {
+      "name": "George Williams",
+      "rating": 88,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Ben Currie",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Danny Walker",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Luke Yates",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Matt Dufty",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Adam Holroyd",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Josh Thewlis",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Lachlan Fitzgibbon",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Marc Sneyd",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Paul Vaughan",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Toby King",
+      "rating": 84,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Jake Thewlis",
+      "rating": 83,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Rodrick Tai",
+      "rating": 83,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "James Harrison",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Joe Philbin",
+      "rating": 81,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Jordan Crowther",
+      "rating": 81,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Sam Powell",
+      "rating": 81,
+      "club": "Warrington Wolves",
+      "year": 2025
+    },
+    {
+      "name": "Bevan French",
+      "rating": 89,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Junior Nsemba",
+      "rating": 88,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Kaide Ellis",
+      "rating": 88,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Jai Field",
+      "rating": 87,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Liam Farrell",
+      "rating": 87,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Harry Smith",
+      "rating": 86,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Bradley O'Neill",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Jacob Wardle",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Liam Byrne",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Liam Marshall",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Luke Thompson",
+      "rating": 85,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Adam Keighran",
+      "rating": 84,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Kruise Leeming",
+      "rating": 83,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Zach Eckersley",
+      "rating": 83,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Patrick Mago",
+      "rating": 82,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Sam Walters",
+      "rating": 82,
+      "club": "Wigan Warriors",
+      "year": 2025
+    },
+    {
+      "name": "Tyler Dupree",
+      "rating": 82,
+      "club": "Wigan Warriors",
+      "year": 2025
+    }
+  ]
+}

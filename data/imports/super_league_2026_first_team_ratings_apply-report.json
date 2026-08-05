@@ -1,0 +1,3447 @@
+{
+  "generatedAt": "2026-08-04T23:33:11.432Z",
+  "importPath": "data/imports/super_league_2026_first_team_ratings_cursor_import.json",
+  "eligiblePlayerCount": 345,
+  "excludedPlayerCount": 149,
+  "processedEligible": 345,
+  "updated": 212,
+  "unmatched": 133,
+  "ambiguous": 0,
+  "excludedUntouched": true,
+  "excludedTouchedIds": [],
+  "ratingOverrideCount": 212,
+  "potentialOverrideCount": 212,
+  "requiredChecks": {
+    "Bevan French": {
+      "id": "wigan-cur-bevan-french",
+      "name": "Bevan French",
+      "club": "Wigan Warriors",
+      "importName": "Bevan French",
+      "via": "name+club",
+      "overallBefore": 93,
+      "overallAfter": 93,
+      "valueBefore": 438000,
+      "valueAfter": 438000,
+      "potential": 93
+    },
+    "Mikey Lewis": {
+      "id": "hull-kr-cur-mikey-lewis",
+      "name": "Mikey Lewis",
+      "club": "Hull KR",
+      "importName": "Mikey Lewis",
+      "via": "name+club",
+      "overallBefore": 92,
+      "overallAfter": 92,
+      "valueBefore": 375000,
+      "valueAfter": 375000,
+      "potential": 94
+    },
+    "Jack Welsby": {
+      "id": "st-helens-cur-jack-welsby",
+      "name": "Jack Welsby",
+      "club": "St Helens",
+      "importName": "Jack Welsby",
+      "via": "name+club",
+      "overallBefore": 87,
+      "overallAfter": 87,
+      "valueBefore": 215000,
+      "valueAfter": 215000,
+      "potential": 91
+    },
+    "Joe Mellor": {
+      "id": "bradford-cur-joe-mellor",
+      "name": "Joe Mellor",
+      "club": "Bradford Bulls",
+      "importName": "Joe Mellor",
+      "via": "name+club",
+      "overallBefore": 87,
+      "overallAfter": 87,
+      "valueBefore": 215000,
+      "valueAfter": 215000,
+      "potential": 89
+    },
+    "Olly Ashall-Bott": {
+      "id": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "club": "Toulouse Olympique",
+      "importName": "Oliver Ashall-Bott",
+      "via": "alias+club",
+      "overallBefore": 89,
+      "overallAfter": 87,
+      "valueBefore": 250000,
+      "valueAfter": 215000,
+      "potential": 89
+    },
+    "George Flanagan Jr": {
+      "id": "huddersfield-cur-george-flanagan-jr",
+      "name": "George Flanagan Jr",
+      "club": "Huddersfield Giants",
+      "importName": "George Flanagan",
+      "via": "alias+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 91
+    },
+    "Zach Eckersley": {
+      "id": "wigan-cur-zach-eckersley",
+      "name": "Zach Eckersley",
+      "club": "Wigan Warriors",
+      "importName": "Zach Eckersley",
+      "via": "name+club",
+      "overallBefore": 88,
+      "overallAfter": 88,
+      "valueBefore": 248000,
+      "valueAfter": 248000,
+      "potential": 92
+    }
+  },
+  "updatedPlayers": [
+    {
+      "id": "wigan-cur-bevan-french",
+      "name": "Bevan French",
+      "club": "Wigan Warriors",
+      "importName": "Bevan French",
+      "via": "name+club",
+      "overallBefore": 93,
+      "overallAfter": 93,
+      "valueBefore": 438000,
+      "valueAfter": 438000,
+      "potential": 93
+    },
+    {
+      "id": "hull-kr-cur-mikey-lewis",
+      "name": "Mikey Lewis",
+      "club": "Hull KR",
+      "importName": "Mikey Lewis",
+      "via": "name+club",
+      "overallBefore": 92,
+      "overallAfter": 92,
+      "valueBefore": 375000,
+      "valueAfter": 375000,
+      "potential": 94
+    },
+    {
+      "id": "leeds-cur-jake-connor",
+      "name": "Jake Connor",
+      "club": "Leeds Rhinos",
+      "importName": "Jake Connor",
+      "via": "name+club",
+      "overallBefore": 91,
+      "overallAfter": 91,
+      "valueBefore": 313000,
+      "valueAfter": 313000,
+      "potential": 91
+    },
+    {
+      "id": "leeds-cur-maika-sivo",
+      "name": "Maika Sivo",
+      "club": "Leeds Rhinos",
+      "importName": "Maika Sivo",
+      "via": "name+club",
+      "overallBefore": 91,
+      "overallAfter": 91,
+      "valueBefore": 313000,
+      "valueAfter": 313000,
+      "potential": 91
+    },
+    {
+      "id": "st-helens-cur-tristan-sailor",
+      "name": "Tristan Sailor",
+      "club": "St Helens",
+      "importName": "Tristan Sailor",
+      "via": "name+club",
+      "overallBefore": 90,
+      "overallAfter": 90,
+      "valueBefore": 250000,
+      "valueAfter": 250000,
+      "potential": 92
+    },
+    {
+      "id": "leeds-cur-brodie-croft",
+      "name": "Brodie Croft",
+      "club": "Leeds Rhinos",
+      "importName": "Brodie Croft",
+      "via": "name+club",
+      "overallBefore": 90,
+      "overallAfter": 90,
+      "valueBefore": 250000,
+      "valueAfter": 250000,
+      "potential": 90
+    },
+    {
+      "id": "leeds-cur-james-mcdonnell",
+      "name": "James McDonnell",
+      "club": "Leeds Rhinos",
+      "importName": "James McDonnell",
+      "via": "name+club",
+      "overallBefore": 89,
+      "overallAfter": 89,
+      "valueBefore": 280000,
+      "valueAfter": 280000,
+      "potential": 91
+    },
+    {
+      "id": "catalans-cur-charlie-staines",
+      "name": "Charlie Staines",
+      "club": "Catalans Dragons",
+      "importName": "Charlie Staines",
+      "via": "name+club",
+      "overallBefore": 89,
+      "overallAfter": 89,
+      "valueBefore": 280000,
+      "valueAfter": 280000,
+      "potential": 90
+    },
+    {
+      "id": "wigan-cur-kaide-ellis",
+      "name": "Kaide Ellis",
+      "club": "Wigan Warriors",
+      "importName": "Kaide Ellis",
+      "via": "name+club",
+      "overallBefore": 89,
+      "overallAfter": 89,
+      "valueBefore": 280000,
+      "valueAfter": 280000,
+      "potential": 89
+    },
+    {
+      "id": "wigan-cur-jai-field",
+      "name": "Jai Field",
+      "club": "Wigan Warriors",
+      "importName": "Jai Field",
+      "via": "name+club",
+      "overallBefore": 89,
+      "overallAfter": 89,
+      "valueBefore": 280000,
+      "valueAfter": 280000,
+      "potential": 89
+    },
+    {
+      "id": "hull-fc-cur-herman-eseese",
+      "name": "Herman Ese'ese",
+      "club": "Hull FC",
+      "importName": "Herman Ese'ese",
+      "via": "name+club",
+      "overallBefore": 89,
+      "overallAfter": 89,
+      "valueBefore": 280000,
+      "valueAfter": 280000,
+      "potential": 89
+    },
+    {
+      "id": "wigan-cur-zach-eckersley",
+      "name": "Zach Eckersley",
+      "club": "Wigan Warriors",
+      "importName": "Zach Eckersley",
+      "via": "name+club",
+      "overallBefore": 88,
+      "overallAfter": 88,
+      "valueBefore": 248000,
+      "valueAfter": 248000,
+      "potential": 92
+    },
+    {
+      "id": "wakefield-cur-jake-trueman",
+      "name": "Jake Trueman",
+      "club": "Wakefield Trinity",
+      "importName": "Jake Trueman",
+      "via": "name+club",
+      "overallBefore": 88,
+      "overallAfter": 88,
+      "valueBefore": 248000,
+      "valueAfter": 248000,
+      "potential": 89
+    },
+    {
+      "id": "warrington-cur-ben-currie",
+      "name": "Ben Currie",
+      "club": "Warrington Wolves",
+      "importName": "Ben Currie",
+      "via": "name+club",
+      "overallBefore": 88,
+      "overallAfter": 88,
+      "valueBefore": 248000,
+      "valueAfter": 248000,
+      "potential": 88
+    },
+    {
+      "id": "wakefield-cur-caleb-hamlin-uele",
+      "name": "Caleb Hamlin-Uele",
+      "club": "Wakefield Trinity",
+      "importName": "Caleb Hamlin-Uele",
+      "via": "name+club",
+      "overallBefore": 88,
+      "overallAfter": 88,
+      "valueBefore": 248000,
+      "valueAfter": 248000,
+      "potential": 88
+    },
+    {
+      "id": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "club": "Toulouse Olympique",
+      "importName": "Mathieu Jussaume",
+      "via": "name+club",
+      "overallBefore": 88,
+      "overallAfter": 88,
+      "valueBefore": 248000,
+      "valueAfter": 248000,
+      "potential": 88
+    },
+    {
+      "id": "wakefield-cur-mike-mcmeeken",
+      "name": "Mike McMeeken",
+      "club": "Wakefield Trinity",
+      "importName": "Mike McMeeken",
+      "via": "name+club",
+      "overallBefore": 88,
+      "overallAfter": 88,
+      "valueBefore": 248000,
+      "valueAfter": 248000,
+      "potential": 88
+    },
+    {
+      "id": "st-helens-cur-jack-welsby",
+      "name": "Jack Welsby",
+      "club": "St Helens",
+      "importName": "Jack Welsby",
+      "via": "name+club",
+      "overallBefore": 87,
+      "overallAfter": 87,
+      "valueBefore": 215000,
+      "valueAfter": 215000,
+      "potential": 91
+    },
+    {
+      "id": "bradford-cur-joe-mellor",
+      "name": "Joe Mellor",
+      "club": "Bradford Bulls",
+      "importName": "Joe Mellor",
+      "via": "name+club",
+      "overallBefore": 87,
+      "overallAfter": 87,
+      "valueBefore": 215000,
+      "valueAfter": 215000,
+      "potential": 89
+    },
+    {
+      "id": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "club": "Toulouse Olympique",
+      "importName": "Oliver Ashall-Bott",
+      "via": "alias+club",
+      "overallBefore": 89,
+      "overallAfter": 87,
+      "valueBefore": 250000,
+      "valueAfter": 215000,
+      "potential": 89
+    },
+    {
+      "id": "warrington-cur-danny-walker",
+      "name": "Danny Walker",
+      "club": "Warrington Wolves",
+      "importName": "Danny Walker",
+      "via": "name+club",
+      "overallBefore": 87,
+      "overallAfter": 87,
+      "valueBefore": 215000,
+      "valueAfter": 215000,
+      "potential": 89
+    },
+    {
+      "id": "leigh-cur-edwin-ipape",
+      "name": "Edwin Ipape",
+      "club": "Leigh Leopards",
+      "importName": "Edwin Ipape",
+      "via": "name+club",
+      "overallBefore": 87,
+      "overallAfter": 87,
+      "valueBefore": 215000,
+      "valueAfter": 215000,
+      "potential": 89
+    },
+    {
+      "id": "warrington-cur-matty-ashton",
+      "name": "Matty Ashton",
+      "club": "Warrington Wolves",
+      "importName": "Matty Ashton",
+      "via": "name+club",
+      "overallBefore": 87,
+      "overallAfter": 87,
+      "valueBefore": 215000,
+      "valueAfter": 215000,
+      "potential": 88
+    },
+    {
+      "id": "warrington-cur-george-williams",
+      "name": "George Williams",
+      "club": "Warrington Wolves",
+      "importName": "George Williams",
+      "via": "name+club",
+      "overallBefore": 87,
+      "overallAfter": 87,
+      "valueBefore": 215000,
+      "valueAfter": 215000,
+      "potential": 88
+    },
+    {
+      "id": "york-cur-paul-vaughan",
+      "name": "Paul Vaughan",
+      "club": "York Knights",
+      "importName": "Paul Vaughan",
+      "via": "name+club",
+      "overallBefore": 87,
+      "overallAfter": 87,
+      "valueBefore": 215000,
+      "valueAfter": 215000,
+      "potential": 87
+    },
+    {
+      "id": "wigan-cur-junior-nsemba",
+      "name": "Junior Nsemba",
+      "club": "Wigan Warriors",
+      "importName": "Junior Nsemba",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 91
+    },
+    {
+      "id": "leigh-cur-lachlan-lam",
+      "name": "Lachlan Lam",
+      "club": "Leigh Leopards",
+      "importName": "Lachlan Lam",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 90
+    },
+    {
+      "id": "wakefield-cur-tom-johnstone",
+      "name": "Tom Johnstone",
+      "club": "Wakefield Trinity",
+      "importName": "Tom Johnstone",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 89
+    },
+    {
+      "id": "leigh-cur-umyla-hanley",
+      "name": "Umyla Hanley",
+      "club": "Leigh Leopards",
+      "importName": "Umyla Hanley",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 88
+    },
+    {
+      "id": "leeds-cur-ash-handley",
+      "name": "Ash Handley",
+      "club": "Leeds Rhinos",
+      "importName": "Ash Handley",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 88
+    },
+    {
+      "id": "wigan-cur-harry-smith",
+      "name": "Harry Smith",
+      "club": "Wigan Warriors",
+      "importName": "Harry Smith",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 88
+    },
+    {
+      "id": "st-helens-cur-matty-lees",
+      "name": "Matty Lees",
+      "club": "St Helens",
+      "importName": "Matty Lees",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 87
+    },
+    {
+      "id": "hull-kr-cur-tyrone-may",
+      "name": "Tyrone May",
+      "club": "Hull KR",
+      "importName": "Tyrone May",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 86
+    },
+    {
+      "id": "bradford-cur-andy-ackers",
+      "name": "Andy Ackers",
+      "club": "Bradford Bulls",
+      "importName": "Andy Ackers",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 86
+    },
+    {
+      "id": "st-helens-cur-daryl-clark",
+      "name": "Daryl Clark",
+      "club": "St Helens",
+      "importName": "Daryl Clark",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 86
+    },
+    {
+      "id": "st-helens-cur-mark-percival",
+      "name": "Mark Percival",
+      "club": "St Helens",
+      "importName": "Mark Percival",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 86
+    },
+    {
+      "id": "wigan-cur-liam-marshall",
+      "name": "Liam Marshall",
+      "club": "Wigan Warriors",
+      "importName": "Liam Marshall",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 86
+    },
+    {
+      "id": "hull-kr-cur-peta-hiku",
+      "name": "Peta Hiku",
+      "club": "Hull KR",
+      "importName": "Peta Hiku",
+      "via": "name+club",
+      "overallBefore": 86,
+      "overallAfter": 86,
+      "valueBefore": 183000,
+      "valueAfter": 183000,
+      "potential": 86
+    },
+    {
+      "id": "hull-fc-cur-jake-arthur",
+      "name": "Jake Arthur",
+      "club": "Hull FC",
+      "importName": "Jake Arthur",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 90
+    },
+    {
+      "id": "hull-fc-cur-will-pryce",
+      "name": "Will Pryce",
+      "club": "Hull FC",
+      "importName": "Will Pryce",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 89
+    },
+    {
+      "id": "huddersfield-cur-jacob-gagai",
+      "name": "Jacob Gagai",
+      "club": "Huddersfield Giants",
+      "importName": "Jacob Gagai",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 88
+    },
+    {
+      "id": "hull-kr-cur-tom-davies",
+      "name": "Tom Davies",
+      "club": "Hull KR",
+      "importName": "Tom Davies",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 88
+    },
+    {
+      "id": "huddersfield-cur-taane-milne",
+      "name": "Taane Milne",
+      "club": "Huddersfield Giants",
+      "importName": "Taane Milne",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 87
+    },
+    {
+      "id": "wigan-cur-ethan-havard",
+      "name": "Ethan Havard",
+      "club": "Wigan Warriors",
+      "importName": "Ethan Havard",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 87
+    },
+    {
+      "id": "wigan-cur-luke-thompson",
+      "name": "Luke Thompson",
+      "club": "Wigan Warriors",
+      "importName": "Luke Thompson",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 87
+    },
+    {
+      "id": "warrington-cur-marc-sneyd",
+      "name": "Marc Sneyd",
+      "club": "Warrington Wolves",
+      "importName": "Marc Sneyd",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 87
+    },
+    {
+      "id": "leeds-cur-harry-newman",
+      "name": "Harry Newman",
+      "club": "Leeds Rhinos",
+      "importName": "Harry Newman",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 87
+    },
+    {
+      "id": "hull-kr-cur-elliot-minchella",
+      "name": "Elliot Minchella",
+      "club": "Hull KR",
+      "importName": "Elliot Minchella",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 85
+    },
+    {
+      "id": "leeds-cur-jarrod-o-connor",
+      "name": "Jarrod O'Connor",
+      "club": "Leeds Rhinos",
+      "importName": "Jarrod O'Connor",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 85
+    },
+    {
+      "id": "wigan-cur-liam-farrell",
+      "name": "Liam Farrell",
+      "club": "Wigan Warriors",
+      "importName": "Liam Farrell",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 85
+    },
+    {
+      "id": "wakefield-cur-max-jowitt",
+      "name": "Max Jowitt",
+      "club": "Wakefield Trinity",
+      "importName": "Max Jowitt",
+      "via": "name+club",
+      "overallBefore": 85,
+      "overallAfter": 85,
+      "valueBefore": 150000,
+      "valueAfter": 150000,
+      "potential": 85
+    },
+    {
+      "id": "wigan-cur-brad-o-neill",
+      "name": "Brad O'Neill",
+      "club": "Wigan Warriors",
+      "importName": "Brad O'Neill",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 91
+    },
+    {
+      "id": "york-cur-oliver-field",
+      "name": "Oliver Field",
+      "club": "York Knights",
+      "importName": "Oliver Field",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 90
+    },
+    {
+      "id": "wigan-cur-jake-wardle",
+      "name": "Jake Wardle",
+      "club": "Wigan Warriors",
+      "importName": "Jake Wardle",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 88
+    },
+    {
+      "id": "hull-fc-cur-lewis-martin",
+      "name": "Lewis Martin",
+      "club": "Hull FC",
+      "importName": "Lewis Martin",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 88
+    },
+    {
+      "id": "catalans-cur-lewis-dodd",
+      "name": "Lewis Dodd",
+      "club": "Catalans Dragons",
+      "importName": "Lewis Dodd",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 87
+    },
+    {
+      "id": "leeds-cur-mikolaj-oledzki",
+      "name": "Mikolaj Oledzki",
+      "club": "Leeds Rhinos",
+      "importName": "Mikolaj Oledzki",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 87
+    },
+    {
+      "id": "catalans-cur-toby-sexton",
+      "name": "Toby Sexton",
+      "club": "Catalans Dragons",
+      "importName": "Toby Sexton",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 87
+    },
+    {
+      "id": "castleford-cur-daejarn-asi",
+      "name": "Daejarn Asi",
+      "club": "Castleford Tigers",
+      "importName": "Daejarn Asi",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 86
+    },
+    {
+      "id": "hull-fc-cur-amir-bourouh",
+      "name": "Amir Bourouh",
+      "club": "Hull FC",
+      "importName": "Amir Bourouh",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 86
+    },
+    {
+      "id": "hull-kr-cur-tom-amone",
+      "name": "Tom Amone",
+      "club": "Hull KR",
+      "importName": "Tom Amone",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 85
+    },
+    {
+      "id": "catalans-cur-nick-cotric",
+      "name": "Nick Čotrić",
+      "club": "Catalans Dragons",
+      "importName": "Nick Cotric",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 85
+    },
+    {
+      "id": "hull-kr-cur-james-batchelor",
+      "name": "James Batchelor",
+      "club": "Hull KR",
+      "importName": "James Batchelor",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 84
+    },
+    {
+      "id": "bradford-cur-caleb-aekins",
+      "name": "Caleb Aekins",
+      "club": "Bradford Bulls",
+      "importName": "Caleb Aekins",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 84
+    },
+    {
+      "id": "st-helens-cur-curtis-sironen",
+      "name": "Curtis Sironen",
+      "club": "St Helens",
+      "importName": "Curtis Sironen",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 84
+    },
+    {
+      "id": "warrington-cur-luke-yates",
+      "name": "Luke Yates",
+      "club": "Warrington Wolves",
+      "importName": "Luke Yates",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 84
+    },
+    {
+      "id": "st-helens-cur-alex-walmsley",
+      "name": "Alex Walmsley",
+      "club": "St Helens",
+      "importName": "Alex Walmsley",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 84
+    },
+    {
+      "id": "huddersfield-cur-tui-lolohea",
+      "name": "Tui Lolohea",
+      "club": "Huddersfield Giants",
+      "importName": "Tui Lolohea",
+      "via": "name+club",
+      "overallBefore": 84,
+      "overallAfter": 84,
+      "valueBefore": 180000,
+      "valueAfter": 180000,
+      "potential": 84
+    },
+    {
+      "id": "huddersfield-cur-george-flanagan-jr",
+      "name": "George Flanagan Jr",
+      "club": "Huddersfield Giants",
+      "importName": "George Flanagan",
+      "via": "alias+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 91
+    },
+    {
+      "id": "warrington-cur-josh-thewlis",
+      "name": "Josh Thewlis",
+      "club": "Warrington Wolves",
+      "importName": "Josh Thewlis",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 87
+    },
+    {
+      "id": "hull-kr-cur-arthur-mourgue",
+      "name": "Arthur Mourgue",
+      "club": "Hull KR",
+      "importName": "Arthur Mourgue",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 86
+    },
+    {
+      "id": "wakefield-cur-ky-rodwell",
+      "name": "Ky Rodwell",
+      "club": "Wakefield Trinity",
+      "importName": "Ky Rodwell",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 86
+    },
+    {
+      "id": "catalans-cur-ben-condon",
+      "name": "Ben Condon",
+      "club": "Catalans Dragons",
+      "importName": "Ben Condon",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 85
+    },
+    {
+      "id": "hull-kr-cur-jez-litten",
+      "name": "Jez Litten",
+      "club": "Hull KR",
+      "importName": "Jez Litten",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 85
+    },
+    {
+      "id": "bradford-cur-zac-fulton",
+      "name": "Zac Fulton",
+      "club": "Bradford Bulls",
+      "importName": "Zac Fulton",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 84
+    },
+    {
+      "id": "leigh-cur-robbie-mulhern",
+      "name": "Robbie Mulhern",
+      "club": "Leigh Leopards",
+      "importName": "Robbie Mulhern",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 84
+    },
+    {
+      "id": "hull-fc-cur-joe-batchelor",
+      "name": "Joe Batchelor",
+      "club": "Hull FC",
+      "importName": "Joe Batchelor",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 83
+    },
+    {
+      "id": "wakefield-cur-jay-pitts",
+      "name": "Jay Pitts",
+      "club": "Wakefield Trinity",
+      "importName": "Jay Pitts",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 83
+    },
+    {
+      "id": "leigh-cur-isaac-liu",
+      "name": "Isaac Liu",
+      "club": "Leigh Leopards",
+      "importName": "Isaac Liu",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 83
+    },
+    {
+      "id": "hull-fc-cur-aidan-sezer",
+      "name": "Aidan Sezer",
+      "club": "Hull FC",
+      "importName": "Aidan Sezer",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 83
+    },
+    {
+      "id": "st-helens-cur-david-klemmer",
+      "name": "David Klemmer",
+      "club": "St Helens",
+      "importName": "David Klemmer",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 83
+    },
+    {
+      "id": "bradford-cur-esan-marsters",
+      "name": "Esan Marsters",
+      "club": "Bradford Bulls",
+      "importName": "Esan Marsters",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 83
+    },
+    {
+      "id": "wakefield-cur-jazz-tevaga",
+      "name": "Jazz Tevaga",
+      "club": "Wakefield Trinity",
+      "importName": "Jazz Tevaga",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 83
+    },
+    {
+      "id": "leigh-cur-joe-ofahengaue",
+      "name": "Joe Ofahengaue",
+      "club": "Leigh Leopards",
+      "importName": "Joe Ofahengaue",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 83
+    },
+    {
+      "id": "st-helens-cur-jonny-lomax",
+      "name": "Jonny Lomax",
+      "club": "St Helens",
+      "importName": "Jonny Lomax",
+      "via": "name+club",
+      "overallBefore": 83,
+      "overallAfter": 83,
+      "valueBefore": 158000,
+      "valueAfter": 158000,
+      "potential": 83
+    },
+    {
+      "id": "york-cur-denive-balmforth",
+      "name": "Denive Balmforth",
+      "club": "York Knights",
+      "importName": "Denive Balmforth",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 88
+    },
+    {
+      "id": "st-helens-cur-george-delaney",
+      "name": "George Delaney",
+      "club": "St Helens",
+      "importName": "George Delaney",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 87
+    },
+    {
+      "id": "leeds-cur-tom-holroyd",
+      "name": "Tom Holroyd",
+      "club": "Leeds Rhinos",
+      "importName": "Tom Holroyd",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 86
+    },
+    {
+      "id": "leigh-cur-tesi-niu",
+      "name": "Tesi Niu",
+      "club": "Leigh Leopards",
+      "importName": "Tesi Niu",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 84
+    },
+    {
+      "id": "warrington-cur-albert-hopoate",
+      "name": "Albert Hopoate",
+      "club": "Warrington Wolves",
+      "importName": "Albert Hopoate",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 83
+    },
+    {
+      "id": "wakefield-cur-cameron-scott",
+      "name": "Cameron Scott",
+      "club": "Wakefield Trinity",
+      "importName": "Cameron Scott",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 83
+    },
+    {
+      "id": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "club": "Toulouse Olympique",
+      "importName": "Jake Shorrocks",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 83
+    },
+    {
+      "id": "york-cur-liam-harris",
+      "name": "Liam Harris",
+      "club": "York Knights",
+      "importName": "Liam Harris",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 83
+    },
+    {
+      "id": "hull-kr-cur-joe-burgess",
+      "name": "Joe Burgess",
+      "club": "Hull KR",
+      "importName": "Joe Burgess",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 82
+    },
+    {
+      "id": "catalans-cur-julian-bousquet",
+      "name": "Julian Bousquet",
+      "club": "Catalans Dragons",
+      "importName": "Julian Bousquet",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 82
+    },
+    {
+      "id": "hull-fc-cur-jed-cartwright",
+      "name": "Jed Cartwright",
+      "club": "Hull FC",
+      "importName": "Jed Cartwright",
+      "via": "unique-sl-name",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 82
+    },
+    {
+      "id": "huddersfield-cur-zac-woolford",
+      "name": "Zac Woolford",
+      "club": "Huddersfield Giants",
+      "importName": "Zac Woolford",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 82
+    },
+    {
+      "id": "wigan-cur-oliver-wilson",
+      "name": "Oliver Wilson",
+      "club": "Wigan Warriors",
+      "importName": "Oliver Wilson",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 82
+    },
+    {
+      "id": "york-cur-josh-griffin",
+      "name": "Josh Griffin",
+      "club": "York Knights",
+      "importName": "Josh Griffin",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 82
+    },
+    {
+      "id": "wakefield-cur-mason-lino",
+      "name": "Mason Lino",
+      "club": "Wakefield Trinity",
+      "importName": "Mason Lino",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 82
+    },
+    {
+      "id": "wigan-cur-adam-keighran",
+      "name": "Adam Keighran",
+      "club": "Wigan Warriors",
+      "importName": "Adam Keighran",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 82
+    },
+    {
+      "id": "hull-kr-cur-dean-hadley",
+      "name": "Dean Hadley",
+      "club": "Hull KR",
+      "importName": "Dean Hadley",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 82
+    },
+    {
+      "id": "hull-kr-cur-sauaso-sue",
+      "name": "Sauaso Sue",
+      "club": "Hull KR",
+      "importName": "Sauaso Sue",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 82
+    },
+    {
+      "id": "warrington-cur-toby-king",
+      "name": "Toby King",
+      "club": "Warrington Wolves",
+      "importName": "Toby King",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 82
+    },
+    {
+      "id": "catalans-cur-tommy-makinson",
+      "name": "Tommy Makinson",
+      "club": "Catalans Dragons",
+      "importName": "Tommy Makinson",
+      "via": "name+club",
+      "overallBefore": 82,
+      "overallAfter": 82,
+      "valueBefore": 135000,
+      "valueAfter": 135000,
+      "potential": 82
+    },
+    {
+      "id": "st-helens-cur-george-whitby",
+      "name": "George Whitby",
+      "club": "St Helens",
+      "importName": "George Whitby",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 90
+    },
+    {
+      "id": "hull-fc-cur-harvey-barron",
+      "name": "Harvey Barron",
+      "club": "Hull FC",
+      "importName": "Harvey Barron",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 87
+    },
+    {
+      "id": "leigh-cur-david-armstrong",
+      "name": "David Armstrong",
+      "club": "Leigh Leopards",
+      "importName": "David Armstrong",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 87
+    },
+    {
+      "id": "wakefield-cur-corey-hall",
+      "name": "Corey Hall",
+      "club": "Wakefield Trinity",
+      "importName": "Corey Hall",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 85
+    },
+    {
+      "id": "bradford-cur-loghan-lewis",
+      "name": "Loghan Lewis",
+      "club": "Bradford Bulls",
+      "importName": "Loghan Lewis",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 84
+    },
+    {
+      "id": "wakefield-cur-matty-storton",
+      "name": "Matty Storton",
+      "club": "Wakefield Trinity",
+      "importName": "Matty Storton",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 83
+    },
+    {
+      "id": "hull-kr-cur-oliver-gildart",
+      "name": "Oliver Gildart",
+      "club": "Hull KR",
+      "importName": "Oliver Gildart",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 83
+    },
+    {
+      "id": "wakefield-cur-tyson-smoothy",
+      "name": "Tyson Smoothy",
+      "club": "Wakefield Trinity",
+      "importName": "Tyson Smoothy",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 83
+    },
+    {
+      "id": "castleford-cur-renouf-atoni",
+      "name": "Renouf Atoni",
+      "club": "Castleford Tigers",
+      "importName": "Renouf Atoni",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 81
+    },
+    {
+      "id": "bradford-cur-waqa-blake",
+      "name": "Waqa Blake",
+      "club": "Bradford Bulls",
+      "importName": "Waqa Blake",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 81
+    },
+    {
+      "id": "hull-fc-cur-james-bell",
+      "name": "James Bell",
+      "club": "Hull FC",
+      "importName": "James Bell",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 81
+    },
+    {
+      "id": "castleford-cur-zac-cini",
+      "name": "Zac Cini",
+      "club": "Castleford Tigers",
+      "importName": "Zac Cini",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 81
+    },
+    {
+      "id": "leigh-cur-ethan-o-neill",
+      "name": "Ethan O'Neill",
+      "club": "Leigh Leopards",
+      "importName": "Ethan O'Neill",
+      "via": "unique-sl-name",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 81
+    },
+    {
+      "id": "catalans-cur-chris-satae",
+      "name": "Chris Satae",
+      "club": "Catalans Dragons",
+      "importName": "Chris Satae",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 81
+    },
+    {
+      "id": "hull-kr-cur-kelepi-tanginoa",
+      "name": "Kelepi Tanginoa",
+      "club": "Hull KR",
+      "importName": "Kelepi Tanginoa",
+      "via": "unique-sl-name",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 81
+    },
+    {
+      "id": "st-helens-cur-matt-whitley",
+      "name": "Matt Whitley",
+      "club": "St Helens",
+      "importName": "Matt Whitley",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 81
+    },
+    {
+      "id": "huddersfield-cur-niall-evalds",
+      "name": "Niall Evalds",
+      "club": "Huddersfield Giants",
+      "importName": "Niall Evalds",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 81
+    },
+    {
+      "id": "bradford-cur-ryan-sutton",
+      "name": "Ryan Sutton",
+      "club": "Bradford Bulls",
+      "importName": "Ryan Sutton",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 81
+    },
+    {
+      "id": "hull-fc-cur-zak-hardaker",
+      "name": "Zak Hardaker",
+      "club": "Hull FC",
+      "importName": "Zak Hardaker",
+      "via": "name+club",
+      "overallBefore": 81,
+      "overallAfter": 81,
+      "valueBefore": 113000,
+      "valueAfter": 113000,
+      "potential": 81
+    },
+    {
+      "id": "st-helens-cur-harry-robertson",
+      "name": "Harry Robertson",
+      "club": "St Helens",
+      "importName": "Harry Robertson",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 89
+    },
+    {
+      "id": "leeds-cur-riley-lumb",
+      "name": "Riley Lumb",
+      "club": "Leeds Rhinos",
+      "importName": "Riley Lumb",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 89
+    },
+    {
+      "id": "warrington-cur-cai-taylor-wray",
+      "name": "Cai Taylor-Wray",
+      "club": "Warrington Wolves",
+      "importName": "Cai Taylor-Wray",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 88
+    },
+    {
+      "id": "warrington-cur-adam-holroyd",
+      "name": "Adam Holroyd",
+      "club": "Warrington Wolves",
+      "importName": "Adam Holroyd",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 87
+    },
+    {
+      "id": "wakefield-cur-oliver-pratt",
+      "name": "Oliver Pratt",
+      "club": "Wakefield Trinity",
+      "importName": "Oliver Pratt",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 87
+    },
+    {
+      "id": "huddersfield-cur-sam-halsall",
+      "name": "Sam Halsall",
+      "club": "Huddersfield Giants",
+      "importName": "Sam Halsall",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 85
+    },
+    {
+      "id": "wigan-cur-sam-walters",
+      "name": "Sam Walters",
+      "club": "Wigan Warriors",
+      "importName": "Sam Walters",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 85
+    },
+    {
+      "id": "leeds-cur-cooper-jenkins",
+      "name": "Cooper Jenkins",
+      "club": "Leeds Rhinos",
+      "importName": "Cooper Jenkins",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 84
+    },
+    {
+      "id": "st-helens-cur-lewis-murphy",
+      "name": "Lewis Murphy",
+      "club": "St Helens",
+      "importName": "Lewis Murphy",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 84
+    },
+    {
+      "id": "wigan-cur-patrick-mago",
+      "name": "Patrick Mago",
+      "club": "Wigan Warriors",
+      "importName": "Patrick Mago",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 84
+    },
+    {
+      "id": "castleford-cur-blake-taaffe",
+      "name": "Blake Taaffe",
+      "club": "Castleford Tigers",
+      "importName": "Blake Taaffe",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 83
+    },
+    {
+      "id": "leigh-cur-frankie-halton",
+      "name": "Frankie Halton",
+      "club": "Leigh Leopards",
+      "importName": "Frankie Halton",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 82
+    },
+    {
+      "id": "warrington-cur-james-harrison",
+      "name": "James Harrison",
+      "club": "Warrington Wolves",
+      "importName": "James Harrison",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 82
+    },
+    {
+      "id": "toulouse-cur-paul-ulberg",
+      "name": "Paul Ulberg",
+      "club": "Toulouse Olympique",
+      "importName": "Paul Ulberg",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 81
+    },
+    {
+      "id": "toulouse-cur-lambert-belmas",
+      "name": "Lambert Belmas",
+      "club": "Toulouse Olympique",
+      "importName": "Lambert Belmas",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "hull-kr-cur-jack-brown",
+      "name": "Jack Brown",
+      "club": "Hull KR",
+      "importName": "Jack Brown",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "bradford-cur-ed-chamberlain",
+      "name": "Ed Chamberlain",
+      "club": "Bradford Bulls",
+      "importName": "Ed Chamberlain",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "leeds-cur-james-bentley",
+      "name": "James Bentley",
+      "club": "Leeds Rhinos",
+      "importName": "James Bentley",
+      "via": "unique-sl-name",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "york-cur-ata-hingano",
+      "name": "Ata Hingano",
+      "club": "York Knights",
+      "importName": "Ata Hingano",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "hull-kr-cur-danny-richardson",
+      "name": "Danny Richardson",
+      "club": "Hull KR",
+      "importName": "Danny Richardson",
+      "via": "unique-sl-name",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "bradford-cur-jayden-nikorima",
+      "name": "Jayden Nikorima",
+      "club": "Bradford Bulls",
+      "importName": "Jayden Nikorima",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "warrington-cur-joe-philbin",
+      "name": "Joe Philbin",
+      "club": "Warrington Wolves",
+      "importName": "Joe Philbin",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "leigh-cur-owen-trout",
+      "name": "Owen Trout",
+      "club": "Leigh Leopards",
+      "importName": "Owen Trout",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "hull-fc-cur-sam-lisone",
+      "name": "Sam Lisone",
+      "club": "Hull FC",
+      "importName": "Sam Lisone",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "warrington-cur-sam-powell",
+      "name": "Sam Powell",
+      "club": "Warrington Wolves",
+      "importName": "Sam Powell",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "warrington-cur-sam-stone",
+      "name": "Sam Stone",
+      "club": "Warrington Wolves",
+      "importName": "Sam Stone",
+      "via": "name+club",
+      "overallBefore": 80,
+      "overallAfter": 80,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "wakefield-cur-seth-nikotemo",
+      "name": "Seth Nikotemo",
+      "club": "Wakefield Trinity",
+      "importName": "Seth Nikotemo",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 86
+    },
+    {
+      "id": "hull-fc-cur-john-asiata",
+      "name": "John Asiata",
+      "club": "Hull FC",
+      "importName": "John Asiata",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 83
+    },
+    {
+      "id": "huddersfield-cur-adam-clune",
+      "name": "Adam Clune",
+      "club": "Huddersfield Giants",
+      "importName": "Adam Clune",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 82
+    },
+    {
+      "id": "st-helens-cur-deon-cross",
+      "name": "Deon Cross",
+      "club": "St Helens",
+      "importName": "Deon Cross",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 81
+    },
+    {
+      "id": "toulouse-cur-brendan-hands",
+      "name": "Brendan Hands",
+      "club": "Toulouse Olympique",
+      "importName": "Brendan Hands",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "hull-kr-cur-jai-whitbread",
+      "name": "Jai Whitbread",
+      "club": "Hull KR",
+      "importName": "Jai Whitbread",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "club": "Toulouse Olympique",
+      "importName": "Reubenn Rennie",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 80
+    },
+    {
+      "id": "leigh-cur-aaron-pene",
+      "name": "Aaron Pene",
+      "club": "Leigh Leopards",
+      "importName": "Aaron Pene",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 79
+    },
+    {
+      "id": "toulouse-cur-anthony-marion",
+      "name": "Anthony Marion",
+      "club": "Toulouse Olympique",
+      "importName": "Anthony Marion",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 79
+    },
+    {
+      "id": "hull-fc-cur-cade-cust",
+      "name": "Cade Cust",
+      "club": "Hull FC",
+      "importName": "Cade Cust",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 79
+    },
+    {
+      "id": "huddersfield-cur-george-king",
+      "name": "George King",
+      "club": "Huddersfield Giants",
+      "importName": "George King",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 79
+    },
+    {
+      "id": "york-cur-jordan-lipp",
+      "name": "Jordan Lipp",
+      "club": "York Knights",
+      "importName": "Jordan Lipp",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 79
+    },
+    {
+      "id": "york-cur-paul-mcshane",
+      "name": "Paul McShane",
+      "club": "York Knights",
+      "importName": "Paul McShane",
+      "via": "name+club",
+      "overallBefore": 79,
+      "overallAfter": 79,
+      "valueBefore": 90000,
+      "valueAfter": 90000,
+      "potential": 79
+    },
+    {
+      "id": "huddersfield-cur-harry-rushton",
+      "name": "Harry Rushton",
+      "club": "Huddersfield Giants",
+      "importName": "Harry Rushton",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 85
+    },
+    {
+      "id": "hull-fc-cur-davy-litten",
+      "name": "Davy Litten",
+      "club": "Hull FC",
+      "importName": "Davy Litten",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 83
+    },
+    {
+      "id": "toulouse-cur-thomas-lacans",
+      "name": "Thomas Lacans",
+      "club": "Toulouse Olympique",
+      "importName": "Thomas Lacans",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 83
+    },
+    {
+      "id": "st-helens-cur-jake-wingfield",
+      "name": "Jake Wingfield",
+      "club": "St Helens",
+      "importName": "Jake Wingfield",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 82
+    },
+    {
+      "id": "bradford-cur-rowan-milnes",
+      "name": "Rowan Milnes",
+      "club": "Bradford Bulls",
+      "importName": "Rowan Milnes",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 82
+    },
+    {
+      "id": "leigh-cur-keanan-brand",
+      "name": "Keanan Brand",
+      "club": "Leigh Leopards",
+      "importName": "Keanan Brand",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 81
+    },
+    {
+      "id": "huddersfield-cur-sam-hewitt",
+      "name": "Sam Hewitt",
+      "club": "Huddersfield Giants",
+      "importName": "Sam Hewitt",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 81
+    },
+    {
+      "id": "toulouse-cur-james-roumanos",
+      "name": "James Roumanos",
+      "club": "Toulouse Olympique",
+      "importName": "James Roumanos",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 80
+    },
+    {
+      "id": "castleford-cur-jordan-lane",
+      "name": "Jordan Lane",
+      "club": "Castleford Tigers",
+      "importName": "Jordan Lane",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 80
+    },
+    {
+      "id": "york-cur-sam-wood",
+      "name": "Sam Wood",
+      "club": "York Knights",
+      "importName": "Sam Wood",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 80
+    },
+    {
+      "id": "hull-fc-cur-harvie-hill",
+      "name": "Harvie Hill",
+      "club": "Hull FC",
+      "importName": "Harvie Hill",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 79
+    },
+    {
+      "id": "bradford-cur-ethan-ryan",
+      "name": "Ethan Ryan",
+      "club": "Bradford Bulls",
+      "importName": "Ethan Ryan",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 79
+    },
+    {
+      "id": "york-cur-jack-martin",
+      "name": "Jack Martin",
+      "club": "York Knights",
+      "importName": "Jack Martin",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 79
+    },
+    {
+      "id": "york-cur-justin-sangare",
+      "name": "Justin Sangaré",
+      "club": "York Knights",
+      "importName": "Justin Sangare",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 79
+    },
+    {
+      "id": "york-cur-toa-mataafa",
+      "name": "Toa Mata'afa",
+      "club": "York Knights",
+      "importName": "Toa Mata'afa",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 79
+    },
+    {
+      "id": "huddersfield-cur-adam-swift",
+      "name": "Adam Swift",
+      "club": "Huddersfield Giants",
+      "importName": "Adam Swift",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "castleford-cur-alex-mellor",
+      "name": "Alex Mellor",
+      "club": "Castleford Tigers",
+      "importName": "Alex Mellor",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "york-cur-ben-jones-bishop",
+      "name": "Ben Jones-Bishop",
+      "club": "York Knights",
+      "importName": "Ben Jones-Bishop",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "toulouse-cur-benjamin-laguerre",
+      "name": "Benjamin Laguerre",
+      "club": "Toulouse Olympique",
+      "importName": "Benjamin Laguerre",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "bradford-cur-dan-russell",
+      "name": "Dan Russell",
+      "club": "Bradford Bulls",
+      "importName": "Dan Russell",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "castleford-cur-darnell-mcintosh",
+      "name": "Darnell McIntosh",
+      "club": "Castleford Tigers",
+      "importName": "Darnell McIntosh",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "leigh-cur-gareth-o-brien",
+      "name": "Gareth O'Brien",
+      "club": "Leigh Leopards",
+      "importName": "Gareth O'Brien",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "castleford-cur-george-lawler",
+      "name": "George Lawler",
+      "club": "Castleford Tigers",
+      "importName": "George Lawler",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "bradford-cur-jayden-okunbor",
+      "name": "Jayden Okunbor",
+      "club": "Bradford Bulls",
+      "importName": "Jayden Okunbor",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "york-cur-jesse-dee",
+      "name": "Jesse Dee",
+      "club": "York Knights",
+      "importName": "Jesse Dee",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "castleford-cur-joe-stimson",
+      "name": "Joe Stimson",
+      "club": "Castleford Tigers",
+      "importName": "Joe Stimson",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "castleford-cur-joe-westerman",
+      "name": "Joe Westerman",
+      "club": "Castleford Tigers",
+      "importName": "Joe Westerman",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "york-cur-jordan-thompson",
+      "name": "Jordan Thompson",
+      "club": "York Knights",
+      "importName": "Jordan Thompson",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "castleford-cur-liam-hood",
+      "name": "Liam Hood",
+      "club": "Castleford Tigers",
+      "importName": "Liam Hood",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "hull-fc-cur-ligi-sao",
+      "name": "Ligi Sao",
+      "club": "Hull FC",
+      "importName": "Ligi Sao",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "toulouse-cur-maxime-stefani",
+      "name": "Maxime Stefani",
+      "club": "Toulouse Olympique",
+      "importName": "Maxime Stefani",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "toulouse-cur-paul-marcon",
+      "name": "Paul Marcon",
+      "club": "Toulouse Olympique",
+      "importName": "Paul Marcon",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "york-cur-scott-galeano",
+      "name": "Scott Galeano",
+      "club": "York Knights",
+      "importName": "Scott Galeano",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "castleford-cur-semi-valemei",
+      "name": "Semi Valemei",
+      "club": "Castleford Tigers",
+      "importName": "Semi Valemei",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "catalans-cur-solomona-faataape",
+      "name": "Solomona Faataape",
+      "club": "Catalans Dragons",
+      "importName": "Solomona Faataape",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "castleford-cur-tom-weaver",
+      "name": "Tom Weaver",
+      "club": "Castleford Tigers",
+      "importName": "Tom Weaver",
+      "via": "name+club",
+      "overallBefore": 78,
+      "overallAfter": 78,
+      "valueBefore": 81000,
+      "valueAfter": 81000,
+      "potential": 78
+    },
+    {
+      "id": "york-cur-xavier-vaa",
+      "name": "Xavier Va'a",
+      "club": "York Knights",
+      "importName": "Xavier Va'a",
+      "via": "name+club",
+      "overallBefore": 77,
+      "overallAfter": 77,
+      "valueBefore": 73000,
+      "valueAfter": 73000,
+      "potential": 86
+    },
+    {
+      "id": "bradford-cur-ebon-scurr",
+      "name": "Ebon Scurr",
+      "club": "Bradford Bulls",
+      "importName": "Ebon Scurr",
+      "via": "name+club",
+      "overallBefore": 77,
+      "overallAfter": 77,
+      "valueBefore": 73000,
+      "valueAfter": 73000,
+      "potential": 82
+    },
+    {
+      "id": "catalans-cur-alrix-da-costa",
+      "name": "Alrix Da Costa",
+      "club": "Catalans Dragons",
+      "importName": "Alrix Da Costa",
+      "via": "name+club",
+      "overallBefore": 77,
+      "overallAfter": 77,
+      "valueBefore": 73000,
+      "valueAfter": 73000,
+      "potential": 78
+    },
+    {
+      "id": "catalans-cur-arthur-romano",
+      "name": "Arthur Romano",
+      "club": "Catalans Dragons",
+      "importName": "Arthur Romano",
+      "via": "unique-sl-name",
+      "overallBefore": 77,
+      "overallAfter": 77,
+      "valueBefore": 73000,
+      "valueAfter": 73000,
+      "potential": 78
+    },
+    {
+      "id": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "club": "Toulouse Olympique",
+      "importName": "Calum Gahan",
+      "via": "name+club",
+      "overallBefore": 77,
+      "overallAfter": 77,
+      "valueBefore": 73000,
+      "valueAfter": 73000,
+      "potential": 77
+    },
+    {
+      "id": "bradford-cur-eribe-doro",
+      "name": "Eribe Doro",
+      "club": "Bradford Bulls",
+      "importName": "Eribe Doro",
+      "via": "name+club",
+      "overallBefore": 77,
+      "overallAfter": 77,
+      "valueBefore": 73000,
+      "valueAfter": 73000,
+      "potential": 77
+    },
+    {
+      "id": "huddersfield-cur-fenton-rogers",
+      "name": "Fenton Rogers",
+      "club": "Huddersfield Giants",
+      "importName": "Fenton Rogers",
+      "via": "name+club",
+      "overallBefore": 77,
+      "overallAfter": 77,
+      "valueBefore": 73000,
+      "valueAfter": 73000,
+      "potential": 77
+    },
+    {
+      "id": "huddersfield-cur-joe-greenwood",
+      "name": "Joe Greenwood",
+      "club": "Huddersfield Giants",
+      "importName": "Joe Greenwood",
+      "via": "name+club",
+      "overallBefore": 77,
+      "overallAfter": 77,
+      "valueBefore": 73000,
+      "valueAfter": 73000,
+      "potential": 77
+    },
+    {
+      "id": "bradford-cur-mitch-souter",
+      "name": "Mitch Souter",
+      "club": "Bradford Bulls",
+      "importName": "Mitch Souter",
+      "via": "name+club",
+      "overallBefore": 77,
+      "overallAfter": 77,
+      "valueBefore": 73000,
+      "valueAfter": 73000,
+      "potential": 77
+    },
+    {
+      "id": "castleford-cur-jason-qareqare",
+      "name": "Jason Qareqare",
+      "club": "Castleford Tigers",
+      "importName": "Jason Qareqare",
+      "via": "name+club",
+      "overallBefore": 76,
+      "overallAfter": 76,
+      "valueBefore": 64000,
+      "valueAfter": 64000,
+      "potential": 85
+    },
+    {
+      "id": "wigan-cur-sam-eseh",
+      "name": "Sam Eseh",
+      "club": "Wigan Warriors",
+      "importName": "Sam Eseh",
+      "via": "name+club",
+      "overallBefore": 76,
+      "overallAfter": 76,
+      "valueBefore": 64000,
+      "valueAfter": 64000,
+      "potential": 84
+    },
+    {
+      "id": "catalans-cur-jordan-dezaria",
+      "name": "Jordan Dezaria",
+      "club": "Catalans Dragons",
+      "importName": "Jordan Dezaria",
+      "via": "unique-sl-name",
+      "overallBefore": 76,
+      "overallAfter": 76,
+      "valueBefore": 64000,
+      "valueAfter": 64000,
+      "potential": 79
+    },
+    {
+      "id": "leigh-cur-ben-mcnamara",
+      "name": "Ben McNamara",
+      "club": "Leigh Leopards",
+      "importName": "Ben McNamara",
+      "via": "name+club",
+      "overallBefore": 75,
+      "overallAfter": 75,
+      "valueBefore": 55000,
+      "valueAfter": 55000,
+      "potential": 77
+    }
+  ],
+  "unmatchedPlayers": [
+    {
+      "name": "Lachlan Miller",
+      "club": "Leeds Rhinos",
+      "overall": 90,
+      "potential": 90
+    },
+    {
+      "name": "Jackson Hastings",
+      "club": "St Helens",
+      "overall": 89,
+      "potential": 89
+    },
+    {
+      "name": "Adam Cook",
+      "club": "Leigh Leopards",
+      "overall": 88,
+      "potential": 89
+    },
+    {
+      "name": "Zac Lipowicz",
+      "club": "Catalans Dragons",
+      "overall": 86,
+      "potential": 90
+    },
+    {
+      "name": "Tevita Pangai Junior",
+      "club": "Hull KR",
+      "overall": 86,
+      "potential": 86
+    },
+    {
+      "name": "Jacob Alick-Wiencke",
+      "club": "Leigh Leopards",
+      "overall": 85,
+      "potential": 88
+    },
+    {
+      "name": "Josh Charnley",
+      "club": "Leigh Leopards",
+      "overall": 85,
+      "potential": 88
+    },
+    {
+      "name": "Kallum Watkins",
+      "club": "Leeds Rhinos",
+      "overall": 85,
+      "potential": 85
+    },
+    {
+      "name": "Oliver Partington",
+      "club": "Wigan Warriors",
+      "overall": 85,
+      "potential": 85
+    },
+    {
+      "name": "Jack Broadbent",
+      "club": "Hull KR",
+      "overall": 84,
+      "potential": 88
+    },
+    {
+      "name": "Josh Allen",
+      "club": "Catalans Dragons",
+      "overall": 84,
+      "potential": 84
+    },
+    {
+      "name": "Nene Macdonald",
+      "club": "St Helens",
+      "overall": 84,
+      "potential": 84
+    },
+    {
+      "name": "Rhyse Martin",
+      "club": "Hull KR",
+      "overall": 84,
+      "potential": 84
+    },
+    {
+      "name": "Chris Atkin",
+      "club": "Bradford Bulls",
+      "overall": 83,
+      "potential": 83
+    },
+    {
+      "name": "Joe Cator",
+      "club": "Toulouse Olympique",
+      "overall": 83,
+      "potential": 83
+    },
+    {
+      "name": "Liam Byrne",
+      "club": "Warrington Wolves",
+      "overall": 83,
+      "potential": 83
+    },
+    {
+      "name": "Kyle Feldt",
+      "club": "St Helens",
+      "overall": 83,
+      "potential": 83
+    },
+    {
+      "name": "Ryan Hall",
+      "club": "Leeds Rhinos",
+      "overall": 83,
+      "potential": 83
+    },
+    {
+      "name": "Jack Farrimond",
+      "club": "Wigan Warriors",
+      "overall": 82,
+      "potential": 92
+    },
+    {
+      "name": "Logan Moy",
+      "club": "Hull FC",
+      "overall": 82,
+      "potential": 91
+    },
+    {
+      "name": "Tyler Dupree",
+      "club": "Castleford Tigers",
+      "overall": 82,
+      "potential": 86
+    },
+    {
+      "name": "Tiaki Chan",
+      "club": "Toulouse Olympique",
+      "overall": 82,
+      "potential": 84
+    },
+    {
+      "name": "Keenan Palasia",
+      "club": "Leeds Rhinos",
+      "overall": 82,
+      "potential": 83
+    },
+    {
+      "name": "Tom Briscoe",
+      "club": "Hull FC",
+      "overall": 82,
+      "potential": 82
+    },
+    {
+      "name": "Ben Garcia",
+      "club": "Catalans Dragons",
+      "overall": 82,
+      "potential": 82
+    },
+    {
+      "name": "Cam Smith",
+      "club": "Leeds Rhinos",
+      "overall": 82,
+      "potential": 82
+    },
+    {
+      "name": "Jack Bird",
+      "club": "Leeds Rhinos",
+      "overall": 82,
+      "potential": 82
+    },
+    {
+      "name": "Abbas Miski",
+      "club": "Wigan Warriors",
+      "overall": 81,
+      "potential": 84
+    },
+    {
+      "name": "Tom Burgess",
+      "club": "Huddersfield Giants",
+      "overall": 81,
+      "potential": 83
+    },
+    {
+      "name": "Kruise Leeming",
+      "club": "Catalans Dragons",
+      "overall": 81,
+      "potential": 82
+    },
+    {
+      "name": "Yusuf Aydin",
+      "club": "Hull FC",
+      "overall": 81,
+      "potential": 81
+    },
+    {
+      "name": "Danny Levi",
+      "club": "Leeds Rhinos",
+      "overall": 81,
+      "potential": 81
+    },
+    {
+      "name": "Taofofoa Sipley",
+      "club": "Warrington Wolves",
+      "overall": 81,
+      "potential": 81
+    },
+    {
+      "name": "Fletcher Rooney",
+      "club": "Castleford Tigers",
+      "overall": 80,
+      "potential": 89
+    },
+    {
+      "name": "Leon Hayes",
+      "club": "Warrington Wolves",
+      "overall": 80,
+      "potential": 89
+    },
+    {
+      "name": "Max Simpson",
+      "club": "Leeds Rhinos",
+      "overall": 80,
+      "potential": 82
+    },
+    {
+      "name": "Guillermo Aispuro-Bichet",
+      "club": "Catalans Dragons",
+      "overall": 80,
+      "potential": 81
+    },
+    {
+      "name": "Caius Faatili",
+      "club": "Wakefield Trinity",
+      "overall": 80,
+      "potential": 81
+    },
+    {
+      "name": "Joe Shorrocks",
+      "club": "St Helens",
+      "overall": 80,
+      "potential": 81
+    },
+    {
+      "name": "Shane Wright",
+      "club": "St Helens",
+      "overall": 80,
+      "potential": 81
+    },
+    {
+      "name": "Rob Butler",
+      "club": "Toulouse Olympique",
+      "overall": 80,
+      "potential": 80
+    },
+    {
+      "name": "Innes Senior",
+      "club": "Leigh Leopards",
+      "overall": 80,
+      "potential": 80
+    },
+    {
+      "name": "Isaiah Vagana",
+      "club": "Wakefield Trinity",
+      "overall": 80,
+      "potential": 80
+    },
+    {
+      "name": "Agnatius Paasi",
+      "club": "St Helens",
+      "overall": 80,
+      "potential": 80
+    },
+    {
+      "name": "David Nofoaluma",
+      "club": "York Knights",
+      "overall": 80,
+      "potential": 80
+    },
+    {
+      "name": "Jacob Host",
+      "club": "St Helens",
+      "overall": 80,
+      "potential": 80
+    },
+    {
+      "name": "Mikaele Ravalawa",
+      "club": "Castleford Tigers",
+      "overall": 80,
+      "potential": 80
+    },
+    {
+      "name": "Jack Charles",
+      "club": "Hull KR",
+      "overall": 79,
+      "potential": 89
+    },
+    {
+      "name": "Jenson Windley",
+      "club": "Castleford Tigers",
+      "overall": 79,
+      "potential": 88
+    },
+    {
+      "name": "Asher O'Donnell",
+      "club": "Huddersfield Giants",
+      "overall": 79,
+      "potential": 84
+    },
+    {
+      "name": "Ashton Golding",
+      "club": "Castleford Tigers",
+      "overall": 79,
+      "potential": 80
+    },
+    {
+      "name": "Olly Russell",
+      "club": "Huddersfield Giants",
+      "overall": 79,
+      "potential": 80
+    },
+    {
+      "name": "Sam Luckley",
+      "club": "Hull KR",
+      "overall": 79,
+      "potential": 80
+    },
+    {
+      "name": "Chris Hankinson",
+      "club": "Leeds Rhinos",
+      "overall": 79,
+      "potential": 79
+    },
+    {
+      "name": "Jack Hughes",
+      "club": "Leigh Leopards",
+      "overall": 79,
+      "potential": 79
+    },
+    {
+      "name": "Liam Sutcliffe",
+      "club": "Huddersfield Giants",
+      "overall": 79,
+      "potential": 79
+    },
+    {
+      "name": "Matt Davis",
+      "club": "Leigh Leopards",
+      "overall": 79,
+      "potential": 79
+    },
+    {
+      "name": "Arron Lindop",
+      "club": "Warrington Wolves",
+      "overall": 78,
+      "potential": 87
+    },
+    {
+      "name": "Jon Bennison",
+      "club": "York Knights",
+      "overall": 78,
+      "potential": 84
+    },
+    {
+      "name": "Josh Rourke",
+      "club": "Wakefield Trinity",
+      "overall": 78,
+      "potential": 83
+    },
+    {
+      "name": "Ned McCormack",
+      "club": "Leeds Rhinos",
+      "overall": 78,
+      "potential": 83
+    },
+    {
+      "name": "Ryan Hampshire",
+      "club": "Hull KR",
+      "overall": 78,
+      "potential": 83
+    },
+    {
+      "name": "Tom Forber",
+      "club": "Wigan Warriors",
+      "overall": 78,
+      "potential": 83
+    },
+    {
+      "name": "Kieran Buchanan",
+      "club": "York Knights",
+      "overall": 78,
+      "potential": 81
+    },
+    {
+      "name": "Connor Bailey",
+      "club": "Hull FC",
+      "overall": 78,
+      "potential": 81
+    },
+    {
+      "name": "Kian McDermott",
+      "club": "Wigan Warriors",
+      "overall": 78,
+      "potential": 81
+    },
+    {
+      "name": "Jordan Crowther",
+      "club": "Warrington Wolves",
+      "overall": 78,
+      "potential": 80
+    },
+    {
+      "name": "Lazarus Vaalepu",
+      "club": "Leigh Leopards",
+      "overall": 78,
+      "potential": 80
+    },
+    {
+      "name": "Liam Horne",
+      "club": "Leigh Leopards",
+      "overall": 78,
+      "potential": 80
+    },
+    {
+      "name": "Ewan Irwin",
+      "club": "Warrington Wolves",
+      "overall": 78,
+      "potential": 79
+    },
+    {
+      "name": "Guy Armitage",
+      "club": "Bradford Bulls",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Jack Ashworth",
+      "club": "Castleford Tigers",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Louis Senior",
+      "club": "Castleford Tigers",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Brad Fash",
+      "club": "Hull FC",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Daniel Suluka-Fifita",
+      "club": "St Helens",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Franck Maria",
+      "club": "Catalans Dragons",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Joe Keyes",
+      "club": "Bradford Bulls",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "King Vuniyayawa",
+      "club": "York Knights",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Liam Knight",
+      "club": "Hull FC",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Matty Russell",
+      "club": "Catalans Dragons",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Mitch Clark",
+      "club": "York Knights",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Romain Navarrete",
+      "club": "Catalans Dragons",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Tristan Powell",
+      "club": "Huddersfield Giants",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Will Dagger",
+      "club": "York Knights",
+      "overall": 78,
+      "potential": 78
+    },
+    {
+      "name": "Noah Booth",
+      "club": "Hull KR",
+      "overall": 77,
+      "potential": 88
+    },
+    {
+      "name": "Presley Cassell",
+      "club": "Leeds Rhinos",
+      "overall": 77,
+      "potential": 84
+    },
+    {
+      "name": "Harvey Smith",
+      "club": "Wakefield Trinity",
+      "overall": 77,
+      "potential": 84
+    },
+    {
+      "name": "Harvey Wilson",
+      "club": "Catalans Dragons",
+      "overall": 77,
+      "potential": 84
+    },
+    {
+      "name": "Baptiste Rodriguez",
+      "club": "Toulouse Olympique",
+      "overall": 77,
+      "potential": 83
+    },
+    {
+      "name": "Kieran Rush",
+      "club": "Huddersfield Giants",
+      "overall": 77,
+      "potential": 81
+    },
+    {
+      "name": "Bailey Hodgson",
+      "club": "Leigh Leopards",
+      "overall": 77,
+      "potential": 79
+    },
+    {
+      "name": "Joe Bretherton",
+      "club": "Toulouse Olympique",
+      "overall": 77,
+      "potential": 78
+    },
+    {
+      "name": "Brad Dwyer",
+      "club": "Castleford Tigers",
+      "overall": 77,
+      "potential": 77
+    },
+    {
+      "name": "Brad Singleton",
+      "club": "Castleford Tigers",
+      "overall": 77,
+      "potential": 77
+    },
+    {
+      "name": "Brock Greacen",
+      "club": "Castleford Tigers",
+      "overall": 77,
+      "potential": 77
+    },
+    {
+      "name": "Iszac Fa'asuamaleaui",
+      "club": "Catalans Dragons",
+      "overall": 77,
+      "potential": 77
+    },
+    {
+      "name": "Jack Ormondroyd",
+      "club": "Bradford Bulls",
+      "overall": 77,
+      "potential": 77
+    },
+    {
+      "name": "Kieran Hudson",
+      "club": "York Knights",
+      "overall": 77,
+      "potential": 77
+    },
+    {
+      "name": "Phoenix Laulu-Togaga'e",
+      "club": "Castleford Tigers",
+      "overall": 77,
+      "potential": 77
+    },
+    {
+      "name": "Jack Sinfield",
+      "club": "Wakefield Trinity",
+      "overall": 76,
+      "potential": 85
+    },
+    {
+      "name": "AJ Towse",
+      "club": "Leigh Leopards",
+      "overall": 76,
+      "potential": 84
+    },
+    {
+      "name": "Bill Leyland",
+      "club": "Hull KR",
+      "overall": 76,
+      "potential": 82
+    },
+    {
+      "name": "Jake Burns",
+      "club": "St Helens",
+      "overall": 76,
+      "potential": 81
+    },
+    {
+      "name": "Jack Billington",
+      "club": "Huddersfield Giants",
+      "overall": 76,
+      "potential": 81
+    },
+    {
+      "name": "Jayden Myers",
+      "club": "Wakefield Trinity",
+      "overall": 76,
+      "potential": 81
+    },
+    {
+      "name": "Tray Lolesio",
+      "club": "Wakefield Trinity",
+      "overall": 76,
+      "potential": 81
+    },
+    {
+      "name": "Andrew Badrock",
+      "club": "Leigh Leopards",
+      "overall": 76,
+      "potential": 79
+    },
+    {
+      "name": "Josh Simm",
+      "club": "Catalans Dragons",
+      "overall": 76,
+      "potential": 79
+    },
+    {
+      "name": "Karl Lawton",
+      "club": "Hull KR",
+      "overall": 76,
+      "potential": 79
+    },
+    {
+      "name": "Lachlan Walmsley",
+      "club": "Wakefield Trinity",
+      "overall": 76,
+      "potential": 79
+    },
+    {
+      "name": "Mathieu Cozza",
+      "club": "Huddersfield Giants",
+      "overall": 76,
+      "potential": 79
+    },
+    {
+      "name": "Lee Kershaw",
+      "club": "Huddersfield Giants",
+      "overall": 76,
+      "potential": 77
+    },
+    {
+      "name": "Greg Eden",
+      "club": "Bradford Bulls",
+      "overall": 76,
+      "potential": 76
+    },
+    {
+      "name": "Alfie Edgell",
+      "club": "Leeds Rhinos",
+      "overall": 75,
+      "potential": 84
+    },
+    {
+      "name": "Noah Stephens",
+      "club": "St Helens",
+      "overall": 75,
+      "potential": 84
+    },
+    {
+      "name": "AJ Wallace",
+      "club": "Toulouse Olympique",
+      "overall": 75,
+      "potential": 82
+    },
+    {
+      "name": "Connor Wynne",
+      "club": "Bradford Bulls",
+      "overall": 75,
+      "potential": 82
+    },
+    {
+      "name": "Ellis Gillam",
+      "club": "Toulouse Olympique",
+      "overall": 75,
+      "potential": 82
+    },
+    {
+      "name": "Samuel Hallas",
+      "club": "Bradford Bulls",
+      "overall": 75,
+      "potential": 82
+    },
+    {
+      "name": "Connor Carr",
+      "club": "Huddersfield Giants",
+      "overall": 75,
+      "potential": 81
+    },
+    {
+      "name": "Brandon Douglas",
+      "club": "Bradford Bulls",
+      "overall": 75,
+      "potential": 81
+    },
+    {
+      "name": "Connor Wrench",
+      "club": "Huddersfield Giants",
+      "overall": 75,
+      "potential": 81
+    },
+    {
+      "name": "Henry O'Kane",
+      "club": "Toulouse Olympique",
+      "overall": 75,
+      "potential": 81
+    },
+    {
+      "name": "Luke Hooley",
+      "club": "Bradford Bulls",
+      "overall": 75,
+      "potential": 81
+    },
+    {
+      "name": "Pierre-Jean Lima",
+      "club": "Toulouse Olympique",
+      "overall": 75,
+      "potential": 81
+    },
+    {
+      "name": "Romeo Tropis",
+      "club": "Toulouse Olympique",
+      "overall": 75,
+      "potential": 81
+    },
+    {
+      "name": "Jeremiah Mata'utia",
+      "club": "Hull FC",
+      "overall": 75,
+      "potential": 77
+    },
+    {
+      "name": "Aiden Doolan",
+      "club": "Castleford Tigers",
+      "overall": 75,
+      "potential": 75
+    },
+    {
+      "name": "Chris Patolo",
+      "club": "Huddersfield Giants",
+      "overall": 75,
+      "potential": 75
+    },
+    {
+      "name": "John Sagaga",
+      "club": "York Knights",
+      "overall": 75,
+      "potential": 75
+    },
+    {
+      "name": "Matthieu Laguerre",
+      "club": "Catalans Dragons",
+      "overall": 75,
+      "potential": 75
+    },
+    {
+      "name": "Riley Dean",
+      "club": "Bradford Bulls",
+      "overall": 75,
+      "potential": 75
+    },
+    {
+      "name": "Will Gardiner",
+      "club": "Bradford Bulls",
+      "overall": 75,
+      "potential": 75
+    }
+  ],
+  "ambiguousPlayers": []
+}

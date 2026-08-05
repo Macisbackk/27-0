@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerTransferPlayerCard } from "@/components/manager/ManagerTransferPlayerCard";
 import { SPACING } from "@/lib/ui/design-system";
@@ -9,7 +9,11 @@ import { useModalA11y } from "@/hooks/useModalA11y";
 import { formatWage } from "@/lib/manager/managerContracts";
 import type { InboxMessage, ManagerCareer } from "@/lib/manager/types";
 import { getPlayerById } from "@/lib/players";
-import { managerModalHeaderClass, managerPillClass } from "@/lib/manager/managerSurfaces";
+import { getFullPositionName } from "@/lib/positions";
+import {
+  managerModalHeaderClass,
+  managerPillClass,
+} from "@/lib/manager/managerSurfaces";
 import { playMenuOpen, playUiClick } from "@/lib/sound";
 
 interface ManagerIncomingBidModalProps {
@@ -25,10 +29,43 @@ export function ManagerIncomingBidModal({
   onAccept,
   onReject,
 }: ManagerIncomingBidModalProps) {
-  const player = offer.playerId ? getPlayerById(offer.playerId) : null;
-  const contract = offer.playerId ? career.contracts[offer.playerId] : undefined;
+  const senior = offer.playerId ? getPlayerById(offer.playerId) : null;
+  const reserve = offer.playerId
+    ? career.reserves.find((r) => r.id === offer.playerId)
+    : undefined;
+  const contract = offer.playerId
+    ? career.contracts[offer.playerId] ??
+      career.reserveContracts?.[offer.playerId]
+    : undefined;
   const buyer = offer.offerClub ?? "A rival club";
   const fee = offer.offerAmount ?? 0;
+  const listed =
+    !offer.unsolicited &&
+    !offer.reserveOffer &&
+    Boolean(
+      offer.playerId &&
+        career.leagueListedPlayers.some((row) => row.playerId === offer.playerId)
+    );
+
+  const display = useMemo(() => {
+    if (senior) {
+      return {
+        name: senior.name,
+        peakRating: senior.peakRating,
+        wagePerYear: contract?.wagePerYear ?? 0,
+        positionLabel: null as string | null,
+      };
+    }
+    if (reserve) {
+      return {
+        name: reserve.name,
+        peakRating: reserve.rating,
+        wagePerYear: contract?.wagePerYear ?? 0,
+        positionLabel: getFullPositionName(reserve.position),
+      };
+    }
+    return null;
+  }, [senior, reserve, contract]);
 
   const handleDismiss = useCallback(() => {
     playUiClick();
@@ -41,7 +78,23 @@ export function ManagerIncomingBidModal({
     playMenuOpen();
   }, []);
 
-  if (!player || !offer.playerId) return null;
+  if (!display || !offer.playerId) return null;
+
+  const pill = offer.reserveOffer
+    ? "Reserve bid"
+    : listed
+      ? "Listed player"
+      : "Unlisted player";
+  const headline = offer.reserveOffer
+    ? "Championship Approach"
+    : listed
+      ? "Transfer Offer"
+      : "Transfer Approach";
+  const intro = offer.reserveOffer
+    ? `${buyer} have bid ${formatWage(fee)} for reserve ${display.name}.`
+    : listed
+      ? `${buyer} have offered ${formatWage(fee)} for ${display.name}.`
+      : `${buyer} want to sign ${display.name} without them being listed for transfer.`;
 
   return (
     <div
@@ -57,33 +110,62 @@ export function ManagerIncomingBidModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className={managerModalHeaderClass("amber")}>
-          <span className={managerPillClass("amber")}>
-            Unlisted player
-          </span>
+          <span className={managerPillClass("amber")}>{pill}</span>
           <h2 id="incoming-bid-title" className={`mt-3 ${TYPO.cardTitle}`}>
-            Transfer Approach
+            {headline}
           </h2>
-          <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
-            {buyer} want to sign {player.name} without them being listed for
-            transfer.
-          </p>
+          <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>{intro}</p>
         </div>
 
-        <ManagerTransferPlayerCard
-          player={player}
-          club={career.club}
-          listed={false}
-          fee={fee}
-          wagePerYear={contract?.wagePerYear ?? 0}
-        >
-          <p className={`${TYPO.bodySm} text-pitch-400`}>
-            Valuation around{" "}
-            <span className="font-semibold text-pitch-200">
-              {formatWage(offer.askingPrice ?? fee)}
-            </span>
-            . Accepting adds the fee to your transfer budget.
-          </p>
-        </ManagerTransferPlayerCard>
+        {senior ? (
+          <ManagerTransferPlayerCard
+            player={senior}
+            club={career.club}
+            listed={listed}
+            fee={fee}
+            wagePerYear={display.wagePerYear}
+          >
+            <p className={`${TYPO.bodySm} text-pitch-400`}>
+              {listed && offer.askingPrice != null ? (
+                <>
+                  Asking price{" "}
+                  <span className="font-semibold text-pitch-200">
+                    {formatWage(offer.askingPrice)}
+                  </span>
+                  . Accepting adds the fee to your transfer budget.
+                </>
+              ) : (
+                <>
+                  Valuation around{" "}
+                  <span className="font-semibold text-pitch-200">
+                    {formatWage(offer.askingPrice ?? fee)}
+                  </span>
+                  . Accepting adds the fee to your transfer budget.
+                </>
+              )}
+            </p>
+          </ManagerTransferPlayerCard>
+        ) : (
+          <div className="mt-3 rounded-lg border border-pitch-700/50 bg-pitch-950/40 p-3">
+            <p className="font-semibold text-white">{display.name}</p>
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+              {display.positionLabel ?? "Reserve"} · Rating {display.peakRating}
+              {reserve?.potentialRating != null
+                ? ` · POT ${reserve.potentialRating}`
+                : ""}
+              {display.wagePerYear > 0
+                ? ` · ${formatWage(display.wagePerYear)}/yr`
+                : ""}
+            </p>
+            <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+              Offer{" "}
+              <span className="font-semibold text-accent-gold">
+                {formatWage(fee)}
+              </span>
+              . Accepting completes the move to {buyer}.
+            </p>
+          </div>
+        )}
 
         <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
           <GameButton

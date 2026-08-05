@@ -16,6 +16,7 @@ import {
 } from "./managerLeagueRosters";
 import {
   addPlayerRetiredInboxMessage,
+  addRetirementConvinceResultInboxMessage,
   addRetirementIntentInboxMessage,
 } from "./managerInbox";
 
@@ -443,33 +444,84 @@ export function canConvincePlayerToStay(
   return Boolean(contract.retiringAtSeasonEnd);
 }
 
-/** One extra year at the same wage — can only be used once per player. */
+/** Chance a retiring veteran accepts one more year (harder as they age). */
+export function getConvinceToStayChance(age: number): number {
+  if (age <= 34) return 0.72;
+  if (age === 35) return 0.58;
+  if (age === 36) return 0.45;
+  if (age === 37) return 0.32;
+  if (age === 38) return 0.2;
+  return 0.12;
+}
+
+export type ConvincePlayerToStayResult = {
+  ok: boolean;
+  stayed: boolean;
+  career: ManagerCareer;
+  playerName: string;
+  error?: string;
+};
+
+/**
+ * One attempt to keep a retiring player for an extra year at the same wage.
+ * They may accept or stick with retirement — either way the attempt is spent.
+ */
 export function convincePlayerToStay(
   career: ManagerCareer,
   playerId: string
-): ManagerCareer {
+): ConvincePlayerToStayResult {
   const contract = career.contracts[playerId];
+  const player = getManagerPlayer(career, playerId);
+  const playerName = player?.name ?? "The player";
+
   if (!contract || !canConvincePlayerToStay(career, playerId)) {
-    return career;
+    return {
+      ok: false,
+      stayed: false,
+      career,
+      playerName,
+      error: "This player cannot be convinced to stay.",
+    };
   }
 
-  const nextContracts = { ...career.contracts };
-  nextContracts[playerId] = {
-    ...contract,
-    convincedToStayUsed: true,
-    retireAfterContract: true,
-    retiringAtSeasonEnd: false,
-    wagePerYear: contract.wagePerYear,
-    yearsRemaining: 1,
-    expiresAtSeasonEnd: false,
-    renewalDemand: undefined,
-    status: undefined,
-    retirementIntentSeason: career.seasonYear,
-  };
+  const age = getManagerPlayerAge(career, playerId) ?? 36;
+  const rng = seedrandom(
+    `${career.seed}-convince-stay-${playerId}-s${career.seasonYear}`
+  );
+  const stayed = rng() < getConvinceToStayChance(age);
 
-  return {
+  const nextContracts = { ...career.contracts };
+  nextContracts[playerId] = stayed
+    ? {
+        ...contract,
+        convincedToStayUsed: true,
+        retireAfterContract: true,
+        retiringAtSeasonEnd: false,
+        wagePerYear: contract.wagePerYear,
+        yearsRemaining: 1,
+        expiresAtSeasonEnd: false,
+        renewalDemand: undefined,
+        status: undefined,
+        retirementIntentSeason: career.seasonYear,
+      }
+    : {
+        ...contract,
+        convincedToStayUsed: true,
+        retiringAtSeasonEnd: true,
+        retirementIntentSeason: career.seasonYear,
+      };
+
+  let next: ManagerCareer = {
     ...career,
     contracts: nextContracts,
     updatedAt: new Date().toISOString(),
   };
+  next = addRetirementConvinceResultInboxMessage(
+    next,
+    playerId,
+    playerName,
+    stayed
+  );
+
+  return { ok: true, stayed, career: next, playerName };
 }

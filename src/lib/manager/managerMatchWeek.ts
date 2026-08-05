@@ -1,5 +1,8 @@
 import type { ManagerCareer } from "./types";
-import { getPendingUnsolicitedOffer } from "./managerTransferLeague";
+import {
+  getPendingIncomingClubBid,
+  getPendingIncomingClubBids,
+} from "./managerTransferLeague";
 import { getPendingContractExpiryPopup } from "./managerInbox";
 import { getPendingRetirementIntentPopup } from "./managerRetirement";
 import { getPendingPositionRetrainingPopup } from "./managerPositionRetraining";
@@ -40,7 +43,7 @@ export function canPlayNextMatch(career: ManagerCareer): boolean {
 /** Unresolved decisions that must be handled before advancing again. */
 export function hasBlockingManagerDecision(career: ManagerCareer): boolean {
   return Boolean(
-    getPendingUnsolicitedOffer(career) ||
+    getPendingIncomingClubBid(career) ||
       getPendingRetirementIntentPopup(career)
   );
 }
@@ -114,7 +117,9 @@ export function collectWeeklyManagerEventIds(career: ManagerCareer): string[] {
     if (id && !acked.has(id) && !ids.includes(id)) ids.push(id);
   };
 
-  push(getPendingUnsolicitedOffer(career)?.id);
+  for (const bid of getPendingIncomingClubBids(career)) {
+    push(bid.id);
+  }
   push(getPendingRetirementIntentPopup(career)?.id);
   push(getPendingBoardInboxPopup(career)?.id);
   push(getPendingContractExpiryPopup(career)?.id);

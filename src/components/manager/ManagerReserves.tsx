@@ -6,7 +6,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { GamePanel } from "@/components/ui/GamePanel";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { GameTableRow } from "@/components/ui/GameTableRow";
-import { FILTER, MANAGER, SPACING } from "@/lib/ui/design-system";
+import { FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { CollapsibleDetails } from "@/components/ui/MobileLayout";
 import type { ManagerCareer, ManagerReservePlayer } from "@/lib/manager/types";
@@ -288,7 +288,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         <p className={`${TYPO.bodySm} text-theme-primary`}>{message}</p>
       )}
 
-      <GamePanel padded label="Reserve fixtures" className={MANAGER.panelCenter}>
+      <GamePanel padded label="Reserve fixtures">
         {!career.isSeasonComplete && upcomingOpp ? (
           <div>
             <p className={TYPO.sectionLabel}>Next fixture</p>
@@ -345,8 +345,8 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         )}
       </GamePanel>
 
-      <GamePanel padded label="Reserve squad summary" className={MANAGER.panelCenter}>
-        <div className="grid grid-cols-2 justify-items-center gap-3 sm:grid-cols-3">
+      <GamePanel padded label="Reserve squad summary">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <ManagerStat
             label="Squad size"
             value={`${career.reserves.length} / ${RESERVE_MIN_PLAYERS}`}
@@ -368,7 +368,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             />
           )}
         </div>
-        <div className={MANAGER.actionRow}>
+        <div className="mt-3 flex flex-wrap gap-2">
           <GameButton
             variant="secondary"
             size="sm"
@@ -439,7 +439,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         <GamePanel
           padded
           label={`Youth intake · ${career.seasonYear}`}
-          className="mx-auto max-w-2xl text-center"
         >
           <p className={`${TYPO.bodySm} text-pitch-300`}>
             {youthProspects.length} academy prospect
@@ -452,30 +451,31 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
               return (
                 <div
                   key={p.id}
-                  className="flex flex-col items-center py-3 first:pt-0 last:pb-0"
+                  className="flex flex-col py-3 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between sm:gap-3"
                 >
-                  <p className="font-medium text-white">{p.name}</p>
-                  <p className={`${TYPO.bodySm} text-pitch-400`}>
-                    {getFullPositionName(p.position)} · Age {p.age} ·{" "}
-                    {p.nationality}
-                  </p>
-                  <div className="mt-2 flex flex-wrap justify-center gap-1.5">
-                    <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] font-semibold text-theme-primary">
-                      Rating {p.rating}
-                    </span>
-                    <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] font-semibold text-accent-gold">
-                      POT {p.potentialRating}
-                    </span>
-                    <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] text-pitch-300">
-                      {getPotentialTier(p.potentialRating)} · ~
-                      {formatWage(previewWage)}/yr
-                    </span>
+                  <div className="min-w-0">
+                    <p className="font-medium text-white">{p.name}</p>
+                    <p className={`${TYPO.bodySm} text-pitch-400`}>
+                      {getFullPositionName(p.position)} · Age {p.age} ·{" "}
+                      {p.nationality}
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] font-semibold text-theme-primary">
+                        Rating {p.rating}
+                      </span>
+                      <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] font-semibold text-accent-gold">
+                        POT {p.potentialRating}
+                      </span>
+                      <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] text-pitch-300">
+                        {getPotentialTier(p.potentialRating)} · ~
+                        {formatWage(previewWage)}/yr
+                      </span>
+                    </div>
                   </div>
-                  <div className="mt-3 flex w-full max-w-sm flex-col gap-2 sm:flex-row sm:justify-center">
+                  <div className="mt-3 flex shrink-0 flex-col gap-2 sm:mt-0 sm:flex-row">
                     <GameButton
                       variant="theme"
                       size="sm"
-                      className="sm:flex-1"
                       onClick={() => {
                         playUiClick();
                         handleSignProspect(p.id);
@@ -486,7 +486,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                     <GameButton
                       variant="secondary"
                       size="sm"
-                      className="sm:flex-1"
                       onClick={() => {
                         playUiClick();
                         handleDeclineProspect(p.id, p.name);
@@ -502,8 +501,8 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         </GamePanel>
       )}
 
-      <GamePanel padded label="Filters" className={MANAGER.panelCenter}>
-        <div className={MANAGER.chipRow}>
+      <GamePanel padded label="Filters">
+        <div className="flex flex-wrap gap-2">
           {(
             [
               ["all", "All"],
@@ -524,7 +523,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             </button>
           ))}
         </div>
-        <div className={`mt-2 ${MANAGER.chipRow}`}>
+        <div className="mt-2 flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setPositionFilter("all")}

@@ -1,0 +1,37 @@
+﻿{
+    "data/championship-rating-scale-report.json":  {
+                                                       "mtime":  "2026-08-04T12:30:49.7338333Z",
+                                                       "hash":  "519124019D956D5968CD4F1ADA29943007DD6D47D80A73EBDC61E62AFA8ABAE8",
+                                                       "length":  4506
+                                                   },
+    "data/championship-clubs.json":  {
+                                         "mtime":  "2026-08-03T02:02:22.6464615Z",
+                                         "hash":  "1A368284BA0DB397D24950990E02F69EBD2745CA577B29DCC285FF1410DBC1FA",
+                                         "length":  6944
+                                     },
+    "src/lib/manager/championship/championshipNamePools.ts":  {
+                                                                  "mtime":  "2026-08-03T02:07:22.6369126Z",
+                                                                  "hash":  "8E7F6802655B9B843C4D8A9AE0032349911E5DE73EC1B10F73AC3B9F07EE6F08",
+                                                                  "length":  23432
+                                                              },
+    "src/lib/manager/championship/championshipRatingScale.ts":  {
+                                                                    "mtime":  "2026-08-04T14:04:19.2158426Z",
+                                                                    "hash":  "C0D3958851346EA802F5C83B37464CA8C9B0CA319917CAF9BF0A73E42067D8B5",
+                                                                    "length":  6416
+                                                                },
+    "data/legends.json":  {
+                              "mtime":  "2026-08-04T04:49:11.1458659Z",
+                              "hash":  "BA0E5AB7D6EDD5C91AAAEF7C85618206D6D52690B2F5D9E43FFCC2C36D2E3DED",
+                              "length":  14063
+                          },
+    "data/historic-players.json":  {
+                                       "mtime":  "2026-08-04T23:12:33.9880997Z",
+                                       "hash":  "4AC9ECCD8ADA469E3F93EDA3CB5188319F7336C568F5A0054654CF00833D7F3B",
+                                       "length":  2054292
+                                   },
+    "src/lib/manager/championship/championshipSquads.ts":  {
+                                                               "mtime":  "2026-08-04T11:51:55.0616406Z",
+                                                               "hash":  "9950E2B011E5C8BC9BAB44A838B8C91555759DD4906E2D61457659FF0B3EE3CF",
+                                                               "length":  10745
+                                                           }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo, type CSSProperties } from "react";
 import type { Player } from "@/lib/types";
 import { getClubColoursForCard } from "@/lib/clubs";
 import { formatPlayerDisplayName } from "@/lib/players/prime-year";
@@ -43,9 +43,22 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
   const displayName = formatPlayerDisplayName(player);
   const clubYearLabel = formatShowcaseClubYear(player);
   const colorClub = getPlayerColorClub(player);
+  const isLegend = player.category === "legend";
   const cardColours = useMemo(
     () => getClubColoursForCard(colorClub),
     [colorClub]
+  );
+
+  const legendPanelStyle = useMemo(
+    () =>
+      ({
+        borderColor: "rgba(251, 191, 36, 0.72)",
+        background:
+          "linear-gradient(160deg, rgba(255,255,255,0.14) 0%, rgba(255,248,220,0.10) 40%, rgba(20,24,22,0.92) 100%)",
+        boxShadow:
+          "0 0 0 1px rgba(255,255,255,0.22) inset, 0 0 18px rgba(251,191,36,0.12)",
+      }) as CSSProperties,
+    []
   );
 
   const handleToggle = useCallback(() => {
@@ -68,15 +81,36 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
     <div
       className={`showcase-player-card game-panel game-panel--flush h-auto w-full min-w-0 self-start overflow-hidden border transition ${
         expanded ? "showcase-player-card--expanded" : "hover:border-pitch-500/50"
+      } ${
+        isLegend
+          ? "border-accent-gold/70 ring-1 ring-accent-gold/45 hover:border-accent-gold/90"
+          : ""
       }`}
-      style={expanded ? cardColours.expandedStyle : cardColours.style}
+      style={
+        isLegend
+          ? legendPanelStyle
+          : expanded
+            ? cardColours.expandedStyle
+            : cardColours.style
+      }
     >
       <TeamColourStrip club={colorClub} thick={expanded} />
 
       <button
         type="button"
-        className="flex w-full min-w-0 items-start gap-2 px-3 py-2 text-left transition hover:bg-white/[0.03] sm:py-2.5"
-        style={expanded ? { backgroundColor: cardColours.wash } : undefined}
+        className={`flex w-full min-w-0 items-start gap-2 px-3 py-2 text-left transition hover:bg-white/[0.03] sm:py-2.5 ${
+          isLegend ? "hover:bg-accent-gold/5" : ""
+        }`}
+        style={
+          expanded && !isLegend
+            ? { backgroundColor: cardColours.wash }
+            : expanded && isLegend
+              ? {
+                  background:
+                    "linear-gradient(90deg, rgba(255,255,255,0.10), rgba(251,191,36,0.08))",
+                }
+              : undefined
+        }
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
         aria-expanded={expanded}
@@ -85,10 +119,20 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
           <span className="block break-words [overflow-wrap:anywhere] line-clamp-3">
             {displayName}
           </span>
-          <span className="mt-0.5 block truncate text-[11px] font-medium text-gray-400">
+          <span
+            className={`mt-0.5 block truncate text-[11px] font-medium ${
+              isLegend ? "text-accent-gold/85" : "text-gray-400"
+            }`}
+          >
             {clubYearLabel}
+            {isLegend ? " · Legend" : ""}
           </span>
         </span>
+        {isLegend && (
+          <span className="shrink-0 self-start rounded border border-accent-gold/60 bg-gradient-to-br from-white/90 via-amber-50/90 to-accent-gold/35 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-amber-900 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.45)]">
+            Legend
+          </span>
+        )}
         <span className="shrink-0 self-start pt-0.5 text-xs font-medium text-gray-500">
           {expanded ? "Close" : "View"}
         </span>

@@ -420,6 +420,34 @@ export function addRetirementIntentInboxMessage(
   });
 }
 
+/** Result of asking a retiring veteran to stay one more year. */
+export function addRetirementConvinceResultInboxMessage(
+  career: ManagerCareer,
+  playerId: string,
+  playerName: string,
+  stayed: boolean
+): ManagerCareer {
+  const msgId = `retirement-convince-${playerId}-s${career.seasonYear}`;
+  if (career.inboxMessages.some((m) => m.id === msgId)) return career;
+
+  return pushInboxMessage(career, {
+    id: msgId,
+    type: "retirement",
+    title: stayed ? "Player Staying On" : "Retirement Confirmed",
+    body: stayed
+      ? `${playerName} has agreed to stay for one more season at their current wage. They will retire when that final year ends.`
+      : `${playerName} has turned down your offer and will carry on with their plan to retire at the end of the ${career.seasonYear} season.`,
+    week: career.gameWeek,
+    season: career.seasonYear,
+    gameWeek: career.gameWeek,
+    createdAt: new Date().toISOString(),
+    read: false,
+    resolved: false,
+    playerId,
+    playerName,
+  });
+}
+
 export function addPlayerRetiredInboxMessage(
   career: ManagerCareer,
   playerId: string,

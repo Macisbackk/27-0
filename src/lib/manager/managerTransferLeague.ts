@@ -797,18 +797,44 @@ export function generateUnsolicitedTransferOffers(
   });
 }
 
+/**
+ * Any unresolved bid from another club for one of the user's players
+ * (listed, unsolicited, or Championship → reserve).
+ */
+export function isIncomingClubBid(
+  message: InboxMessage,
+  career: ManagerCareer
+): boolean {
+  if (message.resolved) return false;
+  if (!message.playerId || message.offerAmount == null || !message.offerClub) {
+    return false;
+  }
+  if (isSameManagerClub(message.offerClub, career.club)) return false;
+  if (message.reserveOffer) return true;
+  if (message.unsolicited) return true;
+  return (
+    message.type === "transfer" ||
+    message.type === "transfer_offer_in"
+  );
+}
+
+export function getPendingIncomingClubBids(
+  career: ManagerCareer
+): InboxMessage[] {
+  return career.inboxMessages.filter((m) => isIncomingClubBid(m, career));
+}
+
+export function getPendingIncomingClubBid(
+  career: ManagerCareer
+): InboxMessage | undefined {
+  return getPendingIncomingClubBids(career)[0];
+}
+
+/** @deprecated Prefer getPendingIncomingClubBid — now returns any incoming club bid. */
 export function getPendingUnsolicitedOffer(
   career: ManagerCareer
 ): InboxMessage | undefined {
-  return career.inboxMessages.find(
-    (m) =>
-      !m.resolved &&
-      m.unsolicited &&
-      m.playerId &&
-      m.offerAmount != null &&
-      m.offerClub &&
-      !isSameManagerClub(m.offerClub, career.club)
-  );
+  return getPendingIncomingClubBid(career);
 }
 
 export function acceptIncomingOffer(

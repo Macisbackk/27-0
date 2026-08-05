@@ -217,7 +217,7 @@ export function ManagerRetirementIntentModal({
                 </p>
                 <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
                   {canConvince
-                    ? "Let them retire as planned, or convince them to stay one more year at the same wage — then they retire for good."
+                    ? "Let them retire as planned, or try to convince them to stay one more year at the same wage. They may accept — or stick with retirement."
                     : "Contract runs out and the player plans to retire."}
                 </p>
               </div>
@@ -236,7 +236,7 @@ export function ManagerRetirementIntentModal({
                 </p>
                 <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
                   {canConvince
-                    ? "If convinced, they play one final season then retire — this option works once per player."
+                    ? "If they stay, they play one final season then retire. You only get one attempt per player."
                     : "Leaves the squad at the end of the season unless already persuaded to stay."}
                 </p>
               </div>
@@ -255,8 +255,9 @@ export function ManagerRetirementIntentModal({
               <span className="font-semibold text-theme-primary">
                 {formatWage(contract.wagePerYear)}/yr
               </span>{" "}
-              — the same wage as now. They will hang up their boots when that
-              year ends. This can only be used once per player.
+              — the same wage as now. Older players are less likely to accept.
+              You will be told whether they stay or stick with retirement. One
+              attempt only.
             </p>
           )}
         </div>
@@ -291,13 +292,13 @@ export function ManagerRetirementIntentModal({
       <ManagerDialog
         open={confirmStayOpen}
         variant="confirm"
-        title="Offer one more year?"
+        title="Try to keep them?"
         message={
           contract?.wagePerYear != null
-            ? `Offer ${player.name} a 1-year contract at ${formatWage(contract.wagePerYear)}/yr — the same wage as now?\n\nThey will stay for the rest of this season and one more year, then retire. This can only be done once.`
-            : `Offer ${player.name} a 1-year contract at their current wage?\n\nThey will stay for the rest of this season and one more year, then retire. This can only be done once.`
+            ? `Offer ${player.name} a 1-year contract at ${formatWage(contract.wagePerYear)}/yr — the same wage as now?\n\nThey may accept and stay one more year, or turn you down and carry on with retirement. You only get one attempt.`
+            : `Offer ${player.name} a 1-year contract at their current wage?\n\nThey may accept and stay one more year, or turn you down and carry on with retirement. You only get one attempt.`
         }
-        confirmLabel="Yes — offer contract"
+        confirmLabel="Yes — make the offer"
         cancelLabel="Go back"
         onConfirm={handleConfirmStay}
         onCancel={() => setConfirmStayOpen(false)}

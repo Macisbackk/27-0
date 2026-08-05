@@ -338,8 +338,20 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
       clubColorOverride={clubColorOverride}
       clubAccent={showcaseTopBarOnly ? "top-bar-only" : "full"}
       className={`${equalHeight ? "min-h-full" : ""} ${
-        isGoat ? "ring-2 ring-accent-gold" : isLegend ? "ring-2 ring-accent-gold/40" : ""
+        isGoat
+          ? "ring-2 ring-accent-gold"
+          : isLegend
+            ? "ring-2 ring-accent-gold/70 border-accent-gold/50 shadow-[0_0_0_1px_rgba(255,255,255,0.25)_inset,0_0_20px_rgba(251,191,36,0.15)]"
+            : ""
       } ${allowAchievementPopover ? "!overflow-visible" : ""} ${className}`}
+      style={
+        isLegend && !isGoat
+          ? {
+              background:
+                "linear-gradient(165deg, rgba(255,255,255,0.12) 0%, rgba(255,248,220,0.08) 35%, transparent 70%)",
+            }
+          : undefined
+      }
     >
       {showClubColourBar && <ClubColourBar club={colorClub} />}
       {!showcaseTopBarOnly && (

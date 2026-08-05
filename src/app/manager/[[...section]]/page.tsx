@@ -75,6 +75,7 @@ import {
 import {
   acknowledgeManagerEventId,
   collectWeeklyManagerEventIds,
+  hasBlockingManagerDecision,
   withWeeklyManagerEventQueue,
 } from "@/lib/manager/managerMatchWeek";
 import { scrollToManagerHubNextFixture } from "@/lib/manager/managerHubScroll";
@@ -124,8 +125,12 @@ import {
   markInboxMessageRead,
 } from "@/lib/manager/managerInbox";
 import {
+  acceptReserveTransferOffer,
+  rejectReserveTransferOffer,
+} from "@/lib/manager/championshipBidForSlReserves";
+import {
   acceptIncomingOffer,
-  getPendingUnsolicitedOffer,
+  getPendingIncomingClubBid,
   rejectIncomingOffer,
 } from "@/lib/manager/managerTransferLeague";
 import {
@@ -463,6 +468,18 @@ export default function ManagerPage() {
     [refreshSaveSlots, setCareerState]
   );
 
+  /** Persist and open a bid popup if another club has an unresolved offer. */
+  const persistAndSurfaceIncomingBids = useCallback(
+    (next: ManagerCareer) => {
+      persist(next);
+      const bid = getPendingIncomingClubBid(next);
+      if (!bid) return;
+      setPendingIncomingBidId(bid.id);
+      setIncomingBidModalOpen(true);
+    },
+    [persist]
+  );
+
   const continueCelebrationQueue = useCallback(
     (
       fromStep:
@@ -735,11 +752,11 @@ export default function ManagerPage() {
       );
       return;
     }
-    const unsolicited = getPendingUnsolicitedOffer(saved);
+    const incomingBid = getPendingIncomingClubBid(saved);
     const contractExpiry = getPendingContractExpiryPopup(saved);
     const retirementIntent = getPendingRetirementIntentPopup(saved);
-    if (unsolicited) {
-      setPendingIncomingBidId(unsolicited.id);
+    if (incomingBid) {
+      setPendingIncomingBidId(incomingBid.id);
       setIncomingBidModalOpen(true);
     } else if (contractExpiry) {
       setPendingContractExpiryId(contractExpiry.id);
@@ -956,7 +973,12 @@ export default function ManagerPage() {
       return;
     }
 
-    if (pendingIncomingBidId) {
+    const incomingBid =
+      (pendingIncomingBidId
+        ? career.inboxMessages.find((m) => m.id === pendingIncomingBidId)
+        : undefined) ?? getPendingIncomingClubBid(career);
+    if (incomingBid) {
+      setPendingIncomingBidId(incomingBid.id);
       setIncomingBidModalOpen(true);
       goToView("hub");
       return;
@@ -1035,6 +1057,14 @@ export default function ManagerPage() {
       : nextCareer;
     persist(cleared);
 
+    const nextBid = getPendingIncomingClubBid(cleared);
+    if (nextBid) {
+      setPendingIncomingBidId(nextBid.id);
+      setIncomingBidModalOpen(true);
+      goToView("hub");
+      return;
+    }
+
     const contractExpiry = getPendingContractExpiryPopup(cleared);
     if (contractExpiry) {
       setPendingContractExpiryId(contractExpiry.id);
@@ -1056,18 +1086,20 @@ export default function ManagerPage() {
 
   const handleIncomingBidAccept = () => {
     if (!career || !pendingIncomingBidId) return;
-    const result = acceptIncomingOffer(career, pendingIncomingBidId);
+    const offer = career.inboxMessages.find((m) => m.id === pendingIncomingBidId);
+    const result = offer?.reserveOffer
+      ? acceptReserveTransferOffer(career, pendingIncomingBidId)
+      : acceptIncomingOffer(career, pendingIncomingBidId);
     if (!result.ok || !result.career) {
       setAlertDialog({
         title: "Transfer failed",
         message: result.error ?? "Could not complete this transfer.",
       });
       if (result.error?.includes("no longer")) {
-        setIncomingBidModalOpen(false);
-        setPendingIncomingBidId(null);
-        persist(
-          rejectIncomingOffer(career, pendingIncomingBidId)
-        );
+        const rejected = offer?.reserveOffer
+          ? rejectReserveTransferOffer(career, pendingIncomingBidId)
+          : rejectIncomingOffer(career, pendingIncomingBidId);
+        handleIncomingBidResolved(rejected);
       }
       return;
     }
@@ -1076,7 +1108,12 @@ export default function ManagerPage() {
 
   const handleIncomingBidReject = () => {
     if (!career || !pendingIncomingBidId) return;
-    handleIncomingBidResolved(rejectIncomingOffer(career, pendingIncomingBidId));
+    const offer = career.inboxMessages.find((m) => m.id === pendingIncomingBidId);
+    handleIncomingBidResolved(
+      offer?.reserveOffer
+        ? rejectReserveTransferOffer(career, pendingIncomingBidId)
+        : rejectIncomingOffer(career, pendingIncomingBidId)
+    );
   };
 
   const continueAfterContractExpiry = (nextCareer: ManagerCareer) => {
@@ -1120,7 +1157,7 @@ export default function ManagerPage() {
       pendingLeagueWinnersCelebration ||
       pendingTrophyCelebration ||
       pendingIncomingBidId ||
-      !!getPendingUnsolicitedOffer(next) ||
+      !!getPendingIncomingClubBid(next) ||
       !!getPendingContractExpiryPopup(next) ||
       !!getPendingRetirementIntentPopup(next) ||
       !!getPendingPositionRetrainingPopup(next) ||
@@ -1201,7 +1238,7 @@ export default function ManagerPage() {
       pendingLeagueWinnersCelebration ||
       pendingTrophyCelebration ||
       pendingIncomingBidId ||
-      !!getPendingUnsolicitedOffer(next) ||
+      !!getPendingIncomingClubBid(next) ||
       !!getPendingContractExpiryPopup(next) ||
       !!getPendingRetirementIntentPopup(next) ||
       !!getPendingPositionRetrainingPopup(next) ||
@@ -1221,15 +1258,28 @@ export default function ManagerPage() {
     if (!career || !pendingRetirementIntentId || !retirementIntentMessage?.playerId) {
       return;
     }
-    const convinced = convincePlayerToStay(
+    const result = convincePlayerToStay(
       career,
       retirementIntentMessage.playerId
     );
+    if (!result.ok) {
+      setAlertDialog({
+        title: "Could not convince",
+        message: result.error ?? "This player cannot be convinced to stay.",
+      });
+      return;
+    }
     const next = acknowledgeManagerEventId(
-      acknowledgeRetirementIntentPopup(convinced, pendingRetirementIntentId),
+      acknowledgeRetirementIntentPopup(result.career, pendingRetirementIntentId),
       pendingRetirementIntentId
     );
     persist(next);
+    setAlertDialog({
+      title: result.stayed ? "Player staying on" : "Retirement confirmed",
+      message: result.stayed
+        ? `${result.playerName} has agreed to stay for one more season at their current wage. They will retire when that final year ends.`
+        : `${result.playerName} has turned down your offer and will carry on with their plan to retire at the end of the ${career.seasonYear} season.`,
+    });
     continueAfterRetirementIntent(next);
   };
 
@@ -1244,9 +1294,9 @@ export default function ManagerPage() {
   };
 
   const continueAfterBoardMessage = (nextCareer: ManagerCareer) => {
-    const unsolicited = getPendingUnsolicitedOffer(nextCareer);
-    if (unsolicited) {
-      setPendingIncomingBidId(unsolicited.id);
+    const incomingBid = getPendingIncomingClubBid(nextCareer);
+    if (incomingBid) {
+      setPendingIncomingBidId(incomingBid.id);
       setIncomingBidModalOpen(true);
       goToView("hub");
       return;
@@ -1314,7 +1364,7 @@ export default function ManagerPage() {
       pendingLeagueWinnersCelebration ||
       pendingTrophyCelebration ||
       pendingIncomingBidId ||
-      !!getPendingUnsolicitedOffer(next) ||
+      !!getPendingIncomingClubBid(next) ||
       !!getPendingContractExpiryPopup(next) ||
       !!getPendingRetirementIntentPopup(next) ||
       !!getPendingPositionRetrainingPopup(next) ||
@@ -1476,6 +1526,22 @@ export default function ManagerPage() {
   const handleAdvanceWeek = () => {
     if (!career || advancingWeek) return;
     if (career.matchWeekPhase !== "awaiting_advance") return;
+    if (hasBlockingManagerDecision(career)) {
+      const blockingBid = getPendingIncomingClubBid(career);
+      if (blockingBid) {
+        setPendingIncomingBidId(blockingBid.id);
+        setIncomingBidModalOpen(true);
+        goToView("hub");
+        return;
+      }
+      const retirement = getPendingRetirementIntentPopup(career);
+      if (retirement) {
+        setPendingRetirementIntentId(retirement.id);
+        setRetirementIntentModalOpen(true);
+        goToView("hub");
+      }
+      return;
+    }
     setAdvancingWeek(true);
     try {
       const result = advanceManagerMatchWeek(career);
@@ -1493,14 +1559,14 @@ export default function ManagerPage() {
 
       // Weekly popups only — never auto-open or play the next fixture.
       const boardMail = getPendingBoardInboxPopup(withQueue);
-      const unsolicited = getPendingUnsolicitedOffer(withQueue);
+      const incomingBid = getPendingIncomingClubBid(withQueue);
       const contractExpiry = getPendingContractExpiryPopup(withQueue);
       const retirementIntent = getPendingRetirementIntentPopup(withQueue);
       const retrainingComplete = getPendingPositionRetrainingPopup(withQueue);
       const reserveReport = getPendingReserveReportPopup(withQueue);
 
       setPendingBoardMessageId(boardMail?.id ?? null);
-      setPendingIncomingBidId(unsolicited?.id ?? null);
+      setPendingIncomingBidId(incomingBid?.id ?? null);
       setPendingContractExpiryId(contractExpiry?.id ?? null);
       setPendingRetirementIntentId(retirementIntent?.id ?? null);
       setPendingPositionRetrainingId(retrainingComplete?.id ?? null);
@@ -1513,7 +1579,7 @@ export default function ManagerPage() {
 
       if (boardMail) {
         setBoardMessageModalOpen(true);
-      } else if (unsolicited) {
+      } else if (incomingBid) {
         setIncomingBidModalOpen(true);
       } else if (contractExpiry) {
         setContractExpiryModalOpen(true);
@@ -1708,7 +1774,7 @@ export default function ManagerPage() {
                 {displayView === "inbox" && (
                   <ManagerInbox
                     career={career}
-                    onUpdate={persist}
+                    onUpdate={persistAndSurfaceIncomingBids}
                     onNavigate={(v) => {
                       if (v === "season-rewards") goToView("season-rewards", { syncUrl: false });
                       else handleNavNavigate(v);
@@ -1718,18 +1784,24 @@ export default function ManagerPage() {
                 {displayView === "squad" && (
                   <ManagerSquad
                     career={career}
-                    onUpdate={persist}
+                    onUpdate={persistAndSurfaceIncomingBids}
                     subTab={squadSubTab}
                   />
                 )}
                 {displayView === "reserves" && (
-                  <ManagerReserves career={career} onUpdate={persist} />
+                  <ManagerReserves
+                    career={career}
+                    onUpdate={persistAndSurfaceIncomingBids}
+                  />
                 )}
                 {displayView === "contracts" && (
                   <ManagerContracts career={career} onUpdate={persist} />
                 )}
                 {displayView === "transfers" && (
-                  <ManagerTransfers career={career} onUpdate={persist} />
+                  <ManagerTransfers
+                    career={career}
+                    onUpdate={persistAndSurfaceIncomingBids}
+                  />
                 )}
                 {displayView === "club" && (
                   <ManagerClub career={career} onUpdate={persist} />

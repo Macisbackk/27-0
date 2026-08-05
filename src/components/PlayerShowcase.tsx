@@ -19,6 +19,7 @@ import {
   applyShowcasePipeline,
   computeShowcaseDbStats,
   getUniqueClubs,
+  getUniqueShowcaseYears,
   RATING_FILTER_LABELS,
   TIER_FILTER_LABELS,
   type RatingFilter,
@@ -49,6 +50,7 @@ const DEFAULT_FILTERS: ShowcaseFilters = {
   status: "current",
   position: "all",
   club: "all",
+  year: "all",
   ratingMin: "all",
   tier: "all",
 };
@@ -90,6 +92,7 @@ export function PlayerShowcase() {
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const clubs = useMemo(() => getUniqueClubs(allPlayers), [allPlayers]);
+  const years = useMemo(() => getUniqueShowcaseYears(allPlayers), [allPlayers]);
   const dbStats = useMemo(() => computeShowcaseDbStats(allPlayers), [allPlayers]);
 
   const activeFiltersState = useMemo(
@@ -115,6 +118,7 @@ export function PlayerShowcase() {
         filters.status,
         filters.position,
         filters.club,
+        filters.year,
         filters.ratingMin,
         filters.tier,
         sortKey,
@@ -125,6 +129,7 @@ export function PlayerShowcase() {
       filters.status,
       filters.position,
       filters.club,
+      filters.year,
       filters.ratingMin,
       filters.tier,
       sortKey,
@@ -223,6 +228,13 @@ export function PlayerShowcase() {
         key: "club",
         label: `Team: ${filters.club}`,
         clear: () => updateFilters((f) => ({ ...f, club: "all" })),
+      });
+    }
+    if (filters.year !== "all") {
+      chips.push({
+        key: "year",
+        label: `Year: ${filters.year}`,
+        clear: () => updateFilters((f) => ({ ...f, year: "all" })),
       });
     }
     if (filters.ratingMin !== "all") {
@@ -377,6 +389,29 @@ export function PlayerShowcase() {
               {clubs.map((c) => (
                 <option key={c} value={c}>
                   {c}
+                </option>
+              ))}
+            </select>
+          </FilterField>
+
+          <FilterField label="Year">
+            <select
+              value={filters.year === "all" ? "all" : String(filters.year)}
+              onChange={(e) =>
+                updateFilters((f) => ({
+                  ...f,
+                  year:
+                    e.target.value === "all"
+                      ? "all"
+                      : Number.parseInt(e.target.value, 10),
+                }))
+              }
+              className={FILTER.input}
+            >
+              <option value="all">All Years</option>
+              {years.map((y) => (
+                <option key={y} value={y}>
+                  {y}
                 </option>
               ))}
             </select>

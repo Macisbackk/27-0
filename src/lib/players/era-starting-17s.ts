@@ -1,8 +1,35 @@
 import eraStarting17sData from "../../../data/era-starting-17s.json";
 import type { Position } from "../types";
 import { isSuperLeagueSeason } from "./super-league-club-years";
-import { findEraPlayerByName } from "./player-name-resolve";
+import {
+  findEraPlayerByName,
+  findPlayerForTeamYearSquad,
+} from "./player-name-resolve";
 import { getPlayerEligiblePositions } from "./player-positions";
+import type { Player } from "../types";
+
+function resolveEraSquadPlayer(
+  name: string,
+  club: string,
+  year: string,
+  excludeIds?: Set<string>
+): Player | null {
+  const exact = findPlayerForTeamYearSquad(name, club, year, { excludeIds });
+  if (exact) return exact;
+
+  // Fallback when a season card is missing — keeps older / non-import club-years playable.
+  // Prefer name+club+year above; never use a Current 2026 card for a historic year.
+  const fallback = findEraPlayerByName(name);
+  if (!fallback) return null;
+  if (excludeIds?.has(fallback.id)) return null;
+
+  const y = Number.parseInt(year, 10);
+  if (fallback.category === "current" && Number.isFinite(y) && y < 2026) {
+    return null;
+  }
+
+  return fallback;
+}
 
 export const ERA_STARTING_17_SIZE = 17;
 export const ERA_XIII_FROM_STARTING_17 = 13;
@@ -86,11 +113,16 @@ export function getEraStarting17YearsForClub(club: string): string[] {
     .sort((a, b) => Number(b) - Number(a));
 }
 
-function resolveMemberPosition(member: EraStarting17Member): Position | null {
+function resolveMemberPosition(
+  member: EraStarting17Member,
+  club: string,
+  year: string,
+  excludeIds?: Set<string>
+): Position | null {
   const mapped = STARTING_17_POSITION_MAP[member.position.trim().toUpperCase()];
   if (mapped) return mapped;
   if (member.position.trim().toUpperCase() === "B") {
-    const player = findEraPlayerByName(member.name);
+    const player = resolveEraSquadPlayer(member.name, club, year, excludeIds);
     if (!player) return null;
     return getPlayerEligiblePositions(player)[0] ?? player.position;
   }
@@ -121,19 +153,21 @@ export function resolveEraStarting17Squad(
   const slotPositions: Position[] = [];
   const benchPositions: Position[] = [];
   const missingNames: string[] = [];
+  const usedIds = new Set<string>();
 
   for (const member of ordered) {
-    const player = findEraPlayerByName(member.name);
+    const player = resolveEraSquadPlayer(member.name, club, year, usedIds);
     if (!player) {
       missingNames.push(member.name);
       continue;
     }
-    const position = resolveMemberPosition(member);
+    const position = resolveMemberPosition(member, club, year, usedIds);
     if (!position) {
       missingNames.push(member.name);
       continue;
     }
 
+    usedIds.add(player.id);
     playerIds.push(player.id);
     if (member.number <= ERA_XIII_FROM_STARTING_17) {
       xiiiPlayerIds.push(player.id);

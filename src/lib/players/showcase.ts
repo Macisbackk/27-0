@@ -75,6 +75,8 @@ export interface ShowcaseFilters {
   status: PlayerCategory | "all";
   position: Position | "all";
   club: string;
+  /** Exact card year (e.g. 2023) or all seasons. */
+  year: number | "all";
   ratingMin: RatingFilter;
   tier: TierFilter;
 }
@@ -126,6 +128,15 @@ export function getUniqueClubs(players: Player[]): string[] {
   return [...new Set(players.map((p) => p.club))].sort((a, b) =>
     a.localeCompare(b)
   );
+}
+
+export function getUniqueShowcaseYears(players: Player[]): number[] {
+  const years = new Set<number>();
+  for (const p of players) {
+    const y = p.year ?? p.cardYear ?? p.primeYear;
+    if (typeof y === "number" && Number.isFinite(y)) years.add(y);
+  }
+  return [...years].sort((a, b) => b - a);
 }
 
 function ratingInBand(rating: number, filter: RatingFilter): boolean {
@@ -193,7 +204,9 @@ function matchesSearch(player: Player, query: string): boolean {
     player.club.toLowerCase().includes(q) ||
     positionLabel.includes(q) ||
     player.position.toLowerCase().replace(/_/g, " ").includes(q) ||
-    (player.primeYear !== undefined && String(player.primeYear).includes(q))
+    (player.primeYear !== undefined && String(player.primeYear).includes(q)) ||
+    (player.year !== undefined && String(player.year).includes(q)) ||
+    (player.cardYear !== undefined && String(player.cardYear).includes(q))
   );
 }
 
@@ -207,6 +220,12 @@ function passesStatusFilter(
 
 function passesTeamFilter(player: Player, filters: ShowcaseFilters): boolean {
   return filters.club === "all" || player.club === filters.club;
+}
+
+function passesYearFilter(player: Player, filters: ShowcaseFilters): boolean {
+  if (filters.year === "all") return true;
+  const y = player.year ?? player.cardYear ?? player.primeYear;
+  return y === filters.year;
 }
 
 function passesSecondaryFilters(
@@ -238,6 +257,7 @@ export function filterShowcasePlayers(
     if (player.availableInGame === false) return false;
     if (!passesStatusFilter(player, filters.status)) return false;
     if (!passesTeamFilter(player, filters)) return false;
+    if (!passesYearFilter(player, filters)) return false;
     if (!matchesSearch(player, filters.search)) return false;
     if (!passesSecondaryFilters(player, filters)) return false;
     return true;

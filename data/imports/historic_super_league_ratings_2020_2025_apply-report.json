@@ -1,0 +1,199 @@
+{
+  "dryRun": false,
+  "importPath": "C:\\Users\\Macis\\Projects\\27-0\\data\\imports\\historic_super_league_ratings_2020_2025_smoothed.json",
+  "totalRead": 578,
+  "invalid": 0,
+  "invalidRows": [],
+  "updated": 44,
+  "unchanged": 4,
+  "created": 530,
+  "unmatched": 0,
+  "unmatchedRows": [],
+  "ambiguous": 0,
+  "ambiguousRows": [],
+  "duplicatesResolved": 2,
+  "duplicateResolutions": [
+    {
+      "key": "joe bretherton|toulouse olympique|2022",
+      "keptId": "toulouse-hist-joe-bretherton-2022",
+      "removedIds": [
+        "toulouse-hist-era-joe-bretherton"
+      ]
+    },
+    {
+      "key": "will dagger|hull kr|2020",
+      "keptId": "hull-kr-hist-era-will-dagger",
+      "removedIds": [
+        "hull-kr-hist-will-dagger-2020"
+      ]
+    }
+  ],
+  "identityExamples": [
+    {
+      "identity": "jake-connor-hull-fc-2020",
+      "name": "Jake Connor",
+      "rating": 87,
+      "club": "Hull FC",
+      "year": 2020,
+      "clubCanonical": "Hull FC"
+    },
+    {
+      "identity": "daryl-clark-warrington-wolves-2020",
+      "name": "Daryl Clark",
+      "rating": 91,
+      "club": "Warrington Wolves",
+      "year": 2020,
+      "clubCanonical": "Warrington Wolves"
+    },
+    {
+      "identity": "toby-king-warrington-wolves-2020",
+      "name": "Toby King",
+      "rating": 88,
+      "club": "Warrington Wolves",
+      "year": 2020,
+      "clubCanonical": "Warrington Wolves"
+    },
+    {
+      "identity": "liam-farrell-wigan-warriors-2020",
+      "name": "Liam Farrell",
+      "rating": 92,
+      "club": "Wigan Warriors",
+      "year": 2020,
+      "clubCanonical": "Wigan Warriors"
+    },
+    {
+      "identity": "bevan-french-wigan-warriors-2020",
+      "name": "Bevan French",
+      "rating": 90,
+      "club": "Wigan Warriors",
+      "year": 2020,
+      "clubCanonical": "Wigan Warriors"
+    },
+    {
+      "identity": "jake-connor-hull-fc-2021",
+      "name": "Jake Connor",
+      "rating": 87,
+      "club": "Hull FC",
+      "year": 2021,
+      "clubCanonical": "Hull FC"
+    },
+    {
+      "identity": "daryl-clark-warrington-wolves-2021",
+      "name": "Daryl Clark",
+      "rating": 90,
+      "club": "Warrington Wolves",
+      "year": 2021,
+      "clubCanonical": "Warrington Wolves"
+    },
+    {
+      "identity": "toby-king-warrington-wolves-2021",
+      "name": "Toby King",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2021,
+      "clubCanonical": "Warrington Wolves"
+    },
+    {
+      "identity": "liam-farrell-wigan-warriors-2021",
+      "name": "Liam Farrell",
+      "rating": 90,
+      "club": "Wigan Warriors",
+      "year": 2021,
+      "clubCanonical": "Wigan Warriors"
+    },
+    {
+      "identity": "jake-connor-hull-fc-2022",
+      "name": "Jake Connor",
+      "rating": 85,
+      "club": "Hull FC",
+      "year": 2022,
+      "clubCanonical": "Hull FC"
+    },
+    {
+      "identity": "daryl-clark-warrington-wolves-2022",
+      "name": "Daryl Clark",
+      "rating": 86,
+      "club": "Warrington Wolves",
+      "year": 2022,
+      "clubCanonical": "Warrington Wolves"
+    },
+    {
+      "identity": "toby-king-warrington-wolves-2022",
+      "name": "Toby King",
+      "rating": 85,
+      "club": "Warrington Wolves",
+      "year": 2022,
+      "clubCanonical": "Warrington Wolves"
+    },
+    {
+      "identity": "bevan-french-wigan-warriors-2022",
+      "name": "Bevan French",
+      "rating": 91,
+      "club": "Wigan Warriors",
+      "year": 2022,
+      "clubCanonical": "Wigan Warriors"
+    },
+    {
+      "identity": "liam-farrell-wigan-warriors-2022",
+      "name": "Liam Farrell",
+      "rating": 88,
+      "club": "Wigan Warriors",
+      "year": 2022,
+      "clubCanonical": "Wigan Warriors"
+    },
+    {
+      "identity": "jake-connor-huddersfield-giants-2023",
+      "name": "Jake Connor",
+      "rating": 84,
+      "club": "Huddersfield Giants",
+      "year": 2023,
+      "clubCanonical": "Huddersfield Giants"
+    },
+    {
+      "identity": "daryl-clark-warrington-wolves-2023",
+      "name": "Daryl Clark",
+      "rating": 82,
+      "club": "Warrington Wolves",
+      "year": 2023,
+      "clubCanonical": "Warrington Wolves"
+    },
+    {
+      "identity": "bevan-french-wigan-warriors-2023",
+      "name": "Bevan French",
+      "rating": 91,
+      "club": "Wigan Warriors",
+      "year": 2023,
+      "clubCanonical": "Wigan Warriors"
+    },
+    {
+      "identity": "liam-farrell-wigan-warriors-2023",
+      "name": "Liam Farrell",
+      "rating": 89,
+      "club": "Wigan Warriors",
+      "year": 2023,
+      "clubCanonical": "Wigan Warriors"
+    },
+    {
+      "identity": "toby-king-wigan-warriors-2023",
+      "name": "Toby King",
+      "rating": 87,
+      "club": "Wigan Warriors",
+      "year": 2023,
+      "clubCanonical": "Wigan Warriors"
+    },
+    {
+      "identity": "jake-connor-huddersfield-giants-2024",
+      "name": "Jake Connor",
+      "rating": 85,
+      "club": "Huddersfield Giants",
+      "year": 2024,
+      "clubCanonical": "Huddersfield Giants"
+    }
+  ],
+  "protected": {
+    "currentSquadsUntouched": true,
+    "legendsUntouched": true,
+    "reservesUntouched": true,
+    "generatedChampionshipUntouched": true
+  }
+}
