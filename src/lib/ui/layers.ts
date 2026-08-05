@@ -16,9 +16,26 @@ export const UI_LAYERS = {
 
 export type UiLayer = keyof typeof UI_LAYERS;
 
-/** Tailwind arbitrary z-index class for a named layer. */
+/**
+ * Static class per layer, defined in globals.css against the --z-* vars.
+ * Never build these as Tailwind arbitrary values (`z-[9999]`): the class name
+ * only exists if it appears literally in a scanned file, so a generated one
+ * silently leaves the element at `z-index: auto`.
+ */
+const UI_LAYER_CLASSES: Record<UiLayer, string> = {
+  page: "ui-layer-page",
+  stickyNav: "ui-layer-sticky-nav",
+  mobileActionBar: "ui-layer-mobile-action-bar",
+  stickyFooter: "ui-layer-sticky-footer",
+  popover: "ui-layer-popover",
+  sidebar: "ui-layer-sidebar",
+  modalBackdrop: "ui-layer-modal-backdrop",
+  modal: "ui-layer-modal",
+  criticalAnimation: "ui-layer-critical-animation",
+};
+
 export function uiLayerClass(layer: UiLayer): string {
-  return `z-[${UI_LAYERS[layer]}]`;
+  return UI_LAYER_CLASSES[layer];
 }
 
 /** Inline style helper when class names are impractical. */

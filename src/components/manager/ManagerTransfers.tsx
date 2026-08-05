@@ -568,11 +568,6 @@ export function ManagerTransfers({
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    {!appeal.allowed && appeal.reason && (
-                      <p className={`${TYPO.bodySm} text-amber-300/90`}>
-                        {appeal.reason}
-                      </p>
-                    )}
                     <div className="grid gap-2 sm:grid-cols-2">
                     <GameButton
                       variant="theme"
@@ -704,11 +699,6 @@ export function ManagerTransfers({
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    {!appeal.allowed && appeal.reason && (
-                      <p className={`${TYPO.bodySm} text-amber-300/90`}>
-                        {appeal.reason}
-                      </p>
-                    )}
                     <div className="grid gap-2 sm:grid-cols-2">
                     <GameButton
                       variant="theme"
@@ -860,11 +850,6 @@ export function ManagerTransfers({
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    {!appeal.allowed && appeal.reason && (
-                      <p className={`${TYPO.bodySm} text-amber-300/90`}>
-                        {appeal.reason}
-                      </p>
-                    )}
                     <GameButton
                       variant="secondary"
                       size="sm"

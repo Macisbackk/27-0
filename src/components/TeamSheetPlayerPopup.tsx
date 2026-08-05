@@ -91,7 +91,7 @@ export function TeamSheetPlayerPopup({
               onClick={(event) => event.stopPropagation()}
             >
               {colors && (
-                <div className="flex h-1.5 w-full">
+                <div className="flex h-0.5 w-full">
                   <span
                     className="h-full flex-1"
                     style={{ backgroundColor: colors.primary }}

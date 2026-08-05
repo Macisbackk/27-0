@@ -1,32 +1,30 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ManagerBoostsPanel } from "@/components/manager/ManagerBoostsPanel";
 import { GameButton } from "@/components/ui/GameButton";
 import { GamePanel } from "@/components/ui/GamePanel";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
-import { GameTableRow } from "@/components/ui/GameTableRow";
-import { FILTER, SPACING } from "@/lib/ui/design-system";
+import { GameEmptyState } from "@/components/ui/GameEmptyState";
+import { FILTER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { CollapsibleDetails } from "@/components/ui/MobileLayout";
 import type { ManagerCareer, ManagerReservePlayer } from "@/lib/manager/types";
-import { POSITION_SHORT, getFullPositionName, getFullPositionNames } from "@/lib/positions";
+import { POSITION_SHORT, getFullPositionName } from "@/lib/positions";
 import type { Position } from "@/lib/types";
 import {
-  callUpReserveForNextMatch,
   fillReserveSquadMinimum,
-  formatReserveGrowthDelta,
   getPotentialTier,
   getReserveOpponent,
-  getReserveSignedGrowthDelta,
-  getReserveSignedRating,
   promoteReserveToSquad,
-  releaseReserve,
+  callUpReserveForNextMatch,
   RESERVE_EMERGENCY_RECRUITMENT_EXCUSE,
   RESERVE_EMERGENCY_RECRUITMENT_TITLE,
   RESERVE_MIN_PLAYERS,
   RESERVE_RECRUITMENT_FEE,
 } from "@/lib/manager/managerReserves";
+import {
+  buildReserveCardModel,
+  type ReserveCardChip,
+} from "@/lib/manager/managerReserveCard";
 import {
   bulkRenewExpiringReserveContracts,
   declineYouthProspect,
@@ -44,6 +42,9 @@ import { getReserveReportMonth } from "@/lib/manager/managerReserveReports";
 import { playUiClick } from "@/lib/sound";
 import { ManagerPage, ManagerSection, ManagerStat } from "@/components/manager/manager-ui";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
+import { ManagerPlayerCardGrid } from "@/components/manager/ManagerPlayerCard";
+import { ManagerReservePlayerCard } from "@/components/manager/ManagerReservePlayerCard";
+import { ManagerReservePlayerModal } from "@/components/manager/ManagerReservePlayerModal";
 import {
   patchManagerCareerSettings,
   ReserveDevelopmentSettingsPanel,
@@ -51,6 +52,7 @@ import {
 } from "@/components/manager/ManagerSettings";
 import { ManagerReserveReleaseModal } from "@/components/manager/ManagerReserveReleaseModal";
 import { ManagerReserveReleaseToolsModal } from "@/components/manager/ManagerReserveReleaseToolsModal";
+import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import {
   applyReserveReleases,
   evaluateReservePlayerReview,
@@ -60,34 +62,11 @@ import {
 type ReserveFilter = "all" | "position" | "potential" | "rating" | "age";
 type ReservesSubTab = "squad" | "settings";
 
-const STATUS_LABELS: Record<string, string> = {
-  expires_this_season: "Expires this season",
-  one_year_left: "1 year left",
-  long_term: "Long-term",
-  wants_renewal: "Renewal due",
-  renewed: "Renewed",
-};
-
-const REVIEW_CHIP: Record<
-  ReserveReviewFlag,
-  { label: string; className: string }
-> = {
-  review: {
-    label: "Review",
-    className: "border-amber-500/40 bg-amber-500/10 text-amber-300",
-  },
-  promote: {
-    label: "Promote",
-    className: "border-theme-primary/40 bg-theme-primary/10 text-theme-primary",
-  },
-  protected: {
-    label: "Protected",
-    className: "border-indigo-400/40 bg-indigo-500/10 text-indigo-200",
-  },
-  release_candidate: {
-    label: "Release Candidate",
-    className: "border-red-500/40 bg-red-500/10 text-red-300",
-  },
+const REVIEW_CHIP: Record<ReserveReviewFlag, ReserveCardChip> = {
+  review: { label: "Review", tone: "amber" },
+  promote: { label: "Promote", tone: "primary" },
+  protected: { label: "Protected", tone: "sky" },
+  release_candidate: { label: "Release Candidate", tone: "red" },
 };
 
 interface ManagerReservesProps {
@@ -100,9 +79,11 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
   const [filter, setFilter] = useState<ReserveFilter>("all");
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
   const [message, setMessage] = useState<string | null>(null);
+  const [detailsId, setDetailsId] = useState<string | null>(null);
   const [releaseTarget, setReleaseTarget] = useState<ManagerReservePlayer | null>(
     null
   );
+  const [releaseError, setReleaseError] = useState<string | null>(null);
   const [releaseToolsOpen, setReleaseToolsOpen] = useState(false);
   const settings = resolveManagerSettings(career);
 
@@ -156,37 +137,58 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     return list;
   }, [career.reserves, filter, positionFilter]);
 
+  const detailsReserve = detailsId
+    ? (career.reserves.find((r) => r.id === detailsId) ?? null)
+    : null;
+
   const handlePromote = (id: string) => {
     const result = promoteReserveToSquad(career, id);
     if (!result.ok || !result.career) {
       setMessage(result.error ?? "Could not promote player");
       return;
     }
+    const name = career.reserves.find((r) => r.id === id)?.name ?? "Player";
     onUpdate(result.career);
-    setMessage("Player signed to first-team squad");
+    setDetailsId(null);
+    setMessage(`${name} promoted to the senior squad`);
   };
 
-  const handleReleaseClick = (reserve: ManagerReservePlayer) => {
+  const handleCallUp = (id: string) => {
+    const reserve = career.reserves.find((r) => r.id === id);
+    if (!reserve) return;
+    onUpdate(callUpReserveForNextMatch(career, id));
+    setMessage(`${reserve.name} added to the matchday squad`);
+  };
+
+  const handleReleaseClick = (id: string) => {
+    const reserve = career.reserves.find((r) => r.id === id);
+    if (!reserve) return;
     playUiClick();
+    setDetailsId(null);
     setReleaseTarget(reserve);
   };
 
+  /**
+   * Release always routes through applyReserveReleases so the player keeps their
+   * stable id and lands in the free-agent pool. A failure is surfaced rather
+   * than falling back to a delete that would lose them.
+   */
   const handleReleaseConfirm = () => {
     if (!releaseTarget) return;
-    const result = applyReserveReleases(career, [
-      { reserve: releaseTarget, reason: "Released by club" },
-    ], { forceBelowMinimum: true });
-    if (result.ok && result.career) {
-      onUpdate(result.career);
-      setMessage(`${releaseTarget.name} released`);
+    const result = applyReserveReleases(
+      career,
+      [{ reserve: releaseTarget, reason: "Released by club" }],
+      { forceBelowMinimum: true }
+    );
+    if (!result.ok || !result.career) {
+      setReleaseTarget(null);
+      setReleaseError(
+        result.error ?? `${releaseTarget.name} could not be released.`
+      );
       return;
     }
-    onUpdate(releaseReserve(career, releaseTarget.id));
-    setMessage(`${releaseTarget.name} released`);
-  };
-
-  const handleReleaseModalClose = () => {
-    setReleaseTarget(null);
+    onUpdate(result.career);
+    setMessage(`${releaseTarget.name} released to the free-agent pool`);
   };
 
   const handleSignProspect = (id: string) => {
@@ -213,6 +215,18 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
       generateReserveRenewalDemand(reserve, contract);
     onUpdate(renewReserveContract(career, id, demand));
     setMessage(`${reserve.name} renewed at ${formatWage(demand.wagePerYear)}/yr`);
+  };
+
+  const getRenewalLabel = (reserve: ManagerReservePlayer): string | null => {
+    const contract = career.reserveContracts?.[reserve.id];
+    if (!contract) return null;
+    const status = getContractStatus(contract);
+    if (status !== "expires_this_season" && status !== "wants_renewal") {
+      return null;
+    }
+    const demand =
+      contract.renewalDemand ?? generateReserveRenewalDemand(reserve, contract);
+    return `${formatWage(demand.wagePerYear)}/yr`;
   };
 
   const reserveShortfall = Math.max(0, RESERVE_MIN_PLAYERS - career.reserves.length);
@@ -278,12 +292,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         />
       ) : (
       <>
-      <ManagerBoostsPanel
-        career={career}
-        stage={["manager-reserves", "manager-youth-generation"]}
-        onApplied={onUpdate}
-        compact
-      />
       {message && (
         <p className={`${TYPO.bodySm} text-theme-primary`}>{message}</p>
       )}
@@ -445,7 +453,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             {youthProspects.length === 1 ? "" : "s"} available to sign on cheap
             youth terms.
           </p>
-          <div className={`mt-3 divide-y divide-pitch-700/40 ${SPACING.stackSm}`}>
+          <div className="mt-3 divide-y divide-pitch-700/40">
             {youthProspects.map((p) => {
               const previewWage = generateReserveYouthContract(p).wagePerYear;
               return (
@@ -553,194 +561,27 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
       </GamePanel>
 
       <GamePanel padded label={`Reserve players (${rows.length})`}>
-        <div className="divide-y divide-pitch-700/40">
-          {rows.map((r) => {
-            const contract = career.reserveContracts?.[r.id];
-            const status = contract ? getContractStatus(contract) : null;
-            const needsRenew =
-              status === "expires_this_season" || status === "wants_renewal";
-            const signedRating = getReserveSignedRating(r);
-            const growthDelta = getReserveSignedGrowthDelta(r);
-            const positionLabel = getFullPositionNames(
-              (r.eligiblePositions?.length
-                ? r.eligiblePositions
-                : [r.position]
-              ) as Position[]
-            );
-            const review = evaluateReservePlayerReview(career, r);
-
-            return (
-              <GameTableRow
-                key={r.id}
-                variant="ledger"
-                className={`border-0 bg-transparent px-0 py-4 shadow-none first:pt-0 last:pb-0 ${
-                  needsRenew ? "rounded-lg ring-1 ring-accent-gold/30 !px-3" : ""
-                }`}
-              >
-                <div className="reserve-player-card">
-                  <div className="reserve-player-card__header">
-                    <div className="flex flex-wrap items-center justify-center gap-2">
-                      <h3>{r.name}</h3>
-                      {review.flags.map((flag) => (
-                        <span
-                          key={flag}
-                          className={`rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${REVIEW_CHIP[flag].className}`}
-                          title={review.reasons.join(" · ")}
-                        >
-                          {REVIEW_CHIP[flag].label}
-                        </span>
-                      ))}
-                    </div>
-                    <p className={`${TYPO.bodySm} text-pitch-400`}>
-                      {positionLabel || getFullPositionName(r.position)} · Age{" "}
-                      {r.age} · {r.nationality}
-                    </p>
-                    {contract ? (
-                      <p className={`${TYPO.bodySm} text-accent-gold`}>
-                        {formatWage(contract.wagePerYear)} wage ·{" "}
-                        {contract.yearsRemaining} year
-                        {contract.yearsRemaining === 1 ? "" : "s"} left
-                      </p>
-                    ) : null}
-                    {needsRenew && status ? (
-                      <p className={`mt-1 ${TYPO.bodySm} text-accent-gold`}>
-                        {STATUS_LABELS[status] ?? status}
-                      </p>
-                    ) : null}
-                    {r.calledUpForNextMatch ? (
-                      <p className={`mt-1 ${TYPO.bodySm} text-theme-primary`}>
-                        Called up for next match
-                      </p>
-                    ) : null}
-                  </div>
-
-                  <div className="reserve-player-card__ratings">
-                    <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] font-semibold text-pitch-300">
-                      Signed {signedRating}
-                    </span>
-                    <span className="rounded-md border border-pitch-600/60 bg-pitch-900/40 px-2 py-0.5 text-[10px] font-semibold text-theme-primary">
-                      Current {r.rating}
-                    </span>
-                    <span
-                      className={`rounded-md border px-2 py-0.5 text-[10px] font-semibold ${
-                        growthDelta > 0
-                          ? "border-theme-primary/40 bg-theme-primary/10 text-theme-primary"
-                          : growthDelta < 0
-                            ? "border-red-500/40 bg-red-500/10 text-red-300"
-                            : "border-pitch-600/60 bg-pitch-900/40 text-pitch-400"
-                      }`}
-                    >
-                      Growth {formatReserveGrowthDelta(growthDelta)}
-                    </span>
-                  </div>
-
-                  <div className="reserve-player-card__actions">
-                    <GameButton
-                      variant="theme"
-                      size="sm"
-                      fullWidth={false}
-                      className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
-                      disabled={r.calledUpForNextMatch}
-                      onClick={() => {
-                        playUiClick();
-                        onUpdate(callUpReserveForNextMatch(career, r.id));
-                        setMessage(
-                          r.calledUpForNextMatch
-                            ? `${r.name} is already called up`
-                            : `${r.name} called up for next match`
-                        );
-                      }}
-                    >
-                      {r.calledUpForNextMatch ? "Called up" : "Call up"}
-                    </GameButton>
-                    <GameButton
-                      variant="secondary"
-                      size="sm"
-                      fullWidth={false}
-                      className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
-                      onClick={() => {
-                        playUiClick();
-                        handlePromote(r.id);
-                      }}
-                    >
-                      Offer Full-Time
-                    </GameButton>
-                    <div className="sm:contents">
-                        <div className="sm:hidden">
-                          <CollapsibleDetails summary="More actions">
-                            {needsRenew && contract && (
-                              <GameButton
-                                variant="theme"
-                                size="sm"
-                                fullWidth
-                                className="mb-2"
-                                onClick={() => {
-                                  playUiClick();
-                                  handleRenewReserve(r.id);
-                                }}
-                              >
-                                Renew (
-                                {formatWage(
-                                  (contract.renewalDemand ??
-                                    generateReserveRenewalDemand(r, contract)
-                                  ).wagePerYear
-                                )}
-                                /yr)
-                              </GameButton>
-                            )}
-                            <GameButton
-                              variant="danger"
-                              size="sm"
-                              fullWidth
-                              onClick={() => handleReleaseClick(r)}
-                            >
-                              Release
-                            </GameButton>
-                          </CollapsibleDetails>
-                        </div>
-                        <div className="hidden sm:contents">
-                          {needsRenew && contract && (
-                            <GameButton
-                              variant="theme"
-                              size="sm"
-                              fullWidth={false}
-                              className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
-                              onClick={() => {
-                                playUiClick();
-                                handleRenewReserve(r.id);
-                              }}
-                            >
-                              Renew (
-                              {formatWage(
-                                (contract.renewalDemand ??
-                                  generateReserveRenewalDemand(r, contract)
-                                ).wagePerYear
-                              )}
-                              /yr)
-                            </GameButton>
-                          )}
-                          <GameButton
-                            variant="danger"
-                            size="sm"
-                            fullWidth={false}
-                            className="w-full min-w-0 sm:w-auto sm:min-w-[7.5rem]"
-                            onClick={() => handleReleaseClick(r)}
-                          >
-                            Release
-                          </GameButton>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-              </GameTableRow>
-            );
-          })}
-        </div>
-
-        {rows.length === 0 && (
-          <p className={`${TYPO.bodySm} text-center text-pitch-500`}>
-            No reserve players match your filters.
-          </p>
+        {rows.length === 0 ? (
+          <GameEmptyState message="No reserve players match your filters." />
+        ) : (
+          <ManagerPlayerCardGrid>
+            {rows.map((r) => {
+              const review = evaluateReservePlayerReview(career, r);
+              return (
+                <ManagerReservePlayerCard
+                  key={r.id}
+                  model={buildReserveCardModel(career, r)}
+                  club={career.club}
+                  extraChips={review.flags.map((flag) => ({
+                    ...REVIEW_CHIP[flag],
+                    title: review.reasons.join(" · "),
+                  }))}
+                  onPromote={handlePromote}
+                  onViewDetails={setDetailsId}
+                />
+              );
+            })}
+          </ManagerPlayerCardGrid>
         )}
       </GamePanel>
 
@@ -768,14 +609,33 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         </GamePanel>
       )}
 
+      {detailsReserve && (
+        <ManagerReservePlayerModal
+          model={buildReserveCardModel(career, detailsReserve)}
+          renewalLabel={getRenewalLabel(detailsReserve)}
+          onClose={() => setDetailsId(null)}
+          onCallUp={handleCallUp}
+          onRenew={handleRenewReserve}
+          onRelease={handleReleaseClick}
+        />
+      )}
+
       {releaseTarget && (
         <ManagerReserveReleaseModal
           reserve={releaseTarget}
           contract={career.reserveContracts?.[releaseTarget.id] ?? null}
-          onCancel={handleReleaseModalClose}
+          onCancel={() => setReleaseTarget(null)}
           onConfirm={handleReleaseConfirm}
         />
       )}
+
+      <ManagerDialog
+        open={releaseError !== null}
+        title="Release failed"
+        message={releaseError ?? ""}
+        onConfirm={() => setReleaseError(null)}
+        onCancel={() => setReleaseError(null)}
+      />
 
       <ManagerReserveReleaseToolsModal
         open={releaseToolsOpen}

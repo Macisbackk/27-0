@@ -78,12 +78,12 @@ export function ManagerTransferPlayerCard({
     >
       <div
         className={`border-b border-pitch-700/40 px-4 py-3 sm:px-4 ${
-          freeAgent ? "border-t-[3px] border-t-theme-primary" : ""
+          freeAgent ? "border-t-2 border-t-theme-primary" : ""
         }`}
         style={
           freeAgent
             ? undefined
-            : { borderTopWidth: 3, borderTopColor: accent }
+            : { borderTopWidth: 2, borderTopColor: accent }
         }
       >
         <div className="flex items-start justify-between gap-2">

@@ -72,6 +72,8 @@ export const RESERVE_DEPTH_MIN = 22;
 /** Preferred reserve listing size when topping up coverage. */
 export const RESERVE_DEPTH_TARGET = 26;
 export const RESERVE_SQUAD_MAX = 30;
+/** Registration cap on the senior squad — gates reserve promotions. */
+export const SENIOR_SQUAD_LIMIT = 35;
 export const RESERVE_RECRUITMENT_FEE = 300_000;
 export const RESERVE_WALKOVER_SCORE = 18;
 export const RESERVE_WALKOVER_REASON = "Walkover — fewer than 13 reserve players";
@@ -1001,8 +1003,11 @@ export function promoteReserveToSquad(
   if (career.squad.some((p) => p.playerId === reserveId)) {
     return { ok: false, error: "Already in squad" };
   }
-  if (career.squad.length >= 35) {
-    return { ok: false, error: "Squad is full" };
+  if (career.squad.length >= SENIOR_SQUAD_LIMIT) {
+    return {
+      ok: false,
+      error: `Senior squad is full (${career.squad.length}/${SENIOR_SQUAD_LIMIT})`,
+    };
   }
 
   const player: Player = reserveToPlayer(reserve, career.seasonYear);

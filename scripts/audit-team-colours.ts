@@ -24,7 +24,7 @@ const PLAYER_CARD_FILES = [
   "ShowcasePlayerCard.tsx",
   "PlayerCard.tsx",
   "PitchSlotCard.tsx",
-  "SlotRecruitPlayerCard.tsx",
+  "QuickModePlayerChoiceCard.tsx",
   "RugbyLeaguePlayerCard.tsx",
   "SquadPlayerCard.tsx",
   "TeamCard.tsx",

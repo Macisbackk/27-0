@@ -7,6 +7,7 @@ import {
   ManagerSection,
   ManagerSectionCard,
   ManagerStat,
+  ManagerClubFinancesPanel,
 } from "@/components/manager/manager-ui";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -40,7 +41,7 @@ interface ManagerClubProps {
   onUpdate: (career: ManagerCareer) => void;
 }
 
-type ClubOfficeSubTab = "boosts" | "facilities" | "settings";
+type ClubOfficeSubTab = "finances" | "boosts" | "facilities" | "settings";
 
 const FACILITY_ORDER: FacilityType[] = [
   "youth",
@@ -58,7 +59,7 @@ const FACILITY_ICONS: Record<FacilityType, string> = {
 
 export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
   const [error, setError] = useState<string | null>(null);
-  const [subTab, setSubTab] = useState<ClubOfficeSubTab>("boosts");
+  const [subTab, setSubTab] = useState<ClubOfficeSubTab>("finances");
   const settings = resolveManagerSettings(career);
   const facilities = getClubFacilities(career);
   const transferFund = getTransferBudget(career);
@@ -99,7 +100,7 @@ export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
         size="page"
         label="Club Office"
         title="Club"
-        subtitle="Boosts, facilities and club preferences for your managerial career."
+        subtitle="Finances, boosts, facilities and club preferences."
       />
 
       <ManagerSubTabBar
@@ -107,13 +108,16 @@ export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
         active={subTab}
         onChange={setSubTab}
         tabs={[
+          { id: "finances", label: "Finances" },
           { id: "boosts", label: "Boosts" },
           { id: "facilities", label: "Facilities" },
           { id: "settings", label: "Settings" },
         ]}
       />
 
-      {subTab === "boosts" ? (
+      {subTab === "finances" ? (
+        <ManagerClubFinancesPanel career={career} />
+      ) : subTab === "boosts" ? (
         <ManagerBoostsPanel
           career={career}
           stage="all-manager"

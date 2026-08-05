@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { Player, SquadSlot } from "@/lib/types";
 import { DraftPositionsRemaining } from "./DraftPositionsRemaining";
-import { formatPositionFullNames } from "@/lib/players/player-positions";
 import {
   playGoatAppears,
   playHistoricPlayerAppears,
@@ -14,8 +13,11 @@ import {
 import { isGoatPlayer } from "@/lib/players/goat";
 import { DRAFT_MODE_RULE } from "@/lib/mode-labels";
 import { RL_SECTION_TITLE_CLASS } from "./cards/rl-card";
-import { PlayerCard } from "./PlayerCard";
 import { PlayerDetailModal } from "./PlayerDetailModal";
+import {
+  QuickModePlayerChoiceCard,
+  quickPlayerChoiceGridClass,
+} from "./QuickModePlayerChoiceCard";
 import { MOBILE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "@/components/ui/GameButton";
@@ -33,6 +35,8 @@ interface PlayerChoiceProps {
   draftMode?: boolean;
   showDraftRule?: boolean;
   draftSquad?: SquadSlot[];
+  /** When true, a selection boost guaranteed one of these options. */
+  boosted?: boolean;
 }
 
 export function PlayerChoice({
@@ -48,6 +52,7 @@ export function PlayerChoice({
   draftMode,
   showDraftRule,
   draftSquad,
+  boosted = false,
 }: PlayerChoiceProps) {
   const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
   const appearSoundPlayed = useRef(false);
@@ -151,23 +156,49 @@ export function PlayerChoice({
         </div>
       ) : null}
 
-      <div className={MOBILE.choiceGrid}>
-        <ChoiceCard
-          player={displayA}
-          label="A"
-          onChoose={() => onChoose(displayA)}
-          onViewDetails={() => setDetailPlayer(displayA)}
-          disabled={disabled}
-          hardMode={hardMode}
-        />
-        <ChoiceCard
-          player={displayB}
-          label="B"
-          onChoose={() => onChoose(displayB)}
-          onViewDetails={() => setDetailPlayer(displayB)}
-          disabled={disabled}
-          hardMode={hardMode}
-        />
+      <div className={quickPlayerChoiceGridClass(2)}>
+        <motion.div
+          className="h-full min-w-0"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35 }}
+        >
+          <QuickModePlayerChoiceCard
+            player={displayA}
+            choiceLabel="A"
+            hardMode={hardMode}
+            ratingVisible={!hardMode}
+            disabled={disabled}
+            boosted={boosted}
+            selectLabel="Select Player"
+            showDetailsAction={!hardMode}
+            onSelect={() => onChoose(displayA)}
+            onViewDetails={
+              hardMode ? undefined : () => setDetailPlayer(displayA)
+            }
+          />
+        </motion.div>
+        <motion.div
+          className="h-full min-w-0"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, delay: 0.05 }}
+        >
+          <QuickModePlayerChoiceCard
+            player={displayB}
+            choiceLabel="B"
+            hardMode={hardMode}
+            ratingVisible={!hardMode}
+            disabled={disabled}
+            boosted={boosted}
+            selectLabel="Select Player"
+            showDetailsAction={!hardMode}
+            onSelect={() => onChoose(displayB)}
+            onViewDetails={
+              hardMode ? undefined : () => setDetailPlayer(displayB)
+            }
+          />
+        </motion.div>
       </div>
 
       {detailPlayer && (
@@ -177,76 +208,5 @@ export function PlayerChoice({
         />
       )}
     </motion.div>
-  );
-}
-
-function ChoiceCard({
-  player,
-  label,
-  onChoose,
-  onViewDetails,
-  disabled,
-  hardMode,
-}: {
-  player: Player;
-  label: string;
-  onChoose: () => void;
-  onViewDetails: () => void;
-  disabled?: boolean;
-  hardMode?: boolean;
-}) {
-  return (
-    <motion.button
-      type="button"
-      onClick={onChoose}
-      disabled={disabled}
-      className={`group btn-press flex h-full w-full flex-col text-left disabled:active:scale-100 ${MOBILE.compactCard}`}
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35 }}
-    >
-      <div className="mb-0.5 flex min-h-[28px] items-center justify-between px-0.5 sm:mb-2 sm:min-h-[22px] sm:px-1">
-        <span className="font-display text-[9px] font-bold uppercase tracking-wider text-gray-500 sm:text-[11px]">
-          {label}
-        </span>
-        <span className="flex items-center gap-1.5">
-          {!hardMode && (
-            <span
-              role="button"
-              tabIndex={0}
-              className="inline-flex min-h-[28px] items-center rounded-md border border-white/10 px-2.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-gray-400 transition hover:border-theme-primary/40 hover:text-theme-primary sm:min-h-0 sm:text-[10px]"
-              onClick={(e) => {
-                e.stopPropagation();
-                onViewDetails();
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  onViewDetails();
-                }
-              }}
-            >
-              Info
-            </span>
-          )}
-          <span className="hidden rounded-full bg-theme-primary/20 px-2 py-0.5 text-[10px] font-semibold text-theme-primary opacity-0 transition group-hover:opacity-100 sm:inline">
-            Sign →
-          </span>
-        </span>
-      </div>
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg transition sm:min-h-[280px] group-hover:opacity-95">
-        <PlayerCard
-          player={player}
-          selectable
-          hardMode={hardMode}
-          equalHeight
-          compactMobile
-        />
-      </div>
-      <p className={`mt-0.5 hidden truncate text-center sm:block ${TYPO.meta}`}>
-        {formatPositionFullNames(player)}
-      </p>
-    </motion.button>
   );
 }

@@ -84,6 +84,47 @@
   --z-critical-animation: 10001;
 }
 
+/*
+ * Layer utilities for uiLayerClass() in src/lib/ui/layers.ts.
+ * These must be real CSS: Tailwind cannot compile an arbitrary class built from
+ * a template literal, so overlays styled that way resolve to `z-index: auto`.
+ */
+.ui-layer-page {
+  z-index: var(--z-page);
+}
+
+.ui-layer-sticky-nav {
+  z-index: var(--z-sticky-nav);
+}
+
+.ui-layer-mobile-action-bar {
+  z-index: var(--z-mobile-action-bar);
+}
+
+.ui-layer-sticky-footer {
+  z-index: var(--z-sticky-footer);
+}
+
+.ui-layer-popover {
+  z-index: var(--z-popover);
+}
+
+.ui-layer-sidebar {
+  z-index: var(--z-sidebar);
+}
+
+.ui-layer-modal-backdrop {
+  z-index: var(--z-modal-backdrop);
+}
+
+.ui-layer-modal {
+  z-index: var(--z-modal);
+}
+
+.ui-layer-critical-animation {
+  z-index: var(--z-critical-animation);
+}
+
 html {
   width: 100%;
   max-width: 100%;

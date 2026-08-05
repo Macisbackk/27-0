@@ -646,10 +646,13 @@ export default function ManagerPage() {
   }, [awaitingFriendlyChoice, displayView, goToView]);
 
   useEffect(() => {
-    if (!career || !awaitingFriendlyChoice) return;
-    if (career.preSeason.currentChoices.length >= 3) return;
-    persist(ensureFriendlyChoices(career));
-  }, [career, awaitingFriendlyChoice, persist]);
+    if (!career || !isAwaitingFriendlyChoice(career)) return;
+    const next = ensureFriendlyChoices(career);
+    // persist() always yields a new career identity, so re-persisting an
+    // unchanged career would re-trigger this effect forever.
+    if (next === career) return;
+    persist(next);
+  }, [career, persist]);
 
   useEffect(() => {
     if (!SCROLL_TOP_VIEWS.includes(view)) return;

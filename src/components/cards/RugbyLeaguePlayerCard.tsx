@@ -305,7 +305,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
               size="lg"
               light
               compact={mobileCompact}
-              className="hidden sm:block"
+              className="hidden sm:flex"
             />
             <StatBox
               label="Value"
@@ -358,7 +358,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
         <ClubNameStrip club={displayClub} colors={colors} />
       )}
 
-      <div className="flex flex-1 flex-col gap-2 p-3 sm:p-4">
+      <div className="player-card-body flex flex-1 flex-col gap-2 p-3 sm:p-4">
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1 overflow-hidden pr-1">
             <h2
@@ -387,14 +387,14 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
           <div className="relative z-20 overflow-visible">{achievementBadges}</div>
         )}
 
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <div className="game-stat-grid">
           <StatBox label="Apps" value={appearancesValue} />
           <StatBox label="Tries" value={formatCareerTries(player.tries)} />
           <StatBox label="Age" value={ageValue} />
           <StatBox
             label="Years Active"
             value={player.yearsActive}
-            className="hidden sm:block"
+            className="game-stat-tile--wide-only"
           />
           <StatBox
             label="Value"

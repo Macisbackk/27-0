@@ -44,6 +44,7 @@ import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { playUiClick } from "@/lib/sound";
 import { FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { EraRatingExplanation } from "./EraRatingExplanation";
 
 const DEFAULT_FILTERS: ShowcaseFilters = {
   search: "",
@@ -87,7 +88,6 @@ export function PlayerShowcase() {
   const [sortKey, setSortKey] = useState<ShowcaseSortKey>("rating");
   const [sortDir, setSortDir] = useState<ShowcaseSortDir>("desc");
   const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
-  const [expandedPlayerId, setExpandedPlayerId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
@@ -152,7 +152,6 @@ export function PlayerShowcase() {
     const player = allPlayers.find((p) => p.id === deepLinkPlayerId);
     if (!player) return;
     setDetailPlayer(player);
-    setExpandedPlayerId(player.id);
     setSearchInput(player.name);
     setFilters((current) => ({
       ...current,
@@ -164,7 +163,6 @@ export function PlayerShowcase() {
 
   useEffect(() => {
     setCurrentPage(1);
-    setExpandedPlayerId(null);
   }, [filterResultsKey]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
@@ -183,13 +181,6 @@ export function PlayerShowcase() {
 
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
-    setExpandedPlayerId(null);
-  }, []);
-
-  const handleTogglePlayer = useCallback((player: Player) => {
-    setExpandedPlayerId((current) =>
-      current === player.id ? null : player.id
-    );
   }, []);
 
   const handleOpenDetail = useCallback((player: Player) => {
@@ -559,6 +550,9 @@ export function PlayerShowcase() {
               </>
             )}
           </ScoreboardPanel>
+          {filters.year !== "all" && (
+            <EraRatingExplanation compact className="px-2" />
+          )}
 
           {filtered.length === 0 ? (
             <GamePanel
@@ -583,8 +577,6 @@ export function PlayerShowcase() {
                   <div key={player.id} className="min-w-0 self-start">
                     <ShowcasePlayerCard
                       player={player}
-                      expanded={expandedPlayerId === player.id}
-                      onToggle={handleTogglePlayer}
                       onOpenDetail={handleOpenDetail}
                     />
                   </div>

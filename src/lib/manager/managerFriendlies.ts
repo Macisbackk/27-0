@@ -53,6 +53,25 @@ function normalizePreSeason(state: PreSeasonState): PreSeasonState {
   };
 }
 
+/**
+ * Pre-season is only playable while an opponent is active, a pick is pending or a
+ * draft is awaiting confirmation. Any other unfinished state has no route forward
+ * and would leave the calendar with no next fixture, so treat it as complete.
+ */
+function repairPreSeasonDeadEnd(state: PreSeasonState): PreSeasonState {
+  const required = state.friendliesRequired ?? FRIENDLIES_REQUIRED;
+  if (state.friendliesPlayed >= required) return state;
+  if (state.activeFriendly) return state;
+  if (state.awaitingChoice) return state;
+  if (state.awaitingScheduleConfirm) return state;
+  return {
+    ...state,
+    friendliesPlayed: required,
+    currentChoices: [],
+    activeFriendly: null,
+  };
+}
+
 export function initPreSeasonState(career: Partial<ManagerCareer>): PreSeasonState {
   if (career.preSeason) {
     const normalized = normalizePreSeason(career.preSeason);
@@ -60,22 +79,26 @@ export function initPreSeasonState(career: Partial<ManagerCareer>): PreSeasonSta
       const played = normalized.friendliesPlayed;
       const legacyRequired = 2;
       if (played >= legacyRequired) {
+        // Legacy pre-seasons finished under the old 2-friendly rule; raising the
+        // requirement must not reopen them mid-career.
         return {
           ...normalized,
           friendliesRequired: FRIENDLIES_REQUIRED,
-          friendliesPlayed: Math.min(played, FRIENDLIES_REQUIRED),
+          friendliesPlayed: FRIENDLIES_REQUIRED,
           awaitingChoice: false,
           awaitingScheduleConfirm: false,
+          currentChoices: [],
+          activeFriendly: null,
           friendlyScheduleVersion: FRIENDLY_SCHEDULE_VERSION,
         };
       }
-      return {
+      return repairPreSeasonDeadEnd({
         ...normalized,
         friendliesRequired: FRIENDLIES_REQUIRED,
         friendlyScheduleVersion: FRIENDLY_SCHEDULE_VERSION,
-      };
+      });
     }
-    return normalized;
+    return repairPreSeasonDeadEnd(normalized);
   }
   if ((career.fixtures?.length ?? 0) > 0 || (career.gameWeek ?? 0) > 0) {
     return {
@@ -120,7 +143,7 @@ export function isAwaitingFriendlyScheduleConfirm(career: ManagerCareer): boolea
 
 function previousFriendlyClubs(career: ManagerCareer): string[] {
   const clubs: string[] = [];
-  for (const f of career.fixtures) {
+  for (const f of career.fixtures ?? []) {
     if (f.competition === "friendly" && f.opponent) {
       clubs.push(f.opponent);
     }
@@ -389,12 +412,13 @@ export function completeFriendlyMatch(career: ManagerCareer): ManagerCareer {
   const schedule = career.preSeason.confirmedSchedule ?? [];
   const nextScheduled = schedule[played] ?? null;
 
-  if (played >= required) {
+  // No confirmed opponent left to face (legacy schedules), so pre-season is over.
+  if (played >= required || !nextScheduled) {
     return {
       ...career,
       preSeason: {
         ...career.preSeason,
-        friendliesPlayed: played,
+        friendliesPlayed: Math.max(played, required),
         awaitingChoice: false,
         awaitingScheduleConfirm: false,
         currentChoices: [],
@@ -411,16 +435,14 @@ export function completeFriendlyMatch(career: ManagerCareer): ManagerCareer {
       awaitingChoice: false,
       awaitingScheduleConfirm: false,
       currentChoices: [],
-      activeFriendly: nextScheduled
-        ? {
-            displayName: nextScheduled.displayName,
-            club: nextScheduled.club,
-            year: nextScheduled.year,
-            teamRating: nextScheduled.teamRating,
-            isHome: nextScheduled.isHome,
-            friendlyIndex: nextScheduled.friendlyIndex,
-          }
-        : null,
+      activeFriendly: {
+        displayName: nextScheduled.displayName,
+        club: nextScheduled.club,
+        year: nextScheduled.year,
+        teamRating: nextScheduled.teamRating,
+        isHome: nextScheduled.isHome,
+        friendlyIndex: nextScheduled.friendlyIndex,
+      },
     },
   };
 }

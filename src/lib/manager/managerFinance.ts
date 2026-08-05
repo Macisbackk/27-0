@@ -78,6 +78,10 @@ export function getBuyerAdjustedTransferFee(
   );
 }
 
+/** Neutral rejection copy — never advise a rating band or "club reach". */
+export const SIGNING_NOT_INTERESTED_REASON =
+  "This player is not interested in joining your club.";
+
 export interface ClubSigningAppeal {
   allowed: boolean;
   reason?: string;
@@ -101,30 +105,16 @@ export function evaluateClubSigningAppeal(
 
   const gap = playerRating - comfortable;
 
-  if (stars <= 1 && playerRating >= 84) {
+  if (
+    (stars <= 1 && playerRating >= 84) ||
+    (stars <= 2 && playerRating >= 88) ||
+    gap > 5
+  ) {
     return {
       allowed: false,
       feePremium,
       wagePremium: 1,
-      reason:
-        "Players of this calibre are not interested in your club — target lower-rated squad options.",
-    };
-  }
-  if (stars <= 2 && playerRating >= 88) {
-    return {
-      allowed: false,
-      feePremium,
-      wagePremium: 1,
-      reason:
-        "Elite players rarely join clubs at your level — look for squad players around 80 rating.",
-    };
-  }
-  if (gap > 5) {
-    return {
-      allowed: false,
-      feePremium,
-      wagePremium: 1,
-      reason: `This signing is above your club's reach — scout targets around ${comfortable} rating or lower.`,
+      reason: SIGNING_NOT_INTERESTED_REASON,
     };
   }
 

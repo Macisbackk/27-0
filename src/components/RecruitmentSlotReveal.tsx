@@ -23,6 +23,7 @@ import { uiLayerClass } from "@/lib/ui/layers";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { TYPO } from "@/lib/ui/typography";
 import { SlotReel, type SlotReelHandle } from "./SlotReel";
+import { EraRatingExplanation } from "./EraRatingExplanation";
 
 const LAND_HOLD_MS = 380;
 const TICK_SOUND_EVERY_ITEMS = 3;
@@ -292,9 +293,13 @@ export function RecruitmentSlotReveal({
                 </>
               )}
             </p>
-            <p className={`mt-1.5 ${TYPO.bodySm} text-gray-400`}>
-              Choose your signing…
-            </p>
+            {isEraSpin ? (
+              <EraRatingExplanation compact className="mt-1.5" />
+            ) : (
+              <p className={`mt-1.5 ${TYPO.bodySm} text-gray-400`}>
+                Choose your signing…
+              </p>
+            )}
           </div>
         </div>
       </div>

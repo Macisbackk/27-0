@@ -5,7 +5,6 @@ import { GameButton } from "@/components/ui/GameButton";
 import { GameModal } from "@/components/ui/GameModal";
 import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
-import { GameTableRow } from "@/components/ui/GameTableRow";
 import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -28,11 +27,12 @@ import { bulkRenewExpiringContractsWithInbox, renewManagerContract } from "@/lib
 import { releasePlayerWithCost } from "@/lib/manager/managerTransferLeague";
 import { getWageBillPercent, isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
-import { playPanelClose, playUiClick } from "@/lib/sound";
 import {
-  managerCalloutClass,
-  managerSectionAccentClass,
-} from "@/lib/manager/managerSurfaces";
+  ManagerPlayerCard,
+  ManagerPlayerCardHeader,
+} from "@/components/manager/ManagerPlayerCard";
+import { playPanelClose, playUiClick } from "@/lib/sound";
+import { managerCalloutClass } from "@/lib/manager/managerSurfaces";
 import { ManagerPage, ManagerSection } from "@/components/manager/manager-ui";
 import {
   ManagerSubTabBar,
@@ -379,38 +379,29 @@ export function ManagerContracts({
             ? "Retiring end of season"
             : STATUS_LABELS[status] ?? status;
           return (
-            <GameTableRow
+            <ManagerPlayerCard
               key={player.id}
-              variant="ledger"
+              variant="contract"
+              accent={urgent ? "gold" : "none"}
               interactive
               onClick={() => {
                 playUiClick();
                 openRenewal(player.id);
               }}
-              className={`w-full ${urgent ? managerSectionAccentClass("gold") : ""}`}
             >
-              <div className="flex w-full flex-col items-center gap-2 text-center sm:flex-row sm:justify-between sm:text-left">
-                <div className="flex min-w-0 w-full flex-col items-center gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-theme-primary/15 text-sm font-bold text-theme-primary">
-                    {rating}
+              <ManagerPlayerCardHeader
+                rating={rating}
+                name={player.name}
+                meta={`${formatWage(contract.wagePerYear)}/yr · ${contract.yearsRemaining}yr · ${formatSquadRole(contract.squadRole)}`}
+                trailing={
+                  <span
+                    className={`shrink-0 rounded-sm border px-2 py-0.5 text-xs ${statusColor}`}
+                  >
+                    {statusLabel}
                   </span>
-                  <div className="min-w-0 w-full text-center sm:w-auto sm:text-left">
-                    <p className="truncate font-medium text-white">
-                      {player.name}
-                    </p>
-                    <p className={`${TYPO.bodySm} text-pitch-400`}>
-                      {formatWage(contract.wagePerYear)}/yr ·{" "}
-                      {contract.yearsRemaining}yr · {formatSquadRole(contract.squadRole)}
-                    </p>
-                  </div>
-                </div>
-                <span
-                  className={`shrink-0 rounded-sm border px-2 py-0.5 text-xs ${statusColor}`}
-                >
-                  {statusLabel}
-                </span>
-              </div>
-            </GameTableRow>
+                }
+              />
+            </ManagerPlayerCard>
           );
         })}
         </div>

@@ -106,6 +106,7 @@ import { pickLegendSpinSlotIndex } from "@/lib/game/legend-spin";
 import { getPlayerTeamYearIds } from "@/lib/game/team-year-pools";
 import type { SpinPoolVariant } from "@/lib/game/player-pool-eligibility";
 import { QuickModeBoostsPanel } from "./QuickModeBoostsPanel";
+import { EraRatingExplanation } from "./EraRatingExplanation";
 import {
   armBoostForGame,
   cancelArmedBoost,
@@ -1603,6 +1604,9 @@ export function GameBoard({
             <p className={`w-full text-center ${TYPO.bodySm} text-gray-400`}>
               Tap an empty position on the team sheet to spin for a team & year
             </p>
+            {normalEraMode && (
+              <EraRatingExplanation compact className="w-full" />
+            )}
             <GameButton
               variant="theme"
               size="sm"
@@ -1722,54 +1726,56 @@ export function GameBoard({
             {phase === "choice" &&
               isSlotRecruitMode &&
               activeSpinTarget && (
-              <BodyPortal>
-              <motion.div
-                key={choiceKey}
-                className={`recruitment-choice-backdrop fixed inset-0 flex items-center justify-center bg-black/82 p-3 sm:p-6 ${uiLayerClass("modalBackdrop")}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
+              <BodyPortal key={choiceKey}>
                 <motion.div
-                  className="manager-section w-full min-w-0 max-h-[min(92dvh,900px)] overflow-x-hidden overflow-y-auto overscroll-contain"
-                  initial={{ opacity: 0, y: 24, scale: 0.97 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 16 }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className={`recruitment-choice-backdrop fixed inset-0 flex items-center justify-center bg-black/82 p-3 sm:p-6 ${uiLayerClass("modalBackdrop")}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                 >
-                  <QuickModeBoostsPanel
-                    selectionBoostsUsedThisRun={selectionBoostsUsedThisRun}
-                    disabled={choosing || joeMellorMode || superSamHallasMode}
-                    notice={boostNotice}
-                    onActivate={handleActivateQmBoost}
-                  />
-                  <SlotTeamYearPicker
-                    target={activeSpinTarget}
-                    entries={slotRecruitEntries}
-                    onSelect={handleSlotTeamYearPick}
-                    onBack={handleBackToPitch}
-                    onRespin={handleSlotRespin}
-                    respinsRemaining={respinsRemaining}
-                    maxRespins={MAX_RESPINS_PER_RUN}
-                    disabled={choosing}
-                  />
+                  <motion.div
+                    className="manager-section w-full min-w-0 max-h-[min(92dvh,900px)] overflow-x-hidden overflow-y-auto overscroll-contain"
+                    initial={{ opacity: 0, y: 24, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 16 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                  >
+                    <QuickModeBoostsPanel
+                      selectionBoostsUsedThisRun={selectionBoostsUsedThisRun}
+                      disabled={choosing || joeMellorMode || superSamHallasMode}
+                      notice={boostNotice}
+                      onActivate={handleActivateQmBoost}
+                    />
+                    <SlotTeamYearPicker
+                      target={activeSpinTarget}
+                      entries={slotRecruitEntries}
+                      onSelect={handleSlotTeamYearPick}
+                      onBack={handleBackToPitch}
+                      onRespin={handleSlotRespin}
+                      respinsRemaining={respinsRemaining}
+                      maxRespins={MAX_RESPINS_PER_RUN}
+                      disabled={choosing}
+                      hardMode={difficulty === "HARD"}
+                      boosted={Boolean(boostNotice)}
+                      eraMode={normalEraMode}
+                    />
+                  </motion.div>
                 </motion.div>
-              </motion.div>
               </BodyPortal>
             )}
             {phase === "choice" &&
               !isSlotRecruitMode &&
               currentRound &&
               playerPair && (
+              <BodyPortal key={choiceKey}>
               <motion.div
-                key={choiceKey}
-                className={MODAL.backdrop}
+                className={`recruitment-choice-backdrop fixed inset-0 flex items-center justify-center bg-black/82 p-3 sm:p-6 ${uiLayerClass("modalBackdrop")}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
                 <motion.div
-                  className={`${CARD.panel} ${MODAL.panelWide} ${MODAL.panelPadding}`}
+                  className={`${CARD.panel} ${MODAL.panelWide} ${MODAL.panelPadding} max-h-[min(92dvh,900px)] overflow-x-hidden overflow-y-auto overscroll-contain`}
                   initial={{ opacity: 0, y: 40, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 20 }}
@@ -1809,12 +1815,15 @@ export function GameBoard({
                     rerollAvailable={rerollAvailable}
                     rerollsRemaining={rerollsRemaining}
                     disabled={choosing || rerolling}
+                    hardMode={difficulty === "HARD"}
                     draftMode={isDraftMode}
                     showDraftRule={isDraftMode && draftPickIndex === 0}
                     draftSquad={isDraftMode ? squad : undefined}
+                    boosted={Boolean(boostNotice)}
                   />
                 </motion.div>
               </motion.div>
+              </BodyPortal>
             )}
           </AnimatePresence>
         </div>

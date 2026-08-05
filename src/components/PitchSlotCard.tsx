@@ -61,9 +61,7 @@ export function PitchSlotCard({
       className={`pitch-slot-card flex shrink-0 flex-col overflow-hidden rounded-lg border border-white/10 bg-[rgba(8,12,13,0.96)] shadow-[0_8px_22px_rgba(0,0,0,0.28)] ${sizeClass} ${className}`}
       title={player.name}
     >
-      <div
-        className={`flex w-full shrink-0 ${isMatchdayPitch ? "h-1 sm:h-1.5" : "h-1"}`}
-      >
+      <div className="flex h-0.5 w-full shrink-0">
         <span className="h-full flex-1" style={{ backgroundColor: colors.primary }} />
         <span className="h-full flex-1" style={{ backgroundColor: colors.secondary }} />
       </div>

@@ -81,7 +81,6 @@ import { MobileDetailsAccordion } from "@/components/MobileDetailsAccordion";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
 import {
-  ManagerClubFinancesPanel,
   ManagerFormStrip,
   ManagerNewsItem,
   ManagerPage,
@@ -832,7 +831,6 @@ export function ManagerHub({
 
   const clubDetailsSections = (
     <div className="stat-section-stack">
-      <ManagerClubFinancesPanel career={career} collapsible />
       <HubBoardBudgetAttendance
         career={career}
         lastGate={lastGate}
@@ -864,7 +862,6 @@ export function ManagerHub({
               lastGate={lastGate}
               wageOverBudget={wageOverBudget}
             />
-            <ManagerClubFinancesPanel career={career} />
             {scoringLeadersCard}
             {contractsCard}
             </div>

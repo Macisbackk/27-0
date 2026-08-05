@@ -718,7 +718,7 @@ export function ManagerClubFinancesPanel({
   collapsible = false,
 }: {
   career: ManagerCareer;
-  /** Hub: collapsed by default to reduce scroll depth. */
+  /** Optional collapsed summary for dense layouts. */
   collapsible?: boolean;
 }) {
   const transfer = getTransferBudget(career);

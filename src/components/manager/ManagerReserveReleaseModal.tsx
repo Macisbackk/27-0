@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { SPACING } from "@/lib/ui/design-system";
+import { GameModal } from "@/components/ui/GameModal";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { POSITION_SHORT } from "@/lib/positions";
@@ -45,21 +45,14 @@ export function ManagerReserveReleaseModal({
   };
 
   return (
-    <div
-      className={`fixed inset-0 z-[9999] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} pb-[max(1rem,env(safe-area-inset-bottom))] sm:items-center`}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="reserve-release-title"
-      onClick={handleCancel}
+    <GameModal
+      open
+      onClose={handleCancel}
+      labelledBy="reserve-release-title"
+      panelRef={panelRef}
     >
       <div
-        ref={panelRef}
-        tabIndex={-1}
-        className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div
-          className={`-mx-4 -mt-4 mb-4 border-b px-4 py-3 sm:-mx-6 sm:-mt-6 sm:px-6 ${
+          className={`-mx-3 -mt-3 mb-4 border-b px-4 py-3 sm:-mx-6 sm:-mt-6 sm:px-6 ${
             released
               ? "border-pitch-600/40 bg-pitch-800/40"
               : "border-red-500/30 bg-red-500/10"
@@ -157,7 +150,6 @@ export function ManagerReserveReleaseModal({
             </GameButton>
           </>
         )}
-      </div>
-    </div>
+    </GameModal>
   );
 }

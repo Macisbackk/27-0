@@ -17,6 +17,7 @@ import { TYPO } from "@/lib/ui/typography";
 import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { ModeStartLink } from "./ModeStartLink";
+import { EraRatingExplanation } from "./EraRatingExplanation";
 
 export function HomeModeSelector() {
   const [normalEraMode, setNormalEraMode] = useState(false);
@@ -89,6 +90,9 @@ export function HomeModeSelector() {
           <p className={`mt-3 text-center ${TYPO.bodySm}`}>
             {getQuickModeCurrentEraHint(normalEraMode)}
           </p>
+          {normalEraMode && (
+            <EraRatingExplanation className="mx-auto mt-2 max-w-xl" />
+          )}
 
           <div className="mt-4">
             <ModeStartLink

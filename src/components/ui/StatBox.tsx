@@ -31,7 +31,7 @@ export function StatBox({
   const valueClass = (() => {
     if (highlight) return "font-medium !text-accent-gold";
     if (light && isTier) {
-      return `font-normal text-gray-300 break-words leading-snug ${
+      return `font-normal text-gray-300 leading-snug ${
         compact
           ? "text-[9px] sm:text-[10px]"
           : "text-[10px] sm:text-sm"
@@ -39,8 +39,8 @@ export function StatBox({
     }
     if (light) {
       return compact
-        ? "break-words text-[10px] font-normal leading-snug text-gray-300 sm:text-sm"
-        : "break-words font-normal text-gray-300";
+        ? "text-[10px] font-normal leading-snug text-gray-300 sm:text-sm"
+        : "text-[length:var(--text-body)] font-normal leading-snug text-gray-300";
     }
     if (size === "lg") return TYPO.statValueLg;
     if (size === "sm" || compact) {
@@ -59,21 +59,23 @@ export function StatBox({
 
   return (
     <div
-      className={`${CARD.stat} flex min-h-0 flex-col ${
-        isTier ? "min-w-0" : "min-w-0"
-      } ${paddingClass} ${className}`}
+      className={`${CARD.stat} flex min-h-0 min-w-0 flex-col ${paddingClass} ${className}`}
     >
       <p
-        className={`${TYPO.statLabel} shrink-0 ${
+        className={`${TYPO.statLabel} shrink-0 break-words leading-tight ${
           compact ? "text-[9px] tracking-wide sm:text-[10px]" : ""
         }`}
       >
         {label}
       </p>
-      <p className={`mt-1 min-w-0 ${valueClass}`}>{value}</p>
+      <p
+        className={`mt-1 min-w-0 break-words [overflow-wrap:anywhere] ${valueClass}`}
+      >
+        {value}
+      </p>
     </div>
   );
 }
 
-/** Tier stat box spans full row on narrow layouts. */
-export const TIER_STAT_SPAN_CLASS = "col-span-2 sm:col-span-1";
+/** Tier stat box spans the full stat row so its wordier values stay on one line. */
+export const TIER_STAT_SPAN_CLASS = "col-span-full";

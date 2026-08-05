@@ -10,10 +10,15 @@ import { getClubColors } from "@/lib/clubs";
 import type { SlotTeamYearPlayer } from "@/lib/game/slot-team-year-pick";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import { playPlayerSelect, playUiClick } from "@/lib/sound";
-import { CARD, LINK, SPACING, MOBILE } from "@/lib/ui/design-system";
+import { CARD, LINK, MOBILE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { StickyActionBar } from "@/components/ui/MobileLayout";
-import { SlotRecruitPlayerCard } from "./SlotRecruitPlayerCard";
+import {
+  QuickModePlayerChoiceCard,
+  quickPlayerChoiceGridClass,
+} from "./QuickModePlayerChoiceCard";
+import { PlayerDetailModal } from "./PlayerDetailModal";
+import { EraRatingExplanation } from "./EraRatingExplanation";
 
 interface SlotTeamYearPickerProps {
   target: SlotRevealTarget;
@@ -25,6 +30,8 @@ interface SlotTeamYearPickerProps {
   maxRespins?: number;
   disabled?: boolean;
   hardMode?: boolean;
+  boosted?: boolean;
+  eraMode?: boolean;
 }
 
 export function SlotTeamYearPicker({
@@ -37,8 +44,10 @@ export function SlotTeamYearPicker({
   maxRespins = 3,
   disabled,
   hardMode,
+  boosted = false,
+  eraMode = false,
 }: SlotTeamYearPickerProps) {
-  const [statsPlayerId, setStatsPlayerId] = useState<string | null>(null);
+  const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
   const [respinLocked, setRespinLocked] = useState(false);
 
   const clubColors = useMemo(
@@ -46,7 +55,10 @@ export function SlotTeamYearPicker({
     [target.team]
   );
   const shortYear = formatShortYear(target.year);
-  const teamYearLabel = `${target.team} ${shortYear}`;
+  const parsedYear = Number.parseInt(target.year, 10);
+  const selectedSeasonYear = Number.isFinite(parsedYear)
+    ? parsedYear
+    : undefined;
 
   const sortedEntries = useMemo(
     () =>
@@ -55,13 +67,6 @@ export function SlotTeamYearPicker({
   );
   const topRating = sortedEntries[0]?.player.peakRating ?? 0;
   const choiceCount = sortedEntries.length;
-
-  const choiceGridClass =
-    choiceCount <= 1
-      ? "mx-auto flex w-full max-w-sm justify-center"
-      : choiceCount === 2
-        ? "mx-auto grid w-full max-w-2xl grid-cols-1 place-content-center justify-items-center gap-3 min-[480px]:grid-cols-2 sm:gap-4"
-        : "mx-auto grid w-full max-w-4xl grid-cols-1 place-content-center justify-items-center gap-3 min-[520px]:grid-cols-2 lg:grid-cols-3 sm:gap-4";
 
   const handleRespin = () => {
     if (!onRespin || disabled || respinsRemaining <= 0 || respinLocked) return;
@@ -83,7 +88,8 @@ export function SlotTeamYearPicker({
           boxShadow: `inset 3px 0 0 ${clubColors.primary}`,
         }}
       >
-        <div className="border-b border-pitch-700/40 px-3 py-3 sm:px-6 sm:py-4"
+        <div
+          className="border-b border-pitch-700/40 px-3 py-3 sm:px-6 sm:py-4"
           style={{
             background: `linear-gradient(135deg, ${clubColors.primary}1a 0%, transparent 55%)`,
           }}
@@ -129,23 +135,28 @@ export function SlotTeamYearPicker({
           </div>
         </div>
 
-        <div className={`px-3 pt-2 sm:px-6 sm:pt-4 ${onRespin ? MOBILE.actionBarPad : ""}`}>
+        <div
+          className={`px-3 pt-2 sm:px-6 sm:pt-4 ${onRespin ? MOBILE.actionBarPad : ""}`}
+        >
           {entries.length === 0 ? (
             <p className="py-10 text-center text-gray-500">
               No players available from this squad.
             </p>
           ) : (
             <>
-              <p className={`mb-3 text-center ${TYPO.meta}`}>
-                Tap{" "}
-                <span className="font-semibold text-theme-primary">
-                  Sign player
-                </span>{" "}
-                to add them
-              </p>
-              <div className={choiceGridClass}>
+              {eraMode ? (
+                <EraRatingExplanation compact className="mb-2" />
+              ) : (
+                <p className={`mb-3 text-center ${TYPO.meta}`}>
+                  Tap{" "}
+                  <span className="font-semibold text-theme-primary">
+                    Select Player
+                  </span>{" "}
+                  to add them
+                </p>
+              )}
+              <div className={quickPlayerChoiceGridClass(choiceCount)}>
                 {sortedEntries.map(({ player }, index) => {
-                  const statsExpanded = statsPlayerId === player.id;
                   const isTopPick =
                     !hardMode &&
                     player.peakRating === topRating &&
@@ -154,39 +165,35 @@ export function SlotTeamYearPicker({
                   return (
                     <motion.div
                       key={player.id}
-                      className={`relative min-w-0 w-full ${
-                        choiceCount <= 1
-                          ? "max-w-sm"
-                          : choiceCount === 2
-                            ? "max-w-xs min-[480px]:max-w-none"
-                            : "max-w-sm min-[520px]:max-w-none"
-                      } ${
-                        statsExpanded && choiceCount >= 3
-                          ? "min-[520px]:col-span-2 lg:col-span-3 max-w-none"
-                          : ""
-                      }`}
+                      className="h-full min-w-0 w-full"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.24, delay: index * 0.06 }}
                     >
-                      <SlotRecruitPlayerCard
+                      <QuickModePlayerChoiceCard
                         player={player}
-                        teamYearLabel={teamYearLabel}
+                        choiceLabel={isTopPick ? "Top rating" : undefined}
                         hardMode={hardMode}
+                        ratingVisible={!hardMode}
+                        clubOverride={target.team}
                         clubColorOverride={target.team}
-                        statsExpanded={statsExpanded}
                         topPick={isTopPick}
+                        boosted={boosted}
                         disabled={disabled}
+                        selectLabel="Select Player"
+                        showDetailsAction={!hardMode}
                         onSelect={() => {
                           playPlayerSelect();
                           onSelect(player);
                         }}
-                        onToggleStats={() => {
-                          playUiClick();
-                          setStatsPlayerId((id) =>
-                            id === player.id ? null : player.id
-                          );
-                        }}
+                        onViewDetails={
+                          hardMode
+                            ? undefined
+                            : () => {
+                                playUiClick();
+                                setDetailPlayer(player);
+                              }
+                        }
                       />
                     </motion.div>
                   );
@@ -234,6 +241,15 @@ export function SlotTeamYearPicker({
           )}
         </div>
       </div>
+
+      {detailPlayer && (
+        <PlayerDetailModal
+          player={detailPlayer}
+          ratingContext={eraMode ? "season" : undefined}
+          seasonYear={eraMode ? selectedSeasonYear : undefined}
+          onClose={() => setDetailPlayer(null)}
+        />
+      )}
     </motion.div>
   );
 }
