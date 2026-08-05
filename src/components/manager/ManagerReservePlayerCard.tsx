@@ -23,18 +23,27 @@ interface ManagerReservePlayerCardProps {
   club: string;
   /** Staff review flags — rendered in the status zone, never beside the name. */
   extraChips?: ReserveCardChip[];
+  onCallUp: (id: string) => void;
+  onCancelCallUp?: (id: string) => void;
   onPromote: (id: string) => void;
+  onOfferFullTime: (id: string) => void;
   onViewDetails: (id: string) => void;
+  canOfferFullTime?: boolean;
 }
 
 export function ManagerReservePlayerCard({
   model,
   club,
   extraChips = [],
+  onCallUp,
+  onCancelCallUp,
   onPromote,
+  onOfferFullTime,
   onViewDetails,
+  canOfferFullTime = true,
 }: ManagerReservePlayerCardProps) {
   const { development, contract, promotion } = model;
+  const calledUp = !model.canCallUp;
 
   const developmentLine = development.trainingLabel
     ? `Training: ${development.trainingLabel} · ${development.trainingProgressPercent}%`
@@ -88,8 +97,34 @@ export function ManagerReservePlayerCard({
       )}
 
       <ManagerPlayerCardActions>
+        {calledUp && onCancelCallUp ? (
+          <GameButton
+            variant="secondary"
+            size="sm"
+            fullWidth
+            onClick={() => {
+              playUiClick();
+              onCancelCallUp(model.id);
+            }}
+          >
+            Cancel Call-Up
+          </GameButton>
+        ) : (
+          <GameButton
+            variant="theme"
+            size="sm"
+            fullWidth
+            disabled={!model.canCallUp}
+            onClick={() => {
+              playUiClick();
+              onCallUp(model.id);
+            }}
+          >
+            Call Up for Next Game
+          </GameButton>
+        )}
         <GameButton
-          variant="theme"
+          variant="secondary"
           size="sm"
           fullWidth
           disabled={!promotion.allowed}
@@ -98,8 +133,21 @@ export function ManagerReservePlayerCard({
             onPromote(model.id);
           }}
         >
-          Promote to Senior Squad
+          Promote to Senior Team
         </GameButton>
+        {canOfferFullTime && (
+          <GameButton
+            variant="secondary"
+            size="sm"
+            fullWidth
+            onClick={() => {
+              playUiClick();
+              onOfferFullTime(model.id);
+            }}
+          >
+            Offer Full-Time Contract
+          </GameButton>
+        )}
         <GameButton
           variant="secondary"
           size="sm"

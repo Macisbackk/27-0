@@ -1,4 +1,5 @@
 import type { Player } from "../types";
+import { CURRENT_SEASON_YEAR } from "../play-links";
 
 export type PlayerRatingContext =
   | "current"
@@ -11,6 +12,25 @@ export const ERA_RATING_EXPLANATION =
 
 export const ERA_RATING_COMPACT_EXPLANATION =
   "Season ratings: Each rating reflects how the player performed in this selected year.";
+
+export function getCurrentSeasonYearNumber(): number {
+  const parsed = Number.parseInt(String(CURRENT_SEASON_YEAR), 10);
+  return Number.isFinite(parsed) ? parsed : 2026;
+}
+
+export function getCurrentRatingExplanation(): string {
+  return `Current Mode ratings reflect each player’s performances and ability during the current season.`;
+}
+
+export function getCurrentRatingCompactExplanation(): string {
+  return "Current ratings are based on this season’s performances.";
+}
+
+export function getCurrentRatingSupportText(
+  year: number = getCurrentSeasonYearNumber()
+): string {
+  return `Based on the player’s performances and ability during the ${year} season.`;
+}
 
 const RATING_LABELS: Record<PlayerRatingContext, string> = {
   current: "Current Rating",

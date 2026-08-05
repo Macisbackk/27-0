@@ -38,6 +38,7 @@ export function ManagerPlayerCard({
   const classes = [
     "manager-player-card",
     `manager-player-card--${variant}`,
+    clubStyle ? "manager-player-card--club-accent" : "",
     accent === "gold" ? "manager-player-card--accent-gold" : "",
     interactive || onClick ? "manager-player-card--interactive" : "",
     className,

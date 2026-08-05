@@ -105,8 +105,9 @@ import {
 import { pickLegendSpinSlotIndex } from "@/lib/game/legend-spin";
 import { getPlayerTeamYearIds } from "@/lib/game/team-year-pools";
 import type { SpinPoolVariant } from "@/lib/game/player-pool-eligibility";
-import { QuickModeBoostsPanel } from "./QuickModeBoostsPanel";
 import { EraRatingExplanation } from "./EraRatingExplanation";
+import { CurrentRatingExplanation } from "./CurrentRatingExplanation";
+import { QuickModePreGameBoostSetup } from "./QuickModePreGameBoostSetup";
 import {
   armBoostForGame,
   cancelArmedBoost,
@@ -118,6 +119,12 @@ import {
   selectionHasBoostedPlayer,
 } from "@/lib/boosts/applyQuickModeBoost";
 import { validateQuickModeSelectionBoost } from "@/lib/boosts/validateBoost";
+import {
+  armPreGameBoost,
+  createUnselectedPreGameBoost,
+  isPreGameBoostReady,
+  type QuickModePreGameBoostState,
+} from "@/lib/game/quick-mode-pregame-boost";
 
 interface GameBoardProps {
   mode: GameMode;
@@ -235,6 +242,9 @@ export function GameBoard({
   const [slotBoostGuaranteeId, setSlotBoostGuaranteeId] = useState<
     "qm-90-plus-player" | "qm-goat-hall-of-fame" | null
   >(null);
+  const [preGameBoost, setPreGameBoost] =
+    useState<QuickModePreGameBoostState | null>(null);
+  const preGameBoostUsageIdRef = useRef<string | null>(null);
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
   const placementScrollRef = useRef<HTMLDivElement>(null);
@@ -255,6 +265,86 @@ export function GameBoard({
       runId: `run-${Date.now()}-${runKey}`,
     };
   }, [runKey]);
+
+  useEffect(() => {
+    if (joeMellorMode || superSamHallasMode) {
+      setPreGameBoost(armPreGameBoost(runId, null));
+      return;
+    }
+    setPreGameBoost(createUnselectedPreGameBoost(runId));
+    preGameBoostUsageIdRef.current = null;
+    setSlotBoostGuaranteeId(null);
+    setBoostNotice(null);
+    setSelectionBoostsUsedThisRun(0);
+    setUsedBoostThisRun(false);
+  }, [runId, joeMellorMode, superSamHallasMode]);
+
+  const handlePreGameBoostConfirm = useCallback(
+    (boostId: GameBoostId | null) => {
+      const next = armPreGameBoost(runId, boostId);
+      setPreGameBoost(next);
+      if (
+        boostId === "qm-90-plus-player" ||
+        boostId === "qm-goat-hall-of-fame"
+      ) {
+        const usageId = `qm-pre-${boostId}-${runId}`;
+        preGameBoostUsageIdRef.current = usageId;
+        armBoostForGame({
+          id: usageId,
+          boostId,
+          gameSaveId: runId,
+          mode,
+          status: "armed",
+          armedAt: new Date().toISOString(),
+        });
+        setSlotBoostGuaranteeId(boostId);
+        setBoostNotice(
+          boostId === "qm-90-plus-player"
+            ? "90+ boost armed for the next eligible selection."
+            : "GOAT / Hall of Fame boost armed for the next eligible selection."
+        );
+      } else {
+        preGameBoostUsageIdRef.current = null;
+        setSlotBoostGuaranteeId(null);
+        setBoostNotice(null);
+      }
+    },
+    [runId, mode]
+  );
+
+  const consumeArmedPreGameBoost = useCallback(
+    (boostId: "qm-90-plus-player" | "qm-goat-hall-of-fame") => {
+      const usageId = preGameBoostUsageIdRef.current ?? `qm-pre-${boostId}-${runId}`;
+      const consumed = tryConsumeBoostFromInventory(boostId, {
+        id: usageId,
+        boostId,
+        gameSaveId: runId,
+        mode,
+        status: "consumed",
+        timestamp: new Date().toISOString(),
+      });
+      if (!consumed.success) {
+        setBoostNotice(consumed.reason ?? "Could not consume boost.");
+        setPreGameBoost((prev) =>
+          prev ? { ...prev, status: "failed" } : prev
+        );
+        return false;
+      }
+      setSelectionBoostsUsedThisRun((n) => n + 1);
+      setUsedBoostThisRun(true);
+      setSlotBoostGuaranteeId(null);
+      setPreGameBoost((prev) =>
+        prev ? { ...prev, status: "consumed" } : prev
+      );
+      setBoostNotice(
+        boostId === "qm-90-plus-player"
+          ? "90+ boost applied."
+          : "GOAT / Hall of Fame boost applied."
+      );
+      return true;
+    },
+    [runId, mode]
+  );
 
   useEffect(() => {
     if (
@@ -842,13 +932,30 @@ export function GameBoard({
       setChoosing(true);
       playPositionComplete();
 
+      const boostId = slotBoostGuaranteeId;
+      let boostConsumed = false;
+      if (
+        boostId &&
+        (preGameBoost?.status === "applied" ||
+          preGameBoost?.status === "armed") &&
+        selectionHasBoostedPlayer([player], boostId)
+      ) {
+        boostConsumed = consumeArmedPreGameBoost(boostId);
+      }
+
       setSquad(newSquad);
       setPendingPlayer(null);
       setSelectedSlotIndex(null);
       setSlotRecruitTarget(null);
       setActiveSpinTarget(null);
-      setSlotBoostGuaranteeId(null);
-      setBoostNotice(null);
+      if (boostConsumed || !boostId) {
+        setSlotBoostGuaranteeId(null);
+        if (boostConsumed) {
+          /* notice set by consume helper */
+        } else {
+          setBoostNotice(null);
+        }
+      }
       setChoosing(false);
       setUsedTeamYearKeys((prev) => {
         const next = new Set(prev);
@@ -878,6 +985,9 @@ export function GameBoard({
       selectedSlotIndex,
       squad,
       startTournamentSimulation,
+      slotBoostGuaranteeId,
+      preGameBoost,
+      consumeArmedPreGameBoost,
     ]
   );
 
@@ -900,15 +1010,59 @@ export function GameBoard({
       const requireLegendPlayer =
         !legendSpinUsed &&
         legendSpinSlotIndex === slotIndex;
-      const target = generateSlotTeamYearTargetForSlot(
-        seed,
-        spinPickIndex,
-        signedPlayerIds,
-        squad,
-        slotIndex,
-        usedTeamYearKeys,
-        { requireLegendPlayer, spinVariant }
-      );
+      const armedBoost =
+        preGameBoost?.status === "armed" || preGameBoost?.status === "applied"
+          ? slotBoostGuaranteeId
+          : null;
+      let target =
+        armedBoost != null
+          ? findSlotTeamYearTargetForSelectionBoost(
+              seed,
+              spinPickIndex + selectionBoostsUsedThisRun + 17,
+              signedPlayerIds,
+              squad,
+              slotIndex,
+              armedBoost,
+              usedTeamYearKeys,
+              { spinVariant }
+            )
+          : null;
+      if (armedBoost && !target) {
+        setBoostNotice(
+          armedBoost === "qm-90-plus-player"
+            ? "No eligible 90+ player for this slot — boost kept for the next pick."
+            : "No eligible GOAT/HOF player for this slot — boost kept for the next pick."
+        );
+        setPreGameBoost((prev) =>
+          prev && prev.status === "armed" ? { ...prev, status: "failed" } : prev
+        );
+        // Keep armed for a later attempt — reset failed → armed next time we have a candidate
+        setPreGameBoost((prev) =>
+          prev?.selectedBoostId
+            ? { ...prev, status: "armed" }
+            : prev
+        );
+      }
+      if (!target) {
+        target = generateSlotTeamYearTargetForSlot(
+          seed,
+          spinPickIndex,
+          signedPlayerIds,
+          squad,
+          slotIndex,
+          usedTeamYearKeys,
+          { requireLegendPlayer, spinVariant }
+        );
+      } else if (armedBoost) {
+        setPreGameBoost((prev) =>
+          prev ? { ...prev, status: "applied" } : prev
+        );
+        setBoostNotice(
+          armedBoost === "qm-90-plus-player"
+            ? "90+ player guaranteed in this selection."
+            : "GOAT / Hall of Fame player guaranteed in this selection."
+        );
+      }
       if (process.env.NODE_ENV === "development") {
         console.debug(
           `[spin-timing] target-selected: ${(performance.now() - t0).toFixed(1)}ms`,
@@ -944,6 +1098,10 @@ export function GameBoard({
       usedTeamYearKeys,
       legendSpinUsed,
       legendSpinSlotIndex,
+      spinVariant,
+      preGameBoost,
+      slotBoostGuaranteeId,
+      selectionBoostsUsedThisRun,
     ]
   );
 
@@ -1556,6 +1714,13 @@ export function GameBoard({
       <div>
           <GuestNotice variant="play" />
 
+        {!isPreGameBoostReady(preGameBoost) ? (
+          <QuickModePreGameBoostSetup
+            runId={runId}
+            onConfirm={handlePreGameBoostConfirm}
+          />
+        ) : (
+          <>
         <MatchdayScoreboard
             filledCount={filledCount}
             totalSlots={TOTAL_SLOTS}
@@ -1604,8 +1769,10 @@ export function GameBoard({
             <p className={`w-full text-center ${TYPO.bodySm} text-gray-400`}>
               Tap an empty position on the team sheet to spin for a team & year
             </p>
-            {normalEraMode && (
+            {normalEraMode ? (
               <EraRatingExplanation compact className="w-full" />
+            ) : (
+              <CurrentRatingExplanation compact className="w-full" />
             )}
             <GameButton
               variant="theme"
@@ -1740,12 +1907,11 @@ export function GameBoard({
                     exit={{ opacity: 0, y: 16 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
                   >
-                    <QuickModeBoostsPanel
-                      selectionBoostsUsedThisRun={selectionBoostsUsedThisRun}
-                      disabled={choosing || joeMellorMode || superSamHallasMode}
-                      notice={boostNotice}
-                      onActivate={handleActivateQmBoost}
-                    />
+                    {boostNotice && (
+                      <p className="mb-2 text-center text-xs text-theme-primary">
+                        {boostNotice}
+                      </p>
+                    )}
                     <SlotTeamYearPicker
                       target={activeSpinTarget}
                       entries={slotRecruitEntries}
@@ -1791,17 +1957,11 @@ export function GameBoard({
                       ← Back to team sheet
                     </button>
                   )}
-                  <QuickModeBoostsPanel
-                    selectionBoostsUsedThisRun={selectionBoostsUsedThisRun}
-                    disabled={
-                      choosing ||
-                      rerolling ||
-                      joeMellorMode ||
-                      superSamHallasMode
-                    }
-                    notice={boostNotice}
-                    onActivate={handleActivateQmBoost}
-                  />
+                  {boostNotice && (
+                    <p className="mb-2 text-center text-xs text-theme-primary">
+                      {boostNotice}
+                    </p>
+                  )}
                   <PlayerChoice
                     playerA={playerPair[0]}
                     playerB={playerPair[1]}
@@ -1827,10 +1987,12 @@ export function GameBoard({
             )}
           </AnimatePresence>
         </div>
+          </>
+        )}
       </div>
       )}
 
-      {!isReviewPhase && (
+      {!isReviewPhase && isPreGameBoostReady(preGameBoost) && (
         <StickyActionBar>
             <Link
               href="/"

@@ -49,6 +49,27 @@ export const SOUND_FILES = {
   slotSpinStart: "/sounds/slot-spin-start.mp3",
   slotSpinTick: "/sounds/slot-spin-tick.mp3",
   slotLand: "/sounds/slot-land.mp3",
+  // Feature events — reuse existing assets; synth falls back if files missing.
+  popupOpen: "/sounds/menu-open.mp3",
+  popupClose: "/sounds/menu-close.mp3",
+  boostSelected: "/sounds/select.mp3",
+  boostSuccess: "/sounds/success.mp3",
+  boostFailed: "/sounds/fail.mp3",
+  futureStarReveal: "/sounds/reveal.mp3",
+  transferOffer: "/sounds/warning.mp3",
+  transferComplete: "/sounds/success.mp3",
+  reserveCallUp: "/sounds/select.mp3",
+  contractSigned: "/sounds/success.mp3",
+  cupProgress: "/sounds/challenge-cup.mp3",
+  wccWin: "/sounds/trophy.mp3",
+  goldenPointStart: "/sounds/warning.mp3",
+  goldenPointWin: "/sounds/big-win.mp3",
+  managerSacked: "/sounds/disaster.mp3",
+  managerAppointed: "/sounds/season-start.mp3",
+  calendarComplete: "/sounds/complete.mp3",
+  friendlyConfirm: "/sounds/success.mp3",
+  achievementUnlock: "/sounds/trophy.mp3",
+  seasonReviewMajor: "/sounds/trophy.mp3",
 } as const;
 
 export type SoundId = keyof typeof SOUND_FILES;
@@ -83,6 +104,15 @@ const COOLDOWN_MS: Partial<Record<SoundId, number>> = {
   simulateAll: 350,
   success: 200,
   warning: 280,
+  popupOpen: 180,
+  popupClose: 180,
+  boostSelected: 140,
+  boostSuccess: 220,
+  boostFailed: 220,
+  reserveCallUp: 200,
+  cupProgress: 300,
+  calendarComplete: 250,
+  friendlyConfirm: 180,
 };
 
 let interactionUnlocked = false;
@@ -157,12 +187,37 @@ async function tryPlayFile(path: string, volume = 0.32): Promise<boolean> {
   }
 }
 
+/** New feature SoundIds without a dedicated synth tone reuse an existing one. */
+const SYNTH_ALIASES: Partial<Record<SoundId, keyof typeof synth>> = {
+  popupOpen: "menuOpen",
+  popupClose: "menuClose",
+  boostSelected: "select",
+  boostSuccess: "success",
+  boostFailed: "warning",
+  futureStarReveal: "legend",
+  transferOffer: "reveal",
+  transferComplete: "positionComplete",
+  reserveCallUp: "draftPlace",
+  contractSigned: "success",
+  cupProgress: "challengeCup",
+  wccWin: "trophy",
+  goldenPointStart: "seasonStart",
+  goldenPointWin: "bigWin",
+  managerSacked: "disaster",
+  managerAppointed: "modeNormal",
+  calendarComplete: "crowd",
+  friendlyConfirm: "select",
+  achievementUnlock: "legend",
+  seasonReviewMajor: "trophy",
+};
+
 function playSynth(id: SoundId, grade?: string): void {
   if (id === "fail" || id === "warning") {
     synth.warning();
     return;
   }
-  const fn = synth[id as keyof typeof synth];
+  const aliasId = SYNTH_ALIASES[id] ?? id;
+  const fn = synth[aliasId as keyof typeof synth];
   if (typeof fn === "function") {
     (fn as () => void)();
   } else if (grade) {

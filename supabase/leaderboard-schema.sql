@@ -29,6 +29,13 @@ alter table public.leaderboard add column if not exists updated_at timestamptz;
 alter table public.leaderboard add column if not exists perfect_runs integer;
 update public.leaderboard set perfect_runs = 0 where perfect_runs is null;
 
+-- wcc_wins (schema v4) replaces winless_seasons on public leaderboards.
+-- winless_seasons is left in place (unused) rather than dropped, since
+-- private career winlessSeasons stats are tracked elsewhere and this
+-- column is harmless to keep around for old rows.
+alter table public.leaderboard add column if not exists wcc_wins integer;
+update public.leaderboard set wcc_wins = 0 where wcc_wins is null;
+
 update public.leaderboard set mode = 'super-league' where mode is null;
 -- Valid mode values: super-league, challenge-cup, draft
 update public.leaderboard set difficulty = 'NORMAL' where difficulty is null;

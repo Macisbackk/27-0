@@ -78,11 +78,19 @@ export const RESERVE_RECRUITMENT_FEE = 300_000;
 export const RESERVE_WALKOVER_SCORE = 18;
 export const RESERVE_WALKOVER_REASON = "Walkover — fewer than 13 reserve players";
 export const GENERATED_RESERVE_MAX_RATING = 82;
+/** Generator stamp — bump when band weights or formula change. */
+export const RESERVE_GENERATOR_VERSION = 5;
+/**
+ * Starting generated-reserve distribution. Target mean ~69–71; majority below 77;
+ * 80+ exceptional. Current rating is rolled independently of potential.
+ */
 export const RESERVE_RATING_BANDS = [
-  { min: 65, max: 69, weight: 0.25 },
-  { min: 70, max: 74, weight: 0.4 },
-  { min: 75, max: 79, weight: 0.25 },
-  { min: 80, max: 82, weight: 0.1 },
+  { min: 65, max: 67, weight: 0.25 },
+  { min: 68, max: 70, weight: 0.35 },
+  { min: 71, max: 73, weight: 0.25 },
+  { min: 74, max: 76, weight: 0.1 },
+  { min: 77, max: 79, weight: 0.04 },
+  { min: 80, max: 82, weight: 0.01 },
 ] as const;
 
 /** Minimum positional coverage for a healthy reserve listing. */
@@ -194,7 +202,7 @@ export function pickGeneratedReserveRating(
   rng: () => number,
   youthLevel = 0
 ): number {
-  // Weighted base distribution: mean ~72.9 before facility investment.
+  // Weighted base distribution — target mean ~69–71 before capped facility boost.
   const roll = rng();
   let cumulative = 0;
   let selected = RESERVE_RATING_BANDS[RESERVE_RATING_BANDS.length - 1]!;
@@ -207,9 +215,10 @@ export function pickGeneratedReserveRating(
   }
   const base =
     selected.min + Math.floor(rng() * (selected.max - selected.min + 1));
+  const developmentModifier = Math.min(2, getYouthIntakeRatingBoost(youthLevel));
   return Math.min(
     GENERATED_RESERVE_MAX_RATING,
-    clampReservePlayerRating(base + Math.min(2, getYouthIntakeRatingBoost(youthLevel)))
+    clampReservePlayerRating(base + developmentModifier)
   );
 }
 
@@ -433,7 +442,30 @@ export function generateReservePlayer(
 ): ManagerReservePlayer {
   const rng = seedrandom(`${seed}-reserve-${index}`);
   const age = 17 + Math.floor(rng() * 6);
-  const rating = pickGeneratedReserveRating(rng, youthLevel);
+  const developmentModifier = Math.min(2, getYouthIntakeRatingBoost(youthLevel));
+  // Re-seed a dedicated RNG for the band roll so stamps stay reproducible.
+  const ratingRng = seedrandom(`${seed}-reserve-rating-${index}`);
+  const baseBeforeMod = (() => {
+    const roll = ratingRng();
+    let cumulative = 0;
+    let selected = RESERVE_RATING_BANDS[RESERVE_RATING_BANDS.length - 1]!;
+    for (const band of RESERVE_RATING_BANDS) {
+      cumulative += band.weight;
+      if (roll < cumulative) {
+        selected = band;
+        break;
+      }
+    }
+    return (
+      selected.min +
+      Math.floor(ratingRng() * (selected.max - selected.min + 1))
+    );
+  })();
+  const rating = Math.min(
+    GENERATED_RESERVE_MAX_RATING,
+    clampReservePlayerRating(baseBeforeMod + developmentModifier)
+  );
+  // Potential is independent of the current roll — only floored to rating.
   const potential = Math.max(rating, pickPotential(age, rng, youthLevel));
   const { first, last } = pickReserveName(rng, club);
 
@@ -456,6 +488,12 @@ export function generateReservePlayer(
     signedRating: rating,
     signedSeasonYear: seasonYear,
     yearsAtClub: 0,
+    ratingGeneration: {
+      source: "generated-reserve",
+      generatorVersion: RESERVE_GENERATOR_VERSION,
+      baseRating: baseBeforeMod,
+      developmentModifier,
+    },
   };
 }
 
@@ -957,6 +995,31 @@ export function callUpReserveForNextMatch(
   }
 
   return next;
+}
+
+/** Cancel a single temporary call-up before the fixture. */
+export function cancelReserveCallUp(
+  career: ManagerCareer,
+  reserveId: string
+): ManagerCareer {
+  const reserveIds = new Set(career.reserves.map((r) => r.id));
+  if (!reserveIds.has(reserveId)) return career;
+
+  return {
+    ...career,
+    calledUpReserveIds: career.calledUpReserveIds.filter(
+      (id) => id !== reserveId
+    ),
+    matchdayXiii: career.matchdayXiii.map((id) =>
+      id === reserveId ? "" : id
+    ),
+    matchdayInterchange: career.matchdayInterchange.map((id) =>
+      id === reserveId ? "" : id
+    ),
+    reserves: career.reserves.map((r) =>
+      r.id === reserveId ? { ...r, calledUpForNextMatch: false } : r
+    ),
+  };
 }
 
 export function clearReserveCallUps(career: ManagerCareer): ManagerCareer {

@@ -1793,7 +1793,10 @@ export default function ManagerPage() {
               />
             ) : (
               <>
-                {displayView === "hub" && (
+                <div
+                  className={displayView === "hub" ? undefined : "hidden"}
+                  aria-hidden={displayView !== "hub"}
+                >
                   <ManagerHub
                     career={career}
                     onPlayGame={handlePlayGame}
@@ -1813,9 +1816,12 @@ export default function ManagerPage() {
                       goToView("match-review", { syncUrl: false });
                     }}
                   />
-                )}
+                </div>
 
-                {displayView === "inbox" && (
+                <div
+                  className={displayView === "inbox" ? undefined : "hidden"}
+                  aria-hidden={displayView !== "inbox"}
+                >
                   <ManagerInbox
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}
@@ -1824,35 +1830,52 @@ export default function ManagerPage() {
                       else handleNavNavigate(v);
                     }}
                   />
-                )}
-                {displayView === "squad" && (
+                </div>
+                <div
+                  className={displayView === "squad" ? undefined : "hidden"}
+                  aria-hidden={displayView !== "squad"}
+                >
                   <ManagerSquad
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}
                     subTab={squadSubTab}
                   />
-                )}
-                {displayView === "reserves" && (
+                </div>
+                <div
+                  className={displayView === "reserves" ? undefined : "hidden"}
+                  aria-hidden={displayView !== "reserves"}
+                >
                   <ManagerReserves
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}
                   />
-                )}
-                {displayView === "contracts" && (
+                </div>
+                <div
+                  className={displayView === "contracts" ? undefined : "hidden"}
+                  aria-hidden={displayView !== "contracts"}
+                >
                   <ManagerContracts career={career} onUpdate={persist} />
-                )}
-                {displayView === "transfers" && (
+                </div>
+                <div
+                  className={displayView === "transfers" ? undefined : "hidden"}
+                  aria-hidden={displayView !== "transfers"}
+                >
                   <ManagerTransfers
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}
                   />
-                )}
-                {displayView === "club" && (
+                </div>
+                <div
+                  className={displayView === "club" ? undefined : "hidden"}
+                  aria-hidden={displayView !== "club"}
+                >
                   <ManagerClub career={career} onUpdate={persist} />
-                )}
-                {displayView === "fixtures" && (
+                </div>
+                <div
+                  className={displayView === "fixtures" ? undefined : "hidden"}
+                  aria-hidden={displayView !== "fixtures"}
+                >
                   <ManagerFixtures
-                    key={fixturesInitialFilter ?? "calendar"}
                     career={career}
                     onUpdate={persist}
                     initialFilter={fixturesInitialFilter ?? "calendar"}
@@ -1867,17 +1890,30 @@ export default function ManagerPage() {
                       goToView("match-review", { syncUrl: false });
                     }}
                   />
-                )}
-                {displayView === "across-league" && (
+                </div>
+                <div
+                  className={
+                    displayView === "across-league" ? undefined : "hidden"
+                  }
+                  aria-hidden={displayView !== "across-league"}
+                >
                   <ManagerAcrossLeague
                     career={career}
                     onNavigate={handleNavNavigate}
                   />
-                )}
-                {displayView === "stats" && <ManagerStatsView career={career} />}
-                {displayView === "settings" && (
+                </div>
+                <div
+                  className={displayView === "stats" ? undefined : "hidden"}
+                  aria-hidden={displayView !== "stats"}
+                >
+                  <ManagerStatsView career={career} />
+                </div>
+                <div
+                  className={displayView === "settings" ? undefined : "hidden"}
+                  aria-hidden={displayView !== "settings"}
+                >
                   <ManagerSettings career={career} onUpdate={persist} />
-                )}
+                </div>
               </>
             )}
           </div>

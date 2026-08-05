@@ -7,7 +7,7 @@ import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { getLatestUserWorldClubChallengeResult } from "@/lib/manager/worldClubChallenge";
-import { playCupFinalWin, playUiClick } from "@/lib/sound";
+import { playUiClick, playWccWin } from "@/lib/sound";
 import {
   managerModalHeaderClass,
   managerPillClass,
@@ -28,7 +28,7 @@ export function ManagerWorldClubChallengeWinModal({
   );
 
   useEffect(() => {
-    playCupFinalWin();
+    playWccWin();
   }, []);
 
   const scoreline =

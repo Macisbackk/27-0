@@ -36,6 +36,8 @@ import {
   PlayerStatusBadge,
   resolvePlayerStatus,
 } from "./PlayerStatusBadge";
+import { PlayerTierBadge } from "./PlayerTierBadge";
+import { resolvePlayerCardColourContext } from "@/lib/players/player-card-colours";
 
 export type RLPlayerCardVariant = "recruitment" | "pitch" | "default";
 
@@ -94,7 +96,14 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
   const displayClub = getPlayerDisplayClub(player);
   const colorClub = getPlayerColorClub(player, clubColorOverride);
   const colors = getClubColors(colorClub);
-  const isLegend = player.category === "legend";
+  const colourCtx = useMemo(
+    () =>
+      resolvePlayerCardColourContext(player, {
+        clubOverride: clubColorOverride,
+        maxTiers: 2,
+      }),
+    [player, clubColorOverride]
+  );
   const isGoat = isGoatPlayer(player);
   const isSuperSam = isSuperSamHallasPlayer(player);
   const playerStatus = resolvePlayerStatus(player);
@@ -115,7 +124,8 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
       : "Unknown";
   const ageValue = formatPlayerAge(player);
 
-  const statusStrip =
+  /* Tier badges own classification; legacy status strip kept only for pitch compact. */
+  const statusStrip = isPitch ? (
     isSuperSam ? (
       <PlayerSpecialBadge
         variant="superSam"
@@ -134,7 +144,14 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
         compact={compactMobile}
         className={hiddenClass}
       />
-    ) : null;
+    ) : null
+  ) : (
+    <PlayerTierBadge
+      tiers={colourCtx.primaryTier}
+      compact={compactMobile ?? true}
+      className={`justify-start ${hiddenClass}`}
+    />
+  );
 
   const achievementBadges =
     achievements.length > 0 ? (
@@ -338,19 +355,12 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
       clubColorOverride={clubColorOverride}
       clubAccent={showcaseTopBarOnly ? "top-bar-only" : "full"}
       className={`${equalHeight ? "min-h-full" : ""} ${
-        isGoat
-          ? "ring-2 ring-accent-gold"
-          : isLegend
-            ? "ring-2 ring-accent-gold/70 border-accent-gold/50 shadow-[0_0_0_1px_rgba(255,255,255,0.25)_inset,0_0_20px_rgba(251,191,36,0.15)]"
-            : ""
-      } ${allowAchievementPopover ? "!overflow-visible" : ""} ${className}`}
+        allowAchievementPopover ? "!overflow-visible" : ""
+      } ${className}`}
       style={
-        isLegend && !isGoat
-          ? {
-              background:
-                "linear-gradient(165deg, rgba(255,255,255,0.12) 0%, rgba(255,248,220,0.08) 35%, transparent 70%)",
-            }
-          : undefined
+        {
+          ["--player-card-border" as string]: colourCtx.clubBorder,
+        } as React.CSSProperties
       }
     >
       {showClubColourBar && <ClubColourBar club={colorClub} />}

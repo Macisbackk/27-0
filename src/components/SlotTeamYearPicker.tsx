@@ -10,15 +10,15 @@ import { getClubColors } from "@/lib/clubs";
 import type { SlotTeamYearPlayer } from "@/lib/game/slot-team-year-pick";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import { playPlayerSelect, playUiClick } from "@/lib/sound";
-import { CARD, LINK, MOBILE } from "@/lib/ui/design-system";
+import { CARD, LINK } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { StickyActionBar } from "@/components/ui/MobileLayout";
 import {
   QuickModePlayerChoiceCard,
   quickPlayerChoiceGridClass,
 } from "./QuickModePlayerChoiceCard";
 import { PlayerDetailModal } from "./PlayerDetailModal";
 import { EraRatingExplanation } from "./EraRatingExplanation";
+import { CurrentRatingExplanation } from "./CurrentRatingExplanation";
 
 interface SlotTeamYearPickerProps {
   target: SlotRevealTarget;
@@ -135,9 +135,7 @@ export function SlotTeamYearPicker({
           </div>
         </div>
 
-        <div
-          className={`px-3 pt-2 sm:px-6 sm:pt-4 ${onRespin ? MOBILE.actionBarPad : ""}`}
-        >
+        <div className="px-3 pt-2 sm:px-6 sm:pt-4">
           {entries.length === 0 ? (
             <p className="py-10 text-center text-gray-500">
               No players available from this squad.
@@ -147,14 +145,15 @@ export function SlotTeamYearPicker({
               {eraMode ? (
                 <EraRatingExplanation compact className="mb-2" />
               ) : (
-                <p className={`mb-3 text-center ${TYPO.meta}`}>
-                  Tap{" "}
-                  <span className="font-semibold text-theme-primary">
-                    Select Player
-                  </span>{" "}
-                  to add them
-                </p>
+                <CurrentRatingExplanation compact className="mb-2" />
               )}
+              <p className={`mb-3 text-center ${TYPO.meta}`}>
+                Tap{" "}
+                <span className="font-semibold text-theme-primary">
+                  Select Player
+                </span>{" "}
+                to add them
+              </p>
               <div className={quickPlayerChoiceGridClass(choiceCount)}>
                 {sortedEntries.map(({ player }, index) => {
                   const isTopPick =
@@ -201,41 +200,24 @@ export function SlotTeamYearPicker({
               </div>
 
               {onRespin && (
-                <>
-                  <div className="mx-auto mt-5 hidden w-full max-w-md flex-col items-center gap-2 sm:flex">
-                    <GameButton
-                      variant="secondary"
-                      size="md"
-                      fullWidth
-                      disabled={
-                        disabled || respinsRemaining <= 0 || respinLocked
-                      }
-                      onClick={handleRespin}
-                    >
-                      {respinsRemaining > 0
-                        ? `Respin — ${respinsRemaining} remaining`
-                        : "No respins remaining"}
-                    </GameButton>
-                    <p className={`${TYPO.meta} text-center`}>
-                      {maxRespins} respins per run · does not use a draft pick
-                    </p>
-                  </div>
-                  <StickyActionBar portal>
-                    <GameButton
-                      variant="secondary"
-                      size="sm"
-                      className="min-h-[var(--mobile-tap-target)] flex-1"
-                      disabled={
-                        disabled || respinsRemaining <= 0 || respinLocked
-                      }
-                      onClick={handleRespin}
-                    >
-                      {respinsRemaining > 0
-                        ? `Respin (${respinsRemaining})`
-                        : "No respins"}
-                    </GameButton>
-                  </StickyActionBar>
-                </>
+                <div className="mx-auto mt-4 w-full max-w-md flex-col items-center gap-2 flex sm:mt-5">
+                  <GameButton
+                    variant="secondary"
+                    size="md"
+                    fullWidth
+                    disabled={
+                      disabled || respinsRemaining <= 0 || respinLocked
+                    }
+                    onClick={handleRespin}
+                  >
+                    {respinsRemaining > 0
+                      ? `Respin — ${respinsRemaining} remaining`
+                      : "No respins remaining"}
+                  </GameButton>
+                  <p className={`${TYPO.meta} text-center`}>
+                    {maxRespins} respins per run · does not use a draft pick
+                  </p>
+                </div>
               )}
             </>
           )}

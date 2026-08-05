@@ -244,7 +244,9 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 </p>
                 <ul className={NAV.list}>
                   {MAIN_NAV_ITEMS.filter((item) =>
-                    ["/store", "/stats", "/leaderboard"].includes(item.href)
+                    ["/store", "/showcase", "/stats", "/leaderboard"].includes(
+                      item.href
+                    )
                   ).map((item) => {
                     const active = isActive(item.href);
                     return (
@@ -294,33 +296,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       </Link>
                     )}
                   </li>
-                </ul>
-              </section>
-
-              <section className={NAV.sectionGap}>
-                <p className={`${NAV.sectionLabel} sidebar-section-label !mx-0 !mt-0`}>
-                  Extras
-                </p>
-                <ul className={NAV.list}>
-                  {MAIN_NAV_ITEMS.filter((item) =>
-                    item.href === "/showcase"
-                  ).map((item) => {
-                    const active = isActive(item.href);
-                    return (
-                      <li key={item.href}>
-                        <Link
-                          href={item.href}
-                          onClick={handleNavClick}
-                          className={navLinkClass(active)}
-                        >
-                          {item.label}
-                          {active && (
-                            <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
-                          )}
-                        </Link>
-                      </li>
-                    );
-                  })}
                 </ul>
               </section>
             </nav>

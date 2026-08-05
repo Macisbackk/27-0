@@ -4,7 +4,6 @@ import type { GameDifficulty, GameMode } from "./types";
 
 export type LeaderboardTrackerType =
   | "perfect_runs"
-  | "winless_seasons"
   | "best_record"
   | "league_titles"
   | "super_league_champions"
@@ -14,11 +13,19 @@ export type LeaderboardTrackerType =
   | "manager_challenge_cups"
   | "manager_cup_finals"
   | "manager_league_titles"
-  | "manager_total_earnings";
+  | "manager_total_earnings"
+  | "wcc_wins";
 
 export type TrophyCabinetSection = "current" | "era";
 
 export const MIN_GAMES_FOR_WIN_PERCENTAGE = 10;
+
+/**
+ * Public leaderboard tracker payload schema.
+ * 4 = winless_seasons/"0-27 Seasons" removed from public boards (private
+ *     career winlessSeasons stats are unaffected) and wcc_wins added.
+ */
+export const LEADERBOARD_SCHEMA_VERSION = 4;
 
 export interface LeaderboardTrackerEntry {
   username: string;
@@ -29,7 +36,6 @@ export interface LeaderboardTrackerEntry {
   totalWins: number;
   totalLosses: number;
   perfectRuns: number;
-  winlessSeasons: number;
   bestRecordWins: number;
   bestRecordLosses: number;
   bestWinPercentage: number;
@@ -42,6 +48,8 @@ export interface LeaderboardTrackerEntry {
   leagueTitles: number;
   /** Manager Mode — play-off Super League championships. */
   superLeagueTitles: number;
+  /** Manager Mode — World Club Challenge wins. */
+  wccWins: number;
 }
 
 export interface LeaderboardTrackerRow {
@@ -69,7 +77,6 @@ export function sanitizeLeaderboardTrackerEntry(
     totalWins: roundLeaderboardCount(entry.totalWins),
     totalLosses: roundLeaderboardCount(entry.totalLosses),
     perfectRuns: roundLeaderboardCount(entry.perfectRuns),
-    winlessSeasons: roundLeaderboardCount(entry.winlessSeasons),
     bestRecordWins: roundLeaderboardCount(entry.bestRecordWins),
     bestRecordLosses: roundLeaderboardCount(entry.bestRecordLosses),
     bestWinPercentage: roundLeaderboardCount(entry.bestWinPercentage),
@@ -79,6 +86,7 @@ export function sanitizeLeaderboardTrackerEntry(
     cupWinPercentage: roundLeaderboardCount(entry.cupWinPercentage),
     leagueTitles: roundLeaderboardCount(entry.leagueTitles),
     superLeagueTitles: roundLeaderboardCount(entry.superLeagueTitles),
+    wccWins: roundLeaderboardCount(entry.wccWins),
   };
 }
 
@@ -124,9 +132,10 @@ export const LEADERBOARD_TRACKERS: {
     shortLabel: "27-0 Seasons",
   },
   {
-    id: "winless_seasons",
-    label: "Most 0-27 Seasons",
-    shortLabel: "0-27 Seasons",
+    id: "wcc_wins",
+    label: "WCC Wins",
+    shortLabel: "WCC Wins",
+    managerSuperLeagueOnly: true,
   },
   {
     id: "league_titles",
@@ -271,7 +280,7 @@ export function getTrackersForManagerDbMode(
     "best_record",
     "manager_league_titles",
     "perfect_runs",
-    "winless_seasons",
+    "wcc_wins",
   ];
   return order
     .map((id) => LEADERBOARD_TRACKERS.find((t) => t.id === id))
@@ -303,8 +312,8 @@ export function rankByTracker(
     switch (tracker) {
       case "perfect_runs":
         return b.perfectRuns - a.perfectRuns;
-      case "winless_seasons":
-        return b.winlessSeasons - a.winlessSeasons;
+      case "wcc_wins":
+        return (b.wccWins ?? 0) - (a.wccWins ?? 0);
       case "best_record": {
         const aWins = a.bestRecordWins;
         const bWins = b.bestRecordWins;
@@ -371,8 +380,8 @@ export function getTrackerStatDisplay(
   switch (tracker) {
     case "perfect_runs":
       return String(sanitized.perfectRuns);
-    case "winless_seasons":
-      return String(sanitized.winlessSeasons);
+    case "wcc_wins":
+      return String(sanitized.wccWins);
     case "best_record":
       return formatRecordWithPercentage(
         sanitized.bestRecordWins,
@@ -421,10 +430,6 @@ export function mergeLeaderboardStats(
   const perfectRuns = skipSeasonCounters
     ? (existing?.perfectRuns ?? 0)
     : (existing?.perfectRuns ?? 0) + (update.isPerfectSeason ? 1 : 0);
-  const winlessSeasons = skipSeasonCounters
-    ? (existing?.winlessSeasons ?? 0)
-    : (existing?.winlessSeasons ?? 0) +
-      (seasonGames > 0 && runWins === 0 ? 1 : 0);
   const challengeCupWins = existing?.challengeCupWins ?? 0;
 
   let bestRecordWins = existing?.bestRecordWins ?? 0;
@@ -455,7 +460,6 @@ export function mergeLeaderboardStats(
     totalWins,
     totalLosses,
     perfectRuns,
-    winlessSeasons,
     bestRecordWins,
     bestRecordLosses,
     bestWinPercentage,
@@ -466,6 +470,8 @@ export function mergeLeaderboardStats(
     cupWinPercentage,
     leagueTitles: 0,
     superLeagueTitles: 0,
+    // Quick Mode runs have no World Club Challenge concept.
+    wccWins: existing?.wccWins ?? 0,
   };
 }
 
@@ -498,7 +504,6 @@ export function combineLeaderboardTrackerStats(
     totalWins,
     totalLosses,
     perfectRuns: (a.perfectRuns ?? 0) + (b.perfectRuns ?? 0),
-    winlessSeasons: (a.winlessSeasons ?? 0) + (b.winlessSeasons ?? 0),
     bestRecordWins: betterRecord.wins,
     bestRecordLosses: betterRecord.losses,
     bestWinPercentage:
@@ -518,5 +523,6 @@ export function combineLeaderboardTrackerStats(
         : Math.max(a.cupWinPercentage ?? 0, b.cupWinPercentage ?? 0),
     leagueTitles: (a.leagueTitles ?? 0) + (b.leagueTitles ?? 0),
     superLeagueTitles: (a.superLeagueTitles ?? 0) + (b.superLeagueTitles ?? 0),
+    wccWins: (a.wccWins ?? 0) + (b.wccWins ?? 0),
   };
 }

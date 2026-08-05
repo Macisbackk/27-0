@@ -24,6 +24,13 @@ const SUPER_LEAGUE_MODE = "manager-super-league";
 const CHALLENGE_CUP_MODE = "manager-challenge-cup";
 const EARNINGS_MODE = "manager-earnings";
 
+/**
+ * Manager leaderboard WCC Wins payload version. 1 = initial rollout —
+ * old rows with no `wcc_wins` column (or stale `winless_seasons` data,
+ * which is ignored) safely default to 0 via `?? 0` on read.
+ */
+export const MANAGER_WCC_WINS_VERSION = 1;
+
 export const MANAGER_LEADERBOARD_MODES: {
   id: ManagerLeaderboardDbMode;
   label: string;
@@ -73,7 +80,7 @@ function managerStatsToTrackerPayload(
     totalWins: wins,
     totalLosses: losses,
     perfectRuns: Math.round(stats.perfectSeasons),
-    winlessSeasons: Math.round(stats.winlessSeasons),
+    wccWins: Math.round(stats.worldClubChallengeWins ?? 0),
     bestRecordWins: wins,
     bestRecordLosses: losses,
     bestWinPercentage: games > 0 ? Math.round((wins / games) * 100) : 0,
@@ -96,6 +103,7 @@ function hasManagerLeaderboardActivity(stats: ManagerLifetimeStats): boolean {
     stats.leagueTitles > 0 ||
     stats.superLeagueTitles > 0 ||
     stats.challengeCups > 0 ||
+    stats.worldClubChallengeWins > 0 ||
     stats.totalEarnings > 0
   );
 }
@@ -193,7 +201,7 @@ async function upsertTrackerModeOnline(
       wins: payload.totalWins,
       losses: payload.totalLosses,
       perfect_runs: payload.perfectRuns,
-      winless_seasons: payload.winlessSeasons,
+      wcc_wins: payload.wccWins,
       best_record_wins: payload.bestRecordWins,
       best_record_losses: payload.bestRecordLosses,
       best_win_percentage: payload.bestWinPercentage,
@@ -412,7 +420,7 @@ async function fetchRemoteTrackerEntries(
     const { data, error } = await supabase
       .from("leaderboard")
       .select(
-        "coach_name, score, wins, losses, perfect_runs, winless_seasons, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, updated_at, created_at"
+        "coach_name, score, wins, losses, perfect_runs, wcc_wins, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, updated_at, created_at"
       )
       .eq("mode", mode)
       .eq("difficulty", "NORMAL")
@@ -435,7 +443,7 @@ async function fetchRemoteTrackerEntries(
         totalWins: row.wins ?? 0,
         totalLosses: row.losses ?? 0,
         perfectRuns: row.perfect_runs ?? 0,
-        winlessSeasons: row.winless_seasons ?? 0,
+        wccWins: (row as { wcc_wins?: number }).wcc_wins ?? 0,
         bestRecordWins: row.best_record_wins ?? row.wins ?? 0,
         bestRecordLosses: row.best_record_losses ?? row.losses ?? 0,
         bestWinPercentage: row.best_win_percentage ?? 0,

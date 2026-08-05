@@ -414,12 +414,17 @@
   position: absolute;
   inset: 0 0 auto 0;
   height: 2px;
-  background: color-mix(in srgb, var(--theme-primary) 55%, transparent);
+  /* Club accent when --manager-card-accent is set; otherwise a neutral edge. */
+  background: var(
+    --manager-card-accent,
+    rgba(148, 163, 184, 0.35)
+  );
   pointer-events: none;
 }
 
-/* Club identity owns the top edge on Reserve cards, so drop the theme strip. */
-.manager-player-card--reserve::before {
+/* Club identity owns the top edge — drop the generic strip. */
+.manager-player-card--reserve::before,
+.manager-player-card--club-accent::before {
   display: none;
 }
 
@@ -795,14 +800,15 @@
 }
 
 /*
- * Player/team identity panels — neutral chrome only.
- * Club colours come from TeamColourStrip / getClubColoursForCard inline styles.
+ * Player/team identity panels — neutral chrome by default.
+ * Club colours own the border via --player-card-border (inline from
+ * resolvePlayerCardColourContext). Tier never paints the outer edge.
  * Never paint Store --theme-* borders on these surfaces.
  */
 .game-panel--identity,
 .game-panel--player,
 .showcase-player-card {
-  border-color: rgba(148, 163, 184, 0.22) !important;
+  border-color: var(--player-card-border, rgba(148, 163, 184, 0.22));
   background: rgba(8, 12, 13, 0.96);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
   outline: none;
@@ -815,10 +821,80 @@
   content: none !important;
 }
 
-/* Selected / hover states must stay neutral — club strip owns identity */
+/* Hover stays subtle — club strip + border var still own identity */
 .showcase-player-card:hover,
 .showcase-player-card--expanded {
-  border-color: rgba(148, 163, 184, 0.35) !important;
+  border-color: var(--player-card-border-hover, var(--player-card-border, rgba(148, 163, 184, 0.35)));
+}
+
+/* Shared compact tier badges — never alter card geometry or outer border */
+.player-tier-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-height: 1.15rem;
+  max-height: 2.4rem;
+  overflow: hidden;
+}
+
+.player-tier-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  max-width: 100%;
+  padding: 0.12rem 0.4rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(15, 23, 42, 0.85);
+  font-size: 0.5625rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: #e2e8f0;
+}
+
+.player-tier-badge--compact {
+  padding: 0.08rem 0.35rem;
+  font-size: 0.5rem;
+}
+
+.player-tier-badge--gold {
+  border-color: rgba(251, 191, 36, 0.55);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.14),
+    rgba(251, 191, 36, 0.18)
+  );
+  color: #fde68a;
+}
+
+.player-tier-badge--purple {
+  border-color: rgba(167, 139, 250, 0.5);
+  background: rgba(76, 29, 149, 0.35);
+  color: #ddd6fe;
+}
+
+.player-tier-badge--sky {
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(12, 74, 110, 0.4);
+  color: #bae6fd;
+}
+
+.player-tier-badge--slate {
+  border-color: rgba(148, 163, 184, 0.4);
+  background: rgba(30, 41, 59, 0.85);
+  color: #cbd5e1;
+}
+
+.player-tier-badge--amber {
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(120, 53, 15, 0.4);
+  color: #fcd34d;
 }
 
 .game-panel::after,

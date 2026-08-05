@@ -114,17 +114,17 @@ export function managerClubAccentCardStyle(club: string): CSSProperties {
   const primary = colors.primary;
   const secondary = colors.secondary;
   const tertiary = colors.accent ?? secondary;
+  const indicator = getClubIndicatorColor(club);
   return {
-    // Top club gradient via border-image substitute — solid primary strip
-    borderTop: `3px solid ${getClubIndicatorColor(club)}`,
-    // Prevent theme/generic borders stacking over club identity
+    borderTop: `2px solid ${indicator}`,
     borderLeftColor: "rgba(255,255,255,0.08)",
     borderRightColor: "rgba(255,255,255,0.08)",
     borderBottomColor: "rgba(255,255,255,0.08)",
-    // CSS vars for optional team-card__accent usage
     ["--club-primary" as string]: primary,
     ["--club-secondary" as string]: secondary,
     ["--club-tertiary" as string]: tertiary,
+    ["--manager-card-accent" as string]: indicator,
+    ["--player-card-border" as string]: indicator,
   };
 }
 

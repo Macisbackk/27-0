@@ -820,9 +820,9 @@ export function ManagerHub({
       canPlay={canPlay}
       playLabel={matchOccasion?.playCtaShort ?? "Play Match"}
       simulateLabel={
-        matchOccasion?.isShowcase
-          ? matchOccasion.simulateCta.replace(/^Simulate /, "")
-          : "Simulate"
+        matchOccasion?.simulateCtaShort ??
+        matchOccasion?.simulateCta ??
+        "Simulate Match"
       }
       onPlayGame={onPlayGame}
       onSimulate={onSimulate}

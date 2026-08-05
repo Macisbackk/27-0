@@ -16,7 +16,6 @@ export default function HomePage() {
     <PageShell withLights compact>
       <div className={PAGE.sectionHero}>
         <GameHeader
-          eyebrow="Super League"
           title={
             <GameShortContent>
               <span className="flex flex-col items-center gap-1.5">
@@ -33,7 +32,7 @@ export default function HomePage() {
               can you go 27-0?
             </>
           }
-          className="mx-auto max-w-2xl text-left sm:text-center [&_.game-header__title]:flex [&_.game-header__title]:justify-center"
+          className="mx-auto max-w-2xl text-center [&_.game-header__title]:flex [&_.game-header__title]:justify-center"
         />
       </div>
 

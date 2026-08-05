@@ -18,6 +18,7 @@ import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { ModeStartLink } from "./ModeStartLink";
 import { EraRatingExplanation } from "./EraRatingExplanation";
+import { CurrentRatingExplanation } from "./CurrentRatingExplanation";
 
 export function HomeModeSelector() {
   const [normalEraMode, setNormalEraMode] = useState(false);
@@ -90,8 +91,10 @@ export function HomeModeSelector() {
           <p className={`mt-3 text-center ${TYPO.bodySm}`}>
             {getQuickModeCurrentEraHint(normalEraMode)}
           </p>
-          {normalEraMode && (
+          {normalEraMode ? (
             <EraRatingExplanation className="mx-auto mt-2 max-w-xl" />
+          ) : (
+            <CurrentRatingExplanation className="mx-auto mt-2 max-w-xl" />
           )}
 
           <div className="mt-4">

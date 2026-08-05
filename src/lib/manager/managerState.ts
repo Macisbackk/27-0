@@ -39,6 +39,7 @@ import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubR
 import { sanitizeWorldClubChallengeState, ensureWorldClubChallengeScheduled } from "./worldClubChallenge";
 import { ensureChampionshipSystems } from "./championship/ensureChampionship";
 import { migrateSquadRoles } from "./migrateSquadRoles";
+import { migrateReserveGeneratorV5 } from "./migrateReserveGeneratorV5";
 import {
   migratePlayerRatingsV5,
   PLAYER_RATING_SCHEMA_VERSION,
@@ -410,6 +411,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = ensureFreeAgentPool(career);
   career = migrateMatchWeekFields(career);
   career = migratePlayerRatingsV5(career);
+  career = migrateReserveGeneratorV5(career);
   career = migrateSquadRoles(career);
   career = ensureChampionshipSystems(career);
   career = migrateChallengeCupRoundLabels(career);

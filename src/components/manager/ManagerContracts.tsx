@@ -31,8 +31,8 @@ import {
   ManagerPlayerCard,
   ManagerPlayerCardHeader,
 } from "@/components/manager/ManagerPlayerCard";
-import { playPanelClose, playUiClick } from "@/lib/sound";
-import { managerCalloutClass } from "@/lib/manager/managerSurfaces";
+import { playContractSigned, playPanelClose, playUiClick } from "@/lib/sound";
+import { managerCalloutClass, managerClubAccentCardStyle } from "@/lib/manager/managerSurfaces";
 import { ManagerPage, ManagerSection } from "@/components/manager/manager-ui";
 import {
   ManagerSubTabBar,
@@ -192,6 +192,7 @@ export function ManagerContracts({
     setLastResponse(result);
     if (result.accepted) {
       onUpdate(renewManagerContract(career, selectedId, offer));
+      playContractSigned();
     }
   };
 
@@ -383,6 +384,7 @@ export function ManagerContracts({
               key={player.id}
               variant="contract"
               accent={urgent ? "gold" : "none"}
+              clubStyle={managerClubAccentCardStyle(career.club)}
               interactive
               onClick={() => {
                 playUiClick();

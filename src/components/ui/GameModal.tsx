@@ -1,8 +1,9 @@
 "use client";
 
-import type { ReactNode, RefObject } from "react";
+import { useEffect, useRef, type ReactNode, type RefObject } from "react";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { uiLayerClass } from "@/lib/ui/layers";
+import { playPopupClose, playPopupOpen } from "@/lib/sound";
 
 interface GameModalProps {
   open: boolean;
@@ -28,6 +29,17 @@ export function GameModal({
   zClass = uiLayerClass("modalBackdrop"),
   panelRef,
 }: GameModalProps) {
+  const wasOpen = useRef(false);
+
+  useEffect(() => {
+    if (open && !wasOpen.current) {
+      playPopupOpen();
+    } else if (!open && wasOpen.current) {
+      playPopupClose();
+    }
+    wasOpen.current = open;
+  }, [open]);
+
   if (!open) return null;
 
   return (

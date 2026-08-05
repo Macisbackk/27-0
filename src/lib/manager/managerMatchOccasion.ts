@@ -48,6 +48,8 @@ export interface ManagerMatchOccasionPresentation {
   playCta: string;
   playCtaShort: string;
   simulateCta: string;
+  /** Mobile sticky — still action-specific, never bare competition name. */
+  simulateCtaShort: string;
   roundStatLabel: string;
   /** Soft wash on the scoreboard card. */
   surfaceClass: string;
@@ -86,10 +88,113 @@ function playoffBadgeLabel(playoffRound?: number): string {
   return getPlayoffRoundLabel(playoffRound);
 }
 
+function cupRoundActionNoun(cupRound?: CupRoundKey): string {
+  if (cupRound === "semi_final") return "Semi-Final";
+  if (cupRound === "final") return "Final";
+  if (cupRound === "quarter_final") return "Quarter-Final";
+  return "Challenge Cup Match";
+}
+
+export type FixtureActionKind = "play" | "simulate" | "simulate-round";
+
+/**
+ * Central fixture action labels — never fall back to bare "Cup".
+ */
+export function getFixtureActionLabel(input: {
+  fixture: ManagerMatchOccasionFixture;
+  action: FixtureActionKind;
+  compact?: boolean;
+}): string {
+  const { fixture, action, compact = false } = input;
+  const occasion = resolveManagerMatchOccasion(fixture);
+  const playoffRoundLabel = playoffBadgeLabel(fixture.playoffRound);
+  const cupNoun = cupRoundActionNoun(fixture.cupRound);
+
+  if (occasion === "grand_final") {
+    if (action === "play") return compact ? "Play Final" : "Play Grand Final";
+    return compact ? "Simulate Final" : "Simulate Grand Final";
+  }
+  if (occasion === "cup_final") {
+    if (action === "play") {
+      return compact ? "Play Final" : "Play Challenge Cup Final";
+    }
+    return compact ? "Simulate Final" : "Simulate Challenge Cup Final";
+  }
+  if (occasion === "challenge_cup") {
+    if (cupNoun === "Semi-Final" || cupNoun === "Final" || cupNoun === "Quarter-Final") {
+      if (action === "play") return `Play ${cupNoun}`;
+      return `Simulate ${cupNoun}`;
+    }
+    if (action === "play") {
+      return compact
+        ? "Play Challenge Cup"
+        : "Play Challenge Cup Match";
+    }
+    if (action === "simulate-round") {
+      return compact
+        ? "Simulate Cup Round"
+        : "Simulate Challenge Cup Round";
+    }
+    return compact
+      ? "Simulate Challenge Cup"
+      : "Simulate Challenge Cup Round";
+  }
+  if (occasion === "wcc") {
+    if (action === "play") {
+      return compact ? "Play WCC" : "Play World Club Challenge";
+    }
+    return compact
+      ? "Simulate WCC"
+      : "Simulate World Club Challenge";
+  }
+  if (occasion === "playoff") {
+    const round = playoffRoundLabel;
+    if (action === "play") {
+      return compact ? `Play ${round}` : `Play ${round}`;
+    }
+    return `Simulate ${round}`;
+  }
+  if (occasion === "friendly") {
+    return action === "play" ? "Play Friendly" : "Simulate Friendly";
+  }
+  if (occasion === "magic_weekend") {
+    return action === "play"
+      ? compact
+        ? "Play Match"
+        : "Play Magic Weekend"
+      : "Simulate Match";
+  }
+  return action === "play"
+    ? compact
+      ? "Play Match"
+      : "Play Game"
+    : "Simulate Match";
+}
+
 export function getManagerMatchOccasionPresentation(
   fixture: ManagerMatchOccasionFixture
 ): ManagerMatchOccasionPresentation {
   const occasion = resolveManagerMatchOccasion(fixture);
+  const playCta = getFixtureActionLabel({
+    fixture,
+    action: "play",
+    compact: false,
+  });
+  const playCtaShort = getFixtureActionLabel({
+    fixture,
+    action: "play",
+    compact: true,
+  });
+  const simulateCta = getFixtureActionLabel({
+    fixture,
+    action: "simulate",
+    compact: false,
+  });
+  const simulateCtaShort = getFixtureActionLabel({
+    fixture,
+    action: "simulate",
+    compact: true,
+  });
 
   switch (occasion) {
     case "grand_final":
@@ -101,9 +206,10 @@ export function getManagerMatchOccasionPresentation(
         momentLine: fixture.venue
           ? `One match for the Super League — ${fixture.venue}`
           : "One match for the Super League title",
-        playCta: "Play Grand Final",
-        playCtaShort: "Play Final",
-        simulateCta: "Simulate Final",
+        playCta,
+        playCtaShort,
+        simulateCta,
+        simulateCtaShort,
         roundStatLabel: "Showpiece",
         surfaceClass: SURFACE.grandFinal,
         matchdayModifier: "matchday-scoreboard--grand-final",
@@ -119,9 +225,10 @@ export function getManagerMatchOccasionPresentation(
         momentLine: fixture.venue
           ? `Challenge Cup glory at ${fixture.venue}`
           : "Challenge Cup glory on the biggest stage",
-        playCta: "Play Cup Final",
-        playCtaShort: "Play Final",
-        simulateCta: "Simulate Final",
+        playCta,
+        playCtaShort,
+        simulateCta,
+        simulateCtaShort,
         roundStatLabel: "Final",
         surfaceClass: SURFACE.cupFinal,
         matchdayModifier: "matchday-scoreboard--cup-final",
@@ -138,9 +245,10 @@ export function getManagerMatchOccasionPresentation(
           fixture.playoffRound === 2
             ? "Semi-final — win and the Grand Final awaits"
             : "Knockout rugby — lose and the season ends",
-        playCta: "Play Play-Off Tie",
-        playCtaShort: "Play Tie",
-        simulateCta: "Simulate Tie",
+        playCta,
+        playCtaShort,
+        simulateCta,
+        simulateCtaShort,
         roundStatLabel: "Play-off round",
         surfaceClass: SURFACE.playoff,
         matchdayModifier: "matchday-scoreboard--playoff",
@@ -154,9 +262,10 @@ export function getManagerMatchOccasionPresentation(
         badgeLabel: "Challenge Cup",
         badgeTone: "gold",
         momentLine: `${getManagerCupRoundLabel(fixture.cupRound)} — cup runs are built here`,
-        playCta: "Play Cup Tie",
-        playCtaShort: "Play Cup",
-        simulateCta: "Simulate Cup",
+        playCta,
+        playCtaShort,
+        simulateCta,
+        simulateCtaShort,
         roundStatLabel: "Cup round",
         surfaceClass: SURFACE.cup,
         matchdayModifier: "matchday-scoreboard--challenge-cup",
@@ -170,9 +279,10 @@ export function getManagerMatchOccasionPresentation(
         badgeLabel: "WCC",
         badgeTone: "sky",
         momentLine: "World Club Challenge — Super League vs NRL champions",
-        playCta: "Play Match",
-        playCtaShort: "Play",
-        simulateCta: "Simulate Match",
+        playCta,
+        playCtaShort,
+        simulateCta,
+        simulateCtaShort,
         roundStatLabel: "Stage",
         surfaceClass: SURFACE.wcc,
         matchdayModifier: "matchday-scoreboard--wcc",
@@ -186,9 +296,10 @@ export function getManagerMatchOccasionPresentation(
         badgeLabel: "Magic Weekend",
         badgeTone: "primary",
         momentLine: "Neutral-venue Super League — festival atmosphere",
-        playCta: "Play Magic Weekend",
-        playCtaShort: "Play Match",
-        simulateCta: "Simulate Match",
+        playCta,
+        playCtaShort,
+        simulateCta,
+        simulateCtaShort,
         roundStatLabel: "Game week",
         surfaceClass: SURFACE.magic,
         matchdayModifier: "matchday-scoreboard--magic",
@@ -202,9 +313,10 @@ export function getManagerMatchOccasionPresentation(
         badgeLabel: "Friendly",
         badgeTone: "sky",
         momentLine: "Pre-season — sharpen the squad before Round 1",
-        playCta: "Play Friendly",
-        playCtaShort: "Play Friendly",
-        simulateCta: "Simulate Friendly",
+        playCta,
+        playCtaShort,
+        simulateCta,
+        simulateCtaShort,
         roundStatLabel: "Pre-season",
         surfaceClass: SURFACE.friendly,
         matchdayModifier: "matchday-scoreboard--friendly",
@@ -218,9 +330,10 @@ export function getManagerMatchOccasionPresentation(
         badgeLabel: "Super League",
         badgeTone: "primary",
         momentLine: "",
-        playCta: "Play Game",
-        playCtaShort: "Play Match",
-        simulateCta: "Simulate Match",
+        playCta,
+        playCtaShort,
+        simulateCta,
+        simulateCtaShort,
         roundStatLabel: "Game week",
         surfaceClass: SURFACE.league,
         matchdayModifier: "",

@@ -143,6 +143,20 @@ export interface ManagerReservePlayer {
   calledUpForNextMatch: boolean;
   /** Flagged by staff for bulk release tools. */
   markedForRelease?: boolean;
+  /** Stamped when the player was created by the reserve generator. */
+  ratingGeneration?: {
+    source: "generated-reserve";
+    generatorVersion: number;
+    baseRating: number;
+    developmentModifier: number;
+  };
+  /** Pending full-time senior contract offer while still in reserves. */
+  pendingFullTimeOffer?: {
+    wagePerYear: number;
+    years: number;
+    offeredAtSeasonYear: number;
+    status: "pending" | "accepted" | "rejected";
+  };
 }
 
 export interface ReserveFixtureResult {
@@ -894,6 +908,8 @@ export interface ManagerCareer {
   saveStorageVersion?: number;
   /** Player ability scale migration (5 = reserve floor + Current 90+ audit). */
   playerRatingSchemaVersion?: number;
+  /** Reserve generator band version (5 = 65–82 retuned mean ~70). */
+  reserveGeneratorVersion?: number;
   /** Championship-only rating scale correction (2 = post mistaken floor-80 remap). */
   championshipRatingScaleVersion?: number;
   /** Reserve rating scale after mistaken floor-80 clamp (2 = age/potential remap). */

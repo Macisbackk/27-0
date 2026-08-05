@@ -3,7 +3,6 @@
 import { ManagerPage, ManagerSection } from "@/components/manager/manager-ui";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { CollapsibleDetails } from "@/components/ui/MobileLayout";
 import type { ManagerCareer, ManagerTactics } from "@/lib/manager/types";
 import {
   ATTACK_FOCUS_BIOS,
@@ -180,17 +179,27 @@ export function ManagerTacticsPanel({
   return (
     <div className={SPACING.stackSm}>
       <TacticsSetupPanel tactics={t} onChange={update} />
-      <CollapsibleDetails summary="Match impact & live play">
-        <MatchImpactPreview tactics={t} />
-        <LivePlayPreview career={career} />
-      </CollapsibleDetails>
+      <section className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+        <h2 className={`text-center ${TYPO.sectionLabel}`}>
+          Match impact & live play
+        </h2>
+        <div className="mt-3">
+          <MatchImpactPreview tactics={t} />
+          <LivePlayPreview career={career} />
+        </div>
+      </section>
       {onCareerUpdate && (
-        <CollapsibleDetails summary="Dual position training">
-          <ManagerPositionRetrainingPanel
-            career={career}
-            onUpdate={onCareerUpdate}
-          />
-        </CollapsibleDetails>
+        <section className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+          <h2 className={`text-center ${TYPO.sectionLabel}`}>
+            Dual position training
+          </h2>
+          <div className="mt-3">
+            <ManagerPositionRetrainingPanel
+              career={career}
+              onUpdate={onCareerUpdate}
+            />
+          </div>
+        </section>
       )}
     </div>
   );

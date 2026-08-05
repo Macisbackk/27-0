@@ -16,6 +16,7 @@ import {
   getReserveOpponent,
   promoteReserveToSquad,
   callUpReserveForNextMatch,
+  cancelReserveCallUp,
   RESERVE_EMERGENCY_RECRUITMENT_EXCUSE,
   RESERVE_EMERGENCY_RECRUITMENT_TITLE,
   RESERVE_MIN_PLAYERS,
@@ -39,7 +40,7 @@ import {
 } from "@/lib/manager/managerContracts";
 import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import { getReserveReportMonth } from "@/lib/manager/managerReserveReports";
-import { playUiClick } from "@/lib/sound";
+import { playUiClick, playReserveCallUp } from "@/lib/sound";
 import { ManagerPage, ManagerSection, ManagerStat } from "@/components/manager/manager-ui";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { ManagerPlayerCardGrid } from "@/components/manager/ManagerPlayerCard";
@@ -157,7 +158,71 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     const reserve = career.reserves.find((r) => r.id === id);
     if (!reserve) return;
     onUpdate(callUpReserveForNextMatch(career, id));
-    setMessage(`${reserve.name} added to the matchday squad`);
+    playReserveCallUp();
+    setMessage(`${reserve.name} called up for the next game`);
+  };
+
+  const handleCancelCallUp = (id: string) => {
+    const reserve = career.reserves.find((r) => r.id === id);
+    if (!reserve) return;
+    onUpdate(cancelReserveCallUp(career, id));
+    setMessage(`${reserve.name} call-up cancelled`);
+  };
+
+  const handleOfferFullTime = (id: string) => {
+    const reserve = career.reserves.find((r) => r.id === id);
+    if (!reserve) return;
+    if (reserve.pendingFullTimeOffer?.status === "pending") {
+      setMessage(`${reserve.name} already has a pending full-time offer`);
+      return;
+    }
+    const wage = Math.min(
+      45_000,
+      Math.max(12_000, Math.round(8_000 + reserve.rating * 280))
+    );
+    const years = reserve.age <= 21 ? 3 : 2;
+    const next: ManagerCareer = {
+      ...career,
+      reserves: career.reserves.map((r) =>
+        r.id === id
+          ? {
+              ...r,
+              pendingFullTimeOffer: {
+                wagePerYear: wage,
+                years,
+                offeredAtSeasonYear: career.seasonYear,
+                status: "pending",
+              },
+            }
+          : r
+      ),
+      reserveContracts: {
+        ...(career.reserveContracts ?? {}),
+        [id]: {
+          ...(career.reserveContracts?.[id] ??
+            generateReserveYouthContract(reserve)),
+          wagePerYear: wage,
+          yearsRemaining: years,
+          squadRole: "reserve",
+        },
+      },
+    };
+    // Accept immediately into reserve contract (player stays in reserves).
+    next.reserves = next.reserves.map((r) =>
+      r.id === id && r.pendingFullTimeOffer
+        ? {
+            ...r,
+            pendingFullTimeOffer: {
+              ...r.pendingFullTimeOffer,
+              status: "accepted",
+            },
+          }
+        : r
+    );
+    onUpdate(next);
+    setMessage(
+      `${reserve.name} signed a full-time deal (£${Math.round(wage / 1000)}k/yr, ${years}yr) — still in Reserves until promoted`
+    );
   };
 
   const handleReleaseClick = (id: string) => {
@@ -576,7 +641,14 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                     ...REVIEW_CHIP[flag],
                     title: review.reasons.join(" · "),
                   }))}
+                  onCallUp={handleCallUp}
+                  onCancelCallUp={handleCancelCallUp}
                   onPromote={handlePromote}
+                  onOfferFullTime={handleOfferFullTime}
+                  canOfferFullTime={
+                    r.pendingFullTimeOffer?.status !== "accepted" &&
+                    r.pendingFullTimeOffer?.status !== "pending"
+                  }
                   onViewDetails={setDetailsId}
                 />
               );

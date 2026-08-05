@@ -85,6 +85,86 @@ export function playWarning(): void {
   playSound("warning");
 }
 
+export function playPopupOpen(): void {
+  playSound("popupOpen");
+}
+
+export function playPopupClose(): void {
+  playSound("popupClose");
+}
+
+export function playBoostSelected(): void {
+  playSound("boostSelected");
+}
+
+export function playBoostSuccess(): void {
+  playSound("boostSuccess");
+}
+
+export function playBoostFailed(): void {
+  playSound("boostFailed");
+}
+
+export function playFutureStarReveal(): void {
+  playSound("futureStarReveal");
+}
+
+export function playTransferOffer(): void {
+  playSound("transferOffer");
+}
+
+export function playTransferComplete(): void {
+  playSound("transferComplete");
+}
+
+export function playReserveCallUp(): void {
+  playSound("reserveCallUp");
+}
+
+export function playContractSigned(): void {
+  playSound("contractSigned");
+}
+
+export function playCupProgress(): void {
+  playSound("cupProgress");
+}
+
+export function playWccWin(): void {
+  playSound("wccWin");
+}
+
+export function playGoldenPointStart(): void {
+  playSound("goldenPointStart");
+}
+
+export function playGoldenPointWin(): void {
+  playSound("goldenPointWin");
+}
+
+export function playManagerSacked(): void {
+  playSound("managerSacked");
+}
+
+export function playManagerAppointed(): void {
+  playSound("managerAppointed");
+}
+
+export function playCalendarComplete(): void {
+  playSound("calendarComplete");
+}
+
+export function playFriendlyConfirm(): void {
+  playSound("friendlyConfirm");
+}
+
+export function playAchievementUnlock(): void {
+  playSound("achievementUnlock");
+}
+
+export function playSeasonReviewMajor(): void {
+  playSound("seasonReviewMajor");
+}
+
 /* ── Recruitment / selection ── */
 
 export function playPositionSelect(): void {

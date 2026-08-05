@@ -17,6 +17,8 @@ import { useScrollLock } from "@/hooks/useScrollLock";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
+  getCurrentRatingSupportText,
+  getCurrentSeasonYearNumber,
   getPlayerRatingContext,
   getPlayerRatingLabel,
   getPlayerSeasonRatingYear,
@@ -95,10 +97,16 @@ export function PlayerDetailModal({
           <p className="mt-0.5 font-semibold text-[color:var(--rating)]">
             {player.peakRating}
           </p>
-          {resolvedRatingContext === "season" &&
-            resolvedSeasonYear !== undefined && (
+          {(resolvedRatingContext === "season" ||
+            resolvedRatingContext === "current") && (
               <p className="mt-1 text-[11px] leading-snug text-pitch-400">
-                {getSeasonRatingSupportText(resolvedSeasonYear)}
+                {resolvedRatingContext === "current"
+                  ? getCurrentRatingSupportText(
+                      resolvedSeasonYear ?? getCurrentSeasonYearNumber()
+                    )
+                  : resolvedSeasonYear !== undefined
+                    ? getSeasonRatingSupportText(resolvedSeasonYear)
+                    : null}
               </p>
             )}
         </div>

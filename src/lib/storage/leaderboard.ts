@@ -35,7 +35,6 @@ export interface StoredLeaderboardEntry {
   totalWins: number;
   totalLosses: number;
   perfectRuns: number;
-  winlessSeasons: number;
   bestRecordWins: number;
   bestRecordLosses: number;
   bestWinPercentage: number;
@@ -61,7 +60,6 @@ export interface SupabaseLeaderboardRow {
   wins: number | null;
   losses: number | null;
   perfect_runs: number | null;
-  winless_seasons: number | null;
   best_record_wins: number | null;
   best_record_losses: number | null;
   best_win_percentage: number | null;
@@ -106,7 +104,7 @@ function resolveLeaderboardDifficulty(
 }
 
 const SUPABASE_SELECT_EXTENDED =
-  "id, player_name, coach_name, user_id, score, mode, difficulty, mode_variant, wins, losses, perfect_runs, winless_seasons, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage, created_at, updated_at";
+  "id, player_name, coach_name, user_id, score, mode, difficulty, mode_variant, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage, created_at, updated_at";
 
 const SUPABASE_SELECT_BASE =
   "id, player_name, coach_name, user_id, score, mode, difficulty, mode_variant, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, created_at, updated_at";
@@ -136,7 +134,6 @@ function loadLocalEntriesRaw(): StoredLeaderboardEntry[] {
       totalWins: entry.totalWins ?? entry.wins ?? 0,
       totalLosses: entry.totalLosses ?? entry.losses ?? 0,
       perfectRuns: entry.perfectRuns ?? 0,
-      winlessSeasons: entry.winlessSeasons ?? 0,
       bestRecordWins: entry.bestRecordWins ?? entry.wins ?? 0,
       bestRecordLosses: entry.bestRecordLosses ?? entry.losses ?? 0,
       bestWinPercentage: entry.bestWinPercentage ?? 0,
@@ -201,7 +198,6 @@ function toTrackerEntry(
     totalWins: row.totalWins ?? 0,
     totalLosses: row.totalLosses ?? 0,
     perfectRuns: row.perfectRuns ?? 0,
-    winlessSeasons: row.winlessSeasons ?? 0,
     bestRecordWins: row.bestRecordWins ?? 0,
     bestRecordLosses: row.bestRecordLosses ?? 0,
     bestWinPercentage: row.bestWinPercentage ?? 0,
@@ -212,6 +208,8 @@ function toTrackerEntry(
     cupWinPercentage: row.cupWinPercentage ?? 0,
     leagueTitles: row.leagueTitles ?? 0,
     superLeagueTitles: row.superLeagueTitles ?? 0,
+    // Quick Mode entries have no World Club Challenge concept.
+    wccWins: 0,
   };
 }
 
@@ -293,7 +291,6 @@ function mapSupabaseToTrackerEntries(
       totalWins: row.wins ?? 0,
       totalLosses: row.losses ?? 0,
       perfectRuns: row.perfect_runs ?? 0,
-      winlessSeasons: row.winless_seasons ?? 0,
       bestRecordWins: row.best_record_wins ?? row.wins ?? 0,
       bestRecordLosses: row.best_record_losses ?? row.losses ?? 0,
       bestWinPercentage: row.best_win_percentage ?? 0,
@@ -411,7 +408,7 @@ async function insertToSupabase(
     let existingQuery = supabase
       .from("leaderboard")
       .select(
-        "id, score, wins, losses, perfect_runs, winless_seasons, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage"
+        "id, score, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage"
       )
       .eq("user_id", userId)
       .eq("mode", dbMode)
@@ -428,7 +425,6 @@ async function insertToSupabase(
       wins: stats.totalWins,
       losses: stats.totalLosses,
       perfect_runs: stats.perfectRuns,
-      winless_seasons: stats.winlessSeasons,
       best_record_wins: stats.bestRecordWins,
       best_record_losses: stats.bestRecordLosses,
       best_win_percentage: stats.bestWinPercentage,
@@ -502,7 +498,6 @@ function hasTrackerActivity(entry: LeaderboardTrackerEntry): boolean {
     entry.totalWins > 0 ||
     entry.totalLosses > 0 ||
     entry.perfectRuns > 0 ||
-    entry.winlessSeasons > 0 ||
     entry.challengeCupWins > 0
   );
 }
@@ -528,7 +523,6 @@ function userStatsToClassicTrackerEntry(
     totalWins: wins,
     totalLosses: losses,
     perfectRuns: stats.totalPerfectSeasons,
-    winlessSeasons: stats.totalWinlessSeasons,
     bestRecordWins: bestWins,
     bestRecordLosses: bestLosses,
     bestWinPercentage: games > 0 ? (wins / games) * 100 : 0,
@@ -539,6 +533,7 @@ function userStatsToClassicTrackerEntry(
     cupWinPercentage: 0,
     leagueTitles: 0,
     superLeagueTitles: 0,
+    wccWins: 0,
   };
 }
 
@@ -639,7 +634,6 @@ function saveLocalEntry(
         totalWins: stats.totalWins,
         totalLosses: stats.totalLosses,
         perfectRuns: stats.perfectRuns,
-        winlessSeasons: stats.winlessSeasons,
         bestRecordWins: stats.bestRecordWins,
         bestRecordLosses: stats.bestRecordLosses,
         bestWinPercentage: stats.bestWinPercentage,
@@ -666,7 +660,6 @@ function saveLocalEntry(
       totalWins: stats.totalWins,
       totalLosses: stats.totalLosses,
       perfectRuns: stats.perfectRuns,
-      winlessSeasons: stats.winlessSeasons,
       bestRecordWins: stats.bestRecordWins,
       bestRecordLosses: stats.bestRecordLosses,
       bestWinPercentage: stats.bestWinPercentage,
@@ -718,7 +711,7 @@ async function getExistingRemoteStats(
     let query = supabase
       .from("leaderboard")
       .select(
-        "score, wins, losses, perfect_runs, winless_seasons, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage"
+        "score, wins, losses, perfect_runs, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, best_cup_finish, best_cup_finish_rank, cup_win_percentage"
       )
       .eq("user_id", userId)
       .eq("mode", dbMode)
@@ -737,7 +730,7 @@ async function getExistingRemoteStats(
       totalWins: data.wins ?? 0,
       totalLosses: data.losses ?? 0,
       perfectRuns: data.perfect_runs ?? 0,
-      winlessSeasons: data.winless_seasons ?? 0,
+      wccWins: 0,
       bestRecordWins: data.best_record_wins ?? 0,
       bestRecordLosses: data.best_record_losses ?? 0,
       bestWinPercentage: data.best_win_percentage ?? 0,

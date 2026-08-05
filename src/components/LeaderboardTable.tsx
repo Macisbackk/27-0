@@ -67,7 +67,7 @@ const TRACKER_ACCENTS: Partial<
   Record<LeaderboardTrackerType, LeaderboardTabAccent>
 > = {
   perfect_runs: "green",
-  winless_seasons: "amber",
+  wcc_wins: "amber",
   best_record: "theme",
   league_titles: "green",
   super_league_champions: "gold",
@@ -82,7 +82,7 @@ const TRACKER_ACCENTS: Partial<
 
 const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   perfect_runs: "27-0 Seasons",
-  winless_seasons: "0-27 Seasons",
+  wcc_wins: "WCC Wins",
   best_record: "Total Record",
   league_titles: "League Titles",
   super_league_champions: "SL Champions",
