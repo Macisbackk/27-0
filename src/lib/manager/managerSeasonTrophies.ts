@@ -1,6 +1,9 @@
 import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import type { PlayoffFinish } from "../game/playoff-simulation";
-import { isLeagueAndCupPhaseComplete } from "./managerChallengeCup";
+import {
+  countLeagueFixturesPlayed,
+  isLeagueAndCupPhaseComplete,
+} from "./managerChallengeCup";
 import { getUserLeagueTablePosition } from "./managerFixtures";
 import type { ManagerCareer, ManagerSeasonSummary } from "./types";
 
@@ -81,11 +84,14 @@ export function getManagerSeasonTrophyLabels(career: ManagerCareer): string[] {
   const playoffFinish = career.playoffs?.finish ?? null;
   const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
   const leaguePhaseComplete = isLeagueAndCupPhaseComplete(career);
+  /* No league honours before a ball is kicked — an all-zero table still ranks
+     someone first on the tie-break. */
   const leagueTableSettled =
-    leaguePhaseComplete ||
-    career.isSeasonComplete ||
-    career.playoffsIntroAcknowledged ||
-    career.playoffs != null;
+    countLeagueFixturesPlayed(career) > 0 &&
+    (leaguePhaseComplete ||
+      career.isSeasonComplete ||
+      career.playoffsIntroAcknowledged ||
+      career.playoffs != null);
   const worldClubChallengeWon = (career.worldClubChallenge?.history ?? []).some(
     (r) => r.seasonYear === career.seasonYear && r.userResult === "won"
   );

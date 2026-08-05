@@ -23,7 +23,7 @@ import type {
   ManagerCareer,
   ManagerScheduledFixture,
 } from "./types";
-import { CUP_ROUND_LABELS } from "./types";
+import { CUP_ROUND_LABELS, MANAGER_SEASON_GAMES } from "./types";
 import {
   getChallengeCupRoundLabel,
   isChallengeCupFinalRound,
@@ -462,9 +462,18 @@ export function buildCupScheduledFixture(
 
 export function isLeagueAndCupPhaseComplete(career: ManagerCareer): boolean {
   const leaguePlayed = countLeagueFixturesPlayed(career);
-  const leagueDone =
-    leaguePlayed >= 27 ||
+  /*
+   * An empty or unbuilt schedule is not a finished season. Hydration falls back
+   * to `schedule: []`, so `currentFixtureIndex >= schedule.length` was 0 >= 0
+   * and marked untouched careers as league-complete — which then awarded
+   * League Leaders to whoever topped the all-zero table on the tie-break.
+   */
+  const scheduleExhausted =
+    career.schedule.length > 0 &&
     career.currentFixtureIndex >= career.schedule.length;
+  const leagueDone =
+    leaguePlayed >= MANAGER_SEASON_GAMES ||
+    (scheduleExhausted && leaguePlayed > 0);
   if (!leagueDone) return false;
 
   if (!career.challengeCup) return true;

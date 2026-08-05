@@ -61,7 +61,10 @@ import {
   ensureBoardObjectivesInbox,
 } from "./managerBoardInbox";
 import { initPreSeasonState, ensureFriendlyChoices } from "./managerFriendlies";
-import { ensureCupBracketReady } from "./managerChallengeCup";
+import {
+  countLeagueFixturesPlayed,
+  ensureCupBracketReady,
+} from "./managerChallengeCup";
 import { ensurePlayoffsReady, syncPlayoffsIntroAcknowledged } from "./managerPlayoffs";
 import { ensureSeasonEndPlayerDevelopment } from "./managerPlayerDevelopment";
 import { normalizeMatchdayLineup } from "./matchday-lineup";
@@ -411,7 +414,23 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = ensureChampionshipSystems(career);
   career = migrateChallengeCupRoundLabels(career);
   career = migrateCareerHistory(career);
+  career = repairPrematureLeaguePhaseCredit(career);
   return syncManagerInboxMessages(career);
+}
+
+/**
+ * Saves touched by the empty-schedule bug had this season's league finish
+ * credited before a single game, which also blocked the real finish from ever
+ * being credited. Clearing the marker lets the genuine result record.
+ */
+function repairPrematureLeaguePhaseCredit(
+  career: ManagerCareer
+): ManagerCareer {
+  if (career.leaguePhaseStatsRecordedForYear !== career.seasonYear) {
+    return career;
+  }
+  if (countLeagueFixturesPlayed(career) > 0) return career;
+  return { ...career, leaguePhaseStatsRecordedForYear: null };
 }
 
 /** Light save-path sync — no AI cup/playoff sim, inbox rolls, or season development. */
