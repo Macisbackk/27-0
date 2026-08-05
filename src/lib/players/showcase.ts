@@ -2,6 +2,12 @@ import type { Player, PlayerCategory, Position } from "../types";
 import { formatPlayerDisplayName } from "./prime-year";
 import { POSITION_LABELS } from "../positions";
 import { getPlayerEligiblePositions } from "./player-positions";
+import { isHiddenPlayer } from "./goat";
+import {
+  isGameplayYearCard,
+  parseYearsActiveEnd,
+  parseYearsActiveStart,
+} from "./year-card";
 
 export type ShowcaseSortKey =
   | "rating"
@@ -133,8 +139,16 @@ export function getUniqueClubs(players: Player[]): string[] {
 export function getUniqueShowcaseYears(players: Player[]): number[] {
   const years = new Set<number>();
   for (const p of players) {
-    const y = p.year ?? p.cardYear ?? p.primeYear;
-    if (typeof y === "number" && Number.isFinite(y)) years.add(y);
+    if (isGameplayYearCard(p)) {
+      const year = p.year ?? p.cardYear ?? p.primeYear;
+      if (typeof year === "number" && Number.isFinite(year)) years.add(year);
+      continue;
+    }
+
+    const start = parseYearsActiveStart(p.yearsActive);
+    const end = parseYearsActiveEnd(p.yearsActive);
+    if (start === undefined || end === undefined || end < start) continue;
+    for (let year = start; year <= end; year++) years.add(year);
   }
   return [...years].sort((a, b) => b - a);
 }
@@ -224,8 +238,19 @@ function passesTeamFilter(player: Player, filters: ShowcaseFilters): boolean {
 
 function passesYearFilter(player: Player, filters: ShowcaseFilters): boolean {
   if (filters.year === "all") return true;
-  const y = player.year ?? player.cardYear ?? player.primeYear;
-  return y === filters.year;
+  if (isGameplayYearCard(player)) {
+    const year = player.year ?? player.cardYear ?? player.primeYear;
+    return year === filters.year;
+  }
+
+  const start = parseYearsActiveStart(player.yearsActive);
+  const end = parseYearsActiveEnd(player.yearsActive);
+  return (
+    start !== undefined &&
+    end !== undefined &&
+    filters.year >= start &&
+    filters.year <= end
+  );
 }
 
 function passesSecondaryFilters(
@@ -254,6 +279,7 @@ export function filterShowcasePlayers(
   filters: ShowcaseFilters
 ): Player[] {
   return players.filter((player) => {
+    if (isHiddenPlayer(player)) return false;
     if (player.availableInGame === false) return false;
     if (!passesStatusFilter(player, filters.status)) return false;
     if (!passesTeamFilter(player, filters)) return false;

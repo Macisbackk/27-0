@@ -3,6 +3,7 @@ import type { LatestNewsItem, ManagerCareer } from "./types";
 import { getNextManagerFixture } from "./managerSimulation";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { formatWage } from "./managerContracts";
+import { getManagerPlayer } from "./managerPlayers";
 import {
   MAGIC_WEEKEND_VENUE,
   isMagicWeekendFixture,
@@ -261,12 +262,18 @@ export function generateWeeklyNews(career: ManagerCareer): LatestNewsItem[] {
 
   const listed = career.leagueListedPlayers[0];
   if (listed && rng() < 0.35) {
-    items.push({
-      id: `news-transfer-${week}`,
-      week,
-      type: "transfer",
-      text: `${listed.club} have ${listed.playerId ? "a player" : "talent"} available for around ${formatWage(listed.askingPrice)}.`,
-    });
+    const player = listed.playerId
+      ? getManagerPlayer(career, listed.playerId)
+      : undefined;
+    const playerLabel = player?.name ?? listed.playerName;
+    if (playerLabel) {
+      items.push({
+        id: `news-transfer-${week}-${listed.playerId ?? listed.club}`,
+        week,
+        type: "transfer",
+        text: `${listed.club} have listed ${playerLabel} for around ${formatWage(listed.askingPrice)}.`,
+      });
+    }
   }
 
   // Prefer a mix of SL + Championship headlines when both exist

@@ -180,7 +180,7 @@ function clubStrength(
   squads?: ChampionshipSquadState
 ): number {
   const club = getChampionshipClubByName(clubName);
-  if (!club) return 62;
+  if (!club) return 58;
   if (!squads) return club.baseStrength;
   const roster = squads.rosterByClub[club.id] ?? [];
   if (roster.length === 0) return club.baseStrength;
@@ -188,10 +188,11 @@ function clubStrength(
     .map((id) => squads.players[id]?.peakRating ?? 0)
     .filter((r) => r > 0)
     .sort((a, b) => b - a)
-    .slice(0, 17);
+    .slice(0, 13);
   if (ratings.length === 0) return club.baseStrength;
   const avg = ratings.reduce((s, r) => s + r, 0) / ratings.length;
-  return Math.round(avg);
+  // Blend matchday quality with club reputation so weak sides stay below SL depth.
+  return Math.round(avg * 0.92 + club.baseStrength * 0.08);
 }
 
 export function simulateChampionshipFixtureScores(
@@ -202,12 +203,12 @@ export function simulateChampionshipFixtureScores(
   squads?: ChampionshipSquadState
 ): { homeScore: number; awayScore: number; homeTries: number; awayTries: number } {
   const rng = seedrandom(`${seed}-${fixtureId}`);
-  const homeStr = clubStrength(homeTeam, squads) + 1.5; // slight home edge
+  const homeStr = clubStrength(homeTeam, squads) + 1.2; // slight home edge
   const awayStr = clubStrength(awayTeam, squads);
   const diff = homeStr - awayStr;
-  const homeWinChance = 0.5 + Math.max(-0.28, Math.min(0.28, diff / 40));
+  const homeWinChance = 0.5 + Math.max(-0.3, Math.min(0.3, diff / 50));
   const homeWins = rng() < homeWinChance;
-  const pair = pickScorePairAllowingDraw(16, 48, 4, 28, rng);
+  const pair = pickScorePairAllowingDraw(12, 42, 2, 24, rng);
   const homeScore = homeWins ? pair.winner : pair.loser;
   const awayScore = homeWins ? pair.loser : pair.winner;
   return {

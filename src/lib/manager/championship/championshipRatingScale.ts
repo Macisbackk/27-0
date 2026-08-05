@@ -9,58 +9,53 @@ import { getChampionshipClubById } from "../../clubs/championship-clubs";
 import type { ChampionshipGeneratedPlayer } from "./championshipSquads";
 
 /**
- * Championship rating bands (70–89):
+ * Championship rating bands (70–89) — clearly below Super League (~86–88):
  * 70–72 development / emergency depth
  * 73–75 squad / fringe
  * 76–78 established starters
  * 79–81 good Championship players
  * 82–84 leading club performers
- * 85–87 elite (sparing)
- * 88–89 exceptional (very rare)
+ * 85–89 elite (very rare)
+ *
+ * Target overall squad average ~73–76.
  */
 export function ratingForChampionshipClub(
   club: ChampionshipClub,
   slotIndex: number,
   rng: () => number
 ): number {
-  const strength = club.baseStrength; // ~54–74
+  const strengthT = Math.max(
+    0,
+    Math.min(1, (club.baseStrength - 54) / 20)
+  );
+  const starterT = Math.max(0, Math.min(1, 1 - slotIndex / 24));
+  const quality = strengthT * 0.55 + starterT * 0.45;
   const roll = rng();
+  const bandRoll =
+    roll + quality * 0.16 - (slotIndex >= 20 ? 0.14 : slotIndex >= 17 ? 0.06 : 0);
 
-  // 88–89 exceptional — very rare, strong clubs only
-  if (roll > 0.994 && strength >= 70) {
-    return clampChampionshipPlayerRating(88 + Math.floor(rng() * 2));
+  if (bandRoll > 0.988 && quality > 0.7) {
+    return clampChampionshipPlayerRating(85 + Math.floor(rng() * 5));
   }
-  // 85–87 elite — rare
-  if (roll > 0.972 && strength >= 66) {
-    return clampChampionshipPlayerRating(85 + Math.floor(rng() * 3));
-  }
-  // 82–84 leading
-  if (roll > 0.9 && strength >= 62) {
+  if (bandRoll > 0.968 && quality > 0.55) {
     return clampChampionshipPlayerRating(82 + Math.floor(rng() * 3));
   }
-  // 79–81 good starters — more common at strong clubs / early slots
-  if (roll > 0.78 && (slotIndex < 13 || strength >= 64)) {
+  if (bandRoll > 0.86 && quality > 0.42) {
     return clampChampionshipPlayerRating(79 + Math.floor(rng() * 3));
   }
-
-  if (slotIndex < 17) {
-    // Established starters 76–78, nudged by club strength
-    const mid = 75.5 + (strength - 55) * 0.12 + rng() * 2.5;
+  if (bandRoll > 0.38) {
+    const base = 75 + quality * 2.2 + rng() * 2;
     return clampChampionshipPlayerRating(
-      Math.max(76, Math.min(81, Math.round(mid)))
+      Math.round(Math.max(76, Math.min(78, base)))
     );
   }
-
-  // Bench / development 70–75
-  const depth = 71 + (strength - 55) * 0.08 + rng() * 3.5;
-  if (slotIndex >= 22 || roll < 0.35) {
+  if (bandRoll > 0.14) {
+    const base = 72 + quality * 1.8 + rng() * 2;
     return clampChampionshipPlayerRating(
-      Math.max(70, Math.min(72, Math.round(depth - 1)))
+      Math.round(Math.max(73, Math.min(75, base)))
     );
   }
-  return clampChampionshipPlayerRating(
-    Math.max(73, Math.min(75, Math.round(depth)))
-  );
+  return clampChampionshipPlayerRating(70 + Math.floor(rng() * 3));
 }
 
 export function championshipTransferValue(peakRating: number): number {
@@ -102,7 +97,7 @@ export function correctMistakenChampionshipFloor80Rating(
   }
 ): number {
   if (!Number.isFinite(oldRating)) {
-    return 76;
+    return 74;
   }
 
   // Already on the corrected Championship scale.
@@ -118,7 +113,7 @@ export function correctMistakenChampionshipFloor80Rating(
   }
 
   const club = getChampionshipClubById(context.clubId);
-  const strength = club?.baseStrength ?? 62;
+  const strength = club?.baseStrength ?? 58;
   const peers = context.peerRatings.filter((r) => Number.isFinite(r));
   const sorted = [...peers].sort((a, b) => a - b);
   const rankT =
@@ -134,21 +129,21 @@ export function correctMistakenChampionshipFloor80Rating(
   // Keep the elite tail of the mistaken band at Championship elite (85–89).
   if (clampedOld >= 87) {
     return clampChampionshipPlayerRating(
-      Math.round(86 + (clampedOld - 87) * 1.5 + strengthT * 0.5)
+      Math.round(84 + (clampedOld - 87) * 1.25 + strengthT * 0.5)
     );
   }
   if (clampedOld >= 85) {
     return clampChampionshipPlayerRating(
-      Math.round(83 + (clampedOld - 85) + strengthT)
+      Math.round(81 + (clampedOld - 85) + strengthT)
     );
   }
 
   // Depth positions (late roster) bias lower even if old clamp made them 80+.
   const depthBias =
     context.slotHint != null && context.slotHint >= 17
-      ? -0.12
+      ? -0.14
       : context.position === "PROP" && ratingT < 0.35
-        ? -0.05
+        ? -0.06
         : 0;
 
   const t = Math.max(
@@ -160,8 +155,8 @@ export function correctMistakenChampionshipFloor80Rating(
   );
 
   // Strong clubs shift the mid of the stretch slightly upward.
-  const low = 70 + strengthT * 2;
-  const high = 84 - (1 - strengthT) * 1;
+  const low = 70 + strengthT * 1.5;
+  const high = 82 - (1 - strengthT) * 2;
   const mapped = Math.round(low + t * (high - low));
   return clampChampionshipPlayerRating(mapped);
 }

@@ -7,6 +7,7 @@ import { HowToPlaySection } from "@/components/HowToPlaySection";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
 import { LogoMark } from "@/components/LogoMark";
 import { GameHeader } from "@/components/ui/GameHeader";
+import { GameShortContent } from "@/components/ui/GameShortContent";
 import { PageShell } from "@/components/ui/PageShell";
 import { LINK, PAGE, SPACING } from "@/lib/ui/design-system";
 
@@ -17,12 +18,14 @@ export default function HomePage() {
         <GameHeader
           eyebrow="Super League"
           title={
-            <span className="flex flex-col items-center gap-1.5">
-              <LogoMark size="lg" className="justify-center" />
-              <span className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-pitch-400 sm:text-xs">
-                Work in progress
+            <GameShortContent>
+              <span className="flex flex-col items-center gap-1.5">
+                <LogoMark size="lg" className="justify-center" />
+                <span className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-pitch-400 sm:text-xs">
+                  Work in progress
+                </span>
               </span>
-            </span>
+            </GameShortContent>
           }
           subtitle={
             <>

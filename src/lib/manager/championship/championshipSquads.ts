@@ -21,10 +21,10 @@ import {
 } from "../../players/rating-floors";
 
 /**
- * v3: Championship uses a separate 70–89 scale (not the Super League floor of 80).
+ * v4: Championship generation retuned below Super League (~73–76 squad average).
  * Existing careers are remapped by migratePlayerRatingsV4 — squads are not regenerated.
  */
-export const GENERATED_CHAMPIONSHIP_SQUADS_VERSION = 3;
+export const GENERATED_CHAMPIONSHIP_SQUADS_VERSION = 4;
 
 export const CHAMP_NATIONALITY_QUOTA: Record<ChampNationalityCode, number> = {
   ENG: 425,
@@ -209,7 +209,7 @@ function pickUniqueName(
 
 /**
  * Championship ratings use a separate 70–89 scale.
- * Targets: squad avg ~75–78 · strong clubs ~78–80 · SL remains ~86–88.
+ * Targets: squad avg ~73–76 · strong clubs ~75–77 · SL remains ~86–88.
  */
 function ratingForClub(
   club: ChampionshipClub,

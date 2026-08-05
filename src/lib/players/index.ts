@@ -154,14 +154,12 @@ export function isAvailableInGame(player: Player): boolean {
   return player.availableInGame !== false;
 }
 
-/** Public player pool — year-pinned cards only, excludes hidden/archived. */
+/** Public player pool — includes year cards and canonical career records. */
 export function getShowcasePlayers(): Player[] {
   return PLAYER_POOL.filter(
     (p) =>
       !isHiddenPlayer(p) &&
-      isAvailableInGame(p) &&
-      isYearPinnedPlayer(p) &&
-      isGameplayYearCard(p)
+      isAvailableInGame(p)
   );
 }
 

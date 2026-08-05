@@ -73,16 +73,7 @@ import {
 import { MANAGER_HUB_SCROLL_TARGET_ID } from "@/lib/manager/managerHubScroll";
 import { autoFixMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { isWageOverBudget } from "@/lib/manager/managerFinance";
-import { ManagerBoostsPanel } from "@/components/manager/ManagerBoostsPanel";
-import { ManagerDialog } from "@/components/manager/ManagerDialog";
-import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
-import { ManagerLeagueTable } from "@/components/manager/ManagerLeagueTable";
-import { ManagerHubStickyActions } from "@/components/manager/ManagerHubStickyActions";
-import { MobileDetailsAccordion } from "@/components/MobileDetailsAccordion";
-import { formatWage } from "@/lib/manager/managerContracts";
-import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
-import {
-  ManagerClubFinancesPanel,
+import { ManagerClubFinancesPanel } from "@/components/manager/manager-ui";
   ManagerFormStrip,
   ManagerNewsItem,
   ManagerPage,
@@ -394,13 +385,13 @@ export function ManagerHub({
         <GameSectionHeader
           label={matchOccasion.weekLabel}
           title={
-            <>
-              <span className="block sm:inline">{career.club}</span>{" "}
+            <span className="fixture-matchup-title">
+              <span>{career.club}</span>{" "}
               <span className="text-pitch-500">
                 {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
               </span>{" "}
-              <span className="block sm:inline">{nextFixture.opponent}</span>
-            </>
+              <span>{nextFixture.opponent}</span>
+            </span>
           }
           subtitle={
             <span className="flex flex-wrap items-center gap-2">
@@ -414,14 +405,7 @@ export function ManagerHub({
                   detailed={matchOccasion.isShowcase}
                 />
               ) : null}
-              <span>
-                {getManagerScheduledFixtureVenueLabel(nextFixture)}
-                {nextFixture.isNeutral
-                  ? " · Neutral"
-                  : nextFixture.isHome
-                    ? " · Home"
-                    : " · Away"}
-              </span>
+              <span>{getManagerScheduledFixtureVenueLabel(nextFixture)}</span>
             </span>
           }
         />
@@ -840,14 +824,6 @@ export function ManagerHub({
 
   const clubDetailsSections = (
     <div className="stat-section-stack">
-      {onUpdate && (
-        <ManagerBoostsPanel
-          career={career}
-          stage={["manager-career", "manager-medical"]}
-          onApplied={onUpdate}
-          compact
-        />
-      )}
       <ManagerClubFinancesPanel career={career} collapsible />
       <HubBoardBudgetAttendance
         career={career}

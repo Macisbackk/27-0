@@ -45,7 +45,7 @@ console.log("Floors\n");
 assert(CURRENT_SUPER_LEAGUE_MIN_RATING === 80, "Current SL floor = 80");
 assert(HISTORIC_PLAYER_MIN_RATING === 80, "Historic floor = 80");
 assert(CHAMPIONSHIP_PLAYER_MIN_RATING === 70, "Championship floor = 70");
-assert(GENERATED_CHAMPIONSHIP_SQUADS_VERSION === 3, "Champ squads version = 3");
+assert(GENERATED_CHAMPIONSHIP_SQUADS_VERSION === 4, "Champ squads version = 4");
 assert(PLAYER_RATING_SCHEMA_VERSION === 4, "playerRatingSchemaVersion = 4");
 assert(
   CHAMPIONSHIP_RATING_SCALE_VERSION === 2,

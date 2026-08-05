@@ -372,7 +372,7 @@ export function SeasonReview({
             <CollapsibleReviewSection
               title="Match Results"
               delay={0.36}
-              defaultOpen
+              defaultOpen={false}
               helper="Click any result to view full match details."
             >
               <div className="min-w-0 space-y-2 text-left">

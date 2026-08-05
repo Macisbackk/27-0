@@ -25,7 +25,10 @@ export const STORAGE_KEYS = {
   statsSchemaVersion: "27-0-stats-schema-version",
   /** @deprecated Legacy single save — migrated to slot 0 */
   managerCareer: "27-0-manager-career",
+  /** @deprecated Full career JSON — lazily migrated to IndexedDB. */
   managerCareerSlot: (slot: number) => `27-0-manager-career-slot-${slot}`,
+  managerCareerMeta: (slot: number) => `27-0-manager-career-meta-${slot}`,
+  managerSaveStorageMigrated: "27-0-manager-save-storage-v2",
   /** Session backup when localStorage write fails or before tab teardown on mobile. */
   managerCareerBackup: (slot: number) => `27-0-manager-career-backup-${slot}`,
   managerStats: "27-0-manager-stats",

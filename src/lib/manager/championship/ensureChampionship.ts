@@ -113,6 +113,18 @@ export function ensureChampionshipSystems(
   if ((next.aiTransferActivityVersion ?? 0) < 3) {
     next = { ...next, aiTransferActivityVersion: 3 };
   }
+  if ((next.transferTargetBalanceVersion ?? 0) < 4) {
+    next = {
+      ...next,
+      transferTargetBalanceVersion: 4,
+      transferTargetCooldowns: next.transferTargetCooldowns ?? {},
+      transferTargetClubCooldowns: next.transferTargetClubCooldowns ?? {},
+      reserveToChampionshipClubCooldowns:
+        next.reserveToChampionshipClubCooldowns ?? {},
+      reserveToChampionshipClubRequestCounts:
+        next.reserveToChampionshipClubRequestCounts ?? {},
+    };
+  }
   if ((next.matchResolutionRulesVersion ?? 0) < 2) {
     next = { ...next, matchResolutionRulesVersion: 2 };
   }

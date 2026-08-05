@@ -107,8 +107,15 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
   const birthYear = resolveBirthYear(
     (raw.birthYear as number | undefined) ?? birthYearOverride,
     rawDateOfBirth,
-    yearsActive
+    category === "current" ? yearsActive : undefined
   );
+  const ageSource =
+    (raw.ageSource as Player["ageSource"]) ??
+    (rawDateOfBirth
+      ? "verified"
+      : raw.birthYear !== undefined || birthYearOverride !== undefined
+        ? "derived-from-birth-year"
+        : undefined);
   const cardYear = resolveCardYear(
     raw.cardYear as number | undefined,
     parsedId.yearCardYear
@@ -155,6 +162,7 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     primeYear,
     dateOfBirth: rawDateOfBirth,
     birthYear,
+    ageSource,
     eraYear,
     cardYear,
     category,

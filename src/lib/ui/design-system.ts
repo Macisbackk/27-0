@@ -1,3 +1,5 @@
+export { UI_LAYERS, uiLayerClass, uiLayerStyle } from "./layers";
+export type { UiLayer } from "./layers";
 import { TYPO } from "./typography";
 
 /** Shared spacing tokens — padding, gaps, section margins. */
@@ -76,6 +78,20 @@ export const TAB_RAIL = {
   item: "shrink-0 snap-start",
 } as const;
 
+/** Semantic border tokens — avoid generic theme-green selection chrome on club cards. */
+export const BORDER = {
+  default: "border border-pitch-600/50",
+  subtle: "border border-pitch-700/45",
+  focus:
+    "border border-theme-tertiary/35 ring-1 ring-theme-tertiary/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-tertiary/25",
+  selected:
+    "border-2 border-white/20 ring-1 ring-white/10 shadow-[inset_3px_0_0_var(--card-accent,theme(colors.pitch.500))]",
+  selectedMuted: "border-2 border-pitch-500/55 bg-pitch-900/35",
+  success: "border border-emerald-500/40",
+  danger: "border border-accent-red/45",
+  warning: "border border-accent-gold/45",
+} as const;
+
 /** Shared card surface classes — clean sports panels. */
 export const CARD = {
   base: "game-panel",
@@ -90,7 +106,7 @@ export const CARD = {
   interactive:
     "btn-press cursor-pointer transition hover:border-theme-primary/40",
   selected:
-    "border-theme-tertiary/40 bg-pitch-800/45",
+    "border-white/20 bg-pitch-800/45 ring-1 ring-white/10",
   panel: "game-panel game-panel--elevated",
   glass: "game-panel game-panel--elevated",
   hero: "game-panel game-panel--elevated game-panel--featured",

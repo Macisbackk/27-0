@@ -148,7 +148,6 @@ export function PlayoffBracket({
       }
 
       setState(next);
-      setSelectedId(matchId);
       finishIfComplete(next);
 
       if (
@@ -167,9 +166,7 @@ export function PlayoffBracket({
   const handleSimulateRound = useCallback(() => {
     playSimulateRound();
     const next = simulatePlayoffBracketRound(state, activeRound, squad);
-    const detailsId = pickMatchForDetails(next, activeRound);
     setState(next);
-    if (detailsId) setSelectedId(detailsId);
     finishIfComplete(next);
 
     if (

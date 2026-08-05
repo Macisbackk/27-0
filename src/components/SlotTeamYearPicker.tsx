@@ -83,8 +83,7 @@ export function SlotTeamYearPicker({
           boxShadow: `inset 3px 0 0 ${clubColors.primary}`,
         }}
       >
-        <div
-          className="border-b border-pitch-700/40 px-4 py-4 sm:px-6 sm:py-5"
+        <div className="border-b border-pitch-700/40 px-3 py-3 sm:px-6 sm:py-4"
           style={{
             background: `linear-gradient(135deg, ${clubColors.primary}1a 0%, transparent 55%)`,
           }}
@@ -130,7 +129,7 @@ export function SlotTeamYearPicker({
           </div>
         </div>
 
-        <div className={`${SPACING.cardPadding} pt-3 sm:pt-5 ${onRespin ? MOBILE.actionBarPad : ""}`}>
+        <div className={`px-3 pt-2 sm:px-6 sm:pt-4 ${onRespin ? MOBILE.actionBarPad : ""}`}>
           {entries.length === 0 ? (
             <p className="py-10 text-center text-gray-500">
               No players available from this squad.
@@ -214,7 +213,7 @@ export function SlotTeamYearPicker({
                       {maxRespins} respins per run · does not use a draft pick
                     </p>
                   </div>
-                  <StickyActionBar>
+                  <StickyActionBar portal>
                     <GameButton
                       variant="secondary"
                       size="sm"

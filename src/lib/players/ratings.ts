@@ -102,5 +102,5 @@ export function getValueTier(rating: number): string {
   if (rating >= 90) return "Top Tier";
   if (rating >= 86) return "Strong Starter";
   if (rating >= 83) return "Professional";
-  return "Fringe / Development";
+  return "Squad Depth";
 }

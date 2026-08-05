@@ -682,31 +682,79 @@ export function generateIncomingTransferOffers(
   return { ...career, inboxMessages: messages };
 }
 
-/** Uncommon post-match approaches for unlisted squad players in good form. */
+const SENIOR_APPROACH_SEASON_WEEKS = 27;
+
+export function getSeniorApproachSeasonTarget(career: ManagerCareer): number {
+  const cfg = DEFAULT_TRANSFER_ACTIVITY_CONFIG.transferTargetPool;
+  const rng = seedrandom(
+    `${career.seed}-senior-approach-target-s${career.seasonYear}`
+  );
+  return (
+    cfg.minSeniorApproachesPerSeason +
+    Math.floor(
+      rng() *
+        (cfg.maxSeniorApproachesPerSeason -
+          cfg.minSeniorApproachesPerSeason +
+          1)
+    )
+  );
+}
+
+/**
+ * Chance needed this week to exhaust a fixed season budget, with opening
+ * weeks weighted more heavily. The final eligible week consumes any remainder.
+ */
+export function getSeniorApproachWeeklyChance(
+  gameWeek: number,
+  approachesSoFar: number,
+  seasonTarget: number
+): number {
+  const cfg = DEFAULT_TRANSFER_ACTIVITY_CONFIG.transferTargetPool;
+  const remaining = Math.max(0, seasonTarget - approachesSoFar);
+  if (remaining === 0 || gameWeek < 1 || gameWeek > SENIOR_APPROACH_SEASON_WEEKS) {
+    return 0;
+  }
+  const weeksRemaining = SENIOR_APPROACH_SEASON_WEEKS - gameWeek + 1;
+  if (remaining >= weeksRemaining) return 1;
+
+  let remainingWeight = 0;
+  for (let week = gameWeek; week <= SENIOR_APPROACH_SEASON_WEEKS; week++) {
+    remainingWeight +=
+      week <= cfg.earlySeasonThroughWeek ? cfg.earlySeasonMultiplier : 1;
+  }
+  const currentWeight =
+    gameWeek <= cfg.earlySeasonThroughWeek ? cfg.earlySeasonMultiplier : 1;
+  return Math.min(1, (remaining * currentWeight) / remainingWeight);
+}
+
+/** Season-budgeted post-match approaches for unlisted senior squad players. */
 export function generateUnsolicitedTransferOffers(
   career: ManagerCareer
 ): ManagerCareer {
   const rng = seedrandom(`${career.seed}-unsolicited-w${career.gameWeek}`);
-  const seasonIndex = getLeagueSeasonIndex(career);
-  const cfg = DEFAULT_TRANSFER_ACTIVITY_CONFIG.unsolicitedOffers;
-  const heat = DEFAULT_TRANSFER_ACTIVITY_CONFIG.gameWeekActivityMultiplier(
-    career.gameWeek
+  const cfg = DEFAULT_TRANSFER_ACTIVITY_CONFIG.transferTargetPool;
+  const seasonOffers = career.inboxMessages.filter(
+    (message) =>
+      message.unsolicited &&
+      message.season === career.seasonYear
   );
-  // Quiet in year one; from season two approaches land more often.
-  const baseChance =
-    seasonIndex <= 0
-      ? cfg.baseChance
-      : Math.min(
-          cfg.maxChance,
-          cfg.seasonRampStart + (seasonIndex - 1) * cfg.seasonRampStep
-        );
-  const approachChance = Math.min(0.32, baseChance * heat);
+  const offersThisWeek = seasonOffers.filter(
+    (message) => message.gameWeek === career.gameWeek
+  ).length;
+  if (offersThisWeek >= cfg.maxSeniorApproachesPerWeek) return career;
 
+  const target = getSeniorApproachSeasonTarget(career);
+  const approachChance = getSeniorApproachWeeklyChance(
+    career.gameWeek,
+    seasonOffers.length,
+    target
+  );
   if (rng() > approachChance) return career;
 
-  if (
-    career.inboxMessages.some((m) => !m.resolved && m.unsolicited)
-  ) {
+  const pendingCount = career.inboxMessages.filter(
+    (message) => !message.resolved && message.unsolicited
+  ).length;
+  if (pendingCount >= cfg.maxPendingSeniorApproaches) {
     return career;
   }
 
@@ -723,6 +771,9 @@ export function generateUnsolicitedTransferOffers(
         return null;
       }
       if (ps.injury) return null;
+      if ((career.transferTargetCooldowns?.[ps.playerId] ?? 0) > career.gameWeek) {
+        return null;
+      }
 
       const player = getPlayerById(ps.playerId);
       if (!player) return null;
@@ -733,7 +784,15 @@ export function generateUnsolicitedTransferOffers(
       const appsBoost = ps.seasonAppearances >= 3 ? 0.12 : 0;
       const ratingBoost =
         rating >= 90 ? 0.3 : rating >= 86 ? 0.18 : rating >= 83 ? 0.08 : 0;
-      const weight = 0.35 + formBoost + triesBoost + appsBoost + ratingBoost;
+      const isFirstTeam =
+        career.matchdayXiii.includes(ps.playerId) ||
+        career.matchdayInterchange.includes(ps.playerId) ||
+        ps.seasonAppearances >= Math.max(3, career.gameWeek * 0.55);
+      const poolWeight = isFirstTeam
+        ? cfg.weights.seniorFirstTeam
+        : cfg.weights.seniorRotation;
+      const weight =
+        (0.35 + formBoost + triesBoost + appsBoost + ratingBoost) * poolWeight;
 
       return { ps, player, weight };
     })
@@ -768,7 +827,10 @@ export function generateUnsolicitedTransferOffers(
     career.gameWeek,
     career
   );
-  const buyers = rivalTransferClubs(career.club);
+  const buyers = rivalTransferClubs(career.club).filter(
+    (club) =>
+      (career.transferTargetClubCooldowns?.[club] ?? 0) <= career.gameWeek
+  );
   if (buyers.length === 0) return career;
   const buyer = buyers[Math.floor(rng() * buyers.length)]!;
   if (isSameManagerClub(buyer, career.club)) return career;
@@ -777,7 +839,7 @@ export function generateUnsolicitedTransferOffers(
 
   if (offerAmount > funds * 0.35) return career;
 
-  return pushInboxMessage(career, {
+  const withOffer = pushInboxMessage(career, {
     id: `unsolicited-${ps.playerId}-${career.gameWeek}-${Math.floor(rng() * 10000)}`,
     type: "transfer",
     title: "Transfer Approach",
@@ -795,6 +857,18 @@ export function generateUnsolicitedTransferOffers(
     askingPrice: impliedPrice,
     unsolicited: true,
   });
+  return {
+    ...withOffer,
+    transferTargetCooldowns: {
+      ...(withOffer.transferTargetCooldowns ?? {}),
+      [ps.playerId]: career.gameWeek + cfg.playerCooldownWeeks,
+    },
+    transferTargetClubCooldowns: {
+      ...(withOffer.transferTargetClubCooldowns ?? {}),
+      [buyer]: career.gameWeek + cfg.clubCooldownWeeks,
+    },
+    transferTargetBalanceVersion: 4,
+  };
 }
 
 /**

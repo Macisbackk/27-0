@@ -89,6 +89,8 @@ import { MatchdayScoreboard } from "./MatchdayScoreboard";
 import { GuestNotice } from "./GuestNotice";
 import { DraftPositionPlacement } from "./DraftPositionPlacement";
 import { LINK, BTN, CARD, SPACING, MODAL, MOBILE } from "@/lib/ui/design-system";
+import { BodyPortal } from "@/components/ui/BodyPortal";
+import { uiLayerClass } from "@/lib/ui/layers";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "@/components/ui/GameButton";
 import { StickyActionBar } from "@/components/ui/MobileLayout";
@@ -1720,9 +1722,10 @@ export function GameBoard({
             {phase === "choice" &&
               isSlotRecruitMode &&
               activeSpinTarget && (
+              <BodyPortal>
               <motion.div
                 key={choiceKey}
-                className="recruitment-choice-backdrop fixed inset-0 z-40 flex items-center justify-center bg-black/82 p-3 sm:p-6"
+                className={`recruitment-choice-backdrop fixed inset-0 flex items-center justify-center bg-black/82 p-3 sm:p-6 ${uiLayerClass("modalBackdrop")}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -1752,6 +1755,7 @@ export function GameBoard({
                   />
                 </motion.div>
               </motion.div>
+              </BodyPortal>
             )}
             {phase === "choice" &&
               !isSlotRecruitMode &&

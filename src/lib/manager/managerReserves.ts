@@ -75,6 +75,13 @@ export const RESERVE_SQUAD_MAX = 30;
 export const RESERVE_RECRUITMENT_FEE = 300_000;
 export const RESERVE_WALKOVER_SCORE = 18;
 export const RESERVE_WALKOVER_REASON = "Walkover — fewer than 13 reserve players";
+export const GENERATED_RESERVE_MAX_RATING = 82;
+export const RESERVE_RATING_BANDS = [
+  { min: 65, max: 69, weight: 0.25 },
+  { min: 70, max: 74, weight: 0.4 },
+  { min: 75, max: 79, weight: 0.25 },
+  { min: 80, max: 82, weight: 0.1 },
+] as const;
 
 /** Minimum positional coverage for a healthy reserve listing. */
 export const RESERVE_POSITION_COVERAGE: { position: Position; min: number }[] = [
@@ -181,34 +188,27 @@ export function pickPotential(
   return Math.min(92, Math.max(floor, potential + bonus));
 }
 
-function ratingForAge(
-  age: number,
-  potential: number,
+export function pickGeneratedReserveRating(
   rng: () => number,
   youthLevel = 0
 ): number {
-  const boost = getYouthIntakeRatingBoost(youthLevel);
-  // Current ability bands for reserves — target a generated average around
-  // 74–76 with the bulk of the pool sitting in the 70–78 range.
-  let base: number;
+  // Weighted base distribution: mean ~72.9 before facility investment.
   const roll = rng();
-  if (age <= 18) {
-    if (roll < 0.2) base = 70 + Math.floor(rng() * 3); // 70–72 (20%)
-    else if (roll < 0.55) base = 73 + Math.floor(rng() * 3); // 73–75 (35%)
-    else base = 76 + Math.floor(rng() * 3); // 76–78 (45%)
-  } else if (age <= 20) {
-    if (roll < 0.1) base = 70 + Math.floor(rng() * 3); // 70–72 (10%)
-    else if (roll < 0.35) base = 73 + Math.floor(rng() * 3); // 73–75 (25%)
-    else if (roll < 0.8) base = 76 + Math.floor(rng() * 3); // 76–78 (45%)
-    else base = 79 + Math.floor(rng() * 3); // 79–81 (20%)
-  } else {
-    if (roll < 0.05) base = 70 + Math.floor(rng() * 3); // 70–72 (5%)
-    else if (roll < 0.25) base = 73 + Math.floor(rng() * 3); // 73–75 (20%)
-    else if (roll < 0.65) base = 76 + Math.floor(rng() * 3); // 76–78 (40%)
-    else if (roll < 0.9) base = 79 + Math.floor(rng() * 3); // 79–81 (25%)
-    else base = 82 + Math.floor(rng() * 3); // 82–84 (10%, rare high-quality reserve)
+  let cumulative = 0;
+  let selected = RESERVE_RATING_BANDS[RESERVE_RATING_BANDS.length - 1]!;
+  for (const band of RESERVE_RATING_BANDS) {
+    cumulative += band.weight;
+    if (roll < cumulative) {
+      selected = band;
+      break;
+    }
   }
-  return clampReservePlayerRating(base + Math.min(2, boost));
+  const base =
+    selected.min + Math.floor(rng() * (selected.max - selected.min + 1));
+  return Math.min(
+    GENERATED_RESERVE_MAX_RATING,
+    clampReservePlayerRating(base + Math.min(2, getYouthIntakeRatingBoost(youthLevel)))
+  );
 }
 
 export function getPotentialTier(potential: number): string {
@@ -431,10 +431,8 @@ export function generateReservePlayer(
 ): ManagerReservePlayer {
   const rng = seedrandom(`${seed}-reserve-${index}`);
   const age = 17 + Math.floor(rng() * 6);
-  const potential = pickPotential(age, rng, youthLevel);
-  const rating = clampReservePlayerRating(
-    Math.min(potential, ratingForAge(age, potential, rng, youthLevel))
-  );
+  const rating = pickGeneratedReserveRating(rng, youthLevel);
+  const potential = Math.max(rating, pickPotential(age, rng, youthLevel));
   const { first, last } = pickReserveName(rng, club);
 
   return {
@@ -822,7 +820,7 @@ export function simulateReserveFixture(
   const squadRating =
     career.reserves.reduce((sum, r) => sum + r.rating, 0) /
     Math.max(1, career.reserves.length);
-  const oppRating = 68 + rng() * 10;
+  const oppRating = 64 + rng() * 12;
   const diff = squadRating - oppRating + (rng() - 0.5) * 6;
   const userWins = rng() < 1 / (1 + Math.exp(-diff / 4));
 

@@ -32,6 +32,7 @@ import { buildMergedDisplaySchedule, getCupBracketForDisplay } from "@/lib/manag
 import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
 import { getHomeFixtureAttendanceOutlook } from "@/lib/manager/managerAttendance";
 import {
+  getManagerFixtureSectionLabel,
   getManagerPlayedFixtureLabel,
   getManagerScheduledFixtureHeadline,
   getManagerScheduledFixtureVenueLabel,
@@ -1020,12 +1021,12 @@ export function ManagerFixtures({
               />
             ) : null}
           </div>
-          <p className="mt-2 break-words text-base font-bold leading-snug text-white sm:text-2xl">
-            <span className="block sm:inline">{career.club}</span>{" "}
+          <p className="fixture-matchup-title mt-2 text-base font-bold leading-snug text-white sm:text-2xl">
+            <span>{career.club}</span>{" "}
             <span className="text-pitch-500">
               {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
             </span>{" "}
-            <span className="block sm:inline">{nextFixture.opponent}</span>
+            <span>{nextFixture.opponent}</span>
           </p>
           {nextMatchOccasion.momentLine ? (
             <p
@@ -1036,11 +1037,6 @@ export function ManagerFixtures({
           ) : null}
           <p className={`mt-1 break-words ${TYPO.bodySm} text-pitch-400`}>
             {getManagerScheduledFixtureVenueLabel(nextFixture)}
-            {nextFixture.isNeutral
-              ? " · Neutral"
-              : nextFixture.isHome
-                ? " · Home"
-                : " · Away"}
           </p>
           {homeAttendanceOutlook && (
             <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
@@ -1129,7 +1125,7 @@ export function ManagerFixtures({
       {showSuperLeague && leagueUpcomingItems.length > 0 && (
         <GamePanel
           padded
-          label={`Super League fixtures (${leagueUpcomingItems.length})`}
+          label={getManagerFixtureSectionLabel("league", leagueUpcomingItems.length)}
         >
           <FixtureItemList
             items={leagueUpcomingItems}

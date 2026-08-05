@@ -2,6 +2,7 @@
 
 import type { ReactNode, RefObject } from "react";
 import { BodyPortal } from "@/components/ui/BodyPortal";
+import { uiLayerClass } from "@/lib/ui/layers";
 
 interface GameModalProps {
   open: boolean;
@@ -10,7 +11,7 @@ interface GameModalProps {
   labelledBy?: string;
   wide?: boolean;
   className?: string;
-  /** Override default backdrop z-index (e.g. "z-[95]"). */
+  /** Override default backdrop layer class. */
   zClass?: string;
   /** Optional ref for focus trap / a11y (useModalA11y). */
   panelRef?: RefObject<HTMLDivElement | null>;
@@ -24,7 +25,7 @@ export function GameModal({
   labelledBy,
   wide = false,
   className = "",
-  zClass = "z-[9999]",
+  zClass = uiLayerClass("modalBackdrop"),
   panelRef,
 }: GameModalProps) {
   if (!open) return null;
@@ -41,6 +42,7 @@ export function GameModal({
         <div
           ref={panelRef}
           tabIndex={panelRef ? -1 : undefined}
+          data-scroll-lock-allow="true"
           className={`game-modal-panel game-modal-card contract-modal-card p-3 sm:p-6 my-4 w-[min(92vw,520px)] max-w-[520px] max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden ${wide ? "w-[min(96vw,40rem)] max-w-4xl" : ""} ${className}`.trim()}
           onClick={(e) => e.stopPropagation()}
         >

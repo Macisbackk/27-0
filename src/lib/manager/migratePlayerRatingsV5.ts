@@ -15,7 +15,7 @@ import {
 import { CLUB_REPUTATION_SCHEMA_VERSION } from "../../../data/club-reputation";
 import type { ManagerCareer, ManagerReservePlayer } from "./types";
 import { migratePlayerRatingsV4 } from "./migratePlayerRatingsV4";
-import { pickPotential } from "./managerReserves";
+import { pickGeneratedReserveRating, pickPotential } from "./managerReserves";
 
 /** Schema 5: reserve floor correction + Current 90+ audit + FA band clamp. */
 export const PLAYER_RATING_SCHEMA_VERSION = 5;
@@ -25,50 +25,41 @@ export const PLAYER_RATING_SCHEMA_VERSION = 5;
  * 2 = mistaken V3 floor-80 pass corrected (partial — potential left ≥80).
  * 3 = tighter 70–78 generation bands + potential pile-up-at-80 repair, with
  *     earned in-save development preserved on top of the remapped base.
+ * 4 = generated reserves reconstructed on the weighted 65–82 scale.
  */
-export const RESERVE_RATING_SCALE_VERSION = 3;
+export const RESERVE_RATING_SCALE_VERSION = 4;
 
 export const MANAGER_BOOST_HUB_VERSION = 1;
 
 /**
  * Deterministic current ability from age + potential (not flat -10).
- * Mirrors reserve generation bands in managerReserves.ratingForAge.
+ * Mirrors reserve generation bands in managerReserves.pickGeneratedReserveRating.
  */
 export function recalculateReserveRatingFromProfile(
   reserve: Pick<
     ManagerReservePlayer,
     "id" | "age" | "potentialRating" | "rating"
-  >
+  >,
+  context?: {
+    careerSeed?: string;
+    priorScale?: number;
+    generationSource?: "reserve" | "youth";
+    experience?: number;
+  }
 ): number {
-  const rng = seedrandom(`${reserve.id}-v5-reserve-scale`);
+  const source =
+    context?.generationSource ??
+    (reserve.id.startsWith("mgr-youth-") ? "youth" : "reserve");
+  const priorScale = context?.priorScale ?? 3;
+  const experience = Math.max(0, Math.round(context?.experience ?? 0));
+  const rng = seedrandom(
+    `${context?.careerSeed ?? "legacy"}-${source}-${priorScale}-${reserve.id}-${reserve.age}-${reserve.potentialRating}-${experience}-reserve-scale-v4`
+  );
   const potential = clampReservePlayerRating(
     Math.max(RESERVE_MIN_RATING, Math.round(reserve.potentialRating))
   );
-  const age = Math.max(16, Math.min(36, Math.round(reserve.age)));
-
-  let base: number;
-  const roll = rng();
-  if (age <= 18) {
-    if (roll < 0.2) base = 70 + Math.floor(rng() * 3); // 70–72 (20%)
-    else if (roll < 0.55) base = 73 + Math.floor(rng() * 3); // 73–75 (35%)
-    else base = 76 + Math.floor(rng() * 3); // 76–78 (45%)
-  } else if (age <= 20) {
-    if (roll < 0.1) base = 70 + Math.floor(rng() * 3); // 70–72 (10%)
-    else if (roll < 0.35) base = 73 + Math.floor(rng() * 3); // 73–75 (25%)
-    else if (roll < 0.8) base = 76 + Math.floor(rng() * 3); // 76–78 (45%)
-    else base = 79 + Math.floor(rng() * 3); // 79–81 (20%)
-  } else {
-    if (roll < 0.05) base = 70 + Math.floor(rng() * 3); // 70–72 (5%)
-    else if (roll < 0.25) base = 73 + Math.floor(rng() * 3); // 73–75 (20%)
-    else if (roll < 0.65) base = 76 + Math.floor(rng() * 3); // 76–78 (40%)
-    else if (roll < 0.9) base = 79 + Math.floor(rng() * 3); // 79–81 (25%)
-    else base = 82 + Math.floor(rng() * 3); // 82–84 (10%, rare)
-  }
-
-  // High potential pulls current ability up slightly within reserve bands.
-  const potBoost = potential >= 88 ? 2 : potential >= 84 ? 1 : 0;
   return clampReservePlayerRating(
-    Math.min(potential, base + potBoost)
+    Math.min(potential, pickGeneratedReserveRating(rng))
   );
 }
 
@@ -111,7 +102,7 @@ function repairFlooredPotential(reserve: ManagerReservePlayer): number {
 
 function migrateReserveV5(reserve: ManagerReservePlayer): ManagerReservePlayer {
   if (!needsReserveRescaleV3(reserve)) {
-    // Still enforce reserve floor 70 if somehow below.
+    // Still enforce reserve floor 65 if somehow below.
     if (reserve.rating < RESERVE_MIN_RATING) {
       const rating = clampReservePlayerRating(reserve.rating);
       return {
@@ -156,6 +147,59 @@ function migrateReserveV5(reserve: ManagerReservePlayer): ManagerReservePlayer {
     potentialRating: Math.max(rating, potentialRating),
     baseRating: recalculatedBase,
     signedRating: recalculatedBase,
+  };
+}
+
+function generatedReserveSource(
+  id: string
+): "reserve" | "youth" | undefined {
+  if (id.startsWith("mgr-res-")) return "reserve";
+  if (id.startsWith("mgr-youth-")) return "youth";
+  return undefined;
+}
+
+/**
+ * Scale v4 deliberately touches only players whose generated-reserve source is
+ * confirmed by their stable ID and whose save predates the v4 scale.
+ */
+function migrateGeneratedReserveScaleV4(
+  reserve: ManagerReservePlayer,
+  context: { careerSeed: string; priorScale: number }
+): ManagerReservePlayer {
+  const generationSource = generatedReserveSource(reserve.id);
+  if (!generationSource || context.priorScale >= RESERVE_RATING_SCALE_VERSION) {
+    return reserve;
+  }
+
+  const experience =
+    Math.max(0, reserve.reserveAppearances ?? 0) +
+    Math.max(0, reserve.yearsAtClub ?? 0) * 10;
+  const priorBase =
+    reserve.baseRating ?? reserve.signedRating ?? reserve.rating;
+  const earnedDelta = Math.max(
+    0,
+    Math.round(reserve.rating) - Math.round(priorBase)
+  );
+  const experienceCap = Math.min(6, 1 + Math.floor(experience / 8));
+  const recalculatedBase = recalculateReserveRatingFromProfile(reserve, {
+    careerSeed: context.careerSeed,
+    priorScale: context.priorScale,
+    generationSource,
+    experience,
+  });
+  const rating = Math.min(
+    reserve.potentialRating,
+    clampReservePlayerRating(
+      recalculatedBase + Math.min(earnedDelta, experienceCap)
+    )
+  );
+
+  return {
+    ...reserve,
+    rating,
+    baseRating: recalculatedBase,
+    signedRating: recalculatedBase,
+    potentialRating: Math.max(rating, reserve.potentialRating),
   };
 }
 
@@ -213,6 +257,7 @@ function applyNinetyPlusAuditToRegistry(
  */
 export function migratePlayerRatingsV5(career: ManagerCareer): ManagerCareer {
   let next = migratePlayerRatingsV4(career);
+  const priorReserveScale = next.reserveRatingScaleVersion ?? 0;
 
   const schemaOk =
     (next.playerRatingSchemaVersion ?? 0) >= PLAYER_RATING_SCHEMA_VERSION;
@@ -236,27 +281,40 @@ export function migratePlayerRatingsV5(career: ManagerCareer): ManagerCareer {
 
   if (!reserveScaleOk) {
     for (const [id, saved] of Object.entries(playerRegistry)) {
-      if (!id.startsWith("mgr-res-") && !id.startsWith("mgr-youth-")) continue;
-      const asReserve: ManagerReservePlayer = {
-        id,
-        name: saved.name,
-        age: next.seasonYear - (saved.birthYear ?? next.seasonYear - 20),
-        nationality: saved.nationality ?? "England",
-        position: saved.position,
-        eligiblePositions: [saved.position],
-        rating: saved.peakRating,
-        potentialRating: saved.peakRating,
-        developmentRate: 0.7,
-        form: 60,
-        fitness: 90,
-        reserveAppearances: 0,
-        reserveTries: 0,
-        calledUpForNextMatch: false,
-        baseRating: saved.peakRating,
-        signedRating: saved.peakRating,
-      };
-      if (!needsReserveRescaleV3(asReserve)) continue;
-      const rating = recalculateReserveRatingFromProfile(asReserve);
+      const generationSource = generatedReserveSource(id);
+      if (!generationSource) continue;
+      const dev = next.playerDevelopment?.[id];
+      const seasonStats = next.playerSeasonStats?.[id];
+      const age =
+        next.seasonYear - (saved.birthYear ?? next.seasonYear - 20);
+      const potential = Math.max(
+        RESERVE_MIN_RATING,
+        dev?.potential ?? saved.peakRating
+      );
+      const experience = Math.max(0, seasonStats?.appearances ?? 0);
+      const recalculatedBase = recalculateReserveRatingFromProfile(
+        {
+          id,
+          age,
+          potentialRating: potential,
+          rating: saved.peakRating,
+        },
+        {
+          careerSeed: next.seed,
+          priorScale: priorReserveScale,
+          generationSource,
+          experience,
+        }
+      );
+      const priorBase = dev?.seasonStartRating ?? saved.peakRating;
+      const earnedDelta = Math.max(0, saved.peakRating - priorBase);
+      const rating = Math.min(
+        potential,
+        clampReservePlayerRating(
+          recalculatedBase +
+            Math.min(earnedDelta, Math.min(6, 1 + Math.floor(experience / 8)))
+        )
+      );
       playerRegistry[id] = syncPlayerValueFromRating({
         ...saved,
         peakRating: rating,
@@ -282,21 +340,30 @@ export function migratePlayerRatingsV5(career: ManagerCareer): ManagerCareer {
     });
   }
 
+  const migrateReserve = (reserve: ManagerReservePlayer) => {
+    const corrected =
+      priorReserveScale < 3 ? migrateReserveV5(reserve) : reserve;
+    return migrateGeneratedReserveScaleV4(corrected, {
+      careerSeed: next.seed,
+      priorScale: priorReserveScale,
+    });
+  };
+
   const reserves = !reserveScaleOk
-    ? (next.reserves ?? []).map(migrateReserveV5)
+    ? (next.reserves ?? []).map(migrateReserve)
     : next.reserves;
 
   const leagueClubReserves = !reserveScaleOk && next.leagueClubReserves
     ? Object.fromEntries(
         Object.entries(next.leagueClubReserves).map(([club, list]) => [
           club,
-          list.map(migrateReserveV5),
+          list.map(migrateReserve),
         ])
       )
     : next.leagueClubReserves;
 
   const youthProspects = !reserveScaleOk
-    ? (next.youthProspects ?? []).map(migrateReserveV5)
+    ? (next.youthProspects ?? []).map(migrateReserve)
     : next.youthProspects;
 
   // Development rows for audited Current players — align floor to new rating.

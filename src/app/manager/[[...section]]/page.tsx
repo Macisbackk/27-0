@@ -114,9 +114,13 @@ import {
 import { PageShell } from "@/components/ui/PageShell";
 import { PAGE } from "@/lib/ui/design-system";
 import {
+  confirmFriendlySchedule,
   ensureFriendlyChoices,
+  FRIENDLIES_REQUIRED,
   isAwaitingFriendlyChoice,
+  isAwaitingFriendlyScheduleConfirm,
   selectFriendlyOpponent,
+  undoLastFriendlyDraftPick,
 } from "@/lib/manager/managerFriendlies";
 import {
   acknowledgeContractExpiryPopup,
@@ -150,7 +154,10 @@ import {
   downloadManagerCareerExport,
   importManagerCareerFromFile,
 } from "@/lib/manager/managerSaveExport";
-import { readManagerCareerRaw } from "@/lib/manager/managerSaveStorage";
+import {
+  ensureManagerSaveStorageReady,
+  readManagerCareerRaw,
+} from "@/lib/manager/managerSaveStorage";
 import { isLoggedIn } from "@/lib/auth-session";
 import {
   flushManagerCareerToCloud,
@@ -239,6 +246,7 @@ export default function ManagerPage() {
   const [career, setCareer] = useState<ManagerCareer | null>(null);
   const [activeSlot, setActiveSlot] = useState(0);
   const [saveSlots, setSaveSlots] = useState<ManagerSaveSlotSummary[]>([]);
+  const [saveStorageReady, setSaveStorageReady] = useState(false);
   const [importMessage, setImportMessage] = useState<string | null>(null);
   const [reviewFixtureId, setReviewFixtureId] = useState<string | null>(null);
   const [playGameOpen, setPlayGameOpen] = useState(false);
@@ -392,8 +400,16 @@ export default function ManagerPage() {
   }, []);
 
   useEffect(() => {
-    refreshSaveSlots();
-    setActiveSlot(getActiveSaveSlot());
+    let cancelled = false;
+    void ensureManagerSaveStorageReady().then(() => {
+      if (cancelled) return;
+      refreshSaveSlots();
+      setActiveSlot(getActiveSaveSlot());
+      setSaveStorageReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [refreshSaveSlots]);
 
   useEffect(() => {
@@ -429,6 +445,7 @@ export default function ManagerPage() {
 
   /** Load career from disk once per save slot — not on every tab change. */
   useLayoutEffect(() => {
+    if (!saveStorageReady) return;
     const slot = getActiveSaveSlot();
     setActiveSlot((prev) => (prev === slot ? prev : slot));
 
@@ -444,7 +461,7 @@ export default function ManagerPage() {
     setShowSaveMigration(
       shouldShowSaveMigrationNotice(raw.saveVersion)
     );
-  }, [pathname, setCareerState]);
+  }, [pathname, saveStorageReady, setCareerState]);
 
   const persist = useCallback(
     (next: ManagerCareer) => {
@@ -617,7 +634,9 @@ export default function ManagerPage() {
   }, [pathname, refreshSaveSlots, setCareerState]);
 
   const awaitingFriendlyChoice =
-    career != null && isAwaitingFriendlyChoice(career);
+    career != null &&
+    (isAwaitingFriendlyChoice(career) ||
+      isAwaitingFriendlyScheduleConfirm(career));
 
   useLayoutEffect(() => {
     if (!awaitingFriendlyChoice) return;
@@ -694,6 +713,16 @@ export default function ManagerPage() {
     },
     [career, persist]
   );
+
+  const handleFriendlyScheduleConfirm = useCallback(() => {
+    if (!career) return;
+    persist(confirmFriendlySchedule(career));
+  }, [career, persist]);
+
+  const handleFriendlyScheduleBack = useCallback(() => {
+    if (!career) return;
+    persist(undoLastFriendlyDraftPick(career));
+  }, [career, persist]);
 
   const handleStartNew = (slot: number) => {
     setActiveSlot(slot);
@@ -902,7 +931,7 @@ export default function ManagerPage() {
       recordMatchResult(won, margin, won ? 25_000 : 10_000);
       triggerManagerMatchAchievements(next, fixture);
     }
-    if (next.preSeason.friendliesPlayed >= 2) {
+    if (next.preSeason.friendliesPlayed >= FRIENDLIES_REQUIRED) {
       markOnboardingStepComplete("friendlies");
     }
     const leagueFixturesPlayed = next.fixtures.filter(
@@ -1743,9 +1772,21 @@ export default function ManagerPage() {
             {awaitingFriendlyChoice ? (
               <ManagerFriendlySelect
                 career={career}
-                friendlyNumber={career.preSeason.friendliesPlayed + 1}
+                friendlyNumber={(career.preSeason.draftSchedule?.length ?? 0) + 1}
                 choices={career.preSeason.currentChoices}
+                draftSchedule={career.preSeason.draftSchedule}
+                awaitingScheduleConfirm={career.preSeason.awaitingScheduleConfirm}
                 onSelect={handleFriendlySelect}
+                onBack={
+                  (career.preSeason.draftSchedule?.length ?? 0) > 0
+                    ? handleFriendlyScheduleBack
+                    : undefined
+                }
+                onConfirmSchedule={
+                  career.preSeason.awaitingScheduleConfirm
+                    ? handleFriendlyScheduleConfirm
+                    : undefined
+                }
               />
             ) : (
               <>

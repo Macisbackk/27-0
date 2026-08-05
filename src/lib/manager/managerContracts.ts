@@ -14,6 +14,13 @@ import type {
 import { clearRetirementIntentOnRenewal } from "./managerRetirement";
 import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import { canAffordRenewalWage, scaleManagerEconomy } from "./managerFinance";
+import {
+  caresAboutGameTime,
+  evaluateSquadRole,
+  roleRank,
+} from "./squadRole";
+
+export { inferSquadRole, roleRank } from "./squadRole";
 
 export function formatWage(amount: number): string {
   if (amount >= 1_000_000) return `£${(amount / 1_000_000).toFixed(2)}m`;
@@ -30,25 +37,12 @@ export function getPlayerSeasonAppearances(
   return ps?.seasonAppearances ?? 0;
 }
 
-export function inferSquadRole(
-  rating: number,
-  inStartingXiii: boolean,
-  age?: number
-): SquadRole {
-  if (rating >= 90) return "Star";
-  if (rating >= 86 && inStartingXiii) return "Starter";
-  if (rating >= 84 && inStartingXiii) return "Starter";
-  if (rating >= 82) return "Rotation";
-  if (age !== undefined && age <= 22) return "Prospect";
-  return "Depth";
-}
-
 const MAX_DEMAND_BY_ROLE: Record<SquadRole, number> = {
-  Star: 350_000,
-  Starter: 180_000,
-  Rotation: 90_000,
-  Prospect: 60_000,
-  Depth: 45_000,
+  "key-player": 350_000,
+  "first-team": 180_000,
+  rotation: 90_000,
+  "squad-depth": 45_000,
+  reserve: 35_000,
 };
 
 function baseWageFromRating(rating: number, age?: number): number {
@@ -86,11 +80,11 @@ export function calculateWageForPlayer(
   const base = baseWageFromRating(rating, age);
 
   const roleMult: Record<SquadRole, number> = {
-    Star: 1.08,
-    Starter: 1.04,
-    Rotation: 1.0,
-    Prospect: 0.9,
-    Depth: 0.82,
+    "key-player": 1.08,
+    "first-team": 1.04,
+    rotation: 1.0,
+    "squad-depth": 0.82,
+    reserve: 0.75,
   };
 
   const wage = Math.round(base * roleMult[role]);
@@ -113,7 +107,14 @@ export function generateInitialContract(
     : player
       ? getPlayerAge(player)
       : undefined;
-  const role = inferSquadRole(rating, inStartingXiii, age);
+  const role = evaluateSquadRole({
+    rating,
+    age,
+    inStartingXiii,
+    seasonAppearances: career
+      ? getPlayerSeasonAppearances(career, playerId)
+      : 0,
+  });
   const wage = calculateWageForPlayer(
     playerId,
     role,
@@ -146,7 +147,14 @@ export function getLeagueClubPlayerContract(
   const rating = player?.peakRating ?? 70;
   const age = getManagerPlayerAge(career, playerId);
   const inStartingXiii = options?.inStartingXiii ?? false;
-  const role = inferSquadRole(rating, inStartingXiii, age);
+  const role = evaluateSquadRole({
+    rating,
+    age,
+    inStartingXiii,
+    seasonAppearances: career
+      ? getPlayerSeasonAppearances(career, playerId)
+      : 0,
+  });
   const wage = calculateWageForPlayer(
     playerId,
     role,
@@ -190,7 +198,7 @@ export function generateRenewalDemand(
     rating >= 88 && (age === undefined || age <= 30) ? 2 : 1;
   const role =
     appearances >= 8 && rating >= 84
-      ? "Starter"
+      ? "first-team"
       : contract.squadRole;
 
   const rawDemand = Math.round(contract.wagePerYear * wageBump);
@@ -283,21 +291,6 @@ export function getWageBudgetForClub(
   };
   const base = byStars[stars] ?? byStars[3]!;
   return scaleManagerEconomy(base);
-}
-
-export function roleRank(role: SquadRole): number {
-  const ranks: Record<SquadRole, number> = {
-    Star: 5,
-    Starter: 4,
-    Rotation: 3,
-    Prospect: 2,
-    Depth: 1,
-  };
-  return ranks[role];
-}
-
-function caresAboutGameTime(role: SquadRole): boolean {
-  return role === "Star" || role === "Starter";
 }
 
 export function evaluateRenewalOffer(

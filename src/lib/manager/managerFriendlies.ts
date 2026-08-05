@@ -12,7 +12,11 @@ import type {
   LatestNewsItem,
   ManagerCareer,
   PreSeasonState,
+  ScheduledFriendly,
 } from "./types";
+
+export const FRIENDLIES_REQUIRED = 3;
+export const FRIENDLY_SCHEDULE_VERSION = 2;
 
 const ATTENDANCE_LABELS = {
   low: "Modest crowd expected",
@@ -25,34 +29,92 @@ const CURRENT_SEASON = "2026";
 function defaultPreSeason(): PreSeasonState {
   return {
     friendliesPlayed: 0,
+    friendliesRequired: FRIENDLIES_REQUIRED,
     awaitingChoice: true,
     currentChoices: [],
+    draftSchedule: [],
+    confirmedSchedule: [],
+    awaitingScheduleConfirm: false,
+    friendlyScheduleVersion: FRIENDLY_SCHEDULE_VERSION,
     activeFriendly: null,
   };
 }
 
+function normalizePreSeason(state: PreSeasonState): PreSeasonState {
+  const required = state.friendliesRequired ?? FRIENDLIES_REQUIRED;
+  return {
+    ...state,
+    friendliesRequired: required,
+    draftSchedule: state.draftSchedule ?? [],
+    confirmedSchedule: state.confirmedSchedule ?? [],
+    awaitingScheduleConfirm: state.awaitingScheduleConfirm ?? false,
+    friendlyScheduleVersion:
+      state.friendlyScheduleVersion ?? FRIENDLY_SCHEDULE_VERSION,
+  };
+}
+
 export function initPreSeasonState(career: Partial<ManagerCareer>): PreSeasonState {
-  if (career.preSeason) return career.preSeason;
+  if (career.preSeason) {
+    const normalized = normalizePreSeason(career.preSeason);
+    if ((normalized.friendlyScheduleVersion ?? 0) < FRIENDLY_SCHEDULE_VERSION) {
+      const played = normalized.friendliesPlayed;
+      const legacyRequired = 2;
+      if (played >= legacyRequired) {
+        return {
+          ...normalized,
+          friendliesRequired: FRIENDLIES_REQUIRED,
+          friendliesPlayed: Math.min(played, FRIENDLIES_REQUIRED),
+          awaitingChoice: false,
+          awaitingScheduleConfirm: false,
+          friendlyScheduleVersion: FRIENDLY_SCHEDULE_VERSION,
+        };
+      }
+      return {
+        ...normalized,
+        friendliesRequired: FRIENDLIES_REQUIRED,
+        friendlyScheduleVersion: FRIENDLY_SCHEDULE_VERSION,
+      };
+    }
+    return normalized;
+  }
   if ((career.fixtures?.length ?? 0) > 0 || (career.gameWeek ?? 0) > 0) {
     return {
-      friendliesPlayed: 2,
+      friendliesPlayed: FRIENDLIES_REQUIRED,
+      friendliesRequired: FRIENDLIES_REQUIRED,
       awaitingChoice: false,
       currentChoices: [],
+      draftSchedule: [],
+      confirmedSchedule: [],
+      awaitingScheduleConfirm: false,
+      friendlyScheduleVersion: FRIENDLY_SCHEDULE_VERSION,
       activeFriendly: null,
     };
   }
   return defaultPreSeason();
 }
 
+export function getFriendliesRequired(career: ManagerCareer): number {
+  return career.preSeason.friendliesRequired ?? FRIENDLIES_REQUIRED;
+}
+
 export function needsPreSeasonFriendlies(career: ManagerCareer): boolean {
-  return career.preSeason.friendliesPlayed < 2;
+  return career.preSeason.friendliesPlayed < getFriendliesRequired(career);
 }
 
 export function isAwaitingFriendlyChoice(career: ManagerCareer): boolean {
   return (
     needsPreSeasonFriendlies(career) &&
     career.preSeason.awaitingChoice &&
-    !career.preSeason.activeFriendly
+    !career.preSeason.activeFriendly &&
+    !career.preSeason.awaitingScheduleConfirm
+  );
+}
+
+export function isAwaitingFriendlyScheduleConfirm(career: ManagerCareer): boolean {
+  return Boolean(
+    needsPreSeasonFriendlies(career) &&
+      career.preSeason.awaitingScheduleConfirm &&
+      (career.preSeason.draftSchedule?.length ?? 0) >= getFriendliesRequired(career)
   );
 }
 
@@ -62,6 +124,9 @@ function previousFriendlyClubs(career: ManagerCareer): string[] {
     if (f.competition === "friendly" && f.opponent) {
       clubs.push(f.opponent);
     }
+  }
+  for (const s of career.preSeason.draftSchedule ?? []) {
+    clubs.push(s.club);
   }
   return clubs;
 }
@@ -93,7 +158,6 @@ function buildFriendlyCandidates(
     };
   });
 
-  // Fallback if exclusions emptied the pool (still never include user club).
   const usable =
     pool.length > 0
       ? pool
@@ -122,15 +186,18 @@ function buildFriendlyCandidates(
 
 export function ensureFriendlyChoices(career: ManagerCareer): ManagerCareer {
   if (!needsPreSeasonFriendlies(career)) return career;
+  if (career.preSeason.awaitingScheduleConfirm) return career;
   if (!career.preSeason.awaitingChoice || career.preSeason.activeFriendly) {
     return career;
   }
+  const draftLen = career.preSeason.draftSchedule?.length ?? 0;
+  if (draftLen >= getFriendliesRequired(career)) return career;
   if (career.preSeason.currentChoices.length >= 3) return career;
 
   const choices = buildFriendlyCandidates(
     career.club,
     career.seed,
-    career.preSeason.friendliesPlayed,
+    draftLen,
     previousFriendlyClubs(career)
   );
 
@@ -144,6 +211,16 @@ export function ensureFriendlyChoices(career: ManagerCareer): ManagerCareer {
   };
 }
 
+function resolveFriendlyVenue(
+  career: ManagerCareer,
+  friendlyIndex: number
+): boolean {
+  const rng = seedrandom(
+    `${career.seed}-friendly-home-${friendlyIndex}`
+  );
+  return rng() > 0.35;
+}
+
 export function selectFriendlyOpponent(
   career: ManagerCareer,
   choiceId: string
@@ -151,37 +228,96 @@ export function selectFriendlyOpponent(
   const choice = career.preSeason.currentChoices.find((c) => c.id === choiceId);
   if (!choice) return career;
 
-  const rng = seedrandom(
-    `${career.seed}-friendly-home-${career.preSeason.friendliesPlayed}`
-  );
-  const isHome = rng() > 0.35;
+  const draft = [...(career.preSeason.draftSchedule ?? [])];
+  const friendlyIndex = draft.length;
+  if (draft.some((s) => s.club === choice.club)) return career;
+
+  draft.push({
+    club: choice.club,
+    year: choice.year,
+    displayName: choice.displayName,
+    teamRating: choice.teamRating,
+    isHome: resolveFriendlyVenue(career, friendlyIndex),
+    friendlyIndex,
+  });
+
+  const required = getFriendliesRequired(career);
+  if (draft.length >= required) {
+    return {
+      ...career,
+      preSeason: {
+        ...career.preSeason,
+        draftSchedule: draft,
+        currentChoices: [],
+        awaitingChoice: false,
+        awaitingScheduleConfirm: true,
+      },
+    };
+  }
+
+  return ensureFriendlyChoices({
+    ...career,
+    preSeason: {
+      ...career.preSeason,
+      draftSchedule: draft,
+      currentChoices: [],
+      awaitingChoice: true,
+    },
+  });
+}
+
+export function undoLastFriendlyDraftPick(career: ManagerCareer): ManagerCareer {
+  const draft = [...(career.preSeason.draftSchedule ?? [])];
+  if (draft.length === 0) return career;
+  draft.pop();
+  return ensureFriendlyChoices({
+    ...career,
+    preSeason: {
+      ...career.preSeason,
+      draftSchedule: draft,
+      awaitingScheduleConfirm: false,
+      awaitingChoice: true,
+      activeFriendly: null,
+    },
+  });
+}
+
+export function confirmFriendlySchedule(career: ManagerCareer): ManagerCareer {
+  const draft = career.preSeason.draftSchedule ?? [];
+  const required = getFriendliesRequired(career);
+  if (draft.length < required) return career;
+
+  const confirmed = [...draft];
+  const first = confirmed[0]!;
 
   return {
     ...career,
     preSeason: {
       ...career.preSeason,
+      confirmedSchedule: confirmed,
+      draftSchedule: confirmed,
+      awaitingScheduleConfirm: false,
       awaitingChoice: false,
-      currentChoices: [],
       activeFriendly: {
-        displayName: choice.club,
-        club: choice.club,
-        year: choice.year,
-        teamRating: choice.teamRating,
-        isHome,
-        friendlyIndex: career.preSeason.friendliesPlayed,
+        displayName: first.displayName,
+        club: first.club,
+        year: first.year,
+        teamRating: first.teamRating,
+        isHome: first.isHome,
+        friendlyIndex: first.friendlyIndex,
       },
     },
   };
 }
 
-/**
- * For Sim to Date: if a friendly opponent is still required, pick one with the
- * seeded RNG, persist it, and continue — never overwrite a manual choice.
- */
 export function autoSelectFriendlyForSim(career: ManagerCareer): {
   career: ManagerCareer;
   autoSelectedClub: string | null;
 } {
+  if (career.preSeason.awaitingScheduleConfirm) {
+    return { career: confirmFriendlySchedule(career), autoSelectedClub: null };
+  }
+
   if (!isAwaitingFriendlyChoice(career)) {
     return { career, autoSelectedClub: null };
   }
@@ -195,60 +331,98 @@ export function autoSelectFriendlyForSim(career: ManagerCareer): {
     return { career: next, autoSelectedClub: null };
   }
 
-  const rng = seedrandom(
-    `${next.seed}-friendly-auto-${next.preSeason.friendliesPlayed}`
-  );
+  const draftLen = next.preSeason.draftSchedule?.length ?? 0;
+  const rng = seedrandom(`${next.seed}-friendly-auto-${draftLen}`);
   const pick = choices[Math.floor(rng() * choices.length)]!;
   next = selectFriendlyOpponent(next, pick.id);
 
-  const note = `A friendly against ${pick.club} was arranged automatically.`;
+  if (next.preSeason.awaitingScheduleConfirm) {
+    next = confirmFriendlySchedule(next);
+    return { career: next, autoSelectedClub: pick.club };
+  }
+
+  const note = `A friendly against ${pick.club} was added to the pre-season schedule.`;
+  return {
+    career: appendFriendlyAutoNote(next, note, draftLen),
+    autoSelectedClub: pick.club,
+  };
+}
+
+function appendFriendlyAutoNote(
+  career: ManagerCareer,
+  note: string,
+  friendlyIndex: number
+): ManagerCareer {
   const newsItem: LatestNewsItem = {
-    id: `news-friendly-auto-${next.seasonYear}-${next.preSeason.activeFriendly?.friendlyIndex ?? 0}`,
-    week: next.gameWeek,
+    id: `news-friendly-auto-${career.seasonYear}-${friendlyIndex}`,
+    week: career.gameWeek,
     type: "fixture",
     text: note,
   };
   const inbox: InboxMessage = {
-    id: `inbox-friendly-auto-${next.seasonYear}-${next.preSeason.activeFriendly?.friendlyIndex ?? 0}`,
+    id: `inbox-friendly-auto-${career.seasonYear}-${friendlyIndex}`,
     type: "fixture",
     title: "Friendly arranged",
     body: note,
-    week: next.gameWeek,
-    season: next.seasonYear,
-    gameWeek: next.gameWeek,
+    week: career.gameWeek,
+    season: career.seasonYear,
+    gameWeek: career.gameWeek,
     createdAt: new Date(0).toISOString(),
     read: false,
   };
-
-  // Stable IDs so replaying the same sim path does not duplicate notes.
-  const existingNews = (next.latestNews ?? []).some((n) => n.id === newsItem.id);
-  const existingInbox = (next.inboxMessages ?? []).some((m) => m.id === inbox.id);
-
+  const existingNews = (career.latestNews ?? []).some((n) => n.id === newsItem.id);
+  const existingInbox = (career.inboxMessages ?? []).some((m) => m.id === inbox.id);
   return {
-    career: {
-      ...next,
-      latestNews: existingNews
-        ? next.latestNews
-        : [newsItem, ...(next.latestNews ?? [])].slice(0, 24),
-      inboxMessages: existingInbox
-        ? next.inboxMessages
-        : [inbox, ...(next.inboxMessages ?? [])].slice(0, 80),
-    },
-    autoSelectedClub: pick.club,
+    ...career,
+    latestNews: existingNews
+      ? career.latestNews
+      : [newsItem, ...(career.latestNews ?? [])].slice(0, 24),
+    inboxMessages: existingInbox
+      ? career.inboxMessages
+      : [inbox, ...(career.inboxMessages ?? [])].slice(0, 80),
   };
 }
 
 export function completeFriendlyMatch(career: ManagerCareer): ManagerCareer {
   const played = career.preSeason.friendliesPlayed + 1;
-  return ensureFriendlyChoices({
+  const required = getFriendliesRequired(career);
+  const schedule = career.preSeason.confirmedSchedule ?? [];
+  const nextScheduled = schedule[played] ?? null;
+
+  if (played >= required) {
+    return {
+      ...career,
+      preSeason: {
+        ...career.preSeason,
+        friendliesPlayed: played,
+        awaitingChoice: false,
+        awaitingScheduleConfirm: false,
+        currentChoices: [],
+        activeFriendly: null,
+      },
+    };
+  }
+
+  return {
     ...career,
     preSeason: {
+      ...career.preSeason,
       friendliesPlayed: played,
-      awaitingChoice: played < 2,
+      awaitingChoice: false,
+      awaitingScheduleConfirm: false,
       currentChoices: [],
-      activeFriendly: null,
+      activeFriendly: nextScheduled
+        ? {
+            displayName: nextScheduled.displayName,
+            club: nextScheduled.club,
+            year: nextScheduled.year,
+            teamRating: nextScheduled.teamRating,
+            isHome: nextScheduled.isHome,
+            friendlyIndex: nextScheduled.friendlyIndex,
+          }
+        : null,
     },
-  });
+  };
 }
 
 export function getFriendlyAttendanceInterest(

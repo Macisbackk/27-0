@@ -59,6 +59,7 @@ export function ManagerOnboardingModal({
       </div>
 
       <ol
+        data-scroll-lock-allow="true"
         className={`min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain px-3 py-3 sm:px-6 ${SPACING.stackSm}`}
       >
         {MANAGER_ONBOARDING_STEPS.map((step, index) => {

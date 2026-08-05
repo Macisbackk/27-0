@@ -47,7 +47,7 @@ import { TYPO } from "@/lib/ui/typography";
 
 const DEFAULT_FILTERS: ShowcaseFilters = {
   search: "",
-  status: "current",
+  status: "all",
   position: "all",
   club: "all",
   year: "all",
@@ -154,6 +154,12 @@ export function PlayerShowcase() {
     setDetailPlayer(player);
     setExpandedPlayerId(player.id);
     setSearchInput(player.name);
+    setFilters((current) => ({
+      ...current,
+      status: "all",
+      club: "all",
+      year: "all",
+    }));
   }, [deepLinkPlayerId, allPlayers]);
 
   useEffect(() => {
@@ -500,6 +506,7 @@ export function PlayerShowcase() {
             <div className="flex flex-wrap gap-2">
               {(
                 [
+                  ["name", "A–Z"],
                   ["rating", "Rating"],
                   ["value", "Value"],
                   ["tries", "Tries"],
@@ -512,7 +519,7 @@ export function PlayerShowcase() {
                   onClick={() => {
                     playUiClick();
                     setSortKey(key);
-                    setSortDir("desc");
+                    setSortDir(key === "name" ? "asc" : "desc");
                   }}
                   className={`rounded-lg border px-2.5 py-1.5 text-[11px] font-medium transition ${
                     sortKey === key ? FILTER.chipActive : FILTER.chipIdle

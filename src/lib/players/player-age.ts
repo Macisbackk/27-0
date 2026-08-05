@@ -101,7 +101,7 @@ export function getAgeAtYear(
 }
 
 function resolveReferenceYear(player: Player): number | undefined {
-  return player.eraYear ?? player.primeYear ?? player.cardYear;
+  return player.eraYear ?? player.year ?? player.cardYear ?? player.primeYear;
 }
 
 /** Player age at card era (historic/legend) or current age (current players). */

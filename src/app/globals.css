@@ -71,6 +71,17 @@
     0.5rem + 3.5rem + max(0.5rem, env(safe-area-inset-bottom))
   );
   --manager-mobile-playbar-h: calc(1rem + 2.75rem);
+
+  /* Central UI layering — keep in sync with src/lib/ui/layers.ts */
+  --z-page: 0;
+  --z-sticky-nav: 30;
+  --z-mobile-action-bar: 40;
+  --z-sticky-footer: 50;
+  --z-popover: 60;
+  --z-sidebar: 70;
+  --z-modal-backdrop: 9999;
+  --z-modal: 10000;
+  --z-critical-animation: 10001;
 }
 
 html {

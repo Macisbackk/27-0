@@ -14,7 +14,31 @@
  *   · Normal active weeks (heat 1.0): 2–5
  *   · Busy window weeks (early/run-in, heat ≥1.2): 4–8
  */
+export interface TransferTargetPoolConfig {
+  /** Relative likelihood that each market pool is selected by AI recruitment. */
+  weights: {
+    seniorFirstTeam: number;
+    seniorRotation: number;
+    reserve: number;
+    freeAgent: number;
+    championshipElite: number;
+  };
+  /** Extra urgency applied to recruitment during the opening weeks. */
+  earlySeasonMultiplier: number;
+  earlySeasonThroughWeek: number;
+  /** User senior-squad approaches are budgeted once per season in this range. */
+  minSeniorApproachesPerSeason: number;
+  maxSeniorApproachesPerSeason: number;
+  /** Interest cannot repeatedly cycle through the same player or buying club. */
+  playerCooldownWeeks: number;
+  clubCooldownWeeks: number;
+  /** Hard limits protect the inbox and prevent a single pool dominating activity. */
+  maxSeniorApproachesPerWeek: number;
+  maxPendingSeniorApproaches: number;
+}
+
 export interface TransferActivityConfig {
+  transferTargetPool: TransferTargetPoolConfig;
   /** AI-vs-AI Super League roster shuffling (managerAiTransfers.ts). */
   aiInternalTransfers: {
     /** Chance per attempt in the club's first season (× gameWeekActivityMultiplier). */
@@ -63,6 +87,10 @@ export interface TransferActivityConfig {
     maxSigningsPerSeason: number;
     /** Weeks before the same reserve can be targeted again after a deal. */
     cooldownWeeksPerPlayer: number;
+    /** Weeks before the same Championship club can submit another request. */
+    cooldownWeeksPerClub: number;
+    /** Seasonal cap for requests made by one Championship club. */
+    maxRequestsPerClubPerSeason: number;
     /** Eligible current-ability band — prefers fringe reserves, not SL starters. */
     minCaRating: number;
     maxCaRating: number;
@@ -76,6 +104,23 @@ export interface TransferActivityConfig {
 }
 
 export const DEFAULT_TRANSFER_ACTIVITY_CONFIG: TransferActivityConfig = {
+  transferTargetPool: {
+    weights: {
+      seniorFirstTeam: 0.3,
+      seniorRotation: 0.4,
+      reserve: 0.12,
+      freeAgent: 0.1,
+      championshipElite: 0.08,
+    },
+    earlySeasonMultiplier: 1.8,
+    earlySeasonThroughWeek: 7,
+    minSeniorApproachesPerSeason: 2,
+    maxSeniorApproachesPerSeason: 5,
+    playerCooldownWeeks: 10,
+    clubCooldownWeeks: 3,
+    maxSeniorApproachesPerWeek: 1,
+    maxPendingSeniorApproaches: 2,
+  },
   aiInternalTransfers: {
     baseChancePerMatch: 0.38,
     postFirstSeasonChance: 0.58,
@@ -98,11 +143,13 @@ export const DEFAULT_TRANSFER_ACTIVITY_CONFIG: TransferActivityConfig = {
     cooldownWeeks: 6,
   },
   reserveToChampionship: {
-    baseWeeklyScanChance: 0.1,
+    baseWeeklyScanChance: 0.035,
     maxRequestsPerClubPerWeek: 1,
-    maxWorldRequestsPerWeek: 5,
-    maxSigningsPerSeason: 24,
-    cooldownWeeksPerPlayer: 8,
+    maxWorldRequestsPerWeek: 2,
+    maxSigningsPerSeason: 10,
+    cooldownWeeksPerPlayer: 12,
+    cooldownWeeksPerClub: 4,
+    maxRequestsPerClubPerSeason: 2,
     minCaRating: 70,
     maxCaRating: 84,
     aiSellerAcceptChance: 0.58,

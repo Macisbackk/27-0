@@ -428,6 +428,18 @@ export function maybeChampionshipBidForSlReserves(
     }
     if (rng() > scanChance) continue;
     if ((clubRequests[club.id] ?? 0) >= cfg.maxRequestsPerClubPerWeek) continue;
+    if (
+      (next.reserveToChampionshipClubCooldowns?.[club.id] ?? 0) >
+      next.gameWeek
+    ) {
+      continue;
+    }
+    if (
+      (next.reserveToChampionshipClubRequestCounts?.[club.id] ?? 0) >=
+      cfg.maxRequestsPerClubPerSeason
+    ) {
+      continue;
+    }
 
     const pool = collectReserveCandidates(next, cfg);
     if (pool.length === 0) break;
@@ -438,6 +450,18 @@ export function maybeChampionshipBidForSlReserves(
 
     clubRequests[club.id] = (clubRequests[club.id] ?? 0) + 1;
     worldRequests += 1;
+    next = {
+      ...next,
+      reserveToChampionshipClubCooldowns: {
+        ...(next.reserveToChampionshipClubCooldowns ?? {}),
+        [club.id]: next.gameWeek + cfg.cooldownWeeksPerClub,
+      },
+      reserveToChampionshipClubRequestCounts: {
+        ...(next.reserveToChampionshipClubRequestCounts ?? {}),
+        [club.id]:
+          (next.reserveToChampionshipClubRequestCounts?.[club.id] ?? 0) + 1,
+      },
+    };
 
     const fee = computeReserveTransferFee(picked.reserve, rng);
 

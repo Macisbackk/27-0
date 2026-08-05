@@ -11,6 +11,7 @@ import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer, SquadRole } from "@/lib/manager/types";
+import { SQUAD_ROLES, SQUAD_ROLE_LABELS, formatSquadRole } from "@/lib/manager/squadRole";
 import {
   getManagerPlayer,
   getManagerPlayerAge,
@@ -78,7 +79,7 @@ export function ManagerContracts({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [offerWage, setOfferWage] = useState(0);
   const [offerYears, setOfferYears] = useState(2);
-  const [offerRole, setOfferRole] = useState<SquadRole>("Starter");
+  const [offerRole, setOfferRole] = useState<SquadRole>("first-team");
   const [lastResponse, setLastResponse] = useState<{
     accepted: boolean;
     reason: string;
@@ -165,7 +166,7 @@ export function ManagerContracts({
     setSelectedId(playerId);
     setOfferWage(demand?.wagePerYear ?? contract?.wagePerYear ?? 50_000);
     setOfferYears(demand?.yearsRequested ?? 2);
-    setOfferRole(demand?.squadRole ?? contract?.squadRole ?? "Starter");
+    setOfferRole(demand?.squadRole ?? contract?.squadRole ?? "first-team");
     setLastResponse(null);
   };
 
@@ -399,7 +400,7 @@ export function ManagerContracts({
                     </p>
                     <p className={`${TYPO.bodySm} text-pitch-400`}>
                       {formatWage(contract.wagePerYear)}/yr ·{" "}
-                      {contract.yearsRemaining}yr · {contract.squadRole}
+                      {contract.yearsRemaining}yr · {formatSquadRole(contract.squadRole)}
                     </p>
                   </div>
                 </div>
@@ -445,7 +446,7 @@ export function ManagerContracts({
                 {formatWage(selected.contract.wagePerYear)}/yr ·{" "}
                 {selected.contract.yearsRemaining} year
                 {selected.contract.yearsRemaining === 1 ? "" : "s"} left ·{" "}
-                {selected.contract.squadRole}
+                {formatSquadRole(selected.contract.squadRole)}
               </p>
               <p className={`${TYPO.bodySm} text-pitch-400`}>
                 {STATUS_LABELS[selected.status] ?? selected.status} · Happiness{" "}
@@ -456,7 +457,7 @@ export function ManagerContracts({
                   Demand:{" "}
                   {formatWage(selected.contract.renewalDemand.wagePerYear)}/yr ·{" "}
                   {selected.contract.renewalDemand.yearsRequested} years ·{" "}
-                  {selected.contract.renewalDemand.squadRole}
+                  {formatSquadRole(selected.contract.renewalDemand.squadRole)}
                 </p>
               )}
             </div>
@@ -490,11 +491,9 @@ export function ManagerContracts({
                   onChange={(e) => setOfferRole(e.target.value as SquadRole)}
                   className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-900 px-2 py-1.5 text-white"
                 >
-                  {(
-                    ["Star", "Starter", "Rotation", "Prospect", "Depth"] as const
-                  ).map((r) => (
+                  {SQUAD_ROLES.filter((r) => r !== "reserve").map((r) => (
                     <option key={r} value={r}>
-                      {r}
+                      {SQUAD_ROLE_LABELS[r]}
                     </option>
                   ))}
                 </select>

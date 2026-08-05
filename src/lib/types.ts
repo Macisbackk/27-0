@@ -25,6 +25,11 @@ export type PlayerCategory = "current" | "historic" | "legend";
 
 export type PlayerCardStatus = "Current" | "Historic" | "Legend";
 
+export type PlayerAgeSource =
+  | "verified"
+  | "derived-from-birth-year"
+  | "derived-from-adjacent-season";
+
 export type GameMode = "CLASSIC" | "DRAFT" | "FANTASY";
 
 /** Normal Mode spin variant — persisted on runs, stats, and leaderboard rows. */
@@ -91,6 +96,8 @@ export interface Player extends PlayerAchievements {
   dateOfBirth?: string;
   /** Birth year — used for age when full DOB is unavailable. */
   birthYear?: number;
+  /** Provenance for historic card age calculations. */
+  ageSource?: PlayerAgeSource;
   /** Era-specific year for historic cards (e.g. era challenge cup). */
   eraYear?: number;
   /** Year encoded on year-card ids (e.g. sam-burgess-2009 → 2009). */

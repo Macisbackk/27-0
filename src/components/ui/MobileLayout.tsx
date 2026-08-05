@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { BodyPortal } from "@/components/ui/BodyPortal";
 import { GameButton } from "@/components/ui/GameButton";
 import { MOBILE, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -205,6 +206,8 @@ interface StickyActionBarProps {
   className?: string;
   /** Hide on desktop (default true). */
   mobileOnly?: boolean;
+  /** Render via root portal — escapes overflow/transform ancestors. */
+  portal?: boolean;
 }
 
 /**
@@ -216,8 +219,9 @@ export function StickyActionBar({
   aboveNav = false,
   className = "",
   mobileOnly = true,
+  portal = false,
 }: StickyActionBarProps) {
-  return (
+  const bar = (
     <div
       className={`mobile-action-bar ${aboveNav ? "mobile-action-bar--above-nav" : ""} ${
         mobileOnly ? "sm:hidden" : ""
@@ -227,4 +231,7 @@ export function StickyActionBar({
       <div className="mobile-action-bar__inner">{children}</div>
     </div>
   );
+
+  if (portal) return <BodyPortal>{bar}</BodyPortal>;
+  return bar;
 }

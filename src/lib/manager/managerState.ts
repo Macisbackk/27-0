@@ -38,7 +38,7 @@ import { createManagerChallengeCup, reconcileChallengeCupFromFixtures } from "./
 import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubReserveCounts, ensureAllClubReserveDepth } from "./managerReserves";
 import { sanitizeWorldClubChallengeState, ensureWorldClubChallengeScheduled } from "./worldClubChallenge";
 import { ensureChampionshipSystems } from "./championship/ensureChampionship";
-import { stampManagerSaveVersion } from "./managerSaveVersion";
+import { migrateSquadRoles } from "./migrateSquadRoles";
 import {
   migratePlayerRatingsV5,
   PLAYER_RATING_SCHEMA_VERSION,
@@ -86,6 +86,14 @@ import {
   writeManagerCareerRaw,
   type ManagerSaveSlotSummary,
 } from "./managerSaveStorage";
+import {
+  maybeLogSaveSizeDiagnostics,
+  measureCareerSaveSize,
+} from "./managerSaveDiagnostics";
+import { stampManagerSaveVersion } from "./managerSaveVersion";
+
+export const PLAYER_SHOWCASE_VERSION = 2;
+export const HISTORIC_AGE_DATA_VERSION = 2;
 
 function hydrateManagerSettings(
   raw: ManagerSettings | undefined
@@ -334,6 +342,12 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     leagueClubReserveCounts: raw.leagueClubReserveCounts,
     leagueClubReserves: raw.leagueClubReserves,
     reserveToChampionshipCooldowns: raw.reserveToChampionshipCooldowns ?? {},
+    transferTargetCooldowns: raw.transferTargetCooldowns ?? {},
+    transferTargetClubCooldowns: raw.transferTargetClubCooldowns ?? {},
+    reserveToChampionshipClubCooldowns:
+      raw.reserveToChampionshipClubCooldowns ?? {},
+    reserveToChampionshipClubRequestCounts:
+      raw.reserveToChampionshipClubRequestCounts ?? {},
     championshipReserveSigningsThisSeason:
       raw.championshipReserveSigningsThisSeason ?? 0,
     playerDevelopment: raw.playerDevelopment ?? {},
@@ -343,6 +357,8 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     clubCareerTotals: raw.clubCareerTotals ?? {},
     retiredPlayers: raw.retiredPlayers ?? [],
     managerSettings: hydrateManagerSettings(raw.managerSettings),
+    playerShowcaseVersion: PLAYER_SHOWCASE_VERSION,
+    historicAgeDataVersion: HISTORIC_AGE_DATA_VERSION,
   };
 
   career = ensureRenewalDemands(career);
@@ -391,6 +407,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = ensureFreeAgentPool(career);
   career = migrateMatchWeekFields(career);
   career = migratePlayerRatingsV5(career);
+  career = migrateSquadRoles(career);
   career = ensureChampionshipSystems(career);
   career = migrateChallengeCupRoundLabels(career);
   career = migrateCareerHistory(career);
@@ -436,7 +453,9 @@ export function prepareManagerCareerForSave(raw: ManagerCareer): ManagerCareer {
     ...career,
     isSeasonComplete: isManagerSeasonComplete(career),
   };
-  return stampManagerSaveVersion(career);
+  const prepared = stampManagerSaveVersion(career);
+  maybeLogSaveSizeDiagnostics(prepared, "prepareManagerCareerForSave");
+  return prepared;
 }
 
 export function loadManagerCareer(slot?: number): ManagerCareer | null {
@@ -449,7 +468,9 @@ export function saveManagerCareer(
   career: ManagerCareer,
   slot?: number
 ): { ok: true } | { ok: false; error: string } {
-  return writeManagerCareerRaw(prepareManagerCareerForSave(career), slot);
+  const prepared = prepareManagerCareerForSave(career);
+  maybeLogSaveSizeDiagnostics(prepared, "saveManagerCareer");
+  return writeManagerCareerRaw(prepared, slot);
 }
 
 /** Immediate disk flush for lifecycle hooks (page hide, unmount, etc.). */
@@ -603,6 +624,8 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     // don't re-floor them onto the legacy Current 80 floor.
     playerRatingSchemaVersion: PLAYER_RATING_SCHEMA_VERSION,
     reserveRatingScaleVersion: RESERVE_RATING_SCALE_VERSION,
+    playerShowcaseVersion: PLAYER_SHOWCASE_VERSION,
+    historicAgeDataVersion: HISTORIC_AGE_DATA_VERSION,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -634,3 +657,5 @@ export {
   MANAGER_SAVE_SLOT_COUNT,
   type ManagerSaveSlotSummary,
 } from "./managerSaveStorage";
+
+export { measureCareerSaveSize };

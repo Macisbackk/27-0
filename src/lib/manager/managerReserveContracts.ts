@@ -41,7 +41,7 @@ export function generateReserveYouthContract(
     wagePerYear: wage,
     yearsRemaining,
     expiresAtSeasonEnd: yearsRemaining <= 1,
-    squadRole: "Prospect",
+    squadRole: "reserve",
     happiness: 60 + Math.floor(Math.random() * 25),
     purchaseFee: 0,
   };
@@ -62,7 +62,7 @@ export function generateReserveRenewalDemand(
   return {
     wagePerYear,
     yearsRequested: reserve.age <= 19 ? 2 : 1,
-    squadRole: "Prospect",
+    squadRole: "reserve",
   };
 }
 
@@ -83,7 +83,7 @@ export function generatePromotedReserveContract(
     rep,
     withPlayer
   );
-  contract.squadRole = "Prospect";
+  contract.squadRole = "reserve";
   contract.purchaseFee = 0;
 
   const minYears = reserve.age <= 21 ? 3 : 2;
@@ -142,7 +142,7 @@ export function evaluateReserveRenewalOffer(
     ({
       wagePerYear: contract.wagePerYear,
       yearsRequested: 1,
-      squadRole: "Prospect" as const,
+      squadRole: "reserve" as const,
     } satisfies RenewalDemand);
 
   if (offer.wagePerYear < demand.wagePerYear * 0.85) {

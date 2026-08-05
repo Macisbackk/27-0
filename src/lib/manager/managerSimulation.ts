@@ -895,11 +895,10 @@ export function advanceManagerMatchWeek(
   }
 
   next = syncManagerLeagueTable(next);
-  next = generateIncomingTransferOffers(next);
-  if (
-    last?.competition !== "friendly" &&
-    last?.competition !== "world_club_challenge"
-  ) {
+  // Transfer approaches are weekly systems: cup/play-off advances can share a
+  // gameWeek and must not create extra rolls for the same market week.
+  if (last?.competition === "league") {
+    next = generateIncomingTransferOffers(next);
     next = generateUnsolicitedTransferOffers(next);
   }
   next = syncManagerInboxMessages(next);

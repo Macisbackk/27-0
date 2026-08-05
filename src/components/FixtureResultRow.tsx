@@ -4,7 +4,7 @@ import type { MatchFixture } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { getClubColors } from "@/lib/clubs";
 import { DREAM_TEAM_COLORS } from "@/lib/clubs/dream-team";
-import { CARD } from "@/lib/ui/design-system";
+import { CARD, BORDER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubColorChip } from "./ClubColorChip";
 
@@ -53,7 +53,7 @@ export function FixtureResultRow({
       onClick={onClick}
       className={`fixture-result-row min-w-0 w-full max-w-full text-left transition ${
         selected
-          ? "fixture-result-row--selected border-theme-primary/50 bg-theme-primary/10"
+          ? `fixture-result-row--selected ${BORDER.selected}`
           : cupHighlight
             ? `${CARD.base} border-2 border-accent-gold/50 bg-accent-gold/10 ring-1 ring-accent-gold/25`
             : `${CARD.base} bg-pitch-900/40`

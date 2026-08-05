@@ -767,6 +767,12 @@
   font-size: var(--text-page-title, clamp(1.45rem, 3vw, 2rem));
 }
 
+.fixture-matchup-title {
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+}
+
 .game-header__subtitle,
 .game-section-header__subtitle {
   font-size: var(--text-body, 0.92rem);
@@ -1131,7 +1137,7 @@
 .game-modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: var(--z-modal-backdrop, 9999);
   display: grid;
   place-items: center;
   padding: 1rem;

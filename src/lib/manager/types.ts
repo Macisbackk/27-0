@@ -26,11 +26,11 @@ export type DefenceFocus =
   | "goal_line";
 
 export type SquadRole =
-  | "Star"
-  | "Starter"
-  | "Rotation"
-  | "Prospect"
-  | "Depth";
+  | "key-player"
+  | "first-team"
+  | "rotation"
+  | "squad-depth"
+  | "reserve";
 
 export type ContractStatus =
   | "expires_this_season"
@@ -564,10 +564,27 @@ export interface FriendlyOpponentChoice {
   attendanceInterest: "low" | "medium" | "high";
 }
 
+export interface ScheduledFriendly {
+  club: string;
+  year: string;
+  displayName: string;
+  teamRating: number;
+  isHome: boolean;
+  friendlyIndex: number;
+}
+
 export interface PreSeasonState {
   friendliesPlayed: number;
+  /** Required pre-season friendlies per season (schema v2 = 3). */
+  friendliesRequired?: number;
   awaitingChoice: boolean;
   currentChoices: FriendlyOpponentChoice[];
+  /** Ordered picks before schedule confirmation. */
+  draftSchedule?: ScheduledFriendly[];
+  /** Confirmed schedule played in order. */
+  confirmedSchedule?: ScheduledFriendly[];
+  awaitingScheduleConfirm?: boolean;
+  friendlyScheduleVersion?: number;
   activeFriendly: {
     displayName: string;
     club: string;
@@ -873,12 +890,20 @@ export interface ManagerCareer {
   retiredPlayers?: RetiredPlayer[];
   /** Save schema version for migrations. */
   saveVersion?: number;
+  /** Persistence backend marker (2 = IndexedDB blobs + localStorage pointer). */
+  saveStorageVersion?: number;
   /** Player ability scale migration (5 = reserve floor + Current 90+ audit). */
   playerRatingSchemaVersion?: number;
   /** Championship-only rating scale correction (2 = post mistaken floor-80 remap). */
   championshipRatingScaleVersion?: number;
   /** Reserve rating scale after mistaken floor-80 clamp (2 = age/potential remap). */
   reserveRatingScaleVersion?: number;
+  /** Player Showcase route/filter compatibility marker. */
+  playerShowcaseVersion?: number;
+  /** Historic age provenance/data compatibility marker. */
+  historicAgeDataVersion?: number;
+  /** Squad role union migration (key-player / first-team / etc.). */
+  squadRoleSchemaVersion?: number;
   /** Current Super League 90+ ability audit application marker. */
   currentNinetyPlusAuditVersion?: number;
   /** Club reputation stars schema (see data/club-reputation.ts). */
@@ -904,6 +929,12 @@ export interface ManagerCareer {
   championshipTransferCooldowns?: Record<string, number>;
   /** Schema marker for the centralised AI transfer-activity tuning (transferActivityConfig.ts). */
   aiTransferActivityVersion?: number;
+  /** Rebalanced recruitment target pools and seasonal approach pacing. */
+  transferTargetBalanceVersion?: number;
+  /** Week through which a player is protected from repeat senior approaches. */
+  transferTargetCooldowns?: Record<string, number>;
+  /** Week through which a buying club is held out of senior approaches. */
+  transferTargetClubCooldowns?: Record<string, number>;
   /** Completed transfer records include competition IDs + sourceSquad. */
   completedTransferRecordVersion?: number;
   /** Explicit match resolution rules (draws vs knockout extra-time). */
@@ -914,6 +945,10 @@ export interface ManagerCareer {
   reserveToChampionshipTransfersVersion?: number;
   /** Reserve player IDs recently rejected / cooled down for Championship interest. */
   reserveToChampionshipCooldowns?: Record<string, number>;
+  /** Championship club IDs held out after making a reserve request. */
+  reserveToChampionshipClubCooldowns?: Record<string, number>;
+  /** Reserve requests made by each Championship club in the current season. */
+  reserveToChampionshipClubRequestCounts?: Record<string, number>;
   /** Reserve → Championship signings completed this season (across all Championship clubs). */
   championshipReserveSigningsThisSeason?: number;
   /** World Club Challenge fixture + history (from season 2 onwards). */

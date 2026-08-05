@@ -17,12 +17,10 @@ import { getClubColors } from "@/lib/clubs";
 import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { playSlotLand, playSlotSpinStart, playSlotSpinTick } from "@/lib/sound";
-import { CARD, SPACING } from "@/lib/ui/design-system";
-import {
-  acquireScrollLock,
-  releaseScrollLock,
-  type ScrollLockId,
-} from "@/lib/ui/scroll-lock";
+import { CARD, SPACING, BORDER } from "@/lib/ui/design-system";
+import { BodyPortal } from "@/components/ui/BodyPortal";
+import { uiLayerClass } from "@/lib/ui/layers";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import { TYPO } from "@/lib/ui/typography";
 import { SlotReel, type SlotReelHandle } from "./SlotReel";
 
@@ -46,14 +44,10 @@ export function RecruitmentSlotReveal({
   const shellRef = useRef<HTMLDivElement>(null);
   const onCompleteRef = useRef(onComplete);
   const clubPrimaryRef = useRef(getClubColors(target.team).primary);
-  const scrollLockIdRef = useRef<ScrollLockId | null>(null);
   const [isSpinning, setIsSpinning] = useState(true);
   const [landed, setLanded] = useState(false);
 
-  const releaseSpinScrollLock = () => {
-    releaseScrollLock(scrollLockIdRef.current);
-    scrollLockIdRef.current = null;
-  };
+  useScrollLock(true, "quick-mode-spin");
 
   const clubColors = useMemo(
     () => getClubColors(target.team),
@@ -85,8 +79,6 @@ export function RecruitmentSlotReveal({
   }, [target.team, target.year, target.teamYearId, spinVariant, isEraSpin]);
 
   useEffect(() => {
-    scrollLockIdRef.current = acquireScrollLock("quick-mode-spin");
-
     const prefersReducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -98,13 +90,13 @@ export function RecruitmentSlotReveal({
         []) {
         shell.classList.add("slot-reel-lock-flash");
         shell.classList.remove("border-pitch-600/70", "bg-pitch-950/80");
-        shell.classList.add("border-theme-primary/55", "bg-pitch-950/95");
+        shell.classList.add("bg-pitch-950/95");
+        (shell as HTMLElement).style.borderColor = clubPrimaryRef.current;
         (shell as HTMLElement).style.borderTopColor = clubPrimaryRef.current;
       }
     };
 
     const completeAndRelease = () => {
-      releaseSpinScrollLock();
       onCompleteRef.current();
     };
 
@@ -119,7 +111,6 @@ export function RecruitmentSlotReveal({
       }, 120);
       return () => {
         window.clearTimeout(timeoutId);
-        releaseSpinScrollLock();
       };
     }
 
@@ -208,30 +199,31 @@ export function RecruitmentSlotReveal({
       cancelled = true;
       window.cancelAnimationFrame(rafId);
       if (holdTimeout) window.clearTimeout(holdTimeout);
-      releaseSpinScrollLock();
     };
   }, [teamPlan, yearPlan, isEraSpin]);
 
   return (
-    <div
-      className={`recruitment-spin-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/88 ${SPACING.modalBackdrop}`}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Recruitment spin"
-    >
+    <BodyPortal>
       <div
-        className={`recruitment-spin-panel ${CARD.elevated} w-full max-w-lg overflow-hidden border shadow-[0_14px_34px_rgba(0,0,0,0.28)] ${
-          landed ? "border-theme-primary/55" : "border-pitch-600/50"
-        }`}
-        style={{
-          boxShadow: landed
-            ? `0 14px 34px rgba(0,0,0,0.28), inset 3px 0 0 ${clubColors.primary}`
-            : "0 14px 34px rgba(0,0,0,0.28), inset 3px 0 0 rgba(100,116,139,0.45)",
-          transition: landed
-            ? "box-shadow 0.35s ease-out, border-color 0.35s ease-out"
-            : undefined,
-        }}
+        className={`recruitment-spin-backdrop fixed inset-0 flex items-center justify-center bg-black/88 ${uiLayerClass("criticalAnimation")} ${SPACING.modalBackdrop}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Recruitment spin"
       >
+        <div
+          className={`recruitment-spin-panel ${CARD.elevated} w-full max-w-lg overflow-hidden border shadow-[0_14px_34px_rgba(0,0,0,0.28)] ${
+            landed ? BORDER.selectedMuted : BORDER.default
+          }`}
+          style={{
+            boxShadow: landed
+              ? `0 14px 34px rgba(0,0,0,0.28), inset 3px 0 0 ${clubColors.primary}`
+              : "0 14px 34px rgba(0,0,0,0.28), inset 3px 0 0 rgba(100,116,139,0.45)",
+            borderColor: landed ? clubColors.primary : undefined,
+            transition: landed
+              ? "box-shadow 0.35s ease-out, border-color 0.35s ease-out"
+              : undefined,
+          }}
+        >
         <div
           className="border-b border-pitch-700/50 px-5 py-4 text-center sm:px-8 sm:py-5"
           style={{
@@ -307,5 +299,6 @@ export function RecruitmentSlotReveal({
         </div>
       </div>
     </div>
+    </BodyPortal>
   );
 }

@@ -70,6 +70,7 @@ export default function RootLayout({
             <SiteFooter />
           </AchievementProvider>
         </AuthProvider>
+        <div id="game-portal-root" />
         <Analytics />
       </body>
     </html>

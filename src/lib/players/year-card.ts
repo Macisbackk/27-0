@@ -142,6 +142,9 @@ export function isGameplayYearCard(player: Player): boolean {
 
 export function formatShowcaseClubYear(player: Player): string {
   const club = player.displayClub ?? player.team ?? player.club;
+  if (!isGameplayYearCard(player) && player.yearsActive.trim()) {
+    return `${club} · ${player.yearsActive}`;
+  }
   const year = player.year ?? player.cardYear ?? CURRENT_SEASON_YEAR;
   return `${club} · ${year}`;
 }
