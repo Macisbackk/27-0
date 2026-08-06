@@ -829,6 +829,8 @@
 
 .showcase-player-card__body {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   width: 100%;
   min-width: 0;
   align-items: flex-start;

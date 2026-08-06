@@ -79,10 +79,10 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
         aria-haspopup="dialog"
       >
         <span className="showcase-compact-name min-w-0 flex-1 font-display font-bold leading-snug text-white">
-          <span className="block break-words [overflow-wrap:anywhere] line-clamp-3">
+          <span className="showcase-compact-name__title">
             {displayName}
           </span>
-          <span className="mt-0.5 block truncate text-[11px] font-medium text-gray-400">
+          <span className="mt-0.5 block w-full truncate text-[11px] font-medium text-gray-400">
             {clubYearLabel}
           </span>
         </span>

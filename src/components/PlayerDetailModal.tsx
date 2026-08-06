@@ -75,7 +75,7 @@ export function PlayerDetailModal({
       />
 
       {achievements.length > 0 && (
-        <div className={`mt-4 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
+        <div className={`mt-4 min-w-0 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
           <p className={`${TYPO.sectionTitle} mb-2`}>Achievements</p>
           <AchievementChipList
             achievements={achievements}
@@ -85,21 +85,21 @@ export function PlayerDetailModal({
       )}
 
       {goldenBootYears.length > 0 && (
-        <div className={`mt-3 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
+        <div className={`mt-3 min-w-0 overflow-hidden ${CARD.inset} ${SPACING.cardPaddingSm}`}>
           <p className={TYPO.statLabel}>Golden Boot</p>
-          <p className={`mt-1 ${TYPO.body}`}>{goldenBootYears.join(", ")}</p>
+          <p className={`mt-1 break-words ${TYPO.body}`}>{goldenBootYears.join(", ")}</p>
         </div>
       )}
 
-      <div className={`mt-3 grid grid-cols-2 gap-2 ${TYPO.bodySm}`}>
-        <div className={CARD.inset}>
+      <div className={`mt-3 grid min-w-0 grid-cols-2 gap-2 ${TYPO.bodySm}`}>
+        <div className={`min-w-0 overflow-hidden ${CARD.inset} ${SPACING.cardPaddingSm}`}>
           <p className={TYPO.statLabel}>{ratingLabel}</p>
           <p className="mt-0.5 font-semibold text-[color:var(--rating)]">
             {player.peakRating}
           </p>
           {(resolvedRatingContext === "season" ||
             resolvedRatingContext === "current") && (
-              <p className="mt-1 text-[11px] leading-snug text-pitch-400">
+              <p className="mt-1 break-words text-[11px] leading-snug text-pitch-400">
                 {resolvedRatingContext === "current"
                   ? getCurrentRatingSupportText(
                       resolvedSeasonYear ?? getCurrentSeasonYearNumber()
@@ -110,25 +110,25 @@ export function PlayerDetailModal({
               </p>
             )}
         </div>
-        <div className={CARD.inset}>
+        <div className={`min-w-0 overflow-hidden ${CARD.inset} ${SPACING.cardPaddingSm}`}>
           <p className={TYPO.statLabel}>Value</p>
           <p className="mt-0.5 font-semibold text-accent-gold">
             {formatValue(player.value)}
           </p>
         </div>
-        <div className={CARD.inset}>
+        <div className={`min-w-0 overflow-hidden ${CARD.inset} ${SPACING.cardPaddingSm}`}>
           <p className={TYPO.statLabel}>Age</p>
           <p className="mt-0.5 font-medium text-white">
             {formatPlayerAge(player)}
           </p>
         </div>
-        <div className={`${CARD.inset} col-span-2`}>
+        <div className={`min-w-0 overflow-hidden ${CARD.inset} ${SPACING.cardPaddingSm} col-span-2`}>
           <p className={TYPO.statLabel}>Years Active</p>
-          <p className="mt-0.5 font-medium text-white">{player.yearsActive}</p>
+          <p className="mt-0.5 break-words font-medium text-white">{player.yearsActive}</p>
         </div>
-        <div className={`${CARD.inset} col-span-2`}>
+        <div className={`min-w-0 overflow-hidden ${CARD.inset} ${SPACING.cardPaddingSm} col-span-2`}>
           <p className={TYPO.statLabel}>Player</p>
-          <p className="mt-0.5 font-medium text-white">
+          <p className="mt-0.5 break-words font-medium text-white">
             {formatPlayerDisplayName(player)}
           </p>
         </div>
