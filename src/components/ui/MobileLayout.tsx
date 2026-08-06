@@ -1,6 +1,10 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import {
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { GameButton } from "@/components/ui/GameButton";
 import { MOBILE, SPACING } from "@/lib/ui/design-system";
@@ -51,6 +55,8 @@ interface MobileSectionHeaderProps {
   subtitle?: string;
   /** When true, subtitle is hidden below sm (priority 3). */
   collapseSubtitleOnMobile?: boolean;
+  /** Default left — pass `"center"` for legacy centred headers. */
+  align?: "left" | "center";
   className?: string;
 }
 
@@ -59,10 +65,15 @@ export function MobileSectionHeader({
   title,
   subtitle,
   collapseSubtitleOnMobile = true,
+  align = "left",
   className = "",
 }: MobileSectionHeaderProps) {
   return (
-    <header className={`w-full min-w-0 text-center ${className}`}>
+    <header
+      className={`${MOBILE.sectionHeader} ${
+        align === "center" ? "text-center" : "text-left"
+      } ${className}`.trim()}
+    >
       {label ? (
         <p className={`${TYPO.keyLabel} text-pitch-500`}>
           {label}
@@ -79,6 +90,127 @@ export function MobileSectionHeader({
         </p>
       ) : null}
     </header>
+  );
+}
+
+interface MobilePageHeaderProps {
+  title: string;
+  context?: ReactNode;
+  actions?: ReactNode;
+  className?: string;
+}
+
+/** Left-aligned page title + optional context / trailing actions. */
+export function MobilePageHeader({
+  title,
+  context,
+  actions,
+  className = "",
+}: MobilePageHeaderProps) {
+  return (
+    <header className={`${MOBILE.pageHeader} ${className}`.trim()}>
+      <div className="flex min-w-0 items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <h1 className={MOBILE.pageHeaderTitle}>{title}</h1>
+          {context ? (
+            <div className={MOBILE.pageHeaderContext}>{context}</div>
+          ) : null}
+        </div>
+        {actions ? (
+          <div className="flex shrink-0 items-center gap-2">{actions}</div>
+        ) : null}
+      </div>
+    </header>
+  );
+}
+
+interface MobileSectionProps {
+  children: ReactNode;
+  /** Drop padding / border / background — content only. */
+  flush?: boolean;
+  className?: string;
+  as?: "div" | "section" | "article";
+}
+
+/** Level-2 surface for meaningful mobile content groups. */
+export function MobileSection({
+  children,
+  flush = false,
+  className = "",
+  as: Tag = "section",
+}: MobileSectionProps) {
+  return (
+    <Tag
+      className={`${flush ? MOBILE.sectionFlush : MOBILE.section} ${className}`.trim()}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+interface CompactMetricRowProps {
+  label: ReactNode;
+  value: ReactNode;
+  className?: string;
+}
+
+export function CompactMetricRow({
+  label,
+  value,
+  className = "",
+}: CompactMetricRowProps) {
+  return (
+    <div className={`${MOBILE.metricRow} ${className}`.trim()}>
+      <span className={MOBILE.metricRowLabel}>{label}</span>
+      <span className={MOBILE.metricRowValue}>{value}</span>
+    </div>
+  );
+}
+
+interface CompactFixtureCardProps {
+  children: ReactNode;
+  accentColor?: string;
+  className?: string;
+}
+
+export function CompactFixtureCard({
+  children,
+  accentColor,
+  className = "",
+}: CompactFixtureCardProps) {
+  const style = accentColor
+    ? ({ ["--card-accent"]: accentColor } as CSSProperties)
+    : undefined;
+  return (
+    <div className={`${MOBILE.fixtureCard} ${className}`.trim()} style={style}>
+      {children}
+    </div>
+  );
+}
+
+interface CompactResultRowProps {
+  home: ReactNode;
+  away: ReactNode;
+  score: ReactNode;
+  className?: string;
+}
+
+export function CompactResultRow({
+  home,
+  away,
+  score,
+  className = "",
+}: CompactResultRowProps) {
+  return (
+    <div className={`${MOBILE.resultRow} ${className}`.trim()}>
+      <span className="min-w-0 truncate text-left text-sm font-medium text-white">
+        {home}
+      </span>
+      <span className={MOBILE.resultRowScore}>{score}</span>
+      <span className="min-w-0 truncate text-right text-sm font-medium text-white">
+        {away}
+      </span>
+    </div>
   );
 }
 
@@ -235,3 +367,6 @@ export function StickyActionBar({
   if (portal) return <BodyPortal>{bar}</BodyPortal>;
   return bar;
 }
+
+/** Alias — prefer this name in mobile layout docs / new call sites. */
+export const MobileActionBar = StickyActionBar;

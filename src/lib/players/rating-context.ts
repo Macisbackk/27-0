@@ -11,7 +11,7 @@ export const ERA_RATING_EXPLANATION =
   "Era Mode ratings reflect each player’s ability and performances in the selected season, not their overall career or all-time peak.";
 
 export const ERA_RATING_COMPACT_EXPLANATION =
-  "Season ratings: Each rating reflects how the player performed in this selected year.";
+  "Ratings reflect how each player performed in that season.";
 
 export function getCurrentSeasonYearNumber(): number {
   const parsed = Number.parseInt(String(CURRENT_SEASON_YEAR), 10);
@@ -23,7 +23,7 @@ export function getCurrentRatingExplanation(): string {
 }
 
 export function getCurrentRatingCompactExplanation(): string {
-  return "Current ratings are based on this season’s performances.";
+  return "Ratings reflect this season’s performances.";
 }
 
 export function getCurrentRatingSupportText(

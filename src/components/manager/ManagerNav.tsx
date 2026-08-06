@@ -124,8 +124,10 @@ export function ManagerNav({
               type="button"
               onClick={() => navigate(tab.id)}
               disabled={disabled}
-              className={`btn-press shrink-0 rounded-sm px-2.5 py-2 text-center font-display text-[length:var(--text-small)] font-bold uppercase tracking-wide transition sm:px-3 ${
-                active === tab.id ? BTN.tabActive : BTN.tabIdle
+              className={`btn-press shrink-0 rounded-sm border-b-2 px-2.5 py-2 text-center font-display text-[length:var(--text-small)] font-bold uppercase tracking-wide transition sm:px-3 ${
+                active === tab.id
+                  ? `${BTN.tabActive} border-b-[var(--theme-text-on-primary)]`
+                  : `${BTN.tabIdle} border-b-transparent`
               } ${disabled ? "pointer-events-none opacity-40" : ""}`}
               aria-current={active === tab.id ? "page" : undefined}
               title={tab.label}

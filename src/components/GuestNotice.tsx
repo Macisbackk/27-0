@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "@/components/ui/GameButton";
 import { playUiClick } from "@/lib/sound";
@@ -44,10 +44,8 @@ export function GuestNotice({ variant = "inline" }: GuestNoticeProps) {
 
   if (variant === "play") {
     return (
-      <div
-        className={`mb-4 ${CARD.base} ${SPACING.cardPaddingSm} text-center ${SPACING.stackSm}`}
-      >
-        <p className={TYPO.bodySm}>{GUEST_NOTICE_TEXT}</p>
+      <div className={`mb-3 text-center ${SPACING.stackSm}`}>
+        <p className={TYPO.meta}>{GUEST_NOTICE_TEXT}</p>
         <Link
           href={loginHref(pathname)}
           onClick={() => playUiClick()}

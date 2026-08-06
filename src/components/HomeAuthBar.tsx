@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
-import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
+import { BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 export function HomeAuthBar() {
@@ -13,9 +13,8 @@ export function HomeAuthBar() {
   }
 
   return (
-    <section className={`${CARD.hero} ${CARD.featured} mx-auto max-w-md ${SPACING.cardPadding} text-center`}>
-      <p className={TYPO.sectionTitle}>Get Started</p>
-      <div className={`mt-4 flex flex-col ${SPACING.buttonGap} sm:flex-row sm:justify-center`}>
+    <section className="mx-auto max-w-md border-b border-[var(--mobile-divider)] pb-[var(--mobile-section-gap)] text-center">
+      <div className={`flex flex-col ${SPACING.buttonGap} sm:flex-row sm:justify-center`}>
         <Link href="#play-modes" className={`${BTN.theme} text-center`}>
           Play as Guest
         </Link>
@@ -26,9 +25,8 @@ export function HomeAuthBar() {
           Create Account
         </Link>
       </div>
-      <p className={`mt-3 ${TYPO.bodySm}`}>
-        Guest play saves stats on this device only. Log in to submit online
-        leaderboard scores.
+      <p className={`mt-3 ${TYPO.meta}`}>
+        Guest saves on this device. Log in for online leaderboard.
       </p>
     </section>
   );

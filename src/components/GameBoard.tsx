@@ -75,6 +75,8 @@ import {
   playRevealChoices,
   playReroll,
   playSeasonStart,
+  playBoostSuccess,
+  playBoostFailed,
   playUiClick,
 } from "@/lib/sound";
 import { PlayerChoice } from "./PlayerChoice";
@@ -117,6 +119,7 @@ import type { SpinPoolVariant } from "@/lib/game/player-pool-eligibility";
 import { EraRatingExplanation } from "./EraRatingExplanation";
 import { CurrentRatingExplanation } from "./CurrentRatingExplanation";
 import { QuickModePreGameBoostSetup } from "./QuickModePreGameBoostSetup";
+import { MobileStepIndicator } from "@/components/ui/MobileStepIndicator";
 import {
   armBoostForGame,
   cancelArmedBoost,
@@ -124,6 +127,7 @@ import {
   tryConsumeBoostFromInventory,
 } from "@/lib/boosts/boostInventory";
 import type { GameBoostId } from "@/lib/boosts/boostDefinitions";
+import { getBoostDefinition } from "@/lib/boosts/boostDefinitions";
 import {
   isQmSelectionBoostAllowedInMode,
   selectionHasBoostedPlayer,
@@ -145,6 +149,37 @@ interface GameBoardProps {
   superSamHallasMode?: boolean;
   /** Normal Mode: false = Current (2026 only), true = Era team-year pools. */
   normalEraMode?: boolean;
+}
+
+const QUICK_MODE_STEPS = [
+  "Mode",
+  "Spin",
+  "Choose",
+  "Squad",
+  "Match",
+  "Result",
+] as const;
+
+function getQuickModeStepIndex(
+  phase: GamePhase,
+  preGameReady: boolean
+): number {
+  if (!preGameReady) return 0;
+  switch (phase) {
+    case "reveal":
+      return 1;
+    case "choice":
+      return 2;
+    case "pitch":
+    case "placement":
+      return 3;
+    case "simulation":
+      return 4;
+    case "review":
+      return 5;
+    default:
+      return 3;
+  }
 }
 
 function createRunSeed(runKey: number): string {
@@ -351,8 +386,10 @@ export function GameBoard({
         setPreGameBoost((prev) =>
           prev ? { ...prev, status: "failed" } : prev
         );
+        playBoostFailed();
         return false;
       }
+      playBoostSuccess();
       setSelectionBoostsUsedThisRun((n) => n + 1);
       setUsedBoostThisRun(true);
       setSlotBoostGuaranteeId(null);
@@ -1576,9 +1613,11 @@ export function GameBoard({
         });
         if (!consumed.success) {
           fail(consumed.reason ?? "Could not consume boost.");
+          playBoostFailed();
           return;
         }
 
+        playBoostSuccess();
         setSlotOffers((prev) => {
           const next = new Map(prev);
           next.set(draftPickIndex, nextRound);
@@ -1666,9 +1705,11 @@ export function GameBoard({
         });
         if (!consumed.success) {
           fail(consumed.reason ?? "Could not consume boost.");
+          playBoostFailed();
           return;
         }
 
+        playBoostSuccess();
         setBoostedSpinPlan(markBoostedSpinPlanPlayersGenerated(plan));
         setActiveSpinTarget(target);
         setSlotRecruitTarget(target);
@@ -1907,6 +1948,17 @@ export function GameBoard({
         : "";
 
   const isReviewPhase = phase === "review";
+  const preGameReady = isPreGameBoostReady(preGameBoost);
+  const quickModeStepIndex = getQuickModeStepIndex(phase, preGameReady);
+  const hideChromeForOverlay = phase === "reveal";
+  const hideActionBar =
+    phase === "reveal" || phase === "choice" || phase === "simulation";
+  const spinBoostStatus =
+    phase === "reveal" &&
+    slotBoostGuaranteeId &&
+    (preGameBoost?.status === "armed" || preGameBoost?.status === "applied")
+      ? getBoostDefinition(slotBoostGuaranteeId)?.name ?? "Boost armed"
+      : null;
 
   return (
     <div
@@ -1937,10 +1989,17 @@ export function GameBoard({
       )}
 
       {!isReviewPhase && (
-      <div>
+      <div className={hideChromeForOverlay ? "invisible pointer-events-none select-none" : undefined}>
           <GuestNotice variant="play" />
 
-        {!isPreGameBoostReady(preGameBoost) ? (
+        <div className="mb-3 sm:mb-4">
+          <MobileStepIndicator
+            steps={[...QUICK_MODE_STEPS]}
+            currentIndex={quickModeStepIndex}
+          />
+        </div>
+
+        {!preGameReady ? (
           <QuickModePreGameBoostSetup
             runId={runId}
             eraMode={normalEraMode}
@@ -2168,6 +2227,7 @@ export function GameBoard({
                 key={choiceKey}
                 target={slotRecruitTarget}
                 spinVariant={spinVariant}
+                boostStatus={spinBoostStatus}
                 onComplete={handleRevealComplete}
               />
             )}
@@ -2273,7 +2333,7 @@ export function GameBoard({
       </div>
       )}
 
-      {!isReviewPhase && isPreGameBoostReady(preGameBoost) && (
+      {!isReviewPhase && preGameReady && !hideActionBar && (
         <StickyActionBar>
             <Link
               href="/"
@@ -2311,6 +2371,13 @@ export function GameBoard({
       {isReviewPhase &&
         seasonResult &&
         reviewStage === "regular" && (
+        <>
+        <div className="mb-3 px-1 sm:mb-4">
+          <MobileStepIndicator
+            steps={[...QUICK_MODE_STEPS]}
+            currentIndex={quickModeStepIndex}
+          />
+        </div>
         <SeasonReview
           squad={squad}
           mode={mode}
@@ -2330,6 +2397,7 @@ export function GameBoard({
           onClose={() => setPhase("pitch")}
           onReturnHome={resetRun}
         />
+        </>
       )}
 
       {isReviewPhase &&

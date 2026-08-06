@@ -14,7 +14,7 @@ export function Header() {
   return (
     <>
       <header className="app-header sticky top-0 z-50 overflow-x-clip border-b">
-        <div className="app-chrome relative grid min-h-14 min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-1 overflow-hidden py-1.5 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:h-[3.75rem] sm:gap-2 sm:py-0">
+        <div className="app-chrome relative grid h-12 min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-2 overflow-hidden sm:h-[3.25rem] sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-2">
           <div className="flex min-h-[44px] min-w-0 items-center justify-start sm:col-start-1">
             <button
               type="button"
@@ -22,33 +22,28 @@ export function Header() {
                 playMenuOpen();
                 setMenuOpen(true);
               }}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-theme-tertiary/25 bg-[rgba(7,12,11,0.9)] text-lg text-pitch-300 transition hover:border-theme-tertiary/45 hover:bg-theme-primary/10 hover:text-theme-primary sm:min-h-[44px] sm:w-auto sm:gap-2 sm:px-4 sm:text-sm sm:font-medium sm:text-gray-300"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--mobile-radius-medium)] border border-white/10 bg-[rgba(7,12,11,0.95)] text-base text-pitch-300 transition hover:border-white/20 hover:text-white sm:h-11 sm:w-auto sm:gap-2 sm:px-3 sm:text-sm sm:font-medium"
               aria-label="Open menu"
             >
-              <span aria-hidden className="leading-none sm:text-base">
+              <span aria-hidden className="leading-none">
                 ☰
               </span>
               <span className="hidden sm:inline">Menu</span>
             </button>
           </div>
 
-          <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center justify-center gap-0.5 sm:pointer-events-auto sm:static sm:z-auto sm:col-start-2 sm:translate-y-0">
+          <div className="flex min-w-0 items-center justify-center sm:col-start-2">
             <Link
               href="/"
-              className="pointer-events-auto flex min-w-0 items-center justify-center px-1 sm:px-3"
+              className="flex min-w-0 items-center justify-center px-1"
               aria-label="27-0 home"
             >
               <LogoMark />
             </Link>
-            <div className="pointer-events-auto sm:hidden">
-              <ClubFundsDisplay placement="mobile-under-logo" />
-            </div>
           </div>
 
           <div className="flex min-h-[44px] min-w-0 items-center justify-end gap-1 sm:col-start-3 sm:gap-2">
-            <div className="max-sm:hidden">
-              <ClubFundsDisplay />
-            </div>
+            <ClubFundsDisplay />
             <HeaderAuthControls />
           </div>
         </div>

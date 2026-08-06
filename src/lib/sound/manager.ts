@@ -50,6 +50,9 @@ export const SOUND_FILES = {
   slotSpinTick: "/sounds/slot-spin-tick.mp3",
   slotLand: "/sounds/slot-land.mp3",
   // Feature events — reuse existing assets; synth falls back if files missing.
+  matchStarted: "/sounds/season-start.mp3",
+  fullTime: "/sounds/crowd.mp3",
+  promotion: "/sounds/select.mp3",
   popupOpen: "/sounds/menu-open.mp3",
   popupClose: "/sounds/menu-close.mp3",
   boostSelected: "/sounds/select.mp3",
@@ -106,6 +109,9 @@ const COOLDOWN_MS: Partial<Record<SoundId, number>> = {
   warning: 280,
   popupOpen: 180,
   popupClose: 180,
+  matchStarted: 400,
+  fullTime: 350,
+  promotion: 220,
   boostSelected: 140,
   boostSuccess: 220,
   boostFailed: 220,
@@ -113,6 +119,14 @@ const COOLDOWN_MS: Partial<Record<SoundId, number>> = {
   cupProgress: 300,
   calendarComplete: 250,
   friendlyConfirm: 180,
+  futureStarReveal: 280,
+  transferOffer: 280,
+  transferComplete: 250,
+  wccWin: 400,
+  goldenPointStart: 320,
+  goldenPointWin: 350,
+  managerSacked: 400,
+  managerAppointed: 350,
 };
 
 let interactionUnlocked = false;
@@ -191,6 +205,9 @@ async function tryPlayFile(path: string, volume = 0.32): Promise<boolean> {
 const SYNTH_ALIASES: Partial<Record<SoundId, keyof typeof synth>> = {
   popupOpen: "menuOpen",
   popupClose: "menuClose",
+  matchStarted: "seasonStart",
+  fullTime: "crowd",
+  promotion: "draftPlace",
   boostSelected: "select",
   boostSuccess: "success",
   boostFailed: "warning",

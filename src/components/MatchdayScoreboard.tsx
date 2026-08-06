@@ -21,9 +21,6 @@ export function MatchdayScoreboard({
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 animate-pulse rounded-full bg-theme-primary" />
-            <span className={`${TYPO.sectionLabel} text-theme-primary`}>
-              Super League
-            </span>
           </div>
           <div>
             <p className="font-display text-sm font-black uppercase tracking-wider text-white sm:text-base">

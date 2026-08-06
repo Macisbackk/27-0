@@ -14,7 +14,7 @@ import {
   managerModalHeaderClass,
   managerPillClass,
 } from "@/lib/manager/managerSurfaces";
-import { playMenuOpen, playUiClick } from "@/lib/sound";
+import { playTransferOffer, playUiClick } from "@/lib/sound";
 
 interface ManagerIncomingBidModalProps {
   career: ManagerCareer;
@@ -75,26 +75,26 @@ export function ManagerIncomingBidModal({
   const panelRef = useModalA11y(true, handleDismiss);
 
   useEffect(() => {
-    playMenuOpen();
+    playTransferOffer();
   }, []);
 
   if (!display || !offer.playerId) return null;
 
   const pill = offer.reserveOffer
-    ? "Reserve bid"
+    ? "Reserve squad offer"
     : listed
-      ? "Listed player"
-      : "Unlisted player";
+      ? "Senior squad offer · Listed"
+      : "Senior squad offer";
   const headline = offer.reserveOffer
-    ? "Championship Approach"
+    ? "Reserve Transfer Offer"
     : listed
-      ? "Transfer Offer"
-      : "Transfer Approach";
+      ? "Senior Transfer Offer"
+      : "Senior Transfer Approach";
   const intro = offer.reserveOffer
     ? `${buyer} have bid ${formatWage(fee)} for reserve ${display.name}.`
     : listed
-      ? `${buyer} have offered ${formatWage(fee)} for ${display.name}.`
-      : `${buyer} want to sign ${display.name} without them being listed for transfer.`;
+      ? `${buyer} have offered ${formatWage(fee)} for senior player ${display.name}.`
+      : `${buyer} want to sign senior player ${display.name} without them being listed for transfer.`;
 
   return (
     <div

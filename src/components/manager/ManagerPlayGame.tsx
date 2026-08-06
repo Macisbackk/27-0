@@ -40,7 +40,7 @@ import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getDisplayedOpponentTeamRating } from "@/lib/manager/managerOpponentRating";
 import { managerResultBadgeClass } from "@/lib/manager/managerSurfaces";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
-import { playSimulateRound, playUiClick } from "@/lib/sound";
+import { playMatchStarted, playFullTime, playGoldenPointStart, playGoldenPointWin, playSimulateRound, playUiClick } from "@/lib/sound";
 
 const COMMANDS = LIVE_MATCH_COMMANDS;
 
@@ -71,6 +71,7 @@ export function ManagerPlayGame({
   const [abandonConfirmOpen, setAbandonConfirmOpen] = useState(false);
   const [applyError, setApplyError] = useState<string | null>(null);
   const finishedRef = useRef(false);
+  const completionSoundKeyRef = useRef<string | null>(null);
   const careerRef = useRef(career);
   const commandRef = useRef(command);
   const liveRef = useRef(live);
@@ -88,6 +89,7 @@ export function ManagerPlayGame({
     setClockRunning(false);
     setHasStarted(false);
     finishedRef.current = false;
+    completionSoundKeyRef.current = null;
   }, [fixtureKey]);
 
   const finishMatch = useCallback(
@@ -142,8 +144,26 @@ export function ManagerPlayGame({
     return () => window.clearInterval(timer);
   }, [fixtureKey, clockRunning, live?.phase, sched]);
 
+  useEffect(() => {
+    if (!live?.isComplete) return;
+    const key = `${live.fixtureId}:${live.userScore}-${live.oppScore}`;
+    if (completionSoundKeyRef.current === key) return;
+    completionSoundKeyRef.current = key;
+    const hadGoldenPoint = live.events.some((e) => e.period === "golden_point");
+    if (hadGoldenPoint) {
+      playGoldenPointStart();
+      window.setTimeout(() => {
+        const userWon = live.userScore > live.oppScore;
+        if (userWon) playGoldenPointWin();
+        else playFullTime();
+      }, 280);
+    } else {
+      playFullTime();
+    }
+  }, [live?.isComplete, live?.fixtureId, live?.userScore, live?.oppScore, live?.events]);
+
   const handleStartGame = () => {
-    playUiClick();
+    playMatchStarted();
     setHasStarted(true);
     setClockRunning(true);
     setLive((prev) =>
@@ -293,18 +313,18 @@ export function ManagerPlayGame({
             </p>
           ) : null}
 
-          <div className="mt-1.5 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 font-[family-name:var(--font-pitch)] text-[length:var(--text-section-header)] uppercase tracking-wide leading-tight text-white">
+          <div className="mt-1.5 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 uppercase tracking-wide leading-tight text-white">
             <span
-              className={`truncate text-right ${live.isHome ? "text-theme-primary" : ""}`}
+              className={`min-w-0 truncate text-right font-[family-name:var(--font-pitch)] text-[length:var(--text-body)] sm:text-[length:var(--text-section-header)] ${live.isHome ? "text-theme-primary" : ""}`}
               title={homeName}
             >
               {homeName}
             </span>
-            <span className="shrink-0 text-center text-theme-primary tabular-nums">
+            <span className="shrink-0 text-center font-display text-2xl font-black tabular-nums text-theme-primary sm:text-3xl">
               {homeScore}-{awayScore}
             </span>
             <span
-              className={`truncate text-left ${!live.isHome ? "text-theme-primary" : ""}`}
+              className={`min-w-0 truncate text-left font-[family-name:var(--font-pitch)] text-[length:var(--text-body)] sm:text-[length:var(--text-section-header)] ${!live.isHome ? "text-theme-primary" : ""}`}
               title={awayName}
             >
               {awayName}
@@ -404,13 +424,14 @@ export function ManagerPlayGame({
                   : "Waiting for action…"}
               </p>
             ) : (
-              <ul className="mt-1.5 min-h-0 flex-1 space-y-0.5 overflow-y-auto overscroll-contain pr-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-pitch-600/80">
+              <ul className="mt-1.5 min-h-0 flex-1 divide-y divide-pitch-700/30 overflow-y-auto overscroll-contain pr-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-pitch-600/80">
                 {matchEvents.map((ev, i) => (
                   <ManagerMatchEventLine
                     key={`${ev.minute}-${ev.type}-${i}`}
                     event={ev}
                     userClub={career.club}
                     opponentClub={sched.opponent}
+                    className="py-1.5"
                   />
                 ))}
               </ul>

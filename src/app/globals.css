@@ -160,6 +160,12 @@ body {
   min-width: 0;
 }
 
+/* Hide site footer while overlays / spins hold a scroll lock — popups stay above chrome. */
+html[data-ui-overlay="1"] .site-footer {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 @media (max-width: 639px) {
   .manager-mobile-nav-pad {
     padding-bottom: var(--manager-mobile-nav-h);
@@ -457,18 +463,17 @@ body {
 
 /* Player Showcase — shared card name/header geometry (all player types). */
 .showcase-player-card {
-  --showcase-card-padding-inline: 1rem;
-  --showcase-card-padding-top: 0.85rem;
-  --showcase-card-padding-bottom: 0.85rem;
-  --showcase-header-gap: 0.5rem;
-  --showcase-strip-gap: 0.5rem;
+  --showcase-card-padding-inline: 0.875rem;
+  --showcase-card-padding-top: 0.7rem;
+  --showcase-card-padding-bottom: 0.7rem;
+  --showcase-header-gap: 0.35rem;
+  --showcase-strip-gap: 0.35rem;
   overflow: hidden;
 }
 
 .showcase-player-card__strip {
   display: block;
   width: 100%;
-  /* Clear gap between club strip and name header (body padding adds the rest). */
   margin-bottom: 0;
 }
 
@@ -476,7 +481,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.35rem;
+  gap: 0.3rem;
   width: 100%;
   min-width: 0;
   margin: 0;
@@ -499,7 +504,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.35rem;
+  gap: 0.3rem;
   width: 100%;
   min-width: 0;
 }
@@ -508,8 +513,7 @@ body {
   margin: 0;
   min-width: 0;
   max-width: 100%;
-  /* Full-width name row — badges never compress this into a tiny column. */
-  min-height: 2.6em;
+  min-height: 0;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -550,6 +554,45 @@ body {
   color: #9ca3af;
 }
 
+.showcase-player-card__facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.35rem;
+  margin: 0.1rem 0 0;
+  min-width: 0;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: #d1d5db;
+}
+
+.showcase-player-card__fact {
+  min-width: 0;
+}
+
+.showcase-player-card__fact-label {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.showcase-player-card__fact-value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #e5e7eb;
+}
+
+.showcase-player-card__fact-value--rating {
+  color: var(--rating, #fbbf24);
+}
+
+.showcase-player-card__fact-sep {
+  color: #4b5563;
+  font-weight: 500;
+}
+
 .showcase-player-card__view {
   align-self: flex-start;
   margin-top: 0.15rem;
@@ -562,8 +605,8 @@ body {
 @media (max-width: 639px) {
   .showcase-player-card {
     --showcase-card-padding-inline: 0.75rem;
-    --showcase-card-padding-top: 0.65rem;
-    --showcase-card-padding-bottom: 0.65rem;
+    --showcase-card-padding-top: 0.55rem;
+    --showcase-card-padding-bottom: 0.55rem;
   }
 }
 
@@ -589,10 +632,11 @@ body {
   word-break: normal;
   line-height: 1.25;
   writing-mode: horizontal-tb;
+  padding-inline-end: 0.25rem;
 }
 
 .player-detail-modal__meta {
-  margin: 0.35rem 0 0;
+  margin: 0;
   color: #9ca3af;
   font-size: 0.8125rem;
   line-height: 1.35;
@@ -601,6 +645,31 @@ body {
 
 .player-detail-modal__close {
   flex-shrink: 0;
+}
+
+.player-detail-sheet__rating {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.player-detail-sheet__rating-main,
+.player-detail-sheet__rating-side {
+  min-width: 0;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.player-detail-sheet__rating-value {
+  margin-top: 0.15rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--rating, #fbbf24);
 }
 
 @media (max-width: 639px) {
@@ -2547,5 +2616,12 @@ button.mode-start-btn-hard,
 
   .animate-pulse {
     animation: none !important;
+  }
+
+  .mobile-bottom-sheet,
+  .mobile-modal-panel,
+  .game-modal-panel {
+    animation: none !important;
+    transition: none !important;
   }
 }

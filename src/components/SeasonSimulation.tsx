@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
+  playFullTime,
   playMatchBigWin,
   playMatchDefeat,
   playMatchNarrowWin,
+  playMatchStarted,
   playMatchUpsetVictory,
   playPerfectSeason,
   playSeasonComplete,
@@ -31,15 +33,23 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
   const [losses, setLosses] = useState(0);
   const [phase, setPhase] = useState<"simulating" | "complete">("simulating");
   const seasonCompleteSoundPlayed = useRef(false);
+  const matchStartedSoundPlayed = useRef(false);
 
   const currentFixture =
     gameIndex > 0 ? result.fixtures[gameIndex - 1] : null;
+
+  useEffect(() => {
+    if (matchStartedSoundPlayed.current) return;
+    matchStartedSoundPlayed.current = true;
+    playMatchStarted();
+  }, []);
 
   useEffect(() => {
     if (gameIndex >= SEASON_GAMES) {
       setPhase("complete");
       if (!seasonCompleteSoundPlayed.current) {
         seasonCompleteSoundPlayed.current = true;
+        playFullTime();
         if (result.isPerfect) playPerfectSeason();
         else if (result.wins === 0) playWinlessSeason();
         else playSeasonComplete();
@@ -87,7 +97,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        Super League Campaign
+        Season
       </motion.h2>
 
       <div className="mt-6 w-full max-w-lg">

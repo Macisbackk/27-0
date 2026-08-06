@@ -47,7 +47,7 @@ import { getPlayerById } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Player, Position } from "@/lib/types";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
-import { playUiClick } from "@/lib/sound";
+import { playUiClick, playTransferOffer, playTransferComplete } from "@/lib/sound";
 
 interface ManagerTransfersProps {
   career: ManagerCareer;
@@ -247,9 +247,12 @@ export function ManagerTransfers({
     });
 
     if (result.accepted) {
+      playTransferComplete();
       onUpdate(completePlayerPurchase(career, playerId, club, offer, listed));
       setOfferPlayerId(null);
       setListedNegotiateId(null);
+    } else {
+      playTransferOffer();
     }
   };
 
@@ -313,10 +316,13 @@ export function ManagerTransfers({
     });
 
     if (result.accepted) {
+      playTransferComplete();
       onUpdate(completeFreeAgentSigning(career, playerId, offer));
       setFreeAgentNegotiateId(null);
       setListedNegotiateId(null);
       setOfferPlayerId(null);
+    } else {
+      playTransferOffer();
     }
   };
 

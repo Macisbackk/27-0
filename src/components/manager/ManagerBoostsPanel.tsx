@@ -22,7 +22,7 @@ import { validateBoostOwned } from "@/lib/boosts/validateBoost";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerSectionCard } from "@/components/manager/manager-ui";
-import { playUiClick } from "@/lib/sound";
+import { playBoostSuccess, playBoostFailed, playUiClick } from "@/lib/sound";
 
 const ALL_MANAGER_STAGES: BoostActivationStage[] = [
   "manager-career",
@@ -145,6 +145,7 @@ export function ManagerBoostsPanel({
 
     if (!result.success || !result.career) {
       setBusy(false);
+      playBoostFailed();
       setError(result.reason ?? "Boost could not be applied.");
       return;
     }
@@ -161,10 +162,12 @@ export function ManagerBoostsPanel({
     setBusy(false);
 
     if (!consumed.success) {
+      playBoostFailed();
       setError(consumed.reason ?? "Could not consume boost from inventory.");
       return;
     }
 
+    playBoostSuccess();
     setPendingBoost(null);
     setSelectedPlayerId(null);
     setSelectedReserveId(null);

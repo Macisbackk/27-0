@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ClubLogoBox } from "@/components/ClubBadge";
-import { GameButton } from "@/components/ui/GameButton";
 import type { Player } from "@/lib/types";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { getClubColors } from "@/lib/clubs";
@@ -68,8 +67,16 @@ export function SlotTeamYearPicker({
   const topRating = sortedEntries[0]?.player.peakRating ?? 0;
   const choiceCount = sortedEntries.length;
 
+  const canRespin =
+    !!onRespin && !disabled && respinsRemaining > 0 && !respinLocked;
+  const showRespin = !!onRespin && !hardMode;
+  const respinLabel =
+    respinsRemaining > 0
+      ? `Respin (${respinsRemaining})`
+      : "No respins";
+
   const handleRespin = () => {
-    if (!onRespin || disabled || respinsRemaining <= 0 || respinLocked) return;
+    if (!canRespin || !onRespin) return;
     setRespinLocked(true);
     playUiClick();
     onRespin();
@@ -89,7 +96,7 @@ export function SlotTeamYearPicker({
         }}
       >
         <div
-          className="border-b border-pitch-700/40 px-3 py-3 sm:px-6 sm:py-4"
+          className="border-b border-pitch-700/40 px-3 py-2.5 sm:px-6 sm:py-4"
           style={{
             background: `linear-gradient(135deg, ${clubColors.primary}1a 0%, transparent 55%)`,
           }}
@@ -99,7 +106,7 @@ export function SlotTeamYearPicker({
               type="button"
               onClick={onBack}
               disabled={disabled}
-              className={`mb-3 ${LINK.subtle} disabled:opacity-40`}
+              className={`mb-2 ${LINK.subtle} disabled:opacity-40`}
             >
               ← Back to team sheet
             </button>
@@ -123,11 +130,11 @@ export function SlotTeamYearPicker({
               <h2 className="mt-0.5 font-display text-lg font-bold leading-tight text-white sm:text-2xl">
                 {target.team}
               </h2>
-              <div className="mt-2 flex flex-wrap items-center gap-2">
-                <span className="rounded-md border border-white/10 bg-pitch-950/70 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-theme-primary">
+              <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                <span className="rounded-md border border-white/10 bg-pitch-950/70 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-theme-primary">
                   {shortYear}
                 </span>
-                <span className="rounded-md border border-white/10 bg-pitch-950/70 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-gray-300">
+                <span className="rounded-md border border-white/10 bg-pitch-950/70 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-gray-300">
                   {entries.length} available
                 </span>
               </div>
@@ -143,17 +150,10 @@ export function SlotTeamYearPicker({
           ) : (
             <>
               {eraMode ? (
-                <EraRatingExplanation compact className="mb-2" />
+                <EraRatingExplanation compact className="mb-1.5 px-1" />
               ) : (
-                <CurrentRatingExplanation compact className="mb-2" />
+                <CurrentRatingExplanation compact className="mb-1.5 px-1" />
               )}
-              <p className={`mb-3 text-center ${TYPO.meta}`}>
-                Tap{" "}
-                <span className="font-semibold text-theme-primary">
-                  Select Player
-                </span>{" "}
-                to add them
-              </p>
               <div className={quickPlayerChoiceGridClass(choiceCount)}>
                 {sortedEntries.map(({ player }, index) => {
                   const isTopPick =
@@ -179,8 +179,12 @@ export function SlotTeamYearPicker({
                         topPick={isTopPick}
                         boosted={boosted}
                         disabled={disabled}
-                        selectLabel="Select Player"
+                        selectLabel="Select"
                         showDetailsAction={!hardMode}
+                        showRespinAction={showRespin}
+                        respinLabel={respinLabel}
+                        respinDisabled={!canRespin}
+                        onRespin={showRespin ? handleRespin : undefined}
                         onSelect={() => {
                           playPlayerSelect();
                           onSelect(player);
@@ -198,26 +202,12 @@ export function SlotTeamYearPicker({
                   );
                 })}
               </div>
-
-              {onRespin && (
-                <div className="mx-auto mt-4 w-full max-w-md flex-col items-center gap-2 flex sm:mt-5">
-                  <GameButton
-                    variant="secondary"
-                    size="md"
-                    fullWidth
-                    disabled={
-                      disabled || respinsRemaining <= 0 || respinLocked
-                    }
-                    onClick={handleRespin}
-                  >
-                    {respinsRemaining > 0
-                      ? `Respin — ${respinsRemaining} remaining`
-                      : "No respins remaining"}
-                  </GameButton>
-                  <p className={`${TYPO.meta} text-center`}>
-                    {maxRespins} respins per run · does not use a draft pick
-                  </p>
-                </div>
+              {showRespin ? (
+                <p className={`mx-auto mt-2 max-w-md pb-3 text-center ${TYPO.meta}`}>
+                  {maxRespins} respins per run · does not use a draft pick
+                </p>
+              ) : (
+                <div className="pb-3" />
               )}
             </>
           )}

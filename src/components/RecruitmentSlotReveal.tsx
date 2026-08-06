@@ -17,13 +17,12 @@ import { getClubColors } from "@/lib/clubs";
 import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { playSlotLand, playSlotSpinStart, playSlotSpinTick } from "@/lib/sound";
-import { CARD, SPACING, BORDER } from "@/lib/ui/design-system";
+import { SPACING } from "@/lib/ui/design-system";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { uiLayerClass } from "@/lib/ui/layers";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { TYPO } from "@/lib/ui/typography";
 import { SlotReel, type SlotReelHandle } from "./SlotReel";
-import { EraRatingExplanation } from "./EraRatingExplanation";
 
 const LAND_HOLD_MS = 380;
 const TICK_SOUND_EVERY_ITEMS = 3;
@@ -31,12 +30,15 @@ const TICK_SOUND_EVERY_ITEMS = 3;
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
   spinVariant?: SpinPoolVariant;
+  /** Small status line for an armed pre-game boost (no boost controls). */
+  boostStatus?: string | null;
   onComplete: () => void;
 }
 
 export function RecruitmentSlotReveal({
   target,
   spinVariant = "current",
+  boostStatus = null,
   onComplete,
 }: RecruitmentSlotRevealProps) {
   const isEraSpin = spinVariant === "era";
@@ -48,7 +50,8 @@ export function RecruitmentSlotReveal({
   const [isSpinning, setIsSpinning] = useState(true);
   const [landed, setLanded] = useState(false);
 
-  useScrollLock(true, "quick-mode-spin");
+  // Lock while spinning; release once the result has settled.
+  useScrollLock(!landed, "quick-mode-spin");
 
   const clubColors = useMemo(
     () => getClubColors(target.team),
@@ -206,104 +209,90 @@ export function RecruitmentSlotReveal({
   return (
     <BodyPortal>
       <div
-        className={`recruitment-spin-backdrop fixed inset-0 flex items-center justify-center bg-black/88 ${uiLayerClass("criticalAnimation")} ${SPACING.modalBackdrop}`}
+        className={`recruitment-spin-backdrop fixed inset-0 flex items-center justify-center bg-black/90 ${uiLayerClass("criticalAnimation")} ${SPACING.modalBackdrop}`}
         role="dialog"
         aria-modal="true"
         aria-label="Recruitment spin"
       >
         <div
-          className={`recruitment-spin-panel ${CARD.elevated} w-full max-w-lg overflow-hidden border shadow-[0_14px_34px_rgba(0,0,0,0.28)] ${
-            landed ? BORDER.selectedMuted : BORDER.default
-          }`}
+          className="recruitment-spin-panel w-full max-w-[min(22rem,92vw)] overflow-hidden rounded-[var(--mobile-radius-medium,10px)] border border-white/12 bg-[var(--mobile-surface-secondary,#080c0d)] shadow-[0_14px_34px_rgba(0,0,0,0.4)]"
           style={{
             boxShadow: landed
-              ? `0 14px 34px rgba(0,0,0,0.28), inset 3px 0 0 ${clubColors.primary}`
-              : "0 14px 34px rgba(0,0,0,0.28), inset 3px 0 0 rgba(100,116,139,0.45)",
+              ? `0 14px 34px rgba(0,0,0,0.4), inset 3px 0 0 ${clubColors.primary}`
+              : "0 14px 34px rgba(0,0,0,0.4), inset 3px 0 0 rgba(100,116,139,0.45)",
             borderColor: landed ? clubColors.primary : undefined,
             transition: landed
               ? "box-shadow 0.35s ease-out, border-color 0.35s ease-out"
               : undefined,
           }}
         >
-        <div
-          className="border-b border-pitch-700/50 px-5 py-4 text-center sm:px-8 sm:py-5"
-          style={{
-            background: landed
-              ? `linear-gradient(180deg, ${clubColors.primary}22 0%, transparent 100%)`
-              : "linear-gradient(180deg, rgba(51,65,85,0.35) 0%, transparent 100%)",
-            transition: landed ? "background 0.35s ease-out" : undefined,
-          }}
-        >
-          <p className={TYPO.sectionLabel}>Recruitment draw</p>
-          <p className="mt-1 min-h-[1.75rem] font-display text-lg font-bold text-white sm:min-h-[1.875rem] sm:text-xl">
-            {isSpinning ? "Spinning…" : "You landed on"}
-          </p>
-        </div>
-
-        <div ref={shellRef} className="px-4 py-6 sm:px-8 sm:py-8">
-          <div
-            className={`recruitment-spin-reels flex max-w-full items-stretch justify-center ${
-              isEraSpin ? "gap-2 sm:gap-3" : ""
-            }`}
-          >
-            <div
-              className={`slot-reveal-reel recruitment-spin-reel min-w-0 rounded-2xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1.5 ${
-                isEraSpin ? "flex-1" : "w-full"
-              } ${landed ? "recruitment-spin-reel--landed" : ""}`}
-            >
-              <SlotReel
-                ref={teamReelRef}
-                strip={teamPlan.strip}
-                formatItem={formatSpinReelTeamName}
-                textClassName="slot-reveal-team-name"
-                useClubColors
-              />
-            </div>
-            {isEraSpin && yearPlan && (
-              <div
-                className={`slot-reveal-reel slot-reveal-year-reel recruitment-spin-reel recruitment-spin-year-reel min-w-0 shrink-0 flex-1 rounded-2xl border-2 border-pitch-600/70 bg-pitch-950/80 px-1.5 ${
-                  landed ? "recruitment-spin-reel--landed" : ""
-                }`}
-              >
-                <SlotReel
-                  ref={yearReelRef}
-                  strip={yearPlan.strip}
-                  formatItem={formatShortYear}
-                  textClassName="slot-reveal-year-text tabular-nums"
-                />
-              </div>
-            )}
+          <div className="border-b border-white/10 px-4 py-2.5 text-center">
+            <p className={`${TYPO.sectionLabel} text-pitch-400`}>
+              {isSpinning ? "Spinning…" : "Landed"}
+            </p>
+            {boostStatus ? (
+              <p className={`mt-1 ${TYPO.meta} text-theme-primary/90`}>
+                {boostStatus}
+              </p>
+            ) : null}
           </div>
 
-          {/* Always reserve height so the panel does not jump when the result fades in. */}
-          <div
-            className={`mt-5 min-h-[4.25rem] text-center transition-opacity duration-300 sm:min-h-[4.75rem] ${
-              landed ? "opacity-100" : "opacity-0"
-            }`}
-            aria-hidden={!landed}
-          >
-            <p className="truncate px-1 font-display text-xl font-black text-white sm:text-2xl">
-              {target.team}
-              {isEraSpin && (
-                <>
-                  {" "}
-                  <span className="text-theme-primary">
-                    {formatShortYear(target.year)}
-                  </span>
-                </>
+          <div ref={shellRef} className="px-3 py-4 sm:px-5 sm:py-5">
+            <div
+              className={`recruitment-spin-reels flex max-w-full items-stretch justify-center ${
+                isEraSpin ? "gap-2" : ""
+              }`}
+            >
+              <div
+                className={`slot-reveal-reel recruitment-spin-reel min-w-0 overflow-hidden rounded-xl border border-pitch-600/70 bg-pitch-950/80 px-1 ${
+                  isEraSpin ? "flex-1" : "w-full"
+                } ${landed ? "recruitment-spin-reel--landed" : ""}`}
+              >
+                <SlotReel
+                  ref={teamReelRef}
+                  strip={teamPlan.strip}
+                  formatItem={formatSpinReelTeamName}
+                  textClassName="slot-reveal-team-name"
+                  useClubColors
+                />
+              </div>
+              {isEraSpin && yearPlan && (
+                <div
+                  className={`slot-reveal-reel slot-reveal-year-reel recruitment-spin-reel recruitment-spin-year-reel min-w-0 shrink-0 flex-1 overflow-hidden rounded-xl border border-pitch-600/70 bg-pitch-950/80 px-1 ${
+                    landed ? "recruitment-spin-reel--landed" : ""
+                  }`}
+                >
+                  <SlotReel
+                    ref={yearReelRef}
+                    strip={yearPlan.strip}
+                    formatItem={formatShortYear}
+                    textClassName="slot-reveal-year-text tabular-nums"
+                  />
+                </div>
               )}
-            </p>
-            {isEraSpin ? (
-              <EraRatingExplanation compact className="mt-1.5" />
-            ) : (
-              <p className={`mt-1.5 ${TYPO.bodySm} text-gray-400`}>
-                Choose your signing…
+            </div>
+
+            <div
+              className={`mt-3 min-h-[2.5rem] text-center transition-opacity duration-300 ${
+                landed ? "opacity-100" : "opacity-0"
+              }`}
+              aria-hidden={!landed}
+            >
+              <p className="truncate px-1 font-display text-lg font-black text-white sm:text-xl">
+                {target.team}
+                {isEraSpin && (
+                  <>
+                    {" "}
+                    <span className="text-theme-primary">
+                      {formatShortYear(target.year)}
+                    </span>
+                  </>
+                )}
               </p>
-            )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </BodyPortal>
   );
 }

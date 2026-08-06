@@ -6,6 +6,7 @@ import { MatchDetailsPanel } from "@/components/MatchDetailsPanel";
 import { MatchPlayerOfTheMatchCard } from "@/components/MatchPlayerOfTheMatchCard";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
+import { CollapsibleDetails } from "@/components/ui/MobileLayout";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -204,24 +205,44 @@ export function ManagerMatchReview({
             <p
               className={`mb-2 text-xs font-semibold uppercase tracking-wider ${matchOccasion.momentTextClass}`}
             >
+              {matchOccasion.momentLine}
+            </p>
+          ) : matchOccasion?.weekLabel ? (
+            <p
+              className={`mb-2 text-xs font-semibold uppercase tracking-wider ${matchOccasion.momentTextClass}`}
+            >
               {matchOccasion.weekLabel}
             </p>
           ) : null}
-          <p className="text-xl font-bold text-white sm:text-2xl">
-            <span className={fixture.isHome ? "text-theme-primary" : ""}>
-              {fixture.isHome ? career.club : fixture.opponent}
-            </span>{" "}
-            <span className="text-theme-primary">
-              {fixture.isHome ? fixture.pointsFor : fixture.pointsAgainst}
-            </span>
-            <span className="mx-2 text-pitch-500">-</span>
-            <span className="text-theme-primary">
-              {fixture.isHome ? fixture.pointsAgainst : fixture.pointsFor}
-            </span>{" "}
-            <span className={!fixture.isHome ? "text-theme-primary" : ""}>
-              {!fixture.isHome ? career.club : fixture.opponent}
-            </span>
-          </p>
+          {(() => {
+            const homeName = fixture.isHome ? career.club : fixture.opponent;
+            const awayName = !fixture.isHome ? career.club : fixture.opponent;
+            const homePts = fixture.isHome
+              ? fixture.pointsFor
+              : fixture.pointsAgainst;
+            const awayPts = fixture.isHome
+              ? fixture.pointsAgainst
+              : fixture.pointsFor;
+            return (
+              <div className="mt-1 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 uppercase tracking-wide leading-tight text-white">
+                <span
+                  className={`min-w-0 truncate text-right font-[family-name:var(--font-pitch)] text-[length:var(--text-body)] sm:text-[length:var(--text-section-header)] ${fixture.isHome ? "text-theme-primary" : ""}`}
+                  title={homeName}
+                >
+                  {homeName}
+                </span>
+                <span className="shrink-0 text-center font-display text-2xl font-black tabular-nums text-theme-primary sm:text-3xl">
+                  {homePts}-{awayPts}
+                </span>
+                <span
+                  className={`min-w-0 truncate text-left font-[family-name:var(--font-pitch)] text-[length:var(--text-body)] sm:text-[length:var(--text-section-header)] ${!fixture.isHome ? "text-theme-primary" : ""}`}
+                  title={awayName}
+                >
+                  {awayName}
+                </span>
+              </div>
+            );
+          })()}
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{roundLabel}</p>
         </div>
 
@@ -372,19 +393,37 @@ export function ManagerMatchReview({
       )}
 
       {fixture.meta?.liveEvents && fixture.meta.liveEvents.length > 0 && (
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <p className={TYPO.sectionLabel}>Match Events</p>
-          <ul className={`mt-2 ${SPACING.stackSm}`}>
-            {[...fixture.meta.liveEvents].reverse().map((ev, i) => (
-              <ManagerMatchEventLine
-                key={`${ev.minute}-${i}`}
-                event={ev}
-                userClub={career.club}
-                opponentClub={fixture.opponent}
-              />
-            ))}
-          </ul>
-        </div>
+        <>
+          <div className="sm:hidden">
+            <CollapsibleDetails summary="Match Events">
+              <ul className="divide-y divide-pitch-700/30">
+                {[...fixture.meta.liveEvents].reverse().map((ev, i) => (
+                  <ManagerMatchEventLine
+                    key={`${ev.minute}-${i}`}
+                    event={ev}
+                    userClub={career.club}
+                    opponentClub={fixture.opponent}
+                    className="py-1.5"
+                  />
+                ))}
+              </ul>
+            </CollapsibleDetails>
+          </div>
+          <div className={`hidden sm:block ${CARD.base} ${SPACING.cardPadding}`}>
+            <p className={TYPO.sectionLabel}>Match Events</p>
+            <ul className="mt-2 divide-y divide-pitch-700/30">
+              {[...fixture.meta.liveEvents].reverse().map((ev, i) => (
+                <ManagerMatchEventLine
+                  key={`${ev.minute}-${i}`}
+                  event={ev}
+                  userClub={career.club}
+                  opponentClub={fixture.opponent}
+                  className="py-1.5"
+                />
+              ))}
+            </ul>
+          </div>
+        </>
       )}
 
       {fixture.meta?.injuries && fixture.meta.injuries.length > 0 && (

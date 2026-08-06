@@ -90,7 +90,7 @@ export function ManagerHubAlertsPanel({
   if (alerts.length === 0) return null;
 
   return (
-    <ManagerSectionCard title="Club priorities" variant="inset">
+    <ManagerSectionCard title="Urgent" variant="inset">
       <ul className="-mx-1 mt-2 divide-y divide-pitch-800/70" role="list">
         {alerts.map((alert) => (
           <HubAlertRow key={alert.id} alert={alert} onNavigate={onNavigate} />

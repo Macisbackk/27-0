@@ -18,7 +18,7 @@ function resolveChoicePlayerType(
 }
 
 /** Max primary tags shown on the selection card (rest go to details). */
-export const QUICK_PLAYER_CHOICE_MAX_TAGS = 2;
+export const QUICK_PLAYER_CHOICE_MAX_TAGS = 1;
 
 export type QuickPlayerChoiceTagId =
   | "goat"

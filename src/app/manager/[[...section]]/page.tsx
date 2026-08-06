@@ -114,6 +114,8 @@ import {
   playMatchDefeat,
   playMatchNarrowWin,
   playMatchUpsetVictory,
+  playTransferComplete,
+  playManagerAppointed,
   playUiClick,
 } from "@/lib/sound";
 import { PageShell } from "@/components/ui/PageShell";
@@ -922,6 +924,7 @@ export default function ManagerPage() {
           careerSlotRef.current = slot;
           setCareerState(next);
           refreshSaveSlots();
+          playManagerAppointed();
         } catch (err) {
           setAlertDialog({
             title: "Could not start career",
@@ -1163,6 +1166,7 @@ export default function ManagerPage() {
       return;
     }
     handleIncomingBidResolved(result.career);
+    playTransferComplete();
   };
 
   const handleIncomingBidReject = () => {
@@ -1735,6 +1739,7 @@ export default function ManagerPage() {
       base = hydrateManagerCareer(advanceToNextSeason(base));
     }
     const next = hydrateManagerCareer(takeOverClub(base, newClub, "sacked"));
+    playManagerAppointed();
     persist(next);
     goToView("hub");
   };

@@ -271,8 +271,160 @@ export function PlayerShowcase() {
     setCurrentPage(1);
   };
 
+  const filterPanel = (
+    <div className="space-y-4">
+      <FilterField label="Team">
+        <select
+          value={filters.club}
+          onChange={(e) =>
+            updateFilters((f) => ({ ...f, club: e.target.value }))
+          }
+          className={FILTER.input}
+        >
+          <option value="all">All Teams</option>
+          {clubs.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+      </FilterField>
+
+      <FilterField label="Year">
+        <select
+          value={filters.year === "all" ? "all" : String(filters.year)}
+          onChange={(e) =>
+            updateFilters((f) => ({
+              ...f,
+              year:
+                e.target.value === "all"
+                  ? "all"
+                  : Number.parseInt(e.target.value, 10),
+            }))
+          }
+          className={FILTER.input}
+        >
+          <option value="all">All Years</option>
+          {years.map((y) => (
+            <option key={y} value={y}>
+              {y}
+            </option>
+          ))}
+        </select>
+      </FilterField>
+
+      <FilterField label="Position">
+        <select
+          value={filters.position}
+          onChange={(e) =>
+            updateFilters((f) => ({
+              ...f,
+              position: e.target.value as Position | "all",
+            }))
+          }
+          className={FILTER.input}
+        >
+          <option value="all">All Positions</option>
+          {POSITIONS.map((p) => (
+            <option key={p} value={p}>
+              {POSITION_LABELS[p]}
+            </option>
+          ))}
+        </select>
+      </FilterField>
+
+      <FilterField label="Player Type">
+        <select
+          value={filters.status}
+          onChange={(e) =>
+            updateFilters((f) => ({
+              ...f,
+              status: e.target.value as PlayerCategory | "all",
+            }))
+          }
+          className={FILTER.input}
+        >
+          <option value="current">Current</option>
+          <option value="historic">Historic</option>
+          <option value="legend">Legend</option>
+          <option value="all">All</option>
+        </select>
+      </FilterField>
+
+      <FilterField label="Rating">
+        <select
+          value={filters.ratingMin}
+          onChange={(e) =>
+            updateFilters((f) => ({
+              ...f,
+              ratingMin: e.target.value as RatingFilter,
+            }))
+          }
+          className={FILTER.input}
+        >
+          <option value="all">Any Rating</option>
+          <option value="80-82">80–82</option>
+          <option value="83-85">83–85</option>
+          <option value="86-88">86–88</option>
+          <option value="89-91">89–91</option>
+          <option value="92-94">92–94</option>
+          <option value="95+">95+</option>
+        </select>
+      </FilterField>
+
+      <FilterField label="Tier">
+        <div className="flex flex-wrap gap-1.5">
+          <TierChip
+            active={filters.tier === "all"}
+            onClick={() => updateFilters((f) => ({ ...f, tier: "all" }))}
+          >
+            All
+          </TierChip>
+          {TIER_OPTIONS.map(([key, label]) => (
+            <TierChip
+              key={key}
+              active={filters.tier === key}
+              onClick={() => updateFilters((f) => ({ ...f, tier: key }))}
+            >
+              {label}
+            </TierChip>
+          ))}
+        </div>
+      </FilterField>
+
+      <FilterField label="Sort By">
+        <div className="flex flex-wrap gap-2">
+          {(
+            [
+              ["name", "A–Z"],
+              ["rating", "Rating"],
+              ["value", "Value"],
+              ["tries", "Tries"],
+              ["appearances", "Apps"],
+            ] as const
+          ).map(([key, label]) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => {
+                playUiClick();
+                setSortKey(key);
+                setSortDir(key === "name" ? "asc" : "desc");
+              }}
+              className={`rounded-lg border px-2.5 py-1.5 text-[11px] font-medium transition ${
+                sortKey === key ? FILTER.chipActive : FILTER.chipIdle
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </FilterField>
+    </div>
+  );
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <GameHeader
         eyebrow="Player Database"
         title="Player Showcase"
@@ -280,7 +432,12 @@ export function PlayerShowcase() {
         className="[&_.game-header__eyebrow]:text-gray-400"
       />
 
-      <GamePanel padded variant="elevated" flush>
+      <GamePanel
+        padded
+        variant="elevated"
+        flush
+        className="hidden sm:block"
+      >
         <p className={`mb-4 ${TYPO.sectionTitle}`}>Database Overview</p>
         <div className={`grid ${SPACING.cardGridGap} sm:grid-cols-2 lg:grid-cols-3`}>
           <GameStatCard
@@ -334,207 +491,87 @@ export function PlayerShowcase() {
       </GamePanel>
 
       <div className="grid gap-4 lg:grid-cols-[280px_1fr] lg:gap-6">
-        <GamePanel className="lg:hidden" variant="elevated" flush>
-          <button
-            type="button"
-            onClick={() => {
-              playUiClick();
-              setFiltersOpen((open) => !open);
-            }}
-            className="btn-press flex w-full items-center justify-between px-4 py-3"
-          >
-            <span className={TYPO.sectionTitle}>Filters</span>
-            <span className="text-xs text-gray-500">
-              {filtersOpen ? "Hide" : "Show"}
-            </span>
-          </button>
-        </GamePanel>
-
+        {/* Desktop sticky filter column */}
         <GamePanel
           variant="elevated"
           flush
-          className={`lg:sticky lg:top-20 ${
-            filtersOpen ? "" : "hidden lg:block"
-          }`}
+          className="hidden lg:sticky lg:top-20 lg:block"
         >
           <div className="flex max-h-[calc(100vh-6rem)] flex-col">
-          <div
-            className={`flex shrink-0 items-center justify-between ${SPACING.buttonGap} border-b border-pitch-600/30 px-4 py-3 sm:px-5`}
-          >
-            <h2 className={TYPO.sectionTitle}>Filters</h2>
-            <GameButton
-              variant="ghost"
-              size="sm"
-              fullWidth={false}
-              onClick={resetFilters}
+            <div
+              className={`flex shrink-0 items-center justify-between ${SPACING.buttonGap} border-b border-pitch-600/30 px-4 py-3 sm:px-5`}
             >
-              Reset
-            </GameButton>
-          </div>
-
-          <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overflow-x-hidden p-4 sm:p-5">
-          <FilterField label="Search">
-            <input
-              type="search"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Name, club, position…"
-              className={FILTER.input}
-            />
-          </FilterField>
-
-          <FilterField label="Team">
-            <select
-              value={filters.club}
-              onChange={(e) =>
-                updateFilters((f) => ({ ...f, club: e.target.value }))
-              }
-              className={FILTER.input}
-            >
-              <option value="all">All Teams</option>
-              {clubs.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </FilterField>
-
-          <FilterField label="Year">
-            <select
-              value={filters.year === "all" ? "all" : String(filters.year)}
-              onChange={(e) =>
-                updateFilters((f) => ({
-                  ...f,
-                  year:
-                    e.target.value === "all"
-                      ? "all"
-                      : Number.parseInt(e.target.value, 10),
-                }))
-              }
-              className={FILTER.input}
-            >
-              <option value="all">All Years</option>
-              {years.map((y) => (
-                <option key={y} value={y}>
-                  {y}
-                </option>
-              ))}
-            </select>
-          </FilterField>
-
-          <FilterField label="Position">
-            <select
-              value={filters.position}
-              onChange={(e) =>
-                updateFilters((f) => ({
-                  ...f,
-                  position: e.target.value as Position | "all",
-                }))
-              }
-              className={FILTER.input}
-            >
-              <option value="all">All Positions</option>
-              {POSITIONS.map((p) => (
-                <option key={p} value={p}>
-                  {POSITION_LABELS[p]}
-                </option>
-              ))}
-            </select>
-          </FilterField>
-
-          <FilterField label="Player Type">
-            <select
-              value={filters.status}
-              onChange={(e) =>
-                updateFilters((f) => ({
-                  ...f,
-                  status: e.target.value as PlayerCategory | "all",
-                }))
-              }
-              className={FILTER.input}
-            >
-              <option value="current">Current</option>
-              <option value="historic">Historic</option>
-              <option value="legend">Legend</option>
-              <option value="all">All</option>
-            </select>
-          </FilterField>
-
-          <FilterField label="Rating">
-            <select
-              value={filters.ratingMin}
-              onChange={(e) =>
-                updateFilters((f) => ({
-                  ...f,
-                  ratingMin: e.target.value as RatingFilter,
-                }))
-              }
-              className={FILTER.input}
-            >
-              <option value="all">Any Rating</option>
-              <option value="80-82">80–82</option>
-              <option value="83-85">83–85</option>
-              <option value="86-88">86–88</option>
-              <option value="89-91">89–91</option>
-              <option value="92-94">92–94</option>
-              <option value="95+">95+</option>
-            </select>
-          </FilterField>
-
-          <FilterField label="Tier">
-            <div className="flex flex-wrap gap-1.5">
-              <TierChip
-                active={filters.tier === "all"}
-                onClick={() => updateFilters((f) => ({ ...f, tier: "all" }))}
+              <h2 className={TYPO.sectionTitle}>Filters</h2>
+              <GameButton
+                variant="ghost"
+                size="sm"
+                fullWidth={false}
+                onClick={resetFilters}
               >
-                All
-              </TierChip>
-              {TIER_OPTIONS.map(([key, label]) => (
-                <TierChip
-                  key={key}
-                  active={filters.tier === key}
-                  onClick={() => updateFilters((f) => ({ ...f, tier: key }))}
-                >
-                  {label}
-                </TierChip>
-              ))}
+                Reset
+              </GameButton>
             </div>
-          </FilterField>
-
-          <FilterField label="Sort By">
-            <div className="flex flex-wrap gap-2">
-              {(
-                [
-                  ["name", "A–Z"],
-                  ["rating", "Rating"],
-                  ["value", "Value"],
-                  ["tries", "Tries"],
-                  ["appearances", "Apps"],
-                ] as const
-              ).map(([key, label]) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => {
-                    playUiClick();
-                    setSortKey(key);
-                    setSortDir(key === "name" ? "asc" : "desc");
-                  }}
-                  className={`rounded-lg border px-2.5 py-1.5 text-[11px] font-medium transition ${
-                    sortKey === key ? FILTER.chipActive : FILTER.chipIdle
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
+            <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overflow-x-hidden p-4 sm:p-5">
+              <FilterField label="Search">
+                <input
+                  type="search"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  placeholder="Name, club, position…"
+                  className={FILTER.input}
+                />
+              </FilterField>
+              {filterPanel}
             </div>
-          </FilterField>
-          </div>
           </div>
         </GamePanel>
 
-        <div className="min-w-0 space-y-4">
+        <div className="min-w-0 space-y-3 sm:space-y-4">
+          {/* Mobile compact toolbar — search always visible */}
+          <ScoreboardPanel
+            flush
+            className="space-y-2.5 px-3 py-2.5 sm:px-4 sm:py-3 lg:hidden"
+          >
+            <div className="flex items-center gap-2">
+              <input
+                type="search"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                placeholder="Search players…"
+                className={`${FILTER.input} min-w-0 flex-1`}
+                aria-label="Search players"
+              />
+              <GameButton
+                variant={filtersOpen ? "theme" : "secondary"}
+                size="sm"
+                fullWidth={false}
+                onClick={() => {
+                  playUiClick();
+                  setFiltersOpen((open) => !open);
+                }}
+              >
+                Filters
+                {activeFilters.length > 0 ? ` (${activeFilters.length})` : ""}
+              </GameButton>
+            </div>
+            {filtersOpen && (
+              <div className="border-t border-pitch-600/30 pt-3">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className={TYPO.sectionTitle}>More filters</p>
+                  <GameButton
+                    variant="ghost"
+                    size="sm"
+                    fullWidth={false}
+                    onClick={resetFilters}
+                  >
+                    Reset
+                  </GameButton>
+                </div>
+                {filterPanel}
+              </div>
+            )}
+          </ScoreboardPanel>
+
           <ScoreboardPanel
             flush
             className="flex flex-wrap items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3"
@@ -550,9 +587,9 @@ export function PlayerShowcase() {
                     key={chip.key}
                     type="button"
                     onClick={chip.clear}
-                    className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-0.5 text-[11px] font-medium transition ${FILTER.chipActive}`}
+                    className={`inline-flex max-w-full items-center gap-1 rounded-lg border px-2.5 py-0.5 text-[11px] font-medium transition ${FILTER.chipActive}`}
                   >
-                    {chip.label}
+                    <span className="truncate">{chip.label}</span>
                     <span aria-hidden>×</span>
                   </button>
                 ))}

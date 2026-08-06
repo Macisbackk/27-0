@@ -65,6 +65,26 @@ export const MOBILE = {
   /** Manager Hub: pad for bottom nav + play bar. */
   hubChromePad: "manager-mobile-hub-pad",
   navChromePad: "manager-mobile-nav-pad",
+  /** Level-2 section surface. */
+  section: "mobile-section",
+  sectionFlush: "mobile-section mobile-section--flush",
+  sectionHeader: "mobile-section__header",
+  pageHeader: "mobile-page-header",
+  pageHeaderTitle: "mobile-page-header__title",
+  pageHeaderContext: "mobile-page-header__context",
+  metricRow: "mobile-metric-row",
+  metricRowLabel: "mobile-metric-row__label",
+  metricRowValue: "mobile-metric-row__value",
+  fixtureCard: "mobile-fixture-card",
+  resultRow: "mobile-result-row",
+  resultRowScore: "mobile-result-row__score",
+  bottomSheet: "mobile-bottom-sheet",
+  modalPanel: "mobile-modal-panel",
+  overlayHeader: "mobile-overlay-header",
+  overlayBody: "mobile-overlay-body",
+  overlayFooter: "mobile-overlay-footer",
+  stepIndicator: "mobile-step-indicator",
+  clubAccentStrip: "mobile-club-accent-strip",
 } as const;
 
 /** Mobile-first modal / bottom-sheet pattern (matches ManagerDialog). */

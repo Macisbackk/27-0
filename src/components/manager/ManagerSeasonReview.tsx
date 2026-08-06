@@ -15,7 +15,7 @@ import { getPlayerById } from "@/lib/players";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { formatSquadRatingStars } from "@/lib/manager/club-config";
 import { getCareerClubStars } from "@/lib/manager/managerDifficulty";
-import { playSeasonComplete, playUiClick } from "@/lib/sound";
+import { playSeasonComplete, playUiClick, playManagerSacked } from "@/lib/sound";
 import {
   ManagerInfoRow,
   ManagerSectionCard,
@@ -67,6 +67,13 @@ export function ManagerSeasonReview({
   const trophies = getSeasonSummaryTrophyLabels(summary);
   const clubStars = getCareerClubStars(evaluatedCareer);
   const sacked = evaluation.finalDecision === "sack";
+  const sackSoundRef = useRef(false);
+  useEffect(() => {
+    if (!sacked || sackSoundRef.current) return;
+    sackSoundRef.current = true;
+    playManagerSacked();
+  }, [sacked]);
+
   const bestPlayer = summary.bestPlayerId
     ? getPlayerById(summary.bestPlayerId)
     : null;

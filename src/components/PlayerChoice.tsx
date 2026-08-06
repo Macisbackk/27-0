@@ -19,8 +19,6 @@ import {
   quickPlayerChoiceGridClass,
 } from "./QuickModePlayerChoiceCard";
 import { MOBILE } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
-import { GameButton } from "@/components/ui/GameButton";
 
 interface PlayerChoiceProps {
   playerA: Player;
@@ -91,6 +89,18 @@ export function PlayerChoice({
     rerollsRemaining > 0 &&
     !disabled;
 
+  const showRespin = !hardMode && !!onReroll;
+  const respinLabel =
+    rerollsRemaining > 0
+      ? `Respin (${rerollsRemaining})`
+      : "No respins";
+
+  const handleRespin = () => {
+    if (!canReroll || !onReroll) return;
+    playUiClick();
+    onReroll();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -98,11 +108,11 @@ export function PlayerChoice({
       transition={{ duration: 0.4, ease: "easeOut" }}
       className={`w-full ${MOBILE.minZero}`}
     >
-      <header className="mb-2 text-center sm:mb-4">
+      <header className="mb-2 text-center sm:mb-3">
         <p className={`${RL_SECTION_TITLE_CLASS} text-[10px] sm:text-xs`}>
           {draftMode ? "Draft Pick" : "Recruitment"}
         </p>
-        <h2 className="mt-0.5 font-display text-base font-black uppercase tracking-tight text-white sm:mt-2 sm:text-2xl">
+        <h2 className="mt-0.5 font-display text-base font-black uppercase tracking-tight text-white sm:mt-1 sm:text-2xl">
           {positionLabel}
         </h2>
         <p className={`mt-1 ${MOBILE.secondaryCopy}`}>
@@ -120,41 +130,11 @@ export function PlayerChoice({
         )}
 
         {draftMode && draftSquad && (
-          <div className="mx-auto mt-2 max-w-md sm:mt-4">
+          <div className="mx-auto mt-2 max-w-md sm:mt-3">
             <DraftPositionsRemaining squad={draftSquad} compact />
           </div>
         )}
       </header>
-
-      {!hardMode && onReroll ? (
-        <div className="mb-2 flex items-center justify-center gap-2 sm:mb-4">
-          <span className={`${TYPO.meta} uppercase tracking-wider`}>
-            Rerolls{" "}
-            <span
-              className={
-                rerollsRemaining > 0
-                  ? "font-bold text-theme-primary"
-                  : "font-bold text-pitch-500"
-              }
-            >
-              {rerollsRemaining}
-            </span>
-          </span>
-          <GameButton
-            variant="secondary"
-            size="sm"
-            fullWidth={false}
-            disabled={!canReroll}
-            className="min-h-[var(--mobile-tap-target)] px-4"
-            onClick={() => {
-              playUiClick();
-              onReroll();
-            }}
-          >
-            Respin
-          </GameButton>
-        </div>
-      ) : null}
 
       <div className={quickPlayerChoiceGridClass(2)}>
         <motion.div
@@ -170,8 +150,12 @@ export function PlayerChoice({
             ratingVisible={!hardMode}
             disabled={disabled}
             boosted={boosted}
-            selectLabel="Select Player"
+            selectLabel="Select"
             showDetailsAction={!hardMode}
+            showRespinAction={showRespin}
+            respinLabel={respinLabel}
+            respinDisabled={!canReroll}
+            onRespin={showRespin ? handleRespin : undefined}
             onSelect={() => onChoose(displayA)}
             onViewDetails={
               hardMode ? undefined : () => setDetailPlayer(displayA)
@@ -191,8 +175,12 @@ export function PlayerChoice({
             ratingVisible={!hardMode}
             disabled={disabled}
             boosted={boosted}
-            selectLabel="Select Player"
+            selectLabel="Select"
             showDetailsAction={!hardMode}
+            showRespinAction={showRespin}
+            respinLabel={respinLabel}
+            respinDisabled={!canReroll}
+            onRespin={showRespin ? handleRespin : undefined}
             onSelect={() => onChoose(displayB)}
             onViewDetails={
               hardMode ? undefined : () => setDetailPlayer(displayB)

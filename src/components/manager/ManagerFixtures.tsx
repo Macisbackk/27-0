@@ -1021,12 +1021,12 @@ export function ManagerFixtures({
               />
             ) : null}
           </div>
-          <p className="fixture-matchup-title mt-2 text-base font-bold leading-snug text-white sm:text-2xl">
-            <span>{career.club}</span>{" "}
+          <p className="fixture-matchup-title mt-2 font-[family-name:var(--font-pitch)] text-base font-bold uppercase tracking-wide leading-snug text-white sm:text-xl">
+            <span title={career.club}>{career.club}</span>
             <span className="text-pitch-500">
               {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
-            </span>{" "}
-            <span>{nextFixture.opponent}</span>
+            </span>
+            <span title={nextFixture.opponent}>{nextFixture.opponent}</span>
           </p>
           {nextMatchOccasion.momentLine ? (
             <p

@@ -13,12 +13,18 @@ export function CurrentRatingExplanation({
 }) {
   return (
     <p
-      className={`${compact ? TYPO.meta : TYPO.bodySm} text-center text-gray-300 ${className}`.trim()}
+      className={`${
+        compact
+          ? `${TYPO.meta} text-center text-pitch-500 leading-snug`
+          : `${TYPO.bodySm} text-center text-gray-300`
+      } ${className}`.trim()}
       aria-label="How Current Mode player ratings work"
     >
-      <span className="font-semibold text-theme-primary" aria-hidden>
-        ℹ
-      </span>{" "}
+      {compact ? null : (
+        <span className="font-semibold text-theme-primary" aria-hidden>
+          ℹ{" "}
+        </span>
+      )}
       {compact
         ? getCurrentRatingCompactExplanation()
         : getCurrentRatingExplanation()}

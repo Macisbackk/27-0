@@ -41,7 +41,7 @@ export function ManagerMobileBottomNav({
         className="fixed inset-x-0 bottom-0 z-50 border-t border-pitch-700/50 bg-pitch-950 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(0,0,0,0.35)] sm:hidden"
         aria-label="Manager mobile navigation"
       >
-        <div className="mx-auto grid max-w-lg grid-cols-6 gap-0.5 px-1.5 pt-2">
+        <div className="mx-auto grid max-w-lg grid-cols-6 gap-0.5 overflow-hidden px-1.5 pt-2">
           {MANAGER_PRIMARY_NAV_TABS.map((tab) => {
             const isActive = active === tab.id;
             return (
@@ -50,9 +50,9 @@ export function ManagerMobileBottomNav({
                 type="button"
                 disabled={disabled}
                 onClick={() => navigate(tab.id)}
-                className={`btn-press flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-sm border-2 px-0.5 py-2 text-center transition ${
+                className={`btn-press relative flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-sm border-2 px-0.5 py-2 text-center transition ${
                   isActive
-                    ? BTN.tabActive
+                    ? `${BTN.tabActive} shadow-[inset_0_-2px_0_0_var(--theme-text-on-primary)]`
                     : "border-transparent bg-pitch-900/50 text-pitch-300 hover:bg-pitch-800/60 hover:text-white"
                 } ${disabled ? "pointer-events-none opacity-40" : ""}`}
                 aria-current={isActive ? "page" : undefined}
@@ -75,11 +75,12 @@ export function ManagerMobileBottomNav({
             }}
             className={`btn-press relative flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-sm border-2 px-0.5 py-2 text-center transition ${
               moreActive || moreOpen
-                ? BTN.tabActive
+                ? `${BTN.tabActive} shadow-[inset_0_-2px_0_0_var(--theme-text-on-primary)]`
                 : "border-transparent bg-pitch-900/50 text-pitch-300 hover:bg-pitch-800/60 hover:text-white"
             } ${disabled ? "pointer-events-none opacity-40" : ""}`}
             aria-expanded={moreOpen}
             aria-haspopup="dialog"
+            aria-current={moreActive ? "page" : undefined}
           >
             <span className="text-lg leading-none" aria-hidden>
               ⋯

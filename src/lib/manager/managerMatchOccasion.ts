@@ -192,8 +192,13 @@ export function getManagerMatchOccasionPresentation(
         weekLabel: "Challenge Cup Week",
         badgeLabel: "Challenge Cup",
         badgeTone: "gold",
-        // Round already shown in UI badges/stats — avoid redundant subtitle.
-        momentLine: fixture.venue || undefined,
+        // Round/venue already shown in badges and venue label — avoid Home/Away filler.
+        momentLine:
+          fixture.venue &&
+          fixture.venue !== "Home" &&
+          fixture.venue !== "Away"
+            ? fixture.venue
+            : undefined,
         playCta,
         playCtaShort,
         simulateCta,

@@ -536,7 +536,7 @@ function InboxMessageMeta({ message }: { message: InboxMessage }) {
       )}
       {hasOffer && (
         <ManagerStat
-          label="Offer"
+          label={message.reserveOffer ? "Reserve offer" : "Senior offer"}
           value={formatWage(message.offerAmount!)}
           tone="gold"
         />

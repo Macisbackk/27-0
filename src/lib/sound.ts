@@ -105,6 +105,18 @@ export function playBoostFailed(): void {
   playSound("boostFailed");
 }
 
+export function playMatchStarted(): void {
+  playSound("matchStarted");
+}
+
+export function playFullTime(): void {
+  playSound("fullTime");
+}
+
+export function playPromotion(): void {
+  playSound("promotion");
+}
+
 export function playFutureStarReveal(): void {
   playSound("futureStarReveal");
 }

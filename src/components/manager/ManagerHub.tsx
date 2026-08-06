@@ -4,7 +4,6 @@ import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
-import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type {
@@ -32,15 +31,9 @@ import {
 } from "@/lib/manager/managerPlayoffs";
 import { getPlayoffRoundLabel } from "@/lib/game/playoff-bracket";
 import {
-  countExpiringContracts,
-} from "@/lib/manager/managerContracts";
-import {
-  fanMoodTrend,
   getHomeFixtureAttendanceOutlook,
-  getLastHomeGate,
 } from "@/lib/manager/managerAttendance";
-import { getManagerHubAlerts } from "@/lib/manager/managerHubAlerts";
-import { getManagerDifficultyPressure } from "@/lib/manager/managerDifficulty";
+import { getManagerHubUrgentAlerts } from "@/lib/manager/managerHubAlerts";
 import { ManagerHubAlertsPanel } from "@/components/manager/ManagerHubAlertsPanel";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
@@ -50,21 +43,13 @@ import {
 import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getMatchPrediction } from "@/lib/manager/managerScoring";
-import {
-  getTopGoalScorer,
-  getTopTryScorer,
-} from "@/lib/manager/managerCareerStats";
-import { getHubNewsItems } from "@/lib/manager/managerNews";
 import { playSimulateRound, playUiClick } from "@/lib/sound";
 import {
   getManagerCupRoundLabel,
-  getManagerScheduledFixtureHeadline,
   getManagerScheduledFixtureVenueLabel,
 } from "@/lib/manager/managerFixtureDisplay";
 import { getManagerMatchOccasionPresentation } from "@/lib/manager/managerMatchOccasion";
 import {
-  managerClubAccentCardClass,
-  managerClubAccentCardStyle,
   managerCompetitionPanelClass,
   managerFixtureCardStyle,
   managerPillClass,
@@ -77,8 +62,7 @@ import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
 import { ManagerLeagueTable } from "@/components/manager/ManagerLeagueTable";
 import { ManagerHubStickyActions } from "@/components/manager/ManagerHubStickyActions";
-import { MobileDetailsAccordion } from "@/components/MobileDetailsAccordion";
-import { formatWage } from "@/lib/manager/managerContracts";
+import { CompactFixtureCard } from "@/components/ui/MobileLayout";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
 import {
   ManagerFormStrip,
@@ -88,11 +72,10 @@ import {
   ManagerSectionCard,
   ManagerStat,
   ManagerStatGrid,
-  boardConfidenceTone,
-  fanMoodTone,
   leaguePositionTone,
   matchPredictionTone,
 } from "@/components/manager/manager-ui";
+import { getHubNewsItems } from "@/lib/manager/managerNews";
 
 interface ManagerHubProps {
   career: ManagerCareer;
@@ -111,82 +94,6 @@ function ordinal(n: number): string {
   if (n === 2) return "2nd";
   if (n === 3) return "3rd";
   return `${n}th`;
-}
-
-function HubBoardBudgetAttendance({
-  career,
-  lastGate,
-  wageOverBudget,
-}: {
-  career: ManagerCareer;
-  lastGate: ReturnType<typeof getLastHomeGate>;
-  wageOverBudget: boolean;
-}) {
-  const pressure = getManagerDifficultyPressure(career);
-  const pressureToneClass =
-    pressure.tone === "red"
-      ? "text-red-300"
-      : pressure.tone === "amber"
-        ? "text-amber-300"
-        : pressure.tone === "gold"
-          ? "text-accent-gold"
-          : pressure.tone === "primary"
-            ? "text-theme-primary"
-            : "text-pitch-400";
-
-  return (
-    <div
-      className={managerClubAccentCardClass()}
-      style={managerClubAccentCardStyle(career.club)}
-    >
-      <p className={TYPO.sectionLabel}>Board · Attendance · Wages</p>
-      <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
-        <ManagerStat
-          label="Board Confidence"
-          value={`${career.boardConfidence}%`}
-          tone={boardConfidenceTone(career.boardConfidence)}
-        />
-        <ManagerStat
-          label="Wage Bill"
-          value={`${formatWage(career.wageBill)} / ${formatWage(career.wageBudget)}`}
-          tone={wageOverBudget ? "amber" : "muted"}
-        />
-        <ManagerStat
-          label="Avg Attendance"
-          value={career.attendanceData.currentAverageAttendance.toLocaleString()}
-          tone="sky"
-        />
-        <ManagerStat
-          label="Fan Mood"
-          value={fanMoodTrend(career.attendanceData.fanMood)}
-          tone={fanMoodTone(career.attendanceData.fanMood)}
-        />
-      </div>
-      <p className={`mt-2 ${TYPO.bodySm}`}>
-        <span className={`font-semibold ${pressureToneClass}`}>
-          {pressure.label}:{" "}
-        </span>
-        <span className="text-pitch-300">{pressure.detail}</span>
-      </p>
-      {lastGate && (
-        <p className={`mt-2 ${TYPO.bodySm}`}>
-          <span className="text-pitch-500">Last home gate: </span>
-          <span className="font-semibold text-sky-300">
-            {lastGate.attendance.toLocaleString()}
-          </span>
-          <span className="text-pitch-500"> · </span>
-          <span className="font-semibold text-accent-gold">
-            {formatWage(lastGate.income)}
-          </span>
-          <span className="text-pitch-500">
-            {" "}
-            ({formatWage(lastGate.transferAllocation)} → transfer ·{" "}
-            {formatWage(lastGate.operatingAllocation)} → operations)
-          </span>
-        </p>
-      )}
-    </div>
-  );
 }
 
 function HubChallengeCupBracketPanel({
@@ -277,7 +184,7 @@ export function ManagerHub({
   );
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
 
-  const hubAlerts = getManagerHubAlerts(career);
+  const hubAlerts = getManagerHubUrgentAlerts(career);
 
   const hubCareer = syncBracketProgress(career);
   const clubSheetModal =
@@ -309,9 +216,6 @@ export function ManagerHub({
     (p) => p.injury?.type === "suspension"
   ).length;
   const injuryCount = unavailablePlayers.length;
-  const topScorer = getTopTryScorer(career.playerSeasonStats, career);
-  const topKicker = getTopGoalScorer(career.playerSeasonStats, career);
-  const ts = career.teamSeasonStats;
   const squadCheck = validateFitMatchdaySquad(simCareer);
   const playoffsPending = needsPlayoffsIntro(career);
   const playoffsActive = isManagerPlayoffsActive(hubCareer);
@@ -348,8 +252,6 @@ export function ManagerHub({
       ? getHomeFixtureAttendanceOutlook(career, nextFixture)
       : null;
 
-  const expiringCount = countExpiringContracts(career.contracts);
-  const lastGate = getLastHomeGate(career.gateIncomeHistory);
   const cupStatus = getCupHubStatus(hubCareer);
   const wageOverBudget = isWageOverBudget(career);
   const wagePressure = career.wagePressureWeeks ?? 0;
@@ -378,43 +280,46 @@ export function ManagerHub({
   const nextFixtureCard =
     nextFixture && !seasonComplete && !playoffsPending && matchOccasion ? (
       <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28">
-      <ScoreboardPanel
-        variant="elevated"
-        padded
+      <CompactFixtureCard
+        accentColor={undefined}
         className={`matchday-scoreboard ${matchOccasion.surfaceClass} ${matchOccasion.matchdayModifier}`.trim()}
-        style={managerFixtureCardStyle(
-          nextFixture.competition,
-          career.club,
-          nextFixture.opponent
-        )}
       >
-        <GameSectionHeader
-          label={matchOccasion.weekLabel}
-          title={
-            <span className="fixture-matchup-title">
-              <span>{career.club}</span>{" "}
-              <span className="text-pitch-500">
-                {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
-              </span>{" "}
-              <span>{nextFixture.opponent}</span>
-            </span>
-          }
-          subtitle={
-            <span className="flex flex-wrap items-center gap-2">
-              {matchOccasion.occasion !== "wcc" ? (
-                <ManagerCompetitionBadge
-                  competition={nextFixture.competition}
-                  cupRound={nextFixture.cupRound}
-                  playoffRound={nextFixture.playoffRound}
-                  isNeutral={nextFixture.isNeutral}
-                  venue={nextFixture.venue}
-                  detailed={matchOccasion.isShowcase}
-                />
-              ) : null}
-              <span>{getManagerScheduledFixtureVenueLabel(nextFixture)}</span>
-            </span>
-          }
-        />
+        <div
+          style={managerFixtureCardStyle(
+            nextFixture.competition,
+            career.club,
+            nextFixture.opponent
+          )}
+        >
+        <p className={`${TYPO.keyLabel} text-pitch-400`}>
+          {matchOccasion.weekLabel}
+        </p>
+        <div className="mt-1 flex flex-wrap items-center gap-2">
+          {matchOccasion.occasion !== "wcc" ? (
+            <ManagerCompetitionBadge
+              competition={nextFixture.competition}
+              cupRound={nextFixture.cupRound}
+              playoffRound={nextFixture.playoffRound}
+              isNeutral={nextFixture.isNeutral}
+              venue={nextFixture.venue}
+              detailed={matchOccasion.isShowcase}
+            />
+          ) : null}
+          <span className={`${TYPO.bodySm} text-pitch-400`}>
+            {getManagerScheduledFixtureVenueLabel(nextFixture)}
+          </span>
+        </div>
+        <div className="mt-2 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 font-[family-name:var(--font-pitch)] text-[length:var(--text-section-header)] uppercase tracking-wide leading-tight text-white">
+          <span className="min-w-0 truncate text-right" title={career.club}>
+            {career.club}
+          </span>
+          <span className="shrink-0 px-1 text-center text-pitch-500">
+            {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
+          </span>
+          <span className="min-w-0 truncate text-left" title={nextFixture.opponent}>
+            {nextFixture.opponent}
+          </span>
+        </div>
         {matchOccasion.momentLine ? (
           <p
             className={`mt-2 text-sm font-semibold ${matchOccasion.momentTextClass}`}
@@ -523,7 +428,8 @@ export function ManagerHub({
             {matchOccasion.simulateCta}
           </GameButton>
         </div>
-      </ScoreboardPanel>
+        </div>
+      </CompactFixtureCard>
       </div>
     ) : null;
 
@@ -544,66 +450,6 @@ export function ManagerHub({
   const hubMobilePad = showStickyPlayBar
     ? "manager-mobile-hub-pad sm:pb-0"
     : "manager-mobile-nav-pad sm:pb-0";
-
-  const scoringLeadersCard =
-    ts.played > 0 ? (
-      <ManagerSectionCard title="Scoring Leaders">
-        <div className="mt-2 grid gap-2 text-sm sm:grid-cols-2">
-          <span>
-            <span className="text-pitch-500">Record: </span>
-            <span className="font-semibold text-theme-primary">{ts.wins}W</span>
-            <span className="text-pitch-500">-</span>
-            <span className="font-semibold text-gray-300">{ts.draws ?? 0}D</span>
-            <span className="text-pitch-500">-</span>
-            <span className="font-semibold text-red-300">{ts.losses}L</span>
-          </span>
-          <span>
-            <span className="text-pitch-500">Tries: </span>
-            <span className="font-semibold text-theme-primary">{ts.triesFor}</span>
-            <span className="text-pitch-500"> scored / </span>
-            <span className="font-semibold text-red-300">{ts.triesAgainst}</span>
-            <span className="text-pitch-500"> conceded</span>
-          </span>
-        </div>
-        {topScorer && (
-          <p className={`mt-2 ${TYPO.bodySm}`}>
-            <span className="text-pitch-500">Top try scorer: </span>
-            <span className="font-semibold text-white">
-              {getManagerPlayer(career, topScorer.playerId)?.name ?? "—"}
-            </span>
-            <span className="font-semibold text-accent-gold">
-              {" "}
-              ({topScorer.tries})
-            </span>
-          </p>
-        )}
-        {topKicker && topKicker.goals > 0 && (
-          <p className={TYPO.bodySm}>
-            <span className="text-pitch-500">Top goal scorer: </span>
-            <span className="font-semibold text-white">
-              {getManagerPlayer(career, topKicker.playerId)?.name ?? "—"}
-            </span>
-            <span className="font-semibold text-sky-300">
-              {" "}
-              ({topKicker.goals})
-            </span>
-          </p>
-        )}
-      </ManagerSectionCard>
-    ) : null;
-
-  const contractsCard =
-    expiringCount > 0 ? (
-      <ManagerSectionCard
-        title="Contracts"
-        variant="inset"
-        accent="amber"
-      >
-        <p className={`mt-1 ${TYPO.bodySm} text-accent-gold`}>
-          {expiringCount} contract{expiringCount > 1 ? "s" : ""} expiring soon
-        </p>
-      </ManagerSectionCard>
-    ) : null;
 
   const squadAvailabilityCard =
     injuryCount > 0 ? (
@@ -813,56 +659,53 @@ export function ManagerHub({
     <ManagerHubStickyActions
       visible={showStickyPlayBar}
       canPlay={canPlay}
-      playLabel={matchOccasion?.playCtaShort ?? "Play Match"}
+      playLabel={matchOccasion?.playCtaShort ?? "Play Game"}
       simulateLabel={
         matchOccasion?.simulateCtaShort ??
         matchOccasion?.simulateCta ??
-        "Simulate Match"
+        "Simulate Game"
       }
       onPlayGame={onPlayGame}
       onSimulate={onSimulate}
     />
   );
 
-  const clubDetailsSections = (
-    <div className="stat-section-stack">
-      <HubBoardBudgetAttendance
-        career={career}
-        lastGate={lastGate}
-        wageOverBudget={wageOverBudget}
-      />
-      {scoringLeadersCard}
-      {contractsCard}
-    </div>
+  const clubOfficeLink =
+    onNavigate ? (
+      <div className="flex justify-center sm:justify-start">
+        <GameButton
+          variant="secondary"
+          size="sm"
+          onClick={() => {
+            playUiClick();
+            onNavigate("club");
+          }}
+        >
+          Club Office
+        </GameButton>
+      </div>
+    ) : null;
+
+  const hubBody = (
+    <>
+      <div className="space-y-4">
+        {nextFixtureCard}
+        {commandCentre}
+        {seasonProgressCard}
+        {newsTickerCard}
+        {hubStandingsCard}
+        {squadAvailabilityCard}
+      </div>
+      {clubOfficeLink}
+      {quickActionsCard}
+    </>
   );
 
   if (playoffsActive && hubCareer.playoffs) {
     return (
       <>
         <ManagerPage className={hubMobilePad}>
-          <ManagerSection>
-          <div className="space-y-4">
-            {seasonProgressCard}
-            {nextFixtureCard}
-            {newsTickerCard}
-            {hubStandingsCard}
-            {squadAvailabilityCard}
-          </div>
-          {commandCentre}
-          <GameSectionHeader label="Club office" title="Club details" className="sm:hidden" />
-          <MobileDetailsAccordion title="Club details">
-            <div className="stat-section-stack">
-            <HubBoardBudgetAttendance
-              career={career}
-              lastGate={lastGate}
-              wageOverBudget={wageOverBudget}
-            />
-            {scoringLeadersCard}
-            {contractsCard}
-            </div>
-          </MobileDetailsAccordion>
-          {quickActionsCard}
-          </ManagerSection>
+          <ManagerSection>{hubBody}</ManagerSection>
         </ManagerPage>
         {stickyActions}
         {alertDialog}
@@ -874,28 +717,11 @@ export function ManagerHub({
   return (
     <>
       <ManagerPage className={hubMobilePad}>
-      <ManagerSection>
-      <div className="space-y-4">
-        {seasonProgressCard}
-        {nextFixtureCard}
-        {newsTickerCard}
-        {hubStandingsCard}
-        {squadAvailabilityCard}
-      </div>
-
-      {commandCentre}
-
-      <GameSectionHeader label="Club office" title="Club details" className="sm:hidden" />
-      <MobileDetailsAccordion title="Club details">
-        {clubDetailsSections}
-      </MobileDetailsAccordion>
-
-      {quickActionsCard}
-      </ManagerSection>
-    </ManagerPage>
-    {stickyActions}
-    {alertDialog}
-    {clubSheetModal}
+        <ManagerSection>{hubBody}</ManagerSection>
+      </ManagerPage>
+      {stickyActions}
+      {alertDialog}
+      {clubSheetModal}
     </>
   );
 }

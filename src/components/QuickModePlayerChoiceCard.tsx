@@ -33,6 +33,11 @@ export type QuickModePlayerChoiceCardProps = {
   selectLabel?: string;
   detailsLabel?: string;
   showDetailsAction?: boolean;
+  /** Optional Respin control — kept in the card action zone for Current/Era. */
+  respinLabel?: string;
+  showRespinAction?: boolean;
+  respinDisabled?: boolean;
+  onRespin?: () => void;
   onSelect: () => void;
   onViewDetails?: () => void;
   className?: string;
@@ -75,8 +80,12 @@ export function QuickModePlayerChoiceCard({
   topPick = false,
   allowEasterEggTags = true,
   selectLabel = "Select Player",
-  detailsLabel = "View Details",
+  detailsLabel = "Player Details",
   showDetailsAction = true,
+  respinLabel = "Respin",
+  showRespinAction = false,
+  respinDisabled = false,
+  onRespin,
   onSelect,
   onViewDetails,
   className = "",
@@ -98,6 +107,9 @@ export function QuickModePlayerChoiceCard({
         allowEasterEggTags,
       });
   const colorClub = getPlayerChoiceColorClub(player, clubColorOverride);
+  const metaLine = [metadata.positionLabel, metadata.nationalityAbbrev, metadata.club]
+    .filter(Boolean)
+    .join(" · ");
 
   useEffect(() => {
     warnMissingPlayerChoiceData(player);
@@ -126,16 +138,6 @@ export function QuickModePlayerChoiceCard({
           <h3 className="quick-player-card__name" title={name}>
             {name}
           </h3>
-        </header>
-
-        <div className="quick-player-card__metadata">
-          <p className="quick-player-card__meta-line">{metadata.primaryLine}</p>
-          <p className="quick-player-card__club" title={metadata.club}>
-            {metadata.club}
-          </p>
-        </div>
-
-        <div className="quick-player-card__rating">
           <div
             className={`quick-player-card__rating-badge ${ratingBadgeModifier(
               rating.value,
@@ -154,6 +156,12 @@ export function QuickModePlayerChoiceCard({
               {rating.hidden ? "Hidden" : "OVR"}
             </span>
           </div>
+        </header>
+
+        <div className="quick-player-card__metadata">
+          <p className="quick-player-card__meta-line" title={metaLine}>
+            {metaLine}
+          </p>
         </div>
 
         <div className="quick-player-card__tags" aria-label="Player tags">
@@ -161,20 +169,31 @@ export function QuickModePlayerChoiceCard({
             <TagChip key={tag.id} tag={tag} />
           ))}
         </div>
-
-        <div className="quick-player-card__details" aria-hidden />
       </div>
 
       <footer className="quick-player-card__actions">
-        <GameButton
-          variant="theme"
-          size="sm"
-          fullWidth
-          disabled={disabled}
-          onClick={onSelect}
-        >
-          {selectLabel}
-        </GameButton>
+        <div className="quick-player-card__actions-primary">
+          <GameButton
+            variant="theme"
+            size="sm"
+            fullWidth
+            disabled={disabled}
+            onClick={onSelect}
+          >
+            {selectLabel}
+          </GameButton>
+          {showRespinAction && onRespin ? (
+            <GameButton
+              variant="secondary"
+              size="sm"
+              fullWidth
+              disabled={disabled || respinDisabled}
+              onClick={onRespin}
+            >
+              {respinLabel}
+            </GameButton>
+          ) : null}
+        </div>
         {showDetailsAction && onViewDetails ? (
           <button
             type="button"

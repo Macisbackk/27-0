@@ -208,7 +208,7 @@ export function MatchDetailsPanel({
         {matchEvents.length > 0 ? (
           <div>
             <p className={TYPO.sectionLabel}>Match Events</p>
-            <ul className="mt-2 space-y-1 rounded-lg border border-pitch-700/40 bg-pitch-950/40 p-2">
+            <ul className="mt-2 divide-y divide-pitch-700/30">
               {matchEvents
                 .filter((e) => e.type !== "half_time" && e.type !== "full_time")
                 .map((event, index) => (
@@ -217,6 +217,7 @@ export function MatchDetailsPanel({
                     event={event}
                     userClub={userTeamName}
                     opponentClub={fixture.opponent}
+                    className="py-1.5"
                   />
                 ))}
             </ul>

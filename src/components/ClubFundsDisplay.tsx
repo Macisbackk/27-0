@@ -108,7 +108,7 @@ export function ClubFundsDisplay({
 
   const triggerClass = isMobileUnderLogo
     ? "flex min-h-[1.125rem] items-center justify-center whitespace-nowrap rounded-md px-1.5 py-0.5 text-[11px] font-semibold tabular-nums leading-none text-theme-primary transition hover:bg-pitch-800/35 hover:text-theme-primary active:bg-pitch-800/50"
-    : "header-control-btn flex h-11 min-h-[44px] items-center justify-center gap-1.5 whitespace-nowrap rounded-xl border border-theme-tertiary/25 bg-[rgba(7,12,11,0.9)] px-2.5 font-semibold tabular-nums text-theme-primary transition hover:border-theme-tertiary/45 hover:bg-theme-primary/10 sm:px-3";
+    : "header-control-btn flex h-9 min-h-[36px] items-center justify-center gap-1 whitespace-nowrap rounded-[var(--mobile-radius-medium)] border border-white/10 bg-[rgba(7,12,11,0.95)] px-2 font-semibold tabular-nums text-theme-primary transition hover:border-white/20 hover:bg-theme-primary/10 sm:h-11 sm:min-h-[44px] sm:gap-1.5 sm:rounded-xl sm:border-theme-tertiary/25 sm:px-2.5 sm:px-3";
 
   return (
     <div

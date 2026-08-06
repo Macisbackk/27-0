@@ -1,13 +1,14 @@
 "use client";
 
 import { memo, useCallback, useMemo } from "react";
-import type { Player } from "@/lib/types";
+import type { Player, Position } from "@/lib/types";
 import {
   assertShowcaseCardPopupNameMatch,
   toPlayerShowcaseViewModel,
 } from "@/lib/players/showcase-view-model";
 import { getPlayerDisplayName } from "@/lib/players/display-name-resolver";
 import { resolvePlayerCardColourContext } from "@/lib/players/player-card-colours";
+import { POSITION_LABELS } from "@/lib/positions";
 import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
 import { PlayerTierBadge } from "@/components/cards/PlayerTierBadge";
 import { playUiClick } from "@/lib/sound";
@@ -29,7 +30,7 @@ function showcaseCardPropsEqual(
 }
 
 /**
- * Shared Player Showcase card — club kit owns border/strip; tier is badge-only.
+ * Shared Player Showcase card — club kit owns thin strip; tier is badge-only.
  * Name geometry is identical for Current / Historic / Legend / Hall of Fame.
  */
 export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
@@ -38,7 +39,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
 }: ShowcasePlayerCardProps) {
   const view = useMemo(() => toPlayerShowcaseViewModel(player), [player]);
   const colourCtx = useMemo(
-    () => resolvePlayerCardColourContext(player, { maxTiers: 2 }),
+    () => resolvePlayerCardColourContext(player, { maxTiers: 1 }),
     [player]
   );
 
@@ -51,6 +52,9 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
       }) as React.CSSProperties,
     [colourCtx]
   );
+
+  const positionLabel =
+    POSITION_LABELS[view.position as Position] ?? view.position;
 
   const handleOpen = useCallback(() => {
     playUiClick();
@@ -74,7 +78,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
   );
 
   const ariaLabel = view.displayName
-    ? `${view.displayName}, ${view.clubYearLabel}`
+    ? `${view.displayName}, ${view.clubYearLabel}, rating ${view.rating}`
     : `Player ${view.playerId}, ${view.clubYearLabel}`;
 
   return (
@@ -113,10 +117,31 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
             className="showcase-player-card__badge"
           />
         </div>
+
         <p className="showcase-player-card__meta" title={view.clubYearLabel}>
           {view.clubYearLabel}
         </p>
-        <span className="showcase-player-card__view">View Player</span>
+
+        <p className="showcase-player-card__facts">
+          <span className="showcase-player-card__fact">
+            <span className="showcase-player-card__fact-label">OVR</span>{" "}
+            <span className="showcase-player-card__fact-value showcase-player-card__fact-value--rating">
+              {view.rating}
+            </span>
+          </span>
+          <span className="showcase-player-card__fact-sep" aria-hidden>
+            ·
+          </span>
+          <span className="showcase-player-card__fact">{positionLabel}</span>
+          {view.nationality ? (
+            <>
+              <span className="showcase-player-card__fact-sep" aria-hidden>
+                ·
+              </span>
+              <span className="showcase-player-card__fact">{view.nationality}</span>
+            </>
+          ) : null}
+        </p>
       </button>
     </article>
   );

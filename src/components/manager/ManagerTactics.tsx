@@ -35,9 +35,9 @@ function CompactOptionRow<T extends string>({
   onChange: (v: T) => void;
 }) {
   return (
-    <div className="flex flex-col items-center gap-1.5 text-center">
+    <div className="flex flex-col gap-1.5 text-left">
       <p className={`${TYPO.sectionLabel}`}>{label}</p>
-      <div className="flex min-w-0 flex-wrap justify-center gap-1.5">
+      <div className="flex min-w-0 flex-wrap gap-1.5">
         {options.map((opt) => (
           <button
             key={opt.value}
@@ -85,7 +85,7 @@ function TacticsSetupPanel({
         value={tactics.defenceFocus}
         onChange={(v) => onChange({ defenceFocus: v })}
       />
-      <p className={`mx-auto max-w-lg border-t border-pitch-700/40 pt-2 text-center ${TYPO.meta} sm:text-xs sm:leading-snug sm:text-pitch-400`}>
+      <p className={`max-w-lg border-t border-pitch-700/40 pt-2 text-left ${TYPO.meta} sm:text-xs sm:leading-snug sm:text-pitch-400`}>
         <span className="sm:hidden">Tap options to set your match plan</span>
         <span className="hidden sm:inline">
           {PLAYING_STYLE_BIOS[tactics.playingStyle]}{" "}
@@ -103,7 +103,7 @@ function MatchImpactPreview({ tactics }: { tactics: ManagerTactics }) {
   const summary = getTacticGameplaySummary(tactics);
 
   return (
-    <div className={`${CARD.stat} ${SPACING.cardPaddingSm} text-center`}>
+    <div className={`${CARD.stat} ${SPACING.cardPaddingSm} text-left`}>
       <p className={TYPO.sectionLabel}>Match Impact</p>
       <p className={`mt-1.5 text-[11px] leading-snug text-pitch-300 sm:text-xs`}>
         <span className="font-semibold text-theme-primary">Attack: </span>
@@ -116,7 +116,7 @@ function MatchImpactPreview({ tactics }: { tactics: ManagerTactics }) {
         {summary.matchImpact}
       </p>
       {summary.cautions.length > 0 && (
-        <div className="mt-1.5 flex flex-wrap justify-center gap-1">
+        <div className="mt-1.5 flex flex-wrap gap-1">
           {summary.cautions.map((caution) => (
             <span
               key={caution}
@@ -136,9 +136,9 @@ function LivePlayPreview({ career }: { career: ManagerCareer }) {
   const reason = getTacticsLiveCommandReason(career);
 
   return (
-    <div className={`${CARD.stat} ${SPACING.cardPaddingSm} text-center`}>
+    <div className={`${CARD.stat} ${SPACING.cardPaddingSm} text-left`}>
       <p className={TYPO.sectionLabel}>Live Play</p>
-      <div className="mt-1.5 flex flex-wrap justify-center gap-1">
+      <div className="mt-1.5 flex flex-wrap gap-1">
         {LIVE_MATCH_COMMANDS.map((cmd) => (
           <span
             key={cmd}
@@ -152,7 +152,7 @@ function LivePlayPreview({ career }: { career: ManagerCareer }) {
           </span>
         ))}
       </div>
-      <p className={`mx-auto mt-1.5 max-w-lg text-[11px] leading-snug text-pitch-300 sm:text-xs`}>
+      <p className={`mt-1.5 max-w-lg text-[11px] leading-snug text-pitch-300 sm:text-xs`}>
         <span className="font-semibold text-theme-primary">
           {getLiveCommandLabel(defaultCommand)}
         </span>{" "}
@@ -180,17 +180,17 @@ export function ManagerTacticsPanel({
     <div className={SPACING.stackSm}>
       <TacticsSetupPanel tactics={t} onChange={update} />
       <section className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-        <h2 className={`text-center ${TYPO.sectionLabel}`}>
+        <h2 className={`text-left ${TYPO.sectionLabel}`}>
           Match impact & live play
         </h2>
-        <div className="mt-3">
+        <div className="mt-3 space-y-3">
           <MatchImpactPreview tactics={t} />
           <LivePlayPreview career={career} />
         </div>
       </section>
       {onCareerUpdate && (
         <section className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-          <h2 className={`text-center ${TYPO.sectionLabel}`}>
+          <h2 className={`text-left ${TYPO.sectionLabel}`}>
             Dual position training
           </h2>
           <div className="mt-3">
@@ -215,7 +215,7 @@ export function ManagerTactics({
   return (
     <ManagerPage>
       <ManagerSection>
-        <h1 className={`text-center ${TYPO.pageTitle}`}>Tactics</h1>
+        <h1 className={`text-left ${TYPO.pageTitle}`}>Tactics</h1>
         <ManagerTacticsPanel career={career} onChange={onChange} />
       </ManagerSection>
     </ManagerPage>

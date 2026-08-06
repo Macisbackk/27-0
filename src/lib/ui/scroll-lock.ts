@@ -59,6 +59,7 @@ function applyLockStyles(): void {
   document.body.style.left = "0";
   document.body.style.right = "0";
   document.body.style.width = "100%";
+  document.documentElement.dataset.uiOverlay = "1";
   attachTouchBlocker();
 }
 
@@ -72,6 +73,7 @@ function restoreScrollStyles(): void {
   document.body.style.left = "";
   document.body.style.right = "";
   document.body.style.width = "";
+  delete document.documentElement.dataset.uiOverlay;
   detachTouchBlocker();
   window.scrollTo(scrollX, scrollY);
   snapshot = null;
@@ -144,6 +146,7 @@ export function resetScrollLockForTests(): void {
     document.documentElement.style.overflow = "";
     document.body.style.position = "";
     document.body.style.top = "";
+    delete document.documentElement.dataset.uiOverlay;
     detachTouchBlocker();
   }
 }

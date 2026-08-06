@@ -40,7 +40,7 @@ import {
 } from "@/lib/manager/managerContracts";
 import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
 import { getReserveReportMonth } from "@/lib/manager/managerReserveReports";
-import { playUiClick, playReserveCallUp } from "@/lib/sound";
+import { playUiClick, playReserveCallUp, playPromotion } from "@/lib/sound";
 import { ManagerPage, ManagerSection, ManagerStat } from "@/components/manager/manager-ui";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { ManagerPlayerCardGrid } from "@/components/manager/ManagerPlayerCard";
@@ -164,6 +164,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
       return;
     }
     const name = career.reserves.find((r) => r.id === id)?.name ?? "Player";
+    playPromotion();
     onUpdate(result.career);
     setDetailsId(null);
     setMessage(`${name} promoted to the senior squad`);
@@ -376,9 +377,10 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         <p className={`${TYPO.bodySm} text-theme-primary`}>{message}</p>
       )}
 
-      <GamePanel padded label="Reserve fixtures">
+      <GamePanel padded>
+        <p className={`${TYPO.sectionLabel} text-center`}>Reserve Fixtures</p>
         {!career.isSeasonComplete && upcomingOpp ? (
-          <div>
+          <div className="mt-2 text-left">
             <p className={TYPO.sectionLabel}>Next fixture</p>
             <p className="mt-1 font-medium text-white">
               {career.club} Reserves vs {upcomingOpp} Reserves
@@ -386,7 +388,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             </p>
           </div>
         ) : !career.lastReserveResult ? (
-          <p className={`${TYPO.bodySm} text-pitch-500`}>
+          <p className={`${TYPO.bodySm} text-left text-pitch-500`}>
             No reserve fixtures scheduled or played yet.
           </p>
         ) : null}
@@ -433,8 +435,9 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         )}
       </GamePanel>
 
-      <GamePanel padded label="Reserve squad summary">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <GamePanel padded>
+        <p className={`${TYPO.sectionLabel} text-center`}>Reserve Squad Summary</p>
+        <div className="mt-2 grid grid-cols-2 gap-3 text-left sm:grid-cols-3">
           <ManagerStat
             label="Squad size"
             value={`${career.reserves.length} / ${RESERVE_MIN_PLAYERS}`}
@@ -589,8 +592,9 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         </GamePanel>
       )}
 
-      <GamePanel padded label="Filters">
-        <div className="flex flex-wrap gap-2">
+      <GamePanel padded>
+        <p className={`${TYPO.sectionLabel} text-center`}>Reserve Filters</p>
+        <div className="mt-2 flex flex-wrap justify-center gap-2">
           {(
             [
               ["all", "All"],
@@ -611,7 +615,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             </button>
           ))}
         </div>
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-2 flex flex-wrap justify-center gap-2">
           <button
             type="button"
             onClick={() => setPositionFilter("all")}
@@ -640,7 +644,10 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
         </div>
       </GamePanel>
 
-      <GamePanel padded label={`Reserve players (${rows.length})`}>
+      <GamePanel padded>
+        <p className={`${TYPO.sectionLabel} mb-2 text-left`}>
+          Reserve players ({rows.length})
+        </p>
         {rows.length === 0 ? (
           <GameEmptyState message="No reserve players match your filters." />
         ) : (
