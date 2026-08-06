@@ -639,6 +639,15 @@ function getDraftFavoriteUpsetChance(ratingGap: number, cupMode: boolean): numbe
   return cupMode ? 0.08 : 0.06;
 }
 
+/** Normal Mode favourite upsets — rare when clearly stronger so elite 27-0 is achievable. */
+function getNormalFavoriteUpsetChance(ratingGap: number, cupMode: boolean): number {
+  if (ratingGap >= 10) return cupMode ? 0.012 : 0.005;
+  if (ratingGap >= 8) return cupMode ? 0.02 : 0.01;
+  if (ratingGap >= 5) return cupMode ? 0.035 : 0.018;
+  if (ratingGap >= 2) return cupMode ? 0.05 : 0.03;
+  return 0;
+}
+
 function getDraftWinProbabilityFloor(ratingGap: number): number | null {
   if (ratingGap >= 10) return 0.94;
   if (ratingGap >= 7) return 0.88;
@@ -658,13 +667,47 @@ function getManagerWinProbabilityFloor(ratingGap: number): number | null {
   return null;
 }
 
+/**
+ * Normal Mode floors — aligned closer to Draft so a strong Quick Mode
+ * squad can sustain a genuine title challenge / 27-0 run.
+ */
 function getNormalWinProbabilityFloor(ratingGap: number): number | null {
-  if (ratingGap >= 10) return 0.9;
-  if (ratingGap >= 7) return 0.84;
-  if (ratingGap >= 4) return 0.78;
-  if (ratingGap >= 2) return 0.65;
+  if (ratingGap >= 10) return 0.94;
+  if (ratingGap >= 7) return 0.88;
+  if (ratingGap >= 4) return 0.8;
+  if (ratingGap >= 2) return 0.68;
   if (ratingGap >= 0) return 0.54;
   return null;
+}
+
+/**
+ * Gap-scaled win-probability ceiling.
+ * Flat 0.96 made even +12 favourites lose ~1 in 25 games forever —
+ * stacked with upset flips that made 27-0 near-lottery for elite sides.
+ */
+function getWinProbabilityCeiling(
+  ratingGap: number,
+  draftMode: boolean,
+  managerMode: boolean
+): number {
+  if (managerMode) {
+    if (ratingGap >= 12) return 0.99;
+    if (ratingGap >= 8) return 0.985;
+    return 0.98;
+  }
+  if (draftMode) {
+    if (ratingGap >= 10) return 0.985;
+    if (ratingGap >= 7) return 0.98;
+    if (ratingGap >= 4) return 0.97;
+    return 0.96;
+  }
+  // Normal / Quick Mode
+  if (ratingGap >= 12) return 0.985;
+  if (ratingGap >= 10) return 0.98;
+  if (ratingGap >= 8) return 0.975;
+  if (ratingGap >= 6) return 0.97;
+  if (ratingGap >= 4) return 0.965;
+  return 0.96;
 }
 
 function resolveOutcome(
@@ -730,10 +773,11 @@ function resolveOutcome(
   else if (ratingGap <= -8) winProbability = Math.min(winProbability, 0.16);
   else if (ratingGap <= -5) winProbability = Math.min(winProbability, 0.26);
 
-  winProbability = Math.max(0.04, Math.min(0.96, winProbability));
+  const ceiling = getWinProbabilityCeiling(ratingGap, draftMode, managerMode);
+  winProbability = Math.max(0.04, Math.min(ceiling, winProbability));
 
   if (!draftMode && !managerMode && ratingGap >= -3 && ratingGap <= 2) {
-    winProbability = Math.min(0.96, winProbability + 0.07);
+    winProbability = Math.min(ceiling, winProbability + 0.07);
   }
 
   let won = rng() < winProbability;
@@ -758,19 +802,7 @@ function resolveOutcome(
               : 0
         : draftMode
           ? getDraftFavoriteUpsetChance(ratingGap, cupMode)
-          : ratingGap >= 10
-            ? cupMode
-              ? 0.028
-              : 0.015
-            : ratingGap >= 8
-              ? cupMode
-                ? 0.05
-                : 0.03
-              : ratingGap >= 5
-                ? cupMode
-                  ? 0.085
-                  : 0.055
-                : 0;
+          : getNormalFavoriteUpsetChance(ratingGap, cupMode);
     if (upsetChance > 0 && rng() < upsetChance) {
       won = false;
       isUpset = true;

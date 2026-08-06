@@ -270,7 +270,7 @@ export function ManagerPlayGame({
           className={`matchday-scoreboard shrink-0 px-2 py-2 text-center ${matchOccasion.surfaceClass} ${matchOccasion.matchdayModifier}`.trim()}
         >
           <div className="flex flex-wrap items-center justify-center gap-1.5">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-400">
+            <p className={`${TYPO.keyLabel} text-pitch-400`}>
               {matchOccasion.weekLabel} ·{" "}
               {getManagerScheduledFixtureVenueLabel(sched)}
             </p>
@@ -287,27 +287,33 @@ export function ManagerPlayGame({
           </div>
           {matchOccasion.momentLine ? (
             <p
-              className={`mt-1 text-[11px] font-semibold ${matchOccasion.momentTextClass}`}
+              className={`mt-1 ${TYPO.bodySm} font-semibold ${matchOccasion.momentTextClass}`}
             >
               {matchOccasion.momentLine}
             </p>
           ) : null}
 
-          <p className="mt-1.5 font-[family-name:var(--font-pitch)] text-lg uppercase tracking-wide leading-tight text-white sm:text-xl">
-            <span className={live.isHome ? "text-theme-primary" : ""}>
+          <div className="mt-1.5 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 font-[family-name:var(--font-pitch)] text-[length:var(--text-section-header)] uppercase tracking-wide leading-tight text-white">
+            <span
+              className={`truncate text-right ${live.isHome ? "text-theme-primary" : ""}`}
+              title={homeName}
+            >
               {homeName}
-            </span>{" "}
-            <span className="text-theme-primary tabular-nums">
+            </span>
+            <span className="shrink-0 text-center text-theme-primary tabular-nums">
               {homeScore}-{awayScore}
-            </span>{" "}
-            <span className={!live.isHome ? "text-theme-primary" : ""}>
+            </span>
+            <span
+              className={`truncate text-left ${!live.isHome ? "text-theme-primary" : ""}`}
+              title={awayName}
+            >
               {awayName}
             </span>
-          </p>
+          </div>
 
           {!isPreview && (
             <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
-              <span className="font-mono text-sm font-bold text-accent-gold tabular-nums">
+              <span className="font-mono text-[length:var(--text-body)] font-bold text-accent-gold tabular-nums">
                 {formatLiveClock(live.minute)}
                 {live.isComplete
                   ? " FT"
@@ -316,14 +322,14 @@ export function ManagerPlayGame({
                     : ""}
               </span>
               <span
-                className={`rounded-sm border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${STATUS_PILL_CLASS[status.tone]}`}
+                className={`rounded-sm border px-2 py-0.5 ${TYPO.keyLabel} ${STATUS_PILL_CLASS[status.tone]}`}
               >
                 {status.pill}
               </span>
             </div>
           )}
           {!isPreview && !isHalftime && (
-            <p className="mt-0.5 line-clamp-1 text-[11px] text-pitch-400">
+            <p className={`mt-0.5 line-clamp-1 ${TYPO.bodySm} text-pitch-400`}>
               {status.line}
             </p>
           )}
@@ -333,7 +339,7 @@ export function ManagerPlayGame({
         <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden py-2">
           {isPreview && (
             <div className={`${CARD.inset} shrink-0 ${SPACING.cardPaddingSm}`}>
-              <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm">
+              <div className={`grid grid-cols-2 gap-2 ${TYPO.body}`}>
                 <span>
                   {career.club}:{" "}
                   <strong className="text-theme-primary">{userRating}</strong>
@@ -342,7 +348,7 @@ export function ManagerPlayGame({
                   {sched.opponent}: <strong>{oppRating}</strong>
                 </span>
               </div>
-              <p className="mt-1.5 line-clamp-2 text-center text-[11px] text-pitch-400">
+              <p className={`mt-1.5 line-clamp-2 text-center ${TYPO.bodySm} text-pitch-400`}>
                 {formatTacticsLabel(career.tactics)}
               </p>
             </div>
@@ -353,7 +359,7 @@ export function ManagerPlayGame({
               <p className={`${TYPO.bodySm} line-clamp-2 text-pitch-300`}>
                 {live.effectivenessLine}
               </p>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
+              <p className={`${TYPO.keyLabel} text-pitch-500`}>
                 Second half command
               </p>
               <CommandGrid command={command} onSelect={selectCommand} />
@@ -362,7 +368,7 @@ export function ManagerPlayGame({
 
           {!isPreview && !isHalftime && !live.isComplete && (
             <div className="shrink-0 space-y-2">
-              <p className="line-clamp-1 text-[11px] text-pitch-400">
+              <p className={`line-clamp-1 ${TYPO.bodySm} text-pitch-400`}>
                 <span className="font-medium text-white">
                   {getLiveCommandLabel(command)}
                 </span>
@@ -383,7 +389,7 @@ export function ManagerPlayGame({
           <div
             className={`${CARD.clipboard} flex min-h-0 flex-1 flex-col overflow-hidden ${SPACING.cardPaddingSm}`}
           >
-            <p className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
+            <p className={`shrink-0 ${TYPO.keyLabel} text-pitch-500`}>
               Match events
               {matchEvents.length > 0 && (
                 <span className="ml-1.5 font-normal normal-case text-pitch-600">
@@ -392,7 +398,7 @@ export function ManagerPlayGame({
               )}
             </p>
             {matchEvents.length === 0 ? (
-              <p className="mt-2 text-[11px] text-pitch-500">
+              <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
                 {isPreview
                   ? "Events appear once the match starts."
                   : "Waiting for action…"}
@@ -514,7 +520,7 @@ function CommandGrid({
           key={cmd}
           type="button"
           onClick={() => onSelect(cmd)}
-          className={`btn-press min-h-[44px] min-w-0 rounded-lg border px-1 py-1.5 text-[10px] font-bold uppercase leading-tight tracking-wide transition sm:min-h-[40px] sm:text-[11px] ${
+          className={`btn-press min-h-[44px] min-w-0 rounded-lg border px-1 py-1.5 text-[length:var(--text-small)] font-bold uppercase leading-tight tracking-wide transition sm:min-h-[40px] ${
             command === cmd
               ? "border-theme-primary bg-theme-primary/15 text-theme-primary ring-1 ring-theme-primary/30"
               : "border-pitch-600/80 bg-pitch-900/60 text-pitch-300 hover:border-pitch-500 hover:text-white"
@@ -523,7 +529,7 @@ function CommandGrid({
           <span className="block truncate sm:hidden">
             {getLiveCommandShortLabel(cmd)}
           </span>
-          <span className="hidden sm:block">{getLiveCommandLabel(cmd)}</span>
+          <span className="hidden truncate sm:block">{getLiveCommandLabel(cmd)}</span>
         </button>
       ))}
     </div>

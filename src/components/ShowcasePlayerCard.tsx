@@ -78,22 +78,16 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
         onKeyDown={handleKeyDown}
         aria-haspopup="dialog"
       >
-        <span className="showcase-compact-name min-w-0 flex-1 font-display font-bold leading-snug text-white">
-          <span className="showcase-compact-name__title">
-            {displayName}
-          </span>
-          <span className="mt-0.5 block w-full truncate text-[11px] font-medium text-gray-400">
-            {clubYearLabel}
-          </span>
+        <span className="showcase-compact-name">
+          <span className="showcase-compact-name__title">{displayName}</span>
+          <span className="showcase-compact-name__meta">{clubYearLabel}</span>
         </span>
         <PlayerTierBadge
           tiers={colourCtx.primaryTier}
           compact
-          className="shrink-0 self-start"
+          className="showcase-player-card__badge"
         />
-        <span className="shrink-0 self-start pt-0.5 text-xs font-medium text-gray-500">
-          View
-        </span>
+        <span className="showcase-player-card__view">View</span>
       </button>
     </div>
   );

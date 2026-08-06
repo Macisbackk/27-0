@@ -436,7 +436,7 @@
   {
     "id": "leeds-cur-jake-connor",
     "name": "Jake Connor",
-    "position": "SCRUM_HALF",
+    "position": "STAND_OFF",
     "club": "Leeds Rhinos",
     "nationality": "England",
     "era": "CONTEMPORARY_ERA",
@@ -453,13 +453,14 @@
     "year": 2026,
     "status": "Current",
     "positions": [
+      "STAND_OFF",
       "SCRUM_HALF"
     ],
-    "positionAbbrev": "SH",
+    "positionAbbrev": "SO/SH",
     "cardYear": 2026,
     "team": "Leeds Rhinos",
     "displayClub": "Leeds Rhinos",
     "basePlayerId": "leeds-cur-jake-connor",
-    "primaryPosition": "SH"
+    "primaryPosition": "HB"
   }
 ]

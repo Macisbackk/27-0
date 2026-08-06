@@ -1,9 +1,15 @@
 {
-  "ratings": {},
+  "ratings": {
+    "bradford-cur-eribe-doro": 82,
+    "bradford-cur-ethan-ryan": 84,
+    "bradford-cur-ryan-sutton": 84,
+    "bradford-cur-jayden-nikorima": 83
+  },
   "potentials": {
-    "bradford-cur-loghan-lewis": 86,
-    "bradford-cur-ethan-ryan": 91,
-    "bradford-cur-eribe-doro": 91,
-    "bradford-cur-zac-fulton": 89
+    "bradford-cur-eribe-doro": 87,
+    "bradford-cur-ethan-ryan": 87,
+    "bradford-cur-ryan-sutton": 86,
+    "bradford-cur-zac-fulton": 88,
+    "bradford-cur-jayden-nikorima": 87
   }
 }

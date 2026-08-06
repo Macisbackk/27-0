@@ -60,7 +60,7 @@ export function ManagerFriendlySelect({
             {draftSchedule.map((friendly, index) => (
               <li key={`${friendly.club}-${index}`}>
                 <ManagerSectionCard
-                  className="flex flex-col gap-2 !p-3.5 sm:!p-4"
+                  className="game-panel--kit-identity flex flex-col gap-2 !p-3.5 sm:!p-4"
                   style={getFriendlyOpponentBorderStyle(friendly.club)}
                 >
                   <div className="flex items-center gap-2">
@@ -127,7 +127,7 @@ export function ManagerFriendlySelect({
           {choices.map((choice) => (
             <ManagerSectionCard
               key={choice.id}
-              className="flex h-full flex-col !p-3.5 sm:!p-5"
+              className="game-panel--kit-identity flex h-full flex-col !p-3.5 sm:!p-5"
               style={getFriendlyOpponentBorderStyle(choice.club)}
             >
               <div className="flex min-h-[1.25rem] items-center gap-2">

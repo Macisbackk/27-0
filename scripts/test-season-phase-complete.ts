@@ -1,15 +1,19 @@
 /**
  * Regression cover for league-phase completion and season trophies.
  *
- * Hydration falls back to `schedule: []`, so `currentFixtureIndex >= schedule.length`
- * evaluated 0 >= 0 and reported a brand-new career as league-complete. That handed
- * League Leaders (plus the board mail, celebration modal and lifetime stat) to
- * whichever club topped the all-zero table on the alphabetical tie-break.
+ * Bugs this guards against:
+ * 1. Hydration with `schedule: []` treating an untouched career as complete.
+ * 2. Mid-season table-toppers getting League Leaders after a few rounds because
+ *    playoff-intro flags / short exhausted schedules settled the table early.
  *
  * Run: npx tsx scripts/test-season-phase-complete.ts
  */
 import assert from "node:assert/strict";
 import { isLeagueAndCupPhaseComplete } from "../src/lib/manager/managerChallengeCup";
+import {
+  isLeaguePhaseComplete,
+  syncPlayoffsIntroAcknowledged,
+} from "../src/lib/manager/managerPlayoffs";
 import { getManagerSeasonTrophyLabels } from "../src/lib/manager/managerSeasonTrophies";
 import { MANAGER_SEASON_GAMES } from "../src/lib/manager/types";
 import type {
@@ -104,19 +108,19 @@ function fullLeagueSeason(): Partial<ManagerCareer> {
 }
 
 /** Club sits top of an otherwise untouched table — the alphabetical tie-break case. */
-function tableToppedBy(club: string) {
+function tableToppedBy(club: string, played = 0) {
   return [
     {
       team: club,
       position: 1,
-      played: 0,
-      wins: 0,
+      played,
+      wins: played,
       losses: 0,
       draws: 0,
-      pointsFor: 0,
-      pointsAgainst: 0,
-      pointsDifference: 0,
-      leaguePoints: 0,
+      pointsFor: played * 24,
+      pointsAgainst: played * 12,
+      pointsDifference: played * 12,
+      leaguePoints: played * 2,
       isUserTeam: true,
     },
   ];
@@ -178,13 +182,15 @@ check("a full league season is complete", () => {
   assert.equal(isLeagueAndCupPhaseComplete(career), true);
 });
 
-check("a short but exhausted schedule with results played is complete", () => {
+check("a short exhausted schedule is NOT league-complete", () => {
   const career = careerWith({
     schedule: [scheduledFixture(1), scheduledFixture(2)],
     fixtures: [leagueResult(1), leagueResult(2), ...cupRun()],
     currentFixtureIndex: 2,
+    leagueTable: tableToppedBy(CLUB, 2),
   });
-  assert.equal(isLeagueAndCupPhaseComplete(career), true);
+  assert.equal(isLeaguePhaseComplete(career), false);
+  assert.equal(isLeagueAndCupPhaseComplete(career), false);
 });
 
 console.log("\nSeason trophies");
@@ -205,6 +211,36 @@ check("stale playoff flags cannot award League Leaders with no results", () => {
     getManagerSeasonTrophyLabels(career).includes("League Leaders"),
     false
   );
+});
+
+check("mid-season table-topper does not get League Leaders", () => {
+  const career = careerWith({
+    schedule: Array.from({ length: MANAGER_SEASON_GAMES }, (_, i) =>
+      scheduledFixture(i + 1)
+    ),
+    fixtures: Array.from({ length: 5 }, (_, i) => leagueResult(i + 1)),
+    currentFixtureIndex: 5,
+    playoffsIntroAcknowledged: true,
+    leagueTable: tableToppedBy(CLUB, 5),
+  });
+  assert.equal(isLeaguePhaseComplete(career), false);
+  assert.equal(
+    getManagerSeasonTrophyLabels(career).includes("League Leaders"),
+    false
+  );
+});
+
+check("sync does not acknowledge playoff intro mid-season", () => {
+  const career = careerWith({
+    schedule: Array.from({ length: MANAGER_SEASON_GAMES }, (_, i) =>
+      scheduledFixture(i + 1)
+    ),
+    fixtures: Array.from({ length: 4 }, (_, i) => leagueResult(i + 1)),
+    currentFixtureIndex: 4,
+    leagueTable: tableToppedBy(CLUB, 4),
+  });
+  const synced = syncPlayoffsIntroAcknowledged(career);
+  assert.equal(synced.playoffsIntroAcknowledged, false);
 });
 
 check("topping a settled table still awards League Leaders", () => {

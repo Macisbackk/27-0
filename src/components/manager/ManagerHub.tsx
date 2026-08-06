@@ -351,7 +351,6 @@ export function ManagerHub({
   const expiringCount = countExpiringContracts(career.contracts);
   const lastGate = getLastHomeGate(career.gateIncomeHistory);
   const cupStatus = getCupHubStatus(hubCareer);
-  const playoffStatus = getPlayoffHubStatus(hubCareer);
   const wageOverBudget = isWageOverBudget(career);
   const wagePressure = career.wagePressureWeeks ?? 0;
 
@@ -737,12 +736,6 @@ export function ManagerHub({
           </span>
           <span className="text-pitch-500"> in the table</span>
         </p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          <span className={managerPillClass("gold")}>{cupStatus}</span>
-          {playoffStatus ? (
-            <span className={managerPillClass("primary")}>{playoffStatus}</span>
-          ) : null}
-        </div>
         {wageOverBudget && (
           <p className={`mt-2 ${TYPO.bodySm} text-amber-300`}>
             Wage bill over budget

@@ -64,7 +64,7 @@ export function MobileSectionHeader({
   return (
     <header className={`w-full min-w-0 text-center ${className}`}>
       {label ? (
-        <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500 sm:text-xs">
+        <p className={`${TYPO.keyLabel} text-pitch-500`}>
           {label}
         </p>
       ) : null}

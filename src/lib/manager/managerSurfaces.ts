@@ -250,7 +250,7 @@ export function managerFixtureRowClass(options: {
   const base = managerFixtureRowBase();
 
   if (options.hasFriendlyStyle) {
-    return `${base} ${ACCENT_STRIPE.sky}`;
+    return `${base} game-table-row--kit-identity ${ACCENT_STRIPE.sky}`;
   }
   if (options.isNext) {
     return `${base} ${ACCENT_STRIPE.primary}`;

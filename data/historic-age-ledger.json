@@ -18463,16 +18463,16 @@
     {
       "playerId": "leeds-hist-jordan-lilley",
       "name": "Jordan Lilley",
-      "category": "current",
+      "category": "historic",
       "status": "filled",
-      "seasonYear": 2026,
+      "seasonYear": 2016,
       "dateOfBirth": "1996-09-04",
       "birthYear": 1996,
       "ageSource": "verified",
-      "seasonAge": 30,
+      "seasonAge": 20,
       "seasonAgeRange": [
-        30,
-        30
+        20,
+        20
       ],
       "source": "canonical player dateOfBirth"
     },

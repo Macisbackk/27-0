@@ -44,5 +44,43 @@
     "basePlayerId": "sheffield-cur-matty-marsh",
     "status": "Current",
     "primaryPosition": "FULLBACK"
+  },
+  {
+    "id": "sheffield-cur-jordan-lilley",
+    "name": "Jordan Lilley",
+    "position": "STAND_OFF",
+    "club": "Sheffield Eagles",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 138000,
+    "appearances": 247,
+    "tries": 42,
+    "dateOfBirth": "1996-09-04",
+    "birthYear": 1996,
+    "currentClub": "Sheffield Eagles",
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "sheffield-eagles-2026",
+    "team": "Sheffield Eagles",
+    "displayClub": "Sheffield Eagles",
+    "basePlayerId": "sheffield-cur-jordan-lilley",
+    "status": "Current",
+    "primaryPosition": "HB",
+    "positions": [
+      "STAND_OFF",
+      "SCRUM_HALF"
+    ],
+    "positionAbbrev": "SO/SH",
+    "clubsPlayedFor": [
+      "Hunslet",
+      "Leeds",
+      "Featherstone",
+      "Bradford",
+      "Leigh",
+      "Sheffield"
+    ]
   }
 ]

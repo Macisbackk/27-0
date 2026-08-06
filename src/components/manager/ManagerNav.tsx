@@ -72,7 +72,7 @@ export function ManagerNav({
         <div className="min-w-0 flex-1">
           <div className="flex min-w-0 items-baseline gap-2">
             <h1
-              className="min-w-0 truncate font-display text-sm font-bold uppercase tracking-wide text-white sm:text-base"
+              className={`min-w-0 truncate font-display text-[length:var(--text-card-title)] font-bold uppercase tracking-wide text-white`}
               title={club}
             >
               {club}
@@ -91,7 +91,7 @@ export function ManagerNav({
           type="button"
           onClick={() => navigate("inbox")}
           disabled={disabled}
-          className={`btn-press relative shrink-0 rounded-sm px-2.5 py-2 text-center font-display text-[11px] font-bold uppercase tracking-wide transition sm:px-3 sm:text-xs ${
+          className={`btn-press relative shrink-0 rounded-sm px-2.5 py-2 text-center font-display text-[length:var(--text-small)] font-bold uppercase tracking-wide transition sm:px-3 ${
             active === "inbox" ? BTN.tabActive : BTN.tabIdle
           } ${disabled ? "pointer-events-none opacity-40" : ""}`}
           aria-current={active === "inbox" ? "page" : undefined}
@@ -124,7 +124,7 @@ export function ManagerNav({
               type="button"
               onClick={() => navigate(tab.id)}
               disabled={disabled}
-              className={`btn-press shrink-0 rounded-sm px-2.5 py-2 text-center font-display text-[11px] font-bold uppercase tracking-wide transition sm:px-3 sm:text-xs ${
+              className={`btn-press shrink-0 rounded-sm px-2.5 py-2 text-center font-display text-[length:var(--text-small)] font-bold uppercase tracking-wide transition sm:px-3 ${
                 active === tab.id ? BTN.tabActive : BTN.tabIdle
               } ${disabled ? "pointer-events-none opacity-40" : ""}`}
               aria-current={active === tab.id ? "page" : undefined}

@@ -11,6 +11,7 @@ import type {
   ManagerCompetition,
   ManagerScheduledFixture,
   LiveMatchEvent,
+  MatchEventPeriod,
 } from "./types";
 import {
   competitionAllowsDraw,
@@ -457,39 +458,246 @@ function effectivenessFromCommand(
   return "Even contest — keep adjusting.";
 }
 
+function livePeriod(minute: number): MatchEventPeriod {
+  return minute <= HALFTIME_MINUTE ? "first_half" : "second_half";
+}
+
+function liveFillTemplate(
+  template: string,
+  team: string,
+  opp: string,
+  player?: string
+): string {
+  return template
+    .replace(/\{team\}/g, team)
+    .replace(/\{opp\}/g, opp)
+    .replace(/\{opponent\}/g, opp)
+    .replace(/\{player\}/g, player ?? "a runner");
+}
+
+const LIVE_FILLER: Array<{
+  type: LiveMatchEvent["type"];
+  templates: string[];
+  weight: number;
+}> = [
+  {
+    type: "pressure_set",
+    weight: 3,
+    templates: [
+      "{team} complete their set and force a dropout.",
+      "Solid set from {team} — pressure building.",
+    ],
+  },
+  {
+    type: "last_tackle_kick",
+    weight: 2.5,
+    templates: [
+      "Bomb goes up and {team} win the chase.",
+      "{team} kick long and pin the defence back.",
+    ],
+  },
+  {
+    type: "forced_error",
+    weight: 2.5,
+    templates: [
+      "Huge hit from {team} — ball spilled in contact.",
+      "{team} wrap up the runner and win the play-the-ball.",
+    ],
+  },
+  {
+    type: "forty_twenty",
+    weight: 2,
+    templates: [
+      "Penalty against {opp} — {team} get the ball back.",
+      "Referee calls a penalty and {team} take the tap.",
+    ],
+  },
+  {
+    type: "six_again",
+    weight: 2,
+    templates: [
+      "Six again for {team} — the attack rolls on.",
+      "Referee signals six again and {team} stay on the front foot.",
+    ],
+  },
+  {
+    type: "knock_on",
+    weight: 2,
+    templates: [
+      "Knock on from {opp} — {team} get the scrum feed.",
+      "Handling error hands possession to {team}.",
+    ],
+  },
+  {
+    type: "line_break",
+    weight: 1.5,
+    templates: [
+      "{team} find a half-gap and break the line!",
+      "Clever play from {team} — through the defensive line.",
+    ],
+  },
+  {
+    type: "goal_line_dropout",
+    weight: 1.5,
+    templates: [
+      "Sloppy play from {opp} gifts {team} field position.",
+      "{opp} lose the ball in good ball — {team} capitalise.",
+    ],
+  },
+];
+
+function pushLiveFiller(
+  events: LiveMatchEvent[],
+  minute: number,
+  side: "user" | "opponent",
+  userClub: string,
+  oppClub: string,
+  rng: () => number
+): void {
+  const total = LIVE_FILLER.reduce((s, f) => s + f.weight, 0);
+  let roll = rng() * total;
+  let chosen = LIVE_FILLER[0]!;
+  for (const f of LIVE_FILLER) {
+    roll -= f.weight;
+    if (roll <= 0) {
+      chosen = f;
+      break;
+    }
+  }
+  const team = side === "user" ? userClub : oppClub;
+  const opp = side === "user" ? oppClub : userClub;
+  const template =
+    chosen.templates[Math.floor(rng() * chosen.templates.length)] ??
+    chosen.templates[0]!;
+  events.push({
+    minute,
+    type: chosen.type,
+    team: side,
+    teamName: team,
+    description: eventMinutePrefix(
+      minute,
+      liveFillTemplate(template, team, opp)
+    ),
+    points: 0,
+    importance: "low",
+    period: livePeriod(minute),
+  });
+}
+
+function pushTryBuildUp(
+  events: LiveMatchEvent[],
+  minute: number,
+  side: "user" | "opponent",
+  userClub: string,
+  oppClub: string,
+  scorer: string,
+  rng: () => number
+): void {
+  const team = side === "user" ? userClub : oppClub;
+  const opp = side === "user" ? oppClub : userClub;
+  if (rng() < 0.55 && minute > 1) {
+    const m = minute - 1;
+    events.push({
+      minute: m,
+      type: "six_again",
+      team: side,
+      teamName: team,
+      description: eventMinutePrefix(
+        m,
+        liveFillTemplate(
+          "Six again for {team} — the attack rolls on.",
+          team,
+          opp
+        )
+      ),
+      points: 0,
+      importance: "low",
+      period: livePeriod(m),
+    });
+  }
+  if (rng() < 0.4) {
+    const breakType: LiveMatchEvent["type"] =
+      rng() < 0.5 ? "line_break" : "big_break";
+    events.push({
+      minute,
+      type: breakType,
+      team: side,
+      teamName: team,
+      playerName: scorer,
+      description: eventMinutePrefix(
+        minute,
+        liveFillTemplate(
+          "{team} find a half-gap and {player} is through!",
+          team,
+          opp,
+          scorer
+        )
+      ),
+      points: 0,
+      importance: "medium",
+      period: livePeriod(minute),
+    });
+  }
+}
+
 function dominanceNote(
   userRating: number,
   oppRating: number,
   momentum: number,
   minute: number,
+  userClub: string,
+  oppClub: string,
   rng: () => number
 ): LiveMatchEvent | null {
   const diff = userRating - oppRating;
-  if (diff <= -8 && momentum < -12 && rng() < 0.35) {
+  if (diff <= -8 && momentum < -12 && rng() < 0.28) {
     return {
       minute,
       type: "note",
       team: "opponent",
-      description: `${minute}' ${diff <= -12 ? "Opponents dominating possession" : "Under heavy pressure in defence"}`,
+      teamName: oppClub,
+      description: eventMinutePrefix(
+        minute,
+        diff <= -12
+          ? `${oppClub} dominating possession`
+          : `Under heavy pressure from ${oppClub}`
+      ),
       points: 0,
+      importance: "low",
+      period: livePeriod(minute),
     };
   }
-  if (diff >= 8 && momentum > 12 && rng() < 0.3) {
+  if (diff >= 8 && momentum > 12 && rng() < 0.25) {
     return {
       minute,
       type: "note",
       team: "user",
-      description: `${minute}' Camped in the opposition half`,
+      teamName: userClub,
+      description: eventMinutePrefix(
+        minute,
+        `${userClub} camped in the opposition half`
+      ),
       points: 0,
+      importance: "low",
+      period: livePeriod(minute),
     };
   }
-  if (Math.abs(momentum) > 18 && rng() < 0.22) {
+  if (Math.abs(momentum) > 18 && rng() < 0.18) {
+    const withUser = momentum > 0;
     return {
       minute,
       type: "note",
-      team: momentum > 0 ? "user" : "opponent",
-      description: `${minute}' ${momentum > 0 ? "Momentum with your side" : "Opponents on top at the moment"}`,
+      team: withUser ? "user" : "opponent",
+      teamName: withUser ? userClub : oppClub,
+      description: eventMinutePrefix(
+        minute,
+        withUser
+          ? `Momentum with ${userClub}`
+          : `${oppClub} on top at the moment`
+      ),
       points: 0,
+      importance: "low",
+      period: livePeriod(minute),
     };
   }
   return null;
@@ -632,13 +840,30 @@ export function advanceLiveTick(
         rng
       );
 
-    const note = dominanceNote(userRating, oppRating, momentum, minute, rng);
+    const note = dominanceNote(
+      userRating,
+      oppRating,
+      momentum,
+      minute,
+      career.club,
+      state.opponent,
+      rng
+    );
     if (note) events.push(note);
 
     if (userTry) {
       userTries++;
       userScore += 4;
       const scorer = pickScorer(career, command, rng, events);
+      pushTryBuildUp(
+        events,
+        minute,
+        "user",
+        career.club,
+        state.opponent,
+        scorer.name,
+        rng
+      );
       const tryText = buildCommentaryLine(
         "try",
         {
@@ -662,6 +887,7 @@ export function advanceLiveTick(
         points: 4,
         importance: "major",
         teamName: career.club,
+        period: livePeriod(minute),
       });
       if (rng() < 0.82) {
         userScore += 2;
@@ -689,6 +915,7 @@ export function advanceLiveTick(
           points: 2,
           importance: "high",
           teamName: career.club,
+          period: livePeriod(minute),
         });
       }
       momentum += 8;
@@ -702,6 +929,15 @@ export function advanceLiveTick(
         state.round,
         rng,
         state.competition
+      );
+      pushTryBuildUp(
+        events,
+        minute,
+        "opponent",
+        career.club,
+        state.opponent,
+        scorer.name,
+        rng
       );
       const tryText = buildCommentaryLine(
         "try",
@@ -726,6 +962,7 @@ export function advanceLiveTick(
         points: 4,
         importance: "major",
         teamName: state.opponent,
+        period: livePeriod(minute),
       });
       if (rng() < 0.8) {
         oppScore += 2;
@@ -759,31 +996,41 @@ export function advanceLiveTick(
           points: 2,
           importance: "high",
           teamName: state.opponent,
+          period: livePeriod(minute),
         });
       }
       momentum -= 8;
-    } else if (rng() < 0.018 * mods.errorRisk) {
-      const errText = buildCommentaryLine(
-        "knock_on",
-        {
-          team: career.club,
-          opponent: state.opponent,
-          minute,
-          area: territoryForMinute(minute),
-          score: `${userScore}-${oppScore}`,
-        },
-        memory,
+    } else if (rng() < 0.32 * Math.min(1.35, mods.errorRisk)) {
+      const side: "user" | "opponent" = rng() < 0.5 ? "user" : "opponent";
+      pushLiveFiller(
+        events,
+        minute,
+        side,
+        career.club,
+        state.opponent,
         rng
       );
+      if (side === "user") momentum -= 1.5;
+      else momentum += 1.5;
+    }
+
+    if (
+      minute === HALFTIME_MINUTE &&
+      !events.some((e) => e.type === "half_time")
+    ) {
       events.push({
-        minute,
-        type: "knock_on",
+        minute: HALFTIME_MINUTE,
+        type: "half_time",
         team: "user",
-        description: eventMinutePrefix(minute, errText),
-        points: 0,
         teamName: career.club,
+        description: eventMinutePrefix(
+          HALFTIME_MINUTE,
+          `Half time — ${career.club} ${userScore}, ${state.opponent} ${oppScore}.`
+        ),
+        points: 0,
+        importance: "major",
+        period: "first_half",
       });
-      momentum -= 3;
     }
   }
 
@@ -791,6 +1038,23 @@ export function advanceLiveTick(
   const atHalftime = minute >= HALFTIME_MINUTE && maxMinute <= HALFTIME_MINUTE;
   let finalUser = userScore;
   let finalOpp = oppScore;
+
+  if (isComplete && !events.some((e) => e.type === "full_time")) {
+    events.push({
+      minute: 80,
+      type: "full_time",
+      team: "user",
+      teamName: career.club,
+      description: eventMinutePrefix(
+        80,
+        `Full time — ${career.club} ${userScore}, ${state.opponent} ${oppScore}.`
+      ),
+      points: 0,
+      importance: "major",
+      period: "second_half",
+    });
+  }
+
   // Cup / playoffs / WCC / friendlies: level at full time → golden point.
   // Manager league may finish as a draw — no golden point there.
   if (
@@ -811,11 +1075,12 @@ export function advanceLiveTick(
       team: winnerTeam,
       description: eventMinutePrefix(
         80,
-        "Full time — scores are level. Golden Point."
+        "Scores are level. Golden Point."
       ),
       points: 0,
       teamName: winnerName,
       importance: "high",
+      period: "golden_point",
     });
     events.push({
       minute: 81,
@@ -829,6 +1094,7 @@ export function advanceLiveTick(
       points: 1,
       teamName: winnerName,
       importance: "high",
+      period: "golden_point",
     });
   }
 
@@ -919,6 +1185,23 @@ function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
     (e) => e.type === "try" && e.team === "opponent"
   ).length;
 
+  const events = [...state.events];
+  if (!events.some((e) => e.type === "full_time")) {
+    events.push({
+      minute: 80,
+      type: "full_time",
+      team: "user",
+      teamName: undefined,
+      description: eventMinutePrefix(
+        80,
+        `Full time — ${userScore}-${oppScore}.`
+      ),
+      points: 0,
+      importance: "major",
+      period: "second_half",
+    });
+  }
+
   return {
     ...state,
     minute: 80,
@@ -926,6 +1209,7 @@ function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
     oppScore,
     userTries: userTries > 0 ? userTries : state.userTries,
     oppTries: oppTries > 0 ? oppTries : state.oppTries,
+    events,
     isComplete: true,
     isPlaying: false,
     phase: "full_time",

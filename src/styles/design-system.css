@@ -36,21 +36,21 @@
   --player-card-padding-block: 0.875rem;
   --player-card-header-gap: 0.5rem;
 
-  /* Mobile design tokens — denser phones, unchanged desktop via media queries */
+  /* Mobile design tokens — denser phones; type scale shared with desktop */
   --mobile-page-padding: 0.75rem;
   --mobile-section-gap: 0.75rem;
   --mobile-card-padding: 0.75rem;
   --mobile-compact-card-padding: 0.625rem;
   --mobile-control-gap: 0.5rem;
   --mobile-header-height: 3rem;
-  --mobile-body-font-size: 0.875rem;
-  --mobile-secondary-font-size: 0.78rem;
-  --mobile-caption-font-size: 0.7rem;
-  --mobile-title-font-size: 1.28rem;
-  --mobile-section-title-size: 1.05rem;
+  --mobile-body-font-size: 0.92rem;
+  --mobile-secondary-font-size: 0.8rem;
+  --mobile-caption-font-size: 0.8rem;
+  --mobile-title-font-size: clamp(1.45rem, 3vw, 2rem);
+  --mobile-section-title-size: 1.1rem;
   --mobile-button-height: 2.75rem;
   --mobile-tap-target: 2.75rem;
-  --mobile-line-height-body: 1.4;
+  --mobile-line-height-body: 1.5;
   --mobile-line-height-tight: 1.25;
 
   --text-page-title: clamp(1.45rem, 3vw, 2rem);
@@ -68,12 +68,7 @@
 @media (max-width: 639px) {
   :root {
     --layout-page-pad-inline: var(--mobile-page-padding);
-    --text-page-title: var(--mobile-title-font-size);
-    --text-section-title: var(--mobile-section-title-size);
-    --text-section-header: var(--mobile-section-title-size);
-    --text-card-title: 0.92rem;
-    --text-body: var(--mobile-body-font-size);
-    --text-small: var(--mobile-secondary-font-size);
+    /* Keep type scale identical to desktop — only spacing densifies on phones. */
   }
 
   .manager-section {
@@ -798,6 +793,21 @@
   z-index: 0;
 }
 
+/*
+ * Kit-owned top edge — club colours paint the top border/strip.
+ * Hide the Store theme accent so it does not clash (friendlies, etc.).
+ */
+.game-panel--kit-identity::before,
+.programme-panel--kit-identity::before,
+.scoreboard-panel--kit-identity::before,
+.clipboard-panel--kit-identity::before,
+.card-glass--kit-identity::before,
+.matchday-panel--kit-identity::before,
+.game-table-row--kit-identity::before {
+  display: none !important;
+  content: none !important;
+}
+
 /* Explicit accent bar utility (Store theme). Do not apply on identity/player cards. */
 .game-panel__accent {
   height: 3px;
@@ -828,13 +838,12 @@
 }
 
 .showcase-player-card__body {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: start;
+  column-gap: var(--player-card-header-gap, 0.5rem);
   width: 100%;
   min-width: 0;
-  align-items: flex-start;
-  gap: var(--player-card-header-gap, 0.5rem);
   padding: var(--player-card-padding-block, 0.875rem)
     var(--player-card-padding-inline, 1rem);
   text-align: left;
@@ -843,6 +852,21 @@
 
 .showcase-player-card__body:hover {
   background: rgba(255, 255, 255, 0.03);
+}
+
+.showcase-player-card__badge {
+  justify-content: flex-end;
+  align-self: start;
+}
+
+.showcase-player-card__view {
+  flex-shrink: 0;
+  align-self: start;
+  padding-top: 0.125rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #6b7280;
+  white-space: nowrap;
 }
 
 .game-panel--identity::before,

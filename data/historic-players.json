@@ -13897,12 +13897,12 @@
     "club": "Leeds Rhinos",
     "nationality": "England",
     "era": "MODERN_ERA",
-    "yearsActive": "2026–Present",
-    "category": "current",
-    "peakRating": 83,
-    "value": 166000,
-    "appearances": 32,
-    "tries": 2,
+    "yearsActive": "2015–2018",
+    "category": "historic",
+    "peakRating": 78,
+    "value": 81000,
+    "appearances": 41,
+    "tries": 4,
     "clubLegend": false,
     "dateOfBirth": "1996-09-04",
     "birthYear": 1996,
@@ -13914,14 +13914,19 @@
       "Leigh",
       "Sheffield"
     ],
-    "year": 2026,
-    "cardYear": 2026,
-    "teamYearId": "leeds-rhinos-2026",
+    "year": 2016,
+    "cardYear": 2016,
+    "teamYearId": "leeds-rhinos-2016",
     "team": "Leeds Rhinos",
     "displayClub": "Leeds Rhinos",
     "basePlayerId": "leeds-hist-jordan-lilley",
-    "status": "Current",
-    "primaryPosition": "SCRUM_HALF"
+    "status": "Historic",
+    "primaryPosition": "HB",
+    "positions": [
+      "STAND_OFF",
+      "SCRUM_HALF"
+    ],
+    "positionAbbrev": "SO/SH"
   },
   {
     "id": "catalans-hist-shane-perry",

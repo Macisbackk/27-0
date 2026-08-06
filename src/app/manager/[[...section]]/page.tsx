@@ -7,6 +7,7 @@ import { ManagerLanding } from "@/components/manager/ManagerLanding";
 import { ManagerClubSelect } from "@/components/manager/ManagerClubSelect";
 import { ManagerNav } from "@/components/manager/ManagerNav";
 import { ManagerMobileBottomNav } from "@/components/manager/ManagerMobileBottomNav";
+import { ManagerKeepAlivePane } from "@/components/manager/ManagerKeepAlivePane";
 import { ManagerHub } from "@/components/manager/ManagerHub";
 import { ManagerSquad } from "@/components/manager/ManagerSquad";
 import { ManagerContracts } from "@/components/manager/ManagerContracts";
@@ -220,6 +221,8 @@ function resolveInitialNavView(pathname: string, saved: ManagerCareer): ManagerV
 export default function ManagerPage() {
   const router = useRouter();
   const pathname = usePathname();
+  const pathnameRef = useRef(pathname);
+  pathnameRef.current = pathname;
   const [view, setView] = useState<ManagerView>("landing");
   /** Forward nav only — cleared synchronously when pathname changes (browser back). */
   const pendingForwardNavRef = useRef<{ path: string; view: ManagerView } | null>(
@@ -317,6 +320,7 @@ export default function ManagerPage() {
   const careerSlotRef = useRef<number | null>(null);
   const careerRef = useRef<ManagerCareer | null>(null);
   const flushErrorRef = useRef<string | null>(null);
+  const afterMatchRef = useRef<(next: ManagerCareer) => void>(() => {});
 
   const setCareerState = useCallback((next: ManagerCareer | null) => {
     careerRef.current = next;
@@ -611,7 +615,7 @@ export default function ManagerPage() {
       if (!event.persisted) return;
       const slot = getActiveSaveSlot();
       if (careerSlotRef.current === slot && careerRef.current) return;
-      const fromPath = managerViewFromPathname(pathname);
+      const fromPath = managerViewFromPathname(pathnameRef.current);
       if (!fromPath || !isManagerNavView(fromPath)) return;
       const raw = readManagerCareerRaw(slot);
       if (!raw) return;
@@ -635,7 +639,8 @@ export default function ManagerPage() {
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("freeze", freezeHandler);
     };
-  }, [pathname, refreshSaveSlots, setCareerState]);
+    // Pathname must not be a dependency — tab switches would flush+rebind and jank.
+  }, [refreshSaveSlots, setCareerState]);
 
   const awaitingFriendlyChoice =
     career != null &&
@@ -694,6 +699,23 @@ export default function ManagerPage() {
     },
     [career, goToView]
   );
+
+  /** Scroll to top when switching between main Manager nav tabs. */
+  const prevNavViewRef = useRef<ManagerView | null>(null);
+  useLayoutEffect(() => {
+    if (!isManagerNavView(displayView)) {
+      prevNavViewRef.current = displayView;
+      return;
+    }
+    if (
+      prevNavViewRef.current != null &&
+      prevNavViewRef.current !== displayView &&
+      isManagerNavView(prevNavViewRef.current)
+    ) {
+      scrollManagerPageToTop();
+    }
+    prevNavViewRef.current = displayView;
+  }, [displayView]);
 
   const handleSquadSubTabChange = useCallback(
     (tab: SquadSubTab) => {
@@ -1002,6 +1024,7 @@ export default function ManagerPage() {
       setPendingLeagueWinnersCelebration(wonLeagueTable);
     }
   };
+  afterMatchRef.current = afterMatch;
 
   const continueAfterMatchReview = () => {
     if (!career) {
@@ -1485,7 +1508,7 @@ export default function ManagerPage() {
     goToView("season-review", { syncUrl: false });
   };
 
-  const handleSimulate = () => {
+  const handleSimulate = useCallback(() => {
     if (!career) return;
     if (career.matchWeekPhase === "awaiting_advance") {
       setAlertDialog({
@@ -1524,10 +1547,10 @@ export default function ManagerPage() {
       });
       return;
     }
-    afterMatch(result.career);
-  };
+    afterMatchRef.current(result.career);
+  }, [career, persist, setCareerState]);
 
-  const handlePlayGame = () => {
+  const handlePlayGame = useCallback(() => {
     if (!career) return;
     if (career.matchWeekPhase === "awaiting_advance") {
       setAlertDialog({
@@ -1557,9 +1580,9 @@ export default function ManagerPage() {
     }
     persist(ready);
     setPlayGameOpen(true);
-  };
+  }, [career, persist]);
 
-  const handleAdvanceWeek = () => {
+  const handleAdvanceWeek = useCallback(() => {
     if (!career || advancingWeek) return;
     if (career.matchWeekPhase !== "awaiting_advance") return;
     if (hasBlockingManagerDecision(career)) {
@@ -1631,7 +1654,64 @@ export default function ManagerPage() {
     } finally {
       setAdvancingWeek(false);
     }
-  };
+  }, [career, advancingWeek, persist, goToView]);
+
+  const handleOpenCupFixtures = useCallback(() => {
+    setFixturesInitialFilter("cup");
+    handleNavNavigate("fixtures");
+  }, [handleNavNavigate]);
+
+  const handleOpenHubMatchReview = useCallback(
+    (fixtureId: string) => {
+      setReviewFixtureId(fixtureId);
+      setPostMatchReviewFlow(false);
+      setMatchReviewReturnView("hub");
+      goToView("match-review", { syncUrl: false });
+    },
+    [goToView]
+  );
+
+  const handleInboxNavigate = useCallback(
+    (v: ManagerView) => {
+      if (v === "season-rewards") goToView("season-rewards", { syncUrl: false });
+      else handleNavNavigate(v);
+    },
+    [goToView, handleNavNavigate]
+  );
+
+  const handleOpenMatchPrep = useCallback(() => {
+    setPendingHubNextFixtureScroll(true);
+    handleNavNavigate("hub");
+  }, [handleNavNavigate]);
+
+  const handleSelectFixtureReview = useCallback(
+    (fixtureId: string) => {
+      setReviewFixtureId(fixtureId);
+      setPostMatchReviewFlow(false);
+      setMatchReviewReturnView("fixtures");
+      goToView("match-review", { syncUrl: false });
+    },
+    [goToView]
+  );
+
+  const squadContextTabs = useMemo(
+    () =>
+      displayView === "squad" && !awaitingFriendlyChoice
+        ? {
+            tabs: SQUAD_SUB_TAB_OPTIONS,
+            active: squadSubTab,
+            onChange: (tab: string) =>
+              handleSquadSubTabChange(tab as SquadSubTab),
+            ariaLabel: "Squad sections",
+          }
+        : undefined,
+    [
+      displayView,
+      awaitingFriendlyChoice,
+      squadSubTab,
+      handleSquadSubTabChange,
+    ]
+  );
 
   const handlePlayComplete = (next: ManagerCareer) => {
     setPlayGameOpen(false);
@@ -1761,17 +1841,7 @@ export default function ManagerPage() {
             onNavigate={handleNavNavigate}
             disabled={playGameOpen || awaitingFriendlyChoice}
             unreadInbox={countUnreadInbox(career)}
-            contextTabs={
-              displayView === "squad" && !awaitingFriendlyChoice
-                ? {
-                    tabs: SQUAD_SUB_TAB_OPTIONS,
-                    active: squadSubTab,
-                    onChange: (tab) =>
-                      handleSquadSubTabChange(tab as SquadSubTab),
-                    ariaLabel: "Squad sections",
-                  }
-                : undefined
-            }
+            contextTabs={squadContextTabs}
           />
 
           <div className={`flex min-w-0 flex-col ${PAGE.section}`}>
@@ -1801,10 +1871,7 @@ export default function ManagerPage() {
               />
             ) : (
               <>
-                <div
-                  className={displayView === "hub" ? undefined : "hidden"}
-                  aria-hidden={displayView !== "hub"}
-                >
+                <ManagerKeepAlivePane active={displayView === "hub"}>
                   <ManagerHub
                     career={career}
                     onPlayGame={handlePlayGame}
@@ -1813,115 +1880,64 @@ export default function ManagerPage() {
                     advancingWeek={advancingWeek}
                     onUpdate={persist}
                     onNavigate={handleNavNavigate}
-                    onOpenCupFixtures={() => {
-                      setFixturesInitialFilter("cup");
-                      handleNavNavigate("fixtures");
-                    }}
-                    onOpenMatchReview={(fixtureId) => {
-                      setReviewFixtureId(fixtureId);
-                      setPostMatchReviewFlow(false);
-                      setMatchReviewReturnView("hub");
-                      goToView("match-review", { syncUrl: false });
-                    }}
+                    onOpenCupFixtures={handleOpenCupFixtures}
+                    onOpenMatchReview={handleOpenHubMatchReview}
                   />
-                </div>
+                </ManagerKeepAlivePane>
 
-                <div
-                  className={displayView === "inbox" ? undefined : "hidden"}
-                  aria-hidden={displayView !== "inbox"}
-                >
+                <ManagerKeepAlivePane active={displayView === "inbox"}>
                   <ManagerInbox
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}
-                    onNavigate={(v) => {
-                      if (v === "season-rewards") goToView("season-rewards", { syncUrl: false });
-                      else handleNavNavigate(v);
-                    }}
+                    onNavigate={handleInboxNavigate}
                   />
-                </div>
-                <div
-                  className={displayView === "squad" ? undefined : "hidden"}
-                  aria-hidden={displayView !== "squad"}
-                >
+                </ManagerKeepAlivePane>
+                <ManagerKeepAlivePane active={displayView === "squad"}>
                   <ManagerSquad
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}
                     subTab={squadSubTab}
                   />
-                </div>
-                <div
-                  className={displayView === "reserves" ? undefined : "hidden"}
-                  aria-hidden={displayView !== "reserves"}
-                >
+                </ManagerKeepAlivePane>
+                <ManagerKeepAlivePane active={displayView === "reserves"}>
                   <ManagerReserves
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}
                   />
-                </div>
-                <div
-                  className={displayView === "contracts" ? undefined : "hidden"}
-                  aria-hidden={displayView !== "contracts"}
-                >
+                </ManagerKeepAlivePane>
+                <ManagerKeepAlivePane active={displayView === "contracts"}>
                   <ManagerContracts career={career} onUpdate={persist} />
-                </div>
-                <div
-                  className={displayView === "transfers" ? undefined : "hidden"}
-                  aria-hidden={displayView !== "transfers"}
-                >
+                </ManagerKeepAlivePane>
+                <ManagerKeepAlivePane active={displayView === "transfers"}>
                   <ManagerTransfers
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}
                   />
-                </div>
-                <div
-                  className={displayView === "club" ? undefined : "hidden"}
-                  aria-hidden={displayView !== "club"}
-                >
+                </ManagerKeepAlivePane>
+                <ManagerKeepAlivePane active={displayView === "club"}>
                   <ManagerClub career={career} onUpdate={persist} />
-                </div>
-                <div
-                  className={displayView === "fixtures" ? undefined : "hidden"}
-                  aria-hidden={displayView !== "fixtures"}
-                >
+                </ManagerKeepAlivePane>
+                <ManagerKeepAlivePane active={displayView === "fixtures"}>
                   <ManagerFixtures
                     career={career}
                     onUpdate={persist}
                     initialFilter={fixturesInitialFilter ?? "calendar"}
-                    onOpenMatchPrep={() => {
-                      setPendingHubNextFixtureScroll(true);
-                      handleNavNavigate("hub");
-                    }}
-                    onSelectFixture={(fixtureId) => {
-                      setReviewFixtureId(fixtureId);
-                      setPostMatchReviewFlow(false);
-                      setMatchReviewReturnView("fixtures");
-                      goToView("match-review", { syncUrl: false });
-                    }}
+                    onOpenMatchPrep={handleOpenMatchPrep}
+                    onSelectFixture={handleSelectFixtureReview}
                   />
-                </div>
-                <div
-                  className={
-                    displayView === "across-league" ? undefined : "hidden"
-                  }
-                  aria-hidden={displayView !== "across-league"}
-                >
+                </ManagerKeepAlivePane>
+                <ManagerKeepAlivePane active={displayView === "across-league"}>
                   <ManagerAcrossLeague
                     career={career}
                     onNavigate={handleNavNavigate}
                   />
-                </div>
-                <div
-                  className={displayView === "stats" ? undefined : "hidden"}
-                  aria-hidden={displayView !== "stats"}
-                >
+                </ManagerKeepAlivePane>
+                <ManagerKeepAlivePane active={displayView === "stats"}>
                   <ManagerStatsView career={career} />
-                </div>
-                <div
-                  className={displayView === "settings" ? undefined : "hidden"}
-                  aria-hidden={displayView !== "settings"}
-                >
+                </ManagerKeepAlivePane>
+                <ManagerKeepAlivePane active={displayView === "settings"}>
                   <ManagerSettings career={career} onUpdate={persist} />
-                </div>
+                </ManagerKeepAlivePane>
               </>
             )}
           </div>

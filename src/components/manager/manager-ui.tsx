@@ -41,8 +41,7 @@ const STAT_VALUE_LG: Record<ManagerValueTone, string> = {
   muted: "text-lg font-bold text-pitch-300",
 };
 
-export const MANAGER_LABEL =
-  "text-[11px] font-semibold uppercase tracking-wider text-pitch-500 sm:text-[10px]";
+export const MANAGER_LABEL = TYPO.keyLabel;
 
 export function ManagerPage({
   wide = false,
@@ -691,14 +690,14 @@ export function ManagerInboxMessageCard({
                 </button>
               ) : null}
             </div>
-            <h3 className="mt-1.5 text-sm font-semibold leading-snug text-white sm:mt-2 sm:text-base">
+            <h3 className={`mt-1.5 ${TYPO.cardTitle} sm:mt-2`}>
               {message.title}
             </h3>
           </div>
         </header>
 
         <p
-          className={`${TYPO.bodySm} whitespace-pre-line leading-snug text-pitch-300 sm:leading-relaxed`}
+          className={`${TYPO.bodySm} whitespace-pre-line text-pitch-300`}
         >
           {message.body}
         </p>

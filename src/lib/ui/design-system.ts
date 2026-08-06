@@ -51,11 +51,11 @@ export const MOBILE = {
   choiceGrid: "grid grid-cols-2 items-stretch gap-2 sm:gap-3 md:gap-4",
   /** Fluid card that never forces horizontal page scroll. */
   compactCard: "w-full min-w-0 max-w-full overflow-hidden",
-  /** Dense section title on phones. */
+  /** Dense section title — same type scale on phone and desktop. */
   sectionTitle:
-    "font-display text-[length:var(--text-section-title)] font-bold sm:text-xl",
+    "font-display text-[length:var(--text-section-title)] font-bold text-white leading-[1.25]",
   /** Secondary copy hidden or collapsed on phones. */
-  secondaryCopy: "hidden text-sm text-gray-400 sm:block",
+  secondaryCopy: "hidden text-[length:var(--text-body)] text-gray-400 sm:block",
   /** Touch-safe control (min 44px). */
   touchTarget: "min-h-[var(--mobile-tap-target,44px)] min-w-[var(--mobile-tap-target,44px)]",
   /** Prevent flex/grid children from blowing out the viewport. */

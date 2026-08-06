@@ -483,23 +483,37 @@ body {
 }
 
 .showcase-compact-name {
-  font-size: clamp(0.6875rem, 2.6vw, 0.875rem);
-  /* Keep horizontal text — never use -webkit-box on this flex column wrapper */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  display: block;
   min-width: 0;
-  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+  font-size: clamp(0.75rem, 2.4vw, 0.9375rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
 }
 
 .showcase-compact-name__title {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
+  display: block;
+  width: 100%;
+  max-width: 100%;
   overflow-wrap: break-word;
   word-break: normal;
+  white-space: normal;
+}
+
+.showcase-compact-name__meta {
+  display: block;
+  width: 100%;
   max-width: 100%;
+  margin-top: 0.125rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: #9ca3af;
 }
 
 .showcase-player-grid {

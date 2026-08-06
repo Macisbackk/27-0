@@ -463,17 +463,11 @@ export function buildCupScheduledFixture(
 export function isLeagueAndCupPhaseComplete(career: ManagerCareer): boolean {
   const leaguePlayed = countLeagueFixturesPlayed(career);
   /*
-   * An empty or unbuilt schedule is not a finished season. Hydration falls back
-   * to `schedule: []`, so `currentFixtureIndex >= schedule.length` was 0 >= 0
-   * and marked untouched careers as league-complete — which then awarded
-   * League Leaders to whoever topped the all-zero table on the tie-break.
+   * Require the full 27-game league slate. Do not treat a short/exhausted
+   * schedule as finished — that crowned mid-season table-toppers as League
+   * Leaders after only a handful of rounds.
    */
-  const scheduleExhausted =
-    career.schedule.length > 0 &&
-    career.currentFixtureIndex >= career.schedule.length;
-  const leagueDone =
-    leaguePlayed >= MANAGER_SEASON_GAMES ||
-    (scheduleExhausted && leaguePlayed > 0);
+  const leagueDone = leaguePlayed >= MANAGER_SEASON_GAMES;
   if (!leagueDone) return false;
 
   if (!career.challengeCup) return true;

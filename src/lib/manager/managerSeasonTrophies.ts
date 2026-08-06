@@ -1,11 +1,8 @@
 import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import type { PlayoffFinish } from "../game/playoff-simulation";
-import {
-  countLeagueFixturesPlayed,
-  isLeagueAndCupPhaseComplete,
-} from "./managerChallengeCup";
+import { countLeagueFixturesPlayed } from "./managerChallengeCup";
 import { getUserLeagueTablePosition } from "./managerFixtures";
-import type { ManagerCareer, ManagerSeasonSummary } from "./types";
+import { MANAGER_SEASON_GAMES, type ManagerCareer, type ManagerSeasonSummary } from "./types";
 
 const TROPHY_ORDER = [
   "League Leaders",
@@ -83,15 +80,11 @@ export function getManagerSeasonTrophyLabels(career: ManagerCareer): string[] {
   const position = getUserLeagueTablePosition(career);
   const playoffFinish = career.playoffs?.finish ?? null;
   const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
-  const leaguePhaseComplete = isLeagueAndCupPhaseComplete(career);
-  /* No league honours before a ball is kicked — an all-zero table still ranks
-     someone first on the tie-break. */
+  /* League Leaders is a full-slate honour — never award it because the club
+     happens to sit first after a handful of rounds, or because playoff intro
+     flags were synced early. */
   const leagueTableSettled =
-    countLeagueFixturesPlayed(career) > 0 &&
-    (leaguePhaseComplete ||
-      career.isSeasonComplete ||
-      career.playoffsIntroAcknowledged ||
-      career.playoffs != null);
+    countLeagueFixturesPlayed(career) >= MANAGER_SEASON_GAMES;
   const worldClubChallengeWon = (career.worldClubChallenge?.history ?? []).some(
     (r) => r.seasonYear === career.seasonYear && r.userResult === "won"
   );

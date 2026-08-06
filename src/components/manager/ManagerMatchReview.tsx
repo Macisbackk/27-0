@@ -149,9 +149,14 @@ export function ManagerMatchReview({
       fixture.meta?.tacticEffectivenessLine ||
       fixture.meta?.tacticImpactLine
   );
+  const hasStoryExtras = Boolean(keyMoment || cupBracketSnapshot);
+  const effectiveMobileTab: typeof mobileTab =
+    !hasStoryExtras && mobileTab === "story" ? "stats" : mobileTab;
 
   const tabVisible = (tab: typeof mobileTab) =>
-    mobileTab === tab ? "block space-y-4" : "hidden sm:block sm:space-y-4";
+    effectiveMobileTab === tab
+      ? "block space-y-4"
+      : "hidden sm:block sm:space-y-4";
 
   const matchOccasion = fixture.competition
     ? getManagerMatchOccasionPresentation({
@@ -188,48 +193,76 @@ export function ManagerMatchReview({
       </div>
 
       <div
-        className={`${CARD.elevated} ${SPACING.cardPadding} text-center matchday-scoreboard ${
+        className={`${CARD.elevated} ${SPACING.cardPadding} matchday-scoreboard ${
           matchOccasion
             ? `${matchOccasion.surfaceClass} ${matchOccasion.matchdayModifier}`
             : ""
         }`.trim()}
       >
-        {matchOccasion?.momentLine ? (
-          <p
-            className={`mb-2 text-xs font-semibold uppercase tracking-wider ${matchOccasion.momentTextClass}`}
-          >
-            {matchOccasion.weekLabel}
+        <div className="text-center">
+          {matchOccasion?.momentLine ? (
+            <p
+              className={`mb-2 text-xs font-semibold uppercase tracking-wider ${matchOccasion.momentTextClass}`}
+            >
+              {matchOccasion.weekLabel}
+            </p>
+          ) : null}
+          <p className="text-xl font-bold text-white sm:text-2xl">
+            <span className={fixture.isHome ? "text-theme-primary" : ""}>
+              {fixture.isHome ? career.club : fixture.opponent}
+            </span>{" "}
+            <span className="text-theme-primary">
+              {fixture.isHome ? fixture.pointsFor : fixture.pointsAgainst}
+            </span>
+            <span className="mx-2 text-pitch-500">-</span>
+            <span className="text-theme-primary">
+              {fixture.isHome ? fixture.pointsAgainst : fixture.pointsFor}
+            </span>{" "}
+            <span className={!fixture.isHome ? "text-theme-primary" : ""}>
+              {!fixture.isHome ? career.club : fixture.opponent}
+            </span>
           </p>
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{roundLabel}</p>
+        </div>
+
+        {fixture.matchBio ? (
+          <div className="mt-4 border-t border-pitch-700/45 pt-3 text-left">
+            <p className={TYPO.sectionLabel}>Match Story</p>
+            <p
+              className={`mt-2 leading-relaxed whitespace-pre-line ${TYPO.bodySm} text-pitch-200`}
+            >
+              {fixture.matchBio}
+            </p>
+          </div>
         ) : null}
-        <p className={`text-xl font-bold text-white sm:text-2xl`}>
-          <span className={fixture.isHome ? "text-theme-primary" : ""}>
-            {fixture.isHome ? career.club : fixture.opponent}
-          </span>{" "}
-          <span className="text-theme-primary">{fixture.isHome ? fixture.pointsFor : fixture.pointsAgainst}</span>
-          <span className="mx-2 text-pitch-500">-</span>
-          <span className="text-theme-primary">{fixture.isHome ? fixture.pointsAgainst : fixture.pointsFor}</span>{" "}
-          <span className={!fixture.isHome ? "text-theme-primary" : ""}>
-            {!fixture.isHome ? career.club : fixture.opponent}
-          </span>
-        </p>
-        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>{roundLabel}</p>
+
+        {fixture.manOfTheMatch ? (
+          <div className="mt-3 text-left">
+            <MatchPlayerOfTheMatchCard
+              motm={fixture.manOfTheMatch}
+              userClub={career.club}
+              className="border-pitch-700/50 bg-pitch-950/40 shadow-none"
+            />
+          </div>
+        ) : null}
       </div>
 
       <div className="flex justify-center sm:hidden">
         <ManagerSubTabBar
           tabs={(
             [
-              ["story", "Story"],
+              ...(hasStoryExtras ? ([["story", "Story"]] as const) : []),
               ["stats", "Stats"],
               ...(hasTactics ? ([["tactics", "Tactics"]] as const) : []),
             ] as const
           ).map(([id, label]) => ({ id, label }))}
-          active={mobileTab}
+          active={effectiveMobileTab}
           onChange={setMobileTab}
           ariaLabel="Match review sections"
         />
       </div>
 
+      {hasStoryExtras ? (
       <div className={tabVisible("story")}>
       {keyMoment && (
         <div
@@ -242,15 +275,6 @@ export function ManagerMatchReview({
             {keyMoment.headline}
           </p>
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-200`}>{keyMoment.body}</p>
-        </div>
-      )}
-
-      {fixture.matchBio && (
-        <div className={`${CARD.base} ${SPACING.cardPadding}`}>
-          <p className={TYPO.sectionLabel}>Match Story</p>
-          <p className={`mt-2 leading-relaxed whitespace-pre-line ${TYPO.bodySm} text-pitch-200`}>
-            {fixture.matchBio}
-          </p>
         </div>
       )}
 
@@ -274,14 +298,8 @@ export function ManagerMatchReview({
           />
         </div>
       )}
-
-      {fixture.manOfTheMatch && (
-        <MatchPlayerOfTheMatchCard
-          motm={fixture.manOfTheMatch}
-          userClub={career.club}
-        />
-      )}
       </div>
+      ) : null}
 
       <div className={tabVisible("stats")}>
         <MatchDetailsPanel

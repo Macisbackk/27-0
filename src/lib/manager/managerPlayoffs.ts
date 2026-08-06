@@ -230,17 +230,12 @@ export function ensurePlayoffsReady(career: ManagerCareer): ManagerCareer {
 
 /**
  * Regular league season only — cup progress does not delay this flag.
- * Used for Season Progress playoff visibility.
+ * Used for Season Progress playoff visibility and League Leaders eligibility.
+ * Requires the full 27-game slate so a short/corrupt schedule cannot crown
+ * a mid-season table-topper.
  */
 export function isLeaguePhaseComplete(career: ManagerCareer): boolean {
-  const leaguePlayed = countLeagueFixturesPlayed(career);
-  const scheduleExhausted =
-    career.schedule.length > 0 &&
-    career.currentFixtureIndex >= career.schedule.length;
-  return (
-    leaguePlayed >= MANAGER_SEASON_GAMES ||
-    (scheduleExhausted && leaguePlayed > 0)
-  );
+  return countLeagueFixturesPlayed(career) >= MANAGER_SEASON_GAMES;
 }
 
 /** Show playoffs in Season Progress only after the league slate is done. */
@@ -434,7 +429,7 @@ export function shouldShowLeagueWinnersCelebration(
   career: ManagerCareer
 ): boolean {
   if (career.leagueWinnersCelebrationShown) return false;
-  if (!isLeagueAndCupPhaseComplete(career)) return false;
+  if (!isLeaguePhaseComplete(career)) return false;
   const position = getUserLeaguePosition(
     getManagerLeagueTable(career),
     career.club
@@ -468,7 +463,14 @@ export function syncPlayoffsIntroAcknowledged(career: ManagerCareer): ManagerCar
   if (playedPlayoff) {
     return { ...career, playoffsIntroAcknowledged: true };
   }
-  if (!needsPlayoffsIntro(career)) {
+  /* Mid-season `!needsPlayoffsIntro` is also true (league/cup not finished yet).
+     Only auto-ack once the slate is done and the club missed the play-offs —
+     otherwise League Leaders / board mail fire while the club is merely top
+     after a few rounds. */
+  if (
+    isLeagueAndCupPhaseComplete(career) &&
+    !userQualifiedForManagerPlayoffs(career)
+  ) {
     return { ...career, playoffsIntroAcknowledged: true };
   }
   return career;

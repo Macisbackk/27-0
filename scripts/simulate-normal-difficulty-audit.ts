@@ -100,7 +100,7 @@ function main(): void {
     console.log("");
   }
 
-  console.log("Targets: weak <40% | average ~45-55% | good ~60-75% | elite 75%+");
+  console.log("Targets: weak <45% | average ~50-60% | good ~70-85% | elite 90%+ with believable 27-0 rate");
 }
 
 main();
