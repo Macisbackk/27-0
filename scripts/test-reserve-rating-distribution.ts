@@ -1,8 +1,9 @@
 /**
  * Reserve rating distribution regression test.
  *
- * Verifies the fix for inflated Manager Mode reserve ratings:
- * - Fresh generation (generateReserveSquad) targets a ~74-76 average.
+ * Verifies the v5 generator retune (RESERVE_RATING_BANDS, mean ~69-71,
+ * majority below 77, 80+ extremely rare):
+ * - Fresh generation (generateReserveSquad) targets a ~69-71 average.
  * - createNewCareer stamps the current rating schema so hydrate's
  *   migration passes don't re-floor freshly generated reserves onto the
  *   legacy Current-senior 80 floor.
@@ -110,13 +111,19 @@ function printStats(label: string, stats: Stats): void {
 function assertHealthyDistribution(label: string, stats: Stats): void {
   const avg = stats.values.length ? stats.sum / stats.values.length : NaN;
   assert(
-    avg >= 73.5 && avg <= 76.5,
-    `${label}: average ${avg.toFixed(2)} within 74-76 (\u00b10.5)`
+    avg >= 68.5 && avg <= 71.5,
+    `${label}: average ${avg.toFixed(2)} within 69-71 (\u00b10.5)`
   );
-  assert(stats.below70 === 0, `${label}: zero reserves below 70 (found ${stats.below70})`);
+  const belowFloor = stats.values.filter((r) => r < 65).length;
+  assert(belowFloor === 0, `${label}: zero reserves below the 65 floor (found ${belowFloor})`);
   assert(
-    stats.atOrAbove80 / Math.max(1, stats.count) < 0.15,
-    `${label}: fewer than 15% at 80+ (${pct(stats.atOrAbove80, stats.count)}%)`
+    stats.atOrAbove80 / Math.max(1, stats.count) < 0.03,
+    `${label}: fewer than 3% at 80+ (${pct(stats.atOrAbove80, stats.count)}%)`
+  );
+  const above76 = stats.values.filter((r) => r > 76).length;
+  assert(
+    above76 / Math.max(1, stats.count) < 0.25,
+    `${label}: fewer than 25% above 76 (${pct(above76, stats.count)}%) — majority stay below 77`
   );
   assert(stats.nanCount === 0, `${label}: no NaN ratings (found ${stats.nanCount})`);
 }

@@ -26,10 +26,12 @@ const POSITIONS: Position[] = [
 ];
 
 const TARGET_BANDS = [
-  { label: "65-69", min: 65, max: 69, target: 0.25 },
-  { label: "70-74", min: 70, max: 74, target: 0.4 },
-  { label: "75-79", min: 75, max: 79, target: 0.25 },
-  { label: "80-82", min: 80, max: 82, target: 0.1 },
+  { label: "65-67", min: 65, max: 67, target: 0.25 },
+  { label: "68-70", min: 68, max: 70, target: 0.35 },
+  { label: "71-73", min: 71, max: 73, target: 0.25 },
+  { label: "74-76", min: 74, max: 76, target: 0.1 },
+  { label: "77-79", min: 77, max: 79, target: 0.04 },
+  { label: "80-82", min: 80, max: 82, target: 0.01 },
 ] as const;
 
 function median(values: number[]): number {
@@ -68,7 +70,7 @@ console.log(`Total samples: ${ratings.length}`);
 console.log(`Configured bands: ${RESERVE_RATING_BANDS.map((b) => `${b.min}-${b.max}@${(b.weight * 100).toFixed(0)}%`).join(", ")}`);
 console.log(`Floor constant: ${RESERVE_MIN_RATING}`);
 console.log("");
-console.log(`Mean:   ${mean.toFixed(2)}  (target 70–73)`);
+console.log(`Mean:   ${mean.toFixed(2)}  (target 69–71)`);
 console.log(`Median: ${med.toFixed(1)}`);
 console.log(`Min:    ${min}`);
 console.log(`Max:    ${max}`);
@@ -82,7 +84,9 @@ for (const band of TARGET_BANDS) {
   ).length;
   const share = count / ratings.length;
   const delta = Math.abs(share - band.target);
-  const ok = delta <= 0.06;
+  // Tighter absolute tolerance for the small tail bands (80+ must stay rare).
+  const tolerance = Math.max(0.02, Math.min(0.06, band.target * 0.6));
+  const ok = delta <= tolerance;
   if (!ok) failed++;
   console.log(
     `  ${band.label}: ${pct(count, ratings.length)}% (${count}) target ~${(band.target * 100).toFixed(0)}% ${ok ? "OK" : "WARN"}`
@@ -95,8 +99,8 @@ console.log("");
 console.log(`Below floor (${RESERVE_MIN_RATING}): ${belowFloor}`);
 console.log(`Above cap (82): ${aboveCap}`);
 
-if (mean < 70 || mean > 73) {
-  console.error(`Mean ${mean.toFixed(2)} outside target 70–73`);
+if (mean < 69 || mean > 71) {
+  console.error(`Mean ${mean.toFixed(2)} outside target 69–71`);
   failed++;
 }
 if (belowFloor > 0 || aboveCap > 0) {
