@@ -728,18 +728,21 @@ function resolveOutcome(
   const cupMode = options.cupMode ?? false;
   const managerMode = options.managerCareerMode ?? false;
 
+  const currentMode = (options.currentSeasonOnly ?? false) && !draftMode && !managerMode;
   const homeAdvantage = isHome ? 1.5 : -1;
   const formEffect = form * (managerMode ? 0.55 : 0.4);
   const draftRatingBonus = draftMode ? getDraftTeamRatingBonus(avgRating) : 0;
 
-  let noiseScale = draftMode ? 8 : managerMode ? 2.6 : 7;
+  // Current Mode: less noise — compressed 2026 ratings made Normal's ±3.5 chaos
+  // feel like coin flips even with a strong XIII.
+  let noiseScale = draftMode ? 8 : managerMode ? 2.6 : currentMode ? 5.5 : 7;
   const absGap = Math.abs(ratingGap);
   if (absGap >= 10) noiseScale = draftMode ? 2 : 2.5;
   else if (absGap >= 8) noiseScale = draftMode ? 2.8 : 3.5;
   else if (absGap >= 7) noiseScale = draftMode ? 3.2 : 4;
-  else if (absGap >= 5) noiseScale = draftMode ? 4 : 5;
-  else if (absGap >= 4) noiseScale = draftMode ? 4.8 : 5.8;
-  else if (absGap >= 3) noiseScale = draftMode ? 5.5 : 6.5;
+  else if (absGap >= 5) noiseScale = draftMode ? 4 : currentMode ? 4.2 : 5;
+  else if (absGap >= 4) noiseScale = draftMode ? 4.8 : currentMode ? 4.5 : 5.8;
+  else if (absGap >= 3) noiseScale = draftMode ? 5.5 : currentMode ? 5 : 6.5;
 
   const noise = (rng() - 0.5) * noiseScale;
   const strengthGap = strength - opponentStrength;
@@ -754,7 +757,13 @@ function resolveOutcome(
     draftRatingBonus +
     noise;
 
-  const logisticDivisor = draftMode ? 3.9 : managerMode ? 3.6 : 4.2;
+  const logisticDivisor = draftMode
+    ? 3.9
+    : managerMode
+      ? 3.6
+      : currentMode
+        ? 3.9
+        : 4.2;
   let winProbability = 1 / (1 + Math.exp(-diff / logisticDivisor));
 
   if (draftMode) {
@@ -776,8 +785,14 @@ function resolveOutcome(
   const ceiling = getWinProbabilityCeiling(ratingGap, draftMode, managerMode);
   winProbability = Math.max(0.04, Math.min(ceiling, winProbability));
 
-  if (!draftMode && !managerMode && ratingGap >= -3 && ratingGap <= 2) {
-    winProbability = Math.min(ceiling, winProbability + 0.07);
+  // Soft boost for close / slight-favourite games — Current extends to +4 gap
+  // so a solid ~87–89 side gets help without Era lottery mid-table.
+  if (!draftMode && !managerMode) {
+    if (ratingGap >= -3 && ratingGap <= 2) {
+      winProbability = Math.min(ceiling, winProbability + 0.07);
+    } else if (currentMode && ratingGap > 2 && ratingGap <= 4) {
+      winProbability = Math.min(ceiling, winProbability + 0.05);
+    }
   }
 
   let won = rng() < winProbability;
