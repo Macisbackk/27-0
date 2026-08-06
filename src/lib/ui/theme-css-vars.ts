@@ -105,14 +105,29 @@ export function applyThemeCssVarsToRoot(
   theme: UiThemeDefinition,
   root: HTMLElement = document.documentElement
 ): void {
-  root.dataset.uiTheme = theme.id;
   const gradient = resolveThemeGradientColors({
     primary: theme.primary,
     secondary: theme.secondary,
     tertiary: theme.tertiary,
   });
-  root.dataset.themeLogoGlow = gradient.logoGlow ? "true" : "false";
+  const nextGlow = gradient.logoGlow ? "true" : "false";
   const vars = buildThemeCssVars(theme);
+
+  let changed = root.dataset.uiTheme !== theme.id;
+  if (root.dataset.themeLogoGlow !== nextGlow) changed = true;
+
+  for (const [key, value] of Object.entries(vars)) {
+    if (root.style.getPropertyValue(key).trim() !== value) {
+      changed = true;
+      break;
+    }
+  }
+
+  // Avoid site-wide repaints when bootstrap/cloud re-apply the same theme.
+  if (!changed) return;
+
+  root.dataset.uiTheme = theme.id;
+  root.dataset.themeLogoGlow = nextGlow;
   for (const [key, value] of Object.entries(vars)) {
     root.style.setProperty(key, value);
   }

@@ -66,7 +66,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
 
   return (
     <div
-      className="showcase-player-card game-panel game-panel--flush h-auto w-full min-w-0 self-start overflow-hidden border transition"
+      className="showcase-player-card game-panel game-panel--flush h-auto w-full min-w-0 self-start overflow-hidden border"
       style={cardStyle}
     >
       <TeamColourStrip club={colourCtx.clubName} />
@@ -78,7 +78,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
         onKeyDown={handleKeyDown}
         aria-haspopup="dialog"
       >
-        <span className="showcase-compact-name">
+        <span className="showcase-compact-name" title={`${displayName} · ${clubYearLabel}`}>
           <span className="showcase-compact-name__title">{displayName}</span>
           <span className="showcase-compact-name__meta">{clubYearLabel}</span>
         </span>

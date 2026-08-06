@@ -13,6 +13,7 @@ import {
   BOOST_INVENTORY_CHANGED_EVENT,
   getBoostQuantity,
 } from "@/lib/boosts/boostInventory";
+import { isQmSelectionBoostAllowedInMode } from "@/lib/boosts/applyQuickModeBoost";
 import {
   isQmSelectionBoostId,
   type QmSelectionBoostId,
@@ -21,6 +22,8 @@ import { playUiClick, playBoostSelected } from "@/lib/sound";
 
 interface QuickModePreGameBoostSetupProps {
   runId: string;
+  /** Current vs Era — Legend boost is Era Mode only. */
+  eraMode?: boolean;
   onConfirm: (boostId: GameBoostId | null) => void;
 }
 
@@ -29,6 +32,7 @@ interface QuickModePreGameBoostSetupProps {
  */
 export function QuickModePreGameBoostSetup({
   runId,
+  eraMode = false,
   onConfirm,
 }: QuickModePreGameBoostSetupProps) {
   const [, setTick] = useState(0);
@@ -42,7 +46,10 @@ export function QuickModePreGameBoostSetup({
   }, []);
 
   const boosts = getQuickModeBoosts().filter(
-    (b) => isQmSelectionBoostId(b.id) && getBoostQuantity(b.id) > 0
+    (b) =>
+      isQmSelectionBoostId(b.id) &&
+      getBoostQuantity(b.id) > 0 &&
+      isQmSelectionBoostAllowedInMode(b.id, eraMode)
   );
 
   const confirm = (boostId: GameBoostId | null) => {
@@ -61,6 +68,12 @@ export function QuickModePreGameBoostSetup({
         <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
           Choose one boost for this run, or start without. Boosts cannot be
           changed once the first spin begins.
+          {!eraMode ? (
+            <>
+              {" "}
+              Legend Player boosts are only available in Era Mode.
+            </>
+          ) : null}
         </p>
         <p className={`mt-1 ${TYPO.meta}`}>Run {runId.slice(0, 12)}…</p>
 

@@ -31,9 +31,7 @@ export function applyUiThemeToDocument(theme: UiThemeDefinition): void {
 }
 
 export function applyUiThemeById(themeId: string): void {
-  if (typeof document !== "undefined") {
-    const root = document.documentElement;
-    if (root.dataset.uiTheme === themeId) return;
-  }
+  // Always resolve through applyThemeCssVarsToRoot — it no-ops when vars match,
+  // so bootstrap + provider + cloud hydrate do not flash the whole UI.
   applyUiThemeToDocument(getUiThemeById(themeId));
 }

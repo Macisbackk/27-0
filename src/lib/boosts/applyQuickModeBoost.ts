@@ -1,17 +1,39 @@
 import type { Player, Position } from "../types";
 import { isHiddenPlayer, isGoatPlayer } from "../players/goat";
 import type { GameBoostId } from "./boostDefinitions";
+import { getBoostDefinition } from "./boostDefinitions";
 
-/** Hall of Fame / GOAT-tier eligibility for Quick Mode boost (excludes JM Easter egg GOAT). */
-export function isGoatOrHallOfFamePlayer(player: Player): boolean {
+/**
+ * Legend boost eligibility (excludes JM Easter egg GOAT).
+ * Named historically as GOAT/HOF; Store label is now Legend Player.
+ */
+export function isLegendBoostPlayer(player: Player): boolean {
   if (isGoatPlayer(player) || isHiddenPlayer(player)) return false;
-  if (player.category === "legend") return true;
-  if (player.hallOfFame === true) return true;
-  return false;
+  return player.category === "legend";
+}
+
+/** @deprecated Prefer isLegendBoostPlayer */
+export function isGoatOrHallOfFamePlayer(player: Player): boolean {
+  return isLegendBoostPlayer(player);
 }
 
 export function isNinetyPlusPlayer(player: Player): boolean {
   return player.peakRating >= 90;
+}
+
+export function isQmLegendBoostId(boostId: GameBoostId): boolean {
+  return boostId === "qm-goat-hall-of-fame";
+}
+
+/** Whether a Quick Mode selection boost can be used in the active mode variant. */
+export function isQmSelectionBoostAllowedInMode(
+  boostId: GameBoostId,
+  eraMode: boolean
+): boolean {
+  const def = getBoostDefinition(boostId);
+  if (!def || def.category !== "quick-mode") return false;
+  if (def.eraModeOnly && !eraMode) return false;
+  return true;
 }
 
 export function playerMatchesSelectionBoost(
@@ -19,7 +41,7 @@ export function playerMatchesSelectionBoost(
   boostId: GameBoostId
 ): boolean {
   if (boostId === "qm-90-plus-player") return isNinetyPlusPlayer(player);
-  if (boostId === "qm-goat-hall-of-fame") return isGoatOrHallOfFamePlayer(player);
+  if (boostId === "qm-goat-hall-of-fame") return isLegendBoostPlayer(player);
   return false;
 }
 
@@ -53,7 +75,7 @@ export function buildBoostedPair(input: {
       reason:
         boostId === "qm-90-plus-player"
           ? "No eligible 90+ player is available for this selection."
-          : "No eligible GOAT or Hall of Fame player is available for this selection.",
+          : "No eligible Legend player is available for this selection.",
     };
   }
 

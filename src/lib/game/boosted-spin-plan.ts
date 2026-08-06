@@ -1,13 +1,13 @@
 /**
  * Quick Mode boosted team/year spin planning.
- * When a 90+ or GOAT/HOF boost is armed, the next spin must land on a
+ * When a 90+ or Legend boost is armed, the next spin must land on a
  * compatible pool that can supply an eligible boosted player — never an
  * unfiltered random team/year.
  */
 import seedrandom from "seedrandom";
 import type { Player, SquadSlot } from "../types";
 import {
-  isGoatOrHallOfFamePlayer,
+  isLegendBoostPlayer,
   isNinetyPlusPlayer,
 } from "../boosts/applyQuickModeBoost";
 import {
@@ -70,7 +70,7 @@ function boostMatchFn(
 ): (player: Player) => boolean {
   return boostId === "qm-90-plus-player"
     ? isNinetyPlusPlayer
-    : isGoatOrHallOfFamePlayer;
+    : isLegendBoostPlayer;
 }
 
 function teamYearKey(pool: Pick<TeamYearPool, "team" | "year">): string {
@@ -189,7 +189,7 @@ export function buildBoostedSpinPlan(
   const failReason =
     boostId === "qm-90-plus-player"
       ? "No eligible 90+ player for this slot — boost kept for a later pick."
-      : "No eligible GOAT/HOF player for this slot — boost kept for a later pick.";
+      : "No eligible Legend player for this slot — boost kept for a later pick.";
 
   const compatible = listCompatibleTeamYearsForBoost(
     boostId,
@@ -352,7 +352,7 @@ export function boostFailureNotice(
   if (reason) return reason;
   return boostId === "qm-90-plus-player"
     ? "No eligible 90+ player for this slot — boost kept for a later pick."
-    : "No eligible GOAT/HOF player for this slot — boost kept for a later pick.";
+    : "No eligible Legend player for this slot — boost kept for a later pick.";
 }
 
 export function teamYearIdForPlan(plan: BoostedSpinPlan): string {

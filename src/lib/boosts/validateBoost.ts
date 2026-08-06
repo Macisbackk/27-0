@@ -44,13 +44,20 @@ export function validateBoostCategory(
 export function validateQuickModeSelectionBoost(
   boostId: GameBoostId,
   gameSaveId: string,
-  selectionBoostsUsedThisRun: number
+  selectionBoostsUsedThisRun: number,
+  options?: { eraMode?: boolean }
 ): BoostValidationResult {
   const base = validateBoostCategory(boostId, "quick-mode");
   if (!base.ok) return base;
   const def = getBoostDefinition(boostId)!;
   if (def.activationStage !== "quick-mode-before-player-choice") {
     return { ok: false, reason: "This boost is not a selection boost." };
+  }
+  if (def.eraModeOnly && !options?.eraMode) {
+    return {
+      ok: false,
+      reason: "Legend Player boost can only be used in Era Mode.",
+    };
   }
   if (selectionBoostsUsedThisRun >= 2) {
     return {

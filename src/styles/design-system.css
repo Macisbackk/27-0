@@ -7,14 +7,10 @@
 /* ── App shell ───────────────────────────────────────────────────────────── */
 .app-shell {
   position: relative;
-  isolation: isolate;
+  /* Avoid isolation:isolate — it forces a full-page compositing layer that
+     flickers on Windows Chrome when sticky header / panels repaint. */
   min-height: 100dvh;
-  background: linear-gradient(180deg, #0a1210 0%, #060a09 100%);
-}
-
-.app-shell > * {
-  position: relative;
-  z-index: 1;
+  background: #0a1210;
 }
 
 /* ── Shared page width ───────────────────────────────────────────────────── */
@@ -201,8 +197,9 @@
   overflow: hidden;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(8, 12, 13, 0.96);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.26);
+  background: #080c0d;
+  /* Flat opaque surfaces — soft shadows + translucent fills flicker on scroll. */
+  box-shadow: none;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
@@ -832,21 +829,29 @@
   --player-card-padding-block: 0.875rem;
   --player-card-header-gap: 0.5rem;
   border-color: var(--player-card-border, rgba(148, 163, 184, 0.22));
-  background: rgba(8, 12, 13, 0.96);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+  background: #080c0d;
+  box-shadow: none;
   outline: none;
 }
 
 .showcase-player-card__body {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  align-items: start;
+  /* Name gets remaining space; badge track is capped so it cannot starve names. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 8.5rem) auto;
+  align-items: center;
   column-gap: var(--player-card-header-gap, 0.5rem);
   width: 100%;
   min-width: 0;
+  margin: 0;
   padding: var(--player-card-padding-block, 0.875rem)
     var(--player-card-padding-inline, 1rem);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
   text-align: left;
+  cursor: pointer;
+  appearance: none;
   transition: background 0.15s ease;
 }
 
@@ -854,15 +859,27 @@
   background: rgba(255, 255, 255, 0.03);
 }
 
+.showcase-player-card__body > .showcase-compact-name {
+  grid-column: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .showcase-player-card__badge {
+  grid-column: 2;
   justify-content: flex-end;
-  align-self: start;
+  align-self: center;
+  width: 100%;
+  max-width: 100%;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
 .showcase-player-card__view {
+  grid-column: 3;
   flex-shrink: 0;
-  align-self: start;
-  padding-top: 0.125rem;
+  align-self: center;
+  padding-top: 0;
   font-size: 0.75rem;
   font-weight: 500;
   color: #6b7280;
@@ -973,7 +990,7 @@
 .scoreboard-panel--inset,
 .clipboard-panel--inset {
   border-radius: 12px;
-  background: rgba(5, 10, 9, 0.88);
+  background: #050a09;
   box-shadow: none;
   border-color: rgba(255, 255, 255, 0.06);
 }
@@ -990,8 +1007,8 @@
 .programme-panel--elevated,
 .scoreboard-panel--elevated,
 .clipboard-panel--elevated {
-  background: rgba(9, 15, 13, 0.96);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+  background: #090f0d;
+  box-shadow: none;
 }
 
 .game-panel--featured,

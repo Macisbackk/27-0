@@ -30,6 +30,8 @@ export interface GameBoost {
   description: string;
   category: BoostCategory;
   compatibleModes: string[];
+  /** When true, Quick Mode boost only appears/arms in Era Mode (not Current). */
+  eraModeOnly?: boolean;
   price: number;
   activationStage: BoostActivationStage;
   stackable: boolean;
@@ -56,17 +58,18 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
   },
   {
     id: "qm-goat-hall-of-fame",
-    name: "GOAT/Hall of Fame Player",
+    name: "Legend Player",
     description:
-      "Guarantees the next eligible selection contains one GOAT-tier or Hall of Fame player.",
+      "Era Mode only. Guarantees the next eligible selection contains one Legend player.",
     category: "quick-mode",
     compatibleModes: ["CLASSIC", "DRAFT"],
+    eraModeOnly: true,
     price: 2_000_000,
     activationStage: "quick-mode-before-player-choice",
     stackable: false,
     maxPerGame: 2,
     consumable: true,
-    usageLimitLabel: "One per player choice · max 2 per run",
+    usageLimitLabel: "Era Mode · one per player choice · max 2 per run",
   },
   {
     id: "mgr-future-star",

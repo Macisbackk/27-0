@@ -44,15 +44,17 @@ export function useClubFunds() {
       }
     };
 
+    // Auth hydrate already merges funds — only re-read local storage here to
+    // avoid a second cloud round-trip that flashes the header balance.
     window.addEventListener(CLUB_FUNDS_CHANGED_EVENT, sync);
-    window.addEventListener("auth-state-changed", pullFromCloud);
+    window.addEventListener("auth-state-changed", sync);
     document.addEventListener("visibilitychange", onVisible);
     document.addEventListener("visibilitychange", onHide);
     window.addEventListener("pagehide", flushClubFundsToCloud);
 
     return () => {
       window.removeEventListener(CLUB_FUNDS_CHANGED_EVENT, sync);
-      window.removeEventListener("auth-state-changed", pullFromCloud);
+      window.removeEventListener("auth-state-changed", sync);
       document.removeEventListener("visibilitychange", onVisible);
       document.removeEventListener("visibilitychange", onHide);
       window.removeEventListener("pagehide", flushClubFundsToCloud);

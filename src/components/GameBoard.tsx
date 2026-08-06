@@ -125,6 +125,7 @@ import {
 } from "@/lib/boosts/boostInventory";
 import type { GameBoostId } from "@/lib/boosts/boostDefinitions";
 import {
+  isQmSelectionBoostAllowedInMode,
   selectionHasBoostedPlayer,
 } from "@/lib/boosts/applyQuickModeBoost";
 import { validateQuickModeSelectionBoost } from "@/lib/boosts/validateBoost";
@@ -293,35 +294,45 @@ export function GameBoard({
 
   const handlePreGameBoostConfirm = useCallback(
     (boostId: GameBoostId | null) => {
-      const next = armPreGameBoost(runId, boostId);
+      let resolvedBoostId = boostId;
+      if (
+        resolvedBoostId &&
+        !isQmSelectionBoostAllowedInMode(resolvedBoostId, normalEraMode)
+      ) {
+        setBoostNotice(
+          "Legend Player boost can only be used in Era Mode."
+        );
+        resolvedBoostId = null;
+      }
+      const next = armPreGameBoost(runId, resolvedBoostId);
       setPreGameBoost(next);
       if (
-        boostId === "qm-90-plus-player" ||
-        boostId === "qm-goat-hall-of-fame"
+        resolvedBoostId === "qm-90-plus-player" ||
+        resolvedBoostId === "qm-goat-hall-of-fame"
       ) {
-        const usageId = `qm-pre-${boostId}-${runId}`;
+        const usageId = `qm-pre-${resolvedBoostId}-${runId}`;
         preGameBoostUsageIdRef.current = usageId;
         armBoostForGame({
           id: usageId,
-          boostId,
+          boostId: resolvedBoostId,
           gameSaveId: runId,
           mode,
           status: "armed",
           armedAt: new Date().toISOString(),
         });
-        setSlotBoostGuaranteeId(boostId);
+        setSlotBoostGuaranteeId(resolvedBoostId);
         setBoostNotice(
-          boostId === "qm-90-plus-player"
+          resolvedBoostId === "qm-90-plus-player"
             ? "90+ boost armed for the next eligible selection."
-            : "GOAT / Hall of Fame boost armed for the next eligible selection."
+            : "Legend boost armed for the next eligible selection."
         );
       } else {
         preGameBoostUsageIdRef.current = null;
         setSlotBoostGuaranteeId(null);
-        setBoostNotice(null);
+        if (boostId == null) setBoostNotice(null);
       }
     },
-    [runId, mode]
+    [runId, mode, normalEraMode]
   );
 
   const consumeArmedPreGameBoost = useCallback(
@@ -352,7 +363,7 @@ export function GameBoard({
       setBoostNotice(
         boostId === "qm-90-plus-player"
           ? "90+ boost applied."
-          : "GOAT / Hall of Fame boost applied."
+          : "Legend boost applied."
       );
       return true;
     },
@@ -1176,7 +1187,7 @@ export function GameBoard({
         setBoostNotice(
           armedBoost === "qm-90-plus-player"
             ? "90+ player guaranteed in this selection."
-            : "GOAT / Hall of Fame player guaranteed in this selection."
+            : "Legend player guaranteed in this selection."
         );
       } else {
         setBoostedSpinPlan(null);
@@ -1287,7 +1298,7 @@ export function GameBoard({
       setBoostNotice(
         armedBoost === "qm-90-plus-player"
           ? "90+ player guaranteed in this selection."
-          : "GOAT / Hall of Fame player guaranteed in this selection."
+          : "Legend player guaranteed in this selection."
       );
     } else {
       setBoostedSpinPlan(null);
@@ -1473,7 +1484,8 @@ export function GameBoard({
       const validation = validateQuickModeSelectionBoost(
         boostId,
         runId,
-        selectionBoostsUsedThisRun
+        selectionBoostsUsedThisRun,
+        { eraMode: normalEraMode }
       );
       if (!validation.ok) {
         setBoostNotice(validation.reason ?? "Cannot use this boost.");
@@ -1540,7 +1552,7 @@ export function GameBoard({
           fail(
             boostId === "qm-90-plus-player"
               ? "No eligible 90+ player is available for this selection."
-              : "No eligible GOAT or Hall of Fame player is available for this selection."
+              : "No eligible Legend player is available for this selection."
           );
           return;
         }
@@ -1577,7 +1589,7 @@ export function GameBoard({
         setBoostNotice(
           boostId === "qm-90-plus-player"
             ? "90+ player guaranteed in this choice."
-            : "GOAT / Hall of Fame player guaranteed in this choice."
+            : "Legend player guaranteed in this choice."
         );
         return;
       }
@@ -1614,7 +1626,7 @@ export function GameBoard({
             plan.failureReason ??
               (boostId === "qm-90-plus-player"
                 ? "No eligible 90+ player is available for this slot."
-                : "No eligible GOAT or Hall of Fame player is available for this slot.")
+                : "No eligible Legend player is available for this slot.")
           );
           return;
         }
@@ -1667,7 +1679,7 @@ export function GameBoard({
         setBoostNotice(
           boostId === "qm-90-plus-player"
             ? "90+ player guaranteed in this selection."
-            : "GOAT / Hall of Fame player guaranteed in this selection."
+            : "Legend player guaranteed in this selection."
         );
         return;
       }
@@ -1680,6 +1692,7 @@ export function GameBoard({
       runId,
       selectionBoostsUsedThisRun,
       mode,
+      normalEraMode,
       isDraftMode,
       isSlotRecruitMode,
       phase,
@@ -1804,7 +1817,7 @@ export function GameBoard({
       setBoostNotice(
         slotBoostGuaranteeId === "qm-90-plus-player"
           ? "90+ boost armed for the next eligible selection."
-          : "GOAT / Hall of Fame boost armed for the next eligible selection."
+          : "Legend boost armed for the next eligible selection."
       );
     }
     lastScrolledPlayerIdRef.current = null;
@@ -1930,6 +1943,7 @@ export function GameBoard({
         {!isPreGameBoostReady(preGameBoost) ? (
           <QuickModePreGameBoostSetup
             runId={runId}
+            eraMode={normalEraMode}
             onConfirm={handlePreGameBoostConfirm}
           />
         ) : (
@@ -1977,7 +1991,7 @@ export function GameBoard({
                   setBoostNotice(
                     slotBoostGuaranteeId === "qm-90-plus-player"
                       ? "90+ boost still armed — pick another position."
-                      : "GOAT / Hall of Fame boost still armed — pick another position."
+                      : "Legend boost still armed — pick another position."
                   );
                 }}
               >

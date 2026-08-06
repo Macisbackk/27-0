@@ -98,19 +98,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const syncGenerationRef = useRef(0);
+  const userIdRef = useRef<string | null>(null);
+  const profileIdRef = useRef<string | null>(null);
+  /** Suppress duplicate INITIAL_SESSION while getSession() init is in flight. */
+  const initInFlightRef = useRef(false);
 
   const syncFromSession = useCallback(
     async (session: Session | null, options?: { forceHydrate?: boolean }) => {
       const generation = ++syncGenerationRef.current;
       const nextUser = session?.user ?? null;
-      setUser(nextUser);
+      const nextUserId = nextUser?.id ?? null;
+
+      if (nextUserId !== userIdRef.current) {
+        userIdRef.current = nextUserId;
+        setUser(nextUser);
+      }
 
       if (!nextUser) {
+        const wasLoggedIn = hydratedSessionKey != null || profileIdRef.current != null;
         hydratedSessionKey = null;
         if (generation !== syncGenerationRef.current) return;
-        setProfile(null);
+        if (profileIdRef.current != null) {
+          profileIdRef.current = null;
+          setProfile(null);
+        }
         applySession(null, null);
-        window.dispatchEvent(new Event("auth-state-changed"));
+        if (wasLoggedIn) {
+          window.dispatchEvent(new Event("auth-state-changed"));
+        }
         return;
       }
 
@@ -126,7 +141,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      setProfile(nextProfile);
+      const nextProfileId = nextProfile?.id ?? null;
+      if (nextProfileId !== profileIdRef.current) {
+        profileIdRef.current = nextProfileId ?? nextUser.id;
+        setProfile(nextProfile);
+      }
       applySession(session, nextProfile);
 
       const sessionKey = nextUser.id;
@@ -158,6 +177,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    initInFlightRef.current = true;
     void (async () => {
       try {
         const hadConfirmRedirect = detectEmailConfirmationRedirect();
@@ -174,6 +194,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           applySession(null, null);
         }
       } finally {
+        initInFlightRef.current = false;
         if (mounted) setLoading(false);
       }
     })();
@@ -182,6 +203,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "TOKEN_REFRESHED") return;
+      // getSession() already applied the session — skip the duplicate cascade.
+      if (event === "INITIAL_SESSION" && initInFlightRef.current) return;
+      if (
+        event === "INITIAL_SESSION" &&
+        session?.user?.id != null &&
+        hydratedSessionKey === session.user.id
+      ) {
+        return;
+      }
       if (event === "SIGNED_IN" && detectEmailConfirmationRedirect()) {
         markEmailConfirmPending();
         cleanAuthRedirectFromUrl();
@@ -232,6 +262,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = useCallback(async () => {
     await authSignOut();
     hydratedSessionKey = null;
+    userIdRef.current = null;
+    profileIdRef.current = null;
     setUser(null);
     setProfile(null);
     applySession(null, null);

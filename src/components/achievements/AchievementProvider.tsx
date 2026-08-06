@@ -117,20 +117,33 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     if (baselineUserKeyRef.current === userKey && hydratedRef.current) {
       return;
     }
-    hydratedRef.current = false;
-    setIsAchievementHydrated(false);
+    // Only tear down hydration when the signed-in identity actually changes.
+    if (baselineUserKeyRef.current !== null && baselineUserKeyRef.current !== userKey) {
+      hydratedRef.current = false;
+      setIsAchievementHydrated(false);
+    }
   }, [userId]);
 
   // Guest / session-ready baseline once auth has finished its first pass.
   useEffect(() => {
     if (authLoading) return;
+    const userKey = userId ?? "guest";
+    if (baselineUserKeyRef.current === userKey && hydratedRef.current) {
+      return;
+    }
     finishHydration();
   }, [authLoading, userId, finishHydration]);
 
-  // Cloud hydrate completes with auth-state-changed — re-baseline silently.
+  // Cloud hydrate completes with auth-state-changed — re-baseline silently
+  // without flipping hydrated false (avoids full-tree flicker).
   useEffect(() => {
     const onAuthChanged = () => {
-      finishHydration();
+      if (!hydratedRef.current) {
+        finishHydration();
+        return;
+      }
+      const { unlockedIds } = synchronizeAchievementBaseline({});
+      baselineIdsRef.current = new Set(unlockedIds);
     };
     window.addEventListener("auth-state-changed", onAuthChanged);
     return () => window.removeEventListener("auth-state-changed", onAuthChanged);

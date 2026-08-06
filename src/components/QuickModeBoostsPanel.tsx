@@ -19,6 +19,8 @@ interface QuickModeBoostsPanelProps {
   maxPerRun?: number;
   disabled?: boolean;
   notice?: string | null;
+  /** Current vs Era — Legend boost is Era Mode only. */
+  eraMode?: boolean;
   onActivate: (boostId: GameBoostId) => void;
 }
 
@@ -27,6 +29,7 @@ export function QuickModeBoostsPanel({
   maxPerRun = 2,
   disabled = false,
   notice = null,
+  eraMode = false,
   onActivate,
 }: QuickModeBoostsPanelProps) {
   const [, setTick] = useState(0);
@@ -38,7 +41,11 @@ export function QuickModeBoostsPanel({
       window.removeEventListener(BOOST_INVENTORY_CHANGED_EVENT, refresh);
   }, []);
 
-  const boosts = getQuickModeBoosts().filter((b) => getBoostQuantity(b.id) > 0);
+  const boosts = getQuickModeBoosts().filter(
+    (b) =>
+      getBoostQuantity(b.id) > 0 &&
+      (!b.eraModeOnly || eraMode)
+  );
   if (boosts.length === 0 && !notice) return null;
 
   const atCap = selectionBoostsUsedThisRun >= maxPerRun;
