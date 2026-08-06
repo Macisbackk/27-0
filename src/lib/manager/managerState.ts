@@ -45,6 +45,7 @@ import {
   PLAYER_RATING_SCHEMA_VERSION,
   RESERVE_RATING_SCALE_VERSION,
 } from "./migratePlayerRatingsV5";
+import { migrateChampionshipFirstSeasonBalance } from "./migrateChampionshipFirstSeasonBalance";
 import { snapshotSquadSeasonStartRatings } from "./managerPlayerDevelopment";
 import {
   applyYearlyYouthIntake,
@@ -411,6 +412,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = ensureFreeAgentPool(career);
   career = migrateMatchWeekFields(career);
   career = migratePlayerRatingsV5(career);
+  career = migrateChampionshipFirstSeasonBalance(career);
   career = migrateReserveGeneratorV5(career);
   career = migrateSquadRoles(career);
   career = ensureChampionshipSystems(career);

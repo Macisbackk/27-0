@@ -895,11 +895,12 @@ export function advanceManagerMatchWeek(
   }
 
   next = syncManagerLeagueTable(next);
-  // Transfer approaches are weekly systems: cup/play-off advances can share a
-  // gameWeek and must not create extra rolls for the same market week.
-  if (last?.competition === "league") {
+  // Senior transfer approaches run once per unique gameWeek (cup + league share
+  // weeks). Reserve Championship bids still run every advance independently.
+  if (next.gameWeek !== (next.lastTransferScanGameWeek ?? -1)) {
     next = generateIncomingTransferOffers(next);
     next = generateUnsolicitedTransferOffers(next);
+    next = { ...next, lastTransferScanGameWeek: next.gameWeek };
   }
   next = syncManagerInboxMessages(next);
   if (last?.competition === "league") {

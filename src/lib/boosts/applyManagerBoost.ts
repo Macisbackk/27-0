@@ -25,6 +25,8 @@ export interface ApplyManagerBoostResult {
   career?: ManagerCareer;
   reason?: string;
   healedPlayerIds?: string[];
+  /** Populated when Future Star creates a new reserve pathway player. */
+  futureStarPlayer?: ManagerReservePlayer;
 }
 
 function ensureBoostUsage(career: ManagerCareer): ManagerBoostUsage {
@@ -135,6 +137,7 @@ function applyFutureStar(
       ...usage,
       futureStarBySeason: { ...(usage.futureStarBySeason ?? {}), [seasonKey]: true },
     },
+    pendingFutureStarRevealPlayerId: reserve.id,
     updatedAt: new Date().toISOString(),
   };
 
@@ -152,7 +155,7 @@ function applyFutureStar(
     playerName: reserve.name,
   });
 
-  return { success: true, career: next };
+  return { success: true, career: next, futureStarPlayer: reserve };
 }
 
 function applyFinancialTakeover(

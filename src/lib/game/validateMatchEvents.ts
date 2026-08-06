@@ -1,5 +1,8 @@
 import type { MatchEvent, MatchEventType } from "./match-events";
 
+/** Regulation length — non-golden-point events must not exceed this. */
+export const REGULATION_MATCH_MINUTES = 80;
+
 export type MatchEventValidationIssue = {
   code: string;
   message: string;
@@ -209,6 +212,54 @@ export function validateMatchEvents(
     }
 
     repaired.push(event);
+  }
+
+  // Clamp regulation minutes when the feed has no golden-point extension.
+  const hasGoldenPoint = repaired.some(
+    (e) =>
+      e.minute > REGULATION_MATCH_MINUTES &&
+      e.type !== "full_time" &&
+      e.type !== "half_time"
+  );
+  if (!hasGoldenPoint) {
+    for (let i = 0; i < repaired.length; i++) {
+      const ev = repaired[i]!;
+      if (ev.type === "full_time") {
+        if (ev.minute !== REGULATION_MATCH_MINUTES) {
+          repaired[i] = { ...ev, minute: REGULATION_MATCH_MINUTES };
+          issues.push({
+            code: "full_time_minute",
+            message: `full_time clamped to ${REGULATION_MATCH_MINUTES}'`,
+            eventId: ev.id,
+            fixed: true,
+          });
+        }
+        continue;
+      }
+      if (ev.minute > REGULATION_MATCH_MINUTES) {
+        repaired[i] = {
+          ...ev,
+          minute: REGULATION_MATCH_MINUTES - 1,
+        };
+        issues.push({
+          code: "regulation_minute_clamp",
+          message: `Event minute ${ev.minute}' clamped to ${REGULATION_MATCH_MINUTES - 1}' (no golden point)`,
+          eventId: ev.id,
+          fixed: true,
+        });
+      } else if (ev.minute === REGULATION_MATCH_MINUTES) {
+        repaired[i] = {
+          ...ev,
+          minute: REGULATION_MATCH_MINUTES - 1,
+        };
+        issues.push({
+          code: "regulation_minute_clamp",
+          message: `Non-full_time event at ${REGULATION_MATCH_MINUTES}' moved to ${REGULATION_MATCH_MINUTES - 1}'`,
+          eventId: ev.id,
+          fixed: true,
+        });
+      }
+    }
   }
 
   // Conversion must follow a try by same team (soft check)

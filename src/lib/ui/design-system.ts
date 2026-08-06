@@ -34,6 +34,15 @@ export const SPACING = {
   safeBottom: "pb-[max(1rem,env(safe-area-inset-bottom))]",
 } as const;
 
+/** Shared matchday / Play Game surface patterns (Hub, Play Game, Fixtures, Review). */
+export const MATCHDAY = {
+  scoreboard: "matchday-scoreboard",
+  cardPadding: SPACING.cardPaddingMobile,
+  keyLabel: TYPO.keyLabel,
+  sectionTitle: TYPO.sectionTitle,
+  actionButton: TYPO.button,
+} as const;
+
 /** Shared mobile layout primitives — prefer these over one-off page patches. */
 export const MOBILE = {
   /** Always-visible primary content block. */

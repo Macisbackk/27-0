@@ -1,9 +1,6 @@
 import { getPlayoffRoundLabel } from "../game/playoff-bracket";
 import { isChallengeCupFinalFixture } from "./managerChallengeCup";
-import {
-  getManagerCupRoundLabel,
-  isChallengeCupFixture,
-} from "./managerFixtureDisplay";
+import { isChallengeCupFixture } from "./managerFixtureDisplay";
 import { isMagicWeekendFixture } from "./managerMagicWeekend";
 import { isGrandFinalFixture } from "./managerPlayoffs";
 import type { ManagerPillTone } from "./managerSurfaces";
@@ -43,8 +40,8 @@ export interface ManagerMatchOccasionPresentation {
   weekLabel: string;
   badgeLabel: string;
   badgeTone: ManagerPillTone;
-  /** Short atmospheric line under the title. */
-  momentLine: string;
+  /** Short atmospheric line under the title — omit when redundant with badge. */
+  momentLine?: string;
   playCta: string;
   playCtaShort: string;
   simulateCta: string;
@@ -88,87 +85,21 @@ function playoffBadgeLabel(playoffRound?: number): string {
   return getPlayoffRoundLabel(playoffRound);
 }
 
-function cupRoundActionNoun(cupRound?: CupRoundKey): string {
-  if (cupRound === "semi_final") return "Semi-Final";
-  if (cupRound === "final") return "Final";
-  if (cupRound === "quarter_final") return "Quarter-Final";
-  return "Challenge Cup Match";
-}
-
 export type FixtureActionKind = "play" | "simulate" | "simulate-round";
 
 /**
- * Central fixture action labels — never fall back to bare "Cup".
+ * Central fixture action labels — competition context lives in badges/headings,
+ * not in single-match CTAs.
  */
 export function getFixtureActionLabel(input: {
   fixture: ManagerMatchOccasionFixture;
   action: FixtureActionKind;
   compact?: boolean;
 }): string {
-  const { fixture, action, compact = false } = input;
-  const occasion = resolveManagerMatchOccasion(fixture);
-  const playoffRoundLabel = playoffBadgeLabel(fixture.playoffRound);
-  const cupNoun = cupRoundActionNoun(fixture.cupRound);
-
-  if (occasion === "grand_final") {
-    if (action === "play") return compact ? "Play Final" : "Play Grand Final";
-    return compact ? "Simulate Final" : "Simulate Grand Final";
-  }
-  if (occasion === "cup_final") {
-    if (action === "play") {
-      return compact ? "Play Final" : "Play Challenge Cup Final";
-    }
-    return compact ? "Simulate Final" : "Simulate Challenge Cup Final";
-  }
-  if (occasion === "challenge_cup") {
-    if (cupNoun === "Semi-Final" || cupNoun === "Final" || cupNoun === "Quarter-Final") {
-      if (action === "play") return `Play ${cupNoun}`;
-      return `Simulate ${cupNoun}`;
-    }
-    if (action === "play") {
-      return compact
-        ? "Play Challenge Cup"
-        : "Play Challenge Cup Match";
-    }
-    if (action === "simulate-round") {
-      return compact
-        ? "Simulate Cup Round"
-        : "Simulate Challenge Cup Round";
-    }
-    return compact
-      ? "Simulate Challenge Cup"
-      : "Simulate Challenge Cup Round";
-  }
-  if (occasion === "wcc") {
-    if (action === "play") {
-      return compact ? "Play WCC" : "Play World Club Challenge";
-    }
-    return compact
-      ? "Simulate WCC"
-      : "Simulate World Club Challenge";
-  }
-  if (occasion === "playoff") {
-    const round = playoffRoundLabel;
-    if (action === "play") {
-      return compact ? `Play ${round}` : `Play ${round}`;
-    }
-    return `Simulate ${round}`;
-  }
-  if (occasion === "friendly") {
-    return action === "play" ? "Play Friendly" : "Simulate Friendly";
-  }
-  if (occasion === "magic_weekend") {
-    return action === "play"
-      ? compact
-        ? "Play Match"
-        : "Play Magic Weekend"
-      : "Simulate Match";
-  }
-  return action === "play"
-    ? compact
-      ? "Play Match"
-      : "Play Game"
-    : "Simulate Match";
+  const { action } = input;
+  if (action === "simulate-round") return "Simulate Round";
+  if (action === "play") return "Play Game";
+  return "Simulate Game";
 }
 
 export function getManagerMatchOccasionPresentation(
@@ -261,7 +192,8 @@ export function getManagerMatchOccasionPresentation(
         weekLabel: "Challenge Cup Week",
         badgeLabel: "Challenge Cup",
         badgeTone: "gold",
-        momentLine: `${getManagerCupRoundLabel(fixture.cupRound)} — cup runs are built here`,
+        // Round already shown in UI badges/stats — avoid redundant subtitle.
+        momentLine: fixture.venue || undefined,
         playCta,
         playCtaShort,
         simulateCta,
@@ -329,7 +261,7 @@ export function getManagerMatchOccasionPresentation(
         weekLabel: "Next fixture",
         badgeLabel: "Super League",
         badgeTone: "primary",
-        momentLine: "",
+        momentLine: undefined,
         playCta,
         playCtaShort,
         simulateCta,

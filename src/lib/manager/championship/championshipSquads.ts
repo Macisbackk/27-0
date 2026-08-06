@@ -21,10 +21,11 @@ import {
 } from "../../players/rating-floors";
 
 /**
- * v4: Championship generation retuned below Super League (~73–76 squad average).
- * Existing careers are remapped by migratePlayerRatingsV4 — squads are not regenerated.
+ * v5: First-season Championship balance retuned to 70–83 (rare standouts only).
+ * Existing careers are remapped by migrateChampionshipFirstSeasonBalance —
+ * squads are not regenerated.
  */
-export const GENERATED_CHAMPIONSHIP_SQUADS_VERSION = 4;
+export const GENERATED_CHAMPIONSHIP_SQUADS_VERSION = 5;
 
 export const CHAMP_NATIONALITY_QUOTA: Record<ChampNationalityCode, number> = {
   ENG: 425,

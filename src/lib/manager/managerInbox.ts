@@ -61,6 +61,7 @@ export function normalizeInboxMessage(
     askingPrice: raw.askingPrice,
     unsolicited: raw.unsolicited,
     reserveOffer: raw.reserveOffer,
+    offerCategory: raw.offerCategory,
     retrainingFrom: raw.retrainingFrom,
     retrainingTo: raw.retrainingTo,
   };

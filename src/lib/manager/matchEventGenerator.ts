@@ -14,11 +14,17 @@ import {
 } from "../match/matchEventTemplates";
 import { buildOpponentTryScoringDetail } from "./managerOpponentScoring";
 import { generateNrlSquadNames } from "./worldClubChallenge";
-import type { ManagerCareer, ManagerScheduledFixture } from "./types";
-import type { LiveMatchEvent } from "./types";
+import type { ManagerCareer, ManagerCompetition, ManagerScheduledFixture } from "./types";
+import type { LiveMatchEvent, MatchEventPeriod } from "./types";
 import { isInvalidPlayerName } from "./managerPlayerNameGuards";
 
 type TeamSide = "user" | "opponent";
+
+/** Regulation length for simulated match commentary (no stoppage beyond FT). */
+export const REGULATION_MATCH_MINUTES = 80;
+
+/** Latest minute allowed for non-full_time regulation events (80 reserved for FT). */
+const REGULATION_EVENT_MAX_MINUTE = REGULATION_MATCH_MINUTES - 1;
 
 interface GeneratorInput {
   seed: string;
@@ -37,6 +43,10 @@ interface GeneratorInput {
   opponentKicker?: string;
   career?: ManagerCareer;
   round?: number;
+  /** When set, used to decide whether golden point / ET is allowed. */
+  competition?: ManagerCompetition;
+  /** League / draws-allowed fixtures never extend past regulation. */
+  allowsDraw?: boolean;
 }
 
 type FillerType =
@@ -74,6 +84,27 @@ function teamName(side: TeamSide, input: GeneratorInput): string {
 
 function opponentOf(side: TeamSide, input: GeneratorInput): string {
   return side === "user" ? input.opponent : input.userClub;
+}
+
+/** Simulated generator stays in regulation unless a knockout forbids draws. */
+function staysInRegulation(input: GeneratorInput): boolean {
+  if (input.allowsDraw === true) return true;
+  if (input.allowsDraw === false) return false;
+  const comp = input.competition ?? "league";
+  return comp === "league" || comp === "friendly";
+}
+
+function periodForMinute(
+  minute: number,
+  opts?: { goldenPoint?: boolean }
+): MatchEventPeriod {
+  if (opts?.goldenPoint) return "golden_point";
+  if (minute <= 40) return "first_half";
+  return "second_half";
+}
+
+function clampRegulationMinute(minute: number): number {
+  return Math.max(1, Math.min(REGULATION_EVENT_MAX_MINUTE, Math.round(minute)));
 }
 
 function expandScorerEntries(
@@ -120,6 +151,8 @@ function makeEvent(
     kickerName?: string;
     importance?: MatchEventImportance;
     relatedEventId?: string;
+    period?: MatchEventPeriod;
+    goldenPoint?: boolean;
   }
 ): LiveMatchEvent {
   const isKick =
@@ -131,21 +164,31 @@ function makeEvent(
     type === "drop_goal" ||
     type === "missed_drop_goal";
 
+  const cappedMinute =
+    type === "full_time"
+      ? REGULATION_MATCH_MINUTES
+      : opts?.goldenPoint
+        ? minute
+        : clampRegulationMinute(minute);
+
   return {
     id,
-    minute,
+    minute: cappedMinute,
     type,
     team: side,
     playerName: isKick ? undefined : opts?.playerName,
     playerId: isKick ? undefined : opts?.playerId,
     kickerName: isKick ? opts?.kickerName ?? opts?.playerName : undefined,
-    description: eventMinutePrefix(minute, description),
+    description: eventMinutePrefix(cappedMinute, description),
     points,
     importance: opts?.importance ?? "medium",
     teamId: side,
     teamName: teamName(side, input),
     opponentTeamName: opponentOf(side, input),
     relatedEventId: opts?.relatedEventId,
+    period:
+      opts?.period ??
+      periodForMinute(cappedMinute, { goldenPoint: opts?.goldenPoint }),
   };
 }
 
@@ -190,7 +233,9 @@ function distributeMinutes(count: number, rng: () => number): number[] {
   for (let i = 0; i < count; i++) {
     minutes.push(8 + Math.floor(rng() * 70));
   }
-  return minutes.sort((a, b) => a - b);
+  return minutes
+    .map(clampRegulationMinute)
+    .sort((a, b) => a - b);
 }
 
 function targetEventCount(input: GeneratorInput): number {
@@ -267,6 +312,65 @@ function resolveKicker(
   return side === "user" ? "the home kicker" : "the away kicker";
 }
 
+function finalizeRegulationEvents(events: LiveMatchEvent[]): LiveMatchEvent[] {
+  const withoutOverage = events.filter((e) => {
+    if (e.type === "full_time") return true;
+    if (e.period === "golden_point") return true;
+    return e.minute < REGULATION_MATCH_MINUTES;
+  });
+
+  const capped = withoutOverage.map((e) => {
+    if (e.type === "full_time") {
+      return {
+        ...e,
+        minute: REGULATION_MATCH_MINUTES,
+        period: "second_half" as const,
+        description: eventMinutePrefix(
+          REGULATION_MATCH_MINUTES,
+          e.description.replace(/^\d+'?\s*/, "")
+        ),
+      };
+    }
+    if (e.period === "golden_point") return e;
+    if (e.minute > REGULATION_EVENT_MAX_MINUTE) {
+      const minute = REGULATION_EVENT_MAX_MINUTE;
+      return {
+        ...e,
+        minute,
+        period: periodForMinute(minute),
+        description: eventMinutePrefix(
+          minute,
+          e.description.replace(/^\d+'?\s*/, "")
+        ),
+      };
+    }
+    return {
+      ...e,
+      period: e.period ?? periodForMinute(e.minute),
+    };
+  });
+
+  const withoutDupFt = capped.filter((e) => e.type !== "full_time");
+  const fullTime =
+    capped.find((e) => e.type === "full_time") ??
+    ({
+      id: "full-time",
+      minute: REGULATION_MATCH_MINUTES,
+      type: "full_time",
+      team: "user",
+      description: `${REGULATION_MATCH_MINUTES}' Full time`,
+      points: 0,
+      importance: "major",
+      period: "second_half",
+    } satisfies LiveMatchEvent);
+
+  return [...withoutDupFt, { ...fullTime, minute: REGULATION_MATCH_MINUTES }].sort(
+    (a, b) =>
+      a.minute - b.minute ||
+      (a.id ?? "").localeCompare(b.id ?? "")
+  );
+}
+
 /** Generate a coherent commentary feed that matches the final scoreline. */
 export function generateSimulatedMatchEvents(
   input: GeneratorInput
@@ -275,6 +379,8 @@ export function generateSimulatedMatchEvents(
   const memory = createMatchStoryMemory();
   let eventIndex = 0;
   const nextId = () => `${input.fixtureKey}-ev-${eventIndex++}`;
+  // This generator does not emit golden point / ET when draws are allowed.
+  void staysInRegulation(input);
 
   const userTryMinutes = distributeMinutes(
     input.userTries,
@@ -341,20 +447,22 @@ export function generateSimulatedMatchEvents(
     minute: number,
     scorer: { name: string; playerId?: string }
   ) => {
-    const rng = rngFor(input.seed, `chain-${side}-${minute}`);
+    const safeMinute = clampRegulationMinute(minute);
+    const rng = rngFor(input.seed, `chain-${side}-${safeMinute}`);
     const kicker = side === "user" ? userKicker : oppKicker;
     let relatedTryId = "";
     const scorerName = scorer.name;
 
     if (rng() < 0.55) {
+      const m = clampRegulationMinute(Math.max(1, safeMinute - 2));
       events.push(
         makeEvent(
           nextId(),
-          Math.max(1, minute - 2),
+          m,
           side,
           input,
           "six_again",
-          commentary("six_again", side, input, Math.max(1, minute - 2), memory, rng),
+          commentary("six_again", side, input, m, memory, rng),
           0,
           { importance: "low" }
         )
@@ -362,14 +470,15 @@ export function generateSimulatedMatchEvents(
     }
     if (rng() < 0.4) {
       const breakType: MatchEventType = rng() < 0.5 ? "line_break" : "big_break";
+      const m = clampRegulationMinute(Math.max(1, safeMinute - 1));
       events.push(
         makeEvent(
           nextId(),
-          Math.max(1, minute - 1),
+          m,
           side,
           input,
           breakType,
-          commentary(breakType, side, input, Math.max(1, minute - 1), memory, rng, scorerName),
+          commentary(breakType, side, input, m, memory, rng, scorerName),
           0,
           {
             playerName: scorerName,
@@ -384,11 +493,11 @@ export function generateSimulatedMatchEvents(
     events.push(
       makeEvent(
         relatedTryId,
-        minute,
+        safeMinute,
         side,
         input,
         "try",
-        commentary("try", side, input, minute, memory, rng, scorerName),
+        commentary("try", side, input, safeMinute, memory, rng, scorerName),
         4,
         {
           playerName: scorerName,
@@ -398,16 +507,16 @@ export function generateSimulatedMatchEvents(
       )
     );
 
-    const convRng = rngFor(input.seed, `conv-${side}-${minute}`);
+    const convRng = rngFor(input.seed, `conv-${side}-${safeMinute}`);
     if (convRng() < 0.82) {
       events.push(
         makeEvent(
           nextId(),
-          minute,
+          safeMinute,
           side,
           input,
           "conversion",
-          commentary("conversion", side, input, minute, memory, convRng, undefined, kicker),
+          commentary("conversion", side, input, safeMinute, memory, convRng, undefined, kicker),
           2,
           {
             kickerName: kicker,
@@ -420,7 +529,7 @@ export function generateSimulatedMatchEvents(
       events.push(
         makeEvent(
           nextId(),
-          minute,
+          safeMinute,
           side,
           input,
           "missed_conversion",
@@ -428,7 +537,7 @@ export function generateSimulatedMatchEvents(
             "missed_conversion",
             side,
             input,
-            minute,
+            safeMinute,
             memory,
             convRng,
             undefined,
@@ -461,20 +570,21 @@ export function generateSimulatedMatchEvents(
   const closeGame = Math.abs(margin) <= 6;
   if (closeGame && input.userScore + input.oppScore > 0) {
     const lateRng = rngFor(input.seed, "late");
-    const lateMinute = 68 + Math.floor(lateRng() * 10);
+    const lateMinute = clampRegulationMinute(68 + Math.floor(lateRng() * 10));
 
     if (lateRng() < 0.45) {
       const side: TeamSide = margin >= 0 ? "user" : "opponent";
       const kicker = side === "user" ? userKicker : oppKicker;
       if (lateRng() < 0.35) {
+        const pressureMin = clampRegulationMinute(lateMinute - 2);
         events.push(
           makeEvent(
             nextId(),
-            lateMinute - 2,
+            pressureMin,
             side,
             input,
             "pressure_set",
-            commentary("pressure_set", side, input, lateMinute - 2, memory, lateRng),
+            commentary("pressure_set", side, input, pressureMin, memory, lateRng),
             0,
             { importance: "medium" }
           )
@@ -507,10 +617,11 @@ export function generateSimulatedMatchEvents(
       const side: TeamSide = margin >= 0 ? "user" : "opponent";
       const kicker = side === "user" ? userKicker : oppKicker;
       const made = lateRng() < 0.52;
+      const dropMinute = clampRegulationMinute(76 + Math.floor(lateRng() * 4));
       events.push(
         makeEvent(
           nextId(),
-          76 + Math.floor(lateRng() * 4),
+          dropMinute,
           side,
           input,
           made ? "drop_goal" : "missed_drop_goal",
@@ -518,7 +629,7 @@ export function generateSimulatedMatchEvents(
             made ? "drop_goal" : "missed_drop_goal",
             side,
             input,
-            79,
+            dropMinute,
             memory,
             lateRng,
             undefined,
@@ -561,10 +672,12 @@ export function generateSimulatedMatchEvents(
   ].filter((n) => n && !isInvalidPlayerName(n, teamNames));
 
   for (let i = 0; i < fillerTarget; i++) {
-    const minute = Math.max(
-      lastFillerMinute + 2,
-      5 + Math.floor(fillerRng() * 75)
+    // Leave room for +2 spacing and keep fillers ≤ 79 (80 is full_time only).
+    if (lastFillerMinute >= 78) break;
+    const minute = clampRegulationMinute(
+      Math.max(lastFillerMinute + 2, 5 + Math.floor(fillerRng() * 74))
     );
+    if (minute > REGULATION_EVENT_MAX_MINUTE) break;
     lastFillerMinute = minute;
     const possessionSide: TeamSide = fillerRng() < 0.5 ? "user" : "opponent";
     const lateGame = minute >= 65;
@@ -608,7 +721,9 @@ export function generateSimulatedMatchEvents(
   if (rngFor(input.seed, "sinbin")() < 0.22 && allPlayerNames.length > 0) {
     const side: TeamSide =
       rngFor(input.seed, "sinbin-side")() < 0.5 ? "user" : "opponent";
-    const minute = 30 + Math.floor(rngFor(input.seed, "sinbin-m")() * 40);
+    const minute = clampRegulationMinute(
+      30 + Math.floor(rngFor(input.seed, "sinbin-m")() * 40)
+    );
     const sinPlayer =
       allPlayerNames[Math.floor(rngFor(input.seed, "sinbin-p")() * allPlayerNames.length)]!;
     events.push(
@@ -642,27 +757,30 @@ export function generateSimulatedMatchEvents(
       "half_time",
       commentary("half_time", "user", input, 40, memory, rngFor(input.seed, "ht")),
       0,
-      { importance: "major" }
+      { importance: "major", period: "first_half" }
     )
   );
   events.push(
     makeEvent(
       nextId(),
-      80,
+      REGULATION_MATCH_MINUTES,
       "user",
       input,
       "full_time",
-      commentary("full_time", "user", input, 80, memory, rngFor(input.seed, "ft")),
+      commentary(
+        "full_time",
+        "user",
+        input,
+        REGULATION_MATCH_MINUTES,
+        memory,
+        rngFor(input.seed, "ft")
+      ),
       0,
-      { importance: "major" }
+      { importance: "major", period: "second_half" }
     )
   );
 
-  return events.sort(
-    (a, b) =>
-      a.minute - b.minute ||
-      (a.id ?? "").localeCompare(b.id ?? "")
-  );
+  return finalizeRegulationEvents(events);
 }
 
 export function generateEventsFromFixture(
@@ -703,6 +821,9 @@ export function generateEventsFromFixture(
       ? (oppScorers[6]?.name ?? oppScorers[0]?.name)
       : fixture.scoringDetail?.opponent.kicking?.name;
 
+  const competition = sched?.competition ?? "league";
+  const allowsDraw = competition === "league" || competition === "friendly";
+
   const events = generateSimulatedMatchEvents({
     seed: career.seed,
     fixtureKey,
@@ -718,6 +839,8 @@ export function generateEventsFromFixture(
     opponentKicker: oppKicker,
     career,
     round: fixture.round,
+    competition,
+    allowsDraw,
   });
 
   fixture.matchBio = buildMatchStoryFromEvents(

@@ -73,7 +73,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
 
       <button
         type="button"
-        className="flex w-full min-w-0 items-start gap-2 px-3 py-2 text-left transition hover:bg-white/[0.03] sm:py-2.5"
+        className="showcase-player-card__body"
         onClick={handleOpen}
         onKeyDown={handleKeyDown}
         aria-haspopup="dialog"

@@ -25,6 +25,9 @@ export const TYPO = {
     "font-display text-base font-semibold leading-tight text-white sm:text-lg",
   clubName:
     "text-[length:var(--mobile-caption-font-size,0.7rem)] font-semibold tracking-tight text-gray-400 sm:text-xs",
+  /** Fixture / rating key labels (e.g. Wins, Losses, Your Rating). */
+  keyLabel:
+    "text-[length:var(--text-small)] font-semibold uppercase tracking-wide text-gray-400",
   statLabel:
     "text-[length:var(--text-small)] font-semibold uppercase tracking-wide text-gray-400",
   statValue:
@@ -48,3 +51,5 @@ export const TYPO = {
   positionHighlight: "font-semibold text-white",
   rating: "font-display font-bold text-[color:var(--rating)]",
 } as const;
+
+export type TypographyRole = keyof typeof TYPO;

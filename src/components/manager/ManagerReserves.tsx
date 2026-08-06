@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { GamePanel } from "@/components/ui/GamePanel";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
@@ -87,6 +87,21 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
   const [releaseError, setReleaseError] = useState<string | null>(null);
   const [releaseToolsOpen, setReleaseToolsOpen] = useState(false);
   const settings = resolveManagerSettings(career);
+
+  useEffect(() => {
+    const focusId = career.focusReservePlayerId;
+    if (!focusId) return;
+    if (!(career.reserves ?? []).some((r) => r.id === focusId)) return;
+    setSubTab("squad");
+    setDetailsId(focusId);
+    onUpdate({
+      ...career,
+      focusReservePlayerId: null,
+      updatedAt: new Date().toISOString(),
+    });
+    // Only react to the focus request itself — not every career field change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional
+  }, [career.focusReservePlayerId]);
 
   const latestMonthlyReport = useMemo(
     () =>

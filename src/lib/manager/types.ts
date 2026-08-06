@@ -302,9 +302,13 @@ export interface ManagerMatchMeta {
   xiiiSlotPositions?: Position[];
 }
 
+export type MatchEventPeriod = "first_half" | "second_half" | "golden_point";
+
 export interface LiveMatchEvent {
   id?: string;
   minute: number;
+  /** Optional period tag for UI / sorting; consumers may ignore. */
+  period?: MatchEventPeriod;
   type:
     | "try"
     | "goal"
@@ -678,10 +682,34 @@ export interface InboxMessage {
   unsolicited?: boolean;
   /** Championship-club bid for a reserve-squad player (accept moves them out of reserves). */
   reserveOffer?: boolean;
+  /**
+   * Market pool this offer belongs to. Senior approaches never share a season
+   * budget with reserve / Championship bids.
+   */
+  offerCategory?: TransferOfferCategory;
   /** Dual-position retraining completion — surfaced as a post-match popup. */
   retrainingFrom?: import("../types").Position;
   retrainingTo?: import("../types").Position;
 }
+
+/** Senior vs reserve transfer-offer market pools. */
+export type TransferOfferCategory =
+  | "senior-first-team"
+  | "senior-rotation"
+  | "senior-listed"
+  | "reserve";
+
+/** Dev / tuning breadcrumb for a generated transfer approach. */
+export type TransferOfferDiagnostic = {
+  requestId: string;
+  targetPlayerId: string;
+  targetSquad: "senior" | "reserve";
+  targetRole: string;
+  buyingClubId: string;
+  generatedWeek: number;
+  generationPhase: "early-season" | "normal" | "window" | "expiry";
+  countedAgainstCategory: string;
+};
 
 export interface RetiredPlayer {
   playerId: string;
@@ -912,6 +940,8 @@ export interface ManagerCareer {
   reserveGeneratorVersion?: number;
   /** Championship-only rating scale correction (2 = post mistaken floor-80 remap). */
   championshipRatingScaleVersion?: number;
+  /** First-season Championship balance (3 = generated max 83, remap >80). */
+  championshipFirstSeasonBalanceVersion?: number;
   /** Reserve rating scale after mistaken floor-80 clamp (2 = age/potential remap). */
   reserveRatingScaleVersion?: number;
   /** Player Showcase route/filter compatibility marker. */
@@ -947,10 +977,22 @@ export interface ManagerCareer {
   aiTransferActivityVersion?: number;
   /** Rebalanced recruitment target pools and seasonal approach pacing. */
   transferTargetBalanceVersion?: number;
+  /** Last gameWeek that ran senior transfer-offer generators (dedupe cup/league). */
+  lastTransferScanGameWeek?: number;
+  /** Pending inbox offers tagged with offerCategory (2 = senior/reserve split). */
+  transferOfferCategoryVersion?: number;
+  /** Recent transfer-offer diagnostics (capped; also console.debug in development). */
+  transferOfferDiagnostics?: TransferOfferDiagnostic[];
   /** Week through which a player is protected from repeat senior approaches. */
   transferTargetCooldowns?: Record<string, number>;
   /** Week through which a buying club is held out of senior approaches. */
   transferTargetClubCooldowns?: Record<string, number>;
+  /** Future Star reveal popups already acknowledged (by reserve player id). */
+  futureStarRevealAckByPlayerId?: Record<string, boolean>;
+  /** Reserve player id waiting for the Future Star reveal modal. */
+  pendingFutureStarRevealPlayerId?: string | null;
+  /** Reserves screen should open this player on next visit. */
+  focusReservePlayerId?: string | null;
   /** Completed transfer records include competition IDs + sourceSquad. */
   completedTransferRecordVersion?: number;
   /** Explicit match resolution rules (draws vs knockout extra-time). */

@@ -8,6 +8,8 @@ import type {
   ManagerCareer,
   PlayerTransferStatus,
   SquadRole,
+  TransferOfferCategory,
+  TransferOfferDiagnostic,
 } from "./types";
 import {
   calculateWageForPlayer,
@@ -42,6 +44,113 @@ import {
 import { addBoardTransferMilestoneInbox } from "./managerBoardInbox";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 import { DEFAULT_TRANSFER_ACTIVITY_CONFIG } from "./transferActivityConfig";
+
+const TRANSFER_DIAGNOSTIC_CAP = 40;
+
+export function getTransferOfferGenerationPhase(
+  gameWeek: number
+): TransferOfferDiagnostic["generationPhase"] {
+  const cfg = DEFAULT_TRANSFER_ACTIVITY_CONFIG;
+  if (gameWeek <= cfg.transferTargetPool.earlySeasonThroughWeek) {
+    return "early-season";
+  }
+  const heat = cfg.gameWeekActivityMultiplier(gameWeek);
+  if (heat >= 1.2) return "window";
+  if (heat <= 0.6) return "expiry";
+  return "normal";
+}
+
+export function recordTransferOfferDiagnostic(
+  career: ManagerCareer,
+  diagnostic: TransferOfferDiagnostic
+): ManagerCareer {
+  if (process.env.NODE_ENV === "development") {
+    console.debug("[transfer-offer]", diagnostic);
+  }
+  const recent = [
+    ...(career.transferOfferDiagnostics ?? []),
+    diagnostic,
+  ].slice(-TRANSFER_DIAGNOSTIC_CAP);
+  return { ...career, transferOfferDiagnostics: recent };
+}
+
+/** Senior season budget excludes Championship / reserve wire — never count reserveOffer. */
+export function isSeniorSeasonApproachMessage(message: InboxMessage): boolean {
+  if (message.reserveOffer) return false;
+  if (message.offerCategory === "reserve") return false;
+  return Boolean(message.unsolicited);
+}
+
+function isSeniorFirstTeamPlayer(
+  career: ManagerCareer,
+  playerId: string,
+  seasonAppearances: number
+): boolean {
+  return (
+    career.matchdayXiii.includes(playerId) ||
+    career.matchdayInterchange.includes(playerId) ||
+    seasonAppearances >= Math.max(3, career.gameWeek * 0.55)
+  );
+}
+
+/**
+ * Backfill offerCategory on pending inbox transfer bids (save migration).
+ */
+export function migrateTransferOfferCategories(
+  career: ManagerCareer
+): ManagerCareer {
+  if ((career.transferOfferCategoryVersion ?? 0) >= 2) return career;
+
+  const reserveIds = new Set((career.reserves ?? []).map((r) => r.id));
+  const squadById = new Map(career.squad.map((p) => [p.playerId, p]));
+
+  const inboxMessages = career.inboxMessages.map((message) => {
+    if (message.offerCategory) return message;
+    if (
+      message.resolved ||
+      !message.playerId ||
+      message.offerAmount == null ||
+      !message.offerClub
+    ) {
+      return message;
+    }
+    if (
+      message.type !== "transfer" &&
+      message.type !== "transfer_offer_in"
+    ) {
+      return message;
+    }
+
+    let offerCategory: TransferOfferCategory;
+    if (message.reserveOffer || reserveIds.has(message.playerId)) {
+      offerCategory = "reserve";
+    } else {
+      const ps = squadById.get(message.playerId);
+      if (
+        ps &&
+        isSeniorFirstTeamPlayer(career, message.playerId, ps.seasonAppearances)
+      ) {
+        offerCategory = "senior-first-team";
+      } else if (message.unsolicited) {
+        offerCategory = "senior-rotation";
+      } else {
+        offerCategory = "senior-listed";
+      }
+    }
+
+    return {
+      ...message,
+      offerCategory,
+      reserveOffer: offerCategory === "reserve" ? true : message.reserveOffer,
+    };
+  });
+
+  return {
+    ...career,
+    inboxMessages,
+    transferOfferCategoryVersion: 2,
+  };
+}
 
 function invalidatePlayerTransferOffers(
   career: ManagerCareer,
@@ -625,12 +734,14 @@ export function generateIncomingTransferOffers(
 ): ManagerCareer {
   const rng = seedrandom(`${career.seed}-offers-w${career.gameWeek}`);
   const messages = [...career.inboxMessages];
+  const diagnostics: TransferOfferDiagnostic[] = [];
   const clubFunds = { ...career.clubFunds };
   const cfg = DEFAULT_TRANSFER_ACTIVITY_CONFIG.incomingOffers;
   const heat = DEFAULT_TRANSFER_ACTIVITY_CONFIG.gameWeekActivityMultiplier(
     career.gameWeek
   );
   const seasonBoost = getLeagueSeasonIndex(career) >= 1 ? cfg.seasonBoost : 0;
+  const phase = getTransferOfferGenerationPhase(career.gameWeek);
 
   for (const [playerId, status] of Object.entries(career.playerTransferStatus)) {
     if (!status.listed) continue;
@@ -660,8 +771,16 @@ export function generateIncomingTransferOffers(
 
     if (offerAmount > funds * 0.4) continue;
 
+    const ps = career.squad.find((p) => p.playerId === playerId);
+    const offerCategory: TransferOfferCategory =
+      ps &&
+      isSeniorFirstTeamPlayer(career, playerId, ps.seasonAppearances)
+        ? "senior-first-team"
+        : "senior-listed";
+    const requestId = `offer-${playerId}-${career.gameWeek}-${Math.floor(rng() * 10000)}`;
+
     messages.unshift({
-      id: `offer-${playerId}-${career.gameWeek}-${Math.floor(rng() * 10000)}`,
+      id: requestId,
       type: "transfer",
       title: "Transfer Offer",
       body: `${buyer} have offered ${formatWage(offerAmount)} for ${player.name}. Your asking price: ${formatWage(status.askingPrice)}.`,
@@ -676,10 +795,26 @@ export function generateIncomingTransferOffers(
       offerClub: buyer,
       offerAmount,
       askingPrice: status.askingPrice,
+      offerCategory,
+    });
+
+    diagnostics.push({
+      requestId,
+      targetPlayerId: playerId,
+      targetSquad: "senior",
+      targetRole: offerCategory,
+      buyingClubId: buyer,
+      generatedWeek: career.gameWeek,
+      generationPhase: phase,
+      countedAgainstCategory: "listed-incoming",
     });
   }
 
-  return { ...career, inboxMessages: messages };
+  let next: ManagerCareer = { ...career, inboxMessages: messages };
+  for (const diagnostic of diagnostics) {
+    next = recordTransferOfferDiagnostic(next, diagnostic);
+  }
+  return next;
 }
 
 const SENIOR_APPROACH_SEASON_WEEKS = 27;
@@ -735,7 +870,7 @@ export function generateUnsolicitedTransferOffers(
   const cfg = DEFAULT_TRANSFER_ACTIVITY_CONFIG.transferTargetPool;
   const seasonOffers = career.inboxMessages.filter(
     (message) =>
-      message.unsolicited &&
+      isSeniorSeasonApproachMessage(message) &&
       message.season === career.seasonYear
   );
   const offersThisWeek = seasonOffers.filter(
@@ -743,16 +878,9 @@ export function generateUnsolicitedTransferOffers(
   ).length;
   if (offersThisWeek >= cfg.maxSeniorApproachesPerWeek) return career;
 
-  const target = getSeniorApproachSeasonTarget(career);
-  const approachChance = getSeniorApproachWeeklyChance(
-    career.gameWeek,
-    seasonOffers.length,
-    target
-  );
-  if (rng() > approachChance) return career;
-
   const pendingCount = career.inboxMessages.filter(
-    (message) => !message.resolved && message.unsolicited
+    (message) =>
+      !message.resolved && isSeniorSeasonApproachMessage(message)
   ).length;
   if (pendingCount >= cfg.maxPendingSeniorApproaches) {
     return career;
@@ -784,17 +912,18 @@ export function generateUnsolicitedTransferOffers(
       const appsBoost = ps.seasonAppearances >= 3 ? 0.12 : 0;
       const ratingBoost =
         rating >= 90 ? 0.3 : rating >= 86 ? 0.18 : rating >= 83 ? 0.08 : 0;
-      const isFirstTeam =
-        career.matchdayXiii.includes(ps.playerId) ||
-        career.matchdayInterchange.includes(ps.playerId) ||
-        ps.seasonAppearances >= Math.max(3, career.gameWeek * 0.55);
+      const isFirstTeam = isSeniorFirstTeamPlayer(
+        career,
+        ps.playerId,
+        ps.seasonAppearances
+      );
       const poolWeight = isFirstTeam
         ? cfg.weights.seniorFirstTeam
         : cfg.weights.seniorRotation;
       const weight =
         (0.35 + formBoost + triesBoost + appsBoost + ratingBoost) * poolWeight;
 
-      return { ps, player, weight };
+      return { ps, player, weight, isFirstTeam };
     })
     .filter(
       (
@@ -803,10 +932,25 @@ export function generateUnsolicitedTransferOffers(
         ps: (typeof career.squad)[number];
         player: NonNullable<ReturnType<typeof getPlayerById>>;
         weight: number;
+        isFirstTeam: boolean;
       } => row !== null
     );
 
   if (candidates.length === 0) return career;
+
+  const buyers = rivalTransferClubs(career.club).filter(
+    (club) =>
+      (career.transferTargetClubCooldowns?.[club] ?? 0) <= career.gameWeek
+  );
+  if (buyers.length === 0) return career;
+
+  const target = getSeniorApproachSeasonTarget(career);
+  const approachChance = getSeniorApproachWeeklyChance(
+    career.gameWeek,
+    seasonOffers.length,
+    target
+  );
+  if (rng() > approachChance) return career;
 
   const totalWeight = candidates.reduce((sum, row) => sum + row.weight, 0);
   let roll = rng() * totalWeight;
@@ -819,7 +963,10 @@ export function generateUnsolicitedTransferOffers(
     }
   }
 
-  const { ps, player } = picked;
+  const { ps, player, isFirstTeam } = picked;
+  const offerCategory: TransferOfferCategory = isFirstTeam
+    ? "senior-first-team"
+    : "senior-rotation";
   const impliedPrice = getAskingPrice(
     ps.playerId,
     false,
@@ -827,20 +974,26 @@ export function generateUnsolicitedTransferOffers(
     career.gameWeek,
     career
   );
-  const buyers = rivalTransferClubs(career.club).filter(
-    (club) =>
-      (career.transferTargetClubCooldowns?.[club] ?? 0) <= career.gameWeek
-  );
-  if (buyers.length === 0) return career;
-  const buyer = buyers[Math.floor(rng() * buyers.length)]!;
+
+  // Prefer a buyer that can afford the approach so a successful week roll
+  // is not wasted on an underfunded club.
+  const affordableBuyers = buyers.filter((club) => {
+    if (isSameManagerClub(club, career.club)) return false;
+    const funds = career.clubFunds[club] ?? getManagerClubConfig(club).budget;
+    const offerAmount = Math.round(impliedPrice * 0.95);
+    return offerAmount <= funds * 0.35;
+  });
+  const buyerPool = affordableBuyers.length > 0 ? affordableBuyers : buyers;
+  const buyer = buyerPool[Math.floor(rng() * buyerPool.length)]!;
   if (isSameManagerClub(buyer, career.club)) return career;
   const funds = career.clubFunds[buyer] ?? getManagerClubConfig(buyer).budget;
   const offerAmount = Math.round(impliedPrice * (0.9 + rng() * 0.1));
 
   if (offerAmount > funds * 0.35) return career;
 
+  const requestId = `unsolicited-${ps.playerId}-${career.gameWeek}-${Math.floor(rng() * 10000)}`;
   const withOffer = pushInboxMessage(career, {
-    id: `unsolicited-${ps.playerId}-${career.gameWeek}-${Math.floor(rng() * 10000)}`,
+    id: requestId,
     type: "transfer",
     title: "Transfer Approach",
     body: `${buyer} want to sign ${player.name}, who is not on the transfer list. They've offered ${formatWage(offerAmount)}.`,
@@ -856,15 +1009,26 @@ export function generateUnsolicitedTransferOffers(
     offerAmount,
     askingPrice: impliedPrice,
     unsolicited: true,
+    offerCategory,
+  });
+  const withDiag = recordTransferOfferDiagnostic(withOffer, {
+    requestId,
+    targetPlayerId: ps.playerId,
+    targetSquad: "senior",
+    targetRole: offerCategory,
+    buyingClubId: buyer,
+    generatedWeek: career.gameWeek,
+    generationPhase: getTransferOfferGenerationPhase(career.gameWeek),
+    countedAgainstCategory: "senior-unsolicited",
   });
   return {
-    ...withOffer,
+    ...withDiag,
     transferTargetCooldowns: {
-      ...(withOffer.transferTargetCooldowns ?? {}),
+      ...(withDiag.transferTargetCooldowns ?? {}),
       [ps.playerId]: career.gameWeek + cfg.playerCooldownWeeks,
     },
     transferTargetClubCooldowns: {
-      ...(withOffer.transferTargetClubCooldowns ?? {}),
+      ...(withDiag.transferTargetClubCooldowns ?? {}),
       [buyer]: career.gameWeek + cfg.clubCooldownWeeks,
     },
     transferTargetBalanceVersion: 4,

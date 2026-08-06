@@ -14,11 +14,13 @@ import {
   standingsToCupSeeding,
 } from "./championshipChallengeCup";
 import { countCupFixturesPlayed } from "../managerChallengeCup";
+import { migrateTransferOfferCategories } from "../managerTransferLeague";
 
 /**
  * Ensure Championship squads, league, and expanded cup schema exist on a career.
  * Safe for mid-season: does not redraw an in-progress legacy cup.
- * Rating-scale upgrades for existing squads are handled by migratePlayerRatingsV4.
+ * Rating-scale upgrades for existing squads are handled by
+ * migratePlayerRatingsV4 / migrateChampionshipFirstSeasonBalance.
  */
 export function ensureChampionshipSystems(
   career: ManagerCareer
@@ -124,6 +126,9 @@ export function ensureChampionshipSystems(
       reserveToChampionshipClubRequestCounts:
         next.reserveToChampionshipClubRequestCounts ?? {},
     };
+  }
+  if ((next.transferOfferCategoryVersion ?? 0) < 2) {
+    next = migrateTransferOfferCategories(next);
   }
   if ((next.matchResolutionRulesVersion ?? 0) < 2) {
     next = { ...next, matchResolutionRulesVersion: 2 };

@@ -1,5 +1,5 @@
 /**
- * Validate Championship rating scale correction (floor 70, SL/Historic floor 80).
+ * Validate Championship rating scale correction (floor 70, max 83, SL/Historic floor 80).
  * Run: npx tsx scripts/validate-championship-rating-scale.ts
  */
 import { writeFileSync } from "fs";
@@ -8,6 +8,7 @@ import {
   CURRENT_SUPER_LEAGUE_MIN_RATING,
   HISTORIC_PLAYER_MIN_RATING,
   CHAMPIONSHIP_PLAYER_MIN_RATING,
+  CHAMPIONSHIP_PLAYER_MAX_RATING,
 } from "../src/lib/players/rating-floors";
 import { CURRENT_PLAYERS, HISTORIC_PLAYERS } from "../src/lib/players";
 import { CHAMPIONSHIP_CLUBS } from "../src/lib/clubs/championship-clubs";
@@ -21,9 +22,12 @@ import {
 } from "../src/lib/manager/championship/championshipRatingScale";
 import {
   CHAMPIONSHIP_RATING_SCALE_VERSION,
-  PLAYER_RATING_SCHEMA_VERSION,
   migratePlayerRatingsV4,
 } from "../src/lib/manager/migratePlayerRatingsV4";
+import {
+  CHAMPIONSHIP_FIRST_SEASON_BALANCE_VERSION,
+  migrateChampionshipFirstSeasonBalance,
+} from "../src/lib/manager/migrateChampionshipFirstSeasonBalance";
 import { createNewCareer } from "../src/lib/manager/managerState";
 import type { ChampionshipGeneratedPlayer } from "../src/lib/manager/championship/championshipSquads";
 import type { Position } from "../src/lib/types";
@@ -45,11 +49,15 @@ console.log("Floors\n");
 assert(CURRENT_SUPER_LEAGUE_MIN_RATING === 80, "Current SL floor = 80");
 assert(HISTORIC_PLAYER_MIN_RATING === 80, "Historic floor = 80");
 assert(CHAMPIONSHIP_PLAYER_MIN_RATING === 70, "Championship floor = 70");
-assert(GENERATED_CHAMPIONSHIP_SQUADS_VERSION === 4, "Champ squads version = 4");
-assert(PLAYER_RATING_SCHEMA_VERSION === 4, "playerRatingSchemaVersion = 4");
+assert(CHAMPIONSHIP_PLAYER_MAX_RATING === 83, "Championship max = 83");
+assert(GENERATED_CHAMPIONSHIP_SQUADS_VERSION === 5, "Champ squads version = 5");
 assert(
   CHAMPIONSHIP_RATING_SCALE_VERSION === 2,
   "championshipRatingScaleVersion = 2"
+);
+assert(
+  CHAMPIONSHIP_FIRST_SEASON_BALANCE_VERSION === 3,
+  "championshipFirstSeasonBalanceVersion = 3"
 );
 
 console.log("\nCurrent / Historic floors intact\n");
@@ -77,8 +85,8 @@ const avgC =
 assert(players.length === 500, "500 Championship players");
 assert(minC >= 70, `Champ min >= 70 (got ${minC})`);
 assert(minC < 80, `Champ min not clamped to 80 (got ${minC})`);
-assert(maxC <= 89, `Champ max <= 89 (got ${maxC})`);
-assert(avgC >= 74 && avgC <= 80, `Champ overall avg ~75–78 (got ${avgC.toFixed(2)})`);
+assert(maxC <= 83, `Champ max <= 83 (got ${maxC})`);
+assert(avgC >= 73 && avgC <= 78, `Champ overall avg ~73–76 (got ${avgC.toFixed(2)})`);
 assert(avgC < currentAvg - 4, `Champ avg below SL avg (${avgC.toFixed(2)} vs ${currentAvg.toFixed(2)})`);
 
 const byClub: Record<string, number[]> = {};
@@ -107,12 +115,16 @@ const posAvgs = Object.entries(byPos).map(([pos, rs]) => ({
   avg: rs.reduce((s, r) => s + r, 0) / rs.length,
 }));
 
-const elite = players
-  .filter((p) => p.peakRating >= 85)
+const standouts = players
+  .filter((p) => p.peakRating >= 81)
   .sort((a, b) => b.peakRating - a.peakRating);
+const over83 = players.filter((p) => p.peakRating >= 84);
 
-assert(elite.length > 0, `Has elite 85+ players (${elite.length})`);
-assert(elite.length < 80, `Elite 85+ remain rare (${elite.length}/500)`);
+assert(over83.length === 0, `No 84+ generated players (${over83.length})`);
+assert(
+  standouts.length < 15,
+  `Standout 81–83 remain rare (${standouts.length}/500)`
+);
 
 console.log("\nMistaken floor-80 remap (not flat −10)\n");
 const fakePeers = [80, 81, 82, 83, 84, 85, 86];
@@ -128,9 +140,10 @@ const mapped89 = correctMistakenChampionshipFloor80Rating(89, {
   position: "STAND_OFF" as Position,
   slotHint: 0,
 });
-assert(mapped80 >= 70 && mapped80 <= 76, `Depth 80 remaps near 70–76 (got ${mapped80})`);
-assert(mapped89 >= 85, `Elite 89 stays elite (got ${mapped89})`);
-assert(mapped89 - mapped80 >= 8, "Remap preserves spread (not flat −10)");
+assert(mapped80 >= 70 && mapped80 <= 80, `Leading/depth 80 stays ≤80 (got ${mapped80})`);
+assert(mapped89 <= 83, `Elite 89 remaps to ≤83 (got ${mapped89})`);
+assert(mapped89 >= 79, `Elite 89 stays near standout band (got ${mapped89})`);
+assert(mapped89 - mapped80 >= 0, "Remap preserves ordering");
 
 // Build a fake mistaken squad (all 80+) and remap
 const mistaken: Record<string, ChampionshipGeneratedPlayer> = {};
@@ -139,14 +152,18 @@ for (const p of players.slice(0, 25)) {
 }
 const remapped = remapChampionshipSquadRatings(mistaken);
 const remapMin = Math.min(...Object.values(remapped).map((p) => p.peakRating));
-assert(remapMin < 80, `Remap produces sub-80 depth (min ${remapMin})`);
+const remapMax = Math.max(...Object.values(remapped).map((p) => p.peakRating));
+assert(remapMin <= 80, `Remap produces ≤80 depth/leading (min ${remapMin})`);
+assert(remapMax <= 83, `Remap max ≤83 (got ${remapMax})`);
 
 console.log("\nSave migration\n");
 const career = createNewCareer("Leeds Rhinos");
-const migrated = migratePlayerRatingsV4(career);
+const migrated = migrateChampionshipFirstSeasonBalance(
+  migratePlayerRatingsV4(career)
+);
 assert(
-  migrated.playerRatingSchemaVersion === 4,
-  "career schema version 4"
+  migrated.championshipFirstSeasonBalanceVersion === 3,
+  "career first-season balance version 3"
 );
 assert(
   migrated.championshipRatingScaleVersion === 2,
@@ -159,12 +176,16 @@ assert(
   "migrated champ min >= 70"
 );
 assert(
+  Math.max(...mPlayers.map((p) => p.peakRating)) <= 83,
+  "migrated champ max <= 83"
+);
+assert(
   Math.min(...mPlayers.map((p) => p.peakRating)) < 80,
   "migrated champ not all floored to 80"
 );
 
 // Idempotent
-const again = migratePlayerRatingsV4(migrated);
+const again = migrateChampionshipFirstSeasonBalance(migrated);
 assert(
   JSON.stringify(
     Object.values(again.championshipSquads!.players).map((p) => [
@@ -186,10 +207,11 @@ const report = {
     current: CURRENT_SUPER_LEAGUE_MIN_RATING,
     historic: HISTORIC_PLAYER_MIN_RATING,
     championship: CHAMPIONSHIP_PLAYER_MIN_RATING,
+    championshipMax: CHAMPIONSHIP_PLAYER_MAX_RATING,
   },
   generatedVersion: GENERATED_CHAMPIONSHIP_SQUADS_VERSION,
-  schemaVersion: PLAYER_RATING_SCHEMA_VERSION,
   championshipRatingScaleVersion: CHAMPIONSHIP_RATING_SCALE_VERSION,
+  championshipFirstSeasonBalanceVersion: CHAMPIONSHIP_FIRST_SEASON_BALANCE_VERSION,
   championshipOverall: { min: minC, max: maxC, avg: Number(avgC.toFixed(2)) },
   superLeagueCurrentAvg: Number(currentAvg.toFixed(2)),
   averageByClub: clubAvgs.map((c) => ({
@@ -200,7 +222,7 @@ const report = {
     pos: p.pos,
     avg: Number(p.avg.toFixed(2)),
   })),
-  elite85Plus: elite.map((p) => ({
+  standouts81Plus: standouts.map((p) => ({
     id: p.id,
     name: p.name,
     club: p.clubName,

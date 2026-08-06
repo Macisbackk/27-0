@@ -20,6 +20,10 @@ import { addTransferIncome, syncManagerFinance } from "./managerFinance";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { formatWage } from "./managerContracts";
 import { DEFAULT_TRANSFER_ACTIVITY_CONFIG } from "./transferActivityConfig";
+import {
+  getTransferOfferGenerationPhase,
+  recordTransferOfferDiagnostic,
+} from "./managerTransferLeague";
 
 const MAX_TRANSFER_HISTORY = 40;
 
@@ -367,8 +371,9 @@ function createReserveTransferOffer(
 ): ManagerCareer {
   const { reserve, buyerClubName, fee } = params;
   const posLabel = reserve.position.replace(/_/g, " ").toLowerCase();
+  const requestId = `champ-reserve-offer-${reserve.id}-w${career.gameWeek}`;
   const message: InboxMessage = {
-    id: `champ-reserve-offer-${reserve.id}-w${career.gameWeek}`,
+    id: requestId,
     type: "transfer",
     title: "Championship Interest",
     body: `${buyerClubName} have offered ${formatWage(fee)} for reserve ${posLabel} ${reserve.name} to join their Championship squad.`,
@@ -384,8 +389,19 @@ function createReserveTransferOffer(
     offerAmount: fee,
     askingPrice: fee,
     reserveOffer: true,
+    offerCategory: "reserve",
   };
-  return pushInboxMessage(career, message);
+  const withOffer = pushInboxMessage(career, message);
+  return recordTransferOfferDiagnostic(withOffer, {
+    requestId,
+    targetPlayerId: reserve.id,
+    targetSquad: "reserve",
+    targetRole: "reserve",
+    buyingClubId: buyerClubName,
+    generatedWeek: career.gameWeek,
+    generationPhase: getTransferOfferGenerationPhase(career.gameWeek),
+    countedAgainstCategory: "reserve",
+  });
 }
 
 /**

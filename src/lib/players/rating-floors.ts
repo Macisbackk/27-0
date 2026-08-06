@@ -19,7 +19,13 @@ export const GENERATED_RESERVE_MIN_RATING = RESERVE_MIN_RATING;
 export const RESERVE_ORIGIN_FREE_AGENT_MIN_RATING = RESERVE_MIN_RATING;
 
 export const CURRENT_HISTORIC_MAX_RATING = 99;
+/**
+ * Absolute Championship ceiling (includes researched / transferred SL players).
+ * First-season *generated* squads use GENERATED_CHAMPIONSHIP_MAX_RATING instead.
+ */
 export const CHAMPIONSHIP_PLAYER_MAX_RATING = 89;
+/** First-season generated Championship players — no 84+. */
+export const GENERATED_CHAMPIONSHIP_MAX_RATING = 83;
 export const RESERVE_MAX_RATING = 92;
 export const RANDOM_FREE_AGENT_MAX_RATING = 84;
 

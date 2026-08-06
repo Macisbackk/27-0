@@ -2,235 +2,276 @@
   "floors": {
     "current": 80,
     "historic": 80,
-    "championship": 70
+    "championship": 70,
+    "championshipMax": 83
   },
-  "generatedVersion": 3,
-  "schemaVersion": 4,
+  "generatedVersion": 5,
   "championshipRatingScaleVersion": 2,
+  "championshipFirstSeasonBalanceVersion": 3,
   "championshipOverall": {
     "min": 70,
-    "max": 88,
-    "avg": 76.69
+    "max": 83,
+    "avg": 75.98
   },
-  "superLeagueCurrentAvg": 86.29,
+  "superLeagueCurrentAvg": 82.37,
   "averageByClub": [
-    {
-      "club": "Newcastle Thunder",
-      "id": "newcastle-thunder",
-      "strength": 54,
-      "avg": 75.12
-    },
-    {
-      "club": "Midlands Hurricanes",
-      "id": "midlands-hurricanes",
-      "strength": 56,
-      "avg": 75.6
-    },
-    {
-      "club": "Goole Vikings",
-      "id": "goole",
-      "strength": 55,
-      "avg": 75.68
-    },
-    {
-      "club": "North Wales Crusaders",
-      "id": "north-wales-crusaders",
-      "strength": 55,
-      "avg": 75.68
-    },
     {
       "club": "Rochdale Hornets",
       "id": "rochdale",
       "strength": 56,
-      "avg": 75.76
-    },
-    {
-      "club": "Workington Town",
-      "id": "workington",
-      "strength": 57,
-      "avg": 75.8
-    },
-    {
-      "club": "Whitehaven RLFC",
-      "id": "whitehaven",
-      "strength": 58,
-      "avg": 75.96
-    },
-    {
-      "club": "Dewsbury Rams",
-      "id": "dewsbury",
-      "strength": 58,
-      "avg": 76.12
-    },
-    {
-      "club": "Swinton Lions",
-      "id": "swinton",
-      "strength": 59,
-      "avg": 76.12
-    },
-    {
-      "club": "Keighley Cougars",
-      "id": "keighley",
-      "strength": 57,
-      "avg": 76.24
-    },
-    {
-      "club": "Batley Bulldogs",
-      "id": "batley",
-      "strength": 66,
-      "avg": 76.64
-    },
-    {
-      "club": "Barrow Raiders",
-      "id": "barrow",
-      "strength": 64,
-      "avg": 76.68
+      "avg": 74.92
     },
     {
       "club": "Hunslet RLFC",
       "id": "hunslet",
       "strength": 63,
-      "avg": 76.68
+      "avg": 75.16
     },
     {
-      "club": "Halifax Panthers",
-      "id": "halifax",
-      "strength": 70,
-      "avg": 77.32
+      "club": "Midlands Hurricanes",
+      "id": "midlands-hurricanes",
+      "strength": 56,
+      "avg": 75.16
+    },
+    {
+      "club": "Newcastle Thunder",
+      "id": "newcastle-thunder",
+      "strength": 54,
+      "avg": 75.24
+    },
+    {
+      "club": "Swinton Lions",
+      "id": "swinton",
+      "strength": 59,
+      "avg": 75.24
+    },
+    {
+      "club": "Barrow Raiders",
+      "id": "barrow",
+      "strength": 64,
+      "avg": 75.32
+    },
+    {
+      "club": "Workington Town",
+      "id": "workington",
+      "strength": 57,
+      "avg": 75.48
+    },
+    {
+      "club": "Keighley Cougars",
+      "id": "keighley",
+      "strength": 57,
+      "avg": 75.52
+    },
+    {
+      "club": "Dewsbury Rams",
+      "id": "dewsbury",
+      "strength": 58,
+      "avg": 75.76
+    },
+    {
+      "club": "North Wales Crusaders",
+      "id": "north-wales-crusaders",
+      "strength": 55,
+      "avg": 75.8
+    },
+    {
+      "club": "Goole Vikings",
+      "id": "goole",
+      "strength": 55,
+      "avg": 75.92
+    },
+    {
+      "club": "Batley Bulldogs",
+      "id": "batley",
+      "strength": 66,
+      "avg": 75.96
+    },
+    {
+      "club": "Whitehaven RLFC",
+      "id": "whitehaven",
+      "strength": 58,
+      "avg": 76.16
     },
     {
       "club": "Doncaster RLFC",
       "id": "doncaster",
       "strength": 67,
-      "avg": 77.52
-    },
-    {
-      "club": "Oldham RLFC",
-      "id": "oldham",
-      "strength": 68,
-      "avg": 77.52
-    },
-    {
-      "club": "Sheffield Eagles",
-      "id": "sheffield",
-      "strength": 69,
-      "avg": 77.72
+      "avg": 76.24
     },
     {
       "club": "Salford RLFC",
       "id": "salford-rlfc",
       "strength": 74,
-      "avg": 78.12
+      "avg": 76.56
     },
     {
-      "club": "London Broncos",
-      "id": "london",
-      "strength": 72,
-      "avg": 78.36
+      "club": "Sheffield Eagles",
+      "id": "sheffield",
+      "strength": 69,
+      "avg": 76.72
+    },
+    {
+      "club": "Oldham RLFC",
+      "id": "oldham",
+      "strength": 68,
+      "avg": 76.92
+    },
+    {
+      "club": "Halifax Panthers",
+      "id": "halifax",
+      "strength": 70,
+      "avg": 77.04
     },
     {
       "club": "Widnes Vikings",
       "id": "widnes",
       "strength": 71,
-      "avg": 79.2
+      "avg": 77.08
+    },
+    {
+      "club": "London Broncos",
+      "id": "london",
+      "strength": 72,
+      "avg": 77.48
     }
   ],
   "averageByPosition": [
     {
       "pos": "FULLBACK",
-      "avg": 78.63
+      "avg": 77.8
     },
     {
       "pos": "WING",
-      "avg": 78.46
+      "avg": 76.89
     },
     {
       "pos": "CENTRE",
-      "avg": 78.28
+      "avg": 76.03
     },
     {
       "pos": "STAND_OFF",
-      "avg": 78.22
+      "avg": 75.6
     },
     {
       "pos": "SCRUM_HALF",
-      "avg": 78.1
+      "avg": 76.4
     },
     {
       "pos": "HOOKER",
-      "avg": 78.02
+      "avg": 75.9
     },
     {
       "pos": "PROP",
-      "avg": 75.73
+      "avg": 75.75
     },
     {
       "pos": "SECOND_ROW",
-      "avg": 72.96
+      "avg": 74.85
     },
     {
       "pos": "LOOSE_FORWARD",
-      "avg": 72.25
+      "avg": 74.9
     }
   ],
-  "elite85Plus": [
+  "standouts81Plus": [
     {
-      "id": "generated-championship-london-0205",
-      "name": "Peter Porter",
-      "club": "London Broncos",
-      "position": "WING",
-      "peakRating": 88,
+      "id": "generated-championship-salford-rlfc-0351",
+      "name": "Gerald Perry",
+      "club": "Salford RLFC",
+      "position": "FULLBACK",
+      "peakRating": 83,
       "age": 22
     },
     {
-      "id": "generated-championship-halifax-0146",
-      "name": "Elliot Pearce",
-      "club": "Halifax Panthers",
-      "position": "SECOND_ROW",
-      "peakRating": 87,
-      "age": 27
+      "id": "generated-championship-salford-rlfc-0352",
+      "name": "William Morris",
+      "club": "Salford RLFC",
+      "position": "FULLBACK",
+      "peakRating": 83,
+      "age": 26
     },
     {
       "id": "generated-championship-widnes-0454",
       "name": "Dale Radford",
       "club": "Widnes Vikings",
       "position": "WING",
-      "peakRating": 87,
+      "peakRating": 83,
+      "age": 23
+    },
+    {
+      "id": "generated-championship-london-0207",
+      "name": "Malcolm Nash",
+      "club": "London Broncos",
+      "position": "CENTRE",
+      "peakRating": 82,
+      "age": 31
+    },
+    {
+      "id": "generated-championship-oldham-0304",
+      "name": "Jake Fitzpatrick",
+      "club": "Oldham RLFC",
+      "position": "WING",
+      "peakRating": 82,
       "age": 24
     },
     {
-      "id": "generated-championship-london-0218",
-      "name": "Shane Shuttleworth",
-      "club": "London Broncos",
-      "position": "PROP",
-      "peakRating": 86,
-      "age": 26
+      "id": "generated-championship-salford-rlfc-0358",
+      "name": "Danny Morley",
+      "club": "Salford RLFC",
+      "position": "CENTRE",
+      "peakRating": 82,
+      "age": 23
     },
     {
-      "id": "generated-championship-widnes-0469",
-      "name": "Brian Hill",
+      "id": "generated-championship-widnes-0452",
+      "name": "Isaac Warburton",
       "club": "Widnes Vikings",
-      "position": "PROP",
-      "peakRating": 86,
-      "age": 27
+      "position": "FULLBACK",
+      "peakRating": 82,
+      "age": 21
     },
     {
       "id": "generated-championship-doncaster-0076",
-      "name": "Niko Aiono",
+      "name": "Liam Asofa-Solomona",
       "club": "Doncaster RLFC",
       "position": "FULLBACK",
-      "peakRating": 85,
-      "age": 25
+      "peakRating": 81,
+      "age": 23
+    },
+    {
+      "id": "generated-championship-london-0205",
+      "name": "Peter Porter",
+      "club": "London Broncos",
+      "position": "WING",
+      "peakRating": 81,
+      "age": 19
+    },
+    {
+      "id": "generated-championship-london-0213",
+      "name": "Leon Duncan",
+      "club": "London Broncos",
+      "position": "HOOKER",
+      "peakRating": 81,
+      "age": 27
+    },
+    {
+      "id": "generated-championship-oldham-0307",
+      "name": "Bailey Hancock",
+      "club": "Oldham RLFC",
+      "position": "CENTRE",
+      "peakRating": 81,
+      "age": 31
     },
     {
       "id": "generated-championship-sheffield-0382",
-      "name": "Cameron Parsons",
+      "name": "Benjamin Nouvel",
       "club": "Sheffield Eagles",
       "position": "CENTRE",
-      "peakRating": 85,
-      "age": 22
+      "peakRating": 81,
+      "age": 19
     }
   ],
-  "passed": 27,
-  "failed": 0
+  "passed": 30,
+  "failed": 1
 }

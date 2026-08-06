@@ -2,20 +2,28 @@ import type { Position } from "../../types";
 import {
   CHAMPIONSHIP_PLAYER_MAX_RATING,
   CHAMPIONSHIP_PLAYER_MIN_RATING,
+  GENERATED_CHAMPIONSHIP_MAX_RATING,
   clampChampionshipPlayerRating,
 } from "../../players/rating-floors";
 import type { ChampionshipClub } from "../../clubs/championship-clubs";
 import { getChampionshipClubById } from "../../clubs/championship-clubs";
 import type { ChampionshipGeneratedPlayer } from "./championshipSquads";
 
+/** Clamp for first-season generated Championship players only (≤83). */
+function clampGeneratedChampionshipRating(rating: number): number {
+  return Math.max(
+    CHAMPIONSHIP_PLAYER_MIN_RATING,
+    Math.min(GENERATED_CHAMPIONSHIP_MAX_RATING, Math.round(rating))
+  );
+}
 /**
- * Championship rating bands (70–89) — clearly below Super League (~86–88):
- * 70–72 development / emergency depth
- * 73–75 squad / fringe
+ * First-season Championship rating bands (70–83) — clearly below Super League:
+ * 70–72 depth
+ * 73–75 normal / fringe
  * 76–78 established starters
- * 79–81 good Championship players
- * 82–84 leading club performers
- * 85–89 elite (very rare)
+ * 79–80 leading club performers
+ * 81–83 rare standout (~1% or less)
+ * 84+ none for generated
  *
  * Target overall squad average ~73–76.
  */
@@ -34,36 +42,37 @@ export function ratingForChampionshipClub(
   const bandRoll =
     roll + quality * 0.16 - (slotIndex >= 20 ? 0.14 : slotIndex >= 17 ? 0.06 : 0);
 
-  if (bandRoll > 0.988 && quality > 0.7) {
-    return clampChampionshipPlayerRating(85 + Math.floor(rng() * 5));
+  // Rare standout 81–83 (~0.5–1%)
+  if (bandRoll > 0.997 && quality > 0.78) {
+    return clampGeneratedChampionshipRating(81 + Math.floor(rng() * 3));
   }
-  if (bandRoll > 0.968 && quality > 0.55) {
-    return clampChampionshipPlayerRating(82 + Math.floor(rng() * 3));
+  // Leading 79–80
+  if (bandRoll > 0.92 && quality > 0.52) {
+    return clampGeneratedChampionshipRating(79 + Math.floor(rng() * 2));
   }
-  if (bandRoll > 0.86 && quality > 0.42) {
-    return clampChampionshipPlayerRating(79 + Math.floor(rng() * 3));
-  }
-  if (bandRoll > 0.38) {
-    const base = 75 + quality * 2.2 + rng() * 2;
-    return clampChampionshipPlayerRating(
+  // Established starter 76–78
+  if (bandRoll > 0.42) {
+    const base = 74.5 + quality * 2.0 + rng() * 2;
+    return clampGeneratedChampionshipRating(
       Math.round(Math.max(76, Math.min(78, base)))
     );
   }
-  if (bandRoll > 0.14) {
-    const base = 72 + quality * 1.8 + rng() * 2;
-    return clampChampionshipPlayerRating(
+  // Normal / fringe 73–75
+  if (bandRoll > 0.16) {
+    const base = 71.5 + quality * 1.6 + rng() * 2;
+    return clampGeneratedChampionshipRating(
       Math.round(Math.max(73, Math.min(75, base)))
     );
   }
-  return clampChampionshipPlayerRating(70 + Math.floor(rng() * 3));
+  // Depth 70–72
+  return clampGeneratedChampionshipRating(70 + Math.floor(rng() * 3));
 }
 
 export function championshipTransferValue(peakRating: number): number {
   const r = clampChampionshipPlayerRating(peakRating);
   // Champ fees stay below SL bands for equivalent numbers.
-  if (r >= 85) return Math.round(95_000 + (r - 85) * 35_000);
-  if (r >= 82) return Math.round(65_000 + (r - 82) * 10_000);
-  if (r >= 79) return Math.round(42_000 + (r - 79) * 7_500);
+  if (r >= 81) return Math.round(65_000 + (r - 81) * 12_000);
+  if (r >= 79) return Math.round(42_000 + (r - 79) * 10_000);
   if (r >= 76) return Math.round(28_000 + (r - 76) * 4_500);
   if (r >= 73) return Math.round(18_000 + (r - 73) * 3_000);
   return Math.round(12_000 + (r - 70) * 2_000);
@@ -74,9 +83,8 @@ export function championshipWageFromRating(
   age?: number
 ): number {
   const r = clampChampionshipPlayerRating(peakRating);
-  if (r >= 85) return 70_000 + (r - 85) * 12_000;
-  if (r >= 82) return 48_000 + (r - 82) * 7_000;
-  if (r >= 79) return 32_000 + (r - 79) * 5_000;
+  if (r >= 81) return 48_000 + (r - 81) * 8_000;
+  if (r >= 79) return 32_000 + (r - 79) * 7_000;
   if (r >= 76) return 22_000 + (r - 76) * 3_000;
   if (r >= 73) return 15_000 + (r - 73) * 2_000;
   const youth = age !== undefined && age <= 21 ? 0.9 : 1;
@@ -86,6 +94,7 @@ export function championshipWageFromRating(
 /**
  * Correct ratings that were wrongly floored onto the 80–89 Championship band.
  * Uses club strength + peer rank — not a flat −10.
+ * Elite mistaken (85–89) remap into the first-season standout ceiling (≤83).
  */
 export function correctMistakenChampionshipFloor80Rating(
   oldRating: number,
@@ -100,16 +109,16 @@ export function correctMistakenChampionshipFloor80Rating(
     return 74;
   }
 
-  // Already on the corrected Championship scale.
+  // Already on the corrected Championship scale (leading band and below).
   if (
     oldRating >= CHAMPIONSHIP_PLAYER_MIN_RATING &&
-    oldRating < 80
+    oldRating <= 80
   ) {
     return clampChampionshipPlayerRating(oldRating);
   }
 
   if (oldRating > CHAMPIONSHIP_PLAYER_MAX_RATING) {
-    return CHAMPIONSHIP_PLAYER_MAX_RATING;
+    return GENERATED_CHAMPIONSHIP_MAX_RATING;
   }
 
   const club = getChampionshipClubById(context.clubId);
@@ -121,20 +130,20 @@ export function correctMistakenChampionshipFloor80Rating(
       ? 0.5
       : sorted.findIndex((r) => r >= oldRating) / (sorted.length - 1);
 
-  // Mistaken band was 80–89; stretch into 70–89 with club/role shaping.
+  // Mistaken band was 80–89; stretch into 70–83 with club/role shaping.
   const clampedOld = Math.max(80, Math.min(89, oldRating));
   const ratingT = (clampedOld - 80) / 9;
   const strengthT = (strength - 54) / 20; // 0..1 across Champ clubs
 
-  // Keep the elite tail of the mistaken band at Championship elite (85–89).
+  // Elite mistaken → rare standout ceiling (81–83), never 84+.
   if (clampedOld >= 87) {
-    return clampChampionshipPlayerRating(
-      Math.round(84 + (clampedOld - 87) * 1.25 + strengthT * 0.5)
+    return clampGeneratedChampionshipRating(
+      Math.round(81 + (clampedOld - 87) * 0.75 + strengthT * 0.5)
     );
   }
   if (clampedOld >= 85) {
-    return clampChampionshipPlayerRating(
-      Math.round(81 + (clampedOld - 85) + strengthT)
+    return clampGeneratedChampionshipRating(
+      Math.round(79 + (clampedOld - 85) + strengthT)
     );
   }
 
@@ -156,9 +165,9 @@ export function correctMistakenChampionshipFloor80Rating(
 
   // Strong clubs shift the mid of the stretch slightly upward.
   const low = 70 + strengthT * 1.5;
-  const high = 82 - (1 - strengthT) * 2;
+  const high = 80 - (1 - strengthT) * 2;
   const mapped = Math.round(low + t * (high - low));
-  return clampChampionshipPlayerRating(mapped);
+  return clampGeneratedChampionshipRating(mapped);
 }
 
 export function remapChampionshipSquadRatings(
@@ -176,6 +185,43 @@ export function remapChampionshipSquadRatings(
       (a, b) => a.peakRating - b.peakRating
     );
     for (const p of clubPlayers) {
+      const slotHint = sortedByRating.findIndex((x) => x.id === p.id);
+      next[p.id] = {
+        ...p,
+        peakRating: correctMistakenChampionshipFloor80Rating(p.peakRating, {
+          clubId,
+          peerRatings: peers,
+          position: p.position,
+          slotHint,
+        }),
+      };
+    }
+  }
+  return next;
+}
+
+/**
+ * Remap generated Championship players above the first-season leading band
+ * (peakRating > 80) down onto the 70–83 scale. Leaves real transferred /
+ * non-generated IDs untouched.
+ */
+export function remapChampionshipFirstSeasonOverrated(
+  players: Record<string, ChampionshipGeneratedPlayer>
+): Record<string, ChampionshipGeneratedPlayer> {
+  const byClub: Record<string, ChampionshipGeneratedPlayer[]> = {};
+  for (const p of Object.values(players)) {
+    (byClub[p.clubId] ??= []).push(p);
+  }
+
+  const next: Record<string, ChampionshipGeneratedPlayer> = { ...players };
+  for (const [clubId, clubPlayers] of Object.entries(byClub)) {
+    const peers = clubPlayers.map((p) => p.peakRating);
+    const sortedByRating = [...clubPlayers].sort(
+      (a, b) => a.peakRating - b.peakRating
+    );
+    for (const p of clubPlayers) {
+      if (!p.id.startsWith("generated-championship-")) continue;
+      if (p.peakRating <= 80) continue;
       const slotHint = sortedByRating.findIndex((x) => x.id === p.id);
       next[p.id] = {
         ...p,

@@ -11,7 +11,6 @@ import {
   getPlacementPenalty,
   getRecruitListPositionsForSlot,
 } from "./position-placement";
-import { getPlayerEligiblePositions } from "../players/player-positions";
 import {
   getTeamYearRecruitPosition,
   canPlayerFillTeamYearSlot,
@@ -83,6 +82,10 @@ export interface SlotPlayerPrepareOptions {
   seed?: string;
   /** Force at least one matching Quick Mode selection-boost player into the choice list. */
   selectionBoostId?: "qm-90-plus-player" | "qm-goat-hall-of-fame";
+  /** Prefer this boosted player id when injecting a selection-boost guarantee. */
+  guaranteedPlayerId?: string;
+  /** When set, rebuild choices from these ids (BoostedSpinPlan) instead of shuffling. */
+  forcedPlayerIds?: readonly string[];
 }
 
 export const MAX_SLOT_RECRUIT_CHOICES = 3;
@@ -214,6 +217,22 @@ export function prepareSlotTeamYearPlayers(
     target.team,
     target.year
   );
+
+  if (options.forcedPlayerIds && options.forcedPlayerIds.length > 0) {
+    const byId = new Map(sorted.map((e) => [e.player.id, e]));
+    const forced = options.forcedPlayerIds
+      .map((id) => byId.get(id))
+      .filter((e): e is SlotTeamYearPlayer => e != null)
+      .slice(0, MAX_SLOT_RECRUIT_CHOICES);
+    if (forced.length === 0) return [];
+    if (options.selectionBoostId) {
+      const match = (p: Player) =>
+        playerMatchesSelectionBoost(p, options.selectionBoostId!);
+      if (!forced.some((e) => match(e.player))) return [];
+    }
+    return forced;
+  }
+
   const seed = options.seed ?? `${target.teamYearKey}-${slotIndex}`;
   const rng = seedrandom(`${seed}-slot-recruit-choices-${slotIndex}-${target.teamYearKey}`);
   let chosen = shuffleSlotRecruitEntries(sorted, rng).slice(
@@ -225,7 +244,11 @@ export function prepareSlotTeamYearPlayers(
     const match = (p: Player) =>
       playerMatchesSelectionBoost(p, options.selectionBoostId!);
     if (!chosen.some((e) => match(e.player))) {
-      const boosted = sorted.find((e) => match(e.player));
+      const preferredId = options.guaranteedPlayerId;
+      const boosted =
+        (preferredId
+          ? sorted.find((e) => e.player.id === preferredId && match(e.player))
+          : undefined) ?? sorted.find((e) => match(e.player));
       if (!boosted) return [];
       chosen = [
         boosted,
@@ -254,8 +277,13 @@ export function findSlotTeamYearTargetForSelectionBoost(
       ? isNinetyPlusPlayer
       : isGoatOrHallOfFamePlayer;
 
-  const validatePool = (pool: TeamYearPool) =>
-    eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).some(match);
+  const validatePool = (pool: TeamYearPool) => {
+    let eligible = eligiblePlayersForSlot(pool, usedIds, squad, slotIndex);
+    if (options.requireLegendPlayer) {
+      eligible = eligible.filter((player) => player.category === "legend");
+    }
+    return eligible.some(match);
+  };
 
   const eligible = filterSpinPools(
     getSpinTeamYearPoolsCached(variant),
@@ -329,7 +357,7 @@ export function generateSlotTeamYearTarget(
   return null;
 }
 
-function eligiblePlayersForSlot(
+export function eligiblePlayersForSlot(
   pool: TeamYearPool,
   usedIds: Set<string>,
   squad: SquadSlot[],
@@ -337,10 +365,6 @@ function eligiblePlayersForSlot(
 ): Player[] {
   const slot = squad.find((s) => s.slotIndex === slotIndex);
   if (!slot || slot.player) return [];
-
-  const allowedPositions = new Set(
-    getRecruitListPositionsForSlot(slot.position)
-  );
 
   return getRawPlayersForTeamYearPool(pool).filter(
     (player) =>

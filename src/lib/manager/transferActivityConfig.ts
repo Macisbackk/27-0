@@ -112,7 +112,7 @@ export const DEFAULT_TRANSFER_ACTIVITY_CONFIG: TransferActivityConfig = {
       freeAgent: 0.1,
       championshipElite: 0.08,
     },
-    earlySeasonMultiplier: 1.8,
+    earlySeasonMultiplier: 2.0,
     earlySeasonThroughWeek: 7,
     minSeniorApproachesPerSeason: 2,
     maxSeniorApproachesPerSeason: 5,

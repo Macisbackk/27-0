@@ -26,6 +26,16 @@
   --layout-page-pad-inline: clamp(0.85rem, 2.5vw, 1.5rem);
   --app-content-max-width: var(--layout-page-compact);
 
+  /* Manager modal shell */
+  --manager-modal-header-padding: 0.75rem 0.75rem 0.85rem;
+  --manager-modal-body-padding: 0.75rem;
+  --manager-modal-footer-padding: 0.75rem 0.75rem max(0.75rem, env(safe-area-inset-bottom));
+
+  /* Showcase player card */
+  --player-card-padding-inline: 1rem;
+  --player-card-padding-block: 0.875rem;
+  --player-card-header-gap: 0.5rem;
+
   /* Mobile design tokens — denser phones, unchanged desktop via media queries */
   --mobile-page-padding: 0.75rem;
   --mobile-section-gap: 0.75rem;
@@ -808,10 +818,29 @@
 .game-panel--identity,
 .game-panel--player,
 .showcase-player-card {
+  --player-card-padding-inline: 1rem;
+  --player-card-padding-block: 0.875rem;
+  --player-card-header-gap: 0.5rem;
   border-color: var(--player-card-border, rgba(148, 163, 184, 0.22));
   background: rgba(8, 12, 13, 0.96);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
   outline: none;
+}
+
+.showcase-player-card__body {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: flex-start;
+  gap: var(--player-card-header-gap, 0.5rem);
+  padding: var(--player-card-padding-block, 0.875rem)
+    var(--player-card-padding-inline, 1rem);
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.showcase-player-card__body:hover {
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .game-panel--identity::before,
@@ -1553,6 +1582,43 @@
     var(--theme-tertiary)
   );
   pointer-events: none;
+}
+
+/* Manager modal shell — sticky header/footer, scrolling body */
+.manager-modal.game-modal-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+
+.manager-modal__header {
+  flex-shrink: 0;
+  padding: var(--manager-modal-header-padding);
+}
+
+.manager-modal__body {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--manager-modal-body-padding);
+}
+
+.manager-modal__footer {
+  flex-shrink: 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(6, 10, 9, 0.95);
+  padding: var(--manager-modal-footer-padding);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --manager-modal-header-padding: 1.25rem 1.5rem 1rem;
+    --manager-modal-body-padding: 1rem 1.5rem;
+    --manager-modal-footer-padding: 1rem 1.5rem 1.5rem;
+  }
 }
 
 /* ── Logo ────────────────────────────────────────────────────────────────── */

@@ -5,6 +5,9 @@ import type { GameBoostId } from "@/lib/boosts/boostDefinitions";
 
 export const QUICK_MODE_PRE_GAME_BOOST_VERSION = 1;
 
+/** BoostedSpinPlan schema version used with QM selection boosts. */
+export const boostedSpinPlanVersion = 2;
+
 export type QuickModePreGameBoostStatus =
   | "unselected"
   | "armed"

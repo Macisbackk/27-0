@@ -46,6 +46,10 @@ import { ManagerPositionRetrainingCompleteModal } from "@/components/manager/Man
 import { ManagerPlayoffsIntroModal } from "@/components/manager/ManagerPlayoffsIntroModal";
 import { ManagerObjectivesIntroModal } from "@/components/manager/ManagerObjectivesIntroModal";
 import { ManagerOnboardingModal } from "@/components/manager/ManagerOnboardingModal";
+import {
+  getPendingFutureStarReveal,
+  ManagerFutureStarRevealModal,
+} from "@/components/manager/ManagerFutureStarRevealModal";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerFriendlySelect } from "@/components/manager/ManagerFriendlySelect";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
@@ -1716,6 +1720,10 @@ export default function ManagerPage() {
   const canShowManagerHubIntroModals =
     displayView === "hub" && !managerCelebrationModalsOpen;
 
+  const pendingFutureStar = career
+    ? getPendingFutureStarReveal(career)
+    : null;
+
   return (
     <PageShell withLights compact>
       {displayView === "landing" && (
@@ -2071,6 +2079,18 @@ export default function ManagerPage() {
         <ManagerPlayoffsIntroModal
           career={career}
           onContinue={handlePlayoffsIntroContinue}
+        />
+      )}
+
+      {career && pendingFutureStar && (
+        <ManagerFutureStarRevealModal
+          career={career}
+          player={pendingFutureStar}
+          onAcknowledge={persist}
+          onViewInReserves={(next) => {
+            persist(next);
+            handleNavNavigate("reserves");
+          }}
         />
       )}
 

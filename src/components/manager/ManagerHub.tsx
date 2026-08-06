@@ -250,7 +250,7 @@ function HubPlayoffBracketPanel({
               {ordinal(position)}
             </span>{" "}
             in the league ·{" "}
-            <span className="text-accent-gold">{playoffStatus}</span>
+            <span className="text-accent-gold">{playoffStatus ?? "Play-Offs"}</span>
           </p>
         </div>
       </div>
@@ -739,7 +739,9 @@ export function ManagerHub({
         </p>
         <div className="mt-2 flex flex-wrap gap-2">
           <span className={managerPillClass("gold")}>{cupStatus}</span>
-          <span className={managerPillClass("primary")}>{playoffStatus}</span>
+          {playoffStatus ? (
+            <span className={managerPillClass("primary")}>{playoffStatus}</span>
+          ) : null}
         </div>
         {wageOverBudget && (
           <p className={`mt-2 ${TYPO.bodySm} text-amber-300`}>

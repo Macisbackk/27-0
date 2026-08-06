@@ -21,6 +21,7 @@ import {
   syncManagerLeagueTable,
 } from "./managerFixtures";
 import { PLAYOFF_QUALIFIERS } from "../game/playoff-simulation";
+import { MANAGER_SEASON_GAMES } from "./types";
 
 export { PLAYOFF_QUALIFIERS };
 
@@ -227,11 +228,41 @@ export function ensurePlayoffsReady(career: ManagerCareer): ManagerCareer {
   return { ...synced, playoffs };
 }
 
-export function getPlayoffHubStatus(career: ManagerCareer): string {
+/**
+ * Regular league season only — cup progress does not delay this flag.
+ * Used for Season Progress playoff visibility.
+ */
+export function isLeaguePhaseComplete(career: ManagerCareer): boolean {
+  const leaguePlayed = countLeagueFixturesPlayed(career);
+  const scheduleExhausted =
+    career.schedule.length > 0 &&
+    career.currentFixtureIndex >= career.schedule.length;
+  return (
+    leaguePlayed >= MANAGER_SEASON_GAMES ||
+    (scheduleExhausted && leaguePlayed > 0)
+  );
+}
+
+/** Show playoffs in Season Progress only after the league slate is done. */
+export function shouldShowPlayoffsInSeasonProgress(
+  career: ManagerCareer
+): boolean {
+  return isLeaguePhaseComplete(career);
+}
+
+export function getPlayoffHubStatus(career: ManagerCareer): string | null {
   const playoffs = career.playoffs;
+  if (!shouldShowPlayoffsInSeasonProgress(career) && !playoffs) {
+    return null;
+  }
   if (!playoffs) {
-    if (!isLeagueAndCupPhaseComplete(career)) return "Play-Offs: After league & cup";
-    if (!userQualifiedForManagerPlayoffs(career)) return "Play-Offs: Missed (7th+)";
+    if (!userQualifiedForManagerPlayoffs(career)) {
+      return "Play-Offs: Missed";
+    }
+    // Bracket starts after cup phase ends (scheduling depends on it).
+    if (!isLeagueAndCupPhaseComplete(career)) {
+      return "Play-Offs: Qualified";
+    }
     return "Play-Offs: Starting soon";
   }
   if (playoffs.finish === "Super League Champions") return "Play-Offs: Champions";
