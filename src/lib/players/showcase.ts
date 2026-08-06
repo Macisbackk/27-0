@@ -1,5 +1,5 @@
 import type { Player, PlayerCategory, Position } from "../types";
-import { formatPlayerDisplayName } from "./prime-year";
+import { getPlayerDisplayName } from "./display-name-resolver";
 import { POSITION_LABELS } from "../positions";
 import { getPlayerEligiblePositions } from "./player-positions";
 import { isHiddenPlayer } from "./goat";
@@ -209,11 +209,9 @@ function matchesSearch(player: Player, query: string): boolean {
   if (!q) return true;
 
   const positionLabel = POSITION_LABELS[player.position].toLowerCase();
-
-  const displayName = formatPlayerDisplayName(player).toLowerCase();
+  const displayName = getPlayerDisplayName(player).toLowerCase();
 
   return (
-    player.name.toLowerCase().includes(q) ||
     displayName.includes(q) ||
     player.club.toLowerCase().includes(q) ||
     positionLabel.includes(q) ||
@@ -312,7 +310,7 @@ function sortValue(player: Player, key: ShowcaseSortKey): string | number {
     case "appearances":
       return player.appearances ?? 0;
     case "name":
-      return player.name.toLowerCase();
+      return getPlayerDisplayName(player).toLowerCase();
   }
 }
 
@@ -324,9 +322,17 @@ export function sortShowcasePlayers(
   const sorted = [...players].sort((a, b) => {
     const av = sortValue(a, key);
     const bv = sortValue(b, key);
+    if (typeof av === "string" && typeof bv === "string") {
+      if (!av && bv) return 1;
+      if (av && !bv) return -1;
+    }
     if (av < bv) return dir === "asc" ? -1 : 1;
     if (av > bv) return dir === "asc" ? 1 : -1;
-    return a.name.localeCompare(b.name);
+    const nameCmp = getPlayerDisplayName(a).localeCompare(
+      getPlayerDisplayName(b)
+    );
+    if (nameCmp !== 0) return nameCmp;
+    return a.id.localeCompare(b.id);
   });
   return sorted;
 }

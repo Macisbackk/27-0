@@ -825,65 +825,13 @@
 .game-panel--identity,
 .game-panel--player,
 .showcase-player-card {
-  --player-card-padding-inline: 1rem;
-  --player-card-padding-block: 0.875rem;
-  --player-card-header-gap: 0.5rem;
+  --player-card-padding-inline: var(--showcase-card-padding-inline, 0.875rem);
+  --player-card-padding-block: var(--showcase-card-padding-top, 0.75rem);
+  --player-card-header-gap: var(--showcase-header-gap, 0.5rem);
   border-color: var(--player-card-border, rgba(148, 163, 184, 0.22));
   background: #080c0d;
   box-shadow: none;
   outline: none;
-}
-
-.showcase-player-card__body {
-  display: grid;
-  /* Name gets remaining space; badge track is capped so it cannot starve names. */
-  grid-template-columns: minmax(0, 1fr) minmax(0, 8.5rem) auto;
-  align-items: center;
-  column-gap: var(--player-card-header-gap, 0.5rem);
-  width: 100%;
-  min-width: 0;
-  margin: 0;
-  padding: var(--player-card-padding-block, 0.875rem)
-    var(--player-card-padding-inline, 1rem);
-  border: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  appearance: none;
-  transition: background 0.15s ease;
-}
-
-.showcase-player-card__body:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.showcase-player-card__body > .showcase-compact-name {
-  grid-column: 1;
-  min-width: 0;
-  max-width: 100%;
-}
-
-.showcase-player-card__badge {
-  grid-column: 2;
-  justify-content: flex-end;
-  align-self: center;
-  width: 100%;
-  max-width: 100%;
-  flex-wrap: nowrap;
-  overflow: hidden;
-}
-
-.showcase-player-card__view {
-  grid-column: 3;
-  flex-shrink: 0;
-  align-self: center;
-  padding-top: 0;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #6b7280;
-  white-space: nowrap;
 }
 
 .game-panel--identity::before,
@@ -894,8 +842,7 @@
 }
 
 /* Hover stays subtle — club strip + border var still own identity */
-.showcase-player-card:hover,
-.showcase-player-card--expanded {
+.showcase-player-card:hover {
   border-color: var(--player-card-border-hover, var(--player-card-border, rgba(148, 163, 184, 0.35)));
 }
 

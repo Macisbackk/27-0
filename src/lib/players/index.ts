@@ -136,6 +136,18 @@ export {
   resolvePrimeYear,
 } from "./prime-year";
 export {
+  getPlayerDisplayName,
+  resolvePlayerDisplayName,
+  normalizePlayerNameWhitespace,
+  type PlayerNameSource,
+  type PlayerNameResolveResult,
+} from "./display-name-resolver";
+export {
+  toPlayerShowcaseViewModel,
+  assertShowcaseCardPopupNameMatch,
+  type PlayerShowcaseViewModel,
+} from "./showcase-view-model";
+export {
   isGoatPlayer,
   isHiddenPlayer,
   JOE_MELLOR_ID,

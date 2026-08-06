@@ -374,7 +374,7 @@ export const RugbyLeaguePlayerCard = memo(function RugbyLeaguePlayerCard({
             <h2
               className={`${
                 allowLongName
-                  ? "break-words [overflow-wrap:anywhere] leading-snug line-clamp-3"
+                  ? "break-words leading-snug [overflow-wrap:break-word] line-clamp-3"
                   : "truncate"
               } ${TYPO.playerNameSm}`}
             >

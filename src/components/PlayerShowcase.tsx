@@ -12,6 +12,7 @@ import { useSearchParams } from "next/navigation";
 import {
   getShowcasePlayers,
   formatValue,
+  getPlayerDisplayName,
 } from "@/lib/players";
 import type { PlayerCategory, Position } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
@@ -87,7 +88,7 @@ export function PlayerShowcase() {
   const debouncedSearch = useDeferredValue(searchInput);
   const [sortKey, setSortKey] = useState<ShowcaseSortKey>("rating");
   const [sortDir, setSortDir] = useState<ShowcaseSortDir>("desc");
-  const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
+  const [detailPlayerId, setDetailPlayerId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
@@ -151,8 +152,8 @@ export function PlayerShowcase() {
     if (!deepLinkPlayerId) return;
     const player = allPlayers.find((p) => p.id === deepLinkPlayerId);
     if (!player) return;
-    setDetailPlayer(player);
-    setSearchInput(player.name);
+    setDetailPlayerId(player.id);
+    setSearchInput(getPlayerDisplayName(player));
     setFilters((current) => ({
       ...current,
       status: "all",
@@ -183,9 +184,18 @@ export function PlayerShowcase() {
     setCurrentPage(page);
   }, []);
 
-  const handleOpenDetail = useCallback((player: Player) => {
-    setDetailPlayer(player);
+  const handleOpenDetail = useCallback((playerId: string) => {
+    setDetailPlayerId(playerId);
   }, []);
+
+  const detailPlayer = useMemo(() => {
+    if (!detailPlayerId) return null;
+    return (
+      allPlayers.find((p) => p.id === detailPlayerId) ??
+      pagePlayers.find((p) => p.id === detailPlayerId) ??
+      null
+    );
+  }, [detailPlayerId, allPlayers, pagePlayers]);
 
   const updateFilters = useCallback(
     (updater: (f: ShowcaseFilters) => ShowcaseFilters) => {
@@ -299,7 +309,7 @@ export function PlayerShowcase() {
             value={
               dbStats.highestRated ? (
                 <span className="text-accent-gold">
-                  {dbStats.highestRated.name} ({dbStats.highestRated.peakRating})
+                  {getPlayerDisplayName(dbStats.highestRated)} ({dbStats.highestRated.peakRating})
                 </span>
               ) : (
                 "—"
@@ -312,7 +322,7 @@ export function PlayerShowcase() {
             value={
               dbStats.highestValue ? (
                 <span className="text-accent-gold">
-                  {dbStats.highestValue.name} (
+                  {getPlayerDisplayName(dbStats.highestValue)} (
                   {formatValue(dbStats.highestValue.value)})
                 </span>
               ) : (
@@ -599,7 +609,8 @@ export function PlayerShowcase() {
       {detailPlayer && (
         <PlayerDetailModal
           player={detailPlayer}
-          onClose={() => setDetailPlayer(null)}
+          cardDisplayName={getPlayerDisplayName(detailPlayer)}
+          onClose={() => setDetailPlayerId(null)}
         />
       )}
     </div>

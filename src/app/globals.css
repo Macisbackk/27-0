@@ -455,61 +455,90 @@ body {
   box-sizing: border-box;
 }
 
-/* Player Showcase compact rows — avoid content-visibility/contain tricks that
-   collapse the name column to a few vertical characters before measure. */
+/* Player Showcase — shared card name/header geometry (all player types). */
 .showcase-player-card {
+  --showcase-card-padding-inline: 1rem;
+  --showcase-card-padding-top: 0.85rem;
+  --showcase-card-padding-bottom: 0.85rem;
+  --showcase-header-gap: 0.5rem;
+  --showcase-strip-gap: 0.5rem;
   overflow: hidden;
 }
 
-.showcase-player-card--expanded {
-  grid-column: 1 / -1;
+.showcase-player-card__strip {
+  display: block;
+  width: 100%;
+  /* Clear gap between club strip and name header (body padding adds the rest). */
+  margin-bottom: 0;
 }
 
-@media (min-width: 640px) {
-  .showcase-player-card--expanded {
-    grid-column: span 2;
-  }
-}
-
-@media (min-width: 1024px) {
-  .showcase-player-card--expanded {
-    grid-column: span 3;
-  }
-}
-
-.showcase-compact-name {
+.showcase-player-card__body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  justify-content: center;
-  gap: 0.125rem;
+  gap: 0.35rem;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: var(--showcase-card-padding-top) var(--showcase-card-padding-inline)
+    var(--showcase-card-padding-bottom);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  appearance: none;
+}
+
+.showcase-player-card__body:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.showcase-player-card__header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.showcase-player-card__name {
+  margin: 0;
   min-width: 0;
   max-width: 100%;
+  /* Full-width name row — badges never compress this into a tiny column. */
+  min-height: 2.6em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
-  font-family: var(--font-display), "Arial Black", Impact, sans-serif;
-  font-size: clamp(0.75rem, 2.4vw, 0.9375rem);
-  font-weight: 700;
-  line-height: 1.25;
-  color: #fff;
+  line-height: 1.3;
+  word-break: normal;
+  overflow-wrap: break-word;
   writing-mode: horizontal-tb;
   text-orientation: mixed;
-  /* Never reintroduce line-clamp/-webkit-box here — it stacks letters in a flex/grid cell. */
+  hyphens: manual;
 }
 
-.showcase-compact-name__title {
-  display: block;
-  min-width: 0;
+.showcase-player-card__name-missing {
+  color: #f87171;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.showcase-player-card__badge {
+  justify-content: flex-start;
+  align-self: flex-start;
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow-wrap: normal;
-  word-break: normal;
-  writing-mode: horizontal-tb;
+  margin: 0;
+  flex-wrap: wrap;
 }
 
-.showcase-compact-name__meta {
-  display: block;
+.showcase-player-card__meta {
+  margin: 0;
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
@@ -517,14 +546,61 @@ body {
   white-space: nowrap;
   font-size: 0.6875rem;
   font-weight: 500;
+  line-height: 1.3;
   color: #9ca3af;
-  writing-mode: horizontal-tb;
+}
+
+.showcase-player-card__view {
+  align-self: flex-start;
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+@media (max-width: 639px) {
+  .showcase-player-card {
+    --showcase-card-padding-inline: 0.75rem;
+    --showcase-card-padding-top: 0.65rem;
+    --showcase-card-padding-bottom: 0.65rem;
+  }
 }
 
 .showcase-player-grid {
   overflow-anchor: none;
   max-width: 100%;
   align-items: start;
+}
+
+.player-detail-modal__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.player-detail-modal__title {
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: normal;
+  line-height: 1.25;
+  writing-mode: horizontal-tb;
+}
+
+.player-detail-modal__meta {
+  margin: 0.35rem 0 0;
+  color: #9ca3af;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  overflow-wrap: break-word;
+}
+
+.player-detail-modal__close {
+  flex-shrink: 0;
 }
 
 @media (max-width: 639px) {

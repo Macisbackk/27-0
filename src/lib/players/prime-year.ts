@@ -1,5 +1,6 @@
 import type { Player, PlayerCategory } from "../types";
 import primeYearsData from "../../../data/prime-years.json";
+import { getPlayerDisplayName } from "./display-name-resolver";
 
 const PRIME_YEAR_OVERRIDES = primeYearsData as Record<string, number>;
 
@@ -76,10 +77,7 @@ export function formatPrimeYearSuffix(primeYear: number): string {
   return formatShortYear(primeYear);
 }
 
-/** Display name with year suffix for historic/legend year cards. */
+/** Display name — player name only. Season years belong in separate metadata. */
 export function formatPlayerDisplayName(player: Player): string {
-  if (player.category === "current") return player.name;
-  const year = player.year ?? player.primeYear ?? player.cardYear;
-  if (year === undefined) return player.name;
-  return `${player.name} ${formatPrimeYearSuffix(year)}`;
+  return getPlayerDisplayName(player);
 }
