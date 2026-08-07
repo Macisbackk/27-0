@@ -32,6 +32,8 @@ interface RecruitmentSlotRevealProps {
   spinVariant?: SpinPoolVariant;
   /** Small status line for an armed pre-game boost (no boost controls). */
   boostStatus?: string | null;
+  /** Secondary line, e.g. "Random valid position: Full Back". */
+  boostDetail?: string | null;
   onComplete: () => void;
 }
 
@@ -39,6 +41,7 @@ export function RecruitmentSlotReveal({
   target,
   spinVariant = "current",
   boostStatus = null,
+  boostDetail = null,
   onComplete,
 }: RecruitmentSlotRevealProps) {
   const isEraSpin = spinVariant === "era";
@@ -233,6 +236,11 @@ export function RecruitmentSlotReveal({
             {boostStatus ? (
               <p className={`mt-1 ${TYPO.meta} text-theme-primary/90`}>
                 {boostStatus}
+              </p>
+            ) : null}
+            {boostDetail ? (
+              <p className={`mt-0.5 ${TYPO.meta} text-pitch-400`}>
+                {boostDetail}
               </p>
             ) : null}
           </div>

@@ -13,6 +13,7 @@ import {
   warnMissingPlayerChoiceData,
   type QuickPlayerChoiceTag,
 } from "@/lib/game/quick-mode-player-choice";
+import { UI_COPY } from "@/lib/ui/copy";
 
 export type QuickModePlayerChoiceCardProps = {
   player: Player;
@@ -79,10 +80,10 @@ export function QuickModePlayerChoiceCard({
   boosted = false,
   topPick = false,
   allowEasterEggTags = true,
-  selectLabel = "Select Player",
-  detailsLabel = "Player Details",
+  selectLabel = UI_COPY.selectPlayer,
+  detailsLabel = UI_COPY.viewDetails,
   showDetailsAction = true,
-  respinLabel = "Respin",
+  respinLabel = UI_COPY.respin,
   showRespinAction = false,
   respinDisabled = false,
   onRespin,

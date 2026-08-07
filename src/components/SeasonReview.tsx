@@ -39,6 +39,7 @@ import { GuestSaveNudge } from "@/components/EconomyExplainer";
 import { useAuth } from "@/lib/auth-context";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
+import { resolveSquadClubColorOverride } from "@/lib/players/squad-club-accent";
 
 interface SeasonReviewProps {
   squad: SquadSlot[];
@@ -121,6 +122,10 @@ export function SeasonReview({
     }
   }, [selectedFixture]);
   const showCelebration = isPerfect || isSuperSquad;
+  const dreamTeamColorClub = useMemo(
+    () => resolveSquadClubColorOverride(squad),
+    [squad]
+  );
 
   const handlePlayAgain = () => {
     onFinalizeSeason?.();
@@ -401,6 +406,7 @@ export function SeasonReview({
                               fixture={fixture}
                               seed={seed}
                               userSquad={squad}
+                              userClubColorOverride={dreamTeamColorClub}
                               currentSeasonOnly={!normalEraMode}
                               hideMatchStory
                               onClose={() => {

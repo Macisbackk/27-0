@@ -175,6 +175,7 @@ import {
 import { syncManagerInboxMessages } from "./managerInbox";
 import { completeFriendlyMatch } from "./managerFriendlies";
 import { maybeAddReserveReport } from "./managerReserveReports";
+import { applyAutoPromoteByRating } from "./managerReserveRelease";
 import { rotateLatestNews } from "./managerNews";
 import {
   tickChampionshipOnAdvance,
@@ -214,15 +215,13 @@ function computePlayerModifiers(
     const ps = career.squad.find((p) => p.playerId === id);
     if (ps) {
       if (isPlayerUnavailable(ps)) continue;
-      const fitnessWeight = Math.max(0.8, ps.fitness / 100);
-      formSum += ps.form * fitnessWeight;
+      formSum += ps.form;
       count++;
       continue;
     }
     const reserve = career.reserves.find((r) => r.id === id);
     if (reserve) {
-      const fitnessWeight = Math.max(0.8, reserve.fitness / 100);
-      formSum += reserve.form * fitnessWeight;
+      formSum += reserve.form;
       count++;
     }
   }
@@ -907,6 +906,7 @@ export function advanceManagerMatchWeek(
     next = tickPositionRetraining(next);
   }
   next = maybeAddReserveReport(next);
+  next = applyAutoPromoteByRating(next);
   next = tickChampionshipOnAdvance(next);
   next = maybeAiSignChampionshipElite(next);
   next = maybeChampionshipBidForSlReserves(next);

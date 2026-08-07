@@ -127,13 +127,6 @@ export function ManagerSquadPlayerModal({
                 </span>
               );
             }
-            if (ps.fitness < 75) {
-              return (
-                <span className="col-span-2 text-amber-300">
-                  Fitness {Math.round(ps.fitness)}% — may need rest
-                </span>
-              );
-            }
             return null;
           })()}
           {transferStatus?.listed && (

@@ -51,14 +51,12 @@ export const RESERVE_SQUAD_STATUS_LABELS: Record<ReserveSquadStatus, string> = {
 export type ReserveLineupStatus =
   | "starting"
   | "interchange"
-  | "not-selected"
-  | "unavailable";
+  | "not-selected";
 
 export const RESERVE_LINEUP_LABELS: Record<ReserveLineupStatus, string> = {
   starting: "Starting",
   interchange: "Interchange",
   "not-selected": "Not Selected",
-  unavailable: "Unavailable",
 };
 
 export interface ReserveDevelopmentSummary {
@@ -111,7 +109,6 @@ export interface ReserveCardModel {
   reserveAppearances: number;
   reserveTries: number;
   form: number;
-  fitness: number;
 }
 
 const RENEWAL_STATUS_LABELS: Record<string, string> = {
@@ -175,7 +172,6 @@ export function getReserveLineupStatus(
 ): ReserveLineupStatus {
   const slot = findPlayerMatchdaySlot(career, reserve.id);
   if (slot) return slot.kind === "xiii" ? "starting" : "interchange";
-  if (reserve.fitness > 0 && reserve.fitness < 50) return "unavailable";
   return "not-selected";
 }
 
@@ -279,9 +275,7 @@ function buildStatusChips(
           ? "primary"
           : model.lineupStatus === "interchange"
             ? "sky"
-            : model.lineupStatus === "unavailable"
-              ? "red"
-              : "muted",
+            : "muted",
     },
   ];
 
@@ -327,7 +321,6 @@ export function buildReserveCardModel(
     reserveAppearances: reserve.reserveAppearances ?? 0,
     reserveTries: reserve.reserveTries ?? 0,
     form: reserve.form ?? 0,
-    fitness: reserve.fitness ?? 0,
   };
 
   return { ...base, statusChips: buildStatusChips(base) };

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
+import { recordShellMount } from "@/lib/ui/mount-diagnostics";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import type {
@@ -105,13 +106,23 @@ import {
 } from "@/lib/game/slot-team-year-pick";
 import {
   boostFailureNotice,
+  boostedFirstPickStatusLines,
+  buildBoostedFirstPickPlan,
   buildBoostedSpinPlan,
+  clearBoostedFirstPickPlan,
+  isActiveBoostedFirstPick,
+  loadBoostedFirstPickPlan,
+  markBoostedFirstPickChoicesReady,
+  markBoostedFirstPickFulfilled,
+  markBoostedFirstPickSpinning,
   markBoostedSpinPlanConsumed,
   markBoostedSpinPlanPlayersGenerated,
   markBoostedSpinPlanTeamSpun,
+  persistBoostedFirstPickPlan,
   resolveBoostedSpinPlanPlayers,
   slotRevealTargetFromBoostedPlan,
   type BoostedSpinPlan,
+  type QuickModeBoostedFirstPickPlan,
 } from "@/lib/game/boosted-spin-plan";
 import { pickLegendSpinSlotIndex } from "@/lib/game/legend-spin";
 import { getPlayerTeamYearIds } from "@/lib/game/team-year-pools";
@@ -136,7 +147,9 @@ import { validateQuickModeSelectionBoost } from "@/lib/boosts/validateBoost";
 import {
   armPreGameBoost,
   createUnselectedPreGameBoost,
+  isPreGameBoostPending,
   isPreGameBoostReady,
+  QUICK_MODE_PRE_GAME_BOOST_VERSION,
   type QuickModePreGameBoostState,
 } from "@/lib/game/quick-mode-pregame-boost";
 
@@ -289,6 +302,8 @@ export function GameBoard({
   >(null);
   const [boostedSpinPlan, setBoostedSpinPlan] =
     useState<BoostedSpinPlan | null>(null);
+  const [boostedFirstPick, setBoostedFirstPick] =
+    useState<QuickModeBoostedFirstPickPlan | null>(null);
   const [preGameBoost, setPreGameBoost] =
     useState<QuickModePreGameBoostState | null>(null);
   const preGameBoostUsageIdRef = useRef<string | null>(null);
@@ -309,23 +324,84 @@ export function GameBoard({
     const s = createRunSeed(runKey);
     return {
       seed: s,
-      runId: `run-${Date.now()}-${runKey}`,
+      /** Stable for the run so first-pick hydration can remount safely. */
+      runId: `run-${s}`,
     };
   }, [runKey]);
 
   useEffect(() => {
+    recordShellMount("qm-shell");
+  }, []);
+
+  useEffect(() => {
     if (joeMellorMode || superSamHallasMode) {
+      clearBoostedFirstPickPlan();
+      setBoostedFirstPick(null);
       setPreGameBoost(armPreGameBoost(runId, null));
       return;
     }
+    const hydrated = loadBoostedFirstPickPlan(runId);
+    if (hydrated && isActiveBoostedFirstPick(hydrated)) {
+      const target = slotRevealTargetFromBoostedPlan(hydrated.spinPlan);
+      if (target) {
+        const usageId = `qm-pre-${hydrated.boostId}-${runId}`;
+        preGameBoostUsageIdRef.current = usageId;
+        armBoostForGame({
+          id: usageId,
+          boostId: hydrated.boostId,
+          gameSaveId: runId,
+          mode,
+          status: "armed",
+          armedAt: new Date().toISOString(),
+        });
+        setPreGameBoost({
+          selectedBoostId: hydrated.boostId,
+          status: "applied",
+          runId,
+          version: QUICK_MODE_PRE_GAME_BOOST_VERSION,
+        });
+        setSlotBoostGuaranteeId(hydrated.boostId);
+        setBoostedFirstPick(hydrated);
+        setBoostedSpinPlan(
+          hydrated.status === "choices-ready"
+            ? markBoostedSpinPlanPlayersGenerated(hydrated.spinPlan)
+            : markBoostedSpinPlanTeamSpun(hydrated.spinPlan)
+        );
+        setSelectedSlotIndex(hydrated.selectedSlotIndex);
+        setActiveSpinTarget(target);
+        setSlotRecruitTarget(target);
+        setSpinSessionId((id) => id + 1);
+        setPhase(
+          hydrated.status === "choices-ready" ? "choice" : "reveal"
+        );
+        setBoostNotice(
+          hydrated.boostId === "qm-90-plus-player"
+            ? "90+ player guaranteed in this selection."
+            : "Legend player guaranteed in this selection."
+        );
+        return;
+      }
+    }
+
     setPreGameBoost(createUnselectedPreGameBoost(runId));
     preGameBoostUsageIdRef.current = null;
     setSlotBoostGuaranteeId(null);
     setBoostedSpinPlan(null);
+    setBoostedFirstPick(null);
     setBoostNotice(null);
     setSelectionBoostsUsedThisRun(0);
     setUsedBoostThisRun(false);
-  }, [runId, joeMellorMode, superSamHallasMode]);
+  }, [runId, joeMellorMode, superSamHallasMode, mode]);
+
+  const fulfillBoostedFirstPick = useCallback(() => {
+    setBoostedFirstPick((prev) => {
+      if (!prev || !isActiveBoostedFirstPick(prev)) return prev;
+      const next = markBoostedFirstPickFulfilled(prev);
+      persistBoostedFirstPickPlan(next);
+      clearBoostedFirstPickPlan();
+      return next;
+    });
+  }, []);
 
   const handlePreGameBoostConfirm = useCallback(
     (boostId: GameBoostId | null) => {
@@ -339,35 +415,119 @@ export function GameBoard({
         );
         resolvedBoostId = null;
       }
-      const next = armPreGameBoost(runId, resolvedBoostId);
-      setPreGameBoost(next);
+
       if (
-        resolvedBoostId === "qm-90-plus-player" ||
-        resolvedBoostId === "qm-goat-hall-of-fame"
+        resolvedBoostId !== "qm-90-plus-player" &&
+        resolvedBoostId !== "qm-goat-hall-of-fame"
       ) {
-        const usageId = `qm-pre-${resolvedBoostId}-${runId}`;
-        preGameBoostUsageIdRef.current = usageId;
-        armBoostForGame({
-          id: usageId,
-          boostId: resolvedBoostId,
-          gameSaveId: runId,
-          mode,
-          status: "armed",
-          armedAt: new Date().toISOString(),
-        });
-        setSlotBoostGuaranteeId(resolvedBoostId);
-        setBoostNotice(
-          resolvedBoostId === "qm-90-plus-player"
-            ? "90+ boost armed for the next eligible selection."
-            : "Legend boost armed for the next eligible selection."
-        );
-      } else {
+        clearBoostedFirstPickPlan();
         preGameBoostUsageIdRef.current = null;
         setSlotBoostGuaranteeId(null);
-        if (boostId == null) setBoostNotice(null);
+        setBoostedSpinPlan(null);
+        setBoostedFirstPick(null);
+        setBoostNotice(null);
+        setPreGameBoost(armPreGameBoost(runId, null));
+        return;
       }
+
+      const usedIds = new Set(
+        squad.filter((s) => s.player).map((s) => s.player!.id)
+      );
+      const firstPick = buildBoostedFirstPickPlan({
+        runId,
+        seed,
+        spinIndex: spinPickIndex + selectionBoostsUsedThisRun + 17,
+        boostId: resolvedBoostId,
+        usedIds,
+        squad,
+        usedTeamYearKeys,
+        options: {
+          spinVariant,
+          prepareSeed: seed,
+          legendSpinSlotIndex,
+          legendSpinUsed,
+        },
+      });
+
+      if (firstPick.status === "failed" || !firstPick.spinPlan || firstPick.spinPlan.status === "failed") {
+        clearBoostedFirstPickPlan();
+        preGameBoostUsageIdRef.current = null;
+        setSlotBoostGuaranteeId(null);
+        setBoostedSpinPlan(null);
+        setBoostedFirstPick(null);
+        setPreGameBoost(createUnselectedPreGameBoost(runId));
+        setBoostNotice(
+          firstPick.failureReason ??
+            boostFailureNotice(
+              resolvedBoostId,
+              "No valid boosted route for this run — boost not used."
+            )
+        );
+        return;
+      }
+
+      const target = slotRevealTargetFromBoostedPlan(firstPick.spinPlan);
+      if (!target) {
+        clearBoostedFirstPickPlan();
+        setPreGameBoost(createUnselectedPreGameBoost(runId));
+        setBoostNotice(
+          boostFailureNotice(
+            resolvedBoostId,
+            "No valid boosted route for this run — boost not used."
+          )
+        );
+        return;
+      }
+
+      const usageId = `qm-pre-${resolvedBoostId}-${runId}`;
+      preGameBoostUsageIdRef.current = usageId;
+      armBoostForGame({
+        id: usageId,
+        boostId: resolvedBoostId,
+        gameSaveId: runId,
+        mode,
+        status: "armed",
+        armedAt: new Date().toISOString(),
+      });
+
+      const spinning = markBoostedFirstPickSpinning(firstPick);
+      persistBoostedFirstPickPlan(spinning);
+      setBoostedFirstPick(spinning);
+      setBoostedSpinPlan(spinning.spinPlan);
+      setSlotBoostGuaranteeId(resolvedBoostId);
+      setPreGameBoost({
+        ...armPreGameBoost(runId, resolvedBoostId),
+        status: "applied",
+      });
+      setBoostNotice(
+        resolvedBoostId === "qm-90-plus-player"
+          ? "90+ player guaranteed in this selection."
+          : "Legend player guaranteed in this selection."
+      );
+
+      playPositionSelect();
+      setRecruitNotice(null);
+      setPendingPlayer(null);
+      lastScrolledPlayerIdRef.current = null;
+      setSelectedSlotIndex(spinning.selectedSlotIndex);
+      setActiveSpinTarget(target);
+      setSlotRecruitTarget(target);
+      setSpinSessionId((id) => id + 1);
+      setPhase("reveal");
     },
-    [runId, mode, normalEraMode]
+    [
+      runId,
+      mode,
+      normalEraMode,
+      seed,
+      spinPickIndex,
+      selectionBoostsUsedThisRun,
+      squad,
+      usedTeamYearKeys,
+      spinVariant,
+      legendSpinSlotIndex,
+      legendSpinUsed,
+    ]
   );
 
   const consumeArmedPreGameBoost = useCallback(
@@ -394,6 +554,7 @@ export function GameBoard({
       setUsedBoostThisRun(true);
       setSlotBoostGuaranteeId(null);
       setBoostedSpinPlan(null);
+      fulfillBoostedFirstPick();
       setPreGameBoost((prev) =>
         prev ? { ...prev, status: "consumed" } : prev
       );
@@ -404,7 +565,7 @@ export function GameBoard({
       );
       return true;
     },
-    [runId, mode]
+    [runId, mode, fulfillBoostedFirstPick]
   );
 
   /** Keep inventory; drop the armed guarantee so the run continues normally. */
@@ -418,13 +579,14 @@ export function GameBoard({
     preGameBoostUsageIdRef.current = null;
     setSlotBoostGuaranteeId(null);
     setBoostedSpinPlan(null);
+    fulfillBoostedFirstPick();
     setPreGameBoost((prev) =>
       prev
         ? { ...prev, selectedBoostId: null, status: "skipped" }
         : prev
     );
     setBoostNotice(null);
-  }, [runId, slotBoostGuaranteeId, preGameBoost?.selectedBoostId]);
+  }, [runId, slotBoostGuaranteeId, preGameBoost?.selectedBoostId, fulfillBoostedFirstPick]);
 
   /** Return to pre-game boost picker without consuming inventory. */
   const returnToPreGameBoostSelection = useCallback(() => {
@@ -437,7 +599,13 @@ export function GameBoard({
     preGameBoostUsageIdRef.current = null;
     setSlotBoostGuaranteeId(null);
     setBoostedSpinPlan(null);
+    clearBoostedFirstPickPlan();
+    setBoostedFirstPick(null);
     setBoostNotice(null);
+    setSelectedSlotIndex(null);
+    setActiveSpinTarget(null);
+    setSlotRecruitTarget(null);
+    setPhase("pitch");
     setPreGameBoost(createUnselectedPreGameBoost(runId));
   }, [runId, slotBoostGuaranteeId, preGameBoost?.selectedBoostId]);
 
@@ -742,6 +910,8 @@ export function GameBoard({
     phase === "choice";
 
   const resetRun = useCallback(() => {
+    clearBoostedFirstPickPlan();
+    setBoostedFirstPick(null);
     setRunKey((k) => k + 1);
     setPhase("pitch");
     setSelectedSlotIndex(null);
@@ -1096,9 +1266,7 @@ export function GameBoard({
       playPositionComplete();
 
       const boostId = slotBoostGuaranteeId;
-      const preGamePending =
-        preGameBoost?.status === "applied" ||
-        preGameBoost?.status === "armed";
+      const preGamePending = isPreGameBoostPending(preGameBoost);
       let boostConsumed = false;
       if (
         boostId &&
@@ -1111,6 +1279,9 @@ export function GameBoard({
             prev ? markBoostedSpinPlanConsumed(prev) : prev
           );
         }
+      } else if (isActiveBoostedFirstPick(boostedFirstPick)) {
+        // First auto pick completed without consuming (non-matching choice).
+        fulfillBoostedFirstPick();
       }
 
       setSquad(newSquad);
@@ -1160,7 +1331,11 @@ export function GameBoard({
       startTournamentSimulation,
       slotBoostGuaranteeId,
       preGameBoost,
+      boostedFirstPick,
       consumeArmedPreGameBoost,
+      fulfillBoostedFirstPick,
+      legendSpinSlotIndex,
+      legendSpinUsed,
     ]
   );
 
@@ -1421,6 +1596,12 @@ export function GameBoard({
         ? markBoostedSpinPlanPlayersGenerated(prev)
         : prev
     );
+    setBoostedFirstPick((prev) => {
+      if (!prev || !isActiveBoostedFirstPick(prev)) return prev;
+      const next = markBoostedFirstPickChoicesReady(prev);
+      persistBoostedFirstPickPlan(next);
+      return next;
+    });
     setPhase("choice");
   }, []);
 
@@ -1839,13 +2020,17 @@ export function GameBoard({
     if (isDraftMode) return;
     const keepBoost =
       !!slotBoostGuaranteeId &&
-      (preGameBoost?.status === "armed" ||
-        preGameBoost?.status === "applied");
+      isPreGameBoostPending(preGameBoost);
     setSelectedSlotIndex(null);
     setSlotRecruitTarget(null);
     setActiveSpinTarget(null);
     setPendingPlayer(null);
     setBoostedSpinPlan(null);
+    // First-pick auto is done once the user returns to the sheet — later picks
+    // use normal position selection (boost may still be armed).
+    if (isActiveBoostedFirstPick(boostedFirstPick)) {
+      fulfillBoostedFirstPick();
+    }
     if (!keepBoost) {
       setSlotBoostGuaranteeId(null);
       setBoostNotice(null);
@@ -1864,7 +2049,13 @@ export function GameBoard({
     lastScrolledPlayerIdRef.current = null;
     revealSoundKey.current = null;
     setPhase("pitch");
-  }, [isDraftMode, slotBoostGuaranteeId, preGameBoost]);
+  }, [
+    isDraftMode,
+    slotBoostGuaranteeId,
+    preGameBoost,
+    boostedFirstPick,
+    fulfillBoostedFirstPick,
+  ]);
 
   const handleAutofill = useCallback(() => {
     if (phase !== "pitch" || filledCount >= TOTAL_SLOTS || isDraftMode) return;
@@ -1953,12 +2144,17 @@ export function GameBoard({
   const hideChromeForOverlay = phase === "reveal";
   const hideActionBar =
     phase === "reveal" || phase === "choice" || phase === "simulation";
+  const firstPickStatus = boostedFirstPickStatusLines(boostedFirstPick);
   const spinBoostStatus =
-    phase === "reveal" &&
-    slotBoostGuaranteeId &&
-    (preGameBoost?.status === "armed" || preGameBoost?.status === "applied")
-      ? getBoostDefinition(slotBoostGuaranteeId)?.name ?? "Boost armed"
-      : null;
+    phase === "reveal" && firstPickStatus
+      ? firstPickStatus.headline
+      : phase === "reveal" &&
+          slotBoostGuaranteeId &&
+          isPreGameBoostPending(preGameBoost)
+        ? getBoostDefinition(slotBoostGuaranteeId)?.name ?? "Boost armed"
+        : null;
+  const spinBoostDetail =
+    phase === "reveal" && firstPickStatus ? firstPickStatus.detail : null;
 
   return (
     <div
@@ -2003,6 +2199,7 @@ export function GameBoard({
           <QuickModePreGameBoostSetup
             runId={runId}
             eraMode={normalEraMode}
+            notice={boostNotice}
             onConfirm={handlePreGameBoostConfirm}
           />
         ) : (
@@ -2228,6 +2425,7 @@ export function GameBoard({
                 target={slotRecruitTarget}
                 spinVariant={spinVariant}
                 boostStatus={spinBoostStatus}
+                boostDetail={spinBoostDetail}
                 onComplete={handleRevealComplete}
               />
             )}

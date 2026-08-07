@@ -833,10 +833,9 @@ function buildContextParagraph(
 
   if (context.attendance && fixture.isHome && !context.attendance.excludedFromClubFunds) {
     const gate = context.attendance.attendance.toLocaleString();
-    const mood = context.attendance.fanMoodChange;
-    if (mood >= 4) {
+    if (won) {
       parts.push(`${gate} fans went home happy after a result they came to see.`);
-    } else if (mood <= -4) {
+    } else {
       parts.push(`${gate} turned up at home and left disappointed.`);
     }
   }

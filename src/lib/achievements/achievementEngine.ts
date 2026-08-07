@@ -9,6 +9,7 @@ import {
   type AchievementProgressSnapshot,
 } from "./achievementContext";
 import {
+  createUnlockEventId,
   getUnlockedAchievement,
   isAchievementUnlocked,
   loadAchievements,
@@ -25,6 +26,7 @@ export type AchievementUnlockResult = {
   id: string;
   definition: AchievementDefinition;
   unlockedAt: string;
+  unlockEventId: string;
   rewardAmount?: number;
 };
 
@@ -236,12 +238,20 @@ export function unlockAchievement(id: string): AchievementUnlockResult | null {
   if (!def) return null;
 
   const rows = loadAchievements();
-  if (isAchievementUnlocked(id)) return null;
+  // Never unlock twice — ledger is the source of truth.
+  if (rows.some((r) => r.id === id)) return null;
 
   const unlockedAt = new Date().toISOString();
-  let next = [
+  const unlockEventId = createUnlockEventId(id, unlockedAt);
+  let next: UnlockedAchievement[] = [
     ...rows,
-    { id, unlockedAt, popupSeen: false, rewardClaimed: false },
+    {
+      id,
+      unlockedAt,
+      unlockEventId,
+      popupAcknowledged: false,
+      rewardClaimed: false,
+    },
   ];
 
   let rewardAmount: number | undefined;
@@ -251,30 +261,37 @@ export function unlockAchievement(id: string): AchievementUnlockResult | null {
   }
 
   saveAchievements(next);
-  return { id, definition: def, unlockedAt, rewardAmount };
+  return { id, definition: def, unlockedAt, unlockEventId, rewardAmount };
 }
 
-export function markAchievementPopupSeen(id: string): void {
+/** Persist acknowledgement before the popup closes — never requeues after. */
+export function markAchievementPopupAcknowledged(id: string): void {
   const rows = loadAchievements();
-  const next = rows.map((row) =>
-    row.id === id ? { ...row, popupSeen: true } : row
-  );
-  saveAchievements(next);
+  let changed = false;
+  const next = rows.map((row) => {
+    if (row.id !== id || row.popupAcknowledged) return row;
+    changed = true;
+    return { ...row, popupAcknowledged: true };
+  });
+  if (changed) saveAchievements(next);
+}
+
+/** @deprecated Use markAchievementPopupAcknowledged */
+export function markAchievementPopupSeen(id: string): void {
+  markAchievementPopupAcknowledged(id);
 }
 
 /**
  * One-time / mount migration: mark every already-unlocked achievement as
- * acknowledgement-complete without showing popups. Prevents login/refresh
- * from replaying the entire unlock history. New unlocks still queue via
- * checkAchievements → unlockAchievement (popupSeen: false).
+ * acknowledgement-complete without showing popups.
  */
 export function acknowledgeExistingAchievementPopups(): number {
   const rows = loadAchievements();
   let changed = 0;
   const next = rows.map((row) => {
-    if (row.popupSeen === true) return row;
+    if (row.popupAcknowledged) return row;
     changed += 1;
-    return { ...row, popupSeen: true };
+    return { ...row, popupAcknowledged: true };
   });
   if (changed > 0) saveAchievements(next);
   return changed;
@@ -305,18 +322,33 @@ function writeBaselineVersion(version: number): void {
 
 /**
  * After local + account progress are available: union unlocked IDs from
- * progress into storage, mark them all acknowledged, and record the baseline.
- * Does not pay rewards or queue popups — imports/migrations must stay silent.
+ * progress into the ledger (silent, acknowledged). Preserves existing
+ * popupAcknowledged flags for rows already in the ledger.
+ * Baseline IDs come from the ledger so hydrate never replays acknowledged unlocks.
  */
 export function synchronizeAchievementBaseline(
   ctx: AchievementCheckContext = {}
-): { unlockedIds: string[]; migrated: boolean } {
+): { unlockedIds: string[]; acknowledgedIds: string[]; migrated: boolean } {
   const progress = buildAchievementProgress(ctx);
   const existing = loadAchievements();
   const byId = new Map(existing.map((row) => [row.id, row]));
   const now = new Date().toISOString();
   const needsMigration = readBaselineVersion() < ACHIEVEMENTS_BASELINE_VERSION;
 
+  // One-time migration: mark every existing ledger row acknowledged.
+  if (needsMigration) {
+    for (const [id, prev] of byId) {
+      byId.set(id, {
+        ...prev,
+        unlockEventId:
+          prev.unlockEventId || createUnlockEventId(prev.id, prev.unlockedAt),
+        popupAcknowledged: true,
+      });
+    }
+  }
+
+  // Import progress-satisfied achievements that are missing from the ledger
+  // (e.g. after wipe while stats/cloud progress remains). Silent — no popups.
   for (const def of ACHIEVEMENT_DEFINITIONS) {
     if (!evaluateUnlock(def, ctx, progress)) continue;
     const prev = byId.get(def.id);
@@ -324,25 +356,23 @@ export function synchronizeAchievementBaseline(
       byId.set(def.id, {
         id: def.id,
         unlockedAt: now,
-        popupSeen: true,
+        unlockEventId: createUnlockEventId(def.id, now),
+        popupAcknowledged: true,
         // Historical / imported unlocks — do not re-pay club funds.
         rewardClaimed: true,
       });
-    } else {
-      byId.set(def.id, { ...prev, popupSeen: true });
     }
   }
 
-  // Existing rows without acknowledgement lists (legacy saves) are acknowledged.
-  const next = Array.from(byId.values()).map((row) => ({
-    ...row,
-    popupSeen: true,
-  }));
+  const next = Array.from(byId.values());
   saveAchievements(next);
   writeBaselineVersion(ACHIEVEMENTS_BASELINE_VERSION);
 
   return {
     unlockedIds: next.map((row) => row.id),
+    acknowledgedIds: next
+      .filter((row) => row.popupAcknowledged)
+      .map((row) => row.id),
     migrated: needsMigration,
   };
 }
@@ -367,13 +397,14 @@ export function checkAchievements(
 export function getUnseenAchievementPopups(): AchievementUnlockResult[] {
   const results: AchievementUnlockResult[] = [];
   for (const row of loadAchievements()) {
-    if (row.popupSeen) continue;
+    if (row.popupAcknowledged) continue;
     const def = getAchievementDefinition(row.id);
     if (!def) continue;
     results.push({
       id: row.id,
       definition: def,
       unlockedAt: row.unlockedAt,
+      unlockEventId: row.unlockEventId,
       rewardAmount: def.rewardClubFunds,
     });
   }

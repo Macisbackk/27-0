@@ -23,6 +23,8 @@ interface QuickModePreGameBoostSetupProps {
   runId: string;
   /** Current vs Era — Legend boost is Era Mode only. */
   eraMode?: boolean;
+  /** Shown when start is blocked (e.g. no valid boosted route). */
+  notice?: string | null;
   onConfirm: (boostId: GameBoostId | null) => void;
 }
 
@@ -32,6 +34,7 @@ interface QuickModePreGameBoostSetupProps {
 export function QuickModePreGameBoostSetup({
   runId,
   eraMode = false,
+  notice = null,
   onConfirm,
 }: QuickModePreGameBoostSetupProps) {
   const [, setTick] = useState(0);
@@ -113,6 +116,15 @@ export function QuickModePreGameBoostSetup({
             })}
           </ul>
         )}
+
+        {notice ? (
+          <p
+            className="mt-4 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-100"
+            role="alert"
+          >
+            {notice}
+          </p>
+        ) : null}
 
         <div className="mt-5 flex flex-col gap-2">
           <GameButton

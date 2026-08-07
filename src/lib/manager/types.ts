@@ -110,10 +110,19 @@ export interface ManagerInjury {
   serious: boolean;
 }
 
+/** Matchday availability — Fitness removed; injuries/suspensions remain. */
+export type ManagerPlayerAvailability =
+  | "available"
+  | "injured"
+  | "suspended"
+  | "ineligible"
+  | "not-registered";
+
 export interface ManagerPlayerState {
   playerId: string;
   form: number;
-  fitness: number;
+  /** @deprecated Fitness removed — ignored on hydrate. */
+  fitness?: number;
   injury: ManagerInjury | null;
   seasonAppearances: number;
   seasonTries: number;
@@ -137,7 +146,8 @@ export interface ManagerReservePlayer {
   potentialRating: number;
   developmentRate: number;
   form: number;
-  fitness: number;
+  /** @deprecated Fitness removed — ignored on hydrate. */
+  fitness?: number;
   reserveAppearances: number;
   reserveTries: number;
   calledUpForNextMatch: boolean;
@@ -206,7 +216,8 @@ export interface ClubAttendanceData {
   baseAttendance: number;
   currentAverageAttendance: number;
   stadiumCapacity: number;
-  fanMood: number;
+  /** @deprecated Fan Mood removed — ignored on hydrate. */
+  fanMood?: number;
   /** Dynamic minimum gate — rises with sustained success, erodes when struggling. */
   attendanceFloor?: number;
 }
@@ -278,7 +289,8 @@ export interface MatchAttendanceMeta {
   gateIncome: number;
   transferAllocation: number;
   operatingAllocation: number;
-  fanMoodChange: number;
+  /** @deprecated Fan Mood removed — ignored when present on legacy saves. */
+  fanMoodChange?: number;
   ticketPrice: number;
   venue?: string;
   /** Neutral Grand Final — crowd shown for flavour, no gate revenue to the club. */
@@ -451,7 +463,8 @@ export interface ManagerSeasonSummary {
   averageAttendance: number;
   highestAttendance: number;
   lowestAttendance: number;
-  finalFanMood: number;
+  /** @deprecated Fan Mood removed. */
+  finalFanMood?: number;
   wageBill: number;
   expiringContracts: number;
   playersLeaving: string[];
@@ -485,23 +498,53 @@ export type ManagerView =
 
 export type ManagerAutoRenewContractYears = 1 | 2 | 3 | 4;
 
-/** Development / review rules for the reserve listing. */
+export type MassReleaseMatchMode = "all" | "any";
+
+/** Reserve Management rules — Auto Promote + mass-release (v2). */
 export interface ManagerReserveDevelopmentSettings {
-  releaseAfterYearsEnabled: boolean;
-  releaseAfterYears: number;
-  releaseIfRatingBelow: number;
-  releaseIfGrowthBelowEnabled: boolean;
-  growthCheckAfterYears: number;
-  releaseIfGrowthBelow: number;
-  flagLowPotentialEnabled: boolean;
-  flagPotentialBelow: number;
-  flagForFullTimeEnabled: boolean;
-  fullTimeRatingThreshold: number;
-  protectUnderAge: number;
-  protectHighPotentialPlayers: boolean;
+  reserveManagementSettingsVersion: number;
+  /** Auto-promote reserves at/above rating when senior capacity allows. Off by default. */
+  autoPromoteByRatingEnabled: boolean;
+  autoPromoteRatingThreshold: number;
+  /** Mass release: Match ALL (default) requires every enabled rule; ANY uses OR. */
+  massReleaseMatchMode: MassReleaseMatchMode;
+  massReleaseByPotentialEnabled: boolean;
+  massReleasePotentialBelow: number;
+  massReleaseByRatingEnabled: boolean;
+  massReleaseRatingBelow: number;
+  massReleaseByAgeEnabled: boolean;
+  massReleaseAgeAbove: number;
+  /** Player ids excluded from mass release. */
+  protectedFromMassReleaseIds: string[];
   minimumReserveSquadSize: number;
-  /** When true, end-of-season auto-release may run after explicit confirmation tooling. */
-  autoReleaseEnabled: boolean;
+
+  // --- Legacy fields (ignored by v2 UI; kept for save migration) ---
+  /** @deprecated */
+  releaseAfterYearsEnabled?: boolean;
+  /** @deprecated */
+  releaseAfterYears?: number;
+  /** @deprecated */
+  releaseIfRatingBelow?: number;
+  /** @deprecated */
+  releaseIfGrowthBelowEnabled?: boolean;
+  /** @deprecated */
+  growthCheckAfterYears?: number;
+  /** @deprecated */
+  releaseIfGrowthBelow?: number;
+  /** @deprecated */
+  flagLowPotentialEnabled?: boolean;
+  /** @deprecated */
+  flagPotentialBelow?: number;
+  /** @deprecated */
+  flagForFullTimeEnabled?: boolean;
+  /** @deprecated */
+  fullTimeRatingThreshold?: number;
+  /** @deprecated */
+  protectUnderAge?: number;
+  /** @deprecated */
+  protectHighPotentialPlayers?: boolean;
+  /** @deprecated */
+  autoReleaseEnabled?: boolean;
 }
 
 /** @deprecated Prefer ManagerReserveDevelopmentSettings — kept for save migration. */
@@ -512,7 +555,8 @@ export interface ManagerSettings {
   autoFixSquadBeforeMatch: boolean;
   showAchievementPopups: boolean;
   compactFixtureRows: boolean;
-  autoOpenNextFixture: boolean;
+  /** @deprecated Removed — was a UI workaround for hub navigation. */
+  autoOpenNextFixture?: boolean;
   wccWriteUpExpandedByDefault: boolean;
   reserveDevelopmentSettings: ManagerReserveDevelopmentSettings;
   /** Legacy key — mirrored from reserveDevelopmentSettings on hydrate. */
@@ -932,6 +976,8 @@ export interface ManagerCareer {
   retiredPlayers?: RetiredPlayer[];
   /** Save schema version for migrations. */
   saveVersion?: number;
+  /** Fan Mood + Fitness removal marker. */
+  simplifiedPlayerSystemsVersion?: number;
   /** Persistence backend marker (2 = IndexedDB blobs + localStorage pointer). */
   saveStorageVersion?: number;
   /** Player ability scale migration (5 = reserve floor + Current 90+ audit). */
@@ -1080,20 +1126,18 @@ export const DEFAULT_TACTICS: ManagerTactics = {
 
 export const DEFAULT_RESERVE_DEVELOPMENT_SETTINGS: ManagerReserveDevelopmentSettings =
   {
-    releaseAfterYearsEnabled: false,
-    releaseAfterYears: 2,
-    releaseIfRatingBelow: 81,
-    releaseIfGrowthBelowEnabled: false,
-    growthCheckAfterYears: 2,
-    releaseIfGrowthBelow: 3,
-    flagLowPotentialEnabled: true,
-    flagPotentialBelow: 83,
-    flagForFullTimeEnabled: true,
-    fullTimeRatingThreshold: 85,
-    protectUnderAge: 18,
-    protectHighPotentialPlayers: true,
+    reserveManagementSettingsVersion: 2,
+    autoPromoteByRatingEnabled: false,
+    autoPromoteRatingThreshold: 85,
+    massReleaseMatchMode: "all",
+    massReleaseByPotentialEnabled: false,
+    massReleasePotentialBelow: 80,
+    massReleaseByRatingEnabled: false,
+    massReleaseRatingBelow: 78,
+    massReleaseByAgeEnabled: false,
+    massReleaseAgeAbove: 23,
+    protectedFromMassReleaseIds: [],
     minimumReserveSquadSize: 22,
-    autoReleaseEnabled: false,
   };
 
 /** @deprecated Use DEFAULT_RESERVE_DEVELOPMENT_SETTINGS */
@@ -1105,7 +1149,6 @@ export const DEFAULT_MANAGER_SETTINGS: ManagerSettings = {
   autoFixSquadBeforeMatch: false,
   showAchievementPopups: true,
   compactFixtureRows: false,
-  autoOpenNextFixture: true,
   wccWriteUpExpandedByDefault: false,
   reserveDevelopmentSettings: { ...DEFAULT_RESERVE_DEVELOPMENT_SETTINGS },
   reserveReleaseSettings: { ...DEFAULT_RESERVE_DEVELOPMENT_SETTINGS },

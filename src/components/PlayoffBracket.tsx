@@ -36,6 +36,7 @@ import {
   PlayoffBracketHeader,
   PlayoffMatchCard,
 } from "./PlayoffBracketVisuals";
+import { resolveSquadClubColorOverride } from "@/lib/players/squad-club-accent";
 
 interface PlayoffBracketProps {
   squad: SquadSlot[];
@@ -79,6 +80,10 @@ export function PlayoffBracket({
   onComplete,
   initialState,
 }: PlayoffBracketProps) {
+  const dreamTeamColorClub = useMemo(
+    () => resolveSquadClubColorOverride(squad),
+    [squad]
+  );
   const [state, setState] = useState<PlayoffBracketState>(
     () =>
       initialState ??
@@ -276,6 +281,7 @@ export function PlayoffBracket({
             <div ref={matchDetailsRef} className="max-md:mb-4">
               <PlayoffMatchDetailsPanel
                 match={selectedMatch}
+                userClubColorOverride={dreamTeamColorClub}
                 onClose={() => {
                   playPanelClose();
                   setSelectedId(null);

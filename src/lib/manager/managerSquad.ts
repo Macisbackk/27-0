@@ -9,7 +9,6 @@ import type { ManagerCareer, ManagerPlayerState } from "./types";
 import { getManagerPlayer, getManagerPlayerEligiblePositions } from "./managerPlayers";
 import { getMatchdayTryWeight } from "./managerTryScoring";
 import {
-  getManagerFitnessRatingPenalty,
   toMatchdaySquadSlots,
 } from "./matchday-lineup";
 import {
@@ -22,7 +21,6 @@ export function createInitialPlayerState(playerId: string): ManagerPlayerState {
   return {
     playerId,
     form: 50 + Math.floor(Math.random() * 20),
-    fitness: 85 + Math.floor(Math.random() * 15),
     injury: null,
     seasonAppearances: 0,
     seasonTries: 0,
@@ -31,6 +29,24 @@ export function createInitialPlayerState(playerId: string): ManagerPlayerState {
 
 export function isPlayerUnavailable(player: ManagerPlayerState): boolean {
   return !!(player.injury && player.injury.matchesRemaining > 0);
+}
+
+export function getPlayerAvailability(
+  career: ManagerCareer,
+  playerId: string
+): import("./types").ManagerPlayerAvailability {
+  const ps = career.squad.find((p) => p.playerId === playerId);
+  const reserve = career.reserves.find((r) => r.id === playerId);
+  if (!ps && !reserve) return "not-registered";
+
+  const injury = ps?.injury ?? null;
+  if (injury && injury.matchesRemaining > 0) {
+    if (injury.type === "suspension") return "suspended";
+    return "injured";
+  }
+
+  // Cup / registration ineligibility is handled by matchday validation separately.
+  return "available";
 }
 
 export function getUnavailableSquadPlayers(
@@ -112,8 +128,6 @@ export function buildSquadSlotsFromMatchday(
   return toMatchdaySquadSlots({ xiiiIds, slotPositions, career });
 }
 
-export { getManagerFitnessRatingPenalty } from "./matchday-lineup";
-
 /** @deprecated Use getMatchdayTryWeight(position, true) — kept for imports that expect a scalar. */
 export const MATCHDAY_INTERCHANGE_TRY_WEIGHT = 0.35;
 
@@ -186,7 +200,7 @@ export function tickInjuries(squad: ManagerPlayerState[]): ManagerPlayerState[] 
     }
     const remaining = p.injury.matchesRemaining - 1;
     if (remaining <= 0) {
-      return { ...p, injury: null, fitness: Math.min(100, p.fitness + 15) };
+      return { ...p, injury: null };
     }
     return {
       ...p,
@@ -195,13 +209,10 @@ export function tickInjuries(squad: ManagerPlayerState[]): ManagerPlayerState[] 
   });
 }
 
+/** @deprecated Fitness removed — rest no longer changes player state. */
 export function restPlayer(
   squad: ManagerPlayerState[],
-  playerId: string
+  _playerId: string
 ): ManagerPlayerState[] {
-  return squad.map((p) =>
-    p.playerId === playerId
-      ? { ...p, fitness: Math.min(100, p.fitness + 12) }
-      : p
-  );
+  return squad;
 }

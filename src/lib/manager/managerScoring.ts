@@ -31,7 +31,6 @@ interface SquadEntry {
   playedPosition: Position;
   tryWeightMultiplier: number;
   form?: number;
-  fitness?: number;
 }
 
 function pickKicker(entries: SquadEntry[]): SquadEntry | null {
@@ -63,8 +62,7 @@ function buildUserWeights(
     });
     const ability = computeAbilityScorerFactor(
       rating,
-      e.form ?? 50,
-      e.fitness ?? 100
+      e.form ?? 50
     );
     const variance = 0.85 + rng() * 0.3;
     return sanitizeWeight(
@@ -137,13 +135,7 @@ export function enrichManagerFixtureScoring(
         opponentOptions?.career?.reserves?.find((r) => r.id === e.player.id)
           ?.form ??
         50;
-      const fitness =
-        opponentOptions?.career?.squad.find((p) => p.playerId === e.player.id)
-          ?.fitness ??
-        opponentOptions?.career?.reserves?.find((r) => r.id === e.player.id)
-          ?.fitness ??
-        100;
-      return { ...e, form, fitness };
+      return { ...e, form };
     }),
     tactics,
     rng

@@ -9,6 +9,7 @@ import {
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { playUiClick } from "@/lib/sound";
 import { CARD, SPACING } from "@/lib/ui/design-system";
+import { UI_COPY } from "@/lib/ui/copy";
 import { TYPO } from "@/lib/ui/typography";
 import {
   DEFAULT_MANAGER_SETTINGS,
@@ -17,6 +18,7 @@ import {
   type ManagerCareer,
   type ManagerReserveDevelopmentSettings,
   type ManagerSettings,
+  type MassReleaseMatchMode,
 } from "@/lib/manager/types";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
@@ -39,6 +41,7 @@ const TOGGLE_OPTIONS: {
     | "autoRenewContractYears"
     | "reserveReleaseSettings"
     | "reserveDevelopmentSettings"
+    | "autoOpenNextFixture"
   >;
   label: string;
   description: string;
@@ -59,11 +62,6 @@ const TOGGLE_OPTIONS: {
     description: "Use a denser fixtures list layout.",
   },
   {
-    key: "autoOpenNextFixture",
-    label: "Auto-open next fixture",
-    description: "Jump to the next match after finishing a game.",
-  },
-  {
     key: "wccWriteUpExpandedByDefault",
     label: "WCC write-up expanded",
     description: "Expand World Club Challenge match write-ups by default.",
@@ -76,6 +74,10 @@ export function resolveManagerSettings(career: ManagerCareer): ManagerSettings {
     ...DEFAULT_RESERVE_DEVELOPMENT_SETTINGS,
     ...base.reserveDevelopmentSettings,
     ...(base.reserveReleaseSettings ?? {}),
+    protectedFromMassReleaseIds:
+      base.reserveDevelopmentSettings?.protectedFromMassReleaseIds ??
+      base.reserveReleaseSettings?.protectedFromMassReleaseIds ??
+      DEFAULT_RESERVE_DEVELOPMENT_SETTINGS.protectedFromMassReleaseIds,
   };
   return {
     ...DEFAULT_MANAGER_SETTINGS,
@@ -337,7 +339,9 @@ function ReserveDevelopmentSettingsCard({
   const careerWithSettings = { ...career, managerSettings: settings };
 
   const patchDev = (patch: Partial<ManagerReserveDevelopmentSettings>) => {
-    const next = { ...dev, ...patch };
+    const next = { ...dev, ...patch, reserveManagementSettingsVersion: 2 };
+    setPreview([]);
+    setPreviewError(null);
     onPatch({
       reserveDevelopmentSettings: next,
       reserveReleaseSettings: next,
@@ -350,17 +354,20 @@ function ReserveDevelopmentSettingsCard({
     setPreview(candidates);
     setPreviewError(
       candidates.length === 0
-        ? "No players match the current development rules."
+        ? "No players match the current mass-release rules."
         : null
     );
   };
 
   const startApply = () => {
     playUiClick();
-    const candidates = previewReleaseBySettings(careerWithSettings);
+    const candidates =
+      preview.length > 0
+        ? preview
+        : previewReleaseBySettings(careerWithSettings);
     if (candidates.length === 0) {
       setPreview([]);
-      setPreviewError("No players match the current development rules.");
+      setPreviewError("No players match the current mass-release rules.");
       return;
     }
     setPreview(candidates);
@@ -387,87 +394,44 @@ function ReserveDevelopmentSettingsCard({
     }
   };
 
+  const matchMode: MassReleaseMatchMode = dev.massReleaseMatchMode ?? "all";
+
   return (
     <>
-      <ManagerSectionCard title="Reserve Development Settings" variant="elevated">
+      <ManagerSectionCard title="Reserve Management" variant="elevated">
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-          Time- and progress-based rules for the reserve listing. Preview before
-          releasing; flags also appear on reserve cards and in monthly reports.
+          Auto-promote by rating and mass-release rules. Preview before releasing;
+          protected players are never included.
         </p>
 
         <div className="mt-4 space-y-5">
           <section>
             <h3 className={`${TYPO.bodySm} font-semibold text-pitch-200`}>
-              Release rules
+              Auto promote
             </h3>
             <ul className="mt-1 divide-y divide-pitch-700/50">
               <SettingsToggle
-                label="Release after years if rating not reached"
-                description={`Release if still below ${dev.releaseIfRatingBelow} rating after ${dev.releaseAfterYears} year${dev.releaseAfterYears === 1 ? "" : "s"}.`}
-                on={dev.releaseAfterYearsEnabled}
+                label="Auto promote by rating"
+                description={`Promote reserves at ${dev.autoPromoteRatingThreshold}+ when senior capacity allows. Off by default.`}
+                on={dev.autoPromoteByRatingEnabled}
                 onToggle={() =>
                   patchDev({
-                    releaseAfterYearsEnabled: !dev.releaseAfterYearsEnabled,
+                    autoPromoteByRatingEnabled: !dev.autoPromoteByRatingEnabled,
                   })
                 }
               />
             </ul>
             <div
-              className={`mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2 ${dev.releaseAfterYearsEnabled ? "" : "opacity-50"}`}
+              className={`mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2 ${dev.autoPromoteByRatingEnabled ? "" : "opacity-50"}`}
             >
               <SettingsNumberInput
-                label="Years at club before check"
-                value={dev.releaseAfterYears}
-                min={1}
-                max={6}
-                disabled={!dev.releaseAfterYearsEnabled}
-                onChange={(releaseAfterYears) => patchDev({ releaseAfterYears })}
-              />
-              <SettingsNumberInput
-                label="Rating must reach"
-                value={dev.releaseIfRatingBelow}
-                min={40}
-                max={90}
-                disabled={!dev.releaseAfterYearsEnabled}
-                onChange={(releaseIfRatingBelow) =>
-                  patchDev({ releaseIfRatingBelow })
-                }
-              />
-            </div>
-
-            <ul className="mt-3 divide-y divide-pitch-700/50">
-              <SettingsToggle
-                label="Release after years if growth is less than"
-                description={`Release if growth is below +${dev.releaseIfGrowthBelow} after ${dev.growthCheckAfterYears} year${dev.growthCheckAfterYears === 1 ? "" : "s"}.`}
-                on={dev.releaseIfGrowthBelowEnabled}
-                onToggle={() =>
-                  patchDev({
-                    releaseIfGrowthBelowEnabled: !dev.releaseIfGrowthBelowEnabled,
-                  })
-                }
-              />
-            </ul>
-            <div
-              className={`mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2 ${dev.releaseIfGrowthBelowEnabled ? "" : "opacity-50"}`}
-            >
-              <SettingsNumberInput
-                label="Years at club before growth check"
-                value={dev.growthCheckAfterYears}
-                min={1}
-                max={6}
-                disabled={!dev.releaseIfGrowthBelowEnabled}
-                onChange={(growthCheckAfterYears) =>
-                  patchDev({ growthCheckAfterYears })
-                }
-              />
-              <SettingsNumberInput
-                label="Minimum growth (points)"
-                value={dev.releaseIfGrowthBelow}
-                min={0}
-                max={20}
-                disabled={!dev.releaseIfGrowthBelowEnabled}
-                onChange={(releaseIfGrowthBelow) =>
-                  patchDev({ releaseIfGrowthBelow })
+                label="Promote at rating"
+                value={dev.autoPromoteRatingThreshold}
+                min={70}
+                max={95}
+                disabled={!dev.autoPromoteByRatingEnabled}
+                onChange={(autoPromoteRatingThreshold) =>
+                  patchDev({ autoPromoteRatingThreshold })
                 }
               />
             </div>
@@ -475,31 +439,120 @@ function ReserveDevelopmentSettingsCard({
 
           <section>
             <h3 className={`${TYPO.bodySm} font-semibold text-pitch-200`}>
-              Review flags
+              Mass release
             </h3>
-            <ul className="divide-y divide-pitch-700/50">
+            <fieldset className="mt-2">
+              <legend className={`mb-2 ${TYPO.bodySm} text-pitch-400`}>
+                Match mode
+              </legend>
+              <div className="grid grid-cols-2 gap-2">
+                {(["all", "any"] as const).map((mode) => {
+                  const selected = matchMode === mode;
+                  return (
+                    <label
+                      key={mode}
+                      className={`flex cursor-pointer flex-col items-center gap-1 rounded-lg border px-2 py-2.5 text-center transition ${
+                        selected
+                          ? "border-theme-primary/60 bg-theme-primary/15 text-theme-primary"
+                          : "border-pitch-600/55 bg-pitch-900/40 text-pitch-300"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="massReleaseMatchMode"
+                        className="sr-only"
+                        checked={selected}
+                        onChange={() => patchDev({ massReleaseMatchMode: mode })}
+                      />
+                      <span className="text-sm font-bold uppercase">
+                        Match {mode}
+                      </span>
+                      <span className="text-[10px] text-pitch-500">
+                        {mode === "all" ? "Every enabled rule" : "Any enabled rule"}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+
+            <ul className="mt-3 divide-y divide-pitch-700/50">
               <SettingsToggle
-                label="Flag for full-time deal if rating reaches"
-                description={`Promote candidates at ${dev.fullTimeRatingThreshold}+ rating.`}
-                on={dev.flagForFullTimeEnabled}
+                label="Release by potential"
+                description={`Potential below ${dev.massReleasePotentialBelow}.`}
+                on={dev.massReleaseByPotentialEnabled}
                 onToggle={() =>
                   patchDev({
-                    flagForFullTimeEnabled: !dev.flagForFullTimeEnabled,
+                    massReleaseByPotentialEnabled: !dev.massReleaseByPotentialEnabled,
                   })
                 }
               />
             </ul>
             <div
-              className={`mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2 ${dev.flagForFullTimeEnabled ? "" : "opacity-50"}`}
+              className={`mt-2 ${dev.massReleaseByPotentialEnabled ? "" : "opacity-50"}`}
             >
               <SettingsNumberInput
-                label="Full-time rating threshold"
-                value={dev.fullTimeRatingThreshold}
+                label="Potential below"
+                value={dev.massReleasePotentialBelow}
                 min={60}
-                max={90}
-                disabled={!dev.flagForFullTimeEnabled}
-                onChange={(fullTimeRatingThreshold) =>
-                  patchDev({ fullTimeRatingThreshold })
+                max={95}
+                disabled={!dev.massReleaseByPotentialEnabled}
+                onChange={(massReleasePotentialBelow) =>
+                  patchDev({ massReleasePotentialBelow })
+                }
+              />
+            </div>
+
+            <ul className="mt-3 divide-y divide-pitch-700/50">
+              <SettingsToggle
+                label="Release by rating"
+                description={`Current rating below ${dev.massReleaseRatingBelow}.`}
+                on={dev.massReleaseByRatingEnabled}
+                onToggle={() =>
+                  patchDev({
+                    massReleaseByRatingEnabled: !dev.massReleaseByRatingEnabled,
+                  })
+                }
+              />
+            </ul>
+            <div
+              className={`mt-2 ${dev.massReleaseByRatingEnabled ? "" : "opacity-50"}`}
+            >
+              <SettingsNumberInput
+                label="Rating below"
+                value={dev.massReleaseRatingBelow}
+                min={60}
+                max={95}
+                disabled={!dev.massReleaseByRatingEnabled}
+                onChange={(massReleaseRatingBelow) =>
+                  patchDev({ massReleaseRatingBelow })
+                }
+              />
+            </div>
+
+            <ul className="mt-3 divide-y divide-pitch-700/50">
+              <SettingsToggle
+                label="Release by age"
+                description={`Age above ${dev.massReleaseAgeAbove}.`}
+                on={dev.massReleaseByAgeEnabled}
+                onToggle={() =>
+                  patchDev({
+                    massReleaseByAgeEnabled: !dev.massReleaseByAgeEnabled,
+                  })
+                }
+              />
+            </ul>
+            <div
+              className={`mt-2 ${dev.massReleaseByAgeEnabled ? "" : "opacity-50"}`}
+            >
+              <SettingsNumberInput
+                label="Age above"
+                value={dev.massReleaseAgeAbove}
+                min={18}
+                max={35}
+                disabled={!dev.massReleaseByAgeEnabled}
+                onChange={(massReleaseAgeAbove) =>
+                  patchDev({ massReleaseAgeAbove })
                 }
               />
             </div>
@@ -508,10 +561,15 @@ function ReserveDevelopmentSettingsCard({
 
         <div className="mt-4 flex flex-col gap-2 sm:flex-row">
           <GameButton variant="secondary" size="sm" onClick={runPreview}>
-            Preview releases
+            {UI_COPY.previewPlayers}
           </GameButton>
-          <GameButton variant="theme" size="sm" onClick={startApply}>
-            Apply now
+          <GameButton
+            variant="theme"
+            size="sm"
+            onClick={startApply}
+            disabled={preview.length === 0}
+          >
+            Confirm release
           </GameButton>
         </div>
 
@@ -528,7 +586,8 @@ function ReserveDevelopmentSettingsCard({
                 <span className="font-medium text-white">{reserve.name}</span>
                 <span className="text-pitch-400">
                   {" "}
-                  · Age {reserve.age} · Rating {reserve.rating}
+                  · Age {reserve.age} · Rating {reserve.rating} · Pot{" "}
+                  {reserve.potentialRating}
                 </span>
                 <span className={`block text-pitch-500`}>{reason}</span>
               </li>
@@ -549,7 +608,7 @@ function ReserveDevelopmentSettingsCard({
         title="Confirm reserve releases"
         message={
           pendingApply
-            ? `Release ${pendingApply.length} reserve player${pendingApply.length === 1 ? "" : "s"} matching the current development rules?\n\nThis cannot be undone.`
+            ? `Release ${pendingApply.length} reserve player${pendingApply.length === 1 ? "" : "s"} matching the current mass-release rules?\n\nThis cannot be undone.`
             : ""
         }
         confirmLabel="Release"

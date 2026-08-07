@@ -480,7 +480,6 @@ export function generateReservePlayer(
     potentialRating: potential,
     developmentRate: computeDevelopmentRateForPotential(potential, rng),
     form: 50 + Math.floor(rng() * 25),
-    fitness: 85 + Math.floor(rng() * 15),
     reserveAppearances: 0,
     reserveTries: 0,
     calledUpForNextMatch: false,

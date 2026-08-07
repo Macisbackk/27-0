@@ -97,11 +97,6 @@ export function ManagerReservePlayerModal({
             value={String(Math.round(model.form))}
             tone="default"
           />
-          <ManagerStat
-            label="Fitness"
-            value={`${Math.round(model.fitness)}%`}
-            tone="default"
-          />
         </div>
 
         <div>

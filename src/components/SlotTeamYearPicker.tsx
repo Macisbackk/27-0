@@ -204,7 +204,7 @@ export function SlotTeamYearPicker({
               </div>
               {showRespin ? (
                 <p className={`mx-auto mt-2 max-w-md pb-3 text-center ${TYPO.meta}`}>
-                  {maxRespins} respins per run · does not use a draft pick
+                  {maxRespins} respins per run
                 </p>
               ) : (
                 <div className="pb-3" />

@@ -79,3 +79,11 @@ export function isPreGameBoostReady(
     state.status === "failed"
   );
 }
+
+/** True while a selection boost is still owed for this run. */
+export function isPreGameBoostPending(
+  state: QuickModePreGameBoostState | null
+): boolean {
+  if (!state) return false;
+  return state.status === "armed" || state.status === "applied";
+}

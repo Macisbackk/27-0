@@ -6,6 +6,7 @@
  */
 import seedrandom from "seedrandom";
 import type { Player, SquadSlot } from "../types";
+import { UI_COPY } from "@/lib/ui/copy";
 import {
   isLegendBoostPlayer,
   isNinetyPlusPlayer,
@@ -29,8 +30,12 @@ import {
   type SlotSpinPickOptions,
 } from "./slot-team-year-pick";
 import type { QmSelectionBoostId } from "./quick-mode-pregame-boost";
+import { getFormationSlotDisplayLabel } from "../positions";
 
 export const BOOSTED_SPIN_PLAN_VERSION = 2;
+export const BOOSTED_FIRST_PICK_PLAN_VERSION = 1;
+
+const FIRST_PICK_STORAGE_KEY = "27-0-qm-boosted-first-pick";
 
 export type BoostedSpinPlan = {
   runId: string;
@@ -358,4 +363,307 @@ export function boostFailureNotice(
 export function teamYearIdForPlan(plan: BoostedSpinPlan): string {
   if (!plan.selectedTeam || !plan.selectedYear) return "";
   return buildTeamYearId(plan.selectedTeam, plan.selectedYear);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Boosted first pick (auto position + spin on run start)                     */
+/* -------------------------------------------------------------------------- */
+
+export type BoostedFirstPickStatus =
+  | "planned"
+  | "spinning"
+  | "choices-ready"
+  | "fulfilled"
+  | "failed";
+
+/** Persistable plan for the auto first pick after a pre-game boost confirm. */
+export type QuickModeBoostedFirstPickPlan = {
+  runId: string;
+  seed: string;
+  boostId: QmSelectionBoostId;
+  selectedSlotIndex: number;
+  selectedPositionId: string;
+  selectedPositionLabel: string;
+  validSlotIndexes: number[];
+  spinPlan: BoostedSpinPlan;
+  status: BoostedFirstPickStatus;
+  failureReason?: string;
+  version: number;
+};
+
+export type BuildBoostedFirstPickPlanInput = {
+  runId: string;
+  seed: string;
+  spinIndex: number;
+  boostId: QmSelectionBoostId;
+  usedIds: Set<string>;
+  squad: SquadSlot[];
+  usedTeamYearKeys?: ReadonlySet<string>;
+  options?: SlotSpinPickOptions & {
+    prepareSeed?: string;
+    legendSpinSlotIndex?: number | null;
+    legendSpinUsed?: boolean;
+  };
+};
+
+function slotRequiresLegendPlayer(
+  slotIndex: number,
+  options: BuildBoostedFirstPickPlanInput["options"]
+): boolean {
+  if (!options) return false;
+  if (options.requireLegendPlayer === true) return true;
+  if (options.legendSpinUsed === true) return false;
+  return options.legendSpinSlotIndex === slotIndex;
+}
+
+/**
+ * Unfilled slot indexes that can still produce at least one boost-matching player.
+ */
+export function listValidBoostedFirstPickSlots(
+  boostId: QmSelectionBoostId,
+  usedIds: Set<string>,
+  squad: SquadSlot[],
+  usedTeamYearKeys: ReadonlySet<string> = new Set(),
+  options: BuildBoostedFirstPickPlanInput["options"] = {}
+): number[] {
+  return squad
+    .filter((slot) => !slot.player)
+    .filter((slot) => {
+      const requireLegend = slotRequiresLegendPlayer(slot.slotIndex, options);
+      return (
+        listCompatibleTeamYearsForBoost(
+          boostId,
+          usedIds,
+          squad,
+          slot.slotIndex,
+          usedTeamYearKeys,
+          { ...options, requireLegendPlayer: requireLegend }
+        ).length > 0
+      );
+    })
+    .map((slot) => slot.slotIndex);
+}
+
+function emptyFailedFirstPickPlan(
+  input: Pick<
+    BuildBoostedFirstPickPlanInput,
+    "runId" | "seed" | "boostId"
+  >,
+  reason: string,
+  validSlotIndexes: number[] = []
+): QuickModeBoostedFirstPickPlan {
+  return {
+    runId: input.runId,
+    seed: input.seed,
+    boostId: input.boostId,
+    selectedSlotIndex: -1,
+    selectedPositionId: "",
+    selectedPositionLabel: "",
+    validSlotIndexes,
+    spinPlan: emptyFailedPlan(
+      {
+        runId: input.runId,
+        boostId: input.boostId,
+        slotIndex: 0,
+        squad: [],
+      },
+      reason
+    ),
+    status: "failed",
+    failureReason: reason,
+    version: BOOSTED_FIRST_PICK_PLAN_VERSION,
+  };
+}
+
+/**
+ * Enumerate valid unfilled positions, pick one at random, and build a full
+ * boosted spin plan (team/year + guaranteed player) before animation starts.
+ */
+export function buildBoostedFirstPickPlan(
+  input: BuildBoostedFirstPickPlanInput
+): QuickModeBoostedFirstPickPlan {
+  const {
+    runId,
+    seed,
+    spinIndex,
+    boostId,
+    usedIds,
+    squad,
+    usedTeamYearKeys = new Set(),
+    options = {},
+  } = input;
+
+  const failReason =
+    boostId === "qm-90-plus-player"
+      ? "No valid position can produce a 90+ player — boost not used."
+      : "No valid position can produce a Legend player — boost not used.";
+
+  const validSlotIndexes = listValidBoostedFirstPickSlots(
+    boostId,
+    usedIds,
+    squad,
+    usedTeamYearKeys,
+    options
+  );
+
+  if (validSlotIndexes.length === 0) {
+    return emptyFailedFirstPickPlan(input, failReason, validSlotIndexes);
+  }
+
+  const rng = seedrandom(
+    `${seed}-boosted-first-pick-${boostId}-${spinIndex}`
+  );
+  const order = [...validSlotIndexes];
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    const tmp = order[i]!;
+    order[i] = order[j]!;
+    order[j] = tmp;
+  }
+
+  for (const slotIndex of order) {
+    const requireLegend = slotRequiresLegendPlayer(slotIndex, options);
+    const spinPlan = buildBoostedSpinPlan({
+      runId,
+      seed,
+      spinIndex,
+      boostId,
+      usedIds,
+      squad,
+      slotIndex,
+      usedTeamYearKeys,
+      options: {
+        ...options,
+        requireLegendPlayer: requireLegend,
+        prepareSeed: options.prepareSeed ?? seed,
+      },
+    });
+
+    if (spinPlan.status === "failed") continue;
+
+    const label = getFormationSlotDisplayLabel(slotIndex);
+    return {
+      runId,
+      seed,
+      boostId,
+      selectedSlotIndex: slotIndex,
+      selectedPositionId: spinPlan.positionId,
+      selectedPositionLabel: label,
+      validSlotIndexes,
+      spinPlan,
+      status: "planned",
+      version: BOOSTED_FIRST_PICK_PLAN_VERSION,
+    };
+  }
+
+  return emptyFailedFirstPickPlan(input, failReason, validSlotIndexes);
+}
+
+export function markBoostedFirstPickSpinning(
+  plan: QuickModeBoostedFirstPickPlan
+): QuickModeBoostedFirstPickPlan {
+  if (plan.status === "failed" || plan.status === "fulfilled") return plan;
+  return {
+    ...plan,
+    status: "spinning",
+    spinPlan: markBoostedSpinPlanTeamSpun(plan.spinPlan),
+  };
+}
+
+export function markBoostedFirstPickChoicesReady(
+  plan: QuickModeBoostedFirstPickPlan
+): QuickModeBoostedFirstPickPlan {
+  if (plan.status === "failed" || plan.status === "fulfilled") return plan;
+  return {
+    ...plan,
+    status: "choices-ready",
+    spinPlan: markBoostedSpinPlanPlayersGenerated(plan.spinPlan),
+  };
+}
+
+export function markBoostedFirstPickFulfilled(
+  plan: QuickModeBoostedFirstPickPlan
+): QuickModeBoostedFirstPickPlan {
+  return {
+    ...plan,
+    status: "fulfilled",
+    spinPlan: markBoostedSpinPlanConsumed(plan.spinPlan),
+  };
+}
+
+export function boostedFirstPickStatusLines(
+  plan: QuickModeBoostedFirstPickPlan | null | undefined
+): { headline: string; detail: string } | null {
+  if (
+    !plan ||
+    plan.status === "failed" ||
+    plan.status === "fulfilled" ||
+    !plan.selectedPositionLabel
+  ) {
+    return null;
+  }
+  return {
+    headline: UI_COPY.boostedFirstPick,
+    detail: UI_COPY.randomValidPosition(plan.selectedPositionLabel),
+  };
+}
+
+export function isActiveBoostedFirstPick(
+  plan: QuickModeBoostedFirstPickPlan | null | undefined
+): boolean {
+  return (
+    !!plan &&
+    (plan.status === "planned" ||
+      plan.status === "spinning" ||
+      plan.status === "choices-ready")
+  );
+}
+
+export function persistBoostedFirstPickPlan(
+  plan: QuickModeBoostedFirstPickPlan
+): void {
+  if (typeof sessionStorage === "undefined") return;
+  try {
+    sessionStorage.setItem(FIRST_PICK_STORAGE_KEY, JSON.stringify(plan));
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
+
+export function loadBoostedFirstPickPlan(
+  runId: string
+): QuickModeBoostedFirstPickPlan | null {
+  if (typeof sessionStorage === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(FIRST_PICK_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as QuickModeBoostedFirstPickPlan;
+    if (
+      !parsed ||
+      parsed.runId !== runId ||
+      parsed.version !== BOOSTED_FIRST_PICK_PLAN_VERSION
+    ) {
+      return null;
+    }
+    if (
+      parsed.status === "fulfilled" ||
+      parsed.status === "failed" ||
+      !parsed.spinPlan ||
+      parsed.spinPlan.status === "failed"
+    ) {
+      return null;
+    }
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+export function clearBoostedFirstPickPlan(): void {
+  if (typeof sessionStorage === "undefined") return;
+  try {
+    sessionStorage.removeItem(FIRST_PICK_STORAGE_KEY);
+  } catch {
+    /* ignore */
+  }
 }

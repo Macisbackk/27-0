@@ -122,8 +122,9 @@ export function computeManagerSeasonRewardLines(
     });
   }
 
-  const fanMood = career.attendanceData.fanMood;
-  if (fanMood >= 65) {
+  const avgAttendance = career.attendanceData.currentAverageAttendance;
+  const baseAttendance = career.attendanceData.baseAttendance;
+  if (avgAttendance >= baseAttendance * 1.05) {
     lines.push({
       id: "mgr-attendance-growth",
       label: "Strong Attendance Growth",

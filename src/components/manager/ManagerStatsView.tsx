@@ -8,7 +8,6 @@ import type { ManagerCareer, RetiredPlayer } from "@/lib/manager/types";
 import { getManagerPlayer, getRetiredPlayerDisplayAge } from "@/lib/manager/managerPlayers";
 import { getRetiredPlayerSaveStats } from "@/lib/manager/managerRetirement";
 import {
-  computeSquadFitness,
   computeSquadForm,
   formLabel,
   getTopGoalScorer,
@@ -149,11 +148,6 @@ function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
             label="Squad form"
             value={formLabel(computeSquadForm(career))}
             tone="sky"
-          />
-          <ManagerStat
-            label="Fitness"
-            value={`${computeSquadFitness(career)}%`}
-            tone="primary"
           />
         </div>
       </ManagerSectionCard>

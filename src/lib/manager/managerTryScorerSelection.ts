@@ -17,7 +17,6 @@ export interface ScorerCandidate {
   position: Position;
   rating: number;
   form: number;
-  fitness: number;
   isInterchange: boolean;
   baseWeight: number;
 }
@@ -62,18 +61,17 @@ export function resolvePlayerRating(
   return CONSERVATIVE_FALLBACK_RATING;
 }
 
-/** Ability × form × fitness × position share. */
+/** Ability × form × position share. */
 export function computeAbilityScorerFactor(
   rating: number,
   form: number,
-  fitness: number
+  _fitness = 100
 ): number {
   // Do not floor at senior 80 — reserves/FAs at 70–79 must not get elite weight.
   const r = Math.max(1, rating);
   const formMul = 0.72 + (Math.max(1, Math.min(99, form)) / 100) * 0.56;
-  const fitMul = 0.55 + (Math.max(1, Math.min(100, fitness)) / 100) * 0.45;
   // Baseline 83 (squad/rotation on the senior scale). Lower ratings stay meaningful.
-  return Math.pow(r / 83, 2.35) * formMul * fitMul;
+  return Math.pow(r / 83, 2.35) * formMul;
 }
 
 export { sanitizeWeight, pickWeightedIndexSafe } from "./managerTryScoring";
@@ -115,20 +113,18 @@ export function buildMatchdayScorerCandidates(
     const squadState = career.squad.find((p) => p.playerId === id);
     const reserve = career.reserves?.find((r) => r.id === id);
     const form = squadState?.form ?? reserve?.form ?? 50;
-    const fitness = squadState?.fitness ?? reserve?.fitness ?? 100;
     const rating = resolvePlayerRating(player.peakRating, {
       playerId: player.id,
       name: player.name,
     });
     const posWeight = getMatchdayTryWeight(pos, isInterchange);
-    const ability = computeAbilityScorerFactor(rating, form, fitness);
+    const ability = computeAbilityScorerFactor(rating, form);
     out.push({
       id: player.id,
       name: player.name,
       position: pos,
       rating,
       form,
-      fitness,
       isInterchange,
       baseWeight: sanitizeWeight(posWeight * ability),
     });

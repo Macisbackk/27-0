@@ -18,12 +18,15 @@ import {
   PlayerRatingPotentialRow,
 } from "@/components/manager/ManagerPlayerCard";
 import { playUiClick } from "@/lib/sound";
+import { UI_COPY } from "@/lib/ui/copy";
 
 interface ManagerReservePlayerCardProps {
   model: ReserveCardModel;
   club: string;
   /** Staff review flags — rendered in the status zone, never beside the name. */
   extraChips?: ReserveCardChip[];
+  protectedFromMassRelease?: boolean;
+  onToggleProtectFromMassRelease?: (id: string) => void;
   onCallUp: (id: string) => void;
   onCancelCallUp?: (id: string) => void;
   onPromote: (id: string) => void;
@@ -36,6 +39,8 @@ export function ManagerReservePlayerCard({
   model,
   club,
   extraChips = [],
+  protectedFromMassRelease = false,
+  onToggleProtectFromMassRelease,
   onCallUp,
   onCancelCallUp,
   onPromote,
@@ -171,8 +176,24 @@ export function ManagerReservePlayerCard({
                     onViewDetails(model.id);
                   }}
                 >
-                  View Player
+                  {UI_COPY.viewDetails}
                 </button>
+                {onToggleProtectFromMassRelease ? (
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="btn-press block w-full rounded-md px-3 py-2 text-left text-xs font-semibold text-white hover:bg-pitch-800"
+                    onClick={() => {
+                      playUiClick();
+                      setMenuOpen(false);
+                      onToggleProtectFromMassRelease(model.id);
+                    }}
+                  >
+                    {protectedFromMassRelease
+                      ? "Unprotect from mass release"
+                      : UI_COPY.protectFromMassRelease}
+                  </button>
+                ) : null}
               </div>
             ) : null}
           </div>

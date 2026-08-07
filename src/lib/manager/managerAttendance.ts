@@ -169,10 +169,6 @@ export function getHistoricalPerformanceSignal(career: ManagerCareer): number {
     weight += 1.1;
   }
 
-  const mood = (career.attendanceData.fanMood - 50) / 50;
-  weighted += mood * 0.35;
-  weight += 0.35;
-
   if (weight <= 0) return 0;
   return clampAttendance(weighted / weight, -1, 1);
 }
@@ -257,7 +253,6 @@ export function createClubAttendanceData(club: string): ClubAttendanceData {
     baseAttendance: base,
     currentAverageAttendance: base,
     stadiumCapacity: capacity,
-    fanMood: 50,
     attendanceFloor: initialAttendanceFloor(club, base),
   };
 }
@@ -279,6 +274,8 @@ export function syncClubAttendanceData(
     ...data,
     stadiumCapacity: capacity,
     attendanceFloor: data.attendanceFloor ?? profileFloor,
+    // Fan Mood removed — drop legacy field on hydrate.
+    fanMood: undefined,
   };
 }
 
@@ -488,30 +485,10 @@ export function calculateChallengeCupFinalAttendance(
   return CHALLENGE_CUP_FINAL_ATTENDANCE_MIN + Math.floor(rng() * span);
 }
 
-function fanMoodChangeFromMatch(
-  fixture: ManagerScheduledFixture,
-  match: MatchFixture
-): number {
-  let fanMoodChange = 0;
-  if (match.result === "W") fanMoodChange += 3;
-  else fanMoodChange -= 2;
-  if (match.isUpset) fanMoodChange += 2;
-  const margin = match.pointsFor - match.pointsAgainst;
-  if (margin >= 20) fanMoodChange += 2;
-  if (margin <= -15) fanMoodChange -= 2;
-  if (fixture.competition === "challenge_cup" && match.result === "W") {
-    fanMoodChange += 2;
-  }
-  if (fixture.competition === "playoffs" && match.result === "W") {
-    fanMoodChange += 3;
-  }
-  return fanMoodChange;
-}
-
 function processMagicWeekendAttendance(
   career: ManagerCareer,
   fixture: ManagerScheduledFixture,
-  match: MatchFixture
+  _match: MatchFixture
 ): {
   career: ManagerCareer;
   meta: MatchAttendanceMeta;
@@ -520,26 +497,14 @@ function processMagicWeekendAttendance(
     career.seed,
     fixture.id ?? `magic-${fixture.round}`
   );
-  const fanMoodChange = fanMoodChangeFromMatch(fixture, match);
-  const newFanMood = Math.max(
-    10,
-    Math.min(99, career.attendanceData.fanMood + fanMoodChange)
-  );
 
   return {
-    career: {
-      ...career,
-      attendanceData: {
-        ...career.attendanceData,
-        fanMood: newFanMood,
-      },
-    },
+    career,
     meta: {
       attendance,
       gateIncome: 0,
       transferAllocation: 0,
       operatingAllocation: 0,
-      fanMoodChange,
       ticketPrice: 0,
       venue: MAGIC_WEEKEND_VENUE,
       excludedFromClubFunds: true,
@@ -550,32 +515,20 @@ function processMagicWeekendAttendance(
 function processChallengeCupFinalAttendance(
   career: ManagerCareer,
   fixture: ManagerScheduledFixture,
-  match: MatchFixture
+  _match: MatchFixture
 ): {
   career: ManagerCareer;
   meta: MatchAttendanceMeta;
 } {
   const attendance = calculateChallengeCupFinalAttendance(career, fixture);
-  const fanMoodChange = fanMoodChangeFromMatch(fixture, match);
-  const newFanMood = Math.max(
-    10,
-    Math.min(99, career.attendanceData.fanMood + fanMoodChange)
-  );
 
   return {
-    career: {
-      ...career,
-      attendanceData: {
-        ...career.attendanceData,
-        fanMood: newFanMood,
-      },
-    },
+    career,
     meta: {
       attendance,
       gateIncome: 0,
       transferAllocation: 0,
       operatingAllocation: 0,
-      fanMoodChange,
       ticketPrice: 0,
       venue: CHALLENGE_CUP_FINAL_VENUE,
       excludedFromClubFunds: true,
@@ -586,32 +539,20 @@ function processChallengeCupFinalAttendance(
 function processGrandFinalAttendance(
   career: ManagerCareer,
   fixture: ManagerScheduledFixture,
-  match: MatchFixture
+  _match: MatchFixture
 ): {
   career: ManagerCareer;
   meta: MatchAttendanceMeta;
 } {
   const attendance = calculateGrandFinalAttendance(career, fixture);
-  const fanMoodChange = fanMoodChangeFromMatch(fixture, match);
-  const newFanMood = Math.max(
-    10,
-    Math.min(99, career.attendanceData.fanMood + fanMoodChange)
-  );
 
   return {
-    career: {
-      ...career,
-      attendanceData: {
-        ...career.attendanceData,
-        fanMood: newFanMood,
-      },
-    },
+    career,
     meta: {
       attendance,
       gateIncome: 0,
       transferAllocation: 0,
       operatingAllocation: 0,
-      fanMoodChange,
       ticketPrice: 0,
       venue: GRAND_FINAL_VENUE,
       excludedFromClubFunds: true,
@@ -691,7 +632,7 @@ export function calculateMatchAttendance(
 ): number {
   if (!fixture.isHome) return 0;
 
-  const { baseAttendance, stadiumCapacity, fanMood } = career.attendanceData;
+  const { baseAttendance, stadiumCapacity } = career.attendanceData;
   const isPlayoff = fixture.competition === "playoffs";
   const isRival = areRivalClubs(career.club, fixture.opponent);
 
@@ -724,8 +665,7 @@ export function calculateMatchAttendance(
       fixture.opponent,
       fixture.competition
     ) *
-    competitionMultiplier(fixture.competition) *
-    (0.85 + fanMood / 200);
+    competitionMultiplier(fixture.competition);
 
   const floor = getClubAttendanceFloor(
     career.club,
@@ -771,12 +711,6 @@ export function processHomeMatchAttendance(
   const { transfer: transferAllocation, operating: operatingAllocation } =
     splitRevenue(gateIncome, "gate");
 
-  const fanMoodChange = fanMoodChangeFromMatch(fixture, match);
-
-  const newFanMood = Math.max(
-    10,
-    Math.min(99, career.attendanceData.fanMood + fanMoodChange)
-  );
   const prevAvg = career.attendanceData.currentAverageAttendance;
   const homeGames = career.gateIncomeHistory.length + 1;
   const newAvg = Math.round(
@@ -809,7 +743,6 @@ export function processHomeMatchAttendance(
         ...career,
         attendanceData: {
           ...career.attendanceData,
-          fanMood: newFanMood,
           currentAverageAttendance: newAvg,
         },
         gateIncomeHistory: [...career.gateIncomeHistory, record],
@@ -828,16 +761,9 @@ export function processHomeMatchAttendance(
       gateIncome,
       transferAllocation,
       operatingAllocation,
-      fanMoodChange,
       ticketPrice: price,
     },
   };
-}
-
-export function fanMoodTrend(fanMood: number): string {
-  if (fanMood >= 70) return "Rising";
-  if (fanMood >= 45) return "Steady";
-  return "Falling";
 }
 
 export function getLastHomeGate(

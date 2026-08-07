@@ -1,13 +1,53 @@
 import { STORAGE_KEYS } from "../storage/keys";
 
+/**
+ * Canonical one-time unlock ledger row.
+ * `popupAcknowledged` is authoritative for whether the unlock toast may queue.
+ */
 export type UnlockedAchievement = {
+  /** Achievement definition id. */
   id: string;
   unlockedAt: string;
-  popupSeen?: boolean;
+  /** Stable id for this unlock event — never reused for the same achievement. */
+  unlockEventId: string;
+  popupAcknowledged: boolean;
   rewardClaimed?: boolean;
 };
 
 export const ACHIEVEMENTS_CHANGED_EVENT = "27-0-achievements-changed";
+
+function createUnlockEventId(achievementId: string, unlockedAt: string): string {
+  return `ach-unlock:${achievementId}:${unlockedAt}`;
+}
+
+function normalizeRow(raw: unknown): UnlockedAchievement | null {
+  if (typeof raw !== "object" || raw === null) return null;
+  const row = raw as Record<string, unknown>;
+  if (typeof row.id !== "string" || typeof row.unlockedAt !== "string") {
+    return null;
+  }
+
+  const hasAckField =
+    "popupAcknowledged" in row || "popupSeen" in row;
+  // Pre-ack-field legacy rows were already earned — never replay.
+  // Explicit false (or missing true) stays unacked until acknowledge().
+  const popupAcknowledged = hasAckField
+    ? row.popupAcknowledged === true || row.popupSeen === true
+    : true;
+
+  const unlockEventId =
+    typeof row.unlockEventId === "string" && row.unlockEventId.length > 0
+      ? row.unlockEventId
+      : createUnlockEventId(row.id, row.unlockedAt);
+
+  return {
+    id: row.id,
+    unlockedAt: row.unlockedAt,
+    unlockEventId,
+    popupAcknowledged,
+    rewardClaimed: row.rewardClaimed === true,
+  };
+}
 
 function loadRaw(): UnlockedAchievement[] {
   if (typeof window === "undefined") return [];
@@ -16,20 +56,14 @@ function loadRaw(): UnlockedAchievement[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw) as unknown;
     if (!Array.isArray(parsed)) return [];
-    return parsed
-      .filter(
-        (row): row is UnlockedAchievement =>
-          typeof row === "object" &&
-          row !== null &&
-          typeof (row as UnlockedAchievement).id === "string" &&
-          typeof (row as UnlockedAchievement).unlockedAt === "string"
-      )
-      .map((row) => ({
-        id: row.id,
-        unlockedAt: row.unlockedAt,
-        popupSeen: row.popupSeen === true,
-        rewardClaimed: row.rewardClaimed === true,
-      }));
+    const byId = new Map<string, UnlockedAchievement>();
+    for (const item of parsed) {
+      const row = normalizeRow(item);
+      if (!row) continue;
+      // Never unlock twice — first row wins.
+      if (!byId.has(row.id)) byId.set(row.id, row);
+    }
+    return Array.from(byId.values());
   } catch {
     return [];
   }
@@ -37,7 +71,15 @@ function loadRaw(): UnlockedAchievement[] {
 
 function saveRaw(rows: UnlockedAchievement[]): void {
   if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEYS.achievements, JSON.stringify(rows));
+  // Dedupe by achievement id before persist.
+  const byId = new Map<string, UnlockedAchievement>();
+  for (const row of rows) {
+    if (!byId.has(row.id)) byId.set(row.id, row);
+  }
+  localStorage.setItem(
+    STORAGE_KEYS.achievements,
+    JSON.stringify(Array.from(byId.values()))
+  );
   window.dispatchEvent(new CustomEvent(ACHIEVEMENTS_CHANGED_EVENT));
 }
 
@@ -58,3 +100,9 @@ export function getUnlockedAchievement(
 ): UnlockedAchievement | undefined {
   return loadRaw().find((row) => row.id === id);
 }
+
+export function isAchievementPopupAcknowledged(id: string): boolean {
+  return getUnlockedAchievement(id)?.popupAcknowledged === true;
+}
+
+export { createUnlockEventId };

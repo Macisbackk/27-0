@@ -104,7 +104,6 @@ function createFutureStarReserve(
     potentialRating,
     developmentRate: 1.2 + rng() * 0.4,
     form: 55 + Math.floor(rng() * 20),
-    fitness: 90,
     reserveAppearances: 0,
     reserveTries: 0,
     calledUpForNextMatch: false,

@@ -249,6 +249,24 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     setReleaseTarget(reserve);
   };
 
+  const handleToggleProtectFromMassRelease = (id: string) => {
+    playUiClick();
+    const protectedIds = new Set(
+      settings.reserveDevelopmentSettings?.protectedFromMassReleaseIds ?? []
+    );
+    if (protectedIds.has(id)) protectedIds.delete(id);
+    else protectedIds.add(id);
+    const nextDev = {
+      ...settings.reserveDevelopmentSettings,
+      protectedFromMassReleaseIds: [...protectedIds],
+      reserveManagementSettingsVersion: 2,
+    };
+    patchManagerCareerSettings(career, onUpdate, settings, {
+      reserveDevelopmentSettings: nextDev,
+      reserveReleaseSettings: nextDev,
+    });
+  };
+
   /**
    * Release always routes through applyReserveReleases so the player keeps their
    * stable id and lands in the free-agent pool. A failure is surfaced rather
@@ -259,7 +277,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     const result = applyReserveReleases(
       career,
       [{ reserve: releaseTarget, reason: "Released by club" }],
-      { forceBelowMinimum: true }
+      { forceBelowMinimum: true, ignoreMassReleaseProtection: true }
     );
     if (!result.ok || !result.career) {
       setReleaseTarget(null);
@@ -663,6 +681,13 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                     ...REVIEW_CHIP[flag],
                     title: review.reasons.join(" · "),
                   }))}
+                  protectedFromMassRelease={(
+                    settings.reserveDevelopmentSettings
+                      ?.protectedFromMassReleaseIds ?? []
+                  ).includes(r.id)}
+                  onToggleProtectFromMassRelease={
+                    handleToggleProtectFromMassRelease
+                  }
                   onCallUp={handleCallUp}
                   onCancelCallUp={handleCancelCallUp}
                   onPromote={handlePromote}

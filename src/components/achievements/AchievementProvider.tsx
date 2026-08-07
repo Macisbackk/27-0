@@ -12,9 +12,12 @@ import {
 import {
   checkAchievements,
   synchronizeAchievementBaseline,
-  markAchievementPopupSeen,
+  markAchievementPopupAcknowledged,
   type AchievementUnlockResult,
 } from "@/lib/achievements/achievementEngine";
+import {
+  isAchievementPopupAcknowledged,
+} from "@/lib/achievements/achievementStorage";
 import type { AchievementCheckContext } from "@/lib/achievements/achievementContext";
 import { ACHIEVEMENT_CHECK_EVENT } from "@/lib/achievements/achievementNotify";
 import { useAuth } from "@/lib/auth-context";
@@ -55,7 +58,8 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
   const queuedIdsRef = useRef<Set<string>>(new Set());
   const activeIdRef = useRef<string | null>(null);
   const hydratedRef = useRef(false);
-  const baselineIdsRef = useRef<Set<string>>(new Set());
+  /** Ledger IDs that must never requeue (unlocked + acknowledged, or baseline). */
+  const acknowledgedIdsRef = useRef<Set<string>>(new Set());
   const pendingCtxRef = useRef<AchievementCheckContext | null>(null);
   const baselineUserKeyRef = useRef<string | null>(null);
 
@@ -67,13 +71,25 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const enqueue = useCallback((items: AchievementUnlockResult[]) => {
-    if (!achievementPopupsEnabled() || items.length === 0) return;
+    if (items.length === 0) return;
+
+    if (!achievementPopupsEnabled()) {
+      for (const item of items) {
+        markAchievementPopupAcknowledged(item.id);
+        acknowledgedIdsRef.current.add(item.id);
+      }
+      return;
+    }
 
     const fresh: AchievementUnlockResult[] = [];
     for (const item of items) {
       if (queuedIdsRef.current.has(item.id)) continue;
       if (activeIdRef.current === item.id) continue;
-      if (baselineIdsRef.current.has(item.id)) continue;
+      if (acknowledgedIdsRef.current.has(item.id)) continue;
+      if (isAchievementPopupAcknowledged(item.id)) {
+        acknowledgedIdsRef.current.add(item.id);
+        continue;
+      }
       queuedIdsRef.current.add(item.id);
       fresh.push(item);
     }
@@ -84,8 +100,9 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
   const finishHydration = useCallback(
     (ctx: AchievementCheckContext = {}) => {
       const userKey = userId ?? "guest";
-      const { unlockedIds } = synchronizeAchievementBaseline(ctx);
-      baselineIdsRef.current = new Set(unlockedIds);
+      // Baseline from ledger (+ silent progress import). Never queue historical unlocks.
+      const { acknowledgedIds } = synchronizeAchievementBaseline(ctx);
+      acknowledgedIdsRef.current = new Set(acknowledgedIds);
       baselineUserKeyRef.current = userKey;
       hydratedRef.current = true;
       setIsAchievementHydrated(true);
@@ -117,7 +134,6 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     if (baselineUserKeyRef.current === userKey && hydratedRef.current) {
       return;
     }
-    // Only tear down hydration when the signed-in identity actually changes.
     if (baselineUserKeyRef.current !== null && baselineUserKeyRef.current !== userKey) {
       hydratedRef.current = false;
       setIsAchievementHydrated(false);
@@ -134,16 +150,20 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     finishHydration();
   }, [authLoading, userId, finishHydration]);
 
-  // Cloud hydrate completes with auth-state-changed — re-baseline silently
-  // without flipping hydrated false (avoids full-tree flicker).
+  // Cloud/stats hydrate: re-baseline from ledger + progress without flipping
+  // hydrated false (avoids full-tree flicker / popup replay).
   useEffect(() => {
     const onAuthChanged = () => {
       if (!hydratedRef.current) {
         finishHydration();
         return;
       }
-      const { unlockedIds } = synchronizeAchievementBaseline({});
-      baselineIdsRef.current = new Set(unlockedIds);
+      const { acknowledgedIds } = synchronizeAchievementBaseline({});
+      acknowledgedIdsRef.current = new Set(acknowledgedIds);
+      // Never requeue after acknowledge — drop any queued ids now in ledger ack set.
+      setQueue((prev) =>
+        prev.filter((item) => !acknowledgedIdsRef.current.has(item.id))
+      );
     };
     window.addEventListener("auth-state-changed", onAuthChanged);
     return () => window.removeEventListener("auth-state-changed", onAuthChanged);
@@ -158,11 +178,24 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener(ACHIEVEMENT_CHECK_EVENT, onCheck);
   }, [notifyAchievements]);
 
+  // Advance queue → active. Persist ack *before* the popup is interactive/closed
+  // so remount/hydrate cannot requeue this unlock.
   useEffect(() => {
     if (active || queue.length === 0) return;
     const [next, ...rest] = queue;
+    // Skip if ledger already acknowledged (Strict Mode / remount race).
+    if (
+      acknowledgedIdsRef.current.has(next.id) ||
+      isAchievementPopupAcknowledged(next.id)
+    ) {
+      acknowledgedIdsRef.current.add(next.id);
+      queuedIdsRef.current.delete(next.id);
+      setQueue(rest);
+      return;
+    }
     activeIdRef.current = next.id;
-    markAchievementPopupSeen(next.id);
+    markAchievementPopupAcknowledged(next.id);
+    acknowledgedIdsRef.current.add(next.id);
     setActive(next);
     setQueue(rest);
   }, [active, queue]);
@@ -176,7 +209,8 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
 
     dismissTimer.current = setTimeout(() => {
       if (activeIdRef.current !== shownId) return;
-      markAchievementPopupSeen(shownId);
+      markAchievementPopupAcknowledged(shownId);
+      acknowledgedIdsRef.current.add(shownId);
       queuedIdsRef.current.delete(shownId);
       activeIdRef.current = null;
       setActive(null);
@@ -197,7 +231,9 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     if (!active) return;
     const id = active.id;
     clearDismissTimer();
-    markAchievementPopupSeen(id);
+    // Persist ack before close.
+    markAchievementPopupAcknowledged(id);
+    acknowledgedIdsRef.current.add(id);
     queuedIdsRef.current.delete(id);
     activeIdRef.current = null;
     setActive(null);

@@ -61,12 +61,6 @@ export function computeSquadForm(career: ManagerCareer): number {
   return Math.round(sum / career.squad.length);
 }
 
-export function computeSquadFitness(career: ManagerCareer): number {
-  if (career.squad.length === 0) return 100;
-  const sum = career.squad.reduce((a, p) => a + p.fitness, 0);
-  return Math.round(sum / career.squad.length);
-}
-
 export function formLabel(score: number): string {
   if (score >= 75) return "In form";
   if (score >= 60) return "Good";

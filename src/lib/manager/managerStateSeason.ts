@@ -28,7 +28,7 @@ import {
 import { awardManagerSeasonBoardGrant } from "./managerSeasonRewards";
 import { addContractLeavingInboxMessage, clearSeasonTransferState } from "./managerInbox";
 import { createClubAttendanceData, applyAttendancePerformanceDrift } from "./managerAttendance";
-import { applyConfiguredReserveAutoRelease, tickReserveYearsAtClub } from "./managerReserveRelease";
+import { applyAutoPromoteByRating, tickReserveYearsAtClub } from "./managerReserveRelease";
 import { applySeasonAiReserveIntake, ensureAllClubReserveDepth } from "./managerReserves";
 import {
   applyYearlyYouthIntake,
@@ -163,7 +163,6 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
     averageAttendance: avgAttendance,
     highestAttendance: sa.high,
     lowestAttendance: sa.count > 0 ? sa.low : 0,
-    finalFanMood: career.attendanceData.fanMood,
     wageBill: career.wageBill,
     expiringContracts: expiring,
     playersLeaving: leaving.map(
@@ -309,7 +308,6 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
       ...p,
       seasonAppearances: 0,
       seasonTries: 0,
-      fitness: Math.min(100, p.fitness + 20),
     })),
     reserves: afterReserveContracts.reserves.map((r) => ({
       ...r,
@@ -382,7 +380,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const aged = hydrateManagerPlayerRegistryAges(withChampion);
   const withTenure = tickReserveYearsAtClub(aged);
   return ensureAllClubReserveDepth(
-    applyConfiguredReserveAutoRelease(
+    applyAutoPromoteByRating(
       scheduleWorldClubChallengeForSeason(withTenure)
     )
   );

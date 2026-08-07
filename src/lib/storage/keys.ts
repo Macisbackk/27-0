@@ -41,7 +41,7 @@ export const STORAGE_KEYS = {
 } as const;
 
 /** Bump when achievement hydration / acknowledgement migration changes. */
-export const ACHIEVEMENTS_BASELINE_VERSION = 1;
+export const ACHIEVEMENTS_BASELINE_VERSION = 2;
 
 /** Bump when StoredStats shape changes — triggers one-time local migration. */
 export const STATS_SCHEMA_VERSION = 3;

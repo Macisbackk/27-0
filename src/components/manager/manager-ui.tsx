@@ -879,12 +879,6 @@ export function boardConfidenceTone(confidence: number): ManagerValueTone {
   return "red";
 }
 
-export function fanMoodTone(mood: number): ManagerValueTone {
-  if (mood >= 70) return "primary";
-  if (mood >= 45) return "default";
-  return "amber";
-}
-
 /** Match prediction copy → colour by favourability. */
 export function matchPredictionTone(prediction: string): ManagerValueTone {
   if (

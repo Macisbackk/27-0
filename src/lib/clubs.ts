@@ -224,6 +224,18 @@ export function getClubIndicatorColor(clubName: string): string {
   return indicator;
 }
 
+/**
+ * Accent colour for Match Stats / event panels.
+ * Prefer club secondary so scoring cards stay neutral (no Store theme strip).
+ */
+export function getClubEventPanelAccent(
+  clubId: string,
+  tone: "primary" | "secondary" = "secondary"
+): string {
+  const colors = getClubColors(clubId);
+  return tone === "primary" ? colors.primary : colors.secondary;
+}
+
 /** Shared two-tone club theme — single source for all club UI. */
 export interface ClubTheme {
   colors: ClubColorSet;

@@ -48,7 +48,6 @@ function reserve(
     potentialRating: 88,
     developmentRate: 1,
     form: 60,
-    fitness: 100,
     reserveAppearances: 6,
     reserveTries: 2,
     calledUpForNextMatch: false,

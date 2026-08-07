@@ -95,7 +95,7 @@ import {
   maybeLogSaveSizeDiagnostics,
   measureCareerSaveSize,
 } from "./managerSaveDiagnostics";
-import { stampManagerSaveVersion } from "./managerSaveVersion";
+import { stampManagerSaveVersion, SIMPLIFIED_PLAYER_SYSTEMS_VERSION } from "./managerSaveVersion";
 
 export const PLAYER_SHOWCASE_VERSION = 2;
 export const HISTORIC_AGE_DATA_VERSION = 2;
@@ -113,28 +113,34 @@ function hydrateManagerSettings(
     | Record<string, unknown>
     | undefined;
   const modern = raw?.reserveDevelopmentSettings;
-  const mergedDev = {
+  const mergedDev: ManagerSettings["reserveDevelopmentSettings"] = {
     ...DEFAULT_MANAGER_SETTINGS.reserveDevelopmentSettings,
     ...(modern ?? {}),
+    protectedFromMassReleaseIds: [
+      ...(DEFAULT_MANAGER_SETTINGS.reserveDevelopmentSettings
+        .protectedFromMassReleaseIds ?? []),
+      ...((modern?.protectedFromMassReleaseIds as string[] | undefined) ?? []),
+    ],
   };
 
   // Migrate legacy rating/age toggle fields if present on old saves.
-  if (legacy && !modern) {
+  if (legacy && (!modern || (modern.reserveManagementSettingsVersion ?? 0) < 2)) {
     if (typeof legacy.releaseUnderRating === "number") {
-      mergedDev.releaseIfRatingBelow = legacy.releaseUnderRating as number;
+      mergedDev.massReleaseRatingBelow = legacy.releaseUnderRating as number;
+      mergedDev.massReleaseByRatingEnabled = true;
     }
-    if (legacy.enableAutoReleaseByRating === true) {
-      mergedDev.releaseAfterYearsEnabled = true;
-      mergedDev.autoReleaseEnabled = true;
+    if (typeof legacy.releaseIfRatingBelow === "number") {
+      mergedDev.massReleaseRatingBelow = legacy.releaseIfRatingBelow as number;
+    }
+    if (typeof legacy.fullTimeRatingThreshold === "number") {
+      mergedDev.autoPromoteRatingThreshold =
+        legacy.fullTimeRatingThreshold as number;
     }
     if (typeof legacy.minimumReserveSquadSize === "number") {
       mergedDev.minimumReserveSquadSize =
         legacy.minimumReserveSquadSize as number;
     }
-    if (typeof legacy.protectHighPotentialPlayers === "boolean") {
-      mergedDev.protectHighPotentialPlayers =
-        legacy.protectHighPotentialPlayers as boolean;
-    }
+    mergedDev.reserveManagementSettingsVersion = 2;
   }
 
   return {
@@ -147,8 +153,6 @@ function hydrateManagerSettings(
       DEFAULT_MANAGER_SETTINGS.showAchievementPopups,
     compactFixtureRows:
       raw?.compactFixtureRows ?? DEFAULT_MANAGER_SETTINGS.compactFixtureRows,
-    autoOpenNextFixture:
-      raw?.autoOpenNextFixture ?? DEFAULT_MANAGER_SETTINGS.autoOpenNextFixture,
     wccWriteUpExpandedByDefault:
       raw?.wccWriteUpExpandedByDefault ??
       DEFAULT_MANAGER_SETTINGS.wccWriteUpExpandedByDefault,
@@ -291,7 +295,6 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     squad: (raw.squad ?? []).map((p) => ({
       playerId: p.playerId,
       form: p.form ?? 50,
-      fitness: p.fitness ?? 85,
       injury: p.injury ?? null,
       seasonAppearances: p.seasonAppearances ?? 0,
       seasonTries: p.seasonTries ?? 0,
@@ -364,6 +367,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     managerSettings: hydrateManagerSettings(raw.managerSettings),
     playerShowcaseVersion: PLAYER_SHOWCASE_VERSION,
     historicAgeDataVersion: HISTORIC_AGE_DATA_VERSION,
+    simplifiedPlayerSystemsVersion: SIMPLIFIED_PLAYER_SYSTEMS_VERSION,
   };
 
   career = ensureRenewalDemands(career);

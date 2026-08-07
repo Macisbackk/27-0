@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { FooterSupportLinks } from "./FooterSupportLinks";
 import { GAME_VERSION } from "../../data/version";
 import { TYPO } from "@/lib/ui/typography";
+import { recordShellMount } from "@/lib/ui/mount-diagnostics";
 
 const DISCLAIMER =
   "27-0 is an unofficial fan-made rugby league squad-building game. It is not affiliated with, endorsed by, sponsored by, or connected to the Rugby Football League, Super League, RL Commercial, any rugby league club, broadcaster, player, or governing body. All names, clubs, and references are used for fan entertainment purposes only.";
@@ -15,6 +17,10 @@ export function SiteFooter() {
   const minimalChrome = MINIMAL_CHROME_PATHS.some((path) =>
     pathname.startsWith(path)
   );
+
+  useEffect(() => {
+    recordShellMount("app-footer");
+  }, []);
 
   if (minimalChrome) {
     return (

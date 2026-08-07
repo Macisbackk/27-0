@@ -120,6 +120,7 @@ import {
 } from "@/lib/sound";
 import { PageShell } from "@/components/ui/PageShell";
 import { PAGE } from "@/lib/ui/design-system";
+import { recordShellMount } from "@/lib/ui/mount-diagnostics";
 import {
   confirmFriendlySchedule,
   ensureFriendlyChoices,
@@ -407,6 +408,10 @@ export default function ManagerPage() {
 
   const refreshSaveSlots = useCallback(() => {
     setSaveSlots(listManagerSaveSlots());
+  }, []);
+
+  useEffect(() => {
+    recordShellMount("manager-shell");
   }, []);
 
   useEffect(() => {
@@ -704,6 +709,7 @@ export default function ManagerPage() {
 
   /** Scroll to top when switching between main Manager nav tabs. */
   const prevNavViewRef = useRef<ManagerView | null>(null);
+  const lastNavViewRef = useRef<ManagerView>("hub");
   useLayoutEffect(() => {
     if (!isManagerNavView(displayView)) {
       prevNavViewRef.current = displayView;
@@ -1093,8 +1099,7 @@ export default function ManagerPage() {
       continueAfterMatchReview();
       if (
         landsOnHub &&
-        career?.matchWeekPhase !== "awaiting_advance" &&
-        (career?.managerSettings?.autoOpenNextFixture ?? true)
+        career?.matchWeekPhase !== "awaiting_advance"
       ) {
         setPendingHubNextFixtureScroll(true);
       }
@@ -1103,8 +1108,7 @@ export default function ManagerPage() {
     goToView(matchReviewReturnView);
     if (
       matchReviewReturnView === "hub" &&
-      career?.matchWeekPhase !== "awaiting_advance" &&
-      (career?.managerSettings?.autoOpenNextFixture ?? true)
+      career?.matchWeekPhase !== "awaiting_advance"
     ) {
       setPendingHubNextFixtureScroll(true);
     }
@@ -1752,11 +1756,27 @@ export default function ManagerPage() {
   };
 
   const managerOverlayActive = isManagerStateOverlayView(view);
+  if (
+    MANAGER_NAV_VIEWS.includes(displayView as (typeof MANAGER_NAV_VIEWS)[number])
+  ) {
+    lastNavViewRef.current = displayView;
+  }
+  const chromeNavView = (
+    MANAGER_NAV_VIEWS.includes(displayView as (typeof MANAGER_NAV_VIEWS)[number])
+      ? displayView
+      : lastNavViewRef.current
+  ) as (typeof MANAGER_NAV_VIEWS)[number];
 
-  const showNav =
-    career &&
-    !managerOverlayActive &&
-    MANAGER_NAV_VIEWS.includes(displayView as (typeof MANAGER_NAV_VIEWS)[number]);
+  // Keep Manager chrome + keep-alive panes mounted during overlay views
+  // so mobile does not remount the shell when opening match review / season flow.
+  const showChrome =
+    !!career &&
+    (managerOverlayActive ||
+      MANAGER_NAV_VIEWS.includes(
+        displayView as (typeof MANAGER_NAV_VIEWS)[number]
+      ));
+
+  const panesInteractive = showChrome && !managerOverlayActive && !playGameOpen;
 
   const incomingBidOffer =
     career && pendingIncomingBidId
@@ -1836,15 +1856,25 @@ export default function ManagerPage() {
         />
       )}
 
-      {showNav && career && (
-        <div className={`flex flex-col manager-mobile-nav-pad sm:pb-0 ${PAGE.section}`}>
+      {showChrome && career && (
+        <div
+          className={`flex flex-col manager-mobile-nav-pad sm:pb-0 ${PAGE.section} ${
+            managerOverlayActive || playGameOpen
+              ? "pointer-events-none max-sm:invisible max-sm:absolute max-sm:inset-0 max-sm:overflow-hidden"
+              : ""
+          }`}
+          aria-hidden={managerOverlayActive || playGameOpen}
+          inert={managerOverlayActive || playGameOpen ? true : undefined}
+        >
           <ManagerNav
-            active={awaitingFriendlyChoice ? "hub" : displayView}
+            active={awaitingFriendlyChoice ? "hub" : chromeNavView}
             club={career.club}
             seasonYear={career.seasonYear}
             gameWeek={career.gameWeek}
             onNavigate={handleNavNavigate}
-            disabled={playGameOpen || awaitingFriendlyChoice}
+            disabled={
+              playGameOpen || awaitingFriendlyChoice || managerOverlayActive
+            }
             unreadInbox={countUnreadInbox(career)}
             contextTabs={squadContextTabs}
           />
@@ -1876,7 +1906,7 @@ export default function ManagerPage() {
               />
             ) : (
               <>
-                <ManagerKeepAlivePane active={displayView === "hub"}>
+                <ManagerKeepAlivePane active={chromeNavView === "hub" && panesInteractive}>
                   <ManagerHub
                     career={career}
                     onPlayGame={handlePlayGame}
@@ -1890,39 +1920,39 @@ export default function ManagerPage() {
                   />
                 </ManagerKeepAlivePane>
 
-                <ManagerKeepAlivePane active={displayView === "inbox"}>
+                <ManagerKeepAlivePane active={chromeNavView === "inbox" && panesInteractive}>
                   <ManagerInbox
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}
                     onNavigate={handleInboxNavigate}
                   />
                 </ManagerKeepAlivePane>
-                <ManagerKeepAlivePane active={displayView === "squad"}>
+                <ManagerKeepAlivePane active={chromeNavView === "squad" && panesInteractive}>
                   <ManagerSquad
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}
                     subTab={squadSubTab}
                   />
                 </ManagerKeepAlivePane>
-                <ManagerKeepAlivePane active={displayView === "reserves"}>
+                <ManagerKeepAlivePane active={chromeNavView === "reserves" && panesInteractive}>
                   <ManagerReserves
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}
                   />
                 </ManagerKeepAlivePane>
-                <ManagerKeepAlivePane active={displayView === "contracts"}>
+                <ManagerKeepAlivePane active={chromeNavView === "contracts" && panesInteractive}>
                   <ManagerContracts career={career} onUpdate={persist} />
                 </ManagerKeepAlivePane>
-                <ManagerKeepAlivePane active={displayView === "transfers"}>
+                <ManagerKeepAlivePane active={chromeNavView === "transfers" && panesInteractive}>
                   <ManagerTransfers
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}
                   />
                 </ManagerKeepAlivePane>
-                <ManagerKeepAlivePane active={displayView === "club"}>
+                <ManagerKeepAlivePane active={chromeNavView === "club" && panesInteractive}>
                   <ManagerClub career={career} onUpdate={persist} />
                 </ManagerKeepAlivePane>
-                <ManagerKeepAlivePane active={displayView === "fixtures"}>
+                <ManagerKeepAlivePane active={chromeNavView === "fixtures" && panesInteractive}>
                   <ManagerFixtures
                     career={career}
                     onUpdate={persist}
@@ -1931,25 +1961,27 @@ export default function ManagerPage() {
                     onSelectFixture={handleSelectFixtureReview}
                   />
                 </ManagerKeepAlivePane>
-                <ManagerKeepAlivePane active={displayView === "across-league"}>
+                <ManagerKeepAlivePane active={chromeNavView === "across-league" && panesInteractive}>
                   <ManagerAcrossLeague
                     career={career}
                     onNavigate={handleNavNavigate}
                   />
                 </ManagerKeepAlivePane>
-                <ManagerKeepAlivePane active={displayView === "stats"}>
+                <ManagerKeepAlivePane active={chromeNavView === "stats" && panesInteractive}>
                   <ManagerStatsView career={career} />
                 </ManagerKeepAlivePane>
-                <ManagerKeepAlivePane active={displayView === "settings"}>
+                <ManagerKeepAlivePane active={chromeNavView === "settings" && panesInteractive}>
                   <ManagerSettings career={career} onUpdate={persist} />
                 </ManagerKeepAlivePane>
               </>
             )}
           </div>
           <ManagerMobileBottomNav
-            active={awaitingFriendlyChoice ? "hub" : displayView}
+            active={awaitingFriendlyChoice ? "hub" : chromeNavView}
             onNavigate={handleNavNavigate}
-            disabled={playGameOpen || awaitingFriendlyChoice}
+            disabled={
+              playGameOpen || awaitingFriendlyChoice || managerOverlayActive
+            }
           />
         </div>
       )}

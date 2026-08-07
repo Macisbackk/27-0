@@ -2,6 +2,7 @@
  * Reference-counted document scroll lock.
  * One service for spins, calendar animation, modals, and popups.
  * Releasing one owner never clears another owner's lock.
+ * Compensates scrollbar width so page width does not jump.
  */
 
 export type ScrollLockId = string;
@@ -15,8 +16,11 @@ type LockRecord = {
 type ScrollSnapshot = {
   bodyOverflow: string;
   htmlOverflow: string;
+  bodyPaddingRight: string;
+  htmlPaddingRight: string;
   scrollX: number;
   scrollY: number;
+  scrollbarGap: number;
 };
 
 const locks = new Map<ScrollLockId, LockRecord>();
@@ -28,8 +32,12 @@ function isBrowser(): boolean {
   return typeof document !== "undefined" && typeof window !== "undefined";
 }
 
+function measureScrollbarGap(): number {
+  if (!isBrowser()) return 0;
+  return Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+}
+
 function blockTouchMove(event: TouchEvent): void {
-  // Allow scrolling inside modal panels that opt in via data-scroll-lock-allow.
   const target = event.target;
   if (target instanceof Element) {
     if (target.closest("[data-scroll-lock-allow='true']")) return;
@@ -51,21 +59,32 @@ function detachTouchBlocker(): void {
 
 function applyLockStyles(): void {
   if (!isBrowser() || !snapshot) return;
+  const gap = snapshot.scrollbarGap;
   document.body.style.overflow = "hidden";
   document.documentElement.style.overflow = "hidden";
-  // Keep visual position stable without jumping to top.
   document.body.style.position = "fixed";
   document.body.style.top = `-${snapshot.scrollY}px`;
   document.body.style.left = "0";
   document.body.style.right = "0";
   document.body.style.width = "100%";
+  if (gap > 0) {
+    document.body.style.paddingRight = `${gap}px`;
+    document.documentElement.style.paddingRight = `${gap}px`;
+  }
   document.documentElement.dataset.uiOverlay = "1";
   attachTouchBlocker();
 }
 
 function restoreScrollStyles(): void {
   if (!isBrowser() || !snapshot) return;
-  const { bodyOverflow, htmlOverflow, scrollX, scrollY } = snapshot;
+  const {
+    bodyOverflow,
+    htmlOverflow,
+    bodyPaddingRight,
+    htmlPaddingRight,
+    scrollX,
+    scrollY,
+  } = snapshot;
   document.body.style.overflow = bodyOverflow;
   document.documentElement.style.overflow = htmlOverflow;
   document.body.style.position = "";
@@ -73,6 +92,8 @@ function restoreScrollStyles(): void {
   document.body.style.left = "";
   document.body.style.right = "";
   document.body.style.width = "";
+  document.body.style.paddingRight = bodyPaddingRight;
+  document.documentElement.style.paddingRight = htmlPaddingRight;
   delete document.documentElement.dataset.uiOverlay;
   detachTouchBlocker();
   window.scrollTo(scrollX, scrollY);
@@ -88,8 +109,11 @@ export function acquireScrollLock(owner: string): ScrollLockId {
     snapshot = {
       bodyOverflow: document.body.style.overflow,
       htmlOverflow: document.documentElement.style.overflow,
+      bodyPaddingRight: document.body.style.paddingRight,
+      htmlPaddingRight: document.documentElement.style.paddingRight,
       scrollX: window.scrollX,
       scrollY: window.scrollY,
+      scrollbarGap: measureScrollbarGap(),
     };
     applyLockStyles();
   }
@@ -120,10 +144,6 @@ export function hasActiveScrollLocks(): boolean {
   return locks.size > 0;
 }
 
-/**
- * Drop abandoned animation locks (spin / calendar) without clearing modal locks.
- * Safe on route change / hydration.
- */
 export function clearAbandonedAnimationScrollLocks(
   ownerPrefixes: string[] = ["quick-mode-spin", "calendar-sim"]
 ): void {
@@ -146,6 +166,8 @@ export function resetScrollLockForTests(): void {
     document.documentElement.style.overflow = "";
     document.body.style.position = "";
     document.body.style.top = "";
+    document.body.style.paddingRight = "";
+    document.documentElement.style.paddingRight = "";
     delete document.documentElement.dataset.uiOverlay;
     detachTouchBlocker();
   }

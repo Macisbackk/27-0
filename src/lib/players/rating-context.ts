@@ -1,5 +1,6 @@
 import type { Player } from "../types";
 import { CURRENT_SEASON_YEAR } from "../play-links";
+import { UI_COPY } from "@/lib/ui/copy";
 
 export type PlayerRatingContext =
   | "current"
@@ -10,8 +11,7 @@ export type PlayerRatingContext =
 export const ERA_RATING_EXPLANATION =
   "Era Mode ratings reflect each player’s ability and performances in the selected season, not their overall career or all-time peak.";
 
-export const ERA_RATING_COMPACT_EXPLANATION =
-  "Ratings reflect how each player performed in that season.";
+export const ERA_RATING_COMPACT_EXPLANATION = UI_COPY.eraRatingNote;
 
 export function getCurrentSeasonYearNumber(): number {
   const parsed = Number.parseInt(String(CURRENT_SEASON_YEAR), 10);
@@ -23,7 +23,7 @@ export function getCurrentRatingExplanation(): string {
 }
 
 export function getCurrentRatingCompactExplanation(): string {
-  return "Ratings reflect this season’s performances.";
+  return UI_COPY.currentRatingNote;
 }
 
 export function getCurrentRatingSupportText(

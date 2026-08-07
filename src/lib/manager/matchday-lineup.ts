@@ -14,18 +14,12 @@ import { ERA_BENCH_FROM_STARTING_17, ERA_XIII_FROM_STARTING_17 } from "../player
 const XIII_SLOTS = ERA_XIII_FROM_STARTING_17;
 const BENCH_SLOTS = ERA_BENCH_FROM_STARTING_17;
 
-/** Mild OOP-style penalty when fitness is low after injury / heavy minutes. */
+/** Fitness system removed — always returns 0 (no rating penalty). */
 export function getManagerFitnessRatingPenalty(
-  career: ManagerCareer,
-  playerId: string
+  _career: ManagerCareer,
+  _playerId: string
 ): number {
-  const ps = career.squad.find((p) => p.playerId === playerId);
-  const fitness =
-    ps?.fitness ??
-    career.reserves.find((r) => r.id === playerId)?.fitness ??
-    90;
-  if (fitness >= 82) return 0;
-  return Math.min(6, Math.round((82 - fitness) * 0.25));
+  return 0;
 }
 
 function padStringArray(values: string[] | undefined, length: number): string[] {
@@ -77,8 +71,7 @@ export function toMatchdaySquadSlots({
     if (!id) continue;
     const player = career ? getManagerPlayer(career, id) : getPlayerById(id);
     if (!player) continue;
-    const penalty = career ? getManagerFitnessRatingPenalty(career, id) : 0;
-    squad = signPlayerToSlot(squad, player, i, penalty);
+    squad = signPlayerToSlot(squad, player, i, 0);
   }
 
   return squad;
@@ -114,10 +107,7 @@ export function toMatchdaySquadSlotsFromClubLineup(
     if (!row?.player) continue;
     // Prefer the inline player object so emergency / ephemeral AI players render.
     const resolved = row.player;
-    const penalty = career
-      ? getManagerFitnessRatingPenalty(career, resolved.id)
-      : 0;
-    squad = signPlayerToSlot(squad, resolved, i, penalty);
+    squad = signPlayerToSlot(squad, resolved, i, 0);
   }
 
   return squad;

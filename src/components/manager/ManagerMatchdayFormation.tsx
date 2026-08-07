@@ -56,7 +56,7 @@ export function ManagerMatchdayFormation({
         career.matchdayInterchange.join(","),
         career.xiiiSlotPositions?.join(",") ?? "",
         career.squad
-          .map((p) => `${p.playerId}:${p.fitness ?? ""}:${p.injury?.type ?? ""}`)
+          .map((p) => `${p.playerId}:${p.injury?.type ?? ""}`)
           .join("|"),
         career.calledUpReserveIds?.join(",") ?? "",
       ].join("::")

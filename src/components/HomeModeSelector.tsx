@@ -14,6 +14,7 @@ import {
   getQuickSeasonStartLabel,
 } from "@/lib/mode-labels";
 import { playModeClassicStart, playUiClick } from "@/lib/sound";
+import { UI_COPY } from "@/lib/ui/copy";
 import { TYPO } from "@/lib/ui/typography";
 import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
@@ -82,10 +83,10 @@ export function HomeModeSelector() {
             className="mt-4"
           />
 
-          <p className={`mt-3 ${TYPO.meta}`}>
+          <p className={`mt-3 ${TYPO.meta} mobile-safe-text`}>
             {normalEraMode
-              ? "Ratings reflect how each player performed in that season."
-              : "Ratings reflect this season’s performances."}
+              ? UI_COPY.eraRatingNote
+              : UI_COPY.currentRatingNote}
           </p>
           <p className={`mt-1 ${TYPO.meta}`}>
             {getQuickModeCurrentEraHint(normalEraMode)}

@@ -1,15 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { ClubFundsDisplay } from "./ClubFundsDisplay";
 import { HeaderAuthControls } from "./HeaderAuthControls";
 import { LogoMark } from "./LogoMark";
 import { SidebarNav } from "./SidebarNav";
 import { playMenuOpen } from "@/lib/sound";
+import { recordShellMount } from "@/lib/ui/mount-diagnostics";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    recordShellMount("app-header");
+  }, []);
 
   return (
     <>

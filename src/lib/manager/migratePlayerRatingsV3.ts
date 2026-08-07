@@ -1,6 +1,7 @@
 import { getPlayerById } from "../players";
 import { syncPlayerValueFromRating } from "../players/ratings";
 import type { ManagerCareer, ManagerReservePlayer } from "./types";
+import { DEFAULT_RESERVE_DEVELOPMENT_SETTINGS } from "./types";
 import type { ChampionshipGeneratedPlayer } from "./championship/championshipSquads";
 import { GENERATED_CHAMPIONSHIP_SQUADS_VERSION } from "./championship/championshipSquads";
 import { clampReservePlayerRating } from "../players/rating-floors";
@@ -145,16 +146,27 @@ export function migratePlayerRatingsV3(career: ManagerCareer): ManagerCareer {
     ? {
         ...career.managerSettings,
         reserveDevelopmentSettings: {
+          ...DEFAULT_RESERVE_DEVELOPMENT_SETTINGS,
           ...career.managerSettings.reserveDevelopmentSettings,
-          releaseIfRatingBelow:
+          reserveManagementSettingsVersion: 2,
+          massReleaseRatingBelow:
             career.managerSettings.reserveDevelopmentSettings
-              ?.releaseIfRatingBelow ?? 74,
-          flagPotentialBelow:
+              ?.massReleaseRatingBelow ??
             career.managerSettings.reserveDevelopmentSettings
-              ?.flagPotentialBelow ?? 76,
-          fullTimeRatingThreshold:
+              ?.releaseIfRatingBelow ??
+            74,
+          massReleasePotentialBelow:
             career.managerSettings.reserveDevelopmentSettings
-              ?.fullTimeRatingThreshold ?? 78,
+              ?.massReleasePotentialBelow ??
+            career.managerSettings.reserveDevelopmentSettings
+              ?.flagPotentialBelow ??
+            76,
+          autoPromoteRatingThreshold:
+            career.managerSettings.reserveDevelopmentSettings
+              ?.autoPromoteRatingThreshold ??
+            career.managerSettings.reserveDevelopmentSettings
+              ?.fullTimeRatingThreshold ??
+            78,
         },
       }
     : career.managerSettings;

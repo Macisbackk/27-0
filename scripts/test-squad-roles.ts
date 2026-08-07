@@ -53,7 +53,7 @@ assert(formatSquadRole("rotation") === SQUAD_ROLE_LABELS.rotation, "format label
 const stubCareer = {
   squadRoleSchemaVersion: 0,
   matchdayXiii: ["p1"],
-  squad: [{ playerId: "p1", seasonAppearances: 12, form: 60, fitness: 90, injury: null, seasonTries: 0 }],
+  squad: [{ playerId: "p1", seasonAppearances: 12, form: 60, injury: null, seasonTries: 0 }],
   contracts: { p1: { wagePerYear: 100_000, yearsRemaining: 2, expiresAtSeasonEnd: false, squadRole: "Star" as never, happiness: 70 } },
   reserves: [],
   reserveContracts: {},

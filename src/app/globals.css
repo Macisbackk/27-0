@@ -160,10 +160,16 @@ body {
   min-width: 0;
 }
 
-/* Hide site footer while overlays / spins hold a scroll lock — popups stay above chrome. */
+/* Keep footer in layout during overlays — visibility alone caused width/height jumps.
+   Popups sit above via z-index; footer stays non-interactive while locked. */
 html[data-ui-overlay="1"] .site-footer {
-  visibility: hidden;
   pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  html {
+    scrollbar-gutter: stable;
+  }
 }
 
 @media (max-width: 639px) {

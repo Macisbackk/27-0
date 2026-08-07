@@ -10,6 +10,11 @@ import {
 import { useClubFunds } from "@/hooks/useClubFunds";
 import { playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { TYPO } from "@/lib/ui/typography";
+import {
+  acquireScrollLock,
+  releaseScrollLock,
+  type ScrollLockId,
+} from "@/lib/ui/scroll-lock";
 import { BodyPortal } from "./ui/BodyPortal";
 
 interface ClubFundsDisplayProps {
@@ -95,11 +100,10 @@ export function ClubFundsDisplay({
       if (event.key === "Escape") closePanel();
     };
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const lockId: ScrollLockId = acquireScrollLock("club-funds");
     document.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = previousOverflow;
+      releaseScrollLock(lockId);
       document.removeEventListener("keydown", onKey);
     };
   }, [open, isMobileUnderLogo]);
@@ -153,20 +157,21 @@ export function ClubFundsDisplay({
             <motion.div
               key="club-funds-mobile"
               className="fixed inset-0 z-[200] flex items-end justify-center bg-black/65 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-[max(3.5rem,env(safe-area-inset-top))]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ y: 24 }}
+              animate={{ y: 0 }}
+              exit={{ y: 16 }}
+              transition={{ duration: 0.18 }}
               onClick={closePanel}
             >
               <motion.div
                 role="dialog"
                 aria-modal="true"
                 aria-label="Earn Club Funds"
-                className="club-funds-mobile-sheet game-panel game-panel--flush w-full max-w-md max-h-[min(85dvh,28rem)] overflow-y-auto overscroll-contain rounded-2xl border border-theme-tertiary/35 p-4 shadow-2xl"
-                initial={{ opacity: 0, y: 28, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 20, scale: 0.98 }}
-                transition={{ duration: 0.2 }}
+                className="club-funds-mobile-sheet game-panel game-panel--flush w-full max-w-md max-h-[min(85dvh,28rem)] overflow-y-auto overscroll-contain rounded-[var(--mobile-radius-medium)] border border-theme-tertiary/35 p-4"
+                initial={{ y: 16 }}
+                animate={{ y: 0 }}
+                exit={{ y: 12 }}
+                transition={{ duration: 0.18 }}
                 onClick={(event) => event.stopPropagation()}
               >
                 <ClubFundsPanelContent

@@ -7,18 +7,22 @@ import { GRAND_FINAL_VENUE } from "@/lib/manager/managerPlayoffs";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { CollapsibleDetails } from "@/components/ui/MobileLayout";
+import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { TeamScoringBreakdown } from "./TeamScoringBreakdown";
 
 interface PlayoffMatchDetailsPanelProps {
   match: PlayoffBracketMatch;
   onClose: () => void;
   className?: string;
+  /** Quick Mode — Dream Team panels use squad majority club colours. */
+  userClubColorOverride?: string;
 }
 
 export function PlayoffMatchDetailsPanel({
   match,
   onClose,
   className = "",
+  userClubColorOverride,
 }: PlayoffMatchDetailsPanelProps) {
   if (
     !match.homeTeam ||
@@ -62,12 +66,20 @@ export function PlayoffMatchDetailsPanel({
     <div className="space-y-4">
       <TeamScoringBreakdown
         teamName={match.homeTeam}
-        colorClub={match.homeTeam}
+        colorClub={
+          match.homeTeam === DREAM_TEAM_NAME && userClubColorOverride
+            ? userClubColorOverride
+            : match.homeTeam
+        }
         scoring={scoring.home}
       />
       <TeamScoringBreakdown
         teamName={match.awayTeam}
-        colorClub={match.awayTeam}
+        colorClub={
+          match.awayTeam === DREAM_TEAM_NAME && userClubColorOverride
+            ? userClubColorOverride
+            : match.awayTeam
+        }
         scoring={scoring.away}
         variant="opponent"
       />

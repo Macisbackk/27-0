@@ -38,6 +38,10 @@
   --mobile-row-gap: 10px;
   --mobile-card-padding: 12px;
   --mobile-compact-card-padding: 10px;
+  --mobile-surface-pad: 12px;
+  --mobile-surface-pad-tight: 10px;
+  --mobile-overlay-pad: 14px;
+  --mobile-text-inset: 2px;
   --mobile-control-gap: 8px;
   --mobile-control-height: 44px;
   --mobile-header-height: 3rem;
@@ -390,12 +394,26 @@
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: var(--mobile-card-padding);
+  padding: var(--mobile-overlay-pad, var(--mobile-card-padding));
   padding-bottom: max(
-    calc(var(--mobile-card-padding) + 0.5rem),
+    calc(var(--mobile-overlay-pad, var(--mobile-card-padding)) + 0.5rem),
     env(safe-area-inset-bottom, 0px)
   );
   -webkit-overflow-scrolling: touch;
+}
+
+.mobile-safe-text {
+  padding-inline: var(--mobile-text-inset, 2px);
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.mobile-surface-pad {
+  padding: var(--mobile-surface-pad, var(--mobile-card-padding));
+}
+
+.mobile-surface-pad-tight {
+  padding: var(--mobile-surface-pad-tight, var(--mobile-compact-card-padding));
 }
 
 .mobile-overlay-footer {

@@ -3,6 +3,7 @@ import {
   RESERVE_MIN_PLAYERS,
   releaseReserve,
   getReserveSignedRating,
+  promoteReserveToSquad,
 } from "./managerReserves";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { addPlayersToFreeAgents } from "./managerFreeAgents";
@@ -83,12 +84,10 @@ export function getReserveGrowth(reserve: ManagerReservePlayer): number {
 
 function isProtectedReserve(
   _career: ManagerCareer,
-  _reserve: ManagerReservePlayer,
-  _settings: ManagerReserveDevelopmentSettings
+  reserve: ManagerReservePlayer,
+  settings: ManagerReserveDevelopmentSettings
 ): boolean {
-  // Legacy protect-under-age / high-potential settings are ignored (kept on
-  // saves for migration only; not shown in UI and not applied).
-  return false;
+  return (settings.protectedFromMassReleaseIds ?? []).includes(reserve.id);
 }
 
 function isOnMatchday(career: ManagerCareer, reserveId: string): boolean {
@@ -104,53 +103,66 @@ export function evaluateReservePlayerReview(
   reserve: ManagerReservePlayer
 ): ReservePlayerReview {
   const settings = getDevelopmentSettings(career);
-  const years = getReserveYearsAtClub(career, reserve);
-  const growth = getReserveGrowth(reserve);
   const flags: ReserveReviewFlag[] = [];
   const reasons: string[] = [];
 
   if (isProtectedReserve(career, reserve, settings)) {
     flags.push("protected");
-    reasons.push("Protected prospect");
+    reasons.push("Protected from mass release");
   }
 
   if (
-    settings.flagForFullTimeEnabled &&
-    reserve.rating >= settings.fullTimeRatingThreshold
+    settings.autoPromoteByRatingEnabled &&
+    reserve.rating >= settings.autoPromoteRatingThreshold
   ) {
     flags.push("promote");
     reasons.push(
-      `Reached ${reserve.rating} rating — consider a full-time deal`
+      `Reached ${reserve.rating} rating — auto-promote candidate`
     );
   }
 
-  if (
-    settings.releaseAfterYearsEnabled &&
-    years >= settings.releaseAfterYears &&
-    reserve.rating < settings.releaseIfRatingBelow &&
-    !flags.includes("protected")
-  ) {
+  const mass = evaluateMassReleaseRules(reserve, settings);
+  if (mass.matches && !flags.includes("protected")) {
     flags.push("review");
     flags.push("release_candidate");
-    reasons.push(
-      `Has been at the club ${years} year${years === 1 ? "" : "s"} and is still below ${settings.releaseIfRatingBelow} rating`
-    );
-  }
-
-  if (
-    settings.releaseIfGrowthBelowEnabled &&
-    years >= settings.growthCheckAfterYears &&
-    growth < settings.releaseIfGrowthBelow &&
-    !flags.includes("protected")
-  ) {
-    if (!flags.includes("review")) flags.push("review");
-    if (!flags.includes("release_candidate")) flags.push("release_candidate");
-    reasons.push(
-      `Growth is only ${growth >= 0 ? "+" : ""}${growth} after ${years} year${years === 1 ? "" : "s"}`
-    );
+    reasons.push(mass.reason);
   }
 
   return { reserve, flags, reasons };
+}
+
+function evaluateMassReleaseRules(
+  reserve: ManagerReservePlayer,
+  settings: ManagerReserveDevelopmentSettings
+): { matches: boolean; reason: string } {
+  const checks: { enabled: boolean; pass: boolean; label: string }[] = [
+    {
+      enabled: settings.massReleaseByPotentialEnabled,
+      pass: reserve.potentialRating < settings.massReleasePotentialBelow,
+      label: `Potential ${reserve.potentialRating} under ${settings.massReleasePotentialBelow}`,
+    },
+    {
+      enabled: settings.massReleaseByRatingEnabled,
+      pass: reserve.rating < settings.massReleaseRatingBelow,
+      label: `Rating ${reserve.rating} under ${settings.massReleaseRatingBelow}`,
+    },
+    {
+      enabled: settings.massReleaseByAgeEnabled,
+      pass: reserve.age > settings.massReleaseAgeAbove,
+      label: `Age ${reserve.age} over ${settings.massReleaseAgeAbove}`,
+    },
+  ];
+
+  const active = checks.filter((c) => c.enabled);
+  if (active.length === 0) return { matches: false, reason: "" };
+
+  const mode = settings.massReleaseMatchMode ?? "all";
+  const hits = active.filter((c) => c.pass);
+  const matches = mode === "all" ? hits.length === active.length : hits.length > 0;
+  return {
+    matches,
+    reason: hits.map((h) => h.label).join(mode === "all" ? " + " : " / ") || "Mass release rules",
+  };
 }
 
 export function previewReleaseUnderRating(
@@ -257,7 +269,7 @@ export function previewReleaseMarkedForRelease(
     }));
 }
 
-/** Preview players matching development release rules (stagnation / low growth). */
+/** Preview players matching mass-release rules (potential / rating / age). */
 export function previewReleaseBySettings(
   career: ManagerCareer
 ): ReserveReleaseCandidate[] {
@@ -274,17 +286,60 @@ export function previewReleaseBySettings(
     seen.add(reserve.id);
     out.push({
       reserve,
-      reason: review.reasons[0] ?? "Development release candidate",
+      reason: review.reasons.find((r) => !r.startsWith("Reached")) ??
+        review.reasons[0] ??
+        "Mass release candidate",
     });
   }
 
   return out;
 }
 
+/**
+ * Auto-promote reserves at/above the rating threshold when senior capacity allows.
+ * Runs on weekly/season ticks when enabled; writes an inbox summary.
+ */
+export function applyAutoPromoteByRating(career: ManagerCareer): ManagerCareer {
+  const settings = getDevelopmentSettings(career);
+  if (!settings.autoPromoteByRatingEnabled) return career;
+
+  let next = career;
+  const promoted: string[] = [];
+
+  const candidates = [...next.reserves]
+    .filter(
+      (r) =>
+        r.rating >= settings.autoPromoteRatingThreshold &&
+        !isOnMatchday(next, r.id)
+    )
+    .sort((a, b) => b.rating - a.rating || a.age - b.age);
+
+  for (const reserve of candidates) {
+    const result = promoteReserveToSquad(next, reserve.id);
+    if (!result.ok || !result.career) break;
+    next = result.career;
+    promoted.push(reserve.name);
+  }
+
+  if (promoted.length === 0) return career;
+
+  return pushInboxMessage(next, {
+    id: `auto-promote-s${career.seasonYear}-w${career.gameWeek}-${promoted.length}`,
+    type: "youth_intake",
+    title: "Auto-promote complete",
+    body: `Promoted ${promoted.length} reserve${promoted.length === 1 ? "" : "s"} at ${settings.autoPromoteRatingThreshold}+ rating: ${promoted.slice(0, 8).join(", ")}${promoted.length > 8 ? ` and ${promoted.length - 8} more` : ""}.`,
+    week: career.gameWeek,
+    season: career.seasonYear,
+    gameWeek: career.gameWeek,
+    createdAt: new Date().toISOString(),
+    read: false,
+  });
+}
+
 export function applyReserveReleases(
   career: ManagerCareer,
   candidates: ReserveReleaseCandidate[],
-  options?: { forceBelowMinimum?: boolean }
+  options?: { forceBelowMinimum?: boolean; ignoreMassReleaseProtection?: boolean }
 ): {
   ok: boolean;
   career?: ManagerCareer;
@@ -294,16 +349,22 @@ export function applyReserveReleases(
 } {
   const unique = new Map<string, ReserveReleaseCandidate>();
   for (const c of candidates) unique.set(c.reserve.id, c);
-  const list = [...unique.values()].filter(
-    (c) => !isOnMatchday(career, c.reserve.id)
-  );
+  const settings = getDevelopmentSettings(career);
+  const list = [...unique.values()].filter((c) => {
+    if (isOnMatchday(career, c.reserve.id)) return false;
+    if (
+      !options?.ignoreMassReleaseProtection &&
+      isProtectedReserve(career, c.reserve, settings)
+    ) {
+      return false;
+    }
+    return true;
+  });
 
   if (list.length === 0) {
     return { ok: false, released: 0, error: "No eligible reserves to release" };
   }
 
-  const settings = getDevelopmentSettings(career);
-  void settings;
   const minSize = RESERVE_MIN_PLAYERS;
   const remaining = career.reserves.length - list.length;
   if (remaining < minSize && !options?.forceBelowMinimum) {

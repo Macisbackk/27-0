@@ -383,11 +383,6 @@ export function ManagerMatchReview({
                 />
               </>
             )}
-            <ManagerStat
-              label="Fan Mood"
-              value={`${attendance.fanMoodChange >= 0 ? "+" : ""}${attendance.fanMoodChange}`}
-              tone={attendance.fanMoodChange >= 0 ? "primary" : "red"}
-            />
           </div>
         </ManagerSectionCard>
       )}

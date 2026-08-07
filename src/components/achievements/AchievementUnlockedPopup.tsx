@@ -29,15 +29,16 @@ export function AchievementUnlockedPopup({
       shownIdRef.current = null;
       return;
     }
-    if (shownIdRef.current === result.id) return;
-    shownIdRef.current = result.id;
+    const eventKey = result.unlockEventId || result.id;
+    if (shownIdRef.current === eventKey) return;
+    shownIdRef.current = eventKey;
     setOverlayArmed(false);
     const timer = window.setTimeout(() => setOverlayArmed(true), OVERLAY_ARM_MS);
     return () => window.clearTimeout(timer);
   }, [result]);
 
   const titleId = result
-    ? `achievement-popup-title-${result.id}`
+    ? `achievement-popup-title-${result.unlockEventId || result.id}`
     : "achievement-popup-title";
 
   return (
@@ -45,15 +46,15 @@ export function AchievementUnlockedPopup({
       <AnimatePresence>
         {result ? (
           <motion.div
-            key={result.id}
+            key={result.unlockEventId || result.id}
             className="achievement-popup-overlay"
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{ y: 10 }}
+            animate={{ y: 0 }}
+            exit={{ y: 8 }}
+            transition={{ duration: 0.16 }}
             onClick={() => {
               if (!overlayArmed) return;
               onDismiss();
@@ -61,9 +62,9 @@ export function AchievementUnlockedPopup({
           >
             <motion.div
               className="achievement-popup-card"
-              initial={{ opacity: 0, scale: 0.94, y: 8 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: 6 }}
+              initial={{ y: 16, scale: 0.98 }}
+              animate={{ y: 0, scale: 1 }}
+              exit={{ y: 10, scale: 0.99 }}
               transition={{ type: "spring", damping: 26, stiffness: 340 }}
               onClick={(e) => e.stopPropagation()}
             >

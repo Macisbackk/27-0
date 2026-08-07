@@ -12,6 +12,11 @@ import { getFormationSlotDisplayLabel } from "@/lib/positions";
 import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
 import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import {
+  acquireScrollLock,
+  releaseScrollLock,
+  type ScrollLockId,
+} from "@/lib/ui/scroll-lock";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { BodyPortal } from "./ui/BodyPortal";
 
@@ -49,10 +54,9 @@ export function TeamSheetPlayerPopup({
 
   useEffect(() => {
     if (!player) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const lockId: ScrollLockId = acquireScrollLock("team-sheet-player");
     return () => {
-      document.body.style.overflow = previousOverflow;
+      releaseScrollLock(lockId);
     };
   }, [player]);
 
@@ -75,9 +79,10 @@ export function TeamSheetPlayerPopup({
         {player && slot && (
           <motion.div
             className="fixed inset-0 z-[120] flex items-end justify-center bg-black/70 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:items-center sm:p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ y: 12 }}
+            animate={{ y: 0 }}
+            exit={{ y: 8 }}
+            transition={{ duration: 0.16 }}
             onClick={onClose}
           >
             <motion.div
@@ -85,9 +90,10 @@ export function TeamSheetPlayerPopup({
               aria-modal="true"
               aria-label={`${player.name} details`}
               className={`${CARD.panel} max-h-[min(85dvh,640px)] w-full max-w-sm overflow-y-auto overscroll-contain p-0 shadow-2xl`}
-              initial={{ opacity: 0, y: 24, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 16, scale: 0.98 }}
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              exit={{ y: 14 }}
+              transition={{ duration: 0.16 }}
               onClick={(event) => event.stopPropagation()}
             >
               {colors && (

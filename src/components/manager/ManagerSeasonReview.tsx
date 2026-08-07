@@ -245,11 +245,6 @@ export function ManagerSeasonReview({
             }
             tone="muted"
           />
-          <ManagerInfoRow
-            label="Final Fan Mood"
-            value={`${summary.finalFanMood}`}
-            tone={summary.finalFanMood >= 70 ? "primary" : summary.finalFanMood >= 45 ? "default" : "amber"}
-          />
         </div>
       </ManagerSectionCard>
 

@@ -153,10 +153,11 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
           <motion.button
             type="button"
             aria-label="Close menu"
-            className="fixed inset-0 z-[60] bg-black/60"
-            initial={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] bg-black/60 max-sm:transition-none"
+            initial={false}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.12 }}
             onClick={closeMenu}
           />
           <motion.aside
