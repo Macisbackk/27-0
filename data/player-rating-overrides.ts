@@ -96,7 +96,7 @@ export const PLAYER_RATING_OVERRIDES: Record<string, number> = {
   "castleford-cur-renouf-atoni": 81,
   "wakefield-cur-tyson-smoothy": 81,
   "wakefield-cur-matty-storton": 81,
-  "bradford-cur-loghan-lewis": 81,
+  "bradford-cur-loghan-lewis": 78,
   "wakefield-cur-corey-hall": 81,
   "leigh-cur-david-armstrong": 81,
   "hull-fc-cur-harvey-barron": 81,

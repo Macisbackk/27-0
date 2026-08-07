@@ -16,6 +16,8 @@ export interface MatchStoryMemory {
   recentEventTypes: MatchEventType[];
   recentPlayers: string[];
   recentPhrases: string[];
+  /** Last template id chosen — used to avoid identical consecutive picks. */
+  lastTemplateId?: string;
 }
 
 type TemplateEntry = { id: string; text: string };
@@ -26,7 +28,7 @@ function tpl(id: string, text: string): TemplateEntry {
 
 export const MATCH_EVENT_TEMPLATES: Partial<Record<MatchEventType, TemplateEntry[]>> = {
   six_again: [
-    tpl("six_again_0", "{team} earn a six-again call and keep the defence pinned back."),
+    tpl("six_again_0", "{team} earn a six-again and keep the defence pinned back."),
     tpl("six_again_1", "{team} get a fresh set after sharp ruck speed."),
     tpl("six_again_2", "{team} force repeat pressure with another tackle count."),
     tpl("six_again_3", "{team} keep the ball alive and win another set."),
@@ -34,8 +36,8 @@ export const MATCH_EVENT_TEMPLATES: Partial<Record<MatchEventType, TemplateEntry
     tpl("six_again_5", "{team} stay on the attack with a repeat set near the line."),
   ],
   pressure_set: [
-    tpl("pressure_0", "{team} build a dangerous repeat set in the {area}."),
-    tpl("pressure_1", "{team} win a penalty and choose to tap quickly."),
+    tpl("pressure_0", "{team} build a dangerous set in the {area}."),
+    tpl("pressure_1", "{team} win a penalty and tap it quickly."),
     tpl("pressure_2", "{team} camp deep in {opponent} territory."),
     tpl("pressure_3", "{team} force {opponent} to defend back-to-back sets."),
     tpl("pressure_4", "{team} pin {opponent} on their own goal line."),
@@ -44,10 +46,10 @@ export const MATCH_EVENT_TEMPLATES: Partial<Record<MatchEventType, TemplateEntry
   line_break: [
     tpl("line_0", "{player} slices through the line for {team}."),
     tpl("line_1", "{player} hits a gap and puts {team} on the front foot."),
-    tpl("line_2", "{team} open up the defence through {player}."),
+    tpl("line_2", "{team} open the defence through {player}."),
     tpl("line_3", "{player} breaks clear and the crowd lifts."),
     tpl("line_4", "{team} find space as {player} punches through the middle."),
-    tpl("line_5", "{player} steps the fullback and races into space."),
+    tpl("line_5", "{player} steps the full-back and races into space."),
     tpl("line_6", "{player} cuts back inside and splits the markers."),
   ],
   big_break: [
@@ -57,27 +59,31 @@ export const MATCH_EVENT_TEMPLATES: Partial<Record<MatchEventType, TemplateEntry
     tpl("big_3", "A sweeping move ends with {player} tearing into space."),
   ],
   try: [
-    tpl("try_0", "{player} crashes over for {team}."),
-    tpl("try_1", "{player} finishes the move for {team}."),
-    tpl("try_2", "{team} turn pressure into points through {player}."),
+    tpl("try_0", "{player} crashes over for a try — {team}."),
+    tpl("try_1", "{player} finishes the move; try {team}."),
+    tpl("try_2", "{team} turn pressure into points — {player} dots down."),
     tpl("try_3", "{player} gets over after a strong attacking set."),
-    tpl("try_4", "{player} touches down after {team} stretch the edge."),
+    tpl("try_4", "{player} touches down as {team} stretch the edge."),
     tpl("try_5", "{player} dots down beside the posts for {team}."),
     tpl("try_6", "{player} finishes in the corner after a sweeping move."),
-    tpl("try_7", "{team} score through {player} from close range."),
+    tpl("try_7", "{team} score from close range through {player}."),
+    tpl("try_8", "Try! {player} grounds it for {team}."),
+    tpl("try_9", "{player} reaches out and plants it — try {team}."),
   ],
   conversion: [
     tpl("conv_0", "{kicker} adds the extras from in front."),
-    tpl("conv_1", "{kicker} converts from wide — no problem."),
-    tpl("conv_2", "{kicker} nails the kick and {team} lead {score}."),
+    tpl("conv_1", "{kicker} converts from out wide — no trouble."),
+    tpl("conv_2", "{kicker} nails the conversion{score_clause}."),
     tpl("conv_3", "The conversion is good from {kicker}."),
     tpl("conv_4", "{kicker} steadies himself and slots it over."),
+    tpl("conv_5", "{kicker} bisects the posts from the touchline."),
   ],
   goal: [
     tpl("goal_0", "{kicker} adds the extras from in front."),
-    tpl("goal_1", "{kicker} converts from wide — no problem."),
-    tpl("goal_2", "{kicker} nails the kick and {team} lead {score}."),
+    tpl("goal_1", "{kicker} converts from out wide — no trouble."),
+    tpl("goal_2", "{kicker} nails the kick{score_clause}."),
     tpl("goal_3", "The conversion is good from {kicker}."),
+    tpl("goal_4", "{kicker} steadies himself and slots it over."),
   ],
   missed_conversion: [
     tpl("miss_conv_0", "{kicker} misses the conversion wide."),
@@ -88,27 +94,29 @@ export const MATCH_EVENT_TEMPLATES: Partial<Record<MatchEventType, TemplateEntry
   penalty_goal: [
     tpl("pg_0", "{team} take the two points from in front."),
     tpl("pg_1", "{kicker} slots the penalty goal for {team}."),
-    tpl("pg_2", "{team} slow the game down and take the two."),
+    tpl("pg_2", "{team} slow it down and take the two."),
     tpl("pg_3", "{kicker} kicks the penalty and {team} edge ahead."),
     tpl("pg_4", "{team} opt for goal and {kicker} delivers."),
+    tpl("pg_5", "Penalty goal — {kicker} makes no mistake."),
   ],
   penalty: [
     tpl("pen_0", "{team} take the two points from in front."),
     tpl("pen_1", "{kicker} slots the penalty goal for {team}."),
-    tpl("pen_2", "{team} slow the game down and take the two."),
+    tpl("pen_2", "{team} slow it down and take the two."),
     tpl("pen_3", "{kicker} kicks the penalty and {team} edge ahead."),
   ],
   drop_goal: [
-    tpl("dg_0", "{kicker} nails a drop goal in the closing stages."),
+    tpl("dg_0", "{kicker} nails a drop-goal in the closing stages."),
     tpl("dg_1", "{team} work into range and {kicker} lands a one-pointer."),
-    tpl("dg_2", "{kicker} steadies under pressure and slots a drop goal."),
-    tpl("dg_3", "A clutch drop goal from {kicker} gives {team} the lead."),
+    tpl("dg_2", "{kicker} steadies under pressure and slots a drop-goal."),
+    tpl("dg_3", "A clutch drop-goal from {kicker} gives {team} the lead."),
+    tpl("dg_4", "{kicker} drops over for one — {team}."),
   ],
   missed_drop_goal: [
-    tpl("miss_dg_0", "{kicker} misses the drop goal attempt."),
+    tpl("miss_dg_0", "{kicker} misses the drop-goal attempt."),
     tpl("miss_dg_1", "The one-pointer drifts wide — {kicker} can't land it."),
     tpl("miss_dg_2", "{kicker} rushes the drop and misses badly."),
-    tpl("miss_dg_3", "{opponent} breathe again as the drop goal goes wide."),
+    tpl("miss_dg_3", "{opponent} breathe again as the drop-goal goes wide."),
   ],
   knock_on: [
     tpl("ko_0", "{team} knock on coming out of yardage."),
@@ -164,49 +172,92 @@ export const MATCH_EVENT_TEMPLATES: Partial<Record<MatchEventType, TemplateEntry
   ],
   sin_bin: [
     tpl("sb_0", "{player} is sent to the sin bin for ten minutes."),
-    tpl("sb_1", "{team} go down to 12 men — {player} in the bin."),
+    tpl("sb_1", "{team} go down to twelve — {player} in the bin."),
     tpl("sb_2", "The referee shows yellow to {player}."),
   ],
   injury: [
     tpl("inj_0", "{player} is down and needs treatment."),
     tpl("inj_1", "A stoppage as {player} receives attention."),
     tpl("inj_2", "{team} lose {player} temporarily after a heavy hit."),
+    tpl("inj_3", "Concern for {player} — the trainers are on."),
   ],
   interchange: [
-    tpl("int_0", "{team} make an interchange refresh."),
+    tpl("int_0", "{team} make an interchange."),
     tpl("int_1", "Fresh legs on for {team}."),
-    tpl("int_2", "{team} rotate their bench."),
+    tpl("int_2", "{team} rotate from the bench."),
+    tpl("int_3", "An interchange refresh for {team}."),
   ],
   half_time: [
-    tpl("ht_0", "Half time."),
-    tpl("ht_1", "The teams head to the sheds at the break."),
+    tpl("ht_0", "Half-time{score_clause}."),
+    tpl("ht_1", "The teams head to the sheds at the break{score_clause}."),
+    tpl("ht_2", "Half-time whistle{score_clause}."),
   ],
   full_time: [
-    tpl("ft_0", "Full time."),
-    tpl("ft_1", "The hooter sounds — that's the game."),
+    tpl("ft_0", "Full time{score_clause}."),
+    tpl("ft_1", "The hooter sounds — that's the game{score_clause}."),
+    tpl("ft_2", "Full time whistle{score_clause}."),
   ],
   note: [
     tpl("note_0", "{team} dominate possession in the {area}."),
     tpl("note_1", "{team} are camped in {opponent} territory."),
-    tpl("note_2", "{team} win the ruck speed battle."),
+    tpl("note_2", "{team} win the ruck-speed battle."),
     tpl("note_3", "A tense spell as {team} probe the defence."),
   ],
 };
 
 const DEFAULT_AREA = "middle third";
 
-function fillTemplate(text: string, ctx: MatchEventContext): string {
-  const player = ctx.player?.trim() || "the attacker";
-  const kicker = ctx.kicker?.trim() || "the kicker";
+const GENERIC_PLAYER = "a player";
+const GENERIC_KICKER = "the kicker";
+
+function safeName(
+  value: string | undefined,
+  fallback: string,
+  banned: string[] = []
+): string {
+  const trimmed = value?.trim();
+  if (!trimmed) return fallback;
+  const lower = trimmed.toLowerCase();
+  if (lower === "undefined" || lower === "null" || lower === "unknown") {
+    return fallback;
+  }
+  if (banned.some((b) => b && trimmed.toLowerCase() === b.toLowerCase())) {
+    return fallback;
+  }
+  return trimmed;
+}
+
+function scoreClause(score: string | undefined): string {
+  const s = score?.trim();
+  if (!s || s === "-" || /^0-0$/i.test(s)) return "";
+  return ` — ${s}`;
+}
+
+function tidyPhrase(text: string): string {
   return text
-    .replaceAll("{team}", ctx.team)
-    .replaceAll("{opponent}", ctx.opponent)
+    .replace(/\s{2,}/g, " ")
+    .replace(/\s+([.,!?])/g, "$1")
+    .replace(/\s*[—-]\s*\./g, ".")
+    .replace(/\.\s*\./g, ".")
+    .trim();
+}
+
+function fillTemplate(text: string, ctx: MatchEventContext): string {
+  const banned = [ctx.team, ctx.opponent].filter(Boolean);
+  const player = safeName(ctx.player, GENERIC_PLAYER, banned);
+  const kicker = safeName(ctx.kicker, GENERIC_KICKER, banned);
+  const clause = scoreClause(ctx.score);
+  const filled = text
+    .replaceAll("{team}", ctx.team || "the home side")
+    .replaceAll("{opponent}", ctx.opponent || "the opposition")
     .replaceAll("{player}", player)
     .replaceAll("{kicker}", kicker)
     .replaceAll("{minute}", String(ctx.minute))
-    .replaceAll("{area}", ctx.area ?? DEFAULT_AREA)
-    .replaceAll("{score}", ctx.score ?? "")
-    .replaceAll("{position}", ctx.position ?? "");
+    .replaceAll("{area}", ctx.area?.trim() || DEFAULT_AREA)
+    .replaceAll("{score_clause}", clause)
+    .replaceAll("{score}", ctx.score?.trim() || "")
+    .replaceAll("{position}", ctx.position?.trim() || "");
+  return tidyPhrase(filled);
 }
 
 export function createMatchStoryMemory(): MatchStoryMemory {
@@ -245,9 +296,13 @@ export function memoryFromEvents(
 }
 
 function isRecentPhrase(phrase: string, memory: MatchStoryMemory): boolean {
-  return memory.recentPhrases.some(
-    (p) => p.toLowerCase() === phrase.toLowerCase()
-  );
+  const lower = phrase.toLowerCase();
+  return memory.recentPhrases.some((p) => p.toLowerCase() === lower);
+}
+
+function isIdenticalToLast(phrase: string, memory: MatchStoryMemory): boolean {
+  const last = memory.recentPhrases[memory.recentPhrases.length - 1];
+  return Boolean(last && last.toLowerCase() === phrase.toLowerCase());
 }
 
 function sameTypeStreak(type: MatchEventType, memory: MatchStoryMemory): number {
@@ -268,6 +323,7 @@ export function recordTemplateUse(
 ): void {
   memory.usedTemplateIds[templateId] =
     (memory.usedTemplateIds[templateId] ?? 0) + 1;
+  memory.lastTemplateId = templateId;
   memory.recentPhrases.push(phrase);
   if (memory.recentPhrases.length > 10) {
     memory.recentPhrases = memory.recentPhrases.slice(-10);
@@ -292,7 +348,7 @@ export function pickEventTemplate(
 ): { text: string; templateId: string } {
   const pool = MATCH_EVENT_TEMPLATES[eventType] ?? MATCH_EVENT_TEMPLATES.note ?? [];
   if (pool.length === 0) {
-    const fallback = `${context.team} make their mark.`;
+    const fallback = `${context.team || "A side"} make their mark.`;
     return { text: fallback, templateId: `${eventType}_fallback` };
   }
 
@@ -300,7 +356,11 @@ export function pickEventTemplate(
   const maxSameTypeStreak = eventType === "try" ? 2 : 3;
 
   let candidates = pool.filter((entry) => {
+    if (memory.lastTemplateId && entry.id === memory.lastTemplateId) {
+      return false;
+    }
     const phrase = fillTemplate(entry.text, context);
+    if (isIdenticalToLast(phrase, memory)) return false;
     if (isRecentPhrase(phrase, memory)) return false;
     if (
       context.player &&
@@ -313,11 +373,14 @@ export function pickEventTemplate(
     return true;
   });
 
-  if (typeStreak >= maxSameTypeStreak) {
-    const otherTypes = candidates;
-    if (otherTypes.length === 0) {
-      candidates = pool.filter((e) => !isRecentPhrase(fillTemplate(e.text, context), memory));
-    }
+  if (candidates.length === 0) {
+    candidates = pool.filter((entry) => {
+      if (memory.lastTemplateId && entry.id === memory.lastTemplateId) {
+        return false;
+      }
+      const phrase = fillTemplate(entry.text, context);
+      return !isIdenticalToLast(phrase, memory);
+    });
   }
 
   if (candidates.length === 0) {
@@ -332,6 +395,11 @@ export function pickEventTemplate(
       (memory.usedTemplateIds[a.id] ?? 0) - (memory.usedTemplateIds[b.id] ?? 0)
   );
 
+  if (typeStreak >= maxSameTypeStreak && candidates.length > 1) {
+    // Prefer least-used when the same event type is streaking.
+    candidates = candidates.slice(0, Math.max(2, Math.ceil(candidates.length / 2)));
+  }
+
   const leastUsed = memory.usedTemplateIds[candidates[0].id] ?? 0;
   const tier = candidates.filter(
     (c) => (memory.usedTemplateIds[c.id] ?? 0) <= leastUsed + 1
@@ -341,7 +409,7 @@ export function pickEventTemplate(
   return { text, templateId: chosen.id };
 }
 
-export function buildCommentaryLine(
+function lineFromPool(
   eventType: MatchEventType,
   context: MatchEventContext,
   memory: MatchStoryMemory,
@@ -355,6 +423,128 @@ export function buildCommentaryLine(
   );
   recordTemplateUse(memory, templateId, text, eventType, context.player);
   return text;
+}
+
+function withMemory(
+  memory: MatchStoryMemory | undefined
+): MatchStoryMemory {
+  return memory ?? createMatchStoryMemory();
+}
+
+/** Concise UK English try line. */
+export function formatTryEvent(
+  context: MatchEventContext,
+  memory?: MatchStoryMemory,
+  rng: () => number = Math.random
+): string {
+  return lineFromPool("try", context, withMemory(memory), rng);
+}
+
+/** Conversion / goal extras. */
+export function formatConversionEvent(
+  context: MatchEventContext,
+  memory?: MatchStoryMemory,
+  rng: () => number = Math.random
+): string {
+  return lineFromPool("conversion", context, withMemory(memory), rng);
+}
+
+/** Penalty goal (two points). */
+export function formatPenaltyGoalEvent(
+  context: MatchEventContext,
+  memory?: MatchStoryMemory,
+  rng: () => number = Math.random
+): string {
+  return lineFromPool("penalty_goal", context, withMemory(memory), rng);
+}
+
+/** Field drop-goal (one point). */
+export function formatDropGoalEvent(
+  context: MatchEventContext,
+  memory?: MatchStoryMemory,
+  rng: () => number = Math.random
+): string {
+  return lineFromPool("drop_goal", context, withMemory(memory), rng);
+}
+
+/** Interchange / substitution refresh. */
+export function formatSubstitutionEvent(
+  context: MatchEventContext,
+  memory?: MatchStoryMemory,
+  rng: () => number = Math.random
+): string {
+  return lineFromPool("interchange", context, withMemory(memory), rng);
+}
+
+/** Injury stoppage. */
+export function formatInjuryEvent(
+  context: MatchEventContext,
+  memory?: MatchStoryMemory,
+  rng: () => number = Math.random
+): string {
+  return lineFromPool("injury", context, withMemory(memory), rng);
+}
+
+/** Half-time whistle. */
+export function formatHalfTimeEvent(
+  context: MatchEventContext,
+  memory?: MatchStoryMemory,
+  rng: () => number = Math.random
+): string {
+  return lineFromPool("half_time", context, withMemory(memory), rng);
+}
+
+/** Full-time hooter. */
+export function formatFullTimeEvent(
+  context: MatchEventContext,
+  memory?: MatchStoryMemory,
+  rng: () => number = Math.random
+): string {
+  return lineFromPool("full_time", context, withMemory(memory), rng);
+}
+
+/**
+ * Explicit Golden Point start — always names the period.
+ * Prefer this over generic note templates when extra time begins.
+ */
+export function formatGoldenPointStartEvent(
+  context?: Partial<MatchEventContext>
+): string {
+  const score = context?.score?.trim();
+  if (score && score !== "-" && !/^0-0$/i.test(score)) {
+    return `Scores are level at ${score} — Golden Point begins.`;
+  }
+  return "Scores are level — Golden Point begins.";
+}
+
+export function buildCommentaryLine(
+  eventType: MatchEventType,
+  context: MatchEventContext,
+  memory: MatchStoryMemory,
+  rng: () => number
+): string {
+  switch (eventType) {
+    case "try":
+      return formatTryEvent(context, memory, rng);
+    case "conversion":
+    case "goal":
+      return formatConversionEvent(context, memory, rng);
+    case "penalty_goal":
+    case "penalty":
+      return formatPenaltyGoalEvent(context, memory, rng);
+    case "drop_goal":
+      return formatDropGoalEvent(context, memory, rng);
+    case "interchange":
+      return formatSubstitutionEvent(context, memory, rng);
+    case "injury":
+      return formatInjuryEvent(context, memory, rng);
+    case "half_time":
+      return formatHalfTimeEvent(context, memory, rng);
+    case "full_time":
+      return formatFullTimeEvent(context, memory, rng);
+    default:
+      return lineFromPool(eventType, context, memory, rng);
+  }
 }
 
 export function territoryForMinute(minute: number): string {

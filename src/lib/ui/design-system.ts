@@ -114,7 +114,7 @@ export const BORDER = {
   focus:
     "border border-theme-tertiary/35 ring-1 ring-theme-tertiary/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-tertiary/25",
   selected:
-    "border-2 border-white/20 ring-1 ring-white/10 shadow-[inset_3px_0_0_var(--card-accent,theme(colors.pitch.500))]",
+    "border-2 border-white/20 ring-1 ring-white/10 shadow-[inset_3px_0_0_var(--card-accent,#2a4539)]",
   /** Border-only: a surface colour here would override the panel background it sits on. */
   selectedMuted: "border-2 border-pitch-500/55",
   success: "border border-emerald-500/40",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ClubLogoBox } from "@/components/ClubBadge";
 import type { Player } from "@/lib/types";
@@ -15,7 +15,7 @@ import {
   QuickModePlayerChoiceCard,
   quickPlayerChoiceGridClass,
 } from "./QuickModePlayerChoiceCard";
-import { PlayerDetailModal } from "./PlayerDetailModal";
+import { GameButton } from "@/components/ui/GameButton";
 import { EraRatingExplanation } from "./EraRatingExplanation";
 import { CurrentRatingExplanation } from "./CurrentRatingExplanation";
 
@@ -26,6 +26,7 @@ interface SlotTeamYearPickerProps {
   onBack?: () => void;
   onRespin?: () => void;
   respinsRemaining?: number;
+  /** Retained for callers; count is shown only on the shared Respin button. */
   maxRespins?: number;
   disabled?: boolean;
   hardMode?: boolean;
@@ -40,24 +41,22 @@ export function SlotTeamYearPicker({
   onBack,
   onRespin,
   respinsRemaining = 0,
-  maxRespins = 3,
   disabled,
   hardMode,
   boosted = false,
   eraMode = false,
 }: SlotTeamYearPickerProps) {
-  const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
   const [respinLocked, setRespinLocked] = useState(false);
+
+  useEffect(() => {
+    setRespinLocked(false);
+  }, [entries]);
 
   const clubColors = useMemo(
     () => getClubColors(target.team),
     [target.team]
   );
   const shortYear = formatShortYear(target.year);
-  const parsedYear = Number.parseInt(target.year, 10);
-  const selectedSeasonYear = Number.isFinite(parsedYear)
-    ? parsedYear
-    : undefined;
 
   const sortedEntries = useMemo(
     () =>
@@ -142,7 +141,7 @@ export function SlotTeamYearPicker({
           </div>
         </div>
 
-        <div className="px-3 pt-2 sm:px-6 sm:pt-4">
+        <div className="px-3 pt-2 pb-3 sm:px-6 sm:pt-4 sm:pb-4">
           {entries.length === 0 ? (
             <p className="py-10 text-center text-gray-500">
               No players available from this squad.
@@ -180,48 +179,33 @@ export function SlotTeamYearPicker({
                         boosted={boosted}
                         disabled={disabled}
                         selectLabel="Select"
-                        showDetailsAction={!hardMode}
-                        showRespinAction={showRespin}
-                        respinLabel={respinLabel}
-                        respinDisabled={!canRespin}
-                        onRespin={showRespin ? handleRespin : undefined}
                         onSelect={() => {
                           playPlayerSelect();
                           onSelect(player);
                         }}
-                        onViewDetails={
-                          hardMode
-                            ? undefined
-                            : () => {
-                                playUiClick();
-                                setDetailPlayer(player);
-                              }
-                        }
                       />
                     </motion.div>
                   );
                 })}
               </div>
               {showRespin ? (
-                <p className={`mx-auto mt-2 max-w-md pb-3 text-center ${TYPO.meta}`}>
-                  {maxRespins} respins per run
-                </p>
-              ) : (
-                <div className="pb-3" />
-              )}
+                <div className="mt-3 flex justify-center">
+                  <GameButton
+                    variant="secondary"
+                    size="sm"
+                    fullWidth={false}
+                    disabled={!canRespin}
+                    onClick={handleRespin}
+                    className="min-w-[8.5rem]"
+                  >
+                    {respinLabel}
+                  </GameButton>
+                </div>
+              ) : null}
             </>
           )}
         </div>
       </div>
-
-      {detailPlayer && (
-        <PlayerDetailModal
-          player={detailPlayer}
-          ratingContext={eraMode ? "season" : undefined}
-          seasonYear={eraMode ? selectedSeasonYear : undefined}
-          onClose={() => setDetailPlayer(null)}
-        />
-      )}
     </motion.div>
   );
 }

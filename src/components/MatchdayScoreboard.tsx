@@ -1,22 +1,26 @@
 "use client";
 
-import { formatValue } from "@/lib/players";
 import { TYPO } from "@/lib/ui/typography";
 
 interface MatchdayScoreboardProps {
   filledCount: number;
   totalSlots: number;
-  totalValue: number;
+  /** Average peak rating of drafted players (1 decimal). Hidden in hard mode. */
+  averageSquadRating: number;
+  hardMode?: boolean;
 }
 
 export function MatchdayScoreboard({
   filledCount,
   totalSlots,
-  totalValue,
+  averageSquadRating,
+  hardMode = false,
 }: MatchdayScoreboardProps) {
+  const showRating = !hardMode && filledCount > 0;
+
   return (
-    <div className="matchday-scoreboard relative overflow-hidden border border-white/10 px-4 py-3 shadow-[0_14px_34px_rgba(0,0,0,0.28)]">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-pitch-900/40 via-transparent to-pitch-900/40" />
+    <div className="matchday-scoreboard relative overflow-hidden border border-white/10 bg-[#080c0d] px-4 py-3 shadow-[0_14px_34px_rgba(0,0,0,0.28)]">
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_42%)]" />
       <div className="relative flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
@@ -57,9 +61,11 @@ export function MatchdayScoreboard({
           </div>
 
           <div className="scoreboard-value-panel rounded-lg px-4 py-2 text-right">
-            <p className={`${TYPO.statLabel} text-accent-gold/80`}>Squad Value</p>
+            <p className={`${TYPO.statLabel} text-accent-gold/80`}>
+              Average Squad Rating
+            </p>
             <p className="font-display text-xl font-black text-accent-gold sm:text-2xl">
-              {totalValue > 0 ? formatValue(totalValue) : "—"}
+              {showRating ? averageSquadRating.toFixed(1) : "—"}
             </p>
           </div>
         </div>

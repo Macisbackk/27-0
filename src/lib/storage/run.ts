@@ -25,7 +25,7 @@ export async function recordCompletedRun(
   options?: {
     joeMellorMode?: boolean;
     superSamHallasMode?: boolean;
-    /** Boosted Quick Mode runs are excluded from competitive leaderboards. */
+    /** Optional boost metadata (no longer excludes competitive leaderboards). */
     usedBoosts?: boolean;
     normalEraMode?: boolean;
     modeVariant?: import("../types").ModeVariant;
@@ -54,8 +54,8 @@ export async function recordCompletedRun(
   const loggedIn = isLoggedIn();
   const isHiddenRun =
     options?.joeMellorMode === true || options?.superSamHallasMode === true;
-  const excludeFromLeaderboard =
-    isHiddenRun || options?.usedBoosts === true;
+  // Boosts remain tracked via usedBoosts metadata but no longer exclude competitive entry.
+  const excludeFromLeaderboard = isHiddenRun;
   const modeVariant = resolveClassicModeVariant({
     modeVariant: run.modeVariant,
     normalEraMode: options?.normalEraMode,
@@ -147,9 +147,6 @@ export async function recordPlayoffCompletion(
   const loggedIn = isLoggedIn();
   const modeVariant = resolveClassicModeVariant({ modeVariant: run.modeVariant });
   const statsBucket = resolveStatsBucket(run.mode, difficulty, modeVariant);
-  const wins = options.regularWins + options.playoffWins;
-  const losses = options.regularLosses + options.playoffLosses;
-  const skipCompetitive = options.usedBoosts === true;
 
   const superLeagueTitle =
     options.superLeagueTitle ??
@@ -170,7 +167,7 @@ export async function recordPlayoffCompletion(
   );
 
   let nationalRank: number | undefined;
-  if (loggedIn && run.mode === "CLASSIC" && !skipCompetitive) {
+  if (loggedIn && run.mode === "CLASSIC") {
     await addLeaderboardEntry(totalValue, run.mode, difficulty, {
       wins: options.playoffWins,
       losses: options.playoffLosses,
@@ -189,6 +186,6 @@ export async function recordPlayoffCompletion(
     ).rows.find((e) => e.isCurrentUser)?.rank;
   }
 
-  if (!skipCompetitive) syncTrophyCabinetLeaderboard();
-  return { nationalRank, submittedOnline: loggedIn && !skipCompetitive };
+  syncTrophyCabinetLeaderboard();
+  return { nationalRank, submittedOnline: loggedIn };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import type { Player, SquadSlot } from "@/lib/types";
 import { DraftPositionsRemaining } from "./DraftPositionsRemaining";
@@ -13,11 +13,11 @@ import {
 import { isGoatPlayer } from "@/lib/players/goat";
 import { DRAFT_MODE_RULE } from "@/lib/mode-labels";
 import { RL_SECTION_TITLE_CLASS } from "./cards/rl-card";
-import { PlayerDetailModal } from "./PlayerDetailModal";
 import {
   QuickModePlayerChoiceCard,
   quickPlayerChoiceGridClass,
 } from "./QuickModePlayerChoiceCard";
+import { GameButton } from "@/components/ui/GameButton";
 import { MOBILE } from "@/lib/ui/design-system";
 
 interface PlayerChoiceProps {
@@ -52,7 +52,6 @@ export function PlayerChoice({
   draftSquad,
   boosted = false,
 }: PlayerChoiceProps) {
-  const [detailPlayer, setDetailPlayer] = useState<Player | null>(null);
   const appearSoundPlayed = useRef(false);
   const [displayA, displayB] = useMemo(() => {
     return playerA.peakRating >= playerB.peakRating
@@ -151,15 +150,7 @@ export function PlayerChoice({
             disabled={disabled}
             boosted={boosted}
             selectLabel="Select"
-            showDetailsAction={!hardMode}
-            showRespinAction={showRespin}
-            respinLabel={respinLabel}
-            respinDisabled={!canReroll}
-            onRespin={showRespin ? handleRespin : undefined}
             onSelect={() => onChoose(displayA)}
-            onViewDetails={
-              hardMode ? undefined : () => setDetailPlayer(displayA)
-            }
           />
         </motion.div>
         <motion.div
@@ -176,25 +167,25 @@ export function PlayerChoice({
             disabled={disabled}
             boosted={boosted}
             selectLabel="Select"
-            showDetailsAction={!hardMode}
-            showRespinAction={showRespin}
-            respinLabel={respinLabel}
-            respinDisabled={!canReroll}
-            onRespin={showRespin ? handleRespin : undefined}
             onSelect={() => onChoose(displayB)}
-            onViewDetails={
-              hardMode ? undefined : () => setDetailPlayer(displayB)
-            }
           />
         </motion.div>
       </div>
 
-      {detailPlayer && (
-        <PlayerDetailModal
-          player={detailPlayer}
-          onClose={() => setDetailPlayer(null)}
-        />
-      )}
+      {showRespin ? (
+        <div className="mt-3 flex justify-center sm:mt-4">
+          <GameButton
+            variant="secondary"
+            size="sm"
+            fullWidth={false}
+            disabled={!canReroll}
+            onClick={handleRespin}
+            className="min-w-[8.5rem]"
+          >
+            {respinLabel}
+          </GameButton>
+        </div>
+      ) : null}
     </motion.div>
   );
 }

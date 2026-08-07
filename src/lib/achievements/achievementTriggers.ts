@@ -88,6 +88,7 @@ export function triggerQuickSeasonAchievements(
   season: {
     wins: number;
     losses: number;
+    draws?: number;
     leaguePosition: number;
     pointsDifference: number;
     isPerfect: boolean;
@@ -99,6 +100,9 @@ export function triggerQuickSeasonAchievements(
     superSamHallasMode?: boolean;
     normalEraMode?: boolean;
     madePlayoffs?: boolean;
+    playoffWins?: number;
+    playoffLosses?: number;
+    leagueChampion?: boolean;
   } = {}
 ): void {
   const totalValue = getSquadValue(squad);
@@ -113,8 +117,15 @@ export function triggerQuickSeasonAchievements(
 
   triggerAchievementCheck({
     trigger: "quick-season-completed",
+    quickModeLeagueSeason: true,
     seasonWins: season.wins,
     seasonLosses: season.losses,
+    seasonDraws: season.draws ?? 0,
+    regularSeasonWins: season.wins,
+    regularSeasonLosses: season.losses,
+    playoffWins: options.playoffWins,
+    playoffLosses: options.playoffLosses,
+    leagueChampion: options.leagueChampion === true,
     isPerfectSeason: season.isPerfect,
     isUnbeatenSeason: season.losses === 0 && season.wins > 0,
     madePlayoffs: options.madePlayoffs ?? season.leaguePosition <= 6,

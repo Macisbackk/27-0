@@ -138,28 +138,29 @@ export function ManagerNav({
           ))}
         </nav>
 
-        {contextTabs ? (
-          <div className="flex w-full justify-center px-1">
+        {/* Fixed sub-tab slot height so Hub↔Squad does not jump sticky nav. */}
+        <div className="flex min-h-[2.75rem] w-full items-center justify-center px-1">
+          {contextTabs ? (
             <ManagerSubTabBar
               tabs={contextTabs.tabs}
               active={contextTabs.active}
               onChange={contextTabs.onChange}
               ariaLabel={contextTabs.ariaLabel}
             />
-          </div>
-        ) : null}
+          ) : null}
+        </div>
       </div>
 
-      {contextTabs ? (
-        <div className="flex w-full justify-center px-1 sm:hidden">
+      <div className="flex min-h-0 w-full justify-center px-1 sm:hidden">
+        {contextTabs ? (
           <ManagerSubTabBar
             tabs={contextTabs.tabs}
             active={contextTabs.active}
             onChange={contextTabs.onChange}
             ariaLabel={contextTabs.ariaLabel}
           />
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </header>
   );
 }

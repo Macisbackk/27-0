@@ -120,7 +120,7 @@ import {
 } from "@/lib/sound";
 import { PageShell } from "@/components/ui/PageShell";
 import { PAGE } from "@/lib/ui/design-system";
-import { recordShellMount } from "@/lib/ui/mount-diagnostics";
+import { useMountDiagnostic } from "@/lib/ui/use-mount-diagnostic";
 import {
   confirmFriendlySchedule,
   ensureFriendlyChoices,
@@ -205,7 +205,11 @@ const SCROLL_TOP_VIEWS: ManagerView[] = [
 
 function scrollManagerPageToTop() {
   if (typeof window === "undefined") return;
-  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  // Instant jump only — avoid smooth scroll (extra frames) and avoid fighting
+  // sticky header compositing. Prefer documentElement for Windows Chrome.
+  const root = document.scrollingElement ?? document.documentElement;
+  if (root.scrollTop > 0) root.scrollTop = 0;
+  if (window.scrollY > 0) window.scrollTo(0, 0);
 }
 
 function setManagerView(
@@ -233,21 +237,25 @@ export default function ManagerPage() {
   );
   const prevPathnameForNavRef = useRef(pathname);
   const displayView = useMemo(() => {
-    if (prevPathnameForNavRef.current !== pathname) {
-      pendingForwardNavRef.current = null;
-      prevPathnameForNavRef.current = pathname;
-    }
-
-    const resolved = resolveManagerDisplayView(pathname, view);
+    const pathChanged = prevPathnameForNavRef.current !== pathname;
     const pending = pendingForwardNavRef.current;
+
+    // Optimistic forward tab paint before router pathname catches up.
     if (
       pending &&
+      !pathChanged &&
       pathname !== pending.path &&
       view === pending.view
     ) {
       return pending.view;
     }
-    return resolved;
+
+    if (pathChanged) {
+      pendingForwardNavRef.current = null;
+      prevPathnameForNavRef.current = pathname;
+    }
+
+    return resolveManagerDisplayView(pathname, view);
   }, [pathname, view]);
   const squadSubTab = useMemo(
     () => resolveSquadSubTabDisplay(pathname),
@@ -410,9 +418,7 @@ export default function ManagerPage() {
     setSaveSlots(listManagerSaveSlots());
   }, []);
 
-  useEffect(() => {
-    recordShellMount("manager-shell");
-  }, []);
+  useMountDiagnostic("manager-shell");
 
   useEffect(() => {
     let cancelled = false;
@@ -1906,7 +1912,10 @@ export default function ManagerPage() {
               />
             ) : (
               <>
-                <ManagerKeepAlivePane active={chromeNavView === "hub" && panesInteractive}>
+                <ManagerKeepAlivePane
+                  label="manager-tab-hub"
+                  active={chromeNavView === "hub" && panesInteractive}
+                >
                   <ManagerHub
                     career={career}
                     onPlayGame={handlePlayGame}
@@ -1927,7 +1936,10 @@ export default function ManagerPage() {
                     onNavigate={handleInboxNavigate}
                   />
                 </ManagerKeepAlivePane>
-                <ManagerKeepAlivePane active={chromeNavView === "squad" && panesInteractive}>
+                <ManagerKeepAlivePane
+                  label="manager-tab-squad"
+                  active={chromeNavView === "squad" && panesInteractive}
+                >
                   <ManagerSquad
                     career={career}
                     onUpdate={persistAndSurfaceIncomingBids}

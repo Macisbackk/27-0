@@ -9,6 +9,7 @@ import {
 import {
   buildCommentaryLine,
   createMatchStoryMemory,
+  formatFullTimeEvent,
   territoryForMinute,
   type MatchStoryMemory,
 } from "../match/matchEventTemplates";
@@ -312,7 +313,10 @@ function resolveKicker(
   return side === "user" ? "the home kicker" : "the away kicker";
 }
 
-function finalizeRegulationEvents(events: LiveMatchEvent[]): LiveMatchEvent[] {
+function finalizeRegulationEvents(
+  events: LiveMatchEvent[],
+  input: GeneratorInput
+): LiveMatchEvent[] {
   const withoutOverage = events.filter((e) => {
     if (e.type === "full_time") return true;
     if (e.period === "golden_point") return true;
@@ -358,7 +362,15 @@ function finalizeRegulationEvents(events: LiveMatchEvent[]): LiveMatchEvent[] {
       minute: REGULATION_MATCH_MINUTES,
       type: "full_time",
       team: "user",
-      description: `${REGULATION_MATCH_MINUTES}' Full time`,
+      description: eventMinutePrefix(
+        REGULATION_MATCH_MINUTES,
+        formatFullTimeEvent({
+          team: input.userClub,
+          opponent: input.opponent,
+          minute: REGULATION_MATCH_MINUTES,
+          score: `${input.userScore}-${input.oppScore}`,
+        })
+      ),
       points: 0,
       importance: "major",
       period: "second_half",
@@ -780,7 +792,7 @@ export function generateSimulatedMatchEvents(
     )
   );
 
-  return finalizeRegulationEvents(events);
+  return finalizeRegulationEvents(events, input);
 }
 
 export function generateEventsFromFixture(

@@ -10,6 +10,16 @@ export type AchievementCheckContext = {
   // Season / run
   seasonWins?: number;
   seasonLosses?: number;
+  seasonDraws?: number;
+  /** Explicit regular-season wins for 29–0 validation (Quick Mode league). */
+  regularSeasonWins?: number;
+  regularSeasonLosses?: number;
+  playoffWins?: number;
+  playoffLosses?: number;
+  /** True when the run won the Super League title via playoffs. */
+  leagueChampion?: boolean;
+  /** True for Quick Mode Super League seasons (not cup / WCC / friendlies). */
+  quickModeLeagueSeason?: boolean;
   isPerfectSeason?: boolean;
   isUnbeatenSeason?: boolean;
   madePlayoffs?: boolean;

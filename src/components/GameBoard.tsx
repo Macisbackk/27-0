@@ -59,6 +59,7 @@ import {
   signPlayerToSlot,
   TOTAL_SLOTS,
 } from "@/lib/positions";
+import { getAverageSquadRating } from "@/lib/squad-analysis";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { awardClubFundsForRun } from "@/lib/storage/club-funds";
 import { recordCompletedRun, recordPlayoffCompletion } from "@/lib/storage/run";
@@ -768,6 +769,7 @@ export function GameBoard({
 
   const filledCount = getFilledCount(squad);
   const totalValue = getSquadValue(squad);
+  const averageSquadRating = getAverageSquadRating(squad);
 
   const signedPlayerIds = useMemo(
     () =>
@@ -1047,6 +1049,7 @@ export function GameBoard({
         {
           wins: result.wins,
           losses: result.losses,
+          draws: result.draws ?? 0,
           leaguePosition: tablePosition,
           pointsDifference: result.pointsDifference,
           isPerfect: result.isPerfect,
@@ -1128,6 +1131,7 @@ export function GameBoard({
         {
           wins: result.wins,
           losses: result.losses,
+          draws: result.draws ?? 0,
           leaguePosition: tablePosition,
           pointsDifference: result.pointsDifference,
           isPerfect: result.isPerfect,
@@ -1139,6 +1143,11 @@ export function GameBoard({
           superSamHallasMode,
           normalEraMode,
           madePlayoffs: true,
+          playoffWins: playoff.wins,
+          playoffLosses: playoff.losses,
+          leagueChampion:
+            playoff.isChampion ||
+            playoff.finish === "Super League Champions",
         }
       );
     },
@@ -2207,7 +2216,8 @@ export function GameBoard({
         <MatchdayScoreboard
             filledCount={filledCount}
             totalSlots={TOTAL_SLOTS}
-            totalValue={totalValue}
+            averageSquadRating={averageSquadRating}
+            hardMode={difficulty === "HARD"}
           />
 
         {recruitNotice && phase === "pitch" && (

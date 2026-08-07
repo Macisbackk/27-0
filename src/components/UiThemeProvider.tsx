@@ -6,12 +6,15 @@ import {
   getSelectedUiThemeId,
   UI_THEME_CHANGED_EVENT,
 } from "@/lib/storage/ui-theme-store";
+import { useMountDiagnostic } from "@/lib/ui/use-mount-diagnostic";
 
 const useThemeLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 /** Applies selected store theme CSS variables on load and when the user changes theme. */
 export function UiThemeProvider() {
+  useMountDiagnostic("UiThemeProvider");
+
   useThemeLayoutEffect(() => {
     applyUiThemeById(getSelectedUiThemeId());
 

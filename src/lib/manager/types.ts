@@ -498,6 +498,7 @@ export type ManagerView =
 
 export type ManagerAutoRenewContractYears = 1 | 2 | 3 | 4;
 
+/** @deprecated Ignored — mass release always ANDs enabled rules. Kept for migrate. */
 export type MassReleaseMatchMode = "all" | "any";
 
 /** Reserve Management rules — Auto Promote + mass-release (v2). */
@@ -506,8 +507,11 @@ export interface ManagerReserveDevelopmentSettings {
   /** Auto-promote reserves at/above rating when senior capacity allows. Off by default. */
   autoPromoteByRatingEnabled: boolean;
   autoPromoteRatingThreshold: number;
-  /** Mass release: Match ALL (default) requires every enabled rule; ANY uses OR. */
-  massReleaseMatchMode: MassReleaseMatchMode;
+  /**
+   * @deprecated Ignored on apply — mass release always requires every enabled
+   * rule (AND / "all"). Optional so legacy saves still hydrate.
+   */
+  massReleaseMatchMode?: MassReleaseMatchMode;
   massReleaseByPotentialEnabled: boolean;
   massReleasePotentialBelow: number;
   massReleaseByRatingEnabled: boolean;
@@ -1126,7 +1130,7 @@ export const DEFAULT_TACTICS: ManagerTactics = {
 
 export const DEFAULT_RESERVE_DEVELOPMENT_SETTINGS: ManagerReserveDevelopmentSettings =
   {
-    reserveManagementSettingsVersion: 2,
+    reserveManagementSettingsVersion: 3,
     autoPromoteByRatingEnabled: false,
     autoPromoteRatingThreshold: 85,
     massReleaseMatchMode: "all",

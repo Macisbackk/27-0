@@ -143,6 +143,12 @@ function hydrateManagerSettings(
     mergedDev.reserveManagementSettingsVersion = 2;
   }
 
+  // v3: Match Mode toggle removed — always AND matching; ignore legacy field.
+  if ((mergedDev.reserveManagementSettingsVersion ?? 0) < 3) {
+    delete (mergedDev as { massReleaseMatchMode?: unknown }).massReleaseMatchMode;
+    mergedDev.reserveManagementSettingsVersion = 3;
+  }
+
   return {
     autoRenewContractYears,
     autoFixSquadBeforeMatch:

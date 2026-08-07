@@ -53,6 +53,15 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     rewardClubFunds: 250_000,
   },
   {
+    id: "29-0",
+    name: "29–0",
+    description:
+      "Go unbeaten through the league and playoffs — 27–0 regular season and 2–0 in the playoffs.",
+    category: "normal",
+    points: 150,
+    rewardClubFunds: 500_000,
+  },
+  {
     id: "unbeaten-again",
     name: "Unbeaten Again",
     description: "Complete 3 unbeaten seasons.",

@@ -82,7 +82,7 @@ export function QuickModePlayerChoiceCard({
   allowEasterEggTags = true,
   selectLabel = UI_COPY.selectPlayer,
   detailsLabel = UI_COPY.viewDetails,
-  showDetailsAction = true,
+  showDetailsAction = false,
   respinLabel = UI_COPY.respin,
   showRespinAction = false,
   respinDisabled = false,
@@ -204,12 +204,7 @@ export function QuickModePlayerChoiceCard({
           >
             {detailsLabel}
           </button>
-        ) : (
-          /* Preserve action-zone height when details are unavailable (Hard Mode). */
-          <span className="quick-player-card__details-btn invisible" aria-hidden>
-            {detailsLabel}
-          </span>
-        )}
+        ) : null}
       </footer>
     </article>
   );

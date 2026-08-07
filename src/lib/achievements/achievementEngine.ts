@@ -44,6 +44,16 @@ function evaluateUnlock(
       return (ctx.seasonWins ?? progress.seasonWinsCurrent) >= 20;
     case "perfect-season":
       return ctx.isPerfectSeason === true;
+    case "29-0":
+      return (
+        ctx.quickModeLeagueSeason === true &&
+        ctx.regularSeasonWins === 27 &&
+        ctx.regularSeasonLosses === 0 &&
+        ctx.seasonDraws === 0 &&
+        ctx.playoffWins === 2 &&
+        ctx.playoffLosses === 0 &&
+        ctx.leagueChampion === true
+      );
     case "unbeaten-again":
       return progress.unbeatenSeasons >= 3 || ctx.isUnbeatenSeason === true;
     case "elite-builder":

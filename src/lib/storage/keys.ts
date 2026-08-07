@@ -38,10 +38,26 @@ export const STORAGE_KEYS = {
   achievements: "27-0-achievements",
   /** One-time: existing unlocks treated as acknowledged; post-hydrate baseline set. */
   achievementsBaselineVersion: "27-0-achievements-baseline-version",
+  achievementSchemaVersion: "27-0-achievement-schema-version",
+  leaderboardEligibilityVersion: "27-0-leaderboard-eligibility-version",
+  tabRenderingFixVersion: "27-0-tab-rendering-fix-version",
+  matchEventCopyVersion: "27-0-match-event-copy-version",
+  mobileHeaderVersion: "27-0-mobile-header-version",
+  quickModeSelectionUIVersion: "27-0-qm-selection-ui-version",
+  reserveSettingsVersion: "27-0-reserve-settings-version",
 } as const;
 
 /** Bump when achievement hydration / acknowledgement migration changes. */
 export const ACHIEVEMENTS_BASELINE_VERSION = 2;
+
+/** Priority-pass schema markers. */
+export const ACHIEVEMENT_SCHEMA_VERSION = 3;
+export const LEADERBOARD_ELIGIBILITY_VERSION = 2;
+export const TAB_RENDERING_FIX_VERSION = 4;
+export const MATCH_EVENT_COPY_VERSION = 2;
+export const MOBILE_HEADER_VERSION = 3;
+export const QUICK_MODE_SELECTION_UI_VERSION = 4;
+export const RESERVE_SETTINGS_VERSION = 3;
 
 /** Bump when StoredStats shape changes — triggers one-time local migration. */
 export const STATS_SCHEMA_VERSION = 3;

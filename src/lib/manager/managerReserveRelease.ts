@@ -156,12 +156,13 @@ function evaluateMassReleaseRules(
   const active = checks.filter((c) => c.enabled);
   if (active.length === 0) return { matches: false, reason: "" };
 
-  const mode = settings.massReleaseMatchMode ?? "all";
+  // Always AND ("all") — massReleaseMatchMode is deprecated / ignored.
+  void settings.massReleaseMatchMode;
   const hits = active.filter((c) => c.pass);
-  const matches = mode === "all" ? hits.length === active.length : hits.length > 0;
+  const matches = hits.length === active.length;
   return {
     matches,
-    reason: hits.map((h) => h.label).join(mode === "all" ? " + " : " / ") || "Mass release rules",
+    reason: hits.map((h) => h.label).join(" + ") || "Mass release rules",
   };
 }
 

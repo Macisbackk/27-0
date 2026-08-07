@@ -157,7 +157,8 @@ export function resolveManagerScreenFromPathname(pathname: string): ManagerView 
   return null;
 }
 
-/** Single render-time view: overlays first; URL is source of truth for tabs. */
+/** Single render-time view: overlays first; URL is source of truth for tabs.
+ *  Forward nav uses pendingForwardNav on the page for one optimistic paint. */
 export function resolveManagerDisplayView(
   pathname: string,
   stateView: ManagerView

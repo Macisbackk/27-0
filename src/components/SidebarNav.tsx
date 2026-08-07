@@ -30,6 +30,8 @@ import {
   SuggestionsIcon,
   XIcon,
 } from "./SupportLinkIcons";
+import { useClubFunds } from "@/hooks/useClubFunds";
+import { formatClubFunds } from "@/lib/club-funds";
 
 interface SidebarNavProps {
   open: boolean;
@@ -53,6 +55,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { loading, isLoggedIn } = useAuth();
+  const { balance, ready: fundsReady } = useClubFunds();
   const [normalEraVariant, setNormalEraVariantState] = useState(false);
   const [muted, setMuted] = useState(false);
   const closeMenu = useCallback(() => {
@@ -204,6 +207,21 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     </Link>
                   </li>
                 </ul>
+                <div className="mt-2 rounded-[var(--mobile-radius-medium)] border border-white/10 bg-black/25 px-3 py-2 sm:hidden">
+                  <p className={`${TYPO.meta} uppercase tracking-wide text-pitch-400`}>
+                    Club Finances
+                  </p>
+                  <p className="mt-0.5 text-sm font-semibold tabular-nums text-theme-primary">
+                    {fundsReady ? formatClubFunds(balance) : "—"}
+                  </p>
+                  <Link
+                    href="/manager/club"
+                    onClick={handleNavClick}
+                    className={`mt-1 inline-block ${TYPO.meta} text-pitch-300 underline-offset-2 hover:underline`}
+                  >
+                    Club Office
+                  </Link>
+                </div>
               </section>
 
               <section className={NAV.sectionGap}>

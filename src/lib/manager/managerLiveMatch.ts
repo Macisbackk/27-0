@@ -32,6 +32,9 @@ import { eventMinutePrefix } from "../game/match-events";
 import type { MatchEventType } from "../game/match-events";
 import {
   buildCommentaryLine,
+  formatFullTimeEvent,
+  formatGoldenPointStartEvent,
+  formatHalfTimeEvent,
   memoryFromEvents,
   territoryForMinute,
 } from "../match/matchEventTemplates";
@@ -1025,7 +1028,12 @@ export function advanceLiveTick(
         teamName: career.club,
         description: eventMinutePrefix(
           HALFTIME_MINUTE,
-          `Half time — ${career.club} ${userScore}, ${state.opponent} ${oppScore}.`
+          formatHalfTimeEvent({
+            team: career.club,
+            opponent: state.opponent,
+            minute: HALFTIME_MINUTE,
+            score: `${userScore}-${oppScore}`,
+          })
         ),
         points: 0,
         importance: "major",
@@ -1047,7 +1055,12 @@ export function advanceLiveTick(
       teamName: career.club,
       description: eventMinutePrefix(
         80,
-        `Full time — ${career.club} ${userScore}, ${state.opponent} ${oppScore}.`
+        formatFullTimeEvent({
+          team: career.club,
+          opponent: state.opponent,
+          minute: 80,
+          score: `${userScore}-${oppScore}`,
+        })
       ),
       points: 0,
       importance: "major",
@@ -1075,7 +1088,11 @@ export function advanceLiveTick(
       team: winnerTeam,
       description: eventMinutePrefix(
         80,
-        "Scores are level. Golden Point."
+        formatGoldenPointStartEvent({
+          team: winnerName,
+          opponent: userWinsGp ? state.opponent : career.club,
+          score: `${userScore}-${oppScore}`,
+        })
       ),
       points: 0,
       teamName: winnerName,
@@ -1187,6 +1204,8 @@ function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
 
   const events = [...state.events];
   if (!events.some((e) => e.type === "full_time")) {
+    const userTeamName =
+      events.find((e) => e.team === "user" && e.teamName)?.teamName ?? "Home";
     events.push({
       minute: 80,
       type: "full_time",
@@ -1194,7 +1213,12 @@ function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
       teamName: undefined,
       description: eventMinutePrefix(
         80,
-        `Full time — ${userScore}-${oppScore}.`
+        formatFullTimeEvent({
+          team: userTeamName,
+          opponent: state.opponent,
+          minute: 80,
+          score: `${userScore}-${oppScore}`,
+        })
       ),
       points: 0,
       importance: "major",

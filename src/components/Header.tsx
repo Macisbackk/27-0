@@ -1,26 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import { ClubFundsDisplay } from "./ClubFundsDisplay";
 import { HeaderAuthControls } from "./HeaderAuthControls";
 import { LogoMark } from "./LogoMark";
 import { SidebarNav } from "./SidebarNav";
 import { playMenuOpen } from "@/lib/sound";
-import { recordShellMount } from "@/lib/ui/mount-diagnostics";
+import { useMountDiagnostic } from "@/lib/ui/use-mount-diagnostic";
 
+/**
+ * Site header: true three-column grid so the logo stays viewport-centred.
+ * Mobile hides Club Funds in the header (lives in the side menu).
+ */
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    recordShellMount("app-header");
-  }, []);
+  useMountDiagnostic("app-header");
 
   return (
     <>
       <header className="app-header sticky top-0 z-50 overflow-x-clip border-b">
-        <div className="app-chrome relative grid h-12 min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-2 overflow-hidden sm:h-[3.25rem] sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-2">
-          <div className="flex min-h-[44px] min-w-0 items-center justify-start sm:col-start-1">
+        <div className="app-chrome relative grid h-12 min-w-0 grid-cols-[1fr_auto_1fr] items-center gap-x-2 overflow-hidden sm:h-[3.25rem] sm:gap-2">
+          <div className="mobile-header__left flex min-h-[44px] min-w-0 items-center justify-start">
             <button
               type="button"
               onClick={() => {
@@ -37,18 +38,20 @@ export function Header() {
             </button>
           </div>
 
-          <div className="flex min-w-0 items-center justify-center sm:col-start-2">
+          <div className="flex shrink-0 items-center justify-center">
             <Link
               href="/"
-              className="flex min-w-0 items-center justify-center px-1"
+              className="flex items-center justify-center px-1"
               aria-label="27-0 home"
             >
               <LogoMark />
             </Link>
           </div>
 
-          <div className="flex min-h-[44px] min-w-0 items-center justify-end gap-1 sm:col-start-3 sm:gap-2">
-            <ClubFundsDisplay />
+          <div className="mobile-header__right flex min-h-[44px] min-w-0 items-center justify-end gap-1 sm:gap-2">
+            <div className="hidden sm:block">
+              <ClubFundsDisplay />
+            </div>
             <HeaderAuthControls />
           </div>
         </div>

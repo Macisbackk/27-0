@@ -1258,81 +1258,78 @@
   }
 }
 
-/* Showcase match weeks — unique atmosphere per occasion */
+/* Showcase match weeks — solid dark panels; thin occasion accents on the border only */
 .matchday-scoreboard--grand-final {
-  border-color: rgba(212, 175, 55, 0.42);
-  box-shadow:
-    0 0 0 1px rgba(212, 175, 55, 0.22),
-    0 18px 42px rgba(0, 0, 0, 0.38);
+  border-color: rgba(212, 175, 55, 0.32);
+  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.1);
+  background-color: #080c0d;
   background-image: linear-gradient(
-    165deg,
-    rgba(212, 175, 55, 0.14) 0%,
-    rgba(212, 175, 55, 0.03) 42%,
-    transparent 72%
+    180deg,
+    rgba(255, 255, 255, 0.025) 0%,
+    transparent 36%
   );
 }
 
 .matchday-scoreboard--cup-final {
-  border-color: rgba(212, 175, 55, 0.38);
-  box-shadow:
-    0 0 0 1px rgba(212, 175, 55, 0.18),
-    0 16px 36px rgba(0, 0, 0, 0.34);
+  border-color: rgba(212, 175, 55, 0.28);
+  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.08);
+  background-color: #080c0d;
   background-image: linear-gradient(
     180deg,
-    rgba(212, 175, 55, 0.12) 0%,
-    transparent 58%
+    rgba(255, 255, 255, 0.02) 0%,
+    transparent 32%
   );
 }
 
 .matchday-scoreboard--playoff {
-  border-color: rgba(245, 158, 11, 0.36);
-  box-shadow:
-    0 0 0 1px rgba(245, 158, 11, 0.14),
-    0 14px 32px rgba(0, 0, 0, 0.32);
+  border-color: rgba(245, 158, 11, 0.26);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.08);
+  background-color: #080c0d;
   background-image: linear-gradient(
     180deg,
-    rgba(245, 158, 11, 0.1) 0%,
-    transparent 55%
+    rgba(255, 255, 255, 0.02) 0%,
+    transparent 32%
   );
 }
 
 .matchday-scoreboard--challenge-cup {
-  border-color: rgba(212, 175, 55, 0.28);
+  border-color: rgba(212, 175, 55, 0.22);
+  background-color: #080c0d;
   background-image: linear-gradient(
     180deg,
-    rgba(212, 175, 55, 0.07) 0%,
-    transparent 50%
+    rgba(255, 255, 255, 0.018) 0%,
+    transparent 28%
   );
 }
 
 .matchday-scoreboard--wcc {
-  border-color: rgba(56, 189, 248, 0.4);
-  box-shadow:
-    0 0 0 1px rgba(56, 189, 248, 0.16),
-    0 16px 36px rgba(0, 0, 0, 0.34);
+  border-color: rgba(56, 189, 248, 0.28);
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.08);
+  background-color: #080c0d;
   background-image: linear-gradient(
-    135deg,
-    rgba(56, 189, 248, 0.12) 0%,
-    rgba(148, 163, 184, 0.06) 45%,
-    transparent 70%
+    180deg,
+    rgba(255, 255, 255, 0.022) 0%,
+    transparent 34%
   );
 }
 
 .matchday-scoreboard--magic {
-  border-color: color-mix(in srgb, var(--theme-primary, #22c55e) 40%, transparent);
+  border-color: color-mix(in srgb, var(--theme-primary, #22c55e) 28%, transparent);
+  background-color: #080c0d;
   background-image: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--theme-primary, #22c55e) 12%, transparent) 0%,
-    transparent 55%
+    rgba(255, 255, 255, 0.02) 0%,
+    transparent 30%
   );
 }
 
 .matchday-scoreboard--friendly {
-  border-color: rgba(56, 189, 248, 0.28);
+  border-color: rgba(56, 189, 248, 0.22);
+  background-color: #080c0d;
   background-image: linear-gradient(
     180deg,
-    rgba(56, 189, 248, 0.06) 0%,
-    transparent 50%
+    rgba(255, 255, 255, 0.016) 0%,
+    transparent 28%
   );
 }
 

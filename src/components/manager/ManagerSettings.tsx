@@ -18,7 +18,6 @@ import {
   type ManagerCareer,
   type ManagerReserveDevelopmentSettings,
   type ManagerSettings,
-  type MassReleaseMatchMode,
 } from "@/lib/manager/types";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
@@ -394,14 +393,13 @@ function ReserveDevelopmentSettingsCard({
     }
   };
 
-  const matchMode: MassReleaseMatchMode = dev.massReleaseMatchMode ?? "all";
-
   return (
     <>
       <ManagerSectionCard title="Reserve Management" variant="elevated">
         <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
           Auto-promote by rating and mass-release rules. Preview before releasing;
-          protected players are never included.
+          protected players are never included. Mass release requires every enabled
+          rule to match.
         </p>
 
         <div className="mt-4 space-y-5">
@@ -441,42 +439,7 @@ function ReserveDevelopmentSettingsCard({
             <h3 className={`${TYPO.bodySm} font-semibold text-pitch-200`}>
               Mass release
             </h3>
-            <fieldset className="mt-2">
-              <legend className={`mb-2 ${TYPO.bodySm} text-pitch-400`}>
-                Match mode
-              </legend>
-              <div className="grid grid-cols-2 gap-2">
-                {(["all", "any"] as const).map((mode) => {
-                  const selected = matchMode === mode;
-                  return (
-                    <label
-                      key={mode}
-                      className={`flex cursor-pointer flex-col items-center gap-1 rounded-lg border px-2 py-2.5 text-center transition ${
-                        selected
-                          ? "border-theme-primary/60 bg-theme-primary/15 text-theme-primary"
-                          : "border-pitch-600/55 bg-pitch-900/40 text-pitch-300"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="massReleaseMatchMode"
-                        className="sr-only"
-                        checked={selected}
-                        onChange={() => patchDev({ massReleaseMatchMode: mode })}
-                      />
-                      <span className="text-sm font-bold uppercase">
-                        Match {mode}
-                      </span>
-                      <span className="text-[10px] text-pitch-500">
-                        {mode === "all" ? "Every enabled rule" : "Any enabled rule"}
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-            </fieldset>
-
-            <ul className="mt-3 divide-y divide-pitch-700/50">
+            <ul className="mt-2 divide-y divide-pitch-700/50">
               <SettingsToggle
                 label="Release by potential"
                 description={`Potential below ${dev.massReleasePotentialBelow}.`}

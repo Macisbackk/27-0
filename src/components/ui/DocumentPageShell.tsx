@@ -10,7 +10,7 @@ import {
   logDocumentScrollDiagnostics,
 } from "@/lib/ui/document-page-scroll";
 import { clearAbandonedAnimationScrollLocks } from "@/lib/ui/scroll-lock";
-import { recordShellMount } from "@/lib/ui/mount-diagnostics";
+import { useMountDiagnostic } from "@/lib/ui/use-mount-diagnostic";
 
 type DocumentPageShellProps = {
   children: ReactNode;
@@ -29,9 +29,9 @@ export function DocumentPageShell({
   diagnoseLabel = "DocumentPageShell",
 }: DocumentPageShellProps) {
   const rootRef = useRef<HTMLDivElement>(null);
+  useMountDiagnostic(`shell:${diagnoseLabel}`);
 
   useEffect(() => {
-    recordShellMount(`shell:${diagnoseLabel}`);
     clearAbandonedAnimationScrollLocks();
     clearStaleBodyScrollLocks();
     const root = rootRef.current;
