@@ -350,6 +350,7 @@
 .mobile-bottom-sheet,
 .mobile-modal-panel {
   width: 100%;
+  height: min(88dvh, 900px);
   max-height: min(88dvh, 900px);
   overflow: hidden;
   display: flex;

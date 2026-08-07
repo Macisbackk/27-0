@@ -20,8 +20,10 @@ import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { ModeStartLink } from "./ModeStartLink";
 import {
-  DAILY_CHALLENGE_BONUS,
   getDailyChallengeHref,
+  getDailyChallengeProgress,
+  getDailyChallengeScenario,
+  getDailyChallengeTotalBonus,
   hasClaimedDailyChallengeBonus,
 } from "@/lib/daily-challenge";
 import { formatClubFundsExact } from "@/lib/club-funds";
@@ -30,11 +32,20 @@ export function HomeModeSelector() {
   const [normalEraMode, setNormalEraMode] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [dailyClaimed, setDailyClaimed] = useState(false);
+  const [dailyProgress, setDailyProgress] = useState({
+    leagueLeaders: false,
+    playoffTitle: false,
+  });
+  const scenario = getDailyChallengeScenario();
 
   useEffect(() => {
     setNormalEraMode(getNormalEraVariant());
     setMounted(true);
     setDailyClaimed(hasClaimedDailyChallengeBonus());
+    setDailyProgress({
+      leagueLeaders: Boolean(getDailyChallengeProgress().leagueLeaders),
+      playoffTitle: Boolean(getDailyChallengeProgress().playoffTitle),
+    });
 
     const onNormal = (event: Event) => {
       const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
@@ -92,23 +103,37 @@ export function HomeModeSelector() {
             <p className={`text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-theme-primary`}>
               Daily challenge
             </p>
-            <p className={`mt-1 ${TYPO.bodySm}`}>
-              Finish a Classic Quick Mode season today for a{" "}
-              {formatClubFundsExact(DAILY_CHALLENGE_BONUS)} Club Funds bonus.
+            <p className={`mt-1 font-semibold text-white`}>{scenario.title}</p>
+            <p className={`mt-1 ${TYPO.bodySm}`}>{scenario.blurb}</p>
+            <p className={`mt-1 ${TYPO.meta}`}>
+              League Leaders {formatClubFundsExact(scenario.leagueLeadersBonus)}
+              {" · "}
+              Grand Final {formatClubFundsExact(scenario.playoffTitleBonus)}
+              {" · "}
+              Total {formatClubFundsExact(getDailyChallengeTotalBonus(scenario))}
             </p>
             {dailyClaimed ? (
-              <p className={`mt-1 ${TYPO.meta} text-theme-primary`}>Bonus claimed today</p>
+              <p className={`mt-1 ${TYPO.meta} text-theme-primary`}>
+                Challenge complete today
+              </p>
             ) : (
-              <div className="mt-2 flex justify-center">
-                <GameButton
-                  variant="secondary"
-                  size="sm"
-                  href={getDailyChallengeHref()}
-                  onClick={() => playUiClick()}
-                >
-                  Play today&apos;s challenge
-                </GameButton>
-              </div>
+              <>
+                <p className={`mt-1 ${TYPO.meta}`}>
+                  {dailyProgress.leagueLeaders ? "League Leaders done" : "League Leaders pending"}
+                  {" · "}
+                  {dailyProgress.playoffTitle ? "Title done" : "Title pending"}
+                </p>
+                <div className="mt-2 flex justify-center">
+                  <GameButton
+                    variant="secondary"
+                    size="sm"
+                    href={getDailyChallengeHref()}
+                    onClick={() => playUiClick()}
+                  >
+                    Play today&apos;s challenge
+                  </GameButton>
+                </div>
+              </>
             )}
           </div>
 

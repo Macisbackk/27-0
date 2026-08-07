@@ -1546,6 +1546,12 @@ export default function ManagerPage() {
 
   const handleSimulate = useCallback(() => {
     if (!career) return;
+    if (career.managerSettings?.confirmBeforeSimulate) {
+      const ok = window.confirm(
+        "Simulate this fixture? You can turn off this prompt in Contracts → Settings."
+      );
+      if (!ok) return;
+    }
     if (career.matchWeekPhase === "awaiting_advance") {
       setAlertDialog({
         title: "Match Week",

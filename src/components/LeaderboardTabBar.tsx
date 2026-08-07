@@ -147,13 +147,15 @@ export function LeaderboardTabBar<T extends string>({
   }
 
   if (tier === "mode") {
+    const cols =
+      tabs.length === 3
+        ? "grid-cols-3"
+        : tabs.length > 2
+          ? "grid-cols-2 sm:grid-cols-3"
+          : "grid-cols-2";
     return (
       <div
-        className={`grid gap-2 ${
-          tabs.length > 2
-            ? "grid-cols-2 sm:grid-cols-3"
-            : "grid-cols-2"
-        }`}
+        className={`grid gap-2 ${cols}`}
         role="tablist"
         aria-label={ariaLabel}
       >

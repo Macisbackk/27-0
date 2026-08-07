@@ -358,10 +358,11 @@ export function ManagerContracts({
         <div className={`${SPACING.stackSm}`}>
         {rows.map(({ player, contract, status, rating }) => {
           const urgent =
-            contract.yearsRemaining <= 1 ||
-            contract.expiresAtSeasonEnd ||
-            contract.retiringAtSeasonEnd ||
-            contract.retireAfterContract;
+            (career.managerSettings?.highlightExpiringContracts !== false) &&
+            (contract.yearsRemaining <= 1 ||
+              contract.expiresAtSeasonEnd ||
+              contract.retiringAtSeasonEnd ||
+              contract.retireAfterContract);
           const statusColor =
             contract.retireAfterContract
               ? "text-stone-200 bg-stone-500/15 border-stone-400/35"

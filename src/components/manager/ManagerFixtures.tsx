@@ -822,13 +822,13 @@ export function ManagerFixtures({
 
   const wccPastResultsList =
     wccPastResults.length > 0 ? (
-      <ul className={career.managerSettings?.compactFixtureRows ? "space-y-1.5" : SPACING.stackSm}>
+      <ul className={SPACING.stackSm}>
         {wccPastResults.map((r) => (
           <li key={r.id}>
             <WccResultBox
               result={r}
               club={career.club}
-              compact={career.managerSettings?.compactFixtureRows}
+              compact={false}
             />
           </li>
         ))}
@@ -846,7 +846,7 @@ export function ManagerFixtures({
               wcc={wccScheduled}
               club={career.club}
               isNext={nextFixture?.id === wccScheduled.id}
-              compact={career.managerSettings?.compactFixtureRows}
+              compact={false}
             />
             <p className={TYPO.bodySm}>
               Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear}
@@ -874,10 +874,8 @@ export function ManagerFixtures({
             <WccResultBox
               result={wccCurrentSeasonResult}
               club={career.club}
-              defaultOpen={
-                career.managerSettings?.wccWriteUpExpandedByDefault ?? false
-              }
-              compact={career.managerSettings?.compactFixtureRows}
+              defaultOpen={false}
+              compact={false}
             />
           </div>
         ) : wccPastResults.length > 0 || wccStats.results.length > 0 ? (
@@ -906,7 +904,7 @@ export function ManagerFixtures({
           wcc={wccScheduled}
           club={career.club}
           isNext={nextFixture?.id === wccScheduled.id}
-          compact={career.managerSettings?.compactFixtureRows}
+          compact={false}
         />
         <p className={TYPO.bodySm}>
           Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear}
@@ -1085,7 +1083,7 @@ export function ManagerFixtures({
             items={allTabItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
-            compact={career.managerSettings?.compactFixtureRows}
+            compact={false}
           />
         </GamePanel>
       )}
@@ -1110,7 +1108,7 @@ export function ManagerFixtures({
             items={challengeCupItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
-            compact={career.managerSettings?.compactFixtureRows}
+            compact={false}
           />
         </GamePanel>
       )}
@@ -1124,7 +1122,7 @@ export function ManagerFixtures({
             items={leagueUpcomingItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
-            compact={career.managerSettings?.compactFixtureRows}
+            compact={false}
           />
         </GamePanel>
       )}
@@ -1135,7 +1133,7 @@ export function ManagerFixtures({
             items={playoffItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
-            compact={career.managerSettings?.compactFixtureRows}
+            compact={false}
           />
         </GamePanel>
       )}
@@ -1149,7 +1147,7 @@ export function ManagerFixtures({
             items={completedResultsItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
-            compact={career.managerSettings?.compactFixtureRows}
+            compact={false}
           />
         </GamePanel>
       )}

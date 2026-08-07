@@ -316,23 +316,12 @@ export function SeasonReview({
               transition={{ delay: 0.25 }}
             >
               {showPlayoffPrompt ? (
-                <MatchReviewActions
-                  compact
-                  notice={
-                    <p className={TYPO.bodySm}>
-                      You qualified for the play-offs — complete the knockout
-                      stage to finish your season.
-                    </p>
-                  }
-                  primaryAction={{
-                    label: "Continue to Play-Offs →",
-                    onClick: () => {
-                      playUiClick();
-                      onContinuePlayoffs?.();
-                    },
-                  }}
-                  hideEndOfRunNav
-                />
+                <div className="text-center">
+                  <p className={TYPO.bodySm}>
+                    You qualified for the play-offs — complete the knockout
+                    stage to finish your season.
+                  </p>
+                </div>
               ) : (
                 <MatchReviewActions
                   compact
@@ -475,25 +464,14 @@ export function SeasonReview({
                 {!loading && !isLoggedIn && !showPlayoffPrompt && (
                   <GuestSaveNudge context="quick-season" />
                 )}
-                {showPlayoffPrompt ? (
-                  <MatchReviewActions
-                    primaryAction={{
-                      label: "Continue to Play-Offs →",
-                      onClick: () => {
-                        playUiClick();
-                        onContinuePlayoffs?.();
-                      },
-                    }}
-                    hideEndOfRunNav
-                  />
-                ) : (
+                {!showPlayoffPrompt ? (
                   <MatchReviewActions
                     onPlayAgain={handlePlayAgain}
                     onReturnHome={onReturnHome}
                     leaderboardHref="/leaderboard"
                     shareAction={shareAction}
                   />
-                )}
+                ) : null}
               </div>
             </motion.footer>
             </div>

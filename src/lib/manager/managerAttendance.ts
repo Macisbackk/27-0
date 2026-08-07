@@ -191,16 +191,17 @@ export function applyAttendancePerformanceDrift(
     data.attendanceFloor ?? initialAttendanceFloor(career.club, data.baseAttendance);
 
   const maxFloor = Math.round(
-    Math.min(data.baseAttendance * 0.9, data.stadiumCapacity * 0.58)
+    Math.min(data.baseAttendance * 0.95, data.stadiumCapacity * 0.88)
   );
   const minBase = Math.round(profileBase * 0.72);
+  // Sustained success can push home crowds toward sell-outs.
   const maxBase = Math.round(
-    Math.min(profileBase * 1.2, data.stadiumCapacity * 0.78)
+    Math.min(profileBase * 1.45, data.stadiumCapacity * 0.96)
   );
 
-  const floorStep = intensity === "season_end" ? 320 : 18;
-  const baseStep = intensity === "season_end" ? 260 : 14;
-  const avgStep = intensity === "season_end" ? 180 : 10;
+  const floorStep = intensity === "season_end" ? 420 : 28;
+  const baseStep = intensity === "season_end" ? 380 : 22;
+  const avgStep = intensity === "season_end" ? 260 : 16;
 
   const floorDelta =
     signal >= 0

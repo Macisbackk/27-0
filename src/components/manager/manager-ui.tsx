@@ -53,7 +53,9 @@ export function ManagerPage({
   className?: string;
 }) {
   return (
-    <div className={`${wide ? MANAGER.pageWide : MANAGER.page} ${className}`}>
+    <div
+      className={`${wide ? MANAGER.pageWide : MANAGER.page} max-sm:text-center ${className}`}
+    >
       {children}
     </div>
   );

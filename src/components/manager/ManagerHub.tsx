@@ -311,14 +311,20 @@ export function ManagerHub({
             {getManagerScheduledFixtureVenueLabel(nextFixture)}
           </span>
         </div>
-        <div className="mt-2 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 font-[family-name:var(--font-pitch)] text-[length:var(--text-section-header)] uppercase tracking-wide leading-tight text-white">
-          <span className="min-w-0 truncate text-right" title={career.club}>
+        <div className="mt-2 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-1.5 text-left font-[family-name:var(--font-pitch)] text-[0.7rem] uppercase tracking-wide leading-snug text-white sm:gap-x-2 sm:text-[length:var(--text-section-header)] sm:leading-tight">
+          <span
+            className="min-w-0 whitespace-normal text-right text-balance sm:truncate sm:whitespace-nowrap"
+            title={career.club}
+          >
             {career.club}
           </span>
-          <span className="shrink-0 px-1 text-center text-pitch-500">
+          <span className="shrink-0 px-0.5 text-center text-pitch-500 sm:px-1">
             {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
           </span>
-          <span className="min-w-0 truncate text-left" title={nextFixture.opponent}>
+          <span
+            className="min-w-0 whitespace-normal text-left text-balance sm:truncate sm:whitespace-nowrap"
+            title={nextFixture.opponent}
+          >
             {nextFixture.opponent}
           </span>
         </div>
@@ -448,10 +454,9 @@ export function ManagerHub({
   const showStickyPlayBar =
     Boolean(nextFixture && !seasonComplete && !playoffsPending);
 
-  // Only reserve play-bar pad when the sticky bar is actually showing.
-  const hubMobilePad = showStickyPlayBar
-    ? "manager-mobile-playbar-extra sm:pb-0"
-    : undefined;
+  // Keep play-bar pad stable on hub so sticky show/hide does not jump layout.
+  const hubMobilePad =
+    "manager-mobile-playbar-extra sm:pb-0";
 
   const squadAvailabilityCard =
     injuryCount > 0 ? (

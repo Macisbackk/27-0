@@ -63,14 +63,16 @@ import { getAverageSquadRating } from "@/lib/squad-analysis";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { mergeClubFundsPayouts } from "@/lib/club-funds";
 import {
+  getDailyChallengeLeagueRunId,
+  getDailyChallengePlayoffRunId,
+  getDailyChallengeScenario,
+  markDailyChallengeLeagueLeaders,
+  markDailyChallengePlayoffTitle,
+} from "@/lib/daily-challenge";
+import {
   awardClubFundsForRun,
   awardClubFundsLines,
 } from "@/lib/storage/club-funds";
-import {
-  DAILY_CHALLENGE_BONUS,
-  getDailyChallengeRunId,
-  markDailyChallengeBonusClaimed,
-} from "@/lib/daily-challenge";
 import { recordCompletedRun, recordPlayoffCompletion } from "@/lib/storage/run";
 import { triggerQuickSeasonAchievements } from "@/lib/achievements/achievementTriggers";
 import {
@@ -172,6 +174,8 @@ interface GameBoardProps {
   superSamHallasMode?: boolean;
   /** Normal Mode: false = Current (2026 only), true = Era team-year pools. */
   normalEraMode?: boolean;
+  /** Unique daily scenario (forced opponent league). */
+  dailyChallengeMode?: boolean;
 }
 
 const QUICK_MODE_STEPS = [
@@ -241,9 +245,13 @@ export function GameBoard({
   joeMellorMode = false,
   superSamHallasMode = false,
   normalEraMode = false,
+  dailyChallengeMode = false,
 }: GameBoardProps) {
   const spinVariant: SpinPoolVariant = normalEraMode ? "era" : "current";
   const isDraftMode = mode === "DRAFT";
+  const dailyScenario = dailyChallengeMode
+    ? getDailyChallengeScenario()
+    : null;
   const isSlotRecruitMode = mode === "CLASSIC";
   const [runKey, setRunKey] = useState(0);
   const [phase, setPhase] = useState<GamePhase>("pitch");
@@ -969,6 +977,7 @@ export function GameBoard({
       const result = simulateSeason(finalSquad, seed, {
         draftMode: isDraftMode,
         currentSeasonOnly: !normalEraMode,
+        forceOpponentClub: dailyScenario?.forceOpponentClub,
       });
       setSeasonResult(result);
       setPhase("simulation");
@@ -985,6 +994,7 @@ export function GameBoard({
       superSamHallasMode,
       isDraftMode,
       normalEraMode,
+      dailyScenario?.forceOpponentClub,
     ]
   );
 
@@ -1052,20 +1062,24 @@ export function GameBoard({
         });
         let combined: ClubFundsPayoutResult | null = payout;
         if (
+          dailyScenario &&
+          tablePosition === 1 &&
           mode === "CLASSIC" &&
           !joeMellorMode &&
           !superSamHallasMode
         ) {
-          const dailyId = getDailyChallengeRunId();
-          const dailyPayout = awardClubFundsLines(dailyId, [
-            {
-              id: "daily-challenge",
-              label: "Daily Challenge Bonus",
-              amount: DAILY_CHALLENGE_BONUS,
-            },
-          ]);
+          const dailyPayout = awardClubFundsLines(
+            getDailyChallengeLeagueRunId(),
+            [
+              {
+                id: "daily-league-leaders",
+                label: `Daily: ${dailyScenario.title} — League Leaders`,
+                amount: dailyScenario.leagueLeadersBonus,
+              },
+            ]
+          );
           if (dailyPayout.awarded) {
-            markDailyChallengeBonusClaimed();
+            markDailyChallengeLeagueLeaders();
           }
           combined = mergeClubFundsPayouts(payout, dailyPayout);
         }
@@ -1101,6 +1115,7 @@ export function GameBoard({
       superSamHallasMode,
       normalEraMode,
       usedBoostThisRun,
+      dailyScenario,
     ]
   );
 
@@ -1242,7 +1257,33 @@ export function GameBoard({
             seasonResult: updated,
             fundsPhase: "playoff",
           });
-          setPlayoffFundsPayout(payout);
+          let combined: ClubFundsPayoutResult | null = payout;
+          const wonTitle =
+            playoffResult.isChampion === true ||
+            playoffResult.finish === "Super League Champions";
+          if (
+            dailyScenario &&
+            wonTitle &&
+            mode === "CLASSIC" &&
+            !joeMellorMode &&
+            !superSamHallasMode
+          ) {
+            const dailyPayout = awardClubFundsLines(
+              getDailyChallengePlayoffRunId(),
+              [
+                {
+                  id: "daily-playoff-title",
+                  label: `Daily: ${dailyScenario.title} — Grand Final`,
+                  amount: dailyScenario.playoffTitleBonus,
+                },
+              ]
+            );
+            if (dailyPayout.awarded) {
+              markDailyChallengePlayoffTitle();
+            }
+            combined = mergeClubFundsPayouts(payout, dailyPayout);
+          }
+          setPlayoffFundsPayout(combined);
         }
         finalizePlayoffRun(updated, squad);
         setSeasonResult(updated);
@@ -1259,6 +1300,7 @@ export function GameBoard({
       joeMellorMode,
       superSamHallasMode,
       finalizePlayoffRun,
+      dailyScenario,
     ]
   );
 
@@ -2230,14 +2272,20 @@ export function GameBoard({
             : `py-4 ${MOBILE.actionBarPad} sm:py-5 sm:pb-8 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4`
         }`}
       >
-      {!isReviewPhase && (title || subtitle) && (
-        <div className="pt-1 lg:pt-0">
-          <div className="flex flex-wrap items-center gap-3">
+      {!isReviewPhase && (title || subtitle || dailyScenario) && (
+        <div className="pt-1 text-center lg:pt-0 sm:text-left">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start">
             {title && (
-              <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>{title}</h1>
+              <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>
+                {dailyScenario ? `Daily · ${dailyScenario.title}` : title}
+              </h1>
             )}
           </div>
-          {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
+          {dailyScenario ? (
+            <p className="text-sm text-gray-400">{dailyScenario.blurb}</p>
+          ) : subtitle ? (
+            <p className="text-sm text-gray-400">{subtitle}</p>
+          ) : null}
         </div>
       )}
 

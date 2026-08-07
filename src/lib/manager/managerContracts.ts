@@ -121,12 +121,13 @@ export function generateInitialContract(
     clubReputation,
     career
   );
-  const yearsRemaining = rating >= 88 ? 2 + Math.floor(Math.random() * 2) : 1 + Math.floor(Math.random() * 3);
+  // Opening deals always last 2–4 seasons so careers don't start in renewal spam.
+  const yearsRemaining = 2 + Math.floor(Math.random() * 3);
 
   return {
     wagePerYear: wage,
     yearsRemaining,
-    expiresAtSeasonEnd: yearsRemaining <= 1,
+    expiresAtSeasonEnd: false,
     squadRole: role,
     happiness: 55 + Math.floor(Math.random() * 30),
   };

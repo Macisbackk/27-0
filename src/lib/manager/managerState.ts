@@ -157,11 +157,12 @@ function hydrateManagerSettings(
     showAchievementPopups:
       raw?.showAchievementPopups ??
       DEFAULT_MANAGER_SETTINGS.showAchievementPopups,
-    compactFixtureRows:
-      raw?.compactFixtureRows ?? DEFAULT_MANAGER_SETTINGS.compactFixtureRows,
-    wccWriteUpExpandedByDefault:
-      raw?.wccWriteUpExpandedByDefault ??
-      DEFAULT_MANAGER_SETTINGS.wccWriteUpExpandedByDefault,
+    confirmBeforeSimulate:
+      raw?.confirmBeforeSimulate ??
+      DEFAULT_MANAGER_SETTINGS.confirmBeforeSimulate,
+    highlightExpiringContracts:
+      raw?.highlightExpiringContracts ??
+      DEFAULT_MANAGER_SETTINGS.highlightExpiringContracts,
     reserveDevelopmentSettings: mergedDev,
     reserveReleaseSettings: mergedDev,
   };

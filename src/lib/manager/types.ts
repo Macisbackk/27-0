@@ -558,10 +558,16 @@ export interface ManagerSettings {
   autoRenewContractYears: ManagerAutoRenewContractYears;
   autoFixSquadBeforeMatch: boolean;
   showAchievementPopups: boolean;
-  compactFixtureRows: boolean;
+  /** @deprecated Prefer always-comfortable fixture density. */
+  compactFixtureRows?: boolean;
   /** @deprecated Removed — was a UI workaround for hub navigation. */
   autoOpenNextFixture?: boolean;
-  wccWriteUpExpandedByDefault: boolean;
+  /** @deprecated WCC write-ups stay collapsed by default. */
+  wccWriteUpExpandedByDefault?: boolean;
+  /** Ask before simulating from the hub. */
+  confirmBeforeSimulate: boolean;
+  /** Highlight players with ≤1 year left on Contracts. */
+  highlightExpiringContracts: boolean;
   reserveDevelopmentSettings: ManagerReserveDevelopmentSettings;
   /** Legacy key — mirrored from reserveDevelopmentSettings on hydrate. */
   reserveReleaseSettings?: ManagerReserveDevelopmentSettings;
@@ -1154,8 +1160,8 @@ export const DEFAULT_MANAGER_SETTINGS: ManagerSettings = {
   autoRenewContractYears: 2,
   autoFixSquadBeforeMatch: false,
   showAchievementPopups: true,
-  compactFixtureRows: false,
-  wccWriteUpExpandedByDefault: false,
+  confirmBeforeSimulate: false,
+  highlightExpiringContracts: true,
   reserveDevelopmentSettings: { ...DEFAULT_RESERVE_DEVELOPMENT_SETTINGS },
   reserveReleaseSettings: { ...DEFAULT_RESERVE_DEVELOPMENT_SETTINGS },
 };

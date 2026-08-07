@@ -35,12 +35,12 @@ export function generateReserveYouthContract(
     22_000,
     Math.max(6_000, Math.round(5_500 + reserve.rating * 120))
   );
-  const yearsRemaining = reserve.age <= 18 ? 2 : 1;
+  const yearsRemaining = 2 + Math.floor(Math.random() * 3);
 
   return {
     wagePerYear: wage,
     yearsRemaining,
-    expiresAtSeasonEnd: yearsRemaining <= 1,
+    expiresAtSeasonEnd: false,
     squadRole: "reserve",
     happiness: 60 + Math.floor(Math.random() * 25),
     purchaseFee: 0,
@@ -353,6 +353,8 @@ export function bulkRenewExpiringReserveContracts(career: ManagerCareer): {
   let working = ensureReserveRenewalDemands(career);
   let renewed = 0;
   let declined = 0;
+  const yearsSetting =
+    working.managerSettings?.autoRenewContractYears ?? 2;
 
   for (const reserve of working.reserves) {
     const contract = working.reserveContracts?.[reserve.id];
@@ -365,9 +367,13 @@ export function bulkRenewExpiringReserveContracts(career: ManagerCareer): {
     const demand =
       contract.renewalDemand ??
       generateReserveRenewalDemand(reserve, contract);
-    const result = evaluateReserveRenewalOffer(contract, demand);
+    const offer = {
+      ...demand,
+      yearsRequested: yearsSetting,
+    };
+    const result = evaluateReserveRenewalOffer(contract, offer);
     if (result.accepted) {
-      working = renewReserveContract(working, reserve.id, demand);
+      working = renewReserveContract(working, reserve.id, offer);
       renewed++;
     } else {
       declined++;

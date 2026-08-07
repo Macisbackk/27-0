@@ -41,6 +41,8 @@ const TOGGLE_OPTIONS: {
     | "reserveReleaseSettings"
     | "reserveDevelopmentSettings"
     | "autoOpenNextFixture"
+    | "compactFixtureRows"
+    | "wccWriteUpExpandedByDefault"
   >;
   label: string;
   description: string;
@@ -56,14 +58,14 @@ const TOGGLE_OPTIONS: {
     description: "Display unlock toasts when you earn achievements.",
   },
   {
-    key: "compactFixtureRows",
-    label: "Compact fixture rows",
-    description: "Use a denser fixtures list layout.",
+    key: "confirmBeforeSimulate",
+    label: "Confirm before simulate",
+    description: "Ask before simulating the next fixture from the hub.",
   },
   {
-    key: "wccWriteUpExpandedByDefault",
-    label: "WCC write-up expanded",
-    description: "Expand World Club Challenge match write-ups by default.",
+    key: "highlightExpiringContracts",
+    label: "Highlight expiring contracts",
+    description: "Mark players with one year or less left on Contracts screens.",
   },
 ];
 

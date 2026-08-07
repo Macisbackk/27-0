@@ -22,15 +22,19 @@ export function ManagerHubStickyActions({
   onPlayGame,
   onSimulate,
 }: ManagerHubStickyActionsProps) {
-  if (!visible) return null;
-
   return (
-    <StickyActionBar aboveNav portal>
+    <StickyActionBar
+      aboveNav
+      portal
+      className={
+        visible ? undefined : "invisible pointer-events-none"
+      }
+    >
       <GameButton
         variant="theme"
         size="sm"
         className="min-h-[var(--mobile-tap-target)] min-w-0 flex-1"
-        disabled={!canPlay}
+        disabled={!canPlay || !visible}
         onClick={() => {
           playUiClick();
           onPlayGame();
@@ -42,7 +46,7 @@ export function ManagerHubStickyActions({
         variant="secondary"
         size="sm"
         className="min-h-[var(--mobile-tap-target)] min-w-0 flex-1"
-        disabled={!canPlay}
+        disabled={!canPlay || !visible}
         onClick={() => {
           playSimulateRound();
           playUiClick();

@@ -100,7 +100,13 @@ export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
   return alerts;
 }
 
-/** Hub-facing urgent alerts only — board objective lives in season context. */
+/** Hub-facing urgent alerts — only actionable problems, not routine inbox noise. */
 export function getManagerHubUrgentAlerts(career: ManagerCareer): HubAlert[] {
-  return getManagerHubAlerts(career).filter((alert) => alert.id !== "objective");
+  return getManagerHubAlerts(career).filter(
+    (alert) =>
+      alert.id === "matchday" ||
+      alert.id === "reserves" ||
+      alert.id === "wages" ||
+      (alert.id === "contracts" && alert.tone === "amber")
+  );
 }

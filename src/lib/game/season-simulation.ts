@@ -607,6 +607,8 @@ export interface SimulateSeasonOptions {
   currentSeasonOnly?: boolean;
   /** Quick Mode league season permits regulation draws (default true). */
   allowDraw?: boolean;
+  /** Daily challenge — every league opponent uses this club name. */
+  forceOpponentClub?: string;
 }
 
 export interface ScheduledFixture {
@@ -869,11 +871,27 @@ function buildFixtureList(
 }
 
 /** Pre-built 27-round schedule for incremental fantasy season play. */
-export function buildSeasonSchedule(seed: string): {
+export function buildSeasonSchedule(
+  seed: string,
+  options?: { forceOpponentClub?: string }
+): {
   schedule: ScheduledFixture[];
   opponentClubs: string[];
   replacedTeam: string;
 } {
+  const forced = options?.forceOpponentClub?.trim();
+  if (forced) {
+    const opponentClubs = Array.from(
+      { length: 13 },
+      () => forced
+    );
+    const rng = seedrandom(`${seed}-season-daily`);
+    return {
+      schedule: buildFixtureList(rng, opponentClubs),
+      opponentClubs,
+      replacedTeam: forced,
+    };
+  }
   const { opponentClubs, replacedTeam } = getSeasonLeagueClubs(seed);
   const rng = seedrandom(`${seed}-season`);
   return {
@@ -1140,7 +1158,9 @@ export function simulateSeason(
   options: SimulateSeasonOptions = {}
 ): SeasonResult {
   const strength = calculateSquadStrength(squad);
-  const { schedule: opponents, replacedTeam } = buildSeasonSchedule(seed);
+  const { schedule: opponents, replacedTeam } = buildSeasonSchedule(seed, {
+    forceOpponentClub: options.forceOpponentClub,
+  });
   const draftMode = options.draftMode ?? false;
   const currentSeasonOnly = options.currentSeasonOnly ?? false;
   // Quick Mode never draws — level scores resolve via golden point / decisive

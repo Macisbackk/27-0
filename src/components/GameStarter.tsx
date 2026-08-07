@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import type { GameMode } from "@/lib/types";
 import { isNormalEraMode } from "@/lib/play-links";
 import { GameBoard } from "./GameBoard";
+import { isDailyChallengeActive } from "@/lib/daily-challenge";
 
 interface GameStarterProps {
   mode: GameMode;
@@ -34,6 +35,12 @@ export function GameStarter({
         cup: searchParams.get("cup"),
       }));
 
+  const dailyChallengeMode =
+    mode === "CLASSIC" &&
+    !joeMellorMode &&
+    !superSamHallasMode &&
+    isDailyChallengeActive({ daily: searchParams.get("daily") });
+
   return (
     <GameBoard
       mode={mode}
@@ -43,6 +50,7 @@ export function GameStarter({
       joeMellorMode={joeMellorMode}
       superSamHallasMode={superSamHallasMode}
       normalEraMode={isNormalEra}
+      dailyChallengeMode={dailyChallengeMode}
     />
   );
 }

@@ -112,6 +112,7 @@ export function LeaderboardTable() {
   const [loading, setLoading] = useState(true);
   const [usingFallback, setUsingFallback] = useState(false);
   const [normalEraMode, setNormalEraMode] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
   const requestId = useRef(0);
 
   const isManagerPlayStyle = playStyle === "manager";
@@ -127,6 +128,24 @@ export function LeaderboardTable() {
       window.removeEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalEra);
     };
   }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => setIsMobileViewport(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobileViewport) return;
+    if (leaderboardMode === "club-funds") {
+      setLeaderboardMode("super-league");
+    }
+    if (managerMode === "manager-earnings") {
+      setManagerMode("manager-super-league");
+    }
+  }, [isMobileViewport, leaderboardMode, managerMode]);
 
   const availableTrackers = isManagerPlayStyle
     ? getTrackersForManagerDbMode(managerMode)
@@ -275,8 +294,14 @@ export function LeaderboardTable() {
   const quickModeOptions = [
     { id: "super-league" as const, label: "Quick Mode" },
     { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
-    { id: "club-funds" as const, label: "Total Winnings" },
+    ...(isMobileViewport
+      ? []
+      : [{ id: "club-funds" as const, label: "Total Winnings" }]),
   ] as const;
+
+  const managerModeOptions = isMobileViewport
+    ? MANAGER_LEADERBOARD_MODES.filter((m) => m.id !== "manager-earnings")
+    : MANAGER_LEADERBOARD_MODES;
 
   const emptyStateMessage = isManagerPlayStyle
     ? `No ${trackerLabel.toLowerCase()} entries yet. Complete a manager season to appear on the leaderboard!`
@@ -306,7 +331,7 @@ export function LeaderboardTable() {
 
       {(() => {
         const modeOptions = isManagerPlayStyle
-          ? MANAGER_LEADERBOARD_MODES
+          ? managerModeOptions
           : quickModeOptions;
         const modeLabel = isManagerPlayStyle
           ? "Manager leaderboard modes"
@@ -442,13 +467,19 @@ export function LeaderboardTable() {
             message={emptyStateMessage}
             action={
               <div className="flex flex-wrap items-center justify-center gap-3">
-                <GameButton variant="theme" size="sm" href={isManagerPlayStyle ? "/manager" : "/play"}>
+                <GameButton
+                  variant="theme"
+                  size="sm"
+                  fullWidth={false}
+                  href={isManagerPlayStyle ? "/manager" : "/play"}
+                >
                   {isManagerPlayStyle ? "Play Manager Mode" : "Play Quick Mode"}
                 </GameButton>
                 {!authLoading && !isLoggedIn ? (
                   <GameButton
                     variant="secondary"
                     size="sm"
+                    fullWidth={false}
                     href="/login?redirect=/leaderboard"
                   >
                     Log in to submit
