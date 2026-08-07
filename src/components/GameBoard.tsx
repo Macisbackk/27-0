@@ -61,7 +61,16 @@ import {
 } from "@/lib/positions";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
-import { awardClubFundsForRun } from "@/lib/storage/club-funds";
+import { mergeClubFundsPayouts } from "@/lib/club-funds";
+import {
+  awardClubFundsForRun,
+  awardClubFundsLines,
+} from "@/lib/storage/club-funds";
+import {
+  DAILY_CHALLENGE_BONUS,
+  getDailyChallengeRunId,
+  markDailyChallengeBonusClaimed,
+} from "@/lib/daily-challenge";
 import { recordCompletedRun, recordPlayoffCompletion } from "@/lib/storage/run";
 import { triggerQuickSeasonAchievements } from "@/lib/achievements/achievementTriggers";
 import {
@@ -1041,7 +1050,26 @@ export function GameBoard({
           seasonResult: result,
           fundsPhase: "regular",
         });
-        setClubFundsPayout(payout);
+        let combined: ClubFundsPayoutResult | null = payout;
+        if (
+          mode === "CLASSIC" &&
+          !joeMellorMode &&
+          !superSamHallasMode
+        ) {
+          const dailyId = getDailyChallengeRunId();
+          const dailyPayout = awardClubFundsLines(dailyId, [
+            {
+              id: "daily-challenge",
+              label: "Daily Challenge Bonus",
+              amount: DAILY_CHALLENGE_BONUS,
+            },
+          ]);
+          if (dailyPayout.awarded) {
+            markDailyChallengeBonusClaimed();
+          }
+          combined = mergeClubFundsPayouts(payout, dailyPayout);
+        }
+        setClubFundsPayout(combined);
       }
 
       triggerQuickSeasonAchievements(

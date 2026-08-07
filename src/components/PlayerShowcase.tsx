@@ -6,6 +6,9 @@ import {
   useEffect,
   useMemo,
   useState,
+  cloneElement,
+  isValidElement,
+  type ReactElement,
   type ReactNode,
 } from "react";
 import { useSearchParams } from "next/navigation";
@@ -661,12 +664,33 @@ function FilterField({
   label: string;
   children: ReactNode;
 }) {
+  const fieldId = `showcase-filter-${label.toLowerCase().replace(/\s+/g, "-")}`;
+
+  if (isValidElement(children) && children.type === "select") {
+    return (
+      <div>
+        <label
+          htmlFor={fieldId}
+          className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-gray-500"
+        >
+          {label}
+        </label>
+        {cloneElement(children as ReactElement<{ id?: string }>, { id: fieldId })}
+      </div>
+    );
+  }
+
   return (
     <div>
-      <p className="mb-1.5 text-xs font-medium uppercase tracking-wider text-gray-500">
+      <p
+        id={fieldId}
+        className="mb-1.5 text-xs font-medium uppercase tracking-wider text-gray-500"
+      >
         {label}
       </p>
-      {children}
+      <div role="group" aria-labelledby={fieldId}>
+        {children}
+      </div>
     </div>
   );
 }

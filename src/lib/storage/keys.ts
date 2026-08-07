@@ -13,6 +13,7 @@ export const STORAGE_KEYS = {
   normalEraVariant: "27-0-normal-era-variant",
   clubFunds: "27-0-club-funds",
   clubFundsLeaderboard: "27-0-club-funds-leaderboard",
+  dailyChallengeClaims: "27-0-daily-challenge-claims",
   trophyCabinetLeaderboard: "27-0-trophy-cabinet-leaderboard",
   /** One-time local reset marker for squad value leaderboard wipe. */
   squadValueLeaderboardReset: "27-0-squad-value-lb-reset-v1",

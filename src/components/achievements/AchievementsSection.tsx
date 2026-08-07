@@ -146,6 +146,7 @@ export function AchievementsSection() {
   const points = countAchievementPoints();
 
   return (
+    <div id="achievements" className="scroll-mt-24">
     <GamePanel padded label="Achievements">
       <div className="grid gap-3 sm:grid-cols-3">
         <GameStatCard
@@ -198,5 +199,6 @@ export function AchievementsSection() {
         <p className={`mt-4 ${TYPO.bodySm}`}>No achievements match these filters.</p>
       ) : null}
     </GamePanel>
+    </div>
   );
 }

@@ -19,6 +19,7 @@ import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { formatSeasonWinPercentageOrDash } from "@/lib/stats-views";
 import { playGradeSound, playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { MatchReviewActions } from "./MatchReviewActions";
+import { ShareSeasonButton } from "./ShareSeasonButton";
 import { GameButton } from "./ui/GameButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
 import { FixtureResultRow } from "./FixtureResultRow";
@@ -190,6 +191,35 @@ export function SeasonReview({
 
   const hideEndOfRunNav = showPlayoffPrompt;
 
+  const shareCardData = useMemo(
+    () => ({
+      title: `Grade ${gradeInfo.grade}`,
+      subtitle: reviewLabel,
+      recordLine: formatRecordWithPercentage(
+        seasonResult.wins,
+        seasonResult.losses
+      ),
+      detailLines: [
+        `League position ${leaguePositionLabel}`,
+        `Team value ${formatValue(totalValue)}`,
+        summaryMessage,
+      ].filter(Boolean),
+    }),
+    [
+      gradeInfo.grade,
+      reviewLabel,
+      seasonResult.wins,
+      seasonResult.losses,
+      leaguePositionLabel,
+      totalValue,
+      summaryMessage,
+    ]
+  );
+
+  const shareAction = (
+    <ShareSeasonButton data={shareCardData} filename="27-0-quick-season.png" />
+  );
+
   useEffect(() => {
     runSeasonReviewValidation({
       squad,
@@ -309,6 +339,7 @@ export function SeasonReview({
                   onPlayAgain={handlePlayAgain}
                   onReturnHome={onReturnHome}
                   leaderboardHref="/leaderboard"
+                  shareAction={shareAction}
                 />
               )}
               {clubFundsPayout ? (
@@ -460,6 +491,7 @@ export function SeasonReview({
                     onPlayAgain={handlePlayAgain}
                     onReturnHome={onReturnHome}
                     leaderboardHref="/leaderboard"
+                    shareAction={shareAction}
                   />
                 )}
               </div>

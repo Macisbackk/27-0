@@ -8,6 +8,7 @@ import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
 import { LogoMark } from "@/components/LogoMark";
 import { PageShell } from "@/components/ui/PageShell";
 import { LINK, PAGE, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 export default function HomePage() {
   return (
@@ -15,9 +16,6 @@ export default function HomePage() {
       <div className={`${PAGE.sectionHero} text-center`}>
         <div className="mx-auto flex max-w-xl flex-col items-center gap-3">
           <LogoMark size="lg" className="items-center justify-center" />
-          <p className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-pitch-400 sm:text-xs">
-            Work in progress
-          </p>
           <p className="max-w-sm text-center text-[length:var(--text-body)] leading-snug text-[var(--mobile-text-secondary)]">
             Rugby league management and Quick Mode. Build a side. Go 27-0.
           </p>
@@ -35,6 +33,10 @@ export default function HomePage() {
       <div id="play-modes" className="mt-8 scroll-mt-8">
         <HomeModeSelector />
       </div>
+
+      <p className={`mx-auto mt-4 max-w-md text-center ${TYPO.meta}`}>
+        Free to play — Quick Mode drafts and full Manager Mode careers.
+      </p>
 
       <div className="mt-10">
         <HowToPlaySection />

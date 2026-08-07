@@ -3,7 +3,11 @@ import type {
   ClubFundsPayoutResult,
   ClubFundsRunInput,
 } from "../club-funds";
-import { computeClubFundsLines } from "../club-funds";
+import {
+  CLUB_FUNDS_STARTER_GRANT,
+  CLUB_FUNDS_STARTER_RUN_ID,
+  computeClubFundsLines,
+} from "../club-funds";
 import { STORAGE_KEYS } from "./keys";
 import { loadCloudClubFunds, saveCloudClubFunds } from "./club-funds-cloud";
 import { syncClubFundsLeaderboard } from "./club-funds-leaderboard";
@@ -21,14 +25,45 @@ const MAX_PAID_RUN_IDS = 200;
 const pendingSpendIds = new Set<string>();
 
 function emptyState(): ClubFundsState {
-  return { balance: 0, totalEarned: 0, paidRunIds: [] };
+  return {
+    balance: CLUB_FUNDS_STARTER_GRANT,
+    totalEarned: CLUB_FUNDS_STARTER_GRANT,
+    paidRunIds: [CLUB_FUNDS_STARTER_RUN_ID],
+  };
+}
+
+function ensureStarterGrant(state: ClubFundsState): ClubFundsState {
+  if (state.paidRunIds.includes(CLUB_FUNDS_STARTER_RUN_ID)) return state;
+  // Existing players who already earned/spent keep their balance; only brand-new
+  // empty wallets get the starter cash. Mark the id so we never double-grant.
+  const isVirgin =
+    state.balance === 0 &&
+    state.totalEarned === 0 &&
+    state.paidRunIds.length === 0;
+  if (!isVirgin) {
+    return {
+      ...state,
+      paidRunIds: [...state.paidRunIds, CLUB_FUNDS_STARTER_RUN_ID],
+    };
+  }
+  return {
+    balance: CLUB_FUNDS_STARTER_GRANT,
+    totalEarned: CLUB_FUNDS_STARTER_GRANT,
+    paidRunIds: [CLUB_FUNDS_STARTER_RUN_ID],
+  };
 }
 
 function loadState(): ClubFundsState {
-  if (typeof window === "undefined") return emptyState();
+  if (typeof window === "undefined") {
+    return { balance: 0, totalEarned: 0, paidRunIds: [] };
+  }
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.clubFunds);
-    if (!raw) return emptyState();
+    if (!raw) {
+      const fresh = emptyState();
+      localStorage.setItem(STORAGE_KEYS.clubFunds, JSON.stringify(fresh));
+      return fresh;
+    }
     const parsed = JSON.parse(raw) as Partial<ClubFundsState>;
     const balance =
       typeof parsed.balance === "number" && parsed.balance >= 0
@@ -39,13 +74,22 @@ function loadState(): ClubFundsState {
         ? parsed.totalEarned
         : balance;
     const totalEarned = Math.max(totalEarnedRaw, balance);
-    return {
+    const loaded = ensureStarterGrant({
       balance,
       totalEarned,
       paidRunIds: Array.isArray(parsed.paidRunIds)
         ? parsed.paidRunIds.filter((id) => typeof id === "string")
         : [],
-    };
+    });
+    if (
+      loaded.balance !== balance ||
+      loaded.totalEarned !== totalEarned ||
+      loaded.paidRunIds.length !==
+        (Array.isArray(parsed.paidRunIds) ? parsed.paidRunIds.length : 0)
+    ) {
+      localStorage.setItem(STORAGE_KEYS.clubFunds, JSON.stringify(loaded));
+    }
+    return loaded;
   } catch {
     return emptyState();
   }

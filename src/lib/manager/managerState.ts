@@ -403,6 +403,9 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = ensureSeasonEndPlayerDevelopment(career);
   career = ensureLeagueClubRosters(career);
   career = normalizeMatchdayLineup(career);
+  if (!Array.isArray(career.transferWatchlistIds)) {
+    career = { ...career, transferWatchlistIds: [] };
+  }
   if (!career.leagueClubReserveCounts) {
     career = {
       ...career,
@@ -588,6 +591,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     lastProcessedMatchWeekId: null,
     leagueTable: buildLeagueTableFromMatches([], club),
     transferMarket: [],
+    transferWatchlistIds: [],
     leagueListedPlayers: [],
     playerTransferStatus: {},
     inboxMessages: [],

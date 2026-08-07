@@ -187,7 +187,9 @@ html[data-ui-overlay="1"] .site-footer {
 
   /* Hub sticky play bar only — shell already reserved nav height. */
   .manager-mobile-playbar-extra {
-    padding-bottom: var(--manager-mobile-playbar-h);
+    padding-bottom: calc(
+      var(--manager-mobile-playbar-h) + env(safe-area-inset-bottom, 0px)
+    );
   }
 
   .manager-mobile-play-bar {
@@ -519,7 +521,7 @@ html[data-ui-overlay="1"] .site-footer {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.3rem;
+  gap: 0.2rem;
   width: 100%;
   min-width: 0;
 }
@@ -534,7 +536,11 @@ html[data-ui-overlay="1"] .site-footer {
   -webkit-line-clamp: 2;
   line-clamp: 2;
   overflow: hidden;
-  line-height: 1.3;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: #fff;
   word-break: normal;
   overflow-wrap: break-word;
   writing-mode: horizontal-tb;
@@ -563,10 +569,10 @@ html[data-ui-overlay="1"] .site-footer {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.6875rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 600;
   line-height: 1.3;
-  color: #9ca3af;
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .showcase-player-card__facts {
@@ -574,11 +580,11 @@ html[data-ui-overlay="1"] .site-footer {
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.25rem 0.35rem;
-  margin: 0.1rem 0 0;
+  margin: 0.15rem 0 0;
   min-width: 0;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   line-height: 1.3;
-  color: #d1d5db;
+  color: #9ca3af;
 }
 
 .showcase-player-card__fact {

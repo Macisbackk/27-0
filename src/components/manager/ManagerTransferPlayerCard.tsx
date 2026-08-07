@@ -49,6 +49,8 @@ interface ManagerTransferPlayerCardProps {
   sellerListedFee?: number;
   wagePerYear: number;
   yearsRequested?: number;
+  watched?: boolean;
+  onToggleWatch?: () => void;
   children: ReactNode;
 }
 
@@ -63,6 +65,8 @@ export function ManagerTransferPlayerCard({
   sellerListedFee,
   wagePerYear,
   yearsRequested,
+  watched = false,
+  onToggleWatch,
   children,
 }: ManagerTransferPlayerCardProps) {
   const rating = player.peakRating;
@@ -100,6 +104,21 @@ export function ManagerTransferPlayerCard({
                   {listed ? "Listed" : "Unlisted"}
                 </span>
               )}
+              {onToggleWatch ? (
+                <button
+                  type="button"
+                  onClick={onToggleWatch}
+                  className={`inline-flex rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider transition ${
+                    watched
+                      ? "border-accent-gold/50 bg-accent-gold/15 text-accent-gold"
+                      : "border-pitch-600 text-pitch-400 hover:border-pitch-500 hover:text-white"
+                  }`}
+                  aria-pressed={watched}
+                  aria-label={watched ? "Remove from watchlist" : "Add to watchlist"}
+                >
+                  {watched ? "Watching" : "Watch"}
+                </button>
+              ) : null}
             </div>
             <p className="mt-1.5 truncate font-display text-base font-bold text-white">
               {player.name}

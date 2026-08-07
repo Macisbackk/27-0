@@ -9,7 +9,9 @@ import { useModalA11y } from "@/hooks/useModalA11y";
 import {
   MANAGER_ONBOARDING_STEPS,
   dismissManagerOnboarding,
+  dismissManagerOnboardingModal,
   getOnboardingProgress,
+  isOnboardingComplete,
 } from "@/lib/manager/managerOnboarding";
 import {
   managerPillClass,
@@ -29,6 +31,16 @@ export function ManagerOnboardingModal({
   const progress = getOnboardingProgress();
 
   const handleDismiss = useCallback(() => {
+    playUiClick();
+    if (isOnboardingComplete()) {
+      dismissManagerOnboarding();
+    } else {
+      dismissManagerOnboardingModal();
+    }
+    onDismiss();
+  }, [onDismiss]);
+
+  const handleSkip = useCallback(() => {
     playUiClick();
     dismissManagerOnboarding();
     onDismiss();
@@ -50,14 +62,19 @@ export function ManagerOnboardingModal({
           </h2>
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
             New to the dugout? Work through these steps to get your campaign
-            rolling.
+            rolling. Closing keeps the checklist on the hub until you finish.
           </p>
         </div>
       }
       footer={
-        <GameButton variant="theme" onClick={handleDismiss} className="w-full">
-          Got it
-        </GameButton>
+        <div className={`flex w-full flex-col ${SPACING.buttonGap}`}>
+          <GameButton variant="theme" onClick={handleDismiss} className="w-full">
+            Got it
+          </GameButton>
+          <GameButton variant="secondary" onClick={handleSkip} className="w-full">
+            Skip guide
+          </GameButton>
+        </div>
       }
     >
       <ol className={`space-y-2 ${SPACING.stackSm}`}>

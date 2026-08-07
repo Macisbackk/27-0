@@ -18,6 +18,8 @@ export interface MatchReviewActionsProps {
   hideEndOfRunNav?: boolean;
   /** Optional notice above the action group. */
   notice?: ReactNode;
+  /** Share season card control (Quick Mode end of run). */
+  shareAction?: ReactNode;
   compact?: boolean;
   className?: string;
 }
@@ -33,6 +35,7 @@ export function MatchReviewActions({
   primaryAction,
   hideEndOfRunNav = false,
   notice,
+  shareAction,
   compact = false,
   className = "",
 }: MatchReviewActionsProps) {
@@ -60,6 +63,7 @@ export function MatchReviewActions({
             <ActionButton variant="theme" onClick={onPlayAgain}>
               Play Again
             </ActionButton>
+            {shareAction}
             <div
               className={`grid grid-cols-1 sm:grid-cols-2 ${SPACING.buttonGap}`}
             >

@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { GameButton } from "@/components/ui/GameButton";
 import { playUiClick } from "@/lib/sound";
 
 interface GuestNoticeProps {
@@ -31,15 +30,7 @@ export function GuestNotice({ variant = "inline" }: GuestNoticeProps) {
       <div
         className={`mx-auto mt-4 flex max-w-md flex-col items-center text-center ${SPACING.stackSm}`}
       >
-        <p className={`w-full text-center ${TYPO.bodySm}`}>{GUEST_NOTICE_TEXT}</p>
-        <GameButton
-          variant="secondary"
-          size="sm"
-          href={loginHref(pathname)}
-          onClick={() => playUiClick()}
-        >
-          Sign in to sync stats & leaderboard
-        </GameButton>
+        <p className={`w-full text-center ${TYPO.meta}`}>{GUEST_NOTICE_TEXT}</p>
       </div>
     );
   }

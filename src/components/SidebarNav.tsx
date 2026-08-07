@@ -39,9 +39,9 @@ interface SidebarNavProps {
 }
 
 const MAIN_NAV_ITEMS = [
-  { href: "/store", label: "Store" },
+  { href: "/store", label: "Club Store" },
   { href: "/showcase", label: "Player Showcase" },
-  { href: "/stats", label: "Statistics" },
+  { href: "/stats", label: "Career Stats" },
   { href: "/leaderboard", label: "Leaderboard" },
 ] as const;
 
@@ -290,11 +290,11 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       </div>
                     ) : isLoggedIn ? (
                       <Link
-                        href="/profile"
+                        href="/profile#achievements"
                         onClick={handleNavClick}
                         className={navLinkClass(pathname.startsWith("/profile"))}
                       >
-                        Coach Profile
+                        Profile &amp; Achievements
                         {pathname.startsWith("/profile") && (
                           <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
                         )}

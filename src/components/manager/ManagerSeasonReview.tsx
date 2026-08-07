@@ -9,6 +9,7 @@ import { buildSeasonSummary } from "@/lib/manager/managerState";
 import { getOrCreateBoardSeasonEvaluation } from "@/lib/manager/boardSeasonEvaluation";
 import { getSeasonSummaryTrophyLabels } from "@/lib/manager/managerSeasonTrophies";
 import { ManagerSeasonRecapCard } from "@/components/manager/ManagerSeasonRecapCard";
+import { ShareSeasonButton } from "@/components/ShareSeasonButton";
 import { GuestSaveNudge } from "@/components/EconomyExplainer";
 import { useAuth } from "@/lib/auth-context";
 import { getPlayerById } from "@/lib/players";
@@ -311,6 +312,30 @@ export function ManagerSeasonReview({
         club={evaluatedCareer.club}
         seasonYear={evaluatedCareer.seasonYear}
         summary={summary}
+      />
+
+      <ShareSeasonButton
+        data={{
+          title: evaluatedCareer.club,
+          subtitle: `${evaluatedCareer.seasonYear} Manager season`,
+          recordLine: `${summary.wins}W-${summary.draws ?? 0}D-${summary.losses}L`,
+          detailLines: [
+            `Finished ${summary.position}${
+              summary.position === 1
+                ? "st"
+                : summary.position === 2
+                  ? "nd"
+                  : summary.position === 3
+                    ? "rd"
+                    : "th"
+            }`,
+            trophies.length > 0
+              ? `Trophies: ${trophies.join(" · ")}`
+              : "No silverware this year",
+            summary.boardVerdict,
+          ],
+        }}
+        filename={`27-0-${evaluatedCareer.club}-${evaluatedCareer.seasonYear}.png`}
       />
 
       {!loading && !isLoggedIn && (

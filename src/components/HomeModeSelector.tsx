@@ -19,14 +19,22 @@ import { TYPO } from "@/lib/ui/typography";
 import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { ModeStartLink } from "./ModeStartLink";
+import {
+  DAILY_CHALLENGE_BONUS,
+  getDailyChallengeHref,
+  hasClaimedDailyChallengeBonus,
+} from "@/lib/daily-challenge";
+import { formatClubFundsExact } from "@/lib/club-funds";
 
 export function HomeModeSelector() {
   const [normalEraMode, setNormalEraMode] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [dailyClaimed, setDailyClaimed] = useState(false);
 
   useEffect(() => {
     setNormalEraMode(getNormalEraVariant());
     setMounted(true);
+    setDailyClaimed(hasClaimedDailyChallengeBonus());
 
     const onNormal = (event: Event) => {
       const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
@@ -79,6 +87,30 @@ export function HomeModeSelector() {
           <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
             Spin a 17 from Current or Era pools and run the season.
           </p>
+
+          <div className="mt-3 w-full rounded-xl border border-theme-primary/25 bg-theme-primary/5 px-3 py-2.5 text-center">
+            <p className={`text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-theme-primary`}>
+              Daily challenge
+            </p>
+            <p className={`mt-1 ${TYPO.bodySm}`}>
+              Finish a Classic Quick Mode season today for a{" "}
+              {formatClubFundsExact(DAILY_CHALLENGE_BONUS)} Club Funds bonus.
+            </p>
+            {dailyClaimed ? (
+              <p className={`mt-1 ${TYPO.meta} text-theme-primary`}>Bonus claimed today</p>
+            ) : (
+              <div className="mt-2 flex justify-center">
+                <GameButton
+                  variant="secondary"
+                  size="sm"
+                  href={getDailyChallengeHref()}
+                  onClick={() => playUiClick()}
+                >
+                  Play today&apos;s challenge
+                </GameButton>
+              </div>
+            )}
+          </div>
 
           <div className="mt-4 flex w-full justify-center">
             <ChallengeCupVariantToggle

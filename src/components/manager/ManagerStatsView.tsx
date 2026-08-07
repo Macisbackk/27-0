@@ -260,19 +260,31 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
     <>
       <div className="stat-section-stack">
       <ManagerSectionCard title="Milestones" variant="inset">
-        <div className="mt-2 flex flex-wrap gap-2">
+        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+          Career landmarks for this save — earned badges stay highlighted.
+        </p>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {milestones.map((m) => (
-            <span
+            <div
               key={m.id}
-              className={`rounded-full border px-2.5 py-1 text-xs ${
+              className={`rounded-lg border px-3 py-2.5 ${
                 m.earned
-                  ? "border-accent-gold/50 bg-accent-gold/10 text-accent-gold"
-                  : "border-pitch-600 text-pitch-500"
+                  ? "border-accent-gold/45 bg-accent-gold/10"
+                  : "border-pitch-700/60 bg-pitch-950/40 opacity-70"
               }`}
             >
-              {m.label}
-              {m.detail ? ` · ${m.detail}` : ""}
-            </span>
+              <p
+                className={`text-sm font-semibold ${
+                  m.earned ? "text-accent-gold" : "text-pitch-400"
+                }`}
+              >
+                {m.earned ? "Earned · " : "Locked · "}
+                {m.label}
+              </p>
+              {m.detail ? (
+                <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-500`}>{m.detail}</p>
+              ) : null}
+            </div>
           ))}
         </div>
       </ManagerSectionCard>

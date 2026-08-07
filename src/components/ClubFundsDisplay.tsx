@@ -138,14 +138,6 @@ export function ClubFundsDisplay({
         title={ready ? `Club Funds: ${formatted}` : undefined}
         disabled={!ready}
       >
-        {!isMobileUnderLogo && (
-          <span
-            aria-hidden
-            className="shrink-0 text-[11px] leading-none sm:text-xs"
-          >
-            💷
-          </span>
-        )}
         <span className={isMobileUnderLogo ? "text-[11px]" : "text-sm leading-none"}>
           {formatted}
         </span>

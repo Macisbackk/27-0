@@ -2,17 +2,21 @@ import type { SeasonResult } from "./game/season-simulation";
 import type { GameMode } from "./types";
 
 export const CLUB_FUNDS_REWARDS = {
-  leagueLeaders: 15_000,
-  topSixFinish: 20_000,
-  playoffEliminatorWin: 15_000,
-  playoffSemiFinalWin: 30_000,
-  playoffFinalRunnerUp: 40_000,
-  superLeagueTitle: 100_000,
+  leagueLeaders: 30_000,
+  topSixFinish: 40_000,
+  playoffEliminatorWin: 30_000,
+  playoffSemiFinalWin: 60_000,
+  playoffFinalRunnerUp: 80_000,
+  superLeagueTitle: 200_000,
   perfectSeason: 250_000,
-  seasonComplete: 10_000,
-  regularSeasonWin: 500,
-  twentyWins: 25_000,
+  seasonComplete: 50_000,
+  regularSeasonWin: 1_000,
+  twentyWins: 50_000,
 } as const;
+
+/** One-time grant for first Club Funds init (idempotent via paidRunIds). */
+export const CLUB_FUNDS_STARTER_GRANT = 250_000;
+export const CLUB_FUNDS_STARTER_RUN_ID = "starter-grant";
 
 export interface ClubFundsEarnedLine {
   id: string;

@@ -3,12 +3,16 @@ import { STORAGE_KEYS } from "../storage/keys";
 const KEY = STORAGE_KEYS.managerOnboarding;
 
 export interface ManagerOnboardingState {
+  /** Permanently hide guide (all steps done or skip). */
   dismissedHubGuide: boolean;
+  /** Modal closed for now — sticky hub strip still shown. */
+  modalDismissed: boolean;
   completedSteps: string[];
 }
 
 const DEFAULT: ManagerOnboardingState = {
   dismissedHubGuide: false,
+  modalDismissed: false,
   completedSteps: [],
 };
 
@@ -55,29 +59,75 @@ function save(state: ManagerOnboardingState): void {
   localStorage.setItem(KEY, JSON.stringify(state));
 }
 
-export function shouldShowManagerOnboarding(career: {
+function isFirstSeasonCareer(career: {
   seasonHistory: unknown[];
   fixtures: unknown[];
 }): boolean {
   if (career.seasonHistory.length > 0) return false;
   if (career.fixtures.length > 3) return false;
-  return !load().dismissedHubGuide;
+  return true;
 }
 
+export function isOnboardingComplete(): boolean {
+  const state = load();
+  if (state.dismissedHubGuide) return true;
+  return MANAGER_ONBOARDING_STEPS.every((step) =>
+    state.completedSteps.includes(step.id)
+  );
+}
+
+export function shouldShowManagerOnboarding(career: {
+  seasonHistory: unknown[];
+  fixtures: unknown[];
+}): boolean {
+  if (!isFirstSeasonCareer(career)) return false;
+  const state = load();
+  if (state.dismissedHubGuide || isOnboardingComplete()) return false;
+  return !state.modalDismissed;
+}
+
+export function shouldShowManagerOnboardingStrip(career: {
+  seasonHistory: unknown[];
+  fixtures: unknown[];
+}): boolean {
+  if (!isFirstSeasonCareer(career)) return false;
+  const state = load();
+  if (state.dismissedHubGuide || isOnboardingComplete()) return false;
+  return true;
+}
+
+/** Close the modal without wiping unfinished checklist progress. */
+export function dismissManagerOnboardingModal(): void {
+  const state = load();
+  save({ ...state, modalDismissed: true });
+}
+
+/** Permanently dismiss (Skip) or when all steps are done. */
 export function dismissManagerOnboarding(): void {
   const state = load();
-  save({ ...state, dismissedHubGuide: true });
+  save({ ...state, dismissedHubGuide: true, modalDismissed: true });
 }
 
 export function markOnboardingStepComplete(stepId: string): void {
   const state = load();
   if (state.completedSteps.includes(stepId)) return;
+  const completedSteps = [...state.completedSteps, stepId];
+  const allDone = MANAGER_ONBOARDING_STEPS.every((step) =>
+    completedSteps.includes(step.id)
+  );
   save({
     ...state,
-    completedSteps: [...state.completedSteps, stepId],
+    completedSteps,
+    dismissedHubGuide: allDone ? true : state.dismissedHubGuide,
   });
 }
 
 export function getOnboardingProgress(): ManagerOnboardingState {
   return load();
+}
+
+export function reopenManagerOnboardingModal(): void {
+  const state = load();
+  if (state.dismissedHubGuide) return;
+  save({ ...state, modalDismissed: false });
 }

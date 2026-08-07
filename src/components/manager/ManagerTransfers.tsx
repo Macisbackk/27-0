@@ -54,18 +54,20 @@ interface ManagerTransfersProps {
   onUpdate: (career: ManagerCareer) => void;
 }
 
-type TransferTab = "listed" | "freeAgents" | "unlisted";
+type TransferTab = "listed" | "freeAgents" | "unlisted" | "watch";
 
 const TRANSFER_TAB_LABELS: Record<TransferTab, string> = {
   listed: "Listed",
   freeAgents: "Free agents",
   unlisted: "Unlisted",
+  watch: "Watch",
 };
 
 const TRANSFER_TAB_SHORT_LABELS: Record<TransferTab, string> = {
   listed: "Listed",
   freeAgents: "Free",
   unlisted: "Bid",
+  watch: "Watch",
 };
 
 function withManagerRating(player: Player): Player {
@@ -109,6 +111,18 @@ export function ManagerTransfers({
     [career.freeAgents]
   );
 
+  const watchlistIds = career.transferWatchlistIds ?? [];
+  const watchlistSet = useMemo(() => new Set(watchlistIds), [watchlistIds]);
+
+  const toggleWatchlist = (playerId: string) => {
+    playUiClick();
+    const current = career.transferWatchlistIds ?? [];
+    const next = current.includes(playerId)
+      ? current.filter((id) => id !== playerId)
+      : [...current, playerId];
+    onUpdate({ ...career, transferWatchlistIds: next });
+  };
+
   /** Full unlisted pool — not transfer-listed, not a free agent, not at your club. */
   const allUnlistedPlayers = useMemo(() => {
     return getAllLeaguePlayers(career)
@@ -135,6 +149,7 @@ export function ManagerTransfers({
               getPlayerById(entry.playerId)
           )
       ).length,
+      watch: (career.transferWatchlistIds ?? []).length,
     }),
     [career]
   );
@@ -205,6 +220,32 @@ export function ManagerTransfers({
         return b.player.peakRating - a.player.peakRating;
       });
   }, [allUnlistedPlayers, search, positionFilter, leagueSort]);
+
+  const watchedPlayers = useMemo(() => {
+    return watchlistIds
+      .map((playerId) => {
+        const listed = career.leagueListedPlayers.find(
+          (entry) => entry.playerId === playerId
+        );
+        const free = (career.freeAgents ?? []).find(
+          (entry) => entry.playerId === playerId
+        );
+        const raw =
+          getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
+        if (!raw) return null;
+        const fromLeague = getAllLeaguePlayers(career).find(
+          (row) => row.playerId === playerId
+        );
+        return {
+          playerId,
+          player: withManagerRating(raw),
+          club: listed?.club ?? free?.formerClub ?? fromLeague?.club ?? "Unknown",
+          listed: Boolean(listed),
+          freeAgent: Boolean(free),
+        };
+      })
+      .filter((row): row is NonNullable<typeof row> => row !== null);
+  }, [watchlistIds, career]);
 
   const submitTransferOffer = (
     playerId: string,
@@ -369,6 +410,7 @@ export function ManagerTransfers({
       ["listed", tabCounts.listed],
       ["freeAgents", tabCounts.freeAgents],
       ["unlisted", null],
+      ["watch", tabCounts.watch],
     ] as const
   ).map(([id, count]) => ({
     id,
@@ -381,7 +423,9 @@ export function ManagerTransfers({
       ? "Players openly on the market — negotiate terms or leave the deal to your assistant"
       : tab === "freeAgents"
         ? "Out-of-contract players — no transfer fee, negotiate wages only"
-        : "Bid for any Super League player not on the transfer list — deals cost more";
+        : tab === "watch"
+          ? "Your scouting board — players you're tracking across the league"
+          : "Bid for any Super League player not on the transfer list — deals cost more";
 
   return (
     <ManagerPage>
@@ -513,6 +557,8 @@ export function ManagerTransfers({
                 yearsRequested={
                   isNegotiating ? listedOfferYears : demand.yearsRequested
                 }
+                watched={watchlistSet.has(player.id)}
+                onToggleWatch={() => toggleWatchlist(player.id)}
               >
                 {isNegotiating ? (
                   <div className="space-y-3">
@@ -644,6 +690,8 @@ export function ManagerTransfers({
                 yearsRequested={
                   isNegotiating ? freeAgentOfferYears : demand.yearsRequested
                 }
+                watched={watchlistSet.has(playerId)}
+                onToggleWatch={() => toggleWatchlist(playerId)}
               >
                 {isNegotiating ? (
                   <div className="space-y-3">
@@ -831,6 +879,8 @@ export function ManagerTransfers({
                 }
                 wagePerYear={demand.wagePerYear}
                 yearsRequested={demand.yearsRequested}
+                watched={watchlistSet.has(player.id)}
+                onToggleWatch={() => toggleWatchlist(player.id)}
               >
                 {isOffering ? (
                   <div className="space-y-2">
@@ -883,6 +933,58 @@ export function ManagerTransfers({
           )}
         </div>
       </section>
+      )}
+
+      {tab === "watch" && (
+        <section aria-label="Watchlist">
+          <div className={`grid gap-3 sm:grid-cols-2 ${SPACING.stackMd}`}>
+            {watchedPlayers.map(({ player, club, listed, freeAgent, playerId }) => {
+              const demand = getPlayerSigningDemand(career, playerId);
+              const fee = freeAgent
+                ? 0
+                : getBuyerMinimumTransferFee(career, playerId, club, listed);
+              return (
+                <ManagerTransferPlayerCard
+                  key={playerId}
+                  player={player}
+                  club={club}
+                  listed={listed}
+                  freeAgent={freeAgent}
+                  fee={fee}
+                  wagePerYear={demand.wagePerYear}
+                  yearsRequested={demand.yearsRequested}
+                  watched
+                  onToggleWatch={() => toggleWatchlist(playerId)}
+                >
+                  <p className={`${TYPO.bodySm} text-pitch-400`}>
+                    Tracked on your scouting board. Open Listed, Free agents, or
+                    Unlisted to make an offer.
+                  </p>
+                  <GameButton
+                    variant="secondary"
+                    size="sm"
+                    fullWidth
+                    className="mt-2"
+                    onClick={() => {
+                      playUiClick();
+                      if (freeAgent) switchTab("freeAgents");
+                      else if (listed) switchTab("listed");
+                      else switchTab("unlisted");
+                    }}
+                  >
+                    Open {freeAgent ? "Free agents" : listed ? "Listed" : "Unlisted"}
+                  </GameButton>
+                </ManagerTransferPlayerCard>
+              );
+            })}
+            {watchedPlayers.length === 0 && (
+              <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
+                No players on your watchlist yet. Tap Watch on any transfer card
+                to track them here.
+              </p>
+            )}
+          </div>
+        </section>
       )}
 
       </ManagerSection>

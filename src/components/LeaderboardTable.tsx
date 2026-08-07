@@ -36,8 +36,11 @@ import {
 } from "@/lib/storage/manager-leaderboard";
 import { RecordWithPercentage, parseRecordWithPercentage } from "./RecordWithPercentage";
 import { GamePanel } from "@/components/ui/GamePanel";
+import { GameEmptyState } from "@/components/ui/GameEmptyState";
+import { GameButton } from "@/components/ui/GameButton";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
+import { useAuth } from "@/lib/auth-context";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
 
@@ -96,6 +99,7 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
 };
 
 export function LeaderboardTable() {
+  const { isLoggedIn, loading: authLoading } = useAuth();
   const [playStyle, setPlayStyle] = useState<LeaderboardPlayStyle>("manager");
   const [leaderboardMode, setLeaderboardMode] =
     useState<LeaderboardDbMode>("super-league");
@@ -415,12 +419,44 @@ export function LeaderboardTable() {
       )}
 
       {loading && entries.length === 0 ? (
-        <GamePanel variant="elevated" className="p-12 text-center text-gray-500">
-          Loading leaderboard…
+        <GamePanel variant="elevated" className="overflow-hidden p-0" aria-busy="true" aria-label="Loading leaderboard">
+          <ul className="divide-y divide-pitch-700/30" aria-hidden>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <li
+                key={`skeleton-${index}`}
+                className="flex items-center justify-between gap-3 px-4 py-3"
+              >
+                <div className="flex min-w-0 flex-1 items-center gap-3">
+                  <span className="h-4 w-6 animate-pulse rounded bg-pitch-700/50" />
+                  <span className="h-4 w-32 max-w-[50%] animate-pulse rounded bg-pitch-700/40" />
+                </div>
+                <span className="h-4 w-16 animate-pulse rounded bg-pitch-700/40" />
+              </li>
+            ))}
+          </ul>
         </GamePanel>
       ) : entries.length === 0 ? (
-        <GamePanel variant="elevated" className="p-12 text-center text-gray-500">
-          {emptyStateMessage}
+        <GamePanel variant="elevated" className="p-6 sm:p-8">
+          <GameEmptyState
+            title="No entries yet"
+            message={emptyStateMessage}
+            action={
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <GameButton variant="theme" size="sm" href={isManagerPlayStyle ? "/manager" : "/play"}>
+                  {isManagerPlayStyle ? "Play Manager Mode" : "Play Quick Mode"}
+                </GameButton>
+                {!authLoading && !isLoggedIn ? (
+                  <GameButton
+                    variant="secondary"
+                    size="sm"
+                    href="/login?redirect=/leaderboard"
+                  >
+                    Log in to submit
+                  </GameButton>
+                ) : null}
+              </div>
+            }
+          />
         </GamePanel>
       ) : (
         <ScoreboardPanel

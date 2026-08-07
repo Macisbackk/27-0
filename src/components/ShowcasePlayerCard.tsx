@@ -122,7 +122,7 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
           {view.clubYearLabel}
         </p>
 
-        <p className="showcase-player-card__facts">
+        <p className="showcase-player-card__facts" aria-label="Player facts">
           <span className="showcase-player-card__fact">
             <span className="showcase-player-card__fact-label">OVR</span>{" "}
             <span className="showcase-player-card__fact-value showcase-player-card__fact-value--rating">

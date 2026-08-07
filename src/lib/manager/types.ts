@@ -926,6 +926,8 @@ export interface ManagerCareer {
   acknowledgedManagerEventIds?: string[];
   leagueTable: ManagerLeagueRow[];
   transferMarket: string[];
+  /** Player ids the user is watching on the transfer market. */
+  transferWatchlistIds?: string[];
   leagueListedPlayers: LeagueListedPlayer[];
   freeAgents?: FreeAgent[];
   playerTransferStatus: Record<string, PlayerTransferStatus>;

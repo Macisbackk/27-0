@@ -35,6 +35,8 @@ import {
 } from "@/lib/manager/managerAttendance";
 import { getManagerHubUrgentAlerts } from "@/lib/manager/managerHubAlerts";
 import { ManagerHubAlertsPanel } from "@/components/manager/ManagerHubAlertsPanel";
+import { ManagerOnboardingStrip } from "@/components/manager/ManagerOnboardingStrip";
+import { shouldShowManagerOnboardingStrip } from "@/lib/manager/managerOnboarding";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import {
@@ -86,6 +88,7 @@ interface ManagerHubProps {
   onNavigate?: (view: ManagerView) => void;
   onOpenCupFixtures?: () => void;
   onOpenMatchReview?: (fixtureId: string) => void;
+  onOpenOnboardingGuide?: () => void;
 }
 
 function ordinal(n: number): string {
@@ -177,6 +180,7 @@ export function ManagerHub({
   onNavigate,
   onOpenCupFixtures,
   onOpenMatchReview,
+  onOpenOnboardingGuide,
 }: ManagerHubProps) {
   const [dialog, setDialog] = useState<{ title: string; message: string } | null>(
     null
@@ -530,6 +534,14 @@ export function ManagerHub({
       <ManagerHubAlertsPanel alerts={hubAlerts} onNavigate={onNavigate} />
     ) : null;
 
+  const onboardingStrip =
+    onOpenOnboardingGuide && shouldShowManagerOnboardingStrip(career) ? (
+      <ManagerOnboardingStrip
+        onNavigate={onNavigate}
+        onOpenGuide={onOpenOnboardingGuide}
+      />
+    ) : null;
+
   const seasonProgressCard = (
     <div className={showStickyPlayBar ? "hidden sm:block" : undefined}>
       <ProgrammePanel padded>
@@ -657,6 +669,7 @@ export function ManagerHub({
   const hubBody = (
     <>
       <div className="space-y-4">
+        {onboardingStrip}
         {commandCentre}
         {nextFixtureCard}
         {seasonProgressCard}

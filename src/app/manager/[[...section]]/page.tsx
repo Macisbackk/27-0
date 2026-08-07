@@ -501,6 +501,10 @@ export default function ManagerPage() {
     (next: ManagerCareer) => {
       const slot = getActiveSaveSlot();
       const prepared = prepareManagerCareerForSave(next);
+      const xiiiFilled = prepared.matchdayXiii.filter(Boolean).length;
+      if (xiiiFilled >= 13) {
+        markOnboardingStepComplete("lineup");
+      }
       const result = saveManagerCareer(prepared, slot);
       if (!result.ok) {
         flushErrorRef.current = result.error;
@@ -1983,6 +1987,9 @@ export default function ManagerPage() {
                     onNavigate={handleNavNavigate}
                     onOpenCupFixtures={handleOpenCupFixtures}
                     onOpenMatchReview={handleOpenHubMatchReview}
+                    onOpenOnboardingGuide={() =>
+                      setOnboardingRevision((n) => n + 1)
+                    }
                   />
                 </ManagerKeepAlivePane>
 
