@@ -28,8 +28,10 @@ export function GuestNotice({ variant = "inline" }: GuestNoticeProps) {
 
   if (variant === "home") {
     return (
-      <div className={`mx-auto mt-4 max-w-md text-center ${SPACING.stackSm}`}>
-        <p className={TYPO.bodySm}>{GUEST_NOTICE_TEXT}</p>
+      <div
+        className={`mx-auto mt-4 flex max-w-md flex-col items-center text-center ${SPACING.stackSm}`}
+      >
+        <p className={`w-full text-center ${TYPO.bodySm}`}>{GUEST_NOTICE_TEXT}</p>
         <GameButton
           variant="secondary"
           size="sm"

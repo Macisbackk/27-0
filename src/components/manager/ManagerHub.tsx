@@ -62,7 +62,7 @@ import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
 import { ManagerLeagueTable } from "@/components/manager/ManagerLeagueTable";
 import { ManagerHubStickyActions } from "@/components/manager/ManagerHubStickyActions";
-import { CompactFixtureCard } from "@/components/ui/MobileLayout";
+import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
 import {
   ManagerFormStrip,
@@ -280,17 +280,16 @@ export function ManagerHub({
   const nextFixtureCard =
     nextFixture && !seasonComplete && !playoffsPending && matchOccasion ? (
       <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28">
-      <CompactFixtureCard
-        accentColor={undefined}
+      <ScoreboardPanel
+        variant="elevated"
+        padded
         className={`matchday-scoreboard ${matchOccasion.surfaceClass} ${matchOccasion.matchdayModifier}`.trim()}
+        style={managerFixtureCardStyle(
+          nextFixture.competition,
+          career.club,
+          nextFixture.opponent
+        )}
       >
-        <div
-          style={managerFixtureCardStyle(
-            nextFixture.competition,
-            career.club,
-            nextFixture.opponent
-          )}
-        >
         <p className={`${TYPO.keyLabel} text-pitch-400`}>
           {matchOccasion.weekLabel}
         </p>
@@ -428,8 +427,7 @@ export function ManagerHub({
             {matchOccasion.simulateCta}
           </GameButton>
         </div>
-        </div>
-      </CompactFixtureCard>
+      </ScoreboardPanel>
       </div>
     ) : null;
 
@@ -535,7 +533,7 @@ export function ManagerHub({
     <div className={showStickyPlayBar ? "hidden sm:block" : undefined}>
       <ProgrammePanel padded>
         <GameSectionHeader
-          label="Club office"
+          label="Season"
           title="Season Progress"
           subtitle={`Season ${career.seasonYear}`}
           action={
@@ -670,22 +668,6 @@ export function ManagerHub({
     />
   );
 
-  const clubOfficeLink =
-    onNavigate ? (
-      <div className="flex justify-center sm:justify-start">
-        <GameButton
-          variant="secondary"
-          size="sm"
-          onClick={() => {
-            playUiClick();
-            onNavigate("club");
-          }}
-        >
-          Club Office
-        </GameButton>
-      </div>
-    ) : null;
-
   const hubBody = (
     <>
       <div className="space-y-4">
@@ -696,7 +678,6 @@ export function ManagerHub({
         {hubStandingsCard}
         {squadAvailabilityCard}
       </div>
-      {clubOfficeLink}
       {quickActionsCard}
     </>
   );

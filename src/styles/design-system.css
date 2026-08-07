@@ -1323,15 +1323,8 @@
   );
 }
 
-.matchday-scoreboard--friendly {
-  border-color: rgba(56, 189, 248, 0.22);
-  background-color: #080c0d;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.016) 0%,
-    transparent 28%
-  );
-}
+/* Friendly weeks intentionally share the base .matchday-scoreboard outline —
+   no second border ring / dual-kit frame (badge carries the occasion). */
 
 .scoreboard-value-panel {
   background: rgba(0, 0, 0, 0.28);

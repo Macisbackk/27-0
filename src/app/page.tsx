@@ -15,6 +15,9 @@ export default function HomePage() {
       <div className={`${PAGE.sectionHero} text-center`}>
         <div className="mx-auto flex max-w-xl flex-col items-center gap-3">
           <LogoMark size="lg" className="items-center justify-center" />
+          <p className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-pitch-400 sm:text-xs">
+            Work in progress
+          </p>
           <p className="max-w-sm text-center text-[length:var(--text-body)] leading-snug text-[var(--mobile-text-secondary)]">
             Rugby league management and Quick Mode. Build a side. Go 27-0.
           </p>

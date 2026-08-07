@@ -63,7 +63,7 @@ const SURFACE = {
   cup: "bg-accent-gold/[0.04]",
   wcc: "bg-sky-400/[0.07]",
   magic: "bg-theme-primary/[0.06]",
-  friendly: "bg-sky-400/[0.04]",
+  friendly: "bg-theme-primary/[0.04]",
   league: "bg-theme-primary/[0.04]",
 } as const;
 
@@ -246,18 +246,18 @@ export function getManagerMatchOccasionPresentation(
     case "friendly":
       return {
         occasion,
-        weekLabel: "Friendly Week",
+        weekLabel: "Next fixture",
         badgeLabel: "Friendly",
         badgeTone: "sky",
-        momentLine: "Pre-season — sharpen the squad before Round 1",
+        momentLine: "Pre-season friendly",
         playCta,
         playCtaShort,
         simulateCta,
         simulateCtaShort,
-        roundStatLabel: "Pre-season",
+        roundStatLabel: "Friendly",
         surfaceClass: SURFACE.friendly,
-        matchdayModifier: "matchday-scoreboard--friendly",
-        momentTextClass: "text-sky-300",
+        matchdayModifier: "",
+        momentTextClass: "text-pitch-300",
         isShowcase: false,
       };
     default:

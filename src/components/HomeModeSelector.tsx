@@ -47,62 +47,72 @@ export function HomeModeSelector() {
   const normalHref = mounted ? buildPlayHref("classic", normalEraMode) : "/play";
 
   return (
-    <div>
+    <div className="mx-auto w-full max-w-xl text-center">
       <GuestNotice variant="home" />
 
-      <div className="mx-auto flex max-w-xl flex-col gap-[var(--mobile-section-gap)]">
-        <MobileSection className="text-left sm:text-left">
-          <p className={TYPO.keyLabel}>Career</p>
-          <h2 className={`mt-1 ${TYPO.homeModeTitle}`}>Manager Mode</h2>
-          <p className={`mt-2 ${TYPO.bodySm}`}>
+      <div className="flex flex-col items-center gap-[var(--mobile-section-gap)]">
+        <MobileSection className="flex w-full flex-col items-center text-center">
+          <p className={`w-full text-center ${TYPO.keyLabel}`}>Career</p>
+          <h2 className={`mt-1 w-full text-center ${TYPO.homeModeTitle}`}>
+            Manager Mode
+          </h2>
+          <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
             Build a club, manage the season, chase trophies.
           </p>
-          <div className="mt-4">
+          <div className="mt-4 flex w-full justify-center">
             <GameButton
               variant="theme"
               href="/manager"
               onClick={() => playUiClick()}
+              className="max-w-sm"
             >
               Enter Manager Mode
             </GameButton>
           </div>
         </MobileSection>
 
-        <div className="border-t border-[var(--mobile-divider)] pt-[var(--mobile-section-gap)]">
-          <p className={TYPO.keyLabel}>Quick Mode</p>
-          <h2 className={`mt-1 ${TYPO.homeModeTitle}`}>Draft &amp; go 27-0</h2>
-          <p className={`mt-2 ${TYPO.bodySm}`}>
+        <div className="flex w-full flex-col items-center border-t border-[var(--mobile-divider)] pt-[var(--mobile-section-gap)] text-center">
+          <p className={`w-full text-center ${TYPO.keyLabel}`}>Quick Mode</p>
+          <h2 className={`mt-1 w-full text-center ${TYPO.homeModeTitle}`}>
+            Draft &amp; go 27-0
+          </h2>
+          <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
             Spin a 17 from Current or Era pools and run the season.
           </p>
 
-          <ChallengeCupVariantToggle
-            sectionLabel="Pool"
-            useShortLabels
-            eraMode={normalEraMode}
-            onEraModeChange={handleEraModeChange}
-            className="mt-4"
-          />
+          <div className="mt-4 flex w-full justify-center">
+            <ChallengeCupVariantToggle
+              sectionLabel="Pool"
+              useShortLabels
+              eraMode={normalEraMode}
+              onEraModeChange={handleEraModeChange}
+            />
+          </div>
 
-          <p className={`mt-3 ${TYPO.meta} mobile-safe-text`}>
+          <p
+            className={`mx-auto mt-3 max-w-md text-center ${TYPO.meta} mobile-safe-text`}
+          >
             {normalEraMode
               ? UI_COPY.eraRatingNote
               : UI_COPY.currentRatingNote}
           </p>
-          <p className={`mt-1 ${TYPO.meta}`}>
+          <p className={`mx-auto mt-1 max-w-md text-center ${TYPO.meta}`}>
             {getQuickModeCurrentEraHint(normalEraMode)}
           </p>
 
-          <div className="mt-4">
-            <ModeStartLink
-              href={normalHref}
-              eraMode={normalEraMode}
-              onClick={() => {
-                playUiClick();
-                playModeClassicStart("NORMAL");
-              }}
-            >
-              {getQuickSeasonStartLabel(normalEraMode)}
-            </ModeStartLink>
+          <div className="mt-4 flex w-full justify-center">
+            <div className="w-full max-w-sm">
+              <ModeStartLink
+                href={normalHref}
+                eraMode={normalEraMode}
+                onClick={() => {
+                  playUiClick();
+                  playModeClassicStart("NORMAL");
+                }}
+              >
+                {getQuickSeasonStartLabel(normalEraMode)}
+              </ModeStartLink>
+            </div>
           </div>
         </div>
       </div>

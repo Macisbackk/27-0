@@ -54,7 +54,8 @@ const COMPETITION_SURFACE: Record<
   league: ACCENT_STRIPE.primary,
   cup: ACCENT_STRIPE.gold,
   playoff: ACCENT_STRIPE.amber,
-  friendly: ACCENT_STRIPE.sky,
+  /** Same wash as league — Friendly identity is the badge, not a second border. */
+  friendly: ACCENT_STRIPE.primary,
   wcc: ACCENT_STRIPE.sky,
 };
 
@@ -98,7 +99,9 @@ export function managerFixtureCardStyle(
   userClub: string,
   opponent: string
 ): CSSProperties | undefined {
-  if (competition === "friendly" || competition === "world_club_challenge") {
+  // Friendlies use the same clean scoreboard surface as league weeks.
+  // Keep dual-kit identity for WCC only.
+  if (competition === "world_club_challenge") {
     return getFriendlyDualBorderStyle(userClub, opponent);
   }
   return undefined;

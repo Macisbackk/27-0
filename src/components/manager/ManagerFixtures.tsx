@@ -27,7 +27,6 @@ import {
   managerPillClass,
 } from "@/lib/manager/managerSurfaces";
 import { getManagerMatchOccasionPresentation } from "@/lib/manager/managerMatchOccasion";
-import { getFriendlyDualBorderStyle } from "@/lib/manager/managerFriendlyUi";
 import { buildMergedDisplaySchedule, getCupBracketForDisplay } from "@/lib/manager/managerChallengeCup";
 import { syncBracketProgress } from "@/lib/manager/managerBracketSync";
 import { getHomeFixtureAttendanceOutlook } from "@/lib/manager/managerAttendance";
@@ -457,20 +456,14 @@ function UpcomingFixtureRow({
       : sched.isHome
         ? opponentColors ?? userColors
         : userColors;
-  const isFriendly = sched.competition === "friendly";
-  const friendlyBorderStyle =
-    isFriendly && opponent !== "TBC"
-      ? getFriendlyDualBorderStyle(club, opponent)
-      : undefined;
 
   return (
     <div
       className={`${managerFixtureRowClass({
         isNext,
         competition: sched.competition,
-        hasFriendlyStyle: Boolean(friendlyBorderStyle),
+        hasFriendlyStyle: false,
       })}${compact ? " !py-2" : ""}`}
-      style={friendlyBorderStyle}
     >
       <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
         <div className="flex min-w-0 flex-wrap items-center gap-2">

@@ -19,12 +19,12 @@ const GUIDE_ITEMS = [
 
 export function HowToPlaySection() {
   return (
-    <section className="mx-auto max-w-2xl border-t border-[var(--mobile-divider)] pt-[var(--mobile-section-gap)]">
-      <div className="text-left sm:text-center">
+    <section className="mx-auto max-w-2xl border-t border-[var(--mobile-divider)] pt-[var(--mobile-section-gap)] text-center">
+      <div className="flex flex-col items-center text-center">
         <GameSectionTitle
           label="Guide"
           heading="How to play"
-          className="sm:items-center sm:text-center"
+          className="items-center text-center"
         />
         <p id="how-to-play-heading" className="sr-only">
           How to play
@@ -35,10 +35,10 @@ export function HowToPlaySection() {
         {GUIDE_ITEMS.map((item) => (
           <li
             key={item.title}
-            className="min-w-0 border-b border-[var(--mobile-divider)] py-2.5 text-left last:border-b-0 sm:text-center"
+            className="min-w-0 border-b border-[var(--mobile-divider)] py-2.5 text-center last:border-b-0"
           >
-            <p className={TYPO.cardTitle}>{item.title}</p>
-            <p className={`mt-1 ${TYPO.bodySm} sm:mx-auto sm:max-w-md`}>
+            <p className={`text-center ${TYPO.cardTitle}`}>{item.title}</p>
+            <p className={`mx-auto mt-1 max-w-md text-center ${TYPO.bodySm}`}>
               {item.body}
             </p>
           </li>
