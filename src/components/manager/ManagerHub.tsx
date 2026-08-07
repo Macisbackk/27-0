@@ -444,8 +444,10 @@ export function ManagerHub({
   const showStickyPlayBar =
     Boolean(nextFixture && !seasonComplete && !playoffsPending);
 
-  // Always reserve play-bar pad on mobile so sticky mount/unmount does not reflow.
-  const hubMobilePad = "manager-mobile-playbar-extra sm:pb-0";
+  // Only reserve play-bar pad when the sticky bar is actually showing.
+  const hubMobilePad = showStickyPlayBar
+    ? "manager-mobile-playbar-extra sm:pb-0"
+    : undefined;
 
   const squadAvailabilityCard =
     injuryCount > 0 ? (

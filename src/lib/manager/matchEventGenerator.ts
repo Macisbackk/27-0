@@ -454,6 +454,36 @@ export function generateSimulatedMatchEvents(
   const userKicker = resolveKicker("user", input, userScorers);
   const oppKicker = resolveKicker("opponent", input, oppScorers);
 
+  const userPlayerPool = [
+    ...userScorers.map((s) => s.name),
+    ...(input.career
+      ? [...input.career.matchdayXiii, ...input.career.matchdayInterchange]
+          .map((id) => {
+            if (!id) return "";
+            return (
+              input.career?.playerRegistry?.[id]?.name ??
+              input.career?.reserves.find((r) => r.id === id)?.name ??
+              ""
+            );
+          })
+          .filter(Boolean)
+      : []),
+    userKicker,
+  ].filter((n) => n && !isInvalidPlayerName(n, teamNames));
+  const oppPlayerPool = [
+    ...oppScorers.map((s) => s.name),
+    oppKicker,
+  ].filter((n) => n && !isInvalidPlayerName(n, teamNames));
+
+  const pickSidePlayer = (
+    side: TeamSide,
+    rng: () => number
+  ): string | undefined => {
+    const pool = side === "user" ? userPlayerPool : oppPlayerPool;
+    if (pool.length === 0) return undefined;
+    return pool[Math.floor(rng() * pool.length)]!;
+  };
+
   const addTryChain = (
     side: TeamSide,
     minute: number,
@@ -676,12 +706,11 @@ export function generateSimulatedMatchEvents(
     targetEventCount(input) - events.length - 2
   );
   let lastFillerMinute = 0;
-  const allPlayerNames = [
-    ...userScorers.map((s) => s.name),
-    ...oppScorers.map((s) => s.name),
-    userKicker,
-    oppKicker,
-  ].filter((n) => n && !isInvalidPlayerName(n, teamNames));
+  const PLAYER_FILLER_TYPES = new Set<FillerType>([
+    "try_saver",
+    "held_up",
+    "interchange",
+  ]);
 
   for (let i = 0; i < fillerTarget; i++) {
     // Leave room for +2 spacing and keep fillers ≤ 79 (80 is full_time only).
@@ -700,10 +729,15 @@ export function generateSimulatedMatchEvents(
           ? "opponent"
           : "user"
         : possessionSide;
-    const playerName =
-      fillerType === "try_saver" && allPlayerNames.length > 0
-        ? allPlayerNames[Math.floor(fillerRng() * allPlayerNames.length)]
-        : undefined;
+    let resolvedType = fillerType;
+    let playerName = PLAYER_FILLER_TYPES.has(fillerType)
+      ? pickSidePlayer(defendingSide, fillerRng)
+      : undefined;
+    // try_saver templates always need a named player — fall back to team filler.
+    if (resolvedType === "try_saver" && !playerName) {
+      resolvedType = "pressure_set";
+      playerName = undefined;
+    }
 
     events.push(
       makeEvent(
@@ -711,9 +745,9 @@ export function generateSimulatedMatchEvents(
         minute,
         defendingSide,
         input,
-        fillerType,
+        resolvedType,
         commentary(
-          fillerType,
+          resolvedType,
           defendingSide,
           input,
           minute,
@@ -724,40 +758,49 @@ export function generateSimulatedMatchEvents(
         0,
         {
           playerName,
-          importance: fillerType === "try_saver" ? "medium" : "low",
+          importance: resolvedType === "try_saver" ? "medium" : "low",
         }
       )
     );
   }
 
-  if (rngFor(input.seed, "sinbin")() < 0.22 && allPlayerNames.length > 0) {
+  if (
+    rngFor(input.seed, "sinbin")() < 0.22 &&
+    (userPlayerPool.length > 0 || oppPlayerPool.length > 0)
+  ) {
     const side: TeamSide =
       rngFor(input.seed, "sinbin-side")() < 0.5 ? "user" : "opponent";
     const minute = clampRegulationMinute(
       30 + Math.floor(rngFor(input.seed, "sinbin-m")() * 40)
     );
     const sinPlayer =
-      allPlayerNames[Math.floor(rngFor(input.seed, "sinbin-p")() * allPlayerNames.length)]!;
-    events.push(
-      makeEvent(
-        nextId(),
-        minute,
-        side,
-        input,
-        "sin_bin",
-        commentary(
-          "sin_bin",
+      pickSidePlayer(side, rngFor(input.seed, "sinbin-p")) ??
+      pickSidePlayer(
+        side === "user" ? "opponent" : "user",
+        rngFor(input.seed, "sinbin-p2")
+      );
+    if (sinPlayer) {
+      events.push(
+        makeEvent(
+          nextId(),
+          minute,
           side,
           input,
-          minute,
-          memory,
-          rngFor(input.seed, "sinbin-t"),
-          sinPlayer
-        ),
-        0,
-        { playerName: sinPlayer, importance: "high" }
-      )
-    );
+          "sin_bin",
+          commentary(
+            "sin_bin",
+            side,
+            input,
+            minute,
+            memory,
+            rngFor(input.seed, "sinbin-t"),
+            sinPlayer
+          ),
+          0,
+          { playerName: sinPlayer, importance: "high" }
+        )
+      );
+    }
   }
 
   events.push(

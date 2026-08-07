@@ -355,10 +355,18 @@ export function pickEventTemplate(
   const typeStreak = sameTypeStreak(eventType, memory);
   const maxSameTypeStreak = eventType === "try" ? 2 : 3;
 
+  const banned = [context.team, context.opponent].filter(Boolean);
+  const hasPlayer = Boolean(safeName(context.player, "", banned));
+  const hasKicker = Boolean(safeName(context.kicker, "", banned));
+
   let candidates = pool.filter((entry) => {
     if (memory.lastTemplateId && entry.id === memory.lastTemplateId) {
       return false;
     }
+    // Prefer team-only lines when we lack a named player/kicker — avoids
+    // "a player" / "the kicker" commentary with no real identity.
+    if (!hasPlayer && entry.text.includes("{player}")) return false;
+    if (!hasKicker && entry.text.includes("{kicker}")) return false;
     const phrase = fillTemplate(entry.text, context);
     if (isIdenticalToLast(phrase, memory)) return false;
     if (isRecentPhrase(phrase, memory)) return false;
@@ -378,8 +386,20 @@ export function pickEventTemplate(
       if (memory.lastTemplateId && entry.id === memory.lastTemplateId) {
         return false;
       }
+      if (!hasPlayer && entry.text.includes("{player}")) return false;
+      if (!hasKicker && entry.text.includes("{kicker}")) return false;
       const phrase = fillTemplate(entry.text, context);
       return !isIdenticalToLast(phrase, memory);
+    });
+  }
+
+  if (candidates.length === 0) {
+    // Last resort: allow player/kicker templates only when we have names;
+    // otherwise keep team-only lines so we never emit "a player".
+    candidates = pool.filter((entry) => {
+      if (!hasPlayer && entry.text.includes("{player}")) return false;
+      if (!hasKicker && entry.text.includes("{kicker}")) return false;
+      return true;
     });
   }
 

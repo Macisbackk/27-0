@@ -9,13 +9,30 @@ function stripEventMinutePrefix(description: string, minute: number): string {
   return description.slice(prefix.length).trimStart();
 }
 
-/** Drop a leading club name when commentary already names the side. */
-function stripLeadingClubName(body: string, club: string): string {
-  if (!club || !body) return body;
-  const escaped = club.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return body
-    .replace(new RegExp(`^${escaped}\\s*[·•:\\-–—]?\\s*`, "i"), "")
-    .trimStart();
+function mentionsClub(body: string, club: string): boolean {
+  if (!club || !body) return false;
+  return body.toLowerCase().includes(club.toLowerCase());
+}
+
+/**
+ * Ensure the line names the side when commentary only has a kicker/player
+ * (or a generic) and no club string — color dots alone are easy to miss.
+ */
+function ensureTeamAttribution(
+  body: string,
+  teamClub: string,
+  userClub: string,
+  opponentClub: string
+): string {
+  if (!teamClub || !body) return body;
+  if (
+    mentionsClub(body, userClub) ||
+    mentionsClub(body, opponentClub) ||
+    mentionsClub(body, teamClub)
+  ) {
+    return body;
+  }
+  return `${teamClub} · ${body}`;
 }
 
 interface ManagerMatchEventLineProps {
@@ -33,12 +50,16 @@ export function ManagerMatchEventLine({
 }: ManagerMatchEventLineProps) {
   const isPeriodMarker =
     event.type === "half_time" || event.type === "full_time";
-  const teamClub = event.team === "user" ? userClub : opponentClub;
+  const teamClub =
+    event.teamName?.trim() ||
+    (event.team === "user" ? userClub : opponentClub);
   const colors = getClubColors(teamClub);
   const teamColor = getMatchEventTeamAccentColour(colors);
   let body = stripEventMinutePrefix(event.description, event.minute);
   if (!isPeriodMarker) {
-    body = stripLeadingClubName(body, teamClub);
+    // Keep club names in commentary — stripping them left orphan phrases
+    // like "earn a six-again…" with no readable team/player actor.
+    body = ensureTeamAttribution(body, teamClub, userClub, opponentClub);
   }
 
   return (
