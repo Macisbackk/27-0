@@ -117,7 +117,8 @@ export function SeasonReview({
     if (selectedFixture && selectedRowRef.current) {
       selectedRowRef.current.scrollIntoView({
         block: "nearest",
-        behavior: "smooth",
+        inline: "nearest",
+        behavior: "auto",
       });
     }
   }, [selectedFixture]);

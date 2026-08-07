@@ -25,7 +25,7 @@ export function ManagerHubStickyActions({
   if (!visible) return null;
 
   return (
-    <StickyActionBar aboveNav>
+    <StickyActionBar aboveNav portal>
       <GameButton
         variant="theme"
         size="sm"

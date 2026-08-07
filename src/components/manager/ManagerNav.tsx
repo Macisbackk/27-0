@@ -151,7 +151,8 @@ export function ManagerNav({
         </div>
       </div>
 
-      <div className="flex min-h-0 w-full justify-center px-1 sm:hidden">
+      {/* Mobile sub-tabs — always reserve height so Hub↔Squad does not jump. */}
+      <div className="flex min-h-[2.75rem] w-full items-center justify-center px-1 sm:hidden">
         {contextTabs ? (
           <ManagerSubTabBar
             tabs={contextTabs.tabs}

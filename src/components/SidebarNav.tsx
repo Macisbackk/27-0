@@ -115,14 +115,14 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
       playSearch.fantasy !== "1" &&
       playSearch.draft !== "1"
     ) {
-      router.push(buildPlayHref("classic", era));
+      router.push(buildPlayHref("classic", era), { scroll: false });
     }
   };
 
   const handleNormalNavigate = () => {
     playUiClick();
     setNormalEraVariant(normalEraVariant);
-    router.push(buildPlayHref("classic", normalEraVariant));
+    router.push(buildPlayHref("classic", normalEraVariant), { scroll: false });
     onClose();
   };
 
@@ -188,7 +188,19 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
               </button>
             </div>
 
-            <nav className="sidebar-nav-scroll flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overflow-x-hidden px-2.5 py-2">
+            <nav
+              className="sidebar-nav-scroll flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overflow-x-hidden overscroll-contain px-2.5 py-2"
+              data-scroll-lock-allow="true"
+            >
+              <div className="shrink-0 rounded-md border border-white/10 bg-black/25 px-2.5 py-1.5 sm:hidden">
+                <p className="text-[9px] font-semibold uppercase tracking-wider text-pitch-500">
+                  Club Finances
+                </p>
+                <p className="mt-0.5 text-sm font-semibold tabular-nums leading-tight text-theme-primary">
+                  {fundsReady ? formatClubFunds(balance) : "—"}
+                </p>
+              </div>
+
               <section>
                 <p className={`${NAV.sectionLabel} sidebar-section-label !mx-0 !mt-0`}>
                   Manager
@@ -207,21 +219,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     </Link>
                   </li>
                 </ul>
-                <div className="mt-2 rounded-[var(--mobile-radius-medium)] border border-white/10 bg-black/25 px-3 py-2 sm:hidden">
-                  <p className={`${TYPO.meta} uppercase tracking-wide text-pitch-400`}>
-                    Club Finances
-                  </p>
-                  <p className="mt-0.5 text-sm font-semibold tabular-nums text-theme-primary">
-                    {fundsReady ? formatClubFunds(balance) : "—"}
-                  </p>
-                  <Link
-                    href="/manager/club"
-                    onClick={handleNavClick}
-                    className={`mt-1 inline-block ${TYPO.meta} text-pitch-300 underline-offset-2 hover:underline`}
-                  >
-                    Club Office
-                  </Link>
-                </div>
               </section>
 
               <section className={NAV.sectionGap}>

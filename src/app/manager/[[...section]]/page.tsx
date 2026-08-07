@@ -24,7 +24,16 @@ const ManagerPlayGame = dynamic(
     import("@/components/manager/ManagerPlayGame").then((m) => ({
       default: m.ManagerPlayGame,
     })),
-  { ssr: false }
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="fixed inset-0 z-[100] bg-black/85"
+        aria-busy="true"
+        aria-label="Loading live match"
+      />
+    ),
+  }
 );
 import { ManagerMatchReview } from "@/components/manager/ManagerMatchReview";
 import { ManagerSeasonReview } from "@/components/manager/ManagerSeasonReview";
@@ -53,8 +62,9 @@ import {
 } from "@/components/manager/ManagerFutureStarRevealModal";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerFriendlySelect } from "@/components/manager/ManagerFriendlySelect";
+import { ManagerHubStickyActions } from "@/components/manager/ManagerHubStickyActions";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
-import { autoFixMatchdaySquad } from "@/lib/manager/managerAutoFix";
+import { autoFixMatchdaySquad, resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
   loadManagerCareer,
@@ -74,16 +84,24 @@ import { takeOverClub } from "@/lib/manager/managerClubChange";
 import {
   advanceManagerMatchWeek,
   getNextManagerFixture,
+  isManagerSeasonComplete,
   prepareCareerForNextMatch,
   simulateManagerNextMatch,
 } from "@/lib/manager/managerSimulation";
 import {
   acknowledgeManagerEventId,
+  canPlayNextMatch,
   collectWeeklyManagerEventIds,
   hasBlockingManagerDecision,
   withWeeklyManagerEventQueue,
 } from "@/lib/manager/managerMatchWeek";
 import { scrollToManagerHubNextFixture } from "@/lib/manager/managerHubScroll";
+import { getManagerMatchOccasionPresentation } from "@/lib/manager/managerMatchOccasion";
+import {
+  getDocumentScrollY,
+  scrollDocumentTo,
+  scrollDocumentToTop,
+} from "@/lib/ui/scroll";
 import { shouldShowManagerObjectivesIntro } from "@/lib/manager/managerBoardObjectives";
 import {
   ensureBoardObjectivesInbox,
@@ -204,12 +222,7 @@ const SCROLL_TOP_VIEWS: ManagerView[] = [
 ];
 
 function scrollManagerPageToTop() {
-  if (typeof window === "undefined") return;
-  // Instant jump only — avoid smooth scroll (extra frames) and avoid fighting
-  // sticky header compositing. Prefer documentElement for Windows Chrome.
-  const root = document.scrollingElement ?? document.documentElement;
-  if (root.scrollTop > 0) root.scrollTop = 0;
-  if (window.scrollY > 0) window.scrollTo(0, 0);
+  scrollDocumentToTop();
 }
 
 function setManagerView(
@@ -359,7 +372,7 @@ export default function ManagerPage() {
         const target = "/manager";
         pendingForwardNavRef.current = { path: target, view: "landing" };
         setManagerView(setView, "landing");
-        router.replace(target);
+        router.replace(target, { scroll: false });
         return;
       }
 
@@ -367,7 +380,7 @@ export default function ManagerPage() {
         const target = managerPathForView("club-select");
         pendingForwardNavRef.current = { path: target, view: "club-select" };
         setManagerView(setView, "club-select");
-        router.replace(target);
+        router.replace(target, { scroll: false });
         return;
       }
 
@@ -376,7 +389,7 @@ export default function ManagerPage() {
         pendingForwardNavRef.current = { path: target, view: next };
         setManagerView(setView, next);
         if (target !== pathname) {
-          router.push(target);
+          router.push(target, { scroll: false });
         }
         return;
       }
@@ -678,9 +691,11 @@ export default function ManagerPage() {
 
   useEffect(() => {
     if (!SCROLL_TOP_VIEWS.includes(view)) return;
-    requestAnimationFrame(() => {
+    // useLayoutEffect-equivalent timing via rAF once — avoid double document/window fight.
+    const frame = requestAnimationFrame(() => {
       scrollManagerPageToTop();
     });
+    return () => cancelAnimationFrame(frame);
   }, [view, reviewFixtureId]);
 
   useEffect(() => {
@@ -713,27 +728,30 @@ export default function ManagerPage() {
     [career, goToView]
   );
 
-  /** Scroll to top when switching between main Manager nav tabs. */
+  /**
+   * KeepAlive tabs: preserve each nav view's scroll position instead of
+   * yanking to top on every tab press (main source of "page jumps").
+   */
   const prevNavViewRef = useRef<ManagerView | null>(null);
+  const navScrollYRef = useRef<Partial<Record<ManagerView, number>>>({});
   const lastNavViewRef = useRef<ManagerView>("hub");
   useLayoutEffect(() => {
     if (!isManagerNavView(displayView)) {
       prevNavViewRef.current = displayView;
       return;
     }
-    if (
-      prevNavViewRef.current != null &&
-      prevNavViewRef.current !== displayView &&
-      isManagerNavView(prevNavViewRef.current)
-    ) {
-      scrollManagerPageToTop();
+    const prev = prevNavViewRef.current;
+    if (prev != null && prev !== displayView && isManagerNavView(prev)) {
+      navScrollYRef.current[prev] = getDocumentScrollY();
+      const restoreY = navScrollYRef.current[displayView] ?? 0;
+      scrollDocumentTo(restoreY);
     }
     prevNavViewRef.current = displayView;
   }, [displayView]);
 
   const handleSquadSubTabChange = useCallback(
     (tab: SquadSubTab) => {
-      router.push(managerPathForSquadTab(tab));
+      router.push(managerPathForSquadTab(tab), { scroll: false });
     },
     [router]
   );
@@ -1782,7 +1800,44 @@ export default function ManagerPage() {
         displayView as (typeof MANAGER_NAV_VIEWS)[number]
       ));
 
-  const panesInteractive = showChrome && !managerOverlayActive && !playGameOpen;
+  // Keep panes interactive under Play Game and overlay views so KeepAlive does
+  // not freeze/unfreeze (that toggle was a major mobile flicker). Chrome is
+  // inert/hidden separately while overlays are open.
+  const panesInteractive = showChrome;
+
+  const hubSticky = useMemo(() => {
+    if (!career) return null;
+    const nextFixture = getNextManagerFixture(career);
+    const seasonComplete = isManagerSeasonComplete(career);
+    const playoffsPending = needsPlayoffsIntro(career);
+    const visible = Boolean(nextFixture && !seasonComplete && !playoffsPending);
+    if (!visible) return null;
+    const simCareer = resolveCareerForMatchSimulation(career);
+    const squadCheck = validateFitMatchdaySquad(simCareer);
+    const canPlay =
+      canPlayNextMatch(career) &&
+      squadCheck.valid &&
+      !seasonComplete &&
+      !playoffsPending;
+    const matchOccasion = nextFixture
+      ? getManagerMatchOccasionPresentation(nextFixture)
+      : null;
+    return {
+      canPlay,
+      playLabel: matchOccasion?.playCtaShort ?? "Play Game",
+      simulateLabel:
+        matchOccasion?.simulateCtaShort ??
+        matchOccasion?.simulateCta ??
+        "Simulate Game",
+    };
+  }, [career]);
+
+  const showHubStickyBar =
+    Boolean(hubSticky) &&
+    chromeNavView === "hub" &&
+    !awaitingFriendlyChoice &&
+    !playGameOpen &&
+    !managerOverlayActive;
 
   const incomingBidOffer =
     career && pendingIncomingBidId
@@ -1865,9 +1920,11 @@ export default function ManagerPage() {
       {showChrome && career && (
         <div
           className={`flex flex-col manager-mobile-nav-pad sm:pb-0 ${PAGE.section} ${
-            managerOverlayActive || playGameOpen
-              ? "pointer-events-none max-sm:invisible max-sm:absolute max-sm:inset-0 max-sm:overflow-hidden"
-              : ""
+            playGameOpen
+              ? "pointer-events-none max-sm:invisible"
+              : managerOverlayActive
+                ? "pointer-events-none max-sm:hidden"
+                : ""
           }`}
           aria-hidden={managerOverlayActive || playGameOpen}
           inert={managerOverlayActive || playGameOpen ? true : undefined}
@@ -1996,6 +2053,17 @@ export default function ManagerPage() {
             }
           />
         </div>
+      )}
+
+      {career && showChrome && hubSticky && (
+        <ManagerHubStickyActions
+          visible={showHubStickyBar}
+          canPlay={hubSticky.canPlay}
+          playLabel={hubSticky.playLabel}
+          simulateLabel={hubSticky.simulateLabel}
+          onPlayGame={handlePlayGame}
+          onSimulate={handleSimulate}
+        />
       )}
 
       {career && playGameOpen && (

@@ -1,4 +1,5 @@
 import { useEffect, useRef, type RefObject } from "react";
+import { focusWithoutScroll } from "@/lib/ui/focus";
 import {
   acquireScrollLock,
   releaseScrollLock,
@@ -42,10 +43,10 @@ export function useModalA11y(
 
       if (event.shiftKey && document.activeElement === first) {
         event.preventDefault();
-        last.focus();
+        focusWithoutScroll(last);
       } else if (!event.shiftKey && document.activeElement === last) {
         event.preventDefault();
-        first.focus();
+        focusWithoutScroll(first);
       }
     };
 
@@ -56,17 +57,19 @@ export function useModalA11y(
         FOCUSABLE_SELECTOR
       );
       if (focusable && focusable.length > 0) {
-        focusable[0]!.focus();
+        focusWithoutScroll(focusable[0]);
       } else {
-        panelRef.current?.focus();
+        focusWithoutScroll(panelRef.current);
       }
     });
 
     return () => {
+      const previous = previousFocusRef.current;
+      window.removeEventListener("keydown", onKey);
+      // Restore focus before unlock so preventScroll wins over browser scroll-into-view.
+      focusWithoutScroll(previous);
       releaseScrollLock(scrollLockIdRef.current);
       scrollLockIdRef.current = null;
-      window.removeEventListener("keydown", onKey);
-      previousFocusRef.current?.focus?.();
     };
   }, [open, onClose]);
 

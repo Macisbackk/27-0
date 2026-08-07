@@ -178,6 +178,20 @@ export function previewReleaseUnderRating(
     }));
 }
 
+export function previewReleaseUnderPotential(
+  career: ManagerCareer,
+  potential: number
+): ReserveReleaseCandidate[] {
+  return career.reserves
+    .filter(
+      (r) => r.potentialRating < potential && !isOnMatchday(career, r.id)
+    )
+    .map((reserve) => ({
+      reserve,
+      reason: `Potential ${reserve.potentialRating} under ${potential}`,
+    }));
+}
+
 export function previewReleaseOverAge(
   career: ManagerCareer,
   age: number

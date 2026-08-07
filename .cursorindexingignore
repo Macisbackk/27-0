@@ -1,0 +1,12 @@
+# Index excludes — keep Agent able to open if needed, but skip heavy trees
+.next/
+out/
+build/
+coverage/
+node_modules/
+.vercel/
+scripts/rlp-cache/
+*.xlsx
+*.pack
+*.pack.gz
+*.tsbuildinfo

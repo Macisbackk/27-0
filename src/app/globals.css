@@ -177,10 +177,17 @@ html[data-ui-overlay="1"] .site-footer {
     padding-bottom: var(--manager-mobile-nav-h);
   }
 
+  /* Full hub pad when Hub owns chrome alone (legacy). Prefer playbar-extra when
+     the shell already applies manager-mobile-nav-pad. */
   .manager-mobile-hub-pad {
     padding-bottom: calc(
       var(--manager-mobile-nav-h) + var(--manager-mobile-playbar-h)
     );
+  }
+
+  /* Hub sticky play bar only — shell already reserved nav height. */
+  .manager-mobile-playbar-extra {
+    padding-bottom: var(--manager-mobile-playbar-h);
   }
 
   .manager-mobile-play-bar {
@@ -243,6 +250,7 @@ html[data-ui-overlay="1"] .site-footer {
   background: var(--sidebar-bg);
   border-right: 1px solid var(--border-subtle);
   max-height: 100dvh;
+  overflow: hidden;
 }
 
 .mode-switch--sidebar,
@@ -421,6 +429,7 @@ html[data-ui-overlay="1"] .site-footer {
 .sidebar-nav-scroll {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+  touch-action: pan-y;
   scrollbar-width: thin;
   scrollbar-color: var(--theme-border) rgba(15, 24, 20, 0.6);
 }

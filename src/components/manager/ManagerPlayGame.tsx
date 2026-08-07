@@ -64,8 +64,13 @@ export function ManagerPlayGame({
   const readyCareer = career;
   const sched = getNextManagerFixture(readyCareer);
   const fixtureKey = sched?.id ?? "none";
-  const [live, setLive] = useState<LiveMatchState | null>(null);
-  const [command, setCommand] = useState<LiveMatchCommand>("balanced");
+  // Sync init — avoid first-frame "No fixture ready" flash before useEffect.
+  const [live, setLive] = useState<LiveMatchState | null>(() =>
+    sched ? createLiveMatch(readyCareer, sched) : null
+  );
+  const [command, setCommand] = useState<LiveMatchCommand>(() =>
+    commandFromTactics(readyCareer)
+  );
   const [clockRunning, setClockRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [abandonConfirmOpen, setAbandonConfirmOpen] = useState(false);
@@ -75,6 +80,7 @@ export function ManagerPlayGame({
   const careerRef = useRef(career);
   const commandRef = useRef(command);
   const liveRef = useRef(live);
+  const initFixtureKeyRef = useRef(fixtureKey);
 
   careerRef.current = career;
   commandRef.current = command;
@@ -82,6 +88,11 @@ export function ManagerPlayGame({
 
   useEffect(() => {
     if (!sched) return;
+    // Skip remount of the same fixture already seeded by useState initializer.
+    if (initFixtureKeyRef.current === fixtureKey && liveRef.current) {
+      initFixtureKeyRef.current = "";
+      return;
+    }
     const tacticCommand = commandFromTactics(readyCareer);
     setLive(createLiveMatch(readyCareer, sched));
     setCommand(tacticCommand);

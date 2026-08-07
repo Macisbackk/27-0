@@ -61,7 +61,6 @@ import { isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { ManagerClubSquadSheet } from "@/components/manager/ManagerClubSquadSheet";
 import { ManagerLeagueTable } from "@/components/manager/ManagerLeagueTable";
-import { ManagerHubStickyActions } from "@/components/manager/ManagerHubStickyActions";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
 import {
@@ -445,9 +444,8 @@ export function ManagerHub({
   const showStickyPlayBar =
     Boolean(nextFixture && !seasonComplete && !playoffsPending);
 
-  const hubMobilePad = showStickyPlayBar
-    ? "manager-mobile-hub-pad sm:pb-0"
-    : "manager-mobile-nav-pad sm:pb-0";
+  // Always reserve play-bar pad on mobile so sticky mount/unmount does not reflow.
+  const hubMobilePad = "manager-mobile-playbar-extra sm:pb-0";
 
   const squadAvailabilityCard =
     injuryCount > 0 ? (
@@ -525,9 +523,10 @@ export function ManagerHub({
       </div>
     ) : null;
 
-  const commandCentre = (
-    <ManagerHubAlertsPanel alerts={hubAlerts} onNavigate={onNavigate} />
-  );
+  const commandCentre =
+    hubAlerts.length > 0 ? (
+      <ManagerHubAlertsPanel alerts={hubAlerts} onNavigate={onNavigate} />
+    ) : null;
 
   const seasonProgressCard = (
     <div className={showStickyPlayBar ? "hidden sm:block" : undefined}>
@@ -653,26 +652,11 @@ export function ManagerHub({
       leagueTableCard
     );
 
-  const stickyActions = (
-    <ManagerHubStickyActions
-      visible={showStickyPlayBar}
-      canPlay={canPlay}
-      playLabel={matchOccasion?.playCtaShort ?? "Play Game"}
-      simulateLabel={
-        matchOccasion?.simulateCtaShort ??
-        matchOccasion?.simulateCta ??
-        "Simulate Game"
-      }
-      onPlayGame={onPlayGame}
-      onSimulate={onSimulate}
-    />
-  );
-
   const hubBody = (
     <>
       <div className="space-y-4">
-        {nextFixtureCard}
         {commandCentre}
+        {nextFixtureCard}
         {seasonProgressCard}
         {newsTickerCard}
         {hubStandingsCard}
@@ -688,7 +672,6 @@ export function ManagerHub({
         <ManagerPage className={hubMobilePad}>
           <ManagerSection>{hubBody}</ManagerSection>
         </ManagerPage>
-        {stickyActions}
         {alertDialog}
         {clubSheetModal}
       </>
@@ -700,7 +683,6 @@ export function ManagerHub({
       <ManagerPage className={hubMobilePad}>
         <ManagerSection>{hubBody}</ManagerSection>
       </ManagerPage>
-      {stickyActions}
       {alertDialog}
       {clubSheetModal}
     </>

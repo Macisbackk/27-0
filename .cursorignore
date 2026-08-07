@@ -1,0 +1,39 @@
+﻿# Reduce Cursor indexing / agent context load (Next.js + build junk)
+.next/
+out/
+build/
+coverage/
+node_modules/
+.vercel/
+.pnp/
+.yarn/
+
+# Local caches / reports / temps
+scripts/rlp-cache/
+*.pem
+*.tsbuildinfo
+.tmp*
+*.tmp
+tsc-*.tmp
+tsc-*.txt
+test-out.tmp
+test-save-storage-out.txt
+sync-output.tmp
+.tmp-showcase-diff.txt
+
+# Large / binary data not useful for chat context
+*.xlsx
+*.pack
+*.pack.gz
+*.woff
+*.woff2
+*.mp3
+*.wav
+*.ogg
+
+# OS / debug
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*

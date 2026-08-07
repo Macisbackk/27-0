@@ -9,16 +9,15 @@ import {
   applyReserveReleases,
   getReserveGrowth,
   getReserveYearsAtClub,
-  previewReleaseByLowGrowth,
-  previewReleaseByYearsRating,
   previewReleaseOverAge,
+  previewReleaseUnderPotential,
   previewReleaseUnderRating,
   type ReserveReleaseCandidate,
 } from "@/lib/manager/managerReserveRelease";
 import { playPanelClose, playUiClick } from "@/lib/sound";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 
-type ReleaseToolId = "rating" | "age" | "growth" | "progress";
+type ReleaseToolId = "potential" | "rating" | "age";
 
 interface ManagerReserveReleaseToolsModalProps {
   open: boolean;
@@ -54,7 +53,8 @@ function CandidatePreview({
             <span className="font-medium text-white">{reserve.name}</span>
             <span className="text-pitch-400">
               {" "}
-              · Age {reserve.age} · Rating {reserve.rating} · {years}y · Growth{" "}
+              · Age {reserve.age} · Rating {reserve.rating} · Pot{" "}
+              {reserve.potentialRating} · {years}y · Growth{" "}
               {growth >= 0 ? "+" : ""}
               {growth}
             </span>
@@ -73,12 +73,9 @@ export function ManagerReserveReleaseToolsModal({
   onUpdate,
   onMessage,
 }: ManagerReserveReleaseToolsModalProps) {
+  const [bulkPotential, setBulkPotential] = useState(80);
   const [bulkRating, setBulkRating] = useState(55);
   const [bulkAge, setBulkAge] = useState(24);
-  const [growthYears, setGrowthYears] = useState(2);
-  const [growthMin, setGrowthMin] = useState(3);
-  const [progressYears, setProgressYears] = useState(2);
-  const [progressRating, setProgressRating] = useState(60);
   const [previews, setPreviews] = useState<
     Partial<Record<ReleaseToolId, ReserveReleaseCandidate[]>>
   >({});
@@ -91,27 +88,23 @@ export function ManagerReserveReleaseToolsModal({
 
   const getCandidates = (tool: ReleaseToolId): ReserveReleaseCandidate[] => {
     switch (tool) {
+      case "potential":
+        return previewReleaseUnderPotential(career, bulkPotential);
       case "rating":
         return previewReleaseUnderRating(career, bulkRating);
       case "age":
         return previewReleaseOverAge(career, bulkAge);
-      case "growth":
-        return previewReleaseByLowGrowth(career, growthYears, growthMin);
-      case "progress":
-        return previewReleaseByYearsRating(career, progressYears, progressRating);
     }
   };
 
   const toolLabel = (tool: ReleaseToolId): string => {
     switch (tool) {
+      case "potential":
+        return `potential under ${bulkPotential}`;
       case "rating":
         return `rated under ${bulkRating}`;
       case "age":
         return `over age ${bulkAge}`;
-      case "growth":
-        return `after ${growthYears} years if growth under ${growthMin}`;
-      case "progress":
-        return `after ${progressYears} years if rating under ${progressRating}`;
     }
   };
 
@@ -185,6 +178,45 @@ export function ManagerReserveReleaseToolsModal({
         <div className="mt-4 space-y-4">
           <section className="rounded-lg border border-pitch-700/45 bg-pitch-950/40 p-3">
             <h3 className={`${TYPO.bodySm} font-semibold text-pitch-200`}>
+              Release all under potential
+            </h3>
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+              Release reserves with potential under{" "}
+              <input
+                type="number"
+                min={40}
+                max={99}
+                value={bulkPotential}
+                onChange={(e) => setBulkPotential(Number(e.target.value))}
+                className="mx-1 w-14 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-0.5 text-sm text-white"
+              />
+            </p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <GameButton
+                variant="secondary"
+                size="sm"
+                onClick={() => handlePreview("potential")}
+              >
+                Preview
+              </GameButton>
+              <GameButton
+                variant="danger"
+                size="sm"
+                onClick={() => handleRelease("potential")}
+              >
+                Release
+              </GameButton>
+              {previews.potential && (
+                <span className={`${TYPO.bodySm} self-center text-pitch-400`}>
+                  {previews.potential.length} affected
+                </span>
+              )}
+            </div>
+            <CandidatePreview career={career} candidates={previews.potential} />
+          </section>
+
+          <section className="rounded-lg border border-pitch-700/45 bg-pitch-950/40 p-3">
+            <h3 className={`${TYPO.bodySm} font-semibold text-pitch-200`}>
               Release by Rating
             </h3>
             <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
@@ -243,86 +275,6 @@ export function ManagerReserveReleaseToolsModal({
               )}
             </div>
             <CandidatePreview career={career} candidates={previews.age} />
-          </section>
-
-          <section className="rounded-lg border border-pitch-700/45 bg-pitch-950/40 p-3">
-            <h3 className={`${TYPO.bodySm} font-semibold text-pitch-200`}>
-              Release by Development
-            </h3>
-            <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-              Release players after{" "}
-              <input
-                type="number"
-                min={1}
-                max={6}
-                value={growthYears}
-                onChange={(e) => setGrowthYears(Number(e.target.value))}
-                className="mx-1 w-12 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-0.5 text-sm text-white"
-              />{" "}
-              years if growth is under{" "}
-              <input
-                type="number"
-                min={0}
-                max={20}
-                value={growthMin}
-                onChange={(e) => setGrowthMin(Number(e.target.value))}
-                className="mx-1 w-12 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-0.5 text-sm text-white"
-              />
-            </p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              <GameButton variant="secondary" size="sm" onClick={() => handlePreview("growth")}>
-                Preview
-              </GameButton>
-              <GameButton variant="danger" size="sm" onClick={() => handleRelease("growth")}>
-                Release
-              </GameButton>
-              {previews.growth && (
-                <span className={`${TYPO.bodySm} self-center text-pitch-400`}>
-                  {previews.growth.length} affected
-                </span>
-              )}
-            </div>
-            <CandidatePreview career={career} candidates={previews.growth} />
-          </section>
-
-          <section className="rounded-lg border border-pitch-700/45 bg-pitch-950/40 p-3">
-            <h3 className={`${TYPO.bodySm} font-semibold text-pitch-200`}>
-              Release by Progress
-            </h3>
-            <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-              Release players after{" "}
-              <input
-                type="number"
-                min={1}
-                max={6}
-                value={progressYears}
-                onChange={(e) => setProgressYears(Number(e.target.value))}
-                className="mx-1 w-12 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-0.5 text-sm text-white"
-              />{" "}
-              years if rating is under{" "}
-              <input
-                type="number"
-                min={40}
-                max={90}
-                value={progressRating}
-                onChange={(e) => setProgressRating(Number(e.target.value))}
-                className="mx-1 w-14 rounded border border-pitch-600 bg-pitch-900/60 px-2 py-0.5 text-sm text-white"
-              />
-            </p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              <GameButton variant="secondary" size="sm" onClick={() => handlePreview("progress")}>
-                Preview
-              </GameButton>
-              <GameButton variant="danger" size="sm" onClick={() => handleRelease("progress")}>
-                Release
-              </GameButton>
-              {previews.progress && (
-                <span className={`${TYPO.bodySm} self-center text-pitch-400`}>
-                  {previews.progress.length} affected
-                </span>
-              )}
-            </div>
-            <CandidatePreview career={career} candidates={previews.progress} />
           </section>
         </div>
 

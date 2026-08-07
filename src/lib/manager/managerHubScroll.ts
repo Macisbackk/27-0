@@ -8,7 +8,7 @@ export function scrollToManagerHubNextFixture(): void {
   if (typeof document === "undefined") return;
   const el = document.getElementById(MANAGER_HUB_SCROLL_TARGET_ID);
   if (!el) return;
-  // Align to top (scroll-mt on the target clears sticky chrome) — not center,
-  // which jumped the viewport to the middle of the page.
-  el.scrollIntoView({ behavior: "auto", block: "start" });
+  // Prefer nearest so we don't yank past sticky chrome when already nearby.
+  // scroll-mt on the target still clears the header when block would be start.
+  el.scrollIntoView({ behavior: "auto", block: "nearest", inline: "nearest" });
 }

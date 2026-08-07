@@ -27,6 +27,8 @@ const locks = new Map<ScrollLockId, LockRecord>();
 let snapshot: ScrollSnapshot | null = null;
 let touchBlockerAttached = false;
 let idSeq = 0;
+/** Coalesce unlock→relock in the same React effect flush (Play Game → match review). */
+let restoreScheduled = false;
 
 function isBrowser(): boolean {
   return typeof document !== "undefined" && typeof window !== "undefined";
@@ -40,7 +42,21 @@ function measureScrollbarGap(): number {
 function blockTouchMove(event: TouchEvent): void {
   const target = event.target;
   if (target instanceof Element) {
+    // Allow scroll inside marked regions (sidebar nav, modals with overflow).
     if (target.closest("[data-scroll-lock-allow='true']")) return;
+    // Also allow any overflow-scrolling ancestor (defensive for nested panels).
+    let node: Element | null = target;
+    while (node && node !== document.body) {
+      const style = window.getComputedStyle(node);
+      const oy = style.overflowY;
+      if (
+        (oy === "auto" || oy === "scroll" || oy === "overlay") &&
+        (node as HTMLElement).scrollHeight > (node as HTMLElement).clientHeight
+      ) {
+        return;
+      }
+      node = node.parentElement;
+    }
   }
   event.preventDefault();
 }
@@ -96,8 +112,27 @@ function restoreScrollStyles(): void {
   document.documentElement.style.paddingRight = htmlPaddingRight;
   delete document.documentElement.dataset.uiOverlay;
   detachTouchBlocker();
-  window.scrollTo(scrollX, scrollY);
+  // Restore after styles clear — double rAF avoids Safari clamping against sticky chrome.
+  const x = scrollX;
+  const y = scrollY;
   snapshot = null;
+  requestAnimationFrame(() => {
+    window.scrollTo(x, y);
+    requestAnimationFrame(() => {
+      window.scrollTo(x, y);
+    });
+  });
+}
+
+function scheduleRestoreIfIdle(): void {
+  if (restoreScheduled) return;
+  restoreScheduled = true;
+  queueMicrotask(() => {
+    restoreScheduled = false;
+    if (locks.size === 0 && snapshot) {
+      restoreScrollStyles();
+    }
+  });
 }
 
 /** Acquire a named scroll lock. Returns an id that must be released. */
@@ -106,16 +141,19 @@ export function acquireScrollLock(owner: string): ScrollLockId {
 
   const id: ScrollLockId = `${owner}-${Date.now()}-${++idSeq}`;
   if (locks.size === 0) {
-    snapshot = {
-      bodyOverflow: document.body.style.overflow,
-      htmlOverflow: document.documentElement.style.overflow,
-      bodyPaddingRight: document.body.style.paddingRight,
-      htmlPaddingRight: document.documentElement.style.paddingRight,
-      scrollX: window.scrollX,
-      scrollY: window.scrollY,
-      scrollbarGap: measureScrollbarGap(),
-    };
-    applyLockStyles();
+    // Reuse snapshot when a prior lock deferred restore (modal handoff).
+    if (!snapshot) {
+      snapshot = {
+        bodyOverflow: document.body.style.overflow,
+        htmlOverflow: document.documentElement.style.overflow,
+        bodyPaddingRight: document.body.style.paddingRight,
+        htmlPaddingRight: document.documentElement.style.paddingRight,
+        scrollX: window.scrollX,
+        scrollY: window.scrollY,
+        scrollbarGap: measureScrollbarGap(),
+      };
+      applyLockStyles();
+    }
   }
   locks.set(id, { id, owner, acquiredAt: Date.now() });
   if (process.env.NODE_ENV === "development") {
@@ -132,7 +170,7 @@ export function releaseScrollLock(id: ScrollLockId | null | undefined): void {
     console.debug("[scroll-lock] release", id, listActiveScrollLocks());
   }
   if (locks.size === 0) {
-    restoreScrollStyles();
+    scheduleRestoreIfIdle();
   }
 }
 
@@ -153,7 +191,7 @@ export function clearAbandonedAnimationScrollLocks(
     }
   }
   if (locks.size === 0) {
-    restoreScrollStyles();
+    scheduleRestoreIfIdle();
   }
 }
 

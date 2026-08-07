@@ -126,7 +126,11 @@ export function PlayoffBracket({
     const match = state.matches.find((m) => m.id === selectedId);
     if (match?.status !== "complete") return;
     if (!window.matchMedia("(max-width: 767px)").matches) return;
-    matchDetailsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    matchDetailsRef.current?.scrollIntoView({
+      behavior: "auto",
+      block: "nearest",
+      inline: "nearest",
+    });
   }, [selectedId, state.matches]);
 
   useEffect(() => {

@@ -2136,10 +2136,18 @@ export function GameBoard({
 
   useEffect(() => {
     if (phase !== "simulation" && phase !== "review") return;
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-      mainScrollRef.current?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    const frame = requestAnimationFrame(() => {
+      // Document scroll on mobile; nested rail on desktop — reset the active one only.
+      const rail = mainScrollRef.current;
+      const railScrolls =
+        rail != null && rail.scrollHeight > rail.clientHeight + 1;
+      if (railScrolls) {
+        rail.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
     });
+    return () => cancelAnimationFrame(frame);
   }, [phase, reviewStage]);
 
   const playerPair =
