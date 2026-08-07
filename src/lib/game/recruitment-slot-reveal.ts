@@ -16,12 +16,17 @@ export interface SlotRevealTarget {
   teamYearId: string;
 }
 
+/** Run-scoped team/year identity used by usedTeamYearKeys (not the slug teamYearId). */
+export function buildTeamYearKey(team: string, year: string): string {
+  return `${team}|${year}`;
+}
+
 export function buildSlotRevealTarget(team: string, year: string): SlotRevealTarget {
   const teamYearId = buildTeamYearId(team, year);
   return {
     team,
     year,
-    teamYearKey: `${team}|${year}`,
+    teamYearKey: buildTeamYearKey(team, year),
     teamYearId,
   };
 }
@@ -48,7 +53,10 @@ export function getSlotRevealTarget(players: [Player, Player]): SlotRevealTarget
   return {
     team: getPlayerDisplayClub(chosen),
     year: String(getPlayerDisplayYear(chosen)),
-    teamYearKey: `${getPlayerDisplayClub(chosen)}|${String(getPlayerDisplayYear(chosen))}`,
+    teamYearKey: buildTeamYearKey(
+      getPlayerDisplayClub(chosen),
+      String(getPlayerDisplayYear(chosen))
+    ),
     teamYearId: buildTeamYearId(
       getPlayerDisplayClub(chosen),
       String(getPlayerDisplayYear(chosen))

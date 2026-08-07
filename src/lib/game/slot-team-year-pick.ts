@@ -17,6 +17,7 @@ import {
 } from "../players/team-year-roster-playable";
 import {
   buildSlotRevealTarget,
+  buildTeamYearKey,
   getTeamSpinPool,
   getYearSpinPool,
   type SlotRevealTarget,
@@ -34,7 +35,6 @@ import {
 } from "../boosts/applyQuickModeBoost";
 import { spinTimingMark } from "./spin-timing";
 import {
-  buildTeamYearId,
   getEligiblePlayersForTeamYearPool,
   getRawPlayersForTeamYearPool,
   getTeamYearPoolFromTarget,
@@ -57,7 +57,7 @@ function preferUnusedTeamYearPools(
 ): TeamYearPool[] {
   if (usedTeamYearKeys.size === 0) return pools;
   const unused = pools.filter(
-    (pool) => !usedTeamYearKeys.has(buildTeamYearId(pool.team, pool.year))
+    (pool) => !usedTeamYearKeys.has(buildTeamYearKey(pool.team, pool.year))
   );
   return unused.length > 0 ? unused : pools;
 }

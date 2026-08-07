@@ -6,6 +6,7 @@ import {
   type SpinPoolVariant,
 } from "./player-pool-eligibility";
 import { pickClubUniformTeamYearPool } from "./spin-club-pick";
+import { buildTeamYearKey } from "./recruitment-slot-reveal";
 import { buildTeamYearId } from "./team-year-pools";
 import {
   getRawPlayersForTeamYearPool,
@@ -81,7 +82,7 @@ export function pickLegendTeamYearForSlot(
   );
   if (usedTeamYearKeys.size > 0) {
     const unused = pools.filter(
-      (pool) => !usedTeamYearKeys.has(buildTeamYearId(pool.team, pool.year))
+      (pool) => !usedTeamYearKeys.has(buildTeamYearKey(pool.team, pool.year))
     );
     if (unused.length > 0) pools = unused;
   }
@@ -97,7 +98,7 @@ export function pickLegendTeamYearForSlot(
   return {
     team: pool.team,
     year: pool.year,
-    teamYearKey: teamYearId,
+    teamYearKey: buildTeamYearKey(pool.team, pool.year),
     teamYearId,
   };
 }

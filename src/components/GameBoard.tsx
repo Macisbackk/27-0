@@ -1488,6 +1488,12 @@ export function GameBoard({
         ? slotBoostGuaranteeId
         : null;
 
+    // Exclude the offer being respinned so we do not land on the same team-year.
+    const respinUsedTeamYearKeys = new Set(usedTeamYearKeys);
+    if (activeSpinTarget) {
+      respinUsedTeamYearKeys.add(activeSpinTarget.teamYearKey);
+    }
+
     let target: SlotRevealTarget | null = null;
 
     if (armedBoost) {
@@ -1499,7 +1505,7 @@ export function GameBoard({
         usedIds: signedPlayerIds,
         squad,
         slotIndex: selectedSlotIndex,
-        usedTeamYearKeys,
+        usedTeamYearKeys: respinUsedTeamYearKeys,
         options: {
           requireLegendPlayer,
           spinVariant,
@@ -1529,7 +1535,7 @@ export function GameBoard({
         signedPlayerIds,
         squad,
         selectedSlotIndex,
-        usedTeamYearKeys,
+        respinUsedTeamYearKeys,
         { requireLegendPlayer, spinVariant }
       );
     }
@@ -1546,6 +1552,8 @@ export function GameBoard({
     playReroll();
     setRespinsRemaining((n) => n - 1);
     setSpinPickIndex(nextSpinIndex);
+    setPendingPlayer(null);
+    lastScrolledPlayerIdRef.current = null;
     setActiveSpinTarget(target);
     setSlotRecruitTarget(target);
     // Never clear slotBoostGuaranteeId until the boost is consumed.
@@ -1563,6 +1571,7 @@ export function GameBoard({
     signedPlayerIds,
     squad,
     usedTeamYearKeys,
+    activeSpinTarget,
     legendSpinUsed,
     legendSpinSlotIndex,
     spinVariant,
@@ -2142,10 +2151,13 @@ export function GameBoard({
 
   const choiceKey =
     isSlotRecruitMode && activeSpinTarget
-      ? `${runKey}-spin-${spinSessionId}-${activeSpinTarget.teamYearId}`
+      ? `${runKey}-spin-${spinSessionId}-${spinVariant}-${activeSpinTarget.teamYearId}`
       : activeOfferKey !== null
         ? `${runKey}-pick-${activeOfferKey}-${currentRound?.optionA}-${currentRound?.optionB}`
         : "";
+
+  const revealKey = `reveal-${choiceKey}`;
+  const slotChoiceKey = `choice-${choiceKey}`;
 
   const isReviewPhase = phase === "review";
   const preGameReady = isPreGameBoostReady(preGameBoost);
@@ -2426,23 +2438,27 @@ export function GameBoard({
             </div>
           )}
 
+          {/* Reveal sits outside AnimatePresence: shared keys + BodyPortal under
+              mode="wait" reused presence identity on respin and dropped the Era
+              year reel (looked like Current Mode). */}
+          {phase === "reveal" &&
+            isSlotRecruitMode &&
+            slotRecruitTarget && (
+            <RecruitmentSlotReveal
+              key={revealKey}
+              target={slotRecruitTarget}
+              spinVariant={spinVariant}
+              boostStatus={spinBoostStatus}
+              boostDetail={spinBoostDetail}
+              onComplete={handleRevealComplete}
+            />
+          )}
+
           <AnimatePresence mode="wait">
-            {phase === "reveal" &&
-              isSlotRecruitMode &&
-              slotRecruitTarget && (
-              <RecruitmentSlotReveal
-                key={choiceKey}
-                target={slotRecruitTarget}
-                spinVariant={spinVariant}
-                boostStatus={spinBoostStatus}
-                boostDetail={spinBoostDetail}
-                onComplete={handleRevealComplete}
-              />
-            )}
             {phase === "choice" &&
               isSlotRecruitMode &&
               activeSpinTarget && (
-              <BodyPortal key={choiceKey}>
+              <BodyPortal key={slotChoiceKey}>
                 <motion.div
                   className={`recruitment-choice-backdrop fixed inset-0 flex items-center justify-center bg-black/82 p-3 sm:p-6 ${uiLayerClass("modalBackdrop")}`}
                   initial={{ opacity: 0 }}

@@ -29,7 +29,8 @@ const TICK_SOUND_EVERY_ITEMS = 3;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
-  spinVariant?: SpinPoolVariant;
+  /** Must match GameBoard spinVariant — Era shows team+year reels; Current is team-only. */
+  spinVariant: SpinPoolVariant;
   /** Small status line for an armed pre-game boost (no boost controls). */
   boostStatus?: string | null;
   /** Secondary line, e.g. "Random valid position: Full Back". */
@@ -39,7 +40,7 @@ interface RecruitmentSlotRevealProps {
 
 export function RecruitmentSlotReveal({
   target,
-  spinVariant = "current",
+  spinVariant,
   boostStatus = null,
   boostDetail = null,
   onComplete,

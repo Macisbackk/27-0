@@ -13,6 +13,7 @@ import {
 } from "../boosts/applyQuickModeBoost";
 import {
   buildSlotRevealTarget,
+  buildTeamYearKey,
   type SlotRevealTarget,
 } from "./recruitment-slot-reveal";
 import {
@@ -79,7 +80,7 @@ function boostMatchFn(
 }
 
 function teamYearKey(pool: Pick<TeamYearPool, "team" | "year">): string {
-  return `${pool.team}|${pool.year}`;
+  return buildTeamYearKey(pool.team, pool.year);
 }
 
 /** Prefer team-years not yet used this run; fall back if pool exhausted. */
