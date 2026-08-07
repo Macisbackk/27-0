@@ -71,7 +71,7 @@ export function HomeModeSelector() {
           </div>
         </MobileSection>
 
-        <div className="flex w-full flex-col items-center border-t border-[var(--mobile-divider)] pt-[var(--mobile-section-gap)] text-center">
+        <MobileSection className="flex w-full flex-col items-center text-center">
           <p className={`w-full text-center ${TYPO.keyLabel}`}>Quick Mode</p>
           <h2 className={`mt-1 w-full text-center ${TYPO.homeModeTitle}`}>
             Draft &amp; go 27-0
@@ -114,7 +114,7 @@ export function HomeModeSelector() {
               </ModeStartLink>
             </div>
           </div>
-        </div>
+        </MobileSection>
       </div>
     </div>
   );
