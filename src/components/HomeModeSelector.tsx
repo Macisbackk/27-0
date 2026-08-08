@@ -132,36 +132,37 @@ export function HomeModeSelector() {
               </ModeStartLink>
             </div>
           </div>
+        </MobileSection>
 
-          <div className="mt-3 w-full rounded-xl border border-theme-primary/25 bg-theme-primary/5 px-3 py-2.5 text-center">
-            <p className={`text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-theme-primary`}>
-              Daily challenge
-            </p>
-            <p className={`mt-1 font-semibold text-white`}>
-              All {scenario.forceOpponentClub}
-            </p>
-            <p className={`mt-1 ${TYPO.meta}`}>
-              {formatClubFundsExact(scenario.leagueLeadersBonus)} League Leaders
-              {" · "}
-              {formatClubFundsExact(scenario.playoffTitleBonus)} Grand Final
-            </p>
-            {dailyClaimed ? (
-              <p className={`mt-1 ${TYPO.meta} text-theme-primary`}>Done today</p>
-            ) : (
-              <div className="mt-2 flex justify-center">
-                <GameButton
-                  variant="secondary"
-                  size="sm"
-                  href={getDailyChallengeHref()}
-                  onClick={() => playUiClick()}
-                >
-                  {dailyProgress.leagueLeaders
-                    ? "Finish the Grand Final"
-                    : "Play daily challenge"}
-                </GameButton>
-              </div>
-            )}
-          </div>
+        <MobileSection className="flex w-full flex-col items-center text-center">
+          <p className={`w-full text-center ${TYPO.keyLabel}`}>Daily</p>
+          <h2 className={`mt-1 w-full text-center ${TYPO.homeModeTitle}`}>
+            Daily challenge
+          </h2>
+          <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
+            All {scenario.forceOpponentClub}
+          </p>
+          <p className={`mx-auto mt-1 max-w-md text-center ${TYPO.meta}`}>
+            {formatClubFundsExact(scenario.leagueLeadersBonus)} League Leaders
+            {" · "}
+            {formatClubFundsExact(scenario.playoffTitleBonus)} Grand Final
+          </p>
+          {dailyClaimed ? (
+            <p className={`mt-3 ${TYPO.meta} text-theme-primary`}>Done today</p>
+          ) : (
+            <div className="mt-4 flex w-full justify-center">
+              <GameButton
+                variant="secondary"
+                href={getDailyChallengeHref()}
+                onClick={() => playUiClick()}
+                className="max-w-sm"
+              >
+                {dailyProgress.leagueLeaders
+                  ? "Finish the Grand Final"
+                  : "Play daily challenge"}
+              </GameButton>
+            </div>
+          )}
         </MobileSection>
       </div>
     </div>
