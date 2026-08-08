@@ -4,15 +4,20 @@ import {
   pickDecisiveScorePair,
 } from "./rl-scores";
 import {
+  buildSeasonSchedule,
   DREAM_TEAM_NAME,
   SEASON_GAMES,
   type MatchFixture,
   type SeasonResult,
 } from "./season-simulation";
-import { getSeasonLeagueClubs } from "./league-replacement";
 import { getMatchClubStrength } from "./opponent-squad-strength";
 import { getSeasonTryTotal } from "./season-tries";
 import { devWarnMany } from "../validation/dev-warn";
+import {
+  inferForceOpponentClub,
+  resolveSeasonLeagueTeams,
+} from "./league-replacement";
+import { stripDailyChallengeCloneLabel } from "../clubs/club-match";
 
 export interface SeasonMatchResult {
   round: number;
@@ -52,8 +57,40 @@ interface TeamAccumulator {
   triesAgainst: number;
 }
 
-function getLeagueTeams(seed: string): string[] {
-  return getSeasonLeagueClubs(seed).leagueTeams;
+function getLeagueTeams(seasonResult: SeasonResult, seed: string): string[] {
+  return resolveSeasonLeagueTeams(
+    seed,
+    inferForceOpponentClub(seasonResult)
+  );
+}
+
+/** Map a Dream Team fixture opponent onto the daily-challenge clone label. */
+function resolveTableOpponent(
+  seasonResult: SeasonResult,
+  seed: string,
+  round: number,
+  fixtureOpponent: string
+): string {
+  const forced = inferForceOpponentClub(seasonResult);
+  if (!forced) return fixtureOpponent;
+
+  // Already a labelled clone from the new schedule.
+  if (
+    stripDailyChallengeCloneLabel(fixtureOpponent) === forced &&
+    / \(\d+\)$/.test(fixtureOpponent)
+  ) {
+    return fixtureOpponent;
+  }
+
+  // Legacy daily runs used the plain club name every week — remap via seed.
+  if (stripDailyChallengeCloneLabel(fixtureOpponent) === forced) {
+    const scheduled = buildSeasonSchedule(seed, {
+      forceOpponentClub: forced,
+    }).schedule[round - 1];
+    if (scheduled?.opponent) return scheduled.opponent;
+  }
+
+  return fixtureOpponent;
 }
 
 function emptyAccumulator(): TeamAccumulator {
@@ -165,15 +202,21 @@ export function buildSeasonMatchResults(
   seasonResult: SeasonResult,
   seed: string
 ): SeasonMatchResult[] {
-  const leagueTeams = getLeagueTeams(seed);
+  const leagueTeams = getLeagueTeams(seasonResult, seed);
   const matches: SeasonMatchResult[] = [];
 
   for (let round = 1; round <= SEASON_GAMES; round++) {
     const dtFixture = seasonResult.fixtures[round - 1];
     if (!dtFixture) continue;
 
-    const homeTeam = dtFixture.isHome ? DREAM_TEAM_NAME : dtFixture.opponent;
-    const awayTeam = dtFixture.isHome ? dtFixture.opponent : DREAM_TEAM_NAME;
+    const tableOpponent = resolveTableOpponent(
+      seasonResult,
+      seed,
+      round,
+      dtFixture.opponent
+    );
+    const homeTeam = dtFixture.isHome ? DREAM_TEAM_NAME : tableOpponent;
+    const awayTeam = dtFixture.isHome ? tableOpponent : DREAM_TEAM_NAME;
     const homeScore = dtFixture.isHome
       ? dtFixture.pointsFor
       : dtFixture.pointsAgainst;
@@ -200,7 +243,7 @@ export function buildSeasonMatchResults(
     });
 
     const resting = leagueTeams.filter(
-      (t) => t !== DREAM_TEAM_NAME && t !== dtFixture.opponent
+      (t) => t !== DREAM_TEAM_NAME && t !== tableOpponent
     );
     const pairs = pairTeamsForRound(resting, round, seed);
 
@@ -231,7 +274,7 @@ export function buildTeamSeasonStats(
   seasonResult: SeasonResult,
   seed: string
 ): Map<string, TeamSeasonStats> {
-  const leagueTeams = getLeagueTeams(seed);
+  const leagueTeams = getLeagueTeams(seasonResult, seed);
   const stats = new Map<string, TeamAccumulator>();
   for (const team of leagueTeams) {
     stats.set(team, emptyAccumulator());

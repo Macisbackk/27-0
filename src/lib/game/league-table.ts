@@ -2,7 +2,10 @@ import {
   DREAM_TEAM_NAME,
   type SeasonResult,
 } from "./season-simulation";
-import { getSeasonLeagueClubs } from "./league-replacement";
+import {
+  inferForceOpponentClub,
+  resolveSeasonLeagueTeams,
+} from "./league-replacement";
 import { buildTeamSeasonStats, type TeamSeasonStats } from "./team-season-stats";
 
 export interface LeagueTableRow {
@@ -19,8 +22,11 @@ export interface LeagueTableRow {
   isUserTeam: boolean;
 }
 
-function getLeagueTeams(seed: string): string[] {
-  return getSeasonLeagueClubs(seed).leagueTeams;
+function getLeagueTeams(seasonResult: SeasonResult, seed: string): string[] {
+  return resolveSeasonLeagueTeams(
+    seed,
+    inferForceOpponentClub(seasonResult)
+  );
 }
 
 function toLeagueRow(stats: TeamSeasonStats): LeagueTableRow {
@@ -56,12 +62,14 @@ function sortStandings(rows: LeagueTableRow[]): LeagueTableRow[] {
  * Builds a full league table for the season.
  * Dream Team stats come from actual simulated fixtures; remaining fixtures
  * between other clubs are simulated deterministically from the same seed.
+ * Daily challenge seasons list clones of the forced club instead of the
+ * normal Super League table.
  */
 export function buildLeagueTable(
   seasonResult: SeasonResult,
   seed: string
 ): LeagueTableRow[] {
-  const leagueTeams = getLeagueTeams(seed);
+  const leagueTeams = getLeagueTeams(seasonResult, seed);
   const statsMap = buildTeamSeasonStats(seasonResult, seed);
   const rows = leagueTeams.map((team) =>
     toLeagueRow(statsMap.get(team) ?? {

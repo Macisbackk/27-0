@@ -98,6 +98,26 @@ export function HomeModeSelector() {
             Spin a 17 from Current or Era pools and run the season.
           </p>
 
+          <div className="mt-4 flex w-full justify-center">
+            <ChallengeCupVariantToggle
+              sectionLabel="Pool"
+              useShortLabels
+              eraMode={normalEraMode}
+              onEraModeChange={handleEraModeChange}
+            />
+          </div>
+
+          <p
+            className={`mx-auto mt-3 max-w-md text-center ${TYPO.meta} mobile-safe-text`}
+          >
+            {normalEraMode
+              ? UI_COPY.eraRatingNote
+              : UI_COPY.currentRatingNote}
+          </p>
+          <p className={`mx-auto mt-1 max-w-md text-center ${TYPO.meta}`}>
+            {getQuickModeCurrentEraHint(normalEraMode)}
+          </p>
+
           <div className="mt-3 w-full rounded-xl border border-theme-primary/25 bg-theme-primary/5 px-3 py-2.5 text-center">
             <p className={`text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-theme-primary`}>
               Daily challenge
@@ -127,26 +147,6 @@ export function HomeModeSelector() {
               </div>
             )}
           </div>
-
-          <div className="mt-4 flex w-full justify-center">
-            <ChallengeCupVariantToggle
-              sectionLabel="Pool"
-              useShortLabels
-              eraMode={normalEraMode}
-              onEraModeChange={handleEraModeChange}
-            />
-          </div>
-
-          <p
-            className={`mx-auto mt-3 max-w-md text-center ${TYPO.meta} mobile-safe-text`}
-          >
-            {normalEraMode
-              ? UI_COPY.eraRatingNote
-              : UI_COPY.currentRatingNote}
-          </p>
-          <p className={`mx-auto mt-1 max-w-md text-center ${TYPO.meta}`}>
-            {getQuickModeCurrentEraHint(normalEraMode)}
-          </p>
 
           <div className="mt-4 flex w-full justify-center">
             <div className="w-full max-w-sm">

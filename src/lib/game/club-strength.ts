@@ -1,3 +1,4 @@
+import { resolveCanonicalClubName } from "../clubs/club-match";
 import { getPlayableClubNames, isPlayableClub } from "../clubs/super-league-display";
 import {
   getChampionshipClubByName,
@@ -41,11 +42,12 @@ export function getChampionshipCupBaseStrength(clubName: string): number {
 }
 
 export function getClubBaseStrength(club: string): number {
-  if (isPlayableClub(club)) {
-    return PLAYABLE_CLUB_BASE_STRENGTH[club] ?? 70;
+  const name = resolveCanonicalClubName(club);
+  if (isPlayableClub(name)) {
+    return PLAYABLE_CLUB_BASE_STRENGTH[name] ?? 70;
   }
-  if (isChampionshipClubName(club)) {
-    return getChampionshipCupBaseStrength(club);
+  if (isChampionshipClubName(name)) {
+    return getChampionshipCupBaseStrength(name);
   }
   return 70;
 }

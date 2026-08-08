@@ -14,14 +14,25 @@ There is **no iOS** project in this repo.
 | Mobile static export | `npm run build:mobile` |
 | Copy + sync into Android | `npm run cap:sync` |
 | Build export **and** sync | `npm run android` |
+| Build debug APK (build + sync + Gradle) | `npm run android:apk` |
+| Build APK and install on LDPlayer (ADB) | `npm run android:ldplayer` |
+| Install existing APK to LDPlayer only | `npm run android:install-ldplayer` |
 | Open Android Studio | `npm run android:open` |
 | Regenerate icons | `npm run icons:mobile` |
 
-After you change game code in Cursor, update the Android app with:
+After you change game code in Cursor, rebuild the test APK with:
 
 ```bash
-npm run android
+npm run android:apk
 ```
+
+Then drag `android\app\build\outputs\apk\debug\app-debug.apk` into LDPlayer, or with LDPlayer running and ADB enabled:
+
+```bash
+npm run android:ldplayer
+```
+
+(`android:ldplayer` only installs when exactly one ADB device is connected, or when `LDPLAYER_SERIAL` is set.)
 
 Or step by step:
 

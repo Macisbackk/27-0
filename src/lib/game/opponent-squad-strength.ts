@@ -21,7 +21,8 @@ const SQUAD_SIZE = 13;
 const seasonStrengthCache = new Map<string, number>();
 
 function cacheKey(seed: string, club: string): string {
-  return `${seed}::${resolveCanonicalClubName(club)}`;
+  // Include the display label so daily-challenge clones get slight variance.
+  return `${seed}::${resolveCanonicalClubName(club)}::${club}`;
 }
 
 function fisherYatesShuffle<T>(items: T[], rng: () => number): T[] {
@@ -140,7 +141,7 @@ export function getGeneratedClubSquadStrength(
   const pool = getOpponentClubPool(canonical, options);
   if (pool.length === 0) return getClubBaseStrength(canonical);
 
-  const rng = seedrandom(`${seed}-${salt}-${canonical}`);
+  const rng = seedrandom(`${seed}-${salt}-${canonical}-${club}`);
   const styleRoll = rng();
   const squad =
     styleRoll < 0.4

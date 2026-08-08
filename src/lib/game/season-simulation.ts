@@ -26,7 +26,10 @@ import { getMatchClubStrength } from "./opponent-squad-strength";
 import { getOpponentMatchRating } from "./opponent-scorers";
 import { getSeasonCommentary } from "./season-commentary";
 import type { ManOfTheMatch } from "./fantasy-match-summary";
-import { getSeasonLeagueClubs } from "./league-replacement";
+import {
+  getForcedSeasonLeagueClubs,
+  getSeasonLeagueClubs,
+} from "./league-replacement";
 import { getDreamTeamTablePosition } from "./league-table";
 
 export const SEASON_GAMES = 27;
@@ -166,6 +169,8 @@ export interface SeasonResult {
   insights: string[];
   /** Real club replaced by Dream Team this season (not in fixtures/table). */
   replacedTeam: string;
+  /** Daily challenge — every league side is a clone of this club. */
+  forceOpponentClub?: string;
   /** Super League play-offs after regular season (top six). */
   playoffResult?: import("./playoff-simulation").PlayoffResult;
 }
@@ -881,15 +886,12 @@ export function buildSeasonSchedule(
 } {
   const forced = options?.forceOpponentClub?.trim();
   if (forced) {
-    const opponentClubs = Array.from(
-      { length: 13 },
-      () => forced
-    );
+    const { opponentClubs, replacedTeam } = getForcedSeasonLeagueClubs(forced);
     const rng = seedrandom(`${seed}-season-daily`);
     return {
       schedule: buildFixtureList(rng, opponentClubs),
       opponentClubs,
-      replacedTeam: forced,
+      replacedTeam,
     };
   }
   const { opponentClubs, replacedTeam } = getSeasonLeagueClubs(seed);
@@ -1158,8 +1160,9 @@ export function simulateSeason(
   options: SimulateSeasonOptions = {}
 ): SeasonResult {
   const strength = calculateSquadStrength(squad);
+  const forcedClub = options.forceOpponentClub?.trim() || undefined;
   const { schedule: opponents, replacedTeam } = buildSeasonSchedule(seed, {
-    forceOpponentClub: options.forceOpponentClub,
+    forceOpponentClub: forcedClub,
   });
   const draftMode = options.draftMode ?? false;
   const currentSeasonOnly = options.currentSeasonOnly ?? false;
@@ -1248,6 +1251,7 @@ export function simulateSeason(
     tryScorers,
     insights: [],
     replacedTeam,
+    ...(forcedClub ? { forceOpponentClub: forcedClub } : {}),
   };
 
   partialResult.insights = generateSeasonInsights(partialResult);
