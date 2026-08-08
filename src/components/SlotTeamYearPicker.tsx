@@ -16,6 +16,7 @@ import {
   quickPlayerChoiceGridClass,
 } from "./QuickModePlayerChoiceCard";
 import { GameButton } from "@/components/ui/GameButton";
+import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
 import { EraRatingExplanation } from "./EraRatingExplanation";
 import { CurrentRatingExplanation } from "./CurrentRatingExplanation";
 
@@ -88,16 +89,12 @@ export function SlotTeamYearPicker({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.32, ease: "easeOut" }}
     >
-      <div
-        className={`${CARD.elevated} game-panel--flush overflow-hidden`}
-        style={{
-          boxShadow: `inset 3px 0 0 ${clubColors.primary}`,
-        }}
-      >
+      <div className={`${CARD.elevated} game-panel--flush overflow-hidden`}>
+        <TeamColourStrip club={target.team} />
         <div
           className="border-b border-pitch-700/40 px-3 py-2.5 sm:px-6 sm:py-4"
           style={{
-            background: `linear-gradient(135deg, ${clubColors.primary}1a 0%, transparent 55%)`,
+            background: `linear-gradient(180deg, ${clubColors.primary}14 0%, transparent 70%)`,
           }}
         >
           {onBack && (

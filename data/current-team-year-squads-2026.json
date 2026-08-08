@@ -669,5 +669,384 @@
       "playableInEra": true,
       "playableInEraChallengeCup": true
     }
+  },
+  "bradford-bulls": {
+    "2026": {
+      "playerIds": [
+        "bradford-cur-mitch-souter",
+        "bradford-cur-ebon-scurr",
+        "bradford-cur-dan-russell",
+        "bradford-cur-loghan-lewis",
+        "bradford-cur-zac-fulton",
+        "bradford-cur-eribe-doro",
+        "bradford-cur-andy-ackers",
+        "bradford-cur-jayden-nikorima",
+        "bradford-cur-rowan-milnes",
+        "bradford-cur-esan-marsters",
+        "bradford-cur-ethan-ryan",
+        "bradford-cur-ryan-sutton",
+        "bradford-cur-caleb-aekins",
+        "bradford-cur-jayden-okunbor",
+        "bradford-cur-waqa-blake",
+        "bradford-cur-ed-chamberlain",
+        "bradford-cur-joe-mellor"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "castleford-tigers": {
+    "2026": {
+      "playerIds": [
+        "castleford-cur-blake-taaffe",
+        "castleford-cur-tom-weaver",
+        "castleford-cur-cain-robb",
+        "castleford-cur-joe-stimson",
+        "castleford-cur-semi-valemei",
+        "castleford-cur-liam-hood",
+        "castleford-cur-renouf-atoni",
+        "castleford-cur-zac-cini",
+        "castleford-cur-george-lawler",
+        "castleford-cur-daejarn-asi",
+        "castleford-cur-jordan-lane",
+        "castleford-cur-jason-qareqare",
+        "castleford-cur-alex-mellor",
+        "castleford-cur-joe-westerman",
+        "castleford-cur-krystian-mapapalangi",
+        "castleford-cur-darnell-mcintosh"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "catalans-dragons": {
+    "2026": {
+      "playerIds": [
+        "catalans-cur-jordan-dezaria",
+        "catalans-cur-arthur-romano",
+        "catalans-cur-paul-seguier",
+        "catalans-cur-nick-cotric",
+        "catalans-cur-bayley-sironen",
+        "catalans-cur-manase-kaho",
+        "catalans-cur-ben-condon",
+        "catalans-cur-cesar-rouge",
+        "catalans-cur-alrix-da-costa",
+        "catalans-cur-chris-satae",
+        "catalans-cur-toby-sexton",
+        "catalans-cur-charlie-staines",
+        "catalans-cur-julian-bousquet",
+        "catalans-cur-lewis-dodd",
+        "catalans-cur-benjamin-garcia",
+        "catalans-cur-solomona-faataape",
+        "catalans-cur-tommy-makinson"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "huddersfield-giants": {
+    "2026": {
+      "playerIds": [
+        "huddersfield-cur-george-flanagan-jr",
+        "huddersfield-cur-oliver-wilson",
+        "huddersfield-cur-fenton-rogers",
+        "huddersfield-cur-taane-milne",
+        "huddersfield-cur-zac-woolford",
+        "huddersfield-cur-harry-rushton",
+        "huddersfield-cur-adam-clune",
+        "huddersfield-cur-matty-english",
+        "huddersfield-cur-george-king",
+        "huddersfield-cur-sam-hewitt",
+        "huddersfield-cur-sam-halsall",
+        "huddersfield-cur-tui-lolohea",
+        "huddersfield-cur-joe-greenwood",
+        "huddersfield-cur-jacob-gagai",
+        "huddersfield-cur-adam-swift",
+        "huddersfield-cur-niall-evalds"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "hull-fc": {
+    "2026": {
+      "playerIds": [
+        "hull-fc-cur-jake-arthur",
+        "hull-fc-cur-james-bell",
+        "hull-fc-cur-ligi-sao",
+        "hull-fc-cur-harvie-hill",
+        "hull-fc-cur-amir-bourouh",
+        "hull-fc-cur-sam-lisone",
+        "hull-fc-cur-davy-litten",
+        "hull-fc-cur-jed-cartwright",
+        "hull-fc-cur-will-pryce",
+        "hull-fc-cur-cade-cust",
+        "hull-fc-cur-harvey-barron",
+        "hull-fc-cur-john-asiata",
+        "hull-fc-cur-aidan-sezer",
+        "hull-fc-cur-joe-batchelor",
+        "hull-fc-cur-herman-eseese",
+        "hull-fc-cur-lewis-martin",
+        "hull-fc-cur-zak-hardaker"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "hull-kr": {
+    "2026": {
+      "playerIds": [
+        "hull-kr-cur-danny-richardson",
+        "hull-kr-cur-kelepi-tanginoa",
+        "hull-kr-cur-jack-brown",
+        "hull-kr-cur-sauaso-sue",
+        "hull-kr-cur-arthur-mourgue",
+        "hull-kr-cur-james-batchelor",
+        "hull-kr-cur-jai-whitbread",
+        "hull-kr-cur-tyrone-may",
+        "hull-kr-cur-tom-amone",
+        "hull-kr-cur-oliver-gildart",
+        "hull-kr-cur-elliot-minchella",
+        "hull-kr-cur-jez-litten",
+        "hull-kr-cur-tom-davies",
+        "hull-kr-cur-joe-burgess",
+        "hull-kr-cur-dean-hadley",
+        "hull-kr-cur-peta-hiku",
+        "hull-kr-cur-mikey-lewis"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "leeds-rhinos": {
+    "2026": {
+      "playerIds": [
+        "leeds-cur-james-bentley",
+        "leeds-cur-sam-lisone",
+        "leeds-cur-cooper-jenkins",
+        "leeds-cur-jarrod-o-connor",
+        "leeds-cur-tom-holroyd",
+        "leeds-cur-morgan-gannon",
+        "leeds-cur-lachie-miller",
+        "leeds-cur-riley-lumb",
+        "leeds-cur-cameron-smith",
+        "leeds-cur-harry-newman",
+        "leeds-cur-mikolaj-oledzki",
+        "leeds-cur-maika-sivo",
+        "leeds-cur-james-mcdonnell",
+        "leeds-cur-ash-handley",
+        "leeds-cur-brodie-croft",
+        "leeds-cur-jake-connor"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "leigh-leopards": {
+    "2026": {
+      "playerIds": [
+        "leigh-cur-darnell-mcintosh",
+        "leigh-cur-ethan-o-neill",
+        "leigh-cur-aaron-pene",
+        "leigh-cur-joe-ofahengaue",
+        "leigh-cur-ben-mcnamara",
+        "leigh-cur-owen-trout",
+        "leigh-cur-isaac-liu",
+        "leigh-cur-gareth-o-brien",
+        "leigh-cur-frankie-halton",
+        "leigh-cur-tesi-niu",
+        "leigh-cur-robbie-mulhern",
+        "leigh-cur-keanan-brand",
+        "leigh-cur-david-armstrong",
+        "leigh-cur-kai-o-donnell",
+        "leigh-cur-edwin-ipape",
+        "leigh-cur-lachlan-lam",
+        "leigh-cur-umyla-hanley"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "st-helens": {
+    "2026": {
+      "playerIds": [
+        "st-helens-cur-david-klemmer",
+        "st-helens-cur-george-whitby",
+        "st-helens-cur-george-delaney",
+        "st-helens-cur-jake-wingfield",
+        "st-helens-cur-matt-whitley",
+        "st-helens-cur-shane-wright",
+        "st-helens-cur-joe-shorrocks",
+        "st-helens-cur-harry-robertson",
+        "st-helens-cur-morgan-knowles",
+        "st-helens-cur-deon-cross",
+        "st-helens-cur-tristan-sailor",
+        "st-helens-cur-curtis-sironen",
+        "st-helens-cur-lewis-murphy",
+        "st-helens-cur-matty-lees",
+        "st-helens-cur-alex-walmsley",
+        "st-helens-cur-jack-welsby",
+        "st-helens-cur-jonny-lomax",
+        "st-helens-cur-mark-percival",
+        "st-helens-cur-daryl-clark"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "toulouse-olympique": {
+    "2026": {
+      "playerIds": [
+        "toulouse-cur-eloi-pelissier",
+        "toulouse-cur-justin-sangare",
+        "toulouse-cur-thomas-lacans",
+        "toulouse-cur-john-toleafoa",
+        "toulouse-cur-brendan-hands",
+        "toulouse-cur-anthony-marion",
+        "toulouse-cur-calum-gahan",
+        "toulouse-cur-james-roumanos",
+        "toulouse-cur-lambert-belmas",
+        "toulouse-cur-paul-marcon",
+        "toulouse-cur-jake-shorrocks",
+        "toulouse-cur-paul-ulberg",
+        "toulouse-cur-maxime-stefani",
+        "toulouse-cur-reubenn-rennie",
+        "toulouse-cur-mathieu-jussaume",
+        "toulouse-cur-benjamin-laguerre",
+        "toulouse-cur-olly-ashall-bott"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "wakefield-trinity": {
+    "2026": {
+      "playerIds": [
+        "wakefield-cur-liam-hood",
+        "wakefield-cur-cameron-scott",
+        "wakefield-cur-caleb-hamlin-uele",
+        "wakefield-cur-renouf-atoni",
+        "wakefield-cur-ky-rodwell",
+        "wakefield-cur-tyson-smoothy",
+        "wakefield-cur-jazz-tevaga",
+        "wakefield-cur-corey-hall",
+        "wakefield-cur-matty-storton",
+        "wakefield-cur-mason-lino",
+        "wakefield-cur-jay-pitts",
+        "wakefield-cur-seth-nikotemo",
+        "wakefield-cur-jake-trueman",
+        "wakefield-cur-max-jowitt",
+        "wakefield-cur-oliver-pratt",
+        "wakefield-cur-tom-johnstone",
+        "wakefield-cur-mike-mcmeeken"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "warrington-wolves": {
+    "2026": {
+      "playerIds": [
+        "warrington-cur-matty-nicholson",
+        "warrington-cur-max-wood",
+        "warrington-cur-james-harrison",
+        "warrington-cur-joe-philbin",
+        "warrington-cur-adam-holroyd",
+        "warrington-cur-luke-yates",
+        "warrington-cur-cai-taylor-wray",
+        "warrington-cur-sam-stone",
+        "warrington-cur-danny-walker",
+        "warrington-cur-josh-thewlis",
+        "warrington-cur-sam-powell",
+        "warrington-cur-albert-hopoate",
+        "warrington-cur-george-williams",
+        "warrington-cur-ben-currie",
+        "warrington-cur-marc-sneyd",
+        "warrington-cur-toby-king",
+        "warrington-cur-matty-ashton"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "wigan-warriors": {
+    "2026": {
+      "playerIds": [
+        "wigan-cur-sam-eseh",
+        "wigan-cur-jonny-vaughan",
+        "wigan-cur-dayon-sambou",
+        "wigan-cur-oliver-wilson",
+        "wigan-cur-sam-walters",
+        "wigan-cur-brad-o-neill",
+        "wigan-cur-ethan-havard",
+        "wigan-cur-kaide-ellis",
+        "wigan-cur-patrick-mago",
+        "wigan-cur-harry-smith",
+        "wigan-cur-zach-eckersley",
+        "wigan-cur-adam-keighran",
+        "wigan-cur-junior-nsemba",
+        "wigan-cur-luke-thompson",
+        "wigan-cur-jake-wardle",
+        "wigan-cur-liam-farrell",
+        "wigan-cur-liam-marshall",
+        "wigan-cur-jai-field",
+        "wigan-cur-bevan-french"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
+  },
+  "york-knights": {
+    "2026": {
+      "playerIds": [
+        "york-cur-oliver-field",
+        "york-cur-jordan-lipp",
+        "york-cur-jack-martin",
+        "york-cur-toa-mataafa",
+        "york-cur-ata-hingano",
+        "york-cur-xavier-vaa",
+        "york-cur-jesse-dee",
+        "york-cur-justin-sangare",
+        "york-cur-denive-balmforth",
+        "york-cur-sam-wood",
+        "york-cur-jordan-thompson",
+        "york-cur-liam-harris",
+        "york-cur-josh-griffin",
+        "york-cur-paul-vaughan",
+        "york-cur-scott-galeano",
+        "york-cur-ben-jones-bishop",
+        "york-cur-paul-mcshane"
+      ],
+      "positions": [],
+      "source": "current-club-moves-2026",
+      "isCurrentSeason": true,
+      "isSuperLeagueSeason": true
+    }
   }
 }

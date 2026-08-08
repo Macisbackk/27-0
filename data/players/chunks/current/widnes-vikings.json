@@ -1,0 +1,31 @@
+[
+  {
+    "id": "widnes-cur-nathan-connell",
+    "name": "Nathan Connell",
+    "position": "WING",
+    "club": "Widnes Vikings",
+    "nationality": "Unknown",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 92000,
+    "appearances": 24,
+    "tries": 2,
+    "dateOfBirth": "2003-01-05",
+    "birthYear": 2003,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "widnes-vikings-2026",
+    "team": "Widnes Vikings",
+    "displayClub": "Widnes Vikings",
+    "basePlayerId": "widnes-cur-nathan-connell",
+    "status": "Current",
+    "primaryPosition": "WING",
+    "currentClub": "Widnes Vikings",
+    "clubsPlayedFor": [
+      "Salford Red Devils",
+      "Widnes Vikings"
+    ]
+  }
+]

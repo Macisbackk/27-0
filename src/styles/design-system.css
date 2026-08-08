@@ -1415,7 +1415,8 @@
   display: flex;
   align-items: center;
   border-top: 1px solid color-mix(in srgb, #374151 55%, transparent);
-  background: color-mix(in srgb, #030706 94%, transparent);
+  /* Opaque — see arena section override; keep solid fallback here too. */
+  background: #030706;
   padding: 0.5rem var(--mobile-page-padding)
     max(0.5rem, env(safe-area-inset-bottom));
   min-height: calc(
@@ -1987,26 +1988,37 @@
 }
 
 /* ── Arena ───────────────────────────────────────────────────────────────── */
+/*
+ * Atmosphere lives on the arena surface itself — never as fixed inset-0 layers.
+ * Fixed full-viewport decorations under sticky chrome cause site-wide flicker
+ * on Windows Chrome and mobile Safari during scroll / overlay open-close.
+ */
 .game-arena,
 .matchday-arena {
-  background: linear-gradient(180deg, #0a1210 0%, #060a09 100%);
+  background-color: #060a09;
+  background-image:
+    radial-gradient(
+      ellipse at 50% 0%,
+      color-mix(in srgb, var(--theme-primary) 8%, transparent) 0%,
+      transparent 48%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.18) 0%,
+      transparent 28%,
+      rgba(0, 0, 0, 0.28) 100%
+    ),
+    linear-gradient(180deg, #0a1210 0%, #060a09 100%);
 }
 
-.stadium-backdrop {
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.18) 0%,
-    transparent 28%,
-    rgba(0, 0, 0, 0.28) 100%
-  );
-}
-
+/* Optional local overlays — absolute + clipped to arena, never fixed. */
+.stadium-backdrop,
 .stadium-lights {
-  background: radial-gradient(
-    ellipse at 50% 0%,
-    color-mix(in srgb, var(--theme-primary) 8%, transparent) 0%,
-    transparent 48%
-  );
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Gradients baked into .matchday-arena; keep empty so legacy markup is inert. */
+  background: none;
 }
 
 /* ── Quick Mode player-choice card (fixed zones) ─────────────────────────── */

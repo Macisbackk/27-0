@@ -1931,7 +1931,7 @@ export default function ManagerPage() {
         <div
           className={`flex flex-col manager-mobile-nav-pad sm:pb-0 ${PAGE.section} ${
             playGameOpen || managerOverlayActive
-              ? "pointer-events-none hidden"
+              ? "invisible pointer-events-none absolute inset-0 -z-10 overflow-hidden"
               : ""
           }`}
           aria-hidden={managerOverlayActive || playGameOpen}

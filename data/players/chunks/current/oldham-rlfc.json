@@ -21,8 +21,8 @@
     "birthYear": 2004
   },
   {
-    "id": "oldham-cur-zach-jebson",
-    "name": "Zach Jebson",
+    "id": "oldham-cur-jake-bibby",
+    "name": "Jake Bibby",
     "position": "CENTRE",
     "club": "Oldham RLFC",
     "nationality": "England",
@@ -31,17 +31,29 @@
     "category": "current",
     "peakRating": 83,
     "value": 163000,
-    "appearances": 11,
-    "tries": 1,
-    "dateOfBirth": "2004-05-09",
-    "birthYear": 2004,
-    "year": 2026,
-    "cardYear": 2026,
+    "superLeagueWinner": false,
+    "challengeCupWinner": true,
+    "dateOfBirth": "1996-06-17",
+    "birthYear": 1996,
+    "appearances": 195,
+    "tries": 74,
+    "currentClub": "Oldham RLFC",
     "teamYearId": "oldham-rlfc-2026",
+    "year": 2026,
+    "status": "Current",
+    "positions": [
+      "CENTRE",
+      "WING"
+    ],
+    "positionAbbrev": "CE/WG",
+    "cardYear": 2026,
     "team": "Oldham RLFC",
     "displayClub": "Oldham RLFC",
-    "basePlayerId": "oldham-cur-zach-jebson",
-    "status": "Current",
-    "primaryPosition": "CENTRE"
+    "basePlayerId": "oldham-cur-jake-bibby",
+    "primaryPosition": "CE/WG",
+    "clubsPlayedFor": [
+      "Huddersfield Giants",
+      "Oldham RLFC"
+    ]
   }
 ]

@@ -1,0 +1,789 @@
+{
+  "generatedAt": "2026-08-08T13:11:07.653Z",
+  "matches": [
+    {
+      "query": "Tee Ritson",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Jacob Parkinson",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Valu Tane Bentley",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Valu Tanē Bentley",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "George Rayner",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Jacob Bateman",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Muizz Mustapha",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Tom Holmes",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Oliver Morgan",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Baily Tait",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Leroy Ncube",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Brad Bullock",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Shane Tuohey",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Alfie Johnson",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Dan Okoro",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Tanguy Zenon",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Darius Carter",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Myles Lawford",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Jeremiah Simbiken",
+      "matchedName": "Jeremiah Simbiken",
+      "id": "castleford-cur-jeremiah-simbiken",
+      "club": "Castleford Tigers",
+      "peakRating": 83,
+      "status": "FOUND"
+    },
+    {
+      "query": "Elliot Wallis",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Jake Ramsden",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Jack Croft",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Neil Tchamambe",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Zach Jebson",
+      "matchedName": "Zach Jebson",
+      "id": "oldham-cur-zach-jebson",
+      "club": "Oldham RLFC",
+      "peakRating": 83,
+      "status": "FOUND"
+    },
+    {
+      "query": "Toby Warren",
+      "matchedName": "Toby Warren",
+      "id": "salford-cur-toby-warren",
+      "club": "Salford Red Devils",
+      "peakRating": 81,
+      "status": "FOUND"
+    },
+    {
+      "query": "Jake Bibby",
+      "matchedName": "Jake Bibby",
+      "id": "huddersfield-cur-jake-bibby",
+      "club": "Huddersfield Giants",
+      "peakRating": 83,
+      "status": "FOUND"
+    },
+    {
+      "query": "Emmanuel Waine",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Harvey Makin",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "TJ Boyd",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Dylan Kelly-Duffy",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Joe Hickey",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Jordan Lilley",
+      "matchedName": "Jordan Lilley",
+      "id": "sheffield-cur-jordan-lilley",
+      "club": "Sheffield Eagles",
+      "peakRating": 82,
+      "status": "FOUND"
+    },
+    {
+      "query": "Kieran Gill",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Conor Fitzsimmons",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Joe Brown",
+      "matchedName": "Joe Brown",
+      "id": "sheffield-cur-joe-brown",
+      "club": "Sheffield Eagles",
+      "peakRating": 82,
+      "status": "FOUND"
+    },
+    {
+      "query": "George Griffin",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Josh Hodson",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Lennie Ellis",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Tom Ratchford",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Trent Kelly-Duffy",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Frank Sergent",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Jack Bibby",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Josh Simm",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Jack Walker",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Bayley Sironen",
+      "matchedName": "Bayley Sironen",
+      "id": "catalans-cur-bayley-sironen",
+      "club": "Catalans Dragons",
+      "peakRating": 83,
+      "status": "FOUND"
+    },
+    {
+      "query": "Reagan Campbell-Gillard",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Jordan Abdull",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Ryan Brierley",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Lee Gaskell",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Eddie Battye",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Lewis Hagan",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    },
+    {
+      "query": "Dylan Proud",
+      "matchedName": null,
+      "id": null,
+      "club": null,
+      "peakRating": null,
+      "status": "NOT_FOUND"
+    }
+  ],
+  "found": [
+    {
+      "query": "Jeremiah Simbiken",
+      "matchedName": "Jeremiah Simbiken",
+      "id": "castleford-cur-jeremiah-simbiken",
+      "club": "Castleford Tigers",
+      "peakRating": 83,
+      "status": "FOUND"
+    },
+    {
+      "query": "Zach Jebson",
+      "matchedName": "Zach Jebson",
+      "id": "oldham-cur-zach-jebson",
+      "club": "Oldham RLFC",
+      "peakRating": 83,
+      "status": "FOUND"
+    },
+    {
+      "query": "Toby Warren",
+      "matchedName": "Toby Warren",
+      "id": "salford-cur-toby-warren",
+      "club": "Salford Red Devils",
+      "peakRating": 81,
+      "status": "FOUND"
+    },
+    {
+      "query": "Jake Bibby",
+      "matchedName": "Jake Bibby",
+      "id": "huddersfield-cur-jake-bibby",
+      "club": "Huddersfield Giants",
+      "peakRating": 83,
+      "status": "FOUND"
+    },
+    {
+      "query": "Jordan Lilley",
+      "matchedName": "Jordan Lilley",
+      "id": "sheffield-cur-jordan-lilley",
+      "club": "Sheffield Eagles",
+      "peakRating": 82,
+      "status": "FOUND"
+    },
+    {
+      "query": "Joe Brown",
+      "matchedName": "Joe Brown",
+      "id": "sheffield-cur-joe-brown",
+      "club": "Sheffield Eagles",
+      "peakRating": 82,
+      "status": "FOUND"
+    },
+    {
+      "query": "Bayley Sironen",
+      "matchedName": "Bayley Sironen",
+      "id": "catalans-cur-bayley-sironen",
+      "club": "Catalans Dragons",
+      "peakRating": 83,
+      "status": "FOUND"
+    }
+  ],
+  "notFound": [
+    "Tee Ritson",
+    "Jacob Parkinson",
+    "Valu Tane Bentley",
+    "Valu Tanē Bentley",
+    "George Rayner",
+    "Jacob Bateman",
+    "Muizz Mustapha",
+    "Tom Holmes",
+    "Oliver Morgan",
+    "Baily Tait",
+    "Leroy Ncube",
+    "Brad Bullock",
+    "Shane Tuohey",
+    "Alfie Johnson",
+    "Dan Okoro",
+    "Tanguy Zenon",
+    "Darius Carter",
+    "Myles Lawford",
+    "Elliot Wallis",
+    "Jake Ramsden",
+    "Jack Croft",
+    "Neil Tchamambe",
+    "Emmanuel Waine",
+    "Harvey Makin",
+    "TJ Boyd",
+    "Dylan Kelly-Duffy",
+    "Joe Hickey",
+    "Kieran Gill",
+    "Conor Fitzsimmons",
+    "George Griffin",
+    "Josh Hodson",
+    "Lennie Ellis",
+    "Tom Ratchford",
+    "Trent Kelly-Duffy",
+    "Frank Sergent",
+    "Jack Bibby",
+    "Josh Simm",
+    "Jack Walker",
+    "Reagan Campbell-Gillard",
+    "Jordan Abdull",
+    "Ryan Brierley",
+    "Lee Gaskell",
+    "Eddie Battye",
+    "Lewis Hagan",
+    "Dylan Proud"
+  ],
+  "clubRosters": {
+    "Huddersfield Giants": [
+      {
+        "name": "Adam Clune",
+        "id": "huddersfield-cur-adam-clune",
+        "peakRating": 79
+      },
+      {
+        "name": "Adam Swift",
+        "id": "huddersfield-cur-adam-swift",
+        "peakRating": 78
+      },
+      {
+        "name": "Fenton Rogers",
+        "id": "huddersfield-cur-fenton-rogers",
+        "peakRating": 77
+      },
+      {
+        "name": "George Flanagan Jr",
+        "id": "huddersfield-cur-george-flanagan-jr",
+        "peakRating": 83
+      },
+      {
+        "name": "George King",
+        "id": "huddersfield-cur-george-king",
+        "peakRating": 79
+      },
+      {
+        "name": "Harry Rushton",
+        "id": "huddersfield-cur-harry-rushton",
+        "peakRating": 78
+      },
+      {
+        "name": "Jacob Gagai",
+        "id": "huddersfield-cur-jacob-gagai",
+        "peakRating": 85
+      },
+      {
+        "name": "Jake Bibby",
+        "id": "huddersfield-cur-jake-bibby",
+        "peakRating": 83
+      },
+      {
+        "name": "Joe Greenwood",
+        "id": "huddersfield-cur-joe-greenwood",
+        "peakRating": 77
+      },
+      {
+        "name": "Matty English",
+        "id": "huddersfield-cur-matty-english",
+        "peakRating": 80
+      },
+      {
+        "name": "Niall Evalds",
+        "id": "huddersfield-cur-niall-evalds",
+        "peakRating": 78
+      },
+      {
+        "name": "Oliver Wilson",
+        "id": "huddersfield-cur-oliver-wilson",
+        "peakRating": 82
+      },
+      {
+        "name": "Sam Halsall",
+        "id": "huddersfield-cur-sam-halsall",
+        "peakRating": 80
+      },
+      {
+        "name": "Sam Hewitt",
+        "id": "huddersfield-cur-sam-hewitt",
+        "peakRating": 78
+      },
+      {
+        "name": "Taane Milne",
+        "id": "huddersfield-cur-taane-milne",
+        "peakRating": 85
+      },
+      {
+        "name": "Tui Lolohea",
+        "id": "huddersfield-cur-tui-lolohea",
+        "peakRating": 84
+      },
+      {
+        "name": "Zac Woolford",
+        "id": "huddersfield-cur-zac-woolford",
+        "peakRating": 82
+      }
+    ],
+    "Castleford Tigers": [
+      {
+        "name": "Alex Mellor",
+        "id": "castleford-cur-alex-mellor",
+        "peakRating": 78
+      },
+      {
+        "name": "Blake Taaffe",
+        "id": "castleford-cur-blake-taaffe",
+        "peakRating": 80
+      },
+      {
+        "name": "Cain Robb",
+        "id": "castleford-cur-cain-robb",
+        "peakRating": 75
+      },
+      {
+        "name": "Daejarn Asi",
+        "id": "castleford-cur-daejarn-asi",
+        "peakRating": 84
+      },
+      {
+        "name": "Darnell McIntosh",
+        "id": "castleford-cur-darnell-mcintosh",
+        "peakRating": 78
+      },
+      {
+        "name": "George Lawler",
+        "id": "castleford-cur-george-lawler",
+        "peakRating": 78
+      },
+      {
+        "name": "Jason Qareqare",
+        "id": "castleford-cur-jason-qareqare",
+        "peakRating": 82
+      },
+      {
+        "name": "Jeremiah Simbiken",
+        "id": "castleford-cur-jeremiah-simbiken",
+        "peakRating": 83
+      },
+      {
+        "name": "Joe Stimson",
+        "id": "castleford-cur-joe-stimson",
+        "peakRating": 78
+      },
+      {
+        "name": "Joe Westerman",
+        "id": "castleford-cur-joe-westerman",
+        "peakRating": 78
+      },
+      {
+        "name": "Jordan Lane",
+        "id": "castleford-cur-jordan-lane",
+        "peakRating": 78
+      },
+      {
+        "name": "Krystian Mapapalangi",
+        "id": "castleford-cur-krystian-mapapalangi",
+        "peakRating": 85
+      },
+      {
+        "name": "Liam Hood",
+        "id": "castleford-cur-liam-hood",
+        "peakRating": 78
+      },
+      {
+        "name": "Renouf Atoni",
+        "id": "castleford-cur-renouf-atoni",
+        "peakRating": 81
+      },
+      {
+        "name": "Semi Valemei",
+        "id": "castleford-cur-semi-valemei",
+        "peakRating": 78
+      },
+      {
+        "name": "Tom Weaver",
+        "id": "castleford-cur-tom-weaver",
+        "peakRating": 78
+      },
+      {
+        "name": "Zac Cini",
+        "id": "castleford-cur-zac-cini",
+        "peakRating": 78
+      }
+    ],
+    "Bradford Bulls": [
+      {
+        "name": "Andy Ackers",
+        "id": "bradford-cur-andy-ackers",
+        "peakRating": 86
+      },
+      {
+        "name": "Caleb Aekins",
+        "id": "bradford-cur-caleb-aekins",
+        "peakRating": 84
+      },
+      {
+        "name": "Dan Russell",
+        "id": "bradford-cur-dan-russell",
+        "peakRating": 78
+      },
+      {
+        "name": "Ebon Scurr",
+        "id": "bradford-cur-ebon-scurr",
+        "peakRating": 77
+      },
+      {
+        "name": "Ed Chamberlain",
+        "id": "bradford-cur-ed-chamberlain",
+        "peakRating": 80
+      },
+      {
+        "name": "Eribe Doro",
+        "id": "bradford-cur-eribe-doro",
+        "peakRating": 79
+      },
+      {
+        "name": "Esan Marsters",
+        "id": "bradford-cur-esan-marsters",
+        "peakRating": 83
+      },
+      {
+        "name": "Ethan Ryan",
+        "id": "bradford-cur-ethan-ryan",
+        "peakRating": 82
+      },
+      {
+        "name": "Jayden Nikorima",
+        "id": "bradford-cur-jayden-nikorima",
+        "peakRating": 80
+      },
+      {
+        "name": "Jayden Okunbor",
+        "id": "bradford-cur-jayden-okunbor",
+        "peakRating": 78
+      },
+      {
+        "name": "Joe Mellor",
+        "id": "bradford-cur-joe-mellor",
+        "peakRating": 87
+      },
+      {
+        "name": "Loghan Lewis",
+        "id": "bradford-cur-loghan-lewis",
+        "peakRating": 78
+      },
+      {
+        "name": "Mitch Souter",
+        "id": "bradford-cur-mitch-souter",
+        "peakRating": 77
+      },
+      {
+        "name": "Rowan Milnes",
+        "id": "bradford-cur-rowan-milnes",
+        "peakRating": 78
+      },
+      {
+        "name": "Ryan Sutton",
+        "id": "bradford-cur-ryan-sutton",
+        "peakRating": 84
+      },
+      {
+        "name": "Waqa Blake",
+        "id": "bradford-cur-waqa-blake",
+        "peakRating": 81
+      },
+      {
+        "name": "Zac Fulton",
+        "id": "bradford-cur-zac-fulton",
+        "peakRating": 83
+      }
+    ]
+  }
+}

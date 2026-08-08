@@ -322,8 +322,6 @@ export function GameBoard({
     useState<BoostedSpinPlan | null>(null);
   const [boostedFirstPick, setBoostedFirstPick] =
     useState<QuickModeBoostedFirstPickPlan | null>(null);
-  const [preGameBoost, setPreGameBoost] =
-    useState<QuickModePreGameBoostState | null>(null);
   const preGameBoostUsageIdRef = useRef<string | null>(null);
   const modeSoundPlayed = useRef(false);
   const revealSoundKey = useRef<string | null>(null);
@@ -346,6 +344,14 @@ export function GameBoard({
       runId: `run-${s}`,
     };
   }, [runKey]);
+
+  // Sync init — avoid first-frame boost ↔ pitch flash (Joe/Super Sam skip boost).
+  const [preGameBoost, setPreGameBoost] =
+    useState<QuickModePreGameBoostState>(() =>
+      joeMellorMode || superSamHallasMode
+        ? armPreGameBoost(runId, null)
+        : createUnselectedPreGameBoost(runId)
+    );
 
   useEffect(() => {
     recordShellMount("qm-shell");
@@ -2261,15 +2267,14 @@ export function GameBoard({
         isReviewPhase ? "min-h-0" : "min-h-full lg:desktop-page-fit"
       }`}
     >
-      <div className="stadium-backdrop pointer-events-none fixed inset-0" />
-      <div className="stadium-lights pointer-events-none fixed inset-0" />
-
       <div
         ref={mainScrollRef}
         className={`game-page relative flex flex-col overflow-x-hidden ${
           isReviewPhase
             ? "overflow-y-visible py-2 pb-[max(1rem,env(safe-area-inset-bottom))] sm:py-4"
-            : `py-4 ${MOBILE.actionBarPad} sm:py-5 sm:pb-8 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4`
+            : `py-4 ${MOBILE.actionBarPad} sm:py-5 sm:pb-8 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:desktop-scroll-rail lg:pb-4 ${
+                !preGameReady ? "min-h-0 flex-1" : ""
+              }`
         }`}
       >
       {!isReviewPhase && (title || subtitle || dailyScenario) && (
@@ -2294,7 +2299,15 @@ export function GameBoard({
       )}
 
       {!isReviewPhase && (
-      <div className={hideChromeForOverlay ? "invisible pointer-events-none select-none" : undefined}>
+      <div
+        className={
+          hideChromeForOverlay
+            ? "invisible pointer-events-none select-none"
+            : !preGameReady
+              ? "flex min-h-0 flex-1 flex-col"
+              : undefined
+        }
+      >
           <GuestNotice variant="play" />
 
         <div className="mb-3 sm:mb-4">
@@ -2305,12 +2318,14 @@ export function GameBoard({
         </div>
 
         {!preGameReady ? (
-          <QuickModePreGameBoostSetup
-            runId={runId}
-            eraMode={normalEraMode}
-            notice={boostNotice}
-            onConfirm={handlePreGameBoostConfirm}
-          />
+          <div className="flex flex-1 flex-col justify-center">
+            <QuickModePreGameBoostSetup
+              runId={runId}
+              eraMode={normalEraMode}
+              notice={boostNotice}
+              onConfirm={handlePreGameBoostConfirm}
+            />
+          </div>
         ) : (
           <>
         <MatchdayScoreboard
@@ -2542,23 +2557,23 @@ export function GameBoard({
             />
           )}
 
-          <AnimatePresence mode="wait">
+          <AnimatePresence initial={false}>
             {phase === "choice" &&
               isSlotRecruitMode &&
               activeSpinTarget && (
               <BodyPortal key={slotChoiceKey}>
                 <motion.div
                   className={`recruitment-choice-backdrop fixed inset-0 flex items-center justify-center bg-black/82 p-3 sm:p-6 ${uiLayerClass("modalBackdrop")}`}
-                  initial={{ opacity: 0 }}
+                  initial={false}
                   animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
+                  exit={{ opacity: 1 }}
                 >
                   <motion.div
                     className="manager-section w-full min-w-0 max-h-[min(92dvh,900px)] overflow-x-hidden overflow-y-auto overscroll-contain"
-                    initial={{ opacity: 0, y: 24, scale: 0.97 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 16 }}
-                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    initial={{ y: 16 }}
+                    animate={{ y: 0 }}
+                    exit={{ y: 8 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
                   >
                     {boostNotice && (
                       <p className="mb-2 text-center text-xs text-theme-primary">
@@ -2589,16 +2604,16 @@ export function GameBoard({
               <BodyPortal key={choiceKey}>
               <motion.div
                 className={`recruitment-choice-backdrop fixed inset-0 flex items-center justify-center bg-black/82 p-3 sm:p-6 ${uiLayerClass("modalBackdrop")}`}
-                initial={{ opacity: 0 }}
+                initial={false}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                exit={{ opacity: 1 }}
               >
                 <motion.div
                   className={`${CARD.panel} ${MODAL.panelWide} ${MODAL.panelPadding} max-h-[min(92dvh,900px)] overflow-x-hidden overflow-y-auto overscroll-contain`}
-                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  initial={{ y: 16 }}
+                  animate={{ y: 0 }}
+                  exit={{ y: 8 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                 >
                   {!isDraftMode && (
                     <button
@@ -2645,8 +2660,12 @@ export function GameBoard({
       </div>
       )}
 
-      {!isReviewPhase && preGameReady && !hideActionBar && (
-        <StickyActionBar>
+      {!isReviewPhase && preGameReady && (
+        <StickyActionBar
+          className={
+            hideActionBar ? "invisible pointer-events-none" : undefined
+          }
+        >
             <Link
               href="/"
               onClick={() => playUiClick()}
@@ -2660,7 +2679,7 @@ export function GameBoard({
                 size="sm"
                 fullWidth={false}
                 onClick={handleAutofill}
-                disabled={choosing}
+                disabled={choosing || hideActionBar}
                 className="min-h-[var(--mobile-tap-target)] flex-1 px-3 text-xs"
               >
                 Auto Fill
@@ -2672,6 +2691,7 @@ export function GameBoard({
                 size="sm"
                 fullWidth={false}
                 onClick={() => startTournamentSimulation(squad)}
+                disabled={hideActionBar}
                 className="min-h-[var(--mobile-tap-target)] flex-1 px-3 text-xs"
               >
                 Simulate Season

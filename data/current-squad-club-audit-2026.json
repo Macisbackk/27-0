@@ -1,0 +1,273 @@
+{
+  "generatedAt": "2026-08-08T13:05:27.636Z",
+  "fantasyNameCount": 428,
+  "slPlayerCount": 237,
+  "matchedCount": 222,
+  "missingCount": 15,
+  "slPlayersMissingFromFantasy": [
+    {
+      "id": "castleford-cur-jeremiah-simbiken",
+      "name": "Jeremiah Simbiken",
+      "club": "Castleford Tigers",
+      "peakRating": 83
+    },
+    {
+      "id": "catalans-cur-bayley-sironen",
+      "name": "Bayley Sironen",
+      "club": "Catalans Dragons",
+      "peakRating": 83
+    },
+    {
+      "id": "catalans-cur-paul-seguier",
+      "name": "Paul Séguier",
+      "club": "Catalans Dragons",
+      "peakRating": 81
+    },
+    {
+      "id": "huddersfield-cur-george-flanagan-jr",
+      "name": "George Flanagan Jr",
+      "club": "Huddersfield Giants",
+      "peakRating": 83
+    },
+    {
+      "id": "huddersfield-cur-jake-bibby",
+      "name": "Jake Bibby",
+      "club": "Huddersfield Giants",
+      "peakRating": 83
+    },
+    {
+      "id": "huddersfield-cur-tui-lolohea",
+      "name": "Tui Lolohea",
+      "club": "Huddersfield Giants",
+      "peakRating": 84
+    },
+    {
+      "id": "leeds-cur-lachie-miller",
+      "name": "Lachie Miller",
+      "club": "Leeds Rhinos",
+      "peakRating": 85
+    },
+    {
+      "id": "leeds-cur-morgan-gannon",
+      "name": "Morgan Gannon",
+      "club": "Leeds Rhinos",
+      "peakRating": 86
+    },
+    {
+      "id": "leigh-cur-kai-o-donnell",
+      "name": "Kai O'Donnell",
+      "club": "Leigh Leopards",
+      "peakRating": 84
+    },
+    {
+      "id": "st-helens-cur-morgan-knowles",
+      "name": "Morgan Knowles",
+      "club": "St Helens",
+      "peakRating": 87
+    },
+    {
+      "id": "toulouse-cur-eloi-pelissier",
+      "name": "Eloi Pelissier",
+      "club": "Toulouse Olympique",
+      "peakRating": 81
+    },
+    {
+      "id": "toulouse-cur-john-toleafoa",
+      "name": "John Toleafoa",
+      "club": "Toulouse Olympique",
+      "peakRating": 75
+    },
+    {
+      "id": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "club": "Toulouse Olympique",
+      "peakRating": 87
+    },
+    {
+      "id": "wakefield-cur-caleb-hamlin-uele",
+      "name": "Caleb Hamlin-Uele",
+      "club": "Wakefield Trinity",
+      "peakRating": 88
+    },
+    {
+      "id": "warrington-cur-matty-nicholson",
+      "name": "Matty Nicholson",
+      "club": "Warrington Wolves",
+      "peakRating": 82
+    }
+  ],
+  "salfordRedDevilsPlayers": [
+    {
+      "id": "salford-cur-kai-morgan",
+      "name": "Kai Morgan",
+      "peakRating": 80
+    },
+    {
+      "id": "salford-cur-ellis-robson",
+      "name": "Ellis Robson",
+      "peakRating": 80
+    },
+    {
+      "id": "salford-cur-nathan-connell",
+      "name": "Nathan Connell",
+      "peakRating": 80
+    },
+    {
+      "id": "salford-cur-ryan-kingston",
+      "name": "Ryan Kingston",
+      "peakRating": 80
+    },
+    {
+      "id": "salford-cur-chris-savelio",
+      "name": "Chris Savelio",
+      "peakRating": 82
+    },
+    {
+      "id": "salford-cur-sitili-ngahe",
+      "name": "Sitili-Losala Ngahe",
+      "peakRating": 81
+    },
+    {
+      "id": "salford-cur-toby-warren",
+      "name": "Toby Warren",
+      "peakRating": 81
+    },
+    {
+      "id": "salford-cur-brodie-shields",
+      "name": "Brodie Shields",
+      "peakRating": 82
+    },
+    {
+      "id": "salford-cur-dele-sule",
+      "name": "Dele Sule",
+      "peakRating": 82
+    },
+    {
+      "id": "salford-cur-logan-ewington",
+      "name": "Logan Ewington",
+      "peakRating": 83
+    },
+    {
+      "id": "salford-cur-tim-bergin",
+      "name": "Tim Bergin",
+      "peakRating": 83
+    },
+    {
+      "id": "salford-cur-jonny-vaughan",
+      "name": "Jonny Vaughan",
+      "peakRating": 75
+    },
+    {
+      "id": "salford-cur-ben-hellewell",
+      "name": "Ben Hellewell",
+      "peakRating": 83
+    },
+    {
+      "id": "salford-cur-mitch-clark",
+      "name": "Mitch Clark",
+      "peakRating": 85
+    },
+    {
+      "id": "salford-cur-shane-wright",
+      "name": "Shane Wright",
+      "peakRating": 85
+    },
+    {
+      "id": "salford-cur-joe-shorrocks",
+      "name": "Joe Shorrocks",
+      "peakRating": 87
+    }
+  ],
+  "championshipRemnantPlayers": [
+    {
+      "id": "london-cur-jacob-jones",
+      "name": "Jacob Jones",
+      "club": "London Broncos",
+      "peakRating": 80
+    },
+    {
+      "id": "london-cur-sam-davis",
+      "name": "Sam Davis",
+      "club": "London Broncos",
+      "peakRating": 81
+    },
+    {
+      "id": "london-cur-harry-aldous",
+      "name": "Harry Aldous",
+      "club": "London Broncos",
+      "peakRating": 80
+    },
+    {
+      "id": "london-cur-robert-butler",
+      "name": "Robert Butler",
+      "club": "London Broncos",
+      "peakRating": 81
+    },
+    {
+      "id": "oldham-cur-jonty-gorley",
+      "name": "Jonty Gorley",
+      "club": "Oldham RLFC",
+      "peakRating": 80
+    },
+    {
+      "id": "london-cur-lewis-bienek",
+      "name": "Lewis Bienek",
+      "club": "London Broncos",
+      "peakRating": 81
+    },
+    {
+      "id": "sheffield-cur-joe-brown",
+      "name": "Joe Brown",
+      "club": "Sheffield Eagles",
+      "peakRating": 82
+    },
+    {
+      "id": "london-cur-jimmy-meadows",
+      "name": "Jimmy Meadows",
+      "club": "London Broncos",
+      "peakRating": 83
+    },
+    {
+      "id": "oldham-cur-zach-jebson",
+      "name": "Zach Jebson",
+      "club": "Oldham RLFC",
+      "peakRating": 83
+    },
+    {
+      "id": "london-cur-oliver-leyland",
+      "name": "Oliver Leyland",
+      "club": "London Broncos",
+      "peakRating": 83
+    },
+    {
+      "id": "london-cur-jack-campagnolo",
+      "name": "Jack Campagnolo",
+      "club": "London Broncos",
+      "peakRating": 84
+    },
+    {
+      "id": "london-cur-dayon-sambou",
+      "name": "Dayon Sambou",
+      "club": "London Broncos",
+      "peakRating": 84
+    },
+    {
+      "id": "sheffield-cur-matty-marsh",
+      "name": "Matty Marsh",
+      "club": "Sheffield Eagles",
+      "peakRating": 84
+    },
+    {
+      "id": "sheffield-cur-jordan-lilley",
+      "name": "Jordan Lilley",
+      "club": "Sheffield Eagles",
+      "peakRating": 82
+    },
+    {
+      "id": "london-cur-robbie-storey",
+      "name": "Robbie Storey",
+      "club": "London Broncos",
+      "peakRating": 84
+    }
+  ]
+}

@@ -1,0 +1,1081 @@
+{
+  "generatedFrom": "super_league_2026_ratings.xlsx / All Players",
+  "matchRule": "normalised name + club (with apply-script aliases); no cross-club name-only",
+  "summary": {
+    "xlsxRows": 494,
+    "slCurrentPlayers": 237,
+    "matched": 209,
+    "unmatchedXlsx": 285,
+    "unmatchedGame": 28,
+    "ambiguous": 0,
+    "exactMatch": 200,
+    "absDeltaGe1": 9,
+    "absDeltaGe2": 9,
+    "absDeltaGe3": 9,
+    "overratedCount": 8,
+    "underratedCount": 1,
+    "overratedDeltaGe3": 8
+  },
+  "callouts": {
+    "jakeBibby": {
+      "note": "in game but not in xlsx All Players",
+      "name": "Jake Bibby",
+      "id": "huddersfield-cur-jake-bibby",
+      "club": "Huddersfield Giants",
+      "gameRating": 89
+    },
+    "krystianMapapalangi": {
+      "name": "Krystian Mapapalangi",
+      "id": "castleford-cur-krystian-mapapalangi",
+      "club": "Castleford Tigers",
+      "gameRating": 88,
+      "xlsxOvr": 75,
+      "delta": 13,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Development"
+    },
+    "all": [
+      {
+        "name": "Krystian Mapapalangi",
+        "id": "castleford-cur-krystian-mapapalangi",
+        "club": "Castleford Tigers",
+        "gameRating": 88,
+        "xlsxOvr": 75,
+        "delta": 13,
+        "fantasy2025Avg": null,
+        "fantasy2026Score": null,
+        "tier": "Depth / Prospect",
+        "squadStatus": "Development"
+      },
+      {
+        "note": "in game but not in xlsx All Players",
+        "name": "Jake Bibby",
+        "id": "huddersfield-cur-jake-bibby",
+        "club": "Huddersfield Giants",
+        "gameRating": 89
+      }
+    ]
+  },
+  "applySampleCheck": [
+    {
+      "query": "bevan french",
+      "game": [
+        {
+          "name": "Bevan French",
+          "id": "wigan-cur-bevan-french",
+          "club": "Wigan Warriors",
+          "peakRating": 93
+        }
+      ],
+      "xlsx": [
+        {
+          "name": "Bevan French",
+          "club": "Wigan Warriors",
+          "ovr": 93,
+          "previousOvr": 90,
+          "squadStatus": "First Team / Rotation"
+        }
+      ],
+      "aligned": true,
+      "delta": 0,
+      "match": {
+        "name": "Bevan French",
+        "id": "wigan-cur-bevan-french",
+        "club": "Wigan Warriors",
+        "gameRating": 93,
+        "xlsxOvr": 93,
+        "delta": 0,
+        "fantasy2025Avg": 50.42,
+        "fantasy2026Score": 433,
+        "tier": "World Class",
+        "squadStatus": "First Team / Rotation"
+      }
+    },
+    {
+      "query": "mikey lewis",
+      "game": [
+        {
+          "name": "Mikey Lewis",
+          "id": "hull-kr-cur-mikey-lewis",
+          "club": "Hull KR",
+          "peakRating": 92
+        }
+      ],
+      "xlsx": [
+        {
+          "name": "Mikey Lewis",
+          "club": "Hull KR",
+          "ovr": 92,
+          "previousOvr": 91,
+          "squadStatus": "First Team / Rotation"
+        }
+      ],
+      "aligned": true,
+      "delta": 0,
+      "match": {
+        "name": "Mikey Lewis",
+        "id": "hull-kr-cur-mikey-lewis",
+        "club": "Hull KR",
+        "gameRating": 92,
+        "xlsxOvr": 92,
+        "delta": 0,
+        "fantasy2025Avg": 67.33,
+        "fantasy2026Score": 1044,
+        "tier": "World Class",
+        "squadStatus": "First Team / Rotation"
+      }
+    },
+    {
+      "query": "maika sivo",
+      "game": [
+        {
+          "name": "Maika Sivo",
+          "id": "leeds-cur-maika-sivo",
+          "club": "Leeds Rhinos",
+          "peakRating": 91
+        }
+      ],
+      "xlsx": [
+        {
+          "name": "Maika Sivo",
+          "club": "Leeds Rhinos",
+          "ovr": 91,
+          "previousOvr": 91,
+          "squadStatus": "First Team / Rotation"
+        }
+      ],
+      "aligned": true,
+      "delta": 0,
+      "match": {
+        "name": "Maika Sivo",
+        "id": "leeds-cur-maika-sivo",
+        "club": "Leeds Rhinos",
+        "gameRating": 91,
+        "xlsxOvr": 91,
+        "delta": 0,
+        "fantasy2025Avg": null,
+        "fantasy2026Score": 921,
+        "tier": "Elite",
+        "squadStatus": "First Team / Rotation"
+      }
+    },
+    {
+      "query": "jake bibby",
+      "game": [
+        {
+          "name": "Jake Bibby",
+          "id": "huddersfield-cur-jake-bibby",
+          "club": "Huddersfield Giants",
+          "peakRating": 89
+        }
+      ],
+      "xlsx": [],
+      "aligned": false,
+      "delta": null,
+      "match": null
+    },
+    {
+      "query": "krystian mapapalangi",
+      "game": [
+        {
+          "name": "Krystian Mapapalangi",
+          "id": "castleford-cur-krystian-mapapalangi",
+          "club": "Castleford Tigers",
+          "peakRating": 88
+        }
+      ],
+      "xlsx": [
+        {
+          "name": "Krystian Mapapalangi",
+          "club": "Castleford Tigers",
+          "ovr": 75,
+          "previousOvr": 75,
+          "squadStatus": "Development"
+        }
+      ],
+      "aligned": false,
+      "delta": 13,
+      "match": {
+        "name": "Krystian Mapapalangi",
+        "id": "castleford-cur-krystian-mapapalangi",
+        "club": "Castleford Tigers",
+        "gameRating": 88,
+        "xlsxOvr": 75,
+        "delta": 13,
+        "fantasy2025Avg": null,
+        "fantasy2026Score": null,
+        "tier": "Depth / Prospect",
+        "squadStatus": "Development"
+      }
+    }
+  ],
+  "harrySmithMatches": [
+    {
+      "name": "Harry Smith",
+      "id": "wigan-cur-harry-smith",
+      "club": "Wigan Warriors",
+      "gameRating": 86,
+      "xlsxOvr": 86,
+      "delta": 0,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Star",
+      "squadStatus": "First Team / Rotation",
+      "xlsxName": "Harry Smith",
+      "matchVia": "name+club"
+    }
+  ],
+  "diffsAbsGe2": [
+    {
+      "name": "Krystian Mapapalangi",
+      "id": "castleford-cur-krystian-mapapalangi",
+      "club": "Castleford Tigers",
+      "gameRating": 88,
+      "xlsxOvr": 75,
+      "delta": 13,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Development"
+    },
+    {
+      "name": "Cain Robb",
+      "id": "castleford-cur-cain-robb",
+      "club": "Castleford Tigers",
+      "gameRating": 84,
+      "xlsxOvr": 75,
+      "delta": 9,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Development"
+    },
+    {
+      "name": "John Toleafoa",
+      "id": "toulouse-cur-john-toleafoa",
+      "club": "Toulouse Olympique",
+      "gameRating": 83,
+      "xlsxOvr": 75,
+      "delta": 8,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Academy / Extended"
+    },
+    {
+      "name": "Manase Kaho",
+      "id": "catalans-cur-manase-kaho",
+      "club": "Catalans Dragons",
+      "gameRating": 82,
+      "xlsxOvr": 75,
+      "delta": 7,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Academy / Extended"
+    },
+    {
+      "name": "Ethan Ryan",
+      "id": "bradford-cur-ethan-ryan",
+      "club": "Bradford Bulls",
+      "gameRating": 84,
+      "xlsxOvr": 78,
+      "delta": 6,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Rotation",
+      "squadStatus": "First Team"
+    },
+    {
+      "name": "Eribe Doro",
+      "id": "bradford-cur-eribe-doro",
+      "club": "Bradford Bulls",
+      "gameRating": 82,
+      "xlsxOvr": 77,
+      "delta": 5,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Rotation"
+    },
+    {
+      "name": "Jayden Nikorima",
+      "id": "bradford-cur-jayden-nikorima",
+      "club": "Bradford Bulls",
+      "gameRating": 83,
+      "xlsxOvr": 80,
+      "delta": 3,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Rotation",
+      "squadStatus": "First Team / Rotation"
+    },
+    {
+      "name": "Ryan Sutton",
+      "id": "bradford-cur-ryan-sutton",
+      "club": "Bradford Bulls",
+      "gameRating": 84,
+      "xlsxOvr": 81,
+      "delta": 3,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation"
+    },
+    {
+      "name": "Loghan Lewis",
+      "id": "bradford-cur-loghan-lewis",
+      "club": "Bradford Bulls",
+      "gameRating": 78,
+      "xlsxOvr": 81,
+      "delta": -3,
+      "fantasy2025Avg": 34.57,
+      "fantasy2026Score": null,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team"
+    }
+  ],
+  "top30Overrated": [
+    {
+      "name": "Krystian Mapapalangi",
+      "id": "castleford-cur-krystian-mapapalangi",
+      "club": "Castleford Tigers",
+      "gameRating": 88,
+      "xlsxOvr": 75,
+      "delta": 13,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Development"
+    },
+    {
+      "name": "Cain Robb",
+      "id": "castleford-cur-cain-robb",
+      "club": "Castleford Tigers",
+      "gameRating": 84,
+      "xlsxOvr": 75,
+      "delta": 9,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Development"
+    },
+    {
+      "name": "John Toleafoa",
+      "id": "toulouse-cur-john-toleafoa",
+      "club": "Toulouse Olympique",
+      "gameRating": 83,
+      "xlsxOvr": 75,
+      "delta": 8,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Academy / Extended"
+    },
+    {
+      "name": "Manase Kaho",
+      "id": "catalans-cur-manase-kaho",
+      "club": "Catalans Dragons",
+      "gameRating": 82,
+      "xlsxOvr": 75,
+      "delta": 7,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Academy / Extended"
+    },
+    {
+      "name": "Ethan Ryan",
+      "id": "bradford-cur-ethan-ryan",
+      "club": "Bradford Bulls",
+      "gameRating": 84,
+      "xlsxOvr": 78,
+      "delta": 6,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Rotation",
+      "squadStatus": "First Team"
+    },
+    {
+      "name": "Eribe Doro",
+      "id": "bradford-cur-eribe-doro",
+      "club": "Bradford Bulls",
+      "gameRating": 82,
+      "xlsxOvr": 77,
+      "delta": 5,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Rotation"
+    },
+    {
+      "name": "Jayden Nikorima",
+      "id": "bradford-cur-jayden-nikorima",
+      "club": "Bradford Bulls",
+      "gameRating": 83,
+      "xlsxOvr": 80,
+      "delta": 3,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Rotation",
+      "squadStatus": "First Team / Rotation"
+    },
+    {
+      "name": "Ryan Sutton",
+      "id": "bradford-cur-ryan-sutton",
+      "club": "Bradford Bulls",
+      "gameRating": 84,
+      "xlsxOvr": 81,
+      "delta": 3,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation"
+    }
+  ],
+  "top30Underrated": [
+    {
+      "name": "Loghan Lewis",
+      "id": "bradford-cur-loghan-lewis",
+      "club": "Bradford Bulls",
+      "gameRating": 78,
+      "xlsxOvr": 81,
+      "delta": -3,
+      "fantasy2025Avg": 34.57,
+      "fantasy2026Score": null,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team"
+    }
+  ],
+  "overratedDeltaGe3": [
+    {
+      "name": "Krystian Mapapalangi",
+      "id": "castleford-cur-krystian-mapapalangi",
+      "club": "Castleford Tigers",
+      "gameRating": 88,
+      "xlsxOvr": 75,
+      "delta": 13,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Development",
+      "recommendedRating": 75
+    },
+    {
+      "name": "Cain Robb",
+      "id": "castleford-cur-cain-robb",
+      "club": "Castleford Tigers",
+      "gameRating": 84,
+      "xlsxOvr": 75,
+      "delta": 9,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Development",
+      "recommendedRating": 75
+    },
+    {
+      "name": "John Toleafoa",
+      "id": "toulouse-cur-john-toleafoa",
+      "club": "Toulouse Olympique",
+      "gameRating": 83,
+      "xlsxOvr": 75,
+      "delta": 8,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Academy / Extended",
+      "recommendedRating": 75
+    },
+    {
+      "name": "Manase Kaho",
+      "id": "catalans-cur-manase-kaho",
+      "club": "Catalans Dragons",
+      "gameRating": 82,
+      "xlsxOvr": 75,
+      "delta": 7,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Academy / Extended",
+      "recommendedRating": 75
+    },
+    {
+      "name": "Ethan Ryan",
+      "id": "bradford-cur-ethan-ryan",
+      "club": "Bradford Bulls",
+      "gameRating": 84,
+      "xlsxOvr": 78,
+      "delta": 6,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Rotation",
+      "squadStatus": "First Team",
+      "recommendedRating": 78
+    },
+    {
+      "name": "Eribe Doro",
+      "id": "bradford-cur-eribe-doro",
+      "club": "Bradford Bulls",
+      "gameRating": 82,
+      "xlsxOvr": 77,
+      "delta": 5,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Depth / Prospect",
+      "squadStatus": "Rotation",
+      "recommendedRating": 77
+    },
+    {
+      "name": "Jayden Nikorima",
+      "id": "bradford-cur-jayden-nikorima",
+      "club": "Bradford Bulls",
+      "gameRating": 83,
+      "xlsxOvr": 80,
+      "delta": 3,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Rotation",
+      "squadStatus": "First Team / Rotation",
+      "recommendedRating": 80
+    },
+    {
+      "name": "Ryan Sutton",
+      "id": "bradford-cur-ryan-sutton",
+      "club": "Bradford Bulls",
+      "gameRating": 84,
+      "xlsxOvr": 81,
+      "delta": 3,
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "recommendedRating": 81
+    }
+  ],
+  "unmatchedGame": [
+    {
+      "name": "James Bentley",
+      "id": "leeds-cur-james-bentley",
+      "club": "Leeds Rhinos",
+      "gameRating": 80
+    },
+    {
+      "name": "Liam Hood",
+      "id": "wakefield-cur-liam-hood",
+      "club": "Wakefield Trinity",
+      "gameRating": 80
+    },
+    {
+      "name": "Eloi Pelissier",
+      "id": "toulouse-cur-eloi-pelissier",
+      "club": "Toulouse Olympique",
+      "gameRating": 81
+    },
+    {
+      "name": "Jordan Dezaria",
+      "id": "catalans-cur-jordan-dezaria",
+      "club": "Catalans Dragons",
+      "gameRating": 76
+    },
+    {
+      "name": "Arthur Romano",
+      "id": "catalans-cur-arthur-romano",
+      "club": "Catalans Dragons",
+      "gameRating": 77
+    },
+    {
+      "name": "Paul S\u00e9guier",
+      "id": "catalans-cur-paul-seguier",
+      "club": "Catalans Dragons",
+      "gameRating": 81
+    },
+    {
+      "name": "Sam Lisone",
+      "id": "leeds-cur-sam-lisone",
+      "club": "Leeds Rhinos",
+      "gameRating": 81
+    },
+    {
+      "name": "Justin Sangar\u00e9",
+      "id": "toulouse-cur-justin-sangare",
+      "club": "Toulouse Olympique",
+      "gameRating": 81
+    },
+    {
+      "name": "Oliver Wilson",
+      "id": "huddersfield-cur-oliver-wilson",
+      "club": "Huddersfield Giants",
+      "gameRating": 82
+    },
+    {
+      "name": "Danny Richardson",
+      "id": "hull-kr-cur-danny-richardson",
+      "club": "Hull KR",
+      "gameRating": 80
+    },
+    {
+      "name": "Darnell McIntosh",
+      "id": "leigh-cur-darnell-mcintosh",
+      "club": "Leigh Leopards",
+      "gameRating": 81
+    },
+    {
+      "name": "Matty Nicholson",
+      "id": "warrington-cur-matty-nicholson",
+      "club": "Warrington Wolves",
+      "gameRating": 82
+    },
+    {
+      "name": "Jeremiah Simbiken",
+      "id": "castleford-cur-jeremiah-simbiken",
+      "club": "Castleford Tigers",
+      "gameRating": 83
+    },
+    {
+      "name": "Bayley Sironen",
+      "id": "catalans-cur-bayley-sironen",
+      "club": "Catalans Dragons",
+      "gameRating": 83
+    },
+    {
+      "name": "Kelepi Tanginoa",
+      "id": "hull-kr-cur-kelepi-tanginoa",
+      "club": "Hull KR",
+      "gameRating": 81
+    },
+    {
+      "name": "Ethan O'Neill",
+      "id": "leigh-cur-ethan-o-neill",
+      "club": "Leigh Leopards",
+      "gameRating": 81
+    },
+    {
+      "name": "Renouf Atoni",
+      "id": "wakefield-cur-renouf-atoni",
+      "club": "Wakefield Trinity",
+      "gameRating": 83
+    },
+    {
+      "name": "C\u00e9sar Roug\u00e9",
+      "id": "catalans-cur-cesar-rouge",
+      "club": "Catalans Dragons",
+      "gameRating": 83
+    },
+    {
+      "name": "Max Wood",
+      "id": "warrington-cur-max-wood",
+      "club": "Warrington Wolves",
+      "gameRating": 84
+    },
+    {
+      "name": "Matty English",
+      "id": "huddersfield-cur-matty-english",
+      "club": "Huddersfield Giants",
+      "gameRating": 86
+    },
+    {
+      "name": "Morgan Gannon",
+      "id": "leeds-cur-morgan-gannon",
+      "club": "Leeds Rhinos",
+      "gameRating": 86
+    },
+    {
+      "name": "Jed Cartwright",
+      "id": "hull-fc-cur-jed-cartwright",
+      "club": "Hull FC",
+      "gameRating": 82
+    },
+    {
+      "name": "Lachie Miller",
+      "id": "leeds-cur-lachie-miller",
+      "club": "Leeds Rhinos",
+      "gameRating": 85
+    },
+    {
+      "name": "Cameron Smith",
+      "id": "leeds-cur-cameron-smith",
+      "club": "Leeds Rhinos",
+      "gameRating": 86
+    },
+    {
+      "name": "Benjamin Garcia",
+      "id": "catalans-cur-benjamin-garcia",
+      "club": "Catalans Dragons",
+      "gameRating": 87
+    },
+    {
+      "name": "Morgan Knowles",
+      "id": "st-helens-cur-morgan-knowles",
+      "club": "St Helens",
+      "gameRating": 87
+    },
+    {
+      "name": "Kai O'Donnell",
+      "id": "leigh-cur-kai-o-donnell",
+      "club": "Leigh Leopards",
+      "gameRating": 84
+    },
+    {
+      "name": "Jake Bibby",
+      "id": "huddersfield-cur-jake-bibby",
+      "club": "Huddersfield Giants",
+      "gameRating": 89
+    }
+  ],
+  "unmatchedXlsxFirstTeamish": [
+    {
+      "name": "Lachlan Miller",
+      "club": "Leeds Rhinos",
+      "ovr": 90,
+      "previousOvr": 89,
+      "tier": "Elite",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": 64,
+      "fantasy2026Score": 980
+    },
+    {
+      "name": "Jackson Hastings",
+      "club": "St Helens",
+      "ovr": 89,
+      "previousOvr": 89,
+      "tier": "Elite",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Adam Cook",
+      "club": "Leigh Leopards",
+      "ovr": 88,
+      "previousOvr": 86,
+      "tier": "Star",
+      "squadStatus": "First Team",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": 1052
+    },
+    {
+      "name": "Tevita Pangai Junior",
+      "club": "Hull KR",
+      "ovr": 86,
+      "previousOvr": 86,
+      "tier": "Star",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Josh Charnley",
+      "club": "Leigh Leopards",
+      "ovr": 85,
+      "previousOvr": 88,
+      "tier": "Star",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": 711
+    },
+    {
+      "name": "Kallum Watkins",
+      "club": "Leeds Rhinos",
+      "ovr": 85,
+      "previousOvr": 81,
+      "tier": "Star",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": 52.58,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Oliver Partington",
+      "club": "Wigan Warriors",
+      "ovr": 85,
+      "previousOvr": 82,
+      "tier": "Star",
+      "squadStatus": "First Team",
+      "fantasy2025Avg": 49.63,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Jack Broadbent",
+      "club": "Hull KR",
+      "ovr": 84,
+      "previousOvr": 84,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": 660
+    },
+    {
+      "name": "Nene Macdonald",
+      "club": "St Helens",
+      "ovr": 84,
+      "previousOvr": 84,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Rhyse Martin",
+      "club": "Hull KR",
+      "ovr": 84,
+      "previousOvr": 84,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Liam Byrne",
+      "club": "Warrington Wolves",
+      "ovr": 83,
+      "previousOvr": 82,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": 586
+    },
+    {
+      "name": "Kyle Feldt",
+      "club": "St Helens",
+      "ovr": 83,
+      "previousOvr": 83,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Ryan Hall",
+      "club": "Leeds Rhinos",
+      "ovr": 83,
+      "previousOvr": 83,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Tyler Dupree",
+      "club": "Castleford Tigers",
+      "ovr": 82,
+      "previousOvr": 82,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Keenan Palasia",
+      "club": "Leeds Rhinos",
+      "ovr": 82,
+      "previousOvr": 82,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Jed Cartwright",
+      "club": "St Helens",
+      "ovr": 82,
+      "previousOvr": 80,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team",
+      "fantasy2025Avg": 46.1,
+      "fantasy2026Score": 300
+    },
+    {
+      "name": "Ben Garcia",
+      "club": "Catalans Dragons",
+      "ovr": 82,
+      "previousOvr": 82,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Cam Smith",
+      "club": "Leeds Rhinos",
+      "ovr": 82,
+      "previousOvr": 82,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Jack Bird",
+      "club": "Leeds Rhinos",
+      "ovr": 82,
+      "previousOvr": 82,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Tom Burgess",
+      "club": "Huddersfield Giants",
+      "ovr": 81,
+      "previousOvr": 83,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": 354
+    },
+    {
+      "name": "Kruise Leeming",
+      "club": "Catalans Dragons",
+      "ovr": 81,
+      "previousOvr": 81,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Danny Levi",
+      "club": "Leeds Rhinos",
+      "ovr": 81,
+      "previousOvr": 81,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Kelepi Tanginoa",
+      "club": "Warrington Wolves",
+      "ovr": 81,
+      "previousOvr": 81,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Taofofoa Sipley",
+      "club": "Warrington Wolves",
+      "ovr": 81,
+      "previousOvr": 81,
+      "tier": "Strong Starter",
+      "squadStatus": "First Team",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Joe Shorrocks",
+      "club": "St Helens",
+      "ovr": 80,
+      "previousOvr": 80,
+      "tier": "Rotation",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Shane Wright",
+      "club": "St Helens",
+      "ovr": 80,
+      "previousOvr": 80,
+      "tier": "Rotation",
+      "squadStatus": "First Team",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "James Bentley",
+      "club": "Warrington Wolves",
+      "ovr": 80,
+      "previousOvr": 80,
+      "tier": "Rotation",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": 398
+    },
+    {
+      "name": "Agnatius Paasi",
+      "club": "St Helens",
+      "ovr": 80,
+      "previousOvr": 80,
+      "tier": "Rotation",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Danny Richardson",
+      "club": "York Knights",
+      "ovr": 80,
+      "previousOvr": 80,
+      "tier": "Rotation",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "David Nofoaluma",
+      "club": "York Knights",
+      "ovr": 80,
+      "previousOvr": 80,
+      "tier": "Rotation",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Jacob Host",
+      "club": "St Helens",
+      "ovr": 80,
+      "previousOvr": 80,
+      "tier": "Rotation",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Mikaele Ravalawa",
+      "club": "Castleford Tigers",
+      "ovr": 80,
+      "previousOvr": 80,
+      "tier": "Rotation",
+      "squadStatus": "First Team / Rotation",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Asher O'Donnell",
+      "club": "Huddersfield Giants",
+      "ovr": 79,
+      "previousOvr": 79,
+      "tier": "Rotation",
+      "squadStatus": "First Team",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Franck Maria",
+      "club": "Catalans Dragons",
+      "ovr": 78,
+      "previousOvr": 78,
+      "tier": "Rotation",
+      "squadStatus": "First Team",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    },
+    {
+      "name": "Tristan Powell",
+      "club": "Huddersfield Giants",
+      "ovr": 78,
+      "previousOvr": 78,
+      "tier": "Rotation",
+      "squadStatus": "First Team",
+      "fantasy2025Avg": null,
+      "fantasy2026Score": null
+    }
+  ],
+  "ambiguous": []
+}

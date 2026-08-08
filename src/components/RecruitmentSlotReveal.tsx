@@ -19,6 +19,7 @@ import { formatShortYear } from "@/lib/players/prime-year";
 import { playSlotLand, playSlotSpinStart, playSlotSpinTick } from "@/lib/sound";
 import { SPACING } from "@/lib/ui/design-system";
 import { BodyPortal } from "@/components/ui/BodyPortal";
+import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
 import { uiLayerClass } from "@/lib/ui/layers";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { TYPO } from "@/lib/ui/typography";
@@ -99,8 +100,11 @@ export function RecruitmentSlotReveal({
         shell.classList.add("slot-reel-lock-flash");
         shell.classList.remove("border-pitch-600/70", "bg-pitch-950/80");
         shell.classList.add("bg-pitch-950/95");
-        (shell as HTMLElement).style.borderColor = clubPrimaryRef.current;
+        // Top edge only — avoid a single-side club colour border.
+        (shell as HTMLElement).style.borderColor = "";
         (shell as HTMLElement).style.borderTopColor = clubPrimaryRef.current;
+        (shell as HTMLElement).style.borderTopWidth = "2px";
+        (shell as HTMLElement).style.borderTopStyle = "solid";
       }
     };
 
@@ -221,15 +225,11 @@ export function RecruitmentSlotReveal({
         <div
           className="recruitment-spin-panel w-full max-w-[min(22rem,92vw)] overflow-hidden rounded-[var(--mobile-radius-medium,10px)] border border-white/12 bg-[var(--mobile-surface-secondary,#080c0d)] shadow-[0_14px_34px_rgba(0,0,0,0.4)]"
           style={{
-            boxShadow: landed
-              ? `0 14px 34px rgba(0,0,0,0.4), inset 3px 0 0 ${clubColors.primary}`
-              : "0 14px 34px rgba(0,0,0,0.4), inset 3px 0 0 rgba(100,116,139,0.45)",
-            borderColor: landed ? clubColors.primary : undefined,
-            transition: landed
-              ? "box-shadow 0.35s ease-out, border-color 0.35s ease-out"
-              : undefined,
+            boxShadow: "0 14px 34px rgba(0,0,0,0.4)",
+            transition: landed ? "border-color 0.35s ease-out" : undefined,
           }}
         >
+          <TeamColourStrip club={target.team} />
           <div className="border-b border-white/10 px-4 py-2.5 text-center">
             <p className={`${TYPO.sectionLabel} text-pitch-400`}>
               {isSpinning ? "Spinning…" : "Landed"}

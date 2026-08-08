@@ -63,19 +63,19 @@ export function QuickModePreGameBoostSetup({
   };
 
   return (
-    <div className="mx-auto w-full max-w-md px-3 py-4">
+    <div className="mx-auto w-full max-w-md px-3 py-4 text-center">
       <div className="border-b border-[var(--mobile-divider)] pb-4">
         <p className={TYPO.keyLabel}>Pre-game</p>
         <h2 className={`mt-1 ${TYPO.cardTitle}`}>Boost</h2>
-        <p className={`mt-2 ${TYPO.meta}`}>
+        <p className={`mx-auto mt-2 max-w-sm ${TYPO.meta}`}>
           One boost for this run, or start without. Locked after the first spin.
           {!eraMode ? " Legend boosts are Era only." : null}
         </p>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 text-left">
         {boosts.length === 0 ? (
-          <p className={`${TYPO.bodySm} text-pitch-400`}>
+          <p className={`${TYPO.bodySm} text-center text-pitch-400`}>
             No compatible Quick Mode boosts in inventory.
           </p>
         ) : (

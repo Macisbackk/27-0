@@ -131,12 +131,8 @@ html {
   overflow-x: hidden;
   overflow-x: clip;
   background-color: var(--bg-primary);
-}
-
-@media (min-width: 1024px) {
-  html {
-    scrollbar-gutter: stable;
-  }
+  /* Stable on all breakpoints so scroll-lock padding does not shift layout. */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -164,12 +160,6 @@ body {
    Popups sit above via z-index; footer stays non-interactive while locked. */
 html[data-ui-overlay="1"] .site-footer {
   pointer-events: none;
-}
-
-@media (min-width: 640px) {
-  html {
-    scrollbar-gutter: stable;
-  }
 }
 
 @media (max-width: 639px) {
@@ -2153,10 +2143,16 @@ html[data-ui-overlay="1"] .site-footer {
 
   /* .card-glass / .matchday-panel / arena shells: see design-system.css */
 
+  /* Absolute (not fixed) — fixed arena grids under sticky chrome flicker. */
+  .arena-surface {
+    position: relative;
+    overflow: clip;
+  }
+
   .arena-surface::before {
     content: "";
     pointer-events: none;
-    position: fixed;
+    position: absolute;
     inset: 0;
     opacity: 0.2;
     background-image:

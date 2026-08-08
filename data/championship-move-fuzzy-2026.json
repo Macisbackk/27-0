@@ -1,0 +1,1180 @@
+{
+  "source": "data/current-squads.json",
+  "playerCount": 268,
+  "clubsPresent": [
+    "Bradford Bulls",
+    "Castleford Tigers",
+    "Catalans Dragons",
+    "Huddersfield Giants",
+    "Hull FC",
+    "Hull KR",
+    "Leeds Rhinos",
+    "Leigh Leopards",
+    "London Broncos",
+    "Oldham RLFC",
+    "Salford Red Devils",
+    "Sheffield Eagles",
+    "St Helens",
+    "Toulouse Olympique",
+    "Wakefield Trinity",
+    "Warrington Wolves",
+    "Wigan Warriors",
+    "York Knights"
+  ],
+  "tokens": [
+    "griffin",
+    "wallis",
+    "croft",
+    "tcham",
+    "ramsden",
+    "waine",
+    "makin",
+    "mustapha",
+    "zenon",
+    "carter",
+    "lawford",
+    "sergent",
+    "ratchford",
+    "kelly duffy",
+    "ritso",
+    "parkison",
+    "parkinson",
+    "holmes",
+    "gill",
+    "fitzsimmons",
+    "hodson",
+    "ellis",
+    "hickey",
+    "boyd",
+    "okoro",
+    "johnson",
+    "morgan",
+    "tait",
+    "ncube",
+    "bullock",
+    "tuohey",
+    "abdull",
+    "brierley",
+    "campbell",
+    "gaskell",
+    "simbiken",
+    "sironen",
+    "bibby",
+    "warren",
+    "jebson",
+    "lilley",
+    "shorter",
+    "shorrocks",
+    "wright",
+    "hellewell",
+    "clark",
+    "vaughan",
+    "savelio"
+  ],
+  "hitsByToken": {
+    "griffin": [
+      {
+        "id": "york-cur-josh-griffin",
+        "name": "Josh Griffin",
+        "club": "York Knights",
+        "position": "SECOND_ROW",
+        "peakRating": 82,
+        "normalisedName": "josh griffin"
+      }
+    ],
+    "wallis": [],
+    "croft": [
+      {
+        "id": "leeds-cur-brodie-croft",
+        "name": "Brodie Croft",
+        "club": "Leeds Rhinos",
+        "position": "STAND_OFF",
+        "peakRating": 90,
+        "normalisedName": "brodie croft"
+      }
+    ],
+    "tcham": [],
+    "ramsden": [],
+    "waine": [],
+    "makin": [
+      {
+        "id": "catalans-cur-tommy-makinson",
+        "name": "Tommy Makinson",
+        "club": "Catalans Dragons",
+        "position": "WING",
+        "peakRating": 82,
+        "normalisedName": "tommy makinson"
+      }
+    ],
+    "mustapha": [],
+    "zenon": [],
+    "carter": [],
+    "lawford": [],
+    "sergent": [],
+    "ratchford": [],
+    "kelly duffy": [],
+    "ritso": [],
+    "parkison": [],
+    "parkinson": [],
+    "holmes": [],
+    "gill": [],
+    "fitzsimmons": [],
+    "hodson": [],
+    "ellis": [
+      {
+        "id": "salford-cur-ellis-robson",
+        "name": "Ellis Robson",
+        "club": "Salford Red Devils",
+        "position": "SECOND_ROW",
+        "peakRating": 80,
+        "normalisedName": "ellis robson"
+      },
+      {
+        "id": "wigan-cur-kaide-ellis",
+        "name": "Kaide Ellis",
+        "club": "Wigan Warriors",
+        "position": "LOOSE_FORWARD",
+        "peakRating": 89,
+        "normalisedName": "kaide ellis"
+      }
+    ],
+    "hickey": [],
+    "boyd": [],
+    "okoro": [],
+    "johnson": [],
+    "morgan": [
+      {
+        "id": "salford-cur-kai-morgan",
+        "name": "Kai Morgan",
+        "club": "Salford Red Devils",
+        "position": "SCRUM_HALF",
+        "peakRating": 80,
+        "normalisedName": "kai morgan"
+      },
+      {
+        "id": "leeds-cur-morgan-gannon",
+        "name": "Morgan Gannon",
+        "club": "Leeds Rhinos",
+        "position": "SECOND_ROW",
+        "peakRating": 86,
+        "normalisedName": "morgan gannon"
+      },
+      {
+        "id": "st-helens-cur-morgan-knowles",
+        "name": "Morgan Knowles",
+        "club": "St Helens",
+        "position": "LOOSE_FORWARD",
+        "peakRating": 87,
+        "normalisedName": "morgan knowles"
+      }
+    ],
+    "tait": [],
+    "ncube": [],
+    "bullock": [],
+    "tuohey": [],
+    "abdull": [],
+    "brierley": [],
+    "campbell": [],
+    "gaskell": [],
+    "simbiken": [
+      {
+        "id": "castleford-cur-jeremiah-simbiken",
+        "name": "Jeremiah Simbiken",
+        "club": "Castleford Tigers",
+        "position": "SECOND_ROW",
+        "peakRating": 83,
+        "normalisedName": "jeremiah simbiken"
+      }
+    ],
+    "sironen": [
+      {
+        "id": "catalans-cur-bayley-sironen",
+        "name": "Bayley Sironen",
+        "club": "Catalans Dragons",
+        "position": "SECOND_ROW",
+        "peakRating": 83,
+        "normalisedName": "bayley sironen"
+      },
+      {
+        "id": "st-helens-cur-curtis-sironen",
+        "name": "Curtis Sironen",
+        "club": "St Helens",
+        "position": "SECOND_ROW",
+        "peakRating": 84,
+        "normalisedName": "curtis sironen"
+      }
+    ],
+    "bibby": [
+      {
+        "id": "huddersfield-cur-jake-bibby",
+        "name": "Jake Bibby",
+        "club": "Huddersfield Giants",
+        "position": "CENTRE",
+        "peakRating": 83,
+        "normalisedName": "jake bibby"
+      }
+    ],
+    "warren": [
+      {
+        "id": "salford-cur-toby-warren",
+        "name": "Toby Warren",
+        "club": "Salford Red Devils",
+        "position": "CENTRE",
+        "peakRating": 81,
+        "normalisedName": "toby warren"
+      }
+    ],
+    "jebson": [
+      {
+        "id": "oldham-cur-zach-jebson",
+        "name": "Zach Jebson",
+        "club": "Oldham RLFC",
+        "position": "CENTRE",
+        "peakRating": 83,
+        "normalisedName": "zach jebson"
+      }
+    ],
+    "lilley": [
+      {
+        "id": "sheffield-cur-jordan-lilley",
+        "name": "Jordan Lilley",
+        "club": "Sheffield Eagles",
+        "position": "STAND_OFF",
+        "peakRating": 82,
+        "normalisedName": "jordan lilley"
+      }
+    ],
+    "shorter": [],
+    "shorrocks": [
+      {
+        "id": "toulouse-cur-jake-shorrocks",
+        "name": "Jake Shorrocks",
+        "club": "Toulouse Olympique",
+        "position": "STAND_OFF",
+        "peakRating": 82,
+        "normalisedName": "jake shorrocks"
+      },
+      {
+        "id": "salford-cur-joe-shorrocks",
+        "name": "Joe Shorrocks",
+        "club": "Salford Red Devils",
+        "position": "STAND_OFF",
+        "peakRating": 87,
+        "normalisedName": "joe shorrocks"
+      }
+    ],
+    "wright": [
+      {
+        "id": "hull-fc-cur-jed-cartwright",
+        "name": "Jed Cartwright",
+        "club": "Hull FC",
+        "position": "SECOND_ROW",
+        "peakRating": 82,
+        "normalisedName": "jed cartwright"
+      },
+      {
+        "id": "salford-cur-shane-wright",
+        "name": "Shane Wright",
+        "club": "Salford Red Devils",
+        "position": "LOOSE_FORWARD",
+        "peakRating": 85,
+        "normalisedName": "shane wright"
+      }
+    ],
+    "hellewell": [
+      {
+        "id": "salford-cur-ben-hellewell",
+        "name": "Ben Hellewell",
+        "club": "Salford Red Devils",
+        "position": "FULLBACK",
+        "peakRating": 83,
+        "normalisedName": "ben hellewell"
+      }
+    ],
+    "clark": [
+      {
+        "id": "salford-cur-mitch-clark",
+        "name": "Mitch Clark",
+        "club": "Salford Red Devils",
+        "position": "PROP",
+        "peakRating": 85,
+        "normalisedName": "mitch clark"
+      },
+      {
+        "id": "st-helens-cur-daryl-clark",
+        "name": "Daryl Clark",
+        "club": "St Helens",
+        "position": "HOOKER",
+        "peakRating": 86,
+        "normalisedName": "daryl clark"
+      }
+    ],
+    "vaughan": [
+      {
+        "id": "salford-cur-jonny-vaughan",
+        "name": "Jonny Vaughan",
+        "club": "Salford Red Devils",
+        "position": "CENTRE",
+        "peakRating": 75,
+        "normalisedName": "jonny vaughan"
+      },
+      {
+        "id": "york-cur-paul-vaughan",
+        "name": "Paul Vaughan",
+        "club": "York Knights",
+        "position": "PROP",
+        "peakRating": 87,
+        "normalisedName": "paul vaughan"
+      }
+    ],
+    "savelio": [
+      {
+        "id": "salford-cur-chris-savelio",
+        "name": "Chris Savelio",
+        "club": "Salford Red Devils",
+        "position": "HOOKER",
+        "peakRating": 82,
+        "normalisedName": "chris savelio"
+      }
+    ]
+  },
+  "allHits": [
+    {
+      "id": "salford-cur-kai-morgan",
+      "name": "Kai Morgan",
+      "normalisedName": "kai morgan",
+      "club": "Salford Red Devils",
+      "position": "SCRUM_HALF",
+      "peakRating": 80,
+      "matchedTokens": [
+        "morgan"
+      ]
+    },
+    {
+      "id": "salford-cur-ellis-robson",
+      "name": "Ellis Robson",
+      "normalisedName": "ellis robson",
+      "club": "Salford Red Devils",
+      "position": "SECOND_ROW",
+      "peakRating": 80,
+      "matchedTokens": [
+        "ellis"
+      ]
+    },
+    {
+      "id": "salford-cur-chris-savelio",
+      "name": "Chris Savelio",
+      "normalisedName": "chris savelio",
+      "club": "Salford Red Devils",
+      "position": "HOOKER",
+      "peakRating": 82,
+      "matchedTokens": [
+        "savelio"
+      ]
+    },
+    {
+      "id": "salford-cur-toby-warren",
+      "name": "Toby Warren",
+      "normalisedName": "toby warren",
+      "club": "Salford Red Devils",
+      "position": "CENTRE",
+      "peakRating": 81,
+      "matchedTokens": [
+        "warren"
+      ]
+    },
+    {
+      "id": "castleford-cur-jeremiah-simbiken",
+      "name": "Jeremiah Simbiken",
+      "normalisedName": "jeremiah simbiken",
+      "club": "Castleford Tigers",
+      "position": "SECOND_ROW",
+      "peakRating": 83,
+      "matchedTokens": [
+        "simbiken"
+      ]
+    },
+    {
+      "id": "catalans-cur-bayley-sironen",
+      "name": "Bayley Sironen",
+      "normalisedName": "bayley sironen",
+      "club": "Catalans Dragons",
+      "position": "SECOND_ROW",
+      "peakRating": 83,
+      "matchedTokens": [
+        "sironen"
+      ]
+    },
+    {
+      "id": "oldham-cur-zach-jebson",
+      "name": "Zach Jebson",
+      "normalisedName": "zach jebson",
+      "club": "Oldham RLFC",
+      "position": "CENTRE",
+      "peakRating": 83,
+      "matchedTokens": [
+        "jebson"
+      ]
+    },
+    {
+      "id": "salford-cur-jonny-vaughan",
+      "name": "Jonny Vaughan",
+      "normalisedName": "jonny vaughan",
+      "club": "Salford Red Devils",
+      "position": "CENTRE",
+      "peakRating": 75,
+      "matchedTokens": [
+        "vaughan"
+      ]
+    },
+    {
+      "id": "salford-cur-ben-hellewell",
+      "name": "Ben Hellewell",
+      "normalisedName": "ben hellewell",
+      "club": "Salford Red Devils",
+      "position": "FULLBACK",
+      "peakRating": 83,
+      "matchedTokens": [
+        "hellewell"
+      ]
+    },
+    {
+      "id": "sheffield-cur-jordan-lilley",
+      "name": "Jordan Lilley",
+      "normalisedName": "jordan lilley",
+      "club": "Sheffield Eagles",
+      "position": "STAND_OFF",
+      "peakRating": 82,
+      "matchedTokens": [
+        "lilley"
+      ]
+    },
+    {
+      "id": "salford-cur-mitch-clark",
+      "name": "Mitch Clark",
+      "normalisedName": "mitch clark",
+      "club": "Salford Red Devils",
+      "position": "PROP",
+      "peakRating": 85,
+      "matchedTokens": [
+        "clark"
+      ]
+    },
+    {
+      "id": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "normalisedName": "jake shorrocks",
+      "club": "Toulouse Olympique",
+      "position": "STAND_OFF",
+      "peakRating": 82,
+      "matchedTokens": [
+        "shorrocks"
+      ]
+    },
+    {
+      "id": "leeds-cur-morgan-gannon",
+      "name": "Morgan Gannon",
+      "normalisedName": "morgan gannon",
+      "club": "Leeds Rhinos",
+      "position": "SECOND_ROW",
+      "peakRating": 86,
+      "matchedTokens": [
+        "morgan"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-jed-cartwright",
+      "name": "Jed Cartwright",
+      "normalisedName": "jed cartwright",
+      "club": "Hull FC",
+      "position": "SECOND_ROW",
+      "peakRating": 82,
+      "matchedTokens": [
+        "wright"
+      ]
+    },
+    {
+      "id": "salford-cur-shane-wright",
+      "name": "Shane Wright",
+      "normalisedName": "shane wright",
+      "club": "Salford Red Devils",
+      "position": "LOOSE_FORWARD",
+      "peakRating": 85,
+      "matchedTokens": [
+        "wright"
+      ]
+    },
+    {
+      "id": "salford-cur-joe-shorrocks",
+      "name": "Joe Shorrocks",
+      "normalisedName": "joe shorrocks",
+      "club": "Salford Red Devils",
+      "position": "STAND_OFF",
+      "peakRating": 87,
+      "matchedTokens": [
+        "shorrocks"
+      ]
+    },
+    {
+      "id": "st-helens-cur-morgan-knowles",
+      "name": "Morgan Knowles",
+      "normalisedName": "morgan knowles",
+      "club": "St Helens",
+      "position": "LOOSE_FORWARD",
+      "peakRating": 87,
+      "matchedTokens": [
+        "morgan"
+      ]
+    },
+    {
+      "id": "york-cur-josh-griffin",
+      "name": "Josh Griffin",
+      "normalisedName": "josh griffin",
+      "club": "York Knights",
+      "position": "SECOND_ROW",
+      "peakRating": 82,
+      "matchedTokens": [
+        "griffin"
+      ]
+    },
+    {
+      "id": "wigan-cur-kaide-ellis",
+      "name": "Kaide Ellis",
+      "normalisedName": "kaide ellis",
+      "club": "Wigan Warriors",
+      "position": "LOOSE_FORWARD",
+      "peakRating": 89,
+      "matchedTokens": [
+        "ellis"
+      ]
+    },
+    {
+      "id": "st-helens-cur-curtis-sironen",
+      "name": "Curtis Sironen",
+      "normalisedName": "curtis sironen",
+      "club": "St Helens",
+      "position": "SECOND_ROW",
+      "peakRating": 84,
+      "matchedTokens": [
+        "sironen"
+      ]
+    },
+    {
+      "id": "york-cur-paul-vaughan",
+      "name": "Paul Vaughan",
+      "normalisedName": "paul vaughan",
+      "club": "York Knights",
+      "position": "PROP",
+      "peakRating": 87,
+      "matchedTokens": [
+        "vaughan"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-jake-bibby",
+      "name": "Jake Bibby",
+      "normalisedName": "jake bibby",
+      "club": "Huddersfield Giants",
+      "position": "CENTRE",
+      "peakRating": 83,
+      "matchedTokens": [
+        "bibby"
+      ]
+    },
+    {
+      "id": "leeds-cur-brodie-croft",
+      "name": "Brodie Croft",
+      "normalisedName": "brodie croft",
+      "club": "Leeds Rhinos",
+      "position": "STAND_OFF",
+      "peakRating": 90,
+      "matchedTokens": [
+        "croft"
+      ]
+    },
+    {
+      "id": "catalans-cur-tommy-makinson",
+      "name": "Tommy Makinson",
+      "normalisedName": "tommy makinson",
+      "club": "Catalans Dragons",
+      "position": "WING",
+      "peakRating": 82,
+      "matchedTokens": [
+        "makin"
+      ]
+    },
+    {
+      "id": "st-helens-cur-daryl-clark",
+      "name": "Daryl Clark",
+      "normalisedName": "daryl clark",
+      "club": "St Helens",
+      "position": "HOOKER",
+      "peakRating": 86,
+      "matchedTokens": [
+        "clark"
+      ]
+    }
+  ],
+  "tokensWithNoHits": [
+    "wallis",
+    "tcham",
+    "ramsden",
+    "waine",
+    "mustapha",
+    "zenon",
+    "carter",
+    "lawford",
+    "sergent",
+    "ratchford",
+    "kelly duffy",
+    "ritso",
+    "parkison",
+    "parkinson",
+    "holmes",
+    "gill",
+    "fitzsimmons",
+    "hodson",
+    "hickey",
+    "boyd",
+    "okoro",
+    "johnson",
+    "tait",
+    "ncube",
+    "bullock",
+    "tuohey",
+    "abdull",
+    "brierley",
+    "campbell",
+    "gaskell",
+    "shorter"
+  ],
+  "clubListsMeta": {
+    "Salford Red Devils": {
+      "match": "exact",
+      "count": 16
+    },
+    "London Broncos": {
+      "match": "exact",
+      "count": 10
+    },
+    "Sheffield Eagles": {
+      "match": "exact",
+      "count": 3
+    },
+    "Oldham RLFC": {
+      "match": "exact",
+      "count": 2
+    }
+  },
+  "clubLists": {
+    "Salford Red Devils": [
+      {
+        "id": "salford-cur-ben-hellewell",
+        "name": "Ben Hellewell",
+        "position": "FULLBACK",
+        "peakRating": 83,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-brodie-shields",
+        "name": "Brodie Shields",
+        "position": "PROP",
+        "peakRating": 82,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-chris-savelio",
+        "name": "Chris Savelio",
+        "position": "HOOKER",
+        "peakRating": 82,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-dele-sule",
+        "name": "Dele Sule",
+        "position": "WING",
+        "peakRating": 82,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-ellis-robson",
+        "name": "Ellis Robson",
+        "position": "SECOND_ROW",
+        "peakRating": 80,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-joe-shorrocks",
+        "name": "Joe Shorrocks",
+        "position": "STAND_OFF",
+        "peakRating": 87,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-jonny-vaughan",
+        "name": "Jonny Vaughan",
+        "position": "CENTRE",
+        "peakRating": 75,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-kai-morgan",
+        "name": "Kai Morgan",
+        "position": "SCRUM_HALF",
+        "peakRating": 80,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-logan-ewington",
+        "name": "Logan Ewington",
+        "position": "SCRUM_HALF",
+        "peakRating": 83,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-mitch-clark",
+        "name": "Mitch Clark",
+        "position": "PROP",
+        "peakRating": 85,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-nathan-connell",
+        "name": "Nathan Connell",
+        "position": "WING",
+        "peakRating": 80,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-ryan-kingston",
+        "name": "Ryan Kingston",
+        "position": "WING",
+        "peakRating": 80,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-shane-wright",
+        "name": "Shane Wright",
+        "position": "LOOSE_FORWARD",
+        "peakRating": 85,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-sitili-ngahe",
+        "name": "Sitili-Losala Ngahe",
+        "position": "SECOND_ROW",
+        "peakRating": 81,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-tim-bergin",
+        "name": "Tim Bergin",
+        "position": "CENTRE",
+        "peakRating": 83,
+        "club": "Salford Red Devils"
+      },
+      {
+        "id": "salford-cur-toby-warren",
+        "name": "Toby Warren",
+        "position": "CENTRE",
+        "peakRating": 81,
+        "club": "Salford Red Devils"
+      }
+    ],
+    "London Broncos": [
+      {
+        "id": "london-cur-dayon-sambou",
+        "name": "Dayon Sambou",
+        "position": "HOOKER",
+        "peakRating": 84,
+        "club": "London Broncos"
+      },
+      {
+        "id": "london-cur-harry-aldous",
+        "name": "Harry Aldous",
+        "position": "PROP",
+        "peakRating": 80,
+        "club": "London Broncos"
+      },
+      {
+        "id": "london-cur-jack-campagnolo",
+        "name": "Jack Campagnolo",
+        "position": "SCRUM_HALF",
+        "peakRating": 84,
+        "club": "London Broncos"
+      },
+      {
+        "id": "london-cur-jacob-jones",
+        "name": "Jacob Jones",
+        "position": "SECOND_ROW",
+        "peakRating": 80,
+        "club": "London Broncos"
+      },
+      {
+        "id": "london-cur-jimmy-meadows",
+        "name": "Jimmy Meadows",
+        "position": "SCRUM_HALF",
+        "peakRating": 83,
+        "club": "London Broncos"
+      },
+      {
+        "id": "london-cur-lewis-bienek",
+        "name": "Lewis Bienek",
+        "position": "PROP",
+        "peakRating": 81,
+        "club": "London Broncos"
+      },
+      {
+        "id": "london-cur-oliver-leyland",
+        "name": "Oliver Leyland",
+        "position": "STAND_OFF",
+        "peakRating": 83,
+        "club": "London Broncos"
+      },
+      {
+        "id": "london-cur-robbie-storey",
+        "name": "Robbie Storey",
+        "position": "CENTRE",
+        "peakRating": 84,
+        "club": "London Broncos"
+      },
+      {
+        "id": "london-cur-robert-butler",
+        "name": "Robert Butler",
+        "position": "PROP",
+        "peakRating": 81,
+        "club": "London Broncos"
+      },
+      {
+        "id": "london-cur-sam-davis",
+        "name": "Sam Davis",
+        "position": "HOOKER",
+        "peakRating": 81,
+        "club": "London Broncos"
+      }
+    ],
+    "Sheffield Eagles": [
+      {
+        "id": "sheffield-cur-joe-brown",
+        "name": "Joe Brown",
+        "position": "FULLBACK",
+        "peakRating": 82,
+        "club": "Sheffield Eagles"
+      },
+      {
+        "id": "sheffield-cur-jordan-lilley",
+        "name": "Jordan Lilley",
+        "position": "STAND_OFF",
+        "peakRating": 82,
+        "club": "Sheffield Eagles"
+      },
+      {
+        "id": "sheffield-cur-matty-marsh",
+        "name": "Matty Marsh",
+        "position": "FULLBACK",
+        "peakRating": 84,
+        "club": "Sheffield Eagles"
+      }
+    ],
+    "Oldham RLFC": [
+      {
+        "id": "oldham-cur-jonty-gorley",
+        "name": "Jonty Gorley",
+        "position": "STAND_OFF",
+        "peakRating": 80,
+        "club": "Oldham RLFC"
+      },
+      {
+        "id": "oldham-cur-zach-jebson",
+        "name": "Zach Jebson",
+        "position": "CENTRE",
+        "peakRating": 83,
+        "club": "Oldham RLFC"
+      }
+    ]
+  },
+  "likelyMovers": [
+    {
+      "id": "salford-cur-kai-morgan",
+      "name": "Kai Morgan",
+      "club": "Salford Red Devils",
+      "position": "SCRUM_HALF",
+      "peakRating": 80,
+      "matchedTokens": [
+        "morgan"
+      ],
+      "onChampionshipClub": true
+    },
+    {
+      "id": "salford-cur-chris-savelio",
+      "name": "Chris Savelio",
+      "club": "Salford Red Devils",
+      "position": "HOOKER",
+      "peakRating": 82,
+      "matchedTokens": [
+        "savelio"
+      ],
+      "onChampionshipClub": true
+    },
+    {
+      "id": "salford-cur-toby-warren",
+      "name": "Toby Warren",
+      "club": "Salford Red Devils",
+      "position": "CENTRE",
+      "peakRating": 81,
+      "matchedTokens": [
+        "warren"
+      ],
+      "onChampionshipClub": true
+    },
+    {
+      "id": "castleford-cur-jeremiah-simbiken",
+      "name": "Jeremiah Simbiken",
+      "club": "Castleford Tigers",
+      "position": "SECOND_ROW",
+      "peakRating": 83,
+      "matchedTokens": [
+        "simbiken"
+      ],
+      "onChampionshipClub": false
+    },
+    {
+      "id": "catalans-cur-bayley-sironen",
+      "name": "Bayley Sironen",
+      "club": "Catalans Dragons",
+      "position": "SECOND_ROW",
+      "peakRating": 83,
+      "matchedTokens": [
+        "sironen"
+      ],
+      "onChampionshipClub": false
+    },
+    {
+      "id": "oldham-cur-zach-jebson",
+      "name": "Zach Jebson",
+      "club": "Oldham RLFC",
+      "position": "CENTRE",
+      "peakRating": 83,
+      "matchedTokens": [
+        "jebson"
+      ],
+      "onChampionshipClub": true
+    },
+    {
+      "id": "salford-cur-jonny-vaughan",
+      "name": "Jonny Vaughan",
+      "club": "Salford Red Devils",
+      "position": "CENTRE",
+      "peakRating": 75,
+      "matchedTokens": [
+        "vaughan"
+      ],
+      "onChampionshipClub": true
+    },
+    {
+      "id": "salford-cur-ben-hellewell",
+      "name": "Ben Hellewell",
+      "club": "Salford Red Devils",
+      "position": "FULLBACK",
+      "peakRating": 83,
+      "matchedTokens": [
+        "hellewell"
+      ],
+      "onChampionshipClub": true
+    },
+    {
+      "id": "sheffield-cur-jordan-lilley",
+      "name": "Jordan Lilley",
+      "club": "Sheffield Eagles",
+      "position": "STAND_OFF",
+      "peakRating": 82,
+      "matchedTokens": [
+        "lilley"
+      ],
+      "onChampionshipClub": true
+    },
+    {
+      "id": "salford-cur-mitch-clark",
+      "name": "Mitch Clark",
+      "club": "Salford Red Devils",
+      "position": "PROP",
+      "peakRating": 85,
+      "matchedTokens": [
+        "clark"
+      ],
+      "onChampionshipClub": true
+    },
+    {
+      "id": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "club": "Toulouse Olympique",
+      "position": "STAND_OFF",
+      "peakRating": 82,
+      "matchedTokens": [
+        "shorrocks"
+      ],
+      "onChampionshipClub": false
+    },
+    {
+      "id": "salford-cur-shane-wright",
+      "name": "Shane Wright",
+      "club": "Salford Red Devils",
+      "position": "LOOSE_FORWARD",
+      "peakRating": 85,
+      "matchedTokens": [
+        "wright"
+      ],
+      "onChampionshipClub": true
+    },
+    {
+      "id": "salford-cur-joe-shorrocks",
+      "name": "Joe Shorrocks",
+      "club": "Salford Red Devils",
+      "position": "STAND_OFF",
+      "peakRating": 87,
+      "matchedTokens": [
+        "shorrocks"
+      ],
+      "onChampionshipClub": true
+    },
+    {
+      "id": "york-cur-josh-griffin",
+      "name": "Josh Griffin",
+      "club": "York Knights",
+      "position": "SECOND_ROW",
+      "peakRating": 82,
+      "matchedTokens": [
+        "griffin"
+      ],
+      "onChampionshipClub": true
+    },
+    {
+      "id": "wigan-cur-kaide-ellis",
+      "name": "Kaide Ellis",
+      "club": "Wigan Warriors",
+      "position": "LOOSE_FORWARD",
+      "peakRating": 89,
+      "matchedTokens": [
+        "ellis"
+      ],
+      "onChampionshipClub": false
+    },
+    {
+      "id": "st-helens-cur-curtis-sironen",
+      "name": "Curtis Sironen",
+      "club": "St Helens",
+      "position": "SECOND_ROW",
+      "peakRating": 84,
+      "matchedTokens": [
+        "sironen"
+      ],
+      "onChampionshipClub": false
+    },
+    {
+      "id": "york-cur-paul-vaughan",
+      "name": "Paul Vaughan",
+      "club": "York Knights",
+      "position": "PROP",
+      "peakRating": 87,
+      "matchedTokens": [
+        "vaughan"
+      ],
+      "onChampionshipClub": true
+    },
+    {
+      "id": "huddersfield-cur-jake-bibby",
+      "name": "Jake Bibby",
+      "club": "Huddersfield Giants",
+      "position": "CENTRE",
+      "peakRating": 83,
+      "matchedTokens": [
+        "bibby"
+      ],
+      "onChampionshipClub": false
+    },
+    {
+      "id": "leeds-cur-brodie-croft",
+      "name": "Brodie Croft",
+      "club": "Leeds Rhinos",
+      "position": "STAND_OFF",
+      "peakRating": 90,
+      "matchedTokens": [
+        "croft"
+      ],
+      "onChampionshipClub": false
+    },
+    {
+      "id": "st-helens-cur-daryl-clark",
+      "name": "Daryl Clark",
+      "club": "St Helens",
+      "position": "HOOKER",
+      "peakRating": 86,
+      "matchedTokens": [
+        "clark"
+      ],
+      "onChampionshipClub": false
+    }
+  ],
+  "weakOrAmbiguousHits": [
+    {
+      "id": "salford-cur-ellis-robson",
+      "name": "Ellis Robson",
+      "club": "Salford Red Devils",
+      "position": "SECOND_ROW",
+      "peakRating": 80,
+      "matchedTokens": [
+        "ellis"
+      ],
+      "onChampionshipClub": true,
+      "note": "first-name Ellis for token ellis"
+    },
+    {
+      "id": "leeds-cur-morgan-gannon",
+      "name": "Morgan Gannon",
+      "club": "Leeds Rhinos",
+      "position": "SECOND_ROW",
+      "peakRating": 86,
+      "matchedTokens": [
+        "morgan"
+      ],
+      "onChampionshipClub": false,
+      "note": "first-name Morgan for token morgan"
+    },
+    {
+      "id": "hull-fc-cur-jed-cartwright",
+      "name": "Jed Cartwright",
+      "club": "Hull FC",
+      "position": "SECOND_ROW",
+      "peakRating": 82,
+      "matchedTokens": [
+        "wright"
+      ],
+      "onChampionshipClub": false,
+      "note": "substring Cartwright for token wright"
+    },
+    {
+      "id": "st-helens-cur-morgan-knowles",
+      "name": "Morgan Knowles",
+      "club": "St Helens",
+      "position": "LOOSE_FORWARD",
+      "peakRating": 87,
+      "matchedTokens": [
+        "morgan"
+      ],
+      "onChampionshipClub": false,
+      "note": "first-name Morgan for token morgan"
+    },
+    {
+      "id": "catalans-cur-tommy-makinson",
+      "name": "Tommy Makinson",
+      "club": "Catalans Dragons",
+      "position": "WING",
+      "peakRating": 82,
+      "matchedTokens": [
+        "makin"
+      ],
+      "onChampionshipClub": false,
+      "note": "substring of Makinson for token makin"
+    }
+  ]
+}

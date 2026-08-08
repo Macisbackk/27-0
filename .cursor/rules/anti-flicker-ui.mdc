@@ -1,0 +1,35 @@
+---
+description: Prevent UI flicker from fixed atmosphere layers, chrome remounts, and body scroll locks
+alwaysApply: true
+---
+
+# Anti-flicker UI contracts
+
+Site-wide flicker on mobile and desktop has repeatedly come from compositing + remount patterns. Follow these contracts so it does not return.
+
+## Arena / atmosphere
+
+- Paint stadium atmosphere on `.matchday-arena` / `.game-arena` backgrounds in `design-system.css`.
+- **Never** add new `fixed inset-0` decorative layers (backdrop, lights, grids) under sticky header/action bars.
+- If a local overlay is required, use `absolute inset-0` inside a `relative` + `overflow: clip` arena — not `position: fixed`.
+- Do not reintroduce `backdrop-filter` on app chrome or full-viewport dims.
+- Do not add `isolation: isolate` on `.app-shell` or full-page shells (forces sticky-chrome repaint flicker on Windows Chrome).
+
+## Sticky chrome
+
+- Keep sticky action bars **mounted**; toggle with `invisible pointer-events-none` / `inert`, do not mount/unmount on phase changes.
+- Sticky bars and `.app-header` must stay **opaque** (no translucent `color-mix` backgrounds that repaint while content scrolls underneath).
+
+## Overlays / motion
+
+- Do not opacity-fade full-viewport backdrops (`initial={{ opacity: 0 }}` / exit fade). Prefer opaque show + small content `y` motion, or CSS only.
+- Prefer exclusive overlay views over leaving large trees as `invisible` under spins when practical.
+- Avoid `AnimatePresence mode="wait"` for exclusive full-screen screens when it creates a blank frame.
+
+## Scroll lock
+
+- Use `@/lib/ui/scroll-lock` only. Do **not** set `document.body.style.position = "fixed"` — overflow + touch blocking is the approved lock (fixed body jumps under sticky chrome).
+
+## First paint
+
+- Sync-initialize any state that gates first content (e.g. pre-game boost, live match). Effects may hydrate, but must not flash a wrong screen for a frame when the truth is already known.

@@ -1,5 +1,38 @@
 [
   {
+    "id": "sheffield-cur-kai-morgan",
+    "name": "Kai Morgan",
+    "position": "SCRUM_HALF",
+    "club": "Sheffield Eagles",
+    "nationality": "Unknown",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 95000,
+    "appearances": 15,
+    "dateOfBirth": "2004-04-13",
+    "birthYear": 2004,
+    "clubsPlayedFor": [
+      "Rochdale",
+      "Swinton",
+      "Halifax",
+      "Salford",
+      "Sheffield",
+      "Salford Red Devils",
+      "Sheffield Eagles"
+    ],
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "sheffield-eagles-2026",
+    "team": "Sheffield Eagles",
+    "displayClub": "Sheffield Eagles",
+    "basePlayerId": "sheffield-cur-kai-morgan",
+    "status": "Current",
+    "primaryPosition": "SCRUM_HALF",
+    "currentClub": "Sheffield Eagles"
+  },
+  {
     "id": "sheffield-cur-joe-brown",
     "name": "Joe Brown",
     "position": "FULLBACK",

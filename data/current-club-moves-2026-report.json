@@ -1,0 +1,98 @@
+{
+  "generatedAt": "2026-08-08T13:20:45.079Z",
+  "applied": [
+    {
+      "name": "Jake Bibby",
+      "fromId": "huddersfield-cur-jake-bibby",
+      "toId": "oldham-cur-jake-bibby",
+      "fromClub": "Huddersfield Giants",
+      "toClub": "Oldham RLFC",
+      "reason": "Released by Huddersfield; permanent Oldham Championship signing for 2026"
+    },
+    {
+      "name": "Jeremiah Simbiken",
+      "fromId": "castleford-cur-jeremiah-simbiken",
+      "toId": "london-cur-jeremiah-simbiken",
+      "fromClub": "Castleford Tigers",
+      "toClub": "London Broncos",
+      "reason": "Castleford → London Broncos Championship for 2026"
+    },
+    {
+      "name": "Zach Jebson",
+      "fromId": "oldham-cur-zach-jebson",
+      "toId": "midlands-cur-zach-jebson",
+      "fromClub": "Oldham RLFC",
+      "toClub": "Midlands Hurricanes",
+      "reason": "Hull FC exit → Midlands Hurricanes (was wrongly on Oldham remnant)"
+    },
+    {
+      "name": "Toby Warren",
+      "fromId": "salford-cur-toby-warren",
+      "toId": "midlands-cur-toby-warren",
+      "fromClub": "Salford Red Devils",
+      "toClub": "Midlands Hurricanes",
+      "reason": "Leeds release / Salford liquidation → Midlands Hurricanes"
+    },
+    {
+      "name": "Nathan Connell",
+      "fromId": "salford-cur-nathan-connell",
+      "toId": "widnes-cur-nathan-connell",
+      "fromClub": "Salford Red Devils",
+      "toClub": "Widnes Vikings",
+      "reason": "Salford liquidation → Widnes Vikings"
+    },
+    {
+      "name": "Kai Morgan",
+      "fromId": "salford-cur-kai-morgan",
+      "toId": "sheffield-cur-kai-morgan",
+      "fromClub": "Salford Red Devils",
+      "toClub": "Sheffield Eagles",
+      "reason": "Salford liquidation → Sheffield Eagles"
+    },
+    {
+      "name": "Shane Wright",
+      "fromId": "salford-cur-shane-wright",
+      "toId": "st-helens-cur-shane-wright",
+      "fromClub": "Salford Red Devils",
+      "toClub": "St Helens",
+      "reason": "Salford liquidation → St Helens (active SL fantasy)"
+    },
+    {
+      "name": "Joe Shorrocks",
+      "fromId": "salford-cur-joe-shorrocks",
+      "toId": "st-helens-cur-joe-shorrocks",
+      "fromClub": "Salford Red Devils",
+      "toClub": "St Helens",
+      "reason": "Salford liquidation → St Helens (active SL fantasy)"
+    },
+    {
+      "name": "Jonny Vaughan",
+      "fromId": "salford-cur-jonny-vaughan",
+      "toId": "wigan-cur-jonny-vaughan",
+      "fromClub": "Salford Red Devils",
+      "toClub": "Wigan Warriors",
+      "reason": "Signed for Wigan from Saints path; was on liquidated Salford card"
+    },
+    {
+      "name": "Dayon Sambou",
+      "fromId": "london-cur-dayon-sambou",
+      "toId": "wigan-cur-dayon-sambou",
+      "fromClub": "London Broncos",
+      "toClub": "Wigan Warriors",
+      "reason": "Joined Wigan with Vaughan; was on London remnant card"
+    }
+  ],
+  "skipped": [],
+  "sidecarRetargets": {
+    "ratingTsHits": 2,
+    "ratingJsonHits": 2,
+    "potTsHits": 2,
+    "birthHits": 10
+  },
+  "notes": [
+    "Bayley Sironen left Catalans for Queensland Cup (Wynnum Manly) — no Championship club in DB; left in place.",
+    "Josh Simm (Catalans→Oldham) and Jack Walker (→Oldham) are not in current-squads — not added.",
+    "Most off-season SL→Championship academy/depth movers are not in the Current DB.",
+    "Run npm run build:player-chunks after this script."
+  ]
+}

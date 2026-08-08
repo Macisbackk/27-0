@@ -3,6 +3,10 @@
  * One service for spins, calendar animation, modals, and popups.
  * Releasing one owner never clears another owner's lock.
  * Compensates scrollbar width so page width does not jump.
+ *
+ * Does NOT set body { position: fixed } — that jumps the document under sticky
+ * chrome and causes a full-UI flicker on mobile and desktop when locks
+ * acquire/release. Overflow + touch blocking is enough for overlays.
  */
 
 export type ScrollLockId = string;
@@ -18,8 +22,6 @@ type ScrollSnapshot = {
   htmlOverflow: string;
   bodyPaddingRight: string;
   htmlPaddingRight: string;
-  scrollX: number;
-  scrollY: number;
   scrollbarGap: number;
 };
 
@@ -78,11 +80,12 @@ function applyLockStyles(): void {
   const gap = snapshot.scrollbarGap;
   document.body.style.overflow = "hidden";
   document.documentElement.style.overflow = "hidden";
-  document.body.style.position = "fixed";
-  document.body.style.top = `-${snapshot.scrollY}px`;
-  document.body.style.left = "0";
-  document.body.style.right = "0";
-  document.body.style.width = "100%";
+  // Clear any legacy position:fixed lock from older sessions / hot reload.
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.left = "";
+  document.body.style.right = "";
+  document.body.style.width = "";
   if (gap > 0) {
     document.body.style.paddingRight = `${gap}px`;
     document.documentElement.style.paddingRight = `${gap}px`;
@@ -98,8 +101,6 @@ function restoreScrollStyles(): void {
     htmlOverflow,
     bodyPaddingRight,
     htmlPaddingRight,
-    scrollX,
-    scrollY,
   } = snapshot;
   document.body.style.overflow = bodyOverflow;
   document.documentElement.style.overflow = htmlOverflow;
@@ -112,16 +113,7 @@ function restoreScrollStyles(): void {
   document.documentElement.style.paddingRight = htmlPaddingRight;
   delete document.documentElement.dataset.uiOverlay;
   detachTouchBlocker();
-  // Restore after styles clear — double rAF avoids Safari clamping against sticky chrome.
-  const x = scrollX;
-  const y = scrollY;
   snapshot = null;
-  requestAnimationFrame(() => {
-    window.scrollTo(x, y);
-    requestAnimationFrame(() => {
-      window.scrollTo(x, y);
-    });
-  });
 }
 
 function scheduleRestoreIfIdle(): void {
@@ -148,8 +140,6 @@ export function acquireScrollLock(owner: string): ScrollLockId {
         htmlOverflow: document.documentElement.style.overflow,
         bodyPaddingRight: document.body.style.paddingRight,
         htmlPaddingRight: document.documentElement.style.paddingRight,
-        scrollX: window.scrollX,
-        scrollY: window.scrollY,
         scrollbarGap: measureScrollbarGap(),
       };
       applyLockStyles();
