@@ -146,8 +146,6 @@ function evaluateUnlock(
       return progress.totalLosses >= 50;
     case "close-one":
       return ctx.matchWon === true && ctx.marginOfVictory === 1;
-    case "statement-win":
-      return ctx.matchWon === true && (ctx.marginOfVictory ?? 0) >= 40;
     case "mellor-miracle":
       return ctx.joeMellorComplete === true;
     case "goat-status":

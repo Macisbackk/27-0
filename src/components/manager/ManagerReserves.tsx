@@ -81,6 +81,15 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
   const [message, setMessage] = useState<string | null>(null);
   const [detailsId, setDetailsId] = useState<string | null>(null);
+  const [promotionPopup, setPromotionPopup] = useState<{
+    name: string;
+    position: string;
+    rating: number;
+    age: number;
+    oldWageLabel: string | null;
+    newWageLabel: string;
+    years: number;
+  } | null>(null);
   const [releaseTarget, setReleaseTarget] = useState<ManagerReservePlayer | null>(
     null
   );
@@ -158,16 +167,30 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     : null;
 
   const handlePromote = (id: string) => {
+    const reserve = career.reserves.find((r) => r.id === id);
+    if (!reserve) {
+      setMessage("Reserve not found");
+      return;
+    }
+    const oldWage = career.reserveContracts?.[id]?.wagePerYear ?? null;
     const result = promoteReserveToSquad(career, id);
     if (!result.ok || !result.career) {
       setMessage(result.error ?? "Could not promote player");
       return;
     }
-    const name = career.reserves.find((r) => r.id === id)?.name ?? "Player";
+    const newContract = result.career.contracts[id];
     playPromotion();
     onUpdate(result.career);
     setDetailsId(null);
-    setMessage(`${name} promoted to the senior squad`);
+    setPromotionPopup({
+      name: reserve.name,
+      position: getFullPositionName(reserve.position),
+      rating: reserve.rating,
+      age: reserve.age,
+      oldWageLabel: oldWage != null ? formatWage(oldWage) : null,
+      newWageLabel: formatWage(newContract?.wagePerYear ?? 0),
+      years: newContract?.yearsRemaining ?? 0,
+    });
   };
 
   const handleCallUp = (id: string) => {
@@ -183,62 +206,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
     if (!reserve) return;
     onUpdate(cancelReserveCallUp(career, id));
     setMessage(`${reserve.name} call-up cancelled`);
-  };
-
-  const handleOfferFullTime = (id: string) => {
-    const reserve = career.reserves.find((r) => r.id === id);
-    if (!reserve) return;
-    if (reserve.pendingFullTimeOffer?.status === "pending") {
-      setMessage(`${reserve.name} already has a pending full-time offer`);
-      return;
-    }
-    const wage = Math.min(
-      45_000,
-      Math.max(12_000, Math.round(8_000 + reserve.rating * 280))
-    );
-    const years = reserve.age <= 21 ? 3 : 2;
-    const next: ManagerCareer = {
-      ...career,
-      reserves: career.reserves.map((r) =>
-        r.id === id
-          ? {
-              ...r,
-              pendingFullTimeOffer: {
-                wagePerYear: wage,
-                years,
-                offeredAtSeasonYear: career.seasonYear,
-                status: "pending",
-              },
-            }
-          : r
-      ),
-      reserveContracts: {
-        ...(career.reserveContracts ?? {}),
-        [id]: {
-          ...(career.reserveContracts?.[id] ??
-            generateReserveYouthContract(reserve)),
-          wagePerYear: wage,
-          yearsRemaining: years,
-          squadRole: "reserve",
-        },
-      },
-    };
-    // Accept immediately into reserve contract (player stays in reserves).
-    next.reserves = next.reserves.map((r) =>
-      r.id === id && r.pendingFullTimeOffer
-        ? {
-            ...r,
-            pendingFullTimeOffer: {
-              ...r.pendingFullTimeOffer,
-              status: "accepted",
-            },
-          }
-        : r
-    );
-    onUpdate(next);
-    setMessage(
-      `${reserve.name} signed a full-time deal (£${Math.round(wage / 1000)}k/yr, ${years}yr) — still in Reserves until promoted`
-    );
   };
 
   const handleReleaseClick = (id: string) => {
@@ -691,11 +658,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                   onCallUp={handleCallUp}
                   onCancelCallUp={handleCancelCallUp}
                   onPromote={handlePromote}
-                  onOfferFullTime={handleOfferFullTime}
-                  canOfferFullTime={
-                    r.pendingFullTimeOffer?.status !== "accepted" &&
-                    r.pendingFullTimeOffer?.status !== "pending"
-                  }
                   onViewDetails={setDetailsId}
                 />
               );
@@ -747,6 +709,27 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
           onConfirm={handleReleaseConfirm}
         />
       )}
+
+      <ManagerDialog
+        open={promotionPopup !== null}
+        title="Promoted to senior squad"
+        message={
+          promotionPopup
+            ? [
+                `${promotionPopup.name} has joined the senior squad.`,
+                "",
+                `${promotionPopup.position} · Age ${promotionPopup.age} · Rating ${promotionPopup.rating}`,
+                promotionPopup.oldWageLabel
+                  ? `Wage: ${promotionPopup.oldWageLabel}/yr → ${promotionPopup.newWageLabel}/yr`
+                  : `Wage: ${promotionPopup.newWageLabel}/yr`,
+                `Contract: ${promotionPopup.years} year${promotionPopup.years === 1 ? "" : "s"}`,
+              ].join("\n")
+            : ""
+        }
+        confirmLabel="Continue"
+        onConfirm={() => setPromotionPopup(null)}
+        onCancel={() => setPromotionPopup(null)}
+      />
 
       <ManagerDialog
         open={releaseError !== null}

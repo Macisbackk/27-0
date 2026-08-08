@@ -34,7 +34,7 @@ import { userQualifiedForPlayoffs } from "@/lib/game/playoff-simulation";
 import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
 import { LeagueTable } from "./LeagueTable";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
-import { NORMAL, MOBILE } from "@/lib/ui/design-system";
+import { NORMAL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GuestSaveNudge } from "@/components/EconomyExplainer";
 import { useAuth } from "@/lib/auth-context";
@@ -235,7 +235,7 @@ export function SeasonReview({
       diagnoseLabel="QuickModeSeasonReview"
       className={
         showPlayoffPrompt
-          ? MOBILE.actionBarPad
+          ? "pb-[max(1rem,env(safe-area-inset-bottom))] max-sm:pb-[calc(var(--mobile-button-height)+1.25rem+env(safe-area-inset-bottom))]"
           : "pb-[max(1rem,env(safe-area-inset-bottom))]"
       }
     >
@@ -321,6 +321,19 @@ export function SeasonReview({
                     You qualified for the play-offs — complete the knockout
                     stage to finish your season.
                   </p>
+                  <div className="mt-4 hidden sm:block">
+                    <MatchReviewActions
+                      compact
+                      primaryAction={{
+                        label: "Continue to Play-Offs →",
+                        onClick: () => {
+                          playUiClick();
+                          onContinuePlayoffs?.();
+                        },
+                      }}
+                      hideEndOfRunNav
+                    />
+                  </div>
                 </div>
               ) : (
                 <MatchReviewActions
@@ -478,7 +491,7 @@ export function SeasonReview({
           </div>
 
         {showPlayoffPrompt && (
-          <div className="sticky bottom-0 z-[1] mt-4 border-t border-theme-tertiary/25 bg-[rgba(5,10,9,0.98)] px-[var(--layout-page-pad-inline)] py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_32px_rgba(0,0,0,0.45)]">
+          <div className="sticky bottom-0 z-[1] mt-4 border-t border-theme-tertiary/25 bg-[rgba(5,10,9,0.98)] px-[var(--layout-page-pad-inline)] py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_32px_rgba(0,0,0,0.45)] sm:hidden">
             <div className="mx-auto w-full max-w-[var(--layout-page-compact)]">
               <GameButton
                 variant="theme"

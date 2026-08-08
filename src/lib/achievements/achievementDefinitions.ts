@@ -243,7 +243,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "youth-breakthrough",
     name: "Youth Breakthrough",
-    description: "Give a reserve player a full-time contract.",
+    description: "Promote a reserve player to the senior squad.",
     category: "manager",
     points: 25,
   },
@@ -376,13 +376,6 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     description: "Win a match by 1 point.",
     category: "profile",
     points: 15,
-  },
-  {
-    id: "statement-win",
-    name: "Statement Win",
-    description: "Win a match by 40+ points.",
-    category: "profile",
-    points: 25,
   },
 
   // Easter Eggs (hidden until unlocked)

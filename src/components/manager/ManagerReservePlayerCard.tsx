@@ -30,9 +30,7 @@ interface ManagerReservePlayerCardProps {
   onCallUp: (id: string) => void;
   onCancelCallUp?: (id: string) => void;
   onPromote: (id: string) => void;
-  onOfferFullTime: (id: string) => void;
   onViewDetails: (id: string) => void;
-  canOfferFullTime?: boolean;
 }
 
 export function ManagerReservePlayerCard({
@@ -44,9 +42,7 @@ export function ManagerReservePlayerCard({
   onCallUp,
   onCancelCallUp,
   onPromote,
-  onOfferFullTime,
   onViewDetails,
-  canOfferFullTime = true,
 }: ManagerReservePlayerCardProps) {
   const { contract, promotion } = model;
   const calledUp = !model.canCallUp;
@@ -152,20 +148,6 @@ export function ManagerReservePlayerCard({
                 >
                   Promote to Senior
                 </button>
-                {canOfferFullTime ? (
-                  <button
-                    type="button"
-                    role="menuitem"
-                    className="btn-press block w-full rounded-md px-3 py-2 text-left text-xs font-semibold text-white hover:bg-pitch-800"
-                    onClick={() => {
-                      playUiClick();
-                      setMenuOpen(false);
-                      onOfferFullTime(model.id);
-                    }}
-                  >
-                    Offer Full-Time
-                  </button>
-                ) : null}
                 <button
                   type="button"
                   role="menuitem"
