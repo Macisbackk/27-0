@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 
 const SITE_URL = "https://www.27-0.co.uk";
 
+/** Required for `output: "export"` (Capacitor mobile builds). */
+export const dynamic = "force-static";
+
 /** Public crawl rules — allow all bots (incl. ChatGPT / OpenAI fetchers). */
 export default function robots(): MetadataRoute.Robots {
   return {

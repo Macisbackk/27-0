@@ -11,6 +11,8 @@ import { SoundUnlock } from "@/components/SoundUnlock";
 import { PwaInstallPrompt } from "@/components/PwaInstallPrompt";
 import { UiThemeProvider } from "@/components/UiThemeProvider";
 import { AchievementProvider } from "@/components/achievements/AchievementProvider";
+import { CapacitorAppShell } from "@/components/CapacitorAppShell";
+import { ExternalLinkGuard } from "@/components/ExternalLinkGuard";
 import { UI_THEME_BOOTSTRAP_SCRIPT } from "@/lib/ui/theme-bootstrap-script";
 
 const anton = Anton({
@@ -58,6 +60,8 @@ export default function RootLayout({
       </head>
       <body className="app-shell flex min-h-dvh min-w-0 max-w-full flex-col overflow-x-clip bg-[var(--bg-primary)]">
         <AuthProvider>
+          <CapacitorAppShell />
+          <ExternalLinkGuard />
           <CoachbeardMergeRunner />
           <UiThemeProvider />
           <AchievementProvider>

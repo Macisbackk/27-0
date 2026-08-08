@@ -2277,12 +2277,16 @@ export function GameBoard({
           <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start">
             {title && (
               <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>
-                {dailyScenario ? `Daily · ${dailyScenario.title}` : title}
+                {dailyScenario
+                  ? `Daily · All ${dailyScenario.forceOpponentClub}`
+                  : title}
               </h1>
             )}
           </div>
           {dailyScenario ? (
-            <p className="text-sm text-gray-400">{dailyScenario.blurb}</p>
+            <p className="text-sm text-gray-400">
+              League Leaders + Grand Final bonuses
+            </p>
           ) : subtitle ? (
             <p className="text-sm text-gray-400">{subtitle}</p>
           ) : null}

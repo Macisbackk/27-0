@@ -2646,3 +2646,27 @@ button.mode-start-btn-hard,
     transition: none !important;
   }
 }
+
+/* Capacitor Android shell — respect display cutouts without huge global padding */
+html.capacitor-native body.app-shell {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  /* Bottom inset is handled by sticky bars / manager nav tokens already */
+  padding-bottom: 0;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html.capacitor-native button,
+html.capacitor-native [role="button"],
+html.capacitor-native .game-button,
+html.capacitor-native a.game-button {
+  touch-action: manipulation;
+}
+
+html.capacitor-native .logo-mark,
+html.capacitor-native .logo-mark * {
+  -webkit-user-select: none;
+  user-select: none;
+}

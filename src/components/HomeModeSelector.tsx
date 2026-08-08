@@ -23,7 +23,6 @@ import {
   getDailyChallengeHref,
   getDailyChallengeProgress,
   getDailyChallengeScenario,
-  getDailyChallengeTotalBonus,
   hasClaimedDailyChallengeBonus,
 } from "@/lib/daily-challenge";
 import { formatClubFundsExact } from "@/lib/club-funds";
@@ -103,37 +102,29 @@ export function HomeModeSelector() {
             <p className={`text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-theme-primary`}>
               Daily challenge
             </p>
-            <p className={`mt-1 font-semibold text-white`}>{scenario.title}</p>
-            <p className={`mt-1 ${TYPO.bodySm}`}>{scenario.blurb}</p>
+            <p className={`mt-1 font-semibold text-white`}>
+              All {scenario.forceOpponentClub}
+            </p>
             <p className={`mt-1 ${TYPO.meta}`}>
-              League Leaders {formatClubFundsExact(scenario.leagueLeadersBonus)}
+              {formatClubFundsExact(scenario.leagueLeadersBonus)} League Leaders
               {" · "}
-              Grand Final {formatClubFundsExact(scenario.playoffTitleBonus)}
-              {" · "}
-              Total {formatClubFundsExact(getDailyChallengeTotalBonus(scenario))}
+              {formatClubFundsExact(scenario.playoffTitleBonus)} Grand Final
             </p>
             {dailyClaimed ? (
-              <p className={`mt-1 ${TYPO.meta} text-theme-primary`}>
-                Challenge complete today
-              </p>
+              <p className={`mt-1 ${TYPO.meta} text-theme-primary`}>Done today</p>
             ) : (
-              <>
-                <p className={`mt-1 ${TYPO.meta}`}>
-                  {dailyProgress.leagueLeaders ? "League Leaders done" : "League Leaders pending"}
-                  {" · "}
-                  {dailyProgress.playoffTitle ? "Title done" : "Title pending"}
-                </p>
-                <div className="mt-2 flex justify-center">
-                  <GameButton
-                    variant="secondary"
-                    size="sm"
-                    href={getDailyChallengeHref()}
-                    onClick={() => playUiClick()}
-                  >
-                    Play today&apos;s challenge
-                  </GameButton>
-                </div>
-              </>
+              <div className="mt-2 flex justify-center">
+                <GameButton
+                  variant="secondary"
+                  size="sm"
+                  href={getDailyChallengeHref()}
+                  onClick={() => playUiClick()}
+                >
+                  {dailyProgress.leagueLeaders
+                    ? "Finish the Grand Final"
+                    : "Play daily challenge"}
+                </GameButton>
+              </div>
             )}
           </div>
 

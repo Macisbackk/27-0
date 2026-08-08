@@ -18,6 +18,16 @@
 # production
 /build
 
+# Capacitor / Android local build outputs (keep android/ project tracked)
+/android/app/build/
+/android/.gradle/
+/android/captures/
+/android/local.properties
+*.apk
+*.aab
+*.keystore
+*.jks
+
 # misc
 .DS_Store
 /scripts/rlp-cache/

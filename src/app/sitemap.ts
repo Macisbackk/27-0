@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 
 const SITE_URL = "https://www.27-0.co.uk";
 
+/** Required for `output: "export"` (Capacitor mobile builds). */
+export const dynamic = "force-static";
+
 /** Public routes for crawlers and link inspectors. */
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();

@@ -2,11 +2,7 @@ import { STORAGE_KEYS } from "./storage/keys";
 
 export const DAILY_CHALLENGE_MODE = "CLASSIC" as const;
 
-export type DailyChallengeKind =
-  | "all-wigan"
-  | "all-saints"
-  | "all-leeds"
-  | "mirror-league";
+export type DailyChallengeKind = string;
 
 export interface DailyChallengeScenario {
   id: DailyChallengeKind;
@@ -18,44 +14,40 @@ export interface DailyChallengeScenario {
   playoffTitleBonus: number;
 }
 
-const SCENARIOS: DailyChallengeScenario[] = [
-  {
-    id: "all-wigan",
-    title: "Warriors Everywhere",
-    blurb:
-      "Every rival is Wigan Warriors. Finish League Leaders, then win the Grand Final.",
-    forceOpponentClub: "Wigan Warriors",
-    leagueLeadersBonus: 75_000,
-    playoffTitleBonus: 150_000,
-  },
-  {
-    id: "all-saints",
-    title: "Saints Gauntlet",
-    blurb:
-      "The league is full of St Helens sides. Top the table, then lift the title.",
-    forceOpponentClub: "St Helens",
-    leagueLeadersBonus: 75_000,
-    playoffTitleBonus: 150_000,
-  },
-  {
-    id: "all-leeds",
-    title: "Rhinos Rematch",
-    blurb:
-      "Face Leeds Rhinos every week. Claim League Leaders, then the Grand Final.",
-    forceOpponentClub: "Leeds Rhinos",
-    leagueLeadersBonus: 70_000,
-    playoffTitleBonus: 140_000,
-  },
-  {
-    id: "mirror-league",
-    title: "Catalans Mirror",
-    blurb:
-      "A league of Catalans Dragons clones. Win the league race, then the play-offs.",
-    forceOpponentClub: "Catalans Dragons",
-    leagueLeadersBonus: 70_000,
-    playoffTitleBonus: 140_000,
-  },
-];
+/** Current Super League clubs that rotate as the all-league daily opponent. */
+const DAILY_OPPONENT_CLUBS = [
+  "Wigan Warriors",
+  "St Helens",
+  "Leeds Rhinos",
+  "Catalans Dragons",
+  "Hull KR",
+  "Warrington Wolves",
+  "Huddersfield Giants",
+  "Hull FC",
+  "Leigh Leopards",
+  "Castleford Tigers",
+  "Wakefield Trinity",
+  "Bradford Bulls",
+  "Toulouse Olympique",
+  "York Knights",
+] as const;
+
+function scenarioForClub(club: string): DailyChallengeScenario {
+  const short = club
+    .replace(/\s+(Warriors|Rhinos|Dragons|Wolves|Giants|Leopards|Tigers|Red Devils|Trinity)$/i, "")
+    .trim();
+  return {
+    id: `all-${club.toLowerCase().replace(/\s+/g, "-")}`,
+    title: club,
+    blurb: `Every opponent is ${club}.`,
+    forceOpponentClub: club,
+    leagueLeadersBonus: short === "Wigan" || short === "St Helens" ? 75_000 : 70_000,
+    playoffTitleBonus: short === "Wigan" || short === "St Helens" ? 150_000 : 140_000,
+  };
+}
+
+const SCENARIOS: DailyChallengeScenario[] =
+  DAILY_OPPONENT_CLUBS.map(scenarioForClub);
 
 function todayKey(date = new Date()): string {
   const y = date.getFullYear();
@@ -64,12 +56,17 @@ function todayKey(date = new Date()): string {
   return `${y}-${m}-${d}`;
 }
 
+/** Salt so consecutive calendar days land on different clubs. */
+const ROTATION_SALT = "27-0-daily-v2";
+
 function hashDateKey(key: string): number {
-  let h = 0;
-  for (let i = 0; i < key.length; i++) {
-    h = (h * 31 + key.charCodeAt(i)) >>> 0;
+  const seeded = `${ROTATION_SALT}:${key}`;
+  let h = 2166136261;
+  for (let i = 0; i < seeded.length; i++) {
+    h ^= seeded.charCodeAt(i);
+    h = Math.imul(h, 16777619);
   }
-  return h;
+  return h >>> 0;
 }
 
 export function getDailyChallengeDateKey(date = new Date()): string {
@@ -79,8 +76,18 @@ export function getDailyChallengeDateKey(date = new Date()): string {
 export function getDailyChallengeScenario(
   date = new Date()
 ): DailyChallengeScenario {
-  const idx = hashDateKey(todayKey(date)) % SCENARIOS.length;
-  return SCENARIOS[idx]!;
+  const key = todayKey(date);
+  const idx = hashDateKey(key) % SCENARIOS.length;
+  const scenario = SCENARIOS[idx]!;
+
+  // Guarantee a different club than yesterday (hash collisions / small pools).
+  const yesterday = new Date(date);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const prevIdx = hashDateKey(todayKey(yesterday)) % SCENARIOS.length;
+  if (prevIdx === idx && SCENARIOS.length > 1) {
+    return SCENARIOS[(idx + 1) % SCENARIOS.length]!;
+  }
+  return scenario;
 }
 
 export function getDailyChallengeHref(): string {
@@ -118,7 +125,6 @@ function loadProgressMap(): Record<string, DailyProgress> {
     if (!raw) return {};
     const parsed = JSON.parse(raw) as unknown;
     if (Array.isArray(parsed)) {
-      // Migrate legacy string[] claims → completed both phases
       const map: Record<string, DailyProgress> = {};
       for (const key of parsed) {
         if (typeof key === "string") {
