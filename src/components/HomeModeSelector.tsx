@@ -118,6 +118,21 @@ export function HomeModeSelector() {
             {getQuickModeCurrentEraHint(normalEraMode)}
           </p>
 
+          <div className="mt-4 flex w-full justify-center">
+            <div className="w-full max-w-sm">
+              <ModeStartLink
+                href={normalHref}
+                eraMode={normalEraMode}
+                onClick={() => {
+                  playUiClick();
+                  playModeClassicStart("NORMAL");
+                }}
+              >
+                {getQuickSeasonStartLabel(normalEraMode)}
+              </ModeStartLink>
+            </div>
+          </div>
+
           <div className="mt-3 w-full rounded-xl border border-theme-primary/25 bg-theme-primary/5 px-3 py-2.5 text-center">
             <p className={`text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-theme-primary`}>
               Daily challenge
@@ -146,21 +161,6 @@ export function HomeModeSelector() {
                 </GameButton>
               </div>
             )}
-          </div>
-
-          <div className="mt-4 flex w-full justify-center">
-            <div className="w-full max-w-sm">
-              <ModeStartLink
-                href={normalHref}
-                eraMode={normalEraMode}
-                onClick={() => {
-                  playUiClick();
-                  playModeClassicStart("NORMAL");
-                }}
-              >
-                {getQuickSeasonStartLabel(normalEraMode)}
-              </ModeStartLink>
-            </div>
           </div>
         </MobileSection>
       </div>
