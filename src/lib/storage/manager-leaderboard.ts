@@ -75,15 +75,18 @@ function managerStatsToTrackerPayload(
   const wins = Math.round(stats.wins);
   const losses = Math.round(stats.losses);
   const games = wins + losses;
+  const bestWins = stats.bestRecordWins ?? wins;
+  const bestLosses = stats.bestRecordLosses ?? losses;
+  const bestGames = bestWins + bestLosses;
   return {
     squadValue: 0,
     totalWins: wins,
     totalLosses: losses,
     perfectRuns: Math.round(stats.perfectSeasons),
     wccWins: Math.round(stats.worldClubChallengeWins ?? 0),
-    bestRecordWins: wins,
-    bestRecordLosses: losses,
-    bestWinPercentage: games > 0 ? Math.round((wins / games) * 100) : 0,
+    bestRecordWins: bestWins,
+    bestRecordLosses: bestLosses,
+    bestWinPercentage: bestGames > 0 ? Math.round((bestWins / bestGames) * 100) : 0,
     challengeCupWins: Math.round(stats.challengeCups),
     cupFinals: Math.round(stats.cupFinals),
     bestCupFinishRank: 0,

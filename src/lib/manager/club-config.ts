@@ -154,12 +154,21 @@ export function championshipStarsFromBaseStrength(baseStrength: number): ClubSta
   return 1;
 }
 
-/** Map Champ baseStrength (~55–75) onto a display OVR band. */
+/** Map Champ baseStrength (~55–75) onto a display OVR band clearly below SL (80+). */
 export function championshipSquadRatingFromBaseStrength(
   baseStrength: number
 ): number {
-  return Math.round(68 + ((baseStrength - 55) / 20) * 12);
+  return Math.round(58 + ((baseStrength - 55) / 20) * 14);
 }
+
+/** Championship transfer/wage budgets vs Super League star midpoints. */
+export const CHAMPIONSHIP_ECONOMY_SCALE = 0.48;
+
+const CHAMP_TRANSFER_BUDGET_MID_BY_STARS: Record<number, number> = {
+  3: Math.round(510_000 * CHAMPIONSHIP_ECONOMY_SCALE),
+  2: Math.round(332_000 * CHAMPIONSHIP_ECONOMY_SCALE),
+  1: Math.round(230_000 * CHAMPIONSHIP_ECONOMY_SCALE),
+};
 
 export function didMeetManagerBoardExpectation(
   tier: ManagerClubExpectationTier,
@@ -220,12 +229,13 @@ function getChampionshipManagerClubConfig(
   const stars = championshipStarsFromBaseStrength(champ.baseStrength);
   const expectationTier = expectationTierFromStars(stars);
   const midBudget =
-    TRANSFER_BUDGET_MID_BY_STARS[stars] ?? TRANSFER_BUDGET_MID_BY_STARS[3]!;
+    CHAMP_TRANSFER_BUDGET_MID_BY_STARS[stars] ??
+    CHAMP_TRANSFER_BUDGET_MID_BY_STARS[1]!;
   return {
     name: clubName,
     expectation: CHAMPIONSHIP_EXPECTATION_LABELS[expectationTier],
     expectationTier,
-    budget: Math.round(midBudget * 0.85),
+    budget: midBudget,
     difficulty: stars,
     squadRating: championshipSquadRatingFromBaseStrength(champ.baseStrength),
     primaryColor: uiColors.primary,

@@ -8,6 +8,10 @@ import type { ManagerCareer, ManagerLeagueRow } from "@/lib/manager/types";
 import { getClubIndicatorColor } from "@/lib/clubs";
 import { ensureChampionshipSystems } from "@/lib/manager/championship/ensureChampionship";
 import { getUserCompetitionId } from "@/lib/manager/leagueMembership";
+import {
+  ensureAiSuperLeague,
+  getCompetitionStandings,
+} from "@/lib/manager/competitionStandings";
 
 type TableCompetition = "super-league" | "championship";
 
@@ -112,21 +116,15 @@ export function ManagerTable({ career }: ManagerTableProps) {
   );
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const withChamp = ensureChampionshipSystems(career);
-  const userComp = getUserCompetitionId(career);
+  const withChamp = ensureAiSuperLeague(ensureChampionshipSystems(career));
   const title =
     competition === "super-league" ? "Super League" : "Championship";
-  const rows =
-    competition === userComp
-      ? career.leagueTable
-      : competition === "championship"
-        ? withChamp.championshipCompetition?.standings ?? []
-        : [];
+  const rows = getCompetitionStandings(withChamp, competition);
 
   return (
     <ManagerPage>
       <ManagerSection>
-        <div className="relative mb-3">
+        <div className="relative mb-2">
           <button
             type="button"
             className={`${TYPO.pageTitle} btn-press inline-flex items-center gap-2 text-left`}
@@ -170,7 +168,7 @@ export function ManagerTable({ career }: ManagerTableProps) {
             </div>
           ) : null}
         </div>
-        <p className={`${TYPO.bodySm} mb-3 text-pitch-400`}>
+        <p className={`${TYPO.bodySm} mb-4 text-pitch-400`}>
           {competition === "super-league"
             ? `Season ${career.seasonYear} Super League standings`
             : `Season ${career.seasonYear} Championship standings`}

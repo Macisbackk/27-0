@@ -2,7 +2,8 @@ import seedrandom from "seedrandom";
 import { getPlayerById } from "../players";
 import { getPlayerAge } from "../players/player-age";
 import { getManagerClubTeamRating } from "./managerRating";
-import { getManagerClubStarRating } from "./club-config";
+import { getManagerClubConfig, getManagerClubStarRating } from "./club-config";
+import { CHAMPIONSHIP_ECONOMY_SCALE } from "./club-config";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import type {
   ContractStatus,
@@ -291,7 +292,11 @@ export function getWageBudgetForClub(
     1: 1_300_000,
   };
   const base = byStars[stars] ?? byStars[3]!;
-  return scaleManagerEconomy(base);
+  const mult =
+    getManagerClubConfig(club).competition === "championship"
+      ? CHAMPIONSHIP_ECONOMY_SCALE
+      : 1;
+  return scaleManagerEconomy(base * mult);
 }
 
 export function evaluateRenewalOffer(

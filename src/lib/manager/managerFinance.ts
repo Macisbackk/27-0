@@ -1,6 +1,10 @@
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { ManagerCareer, ManagerFinance, ManagerSeasonSummary } from "./types";
-import { getManagerClubStarRating } from "./club-config";
+import {
+  CHAMPIONSHIP_ECONOMY_SCALE,
+  getManagerClubConfig,
+  getManagerClubStarRating,
+} from "./club-config";
 import { computeWageBill, getWageBudgetForClub, resolveWageBudgetForCareer } from "./managerContracts";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { getUserLeaguePosition } from "./managerFixtures";
@@ -18,6 +22,12 @@ const TRANSFER_RANGE_BY_STARS: Record<number, [number, number]> = {
   2: [300_000, 480_000],
   1: [200_000, 340_000],
 };
+
+function clubEconomyMultiplier(club: string): number {
+  return getManagerClubConfig(club).competition === "championship"
+    ? CHAMPIONSHIP_ECONOMY_SCALE
+    : 1;
+}
 
 /** Max rating a club comfortably recruits without heavy fee / wage premiums. */
 const COMFORT_RATING_BY_STARS: Record<number, number> = {
@@ -52,7 +62,11 @@ export function getComfortableSigningRating(
   careerStars?: number | null
 ): number {
   const stars = getClubStarTier(club, careerStars);
-  return COMFORT_RATING_BY_STARS[stars] ?? COMFORT_RATING_BY_STARS[3]!;
+  const base = COMFORT_RATING_BY_STARS[stars] ?? COMFORT_RATING_BY_STARS[3]!;
+  if (getManagerClubConfig(club).competition === "championship") {
+    return Math.min(76, base - 8);
+  }
+  return base;
 }
 
 /** Inflated transfer fee when a smaller club chases players above their tier. */
@@ -251,7 +265,7 @@ export function computeFirstSeasonTransferBudget(
   const range = TRANSFER_RANGE_BY_STARS[stars] ?? TRANSFER_RANGE_BY_STARS[3]!;
   const t = hashSeed(seed, club) % 1000;
   const raw = Math.round(range[0] + ((range[1] - range[0]) * t) / 1000);
-  return scaleManagerEconomy(raw);
+  return scaleManagerEconomy(raw * clubEconomyMultiplier(club));
 }
 
 export function computeSeasonTransferBudget(
@@ -286,8 +300,9 @@ export function computeSeasonTransferBudget(
 
   const stars = getClubStarTier(club, careerStars);
   const range = TRANSFER_RANGE_BY_STARS[stars] ?? TRANSFER_RANGE_BY_STARS[3]!;
-  const floor = scaleManagerEconomy(range[0]);
-  const cap = scaleManagerEconomy(Math.round(range[1] * 1.3));
+  const mult = clubEconomyMultiplier(club);
+  const floor = scaleManagerEconomy(range[0] * mult);
+  const cap = scaleManagerEconomy(Math.round(range[1] * 1.3 * mult));
   return Math.max(floor, Math.min(cap, base));
 }
 

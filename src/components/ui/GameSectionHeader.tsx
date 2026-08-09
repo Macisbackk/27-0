@@ -29,7 +29,7 @@ export function GameSectionHeader({
     size === "page" ? "game-section-header--page" : "game-section-header--section";
   const subtitleClass = [
     "game-section-header__subtitle",
-    "mt-1",
+    "mt-1.5",
     collapseSubtitleOnMobile ? "game-section-header__subtitle--collapse sm:line-clamp-none" : "",
   ]
     .filter(Boolean)

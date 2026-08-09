@@ -275,6 +275,7 @@ export function ManagerSectionCard({
   // When callers zero card padding for flush tables, keep title/subtitle inset.
   const flushPadding = /(?:^|\s)!?p-0(?:\s|$)/.test(className);
   const headerPad = flushPadding ? "px-5 pt-5 sm:px-5 lg:px-6" : "";
+  const hasHeader = Boolean(title || subtitle);
 
   return (
     <div
@@ -283,11 +284,17 @@ export function ManagerSectionCard({
     >
       <div className="panel-body relative z-[1]">
         {title && (
-          <p className={`${TYPO.sectionLabel} ${headerPad}`.trim()}>{title}</p>
+          <p
+            className={`${TYPO.sectionLabel} ${headerPad} ${
+              !subtitle && hasHeader ? "mb-3" : ""
+            }`.trim()}
+          >
+            {title}
+          </p>
         )}
         {subtitle && (
           <p
-            className={`${title ? "mt-1" : ""} ${headerPad} ${TYPO.bodySm} text-pitch-400`.trim()}
+            className={`${title ? "mt-1.5" : ""} mb-3 ${headerPad} ${TYPO.bodySm} text-pitch-400`.trim()}
           >
             {subtitle}
           </p>

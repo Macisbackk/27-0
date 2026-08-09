@@ -6,7 +6,10 @@ import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import { isLoggedIn } from "../auth-session";
 import { isLeagueAndCupPhaseComplete } from "./managerChallengeCup";
 import { getUserLeagueTablePosition } from "./managerFixtures";
-import { pickManagerWorstSeasonRecord } from "./manager-stats-views";
+import {
+  pickManagerBestSeasonRecord,
+  pickManagerWorstSeasonRecord,
+} from "./manager-stats-views";
 import type { ManagerCareer, ManagerLifetimeStats } from "./types";
 
 const STATS_KEY = STORAGE_KEYS.managerStats;
@@ -29,6 +32,8 @@ export const EMPTY_MANAGER_STATS: ManagerLifetimeStats = {
   bestFinish: null,
   worstRecordWins: null,
   worstRecordLosses: null,
+  bestRecordWins: null,
+  bestRecordLosses: null,
   biggestWin: 0,
   biggestDefeat: 0,
   totalEarnings: 0,
@@ -116,6 +121,14 @@ export function sanitizeManagerStats(
     worstRecordLosses:
       merged.worstRecordLosses !== null
         ? Math.round(merged.worstRecordLosses)
+        : null,
+    bestRecordWins:
+      merged.bestRecordWins != null && Number.isFinite(merged.bestRecordWins)
+        ? Math.round(merged.bestRecordWins)
+        : null,
+    bestRecordLosses:
+      merged.bestRecordLosses != null && Number.isFinite(merged.bestRecordLosses)
+        ? Math.round(merged.bestRecordLosses)
         : null,
   };
 }
@@ -269,6 +282,10 @@ export function recordSeasonComplete(career: ManagerCareer): void {
   const worst = pickManagerWorstSeasonRecord(stats, seasonWins, seasonLosses);
   stats.worstRecordWins = worst.wins;
   stats.worstRecordLosses = worst.losses;
+
+  const best = pickManagerBestSeasonRecord(stats, seasonWins, seasonLosses);
+  stats.bestRecordWins = best.wins;
+  stats.bestRecordLosses = best.losses;
 
   const playoffFinish = career.playoffs?.finish ?? null;
   if (playoffFinish === "Super League Champions") {

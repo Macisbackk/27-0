@@ -42,19 +42,65 @@ import {
   clampReservePlayerRating,
 } from "../players/rating-floors";
 
+import {
+  CHAMP_NAME_POOLS,
+  type ChampNationalityCode,
+} from "./championship/championshipNamePools";
+import { getChampionshipClubByName } from "../clubs/championship-clubs";
+import { getManagerClubConfig } from "./club-config";
+
 const FIRST_NAMES = [
   "Jack", "Tom", "Liam", "Ethan", "Noah", "Mason", "Harvey", "Finn",
   "Callum", "Ryan", "Luke", "Ben", "Sam", "Joe", "Max", "Ollie",
   "Kai", "Tyler", "Dylan", "Connor", "Josh", "Alex", "George", "Charlie",
+  "Harry", "Jake", "James", "Jamie", "Reece", "Rhys", "Kieran", "Bradley",
+  "Nathan", "Matthew", "Daniel", "Adam", "Scott", "Ashley", "Bailey", "Blake",
+  "Cameron", "Ellis", "Finlay", "Harley", "Jacob", "Joel", "Jude", "Kyle",
+  "Leon", "Logan", "Marcus", "Mitchell", "Owen", "Riley", "Toby", "Zach",
 ];
 
 const LAST_NAMES = [
   "Ashton", "Brooks", "Carter", "Davies", "Evans", "Fletcher", "Grant",
   "Hughes", "Ingram", "Johnson", "Knight", "Lewis", "Mason", "Nolan",
   "Owen", "Price", "Quinn", "Reid", "Shaw", "Taylor", "Walsh", "Young",
+  "Bennett", "Burgess", "Clarke", "Dixon", "Edwards", "Foster", "Graham",
+  "Harrison", "Jackson", "Kelly", "Marshall", "Murphy", "Parker", "Roberts",
+  "Simpson", "Thompson", "Walker", "Watson", "Williams", "Wilson", "Wright",
 ];
 
-const NATIONALITIES = ["England", "Wales", "Scotland", "Ireland", "France", "Australia"];
+const WELSH_LAST_NAMES = [
+  "Jones", "Williams", "Davies", "Evans", "Thomas", "Roberts", "Hughes",
+  "Lewis", "Morgan", "Griffiths", "Edwards", "Owen", "Jenkins", "Price",
+  "Phillips", "Rees", "Parry", "Powell", "Howells", "Pritchard",
+];
+
+const SCOTTISH_LAST_NAMES = [
+  "Campbell", "MacDonald", "Stewart", "Robertson", "Thomson", "Anderson",
+  "Scott", "Murray", "Reid", "Fraser", "Gordon", "Graham", "Hamilton",
+  "Johnston", "Kerr", "McLean", "Paterson", "Sinclair", "Wallace", "Young",
+];
+
+const IRISH_LAST_NAMES = [
+  "Murphy", "Kelly", "O'Brien", "Walsh", "O'Connor", "Byrne", "Ryan",
+  "O'Neill", "O'Sullivan", "Doyle", "McCarthy", "Gallagher", "Doherty",
+  "Kennedy", "Lynch", "Quinn", "Brennan", "Farrell", "Fitzgerald", "Dunne",
+];
+
+const NATIONALITIES = [
+  "England",
+  "Wales",
+  "Scotland",
+  "Ireland",
+  "France",
+  "Australia",
+  "New Zealand",
+  "Samoa",
+  "Fiji",
+  "Tonga",
+  "Papua New Guinea",
+] as const;
+
+type ReserveNationality = (typeof NATIONALITIES)[number];
 
 const FRENCH_RESERVE_CLUBS = new Set([
   "Toulouse Olympique",
@@ -79,7 +125,7 @@ export const RESERVE_WALKOVER_SCORE = 18;
 export const RESERVE_WALKOVER_REASON = "Walkover — fewer than 13 reserve players";
 export const GENERATED_RESERVE_MAX_RATING = 82;
 /** Generator stamp — bump when band weights or formula change. */
-export const RESERVE_GENERATOR_VERSION = 5;
+export const RESERVE_GENERATOR_VERSION = 6;
 /**
  * Starting generated-reserve distribution. Target mean ~69–71; majority below 77;
  * 80+ exceptional. Current rating is rolled independently of potential.
@@ -92,6 +138,17 @@ export const RESERVE_RATING_BANDS = [
   { min: 77, max: 79, weight: 0.04 },
   { min: 80, max: 82, weight: 0.01 },
 ] as const;
+
+/** Championship academy bands — clearly below Super League reserves. */
+export const CHAMP_RESERVE_RATING_BANDS = [
+  { min: 58, max: 61, weight: 0.28 },
+  { min: 62, max: 65, weight: 0.36 },
+  { min: 66, max: 68, weight: 0.24 },
+  { min: 69, max: 71, weight: 0.09 },
+  { min: 72, max: 74, weight: 0.03 },
+] as const;
+
+export const GENERATED_CHAMP_RESERVE_MAX_RATING = 74;
 
 /** Minimum positional coverage for a healthy reserve listing. */
 export const RESERVE_POSITION_COVERAGE: { position: Position; min: number }[] = [
@@ -155,24 +212,97 @@ function usesFrenchReserveIdentity(club?: string): boolean {
   return club != null && FRENCH_RESERVE_CLUBS.has(club);
 }
 
-function pickReserveName(
-  rng: () => number,
-  club?: string
-): { first: string; last: string } {
-  const french = usesFrenchReserveIdentity(club);
-  const firstPool = french ? FRENCH_FIRST_NAMES : FIRST_NAMES;
-  const lastPool = french ? FRENCH_LAST_NAMES : LAST_NAMES;
-  return {
-    first: firstPool[Math.floor(rng() * firstPool.length)]!,
-    last: lastPool[Math.floor(rng() * lastPool.length)]!,
-  };
+function isChampionshipReserveClub(club?: string): boolean {
+  if (!club) return false;
+  if (getChampionshipClubByName(club)) return true;
+  try {
+    return getManagerClubConfig(club).competition === "championship";
+  } catch {
+    return false;
+  }
 }
 
-function pickReserveNationality(rng: () => number, club?: string): string {
-  if (usesFrenchReserveIdentity(club)) {
-    return rng() < 0.82 ? "France" : NATIONALITIES[Math.floor(rng() * NATIONALITIES.length)]!;
+function nationalityToChampCode(
+  nationality: string
+): ChampNationalityCode | null {
+  switch (nationality) {
+    case "England":
+      return "ENG";
+    case "France":
+      return "FRA";
+    case "Australia":
+      return "AUS";
+    case "New Zealand":
+      return "NZL";
+    case "Samoa":
+      return "SAM";
+    case "Fiji":
+      return "FJI";
+    case "Tonga":
+      return "TON";
+    case "Papua New Guinea":
+      return "PNG";
+    default:
+      return null;
   }
-  return NATIONALITIES[Math.floor(rng() * NATIONALITIES.length)]!;
+}
+
+function pickFromPool<T extends string>(
+  pool: readonly T[],
+  rng: () => number
+): T {
+  return pool[Math.floor(rng() * pool.length)]!;
+}
+
+/** Pick nationality first (club-biased), then a matching name pool. */
+function pickReserveIdentity(
+  rng: () => number,
+  club?: string
+): { nationality: ReserveNationality; first: string; last: string } {
+  let nationality: ReserveNationality;
+  if (usesFrenchReserveIdentity(club)) {
+    nationality = rng() < 0.82 ? "France" : pickFromPool(NATIONALITIES, rng);
+  } else {
+    const roll = rng();
+    if (roll < 0.52) nationality = "England";
+    else if (roll < 0.62) nationality = "Wales";
+    else if (roll < 0.7) nationality = "Scotland";
+    else if (roll < 0.76) nationality = "Ireland";
+    else if (roll < 0.84) nationality = "Australia";
+    else if (roll < 0.9) nationality = "New Zealand";
+    else if (roll < 0.93) nationality = "France";
+    else if (roll < 0.955) nationality = "Samoa";
+    else if (roll < 0.975) nationality = "Fiji";
+    else if (roll < 0.99) nationality = "Tonga";
+    else nationality = "Papua New Guinea";
+  }
+
+  const code = nationalityToChampCode(nationality);
+  if (code) {
+    const pool = CHAMP_NAME_POOLS[code];
+    return {
+      nationality,
+      first: pickFromPool(pool.first, rng),
+      last: pickFromPool(pool.last, rng),
+    };
+  }
+
+  // Home nations without dedicated Champ codes — English first + local surnames.
+  const first = pickFromPool(
+    nationality === "France" ? FRENCH_FIRST_NAMES : FIRST_NAMES,
+    rng
+  );
+  let lastPool = LAST_NAMES;
+  if (nationality === "Wales") lastPool = WELSH_LAST_NAMES;
+  else if (nationality === "Scotland") lastPool = SCOTTISH_LAST_NAMES;
+  else if (nationality === "Ireland") lastPool = IRISH_LAST_NAMES;
+  else if (nationality === "France") lastPool = FRENCH_LAST_NAMES;
+
+  return {
+    nationality,
+    first,
+    last: pickFromPool(lastPool, rng),
+  };
 }
 
 export function pickPotential(
@@ -200,13 +330,17 @@ export function pickPotential(
 
 export function pickGeneratedReserveRating(
   rng: () => number,
-  youthLevel = 0
+  youthLevel = 0,
+  championship = false
 ): number {
-  // Weighted base distribution — target mean ~69–71 before capped facility boost.
+  const bands = championship ? CHAMP_RESERVE_RATING_BANDS : RESERVE_RATING_BANDS;
+  const maxRating = championship
+    ? GENERATED_CHAMP_RESERVE_MAX_RATING
+    : GENERATED_RESERVE_MAX_RATING;
   const roll = rng();
   let cumulative = 0;
-  let selected = RESERVE_RATING_BANDS[RESERVE_RATING_BANDS.length - 1]!;
-  for (const band of RESERVE_RATING_BANDS) {
+  let selected = bands[bands.length - 1]!;
+  for (const band of bands) {
     cumulative += band.weight;
     if (roll < cumulative) {
       selected = band;
@@ -215,9 +349,12 @@ export function pickGeneratedReserveRating(
   }
   const base =
     selected.min + Math.floor(rng() * (selected.max - selected.min + 1));
-  const developmentModifier = Math.min(2, getYouthIntakeRatingBoost(youthLevel));
+  const developmentModifier = Math.min(
+    championship ? 1 : 2,
+    getYouthIntakeRatingBoost(youthLevel)
+  );
   return Math.min(
-    GENERATED_RESERVE_MAX_RATING,
+    maxRating,
     clampReservePlayerRating(base + developmentModifier)
   );
 }
@@ -442,14 +579,22 @@ export function generateReservePlayer(
 ): ManagerReservePlayer {
   const rng = seedrandom(`${seed}-reserve-${index}`);
   const age = 17 + Math.floor(rng() * 6);
-  const developmentModifier = Math.min(2, getYouthIntakeRatingBoost(youthLevel));
+  const championship = isChampionshipReserveClub(club);
+  const developmentModifier = Math.min(
+    championship ? 1 : 2,
+    getYouthIntakeRatingBoost(youthLevel)
+  );
+  const bands = championship ? CHAMP_RESERVE_RATING_BANDS : RESERVE_RATING_BANDS;
+  const maxRating = championship
+    ? GENERATED_CHAMP_RESERVE_MAX_RATING
+    : GENERATED_RESERVE_MAX_RATING;
   // Re-seed a dedicated RNG for the band roll so stamps stay reproducible.
   const ratingRng = seedrandom(`${seed}-reserve-rating-${index}`);
   const baseBeforeMod = (() => {
     const roll = ratingRng();
     let cumulative = 0;
-    let selected = RESERVE_RATING_BANDS[RESERVE_RATING_BANDS.length - 1]!;
-    for (const band of RESERVE_RATING_BANDS) {
+    let selected = bands[bands.length - 1]!;
+    for (const band of bands) {
       cumulative += band.weight;
       if (roll < cumulative) {
         selected = band;
@@ -462,18 +607,18 @@ export function generateReservePlayer(
     );
   })();
   const rating = Math.min(
-    GENERATED_RESERVE_MAX_RATING,
+    maxRating,
     clampReservePlayerRating(baseBeforeMod + developmentModifier)
   );
   // Potential is independent of the current roll — only floored to rating.
   const potential = Math.max(rating, pickPotential(age, rng, youthLevel));
-  const { first, last } = pickReserveName(rng, club);
+  const identity = pickReserveIdentity(rng, club);
 
   return {
     id: `mgr-res-${seed}-${index}`,
-    name: `${first} ${last}`,
+    name: `${identity.first} ${identity.last}`,
     age,
-    nationality: pickReserveNationality(rng, club),
+    nationality: identity.nationality,
     position,
     eligiblePositions: [position],
     rating,

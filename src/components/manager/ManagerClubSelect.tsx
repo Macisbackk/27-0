@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import { getClubColors } from "@/lib/clubs";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
+import { CARD, SPACING, SUB_TAB_BAR_SHELL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
   CHAMPIONSHIP_STAR_TIER_BIOS,
@@ -22,6 +23,8 @@ interface ManagerClubSelectProps {
   busy?: boolean;
 }
 
+type ClubSelectTab = "super-league" | "championship";
+
 function ClubSelectRow({
   club,
   onSelect,
@@ -34,7 +37,6 @@ function ClubSelectRow({
   const attendance = getClubAttendanceProfile(club.name);
   const ratingStars = club.difficulty;
   const colors = getClubColors(club.name);
-  const isChamp = club.competition === "championship";
 
   return (
     <li>
@@ -69,14 +71,7 @@ function ClubSelectRow({
         />
 
         <div className="min-w-0 flex-1">
-          <p className="flex items-center gap-2 truncate text-sm font-semibold text-white">
-            <span className="truncate">{club.name}</span>
-            {isChamp ? (
-              <span className="shrink-0 rounded border border-pitch-600 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-pitch-300">
-                Champ
-              </span>
-            ) : null}
-          </p>
+          <p className="truncate text-sm font-semibold text-white">{club.name}</p>
           <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
             <ClubStarRatingDisplay
               stars={ratingStars}
@@ -131,10 +126,10 @@ function StarGroupedList({
     <div className={SPACING.stackMd}>
       {starGroups.map(({ stars, clubs: groupClubs }) => (
         <section key={stars}>
-          <h3 className={`mb-1 ${TYPO.sectionLabel} text-accent-gold`}>
+          <h3 className={`mb-2 ${TYPO.sectionLabel} text-accent-gold`}>
             {stars} star
           </h3>
-          <p className={`mb-1.5 ${TYPO.bodySm} text-pitch-400`}>
+          <p className={`mb-2.5 ${TYPO.bodySm} text-pitch-400`}>
             {bios[stars] ?? "Board expectations scale with club status."}
           </p>
           <ul className="space-y-1.5" role="list">
@@ -158,6 +153,7 @@ export function ManagerClubSelect({
   onBack,
   busy = false,
 }: ManagerClubSelectProps) {
+  const [tab, setTab] = useState<ClubSelectTab>("super-league");
   const { slClubs, champClubs } = useMemo(() => {
     const all = getAllManagerClubConfigs();
     return {
@@ -166,14 +162,33 @@ export function ManagerClubSelect({
     };
   }, []);
 
+  const showingChamp = tab === "championship" && champClubs.length > 0;
+
   return (
     <div className={`mx-auto max-w-xl ${SPACING.stackMd}`}>
-      <div>
+      <div className="mb-1">
         <h1 className={`${TYPO.pageTitle} text-lg sm:text-xl`}>Choose Your Club</h1>
-        <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
-          Super League first — Championship clubs can earn promotion.
+        <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+          {showingChamp
+            ? "Championship clubs — weaker budgets and squads, with promotion on the line."
+            : "Super League clubs — top-tier money, ratings, and board targets."}
         </p>
       </div>
+
+      {champClubs.length > 0 ? (
+        <div className={`${SUB_TAB_BAR_SHELL} mb-1`}>
+          <GameSegmentedControl
+            ariaLabel="Competition"
+            value={tab}
+            onChange={setTab}
+            fullWidth
+            options={[
+              { id: "super-league", label: "Super League", shortLabel: "SL" },
+              { id: "championship", label: "Championship", shortLabel: "Champ" },
+            ]}
+          />
+        </div>
+      ) : null}
 
       {busy && (
         <p className={`${TYPO.bodySm} text-center text-theme-primary`}>
@@ -181,32 +196,21 @@ export function ManagerClubSelect({
         </p>
       )}
 
-      <section className={SPACING.stackMd}>
-        <h2 className={`${TYPO.sectionLabel} text-white`}>Super League</h2>
+      {showingChamp ? (
+        <StarGroupedList
+          clubs={champClubs}
+          bios={CHAMPIONSHIP_STAR_TIER_BIOS}
+          onSelect={onSelect}
+          busy={busy}
+        />
+      ) : (
         <StarGroupedList
           clubs={slClubs}
           bios={MANAGER_STAR_TIER_BIOS}
           onSelect={onSelect}
           busy={busy}
         />
-      </section>
-
-      {champClubs.length > 0 ? (
-        <section className={SPACING.stackMd}>
-          <div>
-            <h2 className={`${TYPO.sectionLabel} text-white`}>Championship</h2>
-            <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
-              Championship — earn promotion
-            </p>
-          </div>
-          <StarGroupedList
-            clubs={champClubs}
-            bios={CHAMPIONSHIP_STAR_TIER_BIOS}
-            onSelect={onSelect}
-            busy={busy}
-          />
-        </section>
-      ) : null}
+      )}
 
       <GameButton
         variant="secondary"

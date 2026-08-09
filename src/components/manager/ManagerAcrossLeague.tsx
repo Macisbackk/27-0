@@ -40,6 +40,12 @@ import { getChampionshipPlayer } from "@/lib/manager/championship/championshipSq
 import { isChampionshipClubName } from "@/lib/clubs/championship-clubs";
 import { isCurrentPlayableClub } from "@/lib/clubs/super-league-display";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
+import {
+  ensureAiSuperLeague,
+  getCompetitionClubNames,
+  getCompetitionStandings,
+} from "@/lib/manager/competitionStandings";
+import { isUserInChampionship } from "@/lib/manager/leagueMembership";
 
 export type AcrossTheLeagueCompetitionId = "super-league" | "championship";
 
@@ -100,26 +106,33 @@ export function ManagerAcrossLeague({
   const [selectedCompetitionId, setSelectedCompetitionId] =
     useState<AcrossTheLeagueCompetitionId>("super-league");
 
-  const withChamp = useMemo(() => ensureChampionshipSystems(career), [career]);
+  const withChamp = useMemo(() => {
+    let next = ensureChampionshipSystems(career);
+    next = ensureAiSuperLeague(next);
+    return next;
+  }, [career]);
 
   const competitionLabel =
     selectedCompetitionId === "super-league" ? "Super League" : "Championship";
 
   const tableRows = useMemo(
-    () =>
-      selectedCompetitionId === "super-league"
-        ? withChamp.leagueTable
-        : withChamp.championshipCompetition?.standings ?? [],
+    () => getCompetitionStandings(withChamp, selectedCompetitionId),
     [selectedCompetitionId, withChamp]
   );
 
-  const topTryScorers = useMemo(
-    () =>
-      selectedCompetitionId === "super-league"
-        ? getLeagueTopTryScorers(withChamp, 10)
-        : getChampionshipTopTryScorers(withChamp, 10),
+  const squadBrowserClubs = useMemo(
+    () => getCompetitionClubNames(withChamp, selectedCompetitionId),
     [selectedCompetitionId, withChamp]
   );
+
+  const topTryScorers = useMemo(() => {
+    if (selectedCompetitionId === "championship") {
+      return getChampionshipTopTryScorers(withChamp, 10);
+    }
+    // User Champ careers don't build SL try charts from leagueTable — skip empty.
+    if (isUserInChampionship(withChamp)) return [];
+    return getLeagueTopTryScorers(withChamp, 10);
+  }, [selectedCompetitionId, withChamp]);
 
   const newsItems = useMemo(
     () =>
@@ -194,6 +207,7 @@ export function ManagerAcrossLeague({
           size="page"
           label="League"
           title="Across the League"
+          className="mb-3"
           subtitle={
             <>
               <span className="sm:hidden">
@@ -212,7 +226,7 @@ export function ManagerAcrossLeague({
         />
 
         <div className="stat-section-stack">
-        <div className={`${SUB_TAB_BAR_SHELL} mb-3`}>
+        <div className={`${SUB_TAB_BAR_SHELL} mb-4`}>
           <GameSegmentedControl
             ariaLabel="Competition"
             value={selectedCompetitionId}
@@ -228,6 +242,7 @@ export function ManagerAcrossLeague({
         {selectedCompetitionId === "super-league" ? (
           <ManagerClubSquadBrowser
             career={career}
+            clubs={squadBrowserClubs}
             onViewUserSquad={onNavigate ? () => onNavigate("squad") : undefined}
           />
         ) : null}

@@ -369,19 +369,22 @@ export function ManagerClubSquadSheet({
 interface ManagerClubSquadBrowserProps {
   career: ManagerCareer;
   onViewUserSquad?: () => void;
+  /** Clubs to list — defaults to Super League membership. */
+  clubs?: readonly string[];
 }
 
 /** Browse any league club's projected matchday squad during the save. */
 export function ManagerClubSquadBrowser({
   career,
   onViewUserSquad,
+  clubs: clubsProp,
 }: ManagerClubSquadBrowserProps) {
   const clubs =
-    career.leagueTable.length > 0
-      ? career.leagueTable.map((row) => row.team)
+    clubsProp && clubsProp.length > 0
+      ? [...clubsProp]
       : CURRENT_PLAYABLE_CLUBS;
   const [selectedClub, setSelectedClub] = useState<string>(
-    clubs.find((c) => c !== career.club) ?? career.club
+    clubs.find((c) => c !== career.club) ?? clubs[0] ?? career.club
   );
   const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -389,7 +392,7 @@ export function ManagerClubSquadBrowser({
     <>
       <div className={`${CARD.base} ${SPACING.cardPadding}`}>
         <p className={TYPO.sectionLabel}>League Squads</p>
-        <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+        <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
           View any club&apos;s starting XIII and interchange for this season.
         </p>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row">

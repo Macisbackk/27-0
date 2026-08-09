@@ -511,9 +511,10 @@ function userStatsToClassicTrackerEntry(
   const wins = stats.seasonWins;
   const losses = stats.seasonLosses;
   const games = wins + losses;
-  const bestWins = stats.bestRecordWins || stats.bestOverallSeasonWins || wins;
+  const bestWins =
+    stats.bestRecordWins ?? stats.bestOverallSeasonWins ?? wins;
   const bestLosses =
-    stats.bestRecordLosses || stats.bestOverallSeasonLosses || losses;
+    stats.bestRecordLosses ?? stats.bestOverallSeasonLosses ?? losses;
 
   return {
     username,

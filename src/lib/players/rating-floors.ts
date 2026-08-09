@@ -8,7 +8,7 @@ export const CURRENT_SENIOR_MIN_RATING = 80;
 export const CURRENT_SUPER_LEAGUE_MIN_RATING = CURRENT_SENIOR_MIN_RATING;
 export const HISTORIC_MIN_RATING = 80;
 export const HISTORIC_PLAYER_MIN_RATING = HISTORIC_MIN_RATING;
-export const CHAMPIONSHIP_MIN_RATING = 70;
+export const CHAMPIONSHIP_MIN_RATING = 65;
 export const CHAMPIONSHIP_PLAYER_MIN_RATING = CHAMPIONSHIP_MIN_RATING;
 export const RESERVE_MIN_RATING = 65;
 export const RANDOM_FREE_AGENT_MIN_RATING = 70;
@@ -24,8 +24,8 @@ export const CURRENT_HISTORIC_MAX_RATING = 99;
  * First-season *generated* squads use GENERATED_CHAMPIONSHIP_MAX_RATING instead.
  */
 export const CHAMPIONSHIP_PLAYER_MAX_RATING = 89;
-/** First-season generated Championship players — no 84+. */
-export const GENERATED_CHAMPIONSHIP_MAX_RATING = 83;
+/** First-season generated Championship players — clearly below Super League 80+. */
+export const GENERATED_CHAMPIONSHIP_MAX_RATING = 78;
 export const RESERVE_MAX_RATING = 92;
 export const RANDOM_FREE_AGENT_MAX_RATING = 84;
 

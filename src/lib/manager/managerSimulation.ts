@@ -196,6 +196,7 @@ import { rotateLatestNews } from "./managerNews";
 import {
   tickChampionshipOnAdvance,
 } from "./championship/ensureChampionship";
+import { tickAiSuperLeagueOnAdvance } from "./competitionStandings";
 import { maybeAiSignChampionshipElite } from "./championship/championshipAiTransfers";
 import { maybeChampionshipBidForSlReserves } from "./championshipBidForSlReserves";
 import {
@@ -925,6 +926,7 @@ export function advanceManagerMatchWeek(
         currentRound: round,
       };
       next = tickChampionshipOnAdvance(next);
+      next = tickAiSuperLeagueOnAdvance(next);
       const champFixtures = next.championshipCompetition?.fixtures ?? [];
       const roundMatches = championshipFixturesToRoundMatches(champFixtures);
       next = {
@@ -995,6 +997,7 @@ export function advanceManagerMatchWeek(
   next = maybeAddReserveReport(next);
   next = applyAutoPromoteByRating(next);
   next = tickChampionshipOnAdvance(next);
+  next = tickAiSuperLeagueOnAdvance(next);
   next = maybeAiSignChampionshipElite(next);
   next = maybeChampionshipBidForSlReserves(next);
   next = rotateLatestNews(next);

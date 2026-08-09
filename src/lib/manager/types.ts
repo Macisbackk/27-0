@@ -1061,6 +1061,10 @@ export interface ManagerCareer {
   championshipSquads?: import("./championship/championshipSquads").ChampionshipSquadState;
   /** Simulated Championship league competition. */
   championshipCompetition?: import("./championship/championshipLeague").ChampionshipCompetitionState;
+  /** Parallel AI Super League table when the user manages in the Championship. */
+  aiSuperLeagueStandings?: ManagerLeagueRow[];
+  aiSuperLeagueRoundMatches?: ManagerRoundMatch[];
+  aiSuperLeagueLastRound?: number;
   /** Schema markers for Championship / expanded cup migrations. */
   challengeCupSchemaVersion?: number;
   /** Round-label migration version (legacy string → CupRoundKey). */
@@ -1164,6 +1168,9 @@ export interface ManagerLifetimeStats {
   bestFinish: number | null;
   worstRecordWins: number | null;
   worstRecordLosses: number | null;
+  /** Best single-season league W-L (not career totals). */
+  bestRecordWins: number | null;
+  bestRecordLosses: number | null;
   biggestWin: number;
   biggestDefeat: number;
   totalEarnings: number;

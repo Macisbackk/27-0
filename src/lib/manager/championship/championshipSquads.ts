@@ -25,7 +25,7 @@ import {
  * Existing careers are remapped by migrateChampionshipFirstSeasonBalance —
  * squads are not regenerated.
  */
-export const GENERATED_CHAMPIONSHIP_SQUADS_VERSION = 5;
+export const GENERATED_CHAMPIONSHIP_SQUADS_VERSION = 6;
 
 export const CHAMP_NATIONALITY_QUOTA: Record<ChampNationalityCode, number> = {
   ENG: 425,

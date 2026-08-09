@@ -17,15 +17,9 @@ function clampGeneratedChampionshipRating(rating: number): number {
   );
 }
 /**
- * First-season Championship rating bands (70–83) — clearly below Super League:
- * 70–72 depth
- * 73–75 normal / fringe
- * 76–78 established starters
- * 79–80 leading club performers
- * 81–83 rare standout (~1% or less)
- * 84+ none for generated
- *
- * Target overall squad average ~73–76.
+ * First-season Championship rating bands (65–78) — clearly below Super League 80+:
+ * 65–68 depth · 69–72 fringe · 73–75 starters · 76–77 leaders · 78 rare
+ * Target squad average ~70–73.
  */
 export function ratingForChampionshipClub(
   club: ChampionshipClub,
@@ -42,30 +36,22 @@ export function ratingForChampionshipClub(
   const bandRoll =
     roll + quality * 0.16 - (slotIndex >= 20 ? 0.14 : slotIndex >= 17 ? 0.06 : 0);
 
-  // Rare standout 81–83 (~0.5–1%)
   if (bandRoll > 0.997 && quality > 0.78) {
-    return clampGeneratedChampionshipRating(81 + Math.floor(rng() * 3));
+    return clampGeneratedChampionshipRating(78);
   }
-  // Leading 79–80
   if (bandRoll > 0.92 && quality > 0.52) {
-    return clampGeneratedChampionshipRating(79 + Math.floor(rng() * 2));
+    return clampGeneratedChampionshipRating(76 + Math.floor(rng() * 2));
   }
-  // Established starter 76–78
   if (bandRoll > 0.42) {
-    const base = 74.5 + quality * 2.0 + rng() * 2;
-    return clampGeneratedChampionshipRating(
-      Math.round(Math.max(76, Math.min(78, base)))
-    );
-  }
-  // Normal / fringe 73–75
-  if (bandRoll > 0.16) {
-    const base = 71.5 + quality * 1.6 + rng() * 2;
+    const base = 71.5 + quality * 2.0 + rng() * 2;
     return clampGeneratedChampionshipRating(
       Math.round(Math.max(73, Math.min(75, base)))
     );
   }
-  // Depth 70–72
-  return clampGeneratedChampionshipRating(70 + Math.floor(rng() * 3));
+  if (bandRoll > 0.16) {
+    return clampGeneratedChampionshipRating(69 + Math.floor(rng() * 4));
+  }
+  return clampGeneratedChampionshipRating(65 + Math.floor(rng() * 4));
 }
 
 export function championshipTransferValue(peakRating: number): number {

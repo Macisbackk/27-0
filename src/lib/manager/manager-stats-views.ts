@@ -1,4 +1,4 @@
-import { isWorseRecord } from "../lifetime-stats";
+import { isBetterRecord, isWorseRecord } from "../lifetime-stats";
 import type { ManagerLifetimeStats } from "./types";
 
 export type ManagerStatsTabId = "overall" | "super-league" | "challenge-cup";
@@ -96,4 +96,25 @@ export function pickManagerWorstSeasonRecord(
     return { wins: seasonWins, losses: seasonLosses };
   }
   return { wins: stats.worstRecordWins, losses: stats.worstRecordLosses };
+}
+
+export function pickManagerBestSeasonRecord(
+  stats: ManagerLifetimeStats,
+  seasonWins: number,
+  seasonLosses: number
+): { wins: number; losses: number } {
+  if (stats.bestRecordWins === null || stats.bestRecordLosses === null) {
+    return { wins: seasonWins, losses: seasonLosses };
+  }
+  if (
+    isBetterRecord(
+      seasonWins,
+      seasonLosses,
+      stats.bestRecordWins,
+      stats.bestRecordLosses
+    )
+  ) {
+    return { wins: seasonWins, losses: seasonLosses };
+  }
+  return { wins: stats.bestRecordWins, losses: stats.bestRecordLosses };
 }
