@@ -45,7 +45,10 @@ import {
   getCompetitionClubNames,
   getCompetitionStandings,
 } from "@/lib/manager/competitionStandings";
-import { isUserInChampionship } from "@/lib/manager/leagueMembership";
+import {
+  getUserCompetitionId,
+  isUserInChampionship,
+} from "@/lib/manager/leagueMembership";
 import {
   getLeagueDisplayName,
   getLeagueShortName,
@@ -110,7 +113,9 @@ export function ManagerAcrossLeague({
 }: ManagerAcrossLeagueProps) {
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
   const [selectedCompetitionId, setSelectedCompetitionId] =
-    useState<AcrossTheLeagueCompetitionId>("super-league");
+    useState<AcrossTheLeagueCompetitionId>(() =>
+      getUserCompetitionId(career)
+    );
 
   const withChamp = useMemo(() => {
     let next = ensureChampionshipSystems(career);

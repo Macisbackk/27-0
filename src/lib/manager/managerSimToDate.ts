@@ -20,7 +20,7 @@ export interface SimToDateResult {
   stoppedEarly?: boolean;
 }
 
-const MAX_STEPS = 80;
+const MAX_STEPS = 140;
 
 /**
  * Auto-simulate user matches and advance Match Weeks until `career.gameWeek`
@@ -94,11 +94,19 @@ export function simulateCareerToGameWeek(
       };
     }
 
-    // Unresolved pre-season friendly: auto-pick a valid opponent (seeded) and continue.
-    const autoFriendly = autoSelectFriendlyForSim(next);
-    next = autoFriendly.career;
+    // Unresolved pre-season friendly: auto-pick until a kick-off exists
+    // (Champ/SL both require a full confirmed schedule of FRIENDLIES_REQUIRED).
+    let ready = next;
+    for (let friendlyStep = 0; friendlyStep < 8; friendlyStep++) {
+      const autoFriendly = autoSelectFriendlyForSim(ready);
+      ready = autoFriendly.career;
+      if (getNextManagerFixture(prepareCareerForNextMatch(ready))) break;
+      if (!autoFriendly.autoSelectedClub && !ready.preSeason.activeFriendly) {
+        break;
+      }
+    }
 
-    let ready = prepareCareerForNextMatch(next);
+    ready = prepareCareerForNextMatch(ready);
     if (ready.managerSettings?.autoFixSquadBeforeMatch !== false) {
       ready = autoFixMatchdaySquad(ready).career;
     }

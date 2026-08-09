@@ -226,6 +226,17 @@ function pickAiSuperLeagueChampion(
   career: ManagerCareer,
   seasonYear: number
 ): string {
+  // Prefer a real AI Super League table when the user managed in Championship.
+  const aiTable = career.aiSuperLeagueStandings;
+  if (aiTable?.length) {
+    const top = [...aiTable].sort((a, b) => a.position - b.position)[0];
+    if (top?.team) return top.team;
+  }
+  const membership = career.superLeagueClubNames?.filter((c) => c !== career.club);
+  if (membership?.length) {
+    const rng = seedrandom(`${career.seed}-sl-champ-${seasonYear}`);
+    return membership[Math.floor(rng() * membership.length)]!;
+  }
   const rng = seedrandom(`${career.seed}-sl-champ-${seasonYear}`);
   const clubs = Object.keys(career.clubFunds ?? {}).filter((c) => c !== career.club);
   if (clubs.length === 0) return "Wigan Warriors";

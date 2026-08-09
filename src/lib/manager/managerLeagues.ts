@@ -115,7 +115,7 @@ const CHAMPIONSHIP_DEF: ManagerLeagueDefinition = {
   shortName: "Champ",
   bio: "England's second tier — tighter budgets, tougher builds, and promotion on the line.",
   clubSelectBlurb:
-    "Weaker budgets and squads than Super League — finish top two to earn promotion.",
+    "Home-and-away Championship — tighter budgets than Super League, finish top two to earn promotion.",
   sortOrder: 2,
   selectable: true,
   seasonGames: CHAMPIONSHIP_ROUNDS,

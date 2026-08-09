@@ -6,6 +6,7 @@ import {
   applyPromotionRelegation,
   getCareerChampionshipClubs,
   getCareerSuperLeagueClubs,
+  getUserCompetitionId,
   getUserLeagueClubs,
   getUserSeasonGames,
   isUserInChampionship,
@@ -196,12 +197,16 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const summary = buildSeasonSummary(career);
   const seasonStartFacilities = getClubFacilities(career);
   // Snapshot final tables for next season's Challenge Cup seeding (year on year).
+  // Champ careers must use the live AI Super League table — not a stale prior snapshot.
   const previousSeasonLeagueTable = isUserInChampionship(career)
-    ? career.previousSeasonLeagueTable ??
-      getCareerSuperLeagueClubs(career).map((team, i) => ({
-        team,
-        position: i + 1,
-      }))
+    ? standingsToCupSeeding(
+        career.aiSuperLeagueStandings?.length
+          ? career.aiSuperLeagueStandings
+          : getCareerSuperLeagueClubs(career).map((team, i) => ({
+              team,
+              position: i + 1,
+            }))
+      )
     : standingsToCupSeeding(getManagerLeagueTable(career));
   const previousSeasonChampionshipTable = isUserInChampionship(career)
     ? standingsToCupSeeding(getManagerLeagueTable(career))
@@ -292,12 +297,13 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
 
   const prevFinance = afterReserveContracts.managerFinance;
   const transferBudget = computeSeasonTransferBudget(
-    career.club,
+    afterPromRel.club,
     newSeed,
     career.seasonYear + 1,
     summary,
     prevFinance,
-    getCareerClubStars(career)
+    getCareerClubStars(afterPromRel),
+    getUserCompetitionId(afterPromRel)
   );
 
   const carriedOperating =
@@ -347,15 +353,21 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     gateIncomeHistory: [],
     attendanceData: attendanceAfterSeason,
     seasonAttendance: { total: 0, count: 0, high: 0, low: 0 },
-    challengeCup: createManagerChallengeCup(newSeed, career.club, {
+    challengeCup: createManagerChallengeCup(newSeed, afterPromRel.club, {
       previousSeasonLeagueTable,
       previousSeasonChampionshipTable,
+      championshipClubs: champClubs,
+      superLeagueClubs: slClubs,
     }),
     challengeCupSchemaVersion: CHALLENGE_CUP_SCHEMA_VERSION,
     previousSeasonLeagueTable,
     previousSeasonChampionshipTable,
     championshipCompetition,
     championshipCompetitionVersion: championshipCompetition.version,
+    /** Fresh AI Super League each Champ season — do not carry lastRound forever. */
+    aiSuperLeagueStandings: undefined,
+    aiSuperLeagueRoundMatches: undefined,
+    aiSuperLeagueLastRound: undefined,
     championshipToSlTransfersThisSeason: 0,
     championshipTransferCooldowns: {},
     championshipReserveSigningsThisSeason: 0,
@@ -394,7 +406,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     calledUpReserveIds: [],
     reserveResults: [],
     lastReserveResult: null,
-    leagueTable: buildLeagueTableFromMatches([], career.club, leagueClubs),
+    leagueTable: buildLeagueTableFromMatches([], afterPromRel.club, leagueClubs),
     preSeason: initPreSeasonState({}),
     managerFinance: {
       transferBudget,

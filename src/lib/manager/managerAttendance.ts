@@ -98,6 +98,42 @@ export const CLUB_ATTENDANCE_PROFILES: Record<
   "York Knights": { base: 4_500, capacity: 8_500 },
 };
 
+/**
+ * Club-accurate Championship gates (2025–26 home averages + stadium capacities).
+ * Used when a club is not already covered by the Super League map above.
+ */
+export const CHAMPIONSHIP_ATTENDANCE_PROFILES: Record<
+  string,
+  { base: number; capacity: number; min?: number }
+> = {
+  "London Broncos": { base: 3_200, capacity: 9_215, min: 1_800 },
+  "Salford RLFC": { base: 2_500, capacity: 12_000, min: 1_600 },
+  "Widnes Vikings": { base: 2_350, capacity: 13_350, min: 1_400 },
+  "Halifax Panthers": { base: 1_750, capacity: 10_401, min: 1_100 },
+  "Barrow Raiders": { base: 1_900, capacity: 6_000, min: 1_200 },
+  "Oldham RLFC": { base: 1_400, capacity: 13_186, min: 900 },
+  "Doncaster RLFC": { base: 1_450, capacity: 15_231, min: 900 },
+  "Dewsbury Rams": { base: 1_200, capacity: 5_100, min: 700 },
+  "Keighley Cougars": { base: 1_250, capacity: 7_800, min: 750 },
+  "Batley Bulldogs": { base: 1_050, capacity: 7_500, min: 650 },
+  "Workington Town": { base: 970, capacity: 10_000, min: 550 },
+  "Swinton Lions": { base: 930, capacity: 3_387, min: 500 },
+  "Hunslet RLFC": { base: 800, capacity: 3_450, min: 450 },
+  "Sheffield Eagles": { base: 750, capacity: 3_900, min: 400 },
+  "Whitehaven RLFC": { base: 720, capacity: 7_500, min: 400 },
+  "Goole Vikings": { base: 580, capacity: 3_000, min: 300 },
+  "Rochdale Hornets": { base: 550, capacity: 9_961, min: 300 },
+  "North Wales Crusaders": { base: 500, capacity: 6_080, min: 250 },
+  "Midlands Hurricanes": { base: 350, capacity: 2_500, min: 200 },
+  "Newcastle Thunder": { base: 400, capacity: 5_000, min: 200 },
+};
+
+/** Legacy uniform Champ profile — used to detect saves that need remapping. */
+const LEGACY_GENERIC_CHAMP_PROFILE = {
+  base: 2_800,
+  capacity: 7_500,
+} as const;
+
 export function getClubAttendanceProfile(club: string): {
   base: number;
   capacity: number;
@@ -105,9 +141,11 @@ export function getClubAttendanceProfile(club: string): {
 } {
   const known = CLUB_ATTENDANCE_PROFILES[club];
   if (known) return known;
+  const champ = CHAMPIONSHIP_ATTENDANCE_PROFILES[club];
+  if (champ) return champ;
   if (isChampionshipClubName(club)) {
-    // Generic Championship gate — smaller than Super League mid-table sides.
-    return { base: 2_800, capacity: 7_500, min: 1_600 };
+    // Unknown Champ / relegated side without a named profile — modest gate.
+    return { base: 1_200, capacity: 6_000, min: 700 };
   }
   return { base: 6_000, capacity: 12_000 };
 }
@@ -272,7 +310,25 @@ export function syncClubAttendanceData(
   data: ClubAttendanceData,
   facilities?: import("./types").ClubFacilities
 ): ClubAttendanceData {
-  const profileCapacity = getClubAttendanceProfile(club).capacity;
+  const profile = getClubAttendanceProfile(club);
+  const usedLegacyGeneric =
+    data.baseAttendance === LEGACY_GENERIC_CHAMP_PROFILE.base &&
+    data.stadiumCapacity === LEGACY_GENERIC_CHAMP_PROFILE.capacity &&
+    (isChampionshipClubName(club) ||
+      Boolean(CHAMPIONSHIP_ATTENDANCE_PROFILES[club]));
+
+  if (usedLegacyGeneric) {
+    const fresh = createClubAttendanceData(club);
+    if (facilities) {
+      fresh.stadiumCapacity = getEffectiveStadiumCapacity(
+        club,
+        ensureClubFacilities(facilities)
+      );
+    }
+    return fresh;
+  }
+
+  const profileCapacity = profile.capacity;
   const capacity = facilities
     ? getEffectiveStadiumCapacity(club, ensureClubFacilities(facilities))
     : data.stadiumCapacity > profileCapacity

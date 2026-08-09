@@ -4,10 +4,12 @@ import { getPlayerAge } from "../players/player-age";
 import { getManagerClubTeamRating } from "./managerRating";
 import { getManagerClubConfig, getManagerClubStarRating } from "./club-config";
 import { getLeagueEconomyScale } from "./managerLeagues";
+import { getUserCompetitionId } from "./leagueMembership";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import type {
   ContractStatus,
   ManagerCareer,
+  ManagerCompetitionId,
   PlayerContract,
   RenewalDemand,
   SquadRole,
@@ -268,7 +270,8 @@ export function resolveWageBudgetForCareer(career: ManagerCareer): number {
     computeWageBill(career.reserveContracts ?? {});
   const tierFloor = getWageBudgetForClub(
     career.club,
-    career.difficulty
+    career.difficulty,
+    getUserCompetitionId(career)
   );
   const afterRenewals = projectWageBillAfterRenewals(career);
   const squadFloor = Math.round(Math.max(wageBill, afterRenewals) * 1.05);
@@ -278,7 +281,8 @@ export function resolveWageBudgetForCareer(career: ManagerCareer): number {
 
 export function getWageBudgetForClub(
   club: string,
-  careerStars?: number | null
+  careerStars?: number | null,
+  competitionOverride?: ManagerCompetitionId | null
 ): number {
   const stars =
     typeof careerStars === "number" && Number.isFinite(careerStars)
@@ -292,7 +296,10 @@ export function getWageBudgetForClub(
     1: 1_300_000,
   };
   const base = byStars[stars] ?? byStars[3]!;
-  const competition = getManagerClubConfig(club).competition ?? "super-league";
+  const competition =
+    competitionOverride ??
+    getManagerClubConfig(club).competition ??
+    "super-league";
   const mult = getLeagueEconomyScale(competition);
   return scaleManagerEconomy(base * mult);
 }

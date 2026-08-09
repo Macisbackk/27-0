@@ -1,5 +1,9 @@
 import type { ManagerCareer } from "../types";
-import { getCareerChampionshipClubs } from "../leagueMembership";
+import {
+  getCareerChampionshipClubs,
+  getCareerSuperLeagueClubs,
+  isUserInChampionship,
+} from "../leagueMembership";
 import {
   generateChampionshipSquads,
   GENERATED_CHAMPIONSHIP_SQUADS_VERSION,
@@ -7,6 +11,9 @@ import {
 import {
   advanceChampionshipToGameWeek,
   createChampionshipCompetition,
+  CHAMPIONSHIP_COMPETITION_VERSION,
+  CHAMPIONSHIP_ROUNDS,
+  migrateChampionshipCompetitionToHomeAndAway,
 } from "./championshipLeague";
 import {
   createExpandedChallengeCupBracket,
@@ -14,8 +21,9 @@ import {
   CHALLENGE_CUP_SCHEMA_VERSION,
   standingsToCupSeeding,
 } from "./championshipChallengeCup";
-import { countCupFixturesPlayed } from "../managerChallengeCup";
+import { countCupFixturesPlayed, countLeagueFixturesPlayed } from "../managerChallengeCup";
 import { migrateTransferOfferCategories } from "../managerTransferLeague";
+import { buildManagerScheduleFromChampionship } from "../managerFixtures";
 
 /**
  * Ensure Championship squads, league, and expanded cup schema exist on a career.
@@ -55,7 +63,10 @@ export function ensureChampionshipSystems(
 
   if (!next.championshipCompetition) {
     // Align processed rounds with current week so we don't backfill a news backlog
-    const startRound = Math.min(19, Math.max(0, next.gameWeek));
+    const startRound = Math.min(
+      CHAMPIONSHIP_ROUNDS,
+      Math.max(0, next.gameWeek)
+    );
     let competition = createChampionshipCompetition(
       next.seed,
       next.seasonYear,
@@ -76,6 +87,46 @@ export function ensureChampionshipSystems(
       championshipCompetition: competition,
       championshipCompetitionVersion: competition.version,
     };
+  } else if (
+    (next.championshipCompetition.version ?? 0) <
+      CHAMPIONSHIP_COMPETITION_VERSION ||
+    next.championshipCompetition.fixtures.reduce(
+      (m, f) => Math.max(m, f.round),
+      0
+    ) < CHAMPIONSHIP_ROUNDS
+  ) {
+    let competition = migrateChampionshipCompetitionToHomeAndAway(
+      next.championshipCompetition,
+      next.seasonYear
+    );
+    competition = advanceChampionshipToGameWeek(
+      competition,
+      next.gameWeek,
+      next.seed,
+      next.championshipSquads
+    );
+    next = {
+      ...next,
+      championshipCompetition: competition,
+      championshipCompetitionVersion: competition.version,
+    };
+    // Champ user schedule must cover the return legs.
+    if (
+      isUserInChampionship(next) &&
+      (next.schedule?.length ?? 0) < CHAMPIONSHIP_ROUNDS
+    ) {
+      const rebuilt = buildManagerScheduleFromChampionship(
+        next.club,
+        competition,
+        next.seed
+      );
+      const playedLeague = countLeagueFixturesPlayed(next);
+      next = {
+        ...next,
+        schedule: rebuilt,
+        currentFixtureIndex: Math.min(playedLeague, rebuilt.length),
+      };
+    }
   }
 
   const cupPlayed = countCupFixturesPlayed(next);
@@ -100,6 +151,8 @@ export function ensureChampionshipSystems(
           previousSeasonChampionshipTable: standingsToCupSeeding(
             next.previousSeasonChampionshipTable
           ),
+          championshipClubs: getCareerChampionshipClubs(next),
+          superLeagueClubs: getCareerSuperLeagueClubs(next),
         }
       ),
       challengeCupSchemaVersion: CHALLENGE_CUP_SCHEMA_VERSION,

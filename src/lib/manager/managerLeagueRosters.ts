@@ -2,7 +2,6 @@ import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS, isSameManagerClub } from "../clubs/super-league-display";
 import {
   getChampionshipClubByName,
-  isChampionshipClubName,
 } from "../clubs/championship-clubs";
 import { getClubBaseStrength } from "../game/club-strength";
 import { getPlayerById } from "../players";
@@ -21,9 +20,28 @@ import { createYouthProspect } from "./managerReserves";
 import {
   championshipPlayerToPlayer,
 } from "./championship/championshipSquads";
+import {
+  getCareerChampionshipClubs,
+  getCareerSuperLeagueClubs,
+  resolveClubCompetitionForCareer,
+} from "./leagueMembership";
 import type { ManagerCareer } from "./types";
 
 export type LeagueClubRosters = Record<string, string[]>;
+
+function getTrackedLeagueClubs(career: ManagerCareer): string[] {
+  const clubs = new Set<string>([
+    ...CURRENT_PLAYABLE_CLUBS,
+    ...getCareerSuperLeagueClubs(career),
+    ...getCareerChampionshipClubs(career),
+  ]);
+  clubs.delete(career.club);
+  return [...clubs];
+}
+
+function isChampionshipSide(career: ManagerCareer, club: string): boolean {
+  return resolveClubCompetitionForCareer(club, career) === "championship";
+}
 
 /** Player IDs owned by the user's club (squad, reserves, youth intake). */
 export function getUserClubPlayerIds(career: ManagerCareer): Set<string> {
@@ -95,8 +113,8 @@ export function getLeagueClubPlayerPool(
   }
   if (players.length > 0) return players;
 
-  // Challenge Cup lower-league sides live on championshipSquads, not league rosters.
-  if (isChampionshipClubName(club) && career.championshipSquads) {
+  // Challenge Cup / Championship sides live on championshipSquads, not league rosters.
+  if (isChampionshipSide(career, club) && career.championshipSquads) {
     const champ = getChampionshipClubByName(club);
     if (!champ) return [];
     const roster = career.championshipSquads.rosterByClub[champ.id] ?? [];
@@ -127,7 +145,7 @@ export function getLeagueClubStableRating(
 ): number {
   const pool = getLeagueClubPlayerPool(career, club);
   if (pool.length === 0) {
-    if (isChampionshipClubName(club)) {
+    if (isChampionshipSide(career, club)) {
       // Shared cup strength scale (already tier-offset below Super League).
       return getClubBaseStrength(club);
     }
@@ -142,7 +160,7 @@ export function getLeagueClubStableRating(
   // Championship peak ratings (70–89) sit on a lower competition band than
   // Super League (80+). Pull cup/opponent ratings toward the tier-offset
   // club strength so SL sides still dominate on scoreboard.
-  if (isChampionshipClubName(club)) {
+  if (isChampionshipSide(career, club)) {
     const tier = getClubBaseStrength(club);
     return Math.round(avg * 0.45 + tier * 0.55);
   }
@@ -174,7 +192,7 @@ export function reconcileLeagueRosters(career: ManagerCareer): ManagerCareer {
     ...(career.leagueClubRosters ?? initLeagueClubRosters(career.club)),
   };
 
-  for (const club of CURRENT_PLAYABLE_CLUBS) {
+  for (const club of getTrackedLeagueClubs(career)) {
     if (club === career.club) continue;
     rosters[club] = dedupeIds(
       (rosters[club] ?? []).filter(
@@ -184,7 +202,7 @@ export function reconcileLeagueRosters(career: ManagerCareer): ManagerCareer {
   }
 
   const assigned = new Set<string>(userPlayerIds);
-  for (const club of CURRENT_PLAYABLE_CLUBS) {
+  for (const club of getTrackedLeagueClubs(career)) {
     if (club === career.club) continue;
     rosters[club] = (rosters[club] ?? []).filter((id) => {
       if (freeAgentIds.has(id)) return false;
@@ -218,7 +236,7 @@ export function transferLeaguePlayer(
     ...(career.leagueClubRosters ?? initLeagueClubRosters(career.club)),
   };
 
-  for (const club of CURRENT_PLAYABLE_CLUBS) {
+  for (const club of getTrackedLeagueClubs(career)) {
     if (club === career.club) continue;
     rosters[club] = (rosters[club] ?? []).filter((id) => id !== playerId);
   }

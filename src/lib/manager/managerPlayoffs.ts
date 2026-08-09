@@ -391,6 +391,10 @@ export function finalizePlayoffTournamentForChampion(
   career: ManagerCareer
 ): ManagerCareer {
   if (!isLeagueAndCupPhaseComplete(career)) return career;
+  // Championship (and any non-playoff league) must not invent an SL GF from the Champ table.
+  if (!leagueHasPlayoffs(getUserCompetitionId(career))) {
+    return { ...career, playoffs: undefined };
+  }
 
   const squad = buildSquadSlotsFromMatchday(
     career.matchdayXiii,

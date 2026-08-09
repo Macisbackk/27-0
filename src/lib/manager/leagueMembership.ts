@@ -44,6 +44,19 @@ export function getUserCompetitionId(career: ManagerCareer): ManagerCompetitionI
   return "super-league";
 }
 
+export function resolveClubCompetitionForCareer(
+  clubName: string,
+  career: ManagerCareer
+): ManagerCompetitionId {
+  if (getCareerChampionshipClubs(career).includes(clubName)) {
+    return "championship";
+  }
+  if (getCareerSuperLeagueClubs(career).includes(clubName)) {
+    return "super-league";
+  }
+  return getUserCompetitionId(career);
+}
+
 export function isUserInChampionship(career: ManagerCareer): boolean {
   return getUserCompetitionId(career) === "championship";
 }
@@ -116,11 +129,17 @@ export function applyPromotionRelegation(career: ManagerCareer): {
   const slClubs = getCareerSuperLeagueClubs(withMembership);
   const champClubs = getCareerChampionshipClubs(withMembership);
 
-  // Prefer cached tables on the career (authoritative at season end).
+  // Prefer live AI Super League standings when the user managed in the Championship.
   const slTable = sortedByPosition(
     isUserInChampionship(withMembership)
-      ? (withMembership.previousSeasonLeagueTable ??
-          slClubs.map((team, i) => ({ team, position: i + 1 })))
+      ? (
+          withMembership.aiSuperLeagueStandings?.length
+            ? withMembership.aiSuperLeagueStandings
+            : withMembership.previousSeasonLeagueTable
+        )?.map((r) => ({
+          team: r.team,
+          position: r.position,
+        })) ?? slClubs.map((team, i) => ({ team, position: i + 1 }))
       : (withMembership.leagueTable ?? []).map((r) => ({
           team: r.team,
           position: r.position,

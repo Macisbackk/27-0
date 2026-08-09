@@ -13,8 +13,9 @@ import {
   type ChampionshipMatchDetail,
 } from "./championshipMatchDetail";
 
-export const CHAMPIONSHIP_COMPETITION_VERSION = 1;
-export const CHAMPIONSHIP_ROUNDS = 19; // 20 clubs → 19 rounds single round-robin
+export const CHAMPIONSHIP_COMPETITION_VERSION = 2;
+/** 20 clubs → home-and-away double round-robin (38 rounds). */
+export const CHAMPIONSHIP_ROUNDS = 38;
 
 export interface ChampionshipFixture {
   id: string;
@@ -90,7 +91,11 @@ function resolveChampionshipClubList(
   return resolved;
 }
 
-/** Circle method single round-robin for 20 clubs → 19 rounds × 10 fixtures. */
+/**
+ * Circle-method home-and-away schedule for an even club count.
+ * First half: single round-robin (n−1 rounds). Second half: return legs with
+ * home/away swapped (rounds n … 2(n−1)).
+ */
 export function generateChampionshipSchedule(
   seed: string,
   seasonYear: number,
@@ -102,19 +107,19 @@ export function generateChampionshipSchedule(
   if (n % 2 !== 0) {
     throw new Error("Championship requires an even number of clubs");
   }
-  const rounds = n - 1;
+  const firstHalfRounds = n - 1;
   const half = n / 2;
   const rotation = clubs.map((c) => c);
-  const fixtures: ChampionshipFixture[] = [];
+  const firstHalf: ChampionshipFixture[] = [];
 
-  for (let round = 1; round <= rounds; round++) {
+  for (let round = 1; round <= firstHalfRounds; round++) {
     for (let i = 0; i < half; i++) {
       const home = rotation[i]!;
       const away = rotation[n - 1 - i]!;
       const homeFirst = (round + i) % 2 === 0;
       const h = homeFirst ? home : away;
       const a = homeFirst ? away : home;
-      fixtures.push({
+      firstHalf.push({
         id: `champ-${seasonYear}-r${round}-${h.id}-${a.id}`,
         round,
         homeClubId: h.id,
@@ -130,7 +135,74 @@ export function generateChampionshipSchedule(
     rest.unshift(rest.pop()!);
     rotation.splice(0, rotation.length, fixed, ...rest);
   }
-  return fixtures;
+
+  const returnLegs: ChampionshipFixture[] = firstHalf.map((f) => ({
+    id: `champ-${seasonYear}-r${f.round + firstHalfRounds}-${f.awayClubId}-${f.homeClubId}`,
+    round: f.round + firstHalfRounds,
+    homeClubId: f.awayClubId,
+    awayClubId: f.homeClubId,
+    homeTeam: f.awayTeam,
+    awayTeam: f.homeTeam,
+    played: false,
+  }));
+
+  return [...firstHalf, ...returnLegs];
+}
+
+/** Upgrade a v1 (19-round) competition onto home-and-away without wiping results. */
+export function migrateChampionshipCompetitionToHomeAndAway(
+  state: ChampionshipCompetitionState,
+  seasonYear: number
+): ChampionshipCompetitionState {
+  const maxRound = state.fixtures.reduce(
+    (m, f) => Math.max(m, f.round),
+    0
+  );
+  if (maxRound >= CHAMPIONSHIP_ROUNDS) {
+    return {
+      ...state,
+      version: Math.max(state.version, CHAMPIONSHIP_COMPETITION_VERSION),
+    };
+  }
+
+  const firstHalfRounds = maxRound > 0 ? maxRound : 19;
+  const firstHalf = state.fixtures.filter((f) => f.round <= firstHalfRounds);
+  const existingIds = new Set(state.fixtures.map((f) => f.id));
+  const returnLegs: ChampionshipFixture[] = [];
+
+  for (const f of firstHalf) {
+    const id = `champ-${seasonYear}-r${f.round + firstHalfRounds}-${f.awayClubId}-${f.homeClubId}`;
+    if (existingIds.has(id)) continue;
+    // Skip if a same-pairing return already exists.
+    const already = state.fixtures.some(
+      (x) =>
+        x.homeTeam === f.awayTeam &&
+        x.awayTeam === f.homeTeam &&
+        x.round > firstHalfRounds
+    );
+    if (already) continue;
+    returnLegs.push({
+      id,
+      round: f.round + firstHalfRounds,
+      homeClubId: f.awayClubId,
+      awayClubId: f.homeClubId,
+      homeTeam: f.awayTeam,
+      awayTeam: f.homeTeam,
+      played: false,
+    });
+  }
+
+  const fixtures = [...state.fixtures, ...returnLegs];
+  const clubNames = [
+    ...new Set(fixtures.flatMap((f) => [f.homeTeam, f.awayTeam])),
+  ];
+  return {
+    ...state,
+    version: CHAMPIONSHIP_COMPETITION_VERSION,
+    fixtures,
+    standings: buildChampionshipTable(fixtures, undefined, clubNames),
+    completed: fixtures.every((f) => f.played),
+  };
 }
 
 export function buildChampionshipTable(
@@ -291,8 +363,8 @@ export function createChampionshipCompetition(
 }
 
 /**
- * Simulate the next Championship round(s) to keep pace with Super League weeks.
- * Maps SL game week → Championship round (1 round per week, capped at 19).
+ * Simulate the next Championship round(s) to keep pace with the user calendar.
+ * Maps game week → Championship round (1 round per week, capped at season length).
  */
 export function advanceChampionshipToGameWeek(
   state: ChampionshipCompetitionState,

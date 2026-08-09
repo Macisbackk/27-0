@@ -6,7 +6,7 @@ import {
   MANAGER_EXPECTATION_LABELS,
   type ManagerClubExpectationTier,
 } from "./club-config";
-import { createManagerChallengeCup } from "./managerChallengeCup";
+import { createManagerChallengeCup, cupSeedingInputFromCareer } from "./managerChallengeCup";
 import {
   buildLeagueTableFromMatches,
   buildManagerSchedule,
@@ -322,10 +322,14 @@ export function takeOverClub(
     next = {
       ...next,
       schedule: buildManagerSchedule(newClub, next.seed),
-      challengeCup: createManagerChallengeCup(next.seed, newClub, {
-        previousSeasonLeagueTable: next.previousSeasonLeagueTable,
-        previousSeasonChampionshipTable: next.previousSeasonChampionshipTable,
-      }),
+      challengeCup: createManagerChallengeCup(
+        next.seed,
+        newClub,
+        cupSeedingInputFromCareer(next, {
+          previousSeasonLeagueTable: next.previousSeasonLeagueTable,
+          previousSeasonChampionshipTable: next.previousSeasonChampionshipTable,
+        })
+      ),
       challengeCupSchemaVersion: CHALLENGE_CUP_SCHEMA_VERSION,
       leagueTable: buildLeagueTableFromMatches([], newClub),
     };

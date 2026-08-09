@@ -26,8 +26,12 @@ import {
 import {
   getUserLeagueClubs,
   getUserSeasonGames,
+  isUserInChampionship,
 } from "./leagueMembership";
-import type { ChampionshipCompetitionState } from "./championship/championshipLeague";
+import {
+  championshipFixturesToRoundMatches,
+  type ChampionshipCompetitionState,
+} from "./championship/championshipLeague";
 
 export function buildManagerSchedule(
   club: string,
@@ -50,7 +54,7 @@ export function buildManagerSchedule(
   >[] = [];
 
   if (seasonGames <= opponents.length) {
-    // Single round-robin (Championship): one fixture vs each opponent.
+    // Short single-pass leagues: one fixture vs each opponent.
     const shuffleRng = seedrandom(`${seed}-schedule-shuffle`);
     const shuffledOpponents = [...opponents].sort(() => shuffleRng() - 0.5);
     shuffledOpponents.forEach((opp, i) => {
@@ -68,6 +72,7 @@ export function buildManagerSchedule(
     });
   }
 
+  // Home-and-away (Championship 38 / Super League 26+Magic): visit every opponent twice.
   for (const opp of opponents) {
     fixtures.push({ opponent: opp, isHome: true });
   }
@@ -394,6 +399,24 @@ export function reconcileRoundMatches(career: ManagerCareer): ManagerCareer {
     .filter((f) => (f.competition ?? "league") === "league")
     .sort((a, b) => a.round - b.round);
   if (leagueFixtures.length === 0) return career;
+
+  // Championship careers: rebuild from the parallel competition fixtures, never
+  // invent Super League–style pairings for missing rounds.
+  if (isUserInChampionship(career) && career.championshipCompetition?.fixtures?.length) {
+    const roundMatches = championshipFixturesToRoundMatches(
+      career.championshipCompetition.fixtures
+    );
+    if (roundMatches.length === (career.roundMatches?.length ?? 0)) return career;
+    return {
+      ...career,
+      roundMatches,
+      leagueTable: buildLeagueTableFromMatches(
+        roundMatches,
+        career.club,
+        getUserLeagueClubs(career)
+      ),
+    };
+  }
 
   const roundsPresent = new Set(career.roundMatches?.map((m) => m.round) ?? []);
   let roundMatches = [...(career.roundMatches ?? [])];

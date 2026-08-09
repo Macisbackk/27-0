@@ -1,10 +1,16 @@
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
-import type { ManagerCareer, ManagerFinance, ManagerSeasonSummary } from "./types";
+import type {
+  ManagerCareer,
+  ManagerCompetitionId,
+  ManagerFinance,
+  ManagerSeasonSummary,
+} from "./types";
 import {
   getManagerClubConfig,
   getManagerClubStarRating,
 } from "./club-config";
 import { getLeagueComfortRatingOffset, getLeagueEconomyScale } from "./managerLeagues";
+import { getUserCompetitionId } from "./leagueMembership";
 import { computeWageBill, getWageBudgetForClub, resolveWageBudgetForCareer } from "./managerContracts";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { getUserLeaguePosition } from "./managerFixtures";
@@ -23,8 +29,14 @@ const TRANSFER_RANGE_BY_STARS: Record<number, [number, number]> = {
   1: [200_000, 340_000],
 };
 
-function clubEconomyMultiplier(club: string): number {
-  const competition = getManagerClubConfig(club).competition ?? "super-league";
+function clubEconomyMultiplier(
+  club: string,
+  competitionOverride?: ManagerCompetitionId | null
+): number {
+  const competition =
+    competitionOverride ??
+    getManagerClubConfig(club).competition ??
+    "super-league";
   return getLeagueEconomyScale(competition);
 }
 
@@ -260,13 +272,16 @@ function hashSeed(seed: string, club: string): number {
 export function computeFirstSeasonTransferBudget(
   club: string,
   seed: string,
-  careerStars?: number | null
+  careerStars?: number | null,
+  competitionOverride?: ManagerCompetitionId | null
 ): number {
   const stars = getClubStarTier(club, careerStars);
   const range = TRANSFER_RANGE_BY_STARS[stars] ?? TRANSFER_RANGE_BY_STARS[3]!;
   const t = hashSeed(seed, club) % 1000;
   const raw = Math.round(range[0] + ((range[1] - range[0]) * t) / 1000);
-  return scaleManagerEconomy(raw * clubEconomyMultiplier(club));
+  return scaleManagerEconomy(
+    raw * clubEconomyMultiplier(club, competitionOverride)
+  );
 }
 
 export function computeSeasonTransferBudget(
@@ -275,16 +290,27 @@ export function computeSeasonTransferBudget(
   seasonYear: number,
   summary?: ManagerSeasonSummary,
   prevFinance?: ManagerFinance,
-  careerStars?: number | null
+  careerStars?: number | null,
+  competitionOverride?: ManagerCompetitionId | null
 ): number {
   const isFirstSeason = seasonYear <= new Date().getFullYear() && !summary;
   if (isFirstSeason && !prevFinance) {
-    return computeFirstSeasonTransferBudget(club, seed, careerStars);
+    return computeFirstSeasonTransferBudget(
+      club,
+      seed,
+      careerStars,
+      competitionOverride
+    );
   }
 
   let base =
     prevFinance?.transferBudget ??
-    computeFirstSeasonTransferBudget(club, seed, careerStars);
+    computeFirstSeasonTransferBudget(
+      club,
+      seed,
+      careerStars,
+      competitionOverride
+    );
   const position = summary?.position ?? 10;
   const wins = summary?.wins ?? 0;
 
@@ -301,7 +327,7 @@ export function computeSeasonTransferBudget(
 
   const stars = getClubStarTier(club, careerStars);
   const range = TRANSFER_RANGE_BY_STARS[stars] ?? TRANSFER_RANGE_BY_STARS[3]!;
-  const mult = clubEconomyMultiplier(club);
+  const mult = clubEconomyMultiplier(club, competitionOverride);
   const floor = scaleManagerEconomy(range[0] * mult);
   const cap = scaleManagerEconomy(Math.round(range[1] * 1.3 * mult));
   return Math.max(floor, Math.min(cap, base));
@@ -316,13 +342,15 @@ export function resyncCareerEconomyToClubStars(
   summary?: ManagerSeasonSummary
 ): ManagerCareer {
   const stars = getClubStarTier(career.club, career.difficulty);
+  const competition = getUserCompetitionId(career);
   const transferBudget = computeSeasonTransferBudget(
     career.club,
     career.seed,
     career.seasonYear,
     summary,
     career.managerFinance,
-    stars
+    stars,
+    competition
   );
   const withBudget: ManagerCareer = {
     ...career,

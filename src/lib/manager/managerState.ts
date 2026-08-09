@@ -40,7 +40,7 @@ import {
   ensureClubFacilities,
   getEffectiveStadiumCapacity,
 } from "./managerFacilities";
-import { createManagerChallengeCup, reconcileChallengeCupFromFixtures } from "./managerChallengeCup";
+import { createManagerChallengeCup, cupSeedingInputFromCareer, reconcileChallengeCupFromFixtures } from "./managerChallengeCup";
 import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubReserveCounts, ensureAllClubReserveDepth, dedupeSquadAndReserves } from "./managerReserves";
 import { sanitizeWorldClubChallengeState, ensureWorldClubChallengeScheduled } from "./worldClubChallenge";
 import { ensureChampionshipSystems } from "./championship/ensureChampionship";
@@ -49,6 +49,8 @@ import {
   isUserInChampionship,
   defaultSuperLeagueClubs,
   defaultChampionshipClubs,
+  getCareerChampionshipClubs,
+  getCareerSuperLeagueClubs,
 } from "./leagueMembership";
 import {
   generateChampionshipSquads,
@@ -235,6 +237,8 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     previousSeasonLeagueTable: withMembership.previousSeasonLeagueTable ?? null,
     previousSeasonChampionshipTable:
       withMembership.previousSeasonChampionshipTable ?? null,
+    championshipClubs: getCareerChampionshipClubs(withMembership),
+    superLeagueClubs: getCareerSuperLeagueClubs(withMembership),
   };
   if (!challengeCup?.matches?.length) {
     const cupPlayed = (withMembership.fixtures ?? []).some(
@@ -648,7 +652,8 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
   const transferBudget = computeFirstSeasonTransferBudget(
     club,
     seed,
-    config.difficulty
+    config.difficulty,
+    isChampCareer ? "championship" : "super-league"
   );
 
   const reserves = generateReserveSquad(seed, 24, club);
@@ -657,7 +662,11 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     contracts,
     reserveContracts,
   } as ManagerCareer);
-  const initialWageBudget = getWageBudgetForClub(club, config.difficulty);
+  const initialWageBudget = getWageBudgetForClub(
+    club,
+    config.difficulty,
+    isChampCareer ? "championship" : "super-league"
+  );
 
   const clubFacilities = createDefaultClubFacilities();
   const attendanceData = {
@@ -701,7 +710,17 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     attendanceData,
     clubFacilities,
     gateIncomeHistory: [],
-    challengeCup: createManagerChallengeCup(seed, club),
+    challengeCup: createManagerChallengeCup(
+      seed,
+      club,
+      cupSeedingInputFromCareer({
+        club,
+        seed,
+        userCompetitionId: isChampCareer ? "championship" : "super-league",
+        superLeagueClubNames: defaultSuperLeagueClubs(),
+        championshipClubNames: defaultChampionshipClubs(),
+      } as ManagerCareer)
+    ),
     matchdayXiii: lineup.xiiiIds,
     matchdayInterchange: lineup.benchIds,
     xiiiSlotPositions: lineup.slotPositions,

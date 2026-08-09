@@ -24,7 +24,11 @@ import type {
   ManagerScheduledFixture,
 } from "./types";
 import { CUP_ROUND_LABELS } from "./types";
-import { getUserSeasonGames } from "./leagueMembership";
+import {
+  getCareerChampionshipClubs,
+  getCareerSuperLeagueClubs,
+  getUserSeasonGames,
+} from "./leagueMembership";
 import {
   getChallengeCupRoundLabel,
   isChallengeCupFinalRound,
@@ -33,8 +37,32 @@ import {
   needsPreSeasonFriendlies,
 } from "./managerFriendlies";
 
-/** Cup rounds unlock after N Super League games — expanded 6-round format. */
-const CUP_TRIGGERS_LEAGUE_GAMES = [3, 7, 12, 17, 22, 26];
+/** Classic Super League cup unlock weeks (6 rounds). */
+const CUP_TRIGGERS_SL_27 = [3, 7, 12, 17, 22, 26] as const;
+
+/**
+ * Scale Challenge Cup unlocks across the user's league length.
+ * Championship (38 home-and-away) must still fit all 6 rounds before season end.
+ */
+export function getCupTriggersForSeasonGames(seasonGames: number): number[] {
+  // Exact Super League length keeps the classic calendar.
+  if (seasonGames === 27) return [...CUP_TRIGGERS_SL_27];
+  // Champ / other lengths: unlock steadily so Final is available by last GW.
+  const last = Math.max(6, seasonGames - 1);
+  const first = Math.max(2, Math.floor(seasonGames / 8));
+  const span = last - first;
+  return Array.from({ length: 6 }, (_, i) =>
+    Math.round(first + (span * i) / 5)
+  );
+}
+
+export function getCupTriggersForCareer(career: ManagerCareer): number[] {
+  return getCupTriggersForSeasonGames(getUserSeasonGames(career));
+}
+
+export function getCupRoundCount(): number {
+  return CUP_TRIGGERS_SL_27.length;
+}
 const CUP_KEY_TO_BRACKET_ROUND: Record<CupRoundKey, number> = {
   round_one: 1,
   round_two: 2,
@@ -124,13 +152,38 @@ function decorateCupFinalNeutral<
   };
 }
 
+export type ChallengeCupSeedingInput = {
+  previousSeasonLeagueTable?: CupSeedingStanding[] | null;
+  previousSeasonChampionshipTable?: CupSeedingStanding[] | null;
+  championshipClubs?: readonly string[] | null;
+  superLeagueClubs?: readonly string[] | null;
+};
+
+/** Membership-aware cup seeding for create / repair paths. */
+export function cupSeedingInputFromCareer(
+  career: ManagerCareer,
+  overrides?: ChallengeCupSeedingInput
+): ChallengeCupSeedingInput {
+  return {
+    previousSeasonLeagueTable:
+      overrides?.previousSeasonLeagueTable ??
+      career.previousSeasonLeagueTable ??
+      null,
+    previousSeasonChampionshipTable:
+      overrides?.previousSeasonChampionshipTable ??
+      career.previousSeasonChampionshipTable ??
+      null,
+    championshipClubs:
+      overrides?.championshipClubs ?? getCareerChampionshipClubs(career),
+    superLeagueClubs:
+      overrides?.superLeagueClubs ?? getCareerSuperLeagueClubs(career),
+  };
+}
+
 export function createManagerChallengeCup(
   seed: string,
   userClub: string,
-  seedingInput?: {
-    previousSeasonLeagueTable?: CupSeedingStanding[] | null;
-    previousSeasonChampionshipTable?: CupSeedingStanding[] | null;
-  }
+  seedingInput?: ChallengeCupSeedingInput
 ): ChallengeCupBracketState {
   return createExpandedChallengeCupBracket(`${seed}-cup`, userClub, seedingInput);
 }
@@ -204,9 +257,13 @@ export function getPendingCupBracketRound(
 
   const leaguePlayed = countLeagueFixturesPlayed(career);
   const cupPlayed = countCupFixturesPlayed(career);
+  const triggers = getCupTriggersForCareer(career);
+  const leagueDone = leaguePlayed >= getUserSeasonGames(career);
 
-  for (let i = cupPlayed; i < CUP_TRIGGERS_LEAGUE_GAMES.length; i++) {
-    if (leaguePlayed >= CUP_TRIGGERS_LEAGUE_GAMES[i]!) {
+  for (let i = cupPlayed; i < triggers.length; i++) {
+    // After the league slate is finished, unlock remaining cup rounds immediately
+    // so Championship (19 GW) careers are not soft-locked waiting for GW 22/26.
+    if (leagueDone || leaguePlayed >= triggers[i]!) {
       return i + 1;
     }
     return null;
@@ -298,14 +355,22 @@ export function reconcileChallengeCupFromFixtures(
   let cup =
     career.challengeCup?.matches?.length
       ? career.challengeCup
-      : createManagerChallengeCup(career.seed, career.club);
+      : createManagerChallengeCup(
+          career.seed,
+          career.club,
+          cupSeedingInputFromCareer(career)
+        );
 
   const cupFixtures = career.fixtures.filter(
     (f) => f.competition === "challenge_cup"
   );
 
   if (!career.challengeCup?.matches?.length && cupFixtures.length > 0) {
-    cup = createManagerChallengeCup(career.seed, career.club);
+    cup = createManagerChallengeCup(
+      career.seed,
+      career.club,
+      cupSeedingInputFromCareer(career)
+    );
     let working = { ...career, challengeCup: cup };
     for (const fixture of cupFixtures) {
       const cupKey = fixture.meta?.cupRound;
@@ -344,7 +409,7 @@ function syncCupOutcomeFlagsFromFixtures(
   }
 
   if (
-    cupFixtures.length >= CUP_TRIGGERS_LEAGUE_GAMES.length &&
+    cupFixtures.length >= getCupRoundCount() &&
     !next.tournamentComplete &&
     !next.userEliminated
   ) {
@@ -481,13 +546,13 @@ export function isLeagueAndCupPhaseComplete(career: ManagerCareer): boolean {
   if (prepared.tournamentComplete || prepared.userEliminated) return true;
 
   if (pendingRound === null) {
-    return countCupFixturesPlayed(career) >= CUP_TRIGGERS_LEAGUE_GAMES.length;
+    return countCupFixturesPlayed(career) >= getCupRoundCount();
   }
 
   if (userMatch) return false;
   if (prepared.userEliminated || prepared.tournamentComplete) return true;
 
-  if (countCupFixturesPlayed(career) >= CUP_TRIGGERS_LEAGUE_GAMES.length) {
+  if (countCupFixturesPlayed(career) >= getCupRoundCount()) {
     return true;
   }
 
@@ -904,7 +969,11 @@ export function clipCupBracketToUserProgress(
   const cup =
     career.challengeCup?.matches?.length
       ? career.challengeCup
-      : createManagerChallengeCup(career.seed, career.club);
+      : createManagerChallengeCup(
+          career.seed,
+          career.club,
+          cupSeedingInputFromCareer(career)
+        );
   return snapshotCupBracketAtRound(cup, getCupBracketDisplayRound(career));
 }
 

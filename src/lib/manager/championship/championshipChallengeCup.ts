@@ -155,14 +155,24 @@ export function createExpandedChallengeCupBracket(
   seedingInput?: {
     previousSeasonLeagueTable?: CupSeedingStanding[] | null;
     previousSeasonChampionshipTable?: CupSeedingStanding[] | null;
+    /** Dynamic membership after prom/rel — preferred over static registries. */
+    championshipClubs?: readonly string[] | null;
+    superLeagueClubs?: readonly string[] | null;
   }
 ): ExpandedChallengeCupState {
   const resolved = resolveCupSeedingContext(seedingInput ?? {});
 
+  const champPool = seedingInput?.championshipClubs?.length
+    ? [...seedingInput.championshipClubs]
+    : [...CHAMPIONSHIP_CLUB_NAMES];
+  const slPool = seedingInput?.superLeagueClubs?.length
+    ? [...seedingInput.superLeagueClubs]
+    : [...CURRENT_PLAYABLE_CLUBS];
+
   const championshipOrder = resolved.championshipOrder.filter((name) =>
-    CHAMPIONSHIP_CLUB_NAMES.includes(name)
+    champPool.includes(name)
   );
-  for (const name of CHAMPIONSHIP_CLUB_NAMES) {
+  for (const name of champPool) {
     if (!championshipOrder.includes(name)) championshipOrder.push(name);
   }
   if (championshipOrder.length !== 20) {
@@ -172,9 +182,9 @@ export function createExpandedChallengeCupBracket(
   }
 
   const superLeagueOrder = resolved.superLeagueOrder.filter((name) =>
-    (CURRENT_PLAYABLE_CLUBS as readonly string[]).includes(name)
+    slPool.includes(name)
   );
-  for (const name of CURRENT_PLAYABLE_CLUBS) {
+  for (const name of slPool) {
     if (!superLeagueOrder.includes(name)) superLeagueOrder.push(name);
   }
   if (superLeagueOrder.length !== 14) {

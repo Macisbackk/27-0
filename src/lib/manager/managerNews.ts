@@ -9,6 +9,7 @@ import {
   isMagicWeekendFixture,
 } from "./managerMagicWeekend";
 import { isCurrentPlayableClub } from "../clubs/super-league-display";
+import { CHAMPIONSHIP_ROUNDS } from "./championship/championshipLeague";
 
 const MAX_STORED = 10;
 const DISPLAY_COUNT = 5;
@@ -23,7 +24,7 @@ function championshipNewsItems(
   if (!competition || week <= 0) return items;
 
   const roundFixtures = competition.fixtures.filter(
-    (f) => f.played && f.round === Math.min(19, week)
+    (f) => f.played && f.round === Math.min(CHAMPIONSHIP_ROUNDS, week)
   );
   if (roundFixtures.length === 0) return items;
 
@@ -36,7 +37,7 @@ function championshipNewsItems(
       id: `news-champ-leader-w${week}`,
       week,
       type: "result",
-      text: `${leader.team} sit top of the Championship after Round ${Math.min(19, week)} (${leader.leaguePoints} pts).`,
+      text: `${leader.team} sit top of the Championship after Round ${Math.min(CHAMPIONSHIP_ROUNDS, week)} (${leader.leaguePoints} pts).`,
     });
   }
 
