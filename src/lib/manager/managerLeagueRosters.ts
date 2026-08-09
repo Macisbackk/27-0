@@ -94,7 +94,8 @@ export function initLeagueClubRosters(userClub: string): LeagueClubRosters {
   return rosters;
 }
 
-export function getLeagueClubRosterIds(
+/** Roster IDs for a club without ownership / free-agent filtering. */
+function getRawLeagueClubRosterIds(
   career: ManagerCareer,
   club: string
 ): string[] {
@@ -104,7 +105,7 @@ export function getLeagueClubRosterIds(
   const rosters = career.leagueClubRosters;
   const tracked = rosters?.[club];
   if (tracked && tracked.length > 0) {
-    return sanitizeRosterIds(career, tracked);
+    return tracked;
   }
   // Championship AI sides live on championshipSquads; reconcile may leave an
   // empty leagueClubRosters entry that must not hide the real roster.
@@ -113,15 +114,40 @@ export function getLeagueClubRosterIds(
     if (champ) {
       const champIds =
         career.championshipSquads.rosterByClub[champ.id] ?? [];
-      if (champIds.length > 0) {
-        return sanitizeRosterIds(career, champIds);
-      }
+      if (champIds.length > 0) return champIds;
     }
   }
-  if (tracked) {
-    return sanitizeRosterIds(career, tracked);
+  if (tracked) return tracked;
+  return getManagerRosterIds(club);
+}
+
+export function getLeagueClubRosterIds(
+  career: ManagerCareer,
+  club: string
+): string[] {
+  return sanitizeRosterIds(career, getRawLeagueClubRosterIds(career, club));
+}
+
+/**
+ * Fast club lookup for every non-user league player (SL + Championship).
+ * Builds skip sets once instead of re-sanitizing per club.
+ */
+export function buildLeaguePlayerClubMap(
+  career: ManagerCareer
+): Map<string, string> {
+  const skip = getUserClubPlayerIds(career);
+  for (const free of career.freeAgents ?? []) {
+    skip.add(free.playerId);
   }
-  return sanitizeRosterIds(career, getManagerRosterIds(club));
+  const map = new Map<string, string>();
+  for (const club of getTrackedLeagueClubs(career)) {
+    if (isSameManagerClub(club, career.club)) continue;
+    for (const id of getRawLeagueClubRosterIds(career, club)) {
+      if (skip.has(id) || map.has(id)) continue;
+      map.set(id, club);
+    }
+  }
+  return map;
 }
 
 export function getLeagueClubPlayerPool(
@@ -412,7 +438,7 @@ export function findPlayerLeagueClub(
   }
   for (const club of getTrackedLeagueClubs(career)) {
     if (isSameManagerClub(club, career.club)) continue;
-    if (getLeagueClubRosterIds(career, club).includes(playerId)) {
+    if (getRawLeagueClubRosterIds(career, club).includes(playerId)) {
       return club;
     }
   }

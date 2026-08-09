@@ -1,6 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import {
+  startTransition,
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import {
   ManagerLeagueTransferCard,
@@ -33,12 +39,15 @@ import { applyManagerModeRatingToPlayer } from "@/lib/manager/managerSquadRating
 import {
   completePlayerPurchase,
   evaluateBuyOffer,
-  getAllLeaguePlayers,
   getBuyerMinimumTransferFee,
   getSellerAskingPrice,
   listingAllowsLoan,
   listingAllowsPermanent,
 } from "@/lib/manager/managerTransferLeague";
+import {
+  buildLeaguePlayerClubMap,
+  findPlayerLeagueClub,
+} from "@/lib/manager/managerLeagueRosters";
 import {
   completeIncomingLoan,
   recallLoan,
@@ -66,6 +75,9 @@ interface ManagerTransfersProps {
 
 type TransferTab = "listed" | "loans" | "freeAgents" | "unlisted" | "watch";
 type DealType = "permanent" | "loan";
+
+/** Cap cards per tab so Championship-sized markets stay interactive. */
+const TRANSFER_CARD_PAGE = 24;
 
 const TRANSFER_TAB_LABELS: Record<TransferTab, string> = {
   listed: "Listed",
@@ -143,10 +155,12 @@ export function ManagerTransfers({
   );
   const [freeAgentOfferWage, setFreeAgentOfferWage] = useState(0);
   const [freeAgentOfferYears, setFreeAgentOfferYears] = useState(1);
+  const [visibleLimit, setVisibleLimit] = useState(TRANSFER_CARD_PAGE);
 
   const wageOverBudget = isWageOverBudget(career);
   const wagePct = getWageBillPercent(career);
   const transferFund = getTransferBudget(career);
+  const deferredSearch = useDeferredValue(search);
 
   const listedPlayerIds = useMemo(
     () => new Set(career.leagueListedPlayers.map((l) => l.playerId)),
@@ -161,61 +175,76 @@ export function ManagerTransfers({
   const watchlistIds = career.transferWatchlistIds ?? [];
   const watchlistSet = useMemo(() => new Set(watchlistIds), [watchlistIds]);
 
+  useEffect(() => {
+    setVisibleLimit(TRANSFER_CARD_PAGE);
+  }, [tab, positionFilter, deferredSearch, leagueSort]);
+
   const toggleWatchlist = (playerId: string) => {
     playUiClick();
     onUpdate(toggleTransferWatchlist(career, playerId));
   };
 
-  /** Full unlisted pool — not transfer-listed, not a free agent, not at your club. */
-  const allUnlistedPlayers = useMemo(() => {
-    return getAllLeaguePlayers(career)
-      .map(({ playerId, club }) => {
-        const raw =
-          getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
-        if (!raw) return null;
-        return { player: withManagerRating(raw), club, playerId };
-      })
-      .filter((r): r is NonNullable<typeof r> => r !== null)
-      .filter((r) => !listedPlayerIds.has(r.playerId))
-      .filter((r) => !freeAgentIds.has(r.playerId));
-  }, [career, listedPlayerIds, freeAgentIds]);
+  /** Full club→player index — only for the Bid tab (hundreds of players). */
+  const leagueClubByPlayerId = useMemo(() => {
+    if (tab !== "unlisted") return null;
+    return buildLeaguePlayerClubMap(career);
+  }, [career, tab]);
 
-  const loanListedCount = useMemo(
-    () =>
-      career.leagueListedPlayers.filter(
-        (entry) =>
-          !isSameManagerClub(entry.club, career.club) &&
-          listingAllowsLoan(entry.listingType) &&
-          Boolean(
-            getManagerPlayer(career, entry.playerId) ??
-              getPlayerById(entry.playerId)
-          )
-      ).length,
-    [career]
-  );
+  /** Lightweight Bid-tab index (no fee math / card props until visible). */
+  const unlistedIndex = useMemo(() => {
+    if (tab !== "unlisted" || !leagueClubByPlayerId) return [];
+    const rows: {
+      playerId: string;
+      club: string;
+      nameKey: string;
+      clubKey: string;
+      peakRating: number;
+      positions: Position[];
+    }[] = [];
+    for (const [playerId, club] of leagueClubByPlayerId) {
+      if (listedPlayerIds.has(playerId) || freeAgentIds.has(playerId)) continue;
+      const raw =
+        getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
+      if (!raw) continue;
+      rows.push({
+        playerId,
+        club,
+        nameKey: raw.name.toLowerCase(),
+        clubKey: club.toLowerCase(),
+        peakRating: raw.peakRating,
+        positions: getPlayerEligiblePositions(raw),
+      });
+    }
+    return rows;
+  }, [
+    tab,
+    leagueClubByPlayerId,
+    career,
+    listedPlayerIds,
+    freeAgentIds,
+  ]);
 
   const tabCounts = useMemo(
     () => ({
       listed: career.leagueListedPlayers.filter(
         (entry) =>
           !isSameManagerClub(entry.club, career.club) &&
-          listingAllowsPermanent(entry.listingType) &&
-          Boolean(
-            getManagerPlayer(career, entry.playerId) ??
-              getPlayerById(entry.playerId)
-          )
+          listingAllowsPermanent(entry.listingType)
       ).length,
-      loans: loanListedCount,
-      freeAgents: (career.freeAgents ?? []).filter(
+      loans: career.leagueListedPlayers.filter(
         (entry) =>
-          Boolean(
-            getManagerPlayer(career, entry.playerId) ??
-              getPlayerById(entry.playerId)
-          )
+          !isSameManagerClub(entry.club, career.club) &&
+          listingAllowsLoan(entry.listingType)
       ).length,
-      watch: (career.transferWatchlistIds ?? []).length,
+      freeAgents: (career.freeAgents ?? []).length,
+      watch: watchlistIds.length,
     }),
-    [career, loanListedCount]
+    [
+      career.leagueListedPlayers,
+      career.club,
+      career.freeAgents,
+      watchlistIds.length,
+    ]
   );
 
   const careerStars = getCareerClubStars(career);
@@ -225,6 +254,7 @@ export function ManagerTransfers({
   );
 
   const listedPlayers = useMemo(() => {
+    if (tab !== "listed" && tab !== "loans") return [];
     return career.leagueListedPlayers
       .filter((entry) => !isSameManagerClub(entry.club, career.club))
       .filter((entry) =>
@@ -245,9 +275,19 @@ export function ManagerTransfers({
         return getPlayerEligiblePositions(r.player).includes(positionFilter);
       })
       .sort((a, b) => b.player.peakRating - a.player.peakRating);
-  }, [career.leagueListedPlayers, career.club, positionFilter, tab]);
+  }, [
+    career.leagueListedPlayers,
+    career.club,
+    career.playerRegistry,
+    career.championshipSquads,
+    career.playerDevelopment,
+    career.seasonYear,
+    positionFilter,
+    tab,
+  ]);
 
   const freeAgents = useMemo(() => {
+    if (tab !== "freeAgents") return [];
     return (career.freeAgents ?? [])
       .map((entry) => {
         const raw =
@@ -262,62 +302,95 @@ export function ManagerTransfers({
         return getPlayerEligiblePositions(r.player).includes(positionFilter);
       })
       .sort((a, b) => b.player.peakRating - a.player.peakRating);
-  }, [career, positionFilter]);
+  }, [
+    tab,
+    career.freeAgents,
+    career.playerRegistry,
+    career.championshipSquads,
+    career.playerDevelopment,
+    career.seasonYear,
+    positionFilter,
+  ]);
 
-  const unlistedPlayers = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return allUnlistedPlayers
+  const filteredUnlistedIndex = useMemo(() => {
+    if (tab !== "unlisted") return [];
+    const q = deferredSearch.trim().toLowerCase();
+    return unlistedIndex
       .filter((r) => {
         if (!q) return true;
-        return (
-          r.player.name.toLowerCase().includes(q) ||
-          r.club.toLowerCase().includes(q)
-        );
+        return r.nameKey.includes(q) || r.clubKey.includes(q);
       })
       .filter((r) => {
         if (positionFilter === "all") return true;
-        return getPlayerEligiblePositions(r.player).includes(positionFilter);
+        return r.positions.includes(positionFilter);
       })
       .sort((a, b) => {
         if (leagueSort === "team") {
           return (
-            a.club.localeCompare(b.club) ||
-            b.player.peakRating - a.player.peakRating
+            a.club.localeCompare(b.club) || b.peakRating - a.peakRating
           );
         }
         if (leagueSort === "name") {
-          return a.player.name.localeCompare(b.player.name);
+          return a.nameKey.localeCompare(b.nameKey);
         }
-        return b.player.peakRating - a.player.peakRating;
+        return b.peakRating - a.peakRating;
       });
-  }, [allUnlistedPlayers, search, positionFilter, leagueSort]);
+  }, [tab, unlistedIndex, deferredSearch, positionFilter, leagueSort]);
+
+  const unlistedPlayers = useMemo(() => {
+    if (tab !== "unlisted") return [];
+    return filteredUnlistedIndex.slice(0, visibleLimit).flatMap((row) => {
+      const managed = getManagerPlayer(career, row.playerId);
+      const raw = managed ?? getPlayerById(row.playerId);
+      if (!raw) return [];
+      return [
+        {
+          playerId: row.playerId,
+          club: row.club,
+          player: managed ? raw : withManagerRating(raw),
+        },
+      ];
+    });
+  }, [tab, filteredUnlistedIndex, visibleLimit, career]);
 
   const watchedPlayers = useMemo(() => {
+    if (tab !== "watch") return [];
+    const listedById = new Map(
+      career.leagueListedPlayers.map((entry) => [entry.playerId, entry])
+    );
+    const freeById = new Map(
+      (career.freeAgents ?? []).map((entry) => [entry.playerId, entry])
+    );
     return watchlistIds
       .map((playerId) => {
-        const listed = career.leagueListedPlayers.find(
-          (entry) => entry.playerId === playerId
-        );
-        const free = (career.freeAgents ?? []).find(
-          (entry) => entry.playerId === playerId
-        );
+        const listed = listedById.get(playerId);
+        const free = freeById.get(playerId);
         const raw =
           getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
         if (!raw) return null;
-        const fromLeague = getAllLeaguePlayers(career).find(
-          (row) => row.playerId === playerId
-        );
         return {
           playerId,
           player: withManagerRating(raw),
-          club: listed?.club ?? free?.formerClub ?? fromLeague?.club ?? "Unknown",
+          club:
+            listed?.club ??
+            free?.formerClub ??
+            findPlayerLeagueClub(career, playerId) ??
+            "Unknown",
           listed: Boolean(listed),
           freeAgent: Boolean(free),
           listingType: listed?.listingType,
         };
       })
       .filter((row): row is NonNullable<typeof row> => row !== null);
-  }, [watchlistIds, career]);
+  }, [
+    tab,
+    watchlistIds,
+    career,
+  ]);
+
+  const visibleListedPlayers = listedPlayers.slice(0, visibleLimit);
+  const visibleFreeAgents = freeAgents.slice(0, visibleLimit);
+  const visibleUnlistedPlayers = unlistedPlayers;
 
   const submitTransferOffer = (
     playerId: string,
@@ -545,12 +618,32 @@ export function ManagerTransfers({
 
   const switchTab = (next: TransferTab) => {
     if (tab === next) return;
-    setTab(next);
-    setListedNegotiateId(null);
-    setFreeAgentNegotiateId(null);
-    setOfferPlayerId(null);
-    setDealType(next === "loans" ? "loan" : "permanent");
+    startTransition(() => {
+      setTab(next);
+      setListedNegotiateId(null);
+      setFreeAgentNegotiateId(null);
+      setOfferPlayerId(null);
+      setDealType(next === "loans" ? "loan" : "permanent");
+      setVisibleLimit(TRANSFER_CARD_PAGE);
+    });
   };
+
+  const showMoreButton = (total: number) =>
+    total > visibleLimit ? (
+      <div className="col-span-full flex justify-center pt-1">
+        <GameButton
+          variant="secondary"
+          size="sm"
+          onClick={() => {
+            playUiClick();
+            setVisibleLimit((n) => n + TRANSFER_CARD_PAGE);
+          }}
+        >
+          Show more ({Math.min(TRANSFER_CARD_PAGE, total - visibleLimit)} of{" "}
+          {total - visibleLimit} remaining)
+        </GameButton>
+      </div>
+    ) : null;
 
   const transferSubTabs = (
     [
@@ -570,12 +663,12 @@ export function ManagerTransfers({
     tab === "listed"
       ? "Players openly on the market — negotiate terms or leave the deal to your assistant"
       : tab === "loans"
-        ? "Players available on loan until season end — fee plus a wage share"
+        ? "Players available on loan until season end — free fee, 50% wage share"
         : tab === "freeAgents"
           ? "Out-of-contract players — no transfer fee, negotiate wages only"
           : tab === "watch"
             ? "Your scouting board — offer from here or jump to the market"
-            : "Bid for any Super League player not on the transfer list — deals cost more";
+            : "Bid for unlisted Super League and Championship players — permanent deals cost more";
 
   return (
     <ManagerPage>
@@ -714,7 +807,7 @@ export function ManagerTransfers({
       {(tab === "listed" || tab === "loans") && (
       <section className="space-y-3">
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
-          {listedPlayers.map(({ player, club, listingType, askingPrice }) => {
+          {visibleListedPlayers.map(({ player, club, listingType, askingPrice }) => {
             const demand = getPlayerSigningDemand(career, player.id);
             const listedPrice = getSellerAskingPrice(
               career,
@@ -910,6 +1003,7 @@ export function ManagerTransfers({
                 : "No transfer-listed players available right now."}
             </p>
           )}
+          {showMoreButton(listedPlayers.length)}
         </div>
       </section>
       )}
@@ -917,7 +1011,7 @@ export function ManagerTransfers({
       {tab === "freeAgents" && (
       <section className="space-y-3">
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
-          {freeAgents.map(({ player, formerClub, playerId, source }) => {
+          {visibleFreeAgents.map(({ player, formerClub, playerId, source }) => {
             const demand = getPlayerSigningDemand(career, player.id);
             const appeal = evaluateClubSigningAppeal(
               career.club,
@@ -1044,6 +1138,7 @@ export function ManagerTransfers({
               expire at season end.
             </p>
           )}
+          {showMoreButton(freeAgents.length)}
         </div>
       </section>
       )}
@@ -1103,7 +1198,7 @@ export function ManagerTransfers({
           ))}
         </div>
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
-          {unlistedPlayers.map(({ player, club }) => {
+          {visibleUnlistedPlayers.map(({ player, club }) => {
             const listedPrice = getSellerAskingPrice(
               career,
               player.id,
@@ -1220,13 +1315,23 @@ export function ManagerTransfers({
               </ManagerTransferPlayerCard>
             );
           })}
-          {unlistedPlayers.length === 0 && (
+          {filteredUnlistedIndex.length === 0 && (
             <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
-              {allUnlistedPlayers.length === 0
+              {unlistedIndex.length === 0
                 ? "No unlisted players available to bid on right now."
                 : "No unlisted players match your filters."}
             </p>
           )}
+          {filteredUnlistedIndex.length > 0 && (
+            <p className={`col-span-full ${TYPO.meta} text-pitch-500`}>
+              Showing{" "}
+              {Math.min(visibleLimit, filteredUnlistedIndex.length)} of{" "}
+              {filteredUnlistedIndex.length}
+              {deferredSearch.trim() ? " matching" : ""} players — use search
+              or position filters to narrow the market.
+            </p>
+          )}
+          {showMoreButton(filteredUnlistedIndex.length)}
         </div>
       </section>
       )}

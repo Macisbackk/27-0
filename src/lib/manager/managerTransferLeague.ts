@@ -23,6 +23,7 @@ import { getManagerClubTeamRating } from "./managerRating";
 import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import { getManagerModePlayerRating } from "./managerSquadRatings";
 import {
+  buildLeaguePlayerClubMap,
   findPlayerLeagueClub,
   getLeagueClubRosterIds,
   getTrackedLeagueClubsForTransferMarket,
@@ -1453,15 +1454,9 @@ export function getAllLeaguePlayers(career: ManagerCareer): {
   playerId: string;
   club: string;
 }[] {
-  const assigned = new Set(getUserClubPlayerIds(career));
   const rows: { playerId: string; club: string }[] = [];
-  for (const club of getTrackedLeagueClubsForTransferMarket(career)) {
-    if (isSameManagerClub(club, career.club)) continue;
-    for (const id of getLeagueClubRosterIds(career, club)) {
-      if (assigned.has(id)) continue;
-      assigned.add(id);
-      rows.push({ playerId: id, club });
-    }
+  for (const [playerId, club] of buildLeaguePlayerClubMap(career)) {
+    rows.push({ playerId, club });
   }
   return rows;
 }
