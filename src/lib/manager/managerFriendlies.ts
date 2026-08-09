@@ -2,8 +2,9 @@ import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import {
   CHAMPIONSHIP_CLUB_NAMES,
-  getChampionshipClubByName,
+  isChampionshipClubName,
 } from "../clubs/championship-clubs";
+import { getClubBaseStrength } from "../game/club-strength";
 import { getManagerClubTeamRating } from "./managerRating";
 import {
   expectsLimitedCrossChannelFriendlyAwaySupport,
@@ -20,7 +21,8 @@ import type {
 } from "./types";
 
 export const FRIENDLIES_REQUIRED = 3;
-export const FRIENDLY_SCHEDULE_VERSION = 2;
+/** v3: Championship friendly ratings use cup tier strength (not baseStrength×1.15). */
+export const FRIENDLY_SCHEDULE_VERSION = 3;
 
 const ATTENDANCE_LABELS = {
   low: "Modest crowd expected",
@@ -45,9 +47,38 @@ function defaultPreSeason(): PreSeasonState {
 }
 
 function championshipFriendlyRating(club: string): number {
-  const record = getChampionshipClubByName(club);
-  // Scale Championship baseStrength (~54–74) into a team-rating-like band for UI.
-  return Math.round((record?.baseStrength ?? 62) * 1.15);
+  // Same tier-offset scale as Challenge Cup / getClubBaseStrength (~40–62).
+  // Previously used raw baseStrength×1.15 (~71–85), which made Championship
+  // friendlies play like Super League peers against a full SL XIII.
+  return getClubBaseStrength(club);
+}
+
+function withCorrectChampionshipFriendlyRating<
+  T extends { club: string; teamRating: number },
+>(item: T): T {
+  if (!isChampionshipClubName(item.club)) return item;
+  const teamRating = championshipFriendlyRating(item.club);
+  return item.teamRating === teamRating ? item : { ...item, teamRating };
+}
+
+function remapChampionshipFriendlyRatings(
+  state: PreSeasonState
+): PreSeasonState {
+  return {
+    ...state,
+    currentChoices: (state.currentChoices ?? []).map(
+      withCorrectChampionshipFriendlyRating
+    ),
+    draftSchedule: (state.draftSchedule ?? []).map(
+      withCorrectChampionshipFriendlyRating
+    ),
+    confirmedSchedule: (state.confirmedSchedule ?? []).map(
+      withCorrectChampionshipFriendlyRating
+    ),
+    activeFriendly: state.activeFriendly
+      ? withCorrectChampionshipFriendlyRating(state.activeFriendly)
+      : null,
+  };
 }
 
 function buildOpponentChoice(
@@ -150,11 +181,13 @@ function repairPreSeasonDeadEnd(state: PreSeasonState): PreSeasonState {
 
 export function initPreSeasonState(career: Partial<ManagerCareer>): PreSeasonState {
   if (career.preSeason) {
-    const normalized = normalizePreSeason(career.preSeason);
+    const normalized = remapChampionshipFriendlyRatings(
+      normalizePreSeason(career.preSeason)
+    );
     if ((normalized.friendlyScheduleVersion ?? 0) < FRIENDLY_SCHEDULE_VERSION) {
       const played = normalized.friendliesPlayed;
       const legacyRequired = 2;
-      if (played >= legacyRequired) {
+      if (played >= legacyRequired && (normalized.friendlyScheduleVersion ?? 0) < 2) {
         // Legacy pre-seasons finished under the old 2-friendly rule; raising the
         // requirement must not reopen them mid-career.
         return {

@@ -12,11 +12,19 @@ export function getDocumentScrollY(): number {
   return window.scrollY || getDocumentScrollRoot().scrollTop || 0;
 }
 
+/** Clamp Y to the current document scroll range (after layout has settled). */
+export function clampDocumentScrollY(y: number): number {
+  if (typeof window === "undefined") return 0;
+  const root = getDocumentScrollRoot();
+  const max = Math.max(0, root.scrollHeight - root.clientHeight);
+  return Math.max(0, Math.min(y, max));
+}
+
 /** Instant document scroll — no smooth animation (smooth causes visible thrash). */
 export function scrollDocumentTo(y: number, x = 0): void {
   if (typeof window === "undefined") return;
   const root = getDocumentScrollRoot();
-  const top = Math.max(0, y);
+  const top = clampDocumentScrollY(y);
   const left = Math.max(0, x);
   if (root.scrollTop !== top) root.scrollTop = top;
   if (root.scrollLeft !== left) root.scrollLeft = left;

@@ -36,14 +36,18 @@ import {
   CHALLENGE_CUP_FINAL_VENUE,
   isChallengeCupFinalFixture,
 } from "./managerChallengeCup";
+import { isChampionshipClubName } from "../clubs/championship-clubs";
 
 const FRENCH_SUPER_LEAGUE_CLUBS = new Set([
   "Catalans Dragons",
   "Toulouse Olympique",
 ]);
 
-/** Clubs with limited travelling support — smaller crowds when they visit. */
-const POOR_AWAY_FOLLOWING_CLUBS = new Set([
+/**
+ * Super League clubs with limited travelling support — same gate penalty as
+ * Championship visitors (see hasPoorAwayFollowing).
+ */
+const POOR_AWAY_FOLLOWING_SL_CLUBS = new Set([
   "York Knights",
   "Huddersfield Giants",
 ]);
@@ -296,7 +300,7 @@ function leaguePositionMultiplier(position: number): number {
 }
 
 function opponentMultiplier(opponent: string): number {
-  if (POOR_AWAY_FOLLOWING_CLUBS.has(opponent)) {
+  if (hasPoorAwayFollowing(opponent)) {
     return 0.86;
   }
   const strength = getClubBaseStrength(opponent);
@@ -326,14 +330,17 @@ function awayTravelCrowdMultiplier(
     }
     return 0.96;
   }
-  if (POOR_AWAY_FOLLOWING_CLUBS.has(visitingClub)) return 0.72;
+  if (hasPoorAwayFollowing(visitingClub)) return 0.72;
   return 1;
 }
 
 export type AttendanceOutlookLevel = "low" | "medium" | "high";
 
+/** Huddersfield/York-tier travelling support — includes all Championship clubs. */
 export function hasPoorAwayFollowing(club: string): boolean {
-  return POOR_AWAY_FOLLOWING_CLUBS.has(club);
+  return (
+    POOR_AWAY_FOLLOWING_SL_CLUBS.has(club) || isChampionshipClubName(club)
+  );
 }
 
 function attendanceOutlookFromPredicted(

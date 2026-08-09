@@ -248,24 +248,16 @@ export default function ManagerPage() {
   const pendingForwardNavRef = useRef<{ path: string; view: ManagerView } | null>(
     null
   );
-  const prevPathnameForNavRef = useRef(pathname);
   const displayView = useMemo(() => {
-    const pathChanged = prevPathnameForNavRef.current !== pathname;
     const pending = pendingForwardNavRef.current;
 
     // Optimistic forward tab paint before router pathname catches up.
     if (
       pending &&
-      !pathChanged &&
       pathname !== pending.path &&
       view === pending.view
     ) {
       return pending.view;
-    }
-
-    if (pathChanged) {
-      pendingForwardNavRef.current = null;
-      prevPathnameForNavRef.current = pathname;
     }
 
     return resolveManagerDisplayView(pathname, view);
@@ -406,6 +398,7 @@ export default function ManagerPage() {
     if (prevPathnameRef.current === pathname) return;
     const hadPreviousPath = prevPathnameRef.current !== null;
     prevPathnameRef.current = pathname;
+    pendingForwardNavRef.current = null;
 
     const fromUrl = resolveManagerScreenFromPathname(pathname);
     if (!fromUrl) return;
@@ -418,7 +411,11 @@ export default function ManagerPage() {
       setPendingLeagueWinnersCelebration(false);
       setPendingTrophyCelebration(false);
       setPendingSeasonRecordCelebration(null);
-      setManagerView(setView, fromUrl);
+      // Skip setState when already on the URL tab — avoids an extra commit after
+      // optimistic goToView(setView) on every Hub↔Squad tap.
+      if (view !== fromUrl) {
+        setManagerView(setView, fromUrl);
+      }
       return;
     }
 
@@ -1930,6 +1927,10 @@ export default function ManagerPage() {
       {showChrome && career && (
         <div
           className={`flex flex-col manager-mobile-nav-pad sm:pb-0 ${PAGE.section} ${
+            // Keep playbar clearance on the chrome shell (not inside Hub KeepAlive)
+            // so Hub↔other tabs do not change document height under sticky chrome.
+            hubSticky ? "manager-mobile-playbar-extra" : ""
+          } ${
             playGameOpen || managerOverlayActive
               ? "invisible pointer-events-none absolute inset-0 -z-10 overflow-hidden"
               : ""
@@ -1976,7 +1977,7 @@ export default function ManagerPage() {
                 }
               />
             ) : (
-              <div className="relative min-h-[40vh]">
+              <div className="relative min-h-[40vh] [overflow-anchor:none]">
                 <ManagerKeepAlivePane
                   label="manager-tab-hub"
                   active={chromeNavView === "hub" && panesInteractive}

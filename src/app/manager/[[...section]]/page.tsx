@@ -1,6 +1,4 @@
-﻿import ManagerSectionClient from "./ManagerSectionClient";
-
-/** Static paths for Capacitor / `output: "export"` builds. */
+﻿/** Static paths for Capacitor / `output: "export"` builds. */
 export function generateStaticParams() {
   const sections = [
     [],
@@ -22,6 +20,10 @@ export function generateStaticParams() {
   return sections.map((section) => ({ section: [...section] }));
 }
 
+/**
+ * URL endpoint only — UI lives in `../layout.tsx` so the Manager shell does
+ * not remount when catch-all section params change.
+ */
 export default function ManagerSectionPage() {
-  return <ManagerSectionClient />;
+  return null;
 }

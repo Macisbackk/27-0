@@ -9,6 +9,7 @@ import {
   computeNrlLineupTeamRating,
 } from "../nrl/nrlMatchdayLineup";
 import { isNrlClubName } from "../nrl/nrlClubs";
+import { isChampionshipClubName } from "../clubs/championship-clubs";
 
 /**
  * Displayed opponent team rating for Hub / Play / predictions.
@@ -21,11 +22,20 @@ export function getDisplayedOpponentTeamRating(
     "opponent" | "round" | "competition" | "id"
   >
 ): number {
-  if (
-    fixture.competition === "friendly" &&
-    career.preSeason.activeFriendly?.club === fixture.opponent
-  ) {
-    return career.preSeason.activeFriendly.teamRating;
+  if (fixture.competition === "friendly") {
+    // Championship friendlies must use the cup tier scale — never the legacy
+    // stored teamRating (baseStrength×1.15) that made them SL-competitive.
+    if (isChampionshipClubName(fixture.opponent)) {
+      return getManagerOpponentMatchRating(
+        career,
+        fixture.opponent,
+        career.seed,
+        fixture.round
+      );
+    }
+    if (career.preSeason.activeFriendly?.club === fixture.opponent) {
+      return career.preSeason.activeFriendly.teamRating;
+    }
   }
 
   if (

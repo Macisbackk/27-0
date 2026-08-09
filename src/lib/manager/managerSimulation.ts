@@ -1,7 +1,11 @@
 import { getPlayerById } from "../players";
 import { getManagerPlayer } from "./managerPlayers";
 import { getManagerOpponentMatchRating, pruneLeagueListedPlayers } from "./managerLeagueRosters";
-import { getWccOpponentTeamRating } from "./managerOpponentRating";
+import {
+  getDisplayedOpponentTeamRating,
+  getWccOpponentTeamRating,
+} from "./managerOpponentRating";
+import { isChampionshipClubName } from "../clubs/championship-clubs";
 import { simulateOneFixture } from "../game/season-simulation";
 import { getMatchResolutionRules } from "./matchResolutionRules";
 import type { ManagerCareer, ManagerFixtureRecord } from "./types";
@@ -1015,17 +1019,29 @@ export function previewManagerMatchScoreline(
     simCareer
   );
   const friendlyRating = simCareer.preSeason.activeFriendly?.teamRating;
-  const baseOppRating =
-    isFriendly && friendlyRating
-      ? friendlyRating
-      : isWcc
-        ? getWccOpponentTeamRating(simCareer, sched.opponent)
-        : getManagerOpponentMatchRating(
-            simCareer,
-            sched.opponent,
-            simCareer.seed,
-            round
-          );
+  const baseOppRating = isFriendly
+    ? isChampionshipClubName(sched.opponent)
+      ? getDisplayedOpponentTeamRating(simCareer, {
+          opponent: sched.opponent,
+          round,
+          competition: "friendly",
+          id: sched.id,
+        })
+      : friendlyRating ??
+        getManagerOpponentMatchRating(
+          simCareer,
+          sched.opponent,
+          simCareer.seed,
+          round
+        )
+    : isWcc
+      ? getWccOpponentTeamRating(simCareer, sched.opponent)
+      : getManagerOpponentMatchRating(
+          simCareer,
+          sched.opponent,
+          simCareer.seed,
+          round
+        );
   const homeAdj = sched.isNeutral ? 0 : sched.isHome ? 5 : -1;
   const ratingGap = userRating - baseOppRating + homeAdj;
   const formFromRatings = Math.max(-3, Math.min(7, ratingGap * 0.4));

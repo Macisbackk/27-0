@@ -14,6 +14,10 @@ import { recordShellMount } from "@/lib/ui/mount-diagnostics";
  * frame between hiding the previous tab and mounting the next is the main
  * Hub↔Squad flicker. Promote `seen` synchronously during render when active.
  *
+ * Inactive panes use `hidden` (display: none), not `invisible absolute`.
+ * Toggling relative ↔ absolute inset-0 on every tab change reflows the
+ * document under sticky chrome and causes Windows Chrome compositing flicker.
+ *
  * While inactive, freeze the last children tree so parent re-renders do not
  * recompute expensive Hub/Squad work.
  */
@@ -45,11 +49,7 @@ export function ManagerKeepAlivePane({
 
   return (
     <div
-      className={
-        active
-          ? "relative z-[1]"
-          : "invisible absolute inset-0 z-0 overflow-hidden pointer-events-none"
-      }
+      className={active ? undefined : "hidden"}
       aria-hidden={!active}
       {...(!active ? ({ inert: "" } as Record<string, string>) : {})}
     >

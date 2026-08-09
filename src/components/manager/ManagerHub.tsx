@@ -454,10 +454,6 @@ export function ManagerHub({
   const showStickyPlayBar =
     Boolean(nextFixture && !seasonComplete && !playoffsPending);
 
-  // Keep play-bar pad stable on hub so sticky show/hide does not jump layout.
-  const hubMobilePad =
-    "manager-mobile-playbar-extra sm:pb-0";
-
   const squadAvailabilityCard =
     injuryCount > 0 ? (
       <ManagerSectionCard
@@ -689,7 +685,7 @@ export function ManagerHub({
   if (playoffsActive && hubCareer.playoffs) {
     return (
       <>
-        <ManagerPage className={hubMobilePad}>
+        <ManagerPage>
           <ManagerSection>{hubBody}</ManagerSection>
         </ManagerPage>
         {alertDialog}
@@ -700,7 +696,7 @@ export function ManagerHub({
 
   return (
     <>
-      <ManagerPage className={hubMobilePad}>
+      <ManagerPage>
         <ManagerSection>{hubBody}</ManagerSection>
       </ManagerPage>
       {alertDialog}

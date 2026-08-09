@@ -138,8 +138,9 @@ export function ManagerNav({
           ))}
         </nav>
 
-        {/* Fixed sub-tab slot height so Hub↔Squad does not jump sticky nav. */}
-        <div className="flex min-h-[2.75rem] w-full items-center justify-center px-1">
+        {/* Reserve real SubTabBar height (GameSegmentedControl ≈ 50px).
+            2.75rem (44px) still grew Hub→Squad and flickered sticky chrome. */}
+        <div className="flex min-h-[50px] w-full items-center justify-center px-1">
           {contextTabs ? (
             <ManagerSubTabBar
               tabs={contextTabs.tabs}
@@ -151,13 +152,9 @@ export function ManagerNav({
         </div>
       </div>
 
-      {/* Mobile sub-tabs — only reserve height when Squad (etc.) has context tabs.
-          Always reserving left a blank band under Inbox / Hub. */}
-      <div
-        className={`flex w-full items-center justify-center px-1 sm:hidden ${
-          contextTabs ? "min-h-[2.75rem]" : ""
-        }`}
-      >
+      {/* Same reserved height as desktop — Hub↔Squad must not grow/shrink the
+          sticky header band (document reflow under .app-header = flicker). */}
+      <div className="flex min-h-[50px] w-full items-center justify-center px-1 sm:hidden">
         {contextTabs ? (
           <ManagerSubTabBar
             tabs={contextTabs.tabs}
