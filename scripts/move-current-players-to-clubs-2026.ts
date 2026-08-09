@@ -47,6 +47,14 @@ const ID_CLUB_SLUG: Record<string, string> = {
   "Doncaster RLFC": "doncaster",
   "Goole Vikings": "goole",
   "Swinton Lions": "swinton",
+  "Hunslet RLFC": "hunslet",
+  "Keighley Cougars": "keighley",
+  "Batley Bulldogs": "batley",
+  "Whitehaven": "whitehaven",
+  "Workington Town": "workington",
+  "Newcastle Thunder": "newcastle",
+  "North Wales Crusaders": "north-wales",
+  "Wynnum Manly Seagulls": "wynnum-manly",
 };
 
 /** Confirmed 2026 placements for players already in our Current DB. */

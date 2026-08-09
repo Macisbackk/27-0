@@ -35,7 +35,7 @@ import {
   getEffectiveStadiumCapacity,
 } from "./managerFacilities";
 import { createManagerChallengeCup, reconcileChallengeCupFromFixtures } from "./managerChallengeCup";
-import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubReserveCounts, ensureAllClubReserveDepth } from "./managerReserves";
+import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubReserveCounts, ensureAllClubReserveDepth, dedupeSquadAndReserves } from "./managerReserves";
 import { sanitizeWorldClubChallengeState, ensureWorldClubChallengeScheduled } from "./worldClubChallenge";
 import { ensureChampionshipSystems } from "./championship/ensureChampionship";
 import { migrateSquadRoles } from "./migrateSquadRoles";
@@ -404,6 +404,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = ensureSeasonEndPlayerDevelopment(career);
   career = ensureLeagueClubRosters(career);
   career = normalizeMatchdayLineup(career);
+  career = dedupeSquadAndReserves(career);
   if (!Array.isArray(career.transferWatchlistIds)) {
     career = { ...career, transferWatchlistIds: [] };
   }

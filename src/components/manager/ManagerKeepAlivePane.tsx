@@ -45,7 +45,11 @@ export function ManagerKeepAlivePane({
 
   return (
     <div
-      className={active ? undefined : "hidden"}
+      className={
+        active
+          ? "relative z-[1]"
+          : "invisible absolute inset-0 z-0 overflow-hidden pointer-events-none"
+      }
       aria-hidden={!active}
       {...(!active ? ({ inert: "" } as Record<string, string>) : {})}
     >

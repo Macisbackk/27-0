@@ -1,5 +1,9 @@
 import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
+import {
+  CHAMPIONSHIP_CLUB_NAMES,
+  getChampionshipClubByName,
+} from "../clubs/championship-clubs";
 import { getManagerClubTeamRating } from "./managerRating";
 import {
   expectsLimitedCrossChannelFriendlyAwaySupport,
@@ -38,6 +42,78 @@ function defaultPreSeason(): PreSeasonState {
     friendlyScheduleVersion: FRIENDLY_SCHEDULE_VERSION,
     activeFriendly: null,
   };
+}
+
+function championshipFriendlyRating(club: string): number {
+  const record = getChampionshipClubByName(club);
+  // Scale Championship baseStrength (~54–74) into a team-rating-like band for UI.
+  return Math.round((record?.baseStrength ?? 62) * 1.15);
+}
+
+function buildOpponentChoice(
+  club: string,
+  userClub: string,
+  teamRating: number
+): FriendlyOpponentChoice {
+  return {
+    id: `${club}-${CURRENT_SEASON}`,
+    club,
+    year: CURRENT_SEASON,
+    displayName: club,
+    difficulty: "balanced" as const,
+    teamRating,
+    attendanceInterest: attendanceInterestForFriendlyOpponent(
+      userClub,
+      club,
+      teamRating
+    ),
+  };
+}
+
+function buildFriendlyCandidates(
+  userClub: string,
+  seed: string,
+  friendlyIndex: number,
+  excludeClubs: string[] = []
+): FriendlyOpponentChoice[] {
+  const rng = seedrandom(`${seed}-friendly-${friendlyIndex}`);
+  const exclude = new Set([userClub, ...excludeClubs]);
+
+  const slPool = CURRENT_PLAYABLE_CLUBS.filter((club) => !exclude.has(club)).map(
+    (club) =>
+      buildOpponentChoice(
+        club,
+        userClub,
+        Math.round(getManagerClubTeamRating(club))
+      )
+  );
+  const champPool = CHAMPIONSHIP_CLUB_NAMES.filter(
+    (club) => !exclude.has(club)
+  ).map((club) =>
+    buildOpponentChoice(club, userClub, championshipFriendlyRating(club))
+  );
+
+  const shuffledSl = [...slPool].sort(() => rng() - 0.5);
+  const shuffledChamp = [...champPool].sort(() => rng() - 0.5);
+
+  // Prefer a mix: usually 2 Super League + 1 Championship among the 3 choices.
+  const picks: FriendlyOpponentChoice[] = [];
+  if (shuffledChamp[0]) picks.push(shuffledChamp[0]);
+  for (const c of shuffledSl) {
+    if (picks.length >= 3) break;
+    picks.push(c);
+  }
+  for (const c of shuffledChamp.slice(1)) {
+    if (picks.length >= 3) break;
+    if (!picks.some((p) => p.club === c.club)) picks.push(c);
+  }
+
+  if (picks.length >= 3) return picks.slice(0, 3);
+
+  const fallback = [...shuffledSl, ...shuffledChamp].filter(
+    (c) => !picks.some((p) => p.club === c.club)
+  );
+  return [...picks, ...fallback].slice(0, 3);
 }
 
 function normalizePreSeason(state: PreSeasonState): PreSeasonState {
@@ -152,59 +228,6 @@ function previousFriendlyClubs(career: ManagerCareer): string[] {
     clubs.push(s.club);
   }
   return clubs;
-}
-
-function buildFriendlyCandidates(
-  userClub: string,
-  seed: string,
-  friendlyIndex: number,
-  excludeClubs: string[] = []
-): FriendlyOpponentChoice[] {
-  const rng = seedrandom(`${seed}-friendly-${friendlyIndex}`);
-  const exclude = new Set([userClub, ...excludeClubs]);
-  const pool: FriendlyOpponentChoice[] = CURRENT_PLAYABLE_CLUBS.filter(
-    (club) => !exclude.has(club)
-  ).map((club) => {
-    const teamRating = Math.round(getManagerClubTeamRating(club));
-    return {
-      id: `${club}-${CURRENT_SEASON}`,
-      club,
-      year: CURRENT_SEASON,
-      displayName: club,
-      difficulty: "balanced" as const,
-      teamRating,
-      attendanceInterest: attendanceInterestForFriendlyOpponent(
-        userClub,
-        club,
-        teamRating
-      ),
-    };
-  });
-
-  const usable =
-    pool.length > 0
-      ? pool
-      : CURRENT_PLAYABLE_CLUBS.filter((club) => club !== userClub).map(
-          (club) => {
-            const teamRating = Math.round(getManagerClubTeamRating(club));
-            return {
-              id: `${club}-${CURRENT_SEASON}`,
-              club,
-              year: CURRENT_SEASON,
-              displayName: club,
-              difficulty: "balanced" as const,
-              teamRating,
-              attendanceInterest: attendanceInterestForFriendlyOpponent(
-                userClub,
-                club,
-                teamRating
-              ),
-            };
-          }
-        );
-
-  const shuffled = [...usable].sort(() => rng() - 0.5);
-  return shuffled.slice(0, 3);
 }
 
 export function ensureFriendlyChoices(career: ManagerCareer): ManagerCareer {

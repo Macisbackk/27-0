@@ -559,6 +559,10 @@ export function bulkRenewExpiringContractsWithInbox(
 }
 
 export const INBOX_MAX_AGE_WEEKS = 7;
+/** Unresolved transfer / reserve offers auto-expire after this many weeks. */
+export const TRANSFER_OFFER_MAX_PENDING_WEEKS = 4;
+/** Soft cap on unresolved transfer-related inbox mail (senior + reserve). */
+export const MAX_PENDING_TRANSFER_INBOX = 5;
 
 /** Clear unresolved transfer state at season rollover. */
 export function clearSeasonTransferState(career: ManagerCareer): ManagerCareer {
@@ -577,6 +581,17 @@ export function clearSeasonTransferState(career: ManagerCareer): ManagerCareer {
   };
 }
 
+function isOpenTransferMail(m: {
+  type: string;
+  resolved?: boolean;
+  reserveOffer?: boolean;
+}): boolean {
+  return (
+    !m.resolved &&
+    (m.type === "transfer" || m.type === "transfer_offer_in")
+  );
+}
+
 /** Remove inbox messages older than maxAgeWeeks (by game week). */
 export function purgeStaleInboxMessages(
   career: ManagerCareer,
@@ -588,24 +603,49 @@ export function purgeStaleInboxMessages(
       m.id.startsWith("board-") ||
       m.id.startsWith("prestige-") ||
       m.sender === "Board";
-    // Keep open action mail (transfers + board) until the manager dismisses it.
-    if (
-      !m.resolved &&
-      (m.type === "transfer" ||
-        m.type === "transfer_offer_in" ||
-        isBoard)
-    ) {
+
+    const week = m.gameWeek ?? m.week ?? 0;
+    const season = m.season ?? career.seasonYear;
+    const ageWeeks =
+      season < career.seasonYear
+        ? Number.POSITIVE_INFINITY
+        : career.gameWeek - week;
+
+    // Auto-expire unanswered transfer / reserve offers so deep sims don't flood the inbox.
+    if (isOpenTransferMail(m)) {
+      if (ageWeeks > TRANSFER_OFFER_MAX_PENDING_WEEKS) return false;
       return true;
     }
-    const season = m.season ?? career.seasonYear;
+
+    // Keep open board action mail until the manager dismisses it.
+    if (!m.resolved && isBoard) {
+      return true;
+    }
+
     if (season < career.seasonYear) return false;
-    const week = m.gameWeek ?? m.week ?? 0;
     // Prestige / season-boundary mail can be week 0 — keep for the season.
     if (week <= 0 && season === career.seasonYear) return true;
     return career.gameWeek - week <= maxAgeWeeks && career.gameWeek >= week;
   });
-  if (inboxMessages.length === career.inboxMessages.length) return career;
-  return { ...career, inboxMessages, updatedAt: new Date().toISOString() };
+
+  // If still over the soft cap, drop the oldest unresolved transfer mail first.
+  const openTransfers = inboxMessages
+    .filter(isOpenTransferMail)
+    .sort((a, b) => (a.gameWeek ?? a.week ?? 0) - (b.gameWeek ?? b.week ?? 0));
+  const dropIds = new Set(
+    openTransfers.length > MAX_PENDING_TRANSFER_INBOX
+      ? openTransfers
+          .slice(0, openTransfers.length - MAX_PENDING_TRANSFER_INBOX)
+          .map((m) => m.id)
+      : []
+  );
+  const trimmed =
+    dropIds.size === 0
+      ? inboxMessages
+      : inboxMessages.filter((m) => !dropIds.has(m.id));
+
+  if (trimmed.length === career.inboxMessages.length) return career;
+  return { ...career, inboxMessages: trimmed, updatedAt: new Date().toISOString() };
 }
 
 export function syncManagerInboxMessages(career: ManagerCareer): ManagerCareer {

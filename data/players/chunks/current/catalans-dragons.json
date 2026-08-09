@@ -112,33 +112,6 @@
     "primaryPosition": "CE/WG"
   },
   {
-    "id": "catalans-cur-bayley-sironen",
-    "name": "Bayley Sironen",
-    "club": "Catalans Dragons",
-    "currentClub": "Catalans Dragons",
-    "teamYearId": "catalans-dragons-2026",
-    "year": 2026,
-    "status": "Current",
-    "position": "SECOND_ROW",
-    "positions": [
-      "SECOND_ROW"
-    ],
-    "positionAbbrev": "SR",
-    "nationality": "Australia",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2026–Present",
-    "category": "current",
-    "peakRating": 83,
-    "value": 158000,
-    "cardYear": 2026,
-    "team": "Catalans Dragons",
-    "displayClub": "Catalans Dragons",
-    "basePlayerId": "catalans-cur-bayley-sironen",
-    "primaryPosition": "SR",
-    "dateOfBirth": "1996-12-23",
-    "birthYear": 1996
-  },
-  {
     "id": "catalans-cur-manase-kaho",
     "name": "Manase Kaho",
     "position": "WING",

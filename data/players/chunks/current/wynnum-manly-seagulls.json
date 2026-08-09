@@ -1,0 +1,35 @@
+[
+  {
+    "id": "wynnum-manly-cur-bayley-sironen",
+    "name": "Bayley Sironen",
+    "club": "Wynnum Manly Seagulls",
+    "currentClub": "Wynnum Manly Seagulls",
+    "teamYearId": "wynnum-manly-seagulls-2026",
+    "year": 2026,
+    "status": "Current",
+    "position": "SECOND_ROW",
+    "positions": [
+      "SECOND_ROW"
+    ],
+    "positionAbbrev": "SR",
+    "nationality": "Australia",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 83,
+    "value": 158000,
+    "cardYear": 2026,
+    "team": "Wynnum Manly Seagulls",
+    "displayClub": "Wynnum Manly Seagulls",
+    "basePlayerId": "wynnum-manly-cur-bayley-sironen",
+    "primaryPosition": "SR",
+    "dateOfBirth": "1996-12-23",
+    "birthYear": 1996,
+    "availableInGame": false,
+    "superLeagueEligible": false,
+    "clubsPlayedFor": [
+      "Catalans Dragons",
+      "Wynnum Manly Seagulls"
+    ]
+  }
+]

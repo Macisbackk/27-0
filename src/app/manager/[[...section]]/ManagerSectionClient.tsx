@@ -1976,7 +1976,7 @@ export default function ManagerPage() {
                 }
               />
             ) : (
-              <>
+              <div className="relative min-h-[40vh]">
                 <ManagerKeepAlivePane
                   label="manager-tab-hub"
                   active={chromeNavView === "hub" && panesInteractive}
@@ -2053,7 +2053,7 @@ export default function ManagerPage() {
                 <ManagerKeepAlivePane active={chromeNavView === "settings" && panesInteractive}>
                   <ManagerSettings career={career} onUpdate={persist} />
                 </ManagerKeepAlivePane>
-              </>
+              </div>
             )}
           </div>
           <ManagerMobileBottomNav

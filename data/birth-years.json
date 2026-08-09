@@ -226,7 +226,6 @@
   "catalans-cur-alrix-da-costa": 1997,
   "catalans-cur-arthur-romano": 1997,
   "catalans-cur-bastien-ader": 1991,
-  "catalans-cur-bayley-sironen": 1996,
   "catalans-cur-ben-condon": 2000,
   "catalans-cur-benjamin-garcia": 1993,
   "catalans-cur-cesar-rouge": 2002,
@@ -977,10 +976,6 @@
   "richard-horne": 1982,
   "richard-swain": 1975,
   "rob-burrow": 1982,
-  "salford-cur-ben-hellewell": 1992,
-  "salford-cur-ellis-robson": 1998,
-  "salford-cur-mitch-clark": 1987,
-  "salford-cur-tim-bergin": 1985,
   "salford-hist-aaron-moule": 1977,
   "salford-hist-adam-neal": 1990,
   "salford-hist-adam-sidlow": 1987,
@@ -1702,5 +1697,9 @@
   "st-helens-cur-shane-wright": 1996,
   "st-helens-cur-joe-shorrocks": 1999,
   "wigan-cur-jonny-vaughan": 2005,
-  "wigan-cur-dayon-sambou": 2005
+  "wigan-cur-dayon-sambou": 2005,
+  "york-cur-mitch-clark": 1987,
+  "barrow-cur-ellis-robson": 1998,
+  "wynnum-manly-cur-bayley-sironen": 1996,
+  "salford-hist-ben-hellewell-2026": 1992
 }

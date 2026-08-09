@@ -73,7 +73,7 @@ export function QuickModePreGameBoostSetup({
         </p>
       </div>
 
-      <div className="mt-4 text-left">
+      <div className="mt-4 text-center">
         {boosts.length === 0 ? (
           <p className={`${TYPO.bodySm} text-center text-pitch-400`}>
             No compatible Quick Mode boosts in inventory.
@@ -87,7 +87,7 @@ export function QuickModePreGameBoostSetup({
                 <li key={boost.id}>
                   <button
                     type="button"
-                    className={`flex w-full items-center justify-between gap-3 rounded-[var(--mobile-radius-medium)] border px-3 py-2.5 text-left transition ${
+                    className={`flex w-full flex-col items-center justify-center gap-1 rounded-[var(--mobile-radius-medium)] border px-3 py-2.5 text-center transition ${
                       selected
                         ? "border-white/25 bg-white/5"
                         : "border-[var(--mobile-divider)] bg-transparent hover:border-white/15"
@@ -97,19 +97,13 @@ export function QuickModePreGameBoostSetup({
                       setPicked(boost.id as QmSelectionBoostId);
                     }}
                   >
-                    <span className="min-w-0">
-                      <span className="block truncate text-sm font-semibold text-white">
-                        {boost.name}
-                      </span>
-                      <span className="block text-[11px] text-pitch-500">
-                        Owned ×{qty}
-                      </span>
+                    <span className="block w-full truncate text-sm font-semibold text-white">
+                      {boost.name}
                     </span>
-                    {selected && (
-                      <span className="shrink-0 text-xs font-bold text-theme-primary">
-                        Selected
-                      </span>
-                    )}
+                    <span className="block text-[11px] text-pitch-500">
+                      Owned ×{qty}
+                      {selected ? " · Selected" : ""}
+                    </span>
                   </button>
                 </li>
               );
@@ -119,7 +113,7 @@ export function QuickModePreGameBoostSetup({
 
         {notice ? (
           <p
-            className="mt-4 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-100"
+            className="mt-4 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-center text-sm text-amber-100"
             role="alert"
           >
             {notice}

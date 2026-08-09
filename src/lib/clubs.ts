@@ -6,6 +6,11 @@ import {
   getChampionshipOnlyClubsAsClub,
 } from "./clubs/championship-clubs";
 import {
+  getAllQldCupClubsAsClub,
+  getQldCupClubByName,
+  qldCupClubToClub,
+} from "./qld-cup/qldCupClubs";
+import {
   getClubPanelTextStyle,
   getClubPillBackground,
   getLuminance,
@@ -24,8 +29,8 @@ export interface Club {
   active?: boolean;
   isCurrentSuperLeague?: boolean;
   playable?: boolean;
-  /** Present for NRL club records; Super League clubs omit or use super_league. */
-  league?: "super_league" | "nrl";
+  /** Present for NRL / QLD Cup records; Super League clubs omit or use super_league. */
+  league?: "super_league" | "nrl" | "qld_cup";
   /** 2026 Championship metadata (lower-league expansion). */
   abbreviation?: string;
   country?: string;
@@ -106,10 +111,13 @@ export function getClubByName(name: string): Club | undefined {
   if (sl) return sl;
 
   const nrl = getNrlClubByName(resolved);
-  return nrl ? nrlClubToClub(nrl) : undefined;
+  if (nrl) return nrlClubToClub(nrl);
+
+  const qld = getQldCupClubByName(resolved);
+  return qld ? qldCupClubToClub(qld) : undefined;
 }
 
-/** All known clubs across Super League + Championship + NRL (NRL remains non-playable). */
+/** All known clubs across Super League + Championship + NRL + QLD Cup (non-RFL remain non-playable). */
 export function getAllClubs(): Club[] {
   const champOnly = getChampionshipOnlyClubsAsClub();
   const seen = new Set(SUPER_LEAGUE_CLUBS.map((c) => c.id));
@@ -120,7 +128,7 @@ export function getAllClubs(): Club[] {
       merged.push(club);
     }
   }
-  return [...merged, ...getAllNrlClubsAsClub()];
+  return [...merged, ...getAllNrlClubsAsClub(), ...getAllQldCupClubsAsClub()];
 }
 
 

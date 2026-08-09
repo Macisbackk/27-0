@@ -1101,8 +1101,11 @@ export function promoteReserveToSquad(
     calledUpReserveIds: career.calledUpReserveIds.filter(
       (id) => id !== reserveId
     ),
-    matchdayInterchange: career.matchdayInterchange.filter(
-      (id) => id !== reserveId
+    matchdayXiii: career.matchdayXiii.map((id) =>
+      id === reserveId ? "" : id
+    ),
+    matchdayInterchange: career.matchdayInterchange.map((id) =>
+      id === reserveId ? "" : id
     ),
   });
   dispatchAchievementCheck({ trigger: "reserve-promoted", reservePromoted: true });
@@ -1123,8 +1126,11 @@ export function releaseReserve(
     calledUpReserveIds: career.calledUpReserveIds.filter(
       (id) => id !== reserveId
     ),
-    matchdayInterchange: career.matchdayInterchange.filter(
-      (id) => id !== reserveId
+    matchdayXiii: career.matchdayXiii.map((id) =>
+      id === reserveId ? "" : id
+    ),
+    matchdayInterchange: career.matchdayInterchange.map((id) =>
+      id === reserveId ? "" : id
     ),
     wageBill: computeCareerWageBill({
       ...career,
@@ -1142,4 +1148,57 @@ export function developReserveFromFirstTeamAppearance(
     round,
     matchdayIds: new Set([reserveId]),
   });
+}
+
+/**
+ * Prefer senior squad membership when an id appears in both squad and reserves.
+ * Prevents duplicate identity / UI clones after promote/call-up edge cases.
+ */
+export function dedupeSquadAndReserves(career: ManagerCareer): ManagerCareer {
+  const seenSquad = new Set<string>();
+  const squad = career.squad.filter((p) => {
+    if (seenSquad.has(p.playerId)) return false;
+    seenSquad.add(p.playerId);
+    return true;
+  });
+  const squadIds = new Set(squad.map((p) => p.playerId));
+
+  const seenReserve = new Set<string>();
+  const reserves = career.reserves.filter((r) => {
+    if (squadIds.has(r.id)) return false;
+    if (seenReserve.has(r.id)) return false;
+    seenReserve.add(r.id);
+    return true;
+  });
+
+  const droppedReserveIds = career.reserves
+    .filter((r) => !reserves.some((kept) => kept.id === r.id))
+    .map((r) => r.id);
+
+  if (
+    squad.length === career.squad.length &&
+    reserves.length === career.reserves.length
+  ) {
+    return career;
+  }
+
+  const nextContracts = { ...(career.reserveContracts ?? {}) };
+  for (const id of droppedReserveIds) {
+    if (squadIds.has(id)) delete nextContracts[id];
+  }
+
+  return {
+    ...career,
+    squad,
+    reserves,
+    reserveContracts: nextContracts,
+    calledUpReserveIds: career.calledUpReserveIds.filter(
+      (id) => !squadIds.has(id) && reserves.some((r) => r.id === id)
+    ),
+    wageBill: computeCareerWageBill({
+      ...career,
+      contracts: career.contracts,
+      reserveContracts: nextContracts,
+    }),
+  };
 }

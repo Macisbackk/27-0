@@ -1,0 +1,18 @@
+[
+  {
+    "id": "qld-wynnum-manly",
+    "name": "Wynnum Manly Seagulls",
+    "shortName": "WYN",
+    "nickname": "Seagulls",
+    "primaryColor": "#0B5C3B",
+    "secondaryColor": "#FFFFFF",
+    "accentColor": "#111111",
+    "league": "qld_cup",
+    "competition": "Queensland Cup",
+    "active": true,
+    "playable": false,
+    "city": "Brisbane",
+    "stadium": "BMD Kougari Oval",
+    "aliases": ["Wynnum Manly", "WM Seagulls", "Wynnum-Manly Seagulls"]
+  }
+]

@@ -1,6 +1,12 @@
 {
   "clubs": [
     {
+      "club": "Barrow Raiders",
+      "slug": "barrow-raiders",
+      "file": "barrow-raiders.json",
+      "count": 1
+    },
+    {
       "club": "Bradford Bulls",
       "slug": "bradford-bulls",
       "file": "bradford-bulls.json",
@@ -16,7 +22,7 @@
       "club": "Catalans Dragons",
       "slug": "catalans-dragons",
       "file": "catalans-dragons.json",
-      "count": 17
+      "count": 16
     },
     {
       "club": "Huddersfield Giants",
@@ -67,12 +73,6 @@
       "count": 2
     },
     {
-      "club": "Salford Red Devils",
-      "slug": "salford-red-devils",
-      "file": "salford-red-devils.json",
-      "count": 10
-    },
-    {
       "club": "Sheffield Eagles",
       "slug": "sheffield-eagles",
       "file": "sheffield-eagles.json",
@@ -115,10 +115,16 @@
       "count": 19
     },
     {
+      "club": "Wynnum Manly Seagulls",
+      "slug": "wynnum-manly-seagulls",
+      "file": "wynnum-manly-seagulls.json",
+      "count": 1
+    },
+    {
       "club": "York Knights",
       "slug": "york-knights",
       "file": "york-knights.json",
-      "count": 17
+      "count": 18
     }
   ]
 }

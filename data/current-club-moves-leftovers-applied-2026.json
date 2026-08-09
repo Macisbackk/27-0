@@ -1,0 +1,120 @@
+{
+  "generatedAt": "2026-08-09T13:03:43.397Z",
+  "championshipCheck": {
+    "count": 20,
+    "names": [
+      "Barrow Raiders",
+      "Batley Bulldogs",
+      "Dewsbury Rams",
+      "Doncaster RLFC",
+      "Goole Vikings",
+      "Halifax Panthers",
+      "Hunslet RLFC",
+      "Keighley Cougars",
+      "London Broncos",
+      "Midlands Hurricanes",
+      "Newcastle Thunder",
+      "North Wales Crusaders",
+      "Oldham RLFC",
+      "Rochdale Hornets",
+      "Salford RLFC",
+      "Sheffield Eagles",
+      "Swinton Lions",
+      "Whitehaven RLFC",
+      "Widnes Vikings",
+      "Workington Town"
+    ],
+    "ok": true,
+    "note": "All 20 Championship clubs present (championship-clubs.json + embedded London/Widnes/Halifax/Sheffield/Oldham)."
+  },
+  "appliedMoves": [
+    {
+      "name": "Mitch Clark",
+      "fromId": "salford-cur-mitch-clark",
+      "toId": "york-cur-mitch-clark",
+      "fromClub": "Salford Red Devils",
+      "toClub": "York Knights",
+      "reason": "Committed to York for 2026 Super League; wrongly on liquidated Salford card",
+      "availableInGame": true
+    },
+    {
+      "name": "Ellis Robson",
+      "fromId": "salford-cur-ellis-robson",
+      "toId": "barrow-cur-ellis-robson",
+      "fromClub": "Salford Red Devils",
+      "toClub": "Barrow Raiders",
+      "reason": "Signed Barrow Raiders (Championship) from 2025 two-year deal",
+      "availableInGame": true
+    },
+    {
+      "name": "Bayley Sironen",
+      "fromId": "catalans-cur-bayley-sironen",
+      "toId": "wynnum-manly-cur-bayley-sironen",
+      "fromClub": "Catalans Dragons",
+      "toClub": "Wynnum Manly Seagulls",
+      "reason": "Left Catalans for Queensland Cup Wynnum Manly — system club only, not in game pools",
+      "availableInGame": false
+    }
+  ],
+  "retiredToHistoric2026": [
+    {
+      "name": "Ben Hellewell",
+      "fromId": "salford-cur-ben-hellewell",
+      "toId": "salford-hist-ben-hellewell-2026",
+      "reason": "Retired Aug 2025 (hip replacement) — historic 2026 card, out of manager Current"
+    }
+  ],
+  "removedPhantoms": [
+    {
+      "id": "salford-cur-brodie-shields",
+      "name": "Brodie Shields",
+      "reason": "No pro record; likely corruption of Jimmy Shields (Swinton then released). Remove unresolved Current card"
+    },
+    {
+      "id": "salford-cur-chris-savelio",
+      "name": "Chris Savelio",
+      "reason": "No RLP/pro record; not in 2025 Salford SL usage list"
+    },
+    {
+      "id": "salford-cur-ryan-kingston",
+      "name": "Ryan Kingston",
+      "reason": "No verified 2026 destination; not in 2025 Salford SL usage list"
+    },
+    {
+      "id": "salford-cur-sitili-ngahe",
+      "name": "Sitili-Losala Ngahe",
+      "reason": "No verified 2026 destination; not in 2025 Salford SL usage list"
+    },
+    {
+      "id": "salford-cur-dele-sule",
+      "name": "Dele Sule",
+      "reason": "No verified 2026 destination; not in 2025 Salford SL usage list"
+    },
+    {
+      "id": "salford-cur-logan-ewington",
+      "name": "Logan Ewington",
+      "reason": "No verified 2026 destination; not in 2025 Salford SL usage list"
+    },
+    {
+      "id": "salford-cur-tim-bergin",
+      "name": "Tim Bergin",
+      "reason": "Stale/bad Current card (DOB 1985); no verified 2026 club"
+    }
+  ],
+  "skipped": [],
+  "salfordCurrentRemaining": [],
+  "sidecarRetargets": {
+    "ratingTsHits": 0,
+    "ratingJsonHits": 0,
+    "potTsHits": 0,
+    "birthHits": 4,
+    "deletedOverrideKeys": 1
+  },
+  "notes": [
+    "Championship clubs already complete at 20 — no Featherstone (by design).",
+    "Wynnum Manly Seagulls added as qld_cup system club (not playable / not in game).",
+    "Bayley Sironen parked on Wynnum Manly with availableInGame=false.",
+    "Ben Hellewell removed from Current/manager pools; historic 2026 card added.",
+    "Run npm run build:player-chunks after this script."
+  ]
+}

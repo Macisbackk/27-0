@@ -425,6 +425,10 @@ export function maybeChampionshipBidForSlReserves(
   if ((career.championshipReserveSigningsThisSeason ?? 0) >= cfg.maxSigningsPerSeason) {
     return career;
   }
+  const pendingReserveOffers = career.inboxMessages.filter(
+    (m) => !m.resolved && m.reserveOffer
+  ).length;
+  if (pendingReserveOffers >= 3) return career;
   if (collectReserveCandidates(career, cfg).length === 0) return career;
 
   const rng = seedrandom(
@@ -482,11 +486,23 @@ export function maybeChampionshipBidForSlReserves(
     const fee = computeReserveTransferFee(picked.reserve, rng);
 
     if (picked.isUser) {
+      const stillPending = next.inboxMessages.filter(
+        (m) => !m.resolved && m.reserveOffer
+      ).length;
+      if (stillPending >= 3) break;
       next = createReserveTransferOffer(next, {
         reserve: picked.reserve,
         buyerClubName: club.name,
         fee,
       });
+      // Cooldown even while pending so deep sims don't re-target after expiry.
+      next = {
+        ...next,
+        reserveToChampionshipCooldowns: {
+          ...(next.reserveToChampionshipCooldowns ?? {}),
+          [picked.reserve.id]: next.gameWeek + cfg.cooldownWeeksPerPlayer,
+        },
+      };
       continue;
     }
 

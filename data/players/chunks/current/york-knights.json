@@ -492,5 +492,34 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-paul-mcshane",
     "primaryPosition": "HK"
+  },
+  {
+    "id": "york-cur-mitch-clark",
+    "name": "Mitch Clark",
+    "position": "PROP",
+    "club": "York Knights",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 85,
+    "value": 180000,
+    "appearances": 39,
+    "tries": 5,
+    "dateOfBirth": "1993-03-13",
+    "birthYear": 1993,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "york-knights-2026",
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "york-cur-mitch-clark",
+    "status": "Current",
+    "primaryPosition": "PROP",
+    "currentClub": "York Knights",
+    "clubsPlayedFor": [
+      "Salford Red Devils",
+      "York Knights"
+    ]
   }
 ]

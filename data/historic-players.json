@@ -91006,5 +91006,32 @@
     "intlCaps": 0,
     "availableInGame": true,
     "source": "legend-tier-primes"
+  },
+  {
+    "id": "salford-hist-ben-hellewell-2026",
+    "name": "Ben Hellewell",
+    "position": "FULLBACK",
+    "club": "Salford Red Devils",
+    "nationality": "Scotland",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–2026",
+    "category": "historic",
+    "peakRating": 83,
+    "value": 164000,
+    "dateOfBirth": "1992-01-30",
+    "birthYear": 1992,
+    "appearances": 53,
+    "tries": 8,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "salford-red-devils-2026",
+    "team": "Salford Red Devils",
+    "displayClub": "Salford Red Devils",
+    "basePlayerId": "salford-hist-ben-hellewell",
+    "status": "Historic",
+    "primaryPosition": "FULLBACK",
+    "currentClub": "Salford Red Devils",
+    "source": "leftover-club-audit-retire-2026",
+    "availableInGame": true
   }
 ]

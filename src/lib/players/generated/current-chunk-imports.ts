@@ -6,7 +6,6 @@ export async function loadAllCurrentClubChunks(): Promise<RawPlayer[]> {
   const chunks = await Promise.all([
     import("../../../../data/players/chunks/current/sheffield-eagles.json").then((m) => m.default as RawPlayer[]),
     import("../../../../data/players/chunks/current/bradford-bulls.json").then((m) => m.default as RawPlayer[]),
-    import("../../../../data/players/chunks/current/salford-red-devils.json").then((m) => m.default as RawPlayer[]),
     import("../../../../data/players/chunks/current/leeds-rhinos.json").then((m) => m.default as RawPlayer[]),
     import("../../../../data/players/chunks/current/wakefield-trinity.json").then((m) => m.default as RawPlayer[]),
     import("../../../../data/players/chunks/current/london-broncos.json").then((m) => m.default as RawPlayer[]),
@@ -24,6 +23,8 @@ export async function loadAllCurrentClubChunks(): Promise<RawPlayer[]> {
     import("../../../../data/players/chunks/current/hull-fc.json").then((m) => m.default as RawPlayer[]),
     import("../../../../data/players/chunks/current/wigan-warriors.json").then((m) => m.default as RawPlayer[]),
     import("../../../../data/players/chunks/current/st-helens.json").then((m) => m.default as RawPlayer[]),
+    import("../../../../data/players/chunks/current/barrow-raiders.json").then((m) => m.default as RawPlayer[]),
+    import("../../../../data/players/chunks/current/wynnum-manly-seagulls.json").then((m) => m.default as RawPlayer[]),
   ]);
   return chunks.flat();
 }

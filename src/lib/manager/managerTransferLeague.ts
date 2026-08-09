@@ -323,7 +323,8 @@ export function getAskingPrice(
   if (listed) {
     return Math.round(player.value * (0.8 + rng() * 0.4));
   }
-  return Math.round(player.value * (1.5 + rng() * 1.0));
+  // Unlisted premium — modest hold-out above value, not 1.5–2.5×.
+  return Math.round(player.value * (1.12 + rng() * 0.28));
 }
 
 export function getLeagueListingAskingPrice(
@@ -381,7 +382,7 @@ export function getBuyerMinimumTransferFee(
     rating,
     getCareerClubStars(career)
   );
-  return listed ? adjusted : Math.round(adjusted * 1.1);
+  return listed ? adjusted : Math.round(adjusted * 1.04);
 }
 
 export function listPlayerForTransfer(
@@ -743,9 +744,26 @@ export function generateIncomingTransferOffers(
   const seasonBoost = getLeagueSeasonIndex(career) >= 1 ? cfg.seasonBoost : 0;
   const phase = getTransferOfferGenerationPhase(career.gameWeek);
 
+  const pendingTransferMail = messages.filter(
+    (m) =>
+      !m.resolved && (m.type === "transfer" || m.type === "transfer_offer_in")
+  ).length;
+  if (pendingTransferMail >= 5) {
+    return career;
+  }
+
   for (const [playerId, status] of Object.entries(career.playerTransferStatus)) {
     if (!status.listed) continue;
     if (messages.some((m) => !m.resolved && m.playerId === playerId)) continue;
+    if (
+      messages.filter(
+        (m) =>
+          !m.resolved &&
+          (m.type === "transfer" || m.type === "transfer_offer_in")
+      ).length >= 5
+    ) {
+      break;
+    }
 
     const player = getPlayerById(playerId);
     if (!player) continue;

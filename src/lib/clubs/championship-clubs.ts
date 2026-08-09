@@ -24,7 +24,7 @@ export interface ChampionshipClub {
   active?: boolean;
   isCurrentSuperLeague?: boolean;
   playable?: boolean;
-  league?: "super_league" | "nrl";
+  league?: "super_league" | "nrl" | "qld_cup";
 }
 
 const FROM_JSON = championshipClubsData as ChampionshipClub[];

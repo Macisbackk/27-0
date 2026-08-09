@@ -1,0 +1,31 @@
+[
+  {
+    "id": "barrow-cur-ellis-robson",
+    "name": "Ellis Robson",
+    "position": "SECOND_ROW",
+    "club": "Barrow Raiders",
+    "nationality": "Unknown",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 90000,
+    "appearances": 14,
+    "tries": 1,
+    "dateOfBirth": "1998-09-14",
+    "birthYear": 1998,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "barrow-raiders-2026",
+    "team": "Barrow Raiders",
+    "displayClub": "Barrow Raiders",
+    "basePlayerId": "barrow-cur-ellis-robson",
+    "status": "Current",
+    "primaryPosition": "SECOND_ROW",
+    "currentClub": "Barrow Raiders",
+    "clubsPlayedFor": [
+      "Salford Red Devils",
+      "Barrow Raiders"
+    ]
+  }
+]

@@ -321,7 +321,7 @@ export function SeasonReview({
                     You qualified for the play-offs — complete the knockout
                     stage to finish your season.
                   </p>
-                  <div className="mt-4 hidden sm:block">
+                  <div className="mt-4">
                     <MatchReviewActions
                       compact
                       primaryAction={{
@@ -491,7 +491,7 @@ export function SeasonReview({
           </div>
 
         {showPlayoffPrompt && (
-          <div className="sticky bottom-0 z-[1] mt-4 border-t border-theme-tertiary/25 bg-[rgba(5,10,9,0.98)] px-[var(--layout-page-pad-inline)] py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_32px_rgba(0,0,0,0.45)] sm:hidden">
+          <div className="sticky bottom-0 z-[1] mt-4 border-t border-theme-tertiary/25 bg-[rgba(5,10,9,0.98)] px-[var(--layout-page-pad-inline)] py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_32px_rgba(0,0,0,0.45)]">
             <div className="mx-auto w-full max-w-[var(--layout-page-compact)]">
               <GameButton
                 variant="theme"

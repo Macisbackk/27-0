@@ -2,7 +2,11 @@ import { POSITION_SHORT } from "../positions";
 import type { Position } from "../types";
 import type { ManagerCareer } from "./types";
 import { assignPlayerToMatchday, type MatchdaySlotTarget } from "./managerMatchdaySquad";
-import { getManagerPlayer, getManagerPlayerEligiblePositions, isCalledUpReserve } from "./managerPlayers";
+import {
+  getManagerPlayer,
+  getManagerPlayerEligiblePositions,
+  isCalledUpReserve,
+} from "./managerPlayers";
 import { callUpReserveForNextMatch } from "./managerReserves";
 import { isPlayerUnavailable } from "./managerSquad";
 import { validateFitMatchdaySquad } from "./managerMatchdayValidation";
@@ -27,14 +31,13 @@ function assignWithAutoCallUp(
   return assignPlayerToMatchday(ready, target, playerId);
 }
 
-function bestSquadPlayerForPosition(
+function rankedSquadForPosition(
   career: ManagerCareer,
   position: Position,
   exclude: Set<string>
-): string | null {
-  const candidates = career.squad
-    .filter((ps) => !exclude.has(ps.playerId))
-    .filter((ps) => !isPlayerUnavailable(ps))
+): string[] {
+  return career.squad
+    .filter((ps) => !exclude.has(ps.playerId) && !isPlayerUnavailable(ps))
     .map((ps) => {
       const player = getManagerPlayer(career, ps.playerId);
       if (
@@ -43,23 +46,19 @@ function bestSquadPlayerForPosition(
       ) {
         return null;
       }
-      return {
-        id: ps.playerId,
-        rating: player.peakRating,
-      };
+      return { id: ps.playerId, rating: player.peakRating };
     })
     .filter((c): c is NonNullable<typeof c> => c !== null)
-    .sort((a, b) => b.rating - a.rating);
-
-  return candidates[0]?.id ?? null;
+    .sort((a, b) => b.rating - a.rating)
+    .map((c) => c.id);
 }
 
-function bestReserveForPosition(
+function rankedReservesForPosition(
   career: ManagerCareer,
   position: Position,
   exclude: Set<string>
-): string | null {
-  const candidates = career.reserves
+): string[] {
+  return career.reserves
     .filter((r) => !exclude.has(r.id))
     .map((r) => {
       const player = getManagerPlayer(career, r.id);
@@ -70,28 +69,45 @@ function bestReserveForPosition(
       return { id: r.id, rating: player.peakRating };
     })
     .filter((c): c is NonNullable<typeof c> => c !== null)
-    .sort((a, b) => b.rating - a.rating);
-
-  return candidates[0]?.id ?? null;
+    .sort((a, b) => b.rating - a.rating)
+    .map((c) => c.id);
 }
 
-function bestPlayerForPosition(
+function rankedAnyAvailable(
   career: ManagerCareer,
-  position: Position,
   exclude: Set<string>
-): { id: string; isReserve: boolean } | null {
-  const squadId = bestSquadPlayerForPosition(career, position, exclude);
-  if (squadId) return { id: squadId, isReserve: false };
-  const reserveId = bestReserveForPosition(career, position, exclude);
-  if (reserveId) return { id: reserveId, isReserve: true };
-  return null;
+): { id: string; isReserve: boolean; rating: number }[] {
+  const seniors = career.squad
+    .filter((ps) => !exclude.has(ps.playerId) && !isPlayerUnavailable(ps))
+    .map((ps) => {
+      const player = getManagerPlayer(career, ps.playerId);
+      if (!player) return null;
+      return { id: ps.playerId, isReserve: false, rating: player.peakRating };
+    })
+    .filter((c): c is NonNullable<typeof c> => c !== null);
+
+  const reserves = career.reserves
+    .filter((r) => !exclude.has(r.id))
+    .map((r) => {
+      const player = getManagerPlayer(career, r.id);
+      if (!player) return null;
+      return { id: r.id, isReserve: true, rating: player.peakRating };
+    })
+    .filter((c): c is NonNullable<typeof c> => c !== null);
+
+  return [...seniors, ...reserves].sort((a, b) => b.rating - a.rating);
 }
 
 function createEmptyMatchdayState(career: ManagerCareer): ManagerCareer {
   return {
     ...career,
+    calledUpReserveIds: [],
     matchdayXiii: career.xiiiSlotPositions.map(() => ""),
     matchdayInterchange: Array(ERA_BENCH_FROM_STARTING_17).fill(""),
+    reserves: career.reserves.map((r) => ({
+      ...r,
+      calledUpForNextMatch: false,
+    })),
   };
 }
 
@@ -105,59 +121,50 @@ function buildOptimalMatchdaySquad(career: ManagerCareer): {
   const used = new Set<string>();
   const actions: string[] = [];
 
+  // 1) Fill XIII — seniors first, then position-matched reserves (auto call-up).
   for (let i = 0; i < working.matchdayXiii.length; i++) {
     const pos = working.xiiiSlotPositions[i];
     if (!pos) continue;
 
-    const pick = bestPlayerForPosition(working, pos, used);
-    if (!pick) {
-      return {
-        ok: false,
-        career: working,
-        actions,
-        error: `Could not fill ${POSITION_SHORT[pos]}.`,
-      };
+    const senior = rankedSquadForPosition(working, pos, used)[0];
+    if (senior) {
+      working = assignWithAutoCallUp(
+        working,
+        { kind: "xiii", index: i },
+        senior,
+        false
+      );
+      used.add(senior);
+      const name = getManagerPlayer(working, senior)?.name ?? "Player";
+      actions.push(`${name} (${POSITION_SHORT[pos]})`);
+      continue;
     }
 
-    working = assignWithAutoCallUp(
-      working,
-      { kind: "xiii", index: i },
-      pick.id,
-      pick.isReserve
-    );
-    used.add(pick.id);
-    const name = getManagerPlayer(working, pick.id)?.name ?? "Player";
-    actions.push(`${name} (${POSITION_SHORT[pos]})`);
+    const reserve = rankedReservesForPosition(working, pos, used)[0];
+    if (reserve) {
+      working = assignWithAutoCallUp(
+        working,
+        { kind: "xiii", index: i },
+        reserve,
+        true
+      );
+      used.add(reserve);
+      const name = getManagerPlayer(working, reserve)?.name ?? "Player";
+      actions.push(`${name} (${POSITION_SHORT[pos]})`);
+      continue;
+    }
+
+    return {
+      ok: false,
+      career: working,
+      actions,
+      error: `Could not fill ${POSITION_SHORT[pos]} — call up or recruit a ${POSITION_SHORT[pos]}.`,
+    };
   }
 
+  // 2) Fill bench — any remaining senior or reserve (auto call-up).
   for (let i = 0; i < ERA_BENCH_FROM_STARTING_17; i++) {
-    const squadBench = [...working.squad]
-      .filter((ps) => !used.has(ps.playerId))
-      .filter((ps) => !isPlayerUnavailable(ps))
-      .map((ps) => {
-        const player = getManagerPlayer(working, ps.playerId);
-        if (!player) return null;
-        return {
-          id: ps.playerId,
-          rating: player.peakRating,
-          isReserve: false,
-        };
-      })
-      .filter((c): c is NonNullable<typeof c> => c !== null);
-
-    const reserveBench = [...working.reserves]
-      .filter((r) => !used.has(r.id))
-      .map((r) => {
-        const player = getManagerPlayer(working, r.id);
-        if (!player) return null;
-        return { id: r.id, rating: player.peakRating, isReserve: true };
-      })
-      .filter((c): c is NonNullable<typeof c> => c !== null);
-
-    const pick = [...squadBench, ...reserveBench].sort(
-      (a, b) => b.rating - a.rating
-    )[0];
-
+    const pick = rankedAnyAvailable(working, used)[0];
     if (!pick) break;
 
     working = assignWithAutoCallUp(
@@ -190,7 +197,7 @@ export function autoFixMatchdaySquad(career: ManagerCareer): {
   message: string;
 } {
   const initial = validateFitMatchdaySquad(career);
-  if (initial.valid) {
+  if (initial.valid && !hasUnavailablePlayersInLineup(career)) {
     return { ok: true, career, message: "Squad already valid." };
   }
 
@@ -241,7 +248,9 @@ export function autoSortMatchdaySquad(career: ManagerCareer): {
 }
 
 /** Best available matchday lineup for simulation (auto-replaces injured/unavailable). */
-export function resolveCareerForMatchSimulation(career: ManagerCareer): ManagerCareer {
+export function resolveCareerForMatchSimulation(
+  career: ManagerCareer
+): ManagerCareer {
   const result = autoFixMatchdaySquad(career);
   return result.ok ? result.career : career;
 }
