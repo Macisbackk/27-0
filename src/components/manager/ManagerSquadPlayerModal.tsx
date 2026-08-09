@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -17,6 +17,12 @@ import {
   suggestedAskingPrice,
   unlistPlayerFromTransfer,
 } from "@/lib/manager/managerTransferLeague";
+import {
+  completeOutgoingLoan,
+  isPlayerLoanedIn,
+  suggestedLoanFee,
+} from "@/lib/manager/managerLoans";
+import { rivalTransferClubs } from "@/lib/clubs/super-league-display";
 import { findPlayerMatchdaySlot } from "@/lib/manager/managerMatchdaySquad";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
@@ -42,6 +48,8 @@ export function ManagerSquadPlayerModal({
     suggestedAskingPrice(playerId)
   );
   const [showListForm, setShowListForm] = useState(false);
+  const [showLoanForm, setShowLoanForm] = useState(false);
+  const [loanClub, setLoanClub] = useState(() => rivalTransferClubs(career.club)[0] ?? "");
   const [releaseConfirmOpen, setReleaseConfirmOpen] = useState(false);
   const [errorDialog, setErrorDialog] = useState<string | null>(null);
 
@@ -57,6 +65,8 @@ export function ManagerSquadPlayerModal({
   const transferStatus = career.playerTransferStatus[playerId];
   const slot = findPlayerMatchdaySlot(career, playerId);
   const releaseCost = computeReleaseCost(career, playerId);
+  const loanedIn = isPlayerLoanedIn(career, playerId);
+  const loanFee = suggestedLoanFee(career, playerId, career.club);
 
   if (!player) return null;
 
@@ -67,6 +77,18 @@ export function ManagerSquadPlayerModal({
 
   const handleUnlist = () => {
     onUpdate(unlistPlayerFromTransfer(career, playerId));
+  };
+
+  const handleLoanOut = () => {
+    if (!loanClub) return;
+    onUpdate(
+      completeOutgoingLoan(career, playerId, loanClub, {
+        loanFee,
+        parentWageShare: 0.5,
+        canRecall: true,
+      })
+    );
+    onClose();
   };
 
   const handleRelease = () => {
@@ -148,16 +170,36 @@ export function ManagerSquadPlayerModal({
             Substitute
           </GameButton>
 
-          {!transferStatus?.listed && !showListForm && (
+          {!transferStatus?.listed && !showListForm && !loanedIn && (
             <GameButton
               variant="secondary"
               onClick={() => {
                 playUiClick();
                 setShowListForm(true);
+                setShowLoanForm(false);
               }}
             >
               List For Transfer
             </GameButton>
+          )}
+
+          {!loanedIn && !showLoanForm && (
+            <GameButton
+              variant="secondary"
+              onClick={() => {
+                playUiClick();
+                setShowLoanForm(true);
+                setShowListForm(false);
+              }}
+            >
+              Loan Out
+            </GameButton>
+          )}
+
+          {loanedIn && (
+            <p className={`${TYPO.bodySm} text-amber-200`}>
+              On loan — cannot list or sell permanently.
+            </p>
           )}
 
           {transferStatus?.listed && (
@@ -189,9 +231,42 @@ export function ManagerSquadPlayerModal({
             </div>
           )}
 
-          <GameButton variant="secondary" onClick={handleRelease}>
-            Release ({formatWage(releaseCost)})
-          </GameButton>
+          {showLoanForm && (
+            <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+              <label className={TYPO.bodySm}>
+                <span className="text-pitch-400">Loan to</span>
+                <select
+                  value={loanClub}
+                  onChange={(e) => setLoanClub(e.target.value)}
+                  className={`${FILTER.input} mt-1`}
+                >
+                  {rivalTransferClubs(career.club).map((club) => (
+                    <option key={club} value={club}>
+                      {club}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <p className={`mt-2 ${TYPO.meta} text-pitch-400`}>
+                Fee {formatWage(loanFee)} · rest of season · you keep 50% wages ·
+                recallable
+              </p>
+              <GameButton
+                variant="theme"
+                size="sm"
+                className="mt-2"
+                onClick={handleLoanOut}
+              >
+                Confirm Loan
+              </GameButton>
+            </div>
+          )}
+
+          {!loanedIn && (
+            <GameButton variant="secondary" onClick={handleRelease}>
+              Release ({formatWage(releaseCost)})
+            </GameButton>
+          )}
 
           <GameButton variant="secondary" onClick={onClose}>
             Close

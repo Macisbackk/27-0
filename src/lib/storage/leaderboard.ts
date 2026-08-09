@@ -78,7 +78,8 @@ export type LeaderboardDbMode =
   | "draft"
   | "fantasy"
   | "club-funds"
-  | "trophy-cabinet";
+  | "trophy-cabinet"
+  | "daily";
 
 export function normalizeLeaderboardGameMode(mode: GameMode): GameMode {
   return mode;
@@ -824,6 +825,10 @@ export async function getTrackerLeaderboardAsync(
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
   if (dbMode === "trophy-cabinet") {
     return getTrophyCabinetLeaderboardAsync(tracker, limit);
+  }
+  if (dbMode === "daily") {
+    const { getDailyLeaderboardAsync } = await import("./daily-leaderboard");
+    return getDailyLeaderboardAsync(limit);
   }
 
   const currentUser = getUsername() ?? "";

@@ -21,7 +21,7 @@ import {
   syncManagerLeagueTable,
 } from "./managerFixtures";
 import { PLAYOFF_QUALIFIERS } from "../game/playoff-simulation";
-import { MANAGER_SEASON_GAMES } from "./types";
+import { getUserSeasonGames, isUserInChampionship } from "./leagueMembership";
 
 export { PLAYOFF_QUALIFIERS };
 
@@ -42,6 +42,7 @@ export function isGrandFinalFixture(
 }
 
 export function userQualifiedForManagerPlayoffs(career: ManagerCareer): boolean {
+  if (isUserInChampionship(career)) return false;
   return (
     getUserLeaguePosition(getManagerLeagueTable(career), career.club) <=
     PLAYOFF_QUALIFIERS
@@ -218,6 +219,7 @@ export function buildPlayoffScheduledFixture(
 
 export function ensurePlayoffsReady(career: ManagerCareer): ManagerCareer {
   const synced = syncManagerLeagueTable(career);
+  if (isUserInChampionship(synced)) return synced;
   if (!isLeagueAndCupPhaseComplete(synced)) {
     return synced;
   }
@@ -231,17 +233,18 @@ export function ensurePlayoffsReady(career: ManagerCareer): ManagerCareer {
 /**
  * Regular league season only — cup progress does not delay this flag.
  * Used for Season Progress playoff visibility and League Leaders eligibility.
- * Requires the full 27-game slate so a short/corrupt schedule cannot crown
- * a mid-season table-topper.
+ * Requires the full slate for the user's competition so a short/corrupt schedule
+ * cannot crown a mid-season table-topper.
  */
 export function isLeaguePhaseComplete(career: ManagerCareer): boolean {
-  return countLeagueFixturesPlayed(career) >= MANAGER_SEASON_GAMES;
+  return countLeagueFixturesPlayed(career) >= getUserSeasonGames(career);
 }
 
 /** Show playoffs in Season Progress only after the league slate is done. */
 export function shouldShowPlayoffsInSeasonProgress(
   career: ManagerCareer
 ): boolean {
+  if (isUserInChampionship(career)) return false;
   return isLeaguePhaseComplete(career);
 }
 

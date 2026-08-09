@@ -11,7 +11,9 @@ import {
 import type {
   AttackFocus,
   DefenceFocus,
+  ManagerCareer,
   ManagerTactics,
+  MatchPlayerRole,
   PlayingStyle,
   TacticMatchReviewAdvice,
 } from "./types";
@@ -303,6 +305,88 @@ export function getDefenceConcedeMultiplier(
     default:
       return 1.0;
   }
+}
+
+/** Per-player role involvement multiplier (default 1.0). */
+export function getMatchPlayerRoleTryMultiplier(
+  role: MatchPlayerRole | undefined,
+  position: Position
+): number {
+  switch (role ?? "default") {
+    case "primary_creator":
+    case "organizer":
+      if (HALVES_POSITIONS.has(position) || position === "HOOKER") return 1.14;
+      return 1.02;
+    case "crash_ball":
+    case "target":
+      if (FORWARD_POSITIONS.has(position)) return 1.14;
+      return 1.02;
+    case "spread":
+      if (EDGE_POSITIONS.has(position)) return 1.14;
+      return 1.02;
+    default:
+      return 1.0;
+  }
+}
+
+/** Small strength bonus when roles align with attack focus. */
+export function getMatchPlayerRolesStrengthBonus(
+  career: ManagerCareer,
+  tactics: ManagerTactics = career.tactics
+): number {
+  const roles = career.matchPlayerRoles ?? {};
+  const xiii = career.matchdayXiii ?? [];
+  let matches = 0;
+  let counted = 0;
+  for (const playerId of xiii) {
+    if (!playerId) continue;
+    const role = roles[playerId] ?? "default";
+    if (role === "default") continue;
+    counted += 1;
+    const p = getPlayerById(playerId);
+    const position = p?.position ?? ("CENTRE" as Position);
+    const aligned =
+      (tactics.attackFocus === "edges" && role === "spread") ||
+      (tactics.attackFocus === "middle" &&
+        (role === "crash_ball" || role === "target")) ||
+      (tactics.attackFocus === "kicking_game" &&
+        (role === "primary_creator" || role === "organizer")) ||
+      (tactics.attackFocus === "offloads" &&
+        (role === "organizer" || role === "spread"));
+    if (aligned) matches += 1;
+  }
+  if (counted === 0) return 0;
+  return Math.min(1.5, matches * 0.35);
+}
+
+/** Resolve tactics for a fixture — one-match gameplan overrides career tactics. */
+export function resolveEffectiveTactics(
+  career: ManagerCareer,
+  fixtureId?: string | null
+): ManagerTactics {
+  const plan = career.nextMatchGameplan;
+  if (
+    plan &&
+    fixtureId &&
+    plan.fixtureId === fixtureId &&
+    plan.tactics
+  ) {
+    return plan.tactics;
+  }
+  return career.tactics;
+}
+
+export function clearNextMatchGameplanIfUsed(
+  career: ManagerCareer,
+  fixtureId: string
+): ManagerCareer {
+  const plan = career.nextMatchGameplan;
+  if (!plan || plan.fixtureId !== fixtureId) return career;
+  return {
+    ...career,
+    nextMatchGameplan: null,
+    updatedAt: new Date().toISOString(),
+  };
 }
 
 export function countOpponentTriesByZone(

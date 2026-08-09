@@ -22,6 +22,24 @@ import {
   STORAGE_KEYS,
 } from "../storage/keys";
 
+function readDailyStreakForProgress(): number {
+  if (typeof window === "undefined") return 0;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.dailyChallengeMeta);
+    if (!raw) return 0;
+    const parsed = JSON.parse(raw) as {
+      currentStreak?: number;
+      bestStreak?: number;
+    };
+    return Math.max(
+      typeof parsed.currentStreak === "number" ? parsed.currentStreak : 0,
+      typeof parsed.bestStreak === "number" ? parsed.bestStreak : 0
+    );
+  } catch {
+    return 0;
+  }
+}
+
 export type AchievementUnlockResult = {
   id: string;
   definition: AchievementDefinition;
@@ -156,6 +174,16 @@ function evaluateUnlock(
       return ctx.againstTheOddsComplete === true;
     case "developers-favourite":
       return ctx.bradfordChallengeComplete === true;
+    case "daily-debut":
+      return (
+        ctx.dailyChallengeCompleted === true ||
+        (ctx.dailyBestStreak ?? 0) >= 1 ||
+        (ctx.dailyCurrentStreak ?? 0) >= 1
+      );
+    case "daily-streak-3":
+      return (ctx.dailyCurrentStreak ?? ctx.dailyBestStreak ?? 0) >= 3;
+    case "daily-streak-7":
+      return (ctx.dailyCurrentStreak ?? ctx.dailyBestStreak ?? 0) >= 7;
     default:
       return false;
   }
@@ -214,6 +242,18 @@ export function getAchievementProgress(
         current: Math.min(progress.totalLosses, def.target),
         target: def.target,
       };
+    case "daily-streak-3":
+    case "daily-streak-7": {
+      const streak = Math.max(
+        ctx.dailyCurrentStreak ?? 0,
+        ctx.dailyBestStreak ?? 0,
+        readDailyStreakForProgress()
+      );
+      return {
+        current: Math.min(streak, def.target),
+        target: def.target,
+      };
+    }
     default:
       return { current: 0, target: def.target };
   }

@@ -7,6 +7,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
+  CHAMPIONSHIP_STAR_TIER_BIOS,
   getAllManagerClubConfigs,
   MANAGER_STAR_TIER_BIOS,
   type ManagerClubConfig,
@@ -33,6 +34,7 @@ function ClubSelectRow({
   const attendance = getClubAttendanceProfile(club.name);
   const ratingStars = club.difficulty;
   const colors = getClubColors(club.name);
+  const isChamp = club.competition === "championship";
 
   return (
     <li>
@@ -67,8 +69,13 @@ function ClubSelectRow({
         />
 
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold text-white">
-            {club.name}
+          <p className="flex items-center gap-2 truncate text-sm font-semibold text-white">
+            <span className="truncate">{club.name}</span>
+            {isChamp ? (
+              <span className="shrink-0 rounded border border-pitch-600 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-pitch-300">
+                Champ
+              </span>
+            ) : null}
           </p>
           <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
             <ClubStarRatingDisplay
@@ -93,27 +100,70 @@ function ClubSelectRow({
   );
 }
 
-export function ManagerClubSelect({
+function StarGroupedList({
+  clubs,
+  bios,
   onSelect,
-  onBack,
-  busy = false,
-}: ManagerClubSelectProps) {
+  busy,
+}: {
+  clubs: ManagerClubConfig[];
+  bios: Record<number, string>;
+  onSelect: (club: string) => void;
+  busy: boolean;
+}) {
   const starGroups = useMemo(() => {
     const byStars = new Map<number, ManagerClubConfig[]>();
-
-    for (const club of getAllManagerClubConfigs()) {
+    for (const club of clubs) {
       const stars = club.difficulty;
       const group = byStars.get(stars) ?? [];
       group.push(club);
       byStars.set(stars, group);
     }
-
     return [...byStars.entries()]
       .sort(([a], [b]) => b - a)
-      .map(([stars, clubs]) => ({
+      .map(([stars, group]) => ({
         stars,
-        clubs: clubs.sort((a, b) => b.squadRating - a.squadRating),
+        clubs: group.sort((a, b) => b.squadRating - a.squadRating),
       }));
+  }, [clubs]);
+
+  return (
+    <div className={SPACING.stackMd}>
+      {starGroups.map(({ stars, clubs: groupClubs }) => (
+        <section key={stars}>
+          <h3 className={`mb-1 ${TYPO.sectionLabel} text-accent-gold`}>
+            {stars} star
+          </h3>
+          <p className={`mb-1.5 ${TYPO.bodySm} text-pitch-400`}>
+            {bios[stars] ?? "Board expectations scale with club status."}
+          </p>
+          <ul className="space-y-1.5" role="list">
+            {groupClubs.map((club) => (
+              <ClubSelectRow
+                key={club.name}
+                club={club}
+                onSelect={onSelect}
+                disabled={busy}
+              />
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+export function ManagerClubSelect({
+  onSelect,
+  onBack,
+  busy = false,
+}: ManagerClubSelectProps) {
+  const { slClubs, champClubs } = useMemo(() => {
+    const all = getAllManagerClubConfigs();
+    return {
+      slClubs: all.filter((c) => c.competition !== "championship"),
+      champClubs: all.filter((c) => c.competition === "championship"),
+    };
   }, []);
 
   return (
@@ -121,7 +171,7 @@ export function ManagerClubSelect({
       <div>
         <h1 className={`${TYPO.pageTitle} text-lg sm:text-xl`}>Choose Your Club</h1>
         <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
-          Grouped by club status — strongest sides first within each tier.
+          Super League first — Championship clubs can earn promotion.
         </p>
       </div>
 
@@ -131,29 +181,32 @@ export function ManagerClubSelect({
         </p>
       )}
 
-      <div className={SPACING.stackMd}>
-        {starGroups.map(({ stars, clubs }) => (
-          <section key={stars}>
-            <h2 className={`mb-1 ${TYPO.sectionLabel} text-accent-gold`}>
-              {stars} star
-            </h2>
-            <p className={`mb-1.5 ${TYPO.bodySm} text-pitch-400`}>
-              {MANAGER_STAR_TIER_BIOS[stars] ??
-                "Board expectations scale with club status."}
+      <section className={SPACING.stackMd}>
+        <h2 className={`${TYPO.sectionLabel} text-white`}>Super League</h2>
+        <StarGroupedList
+          clubs={slClubs}
+          bios={MANAGER_STAR_TIER_BIOS}
+          onSelect={onSelect}
+          busy={busy}
+        />
+      </section>
+
+      {champClubs.length > 0 ? (
+        <section className={SPACING.stackMd}>
+          <div>
+            <h2 className={`${TYPO.sectionLabel} text-white`}>Championship</h2>
+            <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
+              Championship — earn promotion
             </p>
-            <ul className="space-y-1.5" role="list">
-              {clubs.map((club) => (
-                <ClubSelectRow
-                  key={club.name}
-                  club={club}
-                  onSelect={onSelect}
-                  disabled={busy}
-                />
-              ))}
-            </ul>
-          </section>
-        ))}
-      </div>
+          </div>
+          <StarGroupedList
+            clubs={champClubs}
+            bios={CHAMPIONSHIP_STAR_TIER_BIOS}
+            onSelect={onSelect}
+            busy={busy}
+          />
+        </section>
+      ) : null}
 
       <GameButton
         variant="secondary"

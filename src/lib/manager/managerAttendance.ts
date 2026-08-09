@@ -103,9 +103,13 @@ export function getClubAttendanceProfile(club: string): {
   capacity: number;
   min?: number;
 } {
-  return (
-    CLUB_ATTENDANCE_PROFILES[club] ?? { base: 6_000, capacity: 12_000 }
-  );
+  const known = CLUB_ATTENDANCE_PROFILES[club];
+  if (known) return known;
+  if (isChampionshipClubName(club)) {
+    // Generic Championship gate — smaller than Super League mid-table sides.
+    return { base: 2_800, capacity: 7_500, min: 1_600 };
+  }
+  return { base: 6_000, capacity: 12_000 };
 }
 
 export function getClubAttendanceFloor(

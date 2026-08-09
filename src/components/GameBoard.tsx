@@ -1000,6 +1000,7 @@ export function GameBoard({
       superSamHallasMode,
       isDraftMode,
       normalEraMode,
+      dailyChallengeMode,
       dailyScenario?.forceOpponentClub,
     ]
   );
@@ -1051,6 +1052,7 @@ export function GameBoard({
           rerollsUsed: rerollsThisRunRef.current,
           topSixFinish: tablePosition <= 6,
           normalEraMode,
+          dailyChallengeMode,
         }
       ).then((completed) => {
         setSubmittedOnline(completed.submittedOnline);
@@ -1122,6 +1124,7 @@ export function GameBoard({
       normalEraMode,
       usedBoostThisRun,
       dailyScenario,
+      dailyChallengeMode,
     ]
   );
 
@@ -1169,6 +1172,7 @@ export function GameBoard({
             playoff.isChampion ||
             playoff.finish === "Super League Champions",
           usedBoosts: usedBoostThisRun,
+          dailyChallengeMode,
         }
       ).then((completed) => {
         setSubmittedOnline(completed.submittedOnline);
@@ -1209,6 +1213,7 @@ export function GameBoard({
       superSamHallasMode,
       normalEraMode,
       usedBoostThisRun,
+      dailyChallengeMode,
     ]
   );
 
@@ -2719,6 +2724,8 @@ export function GameBoard({
           joeMellorMode={joeMellorMode}
           superSamHallasMode={superSamHallasMode}
           normalEraMode={normalEraMode}
+          dailyChallengeMode={dailyChallengeMode}
+          dailyScenario={dailyScenario}
           seasonResult={seasonResult}
           runRank={runRank}
           submittedOnline={submittedOnline}
@@ -2761,6 +2768,8 @@ export function GameBoard({
           playoffBracketState={completedPlayoffBracketState}
           playoffFundsPayout={playoffFundsPayout}
           clubFundsPayout={clubFundsPayout}
+          dailyChallengeMode={dailyChallengeMode}
+          dailyScenario={dailyScenario}
           onFinalizeRun={handleFinalizePlayoffRun}
           onPlayAgain={handlePlayoffReviewDone}
           onClose={() => setPhase("pitch")}

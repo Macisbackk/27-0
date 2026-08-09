@@ -30,6 +30,7 @@ import {
   type LeaderboardTabAccent,
 } from "./LeaderboardTabBar";
 import { getClubFundsLeaderboardAsync } from "@/lib/storage/club-funds-leaderboard";
+import { getDailyLeaderboardAsync } from "@/lib/storage/daily-leaderboard";
 import {
   getManagerLeaderboardAsync,
   MANAGER_LEADERBOARD_MODES,
@@ -55,6 +56,7 @@ const QUICK_MODE_ACCENTS = {
   "super-league": "green",
   "trophy-cabinet": "gold",
   "club-funds": "sky",
+  daily: "amber",
 } as const satisfies Partial<Record<LeaderboardDbMode, LeaderboardTabAccent>>;
 
 const MANAGER_MODE_ACCENTS: Record<
@@ -77,6 +79,7 @@ const TRACKER_ACCENTS: Partial<
   era_league_title: "green",
   era_league_champions: "gold",
   total_winnings: "sky",
+  daily_streak: "amber",
   manager_challenge_cups: "gold",
   manager_cup_finals: "gold",
   manager_league_titles: "green",
@@ -92,6 +95,7 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   era_league_title: "Era League Titles",
   era_league_champions: "Era Champions",
   total_winnings: "Total Winnings",
+  daily_streak: "Best Streak",
   manager_challenge_cups: "Cups Won",
   manager_cup_finals: "Finals Reached",
   manager_league_titles: "League Titles",
@@ -116,6 +120,17 @@ export function LeaderboardTable() {
   const requestId = useRef(0);
 
   const isManagerPlayStyle = playStyle === "manager";
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const trackerParam = params.get("tracker");
+    if (trackerParam === "daily_streak") {
+      setPlayStyle("quick");
+      setLeaderboardMode("daily");
+      setTracker("daily_streak");
+    }
+  }, []);
 
   useEffect(() => {
     setNormalEraMode(getNormalEraVariant());
@@ -161,6 +176,7 @@ export function LeaderboardTable() {
 
   const isClubFundsMode =
     !isManagerPlayStyle && leaderboardMode === "club-funds";
+  const isDailyMode = !isManagerPlayStyle && leaderboardMode === "daily";
   const isTrophyCabinetMode =
     !isManagerPlayStyle && leaderboardMode === "trophy-cabinet";
   const isManagerEarningsMode =
@@ -210,16 +226,18 @@ export function LeaderboardTable() {
         return;
       }
 
-      if (isClubFundsMode || isTrophyCabinetMode) {
+      if (isClubFundsMode || isDailyMode || isTrophyCabinetMode) {
         const result = isClubFundsMode
           ? await getClubFundsLeaderboardAsync()
-          : await getTrackerLeaderboardAsync(
-              activeTracker,
-              period,
-              difficulty,
-              50,
-              "trophy-cabinet"
-            );
+          : isDailyMode
+            ? await getDailyLeaderboardAsync()
+            : await getTrackerLeaderboardAsync(
+                activeTracker,
+                period,
+                difficulty,
+                50,
+                "trophy-cabinet"
+              );
         if (currentRequest !== requestId.current) return;
         setEntries(result.rows);
         setUsingFallback(result.source === "local");
@@ -251,6 +269,7 @@ export function LeaderboardTable() {
     managerMode,
     activeTracker,
     isClubFundsMode,
+    isDailyMode,
     isTrophyCabinetMode,
     isSuperLeagueMode,
     superLeagueModeVariant,
@@ -277,9 +296,11 @@ export function LeaderboardTable() {
   const quickModeLabel =
     leaderboardMode === "club-funds"
       ? "Total Winnings"
-      : leaderboardMode === "trophy-cabinet"
-        ? "Trophy Cabinet"
-        : "Quick Mode";
+      : leaderboardMode === "daily"
+        ? "Daily"
+        : leaderboardMode === "trophy-cabinet"
+          ? "Trophy Cabinet"
+          : "Quick Mode";
 
   const managerModeLabel =
     MANAGER_LEADERBOARD_MODES.find((mode) => mode.id === managerMode)?.label ??
@@ -294,6 +315,7 @@ export function LeaderboardTable() {
   const quickModeOptions = [
     { id: "super-league" as const, label: "Quick Mode" },
     { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
+    { id: "daily" as const, label: "Daily" },
     ...(isMobileViewport
       ? []
       : [{ id: "club-funds" as const, label: "Total Winnings" }]),
@@ -305,16 +327,20 @@ export function LeaderboardTable() {
 
   const emptyStateMessage = isManagerPlayStyle
     ? `No ${trackerLabel.toLowerCase()} entries yet. Complete a manager season to appear on the leaderboard!`
-    : `No ${trackerLabel.toLowerCase()} entries yet. Complete a run to appear on the leaderboard!`;
+    : isDailyMode
+      ? "No daily streak entries yet. Complete a Daily Challenge to appear on the board!"
+      : `No ${trackerLabel.toLowerCase()} entries yet. Complete a run to appear on the leaderboard!`;
 
   const showUpdatedColumn =
     !isClubFundsMode &&
+    !isDailyMode &&
     !isTrophyCabinetMode &&
     !isManagerScoreMode;
 
   const showPeriodFilters =
     !isManagerPlayStyle &&
     !isClubFundsMode &&
+    !isDailyMode &&
     !isTrophyCabinetMode;
 
   return (

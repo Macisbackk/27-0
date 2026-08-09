@@ -12,6 +12,7 @@ import { buildMatchdayScoringEntries } from "./managerSquad";
 import {
   getAttackFocusTryMultiplier,
   getDefenceConcedeMultiplier,
+  getMatchPlayerRoleTryMultiplier,
   getPlayingStyleTryMultiplier,
 } from "./managerTacticsScoring";
 import { getPlayerEligiblePositions } from "../players/player-positions";
@@ -45,8 +46,10 @@ function pickKicker(entries: SquadEntry[]): SquadEntry | null {
 function buildUserWeights(
   entries: SquadEntry[],
   tactics: ManagerTactics,
-  rng: () => number
+  rng: () => number,
+  career?: ManagerCareer
 ): number[] {
+  const roles = career?.matchPlayerRoles ?? {};
   return entries.map((e) => {
     const style = getPlayingStyleTryMultiplier(
       tactics.playingStyle,
@@ -54,6 +57,10 @@ function buildUserWeights(
     );
     const attack = getAttackFocusTryMultiplier(
       tactics.attackFocus,
+      e.playedPosition
+    );
+    const role = getMatchPlayerRoleTryMultiplier(
+      roles[e.player.id],
       e.playedPosition
     );
     const rating = resolvePlayerRating(e.player.peakRating, {
@@ -68,7 +75,7 @@ function buildUserWeights(
     return sanitizeWeight(
       Math.max(
         0.05,
-        ability * style * attack * variance * e.tryWeightMultiplier
+        ability * style * attack * role * variance * e.tryWeightMultiplier
       )
     );
   });
@@ -138,7 +145,8 @@ export function enrichManagerFixtureScoring(
       return { ...e, form };
     }),
     tactics,
-    rng
+    rng,
+    opponentOptions?.career
   );
   const userAlloc = allocateWeightedTries(fixture.triesFor, userWeights, rng, {
     positions: entries.map((e) => e.playedPosition),

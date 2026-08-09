@@ -1,7 +1,16 @@
 import { getManagerPlayer } from "./managerPlayers";
 import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import type { ManagerCareer, ManagerSeasonSummary, SeasonHighlightResult } from "./types";
-import { buildManagerSchedule, buildLeagueTableFromMatches, getManagerLeagueTable } from "./managerFixtures";
+import { buildManagerSchedule, buildLeagueTableFromMatches, getManagerLeagueTable, buildManagerScheduleFromChampionship } from "./managerFixtures";
+import {
+  applyPromotionRelegation,
+  getCareerChampionshipClubs,
+  getCareerSuperLeagueClubs,
+  getUserLeagueClubs,
+  getUserSeasonGames,
+  isUserInChampionship,
+} from "./leagueMembership";
+import { CHAMPIONSHIP_EXPECTATION_LABELS, expectationTierFromStars, getManagerClubConfig, MANAGER_EXPECTATION_LABELS } from "./club-config";
 import { generateTransferMarket } from "./managerTransfers";
 import { generateLeagueListedPlayers } from "./managerTransferLeague";
 import { getUserLeagueTablePosition } from "./managerFixtures";
@@ -27,6 +36,7 @@ import {
 } from "./managerFinance";
 import { awardManagerSeasonBoardGrant } from "./managerSeasonRewards";
 import { addContractLeavingInboxMessage, clearSeasonTransferState } from "./managerInbox";
+import { returnExpiredLoans } from "./managerLoans";
 import { createClubAttendanceData, applyAttendancePerformanceDrift } from "./managerAttendance";
 import { applyAutoPromoteByRating, tickReserveYearsAtClub } from "./managerReserveRelease";
 import { applySeasonAiReserveIntake, ensureAllClubReserveDepth } from "./managerReserves";
@@ -96,7 +106,17 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
   if (playoffFinish === "Grand Final Runner-Up") budgetChange += 120_000;
 
   let boardVerdict = "A steady season — the board want more next year.";
-  if (playoffFinish === "Super League Champions") {
+  if (isUserInChampionship(career)) {
+    if (position === 1) {
+      boardVerdict = "Outstanding — Championship champions.";
+    } else if (position <= 2) {
+      boardVerdict = "Promoted — Super League awaits.";
+    } else if (position <= 4) {
+      boardVerdict = "Top-four finish. Solid Championship campaign.";
+    } else if (position >= 18) {
+      boardVerdict = "Disappointing — improvements required.";
+    }
+  } else if (playoffFinish === "Super League Champions") {
     boardVerdict = "Outstanding — you delivered the title.";
   } else if (playoffFinish === "Grand Final Runner-Up") {
     boardVerdict = "So close — runners-up in the Grand Final.";
@@ -176,14 +196,20 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const summary = buildSeasonSummary(career);
   const seasonStartFacilities = getClubFacilities(career);
   // Snapshot final tables for next season's Challenge Cup seeding (year on year).
-  const previousSeasonLeagueTable = standingsToCupSeeding(
-    getManagerLeagueTable(career)
-  );
-  const previousSeasonChampionshipTable = standingsToCupSeeding(
-    career.championshipCompetition?.standings
-  );
+  const previousSeasonLeagueTable = isUserInChampionship(career)
+    ? career.previousSeasonLeagueTable ??
+      getCareerSuperLeagueClubs(career).map((team, i) => ({
+        team,
+        position: i + 1,
+      }))
+    : standingsToCupSeeding(getManagerLeagueTable(career));
+  const previousSeasonChampionshipTable = isUserInChampionship(career)
+    ? standingsToCupSeeding(getManagerLeagueTable(career))
+    : standingsToCupSeeding(career.championshipCompetition?.standings);
+
   const withTotals = tickClubCareerTotals(career);
-  const { career: afterRetirements } = applySeasonRetirements(withTotals);
+  const withLoansReturned = returnExpiredLoans(withTotals);
+  const { career: afterRetirements } = applySeasonRetirements(withLoansReturned);
   const afterLeagueRetirements = applyLeagueRetirements(afterRetirements);
   const { career: afterSquadContracts, leaving: squadLeaving } =
     tickContractsForNewSeason(afterLeagueRetirements);
@@ -218,7 +244,51 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   if (leaving.length >= 3) boardConfidence = Math.max(0, boardConfidence - 10);
   else if (leaving.length > 0) boardConfidence = Math.max(0, boardConfidence - 4);
 
+  // Promotion / relegation BEFORE rebuilding schedules.
+  const {
+    career: afterPromRel,
+    userPromoted,
+    userRelegated,
+  } = applyPromotionRelegation({
+    ...clearedTransfers,
+    previousSeasonLeagueTable,
+    previousSeasonChampionshipTable,
+    leagueTable: getManagerLeagueTable(career),
+  });
+
   const newSeed = `${career.seed}-s${career.seasonYear + 1}`;
+  const nextYear = career.seasonYear + 1;
+  const champClubs = getCareerChampionshipClubs(afterPromRel);
+  const slClubs = getCareerSuperLeagueClubs(afterPromRel);
+  const championshipCompetition = createChampionshipCompetition(
+    newSeed,
+    nextYear,
+    { clubNames: champClubs }
+  );
+
+  let schedule;
+  if (isUserInChampionship(afterPromRel)) {
+    schedule = buildManagerScheduleFromChampionship(
+      afterPromRel.club,
+      championshipCompetition,
+      newSeed
+    );
+  } else {
+    schedule = buildManagerSchedule(afterPromRel.club, newSeed, {
+      clubs: slClubs,
+      seasonGames: getUserSeasonGames(afterPromRel),
+      includeMagicWeekend: true,
+    });
+  }
+
+  const leagueClubs = getUserLeagueClubs(afterPromRel);
+  const config = getManagerClubConfig(afterPromRel.club);
+  const boardExpectation =
+    afterPromRel.userCompetitionId === "championship"
+      ? CHAMPIONSHIP_EXPECTATION_LABELS[
+          expectationTierFromStars(config.difficulty)
+        ]
+      : MANAGER_EXPECTATION_LABELS[expectationTierFromStars(config.difficulty)];
 
   const prevFinance = afterReserveContracts.managerFinance;
   const transferBudget = computeSeasonTransferBudget(
@@ -236,7 +306,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const attendanceAfterSeason = applyAttendancePerformanceDrift(
     applySeasonAiReserveIntake(
       {
-        ...clearedTransfers,
+        ...afterPromRel,
         seasonHistory: [...career.seasonHistory, summary],
       },
       career.seasonYear + 1
@@ -245,13 +315,17 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   ).attendanceData;
 
   const next: ManagerCareer = {
-    ...clearedTransfers,
-    seasonYear: career.seasonYear + 1,
+    ...afterPromRel,
+    seasonYear: nextYear,
     seed: newSeed,
     budget: transferBudget,
     clubFundsEarned: afterReserveContracts.clubFundsEarned,
     boardConfidence: Math.min(85, boardConfidence + 10),
-    schedule: buildManagerSchedule(career.club, newSeed),
+    boardExpectation:
+      userPromoted || userRelegated
+        ? boardExpectation
+        : afterPromRel.boardExpectation,
+    schedule,
     fixtures: [],
     roundMatches: [],
     gameWeek: 0,
@@ -280,10 +354,8 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     challengeCupSchemaVersion: CHALLENGE_CUP_SCHEMA_VERSION,
     previousSeasonLeagueTable,
     previousSeasonChampionshipTable,
-    championshipCompetition: createChampionshipCompetition(
-      newSeed,
-      career.seasonYear + 1
-    ),
+    championshipCompetition,
+    championshipCompetitionVersion: championshipCompetition.version,
     championshipToSlTransfersThisSeason: 0,
     championshipTransferCooldowns: {},
     championshipReserveSigningsThisSeason: 0,
@@ -304,6 +376,8 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     worldClubChallengeCelebrationShown: false,
     wagePressureWeeks: 0,
     transferMarket: generateTransferMarket(withFreeAgents, newSeed, 0),
+    nextMatchGameplan: null,
+    activeLoans: withFreeAgents.activeLoans ?? [],
     squad: withFreeAgents.squad.map((p) => ({
       ...p,
       seasonAppearances: 0,
@@ -320,7 +394,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     calledUpReserveIds: [],
     reserveResults: [],
     lastReserveResult: null,
-    leagueTable: buildLeagueTableFromMatches([], career.club),
+    leagueTable: buildLeagueTableFromMatches([], career.club, leagueClubs),
     preSeason: initPreSeasonState({}),
     managerFinance: {
       transferBudget,
@@ -333,7 +407,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
       seasonOperatingIncome: 0,
       seasonSpending: 0,
     },
-    latestNews: [],
+    latestNews: afterPromRel.latestNews ?? [],
     leagueTransfers: [],
     playerDevelopment: afterReserveContracts.playerDevelopment,
     lastSeasonDevelopmentReview: undefined,

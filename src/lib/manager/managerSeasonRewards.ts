@@ -7,6 +7,10 @@ import type { ManagerCareer, ManagerSeasonSummary } from "./types";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { didMeetManagerBoardExpectation } from "./club-config";
 import { getCareerExpectationTier } from "./managerDifficulty";
+import {
+  getUserCompetitionId,
+  isUserInChampionship,
+} from "./leagueMembership";
 
 export function getManagerSeasonRewardRunId(career: ManagerCareer): string {
   return `manager-${career.id}-s${career.seasonYear}`;
@@ -22,6 +26,7 @@ export function computeManagerSeasonRewardLines(
     getUserLeaguePosition(career.leagueTable, career.club);
   const wins = summary?.wins ?? career.wins;
   const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
+  const inChamp = isUserInChampionship(career);
 
   lines.push({
     id: "mgr-season-complete",
@@ -37,20 +42,49 @@ export function computeManagerSeasonRewardLines(
     });
   }
 
-  if (position <= 6) {
-    lines.push({
-      id: "mgr-top-six",
-      label: "Top 6 Finish",
-      amount: 500_000,
-    });
-  }
+  if (inChamp) {
+    if (position <= 4) {
+      lines.push({
+        id: "mgr-champ-top-four",
+        label: "Championship Top 4",
+        amount: 350_000,
+      });
+    }
+    if (position <= 2) {
+      lines.push({
+        id: "mgr-promotion",
+        label: "Promotion to Super League",
+        amount: 750_000,
+      });
+    }
+    if (position === 1) {
+      lines.push({
+        id: "mgr-champ-champions",
+        label: "Championship Champions",
+        amount: 1_250_000,
+      });
+      lines.push({
+        id: "mgr-league-leaders",
+        label: "League Leaders",
+        amount: 500_000,
+      });
+    }
+  } else {
+    if (position <= 6) {
+      lines.push({
+        id: "mgr-top-six",
+        label: "Top 6 Finish",
+        amount: 500_000,
+      });
+    }
 
-  if (position === 1 && !summary?.playoffFinish) {
-    lines.push({
-      id: "mgr-league-leaders",
-      label: "League Leaders",
-      amount: 1_250_000,
-    });
+    if (position === 1 && !summary?.playoffFinish) {
+      lines.push({
+        id: "mgr-league-leaders",
+        label: "League Leaders",
+        amount: 1_250_000,
+      });
+    }
   }
 
   const playoffFinish =
@@ -111,7 +145,8 @@ export function computeManagerSeasonRewardLines(
   const objectiveMet = didMeetManagerBoardExpectation(
     getCareerExpectationTier(career),
     position,
-    playoffFinish
+    playoffFinish,
+    getUserCompetitionId(career)
   );
 
   if (objectiveMet) {

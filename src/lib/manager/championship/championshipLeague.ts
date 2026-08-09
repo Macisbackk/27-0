@@ -3,6 +3,7 @@ import {
   CHAMPIONSHIP_CLUBS,
   CHAMPIONSHIP_CLUB_NAMES,
   getChampionshipClubByName,
+  type ChampionshipClub,
 } from "../../clubs/championship-clubs";
 import { decomposeRLScore, pickScorePairAllowingDraw } from "../../game/rl-scores";
 import type { ManagerLeagueRow, ManagerRoundMatch } from "../types";
@@ -55,13 +56,48 @@ function shuffle<T>(items: T[], rng: () => number): T[] {
   return arr;
 }
 
+function resolveChampionshipClubList(
+  clubNames?: readonly string[]
+): ChampionshipClub[] {
+  if (!clubNames?.length) return [...CHAMPIONSHIP_CLUBS];
+  const resolved: ChampionshipClub[] = [];
+  for (const name of clubNames) {
+    const known = getChampionshipClubByName(name);
+    if (known) {
+      resolved.push(known);
+      continue;
+    }
+    // Relegated Super League clubs may not be in the static Champ registry.
+    const slug = name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    resolved.push({
+      id: slug || `club-${resolved.length}`,
+      name,
+      shortName: name.slice(0, 3).toUpperCase(),
+      abbreviation: name.slice(0, 3).toUpperCase(),
+      country: "England",
+      competitionTier2026: "championship",
+      primaryColor: "#334155",
+      secondaryColor: "#94a3b8",
+      challengeCupEligible: true,
+      managerSelectable: true,
+      generatedSquad: false,
+      baseStrength: 68,
+    });
+  }
+  return resolved;
+}
+
 /** Circle method single round-robin for 20 clubs → 19 rounds × 10 fixtures. */
 export function generateChampionshipSchedule(
   seed: string,
-  seasonYear: number
+  seasonYear: number,
+  clubNames?: readonly string[]
 ): ChampionshipFixture[] {
   const rng = seedrandom(`${seed}-champ-schedule-${seasonYear}`);
-  const clubs = shuffle([...CHAMPIONSHIP_CLUBS], rng);
+  const clubs = shuffle(resolveChampionshipClubList(clubNames), rng);
   const n = clubs.length;
   if (n % 2 !== 0) {
     throw new Error("Championship requires an even number of clubs");
@@ -99,8 +135,18 @@ export function generateChampionshipSchedule(
 
 export function buildChampionshipTable(
   fixtures: ChampionshipFixture[],
-  userClub?: string
+  userClub?: string,
+  clubNames?: readonly string[]
 ): ManagerLeagueRow[] {
+  const names =
+    clubNames && clubNames.length > 0
+      ? [...clubNames]
+      : [...CHAMPIONSHIP_CLUB_NAMES];
+  for (const f of fixtures) {
+    if (!names.includes(f.homeTeam)) names.push(f.homeTeam);
+    if (!names.includes(f.awayTeam)) names.push(f.awayTeam);
+  }
+
   const acc = new Map<
     string,
     {
@@ -113,7 +159,7 @@ export function buildChampionshipTable(
     }
   >();
 
-  for (const name of CHAMPIONSHIP_CLUB_NAMES) {
+  for (const name of names) {
     acc.set(name, {
       played: 0,
       wins: 0,
@@ -147,7 +193,7 @@ export function buildChampionshipTable(
     }
   }
 
-  const rows: ManagerLeagueRow[] = CHAMPIONSHIP_CLUB_NAMES.map((team) => {
+  const rows: ManagerLeagueRow[] = names.map((team) => {
     const s = acc.get(team)!;
     return {
       team,
@@ -222,9 +268,11 @@ export function simulateChampionshipFixtureScores(
 export function createChampionshipCompetition(
   seed: string,
   seasonYear: number,
-  options?: { startRound?: number }
+  options?: { startRound?: number; clubNames?: readonly string[] }
 ): ChampionshipCompetitionState {
-  const fixtures = generateChampionshipSchedule(seed, seasonYear);
+  const clubList = resolveChampionshipClubList(options?.clubNames);
+  const clubNames = clubList.map((c) => c.name);
+  const fixtures = generateChampionshipSchedule(seed, seasonYear, clubNames);
   const startRound = options?.startRound ?? 0;
   // Mark prior rounds as already processed (migration mid-season) without scores
   // Actual scores for aligned rounds are simulated once during weekly advance.
@@ -233,9 +281,9 @@ export function createChampionshipCompetition(
     name: "Championship",
     shortName: "Champ",
     version: CHAMPIONSHIP_COMPETITION_VERSION,
-    clubIds: CHAMPIONSHIP_CLUBS.map((c) => c.id),
+    clubIds: clubList.map((c) => c.id),
     fixtures,
-    standings: buildChampionshipTable(fixtures),
+    standings: buildChampionshipTable(fixtures, undefined, clubNames),
     currentRound: Math.max(0, startRound),
     completed: false,
     lastProcessedRound: Math.max(0, startRound),
@@ -288,7 +336,10 @@ export function advanceChampionshipToGameWeek(
     }
   }
 
-  const standings = buildChampionshipTable(fixtures);
+  const clubNames = [
+    ...new Set(fixtures.flatMap((f) => [f.homeTeam, f.awayTeam])),
+  ];
+  const standings = buildChampionshipTable(fixtures, undefined, clubNames);
   const completed = fixtures.every((f) => f.played);
   return {
     ...state,
@@ -297,6 +348,53 @@ export function advanceChampionshipToGameWeek(
     currentRound: targetRound,
     lastProcessedRound: targetRound,
     completed,
+  };
+}
+
+/** Record a played result onto the matching Championship fixture (by round + teams). */
+export function markChampionshipUserFixtureResult(
+  state: ChampionshipCompetitionState,
+  round: number,
+  homeTeam: string,
+  awayTeam: string,
+  homeScore: number,
+  awayScore: number,
+  homeTries?: number,
+  awayTries?: number,
+  userClub?: string
+): ChampionshipCompetitionState {
+  const fixtures = state.fixtures.map((f) => {
+    if (f.round !== round) return f;
+    const sameWay = f.homeTeam === homeTeam && f.awayTeam === awayTeam;
+    const swapped = f.homeTeam === awayTeam && f.awayTeam === homeTeam;
+    if (!sameWay && !swapped) return f;
+    if (sameWay) {
+      return {
+        ...f,
+        played: true,
+        homeScore,
+        awayScore,
+        homeTries,
+        awayTries,
+      };
+    }
+    return {
+      ...f,
+      played: true,
+      homeScore: awayScore,
+      awayScore: homeScore,
+      homeTries: awayTries,
+      awayTries: homeTries,
+    };
+  });
+
+  const clubNames = [
+    ...new Set(fixtures.flatMap((f) => [f.homeTeam, f.awayTeam])),
+  ];
+  return {
+    ...state,
+    fixtures,
+    standings: buildChampionshipTable(fixtures, userClub, clubNames),
   };
 }
 

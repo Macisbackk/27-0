@@ -10,6 +10,7 @@ export type LeaderboardTrackerType =
   | "era_league_title"
   | "era_league_champions"
   | "total_winnings"
+  | "daily_streak"
   | "manager_challenge_cups"
   | "manager_cup_finals"
   | "manager_league_titles"
@@ -119,6 +120,7 @@ export const LEADERBOARD_TRACKERS: {
   shortLabel: string;
   cupOnly?: boolean;
   clubFundsOnly?: boolean;
+  dailyOnly?: boolean;
   trophyCabinetOnly?: boolean;
   managerSuperLeagueOnly?: boolean;
   managerChallengeCupOnly?: boolean;
@@ -172,6 +174,12 @@ export const LEADERBOARD_TRACKERS: {
     clubFundsOnly: true,
   },
   {
+    id: "daily_streak",
+    label: "Best Daily Streak",
+    shortLabel: "Best Streak",
+    dailyOnly: true,
+  },
+  {
     id: "manager_league_titles",
     label: "League Titles Won",
     shortLabel: "League Titles",
@@ -204,9 +212,13 @@ export function getTrackersForDbMode(
     | "fantasy"
     | "club-funds"
     | "trophy-cabinet"
+    | "daily"
 ) {
   if (dbMode === "club-funds") {
     return LEADERBOARD_TRACKERS.filter((t) => t.clubFundsOnly);
+  }
+  if (dbMode === "daily") {
+    return LEADERBOARD_TRACKERS.filter((t) => t.dailyOnly);
   }
   if (dbMode === "trophy-cabinet") {
     const order = TROPHY_CABINET_SECTIONS.flatMap((section) => section.trackerIds);
@@ -218,6 +230,7 @@ export function getTrackersForDbMode(
     (t) =>
       !t.cupOnly &&
       !t.clubFundsOnly &&
+      !t.dailyOnly &&
       !t.trophyCabinetOnly &&
       !t.managerSuperLeagueOnly &&
       !t.managerChallengeCupOnly &&
@@ -232,6 +245,7 @@ export function getDefaultTrackerForDbMode(
     | "fantasy"
     | "club-funds"
     | "trophy-cabinet"
+    | "daily"
 ): LeaderboardTrackerType {
   return getTrackersForDbMode(dbMode)[0]?.id ?? "best_record";
 }
@@ -244,6 +258,7 @@ export function isTrackerValidForDbMode(
     | "fantasy"
     | "club-funds"
     | "trophy-cabinet"
+    | "daily"
 ): boolean {
   return getTrackersForDbMode(dbMode).some((t) => t.id === tracker);
 }
@@ -337,6 +352,7 @@ export function rankByTracker(
         return (b.superLeagueTitles ?? 0) - (a.superLeagueTitles ?? 0);
       case "total_winnings":
       case "manager_total_earnings":
+      case "daily_streak":
         return 0;
       default:
         return 0;

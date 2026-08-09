@@ -47,8 +47,8 @@ assert(
   "All Challenge Cup eligible"
 );
 assert(
-  CHAMPIONSHIP_CLUBS.every((c) => c.managerSelectable === false),
-  "Not manager-selectable"
+  CHAMPIONSHIP_CLUBS.every((c) => c.managerSelectable === true),
+  "Championship clubs are manager-selectable"
 );
 assert(
   !CHAMPIONSHIP_CLUBS.some((c) => /featherstone/i.test(c.name)),

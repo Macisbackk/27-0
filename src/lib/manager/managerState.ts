@@ -13,13 +13,19 @@ import {
   ensureLeagueClubRosters,
   initLeagueClubRosters,
 } from "./managerLeagueRosters";
-import { getManagerClubConfig, expectationTierFromStars, MANAGER_EXPECTATION_LABELS } from "./club-config";
+import { buildManagerSchedule, buildLeagueTableFromMatches, getManagerLeagueTable, syncManagerLeagueTable, reconcileRoundMatches, buildManagerScheduleFromChampionship } from "./managerFixtures";
+import {
+  getManagerClubConfig,
+  expectationTierFromStars,
+  MANAGER_EXPECTATION_LABELS,
+  CHAMPIONSHIP_EXPECTATION_LABELS,
+  buildDefaultLineupFromPlayers,
+} from "./club-config";
 import {
   getManagerLineupForClub,
   getManagerRosterIds,
 } from "./managerRating";
 import { createInitialPlayerState } from "./managerSquad";
-import { buildManagerSchedule, buildLeagueTableFromMatches, getManagerLeagueTable, syncManagerLeagueTable, reconcileRoundMatches } from "./managerFixtures";
 import {
   buildContractsForSquad,
   computeWageBill,
@@ -38,6 +44,20 @@ import { createManagerChallengeCup, reconcileChallengeCupFromFixtures } from "./
 import { generateReserveSquad, initLeagueClubReserveCounts, reconcileLeagueClubReserveCounts, ensureAllClubReserveDepth, dedupeSquadAndReserves } from "./managerReserves";
 import { sanitizeWorldClubChallengeState, ensureWorldClubChallengeScheduled } from "./worldClubChallenge";
 import { ensureChampionshipSystems } from "./championship/ensureChampionship";
+import {
+  ensureLeagueMembership,
+  isUserInChampionship,
+  defaultSuperLeagueClubs,
+  defaultChampionshipClubs,
+} from "./leagueMembership";
+import {
+  generateChampionshipSquads,
+  championshipPlayerToPlayer,
+} from "./championship/championshipSquads";
+import {
+  createChampionshipCompetition,
+} from "./championship/championshipLeague";
+import { getChampionshipClubByName } from "../clubs/championship-clubs";
 import { migrateSquadRoles } from "./migrateSquadRoles";
 import { migrateReserveGeneratorV5 } from "./migrateReserveGeneratorV5";
 import {
@@ -182,70 +202,79 @@ function hydrateLegacyContracts(
 }
 
 export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
-  const gameWeek = raw.gameWeek ?? raw.currentRound ?? 0;
-  const startingIds = new Set(raw.matchdayXiii ?? []);
+  const withMembership = ensureLeagueMembership(raw);
+  const gameWeek = withMembership.gameWeek ?? withMembership.currentRound ?? 0;
+  const startingIds = new Set(withMembership.matchdayXiii ?? []);
 
-  let contracts = raw.contracts ?? {};
-  if (Object.keys(contracts).length === 0 && raw.squad?.length) {
+  let contracts = withMembership.contracts ?? {};
+  if (Object.keys(contracts).length === 0 && withMembership.squad?.length) {
     contracts = buildContractsForSquad(
-      raw.squad.map((p) => p.playerId),
+      withMembership.squad.map((p) => p.playerId),
       startingIds,
-      raw.club
+      withMembership.club
     );
   }
   contracts = hydrateLegacyContracts(contracts);
 
   const wageBill =
-    raw.wageBill ??
+    withMembership.wageBill ??
     computeCareerWageBill({
-      ...raw,
+      ...withMembership,
       contracts,
-      reserveContracts: raw.reserveContracts,
+      reserveContracts: withMembership.reserveContracts,
     } as ManagerCareer);
   const wageBudget = resolveWageBudgetForCareer({
-    ...raw,
+    ...withMembership,
     contracts,
     wageBill,
-    reserveContracts: raw.reserveContracts,
+    reserveContracts: withMembership.reserveContracts,
   } as ManagerCareer);
 
-  let challengeCup = raw.challengeCup as ChallengeCupBracketState | undefined;
+  let challengeCup = withMembership.challengeCup as ChallengeCupBracketState | undefined;
   const cupSeeding = {
-    previousSeasonLeagueTable: raw.previousSeasonLeagueTable ?? null,
+    previousSeasonLeagueTable: withMembership.previousSeasonLeagueTable ?? null,
     previousSeasonChampionshipTable:
-      raw.previousSeasonChampionshipTable ?? null,
+      withMembership.previousSeasonChampionshipTable ?? null,
   };
   if (!challengeCup?.matches?.length) {
-    const cupPlayed = (raw.fixtures ?? []).some(
+    const cupPlayed = (withMembership.fixtures ?? []).some(
       (f) => f.competition === "challenge_cup"
     );
     const isNewCareer =
-      (raw.fixtures?.length ?? 0) === 0 && (raw.gameWeek ?? 0) === 0;
-    if (!cupPlayed && (isNewCareer || !raw.challengeCup)) {
+      (withMembership.fixtures?.length ?? 0) === 0 &&
+      (withMembership.gameWeek ?? 0) === 0;
+    if (!cupPlayed && (isNewCareer || !withMembership.challengeCup)) {
       challengeCup = createManagerChallengeCup(
-        raw.seed ?? "migrate",
-        raw.club,
+        withMembership.seed ?? "migrate",
+        withMembership.club,
         cupSeeding
       );
     }
   }
   if (!challengeCup) {
     challengeCup = createManagerChallengeCup(
-      raw.seed ?? "migrate",
-      raw.club,
+      withMembership.seed ?? "migrate",
+      withMembership.club,
       cupSeeding
     );
   }
 
-  const clubFacilities = ensureClubFacilities(raw.clubFacilities);
-  const attendanceData = raw.attendanceData
-    ? syncClubAttendanceData(raw.club, raw.attendanceData, clubFacilities)
+  const clubFacilities = ensureClubFacilities(withMembership.clubFacilities);
+  const attendanceData = withMembership.attendanceData
+    ? syncClubAttendanceData(
+        withMembership.club,
+        withMembership.attendanceData,
+        clubFacilities
+      )
     : {
-        ...createClubAttendanceData(raw.club),
-        stadiumCapacity: getEffectiveStadiumCapacity(raw.club, clubFacilities),
+        ...createClubAttendanceData(withMembership.club),
+        stadiumCapacity: getEffectiveStadiumCapacity(
+          withMembership.club,
+          clubFacilities
+        ),
       };
 
-  const schedule = (raw.schedule ?? []).map((s) => ({
+  const schedule = (withMembership.schedule ?? []).map((s) => ({
     ...s,
     id: s.id ?? `legacy-r${s.round}`,
     competition: s.competition ?? ("league" as const),
@@ -253,53 +282,66 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   }));
 
   const leagueTable = getManagerLeagueTable({
-    ...raw,
-    roundMatches: raw.roundMatches ?? [],
-    leagueTable: raw.leagueTable ?? [],
-    fixtures: raw.fixtures ?? [],
+    ...withMembership,
+    roundMatches: withMembership.roundMatches ?? [],
+    leagueTable: withMembership.leagueTable ?? [],
+    fixtures: withMembership.fixtures ?? [],
   } as ManagerCareer).map((row) => ({
     ...row,
-    isUserTeam: row.isUserTeam ?? row.team === raw.club,
+    isUserTeam: row.isUserTeam ?? row.team === withMembership.club,
   }));
 
   let career: ManagerCareer = {
-    ...raw,
-    difficulty: raw.difficulty ?? getManagerClubConfig(raw.club).difficulty,
-    prestigeMomentum: raw.prestigeMomentum ?? 0,
+    ...withMembership,
+    difficulty:
+      withMembership.difficulty ??
+      getManagerClubConfig(withMembership.club).difficulty,
+    prestigeMomentum: withMembership.prestigeMomentum ?? 0,
     clubStarRiseCelebratedAt:
-      raw.clubStarRiseCelebratedAt ??
-      raw.difficulty ??
-      getManagerClubConfig(raw.club).difficulty,
+      withMembership.clubStarRiseCelebratedAt ??
+      withMembership.difficulty ??
+      getManagerClubConfig(withMembership.club).difficulty,
     gameWeek,
     leagueTable,
-    currentFixtureIndex: raw.currentFixtureIndex ?? raw.currentRound ?? 0,
-    teamSeasonStats: raw.teamSeasonStats ?? { ...EMPTY_TEAM_SEASON_STATS },
-    playerSeasonStats: raw.playerSeasonStats ?? {},
-    recentForm: raw.recentForm ?? raw.fixtures?.map((f) => f.result) ?? [],
-    tactics: raw.tactics
+    currentFixtureIndex:
+      withMembership.currentFixtureIndex ?? withMembership.currentRound ?? 0,
+    teamSeasonStats:
+      withMembership.teamSeasonStats ?? { ...EMPTY_TEAM_SEASON_STATS },
+    playerSeasonStats: withMembership.playerSeasonStats ?? {},
+    recentForm:
+      withMembership.recentForm ??
+      withMembership.fixtures?.map((f) => f.result) ??
+      [],
+    tactics: withMembership.tactics
       ? {
-          playingStyle: raw.tactics.playingStyle ?? DEFAULT_TACTICS.playingStyle,
-          attackFocus: raw.tactics.attackFocus ?? DEFAULT_TACTICS.attackFocus,
-          defenceFocus: raw.tactics.defenceFocus ?? DEFAULT_TACTICS.defenceFocus,
+          playingStyle:
+            withMembership.tactics.playingStyle ?? DEFAULT_TACTICS.playingStyle,
+          attackFocus:
+            withMembership.tactics.attackFocus ?? DEFAULT_TACTICS.attackFocus,
+          defenceFocus:
+            withMembership.tactics.defenceFocus ?? DEFAULT_TACTICS.defenceFocus,
         }
       : { ...DEFAULT_TACTICS },
+    matchPlayerRoles: withMembership.matchPlayerRoles ?? {},
+    nextMatchGameplan: withMembership.nextMatchGameplan ?? null,
+    activeLoans: withMembership.activeLoans ?? [],
     contracts,
     wageBudget,
     wageBill,
     attendanceData,
     clubFacilities,
-    gateIncomeHistory: (raw.gateIncomeHistory ?? []).map((r) =>
+    gateIncomeHistory: (withMembership.gateIncomeHistory ?? []).map((r) =>
       hydrateGateIncomeRecord(r)
     ),
     challengeCup,
-    seasonAttendance: raw.seasonAttendance ?? {
+    seasonAttendance: withMembership.seasonAttendance ?? {
       total: 0,
       count: 0,
       high: 0,
       low: 0,
     },
     schedule,
-    squad: (raw.squad ?? []).map((p) => ({
+    squad: (withMembership.squad ?? []).map((p) => ({
       playerId: p.playerId,
       form: p.form ?? 50,
       injury: p.injury ?? null,
@@ -307,71 +349,91 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
       seasonTries: p.seasonTries ?? 0,
     })),
     reserves:
-      raw.reserves?.length
-        ? raw.reserves.map((r) => ({
+      withMembership.reserves?.length
+        ? withMembership.reserves.map((r) => ({
             ...r,
             signedRating: r.signedRating ?? r.baseRating ?? r.rating,
             baseRating: r.baseRating ?? r.rating,
-            signedSeasonYear: r.signedSeasonYear ?? raw.seasonYear,
+            signedSeasonYear:
+              r.signedSeasonYear ?? withMembership.seasonYear,
             yearsAtClub:
               r.yearsAtClub ??
-              Math.max(0, (raw.seasonYear ?? 0) - (r.signedSeasonYear ?? raw.seasonYear ?? 0)),
+              Math.max(
+                0,
+                (withMembership.seasonYear ?? 0) -
+                  (r.signedSeasonYear ?? withMembership.seasonYear ?? 0)
+              ),
           }))
-        : generateReserveSquad(raw.seed ?? "migrate", 24, raw.club),
+        : generateReserveSquad(
+            withMembership.seed ?? "migrate",
+            24,
+            withMembership.club
+          ),
     reserveContracts:
-      raw.reserveContracts ??
+      withMembership.reserveContracts ??
       buildReserveContractsForReserves(
-        raw.reserves?.length
-          ? raw.reserves
-          : generateReserveSquad(raw.seed ?? "migrate", 24, raw.club)
+        withMembership.reserves?.length
+          ? withMembership.reserves
+          : generateReserveSquad(
+              withMembership.seed ?? "migrate",
+              24,
+              withMembership.club
+            )
       ),
-    youthProspects: raw.youthProspects ?? [],
-    reserveResults: raw.reserveResults ?? [],
-    lastReserveResult: raw.lastReserveResult ?? null,
-    calledUpReserveIds: raw.calledUpReserveIds ?? [],
-    playerRegistry: raw.playerRegistry ?? {},
-    hubResultsExpanded: raw.hubResultsExpanded ?? false,
+    youthProspects: withMembership.youthProspects ?? [],
+    reserveResults: withMembership.reserveResults ?? [],
+    lastReserveResult: withMembership.lastReserveResult ?? null,
+    calledUpReserveIds: withMembership.calledUpReserveIds ?? [],
+    playerRegistry: withMembership.playerRegistry ?? {},
+    hubResultsExpanded: withMembership.hubResultsExpanded ?? false,
     leagueListedPlayers:
-      raw.leagueListedPlayers ??
+      withMembership.leagueListedPlayers ??
       generateLeagueListedPlayers(
-        raw,
-        raw.seed ?? "migrate",
-        raw.gameWeek ?? 0
+        withMembership,
+        withMembership.seed ?? "migrate",
+        withMembership.gameWeek ?? 0
       ),
-    playerTransferStatus: raw.playerTransferStatus ?? {},
-    inboxMessages: raw.inboxMessages ?? [],
-    clubFunds: raw.clubFunds ?? initClubTransferBudgets(raw.club, raw.seed ?? "migrate"),
+    playerTransferStatus: withMembership.playerTransferStatus ?? {},
+    inboxMessages: withMembership.inboxMessages ?? [],
+    clubFunds:
+      withMembership.clubFunds ??
+      initClubTransferBudgets(
+        withMembership.club,
+        withMembership.seed ?? "migrate"
+      ),
     transferMarket:
-      raw.transferMarket ??
-      (raw.leagueListedPlayers ?? []).map((l) => l.playerId),
-    preSeason: initPreSeasonState(raw),
-    managerFinance: initManagerFinance(raw),
-    latestNews: raw.latestNews ?? [],
-    leagueTransfers: raw.leagueTransfers ?? [],
-    freeAgents: raw.freeAgents ?? [],
-    wagePressureWeeks: raw.wagePressureWeeks ?? 0,
-    lastReserveReportWeek: raw.lastReserveReportWeek,
-    leagueClubStates: ensureLeagueClubStates(raw.leagueClubStates),
-    leagueClubStatesWeek: raw.leagueClubStatesWeek ?? 0,
-    leagueClubRosters: raw.leagueClubRosters,
-    leagueClubReserveCounts: raw.leagueClubReserveCounts,
-    leagueClubReserves: raw.leagueClubReserves,
-    reserveToChampionshipCooldowns: raw.reserveToChampionshipCooldowns ?? {},
-    transferTargetCooldowns: raw.transferTargetCooldowns ?? {},
-    transferTargetClubCooldowns: raw.transferTargetClubCooldowns ?? {},
+      withMembership.transferMarket ??
+      (withMembership.leagueListedPlayers ?? []).map((l) => l.playerId),
+    preSeason: initPreSeasonState(withMembership),
+    managerFinance: initManagerFinance(withMembership),
+    latestNews: withMembership.latestNews ?? [],
+    leagueTransfers: withMembership.leagueTransfers ?? [],
+    freeAgents: withMembership.freeAgents ?? [],
+    wagePressureWeeks: withMembership.wagePressureWeeks ?? 0,
+    lastReserveReportWeek: withMembership.lastReserveReportWeek,
+    leagueClubStates: ensureLeagueClubStates(withMembership.leagueClubStates),
+    leagueClubStatesWeek: withMembership.leagueClubStatesWeek ?? 0,
+    leagueClubRosters: withMembership.leagueClubRosters,
+    leagueClubReserveCounts: withMembership.leagueClubReserveCounts,
+    leagueClubReserves: withMembership.leagueClubReserves,
+    reserveToChampionshipCooldowns:
+      withMembership.reserveToChampionshipCooldowns ?? {},
+    transferTargetCooldowns: withMembership.transferTargetCooldowns ?? {},
+    transferTargetClubCooldowns:
+      withMembership.transferTargetClubCooldowns ?? {},
     reserveToChampionshipClubCooldowns:
-      raw.reserveToChampionshipClubCooldowns ?? {},
+      withMembership.reserveToChampionshipClubCooldowns ?? {},
     reserveToChampionshipClubRequestCounts:
-      raw.reserveToChampionshipClubRequestCounts ?? {},
+      withMembership.reserveToChampionshipClubRequestCounts ?? {},
     championshipReserveSigningsThisSeason:
-      raw.championshipReserveSigningsThisSeason ?? 0,
-    playerDevelopment: raw.playerDevelopment ?? {},
-    playerLearnedPositions: raw.playerLearnedPositions ?? {},
-    playerPositionRetraining: raw.playerPositionRetraining ?? {},
-    lastSeasonDevelopmentReview: raw.lastSeasonDevelopmentReview,
-    clubCareerTotals: raw.clubCareerTotals ?? {},
-    retiredPlayers: raw.retiredPlayers ?? [],
-    managerSettings: hydrateManagerSettings(raw.managerSettings),
+      withMembership.championshipReserveSigningsThisSeason ?? 0,
+    playerDevelopment: withMembership.playerDevelopment ?? {},
+    playerLearnedPositions: withMembership.playerLearnedPositions ?? {},
+    playerPositionRetraining: withMembership.playerPositionRetraining ?? {},
+    lastSeasonDevelopmentReview: withMembership.lastSeasonDevelopmentReview,
+    clubCareerTotals: withMembership.clubCareerTotals ?? {},
+    retiredPlayers: withMembership.retiredPlayers ?? [],
+    managerSettings: hydrateManagerSettings(withMembership.managerSettings),
     playerShowcaseVersion: PLAYER_SHOWCASE_VERSION,
     historicAgeDataVersion: HISTORIC_AGE_DATA_VERSION,
     simplifiedPlayerSystemsVersion: SIMPLIFIED_PLAYER_SYSTEMS_VERSION,
@@ -392,8 +454,10 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = ensureFriendlyChoices(career);
   career = ensureCupBracketReady(career);
   career = syncManagerLeagueTable(career);
-  career = ensurePlayoffsReady(career);
-  career = syncPlayoffsIntroAcknowledged(career);
+  if (!isUserInChampionship(career)) {
+    career = ensurePlayoffsReady(career);
+    career = syncPlayoffsIntroAcknowledged(career);
+  }
   career = {
     ...career,
     isSeasonComplete: isManagerSeasonComplete(career),
@@ -532,16 +596,60 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
   setActiveSaveSlot(targetSlot);
   const config = getManagerClubConfig(club);
   const seed = `mgr-${club}-${Date.now()}`;
-  const rosterIds = getManagerRosterIds(club);
-  const lineup = getManagerLineupForClub(club);
+  const isChampCareer = config.competition === "championship";
+  const seasonYear = new Date().getFullYear();
+
+  let rosterIds: string[];
+  let lineup: {
+    xiiiIds: string[];
+    slotPositions: import("../types").Position[];
+    benchIds: string[];
+  };
+  let playerRegistry: ManagerCareer["playerRegistry"] = {};
+  let championshipSquads: ManagerCareer["championshipSquads"];
+  let championshipCompetition: ManagerCareer["championshipCompetition"];
+  let schedule: ReturnType<typeof buildManagerSchedule>;
+
+  if (isChampCareer) {
+    championshipSquads = generateChampionshipSquads(seed, seasonYear);
+    const champClub = getChampionshipClubByName(club);
+    if (!champClub) {
+      throw new Error(`Championship club not found: ${club}`);
+    }
+    rosterIds = [...(championshipSquads.rosterByClub[champClub.id] ?? [])];
+    const converted = rosterIds
+      .map((id) => championshipSquads!.players[id])
+      .filter((p): p is NonNullable<typeof p> => Boolean(p))
+      .map(championshipPlayerToPlayer);
+    playerRegistry = Object.fromEntries(converted.map((p) => [p.id, p]));
+    const built = buildDefaultLineupFromPlayers(rosterIds, converted);
+    if (!built) {
+      throw new Error(`Could not build Championship lineup for ${club}`);
+    }
+    lineup = built;
+    championshipCompetition = createChampionshipCompetition(seed, seasonYear, {
+      clubNames: defaultChampionshipClubs(),
+    });
+    schedule = buildManagerScheduleFromChampionship(
+      club,
+      championshipCompetition,
+      seed
+    );
+  } else {
+    rosterIds = getManagerRosterIds(club);
+    lineup = getManagerLineupForClub(club);
+    schedule = buildManagerSchedule(club, seed);
+  }
+
   const squad = rosterIds.map((id) => createInitialPlayerState(id));
   const startingIds = new Set(lineup.xiiiIds);
   const contracts = buildContractsForSquad(rosterIds, startingIds, club);
 
-  const schedule = buildManagerSchedule(club, seed);
-  const squadIdSet = new Set(squad.map((p) => p.playerId));
-
-  const transferBudget = computeFirstSeasonTransferBudget(club, seed);
+  const transferBudget = computeFirstSeasonTransferBudget(
+    club,
+    seed,
+    config.difficulty
+  );
 
   const reserves = generateReserveSquad(seed, 24, club);
   const reserveContracts = buildReserveContractsForReserves(reserves);
@@ -549,7 +657,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     contracts,
     reserveContracts,
   } as ManagerCareer);
-  const initialWageBudget = getWageBudgetForClub(club);
+  const initialWageBudget = getWageBudgetForClub(club, config.difficulty);
 
   const clubFacilities = createDefaultClubFacilities();
   const attendanceData = {
@@ -557,20 +665,35 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     stadiumCapacity: getEffectiveStadiumCapacity(club, clubFacilities),
   };
 
+  const boardExpectation = isChampCareer
+    ? CHAMPIONSHIP_EXPECTATION_LABELS[
+        expectationTierFromStars(config.difficulty)
+      ]
+    : MANAGER_EXPECTATION_LABELS[expectationTierFromStars(config.difficulty)];
+
+  const leagueClubs = isChampCareer
+    ? defaultChampionshipClubs()
+    : defaultSuperLeagueClubs();
+
   const career: ManagerCareer = {
     id: seed,
     club,
-    seasonYear: new Date().getFullYear(),
+    userCompetitionId: isChampCareer ? "championship" : "super-league",
+    superLeagueClubNames: defaultSuperLeagueClubs(),
+    championshipClubNames: defaultChampionshipClubs(),
+    seasonYear,
     seed,
     budget: transferBudget,
     clubFundsEarned: 0,
     boardConfidence: 65,
-    boardExpectation:
-      MANAGER_EXPECTATION_LABELS[expectationTierFromStars(config.difficulty)],
+    boardExpectation,
     difficulty: config.difficulty,
     prestigeMomentum: 0,
     clubStarRiseCelebratedAt: config.difficulty,
     tactics: { ...DEFAULT_TACTICS },
+    matchPlayerRoles: {},
+    nextMatchGameplan: null,
+    activeLoans: [],
     squad,
     contracts,
     wageBudget: initialWageBudget,
@@ -591,7 +714,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     matchWeekPhase: "ready_to_play",
     pendingMatchWeekId: null,
     lastProcessedMatchWeekId: null,
-    leagueTable: buildLeagueTableFromMatches([], club),
+    leagueTable: buildLeagueTableFromMatches([], club, leagueClubs),
     transferMarket: [],
     transferWatchlistIds: [],
     leagueListedPlayers: [],
@@ -632,12 +755,19 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     reserveResults: [],
     lastReserveResult: null,
     calledUpReserveIds: [],
-    playerRegistry: {},
+    playerRegistry,
+    championshipSquads,
+    championshipCompetition,
+    championshipCompetitionVersion: championshipCompetition?.version,
+    generatedChampionshipSquadsVersion: championshipSquads?.version,
     hubResultsExpanded: false,
     objectivesIntroShown: false,
     leagueClubStates: initLeagueClubStates(),
     leagueClubStatesWeek: 0,
-    leagueClubRosters: initLeagueClubRosters(club),
+    // Parallel SL AI world even when the user starts in the Championship.
+    leagueClubRosters: initLeagueClubRosters(
+      isChampCareer ? "__championship_user__" : club
+    ),
     leagueClubReserveCounts: initLeagueClubReserveCounts(),
     managerSettings: { ...DEFAULT_MANAGER_SETTINGS },
     managerId: seed,
@@ -648,19 +778,15 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
         id: `hist-${seed}-${club}`,
         clubId: club,
         clubName: club,
-        joinedSeason: new Date().getFullYear(),
+        joinedSeason: seasonYear,
         joinedWeek: 0,
         joinedDate: new Date().toISOString(),
-        boardExpectationAtJoin:
-          MANAGER_EXPECTATION_LABELS[expectationTierFromStars(config.difficulty)],
+        boardExpectationAtJoin: boardExpectation,
       },
     ],
     managerCareerWorldSchemaVersion: 2,
     boostUsage: {},
     boardSackingSchemaVersion: 1,
-    // Freshly generated reserves/players already use the current rating
-    // scales — stamp the latest versions so hydrate's migration passes
-    // don't re-floor them onto the legacy Current 80 floor.
     playerRatingSchemaVersion: PLAYER_RATING_SCHEMA_VERSION,
     reserveRatingScaleVersion: RESERVE_RATING_SCALE_VERSION,
     playerShowcaseVersion: PLAYER_SHOWCASE_VERSION,

@@ -23,6 +23,7 @@ import {
   boardConfidenceTone,
 } from "@/components/manager/manager-ui";
 import { ManagerBoostsPanel } from "@/components/manager/ManagerBoostsPanel";
+import { isUserInChampionship, getUserLeagueClubs, PROMOTE_RELEGATE_COUNT } from "@/lib/manager/leagueMembership";
 
 interface ManagerSeasonReviewProps {
   career: ManagerCareer;
@@ -109,6 +110,20 @@ export function ManagerSeasonReview({
                 : "th"}{" "}
           Place
         </p>
+        {isUserInChampionship(evaluatedCareer) ? (
+          <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-200`}>
+            {summary.position === 1
+              ? "Championship Champions"
+              : summary.position <= PROMOTE_RELEGATE_COUNT
+                ? "Promoted to Super League"
+                : "Championship finish"}
+          </p>
+        ) : summary.position >
+          getUserLeagueClubs(evaluatedCareer).length - PROMOTE_RELEGATE_COUNT ? (
+          <p className={`mt-2 text-center ${TYPO.bodySm} text-red-300`}>
+            Relegation places — Championship next season
+          </p>
+        ) : null}
         <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-300`}>
           {summary.seasonVerdict}
         </p>

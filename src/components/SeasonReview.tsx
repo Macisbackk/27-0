@@ -41,6 +41,12 @@ import { useAuth } from "@/lib/auth-context";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
 import { resolveSquadClubColorOverride } from "@/lib/players/squad-club-accent";
+import type { DailyChallengeScenario } from "@/lib/daily-challenge";
+import {
+  getDailyChallengeDateKey,
+  getDailyChallengeProgress,
+  getDailyChallengeStreak,
+} from "@/lib/daily-challenge";
 
 interface SeasonReviewProps {
   squad: SquadSlot[];
@@ -51,6 +57,8 @@ interface SeasonReviewProps {
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
   normalEraMode?: boolean;
+  dailyChallengeMode?: boolean;
+  dailyScenario?: DailyChallengeScenario | null;
   runRank?: number;
   submittedOnline?: boolean;
   boostedRun?: boolean;
@@ -71,6 +79,8 @@ export function SeasonReview({
   joeMellorMode = false,
   superSamHallasMode = false,
   normalEraMode = false,
+  dailyChallengeMode = false,
+  dailyScenario = null,
   runRank,
   submittedOnline = false,
   boostedRun = false,
@@ -191,8 +201,30 @@ export function SeasonReview({
 
   const hideEndOfRunNav = showPlayoffPrompt;
 
-  const shareCardData = useMemo(
-    () => ({
+  const shareCardData = useMemo(() => {
+    if (dailyChallengeMode && dailyScenario) {
+      const progress = getDailyChallengeProgress();
+      const streak = getDailyChallengeStreak();
+      const detailLines = [
+        `${dailyScenario.eraMode ? "Era" : "Current"} · ${getDailyChallengeDateKey()}`,
+        formatRecordWithPercentage(seasonResult.wins, seasonResult.losses),
+        progress.leagueLeaders ? "League Leaders" : `League position ${leaguePositionLabel}`,
+        progress.playoffTitle ? "Champions" : undefined,
+        streak > 0 ? `Streak ${streak}` : undefined,
+      ].filter((line): line is string => Boolean(line));
+
+      return {
+        title: `Daily · All ${dailyScenario.forceOpponentClub}`,
+        subtitle: dailyScenario.eraMode ? "Era Daily Challenge" : "Daily Challenge",
+        recordLine: formatRecordWithPercentage(
+          seasonResult.wins,
+          seasonResult.losses
+        ),
+        detailLines,
+      };
+    }
+
+    return {
       title: `Grade ${gradeInfo.grade}`,
       subtitle: reviewLabel,
       recordLine: formatRecordWithPercentage(
@@ -204,20 +236,26 @@ export function SeasonReview({
         `Team value ${formatValue(totalValue)}`,
         summaryMessage,
       ].filter(Boolean),
-    }),
-    [
-      gradeInfo.grade,
-      reviewLabel,
-      seasonResult.wins,
-      seasonResult.losses,
-      leaguePositionLabel,
-      totalValue,
-      summaryMessage,
-    ]
-  );
+    };
+  }, [
+    dailyChallengeMode,
+    dailyScenario,
+    gradeInfo.grade,
+    reviewLabel,
+    seasonResult.wins,
+    seasonResult.losses,
+    leaguePositionLabel,
+    totalValue,
+    summaryMessage,
+  ]);
 
   const shareAction = (
-    <ShareSeasonButton data={shareCardData} filename="27-0-quick-season.png" />
+    <ShareSeasonButton
+      data={shareCardData}
+      filename={
+        dailyChallengeMode ? "27-0-daily.png" : "27-0-quick-season.png"
+      }
+    />
   );
 
   useEffect(() => {

@@ -48,6 +48,9 @@ export type ManagerCompetition =
   | "playoffs"
   | "world_club_challenge";
 
+/** Division the manager career is competing in. */
+export type ManagerCompetitionId = "super-league" | "championship";
+
 export type CupRoundKey =
   | "round_one"
   | "round_two"
@@ -87,6 +90,32 @@ export interface ManagerTactics {
   playingStyle: PlayingStyle;
   attackFocus: AttackFocus;
   defenceFocus: DefenceFocus;
+}
+
+export interface ActiveLoan {
+  playerId: string;
+  parentClub: string; // owning club name
+  loaneeClub: string; // club currently using player
+  /** Absolute game week when loan ends (or season-end handled separately) */
+  endsAtSeasonYear: number; // return at advanceToNextSeason for this year
+  parentWageShare: number; // 0-1 portion parent still pays
+  canRecall: boolean;
+  originalContract: PlayerContract;
+  /** Fee paid by loanee club (small) */
+  loanFee: number;
+}
+
+export type MatchPlayerRole =
+  | "default"
+  | "primary_creator"
+  | "crash_ball"
+  | "spread"
+  | "target"
+  | "organizer";
+
+export interface FixtureGameplan {
+  fixtureId: string;
+  tactics: ManagerTactics;
 }
 
 export interface TacticMatchReviewAdvice {
@@ -862,6 +891,12 @@ export interface WorldClubChallengeState {
 export interface ManagerCareer {
   id: string;
   club: string;
+  /** Division the user is competing in this season. */
+  userCompetitionId?: ManagerCompetitionId;
+  /** Super League membership for this save (14 clubs; mutates on prom/rel). */
+  superLeagueClubNames?: string[];
+  /** Championship membership for this save (20 clubs; mutates on prom/rel). */
+  championshipClubNames?: string[];
   seasonYear: number;
   seed: string;
   budget: number;
@@ -873,6 +908,12 @@ export interface ManagerCareer {
   /** Momentum toward the next star change (-1..1 between shifts). */
   prestigeMomentum?: number;
   tactics: ManagerTactics;
+  /** Optional per-player match roles for the matchday XIII. */
+  matchPlayerRoles?: Record<string, MatchPlayerRole>;
+  /** One-match tactics override for the next fixture only. */
+  nextMatchGameplan?: FixtureGameplan | null;
+  /** Active temporary loans (in or out). */
+  activeLoans?: ActiveLoan[];
   squad: ManagerPlayerState[];
   contracts: Record<string, PlayerContract>;
   wageBudget: number;

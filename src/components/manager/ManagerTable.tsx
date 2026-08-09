@@ -7,6 +7,7 @@ import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, ManagerLeagueRow } from "@/lib/manager/types";
 import { getClubIndicatorColor } from "@/lib/clubs";
 import { ensureChampionshipSystems } from "@/lib/manager/championship/ensureChampionship";
+import { getUserCompetitionId } from "@/lib/manager/leagueMembership";
 
 type TableCompetition = "super-league" | "championship";
 
@@ -106,17 +107,21 @@ function LeagueTableGrid({
 }
 
 export function ManagerTable({ career }: ManagerTableProps) {
-  const [competition, setCompetition] =
-    useState<TableCompetition>("super-league");
+  const [competition, setCompetition] = useState<TableCompetition>(() =>
+    getUserCompetitionId(career)
+  );
   const [menuOpen, setMenuOpen] = useState(false);
 
   const withChamp = ensureChampionshipSystems(career);
+  const userComp = getUserCompetitionId(career);
   const title =
     competition === "super-league" ? "Super League" : "Championship";
   const rows =
-    competition === "super-league"
+    competition === userComp
       ? career.leagueTable
-      : withChamp.championshipCompetition?.standings ?? [];
+      : competition === "championship"
+        ? withChamp.championshipCompetition?.standings ?? []
+        : [];
 
   return (
     <ManagerPage>

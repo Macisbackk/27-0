@@ -27,6 +27,14 @@ import {
   getUserLeaguePosition,
   syncManagerLeagueTable,
 } from "./managerFixtures";
+import {
+  getUserLeagueClubs,
+  isUserInChampionship,
+} from "./leagueMembership";
+import {
+  championshipFixturesToRoundMatches,
+  markChampionshipUserFixtureResult,
+} from "./championship/championshipLeague";
 import { getLeagueFixtureSides, isMagicWeekendFixture } from "./managerMagicWeekend";
 import { rollPostMatchInjuries } from "./managerTransfers";
 import { tickPositionRetraining } from "./managerPositionRetraining";
@@ -39,7 +47,9 @@ import {
   buildTacticMatchReviewAdvice,
   countTriesByPositionGroup,
   applyTacticFormAdjustment,
+  getMatchPlayerRolesStrengthBonus,
   getTacticModifiers,
+  resolveEffectiveTactics,
 } from "./managerTacticsScoring";
 import { updateStatsAfterMatch } from "./managerCareerStats";
 import { formDeltaFromMatchRating } from "./managerMatchRating";
@@ -126,6 +136,7 @@ export function getNextManagerFixture(
 export function isManagerSeasonCompleteLite(career: ManagerCareer): boolean {
   const synced = syncManagerLeagueTable(career);
   if (!isLeagueAndCupPhaseComplete(synced)) return false;
+  if (isUserInChampionship(synced)) return true;
   if (!userQualifiedForManagerPlayoffs(synced)) return true;
   if (!synced.playoffsIntroAcknowledged) return false;
   const playoffs = synced.playoffs;
@@ -136,6 +147,7 @@ export function isManagerSeasonCompleteLite(career: ManagerCareer): boolean {
 export function isManagerSeasonComplete(career: ManagerCareer): boolean {
   const synced = syncManagerLeagueTable(career);
   if (!isLeagueAndCupPhaseComplete(synced)) return false;
+  if (isUserInChampionship(synced)) return true;
   const withPlayoffs = ensurePlayoffsReady(synced);
   return isPlayoffsPhaseComplete(withPlayoffs);
 }
@@ -305,13 +317,22 @@ export function applyManagerMatchResult(
     career.xiiiSlotPositions,
     career
   );
-  const mods = getTacticModifiers(career.tactics);
+  const effectiveTactics = resolveEffectiveTactics(career, sched.id);
+  const careerForMatch: ManagerCareer = {
+    ...career,
+    tactics: effectiveTactics,
+  };
+  const mods = getTacticModifiers(effectiveTactics);
+  mods.strengthBonus += getMatchPlayerRolesStrengthBonus(
+    careerForMatch,
+    effectiveTactics
+  );
 
   let savedLiveEvents = options.liveEvents;
 
   if (options.liveEvents?.length) {
     applyLiveEventsToFixtureScoring(
-      career,
+      careerForMatch,
       fixture,
       options.liveEvents,
       sched.id
@@ -365,7 +386,7 @@ export function applyManagerMatchResult(
       };
     });
     applyLiveEventsToFixtureScoring(
-      career,
+      careerForMatch,
       fixture,
       savedLiveEvents,
       sched.id
@@ -380,20 +401,32 @@ export function applyManagerMatchResult(
         /^(try scorer|opposition try scorer|unknown)$/i.test(s.name)
       ) ?? false;
     if (eventTryTotal !== fixture.triesFor || hasPlaceholderScorers) {
-      enrichManagerFixtureScoring(squad, fixture, career.seed, career.tactics, {
-        currentSeasonOnly: true,
-        fixtureKey: sched.id,
-        career,
-      });
+      enrichManagerFixtureScoring(
+        squad,
+        fixture,
+        career.seed,
+        effectiveTactics,
+        {
+          currentSeasonOnly: true,
+          fixtureKey: sched.id,
+          career: careerForMatch,
+        }
+      );
     }
   } else {
-    enrichManagerFixtureScoring(squad, fixture, career.seed, career.tactics, {
-      currentSeasonOnly: true,
-      fixtureKey: sched.id,
-      career,
-    });
+    enrichManagerFixtureScoring(
+      squad,
+      fixture,
+      career.seed,
+      effectiveTactics,
+      {
+        currentSeasonOnly: true,
+        fixtureKey: sched.id,
+        career: careerForMatch,
+      }
+    );
   }
-  ensureManagerFixtureScoring(career, fixture, squad, sched.id);
+  ensureManagerFixtureScoring(careerForMatch, fixture, squad, sched.id);
 
   const matchdayIdList = [
     ...career.matchdayXiii.filter(Boolean),
@@ -401,7 +434,7 @@ export function applyManagerMatchResult(
   ];
   const motm = selectManagerManOfTheMatch(
     fixture,
-    career,
+    careerForMatch,
     matchdayIdList,
     career.seed,
     sched.id
@@ -414,7 +447,7 @@ export function applyManagerMatchResult(
     career.matchdayXiii
   );
   const effectivenessLine = buildTacticEffectivenessLine(
-    career.tactics,
+    effectiveTactics,
     fixture.result === "W",
     fixture.triesFor,
     fixture.triesAgainst,
@@ -423,7 +456,7 @@ export function applyManagerMatchResult(
     fixture.scoringDetail?.opponent.tryScorers ?? []
   );
   const tacticReview = buildTacticMatchReviewAdvice(
-    career.tactics,
+    effectiveTactics,
     fixture.result === "W",
     fixture.pointsFor,
     fixture.pointsAgainst,
@@ -439,6 +472,7 @@ export function applyManagerMatchResult(
 
   let roundResults = career.roundMatches;
   let leagueTable = career.leagueTable;
+  let championshipCompetition = career.championshipCompetition;
   let leagueStates = resolveLeagueClubStatesForFixture(
     career,
     !isCup && !skipsLeagueProgress ? round : career.gameWeek || round
@@ -459,11 +493,29 @@ export function applyManagerMatchResult(
 
     // User result only — AI round fixtures process on Match Week Continue.
     roundResults = [...career.roundMatches, userMatch];
-    leagueTable = buildLeagueTableFromMatches(roundResults, career.club);
+    leagueTable = buildLeagueTableFromMatches(
+      roundResults,
+      career.club,
+      getUserLeagueClubs(career)
+    );
+
+    if (isUserInChampionship(career) && championshipCompetition) {
+      championshipCompetition = markChampionshipUserFixtureResult(
+        championshipCompetition,
+        round,
+        userMatch.homeTeam,
+        userMatch.awayTeam,
+        userMatch.homeScore,
+        userMatch.awayScore,
+        userMatch.homeTries,
+        userMatch.awayTries,
+        career.club
+      );
+    }
   }
 
   const aggressiveDefence =
-    career.tactics.defenceFocus === "aggressive_contact";
+    effectiveTactics.defenceFocus === "aggressive_contact";
   const injuries = rollPostMatchInjuries(
     career.matchdayXiii,
     career.seed,
@@ -611,7 +663,7 @@ export function applyManagerMatchResult(
     clubName: career.club,
     competition: sched.competition,
     cupRound: sched.cupRound,
-    tactics: career.tactics,
+    tactics: effectiveTactics,
     tacticImpactLine: mods.tacticLine,
     tacticEffectivenessLine: effectivenessLine,
     attendance: attendanceMeta ?? undefined,
@@ -687,6 +739,7 @@ export function applyManagerMatchResult(
 
   const nextCareer: ManagerCareer = {
     ...working,
+    championshipCompetition,
     leagueClubStates: leagueStates,
     leagueClubStatesWeek:
       !isCup && !skipsLeagueProgress
@@ -720,6 +773,10 @@ export function applyManagerMatchResult(
     challengeCup,
     playoffs,
     wagePressureWeeks,
+    nextMatchGameplan:
+      career.nextMatchGameplan?.fixtureId === sched.id
+        ? null
+        : career.nextMatchGameplan,
     updatedAt: new Date().toISOString(),
   };
 
@@ -859,35 +916,61 @@ export function advanceManagerMatchWeek(
       awayTries: userIsListedHome ? last.triesAgainst : last.triesFor,
     };
 
-    // Drop any incomplete user-only row for this round then expand with AI.
-    const withoutThisRoundUser = career.roundMatches.filter((m) => {
-      if (m.round !== round) return true;
-      const involvesUser =
-        m.homeTeam === career.club || m.awayTeam === career.club;
-      return !involvesUser;
-    });
+    if (isUserInChampionship(career)) {
+      // Advance Champ AI fixtures for this week, then mirror standings into the user table.
+      next = {
+        ...next,
+        gameWeek: round,
+        currentFixtureIndex: career.currentFixtureIndex + 1,
+        currentRound: round,
+      };
+      next = tickChampionshipOnAdvance(next);
+      const champFixtures = next.championshipCompetition?.fixtures ?? [];
+      const roundMatches = championshipFixturesToRoundMatches(champFixtures);
+      next = {
+        ...next,
+        roundMatches,
+        leagueTable: buildLeagueTableFromMatches(
+          roundMatches,
+          career.club,
+          getUserLeagueClubs(next)
+        ),
+      };
+    } else {
+      // Drop any incomplete user-only row for this round then expand with AI.
+      const withoutThisRoundUser = career.roundMatches.filter((m) => {
+        if (m.round !== round) return true;
+        const involvesUser =
+          m.homeTeam === career.club || m.awayTeam === career.club;
+        return !involvesUser;
+      });
 
-    const leagueStates = resolveLeagueClubStatesForFixture(career, round);
-    const roundResults = [
-      ...withoutThisRoundUser,
-      ...simulateRoundOtherMatches(
-        career.club,
-        last.opponent,
-        round,
-        career.seed,
-        userMatch,
-        leagueStates,
-        career
-      ),
-    ];
-    next = {
-      ...next,
-      roundMatches: roundResults,
-      leagueTable: buildLeagueTableFromMatches(roundResults, career.club),
-      gameWeek: round,
-      currentFixtureIndex: career.currentFixtureIndex + 1,
-      currentRound: round,
-    };
+      const leagueStates = resolveLeagueClubStatesForFixture(career, round);
+      const roundResults = [
+        ...withoutThisRoundUser,
+        ...simulateRoundOtherMatches(
+          career.club,
+          last.opponent,
+          round,
+          career.seed,
+          userMatch,
+          leagueStates,
+          career
+        ),
+      ];
+      next = {
+        ...next,
+        roundMatches: roundResults,
+        leagueTable: buildLeagueTableFromMatches(
+          roundResults,
+          career.club,
+          getUserLeagueClubs(career)
+        ),
+        gameWeek: round,
+        currentFixtureIndex: career.currentFixtureIndex + 1,
+        currentRound: round,
+      };
+    }
   } else if (!skipsLeagueProgress && last) {
     next = {
       ...next,
@@ -996,7 +1079,12 @@ export function previewManagerMatchScoreline(
     simCareer.xiiiSlotPositions,
     simCareer
   );
-  const mods = getTacticModifiers(simCareer.tactics);
+  const effectiveTactics = resolveEffectiveTactics(simCareer, sched.id);
+  const mods = getTacticModifiers(effectiveTactics);
+  mods.strengthBonus += getMatchPlayerRolesStrengthBonus(
+    simCareer,
+    effectiveTactics
+  );
   const { avgForm } = computePlayerModifiers(simCareer, [
     ...simCareer.matchdayXiii,
     ...simCareer.matchdayInterchange,
@@ -1116,17 +1204,22 @@ export function simulateManagerMatchLive(
     career.xiiiSlotPositions,
     career
   );
+  const effectiveTactics = resolveEffectiveTactics(career, sched.id);
+  const careerForMatch: ManagerCareer = {
+    ...career,
+    tactics: effectiveTactics,
+  };
   enrichManagerFixtureScoring(
     squad,
     fixture,
     career.seed,
-    career.tactics,
+    effectiveTactics,
     {
       currentSeasonOnly:
         sched.competition !== "friendly" &&
         sched.competition !== "world_club_challenge",
       fixtureKey: sched.id,
-      career,
+      career: careerForMatch,
     }
   );
   if (process.env.NODE_ENV === "development") {

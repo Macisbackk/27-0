@@ -6,7 +6,7 @@ import type { LiveMatchEvent, ManagerCareer, ManagerFixtureRecord } from "./type
 import { enrichManagerFixtureScoring } from "./managerScoring";
 import { generateManagerMatchBio } from "./manager-match-summary";
 import { buildMatchStoryFromEvents, type MatchEventType } from "../game/match-events";
-import { countTriesByPositionGroup } from "./managerTacticsScoring";
+import { countTriesByPositionGroup, resolveEffectiveTactics } from "./managerTacticsScoring";
 import { buildMatchdayScoringEntries } from "./managerSquad";
 import { allocateWeightedTries } from "./managerTryScoring";
 import { buildOpponentTryScoringDetail } from "./managerOpponentScoring";
@@ -112,7 +112,7 @@ export function ensureManagerFixtureScoring(
       squad,
       fixture,
       career.seed,
-      career.tactics,
+      resolveEffectiveTactics(career, fixtureKey),
       {
         currentSeasonOnly: true,
         fixtureKey,
@@ -146,7 +146,7 @@ export function ensureManagerFixtureScoring(
     repairOpponentTryScorers(
       fixture,
       career.seed,
-      career.tactics,
+      resolveEffectiveTactics(career, fixtureKey),
       fixtureKey,
       career
     );
@@ -218,7 +218,7 @@ export function ensureManagerFixtureScoring(
                 fixture.triesAgainst,
                 career.seed,
                 fixture.round,
-                career.tactics,
+                resolveEffectiveTactics(career, fixtureKey),
                 fixtureKey,
                 career
               )
@@ -241,7 +241,7 @@ export function ensureManagerFixtureScoring(
     repairOpponentTryScorers(
       fixture,
       career.seed,
-      career.tactics,
+      resolveEffectiveTactics(career, fixtureKey),
       fixtureKey,
       career
     );
@@ -288,7 +288,7 @@ function refreshManagerMatchBio(
     clubName: career.club,
     competition: record.competition ?? record.meta?.competition,
     cupRound: record.meta?.cupRound,
-    tactics: career.tactics,
+    tactics: resolveEffectiveTactics(career, record.fixtureId),
     tacticImpactLine: record.meta?.tacticImpactLine,
     tacticEffectivenessLine: record.meta?.tacticEffectivenessLine,
     attendance: record.meta?.attendance,
@@ -547,7 +547,7 @@ export function applyLiveEventsToFixtureScoring(
       oppTryCount,
       career.seed,
       fixture.round,
-      career.tactics,
+      resolveEffectiveTactics(career, fixtureKey),
       fixtureKey,
       career
     );

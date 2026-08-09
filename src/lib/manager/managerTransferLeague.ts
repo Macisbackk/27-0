@@ -44,6 +44,10 @@ import {
 import { addBoardTransferMilestoneInbox } from "./managerBoardInbox";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 import { DEFAULT_TRANSFER_ACTIVITY_CONFIG } from "./transferActivityConfig";
+import {
+  isPlayerAwayOnLoan,
+  isPlayerLoanedIn,
+} from "./managerLoans";
 
 const TRANSFER_DIAGNOSTIC_CAP = 40;
 
@@ -390,6 +394,9 @@ export function listPlayerForTransfer(
   playerId: string,
   askingPrice: number
 ): ManagerCareer {
+  if (isPlayerAwayOnLoan(career, playerId) || isPlayerLoanedIn(career, playerId)) {
+    return career;
+  }
   const player = getPlayerById(playerId);
   if (!player) return career;
 
@@ -439,6 +446,18 @@ export function releasePlayerWithCost(
   career: ManagerCareer,
   playerId: string
 ): { ok: boolean; career?: ManagerCareer; error?: string; cost?: number } {
+  if (isPlayerAwayOnLoan(career, playerId)) {
+    return {
+      ok: false,
+      error: "Cannot release a player who is away on loan. Recall them first.",
+    };
+  }
+  if (isPlayerLoanedIn(career, playerId)) {
+    return {
+      ok: false,
+      error: "Cannot release a loaned-in player. Their loan will end at season end.",
+    };
+  }
   const cost = computeReleaseCost(career, playerId);
   const transferBudget =
     career.managerFinance?.transferBudget ?? career.budget;
@@ -1103,6 +1122,18 @@ export function acceptIncomingOffer(
   }
 
   const playerId = msg.playerId;
+  if (isPlayerAwayOnLoan(career, playerId)) {
+    return {
+      ok: false,
+      error: "Cannot sell a player who is away on loan. Recall them first.",
+    };
+  }
+  if (isPlayerLoanedIn(career, playerId)) {
+    return {
+      ok: false,
+      error: "Cannot permanently sell a loaned-in player.",
+    };
+  }
   if (!career.squad.some((p) => p.playerId === playerId)) {
     return { ok: false, error: "Player is no longer at your club" };
   }

@@ -54,7 +54,7 @@ function asChampionshipClub(
     accentColor: club.accentColor,
     textColour: club.textColour ?? "#FFFFFF",
     challengeCupEligible: club.challengeCupEligible ?? true,
-    managerSelectable: club.managerSelectable ?? false,
+    managerSelectable: club.managerSelectable ?? true,
     generatedSquad: club.generatedSquad ?? true,
     baseStrength: club.baseStrength ?? 62,
     active: club.active,

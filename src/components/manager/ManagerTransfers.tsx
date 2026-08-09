@@ -38,6 +38,11 @@ import {
   getSellerAskingPrice,
 } from "@/lib/manager/managerTransferLeague";
 import {
+  completeIncomingLoan,
+  recallLoan,
+  suggestedLoanFee,
+} from "@/lib/manager/managerLoans";
+import {
   completeFreeAgentSigning,
   evaluateFreeAgentOffer,
   formatFreeAgentSource,
@@ -55,6 +60,7 @@ interface ManagerTransfersProps {
 }
 
 type TransferTab = "listed" | "freeAgents" | "unlisted" | "watch";
+type DealType = "permanent" | "loan";
 
 const TRANSFER_TAB_LABELS: Record<TransferTab, string> = {
   listed: "Listed",
@@ -74,6 +80,39 @@ function withManagerRating(player: Player): Player {
   return applyManagerModeRatingToPlayer(player);
 }
 
+function DealTypeToggle({
+  value,
+  onChange,
+}: {
+  value: DealType;
+  onChange: (v: DealType) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {(
+        [
+          ["permanent", "Permanent"],
+          ["loan", "Loan"],
+        ] as const
+      ).map(([id, label]) => (
+        <button
+          key={id}
+          type="button"
+          onClick={() => {
+            playUiClick();
+            onChange(id);
+          }}
+          className={`${FILTER.chipTouch} rounded-sm ${
+            value === id ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
+          }`}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export function ManagerTransfers({
   career,
   onUpdate,
@@ -88,6 +127,7 @@ export function ManagerTransfers({
     useState<TransferResultDetails | null>(null);
   const [offerPlayerId, setOfferPlayerId] = useState<string | null>(null);
   const [offerFee, setOfferFee] = useState(0);
+  const [dealType, setDealType] = useState<DealType>("permanent");
   const [listedNegotiateId, setListedNegotiateId] = useState<string | null>(null);
   const [listedOfferWage, setListedOfferWage] = useState(0);
   const [listedOfferYears, setListedOfferYears] = useState(1);
@@ -255,10 +295,57 @@ export function ManagerTransfers({
       transferFee: number;
       wagePerYear: number;
       yearsRequested: number;
-    }
+    },
+    dealOverride?: DealType
   ) => {
     const player = getPlayerById(playerId);
     const demand = getPlayerSigningDemand(career, playerId);
+    const type = dealOverride ?? dealType;
+
+    if (type === "loan") {
+      const loanFee =
+        offerOverride?.transferFee ??
+        suggestedLoanFee(career, playerId, club, listed);
+      const wagePerYear = offerOverride?.wagePerYear ?? demand.wagePerYear;
+      const parentWageShare = 0.5;
+      const loaneeWage = Math.round(wagePerYear * (1 - parentWageShare));
+      const canAfford =
+        getTransferBudget(career) >= loanFee &&
+        canAffordAdditionalWage(career, loaneeWage);
+      const accepted = canAfford && career.squad.length < 35;
+      setTransferResult({
+        playerName: player?.name ?? "Player",
+        club,
+        fee: loanFee,
+        wagePerYear: loaneeWage,
+        years: 1,
+        accepted,
+        reason: accepted
+          ? "Loan agreed until end of season (50% wage share)."
+          : !canAfford
+            ? "Cannot afford loan fee or wage share."
+            : "Squad is full.",
+      });
+      if (accepted) {
+        playTransferComplete();
+        onUpdate(
+          completeIncomingLoan(career, playerId, club, {
+            loanFee,
+            parentWageShare,
+            wagePerYear,
+            yearsRequested: 1,
+            squadRole: demand.squadRole,
+          })
+        );
+        setOfferPlayerId(null);
+        setListedNegotiateId(null);
+        setDealType("permanent");
+      } else {
+        playTransferOffer();
+      }
+      return;
+    }
+
     const fee =
       offerOverride?.transferFee ??
       (listed
@@ -308,23 +395,41 @@ export function ManagerTransfers({
 
   const submitListedAssistantDeal = (playerId: string, club: string) => {
     const demand = getPlayerSigningDemand(career, playerId);
-    const buyerFee = getBuyerMinimumTransferFee(career, playerId, club, true);
+    const fee =
+      dealType === "loan"
+        ? suggestedLoanFee(career, playerId, club, true)
+        : getBuyerMinimumTransferFee(career, playerId, club, true);
     playUiClick();
-    submitTransferOffer(playerId, club, true, {
-      transferFee: buyerFee,
-      wagePerYear: demand.wagePerYear,
-      yearsRequested: demand.yearsRequested,
-    });
+    submitTransferOffer(
+      playerId,
+      club,
+      true,
+      {
+        transferFee: fee,
+        wagePerYear: demand.wagePerYear,
+        yearsRequested: demand.yearsRequested,
+      },
+      dealType
+    );
   };
 
   const submitListedNegotiatedDeal = (playerId: string, club: string) => {
-    const buyerFee = getBuyerMinimumTransferFee(career, playerId, club, true);
+    const fee =
+      dealType === "loan"
+        ? suggestedLoanFee(career, playerId, club, true)
+        : getBuyerMinimumTransferFee(career, playerId, club, true);
     playUiClick();
-    submitTransferOffer(playerId, club, true, {
-      transferFee: buyerFee,
-      wagePerYear: listedOfferWage,
-      yearsRequested: listedOfferYears,
-    });
+    submitTransferOffer(
+      playerId,
+      club,
+      true,
+      {
+        transferFee: fee,
+        wagePerYear: listedOfferWage,
+        yearsRequested: listedOfferYears,
+      },
+      dealType
+    );
   };
 
   const submitFreeAgentOffer = (
@@ -484,6 +589,54 @@ export function ManagerTransfers({
         </p>
       </ManagerSectionCard>
 
+      {(career.activeLoans ?? []).length > 0 && (
+        <ManagerSectionCard title="Active loans" variant="inset">
+          <ul className="mt-2 space-y-2">
+            {(career.activeLoans ?? []).map((loan) => {
+              const name =
+                getManagerPlayer(career, loan.playerId)?.name ??
+                getPlayerById(loan.playerId)?.name ??
+                "Player";
+              const outgoing = isSameManagerClub(loan.parentClub, career.club);
+              return (
+                <li
+                  key={loan.playerId}
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-pitch-700/50 px-2.5 py-2"
+                >
+                  <div>
+                    <p className={`${TYPO.bodySm} text-pitch-200`}>
+                      {name}{" "}
+                      <span className="text-pitch-500">
+                        {outgoing
+                          ? `→ ${loan.loaneeClub}`
+                          : `← ${loan.parentClub}`}
+                      </span>
+                    </p>
+                    <p className={`${TYPO.meta} text-pitch-500`}>
+                      Fee {formatWage(loan.loanFee)} · ends season{" "}
+                      {loan.endsAtSeasonYear} · wage share{" "}
+                      {Math.round(loan.parentWageShare * 100)}% parent
+                    </p>
+                  </div>
+                  {outgoing && loan.canRecall && (
+                    <GameButton
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => {
+                        playUiClick();
+                        onUpdate(recallLoan(career, loan.playerId));
+                      }}
+                    >
+                      Recall
+                    </GameButton>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </ManagerSectionCard>
+      )}
+
       <ClipboardPanel padded>
         <p className={`${TYPO.sectionLabel} mb-3`}>Filter by position</p>
         <div className="flex flex-wrap gap-2">
@@ -528,30 +681,42 @@ export function ManagerTransfers({
               club,
               true
             );
+            const loanFee = suggestedLoanFee(career, player.id, club, true);
+            const dealFee = dealType === "loan" ? loanFee : buyerFee;
             const appeal = evaluateClubSigningAppeal(
               career.club,
               player.peakRating,
               careerStars
             );
             const isNegotiating = listedNegotiateId === player.id;
-            const canAffordFee = getTransferBudget(career) >= buyerFee;
+            const canAffordFee = getTransferBudget(career) >= dealFee;
+            const wageCheck =
+              dealType === "loan"
+                ? Math.round(
+                    (isNegotiating ? listedOfferWage : demand.wagePerYear) * 0.5
+                  )
+                : isNegotiating
+                  ? listedOfferWage
+                  : demand.wagePerYear;
             const canAffordAssistant =
               appeal.allowed &&
               canAffordFee &&
-              canAffordAdditionalWage(career, demand.wagePerYear);
+              canAffordAdditionalWage(career, wageCheck);
             const canAffordNegotiated =
               appeal.allowed &&
               canAffordFee &&
-              canAffordAdditionalWage(career, listedOfferWage);
+              canAffordAdditionalWage(career, wageCheck);
             return (
               <ManagerTransferPlayerCard
                 key={player.id}
                 player={player}
                 club={club}
                 listed
-                fee={buyerFee}
+                fee={dealFee}
                 sellerListedFee={
-                  listedPrice < buyerFee ? listedPrice : undefined
+                  dealType === "permanent" && listedPrice < buyerFee
+                    ? listedPrice
+                    : undefined
                 }
                 wagePerYear={isNegotiating ? listedOfferWage : demand.wagePerYear}
                 yearsRequested={
@@ -562,10 +727,18 @@ export function ManagerTransfers({
               >
                 {isNegotiating ? (
                   <div className="space-y-3">
-                    <p className={`${TYPO.bodySm} text-pitch-400`}>
-                      Player demands: {formatWage(demand.wagePerYear)}/yr ·{" "}
-                      {demand.yearsRequested}yr
-                    </p>
+                    <DealTypeToggle value={dealType} onChange={setDealType} />
+                    {dealType === "loan" ? (
+                      <p className={`${TYPO.bodySm} text-pitch-400`}>
+                        Loan until season end · fee {formatWage(loanFee)} · you
+                        pay 50% of wages
+                      </p>
+                    ) : (
+                      <p className={`${TYPO.bodySm} text-pitch-400`}>
+                        Player demands: {formatWage(demand.wagePerYear)}/yr ·{" "}
+                        {demand.yearsRequested}yr
+                      </p>
+                    )}
                     <div className="grid gap-2 sm:grid-cols-2">
                       <label className={TYPO.bodySm}>
                         <span className="text-pitch-500">Wage (£/yr)</span>
@@ -579,19 +752,21 @@ export function ManagerTransfers({
                           className={`${FILTER.input} mt-1`}
                         />
                       </label>
-                      <label className={TYPO.bodySm}>
-                        <span className="text-pitch-500">Contract length</span>
-                        <input
-                          type="number"
-                          min={1}
-                          max={4}
-                          value={listedOfferYears}
-                          onChange={(e) =>
-                            setListedOfferYears(Number(e.target.value))
-                          }
-                          className={`${FILTER.input} mt-1`}
-                        />
-                      </label>
+                      {dealType === "permanent" && (
+                        <label className={TYPO.bodySm}>
+                          <span className="text-pitch-500">Contract length</span>
+                          <input
+                            type="number"
+                            min={1}
+                            max={4}
+                            value={listedOfferYears}
+                            onChange={(e) =>
+                              setListedOfferYears(Number(e.target.value))
+                            }
+                            className={`${FILTER.input} mt-1`}
+                          />
+                        </label>
+                      )}
                     </div>
                     <div className="grid gap-2 sm:grid-cols-2">
                       <GameButton
@@ -603,7 +778,8 @@ export function ManagerTransfers({
                           submitListedNegotiatedDeal(player.id, club)
                         }
                       >
-                        Submit offer — {formatWage(buyerFee)}
+                        Submit {dealType === "loan" ? "loan" : "offer"} —{" "}
+                        {formatWage(dealFee)}
                       </GameButton>
                       <GameButton
                         variant="secondary"
@@ -612,6 +788,7 @@ export function ManagerTransfers({
                         onClick={() => {
                           playUiClick();
                           setListedNegotiateId(null);
+                          setDealType("permanent");
                         }}
                       >
                         Cancel
@@ -620,6 +797,7 @@ export function ManagerTransfers({
                   </div>
                 ) : (
                   <div className="space-y-2">
+                    <DealTypeToggle value={dealType} onChange={setDealType} />
                     <div className="grid gap-2 sm:grid-cols-2">
                     <GameButton
                       variant="theme"
@@ -858,6 +1036,7 @@ export function ManagerTransfers({
               club,
               false
             );
+            const loanFee = suggestedLoanFee(career, player.id, club, false);
             const appeal = evaluateClubSigningAppeal(
               career.club,
               player.peakRating,
@@ -865,17 +1044,27 @@ export function ManagerTransfers({
             );
             const demand = getPlayerSigningDemand(career, player.id);
             const isOffering = offerPlayerId === player.id;
+            const offerDealFee =
+              dealType === "loan"
+                ? loanFee
+                : isOffering && offerFee > 0
+                  ? offerFee
+                  : buyerFee;
             const canAffordBid =
-              appeal.allowed && getTransferBudget(career) >= buyerFee;
+              appeal.allowed &&
+              getTransferBudget(career) >=
+                (dealType === "loan" ? loanFee : buyerFee);
             return (
               <ManagerTransferPlayerCard
                 key={player.id}
                 player={player}
                 club={club}
                 listed={false}
-                fee={isOffering && offerFee > 0 ? offerFee : buyerFee}
+                fee={offerDealFee}
                 sellerListedFee={
-                  listedPrice < buyerFee ? listedPrice : undefined
+                  dealType === "permanent" && listedPrice < buyerFee
+                    ? listedPrice
+                    : undefined
                 }
                 wagePerYear={demand.wagePerYear}
                 yearsRequested={demand.yearsRequested}
@@ -884,28 +1073,54 @@ export function ManagerTransfers({
               >
                 {isOffering ? (
                   <div className="space-y-2">
-                    <label className={TYPO.bodySm}>
-                      <span className="text-pitch-500">Your bid</span>
-                      <input
-                        type="number"
-                        step={5000}
-                        value={offerFee}
-                        onChange={(e) => setOfferFee(Number(e.target.value))}
-                        className={`${FILTER.input} mt-1`}
-                      />
-                    </label>
+                    <DealTypeToggle value={dealType} onChange={setDealType} />
+                    {dealType === "loan" ? (
+                      <p className={`${TYPO.bodySm} text-pitch-400`}>
+                        Loan fee {formatWage(loanFee)} · rest of season · 50%
+                        wages
+                      </p>
+                    ) : (
+                      <label className={TYPO.bodySm}>
+                        <span className="text-pitch-500">Your bid</span>
+                        <input
+                          type="number"
+                          step={5000}
+                          value={offerFee}
+                          onChange={(e) => setOfferFee(Number(e.target.value))}
+                          className={`${FILTER.input} mt-1`}
+                        />
+                      </label>
+                    )}
                     <GameButton
                       variant="theme"
                       size="sm"
                       fullWidth
                       disabled={!appeal.allowed}
-                      onClick={() => submitTransferOffer(player.id, club, false)}
+                      onClick={() =>
+                        submitTransferOffer(
+                          player.id,
+                          club,
+                          false,
+                          dealType === "loan"
+                            ? {
+                                transferFee: loanFee,
+                                wagePerYear: demand.wagePerYear,
+                                yearsRequested: 1,
+                              }
+                            : undefined,
+                          dealType
+                        )
+                      }
                     >
-                      Submit {formatWage(offerFee)} offer
+                      Submit{" "}
+                      {dealType === "loan"
+                        ? `loan — ${formatWage(loanFee)}`
+                        : `${formatWage(offerFee)} offer`}
                     </GameButton>
                   </div>
                 ) : (
                   <div className="space-y-2">
+                    <DealTypeToggle value={dealType} onChange={setDealType} />
                     <GameButton
                       variant="secondary"
                       size="sm"
@@ -917,7 +1132,9 @@ export function ManagerTransfers({
                         setOfferFee(buyerFee);
                       }}
                     >
-                      Make offer — from {formatWage(buyerFee)}
+                      {dealType === "loan"
+                        ? `Loan — ${formatWage(loanFee)}`
+                        : `Make offer — from ${formatWage(buyerFee)}`}
                     </GameButton>
                   </div>
                 )}

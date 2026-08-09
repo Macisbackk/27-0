@@ -23,16 +23,50 @@ import {
   buildMagicWeekendFixture,
   getLeagueFixtureSides,
 } from "./managerMagicWeekend";
+import {
+  getUserLeagueClubs,
+  getUserSeasonGames,
+} from "./leagueMembership";
+import type { ChampionshipCompetitionState } from "./championship/championshipLeague";
 
 export function buildManagerSchedule(
   club: string,
-  seed: string
+  seed: string,
+  options?: {
+    clubs?: readonly string[];
+    seasonGames?: number;
+    includeMagicWeekend?: boolean;
+  }
 ): ManagerScheduledFixture[] {
-  const opponents = CURRENT_PLAYABLE_CLUBS.filter((c) => c !== club);
+  const clubs = options?.clubs ?? CURRENT_PLAYABLE_CLUBS;
+  const seasonGames = options?.seasonGames ?? MANAGER_SEASON_GAMES;
+  const includeMagicWeekend =
+    options?.includeMagicWeekend ?? seasonGames >= MANAGER_SEASON_GAMES;
+
+  const opponents = clubs.filter((c) => c !== club);
   const fixtures: Omit<
     ManagerScheduledFixture,
     "round" | "id" | "competition" | "label"
   >[] = [];
+
+  if (seasonGames <= opponents.length) {
+    // Single round-robin (Championship): one fixture vs each opponent.
+    const shuffleRng = seedrandom(`${seed}-schedule-shuffle`);
+    const shuffledOpponents = [...opponents].sort(() => shuffleRng() - 0.5);
+    shuffledOpponents.forEach((opp, i) => {
+      fixtures.push({ opponent: opp, isHome: i % 2 === 0 });
+    });
+    return fixtures.slice(0, seasonGames).map((f, i) => {
+      const round = i + 1;
+      return {
+        ...f,
+        id: `league-r${round}-${seed}`,
+        round,
+        competition: "league" as const,
+        label: `Round ${round} — League`,
+      };
+    });
+  }
 
   for (const opp of opponents) {
     fixtures.push({ opponent: opp, isHome: true });
@@ -41,17 +75,19 @@ export function buildManagerSchedule(
     fixtures.push({ opponent: opp, isHome: false });
   }
 
-  const magicWeekend = buildMagicWeekendFixture(club, seed);
-
   const shuffleRng = seedrandom(`${seed}-schedule-shuffle`);
   const shuffled = [...fixtures].sort(() => shuffleRng() - 0.5);
-
   const ordered = [...shuffled];
-  ordered.splice(MAGIC_WEEKEND_ROUND - 1, 0, magicWeekend);
 
-  return ordered.slice(0, MANAGER_SEASON_GAMES).map((f, i) => {
+  if (includeMagicWeekend) {
+    const magicWeekend = buildMagicWeekendFixture(club, seed);
+    ordered.splice(MAGIC_WEEKEND_ROUND - 1, 0, magicWeekend);
+  }
+
+  return ordered.slice(0, seasonGames).map((f, i) => {
     const round = i + 1;
-    const isMagic = round === MAGIC_WEEKEND_ROUND && f.isNeutral;
+    const isMagic =
+      includeMagicWeekend && round === MAGIC_WEEKEND_ROUND && f.isNeutral;
     return {
       ...f,
       id: `league-r${round}-${seed}`,
@@ -62,6 +98,28 @@ export function buildManagerSchedule(
         : `Round ${round} — League`,
     };
   });
+}
+
+/** Build the user's league schedule from Championship competition fixtures. */
+export function buildManagerScheduleFromChampionship(
+  club: string,
+  competition: ChampionshipCompetitionState,
+  seed: string
+): ManagerScheduledFixture[] {
+  return competition.fixtures
+    .filter((f) => f.homeTeam === club || f.awayTeam === club)
+    .sort((a, b) => a.round - b.round)
+    .map((f) => {
+      const isHome = f.homeTeam === club;
+      return {
+        id: `league-r${f.round}-${seed}`,
+        round: f.round,
+        opponent: isHome ? f.awayTeam : f.homeTeam,
+        isHome,
+        competition: "league" as const,
+        label: `Round ${f.round} — League`,
+      };
+    });
 }
 
 function pairTeamsForRound(
@@ -180,7 +238,9 @@ export function simulateRoundOtherMatches(
   leagueClubStates?: LeagueClubStates,
   career?: ManagerCareer
 ): ManagerRoundMatch[] {
-  const allClubs = [...CURRENT_PLAYABLE_CLUBS];
+  const allClubs = career
+    ? getUserLeagueClubs(career)
+    : [...CURRENT_PLAYABLE_CLUBS];
   const resting = allClubs.filter(
     (t) => t !== userClub && t !== userOpponent
   );
@@ -211,8 +271,10 @@ export function simulateRoundOtherMatches(
 
 export function buildLeagueTableFromMatches(
   matches: ManagerRoundMatch[],
-  userClub: string
+  userClub: string,
+  clubs?: readonly string[]
 ): ManagerLeagueRow[] {
+  const leagueClubs = clubs?.length ? [...clubs] : [...CURRENT_PLAYABLE_CLUBS];
   const acc = new Map<
     string,
     {
@@ -225,7 +287,7 @@ export function buildLeagueTableFromMatches(
     }
   >();
 
-  for (const club of CURRENT_PLAYABLE_CLUBS) {
+  for (const club of leagueClubs) {
     acc.set(club, {
       played: 0,
       wins: 0,
@@ -260,7 +322,7 @@ export function buildLeagueTableFromMatches(
     }
   }
 
-  const rows: ManagerLeagueRow[] = CURRENT_PLAYABLE_CLUBS.map((team) => {
+  const rows: ManagerLeagueRow[] = leagueClubs.map((team) => {
     const s = acc.get(team)!;
     return {
       team,
@@ -290,13 +352,18 @@ export function buildLeagueTableFromMatches(
 
 /** Authoritative league table — rebuild from round results when they cover the season played. */
 export function getManagerLeagueTable(career: ManagerCareer): ManagerLeagueRow[] {
+  const clubs = getUserLeagueClubs(career);
   const leaguePlayed = countLeagueFixturesPlayed(career);
   const roundCount = new Set(career.roundMatches?.map((m) => m.round) ?? []).size;
   const roundMatchesAuthoritative =
     Boolean(career.roundMatches?.length) && roundCount >= leaguePlayed;
 
   if (roundMatchesAuthoritative) {
-    return buildLeagueTableFromMatches(career.roundMatches, career.club);
+    return buildLeagueTableFromMatches(
+      career.roundMatches,
+      career.club,
+      clubs
+    );
   }
 
   if (career.leagueTable?.length) {
@@ -307,10 +374,14 @@ export function getManagerLeagueTable(career: ManagerCareer): ManagerLeagueRow[]
   }
 
   if (career.roundMatches?.length) {
-    return buildLeagueTableFromMatches(career.roundMatches, career.club);
+    return buildLeagueTableFromMatches(
+      career.roundMatches,
+      career.club,
+      clubs
+    );
   }
 
-  return buildLeagueTableFromMatches([], career.club);
+  return buildLeagueTableFromMatches([], career.club, clubs);
 }
 
 export function syncManagerLeagueTable(career: ManagerCareer): ManagerCareer {
@@ -362,10 +433,14 @@ export function getUserLeaguePosition(
   table: ManagerLeagueRow[],
   userClub: string
 ): number {
-  return table.find((r) => r.team === userClub)?.position ?? 14;
+  return table.find((r) => r.team === userClub)?.position ?? table.length;
 }
 
 /** Authoritative table position — prefer round-match rebuild over stale leagueTable. */
 export function getUserLeagueTablePosition(career: ManagerCareer): number {
   return getUserLeaguePosition(getManagerLeagueTable(career), career.club);
+}
+
+export function getCareerSeasonGames(career: ManagerCareer): number {
+  return getUserSeasonGames(career);
 }

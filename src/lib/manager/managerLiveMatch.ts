@@ -41,6 +41,10 @@ import {
 import { selectClubMatchSquad } from "../game/opponent-scorers";
 import { getManagerOpponentPoolOptions } from "./managerLeagueRosters";
 import { generateNrlSquadNames } from "./worldClubChallenge";
+import {
+  getMatchPlayerRoleTryMultiplier,
+  resolveEffectiveTactics,
+} from "./managerTacticsScoring";
 
 export type { LiveMatchEvent };
 
@@ -93,7 +97,10 @@ export function getLiveCommandShortLabel(cmd: LiveMatchCommand): string {
 
 /** Map saved tactics to the live command used when simulating from the hub. */
 export function commandFromTactics(career: ManagerCareer): LiveMatchCommand {
-  const { playingStyle, attackFocus, defenceFocus } = career.tactics;
+  const { playingStyle, attackFocus, defenceFocus } = resolveEffectiveTactics(
+    career,
+    career.nextMatchGameplan?.fixtureId
+  );
 
   if (
     playingStyle === "defensive" ||
@@ -140,7 +147,10 @@ export function describeLiveCommand(cmd: LiveMatchCommand): string {
 
 /** Why the current tactics map to a given live-play default. */
 export function getTacticsLiveCommandReason(career: ManagerCareer): string {
-  const { playingStyle, attackFocus, defenceFocus } = career.tactics;
+  const { playingStyle, attackFocus, defenceFocus } = resolveEffectiveTactics(
+    career,
+    career.nextMatchGameplan?.fixtureId
+  );
 
   if (
     playingStyle === "defensive" ||
@@ -229,7 +239,10 @@ function tacticCommandBias(
   career: ManagerCareer,
   cmd: LiveMatchCommand
 ): { userChance: number; oppChance: number } {
-  const t = career.tactics;
+  const t = resolveEffectiveTactics(
+    career,
+    career.nextMatchGameplan?.fixtureId
+  );
   const scale = cmd === "balanced" ? 1 : 0.45;
   let userChance = 1;
   let oppChance = 1;
@@ -292,8 +305,24 @@ function pickScorer(
   const teamTries = priorUserTryEvents.filter(
     (e) => e.type === "try" && e.team === "user"
   ).length;
-  const bias = (pos: Position) =>
-    scorerPositionBias(pos, command, career.tactics.attackFocus);
+  const attackFocus = resolveEffectiveTactics(
+    career,
+    career.nextMatchGameplan?.fixtureId
+  ).attackFocus;
+  const bias = (pos: Position) => {
+    const roleMult = Math.max(
+      1,
+      ...candidates
+        .filter((c) => c.position === pos)
+        .map((c) =>
+          getMatchPlayerRoleTryMultiplier(
+            career.matchPlayerRoles?.[c.id],
+            pos
+          )
+        )
+    );
+    return scorerPositionBias(pos, command, attackFocus) * roleMult;
+  };
   const picked = pickScorerFromCandidates(
     candidates,
     triesAlready,

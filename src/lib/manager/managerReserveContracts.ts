@@ -8,12 +8,12 @@ import type {
   RenewalDemand,
 } from "./types";
 import { dispatchAchievementCheck } from "../achievements/achievementNotify";
-import {
-  computeWageBill,
+import { computeWageBill,
   formatWage,
   generateInitialContract,
   getContractStatus,
 } from "./managerContracts";
+import { isSameManagerClub } from "../clubs/super-league-display";
 import { getManagerClubTeamRating } from "./managerRating";
 import { reserveToPlayer } from "./managerPlayers";
 import {
@@ -106,10 +106,30 @@ export function buildReserveContractsForReserves(
 }
 
 export function computeCareerWageBill(career: ManagerCareer): number {
-  return (
-    computeWageBill(career.contracts) +
-    computeWageBill(career.reserveContracts ?? {})
-  );
+  const loans = career.activeLoans ?? [];
+  const loanByPlayer = new Map(loans.map((l) => [l.playerId, l]));
+
+  let squadWages = 0;
+  for (const [playerId, contract] of Object.entries(career.contracts)) {
+    const loan = loanByPlayer.get(playerId);
+    if (!loan) {
+      squadWages += contract.wagePerYear;
+      continue;
+    }
+    const isParent = isSameManagerClub(loan.parentClub, career.club);
+    const isLoanee = isSameManagerClub(loan.loaneeClub, career.club);
+    if (isParent && !isLoanee) {
+      // Loaned out — parent pays share only
+      squadWages += contract.wagePerYear * loan.parentWageShare;
+    } else if (isLoanee && !isParent) {
+      // Loaned in — loanee pays remainder
+      squadWages += contract.wagePerYear * (1 - loan.parentWageShare);
+    } else {
+      squadWages += contract.wagePerYear;
+    }
+  }
+
+  return squadWages + computeWageBill(career.reserveContracts ?? {});
 }
 
 export function ensureReserveRenewalDemands(

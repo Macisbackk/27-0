@@ -8,11 +8,9 @@ import { buildSeasonSummary } from "./managerStateSeason";
 import { getCareerExpectationTier } from "./managerDifficulty";
 import { userQualifiedForManagerPlayoffs } from "./managerPlayoffs";
 import type { BoardSeasonEvaluation, ManagerCareer } from "./types";
-import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
+import { getUserCompetitionId, getUserLeagueClubs } from "./leagueMembership";
 
 export const BOARD_SACKING_SCHEMA_VERSION = 1;
-
-const LEAGUE_SIZE = CURRENT_PLAYABLE_CLUBS.length;
 
 export function buildBoardSeasonId(career: ManagerCareer): string {
   return `${career.club}-${career.seasonYear}`;
@@ -20,18 +18,19 @@ export function buildBoardSeasonId(career: ManagerCareer): string {
 
 function isTerriblePositionForTier(
   tier: ManagerClubExpectationTier,
-  position: number
+  position: number,
+  size: number
 ): boolean {
   switch (tier) {
     case "title":
     case "top":
-      return position > 10;
+      return position > Math.max(8, Math.floor(size * 0.7));
     case "playoffs":
-      return position >= 13;
+      return position >= Math.max(10, size - 4);
     case "mid-table":
     case "avoid-bottom":
     case "survive":
-      return position >= LEAGUE_SIZE - 1;
+      return position >= size - 1;
   }
 }
 
@@ -79,7 +78,8 @@ export function evaluateBoardSeason(
   const primaryMet = didMeetManagerBoardExpectation(
     tier,
     summary.position,
-    summary.playoffFinish ?? null
+    summary.playoffFinish ?? null,
+    getUserCompetitionId(career)
   );
 
   const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
@@ -148,7 +148,11 @@ export function evaluateBoardSeason(
     )
   );
 
-  const terriblePosition = isTerriblePositionForTier(tier, summary.position);
+  const terriblePosition = isTerriblePositionForTier(
+    tier,
+    summary.position,
+    getUserLeagueClubs(career).length
+  );
   const explanation: string[] = [];
 
   if (primaryMet) {

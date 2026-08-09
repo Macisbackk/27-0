@@ -1,19 +1,17 @@
 import { isLeagueAndCupPhaseComplete } from "./managerChallengeCup";
 import type { ManagerCareer } from "./types";
-import { MANAGER_SEASON_GAMES } from "./types";
+import { getUserSeasonGames } from "./leagueMembership";
 
 export type ManagerSeasonRecordCelebrationKind = "perfect" | "winless";
 
 export function isPerfectManagerSeason(career: ManagerCareer): boolean {
-  return (
-    career.wins === MANAGER_SEASON_GAMES && career.losses === 0
-  );
+  const games = getUserSeasonGames(career);
+  return career.wins === games && career.losses === 0;
 }
 
 export function isWinlessManagerSeason(career: ManagerCareer): boolean {
-  return (
-    career.wins === 0 && career.losses === MANAGER_SEASON_GAMES
-  );
+  const games = getUserSeasonGames(career);
+  return career.wins === 0 && career.losses === games;
 }
 
 export function shouldShowPerfectSeasonCelebration(

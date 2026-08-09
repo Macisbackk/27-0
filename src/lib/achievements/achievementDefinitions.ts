@@ -420,6 +420,32 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     hidden: true,
     points: 35,
   },
+
+  // Daily Challenge
+  {
+    id: "daily-debut",
+    name: "Daily Debut",
+    description: "Complete a Daily Challenge (League Leaders and Grand Final).",
+    category: "normal",
+    points: 15,
+    rewardClubFunds: 25_000,
+  },
+  {
+    id: "daily-streak-3",
+    name: "Three in a Row",
+    description: "Complete the Daily Challenge three days in a row.",
+    category: "normal",
+    points: 30,
+    target: 3,
+  },
+  {
+    id: "daily-streak-7",
+    name: "Week of Wins",
+    description: "Complete the Daily Challenge seven days in a row.",
+    category: "normal",
+    points: 60,
+    target: 7,
+  },
 ];
 
 export const ACHIEVEMENT_BY_ID = new Map(

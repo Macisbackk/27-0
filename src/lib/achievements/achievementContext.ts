@@ -67,6 +67,10 @@ export type AchievementCheckContext = {
   bradfordChallengeComplete?: boolean;
   goatMellorWin?: boolean;
   profileOpened?: boolean;
+  /** Daily Challenge — completed both League Leaders + Grand Final. */
+  dailyChallengeCompleted?: boolean;
+  dailyCurrentStreak?: number;
+  dailyBestStreak?: number;
 };
 
 export type AchievementProgressSnapshot = {

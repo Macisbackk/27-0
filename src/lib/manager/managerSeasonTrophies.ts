@@ -2,10 +2,12 @@ import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import type { PlayoffFinish } from "../game/playoff-simulation";
 import { countLeagueFixturesPlayed } from "./managerChallengeCup";
 import { getUserLeagueTablePosition } from "./managerFixtures";
-import { MANAGER_SEASON_GAMES, type ManagerCareer, type ManagerSeasonSummary } from "./types";
+import { getUserSeasonGames, isUserInChampionship } from "./leagueMembership";
+import type { ManagerCareer, ManagerSeasonSummary } from "./types";
 
 const TROPHY_ORDER = [
   "League Leaders",
+  "Championship Champions",
   "Super League Champions",
   "Challenge Cup",
   "World Club Challenge",
@@ -39,25 +41,28 @@ export function getSeasonSummaryTrophyLabels(
     challengeCupWon,
     worldClubChallengeWon,
     leagueTableSettled: true,
-    existing: summary.trophies,
+    championshipTitle: summary.trophies.includes("Championship Champions"),
   });
 }
 
-function normalizeSeasonTrophyLabels(input: {
+export function normalizeSeasonTrophyLabels(input: {
   position: number;
-  playoffFinish: PlayoffFinish | null;
+  playoffFinish: PlayoffFinish | string | null;
   challengeCupWon: boolean;
-  worldClubChallengeWon?: boolean;
+  worldClubChallengeWon: boolean;
   leagueTableSettled: boolean;
-  existing?: string[];
+  championshipTitle?: boolean;
 }): string[] {
-  const trophies = [...(input.existing ?? [])];
+  const trophies: string[] = [];
   const add = (label: string) => {
     if (!trophies.includes(label)) trophies.push(label);
   };
 
-  if (input.position === 1 && input.leagueTableSettled) {
+  if (input.leagueTableSettled && input.position === 1) {
     add("League Leaders");
+    if (input.championshipTitle) {
+      add("Championship Champions");
+    }
   }
   if (input.playoffFinish === "Super League Champions") {
     add("Super League Champions");
@@ -80,14 +85,13 @@ export function getManagerSeasonTrophyLabels(career: ManagerCareer): string[] {
   const position = getUserLeagueTablePosition(career);
   const playoffFinish = career.playoffs?.finish ?? null;
   const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
-  /* League Leaders is a full-slate honour — never award it because the club
-     happens to sit first after a handful of rounds, or because playoff intro
-     flags were synced early. */
   const leagueTableSettled =
-    countLeagueFixturesPlayed(career) >= MANAGER_SEASON_GAMES;
+    countLeagueFixturesPlayed(career) >= getUserSeasonGames(career);
   const worldClubChallengeWon = (career.worldClubChallenge?.history ?? []).some(
     (r) => r.seasonYear === career.seasonYear && r.userResult === "won"
   );
+  const championshipTitle =
+    isUserInChampionship(career) && position === 1 && leagueTableSettled;
 
   return normalizeSeasonTrophyLabels({
     position,
@@ -95,5 +99,6 @@ export function getManagerSeasonTrophyLabels(career: ManagerCareer): string[] {
     challengeCupWon: cupOutcome.isWinner,
     worldClubChallengeWon,
     leagueTableSettled,
+    championshipTitle,
   });
 }

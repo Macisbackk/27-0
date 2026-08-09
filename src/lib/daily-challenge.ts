@@ -3,6 +3,18 @@ import { STORAGE_KEYS } from "./storage/keys";
 
 export const DAILY_CHALLENGE_MODE = "CLASSIC" as const;
 
+export interface DailyChallengeMeta {
+  currentStreak: number;
+  bestStreak: number;
+  lastCompletedDateKey: string | null;
+}
+
+const DEFAULT_META: DailyChallengeMeta = {
+  currentStreak: 0,
+  bestStreak: 0,
+  lastCompletedDateKey: null,
+};
+
 export type DailyChallengeKind = string;
 
 export interface DailyChallengeScenario {
@@ -79,6 +91,95 @@ function todayKey(date = new Date()): string {
     month: "2-digit",
     day: "2-digit",
   }).format(date);
+}
+
+/** Previous UK calendar day relative to `date`'s London date key. */
+function yesterdayKey(date = new Date()): string {
+  const [y, m, d] = todayKey(date).split("-").map(Number);
+  const utc = new Date(Date.UTC(y!, m! - 1, d!));
+  utc.setUTCDate(utc.getUTCDate() - 1);
+  return utc.toISOString().slice(0, 10);
+}
+
+function loadMeta(): DailyChallengeMeta {
+  if (typeof window === "undefined") return { ...DEFAULT_META };
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.dailyChallengeMeta);
+    if (!raw) return { ...DEFAULT_META };
+    const parsed = JSON.parse(raw) as Partial<DailyChallengeMeta>;
+    return {
+      currentStreak:
+        typeof parsed.currentStreak === "number" && parsed.currentStreak >= 0
+          ? Math.floor(parsed.currentStreak)
+          : 0,
+      bestStreak:
+        typeof parsed.bestStreak === "number" && parsed.bestStreak >= 0
+          ? Math.floor(parsed.bestStreak)
+          : 0,
+      lastCompletedDateKey:
+        typeof parsed.lastCompletedDateKey === "string"
+          ? parsed.lastCompletedDateKey
+          : null,
+    };
+  } catch {
+    return { ...DEFAULT_META };
+  }
+}
+
+function saveMeta(meta: DailyChallengeMeta): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(STORAGE_KEYS.dailyChallengeMeta, JSON.stringify(meta));
+}
+
+export function getDailyChallengeMeta(): DailyChallengeMeta {
+  return loadMeta();
+}
+
+export function getDailyChallengeStreak(): number {
+  return loadMeta().currentStreak;
+}
+
+export function getDailyChallengeBestStreak(): number {
+  return loadMeta().bestStreak;
+}
+
+/**
+ * Record a fully completed daily (League Leaders + Grand Final claimed).
+ * Updates streak, best streak, leaderboard sync, and daily achievements.
+ */
+export function recordDailyChallengeCompletion(date = new Date()): void {
+  const today = todayKey(date);
+  const meta = loadMeta();
+  if (meta.lastCompletedDateKey === today) return;
+
+  const yesterday = yesterdayKey(date);
+  const currentStreak =
+    meta.lastCompletedDateKey === yesterday ? meta.currentStreak + 1 : 1;
+  const bestStreak = Math.max(meta.bestStreak, currentStreak);
+  const next: DailyChallengeMeta = {
+    currentStreak,
+    bestStreak,
+    lastCompletedDateKey: today,
+  };
+  saveMeta(next);
+  // Lazy imports avoid circular module init with leaderboard / achievements.
+  void import("./storage/daily-leaderboard").then(({ syncDailyChallengeLeaderboard }) => {
+    syncDailyChallengeLeaderboard(bestStreak);
+  });
+  void import("./achievements/achievementTriggers").then(
+    ({ triggerDailyChallengeAchievements }) => {
+      triggerDailyChallengeAchievements(currentStreak, bestStreak);
+    }
+  );
+}
+
+function maybeRecordCompletionFromProgress(
+  progress: DailyProgress,
+  date: Date
+): void {
+  if (progress.leagueLeaders && progress.playoffTitle) {
+    recordDailyChallengeCompletion(date);
+  }
 }
 
 /** Style + club rotation — one daily challenge per calendar day. */
@@ -217,15 +318,19 @@ export function hasClaimedDailyChallengeBonus(date = new Date()): boolean {
 export function markDailyChallengeLeagueLeaders(date = new Date()): void {
   const key = todayKey(date);
   const map = loadProgressMap();
-  map[key] = { ...map[key], leagueLeaders: true };
+  const next = { ...map[key], leagueLeaders: true };
+  map[key] = next;
   saveProgressMap(map);
+  maybeRecordCompletionFromProgress(next, date);
 }
 
 export function markDailyChallengePlayoffTitle(date = new Date()): void {
   const key = todayKey(date);
   const map = loadProgressMap();
-  map[key] = { ...map[key], playoffTitle: true };
+  const next = { ...map[key], playoffTitle: true };
+  map[key] = next;
   saveProgressMap(map);
+  maybeRecordCompletionFromProgress(next, date);
 }
 
 /** @deprecated */

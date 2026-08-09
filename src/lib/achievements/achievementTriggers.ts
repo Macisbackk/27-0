@@ -145,6 +145,18 @@ export function triggerQuickSeasonAchievements(
   });
 }
 
+export function triggerDailyChallengeAchievements(
+  currentStreak: number,
+  bestStreak: number
+): void {
+  triggerAchievementCheck({
+    trigger: "daily-challenge-completed",
+    dailyChallengeCompleted: true,
+    dailyCurrentStreak: currentStreak,
+    dailyBestStreak: bestStreak,
+  });
+}
+
 export function triggerManagerMatchAchievements(
   career: ManagerCareer,
   fixture: MatchFixture

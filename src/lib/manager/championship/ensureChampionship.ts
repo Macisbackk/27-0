@@ -1,4 +1,5 @@
 import type { ManagerCareer } from "../types";
+import { getCareerChampionshipClubs } from "../leagueMembership";
 import {
   generateChampionshipSquads,
   GENERATED_CHAMPIONSHIP_SQUADS_VERSION,
@@ -58,7 +59,10 @@ export function ensureChampionshipSystems(
     let competition = createChampionshipCompetition(
       next.seed,
       next.seasonYear,
-      { startRound }
+      {
+        startRound,
+        clubNames: getCareerChampionshipClubs(next),
+      }
     );
     // Simulate up to current week once so the table is live
     competition = advanceChampionshipToGameWeek(

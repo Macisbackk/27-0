@@ -12,7 +12,7 @@
     "accentColor": "#0B2A5B",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 64
   },
@@ -29,7 +29,7 @@
     "accentColor": "#FFFFFF",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 66
   },
@@ -46,7 +46,7 @@
     "accentColor": "#111111",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 58
   },
@@ -63,7 +63,7 @@
     "accentColor": "#FFFFFF",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 67
   },
@@ -80,7 +80,7 @@
     "accentColor": "#FFFFFF",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 55
   },
@@ -97,7 +97,7 @@
     "accentColor": "#F15A29",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 63
   },
@@ -114,7 +114,7 @@
     "accentColor": "#FFFFFF",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 57
   },
@@ -131,7 +131,7 @@
     "accentColor": "#111111",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 56
   },
@@ -148,7 +148,7 @@
     "accentColor": "#FFFFFF",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 54
   },
@@ -165,7 +165,7 @@
     "accentColor": "#1B7A3E",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 55
   },
@@ -182,7 +182,7 @@
     "accentColor": "#1E4D9B",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 56
   },
@@ -199,7 +199,7 @@
     "accentColor": "#111111",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 74
   },
@@ -216,7 +216,7 @@
     "accentColor": "#0B2A5B",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 59
   },
@@ -233,7 +233,7 @@
     "accentColor": "#0B2A5B",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 58
   },
@@ -250,7 +250,7 @@
     "accentColor": "#0B2A5B",
     "textColour": "#FFFFFF",
     "challengeCupEligible": true,
-    "managerSelectable": false,
+    "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 57
   }

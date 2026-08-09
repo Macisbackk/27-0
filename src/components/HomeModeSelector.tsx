@@ -20,9 +20,11 @@ import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { ModeStartLink } from "./ModeStartLink";
 import {
+  getDailyChallengeBestStreak,
   getDailyChallengeHref,
   getDailyChallengeProgress,
   getDailyChallengeScenario,
+  getDailyChallengeStreak,
   hasClaimedDailyChallengeBonus,
 } from "@/lib/daily-challenge";
 import { formatClubFundsExact } from "@/lib/club-funds";
@@ -35,6 +37,8 @@ export function HomeModeSelector() {
     leagueLeaders: false,
     playoffTitle: false,
   });
+  const [dailyStreak, setDailyStreak] = useState(0);
+  const [dailyBestStreak, setDailyBestStreak] = useState(0);
   const [scenario, setScenario] = useState(() => getDailyChallengeScenario());
 
   useEffect(() => {
@@ -46,6 +50,8 @@ export function HomeModeSelector() {
       leagueLeaders: Boolean(getDailyChallengeProgress().leagueLeaders),
       playoffTitle: Boolean(getDailyChallengeProgress().playoffTitle),
     });
+    setDailyStreak(getDailyChallengeStreak());
+    setDailyBestStreak(getDailyChallengeBestStreak());
 
     const onNormal = (event: Event) => {
       const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
@@ -158,6 +164,23 @@ export function HomeModeSelector() {
                 Leaders
                 {" · "}
                 {formatClubFundsExact(scenario.playoffTitleBonus)} Grand Final
+              </p>
+              {(dailyStreak > 0 || dailyBestStreak > 0) && (
+                <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.meta}`}>
+                  Streak {dailyStreak}
+                  {dailyBestStreak > dailyStreak
+                    ? ` · Best ${dailyBestStreak}`
+                    : null}
+                </p>
+              )}
+              <p className={`mx-auto mt-1 max-w-md text-center ${TYPO.meta}`}>
+                <a
+                  href="/leaderboard?tracker=daily_streak"
+                  className="text-theme-primary underline-offset-2 hover:underline"
+                  onClick={() => playUiClick()}
+                >
+                  Daily streak leaderboard
+                </a>
               </p>
               {dailyClaimed ? (
                 <p className={`mt-3 ${TYPO.meta} text-theme-primary`}>

@@ -25,6 +25,13 @@ import { TYPO } from "@/lib/ui/typography";
 import { NORMAL } from "@/lib/ui/design-system";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
+import { ShareSeasonButton } from "./ShareSeasonButton";
+import type { DailyChallengeScenario } from "@/lib/daily-challenge";
+import {
+  getDailyChallengeDateKey,
+  getDailyChallengeProgress,
+  getDailyChallengeStreak,
+} from "@/lib/daily-challenge";
 
 const PLAYOFF_AWARD_TITLES: Record<string, string> = {
   "Player of the Season": "Best Player of the Play-Offs",
@@ -38,6 +45,8 @@ interface PlayoffReviewProps {
   playoffBracketState?: PlayoffBracketState | null;
   playoffFundsPayout?: ClubFundsPayoutResult | null;
   clubFundsPayout?: ClubFundsPayoutResult | null;
+  dailyChallengeMode?: boolean;
+  dailyScenario?: DailyChallengeScenario | null;
   onFinalizeRun?: () => void;
   onPlayAgain: () => void;
   onClose: () => void;
@@ -51,6 +60,8 @@ export function PlayoffReview({
   playoffBracketState = null,
   playoffFundsPayout = null,
   clubFundsPayout = null,
+  dailyChallengeMode = false,
+  dailyScenario = null,
   onFinalizeRun,
   onPlayAgain,
   onReturnHome,
@@ -130,6 +141,46 @@ export function PlayoffReview({
     return final?.status === "complete" ? final.winner : null;
   }, [playoffBracketState]);
 
+  const shareAction = useMemo(() => {
+    if (!dailyChallengeMode || !dailyScenario) return null;
+    const progress = getDailyChallengeProgress();
+    const streak = getDailyChallengeStreak();
+    const overallWins = seasonResult.wins + playoffResult.wins;
+    const overallLosses = seasonResult.losses + playoffResult.losses;
+    const detailLines = [
+      `${dailyScenario.eraMode ? "Era" : "Current"} · ${getDailyChallengeDateKey()}`,
+      formatRecordWithPercentage(overallWins, overallLosses),
+      progress.leagueLeaders ? "League Leaders" : undefined,
+      playoffResult.isChampion || progress.playoffTitle
+        ? "Champions"
+        : playoffResult.finish,
+      streak > 0 ? `Streak ${streak}` : undefined,
+    ].filter((line): line is string => Boolean(line));
+
+    return (
+      <ShareSeasonButton
+        data={{
+          title: `Daily · All ${dailyScenario.forceOpponentClub}`,
+          subtitle: dailyScenario.eraMode
+            ? "Era Daily Challenge"
+            : "Daily Challenge",
+          recordLine: formatRecordWithPercentage(overallWins, overallLosses),
+          detailLines,
+        }}
+        filename="27-0-daily.png"
+      />
+    );
+  }, [
+    dailyChallengeMode,
+    dailyScenario,
+    seasonResult.wins,
+    seasonResult.losses,
+    playoffResult.wins,
+    playoffResult.losses,
+    playoffResult.isChampion,
+    playoffResult.finish,
+  ]);
+
   return (
     <DocumentPageShell
       diagnoseLabel="QuickModePlayoffReview"
@@ -171,7 +222,12 @@ export function PlayoffReview({
             compact
             onPlayAgain={onPlayAgain}
             onReturnHome={onReturnHome}
-            leaderboardHref="/leaderboard"
+            leaderboardHref={
+              dailyChallengeMode
+                ? "/leaderboard?tracker=daily_streak"
+                : "/leaderboard"
+            }
+            shareAction={shareAction}
           />
         </motion.div>
 

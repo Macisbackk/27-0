@@ -2,6 +2,7 @@ import type {
   AttackFocus,
   DefenceFocus,
   ManagerTactics,
+  MatchPlayerRole,
   PlayingStyle,
 } from "./types";
 
@@ -27,6 +28,24 @@ export const DEFENCE_FOCUS_LABELS: Record<DefenceFocus, string> = {
   aggressive_contact: "Aggressive Contact",
   edge_defence: "Edge Defence",
   goal_line: "Goal-Line Defence",
+};
+
+export const MATCH_PLAYER_ROLE_LABELS: Record<MatchPlayerRole, string> = {
+  default: "Default",
+  primary_creator: "Primary Creator",
+  crash_ball: "Crash Ball",
+  spread: "Spread",
+  target: "Target",
+  organizer: "Organizer",
+};
+
+export const MATCH_PLAYER_ROLE_BIOS: Record<MatchPlayerRole, string> = {
+  default: "No special involvement bias.",
+  primary_creator: "Halves and hookers get more attacking involvement.",
+  crash_ball: "Forwards favoured as ball-carriers.",
+  spread: "Edges and wide attackers get more looks.",
+  target: "Forwards targeted near the line.",
+  organizer: "Playmakers organise — halves and hooker involvement up.",
 };
 
 export const PLAYING_STYLE_BIOS: Record<PlayingStyle, string> = {
@@ -95,6 +114,13 @@ export const DEFENCE_FOCUS_OPTIONS = (
 ).map((value) => ({
   value,
   label: DEFENCE_FOCUS_LABELS[value],
+}));
+
+export const MATCH_PLAYER_ROLE_OPTIONS = (
+  Object.keys(MATCH_PLAYER_ROLE_LABELS) as MatchPlayerRole[]
+).map((value) => ({
+  value,
+  label: MATCH_PLAYER_ROLE_LABELS[value],
 }));
 
 export function formatTacticsLabel(tactics: ManagerTactics): string {

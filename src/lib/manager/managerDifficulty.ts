@@ -14,9 +14,17 @@ import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { getClubFacilities } from "./managerFacilities";
 import { pushInboxMessage } from "./managerInbox";
+import {
+  getUserCompetitionId,
+  getUserLeagueClubs,
+  isUserInChampionship,
+} from "./leagueMembership";
 
 const PRESTIGE_SHIFT_THRESHOLD = 2;
-const LEAGUE_SIZE = CURRENT_PLAYABLE_CLUBS.length;
+
+function leagueSize(career?: ManagerCareer): number {
+  return career ? getUserLeagueClubs(career).length : CURRENT_PLAYABLE_CLUBS.length;
+}
 
 export function getCareerClubStars(career: ManagerCareer): number {
   return career.difficulty ?? getManagerClubConfig(career.club).difficulty;
@@ -108,8 +116,15 @@ export function evaluateSeasonPrestigeMomentumDelta(
   const tier = getCareerExpectationTier(career);
   const position = summary.position;
   const playoffFinish = summary.playoffFinish ?? null;
-  const met = didMeetManagerBoardExpectation(tier, position, playoffFinish);
-  const wonTitle = playoffFinish === "Super League Champions";
+  const met = didMeetManagerBoardExpectation(
+    tier,
+    position,
+    playoffFinish,
+    getUserCompetitionId(career)
+  );
+  const wonTitle =
+    playoffFinish === "Super League Champions" ||
+    (isUserInChampionship(career) && position === 1);
   const wonCup = summary.trophies.some((t) => t.includes("Challenge Cup"));
 
   if (wonTitle && tier !== "title") return 1;
@@ -119,7 +134,7 @@ export function evaluateSeasonPrestigeMomentumDelta(
   }
   if (met) return 0;
 
-  if (position >= LEAGUE_SIZE - 1) return -1;
+  if (position >= leagueSize(career) - 1) return -1;
   if (tier === "title" && position > 6) return -1;
   if (tier === "top" && position > 6) return -1;
   if (tier === "playoffs" && position > 10) return -1;

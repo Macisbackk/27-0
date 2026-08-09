@@ -23,7 +23,8 @@ import type {
   ManagerCareer,
   ManagerScheduledFixture,
 } from "./types";
-import { CUP_ROUND_LABELS, MANAGER_SEASON_GAMES } from "./types";
+import { CUP_ROUND_LABELS } from "./types";
+import { getUserSeasonGames } from "./leagueMembership";
 import {
   getChallengeCupRoundLabel,
   isChallengeCupFinalRound,
@@ -463,11 +464,11 @@ export function buildCupScheduledFixture(
 export function isLeagueAndCupPhaseComplete(career: ManagerCareer): boolean {
   const leaguePlayed = countLeagueFixturesPlayed(career);
   /*
-   * Require the full 27-game league slate. Do not treat a short/exhausted
-   * schedule as finished — that crowned mid-season table-toppers as League
-   * Leaders after only a handful of rounds.
+   * Require the full league slate for the user's competition. Do not treat a
+   * short/exhausted schedule as finished — that crowned mid-season table-toppers
+   * as League Leaders after only a handful of rounds.
    */
-  const leagueDone = leaguePlayed >= MANAGER_SEASON_GAMES;
+  const leagueDone = leaguePlayed >= getUserSeasonGames(career);
   if (!leagueDone) return false;
 
   if (!career.challengeCup) return true;
