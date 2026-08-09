@@ -180,7 +180,7 @@ export function ManagerTransferPlayerCard({
                   ? "Your bid"
                   : "Est. fee"
           }
-          value={freeAgent ? "Free" : formatWage(fee)}
+          value={freeAgent || fee <= 0 ? "Free" : formatWage(fee)}
           tone="gold"
         />
         <ManagerStat

@@ -22,8 +22,13 @@ import {
   standingsToCupSeeding,
 } from "./championshipChallengeCup";
 import { countCupFixturesPlayed, countLeagueFixturesPlayed } from "../managerChallengeCup";
-import { migrateTransferOfferCategories } from "../managerTransferLeague";
+import {
+  generateLeagueListedPlayers,
+  migrateTransferOfferCategories,
+} from "../managerTransferLeague";
 import { buildManagerScheduleFromChampionship } from "../managerFixtures";
+
+const LOAN_MARKET_VERSION = 1;
 
 /**
  * Ensure Championship squads, league, and expanded cup schema exist on a career.
@@ -204,6 +209,20 @@ export function ensureChampionshipSystems(
       reserveToChampionshipCooldowns: next.reserveToChampionshipCooldowns ?? {},
       championshipReserveSigningsThisSeason:
         next.championshipReserveSigningsThisSeason ?? 0,
+    };
+  }
+
+  if ((next.loanMarketVersion ?? 0) < LOAN_MARKET_VERSION) {
+    const listed = generateLeagueListedPlayers(
+      next,
+      next.seed,
+      next.gameWeek
+    );
+    next = {
+      ...next,
+      loanMarketVersion: LOAN_MARKET_VERSION,
+      leagueListedPlayers: listed,
+      transferMarket: listed.map((l) => l.playerId),
     };
   }
 

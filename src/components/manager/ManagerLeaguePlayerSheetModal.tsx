@@ -152,8 +152,10 @@ export function ManagerLeaguePlayerSheetModal({
                 value={
                   listingAllowsLoan(listing.listingType) &&
                   listing.listingType === "loan"
-                    ? `Loan · ${formatWage(listing.askingPrice)}`
-                    : `Listed · ${formatWage(listing.askingPrice)}`
+                    ? "Available on loan · free"
+                    : listingAllowsLoan(listing.listingType)
+                      ? `Listed · ${formatWage(listing.askingPrice)} · loan available`
+                      : `Listed · ${formatWage(listing.askingPrice)}`
                 }
                 valueClassName="font-semibold text-accent-gold"
               />

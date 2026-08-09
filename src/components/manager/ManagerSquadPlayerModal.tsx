@@ -195,15 +195,12 @@ export function ManagerSquadPlayerModal({
               variant="secondary"
               onClick={() => {
                 playUiClick();
-                setAskingPrice(loanFee);
                 setShowLoanForm(false);
                 setShowListForm(false);
-                onUpdate(
-                  listPlayerForLoanWithOffers(career, playerId, loanFee)
-                );
+                onUpdate(listPlayerForLoanWithOffers(career, playerId, 0));
               }}
             >
-              List For Loan ({formatWage(loanFee)})
+              List For Loan
             </GameButton>
           )}
 
@@ -272,8 +269,7 @@ export function ManagerSquadPlayerModal({
                 </select>
               </label>
               <p className={`mt-2 ${TYPO.meta} text-pitch-400`}>
-                Fee {formatWage(loanFee)} · rest of season · you keep 50% wages ·
-                recallable
+                Free loan · rest of season · you keep 50% wages · recallable
               </p>
               <GameButton
                 variant="theme"

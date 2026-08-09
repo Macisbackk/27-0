@@ -19,6 +19,7 @@ import { getManagerPlayer, reserveToPlayer } from "./managerPlayers";
 import { createYouthProspect } from "./managerReserves";
 import {
   championshipPlayerToPlayer,
+  type ChampionshipGeneratedPlayer,
 } from "./championship/championshipSquads";
 import {
   getCareerChampionshipClubs,
@@ -37,6 +38,13 @@ function getTrackedLeagueClubs(career: ManagerCareer): string[] {
   ]);
   clubs.delete(career.club);
   return [...clubs];
+}
+
+/** Clubs that can list players on the transfer/loan market (SL + Championship). */
+export function getTrackedLeagueClubsForTransferMarket(
+  career: ManagerCareer
+): string[] {
+  return getTrackedLeagueClubs(career);
 }
 
 function isChampionshipSide(career: ManagerCareer, club: string): boolean {
@@ -94,11 +102,26 @@ export function getLeagueClubRosterIds(
     return career.squad.map((p) => p.playerId);
   }
   const rosters = career.leagueClubRosters;
-  const ids =
-    rosters && club in rosters
-      ? (rosters[club] ?? [])
-      : getManagerRosterIds(club);
-  return sanitizeRosterIds(career, ids);
+  const tracked = rosters?.[club];
+  if (tracked && tracked.length > 0) {
+    return sanitizeRosterIds(career, tracked);
+  }
+  // Championship AI sides live on championshipSquads; reconcile may leave an
+  // empty leagueClubRosters entry that must not hide the real roster.
+  if (isChampionshipSide(career, club) && career.championshipSquads) {
+    const champ = getChampionshipClubByName(club);
+    if (champ) {
+      const champIds =
+        career.championshipSquads.rosterByClub[champ.id] ?? [];
+      if (champIds.length > 0) {
+        return sanitizeRosterIds(career, champIds);
+      }
+    }
+  }
+  if (tracked) {
+    return sanitizeRosterIds(career, tracked);
+  }
+  return sanitizeRosterIds(career, getManagerRosterIds(club));
 }
 
 export function getLeagueClubPlayerPool(
@@ -232,21 +255,77 @@ export function transferLeaguePlayer(
   _fromClub: string,
   toClub?: string
 ): ManagerCareer {
+  let next = career;
   const rosters: LeagueClubRosters = {
-    ...(career.leagueClubRosters ?? initLeagueClubRosters(career.club)),
+    ...(next.leagueClubRosters ?? initLeagueClubRosters(next.club)),
   };
 
-  for (const club of getTrackedLeagueClubs(career)) {
-    if (club === career.club) continue;
+  for (const club of getTrackedLeagueClubs(next)) {
+    if (club === next.club) continue;
     rosters[club] = (rosters[club] ?? []).filter((id) => id !== playerId);
   }
 
-  if (toClub && toClub !== career.club) {
+  if (toClub && toClub !== next.club) {
     rosters[toClub] = [...(rosters[toClub] ?? []), playerId];
   }
 
+  const squads = next.championshipSquads;
+  const champPlayer = squads?.players[playerId];
+  if (squads && champPlayer) {
+    const rosterByClub: Record<string, string[]> = {};
+    for (const [clubId, ids] of Object.entries(squads.rosterByClub)) {
+      rosterByClub[clubId] = ids.filter((id) => id !== playerId);
+    }
+
+    let updated: ChampionshipGeneratedPlayer = { ...champPlayer };
+    const destChamp =
+      toClub && toClub !== next.club
+        ? getChampionshipClubByName(toClub)
+        : null;
+
+    if (destChamp) {
+      rosterByClub[destChamp.id] = [
+        ...(rosterByClub[destChamp.id] ?? []),
+        playerId,
+      ];
+      updated = {
+        ...updated,
+        clubId: destChamp.id,
+        clubName: toClub!,
+      };
+    } else {
+      // User club or Super League AI — keep the player record for lookup/return.
+      updated = {
+        ...updated,
+        clubId: "super-league",
+        clubName: toClub ?? next.club,
+      };
+      if (!toClub || toClub === next.club) {
+        next = {
+          ...next,
+          playerRegistry: {
+            ...next.playerRegistry,
+            [playerId]: championshipPlayerToPlayer({
+              ...updated,
+              clubName: next.club,
+            }),
+          },
+        };
+      }
+    }
+
+    next = {
+      ...next,
+      championshipSquads: {
+        ...squads,
+        rosterByClub,
+        players: { ...squads.players, [playerId]: updated },
+      },
+    };
+  }
+
   return pruneLeagueListedPlayers(
-    reconcileLeagueRosters({ ...career, leagueClubRosters: rosters })
+    reconcileLeagueRosters({ ...next, leagueClubRosters: rosters })
   );
 }
 
@@ -331,10 +410,11 @@ export function findPlayerLeagueClub(
   if (getUserClubPlayerIds(career).has(playerId)) {
     return career.club;
   }
-  const rosters = career.leagueClubRosters ?? {};
-  for (const club of CURRENT_PLAYABLE_CLUBS) {
-    if (club === career.club) continue;
-    if (rosters[club]?.includes(playerId)) return club;
+  for (const club of getTrackedLeagueClubs(career)) {
+    if (isSameManagerClub(club, career.club)) continue;
+    if (getLeagueClubRosterIds(career, club).includes(playerId)) {
+      return club;
+    }
   }
   return null;
 }

@@ -25,11 +25,12 @@ import { getManagerModePlayerRating } from "./managerSquadRatings";
 import {
   findPlayerLeagueClub,
   getLeagueClubRosterIds,
+  getTrackedLeagueClubsForTransferMarket,
   getUserClubPlayerIds,
   pruneLeagueListedPlayers,
   transferLeaguePlayer,
 } from "./managerLeagueRosters";
-import { getManagerPlayer } from "./managerPlayers";
+import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import { getPlayerSigningDemand } from "./managerTransfers";
 import { createInitialPlayerState } from "./managerSquad";
 import { addPlayersToFreeAgents, completeFreeAgentSigning, isFreeAgent } from "./managerFreeAgents";
@@ -73,10 +74,36 @@ export function listingAllowsPermanent(
   return t === "permanent" || t === "both";
 }
 
-function pickAiListingType(rng: () => number): TransferListingType {
+const LOAN_MARKET_YOUNG_MAX_AGE = 23;
+/** Rating gap below the club's best that counts as surplus to requirements. */
+const LOAN_MARKET_SURPLUS_GAP = 4;
+
+function isLoanMarketCandidate(
+  career: ManagerCareer,
+  playerId: string,
+  clubBestRating: number,
+  rating: number
+): boolean {
+  const age = getManagerPlayerAge(career, playerId);
+  const young = age != null && age <= LOAN_MARKET_YOUNG_MAX_AGE;
+  const surplus = clubBestRating - rating >= LOAN_MARKET_SURPLUS_GAP;
+  return young || surplus;
+}
+
+function pickAiListingType(
+  rng: () => number,
+  loanCandidate: boolean
+): TransferListingType {
   const roll = rng();
-  if (roll < 0.28) return "loan";
-  if (roll < 0.48) return "both";
+  if (loanCandidate) {
+    // Young / fringe players: mostly loan market, sometimes dual-listed.
+    if (roll < 0.62) return "loan";
+    if (roll < 0.88) return "both";
+    return "permanent";
+  }
+  // Regular squad: permanent sales dominate; loans are uncommon.
+  if (roll < 0.1) return "loan";
+  if (roll < 0.18) return "both";
   return "permanent";
 }
 
@@ -267,14 +294,23 @@ function getListableClubPlayers(
 
 function pickWeightedListablePlayer(
   pool: { id: string; rating: number }[],
-  rng: () => number
+  rng: () => number,
+  preferLoanCandidates = false,
+  career?: ManagerCareer
 ): string | null {
   if (pool.length === 0) return null;
   const clubBest = Math.max(...pool.map((row) => row.rating));
   const weighted = pool.map((row) => {
     const belowBest = Math.max(0, clubBest - row.rating);
     // Fringe players list often; near-best squad members only occasionally.
-    const weight = Math.pow(belowBest + 2, 1.55);
+    let weight = Math.pow(belowBest + 2, 1.55);
+    if (
+      preferLoanCandidates &&
+      career &&
+      isLoanMarketCandidate(career, row.id, clubBest, row.rating)
+    ) {
+      weight *= 3.2;
+    }
     return { id: row.id, weight };
   });
   const total = weighted.reduce((sum, row) => sum + row.weight, 0);
@@ -299,36 +335,68 @@ export function generateLeagueListedPlayers(
     seasonIndex <= 0 ? 3 : Math.min(5, 3 + Math.floor(seasonIndex / 2));
   const minListPerClub = seasonIndex <= 0 ? 1 : 2;
 
-  for (const club of CURRENT_PLAYABLE_CLUBS) {
-    if (club === career.club) continue;
+  for (const club of getTrackedLeagueClubsForTransferMarket(career)) {
+    if (isSameManagerClub(club, career.club)) continue;
 
     const pool = getListableClubPlayers(career, club);
     if (pool.length === 0) continue;
+
+    const clubBest = Math.max(...pool.map((row) => row.rating));
+    const loanPool = pool.filter((row) =>
+      isLoanMarketCandidate(career, row.id, clubBest, row.rating)
+    );
 
     const listCount = Math.min(
       pool.length,
       minListPerClub + Math.floor(rng() * (maxListPerClub - minListPerClub + 1))
     );
     const remaining = [...pool];
+    let loanSlots =
+      loanPool.length === 0
+        ? 0
+        : Math.min(
+            loanPool.length,
+            1 + (listCount >= 3 && rng() < 0.55 ? 1 : 0)
+          );
 
     for (let i = 0; i < listCount; i++) {
-      const playerId = pickWeightedListablePlayer(remaining, rng);
+      const preferLoan = loanSlots > 0;
+      const playerId = pickWeightedListablePlayer(
+        remaining,
+        rng,
+        preferLoan,
+        career
+      );
       if (!playerId) break;
 
-      const player = getPlayerById(playerId);
+      const player = getManagerPlayer(career, playerId);
       if (!player) continue;
 
+      const rating =
+        remaining.find((row) => row.id === playerId)?.rating ??
+        getPlayerListingRating(career, playerId);
+      const loanCandidate = isLoanMarketCandidate(
+        career,
+        playerId,
+        clubBest,
+        rating
+      );
+      const listingType = preferLoan
+        ? rng() < 0.72
+          ? "loan"
+          : "both"
+        : pickAiListingType(rng, loanCandidate);
+      if (listingAllowsLoan(listingType) && loanCandidate) {
+        loanSlots = Math.max(0, loanSlots - 1);
+      }
+
       const mult = 0.8 + rng() * 0.4;
-      const listingType = pickAiListingType(rng);
       listed.push({
         playerId,
         club,
         askingPrice:
           listingType === "loan"
-            ? Math.max(
-                5_000,
-                Math.round(player.value * (0.08 + rng() * 0.1))
-              )
+            ? 0
             : Math.round(player.value * mult),
         listedAtWeek: gameWeek,
         listingType,
@@ -1387,8 +1455,8 @@ export function getAllLeaguePlayers(career: ManagerCareer): {
 }[] {
   const assigned = new Set(getUserClubPlayerIds(career));
   const rows: { playerId: string; club: string }[] = [];
-  for (const club of CURRENT_PLAYABLE_CLUBS) {
-    if (club === career.club) continue;
+  for (const club of getTrackedLeagueClubsForTransferMarket(career)) {
+    if (isSameManagerClub(club, career.club)) continue;
     for (const id of getLeagueClubRosterIds(career, club)) {
       if (assigned.has(id)) continue;
       assigned.add(id);

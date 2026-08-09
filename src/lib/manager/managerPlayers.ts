@@ -6,6 +6,7 @@ import { getAgeAtYear, resolveBirthYear } from "../players/player-age";
 
 import { computePlayerValue, syncPlayerValueFromRating } from "../players/ratings";
 import { applyManagerModeRatingToPlayer } from "./managerSquadRatings";
+import { championshipPlayerToPlayer } from "./championship/championshipSquads";
 
 function withDevelopmentRating(player: Player, devRating: number): Player {
   return syncPlayerValueFromRating({
@@ -80,6 +81,17 @@ export function getManagerPlayer(
     }
     return rated;
   }
+  const champ = career.championshipSquads?.players[playerId];
+  if (champ) {
+    const asPlayer = championshipPlayerToPlayer(champ);
+    const rated = applyManagerModeRatingToPlayer({
+      ...asPlayer,
+      birthYear: career.seasonYear - champ.age,
+    });
+    const dev = career.playerDevelopment?.[playerId];
+    if (dev) return withDevelopmentRating(rated, dev.rating);
+    return rated;
+  }
   const base = getPlayerById(playerId);
   const dev = career.playerDevelopment?.[playerId];
   if (base && dev) {
@@ -97,6 +109,9 @@ export function getManagerPlayerAge(
 ): number | undefined {
   const reserve = career.reserves?.find((r) => r.id === playerId);
   if (reserve) return reserve.age;
+
+  const champ = career.championshipSquads?.players[playerId];
+  if (champ) return champ.age;
 
   const player = getManagerPlayer(career, playerId);
   if (!player) return undefined;

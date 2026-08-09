@@ -26,7 +26,6 @@ import {
   addTransferIncome,
   canAffordAdditionalWage,
   deductTransferFee,
-  getManagerPlayerListingRating,
   getTransferBudget,
   syncManagerFinance,
 } from "./managerFinance";
@@ -81,27 +80,14 @@ export function isPlayerLoanedIn(
   );
 }
 
+/** Loans are wage-share deals — no upfront fee on the open market. */
 export function suggestedLoanFee(
-  career: ManagerCareer,
-  playerId: string,
+  _career: ManagerCareer,
+  _playerId: string,
   _fromClub?: string,
   _listed = true
 ): number {
-  const rating = getManagerPlayerListingRating(career, playerId);
-  // Flat band by rating (~10–20% of a typical transfer floor).
-  const base =
-    rating >= 88
-      ? 80_000
-      : rating >= 84
-        ? 45_000
-        : rating >= 80
-          ? 25_000
-          : rating >= 75
-            ? 15_000
-            : 8_000;
-  const pct = 0.1 + ((playerId.length + rating) % 11) / 100;
-  const fee = Math.round((base * (pct / 0.15)) / 1000) * 1000;
-  return Math.max(5_000, fee);
+  return 0;
 }
 
 function recordLoanTransfer(
@@ -251,7 +237,9 @@ export function completeIncomingLoan(
       createLoanInboxMessage(
         next,
         "Loan Completed",
-        `${playerName} has joined on loan from ${fromClub} until the end of the season. Fee: ${formatWage(loanFee)}. You pay ${Math.round(loaneeWageShare * 100)}% of wages (${formatWage(Math.round(wagePerYear * loaneeWageShare))}/yr).`,
+        `${playerName} has joined on loan from ${fromClub} until the end of the season${
+          loanFee > 0 ? `. Fee: ${formatWage(loanFee)}` : ""
+        }. You pay ${Math.round(loaneeWageShare * 100)}% of wages (${formatWage(Math.round(wagePerYear * loaneeWageShare))}/yr).`,
         playerId,
         playerName
       )
@@ -340,7 +328,9 @@ export function completeOutgoingLoan(
     createLoanInboxMessage(
       next,
       "Loan Out Completed",
-      `${playerName} has joined ${toClub} on loan until the end of the season. Fee received: ${formatWage(loanFee)}. You still pay ${Math.round(parentWageShare * 100)}% of wages.`,
+      `${playerName} has joined ${toClub} on loan until the end of the season${
+        loanFee > 0 ? `. Fee received: ${formatWage(loanFee)}` : ""
+      }. You still pay ${Math.round(parentWageShare * 100)}% of wages.`,
       playerId,
       playerName
     )

@@ -186,7 +186,10 @@ export function ManagerTransfers({
         (entry) =>
           !isSameManagerClub(entry.club, career.club) &&
           listingAllowsLoan(entry.listingType) &&
-          Boolean(getPlayerById(entry.playerId))
+          Boolean(
+            getManagerPlayer(career, entry.playerId) ??
+              getPlayerById(entry.playerId)
+          )
       ).length,
     [career]
   );
@@ -197,7 +200,10 @@ export function ManagerTransfers({
         (entry) =>
           !isSameManagerClub(entry.club, career.club) &&
           listingAllowsPermanent(entry.listingType) &&
-          Boolean(getPlayerById(entry.playerId))
+          Boolean(
+            getManagerPlayer(career, entry.playerId) ??
+              getPlayerById(entry.playerId)
+          )
       ).length,
       loans: loanListedCount,
       freeAgents: (career.freeAgents ?? []).filter(
@@ -227,7 +233,9 @@ export function ManagerTransfers({
           : listingAllowsPermanent(entry.listingType)
       )
       .map((entry) => {
-        const raw = getPlayerById(entry.playerId);
+        const raw =
+          getManagerPlayer(career, entry.playerId) ??
+          getPlayerById(entry.playerId);
         if (!raw) return null;
         return { ...entry, player: withManagerRating(raw) };
       })
@@ -322,7 +330,8 @@ export function ManagerTransfers({
     },
     dealOverride?: DealType
   ) => {
-    const player = getPlayerById(playerId);
+    const player =
+      getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
     const demand = getPlayerSigningDemand(career, playerId);
     const type = dealOverride ?? dealType;
 
@@ -345,9 +354,9 @@ export function ManagerTransfers({
         years: 1,
         accepted,
         reason: accepted
-          ? "Loan agreed until end of season (50% wage share)."
+          ? "Loan agreed until end of season (no fee · 50% wage share)."
           : !canAfford
-            ? "Cannot afford loan fee or wage share."
+            ? "Cannot afford the wage share on this loan."
             : "Squad is full.",
       });
       if (accepted) {
@@ -649,8 +658,10 @@ export function ManagerTransfers({
                       </span>
                     </p>
                     <p className={`${TYPO.meta} text-pitch-500`}>
-                      Fee {formatWage(loan.loanFee)} · ends season{" "}
-                      {loan.endsAtSeasonYear} · wage share{" "}
+                      {loan.loanFee > 0
+                        ? `Fee ${formatWage(loan.loanFee)} · `
+                        : ""}
+                      ends season {loan.endsAtSeasonYear} · wage share{" "}
                       {Math.round(loan.parentWageShare * 100)}% parent
                     </p>
                   </div>
@@ -717,10 +728,7 @@ export function ManagerTransfers({
               club,
               true
             );
-            const loanFee = Math.max(
-              suggestedLoanFee(career, player.id, club, true),
-              listingType === "loan" ? askingPrice : 0
-            );
+            const loanFee = suggestedLoanFee(career, player.id, club, true);
             const effectiveDeal: DealType =
               tab === "loans"
                 ? "loan"
@@ -779,8 +787,7 @@ export function ManagerTransfers({
                       )}
                     {effectiveDeal === "loan" ? (
                       <p className={`${TYPO.bodySm} text-pitch-400`}>
-                        Loan until season end · fee {formatWage(loanFee)} · you
-                        pay 50% of wages
+                        Loan until season end · no fee · you pay 50% of wages
                       </p>
                     ) : (
                       <p className={`${TYPO.bodySm} text-pitch-400`}>
@@ -831,8 +838,10 @@ export function ManagerTransfers({
                           )
                         }
                       >
-                        Submit {effectiveDeal === "loan" ? "loan" : "offer"} —{" "}
-                        {formatWage(dealFee)}
+                        Submit{" "}
+                        {effectiveDeal === "loan"
+                          ? "free loan"
+                          : `offer — ${formatWage(dealFee)}`}
                       </GameButton>
                       <GameButton
                         variant="secondary"
@@ -1147,8 +1156,7 @@ export function ManagerTransfers({
                     <DealTypeToggle value={dealType} onChange={setDealType} />
                     {dealType === "loan" ? (
                       <p className={`${TYPO.bodySm} text-pitch-400`}>
-                        Loan fee {formatWage(loanFee)} · rest of season · 50%
-                        wages
+                        Free loan · rest of season · 50% wages
                       </p>
                     ) : (
                       <label className={TYPO.bodySm}>
@@ -1185,7 +1193,7 @@ export function ManagerTransfers({
                     >
                       Submit{" "}
                       {dealType === "loan"
-                        ? `loan — ${formatWage(loanFee)}`
+                        ? "free loan"
                         : `${formatWage(offerFee)} offer`}
                     </GameButton>
                   </div>
@@ -1204,7 +1212,7 @@ export function ManagerTransfers({
                       }}
                     >
                       {dealType === "loan"
-                        ? `Loan — ${formatWage(loanFee)}`
+                        ? "Loan — free"
                         : `Make offer — from ${formatWage(buyerFee)}`}
                     </GameButton>
                   </div>
@@ -1299,7 +1307,7 @@ export function ManagerTransfers({
                             openListedNegotiation(playerId);
                           }}
                         >
-                          Loan — {formatWage(loanFee)}
+                          Loan — free
                         </GameButton>
                       )}
                       <GameButton

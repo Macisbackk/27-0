@@ -1097,6 +1097,11 @@ export interface ManagerCareer {
   championshipTransferCooldowns?: Record<string, number>;
   /** Schema marker for the centralised AI transfer-activity tuning (transferActivityConfig.ts). */
   aiTransferActivityVersion?: number;
+  /**
+   * Loan market: free loans + Championship club listings + young/surplus bias.
+   * Bump to regenerate leagueListedPlayers on hydrate.
+   */
+  loanMarketVersion?: number;
   /** Rebalanced recruitment target pools and seasonal approach pacing. */
   transferTargetBalanceVersion?: number;
   /** Last gameWeek that ran senior transfer-offer generators (dedupe cup/league). */
