@@ -21,7 +21,8 @@ import {
   syncManagerLeagueTable,
 } from "./managerFixtures";
 import { PLAYOFF_QUALIFIERS } from "../game/playoff-simulation";
-import { getUserSeasonGames, isUserInChampionship } from "./leagueMembership";
+import { getUserSeasonGames, getUserCompetitionId } from "./leagueMembership";
+import { leagueHasPlayoffs } from "./managerLeagues";
 
 export { PLAYOFF_QUALIFIERS };
 
@@ -42,7 +43,7 @@ export function isGrandFinalFixture(
 }
 
 export function userQualifiedForManagerPlayoffs(career: ManagerCareer): boolean {
-  if (isUserInChampionship(career)) return false;
+  if (!leagueHasPlayoffs(getUserCompetitionId(career))) return false;
   return (
     getUserLeaguePosition(getManagerLeagueTable(career), career.club) <=
     PLAYOFF_QUALIFIERS
@@ -219,7 +220,7 @@ export function buildPlayoffScheduledFixture(
 
 export function ensurePlayoffsReady(career: ManagerCareer): ManagerCareer {
   const synced = syncManagerLeagueTable(career);
-  if (isUserInChampionship(synced)) return synced;
+  if (!leagueHasPlayoffs(getUserCompetitionId(synced))) return synced;
   if (!isLeagueAndCupPhaseComplete(synced)) {
     return synced;
   }
@@ -244,7 +245,7 @@ export function isLeaguePhaseComplete(career: ManagerCareer): boolean {
 export function shouldShowPlayoffsInSeasonProgress(
   career: ManagerCareer
 ): boolean {
-  if (isUserInChampionship(career)) return false;
+  if (!leagueHasPlayoffs(getUserCompetitionId(career))) return false;
   return isLeaguePhaseComplete(career);
 }
 

@@ -1,10 +1,10 @@
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import type { ManagerCareer, ManagerFinance, ManagerSeasonSummary } from "./types";
 import {
-  CHAMPIONSHIP_ECONOMY_SCALE,
   getManagerClubConfig,
   getManagerClubStarRating,
 } from "./club-config";
+import { getLeagueComfortRatingOffset, getLeagueEconomyScale } from "./managerLeagues";
 import { computeWageBill, getWageBudgetForClub, resolveWageBudgetForCareer } from "./managerContracts";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { getUserLeaguePosition } from "./managerFixtures";
@@ -24,9 +24,8 @@ const TRANSFER_RANGE_BY_STARS: Record<number, [number, number]> = {
 };
 
 function clubEconomyMultiplier(club: string): number {
-  return getManagerClubConfig(club).competition === "championship"
-    ? CHAMPIONSHIP_ECONOMY_SCALE
-    : 1;
+  const competition = getManagerClubConfig(club).competition ?? "super-league";
+  return getLeagueEconomyScale(competition);
 }
 
 /** Max rating a club comfortably recruits without heavy fee / wage premiums. */
@@ -63,8 +62,10 @@ export function getComfortableSigningRating(
 ): number {
   const stars = getClubStarTier(club, careerStars);
   const base = COMFORT_RATING_BY_STARS[stars] ?? COMFORT_RATING_BY_STARS[3]!;
-  if (getManagerClubConfig(club).competition === "championship") {
-    return Math.min(76, base - 8);
+  const competition = getManagerClubConfig(club).competition ?? "super-league";
+  const offset = getLeagueComfortRatingOffset(competition);
+  if (offset > 0) {
+    return Math.min(76, base - offset);
   }
   return base;
 }

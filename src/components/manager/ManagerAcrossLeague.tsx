@@ -46,8 +46,14 @@ import {
   getCompetitionStandings,
 } from "@/lib/manager/competitionStandings";
 import { isUserInChampionship } from "@/lib/manager/leagueMembership";
+import {
+  getLeagueDisplayName,
+  getLeagueShortName,
+  MANAGER_LEAGUE_IDS,
+} from "@/lib/manager/managerLeagues";
+import type { ManagerCompetitionId } from "@/lib/manager/types";
 
-export type AcrossTheLeagueCompetitionId = "super-league" | "championship";
+export type AcrossTheLeagueCompetitionId = ManagerCompetitionId;
 
 interface ManagerAcrossLeagueProps {
   career: ManagerCareer;
@@ -112,8 +118,7 @@ export function ManagerAcrossLeague({
     return next;
   }, [career]);
 
-  const competitionLabel =
-    selectedCompetitionId === "super-league" ? "Super League" : "Championship";
+  const competitionLabel = getLeagueDisplayName(selectedCompetitionId);
 
   const tableRows = useMemo(
     () => getCompetitionStandings(withChamp, selectedCompetitionId),
@@ -232,10 +237,11 @@ export function ManagerAcrossLeague({
             value={selectedCompetitionId}
             onChange={setSelectedCompetitionId}
             fullWidth
-            options={[
-              { id: "super-league", label: "Super League", shortLabel: "SL" },
-              { id: "championship", label: "Championship", shortLabel: "Champ" },
-            ]}
+            options={MANAGER_LEAGUE_IDS.map((id) => ({
+              id,
+              label: getLeagueDisplayName(id),
+              shortLabel: getLeagueShortName(id),
+            }))}
           />
         </div>
 

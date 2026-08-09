@@ -49,6 +49,11 @@ export type ManagerCompetition =
   | "world_club_challenge";
 
 /** Division the manager career is competing in. */
+/**
+ * Competition the user is managing in.
+ * When adding a league: extend this union, then register it in `managerLeagues.ts`
+ * and follow `.cursor/rules/manager-leagues.mdc`.
+ */
 export type ManagerCompetitionId = "super-league" | "championship";
 
 export type CupRoundKey =
@@ -897,6 +902,11 @@ export interface ManagerCareer {
   superLeagueClubNames?: string[];
   /** Championship membership for this save (20 clubs; mutates on prom/rel). */
   championshipClubNames?: string[];
+  /**
+   * Membership for future leagues beyond SL/Champ.
+   * Use getCareerClubsForLeague / setCareerClubsForLeague — do not read ad hoc.
+   */
+  leagueMembershipById?: Partial<Record<ManagerCompetitionId, string[]>>;
   seasonYear: number;
   seed: string;
   budget: number;

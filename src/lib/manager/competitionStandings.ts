@@ -1,8 +1,8 @@
 import {
-  getCareerChampionshipClubs,
-  getCareerSuperLeagueClubs,
-  isUserInChampionship,
-} from "./leagueMembership";
+  getCareerClubsForLeague,
+  getLeagueSeasonGames,
+} from "./managerLeagues";
+import { isUserInChampionship } from "./leagueMembership";
 import {
   buildLeagueTableFromMatches,
   simulateRoundOtherMatches,
@@ -13,7 +13,6 @@ import type {
   ManagerLeagueRow,
   ManagerRoundMatch,
 } from "./types";
-import { MANAGER_SEASON_GAMES } from "./types";
 
 /**
  * Resolve standings for a competition tab — never confuse the user's league
@@ -30,15 +29,26 @@ export function getCompetitionStandings(
     return career.championshipCompetition?.standings ?? [];
   }
 
-  // Super League
-  if (!userInChamp) return career.leagueTable ?? [];
-  return career.aiSuperLeagueStandings?.length
-    ? career.aiSuperLeagueStandings
-    : buildLeagueTableFromMatches(
-        career.aiSuperLeagueRoundMatches ?? [],
-        career.club,
-        getCareerSuperLeagueClubs(career)
-      );
+  // Super League (user table when managed; AI table when user is in Champ)
+  if (!userInChamp && competitionId === "super-league") {
+    return career.leagueTable ?? [];
+  }
+  if (competitionId === "super-league") {
+    return career.aiSuperLeagueStandings?.length
+      ? career.aiSuperLeagueStandings
+      : buildLeagueTableFromMatches(
+          career.aiSuperLeagueRoundMatches ?? [],
+          career.club,
+          getCareerClubsForLeague(career, "super-league")
+        );
+  }
+
+  // Future leagues: membership list with empty table until a parallel AI world exists.
+  return buildLeagueTableFromMatches(
+    [],
+    career.club,
+    getCareerClubsForLeague(career, competitionId)
+  );
 }
 
 /** Clubs listed in the Across-the-League squad browser for a competition. */
@@ -46,17 +56,14 @@ export function getCompetitionClubNames(
   career: ManagerCareer,
   competitionId: ManagerCompetitionId
 ): string[] {
-  if (competitionId === "championship") {
-    return getCareerChampionshipClubs(career);
-  }
-  return getCareerSuperLeagueClubs(career);
+  return getCareerClubsForLeague(career, competitionId);
 }
 
 function emptySlTable(career: ManagerCareer): ManagerLeagueRow[] {
   return buildLeagueTableFromMatches(
     [],
     career.club,
-    getCareerSuperLeagueClubs(career)
+    getCareerClubsForLeague(career, "super-league")
   );
 }
 
@@ -102,11 +109,11 @@ export function tickAiSuperLeagueOnAdvance(
   if (!isUserInChampionship(career)) return career;
 
   let next = ensureAiSuperLeague(career);
-  const clubs = getCareerSuperLeagueClubs(next);
+  const clubs = getCareerClubsForLeague(next, "super-league");
   if (clubs.length < 2) return next;
 
   const targetRound = Math.min(
-    MANAGER_SEASON_GAMES,
+    getLeagueSeasonGames("super-league"),
     Math.max(0, next.gameWeek)
   );
   let lastRound = next.aiSuperLeagueLastRound ?? 0;
@@ -116,8 +123,6 @@ export function tickAiSuperLeagueOnAdvance(
 
   while (lastRound < targetRound) {
     const round = lastRound + 1;
-    // Pair all SL clubs (no user side) — pick a synthetic "user" as first club
-    // so simulateRoundOtherMatches still fills the round.
     const anchor = clubs[0]!;
     const rest = clubs.slice(1);
     const opponent = rest[0] ?? clubs[1]!;
@@ -139,14 +144,11 @@ export function tickAiSuperLeagueOnAdvance(
       next.leagueClubStates,
       {
         ...next,
-        // Force SL club list for pairing
         userCompetitionId: "super-league",
         superLeagueClubNames: clubs,
         championshipClubNames: next.championshipClubNames,
       }
     );
-    // Drop the placeholder if scores stayed 0-0 and both were only anchors —
-    // actually simulated already includes a real sim for the placeholder pair.
     roundMatches = [
       ...roundMatches.filter((m) => m.round !== round),
       ...simulated,

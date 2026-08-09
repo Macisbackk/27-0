@@ -12,8 +12,13 @@ import {
   ensureAiSuperLeague,
   getCompetitionStandings,
 } from "@/lib/manager/competitionStandings";
+import {
+  getLeagueDisplayName,
+  MANAGER_LEAGUE_IDS,
+} from "@/lib/manager/managerLeagues";
+import type { ManagerCompetitionId } from "@/lib/manager/types";
 
-type TableCompetition = "super-league" | "championship";
+type TableCompetition = ManagerCompetitionId;
 
 interface ManagerTableProps {
   career: ManagerCareer;
@@ -117,8 +122,7 @@ export function ManagerTable({ career }: ManagerTableProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const withChamp = ensureAiSuperLeague(ensureChampionshipSystems(career));
-  const title =
-    competition === "super-league" ? "Super League" : "Championship";
+  const title = getLeagueDisplayName(competition);
   const rows = getCompetitionStandings(withChamp, competition);
 
   return (
@@ -142,12 +146,7 @@ export function ManagerTable({ career }: ManagerTableProps) {
               role="menu"
               className="absolute z-20 mt-1 min-w-[12rem] rounded-lg border border-pitch-600/70 bg-pitch-950 p-1 shadow-xl"
             >
-              {(
-                [
-                  ["super-league", "Super League"],
-                  ["championship", "Championship"],
-                ] as const
-              ).map(([id, label]) => (
+              {MANAGER_LEAGUE_IDS.map((id) => (
                 <button
                   key={id}
                   type="button"
@@ -162,16 +161,15 @@ export function ManagerTable({ career }: ManagerTableProps) {
                     setMenuOpen(false);
                   }}
                 >
-                  {label}
+                  {getLeagueDisplayName(id)}
                 </button>
               ))}
             </div>
           ) : null}
         </div>
         <p className={`${TYPO.bodySm} mb-4 text-pitch-400`}>
-          {competition === "super-league"
-            ? `Season ${career.seasonYear} Super League standings`
-            : `Season ${career.seasonYear} Championship standings`}
+          Season {career.seasonYear} {getLeagueDisplayName(competition)}{" "}
+          standings
         </p>
         <LeagueTableGrid rows={rows} showDraws />
       </ManagerSection>

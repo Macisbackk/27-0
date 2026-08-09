@@ -1,32 +1,33 @@
 import type { ManagerCompetitionId } from "./types";
-import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { CHAMPIONSHIP_CLUB_NAMES } from "../clubs/championship-clubs";
-import { CHAMPIONSHIP_ROUNDS } from "./championship/championshipLeague";
 import { pushInboxMessage } from "./managerInbox";
-import { MANAGER_SEASON_GAMES, type ManagerCareer } from "./types";
+import { type ManagerCareer } from "./types";
+import {
+  getCareerClubsForLeague,
+  getDefaultClubsForLeague,
+  getLeagueSeasonGames,
+  getLinkedPromoteRelegateCount,
+} from "./managerLeagues";
 
 export type { ManagerCompetitionId };
 
-export const PROMOTE_RELEGATE_COUNT = 2;
+/** @deprecated Prefer getLinkedPromoteRelegateCount() from managerLeagues. */
+export const PROMOTE_RELEGATE_COUNT = getLinkedPromoteRelegateCount();
 
 export function defaultSuperLeagueClubs(): string[] {
-  return [...CURRENT_PLAYABLE_CLUBS];
+  return getDefaultClubsForLeague("super-league");
 }
 
 export function defaultChampionshipClubs(): string[] {
-  return [...CHAMPIONSHIP_CLUB_NAMES];
+  return getDefaultClubsForLeague("championship");
 }
 
 export function getCareerSuperLeagueClubs(career: ManagerCareer): string[] {
-  return career.superLeagueClubNames?.length
-    ? [...career.superLeagueClubNames]
-    : defaultSuperLeagueClubs();
+  return getCareerClubsForLeague(career, "super-league");
 }
 
 export function getCareerChampionshipClubs(career: ManagerCareer): string[] {
-  return career.championshipClubNames?.length
-    ? [...career.championshipClubNames]
-    : defaultChampionshipClubs();
+  return getCareerClubsForLeague(career, "championship");
 }
 
 export function getUserCompetitionId(career: ManagerCareer): ManagerCompetitionId {
@@ -47,16 +48,20 @@ export function isUserInChampionship(career: ManagerCareer): boolean {
   return getUserCompetitionId(career) === "championship";
 }
 
+/** True when the user is managing in the given competition. */
+export function isUserInLeague(
+  career: ManagerCareer,
+  id: ManagerCompetitionId
+): boolean {
+  return getUserCompetitionId(career) === id;
+}
+
 export function getUserLeagueClubs(career: ManagerCareer): string[] {
-  return isUserInChampionship(career)
-    ? getCareerChampionshipClubs(career)
-    : getCareerSuperLeagueClubs(career);
+  return getCareerClubsForLeague(career, getUserCompetitionId(career));
 }
 
 export function getUserSeasonGames(career: ManagerCareer): number {
-  return isUserInChampionship(career)
-    ? CHAMPIONSHIP_ROUNDS
-    : MANAGER_SEASON_GAMES;
+  return getLeagueSeasonGames(getUserCompetitionId(career));
 }
 
 /** Ensure membership arrays + competition id exist on a career. */

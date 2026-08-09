@@ -1,0 +1,36 @@
+---
+description: How to add a new Manager Mode league (checklist + registry)
+globs: src/lib/manager/**/*
+alwaysApply: false
+---
+
+# Adding a Manager Mode league
+
+New leagues are **registry-first**. Do not scatter Super League / Championship string checks for season length, economy, bios, or board rules.
+
+## Source of truth
+
+- Registry: `src/lib/manager/managerLeagues.ts` (`MANAGER_LEAGUES`)
+- New-career UI helpers: `src/lib/manager/managerPlayableLeagues.ts`
+- Competition id union: `ManagerCompetitionId` in `src/lib/manager/types.ts`
+- Future membership (non SL/Champ): `career.leagueMembershipById` via `getCareerClubsForLeague` / `setCareerClubsForLeague`
+
+## Checklist (in order)
+
+1. **Extend** `ManagerCompetitionId` with the new id (e.g. `"league-one"`).
+2. **Register** a full `ManagerLeagueDefinition` in `MANAGER_LEAGUES` (name, bio, seasonGames, playoffs, economyScale, boardRules, defaultClubNames, optional promotionRelegation).
+3. **Clubs** — add club data + `getManagerClubConfig` / `competition` tagging so `getClubsForPlayableLeague(id)` returns them. Set `selectable: true` only when careers can start there.
+4. **Career start** — `createNewCareer` must build squad/schedule for that competition (mirror Champ vs SL branches; prefer helpers keyed by `getUserCompetitionId` / `getManagerLeague`).
+5. **Fixtures / table** — schedule length from `getLeagueSeasonGames(id)`; Magic Weekend from `leagueIncludesMagicWeekend(id)`.
+6. **Standings UI** — Across the League / Table via `getCompetitionStandings` / `getCompetitionClubNames` in `competitionStandings.ts` (extend when a third parallel AI league is needed).
+7. **Season end** — playoffs only if `leagueHasPlayoffs(id)`; rewards/titles use `getLeagueTitleLabel(id)` and board rules via `didMeetLeagueBoardExpectation`.
+8. **Prom/rel** — if linked to another league, set `promotionRelegation` on both defs and extend `applyPromotionRelegation` (today SL↔Champ only).
+9. **Economy** — use `getLeagueEconomyScale(id)` / `getLeagueComfortRatingOffset(id)` (already wired for transfer + wage budgets).
+10. **Typecheck** — `MANAGER_LEAGUES` is `Record<ManagerCompetitionId, …>`; missing keys fail `tsc`.
+
+## Do / don’t
+
+- **Do** add display copy (bio, clubSelectBlurb, starTierBios) on the definition so league select stays data-driven.
+- **Do** keep SL/Champ-specific AI worlds (`championshipCompetition`, `aiSuperLeague*`) behind helpers until a generic “parallel AI league” exists.
+- **Don’t** hardcode `seasonGames === 19` or `economy === 0.48` in UI/sim — read the registry.
+- **Don’t** invent a new select screen path; league → club already reads `listSelectableManagerLeagues()`.

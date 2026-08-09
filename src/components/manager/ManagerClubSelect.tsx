@@ -4,15 +4,16 @@ import { useMemo, useState } from "react";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import { getClubColors } from "@/lib/clubs";
 import { GameButton } from "@/components/ui/GameButton";
-import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
-import { CARD, SPACING, SUB_TAB_BAR_SHELL } from "@/lib/ui/design-system";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import type { ManagerClubConfig } from "@/lib/manager/club-config";
 import {
-  CHAMPIONSHIP_STAR_TIER_BIOS,
-  getAllManagerClubConfigs,
-  MANAGER_STAR_TIER_BIOS,
-  type ManagerClubConfig,
-} from "@/lib/manager/club-config";
+  getClubsForPlayableLeague,
+  getManagerPlayableLeague,
+  listSelectableManagerLeagues,
+  type ManagerPlayableLeagueDefinition,
+} from "@/lib/manager/managerPlayableLeagues";
+import type { ManagerCompetitionId } from "@/lib/manager/types";
 import { getClubAttendanceProfile } from "@/lib/manager/managerAttendance";
 import { ClubStarRatingDisplay } from "@/components/ui/ClubStarRating";
 import { playUiClick } from "@/lib/sound";
@@ -23,7 +24,48 @@ interface ManagerClubSelectProps {
   busy?: boolean;
 }
 
-type ClubSelectTab = "super-league" | "championship";
+type SelectStep = "league" | "club";
+
+function LeagueSelectRow({
+  league,
+  clubCount,
+  onSelect,
+  disabled,
+}: {
+  league: ManagerPlayableLeagueDefinition;
+  clubCount: number;
+  onSelect: (id: ManagerCompetitionId) => void;
+  disabled?: boolean;
+}) {
+  return (
+    <li>
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={() => {
+          if (disabled) return;
+          playUiClick();
+          onSelect(league.id);
+        }}
+        className={`${CARD.base} ${CARD.interactive} flex w-full items-start gap-3 rounded-lg px-3 py-3 text-left disabled:pointer-events-none disabled:opacity-50`}
+      >
+        <span
+          className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-pitch-600/70 bg-pitch-900/70 text-[10px] font-bold uppercase tracking-wide text-accent-gold"
+          aria-hidden
+        >
+          {league.shortName}
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold text-white">{league.name}</p>
+          <p className={`mt-1.5 ${TYPO.bodySm} text-pitch-400`}>{league.bio}</p>
+          <p className="mt-2 text-[10px] uppercase tracking-wide text-pitch-500">
+            {clubCount} club{clubCount === 1 ? "" : "s"}
+          </p>
+        </div>
+      </button>
+    </li>
+  );
+}
 
 function ClubSelectRow({
   club,
@@ -153,42 +195,70 @@ export function ManagerClubSelect({
   onBack,
   busy = false,
 }: ManagerClubSelectProps) {
-  const [tab, setTab] = useState<ClubSelectTab>("super-league");
-  const { slClubs, champClubs } = useMemo(() => {
-    const all = getAllManagerClubConfigs();
-    return {
-      slClubs: all.filter((c) => c.competition !== "championship"),
-      champClubs: all.filter((c) => c.competition === "championship"),
-    };
-  }, []);
+  const [step, setStep] = useState<SelectStep>("league");
+  const [leagueId, setLeagueId] = useState<ManagerCompetitionId | null>(null);
 
-  const showingChamp = tab === "championship" && champClubs.length > 0;
+  const leagues = useMemo(() => listSelectableManagerLeagues(), []);
+  const selectedLeague = leagueId
+    ? getManagerPlayableLeague(leagueId)
+    : undefined;
+  const clubs = useMemo(
+    () => (leagueId ? getClubsForPlayableLeague(leagueId) : []),
+    [leagueId]
+  );
+
+  if (step === "league" || !selectedLeague) {
+    return (
+      <div className={`mx-auto max-w-xl ${SPACING.stackMd}`}>
+        <div className="mb-1">
+          <h1 className={`${TYPO.pageTitle} text-lg sm:text-xl`}>
+            Choose Your League
+          </h1>
+          <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+            Pick a competition, then choose the club you want to manage.
+          </p>
+        </div>
+
+        <ul className="space-y-2.5" role="list">
+          {leagues.map((league) => (
+            <LeagueSelectRow
+              key={league.id}
+              league={league}
+              clubCount={getClubsForPlayableLeague(league.id).length}
+              onSelect={(id) => {
+                setLeagueId(id);
+                setStep("club");
+              }}
+              disabled={busy}
+            />
+          ))}
+        </ul>
+
+        <GameButton
+          variant="secondary"
+          onClick={onBack}
+          fullWidth={false}
+          disabled={busy}
+        >
+          Back
+        </GameButton>
+      </div>
+    );
+  }
 
   return (
     <div className={`mx-auto max-w-xl ${SPACING.stackMd}`}>
       <div className="mb-1">
-        <h1 className={`${TYPO.pageTitle} text-lg sm:text-xl`}>Choose Your Club</h1>
+        <p className={`${TYPO.sectionLabel} text-accent-gold`}>
+          {selectedLeague.name}
+        </p>
+        <h1 className={`mt-1.5 ${TYPO.pageTitle} text-lg sm:text-xl`}>
+          Choose Your Club
+        </h1>
         <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
-          {showingChamp
-            ? "Championship clubs — weaker budgets and squads, with promotion on the line."
-            : "Super League clubs — top-tier money, ratings, and board targets."}
+          {selectedLeague.clubSelectBlurb}
         </p>
       </div>
-
-      {champClubs.length > 0 ? (
-        <div className={`${SUB_TAB_BAR_SHELL} mb-1`}>
-          <GameSegmentedControl
-            ariaLabel="Competition"
-            value={tab}
-            onChange={setTab}
-            fullWidth
-            options={[
-              { id: "super-league", label: "Super League", shortLabel: "SL" },
-              { id: "championship", label: "Championship", shortLabel: "Champ" },
-            ]}
-          />
-        </div>
-      ) : null}
 
       {busy && (
         <p className={`${TYPO.bodySm} text-center text-theme-primary`}>
@@ -196,29 +266,25 @@ export function ManagerClubSelect({
         </p>
       )}
 
-      {showingChamp ? (
-        <StarGroupedList
-          clubs={champClubs}
-          bios={CHAMPIONSHIP_STAR_TIER_BIOS}
-          onSelect={onSelect}
-          busy={busy}
-        />
-      ) : (
-        <StarGroupedList
-          clubs={slClubs}
-          bios={MANAGER_STAR_TIER_BIOS}
-          onSelect={onSelect}
-          busy={busy}
-        />
-      )}
+      <StarGroupedList
+        clubs={clubs}
+        bios={selectedLeague.starTierBios}
+        onSelect={onSelect}
+        busy={busy}
+      />
 
       <GameButton
         variant="secondary"
-        onClick={onBack}
+        onClick={() => {
+          if (busy) return;
+          playUiClick();
+          setStep("league");
+          setLeagueId(null);
+        }}
         fullWidth={false}
         disabled={busy}
       >
-        Back
+        Back to leagues
       </GameButton>
     </div>
   );
