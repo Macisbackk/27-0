@@ -614,10 +614,18 @@ export type LiveMatchPhase =
   | "second_half"
   | "full_time";
 
+export type TransferListingType = "permanent" | "loan" | "both";
+
 export interface PlayerTransferStatus {
   listed: boolean;
   askingPrice: number;
   listedAtGameWeek: number;
+  /**
+   * permanent (default) — sale only;
+   * loan — loan market only;
+   * both — permanent or loan.
+   */
+  listingType?: TransferListingType;
 }
 
 export interface LeagueListedPlayer {
@@ -625,6 +633,7 @@ export interface LeagueListedPlayer {
   club: string;
   askingPrice: number;
   listedAtWeek: number;
+  listingType?: TransferListingType;
 }
 
 export type FreeAgentSource =

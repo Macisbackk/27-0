@@ -2,6 +2,7 @@ import type { ManagerCareer, ManagerScheduledFixture } from "./types";
 import {
   getManagerOpponentMatchRating,
   getManagerOpponentPoolOptions,
+  getLeagueClubPlayerPool,
 } from "./managerLeagueRosters";
 import { getOpponentMatchRating } from "../game/opponent-scorers";
 import {
@@ -9,7 +10,31 @@ import {
   computeNrlLineupTeamRating,
 } from "../nrl/nrlMatchdayLineup";
 import { isNrlClubName } from "../nrl/nrlClubs";
-import { isChampionshipClubName } from "../clubs/championship-clubs";
+import {
+  getChampionshipClubByName,
+  isChampionshipClubName,
+} from "../clubs/championship-clubs";
+import { championshipFriendlySimRating } from "./managerFriendlies";
+import { isUserInChampionship } from "./leagueMembership";
+
+/**
+ * Squad-scale Championship team rating for display (peakRating XIII band).
+ * Falls back to raw baseStrength when squads are missing.
+ */
+export function getChampionshipDisplayTeamRating(
+  career: ManagerCareer,
+  club: string
+): number {
+  const pool = getLeagueClubPlayerPool(career, club);
+  if (pool.length >= 13) {
+    const ranked = [...pool].sort((a, b) => b.peakRating - a.peakRating);
+    const sample = ranked.slice(0, 17);
+    return Math.round(
+      sample.reduce((sum, p) => sum + p.peakRating, 0) / sample.length
+    );
+  }
+  return getChampionshipClubByName(club)?.baseStrength ?? 62;
+}
 
 /**
  * Displayed opponent team rating for Hub / Play / predictions.
@@ -23,15 +48,14 @@ export function getDisplayedOpponentTeamRating(
   >
 ): number {
   if (fixture.competition === "friendly") {
-    // Championship friendlies must use the cup tier scale — never the legacy
-    // stored teamRating (baseStrength×1.15) that made them SL-competitive.
     if (isChampionshipClubName(fixture.opponent)) {
-      return getManagerOpponentMatchRating(
-        career,
-        fixture.opponent,
-        career.seed,
-        fixture.round
-      );
+      // Prefer the stored friendly card rating (squad / baseStrength scale).
+      if (career.preSeason.activeFriendly?.club === fixture.opponent) {
+        const stored = career.preSeason.activeFriendly.teamRating;
+        // Legacy cup-tier saves (~40–62) — rematerialise on the display scale.
+        if (stored >= 65) return stored;
+      }
+      return getChampionshipDisplayTeamRating(career, fixture.opponent);
     }
     if (career.preSeason.activeFriendly?.club === fixture.opponent) {
       return career.preSeason.activeFriendly.teamRating;
@@ -51,6 +75,28 @@ export function getDisplayedOpponentTeamRating(
     career.seed,
     fixture.round
   );
+}
+
+/**
+ * Match-sim opponent rating for friendlies.
+ * Super League users still face Champ sides on the cup-tier scale so a full
+ * SL XIII does not treat them as Super League peers; Champ users see true squad ratings.
+ */
+export function getFriendlyMatchOpponentRating(
+  career: ManagerCareer,
+  opponent: string,
+  round: number,
+  fixtureId: string
+): number {
+  if (isChampionshipClubName(opponent) && !isUserInChampionship(career)) {
+    return championshipFriendlySimRating(opponent);
+  }
+  return getDisplayedOpponentTeamRating(career, {
+    opponent,
+    round,
+    competition: "friendly",
+    id: fixtureId,
+  });
 }
 
 /** Shared WCC / NRL strength: weighted average of the generated matchday lineup. */

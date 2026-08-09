@@ -2,6 +2,7 @@ import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import {
   CHAMPIONSHIP_CLUB_NAMES,
+  getChampionshipClubByName,
   isChampionshipClubName,
 } from "../clubs/championship-clubs";
 import { getClubBaseStrength } from "../game/club-strength";
@@ -21,8 +22,11 @@ import type {
 } from "./types";
 
 export const FRIENDLIES_REQUIRED = 3;
-/** v3: Championship friendly ratings use cup tier strength (not baseStrength×1.15). */
-export const FRIENDLY_SCHEDULE_VERSION = 3;
+/**
+ * v4: Championship friendly teamRating is real squad/baseStrength scale
+ * (not cup-tier getClubBaseStrength ~40–62).
+ */
+export const FRIENDLY_SCHEDULE_VERSION = 4;
 
 const ATTENDANCE_LABELS = {
   low: "Modest crowd expected",
@@ -46,37 +50,63 @@ function defaultPreSeason(): PreSeasonState {
   };
 }
 
-function championshipFriendlyRating(club: string): number {
-  // Same tier-offset scale as Challenge Cup / getClubBaseStrength (~40–62).
-  // Previously used raw baseStrength×1.15 (~71–85), which made Championship
-  // friendlies play like Super League peers against a full SL XIII.
+function championshipFriendlyTeamRating(
+  club: string,
+  career?: Pick<ManagerCareer, "championshipSquads"> | null
+): number {
+  const squads = career?.championshipSquads;
+  const champ = getChampionshipClubByName(club);
+  if (squads && champ) {
+    const roster = squads.rosterByClub[champ.id] ?? [];
+    const ratings = roster
+      .map((id) => squads.players[id]?.peakRating)
+      .filter((r): r is number => typeof r === "number" && Number.isFinite(r))
+      .sort((a, b) => b - a)
+      .slice(0, 17);
+    if (ratings.length >= 13) {
+      return Math.round(
+        ratings.reduce((sum, r) => sum + r, 0) / ratings.length
+      );
+    }
+  }
+  // Raw Champ club strength (54–74) — same band as player peak ratings, not the
+  // cup-tier offset (~40–62) used for SL-vs-Champ match dampening.
+  return champ?.baseStrength ?? 62;
+}
+
+/** Cup-tier strength for Super League users facing Championship friendlies. */
+export function championshipFriendlySimRating(club: string): number {
   return getClubBaseStrength(club);
 }
 
 function withCorrectChampionshipFriendlyRating<
   T extends { club: string; teamRating: number },
->(item: T): T {
+>(
+  item: T,
+  career?: Pick<ManagerCareer, "championshipSquads"> | null
+): T {
   if (!isChampionshipClubName(item.club)) return item;
-  const teamRating = championshipFriendlyRating(item.club);
+  const teamRating = championshipFriendlyTeamRating(item.club, career);
   return item.teamRating === teamRating ? item : { ...item, teamRating };
 }
 
 function remapChampionshipFriendlyRatings(
-  state: PreSeasonState
+  state: PreSeasonState,
+  career?: Pick<ManagerCareer, "championshipSquads"> | null
 ): PreSeasonState {
   return {
     ...state,
-    currentChoices: (state.currentChoices ?? []).map(
-      withCorrectChampionshipFriendlyRating
+    currentChoices: (state.currentChoices ?? []).map((c) =>
+      withCorrectChampionshipFriendlyRating(c, career)
     ),
-    draftSchedule: (state.draftSchedule ?? []).map(
-      withCorrectChampionshipFriendlyRating
+    draftSchedule: (state.draftSchedule ?? []).map((c) =>
+      withCorrectChampionshipFriendlyRating(c, career)
     ),
-    confirmedSchedule: (state.confirmedSchedule ?? []).map(
-      withCorrectChampionshipFriendlyRating
+    confirmedSchedule: (state.confirmedSchedule ?? []).map((c) =>
+      withCorrectChampionshipFriendlyRating(c, career)
     ),
     activeFriendly: state.activeFriendly
-      ? withCorrectChampionshipFriendlyRating(state.activeFriendly)
+      ? withCorrectChampionshipFriendlyRating(state.activeFriendly, career)
       : null,
   };
 }
@@ -105,7 +135,8 @@ function buildFriendlyCandidates(
   userClub: string,
   seed: string,
   friendlyIndex: number,
-  excludeClubs: string[] = []
+  excludeClubs: string[] = [],
+  career?: Pick<ManagerCareer, "championshipSquads"> | null
 ): FriendlyOpponentChoice[] {
   const rng = seedrandom(`${seed}-friendly-${friendlyIndex}`);
   const exclude = new Set([userClub, ...excludeClubs]);
@@ -121,7 +152,11 @@ function buildFriendlyCandidates(
   const champPool = CHAMPIONSHIP_CLUB_NAMES.filter(
     (club) => !exclude.has(club)
   ).map((club) =>
-    buildOpponentChoice(club, userClub, championshipFriendlyRating(club))
+    buildOpponentChoice(
+      club,
+      userClub,
+      championshipFriendlyTeamRating(club, career)
+    )
   );
 
   const shuffledSl = [...slPool].sort(() => rng() - 0.5);
@@ -183,7 +218,8 @@ export function initPreSeasonState(career: Partial<ManagerCareer>): PreSeasonSta
   if (career.preSeason) {
     const rawVersion = career.preSeason.friendlyScheduleVersion ?? 0;
     const normalized = remapChampionshipFriendlyRatings(
-      normalizePreSeason(career.preSeason)
+      normalizePreSeason(career.preSeason),
+      career
     );
     if (rawVersion < FRIENDLY_SCHEDULE_VERSION) {
       const played = normalized.friendliesPlayed;
@@ -300,7 +336,8 @@ export function ensureFriendlyChoices(career: ManagerCareer): ManagerCareer {
     career.club,
     career.seed,
     draftLen,
-    previousFriendlyClubs(career)
+    previousFriendlyClubs(career),
+    career
   );
 
   return {

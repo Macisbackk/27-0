@@ -534,6 +534,16 @@ export function bulkRenewExpiringContractsWithInbox(
   for (const ps of working.squad) {
     const contract = working.contracts[ps.playerId];
     if (!contract) continue;
+    if (
+      (working.activeLoans ?? []).some(
+        (l) =>
+          l.playerId === ps.playerId &&
+          l.loaneeClub === working.club &&
+          l.parentClub !== working.club
+      )
+    ) {
+      continue;
+    }
     const status = getContractStatus(contract);
     if (status !== "expires_this_season" && status !== "wants_renewal") {
       continue;

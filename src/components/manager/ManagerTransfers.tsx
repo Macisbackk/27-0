@@ -36,6 +36,8 @@ import {
   getAllLeaguePlayers,
   getBuyerMinimumTransferFee,
   getSellerAskingPrice,
+  listingAllowsLoan,
+  listingAllowsPermanent,
 } from "@/lib/manager/managerTransferLeague";
 import {
   completeIncomingLoan,
@@ -48,6 +50,9 @@ import {
   formatFreeAgentSource,
 } from "@/lib/manager/managerFreeAgents";
 import { getPlayerSigningDemand } from "@/lib/manager/managerTransfers";
+import {
+  toggleTransferWatchlist,
+} from "@/lib/manager/managerWatchlist";
 import { getPlayerById } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Player, Position } from "@/lib/types";
@@ -59,11 +64,12 @@ interface ManagerTransfersProps {
   onUpdate: (career: ManagerCareer) => void;
 }
 
-type TransferTab = "listed" | "freeAgents" | "unlisted" | "watch";
+type TransferTab = "listed" | "loans" | "freeAgents" | "unlisted" | "watch";
 type DealType = "permanent" | "loan";
 
 const TRANSFER_TAB_LABELS: Record<TransferTab, string> = {
   listed: "Listed",
+  loans: "Loans",
   freeAgents: "Free agents",
   unlisted: "Unlisted",
   watch: "Watch",
@@ -71,6 +77,7 @@ const TRANSFER_TAB_LABELS: Record<TransferTab, string> = {
 
 const TRANSFER_TAB_SHORT_LABELS: Record<TransferTab, string> = {
   listed: "Listed",
+  loans: "Loan",
   freeAgents: "Free",
   unlisted: "Bid",
   watch: "Watch",
@@ -156,11 +163,7 @@ export function ManagerTransfers({
 
   const toggleWatchlist = (playerId: string) => {
     playUiClick();
-    const current = career.transferWatchlistIds ?? [];
-    const next = current.includes(playerId)
-      ? current.filter((id) => id !== playerId)
-      : [...current, playerId];
-    onUpdate({ ...career, transferWatchlistIds: next });
+    onUpdate(toggleTransferWatchlist(career, playerId));
   };
 
   /** Full unlisted pool — not transfer-listed, not a free agent, not at your club. */
@@ -177,11 +180,26 @@ export function ManagerTransfers({
       .filter((r) => !freeAgentIds.has(r.playerId));
   }, [career, listedPlayerIds, freeAgentIds]);
 
+  const loanListedCount = useMemo(
+    () =>
+      career.leagueListedPlayers.filter(
+        (entry) =>
+          !isSameManagerClub(entry.club, career.club) &&
+          listingAllowsLoan(entry.listingType) &&
+          Boolean(getPlayerById(entry.playerId))
+      ).length,
+    [career]
+  );
+
   const tabCounts = useMemo(
     () => ({
-      listed: career.leagueListedPlayers.filter((entry) =>
-        Boolean(getPlayerById(entry.playerId))
+      listed: career.leagueListedPlayers.filter(
+        (entry) =>
+          !isSameManagerClub(entry.club, career.club) &&
+          listingAllowsPermanent(entry.listingType) &&
+          Boolean(getPlayerById(entry.playerId))
       ).length,
+      loans: loanListedCount,
       freeAgents: (career.freeAgents ?? []).filter(
         (entry) =>
           Boolean(
@@ -191,7 +209,7 @@ export function ManagerTransfers({
       ).length,
       watch: (career.transferWatchlistIds ?? []).length,
     }),
-    [career]
+    [career, loanListedCount]
   );
 
   const careerStars = getCareerClubStars(career);
@@ -203,6 +221,11 @@ export function ManagerTransfers({
   const listedPlayers = useMemo(() => {
     return career.leagueListedPlayers
       .filter((entry) => !isSameManagerClub(entry.club, career.club))
+      .filter((entry) =>
+        tab === "loans"
+          ? listingAllowsLoan(entry.listingType)
+          : listingAllowsPermanent(entry.listingType)
+      )
       .map((entry) => {
         const raw = getPlayerById(entry.playerId);
         if (!raw) return null;
@@ -214,7 +237,7 @@ export function ManagerTransfers({
         return getPlayerEligiblePositions(r.player).includes(positionFilter);
       })
       .sort((a, b) => b.player.peakRating - a.player.peakRating);
-  }, [career.leagueListedPlayers, positionFilter]);
+  }, [career.leagueListedPlayers, career.club, positionFilter, tab]);
 
   const freeAgents = useMemo(() => {
     return (career.freeAgents ?? [])
@@ -282,6 +305,7 @@ export function ManagerTransfers({
           club: listed?.club ?? free?.formerClub ?? fromLeague?.club ?? "Unknown",
           listed: Boolean(listed),
           freeAgent: Boolean(free),
+          listingType: listed?.listingType,
         };
       })
       .filter((row): row is NonNullable<typeof row> => row !== null);
@@ -393,10 +417,14 @@ export function ManagerTransfers({
     setOfferPlayerId(null);
   };
 
-  const submitListedAssistantDeal = (playerId: string, club: string) => {
+  const submitListedAssistantDeal = (
+    playerId: string,
+    club: string,
+    type: DealType = dealType
+  ) => {
     const demand = getPlayerSigningDemand(career, playerId);
     const fee =
-      dealType === "loan"
+      type === "loan"
         ? suggestedLoanFee(career, playerId, club, true)
         : getBuyerMinimumTransferFee(career, playerId, club, true);
     playUiClick();
@@ -409,13 +437,17 @@ export function ManagerTransfers({
         wagePerYear: demand.wagePerYear,
         yearsRequested: demand.yearsRequested,
       },
-      dealType
+      type
     );
   };
 
-  const submitListedNegotiatedDeal = (playerId: string, club: string) => {
+  const submitListedNegotiatedDeal = (
+    playerId: string,
+    club: string,
+    type: DealType = dealType
+  ) => {
     const fee =
-      dealType === "loan"
+      type === "loan"
         ? suggestedLoanFee(career, playerId, club, true)
         : getBuyerMinimumTransferFee(career, playerId, club, true);
     playUiClick();
@@ -428,7 +460,7 @@ export function ManagerTransfers({
         wagePerYear: listedOfferWage,
         yearsRequested: listedOfferYears,
       },
-      dealType
+      type
     );
   };
 
@@ -508,11 +540,13 @@ export function ManagerTransfers({
     setListedNegotiateId(null);
     setFreeAgentNegotiateId(null);
     setOfferPlayerId(null);
+    setDealType(next === "loans" ? "loan" : "permanent");
   };
 
   const transferSubTabs = (
     [
       ["listed", tabCounts.listed],
+      ["loans", tabCounts.loans],
       ["freeAgents", tabCounts.freeAgents],
       ["unlisted", null],
       ["watch", tabCounts.watch],
@@ -526,11 +560,13 @@ export function ManagerTransfers({
   const tabSubtitle =
     tab === "listed"
       ? "Players openly on the market — negotiate terms or leave the deal to your assistant"
-      : tab === "freeAgents"
-        ? "Out-of-contract players — no transfer fee, negotiate wages only"
-        : tab === "watch"
-          ? "Your scouting board — players you're tracking across the league"
-          : "Bid for any Super League player not on the transfer list — deals cost more";
+      : tab === "loans"
+        ? "Players available on loan until season end — fee plus a wage share"
+        : tab === "freeAgents"
+          ? "Out-of-contract players — no transfer fee, negotiate wages only"
+          : tab === "watch"
+            ? "Your scouting board — offer from here or jump to the market"
+            : "Bid for any Super League player not on the transfer list — deals cost more";
 
   return (
     <ManagerPage>
@@ -664,10 +700,10 @@ export function ManagerTransfers({
         </div>
       </ClipboardPanel>
 
-      {tab === "listed" && (
+      {(tab === "listed" || tab === "loans") && (
       <section className="space-y-3">
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
-          {listedPlayers.map(({ player, club }) => {
+          {listedPlayers.map(({ player, club, listingType, askingPrice }) => {
             const demand = getPlayerSigningDemand(career, player.id);
             const listedPrice = getSellerAskingPrice(
               career,
@@ -681,8 +717,17 @@ export function ManagerTransfers({
               club,
               true
             );
-            const loanFee = suggestedLoanFee(career, player.id, club, true);
-            const dealFee = dealType === "loan" ? loanFee : buyerFee;
+            const loanFee = Math.max(
+              suggestedLoanFee(career, player.id, club, true),
+              listingType === "loan" ? askingPrice : 0
+            );
+            const effectiveDeal: DealType =
+              tab === "loans"
+                ? "loan"
+                : dealType === "loan" && listingAllowsLoan(listingType)
+                  ? "loan"
+                  : "permanent";
+            const dealFee = effectiveDeal === "loan" ? loanFee : buyerFee;
             const appeal = evaluateClubSigningAppeal(
               career.club,
               player.peakRating,
@@ -691,7 +736,7 @@ export function ManagerTransfers({
             const isNegotiating = listedNegotiateId === player.id;
             const canAffordFee = getTransferBudget(career) >= dealFee;
             const wageCheck =
-              dealType === "loan"
+              effectiveDeal === "loan"
                 ? Math.round(
                     (isNegotiating ? listedOfferWage : demand.wagePerYear) * 0.5
                   )
@@ -708,13 +753,13 @@ export function ManagerTransfers({
               canAffordAdditionalWage(career, wageCheck);
             return (
               <ManagerTransferPlayerCard
-                key={player.id}
+                key={`${tab}-${player.id}`}
                 player={player}
                 club={club}
                 listed
                 fee={dealFee}
                 sellerListedFee={
-                  dealType === "permanent" && listedPrice < buyerFee
+                  effectiveDeal === "permanent" && listedPrice < buyerFee
                     ? listedPrice
                     : undefined
                 }
@@ -727,8 +772,12 @@ export function ManagerTransfers({
               >
                 {isNegotiating ? (
                   <div className="space-y-3">
-                    <DealTypeToggle value={dealType} onChange={setDealType} />
-                    {dealType === "loan" ? (
+                    {tab === "listed" &&
+                      listingAllowsLoan(listingType) &&
+                      listingAllowsPermanent(listingType) && (
+                        <DealTypeToggle value={dealType} onChange={setDealType} />
+                      )}
+                    {effectiveDeal === "loan" ? (
                       <p className={`${TYPO.bodySm} text-pitch-400`}>
                         Loan until season end · fee {formatWage(loanFee)} · you
                         pay 50% of wages
@@ -752,7 +801,7 @@ export function ManagerTransfers({
                           className={`${FILTER.input} mt-1`}
                         />
                       </label>
-                      {dealType === "permanent" && (
+                      {effectiveDeal === "permanent" && (
                         <label className={TYPO.bodySm}>
                           <span className="text-pitch-500">Contract length</span>
                           <input
@@ -775,10 +824,14 @@ export function ManagerTransfers({
                         fullWidth
                         disabled={!canAffordNegotiated}
                         onClick={() =>
-                          submitListedNegotiatedDeal(player.id, club)
+                          submitListedNegotiatedDeal(
+                            player.id,
+                            club,
+                            effectiveDeal
+                          )
                         }
                       >
-                        Submit {dealType === "loan" ? "loan" : "offer"} —{" "}
+                        Submit {effectiveDeal === "loan" ? "loan" : "offer"} —{" "}
                         {formatWage(dealFee)}
                       </GameButton>
                       <GameButton
@@ -788,7 +841,7 @@ export function ManagerTransfers({
                         onClick={() => {
                           playUiClick();
                           setListedNegotiateId(null);
-                          setDealType("permanent");
+                          setDealType(tab === "loans" ? "loan" : "permanent");
                         }}
                       >
                         Cancel
@@ -797,16 +850,28 @@ export function ManagerTransfers({
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <DealTypeToggle value={dealType} onChange={setDealType} />
+                    {tab === "loans" && (
+                      <p className={`${TYPO.meta} text-sky-300`}>
+                        Available on loan
+                      </p>
+                    )}
+                    {tab === "listed" &&
+                      listingAllowsLoan(listingType) &&
+                      listingAllowsPermanent(listingType) && (
+                        <DealTypeToggle value={dealType} onChange={setDealType} />
+                      )}
                     <div className="grid gap-2 sm:grid-cols-2">
                     <GameButton
                       variant="theme"
                       size="sm"
                       fullWidth
                       disabled={!canAffordFee || !appeal.allowed}
-                      onClick={() => openListedNegotiation(player.id)}
+                      onClick={() => {
+                        setDealType(effectiveDeal);
+                        openListedNegotiation(player.id);
+                      }}
                     >
-                      Negotiate deal
+                      Negotiate {effectiveDeal === "loan" ? "loan" : "deal"}
                     </GameButton>
                     <GameButton
                       variant="secondary"
@@ -814,7 +879,11 @@ export function ManagerTransfers({
                       fullWidth
                       disabled={!canAffordAssistant}
                       onClick={() =>
-                        submitListedAssistantDeal(player.id, club)
+                        submitListedAssistantDeal(
+                          player.id,
+                          club,
+                          effectiveDeal
+                        )
                       }
                     >
                       Leave to assistant
@@ -827,7 +896,9 @@ export function ManagerTransfers({
           })}
           {listedPlayers.length === 0 && (
             <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
-              No transfer-listed players available right now.
+              {tab === "loans"
+                ? "No players are currently listed for loan."
+                : "No transfer-listed players available right now."}
             </p>
           )}
         </div>
@@ -1155,11 +1226,18 @@ export function ManagerTransfers({
       {tab === "watch" && (
         <section aria-label="Watchlist">
           <div className={`grid gap-3 sm:grid-cols-2 ${SPACING.stackMd}`}>
-            {watchedPlayers.map(({ player, club, listed, freeAgent, playerId }) => {
+            {watchedPlayers.map(
+              ({ player, club, listed, freeAgent, playerId, listingType }) => {
               const demand = getPlayerSigningDemand(career, playerId);
+              const canLoan = listed && listingAllowsLoan(listingType);
+              const canBuy =
+                freeAgent || (listed && listingAllowsPermanent(listingType)) || !listed;
               const fee = freeAgent
                 ? 0
-                : getBuyerMinimumTransferFee(career, playerId, club, listed);
+                : canLoan && !canBuy
+                  ? suggestedLoanFee(career, playerId, club, listed)
+                  : getBuyerMinimumTransferFee(career, playerId, club, listed);
+              const loanFee = suggestedLoanFee(career, playerId, club, listed);
               return (
                 <ManagerTransferPlayerCard
                   key={playerId}
@@ -1173,31 +1251,74 @@ export function ManagerTransfers({
                   watched
                   onToggleWatch={() => toggleWatchlist(playerId)}
                 >
-                  <p className={`${TYPO.bodySm} text-pitch-400`}>
-                    Tracked on your scouting board. Open Listed, Free agents, or
-                    Unlisted to make an offer.
-                  </p>
-                  <GameButton
-                    variant="secondary"
-                    size="sm"
-                    fullWidth
-                    className="mt-2"
-                    onClick={() => {
-                      playUiClick();
-                      if (freeAgent) switchTab("freeAgents");
-                      else if (listed) switchTab("listed");
-                      else switchTab("unlisted");
-                    }}
-                  >
-                    Open {freeAgent ? "Free agents" : listed ? "Listed" : "Unlisted"}
-                  </GameButton>
+                  <div className="space-y-2">
+                    <p className={`${TYPO.bodySm} text-pitch-400`}>
+                      {freeAgent
+                        ? "Free agent on your watchlist."
+                        : listed
+                          ? canLoan && canBuy
+                            ? "Listed — available permanently or on loan."
+                            : canLoan
+                              ? "Listed for loan."
+                              : "Listed for transfer."
+                          : "Unlisted — a bid will cost a premium."}
+                    </p>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {canBuy && (
+                        <GameButton
+                          variant="theme"
+                          size="sm"
+                          fullWidth
+                          onClick={() => {
+                            if (freeAgent) {
+                              switchTab("freeAgents");
+                              setFreeAgentNegotiateId(playerId);
+                              setFreeAgentOfferWage(demand.wagePerYear);
+                              setFreeAgentOfferYears(demand.yearsRequested);
+                            } else if (listed) {
+                              switchTab("listed");
+                              setDealType("permanent");
+                              openListedNegotiation(playerId);
+                            } else {
+                              switchTab("unlisted");
+                              setOfferPlayerId(playerId);
+                            }
+                          }}
+                        >
+                          {freeAgent ? "Negotiate" : "Make offer"}
+                        </GameButton>
+                      )}
+                      {canLoan && (
+                        <GameButton
+                          variant="secondary"
+                          size="sm"
+                          fullWidth
+                          onClick={() => {
+                            switchTab("loans");
+                            setDealType("loan");
+                            openListedNegotiation(playerId);
+                          }}
+                        >
+                          Loan — {formatWage(loanFee)}
+                        </GameButton>
+                      )}
+                      <GameButton
+                        variant="secondary"
+                        size="sm"
+                        fullWidth
+                        onClick={() => toggleWatchlist(playerId)}
+                      >
+                        Remove watch
+                      </GameButton>
+                    </div>
+                  </div>
                 </ManagerTransferPlayerCard>
               );
             })}
             {watchedPlayers.length === 0 && (
               <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
                 No players on your watchlist yet. Tap Watch on any transfer card
-                to track them here.
+                or league squad player to track them here.
               </p>
             )}
           </div>

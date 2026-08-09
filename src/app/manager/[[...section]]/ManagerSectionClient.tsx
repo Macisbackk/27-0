@@ -2046,6 +2046,7 @@ export default function ManagerPage() {
                   <ManagerAcrossLeague
                     career={career}
                     onNavigate={handleNavNavigate}
+                    onUpdate={persist}
                   />
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "stats" && panesInteractive}>

@@ -8,6 +8,7 @@ import type {
   ManagerCareer,
   PlayerTransferStatus,
   SquadRole,
+  TransferListingType,
   TransferOfferCategory,
   TransferOfferDiagnostic,
 } from "./types";
@@ -48,8 +49,36 @@ import {
   isPlayerAwayOnLoan,
   isPlayerLoanedIn,
 } from "./managerLoans";
+import { pruneTransferWatchlist } from "./managerWatchlist";
 
 const TRANSFER_DIAGNOSTIC_CAP = 40;
+
+export function resolveTransferListingType(
+  listingType?: TransferListingType | null
+): TransferListingType {
+  return listingType ?? "permanent";
+}
+
+export function listingAllowsLoan(
+  listingType?: TransferListingType | null
+): boolean {
+  const t = resolveTransferListingType(listingType);
+  return t === "loan" || t === "both";
+}
+
+export function listingAllowsPermanent(
+  listingType?: TransferListingType | null
+): boolean {
+  const t = resolveTransferListingType(listingType);
+  return t === "permanent" || t === "both";
+}
+
+function pickAiListingType(rng: () => number): TransferListingType {
+  const roll = rng();
+  if (roll < 0.28) return "loan";
+  if (roll < 0.48) return "both";
+  return "permanent";
+}
 
 export function getTransferOfferGenerationPhase(
   gameWeek: number
@@ -290,11 +319,19 @@ export function generateLeagueListedPlayers(
       if (!player) continue;
 
       const mult = 0.8 + rng() * 0.4;
+      const listingType = pickAiListingType(rng);
       listed.push({
         playerId,
         club,
-        askingPrice: Math.round(player.value * mult),
+        askingPrice:
+          listingType === "loan"
+            ? Math.max(
+                5_000,
+                Math.round(player.value * (0.08 + rng() * 0.1))
+              )
+            : Math.round(player.value * mult),
         listedAtWeek: gameWeek,
+        listingType,
       });
 
       const pickedIndex = remaining.findIndex((row) => row.id === playerId);
@@ -392,7 +429,8 @@ export function getBuyerMinimumTransferFee(
 export function listPlayerForTransfer(
   career: ManagerCareer,
   playerId: string,
-  askingPrice: number
+  askingPrice: number,
+  listingType: TransferListingType = "permanent"
 ): ManagerCareer {
   if (isPlayerAwayOnLoan(career, playerId) || isPlayerLoanedIn(career, playerId)) {
     return career;
@@ -404,6 +442,7 @@ export function listPlayerForTransfer(
     listed: true,
     askingPrice,
     listedAtGameWeek: career.gameWeek,
+    listingType,
   };
 
   return {
@@ -416,15 +455,33 @@ export function listPlayerForTransfer(
   };
 }
 
-/** List player and roll for an immediate incoming offer. */
-export function listPlayerForTransferWithOffers(
+/** List a squad player on the loan market (AI clubs can take them). */
+export function listPlayerForLoan(
   career: ManagerCareer,
   playerId: string,
   askingPrice: number
 ): ManagerCareer {
+  return listPlayerForTransfer(career, playerId, askingPrice, "loan");
+}
+
+/** List player and roll for an immediate incoming offer. */
+export function listPlayerForTransferWithOffers(
+  career: ManagerCareer,
+  playerId: string,
+  askingPrice: number,
+  listingType: TransferListingType = "permanent"
+): ManagerCareer {
   return generateIncomingTransferOffers(
-    listPlayerForTransfer(career, playerId, askingPrice)
+    listPlayerForTransfer(career, playerId, askingPrice, listingType)
   );
+}
+
+export function listPlayerForLoanWithOffers(
+  career: ManagerCareer,
+  playerId: string,
+  askingPrice: number
+): ManagerCareer {
+  return listPlayerForTransferWithOffers(career, playerId, askingPrice, "loan");
 }
 
 export function unlistPlayerFromTransfer(
@@ -728,24 +785,27 @@ export function completePlayerPurchase(
   );
 
   const player = getPlayerById(playerId);
-  return pruneLeagueListedPlayers(
-    addBoardTransferMilestoneInbox(
-      pushInboxMessage(
-        purchased,
-        createPlayerPurchaseMessage(
+  return pruneTransferWatchlist(
+    pruneLeagueListedPlayers(
+      addBoardTransferMilestoneInbox(
+        pushInboxMessage(
           purchased,
-          playerId,
-          player?.name ?? "Player",
-          club,
-          offer.transferFee,
-          offer.wagePerYear
-        )
-      ),
-      "signing",
-      player?.name ?? "Player",
-      offer.transferFee,
-      playerId
-    )
+          createPlayerPurchaseMessage(
+            purchased,
+            playerId,
+            player?.name ?? "Player",
+            club,
+            offer.transferFee,
+            offer.wagePerYear
+          )
+        ),
+        "signing",
+        player?.name ?? "Player",
+        offer.transferFee,
+        playerId
+      )
+    ),
+    [playerId]
   );
 }
 

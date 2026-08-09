@@ -6,6 +6,7 @@ import { getManagerClubConfig, getManagerClubStarRating } from "./club-config";
 import { getLeagueEconomyScale } from "./managerLeagues";
 import { getUserCompetitionId } from "./leagueMembership";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
+import { isSameManagerClub } from "../clubs/super-league-display";
 import type {
   ContractStatus,
   ManagerCareer,
@@ -24,6 +25,15 @@ import {
 } from "./squadRole";
 
 export { inferSquadRole, roleRank } from "./squadRole";
+
+function isLoanedInOnSquad(career: ManagerCareer, playerId: string): boolean {
+  const loan = (career.activeLoans ?? []).find((l) => l.playerId === playerId);
+  if (!loan) return false;
+  return (
+    isSameManagerClub(loan.loaneeClub, career.club) &&
+    !isSameManagerClub(loan.parentClub, career.club)
+  );
+}
 
 export function formatWage(amount: number): string {
   if (amount >= 1_000_000) return `£${(amount / 1_000_000).toFixed(2)}m`;
@@ -310,6 +320,13 @@ export function evaluateRenewalOffer(
   offer: RenewalDemand,
   career: ManagerCareer
 ): { accepted: boolean; reason: string } {
+  if (isLoanedInOnSquad(career, playerId)) {
+    return {
+      accepted: false,
+      reason:
+        "Declined — loaned-in players cannot be renewed. They return to their parent club at season end.",
+    };
+  }
   const demand = contract.renewalDemand ?? generateRenewalDemand(playerId, contract, career);
   const player = getManagerPlayer(career, playerId);
   const rating = player?.peakRating ?? 70;
@@ -407,6 +424,7 @@ export function applyRenewal(
   playerId: string,
   offer: RenewalDemand
 ): ManagerCareer {
+  if (isLoanedInOnSquad(career, playerId)) return career;
   const contract = career.contracts[playerId];
   if (!contract) return career;
 
@@ -454,6 +472,7 @@ export function bulkRenewExpiringContracts(
   for (const ps of working.squad) {
     const contract = working.contracts[ps.playerId];
     if (!contract) continue;
+    if (isLoanedInOnSquad(working, ps.playerId)) continue;
     const status = getContractStatus(contract);
     if (status !== "expires_this_season" && status !== "wants_renewal") {
       continue;
@@ -540,6 +559,13 @@ export function ensureRenewalDemands(career: ManagerCareer): ManagerCareer {
   const contracts = { ...career.contracts };
   let changed = false;
   for (const [id, c] of Object.entries(contracts)) {
+    if (isLoanedInOnSquad(career, id)) {
+      if (c.renewalDemand) {
+        contracts[id] = { ...c, renewalDemand: undefined };
+        changed = true;
+      }
+      continue;
+    }
     if ((c.yearsRemaining <= 1 || c.expiresAtSeasonEnd) && !c.renewalDemand) {
       contracts[id] = {
         ...c,
@@ -567,6 +593,11 @@ export function previewPlayersLeaving(
   for (const ps of career.squad) {
     const c = career.contracts[ps.playerId];
     if (!c) continue;
+    // Loaned-in players always leave at season end (parent club).
+    if (isLoanedInOnSquad(career, ps.playerId)) {
+      leaving.push(ps.playerId);
+      continue;
+    }
     if (
       c.yearsRemaining <= 0 ||
       (c.expiresAtSeasonEnd && c.status !== "renewed")

@@ -25,6 +25,7 @@ import {
 } from "@/lib/manager/managerContracts";
 import { bulkRenewExpiringContractsWithInbox, renewManagerContract } from "@/lib/manager/managerInbox";
 import { releasePlayerWithCost } from "@/lib/manager/managerTransferLeague";
+import { isPlayerLoanedIn } from "@/lib/manager/managerLoans";
 import { getWageBillPercent, isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import {
@@ -97,6 +98,7 @@ export function ManagerContracts({
   const expiringCount = useMemo(
     () =>
       career.squad.filter((ps) => {
+        if (isPlayerLoanedIn(career, ps.playerId)) return false;
         const c = career.contracts[ps.playerId];
         if (!c) return false;
         const s = getContractStatus(c);
@@ -131,6 +133,7 @@ export function ManagerContracts({
           contract,
           status,
           rating: player.peakRating,
+          loanedIn: isPlayerLoanedIn(career, ps.playerId),
         };
       })
       .filter((r): r is NonNullable<typeof r> => r !== null);
@@ -356,15 +359,18 @@ export function ManagerContracts({
       <ClipboardPanel padded>
         <p className={`${TYPO.sectionLabel} mb-2`}>Squad Contracts</p>
         <div className={`${SPACING.stackSm}`}>
-        {rows.map(({ player, contract, status, rating }) => {
+        {rows.map(({ player, contract, status, rating, loanedIn }) => {
           const urgent =
+            !loanedIn &&
             (career.managerSettings?.highlightExpiringContracts !== false) &&
             (contract.yearsRemaining <= 1 ||
               contract.expiresAtSeasonEnd ||
               contract.retiringAtSeasonEnd ||
               contract.retireAfterContract);
           const statusColor =
-            contract.retireAfterContract
+            loanedIn
+              ? "text-sky-200 bg-sky-500/15 border-sky-400/35"
+              : contract.retireAfterContract
               ? "text-stone-200 bg-stone-500/15 border-stone-400/35"
               : contract.retiringAtSeasonEnd
               ? "text-stone-200 bg-stone-500/15 border-stone-400/35"
@@ -375,7 +381,9 @@ export function ManagerContracts({
                 : status === "renewed"
                   ? "text-theme-primary bg-theme-primary/10 border-theme-primary/30"
                   : "text-pitch-300 bg-pitch-800/50 border-pitch-600/40";
-          const statusLabel = contract.retireAfterContract
+          const statusLabel = loanedIn
+            ? "On loan"
+            : contract.retireAfterContract
             ? "Final year — retiring after"
             : contract.retiringAtSeasonEnd
             ? "Retiring end of season"
@@ -443,10 +451,18 @@ export function ManagerContracts({
                 {formatSquadRole(selected.contract.squadRole)}
               </p>
               <p className={`${TYPO.bodySm} text-pitch-400`}>
-                {STATUS_LABELS[selected.status] ?? selected.status} · Happiness{" "}
-                {selected.contract.happiness}%
+                {selected.loanedIn
+                  ? "On loan"
+                  : STATUS_LABELS[selected.status] ?? selected.status}{" "}
+                · Happiness {selected.contract.happiness}%
               </p>
-              {selected.contract.renewalDemand && (
+              {selected.loanedIn && (
+                <p className={`mt-1 ${TYPO.bodySm} text-sky-200`}>
+                  Loaned-in players return to their parent club at season end —
+                  renewals cannot make them permanent.
+                </p>
+              )}
+              {!selected.loanedIn && selected.contract.renewalDemand && (
                 <p className={`mt-1 ${TYPO.bodySm} text-accent-gold`}>
                   Demand:{" "}
                   {formatWage(selected.contract.renewalDemand.wagePerYear)}/yr ·{" "}
@@ -456,6 +472,7 @@ export function ManagerContracts({
               )}
             </div>
 
+            {!selected.loanedIn && (
             <div className="grid gap-3 text-left sm:grid-cols-3">
               <label className={TYPO.bodySm}>
                 <span className="text-pitch-400">Offer wage (£/yr)</span>
@@ -493,6 +510,7 @@ export function ManagerContracts({
                 </select>
               </label>
             </div>
+            )}
 
             {lastResponse && (
               <div
@@ -514,6 +532,7 @@ export function ManagerContracts({
             )}
 
             <div className="contract-modal-actions">
+              {!selected.loanedIn && (
               <GameButton
                 variant="theme"
                 fullWidth={false}
@@ -524,10 +543,12 @@ export function ManagerContracts({
               >
                 Offer Contract
               </GameButton>
+              )}
               <GameButton variant="secondary" fullWidth={false} onClick={closeModal}>
                 Close
               </GameButton>
             </div>
+            {!selected.loanedIn && (
             <div className="contract-modal-actions contract-modal-actions--danger">
               <GameButton
                 variant="danger"
@@ -540,6 +561,7 @@ export function ManagerContracts({
                 Release Player
               </GameButton>
             </div>
+            )}
           </div>
         </GameModal>
       )}

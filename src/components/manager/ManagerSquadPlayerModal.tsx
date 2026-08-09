@@ -12,6 +12,7 @@ import { POSITION_SHORT } from "@/lib/positions";
 import { formatWage } from "@/lib/manager/managerContracts";
 import {
   computeReleaseCost,
+  listPlayerForLoanWithOffers,
   listPlayerForTransferWithOffers,
   releasePlayerWithCost,
   suggestedAskingPrice,
@@ -153,7 +154,13 @@ export function ManagerSquadPlayerModal({
           })()}
           {transferStatus?.listed && (
             <span className="col-span-2 text-accent-gold">
-              Listed — {formatWage(transferStatus.askingPrice)}
+              Listed
+              {transferStatus.listingType === "loan"
+                ? " for loan"
+                : transferStatus.listingType === "both"
+                  ? " (sale or loan)"
+                  : ""}{" "}
+              — {formatWage(transferStatus.askingPrice)}
             </span>
           )}
         </div>
@@ -183,6 +190,23 @@ export function ManagerSquadPlayerModal({
             </GameButton>
           )}
 
+          {!transferStatus?.listed && !loanedIn && !showLoanForm && (
+            <GameButton
+              variant="secondary"
+              onClick={() => {
+                playUiClick();
+                setAskingPrice(loanFee);
+                setShowLoanForm(false);
+                setShowListForm(false);
+                onUpdate(
+                  listPlayerForLoanWithOffers(career, playerId, loanFee)
+                );
+              }}
+            >
+              List For Loan ({formatWage(loanFee)})
+            </GameButton>
+          )}
+
           {!loanedIn && !showLoanForm && (
             <GameButton
               variant="secondary"
@@ -192,7 +216,7 @@ export function ManagerSquadPlayerModal({
                 setShowListForm(false);
               }}
             >
-              Loan Out
+              Loan Out Now
             </GameButton>
           )}
 

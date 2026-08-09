@@ -31,6 +31,7 @@ interface ManagerClubSquadSheetProps {
   club: string;
   onClose: () => void;
   onViewUserSquad?: () => void;
+  onUpdate?: (career: ManagerCareer) => void;
   round?: number;
 }
 
@@ -139,6 +140,7 @@ export function ManagerClubSquadSheet({
   club,
   onClose,
   onViewUserSquad,
+  onUpdate,
   round,
 }: ManagerClubSquadSheetProps) {
   const lineup = useMemo(
@@ -360,6 +362,7 @@ export function ManagerClubSquadSheet({
           slotLabel={selectedPlayer.slotLabel}
           inStartingXiii={selectedPlayer.inStartingXiii}
           onClose={() => setSelectedPlayer(null)}
+          onUpdate={onUpdate}
         />
       )}
     </BodyPortal>
@@ -369,6 +372,7 @@ export function ManagerClubSquadSheet({
 interface ManagerClubSquadBrowserProps {
   career: ManagerCareer;
   onViewUserSquad?: () => void;
+  onUpdate?: (career: ManagerCareer) => void;
   /** Clubs to list — defaults to Super League membership. */
   clubs?: readonly string[];
 }
@@ -377,6 +381,7 @@ interface ManagerClubSquadBrowserProps {
 export function ManagerClubSquadBrowser({
   career,
   onViewUserSquad,
+  onUpdate,
   clubs: clubsProp,
 }: ManagerClubSquadBrowserProps) {
   const clubs =
@@ -429,6 +434,7 @@ export function ManagerClubSquadBrowser({
           club={selectedClub}
           onClose={() => setSheetOpen(false)}
           onViewUserSquad={onViewUserSquad}
+          onUpdate={onUpdate}
         />
       )}
     </>

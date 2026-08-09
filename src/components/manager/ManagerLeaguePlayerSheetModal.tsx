@@ -17,9 +17,14 @@ import {
 import type { ManagerCareer } from "@/lib/manager/types";
 import { formatValue } from "@/lib/players";
 import { POSITION_LABELS } from "@/lib/positions";
-import { playPanelClose } from "@/lib/sound";
+import { playPanelClose, playUiClick } from "@/lib/sound";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import {
+  isOnTransferWatchlist,
+  toggleTransferWatchlist,
+} from "@/lib/manager/managerWatchlist";
+import { listingAllowsLoan } from "@/lib/manager/managerTransferLeague";
 
 interface ManagerLeaguePlayerSheetModalProps {
   career: ManagerCareer;
@@ -28,6 +33,7 @@ interface ManagerLeaguePlayerSheetModalProps {
   slotLabel?: string;
   inStartingXiii?: boolean;
   onClose: () => void;
+  onUpdate?: (career: ManagerCareer) => void;
 }
 
 function DetailRow({
@@ -56,6 +62,7 @@ export function ManagerLeaguePlayerSheetModal({
   slotLabel,
   inStartingXiii = false,
   onClose,
+  onUpdate,
 }: ManagerLeaguePlayerSheetModalProps) {
   const handleClose = useCallback(() => {
     playPanelClose();
@@ -79,6 +86,7 @@ export function ManagerLeaguePlayerSheetModal({
   const listing = career.leagueListedPlayers.find(
     (entry) => entry.playerId === playerId && entry.club === club
   );
+  const watched = isOnTransferWatchlist(career, playerId);
 
   return (
     <BodyPortal>
@@ -141,13 +149,29 @@ export function ManagerLeaguePlayerSheetModal({
             {listing && (
               <DetailRow
                 label="Transfer list"
-                value={`Listed · ${formatWage(listing.askingPrice)}`}
+                value={
+                  listingAllowsLoan(listing.listingType) &&
+                  listing.listingType === "loan"
+                    ? `Loan · ${formatWage(listing.askingPrice)}`
+                    : `Listed · ${formatWage(listing.askingPrice)}`
+                }
                 valueClassName="font-semibold text-accent-gold"
               />
             )}
           </dl>
 
-          <div className="mt-4">
+          <div className="mt-4 grid gap-2">
+            {onUpdate && (
+              <GameButton
+                variant={watched ? "secondary" : "theme"}
+                onClick={() => {
+                  playUiClick();
+                  onUpdate(toggleTransferWatchlist(career, playerId));
+                }}
+              >
+                {watched ? "Remove from Watchlist" : "Add to Watchlist"}
+              </GameButton>
+            )}
             <GameButton variant="secondary" onClick={handleClose}>
               Close
             </GameButton>

@@ -28,6 +28,7 @@ import { createInitialPlayerState } from "./managerSquad";
 import { syncManagerFinance, canAffordAdditionalWage, evaluateClubSigningAppeal, getManagerPlayerListingRating } from "./managerFinance";
 import { getCareerClubStars } from "./managerDifficulty";
 import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
+import { pruneTransferWatchlist } from "./managerWatchlist";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 import { SQUAD_STRUCTURE } from "../positions";
 import type { Position } from "../types";
@@ -476,15 +477,18 @@ export function completeFreeAgentSigning(
 
   const player = getPlayerById(playerId);
   dispatchAchievementCheck({ trigger: "player-signed", playerSigned: true });
-  return pushInboxMessage(
-    signed,
-    createFreeAgentSigningMessage(
+  return pruneTransferWatchlist(
+    pushInboxMessage(
       signed,
-      playerId,
-      player?.name ?? "Player",
-      formerClub,
-      offer.wagePerYear
-    )
+      createFreeAgentSigningMessage(
+        signed,
+        playerId,
+        player?.name ?? "Player",
+        formerClub,
+        offer.wagePerYear
+      )
+    ),
+    [playerId]
   );
 }
 

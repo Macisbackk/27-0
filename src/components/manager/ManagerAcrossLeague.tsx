@@ -61,6 +61,7 @@ export type AcrossTheLeagueCompetitionId = ManagerCompetitionId;
 interface ManagerAcrossLeagueProps {
   career: ManagerCareer;
   onNavigate?: (view: ManagerView) => void;
+  onUpdate?: (career: ManagerCareer) => void;
 }
 
 /** Cross-tier Transfer Wire: one club Championship, the other Super League. */
@@ -110,6 +111,7 @@ function filterNewsForCompetition(
 export function ManagerAcrossLeague({
   career,
   onNavigate,
+  onUpdate,
 }: ManagerAcrossLeagueProps) {
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
   const [selectedCompetitionId, setSelectedCompetitionId] =
@@ -206,6 +208,7 @@ export function ManagerAcrossLeague({
         onViewUserSquad={
           onNavigate ? () => onNavigate("squad") : undefined
         }
+        onUpdate={onUpdate}
       />
     ) : null;
 
@@ -255,6 +258,7 @@ export function ManagerAcrossLeague({
             career={career}
             clubs={squadBrowserClubs}
             onViewUserSquad={onNavigate ? () => onNavigate("squad") : undefined}
+            onUpdate={onUpdate}
           />
         ) : null}
 

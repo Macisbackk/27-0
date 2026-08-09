@@ -12,8 +12,7 @@ import {
 } from "@/components/manager/manager-ui";
 import { getMatchPrediction } from "@/lib/manager/managerScoring";
 import { computeManagerTeamRating } from "@/lib/manager/managerRating";
-import { getManagerOpponentPoolOptions } from "@/lib/manager/managerLeagueRosters";
-import { getOpponentMatchRating } from "@/lib/game/opponent-scorers";
+import { getHubOpponentRating } from "@/lib/manager/managerOpponentRating";
 import { resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { SPACING } from "@/lib/ui/design-system";
@@ -653,20 +652,7 @@ export function ManagerFixtures({
 
   const oppRating =
     nextFixture && !seasonComplete
-      ? nextFixture.competition === "world_club_challenge" &&
-        career.worldClubChallenge?.currentFixture
-        ? career.worldClubChallenge.currentFixture.nrlChampionRating
-        : nextFixture.competition === "friendly" &&
-            career.preSeason.activeFriendly
-          ? career.preSeason.activeFriendly.teamRating
-          : Math.round(
-              getOpponentMatchRating(
-                nextFixture.opponent,
-                readyCareer.seed,
-                nextFixture.round,
-                getManagerOpponentPoolOptions(readyCareer, nextFixture.opponent)
-              )
-            )
+      ? getHubOpponentRating(readyCareer, nextFixture)
       : null;
 
   const prediction =

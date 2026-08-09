@@ -32,6 +32,7 @@ import {
 } from "./managerFinance";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
+import { pruneTransferWatchlist } from "./managerWatchlist";
 
 export interface LoanDealOpts {
   loanFee: number;
@@ -244,15 +245,18 @@ export function completeIncomingLoan(
     getManagerPlayer(next, playerId)?.name ??
     getPlayerById(playerId)?.name ??
     "Player";
-  return pushInboxMessage(
-    next,
-    createLoanInboxMessage(
+  return pruneTransferWatchlist(
+    pushInboxMessage(
       next,
-      "Loan Completed",
-      `${playerName} has joined on loan from ${fromClub} until the end of the season. Fee: ${formatWage(loanFee)}. You pay ${Math.round(loaneeWageShare * 100)}% of wages (${formatWage(Math.round(wagePerYear * loaneeWageShare))}/yr).`,
-      playerId,
-      playerName
-    )
+      createLoanInboxMessage(
+        next,
+        "Loan Completed",
+        `${playerName} has joined on loan from ${fromClub} until the end of the season. Fee: ${formatWage(loanFee)}. You pay ${Math.round(loaneeWageShare * 100)}% of wages (${formatWage(Math.round(wagePerYear * loaneeWageShare))}/yr).`,
+        playerId,
+        playerName
+      )
+    ),
+    [playerId]
   );
 }
 
@@ -464,13 +468,33 @@ export function returnExpiredLoans(career: ManagerCareer): ManagerCareer {
         )
       );
     } else {
-      // Stale loan entry — drop it
-      next = {
-        ...next,
-        activeLoans: (next.activeLoans ?? []).filter(
-          (l) => l.playerId !== loan.playerId
-        ),
-      };
+      // Stale loan row: if the player is still on our squad, treat as ending
+      // an incoming loan so a "renewed" loanee cannot become permanent.
+      const onSquad = next.squad.some((p) => p.playerId === loan.playerId);
+      if (onSquad) {
+        const repaired: ActiveLoan = {
+          ...still,
+          loaneeClub: next.club,
+        };
+        next = returnIncomingLoanPlayer(next, repaired);
+        next = pushInboxMessage(
+          next,
+          createLoanInboxMessage(
+            next,
+            "Loan Ended",
+            `${playerName} has returned to ${still.parentClub} after their loan.`,
+            loan.playerId,
+            playerName
+          )
+        );
+      } else {
+        next = {
+          ...next,
+          activeLoans: (next.activeLoans ?? []).filter(
+            (l) => l.playerId !== loan.playerId
+          ),
+        };
+      }
     }
   }
 
