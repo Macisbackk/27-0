@@ -1,0 +1,1302 @@
+{
+  "generatedAt": "2026-08-08T15:35:49.093562+00:00",
+  "sources": {
+    "liveFantasyMarkdown": "C:\\Users\\Macis\\.cursor\\projects\\c-Users-Macis-Projects-27-0\\agent-tools\\dcfc4def-a36c-41de-921a-26b50ec483d7.txt",
+    "liveFantasyHeaders": [
+      "Team",
+      "Name",
+      "Pos",
+      "Price",
+      "M",
+      "C",
+      "TK",
+      "OF",
+      "AK",
+      "T",
+      "G",
+      "DG",
+      "TB",
+      "MT",
+      "CB",
+      "FT",
+      "E",
+      "YC",
+      "RC",
+      "MT",
+      "P",
+      "DR",
+      "TA",
+      "Last Rd",
+      "Score"
+    ],
+    "liveFantasyNote": "Column M is Metres, NOT matches/appearances.",
+    "xlsx": "C:\\Users\\Macis\\Projects\\27-0\\super_league_2026_ratings.xlsx",
+    "xlsxAllPlayersHeaders": [
+      "Rank",
+      "Club",
+      "Squad No.",
+      "Player",
+      "Position",
+      "OVR",
+      "POT",
+      "Growth",
+      "Previous OVR",
+      "Change",
+      "Tier",
+      "Squad Status",
+      "Confidence",
+      "Rating Rationale",
+      "Source URLs",
+      "Rating Method",
+      "2025 Fantasy Score",
+      "2025 Matches",
+      "2025 Avg/Game",
+      "2026 Fantasy Score",
+      "Two-Season Form Index",
+      "Form Evidence"
+    ],
+    "formSnapshotHeaders": [
+      "Rank",
+      "Player",
+      "Club",
+      "OVR",
+      "POT",
+      "2025 Score",
+      "2025 Avg",
+      "2026 Score",
+      "Previous OVR",
+      "Change",
+      "Why"
+    ],
+    "formSnapshotGameLikeColumns": [],
+    "formSnapshotNote": "2026 Form Snapshot has no dedicated games/apps/appearances/rounds columns; only 2025 Score, 2025 Avg, 2026 Score among volume-ish fields.",
+    "calibrationReport": "data/fantasy-rating-calibration-2026-report.json",
+    "clubMoves": "data/current-club-moves-2026-report.json",
+    "injuryNotesSource": "xlsx Confidence/Rationale/Form Evidence/Squad Status + live Last Rd / Score vs Price (no external news fetch)"
+  },
+  "clubMovesApplied": [
+    {
+      "name": "Jake Bibby",
+      "fromId": "huddersfield-cur-jake-bibby",
+      "toId": "oldham-cur-jake-bibby"
+    },
+    {
+      "name": "Jeremiah Simbiken",
+      "fromId": "castleford-cur-jeremiah-simbiken",
+      "toId": "london-cur-jeremiah-simbiken"
+    },
+    {
+      "name": "Zach Jebson",
+      "fromId": "oldham-cur-zach-jebson",
+      "toId": "midlands-cur-zach-jebson"
+    },
+    {
+      "name": "Toby Warren",
+      "fromId": "salford-cur-toby-warren",
+      "toId": "midlands-cur-toby-warren"
+    },
+    {
+      "name": "Nathan Connell",
+      "fromId": "salford-cur-nathan-connell",
+      "toId": "widnes-cur-nathan-connell"
+    },
+    {
+      "name": "Kai Morgan",
+      "fromId": "salford-cur-kai-morgan",
+      "toId": "sheffield-cur-kai-morgan"
+    },
+    {
+      "name": "Shane Wright",
+      "fromId": "salford-cur-shane-wright",
+      "toId": "st-helens-cur-shane-wright"
+    },
+    {
+      "name": "Joe Shorrocks",
+      "fromId": "salford-cur-joe-shorrocks",
+      "toId": "st-helens-cur-joe-shorrocks"
+    },
+    {
+      "name": "Jonny Vaughan",
+      "fromId": "salford-cur-jonny-vaughan",
+      "toId": "wigan-cur-jonny-vaughan"
+    },
+    {
+      "name": "Dayon Sambou",
+      "fromId": "london-cur-dayon-sambou",
+      "toId": "wigan-cur-dayon-sambou"
+    }
+  ],
+  "liveFantasyPlayerCount": 428,
+  "previouslyChangedPlayers": [
+    {
+      "id": "oldham-cur-jake-bibby",
+      "oldId": "huddersfield-cur-jake-bibby",
+      "name": "Jake Bibby",
+      "appliedTo": 83,
+      "appliedFrom": 89,
+      "currentPeak": 83,
+      "possibleManual": false,
+      "resolveMethod": "clubMoveId",
+      "fantasyScore": null,
+      "price": null,
+      "priceRaw": null,
+      "lastRd": null,
+      "metres": null,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": null,
+      "xlsxConfidence": null,
+      "likelyInjuredOrOut": null,
+      "notes": [
+        "clubMove: huddersfield-cur-jake-bibby -> oldham-cur-jake-bibby"
+      ],
+      "calibrationReason": "No 2026 SL fantasy (Championship Oldham); align to 2025 smoothed 83. Still on Huddersfield Current card — club move is separate."
+    },
+    {
+      "id": "castleford-cur-krystian-mapapalangi",
+      "oldId": "castleford-cur-krystian-mapapalangi",
+      "name": "Krystian Mapapalangi",
+      "appliedTo": 85,
+      "appliedFrom": 88,
+      "currentPeak": 85,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 782,
+      "price": 100000,
+      "priceRaw": "100k",
+      "lastRd": 21,
+      "metres": 191,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 75,
+      "xlsxConfidence": "Low",
+      "likelyInjuredOrOut": false,
+      "notes": [],
+      "calibrationReason": "xlsx Development 75 is obsolete (regular Cas starter). Fantasy 782 peers Asi 84/827 and Ashton 87/791; 88 matches Eckersley 864 elite band — too high."
+    },
+    {
+      "id": "castleford-cur-jason-qareqare",
+      "oldId": "castleford-cur-jason-qareqare",
+      "name": "Jason Qareqare",
+      "appliedTo": 82,
+      "appliedFrom": 76,
+      "currentPeak": 82,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 746,
+      "price": 80000,
+      "priceRaw": "80k",
+      "lastRd": 0,
+      "metres": 222,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 76,
+      "xlsxConfidence": "Medium-Low",
+      "likelyInjuredOrOut": false,
+      "notes": [],
+      "calibrationReason": "Underrated vs outside peers (~746 season score)."
+    },
+    {
+      "id": "hull-fc-cur-herman-eseese",
+      "oldId": "hull-fc-cur-herman-eseese",
+      "name": "Herman Ese'ese",
+      "appliedTo": 83,
+      "appliedFrom": 89,
+      "currentPeak": 83,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 403,
+      "price": 150000,
+      "priceRaw": "150k",
+      "lastRd": 38,
+      "metres": 89,
+      "xlsx2025Matches": 24,
+      "xlsx2025Avg": 61.04,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 89,
+      "xlsxConfidence": "Medium",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Low Score/Price ratio (2.69 pts per 1k)."
+      ],
+      "calibrationReason": "Reputation 89 with only 403 fantasy — well below elite prop form (Thompson 720, Sutton 866)."
+    },
+    {
+      "id": "huddersfield-cur-matty-english",
+      "oldId": "huddersfield-cur-matty-english",
+      "name": "Matty English",
+      "appliedTo": 80,
+      "appliedFrom": 86,
+      "currentPeak": 80,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 215,
+      "price": 100000,
+      "priceRaw": "100k",
+      "lastRd": 0,
+      "metres": 26,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": null,
+      "xlsxConfidence": null,
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 215 low vs mid price 100k (expected ~250+); likely injured/out or limited availability."
+      ],
+      "calibrationReason": "Minimal 2026 fantasy volume for an 86 prop."
+    },
+    {
+      "id": "catalans-cur-benjamin-garcia",
+      "oldId": "catalans-cur-benjamin-garcia",
+      "name": "Benjamin Garcia",
+      "appliedTo": 82,
+      "appliedFrom": 87,
+      "currentPeak": 82,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 463,
+      "price": 130000,
+      "priceRaw": "130k",
+      "lastRd": 25,
+      "metres": 64,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": null,
+      "xlsxConfidence": null,
+      "likelyInjuredOrOut": false,
+      "notes": [],
+      "calibrationReason": "Live form + xlsx Ben Garcia 82; 87 above fantasy peers."
+    },
+    {
+      "id": "leigh-cur-umyla-hanley",
+      "oldId": "leigh-cur-umyla-hanley",
+      "name": "Umyla Hanley",
+      "appliedTo": 82,
+      "appliedFrom": 86,
+      "currentPeak": 82,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 536,
+      "price": 130000,
+      "priceRaw": "130k",
+      "lastRd": 48,
+      "metres": 109,
+      "xlsx2025Matches": 22,
+      "xlsx2025Avg": 49,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 86,
+      "xlsxConfidence": "Medium",
+      "likelyInjuredOrOut": false,
+      "notes": [],
+      "calibrationReason": "536 fantasy sits below Mapapalangi 782 / Ashton band — 86 too high."
+    },
+    {
+      "id": "wigan-cur-jai-field",
+      "oldId": "wigan-cur-jai-field",
+      "name": "Jai Field",
+      "appliedTo": 86,
+      "appliedFrom": 89,
+      "currentPeak": 86,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 778,
+      "price": 170000,
+      "priceRaw": "170k",
+      "lastRd": 0,
+      "metres": 219,
+      "xlsx2025Matches": 25,
+      "xlsx2025Avg": 47.4,
+      "xlsx2026FantasyScore": 730,
+      "xlsxOvr": 89,
+      "xlsxConfidence": "High",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Last Rd=0 at price 170k (Score 778); missed most recent round."
+      ],
+      "calibrationReason": "778 fantasy similar to Mapapalangi; 89 elite FB tier needs stronger scoring (Ashall-Bott 936)."
+    },
+    {
+      "id": "wigan-cur-liam-farrell",
+      "oldId": "wigan-cur-liam-farrell",
+      "name": "Liam Farrell",
+      "appliedTo": 82,
+      "appliedFrom": 85,
+      "currentPeak": 82,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 502,
+      "price": 110000,
+      "priceRaw": "110k",
+      "lastRd": 0,
+      "metres": 141,
+      "xlsx2025Matches": 25,
+      "xlsx2025Avg": 46.72,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 85,
+      "xlsxConfidence": "Medium",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Last Rd=0 at price 110k (Score 502); missed most recent round."
+      ],
+      "calibrationReason": "Veteran reputation above 2026 fantasy volume."
+    },
+    {
+      "id": "bradford-cur-ethan-ryan",
+      "oldId": "bradford-cur-ethan-ryan",
+      "name": "Ethan Ryan",
+      "appliedTo": 82,
+      "appliedFrom": 84,
+      "currentPeak": 82,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 680,
+      "price": 100000,
+      "priceRaw": "100k",
+      "lastRd": 0,
+      "metres": 217,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 78,
+      "xlsxConfidence": "Medium-Low",
+      "likelyInjuredOrOut": false,
+      "notes": [],
+      "calibrationReason": "680 wing fantasy — solid rotation, not 84 starter tier vs Ashton 791."
+    },
+    {
+      "id": "bradford-cur-eribe-doro",
+      "oldId": "bradford-cur-eribe-doro",
+      "name": "Eribe Doro",
+      "appliedTo": 79,
+      "appliedFrom": 82,
+      "currentPeak": 79,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 437,
+      "price": 100000,
+      "priceRaw": "100k",
+      "lastRd": 0,
+      "metres": 77,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 77,
+      "xlsxConfidence": "Medium-Low",
+      "likelyInjuredOrOut": false,
+      "notes": [],
+      "calibrationReason": "Modest prop fantasy; align nearer xlsx 77 with slight form hold."
+    },
+    {
+      "id": "bradford-cur-jayden-nikorima",
+      "oldId": "bradford-cur-jayden-nikorima",
+      "name": "Jayden Nikorima",
+      "appliedTo": 80,
+      "appliedFrom": 83,
+      "currentPeak": 80,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 480,
+      "price": 120000,
+      "priceRaw": "120k",
+      "lastRd": 0,
+      "metres": 98,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 80,
+      "xlsxConfidence": "Medium-Low",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Last Rd=0 at price 120k (Score 480); missed most recent round."
+      ],
+      "calibrationReason": "xlsx 80 + mid fantasy."
+    },
+    {
+      "id": "castleford-cur-cain-robb",
+      "oldId": "castleford-cur-cain-robb",
+      "name": "Cain Robb",
+      "appliedTo": 75,
+      "appliedFrom": 84,
+      "currentPeak": 75,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 242,
+      "price": 90000,
+      "priceRaw": "90k",
+      "lastRd": 15,
+      "metres": 20,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 75,
+      "xlsxConfidence": "Low",
+      "likelyInjuredOrOut": false,
+      "notes": [],
+      "calibrationReason": "Development / low fantasy — xlsx 75."
+    },
+    {
+      "id": "catalans-cur-manase-kaho",
+      "oldId": "catalans-cur-manase-kaho",
+      "name": "Manase Kaho",
+      "appliedTo": 75,
+      "appliedFrom": 82,
+      "currentPeak": 75,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 0,
+      "price": 100000,
+      "priceRaw": "100k",
+      "lastRd": 0,
+      "metres": 0,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 75,
+      "xlsxConfidence": "Low",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 0 low vs mid price 100k (expected ~250+); likely injured/out or limited availability."
+      ],
+      "calibrationReason": "Academy / no fantasy — xlsx 75."
+    },
+    {
+      "id": "toulouse-cur-john-toleafoa",
+      "oldId": "toulouse-cur-john-toleafoa",
+      "name": "John Toleafoa",
+      "appliedTo": 75,
+      "appliedFrom": 83,
+      "currentPeak": 75,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": null,
+      "price": null,
+      "priceRaw": null,
+      "lastRd": null,
+      "metres": null,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 75,
+      "xlsxConfidence": "Low",
+      "likelyInjuredOrOut": null,
+      "notes": [],
+      "calibrationReason": "Academy / extended — xlsx 75."
+    },
+    {
+      "id": "wigan-cur-jonny-vaughan",
+      "oldId": "salford-cur-jonny-vaughan",
+      "name": "Jonny Vaughan",
+      "appliedTo": 75,
+      "appliedFrom": 83,
+      "currentPeak": 75,
+      "possibleManual": false,
+      "resolveMethod": "clubMoveId",
+      "fantasyScore": 0,
+      "price": 90000,
+      "priceRaw": "90k",
+      "lastRd": 0,
+      "metres": 0,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 75,
+      "xlsxConfidence": "Low",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "clubMove: salford-cur-jonny-vaughan -> wigan-cur-jonny-vaughan",
+        "Last Rd=0 and Score 0 low vs mid price 90k (expected ~250+); likely injured/out or limited availability."
+      ],
+      "calibrationReason": "Development / no fantasy — xlsx 75."
+    },
+    {
+      "id": "castleford-cur-zac-cini",
+      "oldId": "castleford-cur-zac-cini",
+      "name": "Zac Cini",
+      "appliedTo": 78,
+      "appliedFrom": 81,
+      "currentPeak": 78,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 349,
+      "price": 120000,
+      "priceRaw": "120k",
+      "lastRd": 0,
+      "metres": 101,
+      "xlsx2025Matches": 21,
+      "xlsx2025Avg": 40.19,
+      "xlsx2026FantasyScore": 349,
+      "xlsxOvr": 81,
+      "xlsxConfidence": "High",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 349 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.91 pts per 1k)."
+      ],
+      "calibrationReason": "Low centre fantasy vs Cas peers."
+    },
+    {
+      "id": "huddersfield-cur-niall-evalds",
+      "oldId": "huddersfield-cur-niall-evalds",
+      "name": "Niall Evalds",
+      "appliedTo": 78,
+      "appliedFrom": 81,
+      "currentPeak": 78,
+      "possibleManual": false,
+      "resolveMethod": "currentId",
+      "fantasyScore": 281,
+      "price": 110000,
+      "priceRaw": "110k",
+      "lastRd": 0,
+      "metres": 67,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsx2026FantasyScore": null,
+      "xlsxOvr": 81,
+      "xlsxConfidence": "Medium-Low",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 281 low vs mid-high price 110k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.55 pts per 1k)."
+      ],
+      "calibrationReason": "Low FB fantasy volume."
+    }
+  ],
+  "possibleManualChangeCount": 0,
+  "highProfileInjurySuspects": [
+    {
+      "name": "Jai Field",
+      "price": 170000,
+      "priceRaw": "170k",
+      "score": 778,
+      "lastRd": 0,
+      "metres": 219,
+      "xlsx2025Matches": 25,
+      "xlsx2025Avg": 47.4,
+      "xlsxOvr": 89,
+      "xlsxConfidence": "High",
+      "xlsxRationale": "Elite established ability with strong two-season production.",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Last Rd=0 at price 170k (Score 778); missed most recent round."
+      ]
+    },
+    {
+      "name": "Bevan French",
+      "price": 170000,
+      "priceRaw": "170k",
+      "score": 433,
+      "lastRd": 0,
+      "metres": 69,
+      "xlsx2025Matches": 19,
+      "xlsx2025Avg": 50.42,
+      "xlsxOvr": 93,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "Best player in the league: elite 2025 rate plus decisive 2026 impact despite reduced availability.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 433 low vs elite price 170k (expected ~700+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.55 pts per 1k).",
+        "xlsx rationale: Best player in the league: elite 2025 rate plus decisive 2026 impact despite reduced availability."
+      ]
+    },
+    {
+      "name": "Mikey Lewis",
+      "price": 170000,
+      "priceRaw": "170k",
+      "score": 1044,
+      "lastRd": 0,
+      "metres": 152,
+      "xlsx2025Matches": 24,
+      "xlsx2025Avg": 67.33,
+      "xlsxOvr": 92,
+      "xlsxConfidence": "High",
+      "xlsxRationale": "League-leading 2025 fantasy season and another elite 2026 campaign; clear long-term world-class ceiling.",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Last Rd=0 at price 170k (Score 1044); missed most recent round."
+      ]
+    },
+    {
+      "name": "George Williams",
+      "price": 160000,
+      "priceRaw": "160k",
+      "score": 378,
+      "lastRd": 0,
+      "metres": 77,
+      "xlsx2025Matches": 18,
+      "xlsx2025Avg": 53.94,
+      "xlsxOvr": 87,
+      "xlsxConfidence": "High",
+      "xlsxRationale": "2025 rate was elite, but reduced 2026 output pulls his current rating down.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 378 low vs elite price 160k (expected ~700+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.36 pts per 1k)."
+      ]
+    },
+    {
+      "name": "Matty Lees",
+      "price": 150000,
+      "priceRaw": "150k",
+      "score": 116,
+      "lastRd": 0,
+      "metres": 19,
+      "xlsx2025Matches": 25,
+      "xlsx2025Avg": 45.2,
+      "xlsxOvr": 86,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "2025: 1130 points in 25 games (45.20 per game). Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 116 low vs elite price 150k (expected ~700+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (0.77 pts per 1k).",
+        "Very low metres (19) for price 150k (M=metres, not matches)."
+      ]
+    },
+    {
+      "name": "Liam Marshall",
+      "price": 150000,
+      "priceRaw": "150k",
+      "score": 312,
+      "lastRd": 0,
+      "metres": 122,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 86,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 312 low vs elite price 150k (expected ~700+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.08 pts per 1k)."
+      ]
+    },
+    {
+      "name": "Junior Nsemba",
+      "price": 150000,
+      "priceRaw": "150k",
+      "score": 747,
+      "lastRd": 0,
+      "metres": 132,
+      "xlsx2025Matches": 26,
+      "xlsx2025Avg": 48.38,
+      "xlsxOvr": 86,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "2025: 1258 points in 26 games (48.38 per game). Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Last Rd=0 at price 150k (Score 747); missed most recent round."
+      ]
+    },
+    {
+      "name": "Will Pryce",
+      "price": 150000,
+      "priceRaw": "150k",
+      "score": 102,
+      "lastRd": 0,
+      "metres": 25,
+      "xlsx2025Matches": 9,
+      "xlsx2025Avg": 45.67,
+      "xlsxOvr": 85,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "2025: 411 points in 9 games (45.67 per game). Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 102 low vs elite price 150k (expected ~700+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (0.68 pts per 1k).",
+        "Very low metres (25) for price 150k (M=metres, not matches)."
+      ]
+    },
+    {
+      "name": "Harry Smith",
+      "price": 150000,
+      "priceRaw": "150k",
+      "score": 751,
+      "lastRd": 0,
+      "metres": 61,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 75,
+      "xlsxConfidence": "Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Last Rd=0 at price 150k (Score 751); missed most recent round."
+      ]
+    },
+    {
+      "name": "Jake Wardle",
+      "price": 150000,
+      "priceRaw": "150k",
+      "score": 467,
+      "lastRd": 0,
+      "metres": 110,
+      "xlsx2025Matches": 26,
+      "xlsx2025Avg": 35.19,
+      "xlsxOvr": 84,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "2025: 915 points in 26 games (35.19 per game). Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 467 low vs elite price 150k (expected ~700+); likely injured/out or limited availability."
+      ]
+    },
+    {
+      "name": "Daryl Clark",
+      "price": 140000,
+      "priceRaw": "140k",
+      "score": 788,
+      "lastRd": 0,
+      "metres": 81,
+      "xlsx2025Matches": 24,
+      "xlsx2025Avg": 48.42,
+      "xlsxOvr": 86,
+      "xlsxConfidence": "High",
+      "xlsxRationale": "2025: 1162 points in 24 games (48.42 per game); 2026: 788 fantasy points. Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Last Rd=0 at price 140k (Score 788); missed most recent round."
+      ]
+    },
+    {
+      "name": "Mason Lino",
+      "price": 140000,
+      "priceRaw": "140k",
+      "score": 225,
+      "lastRd": 0,
+      "metres": 22,
+      "xlsx2025Matches": 26,
+      "xlsx2025Avg": 37.27,
+      "xlsxOvr": 82,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "2025: 969 points in 26 games (37.27 per game). Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 225 low vs high price 140k (expected ~550+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (1.61 pts per 1k).",
+        "Very low metres (22) for price 140k (M=metres, not matches)."
+      ]
+    },
+    {
+      "name": "Jonny Lomax",
+      "price": 140000,
+      "priceRaw": "140k",
+      "score": 135,
+      "lastRd": 0,
+      "metres": 15,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 83,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 135 low vs high price 140k (expected ~550+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (0.96 pts per 1k).",
+        "Very low metres (15) for price 140k (M=metres, not matches)."
+      ]
+    },
+    {
+      "name": "Nene Macdonald",
+      "price": 140000,
+      "priceRaw": "140k",
+      "score": 318,
+      "lastRd": 0,
+      "metres": 102,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 84,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 318 low vs high price 140k (expected ~550+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.27 pts per 1k)."
+      ]
+    },
+    {
+      "name": "Maika Sivo",
+      "price": 140000,
+      "priceRaw": "140k",
+      "score": 922,
+      "lastRd": 0,
+      "metres": 194,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 91,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "Elite 2026 try-scoring output keeps him among the league's highest-rated players.",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Last Rd=0 at price 140k (Score 922); missed most recent round."
+      ]
+    },
+    {
+      "name": "Luke Yates",
+      "price": 140000,
+      "priceRaw": "140k",
+      "score": 225,
+      "lastRd": 0,
+      "metres": 39,
+      "xlsx2025Matches": 24,
+      "xlsx2025Avg": 42.08,
+      "xlsxOvr": 84,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "2025: 1010 points in 24 games (42.08 per game). Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 225 low vs high price 140k (expected ~550+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (1.61 pts per 1k).",
+        "Very low metres (39) for price 140k (M=metres, not matches)."
+      ]
+    },
+    {
+      "name": "John Asiata",
+      "price": 130000,
+      "priceRaw": "130k",
+      "score": 226,
+      "lastRd": 0,
+      "metres": 47,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 79,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "2026: 226 fantasy points. Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 226 low vs high price 130k (expected ~550+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (1.74 pts per 1k)."
+      ]
+    },
+    {
+      "name": "George Flanagan",
+      "price": 130000,
+      "priceRaw": "130k",
+      "score": 437,
+      "lastRd": 0,
+      "metres": 101,
+      "xlsx2025Matches": 23,
+      "xlsx2025Avg": 41.83,
+      "xlsxOvr": 83,
+      "xlsxConfidence": "High",
+      "xlsxRationale": "Strong 2025 production and encouraging 2026 first-team impact at a young age.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 437 low vs high price 130k (expected ~550+); likely injured/out or limited availability."
+      ]
+    },
+    {
+      "name": "Ryan Hall",
+      "price": 130000,
+      "priceRaw": "130k",
+      "score": 476,
+      "lastRd": 0,
+      "metres": 168,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 83,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 476 low vs high price 130k (expected ~550+); likely injured/out or limited availability."
+      ]
+    },
+    {
+      "name": "David Klemmer",
+      "price": 130000,
+      "priceRaw": "130k",
+      "score": 676,
+      "lastRd": 0,
+      "metres": 122,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 83,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Last Rd=0 at price 130k (Score 676); missed most recent round."
+      ]
+    },
+    {
+      "name": "Arthur Mourgue",
+      "price": 130000,
+      "priceRaw": "130k",
+      "score": 158,
+      "lastRd": 0,
+      "metres": 30,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 83,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 158 low vs high price 130k (expected ~550+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (1.22 pts per 1k).",
+        "Very low metres (30) for price 130k (M=metres, not matches)."
+      ]
+    },
+    {
+      "name": "Tesi Niu",
+      "price": 130000,
+      "priceRaw": "130k",
+      "score": 479,
+      "lastRd": 0,
+      "metres": 120,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 82,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 479 low vs high price 130k (expected ~550+); likely injured/out or limited availability."
+      ]
+    },
+    {
+      "name": "Oliver Partington",
+      "price": 130000,
+      "priceRaw": "130k",
+      "score": 878,
+      "lastRd": 0,
+      "metres": 125,
+      "xlsx2025Matches": 24,
+      "xlsx2025Avg": 49.63,
+      "xlsxOvr": 85,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "2025: 1191 points in 24 games (49.63 per game). Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Last Rd=0 at price 130k (Score 878); missed most recent round."
+      ]
+    },
+    {
+      "name": "Marc Sneyd",
+      "price": 130000,
+      "priceRaw": "130k",
+      "score": 460,
+      "lastRd": 0,
+      "metres": 22,
+      "xlsx2025Matches": 23,
+      "xlsx2025Avg": 34.43,
+      "xlsxOvr": 85,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "2025: 792 points in 23 games (34.43 per game). Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 460 low vs high price 130k (expected ~550+); likely injured/out or limited availability.",
+        "Very low metres (22) for price 130k (M=metres, not matches)."
+      ]
+    },
+    {
+      "name": "Blake Taaffe",
+      "price": 130000,
+      "priceRaw": "130k",
+      "score": 13,
+      "lastRd": 0,
+      "metres": 7,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 80,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 13 low vs high price 130k (expected ~550+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (0.10 pts per 1k).",
+        "Very low metres (7) for price 130k (M=metres, not matches)."
+      ]
+    },
+    {
+      "name": "Luke Thompson",
+      "price": 130000,
+      "priceRaw": "130k",
+      "score": 720,
+      "lastRd": 0,
+      "metres": 178,
+      "xlsx2025Matches": 16,
+      "xlsx2025Avg": 37.13,
+      "xlsxOvr": 85,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "2025: 594 points in 16 games (37.13 per game). Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": false,
+      "notes": [
+        "Last Rd=0 at price 130k (Score 720); missed most recent round."
+      ]
+    },
+    {
+      "name": "James Bentley",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 398,
+      "lastRd": 0,
+      "metres": 42,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 80,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "2026: 398 fantasy points. Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 398 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability."
+      ]
+    },
+    {
+      "name": "Zac Cini",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 349,
+      "lastRd": 0,
+      "metres": 101,
+      "xlsx2025Matches": 21,
+      "xlsx2025Avg": 40.19,
+      "xlsxOvr": 81,
+      "xlsxConfidence": "High",
+      "xlsxRationale": "2025: 844 points in 21 games (40.19 per game); 2026: 349 fantasy points. Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 349 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.91 pts per 1k)."
+      ]
+    },
+    {
+      "name": "Matthew Dufty",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 0,
+      "lastRd": 0,
+      "metres": 0,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": null,
+      "xlsxConfidence": null,
+      "xlsxRationale": null,
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 0 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (0.00 pts per 1k).",
+        "Very low metres (0) for price 120k (M=metres, not matches)."
+      ]
+    },
+    {
+      "name": "Iszac Fa'asuamaleaui",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 294,
+      "lastRd": 0,
+      "metres": 46,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 77,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 294 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.45 pts per 1k)."
+      ]
+    },
+    {
+      "name": "Kyle Feldt",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 291,
+      "lastRd": 0,
+      "metres": 64,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 83,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 291 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.42 pts per 1k)."
+      ]
+    },
+    {
+      "name": "Joe Greenwood",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 274,
+      "lastRd": 0,
+      "metres": 39,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 77,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 274 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.28 pts per 1k).",
+        "Very low metres (39) for price 120k (M=metres, not matches)."
+      ]
+    },
+    {
+      "name": "Bailey Hodgson",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 340,
+      "lastRd": 0,
+      "metres": 115,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 77,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 340 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.83 pts per 1k)."
+      ]
+    },
+    {
+      "name": "Ben Jones-Bishop",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 182,
+      "lastRd": 0,
+      "metres": 64,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 78,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 182 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (1.52 pts per 1k)."
+      ]
+    },
+    {
+      "name": "Max Jowitt",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 321,
+      "lastRd": 0,
+      "metres": 62,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 85,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 321 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.67 pts per 1k)."
+      ]
+    },
+    {
+      "name": "Liam Knight",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 128,
+      "lastRd": 0,
+      "metres": 20,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 78,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 128 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (1.07 pts per 1k).",
+        "Very low metres (20) for price 120k (M=metres, not matches)."
+      ]
+    },
+    {
+      "name": "Sam Lisone",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 245,
+      "lastRd": 0,
+      "metres": 52,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 80,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 245 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.04 pts per 1k)."
+      ]
+    },
+    {
+      "name": "Esan Marsters",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 306,
+      "lastRd": 0,
+      "metres": 100,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 83,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 306 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.55 pts per 1k)."
+      ]
+    },
+    {
+      "name": "Mark Percival",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 156,
+      "lastRd": 0,
+      "metres": 52,
+      "xlsx2025Matches": 20,
+      "xlsx2025Avg": 47.3,
+      "xlsxOvr": 86,
+      "xlsxConfidence": "Medium",
+      "xlsxRationale": "2025: 946 points in 20 games (47.30 per game). Rating recalculated from two-season fantasy form and established level.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 156 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (1.30 pts per 1k)."
+      ]
+    },
+    {
+      "name": "Mikaele Ravalawa",
+      "price": 120000,
+      "priceRaw": "120k",
+      "score": 265,
+      "lastRd": 0,
+      "metres": 86,
+      "xlsx2025Matches": null,
+      "xlsx2025Avg": null,
+      "xlsxOvr": 80,
+      "xlsxConfidence": "Medium-Low",
+      "xlsxRationale": "No complete official two-season fantasy row was available; retained the established squad-role baseline.",
+      "likelyInjuredOrOut": true,
+      "notes": [
+        "Last Rd=0 and Score 265 low vs mid-high price 120k (expected ~400+); likely injured/out or limited availability.",
+        "Low Score/Price ratio (2.21 pts per 1k)."
+      ]
+    }
+  ],
+  "xlsxInjuryKeywordHits": [
+    {
+      "name": "Bevan French",
+      "ovr": 93,
+      "confidence": "Medium",
+      "rationale": "Best player in the league: elite 2025 rate plus decisive 2026 impact despite reduced availability.",
+      "squadStatus": "First Team / Rotation"
+    }
+  ],
+  "peakVsOverrideMismatches": {
+    "total": 0,
+    "top20": []
+  }
+}

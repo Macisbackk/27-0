@@ -1,0 +1,1203 @@
+{
+  "generatedAt": "2026-08-09T09:25:10.505489+00:00",
+  "methodology": {
+    "fantasyM": "metres (not matches)",
+    "availability": "Inferred from Last Rd, Score vs Fantasy price band, metres volume, and xlsx injury/availability text",
+    "rule": "Do not crush injured/out players on season totals; restore toward pre-audit quality with mild availability discount",
+    "manualLocks": {
+      "bradford-cur-ryan-sutton": 84,
+      "bradford-cur-loghan-lewis": 78,
+      "toulouse-cur-olly-ashall-bott": 87
+    },
+    "preserveSnapshot": "data\\player-rating-manual-preserve-snapshot-2026.json",
+    "liveFantasy": "C:\\Users\\Macis\\.cursor\\projects\\c-Users-Macis-Projects-27-0\\agent-tools\\a69fd1e7-4d18-41fb-9e73-7305eee4c674.txt"
+  },
+  "summary": {
+    "currentPlayers": 268,
+    "liveFantasyRows": 428,
+    "changeCount": 5,
+    "injuredOutCount": 35,
+    "limitedCount": 42,
+    "preservedManualCount": 3,
+    "skippedManualDivergeCount": 0
+  },
+  "preservedManual": [
+    {
+      "id": "bradford-cur-loghan-lewis",
+      "name": "Loghan Lewis",
+      "peakRating": 78,
+      "reason": "explicit manual lock"
+    },
+    {
+      "id": "bradford-cur-ryan-sutton",
+      "name": "Ryan Sutton",
+      "peakRating": 84,
+      "reason": "explicit manual lock"
+    },
+    {
+      "id": "toulouse-cur-olly-ashall-bott",
+      "name": "Olly Ashall-Bott",
+      "peakRating": 87,
+      "reason": "explicit manual lock"
+    }
+  ],
+  "skippedManualDiverge": [],
+  "changes": [
+    {
+      "id": "huddersfield-cur-matty-english",
+      "name": "Matty English",
+      "club": "Huddersfield Giants",
+      "from": 80,
+      "to": 85,
+      "availability": "limited",
+      "fantasyScore": 215,
+      "lastRd": 0,
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ],
+      "reason": "Injured/out (Last Rd 0, low Score); restore toward prior 86 with mild availability discount"
+    },
+    {
+      "id": "huddersfield-cur-niall-evalds",
+      "name": "Niall Evalds",
+      "club": "Huddersfield Giants",
+      "from": 78,
+      "to": 81,
+      "availability": "injured_out",
+      "fantasyScore": 281,
+      "lastRd": 0,
+      "notes": [
+        "Last Rd=0 at 110k; Score 281 below ~400"
+      ],
+      "reason": "Likely out / limited; restore prior 81 (was cut on season total)"
+    },
+    {
+      "id": "hull-fc-cur-herman-eseese",
+      "name": "Herman Ese'ese",
+      "club": "Hull FC",
+      "from": 83,
+      "to": 85,
+      "availability": "available",
+      "fantasyScore": 403,
+      "lastRd": 38,
+      "notes": [
+        "Looks available / contributing recently"
+      ],
+      "reason": "Available recently but weak vs price; soften prior cut (89->83) to 85"
+    },
+    {
+      "id": "wigan-cur-liam-farrell",
+      "name": "Liam Farrell",
+      "club": "Wigan Warriors",
+      "from": 82,
+      "to": 84,
+      "availability": "limited",
+      "fantasyScore": 502,
+      "lastRd": 0,
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ],
+      "reason": "Missed recent round / soft volume; soften prior cut (85->82) to 84"
+    },
+    {
+      "id": "wigan-cur-jai-field",
+      "name": "Jai Field",
+      "club": "Wigan Warriors",
+      "from": 86,
+      "to": 87,
+      "availability": "available",
+      "fantasyScore": 817,
+      "lastRd": 39,
+      "notes": [
+        "Looks available / contributing recently"
+      ],
+      "reason": "Updated Fantasy Score 817, Last Rd 39; nudge 86->87"
+    }
+  ],
+  "priorFormCutsKept": [
+    {
+      "id": "catalans-cur-manase-kaho",
+      "name": "Manase Kaho",
+      "rating": 75,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    },
+    {
+      "id": "toulouse-cur-john-toleafoa",
+      "name": "John Toleafoa",
+      "rating": 75,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    },
+    {
+      "id": "wigan-cur-jonny-vaughan",
+      "name": "Jonny Vaughan",
+      "rating": 75,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    },
+    {
+      "id": "castleford-cur-cain-robb",
+      "name": "Cain Robb",
+      "rating": 75,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    },
+    {
+      "id": "bradford-cur-eribe-doro",
+      "name": "Eribe Doro",
+      "rating": 79,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    },
+    {
+      "id": "castleford-cur-zac-cini",
+      "name": "Zac Cini",
+      "rating": 78,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    },
+    {
+      "id": "bradford-cur-jayden-nikorima",
+      "name": "Jayden Nikorima",
+      "rating": 80,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    },
+    {
+      "id": "bradford-cur-ethan-ryan",
+      "name": "Ethan Ryan",
+      "rating": 82,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    },
+    {
+      "id": "castleford-cur-jason-qareqare",
+      "name": "Jason Qareqare",
+      "rating": 82,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    },
+    {
+      "id": "catalans-cur-benjamin-garcia",
+      "name": "Benjamin Garcia",
+      "rating": 82,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    },
+    {
+      "id": "castleford-cur-krystian-mapapalangi",
+      "name": "Krystian Mapapalangi",
+      "rating": 85,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    },
+    {
+      "id": "oldham-cur-jake-bibby",
+      "name": "Jake Bibby",
+      "rating": 83,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    },
+    {
+      "id": "leigh-cur-umyla-hanley",
+      "name": "Umyla Hanley",
+      "rating": 82,
+      "note": "Prior form cut kept \u2014 player available or intentional development rating"
+    }
+  ],
+  "injuredOutSample": [
+    {
+      "id": "leeds-cur-sam-lisone",
+      "name": "Sam Lisone",
+      "peakRating": 81,
+      "availability": "injured_out",
+      "fantasyScore": 245,
+      "lastRd": 0,
+      "metres": 52,
+      "price": "120k",
+      "notes": [
+        "Last Rd=0 at 120k; Score 245 below ~400"
+      ]
+    },
+    {
+      "id": "toulouse-cur-justin-sangare",
+      "name": "Justin Sangar\u00e9",
+      "peakRating": 81,
+      "availability": "injured_out",
+      "fantasyScore": 194,
+      "lastRd": 0,
+      "metres": 32,
+      "price": "110k",
+      "notes": [
+        "Last Rd=0 and Score 194 << ~400 for 110k"
+      ]
+    },
+    {
+      "id": "castleford-cur-blake-taaffe",
+      "name": "Blake Taaffe",
+      "peakRating": 80,
+      "availability": "injured_out",
+      "fantasyScore": 13,
+      "lastRd": 0,
+      "metres": 7,
+      "price": "130k",
+      "notes": [
+        "Last Rd=0 and Score 13 << ~550 for 130k"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-oliver-wilson",
+      "name": "Oliver Wilson",
+      "peakRating": 82,
+      "availability": "injured_out",
+      "fantasyScore": 0,
+      "lastRd": 0,
+      "metres": 0,
+      "price": "100k",
+      "notes": [
+        "Last Rd=0 and Score 0 << ~250 for 100k"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-danny-richardson",
+      "name": "Danny Richardson",
+      "peakRating": 80,
+      "availability": "injured_out",
+      "fantasyScore": 77,
+      "lastRd": 0,
+      "metres": 2,
+      "price": "100k",
+      "notes": [
+        "Last Rd=0 and Score 77 << ~250 for 100k"
+      ]
+    },
+    {
+      "id": "catalans-cur-manase-kaho",
+      "name": "Manase Kaho",
+      "peakRating": 75,
+      "availability": "injured_out",
+      "fantasyScore": 0,
+      "lastRd": 0,
+      "metres": 0,
+      "price": "100k",
+      "notes": [
+        "Last Rd=0 and Score 0 << ~250 for 100k"
+      ]
+    },
+    {
+      "id": "wigan-cur-jonny-vaughan",
+      "name": "Jonny Vaughan",
+      "peakRating": 75,
+      "availability": "injured_out",
+      "fantasyScore": 0,
+      "lastRd": 0,
+      "metres": 0,
+      "price": "90k",
+      "notes": [
+        "Last Rd=0 and Score 0 << ~250 for 90k"
+      ]
+    },
+    {
+      "id": "leigh-cur-aaron-pene",
+      "name": "Aaron Pene",
+      "peakRating": 79,
+      "availability": "injured_out",
+      "fantasyScore": 132,
+      "lastRd": 0,
+      "metres": 27,
+      "price": "90k",
+      "notes": [
+        "Last Rd=0 and Score 132 << ~250 for 90k"
+      ]
+    },
+    {
+      "id": "toulouse-cur-calum-gahan",
+      "name": "Calum Gahan",
+      "peakRating": 77,
+      "availability": "injured_out",
+      "fantasyScore": 0,
+      "lastRd": 0,
+      "metres": 0,
+      "price": "90k",
+      "notes": [
+        "Last Rd=0 and Score 0 << ~250 for 90k"
+      ]
+    },
+    {
+      "id": "castleford-cur-semi-valemei",
+      "name": "Semi Valemei",
+      "peakRating": 78,
+      "availability": "injured_out",
+      "fantasyScore": 196,
+      "lastRd": 0,
+      "metres": 62,
+      "price": "120k",
+      "notes": [
+        "Last Rd=0 and Score 196 << ~400 for 120k"
+      ]
+    },
+    {
+      "id": "toulouse-cur-paul-marcon",
+      "name": "Paul Marcon",
+      "peakRating": 78,
+      "availability": "injured_out",
+      "fantasyScore": 0,
+      "lastRd": 0,
+      "metres": 0,
+      "price": "110k",
+      "notes": [
+        "Last Rd=0 and Score 0 << ~400 for 110k"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-ligi-sao",
+      "name": "Ligi Sao",
+      "peakRating": 78,
+      "availability": "injured_out",
+      "fantasyScore": 282,
+      "lastRd": 0,
+      "metres": 66,
+      "price": "110k",
+      "notes": [
+        "Last Rd=0 at 110k; Score 282 below ~400"
+      ]
+    },
+    {
+      "id": "salford-cur-mitch-clark",
+      "name": "Mitch Clark",
+      "peakRating": 85,
+      "availability": "injured_out",
+      "fantasyScore": 0,
+      "lastRd": 0,
+      "metres": 0,
+      "price": "100k",
+      "notes": [
+        "Last Rd=0 and Score 0 << ~250 for 100k"
+      ]
+    },
+    {
+      "id": "wigan-cur-oliver-wilson",
+      "name": "Oliver Wilson",
+      "peakRating": 82,
+      "availability": "injured_out",
+      "fantasyScore": 0,
+      "lastRd": 0,
+      "metres": 0,
+      "price": "100k",
+      "notes": [
+        "Last Rd=0 and Score 0 << ~250 for 100k"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-sam-lisone",
+      "name": "Sam Lisone",
+      "peakRating": 80,
+      "availability": "injured_out",
+      "fantasyScore": 245,
+      "lastRd": 0,
+      "metres": 52,
+      "price": "120k",
+      "notes": [
+        "Last Rd=0 at 120k; Score 245 below ~400"
+      ]
+    },
+    {
+      "id": "catalans-cur-alrix-da-costa",
+      "name": "Alrix Da Costa",
+      "peakRating": 77,
+      "availability": "injured_out",
+      "fantasyScore": 184,
+      "lastRd": 14,
+      "metres": 8,
+      "price": "110k",
+      "notes": [
+        "Very low metres (8) + weak Score 184"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-adam-clune",
+      "name": "Adam Clune",
+      "peakRating": 79,
+      "availability": "injured_out",
+      "fantasyScore": 234,
+      "lastRd": 42,
+      "metres": 29,
+      "price": "110k",
+      "notes": [
+        "Very low metres (29) + weak Score 234"
+      ]
+    },
+    {
+      "id": "st-helens-cur-jake-wingfield",
+      "name": "Jake Wingfield",
+      "peakRating": 78,
+      "availability": "injured_out",
+      "fantasyScore": 121,
+      "lastRd": 0,
+      "metres": 13,
+      "price": "100k",
+      "notes": [
+        "Last Rd=0 and Score 121 << ~250 for 100k"
+      ]
+    },
+    {
+      "id": "york-cur-justin-sangare",
+      "name": "Justin Sangar\u00e9",
+      "peakRating": 78,
+      "availability": "injured_out",
+      "fantasyScore": 194,
+      "lastRd": 0,
+      "metres": 32,
+      "price": "110k",
+      "notes": [
+        "Last Rd=0 and Score 194 << ~400 for 110k"
+      ]
+    },
+    {
+      "id": "warrington-cur-luke-yates",
+      "name": "Luke Yates",
+      "peakRating": 84,
+      "availability": "injured_out",
+      "fantasyScore": 225,
+      "lastRd": 0,
+      "metres": 39,
+      "price": "140k",
+      "notes": [
+        "Last Rd=0 and Score 225 << ~550 for 140k"
+      ]
+    },
+    {
+      "id": "wakefield-cur-mason-lino",
+      "name": "Mason Lino",
+      "peakRating": 82,
+      "availability": "injured_out",
+      "fantasyScore": 225,
+      "lastRd": 0,
+      "metres": 22,
+      "price": "140k",
+      "notes": [
+        "Last Rd=0 and Score 225 << ~550 for 140k"
+      ]
+    },
+    {
+      "id": "leeds-cur-riley-lumb",
+      "name": "Riley Lumb",
+      "peakRating": 80,
+      "availability": "injured_out",
+      "fantasyScore": 115,
+      "lastRd": 0,
+      "metres": 37,
+      "price": "100k",
+      "notes": [
+        "Last Rd=0 and Score 115 << ~250 for 100k"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-will-pryce",
+      "name": "Will Pryce",
+      "peakRating": 85,
+      "availability": "injured_out",
+      "fantasyScore": 102,
+      "lastRd": 0,
+      "metres": 25,
+      "price": "150k",
+      "notes": [
+        "Last Rd=0 and Score 102 << ~700 for 150k"
+      ]
+    },
+    {
+      "id": "leigh-cur-keanan-brand",
+      "name": "Keanan Brand",
+      "peakRating": 78,
+      "availability": "injured_out",
+      "fantasyScore": 158,
+      "lastRd": 0,
+      "metres": 28,
+      "price": "110k",
+      "notes": [
+        "Last Rd=0 and Score 158 << ~400 for 110k"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-arthur-mourgue",
+      "name": "Arthur Mourgue",
+      "peakRating": 83,
+      "availability": "injured_out",
+      "fantasyScore": 158,
+      "lastRd": 0,
+      "metres": 30,
+      "price": "130k",
+      "notes": [
+        "Last Rd=0 and Score 158 << ~550 for 130k"
+      ]
+    },
+    {
+      "id": "bradford-cur-jayden-okunbor",
+      "name": "Jayden Okunbor",
+      "peakRating": 78,
+      "availability": "injured_out",
+      "fantasyScore": 31,
+      "lastRd": 0,
+      "metres": 18,
+      "price": "100k",
+      "notes": [
+        "Last Rd=0 and Score 31 << ~250 for 100k"
+      ]
+    },
+    {
+      "id": "castleford-cur-joe-westerman",
+      "name": "Joe Westerman",
+      "peakRating": 78,
+      "availability": "injured_out",
+      "fantasyScore": 212,
+      "lastRd": 0,
+      "metres": 35,
+      "price": "110k",
+      "notes": [
+        "Last Rd=0 and Score 212 << ~400 for 110k"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-john-asiata",
+      "name": "John Asiata",
+      "peakRating": 79,
+      "availability": "injured_out",
+      "fantasyScore": 226,
+      "lastRd": 0,
+      "metres": 47,
+      "price": "130k",
+      "notes": [
+        "Last Rd=0 and Score 226 << ~550 for 130k"
+      ]
+    },
+    {
+      "id": "warrington-cur-george-williams",
+      "name": "George Williams",
+      "peakRating": 87,
+      "availability": "injured_out",
+      "fantasyScore": 378,
+      "lastRd": 0,
+      "metres": 77,
+      "price": "160k",
+      "notes": [
+        "Last Rd=0 and Score 378 << ~700 for 160k"
+      ]
+    },
+    {
+      "id": "york-cur-ben-jones-bishop",
+      "name": "Ben Jones-Bishop",
+      "peakRating": 78,
+      "availability": "injured_out",
+      "fantasyScore": 182,
+      "lastRd": 0,
+      "metres": 64,
+      "price": "120k",
+      "notes": [
+        "Last Rd=0 and Score 182 << ~400 for 120k"
+      ]
+    },
+    {
+      "id": "st-helens-cur-matty-lees",
+      "name": "Matty Lees",
+      "peakRating": 86,
+      "availability": "injured_out",
+      "fantasyScore": 116,
+      "lastRd": 0,
+      "metres": 19,
+      "price": "150k",
+      "notes": [
+        "Last Rd=0 and Score 116 << ~700 for 150k"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-niall-evalds",
+      "name": "Niall Evalds",
+      "peakRating": 78,
+      "availability": "injured_out",
+      "fantasyScore": 281,
+      "lastRd": 0,
+      "metres": 67,
+      "price": "110k",
+      "notes": [
+        "Last Rd=0 at 110k; Score 281 below ~400"
+      ]
+    },
+    {
+      "id": "st-helens-cur-jonny-lomax",
+      "name": "Jonny Lomax",
+      "peakRating": 83,
+      "availability": "injured_out",
+      "fantasyScore": 135,
+      "lastRd": 0,
+      "metres": 15,
+      "price": "140k",
+      "notes": [
+        "Last Rd=0 and Score 135 << ~550 for 140k"
+      ]
+    },
+    {
+      "id": "wigan-cur-jake-wardle",
+      "name": "Jake Wardle",
+      "peakRating": 84,
+      "availability": "injured_out",
+      "fantasyScore": 467,
+      "lastRd": 0,
+      "metres": 110,
+      "price": "150k",
+      "notes": [
+        "Last Rd=0 at 150k; Score 467 below ~700"
+      ]
+    },
+    {
+      "id": "st-helens-cur-mark-percival",
+      "name": "Mark Percival",
+      "peakRating": 86,
+      "availability": "injured_out",
+      "fantasyScore": 156,
+      "lastRd": 0,
+      "metres": 52,
+      "price": "120k",
+      "notes": [
+        "Last Rd=0 and Score 156 << ~400 for 120k"
+      ]
+    }
+  ],
+  "limitedSample": [
+    {
+      "id": "catalans-cur-jordan-dezaria",
+      "name": "Jordan Dezaria",
+      "peakRating": 76,
+      "availability": "limited",
+      "fantasyScore": 270,
+      "lastRd": 0,
+      "metres": 47,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "leigh-cur-darnell-mcintosh",
+      "name": "Darnell McIntosh",
+      "peakRating": 81,
+      "availability": "limited",
+      "fantasyScore": 419,
+      "lastRd": 0,
+      "metres": 100,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "bradford-cur-dan-russell",
+      "name": "Dan Russell",
+      "peakRating": 78,
+      "availability": "limited",
+      "fantasyScore": 440,
+      "lastRd": 0,
+      "metres": 65,
+      "price": "110k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-taane-milne",
+      "name": "Taane Milne",
+      "peakRating": 85,
+      "availability": "limited",
+      "fantasyScore": 715,
+      "lastRd": 0,
+      "metres": 224,
+      "price": "110k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "st-helens-cur-david-klemmer",
+      "name": "David Klemmer",
+      "peakRating": 83,
+      "availability": "limited",
+      "fantasyScore": 676,
+      "lastRd": 0,
+      "metres": 122,
+      "price": "130k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "st-helens-cur-george-delaney",
+      "name": "George Delaney",
+      "peakRating": 82,
+      "availability": "limited",
+      "fantasyScore": 663,
+      "lastRd": 0,
+      "metres": 101,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "bradford-cur-eribe-doro",
+      "name": "Eribe Doro",
+      "peakRating": 79,
+      "availability": "limited",
+      "fantasyScore": 437,
+      "lastRd": 0,
+      "metres": 77,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-matty-english",
+      "name": "Matty English",
+      "peakRating": 80,
+      "availability": "limited",
+      "fantasyScore": 215,
+      "lastRd": 0,
+      "metres": 26,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-davy-litten",
+      "name": "Davy Litten",
+      "peakRating": 78,
+      "availability": "limited",
+      "fantasyScore": 737,
+      "lastRd": 0,
+      "metres": 185,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "catalans-cur-chris-satae",
+      "name": "Chris Satae",
+      "peakRating": 81,
+      "availability": "limited",
+      "fantasyScore": 412,
+      "lastRd": 0,
+      "metres": 72,
+      "price": "120k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "toulouse-cur-jake-shorrocks",
+      "name": "Jake Shorrocks",
+      "peakRating": 82,
+      "availability": "limited",
+      "fantasyScore": 500,
+      "lastRd": 0,
+      "metres": 26,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "wakefield-cur-matty-storton",
+      "name": "Matty Storton",
+      "peakRating": 81,
+      "availability": "limited",
+      "fantasyScore": 610,
+      "lastRd": 0,
+      "metres": 80,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "castleford-cur-zac-cini",
+      "name": "Zac Cini",
+      "peakRating": 78,
+      "availability": "limited",
+      "fantasyScore": 349,
+      "lastRd": 0,
+      "metres": 101,
+      "price": "120k",
+      "notes": [
+        "Last Rd=0 at 120k; Score 349 below ~400"
+      ]
+    },
+    {
+      "id": "st-helens-cur-matt-whitley",
+      "name": "Matt Whitley",
+      "peakRating": 81,
+      "availability": "limited",
+      "fantasyScore": 399,
+      "lastRd": 0,
+      "metres": 58,
+      "price": "110k",
+      "notes": [
+        "Last Rd=0 at 110k; Score 399 below ~400"
+      ]
+    },
+    {
+      "id": "bradford-cur-jayden-nikorima",
+      "name": "Jayden Nikorima",
+      "peakRating": 80,
+      "availability": "limited",
+      "fantasyScore": 480,
+      "lastRd": 0,
+      "metres": 98,
+      "price": "120k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "bradford-cur-rowan-milnes",
+      "name": "Rowan Milnes",
+      "peakRating": 78,
+      "availability": "limited",
+      "fantasyScore": 325,
+      "lastRd": 0,
+      "metres": 44,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "leigh-cur-frankie-halton",
+      "name": "Frankie Halton",
+      "peakRating": 80,
+      "availability": "limited",
+      "fantasyScore": 862,
+      "lastRd": 0,
+      "metres": 135,
+      "price": "110k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "hull-fc-cur-jed-cartwright",
+      "name": "Jed Cartwright",
+      "peakRating": 82,
+      "availability": "limited",
+      "fantasyScore": 300,
+      "lastRd": 0,
+      "metres": 40,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "bradford-cur-esan-marsters",
+      "name": "Esan Marsters",
+      "peakRating": 83,
+      "availability": "limited",
+      "fantasyScore": 306,
+      "lastRd": 0,
+      "metres": 100,
+      "price": "120k",
+      "notes": [
+        "Last Rd=0 at 120k; Score 306 below ~400"
+      ]
+    },
+    {
+      "id": "toulouse-cur-reubenn-rennie",
+      "name": "Reubenn Rennie",
+      "peakRating": 79,
+      "availability": "limited",
+      "fantasyScore": 420,
+      "lastRd": 0,
+      "metres": 110,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "leigh-cur-tesi-niu",
+      "name": "Tesi Niu",
+      "peakRating": 82,
+      "availability": "limited",
+      "fantasyScore": 479,
+      "lastRd": 0,
+      "metres": 120,
+      "price": "130k",
+      "notes": [
+        "Last Rd=0 at 130k; Score 479 below ~550"
+      ]
+    },
+    {
+      "id": "wakefield-cur-max-jowitt",
+      "name": "Max Jowitt",
+      "peakRating": 85,
+      "availability": "limited",
+      "fantasyScore": 321,
+      "lastRd": 0,
+      "metres": 62,
+      "price": "120k",
+      "notes": [
+        "Last Rd=0 at 120k; Score 321 below ~400"
+      ]
+    },
+    {
+      "id": "warrington-cur-sam-stone",
+      "name": "Sam Stone",
+      "peakRating": 80,
+      "availability": "limited",
+      "fantasyScore": 444,
+      "lastRd": 0,
+      "metres": 29,
+      "price": "110k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "catalans-cur-solomona-faataape",
+      "name": "Solomona Faataape",
+      "peakRating": 78,
+      "availability": "limited",
+      "fantasyScore": 671,
+      "lastRd": 0,
+      "metres": 184,
+      "price": "110k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "york-cur-liam-harris",
+      "name": "Liam Harris",
+      "peakRating": 82,
+      "availability": "limited",
+      "fantasyScore": 266,
+      "lastRd": 0,
+      "metres": 20,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "warrington-cur-sam-powell",
+      "name": "Sam Powell",
+      "peakRating": 80,
+      "availability": "limited",
+      "fantasyScore": 175,
+      "lastRd": 0,
+      "metres": 5,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "york-cur-josh-griffin",
+      "name": "Josh Griffin",
+      "peakRating": 82,
+      "availability": "limited",
+      "fantasyScore": 328,
+      "lastRd": 0,
+      "metres": 54,
+      "price": "110k",
+      "notes": [
+        "Last Rd=0 at 110k; Score 328 below ~400"
+      ]
+    },
+    {
+      "id": "st-helens-cur-deon-cross",
+      "name": "Deon Cross",
+      "peakRating": 79,
+      "availability": "limited",
+      "fantasyScore": 302,
+      "lastRd": 0,
+      "metres": 72,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "bradford-cur-waqa-blake",
+      "name": "Waqa Blake",
+      "peakRating": 81,
+      "availability": "limited",
+      "fantasyScore": 529,
+      "lastRd": 0,
+      "metres": 126,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "st-helens-cur-curtis-sironen",
+      "name": "Curtis Sironen",
+      "peakRating": 84,
+      "availability": "limited",
+      "fantasyScore": 494,
+      "lastRd": 0,
+      "metres": 74,
+      "price": "120k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "bradford-cur-ed-chamberlain",
+      "name": "Ed Chamberlain",
+      "peakRating": 80,
+      "availability": "limited",
+      "fantasyScore": 445,
+      "lastRd": 0,
+      "metres": 75,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "wakefield-cur-oliver-pratt",
+      "name": "Oliver Pratt",
+      "peakRating": 80,
+      "availability": "limited",
+      "fantasyScore": 567,
+      "lastRd": 0,
+      "metres": 117,
+      "price": "120k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "castleford-cur-darnell-mcintosh",
+      "name": "Darnell McIntosh",
+      "peakRating": 78,
+      "availability": "limited",
+      "fantasyScore": 419,
+      "lastRd": 0,
+      "metres": 100,
+      "price": "100k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "leeds-cur-maika-sivo",
+      "name": "Maika Sivo",
+      "peakRating": 91,
+      "availability": "limited",
+      "fantasyScore": 922,
+      "lastRd": 0,
+      "metres": 194,
+      "price": "140k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "wigan-cur-adam-keighran",
+      "name": "Adam Keighran",
+      "peakRating": 82,
+      "availability": "limited",
+      "fantasyScore": 817,
+      "lastRd": 0,
+      "metres": 126,
+      "price": "120k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "huddersfield-cur-adam-swift",
+      "name": "Adam Swift",
+      "peakRating": 78,
+      "availability": "limited",
+      "fantasyScore": 375,
+      "lastRd": 0,
+      "metres": 115,
+      "price": "120k",
+      "notes": [
+        "Last Rd=0 at 120k; Score 375 below ~400"
+      ]
+    },
+    {
+      "id": "wigan-cur-junior-nsemba",
+      "name": "Junior Nsemba",
+      "peakRating": 86,
+      "availability": "limited",
+      "fantasyScore": 747,
+      "lastRd": 0,
+      "metres": 132,
+      "price": "150k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "warrington-cur-marc-sneyd",
+      "name": "Marc Sneyd",
+      "peakRating": 85,
+      "availability": "limited",
+      "fantasyScore": 460,
+      "lastRd": 0,
+      "metres": 22,
+      "price": "130k",
+      "notes": [
+        "Last Rd=0 at 130k; Score 460 below ~550"
+      ]
+    },
+    {
+      "id": "wigan-cur-liam-farrell",
+      "name": "Liam Farrell",
+      "peakRating": 82,
+      "availability": "limited",
+      "fantasyScore": 502,
+      "lastRd": 0,
+      "metres": 141,
+      "price": "110k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "st-helens-cur-daryl-clark",
+      "name": "Daryl Clark",
+      "peakRating": 86,
+      "availability": "limited",
+      "fantasyScore": 788,
+      "lastRd": 0,
+      "metres": 81,
+      "price": "140k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "hull-kr-cur-mikey-lewis",
+      "name": "Mikey Lewis",
+      "peakRating": 92,
+      "availability": "limited",
+      "fantasyScore": 1044,
+      "lastRd": 0,
+      "metres": 152,
+      "price": "170k",
+      "notes": [
+        "Missed most recent round (season totals still competitive)"
+      ]
+    },
+    {
+      "id": "wigan-cur-bevan-french",
+      "name": "Bevan French",
+      "peakRating": 93,
+      "availability": "limited",
+      "fantasyScore": 519,
+      "lastRd": 86,
+      "metres": 82,
+      "price": "170k",
+      "notes": [
+        "xlsx mentions injury / reduced availability / missed games",
+        "xlsx injury + below-par season total \u2192 limited"
+      ]
+    }
+  ]
+}

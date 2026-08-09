@@ -1,42 +1,10 @@
 {
   "ratings": {
-    "huddersfield-cur-jake-bibby": 83,
-    "castleford-cur-krystian-mapapalangi": 85,
-    "castleford-cur-jason-qareqare": 82,
-    "hull-fc-cur-herman-eseese": 83,
-    "huddersfield-cur-matty-english": 80,
-    "catalans-cur-benjamin-garcia": 82,
-    "leigh-cur-umyla-hanley": 82,
-    "wigan-cur-jai-field": 86,
-    "wigan-cur-liam-farrell": 82,
-    "bradford-cur-ethan-ryan": 82,
-    "bradford-cur-eribe-doro": 79,
-    "bradford-cur-jayden-nikorima": 80,
-    "castleford-cur-cain-robb": 75,
-    "catalans-cur-manase-kaho": 75,
-    "toulouse-cur-john-toleafoa": 75,
-    "salford-cur-jonny-vaughan": 75,
-    "castleford-cur-zac-cini": 78,
-    "huddersfield-cur-niall-evalds": 78
+    "huddersfield-cur-matty-english": 85,
+    "huddersfield-cur-niall-evalds": 81,
+    "hull-fc-cur-herman-eseese": 85,
+    "wigan-cur-liam-farrell": 84,
+    "wigan-cur-jai-field": 87
   },
-  "potentials": {
-    "huddersfield-cur-jake-bibby": 83,
-    "castleford-cur-krystian-mapapalangi": 88,
-    "castleford-cur-jason-qareqare": 86,
-    "hull-fc-cur-herman-eseese": 84,
-    "huddersfield-cur-matty-english": 82,
-    "catalans-cur-benjamin-garcia": 83,
-    "leigh-cur-umyla-hanley": 86,
-    "wigan-cur-jai-field": 88,
-    "wigan-cur-liam-farrell": 82,
-    "bradford-cur-ethan-ryan": 85,
-    "bradford-cur-eribe-doro": 84,
-    "bradford-cur-jayden-nikorima": 85,
-    "castleford-cur-cain-robb": 84,
-    "catalans-cur-manase-kaho": 80,
-    "toulouse-cur-john-toleafoa": 80,
-    "salford-cur-jonny-vaughan": 84,
-    "castleford-cur-zac-cini": 82,
-    "huddersfield-cur-niall-evalds": 78
-  }
+  "potentials": {}
 }

@@ -1,0 +1,142 @@
+{
+  "generatedAt": "2026-08-09",
+  "sources": [
+    "data/current-club-moves-2026-report.json (10 moves already applied)",
+    "https://www.seriousaboutrl.com/...championship-in-2026... (SL→Champ roundup)",
+    "https://www.totalrl.com/championship-ins-and-outs-every-transfer-for-2026-season/",
+    "Love Rugby League / Oldham / Hull KR mid-season Aug 2026 notes"
+  ],
+  "gameClubsThatCanReceive": [
+    "Oldham RLFC",
+    "London Broncos",
+    "Sheffield Eagles",
+    "Widnes Vikings",
+    "Halifax Panthers",
+    "Midlands Hurricanes",
+    "York Knights",
+    "St Helens",
+    "Wigan Warriors"
+  ],
+  "alreadyMoved": 10,
+  "inDbWrongClub": [
+    {
+      "name": "Mitch Clark",
+      "id": "salford-cur-mitch-clark",
+      "currentClub": "Salford Red Devils",
+      "destination": "York Knights",
+      "confidence": "high",
+      "note": "Committed to York for 2026 Super League; wrongly on liquidated Salford card",
+      "action": "move"
+    },
+    {
+      "name": "Bayley Sironen",
+      "id": "catalans-cur-bayley-sironen",
+      "currentClub": "Catalans Dragons",
+      "destination": "Wynnum Manly Seagulls (Queensland Cup)",
+      "confidence": "high",
+      "note": "Left Catalans; QLD Cup only — no matching club in game",
+      "action": "leave_or_remove_from_catalans"
+    },
+    {
+      "name": "Ben Hellewell",
+      "id": "salford-cur-ben-hellewell",
+      "currentClub": "Salford Red Devils",
+      "destination": "Retired (Aug 2025, hip replacement)",
+      "confidence": "high",
+      "note": "No 2026 club",
+      "action": "retire_or_remove"
+    },
+    {
+      "name": "Ellis Robson",
+      "id": "salford-cur-ellis-robson",
+      "currentClub": "Salford Red Devils",
+      "destination": "Barrow Raiders",
+      "confidence": "medium",
+      "note": "Signed Barrow two-year deal from 2025; Barrow not in game clubs",
+      "action": "blocked_no_game_club"
+    }
+  ],
+  "inDbLikelyPhantomOrUnresolved": [
+    {
+      "name": "Brodie Shields",
+      "id": "salford-cur-brodie-shields",
+      "note": "No pro record found. Real Salford 2025 player was Jimmy/James Shields → Swinton (released May 2026). Possible name corruption."
+    },
+    {
+      "name": "Chris Savelio",
+      "id": "salford-cur-chris-savelio",
+      "note": "No RLP page; not in 2025 Salford SL usage list. Possible confusion with Andre Savelio (Doncaster/Goole)."
+    },
+    {
+      "name": "Ryan Kingston",
+      "id": "salford-cur-ryan-kingston",
+      "note": "No verified 2026 destination; not in 2025 Salford SL usage list"
+    },
+    {
+      "name": "Sitili-Losala Ngahe",
+      "id": "salford-cur-sitili-ngahe",
+      "note": "No verified 2026 destination; not in 2025 Salford SL usage list"
+    },
+    {
+      "name": "Dele Sule",
+      "id": "salford-cur-dele-sule",
+      "note": "No verified 2026 destination; not in 2025 Salford SL usage list"
+    },
+    {
+      "name": "Logan Ewington",
+      "id": "salford-cur-logan-ewington",
+      "note": "No verified 2026 destination; not in 2025 Salford SL usage list"
+    },
+    {
+      "name": "Tim Bergin",
+      "id": "salford-cur-tim-bergin",
+      "note": "DOB 1985 in data; no verified 2026 pro club. Likely stale/bad card"
+    }
+  ],
+  "notInDbButDestInGame": [
+    { "name": "Josh Simm", "from": "Catalans Dragons", "destination": "Oldham RLFC", "deal": "mid-season Aug 2026 remainder" },
+    { "name": "Jack Walker", "from": "Salford (cancelled) / free agent", "destination": "Oldham RLFC", "deal": "permanent 2026" },
+    { "name": "Emmanuel Waine", "from": "Bradford Bulls", "destination": "Oldham RLFC", "deal": "permanent" },
+    { "name": "Harvey Makin", "from": "Wigan Warriors", "destination": "Oldham RLFC", "deal": "season loan" },
+    { "name": "Elliot Wallis", "from": "Huddersfield Giants", "destination": "London Broncos", "deal": "permanent" },
+    { "name": "Jake Ramsden", "from": "Warrington Wolves", "destination": "London Broncos", "deal": "permanent" },
+    { "name": "Jack Croft", "from": "Wakefield Trinity", "destination": "London Broncos", "deal": "permanent" },
+    { "name": "Neil Tchamambe", "from": "Wakefield Trinity", "destination": "London Broncos", "deal": "year loan" },
+    { "name": "Alfie Johnson", "from": "Warrington Wolves", "destination": "Halifax Panthers", "deal": "permanent" },
+    { "name": "Dan Okoro", "from": "Warrington Wolves", "destination": "Halifax Panthers", "deal": "permanent" },
+    { "name": "Tanguy Zenon", "from": "Catalans Dragons", "destination": "Halifax Panthers", "deal": "permanent" },
+    { "name": "Darius Carter", "from": "Huddersfield Giants", "destination": "Halifax Panthers", "deal": "permanent" },
+    { "name": "Myles Lawford", "from": "Wakefield Trinity", "destination": "Halifax Panthers", "deal": "season loan" },
+    { "name": "Kieran Gill", "from": "Bradford Bulls", "destination": "Sheffield Eagles", "deal": "permanent" },
+    { "name": "Conor Fitzsimmons", "from": "York Knights", "destination": "Sheffield Eagles", "deal": "permanent" },
+    { "name": "George Griffin", "from": "Castleford Tigers", "destination": "Sheffield Eagles", "deal": "permanent" },
+    { "name": "Josh Hodson", "from": "Castleford Tigers", "destination": "Sheffield Eagles", "deal": "permanent" },
+    { "name": "Lennie Ellis", "from": "Hull KR", "destination": "Sheffield Eagles", "deal": "permanent" },
+    { "name": "Frank Sergent", "from": "Warrington Wolves", "destination": "Widnes Vikings", "deal": "permanent" },
+    { "name": "Jack Bibby", "from": "Huddersfield Giants", "destination": "Widnes Vikings", "deal": "permanent" }
+  ],
+  "notInDbDestMissingFromGame": {
+    "Goole Vikings": ["Oliver Morgan", "Baily Tait", "Leroy Ncube", "Brad Bullock", "Shane Tuohey"],
+    "Dewsbury Rams": ["Jacob Parkinson", "Valu Tane Bentley", "George Rayner", "Jacob Bateman"],
+    "Doncaster RLFC": ["Muizz Mustapha", "Tom Holmes"],
+    "Hunslet RLFC": ["Lee Gaskell", "Eddie Battye", "Lewis Hagan"],
+    "Rochdale Hornets": ["TJ Boyd", "Dylan Kelly-Duffy", "Joe Hickey"],
+    "Swinton Lions": ["Tom Ratchford", "Trent Kelly-Duffy"],
+    "Barrow Raiders": ["Tee Ritson"],
+    "Keighley Cougars": ["Dylan Proud"]
+  },
+  "midSeasonLoansAug2026": [
+    { "name": "Lazarus Vaalepu", "from": "Leigh Leopards", "destination": "Oldham RLFC", "deal": "1-week loan (Aug 2026)", "inDb": false },
+    { "name": "Harvey Horne", "from": "Hull KR", "destination": "Doncaster RLFC", "deal": "rest-of-season loan", "inDb": false, "destInGame": false },
+    { "name": "Zach Fishwick", "from": "Hull KR", "destination": "Batley Bulldogs", "deal": "week-to-week loan", "inDb": false, "destInGame": false },
+    { "name": "Declan Murphy", "from": "Hull KR", "destination": "Salford RLFC (phoenix)", "deal": "week loan", "inDb": false },
+    { "name": "Louix Gorman", "from": "Hull KR", "destination": "Salford RLFC (phoenix)", "deal": "week loan", "inDb": false }
+  ],
+  "recommendedNextSteps": [
+    "Move Mitch Clark Salford → York (only clear high-confidence move of an existing Current card to a game club).",
+    "Decide policy for Bayley Sironen (stuck on Catalans; QLD Cup has no club) and Ben Hellewell (retired).",
+    "Audit/remove likely phantom Salford cards (Shields/Savelio/Kingston/Ngahe/Sule/Ewington/Bergin) rather than inventing destinations.",
+    "If expanding Current DB: add Josh Simm + Jack Walker to Oldham first (highest-profile leftovers from prior audit notes).",
+    "Do not mass-add academy movers to Goole/Dewsbury/etc. until those clubs exist in clubs.json."
+  ]
+}

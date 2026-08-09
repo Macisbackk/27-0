@@ -1,0 +1,1345 @@
+{
+  "generatedAt": "2026-08-09T09:25:10.486850+00:00",
+  "players": {
+    "sheffield-cur-kai-morgan": {
+      "name": "Kai Morgan",
+      "peakRating": 80,
+      "club": "Sheffield Eagles"
+    },
+    "bradford-cur-mitch-souter": {
+      "name": "Mitch Souter",
+      "peakRating": 77,
+      "club": "Bradford Bulls"
+    },
+    "salford-cur-ellis-robson": {
+      "name": "Ellis Robson",
+      "peakRating": 80,
+      "club": "Salford Red Devils"
+    },
+    "leeds-cur-james-bentley": {
+      "name": "James Bentley",
+      "peakRating": 80,
+      "club": "Leeds Rhinos"
+    },
+    "wakefield-cur-liam-hood": {
+      "name": "Liam Hood",
+      "peakRating": 80,
+      "club": "Wakefield Trinity"
+    },
+    "london-cur-jacob-jones": {
+      "name": "Jacob Jones",
+      "peakRating": 80,
+      "club": "London Broncos"
+    },
+    "london-cur-sam-davis": {
+      "name": "Sam Davis",
+      "peakRating": 81,
+      "club": "London Broncos"
+    },
+    "widnes-cur-nathan-connell": {
+      "name": "Nathan Connell",
+      "peakRating": 80,
+      "club": "Widnes Vikings"
+    },
+    "toulouse-cur-eloi-pelissier": {
+      "name": "Eloi Pelissier",
+      "peakRating": 81,
+      "club": "Toulouse Olympique"
+    },
+    "catalans-cur-jordan-dezaria": {
+      "name": "Jordan Dezaria",
+      "peakRating": 76,
+      "club": "Catalans Dragons"
+    },
+    "bradford-cur-ebon-scurr": {
+      "name": "Ebon Scurr",
+      "peakRating": 77,
+      "club": "Bradford Bulls"
+    },
+    "london-cur-harry-aldous": {
+      "name": "Harry Aldous",
+      "peakRating": 80,
+      "club": "London Broncos"
+    },
+    "salford-cur-ryan-kingston": {
+      "name": "Ryan Kingston",
+      "peakRating": 80,
+      "club": "Salford Red Devils"
+    },
+    "london-cur-robert-butler": {
+      "name": "Robert Butler",
+      "peakRating": 81,
+      "club": "London Broncos"
+    },
+    "catalans-cur-arthur-romano": {
+      "name": "Arthur Romano",
+      "peakRating": 77,
+      "club": "Catalans Dragons"
+    },
+    "catalans-cur-paul-seguier": {
+      "name": "Paul S\u00e9guier",
+      "peakRating": 81,
+      "club": "Catalans Dragons"
+    },
+    "oldham-cur-jonty-gorley": {
+      "name": "Jonty Gorley",
+      "peakRating": 80,
+      "club": "Oldham RLFC"
+    },
+    "leeds-cur-sam-lisone": {
+      "name": "Sam Lisone",
+      "peakRating": 81,
+      "club": "Leeds Rhinos"
+    },
+    "salford-cur-chris-savelio": {
+      "name": "Chris Savelio",
+      "peakRating": 82,
+      "club": "Salford Red Devils"
+    },
+    "salford-cur-sitili-ngahe": {
+      "name": "Sitili-Losala Ngahe",
+      "peakRating": 81,
+      "club": "Salford Red Devils"
+    },
+    "toulouse-cur-justin-sangare": {
+      "name": "Justin Sangar\u00e9",
+      "peakRating": 81,
+      "club": "Toulouse Olympique"
+    },
+    "york-cur-oliver-field": {
+      "name": "Oliver Field",
+      "peakRating": 84,
+      "club": "York Knights"
+    },
+    "castleford-cur-blake-taaffe": {
+      "name": "Blake Taaffe",
+      "peakRating": 80,
+      "club": "Castleford Tigers"
+    },
+    "midlands-cur-toby-warren": {
+      "name": "Toby Warren",
+      "peakRating": 81,
+      "club": "Midlands Hurricanes"
+    },
+    "london-cur-lewis-bienek": {
+      "name": "Lewis Bienek",
+      "peakRating": 81,
+      "club": "London Broncos"
+    },
+    "huddersfield-cur-george-flanagan-jr": {
+      "name": "George Flanagan Jr",
+      "peakRating": 83,
+      "club": "Huddersfield Giants"
+    },
+    "huddersfield-cur-oliver-wilson": {
+      "name": "Oliver Wilson",
+      "peakRating": 82,
+      "club": "Huddersfield Giants"
+    },
+    "hull-kr-cur-danny-richardson": {
+      "name": "Danny Richardson",
+      "peakRating": 80,
+      "club": "Hull KR"
+    },
+    "leigh-cur-darnell-mcintosh": {
+      "name": "Darnell McIntosh",
+      "peakRating": 81,
+      "club": "Leigh Leopards"
+    },
+    "salford-cur-brodie-shields": {
+      "name": "Brodie Shields",
+      "peakRating": 82,
+      "club": "Salford Red Devils"
+    },
+    "salford-cur-dele-sule": {
+      "name": "Dele Sule",
+      "peakRating": 82,
+      "club": "Salford Red Devils"
+    },
+    "sheffield-cur-joe-brown": {
+      "name": "Joe Brown",
+      "peakRating": 82,
+      "club": "Sheffield Eagles"
+    },
+    "wakefield-cur-cameron-scott": {
+      "name": "Cameron Scott",
+      "peakRating": 82,
+      "club": "Wakefield Trinity"
+    },
+    "warrington-cur-matty-nicholson": {
+      "name": "Matty Nicholson",
+      "peakRating": 82,
+      "club": "Warrington Wolves"
+    },
+    "york-cur-jordan-lipp": {
+      "name": "Jordan Lipp",
+      "peakRating": 79,
+      "club": "York Knights"
+    },
+    "bradford-cur-dan-russell": {
+      "name": "Dan Russell",
+      "peakRating": 78,
+      "club": "Bradford Bulls"
+    },
+    "castleford-cur-tom-weaver": {
+      "name": "Tom Weaver",
+      "peakRating": 78,
+      "club": "Castleford Tigers"
+    },
+    "catalans-cur-nick-cotric": {
+      "name": "Nick \u010cotri\u0107",
+      "peakRating": 84,
+      "club": "Catalans Dragons"
+    },
+    "wakefield-cur-caleb-hamlin-uele": {
+      "name": "Caleb Hamlin-Uele",
+      "peakRating": 88,
+      "club": "Wakefield Trinity"
+    },
+    "london-cur-jeremiah-simbiken": {
+      "name": "Jeremiah Simbiken",
+      "peakRating": 83,
+      "club": "London Broncos"
+    },
+    "york-cur-jack-martin": {
+      "name": "Jack Martin",
+      "peakRating": 78,
+      "club": "York Knights"
+    },
+    "toulouse-cur-thomas-lacans": {
+      "name": "Thomas Lacans",
+      "peakRating": 78,
+      "club": "Toulouse Olympique"
+    },
+    "catalans-cur-bayley-sironen": {
+      "name": "Bayley Sironen",
+      "peakRating": 83,
+      "club": "Catalans Dragons"
+    },
+    "catalans-cur-manase-kaho": {
+      "name": "Manase Kaho",
+      "peakRating": 75,
+      "club": "Catalans Dragons"
+    },
+    "catalans-cur-ben-condon": {
+      "name": "Ben Condon",
+      "peakRating": 83,
+      "club": "Catalans Dragons"
+    },
+    "hull-fc-cur-jake-arthur": {
+      "name": "Jake Arthur",
+      "peakRating": 85,
+      "club": "Hull FC"
+    },
+    "hull-kr-cur-kelepi-tanginoa": {
+      "name": "Kelepi Tanginoa",
+      "peakRating": 81,
+      "club": "Hull KR"
+    },
+    "leigh-cur-ethan-o-neill": {
+      "name": "Ethan O'Neill",
+      "peakRating": 81,
+      "club": "Leigh Leopards"
+    },
+    "salford-cur-logan-ewington": {
+      "name": "Logan Ewington",
+      "peakRating": 83,
+      "club": "Salford Red Devils"
+    },
+    "salford-cur-tim-bergin": {
+      "name": "Tim Bergin",
+      "peakRating": 83,
+      "club": "Salford Red Devils"
+    },
+    "toulouse-cur-john-toleafoa": {
+      "name": "John Toleafoa",
+      "peakRating": 75,
+      "club": "Toulouse Olympique"
+    },
+    "wakefield-cur-renouf-atoni": {
+      "name": "Renouf Atoni",
+      "peakRating": 83,
+      "club": "Wakefield Trinity"
+    },
+    "bradford-cur-loghan-lewis": {
+      "name": "Loghan Lewis",
+      "peakRating": 78,
+      "club": "Bradford Bulls"
+    },
+    "wigan-cur-sam-eseh": {
+      "name": "Sam Eseh",
+      "peakRating": 76,
+      "club": "Wigan Warriors"
+    },
+    "london-cur-jimmy-meadows": {
+      "name": "Jimmy Meadows",
+      "peakRating": 83,
+      "club": "London Broncos"
+    },
+    "midlands-cur-zach-jebson": {
+      "name": "Zach Jebson",
+      "peakRating": 83,
+      "club": "Midlands Hurricanes"
+    },
+    "toulouse-cur-brendan-hands": {
+      "name": "Brendan Hands",
+      "peakRating": 79,
+      "club": "Toulouse Olympique"
+    },
+    "wigan-cur-jonny-vaughan": {
+      "name": "Jonny Vaughan",
+      "peakRating": 75,
+      "club": "Wigan Warriors"
+    },
+    "huddersfield-cur-fenton-rogers": {
+      "name": "Fenton Rogers",
+      "peakRating": 77,
+      "club": "Huddersfield Giants"
+    },
+    "london-cur-oliver-leyland": {
+      "name": "Oliver Leyland",
+      "peakRating": 83,
+      "club": "London Broncos"
+    },
+    "york-cur-toa-mataafa": {
+      "name": "Toa Mata'afa",
+      "peakRating": 78,
+      "club": "York Knights"
+    },
+    "york-cur-ata-hingano": {
+      "name": "Ata Hingano",
+      "peakRating": 80,
+      "club": "York Knights"
+    },
+    "salford-cur-ben-hellewell": {
+      "name": "Ben Hellewell",
+      "peakRating": 83,
+      "club": "Salford Red Devils"
+    },
+    "castleford-cur-cain-robb": {
+      "name": "Cain Robb",
+      "peakRating": 75,
+      "club": "Castleford Tigers"
+    },
+    "toulouse-cur-anthony-marion": {
+      "name": "Anthony Marion",
+      "peakRating": 79,
+      "club": "Toulouse Olympique"
+    },
+    "leigh-cur-aaron-pene": {
+      "name": "Aaron Pene",
+      "peakRating": 79,
+      "club": "Leigh Leopards"
+    },
+    "london-cur-jack-campagnolo": {
+      "name": "Jack Campagnolo",
+      "peakRating": 84,
+      "club": "London Broncos"
+    },
+    "castleford-cur-joe-stimson": {
+      "name": "Joe Stimson",
+      "peakRating": 78,
+      "club": "Castleford Tigers"
+    },
+    "wigan-cur-dayon-sambou": {
+      "name": "Dayon Sambou",
+      "peakRating": 84,
+      "club": "Wigan Warriors"
+    },
+    "york-cur-xavier-vaa": {
+      "name": "Xavier Va'a",
+      "peakRating": 77,
+      "club": "York Knights"
+    },
+    "catalans-cur-cesar-rouge": {
+      "name": "C\u00e9sar Roug\u00e9",
+      "peakRating": 83,
+      "club": "Catalans Dragons"
+    },
+    "hull-fc-cur-james-bell": {
+      "name": "James Bell",
+      "peakRating": 81,
+      "club": "Hull FC"
+    },
+    "warrington-cur-max-wood": {
+      "name": "Max Wood",
+      "peakRating": 84,
+      "club": "Warrington Wolves"
+    },
+    "toulouse-cur-calum-gahan": {
+      "name": "Calum Gahan",
+      "peakRating": 77,
+      "club": "Toulouse Olympique"
+    },
+    "leigh-cur-joe-ofahengaue": {
+      "name": "Joe Ofahengaue",
+      "peakRating": 83,
+      "club": "Leigh Leopards"
+    },
+    "toulouse-cur-james-roumanos": {
+      "name": "James Roumanos",
+      "peakRating": 78,
+      "club": "Toulouse Olympique"
+    },
+    "castleford-cur-semi-valemei": {
+      "name": "Semi Valemei",
+      "peakRating": 78,
+      "club": "Castleford Tigers"
+    },
+    "wakefield-cur-ky-rodwell": {
+      "name": "Ky Rodwell",
+      "peakRating": 83,
+      "club": "Wakefield Trinity"
+    },
+    "huddersfield-cur-taane-milne": {
+      "name": "Taane Milne",
+      "peakRating": 85,
+      "club": "Huddersfield Giants"
+    },
+    "sheffield-cur-matty-marsh": {
+      "name": "Matty Marsh",
+      "peakRating": 84,
+      "club": "Sheffield Eagles"
+    },
+    "sheffield-cur-jordan-lilley": {
+      "name": "Jordan Lilley",
+      "peakRating": 82,
+      "club": "Sheffield Eagles"
+    },
+    "toulouse-cur-lambert-belmas": {
+      "name": "Lambert Belmas",
+      "peakRating": 80,
+      "club": "Toulouse Olympique"
+    },
+    "toulouse-cur-paul-marcon": {
+      "name": "Paul Marcon",
+      "peakRating": 78,
+      "club": "Toulouse Olympique"
+    },
+    "st-helens-cur-david-klemmer": {
+      "name": "David Klemmer",
+      "peakRating": 83,
+      "club": "St Helens"
+    },
+    "huddersfield-cur-zac-woolford": {
+      "name": "Zac Woolford",
+      "peakRating": 82,
+      "club": "Huddersfield Giants"
+    },
+    "hull-fc-cur-ligi-sao": {
+      "name": "Ligi Sao",
+      "peakRating": 78,
+      "club": "Hull FC"
+    },
+    "leigh-cur-ben-mcnamara": {
+      "name": "Ben McNamara",
+      "peakRating": 75,
+      "club": "Leigh Leopards"
+    },
+    "st-helens-cur-george-whitby": {
+      "name": "George Whitby",
+      "peakRating": 81,
+      "club": "St Helens"
+    },
+    "wakefield-cur-tyson-smoothy": {
+      "name": "Tyson Smoothy",
+      "peakRating": 81,
+      "club": "Wakefield Trinity"
+    },
+    "huddersfield-cur-harry-rushton": {
+      "name": "Harry Rushton",
+      "peakRating": 78,
+      "club": "Huddersfield Giants"
+    },
+    "wakefield-cur-jazz-tevaga": {
+      "name": "Jazz Tevaga",
+      "peakRating": 83,
+      "club": "Wakefield Trinity"
+    },
+    "london-cur-robbie-storey": {
+      "name": "Robbie Storey",
+      "peakRating": 84,
+      "club": "London Broncos"
+    },
+    "st-helens-cur-george-delaney": {
+      "name": "George Delaney",
+      "peakRating": 82,
+      "club": "St Helens"
+    },
+    "leeds-cur-cooper-jenkins": {
+      "name": "Cooper Jenkins",
+      "peakRating": 80,
+      "club": "Leeds Rhinos"
+    },
+    "salford-cur-mitch-clark": {
+      "name": "Mitch Clark",
+      "peakRating": 85,
+      "club": "Salford Red Devils"
+    },
+    "wigan-cur-oliver-wilson": {
+      "name": "Oliver Wilson",
+      "peakRating": 82,
+      "club": "Wigan Warriors"
+    },
+    "castleford-cur-liam-hood": {
+      "name": "Liam Hood",
+      "peakRating": 78,
+      "club": "Castleford Tigers"
+    },
+    "york-cur-jesse-dee": {
+      "name": "Jesse Dee",
+      "peakRating": 78,
+      "club": "York Knights"
+    },
+    "hull-fc-cur-harvie-hill": {
+      "name": "Harvie Hill",
+      "peakRating": 78,
+      "club": "Hull FC"
+    },
+    "hull-fc-cur-amir-bourouh": {
+      "name": "Amir Bourouh",
+      "peakRating": 84,
+      "club": "Hull FC"
+    },
+    "hull-fc-cur-sam-lisone": {
+      "name": "Sam Lisone",
+      "peakRating": 80,
+      "club": "Hull FC"
+    },
+    "leeds-cur-jarrod-o-connor": {
+      "name": "Jarrod O'Connor",
+      "peakRating": 85,
+      "club": "Leeds Rhinos"
+    },
+    "leigh-cur-owen-trout": {
+      "name": "Owen Trout",
+      "peakRating": 80,
+      "club": "Leigh Leopards"
+    },
+    "catalans-cur-alrix-da-costa": {
+      "name": "Alrix Da Costa",
+      "peakRating": 77,
+      "club": "Catalans Dragons"
+    },
+    "leigh-cur-isaac-liu": {
+      "name": "Isaac Liu",
+      "peakRating": 83,
+      "club": "Leigh Leopards"
+    },
+    "bradford-cur-zac-fulton": {
+      "name": "Zac Fulton",
+      "peakRating": 83,
+      "club": "Bradford Bulls"
+    },
+    "bradford-cur-eribe-doro": {
+      "name": "Eribe Doro",
+      "peakRating": 79,
+      "club": "Bradford Bulls"
+    },
+    "huddersfield-cur-adam-clune": {
+      "name": "Adam Clune",
+      "peakRating": 79,
+      "club": "Huddersfield Giants"
+    },
+    "warrington-cur-james-harrison": {
+      "name": "James Harrison",
+      "peakRating": 80,
+      "club": "Warrington Wolves"
+    },
+    "wakefield-cur-corey-hall": {
+      "name": "Corey Hall",
+      "peakRating": 81,
+      "club": "Wakefield Trinity"
+    },
+    "huddersfield-cur-matty-english": {
+      "name": "Matty English",
+      "peakRating": 80,
+      "club": "Huddersfield Giants"
+    },
+    "huddersfield-cur-george-king": {
+      "name": "George King",
+      "peakRating": 79,
+      "club": "Huddersfield Giants"
+    },
+    "hull-fc-cur-davy-litten": {
+      "name": "Davy Litten",
+      "peakRating": 78,
+      "club": "Hull FC"
+    },
+    "st-helens-cur-jake-wingfield": {
+      "name": "Jake Wingfield",
+      "peakRating": 78,
+      "club": "St Helens"
+    },
+    "castleford-cur-renouf-atoni": {
+      "name": "Renouf Atoni",
+      "peakRating": 81,
+      "club": "Castleford Tigers"
+    },
+    "catalans-cur-chris-satae": {
+      "name": "Chris Satae",
+      "peakRating": 81,
+      "club": "Catalans Dragons"
+    },
+    "warrington-cur-joe-philbin": {
+      "name": "Joe Philbin",
+      "peakRating": 80,
+      "club": "Warrington Wolves"
+    },
+    "warrington-cur-adam-holroyd": {
+      "name": "Adam Holroyd",
+      "peakRating": 80,
+      "club": "Warrington Wolves"
+    },
+    "bradford-cur-andy-ackers": {
+      "name": "Andy Ackers",
+      "peakRating": 86,
+      "club": "Bradford Bulls"
+    },
+    "leeds-cur-tom-holroyd": {
+      "name": "Tom Holroyd",
+      "peakRating": 82,
+      "club": "Leeds Rhinos"
+    },
+    "toulouse-cur-jake-shorrocks": {
+      "name": "Jake Shorrocks",
+      "peakRating": 82,
+      "club": "Toulouse Olympique"
+    },
+    "york-cur-justin-sangare": {
+      "name": "Justin Sangar\u00e9",
+      "peakRating": 78,
+      "club": "York Knights"
+    },
+    "wakefield-cur-matty-storton": {
+      "name": "Matty Storton",
+      "peakRating": 81,
+      "club": "Wakefield Trinity"
+    },
+    "castleford-cur-zac-cini": {
+      "name": "Zac Cini",
+      "peakRating": 78,
+      "club": "Castleford Tigers"
+    },
+    "york-cur-denive-balmforth": {
+      "name": "Denive Balmforth",
+      "peakRating": 82,
+      "club": "York Knights"
+    },
+    "castleford-cur-george-lawler": {
+      "name": "George Lawler",
+      "peakRating": 78,
+      "club": "Castleford Tigers"
+    },
+    "huddersfield-cur-sam-hewitt": {
+      "name": "Sam Hewitt",
+      "peakRating": 78,
+      "club": "Huddersfield Giants"
+    },
+    "st-helens-cur-matt-whitley": {
+      "name": "Matt Whitley",
+      "peakRating": 81,
+      "club": "St Helens"
+    },
+    "warrington-cur-luke-yates": {
+      "name": "Luke Yates",
+      "peakRating": 84,
+      "club": "Warrington Wolves"
+    },
+    "castleford-cur-daejarn-asi": {
+      "name": "Daejarn Asi",
+      "peakRating": 84,
+      "club": "Castleford Tigers"
+    },
+    "wakefield-cur-mason-lino": {
+      "name": "Mason Lino",
+      "peakRating": 82,
+      "club": "Wakefield Trinity"
+    },
+    "toulouse-cur-paul-ulberg": {
+      "name": "Paul Ulberg",
+      "peakRating": 80,
+      "club": "Toulouse Olympique"
+    },
+    "castleford-cur-jordan-lane": {
+      "name": "Jordan Lane",
+      "peakRating": 78,
+      "club": "Castleford Tigers"
+    },
+    "leeds-cur-morgan-gannon": {
+      "name": "Morgan Gannon",
+      "peakRating": 86,
+      "club": "Leeds Rhinos"
+    },
+    "bradford-cur-jayden-nikorima": {
+      "name": "Jayden Nikorima",
+      "peakRating": 80,
+      "club": "Bradford Bulls"
+    },
+    "leigh-cur-gareth-o-brien": {
+      "name": "Gareth O'Brien",
+      "peakRating": 78,
+      "club": "Leigh Leopards"
+    },
+    "wakefield-cur-jay-pitts": {
+      "name": "Jay Pitts",
+      "peakRating": 83,
+      "club": "Wakefield Trinity"
+    },
+    "catalans-cur-toby-sexton": {
+      "name": "Toby Sexton",
+      "peakRating": 84,
+      "club": "Catalans Dragons"
+    },
+    "wigan-cur-sam-walters": {
+      "name": "Sam Walters",
+      "peakRating": 80,
+      "club": "Wigan Warriors"
+    },
+    "bradford-cur-rowan-milnes": {
+      "name": "Rowan Milnes",
+      "peakRating": 78,
+      "club": "Bradford Bulls"
+    },
+    "leigh-cur-frankie-halton": {
+      "name": "Frankie Halton",
+      "peakRating": 80,
+      "club": "Leigh Leopards"
+    },
+    "hull-fc-cur-jed-cartwright": {
+      "name": "Jed Cartwright",
+      "peakRating": 82,
+      "club": "Hull FC"
+    },
+    "st-helens-cur-shane-wright": {
+      "name": "Shane Wright",
+      "peakRating": 85,
+      "club": "St Helens"
+    },
+    "bradford-cur-esan-marsters": {
+      "name": "Esan Marsters",
+      "peakRating": 83,
+      "club": "Bradford Bulls"
+    },
+    "huddersfield-cur-sam-halsall": {
+      "name": "Sam Halsall",
+      "peakRating": 80,
+      "club": "Huddersfield Giants"
+    },
+    "toulouse-cur-maxime-stefani": {
+      "name": "Maxime Stefani",
+      "peakRating": 78,
+      "club": "Toulouse Olympique"
+    },
+    "huddersfield-cur-tui-lolohea": {
+      "name": "Tui Lolohea",
+      "peakRating": 84,
+      "club": "Huddersfield Giants"
+    },
+    "toulouse-cur-reubenn-rennie": {
+      "name": "Reubenn Rennie",
+      "peakRating": 79,
+      "club": "Toulouse Olympique"
+    },
+    "leigh-cur-tesi-niu": {
+      "name": "Tesi Niu",
+      "peakRating": 82,
+      "club": "Leigh Leopards"
+    },
+    "leeds-cur-lachie-miller": {
+      "name": "Lachie Miller",
+      "peakRating": 85,
+      "club": "Leeds Rhinos"
+    },
+    "toulouse-cur-mathieu-jussaume": {
+      "name": "Mathieu Jussaume",
+      "peakRating": 88,
+      "club": "Toulouse Olympique"
+    },
+    "wakefield-cur-seth-nikotemo": {
+      "name": "Seth Nikotemo",
+      "peakRating": 79,
+      "club": "Wakefield Trinity"
+    },
+    "st-helens-cur-joe-shorrocks": {
+      "name": "Joe Shorrocks",
+      "peakRating": 87,
+      "club": "St Helens"
+    },
+    "leeds-cur-riley-lumb": {
+      "name": "Riley Lumb",
+      "peakRating": 80,
+      "club": "Leeds Rhinos"
+    },
+    "catalans-cur-charlie-staines": {
+      "name": "Charlie Staines",
+      "peakRating": 89,
+      "club": "Catalans Dragons"
+    },
+    "leeds-cur-cameron-smith": {
+      "name": "Cameron Smith",
+      "peakRating": 86,
+      "club": "Leeds Rhinos"
+    },
+    "catalans-cur-julian-bousquet": {
+      "name": "Julian Bousquet",
+      "peakRating": 82,
+      "club": "Catalans Dragons"
+    },
+    "york-cur-sam-wood": {
+      "name": "Sam Wood",
+      "peakRating": 78,
+      "club": "York Knights"
+    },
+    "leigh-cur-robbie-mulhern": {
+      "name": "Robbie Mulhern",
+      "peakRating": 83,
+      "club": "Leigh Leopards"
+    },
+    "catalans-cur-lewis-dodd": {
+      "name": "Lewis Dodd",
+      "peakRating": 84,
+      "club": "Catalans Dragons"
+    },
+    "wakefield-cur-jake-trueman": {
+      "name": "Jake Trueman",
+      "peakRating": 88,
+      "club": "Wakefield Trinity"
+    },
+    "hull-fc-cur-will-pryce": {
+      "name": "Will Pryce",
+      "peakRating": 85,
+      "club": "Hull FC"
+    },
+    "leigh-cur-keanan-brand": {
+      "name": "Keanan Brand",
+      "peakRating": 78,
+      "club": "Leigh Leopards"
+    },
+    "warrington-cur-cai-taylor-wray": {
+      "name": "Cai Taylor-Wray",
+      "peakRating": 80,
+      "club": "Warrington Wolves"
+    },
+    "hull-kr-cur-jack-brown": {
+      "name": "Jack Brown",
+      "peakRating": 80,
+      "club": "Hull KR"
+    },
+    "bradford-cur-ethan-ryan": {
+      "name": "Ethan Ryan",
+      "peakRating": 82,
+      "club": "Bradford Bulls"
+    },
+    "hull-fc-cur-cade-cust": {
+      "name": "Cade Cust",
+      "peakRating": 79,
+      "club": "Hull FC"
+    },
+    "hull-fc-cur-harvey-barron": {
+      "name": "Harvey Barron",
+      "peakRating": 81,
+      "club": "Hull FC"
+    },
+    "york-cur-jordan-thompson": {
+      "name": "Jordan Thompson",
+      "peakRating": 78,
+      "club": "York Knights"
+    },
+    "bradford-cur-ryan-sutton": {
+      "name": "Ryan Sutton",
+      "peakRating": 84,
+      "club": "Bradford Bulls"
+    },
+    "st-helens-cur-harry-robertson": {
+      "name": "Harry Robertson",
+      "peakRating": 80,
+      "club": "St Helens"
+    },
+    "wakefield-cur-max-jowitt": {
+      "name": "Max Jowitt",
+      "peakRating": 85,
+      "club": "Wakefield Trinity"
+    },
+    "hull-kr-cur-sauaso-sue": {
+      "name": "Sauaso Sue",
+      "peakRating": 82,
+      "club": "Hull KR"
+    },
+    "castleford-cur-jason-qareqare": {
+      "name": "Jason Qareqare",
+      "peakRating": 82,
+      "club": "Castleford Tigers"
+    },
+    "warrington-cur-sam-stone": {
+      "name": "Sam Stone",
+      "peakRating": 80,
+      "club": "Warrington Wolves"
+    },
+    "warrington-cur-danny-walker": {
+      "name": "Danny Walker",
+      "peakRating": 87,
+      "club": "Warrington Wolves"
+    },
+    "catalans-cur-benjamin-garcia": {
+      "name": "Benjamin Garcia",
+      "peakRating": 82,
+      "club": "Catalans Dragons"
+    },
+    "catalans-cur-solomona-faataape": {
+      "name": "Solomona Faataape",
+      "peakRating": 78,
+      "club": "Catalans Dragons"
+    },
+    "leigh-cur-david-armstrong": {
+      "name": "David Armstrong",
+      "peakRating": 81,
+      "club": "Leigh Leopards"
+    },
+    "wigan-cur-brad-o-neill": {
+      "name": "Brad O'Neill",
+      "peakRating": 84,
+      "club": "Wigan Warriors"
+    },
+    "hull-kr-cur-arthur-mourgue": {
+      "name": "Arthur Mourgue",
+      "peakRating": 83,
+      "club": "Hull KR"
+    },
+    "toulouse-cur-benjamin-laguerre": {
+      "name": "Benjamin Laguerre",
+      "peakRating": 78,
+      "club": "Toulouse Olympique"
+    },
+    "leeds-cur-harry-newman": {
+      "name": "Harry Newman",
+      "peakRating": 85,
+      "club": "Leeds Rhinos"
+    },
+    "st-helens-cur-morgan-knowles": {
+      "name": "Morgan Knowles",
+      "peakRating": 87,
+      "club": "St Helens"
+    },
+    "york-cur-liam-harris": {
+      "name": "Liam Harris",
+      "peakRating": 82,
+      "club": "York Knights"
+    },
+    "hull-kr-cur-james-batchelor": {
+      "name": "James Batchelor",
+      "peakRating": 84,
+      "club": "Hull KR"
+    },
+    "wigan-cur-ethan-havard": {
+      "name": "Ethan Havard",
+      "peakRating": 85,
+      "club": "Wigan Warriors"
+    },
+    "warrington-cur-josh-thewlis": {
+      "name": "Josh Thewlis",
+      "peakRating": 83,
+      "club": "Warrington Wolves"
+    },
+    "warrington-cur-sam-powell": {
+      "name": "Sam Powell",
+      "peakRating": 80,
+      "club": "Warrington Wolves"
+    },
+    "york-cur-josh-griffin": {
+      "name": "Josh Griffin",
+      "peakRating": 82,
+      "club": "York Knights"
+    },
+    "st-helens-cur-deon-cross": {
+      "name": "Deon Cross",
+      "peakRating": 79,
+      "club": "St Helens"
+    },
+    "st-helens-cur-tristan-sailor": {
+      "name": "Tristan Sailor",
+      "peakRating": 90,
+      "club": "St Helens"
+    },
+    "wigan-cur-kaide-ellis": {
+      "name": "Kaide Ellis",
+      "peakRating": 89,
+      "club": "Wigan Warriors"
+    },
+    "wigan-cur-patrick-mago": {
+      "name": "Patrick Mago",
+      "peakRating": 80,
+      "club": "Wigan Warriors"
+    },
+    "castleford-cur-alex-mellor": {
+      "name": "Alex Mellor",
+      "peakRating": 78,
+      "club": "Castleford Tigers"
+    },
+    "hull-kr-cur-jai-whitbread": {
+      "name": "Jai Whitbread",
+      "peakRating": 79,
+      "club": "Hull KR"
+    },
+    "warrington-cur-albert-hopoate": {
+      "name": "Albert Hopoate",
+      "peakRating": 82,
+      "club": "Warrington Wolves"
+    },
+    "bradford-cur-caleb-aekins": {
+      "name": "Caleb Aekins",
+      "peakRating": 84,
+      "club": "Bradford Bulls"
+    },
+    "bradford-cur-jayden-okunbor": {
+      "name": "Jayden Okunbor",
+      "peakRating": 78,
+      "club": "Bradford Bulls"
+    },
+    "castleford-cur-joe-westerman": {
+      "name": "Joe Westerman",
+      "peakRating": 78,
+      "club": "Castleford Tigers"
+    },
+    "toulouse-cur-olly-ashall-bott": {
+      "name": "Olly Ashall-Bott",
+      "peakRating": 87,
+      "club": "Toulouse Olympique"
+    },
+    "bradford-cur-waqa-blake": {
+      "name": "Waqa Blake",
+      "peakRating": 81,
+      "club": "Bradford Bulls"
+    },
+    "st-helens-cur-curtis-sironen": {
+      "name": "Curtis Sironen",
+      "peakRating": 84,
+      "club": "St Helens"
+    },
+    "leigh-cur-kai-o-donnell": {
+      "name": "Kai O'Donnell",
+      "peakRating": 84,
+      "club": "Leigh Leopards"
+    },
+    "hull-kr-cur-tyrone-may": {
+      "name": "Tyrone May",
+      "peakRating": 86,
+      "club": "Hull KR"
+    },
+    "castleford-cur-krystian-mapapalangi": {
+      "name": "Krystian Mapapalangi",
+      "peakRating": 85,
+      "club": "Castleford Tigers"
+    },
+    "hull-fc-cur-john-asiata": {
+      "name": "John Asiata",
+      "peakRating": 79,
+      "club": "Hull FC"
+    },
+    "st-helens-cur-lewis-murphy": {
+      "name": "Lewis Murphy",
+      "peakRating": 80,
+      "club": "St Helens"
+    },
+    "bradford-cur-ed-chamberlain": {
+      "name": "Ed Chamberlain",
+      "peakRating": 80,
+      "club": "Bradford Bulls"
+    },
+    "wigan-cur-harry-smith": {
+      "name": "Harry Smith",
+      "peakRating": 86,
+      "club": "Wigan Warriors"
+    },
+    "bradford-cur-joe-mellor": {
+      "name": "Joe Mellor",
+      "peakRating": 87,
+      "club": "Bradford Bulls"
+    },
+    "wakefield-cur-oliver-pratt": {
+      "name": "Oliver Pratt",
+      "peakRating": 80,
+      "club": "Wakefield Trinity"
+    },
+    "leeds-cur-mikolaj-oledzki": {
+      "name": "Mikolaj Oledzki",
+      "peakRating": 84,
+      "club": "Leeds Rhinos"
+    },
+    "huddersfield-cur-joe-greenwood": {
+      "name": "Joe Greenwood",
+      "peakRating": 77,
+      "club": "Huddersfield Giants"
+    },
+    "castleford-cur-darnell-mcintosh": {
+      "name": "Darnell McIntosh",
+      "peakRating": 78,
+      "club": "Castleford Tigers"
+    },
+    "huddersfield-cur-jacob-gagai": {
+      "name": "Jacob Gagai",
+      "peakRating": 85,
+      "club": "Huddersfield Giants"
+    },
+    "york-cur-paul-vaughan": {
+      "name": "Paul Vaughan",
+      "peakRating": 87,
+      "club": "York Knights"
+    },
+    "leeds-cur-maika-sivo": {
+      "name": "Maika Sivo",
+      "peakRating": 91,
+      "club": "Leeds Rhinos"
+    },
+    "york-cur-scott-galeano": {
+      "name": "Scott Galeano",
+      "peakRating": 78,
+      "club": "York Knights"
+    },
+    "hull-fc-cur-aidan-sezer": {
+      "name": "Aidan Sezer",
+      "peakRating": 83,
+      "club": "Hull FC"
+    },
+    "warrington-cur-george-williams": {
+      "name": "George Williams",
+      "peakRating": 87,
+      "club": "Warrington Wolves"
+    },
+    "oldham-cur-jake-bibby": {
+      "name": "Jake Bibby",
+      "peakRating": 83,
+      "club": "Oldham RLFC"
+    },
+    "hull-kr-cur-tom-amone": {
+      "name": "Tom Amone",
+      "peakRating": 84,
+      "club": "Hull KR"
+    },
+    "wigan-cur-zach-eckersley": {
+      "name": "Zach Eckersley",
+      "peakRating": 88,
+      "club": "Wigan Warriors"
+    },
+    "leigh-cur-edwin-ipape": {
+      "name": "Edwin Ipape",
+      "peakRating": 87,
+      "club": "Leigh Leopards"
+    },
+    "wigan-cur-adam-keighran": {
+      "name": "Adam Keighran",
+      "peakRating": 82,
+      "club": "Wigan Warriors"
+    },
+    "hull-fc-cur-joe-batchelor": {
+      "name": "Joe Batchelor",
+      "peakRating": 83,
+      "club": "Hull FC"
+    },
+    "hull-kr-cur-oliver-gildart": {
+      "name": "Oliver Gildart",
+      "peakRating": 81,
+      "club": "Hull KR"
+    },
+    "york-cur-ben-jones-bishop": {
+      "name": "Ben Jones-Bishop",
+      "peakRating": 78,
+      "club": "York Knights"
+    },
+    "st-helens-cur-matty-lees": {
+      "name": "Matty Lees",
+      "peakRating": 86,
+      "club": "St Helens"
+    },
+    "warrington-cur-ben-currie": {
+      "name": "Ben Currie",
+      "peakRating": 88,
+      "club": "Warrington Wolves"
+    },
+    "huddersfield-cur-adam-swift": {
+      "name": "Adam Swift",
+      "peakRating": 78,
+      "club": "Huddersfield Giants"
+    },
+    "hull-kr-cur-elliot-minchella": {
+      "name": "Elliot Minchella",
+      "peakRating": 85,
+      "club": "Hull KR"
+    },
+    "huddersfield-cur-niall-evalds": {
+      "name": "Niall Evalds",
+      "peakRating": 78,
+      "club": "Huddersfield Giants"
+    },
+    "hull-fc-cur-herman-eseese": {
+      "name": "Herman Ese'ese",
+      "peakRating": 83,
+      "club": "Hull FC"
+    },
+    "wigan-cur-junior-nsemba": {
+      "name": "Junior Nsemba",
+      "peakRating": 86,
+      "club": "Wigan Warriors"
+    },
+    "warrington-cur-marc-sneyd": {
+      "name": "Marc Sneyd",
+      "peakRating": 85,
+      "club": "Warrington Wolves"
+    },
+    "warrington-cur-toby-king": {
+      "name": "Toby King",
+      "peakRating": 82,
+      "club": "Warrington Wolves"
+    },
+    "leigh-cur-lachlan-lam": {
+      "name": "Lachlan Lam",
+      "peakRating": 86,
+      "club": "Leigh Leopards"
+    },
+    "hull-kr-cur-jez-litten": {
+      "name": "Jez Litten",
+      "peakRating": 83,
+      "club": "Hull KR"
+    },
+    "wigan-cur-luke-thompson": {
+      "name": "Luke Thompson",
+      "peakRating": 85,
+      "club": "Wigan Warriors"
+    },
+    "leeds-cur-james-mcdonnell": {
+      "name": "James McDonnell",
+      "peakRating": 89,
+      "club": "Leeds Rhinos"
+    },
+    "hull-kr-cur-tom-davies": {
+      "name": "Tom Davies",
+      "peakRating": 85,
+      "club": "Hull KR"
+    },
+    "warrington-cur-matty-ashton": {
+      "name": "Matty Ashton",
+      "peakRating": 87,
+      "club": "Warrington Wolves"
+    },
+    "wakefield-cur-tom-johnstone": {
+      "name": "Tom Johnstone",
+      "peakRating": 86,
+      "club": "Wakefield Trinity"
+    },
+    "st-helens-cur-alex-walmsley": {
+      "name": "Alex Walmsley",
+      "peakRating": 84,
+      "club": "St Helens"
+    },
+    "wakefield-cur-mike-mcmeeken": {
+      "name": "Mike McMeeken",
+      "peakRating": 88,
+      "club": "Wakefield Trinity"
+    },
+    "leigh-cur-umyla-hanley": {
+      "name": "Umyla Hanley",
+      "peakRating": 82,
+      "club": "Leigh Leopards"
+    },
+    "st-helens-cur-jack-welsby": {
+      "name": "Jack Welsby",
+      "peakRating": 87,
+      "club": "St Helens"
+    },
+    "hull-kr-cur-joe-burgess": {
+      "name": "Joe Burgess",
+      "peakRating": 82,
+      "club": "Hull KR"
+    },
+    "st-helens-cur-jonny-lomax": {
+      "name": "Jonny Lomax",
+      "peakRating": 83,
+      "club": "St Helens"
+    },
+    "hull-fc-cur-lewis-martin": {
+      "name": "Lewis Martin",
+      "peakRating": 84,
+      "club": "Hull FC"
+    },
+    "leeds-cur-ash-handley": {
+      "name": "Ash Handley",
+      "peakRating": 86,
+      "club": "Leeds Rhinos"
+    },
+    "wigan-cur-jake-wardle": {
+      "name": "Jake Wardle",
+      "peakRating": 84,
+      "club": "Wigan Warriors"
+    },
+    "hull-kr-cur-dean-hadley": {
+      "name": "Dean Hadley",
+      "peakRating": 82,
+      "club": "Hull KR"
+    },
+    "york-cur-paul-mcshane": {
+      "name": "Paul McShane",
+      "peakRating": 79,
+      "club": "York Knights"
+    },
+    "wigan-cur-liam-farrell": {
+      "name": "Liam Farrell",
+      "peakRating": 82,
+      "club": "Wigan Warriors"
+    },
+    "st-helens-cur-mark-percival": {
+      "name": "Mark Percival",
+      "peakRating": 86,
+      "club": "St Helens"
+    },
+    "leeds-cur-brodie-croft": {
+      "name": "Brodie Croft",
+      "peakRating": 90,
+      "club": "Leeds Rhinos"
+    },
+    "hull-kr-cur-peta-hiku": {
+      "name": "Peta Hiku",
+      "peakRating": 86,
+      "club": "Hull KR"
+    },
+    "catalans-cur-tommy-makinson": {
+      "name": "Tommy Makinson",
+      "peakRating": 82,
+      "club": "Catalans Dragons"
+    },
+    "wigan-cur-liam-marshall": {
+      "name": "Liam Marshall",
+      "peakRating": 86,
+      "club": "Wigan Warriors"
+    },
+    "st-helens-cur-daryl-clark": {
+      "name": "Daryl Clark",
+      "peakRating": 86,
+      "club": "St Helens"
+    },
+    "wigan-cur-jai-field": {
+      "name": "Jai Field",
+      "peakRating": 86,
+      "club": "Wigan Warriors"
+    },
+    "hull-fc-cur-zak-hardaker": {
+      "name": "Zak Hardaker",
+      "peakRating": 81,
+      "club": "Hull FC"
+    },
+    "leeds-cur-jake-connor": {
+      "name": "Jake Connor",
+      "peakRating": 91,
+      "club": "Leeds Rhinos"
+    },
+    "hull-kr-cur-mikey-lewis": {
+      "name": "Mikey Lewis",
+      "peakRating": 92,
+      "club": "Hull KR"
+    },
+    "wigan-cur-bevan-french": {
+      "name": "Bevan French",
+      "peakRating": 93,
+      "club": "Wigan Warriors"
+    }
+  }
+}
