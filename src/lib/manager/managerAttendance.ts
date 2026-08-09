@@ -300,9 +300,8 @@ function leaguePositionMultiplier(position: number): number {
 }
 
 function opponentMultiplier(opponent: string): number {
-  if (hasPoorAwayFollowing(opponent)) {
-    return 0.86;
-  }
+  // Poor away following is applied in awayTravelCrowdMultiplier only —
+  // stacking both crushed Championship / York / Huddersfield gates.
   const strength = getClubBaseStrength(opponent);
   return 0.9 + (strength - 70) * 0.008;
 }

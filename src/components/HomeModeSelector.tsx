@@ -35,11 +35,12 @@ export function HomeModeSelector() {
     leagueLeaders: false,
     playoffTitle: false,
   });
-  const scenario = getDailyChallengeScenario();
+  const [scenario, setScenario] = useState(() => getDailyChallengeScenario());
 
   useEffect(() => {
     setNormalEraMode(getNormalEraVariant());
     setMounted(true);
+    setScenario(getDailyChallengeScenario());
     setDailyClaimed(hasClaimedDailyChallengeBonus());
     setDailyProgress({
       leagueLeaders: Boolean(getDailyChallengeProgress().leagueLeaders),
@@ -139,29 +140,48 @@ export function HomeModeSelector() {
           <h2 className={`mt-1 w-full text-center ${TYPO.homeModeTitle}`}>
             Daily challenge
           </h2>
-          <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
-            All {scenario.forceOpponentClub}
-          </p>
-          <p className={`mx-auto mt-1 max-w-md text-center ${TYPO.meta}`}>
-            {formatClubFundsExact(scenario.leagueLeadersBonus)} League Leaders
-            {" · "}
-            {formatClubFundsExact(scenario.playoffTitleBonus)} Grand Final
-          </p>
-          {dailyClaimed ? (
-            <p className={`mt-3 ${TYPO.meta} text-theme-primary`}>Done today</p>
-          ) : (
-            <div className="mt-4 flex w-full justify-center">
-              <GameButton
-                variant="secondary"
-                href={getDailyChallengeHref()}
-                onClick={() => playUiClick()}
-                className="max-w-sm"
+          {mounted ? (
+            <>
+              <p
+                className={`mx-auto mt-1 max-w-md text-center ${TYPO.keyLabel} text-pitch-400`}
               >
-                {dailyProgress.leagueLeaders
-                  ? "Finish the Grand Final"
-                  : "Play daily challenge"}
-              </GameButton>
-            </div>
+                {scenario.eraMode ? "Era" : "Current"}
+              </p>
+              <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
+                All {scenario.forceOpponentClub}
+              </p>
+              <p className={`mx-auto mt-1 max-w-md text-center ${TYPO.meta}`}>
+                {scenario.blurb}
+              </p>
+              <p className={`mx-auto mt-1 max-w-md text-center ${TYPO.meta}`}>
+                {formatClubFundsExact(scenario.leagueLeadersBonus)} League
+                Leaders
+                {" · "}
+                {formatClubFundsExact(scenario.playoffTitleBonus)} Grand Final
+              </p>
+              {dailyClaimed ? (
+                <p className={`mt-3 ${TYPO.meta} text-theme-primary`}>
+                  Done today
+                </p>
+              ) : (
+                <div className="mt-4 flex w-full justify-center">
+                  <GameButton
+                    variant="secondary"
+                    href={getDailyChallengeHref()}
+                    onClick={() => playUiClick()}
+                    className="max-w-sm"
+                  >
+                    {dailyProgress.leagueLeaders
+                      ? "Finish the Grand Final"
+                      : "Play daily challenge"}
+                  </GameButton>
+                </div>
+              )}
+            </>
+          ) : (
+            <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.meta}`}>
+              Loading today&apos;s challenge…
+            </p>
           )}
         </MobileSection>
       </div>

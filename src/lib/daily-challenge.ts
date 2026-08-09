@@ -1,3 +1,4 @@
+import { ERA_PLAYABLE_CLUBS } from "./clubs/super-league-display";
 import { STORAGE_KEYS } from "./storage/keys";
 
 export const DAILY_CHALLENGE_MODE = "CLASSIC" as const;
@@ -10,12 +11,14 @@ export interface DailyChallengeScenario {
   blurb: string;
   /** Force every league opponent to this club name. */
   forceOpponentClub: string;
+  /** Historic spin pool + Era sim when true. */
+  eraMode: boolean;
   leagueLeadersBonus: number;
   playoffTitleBonus: number;
 }
 
-/** Current Super League clubs that rotate as the all-league daily opponent. */
-const DAILY_OPPONENT_CLUBS = [
+/** Current Super League clubs for Current-style dailies. */
+const DAILY_CURRENT_OPPONENT_CLUBS = [
   "Wigan Warriors",
   "St Helens",
   "Leeds Rhinos",
@@ -32,32 +35,54 @@ const DAILY_OPPONENT_CLUBS = [
   "York Knights",
 ] as const;
 
-function scenarioForClub(club: string): DailyChallengeScenario {
+/** Era-style dailies — Current clubs plus historic-only Super League sides. */
+const DAILY_ERA_OPPONENT_CLUBS = [...ERA_PLAYABLE_CLUBS] as const;
+
+function scenarioForClub(
+  club: string,
+  eraMode: boolean
+): DailyChallengeScenario {
   const short = club
-    .replace(/\s+(Warriors|Rhinos|Dragons|Wolves|Giants|Leopards|Tigers|Red Devils|Trinity)$/i, "")
+    .replace(
+      /\s+(Warriors|Rhinos|Dragons|Wolves|Giants|Leopards|Tigers|Red Devils|Trinity|Broncos|Vikings|Bulls)$/i,
+      ""
+    )
     .trim();
+  const eliteHome = short === "Wigan" || short === "St Helens";
   return {
-    id: `all-${club.toLowerCase().replace(/\s+/g, "-")}`,
+    id: `${eraMode ? "era" : "current"}-all-${club
+      .toLowerCase()
+      .replace(/\s+/g, "-")}`,
     title: club,
-    blurb: `Every opponent is ${club}.`,
+    blurb: eraMode
+      ? `Era Mode — every opponent is all-time ${club}.`
+      : `Current Mode — every opponent is ${club}.`,
     forceOpponentClub: club,
-    leagueLeadersBonus: short === "Wigan" || short === "St Helens" ? 75_000 : 70_000,
-    playoffTitleBonus: short === "Wigan" || short === "St Helens" ? 150_000 : 140_000,
+    eraMode,
+    leagueLeadersBonus: eliteHome ? 75_000 : 70_000,
+    playoffTitleBonus: eliteHome ? 150_000 : 140_000,
   };
 }
 
-const SCENARIOS: DailyChallengeScenario[] =
-  DAILY_OPPONENT_CLUBS.map(scenarioForClub);
+const CURRENT_SCENARIOS: DailyChallengeScenario[] =
+  DAILY_CURRENT_OPPONENT_CLUBS.map((club) => scenarioForClub(club, false));
 
+const ERA_SCENARIOS: DailyChallengeScenario[] = DAILY_ERA_OPPONENT_CLUBS.map(
+  (club) => scenarioForClub(club, true)
+);
+
+/** UK calendar day — matches Super League fixture day and avoids SSR/client TZ skew. */
 function todayKey(date = new Date()): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/London",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
 }
 
-/** Salt so consecutive calendar days land on different clubs. */
-const ROTATION_SALT = "27-0-daily-v2";
+/** Style + club rotation — one daily challenge per calendar day. */
+const ROTATION_SALT = "27-0-daily-v3";
 
 function hashDateKey(key: string): number {
   const seeded = `${ROTATION_SALT}:${key}`;
@@ -69,35 +94,63 @@ function hashDateKey(key: string): number {
   return h >>> 0;
 }
 
-export function getDailyChallengeDateKey(date = new Date()): string {
-  return todayKey(date);
+function pickRawScenario(date: Date): {
+  scenario: DailyChallengeScenario;
+  pool: DailyChallengeScenario[];
+  idx: number;
+} {
+  const key = todayKey(date);
+  const hash = hashDateKey(key);
+  const eraMode = hash % 2 === 1;
+  const pool = eraMode ? ERA_SCENARIOS : CURRENT_SCENARIOS;
+  const idx = Math.floor(hash / 2) % pool.length;
+  return { scenario: pool[idx]!, pool, idx };
 }
 
+/**
+ * Pick today's single challenge: Current- or Era-style, then a club from that
+ * pool. Avoids repeating yesterday's resolved club when possible.
+ */
 export function getDailyChallengeScenario(
   date = new Date()
 ): DailyChallengeScenario {
-  const key = todayKey(date);
-  const idx = hashDateKey(key) % SCENARIOS.length;
-  const scenario = SCENARIOS[idx]!;
+  const today = pickRawScenario(date);
 
-  // Guarantee a different club than yesterday (hash collisions / small pools).
   const yesterday = new Date(date);
   yesterday.setDate(yesterday.getDate() - 1);
-  const prevIdx = hashDateKey(todayKey(yesterday)) % SCENARIOS.length;
-  if (prevIdx === idx && SCENARIOS.length > 1) {
-    return SCENARIOS[(idx + 1) % SCENARIOS.length]!;
+  const y = pickRawScenario(yesterday);
+  const dayBefore = new Date(yesterday);
+  dayBefore.setDate(dayBefore.getDate() - 1);
+  const before = pickRawScenario(dayBefore);
+  // Yesterday's displayed club (one-level bump vs day-before raw).
+  const yesterdayClub =
+    before.scenario.forceOpponentClub === y.scenario.forceOpponentClub &&
+    y.pool.length > 1
+      ? y.pool[(y.idx + 1) % y.pool.length]!.forceOpponentClub
+      : y.scenario.forceOpponentClub;
+
+  if (
+    yesterdayClub === today.scenario.forceOpponentClub &&
+    today.pool.length > 1
+  ) {
+    return today.pool[(today.idx + 1) % today.pool.length]!;
   }
-  return scenario;
+  return today.scenario;
 }
 
-export function getDailyChallengeHref(): string {
-  return "/play?daily=1";
+export function getDailyChallengeHref(date = new Date()): string {
+  const scenario = getDailyChallengeScenario(date);
+  return scenario.eraMode ? "/play?daily=1&era=1" : "/play?daily=1";
 }
 
 export function isDailyChallengeActive(search: {
   daily?: string | null;
 }): boolean {
   return search.daily === "1";
+}
+
+export function getDailyChallengeDateKey(date = new Date()): string {
+  return todayKey(date);
 }
 
 export function getDailyChallengeLeagueRunId(date = new Date()): string {
@@ -181,6 +234,8 @@ export function markDailyChallengeBonusClaimed(date = new Date()): void {
   markDailyChallengePlayoffTitle(date);
 }
 
-export function getDailyChallengeTotalBonus(scenario: DailyChallengeScenario): number {
+export function getDailyChallengeTotalBonus(
+  scenario: DailyChallengeScenario
+): number {
   return scenario.leagueLeadersBonus + scenario.playoffTitleBonus;
 }

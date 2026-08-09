@@ -1079,7 +1079,7 @@ export function GameBoard({
             [
               {
                 id: "daily-league-leaders",
-                label: `Daily: ${dailyScenario.title} — League Leaders`,
+                label: `Daily${dailyScenario.eraMode ? " Era" : ""}: ${dailyScenario.title} — League Leaders`,
                 amount: dailyScenario.leagueLeadersBonus,
               },
             ]
@@ -1279,7 +1279,7 @@ export function GameBoard({
               [
                 {
                   id: "daily-playoff-title",
-                  label: `Daily: ${dailyScenario.title} — Grand Final`,
+                  label: `Daily${dailyScenario.eraMode ? " Era" : ""}: ${dailyScenario.title} — Grand Final`,
                   amount: dailyScenario.playoffTitleBonus,
                 },
               ]
@@ -1305,6 +1305,7 @@ export function GameBoard({
       squad,
       joeMellorMode,
       superSamHallasMode,
+      normalEraMode,
       finalizePlayoffRun,
       dailyScenario,
     ]
@@ -2283,7 +2284,7 @@ export function GameBoard({
             {title && (
               <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>
                 {dailyScenario
-                  ? `Daily · All ${dailyScenario.forceOpponentClub}`
+                  ? `Daily${dailyScenario.eraMode ? " Era" : ""} · All ${dailyScenario.forceOpponentClub}`
                   : title}
               </h1>
             )}

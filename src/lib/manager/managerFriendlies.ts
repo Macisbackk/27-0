@@ -155,8 +155,8 @@ function normalizePreSeason(state: PreSeasonState): PreSeasonState {
     draftSchedule: state.draftSchedule ?? [],
     confirmedSchedule: state.confirmedSchedule ?? [],
     awaitingScheduleConfirm: state.awaitingScheduleConfirm ?? false,
-    friendlyScheduleVersion:
-      state.friendlyScheduleVersion ?? FRIENDLY_SCHEDULE_VERSION,
+    // Keep missing version as 0 so migration can detect legacy saves.
+    friendlyScheduleVersion: state.friendlyScheduleVersion ?? 0,
   };
 }
 
@@ -181,13 +181,16 @@ function repairPreSeasonDeadEnd(state: PreSeasonState): PreSeasonState {
 
 export function initPreSeasonState(career: Partial<ManagerCareer>): PreSeasonState {
   if (career.preSeason) {
+    const rawVersion = career.preSeason.friendlyScheduleVersion ?? 0;
     const normalized = remapChampionshipFriendlyRatings(
       normalizePreSeason(career.preSeason)
     );
-    if ((normalized.friendlyScheduleVersion ?? 0) < FRIENDLY_SCHEDULE_VERSION) {
+    if (rawVersion < FRIENDLY_SCHEDULE_VERSION) {
       const played = normalized.friendliesPlayed;
       const legacyRequired = 2;
-      if (played >= legacyRequired && (normalized.friendlyScheduleVersion ?? 0) < 2) {
+      const draftLen = normalized.draftSchedule?.length ?? 0;
+
+      if (played >= legacyRequired && rawVersion < 2) {
         // Legacy pre-seasons finished under the old 2-friendly rule; raising the
         // requirement must not reopen them mid-career.
         return {
@@ -201,13 +204,33 @@ export function initPreSeasonState(career: Partial<ManagerCareer>): PreSeasonSta
           friendlyScheduleVersion: FRIENDLY_SCHEDULE_VERSION,
         };
       }
+
+      // Soft-lock: confirmed UI with only 2 picks after required rose to 3.
+      if (
+        normalized.awaitingScheduleConfirm &&
+        draftLen > 0 &&
+        draftLen < FRIENDLIES_REQUIRED
+      ) {
+        return {
+          ...normalized,
+          friendliesRequired: FRIENDLIES_REQUIRED,
+          awaitingScheduleConfirm: false,
+          awaitingChoice: true,
+          currentChoices: [],
+          friendlyScheduleVersion: FRIENDLY_SCHEDULE_VERSION,
+        };
+      }
+
       return repairPreSeasonDeadEnd({
         ...normalized,
         friendliesRequired: FRIENDLIES_REQUIRED,
         friendlyScheduleVersion: FRIENDLY_SCHEDULE_VERSION,
       });
     }
-    return repairPreSeasonDeadEnd(normalized);
+    return repairPreSeasonDeadEnd({
+      ...normalized,
+      friendlyScheduleVersion: FRIENDLY_SCHEDULE_VERSION,
+    });
   }
   if ((career.fixtures?.length ?? 0) > 0 || (career.gameWeek ?? 0) > 0) {
     return {

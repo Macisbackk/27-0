@@ -4,7 +4,10 @@ import { useSearchParams } from "next/navigation";
 import type { GameMode } from "@/lib/types";
 import { isNormalEraMode } from "@/lib/play-links";
 import { GameBoard } from "./GameBoard";
-import { isDailyChallengeActive } from "@/lib/daily-challenge";
+import {
+  getDailyChallengeScenario,
+  isDailyChallengeActive,
+} from "@/lib/daily-challenge";
 
 interface GameStarterProps {
   mode: GameMode;
@@ -27,19 +30,24 @@ export function GameStarter({
 }: GameStarterProps) {
   const searchParams = useSearchParams();
 
-  const isNormalEra =
-    mode === "CLASSIC" &&
-    (normalEraMode ||
-      isNormalEraMode({
-        era: searchParams.get("era"),
-        cup: searchParams.get("cup"),
-      }));
-
   const dailyChallengeMode =
     mode === "CLASSIC" &&
     !joeMellorMode &&
     !superSamHallasMode &&
     isDailyChallengeActive({ daily: searchParams.get("daily") });
+
+  // Daily locks Current/Era from today's scenario (URL era=1 is set by href).
+  const dailyScenario = dailyChallengeMode
+    ? getDailyChallengeScenario()
+    : null;
+  const isNormalEra = dailyScenario
+    ? dailyScenario.eraMode
+    : mode === "CLASSIC" &&
+      (normalEraMode ||
+        isNormalEraMode({
+          era: searchParams.get("era"),
+          cup: searchParams.get("cup"),
+        }));
 
   return (
     <GameBoard

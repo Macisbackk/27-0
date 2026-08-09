@@ -44,6 +44,7 @@ function runTier(
     clearSeasonSquadStrengthCache();
     const result = simulateSeason(squad, `perfect-${label}-${i}`, {
       draftMode,
+      currentSeasonOnly: !draftMode,
     });
     wins += result.wins;
     losses += result.losses;
@@ -69,9 +70,9 @@ function main() {
   console.log("Loading pool...");
   const pool = getGlobalRecruitmentPool();
   console.log(`Pool size: ${pool.length}`);
-  runTier("normal-average", 86, false, pool);
-  runTier("normal-good", 89, false, pool);
-  runTier("normal-elite", 93, false, pool);
+  runTier("current-average", 86, false, pool);
+  runTier("current-good", 89, false, pool);
+  runTier("current-elite", 93, false, pool);
   runTier("draft-elite", 93, true, pool);
 }
 
