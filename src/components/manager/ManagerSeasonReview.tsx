@@ -113,10 +113,12 @@ export function ManagerSeasonReview({
         {isUserInChampionship(evaluatedCareer) ? (
           <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-200`}>
             {summary.position === 1
-              ? "Championship Champions"
+              ? "Championship Champions · Promoted"
               : summary.position <= PROMOTE_RELEGATE_COUNT
                 ? "Promoted to Super League"
-                : "Championship finish"}
+                : summary.position <= 4
+                  ? "Top four — short of promotion"
+                  : "Championship finish"}
           </p>
         ) : summary.position >
           getUserLeagueClubs(evaluatedCareer).length - PROMOTE_RELEGATE_COUNT ? (
@@ -128,6 +130,43 @@ export function ManagerSeasonReview({
           {summary.seasonVerdict}
         </p>
       </ManagerSectionCard>
+
+      {isUserInChampionship(evaluatedCareer) && (
+        <ManagerSectionCard
+          title="Championship Pathway"
+          accent={
+            summary.position <= PROMOTE_RELEGATE_COUNT ? "gold" : "primary"
+          }
+        >
+          <div className={`mt-2 ${SPACING.stackMd}`}>
+            <ManagerInfoRow
+              label="Board aim"
+              value={evaluatedCareer.boardExpectation}
+              tone="gold"
+            />
+            <ManagerInfoRow
+              label="Promotion"
+              value={
+                summary.position <= PROMOTE_RELEGATE_COUNT
+                  ? "Earned — Super League next"
+                  : summary.position <= 4
+                    ? "Missed — top four only"
+                    : "Missed — finish top 2"
+              }
+              tone={
+                summary.position <= PROMOTE_RELEGATE_COUNT
+                  ? "gold"
+                  : summary.position <= 4
+                    ? "amber"
+                    : "red"
+              }
+            />
+            <p className={`${TYPO.meta} text-pitch-400`}>
+              Top two promote automatically. No Championship play-offs.
+            </p>
+          </div>
+        </ManagerSectionCard>
+      )}
 
       <ManagerSectionCard title="Board Decision" accent={sacked ? "red" : "primary"}>
         <div className={`mt-2 ${SPACING.stackMd}`}>

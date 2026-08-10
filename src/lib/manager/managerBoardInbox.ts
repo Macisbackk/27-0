@@ -4,6 +4,12 @@ import { areRivalClubs } from "./managerRivals";
 import { getManagerSeasonTrophyLabels } from "./managerSeasonTrophies";
 import { shouldShowChallengeCupCelebration } from "./managerChallengeCup";
 import { shouldShowLeagueWinnersCelebration } from "./managerPlayoffs";
+import { shouldShowPromotionCelebration } from "./managerPromotion";
+import {
+  isUserInChampionship,
+  PROMOTE_RELEGATE_COUNT,
+} from "./leagueMembership";
+import { getUserLeagueTablePosition } from "./managerFixtures";
 import type {
   FacilityType,
   ManagerCareer,
@@ -102,13 +108,30 @@ function maybeTrophyMails(career: ManagerCareer): ManagerCareer {
 
   if (
     shouldShowLeagueWinnersCelebration(career) ||
-    trophies.includes("League Leaders")
+    trophies.includes("League Leaders") ||
+    trophies.includes("Championship Champions")
   ) {
+    const inChamp = isUserInChampionship(career);
     next = appendBoardMail(
       next,
       `board-trophy-league-leaders-${year}`,
-      "Board — League Leaders",
-      `Finishing top of the table is exactly what this board asked for. Well done — the play-offs will decide the championship, but the League Leaders shield is yours.`
+      inChamp ? "Board — Championship Champions" : "Board — League Leaders",
+      inChamp
+        ? "Top of the Championship. Title secured — Super League promotion is yours."
+        : "Top of the table. Play-offs decide the title — League Leaders shield is yours."
+    );
+  }
+
+  if (
+    isUserInChampionship(career) &&
+    (shouldShowPromotionCelebration(career) ||
+      getUserLeagueTablePosition(career) <= PROMOTE_RELEGATE_COUNT)
+  ) {
+    next = appendBoardMail(
+      next,
+      `board-promoted-${year}`,
+      "Board — Promoted to Super League",
+      "Top-two finish. The board celebrates promotion — Super League next season."
     );
   }
 

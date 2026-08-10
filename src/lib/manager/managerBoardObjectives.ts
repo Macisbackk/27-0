@@ -1,6 +1,10 @@
 import type { ManagerClubExpectationTier } from "./club-config";
-import type { ManagerCareer } from "./types";
-import { getCareerClubStars, getCareerExpectationTier } from "./managerDifficulty";
+import type { ManagerCareer, ManagerCompetitionId } from "./types";
+import {
+  getCareerClubStars,
+  getCareerExpectationTier,
+} from "./managerDifficulty";
+import { getUserCompetitionId } from "./leagueMembership";
 
 export interface ManagerBoardObjectiveIntro {
   club: string;
@@ -19,8 +23,24 @@ export function shouldShowManagerObjectivesIntro(
 }
 
 export function getBoardObjectiveSuccessDetail(
-  tier: ManagerClubExpectationTier
+  tier: ManagerClubExpectationTier,
+  competition: ManagerCompetitionId = "super-league"
 ): string {
+  if (competition === "championship") {
+    switch (tier) {
+      case "title":
+        return "Win the Championship. Top two promote.";
+      case "top":
+        return "Finish top 2 to earn promotion.";
+      case "playoffs":
+        return "Finish top 4.";
+      case "mid-table":
+        return "Finish mid-table or higher.";
+      case "avoid-bottom":
+      case "survive":
+        return "Stay clear of the bottom.";
+    }
+  }
   switch (tier) {
     case "title":
       return "Win the Grand Final.";
@@ -41,18 +61,18 @@ export function getManagerBoardObjectiveIntro(
 ): ManagerBoardObjectiveIntro {
   const tier = getCareerExpectationTier(career);
   const stars = getCareerClubStars(career);
+  const competition = getUserCompetitionId(career);
+  const inChamp = competition === "championship";
 
   return {
     club: career.club,
     seasonYear: career.seasonYear,
     stars,
     primaryObjective: career.boardExpectation,
-    successDetail: getBoardObjectiveSuccessDetail(tier),
-    secondaryAims: [
-      "Challenge Cup run",
-      "Control wages",
-      "Build the squad",
-    ],
+    successDetail: getBoardObjectiveSuccessDetail(tier, competition),
+    secondaryAims: inChamp
+      ? ["Earn promotion (top 2)", "Challenge Cup run", "Build the squad"]
+      : ["Challenge Cup run", "Control wages", "Build the squad"],
     confidenceNote: `${career.boardConfidence}% confidence · hit ${career.boardExpectation}.`,
   };
 }

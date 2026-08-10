@@ -918,6 +918,10 @@ export function generateIncomingTransferOffers(
 
   for (const [playerId, status] of Object.entries(career.playerTransferStatus)) {
     if (!status.listed) continue;
+    // Parent club owns loaned-out players; loaned-in players are not yours to sell.
+    if (isPlayerAwayOnLoan(career, playerId) || isPlayerLoanedIn(career, playerId)) {
+      continue;
+    }
     if (messages.some((m) => !m.resolved && m.playerId === playerId)) continue;
     if (
       messages.filter(
@@ -1080,6 +1084,8 @@ export function generateUnsolicitedTransferOffers(
       if (listedIds.has(ps.playerId) || protectedIds.has(ps.playerId)) {
         return null;
       }
+      // Clubs cannot buy a player you only have on loan.
+      if (isPlayerLoanedIn(career, ps.playerId)) return null;
       if (ps.injury) return null;
       if ((career.transferTargetCooldowns?.[ps.playerId] ?? 0) > career.gameWeek) {
         return null;
@@ -1388,6 +1394,12 @@ export function negotiateIncomingOffer(
   }
   if (!msg.offerAmount || !msg.askingPrice) {
     return { ok: false, feedback: "Offer details missing." };
+  }
+  if (msg.playerId && isPlayerLoanedIn(career, msg.playerId)) {
+    return {
+      ok: false,
+      feedback: "Cannot sell a loaned-in player.",
+    };
   }
 
   const current = msg.offerAmount;

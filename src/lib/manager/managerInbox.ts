@@ -28,6 +28,7 @@ import { syncReserveContractExpiryInbox } from "./managerReserveContracts";
 import { ensureRetirementIntent } from "./managerRetirement";
 import { getUserLeaguePosition } from "./managerFixtures";
 import { getManagerPlayer } from "./managerPlayers";
+import { isPlayerLoanedIn } from "./managerLoans";
 
 export function normalizeInboxMessage(
   raw: Partial<InboxMessage> & { id: string; title: string; body: string },
@@ -690,12 +691,18 @@ export function purgeInvalidTransferOffers(career: ManagerCareer): ManagerCareer
   const inboxMessages = career.inboxMessages.map((m) => {
     if (
       !m.resolved &&
-      (m.type === "transfer" || m.type === "transfer_offer_in") &&
-      m.offerClub &&
-      isSameManagerClub(m.offerClub, career.club)
+      (m.type === "transfer" || m.type === "transfer_offer_in")
     ) {
-      changed = true;
-      return { ...m, resolved: true, read: true };
+      const selfBid =
+        !!m.offerClub && isSameManagerClub(m.offerClub, career.club);
+      const loanedInTarget =
+        !!m.playerId &&
+        !m.reserveOffer &&
+        isPlayerLoanedIn(career, m.playerId);
+      if (selfBid || loanedInTarget) {
+        changed = true;
+        return { ...m, resolved: true, read: true };
+      }
     }
     return m;
   });

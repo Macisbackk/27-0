@@ -2,15 +2,21 @@ import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import {
   didMeetManagerBoardExpectation,
   MANAGER_EXPECTATION_LABELS,
+  CHAMPIONSHIP_EXPECTATION_LABELS,
   type ManagerClubExpectationTier,
 } from "./club-config";
 import { buildSeasonSummary } from "./managerStateSeason";
 import { getCareerExpectationTier } from "./managerDifficulty";
 import { userQualifiedForManagerPlayoffs } from "./managerPlayoffs";
 import type { BoardSeasonEvaluation, ManagerCareer } from "./types";
-import { getUserCompetitionId, getUserLeagueClubs } from "./leagueMembership";
+import {
+  getUserCompetitionId,
+  getUserLeagueClubs,
+  isUserInChampionship,
+  PROMOTE_RELEGATE_COUNT,
+} from "./leagueMembership";
 
-export const BOARD_SACKING_SCHEMA_VERSION = 1;
+export const BOARD_SACKING_SCHEMA_VERSION = 2;
 
 export function buildBoardSeasonId(career: ManagerCareer): string {
   return `${career.club}-${career.seasonYear}`;
@@ -66,6 +72,46 @@ function scoreFromStatus(
   }
 }
 
+function expectationLabel(
+  career: ManagerCareer,
+  tier: ManagerClubExpectationTier
+): string {
+  return isUserInChampionship(career)
+    ? CHAMPIONSHIP_EXPECTATION_LABELS[tier]
+    : MANAGER_EXPECTATION_LABELS[tier];
+}
+
+function championshipPathwayObjective(
+  tier: ManagerClubExpectationTier,
+  position: number
+): BoardSeasonEvaluation["objectiveResults"][number] {
+  const promoted = position <= PROMOTE_RELEGATE_COUNT;
+  const topFour = position <= 4;
+
+  if (tier === "title" || tier === "top") {
+    return {
+      id: "playoffs",
+      label: "Earn promotion (top 2)",
+      status: promoted ? "achieved" : topFour ? "partial" : "failed",
+      weight: 20,
+    };
+  }
+  if (tier === "playoffs") {
+    return {
+      id: "playoffs",
+      label: "Finish top four",
+      status: topFour ? "achieved" : position <= 6 ? "partial" : "failed",
+      weight: 20,
+    };
+  }
+  return {
+    id: "playoffs",
+    label: "Earn promotion (top 2)",
+    status: promoted ? "achieved" : "na",
+    weight: 20,
+  };
+}
+
 export function evaluateBoardSeason(
   career: ManagerCareer
 ): BoardSeasonEvaluation {
@@ -74,6 +120,8 @@ export function evaluateBoardSeason(
   const managerId = career.managerId ?? career.id;
   const seasonId = buildBoardSeasonId(career);
   const decisionId = `board-${seasonId}-${managerId}`;
+  const inChamp = isUserInChampionship(career);
+  const labels = expectationLabel(career, tier);
 
   const primaryMet = didMeetManagerBoardExpectation(
     tier,
@@ -99,29 +147,33 @@ export function evaluateBoardSeason(
       ? summary.playoffFinish === "Super League Champions"
       : userQualifiedForManagerPlayoffs(career) && summary.position <= 6;
 
+  const pathwayObjective = inChamp
+    ? championshipPathwayObjective(tier, summary.position)
+    : {
+        id: "playoffs" as const,
+        label:
+          tier === "title"
+            ? "Win the Grand Final"
+            : "Finish in the top six",
+        status:
+          tier === "mid-table" || tier === "avoid-bottom" || tier === "survive"
+            ? ("na" as const)
+            : playoffMet
+              ? ("achieved" as const)
+              : summary.position <= 8
+                ? ("partial" as const)
+                : ("failed" as const),
+        weight: 20,
+      };
+
   const objectiveResults: BoardSeasonEvaluation["objectiveResults"] = [
     {
       id: "primary",
-      label: career.boardExpectation,
+      label: career.boardExpectation || labels,
       status: primaryMet ? "achieved" : "failed",
       weight: 60,
     },
-    {
-      id: "playoffs",
-      label:
-        tier === "title"
-          ? "Win the Grand Final"
-          : "Finish in the top six",
-      status:
-        tier === "mid-table" || tier === "avoid-bottom" || tier === "survive"
-          ? "na"
-          : playoffMet
-            ? "achieved"
-            : summary.position <= 8
-              ? "partial"
-              : "failed",
-      weight: 20,
-    },
+    pathwayObjective,
     {
       id: "cup",
       label: cupObj.label,
@@ -156,13 +208,17 @@ export function evaluateBoardSeason(
   const explanation: string[] = [];
 
   if (primaryMet) {
-    explanation.push(
-      `Primary target met: ${MANAGER_EXPECTATION_LABELS[tier]}.`
-    );
+    explanation.push(`Primary target met: ${labels}.`);
   } else {
     explanation.push(
-      `Primary target missed: ${MANAGER_EXPECTATION_LABELS[tier]} was not achieved (finished ${summary.position}${summary.position === 1 ? "st" : summary.position === 2 ? "nd" : summary.position === 3 ? "rd" : "th"}).`
+      `Primary target missed: ${labels} (finished ${summary.position}${summary.position === 1 ? "st" : summary.position === 2 ? "nd" : summary.position === 3 ? "rd" : "th"}).`
     );
+  }
+
+  if (inChamp && summary.position <= PROMOTE_RELEGATE_COUNT) {
+    explanation.push("Promoted to Super League.");
+  } else if (inChamp && pathwayObjective.status === "partial") {
+    explanation.push("Close to the promotion places.");
   }
 
   if (cupOutcome.isWinner) {
@@ -177,21 +233,18 @@ export function evaluateBoardSeason(
 
   if (primaryMet) {
     explanation.push(
-      "The primary objective was delivered — the board will not dismiss you over secondary shortfalls."
+      "Primary objective delivered — the board will retain you."
     );
   } else if (career.boardConfidence < 25) {
     recommendation = "sack";
     explanation.push(
-      "Confidence has collapsed below 25% with the primary target missed."
+      "Confidence below 25% with the primary target missed."
     );
-  } else if (
-    career.boardConfidence < 40 ||
-    terriblePosition
-  ) {
+  } else if (career.boardConfidence < 40 || terriblePosition) {
     recommendation = "sack";
     if (career.boardConfidence < 40) {
       explanation.push(
-        "Confidence is below 40% with the primary target missed."
+        "Confidence below 40% with the primary target missed."
       );
     }
     if (terriblePosition) {
@@ -237,7 +290,12 @@ export function getOrCreateBoardSeasonEvaluation(career: ManagerCareer): {
   const existing =
     career.boardSeasonEvaluations?.[seasonId] ?? career.boardSeasonEvaluation;
 
-  if (existing && existing.seasonId === seasonId && existing.clubId === career.club) {
+  if (
+    existing &&
+    existing.seasonId === seasonId &&
+    existing.clubId === career.club &&
+    (career.boardSackingSchemaVersion ?? 0) >= BOARD_SACKING_SCHEMA_VERSION
+  ) {
     return { career, evaluation: existing };
   }
 

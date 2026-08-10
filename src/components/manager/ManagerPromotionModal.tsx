@@ -8,21 +8,26 @@ import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { getClubColors } from "@/lib/clubs";
 import { getReadableClubTextColour } from "@/lib/ui/contrast";
-import { isUserInChampionship } from "@/lib/manager/leagueMembership";
+import { getUserLeagueTablePosition } from "@/lib/manager/managerFixtures";
 import { playSeasonComplete, playUiClick } from "@/lib/sound";
+import {
+  managerModalHeaderClass,
+  managerPillClass,
+} from "@/lib/manager/managerSurfaces";
 
-interface ManagerLeagueWinnersModalProps {
+interface ManagerPromotionModalProps {
   career: ManagerCareer;
   onContinue: () => void;
 }
 
-export function ManagerLeagueWinnersModal({
+export function ManagerPromotionModal({
   career,
   onContinue,
-}: ManagerLeagueWinnersModalProps) {
+}: ManagerPromotionModalProps) {
   const colors = getClubColors(career.club);
   const badgeTextColour = getReadableClubTextColour(colors);
-  const inChamp = isUserInChampionship(career);
+  const position = getUserLeagueTablePosition(career);
+  const champions = position === 1;
 
   const handleContinue = useCallback(() => {
     playUiClick();
@@ -40,7 +45,7 @@ export function ManagerLeagueWinnersModal({
       className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/80 ${SPACING.modalBackdrop} ${SPACING.safeBottom} overflow-y-auto sm:items-center`}
       role="dialog"
       aria-modal="true"
-      aria-labelledby="league-winners-title"
+      aria-labelledby="promotion-title"
     >
       <div
         ref={panelRef}
@@ -49,37 +54,38 @@ export function ManagerLeagueWinnersModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div
-          className="-mx-4 -mt-4 mb-4 border-b px-4 py-5 text-center sm:-mx-6 sm:-mt-6 sm:px-6"
+          className={managerModalHeaderClass("gold", { centered: true })}
           style={{
-            borderColor: `${colors.primary}66`,
             background: `linear-gradient(to bottom, ${colors.primary}22, transparent)`,
           }}
         >
           <p className="text-5xl" aria-hidden>
-            🥇
+            {champions ? "🏆" : "⬆️"}
           </p>
-          <span
-            className="mt-3 inline-flex rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider"
-            style={{
-              borderColor: `${badgeTextColour}80`,
-              backgroundColor: `${badgeTextColour}22`,
-              color: badgeTextColour,
-            }}
-          >
-            {inChamp ? "Championship" : "Regular season"}
+          <span className={`mt-3 ${managerPillClass("gold")}`}>
+            {champions ? "Champions & promoted" : "Promoted"}
           </span>
-          <h2 id="league-winners-title" className={`mt-3 ${TYPO.pageTitle}`}>
-            {inChamp ? "Championship Champions" : "League Leaders"}
+          <h2 id="promotion-title" className={`mt-3 ${TYPO.pageTitle}`}>
+            {champions
+              ? "Championship Champions"
+              : "Promoted to Super League"}
           </h2>
           <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
-            {career.club} finished top of the table in {career.seasonYear}.
+            {career.club} finished {position === 1 ? "1st" : "2nd"} in{" "}
+            {career.seasonYear}.
           </p>
         </div>
 
         <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
-          {inChamp
-            ? "Title winners. Super League promotion secured."
-            : "Top of the league — play-offs decide the title."}
+          {champions
+            ? "Title winners — Super League next season."
+            : "Top-two finish. Super League next season."}
+        </p>
+        <p
+          className={`mt-2 text-center text-[10px] font-bold uppercase tracking-wider`}
+          style={{ color: badgeTextColour }}
+        >
+          Welcome to the top flight
         </p>
 
         <GameButton variant="theme" className="mt-5" onClick={handleContinue}>

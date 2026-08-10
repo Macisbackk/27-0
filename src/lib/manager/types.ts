@@ -965,6 +965,8 @@ export interface ManagerCareer {
   trophyCelebrationShown?: boolean;
   /** League Leaders celebration shown after the regular season (table winners). */
   leagueWinnersCelebrationShown?: boolean;
+  /** Championship promotion celebration shown (top-two finish). */
+  promotionCelebrationShown?: boolean;
   /** Perfect 27-0 league season celebration shown. */
   perfectSeasonCelebrationShown?: boolean;
   /** Winless 0-27 league season celebration shown. */

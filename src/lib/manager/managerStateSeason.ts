@@ -156,8 +156,20 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
   }
 
   let seasonVerdict = boardVerdict;
-  if (cupOutcome.isWinner) seasonVerdict = "A trophy-winning campaign.";
-  else if (position <= 4 && !cupOutcome.isWinner) {
+  if (isUserInChampionship(career)) {
+    if (position <= 2) {
+      seasonVerdict =
+        position === 1
+          ? "Championship champions — promoted."
+          : "Promoted to Super League.";
+    } else if (cupOutcome.isWinner) {
+      seasonVerdict = "Cup winners. League unfinished business.";
+    } else if (position <= 4) {
+      seasonVerdict = "Top four — short of promotion.";
+    }
+  } else if (cupOutcome.isWinner) {
+    seasonVerdict = "A trophy-winning campaign.";
+  } else if (position <= 4 && !cupOutcome.isWinner) {
     seasonVerdict = "Strong league finish — cup disappointment.";
   }
 
@@ -385,6 +397,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     playoffsIntroAcknowledged: false,
     trophyCelebrationShown: false,
     leagueWinnersCelebrationShown: false,
+    promotionCelebrationShown: false,
     perfectSeasonCelebrationShown: false,
     winlessSeasonCelebrationShown: false,
     leaguePhaseStatsRecordedForYear: null,
