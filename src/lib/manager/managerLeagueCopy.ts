@@ -8,8 +8,12 @@ export const MANAGER_STAR_TIER_BIOS: Record<number, string> = {
   1: "Survive — stay clear of the bottom places",
 };
 
+/**
+ * Championship stars are a separate ladder (max 3★).
+ * A Championship 3★ is still below a Super League 3★ in absolute prestige.
+ */
 export const CHAMPIONSHIP_STAR_TIER_BIOS: Record<number, string> = {
-  3: "Win the Championship / push for promotion",
-  2: "Push for promotion — finish in the top two",
-  1: "Build toward mid-table — stay clear of the bottom",
+  3: "Championship elite — win the title / push for Super League promotion",
+  2: "Established Championship side — push for a top-four promotion push",
+  1: "Building club — mid-table or survival; grow toward the promotion race",
 };

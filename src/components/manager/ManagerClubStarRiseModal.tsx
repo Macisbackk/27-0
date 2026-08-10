@@ -8,6 +8,7 @@ import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { formatSquadRatingStars } from "@/lib/manager/club-config";
 import { getCareerClubStars } from "@/lib/manager/managerDifficulty";
+import { isUserInChampionship } from "@/lib/manager/leagueMembership";
 import { getClubColors } from "@/lib/clubs";
 import { playSeasonComplete, playUiClick } from "@/lib/sound";
 import {
@@ -28,6 +29,10 @@ export function ManagerClubStarRiseModal({
 }: ManagerClubStarRiseModalProps) {
   const colors = getClubColors(career.club);
   const newStars = getCareerClubStars(career);
+  const league = isUserInChampionship(career)
+    ? "championship"
+    : "super-league";
+  const starNoun = league === "championship" ? "Championship" : "";
 
   const handleContinue = useCallback(() => {
     playUiClick();
@@ -66,11 +71,12 @@ export function ManagerClubStarRiseModal({
             Club status rising
           </span>
           <h2 id="club-star-rise-title" className={`mt-3 ${TYPO.pageTitle}`}>
-            {career.club} is now a {newStars}-star club
+            {career.club} is now a {starNoun ? `${starNoun} ` : ""}
+            {newStars}-star club
           </h2>
           <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
-            {formatSquadRatingStars(previousStars)} →{" "}
-            {formatSquadRatingStars(newStars)}
+            {formatSquadRatingStars(previousStars, league)} →{" "}
+            {formatSquadRatingStars(newStars, league)}
           </p>
         </div>
 

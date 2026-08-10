@@ -39,6 +39,12 @@ import { syncManagerFinance, deductTransferFee, addTransferIncome, getTransferBu
 import { getCareerClubStars } from "./managerDifficulty";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import {
+  canUserLoanOutPlayers,
+  isPlayerAwayOnLoan,
+  isPlayerLoanedIn,
+} from "./managerLoans";
+import { resolveClubCompetitionForCareer } from "./leagueMembership";
+import {
   createPlayerSaleMessage,
   createPlayerPurchaseMessage,
   pushInboxMessage,
@@ -47,10 +53,6 @@ import {
 import { addBoardTransferMilestoneInbox } from "./managerBoardInbox";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 import { DEFAULT_TRANSFER_ACTIVITY_CONFIG } from "./transferActivityConfig";
-import {
-  isPlayerAwayOnLoan,
-  isPlayerLoanedIn,
-} from "./managerLoans";
 import { pruneTransferWatchlist } from "./managerWatchlist";
 
 const TRANSFER_DIAGNOSTIC_CAP = 40;
@@ -343,9 +345,14 @@ export function generateLeagueListedPlayers(
     if (pool.length === 0) continue;
 
     const clubBest = Math.max(...pool.map((row) => row.rating));
-    const loanPool = pool.filter((row) =>
-      isLoanMarketCandidate(career, row.id, clubBest, row.rating)
-    );
+    // Only Super League clubs list players for loan (SL → Championship pathway).
+    const clubCanListLoans =
+      resolveClubCompetitionForCareer(club, career) === "super-league";
+    const loanPool = clubCanListLoans
+      ? pool.filter((row) =>
+          isLoanMarketCandidate(career, row.id, clubBest, row.rating)
+        )
+      : [];
 
     const listCount = Math.min(
       pool.length,
@@ -361,7 +368,7 @@ export function generateLeagueListedPlayers(
           );
 
     for (let i = 0; i < listCount; i++) {
-      const preferLoan = loanSlots > 0;
+      const preferLoan = clubCanListLoans && loanSlots > 0;
       const playerId = pickWeightedListablePlayer(
         remaining,
         rng,
@@ -376,17 +383,16 @@ export function generateLeagueListedPlayers(
       const rating =
         remaining.find((row) => row.id === playerId)?.rating ??
         getPlayerListingRating(career, playerId);
-      const loanCandidate = isLoanMarketCandidate(
-        career,
-        playerId,
-        clubBest,
-        rating
-      );
-      const listingType = preferLoan
-        ? rng() < 0.72
-          ? "loan"
-          : "both"
-        : pickAiListingType(rng, loanCandidate);
+      const loanCandidate =
+        clubCanListLoans &&
+        isLoanMarketCandidate(career, playerId, clubBest, rating);
+      const listingType = !clubCanListLoans
+        ? "permanent"
+        : preferLoan
+          ? rng() < 0.72
+            ? "loan"
+            : "both"
+          : pickAiListingType(rng, loanCandidate);
       if (listingAllowsLoan(listingType) && loanCandidate) {
         loanSlots = Math.max(0, loanSlots - 1);
       }
@@ -504,6 +510,9 @@ export function listPlayerForTransfer(
   if (isPlayerAwayOnLoan(career, playerId) || isPlayerLoanedIn(career, playerId)) {
     return career;
   }
+  if (listingAllowsLoan(listingType) && !canUserLoanOutPlayers(career)) {
+    listingType = "permanent";
+  }
   const player = getPlayerById(playerId);
   if (!player) return career;
 
@@ -524,12 +533,13 @@ export function listPlayerForTransfer(
   };
 }
 
-/** List a squad player on the loan market (AI clubs can take them). */
+/** List a squad player on the loan market (Championship AI clubs can take them). */
 export function listPlayerForLoan(
   career: ManagerCareer,
   playerId: string,
   askingPrice: number
 ): ManagerCareer {
+  if (!canUserLoanOutPlayers(career)) return career;
   return listPlayerForTransfer(career, playerId, askingPrice, "loan");
 }
 
@@ -540,6 +550,9 @@ export function listPlayerForTransferWithOffers(
   askingPrice: number,
   listingType: TransferListingType = "permanent"
 ): ManagerCareer {
+  if (listingAllowsLoan(listingType) && !canUserLoanOutPlayers(career)) {
+    listingType = "permanent";
+  }
   return generateIncomingTransferOffers(
     listPlayerForTransfer(career, playerId, askingPrice, listingType)
   );
@@ -550,6 +563,7 @@ export function listPlayerForLoanWithOffers(
   playerId: string,
   askingPrice: number
 ): ManagerCareer {
+  if (!canUserLoanOutPlayers(career)) return career;
   return listPlayerForTransferWithOffers(career, playerId, askingPrice, "loan");
 }
 

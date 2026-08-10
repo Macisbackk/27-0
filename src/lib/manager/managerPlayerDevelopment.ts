@@ -1,6 +1,5 @@
 import seedrandom from "seedrandom";
 import { PLAYER_POTENTIAL_OVERRIDES } from "../../../data/player-potential-overrides";
-import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { getPlayerById } from "../players";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import type {
@@ -11,6 +10,7 @@ import type {
 import { getClubFacilities, getTrainingDevelopmentMultiplier } from "./managerFacilities";
 import { getManagerModePlayerRating } from "./managerSquadRatings";
 import { getLeagueClubRosterIds } from "./managerLeagueRosters";
+import { getUserLeagueClubs } from "./leagueMembership";
 import {
   getPlayerSeasonImpact,
   computePlayerSeasonImpact,
@@ -238,7 +238,7 @@ function developLeaguePlayersAtSeasonEnd(
   const userIds = new Set(career.squad.map((p) => p.playerId));
   const next = { ...playerDevelopment };
 
-  for (const club of CURRENT_PLAYABLE_CLUBS) {
+  for (const club of getUserLeagueClubs(career)) {
     if (club === career.club) continue;
     const rosterIds = getLeagueClubRosterIds(career, club);
     for (const playerId of rosterIds) {

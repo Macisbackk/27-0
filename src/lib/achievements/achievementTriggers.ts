@@ -99,12 +99,18 @@ export function triggerQuickSeasonAchievements(
     joeMellorMode?: boolean;
     superSamHallasMode?: boolean;
     normalEraMode?: boolean;
+    dailyChallengeMode?: boolean;
     madePlayoffs?: boolean;
     playoffWins?: number;
     playoffLosses?: number;
     leagueChampion?: boolean;
   } = {}
 ): void {
+  // Daily Challenge has its own streak achievements — do not credit Normal Mode.
+  if (options.dailyChallengeMode) {
+    return;
+  }
+
   // Super Sam Hallas: joke undefeated run — only the play-mode EE unlocks.
   // Do not credit Normal Mode win / perfect-season / grade achievements.
   if (options.superSamHallasMode) {
@@ -116,12 +122,16 @@ export function triggerQuickSeasonAchievements(
     return;
   }
 
-  // Joe Mellor GOAT Mode: play-mode EEs only (no Normal Mode win credits).
+  // Joe Mellor GOAT Mode: distinct EEs only (no Normal Mode win credits).
+  // goat-status = play the mode; mellor-miracle = winning season; Developer's Favourite = Bradford bias.
   if (options.joeMellorMode) {
+    const bradfordCount = countBradfordPlayers(squad);
     triggerAchievementCheck({
       trigger: "quick-season-completed",
       joeMellorComplete: true,
-      bradfordChallengeComplete: true,
+      goatMellorWin: season.wins > season.losses,
+      bradfordChallengeComplete:
+        bradfordCount >= 5 && season.wins > season.losses,
     });
     return;
   }
@@ -191,7 +201,7 @@ export function triggerManagerMatchAchievements(
   triggerAchievementCheck({
     trigger: "manager-match-completed",
     managerWin: won,
-    matchWon: won,
+    // Do not set matchWon — that flag is for Quick/Normal Mode (First Win, etc.).
     marginOfVictory: won ? margin : undefined,
     reserveCalledUp,
     stadiumCapacityPct: capacityPct,

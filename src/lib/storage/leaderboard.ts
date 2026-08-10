@@ -852,7 +852,9 @@ export async function getTrackerLeaderboardAsync(
   );
 
   return {
-    rows: rankByTracker(entries, tracker, limit, currentUser),
+    rows: rankByTracker(entries, tracker, limit, currentUser, {
+      recordMetric: "total",
+    }),
     source: remote ? "remote" : "local",
   };
 }
@@ -869,7 +871,9 @@ export function getLeaderboard(
     "super-league",
     modeVariant
   );
-  const rows = rankByTracker(entries, "best_record", limit, getUsername() ?? "");
+  const rows = rankByTracker(entries, "best_record", limit, getUsername() ?? "", {
+    recordMetric: "total",
+  });
   return mapTrackerRowsToLegacy(rows, entries);
 }
 
@@ -897,7 +901,8 @@ export async function getLeaderboardAsync(
     entries,
     "best_record",
     limit,
-    getUsername() ?? ""
+    getUsername() ?? "",
+    { recordMetric: "total" }
   );
   return {
     rows: mapTrackerRowsToLegacy(rows, entries),

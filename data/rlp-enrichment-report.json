@@ -7,11 +7,11 @@
   "skippedHidden": 0,
   "skippedArchived": 1,
   "ratingOverridesUntouched": 99,
-  "fieldCounts": {
-    "nationality": 0,
-    "yearsActive": 0,
+      "fieldCounts": {
+        "nationality": 0,
+      "yearsActive": 0,
     "tries": 0,
-    "position": 0,
+      "position": 0,
     "dateOfBirth": 0,
     "birthYear": 0,
     "clubsPlayedFor": 0,

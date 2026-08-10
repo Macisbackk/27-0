@@ -118,7 +118,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "era-cup-kings",
     name: "Era Cup Kings",
-    description: "Win an Era Challenge Cup.",
+    description: "Win the Super League title in Era Mode.",
     category: "challenge-cup",
     points: 40,
   },
@@ -382,7 +382,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "mellor-miracle",
     name: "Mellor Miracle",
-    description: "Play Joe Mellor GOAT Mode.",
+    description: "Finish a Joe Mellor GOAT Mode season with a winning record.",
     category: "easter-egg",
     hidden: true,
     points: 50,
@@ -415,7 +415,8 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "developers-favourite",
     name: "Developer's Favourite",
-    description: "Play Joe Mellor GOAT Mode.",
+    description:
+      "Finish Joe Mellor GOAT Mode with a winning record and at least five Bradford players.",
     category: "easter-egg",
     hidden: true,
     points: 35,

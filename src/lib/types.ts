@@ -190,6 +190,8 @@ export interface UserStatsData {
   longestLosingStreak: number;
   leagueTitlesWon: number;
   totalPerfectSeasons: number;
+  /** Seasons with 0 losses (may include draws) — used by Unbeaten Again. */
+  totalUnbeatenSeasons: number;
   totalWinlessSeasons: number;
   bestNationalRanking: number | null;
   averageSeasonFinish: number;

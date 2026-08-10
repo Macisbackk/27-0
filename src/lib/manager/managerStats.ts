@@ -5,6 +5,7 @@ import { triggerManagerSeasonAchievements } from "../achievements/achievementTri
 import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import { isLoggedIn } from "../auth-session";
 import { isLeagueAndCupPhaseComplete } from "./managerChallengeCup";
+import { getUserSeasonGames } from "./leagueMembership";
 import { getUserLeagueTablePosition } from "./managerFixtures";
 import {
   pickManagerBestSeasonRecord,
@@ -244,6 +245,7 @@ export function recordLeaguePhaseAchievements(career: ManagerCareer): void {
   const position = getUserLeagueTablePosition(career);
   const seasonWins = career.wins;
   const seasonLosses = career.losses;
+  const seasonGames = getUserSeasonGames(career);
 
   if (position === 1) {
     stats.leagueTitles++;
@@ -252,10 +254,10 @@ export function recordLeaguePhaseAchievements(career: ManagerCareer): void {
   if (position <= 6) {
     stats.topSixFinishes++;
   }
-  if (seasonWins === 27 && seasonLosses === 0) {
+  if (seasonWins === seasonGames && seasonLosses === 0) {
     stats.perfectSeasons++;
   }
-  if (seasonWins === 0 && seasonLosses === 27) {
+  if (seasonWins === 0 && seasonLosses === seasonGames) {
     stats.winlessSeasons++;
   }
 

@@ -1,4 +1,3 @@
-import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import { CHALLENGE_CUP_SCHEMA_VERSION } from "./championship/championshipChallengeCup";
 import {
   buildDefaultLineup,
@@ -10,6 +9,7 @@ import { createManagerChallengeCup, cupSeedingInputFromCareer } from "./managerC
 import {
   buildLeagueTableFromMatches,
   buildManagerSchedule,
+  buildManagerScheduleFromChampionship,
 } from "./managerFixtures";
 import {
   getLeagueClubPlayerContract,
@@ -17,7 +17,10 @@ import {
 } from "./managerContracts";
 import { createClubAttendanceData, syncClubAttendanceData } from "./managerAttendance";
 import { ensureClubFacilities, getEffectiveStadiumCapacity } from "./managerFacilities";
-import { reconcileLeagueRosters } from "./managerLeagueRosters";
+import {
+  getLeagueClubRosterIds,
+  reconcileLeagueRosters,
+} from "./managerLeagueRosters";
 import { pushInboxMessage } from "./managerInbox";
 import { getManagerRosterIds } from "./managerRating";
 import { createInitialPlayerState } from "./managerSquad";
@@ -27,7 +30,11 @@ import {
   generateReserveSquad,
   initLeagueClubReserveCounts,
 } from "./managerReserves";
-import { MANAGER_SEASON_GAMES } from "./types";
+import {
+  getUserLeagueClubs,
+  getUserSeasonGames,
+  isUserInChampionship,
+} from "./leagueMembership";
 import type {
   ManagerCareer,
   ManagerCareerHistoryEntry,
@@ -108,11 +115,13 @@ function softenExpectationTier(
 }
 
 function boardExpectationForTakeover(
+  career: ManagerCareer,
   club: string,
   gameWeek: number
 ): string {
   const config = getManagerClubConfig(club);
-  if (gameWeek < Math.floor(MANAGER_SEASON_GAMES * 0.65)) {
+  const seasonGames = getUserSeasonGames(career);
+  if (gameWeek < Math.floor(seasonGames * 0.65)) {
     return config.expectation;
   }
   const softerTier = softenExpectationTier(config.expectationTier);
@@ -133,8 +142,9 @@ export interface ContinuationClubSummary {
 export function listContinuationClubs(
   career: ManagerCareer
 ): ContinuationClubSummary[] {
-  return CURRENT_PLAYABLE_CLUBS.filter((club) => club !== career.club).map(
-    (club) => {
+  return getUserLeagueClubs(career)
+    .filter((club) => club !== career.club)
+    .map((club) => {
       const config = getManagerClubConfig(club);
       const row = career.leagueTable.find((r) => r.team === club);
       return {
@@ -142,13 +152,16 @@ export function listContinuationClubs(
         position: row?.position ?? 8,
         squadRating: config.squadRating,
         budget: career.clubFunds[club] ?? config.budget,
-        boardExpectation: boardExpectationForTakeover(club, career.gameWeek),
+        boardExpectation: boardExpectationForTakeover(
+          career,
+          club,
+          career.gameWeek
+        ),
         difficulty: config.difficulty,
         primaryColor: config.primaryColor,
         secondaryColor: config.secondaryColor,
       };
-    }
-  );
+    });
 }
 
 function syncUserSquadToLeagueRoster(career: ManagerCareer): ManagerCareer {
@@ -198,7 +211,8 @@ export function takeOverClub(
   reason: "sacked" | "resigned" | "club-change" = "club-change"
 ): ManagerCareer {
   if (newClub === career.club) return career;
-  if (!CURRENT_PLAYABLE_CLUBS.includes(newClub as (typeof CURRENT_PLAYABLE_CLUBS)[number])) {
+  const leagueClubs = getUserLeagueClubs(career);
+  if (!leagueClubs.includes(newClub)) {
     return career;
   }
 
@@ -210,18 +224,27 @@ export function takeOverClub(
     reason
   );
 
-  const rosterIds =
-    next.leagueClubRosters?.[newClub]?.length
-      ? [...next.leagueClubRosters[newClub]!]
-      : [...getManagerRosterIds(newClub)];
-  const lineup =
-    buildDefaultLineup(rosterIds) ??
-    buildDefaultLineup(getManagerRosterIds(newClub));
-  const squad = rosterIds.map((id) => createInitialPlayerState(id));
+  const rosterIds = getLeagueClubRosterIds(next, newClub);
+  const fallbackIds =
+    rosterIds.length > 0
+      ? rosterIds
+      : isUserInChampionship(next)
+        ? []
+        : [...getManagerRosterIds(newClub)];
+  if (fallbackIds.length === 0) return career;
 
-  const startingIds = new Set(lineup?.xiiiIds ?? rosterIds.slice(0, 13));
+  const lineup =
+    buildDefaultLineup(fallbackIds) ??
+    buildDefaultLineup(
+      isUserInChampionship(next)
+        ? fallbackIds
+        : getManagerRosterIds(newClub)
+    );
+  const squad = fallbackIds.map((id) => createInitialPlayerState(id));
+
+  const startingIds = new Set(lineup?.xiiiIds ?? fallbackIds.slice(0, 13));
   const contracts: Record<string, PlayerContract> = {};
-  for (const playerId of rosterIds) {
+  for (const playerId of fallbackIds) {
     contracts[playerId] = getLeagueClubPlayerContract(next, newClub, playerId, {
       inStartingXiii: startingIds.has(playerId),
     });
@@ -261,14 +284,22 @@ export function takeOverClub(
     joinedSeason: next.seasonYear,
     joinedWeek: next.gameWeek,
     joinedDate,
-    boardExpectationAtJoin: boardExpectationForTakeover(newClub, next.gameWeek),
+    boardExpectationAtJoin: boardExpectationForTakeover(
+      next,
+      newClub,
+      next.gameWeek
+    ),
   };
 
   next = {
     ...next,
     club: newClub,
     userControlledClubId: newClub,
-    boardExpectation: boardExpectationForTakeover(newClub, next.gameWeek),
+    boardExpectation: boardExpectationForTakeover(
+      next,
+      newClub,
+      next.gameWeek
+    ),
     difficulty: config.difficulty,
     squad,
     contracts,
@@ -278,9 +309,9 @@ export function takeOverClub(
     reserveResults: [],
     lastReserveResult: null,
     youthProspects: [],
-    matchdayXiii: lineup?.xiiiIds ?? rosterIds.slice(0, 13),
+    matchdayXiii: lineup?.xiiiIds ?? fallbackIds.slice(0, 13),
     matchdayInterchange:
-      lineup?.benchIds ?? rosterIds.slice(13, 13 + 4),
+      lineup?.benchIds ?? fallbackIds.slice(13, 13 + 4),
     xiiiSlotPositions: lineup?.slotPositions ?? [],
     budget: transferBudget,
     wageBudget,
@@ -319,9 +350,13 @@ export function takeOverClub(
   next = reconcileLeagueRosters(next);
 
   if (next.gameWeek === 0 && next.fixtures.length === 0) {
+    const champComp = next.championshipCompetition;
     next = {
       ...next,
-      schedule: buildManagerSchedule(newClub, next.seed),
+      schedule:
+        isUserInChampionship(next) && champComp
+          ? buildManagerScheduleFromChampionship(newClub, champComp, next.seed)
+          : buildManagerSchedule(newClub, next.seed),
       challengeCup: createManagerChallengeCup(
         next.seed,
         newClub,

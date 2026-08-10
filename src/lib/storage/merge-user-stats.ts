@@ -104,6 +104,8 @@ export function mergeUserStatsData(
     longestLosingStreak: Math.max(a.longestLosingStreak, b.longestLosingStreak),
     leagueTitlesWon: a.leagueTitlesWon + b.leagueTitlesWon,
     totalPerfectSeasons: a.totalPerfectSeasons + b.totalPerfectSeasons,
+    totalUnbeatenSeasons:
+      (a.totalUnbeatenSeasons ?? 0) + (b.totalUnbeatenSeasons ?? 0),
     totalWinlessSeasons: a.totalWinlessSeasons + b.totalWinlessSeasons,
     bestNationalRanking:
       a.bestNationalRanking === null

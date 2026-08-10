@@ -55,7 +55,12 @@ function evaluateUnlock(
 ): boolean {
   switch (def.id) {
     case "first-win":
-      return progress.totalWins >= 1 || ctx.matchWon === true;
+      // Quick/Normal Mode only — Manager wins use first-manager-win.
+      return (
+        progress.quickModeWins >= 1 ||
+        (ctx.trigger === "quick-match-completed" && ctx.matchWon === true) ||
+        (ctx.quickModeLeagueSeason === true && (ctx.seasonWins ?? 0) >= 1)
+      );
     case "winning-habit":
       return (ctx.seasonWins ?? progress.seasonWinsCurrent) >= 10;
     case "chaser-27-0":
@@ -72,8 +77,12 @@ function evaluateUnlock(
         ctx.playoffLosses === 0 &&
         ctx.leagueChampion === true
       );
-    case "unbeaten-again":
-      return progress.unbeatenSeasons >= 3 || ctx.isUnbeatenSeason === true;
+    case "unbeaten-again": {
+      // Need three unbeaten seasons total (include the season that just finished).
+      const prior = progress.unbeatenSeasons;
+      const current = ctx.isUnbeatenSeason === true ? 1 : 0;
+      return prior + current >= 3;
+    }
     case "elite-builder":
       return ctx.squadGrade === "S" || ctx.squadGrade === "S+";
     case "underdog-run":
@@ -89,7 +98,8 @@ function evaluateUnlock(
     case "cup-winners":
       return ctx.cupWon === true || progress.challengeCupsWon >= 1;
     case "era-cup-kings":
-      return ctx.cupWon === true && ctx.eraCup === true;
+      // Era Challenge Cup mode was removed — retarget to Era Mode Super League title.
+      return ctx.eraCup === true && ctx.leagueChampion === true;
     case "giant-killer":
       return ctx.beatStrongerTeam === true;
     case "cup-dynasty":
@@ -163,9 +173,13 @@ function evaluateUnlock(
     case "tough-lessons":
       return progress.totalLosses >= 50;
     case "close-one":
-      return ctx.matchWon === true && ctx.marginOfVictory === 1;
+      return (
+        (ctx.matchWon === true || ctx.managerWin === true) &&
+        ctx.marginOfVictory === 1
+      );
     case "mellor-miracle":
-      return ctx.joeMellorComplete === true;
+      // Winning Joe Mellor GOAT Mode season (not merely playing it).
+      return ctx.goatMellorWin === true;
     case "goat-status":
       // Play-mode unlock (mirrors Super Sam) — no longer requires a win.
       return ctx.joeMellorComplete === true || ctx.goatMellorWin === true;
@@ -177,10 +191,8 @@ function evaluateUnlock(
         ctx.superSamComplete === true || ctx.againstTheOddsComplete === true
       );
     case "developers-favourite":
-      return (
-        ctx.bradfordChallengeComplete === true ||
-        ctx.joeMellorComplete === true
-      );
+      // Bradford-heavy Joe Mellor run — not auto-unlocked by merely playing JM.
+      return ctx.bradfordChallengeComplete === true;
     case "daily-debut":
       return (
         ctx.dailyChallengeCompleted === true ||
@@ -206,18 +218,24 @@ export function getAchievementProgress(
 
   switch (id) {
     case "first-win":
-      return { current: Math.min(progress.totalWins, def.target), target: def.target };
+      return {
+        current: Math.min(progress.quickModeWins, def.target),
+        target: def.target,
+      };
     case "winning-habit":
     case "chaser-27-0":
       return {
         current: Math.min(ctx.seasonWins ?? progress.seasonWinsCurrent, def.target),
         target: def.target,
       };
-    case "unbeaten-again":
+    case "unbeaten-again": {
+      const prior = progress.unbeatenSeasons;
+      const current = ctx.isUnbeatenSeason === true ? 1 : 0;
       return {
-        current: Math.min(progress.unbeatenSeasons, def.target),
+        current: Math.min(prior + current, def.target),
         target: def.target,
       };
+    }
     case "cup-dynasty":
       return {
         current: Math.min(progress.challengeCupsWon, def.target),

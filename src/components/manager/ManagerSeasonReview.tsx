@@ -285,7 +285,12 @@ export function ManagerSeasonReview({
           />
           <ManagerInfoRow
             label="Club Status"
-            value={`${clubStars}-star · ${formatSquadRatingStars(clubStars)}`}
+            value={`${clubStars}-star · ${formatSquadRatingStars(
+              clubStars,
+              isUserInChampionship(evaluatedCareer)
+                ? "championship"
+                : "super-league"
+            )}`}
             tone="gold"
           />
           <ManagerInfoRow label="Board Verdict" value={summary.boardVerdict} tone="default" />

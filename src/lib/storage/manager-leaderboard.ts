@@ -364,7 +364,9 @@ async function getManagerTrackerLeaderboardAsync(
 
   return {
     source: remote !== null ? "remote" : "local",
-    rows: rankByTracker(entries, tracker, limit, currentUser),
+    rows: rankByTracker(entries, tracker, limit, currentUser, {
+      recordMetric: "best",
+    }),
   };
 }
 

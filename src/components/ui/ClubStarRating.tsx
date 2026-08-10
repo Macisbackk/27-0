@@ -1,6 +1,7 @@
 "use client";
 
-import type { ClubStarRating as StarCount } from "../../../data/club-reputation";
+import type { ClubReputationLeague } from "../../../data/club-reputation";
+import { getMaxStarsForLeague } from "../../../data/club-reputation";
 
 interface ClubStarRatingProps {
   stars: number;
@@ -8,23 +9,34 @@ interface ClubStarRatingProps {
   label?: string;
   className?: string;
   size?: "sm" | "md";
+  /**
+   * Super League = gold 5★ ladder.
+   * Championship = sky 3★ ladder (visually distinct, lower absolute prestige).
+   */
+  league?: ClubReputationLeague;
 }
 
 function StarIcon({
   filled,
   size,
+  league,
 }: {
   filled: boolean;
   size: "sm" | "md";
+  league: ClubReputationLeague;
 }) {
   const px = size === "sm" ? 12 : 14;
+  const filledClass =
+    league === "championship" ? "text-sky-300" : "text-accent-gold";
+  const emptyClass =
+    league === "championship" ? "text-sky-900" : "text-pitch-600";
   return (
     <svg
       width={px}
       height={px}
       viewBox="0 0 24 24"
       aria-hidden
-      className={filled ? "text-accent-gold" : "text-pitch-600"}
+      className={filled ? filledClass : emptyClass}
     >
       <path
         fill="currentColor"
@@ -44,10 +56,15 @@ export function ClubStarRatingDisplay({
   label,
   className = "",
   size = "sm",
+  league = "super-league",
 }: ClubStarRatingProps) {
-  const clamped = Math.max(1, Math.min(5, Math.round(stars))) as StarCount;
+  const maxStars = getMaxStarsForLeague(league);
+  const clamped = Math.max(0, Math.min(maxStars, Math.round(stars)));
+  const leagueLabel =
+    league === "championship" ? "Championship" : "Super League";
   const aria =
-    label ?? `Club rating: ${clamped} out of 5 stars`;
+    label ??
+    `${leagueLabel} club rating: ${clamped} out of ${maxStars} stars`;
 
   return (
     <span
@@ -56,8 +73,13 @@ export function ClubStarRatingDisplay({
       aria-label={aria}
       title={aria}
     >
-      {Array.from({ length: 5 }, (_, i) => (
-        <StarIcon key={i} filled={i < clamped} size={size} />
+      {Array.from({ length: maxStars }, (_, i) => (
+        <StarIcon
+          key={i}
+          filled={i < clamped}
+          size={size}
+          league={league}
+        />
       ))}
     </span>
   );

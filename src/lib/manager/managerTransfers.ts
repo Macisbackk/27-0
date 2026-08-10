@@ -12,11 +12,12 @@ import {
   generateInitialContract,
   inferSquadRole,
 } from "./managerContracts";
-import { canAffordAdditionalWage, evaluateClubSigningAppeal, getManagerPlayerListingRating } from "./managerFinance";
+import { canAffordAdditionalWage, evaluateClubSigningAppeal, getManagerPlayerListingRating, isPlayerReachableOnTransferMarket } from "./managerFinance";
 import { getCareerClubStars } from "./managerDifficulty";
 import { getManagerClubTeamRating } from "./managerRating";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import { dispatchAchievementCheck } from "../achievements/achievementNotify";
+import { getManagerModePlayerRating } from "./managerSquadRatings";
 
 const INJURY_POOL: { type: InjuryType; min: number; max: number; serious: boolean }[] = [
   { type: "knock", min: 1, max: 1, serious: false },
@@ -87,12 +88,18 @@ export function generateTransferMarket(
 ): string[] {
   const rng = seedrandom(`${seed}-transfers-r${round}`);
   const userSquadIds = new Set(career.squad.map((p) => p.playerId));
+  const careerStars = getCareerClubStars(career);
   const allCurrent = getPlayersByCategory("current").filter(
     (p) =>
       p.category === "current" &&
       p.availableInGame !== false &&
       !isHiddenPlayer(p) &&
-      !userSquadIds.has(p.id)
+      !userSquadIds.has(p.id) &&
+      isPlayerReachableOnTransferMarket(
+        career.club,
+        getManagerModePlayerRating(p.id, p.name, p.peakRating),
+        careerStars
+      )
   );
 
   const otherClubIds = new Set<string>();

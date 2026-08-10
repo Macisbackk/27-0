@@ -1142,6 +1142,7 @@ export function GameBoard({
           joeMellorMode,
           superSamHallasMode,
           normalEraMode,
+          dailyChallengeMode,
           madePlayoffs: tablePosition <= 6,
         }
       );
@@ -1227,6 +1228,7 @@ export function GameBoard({
           joeMellorMode,
           superSamHallasMode,
           normalEraMode,
+          dailyChallengeMode,
           madePlayoffs: true,
           playoffWins: playoff.wins,
           playoffLosses: playoff.losses,

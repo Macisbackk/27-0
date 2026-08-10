@@ -175,7 +175,7 @@ export function getManagerCareerMilestones(career: ManagerCareer): ManagerMilest
     },
     {
       id: "perfect-season",
-      label: "Perfect 27-0 season",
+      label: "Perfect league season",
       earned: perfect,
     },
     {

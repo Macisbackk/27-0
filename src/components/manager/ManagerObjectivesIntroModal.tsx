@@ -16,6 +16,7 @@ import {
   managerPillClass,
 } from "@/lib/manager/managerSurfaces";
 import type { ManagerCareer } from "@/lib/manager/types";
+import { isUserInChampionship } from "@/lib/manager/leagueMembership";
 import { playUiClick } from "@/lib/sound";
 
 interface ManagerObjectivesIntroModalProps {
@@ -91,7 +92,10 @@ export function ManagerObjectivesIntroModal({
         <div className="grid grid-cols-2 gap-3">
           <ManagerStat
             label="Club status"
-            value={formatSquadRatingStars(intro.stars)}
+            value={formatSquadRatingStars(
+              intro.stars,
+              isUserInChampionship(career) ? "championship" : "super-league"
+            )}
             tone="gold"
           />
           <ManagerStat

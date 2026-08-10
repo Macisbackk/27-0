@@ -676,9 +676,11 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
 
   const boardExpectation = isChampCareer
     ? CHAMPIONSHIP_EXPECTATION_LABELS[
-        expectationTierFromStars(config.difficulty)
+        expectationTierFromStars(config.difficulty, "championship")
       ]
-    : MANAGER_EXPECTATION_LABELS[expectationTierFromStars(config.difficulty)];
+    : MANAGER_EXPECTATION_LABELS[
+        expectationTierFromStars(config.difficulty, "super-league")
+      ];
 
   const leagueClubs = isChampCareer
     ? defaultChampionshipClubs()

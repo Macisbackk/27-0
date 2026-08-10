@@ -4,6 +4,7 @@ import type {
   ManagerSeasonSummary,
 } from "./types";
 import {
+  CHAMPIONSHIP_EXPECTATION_LABELS,
   didMeetManagerBoardExpectation,
   expectationTierFromStars,
   getManagerClubConfig,
@@ -90,7 +91,11 @@ export function evaluateFacilityInvestmentMomentum(
 export function getCareerExpectationTier(
   career: ManagerCareer
 ): ManagerClubExpectationTier {
-  return expectationTierFromStars(getCareerClubStars(career));
+  const league =
+    career.userCompetitionId === "championship"
+      ? "championship"
+      : "super-league";
+  return expectationTierFromStars(getCareerClubStars(career), league);
 }
 
 export interface ManagerDifficultySimAdjustments {
@@ -157,11 +162,14 @@ export function applySeasonClubPrestigeDrift(
       seasonStartFacilities,
       getClubFacilities(career)
     );
+  const inChampionship = isUserInChampionship(career);
+  const maxStars = inChampionship ? 3 : 5;
+  const league = inChampionship ? "championship" : "super-league";
   let momentum = (career.prestigeMomentum ?? 0) + delta;
   let stars = getCareerClubStars(career);
   let starDelta = 0;
 
-  while (momentum >= PRESTIGE_SHIFT_THRESHOLD && stars < 5) {
+  while (momentum >= PRESTIGE_SHIFT_THRESHOLD && stars < maxStars) {
     stars += 1;
     starDelta += 1;
     momentum -= PRESTIGE_SHIFT_THRESHOLD;
@@ -174,12 +182,15 @@ export function applySeasonClubPrestigeDrift(
 
   momentum = Math.max(-1, Math.min(1, momentum));
 
-  const tier = expectationTierFromStars(stars);
+  const tier = expectationTierFromStars(stars, league);
+  const boardExpectation = inChampionship
+    ? CHAMPIONSHIP_EXPECTATION_LABELS[tier]
+    : MANAGER_EXPECTATION_LABELS[tier];
   let next: ManagerCareer = {
     ...career,
     difficulty: stars,
     prestigeMomentum: momentum,
-    boardExpectation: MANAGER_EXPECTATION_LABELS[tier],
+    boardExpectation,
     ...(starDelta > 0
       ? { pendingClubStarRiseFrom: getCareerClubStars(career) }
       : {}),

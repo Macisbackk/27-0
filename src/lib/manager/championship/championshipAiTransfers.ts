@@ -12,12 +12,14 @@ import {
 } from "./championshipSquads";
 import { DEFAULT_TRANSFER_ACTIVITY_CONFIG } from "../transferActivityConfig";
 
-/** Normal interest floor on the Championship 70–89 scale. */
-const MIN_INTEREST_RATING = 81;
+import { GENERATED_CHAMPIONSHIP_MAX_RATING } from "../../players/rating-floors";
+
+/** Normal interest floor on the generated Championship scale (≤78). */
+const MIN_INTEREST_RATING = GENERATED_CHAMPIONSHIP_MAX_RATING - 4; // 74
 /** Strong interest / preferred targets. */
-const STRONG_INTEREST_RATING = 84;
-/** Elite targets (usually 85–89). */
-const MIN_ELITE_RATING = 85;
+const STRONG_INTEREST_RATING = GENERATED_CHAMPIONSHIP_MAX_RATING - 2; // 76
+/** Elite targets near the generated Championship ceiling. */
+const MIN_ELITE_RATING = GENERATED_CHAMPIONSHIP_MAX_RATING; // 78
 
 const HEADLINE_PATTERNS = [
   (sl: string, ch: string, player: string) =>
@@ -54,9 +56,11 @@ function eliteChampionshipPlayers(
     if ((career.championshipTransferCooldowns?.[p.id] ?? 0) > career.gameWeek) {
       return false;
     }
-    // Exceptional younger prospects can attract interest slightly below 81.
+    // Exceptional younger prospects can attract interest slightly below the floor.
     const youngProspect =
-      p.age <= 22 && p.peakRating >= 79 && p.peakRating < MIN_INTEREST_RATING;
+      p.age <= 22 &&
+      p.peakRating >= MIN_INTEREST_RATING - 2 &&
+      p.peakRating < MIN_INTEREST_RATING;
     return p.peakRating >= MIN_INTEREST_RATING || youngProspect;
   });
 }

@@ -8,12 +8,15 @@ import {
   getDefaultTrackerForManagerDbMode,
   getTrackersForDbMode,
   getTrackersForManagerDbMode,
+  getTrophyCabinetLogicalId,
   isTrackerValidForDbMode,
   isTrackerValidForManagerDbMode,
-  TROPHY_CABINET_SECTIONS,
+  resolveTrophyCabinetTracker,
+  TROPHY_CABINET_CATEGORIES,
   type LeaderboardTrackerRow,
   type LeaderboardTrackerType,
   type ManagerLeaderboardDbMode,
+  type TrophyCabinetSection,
 } from "@/lib/leaderboard-trackers";
 import {
   getTrackerLeaderboardAsync,
@@ -39,7 +42,6 @@ import { GamePanel } from "@/components/ui/GamePanel";
 import { GameEmptyState } from "@/components/ui/GameEmptyState";
 import { GameButton } from "@/components/ui/GameButton";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
-import { TYPO } from "@/lib/ui/typography";
 import { useAuth } from "@/lib/auth-context";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
@@ -88,8 +90,8 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   best_record: "Total Record",
   league_titles: "League Titles",
   super_league_champions: "SL Champions",
-  era_league_title: "Era League Titles",
-  era_league_champions: "Era Champions",
+  era_league_title: "League Titles",
+  era_league_champions: "SL Champions",
   daily_streak: "Best Streak",
   manager_challenge_cups: "Cups Won",
   manager_cup_finals: "Finals Reached",
@@ -179,8 +181,20 @@ export function LeaderboardTable() {
 
   const isSuperLeagueMode =
     !isManagerPlayStyle && leaderboardMode === "super-league";
-  const showCupVariantToggle = isSuperLeagueMode;
+  const showCupVariantToggle = isSuperLeagueMode || isTrophyCabinetMode;
   const superLeagueModeVariant = normalEraMode ? "era" : "current";
+  const trophySection: TrophyCabinetSection = normalEraMode ? "era" : "current";
+
+  const trophyLogicalId =
+    getTrophyCabinetLogicalId(activeTracker) ?? "league_titles";
+
+  const resolvedTrophyTracker = isTrophyCabinetMode
+    ? resolveTrophyCabinetTracker(trophyLogicalId, trophySection)
+    : activeTracker;
+
+  const effectiveTracker = isTrophyCabinetMode
+    ? resolvedTrophyTracker
+    : activeTracker;
 
   const loadEntries = useCallback(async () => {
     const currentRequest = ++requestId.current;
@@ -203,7 +217,7 @@ export function LeaderboardTable() {
         const result = isDailyMode
           ? await getDailyLeaderboardAsync()
           : await getTrackerLeaderboardAsync(
-              activeTracker,
+              effectiveTracker,
               period,
               difficulty,
               50,
@@ -239,6 +253,7 @@ export function LeaderboardTable() {
     leaderboardMode,
     managerMode,
     activeTracker,
+    effectiveTracker,
     isDailyMode,
     isTrophyCabinetMode,
     isSuperLeagueMode,
@@ -254,10 +269,25 @@ export function LeaderboardTable() {
       }
       return;
     }
+    if (isTrophyCabinetMode) {
+      const logical = getTrophyCabinetLogicalId(tracker) ?? "league_titles";
+      const resolved = resolveTrophyCabinetTracker(logical, trophySection);
+      if (tracker !== resolved) {
+        setTracker(resolved);
+      }
+      return;
+    }
     if (!isTrackerValidForDbMode(tracker, leaderboardMode)) {
       setTracker(getDefaultTrackerForDbMode(leaderboardMode));
     }
-  }, [leaderboardMode, managerMode, tracker, isManagerPlayStyle]);
+  }, [
+    leaderboardMode,
+    managerMode,
+    tracker,
+    isManagerPlayStyle,
+    isTrophyCabinetMode,
+    trophySection,
+  ]);
 
   useEffect(() => {
     void loadEntries();
@@ -276,9 +306,16 @@ export function LeaderboardTable() {
 
   const modeLabel = isManagerPlayStyle ? managerModeLabel : quickModeLabel;
 
-  const trackerLabel =
-    availableTrackers.find((t) => t.id === activeTracker)?.label ??
-    "Leaderboard";
+  const trackerLabel = isTrophyCabinetMode
+    ? (TROPHY_CABINET_CATEGORIES.find((c) => c.logicalId === trophyLogicalId)
+        ?.label ?? "Leaderboard")
+    : (availableTrackers.find((t) => t.id === activeTracker)?.label ??
+      "Leaderboard");
+
+  const statColumnLabel =
+    isManagerPlayStyle && effectiveTracker === "best_record"
+      ? "Best Record"
+      : (STAT_COLUMN[effectiveTracker] ?? "Stat");
 
   const quickModeOptions = [
     { id: "super-league" as const, label: "Quick Mode" },
@@ -351,7 +388,7 @@ export function LeaderboardTable() {
       {showCupVariantToggle && (
         <div className="mb-5">
           <ChallengeCupVariantToggle
-            sectionLabel="Mode Variant"
+            sectionLabel={isTrophyCabinetMode ? "Trophy Mode" : "Mode Variant"}
             useShortLabels
             eraMode={normalEraMode}
             onEraModeChange={(era) => {
@@ -364,34 +401,25 @@ export function LeaderboardTable() {
 
       <div className="mb-5">
         {isTrophyCabinetMode ? (
-          <div className="space-y-4">
-            {TROPHY_CABINET_SECTIONS.map((section) => {
-              const sectionTrackers = availableTrackers.filter((t) =>
-                section.trackerIds.includes(t.id)
-              );
-              if (sectionTrackers.length === 0) return null;
-
-              return (
-                <div key={section.id}>
-                  <p className={`mb-2 ${TYPO.sectionLabel} text-pitch-500`}>
-                    {section.label}
-                  </p>
-                  <LeaderboardTabBar
-                    tier="category"
-                    tabs={sectionTrackers.map((t) => ({
-                      id: t.id,
-                      label: t.shortLabel,
-                      accent: TRACKER_ACCENTS[t.id],
-                    }))}
-                    active={activeTracker}
-                    onChange={(id) => setTracker(id)}
-                    scrollable={sectionTrackers.length > 4}
-                    ariaLabel={section.label}
-                  />
-                </div>
-              );
-            })}
-          </div>
+          <LeaderboardTabBar
+            tier="category"
+            tabs={TROPHY_CABINET_CATEGORIES.map((category) => ({
+              id: category.logicalId,
+              label: category.shortLabel,
+              accent:
+                TRACKER_ACCENTS[
+                  trophySection === "era"
+                    ? category.eraTracker
+                    : category.currentTracker
+                ],
+            }))}
+            active={trophyLogicalId}
+            onChange={(id) => {
+              const logical = id as "league_titles" | "champions";
+              setTracker(resolveTrophyCabinetTracker(logical, trophySection));
+            }}
+            ariaLabel="Trophy cabinet category"
+          />
         ) : (
           availableTrackers.length > 1 && (
             <LeaderboardTabBar
@@ -500,7 +528,7 @@ export function LeaderboardTable() {
                   <span className="truncate font-medium">{entry.username}</span>
                 </div>
                 <div className="shrink-0 text-right font-semibold text-accent-gold">
-                  {renderLeaderboardStat(entry, activeTracker)}
+                  {renderLeaderboardStat(entry, effectiveTracker)}
                 </div>
               </li>
             ))}
@@ -512,7 +540,7 @@ export function LeaderboardTable() {
                 <th className="px-4 py-3">#</th>
                 <th className="px-4 py-3">Coach</th>
                 <th className="px-4 py-3">
-                  {STAT_COLUMN[activeTracker] ?? "Stat"}
+                  {statColumnLabel}
                 </th>
                 {showUpdatedColumn && (
                   <th className="hidden px-4 py-3 sm:table-cell">Updated</th>
@@ -540,7 +568,7 @@ export function LeaderboardTable() {
                     <span className="font-medium">{entry.username}</span>
                   </td>
                   <td className="px-4 py-3 font-semibold text-accent-gold">
-                    {renderLeaderboardStat(entry, activeTracker)}
+                    {renderLeaderboardStat(entry, effectiveTracker)}
                   </td>
                   {showUpdatedColumn && (
                     <td className="hidden px-4 py-3 text-sm text-gray-500 sm:table-cell">

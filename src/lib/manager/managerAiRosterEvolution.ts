@@ -1,5 +1,5 @@
 import seedrandom from "seedrandom";
-import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
+import { getUserLeagueClubs } from "./leagueMembership";
 import { getPlayerById } from "../players";
 import { syncPlayerValueFromRating } from "../players/ratings";
 import type { LeagueTransferActivity, ManagerCareer } from "./types";
@@ -231,7 +231,7 @@ export function simulateAiSeasonRosterActivity(
   // Sign more than we prune so averages do not drift down over seasons.
   const signsPerClub = Math.min(3, 1 + Math.floor((seasonIndex + 1) / 2));
 
-  for (const club of CURRENT_PLAYABLE_CLUBS) {
+  for (const club of getUserLeagueClubs(next)) {
     if (club === next.club) continue;
     next = matureAiYouthInClub(next, club);
     next = releaseSurplusAiPlayers(next, club);

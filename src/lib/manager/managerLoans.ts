@@ -1,8 +1,5 @@
 import { getPlayerById } from "../players";
-import {
-  isCurrentPlayableClub,
-  isSameManagerClub,
-} from "../clubs/super-league-display";
+import { isSameManagerClub } from "../clubs/super-league-display";
 import type {
   ActiveLoan,
   LeagueTransferActivity,
@@ -32,6 +29,11 @@ import {
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
 import { pruneTransferWatchlist } from "./managerWatchlist";
+import {
+  getCareerChampionshipClubs,
+  isUserInChampionship,
+  resolveClubCompetitionForCareer,
+} from "./leagueMembership";
 
 export interface LoanDealOpts {
   loanFee: number;
@@ -40,6 +42,39 @@ export interface LoanDealOpts {
   yearsRequested?: number;
   squadRole?: SquadRole;
   canRecall?: boolean;
+}
+
+/**
+ * Loans are one-way development deals:
+ * Super League parent → Championship loanee only.
+ */
+export function isValidLoanDirection(
+  career: ManagerCareer,
+  parentClub: string,
+  loaneeClub: string
+): boolean {
+  if (isSameManagerClub(parentClub, loaneeClub)) return false;
+  return (
+    resolveClubCompetitionForCareer(parentClub, career) === "super-league" &&
+    resolveClubCompetitionForCareer(loaneeClub, career) === "championship"
+  );
+}
+
+/** Super League managers can loan players out / list them for loan. */
+export function canUserLoanOutPlayers(career: ManagerCareer): boolean {
+  return !isUserInChampionship(career);
+}
+
+/** Championship managers can take Super League players on loan. */
+export function canUserLoanInPlayers(career: ManagerCareer): boolean {
+  return isUserInChampionship(career);
+}
+
+/** Championship clubs available as loan destinations (excludes the user club). */
+export function getLoanOutDestinationClubs(career: ManagerCareer): string[] {
+  return getCareerChampionshipClubs(career).filter(
+    (club) => !isSameManagerClub(club, career.club)
+  );
 }
 
 function clampWageShare(share: number): number {
@@ -156,6 +191,8 @@ export function completeIncomingLoan(
   fromClub: string,
   opts: LoanDealOpts
 ): ManagerCareer {
+  if (!canUserLoanInPlayers(career)) return career;
+  if (!isValidLoanDirection(career, fromClub, career.club)) return career;
   if (getActiveLoan(career, playerId)) return career;
   if (career.squad.some((p) => p.playerId === playerId)) return career;
 
@@ -257,12 +294,11 @@ export function completeOutgoingLoan(
   toClub: string,
   opts: LoanDealOpts
 ): ManagerCareer {
+  if (!canUserLoanOutPlayers(career)) return career;
+  if (!isValidLoanDirection(career, career.club, toClub)) return career;
   if (getActiveLoan(career, playerId)) return career;
   if (!career.squad.some((p) => p.playerId === playerId)) return career;
   if (isSameManagerClub(toClub, career.club)) return career;
-  if (!isCurrentPlayableClub(toClub)) {
-    return career;
-  }
 
   const originalContract = career.contracts[playerId];
   if (!originalContract) return career;

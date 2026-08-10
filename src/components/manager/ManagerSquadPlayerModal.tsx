@@ -20,10 +20,11 @@ import {
 } from "@/lib/manager/managerTransferLeague";
 import {
   completeOutgoingLoan,
+  canUserLoanOutPlayers,
+  getLoanOutDestinationClubs,
   isPlayerLoanedIn,
   suggestedLoanFee,
 } from "@/lib/manager/managerLoans";
-import { rivalTransferClubs } from "@/lib/clubs/super-league-display";
 import { findPlayerMatchdaySlot } from "@/lib/manager/managerMatchdaySquad";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
@@ -50,7 +51,9 @@ export function ManagerSquadPlayerModal({
   );
   const [showListForm, setShowListForm] = useState(false);
   const [showLoanForm, setShowLoanForm] = useState(false);
-  const [loanClub, setLoanClub] = useState(() => rivalTransferClubs(career.club)[0] ?? "");
+  const [loanClub, setLoanClub] = useState(
+    () => getLoanOutDestinationClubs(career)[0] ?? ""
+  );
   const [releaseConfirmOpen, setReleaseConfirmOpen] = useState(false);
   const [errorDialog, setErrorDialog] = useState<string | null>(null);
 
@@ -67,6 +70,10 @@ export function ManagerSquadPlayerModal({
   const slot = findPlayerMatchdaySlot(career, playerId);
   const releaseCost = computeReleaseCost(career, playerId);
   const loanedIn = isPlayerLoanedIn(career, playerId);
+  const canLoanOut = canUserLoanOutPlayers(career);
+  const loanDestinations = canLoanOut
+    ? getLoanOutDestinationClubs(career)
+    : [];
   const loanFee = suggestedLoanFee(career, playerId, career.club);
 
   if (!player) return null;
@@ -190,7 +197,7 @@ export function ManagerSquadPlayerModal({
             </GameButton>
           )}
 
-          {!transferStatus?.listed && !loanedIn && !showLoanForm && (
+          {!transferStatus?.listed && !loanedIn && !showLoanForm && canLoanOut && (
             <GameButton
               variant="secondary"
               onClick={() => {
@@ -204,7 +211,7 @@ export function ManagerSquadPlayerModal({
             </GameButton>
           )}
 
-          {!loanedIn && !showLoanForm && (
+          {!loanedIn && !showLoanForm && canLoanOut && loanDestinations.length > 0 && (
             <GameButton
               variant="secondary"
               onClick={() => {
@@ -252,16 +259,16 @@ export function ManagerSquadPlayerModal({
             </div>
           )}
 
-          {showLoanForm && (
+          {showLoanForm && canLoanOut && (
             <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
               <label className={TYPO.bodySm}>
-                <span className="text-pitch-400">Loan to</span>
+                <span className="text-pitch-400">Loan to Championship club</span>
                 <select
                   value={loanClub}
                   onChange={(e) => setLoanClub(e.target.value)}
                   className={`${FILTER.input} mt-1`}
                 >
-                  {rivalTransferClubs(career.club).map((club) => (
+                  {loanDestinations.map((club) => (
                     <option key={club} value={club}>
                       {club}
                     </option>
@@ -276,6 +283,7 @@ export function ManagerSquadPlayerModal({
                 size="sm"
                 className="mt-2"
                 onClick={handleLoanOut}
+                disabled={!loanClub}
               >
                 Confirm Loan
               </GameButton>

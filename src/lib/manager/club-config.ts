@@ -15,9 +15,17 @@ import {
   getManagerClubTeamRating,
 } from "./managerRating";
 import {
+  CHAMPIONSHIP_CLUB_REPUTATION_BY_NAME,
   CLUB_REPUTATION_BY_NAME,
   CLUB_REPUTATION_SCHEMA_VERSION,
+  championshipStarsFromBaseStrength,
+  getAbsoluteClubPrestige,
+  getChampionshipClubReputationStars,
+  getClubReputationLeague,
   getClubReputationStars,
+  getMaxStarsForLeague,
+  type ChampionshipStarRating,
+  type ClubReputationLeague,
   type ClubStarRating,
 } from "../../../data/club-reputation";
 import type { ManagerCompetitionId } from "./types";
@@ -26,7 +34,14 @@ import {
   getLeagueEconomyScale,
 } from "./managerLeagues";
 
-export { CLUB_REPUTATION_SCHEMA_VERSION, type ClubStarRating };
+export {
+  CLUB_REPUTATION_SCHEMA_VERSION,
+  getAbsoluteClubPrestige,
+  getMaxStarsForLeague,
+  type ChampionshipStarRating,
+  type ClubReputationLeague,
+  type ClubStarRating,
+};
 
 export interface ManagerClubConfig {
   name: string;
@@ -84,6 +99,16 @@ export const STAR_EXPECTATION_TIER_BY_STARS: Record<
   1: "survive",
 };
 
+/** Championship star ladder (max 3) — not the same meaning as Super League stars. */
+export const CHAMPIONSHIP_STAR_EXPECTATION_TIER_BY_STARS: Record<
+  1 | 2 | 3,
+  ManagerClubExpectationTier
+> = {
+  3: "title",
+  2: "top",
+  1: "mid-table",
+};
+
 /** Short tier summary for club-select group headers (matches star-based board targets). */
 export {
   MANAGER_STAR_TIER_BIOS,
@@ -137,16 +162,17 @@ export function getManagerClubExpectation(
   return MANAGER_EXPECTATION_LABELS[tier];
 }
 
-/** Board expectation tier from the club's current 1–5 star status. */
-export function expectationTierFromStars(stars: number): ManagerClubExpectationTier {
+/** Board expectation tier from the club's current star status (league-local). */
+export function expectationTierFromStars(
+  stars: number,
+  league: ClubReputationLeague = "super-league"
+): ManagerClubExpectationTier {
+  if (league === "championship") {
+    const champ = Math.max(1, Math.min(3, Math.round(stars))) as 1 | 2 | 3;
+    return CHAMPIONSHIP_STAR_EXPECTATION_TIER_BY_STARS[champ];
+  }
   const clamped = Math.max(1, Math.min(5, Math.round(stars))) as 1 | 2 | 3 | 4 | 5;
   return STAR_EXPECTATION_TIER_BY_STARS[clamped];
-}
-
-export function championshipStarsFromBaseStrength(baseStrength: number): ClubStarRating {
-  if (baseStrength >= 70) return 3;
-  if (baseStrength >= 65) return 2;
-  return 1;
 }
 
 /** Map Champ baseStrength (~55–75) onto a display OVR band clearly below SL (80+). */
@@ -199,8 +225,10 @@ function getChampionshipManagerClubConfig(
     champ.secondaryColor,
     champ.accentColor
   );
-  const stars = championshipStarsFromBaseStrength(champ.baseStrength);
-  const expectationTier = expectationTierFromStars(stars);
+  const stars =
+    getChampionshipClubReputationStars(clubName) ??
+    championshipStarsFromBaseStrength(champ.baseStrength);
+  const expectationTier = expectationTierFromStars(stars, "championship");
   const midBudget =
     CHAMP_TRANSFER_BUDGET_MID_BY_STARS[stars] ??
     CHAMP_TRANSFER_BUDGET_MID_BY_STARS[1]!;
@@ -254,12 +282,15 @@ export function getAllManagerClubConfigs(): ManagerClubConfig[] {
 }
 
 /**
- * Canonical club prestige stars (1–5).
+ * League-local club prestige stars.
+ * Super League: 1–5. Championship: 1–3 (lower absolute prestige than SL).
  * Reads fixed reputation data — never in-season squad OVR.
  */
 export function getManagerClubStarRating(clubName: string): ClubStarRating {
-  const fromCanon = getClubReputationStars(clubName);
-  if (fromCanon != null) return fromCanon;
+  const fromSl = getClubReputationStars(clubName);
+  if (fromSl != null) return fromSl;
+  const fromChamp = getChampionshipClubReputationStars(clubName);
+  if (fromChamp != null) return fromChamp;
   const champ = getChampionshipClubByName(clubName);
   if (champ) return championshipStarsFromBaseStrength(champ.baseStrength);
   // Unknown clubs: mid-tier default (should not happen for playable clubs).
@@ -269,12 +300,29 @@ export function getManagerClubStarRating(clubName: string): ClubStarRating {
   return 3;
 }
 
+export function getManagerClubReputationLeague(
+  clubName: string
+): ClubReputationLeague {
+  const fromCanon = getClubReputationLeague(clubName);
+  if (fromCanon) return fromCanon;
+  if (getChampionshipClubByName(clubName)) return "championship";
+  return "super-league";
+}
+
+/** Absolute prestige (1–10) — Championship 3★ sits below Super League 3★. */
+export function getManagerClubAbsolutePrestige(clubName: string): number {
+  const league = getManagerClubReputationLeague(clubName);
+  return getAbsoluteClubPrestige(league, getManagerClubStarRating(clubName));
+}
+
 /** @deprecated Prefer getManagerClubStarRating — kept for callers that used OVR mapping. */
 export function getManagerClubStarRatingLegacyDerived(
   clubName: string
 ): number {
   const fromCanon = CLUB_REPUTATION_BY_NAME[clubName];
   if (fromCanon != null) return fromCanon;
+  const fromChamp = CHAMPIONSHIP_CLUB_REPUTATION_BY_NAME[clubName];
+  if (fromChamp != null) return fromChamp;
   const allRatings = getLeagueSquadRatings();
   return squadRatingToStars(getManagerClubRating(clubName), allRatings);
 }
@@ -291,9 +339,13 @@ export function squadRatingToStars(
   return Math.max(1, Math.min(5, Math.round(((rating - min) / (max - min)) * 4) + 1));
 }
 
-export function formatSquadRatingStars(stars: number): string {
-  const filled = Math.max(0, Math.min(5, stars));
-  return "★".repeat(filled) + "☆".repeat(5 - filled);
+export function formatSquadRatingStars(
+  stars: number,
+  league: ClubReputationLeague = "super-league"
+): string {
+  const max = getMaxStarsForLeague(league);
+  const filled = Math.max(0, Math.min(max, Math.round(stars)));
+  return "★".repeat(filled) + "☆".repeat(max - filled);
 }
 
 export function buildDefaultLineup(playerIds: readonly string[]): {

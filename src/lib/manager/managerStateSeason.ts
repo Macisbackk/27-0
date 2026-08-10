@@ -291,9 +291,11 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   const boardExpectation =
     afterPromRel.userCompetitionId === "championship"
       ? CHAMPIONSHIP_EXPECTATION_LABELS[
-          expectationTierFromStars(config.difficulty)
+          expectationTierFromStars(config.difficulty, "championship")
         ]
-      : MANAGER_EXPECTATION_LABELS[expectationTierFromStars(config.difficulty)];
+      : MANAGER_EXPECTATION_LABELS[
+          expectationTierFromStars(config.difficulty, "super-league")
+        ];
 
   const prevFinance = afterReserveContracts.managerFinance;
   const transferBudget = computeSeasonTransferBudget(

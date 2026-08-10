@@ -75,6 +75,8 @@ export type AchievementCheckContext = {
 
 export type AchievementProgressSnapshot = {
   totalWins: number;
+  /** Quick Mode wins only (excludes Manager) — used by First Win. */
+  quickModeWins: number;
   totalLosses: number;
   totalSeasons: number;
   managerSeasonsCompleted: number;
@@ -149,14 +151,21 @@ function sumPerfectSeasons(): number {
 
 function sumUnbeatenSeasons(): number {
   const all = getAllStats();
-  const normal = all.normal;
-  const hard = all.hard;
-  const era = all.eraNormal;
-  const unbeaten =
-    (normal.longestUnbeatenRun >= 27 ? normal.totalPerfectSeasons : 0) +
-    (hard.longestUnbeatenRun >= 27 ? hard.totalPerfectSeasons : 0) +
-    (era.longestUnbeatenRun >= 27 ? era.totalPerfectSeasons : 0);
-  return unbeaten;
+  const buckets = [
+    all.normal,
+    all.hard,
+    all.draftNormal,
+    all.draftHard,
+    all.eraNormal,
+  ];
+  return buckets.reduce(
+    (sum, s) =>
+      sum +
+      (typeof s.totalUnbeatenSeasons === "number"
+        ? s.totalUnbeatenSeasons
+        : 0),
+    0
+  );
 }
 
 /** Build progress from persisted stats plus any session overrides. */
@@ -168,9 +177,11 @@ export function buildAchievementProgress(
   const purchasedThemes = themeStore.unlockedThemeIds.filter(
     (id) => id !== "default"
   );
+  const quickModeWins = sumStatWins();
 
   return {
-    totalWins: sumStatWins() + (manager.wins ?? 0),
+    totalWins: quickModeWins + (manager.wins ?? 0),
+    quickModeWins,
     totalLosses: sumStatLosses() + (manager.losses ?? 0),
     totalSeasons: sumSeasons() + (manager.seasonsCompleted ?? 0),
     managerSeasonsCompleted: manager.seasonsCompleted ?? 0,

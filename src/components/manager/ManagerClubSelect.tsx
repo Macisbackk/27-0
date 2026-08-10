@@ -97,6 +97,9 @@ function ClubSelectRow({
   const attendance = getClubAttendanceProfile(club.name);
   const ratingStars = club.difficulty;
   const colors = getClubColors(club.name);
+  const league =
+    club.competition === "championship" ? "championship" : "super-league";
+  const maxStars = league === "championship" ? 3 : 5;
 
   return (
     <li>
@@ -135,7 +138,8 @@ function ClubSelectRow({
           <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
             <ClubStarRatingDisplay
               stars={ratingStars}
-              label={`Club rating: ${ratingStars} out of 5 stars`}
+              league={league}
+              label={`${league === "championship" ? "Championship" : "Super League"} club rating: ${ratingStars} out of ${maxStars} stars`}
               size="sm"
             />
             <span className={TYPO.meta}>OVR {club.squadRating}</span>
@@ -158,11 +162,13 @@ function StarGroupedList({
   bios,
   onSelect,
   busy,
+  league,
 }: {
   clubs: ManagerClubConfig[];
   bios: Record<number, string>;
   onSelect: (club: string) => void;
   busy: boolean;
+  league: "super-league" | "championship";
 }) {
   const starGroups = useMemo(() => {
     const byStars = new Map<number, ManagerClubConfig[]>();
@@ -180,6 +186,8 @@ function StarGroupedList({
       }));
   }, [clubs]);
 
+  const isChampionship = league === "championship";
+
   return (
     <div className={SPACING.stackMd}>
       {starGroups.map(({ stars, clubs: groupClubs }) => (
@@ -187,8 +195,14 @@ function StarGroupedList({
           key={stars}
           className={`${CARD.inset} ${SPACING.cardPaddingSm}`}
         >
-          <h3 className={`${TYPO.sectionLabel} text-accent-gold`}>
-            {stars}-star clubs
+          <h3
+            className={`${TYPO.sectionLabel} ${
+              isChampionship ? "text-sky-300" : "text-accent-gold"
+            }`}
+          >
+            {isChampionship
+              ? `Championship ${stars}★ clubs`
+              : `${stars}-star clubs`}
           </h3>
           <p className={`mt-1 mb-3 ${TYPO.bodySm}`}>
             {bios[stars] ?? "Board expectations scale with club status."}
@@ -291,6 +305,7 @@ export function ManagerClubSelect({
         bios={selectedLeague.starTierBios}
         onSelect={onSelect}
         busy={busy}
+        league={selectedLeague.id === "championship" ? "championship" : "super-league"}
       />
 
       <GameButton

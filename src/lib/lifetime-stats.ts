@@ -317,6 +317,9 @@ export function applySeasonLifetimeUpdate(
         : 0),
     totalPerfectSeasons:
       existing.totalPerfectSeasons + (isPerfect ? 1 : 0),
+    totalUnbeatenSeasons:
+      (existing.totalUnbeatenSeasons ?? 0) +
+      (regularLosses === 0 && regularWins > 0 ? 1 : 0),
     totalWinlessSeasons:
       existing.totalWinlessSeasons + (wins === 0 ? 1 : 0),
     lowestSquadValue,

@@ -23,8 +23,9 @@ export const MIN_GAMES_FOR_WIN_PERCENTAGE = 10;
 /**
  * Public leaderboard tracker payload schema.
  * 5 = total_winnings / manager earnings boards removed; seasons_completed added.
+ * 6 = league_titles column (score kept as fallback for manager-super-league).
  */
-export const LEADERBOARD_SCHEMA_VERSION = 5;
+export const LEADERBOARD_SCHEMA_VERSION = 6;
 
 export interface LeaderboardTrackerEntry {
   username: string;
@@ -99,7 +100,7 @@ export const TROPHY_CABINET_SECTIONS: {
 }[] = [
   {
     id: "current",
-    label: "Quick Mode",
+    label: "Current",
     trackerIds: [
       "league_titles",
       "super_league_champions",
@@ -107,13 +108,55 @@ export const TROPHY_CABINET_SECTIONS: {
   },
   {
     id: "era",
-    label: "Era Mode",
+    label: "Era",
     trackerIds: [
       "era_league_title",
       "era_league_champions",
     ],
   },
 ];
+
+/** Logical Trophy Cabinet categories — Current/Era toggle picks the tracker ids. */
+export const TROPHY_CABINET_CATEGORIES: {
+  logicalId: "league_titles" | "champions";
+  label: string;
+  shortLabel: string;
+  currentTracker: LeaderboardTrackerType;
+  eraTracker: LeaderboardTrackerType;
+}[] = [
+  {
+    logicalId: "league_titles",
+    label: "League Titles",
+    shortLabel: "League Titles",
+    currentTracker: "league_titles",
+    eraTracker: "era_league_title",
+  },
+  {
+    logicalId: "champions",
+    label: "Super League Champions",
+    shortLabel: "SL Champions",
+    currentTracker: "super_league_champions",
+    eraTracker: "era_league_champions",
+  },
+];
+
+export function resolveTrophyCabinetTracker(
+  logicalId: "league_titles" | "champions",
+  section: TrophyCabinetSection
+): LeaderboardTrackerType {
+  const category = TROPHY_CABINET_CATEGORIES.find((c) => c.logicalId === logicalId);
+  if (!category) return "league_titles";
+  return section === "era" ? category.eraTracker : category.currentTracker;
+}
+
+export function getTrophyCabinetLogicalId(
+  tracker: LeaderboardTrackerType
+): "league_titles" | "champions" | null {
+  const category = TROPHY_CABINET_CATEGORIES.find(
+    (c) => c.currentTracker === tracker || c.eraTracker === tracker
+  );
+  return category?.logicalId ?? null;
+}
 
 export const LEADERBOARD_TRACKERS: {
   id: LeaderboardTrackerType;
@@ -127,7 +170,8 @@ export const LEADERBOARD_TRACKERS: {
   managerChallengeCupOnly?: boolean;
   trophySection?: TrophyCabinetSection;
 }[] = [
-  { id: "best_record", label: "Best Season Record", shortLabel: "Best Record" },
+  // Quick Mode: career W–L. Manager Mode overrides labels to Best Season Record.
+  { id: "best_record", label: "Total Record", shortLabel: "Total Record" },
   {
     id: "perfect_runs",
     label: "Most 27-0 Seasons",
@@ -211,10 +255,16 @@ export function getTrackersForDbMode(
     return LEADERBOARD_TRACKERS.filter((t) => t.dailyOnly);
   }
   if (dbMode === "trophy-cabinet") {
-    const order = TROPHY_CABINET_SECTIONS.flatMap((section) => section.trackerIds);
-    return order
-      .map((id) => LEADERBOARD_TRACKERS.find((t) => t.id === id))
-      .filter((t): t is NonNullable<typeof t> => !!t);
+    // Logical categories only — Current vs Era is chosen via the variant toggle.
+    return TROPHY_CABINET_CATEGORIES.map((category) => {
+      const def = LEADERBOARD_TRACKERS.find((t) => t.id === category.currentTracker);
+      if (!def) return null;
+      return {
+        ...def,
+        label: category.label,
+        shortLabel: category.shortLabel,
+      };
+    }).filter((t): t is NonNullable<typeof t> => !!t);
   }
   return LEADERBOARD_TRACKERS.filter(
     (t) =>
@@ -247,6 +297,9 @@ export function isTrackerValidForDbMode(
     | "trophy-cabinet"
     | "daily"
 ): boolean {
+  if (dbMode === "trophy-cabinet") {
+    return isTrophyCabinetTracker(tracker);
+  }
   return getTrackersForDbMode(dbMode).some((t) => t.id === tracker);
 }
 
@@ -282,9 +335,27 @@ export function getTrackersForManagerDbMode(
     "wcc_wins",
   ];
   return order
-    .map((id) => LEADERBOARD_TRACKERS.find((t) => t.id === id))
+    .map((id) => {
+      const def = LEADERBOARD_TRACKERS.find((t) => t.id === id);
+      if (!def) return null;
+      if (id === "best_record") {
+        return {
+          ...def,
+          label: "Best Season Record",
+          shortLabel: "Best Record",
+        };
+      }
+      return def;
+    })
     .filter((t): t is NonNullable<typeof t> => !!t);
 }
+
+/** How `best_record` ranks and displays. Quick Mode = career totals; Manager = best season. */
+export type RecordMetric = "total" | "best";
+
+export type RankByTrackerOptions = {
+  recordMetric?: RecordMetric;
+};
 
 export function getDefaultTrackerForManagerDbMode(
   dbMode: ManagerLeaderboardDbMode
@@ -299,12 +370,30 @@ export function isTrackerValidForManagerDbMode(
   return getTrackersForManagerDbMode(dbMode).some((t) => t.id === tracker);
 }
 
+function recordWinsLosses(
+  entry: LeaderboardTrackerEntry,
+  metric: RecordMetric
+): { wins: number; losses: number } {
+  if (metric === "best") {
+    return {
+      wins: entry.bestRecordWins,
+      losses: entry.bestRecordLosses,
+    };
+  }
+  return {
+    wins: entry.totalWins,
+    losses: entry.totalLosses,
+  };
+}
+
 export function rankByTracker(
   entries: LeaderboardTrackerEntry[],
   tracker: LeaderboardTrackerType,
   limit: number,
-  currentUser: string
+  currentUser: string,
+  options: RankByTrackerOptions = {}
 ): LeaderboardTrackerRow[] {
+  const recordMetric = options.recordMetric ?? "total";
   const sorted = [...entries]
     .map(sanitizeLeaderboardTrackerEntry)
     .sort((a, b) => {
@@ -314,14 +403,12 @@ export function rankByTracker(
       case "wcc_wins":
         return (b.wccWins ?? 0) - (a.wccWins ?? 0);
       case "best_record": {
-        const aWins = a.bestRecordWins;
-        const bWins = b.bestRecordWins;
-        const aLosses = a.bestRecordLosses;
-        const bLosses = b.bestRecordLosses;
-        if (bWins !== aWins) {
-          return bWins - aWins;
+        const aRecord = recordWinsLosses(a, recordMetric);
+        const bRecord = recordWinsLosses(b, recordMetric);
+        if (bRecord.wins !== aRecord.wins) {
+          return bRecord.wins - aRecord.wins;
         }
-        return aLosses - bLosses;
+        return aRecord.losses - bRecord.losses;
       }
       case "manager_challenge_cups":
         return b.challengeCupWins - a.challengeCupWins;
@@ -350,7 +437,7 @@ export function rankByTracker(
     difficulty: entry.difficulty,
     mode: entry.mode,
     isCurrentUser: !!currentUser && entry.username === currentUser,
-    statDisplay: getTrackerStatDisplay(entry, tracker),
+    statDisplay: getTrackerStatDisplay(entry, tracker, { recordMetric }),
   }));
 
   if (currentUser && !rows.some((row) => row.isCurrentUser)) {
@@ -364,7 +451,7 @@ export function rankByTracker(
         difficulty: userEntry.difficulty,
         mode: userEntry.mode,
         isCurrentUser: true,
-        statDisplay: getTrackerStatDisplay(userEntry, tracker),
+        statDisplay: getTrackerStatDisplay(userEntry, tracker, { recordMetric }),
       });
     }
   }
@@ -374,19 +461,20 @@ export function rankByTracker(
 
 export function getTrackerStatDisplay(
   entry: LeaderboardTrackerEntry,
-  tracker: LeaderboardTrackerType
+  tracker: LeaderboardTrackerType,
+  options: RankByTrackerOptions = {}
 ): string {
   const sanitized = sanitizeLeaderboardTrackerEntry(entry);
+  const recordMetric = options.recordMetric ?? "total";
   switch (tracker) {
     case "perfect_runs":
       return String(sanitized.perfectRuns);
     case "wcc_wins":
       return String(sanitized.wccWins);
-    case "best_record":
-      return formatRecordWithPercentage(
-        sanitized.bestRecordWins,
-        sanitized.bestRecordLosses
-      );
+    case "best_record": {
+      const record = recordWinsLosses(sanitized, recordMetric);
+      return formatRecordWithPercentage(record.wins, record.losses);
+    }
     case "manager_challenge_cups":
       return String(sanitized.challengeCupWins);
     case "manager_cup_finals":

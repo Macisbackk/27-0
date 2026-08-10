@@ -58,10 +58,10 @@ function applySeasonAchievements(
     if (season.position <= 6) {
       stats.topSixFinishes++;
     }
-    if (season.wins === 27 && season.losses === 0) {
+    if (season.wins > 0 && season.losses === 0) {
       stats.perfectSeasons++;
     }
-    if (season.wins === 0 && season.losses === 27) {
+    if (season.wins === 0 && season.losses > 0) {
       stats.winlessSeasons++;
     }
   }

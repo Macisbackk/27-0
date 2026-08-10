@@ -56,16 +56,17 @@ export async function recordCompletedRun(
   const loggedIn = isLoggedIn();
   const isHiddenRun =
     options?.joeMellorMode === true || options?.superSamHallasMode === true;
+  const isDailyChallenge = options?.dailyChallengeMode === true;
   // Boosts remain tracked via usedBoosts metadata but no longer exclude competitive entry.
-  const excludeFromLeaderboard =
-    isHiddenRun || options?.dailyChallengeMode === true;
+  // Daily Challenge stays off Classic LB and must not pollute Normal/Era lifetime stats.
+  const excludeFromLeaderboard = isHiddenRun || isDailyChallenge;
   const modeVariant = resolveClassicModeVariant({
     modeVariant: run.modeVariant,
     normalEraMode: options?.normalEraMode,
   });
   const statsBucket = resolveStatsBucket(run.mode, difficulty, modeVariant);
 
-  if (!isHiddenRun) {
+  if (!isHiddenRun && !isDailyChallenge) {
     updateStats(signedIds, totalValue, difficulty, new Date(), statsBucket);
 
     if (difficulty === "NORMAL" && run.mode === "CLASSIC") {
@@ -99,7 +100,7 @@ export async function recordCompletedRun(
     ).rows.find((e) => e.isCurrentUser)?.rank;
   }
 
-  if (hasSeasonData) {
+  if (hasSeasonData && !isDailyChallenge) {
     updateSeasonLifetimeStats(
       {
         wins: regularWins,
@@ -158,19 +159,21 @@ export async function recordPlayoffCompletion(
     options.superLeagueTitle ??
     options.playoffFinish === "Super League Champions";
 
-  updatePlayoffLifetimeStats(
-    {
-      regularWins: options.regularWins,
-      regularLosses: options.regularLosses,
-      playoffWins: options.playoffWins,
-      playoffLosses: options.playoffLosses,
-      playoffFinish: options.playoffFinish,
-      superLeagueTitle,
-      signedIds,
-    },
-    difficulty,
-    statsBucket
-  );
+  if (!excludeFromLeaderboard) {
+    updatePlayoffLifetimeStats(
+      {
+        regularWins: options.regularWins,
+        regularLosses: options.regularLosses,
+        playoffWins: options.playoffWins,
+        playoffLosses: options.playoffLosses,
+        playoffFinish: options.playoffFinish,
+        superLeagueTitle,
+        signedIds,
+      },
+      difficulty,
+      statsBucket
+    );
+  }
 
   let nationalRank: number | undefined;
   if (loggedIn && run.mode === "CLASSIC" && !excludeFromLeaderboard) {

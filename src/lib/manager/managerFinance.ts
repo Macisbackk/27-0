@@ -152,6 +152,18 @@ export function evaluateClubSigningAppeal(
   };
 }
 
+/**
+ * Transfer-market visibility gate — hide players the club cannot attract
+ * (e.g. Championship sides seeing elite Super League talent).
+ */
+export function isPlayerReachableOnTransferMarket(
+  club: string,
+  playerRating: number,
+  careerStars?: number | null
+): boolean {
+  return evaluateClubSigningAppeal(club, playerRating, careerStars).allowed;
+}
+
 export function getManagerPlayerListingRating(
   career: ManagerCareer,
   playerId: string

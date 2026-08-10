@@ -78,6 +78,8 @@ export const EMPTY_STATS: UserStatsData = {
 
   totalPerfectSeasons: 0,
 
+  totalUnbeatenSeasons: 0,
+
   totalWinlessSeasons: 0,
 
   bestNationalRanking: null,
@@ -434,6 +436,7 @@ function sanitizeUserStatInts(stats: UserStatsData): UserStatsData {
     longestLosingStreak: roundUserStatInt(stats.longestLosingStreak),
     leagueTitlesWon: roundUserStatInt(stats.leagueTitlesWon),
     totalPerfectSeasons: roundUserStatInt(stats.totalPerfectSeasons),
+    totalUnbeatenSeasons: roundUserStatInt(stats.totalUnbeatenSeasons ?? 0),
     totalWinlessSeasons: roundUserStatInt(stats.totalWinlessSeasons),
     averageSeasonFinish: roundUserStatInt(stats.averageSeasonFinish),
     joeMellorRuns: roundUserStatInt(stats.joeMellorRuns),

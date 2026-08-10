@@ -719,21 +719,25 @@ export function completeUserWorldClubChallenge(
   };
 
   // Update lifetime WCC stats + manager leaderboard (lazy import avoids cycles).
-  void import("./managerStats").then(({ loadManagerStats, saveManagerStats }) => {
-    const stats = loadManagerStats();
-    stats.worldClubChallengeAppearances =
-      (stats.worldClubChallengeAppearances ?? 0) + 1;
-    if (userResult === "won") {
-      stats.worldClubChallengeWins = (stats.worldClubChallengeWins ?? 0) + 1;
-      stats.trophies = (stats.trophies ?? 0) + 1;
-    }
-    saveManagerStats(stats);
-    void import("../storage/manager-leaderboard").then(
-      ({ syncManagerLeaderboard }) => {
-        syncManagerLeaderboard(stats);
+  void import("./managerStats")
+    .then(({ loadManagerStats, saveManagerStats }) => {
+      const stats = loadManagerStats();
+      stats.worldClubChallengeAppearances =
+        (stats.worldClubChallengeAppearances ?? 0) + 1;
+      if (userResult === "won") {
+        stats.worldClubChallengeWins = (stats.worldClubChallengeWins ?? 0) + 1;
+        stats.trophies = (stats.trophies ?? 0) + 1;
       }
-    );
-  });
+      saveManagerStats(stats);
+      return import("../storage/manager-leaderboard").then(
+        ({ syncManagerLeaderboard }) => {
+          syncManagerLeaderboard(stats);
+        }
+      );
+    })
+    .catch((err) => {
+      console.error("[wcc] lifetime/LB sync failed", err);
+    });
 
   const next: ManagerCareer = {
     ...career,
