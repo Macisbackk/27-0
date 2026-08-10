@@ -269,7 +269,32 @@ export function ManagerInbox({
             {(msg.type === "transfer" || msg.type === "transfer_offer_in") &&
               msg.askingPrice != null && (
                 <>
-                  {negotiatingId === msg.id ? (
+                  {msg.loanOffer ? (
+                    <InboxActionRow>
+                      <GameButton
+                        variant="theme"
+                        size="sm"
+                        fullWidth
+                        onClick={() => {
+                          playUiClick();
+                          handleAccept(msg.id);
+                        }}
+                      >
+                        Accept loan
+                      </GameButton>
+                      <GameButton
+                        variant="secondary"
+                        size="sm"
+                        fullWidth
+                        onClick={() => {
+                          playUiClick();
+                          handleReject(msg.id);
+                        }}
+                      >
+                        Reject
+                      </GameButton>
+                    </InboxActionRow>
+                  ) : negotiatingId === msg.id ? (
                     <div className={`${CARD.inset} ${SPACING.cardPaddingSm} space-y-3`}>
                       <label className={TYPO.bodySm}>
                         <span className="text-pitch-400">Your counter offer</span>

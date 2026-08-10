@@ -117,6 +117,7 @@ import {
   acknowledgePromotionCelebration,
   shouldShowPromotionCelebration,
 } from "@/lib/manager/managerPromotion";
+import { wasManagerSacked } from "@/lib/manager/boardSeasonEvaluation";
 import { shouldShowChallengeCupCelebration } from "@/lib/manager/managerChallengeCup";
 import { shouldShowWorldClubChallengeCelebration } from "@/lib/manager/worldClubChallenge";
 import {
@@ -573,41 +574,66 @@ export default function ManagerPage() {
         "trophy",
       ] as const;
       const start = steps.indexOf(fromStep);
+      const resolvedCareer = nextCareer ?? career;
+
+      // When a career snapshot is passed, derive celebrations from it — setState
+      // flags are still stale in the same turn (advance week / calendar / load).
+      const fromCareer = Boolean(nextCareer);
+      const wantWcc = fromCareer
+        ? shouldShowWorldClubChallengeCelebration(nextCareer!)
+        : pendingWccCelebration;
+      const wantCup = fromCareer
+        ? shouldShowChallengeCupCelebration(nextCareer!)
+        : pendingChallengeCupCelebration;
+      const wantSeasonRecord = fromCareer
+        ? resolvePendingSeasonRecordCelebration(nextCareer!)
+        : pendingSeasonRecordCelebration;
+      const wantLeagueWinners = fromCareer
+        ? shouldShowLeagueWinnersCelebration(nextCareer!)
+        : pendingLeagueWinnersCelebration;
+      const wantPromotion = fromCareer
+        ? shouldShowPromotionCelebration(nextCareer!)
+        : pendingPromotionCelebration;
+      const wantTrophy = fromCareer
+        ? Boolean(
+            nextCareer!.playoffs?.finish === "Super League Champions" &&
+              !nextCareer!.trophyCelebrationShown
+          )
+        : pendingTrophyCelebration;
 
       for (let i = start; i < steps.length; i++) {
         const step = steps[i];
-        if (step === "wcc" && pendingWccCelebration) {
+        if (step === "wcc" && wantWcc) {
           setPendingWccCelebration(false);
           setWccWinModalOpen(true);
           goToView("hub");
           return;
         }
-        if (step === "cup" && pendingChallengeCupCelebration) {
+        if (step === "cup" && wantCup) {
           setPendingChallengeCupCelebration(false);
           setChallengeCupWinModalOpen(true);
           goToView("hub");
           return;
         }
-        if (step === "seasonRecord" && pendingSeasonRecordCelebration) {
-          const kind = pendingSeasonRecordCelebration;
+        if (step === "seasonRecord" && wantSeasonRecord) {
           setPendingSeasonRecordCelebration(null);
-          setSeasonRecordModalOpen(kind);
+          setSeasonRecordModalOpen(wantSeasonRecord);
           goToView("hub");
           return;
         }
-        if (step === "leagueWinners" && pendingLeagueWinnersCelebration) {
+        if (step === "leagueWinners" && wantLeagueWinners) {
           setPendingLeagueWinnersCelebration(false);
           setLeagueWinnersModalOpen(true);
           goToView("hub");
           return;
         }
-        if (step === "promotion" && pendingPromotionCelebration) {
+        if (step === "promotion" && wantPromotion) {
           setPendingPromotionCelebration(false);
           setPromotionModalOpen(true);
           goToView("hub");
           return;
         }
-        if (step === "trophy" && pendingTrophyCelebration) {
+        if (step === "trophy" && wantTrophy) {
           setPendingTrophyCelebration(false);
           setTrophyModalOpen(true);
           goToView("hub");
@@ -615,7 +641,6 @@ export default function ManagerPage() {
         }
       }
 
-      const resolvedCareer = nextCareer ?? career;
       if (resolvedCareer?.isSeasonComplete) {
         goToView("season-review", { syncUrl: false });
         return;
@@ -633,6 +658,52 @@ export default function ManagerPage() {
       pendingSeasonRecordCelebration,
       pendingTrophyCelebration,
     ]
+  );
+
+  /** Calendar sim-to-date: persist, surface blockers, route season end. */
+  const persistAfterCalendarSim = useCallback(
+    (next: ManagerCareer) => {
+      const prepared = prepareManagerCareerForSave(next);
+      const complete =
+        prepared.isSeasonComplete || isManagerSeasonComplete(prepared)
+          ? { ...prepared, isSeasonComplete: true as const }
+          : prepared;
+      persist(complete);
+
+      if (complete.isSeasonComplete) {
+        continueCelebrationQueue("wcc", complete);
+        return;
+      }
+
+      const bid = getPendingIncomingClubBid(complete);
+      const contractExpiry = getPendingContractExpiryPopup(complete);
+      const loanEnded = getPendingLoanEndedPopup(complete);
+      const retirement = getPendingRetirementIntentPopup(complete);
+      if (bid) {
+        setPendingIncomingBidId(bid.id);
+        setIncomingBidModalOpen(true);
+        goToView("hub");
+        return;
+      }
+      if (contractExpiry) {
+        setPendingContractExpiryId(contractExpiry.id);
+        setContractExpiryModalOpen(true);
+        goToView("hub");
+        return;
+      }
+      if (loanEnded) {
+        setPendingLoanEndedId(loanEnded.id);
+        setLoanEndedModalOpen(true);
+        goToView("hub");
+        return;
+      }
+      if (retirement) {
+        setPendingRetirementIntentId(retirement.id);
+        setRetirementIntentModalOpen(true);
+        goToView("hub");
+      }
+    },
+    [persist, continueCelebrationQueue, goToView]
   );
 
   useEffect(() => {
@@ -854,25 +925,7 @@ export default function ManagerPage() {
     setActiveSaveSlot(slot);
     setCareerState(saved);
     if (saved.isSeasonComplete) {
-      if (shouldShowChallengeCupCelebration(saved)) {
-        setChallengeCupWinModalOpen(true);
-        goToView("hub");
-        return;
-      }
-      if (
-        saved.playoffs?.finish === "Super League Champions" &&
-        !saved.trophyCelebrationShown
-      ) {
-        setTrophyModalOpen(true);
-        goToView("hub");
-        return;
-      }
-      goToView(
-        saved.seasonRewardClaimedForYear === saved.seasonYear
-          ? "season-rewards"
-          : "season-review",
-        { syncUrl: false }
-      );
+      continueCelebrationQueue("wcc", saved);
       return;
     }
     const incomingBid = getPendingIncomingClubBid(saved);
@@ -1046,9 +1099,11 @@ export default function ManagerPage() {
       markOnboardingStepComplete("first-match");
     }
     const withLeagueStats = recordLeaguePhaseAchievementsIfNeeded(next);
-    const withSeasonStats = withLeagueStats.isSeasonComplete
-      ? recordSeasonCompleteIfNeeded(withLeagueStats)
-      : withLeagueStats;
+    // Match apply leaves isSeasonComplete false; recompute before celebrations.
+    const prepared = prepareManagerCareerForSave(withLeagueStats);
+    const withSeasonStats = prepared.isSeasonComplete
+      ? recordSeasonCompleteIfNeeded(prepared)
+      : prepared;
     persist(withSeasonStats);
 
     const wonTitle =
@@ -1057,8 +1112,7 @@ export default function ManagerPage() {
       !withSeasonStats.trophyCelebrationShown;
 
     const seasonRecord = resolvePendingSeasonRecordCelebration(withSeasonStats);
-    const wonLeagueTable =
-      !seasonRecord && shouldShowLeagueWinnersCelebration(withSeasonStats);
+    const wonLeagueTable = shouldShowLeagueWinnersCelebration(withSeasonStats);
     const earnedPromotion = shouldShowPromotionCelebration(withSeasonStats);
     const wonChallengeCup = shouldShowChallengeCupCelebration(withSeasonStats);
     const wonWorldClubChallenge =
@@ -1089,6 +1143,12 @@ export default function ManagerPage() {
         setPendingPromotionCelebration(earnedPromotion);
       } else if (earnedPromotion) {
         setPromotionModalOpen(true);
+      } else if (seasonRecord) {
+        setSeasonRecordModalOpen(seasonRecord);
+      } else if (wonChallengeCup) {
+        setChallengeCupWinModalOpen(true);
+      } else if (wonWorldClubChallenge) {
+        setWccWinModalOpen(true);
       } else {
         goToView("season-review", { syncUrl: false });
       }
@@ -1217,6 +1277,14 @@ export default function ManagerPage() {
       return;
     }
 
+    const loanEnded = getPendingLoanEndedPopup(cleared);
+    if (loanEnded) {
+      setPendingLoanEndedId(loanEnded.id);
+      setLoanEndedModalOpen(true);
+      goToView("hub");
+      return;
+    }
+
     const retirementIntent = getPendingRetirementIntentPopup(cleared);
     if (retirementIntent) {
       setPendingRetirementIntentId(retirementIntent.id);
@@ -1239,7 +1307,12 @@ export default function ManagerPage() {
         title: "Transfer failed",
         message: result.error ?? "Could not complete this transfer.",
       });
-      if (result.error?.includes("no longer")) {
+      if (result.error?.includes("no longer") ||
+          result.error?.includes("loaned-in") ||
+          result.error?.includes("away on loan") ||
+          result.error?.includes("already on loan") ||
+          result.error?.includes("no longer listed") ||
+          result.error?.includes("Invalid offer")) {
         const rejected = offer?.reserveOffer
           ? rejectReserveTransferOffer(career, pendingIncomingBidId)
           : rejectIncomingOffer(career, pendingIncomingBidId);
@@ -1611,28 +1684,31 @@ export default function ManagerPage() {
 
   const handleLeagueWinnersModalContinue = () => {
     if (!career) return;
-    persist({ ...career, leagueWinnersCelebrationShown: true });
+    const updated = { ...career, leagueWinnersCelebrationShown: true };
+    persist(updated);
     setLeagueWinnersModalOpen(false);
-    continueCelebrationQueue("promotion");
+    continueCelebrationQueue("promotion", updated);
   };
 
   const handlePromotionModalContinue = () => {
     if (!career) return;
-    persist(acknowledgePromotionCelebration(career));
+    const updated = acknowledgePromotionCelebration(career);
+    persist(updated);
     setPromotionModalOpen(false);
-    continueCelebrationQueue("trophy");
+    continueCelebrationQueue("trophy", updated);
   };
 
   const handleSeasonRecordModalContinue = () => {
     if (!career || !seasonRecordModalOpen) return;
-    persist({
+    const updated = {
       ...career,
       ...(seasonRecordModalOpen === "perfect"
         ? { perfectSeasonCelebrationShown: true }
         : { winlessSeasonCelebrationShown: true }),
-    });
+    };
+    persist(updated);
     setSeasonRecordModalOpen(null);
-    continueCelebrationQueue("leagueWinners");
+    continueCelebrationQueue("leagueWinners", updated);
   };
 
   const handleChallengeCupWinModalContinue = () => {
@@ -1790,7 +1866,7 @@ export default function ManagerPage() {
       setPendingReserveReportId(reserveReport?.id ?? null);
 
       if (withQueue.isSeasonComplete) {
-        goToView("season-review", { syncUrl: false });
+        continueCelebrationQueue("wcc", withQueue);
         return;
       }
 
@@ -1814,7 +1890,7 @@ export default function ManagerPage() {
     } finally {
       setAdvancingWeek(false);
     }
-  }, [career, advancingWeek, persist, goToView]);
+  }, [career, advancingWeek, persist, goToView, continueCelebrationQueue]);
 
   const handleOpenCupFixtures = useCallback(() => {
     setFixturesInitialFilter("cup");
@@ -1878,8 +1954,33 @@ export default function ManagerPage() {
     afterMatch(next);
   };
 
+  const handleTakeOverClub = (newClub: string) => {
+    if (!career) return;
+    let base = career;
+    if (base.isSeasonComplete) {
+      base = hydrateManagerCareer(advanceToNextSeason(base));
+    }
+    const next = hydrateManagerCareer(takeOverClub(base, newClub, "sacked"));
+    if (next.club !== newClub) {
+      setAlertDialog({
+        title: "Take over failed",
+        message:
+          "That club is no longer available after the season rolled over. Pick another offer.",
+      });
+      // Keep the sacked end-of-season save — never persist the advanced old club.
+      return;
+    }
+    playManagerAppointed();
+    persist(next);
+    goToView("hub");
+  };
+
   const handleContinueSeason = () => {
     if (!career) return;
+    if (wasManagerSacked(career)) {
+      goToView("choose-next-club", { syncUrl: false });
+      return;
+    }
     const next = hydrateManagerCareer(advanceToNextSeason(career));
     persist(next);
     const loanEnded = getPendingLoanEndedPopup(next);
@@ -1889,18 +1990,6 @@ export default function ManagerPage() {
     } else if (shouldShowClubStarRiseCelebration(next)) {
       setClubStarRiseModalOpen(true);
     }
-    goToView("hub");
-  };
-
-  const handleTakeOverClub = (newClub: string) => {
-    if (!career) return;
-    let base = career;
-    if (base.isSeasonComplete) {
-      base = hydrateManagerCareer(advanceToNextSeason(base));
-    }
-    const next = hydrateManagerCareer(takeOverClub(base, newClub, "sacked"));
-    playManagerAppointed();
-    persist(next);
     goToView("hub");
   };
 
@@ -1942,8 +2031,23 @@ export default function ManagerPage() {
     const nextFixture = getNextManagerFixture(career);
     const seasonComplete = isManagerSeasonComplete(career);
     const playoffsPending = needsPlayoffsIntro(career);
+    const phase = getMatchWeekPhase(career);
 
-    if (seasonComplete) {
+    // Never skip the final Advance Week — season-complete flags can flip after
+    // the last match while still awaiting_advance.
+    if (phase === "awaiting_advance") {
+      const labels = getAdvanceWeekButtonLabel(career, false);
+      return {
+        mode: "advance-week" as const,
+        canPlay: false,
+        canAdvance: canAdvanceMatchWeek(career),
+        playLabel: labels.full,
+        simulateLabel: labels.full,
+        advanceLabel: labels.full,
+      };
+    }
+
+    if (seasonComplete || phase === "season_complete") {
       return {
         mode: "season-review" as const,
         canPlay: false,
@@ -1952,7 +2056,7 @@ export default function ManagerPage() {
       };
     }
 
-    if (canAdvanceMatchWeek(career) || getMatchWeekPhase(career) === "awaiting_advance") {
+    if (canAdvanceMatchWeek(career)) {
       const labels = getAdvanceWeekButtonLabel(career, false);
       return {
         mode: "advance-week" as const,
@@ -2189,7 +2293,7 @@ export default function ManagerPage() {
                 <ManagerKeepAlivePane active={chromeNavView === "fixtures" && panesInteractive}>
                   <ManagerFixtures
                     career={career}
-                    onUpdate={persist}
+                    onUpdate={persistAfterCalendarSim}
                     initialFilter={fixturesInitialFilter ?? "calendar"}
                     onOpenMatchPrep={handleOpenMatchPrep}
                     onSelectFixture={handleSelectFixtureReview}

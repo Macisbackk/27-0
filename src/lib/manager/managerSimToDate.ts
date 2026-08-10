@@ -2,12 +2,16 @@ import type { ManagerCareer } from "./types";
 import {
   advanceManagerMatchWeek,
   getNextManagerFixture,
+  isManagerSeasonComplete,
   prepareCareerForNextMatch,
   simulateManagerNextMatch,
 } from "./managerSimulation";
 import { autoFixMatchdaySquad } from "./managerAutoFix";
 import { validateFitMatchdaySquad } from "./managerMatchdayValidation";
-import { getMatchWeekPhase } from "./managerMatchWeek";
+import {
+  getMatchWeekPhase,
+  hasBlockingManagerDecision,
+} from "./managerMatchWeek";
 import { autoSelectFriendlyForSim } from "./managerFriendlies";
 
 export interface SimToDateResult {
@@ -18,6 +22,8 @@ export interface SimToDateResult {
   error?: string;
   /** True when a blocking popup / season end stopped early. */
   stoppedEarly?: boolean;
+  /** Season finished during the sim — host should open review/celebrations. */
+  seasonComplete?: boolean;
 }
 
 const MAX_STEPS = 140;
@@ -30,7 +36,10 @@ export function simulateCareerToGameWeek(
   career: ManagerCareer,
   targetGameWeek: number
 ): SimToDateResult {
-  let next = career;
+  let next = {
+    ...career,
+    isSeasonComplete: isManagerSeasonComplete(career),
+  };
   let matchesSimulated = 0;
   let weeksAdvanced = 0;
 
@@ -45,14 +54,27 @@ export function simulateCareerToGameWeek(
   }
 
   for (let step = 0; step < MAX_STEPS; step++) {
-    if (next.isSeasonComplete) {
+    if (next.isSeasonComplete || isManagerSeasonComplete(next)) {
+      next = { ...next, isSeasonComplete: true };
       return {
         ok: true,
         career: next,
         matchesSimulated,
         weeksAdvanced,
         stoppedEarly: true,
+        seasonComplete: true,
         error: "Season complete.",
+      };
+    }
+
+    if (hasBlockingManagerDecision(next)) {
+      return {
+        ok: true,
+        career: next,
+        matchesSimulated,
+        weeksAdvanced,
+        stoppedEarly: true,
+        error: "Resolve pending decisions first.",
       };
     }
 
@@ -78,13 +100,14 @@ export function simulateCareerToGameWeek(
           error: advanced.error,
         };
       }
-      next = advanced.career;
+      next = {
+        ...advanced.career,
+        isSeasonComplete: isManagerSeasonComplete(advanced.career),
+      };
       weeksAdvanced++;
       continue;
     }
 
-    // Ready to play — if we've already reached the target week and there's
-    // no pending fixture for an earlier week, stop before the next kick-off.
     if (next.gameWeek >= targetGameWeek) {
       return {
         ok: true,
@@ -94,8 +117,6 @@ export function simulateCareerToGameWeek(
       };
     }
 
-    // Unresolved pre-season friendly: auto-pick until a kick-off exists
-    // (Champ/SL both require a full confirmed schedule of FRIENDLIES_REQUIRED).
     let ready = next;
     for (let friendlyStep = 0; friendlyStep < 8; friendlyStep++) {
       const autoFriendly = autoSelectFriendlyForSim(ready);
@@ -122,7 +143,6 @@ export function simulateCareerToGameWeek(
       };
     }
     if (!getNextManagerFixture(ready)) {
-      // No fixture — try advancing if somehow stuck
       if (next.gameWeek >= targetGameWeek) {
         return {
           ok: true,
@@ -152,7 +172,10 @@ export function simulateCareerToGameWeek(
         error: sim.error,
       };
     }
-    next = sim.career;
+    next = {
+      ...sim.career,
+      isSeasonComplete: isManagerSeasonComplete(sim.career),
+    };
     matchesSimulated++;
   }
 

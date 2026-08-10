@@ -235,16 +235,16 @@ export function evaluateBoardSeason(
     explanation.push(
       "Primary objective delivered — the board will retain you."
     );
-  } else if (career.boardConfidence < 25) {
+  } else if (career.boardConfidence < 30) {
     recommendation = "sack";
     explanation.push(
-      "Confidence below 25% with the primary target missed."
+      "Confidence below 30% with the primary target missed."
     );
-  } else if (career.boardConfidence < 40 || terriblePosition) {
+  } else if (career.boardConfidence < 50 || terriblePosition) {
     recommendation = "sack";
-    if (career.boardConfidence < 40) {
+    if (career.boardConfidence < 50) {
       explanation.push(
-        "Confidence below 40% with the primary target missed."
+        "Confidence below 50% with the primary target missed."
       );
     }
     if (terriblePosition) {
@@ -296,7 +296,15 @@ export function getOrCreateBoardSeasonEvaluation(career: ManagerCareer): {
     existing.clubId === career.club &&
     (career.boardSackingSchemaVersion ?? 0) >= BOARD_SACKING_SCHEMA_VERSION
   ) {
-    return { career, evaluation: existing };
+    // Re-evaluate if no-sacking was activated after a stale sack decision.
+    if (
+      career.managerProtection?.noSacking &&
+      existing.finalDecision === "sack"
+    ) {
+      // fall through to recompute
+    } else {
+      return { career, evaluation: existing };
+    }
   }
 
   const evaluation = evaluateBoardSeason(career);
@@ -314,6 +322,24 @@ export function getOrCreateBoardSeasonEvaluation(career: ManagerCareer): {
       updatedAt: new Date().toISOString(),
     },
     evaluation,
+  };
+}
+
+/** Drop cached board eval for the current season (e.g. after no-sacking boost). */
+export function invalidateBoardSeasonEvaluation(
+  career: ManagerCareer
+): ManagerCareer {
+  const seasonId = buildBoardSeasonId(career);
+  const nextEvals = { ...(career.boardSeasonEvaluations ?? {}) };
+  delete nextEvals[seasonId];
+  return {
+    ...career,
+    boardSeasonEvaluation:
+      career.boardSeasonEvaluation?.seasonId === seasonId
+        ? undefined
+        : career.boardSeasonEvaluation,
+    boardSeasonEvaluations: nextEvals,
+    updatedAt: new Date().toISOString(),
   };
 }
 

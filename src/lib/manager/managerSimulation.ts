@@ -184,6 +184,7 @@ import {
 } from "./managerReserves";
 import {
   generateIncomingTransferOffers,
+  generateIncomingLoanOffers,
   generateUnsolicitedTransferOffers,
   generateLeagueListedPlayers,
 } from "./managerTransferLeague";
@@ -1012,6 +1013,7 @@ export function advanceManagerMatchWeek(
   // weeks). Reserve Championship bids still run every advance independently.
   if (next.gameWeek !== (next.lastTransferScanGameWeek ?? -1)) {
     next = generateIncomingTransferOffers(next);
+    next = generateIncomingLoanOffers(next);
     next = generateUnsolicitedTransferOffers(next);
     next = { ...next, lastTransferScanGameWeek: next.gameWeek };
   }

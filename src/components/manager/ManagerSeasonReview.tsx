@@ -49,11 +49,14 @@ export function ManagerSeasonReview({
 
   const persistedRef = useRef<string | null>(null);
   useEffect(() => {
-    if (persistedRef.current === evaluation.decisionId) return;
     if (
-      !career.boardSeasonEvaluations?.[evaluation.seasonId] &&
-      evaluatedCareer !== career
+      persistedRef.current === evaluation.decisionId &&
+      career.boardSeasonEvaluations?.[evaluation.seasonId]?.decisionId ===
+        evaluation.decisionId
     ) {
+      return;
+    }
+    if (evaluatedCareer !== career) {
       persistedRef.current = evaluation.decisionId;
       onCareerUpdate(evaluatedCareer);
     }

@@ -210,6 +210,9 @@ export function ManagerTransfers({
   /** Lightweight Bid-tab index (no fee math / card props until visible). */
   const unlistedIndex = useMemo(() => {
     if (tab !== "unlisted" || !leagueClubByPlayerId) return [];
+    const activeLoanIds = new Set(
+      (career.activeLoans ?? []).map((loan) => loan.playerId)
+    );
     const rows: {
       playerId: string;
       club: string;
@@ -220,6 +223,7 @@ export function ManagerTransfers({
     }[] = [];
     for (const [playerId, club] of leagueClubByPlayerId) {
       if (listedPlayerIds.has(playerId) || freeAgentIds.has(playerId)) continue;
+      if (activeLoanIds.has(playerId)) continue;
       const raw =
         getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
       if (!raw) continue;
@@ -243,6 +247,7 @@ export function ManagerTransfers({
     leagueClubByPlayerId,
     career,
     career.club,
+    career.activeLoans,
     careerStars,
     listedPlayerIds,
     freeAgentIds,
@@ -269,8 +274,7 @@ export function ManagerTransfers({
             const player =
               getManagerPlayer(career, entry.playerId) ??
               getPlayerById(entry.playerId);
-            if (!player) return false;
-            return isPlayerReachableOnTransferMarket(career.club, player.peakRating, careerStars, competition);
+            return Boolean(player);
           }).length
         : 0,
       freeAgents: (career.freeAgents ?? []).filter((entry) => {
@@ -317,9 +321,16 @@ export function ManagerTransfers({
         return { ...entry, player: withManagerRating(raw) };
       })
       .filter((r): r is NonNullable<typeof r> => r !== null)
-      .filter((r) =>
-        isPlayerReachableOnTransferMarket(career.club, r.player.peakRating, careerStars, competition)
-      )
+      .filter((r) => {
+        // Permanent market uses reach; loan market is SL→Champ development only.
+        if (tab === "loans") return true;
+        return isPlayerReachableOnTransferMarket(
+          career.club,
+          r.player.peakRating,
+          careerStars,
+          competition
+        );
+      })
       .filter((r) => {
         if (positionFilter === "all") return true;
         return getPlayerEligiblePositions(r.player).includes(positionFilter);
@@ -972,6 +983,7 @@ export function ManagerTransfers({
                 player={player}
                 club={club}
                 listed
+                listingType={listingType}
                 fee={dealFee}
                 sellerListedFee={
                   effectiveDeal === "permanent" && listedPrice < buyerFee
@@ -1291,8 +1303,8 @@ export function ManagerTransfers({
           })}
           {freeAgents.length === 0 && (
             <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
-              No free agents available right now. Players appear here when contracts
-              expire at season end.
+              No free agents available right now. The pool tops up during the
+              season and when contracts expire.
             </p>
           )}
           {showMoreButton(freeAgents.length)}
@@ -1369,24 +1381,14 @@ export function ManagerTransfers({
               club,
               false
             );
-            const loanFee = suggestedLoanFee(career, player.id, club, false);
-            const canLoanThisClub =
-              canLoanIn && isValidLoanDirection(career, club, career.club);
-            const unlistedDeal: DealType =
-              dealType === "loan" && canLoanThisClub ? "loan" : "permanent";
+            // Loans only via the Loans tab (listed for loan) — not unlisted Bid approaches.
             const appeal = evaluateClubSigningAppeal(career.club, player.peakRating, careerStars, competition);
             const demand = getPlayerSigningDemand(career, player.id);
             const isOffering = offerPlayerId === player.id;
             const offerDealFee =
-              unlistedDeal === "loan"
-                ? loanFee
-                : isOffering && offerFee > 0
-                  ? offerFee
-                  : buyerFee;
+              isOffering && offerFee > 0 ? offerFee : buyerFee;
             const canAffordBid =
-              appeal.allowed &&
-              getTransferBudget(career) >=
-                (unlistedDeal === "loan" ? loanFee : buyerFee);
+              appeal.allowed && getTransferBudget(career) >= buyerFee;
             return (
               <ManagerTransferPlayerCard
                 key={player.id}
@@ -1395,9 +1397,7 @@ export function ManagerTransfers({
                 listed={false}
                 fee={offerDealFee}
                 sellerListedFee={
-                  unlistedDeal === "permanent" && listedPrice < buyerFee
-                    ? listedPrice
-                    : undefined
+                  listedPrice < buyerFee ? listedPrice : undefined
                 }
                 wagePerYear={demand.wagePerYear}
                 yearsRequested={demand.yearsRequested}
@@ -1406,105 +1406,39 @@ export function ManagerTransfers({
               >
                 {isOffering ? (
                   <div className="space-y-2">
-                    {canLoanThisClub && (
-                      <DealTypeToggle value={dealType} onChange={setDealType} />
-                    )}
-                    {unlistedDeal === "loan" ? (
-                      <>
-                        <p className={`${TYPO.bodySm} text-pitch-400`}>
-                          Season loan · no fee · set your wage %
-                        </p>
-                        <label className={TYPO.bodySm}>
-                          <span className="text-pitch-500">
-                            Your wage share (%)
-                          </span>
-                          <input
-                            type="number"
-                            min={0}
-                            max={100}
-                            step={5}
-                            value={offerLoanSharePct}
-                            onChange={(e) =>
-                              setOfferLoanSharePct(Number(e.target.value))
-                            }
-                            onBlur={() =>
-                              setOfferLoanSharePct(
-                                normalizeLoanWageSharePct(offerLoanSharePct)
-                              )
-                            }
-                            className={`${FILTER.input} mt-1`}
-                          />
-                          <span className={`mt-1 block ${TYPO.meta} text-pitch-500`}>
-                            You pay{" "}
-                            {formatWage(
-                              Math.round(
-                                demand.wagePerYear *
-                                  (normalizeLoanWageSharePct(offerLoanSharePct) /
-                                    100)
-                              )
-                            )}
-                            /yr
-                          </span>
-                        </label>
-                      </>
-                    ) : (
-                      <label className={TYPO.bodySm}>
-                        <span className="text-pitch-500">Your bid</span>
-                        <input
-                          type="number"
-                          step={5000}
-                          value={offerFee}
-                          onChange={(e) => setOfferFee(Number(e.target.value))}
-                          className={`${FILTER.input} mt-1`}
-                        />
-                      </label>
-                    )}
+                    <p className={`${TYPO.bodySm} text-pitch-400`}>
+                      Bid fee and wages to tempt an unlisted sale.
+                    </p>
+                    <label className={TYPO.bodySm}>
+                      <span className="text-pitch-500">Your bid</span>
+                      <input
+                        type="number"
+                        step={5000}
+                        value={offerFee}
+                        onChange={(e) => setOfferFee(Number(e.target.value))}
+                        className={`${FILTER.input} mt-1`}
+                      />
+                    </label>
                     <GameButton
                       variant="theme"
                       size="sm"
                       fullWidth
-                      disabled={
-                        !appeal.allowed ||
-                        (unlistedDeal === "loan" &&
-                          !canAffordAdditionalWage(
-                            career,
-                            Math.round(
-                              demand.wagePerYear *
-                                (normalizeLoanWageSharePct(offerLoanSharePct) /
-                                  100)
-                            )
-                          ))
-                      }
+                      disabled={!appeal.allowed}
                       onClick={() =>
                         submitTransferOffer(
                           player.id,
                           club,
                           false,
-                          unlistedDeal === "loan"
-                            ? {
-                                transferFee: loanFee,
-                                wagePerYear: demand.wagePerYear,
-                                yearsRequested: 1,
-                                loanUserWageShare:
-                                  normalizeLoanWageSharePct(offerLoanSharePct) /
-                                  100,
-                              }
-                            : undefined,
-                          unlistedDeal
+                          undefined,
+                          "permanent"
                         )
                       }
                     >
-                      Submit{" "}
-                      {unlistedDeal === "loan"
-                        ? `${normalizeLoanWageSharePct(offerLoanSharePct)}% loan`
-                        : `${formatWage(offerFee)} offer`}
+                      Submit {formatWage(offerFee)} offer
                     </GameButton>
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    {canLoanThisClub && (
-                      <DealTypeToggle value={dealType} onChange={setDealType} />
-                    )}
                     <GameButton
                       variant="secondary"
                       size="sm"
@@ -1514,13 +1448,10 @@ export function ManagerTransfers({
                         playUiClick();
                         setOfferPlayerId(player.id);
                         setOfferFee(buyerFee);
-                        setOfferLoanSharePct(50);
-                        if (!canLoanThisClub) setDealType("permanent");
+                        setDealType("permanent");
                       }}
                     >
-                      {unlistedDeal === "loan"
-                        ? "Negotiate loan"
-                        : `Make offer — from ${formatWage(buyerFee)}`}
+                      Make offer — from {formatWage(buyerFee)}
                     </GameButton>
                   </div>
                 )}
@@ -1573,6 +1504,7 @@ export function ManagerTransfers({
                   player={player}
                   club={club}
                   listed={listed}
+                  listingType={listingType}
                   freeAgent={freeAgent}
                   fee={fee}
                   wagePerYear={demand.wagePerYear}

@@ -16,6 +16,7 @@ import { formatValue } from "@/lib/players";
 import { formatPlayerAge } from "@/lib/players/player-age";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Player } from "@/lib/types";
+import type { TransferListingType } from "@/lib/manager/types";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -40,6 +41,8 @@ interface ManagerTransferPlayerCardProps {
   player: Player;
   club: string;
   listed: boolean;
+  /** When listed for loan / both, show a Loan market pill. */
+  listingType?: TransferListingType | null;
   freeAgent?: boolean;
   freeAgentSourceLabel?: string;
   /** Manager-mode age (career season). Prefer over real-calendar age. */
@@ -58,6 +61,7 @@ export function ManagerTransferPlayerCard({
   player,
   club,
   listed,
+  listingType,
   freeAgent = false,
   freeAgentSourceLabel,
   ageDisplay,
@@ -74,6 +78,16 @@ export function ManagerTransferPlayerCard({
   const accent = freeAgent ? undefined : getClubIndicatorColor(club);
   const ageValue =
     ageDisplay != null ? String(ageDisplay) : formatPlayerAge(player);
+  const showsLoan =
+    listingType === "loan" || listingType === "both";
+  const listingLabel =
+    listingType === "loan"
+      ? "Loan"
+      : listingType === "both"
+        ? "Listed · Loan"
+        : listed
+          ? "Listed"
+          : "Unlisted";
 
   return (
     <ManagerSectionCard
@@ -96,12 +110,14 @@ export function ManagerTransferPlayerCard({
               {!freeAgent && (
                 <span
                   className={`inline-flex rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                    listed
-                      ? "border-sky-400/40 bg-sky-400/12 text-sky-300"
-                      : "border-amber-400/40 bg-amber-400/10 text-amber-300"
+                    showsLoan
+                      ? "border-violet-400/40 bg-violet-400/12 text-violet-300"
+                      : listed
+                        ? "border-sky-400/40 bg-sky-400/12 text-sky-300"
+                        : "border-amber-400/40 bg-amber-400/10 text-amber-300"
                   }`}
                 >
-                  {listed ? "Listed" : "Unlisted"}
+                  {listingLabel}
                 </span>
               )}
               {onToggleWatch ? (
@@ -172,15 +188,23 @@ export function ManagerTransferPlayerCard({
           label={
             freeAgent
               ? "Transfer fee"
-              : listed
-                ? sellerListedFee != null
-                  ? "Your fee"
-                  : "Asking price"
-                : sellerListedFee != null
-                  ? "Your bid"
-                  : "Est. fee"
+              : showsLoan && listingType === "loan"
+                ? "Loan fee"
+                : listed
+                  ? sellerListedFee != null
+                    ? "Your fee"
+                    : "Asking price"
+                  : sellerListedFee != null
+                    ? "Your bid"
+                    : "Est. fee"
           }
-          value={freeAgent || fee <= 0 ? "Free" : formatWage(fee)}
+          value={
+            freeAgent || fee <= 0
+              ? showsLoan && listingType === "loan"
+                ? "Season loan"
+                : "Free"
+              : formatWage(fee)
+          }
           tone="gold"
         />
         <ManagerStat

@@ -40,6 +40,9 @@ import { getCareerClubStars } from "./managerDifficulty";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import {
   canUserLoanOutPlayers,
+  completeOutgoingLoan,
+  getActiveLoan,
+  getLoanOutDestinationClubs,
   isPlayerAwayOnLoan,
   isPlayerLoanedIn,
 } from "./managerLoans";
@@ -554,9 +557,14 @@ export function listPlayerForTransferWithOffers(
   if (listingAllowsLoan(listingType) && !canUserLoanOutPlayers(career)) {
     listingType = "permanent";
   }
-  return generateIncomingTransferOffers(
-    listPlayerForTransfer(career, playerId, askingPrice, listingType)
-  );
+  let next = listPlayerForTransfer(career, playerId, askingPrice, listingType);
+  if (listingAllowsPermanent(listingType)) {
+    next = generateIncomingTransferOffers(next);
+  }
+  if (listingAllowsLoan(listingType)) {
+    next = generateIncomingLoanOffers(next);
+  }
+  return next;
 }
 
 export function listPlayerForLoanWithOffers(
@@ -729,6 +737,13 @@ export function evaluateBuyOffer(
     return { accepted: false, reason: "Player is no longer at that club." };
   }
 
+  if (getActiveLoan(career, playerId)) {
+    return {
+      accepted: false,
+      reason: "Player is currently on loan and cannot be signed permanently.",
+    };
+  }
+
   if (
     !listed &&
     getProtectedTransferPlayerIds(career, club).has(playerId)
@@ -814,6 +829,11 @@ export function completePlayerPurchase(
       ...offer,
       transferFee: 0,
     });
+  }
+
+  // Permanent buys must not leave a stale active loan (or buy your own loaned-out player).
+  if (getActiveLoan(career, playerId)) {
+    return career;
   }
 
   const sellerClub = findPlayerLeagueClub(career, playerId);
@@ -918,6 +938,8 @@ export function generateIncomingTransferOffers(
 
   for (const [playerId, status] of Object.entries(career.playerTransferStatus)) {
     if (!status.listed) continue;
+    // Loan-only listings get Championship loan approaches, not permanent sales.
+    if (!listingAllowsPermanent(status.listingType)) continue;
     // Parent club owns loaned-out players; loaned-in players are not yours to sell.
     if (isPlayerAwayOnLoan(career, playerId) || isPlayerLoanedIn(career, playerId)) {
       continue;
@@ -1001,6 +1023,85 @@ export function generateIncomingTransferOffers(
     next = recordTransferOfferDiagnostic(next, diagnostic);
   }
   return next;
+}
+
+/**
+ * Championship AI clubs approach Super League players listed for loan.
+ * Accepting completes an outgoing season loan (not a permanent sale).
+ */
+export function generateIncomingLoanOffers(
+  career: ManagerCareer
+): ManagerCareer {
+  if (!canUserLoanOutPlayers(career)) return career;
+
+  const rng = seedrandom(`${career.seed}-loan-offers-w${career.gameWeek}`);
+  const messages = [...career.inboxMessages];
+  const destinations = getLoanOutDestinationClubs(career);
+  if (destinations.length === 0) return career;
+
+  const pendingTransferMail = messages.filter(
+    (m) =>
+      !m.resolved && (m.type === "transfer" || m.type === "transfer_offer_in")
+  ).length;
+  if (pendingTransferMail >= 5) return career;
+
+  for (const [playerId, status] of Object.entries(career.playerTransferStatus)) {
+    if (!status.listed || !listingAllowsLoan(status.listingType)) continue;
+    if (isPlayerAwayOnLoan(career, playerId) || isPlayerLoanedIn(career, playerId)) {
+      continue;
+    }
+    if (messages.some((m) => !m.resolved && m.playerId === playerId)) continue;
+    if (
+      messages.filter(
+        (m) =>
+          !m.resolved &&
+          (m.type === "transfer" || m.type === "transfer_offer_in")
+      ).length >= 5
+    ) {
+      break;
+    }
+
+    const player = getPlayerById(playerId);
+    if (!player) continue;
+    if (!career.squad.some((p) => p.playerId === playerId)) continue;
+
+    // Loan interest is more common than permanent bids — listing is already a signal.
+    let chance = 0.55;
+    if (player.peakRating >= 84) chance -= 0.12;
+    if (player.peakRating < 78) chance += 0.1;
+    if (rng() > chance) continue;
+
+    const loanee = destinations[Math.floor(rng() * destinations.length)]!;
+    if (isSameManagerClub(loanee, career.club)) continue;
+
+    // Parent keeps 40–60% of wages on AI approaches.
+    const parentWageShare = Math.round((0.4 + rng() * 0.2) * 20) / 20;
+    const parentPct = Math.round(parentWageShare * 100);
+    const requestId = `loan-offer-${playerId}-${career.gameWeek}-${Math.floor(rng() * 10000)}`;
+
+    messages.unshift({
+      id: requestId,
+      type: "transfer",
+      title: "Loan Offer",
+      body: `${loanee} want ${player.name} on loan until the end of the season. You would keep paying ${parentPct}% of wages. No loan fee.`,
+      week: career.gameWeek,
+      season: career.seasonYear,
+      gameWeek: career.gameWeek,
+      createdAt: new Date().toISOString(),
+      read: false,
+      resolved: false,
+      playerId,
+      playerName: player.name,
+      offerClub: loanee,
+      offerAmount: 0,
+      askingPrice: 0,
+      loanOffer: true,
+      loanParentWageShare: parentWageShare,
+      offerCategory: "senior-listed",
+    });
+  }
+
+  return { ...career, inboxMessages: messages };
 }
 
 const SENIOR_APPROACH_SEASON_WEEKS = 27;
@@ -1268,7 +1369,15 @@ export function acceptIncomingOffer(
   messageId: string
 ): { ok: boolean; career?: ManagerCareer; error?: string } {
   const msg = career.inboxMessages.find((m) => m.id === messageId);
-  if (!msg || msg.resolved || !msg.playerId || !msg.offerAmount) {
+  if (!msg || msg.resolved || !msg.playerId) {
+    return { ok: false, error: "Offer not found" };
+  }
+
+  if (msg.loanOffer) {
+    return acceptIncomingLoanOffer(career, messageId);
+  }
+
+  if (msg.offerAmount == null || msg.offerAmount < 0) {
     return { ok: false, error: "Offer not found" };
   }
 
@@ -1370,6 +1479,69 @@ export function acceptIncomingOffer(
   };
 }
 
+/** Accept a Championship loan approach for a loan-listed squad player. */
+export function acceptIncomingLoanOffer(
+  career: ManagerCareer,
+  messageId: string
+): { ok: boolean; career?: ManagerCareer; error?: string } {
+  const msg = career.inboxMessages.find((m) => m.id === messageId);
+  if (!msg || msg.resolved || !msg.playerId || !msg.loanOffer || !msg.offerClub) {
+    return { ok: false, error: "Offer not found" };
+  }
+
+  const playerId = msg.playerId;
+  if (isPlayerAwayOnLoan(career, playerId) || getActiveLoan(career, playerId)) {
+    return {
+      ok: false,
+      error: "Player is already on loan.",
+    };
+  }
+  if (isPlayerLoanedIn(career, playerId)) {
+    return {
+      ok: false,
+      error: "Cannot loan out a loaned-in player.",
+    };
+  }
+  if (!career.squad.some((p) => p.playerId === playerId)) {
+    return { ok: false, error: "Player is no longer at your club" };
+  }
+
+  const status = career.playerTransferStatus[playerId];
+  if (!status?.listed || !listingAllowsLoan(status.listingType)) {
+    return {
+      ok: false,
+      error: "Player is no longer listed for loan.",
+    };
+  }
+
+  const parentWageShare =
+    typeof msg.loanParentWageShare === "number"
+      ? msg.loanParentWageShare
+      : 0.5;
+
+  let next = completeOutgoingLoan(career, playerId, msg.offerClub, {
+    loanFee: Math.max(0, msg.offerAmount ?? 0),
+    parentWageShare,
+    canRecall: true,
+  });
+
+  if (getActiveLoan(next, playerId) == null) {
+    return {
+      ok: false,
+      error: "Could not complete this loan.",
+    };
+  }
+
+  next = {
+    ...next,
+    inboxMessages: next.inboxMessages.map((m) =>
+      m.id === messageId ? { ...m, resolved: true, read: true } : m
+    ),
+  };
+
+  return { ok: true, career: next };
+}
+
 export function rejectIncomingOffer(
   career: ManagerCareer,
   messageId: string
@@ -1399,6 +1571,12 @@ export function negotiateIncomingOffer(
     return {
       ok: false,
       feedback: "Cannot sell a loaned-in player.",
+    };
+  }
+  if (msg.loanOffer) {
+    return {
+      ok: false,
+      feedback: "Loan approaches cannot be renegotiated — accept or reject.",
     };
   }
 

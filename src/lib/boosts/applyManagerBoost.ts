@@ -11,6 +11,7 @@ import { pushInboxMessage } from "../manager/managerInbox";
 import { getPlayerPotential } from "../manager/managerPlayerDevelopment";
 import { getManagerPlayer } from "../manager/managerPlayers";
 import { managerClubSeasonKey } from "../manager/managerClubChange";
+import { invalidateBoardSeasonEvaluation } from "../manager/boardSeasonEvaluation";
 import { generateReserveYouthContract } from "../manager/managerReserveContracts";
 import { createYouthProspect } from "../manager/managerReserves";
 import type {
@@ -356,6 +357,9 @@ function applyNoSacking(
     },
     updatedAt: new Date().toISOString(),
   };
+
+  // Drop stale sack eval so season review re-runs with protection.
+  next = invalidateBoardSeasonEvaluation(next);
 
   next = pushInboxMessage(next, {
     id: `boost-no-sacking-${usageId}`,

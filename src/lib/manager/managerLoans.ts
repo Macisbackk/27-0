@@ -37,6 +37,13 @@ import {
   resolveClubCompetitionForCareer,
 } from "./leagueMembership";
 
+function listingAllowsLoanType(
+  listingType?: "permanent" | "loan" | "both" | null
+): boolean {
+  const t = listingType ?? "permanent";
+  return t === "loan" || t === "both";
+}
+
 export interface LoanDealOpts {
   loanFee: number;
   parentWageShare?: number;
@@ -336,6 +343,11 @@ export function completeIncomingLoan(
   const sellerClub = findPlayerLeagueClub(career, playerId);
   if (!sellerClub || !isSameManagerClub(sellerClub, fromClub)) return career;
   if (isSameManagerClub(fromClub, career.club)) return career;
+
+  const listing = career.leagueListedPlayers.find((row) => row.playerId === playerId);
+  if (!listing || !listingAllowsLoanType(listing.listingType)) {
+    return career;
+  }
 
   const parentWageShare = clampWageShare(opts.parentWageShare ?? 0.5);
   const loaneeWageShare = 1 - parentWageShare;

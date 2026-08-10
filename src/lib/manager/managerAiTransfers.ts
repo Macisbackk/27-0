@@ -112,6 +112,9 @@ export function maybeGenerateAiTransfers(
   const playerId = pool[Math.floor(rng() * pool.length)]!;
   const player = getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
   if (!player) return career;
+  if ((career.activeLoans ?? []).some((loan) => loan.playerId === playerId)) {
+    return career;
+  }
 
   const listed = career.leagueListedPlayers.some((l) => l.playerId === playerId);
   const fee = Math.round(

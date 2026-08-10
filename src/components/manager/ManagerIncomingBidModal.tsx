@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerTransferPlayerCard } from "@/components/manager/ManagerTransferPlayerCard";
 import { SPACING } from "@/lib/ui/design-system";
@@ -39,12 +39,18 @@ export function ManagerIncomingBidModal({
     : undefined;
   const buyer = offer.offerClub ?? "A rival club";
   const fee = offer.offerAmount ?? 0;
+  const loanOffer = Boolean(offer.loanOffer);
+  const parentWageShare =
+    typeof offer.loanParentWageShare === "number"
+      ? offer.loanParentWageShare
+      : 0.5;
   const listed =
     !offer.unsolicited &&
     !offer.reserveOffer &&
     Boolean(
       offer.playerId &&
-        career.leagueListedPlayers.some((row) => row.playerId === offer.playerId)
+        (career.playerTransferStatus[offer.playerId]?.listed ||
+          career.leagueListedPlayers.some((row) => row.playerId === offer.playerId))
     );
 
   const display = useMemo(() => {
@@ -67,12 +73,8 @@ export function ManagerIncomingBidModal({
     return null;
   }, [senior, reserve, contract]);
 
-  const handleDismiss = useCallback(() => {
-    playUiClick();
-    onReject();
-  }, [onReject]);
-
-  const panelRef = useModalA11y(true, handleDismiss);
+  // Escape must not reject — advance week stays blocked until Accept/Reject.
+  const panelRef = useModalA11y(true, () => {});
 
   useEffect(() => {
     playTransferOffer();
@@ -82,19 +84,27 @@ export function ManagerIncomingBidModal({
 
   const pill = offer.reserveOffer
     ? "Reserve squad offer"
-    : listed
-      ? "Senior squad offer · Listed"
-      : "Senior squad offer";
+    : loanOffer
+      ? listed
+        ? "Loan approach · Listed"
+        : "Loan approach"
+      : listed
+        ? "Senior squad offer · Listed"
+        : "Senior squad offer";
   const headline = offer.reserveOffer
     ? "Reserve Transfer Offer"
-    : listed
-      ? "Senior Transfer Offer"
-      : "Senior Transfer Approach";
+    : loanOffer
+      ? "Loan Offer"
+      : listed
+        ? "Senior Transfer Offer"
+        : "Senior Transfer Approach";
   const intro = offer.reserveOffer
     ? `${buyer} have bid ${formatWage(fee)} for reserve ${display.name}.`
-    : listed
-      ? `${buyer} have offered ${formatWage(fee)} for senior player ${display.name}.`
-      : `${buyer} want to sign senior player ${display.name} without them being listed for transfer.`;
+    : loanOffer
+      ? `${buyer} want ${display.name} on loan until the end of the season. You keep paying ${Math.round(parentWageShare * 100)}% of wages.`
+      : listed
+        ? `${buyer} have offered ${formatWage(fee)} for senior player ${display.name}.`
+        : `${buyer} want to sign senior player ${display.name} without them being listed for transfer.`;
 
   return (
     <div
@@ -122,11 +132,17 @@ export function ManagerIncomingBidModal({
             player={senior}
             club={career.club}
             listed={listed}
+            listingType={loanOffer ? "loan" : listed ? "permanent" : undefined}
             fee={fee}
             wagePerYear={display.wagePerYear}
           >
             <p className={`${TYPO.bodySm} text-pitch-400`}>
-              {listed && offer.askingPrice != null ? (
+              {loanOffer ? (
+                <>
+                  Season loan · no permanent fee. Accepting sends {display.name}{" "}
+                  to {buyer} until season end.
+                </>
+              ) : listed && offer.askingPrice != null ? (
                 <>
                   Asking price{" "}
                   <span className="font-semibold text-pitch-200">
@@ -175,7 +191,9 @@ export function ManagerIncomingBidModal({
               onAccept();
             }}
           >
-            Accept {formatWage(fee)}
+            {loanOffer
+              ? "Accept loan"
+              : `Accept ${formatWage(fee)}`}
           </GameButton>
           <GameButton
             variant="secondary"

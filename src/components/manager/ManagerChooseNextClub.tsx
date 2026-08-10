@@ -6,7 +6,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { formatSquadRatingStars } from "@/lib/manager/club-config";
-import { listContinuationClubs } from "@/lib/manager/managerClubChange";
+import { listSackJobOffers } from "@/lib/manager/managerClubChange";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { playUiClick } from "@/lib/sound";
 import {
@@ -27,7 +27,7 @@ export function ManagerChooseNextClub({
   onBack,
   busy = false,
 }: ManagerChooseNextClubProps) {
-  const clubs = useMemo(() => listContinuationClubs(career), [career]);
+  const clubs = useMemo(() => listSackJobOffers(career), [career]);
   const [selected, setSelected] = useState<string | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
@@ -40,85 +40,115 @@ export function ManagerChooseNextClub({
       </GameButton>
 
       <ManagerSectionCard variant="featured">
-        <p className={`${TYPO.sectionLabel} text-center`}>New Opportunity</p>
-        <h1 className={`mt-2 text-center ${TYPO.pageTitle}`}>Choose Your Next Club</h1>
+        <p className={`${TYPO.sectionLabel} text-center`}>Job offers</p>
+        <h1 className={`mt-2 text-center ${TYPO.pageTitle}`}>
+          Choose your next club
+        </h1>
         <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-300`}>
-          The {career.club} board have released you. Take over another Super League
-          club and continue your career in season {career.seasonYear}.
+          {career.club} released you. A few lower-status clubs want a manager —
+          Super League and Championship.
         </p>
       </ManagerSectionCard>
 
-      <ul className={`${SPACING.stackSm}`}>
-        {clubs.map((club) => (
-          <li key={club.club}>
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => {
-                playUiClick();
-                setSelected(club.club);
-                setConfirmOpen(true);
-              }}
-              className={`${CARD.base} ${CARD.interactive} flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left sm:gap-3 sm:px-3 disabled:pointer-events-none disabled:opacity-50`}
-            >
-              <span
-                className="w-1 shrink-0 self-stretch rounded-full"
-                style={{ backgroundColor: club.primaryColor }}
-                aria-hidden
-              />
-              <ClubDualSwatch
-                club={club.club}
-                size="md"
-                primary={club.primaryColor}
-                secondary={club.secondaryColor}
-                className="hidden sm:flex"
-              />
-              <ClubDualSwatch
-                club={club.club}
-                size="sm"
-                primary={club.primaryColor}
-                secondary={club.secondaryColor}
-                className="sm:hidden"
-              />
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-2">
-                  <p className="truncate text-sm font-semibold text-white">
-                    {club.club}
+      {clubs.length === 0 ? (
+        <ManagerSectionCard>
+          <p className={`${TYPO.bodySm} text-pitch-300`}>
+            No clubs available right now. Go back and try again.
+          </p>
+        </ManagerSectionCard>
+      ) : (
+        <ul className={`${SPACING.stackSm}`}>
+          {clubs.map((club) => (
+            <li key={club.club}>
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => {
+                  playUiClick();
+                  setSelected(club.club);
+                  setConfirmOpen(true);
+                }}
+                className={`${CARD.base} ${CARD.interactive} flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left sm:gap-3 sm:px-3 disabled:pointer-events-none disabled:opacity-50`}
+              >
+                <span
+                  className="w-1 shrink-0 self-stretch rounded-full"
+                  style={{ backgroundColor: club.primaryColor }}
+                  aria-hidden
+                />
+                <ClubDualSwatch
+                  club={club.club}
+                  size="md"
+                  primary={club.primaryColor}
+                  secondary={club.secondaryColor}
+                  className="hidden sm:flex"
+                />
+                <ClubDualSwatch
+                  club={club.club}
+                  size="sm"
+                  primary={club.primaryColor}
+                  secondary={club.secondaryColor}
+                  className="sm:hidden"
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="truncate text-sm font-semibold text-white">
+                      {club.club}
+                    </p>
+                    <span className="shrink-0 font-mono text-[11px] tracking-wide text-accent-gold">
+                      {formatSquadRatingStars(
+                        club.difficulty,
+                        club.competition
+                      )}
+                    </span>
+                  </div>
+                  <p className="truncate text-xs text-pitch-400">
+                    {club.competition === "championship"
+                      ? "Championship"
+                      : "Super League"}
+                    <span className="text-pitch-600"> · </span>
+                    {club.boardExpectation}
+                    <span className="text-pitch-600"> · </span>
+                    £{(club.budget / 1000).toFixed(0)}k
                   </p>
-                  <span className="shrink-0 font-mono text-[11px] tracking-wide text-accent-gold">
-                    {formatSquadRatingStars(club.difficulty)}
-                  </span>
                 </div>
-                <p className="truncate text-xs text-pitch-400">
-                  {club.boardExpectation}
-                  <span className="text-pitch-600"> · </span>
-                  Table {club.position}
-                  <span className="text-pitch-600"> · </span>
-                  £{(club.budget / 1000).toFixed(0)}k
-                </p>
-              </div>
-              <div className="shrink-0 text-right">
-                <p className="text-sm font-bold leading-none text-theme-primary">
-                  {club.squadRating}
-                </p>
-                <p className="mt-0.5 text-[10px] uppercase tracking-wide text-pitch-500">
-                  OVR
-                </p>
-              </div>
-            </button>
-          </li>
-        ))}
-      </ul>
+                <div className="shrink-0 text-right">
+                  <p className="text-sm font-bold leading-none text-theme-primary">
+                    {club.squadRating}
+                  </p>
+                  <p className="mt-0.5 text-[10px] uppercase tracking-wide text-pitch-500">
+                    OVR
+                  </p>
+                </div>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
 
       {confirmOpen && selectedClub && (
-        <ManagerSectionCard title="Confirm Take Over" accent="primary">
+        <ManagerSectionCard title="Confirm take over" accent="primary">
           <p className={`${TYPO.bodySm} text-pitch-300`}>
-            Take over {selectedClub.club}? You will inherit their current squad and
-            remaining season {career.seasonYear} fixtures.
+            Take over {selectedClub.club}? You inherit their squad for season{" "}
+            {career.seasonYear + (career.isSeasonComplete ? 1 : 0)}.
           </p>
           <div className={`mt-3 ${SPACING.stackMd}`}>
-            <ManagerInfoRow label="Board target" value={selectedClub.boardExpectation} />
-            <ManagerInfoRow label="Squad OVR" value={`${selectedClub.squadRating}`} tone="primary" />
+            <ManagerInfoRow
+              label="League"
+              value={
+                selectedClub.competition === "championship"
+                  ? "Championship"
+                  : "Super League"
+              }
+            />
+            <ManagerInfoRow
+              label="Board target"
+              value={selectedClub.boardExpectation}
+            />
+            <ManagerInfoRow
+              label="Squad OVR"
+              value={`${selectedClub.squadRating}`}
+              tone="primary"
+            />
             <ManagerInfoRow
               label="Transfer pool"
               value={`£${selectedClub.budget.toLocaleString()}`}
@@ -134,7 +164,7 @@ export function ManagerChooseNextClub({
                 onTakeOver(selectedClub.club);
               }}
             >
-              Confirm Take Over Club
+              Confirm take over
             </GameButton>
             <GameButton
               variant="secondary"

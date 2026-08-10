@@ -786,6 +786,10 @@ export interface InboxMessage {
   unsolicited?: boolean;
   /** Championship-club bid for a reserve-squad player (accept moves them out of reserves). */
   reserveOffer?: boolean;
+  /** Championship club requesting a season loan (not a permanent sale). */
+  loanOffer?: boolean;
+  /** Parent club wage share (0–1) proposed on a loanOffer. */
+  loanParentWageShare?: number;
   /**
    * Market pool this offer belongs to. Senior approaches never share a season
    * budget with reserve / Championship bids.

@@ -1,6 +1,8 @@
+import seedrandom from "seedrandom";
 import { CHALLENGE_CUP_SCHEMA_VERSION } from "./championship/championshipChallengeCup";
 import {
   buildDefaultLineup,
+  CHAMPIONSHIP_EXPECTATION_LABELS,
   getManagerClubConfig,
   MANAGER_EXPECTATION_LABELS,
   type ManagerClubExpectationTier,
@@ -31,10 +33,14 @@ import {
   initLeagueClubReserveCounts,
 } from "./managerReserves";
 import {
+  getCareerChampionshipClubs,
+  getCareerSuperLeagueClubs,
+  getUserCompetitionId,
   getUserLeagueClubs,
-  getUserSeasonGames,
   isUserInChampionship,
+  type ManagerCompetitionId,
 } from "./leagueMembership";
+import { getCareerClubStars } from "./managerDifficulty";
 import type {
   ManagerCareer,
   ManagerCareerHistoryEntry,
@@ -44,6 +50,8 @@ import type {
 import { normalizeMatchdayLineup } from "./matchday-lineup";
 
 export const MANAGER_CAREER_WORLD_SCHEMA_VERSION = 2;
+
+const SACK_OFFER_COUNT = 3;
 
 export function managerClubSeasonKey(career: ManagerCareer): string {
   return `${career.club}-${career.seasonYear}`;
@@ -114,18 +122,48 @@ function softenExpectationTier(
   return map[tier];
 }
 
+function expectationLabelsForCompetition(competition: ManagerCompetitionId) {
+  return competition === "championship"
+    ? CHAMPIONSHIP_EXPECTATION_LABELS
+    : MANAGER_EXPECTATION_LABELS;
+}
+
 function boardExpectationForTakeover(
   career: ManagerCareer,
   club: string,
   gameWeek: number
 ): string {
   const config = getManagerClubConfig(club);
-  const seasonGames = getUserSeasonGames(career);
-  if (gameWeek < Math.floor(seasonGames * 0.65)) {
+  const competition: ManagerCompetitionId =
+    config.competition === "championship" ? "championship" : "super-league";
+  const labels = expectationLabelsForCompetition(competition);
+  const seasonGames =
+    competition === "championship"
+      ? getCareerChampionshipClubs(career).length * 2 - 2
+      : getUserLeagueClubs(career).length * 2 - 2;
+  if (gameWeek < Math.floor(Math.max(1, seasonGames) * 0.65)) {
     return config.expectation;
   }
   const softerTier = softenExpectationTier(config.expectationTier);
-  return MANAGER_EXPECTATION_LABELS[softerTier];
+  return labels[softerTier];
+}
+
+/** Unified prestige so SL clubs rank above Championship clubs. */
+export function clubPrestigeRank(
+  club: string,
+  competitionHint?: ManagerCompetitionId
+): number {
+  const config = getManagerClubConfig(club);
+  const competition =
+    competitionHint ??
+    (config.competition === "championship" ? "championship" : "super-league");
+  const stars = Math.max(1, Math.min(5, config.difficulty));
+  return competition === "championship" ? stars : stars + 3;
+}
+
+export function careerPrestigeRank(career: ManagerCareer): number {
+  const stars = getCareerClubStars(career);
+  return isUserInChampionship(career) ? stars : stars + 3;
 }
 
 export interface ContinuationClubSummary {
@@ -137,31 +175,117 @@ export interface ContinuationClubSummary {
   difficulty: number;
   primaryColor: string;
   secondaryColor: string;
+  competition: ManagerCompetitionId;
+  prestigeRank: number;
 }
 
+function summarizeContinuationClub(
+  career: ManagerCareer,
+  club: string,
+  competition: ManagerCompetitionId
+): ContinuationClubSummary {
+  const config = getManagerClubConfig(club);
+  const table =
+    competition === getUserCompetitionId(career)
+      ? career.leagueTable
+      : competition === "championship"
+        ? career.championshipCompetition?.standings.map((s) => ({
+            team: s.team,
+            position: s.position,
+          }))
+        : career.aiSuperLeagueStandings?.map((s) => ({
+            team: s.team,
+            position: s.position,
+          }));
+  const row = table?.find((r) => r.team === club);
+  return {
+    club,
+    position: row?.position ?? 99,
+    squadRating: config.squadRating,
+    budget: career.clubFunds[club] ?? config.budget,
+    boardExpectation: boardExpectationForTakeover(
+      career,
+      club,
+      career.gameWeek
+    ),
+    difficulty: config.difficulty,
+    primaryColor: config.primaryColor,
+    secondaryColor: config.secondaryColor,
+    competition,
+    prestigeRank: clubPrestigeRank(club, competition),
+  };
+}
+
+/** @deprecated Prefer listSackJobOffers for post-sack hiring. */
 export function listContinuationClubs(
   career: ManagerCareer
 ): ContinuationClubSummary[] {
+  const competition = getUserCompetitionId(career);
   return getUserLeagueClubs(career)
     .filter((club) => club !== career.club)
-    .map((club) => {
-      const config = getManagerClubConfig(club);
-      const row = career.leagueTable.find((r) => r.team === club);
-      return {
-        club,
-        position: row?.position ?? 8,
-        squadRating: config.squadRating,
-        budget: career.clubFunds[club] ?? config.budget,
-        boardExpectation: boardExpectationForTakeover(
-          career,
-          club,
-          career.gameWeek
-        ),
-        difficulty: config.difficulty,
-        primaryColor: config.primaryColor,
-        secondaryColor: config.secondaryColor,
-      };
-    });
+    .map((club) => summarizeContinuationClub(career, club, competition))
+    .sort((a, b) => a.prestigeRank - b.prestigeRank || a.position - b.position);
+}
+
+/**
+ * Post-sack job market: a few worse clubs only (SL + Championship),
+ * never a free pick of peers at the same level or above.
+ */
+export function listSackJobOffers(
+  career: ManagerCareer,
+  count = SACK_OFFER_COUNT
+): ContinuationClubSummary[] {
+  const currentPrestige = careerPrestigeRank(career);
+  const currentClub = career.club;
+  const slClubs = getCareerSuperLeagueClubs(career);
+  const champClubs = getCareerChampionshipClubs(career);
+
+  const pool: ContinuationClubSummary[] = [
+    ...slClubs.map((club) =>
+      summarizeContinuationClub(career, club, "super-league")
+    ),
+    ...champClubs.map((club) =>
+      summarizeContinuationClub(career, club, "championship")
+    ),
+  ].filter((row) => row.club !== currentClub);
+
+  const worse = pool.filter((row) => row.prestigeRank < currentPrestige);
+  // Same prestige only if squad OVR is clearly weaker — never better clubs.
+  const sameTierWeaker = pool.filter(
+    (row) =>
+      row.prestigeRank === currentPrestige &&
+      row.squadRating < (getManagerClubConfig(currentClub).squadRating ?? 80)
+  );
+
+  const candidates =
+    worse.length >= count
+      ? worse
+      : [...worse, ...sameTierWeaker].slice(0, Math.max(count, worse.length));
+
+  const rng = seedrandom(
+    `${career.seed}-sack-offers-${career.seasonYear}-${career.club}-${currentPrestige}`
+  );
+  const shuffled = [...(candidates.length > 0 ? candidates : worse)];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    const tmp = shuffled[i]!;
+    shuffled[i] = shuffled[j]!;
+    shuffled[j] = tmp;
+  }
+
+  const preferred = shuffled.filter((row) => row.prestigeRank < currentPrestige);
+  const rest = shuffled.filter((row) => row.prestigeRank === currentPrestige);
+  const ordered = [...preferred, ...rest];
+  return ordered.slice(0, Math.min(count, ordered.length));
+}
+
+function resolveClubCompetitionInWorld(
+  career: ManagerCareer,
+  club: string
+): ManagerCompetitionId | null {
+  if (getCareerSuperLeagueClubs(career).includes(club)) return "super-league";
+  if (getCareerChampionshipClubs(career).includes(club)) return "championship";
+  return null;
 }
 
 function syncUserSquadToLeagueRoster(career: ManagerCareer): ManagerCareer {
@@ -211,8 +335,8 @@ export function takeOverClub(
   reason: "sacked" | "resigned" | "club-change" = "club-change"
 ): ManagerCareer {
   if (newClub === career.club) return career;
-  const leagueClubs = getUserLeagueClubs(career);
-  if (!leagueClubs.includes(newClub)) {
+  const targetCompetition = resolveClubCompetitionInWorld(career, newClub);
+  if (!targetCompetition) {
     return career;
   }
 
@@ -228,7 +352,7 @@ export function takeOverClub(
   const fallbackIds =
     rosterIds.length > 0
       ? rosterIds
-      : isUserInChampionship(next)
+      : targetCompetition === "championship"
         ? []
         : [...getManagerRosterIds(newClub)];
   if (fallbackIds.length === 0) return career;
@@ -236,7 +360,7 @@ export function takeOverClub(
   const lineup =
     buildDefaultLineup(fallbackIds) ??
     buildDefaultLineup(
-      isUserInChampionship(next)
+      targetCompetition === "championship"
         ? fallbackIds
         : getManagerRosterIds(newClub)
     );
@@ -291,24 +415,33 @@ export function takeOverClub(
     ),
   };
 
+  const leagueClubs =
+    targetCompetition === "championship"
+      ? getCareerChampionshipClubs(next)
+      : getCareerSuperLeagueClubs(next);
+
   next = {
     ...next,
     club: newClub,
     userControlledClubId: newClub,
+    userCompetitionId: targetCompetition,
     boardExpectation: boardExpectationForTakeover(
       next,
       newClub,
       next.gameWeek
     ),
     difficulty: config.difficulty,
-    superLeagueDifficulty: isUserInChampionship(next)
-      ? (next.superLeagueDifficulty ?? 1)
-      : config.difficulty,
-    championshipDifficulty: isUserInChampionship(next)
-      ? Math.min(3, config.difficulty)
-      : (next.championshipDifficulty ?? Math.min(3, config.difficulty)),
+    superLeagueDifficulty:
+      targetCompetition === "super-league"
+        ? config.difficulty
+        : (next.superLeagueDifficulty ?? 1),
+    championshipDifficulty:
+      targetCompetition === "championship"
+        ? Math.min(3, config.difficulty)
+        : (next.championshipDifficulty ?? Math.min(3, config.difficulty)),
     prestigeMomentum: 0,
     clubStarRiseCelebratedAt: config.difficulty,
+    pendingClubStarRiseFrom: undefined,
     squad,
     contracts,
     reserves,
@@ -340,10 +473,7 @@ export function takeOverClub(
       club: newClub,
       squad,
     }),
-    leagueTable: next.leagueTable.map((row) => ({
-      ...row,
-      isUserTeam: row.team === newClub,
-    })),
+    leagueTable: buildLeagueTableFromMatches([], newClub, leagueClubs),
     leagueClubReserves: {
       ...(next.leagueClubReserves ?? {}),
       [newClub]: reserves.map((r) => ({ ...r })),
@@ -352,19 +482,48 @@ export function takeOverClub(
       ...(next.leagueClubReserveCounts ?? initLeagueClubReserveCounts()),
       [newClub]: reserves.length,
     },
+    // Clear end-of-season / previous-club celebration state for the new job.
+    isSeasonComplete: false,
+    matchWeekPhase: "ready_to_play",
+    pendingMatchWeekId: null,
+    boardSeasonEvaluation: undefined,
+    boardSeasonEvaluations: undefined,
+    playoffs: undefined,
+    playoffsIntroAcknowledged: false,
+    trophyCelebrationShown: false,
+    leagueWinnersCelebrationShown: false,
+    promotionCelebrationShown: false,
+    objectivesIntroShown: false,
     updatedAt: joinedDate,
   };
 
   next = reconcileLeagueRosters(next);
 
-  if (next.gameWeek === 0 && next.fixtures.length === 0) {
+  // Always rebuild the new club's remaining/new-season schedule when taking over
+  // at season start; mid-season same-league takeovers keep existing fixtures.
+  const rebuildSchedule =
+    next.gameWeek === 0 ||
+    targetCompetition !== getUserCompetitionId(career) ||
+    next.fixtures.length === 0;
+
+  if (rebuildSchedule) {
     const champComp = next.championshipCompetition;
     next = {
       ...next,
+      fixtures: [],
+      roundMatches: [],
+      currentRound: 0,
+      currentFixtureIndex: 0,
+      gameWeek: next.gameWeek === 0 ? 0 : next.gameWeek,
+      wins: next.gameWeek === 0 ? 0 : next.wins,
+      losses: next.gameWeek === 0 ? 0 : next.losses,
+      draws: next.gameWeek === 0 ? 0 : next.draws,
       schedule:
-        isUserInChampionship(next) && champComp
+        targetCompetition === "championship" && champComp
           ? buildManagerScheduleFromChampionship(newClub, champComp, next.seed)
-          : buildManagerSchedule(newClub, next.seed),
+          : buildManagerSchedule(newClub, next.seed, {
+              clubs: getCareerSuperLeagueClubs(next),
+            }),
       challengeCup: createManagerChallengeCup(
         next.seed,
         newClub,
@@ -374,7 +533,7 @@ export function takeOverClub(
         })
       ),
       challengeCupSchemaVersion: CHALLENGE_CUP_SCHEMA_VERSION,
-      leagueTable: buildLeagueTableFromMatches([], newClub),
+      leagueTable: buildLeagueTableFromMatches([], newClub, leagueClubs),
     };
   }
 
@@ -383,7 +542,7 @@ export function takeOverClub(
     id: `board-welcome-${newClub}-${next.seasonYear}-${next.gameWeek}`,
     type: "board",
     title: `Welcome to ${newClub}`,
-    body: `The ${newClub} board have appointed you with immediate effect. Target for the remainder of the season: ${next.boardExpectation}.`,
+    body: `The ${newClub} board have appointed you with immediate effect. Target: ${next.boardExpectation}.`,
     week: next.gameWeek,
     season: next.seasonYear,
     gameWeek: next.gameWeek,
