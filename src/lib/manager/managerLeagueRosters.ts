@@ -24,6 +24,7 @@ import {
 import {
   getCareerChampionshipClubs,
   getCareerSuperLeagueClubs,
+  isUserInChampionship,
   resolveClubCompetitionForCareer,
 } from "./leagueMembership";
 import type { ManagerCareer } from "./types";
@@ -187,16 +188,29 @@ export function getManagerOpponentPoolOptions(
   };
 }
 
-/** Stable lineup rating for a league club (development-aware). */
+/**
+ * Stable lineup rating for a league club (development-aware).
+ *
+ * Cup-tier dampening (baseStrength − 14) only applies when a Super League
+ * user faces Championship sides. Champ users vs Champ peers (including after
+ * relegation) stay on the peakRating scale so they match AI Champ fixtures.
+ * After promotion, isUserInChampionship is false → SL peers use raw peakRating.
+ */
 export function getLeagueClubStableRating(
   career: ManagerCareer,
   club: string
 ): number {
   const pool = getLeagueClubPlayerPool(career, club);
+  const champSide = isChampionshipSide(career, club);
+  const dampenChampForSlUser =
+    champSide && !isUserInChampionship(career);
+
   if (pool.length === 0) {
-    if (isChampionshipSide(career, club)) {
-      // Shared cup strength scale (already tier-offset below Super League).
-      return getClubBaseStrength(club);
+    if (champSide) {
+      // SL user: cup-tier scale. Champ user: raw Champ baseStrength (~54–74).
+      return dampenChampForSlUser
+        ? getClubBaseStrength(club)
+        : (getChampionshipClubByName(club)?.baseStrength ?? 62);
     }
     return getManagerClubTeamRating(club);
   }
@@ -208,8 +222,8 @@ export function getLeagueClubStableRating(
 
   // Championship peak ratings (70–89) sit on a lower competition band than
   // Super League (80+). Pull cup/opponent ratings toward the tier-offset
-  // club strength so SL sides still dominate on scoreboard.
-  if (isChampionshipSide(career, club)) {
+  // club strength so SL sides still dominate — only when the user is in SL.
+  if (dampenChampForSlUser) {
     const tier = getClubBaseStrength(club);
     return Math.round(avg * 0.45 + tier * 0.55);
   }

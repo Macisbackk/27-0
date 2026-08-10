@@ -3,7 +3,7 @@ import { getPlayableClubNames } from "../clubs/super-league-display";
 import type { SquadSlot } from "../types";
 import { getAverageSquadRating } from "../squad-analysis";
 import { getSquadValue } from "../positions";
-import { isGoatPlayer } from "../players/goat";
+import { isGoatPlayer, JOE_MELLOR_GOAT_ID } from "../players/goat";
 import {
   distributeSeasonTries,
   type PlayerTryTotal,
@@ -605,6 +605,8 @@ export interface SimulateFixtureOptions {
    * always force a winner via `ensureDecisive`. Defaults to false.
    */
   allowDraw?: boolean;
+  /** Force a user win (e.g. Super Sam Hallas Mode). */
+  forceUserWin?: boolean;
 }
 
 export interface SimulateSeasonOptions {
@@ -614,6 +616,10 @@ export interface SimulateSeasonOptions {
   allowDraw?: boolean;
   /** Daily challenge — every league opponent uses this club name. */
   forceOpponentClub?: string;
+  /** Force every fixture as a user win (e.g. Super Sam Hallas Mode). */
+  forceUndefeated?: boolean;
+  /** Joe Mellor GOAT Mode — all user tries go to Joe. */
+  joeMellorMode?: boolean;
 }
 
 export interface ScheduledFixture {
@@ -1115,15 +1121,25 @@ export function simulateOneFixture(
       isHome,
       options.currentSeasonOnly
     );
-  const { won: initialWon, isUpset: initialUpset, ratingGap } = resolveOutcome(
-    squad,
-    strength,
-    opponentStrength,
-    state.form,
-    isHome,
-    rng,
-    options
-  );
+  const forcedWin = options.forceUserWin === true;
+  const resolved = forcedWin
+    ? {
+        won: true,
+        isUpset: false,
+        ratingGap:
+          (options.userRatingOverride ?? getAverageSquadRating(squad)) -
+          opponentStrength,
+      }
+    : resolveOutcome(
+        squad,
+        strength,
+        opponentStrength,
+        state.form,
+        isHome,
+        rng,
+        options
+      );
+  const { won: initialWon, isUpset: initialUpset, ratingGap } = resolved;
 
   const matchType = pickMatchType(
     strength,
@@ -1134,7 +1150,8 @@ export function simulateOneFixture(
     rng
   );
 
-  const allowDraw = options.allowDraw ?? false;
+  // Forced wins never draw — Super Sam Hallas and similar joke modes stay undefeated.
+  const allowDraw = forcedWin ? false : (options.allowDraw ?? false);
 
   let scoreline = generateScoreline(
     strength,
@@ -1213,13 +1230,15 @@ export function simulateSeason(
   });
   const draftMode = options.draftMode ?? false;
   const currentSeasonOnly = options.currentSeasonOnly ?? false;
+  const forceUndefeated = options.forceUndefeated === true;
   // Quick Mode never draws — level scores resolve via golden point / decisive
   // margin. Manager Mode league passes allowDraw explicitly when needed.
-  const allowDraw = options.allowDraw ?? false;
+  const allowDraw = forceUndefeated ? false : (options.allowDraw ?? false);
   const fixtureOptions: SimulateFixtureOptions = {
     ...(draftMode ? { draftMode: true } : {}),
     ...(currentSeasonOnly ? { currentSeasonOnly: true } : {}),
     ...(allowDraw ? { allowDraw: true } : {}),
+    ...(forceUndefeated ? { forceUserWin: true } : {}),
   };
 
   let wins = 0;
@@ -1276,6 +1295,9 @@ export function simulateSeason(
   const pointsDifference = pointsFor - pointsAgainst;
   const tryScorers = distributeSeasonTries(squad, fixtures, seed, wins, {
     currentSeasonOnly,
+    ...(options.joeMellorMode
+      ? { exclusiveScorerId: JOE_MELLOR_GOAT_ID }
+      : {}),
   });
 
   const winStreak = findLongestWinStreak(fixtures);

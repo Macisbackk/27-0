@@ -167,13 +167,20 @@ function evaluateUnlock(
     case "mellor-miracle":
       return ctx.joeMellorComplete === true;
     case "goat-status":
-      return ctx.goatMellorWin === true;
+      // Play-mode unlock (mirrors Super Sam) — no longer requires a win.
+      return ctx.joeMellorComplete === true || ctx.goatMellorWin === true;
     case "secret-button":
       return ctx.secretButtonTriggered === true;
     case "against-the-odds":
-      return ctx.againstTheOddsComplete === true;
+      // Super Sam Hallas Mode — unlock for playing the mode, not for wins.
+      return (
+        ctx.superSamComplete === true || ctx.againstTheOddsComplete === true
+      );
     case "developers-favourite":
-      return ctx.bradfordChallengeComplete === true;
+      return (
+        ctx.bradfordChallengeComplete === true ||
+        ctx.joeMellorComplete === true
+      );
     case "daily-debut":
       return (
         ctx.dailyChallengeCompleted === true ||

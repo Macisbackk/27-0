@@ -382,7 +382,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "mellor-miracle",
     name: "Mellor Miracle",
-    description: "Complete the Joe Mellor easter egg mode.",
+    description: "Play Joe Mellor GOAT Mode.",
     category: "easter-egg",
     hidden: true,
     points: 50,
@@ -391,7 +391,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "goat-status",
     name: "GOAT Status",
-    description: "Win a season with GOAT Joe Mellor as a key player.",
+    description: "Play Joe Mellor GOAT Mode.",
     category: "easter-egg",
     hidden: true,
     points: 60,
@@ -406,8 +406,8 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   },
   {
     id: "against-the-odds",
-    name: "Against The Odds",
-    description: "Complete a secret underdog challenge.",
+    name: "Super Sam",
+    description: "Play Super Sam Hallas Mode.",
     category: "easter-egg",
     hidden: true,
     points: 40,
@@ -415,7 +415,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "developers-favourite",
     name: "Developer's Favourite",
-    description: "Complete a secret Bradford-related challenge.",
+    description: "Play Joe Mellor GOAT Mode.",
     category: "easter-egg",
     hidden: true,
     points: 35,

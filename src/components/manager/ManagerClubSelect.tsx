@@ -37,6 +37,8 @@ function LeagueSelectRow({
   onSelect: (id: ManagerCompetitionId) => void;
   disabled?: boolean;
 }) {
+  const isTopFlight = league.id === "super-league";
+
   return (
     <li>
       <button
@@ -47,20 +49,36 @@ function LeagueSelectRow({
           playUiClick();
           onSelect(league.id);
         }}
-        className={`${CARD.base} ${CARD.interactive} flex w-full items-start gap-3 rounded-lg px-3 py-3 text-left disabled:pointer-events-none disabled:opacity-50`}
+        className={`${CARD.elevated} ${CARD.interactive} ${
+          isTopFlight ? CARD.featured : ""
+        } flex w-full items-start gap-3 ${SPACING.cardPaddingSm} text-left disabled:pointer-events-none disabled:opacity-50`}
       >
         <span
-          className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-pitch-600/70 bg-pitch-900/70 text-[10px] font-bold uppercase tracking-wide text-accent-gold"
+          className={`mt-0.5 flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-lg border ${
+            isTopFlight
+              ? "border-accent-gold/45 bg-accent-gold/10 text-accent-gold"
+              : "border-theme-primary/40 bg-theme-primary/10 text-theme-primary"
+          }`}
           aria-hidden
         >
-          {league.shortName}
+          <span className="text-[10px] font-bold uppercase tracking-wide leading-none">
+            {league.shortName}
+          </span>
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-white">{league.name}</p>
-          <p className={`mt-1.5 ${TYPO.bodySm} text-pitch-400`}>{league.bio}</p>
-          <p className="mt-2 text-[10px] uppercase tracking-wide text-pitch-500">
-            {clubCount} club{clubCount === 1 ? "" : "s"}
-          </p>
+          <p className={TYPO.cardTitle}>{league.name}</p>
+          <p className={`mt-1.5 ${TYPO.bodySm}`}>{league.bio}</p>
+          <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span className={TYPO.meta}>
+              {clubCount} club{clubCount === 1 ? "" : "s"}
+            </span>
+            <span className={TYPO.meta}>{league.seasonGames} fixtures</span>
+            {league.hasPlayoffs ? (
+              <span className={`${TYPO.meta} text-accent-gold`}>Playoffs</span>
+            ) : (
+              <span className={TYPO.meta}>Promotion race</span>
+            )}
+          </div>
         </div>
       </button>
     </li>
@@ -90,7 +108,7 @@ function ClubSelectRow({
           playUiClick();
           onSelect(club.name);
         }}
-        className={`${CARD.base} ${CARD.interactive} flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left sm:gap-3 sm:px-3 disabled:pointer-events-none disabled:opacity-50`}
+        className={`${CARD.base} ${CARD.interactive} flex w-full items-center gap-2.5 ${SPACING.listItem} text-left sm:gap-3 disabled:pointer-events-none disabled:opacity-50`}
       >
         <span
           className="w-1 shrink-0 self-stretch rounded-full"
@@ -120,11 +138,9 @@ function ClubSelectRow({
               label={`Club rating: ${ratingStars} out of 5 stars`}
               size="sm"
             />
-            <span className="text-[10px] uppercase tracking-wide text-pitch-500">
-              OVR {club.squadRating}
-            </span>
+            <span className={TYPO.meta}>OVR {club.squadRating}</span>
           </div>
-          <p className="mt-0.5 truncate text-xs text-pitch-400">
+          <p className={`mt-0.5 truncate ${TYPO.bodySm}`}>
             {club.expectation}
             <span className="text-pitch-600"> · </span>
             £{(club.budget / 1000).toFixed(0)}k
@@ -167,11 +183,14 @@ function StarGroupedList({
   return (
     <div className={SPACING.stackMd}>
       {starGroups.map(({ stars, clubs: groupClubs }) => (
-        <section key={stars}>
-          <h3 className={`mb-2 ${TYPO.sectionLabel} text-accent-gold`}>
-            {stars} star
+        <section
+          key={stars}
+          className={`${CARD.inset} ${SPACING.cardPaddingSm}`}
+        >
+          <h3 className={`${TYPO.sectionLabel} text-accent-gold`}>
+            {stars}-star clubs
           </h3>
-          <p className={`mb-2.5 ${TYPO.bodySm} text-pitch-400`}>
+          <p className={`mt-1 mb-3 ${TYPO.bodySm}`}>
             {bios[stars] ?? "Board expectations scale with club status."}
           </p>
           <ul className="space-y-1.5" role="list">
@@ -209,17 +228,18 @@ export function ManagerClubSelect({
 
   if (step === "league" || !selectedLeague) {
     return (
-      <div className={`mx-auto max-w-xl ${SPACING.stackMd}`}>
-        <div className="mb-1">
-          <h1 className={`${TYPO.pageTitle} text-lg sm:text-xl`}>
-            Choose Your League
-          </h1>
-          <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+      <div className={`mx-auto max-w-lg ${SPACING.stackLg}`}>
+        <div
+          className={`${CARD.hero} ${CARD.featured} ${SPACING.cardPaddingLg} text-center`}
+        >
+          <p className={TYPO.sectionLabel}>New career</p>
+          <h1 className={`mt-2 ${TYPO.pageTitle}`}>Choose your league</h1>
+          <p className={`mt-3 ${TYPO.body} text-pitch-300`}>
             Pick a competition, then choose the club you want to manage.
           </p>
         </div>
 
-        <ul className="space-y-2.5" role="list">
+        <ul className={SPACING.stackMd} role="list">
           {leagues.map((league) => (
             <LeagueSelectRow
               key={league.id}
@@ -237,7 +257,7 @@ export function ManagerClubSelect({
         <GameButton
           variant="secondary"
           onClick={onBack}
-          fullWidth={false}
+          fullWidth
           disabled={busy}
         >
           Back
@@ -247,15 +267,15 @@ export function ManagerClubSelect({
   }
 
   return (
-    <div className={`mx-auto max-w-xl ${SPACING.stackMd}`}>
-      <div className="mb-1">
+    <div className={`mx-auto max-w-lg ${SPACING.stackLg}`}>
+      <div
+        className={`${CARD.hero} ${CARD.featured} ${SPACING.cardPaddingLg} text-center`}
+      >
         <p className={`${TYPO.sectionLabel} text-accent-gold`}>
           {selectedLeague.name}
         </p>
-        <h1 className={`mt-1.5 ${TYPO.pageTitle} text-lg sm:text-xl`}>
-          Choose Your Club
-        </h1>
-        <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+        <h1 className={`mt-2 ${TYPO.pageTitle}`}>Choose your club</h1>
+        <p className={`mt-3 ${TYPO.body} text-pitch-300`}>
           {selectedLeague.clubSelectBlurb}
         </p>
       </div>
@@ -281,7 +301,7 @@ export function ManagerClubSelect({
           setStep("league");
           setLeagueId(null);
         }}
-        fullWidth={false}
+        fullWidth
         disabled={busy}
       >
         Back to leagues

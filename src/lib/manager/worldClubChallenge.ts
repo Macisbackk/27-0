@@ -718,7 +718,7 @@ export function completeUserWorldClubChallenge(
     storySummary,
   };
 
-  // Update lifetime WCC stats (lazy import to avoid circular deps at module load)
+  // Update lifetime WCC stats + manager leaderboard (lazy import avoids cycles).
   void import("./managerStats").then(({ loadManagerStats, saveManagerStats }) => {
     const stats = loadManagerStats();
     stats.worldClubChallengeAppearances =
@@ -728,6 +728,11 @@ export function completeUserWorldClubChallenge(
       stats.trophies = (stats.trophies ?? 0) + 1;
     }
     saveManagerStats(stats);
+    void import("../storage/manager-leaderboard").then(
+      ({ syncManagerLeaderboard }) => {
+        syncManagerLeaderboard(stats);
+      }
+    );
   });
 
   const next: ManagerCareer = {

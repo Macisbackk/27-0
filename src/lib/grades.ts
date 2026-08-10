@@ -107,7 +107,7 @@ function getRecordGrade(wins: number, isPerfect: boolean): SquadGrade {
   return "F";
 }
 
-/** Hard ceiling so poor records never receive a respectable grade. */
+/** Soft ceiling from wins — still allow league finish to lift the floor. */
 function capGradeByWins(grade: SquadGrade, wins: number): SquadGrade {
   let maxGrade: SquadGrade;
   if (wins <= 3) maxGrade = "F";
@@ -124,13 +124,39 @@ function capGradeByWins(grade: SquadGrade, wins: number): SquadGrade {
   return GRADE_ORDER[Math.min(gradeIdx, maxIdx)];
 }
 
+/**
+ * League finish must match the grade story.
+ * Current Mode can crown League Leaders with fewer wins than the old
+ * win-only bands assumed — never call 1st place "Mid Table".
+ */
+function floorGradeByPosition(
+  grade: SquadGrade,
+  leaguePosition: number,
+  wins: number
+): SquadGrade {
+  let minGrade: SquadGrade = "F";
+  if (leaguePosition === 1) {
+    minGrade = wins >= 22 ? "S" : "A";
+  } else if (leaguePosition === 2) {
+    minGrade = wins >= 18 ? "A" : "B";
+  } else if (leaguePosition <= 6) {
+    minGrade = wins >= 14 ? "B" : "C";
+  } else if (leaguePosition <= 10) {
+    minGrade = "C";
+  }
+
+  const gradeIdx = GRADE_ORDER.indexOf(grade);
+  const minIdx = GRADE_ORDER.indexOf(minGrade);
+  return GRADE_ORDER[Math.max(gradeIdx, minIdx)];
+}
+
 function gradeFromIndex(index: number): SquadGrade {
   return GRADE_ORDER[Math.max(0, Math.min(GRADE_ORDER.length - 1, index))];
 }
 
 /**
  * Secondary adjustment using performance metrics.
- * Can shift grade by at most one step, and never above the record cap.
+ * Can shift grade by at most one step, then position floor is applied.
  */
 function adjustGradeByPerformance(
   grade: SquadGrade,
@@ -152,25 +178,49 @@ function adjustGradeByPerformance(
     idx += 1;
   } else if (wins >= 15 && strongSquad && leaguePosition <= 4 && idx < GRADE_ORDER.length - 1) {
     idx += 1;
-  } else if (wins <= 14 && weakSquad && leaguePosition >= 10 && idx > 0) {
+  } else if (
+    wins <= 14 &&
+    weakSquad &&
+    leaguePosition >= 10 &&
+    leaguePosition > 6 &&
+    idx > 0
+  ) {
     idx -= 1;
-  } else if (winPct < 0.3 && pointsDifference < -150 && idx > 0) {
+  } else if (winPct < 0.3 && pointsDifference < -150 && leaguePosition > 6 && idx > 0) {
     idx -= 1;
   }
 
   const adjusted = gradeFromIndex(idx);
-  return capGradeByWins(adjusted, wins);
+  const capped = capGradeByWins(adjusted, wins);
+  return floorGradeByPosition(capped, leaguePosition, wins);
 }
 
-function buildGradeInfo(grade: SquadGrade): GradeInfo {
-  return { grade, ...GRADE_META[grade] };
+function buildGradeInfo(
+  grade: SquadGrade,
+  leaguePosition?: number
+): GradeInfo {
+  const meta = GRADE_META[grade];
+  if (leaguePosition === 1 && (grade === "A" || grade === "S" || grade === "S+")) {
+    return {
+      grade,
+      label: grade === "A" ? "League Leaders" : meta.label,
+      subtitle: grade === "A" ? "League Leaders" : meta.subtitle,
+      explanation:
+        grade === "A"
+          ? "Top of the table — a league-winning campaign."
+          : meta.explanation,
+      color: meta.color,
+      glow: meta.glow,
+    };
+  }
+  return { grade, ...meta };
 }
 
 export function getSeasonGrade(input: SeasonGradeInput): GradeInfo {
   const recordGrade = getRecordGrade(input.wins, input.isPerfect);
   const capped = capGradeByWins(recordGrade, input.wins);
   const finalGrade = adjustGradeByPerformance(capped, input);
-  return buildGradeInfo(finalGrade);
+  return buildGradeInfo(finalGrade, input.leaguePosition);
 }
 
 export function getSeasonGradeFromSquad(

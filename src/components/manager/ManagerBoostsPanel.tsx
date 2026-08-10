@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { SPACING } from "@/lib/ui/design-system";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
   applyManagerBoost,
@@ -180,39 +180,49 @@ export function ManagerBoostsPanel({
     <>
       <ManagerSectionCard
         title={panelTitle}
-        accent={career.managerProtection?.noSacking ? "gold" : undefined}
+        subtitle="Apply owned boosts from the Store. Effects are permanent for this career."
+        variant="elevated"
+        accent={career.managerProtection?.noSacking ? "gold" : "primary"}
         className={compact ? "mt-3" : undefined}
       >
         {career.managerProtection?.noSacking && (
-          <p className={`mb-3 rounded-md border border-accent-gold/30 bg-accent-gold/10 px-3 py-2 text-sm text-accent-gold`}>
+          <p className="mb-3 rounded-lg border border-accent-gold/30 bg-accent-gold/10 px-3 py-2 text-sm text-accent-gold">
             Sacking Protection Active — the board cannot dismiss you this save.
           </p>
         )}
 
         {ownedBoosts.length === 0 ? (
-          <p className={`${TYPO.bodySm} text-pitch-400`}>
-            No owned boosts for this screen.
-          </p>
+          <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+            <p className={`${TYPO.bodySm}`}>No owned boosts for this screen.</p>
+            <p className={`mt-1 ${TYPO.meta}`}>
+              Buy Career boosts in the Store, then use them here.
+            </p>
+          </div>
         ) : (
-          <ul className={`${SPACING.stackSm}`}>
+          <ul className={SPACING.stackSm} role="list">
             {ownedBoosts.map((boost: GameBoost) => {
               const qty = getBoostQuantity(boost.id);
               const eligibility = canApplyManagerBoost(boost.id, career);
               return (
                 <li
                   key={boost.id}
-                  className="flex flex-col gap-2 rounded-lg border border-pitch-700/50 bg-pitch-900/40 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between"
+                  className={`${CARD.inset} flex flex-col gap-3 ${SPACING.cardPaddingSm} sm:flex-row sm:items-center sm:justify-between`}
                 >
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-white">{boost.name}</p>
-                    <p className={`${TYPO.bodySm} text-pitch-400`}>{boost.description}</p>
-                    <p className="mt-1 text-[11px] text-pitch-500">
+                  <div className="min-w-0 text-left">
+                    <p className={TYPO.cardTitle}>{boost.name}</p>
+                    <p className={`mt-1 ${TYPO.bodySm}`}>{boost.description}</p>
+                    <p className={`mt-1.5 ${TYPO.meta}`}>
                       Owned ×{qty} · {boost.usageLimitLabel}
+                      {!eligibility.ok && eligibility.reason
+                        ? ` · ${eligibility.reason}`
+                        : ""}
                     </p>
                   </div>
                   <GameButton
-                    variant="secondary"
+                    variant="theme"
                     size="sm"
+                    fullWidth={false}
+                    className="shrink-0 sm:min-w-[5.5rem]"
                     disabled={busy || !eligibility.ok}
                     onClick={() => {
                       playUiClick();
@@ -239,32 +249,45 @@ export function ManagerBoostsPanel({
         )}
 
         {error && (
-          <p className="mt-2 text-sm text-red-400" role="alert">
+          <p className="mt-3 text-sm text-red-400" role="alert">
             {error}
           </p>
         )}
       </ManagerSectionCard>
 
       {pendingBoost === "mgr-training-boost" && (
-        <ManagerSectionCard title="Select player" className="mt-3">
-          <ul className={`${SPACING.stackSm}`}>
-            {trainingOptions.map((p) => (
-              <li key={p.playerId}>
-                <button
-                  type="button"
-                  className={`w-full rounded-lg border px-3 py-2 text-left text-sm ${
-                    selectedPlayerId === p.playerId
-                      ? "border-theme-primary bg-theme-primary/10 text-white"
-                      : "border-pitch-700/50 text-pitch-200 hover:border-pitch-600"
-                  }`}
-                  onClick={() => setSelectedPlayerId(p.playerId)}
-                >
-                  {p.name} · {p.rating} → {p.potential} OVR
-                </button>
-              </li>
-            ))}
+        <ManagerSectionCard
+          title="Select player"
+          subtitle="Training Boost raises current rating toward potential."
+          variant="elevated"
+          className="mt-3"
+        >
+          <ul className={SPACING.stackSm} role="list">
+            {trainingOptions.map((p) => {
+              const selected = selectedPlayerId === p.playerId;
+              return (
+                <li key={p.playerId}>
+                  <button
+                    type="button"
+                    aria-pressed={selected}
+                    className={`${CARD.base} ${CARD.interactive} w-full ${SPACING.listItem} text-left text-sm ${
+                      selected ? CARD.selected : ""
+                    }`}
+                    onClick={() => {
+                      playUiClick();
+                      setSelectedPlayerId(p.playerId);
+                    }}
+                  >
+                    <span className="font-semibold text-white">{p.name}</span>
+                    <span className={`mt-0.5 block ${TYPO.meta}`}>
+                      {p.rating} → {p.potential} OVR
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
-          <div className="mt-3 flex gap-2">
+          <div className={`mt-3 flex flex-col gap-2 sm:flex-row`}>
             <GameButton
               variant="theme"
               disabled={!selectedPlayerId || busy}
@@ -272,7 +295,13 @@ export function ManagerBoostsPanel({
             >
               Apply Training Boost
             </GameButton>
-            <GameButton variant="secondary" onClick={() => setPendingBoost(null)}>
+            <GameButton
+              variant="secondary"
+              onClick={() => {
+                playUiClick();
+                setPendingBoost(null);
+              }}
+            >
               Cancel
             </GameButton>
           </div>
@@ -280,25 +309,38 @@ export function ManagerBoostsPanel({
       )}
 
       {pendingBoost === "mgr-unlocked-potential" && (
-        <ManagerSectionCard title="Select reserve" className="mt-3">
-          <ul className={`${SPACING.stackSm}`}>
-            {reserveOptions.map((r) => (
-              <li key={r.reserveId}>
-                <button
-                  type="button"
-                  className={`w-full rounded-lg border px-3 py-2 text-left text-sm ${
-                    selectedReserveId === r.reserveId
-                      ? "border-theme-primary bg-theme-primary/10 text-white"
-                      : "border-pitch-700/50 text-pitch-200 hover:border-pitch-600"
-                  }`}
-                  onClick={() => setSelectedReserveId(r.reserveId)}
-                >
-                  {r.name} · {r.rating} → {r.potential} OVR
-                </button>
-              </li>
-            ))}
+        <ManagerSectionCard
+          title="Select reserve"
+          subtitle="Unlocked Potential raises a reserve’s ceiling."
+          variant="elevated"
+          className="mt-3"
+        >
+          <ul className={SPACING.stackSm} role="list">
+            {reserveOptions.map((r) => {
+              const selected = selectedReserveId === r.reserveId;
+              return (
+                <li key={r.reserveId}>
+                  <button
+                    type="button"
+                    aria-pressed={selected}
+                    className={`${CARD.base} ${CARD.interactive} w-full ${SPACING.listItem} text-left text-sm ${
+                      selected ? CARD.selected : ""
+                    }`}
+                    onClick={() => {
+                      playUiClick();
+                      setSelectedReserveId(r.reserveId);
+                    }}
+                  >
+                    <span className="font-semibold text-white">{r.name}</span>
+                    <span className={`mt-0.5 block ${TYPO.meta}`}>
+                      {r.rating} → {r.potential} OVR
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
-          <div className="mt-3 flex gap-2">
+          <div className={`mt-3 flex flex-col gap-2 sm:flex-row`}>
             <GameButton
               variant="theme"
               disabled={!selectedReserveId || busy}
@@ -306,7 +348,13 @@ export function ManagerBoostsPanel({
             >
               Apply Unlocked Potential
             </GameButton>
-            <GameButton variant="secondary" onClick={() => setPendingBoost(null)}>
+            <GameButton
+              variant="secondary"
+              onClick={() => {
+                playUiClick();
+                setPendingBoost(null);
+              }}
+            >
               Cancel
             </GameButton>
           </div>

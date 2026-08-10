@@ -93,7 +93,25 @@ export function SeasonReview({
 }: SeasonReviewProps) {
   const { isLoggedIn, loading } = useAuth();
   const totalValue = getSquadValue(squad);
-  const gradeInfo = getSeasonGradeFromSquad(squad, seasonResult, totalValue);
+  const leagueTable = useMemo(
+    () => buildLeagueTable(seasonResult, seed),
+    [seasonResult, seed]
+  );
+  const dreamTeamTablePosition =
+    leagueTable.find((row) => row.isUserTeam)?.position ??
+    seasonResult.leaguePosition;
+  const seasonResultForReview = useMemo(
+    () =>
+      dreamTeamTablePosition === seasonResult.leaguePosition
+        ? seasonResult
+        : { ...seasonResult, leaguePosition: dreamTeamTablePosition },
+    [seasonResult, dreamTeamTablePosition]
+  );
+  const gradeInfo = getSeasonGradeFromSquad(
+    squad,
+    seasonResultForReview,
+    totalValue
+  );
   const awards = useMemo(
     () =>
       generateSeasonAwards(squad, seasonResult, {
@@ -163,21 +181,7 @@ export function SeasonReview({
     clearStaleBodyScrollLocks();
   }, []);
 
-  const leagueTable = useMemo(
-    () => buildLeagueTable(seasonResult, seed),
-    [seasonResult, seed]
-  );
-  const dreamTeamTablePosition =
-    leagueTable.find((row) => row.isUserTeam)?.position ??
-    seasonResult.leaguePosition;
   const leaguePositionLabel = formatLeaguePosition(dreamTeamTablePosition);
-  const seasonResultForReview = useMemo(
-    () =>
-      dreamTeamTablePosition === seasonResult.leaguePosition
-        ? seasonResult
-        : { ...seasonResult, leaguePosition: dreamTeamTablePosition },
-    [seasonResult, dreamTeamTablePosition]
-  );
   const summaryMessage = getSeasonSummaryMessage(
     dreamTeamTablePosition,
     seasonResult.losses,

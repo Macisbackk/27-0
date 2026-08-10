@@ -211,6 +211,7 @@ function toTrackerEntry(
     superLeagueTitles: row.superLeagueTitles ?? 0,
     // Quick Mode entries have no World Club Challenge concept.
     wccWins: 0,
+    seasonsCompleted: 0,
   };
 }
 
@@ -536,6 +537,7 @@ function userStatsToClassicTrackerEntry(
     leagueTitles: 0,
     superLeagueTitles: 0,
     wccWins: 0,
+    seasonsCompleted: 0,
   };
 }
 
@@ -743,6 +745,7 @@ async function getExistingRemoteStats(
       cupWinPercentage: data.cup_win_percentage ?? 0,
       leagueTitles: 0,
       superLeagueTitles: 0,
+      seasonsCompleted: 0,
     };
   } catch {
     return null;

@@ -105,6 +105,27 @@ export function triggerQuickSeasonAchievements(
     leagueChampion?: boolean;
   } = {}
 ): void {
+  // Super Sam Hallas: joke undefeated run — only the play-mode EE unlocks.
+  // Do not credit Normal Mode win / perfect-season / grade achievements.
+  if (options.superSamHallasMode) {
+    triggerAchievementCheck({
+      trigger: "quick-season-completed",
+      superSamComplete: true,
+      againstTheOddsComplete: true,
+    });
+    return;
+  }
+
+  // Joe Mellor GOAT Mode: play-mode EEs only (no Normal Mode win credits).
+  if (options.joeMellorMode) {
+    triggerAchievementCheck({
+      trigger: "quick-season-completed",
+      joeMellorComplete: true,
+      bradfordChallengeComplete: true,
+    });
+    return;
+  }
+
   const totalValue = getSquadValue(squad);
   const gradeInfo = getSeasonGradeFromSquad(squad, season, totalValue);
   const bradfordCount = countBradfordPlayers(squad);
@@ -133,14 +154,6 @@ export function triggerQuickSeasonAchievements(
     squadGrade: gradeInfo.grade,
     bradfordPlayerCount: bradfordCount,
     winningRecord: season.wins > season.losses,
-    joeMellorComplete: options.joeMellorMode === true,
-    superSamComplete: options.superSamHallasMode === true,
-    goatMellorWin:
-      options.joeMellorMode === true &&
-      season.isPerfect &&
-      season.wins >= 20,
-    againstTheOddsComplete: options.superSamHallasMode === true,
-    bradfordChallengeComplete: options.joeMellorMode === true,
     eraCup: options.normalEraMode === true,
   });
 }

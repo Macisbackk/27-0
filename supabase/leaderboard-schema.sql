@@ -36,6 +36,17 @@ update public.leaderboard set perfect_runs = 0 where perfect_runs is null;
 alter table public.leaderboard add column if not exists wcc_wins integer;
 update public.leaderboard set wcc_wins = 0 where wcc_wins is null;
 
+-- Manager Mode career longevity (schema v5).
+alter table public.leaderboard add column if not exists seasons_completed integer;
+update public.leaderboard set seasons_completed = 0 where seasons_completed is null;
+
+-- Manager League Titles (schema v6) — dedicated column; score kept as fallback.
+alter table public.leaderboard add column if not exists league_titles integer;
+update public.leaderboard
+set league_titles = coalesce(league_titles, score, 0)
+where mode = 'manager-super-league' and (league_titles is null or league_titles = 0);
+update public.leaderboard set league_titles = 0 where league_titles is null;
+
 update public.leaderboard set mode = 'super-league' where mode is null;
 -- Valid mode values: super-league, challenge-cup, draft
 update public.leaderboard set difficulty = 'NORMAL' where difficulty is null;

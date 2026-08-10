@@ -3,17 +3,12 @@
 import { ManagerPage, ManagerSection } from "@/components/manager/manager-ui";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import type {
-  ManagerCareer,
-  ManagerTactics,
-  MatchPlayerRole,
-} from "@/lib/manager/types";
+import type { ManagerCareer, ManagerTactics } from "@/lib/manager/types";
 import {
   ATTACK_FOCUS_BIOS,
   ATTACK_FOCUS_OPTIONS,
   DEFENCE_FOCUS_BIOS,
   DEFENCE_FOCUS_OPTIONS,
-  MATCH_PLAYER_ROLE_OPTIONS,
   PLAYING_STYLE_BIOS,
   PLAYING_STYLE_OPTIONS,
 } from "@/lib/manager/managerTacticsCopy";
@@ -26,9 +21,6 @@ import {
 } from "@/lib/manager/managerLiveMatch";
 import { getTacticGameplaySummary } from "@/lib/manager/managerTacticsScoring";
 import { ManagerPositionRetrainingPanel } from "@/components/manager/ManagerPositionRetraining";
-import { getManagerPlayer } from "@/lib/manager/managerPlayers";
-import { getNextManagerFixture } from "@/lib/manager/managerSimulation";
-import { POSITION_SHORT } from "@/lib/positions";
 import { playUiClick } from "@/lib/sound";
 
 function CompactOptionRow<T extends string>({
@@ -170,143 +162,6 @@ function LivePlayPreview({ career }: { career: ManagerCareer }) {
   );
 }
 
-function PlayerRolesPanel({
-  career,
-  onCareerUpdate,
-}: {
-  career: ManagerCareer;
-  onCareerUpdate: (career: ManagerCareer) => void;
-}) {
-  const roles = career.matchPlayerRoles ?? {};
-  const setRole = (playerId: string, role: MatchPlayerRole) => {
-    const next = { ...roles };
-    if (role === "default") delete next[playerId];
-    else next[playerId] = role;
-    onCareerUpdate({
-      ...career,
-      matchPlayerRoles: next,
-      updatedAt: new Date().toISOString(),
-    });
-  };
-
-  return (
-    <div className={`${CARD.stat} ${SPACING.cardPaddingSm} text-left`}>
-      <p className={TYPO.sectionLabel}>Player roles</p>
-      <p className={`mt-1 ${TYPO.meta} text-pitch-400`}>
-        Optional matchday XIII roles — slight try involvement bias.
-      </p>
-      <ul className="mt-2 space-y-2">
-        {career.matchdayXiii.filter(Boolean).map((playerId, idx) => {
-          const player = getManagerPlayer(career, playerId);
-          if (!player) return null;
-          const pos = career.xiiiSlotPositions[idx];
-          const value = roles[playerId] ?? "default";
-          return (
-            <li
-              key={playerId}
-              className="flex flex-wrap items-center justify-between gap-2"
-            >
-              <span className={`text-xs text-pitch-200`}>
-                <span className="text-pitch-500">
-                  {pos ? POSITION_SHORT[pos] : "—"}
-                </span>{" "}
-                {player.name}
-              </span>
-              <select
-                value={value}
-                onChange={(e) => {
-                  playUiClick();
-                  setRole(playerId, e.target.value as MatchPlayerRole);
-                }}
-                className={`${FILTER.input} w-auto min-w-[9rem] py-1 text-xs`}
-              >
-                {MATCH_PLAYER_ROLE_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-}
-
-function NextMatchGameplanPanel({
-  career,
-  onCareerUpdate,
-}: {
-  career: ManagerCareer;
-  onCareerUpdate: (career: ManagerCareer) => void;
-}) {
-  const next = getNextManagerFixture(career);
-  const plan = career.nextMatchGameplan;
-  const active =
-    next && plan && plan.fixtureId === next.id ? plan.tactics : null;
-  const draft = active ?? career.tactics;
-
-  if (!next) {
-    return (
-      <div className={`${CARD.stat} ${SPACING.cardPaddingSm} text-left`}>
-        <p className={TYPO.sectionLabel}>Next match gameplan</p>
-        <p className={`mt-1 ${TYPO.meta} text-pitch-400`}>
-          No upcoming fixture — set a one-match override when a match is booked.
-        </p>
-      </div>
-    );
-  }
-
-  const setPlanTactics = (patch: Partial<ManagerTactics>) => {
-    onCareerUpdate({
-      ...career,
-      nextMatchGameplan: {
-        fixtureId: next.id,
-        tactics: { ...draft, ...patch },
-      },
-      updatedAt: new Date().toISOString(),
-    });
-  };
-
-  const clearPlan = () => {
-    playUiClick();
-    onCareerUpdate({
-      ...career,
-      nextMatchGameplan: null,
-      updatedAt: new Date().toISOString(),
-    });
-  };
-
-  return (
-    <div className={`${CARD.stat} ${SPACING.cardPaddingSm} space-y-3 text-left`}>
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div>
-          <p className={TYPO.sectionLabel}>Next match gameplan</p>
-          <p className={`mt-1 ${TYPO.meta} text-pitch-400`}>
-            Optional override vs {next.opponent} only. Clears after the match.
-          </p>
-        </div>
-        {active && (
-          <button
-            type="button"
-            onClick={clearPlan}
-            className={`${FILTER.chipIdle} rounded-md border px-2.5 py-1 text-xs`}
-          >
-            Clear
-          </button>
-        )}
-      </div>
-      <TacticsSetupPanel tactics={draft} onChange={setPlanTactics} />
-      {!active && (
-        <p className={`${TYPO.meta} text-pitch-500`}>
-          Showing club tactics — change any axis to lock a one-match plan.
-        </p>
-      )}
-    </div>
-  );
-}
-
 export function ManagerTacticsPanel({
   career,
   onChange,
@@ -334,31 +189,17 @@ export function ManagerTacticsPanel({
         </div>
       </section>
       {onCareerUpdate && (
-        <>
-          <section className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-            <h2 className={`text-left ${TYPO.sectionLabel}`}>
-              Roles & next match
-            </h2>
-            <div className="mt-3 space-y-3">
-              <PlayerRolesPanel career={career} onCareerUpdate={onCareerUpdate} />
-              <NextMatchGameplanPanel
-                career={career}
-                onCareerUpdate={onCareerUpdate}
-              />
-            </div>
-          </section>
-          <section className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
-            <h2 className={`text-left ${TYPO.sectionLabel}`}>
-              Dual position training
-            </h2>
-            <div className="mt-3">
-              <ManagerPositionRetrainingPanel
-                career={career}
-                onUpdate={onCareerUpdate}
-              />
-            </div>
-          </section>
-        </>
+        <section className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+          <h2 className={`text-left ${TYPO.sectionLabel}`}>
+            Dual position training
+          </h2>
+          <div className="mt-3">
+            <ManagerPositionRetrainingPanel
+              career={career}
+              onUpdate={onCareerUpdate}
+            />
+          </div>
+        </section>
       )}
     </div>
   );

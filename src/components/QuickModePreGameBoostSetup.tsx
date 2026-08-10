@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { SPACING } from "@/lib/ui/design-system";
+import { MobileSection } from "@/components/ui/MobileLayout";
+import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
   getQuickModeBoosts,
@@ -30,9 +31,10 @@ interface QuickModePreGameBoostSetupProps {
 
 /**
  * Compact pre-game boost chooser — must complete before any spin.
+ * Visual language matches home Quick Mode sections (keyLabel + MobileSection).
  */
 export function QuickModePreGameBoostSetup({
-  runId,
+  runId: _runId,
   eraMode = false,
   notice = null,
   onConfirm,
@@ -63,81 +65,92 @@ export function QuickModePreGameBoostSetup({
   };
 
   return (
-    <div className="mx-auto w-full max-w-md px-3 py-4 text-center">
-      <div className="border-b border-[var(--mobile-divider)] pb-4">
-        <p className={TYPO.keyLabel}>Pre-game</p>
-        <h2 className={`mt-1 ${TYPO.cardTitle}`}>Boost</h2>
-        <p className={`mx-auto mt-2 max-w-sm ${TYPO.meta}`}>
-          One boost for this run, or start without. Locked after the first spin.
+    <div className="mx-auto w-full max-w-xl px-3 py-4 text-center">
+      <MobileSection className="flex w-full flex-col items-center text-center">
+        <p className={`w-full text-center ${TYPO.keyLabel}`}>Pre-game</p>
+        <h2 className={`mt-1 w-full text-center ${TYPO.homeModeTitle}`}>
+          Use a boost
+        </h2>
+        <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
+          One boost for this run, locked after the first spin.
           {!eraMode ? " Legend boosts are Era only." : null}
         </p>
-      </div>
 
-      <div className="mt-4 text-center">
-        {boosts.length === 0 ? (
-          <p className={`${TYPO.bodySm} text-center text-pitch-400`}>
-            No compatible Quick Mode boosts in inventory.
-          </p>
-        ) : (
-          <ul className={SPACING.stackSm}>
-            {boosts.map((boost) => {
-              const qty = getBoostQuantity(boost.id);
-              const selected = picked === boost.id;
-              return (
-                <li key={boost.id}>
-                  <button
-                    type="button"
-                    className={`flex w-full flex-col items-center justify-center gap-1 rounded-[var(--mobile-radius-medium)] border px-3 py-2.5 text-center transition ${
-                      selected
-                        ? "border-white/25 bg-white/5"
-                        : "border-[var(--mobile-divider)] bg-transparent hover:border-white/15"
-                    }`}
-                    onClick={() => {
-                      playUiClick();
-                      setPicked(boost.id as QmSelectionBoostId);
-                    }}
-                  >
-                    <span className="block w-full truncate text-sm font-semibold text-white">
-                      {boost.name}
-                    </span>
-                    <span className="block text-[11px] text-pitch-500">
-                      Owned ×{qty}
-                      {selected ? " · Selected" : ""}
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        )}
+        <div className={`mt-5 w-full ${SPACING.stackSm}`}>
+          {boosts.length === 0 ? (
+            <div
+              className={`${CARD.inset} ${SPACING.cardPaddingSm} text-center`}
+            >
+              <p className={`${TYPO.bodySm} text-pitch-400`}>
+                No compatible Quick Mode boosts in inventory.
+              </p>
+              <p className={`mt-1 ${TYPO.meta}`}>
+                Buy boosts in the Store, or start without one.
+              </p>
+            </div>
+          ) : (
+            <ul className={SPACING.stackSm} role="list">
+              {boosts.map((boost) => {
+                const qty = getBoostQuantity(boost.id);
+                const selected = picked === boost.id;
+                return (
+                  <li key={boost.id}>
+                    <button
+                      type="button"
+                      aria-pressed={selected}
+                      className={`${CARD.elevated} ${CARD.interactive} flex w-full flex-col items-center gap-1 ${SPACING.cardPaddingSm} text-center ${
+                        selected ? CARD.selected : ""
+                      }`}
+                      onClick={() => {
+                        playUiClick();
+                        setPicked(boost.id as QmSelectionBoostId);
+                      }}
+                    >
+                      <span className={`w-full truncate ${TYPO.cardTitle}`}>
+                        {boost.name}
+                      </span>
+                      <span className={`w-full ${TYPO.bodySm}`}>
+                        {boost.description}
+                      </span>
+                      <span className={`mt-0.5 ${TYPO.meta}`}>
+                        Owned ×{qty}
+                        {selected ? " · Selected" : ""}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
 
-        {notice ? (
-          <p
-            className="mt-4 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-center text-sm text-amber-100"
-            role="alert"
-          >
-            {notice}
-          </p>
-        ) : null}
+          {notice ? (
+            <p
+              className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-center text-sm text-amber-100"
+              role="alert"
+            >
+              {notice}
+            </p>
+          ) : null}
 
-        <div className="mt-5 flex flex-col gap-2">
-          <GameButton
-            variant="theme"
-            fullWidth
-            disabled={!picked}
-            onClick={() => picked && confirm(picked)}
-          >
-            Confirm boost
-          </GameButton>
-          <GameButton
-            variant="secondary"
-            fullWidth
-            onClick={() => confirm(null)}
-          >
-            Start Without Boost
-          </GameButton>
+          <div className={`mt-2 flex w-full flex-col gap-2`}>
+            <GameButton
+              variant="theme"
+              fullWidth
+              disabled={!picked}
+              onClick={() => picked && confirm(picked)}
+            >
+              {picked ? "Confirm boost" : "Select a boost"}
+            </GameButton>
+            <GameButton
+              variant="secondary"
+              fullWidth
+              onClick={() => confirm(null)}
+            >
+              Start without boost
+            </GameButton>
+          </div>
         </div>
-      </div>
+      </MobileSection>
     </div>
   );
 }

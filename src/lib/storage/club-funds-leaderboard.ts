@@ -101,18 +101,12 @@ export async function submitClubFundsLeaderboardOnline(
   }
 }
 
-export function syncClubFundsLeaderboard(totalEarned: number): void {
-  if (totalEarned <= 0) return;
-
-  if (isLoggedIn()) {
-    const username = getUsername();
-    if (!username || isGuestLeaderboardName(username)) return;
-    updateLocalClubFundsLeaderboard(username, totalEarned, getAuthUserId() ?? undefined);
-    void submitClubFundsLeaderboardOnline(totalEarned);
-    return;
-  }
-
-  updateLocalClubFundsLeaderboard(LOCAL_GUEST_KEY, totalEarned);
+/**
+ * No-op — Club Funds public leaderboard was removed. Local balance / cloud
+ * merge still use award/spend helpers; do not write dead tracker rows.
+ */
+export function syncClubFundsLeaderboard(_totalEarned: number): void {
+  return;
 }
 
 function filterPublicEntries(

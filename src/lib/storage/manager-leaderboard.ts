@@ -8,7 +8,6 @@ import {
   type LeaderboardTrackerType,
   type ManagerLeaderboardDbMode,
 } from "../leaderboard-trackers";
-import { formatClubFunds } from "../club-funds";
 import { isLoggedIn, getAuthUserId } from "../auth-session";
 import { isSupabaseConfigured, supabase } from "../supabase";
 import {
@@ -22,7 +21,6 @@ import { STORAGE_KEYS } from "./keys";
 const LOCAL_GUEST_KEY = "__local_guest__";
 const SUPER_LEAGUE_MODE = "manager-super-league";
 const CHALLENGE_CUP_MODE = "manager-challenge-cup";
-const EARNINGS_MODE = "manager-earnings";
 
 /**
  * Manager leaderboard WCC Wins payload version. 1 = initial rollout —
@@ -37,7 +35,6 @@ export const MANAGER_LEADERBOARD_MODES: {
 }[] = [
   { id: "manager-super-league", label: "Super League" },
   { id: "manager-challenge-cup", label: "Challenge Cup" },
-  { id: "manager-earnings", label: "Total Earnings" },
 ];
 
 export {
@@ -46,13 +43,6 @@ export {
   isTrackerValidForManagerDbMode,
   type ManagerLeaderboardDbMode,
 };
-
-interface ManagerScoreLeaderboardEntry {
-  userId?: string;
-  username: string;
-  score: number;
-  updatedAt: string;
-}
 
 interface ManagerTrackerLeaderboardEntry {
   userId?: string;
@@ -66,7 +56,6 @@ interface ManagerTrackerLeaderboardEntry {
 
 type LocalManagerLeaderboardStore = {
   tracker: Record<string, ManagerTrackerLeaderboardEntry>;
-  earnings: Record<string, ManagerScoreLeaderboardEntry>;
 };
 
 function managerStatsToTrackerPayload(
@@ -94,6 +83,7 @@ function managerStatsToTrackerPayload(
     cupWinPercentage: 0,
     leagueTitles: Math.round(stats.leagueTitles),
     superLeagueTitles: Math.round(stats.superLeagueTitles),
+    seasonsCompleted: Math.round(stats.seasonsCompleted),
   };
 }
 
@@ -106,25 +96,23 @@ function hasManagerLeaderboardActivity(stats: ManagerLifetimeStats): boolean {
     stats.leagueTitles > 0 ||
     stats.superLeagueTitles > 0 ||
     stats.challengeCups > 0 ||
-    stats.worldClubChallengeWins > 0 ||
-    stats.totalEarnings > 0
+    stats.worldClubChallengeWins > 0
   );
 }
 
 function loadLocalStore(): LocalManagerLeaderboardStore {
   if (typeof window === "undefined") {
-    return { tracker: {}, earnings: {} };
+    return { tracker: {} };
   }
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.managerLeaderboard);
-    if (!raw) return { tracker: {}, earnings: {} };
+    if (!raw) return { tracker: {} };
     const parsed = JSON.parse(raw) as Partial<LocalManagerLeaderboardStore>;
     return {
       tracker: parsed.tracker ?? {},
-      earnings: parsed.earnings ?? {},
     };
   } catch {
-    return { tracker: {}, earnings: {} };
+    return { tracker: {} };
   }
 }
 
@@ -144,24 +132,6 @@ function updateLocalTrackerEntry(
   store.tracker[username] = {
     username,
     stats: payload,
-    updatedAt: new Date().toISOString(),
-    userId: userId ?? existing?.userId,
-  };
-  saveLocalStore(store);
-}
-
-function updateLocalEarningsEntry(
-  username: string,
-  score: number,
-  userId?: string
-): void {
-  if (score <= 0) return;
-  const store = loadLocalStore();
-  const existing = store.earnings[username];
-  if (existing && existing.score >= score) return;
-  store.earnings[username] = {
-    username,
-    score,
     updatedAt: new Date().toISOString(),
     userId: userId ?? existing?.userId,
   };
@@ -201,10 +171,12 @@ async function upsertTrackerModeOnline(
       coach_name: coachName,
       player_name: coachName,
       score: mode === SUPER_LEAGUE_MODE ? stats.leagueTitles : 0,
+      league_titles: mode === SUPER_LEAGUE_MODE ? stats.leagueTitles : 0,
       wins: payload.totalWins,
       losses: payload.totalLosses,
       perfect_runs: payload.perfectRuns,
       wcc_wins: payload.wccWins,
+      seasons_completed: payload.seasonsCompleted,
       best_record_wins: payload.bestRecordWins,
       best_record_losses: payload.bestRecordLosses,
       best_win_percentage: payload.bestWinPercentage,
@@ -235,67 +207,6 @@ async function upsertTrackerModeOnline(
   }
 }
 
-async function upsertScoreModeOnline(
-  mode: string,
-  score: number
-): Promise<void> {
-  const userId = getAuthUserId();
-  const coachName = getUsername();
-  if (
-    !userId ||
-    !coachName ||
-    isGuestLeaderboardName(coachName) ||
-    !isSupabaseConfigured ||
-    score <= 0
-  ) {
-    return;
-  }
-
-  try {
-    const { data: existing, error: selectError } = await supabase
-      .from("leaderboard")
-      .select("id, score")
-      .eq("user_id", userId)
-      .eq("mode", mode)
-      .eq("difficulty", "NORMAL")
-      .eq("mode_variant", "current")
-      .maybeSingle();
-
-    if (selectError) throw selectError;
-
-    const currentScore =
-      typeof existing?.score === "number" ? existing.score : 0;
-    if (score < currentScore) return;
-
-    const payload = {
-      coach_name: coachName,
-      player_name: coachName,
-      score,
-      mode_variant: "current",
-      updated_at: new Date().toISOString(),
-    };
-
-    if (existing?.id) {
-      const { error } = await supabase
-        .from("leaderboard")
-        .update(payload)
-        .eq("id", existing.id);
-      if (error) throw error;
-      return;
-    }
-
-    const { error } = await supabase.from("leaderboard").insert({
-      ...payload,
-      user_id: userId,
-      mode,
-      difficulty: "NORMAL",
-    });
-    if (error) throw error;
-  } catch (err) {
-    console.error("[manager-leaderboard] score submit failed:", err);
-  }
-}
-
 export function syncManagerLeaderboard(
   stats: ManagerLifetimeStats = loadManagerStats()
 ): void {
@@ -309,109 +220,14 @@ export function syncManagerLeaderboard(
     updateLocalTrackerEntry(username, stats, userId);
     void upsertTrackerModeOnline(SUPER_LEAGUE_MODE, stats);
     void upsertTrackerModeOnline(CHALLENGE_CUP_MODE, stats);
-
-    if (stats.totalEarnings > 0) {
-      updateLocalEarningsEntry(username, stats.totalEarnings, userId);
-      void upsertScoreModeOnline(EARNINGS_MODE, stats.totalEarnings);
-    }
     return;
   }
 
   updateLocalTrackerEntry(LOCAL_GUEST_KEY, stats);
-  if (stats.totalEarnings > 0) {
-    updateLocalEarningsEntry(LOCAL_GUEST_KEY, stats.totalEarnings);
-  }
 }
 
 export function syncManagerLeaderboardOnLoad(): void {
   syncManagerLeaderboard();
-}
-
-function filterPublicScoreEntries(
-  entries: ManagerScoreLeaderboardEntry[]
-): ManagerScoreLeaderboardEntry[] {
-  return entries.filter((entry) => !isGuestLeaderboardName(entry.username));
-}
-
-function mergeScoreEntries(
-  ...groups: ManagerScoreLeaderboardEntry[][]
-): ManagerScoreLeaderboardEntry[] {
-  const byKey = new Map<string, ManagerScoreLeaderboardEntry>();
-
-  for (const group of groups) {
-    for (const entry of group) {
-      if (isGuestLeaderboardName(entry.username) || entry.score <= 0) continue;
-      const key = entry.userId ?? entry.username.toLowerCase();
-      const existing = byKey.get(key);
-      if (!existing || entry.score > existing.score) {
-        byKey.set(key, entry);
-      } else if (
-        existing &&
-        entry.score === existing.score &&
-        entry.updatedAt > existing.updatedAt
-      ) {
-        byKey.set(key, { ...existing, username: entry.username });
-      }
-    }
-  }
-
-  return [...byKey.values()];
-}
-
-function isCurrentUserEntry(
-  username: string,
-  userId: string | undefined,
-  currentUser: string,
-  entryUserId?: string
-): boolean {
-  if (userId && entryUserId === userId) return true;
-  if (currentUser && username === currentUser) return true;
-  if (username === "You" && !userId && !currentUser) return true;
-  return false;
-}
-
-function mapScoreEntriesToRows(
-  entries: ManagerScoreLeaderboardEntry[],
-  currentUser: string,
-  userId: string | undefined,
-  limit: number,
-  formatScore: (score: number) => string
-): LeaderboardTrackerRow[] {
-  const sorted = [...entries].sort((a, b) => b.score - a.score);
-  const rows = sorted.slice(0, limit).map((entry, index) => ({
-    rank: index + 1,
-    username: entry.username,
-    statDisplay: formatScore(Math.round(entry.score)),
-    achievedAt: entry.updatedAt,
-    difficulty: "NORMAL" as const,
-    mode: "CLASSIC" as const,
-    isCurrentUser: isCurrentUserEntry(
-      entry.username,
-      userId,
-      currentUser,
-      entry.userId
-    ),
-  }));
-
-  if (!rows.some((row) => row.isCurrentUser)) {
-    const userIndex = sorted.findIndex((entry) =>
-      isCurrentUserEntry(entry.username, userId, currentUser, entry.userId)
-    );
-    if (userIndex >= 0) {
-      const entry = sorted[userIndex]!;
-      rows.push({
-        rank: userIndex + 1,
-        username: entry.username,
-        statDisplay: formatScore(Math.round(entry.score)),
-        achievedAt: entry.updatedAt,
-        difficulty: "NORMAL",
-        mode: "CLASSIC",
-        isCurrentUser: true,
-      });
-    }
-  }
-
-  return rows;
 }
 
 async function fetchRemoteTrackerEntries(
@@ -423,7 +239,7 @@ async function fetchRemoteTrackerEntries(
     const { data, error } = await supabase
       .from("leaderboard")
       .select(
-        "coach_name, score, wins, losses, perfect_runs, wcc_wins, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, updated_at, created_at"
+        "coach_name, score, league_titles, wins, losses, perfect_runs, wcc_wins, seasons_completed, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, updated_at, created_at"
       )
       .eq("mode", mode)
       .eq("difficulty", "NORMAL")
@@ -455,45 +271,18 @@ async function fetchRemoteTrackerEntries(
         bestCupFinishRank: 0,
         bestCupFinishLabel: "",
         cupWinPercentage: 0,
-        leagueTitles: typeof row.score === "number" ? row.score : 0,
+        leagueTitles:
+          typeof (row as { league_titles?: number }).league_titles === "number"
+            ? (row as { league_titles: number }).league_titles
+            : typeof row.score === "number"
+              ? row.score
+              : 0,
         superLeagueTitles: 0,
+        seasonsCompleted:
+          (row as { seasons_completed?: number }).seasons_completed ?? 0,
       }));
   } catch (err) {
     console.error("[manager-leaderboard] tracker fetch failed:", err);
-    return null;
-  }
-}
-
-async function fetchRemoteScoreEntries(
-  mode: string
-): Promise<ManagerScoreLeaderboardEntry[] | null> {
-  if (!isSupabaseConfigured) return null;
-
-  try {
-    const { data, error } = await supabase
-      .from("leaderboard")
-      .select("user_id, coach_name, score, updated_at, created_at")
-      .eq("mode", mode)
-      .eq("difficulty", "NORMAL")
-      .eq("mode_variant", "current")
-      .gt("score", 0)
-      .order("score", { ascending: false })
-      .limit(100);
-
-    if (error) throw error;
-    if (!data?.length) return [];
-
-    return data
-      .filter((row) => row.coach_name && typeof row.score === "number")
-      .map((row) => ({
-        userId: (row.user_id as string | null) ?? undefined,
-        username: row.coach_name as string,
-        score: row.score as number,
-        updatedAt:
-          (row.updated_at as string) ?? (row.created_at as string) ?? "",
-      }));
-  } catch (err) {
-    console.error("[manager-leaderboard] score fetch failed:", err);
     return null;
   }
 }
@@ -531,11 +320,8 @@ function buildLocalTrackerEntries(): LeaderboardTrackerEntry[] {
       difficulty: "NORMAL" as const,
       mode: "CLASSIC" as const,
       ...entry.stats,
+      seasonsCompleted: entry.stats.seasonsCompleted ?? 0,
     }));
-}
-
-function buildLocalEarningsEntries(): ManagerScoreLeaderboardEntry[] {
-  return filterPublicScoreEntries(Object.values(loadLocalStore().earnings));
 }
 
 async function getManagerTrackerLeaderboardAsync(
@@ -544,7 +330,6 @@ async function getManagerTrackerLeaderboardAsync(
   limit: number
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
   const currentUser = getUsername() ?? "";
-  const userId = getAuthUserId() ?? undefined;
   const stats = loadManagerStats();
   const remoteMode =
     dbMode === "manager-super-league" ? SUPER_LEAGUE_MODE : CHALLENGE_CUP_MODE;
@@ -573,52 +358,13 @@ async function getManagerTrackerLeaderboardAsync(
   if (tracker === "manager_league_titles") {
     entries = entries.filter((entry) => entry.leagueTitles > 0);
   }
+  if (tracker === "manager_seasons_completed") {
+    entries = entries.filter((entry) => (entry.seasonsCompleted ?? 0) > 0);
+  }
 
   return {
     source: remote !== null ? "remote" : "local",
     rows: rankByTracker(entries, tracker, limit, currentUser),
-  };
-}
-
-async function getManagerEarningsLeaderboardAsync(
-  limit: number
-): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
-  const currentUser = getUsername() ?? "";
-  const userId = getAuthUserId() ?? undefined;
-  const stats = loadManagerStats();
-  const currentTotal = stats.totalEarnings;
-
-  syncManagerLeaderboard(stats);
-
-  const liveEntry =
-    currentTotal > 0
-      ? {
-          username:
-            currentUser && !isGuestLeaderboardName(currentUser)
-              ? currentUser
-              : "You",
-          score: currentTotal,
-          updatedAt: new Date().toISOString(),
-          userId,
-        }
-      : null;
-
-  const remote = await fetchRemoteScoreEntries(EARNINGS_MODE);
-  const merged = mergeScoreEntries(
-    remote ?? [],
-    buildLocalEarningsEntries(),
-    liveEntry ? [liveEntry] : []
-  );
-
-  return {
-    source: remote !== null ? "remote" : "local",
-    rows: mapScoreEntriesToRows(
-      merged,
-      currentUser,
-      userId,
-      limit,
-      formatClubFunds
-    ),
   };
 }
 
@@ -627,10 +373,6 @@ export async function getManagerLeaderboardAsync(
   tracker: LeaderboardTrackerType,
   limit = 50
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
-  if (dbMode === "manager-earnings") {
-    return getManagerEarningsLeaderboardAsync(limit);
-  }
-
   if (
     dbMode === "manager-super-league" ||
     dbMode === "manager-challenge-cup"

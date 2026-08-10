@@ -9,12 +9,11 @@ export type LeaderboardTrackerType =
   | "super_league_champions"
   | "era_league_title"
   | "era_league_champions"
-  | "total_winnings"
   | "daily_streak"
   | "manager_challenge_cups"
   | "manager_cup_finals"
   | "manager_league_titles"
-  | "manager_total_earnings"
+  | "manager_seasons_completed"
   | "wcc_wins";
 
 export type TrophyCabinetSection = "current" | "era";
@@ -23,10 +22,9 @@ export const MIN_GAMES_FOR_WIN_PERCENTAGE = 10;
 
 /**
  * Public leaderboard tracker payload schema.
- * 4 = winless_seasons/"0-27 Seasons" removed from public boards (private
- *     career winlessSeasons stats are unaffected) and wcc_wins added.
+ * 5 = total_winnings / manager earnings boards removed; seasons_completed added.
  */
-export const LEADERBOARD_SCHEMA_VERSION = 4;
+export const LEADERBOARD_SCHEMA_VERSION = 5;
 
 export interface LeaderboardTrackerEntry {
   username: string;
@@ -51,6 +49,8 @@ export interface LeaderboardTrackerEntry {
   superLeagueTitles: number;
   /** Manager Mode — World Club Challenge wins. */
   wccWins: number;
+  /** Manager Mode — completed seasons (career longevity). */
+  seasonsCompleted: number;
 }
 
 export interface LeaderboardTrackerRow {
@@ -88,6 +88,7 @@ export function sanitizeLeaderboardTrackerEntry(
     leagueTitles: roundLeaderboardCount(entry.leagueTitles),
     superLeagueTitles: roundLeaderboardCount(entry.superLeagueTitles),
     wccWins: roundLeaderboardCount(entry.wccWins),
+    seasonsCompleted: roundLeaderboardCount(entry.seasonsCompleted),
   };
 }
 
@@ -124,7 +125,6 @@ export const LEADERBOARD_TRACKERS: {
   trophyCabinetOnly?: boolean;
   managerSuperLeagueOnly?: boolean;
   managerChallengeCupOnly?: boolean;
-  managerEarningsOnly?: boolean;
   trophySection?: TrophyCabinetSection;
 }[] = [
   { id: "best_record", label: "Best Season Record", shortLabel: "Best Record" },
@@ -168,12 +168,6 @@ export const LEADERBOARD_TRACKERS: {
     trophySection: "era",
   },
   {
-    id: "total_winnings",
-    label: "Total Winnings",
-    shortLabel: "Total Winnings",
-    clubFundsOnly: true,
-  },
-  {
     id: "daily_streak",
     label: "Best Daily Streak",
     shortLabel: "Best Streak",
@@ -183,6 +177,12 @@ export const LEADERBOARD_TRACKERS: {
     id: "manager_league_titles",
     label: "League Titles Won",
     shortLabel: "League Titles",
+    managerSuperLeagueOnly: true,
+  },
+  {
+    id: "manager_seasons_completed",
+    label: "Seasons Completed",
+    shortLabel: "Seasons",
     managerSuperLeagueOnly: true,
   },
   {
@@ -197,12 +197,6 @@ export const LEADERBOARD_TRACKERS: {
     shortLabel: "Finals",
     managerChallengeCupOnly: true,
   },
-  {
-    id: "manager_total_earnings",
-    label: "Total Earnings",
-    shortLabel: "Total Earnings",
-    managerEarningsOnly: true,
-  },
 ];
 
 export function getTrackersForDbMode(
@@ -210,13 +204,9 @@ export function getTrackersForDbMode(
     | "super-league"
     | "draft"
     | "fantasy"
-    | "club-funds"
     | "trophy-cabinet"
     | "daily"
 ) {
-  if (dbMode === "club-funds") {
-    return LEADERBOARD_TRACKERS.filter((t) => t.clubFundsOnly);
-  }
   if (dbMode === "daily") {
     return LEADERBOARD_TRACKERS.filter((t) => t.dailyOnly);
   }
@@ -233,8 +223,7 @@ export function getTrackersForDbMode(
       !t.dailyOnly &&
       !t.trophyCabinetOnly &&
       !t.managerSuperLeagueOnly &&
-      !t.managerChallengeCupOnly &&
-      !t.managerEarningsOnly
+      !t.managerChallengeCupOnly
   );
 }
 
@@ -243,7 +232,6 @@ export function getDefaultTrackerForDbMode(
     | "super-league"
     | "draft"
     | "fantasy"
-    | "club-funds"
     | "trophy-cabinet"
     | "daily"
 ): LeaderboardTrackerType {
@@ -256,7 +244,6 @@ export function isTrackerValidForDbMode(
     | "super-league"
     | "draft"
     | "fantasy"
-    | "club-funds"
     | "trophy-cabinet"
     | "daily"
 ): boolean {
@@ -273,15 +260,11 @@ export function isTrophyCabinetTracker(
 
 export type ManagerLeaderboardDbMode =
   | "manager-super-league"
-  | "manager-challenge-cup"
-  | "manager-earnings";
+  | "manager-challenge-cup";
 
 export function getTrackersForManagerDbMode(
   dbMode: ManagerLeaderboardDbMode
 ) {
-  if (dbMode === "manager-earnings") {
-    return LEADERBOARD_TRACKERS.filter((t) => t.managerEarningsOnly);
-  }
   if (dbMode === "manager-challenge-cup") {
     const order: LeaderboardTrackerType[] = [
       "manager_challenge_cups",
@@ -294,6 +277,7 @@ export function getTrackersForManagerDbMode(
   const order: LeaderboardTrackerType[] = [
     "best_record",
     "manager_league_titles",
+    "manager_seasons_completed",
     "perfect_runs",
     "wcc_wins",
   ];
@@ -347,11 +331,11 @@ export function rankByTracker(
       case "league_titles":
       case "era_league_title":
         return (b.leagueTitles ?? 0) - (a.leagueTitles ?? 0);
+      case "manager_seasons_completed":
+        return (b.seasonsCompleted ?? 0) - (a.seasonsCompleted ?? 0);
       case "super_league_champions":
       case "era_league_champions":
         return (b.superLeagueTitles ?? 0) - (a.superLeagueTitles ?? 0);
-      case "total_winnings":
-      case "manager_total_earnings":
       case "daily_streak":
         return 0;
       default:
@@ -411,6 +395,8 @@ export function getTrackerStatDisplay(
     case "league_titles":
     case "era_league_title":
       return String(sanitized.leagueTitles);
+    case "manager_seasons_completed":
+      return String(sanitized.seasonsCompleted);
     case "super_league_champions":
     case "era_league_champions":
       return String(sanitized.superLeagueTitles);
@@ -488,6 +474,7 @@ export function mergeLeaderboardStats(
     superLeagueTitles: 0,
     // Quick Mode runs have no World Club Challenge concept.
     wccWins: existing?.wccWins ?? 0,
+    seasonsCompleted: existing?.seasonsCompleted ?? 0,
   };
 }
 
@@ -540,5 +527,6 @@ export function combineLeaderboardTrackerStats(
     leagueTitles: (a.leagueTitles ?? 0) + (b.leagueTitles ?? 0),
     superLeagueTitles: (a.superLeagueTitles ?? 0) + (b.superLeagueTitles ?? 0),
     wccWins: (a.wccWins ?? 0) + (b.wccWins ?? 0),
+    seasonsCompleted: (a.seasonsCompleted ?? 0) + (b.seasonsCompleted ?? 0),
   };
 }

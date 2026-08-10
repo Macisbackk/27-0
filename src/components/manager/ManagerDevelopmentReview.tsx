@@ -63,7 +63,8 @@ export function ManagerDevelopmentReview({
     }
     return (
       <span className="text-pitch-500">
-        {c.before} → <span className={afterClass}>{c.after}</span>
+        Season start {c.before} →{" "}
+        <span className={afterClass}>{c.after}</span>
       </span>
     );
   }
@@ -76,14 +77,14 @@ export function ManagerDevelopmentReview({
           {career.club} · {career.seasonYear}
         </h1>
         <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-300`}>
-          How your squad developed over the season.
+          First-team ratings from season start to season end.
         </p>
       </ManagerSectionCard>
 
       {changes.length === 0 ? (
         <ManagerSectionCard>
           <p className={TYPO.bodySm}>
-            No major rating changes this season — most players held steady.
+            No first-team development data for this season.
           </p>
         </ManagerSectionCard>
       ) : (

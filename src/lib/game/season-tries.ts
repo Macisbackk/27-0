@@ -435,6 +435,19 @@ export function enrichSingleFixtureScoring(
 
   if (entries.length === 0) return;
 
+  const exclusiveId = opponentOptions?.exclusiveScorerId;
+  const exclusiveIdx =
+    exclusiveId != null
+      ? entries.findIndex((e) => e.player.id === exclusiveId)
+      : -1;
+
+  if (exclusiveIdx >= 0) {
+    const matchAlloc = new Array(entries.length).fill(0);
+    matchAlloc[exclusiveIdx] = fixture.triesFor;
+    applyScoringDetails(entries, [fixture], [matchAlloc], seed, opponentOptions);
+    return;
+  }
+
   const rng = seedrandom(`${seed}-tries-${fixture.round}`);
   const seasonZeros = new Array(entries.length).fill(0);
   const weights = getMatchWeights(entries, rng, seasonZeros);
@@ -464,6 +477,22 @@ function allocateSeasonTriesToFixtures(
     }));
 
   if (entries.length === 0) return false;
+
+  const exclusiveId = opponentOptions?.exclusiveScorerId;
+  const exclusiveIdx =
+    exclusiveId != null
+      ? entries.findIndex((e) => e.player.id === exclusiveId)
+      : -1;
+
+  if (exclusiveIdx >= 0) {
+    const perMatchAllocs = fixtures.map((fixture) => {
+      const alloc = new Array(entries.length).fill(0);
+      alloc[exclusiveIdx] = fixture.triesFor;
+      return alloc;
+    });
+    applyScoringDetails(entries, fixtures, perMatchAllocs, seed, opponentOptions);
+    return true;
+  }
 
   const rng = seedrandom(`${seed}-tries`);
   const perMatchAllocs: number[][] = [];

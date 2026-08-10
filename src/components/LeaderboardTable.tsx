@@ -29,7 +29,6 @@ import {
   LeaderboardTabBar,
   type LeaderboardTabAccent,
 } from "./LeaderboardTabBar";
-import { getClubFundsLeaderboardAsync } from "@/lib/storage/club-funds-leaderboard";
 import { getDailyLeaderboardAsync } from "@/lib/storage/daily-leaderboard";
 import {
   getManagerLeaderboardAsync,
@@ -55,7 +54,6 @@ const PLAY_STYLE_TABS: { id: LeaderboardPlayStyle; label: string }[] = [
 const QUICK_MODE_ACCENTS = {
   "super-league": "green",
   "trophy-cabinet": "gold",
-  "club-funds": "sky",
   daily: "amber",
 } as const satisfies Partial<Record<LeaderboardDbMode, LeaderboardTabAccent>>;
 
@@ -65,7 +63,6 @@ const MANAGER_MODE_ACCENTS: Record<
 > = {
   "manager-super-league": "green",
   "manager-challenge-cup": "gold",
-  "manager-earnings": "sky",
 };
 
 const TRACKER_ACCENTS: Partial<
@@ -78,12 +75,11 @@ const TRACKER_ACCENTS: Partial<
   super_league_champions: "gold",
   era_league_title: "green",
   era_league_champions: "gold",
-  total_winnings: "sky",
   daily_streak: "amber",
   manager_challenge_cups: "gold",
   manager_cup_finals: "gold",
   manager_league_titles: "green",
-  manager_total_earnings: "sky",
+  manager_seasons_completed: "sky",
 };
 
 const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
@@ -94,19 +90,20 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   super_league_champions: "SL Champions",
   era_league_title: "Era League Titles",
   era_league_champions: "Era Champions",
-  total_winnings: "Total Winnings",
   daily_streak: "Best Streak",
   manager_challenge_cups: "Cups Won",
   manager_cup_finals: "Finals Reached",
   manager_league_titles: "League Titles",
-  manager_total_earnings: "Total Earnings",
+  manager_seasons_completed: "Seasons Completed",
 };
+
+type QuickLeaderboardMode = "super-league" | "trophy-cabinet" | "daily";
 
 export function LeaderboardTable() {
   const { isLoggedIn, loading: authLoading } = useAuth();
   const [playStyle, setPlayStyle] = useState<LeaderboardPlayStyle>("manager");
   const [leaderboardMode, setLeaderboardMode] =
-    useState<LeaderboardDbMode>("super-league");
+    useState<QuickLeaderboardMode>("super-league");
   const [managerMode, setManagerMode] =
     useState<ManagerLeaderboardDbMode>("manager-super-league");
   const [tracker, setTracker] = useState<LeaderboardTrackerType>("best_record");
@@ -116,7 +113,6 @@ export function LeaderboardTable() {
   const [loading, setLoading] = useState(true);
   const [usingFallback, setUsingFallback] = useState(false);
   const [normalEraMode, setNormalEraMode] = useState(false);
-  const [isMobileViewport, setIsMobileViewport] = useState(false);
   const requestId = useRef(0);
 
   const isManagerPlayStyle = playStyle === "manager";
@@ -144,24 +140,6 @@ export function LeaderboardTable() {
     };
   }, []);
 
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 639px)");
-    const sync = () => setIsMobileViewport(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
-
-  useEffect(() => {
-    if (!isMobileViewport) return;
-    if (leaderboardMode === "club-funds") {
-      setLeaderboardMode("super-league");
-    }
-    if (managerMode === "manager-earnings") {
-      setManagerMode("manager-super-league");
-    }
-  }, [isMobileViewport, leaderboardMode, managerMode]);
-
   const availableTrackers = isManagerPlayStyle
     ? getTrackersForManagerDbMode(managerMode)
     : getTrackersForDbMode(leaderboardMode);
@@ -174,14 +152,9 @@ export function LeaderboardTable() {
       ? tracker
       : getDefaultTrackerForDbMode(leaderboardMode);
 
-  const isClubFundsMode =
-    !isManagerPlayStyle && leaderboardMode === "club-funds";
   const isDailyMode = !isManagerPlayStyle && leaderboardMode === "daily";
   const isTrophyCabinetMode =
     !isManagerPlayStyle && leaderboardMode === "trophy-cabinet";
-  const isManagerEarningsMode =
-    isManagerPlayStyle && managerMode === "manager-earnings";
-  const isManagerScoreMode = isManagerEarningsMode;
 
   const handlePlayStyleChange = (style: LeaderboardPlayStyle) => {
     setPlayStyle(style);
@@ -194,7 +167,7 @@ export function LeaderboardTable() {
     }
   };
 
-  const handleQuickModeChange = (mode: LeaderboardDbMode) => {
+  const handleQuickModeChange = (mode: QuickLeaderboardMode) => {
     setLeaderboardMode(mode);
     setTracker(getDefaultTrackerForDbMode(mode));
   };
@@ -226,18 +199,16 @@ export function LeaderboardTable() {
         return;
       }
 
-      if (isClubFundsMode || isDailyMode || isTrophyCabinetMode) {
-        const result = isClubFundsMode
-          ? await getClubFundsLeaderboardAsync()
-          : isDailyMode
-            ? await getDailyLeaderboardAsync()
-            : await getTrackerLeaderboardAsync(
-                activeTracker,
-                period,
-                difficulty,
-                50,
-                "trophy-cabinet"
-              );
+      if (isDailyMode || isTrophyCabinetMode) {
+        const result = isDailyMode
+          ? await getDailyLeaderboardAsync()
+          : await getTrackerLeaderboardAsync(
+              activeTracker,
+              period,
+              difficulty,
+              50,
+              "trophy-cabinet"
+            );
         if (currentRequest !== requestId.current) return;
         setEntries(result.rows);
         setUsingFallback(result.source === "local");
@@ -268,7 +239,6 @@ export function LeaderboardTable() {
     leaderboardMode,
     managerMode,
     activeTracker,
-    isClubFundsMode,
     isDailyMode,
     isTrophyCabinetMode,
     isSuperLeagueMode,
@@ -294,13 +264,11 @@ export function LeaderboardTable() {
   }, [loadEntries]);
 
   const quickModeLabel =
-    leaderboardMode === "club-funds"
-      ? "Total Winnings"
-      : leaderboardMode === "daily"
-        ? "Daily"
-        : leaderboardMode === "trophy-cabinet"
-          ? "Trophy Cabinet"
-          : "Quick Mode";
+    leaderboardMode === "daily"
+      ? "Daily"
+      : leaderboardMode === "trophy-cabinet"
+        ? "Trophy Cabinet"
+        : "Quick Mode";
 
   const managerModeLabel =
     MANAGER_LEADERBOARD_MODES.find((mode) => mode.id === managerMode)?.label ??
@@ -316,14 +284,9 @@ export function LeaderboardTable() {
     { id: "super-league" as const, label: "Quick Mode" },
     { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
     { id: "daily" as const, label: "Daily" },
-    ...(isMobileViewport
-      ? []
-      : [{ id: "club-funds" as const, label: "Total Winnings" }]),
   ] as const;
 
-  const managerModeOptions = isMobileViewport
-    ? MANAGER_LEADERBOARD_MODES.filter((m) => m.id !== "manager-earnings")
-    : MANAGER_LEADERBOARD_MODES;
+  const managerModeOptions = MANAGER_LEADERBOARD_MODES;
 
   const emptyStateMessage = isManagerPlayStyle
     ? `No ${trackerLabel.toLowerCase()} entries yet. Complete a manager season to appear on the leaderboard!`
@@ -331,17 +294,10 @@ export function LeaderboardTable() {
       ? "No daily streak entries yet. Complete a Daily Challenge to appear on the board!"
       : `No ${trackerLabel.toLowerCase()} entries yet. Complete a run to appear on the leaderboard!`;
 
-  const showUpdatedColumn =
-    !isClubFundsMode &&
-    !isDailyMode &&
-    !isTrophyCabinetMode &&
-    !isManagerScoreMode;
+  const showUpdatedColumn = !isDailyMode && !isTrophyCabinetMode;
 
   const showPeriodFilters =
-    !isManagerPlayStyle &&
-    !isClubFundsMode &&
-    !isDailyMode &&
-    !isTrophyCabinetMode;
+    !isManagerPlayStyle && !isDailyMode && !isTrophyCabinetMode;
 
   return (
     <div>
@@ -359,12 +315,12 @@ export function LeaderboardTable() {
         const modeOptions = isManagerPlayStyle
           ? managerModeOptions
           : quickModeOptions;
-        const modeLabel = isManagerPlayStyle
+        const modeNavLabel = isManagerPlayStyle
           ? "Manager leaderboard modes"
           : "Quick mode leaderboards";
 
         return (
-          <nav className="mb-5" aria-label={modeLabel}>
+          <nav className="mb-5" aria-label={modeNavLabel}>
             <LeaderboardTabBar
               tier="mode"
               tabs={modeOptions.map((mode) => ({
@@ -383,10 +339,10 @@ export function LeaderboardTable() {
                 if (isManagerPlayStyle) {
                   handleManagerModeChange(id as ManagerLeaderboardDbMode);
                 } else {
-                  handleQuickModeChange(id as LeaderboardDbMode);
+                  handleQuickModeChange(id as QuickLeaderboardMode);
                 }
               }}
-              ariaLabel={modeLabel}
+              ariaLabel={modeNavLabel}
             />
           </nav>
         );

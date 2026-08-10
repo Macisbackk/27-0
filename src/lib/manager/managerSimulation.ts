@@ -844,6 +844,32 @@ export function applyManagerMatchResult(
   const weekId = buildMatchWeekId(career, sched.id, round);
   finalCareer = markAwaitingMatchWeekAdvance(finalCareer, weekId);
 
+  // Shared form carry for hub Simulate and Play Game.
+  const { avgForm } = computePlayerModifiers(career, [
+    ...career.matchdayXiii,
+    ...career.matchdayInterchange,
+  ]);
+  const teamForm = Math.max(-10, Math.min(10, (avgForm - 50) / 5));
+  const combinedForm = Math.max(
+    -4,
+    Math.min(8, teamForm + career.matchSimState.form * 0.2)
+  );
+  finalCareer = {
+    ...finalCareer,
+    matchSimState: {
+      form:
+        fixture.result === "W"
+          ? Math.min(8, combinedForm + 1.5)
+          : fixture.result === "D"
+            ? combinedForm
+            : Math.max(-4, combinedForm - 1.5),
+      seasonDropGoals:
+        career.matchSimState.seasonDropGoals +
+        (fixture.scoringFor?.dropGoals ?? 0) +
+        (fixture.scoringAgainst?.dropGoals ?? 0),
+    },
+  };
+
   return { ok: true, career: pruneLeagueListedPlayers(finalCareer) };
 }
 
@@ -1244,27 +1270,6 @@ export function simulateManagerNextMatch(
   }
 
   const { fixture, liveEvents } = simulateManagerMatchLive(ready, sched);
-  const { avgForm } = computePlayerModifiers(ready, [
-    ...ready.matchdayXiii,
-    ...ready.matchdayInterchange,
-  ]);
-  const teamForm = Math.max(-10, Math.min(10, (avgForm - 50) / 5));
-  const combinedForm = Math.max(
-    -4,
-    Math.min(8, teamForm + ready.matchSimState.form * 0.2)
-  );
-  const nextSimState = {
-    form:
-      fixture.result === "W"
-        ? Math.min(8, combinedForm + 1.5)
-        : fixture.result === "D"
-          ? combinedForm
-          : Math.max(-4, combinedForm - 1.5),
-    seasonDropGoals:
-      ready.matchSimState.seasonDropGoals +
-      (fixture.scoringFor?.dropGoals ?? 0) +
-      (fixture.scoringAgainst?.dropGoals ?? 0),
-  };
 
   const result = applyManagerMatchResult(ready, fixture, {
     schedOverride: sched,
@@ -1280,13 +1285,7 @@ export function simulateManagerNextMatch(
     );
   }
 
-  return {
-    ok: true,
-    career: {
-      ...result.career,
-      matchSimState: nextSimState,
-    },
-  };
+  return result;
 }
 
 export function getSquadStrengthPreview(career: ManagerCareer): number {

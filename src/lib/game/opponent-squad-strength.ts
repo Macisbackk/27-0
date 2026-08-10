@@ -13,6 +13,11 @@ export interface OpponentPoolOptions {
   currentSeasonOnly?: boolean;
   /** Manager mode — use the saved league roster instead of the static pool. */
   poolOverride?: Player[];
+  /**
+   * When set, all user tries are allocated to this player id
+   * (e.g. Joe Mellor GOAT Mode).
+   */
+  exclusiveScorerId?: string;
 }
 
 const SQUAD_SIZE = 13;

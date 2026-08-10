@@ -755,6 +755,39 @@ function rollTryChance(
   return rng() < Math.max(0.01, Math.min(0.22, prob));
 }
 
+/**
+ * Bias try chance so live scoring paces toward the preview target tries.
+ * Commands still matter mid-match; FT converges via finalizeLiveMatch.
+ */
+function targetPaceMod(
+  currentTries: number,
+  targetTries: number,
+  minute: number
+): number {
+  const progress = Math.max(0.05, Math.min(1, minute / 80));
+  const expected = targetTries * progress;
+  const ahead = currentTries - expected;
+  const remaining = Math.max(1, 80 - minute);
+  const deficit = targetTries - currentTries;
+  let mod = 1;
+  if (ahead < -0.4) mod = 1 + Math.min(1.4, Math.abs(ahead) * 0.4);
+  else if (ahead > 0.4) mod = Math.max(0.2, 1 - ahead * 0.28);
+  if (remaining <= 24 && deficit > 0) {
+    mod *= 1 + Math.min(1.6, deficit * 0.45);
+  } else if (remaining <= 24 && deficit < 0) {
+    mod *= Math.max(0.12, 1 + deficit * 0.22);
+  }
+  return Math.max(0.12, Math.min(2.6, mod));
+}
+
+/** Soft-converge live scoreline toward preview targets for sim/play parity. */
+function convergeScoreToTarget(live: number, target: number, maxNudge = 10): number {
+  const delta = target - live;
+  if (delta === 0) return snapToRLScore(live, false);
+  const nudge = Math.sign(delta) * Math.min(Math.abs(delta), maxNudge);
+  return snapToRLScore(live + nudge, false);
+}
+
 export function createLiveMatch(
   career: ManagerCareer,
   sched: ManagerScheduledFixture
@@ -853,12 +886,23 @@ export function advanceLiveTick(
     );
     momentum += mods.momentumShift * 0.5;
 
+    const userPace = targetPaceMod(
+      userTries,
+      state.targetTriesFor,
+      minute
+    );
+    const oppPace = targetPaceMod(
+      oppTries,
+      state.targetTriesAgainst,
+      minute
+    );
+
     const userTry = rollTryChance(
       userRating,
       oppRating,
       state.isHome,
       momentum,
-      mods.userChance * tacticBias.userChance,
+      mods.userChance * tacticBias.userChance * userPace,
       rng
     );
     const oppTry =
@@ -868,7 +912,7 @@ export function advanceLiveTick(
         userRating,
         !state.isHome,
         -momentum,
-        mods.oppChance * tacticBias.oppChance * champagneVsBetter,
+        mods.oppChance * tacticBias.oppChance * champagneVsBetter * oppPace,
         rng
       );
 
@@ -1213,15 +1257,39 @@ export function advanceLiveToFullTime(
 }
 
 function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
-  let userScore = snapToRLScore(state.userScore, false);
-  let oppScore = snapToRLScore(state.oppScore, false);
+  // Converge toward the preview scoreline (same engine as hub Simulate).
+  let userScore = convergeScoreToTarget(
+    state.userScore,
+    state.targetPointsFor,
+    12
+  );
+  let oppScore = convergeScoreToTarget(
+    state.oppScore,
+    state.targetPointsAgainst,
+    12
+  );
+
+  // If still materially off, snap the remainder to the preview targets.
+  if (
+    Math.abs(userScore - state.targetPointsFor) > 4 ||
+    Math.abs(oppScore - state.targetPointsAgainst) > 4
+  ) {
+    userScore = snapToRLScore(state.targetPointsFor, false);
+    oppScore = snapToRLScore(state.targetPointsAgainst, false);
+  }
+
   // League may finish level; knockouts / friendlies resolve via golden point
   // earlier in the tick — keep a decisive fallback here if scores are still tied.
   if (userScore === oppScore && !competitionAllowsDraw(state.competition)) {
-    const rng = seedrandom(`${state.seed}-live-finalize-${state.fixtureId}`);
-    // Golden Point is a single drop-goal (1 point), not a multi-point margin.
-    if (rng() < 0.52) userScore += 1;
-    else oppScore += 1;
+    const targetWon = state.targetPointsFor > state.targetPointsAgainst;
+    const targetLost = state.targetPointsFor < state.targetPointsAgainst;
+    if (targetWon) userScore = snapToRLScore(userScore + 1, false);
+    else if (targetLost) oppScore = snapToRLScore(oppScore + 1, false);
+    else {
+      const rng = seedrandom(`${state.seed}-live-finalize-${state.fixtureId}`);
+      if (rng() < 0.52) userScore += 1;
+      else oppScore += 1;
+    }
   }
 
   const userTries = state.events.filter(

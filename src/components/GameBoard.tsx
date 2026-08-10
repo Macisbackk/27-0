@@ -252,6 +252,9 @@ export function GameBoard({
   const dailyScenario = dailyChallengeMode
     ? getDailyChallengeScenario()
     : null;
+  /** Daily + special modes: no inventory boosts (fair shared seed / fixed squad). */
+  const skipPreGameBoosts =
+    dailyChallengeMode || joeMellorMode || superSamHallasMode;
   const isSlotRecruitMode = mode === "CLASSIC";
   const [runKey, setRunKey] = useState(0);
   const [phase, setPhase] = useState<GamePhase>("pitch");
@@ -345,10 +348,10 @@ export function GameBoard({
     };
   }, [runKey]);
 
-  // Sync init — avoid first-frame boost ↔ pitch flash (Joe/Super Sam skip boost).
+  // Sync init — avoid first-frame boost ↔ pitch flash (Daily/Joe/Super Sam skip boost).
   const [preGameBoost, setPreGameBoost] =
     useState<QuickModePreGameBoostState>(() =>
-      joeMellorMode || superSamHallasMode
+      skipPreGameBoosts
         ? armPreGameBoost(runId, null)
         : createUnselectedPreGameBoost(runId)
     );
@@ -358,9 +361,15 @@ export function GameBoard({
   }, []);
 
   useEffect(() => {
-    if (joeMellorMode || superSamHallasMode) {
+    if (skipPreGameBoosts) {
       clearBoostedFirstPickPlan();
       setBoostedFirstPick(null);
+      setBoostedSpinPlan(null);
+      setSlotBoostGuaranteeId(null);
+      setBoostNotice(null);
+      setSelectionBoostsUsedThisRun(0);
+      setUsedBoostThisRun(false);
+      preGameBoostUsageIdRef.current = null;
       setPreGameBoost(armPreGameBoost(runId, null));
       return;
     }
@@ -415,7 +424,7 @@ export function GameBoard({
     setBoostNotice(null);
     setSelectionBoostsUsedThisRun(0);
     setUsedBoostThisRun(false);
-  }, [runId, joeMellorMode, superSamHallasMode, mode]);
+  }, [runId, skipPreGameBoosts, mode]);
 
   const fulfillBoostedFirstPick = useCallback(() => {
     setBoostedFirstPick((prev) => {
@@ -429,6 +438,17 @@ export function GameBoard({
 
   const handlePreGameBoostConfirm = useCallback(
     (boostId: GameBoostId | null) => {
+      if (skipPreGameBoosts) {
+        clearBoostedFirstPickPlan();
+        preGameBoostUsageIdRef.current = null;
+        setSlotBoostGuaranteeId(null);
+        setBoostedSpinPlan(null);
+        setBoostedFirstPick(null);
+        setBoostNotice(null);
+        setPreGameBoost(armPreGameBoost(runId, null));
+        return;
+      }
+
       let resolvedBoostId = boostId;
       if (
         resolvedBoostId &&
@@ -543,6 +563,7 @@ export function GameBoard({
       runId,
       mode,
       normalEraMode,
+      skipPreGameBoosts,
       seed,
       spinPickIndex,
       selectionBoostsUsedThisRun,
@@ -630,8 +651,17 @@ export function GameBoard({
     setActiveSpinTarget(null);
     setSlotRecruitTarget(null);
     setPhase("pitch");
-    setPreGameBoost(createUnselectedPreGameBoost(runId));
-  }, [runId, slotBoostGuaranteeId, preGameBoost?.selectedBoostId]);
+    setPreGameBoost(
+      skipPreGameBoosts
+        ? armPreGameBoost(runId, null)
+        : createUnselectedPreGameBoost(runId)
+    );
+  }, [
+    runId,
+    skipPreGameBoosts,
+    slotBoostGuaranteeId,
+    preGameBoost?.selectedBoostId,
+  ]);
 
   useEffect(() => {
     if (
@@ -984,6 +1014,8 @@ export function GameBoard({
         draftMode: isDraftMode,
         currentSeasonOnly: !normalEraMode,
         forceOpponentClub: dailyScenario?.forceOpponentClub,
+        forceUndefeated: superSamHallasMode,
+        joeMellorMode,
       });
       setSeasonResult(result);
       setPhase("simulation");

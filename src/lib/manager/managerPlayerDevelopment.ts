@@ -275,14 +275,15 @@ export function snapshotSquadSeasonStartRatings(
   const next = { ...(career.playerDevelopment ?? {}) };
 
   for (const ps of career.squad) {
-    const base = getPlayerById(ps.playerId);
-    if (!base) continue;
+    const player =
+      getManagerPlayer(career, ps.playerId) ?? getPlayerById(ps.playerId);
+    if (!player) continue;
 
     const age = getManagerPlayerAge(career, ps.playerId) ?? 25;
     const baseline = getManagerModePlayerRating(
       ps.playerId,
-      base.name,
-      base.peakRating
+      player.name,
+      player.peakRating
     );
     const existing = next[ps.playerId];
     const current = existing?.rating ?? baseline;
@@ -298,7 +299,7 @@ export function snapshotSquadSeasonStartRatings(
       ),
       developmentRate: existing?.developmentRate,
       seasonStartRating: current,
-      promotedSeasonYear: undefined,
+      promotedSeasonYear: existing?.promotedSeasonYear,
     };
   }
 
@@ -330,7 +331,8 @@ function applyGoodSeasonUnderperformerDowngrades(
 
   const candidates = career.squad
     .map((ps) => {
-      const base = getPlayerById(ps.playerId);
+      const base =
+        getManagerPlayer(career, ps.playerId) ?? getPlayerById(ps.playerId);
       if (!base) return null;
 
       const impact = getPlayerSeasonImpact(career, ps.playerId);
@@ -344,7 +346,10 @@ function applyGoodSeasonUnderperformerDowngrades(
 
       const devState = playerDevelopment[ps.playerId];
       const reviewBefore =
-        devState?.seasonStartRating ?? devState?.rating ?? base.peakRating;
+        devState?.seasonStartRating ??
+        existingChange?.before ??
+        devState?.rating ??
+        base.peakRating;
       const currentAfter =
         existingChange?.after ?? devState?.rating ?? reviewBefore;
       if (currentAfter <= reviewBefore - 1) return null;
@@ -410,17 +415,26 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
   const changes: PlayerDevelopmentChange[] = [];
 
   for (const ps of career.squad) {
-    const base = getPlayerById(ps.playerId);
-    if (!base) continue;
+    const player =
+      getManagerPlayer(career, ps.playerId) ?? getPlayerById(ps.playerId);
+    if (!player) continue;
 
     const baseline = getManagerModePlayerRating(
       ps.playerId,
-      base.name,
-      base.peakRating
+      player.name,
+      player.peakRating
     );
+    const age = getManagerPlayerAge(career, ps.playerId) ?? 25;
     const devState = playerDevelopment[ps.playerId];
     const reviewBefore =
       devState?.seasonStartRating ?? devState?.rating ?? baseline;
+    const potential =
+      resolvePlayerPotential(
+        ps.playerId,
+        baseline,
+        age,
+        devState?.potential
+      );
 
     const impact = getPlayerSeasonImpact(career, ps.playerId);
 
@@ -436,28 +450,42 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
       },
       seedrandom(`${career.seed}-dev-${career.seasonYear}-${ps.playerId}`)
     );
-    if (!developed) continue;
 
-    playerDevelopment[ps.playerId] = {
-      ...devState,
-      ...developed,
-    };
+    const after = developed?.rating ?? reviewBefore;
+    const afterPotential = developed?.potential ?? potential;
 
-    const actualDelta = developed.rating - reviewBefore;
-    const promotedThisSeason = devState?.promotedSeasonYear === career.seasonYear;
-    if (actualDelta !== 0 || promotedThisSeason) {
-      changes.push({
-        playerId: ps.playerId,
-        playerName: base.name,
-        before: reviewBefore,
-        after: developed.rating,
-        potential: developed.potential,
-        delta: actualDelta,
-        seasonStartRating: devState?.seasonStartRating,
-        promotedFromReserve: promotedThisSeason,
-        seasonImpact: impact,
-      });
+    if (developed) {
+      playerDevelopment[ps.playerId] = {
+        ...devState,
+        ...developed,
+        seasonStartRating: reviewBefore,
+        promotedSeasonYear: devState?.promotedSeasonYear,
+      };
+    } else if (!devState) {
+      playerDevelopment[ps.playerId] = {
+        rating: after,
+        peakRating: after,
+        potential: afterPotential,
+        seasonStartRating: reviewBefore,
+      };
     }
+
+    const actualDelta = after - reviewBefore;
+    const promotedThisSeason =
+      devState?.promotedSeasonYear === career.seasonYear;
+
+    // Always list first-team players with season-start → season-end ratings.
+    changes.push({
+      playerId: ps.playerId,
+      playerName: player.name,
+      before: reviewBefore,
+      after,
+      potential: afterPotential,
+      delta: actualDelta,
+      seasonStartRating: reviewBefore,
+      promotedFromReserve: promotedThisSeason,
+      seasonImpact: impact,
+    });
   }
 
   applyGoodSeasonUnderperformerDowngrades(career, playerDevelopment, changes);
@@ -465,7 +493,10 @@ export function developSquadAtSeasonEnd(career: ManagerCareer): {
   const withLeague = developLeaguePlayersAtSeasonEnd(career, playerDevelopment);
 
   changes.sort(
-    (a, b) => Math.abs(b.delta) - Math.abs(a.delta) || b.delta - a.delta
+    (a, b) =>
+      Math.abs(b.delta) - Math.abs(a.delta) ||
+      b.delta - a.delta ||
+      a.playerName.localeCompare(b.playerName)
   );
 
   return {
