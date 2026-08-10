@@ -116,8 +116,8 @@ export function PlayerChoice({
         </h2>
         <p className={`mt-1 ${MOBILE.secondaryCopy}`}>
           {draftMode
-            ? "Pick one player — then choose where they play on your team sheet."
-            : "Pick one signing — the other walks away forever"}
+            ? "Pick one, then place."
+            : "Pick one — the other is gone."}
         </p>
         {showDraftRule && (
           <p className="mx-auto mt-2 hidden max-w-md rounded-lg border border-pitch-600/50 bg-pitch-900/60 px-3 py-2 text-left text-xs text-gray-400 sm:mt-3 sm:block">

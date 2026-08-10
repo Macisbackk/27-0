@@ -6,6 +6,7 @@ import { getUserLeagueTablePosition } from "../manager/managerFixtures";
 import { getEffectiveStadiumCapacity, ensureClubFacilities } from "../manager/managerFacilities";
 import { getManagerSeasonTrophyLabels } from "../manager/managerSeasonTrophies";
 import { shouldScheduleWorldClubChallenge } from "../manager/worldClubChallenge";
+import { getUserLeagueClubs } from "../manager/leagueMembership";
 import type { ManagerCareer, ManagerFixtureRecord } from "../manager/types";
 import type { SquadSlot } from "../types";
 import type { AchievementCheckContext } from "./achievementContext";
@@ -224,6 +225,7 @@ export function triggerManagerSeasonAchievements(career: ManagerCareer): void {
     trigger: "manager-season-completed",
     managerSeasonComplete: true,
     managerFinishPosition: position,
+    managerLeagueSize: getUserLeagueClubs(career).length,
     managerLeagueWinner: leagueWinner,
     managerGrandFinalWinner: grandFinalWinner,
     managerDoubleWinner: doubleWinner,

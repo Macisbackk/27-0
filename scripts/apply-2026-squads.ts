@@ -115,11 +115,23 @@ function findExisting(
   const display = DISPLAY_NAME_FIXES[name] ?? name;
   const displayKey = normalizeNameKey(display);
 
-  return players.find((p) => {
+  const sameClub = players.find((p) => {
     if (p.club !== club) return false;
     const pKey = normalizeNameKey(p.name);
     return pKey === key || pKey === displayKey;
   });
+  if (sameClub) return sameClub;
+
+  // Transfers: reuse bio fields from another club's Current card.
+  // Prefer playable cards so unavailable NRL leftovers don't pollute SL rows.
+  const transfers = players.filter((p) => {
+    if (p.category !== "current" && p.status !== "Current") return false;
+    const pKey = normalizeNameKey(p.name);
+    return pKey === key || pKey === displayKey;
+  });
+  return (
+    transfers.find((p) => p.availableInGame !== false) ?? transfers[0]
+  );
 }
 
 function main(): void {
@@ -128,9 +140,6 @@ function main(): void {
   ) as RawPlayer[];
   const squads = sl2026Squads as Record<string, SquadRow[]>;
 
-  const kept = existing.filter(
-    (p) => !SL_2026_CLUBS.includes(p.club) || p.availableInGame === false
-  );
   const newPlayers: RawPlayer[] = [];
   const teamYearSquads: TeamYearSquadFile = {};
   const report = {
@@ -147,8 +156,10 @@ function main(): void {
 
   for (const club of SL_2026_CLUBS) {
     const rows = squads[club];
-    if (!rows || rows.length !== 17) {
-      throw new Error(`${club} must have exactly 17 players (has ${rows?.length ?? 0})`);
+    if (!rows || rows.length < 16 || rows.length > 18) {
+      throw new Error(
+        `${club} must have 16–18 players for Current Mode (has ${rows?.length ?? 0})`
+      );
     }
 
     const teamYearId = buildTeamYearId(club, String(CURRENT_YEAR));
@@ -175,6 +186,8 @@ function main(): void {
         name: displayName,
         club,
         currentClub: club,
+        team: club,
+        displayClub: club,
         teamYearId,
         year: CURRENT_YEAR,
         status: "Current",
@@ -188,6 +201,9 @@ function main(): void {
         peakRating: rating,
         rating,
         value,
+        // Never inherit transfer leftovers / NRL flags onto SL 2026 cards.
+        availableInGame: true,
+        superLeagueEligible: true,
         appearances: prev?.appearances,
         tries: prev?.tries,
         dateOfBirth: prev?.dateOfBirth,
@@ -243,6 +259,13 @@ function main(): void {
       report.removed.push(`${p.id} (${p.name} @ ${p.club})`);
     }
   }
+
+  // Keep non-SL clubs + unavailable SL leftovers, but never duplicate an applied id.
+  const kept = existing.filter((p) => {
+    if (newIds.has(p.id)) return false;
+    if (!SL_2026_CLUBS.includes(p.club)) return true;
+    return p.availableInGame === false;
+  });
 
   const merged = [...kept, ...newPlayers].sort((a, b) =>
     a.club.localeCompare(b.club) || a.name.localeCompare(b.name)

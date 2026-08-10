@@ -25,39 +25,39 @@ interface MotmCandidate {
 }
 
 const WIN_BIOS = [
-  "A controlled performance with the squad taking their chances when it mattered.",
-  "Professional from start to finish — the Dream Team did enough to get the job done.",
-  "Solid all-round display and a result that keeps the season on track.",
+  "Controlled win.",
+  "Got the job done.",
+  "Solid all-round win.",
 ];
 
 const BIG_WIN_BIOS = [
-  "A dominant display from start to finish, with the attack looking dangerous all afternoon.",
-  "Ruthless from the opening set — this was a statement performance.",
-  "The opposition never got a foothold in a one-sided afternoon.",
+  "Dominant from the start.",
+  "Statement win.",
+  "One-sided.",
 ];
 
 const CLOSE_WIN_BIOS = [
-  "A tight one, but your side found a way to get over the line.",
-  "Nail-biting at times, yet the Dream Team held their nerve when it counted.",
-  "A gritty win secured by fine margins and real composure late on.",
+  "Narrow win.",
+  "Held their nerve.",
+  "Won by fine margins.",
 ];
 
 const LOSS_BIOS = [
-  "A frustrating result where missed chances proved costly.",
-  "Not enough accuracy in the big moments — a defeat that stings.",
-  "The Dream Team fell short despite patches of promising play.",
+  "Costly defeat.",
+  "Not clinical enough.",
+  "Fell short.",
 ];
 
 const HEAVY_LOSS_BIOS = [
-  "A tough outing, with the opposition controlling the game for long spells.",
-  "Outplayed for large periods and unable to stem the tide.",
-  "A difficult afternoon where the better side took control early.",
+  "Outplayed.",
+  "Tough afternoon.",
+  "Never in control.",
 ];
 
 const CLOSE_LOSS_BIOS = [
-  "So close — a single moment separated the sides on the day.",
-  "A narrow defeat that could easily have swung the other way.",
-  "Heartbreakingly tight, with little to choose between the teams.",
+  "So close.",
+  "Narrow loss.",
+  "Decided by a moment.",
 ];
 
 function pickVariant(lines: string[], seed: string, round: number): string {
@@ -97,7 +97,7 @@ export function generateFantasyMatchBio(
   }
 
   if (motm && (motm.tries ?? 0) >= 2) {
-    return `${base} ${motm.playerName} led the way with a standout showing.`;
+    return `${base} ${motm.playerName} stood out.`;
   }
 
   return base;

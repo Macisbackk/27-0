@@ -36,6 +36,10 @@ function inheritPositionsFromBasePlayers(byId: Map<string, Player>): void {
   }
 
   for (const player of byId.values()) {
+    // Current Mode cards get positions from sl-2026-squads / apply — do not
+    // inherit historic dual roles (e.g. HK onto a 2026 second-rower).
+    if (player.category === "current") continue;
+
     const baseId = player.basePlayerId ?? player.id;
     const nameKey = player.name.toLowerCase().trim();
     const richest = richestByBase.get(baseId) ?? richestByName.get(nameKey);

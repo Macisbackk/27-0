@@ -59,7 +59,7 @@ function BoostCard({
             {boost.usageLimitLabel}
           </p>
           <p className="mt-2 text-xs font-medium text-accent-gold">
-            Use after starting a compatible game
+            Use in-game
           </p>
         </div>
 
@@ -207,8 +207,7 @@ export function StoreBoostsPanel() {
           </p>
         </div>
         <p className={`max-w-xs ${TYPO.bodySm} text-gray-400`}>
-          Boosts are purchased here but only activated inside Quick Mode or
-          Manager Mode after you start a compatible game.
+          Buy here. Activate in-game.
         </p>
       </div>
 
@@ -221,7 +220,7 @@ export function StoreBoostsPanel() {
       <div className={`mt-6 ${SPACING.stackLg}`}>
         <BoostSection
           title="Quick Mode Boosts"
-          description="Use during Classic or Draft player selection."
+          description="Use in Classic or Draft picks."
           boosts={getQuickModeBoosts()}
           balance={balance}
           quantities={quantities}
@@ -231,7 +230,7 @@ export function StoreBoostsPanel() {
 
         <BoostSection
           title="Manager Mode Boosts"
-          description="Use inside an active Manager career on the matching screen."
+          description="Use in Manager on the matching screen."
           boosts={getManagerModeBoosts()}
           balance={balance}
           quantities={quantities}
@@ -245,7 +244,7 @@ export function StoreBoostsPanel() {
           open
           variant="confirm"
           title={`Buy ${confirmBoost.name}?`}
-          message={`This costs ${formatClubFundsExact(confirmBoost.price)}. Boosts cannot be activated from the Store — use them after starting a compatible game.`}
+          message={`Costs ${formatClubFundsExact(confirmBoost.price)}. Use in-game, not here.`}
           confirmLabel={`Buy — ${formatClubFunds(confirmBoost.price)}`}
           onConfirm={() => executePurchase(confirmBoost)}
           onCancel={() => setConfirmBoost(null)}

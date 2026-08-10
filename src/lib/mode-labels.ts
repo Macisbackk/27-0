@@ -5,8 +5,8 @@ export function getSeasonReviewLabel(
   _difficulty: GameDifficulty,
   normalEraMode = false
 ): string {
-  if (mode === "DRAFT") return "Draft Mode Season Review";
-  return normalEraMode ? "Era Quick Mode Season Review" : "Quick Mode Season Review";
+  if (mode === "DRAFT") return "Draft Review";
+  return normalEraMode ? "Era Review" : "Quick Review";
 }
 
 export function getQuickModeLabel(normalEraMode = false): string {
@@ -22,9 +22,7 @@ export function getQuickSeasonStartLabel(normalEraMode = false): string {
 }
 
 export function getQuickModeCurrentEraHint(normalEraMode: boolean): string {
-  return normalEraMode
-    ? "Historic Super League team-years — spin club and season together."
-    : "2026 current squads — club spins with today's rosters.";
+  return normalEraMode ? "Historic team-years" : "2026 squads";
 }
 
 export function getPlayPageTitle(
@@ -37,8 +35,7 @@ export function getPlayPageTitle(
 }
 
 export const DRAFT_MODE_INTRO =
-  "Pick between two players, then choose where they play on your team sheet. Natural positions carry no penalty; out-of-position picks cost 5 OVR. Scrum Half and Stand Off share one pool.";
+  "Pick a player, then place them.";
 
 export const DRAFT_MODE_RULE =
-  "Choose one player from the pair offered, then pick their position. No penalty at natural position; −5 OVR if out of position (Stand Off/Scrum Half swaps are fine).";
-
+  "Natural pos: full OVR. Else −5.";

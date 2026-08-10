@@ -15,8 +15,8 @@ export function GuestSaveNudge({ context }: GuestSaveNudgeProps) {
     >
       <p className={`${TYPO.bodySm} text-amber-100`}>
         {context === "manager-season"
-          ? "Sign in to sync your career to your account across devices. Export from the Manager landing screen for an extra backup."
-          : "Sign in to sync stats and leaderboard entries across devices."}
+          ? "Sign in to sync. Export for backup."
+          : "Sign in to sync stats."}
       </p>
       <GameButton variant="secondary" size="sm" href="/login" className="mt-2">
         Sign in

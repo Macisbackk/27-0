@@ -32,12 +32,12 @@ export function EmailConfirmedBanner() {
   if (!visible) return null;
 
   const message = isLoggedIn
-    ? "Email confirmed successfully. You are now logged in."
-    : "Email confirmed successfully. Please log in to continue.";
+    ? "Email confirmed. You're in."
+    : "Email confirmed. Please log in.";
 
   const subtext = isLoggedIn
-    ? "Your statistics will now save to your online account."
-    : "You can now log in and save your statistics online.";
+    ? "Stats now sync online."
+    : "Log in to save stats online.";
 
   const dismiss = () => {
     setVisible(false);
@@ -52,7 +52,7 @@ export function EmailConfirmedBanner() {
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className={TYPO.sectionTitle}>Email confirmed successfully</p>
+          <p className={TYPO.sectionTitle}>Email confirmed</p>
           <p className={`mt-1 ${TYPO.body} text-gray-200`}>{message}</p>
           <p className={`mt-1 ${TYPO.bodySm}`}>{subtext}</p>
         </div>

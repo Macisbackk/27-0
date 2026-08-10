@@ -49,6 +49,7 @@ import { ManagerSeasonRecordModal } from "@/components/manager/ManagerSeasonReco
 import { ManagerIncomingBidModal } from "@/components/manager/ManagerIncomingBidModal";
 import { ManagerRetirementIntentModal } from "@/components/manager/ManagerRetirementIntentModal";
 import { ManagerContractExpiryModal } from "@/components/manager/ManagerContractExpiryModal";
+import { ManagerLoanEndedModal } from "@/components/manager/ManagerLoanEndedModal";
 import { ManagerReserveReportModal } from "@/components/manager/ManagerReserveReportModal";
 import { ManagerBoardMessageModal } from "@/components/manager/ManagerBoardMessageModal";
 import { triggerManagerMatchAchievements } from "@/lib/achievements/achievementTriggers";
@@ -90,8 +91,11 @@ import {
 } from "@/lib/manager/managerSimulation";
 import {
   acknowledgeManagerEventId,
+  canAdvanceMatchWeek,
   canPlayNextMatch,
   collectWeeklyManagerEventIds,
+  getAdvanceWeekButtonLabel,
+  getMatchWeekPhase,
   hasBlockingManagerDecision,
   withWeeklyManagerEventQueue,
 } from "@/lib/manager/managerMatchWeek";
@@ -176,6 +180,10 @@ import {
   acknowledgePositionRetrainingPopup,
   getPendingPositionRetrainingPopup,
 } from "@/lib/manager/managerPositionRetraining";
+import {
+  acknowledgeLoanEndedPopup,
+  getPendingLoanEndedPopup,
+} from "@/lib/manager/managerLoans";
 import {
   downloadManagerCareerExport,
   importManagerCareerFromFile,
@@ -301,6 +309,10 @@ export default function ManagerPage() {
     string | null
   >(null);
   const [contractExpiryModalOpen, setContractExpiryModalOpen] = useState(false);
+  const [pendingLoanEndedId, setPendingLoanEndedId] = useState<string | null>(
+    null
+  );
+  const [loanEndedModalOpen, setLoanEndedModalOpen] = useState(false);
   const [pendingReserveReportId, setPendingReserveReportId] = useState<
     string | null
   >(null);
@@ -845,6 +857,7 @@ export default function ManagerPage() {
     }
     const incomingBid = getPendingIncomingClubBid(saved);
     const contractExpiry = getPendingContractExpiryPopup(saved);
+    const loanEnded = getPendingLoanEndedPopup(saved);
     const retirementIntent = getPendingRetirementIntentPopup(saved);
     if (incomingBid) {
       setPendingIncomingBidId(incomingBid.id);
@@ -852,6 +865,9 @@ export default function ManagerPage() {
     } else if (contractExpiry) {
       setPendingContractExpiryId(contractExpiry.id);
       setContractExpiryModalOpen(true);
+    } else if (loanEnded) {
+      setPendingLoanEndedId(loanEnded.id);
+      setLoanEndedModalOpen(true);
     } else if (retirementIntent) {
       setPendingRetirementIntentId(retirementIntent.id);
       setRetirementIntentModalOpen(true);
@@ -1083,6 +1099,12 @@ export default function ManagerPage() {
       return;
     }
 
+    if (pendingLoanEndedId) {
+      setLoanEndedModalOpen(true);
+      goToView("hub");
+      return;
+    }
+
     if (pendingRetirementIntentId) {
       setRetirementIntentModalOpen(true);
       goToView("hub");
@@ -1219,6 +1241,25 @@ export default function ManagerPage() {
 
     setPendingContractExpiryId(null);
     setContractExpiryModalOpen(false);
+    continueAfterLoanEnded(nextCareer);
+  };
+
+  const continueAfterLoanEnded = (nextCareer: ManagerCareer) => {
+    const nextLoan = getPendingLoanEndedPopup(nextCareer);
+    if (nextLoan) {
+      setPendingLoanEndedId(nextLoan.id);
+      setLoanEndedModalOpen(true);
+      goToView("hub");
+      return;
+    }
+
+    setPendingLoanEndedId(null);
+    setLoanEndedModalOpen(false);
+    if (shouldShowClubStarRiseCelebration(nextCareer)) {
+      setClubStarRiseModalOpen(true);
+      goToView("hub");
+      return;
+    }
     continueAfterRetirementIntent(nextCareer);
   };
 
@@ -1251,6 +1292,7 @@ export default function ManagerPage() {
       pendingIncomingBidId ||
       !!getPendingIncomingClubBid(next) ||
       !!getPendingContractExpiryPopup(next) ||
+      !!getPendingLoanEndedPopup(next) ||
       !!getPendingRetirementIntentPopup(next) ||
       !!getPendingPositionRetrainingPopup(next) ||
       !!getPendingReserveReportPopup(next) ||
@@ -1261,6 +1303,40 @@ export default function ManagerPage() {
       return;
     }
     goToView("contracts");
+  };
+
+  const handleLoanEndedDismiss = () => {
+    if (!career || !pendingLoanEndedId) return;
+    const next = acknowledgeManagerEventId(
+      acknowledgeLoanEndedPopup(career, pendingLoanEndedId),
+      pendingLoanEndedId
+    );
+    persist(next);
+    continueAfterLoanEnded(next);
+  };
+
+  const handleLoanEndedViewSquad = () => {
+    if (!career || !pendingLoanEndedId) return;
+    const next = acknowledgeManagerEventId(
+      acknowledgeLoanEndedPopup(career, pendingLoanEndedId),
+      pendingLoanEndedId
+    );
+    persist(next);
+    setPendingLoanEndedId(null);
+    setLoanEndedModalOpen(false);
+
+    const hasQueue =
+      !!getPendingLoanEndedPopup(next) ||
+      !!getPendingRetirementIntentPopup(next) ||
+      !!getPendingPositionRetrainingPopup(next) ||
+      !!getPendingReserveReportPopup(next) ||
+      shouldShowClubStarRiseCelebration(next);
+
+    if (hasQueue) {
+      continueAfterLoanEnded(next);
+      return;
+    }
+    goToView("squad");
   };
 
   const continueAfterPositionRetrainingPopup = (nextCareer: ManagerCareer) => {
@@ -1659,6 +1735,7 @@ export default function ManagerPage() {
       const boardMail = getPendingBoardInboxPopup(withQueue);
       const incomingBid = getPendingIncomingClubBid(withQueue);
       const contractExpiry = getPendingContractExpiryPopup(withQueue);
+      const loanEnded = getPendingLoanEndedPopup(withQueue);
       const retirementIntent = getPendingRetirementIntentPopup(withQueue);
       const retrainingComplete = getPendingPositionRetrainingPopup(withQueue);
       const reserveReport = getPendingReserveReportPopup(withQueue);
@@ -1666,6 +1743,7 @@ export default function ManagerPage() {
       setPendingBoardMessageId(boardMail?.id ?? null);
       setPendingIncomingBidId(incomingBid?.id ?? null);
       setPendingContractExpiryId(contractExpiry?.id ?? null);
+      setPendingLoanEndedId(loanEnded?.id ?? null);
       setPendingRetirementIntentId(retirementIntent?.id ?? null);
       setPendingPositionRetrainingId(retrainingComplete?.id ?? null);
       setPendingReserveReportId(reserveReport?.id ?? null);
@@ -1681,6 +1759,8 @@ export default function ManagerPage() {
         setIncomingBidModalOpen(true);
       } else if (contractExpiry) {
         setContractExpiryModalOpen(true);
+      } else if (loanEnded) {
+        setLoanEndedModalOpen(true);
       } else if (retirementIntent) {
         setRetirementIntentModalOpen(true);
       } else if (retrainingComplete) {
@@ -1761,7 +1841,11 @@ export default function ManagerPage() {
     if (!career) return;
     const next = hydrateManagerCareer(advanceToNextSeason(career));
     persist(next);
-    if (shouldShowClubStarRiseCelebration(next)) {
+    const loanEnded = getPendingLoanEndedPopup(next);
+    if (loanEnded) {
+      setPendingLoanEndedId(loanEnded.id);
+      setLoanEndedModalOpen(true);
+    } else if (shouldShowClubStarRiseCelebration(next)) {
       setClubStarRiseModalOpen(true);
     }
     goToView("hub");
@@ -1817,19 +1901,41 @@ export default function ManagerPage() {
     const nextFixture = getNextManagerFixture(career);
     const seasonComplete = isManagerSeasonComplete(career);
     const playoffsPending = needsPlayoffsIntro(career);
-    const visible = Boolean(nextFixture && !seasonComplete && !playoffsPending);
+
+    if (seasonComplete) {
+      return {
+        mode: "season-review" as const,
+        canPlay: false,
+        playLabel: "Season Review",
+        simulateLabel: "Season Review",
+      };
+    }
+
+    if (canAdvanceMatchWeek(career) || getMatchWeekPhase(career) === "awaiting_advance") {
+      const labels = getAdvanceWeekButtonLabel(career, false);
+      return {
+        mode: "advance-week" as const,
+        canPlay: false,
+        canAdvance: canAdvanceMatchWeek(career),
+        playLabel: labels.full,
+        simulateLabel: labels.full,
+        advanceLabel: labels.full,
+      };
+    }
+
+    const visible = Boolean(nextFixture && !playoffsPending);
     if (!visible) return null;
     const simCareer = resolveCareerForMatchSimulation(career);
     const squadCheck = validateFitMatchdaySquad(simCareer);
     const canPlay =
       canPlayNextMatch(career) &&
       squadCheck.valid &&
-      !seasonComplete &&
       !playoffsPending;
     const matchOccasion = nextFixture
       ? getManagerMatchOccasionPresentation(nextFixture)
       : null;
     return {
+      mode: "match" as const,
       canPlay,
       playLabel: matchOccasion?.playCtaShort ?? "Play Game",
       simulateLabel:
@@ -1861,6 +1967,11 @@ export default function ManagerPage() {
       ? career.inboxMessages.find((m) => m.id === pendingContractExpiryId)
       : undefined;
 
+  const loanEndedMessage =
+    career && pendingLoanEndedId
+      ? career.inboxMessages.find((m) => m.id === pendingLoanEndedId)
+      : undefined;
+
   const reserveReportMessage =
     career && pendingReserveReportId
       ? career.inboxMessages.find((m) => m.id === pendingReserveReportId)
@@ -1880,6 +1991,7 @@ export default function ManagerPage() {
     boardMessageModalOpen ||
     incomingBidModalOpen ||
     contractExpiryModalOpen ||
+    loanEndedModalOpen ||
     retirementIntentModalOpen ||
     positionRetrainingCompleteModalOpen ||
     reserveReportModalOpen ||
@@ -2076,6 +2188,25 @@ export default function ManagerPage() {
           simulateLabel={hubSticky.simulateLabel}
           onPlayGame={handlePlayGame}
           onSimulate={handleSimulate}
+          seasonReviewLabel={
+            hubSticky.mode === "season-review" ? "Season Review" : null
+          }
+          onSeasonReview={
+            hubSticky.mode === "season-review"
+              ? () => goToView("season-review", { syncUrl: false })
+              : undefined
+          }
+          advanceWeekLabel={
+            hubSticky.mode === "advance-week"
+              ? hubSticky.advanceLabel ?? "Advance Week"
+              : null
+          }
+          canAdvanceWeek={
+            hubSticky.mode === "advance-week" ? hubSticky.canAdvance : false
+          }
+          onAdvanceWeek={
+            hubSticky.mode === "advance-week" ? handleAdvanceWeek : undefined
+          }
         />
       )}
 
@@ -2165,6 +2296,15 @@ export default function ManagerPage() {
             onViewContracts={handleContractExpiryViewContracts}
           />
         )}
+
+      {career && loanEndedModalOpen && loanEndedMessage && (
+        <ManagerLoanEndedModal
+          career={career}
+          message={loanEndedMessage}
+          onDismiss={handleLoanEndedDismiss}
+          onViewSquad={handleLoanEndedViewSquad}
+        />
+      )}
 
       {career &&
         positionRetrainingCompleteModalOpen &&

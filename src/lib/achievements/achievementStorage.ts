@@ -1,4 +1,5 @@
 import { STORAGE_KEYS } from "../storage/keys";
+import { isLoggedIn } from "../auth-session";
 
 /**
  * Canonical one-time unlock ledger row.
@@ -69,18 +70,21 @@ function loadRaw(): UnlockedAchievement[] {
   }
 }
 
-function saveRaw(rows: UnlockedAchievement[]): void {
+function saveRaw(rows: UnlockedAchievement[], syncCloud = true): void {
   if (typeof window === "undefined") return;
   // Dedupe by achievement id before persist.
   const byId = new Map<string, UnlockedAchievement>();
   for (const row of rows) {
     if (!byId.has(row.id)) byId.set(row.id, row);
   }
-  localStorage.setItem(
-    STORAGE_KEYS.achievements,
-    JSON.stringify(Array.from(byId.values()))
-  );
+  const next = Array.from(byId.values());
+  localStorage.setItem(STORAGE_KEYS.achievements, JSON.stringify(next));
   window.dispatchEvent(new CustomEvent(ACHIEVEMENTS_CHANGED_EVENT));
+  if (syncCloud && isLoggedIn()) {
+    void import("../storage/achievements-cloud").then(({ saveCloudAchievements }) =>
+      saveCloudAchievements(next)
+    );
+  }
 }
 
 export function loadAchievements(): UnlockedAchievement[] {
@@ -89,6 +93,13 @@ export function loadAchievements(): UnlockedAchievement[] {
 
 export function saveAchievements(rows: UnlockedAchievement[]): void {
   saveRaw(rows);
+}
+
+/** Apply a merged ledger without re-uploading during hydrate (caller uploads once). */
+export function replaceAchievementsFromCloudMerge(
+  rows: UnlockedAchievement[]
+): void {
+  saveRaw(rows, false);
 }
 
 export function isAchievementUnlocked(id: string): boolean {
@@ -106,3 +117,27 @@ export function isAchievementPopupAcknowledged(id: string): boolean {
 }
 
 export { createUnlockEventId };
+
+/** Hydrate local ledger from cloud, then push the merged result back. */
+export async function refreshAchievementsFromCloud(): Promise<void> {
+  const {
+    loadCloudAchievements,
+    mergeAchievementLedgers,
+    saveCloudAchievements,
+  } = await import("../storage/achievements-cloud");
+  const cloud = await loadCloudAchievements();
+  if (cloud == null) {
+    // No cloud row yet — upload local ledger if any.
+    const local = loadRaw();
+    if (local.length > 0 && isLoggedIn()) {
+      await saveCloudAchievements(local);
+    }
+    return;
+  }
+  const merged = mergeAchievementLedgers(loadRaw(), cloud);
+  replaceAchievementsFromCloudMerge(merged);
+  await saveCloudAchievements(merged);
+  // Re-run progress baseline so stats-backed unlocks still apply after merge.
+  const { synchronizeAchievementBaseline } = await import("./achievementEngine");
+  synchronizeAchievementBaseline();
+}

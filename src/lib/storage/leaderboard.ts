@@ -208,6 +208,7 @@ function toTrackerEntry(
     bestCupFinishLabel: row.bestCupFinishLabel ?? "",
     cupWinPercentage: row.cupWinPercentage ?? 0,
     leagueTitles: row.leagueTitles ?? 0,
+    championshipTitles: 0,
     superLeagueTitles: row.superLeagueTitles ?? 0,
     // Quick Mode entries have no World Club Challenge concept.
     wccWins: 0,
@@ -535,6 +536,7 @@ function userStatsToClassicTrackerEntry(
     bestCupFinishLabel: "",
     cupWinPercentage: 0,
     leagueTitles: 0,
+    championshipTitles: 0,
     superLeagueTitles: 0,
     wccWins: 0,
     seasonsCompleted: 0,
@@ -744,6 +746,7 @@ async function getExistingRemoteStats(
       bestCupFinishLabel: data.best_cup_finish ?? "",
       cupWinPercentage: data.cup_win_percentage ?? 0,
       leagueTitles: 0,
+      championshipTitles: 0,
       superLeagueTitles: 0,
       seasonsCompleted: 0,
     };

@@ -208,7 +208,7 @@ export function PlayoffReview({
           </p>
           {isChampion && (
             <p className="mt-2 text-sm font-semibold text-theme-primary">
-              Super League Champions — your squad lifted the trophy.
+              Super League Champions.
             </p>
           )}
         </motion.header>
@@ -282,7 +282,7 @@ export function PlayoffReview({
             title="Play-Off Bracket"
             delay={0.25}
             defaultOpen
-            helper="Tap a completed match for scorers and match story."
+            helper="Tap a match for details."
           >
             <PlayoffBracketDisplay
               state={playoffBracketState}

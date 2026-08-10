@@ -36,6 +36,7 @@ import { syncManagerLeaderboardOnLoad } from "./storage/manager-leaderboard";
 import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
 import { refreshBoostInventoryFromCloud } from "./boosts/boostInventory";
 import { refreshManagerCareersFromCloud } from "./storage/manager-career-cloud";
+import { refreshAchievementsFromCloud } from "./achievements/achievementStorage";
 
 interface AuthContextValue {
   user: User | null;
@@ -82,6 +83,10 @@ async function hydrateBoostInventoryFromCloud(): Promise<void> {
 
 async function hydrateManagerCareersFromCloud(): Promise<void> {
   await refreshManagerCareersFromCloud();
+}
+
+async function hydrateAchievementsFromCloud(): Promise<void> {
+  await refreshAchievementsFromCloud();
 }
 
 function applySession(session: Session | null, profile: UserProfile | null) {
@@ -159,6 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         hydrateUiThemeFromCloud(),
         hydrateBoostInventoryFromCloud(),
         hydrateManagerCareersFromCloud(),
+        hydrateAchievementsFromCloud(),
       ]);
       if (generation !== syncGenerationRef.current) return;
 

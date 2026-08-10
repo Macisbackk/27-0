@@ -140,7 +140,7 @@ export default function ProfilePage() {
       setStatsResetConfirm(false);
       setStatsResetMsg(
         isLoggedIn
-          ? "Career stats reset on this device and your online account."
+          ? "Career stats reset everywhere."
           : "Career stats reset on this device."
       );
     } else {
@@ -191,8 +191,7 @@ export default function ProfilePage() {
           <p className={TYPO.sectionLabel}>Account</p>
           <h1 className={`mt-1 ${TYPO.pageTitle}`}>Coach Profile</h1>
           <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
-            Your account, cloud sync status, and a quick snapshot of Quick Mode
-            runs. For deep dives and filters, use Stats.
+            Account, sync, Quick Mode snapshot.
           </p>
         </header>
 
@@ -220,7 +219,7 @@ export default function ProfilePage() {
 
         <SectionCard
           title="Quick Mode snapshot"
-          helper="Logged-in runs sync to the cloud. Manager careers stay on this device unless exported."
+          helper="Cloud sync when logged in."
         >
           {statsLoading || !view ? (
             <p className={TYPO.bodySm}>Loading career stats…</p>
@@ -267,14 +266,12 @@ export default function ProfilePage() {
           </p>
           <div className="mt-5 border-t border-pitch-700/50 pt-4">
             <p className={TYPO.bodySm}>
-              Reset Quick Mode wins, seasons, and trophies tracked in Stats.
-              Manager Mode saves on this device are not affected. Leaderboard
-              entries are not removed.
+              Clears Quick Mode career stats. Not Manager saves or leaderboards.
             </p>
             {statsResetConfirm ? (
               <div className="mt-3 rounded-lg border border-red-500/35 bg-red-950/20 p-3">
                 <p className={`${TYPO.bodySm} text-red-200`}>
-                  This cannot be undone. Clear all Quick Mode and Manager Mode career stats?
+                  Clear all career stats? Can&apos;t undo.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button

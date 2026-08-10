@@ -64,6 +64,7 @@ const MANAGER_MODE_ACCENTS: Record<
   LeaderboardTabAccent
 > = {
   "manager-super-league": "green",
+  "manager-championship": "sky",
   "manager-challenge-cup": "gold",
 };
 
@@ -81,6 +82,8 @@ const TRACKER_ACCENTS: Partial<
   manager_challenge_cups: "gold",
   manager_cup_finals: "gold",
   manager_league_titles: "green",
+  manager_championship_titles: "sky",
+  manager_super_league_champions: "gold",
   manager_seasons_completed: "sky",
 };
 
@@ -95,7 +98,9 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   daily_streak: "Best Streak",
   manager_challenge_cups: "Cups Won",
   manager_cup_finals: "Finals Reached",
-  manager_league_titles: "League Titles",
+  manager_league_titles: "SL Titles",
+  manager_championship_titles: "Champ Titles",
+  manager_super_league_champions: "SL Champions",
   manager_seasons_completed: "Seasons Completed",
 };
 
@@ -326,10 +331,10 @@ export function LeaderboardTable() {
   const managerModeOptions = MANAGER_LEADERBOARD_MODES;
 
   const emptyStateMessage = isManagerPlayStyle
-    ? `No ${trackerLabel.toLowerCase()} entries yet. Complete a manager season to appear on the leaderboard!`
+    ? `No ${trackerLabel.toLowerCase()} entries yet. Finish a manager season.`
     : isDailyMode
-      ? "No daily streak entries yet. Complete a Daily Challenge to appear on the board!"
-      : `No ${trackerLabel.toLowerCase()} entries yet. Complete a run to appear on the leaderboard!`;
+      ? "No streaks yet. Finish a Daily Challenge."
+      : `No ${trackerLabel.toLowerCase()} entries yet. Finish a run.`;
 
   const showUpdatedColumn = !isDailyMode && !isTrophyCabinetMode;
 

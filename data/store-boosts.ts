@@ -45,8 +45,7 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
   {
     id: "qm-90-plus-player",
     name: "90+ Rated Player",
-    description:
-      "Guarantees at least one eligible player rated 90 or above in the next player selection.",
+    description: "Next pick includes a 90+ player.",
     category: "quick-mode",
     compatibleModes: ["CLASSIC", "DRAFT"],
     price: 1_000_000,
@@ -54,13 +53,12 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
     stackable: false,
     maxPerGame: 2,
     consumable: true,
-    usageLimitLabel: "One per player choice · max 2 per run",
+    usageLimitLabel: "Max 2 per run",
   },
   {
     id: "qm-goat-hall-of-fame",
     name: "Legend Player",
-    description:
-      "Era Mode only. Guarantees the next eligible selection contains one Legend player.",
+    description: "Era only. Next pick includes a Legend.",
     category: "quick-mode",
     compatibleModes: ["CLASSIC", "DRAFT"],
     eraModeOnly: true,
@@ -69,13 +67,12 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
     stackable: false,
     maxPerGame: 2,
     consumable: true,
-    usageLimitLabel: "Era Mode · one per player choice · max 2 per run",
+    usageLimitLabel: "Era · max 2 per run",
   },
   {
     id: "mgr-future-star",
     name: "Future Star",
-    description:
-      "Adds one genuine youth player with 90–95 potential to your reserve pathway (current rating stays developmental, potential 90–95).",
+    description: "Add a 90–95 potential youth reserve.",
     category: "manager-mode",
     compatibleModes: ["MANAGER"],
     price: 2_000_000,
@@ -83,13 +80,12 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
     stackable: false,
     maxPerGame: 1,
     consumable: true,
-    usageLimitLabel: "Max one per club season",
+    usageLimitLabel: "Once per season",
   },
   {
     id: "mgr-financial-takeover",
     name: "Financial Takeover",
-    description:
-      "One-time increase to your club’s transfer budget and operating finances. Does not affect Store currency or salary-cap rules.",
+    description: "Boost transfer and operating funds.",
     category: "manager-mode",
     compatibleModes: ["MANAGER"],
     price: 5_000_000,
@@ -97,13 +93,12 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
     stackable: false,
     maxPerGame: 1,
     consumable: true,
-    usageLimitLabel: "Max one per club season",
+    usageLimitLabel: "Once per season",
   },
   {
     id: "mgr-training-boost",
     name: "Training Boost",
-    description:
-      "Immediately raises one eligible first-team squad player to their existing peak potential.",
+    description: "Raise one senior to peak potential.",
     category: "manager-mode",
     compatibleModes: ["MANAGER"],
     price: 3_000_000,
@@ -111,13 +106,12 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
     stackable: false,
     maxPerGame: 1,
     consumable: true,
-    usageLimitLabel: "Once per senior player",
+    usageLimitLabel: "Once per player",
   },
   {
     id: "mgr-unlocked-potential",
     name: "Unlocked Potential",
-    description:
-      "Immediately raises one eligible reserve player to their existing potential. They stay in Reserves.",
+    description: "Raise one reserve to potential.",
     category: "manager-mode",
     compatibleModes: ["MANAGER"],
     price: 2_000_000,
@@ -125,13 +119,12 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
     stackable: false,
     maxPerGame: 1,
     consumable: true,
-    usageLimitLabel: "Once per reserve player",
+    usageLimitLabel: "Once per reserve",
   },
   {
     id: "mgr-no-sacking",
     name: "No Sacking",
-    description:
-      "Disables board sackings for this Manager save. Board expectations and confidence still apply.",
+    description: "Board cannot sack you this save.",
     category: "manager-mode",
     compatibleModes: ["MANAGER"],
     price: 4_000_000,
@@ -139,13 +132,12 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
     stackable: false,
     maxPerGame: 1,
     consumable: true,
-    usageLimitLabel: "Once per Manager save",
+    usageLimitLabel: "Once per save",
   },
   {
     id: "mgr-heal-all",
     name: "Heal All",
-    description:
-      "Clears active injuries from your senior and reserve squads. Suspensions remain. Not consumed if nobody is injured.",
+    description: "Clear injuries (not suspensions).",
     category: "manager-mode",
     compatibleModes: ["MANAGER"],
     price: 500_000,
@@ -153,7 +145,7 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
     stackable: true,
     maxPerGame: 99,
     consumable: true,
-    usageLimitLabel: "Only when injuries exist",
+    usageLimitLabel: "When injured",
   },
 ] as const;
 

@@ -54,7 +54,7 @@ export function ResetPasswordForm() {
         } else {
           setState("error");
           setError(
-            "This reset link is invalid or has expired. Request a new password reset email from your profile."
+            "Link expired. Request a new reset."
           );
         }
       } catch (err) {

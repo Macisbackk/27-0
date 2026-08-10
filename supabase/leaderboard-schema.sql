@@ -47,6 +47,10 @@ set league_titles = coalesce(league_titles, score, 0)
 where mode = 'manager-super-league' and (league_titles is null or league_titles = 0);
 update public.leaderboard set league_titles = 0 where league_titles is null;
 
+-- Manager Super League Champions (schema v7) — Grand Final winners.
+alter table public.leaderboard add column if not exists super_league_titles integer;
+update public.leaderboard set super_league_titles = 0 where super_league_titles is null;
+
 update public.leaderboard set mode = 'super-league' where mode is null;
 -- Valid mode values: super-league, challenge-cup, draft
 update public.leaderboard set difficulty = 'NORMAL' where difficulty is null;

@@ -22,6 +22,7 @@ import {
   ensureRenewalDemands,
   generateRenewalDemand,
   evaluateRenewalOffer,
+  isLoanSquadContract,
 } from "./managerContracts";
 import { syncReserveContractExpiryInbox } from "./managerReserveContracts";
 import { ensureRetirementIntent } from "./managerRetirement";
@@ -182,7 +183,7 @@ export function createPlayerPurchaseMessage(
       id: `purchase-${playerId}-w${career.gameWeek}-${Date.now()}`,
       type: "transfer_complete",
       title: "Transfer Completed",
-      body: `${playerName} has joined from ${fromClub} for ${formatWage(fee)} on ${formatWage(wagePerYear)}/yr.`,
+      body: `${playerName} ← ${fromClub} · ${formatWage(fee)} · ${formatWage(wagePerYear)}/yr.`,
       read: false,
       resolved: false,
       playerId,
@@ -219,7 +220,7 @@ export function createPlayerSaleMessage(
       id: `sale-${playerName}-${career.gameWeek}-${Date.now()}`,
       type: "sale",
       title: "Transfer Completed",
-      body: `${playerName} has joined ${buyerClub} for ${formatWage(fee)}.\nThe fee has been added to your club funds (transfer and operating budgets).${profitLine}`,
+      body: `${playerName} → ${buyerClub} · ${formatWage(fee)}.${profitLine}`,
       read: false,
       resolved: false,
       playerId,
@@ -304,8 +305,26 @@ function getOrdinal(n: number): string {
 export function syncContractExpiryInboxMessages(
   career: ManagerCareer
 ): ManagerCareer {
-  let next = career;
+  // Drop any contract-expiry mail for loaned-in players (they are not renewals).
+  const inboxMessages = career.inboxMessages.filter((m) => {
+    if (
+      m.type !== "contract" ||
+      !m.id.startsWith("contract-expiry-") ||
+      !m.playerId
+    ) {
+      return true;
+    }
+    return !isLoanSquadContract(career, m.playerId);
+  });
+
+  let next: ManagerCareer =
+    inboxMessages.length === career.inboxMessages.length
+      ? career
+      : { ...career, inboxMessages, updatedAt: new Date().toISOString() };
+
   for (const ps of career.squad) {
+    if (isLoanSquadContract(career, ps.playerId)) continue;
+
     const contract = career.contracts[ps.playerId];
     const player = getManagerPlayer(career, ps.playerId);
     if (!contract || !player) continue;
@@ -329,7 +348,7 @@ export function syncContractExpiryInboxMessages(
       id: msgId,
       type: "contract",
       title: "Contract Expiring",
-      body: `${player.name}'s contract expires ${timeLeft}. Open Contracts to negotiate a renewal.`,
+      body: `${player.name} expires ${timeLeft}. Renew in Contracts.`,
       week: career.gameWeek,
       season: career.seasonYear,
       gameWeek: career.gameWeek,
@@ -409,7 +428,7 @@ export function addRetirementIntentInboxMessage(
     id: msgId,
     type: "retirement",
     title: "Retirement Planned",
-    body: `${playerName} (${age}) is considering retirement and plans to call time on their career at the end of the ${career.seasonYear} season.`,
+    body: `${playerName} (${age}) plans to retire after ${career.seasonYear}.`,
     week: career.gameWeek,
     season: career.seasonYear,
     gameWeek: career.gameWeek,
@@ -534,14 +553,7 @@ export function bulkRenewExpiringContractsWithInbox(
   for (const ps of working.squad) {
     const contract = working.contracts[ps.playerId];
     if (!contract) continue;
-    if (
-      (working.activeLoans ?? []).some(
-        (l) =>
-          l.playerId === ps.playerId &&
-          l.loaneeClub === working.club &&
-          l.parentClub !== working.club
-      )
-    ) {
+    if (isLoanSquadContract(working, ps.playerId)) {
       continue;
     }
     const status = getContractStatus(contract);

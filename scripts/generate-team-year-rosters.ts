@@ -271,7 +271,10 @@ function scrubUnresolvedRosterIds(rosters: TeamYearRosters): void {
   }
 }
 
+/** Preferred Current Mode squad size (apply:2026-squads allows 16–18). */
 export const CURRENT_YEAR_SQUAD_SIZE = 17;
+export const CURRENT_YEAR_SQUAD_MIN = 16;
+export const CURRENT_YEAR_SQUAD_MAX = 18;
 
 type CurrentTeamYearSquads = Record<
   string,
@@ -308,10 +311,13 @@ function buildCurrentYearSquads(
       return !!player && player.category === "current";
     });
 
-    if (knownIds.length !== CURRENT_YEAR_SQUAD_SIZE) {
+    if (
+      knownIds.length < CURRENT_YEAR_SQUAD_MIN ||
+      knownIds.length > CURRENT_YEAR_SQUAD_MAX
+    ) {
       if (process.env.NODE_ENV !== "production") {
         console.warn(
-          `${club} ${year}: expected ${CURRENT_YEAR_SQUAD_SIZE} players, got ${knownIds.length}`
+          `${club} ${year}: expected ${CURRENT_YEAR_SQUAD_MIN}–${CURRENT_YEAR_SQUAD_MAX} players, got ${knownIds.length}`
         );
       }
       continue;

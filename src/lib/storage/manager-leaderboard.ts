@@ -20,6 +20,7 @@ import { STORAGE_KEYS } from "./keys";
 
 const LOCAL_GUEST_KEY = "__local_guest__";
 const SUPER_LEAGUE_MODE = "manager-super-league";
+const CHAMPIONSHIP_MODE = "manager-championship";
 const CHALLENGE_CUP_MODE = "manager-challenge-cup";
 
 /**
@@ -34,6 +35,7 @@ export const MANAGER_LEADERBOARD_MODES: {
   label: string;
 }[] = [
   { id: "manager-super-league", label: "Super League" },
+  { id: "manager-championship", label: "Championship" },
   { id: "manager-challenge-cup", label: "Challenge Cup" },
 ];
 
@@ -82,6 +84,7 @@ function managerStatsToTrackerPayload(
     bestCupFinishLabel: "",
     cupWinPercentage: 0,
     leagueTitles: Math.round(stats.leagueTitles),
+    championshipTitles: Math.round(stats.championshipTitles ?? 0),
     superLeagueTitles: Math.round(stats.superLeagueTitles),
     seasonsCompleted: Math.round(stats.seasonsCompleted),
   };
@@ -94,6 +97,7 @@ function hasManagerLeaderboardActivity(stats: ManagerLifetimeStats): boolean {
     stats.wins > 0 ||
     stats.losses > 0 ||
     stats.leagueTitles > 0 ||
+    (stats.championshipTitles ?? 0) > 0 ||
     stats.superLeagueTitles > 0 ||
     stats.challengeCups > 0 ||
     stats.worldClubChallengeWins > 0
@@ -170,8 +174,20 @@ async function upsertTrackerModeOnline(
     const row = {
       coach_name: coachName,
       player_name: coachName,
-      score: mode === SUPER_LEAGUE_MODE ? stats.leagueTitles : 0,
-      league_titles: mode === SUPER_LEAGUE_MODE ? stats.leagueTitles : 0,
+      score:
+        mode === SUPER_LEAGUE_MODE
+          ? stats.leagueTitles
+          : mode === CHAMPIONSHIP_MODE
+            ? stats.championshipTitles ?? 0
+            : 0,
+      league_titles:
+        mode === SUPER_LEAGUE_MODE
+          ? stats.leagueTitles
+          : mode === CHAMPIONSHIP_MODE
+            ? stats.championshipTitles ?? 0
+            : 0,
+      super_league_titles:
+        mode === SUPER_LEAGUE_MODE ? stats.superLeagueTitles : 0,
       wins: payload.totalWins,
       losses: payload.totalLosses,
       perfect_runs: payload.perfectRuns,
@@ -219,6 +235,7 @@ export function syncManagerLeaderboard(
 
     updateLocalTrackerEntry(username, stats, userId);
     void upsertTrackerModeOnline(SUPER_LEAGUE_MODE, stats);
+    void upsertTrackerModeOnline(CHAMPIONSHIP_MODE, stats);
     void upsertTrackerModeOnline(CHALLENGE_CUP_MODE, stats);
     return;
   }
@@ -239,7 +256,7 @@ async function fetchRemoteTrackerEntries(
     const { data, error } = await supabase
       .from("leaderboard")
       .select(
-        "coach_name, score, league_titles, wins, losses, perfect_runs, wcc_wins, seasons_completed, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, updated_at, created_at"
+        "coach_name, score, league_titles, super_league_titles, wins, losses, perfect_runs, wcc_wins, seasons_completed, best_record_wins, best_record_losses, best_win_percentage, challenge_cup_wins, cup_finals, updated_at, created_at"
       )
       .eq("mode", mode)
       .eq("difficulty", "NORMAL")
@@ -272,12 +289,28 @@ async function fetchRemoteTrackerEntries(
         bestCupFinishLabel: "",
         cupWinPercentage: 0,
         leagueTitles:
-          typeof (row as { league_titles?: number }).league_titles === "number"
-            ? (row as { league_titles: number }).league_titles
-            : typeof row.score === "number"
-              ? row.score
-              : 0,
-        superLeagueTitles: 0,
+          mode === CHAMPIONSHIP_MODE
+            ? 0
+            : typeof (row as { league_titles?: number }).league_titles ===
+                "number"
+              ? (row as { league_titles: number }).league_titles
+              : typeof row.score === "number"
+                ? row.score
+                : 0,
+        championshipTitles:
+          mode === CHAMPIONSHIP_MODE
+            ? typeof (row as { league_titles?: number }).league_titles ===
+              "number"
+              ? (row as { league_titles: number }).league_titles
+              : typeof row.score === "number"
+                ? row.score
+                : 0
+            : 0,
+        superLeagueTitles:
+          typeof (row as { super_league_titles?: number }).super_league_titles ===
+          "number"
+            ? (row as { super_league_titles: number }).super_league_titles
+            : 0,
         seasonsCompleted:
           (row as { seasons_completed?: number }).seasons_completed ?? 0,
       }));

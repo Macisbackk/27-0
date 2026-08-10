@@ -22,7 +22,7 @@ export interface HubAlert {
 export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
   const alerts: HubAlert[] = [];
   const unread = countUnreadInbox(career);
-  const expiring = countExpiringContracts(career.contracts);
+  const expiring = countExpiringContracts(career);
   const reserveShort = Math.max(0, RESERVE_MIN_PLAYERS - career.reserves.length);
   const squadCheck = validateFitMatchdaySquad(
     resolveCareerForMatchSimulation(career)
@@ -31,13 +31,24 @@ export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
   const wageOver = isWageOverBudget(career);
   const wagePressure = career.wagePressureWeeks ?? 0;
 
+  if (career.isSeasonComplete) {
+    alerts.push({
+      id: "season-review",
+      tone: "gold",
+      title: "Season complete",
+      body: "Open Season Review to continue.",
+      actionLabel: "Season Review",
+      actionView: "season-review",
+    });
+  }
+
   if (unread > 0) {
     alerts.push({
       id: "inbox",
       tone: "primary",
-      title: `${unread} unread message${unread === 1 ? "" : "s"}`,
-      body: "Board updates, transfer news, and contract reminders are waiting.",
-      actionLabel: "Open inbox",
+      title: `${unread} unread`,
+      body: "New inbox messages.",
+      actionLabel: "Inbox",
       actionView: "inbox",
     });
   }
@@ -46,9 +57,9 @@ export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
     alerts.push({
       id: "matchday",
       tone: "red",
-      title: "Matchday squad incomplete",
+      title: "Squad incomplete",
       body: squadCheck.message,
-      actionLabel: "Set lineup",
+      actionLabel: "Squad",
       actionView: "squad",
     });
   }
@@ -57,9 +68,9 @@ export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
     alerts.push({
       id: "reserves",
       tone: "red",
-      title: `Reserves short (${career.reserves.length}/${RESERVE_MIN_PLAYERS})`,
-      body: "Below 13 registered reserves risks an 18-0 walkover defeat.",
-      actionLabel: "Manage reserves",
+      title: `Reserves ${career.reserves.length}/${RESERVE_MIN_PLAYERS}`,
+      body: "Need 13 reserves or risk a walkover.",
+      actionLabel: "Reserves",
       actionView: "reserves",
     });
   }
@@ -68,11 +79,11 @@ export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
     alerts.push({
       id: "wages",
       tone: "amber",
-      title: wageOver ? "Wage bill over budget" : "Board watching wages",
+      title: wageOver ? "Wages over budget" : "Wages watched",
       body: wageOver
-        ? "Operating costs exceed your wage budget — release or renegotiate."
-        : `${wagePressure} week${wagePressure === 1 ? "" : "s"} over budget — board confidence at risk.`,
-      actionLabel: "View contracts",
+        ? "Cut wages or release players."
+        : `${wagePressure}w over — confidence at risk.`,
+      actionLabel: "Contracts",
       actionView: "contracts",
     });
   }
@@ -81,9 +92,9 @@ export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
     alerts.push({
       id: "contracts",
       tone: "amber",
-      title: `${expiring} contracts expiring`,
-      body: "Renew key players before they leave on a free.",
-      actionLabel: "Renew contracts",
+      title: `${expiring} expiring`,
+      body: "Renew before they leave free.",
+      actionLabel: "Contracts",
       actionView: "contracts",
     });
   }
@@ -91,10 +102,10 @@ export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
   alerts.push({
     id: "objective",
     tone: position <= 6 ? "gold" : "primary",
-    title: "Board objective",
-    body: `Target: ${career.boardExpectation} · Currently ${position}${
+    title: career.boardExpectation,
+    body: `${position}${
       position === 1 ? "st" : position === 2 ? "nd" : position === 3 ? "rd" : "th"
-    } · Confidence ${career.boardConfidence}%`,
+    } · ${career.boardConfidence}% confidence`,
   });
 
   return alerts;
@@ -104,6 +115,7 @@ export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
 export function getManagerHubUrgentAlerts(career: ManagerCareer): HubAlert[] {
   return getManagerHubAlerts(career).filter(
     (alert) =>
+      alert.id === "season-review" ||
       alert.id === "matchday" ||
       alert.id === "reserves" ||
       alert.id === "wages" ||

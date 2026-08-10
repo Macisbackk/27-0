@@ -5,15 +5,15 @@ import { TYPO } from "@/lib/ui/typography";
 const GUIDE_ITEMS = [
   {
     title: "Manager Mode",
-    body: "Run a Super League club across seasons — squad, contracts, transfers and trophies.",
+    body: "Run a club. Win trophies.",
   },
   {
     title: "Quick Mode",
-    body: "Draft a 17 from Current or Era pools and chase a 27-0 season.",
+    body: "Draft 17. Chase 27-0.",
   },
   {
     title: "Store & Profile",
-    body: "Unlock themes with Club Funds. Track records on your Coach Profile.",
+    body: "Themes, boosts, records.",
   },
 ] as const;
 

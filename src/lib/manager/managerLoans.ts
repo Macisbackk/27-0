@@ -1,7 +1,9 @@
+import seedrandom from "seedrandom";
 import { getPlayerById } from "../players";
 import { isSameManagerClub } from "../clubs/super-league-display";
 import type {
   ActiveLoan,
+  InboxMessage,
   LeagueTransferActivity,
   ManagerCareer,
   PlayerContract,
@@ -47,6 +49,11 @@ export interface LoanDealOpts {
 /**
  * Loans are one-way development deals:
  * Super League parent → Championship loanee only.
+ *
+ * Wage split negotiation (the share **your club** pays):
+ * - 50%+ always accepted
+ * - ~25% uncommon
+ * - 0% rare
  */
 export function isValidLoanDirection(
   career: ManagerCareer,
@@ -80,6 +87,77 @@ export function getLoanOutDestinationClubs(career: ManagerCareer): string[] {
 function clampWageShare(share: number): number {
   if (!Number.isFinite(share)) return 0.5;
   return Math.max(0, Math.min(1, share));
+}
+
+/** Round to nearest 5% for stable negotiation rolls. */
+export function normalizeLoanWageSharePct(pct: number): number {
+  if (!Number.isFinite(pct)) return 50;
+  const clamped = Math.max(0, Math.min(100, Math.round(pct)));
+  return Math.round(clamped / 5) * 5;
+}
+
+/**
+ * Chance the other club accepts a proposed wage share for **your** club.
+ * Share is 0–1 (portion you pay). 50%+ always lands; ~25% is uncommon; 0% rare.
+ */
+export function loanWageShareAcceptanceChance(userWageShare: number): number {
+  const s = clampWageShare(userWageShare);
+  if (s >= 0.5) return 1;
+  if (s >= 0.25) {
+    // 25% → ~0.18, 50% → 1.0
+    return 0.18 + ((s - 0.25) / 0.25) * 0.82;
+  }
+  // 0% → ~0.035, 25% → ~0.18
+  return 0.035 + (s / 0.25) * 0.145;
+}
+
+export function evaluateLoanWageShareOffer(
+  career: ManagerCareer,
+  playerId: string,
+  proposedUserWageShare: number
+): { accepted: boolean; reason: string; userWageShare: number } {
+  const userWageShare = clampWageShare(proposedUserWageShare);
+  const pct = Math.round(userWageShare * 100);
+  const chance = loanWageShareAcceptanceChance(userWageShare);
+
+  if (chance >= 1) {
+    return {
+      accepted: true,
+      reason: `${pct}% wage share agreed.`,
+      userWageShare,
+    };
+  }
+
+  // Deterministic per week/offer band so spam-clicking the same % does not re-roll.
+  const band = normalizeLoanWageSharePct(pct);
+  const rng = seedrandom(
+    `${career.seed}-loan-split-v1-${career.seasonYear}-w${career.gameWeek}-${playerId}-${band}`
+  );
+  const accepted = rng() < chance;
+
+  if (accepted) {
+    return {
+      accepted: true,
+      reason:
+        pct <= 5
+          ? `Rare deal — only ${pct}% wage share agreed.`
+          : pct <= 30
+            ? `Uncommon deal — ${pct}% wage share agreed.`
+            : `${pct}% wage share agreed.`,
+      userWageShare,
+    };
+  }
+
+  return {
+    accepted: false,
+    reason:
+      pct <= 10
+        ? "Club refused a near-free wage loan. Offer closer to 50%."
+        : pct < 40
+          ? `Need nearer ${pct}% wage share — try 50%.`
+          : `Club rejected ${pct}% — meet them at 50% to guarantee the deal.`,
+    userWageShare,
+  };
 }
 
 export function getActiveLoan(
@@ -165,6 +243,65 @@ function createLoanInboxMessage(
   );
 }
 
+/** Season-end loan return — unread until the popup is acknowledged. */
+function createLoanEndedInboxMessage(
+  career: ManagerCareer,
+  body: string,
+  playerId: string,
+  playerName: string,
+  direction: "incoming" | "outgoing"
+) {
+  return normalizeInboxMessage(
+    {
+      id: `loan-ended-${direction}-${playerId}-s${career.seasonYear}`,
+      type: "loan_ended",
+      title: "Loan Ended",
+      body,
+      read: false,
+      resolved: false,
+      playerId,
+      playerName,
+    },
+    career
+  );
+}
+
+export function isLoanEndedInboxMessage(message: {
+  id: string;
+  type: string;
+  title?: string;
+}): boolean {
+  if (message.type === "loan_ended") return true;
+  // Legacy season-end loan mail before dedicated type.
+  return (
+    message.type === "transfer_complete" &&
+    message.title === "Loan Ended" &&
+    message.id.startsWith("loan-")
+  );
+}
+
+/** Unread loan-ended inbox item — surfaced as a popup on the hub. */
+export function getPendingLoanEndedPopup(
+  career: ManagerCareer
+): InboxMessage | undefined {
+  return career.inboxMessages.find(
+    (m) => isLoanEndedInboxMessage(m) && !m.read && Boolean(m.playerId)
+  );
+}
+
+export function acknowledgeLoanEndedPopup(
+  career: ManagerCareer,
+  messageId: string
+): ManagerCareer {
+  return {
+    ...career,
+    inboxMessages: career.inboxMessages.map((m) =>
+      m.id === messageId ? { ...m, read: true, resolved: true } : m
+    ),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
 function clearPlayerFromMatchday(
   career: ManagerCareer,
   playerId: string
@@ -218,6 +355,9 @@ export function completeIncomingLoan(
   contract.yearsRemaining = opts.yearsRequested ?? 1;
   contract.squadRole = opts.squadRole ?? demand.squadRole;
   contract.expiresAtSeasonEnd = true;
+  contract.isLoanPlacement = true;
+  contract.status = "on_loan";
+  contract.renewalDemand = undefined;
   contract.purchaseFee = loanFee;
 
   const loan: ActiveLoan = {
@@ -473,24 +613,24 @@ export function returnExpiredLoans(career: ManagerCareer): ManagerCareer {
       next = restoreOutgoingLoanPlayer(next, still);
       next = pushInboxMessage(
         next,
-        createLoanInboxMessage(
+        createLoanEndedInboxMessage(
           next,
-          "Loan Ended",
           `${playerName} has returned from loan at ${still.loaneeClub}.`,
           loan.playerId,
-          playerName
+          playerName,
+          "outgoing"
         )
       );
     } else if (isSameManagerClub(still.loaneeClub, next.club)) {
       next = returnIncomingLoanPlayer(next, still);
       next = pushInboxMessage(
         next,
-        createLoanInboxMessage(
+        createLoanEndedInboxMessage(
           next,
-          "Loan Ended",
           `${playerName} has returned to ${still.parentClub} after their loan.`,
           loan.playerId,
-          playerName
+          playerName,
+          "incoming"
         )
       );
     } else {
@@ -505,12 +645,12 @@ export function returnExpiredLoans(career: ManagerCareer): ManagerCareer {
         next = returnIncomingLoanPlayer(next, repaired);
         next = pushInboxMessage(
           next,
-          createLoanInboxMessage(
+          createLoanEndedInboxMessage(
             next,
-            "Loan Ended",
             `${playerName} has returned to ${still.parentClub} after their loan.`,
             loan.playerId,
-            playerName
+            playerName,
+            "incoming"
           )
         );
       } else {

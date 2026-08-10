@@ -11,8 +11,7 @@ interface GuestNoticeProps {
   variant?: "home" | "play" | "inline";
 }
 
-const GUEST_NOTICE_TEXT =
-  "Playing as Guest — your records are saved on this device only.";
+const GUEST_NOTICE_TEXT = "Guest — saved on this device only.";
 
 function loginHref(pathname: string): string {
   const redirect = encodeURIComponent(pathname || "/");

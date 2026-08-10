@@ -248,7 +248,7 @@ function maybeAttendanceMail(
     career,
     `board-attendance-${seasonTag(career)}`,
     "Board — strong gate",
-    `A near-capacity crowd of ${attendance.toLocaleString()} turned out. The board notes the growing support — keep giving them nights like this.`
+    `Crowd ${attendance.toLocaleString()} — strong gate.`
   );
 }
 
@@ -264,7 +264,7 @@ function maybeConfidenceMail(
       career,
       `board-confidence-boost-${seasonTag(career)}`,
       "Board — confidence rising",
-      `Board confidence has climbed to ${career.boardConfidence}% (up ${jump} points). The directors are noticing the progress — maintain this trajectory.`
+      `Confidence ${career.boardConfidence}% (+${jump}).`
     );
   }
   if (jump <= -BOARD_CONFIDENCE_JUMP) {
@@ -272,10 +272,10 @@ function maybeConfidenceMail(
       career,
       `board-confidence-drop-${seasonTag(career)}`,
       "Board — performance warning",
-      `Board confidence has fallen to ${career.boardConfidence}% (down ${Math.abs(jump)} points). Results must improve before the board reviews your position.`,
+      `Confidence ${career.boardConfidence}% (−${Math.abs(jump)}). Improve results.`,
       {
-        deadlineLabel: "Next board review",
-        requiredAction: "Improve league results and matchday performances",
+        deadlineLabel: "Next review",
+        requiredAction: "Improve results",
       }
     );
   }
@@ -290,10 +290,10 @@ function maybeWagePressureMail(career: ManagerCareer): ManagerCareer {
     career,
     `board-wage-warning-${seasonTag(career)}`,
     "Board — financial warning",
-    `The wage bill is ${over.toLocaleString()} over budget. The board expects corrective action through sales, releases, or wage discipline.`,
+    `Wages ${over.toLocaleString()} over budget. Cut costs.`,
     {
       deadlineLabel: "Within 4 weeks",
-      requiredAction: "Bring the wage bill back under budget",
+      requiredAction: "Cut wage bill",
     }
   );
 }
@@ -435,10 +435,10 @@ export function ensureBoardObjectivesInbox(
     career,
     id,
     "Board — season objectives",
-    `Primary target: ${career.boardExpectation}. The board starts at ${career.boardConfidence}% confidence. Hit your target at season's end to earn rewards and protect your job. Secondary aims: Challenge Cup progress, wage discipline, and squad development.`,
+    `Target: ${career.boardExpectation} · ${career.boardConfidence}% confidence.`,
     {
-      deadlineLabel: `End of ${career.seasonYear} season`,
-      requiredAction: `Deliver: ${career.boardExpectation}`,
+      deadlineLabel: `End of ${career.seasonYear}`,
+      requiredAction: career.boardExpectation,
     }
   );
 }
@@ -453,10 +453,10 @@ export function ensureBoardEndOfSeasonReviewInbox(
     career,
     id,
     "Board — end-of-season review",
-    `The board has reviewed the ${career.seasonYear} campaign. Primary target was ${career.boardExpectation}. Final confidence sits at ${career.boardConfidence}%. Check Season Rewards and prepare for the next season.`,
+    `${career.seasonYear} review · Target ${career.boardExpectation} · Confidence ${career.boardConfidence}%.`,
     {
       deadlineLabel: "Off-season",
-      requiredAction: "Review season rewards and plan the next campaign",
+      requiredAction: "Continue to next season",
     }
   );
 }

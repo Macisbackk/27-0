@@ -199,6 +199,7 @@ export function ManagerHub({
         onViewUserSquad={
           onNavigate ? () => onNavigate("squad") : undefined
         }
+        onUpdate={onUpdate}
       />
     ) : null;
 
@@ -452,7 +453,8 @@ export function ManagerHub({
     ) : null;
 
   const showStickyPlayBar =
-    Boolean(nextFixture && !seasonComplete && !playoffsPending);
+    Boolean(nextFixture && !seasonComplete && !playoffsPending) ||
+    canAdvance;
 
   const squadAvailabilityCard =
     injuryCount > 0 ? (
@@ -550,35 +552,12 @@ export function ManagerHub({
           label="Season"
           title="Season Progress"
           subtitle={`Season ${career.seasonYear}`}
-          action={
-            <div className="flex flex-col items-stretch gap-1 sm:items-end">
-              <GameButton
-                variant="secondary"
-                size="sm"
-                onClick={onAdvanceWeek}
-                disabled={!canAdvance}
-                fullWidth={false}
-                className="min-h-9 w-full px-3 text-xs sm:w-auto"
-              >
-                <span className="sm:hidden">{advanceLabels.short}</span>
-                <span className="hidden sm:inline">{advanceLabels.full}</span>
-              </GameButton>
-              {advanceHint ? (
-                <p className="max-w-[14rem] text-[10px] leading-snug text-[var(--app-muted)] sm:text-right">
-                  {advanceHint}
-                </p>
-              ) : null}
-            </div>
-          }
         />
         <p className={`mt-2 ${TYPO.cardTitle}`}>
-          Game Week{" "}
+          Week{" "}
           <span className="text-theme-primary">{career.gameWeek}</span>
-          <span className="text-pitch-500"> of </span>
-          {career.schedule.length}
-        </p>
-        <p className={`mt-1 ${TYPO.bodySm}`}>
-          <span className="text-pitch-500">Season {career.seasonYear} · </span>
+          <span className="text-pitch-500">/{career.schedule.length}</span>
+          <span className="text-pitch-500"> · </span>
           <span
             className={
               leaguePositionTone(position) === "gold"
@@ -592,14 +571,11 @@ export function ManagerHub({
           >
             {ordinal(position)}
           </span>
-          <span className="text-pitch-500"> in the table</span>
         </p>
         {wageOverBudget && (
           <p className={`mt-2 ${TYPO.bodySm} text-amber-300`}>
-            Wage bill over budget
-            {wagePressure >= 4
-              ? " — board demanding sales or renewals at lower wages"
-              : ""}
+            Wages over budget
+            {wagePressure >= 4 ? " — board wants cuts" : ""}
           </p>
         )}
         <div className="mt-3 h-2 overflow-hidden rounded-full bg-pitch-800">
@@ -612,6 +588,37 @@ export function ManagerHub({
               )}%`,
             }}
           />
+        </div>
+        <div className="mt-4 flex flex-col gap-1.5">
+          {career.isSeasonComplete ? (
+            <GameButton
+              variant="theme"
+              size="md"
+              onClick={() => {
+                playUiClick();
+                onNavigate?.("season-review");
+              }}
+              disabled={!onNavigate}
+              className="min-h-11 text-sm font-semibold"
+            >
+              Season Review
+            </GameButton>
+          ) : (
+            <GameButton
+              variant="theme"
+              size="md"
+              onClick={onAdvanceWeek}
+              disabled={!canAdvance}
+              className="min-h-11 text-sm font-semibold tracking-wide"
+            >
+              {advanceLabels.full}
+            </GameButton>
+          )}
+          {!career.isSeasonComplete && advanceHint ? (
+            <p className="text-[11px] leading-snug text-[var(--app-muted)]">
+              {advanceHint}
+            </p>
+          ) : null}
         </div>
       </ProgrammePanel>
     </div>

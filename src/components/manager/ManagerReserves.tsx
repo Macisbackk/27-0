@@ -363,64 +363,6 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
       )}
 
       <GamePanel padded>
-        <p className={`${TYPO.sectionLabel} text-center`}>Reserve Fixtures</p>
-        {!career.isSeasonComplete && upcomingOpp ? (
-          <div className="mt-2 text-left">
-            <p className={TYPO.sectionLabel}>Next fixture</p>
-            <p className="mt-1 font-medium text-white">
-              {career.club} Reserves vs {upcomingOpp} Reserves
-              {nextFixture ? ` · Round ${nextFixture.round}` : ""}
-            </p>
-          </div>
-        ) : !career.lastReserveResult ? (
-          <p className={`${TYPO.bodySm} text-left text-pitch-500`}>
-            No reserve fixtures scheduled or played yet.
-          </p>
-        ) : null}
-        {career.lastReserveResult && (
-          <div
-            className={
-              !career.isSeasonComplete && upcomingOpp
-                ? "mt-4 border-t border-pitch-700/40 pt-4"
-                : ""
-            }
-          >
-            <p className={TYPO.sectionLabel}>Latest result</p>
-            {career.lastReserveResult.walkover ? (
-              <>
-                <p className="mt-1 font-medium text-white">
-                  {career.lastReserveResult.walkoverReason}
-                </p>
-                <p className={`${TYPO.bodySm} text-pitch-400`}>
-                  {career.club} Reserves {career.lastReserveResult.userScore} -{" "}
-                  {career.lastReserveResult.oppScore}{" "}
-                  {career.lastReserveResult.opponent}
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="mt-1 font-medium text-white">
-                  {career.club} Reserves {career.lastReserveResult.userScore} -{" "}
-                  {career.lastReserveResult.oppScore}{" "}
-                  {career.lastReserveResult.opponent}
-                </p>
-                {career.lastReserveResult.topPerformer && (
-                  <p className={`${TYPO.bodySm} text-pitch-400`}>
-                    Top performer: {career.lastReserveResult.topPerformer}
-                  </p>
-                )}
-              </>
-            )}
-          </div>
-        )}
-        {career.isSeasonComplete && !career.lastReserveResult && (
-          <p className={`${TYPO.bodySm} text-pitch-500`}>
-            Season complete — no further reserve fixtures.
-          </p>
-        )}
-      </GamePanel>
-
-      <GamePanel padded>
         <p className={`${TYPO.sectionLabel} text-center`}>Reserve Squad Summary</p>
         <div className="mt-2 grid grid-cols-2 gap-3 text-left sm:grid-cols-3">
           <ManagerStat
@@ -509,6 +451,64 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
             </GameButton>
           </div>
         )}
+
+        <div className="mt-4 border-t border-pitch-700/40 pt-4 text-left">
+          <p className={TYPO.sectionLabel}>Reserve Fixtures</p>
+          {!career.isSeasonComplete && upcomingOpp ? (
+            <div className="mt-2">
+              <p className={TYPO.sectionLabel}>Next fixture</p>
+              <p className="mt-1 font-medium text-white">
+                {career.club} Reserves vs {upcomingOpp} Reserves
+                {nextFixture ? ` · Round ${nextFixture.round}` : ""}
+              </p>
+            </div>
+          ) : !career.lastReserveResult ? (
+            <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+              No reserve fixtures scheduled or played yet.
+            </p>
+          ) : null}
+          {career.lastReserveResult && (
+            <div
+              className={
+                !career.isSeasonComplete && upcomingOpp
+                  ? "mt-3 border-t border-pitch-700/40 pt-3"
+                  : "mt-2"
+              }
+            >
+              <p className={TYPO.sectionLabel}>Latest result</p>
+              {career.lastReserveResult.walkover ? (
+                <>
+                  <p className="mt-1 font-medium text-white">
+                    {career.lastReserveResult.walkoverReason}
+                  </p>
+                  <p className={`${TYPO.bodySm} text-pitch-400`}>
+                    {career.club} Reserves {career.lastReserveResult.userScore} -{" "}
+                    {career.lastReserveResult.oppScore}{" "}
+                    {career.lastReserveResult.opponent}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="mt-1 font-medium text-white">
+                    {career.club} Reserves {career.lastReserveResult.userScore} -{" "}
+                    {career.lastReserveResult.oppScore}{" "}
+                    {career.lastReserveResult.opponent}
+                  </p>
+                  {career.lastReserveResult.topPerformer && (
+                    <p className={`${TYPO.bodySm} text-pitch-400`}>
+                      Top performer: {career.lastReserveResult.topPerformer}
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+          {career.isSeasonComplete && !career.lastReserveResult && (
+            <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+              Season complete — no further reserve fixtures.
+            </p>
+          )}
+        </div>
       </GamePanel>
 
       {youthProspects.length > 0 && (
@@ -578,92 +578,95 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
       )}
 
       <GamePanel padded>
-        <p className={`${TYPO.sectionLabel} text-center`}>Reserve Filters</p>
-        <div className="mt-2 flex flex-wrap justify-center gap-2">
-          {(
-            [
-              ["all", "All"],
-              ["potential", "Potential"],
-              ["rating", "Rating"],
-              ["age", "Age"],
-            ] as const
-          ).map(([id, label]) => (
+        <p className={`${TYPO.sectionLabel} text-left`}>
+          Reserve players ({rows.length})
+        </p>
+        <div className="mt-3">
+          <p className={TYPO.sectionLabel}>Filters</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {(
+              [
+                ["all", "All"],
+                ["potential", "Potential"],
+                ["rating", "Rating"],
+                ["age", "Age"],
+              ] as const
+            ).map(([id, label]) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setFilter(id)}
+                className={`rounded-sm border px-2 py-1 text-xs ${
+                  filter === id
+                    ? FILTER.chipActive
+                    : "border-pitch-600 text-pitch-300"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
             <button
-              key={id}
               type="button"
-              onClick={() => setFilter(id)}
+              onClick={() => setPositionFilter("all")}
               className={`rounded-sm border px-2 py-1 text-xs ${
-                filter === id ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-        <div className="mt-2 flex flex-wrap justify-center gap-2">
-          <button
-            type="button"
-            onClick={() => setPositionFilter("all")}
-            className={`rounded-sm border px-2 py-1 text-xs ${
-              positionFilter === "all"
-                ? FILTER.chipActive
-                : "border-pitch-600 text-pitch-300"
-            }`}
-          >
-            All positions
-          </button>
-          {(Object.keys(POSITION_SHORT) as Position[]).map((pos) => (
-            <button
-              key={pos}
-              type="button"
-              onClick={() => setPositionFilter(pos)}
-              className={`rounded-sm border px-2 py-1 text-xs ${
-                positionFilter === pos
+                positionFilter === "all"
                   ? FILTER.chipActive
                   : "border-pitch-600 text-pitch-300"
               }`}
             >
-              {POSITION_SHORT[pos]}
+              All positions
             </button>
-          ))}
+            {(Object.keys(POSITION_SHORT) as Position[]).map((pos) => (
+              <button
+                key={pos}
+                type="button"
+                onClick={() => setPositionFilter(pos)}
+                className={`rounded-sm border px-2 py-1 text-xs ${
+                  positionFilter === pos
+                    ? FILTER.chipActive
+                    : "border-pitch-600 text-pitch-300"
+                }`}
+              >
+                {POSITION_SHORT[pos]}
+              </button>
+            ))}
+          </div>
         </div>
-      </GamePanel>
-
-      <GamePanel padded>
-        <p className={`${TYPO.sectionLabel} mb-2 text-left`}>
-          Reserve players ({rows.length})
-        </p>
-        {rows.length === 0 ? (
-          <GameEmptyState message="No reserve players match your filters." />
-        ) : (
-          <ManagerPlayerCardGrid>
-            {rows.map((r) => {
-              const review = evaluateReservePlayerReview(career, r);
-              return (
-                <ManagerReservePlayerCard
-                  key={r.id}
-                  model={buildReserveCardModel(career, r)}
-                  club={career.club}
-                  extraChips={review.flags.map((flag) => ({
-                    ...REVIEW_CHIP[flag],
-                    title: review.reasons.join(" · "),
-                  }))}
-                  protectedFromMassRelease={(
-                    settings.reserveDevelopmentSettings
-                      ?.protectedFromMassReleaseIds ?? []
-                  ).includes(r.id)}
-                  onToggleProtectFromMassRelease={
-                    handleToggleProtectFromMassRelease
-                  }
-                  onCallUp={handleCallUp}
-                  onCancelCallUp={handleCancelCallUp}
-                  onPromote={handlePromote}
-                  onViewDetails={setDetailsId}
-                />
-              );
-            })}
-          </ManagerPlayerCardGrid>
-        )}
+        <div className="mt-4 border-t border-pitch-700/40 pt-4">
+          {rows.length === 0 ? (
+            <GameEmptyState message="No reserve players match your filters." />
+          ) : (
+            <ManagerPlayerCardGrid>
+              {rows.map((r) => {
+                const review = evaluateReservePlayerReview(career, r);
+                return (
+                  <ManagerReservePlayerCard
+                    key={r.id}
+                    model={buildReserveCardModel(career, r)}
+                    club={career.club}
+                    extraChips={review.flags.map((flag) => ({
+                      ...REVIEW_CHIP[flag],
+                      title: review.reasons.join(" · "),
+                    }))}
+                    protectedFromMassRelease={(
+                      settings.reserveDevelopmentSettings
+                        ?.protectedFromMassReleaseIds ?? []
+                    ).includes(r.id)}
+                    onToggleProtectFromMassRelease={
+                      handleToggleProtectFromMassRelease
+                    }
+                    onCallUp={handleCallUp}
+                    onCancelCallUp={handleCancelCallUp}
+                    onPromote={handlePromote}
+                    onViewDetails={setDetailsId}
+                  />
+                );
+              })}
+            </ManagerPlayerCardGrid>
+          )}
+        </div>
       </GamePanel>
 
       {latestMonthlyReport && (

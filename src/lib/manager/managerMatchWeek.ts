@@ -8,6 +8,7 @@ import { getPendingRetirementIntentPopup } from "./managerRetirement";
 import { getPendingPositionRetrainingPopup } from "./managerPositionRetraining";
 import { getPendingReserveReportPopup } from "./managerReserveReports";
 import { getPendingBoardInboxPopup } from "./managerBoardInbox";
+import { getPendingLoanEndedPopup } from "./managerLoans";
 
 export type MatchWeekPhase =
   | "ready_to_play"
@@ -69,14 +70,10 @@ export function getAdvanceWeekButtonLabel(
 
 export function getAdvanceWeekHint(career: ManagerCareer): string | null {
   const phase = getMatchWeekPhase(career);
-  if (phase === "season_complete") {
-    return "Season complete — open season review.";
-  }
-  if (hasBlockingManagerDecision(career)) {
-    return "Resolve pending decisions first.";
-  }
+  if (phase === "season_complete") return null;
+  if (hasBlockingManagerDecision(career)) return "Resolve decisions first.";
   if (phase === "awaiting_advance") return null;
-  return "Play your current fixture before advancing.";
+  return "Play your fixture first.";
 }
 
 export function markAwaitingMatchWeekAdvance(
@@ -123,6 +120,7 @@ export function collectWeeklyManagerEventIds(career: ManagerCareer): string[] {
   push(getPendingRetirementIntentPopup(career)?.id);
   push(getPendingBoardInboxPopup(career)?.id);
   push(getPendingContractExpiryPopup(career)?.id);
+  push(getPendingLoanEndedPopup(career)?.id);
   push(getPendingPositionRetrainingPopup(career)?.id);
   push(getPendingReserveReportPopup(career)?.id);
 

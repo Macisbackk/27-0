@@ -43,7 +43,7 @@ import {
   isPlayerAwayOnLoan,
   isPlayerLoanedIn,
 } from "./managerLoans";
-import { resolveClubCompetitionForCareer } from "./leagueMembership";
+import { resolveClubCompetitionForCareer, getUserCompetitionId } from "./leagueMembership";
 import {
   createPlayerSaleMessage,
   createPlayerPurchaseMessage,
@@ -496,7 +496,8 @@ export function getBuyerMinimumTransferFee(
     career.club,
     asking,
     rating,
-    getCareerClubStars(career)
+    getCareerClubStars(career),
+    getUserCompetitionId(career)
   );
   return listed ? adjusted : Math.round(adjusted * 1.04);
 }
@@ -745,7 +746,8 @@ export function evaluateBuyOffer(
   const appeal = evaluateClubSigningAppeal(
     career.club,
     rating,
-    getCareerClubStars(career)
+    getCareerClubStars(career),
+    getUserCompetitionId(career)
   );
   if (!appeal.allowed) {
     return { accepted: false, reason: appeal.reason ?? "Signing blocked." };

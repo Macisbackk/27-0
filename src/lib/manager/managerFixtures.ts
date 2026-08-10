@@ -274,6 +274,42 @@ export function simulateRoundOtherMatches(
   return results;
 }
 
+/**
+ * Simulate every fixture in a league round (no user/placeholder match).
+ * Used for parallel AI Super League when the user manages in Championship.
+ */
+export function simulateFullLeagueRound(
+  clubs: readonly string[],
+  round: number,
+  seed: string,
+  leagueClubStates?: LeagueClubStates,
+  career?: ManagerCareer
+): ManagerRoundMatch[] {
+  const pairs = pairTeamsForRound([...clubs], round, seed);
+  const results: ManagerRoundMatch[] = [];
+
+  for (const [home, away] of pairs) {
+    const sim = simulateClubFixture(
+      home,
+      away,
+      round,
+      seed,
+      leagueClubStates,
+      career
+    );
+    results.push({
+      round,
+      homeTeam: home,
+      awayTeam: away,
+      homeScore: sim.homeScore,
+      awayScore: sim.awayScore,
+      homeTries: sim.homeTries,
+      awayTries: sim.awayTries,
+    });
+  }
+  return results;
+}
+
 export function buildLeagueTableFromMatches(
   matches: ManagerRoundMatch[],
   userClub: string,

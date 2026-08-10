@@ -25,6 +25,7 @@ import {
   toggleTransferWatchlist,
 } from "@/lib/manager/managerWatchlist";
 import { listingAllowsLoan } from "@/lib/manager/managerTransferLeague";
+import { isSameManagerClub } from "@/lib/clubs/super-league-display";
 
 interface ManagerLeaguePlayerSheetModalProps {
   career: ManagerCareer;
@@ -87,6 +88,8 @@ export function ManagerLeaguePlayerSheetModal({
     (entry) => entry.playerId === playerId && entry.club === club
   );
   const watched = isOnTransferWatchlist(career, playerId);
+  const canWatch =
+    Boolean(onUpdate) && !isSameManagerClub(club, career.club);
 
   return (
     <BodyPortal>
@@ -163,12 +166,12 @@ export function ManagerLeaguePlayerSheetModal({
           </dl>
 
           <div className="mt-4 grid gap-2">
-            {onUpdate && (
+            {canWatch && (
               <GameButton
                 variant={watched ? "secondary" : "theme"}
                 onClick={() => {
                   playUiClick();
-                  onUpdate(toggleTransferWatchlist(career, playerId));
+                  onUpdate!(toggleTransferWatchlist(career, playerId));
                 }}
               >
                 {watched ? "Remove from Watchlist" : "Add to Watchlist"}

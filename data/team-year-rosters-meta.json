@@ -339,7 +339,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 16
     }
   },
   "Castleford Tigers": {
@@ -374,7 +374,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 16
     }
   },
   "Wakefield Trinity": {
@@ -453,6 +453,15 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2016_Leeds_Rhinos_season"
+    },
+    "2026": {
+      "source": "current-squad",
+      "isSuperLeagueSeason": true,
+      "isCurrentSeason": true,
+      "playableInNormalSpin": true,
+      "playableInEra": true,
+      "playableInEraChallengeCup": true,
+      "playerCount": 16
     }
   },
   "Hull FC": {

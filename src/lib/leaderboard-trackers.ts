@@ -13,6 +13,8 @@ export type LeaderboardTrackerType =
   | "manager_challenge_cups"
   | "manager_cup_finals"
   | "manager_league_titles"
+  | "manager_championship_titles"
+  | "manager_super_league_champions"
   | "manager_seasons_completed"
   | "wcc_wins";
 
@@ -24,8 +26,9 @@ export const MIN_GAMES_FOR_WIN_PERCENTAGE = 10;
  * Public leaderboard tracker payload schema.
  * 5 = total_winnings / manager earnings boards removed; seasons_completed added.
  * 6 = league_titles column (score kept as fallback for manager-super-league).
+ * 7 = super_league_titles column (Manager Grand Final champions).
  */
-export const LEADERBOARD_SCHEMA_VERSION = 6;
+export const LEADERBOARD_SCHEMA_VERSION = 7;
 
 export interface LeaderboardTrackerEntry {
   username: string;
@@ -44,8 +47,10 @@ export interface LeaderboardTrackerEntry {
   bestCupFinishRank: number;
   bestCupFinishLabel: string;
   cupWinPercentage: number;
-  /** Manager Mode — regular-season league titles (1st in table). */
+  /** Manager Mode — Super League regular-season league titles (1st in table). */
   leagueTitles: number;
+  /** Manager Mode — Championship regular-season league titles (1st in table). */
+  championshipTitles: number;
   /** Manager Mode — play-off Super League championships. */
   superLeagueTitles: number;
   /** Manager Mode — World Club Challenge wins. */
@@ -87,6 +92,7 @@ export function sanitizeLeaderboardTrackerEntry(
     bestCupFinishRank: roundLeaderboardCount(entry.bestCupFinishRank),
     cupWinPercentage: roundLeaderboardCount(entry.cupWinPercentage),
     leagueTitles: roundLeaderboardCount(entry.leagueTitles),
+    championshipTitles: roundLeaderboardCount(entry.championshipTitles),
     superLeagueTitles: roundLeaderboardCount(entry.superLeagueTitles),
     wccWins: roundLeaderboardCount(entry.wccWins),
     seasonsCompleted: roundLeaderboardCount(entry.seasonsCompleted),
@@ -167,6 +173,7 @@ export const LEADERBOARD_TRACKERS: {
   dailyOnly?: boolean;
   trophyCabinetOnly?: boolean;
   managerSuperLeagueOnly?: boolean;
+  managerChampionshipOnly?: boolean;
   managerChallengeCupOnly?: boolean;
   trophySection?: TrophyCabinetSection;
 }[] = [
@@ -219,9 +226,21 @@ export const LEADERBOARD_TRACKERS: {
   },
   {
     id: "manager_league_titles",
-    label: "League Titles Won",
-    shortLabel: "League Titles",
+    label: "Super League Titles",
+    shortLabel: "SL Titles",
     managerSuperLeagueOnly: true,
+  },
+  {
+    id: "manager_super_league_champions",
+    label: "Super League Champions",
+    shortLabel: "SL Champions",
+    managerSuperLeagueOnly: true,
+  },
+  {
+    id: "manager_championship_titles",
+    label: "Championship Titles",
+    shortLabel: "Champ Titles",
+    managerChampionshipOnly: true,
   },
   {
     id: "manager_seasons_completed",
@@ -273,6 +292,7 @@ export function getTrackersForDbMode(
       !t.dailyOnly &&
       !t.trophyCabinetOnly &&
       !t.managerSuperLeagueOnly &&
+      !t.managerChampionshipOnly &&
       !t.managerChallengeCupOnly
   );
 }
@@ -313,6 +333,7 @@ export function isTrophyCabinetTracker(
 
 export type ManagerLeaderboardDbMode =
   | "manager-super-league"
+  | "manager-championship"
   | "manager-challenge-cup";
 
 export function getTrackersForManagerDbMode(
@@ -327,9 +348,39 @@ export function getTrackersForManagerDbMode(
       .map((id) => LEADERBOARD_TRACKERS.find((t) => t.id === id))
       .filter((t): t is NonNullable<typeof t> => !!t);
   }
+  if (dbMode === "manager-championship") {
+    const order: LeaderboardTrackerType[] = [
+      "best_record",
+      "manager_championship_titles",
+      "manager_seasons_completed",
+      "perfect_runs",
+    ];
+    return order
+      .map((id) => {
+        const def = LEADERBOARD_TRACKERS.find((t) => t.id === id);
+        if (!def) return null;
+        if (id === "best_record") {
+          return {
+            ...def,
+            label: "Best Season Record",
+            shortLabel: "Best Record",
+          };
+        }
+        if (id === "manager_seasons_completed") {
+          return {
+            ...def,
+            managerChampionshipOnly: true,
+            managerSuperLeagueOnly: undefined,
+          };
+        }
+        return def;
+      })
+      .filter((t): t is NonNullable<typeof t> => !!t);
+  }
   const order: LeaderboardTrackerType[] = [
     "best_record",
     "manager_league_titles",
+    "manager_super_league_champions",
     "manager_seasons_completed",
     "perfect_runs",
     "wcc_wins",
@@ -418,8 +469,11 @@ export function rankByTracker(
       case "league_titles":
       case "era_league_title":
         return (b.leagueTitles ?? 0) - (a.leagueTitles ?? 0);
+      case "manager_championship_titles":
+        return (b.championshipTitles ?? 0) - (a.championshipTitles ?? 0);
       case "manager_seasons_completed":
         return (b.seasonsCompleted ?? 0) - (a.seasonsCompleted ?? 0);
+      case "manager_super_league_champions":
       case "super_league_champions":
       case "era_league_champions":
         return (b.superLeagueTitles ?? 0) - (a.superLeagueTitles ?? 0);
@@ -483,8 +537,11 @@ export function getTrackerStatDisplay(
     case "league_titles":
     case "era_league_title":
       return String(sanitized.leagueTitles);
+    case "manager_championship_titles":
+      return String(sanitized.championshipTitles ?? 0);
     case "manager_seasons_completed":
       return String(sanitized.seasonsCompleted);
+    case "manager_super_league_champions":
     case "super_league_champions":
     case "era_league_champions":
       return String(sanitized.superLeagueTitles);
@@ -559,6 +616,7 @@ export function mergeLeaderboardStats(
     bestCupFinishLabel,
     cupWinPercentage,
     leagueTitles: 0,
+    championshipTitles: existing?.championshipTitles ?? 0,
     superLeagueTitles: 0,
     // Quick Mode runs have no World Club Challenge concept.
     wccWins: existing?.wccWins ?? 0,
@@ -613,6 +671,8 @@ export function combineLeaderboardTrackerStats(
         ? (totalWins / cupGames) * 100
         : Math.max(a.cupWinPercentage ?? 0, b.cupWinPercentage ?? 0),
     leagueTitles: (a.leagueTitles ?? 0) + (b.leagueTitles ?? 0),
+    championshipTitles:
+      (a.championshipTitles ?? 0) + (b.championshipTitles ?? 0),
     superLeagueTitles: (a.superLeagueTitles ?? 0) + (b.superLeagueTitles ?? 0),
     wccWins: (a.wccWins ?? 0) + (b.wccWins ?? 0),
     seasonsCompleted: (a.seasonsCompleted ?? 0) + (b.seasonsCompleted ?? 0),

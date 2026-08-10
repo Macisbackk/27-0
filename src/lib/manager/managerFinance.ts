@@ -17,6 +17,18 @@ import { getUserLeaguePosition } from "./managerFixtures";
 import { getManagerModePlayerRating } from "./managerSquadRatings";
 import { getManagerPlayer } from "./managerPlayers";
 
+/** Resolve which league's transfer comfort rules apply (career membership wins). */
+function resolveSigningCompetition(
+  club: string,
+  competitionOverride?: ManagerCompetitionId | null
+): ManagerCompetitionId {
+  return (
+    competitionOverride ??
+    getManagerClubConfig(club).competition ??
+    "super-league"
+  );
+}
+
 /** Global scale for manager-mode wages and transfer budgets. */
 export const MANAGER_ECONOMY_SCALE = 0.85;
 
@@ -70,11 +82,12 @@ export function getClubStarTier(
 
 export function getComfortableSigningRating(
   club: string,
-  careerStars?: number | null
+  careerStars?: number | null,
+  competitionOverride?: ManagerCompetitionId | null
 ): number {
   const stars = getClubStarTier(club, careerStars);
   const base = COMFORT_RATING_BY_STARS[stars] ?? COMFORT_RATING_BY_STARS[3]!;
-  const competition = getManagerClubConfig(club).competition ?? "super-league";
+  const competition = resolveSigningCompetition(club, competitionOverride);
   const offset = getLeagueComfortRatingOffset(competition);
   if (offset > 0) {
     return Math.min(76, base - offset);
@@ -86,9 +99,14 @@ export function getComfortableSigningRating(
 export function getTransferFeePremium(
   club: string,
   playerRating: number,
-  careerStars?: number | null
+  careerStars?: number | null,
+  competitionOverride?: ManagerCompetitionId | null
 ): number {
-  const comfortable = getComfortableSigningRating(club, careerStars);
+  const comfortable = getComfortableSigningRating(
+    club,
+    careerStars,
+    competitionOverride
+  );
   if (playerRating <= comfortable) return 1;
   const gap = playerRating - comfortable;
   return 1 + gap * 0.14;
@@ -98,10 +116,17 @@ export function getBuyerAdjustedTransferFee(
   club: string,
   baseFee: number,
   playerRating: number,
-  careerStars?: number | null
+  careerStars?: number | null,
+  competitionOverride?: ManagerCompetitionId | null
 ): number {
   return Math.round(
-    baseFee * getTransferFeePremium(club, playerRating, careerStars)
+    baseFee *
+      getTransferFeePremium(
+        club,
+        playerRating,
+        careerStars,
+        competitionOverride
+      )
   );
 }
 
@@ -120,11 +145,21 @@ export interface ClubSigningAppeal {
 export function evaluateClubSigningAppeal(
   club: string,
   playerRating: number,
-  careerStars?: number | null
+  careerStars?: number | null,
+  competitionOverride?: ManagerCompetitionId | null
 ): ClubSigningAppeal {
   const stars = getClubStarTier(club, careerStars);
-  const comfortable = getComfortableSigningRating(club, careerStars);
-  const feePremium = getTransferFeePremium(club, playerRating, careerStars);
+  const comfortable = getComfortableSigningRating(
+    club,
+    careerStars,
+    competitionOverride
+  );
+  const feePremium = getTransferFeePremium(
+    club,
+    playerRating,
+    careerStars,
+    competitionOverride
+  );
 
   if (playerRating <= comfortable) {
     return { allowed: true, wagePremium: 1, feePremium: 1 };
@@ -159,9 +194,15 @@ export function evaluateClubSigningAppeal(
 export function isPlayerReachableOnTransferMarket(
   club: string,
   playerRating: number,
-  careerStars?: number | null
+  careerStars?: number | null,
+  competitionOverride?: ManagerCompetitionId | null
 ): boolean {
-  return evaluateClubSigningAppeal(club, playerRating, careerStars).allowed;
+  return evaluateClubSigningAppeal(
+    club,
+    playerRating,
+    careerStars,
+    competitionOverride
+  ).allowed;
 }
 
 export function getManagerPlayerListingRating(

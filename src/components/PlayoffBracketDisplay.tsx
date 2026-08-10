@@ -102,7 +102,7 @@ export function PlayoffBracketDisplay({
             />
             <p className="mt-3 text-center text-xs text-pitch-400">
               {tournamentComplete
-                ? "Tap a completed tie for match details"
+                ? "Tap a completed tie for details"
                 : `${getPlayoffRoundLabel(activeRound)} in progress — tap finished ties for details`}
             </p>
           </div>

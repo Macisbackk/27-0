@@ -5,7 +5,7 @@ import { triggerManagerSeasonAchievements } from "../achievements/achievementTri
 import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import { isLoggedIn } from "../auth-session";
 import { isLeagueAndCupPhaseComplete } from "./managerChallengeCup";
-import { getUserSeasonGames } from "./leagueMembership";
+import { getUserSeasonGames, isUserInChampionship } from "./leagueMembership";
 import { getUserLeagueTablePosition } from "./managerFixtures";
 import {
   pickManagerBestSeasonRecord,
@@ -22,6 +22,7 @@ export const EMPTY_MANAGER_STATS: ManagerLifetimeStats = {
   losses: 0,
   trophies: 0,
   leagueTitles: 0,
+  championshipTitles: 0,
   superLeagueTitles: 0,
   challengeCups: 0,
   cupFinals: 0,
@@ -100,6 +101,7 @@ export function sanitizeManagerStats(
     losses: Math.round(merged.losses),
     trophies: Math.round(merged.trophies),
     leagueTitles: Math.round(merged.leagueTitles),
+    championshipTitles: Math.round(merged.championshipTitles ?? 0),
     superLeagueTitles: Math.round(merged.superLeagueTitles),
     challengeCups: Math.round(merged.challengeCups),
     cupFinals: Math.round(merged.cupFinals),
@@ -248,7 +250,11 @@ export function recordLeaguePhaseAchievements(career: ManagerCareer): void {
   const seasonGames = getUserSeasonGames(career);
 
   if (position === 1) {
-    stats.leagueTitles++;
+    if (isUserInChampionship(career)) {
+      stats.championshipTitles = (stats.championshipTitles ?? 0) + 1;
+    } else {
+      stats.leagueTitles++;
+    }
     stats.trophies++;
   }
   if (position <= 6) {

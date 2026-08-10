@@ -909,7 +909,7 @@ export function GameBoard({
     setBoostNotice(
       boostFailureNotice(
         boostedSpinPlan.boostId,
-        "Boosted selection could not be shown — boost kept for a later pick."
+        "Boost held for a later pick."
       )
     );
     setBoostedSpinPlan((prev) =>
@@ -918,7 +918,7 @@ export function GameBoard({
             ...prev,
             status: "failed",
             failureReason:
-              "Boosted selection could not be shown — boost kept for a later pick.",
+              "Boost held for a later pick.",
           }
         : prev
     );
@@ -1547,7 +1547,7 @@ export function GameBoard({
       }
       if (!target) {
         setRecruitNotice(
-          "No eligible players left for this slot. Try another position or finish manually."
+          "No players left for this slot. Try another."
         );
         return;
       }
@@ -1658,7 +1658,7 @@ export function GameBoard({
 
     if (!target) {
       setRecruitNotice(
-        "No eligible players left for a respin. Sign the current offer or pick another slot."
+        "No respin left. Sign or pick another slot."
       );
       return;
     }
@@ -1914,7 +1914,7 @@ export function GameBoard({
           getPlayerById(nextRound.optionB),
         ].filter(Boolean) as import("@/lib/types").Player[];
         if (!selectionHasBoostedPlayer(players, boostId)) {
-          fail("Boosted selection could not be generated.");
+          fail("Boost failed.");
           return;
         }
 
@@ -1953,7 +1953,7 @@ export function GameBoard({
           (phase !== "reveal" && phase !== "choice") ||
           selectedSlotIndex === null
         ) {
-          fail("Spin a position and open the player list before using a boost.");
+          fail("Spin and open picks first.");
           return;
         }
 
@@ -1987,7 +1987,7 @@ export function GameBoard({
 
         const target = slotRevealTargetFromBoostedPlan(plan);
         if (!target) {
-          fail("Boosted selection could not be generated for this slot.");
+          fail("Boost failed for this slot.");
           return;
         }
 
@@ -2006,7 +2006,7 @@ export function GameBoard({
             boostId
           )
         ) {
-          fail("Boosted selection could not be generated for this slot.");
+          fail("Boost failed for this slot.");
           return;
         }
 
@@ -2204,7 +2204,7 @@ export function GameBoard({
       );
       if (!result) {
         setRecruitNotice(
-          "Autofill could not complete the squad — not enough eligible players remain."
+          "Autofill failed — not enough players."
         );
         return;
       }
@@ -2399,8 +2399,7 @@ export function GameBoard({
                 "No valid boosted route for this position."}
             </p>
             <p className={`${TYPO.bodySm} text-amber-100/80`}>
-              Try another position, continue without the boost, or return to boost
-              selection. The boost has not been consumed.
+              Try another position, skip the boost, or go back. Boost unused.
             </p>
             <div className="flex flex-wrap gap-2">
               <GameButton
@@ -2469,7 +2468,7 @@ export function GameBoard({
           filledCount < TOTAL_SLOTS && (
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
             <p className={`w-full text-center ${TYPO.bodySm} text-gray-400`}>
-              Tap an empty position on the team sheet to spin for a team & year
+              Tap an empty slot to spin
             </p>
             {normalEraMode ? (
               <EraRatingExplanation compact className="w-full" />

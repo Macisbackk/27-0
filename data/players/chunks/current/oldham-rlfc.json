@@ -1,26 +1,5 @@
 [
   {
-    "id": "oldham-cur-jonty-gorley",
-    "name": "Jonty Gorley",
-    "position": "STAND_OFF",
-    "club": "Oldham RLFC",
-    "nationality": "England",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2026–Present",
-    "category": "current",
-    "peakRating": 80,
-    "value": 95000,
-    "year": 2026,
-    "cardYear": 2026,
-    "teamYearId": "oldham-rlfc-2026",
-    "team": "Oldham RLFC",
-    "displayClub": "Oldham RLFC",
-    "basePlayerId": "oldham-cur-jonty-gorley",
-    "status": "Current",
-    "primaryPosition": "STAND_OFF",
-    "birthYear": 2004
-  },
-  {
     "id": "oldham-cur-jake-bibby",
     "name": "Jake Bibby",
     "position": "CENTRE",
@@ -55,5 +34,26 @@
       "Huddersfield Giants",
       "Oldham RLFC"
     ]
+  },
+  {
+    "id": "oldham-cur-jonty-gorley",
+    "name": "Jonty Gorley",
+    "position": "STAND_OFF",
+    "club": "Oldham RLFC",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 95000,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "oldham-rlfc-2026",
+    "team": "Oldham RLFC",
+    "displayClub": "Oldham RLFC",
+    "basePlayerId": "oldham-cur-jonty-gorley",
+    "status": "Current",
+    "primaryPosition": "STAND_OFF",
+    "birthYear": 2004
   }
 ]

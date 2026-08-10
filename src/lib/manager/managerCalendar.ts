@@ -4,6 +4,7 @@ import type {
   ManagerFixtureRecord,
   ManagerScheduledFixture,
 } from "./types";
+import { getUserSeasonGames } from "./leagueMembership";
 import { MANAGER_SEASON_GAMES } from "./types";
 import { areRivalClubs } from "./managerRivals";
 import { isMagicWeekendFixture, MAGIC_WEEKEND_ROUND } from "./managerMagicWeekend";
@@ -121,8 +122,9 @@ export function buildManagerSeasonCalendar(
   const seasonYear = career.seasonYear;
   const schedule = career.schedule ?? [];
   const lastLeagueRound = Math.max(
-    MANAGER_SEASON_GAMES,
-    ...schedule.map((f) => f.round)
+    getUserSeasonGames(career),
+    ...schedule.map((f) => f.round),
+    MANAGER_SEASON_GAMES
   );
 
   for (const fixture of schedule) {

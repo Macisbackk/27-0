@@ -36,106 +36,106 @@ function pickVariant(lines: string[], seed: number): string {
 }
 
 const PERFECT_SEASON = [
-  "One of the greatest Rugby League squads ever assembled.",
-  "A flawless campaign for the ages — 27 wins from 27.",
-  "Perfection achieved. This squad belongs in folklore.",
-  "Unbeaten, untouchable, and utterly dominant.",
-  "The Dream Team didn't just win the league — they owned it.",
+  "Greatest squad assembled.",
+  "27 from 27. Flawless.",
+  "Perfection. Folklore.",
+  "Unbeaten. Untouchable.",
+  "Owned the league.",
 ];
 
 const WINLESS_SEASON = [
-  "A campaign best left in the history books.",
-  "Winless and wounded — a rebuild is non-negotiable.",
-  "Not a single victory all season. Rock bottom in every sense.",
-  "A year to erase from memory and start again.",
-  "Zero wins. Maximum pain. Total overhaul required.",
+  "Best left forgotten.",
+  "Winless. Rebuild required.",
+  "Zero wins. Rock bottom.",
+  "Erase and start again.",
+  "Zero wins. Total overhaul.",
 ];
 
 const CHAMPION = [
-  "An outstanding campaign that will live long in the memory.",
-  "League champions. A season of brilliance from first whistle to last.",
-  "The trophy is yours — a masterclass in squad building.",
-  "Crowned champions after a campaign of real authority.",
-  "Top of the pile. This squad conquered Super League.",
+  "Outstanding campaign.",
+  "League champions.",
+  "Trophy secured.",
+  "Crowned. Real authority.",
+  "Top of the pile.",
 ];
 
 const RUNNER_UP = [
-  "A title challenge that fell just short.",
-  "So close to glory — second place with serious honour.",
-  "Champions in waiting. One more push next season.",
-  "A magnificent effort that just missed the summit.",
-  "Second best in the league — but far from second rate.",
+  "Title challenge. Just short.",
+  "Second. Serious honour.",
+  "Champions in waiting.",
+  "Missed the summit.",
+  "Second best — not second rate.",
 ];
 
 const PLAYOFF = [
-  "Finals rugby league secured — the hard work paid off.",
-  "A top-six finish and a genuine shot at the title race.",
-  "Into the playoffs with momentum and belief.",
-  "Playoff rugby secured — this squad earned their shot at the title.",
-  "A strong finish booked a place among the contenders.",
+  "Finals secured.",
+  "Top six. Title shot.",
+  "Playoffs with belief.",
+  "Earned a shot.",
+  "Among the contenders.",
 ];
 
 const MID_TABLE_HIGH = [
-  "A strong season with plenty of positives.",
-  "Respectable form throughout — a solid platform to build on.",
-  "Mid-table respectability with moments of real quality.",
-  "A competitive campaign that never drifted from the fight.",
-  "Steady progress and genuine signs of a rising squad.",
+  "Strong season. Positives.",
+  "Solid platform.",
+  "Mid-table. Real quality.",
+  "Competitive throughout.",
+  "Rising squad signs.",
 ];
 
 const MID_TABLE = [
-  "A mixed campaign — flashes of brilliance, spells to forget.",
-  "Inconsistent but capable. The potential is there.",
-  "A season of two halves — promise and frustration in equal measure.",
-  "Neither spectacular nor disastrous. Room for growth.",
-  "A workmanlike year that could have been so much more.",
+  "Mixed. Flashes of quality.",
+  "Inconsistent but capable.",
+  "Promise and frustration.",
+  "Neither spectacular nor grim.",
+  "Could have been more.",
 ];
 
 const LOWER_MID = [
-  "A disappointing campaign with flashes of promise.",
-  "Below expectations, but not without hope.",
-  "Frustrating results masked occasional brilliance.",
-  "A season that promised more than it delivered.",
-  "Inconsistency cost this squad a better finish.",
+  "Disappointing. Flashes of hope.",
+  "Below expectations.",
+  "Frustrating. Occasional brilliance.",
+  "Promised more.",
+  "Inconsistency cost them.",
 ];
 
 const LOWER_TABLE = [
-  "A difficult season — too many close defeats.",
-  "Struggled for consistency when it mattered most.",
-  "A campaign that never found its rhythm.",
-  "Rebuilding required after a tough year.",
-  "Too many losses and not enough answers.",
+  "Too many close defeats.",
+  "No consistency when it mattered.",
+  "Never found rhythm.",
+  "Rebuild after a tough year.",
+  "Too many losses.",
 ];
 
 const BOTTOM = [
-  "A season to forget. Major rebuilding required.",
-  "Rock bottom. This squad needs a complete reset.",
-  "Survival wasn't the issue — credibility was.",
-  "A grim campaign with no hiding from the table.",
-  "Last place. Only direction left is up.",
+  "Season to forget. Rebuild.",
+  "Rock bottom. Reset.",
+  "Credibility gone.",
+  "Grim. Nowhere to hide.",
+  "Last place. Only way is up.",
 ];
 
 const NEAR_PERFECT = [
-  "So close to immortality — one slip from 27-0.",
-  "A near-perfect season that will haunt the dressing room.",
-  "Champions in all but perfection. What a squad.",
-  "One defeat from folklore. Still an elite campaign.",
+  "One slip from 27-0.",
+  "Near-perfect. Haunting.",
+  "Champions in all but perfection.",
+  "One defeat from folklore.",
 ];
 
 const STRONG_RECORD = [
-  "A formidable record — this squad frightened the league.",
-  "Twenty-plus wins speaks to genuine title credentials.",
-  "Dominant for long stretches. A top-tier season.",
+  "Formidable. Frightened the league.",
+  "20+ wins. Title credentials.",
+  "Dominant stretches. Top-tier.",
 ];
 
 const POSITIVE_PD = [
-  "A positive points difference underlined the squad's quality.",
-  "Scored heavily and defended well — a balanced threat.",
+  "Positive PD. Real quality.",
+  "Scored and defended well.",
 ];
 
 const NEGATIVE_PD = [
-  "A negative points difference told the story of defensive frailty.",
-  "Conceded too many points despite occasional heroics.",
+  "Negative PD. Defensive frailty.",
+  "Conceded too many.",
 ];
 
 function buildContext(

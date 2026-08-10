@@ -190,10 +190,7 @@ export function StorePanel() {
           </p>
         </div>
         <p className={`max-w-xs ${TYPO.bodySm} text-gray-400`}>
-          Team colour themes cost {formatClubFundsExact(UI_THEME_PURCHASE_PRICE)}{" "}
-          each. Earn Club Funds from Classic seasons, Manager seasons, and
-          achievements. Purchases use your current balance only — lifetime earned
-          is unchanged.
+          Themes {formatClubFundsExact(UI_THEME_PURCHASE_PRICE)} each.
         </p>
       </div>
 

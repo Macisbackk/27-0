@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T23:12:55.666Z",
+  "generatedAt": "2026-08-10T13:05:25.287Z",
   "sources": [
     "Verified Wikipedia/manual XIII only (era-wikipedia-squads.json, sl-era-verified-squads.json)",
     "Current squad for 2026 only (current-squads.json)",
@@ -7,7 +7,7 @@
   ],
   "minPlayers": 13,
   "verifiedSquadsMerged": 83,
-  "verifiedPlayersRejected": 195,
+  "verifiedPlayersRejected": 196,
   "unresolvedSquads": [
     {
       "team": "Toulouse Olympique",
@@ -21,8 +21,8 @@
       ]
     }
   ],
-  "currentYearSquadsBuilt": 13,
-  "playableCount": 82,
+  "currentYearSquadsBuilt": 14,
+  "playableCount": 83,
   "hiddenCount": 2,
   "playable": [
     {
@@ -123,7 +123,7 @@
     {
       "team": "Castleford Tigers",
       "year": "2026",
-      "count": 17
+      "count": 16
     },
     {
       "team": "Catalans Dragons",
@@ -198,7 +198,7 @@
     {
       "team": "Huddersfield Giants",
       "year": "2026",
-      "count": 17
+      "count": 16
     },
     {
       "team": "Hull FC",
@@ -264,6 +264,11 @@
       "team": "Leeds Rhinos",
       "year": "2016",
       "count": 13
+    },
+    {
+      "team": "Leeds Rhinos",
+      "year": "2026",
+      "count": 16
     },
     {
       "team": "Leigh Leopards",

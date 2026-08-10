@@ -110,11 +110,14 @@ function evaluateUnlock(
       );
     case "first-manager-win":
       return ctx.managerWin === true || progress.managerWins >= 1;
-    case "safe-pair-hands":
+    case "safe-pair-hands": {
+      const size = ctx.managerLeagueSize ?? 12;
+      const lastSafe = Math.max(1, size - 1);
       return (
         ctx.managerSeasonComplete === true &&
-        (ctx.managerFinishPosition ?? 99) < 12
+        (ctx.managerFinishPosition ?? 99) <= lastSafe
       );
+    }
     case "playoff-coach":
       return (
         ctx.managerSeasonComplete === true &&

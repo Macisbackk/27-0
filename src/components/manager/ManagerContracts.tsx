@@ -22,10 +22,11 @@ import {
   evaluateRenewalOffer,
   formatWage,
   getContractStatus,
+  getSquadPlayerContractStatus,
+  isLoanSquadContract,
 } from "@/lib/manager/managerContracts";
 import { bulkRenewExpiringContractsWithInbox, renewManagerContract } from "@/lib/manager/managerInbox";
 import { releasePlayerWithCost } from "@/lib/manager/managerTransferLeague";
-import { isPlayerLoanedIn } from "@/lib/manager/managerLoans";
 import { getWageBillPercent, isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import {
@@ -63,6 +64,7 @@ const STATUS_LABELS: Record<string, string> = {
   unhappy: "Unhappy",
   renewed: "Renewed",
   leaving: "Leaving",
+  on_loan: "On loan",
 };
 
 interface ManagerContractsProps {
@@ -98,10 +100,8 @@ export function ManagerContracts({
   const expiringCount = useMemo(
     () =>
       career.squad.filter((ps) => {
-        if (isPlayerLoanedIn(career, ps.playerId)) return false;
-        const c = career.contracts[ps.playerId];
-        if (!c) return false;
-        const s = getContractStatus(c);
+        if (isLoanSquadContract(career, ps.playerId)) return false;
+        const s = getSquadPlayerContractStatus(career, ps.playerId);
         return s === "expires_this_season" || s === "wants_renewal";
       }).length,
     [career]
@@ -126,14 +126,17 @@ export function ManagerContracts({
         const player = getManagerPlayer(career, ps.playerId);
         const contract = career.contracts[ps.playerId];
         if (!player || !contract) return null;
-        const status = getContractStatus(contract);
+        const loanedIn = isLoanSquadContract(career, ps.playerId);
+        const status =
+          getSquadPlayerContractStatus(career, ps.playerId) ??
+          getContractStatus(contract);
         return {
           ps,
           player,
           contract,
           status,
           rating: player.peakRating,
-          loanedIn: isPlayerLoanedIn(career, ps.playerId),
+          loanedIn,
         };
       })
       .filter((r): r is NonNullable<typeof r> => r !== null);
@@ -141,7 +144,8 @@ export function ManagerContracts({
     if (filter === "expiring") {
       list = list.filter(
         (r) =>
-          r.contract.yearsRemaining <= 1 || r.contract.expiresAtSeasonEnd
+          !r.loanedIn &&
+          (r.contract.yearsRemaining <= 1 || r.contract.expiresAtSeasonEnd)
       );
     }
     if (filter === "highest_wage") {
@@ -458,8 +462,7 @@ export function ManagerContracts({
               </p>
               {selected.loanedIn && (
                 <p className={`mt-1 ${TYPO.bodySm} text-sky-200`}>
-                  Loaned-in players return to their parent club at season end —
-                  renewals cannot make them permanent.
+                  On loan — returns at season end.
                 </p>
               )}
               {!selected.loanedIn && selected.contract.renewalDemand && (

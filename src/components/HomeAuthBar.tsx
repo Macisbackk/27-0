@@ -18,8 +18,7 @@ export function HomeAuthBar() {
         Log in / Create account
       </Link>
       <p className={`mt-3 ${TYPO.meta}`}>
-        Or play as a guest — saves stay on this device. Log in for the online
-        leaderboard.
+        Guest saves stay here. Log in for leaderboards.
       </p>
     </section>
   );

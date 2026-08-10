@@ -1151,6 +1151,7 @@ export function ManagerFixtures({
           career={career}
           club={viewClubSheet}
           onClose={() => setViewClubSheet(null)}
+          onUpdate={onUpdate}
         />
       )}
       </div>

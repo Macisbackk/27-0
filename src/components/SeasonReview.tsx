@@ -360,8 +360,7 @@ export function SeasonReview({
               {showPlayoffPrompt ? (
                 <div className="text-center">
                   <p className={TYPO.bodySm}>
-                    You qualified for the play-offs — complete the knockout
-                    stage to finish your season.
+                    Play-offs unlocked — finish the knockout stage.
                   </p>
                   <div className="mt-4">
                     <MatchReviewActions
@@ -454,7 +453,7 @@ export function SeasonReview({
               title="Match Results"
               delay={0.36}
               defaultOpen={false}
-              helper="Click any result to view full match details."
+              helper="Tap a result for details."
             >
               <div className="min-w-0 space-y-2 text-left">
                 {seasonResult.fixtures.map((fixture) => {

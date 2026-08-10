@@ -21,8 +21,10 @@ import {
 import {
   completeOutgoingLoan,
   canUserLoanOutPlayers,
+  evaluateLoanWageShareOffer,
   getLoanOutDestinationClubs,
   isPlayerLoanedIn,
+  normalizeLoanWageSharePct,
   suggestedLoanFee,
 } from "@/lib/manager/managerLoans";
 import { findPlayerMatchdaySlot } from "@/lib/manager/managerMatchdaySquad";
@@ -54,6 +56,7 @@ export function ManagerSquadPlayerModal({
   const [loanClub, setLoanClub] = useState(
     () => getLoanOutDestinationClubs(career)[0] ?? ""
   );
+  const [loanParentSharePct, setLoanParentSharePct] = useState(50);
   const [releaseConfirmOpen, setReleaseConfirmOpen] = useState(false);
   const [errorDialog, setErrorDialog] = useState<string | null>(null);
 
@@ -89,10 +92,20 @@ export function ManagerSquadPlayerModal({
 
   const handleLoanOut = () => {
     if (!loanClub) return;
+    const sharePct = normalizeLoanWageSharePct(loanParentSharePct);
+    const shareEval = evaluateLoanWageShareOffer(
+      career,
+      playerId,
+      sharePct / 100
+    );
+    if (!shareEval.accepted) {
+      setErrorDialog(shareEval.reason);
+      return;
+    }
     onUpdate(
       completeOutgoingLoan(career, playerId, loanClub, {
         loanFee,
-        parentWageShare: 0.5,
+        parentWageShare: shareEval.userWageShare,
         canRecall: true,
       })
     );
@@ -275,8 +288,27 @@ export function ManagerSquadPlayerModal({
                   ))}
                 </select>
               </label>
+              <label className={`mt-3 block ${TYPO.bodySm}`}>
+                <span className="text-pitch-400">Your wage share (%)</span>
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  step={5}
+                  value={loanParentSharePct}
+                  onChange={(e) =>
+                    setLoanParentSharePct(Number(e.target.value))
+                  }
+                  onBlur={() =>
+                    setLoanParentSharePct(
+                      normalizeLoanWageSharePct(loanParentSharePct)
+                    )
+                  }
+                  className={`${FILTER.input} mt-1`}
+                />
+              </label>
               <p className={`mt-2 ${TYPO.meta} text-pitch-400`}>
-                Free loan · rest of season · you keep 50% wages · recallable
+                Season loan · recallable · set wage %
               </p>
               <GameButton
                 variant="theme"
@@ -285,7 +317,7 @@ export function ManagerSquadPlayerModal({
                 onClick={handleLoanOut}
                 disabled={!loanClub}
               >
-                Confirm Loan
+                Confirm {normalizeLoanWageSharePct(loanParentSharePct)}% loan
               </GameButton>
             </div>
           )}

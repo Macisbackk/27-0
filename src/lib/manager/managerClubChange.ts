@@ -301,6 +301,14 @@ export function takeOverClub(
       next.gameWeek
     ),
     difficulty: config.difficulty,
+    superLeagueDifficulty: isUserInChampionship(next)
+      ? (next.superLeagueDifficulty ?? 1)
+      : config.difficulty,
+    championshipDifficulty: isUserInChampionship(next)
+      ? Math.min(3, config.difficulty)
+      : (next.championshipDifficulty ?? Math.min(3, config.difficulty)),
+    prestigeMomentum: 0,
+    clubStarRiseCelebratedAt: config.difficulty,
     squad,
     contracts,
     reserves,

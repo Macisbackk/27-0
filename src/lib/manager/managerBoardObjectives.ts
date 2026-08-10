@@ -23,16 +23,16 @@ export function getBoardObjectiveSuccessDetail(
 ): string {
   switch (tier) {
     case "title":
-      return "Win the Grand Final and lift the Super League title.";
+      return "Win the Grand Final.";
     case "top":
-      return "Finish in the top three on the league table.";
+      return "Finish top 3.";
     case "playoffs":
-      return "Finish the regular season in the top six to reach the play-offs.";
+      return "Finish top 6.";
     case "mid-table":
-      return "Finish 10th or higher on the league table.";
+      return "Finish 10th or higher.";
     case "avoid-bottom":
     case "survive":
-      return "Finish 12th or higher and avoid the bottom places.";
+      return "Finish 12th or higher.";
   }
 }
 
@@ -49,10 +49,10 @@ export function getManagerBoardObjectiveIntro(
     primaryObjective: career.boardExpectation,
     successDetail: getBoardObjectiveSuccessDetail(tier),
     secondaryAims: [
-      "Compete in the Challenge Cup and go as deep as you can.",
-      "Keep board confidence high through results, wages, and renewals.",
-      "Develop your squad via reserves, transfers, and matchday form.",
+      "Challenge Cup run",
+      "Control wages",
+      "Build the squad",
     ],
-    confidenceNote: `The board start at ${career.boardConfidence}% confidence. Hit your target at season's end to earn rewards and protect your job.`,
+    confidenceNote: `${career.boardConfidence}% confidence · hit ${career.boardExpectation}.`,
   };
 }

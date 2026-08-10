@@ -14,6 +14,7 @@ import {
 } from "./managerContracts";
 import { canAffordAdditionalWage, evaluateClubSigningAppeal, getManagerPlayerListingRating, isPlayerReachableOnTransferMarket } from "./managerFinance";
 import { getCareerClubStars } from "./managerDifficulty";
+import { getUserCompetitionId } from "./leagueMembership";
 import { getManagerClubTeamRating } from "./managerRating";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
 import { dispatchAchievementCheck } from "../achievements/achievementNotify";
@@ -70,7 +71,8 @@ export function getPlayerSigningDemand(
   const appeal = evaluateClubSigningAppeal(
     career.club,
     rating,
-    getCareerClubStars(career)
+    getCareerClubStars(career),
+    getUserCompetitionId(career)
   );
   const wagePerYear = Math.round(base.wagePerYear * appeal.wagePremium);
   return {
@@ -89,6 +91,7 @@ export function generateTransferMarket(
   const rng = seedrandom(`${seed}-transfers-r${round}`);
   const userSquadIds = new Set(career.squad.map((p) => p.playerId));
   const careerStars = getCareerClubStars(career);
+  const competition = getUserCompetitionId(career);
   const allCurrent = getPlayersByCategory("current").filter(
     (p) =>
       p.category === "current" &&
@@ -98,7 +101,8 @@ export function generateTransferMarket(
       isPlayerReachableOnTransferMarket(
         career.club,
         getManagerModePlayerRating(p.id, p.name, p.peakRating),
-        careerStars
+        careerStars,
+        competition
       )
   );
 

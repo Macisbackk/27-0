@@ -14,7 +14,6 @@ import {
   getQuickSeasonStartLabel,
 } from "@/lib/mode-labels";
 import { playModeClassicStart, playUiClick } from "@/lib/sound";
-import { UI_COPY } from "@/lib/ui/copy";
 import { TYPO } from "@/lib/ui/typography";
 import { GuestNotice } from "./GuestNotice";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
@@ -82,7 +81,7 @@ export function HomeModeSelector() {
             Manager Mode
           </h2>
           <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
-            Build a club, manage the season, chase trophies.
+            Manage a club. Win trophies.
           </p>
           <div className="mt-4 flex w-full justify-center">
             <GameButton
@@ -102,7 +101,7 @@ export function HomeModeSelector() {
             Draft &amp; go 27-0
           </h2>
           <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
-            Spin a 17 from Current or Era pools and run the season.
+            Draft 17. Play the season.
           </p>
 
           <div className="mt-4 flex w-full justify-center">
@@ -114,14 +113,7 @@ export function HomeModeSelector() {
             />
           </div>
 
-          <p
-            className={`mx-auto mt-3 max-w-md text-center ${TYPO.meta} mobile-safe-text`}
-          >
-            {normalEraMode
-              ? UI_COPY.eraRatingNote
-              : UI_COPY.currentRatingNote}
-          </p>
-          <p className={`mx-auto mt-1 max-w-md text-center ${TYPO.meta}`}>
+          <p className={`mx-auto mt-3 max-w-md text-center ${TYPO.meta}`}>
             {getQuickModeCurrentEraHint(normalEraMode)}
           </p>
 

@@ -345,6 +345,13 @@ const INBOX_MESSAGE_STYLE: Record<
     iconBox: "border-theme-primary/45 bg-theme-primary/20 text-theme-primary",
     accentBar: "bg-theme-primary",
   },
+  loan_ended: {
+    label: "Loan Ended",
+    icon: "L",
+    badge: "border-sky-400/45 bg-sky-500/15 text-sky-300",
+    iconBox: "border-sky-400/45 bg-sky-500/20 text-sky-200",
+    accentBar: "bg-sky-400",
+  },
   sale: {
     label: "Player Sold",
     icon: "$",
@@ -481,7 +488,9 @@ export function inboxMessageAccent(
     return "gold";
   }
   if (type === "transfer_offer_in") return "primary";
-  if (type === "transfer_offer_out" || type === "contract") return "sky";
+  if (type === "transfer_offer_out" || type === "contract" || type === "loan_ended") {
+    return "sky";
+  }
   if (type === "injury" || type === "release") return "red";
   if (type === "board") return "amber";
   if (

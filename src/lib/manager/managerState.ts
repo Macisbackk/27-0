@@ -56,10 +56,14 @@ import {
   generateChampionshipSquads,
   championshipPlayerToPlayer,
 } from "./championship/championshipSquads";
+import { getPlayerById } from "../players";
 import {
   createChampionshipCompetition,
 } from "./championship/championshipLeague";
 import { getChampionshipClubByName } from "../clubs/championship-clubs";
+import {
+  ensureLeagueStarTracks,
+} from "./managerDifficulty";
 import { migrateSquadRoles } from "./migrateSquadRoles";
 import { migrateReserveGeneratorV5 } from "./migrateReserveGeneratorV5";
 import {
@@ -498,6 +502,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = migrateChampionshipFirstSeasonBalance(career);
   career = migrateReserveGeneratorV5(career);
   career = migrateSquadRoles(career);
+  career = ensureLeagueStarTracks(career);
   career = ensureChampionshipSystems(career);
   career = migrateChallengeCupRoundLabels(career);
   career = migrateCareerHistory(career);
@@ -622,9 +627,13 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     }
     rosterIds = [...(championshipSquads.rosterByClub[champClub.id] ?? [])];
     const converted = rosterIds
-      .map((id) => championshipSquads!.players[id])
-      .filter((p): p is NonNullable<typeof p> => Boolean(p))
-      .map(championshipPlayerToPlayer);
+      .map((id) => {
+        const fromDb = getPlayerById(id);
+        if (fromDb && fromDb.availableInGame !== false) return fromDb;
+        const generated = championshipSquads!.players[id];
+        return generated ? championshipPlayerToPlayer(generated) : undefined;
+      })
+      .filter((p): p is NonNullable<typeof p> => Boolean(p));
     playerRegistry = Object.fromEntries(converted.map((p) => [p.id, p]));
     const built = buildDefaultLineupFromPlayers(rosterIds, converted);
     if (!built) {
@@ -699,6 +708,10 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     boardConfidence: 65,
     boardExpectation,
     difficulty: config.difficulty,
+    superLeagueDifficulty: isChampCareer ? 1 : config.difficulty,
+    championshipDifficulty: isChampCareer
+      ? Math.min(3, config.difficulty)
+      : Math.min(3, config.difficulty),
     prestigeMomentum: 0,
     clubStarRiseCelebratedAt: config.difficulty,
     tactics: { ...DEFAULT_TACTICS },

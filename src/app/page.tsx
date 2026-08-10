@@ -21,7 +21,7 @@ export default function HomePage() {
             {GAME_VERSION}
           </p>
           <p className="max-w-sm text-center text-[length:var(--text-body)] leading-snug text-[var(--mobile-text-secondary)]">
-            Rugby league management and Quick Mode. Build a side. Go 27-0.
+            Build a side. Go 27-0.
           </p>
         </div>
       </div>
@@ -39,7 +39,7 @@ export default function HomePage() {
       </div>
 
       <p className={`mx-auto mt-4 max-w-md text-center ${TYPO.meta}`}>
-        Free to play — Quick Mode drafts and full Manager Mode careers.
+        Free to play
       </p>
 
       <div className="mt-10">

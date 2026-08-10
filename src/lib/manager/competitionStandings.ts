@@ -5,7 +5,7 @@ import {
 import { isUserInChampionship } from "./leagueMembership";
 import {
   buildLeagueTableFromMatches,
-  simulateRoundOtherMatches,
+  simulateFullLeagueRound,
 } from "./managerFixtures";
 import type {
   ManagerCareer,
@@ -121,26 +121,20 @@ export function tickAiSuperLeagueOnAdvance(
     ...(next.aiSuperLeagueRoundMatches ?? []),
   ];
 
+  // Heal saves from the old 0–0 placeholder bug (clubs[0] vs clubs[1] drawn every week).
+  if (isCorruptAiSuperLeaguePlaceholder(roundMatches, clubs)) {
+    roundMatches = [];
+    lastRound = 0;
+  }
+
   while (lastRound < targetRound) {
     const round = lastRound + 1;
-    const anchor = clubs[0]!;
-    const rest = clubs.slice(1);
-    const opponent = rest[0] ?? clubs[1]!;
-    const placeholder: ManagerRoundMatch = {
-      round,
-      homeTeam: anchor,
-      awayTeam: opponent,
-      homeScore: 0,
-      awayScore: 0,
-      homeTries: 0,
-      awayTries: 0,
-    };
-    const simulated = simulateRoundOtherMatches(
-      anchor,
-      opponent,
+    // Full SL round — do not reuse simulateRoundOtherMatches with a 0–0
+    // placeholder (that locked clubs[0] vs clubs[1] into D every week).
+    const simulated = simulateFullLeagueRound(
+      clubs,
       round,
       `${next.seed}-ai-sl`,
-      placeholder,
       next.leagueClubStates,
       {
         ...next,
@@ -168,4 +162,23 @@ export function tickAiSuperLeagueOnAdvance(
     aiSuperLeagueStandings: standings,
     aiSuperLeagueLastRound: lastRound,
   };
+}
+
+/** Old bug locked the first two SL clubs into a 0–0 “user” placeholder every round. */
+function isCorruptAiSuperLeaguePlaceholder(
+  matches: ManagerRoundMatch[],
+  clubs: readonly string[]
+): boolean {
+  if (clubs.length < 2 || matches.length === 0) return false;
+  const a = clubs[0]!;
+  const b = clubs[1]!;
+  let zeroZeroAnchors = 0;
+  for (const m of matches) {
+    if (m.homeScore !== 0 || m.awayScore !== 0) continue;
+    const pair =
+      (m.homeTeam === a && m.awayTeam === b) ||
+      (m.homeTeam === b && m.awayTeam === a);
+    if (pair) zeroZeroAnchors += 1;
+  }
+  return zeroZeroAnchors >= 3;
 }

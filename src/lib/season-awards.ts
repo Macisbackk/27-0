@@ -142,45 +142,45 @@ function pickFromPool(pool: string[], playerId: string): string {
 }
 
 const ZERO_TRY_NARRATIVES = [
-  "Failed to register a try all season and struggled to influence games.",
-  "A barren campaign with zero tries — barely visible in attack.",
-  "Never crossed the whitewash despite a full season of opportunities.",
-  "Ghosted through the campaign without troubling the scoreboard.",
+  "Zero tries. Little impact.",
+  "Barren. Invisible in attack.",
+  "Never crossed the whitewash.",
+  "Ghosted. No scoreboard threat.",
 ];
 
 const HIGH_RATED_UNDERPERFORMER_NARRATIVES = [
-  "Fell well short of expectations despite his reputation and price tag.",
-  "A big-name signing who never justified the hype.",
-  "Carried a premium rating but delivered bargain-basement returns.",
-  "Expected to lead the line but consistently underwhelmed.",
+  "Big name. Soft returns.",
+  "Never justified the hype.",
+  "Premium rating. Bargain output.",
+  "Expected to lead. Underwhelmed.",
 ];
 
 const LOW_IMPACT_FORWARD_NARRATIVES = [
-  "Struggled to make an impact and failed to meet positional expectations.",
-  "Offered little in the tight exchanges and was often a passenger.",
-  "Failed to impose himself in the forward battle all season.",
-  "A quiet campaign with minimal contribution in the pack.",
+  "Little impact up front.",
+  "Passenger in the tight.",
+  "Never imposed in the pack.",
+  "Quiet. Minimal contribution.",
 ];
 
 const BACKLINE_UNDERPERFORMER_NARRATIVES = [
-  "Rarely threatened out wide and failed to convert chances into tries.",
-  "A blunt attacking weapon — defences never had to worry about him.",
-  "Expected to finish moves but too often went missing in the wide channels.",
-  "Starved of impact in the backline and offered little running threat.",
+  "Blunt out wide.",
+  "Defences never worried.",
+  "Went missing in the channels.",
+  "No running threat.",
 ];
 
 const BAD_TEAM_SEASON_NARRATIVES = [
-  "Underwhelmed across the campaign with limited contribution to team success.",
-  "Part of a struggling side but still failed to stand out when chances arose.",
-  "Could not lift performances even as the team battled through a tough season.",
-  "A forgettable season that mirrored the team's broader struggles.",
+  "Limited contribution.",
+  "Struggling side. Still no standout.",
+  "Could not lift a tough year.",
+  "Forgettable. Mirrored the team.",
 ];
 
 const POOR_SEASON_NARRATIVES = [
-  "One of the weakest contributors in a difficult campaign.",
-  "Consistently out of step with what the team needed from his position.",
-  "A season to forget — rarely matched the standard expected at this level.",
-  "Drifted through the year without ever finding his best form.",
+  "Weak contributor.",
+  "Out of step with the role.",
+  "Season to forget.",
+  "Never found best form.",
 ];
 
 const FORWARD_POSITIONS: Player["position"][] = [
@@ -202,9 +202,9 @@ function getPotyNarrative(
   if (seasonResult.isPerfect) {
     return pickFromPool(
       [
-        "Dominated throughout an unbeaten campaign and led the team to 27-0 glory.",
-        "The standout in a perfect season — every week brought another decisive display.",
-        "A campaign worthy of a club great — decisive, consistent and impossible to ignore.",
+        "Led a 27-0 campaign.",
+        "Standout in a perfect season.",
+        "Club-great season.",
       ],
       `${perf.playerId}-perfect`
     );
@@ -213,9 +213,9 @@ function getPotyNarrative(
   if (perf.peakRating >= 90 && perf.tries >= 15) {
     return pickFromPool(
       [
-        "A campaign worthy of a club great — decisive, consistent and impossible to ignore.",
-        "Elite form all season — the kind of year legends are built on.",
-        "Star quality every week and the numbers to prove it.",
+        "Club-great season.",
+        "Elite form all year.",
+        "Star quality. Numbers to match.",
       ],
       `${perf.playerId}-elite`
     );
@@ -224,9 +224,9 @@ function getPotyNarrative(
   if (isTopTryScorer && perf.tries >= 12) {
     return pickFromPool(
       [
-        "Led the line with a try tally that separated this side from the rest.",
-        "The team's sharpest finisher — tries arrived when the season needed them most.",
-        "A constant threat with ball in hand and the player opposition sides struggled to contain.",
+        "Led the try tally.",
+        "Sharpest finisher.",
+        "Constant threat.",
       ],
       `${perf.playerId}-tries`
     );
@@ -235,9 +235,9 @@ function getPotyNarrative(
   if (FORWARD_POSITIONS.includes(perf.playedPosition)) {
     return pickFromPool(
       [
-        "Set the tone through the middle and gave the squad a platform every week.",
-        "Relentless in the trenches — the engine room of a strong campaign.",
-        "Led from the front with power, discipline and repeat efforts.",
+        "Set the tone through the middle.",
+        "Engine room all season.",
+        "Led from the front.",
       ],
       `${perf.playerId}-fwd`
     );
@@ -246,9 +246,9 @@ function getPotyNarrative(
   if (HALF_POSITIONS.includes(perf.playedPosition)) {
     return pickFromPool(
       [
-        "Controlled the tempo, created chances and delivered when the season needed direction.",
-        "Ran the team with composure — the hub of everything this side did well.",
-        "Kicked, passed and organised the side through a standout campaign.",
+        "Controlled tempo. Delivered.",
+        "Hub of everything good.",
+        "Organised a standout year.",
       ],
       `${perf.playerId}-half`
     );
@@ -257,9 +257,9 @@ function getPotyNarrative(
   if (BACK_POSITIONS.includes(perf.playedPosition)) {
     return pickFromPool(
       [
-        "A constant threat with ball in hand and the player opposition sides struggled to contain.",
-        "Explosive in attack and reliable when the stakes were highest.",
-        "Finished moves, broke the line and carried the team's attacking threat.",
+        "Constant threat all year.",
+        "Explosive when it mattered.",
+        "Broke the line. Finished moves.",
       ],
       `${perf.playerId}-back`
     );
@@ -268,8 +268,8 @@ function getPotyNarrative(
   if (perf.tries >= 20) {
     return pickFromPool(
       [
-        "A prolific attacking threat who consistently delivered when it mattered.",
-        "Tries flowed all season — a finisher in irrepressible form.",
+        "Prolific. Delivered.",
+        "Tries flowed all season.",
       ],
       `${perf.playerId}-prolific`
     );
@@ -278,8 +278,8 @@ function getPotyNarrative(
   if (seasonResult.wins >= 20) {
     return pickFromPool(
       [
-        "Dominated throughout the campaign and drove the team deep into title contention.",
-        "Match-winning contributions in a season that stayed in the hunt until the end.",
+        "Drove title contention.",
+        "Match-winning all year.",
       ],
       `${perf.playerId}-wins`
     );
@@ -288,9 +288,9 @@ function getPotyNarrative(
   void seed;
   return pickFromPool(
     [
-      "Stood above the rest with consistent match-winning contributions all season.",
-      "The pick of the squad — reliable, influential and always in the conversation.",
-      "Raised the standard week after week when others drifted.",
+      "Match-winning all season.",
+      "Pick of the squad.",
+      "Raised the standard weekly.",
     ],
     perf.playerId
   );
@@ -475,7 +475,7 @@ export function generateSeasonAwards(
       positionNote: superSamHallasMode ? undefined : worstPlayer.positionNote ?? undefined,
       ratingNote: superSamHallasMode ? undefined : worstPlayer.ratingNote ?? undefined,
       narrative: superSamHallasMode
-        ? "Nobody — impossible in Super Sam Hallas Mode. The opposition had a harder time."
+        ? "Nobody — Super Sam Hallas Mode."
         : getWorstNarrative(
             worstPlayer,
             seasonResult.wins,

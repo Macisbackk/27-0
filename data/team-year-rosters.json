@@ -632,7 +632,6 @@
       "huddersfield-cur-george-king",
       "huddersfield-cur-harry-rushton",
       "huddersfield-cur-jacob-gagai",
-      "huddersfield-cur-jake-bibby",
       "huddersfield-cur-joe-greenwood",
       "huddersfield-cur-matty-english",
       "huddersfield-cur-niall-evalds",
@@ -698,7 +697,6 @@
       "castleford-cur-darnell-mcintosh",
       "castleford-cur-george-lawler",
       "castleford-cur-jason-qareqare",
-      "castleford-cur-jeremiah-simbiken",
       "castleford-cur-joe-stimson",
       "castleford-cur-joe-westerman",
       "castleford-cur-jordan-lane",
@@ -851,6 +849,24 @@
       "leeds-leg-danny-mcguire-2016",
       "leeds-leg-jamie-jones-buchanan-2016",
       "leeds-leg-rob-burrow-2016"
+    ],
+    "2026": [
+      "leeds-cur-ash-handley",
+      "leeds-cur-brodie-croft",
+      "leeds-cur-cameron-smith",
+      "leeds-cur-cooper-jenkins",
+      "leeds-cur-harry-newman",
+      "leeds-cur-jake-connor",
+      "leeds-cur-james-bentley",
+      "leeds-cur-james-mcdonnell",
+      "leeds-cur-jarrod-o-connor",
+      "leeds-cur-lachie-miller",
+      "leeds-cur-maika-sivo",
+      "leeds-cur-mikolaj-oledzki",
+      "leeds-cur-morgan-gannon",
+      "leeds-cur-riley-lumb",
+      "leeds-cur-sam-lisone",
+      "leeds-cur-tom-holroyd"
     ]
   },
   "Hull FC": {
@@ -1203,6 +1219,7 @@
     "2020": [
       "hull-kr-hist-ben-crooks-2020",
       "hull-kr-hist-dean-hadley-2020",
+      "hull-kr-hist-era-will-dagger",
       "hull-kr-hist-greg-minikin-2020",
       "hull-kr-hist-harvey-livett-2020",
       "hull-kr-hist-jez-litten-2020",
@@ -1212,8 +1229,7 @@
       "hull-kr-hist-mitch-garbutt-2020",
       "hull-kr-hist-robbie-mulhern-2020",
       "hull-kr-hist-shaun-kenny-dowall-2020",
-      "hull-kr-hist-weller-hauraki-2020",
-      "hull-kr-hist-will-dagger-2020"
+      "hull-kr-hist-weller-hauraki-2020"
     ],
     "2026": [
       "hull-kr-cur-arthur-mourgue",

@@ -705,7 +705,7 @@ export function applyManagerMatchResult(
   } else {
     wagePressureWeeks = 0;
   }
-  const expiring = countExpiringContracts(career.contracts);
+  const expiring = countExpiringContracts(career);
   if (expiring >= 4) boardConfidence = Math.max(0, boardConfidence - 3);
 
   boardConfidence = Math.max(

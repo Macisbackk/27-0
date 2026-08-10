@@ -67,8 +67,8 @@ function scenarioForClub(
       .replace(/\s+/g, "-")}`,
     title: club,
     blurb: eraMode
-      ? `Era Mode — every opponent is all-time ${club}.`
-      : `Current Mode — every opponent is ${club}.`,
+      ? `Era — all ${club}.`
+      : `Current — all ${club}.`,
     forceOpponentClub: club,
     eraMode,
     leagueLeadersBonus: eliteHome ? 75_000 : 70_000,

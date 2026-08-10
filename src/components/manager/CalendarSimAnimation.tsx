@@ -134,7 +134,19 @@ export function CalendarSimAnimation({
 
   useEffect(() => {
     completedRef.current = false;
-    if (!open || status !== "animating" || trail.length === 0) {
+    if (!open) {
+      setIndex(0);
+      return;
+    }
+
+    // After the count finishes, keep showing the reached date — never snap back
+    // to the start date (that made it look like sim never advanced).
+    if (status === "complete" || status === "error") {
+      if (trail.length > 0) setIndex(trail.length - 1);
+      return;
+    }
+
+    if (status !== "animating" || trail.length === 0) {
       setIndex(0);
       return;
     }
@@ -172,10 +184,14 @@ export function CalendarSimAnimation({
 
   if (!open) return null;
 
+  const trailDate =
+    trail.length > 0
+      ? trail[Math.min(index, trail.length - 1)]
+      : null;
   const displayed =
-    trail[Math.min(index, Math.max(0, trail.length - 1))] ??
-    reachedDateKey ??
-    startDateKey;
+    status === "complete" || status === "error"
+      ? reachedDateKey ?? trailDate ?? startDateKey
+      : trailDate ?? reachedDateKey ?? startDateKey;
   const parsed = displayed ? parseDateKey(displayed) : null;
   const done = status === "complete" || status === "error";
   const animDone =

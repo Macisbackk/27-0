@@ -11,7 +11,6 @@ import {
   getUserSeasonGames,
   isUserInChampionship,
 } from "./leagueMembership";
-import { CHAMPIONSHIP_EXPECTATION_LABELS, expectationTierFromStars, getManagerClubConfig, MANAGER_EXPECTATION_LABELS } from "./club-config";
 import { generateTransferMarket } from "./managerTransfers";
 import { generateLeagueListedPlayers } from "./managerTransferLeague";
 import { getUserLeagueTablePosition } from "./managerFixtures";
@@ -63,7 +62,7 @@ import {
   tickClubCareerTotals,
 } from "./managerRetirement";
 import { getManagerSeasonTrophyLabels } from "./managerSeasonTrophies";
-import { applySeasonClubPrestigeDrift, getCareerClubStars } from "./managerDifficulty";
+import { applySeasonClubPrestigeDrift, applyPromotionRelegationStarTracks, getCareerClubStars } from "./managerDifficulty";
 import { getClubFacilities } from "./managerFacilities";
 import { createChampionshipCompetition } from "./championship/championshipLeague";
 import {
@@ -131,7 +130,7 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
   const avgAttendance =
     sa.count > 0 ? Math.round(sa.total / sa.count) : career.attendanceData.currentAverageAttendance;
 
-  const expiring = countExpiringContracts(career.contracts);
+  const expiring = countExpiringContracts(career);
   const leaving = previewPlayersLeaving(career);
 
   let biggestWin: SeasonHighlightResult | null = null;
@@ -249,16 +248,31 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   if (leaving.length >= 3) boardConfidence = Math.max(0, boardConfidence - 10);
   else if (leaving.length > 0) boardConfidence = Math.max(0, boardConfidence - 4);
 
+  // Prestige drift for the season just played — BEFORE prom/rel so success
+  // updates the correct league track (and returning SL clubs keep earned stars).
+  const seasonCompetition = getUserCompetitionId(clearedTransfers);
+  const { career: afterSeasonPrestige } = applySeasonClubPrestigeDrift(
+    {
+      ...clearedTransfers,
+      previousSeasonLeagueTable,
+      previousSeasonChampionshipTable,
+      leagueTable: getManagerLeagueTable(career),
+      boardConfidence,
+    },
+    summary,
+    { seasonStartFacilities, seasonCompetition }
+  );
+
   // Promotion / relegation BEFORE rebuilding schedules.
   const {
-    career: afterPromRel,
+    career: afterMembershipSwap,
     userPromoted,
     userRelegated,
-  } = applyPromotionRelegation({
-    ...clearedTransfers,
-    previousSeasonLeagueTable,
-    previousSeasonChampionshipTable,
-    leagueTable: getManagerLeagueTable(career),
+  } = applyPromotionRelegation(afterSeasonPrestige);
+
+  const afterPromRel = applyPromotionRelegationStarTracks(afterMembershipSwap, {
+    userPromoted,
+    userRelegated,
   });
 
   const newSeed = `${career.seed}-s${career.seasonYear + 1}`;
@@ -287,15 +301,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
   }
 
   const leagueClubs = getUserLeagueClubs(afterPromRel);
-  const config = getManagerClubConfig(afterPromRel.club);
-  const boardExpectation =
-    afterPromRel.userCompetitionId === "championship"
-      ? CHAMPIONSHIP_EXPECTATION_LABELS[
-          expectationTierFromStars(config.difficulty, "championship")
-        ]
-      : MANAGER_EXPECTATION_LABELS[
-          expectationTierFromStars(config.difficulty, "super-league")
-        ];
+  const stars = getCareerClubStars(afterPromRel);
 
   const prevFinance = afterReserveContracts.managerFinance;
   const transferBudget = computeSeasonTransferBudget(
@@ -304,7 +310,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     career.seasonYear + 1,
     summary,
     prevFinance,
-    getCareerClubStars(afterPromRel),
+    stars,
     getUserCompetitionId(afterPromRel)
   );
 
@@ -329,10 +335,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     budget: transferBudget,
     clubFundsEarned: afterReserveContracts.clubFundsEarned,
     boardConfidence: Math.min(85, boardConfidence + 10),
-    boardExpectation:
-      userPromoted || userRelegated
-        ? boardExpectation
-        : afterPromRel.boardExpectation,
+    boardExpectation: afterPromRel.boardExpectation,
     schedule,
     fixtures: [],
     roundMatches: [],
@@ -448,12 +451,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     transferMarket: seasonListed.map((l) => l.playerId),
   };
   awardManagerSeasonBoardGrant(finalCareer, summary);
-  const { career: withPrestige } = applySeasonClubPrestigeDrift(
-    finalCareer,
-    summary,
-    { seasonStartFacilities }
-  );
-  const withStarEconomy = resyncCareerEconomyToClubStars(withPrestige, summary);
+  const withStarEconomy = resyncCareerEconomyToClubStars(finalCareer, summary);
 
   const previousSeasonChampion = resolveSeasonChampionForAdvance(
     finalizePlayoffTournamentForChampion(career)

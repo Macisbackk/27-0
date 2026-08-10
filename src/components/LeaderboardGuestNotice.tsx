@@ -15,8 +15,7 @@ export function LeaderboardGuestNotice() {
       className={`mb-4 ${CARD.base} border-theme-primary/20 bg-theme-primary/5 ${SPACING.cardPaddingSm}`}
     >
       <p className={TYPO.body}>
-        Log in to submit your own scores. You can still view online leaderboards
-        as a guest.
+        Log in to submit. Guests can browse.
       </p>
       <Link href="/" className={`mt-2 inline-block ${LINK.accent}`}>
         Go to Home →

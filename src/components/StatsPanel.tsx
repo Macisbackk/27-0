@@ -264,8 +264,8 @@ export function StatsPanel() {
 
       <p className="text-center text-xs text-gray-600">
         {isLoggedIn
-          ? "Statistics sync to your account when logged in."
-          : "Statistics saved locally in this browser until you log in."}
+          ? "Stats sync when logged in."
+          : "Saved on this device until you log in."}
       </p>
     </div>
   );

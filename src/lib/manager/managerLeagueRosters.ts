@@ -169,9 +169,8 @@ export function getLeagueClubPlayerPool(
     if (!champ) return [];
     const roster = career.championshipSquads.rosterByClub[champ.id] ?? [];
     return roster
-      .map((id) => career.championshipSquads!.players[id])
-      .filter((p): p is NonNullable<typeof p> => Boolean(p))
-      .map(championshipPlayerToPlayer);
+      .map((id) => getManagerPlayer(career, id) ?? getPlayerById(id))
+      .filter((p): p is Player => Boolean(p));
   }
 
   return [];

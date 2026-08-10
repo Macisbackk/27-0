@@ -8,7 +8,7 @@ import type {
   RetiredPlayer,
 } from "./types";
 import { getManagerPlayer, getManagerPlayerAge } from "./managerPlayers";
-import { computeWageBill } from "./managerContracts";
+import { isLoanSquadContract, computeWageBill } from "./managerContracts";
 import {
   getLeagueClubRosterIds,
   initLeagueClubRosters,
@@ -199,6 +199,8 @@ export function ensureRetirementIntent(career: ManagerCareer): ManagerCareer {
   let next = career;
 
   for (const ps of next.squad) {
+    if (isLoanSquadContract(next, ps.playerId)) continue;
+
     const contract = next.contracts[ps.playerId];
     const player = getManagerPlayer(next, ps.playerId);
     if (!contract || !player) continue;

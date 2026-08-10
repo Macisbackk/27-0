@@ -35,6 +35,15 @@ function isLoanedInOnSquad(career: ManagerCareer, playerId: string): boolean {
   );
 }
 
+/** True when this squad slot is a loan-in (ActiveLoan and/or loan placement contract). */
+export function isLoanSquadContract(
+  career: ManagerCareer,
+  playerId: string
+): boolean {
+  if (isLoanedInOnSquad(career, playerId)) return true;
+  return career.contracts[playerId]?.isLoanPlacement === true;
+}
+
 export function formatWage(amount: number): string {
   if (amount >= 1_000_000) return `£${(amount / 1_000_000).toFixed(2)}m`;
   return `£${Math.round(amount / 1000)}k`;
@@ -234,6 +243,9 @@ export function generateRenewalDemand(
 export function getContractStatus(
   contract: PlayerContract
 ): ContractStatus {
+  if (contract.isLoanPlacement || contract.status === "on_loan") {
+    return "on_loan";
+  }
   if (contract.status === "renewed") return "renewed";
   if (contract.status === "leaving") return "leaving";
   if (contract.happiness < 35) return "unhappy";
@@ -245,18 +257,33 @@ export function getContractStatus(
   return "long_term";
 }
 
+/** Loan-aware status for a squad player (preferred for UI / reminders). */
+export function getSquadPlayerContractStatus(
+  career: ManagerCareer,
+  playerId: string
+): ContractStatus | null {
+  const contract = career.contracts[playerId];
+  if (!contract) return null;
+  if (isLoanSquadContract(career, playerId)) return "on_loan";
+  return getContractStatus(contract);
+}
+
 export function computeWageBill(
   contracts: Record<string, PlayerContract>
 ): number {
   return Object.values(contracts).reduce((sum, c) => sum + c.wagePerYear, 0);
 }
 
-/** Wage bill if every expiring player renews at their current demand. */
+/** Wage bill if every expiring permanent player renews at their current demand. */
 export function projectWageBillAfterRenewals(career: ManagerCareer): number {
   let squadWages = 0;
   for (const ps of career.squad) {
     const contract = career.contracts[ps.playerId];
     if (!contract) continue;
+    if (isLoanSquadContract(career, ps.playerId)) {
+      squadWages += contract.wagePerYear;
+      continue;
+    }
     const status = getContractStatus(contract);
     if (status === "expires_this_season" || status === "wants_renewal") {
       const demand =
@@ -320,7 +347,7 @@ export function evaluateRenewalOffer(
   offer: RenewalDemand,
   career: ManagerCareer
 ): { accepted: boolean; reason: string } {
-  if (isLoanedInOnSquad(career, playerId)) {
+  if (isLoanSquadContract(career, playerId)) {
     return {
       accepted: false,
       reason:
@@ -424,7 +451,7 @@ export function applyRenewal(
   playerId: string,
   offer: RenewalDemand
 ): ManagerCareer {
-  if (isLoanedInOnSquad(career, playerId)) return career;
+  if (isLoanSquadContract(career, playerId)) return career;
   const contract = career.contracts[playerId];
   if (!contract) return career;
 
@@ -472,7 +499,7 @@ export function bulkRenewExpiringContracts(
   for (const ps of working.squad) {
     const contract = working.contracts[ps.playerId];
     if (!contract) continue;
-    if (isLoanedInOnSquad(working, ps.playerId)) continue;
+    if (isLoanSquadContract(working, ps.playerId)) continue;
     const status = getContractStatus(contract);
     if (status !== "expires_this_season" && status !== "wants_renewal") {
       continue;
@@ -546,10 +573,11 @@ export function tickContractsForNewSeason(
   };
 }
 
-export function countExpiringContracts(
-  contracts: Record<string, PlayerContract>
-): number {
-  return Object.values(contracts).filter((c) => {
+export function countExpiringContracts(career: ManagerCareer): number {
+  return career.squad.filter((ps) => {
+    if (isLoanSquadContract(career, ps.playerId)) return false;
+    const c = career.contracts[ps.playerId];
+    if (!c) return false;
     const status = getContractStatus(c);
     return status === "expires_this_season" || status === "wants_renewal";
   }).length;
@@ -559,9 +587,18 @@ export function ensureRenewalDemands(career: ManagerCareer): ManagerCareer {
   const contracts = { ...career.contracts };
   let changed = false;
   for (const [id, c] of Object.entries(contracts)) {
-    if (isLoanedInOnSquad(career, id)) {
-      if (c.renewalDemand) {
-        contracts[id] = { ...c, renewalDemand: undefined };
+    if (isLoanSquadContract(career, id)) {
+      if (
+        c.renewalDemand ||
+        !c.isLoanPlacement ||
+        c.status !== "on_loan"
+      ) {
+        contracts[id] = {
+          ...c,
+          isLoanPlacement: true,
+          renewalDemand: undefined,
+          status: "on_loan",
+        };
         changed = true;
       }
       continue;
@@ -594,7 +631,7 @@ export function previewPlayersLeaving(
     const c = career.contracts[ps.playerId];
     if (!c) continue;
     // Loaned-in players always leave at season end (parent club).
-    if (isLoanedInOnSquad(career, ps.playerId)) {
+    if (isLoanSquadContract(career, ps.playerId)) {
       leaving.push(ps.playerId);
       continue;
     }

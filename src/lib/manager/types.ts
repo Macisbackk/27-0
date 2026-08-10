@@ -39,7 +39,8 @@ export type ContractStatus =
   | "wants_renewal"
   | "unhappy"
   | "renewed"
-  | "leaving";
+  | "leaving"
+  | "on_loan";
 
 export type ManagerCompetition =
   | "league"
@@ -81,6 +82,11 @@ export interface PlayerContract {
   purchaseFee?: number;
   renewalDemand?: RenewalDemand;
   status?: ContractStatus;
+  /**
+   * Temporary loan placement at this club — not a permanent signing.
+   * Never generates renewals / contract-expiry reminders.
+   */
+  isLoanPlacement?: boolean;
   /** Player plans to hang up their boots at the end of this season. */
   retiringAtSeasonEnd?: boolean;
   /** Season when retirement intent was last evaluated. */
@@ -734,6 +740,7 @@ export type InboxMessageType =
   | "transfer_complete"
   | "transfer_offer_in"
   | "transfer_offer_out"
+  | "loan_ended"
   | "contract"
   | "reserve_report"
   | "reserve_callup"
@@ -922,8 +929,18 @@ export interface ManagerCareer {
   clubFundsEarned: number;
   boardConfidence: number;
   boardExpectation: string;
-  /** Club prestige tier (1–5 stars). Rises or falls after sustained success or failure. */
+  /** Active club prestige tier for the current competition (1–5 SL / 1–3 Champ). */
   difficulty: number;
+  /**
+   * Prestige while in Super League (1–5). Kept across relegation so a return
+   * to SL can resume from prior SL status; promotion seeds this at 1★.
+   */
+  superLeagueDifficulty?: number;
+  /**
+   * Prestige while in the Championship (1–3). Kept across promotion so a
+   * return to the Championship can resume from prior Champ status.
+   */
+  championshipDifficulty?: number;
   /** Momentum toward the next star change (-1..1 between shifts). */
   prestigeMomentum?: number;
   tactics: ManagerTactics;
@@ -1180,7 +1197,11 @@ export interface ManagerLifetimeStats {
   wins: number;
   losses: number;
   trophies: number;
+  /** Super League regular-season League Leaders (table 1st). */
   leagueTitles: number;
+  /** Championship regular-season League Leaders (table 1st). */
+  championshipTitles: number;
+  /** Super League Grand Final winners. */
   superLeagueTitles: number;
   challengeCups: number;
   cupFinals: number;

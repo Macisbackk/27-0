@@ -22,7 +22,7 @@
       "club": "Catalans Dragons",
       "slug": "catalans-dragons",
       "file": "catalans-dragons.json",
-      "count": 16
+      "count": 17
     },
     {
       "club": "Huddersfield Giants",
@@ -82,7 +82,7 @@
       "club": "St Helens",
       "slug": "st-helens",
       "file": "st-helens.json",
-      "count": 19
+      "count": 17
     },
     {
       "club": "Toulouse Olympique",
@@ -112,7 +112,7 @@
       "club": "Wigan Warriors",
       "slug": "wigan-warriors",
       "file": "wigan-warriors.json",
-      "count": 19
+      "count": 17
     },
     {
       "club": "Wynnum Manly Seagulls",
@@ -124,7 +124,7 @@
       "club": "York Knights",
       "slug": "york-knights",
       "file": "york-knights.json",
-      "count": 18
+      "count": 17
     }
   ]
 }

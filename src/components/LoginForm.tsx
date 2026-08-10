@@ -130,7 +130,7 @@ export function LoginForm() {
         Continue as Guest
       </Link>
       <p className={`mt-2 text-center ${TYPO.bodySm}`}>
-        Play without an account — stats stay on this device only.
+        Play as guest — stats stay here.
       </p>
 
       <div className="mt-6">

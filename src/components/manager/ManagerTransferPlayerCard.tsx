@@ -233,6 +233,7 @@ interface ManagerLeagueTransferCardProps {
   fee: number;
   week: number;
   compact?: boolean;
+  transferType?: "permanent" | "free" | "loan";
 }
 
 /** Neutral Transfer Wire row — pitch border only, club identity via swatch. */
@@ -242,8 +243,15 @@ export function ManagerLeagueTransferCard({
   toClub,
   fee,
   week,
+  transferType,
 }: ManagerLeagueTransferCardProps) {
   const displayName = playerName.trim() || "Unknown player";
+  const feeLabel =
+    transferType === "loan"
+      ? "Loan"
+      : fee <= 0
+        ? "Free"
+        : formatWage(fee);
 
   return (
     <li
@@ -255,7 +263,7 @@ export function ManagerLeagueTransferCard({
           {displayName}
         </span>
         <span className="shrink-0 font-semibold text-accent-gold">
-          {fee <= 0 ? "Free" : formatWage(fee)}
+          {feeLabel}
         </span>
       </div>
       <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">

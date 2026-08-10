@@ -359,29 +359,20 @@ export function getMatchPlayerRolesStrengthBonus(
   return Math.min(1.5, matches * 0.35);
 }
 
-/** Resolve tactics for a fixture — one-match gameplan overrides career tactics. */
+/** Resolve tactics for a fixture (career tactics — one-match override removed). */
 export function resolveEffectiveTactics(
   career: ManagerCareer,
-  fixtureId?: string | null
+  _fixtureId?: string | null
 ): ManagerTactics {
-  const plan = career.nextMatchGameplan;
-  if (
-    plan &&
-    fixtureId &&
-    plan.fixtureId === fixtureId &&
-    plan.tactics
-  ) {
-    return plan.tactics;
-  }
   return career.tactics;
 }
 
+/** @deprecated One-match gameplan UI was never shipped — no-op for save compat. */
 export function clearNextMatchGameplanIfUsed(
   career: ManagerCareer,
-  fixtureId: string
+  _fixtureId: string
 ): ManagerCareer {
-  const plan = career.nextMatchGameplan;
-  if (!plan || plan.fixtureId !== fixtureId) return career;
+  if (!career.nextMatchGameplan) return career;
   return {
     ...career,
     nextMatchGameplan: null,

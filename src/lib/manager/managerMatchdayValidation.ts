@@ -122,17 +122,16 @@ export function validateFitMatchdaySquad(
     return { valid: true, message: "", missing: [] };
   }
 
-  let message = `You cannot play this match yet. Your matchday squad needs 17 fit players.`;
+  let message = "Need 17 fit players.";
   if (unique.length > 0) {
-    message += `\nMissing: ${unique.join(", ")}.`;
+    message += ` Missing: ${unique.join(", ")}.`;
   }
   if (
     unique.length > 0 &&
     career.reserves.length > 0 &&
     career.calledUpReserveIds.length === 0
   ) {
-    message +=
-      "\nUse Auto Fix Squad to fill gaps and call up the best reserves automatically.";
+    message += " Use Auto Fix.";
   }
 
   return { valid: false, message, missing: unique };

@@ -24,8 +24,7 @@ const anton = Anton({
 
 export const metadata: Metadata = {
   title: "27-0 — Build Your Super League Dream Team",
-  description:
-    "Build the most valuable Super League rugby team from random player offers. Sign or skip — every decision matters.",
+  description: "Draft a Super League side. Chase 27-0.",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
@@ -33,7 +32,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "27-0 — Rugby League Squad Builder",
-    description: "Can you build the ultimate Super League starting XIII?",
+    description: "Build a side. Go 27-0.",
   },
 };
 

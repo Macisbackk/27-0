@@ -14,9 +14,7 @@ export default async function LeaderboardPage() {
             <p className={TYPO.sectionLabel}>Rankings</p>
             <h1 className={`mt-1 ${TYPO.pageTitle}`}>Leaderboard</h1>
             <p className={`mt-2 ${TYPO.bodySm}`}>
-              Quick Mode and Manager Mode rankings — Super League records,
-              league titles, Challenge Cup trophies, and career earnings, synced
-              online across all players.
+              Quick Mode and Manager rankings.
             </p>
           </header>
           <LeaderboardGuestNotice />

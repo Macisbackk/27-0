@@ -55,6 +55,12 @@ import {
   MANAGER_LEAGUE_IDS,
 } from "@/lib/manager/managerLeagues";
 import type { ManagerCompetitionId } from "@/lib/manager/types";
+import {
+  isOnTransferWatchlist,
+  toggleTransferWatchlist,
+} from "@/lib/manager/managerWatchlist";
+import { playUiClick } from "@/lib/sound";
+import { GameButton } from "@/components/ui/GameButton";
 
 export type AcrossTheLeagueCompetitionId = ManagerCompetitionId;
 
@@ -414,6 +420,7 @@ export function ManagerAcrossLeague({
                   toClub={tx.toClub}
                   fee={tx.fee}
                   week={tx.week}
+                  transferType={tx.transferType}
                   compact
                 />
               ))}
@@ -431,6 +438,7 @@ export function ManagerAcrossLeague({
               {otherClubListings.map((entry) => {
                 const positions = getPlayerEligiblePositions(entry.player);
                 const posLabel = positions.map((p) => POSITION_SHORT[p]).join("/");
+                const watched = isOnTransferWatchlist(career, entry.playerId);
                 return (
                   <li
                     key={`${entry.club}-${entry.playerId}`}
@@ -452,6 +460,21 @@ export function ManagerAcrossLeague({
                       <p className={`${TYPO.bodySm} text-pitch-500`}>
                         W{entry.listedAtWeek}
                       </p>
+                      {onUpdate && (
+                        <GameButton
+                          variant={watched ? "secondary" : "theme"}
+                          size="sm"
+                          className="mt-1.5"
+                          onClick={() => {
+                            playUiClick();
+                            onUpdate(
+                              toggleTransferWatchlist(career, entry.playerId)
+                            );
+                          }}
+                        >
+                          {watched ? "Watching" : "Watch"}
+                        </GameButton>
+                      )}
                     </div>
                   </li>
                 );
@@ -470,12 +493,13 @@ export function ManagerAcrossLeague({
               {freeAgentsElsewhere.map((entry) => {
                 const positions = getPlayerEligiblePositions(entry.player);
                 const posLabel = positions.map((p) => POSITION_SHORT[p]).join("/");
+                const watched = isOnTransferWatchlist(career, entry.playerId);
                 return (
                   <li
                     key={entry.playerId}
                     className={`${managerDataRowClass()} flex items-center justify-between gap-3 px-3 py-2`}
                   >
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <p className="truncate font-semibold text-white">
                         {entry.player.name}
                       </p>
@@ -483,9 +507,25 @@ export function ManagerAcrossLeague({
                         Free agent · {posLabel} · {entry.player.peakRating} OVR
                       </p>
                     </div>
-                    <span className={`${TYPO.bodySm} shrink-0 text-pitch-500`}>
-                      W{entry.sinceWeek}
-                    </span>
+                    <div className="flex shrink-0 flex-col items-end gap-1.5">
+                      <span className={`${TYPO.bodySm} text-pitch-500`}>
+                        W{entry.sinceWeek}
+                      </span>
+                      {onUpdate && (
+                        <GameButton
+                          variant={watched ? "secondary" : "theme"}
+                          size="sm"
+                          onClick={() => {
+                            playUiClick();
+                            onUpdate(
+                              toggleTransferWatchlist(career, entry.playerId)
+                            );
+                          }}
+                        >
+                          {watched ? "Watching" : "Watch"}
+                        </GameButton>
+                      )}
+                    </div>
                   </li>
                 );
               })}

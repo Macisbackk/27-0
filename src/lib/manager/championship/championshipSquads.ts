@@ -1,6 +1,6 @@
 import seedrandom from "seedrandom";
 import type { Position, Player } from "../../types";
-import { getPlayersByCategory } from "../../players";
+import { getPlayerById, getPlayersByCategory } from "../../players";
 import { isHiddenPlayer } from "../../players/goat";
 import {
   CHAMPIONSHIP_CLUBS,
@@ -19,13 +19,16 @@ import {
   CHAMPIONSHIP_PLAYER_MAX_RATING,
   CHAMPIONSHIP_PLAYER_MIN_RATING,
 } from "../../players/rating-floors";
+import { getCurrentSquadPlayerIds } from "../../players/era-teams";
+import { getEligiblePositions } from "../../players/player-positions";
+import { getAgeAtYear } from "../../players/player-age";
 
 /**
- * v5: First-season Championship balance retuned to 70–83 (rare standouts only).
- * Existing careers are remapped by migrateChampionshipFirstSeasonBalance —
- * squads are not regenerated.
+ * v7: Prefer real Current DB players on Championship clubs when present;
+ * fill remaining slots with generated players. Existing careers keep their
+ * squads (ensureChampionship bumps version without regenerating).
  */
-export const GENERATED_CHAMPIONSHIP_SQUADS_VERSION = 6;
+export const GENERATED_CHAMPIONSHIP_SQUADS_VERSION = 7;
 
 export const CHAMP_NATIONALITY_QUOTA: Record<ChampNationalityCode, number> = {
   ENG: 425,
@@ -301,11 +304,117 @@ export function generateChampionshipSquads(
 
   validateChampionshipSquadGeneration(players, rosterByClub);
 
+  injectCurrentDatabasePlayers(players, rosterByClub, careerSeed, seasonYear);
+
   return {
     version: GENERATED_CHAMPIONSHIP_SQUADS_VERSION,
     rosterByClub,
     players,
   };
+}
+
+function nationalityCodeFromPlayer(player: Player): ChampNationalityCode {
+  const raw = (player.nationality ?? "").toLowerCase();
+  if (raw.includes("france") || raw === "fra") return "FRA";
+  if (raw.includes("new zealand") || raw === "nzl" || raw.includes("kiwi")) return "NZL";
+  if (raw.includes("australia") || raw === "aus") return "AUS";
+  if (raw.includes("samoa") || raw === "sam") return "SAM";
+  if (raw.includes("fiji") || raw === "fji") return "FJI";
+  if (raw.includes("tonga") || raw === "ton") return "TON";
+  if (raw.includes("papua") || raw === "png") return "PNG";
+  return "ENG";
+}
+
+function databasePlayerToChampionship(
+  player: Player,
+  club: ChampionshipClub,
+  seasonYear: number,
+  formRng: () => number
+): ChampionshipGeneratedPlayer {
+  const ageFromDob = getAgeAtYear(player, seasonYear);
+  const age =
+    ageFromDob !== undefined
+      ? Math.max(17, Math.min(40, ageFromDob))
+      : 26;
+  const rating = Math.max(
+    CHAMPIONSHIP_PLAYER_MIN_RATING,
+    Math.min(CHAMPIONSHIP_PLAYER_MAX_RATING, Math.round(player.peakRating))
+  );
+  const nationalityCode = nationalityCodeFromPlayer(player);
+  return {
+    id: player.id,
+    name: player.name,
+    clubId: club.id,
+    clubName: club.name,
+    position: player.position,
+    eligiblePositions: getEligiblePositions(player),
+    peakRating: rating,
+    age,
+    nationality: player.nationality || NAT_DISPLAY[nationalityCode],
+    nationalityCode,
+    form: 48 + Math.floor(formRng() * 20),
+  };
+}
+
+/**
+ * Swap generated roster slots for real Current DB players at the same club.
+ * Keeps squad size at 25; leftover slots stay generated.
+ */
+function injectCurrentDatabasePlayers(
+  players: Record<string, ChampionshipGeneratedPlayer>,
+  rosterByClub: Record<string, string[]>,
+  careerSeed: string,
+  seasonYear: number
+): void {
+  for (const club of CHAMPIONSHIP_CLUBS) {
+    const dbIds = getCurrentSquadPlayerIds(club.name);
+    if (dbIds.length === 0) continue;
+
+    const roster = [...(rosterByClub[club.id] ?? [])];
+    if (roster.length === 0) continue;
+
+    const formRng = seedrandom(`${careerSeed}-champ-db-${club.id}-${seasonYear}`);
+    const usedDb = new Set<string>();
+
+    for (const dbId of dbIds) {
+      if (usedDb.has(dbId)) continue;
+      const dbPlayer = getPlayerById(dbId);
+      if (!dbPlayer || dbPlayer.availableInGame === false) continue;
+      if (dbPlayer.category !== "current") continue;
+      // Skip mis-tagged historic/legend year cards that still sit on Champ clubs.
+      if (/-hist-|-leg-/.test(dbId)) continue;
+
+      // Prefer replacing a generated player at the same primary position.
+      let replaceIdx = roster.findIndex((id) => {
+        const g = players[id];
+        return (
+          g &&
+          g.id.startsWith("generated-championship-") &&
+          g.position === dbPlayer.position
+        );
+      });
+      if (replaceIdx < 0) {
+        replaceIdx = roster.findIndex((id) =>
+          Boolean(players[id]?.id.startsWith("generated-championship-"))
+        );
+      }
+      if (replaceIdx < 0) break;
+
+      const oldId = roster[replaceIdx]!;
+      delete players[oldId];
+      const injected = databasePlayerToChampionship(
+        dbPlayer,
+        club,
+        seasonYear,
+        formRng
+      );
+      players[injected.id] = injected;
+      roster[replaceIdx] = injected.id;
+      usedDb.add(dbId);
+    }
+
+    rosterByClub[club.id] = roster;
+  }
 }
 
 export function validateChampionshipSquadGeneration(

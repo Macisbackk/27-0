@@ -81,8 +81,7 @@ export function ManagerClubStarRiseModal({
         </div>
 
         <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
-          Results on the pitch, a stronger squad, and club upgrades have raised
-          your reputation. Board expectations will increase.
+          Club rating up. Expectations rise.
         </p>
 
         <GameButton variant="theme" className="mt-5" onClick={handleContinue}>

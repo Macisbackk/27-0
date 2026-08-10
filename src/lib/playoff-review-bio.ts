@@ -1,38 +1,38 @@
 import type { PlayoffResult } from "./game/playoff-simulation";
 
 const CHAMPION_BIOS = [
-  "Champions when it mattered most.",
-  "A perfect playoff run sealed the season.",
-  "They finished the job on the biggest stage.",
-  "From league pressure to playoff glory.",
+  "Champions when it mattered.",
+  "Playoffs sealed. Champions.",
+  "Finished the job.",
+  "Playoff glory.",
 ] as const;
 
 const GRAND_FINAL_LOSS_BIOS = [
-  "One win short of the trophy.",
-  "A brilliant run ended at the final hurdle.",
-  "The season finished with heartbreak under the lights.",
-  "So close to turning a strong year into silverware.",
+  "One win short.",
+  "Fell at the final hurdle.",
+  "Heartbreak in the Grand Final.",
+  "So close to silverware.",
 ] as const;
 
 const SEMI_FINAL_LOSS_BIOS = [
-  "The playoff charge ended in the semi-final.",
-  "A strong season faded when the pressure rose.",
-  "They had the quality, but not the final step.",
-  "A semi-final exit ended the dream.",
+  "Out in the semi-final.",
+  "Faded under playoff pressure.",
+  "Quality there — final step missing.",
+  "Semi-final exit.",
 ] as const;
 
 const EARLY_EXIT_BIOS = [
-  "The playoff run never caught fire.",
-  "A quick exit left unfinished business.",
-  "The league campaign promised more than the playoffs delivered.",
-  "One bad night ended the season.",
+  "Playoff run never caught fire.",
+  "Quick exit. Unfinished business.",
+  "League form. Playoff fade.",
+  "One bad night ended it.",
 ] as const;
 
 const LEAGUE_WINNER_BIOS = [
-  "League winners after a dominant campaign.",
-  "Top of the table and deserved league winners.",
-  "They set the standard across the regular season.",
-  "A league-winning season built on consistency.",
+  "League winners.",
+  "Top of the table. Deserved.",
+  "Set the regular-season standard.",
+  "League title. Built on consistency.",
 ] as const;
 
 function pickBio(pool: readonly string[], seed: number): string {

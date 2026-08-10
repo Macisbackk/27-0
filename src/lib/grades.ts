@@ -40,56 +40,56 @@ const GRADE_META: Record<
   "S+": {
     label: "Rugby League Dynasty",
     subtitle: "Dynasty",
-    explanation: "One of the greatest squads ever assembled.",
+    explanation: "All-time great.",
     color: "#fbbf24",
     glow: "rgba(251, 191, 36, 0.55)",
   },
   S: {
     label: "Super Squad",
     subtitle: "Super Squad",
-    explanation: "An elite side that dominated the competition.",
+    explanation: "Elite side.",
     color: "#f59e0b",
     glow: "rgba(245, 158, 11, 0.5)",
   },
   A: {
     label: "Title Contender",
     subtitle: "Title Contender",
-    explanation: "A championship-calibre squad.",
+    explanation: "Title level.",
     color: "#22c55e",
     glow: "rgba(34, 197, 94, 0.45)",
   },
   B: {
     label: "Top Six Contender",
     subtitle: "Top Six Contender",
-    explanation: "A strong top-six level team.",
+    explanation: "Top-six side.",
     color: "#38bdf8",
     glow: "rgba(56, 189, 248, 0.4)",
   },
   C: {
     label: "Mid Table",
     subtitle: "Mid Table",
-    explanation: "Competitive but inconsistent.",
+    explanation: "Mid-table.",
     color: "#a78bfa",
     glow: "rgba(167, 139, 250, 0.4)",
   },
   D: {
     label: "Struggling",
     subtitle: "Struggling",
-    explanation: "A difficult season with limited success.",
+    explanation: "Tough year.",
     color: "#94a3b8",
     glow: "rgba(148, 163, 184, 0.35)",
   },
   E: {
     label: "Relegation Form",
     subtitle: "Relegation Form",
-    explanation: "Serious rebuilding required.",
+    explanation: "Rebuild needed.",
     color: "#f97316",
     glow: "rgba(249, 115, 22, 0.35)",
   },
   F: {
     label: "Wooden Spoon",
     subtitle: "Wooden Spoon",
-    explanation: "Wooden spoon form. Back to training.",
+    explanation: "Wooden spoon.",
     color: "#ef4444",
     glow: "rgba(239, 68, 68, 0.35)",
   },
@@ -206,9 +206,7 @@ function buildGradeInfo(
       label: grade === "A" ? "League Leaders" : meta.label,
       subtitle: grade === "A" ? "League Leaders" : meta.subtitle,
       explanation:
-        grade === "A"
-          ? "Top of the table — a league-winning campaign."
-          : meta.explanation,
+        grade === "A" ? "League winners." : meta.explanation,
       color: meta.color,
       glow: meta.glow,
     };
@@ -283,9 +281,9 @@ export function getGradeReviewBio(
   if (isPerfect || wins === 27) {
     return pickGradeBio(
       [
-        "A once-in-a-generation squad that looked untouchable all season.",
-        "27-0 perfection — this campaign belongs in rugby league folklore.",
-        "An immaculate season where every week felt inevitable.",
+        "Untouchable all season.",
+        "27-0. Folklore.",
+        "Immaculate. Inevitable.",
       ],
       seed
     );
@@ -293,44 +291,44 @@ export function getGradeReviewBio(
 
   const pools: Record<SquadGrade, string[]> = {
     "S+": [
-      "A dominant campaign where the squad looked built for history.",
-      "Barely put a foot wrong — this side set the standard all year.",
-      "Championship-calibre rugby league from first whistle to last.",
+      "Built for history.",
+      "Set the standard all year.",
+      "Championship calibre throughout.",
     ],
     S: [
-      "A dominant campaign where the squad looked built for history.",
-      "Title-chasing form all season — this team meant business.",
-      "An elite run that only narrowly missed immortality.",
+      "Built for history.",
+      "Title-chasing form.",
+      "Elite — just short of perfect.",
     ],
     A: [
-      "A genuine contender's season — strong, consistent and dangerous.",
-      "Title-chasing form all season — this team meant business.",
-      "A polished campaign that kept the pressure on at the top.",
+      "Genuine contender.",
+      "Title-chasing form.",
+      "Pressure on at the top.",
     ],
     B: [
-      "A solid year with plenty to like, even if silverware stayed just out of reach.",
-      "Top-six form without quite breaking into the elite bracket.",
-      "Competitive throughout — a platform worth building on.",
+      "Solid year. No silverware.",
+      "Top-six form.",
+      "Competitive. Build on it.",
     ],
     C: [
-      "Middle-of-the-pack rugby league: competitive enough, but lacking a killer edge.",
-      "A mixed bag of results that never quite found a defining identity.",
-      "Capable in flashes, inconsistent when it mattered most.",
+      "Mid-table. No killer edge.",
+      "Mixed results. No identity.",
+      "Flashes of quality. Inconsistent.",
     ],
     D: [
-      "Too many missed chances and not enough consistency to climb the table.",
-      "A frustrating season that promised more than it delivered.",
-      "Fell short of expectations and struggled to build momentum.",
+      "Too many misses. No climb.",
+      "Promised more than it delivered.",
+      "Fell short. No momentum.",
     ],
     E: [
-      "A disappointing run that left the squad searching for answers.",
-      "Relegation form at times — serious improvement needed next year.",
-      "A tough campaign that exposed too many weaknesses.",
+      "Searching for answers.",
+      "Relegation form. Improve.",
+      "Too many weaknesses.",
     ],
     F: [
-      "A season to forget. The rebuild starts now.",
-      "Wooden spoon territory — back to the drawing board.",
-      "A rebuild is needed. This squad struggled badly.",
+      "Season to forget. Rebuild.",
+      "Wooden spoon. Start again.",
+      "Struggled. Rebuild needed.",
     ],
   };
 
@@ -338,34 +336,22 @@ export function getGradeReviewBio(
 
   if (wins === 0) {
     bio = pickGradeBio(
-      [
-        "A winless campaign that never found its rhythm.",
-        "Not a single victory all season — a brutal year to endure.",
-      ],
+      ["Winless. No rhythm.", "Zero wins. Brutal year."],
       seed + 1
     );
   } else if (losses === 27) {
     bio = pickGradeBio(
-      [
-        "0-27 misery — one of the toughest seasons imaginable.",
-        "A campaign with no respite and no answers.",
-      ],
+      ["0-27. No answers.", "No respite all year."],
       seed + 2
     );
   } else if (leaguePosition <= 2 && wins >= 20) {
     bio = pickGradeBio(
-      [
-        "Finished among the elite and looked every bit a title threat.",
-        "Near the summit all year — just missing the final step.",
-      ],
+      ["Among the elite.", "Near the summit all year."],
       seed + 3
     );
   } else if (pointsDifference < -120) {
     bio = pickGradeBio(
-      [
-        "Outscored heavily — defensive frailties cost this squad dearly.",
-        "A negative points difference that told the story of the season.",
-      ],
+      ["Outscored heavily.", "Points difference told the story."],
       seed + 4
     );
   }
@@ -387,34 +373,34 @@ function modeStoryBioPool(
 
   if (mode === "CLASSIC" && leaguePosition === 1 && !isPerfect && wins < 27) {
     return [
-      "League winners after a dominant campaign.",
-      "Top of the table and deserved league winners.",
-      "They set the standard across the regular season.",
-      "A league-winning season built on consistency.",
+      "League winners.",
+      "Top of the table. Deserved.",
+      "Set the regular-season standard.",
+      "League title. Built on consistency.",
     ];
   }
 
   if (isPerfect || wins === 27) {
     return [
-      "27-0 perfection — the perfect run watch became reality.",
-      "An immaculate league season where every week felt inevitable.",
-      "The unbeaten chase delivered rugby league folklore.",
+      "27-0. Perfect.",
+      "Immaculate. Inevitable.",
+      "Unbeaten. Folklore.",
     ];
   }
 
   if (wins >= 20 && losses <= 4) {
     return [
-      "A title-chasing season with real momentum and statement wins.",
-      "Top-of-the-table form — this squad kept the pressure on all year.",
-      "A defining run that only narrowly missed immortality.",
+      "Title chase. Statement wins.",
+      "Top-table pressure all year.",
+      "Defining run — just short.",
     ];
   }
 
   if (losses >= 15) {
     return [
-      "A season of setbacks — too many results slipped away when it mattered.",
-      "The unbeaten dream faded early; rebuilding the belief is the next job.",
-      "Inconsistent form derailed the chase — lessons to take into the next run.",
+      "Too many setbacks.",
+      "Unbeaten dream faded early.",
+      "Inconsistent. Lessons for next run.",
     ];
   }
 
@@ -440,8 +426,7 @@ export function getSeasonReviewStoryBio(
   return getValidatedGradeReviewBio(grade, ctx, tablePosition);
 }
 
-const SAFE_POSITION_FALLBACK_BIO =
-  "A competitive campaign with plenty to build on.";
+const SAFE_POSITION_FALLBACK_BIO = "Competitive. Plenty to build on.";
 
 const POSITION_MENTION_PATTERNS = [
   /\bfinished\s+(?:1st|2nd|3rd|\d+th)\b/i,

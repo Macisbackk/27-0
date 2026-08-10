@@ -18,6 +18,8 @@ export interface TransferResultDetails {
   accepted: boolean;
   reason: string;
   freeTransfer?: boolean;
+  /** When set, this was a loan — wage shown is your share cost. */
+  loanWageSharePct?: number;
 }
 
 interface ManagerTransferResultModalProps {
@@ -74,19 +76,35 @@ export function ManagerTransferResultModal({
         <div className="grid grid-cols-2 gap-3">
           <ManagerStat
             label="Transfer fee"
-            value={result.freeTransfer || result.fee <= 0 ? "Free" : formatWage(result.fee)}
+            value={
+              result.loanWageSharePct != null
+                ? "Loan"
+                : result.freeTransfer || result.fee <= 0
+                  ? "Free"
+                  : formatWage(result.fee)
+            }
             tone="gold"
           />
           <ManagerStat
-            label="Wage"
+            label={
+              result.loanWageSharePct != null ? "Your wage cost" : "Wage"
+            }
             value={`${formatWage(result.wagePerYear)}/yr`}
             tone="default"
           />
-          <ManagerStat
-            label="Contract"
-            value={`${result.years} year${result.years === 1 ? "" : "s"}`}
-            tone="muted"
-          />
+          {result.loanWageSharePct != null ? (
+            <ManagerStat
+              label="Your wage share"
+              value={`${result.loanWageSharePct}%`}
+              tone="muted"
+            />
+          ) : (
+            <ManagerStat
+              label="Contract"
+              value={`${result.years} year${result.years === 1 ? "" : "s"}`}
+              tone="muted"
+            />
+          )}
         </div>
 
         <p

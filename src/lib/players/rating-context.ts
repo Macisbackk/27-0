@@ -8,8 +8,7 @@ export type PlayerRatingContext =
   | "historic-peak"
   | "legend";
 
-export const ERA_RATING_EXPLANATION =
-  "Era Mode ratings reflect each player’s ability and performances in the selected season, not their overall career or all-time peak.";
+export const ERA_RATING_EXPLANATION = "Era ratings = that season.";
 
 export const ERA_RATING_COMPACT_EXPLANATION = UI_COPY.eraRatingNote;
 
@@ -19,7 +18,7 @@ export function getCurrentSeasonYearNumber(): number {
 }
 
 export function getCurrentRatingExplanation(): string {
-  return `Current Mode ratings reflect each player’s performances and ability during the current season.`;
+  return "Current ratings = this season.";
 }
 
 export function getCurrentRatingCompactExplanation(): string {

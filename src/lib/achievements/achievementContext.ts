@@ -41,6 +41,8 @@ export type AchievementCheckContext = {
   managerWin?: boolean;
   managerSeasonComplete?: boolean;
   managerFinishPosition?: number;
+  /** League size for Safe Pair Of Hands / finish-based unlocks. */
+  managerLeagueSize?: number;
   managerLeagueWinner?: boolean;
   managerGrandFinalWinner?: boolean;
   managerDoubleWinner?: boolean;

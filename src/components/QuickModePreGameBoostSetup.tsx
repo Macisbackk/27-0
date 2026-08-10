@@ -72,7 +72,7 @@ export function QuickModePreGameBoostSetup({
           Use a boost
         </h2>
         <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
-          One boost for this run, locked after the first spin.
+          One boost · locks after first spin
           {!eraMode ? " Legend boosts are Era only." : null}
         </p>
 
@@ -82,10 +82,10 @@ export function QuickModePreGameBoostSetup({
               className={`${CARD.inset} ${SPACING.cardPaddingSm} text-center`}
             >
               <p className={`${TYPO.bodySm} text-pitch-400`}>
-                No compatible Quick Mode boosts in inventory.
+                No boosts owned.
               </p>
               <p className={`mt-1 ${TYPO.meta}`}>
-                Buy boosts in the Store, or start without one.
+                Buy in Store, or skip.
               </p>
             </div>
           ) : (

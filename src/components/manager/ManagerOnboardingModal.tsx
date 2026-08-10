@@ -61,8 +61,7 @@ export function ManagerOnboardingModal({
             Your first season guide
           </h2>
           <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
-            New to the dugout? Work through these steps to get your campaign
-            rolling. Closing keeps the checklist on the hub until you finish.
+            Quick setup. Checklist stays on the hub until done.
           </p>
         </div>
       }

@@ -28,7 +28,7 @@ export default function StatsPage() {
     const result = await importLocalStatsToCloud(getAllStats());
     setImportMsg(
       result.ok
-        ? "Stats synced to your account without double-counting."
+        ? "Synced. No double-counting."
         : (result.error ?? "Import failed.")
     );
     setImporting(false);
@@ -67,9 +67,7 @@ export default function StatsPage() {
         )}
 
         <p className={TYPO.bodySm}>
-          {isLoggedIn
-            ? "Career statistics synced to your account when logged in."
-            : "Career statistics on this device (local only until you log in)."}
+          {isLoggedIn ? "Synced to your account." : "Saved on this device."}
         </p>
 
         <StatsPanel />

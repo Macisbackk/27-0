@@ -6,6 +6,7 @@ import {
   getManagerPlayerEligiblePositions,
 } from "./managerPlayers";
 import { canAffordAdditionalWage } from "./managerFinance";
+import { isLoanSquadContract } from "./managerContracts";
 import { getPlayerSigningDemand } from "./managerTransfers";
 
 export type TransferPriorityFilter =
@@ -53,6 +54,7 @@ export function getExpiringContractPositions(
 ): Position[] {
   const positions = new Set<Position>();
   for (const [playerId, contract] of Object.entries(career.contracts)) {
+    if (isLoanSquadContract(career, playerId)) continue;
     if (contract.yearsRemaining > 1 && !contract.expiresAtSeasonEnd) continue;
     const player = getManagerPlayer(career, playerId);
     if (player) positions.add(player.position);

@@ -27,8 +27,196 @@ function leagueSize(career?: ManagerCareer): number {
   return career ? getUserLeagueClubs(career).length : CURRENT_PLAYABLE_CLUBS.length;
 }
 
+function clampStarsForCompetition(
+  stars: number,
+  competition: "super-league" | "championship"
+): number {
+  const max = competition === "championship" ? 3 : 5;
+  return Math.max(1, Math.min(max, Math.round(stars)));
+}
+
+/**
+ * Ensure SL and Championship prestige tracks exist, and sync `difficulty`
+ * to the active competition's track.
+ */
+export function ensureLeagueStarTracks(career: ManagerCareer): ManagerCareer {
+  const config = getManagerClubConfig(career.club);
+  const competition = getUserCompetitionId(career);
+  const fallback = config.difficulty;
+  const active =
+    career.difficulty ??
+    (competition === "championship"
+      ? Math.min(3, fallback)
+      : Math.min(5, fallback));
+
+  let superLeagueDifficulty = career.superLeagueDifficulty;
+  let championshipDifficulty = career.championshipDifficulty;
+
+  if (superLeagueDifficulty == null) {
+    superLeagueDifficulty =
+      competition === "super-league"
+        ? clampStarsForCompetition(active, "super-league")
+        : 1;
+  } else {
+    superLeagueDifficulty = clampStarsForCompetition(
+      superLeagueDifficulty,
+      "super-league"
+    );
+  }
+
+  if (championshipDifficulty == null) {
+    championshipDifficulty =
+      competition === "championship"
+        ? clampStarsForCompetition(active, "championship")
+        : clampStarsForCompetition(
+            config.competition === "championship" ? fallback : 2,
+            "championship"
+          );
+  } else {
+    championshipDifficulty = clampStarsForCompetition(
+      championshipDifficulty,
+      "championship"
+    );
+  }
+
+  const difficulty =
+    competition === "championship"
+      ? championshipDifficulty
+      : superLeagueDifficulty;
+
+  if (
+    career.superLeagueDifficulty === superLeagueDifficulty &&
+    career.championshipDifficulty === championshipDifficulty &&
+    career.difficulty === difficulty
+  ) {
+    return career;
+  }
+
+  return {
+    ...career,
+    superLeagueDifficulty,
+    championshipDifficulty,
+    difficulty,
+  };
+}
+
 export function getCareerClubStars(career: ManagerCareer): number {
-  return career.difficulty ?? getManagerClubConfig(career.club).difficulty;
+  const tracked = ensureLeagueStarTracks(career);
+  return getUserCompetitionId(tracked) === "championship"
+    ? (tracked.championshipDifficulty as number)
+    : (tracked.superLeagueDifficulty as number);
+}
+
+/** Write stars onto the active competition track and sync `difficulty`. */
+export function withCareerClubStars(
+  career: ManagerCareer,
+  stars: number
+): ManagerCareer {
+  const tracked = ensureLeagueStarTracks(career);
+  const competition = getUserCompetitionId(tracked);
+  const clamped = clampStarsForCompetition(stars, competition);
+  if (competition === "championship") {
+    return {
+      ...tracked,
+      championshipDifficulty: clamped,
+      difficulty: clamped,
+    };
+  }
+  return {
+    ...tracked,
+    superLeagueDifficulty: clamped,
+    difficulty: clamped,
+  };
+}
+
+/**
+ * On promotion: keep Champ track; restore stored Super League stars
+ * (1★ on first promotion, prior SL rating when returning after relegation).
+ * On relegation: keep SL track; switch to stored Champ track.
+ */
+export function applyPromotionRelegationStarTracks(
+  career: ManagerCareer,
+  options: { userPromoted: boolean; userRelegated: boolean }
+): ManagerCareer {
+  let next = ensureLeagueStarTracks(career);
+
+  if (options.userPromoted) {
+    const champStars = clampStarsForCompetition(
+      next.championshipDifficulty ?? next.difficulty,
+      "championship"
+    );
+    // Returning clubs keep earned SL prestige; first-time promote is 1★.
+    const slStars = clampStarsForCompetition(
+      next.superLeagueDifficulty ?? 1,
+      "super-league"
+    );
+    const firstPromotion = slStars <= 1;
+    const tier = expectationTierFromStars(slStars, "super-league");
+    next = {
+      ...next,
+      userCompetitionId: "super-league",
+      championshipDifficulty: champStars,
+      superLeagueDifficulty: slStars,
+      difficulty: slStars,
+      prestigeMomentum: 0,
+      clubStarRiseCelebratedAt: slStars,
+      pendingClubStarRiseFrom: undefined,
+      boardExpectation: MANAGER_EXPECTATION_LABELS[tier],
+    };
+    next = pushInboxMessage(next, {
+      id: `user-promoted-stars-${next.seasonYear}`,
+      type: "board",
+      title: "Super League club rating",
+      body: firstPromotion
+        ? `${next.club}: Super League 1★ (Champ ${champStars}★ kept). SL market unlocked.`
+        : `${next.club}: Super League ${slStars}★ restored (Champ ${champStars}★ kept).`,
+      week: next.gameWeek,
+      season: next.seasonYear,
+      gameWeek: next.gameWeek,
+      createdAt: new Date().toISOString(),
+      read: false,
+      sender: "Board",
+    });
+    return next;
+  }
+
+  if (options.userRelegated) {
+    const slStars = clampStarsForCompetition(
+      next.superLeagueDifficulty ?? next.difficulty,
+      "super-league"
+    );
+    const champStars = clampStarsForCompetition(
+      next.championshipDifficulty ??
+        getManagerClubConfig(next.club).difficulty,
+      "championship"
+    );
+    const tier = expectationTierFromStars(champStars, "championship");
+    next = {
+      ...next,
+      userCompetitionId: "championship",
+      superLeagueDifficulty: slStars,
+      championshipDifficulty: champStars,
+      difficulty: champStars,
+      prestigeMomentum: 0,
+      clubStarRiseCelebratedAt: champStars,
+      pendingClubStarRiseFrom: undefined,
+      boardExpectation: CHAMPIONSHIP_EXPECTATION_LABELS[tier],
+    };
+    next = pushInboxMessage(next, {
+      id: `user-relegated-stars-${next.seasonYear}`,
+      type: "board",
+      title: "Championship club rating",
+      body: `${next.club}: Championship ${champStars}★ (SL ${slStars}★ kept).`,
+      week: next.gameWeek,
+      season: next.seasonYear,
+      gameWeek: next.gameWeek,
+      createdAt: new Date().toISOString(),
+      read: false,
+      sender: "Board",
+    });
+  }
+
+  return next;
 }
 
 export function shouldShowClubStarRiseCelebration(
@@ -151,8 +339,13 @@ export function evaluateSeasonPrestigeMomentumDelta(
 export function applySeasonClubPrestigeDrift(
   career: ManagerCareer,
   summary: ManagerSeasonSummary,
-  options?: { seasonStartFacilities?: ClubFacilities }
+  options?: {
+    seasonStartFacilities?: ClubFacilities;
+    /** League the completed season was played in (before prom/rel). */
+    seasonCompetition?: "super-league" | "championship";
+  }
 ): { career: ManagerCareer; starDelta: number } {
+  career = ensureLeagueStarTracks(career);
   const seasonStartFacilities =
     options?.seasonStartFacilities ?? getClubFacilities(career);
   const delta =
@@ -162,11 +355,16 @@ export function applySeasonClubPrestigeDrift(
       seasonStartFacilities,
       getClubFacilities(career)
     );
-  const inChampionship = isUserInChampionship(career);
+  const league =
+    options?.seasonCompetition ??
+    (isUserInChampionship(career) ? "championship" : "super-league");
+  const inChampionship = league === "championship";
   const maxStars = inChampionship ? 3 : 5;
-  const league = inChampionship ? "championship" : "super-league";
   let momentum = (career.prestigeMomentum ?? 0) + delta;
-  let stars = getCareerClubStars(career);
+  // Drift the track for the season just played — not the post-prom/rel league.
+  let stars = inChampionship
+    ? (career.championshipDifficulty as number)
+    : (career.superLeagueDifficulty as number);
   let starDelta = 0;
 
   while (momentum >= PRESTIGE_SHIFT_THRESHOLD && stars < maxStars) {
@@ -183,33 +381,71 @@ export function applySeasonClubPrestigeDrift(
   momentum = Math.max(-1, Math.min(1, momentum));
 
   const tier = expectationTierFromStars(stars, league);
-  const boardExpectation = inChampionship
-    ? CHAMPIONSHIP_EXPECTATION_LABELS[tier]
-    : MANAGER_EXPECTATION_LABELS[tier];
+  const activeCompetition = getUserCompetitionId(career);
+  const boardExpectation =
+    activeCompetition === "championship"
+      ? CHAMPIONSHIP_EXPECTATION_LABELS[
+          expectationTierFromStars(
+            career.championshipDifficulty ?? stars,
+            "championship"
+          )
+        ]
+      : MANAGER_EXPECTATION_LABELS[
+          expectationTierFromStars(
+            career.superLeagueDifficulty ?? stars,
+            "super-league"
+          )
+        ];
+
+  // Update the completed season's track; keep active difficulty synced.
   let next: ManagerCareer = {
     ...career,
-    difficulty: stars,
     prestigeMomentum: momentum,
-    boardExpectation,
-    ...(starDelta > 0
-      ? { pendingClubStarRiseFrom: getCareerClubStars(career) }
+    ...(inChampionship
+      ? { championshipDifficulty: stars }
+      : { superLeagueDifficulty: stars }),
+  };
+  next = {
+    ...next,
+    difficulty:
+      activeCompetition === "championship"
+        ? (next.championshipDifficulty as number)
+        : (next.superLeagueDifficulty as number),
+    // Only rewrite board target from drift when still in the same league.
+    boardExpectation:
+      activeCompetition === league
+        ? inChampionship
+          ? CHAMPIONSHIP_EXPECTATION_LABELS[tier]
+          : MANAGER_EXPECTATION_LABELS[tier]
+        : boardExpectation,
+    ...(starDelta > 0 && activeCompetition === league
+      ? {
+          pendingClubStarRiseFrom: Math.max(
+            1,
+            stars - starDelta
+          ),
+        }
       : {}),
   };
 
   if (starDelta !== 0) {
     const nextSeason = career.seasonYear + 1;
-    const msgId = `prestige-${starDelta > 0 ? "rise" : "fall"}-s${nextSeason}`;
+    const trackLabel = inChampionship ? "Championship" : "Super League";
+    const msgId = `prestige-${starDelta > 0 ? "rise" : "fall"}-${league}-s${nextSeason}`;
     if (!next.inboxMessages.some((m) => m.id === msgId)) {
       next = pushInboxMessage(next, {
         id: msgId,
         eventId: msgId,
         type: "board",
         sender: "Board",
-        title: starDelta > 0 ? "Club status rising" : "Club status falling",
-          body:
+        title:
           starDelta > 0
-            ? `Years of success have raised ${career.club} to a ${stars}-star club. Board expectations, transfer targets, and budget floors will increase.`
-            : `Persistent poor results have dropped ${career.club} to a ${stars}-star club. Board expectations and transfer reach will ease.`,
+            ? `${trackLabel} status rising`
+            : `${trackLabel} status falling`,
+        body:
+          starDelta > 0
+            ? `${career.club} ${trackLabel} now ${stars}★.`
+            : `${career.club} ${trackLabel} now ${stars}★.`,
         week: 0,
         season: nextSeason,
         gameWeek: 0,
@@ -218,9 +454,7 @@ export function applySeasonClubPrestigeDrift(
         resolved: false,
         deadlineLabel: `Season ${nextSeason}`,
         requiredAction:
-          starDelta > 0
-            ? "Meet the higher board expectation"
-            : "Stabilise results and restore confidence",
+          starDelta > 0 ? "Hit the new target" : "Stabilise results",
       });
     }
   }
@@ -422,7 +656,7 @@ export function maybeAddBoardUltimatumInbox(
     type: "board",
     sender: "Board",
     title: "Board ultimatum",
-    body: `The board's confidence has dropped to ${career.boardConfidence}%. ${career.boardExpectation} is the minimum standard — improve results or face consequences.`,
+    body: `Confidence ${career.boardConfidence}%. Need ${career.boardExpectation} or face the sack.`,
     week: career.gameWeek,
     season: career.seasonYear,
     gameWeek: career.gameWeek,

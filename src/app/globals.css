@@ -1248,6 +1248,11 @@ html[data-ui-overlay="1"] .site-footer {
   opacity: 0.62;
 }
 
+.playoff-bracket-match:has(> .playoff-bracket-match__ribbon) {
+  /* Keep "Your match" clear of the home score chip */
+  padding-top: 1.15rem;
+}
+
 .playoff-bracket-match__ribbon {
   position: absolute;
   top: 0;
@@ -1262,6 +1267,7 @@ html[data-ui-overlay="1"] .site-footer {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #ecfdf5;
+  line-height: 1.1;
 }
 
 .playoff-bracket-match--final .playoff-bracket-match__ribbon {

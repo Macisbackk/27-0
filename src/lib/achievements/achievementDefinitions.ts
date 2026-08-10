@@ -382,7 +382,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "mellor-miracle",
     name: "Mellor Miracle",
-    description: "Finish a Joe Mellor GOAT Mode season with a winning record.",
+    description: "Win a Joe Mellor GOAT season.",
     category: "easter-egg",
     hidden: true,
     points: 50,
@@ -416,7 +416,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     id: "developers-favourite",
     name: "Developer's Favourite",
     description:
-      "Finish Joe Mellor GOAT Mode with a winning record and at least five Bradford players.",
+      "Win Joe Mellor GOAT with 5+ Bradford players.",
     category: "easter-egg",
     hidden: true,
     points: 35,
@@ -426,7 +426,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "daily-debut",
     name: "Daily Debut",
-    description: "Complete a Daily Challenge (League Leaders and Grand Final).",
+    description: "Complete a full Daily Challenge.",
     category: "normal",
     points: 15,
     rewardClubFunds: 25_000,

@@ -13,7 +13,7 @@ export default function StorePage() {
           <p className={TYPO.sectionLabel}>Club Shop</p>
           <h1 className={`mt-2 ${TYPO.pageTitle}`}>Store</h1>
           <p className="mx-auto mt-3 max-w-md text-sm text-gray-500">
-            Unlock team colour themes and career boosts with your club funds.
+            Themes and boosts.
           </p>
         </header>
         <StorePanel />
