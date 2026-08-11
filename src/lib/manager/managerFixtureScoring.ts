@@ -184,6 +184,9 @@ export function ensureManagerFixtureScoring(
           ? e.player.peakRating
           : 80
       ),
+      seasonTriesSoFar: entries.map(
+        (e) => career.playerSeasonStats[e.player.id]?.tries ?? 0
+      ),
     });
     const userTryScorers = entries
       .map((e, i) => ({

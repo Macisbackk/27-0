@@ -164,9 +164,18 @@ export function ManagerAcrossLeague({
   const leagueTransfers = useMemo(() => {
     const all = withChamp.leagueTransfers ?? [];
     if (selectedCompetitionId === "super-league") {
-      return all.filter((tx) => !isChampionshipSuperLeagueTransfer(tx));
+      return all.filter(
+        (tx) =>
+          isCurrentPlayableClub(tx.fromClub) &&
+          isCurrentPlayableClub(tx.toClub)
+      );
     }
-    return all.filter(isChampionshipSuperLeagueTransfer);
+    // Championship board: Champ↔Champ plus cross-tier (highlighted in UI).
+    return all.filter(
+      (tx) =>
+        isChampionshipClubName(tx.fromClub) ||
+        isChampionshipClubName(tx.toClub)
+    );
   }, [withChamp.leagueTransfers, selectedCompetitionId]);
 
   const champFixtures = withChamp.championshipCompetition?.fixtures ?? [];
@@ -238,7 +247,7 @@ export function ManagerAcrossLeague({
               <span className="hidden sm:inline">
                 {selectedCompetitionId === "super-league"
                   ? `Season ${career.seasonYear} · Week ${career.gameWeek} — Super League news, squads and transfer activity`
-                  : `Season ${career.seasonYear} · Week ${career.gameWeek} — Championship standings, scorers and Super League–linked transfer wire`}
+                  : `Season ${career.seasonYear} · Week ${career.gameWeek} — Championship standings, scorers and transfer activity`}
               </span>
             </>
           }
@@ -410,7 +419,7 @@ export function ManagerAcrossLeague({
             <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
               {selectedCompetitionId === "super-league"
                 ? "Completed moves between Super League clubs this season."
-                : "Moves linking Championship and Super League clubs."}
+                : "Championship club moves this season — Super League involvement highlighted."}
             </p>
             <ul className="mt-3 max-h-80 space-y-2 overflow-y-auto">
               {leagueTransfers.map((tx) => (

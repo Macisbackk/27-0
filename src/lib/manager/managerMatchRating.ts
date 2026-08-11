@@ -21,7 +21,7 @@ function diminishing(count: number, base: number, decay = 0.85): number {
 /**
  * Match performance rating (1–10), separate from ability (peakRating).
  *
- * Baseline ~6.0 starter / 5.5 bench, then contribution deltas with
+ * Baseline ~6.6 starter / 6.0 bench, then contribution deltas with
  * diminishing returns so multi-try games reach elite bands without
  * a single error wiping out a hat-trick.
  */
@@ -64,7 +64,7 @@ export function diagnoseMatchRating(params: {
   } = params;
 
   const factors: MatchRatingContribution[] = [];
-  let rating = isStarter ? 6.0 : 5.5;
+  let rating = isStarter ? 6.6 : 6.0;
   factors.push({
     label: isStarter ? "Starter baseline" : "Bench baseline",
     delta: rating,
@@ -231,6 +231,6 @@ export function formatAverageRating(averageRating: number | undefined): string {
 
 /** Convert a 1–10 match rating into a 1–99 form delta (ability stays separate). */
 export function formDeltaFromMatchRating(matchRating: number): number {
-  // 6.5 ≈ neutral; 10 → +14; 4 → −10
-  return Math.round((matchRating - 6.5) * 4);
+  // 6.1 ≈ neutral; 10 → +16; 4 → −8
+  return Math.round((matchRating - 6.1) * 4);
 }

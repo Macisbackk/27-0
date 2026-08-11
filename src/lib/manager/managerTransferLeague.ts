@@ -136,9 +136,7 @@ function pickAiListingType(
     if (roll < 0.88) return "both";
     return "permanent";
   }
-  // Regular squad: permanent sales dominate; loans are uncommon.
-  if (roll < 0.1) return "loan";
-  if (roll < 0.18) return "both";
+  // Non-candidates are never loan-listed.
   return "permanent";
 }
 
@@ -377,7 +375,7 @@ export function generateLeagueListedPlayers(
     if (pool.length === 0) continue;
 
     const clubBest = Math.max(...pool.map((row) => row.rating));
-    // Only Super League clubs list players for loan (SL → Championship pathway).
+    // Only Super League clubs can be loan parents.
     const clubCanListLoans =
       resolveClubCompetitionForCareer(club, career) === "super-league";
     const loanPool = clubCanListLoans
@@ -418,7 +416,7 @@ export function generateLeagueListedPlayers(
       const loanCandidate =
         clubCanListLoans &&
         isLoanMarketCandidate(career, playerId, clubBest, rating);
-      const listingType = !clubCanListLoans
+      const listingType = !clubCanListLoans || !loanCandidate
         ? "permanent"
         : preferLoan
           ? rng() < 0.72

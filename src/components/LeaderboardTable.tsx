@@ -319,7 +319,7 @@ export function LeaderboardTable() {
 
   const statColumnLabel =
     isManagerPlayStyle && effectiveTracker === "best_record"
-      ? "Best Record"
+      ? "Total Record"
       : (STAT_COLUMN[effectiveTracker] ?? "Stat");
 
   const quickModeOptions = [

@@ -345,6 +345,8 @@ export interface ManagerMatchMeta {
   tacticReview?: TacticMatchReviewAdvice;
   injuries: { playerId: string; name: string; injury: ManagerInjury }[];
   playerOfMatchId?: string | null;
+  /** Match ratings keyed by player id, captured at final whistle. */
+  matchRatingsByPlayer?: Record<string, number>;
   playedLive?: boolean;
   attendance?: MatchAttendanceMeta;
   competition?: ManagerCompetition;

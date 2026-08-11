@@ -156,6 +156,9 @@ export function enrichManagerFixtureScoring(
         name: e.player.name,
       })
     ),
+    seasonTriesSoFar: entries.map(
+      (e) => opponentOptions?.career?.playerSeasonStats[e.player.id]?.tries ?? 0
+    ),
   });
 
   const oppPoolOptions = opponentOptions?.career
@@ -227,6 +230,9 @@ export function enrichManagerFixtureScoring(
       ratings: oppEntries.map((p) =>
         resolvePlayerRating(p.rating, { playerId: p.id, name: p.name })
       ),
+    seasonTriesSoFar: oppEntries.map(
+      (p) => opponentOptions?.career?.playerSeasonStats[p.id]?.tries ?? 0
+    ),
     }
   );
 

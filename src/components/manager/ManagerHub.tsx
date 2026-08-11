@@ -546,6 +546,10 @@ export function ManagerHub({
           >
             {ordinal(position)}
           </span>
+          <span className="text-pitch-500"> · </span>
+          <span className="text-pitch-300 font-semibold">
+            Board {career.boardConfidence}%
+          </span>
         </p>
         {wageOverBudget && (
           <p className={`mt-2 ${TYPO.bodySm} text-amber-300`}>

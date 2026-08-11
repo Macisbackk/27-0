@@ -234,9 +234,23 @@ export function evaluateBoardSeason(
 
   let recommendation: "retain" | "sack" = "retain";
 
-  if (primaryMet) {
+  // Weak / survival clubs that meet (or nearly meet) expectation keep the job.
+  const survivalClub =
+    tier === "avoid-bottom" || tier === "survive" || tier === "mid-table";
+  const finishedWithinExpectation =
+    primaryMet ||
+    (survivalClub &&
+      !isTerriblePositionForTier(
+        tier,
+        summary.position,
+        getUserLeagueClubs(career).length
+      ));
+
+  if (primaryMet || finishedWithinExpectation) {
     explanation.push(
-      "Primary objective delivered — the board will retain you."
+      primaryMet
+        ? "Primary objective delivered — the board will retain you."
+        : "Finish is in line with club strength and board expectation — the board will retain you."
     );
   } else if (career.boardConfidence < 30) {
     recommendation = "sack";
@@ -244,6 +258,7 @@ export function evaluateBoardSeason(
       "Confidence below 30% with the primary target missed."
     );
   } else if (career.boardConfidence < 50 || terriblePosition) {
+    // Title/top clubs finishing bottom: sack risk. Survival clubs already retained above.
     recommendation = "sack";
     if (career.boardConfidence < 50) {
       explanation.push(

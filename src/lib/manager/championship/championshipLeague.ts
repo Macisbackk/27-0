@@ -433,7 +433,8 @@ export function markChampionshipUserFixtureResult(
   awayScore: number,
   homeTries?: number,
   awayTries?: number,
-  userClub?: string
+  userClub?: string,
+  matchDetail?: ChampionshipMatchDetail
 ): ChampionshipCompetitionState {
   const fixtures = state.fixtures.map((f) => {
     if (f.round !== round) return f;
@@ -448,8 +449,18 @@ export function markChampionshipUserFixtureResult(
         awayScore,
         homeTries,
         awayTries,
+        matchDetail: matchDetail ?? f.matchDetail,
       };
     }
+    const swappedDetail = matchDetail
+      ? {
+          ...matchDetail,
+          home: matchDetail.away,
+          away: matchDetail.home,
+          homeTries: matchDetail.awayTries,
+          awayTries: matchDetail.homeTries,
+        }
+      : f.matchDetail;
     return {
       ...f,
       played: true,
@@ -457,6 +468,7 @@ export function markChampionshipUserFixtureResult(
       awayScore: homeScore,
       homeTries: awayTries,
       awayTries: homeTries,
+      matchDetail: swappedDetail,
     };
   });
 

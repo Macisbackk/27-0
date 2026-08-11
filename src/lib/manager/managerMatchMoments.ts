@@ -91,6 +91,52 @@ export function getManagerMatchKeyMoment(
     };
   }
 
+  if (competition === "championship_playoffs" && won) {
+    return {
+      id: "champ-playoff-win",
+      label: "Play-offs",
+      headline: close ? "Play-off thriller" : dominant ? "Play-off statement" : "Still in the hunt",
+      body: close
+        ? `${clubName} survived a nail-biter against ${vs} — the Million Pound Game remains in sight.`
+        : dominant
+          ? `${clubName} hammered ${vs} and took a huge step towards the Million Pound Game.`
+          : `${clubName} beat ${vs} to stay alive in the Championship play-offs.`,
+      tone: "gold",
+    };
+  }
+
+  if (competition === "championship_playoffs" && lost) {
+    return {
+      id: "champ-playoff-loss",
+      label: "Play-offs",
+      headline: close ? "Play-off agony" : "Season over",
+      body: close
+        ? `${vs} ended ${clubName}'s Championship play-off campaign by the finest margin.`
+        : `${vs} knocked ${clubName} out of the Championship play-offs.`,
+      tone: "red",
+    };
+  }
+
+  if (competition === "million_pound_game" && won) {
+    return {
+      id: "mpg-win",
+      label: "Million Pound Game",
+      headline: "Super League secured",
+      body: `${clubName} won the Million Pound Game against ${vs} — Super League next season.`,
+      tone: "gold",
+    };
+  }
+
+  if (competition === "million_pound_game" && lost) {
+    return {
+      id: "mpg-loss",
+      label: "Million Pound Game",
+      headline: "Championship bound",
+      body: `${vs} won the Million Pound Game — ${clubName} drop into the Championship.`,
+      tone: "red",
+    };
+  }
+
   if (competition === "playoffs" && won) {
     return {
       id: "playoff-win",

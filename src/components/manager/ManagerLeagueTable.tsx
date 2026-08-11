@@ -139,13 +139,23 @@ export function ManagerLeagueTable({
         <p className={`mt-1 ${TYPO.cardTitle}`}>
           <span
             className={
-              userRow.position <= 3
-                ? "text-accent-gold"
-                : userRow.position <= 6
+              championshipTable
+                ? userRow.position === 1
                   ? "text-theme-primary"
-                  : userRow.position >= 12
-                    ? "text-red-300"
-                    : "text-white"
+                  : userRow.position <= 5
+                    ? "text-amber-300"
+                    : userRow.position >= 18
+                      ? "text-red-300"
+                      : "text-white"
+                : userRow.position === 1
+                  ? "text-accent-gold"
+                  : userRow.position <= 6
+                    ? "text-amber-300"
+                    : userRow.position === 11
+                      ? "text-accent-gold"
+                      : userRow.position >= 12
+                        ? "text-red-300"
+                        : "text-white"
             }
           >
             {ordinal(userRow.position)}

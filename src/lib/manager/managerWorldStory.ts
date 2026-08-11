@@ -242,28 +242,11 @@ function maybePlayerMilestones(
       }
     }
 
-    if (
-      season &&
-      season.tries >= 1 &&
-      season.appearances <= 3 &&
-      season.tries === season.appearances
-    ) {
-      const mid = `story-first-try-${playerId}-s${career.seasonYear}`;
-      if (!story.shownMilestoneIds.includes(mid) && season.tries === 1) {
-        candidates.push({
-          id: mid,
-          title: "First try",
-          body: `${player.name} scored their first try of the ${career.seasonYear} season.`,
-          playerId,
-          weight: 1,
-        });
-      }
-    }
-
-    if (season && season.tries >= 5 && season.appearances >= 5) {
+    // Significant try milestones only (15+). Smaller totals stay in stats.
+    if (season && season.tries >= 15 && season.appearances >= 5) {
       const mid = `story-multi-try-run-${playerId}-s${career.seasonYear}-t${season.tries}`;
       if (
-        season.tries % 5 === 0 &&
+        (season.tries === 15 || season.tries % 10 === 0) &&
         !story.shownMilestoneIds.includes(mid)
       ) {
         candidates.push({
@@ -271,7 +254,7 @@ function maybePlayerMilestones(
           title: "Scoring run",
           body: `${player.name} has ${season.tries} tries this season.`,
           playerId,
-          weight: 2,
+          weight: 3,
         });
       }
     }

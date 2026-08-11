@@ -11,6 +11,7 @@ import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSquadSlotsFromMatchday } from "@/lib/manager/managerSquad";
+import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { ManagerMatchEventLine } from "@/components/manager/ManagerMatchEventLine";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
@@ -150,7 +151,7 @@ export function ManagerMatchReview({
       fixture.meta?.tacticEffectivenessLine ||
       fixture.meta?.tacticImpactLine
   );
-  const hasStoryExtras = Boolean(keyMoment || cupBracketSnapshot);
+  const hasStoryExtras = Boolean(cupBracketSnapshot);
   const effectiveMobileTab: typeof mobileTab =
     !hasStoryExtras && mobileTab === "story" ? "stats" : mobileTab;
 
@@ -191,6 +192,13 @@ export function ManagerMatchReview({
         >
           {won ? "Win" : lost ? "Loss" : "Draw"}
         </span>
+        {keyMoment ? (
+          <span
+            className={`rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${momentToneClass[keyMoment.tone]}`}
+          >
+            {keyMoment.label}
+          </span>
+        ) : null}
       </div>
 
       <div
@@ -285,20 +293,6 @@ export function ManagerMatchReview({
 
       {hasStoryExtras ? (
       <div className={tabVisible("story")}>
-      {keyMoment && (
-        <div
-          className={`rounded-xl border px-4 py-3 ${momentToneClass[keyMoment.tone]}`}
-        >
-          <p className="text-[10px] font-bold uppercase tracking-wider">
-            {keyMoment.label}
-          </p>
-          <p className="mt-1 font-display text-lg font-bold text-white">
-            {keyMoment.headline}
-          </p>
-          <p className={`mt-1 ${TYPO.bodySm} text-pitch-200`}>{keyMoment.body}</p>
-        </div>
-      )}
-
       {cupBracketSnapshot && (
         <div className={managerInsetPanelClass("gold")}>
           <p className={`${TYPO.sectionLabel} text-accent-gold`}>
@@ -323,6 +317,23 @@ export function ManagerMatchReview({
       ) : null}
 
       <div className={tabVisible("stats")}>
+        {fixture.meta?.matchRatingsByPlayer &&
+        Object.keys(fixture.meta.matchRatingsByPlayer).length > 0 ? (
+          <ManagerSectionCard title="Player ratings" accent="primary">
+            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {Object.entries(fixture.meta.matchRatingsByPlayer)
+                .sort(([, a], [, b]) => b - a)
+                .map(([playerId, rating]) => (
+                  <ManagerStat
+                    key={playerId}
+                    label={getManagerPlayer(career, playerId)?.name ?? playerId}
+                    value={`${rating.toFixed(1)}/10`}
+                    tone={rating >= 7 ? "primary" : rating < 6 ? "red" : "default"}
+                  />
+                ))}
+            </div>
+          </ManagerSectionCard>
+        ) : null}
         <MatchDetailsPanel
           fixture={fixture}
           onClose={onClose}

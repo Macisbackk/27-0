@@ -588,6 +588,23 @@ export function applyManagerMatchResult(
     );
 
     if (isUserInChampionship(career) && championshipCompetition) {
+      const homeDetail = userIsListedHome
+        ? fixture.scoringDetail?.dreamTeam
+        : fixture.scoringDetail?.opponent;
+      const awayDetail = userIsListedHome
+        ? fixture.scoringDetail?.opponent
+        : fixture.scoringDetail?.dreamTeam;
+      const champMatchDetail =
+        homeDetail && awayDetail
+          ? {
+              home: homeDetail,
+              away: awayDetail,
+              homeTries: userMatch.homeTries,
+              awayTries: userMatch.awayTries,
+              events: [],
+              story: `${userMatch.homeTeam} ${userMatch.homeScore}-${userMatch.awayScore} ${userMatch.awayTeam}`,
+            }
+          : undefined;
       championshipCompetition = markChampionshipUserFixtureResult(
         championshipCompetition,
         round,
@@ -597,7 +614,8 @@ export function applyManagerMatchResult(
         userMatch.awayScore,
         userMatch.homeTries,
         userMatch.awayTries,
-        career.club
+        career.club,
+        champMatchDetail
       );
     }
   }
@@ -754,6 +772,7 @@ export function applyManagerMatchResult(
         name: getPlayerById(i.playerId)?.name ?? "Player",
       })),
       playerOfMatchId: motm?.playerId ?? null,
+      matchRatingsByPlayer: statsUpdate.matchRatingsByPlayer,
       playedLive: options.playedLive ?? false,
       attendance: attendanceMeta ?? undefined,
       competition: sched.competition,

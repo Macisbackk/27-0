@@ -76,6 +76,8 @@ export function allocateWeightedTries(
   context?: {
     positions?: Position[];
     ratings?: number[];
+    /** Actual season try totals, used to avoid treating every scorer as cold. */
+    seasonTriesSoFar?: number[];
   }
 ): number[] {
   const alloc = new Array(weights.length).fill(0) as number[];
@@ -93,6 +95,14 @@ export function allocateWeightedTries(
 
   for (let t = 0; t < totalTries; t++) {
     const effective = base.map((w, i) => {
+      // A single scorer cannot account for more than roughly 40% of a
+      // three-plus try team performance.
+      if (
+        totalTries >= 3 &&
+        (alloc[i] ?? 0) >= Math.max(1, Math.floor(totalTries * 0.4))
+      ) {
+        return 0;
+      }
       const pos = context?.positions?.[i];
       const rating = context?.ratings?.[i] ?? 70;
       if (!pos) {
@@ -114,7 +124,7 @@ export function allocateWeightedTries(
             alloc[i] ?? 0,
             pos,
             rating,
-            0,
+            context?.seasonTriesSoFar?.[i] ?? 0,
             totalTries
           )
       );

@@ -358,14 +358,18 @@ function buildLocalTrackerEntries(): LeaderboardTrackerEntry[] {
 }
 
 async function getManagerTrackerLeaderboardAsync(
-  dbMode: "manager-super-league" | "manager-challenge-cup",
+  dbMode: ManagerLeaderboardDbMode,
   tracker: LeaderboardTrackerType,
   limit: number
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
   const currentUser = getUsername() ?? "";
   const stats = loadManagerStats();
   const remoteMode =
-    dbMode === "manager-super-league" ? SUPER_LEAGUE_MODE : CHALLENGE_CUP_MODE;
+    dbMode === "manager-super-league"
+      ? SUPER_LEAGUE_MODE
+      : dbMode === "manager-championship"
+        ? CHAMPIONSHIP_MODE
+        : CHALLENGE_CUP_MODE;
 
   syncManagerLeaderboard(stats);
 
@@ -398,7 +402,7 @@ async function getManagerTrackerLeaderboardAsync(
   return {
     source: remote !== null ? "remote" : "local",
     rows: rankByTracker(entries, tracker, limit, currentUser, {
-      recordMetric: "best",
+      recordMetric: "total",
     }),
   };
 }
@@ -410,6 +414,7 @@ export async function getManagerLeaderboardAsync(
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
   if (
     dbMode === "manager-super-league" ||
+    dbMode === "manager-championship" ||
     dbMode === "manager-challenge-cup"
   ) {
     return getManagerTrackerLeaderboardAsync(dbMode, tracker, limit);

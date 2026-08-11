@@ -355,15 +355,14 @@
     "year": 2026,
     "status": "Current",
     "positions": [
-      "CENTRE",
-      "SECOND_ROW"
+      "CENTRE"
     ],
-    "positionAbbrev": "CE/SR",
+    "positionAbbrev": "CE",
     "cardYear": 2026,
     "team": "Castleford Tigers",
     "displayClub": "Castleford Tigers",
     "basePlayerId": "castleford-cur-krystian-mapapalangi",
-    "primaryPosition": "CE/SR",
+    "primaryPosition": "CE",
     "rating": 85,
     "availableInGame": true,
     "superLeagueEligible": true

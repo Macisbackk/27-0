@@ -5,12 +5,15 @@ import {
 import { getUserLeagueTablePosition } from "./managerFixtures";
 import { getAutoPromoteCount } from "./managerLeagues";
 
-/** Championship top-N finish that earns Super League promotion. */
+/** Only the completed Championship table winner earns automatic promotion. */
 export function userFinishedInPromotionPlaces(
   career: ManagerCareer
 ): boolean {
   if (!isUserInChampionship(career)) return false;
-  return getUserLeagueTablePosition(career) <= getAutoPromoteCount();
+  return (
+    career.isSeasonComplete &&
+    getUserLeagueTablePosition(career) === getAutoPromoteCount()
+  );
 }
 
 export function shouldShowPromotionCelebration(

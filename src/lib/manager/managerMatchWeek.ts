@@ -3,8 +3,8 @@ import {
   getPendingIncomingClubBid,
   getPendingIncomingClubBids,
 } from "./managerTransferLeague";
-import { getPendingContractExpiryPopup } from "./managerInbox";
 import { getPendingRetirementIntentPopup } from "./managerRetirement";
+import { getPendingContractExpiryPopup } from "./managerInbox";
 import { getPendingPositionRetrainingPopup } from "./managerPositionRetraining";
 import { getPendingReserveReportPopup } from "./managerReserveReports";
 import { getPendingBoardInboxPopup } from "./managerBoardInbox";
@@ -44,10 +44,10 @@ export function canPlayNextMatch(career: ManagerCareer): boolean {
 
 /** Unresolved decisions that must be handled before advancing again. */
 export function hasBlockingManagerDecision(career: ManagerCareer): boolean {
-  return Boolean(
-    getPendingIncomingClubBid(career) ||
-      getPendingRetirementIntentPopup(career)
-  );
+  // Retirement notices are informational: players retire only at rollover and
+  // the manager has no irreversible action to take here. Keep them in inbox,
+  // but never freeze calendar progression behind a modal acknowledgement.
+  return Boolean(getPendingIncomingClubBid(career));
 }
 
 /** Season Progress — Progress Week after a fixture, before the next unlocks. */

@@ -362,8 +362,8 @@ export function getTrackersForManagerDbMode(
         if (id === "best_record") {
           return {
             ...def,
-            label: "Best Season Record",
-            shortLabel: "Best Record",
+            label: "Total Record",
+            shortLabel: "Total Record",
           };
         }
         if (id === "manager_seasons_completed") {
@@ -392,8 +392,8 @@ export function getTrackersForManagerDbMode(
       if (id === "best_record") {
         return {
           ...def,
-          label: "Best Season Record",
-          shortLabel: "Best Record",
+          label: "Total Record",
+          shortLabel: "Total Record",
         };
       }
       return def;
@@ -401,7 +401,7 @@ export function getTrackersForManagerDbMode(
     .filter((t): t is NonNullable<typeof t> => !!t);
 }
 
-/** How `best_record` ranks and displays. Quick Mode = career totals; Manager = best season. */
+/** How `best_record` ranks and displays. Manager Mode uses career totals. */
 export type RecordMetric = "total" | "best";
 
 export type RankByTrackerOptions = {

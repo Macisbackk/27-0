@@ -177,15 +177,14 @@
     "year": 2026,
     "status": "Current",
     "positions": [
-      "CENTRE",
-      "SECOND_ROW"
+      "CENTRE"
     ],
-    "positionAbbrev": "CE/SR",
+    "positionAbbrev": "CE",
     "cardYear": 2026,
     "team": "Bradford Bulls",
     "displayClub": "Bradford Bulls",
     "basePlayerId": "bradford-cur-ed-chamberlain",
-    "primaryPosition": "CE/SR",
+    "primaryPosition": "CE",
     "rating": 80,
     "availableInGame": true,
     "superLeagueEligible": true
@@ -3584,15 +3583,14 @@
     "year": 2026,
     "status": "Current",
     "positions": [
-      "HOOKER",
-      "LOOSE_FORWARD"
+      "HOOKER"
     ],
-    "positionAbbrev": "HK/LF",
+    "positionAbbrev": "HK",
     "cardYear": 2026,
     "team": "Leeds Rhinos",
     "displayClub": "Leeds Rhinos",
     "basePlayerId": "leeds-cur-jarrod-o-connor",
-    "primaryPosition": "HK/LF",
+    "primaryPosition": "HK",
     "rating": 85,
     "availableInGame": true,
     "superLeagueEligible": true

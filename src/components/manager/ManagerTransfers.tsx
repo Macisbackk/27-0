@@ -70,6 +70,7 @@ import { getPlayerSigningDemand } from "@/lib/manager/managerTransfers";
 import {
   toggleTransferWatchlist,
 } from "@/lib/manager/managerWatchlist";
+import { getTransferEligibility } from "@/lib/manager/transferEligibility";
 import { getPlayerById } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Player, Position } from "@/lib/types";
@@ -281,6 +282,15 @@ export function ManagerTransfers({
             if (!isValidLoanDirection(career, entry.club, career.club)) {
               return false;
             }
+            if (
+              !getTransferEligibility(career, entry.playerId, "loan_in", {
+                fromClub: entry.club,
+                listed: true,
+                listingType: entry.listingType,
+              }).allowed
+            ) {
+              return false;
+            }
             const player =
               getManagerPlayer(career, entry.playerId) ??
               getPlayerById(entry.playerId);
@@ -297,8 +307,7 @@ export function ManagerTransfers({
       watch: watchlistIds.filter((playerId) => {
         const player =
           getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
-        if (!player) return false;
-        return isPlayerReachableOnTransferMarket(career.club, player.peakRating, careerStars, competition);
+        return Boolean(player);
       }).length,
     }),
     [
@@ -320,7 +329,12 @@ export function ManagerTransfers({
       .filter((entry) =>
         tab === "loans"
           ? listingAllowsLoan(entry.listingType) &&
-            isValidLoanDirection(career, entry.club, career.club)
+            isValidLoanDirection(career, entry.club, career.club) &&
+            getTransferEligibility(career, entry.playerId, "loan_in", {
+              fromClub: entry.club,
+              listed: true,
+              listingType: entry.listingType,
+            }).allowed
           : listingAllowsPermanent(entry.listingType)
       )
       .map((entry) => {
@@ -457,11 +471,12 @@ export function ManagerTransfers({
           getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
         if (!raw) return null;
         const player = withManagerRating(raw);
-        if (
-          !isPlayerReachableOnTransferMarket(career.club, player.peakRating, careerStars, competition)
-        ) {
-          return null;
-        }
+        const reachable = isPlayerReachableOnTransferMarket(
+          career.club,
+          player.peakRating,
+          careerStars,
+          competition
+        );
         return {
           playerId,
           player,
@@ -473,6 +488,7 @@ export function ManagerTransfers({
           listed: Boolean(listed),
           freeAgent: Boolean(free),
           listingType: listed?.listingType,
+          reachable,
         };
       })
       .filter((row): row is NonNullable<typeof row> => row !== null);
@@ -507,9 +523,14 @@ export function ManagerTransfers({
     const type = dealOverride ?? dealType;
 
     if (type === "loan") {
+      const eligibility = getTransferEligibility(career, playerId, "loan_in", {
+        fromClub: club,
+        listed,
+      });
       if (
         !canUserLoanInPlayers(career) ||
-        !isValidLoanDirection(career, club, career.club)
+        !isValidLoanDirection(career, club, career.club) ||
+        !eligibility.allowed
       ) {
         setTransferResult({
           playerName: player?.name ?? "Player",
@@ -519,7 +540,7 @@ export function ManagerTransfers({
           years: 1,
           accepted: false,
           reason:
-            "Loans: Super League → Championship only.",
+            eligibility.reason ?? "This player is not eligible for a loan.",
         });
         playTransferOffer();
         return;
@@ -1593,15 +1614,27 @@ export function ManagerTransfers({
         <section aria-label="Watchlist">
           <div className={`grid gap-3 sm:grid-cols-2 ${SPACING.stackMd}`}>
             {watchedPlayers.map(
-              ({ player, club, listed, freeAgent, playerId, listingType }) => {
+              ({
+                player,
+                club,
+                listed,
+                freeAgent,
+                playerId,
+                listingType,
+                reachable,
+              }) => {
               const demand = getPlayerSigningDemand(career, playerId);
               const canLoan =
                 canLoanIn &&
                 listed &&
                 listingAllowsLoan(listingType) &&
-                isValidLoanDirection(career, club, career.club);
+                isValidLoanDirection(career, club, career.club) &&
+                reachable;
               const canBuy =
-                freeAgent || (listed && listingAllowsPermanent(listingType)) || !listed;
+                reachable &&
+                (freeAgent ||
+                  (listed && listingAllowsPermanent(listingType)) ||
+                  !listed);
               const fee = freeAgent
                 ? 0
                 : canLoan && !canBuy
@@ -1622,6 +1655,11 @@ export function ManagerTransfers({
                   watched
                   onToggleWatch={() => toggleWatchlist(playerId)}
                 >
+                  {!reachable ? (
+                    <p className={`mb-2 ${TYPO.meta} text-amber-300`}>
+                      Out of reach for {career.club} right now — kept on watchlist.
+                    </p>
+                  ) : null}
                   <div className="space-y-2">
                     <p className={`${TYPO.bodySm} text-pitch-400`}>
                       {freeAgent

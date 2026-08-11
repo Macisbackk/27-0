@@ -24,6 +24,7 @@ import {
 } from "@/components/manager/manager-ui";
 import { ManagerBoostsPanel } from "@/components/manager/ManagerBoostsPanel";
 import { isUserInChampionship, getUserLeagueClubs, PROMOTE_RELEGATE_COUNT } from "@/lib/manager/leagueMembership";
+import { getChampionshipPlayoffWinner } from "@/lib/manager/managerChampionshipPlayoffs";
 
 interface ManagerSeasonReviewProps {
   career: ManagerCareer;
@@ -69,6 +70,10 @@ export function ManagerSeasonReview({
   ]);
 
   const summary = buildSeasonSummary(evaluatedCareer);
+  const mpgWon = evaluatedCareer.millionPoundGame?.winner === evaluatedCareer.club;
+  const championshipPlayoffWinner =
+    getChampionshipPlayoffWinner(evaluatedCareer.championshipPlayoffs) ===
+    evaluatedCareer.club;
   const trophies = getSeasonSummaryTrophyLabels(summary);
   const clubStars = getCareerClubStars(evaluatedCareer);
   const sacked = evaluation.finalDecision === "sack";
@@ -123,10 +128,12 @@ export function ManagerSeasonReview({
           <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-200`}>
             {summary.position === 1
               ? "Championship Champions · Promoted"
-              : summary.position <= PROMOTE_RELEGATE_COUNT
+              : mpgWon
                 ? "Promoted to Super League"
-                : summary.position <= 4
-                  ? "Top four — short of promotion"
+                : championshipPlayoffWinner
+                  ? "Championship play-off winners — Million Pound Game pathway"
+                  : summary.position >= 2 && summary.position <= 5
+                    ? "Championship play-offs — Million Pound Game pathway"
                   : "Championship finish"}
           </p>
         ) : summary.position >
@@ -140,11 +147,62 @@ export function ManagerSeasonReview({
         </p>
       </ManagerSectionCard>
 
-      {isUserInChampionship(evaluatedCareer) && (
+      <ManagerSectionCard title="Season player ratings" accent="primary">
+        <div className="mt-2 overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="border-b border-pitch-700/50 text-pitch-400">
+                <th className="py-1.5 pr-2 font-medium">Player</th>
+                <th className="px-2 py-1.5 text-center font-medium">Apps</th>
+                <th className="px-2 py-1.5 text-center font-medium">Tries</th>
+                <th className="py-1.5 pl-2 text-center font-medium">Avg</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(evaluatedCareer.playerSeasonStats)
+                .filter(([, stats]) => (stats.appearances ?? 0) > 0)
+                .sort(
+                  ([, a], [, b]) =>
+                    (b.averageRating ?? 0) - (a.averageRating ?? 0)
+                )
+                .slice(0, 12)
+                .map(([playerId, stats]) => (
+                  <tr
+                    key={playerId}
+                    className="border-b border-pitch-800/40 text-pitch-200"
+                  >
+                    <td className="py-1.5 pr-2 font-medium text-white">
+                      {getPlayerById(playerId)?.name ?? playerId}
+                    </td>
+                    <td className="px-2 py-1.5 text-center tabular-nums">
+                      {stats.appearances}
+                    </td>
+                    <td className="px-2 py-1.5 text-center tabular-nums">
+                      {stats.tries}
+                    </td>
+                    <td
+                      className={`py-1.5 pl-2 text-center tabular-nums font-semibold ${
+                        (stats.averageRating ?? 0) >= 7
+                          ? "text-theme-primary"
+                          : "text-white"
+                      }`}
+                    >
+                      {stats.averageRating != null
+                        ? stats.averageRating.toFixed(1)
+                        : "—"}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+      </ManagerSectionCard>
+
+      {isUserInChampionship(evaluatedCareer) ? (
         <ManagerSectionCard
           title="Championship Pathway"
           accent={
-            summary.position <= PROMOTE_RELEGATE_COUNT ? "gold" : "primary"
+            (summary.position === 1 || mpgWon) ? "gold" : "primary"
           }
         >
           <div className={`mt-2 ${SPACING.stackMd}`}>
@@ -156,23 +214,107 @@ export function ManagerSeasonReview({
             <ManagerInfoRow
               label="Promotion"
               value={
-                summary.position <= PROMOTE_RELEGATE_COUNT
+                summary.position === 1
                   ? "Earned — Super League next"
-                  : summary.position <= 4
-                    ? "Missed — top four only"
-                    : "Missed — finish top 2"
+                  : mpgWon
+                    ? "Earned — Million Pound Game won"
+                    : championshipPlayoffWinner
+                      ? "Play-off won — Million Pound Game next"
+                      : summary.position >= 2 && summary.position <= 5
+                        ? "Play-off route — Million Pound Game required"
+                        : "Missed — finish first or win the pathway"
               }
               tone={
-                summary.position <= PROMOTE_RELEGATE_COUNT
+                summary.position === 1 || mpgWon
                   ? "gold"
-                  : summary.position <= 4
+                  : summary.position >= 2 && summary.position <= 5
                     ? "amber"
                     : "red"
               }
             />
+            {evaluatedCareer.championshipPlayoffs?.tournamentComplete ? (
+              <ManagerInfoRow
+                label="Championship play-offs"
+                value={
+                  getChampionshipPlayoffWinner(
+                    evaluatedCareer.championshipPlayoffs
+                  ) ?? "Complete"
+                }
+                tone="amber"
+              />
+            ) : null}
+            {evaluatedCareer.millionPoundGame?.status === "complete" ? (
+              <ManagerInfoRow
+                label="Million Pound Game"
+                value={`${evaluatedCareer.millionPoundGame.slClub} vs ${evaluatedCareer.millionPoundGame.champClub} — ${evaluatedCareer.millionPoundGame.winner} won`}
+                tone={mpgWon ? "gold" : "default"}
+              />
+            ) : null}
             <p className={`${TYPO.meta} text-pitch-400`}>
               First promotes automatically. Positions 2–5 enter the Championship play-offs, with the winner facing Super League 11th in the Million Pound Game.
             </p>
+          </div>
+        </ManagerSectionCard>
+      ) : (
+        <ManagerSectionCard title="Promotion & Relegation" accent="primary">
+          <div className={`mt-2 ${SPACING.stackMd}`}>
+            <ManagerInfoRow
+              label="League finish"
+              value={`${summary.position}${summary.position === 1 ? "st" : summary.position === 2 ? "nd" : summary.position === 3 ? "rd" : "th"}`}
+              tone={
+                summary.position <= 6
+                  ? "amber"
+                  : summary.position >= 12
+                    ? "red"
+                    : "default"
+              }
+            />
+            <ManagerInfoRow
+              label="Play-offs"
+              value={
+                evaluatedCareer.playoffs?.finish ??
+                (summary.position <= 6 ? "Qualified" : "Missed")
+              }
+              tone={
+                evaluatedCareer.playoffs?.finish === "Super League Champions"
+                  ? "gold"
+                  : "default"
+              }
+            />
+            <ManagerInfoRow
+              label="Million Pound Game"
+              value={
+                evaluatedCareer.millionPoundGame?.status === "complete"
+                  ? `${evaluatedCareer.millionPoundGame.winner} won (${evaluatedCareer.millionPoundGame.slClub} vs ${evaluatedCareer.millionPoundGame.champClub})`
+                  : summary.position === 11
+                    ? "Entered as Super League 11th"
+                    : "Not involved"
+              }
+              tone={
+                evaluatedCareer.millionPoundGame?.winner === evaluatedCareer.club
+                  ? "gold"
+                  : summary.position === 11
+                    ? "amber"
+                    : "default"
+              }
+            />
+            <ManagerInfoRow
+              label="Relegation"
+              value={
+                summary.position >= 12
+                  ? "Automatically relegated"
+                  : evaluatedCareer.millionPoundGame?.loser ===
+                      evaluatedCareer.club
+                    ? "Relegated via Million Pound Game"
+                    : "Safe"
+              }
+              tone={
+                summary.position >= 12 ||
+                evaluatedCareer.millionPoundGame?.loser === evaluatedCareer.club
+                  ? "red"
+                  : "primary"
+              }
+            />
           </div>
         </ManagerSectionCard>
       )}

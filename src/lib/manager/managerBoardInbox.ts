@@ -24,7 +24,8 @@ const FACILITY_BOARD_LABELS: Record<FacilityType, string> = {
 };
 
 const BIG_TRANSFER_FEE = 250_000;
-const BOARD_CONFIDENCE_JUMP = 8;
+// Confidence is always visible as a percentage; reserve mail for major swings.
+const BOARD_CONFIDENCE_JUMP = 20;
 const STRONG_GATE_CAPACITY_PCT = 0.9;
 const YOUTH_CALLUP_THRESHOLD = 3;
 

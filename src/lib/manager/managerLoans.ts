@@ -34,6 +34,7 @@ import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
 import { pruneTransferWatchlist } from "./managerWatchlist";
 import {
   getCareerChampionshipClubs,
+  getCareerSuperLeagueClubs,
   isUserInChampionship,
   resolveClubCompetitionForCareer,
 } from "./leagueMembership";
@@ -82,7 +83,7 @@ export interface LoanDealOpts {
 
 /**
  * Loans are one-way development deals:
- * Super League parent → Championship loanee only.
+ * Super League parents may develop players at Championship or other Super League clubs.
  *
  * Wage split negotiation (the share **your club** pays):
  * - 50%+ always accepted
@@ -95,9 +96,11 @@ export function isValidLoanDirection(
   loaneeClub: string
 ): boolean {
   if (isSameManagerClub(parentClub, loaneeClub)) return false;
+  const parentCompetition = resolveClubCompetitionForCareer(parentClub, career);
+  const loaneeCompetition = resolveClubCompetitionForCareer(loaneeClub, career);
   return (
-    resolveClubCompetitionForCareer(parentClub, career) === "super-league" &&
-    resolveClubCompetitionForCareer(loaneeClub, career) === "championship"
+    parentCompetition === "super-league" &&
+    (loaneeCompetition === "championship" || loaneeCompetition === "super-league")
   );
 }
 
@@ -106,14 +109,16 @@ export function canUserLoanOutPlayers(career: ManagerCareer): boolean {
   return !isUserInChampionship(career);
 }
 
-/** Championship managers can take Super League players on loan. */
+/** Both playable leagues can take eligible Super League players on loan. */
 export function canUserLoanInPlayers(career: ManagerCareer): boolean {
-  return isUserInChampionship(career);
+  return Boolean(career.club);
 }
 
-/** Championship clubs available as loan destinations (excludes the user club). */
+/** SL parents can loan to Championship or another Super League club (never self). */
 export function getLoanOutDestinationClubs(career: ManagerCareer): string[] {
-  return getCareerChampionshipClubs(career).filter(
+  const championship = getCareerChampionshipClubs(career);
+  const superLeague = getCareerSuperLeagueClubs(career);
+  return [...new Set([...championship, ...superLeague])].filter(
     (club) => !isSameManagerClub(club, career.club)
   );
 }

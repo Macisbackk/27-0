@@ -71,7 +71,7 @@ export function computeAbilityScorerFactor(
   const r = Math.max(1, rating);
   const formMul = 0.72 + (Math.max(1, Math.min(99, form)) / 100) * 0.56;
   // Baseline 83 (squad/rotation on the senior scale). Lower ratings stay meaningful.
-  return Math.pow(r / 83, 2.35) * formMul;
+  return Math.pow(r / 83, 1.5) * formMul;
 }
 
 export { sanitizeWeight, pickWeightedIndexSafe } from "./managerTryScoring";

@@ -133,13 +133,13 @@ export function getTransferEligibility(
 
   if (intent === "loan_in") {
     if (!canUserLoanInPlayers(career)) {
-      return deny("Only Championship clubs can loan Super League players in.");
+      return deny("Your club cannot take players on loan.");
     }
     if (loan) return deny("Player already has an active loan.");
     const fromClub = opts?.fromClub ?? registration.playingClubId;
     if (!fromClub) return deny("Player has no parent club.");
     if (!isValidLoanDirection(career, fromClub, career.club)) {
-      return deny("Loans must be Super League → Championship.");
+      return deny("Loans must come from a different Super League parent club.");
     }
     const listing =
       career.leagueListedPlayers.find((row) => row.playerId === playerId) ??
@@ -170,7 +170,7 @@ export function getTransferEligibility(
     }
     const toClub = opts?.toClub;
     if (toClub && !isValidLoanDirection(career, career.club, toClub)) {
-      return deny("Loans must be Super League → Championship.");
+      return deny("Loans must come from a Super League parent club.");
     }
     return allow();
   }

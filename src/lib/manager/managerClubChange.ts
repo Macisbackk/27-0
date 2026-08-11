@@ -265,7 +265,16 @@ export function listSackJobOffers(
   const rng = seedrandom(
     `${career.seed}-sack-offers-${career.seasonYear}-${career.club}-${currentPrestige}`
   );
-  const shuffled = [...(candidates.length > 0 ? candidates : worse)];
+  // A weak current club can have no strictly worse peer.  A sacked manager
+  // must still receive realistic vacancies, so broaden to the lowest-ranked
+  // remaining clubs rather than returning an empty career dead end.
+  const fallbackVacancies = [...pool]
+    .sort(
+      (a, b) =>
+        a.prestigeRank - b.prestigeRank || a.squadRating - b.squadRating
+    )
+    .slice(0, Math.max(1, count));
+  const shuffled = [...(candidates.length > 0 ? candidates : fallbackVacancies)];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
     const tmp = shuffled[i]!;

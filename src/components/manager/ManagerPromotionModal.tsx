@@ -28,6 +28,7 @@ export function ManagerPromotionModal({
   const badgeTextColour = getReadableClubTextColour(colors);
   const position = getUserLeagueTablePosition(career);
   const champions = position === 1;
+  const mpgWinners = career.millionPoundGame?.winner === career.club;
 
   const handleContinue = useCallback(() => {
     playUiClick();
@@ -63,7 +64,7 @@ export function ManagerPromotionModal({
             {champions ? "🏆" : "⬆️"}
           </p>
           <span className={`mt-3 ${managerPillClass("gold")}`}>
-            {champions ? "Champions & promoted" : "Promoted"}
+            {champions ? "Champions & promoted" : "Million Pound Game winners"}
           </span>
           <h2 id="promotion-title" className={`mt-3 ${TYPO.pageTitle}`}>
             {champions
@@ -71,15 +72,18 @@ export function ManagerPromotionModal({
               : "Promoted to Super League"}
           </h2>
           <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
-            {career.club} finished {position === 1 ? "1st" : "2nd"} in{" "}
-            {career.seasonYear}.
+            {champions
+              ? `${career.club} finished 1st in ${career.seasonYear}.`
+              : `${career.club} won the Million Pound Game in ${career.seasonYear}.`}
           </p>
         </div>
 
         <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
           {champions
             ? "Title winners — Super League next season."
-            : "Top-two finish. Super League next season."}
+            : mpgWinners
+              ? "Million Pound Game victory — Super League next season."
+              : "Promotion secured — Super League next season."}
         </p>
         <p
           className={`mt-2 text-center text-[10px] font-bold uppercase tracking-wider`}
