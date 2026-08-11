@@ -23,6 +23,7 @@ import {
 import { PLAYOFF_QUALIFIERS } from "../game/playoff-simulation";
 import { getUserSeasonGames, getUserCompetitionId } from "./leagueMembership";
 import { leagueHasPlayoffs } from "./managerLeagues";
+import { userWonMustHaveWinnerFixture } from "./matchResolutionRules";
 
 export { PLAYOFF_QUALIFIERS };
 
@@ -308,8 +309,10 @@ export function applyPlayoffMatchToBracket(
   const opponent = isHome ? match.awayTeam : match.homeTeam;
   const homeScore = isHome ? fixture.pointsFor : fixture.pointsAgainst;
   const awayScore = isHome ? fixture.pointsAgainst : fixture.pointsFor;
-  const winner = fixture.result === "W" ? userClub : opponent;
-  const loser = fixture.result === "W" ? opponent : userClub;
+  // Knockouts must never treat a draw as an automatic user loss.
+  const userWon = userWonMustHaveWinnerFixture(fixture);
+  const winner = userWon ? userClub : opponent;
+  const loser = userWon ? opponent : userClub;
 
   const detail = fixture.scoringDetail;
   const scoringDetail = detail
@@ -355,8 +358,8 @@ export function applyPlayoffMatchToBracket(
     }
   }
 
-  const userLost = fixture.result === "L";
-  const userWonFinal = match.round === 3 && fixture.result === "W";
+  const userLost = !userWon;
+  const userWonFinal = match.round === 3 && userWon;
   let finish = bracket.finish;
   if (userLost) {
     finish =

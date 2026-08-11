@@ -1582,7 +1582,7 @@ export function GameBoard({
     ]
   );
 
-  const handleSlotRespin = useCallback(() => {
+  const handleSlotRespin = useCallback((): boolean => {
     if (
       !isSlotRecruitMode ||
       respinsRemaining <= 0 ||
@@ -1590,7 +1590,7 @@ export function GameBoard({
       selectedSlotIndex === null ||
       choosing
     ) {
-      return;
+      return false;
     }
 
     const nextSpinIndex = spinPickIndex + 1;
@@ -1633,7 +1633,7 @@ export function GameBoard({
         setBoostedSpinPlan(plan);
         setBoostNotice(boostFailureNotice(armedBoost, plan.failureReason));
         // Keep guarantee; do not fall back to unfiltered respin.
-        return;
+        return false;
       }
 
       target = slotRevealTargetFromBoostedPlan(plan);
@@ -1660,7 +1660,7 @@ export function GameBoard({
       setRecruitNotice(
         "No respin left. Sign or pick another slot."
       );
-      return;
+      return false;
     }
 
     setRecruitNotice(null);
@@ -1675,6 +1675,7 @@ export function GameBoard({
     // Never clear slotBoostGuaranteeId until the boost is consumed.
     setSpinSessionId((id) => id + 1);
     setPhase("reveal");
+    return true;
   }, [
     isSlotRecruitMode,
     respinsRemaining,

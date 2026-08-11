@@ -16,6 +16,7 @@ import {
 import { getManagerClubTeamRating } from "./managerRating";
 import {
   findPlayerLeagueClub,
+  getLeagueClubRosterIds,
   transferLeaguePlayer,
 } from "./managerLeagueRosters";
 import { getManagerPlayer } from "./managerPlayers";
@@ -36,12 +37,38 @@ import {
   isUserInChampionship,
   resolveClubCompetitionForCareer,
 } from "./leagueMembership";
+import { getManagerModePlayerRating } from "./managerSquadRatings";
 
 function listingAllowsLoanType(
   listingType?: "permanent" | "loan" | "both" | null
 ): boolean {
   const t = listingType ?? "permanent";
   return t === "loan" || t === "both";
+}
+
+/** Local copy of transfer-league protection to avoid import cycles. */
+function isProtectedLoanTarget(
+  career: ManagerCareer,
+  club: string,
+  playerId: string
+): boolean {
+  const roster = getLeagueClubRosterIds(career, club);
+  let topRating = 0;
+  const ratings: { id: string; rating: number }[] = [];
+  for (const id of roster) {
+    const player = getManagerPlayer(career, id) ?? getPlayerById(id);
+    if (!player) continue;
+    const rating = getManagerModePlayerRating(
+      id,
+      player.name,
+      player.peakRating
+    );
+    ratings.push({ id, rating });
+    if (rating > topRating) topRating = rating;
+  }
+  return new Set(
+    ratings.filter((row) => row.rating >= topRating - 1).map((row) => row.id)
+  ).has(playerId);
 }
 
 export interface LoanDealOpts {
@@ -345,7 +372,11 @@ export function completeIncomingLoan(
   if (isSameManagerClub(fromClub, career.club)) return career;
 
   const listing = career.leagueListedPlayers.find((row) => row.playerId === playerId);
-  if (!listing || !listingAllowsLoanType(listing.listingType)) {
+  if (listing) {
+    // Permanently listed-only players are not available on loan.
+    if (!listingAllowsLoanType(listing.listingType)) return career;
+  } else if (isProtectedLoanTarget(career, fromClub, playerId)) {
+    // Unlisted loan approaches: block protected first-team core.
     return career;
   }
 

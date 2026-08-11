@@ -99,8 +99,8 @@ export function ManagerMobileBackBar({
 
   const placementClass =
     placement === "bottom"
-      ? `sticky bottom-0 z-30 -mx-5 mt-4 border-t ${MANAGER_BORDER.divider} bg-gradient-to-t from-pitch-950/98 to-pitch-950/90 shadow-[0_-4px_24px_rgba(0,0,0,0.35)]`
-      : `sticky top-0 z-30 -mx-5 mb-4 border-b ${MANAGER_BORDER.divider} bg-gradient-to-b from-pitch-950/98 to-pitch-950/90 shadow-[0_4px_24px_rgba(0,0,0,0.35)]`;
+      ? `sticky bottom-0 z-30 -mx-5 mt-4 border-t ${MANAGER_BORDER.divider} bg-pitch-950 shadow-[0_-4px_24px_rgba(0,0,0,0.35)]`
+      : `sticky top-0 z-30 -mx-5 mb-4 border-b ${MANAGER_BORDER.divider} bg-pitch-950 shadow-[0_4px_24px_rgba(0,0,0,0.35)]`;
 
   return (
     <div

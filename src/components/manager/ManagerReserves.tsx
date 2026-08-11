@@ -20,7 +20,8 @@ import {
   RESERVE_EMERGENCY_RECRUITMENT_EXCUSE,
   RESERVE_EMERGENCY_RECRUITMENT_TITLE,
   RESERVE_MIN_PLAYERS,
-  RESERVE_RECRUITMENT_FEE,
+  RESERVE_RECRUITMENT_FEE_PER_PLAYER,
+  getReserveEmergencyRecruitmentFee,
 } from "@/lib/manager/managerReserves";
 import {
   buildReserveCardModel,
@@ -298,7 +299,8 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
   const reserveShortfall = Math.max(0, RESERVE_MIN_PLAYERS - career.reserves.length);
   const transferBudget =
     career.managerFinance?.transferBudget ?? career.budget;
-  const canAffordRecruitment = transferBudget >= RESERVE_RECRUITMENT_FEE;
+  const recruitmentFee = getReserveEmergencyRecruitmentFee(reserveShortfall);
+  const canAffordRecruitment = transferBudget >= recruitmentFee;
 
   const handleEmergencyRecruitment = () => {
     playUiClick();
@@ -419,15 +421,15 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
               onClick={handleEmergencyRecruitment}
             >
               {RESERVE_EMERGENCY_RECRUITMENT_TITLE} — £
-              {(RESERVE_RECRUITMENT_FEE / 1000).toFixed(0)}k
+              {(recruitmentFee / 1000).toFixed(0)}k
               {reserveShortfall > 0
-                ? ` · register ${reserveShortfall} player${reserveShortfall === 1 ? "" : "s"}`
+                ? ` · £${(RESERVE_RECRUITMENT_FEE_PER_PLAYER / 1000).toFixed(0)}k × ${reserveShortfall} player${reserveShortfall === 1 ? "" : "s"}`
                 : ""}
             </GameButton>
             {!canAffordRecruitment && (
               <p className={`mt-2 ${TYPO.bodySm} text-red-400`}>
                 Transfer budget £{(transferBudget / 1000).toFixed(0)}k — need £
-                {(RESERVE_RECRUITMENT_FEE / 1000).toFixed(0)}k
+                {(recruitmentFee / 1000).toFixed(0)}k
               </p>
             )}
           </div>

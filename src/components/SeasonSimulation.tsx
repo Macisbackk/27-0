@@ -136,7 +136,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
             </div>
           </div>
 
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {currentFixture && phase === "simulating" && (
               <motion.div
                 key={gameIndex}

@@ -18,6 +18,7 @@ import { generateNrlSquadNames } from "./worldClubChallenge";
 import type { ManagerCareer, ManagerCompetition, ManagerScheduledFixture } from "./types";
 import type { LiveMatchEvent, MatchEventPeriod } from "./types";
 import { isInvalidPlayerName } from "./managerPlayerNameGuards";
+import { competitionAllowsDraw } from "./matchResolutionRules";
 
 type TeamSide = "user" | "opponent";
 
@@ -91,8 +92,7 @@ function opponentOf(side: TeamSide, input: GeneratorInput): string {
 function staysInRegulation(input: GeneratorInput): boolean {
   if (input.allowsDraw === true) return true;
   if (input.allowsDraw === false) return false;
-  const comp = input.competition ?? "league";
-  return comp === "league" || comp === "friendly";
+  return competitionAllowsDraw(input.competition ?? "league");
 }
 
 function periodForMinute(
@@ -877,7 +877,7 @@ export function generateEventsFromFixture(
       : fixture.scoringDetail?.opponent.kicking?.name;
 
   const competition = sched?.competition ?? "league";
-  const allowsDraw = competition === "league" || competition === "friendly";
+  const allowsDraw = competitionAllowsDraw(competition);
 
   const events = generateSimulatedMatchEvents({
     seed: career.seed,

@@ -91,3 +91,24 @@ export function competitionUsesGoldenPoint(
 ): boolean {
   return getMatchResolutionRules({ competition }).goldenPointEnabled;
 }
+
+/**
+ * Resolve whether the user won a must-have-winner fixture.
+ * Never treat a draw (`D`) as an automatic loss — use the scoreline first.
+ * Equal scores should already have been broken by golden point; if not,
+ * `fallbackUserWins` decides (callers should pass a seeded coin-flip).
+ */
+export function userWonMustHaveWinnerFixture(
+  fixture: {
+    result: "W" | "L" | "D";
+    pointsFor: number;
+    pointsAgainst: number;
+  },
+  fallbackUserWins = false
+): boolean {
+  if (fixture.result === "W") return true;
+  if (fixture.result === "L") return false;
+  if (fixture.pointsFor > fixture.pointsAgainst) return true;
+  if (fixture.pointsAgainst > fixture.pointsFor) return false;
+  return fallbackUserWins;
+}

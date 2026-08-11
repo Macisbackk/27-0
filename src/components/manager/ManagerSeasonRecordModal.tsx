@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -8,6 +8,7 @@ import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
 import type { ManagerSeasonRecordCelebrationKind } from "@/lib/manager/managerSeasonRecordCelebration";
 import { getClubColors } from "@/lib/clubs";
+import { getUserSeasonGames } from "@/lib/manager/leagueMembership";
 import {
   playCupFinalLoss,
   playCupFinalWin,
@@ -24,45 +25,38 @@ interface ManagerSeasonRecordModalProps {
   onContinue: () => void;
 }
 
-const COPY: Record<
-  ManagerSeasonRecordCelebrationKind,
-  {
-    emoji: string;
-    pill: string;
-    title: string;
-    detail: string;
-    headerTone: "gold" | "red";
-    pillTone: "gold" | "red";
-  }
-> = {
-  perfect: {
-    emoji: "🏆",
-    pill: "Perfect season",
-    title: "27-0",
-    detail:
-      "Not a single defeat all season — a legendary league campaign.",
-    headerTone: "gold",
-    pillTone: "gold",
-  },
-  winless: {
-    emoji: "💀",
-    pill: "Winless season",
-    title: "0-27",
-    detail:
-      "A season to forget — the board will be asking serious questions.",
-    headerTone: "red",
-    pillTone: "red",
-  },
-};
-
 export function ManagerSeasonRecordModal({
   career,
   kind,
   onContinue,
 }: ManagerSeasonRecordModalProps) {
   const colors = getClubColors(career.club);
-  const copy = COPY[kind];
-  const recordLabel = kind === "perfect" ? "27-0" : "0-27";
+  const seasonGames = getUserSeasonGames(career);
+  const recordLabel =
+    kind === "perfect" ? `${seasonGames}-0` : `0-${seasonGames}`;
+  const copy = useMemo(
+    () =>
+      kind === "perfect"
+        ? {
+            emoji: "🏆",
+            pill: "Perfect season",
+            title: recordLabel,
+            detail:
+              "Not a single defeat all season — a legendary league campaign.",
+            headerTone: "gold" as const,
+            pillTone: "gold" as const,
+          }
+        : {
+            emoji: "💀",
+            pill: "Winless season",
+            title: recordLabel,
+            detail:
+              "A season to forget — the board will be asking serious questions.",
+            headerTone: "red" as const,
+            pillTone: "red" as const,
+          },
+    [kind, recordLabel]
+  );
 
   const handleContinue = useCallback(() => {
     playUiClick();

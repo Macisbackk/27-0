@@ -25,7 +25,7 @@ interface SlotTeamYearPickerProps {
   entries: SlotTeamYearPlayer[];
   onSelect: (player: Player) => void;
   onBack?: () => void;
-  onRespin?: () => void;
+  onRespin?: () => boolean | void;
   respinsRemaining?: number;
   /** Retained for callers; count is shown only on the shared Respin button. */
   maxRespins?: number;
@@ -79,7 +79,11 @@ export function SlotTeamYearPicker({
     if (!canRespin || !onRespin) return;
     setRespinLocked(true);
     playUiClick();
-    onRespin();
+    const ok = onRespin();
+    // Failed boosted respins leave entries unchanged — unlock so the player is not stuck.
+    if (ok === false) {
+      setRespinLocked(false);
+    }
   };
 
   return (

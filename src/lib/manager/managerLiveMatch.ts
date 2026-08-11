@@ -820,7 +820,7 @@ export function advanceLiveTick(
 ): LiveMatchState {
   if (state.isComplete || state.minute >= maxMinute) {
     if (maxMinute >= 80 && state.minute >= 80) {
-      return finalizeLiveMatch(state);
+      return finalizeLiveMatch(state, career);
     }
     return { ...state, minute: Math.min(state.minute, maxMinute), isPlaying: false };
   }
@@ -1225,7 +1225,7 @@ export function advanceLiveToFullTime(
   }
 
   if (!current.isComplete) {
-    current = finalizeLiveMatch(current);
+    current = finalizeLiveMatch(current, career);
   }
 
   return {
@@ -1235,27 +1235,82 @@ export function advanceLiveToFullTime(
   };
 }
 
-function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
+function finalizeLiveMatch(
+  state: LiveMatchState,
+  career?: ManagerCareer
+): LiveMatchState {
   // Trust the live scoreline — do not snap to the Simulate preview.
   let userScore = snapToRLScore(state.userScore, false);
   let oppScore = snapToRLScore(state.oppScore, false);
+  const events = [...state.events];
 
-  // League may finish level; knockouts / friendlies resolve via golden point
-  // earlier in the tick — keep a decisive fallback here if scores are still tied.
+  // League may finish level; knockouts / friendlies resolve via golden point.
+  // Prefer events already emitted during the tick; otherwise break the tie here
+  // with the same GP narrative so Match Story / Result stay honest.
   if (userScore === oppScore && !competitionAllowsDraw(state.competition)) {
+    const alreadyHasGp = events.some((e) => e.period === "golden_point");
     const rng = seedrandom(`${state.seed}-live-finalize-${state.fixtureId}`);
-    if (rng() < 0.52) userScore = snapToRLScore(userScore + 1, false);
+    const userWinsGp = rng() < 0.52;
+    if (userWinsGp) userScore = snapToRLScore(userScore + 1, false);
     else oppScore = snapToRLScore(oppScore + 1, false);
+
+    if (!alreadyHasGp) {
+      const winnerTeam = userWinsGp ? "user" : "opponent";
+      const winnerName = userWinsGp
+        ? (career?.club ??
+          events.find((e) => e.team === "user" && e.teamName)?.teamName ??
+          "Home")
+        : state.opponent;
+      const kicker = career
+        ? pickKicker(career, rng)
+        : userWinsGp
+          ? "the home kicker"
+          : "the away kicker";
+      events.push({
+        minute: 80,
+        type: "note",
+        team: winnerTeam,
+        description: eventMinutePrefix(
+          80,
+          formatGoldenPointStartEvent({
+            team: winnerName,
+            opponent: userWinsGp
+              ? state.opponent
+              : (career?.club ??
+                events.find((e) => e.team === "user" && e.teamName)?.teamName ??
+                "Home"),
+            score: `${state.userScore}-${state.oppScore}`,
+          })
+        ),
+        points: 0,
+        teamName: winnerName,
+        importance: "high",
+        period: "golden_point",
+      });
+      events.push({
+        minute: 81,
+        type: "drop_goal",
+        team: winnerTeam,
+        kickerName: kicker,
+        description: eventMinutePrefix(
+          81,
+          `${kicker} lands the Golden Point drop-goal! ${winnerName} prevail ${userScore}-${oppScore}.`
+        ),
+        points: 1,
+        teamName: winnerName,
+        importance: "high",
+        period: "golden_point",
+      });
+    }
   }
 
-  const userTries = state.events.filter(
+  const userTries = events.filter(
     (e) => e.type === "try" && e.team === "user"
   ).length;
-  const oppTries = state.events.filter(
+  const oppTries = events.filter(
     (e) => e.type === "try" && e.team === "opponent"
   ).length;
 
-  const events = [...state.events];
   if (!events.some((e) => e.type === "full_time")) {
     const userTeamName =
       events.find((e) => e.team === "user" && e.teamName)?.teamName ?? "Home";
@@ -1279,9 +1334,14 @@ function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
     });
   }
 
+  const maxEventMinute = events.reduce(
+    (max, e) => Math.max(max, e.minute),
+    80
+  );
+
   return {
     ...state,
-    minute: 80,
+    minute: Math.max(80, maxEventMinute, state.minute),
     userScore,
     oppScore,
     userTries: userTries > 0 ? userTries : state.userTries,
@@ -1296,9 +1356,11 @@ function finalizeLiveMatch(state: LiveMatchState): LiveMatchState {
 
 export function liveMatchToFixture(
   state: LiveMatchState,
-  _career: ManagerCareer
+  career: ManagerCareer
 ): MatchFixture {
-  const finalized = state.isComplete ? state : finalizeLiveMatch(state);
+  const finalized = state.isComplete
+    ? state
+    : finalizeLiveMatch(state, career);
 
   const pointsFor = finalized.userScore;
   const pointsAgainst = finalized.oppScore;

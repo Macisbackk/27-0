@@ -427,14 +427,8 @@ export default function ManagerPage() {
     if (hadPreviousPath) {
       setReviewFixtureId(null);
       setPostMatchReviewFlow(false);
-      setPendingChallengeCupCelebration(false);
-      setPendingWccCelebration(false);
-      setPendingLeagueWinnersCelebration(false);
-      setPendingPromotionCelebration(false);
-      setPendingTrophyCelebration(false);
-      setPendingSeasonRecordCelebration(null);
-      // Skip setState when already on the URL tab — avoids an extra commit after
-      // optimistic goToView(setView) on every Hub↔Squad tap.
+      // Keep celebration queue — career flags still drive continueCelebrationQueue.
+      // Clearing pending*Celebration on every URL sync dropped mid-queue modals.
       if (view !== fromUrl) {
         setManagerView(setView, fromUrl);
       }
@@ -668,38 +662,64 @@ export default function ManagerPage() {
         prepared.isSeasonComplete || isManagerSeasonComplete(prepared)
           ? { ...prepared, isSeasonComplete: true as const }
           : prepared;
-      persist(complete);
+      const eventIds = collectWeeklyManagerEventIds(complete);
+      const withQueue = withWeeklyManagerEventQueue(complete, eventIds);
+      persist(withQueue);
 
-      if (complete.isSeasonComplete) {
-        continueCelebrationQueue("wcc", complete);
+      if (withQueue.isSeasonComplete) {
+        continueCelebrationQueue("wcc", withQueue);
         return;
       }
 
-      const bid = getPendingIncomingClubBid(complete);
-      const contractExpiry = getPendingContractExpiryPopup(complete);
-      const loanEnded = getPendingLoanEndedPopup(complete);
-      const retirement = getPendingRetirementIntentPopup(complete);
+      // Same popup surface as Advance Week so sim-to-date does not skip decisions.
+      const boardMail = getPendingBoardInboxPopup(withQueue);
+      const bid = getPendingIncomingClubBid(withQueue);
+      const contractExpiry = getPendingContractExpiryPopup(withQueue);
+      const loanEnded = getPendingLoanEndedPopup(withQueue);
+      const retirement = getPendingRetirementIntentPopup(withQueue);
+      const retrainingComplete = getPendingPositionRetrainingPopup(withQueue);
+      const reserveReport = getPendingReserveReportPopup(withQueue);
+
+      setPendingBoardMessageId(boardMail?.id ?? null);
+      setPendingIncomingBidId(bid?.id ?? null);
+      setPendingContractExpiryId(contractExpiry?.id ?? null);
+      setPendingLoanEndedId(loanEnded?.id ?? null);
+      setPendingRetirementIntentId(retirement?.id ?? null);
+      setPendingPositionRetrainingId(retrainingComplete?.id ?? null);
+      setPendingReserveReportId(reserveReport?.id ?? null);
+
+      if (boardMail) {
+        setBoardMessageModalOpen(true);
+        goToView("hub");
+        return;
+      }
       if (bid) {
-        setPendingIncomingBidId(bid.id);
         setIncomingBidModalOpen(true);
         goToView("hub");
         return;
       }
       if (contractExpiry) {
-        setPendingContractExpiryId(contractExpiry.id);
         setContractExpiryModalOpen(true);
         goToView("hub");
         return;
       }
       if (loanEnded) {
-        setPendingLoanEndedId(loanEnded.id);
         setLoanEndedModalOpen(true);
         goToView("hub");
         return;
       }
       if (retirement) {
-        setPendingRetirementIntentId(retirement.id);
         setRetirementIntentModalOpen(true);
+        goToView("hub");
+        return;
+      }
+      if (retrainingComplete) {
+        setPositionRetrainingCompleteModalOpen(true);
+        goToView("hub");
+        return;
+      }
+      if (reserveReport) {
+        setReserveReportModalOpen(true);
         goToView("hub");
       }
     },
@@ -1100,7 +1120,21 @@ export default function ManagerPage() {
     }
     const withLeagueStats = recordLeaguePhaseAchievementsIfNeeded(next);
     // Match apply leaves isSeasonComplete false; recompute before celebrations.
-    const prepared = prepareManagerCareerForSave(withLeagueStats);
+    let prepared = prepareManagerCareerForSave(withLeagueStats);
+
+    // Never skip the final Advance Week — season-complete after the last match
+    // still needs transfers, development, and inbox processing.
+    if (
+      prepared.isSeasonComplete &&
+      prepared.matchWeekPhase === "awaiting_advance"
+    ) {
+      const advanced = advanceManagerMatchWeek(prepared);
+      if (advanced.ok) {
+        const eventIds = collectWeeklyManagerEventIds(advanced.career);
+        prepared = withWeeklyManagerEventQueue(advanced.career, eventIds);
+      }
+    }
+
     const withSeasonStats = prepared.isSeasonComplete
       ? recordSeasonCompleteIfNeeded(prepared)
       : prepared;
@@ -1117,12 +1151,23 @@ export default function ManagerPage() {
     const wonChallengeCup = shouldShowChallengeCupCelebration(withSeasonStats);
     const wonWorldClubChallenge =
       shouldShowWorldClubChallengeCelebration(withSeasonStats);
-    // Weekly popups (transfers, contracts, retraining, reserves) surface after Advance Week.
-    setPendingIncomingBidId(null);
-    setPendingContractExpiryId(null);
-    setPendingRetirementIntentId(null);
-    setPendingPositionRetrainingId(null);
-    setPendingReserveReportId(null);
+
+    // Surface weekly decisions that were processed by the auto final-week advance.
+    const boardMail = getPendingBoardInboxPopup(withSeasonStats);
+    const incomingBid = getPendingIncomingClubBid(withSeasonStats);
+    const contractExpiry = getPendingContractExpiryPopup(withSeasonStats);
+    const loanEnded = getPendingLoanEndedPopup(withSeasonStats);
+    const retirementIntent = getPendingRetirementIntentPopup(withSeasonStats);
+    const retrainingComplete =
+      getPendingPositionRetrainingPopup(withSeasonStats);
+    const reserveReport = getPendingReserveReportPopup(withSeasonStats);
+    setPendingBoardMessageId(boardMail?.id ?? null);
+    setPendingIncomingBidId(incomingBid?.id ?? null);
+    setPendingContractExpiryId(contractExpiry?.id ?? null);
+    setPendingLoanEndedId(loanEnded?.id ?? null);
+    setPendingRetirementIntentId(retirementIntent?.id ?? null);
+    setPendingPositionRetrainingId(retrainingComplete?.id ?? null);
+    setPendingReserveReportId(reserveReport?.id ?? null);
 
     if (withSeasonStats.isSeasonComplete) {
       if (fixture) {
@@ -1168,6 +1213,17 @@ export default function ManagerPage() {
 
   const continueAfterMatchReview = () => {
     if (!career) {
+      goToView("hub");
+      return;
+    }
+
+    const boardMail =
+      (pendingBoardMessageId
+        ? career.inboxMessages.find((m) => m.id === pendingBoardMessageId)
+        : undefined) ?? getPendingBoardInboxPopup(career);
+    if (boardMail) {
+      setPendingBoardMessageId(boardMail.id);
+      setBoardMessageModalOpen(true);
       goToView("hub");
       return;
     }
@@ -1606,6 +1662,28 @@ export default function ManagerPage() {
     persist(next);
     setPendingBoardMessageId(null);
     setBoardMessageModalOpen(false);
+    // Keep the weekly decision chain alive — do not abandon bids/contracts
+    // just because the user opened Club Mail from a board letter.
+    const hasQueue =
+      pendingWccCelebration ||
+      pendingChallengeCupCelebration ||
+      pendingSeasonRecordCelebration ||
+      pendingLeagueWinnersCelebration ||
+      pendingPromotionCelebration ||
+      pendingTrophyCelebration ||
+      !!getPendingIncomingClubBid(next) ||
+      !!getPendingContractExpiryPopup(next) ||
+      !!getPendingLoanEndedPopup(next) ||
+      !!getPendingRetirementIntentPopup(next) ||
+      !!getPendingPositionRetrainingPopup(next) ||
+      !!getPendingReserveReportPopup(next) ||
+      next.isSeasonComplete;
+
+    if (hasQueue) {
+      continueAfterBoardMessage(next);
+      return;
+    }
+
     goToView("inbox");
   };
 

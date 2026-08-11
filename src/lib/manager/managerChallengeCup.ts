@@ -24,6 +24,7 @@ import type {
   ManagerScheduledFixture,
 } from "./types";
 import { CUP_ROUND_LABELS } from "./types";
+import { userWonMustHaveWinnerFixture } from "./matchResolutionRules";
 import {
   getCareerChampionshipClubs,
   getCareerSuperLeagueClubs,
@@ -675,8 +676,10 @@ export function applyCupMatchToBracket(
   const opponent = isHome ? match.awayTeam : match.homeTeam;
   const homeScore = isHome ? fixture.pointsFor : fixture.pointsAgainst;
   const awayScore = isHome ? fixture.pointsAgainst : fixture.pointsFor;
-  const winner = fixture.result === "W" ? userClub : opponent;
-  const loser = fixture.result === "W" ? opponent : userClub;
+  // Knockouts must never treat a draw as an automatic user loss.
+  const userWon = userWonMustHaveWinnerFixture(fixture);
+  const winner = userWon ? userClub : opponent;
+  const loser = userWon ? opponent : userClub;
 
   const detail = fixture.scoringDetail;
   const scoringDetail = detail
@@ -718,9 +721,9 @@ export function applyCupMatchToBracket(
     }
   }
 
-  const userLost = fixture.result === "L";
+  const userLost = !userWon;
   const maxRound = getCupBracketMaxRound(bracket);
-  const userWonFinal = match.round === maxRound && fixture.result === "W";
+  const userWonFinal = match.round === maxRound && userWon;
 
   return {
     ...bracket,

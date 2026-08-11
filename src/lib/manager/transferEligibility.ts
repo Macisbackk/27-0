@@ -144,8 +144,12 @@ export function getTransferEligibility(
     const listing =
       career.leagueListedPlayers.find((row) => row.playerId === playerId) ??
       null;
-    if (!listing || !listingAllowsLoan(listing.listingType)) {
-      return deny("Player is not listed for loan.");
+    if (listing) {
+      if (!listingAllowsLoan(listing.listingType)) {
+        return deny("Player is listed for permanent transfer only.");
+      }
+    } else if (getProtectedTransferPlayerIds(career, fromClub).has(playerId)) {
+      return deny("Club will not loan this player.");
     }
     return allow();
   }

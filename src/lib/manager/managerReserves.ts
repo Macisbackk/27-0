@@ -120,7 +120,10 @@ export const RESERVE_DEPTH_TARGET = 26;
 export const RESERVE_SQUAD_MAX = 30;
 /** Registration cap on the senior squad — gates reserve promotions. */
 export const SENIOR_SQUAD_LIMIT = 35;
-export const RESERVE_RECRUITMENT_FEE = 300_000;
+/** Cost per emergency reserve recruit when topping up to the matchday minimum. */
+export const RESERVE_RECRUITMENT_FEE_PER_PLAYER = 10_000;
+/** @deprecated Use getReserveEmergencyRecruitmentFee(shortfall). */
+export const RESERVE_RECRUITMENT_FEE = RESERVE_RECRUITMENT_FEE_PER_PLAYER;
 export const RESERVE_WALKOVER_SCORE = 18;
 export const RESERVE_WALKOVER_REASON = "Walkover — fewer than 13 reserve players";
 export const GENERATED_RESERVE_MAX_RATING = 82;
@@ -164,10 +167,14 @@ export const RESERVE_POSITION_COVERAGE: { position: Position; min: number }[] = 
 ];
 
 export const RESERVE_EMERGENCY_RECRUITMENT_TITLE =
-  "Academy development levy";
+  "Academy emergency intake";
 
 export const RESERVE_EMERGENCY_RECRUITMENT_EXCUSE =
-  "Under RFL Operational Rules, clubs must register at least 13 players to fulfil a reserve fixture. Pay a £300k academy development levy to fast-track performance-unit graduates onto the reserve listing for the remainder of the season.";
+  "Under RFL Operational Rules, clubs must register at least 13 players to fulfil a reserve fixture. Pay £10k per graduate to fast-track performance-unit players onto the reserve listing until you reach that minimum.";
+
+export function getReserveEmergencyRecruitmentFee(playerCount: number): number {
+  return Math.max(0, Math.round(playerCount)) * RESERVE_RECRUITMENT_FEE_PER_PLAYER;
+}
 
 const FRENCH_FIRST_NAMES = [
   "Lucas", "Hugo", "Nathan", "Enzo", "Louis", "Theo", "Mathis", "Jules",
@@ -957,10 +964,11 @@ export function fillReserveSquadMinimum(
 
   const transferBudget =
     career.managerFinance?.transferBudget ?? career.budget;
-  if (transferBudget < RESERVE_RECRUITMENT_FEE) {
+  const fee = getReserveEmergencyRecruitmentFee(shortfall);
+  if (transferBudget < fee) {
     return {
       ok: false,
-      error: `Need £${(RESERVE_RECRUITMENT_FEE / 1000).toFixed(0)}k transfer budget`,
+      error: `Need £${(fee / 1000).toFixed(0)}k transfer budget (£10k × ${shortfall} player${shortfall === 1 ? "" : "s"})`,
     };
   }
 
@@ -976,7 +984,7 @@ export function fillReserveSquadMinimum(
     reserveContracts,
     updatedAt: new Date().toISOString(),
   };
-  next = deductTransferFee(next, RESERVE_RECRUITMENT_FEE);
+  next = deductTransferFee(next, fee);
   next = reconcileLeagueClubReserveCounts({
     ...next,
     wageBill: computeCareerWageBill(next),

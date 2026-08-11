@@ -1,12 +1,13 @@
 import { getPlayerById } from "../players";
 import { getManagerPlayer } from "./managerPlayers";
+import seedrandom from "seedrandom";
 import { getManagerOpponentMatchRating, pruneLeagueListedPlayers } from "./managerLeagueRosters";
 import {
   getFriendlyMatchOpponentRating,
   getWccOpponentTeamRating,
 } from "./managerOpponentRating";
 import { simulateOneFixture } from "../game/season-simulation";
-import { getMatchResolutionRules } from "./matchResolutionRules";
+import { getMatchResolutionRules, userWonMustHaveWinnerFixture } from "./matchResolutionRules";
 import type { ManagerCareer, ManagerFixtureRecord } from "./types";
 import { generateEventsFromFixture } from "./matchEventGenerator";
 import {
@@ -300,6 +301,21 @@ export function applyManagerMatchResult(
       career,
       "This fixture result was already recorded."
     );
+  }
+
+  // Knockouts / friendlies / WCC must never persist a draw result.
+  if (
+    !getMatchResolutionRules({ competition: sched.competition }).allowsDraw &&
+    (fixture.result === "D" || fixture.pointsFor === fixture.pointsAgainst)
+  ) {
+    const fallbackWin =
+      seedrandom(`${career.seed}-knockout-break-${sched.id}`)() < 0.5;
+    const userWon = userWonMustHaveWinnerFixture(fixture, fallbackWin);
+    if (fixture.pointsFor === fixture.pointsAgainst) {
+      if (userWon) fixture.pointsFor += 1;
+      else fixture.pointsAgainst += 1;
+    }
+    fixture.result = userWon ? "W" : "L";
   }
 
   const round = sched.round;
