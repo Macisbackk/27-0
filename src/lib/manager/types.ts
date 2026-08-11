@@ -632,6 +632,8 @@ export interface PlayerTransferStatus {
    * both — permanent or loan.
    */
   listingType?: TransferListingType;
+  /** Player has asked to leave — not the same as listed. */
+  transferRequested?: boolean;
 }
 
 export interface LeagueListedPlayer {
@@ -954,6 +956,11 @@ export interface ManagerCareer {
   nextMatchGameplan?: FixtureGameplan | null;
   /** Active temporary loans (in or out). */
   activeLoans?: ActiveLoan[];
+  /**
+   * Idempotency ledger for completed transfer transactions.
+   * Prevents double-apply across Advance Week / sim-to-date / double clicks.
+   */
+  processedTransferTxIds?: string[];
   squad: ManagerPlayerState[];
   contracts: Record<string, PlayerContract>;
   wageBudget: number;

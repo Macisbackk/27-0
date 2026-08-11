@@ -27,6 +27,7 @@ import {
   normalizeLoanWageSharePct,
   suggestedLoanFee,
 } from "@/lib/manager/managerLoans";
+import { dismissTransferRequest } from "@/lib/manager/transferRequests";
 import { findPlayerMatchdaySlot } from "@/lib/manager/managerMatchdaySquad";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
@@ -186,6 +187,25 @@ export function ManagerSquadPlayerModal({
         </div>
 
         <div className="mt-4 grid gap-2">
+          {transferStatus?.transferRequested && !transferStatus.listed && (
+            <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
+              <p className={`${TYPO.bodySm} text-amber-200`}>
+                Transfer request — wants to leave. Listing is optional.
+              </p>
+              <GameButton
+                variant="secondary"
+                size="sm"
+                className="mt-2"
+                onClick={() => {
+                  playUiClick();
+                  onUpdate(dismissTransferRequest(career, playerId));
+                }}
+              >
+                Dismiss request
+              </GameButton>
+            </div>
+          )}
+
           <GameButton
             variant="theme"
             onClick={() => {

@@ -158,9 +158,6 @@ export function prepareCareerForNextMatch(career: ManagerCareer): ManagerCareer 
 }
 
 import { countExpiringContracts } from "./managerContracts";
-import { maybeGenerateAiTransfers } from "./managerAiTransfers";
-import { maybeAiSignFreeAgents } from "./managerFreeAgents";
-import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 import { developSquadAtSeasonEnd } from "./managerPlayerDevelopment";
 import {
   advanceLiveToFullTime,
@@ -182,12 +179,7 @@ import {
   tickLeagueClubReserveCounts,
   ensureAllClubReserveDepth,
 } from "./managerReserves";
-import {
-  generateIncomingTransferOffers,
-  generateIncomingLoanOffers,
-  generateUnsolicitedTransferOffers,
-  generateLeagueListedPlayers,
-} from "./managerTransferLeague";
+import { processTransferMarketForWeek } from "./processTransferMarketForWeek";
 import { syncManagerInboxMessages } from "./managerInbox";
 import { completeFriendlyMatch } from "./managerFriendlies";
 import { maybeAddReserveReport } from "./managerReserveReports";
@@ -197,8 +189,6 @@ import {
   tickChampionshipOnAdvance,
 } from "./championship/ensureChampionship";
 import { tickAiSuperLeagueOnAdvance } from "./competitionStandings";
-import { maybeAiSignChampionshipElite } from "./championship/championshipAiTransfers";
-import { maybeChampionshipBidForSlReserves } from "./championshipBidForSlReserves";
 import {
   addMatchKeyMomentInboxMessage,
   getManagerMatchKeyMoment,
@@ -1009,14 +999,8 @@ export function advanceManagerMatchWeek(
   }
 
   next = syncManagerLeagueTable(next);
-  // Senior transfer approaches run once per unique gameWeek (cup + league share
-  // weeks). Reserve Championship bids still run every advance independently.
-  if (next.gameWeek !== (next.lastTransferScanGameWeek ?? -1)) {
-    next = generateIncomingTransferOffers(next);
-    next = generateIncomingLoanOffers(next);
-    next = generateUnsolicitedTransferOffers(next);
-    next = { ...next, lastTransferScanGameWeek: next.gameWeek };
-  }
+  // All transfer/loan/AI market activity runs once per gameWeek.
+  next = processTransferMarketForWeek(next);
   next = syncManagerInboxMessages(next);
   if (last?.competition === "league") {
     next = tickPositionRetraining(next);
@@ -1025,42 +1009,9 @@ export function advanceManagerMatchWeek(
   next = applyAutoPromoteByRating(next);
   next = tickChampionshipOnAdvance(next);
   next = tickAiSuperLeagueOnAdvance(next);
-  next = maybeAiSignChampionshipElite(next);
-  next = maybeChampionshipBidForSlReserves(next);
   next = rotateLatestNews(next);
 
-  next = maybeGenerateAiTransfers(next, 0);
-  next = maybeAiSignFreeAgents(next, 0);
-  const leagueSeasonIndex = getLeagueSeasonIndex(next);
-  if (leagueSeasonIndex >= 1) {
-    next = maybeGenerateAiTransfers(next, 1);
-    next = maybeAiSignFreeAgents(next, 1);
-  }
-  if (leagueSeasonIndex >= 2) {
-    next = maybeGenerateAiTransfers(next, 2);
-    next = maybeAiSignFreeAgents(next, 2);
-  }
-  if (leagueSeasonIndex >= 4) {
-    next = maybeGenerateAiTransfers(next, 3);
-    next = maybeAiSignFreeAgents(next, 3);
-  }
-
   next = syncManagerFinance(next);
-  const listRefreshEvery = getLeagueSeasonIndex(next) >= 1 ? 2 : 3;
-  const weekForRefresh = next.gameWeek;
-  if (weekForRefresh > 0 && weekForRefresh % listRefreshEvery === 0) {
-    const refreshed = generateLeagueListedPlayers(
-      next,
-      next.seed,
-      weekForRefresh
-    );
-    next = {
-      ...next,
-      leagueListedPlayers: refreshed,
-      transferMarket: refreshed.map((l) => l.playerId),
-    };
-  }
-
   next = ensurePlayoffsReady(next);
   // After elimination (or season end), finish AI play-offs so WCC uses the real champion.
   if (next.playoffs?.userEliminated || isManagerSeasonCompleteLite(next)) {

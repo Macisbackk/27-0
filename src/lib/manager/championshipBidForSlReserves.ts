@@ -5,6 +5,7 @@ import {
   getChampionshipClubById,
   getChampionshipClubByName,
 } from "../clubs/championship-clubs";
+import { isSameManagerClub } from "../clubs/super-league-display";
 import type {
   InboxMessage,
   LeagueTransferActivity,
@@ -24,6 +25,8 @@ import {
   getTransferOfferGenerationPhase,
   recordTransferOfferDiagnostic,
 } from "./managerTransferLeague";
+
+import { markTransferTxProcessed } from "./transferLedger";
 
 const MAX_TRANSFER_HISTORY = 40;
 
@@ -314,6 +317,18 @@ function completeReserveToChampionshipTransfer(
     adaptReserveToChampionshipPlayer(reserve, toClubId, champClubName)
   );
 
+  // Keep leagueClubRosters in sync so registration reads don't hide Champ squads.
+  const rosters = {
+    ...(next.leagueClubRosters ?? {}),
+  };
+  for (const club of Object.keys(rosters)) {
+    rosters[club] = (rosters[club] ?? []).filter((id) => id !== reserve.id);
+  }
+  if (!isSameManagerClub(champClubName, next.club)) {
+    rosters[champClubName] = [...(rosters[champClubName] ?? []), reserve.id];
+  }
+  next = { ...next, leagueClubRosters: rosters };
+
   if (isUserReserve && fee > 0) {
     next = addTransferIncome(next, fee);
   }
@@ -341,24 +356,27 @@ function completeReserveToChampionshipTransfer(
     text: `${champClubName} sign ${fromClub} reserve ${reserve.name} (${posLabel}, age ${reserve.age}) for ${formatWage(fee)}.`,
   };
 
-  return {
-    ...next,
-    leagueTransfers: [activity, ...(next.leagueTransfers ?? [])].slice(
-      0,
-      MAX_TRANSFER_HISTORY
-    ),
-    latestNews: [newsItem, ...(next.latestNews ?? [])].slice(0, 10),
-    reserveToChampionshipCooldowns: {
-      ...(next.reserveToChampionshipCooldowns ?? {}),
-      [reserve.id]:
-        week +
-        DEFAULT_TRANSFER_ACTIVITY_CONFIG.reserveToChampionship
-          .cooldownWeeksPerPlayer,
+  return markTransferTxProcessed(
+    {
+      ...next,
+      leagueTransfers: [activity, ...(next.leagueTransfers ?? [])].slice(
+        0,
+        MAX_TRANSFER_HISTORY
+      ),
+      latestNews: [newsItem, ...(next.latestNews ?? [])].slice(0, 10),
+      reserveToChampionshipCooldowns: {
+        ...(next.reserveToChampionshipCooldowns ?? {}),
+        [reserve.id]:
+          week +
+          DEFAULT_TRANSFER_ACTIVITY_CONFIG.reserveToChampionship
+            .cooldownWeeksPerPlayer,
+      },
+      championshipReserveSigningsThisSeason:
+        (next.championshipReserveSigningsThisSeason ?? 0) + 1,
+      reserveToChampionshipTransfersVersion: 1,
     },
-    championshipReserveSigningsThisSeason:
-      (next.championshipReserveSigningsThisSeason ?? 0) + 1,
-    reserveToChampionshipTransfersVersion: 1,
-  };
+    transferId
+  );
 }
 
 function createReserveTransferOffer(

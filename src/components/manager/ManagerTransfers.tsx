@@ -16,6 +16,7 @@ import {
   ManagerTransferResultModal,
   type TransferResultDetails,
 } from "@/components/manager/ManagerTransferResultModal";
+import { ManagerTransferDebugPanel } from "@/components/manager/ManagerTransferDebugPanel";
 import { ManagerPage, ManagerSection, ManagerSectionCard, ManagerStat } from "@/components/manager/manager-ui";
 import {
   canAffordAdditionalWage,
@@ -164,6 +165,14 @@ export function ManagerTransfers({
   const [freeAgentOfferWage, setFreeAgentOfferWage] = useState(0);
   const [freeAgentOfferYears, setFreeAgentOfferYears] = useState(1);
   const [visibleLimit, setVisibleLimit] = useState(TRANSFER_CARD_PAGE);
+  const [transferDebugId, setTransferDebugId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setTransferDebugId(
+      new URLSearchParams(window.location.search).get("transferDebug")
+    );
+  }, []);
 
   const wageOverBudget = isWageOverBudget(career);
   const wagePct = getWageBillPercent(career);
@@ -872,11 +881,13 @@ export function ManagerTransfers({
                       </span>
                     </p>
                     <p className={`${TYPO.meta} text-pitch-500`}>
+                      {outgoing
+                        ? `LOANED TO: ${loan.loaneeClub} · Returns end of season`
+                        : `ON LOAN from ${loan.parentClub} · Returns end of season`}
                       {loan.loanFee > 0
-                        ? `Fee ${formatWage(loan.loanFee)} · `
+                        ? ` · Fee ${formatWage(loan.loanFee)}`
                         : ""}
-                      ends season {loan.endsAtSeasonYear} · wage share{" "}
-                      {Math.round(loan.parentWageShare * 100)}% parent
+                      {` · You pay ${Math.round((outgoing ? loan.parentWageShare : 1 - loan.parentWageShare) * 100)}% wages`}
                     </p>
                   </div>
                   {outgoing && loan.canRecall && (
@@ -1594,6 +1605,9 @@ export function ManagerTransfers({
           onClose={() => setTransferResult(null)}
         />
       )}
+      {transferDebugId ? (
+        <ManagerTransferDebugPanel career={career} playerId={transferDebugId} />
+      ) : null}
     </ManagerPage>
   );
 }

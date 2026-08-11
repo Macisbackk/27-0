@@ -57,6 +57,34 @@ import { addBoardTransferMilestoneInbox } from "./managerBoardInbox";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 import { DEFAULT_TRANSFER_ACTIVITY_CONFIG } from "./transferActivityConfig";
 import { pruneTransferWatchlist } from "./managerWatchlist";
+import {
+  appendCanonicalTransferActivity,
+  buildTransferActivity,
+  clearAllMarketPresenceForPlayer,
+  markTransferTxProcessed,
+  wasTransferTxProcessed,
+  syncUserListingToLeagueMarket,
+  removePlayerFromLeagueMarket,
+} from "./transferLedger";
+
+function canGenerateOfferFromClub(
+  career: ManagerCareer,
+  playerId: string,
+  offerClub: string,
+  asLoan: boolean
+): boolean {
+  const pending = career.inboxMessages.filter(
+    (m) =>
+      !m.resolved &&
+      m.playerId === playerId &&
+      m.offerClub != null &&
+      isSameManagerClub(m.offerClub, offerClub) &&
+      (m.type === "transfer" || m.type === "transfer_offer_in")
+  );
+  if (pending.some((m) => Boolean(m.loanOffer) === asLoan)) return false;
+  if (pending.some((m) => Boolean(m.loanOffer) !== asLoan)) return false;
+  return true;
+}
 
 const TRANSFER_DIAGNOSTIC_CAP = 40;
 
@@ -517,7 +545,7 @@ export function listPlayerForTransfer(
   if (listingAllowsLoan(listingType) && !canUserLoanOutPlayers(career)) {
     listingType = "permanent";
   }
-  const player = getPlayerById(playerId);
+  const player = getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
   if (!player) return career;
 
   const status: PlayerTransferStatus = {
@@ -525,16 +553,20 @@ export function listPlayerForTransfer(
     askingPrice,
     listedAtGameWeek: career.gameWeek,
     listingType,
+    transferRequested: career.playerTransferStatus[playerId]?.transferRequested,
   };
 
-  return {
-    ...career,
-    playerTransferStatus: {
-      ...career.playerTransferStatus,
-      [playerId]: status,
+  return syncUserListingToLeagueMarket(
+    {
+      ...career,
+      playerTransferStatus: {
+        ...career.playerTransferStatus,
+        [playerId]: status,
+      },
+      updatedAt: new Date().toISOString(),
     },
-    updatedAt: new Date().toISOString(),
-  };
+    playerId
+  );
 }
 
 /** List a squad player on the loan market (Championship AI clubs can take them). */
@@ -580,9 +612,23 @@ export function unlistPlayerFromTransfer(
   career: ManagerCareer,
   playerId: string
 ): ManagerCareer {
+  const prev = career.playerTransferStatus[playerId];
   const next = { ...career.playerTransferStatus };
-  delete next[playerId];
-  return { ...career, playerTransferStatus: next };
+  if (prev?.transferRequested) {
+    next[playerId] = {
+      listed: false,
+      askingPrice: 0,
+      listedAtGameWeek: career.gameWeek,
+      transferRequested: true,
+    };
+  } else {
+    delete next[playerId];
+  }
+  return removePlayerFromLeagueMarket(
+    { ...career, playerTransferStatus: next },
+    playerId,
+    career.club
+  );
 }
 
 export function computeReleaseCost(career: ManagerCareer, playerId: string): number {
@@ -890,7 +936,7 @@ export function completePlayerPurchase(
   );
 
   const player = getPlayerById(playerId);
-  return pruneTransferWatchlist(
+  const withMail = pruneTransferWatchlist(
     pruneLeagueListedPlayers(
       addBoardTransferMilestoneInbox(
         pushInboxMessage(
@@ -912,6 +958,25 @@ export function completePlayerPurchase(
     ),
     [playerId]
   );
+
+  const txId = `perm-buy-${playerId}-w${career.gameWeek}-${offer.transferFee}`;
+  if (wasTransferTxProcessed(withMail, txId)) return withMail;
+  let next = clearAllMarketPresenceForPlayer(withMail, playerId);
+  next = appendCanonicalTransferActivity(
+    next,
+    buildTransferActivity({
+      id: `hist-${txId}`,
+      career: next,
+      playerId,
+      playerName: player?.name ?? "Player",
+      fromClub: club,
+      toClub: career.club,
+      fee: offer.transferFee,
+      transferType: "permanent",
+      sourceSquad: "senior",
+    })
+  );
+  return markTransferTxProcessed(next, txId);
 }
 
 export function generateIncomingTransferOffers(
@@ -972,6 +1037,7 @@ export function generateIncomingTransferOffers(
     if (buyers.length === 0) continue;
     const buyer = buyers[Math.floor(rng() * buyers.length)]!;
     if (isSameManagerClub(buyer, career.club)) continue;
+    if (!canGenerateOfferFromClub(career, playerId, buyer, false)) continue;
     const funds = clubFunds[buyer] ?? getManagerClubConfig(buyer).budget;
     const offerAmount = Math.round(
       status.askingPrice * (0.75 + rng() * 0.2)
@@ -1073,6 +1139,7 @@ export function generateIncomingLoanOffers(
 
     const loanee = destinations[Math.floor(rng() * destinations.length)]!;
     if (isSameManagerClub(loanee, career.club)) continue;
+    if (!canGenerateOfferFromClub(career, playerId, loanee, true)) continue;
 
     // Parent keeps 40–60% of wages on AI approaches.
     const parentWageShare = Math.round((0.4 + rng() * 0.2) * 20) / 20;
@@ -1472,6 +1539,26 @@ export function acceptIncomingOffer(
   nextCareer = syncManagerFinance(nextCareer);
 
   dispatchAchievementCheck({ trigger: "player-sold", playerSold: true });
+
+  const saleTxId = `perm-sale-${playerId}-${messageId}`;
+  if (!wasTransferTxProcessed(nextCareer, saleTxId)) {
+    nextCareer = clearAllMarketPresenceForPlayer(nextCareer, playerId);
+    nextCareer = appendCanonicalTransferActivity(
+      nextCareer,
+      buildTransferActivity({
+        id: `hist-${saleTxId}`,
+        career: nextCareer,
+        playerId,
+        playerName: msg.playerName ?? getPlayerById(playerId)?.name ?? "Player",
+        fromClub: career.club,
+        toClub: buyer,
+        fee: msg.offerAmount,
+        transferType: "permanent",
+        sourceSquad: "senior",
+      })
+    );
+    nextCareer = markTransferTxProcessed(nextCareer, saleTxId);
+  }
 
   return {
     ok: true,

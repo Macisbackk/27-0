@@ -80,14 +80,15 @@ export function ManagerTransferPlayerCard({
     ageDisplay != null ? String(ageDisplay) : formatPlayerAge(player);
   const showsLoan =
     listingType === "loan" || listingType === "both";
-  const listingLabel =
-    listingType === "loan"
-      ? "Loan"
+  const listingLabel = freeAgent
+    ? "FREE AGENT"
+    : listingType === "loan"
+      ? "AVAILABLE ON LOAN"
       : listingType === "both"
-        ? "Listed · Loan"
+        ? "TRANSFER LISTED · LOAN OK"
         : listed
-          ? "Listed"
-          : "Unlisted";
+          ? "TRANSFER LISTED"
+          : "UNLISTED";
 
   return (
     <ManagerSectionCard

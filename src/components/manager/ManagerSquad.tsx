@@ -37,6 +37,9 @@ import {
 } from "@/lib/manager/manager-routes";
 import { managerAlertPanelClass } from "@/lib/manager/managerSurfaces";
 import { playUiClick } from "@/lib/sound";
+import { listUserLoanedOutPlayers } from "@/lib/manager/playerRegistration";
+import { getPlayerById } from "@/lib/players";
+import { recallLoan } from "@/lib/manager/managerLoans";
 
 interface ManagerSquadProps {
   career: ManagerCareer;
@@ -777,6 +780,44 @@ export function ManagerSquad({
         </div>
       </div>
         </>
+      )}
+
+      {listUserLoanedOutPlayers(career).length > 0 && (
+        <div className={`mt-4 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
+          <p className={TYPO.keyLabel}>Loaned out</p>
+          <ul className={`mt-2 ${SPACING.stackSm}`}>
+            {listUserLoanedOutPlayers(career).map((loan) => {
+              const name =
+                getPlayerById(loan.playerId)?.name ??
+                getManagerPlayer(career, loan.playerId)?.name ??
+                "Player";
+              return (
+                <li
+                  key={loan.playerId}
+                  className="flex flex-wrap items-center justify-between gap-2 border-b border-pitch-700/40 py-2 last:border-b-0"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-white">{name}</p>
+                    <p className={`${TYPO.bodySm} text-pitch-400`}>
+                      LOANED TO: {loan.loaneeClub} · Returns end of season · You
+                      pay {Math.round(loan.parentWageShare * 100)}% wages
+                    </p>
+                  </div>
+                  <GameButton
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => {
+                      playUiClick();
+                      onUpdate(recallLoan(career, loan.playerId));
+                    }}
+                  >
+                    Recall
+                  </GameButton>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       )}
       </ManagerSection>
 

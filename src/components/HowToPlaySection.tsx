@@ -5,15 +5,23 @@ import { TYPO } from "@/lib/ui/typography";
 const GUIDE_ITEMS = [
   {
     title: "Manager Mode",
-    body: "Run a club. Win trophies.",
+    body: "Take charge of a Super League or Championship club. Build your squad, handle contracts and loans, develop reserves, manage the transfer market, and chase trophies across seasons.",
   },
   {
     title: "Quick Mode",
-    body: "Draft 17. Chase 27-0.",
+    body: "Draft a 17 from Current or Era player pools and try to build a side good enough to go 27-0 through the league and playoffs.",
   },
   {
-    title: "Store & Profile",
-    body: "Themes, boosts, records.",
+    title: "Club Funds",
+    body: "Earn rewards through seasons, achievements and trophies, then spend them in the Store on team UI themes.",
+  },
+  {
+    title: "Coach Profile",
+    body: "Track your records, achievements, trophies, stats and long-term progress across both modes.",
+  },
+  {
+    title: "Store",
+    body: "Unlock team UI themes with Club Funds. Themes change the interface look — not club or player colours.",
   },
 ] as const;
 
@@ -26,8 +34,12 @@ export function HowToPlaySection() {
           heading="How to play"
           className="items-center text-center"
         />
-        <p id="how-to-play-heading" className="sr-only">
-          How to play
+        <p
+          id="how-to-play-heading"
+          className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm} text-pitch-400`}
+        >
+          Manager Mode is the main career. Quick Mode is the draft challenge —
+          here&apos;s what each area does.
         </p>
       </div>
 

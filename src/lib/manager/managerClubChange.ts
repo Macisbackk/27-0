@@ -468,6 +468,9 @@ export function takeOverClub(
     boardConfidence: Math.min(65, Math.max(45, next.boardConfidence)),
     managerCareerHistory: [...closedHistory, historyEntry],
     playerTransferStatus: {},
+    processedTransferTxIds: next.processedTransferTxIds ?? [],
+    // Drop loans tied to the previous job — new club starts clean.
+    activeLoans: [],
     playerDevelopment: snapshotSquadSeasonStartRatings({
       ...next,
       club: newClub,

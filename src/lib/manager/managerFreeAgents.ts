@@ -30,6 +30,13 @@ import { getCareerClubStars } from "./managerDifficulty";
 import { getUserCompetitionId } from "./leagueMembership";
 import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
 import { pruneTransferWatchlist } from "./managerWatchlist";
+import {
+  appendCanonicalTransferActivity,
+  buildTransferActivity,
+  clearAllMarketPresenceForPlayer,
+  markTransferTxProcessed,
+  wasTransferTxProcessed,
+} from "./transferLedger";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 import { SQUAD_STRUCTURE } from "../positions";
 import type { Position } from "../types";
@@ -479,7 +486,7 @@ export function completeFreeAgentSigning(
 
   const player = getPlayerById(playerId);
   dispatchAchievementCheck({ trigger: "player-signed", playerSigned: true });
-  return pruneTransferWatchlist(
+  const withMail = pruneTransferWatchlist(
     pushInboxMessage(
       signed,
       createFreeAgentSigningMessage(
@@ -492,6 +499,25 @@ export function completeFreeAgentSigning(
     ),
     [playerId]
   );
+
+  const txId = `fa-sign-${playerId}-w${career.gameWeek}`;
+  if (wasTransferTxProcessed(withMail, txId)) return withMail;
+  let next = clearAllMarketPresenceForPlayer(withMail, playerId);
+  next = appendCanonicalTransferActivity(
+    next,
+    buildTransferActivity({
+      id: `hist-${txId}`,
+      career: next,
+      playerId,
+      playerName: player?.name ?? "Player",
+      fromClub: formerClub,
+      toClub: career.club,
+      fee: 0,
+      transferType: "free",
+      sourceSquad: "free-agent",
+    })
+  );
+  return markTransferTxProcessed(next, txId);
 }
 
 /** Release fringe AI squad players at season end to populate the free-agent pool. */

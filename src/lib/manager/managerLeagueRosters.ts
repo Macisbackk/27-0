@@ -460,12 +460,18 @@ export function findPlayerLeagueClub(
 
 export function pruneLeagueListedPlayers(career: ManagerCareer): ManagerCareer {
   const leagueListedPlayers = career.leagueListedPlayers.filter((listing) => {
-    if (isSameManagerClub(listing.club, career.club)) return false;
+    // Keep the user's own listings — they are owned + listed, not AI registration.
+    if (isSameManagerClub(listing.club, career.club)) {
+      return Boolean(career.playerTransferStatus[listing.playerId]?.listed);
+    }
     const club = findPlayerLeagueClub(career, listing.playerId);
     return club != null && isSameManagerClub(club, listing.club);
   });
   if (leagueListedPlayers.length === career.leagueListedPlayers.length) {
-    return career;
+    return {
+      ...career,
+      transferMarket: leagueListedPlayers.map((l) => l.playerId),
+    };
   }
   return {
     ...career,

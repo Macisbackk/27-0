@@ -11,8 +11,8 @@ import {
   getUserSeasonGames,
   isUserInChampionship,
 } from "./leagueMembership";
-import { generateTransferMarket } from "./managerTransfers";
 import { generateLeagueListedPlayers } from "./managerTransferLeague";
+import { mergeUserListingsIntoLeagueMarket } from "./transferLedger";
 import { getUserLeagueTablePosition } from "./managerFixtures";
 import { EMPTY_TEAM_SEASON_STATS } from "./managerCareerStats";
 import {
@@ -405,7 +405,6 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     challengeCupCelebrationShown: false,
     worldClubChallengeCelebrationShown: false,
     wagePressureWeeks: 0,
-    transferMarket: generateTransferMarket(withFreeAgents, newSeed, 0),
     nextMatchGameplan: null,
     activeLoans: withFreeAgents.activeLoans ?? [],
     squad: withFreeAgents.squad.map((p) => ({
@@ -458,11 +457,11 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     )
   );
   const seasonListed = generateLeagueListedPlayers(withIntake, newSeed, 0);
-  let finalCareer: ManagerCareer = {
+  let finalCareer: ManagerCareer = mergeUserListingsIntoLeagueMarket({
     ...withIntake,
     leagueListedPlayers: seasonListed,
     transferMarket: seasonListed.map((l) => l.playerId),
-  };
+  });
   awardManagerSeasonBoardGrant(finalCareer, summary);
   const withStarEconomy = resyncCareerEconomyToClubStars(finalCareer, summary);
 

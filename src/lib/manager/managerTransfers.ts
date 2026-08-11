@@ -83,6 +83,7 @@ export function getPlayerSigningDemand(
   };
 }
 
+/** @deprecated Prefer generateLeagueListedPlayers + syncDerivedTransferMarket. */
 export function generateTransferMarket(
   career: ManagerCareer,
   seed: string,
@@ -130,6 +131,7 @@ export function canAffordWage(career: ManagerCareer, wage: number): boolean {
   return canAffordAdditionalWage(career, wage);
 }
 
+/** @deprecated Prefer completePlayerPurchase / completeFreeAgentSigning via transfer ledger. */
 export function signPlayer(
   career: ManagerCareer,
   playerId: string
