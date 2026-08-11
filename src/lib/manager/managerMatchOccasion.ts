@@ -16,6 +16,8 @@ export type ManagerMatchOccasion =
   | "grand_final"
   | "cup_final"
   | "playoff"
+  | "championship_playoff"
+  | "million_pound_game"
   | "challenge_cup"
   | "wcc"
   | "magic_weekend"
@@ -61,6 +63,7 @@ const SURFACE = {
   grandFinal: "bg-accent-gold/[0.07]",
   cupFinal: "bg-accent-gold/[0.06]",
   playoff: "bg-amber-500/[0.06]",
+  millionPound: "bg-amber-400/[0.08]",
   cup: "bg-accent-gold/[0.04]",
   wcc: "bg-sky-400/[0.07]",
   magic: "bg-theme-primary/[0.06]",
@@ -73,6 +76,10 @@ export function resolveManagerMatchOccasion(
 ): ManagerMatchOccasion {
   if (isGrandFinalFixture(fixture)) return "grand_final";
   if (isChallengeCupFinalFixture(fixture)) return "cup_final";
+  if (fixture.competition === "million_pound_game") return "million_pound_game";
+  if (fixture.competition === "championship_playoffs") {
+    return "championship_playoff";
+  }
   if (fixture.competition === "playoffs") return "playoff";
   if (fixture.competition === "world_club_challenge") return "wcc";
   if (isMagicWeekendFixture(fixture)) return "magic_weekend";
@@ -185,6 +192,46 @@ export function getManagerMatchOccasionPresentation(
         surfaceClass: SURFACE.playoff,
         matchdayModifier: "matchday-scoreboard--playoff",
         momentTextClass: "text-amber-200",
+        isShowcase: true,
+      };
+    case "championship_playoff":
+      return {
+        occasion,
+        weekLabel: "Championship Play-Off Week",
+        badgeLabel:
+          fixture.playoffRound === 3
+            ? "Championship Playoff Final"
+            : "Championship Semi Final",
+        badgeTone: "amber",
+        momentLine:
+          fixture.playoffRound === 3
+            ? "Win and the Million Pound Game awaits"
+            : "Knockout rugby — win through to the Million Pound Game",
+        playCta,
+        playCtaShort,
+        simulateCta,
+        simulateCtaShort,
+        roundStatLabel: "Play-off round",
+        surfaceClass: SURFACE.playoff,
+        matchdayModifier: "matchday-scoreboard--playoff",
+        momentTextClass: "text-amber-200",
+        isShowcase: true,
+      };
+    case "million_pound_game":
+      return {
+        occasion,
+        weekLabel: "Million Pound Game Week",
+        badgeLabel: "Million Pound Game",
+        badgeTone: "gold",
+        momentLine: "One match for Super League — winner stays up, loser goes down",
+        playCta,
+        playCtaShort,
+        simulateCta,
+        simulateCtaShort,
+        roundStatLabel: "Showpiece",
+        surfaceClass: SURFACE.millionPound,
+        matchdayModifier: "matchday-scoreboard--grand-final",
+        momentTextClass: "text-accent-gold",
         isShowcase: true,
       };
     case "challenge_cup":

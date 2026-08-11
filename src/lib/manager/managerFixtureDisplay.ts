@@ -8,6 +8,7 @@ import type {
 import { getChallengeCupRoundLabel } from "./challengeCupRounds";
 import { isMagicWeekendFixture } from "./managerMagicWeekend";
 import { isChallengeCupFinalFixture } from "./managerChallengeCup";
+import { MILLION_POUND_GAME_NAME } from "./managerMillionPoundGame";
 
 /** Canonical competition names — use only when cross-tier context requires them. */
 export const MANAGER_COMPETITION_NAMES = {
@@ -50,6 +51,8 @@ export function getManagerCompetitionName(
     return getManagerCupRoundLabel(options.cupRound);
   }
   if (competition === "playoffs") return "Play-Offs";
+  if (competition === "championship_playoffs") return "Championship Play-Offs";
+  if (competition === "million_pound_game") return MILLION_POUND_GAME_NAME;
   if (competition === "friendly") return "Friendly";
   if (competition === "world_club_challenge") return "WCC";
   if (competition === "league") {
@@ -109,6 +112,8 @@ export function getManagerScheduledFixtureHeadline(
   }
   if (sched.label) return sched.label;
   if (sched.competition === "playoffs") return "Play-Offs";
+  if (sched.competition === "championship_playoffs") return "Championship Play-Offs";
+  if (sched.competition === "million_pound_game") return MILLION_POUND_GAME_NAME;
   if (sched.competition === "friendly") return "Friendly";
   if (sched.competition === "world_club_challenge") {
     return "WCC";
@@ -128,6 +133,8 @@ export function getManagerPlayedFixtureLabel(
     return getManagerCupRoundLabel(fixture.meta?.cupRound);
   }
   if (fixture.competition === "playoffs") return "Play-Offs";
+  if (fixture.competition === "championship_playoffs") return "Championship Play-Offs";
+  if (fixture.competition === "million_pound_game") return MILLION_POUND_GAME_NAME;
   if (fixture.competition === "friendly") return "Friendly";
   if (fixture.competition === "world_club_challenge") {
     return "WCC";
@@ -147,6 +154,12 @@ export function getManagerFixtureSectionLabel(
   }
   if (competition === "playoffs") {
     return `Play-offs (${count})`;
+  }
+  if (competition === "championship_playoffs") {
+    return `Championship Play-Offs (${count})`;
+  }
+  if (competition === "million_pound_game") {
+    return `${MILLION_POUND_GAME_NAME} (${count})`;
   }
   if (competition === "friendly") {
     return `Friendlies (${count})`;

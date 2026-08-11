@@ -16,6 +16,7 @@ export type CalendarHighlightKind =
   | "challenge_cup"
   | "wcc"
   | "playoff"
+  | "million_pound_game"
   | "season_finale";
 
 export interface ManagerCalendarEvent {
@@ -89,7 +90,13 @@ function highlightForFixture(
 ): CalendarHighlightKind {
   if (fixture.competition === "world_club_challenge") return "wcc";
   if (fixture.competition === "challenge_cup") return "challenge_cup";
-  if (fixture.competition === "playoffs") return "playoff";
+  if (fixture.competition === "million_pound_game") return "million_pound_game";
+  if (
+    fixture.competition === "playoffs" ||
+    fixture.competition === "championship_playoffs"
+  ) {
+    return "playoff";
+  }
   if (isMagicWeekendFixture(fixture) || fixture.round === MAGIC_WEEKEND_ROUND) {
     return "magic_weekend";
   }
@@ -381,6 +388,10 @@ export const CALENDAR_HIGHLIGHT_STYLES: Record<
   playoff: {
     chip: "border-theme-primary/45 bg-theme-primary/15 text-theme-primary",
     label: "Play-Offs",
+  },
+  million_pound_game: {
+    chip: "border-accent-gold/50 bg-accent-gold/15 text-accent-gold",
+    label: "Million Pound Game",
   },
   season_finale: {
     chip: "border-amber-400/45 bg-amber-500/15 text-amber-200",

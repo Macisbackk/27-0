@@ -71,6 +71,7 @@ import {
   scheduleWorldClubChallengeForSeason,
 } from "./worldClubChallenge";
 import { finalizePlayoffTournamentForChampion } from "./managerPlayoffs";
+import { MILLION_POUND_GAME_NAME } from "./managerMillionPoundGame";
 import { hydrateManagerPlayerRegistryAges } from "./managerPlayers";
 
 export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary {
@@ -96,6 +97,9 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
   const trophies = getManagerSeasonTrophyLabels(career);
   const playoffFinish = career.playoffs?.finish ?? null;
   const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
+  const mpg = career.millionPoundGame;
+  const mpgWon = mpg?.winner === career.club;
+  const mpgLost = mpg?.loser === career.club;
 
   let budgetChange = 0;
   if (playoffFinish === "Super League Champions") budgetChange = 600_000;
@@ -110,10 +114,12 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
   if (isUserInChampionship(career)) {
     if (position === 1) {
       boardVerdict = "Outstanding — Championship champions.";
-    } else if (position <= 2) {
-      boardVerdict = "Promoted — Super League awaits.";
-    } else if (position <= 4) {
-      boardVerdict = "Top-four finish. Solid Championship campaign.";
+    } else if (mpgWon) {
+      boardVerdict = `Promoted — ${MILLION_POUND_GAME_NAME} winners.`;
+    } else if (position <= 5) {
+      boardVerdict = mpgLost
+        ? `${MILLION_POUND_GAME_NAME} defeat — promotion must wait.`
+        : "Championship play-off finish.";
     } else if (position >= 18) {
       boardVerdict = "Disappointing — improvements required.";
     }
@@ -158,15 +164,17 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
 
   let seasonVerdict = boardVerdict;
   if (isUserInChampionship(career)) {
-    if (position <= 2) {
+    if (position === 1 || mpgWon) {
       seasonVerdict =
         position === 1
-          ? "Championship champions — promoted."
-          : "Promoted to Super League.";
+          ? "Championship champions — automatically promoted."
+          : `Promoted to Super League via the ${MILLION_POUND_GAME_NAME}.`;
     } else if (cupOutcome.isWinner) {
       seasonVerdict = "Cup winners. League unfinished business.";
-    } else if (position <= 4) {
-      seasonVerdict = "Top four — short of promotion.";
+    } else if (position <= 5) {
+      seasonVerdict = mpgLost
+        ? `${MILLION_POUND_GAME_NAME} defeat — promotion denied.`
+        : "Championship play-off campaign complete.";
     }
   } else if (cupOutcome.isWinner) {
     seasonVerdict = "A trophy-winning campaign.";
@@ -205,6 +213,13 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
     ),
     seasonVerdict,
     seasonNarrative,
+    millionPoundGameResult: mpg?.winner
+      ? `${MILLION_POUND_GAME_NAME}: ${mpg.winner} beat ${mpg.loser}.`
+      : undefined,
+    promotedVia: position === 1 ? "auto" : mpgWon ? "million_pound_game" : undefined,
+    relegatedVia: career.userCompetitionId === "super-league"
+      ? (mpgLost ? "million_pound_game" : position === 12 ? "auto" : undefined)
+      : undefined,
   };
 }
 
@@ -398,7 +413,10 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     reserveToChampionshipClubCooldowns: {},
     reserveToChampionshipClubRequestCounts: {},
     playoffs: undefined,
+    championshipPlayoffs: undefined,
+    millionPoundGame: undefined,
     playoffsIntroAcknowledged: false,
+    championshipPlayoffsIntroAcknowledged: false,
     trophyCelebrationShown: false,
     leagueWinnersCelebrationShown: false,
     promotionCelebrationShown: false,

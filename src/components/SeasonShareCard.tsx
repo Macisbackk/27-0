@@ -30,7 +30,7 @@ export const SeasonShareCard = forwardRef<HTMLDivElement, SeasonShareCardProps>(
       >
         <div>
           <p
-            className="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-400/90"
+            className="text-sm font-semibold uppercase tracking-[0.28em] text-theme-primary/90"
             style={{ fontFamily: "system-ui, sans-serif" }}
           >
             27-0
@@ -49,7 +49,7 @@ export const SeasonShareCard = forwardRef<HTMLDivElement, SeasonShareCardProps>(
           </p>
         </div>
 
-        <div className="rounded-3xl border border-white/10 bg-black/35 p-10">
+        <div className="rounded-2xl border border-white/10 bg-black/35 p-10">
           <p
             className="text-5xl font-bold tabular-nums tracking-tight"
             style={{ fontFamily: "system-ui, sans-serif" }}

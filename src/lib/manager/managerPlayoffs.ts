@@ -22,7 +22,6 @@ import {
 } from "./managerFixtures";
 import { PLAYOFF_QUALIFIERS } from "../game/playoff-simulation";
 import { getUserSeasonGames, getUserCompetitionId } from "./leagueMembership";
-import { leagueHasPlayoffs } from "./managerLeagues";
 import { userWonMustHaveWinnerFixture } from "./matchResolutionRules";
 
 export { PLAYOFF_QUALIFIERS };
@@ -30,6 +29,11 @@ export { PLAYOFF_QUALIFIERS };
 export const GRAND_FINAL_VENUE = "Old Trafford";
 export const GRAND_FINAL_ATTENDANCE_MIN = 70_000;
 export const GRAND_FINAL_ATTENDANCE_MAX = 80_000;
+
+/** Championship promotion play-offs use a separate bracket and never the SL Grand Final flow. */
+function hasSuperLeaguePlayoffs(career: ManagerCareer): boolean {
+  return getUserCompetitionId(career) === "super-league";
+}
 
 export function isGrandFinalFixture(
   fixture: Pick<
@@ -44,7 +48,7 @@ export function isGrandFinalFixture(
 }
 
 export function userQualifiedForManagerPlayoffs(career: ManagerCareer): boolean {
-  if (!leagueHasPlayoffs(getUserCompetitionId(career))) return false;
+  if (!hasSuperLeaguePlayoffs(career)) return false;
   return (
     getUserLeaguePosition(getManagerLeagueTable(career), career.club) <=
     PLAYOFF_QUALIFIERS
@@ -221,7 +225,7 @@ export function buildPlayoffScheduledFixture(
 
 export function ensurePlayoffsReady(career: ManagerCareer): ManagerCareer {
   const synced = syncManagerLeagueTable(career);
-  if (!leagueHasPlayoffs(getUserCompetitionId(synced))) return synced;
+  if (!hasSuperLeaguePlayoffs(synced)) return synced;
   if (!isLeagueAndCupPhaseComplete(synced)) {
     return synced;
   }
@@ -246,7 +250,7 @@ export function isLeaguePhaseComplete(career: ManagerCareer): boolean {
 export function shouldShowPlayoffsInSeasonProgress(
   career: ManagerCareer
 ): boolean {
-  if (!leagueHasPlayoffs(getUserCompetitionId(career))) return false;
+  if (!hasSuperLeaguePlayoffs(career)) return false;
   return isLeaguePhaseComplete(career);
 }
 
@@ -395,7 +399,7 @@ export function finalizePlayoffTournamentForChampion(
 ): ManagerCareer {
   if (!isLeagueAndCupPhaseComplete(career)) return career;
   // Championship (and any non-playoff league) must not invent an SL GF from the Champ table.
-  if (!leagueHasPlayoffs(getUserCompetitionId(career))) {
+  if (!hasSuperLeaguePlayoffs(career)) {
     return { ...career, playoffs: undefined };
   }
 

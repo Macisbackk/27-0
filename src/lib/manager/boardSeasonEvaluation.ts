@@ -13,8 +13,8 @@ import {
   getUserCompetitionId,
   getUserLeagueClubs,
   isUserInChampionship,
-  PROMOTE_RELEGATE_COUNT,
 } from "./leagueMembership";
+import { getAutoPromoteCount } from "./managerLeagues";
 
 export const BOARD_SACKING_SCHEMA_VERSION = 2;
 
@@ -82,31 +82,34 @@ function expectationLabel(
 }
 
 function championshipPathwayObjective(
+  career: ManagerCareer,
   tier: ManagerClubExpectationTier,
   position: number
 ): BoardSeasonEvaluation["objectiveResults"][number] {
-  const promoted = position <= PROMOTE_RELEGATE_COUNT;
-  const topFour = position <= 4;
+  const promoted =
+    position <= getAutoPromoteCount() ||
+    career.millionPoundGame?.winner === career.club;
+  const playoffPlace = position <= 5;
 
   if (tier === "title" || tier === "top") {
     return {
       id: "playoffs",
-      label: "Earn promotion (top 2)",
-      status: promoted ? "achieved" : topFour ? "partial" : "failed",
+      label: "Earn promotion",
+      status: promoted ? "achieved" : playoffPlace ? "partial" : "failed",
       weight: 20,
     };
   }
   if (tier === "playoffs") {
     return {
       id: "playoffs",
-      label: "Finish top four",
-      status: topFour ? "achieved" : position <= 6 ? "partial" : "failed",
+      label: "Reach the Championship play-offs",
+      status: playoffPlace ? "achieved" : position <= 6 ? "partial" : "failed",
       weight: 20,
     };
   }
   return {
     id: "playoffs",
-    label: "Earn promotion (top 2)",
+    label: "Earn promotion",
     status: promoted ? "achieved" : "na",
     weight: 20,
   };
@@ -148,7 +151,7 @@ export function evaluateBoardSeason(
       : userQualifiedForManagerPlayoffs(career) && summary.position <= 6;
 
   const pathwayObjective = inChamp
-    ? championshipPathwayObjective(tier, summary.position)
+    ? championshipPathwayObjective(career, tier, summary.position)
     : {
         id: "playoffs" as const,
         label:
@@ -215,7 +218,7 @@ export function evaluateBoardSeason(
     );
   }
 
-  if (inChamp && summary.position <= PROMOTE_RELEGATE_COUNT) {
+  if (inChamp && (summary.position <= getAutoPromoteCount() || career.millionPoundGame?.winner === career.club)) {
     explanation.push("Promoted to Super League.");
   } else if (inChamp && pathwayObjective.status === "partial") {
     explanation.push("Close to the promotion places.");

@@ -7,9 +7,9 @@ import { shouldShowLeagueWinnersCelebration } from "./managerPlayoffs";
 import { shouldShowPromotionCelebration } from "./managerPromotion";
 import {
   isUserInChampionship,
-  PROMOTE_RELEGATE_COUNT,
 } from "./leagueMembership";
 import { getUserLeagueTablePosition } from "./managerFixtures";
+import { getAutoPromoteCount } from "./managerLeagues";
 import type {
   FacilityType,
   ManagerCareer,
@@ -125,13 +125,15 @@ function maybeTrophyMails(career: ManagerCareer): ManagerCareer {
   if (
     isUserInChampionship(career) &&
     (shouldShowPromotionCelebration(career) ||
-      getUserLeagueTablePosition(career) <= PROMOTE_RELEGATE_COUNT)
+      getUserLeagueTablePosition(career) <= getAutoPromoteCount())
   ) {
     next = appendBoardMail(
       next,
       `board-promoted-${year}`,
       "Board — Promoted to Super League",
-      "Top-two finish. The board celebrates promotion — Super League next season."
+      career.millionPoundGame?.winner === career.club
+        ? "Million Pound Game victory. The board celebrates promotion — Super League next season."
+        : "Championship title secured. The board celebrates automatic promotion — Super League next season."
     );
   }
 

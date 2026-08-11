@@ -47,6 +47,8 @@ export type ManagerCompetition =
   | "challenge_cup"
   | "friendly"
   | "playoffs"
+  | "championship_playoffs"
+  | "million_pound_game"
   | "world_club_challenge";
 
 /** Division the manager career is competing in. */
@@ -511,6 +513,20 @@ export interface ManagerSeasonSummary {
   seasonVerdict: string;
   /** Short narrative label e.g. THE CUP RUN — derived from season events. */
   seasonNarrative?: string;
+  millionPoundGameResult?: string;
+  promotedVia?: "auto" | "million_pound_game";
+  relegatedVia?: "auto" | "million_pound_game";
+}
+
+export interface MillionPoundGameState {
+  seasonYear: number;
+  slClub: string;
+  champClub: string;
+  homeClub: string;
+  winner?: string;
+  loser?: string;
+  status: "pending" | "ready" | "complete";
+  userParticipating: boolean;
 }
 
 
@@ -1023,13 +1039,17 @@ export interface ManagerCareer {
   gateIncomeHistory: GateIncomeRecord[];
   challengeCup: ChallengeCupBracketState;
   playoffs?: PlayoffBracketState;
+  /** Championship positions 2–5 promotion play-offs (separate from SL playoffs). */
+  championshipPlayoffs?: PlayoffBracketState;
+  millionPoundGame?: MillionPoundGameState;
+  championshipPlayoffsIntroAcknowledged?: boolean;
   /** User has seen the play-offs intro and can play bracket matches. */
   playoffsIntroAcknowledged?: boolean;
   /** Title celebration shown for the completed season (Super League Champions). */
   trophyCelebrationShown?: boolean;
   /** League Leaders celebration shown after the regular season (table winners). */
   leagueWinnersCelebrationShown?: boolean;
-  /** Championship promotion celebration shown (top-two finish). */
+  /** Championship promotion celebration shown (automatic or Million Pound Game). */
   promotionCelebrationShown?: boolean;
   /** Perfect 27-0 league season celebration shown. */
   perfectSeasonCelebrationShown?: boolean;

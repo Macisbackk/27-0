@@ -7,7 +7,13 @@ import {
   getDefaultClubsForLeague,
   getLeagueSeasonGames,
   getLinkedPromoteRelegateCount,
+  getAutoPromoteCount,
+  getAutoRelegateCount,
 } from "./managerLeagues";
+import {
+  finalizeMillionPoundGameIfNeeded,
+  MILLION_POUND_GAME_NAME,
+} from "./managerMillionPoundGame";
 
 export type { ManagerCompetitionId };
 
@@ -125,7 +131,8 @@ export function applyPromotionRelegation(career: ManagerCareer): {
   userPromoted: boolean;
   userRelegated: boolean;
 } {
-  const withMembership = ensureLeagueMembership(career);
+  let withMembership = ensureLeagueMembership(career);
+  withMembership = finalizeMillionPoundGameIfNeeded(withMembership);
   const slClubs = getCareerSuperLeagueClubs(withMembership);
   const champClubs = getCareerChampionshipClubs(withMembership);
 
@@ -158,39 +165,50 @@ export function applyPromotionRelegation(career: ManagerCareer): {
         }))
   );
 
-  // Fallback when Champ AI table missing: use membership order.
+  const autoPromoteCount = getAutoPromoteCount();
+  const autoRelegateCount = getAutoRelegateCount();
+  // Fallback when tables are missing: preserve a deterministic membership order.
   const champOrdered =
-    champTable.length >= PROMOTE_RELEGATE_COUNT
+    champTable.length >= autoPromoteCount
       ? champTable
       : champClubs.map((team, i) => ({ team, position: i + 1 }));
   const slOrdered =
-    slTable.length >= PROMOTE_RELEGATE_COUNT
+    slTable.length >= autoRelegateCount
       ? slTable
       : slClubs.map((team, i) => ({ team, position: i + 1 }));
 
+  // 12th is automatically relegated; 11th is decided by the Million Pound Game.
   const relegated = slOrdered
-    .slice(-PROMOTE_RELEGATE_COUNT)
+    .filter((r) => r.position === 12)
+    .slice(0, autoRelegateCount)
     .map((r) => r.team)
     .filter((t) => slClubs.includes(t));
   const promoted = champOrdered
-    .slice(0, PROMOTE_RELEGATE_COUNT)
+    .filter((r) => r.position <= autoPromoteCount)
+    .slice(0, autoPromoteCount)
     .map((r) => r.team)
     .filter((t) => champClubs.includes(t));
 
-  // Keep sizes stable if tables were incomplete.
-  while (relegated.length < PROMOTE_RELEGATE_COUNT && slClubs.length) {
+  // Keep automatic swaps stable if a legacy save has incomplete tables.
+  while (relegated.length < autoRelegateCount && slClubs.length) {
     const candidate = [...slClubs]
       .reverse()
       .find((c) => !relegated.includes(c) && !promoted.includes(c));
     if (!candidate) break;
     relegated.push(candidate);
   }
-  while (promoted.length < PROMOTE_RELEGATE_COUNT && champClubs.length) {
+  while (promoted.length < autoPromoteCount && champClubs.length) {
     const candidate = champClubs.find(
       (c) => !promoted.includes(c) && !relegated.includes(c)
     );
     if (!candidate) break;
     promoted.push(candidate);
+  }
+
+  const mpg = withMembership.millionPoundGame;
+  if (mpg?.status === "complete" && mpg.winner && mpg.loser) {
+    if (slClubs.includes(mpg.loser) && !relegated.includes(mpg.loser)) relegated.push(mpg.loser);
+    if (champClubs.includes(mpg.winner) && !promoted.includes(mpg.winner)) promoted.push(mpg.winner);
   }
 
   const nextSl = [
@@ -226,7 +244,7 @@ export function applyPromotionRelegation(career: ManagerCareer): {
     id: `prom-rel-${next.seasonYear}`,
     type: "news",
     title: "Promotion & Relegation",
-    body: `Up: ${promoList}. Down: ${relegList}.`,
+    body: `Automatic promotion: ${promoted[0] ?? "TBD"}. Automatic relegation: ${relegated[0] ?? "TBD"}. ${mpg?.winner ? `${MILLION_POUND_GAME_NAME} winner: ${mpg.winner}.` : ""}`,
     week: next.gameWeek,
     season: next.seasonYear,
     gameWeek: next.gameWeek,
@@ -239,7 +257,7 @@ export function applyPromotionRelegation(career: ManagerCareer): {
       id: `user-promoted-${next.seasonYear}`,
       type: "board",
       title: "Promoted to Super League",
-      body: `${next.club} promoted to Super League.`,
+      body: `${next.club} promoted to Super League${mpg?.winner === next.club ? ` after winning the ${MILLION_POUND_GAME_NAME}.` : "."}`,
       week: next.gameWeek,
       season: next.seasonYear,
       gameWeek: next.gameWeek,
@@ -253,7 +271,7 @@ export function applyPromotionRelegation(career: ManagerCareer): {
       id: `user-relegated-${next.seasonYear}`,
       type: "board",
       title: "Relegated to the Championship",
-      body: `${next.club} relegated to the Championship.`,
+      body: `${next.club} relegated to the Championship${mpg?.loser === next.club ? ` after losing the ${MILLION_POUND_GAME_NAME}.` : "."}`,
       week: next.gameWeek,
       season: next.seasonYear,
       gameWeek: next.gameWeek,

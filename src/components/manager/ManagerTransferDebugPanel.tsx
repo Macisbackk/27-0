@@ -45,7 +45,7 @@ export function ManagerTransferDebugPanel({
       </pre>
       <p className={`mt-2 ${TYPO.bodySm}`}>
         {invariant.valid ? (
-          <span className="text-emerald-400">VALID STATE: ✓</span>
+          <span className="text-theme-primary">VALID STATE: ✓</span>
         ) : (
           <span className="text-red-400">
             INVALID STATE: ✕ {invariant.violations.join("; ")}

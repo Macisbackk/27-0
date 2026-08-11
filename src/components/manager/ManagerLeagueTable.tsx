@@ -5,12 +5,74 @@ import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { getClubIndicatorColor } from "@/lib/clubs";
 import type { ManagerCareer } from "@/lib/manager/types";
+import { isUserInChampionship } from "@/lib/manager/leagueMembership";
 import { playUiClick } from "@/lib/sound";
 
 function ordinal(n: number): string {
   const s = ["th", "st", "nd", "rd"];
   const v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+type TableZone =
+  | "playoffs"
+  | "auto-promote"
+  | "champ-playoffs"
+  | "mpg"
+  | "auto-relegate"
+  | "wooden-spoon"
+  | null;
+
+function getTableZone(
+  position: number,
+  championshipTable: boolean
+): TableZone {
+  if (championshipTable) {
+    if (position === 1) return "auto-promote";
+    if (position >= 2 && position <= 5) return "champ-playoffs";
+    if (position >= 18) return "wooden-spoon";
+    return null;
+  }
+  if (position <= 6) return "playoffs";
+  if (position === 11) return "mpg";
+  if (position === 12) return "auto-relegate";
+  return null;
+}
+
+function zoneRowClass(zone: TableZone, isUser: boolean): string {
+  if (isUser) return "border-theme-primary/35 bg-theme-primary/10";
+  switch (zone) {
+    case "playoffs":
+    case "champ-playoffs":
+      return "border-amber-500/25 bg-amber-500/5";
+    case "auto-promote":
+      return "border-theme-primary/30 bg-theme-primary/8";
+    case "mpg":
+      return "border-accent-gold/35 bg-accent-gold/8";
+    case "auto-relegate":
+      return "border-red-400/30 bg-red-500/8";
+    case "wooden-spoon":
+      return "border-pitch-600/50 bg-pitch-950/50";
+    default:
+      return "border-pitch-700/50 bg-pitch-950/40";
+  }
+}
+
+function zoneRowClassDesktop(zone: TableZone, isUser: boolean): string {
+  if (isUser) return "bg-theme-primary/10";
+  switch (zone) {
+    case "playoffs":
+    case "champ-playoffs":
+      return "bg-amber-500/5";
+    case "auto-promote":
+      return "bg-theme-primary/5";
+    case "mpg":
+      return "bg-accent-gold/8";
+    case "auto-relegate":
+      return "bg-red-500/8";
+    default:
+      return "";
+  }
 }
 
 export function ManagerLeagueTable({
@@ -21,6 +83,7 @@ export function ManagerLeagueTable({
   defaultExpanded = false,
   rows: rowsProp,
   showDraws = true,
+  competitionId,
 }: {
   career: ManagerCareer;
   title?: string;
@@ -31,11 +94,16 @@ export function ManagerLeagueTable({
   /** Override standings (e.g. Championship). Defaults to Super League table. */
   rows?: ManagerCareer["leagueTable"];
   showDraws?: boolean;
+  /** When set, drives promotion/relegation zone legend (otherwise inferred from career). */
+  competitionId?: "super-league" | "championship";
 }) {
   const [expanded, setExpanded] = useState(defaultExpanded);
   const rows = rowsProp ?? career.leagueTable;
   if (rows.length === 0) return null;
 
+  const championshipTable =
+    competitionId === "championship" ||
+    (competitionId == null && isUserInChampionship(career));
   const userRow = rows.find((r) => r.isUserTeam);
   const showCompact =
     !expanded &&
@@ -89,6 +157,7 @@ export function ManagerLeagueTable({
       <ul className={`mt-3 space-y-2 sm:hidden ${SPACING.stackSm}`}>
         {displayRows.map((row) => {
           const indicatorColor = getClubIndicatorColor(row.team);
+          const zone = getTableZone(row.position, championshipTable);
           const inner = (
             <>
               <span className="font-mono text-sm text-pitch-400">{row.position}</span>
@@ -114,11 +183,10 @@ export function ManagerLeagueTable({
           return (
             <li
               key={row.team}
-              className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2 ${
-                row.isUserTeam
-                  ? "border-theme-primary/35 bg-theme-primary/10"
-                  : "border-pitch-700/50 bg-pitch-950/40"
-              }`}
+              className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2 ${zoneRowClass(
+                zone,
+                Boolean(row.isUserTeam)
+              )}`}
             >
               {onViewClub ? (
                 <button
@@ -167,12 +235,14 @@ export function ManagerLeagueTable({
               const indicatorColor = getClubIndicatorColor(row.team);
               const draws =
                 row.draws ?? Math.max(0, row.played - row.wins - row.losses);
+              const zone = getTableZone(row.position, championshipTable);
               return (
                 <tr
                   key={row.team}
-                  className={`border-b border-pitch-800/40 ${
-                    row.isUserTeam ? "bg-theme-primary/10" : ""
-                  }`}
+                  className={`border-b border-pitch-800/40 ${zoneRowClassDesktop(
+                    zone,
+                    Boolean(row.isUserTeam)
+                  )}`}
                 >
                   <td className={`${SPACING.tableCell} font-mono text-pitch-400`}>
                     {row.position}
@@ -243,6 +313,21 @@ export function ManagerLeagueTable({
             })}
           </tbody>
         </table>
+      </div>
+      <div className={`mt-3 flex flex-wrap gap-x-3 gap-y-1 ${TYPO.meta} text-pitch-500`}>
+        {championshipTable ? (
+          <>
+            <span className="text-theme-primary">1 Auto promote</span>
+            <span className="text-amber-300">2–5 Play-offs</span>
+            <span className="text-accent-gold">Winner → Million Pound Game</span>
+          </>
+        ) : (
+          <>
+            <span className="text-amber-300">1–6 Play-offs</span>
+            <span className="text-accent-gold">11 Million Pound Game</span>
+            <span className="text-red-300">12 Auto relegate</span>
+          </>
+        )}
       </div>
     </div>
   );

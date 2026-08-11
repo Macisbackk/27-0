@@ -80,6 +80,24 @@ import {
   userQualifiedForManagerPlayoffs,
 } from "./managerPlayoffs";
 import {
+  advanceChampionshipPlayoffsAfterUserMatch,
+  applyChampionshipPlayoffMatch,
+  buildChampionshipPlayoffScheduledFixture,
+  ensureChampionshipPlayoffsReady,
+  finalizeChampionshipPlayoffsForMpgEntrant,
+  getUserChampionshipPlayoffMatch,
+  isChampionshipPlayoffMatchReadyForResult,
+  prepareChampionshipPlayoffRound,
+  userQualifiedForChampionshipPlayoffs,
+} from "./managerChampionshipPlayoffs";
+import {
+  applyMillionPoundGameResult,
+  buildMillionPoundGameScheduledFixture,
+  ensureMillionPoundGameReady,
+  finalizeMillionPoundGameIfNeeded,
+  isMillionPoundGameComplete,
+} from "./managerMillionPoundGame";
+import {
   buildWorldClubChallengeScheduledFixture,
   completeUserWorldClubChallenge,
   resolveAiWorldClubChallengeIfDue,
@@ -113,6 +131,32 @@ export function getNextManagerFixture(
 
   if (!isLeagueAndCupPhaseComplete(synced)) return null;
 
+  if (isUserInChampionship(synced)) {
+    let champ = ensureChampionshipPlayoffsReady(synced);
+    if (userQualifiedForChampionshipPlayoffs(champ)) {
+      const bracket = prepareChampionshipPlayoffRound(champ);
+      const match = getUserChampionshipPlayoffMatch(bracket);
+      if (match) {
+        return buildChampionshipPlayoffScheduledFixture(
+          { ...champ, championshipPlayoffs: bracket },
+          match
+        );
+      }
+      champ = { ...champ, championshipPlayoffs: bracket };
+    }
+    const withEntrant = finalizeChampionshipPlayoffsForMpgEntrant(champ);
+    const withMpg = ensureMillionPoundGameReady(withEntrant);
+    return buildMillionPoundGameScheduledFixture(withMpg);
+  }
+
+  // Super League careers also require the Championship play-off winner before
+  // the 11th-place club can receive its Million Pound Game fixture.
+  const withMpgEntrant = ensureMillionPoundGameReady(
+    finalizeChampionshipPlayoffsForMpgEntrant(synced)
+  );
+  const mpgFixture = buildMillionPoundGameScheduledFixture(withMpgEntrant);
+  if (mpgFixture) return mpgFixture;
+
   if (
     userQualifiedForManagerPlayoffs(synced) &&
     !synced.playoffsIntroAcknowledged
@@ -136,7 +180,22 @@ export function getNextManagerFixture(
 export function isManagerSeasonCompleteLite(career: ManagerCareer): boolean {
   const synced = syncManagerLeagueTable(career);
   if (!isLeagueAndCupPhaseComplete(synced)) return false;
-  if (isUserInChampionship(synced)) return true;
+  if (isUserInChampionship(synced)) {
+    if (userQualifiedForChampionshipPlayoffs(synced)) {
+      const bracket = synced.championshipPlayoffs;
+      if (!bracket || (!bracket.tournamentComplete && !bracket.userEliminated)) return false;
+    }
+    const withMpg = ensureMillionPoundGameReady(
+      finalizeChampionshipPlayoffsForMpgEntrant(synced)
+    );
+    return !withMpg.millionPoundGame?.userParticipating || isMillionPoundGameComplete(withMpg);
+  }
+  const mpgReady = ensureMillionPoundGameReady(
+    finalizeChampionshipPlayoffsForMpgEntrant(synced)
+  );
+  if (mpgReady.millionPoundGame?.userParticipating && !isMillionPoundGameComplete(mpgReady)) {
+    return false;
+  }
   if (!userQualifiedForManagerPlayoffs(synced)) return true;
   if (!synced.playoffsIntroAcknowledged) return false;
   const playoffs = synced.playoffs;
@@ -147,7 +206,13 @@ export function isManagerSeasonCompleteLite(career: ManagerCareer): boolean {
 export function isManagerSeasonComplete(career: ManagerCareer): boolean {
   const synced = syncManagerLeagueTable(career);
   if (!isLeagueAndCupPhaseComplete(synced)) return false;
-  if (isUserInChampionship(synced)) return true;
+  if (isUserInChampionship(synced)) return isManagerSeasonCompleteLite(synced);
+  const mpgReady = ensureMillionPoundGameReady(
+    finalizeChampionshipPlayoffsForMpgEntrant(synced)
+  );
+  if (mpgReady.millionPoundGame?.userParticipating && !isMillionPoundGameComplete(mpgReady)) {
+    return false;
+  }
   const withPlayoffs = ensurePlayoffsReady(synced);
   return isPlayoffsPhaseComplete(withPlayoffs);
 }
@@ -155,7 +220,13 @@ export function isManagerSeasonComplete(career: ManagerCareer): boolean {
 /** Squad + cup/playoff bracket prep before resolving or playing the next fixture. */
 export function prepareCareerForNextMatch(career: ManagerCareer): ManagerCareer {
   const simulated = resolveCareerForMatchSimulation(career);
-  return ensurePlayoffsReady(ensureCupBracketReady(simulated));
+  let next = ensureCupBracketReady(simulated);
+  if (isLeagueAndCupPhaseComplete(next)) {
+    next = ensureChampionshipPlayoffsReady(next);
+    next = finalizeChampionshipPlayoffsForMpgEntrant(next);
+    next = ensureMillionPoundGameReady(next);
+  }
+  return ensurePlayoffsReady(next);
 }
 
 import { countExpiringContracts } from "./managerContracts";
@@ -274,9 +345,11 @@ export function applyManagerMatchResult(
 
   const isCup = sched.competition === "challenge_cup";
   const isPlayoff = sched.competition === "playoffs";
+  const isChampionshipPlayoff = sched.competition === "championship_playoffs";
+  const isMillionPoundGame = sched.competition === "million_pound_game";
   const isFriendly = sched.competition === "friendly";
   const isWcc = sched.competition === "world_club_challenge";
-  const skipsLeagueProgress = isCup || isPlayoff || isFriendly || isWcc;
+  const skipsLeagueProgress = isCup || isPlayoff || isChampionshipPlayoff || isMillionPoundGame || isFriendly || isWcc;
 
   if (isCup && sched.cupMatchId && !isCupMatchReadyForResult(career, sched.cupMatchId)) {
     console.warn("Cup match not ready for result:", sched.cupMatchId);
@@ -295,6 +368,13 @@ export function applyManagerMatchResult(
       career,
       "Play-off bracket is not ready for this result. Try again from the hub."
     );
+  }
+  if (
+    isChampionshipPlayoff &&
+    sched.playoffMatchId &&
+    !isChampionshipPlayoffMatchReadyForResult(career, sched.playoffMatchId)
+  ) {
+    return matchApplyFail(career, "Championship play-off bracket is not ready for this result.");
   }
 
   if (career.fixtures.some((f) => f.fixtureId === sched.id)) {
@@ -635,6 +715,26 @@ export function applyManagerMatchResult(
       working = { ...working, playoffs };
     }
   }
+  if (isChampionshipPlayoff && sched.playoffMatchId) {
+    const updated = applyChampionshipPlayoffMatch(working, sched.playoffMatchId, fixture);
+    if (!updated) return matchApplyFail(career, "Could not update the Championship play-off bracket.");
+    working = { ...working, championshipPlayoffs: updated };
+    if (!updated.tournamentComplete) {
+      working = {
+        ...working,
+        championshipPlayoffs: advanceChampionshipPlayoffsAfterUserMatch(working),
+      };
+    }
+  }
+  if (isMillionPoundGame) {
+    working = ensureMillionPoundGameReady(
+      finalizeChampionshipPlayoffsForMpgEntrant(working)
+    );
+    working = applyMillionPoundGameResult(
+      working,
+      won ? career.club : sched.opponent
+    );
+  }
 
   const fixtureWithMotm: MatchFixture = motm
     ? { ...fixture, manOfTheMatch: motm }
@@ -788,8 +888,8 @@ export function applyManagerMatchResult(
     updatedAt: new Date().toISOString(),
   };
 
-  let finalCareer: ManagerCareer = ensurePlayoffsReady(
-    syncManagerLeagueTable(nextCareer)
+  let finalCareer: ManagerCareer = ensureMillionPoundGameReady(
+    ensureChampionshipPlayoffsReady(ensurePlayoffsReady(syncManagerLeagueTable(nextCareer)))
   );
   if (matchIncome > 0) {
     finalCareer = applyClubRevenue(finalCareer, matchIncome, "match_fee");
@@ -925,6 +1025,8 @@ export function advanceManagerMatchWeek(
   const skipsLeagueProgress =
     last?.competition === "challenge_cup" ||
     last?.competition === "playoffs" ||
+    last?.competition === "championship_playoffs" ||
+    last?.competition === "million_pound_game" ||
     last?.competition === "friendly" ||
     last?.competition === "world_club_challenge";
 
@@ -1030,11 +1132,16 @@ export function advanceManagerMatchWeek(
   next = rotateLatestNews(next);
 
   next = syncManagerFinance(next);
-  next = ensurePlayoffsReady(next);
+  next = ensureMillionPoundGameReady(
+    ensureChampionshipPlayoffsReady(ensurePlayoffsReady(next))
+  );
   // After elimination (or season end), finish AI play-offs so WCC uses the real champion.
   if (next.playoffs?.userEliminated || isManagerSeasonCompleteLite(next)) {
     next = finalizePlayoffTournamentForChampion(next);
   }
+  next = finalizeMillionPoundGameIfNeeded(
+    finalizeChampionshipPlayoffsForMpgEntrant(next)
+  );
   const seasonDone = isManagerSeasonComplete(next);
   if (seasonDone && !next.lastSeasonDevelopmentReview) {
     const developed = developSquadAtSeasonEnd(next);

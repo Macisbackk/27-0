@@ -1,16 +1,16 @@
 import type { ManagerCareer } from "./types";
 import {
   isUserInChampionship,
-  PROMOTE_RELEGATE_COUNT,
 } from "./leagueMembership";
 import { getUserLeagueTablePosition } from "./managerFixtures";
+import { getAutoPromoteCount } from "./managerLeagues";
 
 /** Championship top-N finish that earns Super League promotion. */
 export function userFinishedInPromotionPlaces(
   career: ManagerCareer
 ): boolean {
   if (!isUserInChampionship(career)) return false;
-  return getUserLeagueTablePosition(career) <= PROMOTE_RELEGATE_COUNT;
+  return getUserLeagueTablePosition(career) <= getAutoPromoteCount();
 }
 
 export function shouldShowPromotionCelebration(
@@ -18,7 +18,10 @@ export function shouldShowPromotionCelebration(
 ): boolean {
   if (career.promotionCelebrationShown) return false;
   if (!career.isSeasonComplete) return false;
-  return userFinishedInPromotionPlaces(career);
+  return (
+    userFinishedInPromotionPlaces(career) ||
+    career.millionPoundGame?.winner === career.club
+  );
 }
 
 export function acknowledgePromotionCelebration(

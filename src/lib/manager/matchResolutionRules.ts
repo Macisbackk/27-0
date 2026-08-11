@@ -69,6 +69,8 @@ export function getMatchResolutionRules(
   switch (context.competition) {
     case "challenge_cup":
     case "playoffs":
+    case "championship_playoffs":
+    case "million_pound_game":
     case "world_club_challenge":
     case "friendly":
       return KNOCKOUT_RULES;

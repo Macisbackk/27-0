@@ -301,6 +301,7 @@ export function ManagerAcrossLeague({
               : `Season ${career.seasonYear} Championship`
           }
           rows={tableRows}
+          competitionId={selectedCompetitionId}
           showDraws
           onViewClub={
             selectedCompetitionId === "super-league"

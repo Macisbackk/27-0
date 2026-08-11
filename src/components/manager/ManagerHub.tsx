@@ -29,6 +29,7 @@ import {
   isManagerPlayoffsActive,
   needsPlayoffsIntro,
 } from "@/lib/manager/managerPlayoffs";
+import { MILLION_POUND_GAME_NAME } from "@/lib/manager/managerMillionPoundGame";
 import { getPlayoffRoundLabel } from "@/lib/game/playoff-bracket";
 import {
   getHomeFixtureAttendanceOutlook,
@@ -233,6 +234,10 @@ export function ManagerHub({
   const advanceLabels = getAdvanceWeekButtonLabel(career, advancingWeek);
   const advanceHint = getAdvanceWeekHint(career);
   const isPlayoffFixture = nextFixture?.competition === "playoffs";
+  const isChampionshipPlayoffFixture =
+    nextFixture?.competition === "championship_playoffs";
+  const isMillionPoundGameFixture =
+    nextFixture?.competition === "million_pound_game";
   const matchOccasion = nextFixture
     ? getManagerMatchOccasionPresentation(nextFixture)
     : null;
@@ -614,6 +619,34 @@ export function ManagerHub({
     career.playoffsIntroAcknowledged &&
     (playoffsActive || isPlayoffFixture);
 
+  const mpg = hubCareer.millionPoundGame;
+  const showMillionPoundPanel =
+    isMillionPoundGameFixture ||
+    (mpg?.userParticipating && mpg.status !== "complete");
+
+  const millionPoundCard = showMillionPoundPanel && mpg ? (
+    <div className={SPACING.stackSm}>
+      <GameSectionHeader label="Promotion" title={MILLION_POUND_GAME_NAME} />
+      <ProgrammePanel padded>
+        <p className={`${TYPO.cardTitle} text-accent-gold`}>
+          {mpg.slClub} vs {mpg.champClub}
+        </p>
+        <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+          Winner plays Super League next season. Loser drops to the Championship.
+        </p>
+        {mpg.status === "complete" && mpg.winner ? (
+          <p className={`mt-2 ${TYPO.bodySm} text-theme-primary`}>
+            {mpg.winner} won the Million Pound Game.
+          </p>
+        ) : (
+          <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>
+            Your club is in the Million Pound Game — play from the match card above.
+          </p>
+        )}
+      </ProgrammePanel>
+    </div>
+  ) : null;
+
   const hubStandingsCard =
     shouldShowChallengeCupBracketOnHub(hubCareer, nextFixture) ? (
       <div className={SPACING.stackSm}>
@@ -630,6 +663,16 @@ export function ManagerHub({
           onOpenMatchPrep={
             onNavigate ? () => onNavigate("hub") : undefined
           }
+        />
+      </div>
+    ) : showMillionPoundPanel ? (
+      millionPoundCard
+    ) : isChampionshipPlayoffFixture && hubCareer.championshipPlayoffs ? (
+      <div className={SPACING.stackSm}>
+        <GameSectionHeader label="Results" title="Championship Play-Offs" />
+        <HubPlayoffBracketPanel
+          playoffs={hubCareer.championshipPlayoffs}
+          career={hubCareer}
         />
       </div>
     ) : showPlayoffBracket ? (

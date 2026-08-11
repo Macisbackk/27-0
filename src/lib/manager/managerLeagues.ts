@@ -81,9 +81,9 @@ const SUPER_LEAGUE_DEF: ManagerLeagueDefinition = {
   id: "super-league",
   name: "Super League",
   shortName: "SL",
-  bio: "England's top flight — the biggest budgets, best squads, and Grand Final glory.",
+  bio: "England's top flight — the biggest budgets, best squads, Grand Final glory, and a Million Pound Game survival battle.",
   clubSelectBlurb:
-    "Top-tier money, ratings, and board targets. Lift the Super League trophy.",
+    "Top-tier money, ratings, and board targets. Finish 11th or higher to avoid the Million Pound Game.",
   sortOrder: 1,
   selectable: true,
   seasonGames: MANAGER_SEASON_GAMES,
@@ -99,11 +99,11 @@ const SUPER_LEAGUE_DEF: ManagerLeagueDefinition = {
     topMaxPosition: 3,
     playoffsMaxPosition: 6,
     midTableMaxPosition: 10,
-    surviveMaxPosition: 12,
+    surviveMaxPosition: 11,
   },
   promotionRelegation: {
     promoteCount: 0,
-    relegateFromLinkedCount: 2,
+    relegateFromLinkedCount: 1,
     linkedLeagueId: "championship",
   },
   defaultClubNames: () => [...CURRENT_PLAYABLE_CLUBS],
@@ -113,14 +113,14 @@ const CHAMPIONSHIP_DEF: ManagerLeagueDefinition = {
   id: "championship",
   name: "Championship",
   shortName: "Champ",
-  bio: "England's second tier — tighter budgets, tougher builds, and promotion on the line.",
+  bio: "England's second tier — tighter budgets, tougher builds, automatic promotion for first, and the Million Pound Game route.",
   clubSelectBlurb:
-    "Home-and-away Championship — tighter budgets than Super League, finish top two to earn promotion.",
+    "Home-and-away Championship — finish first for automatic promotion or 2nd–5th to chase the Million Pound Game.",
   sortOrder: 2,
   selectable: true,
   seasonGames: CHAMPIONSHIP_ROUNDS,
   includeMagicWeekend: false,
-  hasPlayoffs: false,
+  hasPlayoffs: true,
   leagueTitleLabel: "Championship Champions",
   economyScale: 0.48,
   comfortRatingOffset: 8,
@@ -128,13 +128,13 @@ const CHAMPIONSHIP_DEF: ManagerLeagueDefinition = {
   boardRules: {
     titleLeaguePosition: 1,
     titlePlayoffFinish: null,
-    topMaxPosition: 2,
-    playoffsMaxPosition: 4,
+    topMaxPosition: 1,
+    playoffsMaxPosition: 5,
     midTableMaxPosition: 10,
-    surviveMaxPosition: 18,
+    surviveMaxPosition: 17,
   },
   promotionRelegation: {
-    promoteCount: 2,
+    promoteCount: 1,
     relegateFromLinkedCount: 0,
     linkedLeagueId: "super-league",
   },
@@ -212,13 +212,26 @@ export function getLeagueTitleLabel(id: ManagerCompetitionId): string {
 
 /** Promote/relegate swap size for the linked SL ↔ Champ pair. */
 export function getLinkedPromoteRelegateCount(): number {
-  const sl = MANAGER_LEAGUES["super-league"].promotionRelegation;
-  const ch = MANAGER_LEAGUES.championship.promotionRelegation;
-  return Math.max(
-    sl?.relegateFromLinkedCount ?? 0,
-    ch?.promoteCount ?? 0,
-    2
-  );
+  return 1;
+}
+
+/** Automatic promotions from a linked lower competition. */
+export function getAutoPromoteCount(
+  id: ManagerCompetitionId = "championship"
+): number {
+  return MANAGER_LEAGUES[id].promotionRelegation?.promoteCount ?? 0;
+}
+
+/** Automatic relegations into a linked lower competition. */
+export function getAutoRelegateCount(
+  id: ManagerCompetitionId = "super-league"
+): number {
+  return MANAGER_LEAGUES[id].promotionRelegation?.relegateFromLinkedCount ?? 0;
+}
+
+/** The current SL ↔ Championship link includes a Million Pound Game. */
+export function leagueHasMillionPoundGame(id: ManagerCompetitionId): boolean {
+  return id === "super-league" || id === "championship";
 }
 
 export function getDefaultClubsForLeague(id: ManagerCompetitionId): string[] {

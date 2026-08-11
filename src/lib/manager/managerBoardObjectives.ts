@@ -29,11 +29,11 @@ export function getBoardObjectiveSuccessDetail(
   if (competition === "championship") {
     switch (tier) {
       case "title":
-        return "Win the Championship. Top two promote.";
+        return "Win the Championship for automatic promotion. Positions 2–5 enter the Million Pound Game route.";
       case "top":
-        return "Finish top 2 to earn promotion.";
+        return "Finish first for automatic promotion, or 2nd–5th to reach the Championship play-offs.";
       case "playoffs":
-        return "Finish top 4.";
+        return "Finish 2nd–5th to reach the Championship play-offs.";
       case "mid-table":
         return "Finish mid-table or higher.";
       case "avoid-bottom":
@@ -52,7 +52,7 @@ export function getBoardObjectiveSuccessDetail(
       return "Finish 10th or higher.";
     case "avoid-bottom":
     case "survive":
-      return "Finish 12th or higher.";
+      return "Finish 11th or higher to avoid the Million Pound Game.";
   }
 }
 
@@ -71,7 +71,7 @@ export function getManagerBoardObjectiveIntro(
     primaryObjective: career.boardExpectation,
     successDetail: getBoardObjectiveSuccessDetail(tier, competition),
     secondaryAims: inChamp
-      ? ["Earn promotion (top 2)", "Challenge Cup run", "Build the squad"]
+      ? ["Earn promotion", "Championship play-offs", "Build the squad"]
       : ["Challenge Cup run", "Control wages", "Build the squad"],
     confidenceNote: `${career.boardConfidence}% confidence · hit ${career.boardExpectation}.`,
   };

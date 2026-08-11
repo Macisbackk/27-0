@@ -171,7 +171,7 @@ export function ManagerSeasonReview({
               }
             />
             <p className={`${TYPO.meta} text-pitch-400`}>
-              Top two promote automatically. No Championship play-offs.
+              First promotes automatically. Positions 2–5 enter the Championship play-offs, with the winner facing Super League 11th in the Million Pound Game.
             </p>
           </div>
         </ManagerSectionCard>

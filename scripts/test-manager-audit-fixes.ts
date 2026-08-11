@@ -7,11 +7,16 @@ import {
   isCupMatchReadyForResult,
   getPendingCupBracketRound,
   isLeagueAndCupPhaseComplete,
+  getCupRoundCount,
 } from "../src/lib/manager/managerChallengeCup";
 import { computeCareerWageBill } from "../src/lib/manager/managerReserveContracts";
 import { syncManagerFinance } from "../src/lib/manager/managerFinance";
 import { purgeStaleInboxMessages } from "../src/lib/manager/managerInbox";
-import { acceptIncomingOffer, releasePlayerWithCost } from "../src/lib/manager/managerTransferLeague";
+import {
+  acceptIncomingOffer,
+  releasePlayerWithCost,
+  computeReleaseCost,
+} from "../src/lib/manager/managerTransferLeague";
 import type { ManagerCareer } from "../src/lib/manager/types";
 
 let passed = 0;
@@ -101,7 +106,20 @@ assert(
 );
 
 const squadPlayerId = career.squad[0]!.playerId;
-const released = releasePlayerWithCost(career, squadPlayerId);
+const releaseCareer = {
+  ...career,
+  budget: Math.max(career.budget, computeReleaseCost(career, squadPlayerId) + 50_000),
+  managerFinance: career.managerFinance
+    ? {
+        ...career.managerFinance,
+        transferBudget: Math.max(
+          career.managerFinance.transferBudget,
+          computeReleaseCost(career, squadPlayerId) + 50_000
+        ),
+      }
+    : career.managerFinance,
+} as ManagerCareer;
+const released = releasePlayerWithCost(releaseCareer, squadPlayerId);
 assert(released.ok === true && !!released.career, "releasePlayerWithCost succeeds");
 if (released.career) {
   assert(
@@ -162,6 +180,15 @@ if (released.career) {
   );
 }
 
+const cupRoundKeys = [
+  "round_one",
+  "round_two",
+  "last_sixteen",
+  "quarter_final",
+  "semi_final",
+  "final",
+] as const;
+const cupTieCount = getCupRoundCount();
 const cupDoneCareer = {
   ...career,
   fixtures: [
@@ -183,7 +210,7 @@ const cupDoneCareer = {
       fixtureId: `league-${i}`,
       competition: "league" as const,
     })),
-    ...Array.from({ length: 4 }, (_, i) => ({
+    ...Array.from({ length: cupTieCount }, (_, i) => ({
       round: 28 + i,
       opponent: "Wigan Warriors",
       isHome: true,
@@ -200,7 +227,7 @@ const cupDoneCareer = {
       fixtureId: `cup-${i}`,
       competition: "challenge_cup" as const,
       meta: {
-        cupRound: (["round_one", "quarter_final", "semi_final", "final"] as const)[i],
+        cupRound: cupRoundKeys[i] ?? "final",
         injuries: [],
       },
     })),
@@ -214,7 +241,7 @@ const cupDoneCareer = {
 } as ManagerCareer;
 assert(
   isLeagueAndCupPhaseComplete(cupDoneCareer),
-  "cup phase complete when four cup ties played despite stale bracket flags"
+  "cup phase complete when all cup ties played despite stale bracket flags"
 );
 
 const cupEliminatedCareer = {
