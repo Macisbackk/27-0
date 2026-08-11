@@ -280,7 +280,7 @@ export function ManagerPositionRetrainingPanel({
                 key={entry.playerId}
                 name={player.name}
                 rating={player.peakRating}
-                subtitle={`${positionLabel} · Tap to train`}
+                subtitle={`${positionLabel} · Select to train`}
                 variant={pathModalPlayerId === entry.playerId ? "selected" : "idle"}
                 onClick={() => handleSelectPlayer(entry.playerId, status)}
               />

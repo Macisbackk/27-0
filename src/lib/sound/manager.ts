@@ -52,6 +52,11 @@ export const SOUND_FILES = {
   // Feature events — reuse existing assets; synth falls back if files missing.
   matchStarted: "/sounds/season-start.mp3",
   fullTime: "/sounds/crowd.mp3",
+  halfTime: "/sounds/toggle.mp3",
+  tryScored: "/sounds/big-win.mp3",
+  conversion: "/sounds/select.mp3",
+  conversionMiss: "/sounds/fail.mp3",
+  progressWeek: "/sounds/simulate-round.mp3",
   promotion: "/sounds/select.mp3",
   popupOpen: "/sounds/menu-open.mp3",
   popupClose: "/sounds/menu-close.mp3",
@@ -77,10 +82,54 @@ export const SOUND_FILES = {
 
 export type SoundId = keyof typeof SOUND_FILES;
 
+/** Relative mix — UI stays quiet; match/celebration events sit above. */
+const SOUND_VOLUME: Partial<Record<SoundId, number>> = {
+  click: 0.16,
+  tabChange: 0.14,
+  toggle: 0.14,
+  menuOpen: 0.18,
+  menuClose: 0.16,
+  expand: 0.14,
+  panelClose: 0.14,
+  popupOpen: 0.2,
+  popupClose: 0.16,
+  select: 0.22,
+  reveal: 0.24,
+  slotSpinTick: 0.12,
+  slotSpinStart: 0.2,
+  slotLand: 0.28,
+  simulateRound: 0.22,
+  progressWeek: 0.24,
+  calendarComplete: 0.26,
+  transferOffer: 0.28,
+  transferComplete: 0.3,
+  contractSigned: 0.28,
+  matchStarted: 0.32,
+  halfTime: 0.26,
+  tryScored: 0.36,
+  conversion: 0.24,
+  conversionMiss: 0.2,
+  fullTime: 0.3,
+  goldenPointStart: 0.32,
+  goldenPointWin: 0.38,
+  win: 0.32,
+  loss: 0.28,
+  bigWin: 0.36,
+  upset: 0.34,
+  achievementUnlock: 0.4,
+  trophy: 0.4,
+  perfect: 0.42,
+  wccWin: 0.4,
+  futureStarReveal: 0.34,
+  boostSuccess: 0.3,
+  warning: 0.26,
+  fail: 0.24,
+};
+
 const COOLDOWN_MS: Partial<Record<SoundId, number>> = {
   click: 90,
   toggle: 100,
-  tabChange: 120,
+  tabChange: 140,
   select: 140,
   reveal: 200,
   reroll: 250,
@@ -110,23 +159,30 @@ const COOLDOWN_MS: Partial<Record<SoundId, number>> = {
   popupOpen: 180,
   popupClose: 180,
   matchStarted: 400,
+  halfTime: 500,
+  tryScored: 220,
+  conversion: 180,
+  conversionMiss: 180,
   fullTime: 350,
+  progressWeek: 280,
   promotion: 220,
   boostSelected: 140,
   boostSuccess: 220,
   boostFailed: 220,
   reserveCallUp: 200,
   cupProgress: 300,
-  calendarComplete: 250,
+  calendarComplete: 400,
   friendlyConfirm: 180,
-  futureStarReveal: 280,
+  futureStarReveal: 400,
   transferOffer: 280,
   transferComplete: 250,
   wccWin: 400,
-  goldenPointStart: 320,
+  goldenPointStart: 500,
   goldenPointWin: 350,
   managerSacked: 400,
   managerAppointed: 350,
+  achievementUnlock: 600,
+  seasonReviewMajor: 400,
 };
 
 let interactionUnlocked = false;
@@ -218,13 +274,10 @@ const SYNTH_ALIASES: Partial<Record<SoundId, keyof typeof synth>> = {
   contractSigned: "success",
   cupProgress: "challengeCup",
   wccWin: "trophy",
-  goldenPointStart: "seasonStart",
   goldenPointWin: "bigWin",
   managerSacked: "disaster",
   managerAppointed: "modeNormal",
-  calendarComplete: "crowd",
   friendlyConfirm: "select",
-  achievementUnlock: "legend",
   seasonReviewMajor: "trophy",
 };
 
@@ -258,7 +311,8 @@ export function playSound(
   lastPlayedAt.set(id, now);
 
   const path = SOUND_FILES[id];
-  void tryPlayFile(path, options?.volume ?? 0.3).then((ok) => {
+  const volume = options?.volume ?? SOUND_VOLUME[id] ?? 0.26;
+  void tryPlayFile(path, volume).then((ok) => {
     if (!ok) playSynth(id, options?.grade);
   });
 }

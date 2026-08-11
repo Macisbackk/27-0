@@ -29,7 +29,7 @@ import {
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { playUiClick } from "@/lib/sound";
 
-type StatsTab = "season" | "career" | "retired";
+type StatsTab = "season" | "career" | "history" | "retired";
 
 type RetiredSortKey =
   | "name"
@@ -60,7 +60,9 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
             ? `${career.seasonYear} season statistics`
             : tab === "career"
               ? `All-time career record at ${career.club}`
-              : "Players who have retired during this save"
+              : tab === "history"
+                ? "Season-by-season club history"
+                : "Players who have retired during this save"
         }
       />
       <div className="flex w-full min-w-0 justify-center">
@@ -68,6 +70,7 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
           tabs={[
             { id: "season", label: "Season" },
             { id: "career", label: "Career" },
+            { id: "history", label: "History" },
             { id: "retired", label: "Retired" },
           ]}
           active={tab}
@@ -79,6 +82,8 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
         <SeasonStatsPanel career={career} />
       ) : tab === "career" ? (
         <CareerStatsPanel career={career} />
+      ) : tab === "history" ? (
+        <ClubHistoryPanel career={career} />
       ) : (
         <RetiredPlayersPanel career={career} />
       )}
@@ -427,6 +432,95 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
       )}
       </div>
     </>
+  );
+}
+
+function ClubHistoryPanel({ career }: { career: ManagerCareer }) {
+  const history = [...career.seasonHistory].reverse();
+  const moments = (career.worldStory?.moments ?? []).slice(0, 12);
+  const rivalries = career.worldStory?.developingRivalries ?? [];
+
+  return (
+    <div className="stat-section-stack">
+      <ManagerSectionCard title="Season archive" variant="featured" accent="gold">
+        {history.length === 0 ? (
+          <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+            Finish a season to build the club archive.
+          </p>
+        ) : (
+          <ul className="mt-3 space-y-3">
+            {history.map((s) => (
+              <li
+                key={s.seasonYear}
+                className="rounded-lg border border-pitch-700/50 bg-pitch-950/40 px-3 py-2.5"
+              >
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <p className="font-display text-sm font-bold text-white">
+                    {s.seasonYear}
+                  </p>
+                  {s.seasonNarrative ? (
+                    <p className="font-display text-[10px] font-bold uppercase tracking-wider text-accent-gold">
+                      {s.seasonNarrative}
+                    </p>
+                  ) : null}
+                </div>
+                <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+                  {ordinal(s.position)} · {s.wins}W-{s.draws ?? 0}D-{s.losses}L
+                  {s.challengeCupResult
+                    ? ` · Cup: ${s.challengeCupResult}`
+                    : ""}
+                  {s.playoffFinish ? ` · ${s.playoffFinish}` : ""}
+                </p>
+                {s.trophies.length > 0 ? (
+                  <p className={`mt-1 ${TYPO.bodySm} text-accent-gold`}>
+                    {s.trophies.join(" · ")}
+                  </p>
+                ) : null}
+                {s.biggestWin ? (
+                  <p className={`mt-1 ${TYPO.meta} text-pitch-500`}>
+                    Biggest win: {s.biggestWin.pointsFor}–{s.biggestWin.pointsAgainst} vs{" "}
+                    {s.biggestWin.opponent}
+                  </p>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
+      </ManagerSectionCard>
+
+      {rivalries.length > 0 ? (
+        <ManagerSectionCard title="Rivalries" variant="inset">
+          <ul className="mt-2 space-y-2">
+            {rivalries.slice(0, 5).map((r) => (
+              <li key={r.club} className={`${TYPO.bodySm} text-pitch-300`}>
+                <span className="font-semibold text-white">{r.club}</span>
+                {" — "}
+                {r.meetings} meetings ({r.wins}W {r.draws}D {r.losses}L)
+              </li>
+            ))}
+          </ul>
+        </ManagerSectionCard>
+      ) : null}
+
+      <ManagerSectionCard title="Recent club moments" variant="inset">
+        {moments.length === 0 ? (
+          <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+            Memorable weeks will appear here as your save develops.
+          </p>
+        ) : (
+          <ul className="mt-2 space-y-2">
+            {moments.map((m) => (
+              <li key={m.id} className="border-b border-pitch-800/40 pb-2 last:border-0">
+                <p className="text-sm font-semibold text-white">{m.title}</p>
+                <p className={`${TYPO.bodySm} text-pitch-400`}>
+                  {m.seasonYear} · W{m.week} — {m.body}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </ManagerSectionCard>
+    </div>
   );
 }
 

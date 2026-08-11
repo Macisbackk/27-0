@@ -9,6 +9,7 @@ import type {
   ManagerCompetition,
   ManagerScheduledFixture,
 } from "./types";
+import { UI_COPY } from "@/lib/ui/copy";
 
 /** Showcase / knockout weeks that should feel distinct from a league round. */
 export type ManagerMatchOccasion =
@@ -98,8 +99,8 @@ export function getFixtureActionLabel(input: {
 }): string {
   const { action } = input;
   if (action === "simulate-round") return "Simulate Round";
-  if (action === "play") return "Play Game";
-  return "Simulate Game";
+  if (action === "play") return UI_COPY.playGame;
+  return UI_COPY.simulateGame;
 }
 
 export function getManagerMatchOccasionPresentation(

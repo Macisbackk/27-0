@@ -441,6 +441,13 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
     playerPositionRetraining: withMembership.playerPositionRetraining ?? {},
     lastSeasonDevelopmentReview: withMembership.lastSeasonDevelopmentReview,
     clubCareerTotals: withMembership.clubCareerTotals ?? {},
+    worldStory: withMembership.worldStory ?? {
+      chains: [],
+      shownMilestoneIds: [],
+      moments: [],
+      departedPlayers: {},
+      developingRivalries: [],
+    },
     retiredPlayers: withMembership.retiredPlayers ?? [],
     managerSettings: hydrateManagerSettings(withMembership.managerSettings),
     playerShowcaseVersion: PLAYER_SHOWCASE_VERSION,

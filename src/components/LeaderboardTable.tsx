@@ -63,7 +63,7 @@ const MANAGER_MODE_ACCENTS: Record<
   ManagerLeaderboardDbMode,
   LeaderboardTabAccent
 > = {
-  "manager-super-league": "green",
+  "manager-super-league": "theme",
   "manager-championship": "sky",
   "manager-challenge-cup": "gold",
 };
@@ -81,7 +81,7 @@ const TRACKER_ACCENTS: Partial<
   daily_streak: "amber",
   manager_challenge_cups: "gold",
   manager_cup_finals: "gold",
-  manager_league_titles: "green",
+  manager_league_titles: "theme",
   manager_championship_titles: "sky",
   manager_super_league_champions: "gold",
   manager_seasons_completed: "sky",

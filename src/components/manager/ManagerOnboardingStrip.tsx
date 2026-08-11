@@ -49,7 +49,12 @@ export function ManagerOnboardingStrip({
                 onNavigate(nextStep.view);
               }}
             >
-              Go
+              Go to{" "}
+              {nextStep.view === "squad"
+                ? "Squad"
+                : nextStep.view === "contracts"
+                  ? "Contracts"
+                  : "Hub"}
             </GameButton>
           ) : null}
           <GameButton

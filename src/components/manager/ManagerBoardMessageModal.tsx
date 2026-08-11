@@ -7,6 +7,7 @@ import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import type { InboxMessage } from "@/lib/manager/types";
+import { isStoryInboxMessage } from "@/lib/manager/managerWorldStory";
 import { managerModalHeaderClass } from "@/lib/manager/managerSurfaces";
 import { playMenuOpen, playUiClick } from "@/lib/sound";
 
@@ -21,6 +22,7 @@ export function ManagerBoardMessageModal({
   onDismiss,
   onViewInbox,
 }: ManagerBoardMessageModalProps) {
+  const isStory = isStoryInboxMessage(message);
   const handleDismiss = useCallback(() => {
     playUiClick();
     onDismiss();
@@ -49,20 +51,33 @@ export function ManagerBoardMessageModal({
           className={`flex-1 overflow-y-auto overflow-x-hidden ${SPACING.cardPadding}`}
         >
           <div
-            className={managerModalHeaderClass("primary", { centered: true })}
+            className={managerModalHeaderClass(
+              isStory ? "gold" : "primary",
+              { centered: true }
+            )}
           >
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border-2 border-theme-primary/45 bg-theme-primary/15 shadow-inner">
+            <div
+              className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full border-2 shadow-inner ${
+                isStory
+                  ? "border-accent-gold/45 bg-accent-gold/15"
+                  : "border-theme-primary/45 bg-theme-primary/15"
+              }`}
+            >
               <span
-                className="font-display text-xl font-black text-theme-primary"
+                className={`font-display text-xl font-black ${
+                  isStory ? "text-accent-gold" : "text-theme-primary"
+                }`}
                 aria-hidden
               >
-                B
+                {isStory ? "!" : "B"}
               </span>
             </div>
             <div className="mt-3 flex justify-center gap-2">
-              <ManagerInboxBadge type="board" />
+              <ManagerInboxBadge type={isStory ? "news" : "board"} />
               <span className={`${TYPO.bodySm} text-pitch-400`}>
-                From Board · Week {message.gameWeek}
+                {isStory
+                  ? `Club Update · Week ${message.gameWeek}`
+                  : `From Board · Week ${message.gameWeek}`}
               </span>
             </div>
             <h2 id="board-message-title" className={`mt-3 ${TYPO.cardTitle}`}>

@@ -1173,7 +1173,7 @@ export function ManagerTransfers({
                         openListedNegotiation(player.id);
                       }}
                     >
-                      Negotiate {effectiveDeal === "loan" ? "loan" : "deal"}
+                      {effectiveDeal === "loan" ? "Offer loan" : "Make offer"}
                     </GameButton>
                     <GameButton
                       variant="secondary"
@@ -1309,7 +1309,7 @@ export function ManagerTransfers({
                       disabled={!appeal.allowed}
                       onClick={() => openFreeAgentNegotiation(player.id)}
                     >
-                      Negotiate deal
+                      Make offer
                     </GameButton>
                     <GameButton
                       variant="secondary"
@@ -1560,7 +1560,7 @@ export function ManagerTransfers({
                       }}
                     >
                       {unlistedDeal === "loan"
-                        ? "Negotiate loan"
+                        ? "Offer loan"
                         : `Make offer — from ${formatWage(buyerFee)}`}
                     </GameButton>
                   </div>
@@ -1656,7 +1656,7 @@ export function ManagerTransfers({
                             }
                           }}
                         >
-                          {freeAgent ? "Negotiate" : "Make offer"}
+                          Make offer
                         </GameButton>
                       )}
                       {canLoan && (
@@ -1670,7 +1670,7 @@ export function ManagerTransfers({
                             openListedNegotiation(playerId);
                           }}
                         >
-                          Negotiate loan
+                          Offer loan
                         </GameButton>
                       )}
                       <GameButton

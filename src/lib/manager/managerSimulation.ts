@@ -186,6 +186,7 @@ import { completeFriendlyMatch } from "./managerFriendlies";
 import { maybeAddReserveReport } from "./managerReserveReports";
 import { applyAutoPromoteByRating } from "./managerReserveRelease";
 import { rotateLatestNews } from "./managerNews";
+import { processWorldStoryForWeek } from "./managerWorldStory";
 import {
   tickChampionshipOnAdvance,
 } from "./championship/ensureChampionship";
@@ -262,7 +263,7 @@ export function applyManagerMatchResult(
   if (career.matchWeekPhase === "awaiting_advance") {
     return matchApplyFail(
       career,
-      "Continue to the next Match Week before playing another fixture."
+      "Progress Week before playing another fixture."
     );
   }
   const sched =
@@ -1018,6 +1019,7 @@ export function advanceManagerMatchWeek(
   // All transfer/loan/AI market activity runs once per gameWeek.
   next = processTransferMarketForWeek(next);
   next = syncManagerInboxMessages(next);
+  next = processWorldStoryForWeek(next);
   if (last?.competition === "league") {
     next = tickPositionRetraining(next);
   }
@@ -1225,7 +1227,7 @@ export function simulateManagerNextMatch(
   if (career.matchWeekPhase === "awaiting_advance") {
     return matchApplyFail(
       career,
-      "Continue to the next Match Week before playing another fixture."
+      "Progress Week before playing another fixture."
     );
   }
   if (isManagerSeasonComplete(career)) {

@@ -71,8 +71,8 @@ export function playSequence(
 }
 
 export const synth = {
-  click: () => playTone(440, 0.05, { volume: 0.04 }),
-  select: () => playTone(520, 0.07, { volume: 0.06 }),
+  click: () => playTone(440, 0.045, { volume: 0.028 }),
+  select: () => playTone(520, 0.07, { volume: 0.05 }),
   reveal: () => {
     playTone(392, 0.06, { volume: 0.05, type: "triangle" });
     setTimeout(() => playTone(494, 0.07, { volume: 0.045, type: "triangle" }), 50);
@@ -85,6 +85,68 @@ export const synth = {
     playTone(660, 0.09, { volume: 0.07 });
     setTimeout(() => playTone(880, 0.08, { volume: 0.05 }), 60);
   },
+  tryScored: () =>
+    playSequence(
+      [
+        { freq: 392, dur: 0.07, vol: 0.055, type: "triangle" },
+        { freq: 523, dur: 0.09, vol: 0.06, type: "triangle" },
+        { freq: 659, dur: 0.12, vol: 0.055, type: "triangle" },
+      ],
+      0.045
+    ),
+  conversion: () =>
+    playSequence(
+      [
+        { freq: 494, dur: 0.05, vol: 0.04 },
+        { freq: 587, dur: 0.07, vol: 0.038 },
+      ],
+      0.04
+    ),
+  conversionMiss: () =>
+    playTone(277, 0.1, { volume: 0.032, type: "triangle" }),
+  halfTime: () =>
+    playSequence(
+      [
+        { freq: 330, dur: 0.08, vol: 0.04, type: "triangle" },
+        { freq: 330, dur: 0.08, vol: 0.035, type: "triangle" },
+      ],
+      0.1
+    ),
+  progressWeek: () =>
+    playSequence(
+      [
+        { freq: 262, dur: 0.06, vol: 0.04, type: "triangle" },
+        { freq: 330, dur: 0.07, vol: 0.042, type: "triangle" },
+        { freq: 392, dur: 0.08, vol: 0.04, type: "triangle" },
+      ],
+      0.05
+    ),
+  calendarComplete: () =>
+    playSequence(
+      [
+        { freq: 349, dur: 0.07, vol: 0.045, type: "triangle" },
+        { freq: 440, dur: 0.1, vol: 0.05, type: "triangle" },
+      ],
+      0.05
+    ),
+  goldenPointStart: () =>
+    playSequence(
+      [
+        { freq: 370, dur: 0.08, vol: 0.05, type: "triangle" },
+        { freq: 466, dur: 0.1, vol: 0.055, type: "triangle" },
+        { freq: 554, dur: 0.14, vol: 0.05, type: "triangle" },
+      ],
+      0.06
+    ),
+  achievementUnlock: () =>
+    playSequence(
+      [
+        { freq: 523, dur: 0.09, vol: 0.06, type: "triangle" },
+        { freq: 659, dur: 0.1, vol: 0.065, type: "triangle" },
+        { freq: 784, dur: 0.14, vol: 0.055, type: "triangle" },
+      ],
+      0.055
+    ),
   historic: () =>
     playSequence([
       { freq: 330, dur: 0.1, vol: 0.05, type: "triangle" },
@@ -209,10 +271,10 @@ export const synth = {
       { freq: 262, dur: 0.16, vol: 0.05, type: "triangle" },
       { freq: 220, dur: 0.2, vol: 0.045, type: "triangle" },
     ], 0.1),
-  menuOpen: () => playTone(360, 0.06, { volume: 0.04, type: "triangle" }),
-  menuClose: () => playTone(300, 0.06, { volume: 0.035, type: "triangle" }),
-  expand: () => playTone(480, 0.05, { volume: 0.04 }),
-  panelClose: () => playTone(340, 0.04, { volume: 0.03, type: "triangle" }),
+  menuOpen: () => playTone(360, 0.06, { volume: 0.032, type: "triangle" }),
+  menuClose: () => playTone(300, 0.06, { volume: 0.028, type: "triangle" }),
+  expand: () => playTone(480, 0.05, { volume: 0.032 }),
+  panelClose: () => playTone(340, 0.04, { volume: 0.024, type: "triangle" }),
   eraOn: () =>
     playSequence(
       [
@@ -223,7 +285,7 @@ export const synth = {
       0.06
     ),
   eraOff: () => playTone(392, 0.06, { volume: 0.045, type: "triangle" }),
-  toggle: () => playTone(480, 0.04, { volume: 0.035 }),
+  toggle: () => playTone(480, 0.04, { volume: 0.028 }),
   success: () =>
     playSequence(
       [
@@ -249,9 +311,9 @@ export const synth = {
       ],
       0.06
     ),
-  tabChange: () => playTone(420, 0.04, { volume: 0.035, type: "triangle" }),
+  tabChange: () => playTone(420, 0.035, { volume: 0.026, type: "triangle" }),
   simulateRound: () =>
-    playTone(280, 0.09, { volume: 0.045, type: "triangle" }),
+    playTone(280, 0.09, { volume: 0.04, type: "triangle" }),
   simulateAll: () =>
     playSequence(
       [

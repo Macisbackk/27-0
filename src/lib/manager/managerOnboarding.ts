@@ -38,7 +38,7 @@ export const MANAGER_ONBOARDING_STEPS = [
   {
     id: "first-match",
     title: "Play or simulate Round 1",
-    body: "Use Play Match for live tactics or Simulate for a quick result.",
+    body: "Use Play Game for live tactics or Simulate Game for a quick result.",
     view: "hub" as const,
   },
 ] as const;

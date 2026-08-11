@@ -6,7 +6,7 @@ import {
   tabGroupButtonClass,
   tabGroupClass,
 } from "@/lib/ui/design-system";
-import { playTabChange, playUiClick } from "@/lib/sound";
+import { playTabChange } from "@/lib/sound";
 
 export interface ManagerSubTabOption<T extends string> {
   id: T;
@@ -105,7 +105,6 @@ export function ManagerSubTabBar<T extends string>({
               onClick={() => {
                 if (active === id) return;
                 playTabChange();
-                playUiClick();
                 onChange(id);
               }}
             >

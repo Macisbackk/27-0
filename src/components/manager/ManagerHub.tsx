@@ -4,7 +4,7 @@ import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type {
   ManagerCareer,
@@ -496,40 +496,10 @@ export function ManagerHub({
             className="mt-3"
             onClick={() => onNavigate("squad")}
           >
-            View Squad
+            Open Squad
           </GameButton>
         )}
       </ManagerSectionCard>
-    ) : null;
-
-  const quickActionsCard =
-    onNavigate ? (
-      <div className={`hidden sm:block ${CARD.base} ${SPACING.cardPadding}`}>
-        <p className={`${TYPO.sectionLabel} mb-3`}>Quick Actions</p>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-          <GameButton
-            variant="secondary"
-            size="sm"
-            onClick={() => onNavigate("squad")}
-          >
-            Squad
-          </GameButton>
-          <GameButton
-            variant="secondary"
-            size="sm"
-            onClick={() => onNavigate("fixtures")}
-          >
-            Fixtures
-          </GameButton>
-          <GameButton
-            variant="secondary"
-            size="sm"
-            onClick={() => onNavigate("contracts")}
-          >
-            Contracts
-          </GameButton>
-        </div>
-      </div>
     ) : null;
 
   const commandCentre =
@@ -685,7 +655,6 @@ export function ManagerHub({
         {hubStandingsCard}
         {squadAvailabilityCard}
       </div>
-      {quickActionsCard}
     </>
   );
 

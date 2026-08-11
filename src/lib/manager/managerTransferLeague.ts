@@ -66,6 +66,7 @@ import {
   syncUserListingToLeagueMarket,
   removePlayerFromLeagueMarket,
 } from "./transferLedger";
+import { rememberPlayerDeparture } from "./managerWorldStory";
 
 function canGenerateOfferFromClub(
   career: ManagerCareer,
@@ -1035,7 +1036,18 @@ export function generateIncomingTransferOffers(
 
     const buyers = rivalTransferClubs(career.club);
     if (buyers.length === 0) continue;
-    const buyer = buyers[Math.floor(rng() * buyers.length)]!;
+    const storyChains = career.worldStory?.chains ?? [];
+    const interest = storyChains.find(
+      (c) =>
+        c.kind === "transfer_interest" &&
+        c.playerId === playerId &&
+        c.clubId &&
+        c.stage >= 1
+    );
+    const buyer =
+      interest?.clubId && buyers.includes(interest.clubId)
+        ? interest.clubId
+        : buyers[Math.floor(rng() * buyers.length)]!;
     if (isSameManagerClub(buyer, career.club)) continue;
     if (!canGenerateOfferFromClub(career, playerId, buyer, false)) continue;
     const funds = clubFunds[buyer] ?? getManagerClubConfig(buyer).budget;
@@ -1520,6 +1532,7 @@ export function acceptIncomingOffer(
 
   nextCareer = addTransferIncome(nextCareer, msg.offerAmount);
   nextCareer = transferLeaguePlayer(nextCareer, playerId, career.club, buyer);
+  nextCareer = rememberPlayerDeparture(nextCareer, playerId);
   const saleMsg = createPlayerSaleMessage(
     nextCareer,
     msg.playerName ?? getPlayerById(playerId)?.name ?? "Player",

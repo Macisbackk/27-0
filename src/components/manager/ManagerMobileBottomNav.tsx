@@ -9,7 +9,7 @@ import {
   isManagerMobileMoreNavView,
 } from "@/lib/manager/manager-nav-config";
 import type { ManagerView } from "@/lib/manager/types";
-import { playTabChange, playUiClick } from "@/lib/sound";
+import { playMenuClose, playMenuOpen, playTabChange } from "@/lib/sound";
 import { useModalA11y } from "@/hooks/useModalA11y";
 
 interface ManagerMobileBottomNavProps {
@@ -30,7 +30,6 @@ export function ManagerMobileBottomNav({
   const navigate = (view: ManagerView) => {
     if (disabled) return;
     if (active !== view) playTabChange();
-    playUiClick();
     onNavigate(view);
     setMoreOpen(false);
   };
@@ -70,8 +69,11 @@ export function ManagerMobileBottomNav({
             type="button"
             disabled={disabled}
             onClick={() => {
-              playUiClick();
-              setMoreOpen((open) => !open);
+              setMoreOpen((open) => {
+                if (open) playMenuClose();
+                else playMenuOpen();
+                return !open;
+              });
             }}
             className={`btn-press relative flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-sm border-2 px-0.5 py-2 text-center transition ${
               moreActive || moreOpen

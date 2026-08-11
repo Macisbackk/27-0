@@ -62,6 +62,7 @@ import {
   tickClubCareerTotals,
 } from "./managerRetirement";
 import { getManagerSeasonTrophyLabels } from "./managerSeasonTrophies";
+import { deriveSeasonNarrativeLabel } from "./managerWorldStory";
 import { applySeasonClubPrestigeDrift, applyPromotionRelegationStarTracks, getCareerClubStars } from "./managerDifficulty";
 import { getClubFacilities } from "./managerFacilities";
 import { createChampionshipCompetition } from "./championship/championshipLeague";
@@ -173,6 +174,8 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
     seasonVerdict = "Strong league finish — cup disappointment.";
   }
 
+  const seasonNarrative = deriveSeasonNarrativeLabel(career);
+
   return {
     seasonYear: career.seasonYear,
     position,
@@ -201,6 +204,7 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
       (id) => getManagerPlayer(career, id)?.name ?? id
     ),
     seasonVerdict,
+    seasonNarrative,
   };
 }
 

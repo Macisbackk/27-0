@@ -158,7 +158,7 @@ export function ManagerReservePlayerCard({
                     onViewDetails(model.id);
                   }}
                 >
-                  {UI_COPY.viewDetails}
+                  {UI_COPY.managePlayer}
                 </button>
                 {onToggleProtectFromMassRelease ? (
                   <button

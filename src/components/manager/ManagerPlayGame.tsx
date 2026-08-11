@@ -40,7 +40,21 @@ import { computeManagerTeamRating } from "@/lib/manager/managerRating";
 import { getDisplayedOpponentTeamRating } from "@/lib/manager/managerOpponentRating";
 import { managerResultBadgeClass } from "@/lib/manager/managerSurfaces";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
-import { playMatchStarted, playFullTime, playGoldenPointStart, playGoldenPointWin, playSimulateRound, playUiClick } from "@/lib/sound";
+import {
+  playConversion,
+  playConversionMiss,
+  playFullTime,
+  playGoldenPointStart,
+  playGoldenPointWin,
+  playHalfTime,
+  playMatchDefeat,
+  playMatchNarrowWin,
+  playMatchStarted,
+  playCupProgress,
+  playSimulateRound,
+  playTryScored,
+  playUiClick,
+} from "@/lib/sound";
 
 const COMMANDS = LIVE_MATCH_COMMANDS;
 
@@ -77,6 +91,9 @@ export function ManagerPlayGame({
   const [applyError, setApplyError] = useState<string | null>(null);
   const finishedRef = useRef(false);
   const completionSoundKeyRef = useRef<string | null>(null);
+  const eventSoundIndexRef = useRef(0);
+  const gpStartSoundKeyRef = useRef<string | null>(null);
+  const skipBatchEventSfxRef = useRef(false);
   const careerRef = useRef(career);
   const commandRef = useRef(command);
   const liveRef = useRef(live);
@@ -101,6 +118,9 @@ export function ManagerPlayGame({
     setHasStarted(false);
     finishedRef.current = false;
     completionSoundKeyRef.current = null;
+    eventSoundIndexRef.current = 0;
+    gpStartSoundKeyRef.current = null;
+    skipBatchEventSfxRef.current = false;
   }, [fixtureKey]);
 
   const finishMatch = useCallback(
@@ -155,26 +175,83 @@ export function ManagerPlayGame({
     return () => window.clearInterval(timer);
   }, [fixtureKey, clockRunning, live?.phase, sched]);
 
+  // Incremental match-event SFX — tied to new events only, never remount/review.
+  useEffect(() => {
+    if (!live || !hasStarted) return;
+    const events = live.events;
+    if (skipBatchEventSfxRef.current) {
+      eventSoundIndexRef.current = events.length;
+      skipBatchEventSfxRef.current = false;
+      const firstGp = events.find((e) => e.period === "golden_point");
+      if (firstGp && gpStartSoundKeyRef.current !== live.fixtureId) {
+        gpStartSoundKeyRef.current = live.fixtureId;
+        playGoldenPointStart();
+      }
+      return;
+    }
+
+    let i = eventSoundIndexRef.current;
+    while (i < events.length) {
+      const e = events[i];
+      if (e.period === "golden_point" && gpStartSoundKeyRef.current !== live.fixtureId) {
+        gpStartSoundKeyRef.current = live.fixtureId;
+        playGoldenPointStart();
+      }
+      switch (e.type) {
+        case "try":
+          playTryScored();
+          break;
+        case "conversion":
+        case "goal":
+          playConversion();
+          break;
+        case "missed_conversion":
+          playConversionMiss();
+          break;
+        case "half_time":
+          playHalfTime();
+          break;
+        default:
+          break;
+      }
+      i += 1;
+    }
+    eventSoundIndexRef.current = i;
+  }, [live, hasStarted]);
+
   useEffect(() => {
     if (!live?.isComplete) return;
     const key = `${live.fixtureId}:${live.userScore}-${live.oppScore}`;
     if (completionSoundKeyRef.current === key) return;
     completionSoundKeyRef.current = key;
     const hadGoldenPoint = live.events.some((e) => e.period === "golden_point");
+    const userWon = live.userScore > live.oppScore;
+    const isDraw = live.userScore === live.oppScore;
     if (hadGoldenPoint) {
-      playGoldenPointStart();
       window.setTimeout(() => {
-        const userWon = live.userScore > live.oppScore;
         if (userWon) playGoldenPointWin();
-        else playFullTime();
-      }, 280);
-    } else {
-      playFullTime();
+        else playMatchDefeat();
+      }, 220);
+      return;
     }
+    if (isDraw) playFullTime();
+    else if (userWon) playMatchNarrowWin();
+    else playMatchDefeat();
   }, [live?.isComplete, live?.fixtureId, live?.userScore, live?.oppScore, live?.events]);
 
   const handleStartGame = () => {
-    playMatchStarted();
+    const occasion = sched
+      ? getManagerMatchOccasionPresentation(sched).occasion
+      : "league";
+    if (
+      occasion === "cup_final" ||
+      occasion === "grand_final" ||
+      occasion === "wcc"
+    ) {
+      playCupProgress();
+    } else {
+      playMatchStarted();
+    }
     setHasStarted(true);
     setClockRunning(true);
     setLive((prev) =>
@@ -230,6 +307,8 @@ export function ManagerPlayGame({
   const handleSimulateToFullTime = () => {
     if (!live || live.isComplete) return;
     playSimulateRound();
+    skipBatchEventSfxRef.current = true;
+    eventSoundIndexRef.current = live.events.length;
     setClockRunning(false);
     const tacticCommand = commandFromTactics(careerRef.current);
     commandRef.current = tacticCommand;

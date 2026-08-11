@@ -544,7 +544,7 @@ export function ManagerContracts({
                   submitOffer();
                 }}
               >
-                Offer Contract
+                Offer renewal
               </GameButton>
               )}
               <GameButton variant="secondary" fullWidth={false} onClick={closeModal}>

@@ -75,6 +75,7 @@ export function PlayoffBracketDisplay({
       }}
       isActiveRound={round === activeRound}
       interactive
+      actionMode="review"
       mobile={mobile}
     />
   );
@@ -102,8 +103,8 @@ export function PlayoffBracketDisplay({
             />
             <p className="mt-3 text-center text-xs text-pitch-400">
               {tournamentComplete
-                ? "Tap a completed tie for details"
-                : `${getPlayoffRoundLabel(activeRound)} in progress — tap finished ties for details`}
+                ? "Select a completed tie for details"
+                : `${getPlayoffRoundLabel(activeRound)} in progress — select finished ties for details`}
             </p>
           </div>
         )}

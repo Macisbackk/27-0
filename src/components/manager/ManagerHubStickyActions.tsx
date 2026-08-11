@@ -14,7 +14,7 @@ interface ManagerHubStickyActionsProps {
   /** End-of-season CTA — replaces Play/Simulate when set. */
   seasonReviewLabel?: string | null;
   onSeasonReview?: () => void;
-  /** After a fixture — Advance Week is the primary hub action. */
+  /** After a fixture — Progress Week is the primary hub action. */
   advanceWeekLabel?: string | null;
   canAdvanceWeek?: boolean;
   onAdvanceWeek?: () => void;
@@ -70,7 +70,6 @@ export function ManagerHubStickyActions({
           className="min-h-[var(--mobile-tap-target)] min-w-0 flex-1 text-sm font-semibold tracking-wide"
           disabled={!visible || !canAdvanceWeek}
           onClick={() => {
-            playUiClick();
             onAdvanceWeek();
           }}
         >
@@ -105,7 +104,6 @@ export function ManagerHubStickyActions({
         disabled={!canPlay || !visible}
         onClick={() => {
           playSimulateRound();
-          playUiClick();
           onSimulate();
         }}
       >

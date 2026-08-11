@@ -7,6 +7,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { GameBadge } from "@/components/ui/GameBadge";
 import type { AchievementUnlockResult } from "@/lib/achievements/achievementEngine";
 import { formatClubFunds } from "@/lib/club-funds";
+import { playAchievementUnlock } from "@/lib/sound";
 
 /** Prevents the opening pointer event from instantly dismissing the overlay. */
 const OVERLAY_ARM_MS = 650;
@@ -32,6 +33,7 @@ export function AchievementUnlockedPopup({
     const eventKey = result.unlockEventId || result.id;
     if (shownIdRef.current === eventKey) return;
     shownIdRef.current = eventKey;
+    playAchievementUnlock();
     setOverlayArmed(false);
     const timer = window.setTimeout(() => setOverlayArmed(true), OVERLAY_ARM_MS);
     return () => window.clearTimeout(timer);

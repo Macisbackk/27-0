@@ -9,6 +9,7 @@ import {
   type ScrollLockId,
 } from "@/lib/ui/scroll-lock";
 import { TYPO } from "@/lib/ui/typography";
+import { playCalendarComplete } from "@/lib/sound";
 
 const MONTH_NAMES = [
   "January",
@@ -106,6 +107,7 @@ export function CalendarSimAnimation({
 }: CalendarSimAnimationProps) {
   const scrollLockIdRef = useRef<ScrollLockId | null>(null);
   const completedRef = useRef(false);
+  const calendarSoundPlayedRef = useRef(false);
   const prefersReduced =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -134,6 +136,7 @@ export function CalendarSimAnimation({
 
   useEffect(() => {
     completedRef.current = false;
+    calendarSoundPlayedRef.current = false;
     if (!open) {
       setIndex(0);
       return;
@@ -154,6 +157,10 @@ export function CalendarSimAnimation({
       setIndex(trail.length - 1);
       if (!completedRef.current) {
         completedRef.current = true;
+        if (!calendarSoundPlayedRef.current && status === "animating") {
+          calendarSoundPlayedRef.current = true;
+          playCalendarComplete();
+        }
         onTrailComplete?.();
       }
       return;
@@ -173,6 +180,10 @@ export function CalendarSimAnimation({
         setIndex(trail.length - 1);
         if (!completedRef.current) {
           completedRef.current = true;
+          if (!calendarSoundPlayedRef.current) {
+            calendarSoundPlayedRef.current = true;
+            playCalendarComplete();
+          }
           onTrailComplete?.();
         }
         return;

@@ -61,10 +61,8 @@ export function MatchdayScoreboard({
           </div>
 
           <div className="scoreboard-value-panel rounded-lg px-4 py-2 text-right">
-            <p className={`${TYPO.statLabel} text-accent-gold/80`}>
-              Average Squad Rating
-            </p>
-            <p className="font-display text-xl font-black text-accent-gold sm:text-2xl">
+            <p className={TYPO.keyLabel}>Your Rating</p>
+            <p className="font-display text-xl font-black text-white sm:text-2xl">
               {showRating ? averageSquadRating.toFixed(1) : "—"}
             </p>
           </div>

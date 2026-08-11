@@ -97,6 +97,7 @@ import {
   collectWeeklyManagerEventIds,
   getAdvanceWeekButtonLabel,
   getMatchWeekPhase,
+  getPendingNarrativeInboxPopup,
   hasBlockingManagerDecision,
   withWeeklyManagerEventQueue,
 } from "@/lib/manager/managerMatchWeek";
@@ -110,7 +111,6 @@ import {
 import { shouldShowManagerObjectivesIntro } from "@/lib/manager/managerBoardObjectives";
 import {
   ensureBoardObjectivesInbox,
-  getPendingBoardInboxPopup,
 } from "@/lib/manager/managerBoardInbox";
 import { acknowledgePlayoffsIntro, needsPlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
 import {
@@ -144,6 +144,8 @@ import {
   playMatchUpsetVictory,
   playTransferComplete,
   playManagerAppointed,
+  playProgressWeek,
+  playFriendlyConfirm,
   playUiClick,
 } from "@/lib/sound";
 import { PageShell } from "@/components/ui/PageShell";
@@ -672,7 +674,7 @@ export default function ManagerPage() {
       }
 
       // Same popup surface as Advance Week so sim-to-date does not skip decisions.
-      const boardMail = getPendingBoardInboxPopup(withQueue);
+      const boardMail = getPendingNarrativeInboxPopup(withQueue);
       const bid = getPendingIncomingClubBid(withQueue);
       const contractExpiry = getPendingContractExpiryPopup(withQueue);
       const loanEnded = getPendingLoanEndedPopup(withQueue);
@@ -899,6 +901,7 @@ export default function ManagerPage() {
 
   const handleFriendlyScheduleConfirm = useCallback(() => {
     if (!career) return;
+    playFriendlyConfirm();
     persist(confirmFriendlySchedule(career));
   }, [career, persist]);
 
@@ -1153,7 +1156,7 @@ export default function ManagerPage() {
       shouldShowWorldClubChallengeCelebration(withSeasonStats);
 
     // Surface weekly decisions that were processed by the auto final-week advance.
-    const boardMail = getPendingBoardInboxPopup(withSeasonStats);
+    const boardMail = getPendingNarrativeInboxPopup(withSeasonStats);
     const incomingBid = getPendingIncomingClubBid(withSeasonStats);
     const contractExpiry = getPendingContractExpiryPopup(withSeasonStats);
     const loanEnded = getPendingLoanEndedPopup(withSeasonStats);
@@ -1220,7 +1223,7 @@ export default function ManagerPage() {
     const boardMail =
       (pendingBoardMessageId
         ? career.inboxMessages.find((m) => m.id === pendingBoardMessageId)
-        : undefined) ?? getPendingBoardInboxPopup(career);
+        : undefined) ?? getPendingNarrativeInboxPopup(career);
     if (boardMail) {
       setPendingBoardMessageId(boardMail.id);
       setBoardMessageModalOpen(true);
@@ -1624,6 +1627,13 @@ export default function ManagerPage() {
   };
 
   const continueAfterBoardMessage = (nextCareer: ManagerCareer) => {
+    const nextNarrative = getPendingNarrativeInboxPopup(nextCareer);
+    if (nextNarrative) {
+      setPendingBoardMessageId(nextNarrative.id);
+      setBoardMessageModalOpen(true);
+      goToView("hub");
+      return;
+    }
     const incomingBid = getPendingIncomingClubBid(nextCareer);
     if (incomingBid) {
       setPendingIncomingBidId(incomingBid.id);
@@ -1823,7 +1833,7 @@ export default function ManagerPage() {
     if (career.matchWeekPhase === "awaiting_advance") {
       setAlertDialog({
         title: "Match Week",
-        message: "Continue to the next Match Week before simulating another fixture.",
+        message: "Progress Week before simulating another fixture.",
       });
       return;
     }
@@ -1865,7 +1875,7 @@ export default function ManagerPage() {
     if (career.matchWeekPhase === "awaiting_advance") {
       setAlertDialog({
         title: "Match Week",
-        message: "Continue to the next Match Week before playing another fixture.",
+        message: "Progress Week before playing another fixture.",
       });
       return;
     }
@@ -1911,12 +1921,13 @@ export default function ManagerPage() {
       }
       return;
     }
+    playProgressWeek();
     setAdvancingWeek(true);
     try {
       const result = advanceManagerMatchWeek(career);
       if (!result.ok) {
         setAlertDialog({
-          title: "Advance Week",
+          title: "Progress Week",
           message: result.error,
         });
         return;
@@ -1927,7 +1938,7 @@ export default function ManagerPage() {
       persist(withQueue);
 
       // Weekly popups only — never auto-open or play the next fixture.
-      const boardMail = getPendingBoardInboxPopup(withQueue);
+      const boardMail = getPendingNarrativeInboxPopup(withQueue);
       const incomingBid = getPendingIncomingClubBid(withQueue);
       const contractExpiry = getPendingContractExpiryPopup(withQueue);
       const loanEnded = getPendingLoanEndedPopup(withQueue);
@@ -2421,7 +2432,7 @@ export default function ManagerPage() {
           }
           advanceWeekLabel={
             hubSticky.mode === "advance-week"
-              ? hubSticky.advanceLabel ?? "Advance Week"
+              ? hubSticky.advanceLabel ?? "Progress Week"
               : null
           }
           canAdvanceWeek={

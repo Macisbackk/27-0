@@ -154,6 +154,20 @@ function developOnePlayer(
   if (finalDelta > maxPositiveDelta) {
     finalDelta = maxPositiveDelta;
   }
+
+  // Late bloomer: high-potential mid-20s finally getting minutes can spike once.
+  if (
+    rng &&
+    age >= 24 &&
+    age <= 28 &&
+    potential - before >= 6 &&
+    appearances >= 12 &&
+    impact >= 56 &&
+    finalDelta <= 1 &&
+    rng() < 0.12
+  ) {
+    finalDelta = Math.min(maxPositiveDelta, finalDelta + 2);
+  }
   if (!playedEnoughForIncrease && finalDelta > 0) {
     finalDelta = 0;
   }

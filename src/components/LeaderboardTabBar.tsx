@@ -2,7 +2,7 @@
 
 import { TAB_RAIL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { playTabChange, playUiClick } from "@/lib/sound";
+import { playTabChange } from "@/lib/sound";
 
 export type LeaderboardTabAccent = "theme" | "gold" | "green" | "sky" | "amber";
 
@@ -113,7 +113,6 @@ export function LeaderboardTabBar<T extends string>({
   const handleSelect = (id: T) => {
     if (id === active) return;
     playTabChange();
-    playUiClick();
     onChange(id);
   };
 

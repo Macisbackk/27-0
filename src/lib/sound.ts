@@ -109,8 +109,28 @@ export function playMatchStarted(): void {
   playSound("matchStarted");
 }
 
+export function playHalfTime(): void {
+  playSound("halfTime");
+}
+
+export function playTryScored(): void {
+  playSound("tryScored");
+}
+
+export function playConversion(): void {
+  playSound("conversion");
+}
+
+export function playConversionMiss(): void {
+  playSound("conversionMiss");
+}
+
 export function playFullTime(): void {
   playSound("fullTime");
+}
+
+export function playProgressWeek(): void {
+  playSound("progressWeek");
 }
 
 export function playPromotion(): void {

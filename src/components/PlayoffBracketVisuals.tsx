@@ -6,6 +6,7 @@ import type { PlayoffBracketMatch } from "@/lib/game/playoff-bracket";
 import { getPlayoffRoundLabel, getPlayoffTeamDisplayInfo } from "@/lib/game/playoff-bracket";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { ClubDualSwatch } from "./ClubDualSwatch";
+import { UI_COPY } from "@/lib/ui/copy";
 
 export const PLAYOFF_ROUND_SHORT: Record<number, string> = {
   1: "EF",
@@ -64,7 +65,7 @@ export function PlayoffBracketProgressStrip({
                   isLive
                     ? isFinal
                       ? "text-accent-gold"
-                      : "text-mode-current"
+                      : "text-theme-primary"
                     : isComplete
                       ? "text-gray-400"
                       : "text-gray-600"
@@ -96,26 +97,37 @@ export function PlayoffBracketProgressStrip({
 export function PlayoffBracketHeader({
   activeRound,
   tournamentComplete,
+  eyebrow = "Super League Play-Offs",
+  subtitle,
 }: {
   activeRound: number;
   tournamentComplete: boolean;
+  eyebrow?: string;
+  /** Mode-specific helper under the title. Quick Mode explains simulate; Manager embeds omit. */
+  subtitle?: string;
 }) {
+  const resolvedSubtitle =
+    subtitle ??
+    (tournamentComplete
+      ? "Play-offs complete — review the path to the trophy"
+      : "Simulate matches to advance");
+
   return (
     <div className="playoff-bracket-header scoreboard-panel overflow-hidden px-3 py-2.5 text-center sm:px-6 sm:py-6">
       <div className="playoff-bracket-header__shine pointer-events-none" aria-hidden />
-      <p className="font-display text-[9px] font-bold uppercase tracking-[0.2em] text-mode-current sm:text-xs sm:tracking-[0.4em]">
-        Super League Play-Offs
+      <p className="font-display text-[9px] font-bold uppercase tracking-[0.2em] text-theme-primary sm:text-xs sm:tracking-[0.4em]">
+        {eyebrow}
       </p>
       <h2 className="mt-0.5 font-display text-lg font-black tracking-tight text-white sm:mt-2 sm:text-3xl">
         {tournamentComplete
           ? "Knockout Bracket"
           : getPlayoffRoundLabel(activeRound)}
       </h2>
-      <p className="mt-1 hidden text-sm text-gray-400 sm:mt-2 sm:block">
-        {tournamentComplete
-          ? "Play-offs complete — review the path to the trophy"
-          : "Simulate matches to advance"}
-      </p>
+      {resolvedSubtitle ? (
+        <p className="mt-1 hidden text-sm text-gray-400 sm:mt-2 sm:block">
+          {resolvedSubtitle}
+        </p>
+      ) : null}
 
       <div className="mt-2 sm:mt-3">
         <PlayoffBracketProgressStrip
@@ -178,6 +190,8 @@ export function PlayoffMatchCard({
   interactive = true,
   mobile = false,
   userClub = DREAM_TEAM_NAME,
+  /** Quick Mode: tap ready ties to simulate. Manager review embeds: details only. */
+  actionMode = "simulate",
 }: {
   match: PlayoffBracketMatch;
   selected: boolean;
@@ -186,18 +200,26 @@ export function PlayoffMatchCard({
   interactive?: boolean;
   mobile?: boolean;
   userClub?: string;
+  actionMode?: "simulate" | "review";
 }) {
   const isComplete = match.status === "complete";
   const isReady = match.status === "ready";
   const isPending = match.status === "pending";
   const isFinal = match.round === 3;
-  const canInteract = interactive && !isPending;
+  const canInteract =
+    interactive &&
+    !isPending &&
+    (actionMode === "simulate" || isComplete);
 
   const footerBadge = isPending
     ? { text: "Awaiting teams", tone: "muted" as const }
-    : isReady && isActiveRound && interactive
-      ? { text: "Tap to simulate", tone: "live" as const }
-      : isComplete && !selected && interactive
+    : isReady && isActiveRound && actionMode === "simulate" && interactive
+      ? { text: UI_COPY.tapToSimulate, tone: "live" as const }
+      : isReady && isActiveRound && actionMode === "review"
+        ? match.isUserMatch
+          ? { text: UI_COPY.playFromHub, tone: "live" as const }
+          : { text: "Upcoming", tone: "muted" as const }
+      : isComplete && !selected && canInteract
         ? { text: "View details", tone: "muted" as const }
         : null;
 
@@ -300,7 +322,7 @@ function PlayoffTeamRow({
               mobile ? "text-xs" : "text-[11px] sm:text-xs"
             } ${
               isUser
-                ? "text-mode-current"
+                ? "text-theme-primary"
                 : isPending
                   ? "italic text-gray-500"
                   : isWinner

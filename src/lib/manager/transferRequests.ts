@@ -1,6 +1,7 @@
 /**
  * Lean transfer-request system — unhappy first-team players ask to leave.
  * Does not auto-list; manager must list/reject/ignore.
+ * Boosted when an active transfer-interest story chain exists.
  */
 import seedrandom from "seedrandom";
 import { getPlayerById } from "../players";
@@ -8,8 +9,10 @@ import type { ManagerCareer, PlayerTransferStatus } from "./types";
 import { isPlayerAwayOnLoan, isPlayerLoanedIn } from "./managerLoans";
 import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
 import { getContractStatus } from "./managerContracts";
+import { getWorldStory } from "./managerWorldStory";
 
 const REQUEST_CHANCE = 0.08;
+const CHAIN_REQUEST_CHANCE = 0.4;
 
 /** Clear a transfer request without listing. */
 export function dismissTransferRequest(
@@ -39,6 +42,7 @@ export function maybeGenerateTransferRequests(
   );
   let next = career;
   let generated = 0;
+  const story = getWorldStory(career);
 
   for (const ps of career.squad) {
     if (generated >= 1) break;
@@ -49,13 +53,27 @@ export function maybeGenerateTransferRequests(
     const status = next.playerTransferStatus[playerId];
     if (status?.listed || status?.transferRequested) continue;
 
+    const chain = story.chains.find(
+      (c) =>
+        c.kind === "transfer_interest" &&
+        c.playerId === playerId &&
+        c.stage >= 1 &&
+        c.stage < 3
+    );
     const contract = next.contracts[playerId];
-    if (!contract) continue;
-    if (getContractStatus(contract) !== "unhappy") continue;
-    if (rng() > REQUEST_CHANCE) continue;
+    if (!chain) {
+      if (!contract) continue;
+      if (getContractStatus(contract) !== "unhappy") continue;
+      if (rng() > REQUEST_CHANCE) continue;
+    } else if (career.gameWeek - chain.lastWeek < 2) {
+      continue;
+    } else if (rng() > CHAIN_REQUEST_CHANCE) {
+      continue;
+    }
 
     const player = getPlayerById(playerId);
     const name = player?.name ?? "A squad player";
+    const interested = chain?.clubId;
     const requestStatus: PlayerTransferStatus = {
       listed: false,
       askingPrice: 0,
@@ -78,11 +96,14 @@ export function maybeGenerateTransferRequests(
           id: `transfer-request-${playerId}-w${next.gameWeek}`,
           type: "news",
           title: "Transfer Request",
-          body: `${name} has asked to leave the club. List them for transfer or speak to them later.`,
+          body: interested
+            ? `${name} has requested a transfer after limited first-team football. ${interested} have been tracking the situation.`
+            : `${name} has asked to leave the club. List them for transfer or speak to them later.`,
           read: false,
           resolved: false,
           playerId,
           playerName: name,
+          offerClub: interested,
         },
         next
       )

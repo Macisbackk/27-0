@@ -9,6 +9,7 @@ import { getPendingPositionRetrainingPopup } from "./managerPositionRetraining";
 import { getPendingReserveReportPopup } from "./managerReserveReports";
 import { getPendingBoardInboxPopup } from "./managerBoardInbox";
 import { getPendingLoanEndedPopup } from "./managerLoans";
+import { getPendingStoryInboxPopup } from "./managerWorldStory";
 
 export type MatchWeekPhase =
   | "ready_to_play"
@@ -49,7 +50,7 @@ export function hasBlockingManagerDecision(career: ManagerCareer): boolean {
   );
 }
 
-/** Season Progress Advance Week — after a fixture, before the next is unlocked. */
+/** Season Progress — Progress Week after a fixture, before the next unlocks. */
 export function canAdvanceMatchWeek(career: ManagerCareer): boolean {
   return (
     getMatchWeekPhase(career) === "awaiting_advance" &&
@@ -61,11 +62,11 @@ export function getAdvanceWeekButtonLabel(
   career: ManagerCareer,
   processing = false
 ): { full: string; short: string } {
-  if (processing) return { full: "Advancing…", short: "…" };
+  if (processing) return { full: "Progressing…", short: "…" };
   if (getMatchWeekPhase(career) === "season_complete") {
     return { full: "Season Complete", short: "Done" };
   }
-  return { full: "Advance Week", short: "Advance" };
+  return { full: "Progress Week", short: "Progress" };
 }
 
 export function getAdvanceWeekHint(career: ManagerCareer): string | null {
@@ -119,12 +120,20 @@ export function collectWeeklyManagerEventIds(career: ManagerCareer): string[] {
   }
   push(getPendingRetirementIntentPopup(career)?.id);
   push(getPendingBoardInboxPopup(career)?.id);
+  push(getPendingStoryInboxPopup(career)?.id);
   push(getPendingContractExpiryPopup(career)?.id);
   push(getPendingLoanEndedPopup(career)?.id);
   push(getPendingPositionRetrainingPopup(career)?.id);
   push(getPendingReserveReportPopup(career)?.id);
 
   return ids;
+}
+
+/** Board first, then club-story — single Progress Week narrative popup. */
+export function getPendingNarrativeInboxPopup(
+  career: ManagerCareer
+): ReturnType<typeof getPendingBoardInboxPopup> {
+  return getPendingBoardInboxPopup(career) ?? getPendingStoryInboxPopup(career);
 }
 
 export function withWeeklyManagerEventQueue(

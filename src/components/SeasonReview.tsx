@@ -362,29 +362,8 @@ export function SeasonReview({
                   <p className={TYPO.bodySm}>
                     Play-offs unlocked — finish the knockout stage.
                   </p>
-                  <div className="mt-4">
-                    <MatchReviewActions
-                      compact
-                      primaryAction={{
-                        label: "Continue to Play-Offs →",
-                        onClick: () => {
-                          playUiClick();
-                          onContinuePlayoffs?.();
-                        },
-                      }}
-                      hideEndOfRunNav
-                    />
-                  </div>
                 </div>
-              ) : (
-                <MatchReviewActions
-                  compact
-                  onPlayAgain={handlePlayAgain}
-                  onReturnHome={onReturnHome}
-                  leaderboardHref="/leaderboard"
-                  shareAction={shareAction}
-                />
-              )}
+              ) : null}
               {clubFundsPayout ? (
                 <div className="mt-4">
                   <ClubFundsEarned payout={clubFundsPayout} />

@@ -509,6 +509,8 @@ export interface ManagerSeasonSummary {
   expiringContracts: number;
   playersLeaving: string[];
   seasonVerdict: string;
+  /** Short narrative label e.g. THE CUP RUN — derived from season events. */
+  seasonNarrative?: string;
 }
 
 
@@ -842,6 +844,57 @@ export interface ClubCareerTotals {
   seasons: number;
 }
 
+/** Persisted save-memory for Progress Week storytelling (inbox-backed). */
+export type WorldStoryChainKind =
+  | "transfer_interest"
+  | "breakthrough"
+  | "rivalry";
+
+export interface WorldStoryChain {
+  id: string;
+  kind: WorldStoryChainKind;
+  playerId?: string;
+  clubId?: string;
+  stage: number;
+  lastWeek: number;
+  seasonYear: number;
+}
+
+export interface ClubMoment {
+  id: string;
+  week: number;
+  seasonYear: number;
+  kind: string;
+  title: string;
+  body: string;
+  playerId?: string;
+}
+
+export interface DevelopingRivalry {
+  club: string;
+  meetings: number;
+  wins: number;
+  losses: number;
+  draws: number;
+}
+
+export interface DepartedClubPlayerMemory {
+  name: string;
+  appearances: number;
+  tries: number;
+  seasons: number;
+  leftSeasonYear: number;
+  leftWeek: number;
+}
+
+export interface ManagerWorldStory {
+  chains: WorldStoryChain[];
+  shownMilestoneIds: string[];
+  moments: ClubMoment[];
+  departedPlayers: Record<string, DepartedClubPlayerMemory>;
+  developingRivalries: DevelopingRivalry[];
+}
+
 export type LiveMatchCommand =
   | "attack"
   | "defend"
@@ -1075,6 +1128,11 @@ export interface ManagerCareer {
   leagueClubReserveCounts?: Record<string, number>;
   /** Club appearances/tries accumulated across seasons in this save. */
   clubCareerTotals?: Record<string, ClubCareerTotals>;
+  /**
+   * Progress Week storytelling memory — chains, milestones, rivalries, former players.
+   * Story popups persist as inbox `news` with id prefix `story-`.
+   */
+  worldStory?: ManagerWorldStory;
   retiredPlayers?: RetiredPlayer[];
   /** Save schema version for migrations. */
   saveVersion?: number;

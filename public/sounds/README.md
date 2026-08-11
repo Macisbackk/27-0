@@ -3,55 +3,56 @@
 Place lightweight `.mp3` or `.wav` files here. The game loads them automatically;
 if a file is missing, synthesized fallback tones play instead (no crash).
 
-All sounds are triggered through `src/lib/sound.ts` → `src/lib/sound/manager.ts`.
+**Current ship state:** no binary assets are committed. Runtime audio is Web Audio
+synth via `src/lib/sound/synth.ts`, orchestrated by `src/lib/sound/manager.ts`
+and semantic helpers in `src/lib/sound.ts`.
 
-Suggested files:
+Do not call `new Audio()` from components — always use `playSound("…")` /
+helpers such as `playTryScored()`, `playProgressWeek()`, etc.
+
+Sound toggle lives in the sidebar (`27-0-sound-muted` in localStorage).
+Mobile: audio unlocks on first pointer/keydown (`initSoundUnlock`).
+
+## Mix hierarchy (approx.)
+
+1. Quiet UI (click / tab / toggle)
+2. Notifications (transfer offer, popup open)
+3. Match events (try > conversion > half-time)
+4. Major results / achievements
+
+## Suggested files
 
 | File | Category | Used for |
 |------|----------|----------|
-| `click.mp3` | Navigation | UI clicks, sidebar nav, deliberate filter actions |
-| `tab-change.mp3` | Navigation | Stats/leaderboard tabs, section toggles |
-| `menu-open.mp3` | Navigation | Sidebar menu open |
-| `menu-close.mp3` | Navigation | Sidebar menu close |
-| `toggle.mp3` | Toggle | Generic switch sounds |
-| `select.mp3` | Selection | Player selected, slot picked, bracket match selected |
-| `reveal.mp3` | Selection | Player choices revealed |
-| `reroll.mp3` | Action | Reroll used |
-| `draft-place.mp3` | Action | Draft position placement |
-| `remove.mp3` | Action | Fantasy player removed |
-| `autofill.mp3` | Action | Fantasy autofill success |
-| `complete.mp3` | Success | Squad position filled |
-| `success.mp3` | Success | Positive confirmation |
-| `warning.mp3` | Error | Short warning (autofill fail, validation) |
-| `fail.mp3` | Error | F grade / failure |
-| `hard-on.mp3` | Hard Mode | Hard Mode enabled |
-| `hard-off.mp3` | Hard Mode | Hard Mode disabled |
-| `era-on.mp3` | Era Mode | Era Challenge Cup enabled |
-| `era-off.mp3` | Era Mode | Current Challenge Cup enabled |
-| `simulate-round.mp3` | Simulation | Simulate next round / single cup match |
-| `simulate-all.mp3` | Simulation | Simulate all remaining / full tournament |
-| `season-start.mp3` | Simulation | Season / cup start |
-| `win.mp3` | Match | Narrow match win |
-| `loss.mp3` | Match | Match loss |
-| `big-win.mp3` | Match | Big / thrashing win |
-| `upset.mp3` | Match | Upset victory |
-| `trophy.mp3` | Trophy | Cup final won, top grades |
-| `cup-loss.mp3` | Trophy | Cup final lost |
-| `perfect.mp3` | Season | 27-0 perfect season |
-| `disaster.mp3` | Season | 0-27 winless season |
-| `crowd.mp3` | Season | Season simulation complete |
-| `expand.mp3` | Panel | Panels expanded (match details, cards, sections) |
-| `panel-close.mp3` | Panel | Panels collapsed / modals closed |
-| `historic.mp3` | Special | Historic player in offers |
-| `legend.mp3` | Special | Legend player in offers |
-| `goat.mp3` | Special | GOAT player in offers |
-| `joe-mellor.mp3` | Easter egg | Joe Mellor mode |
-| `super-sam-hallas.mp3` | Easter egg | Super Sam Hallas mode |
-| `mode-normal.mp3` | Mode start | Normal / Classic mode |
-| `mode-hard.mp3` | Mode start | Hard mode |
-| `mode-draft.mp3` | Mode start | Draft mode |
-| `challenge-cup.mp3` | Mode start | Challenge Cup activation |
+| `click.mp3` | UI | Primary / secondary UI clicks |
+| `tab-change.mp3` | Navigation | Tab / section changes (cooldown-limited) |
+| `menu-open.mp3` / `menu-close.mp3` | Navigation | Menus / popup open-close aliases |
+| `toggle.mp3` | UI | Generic switches |
+| `select.mp3` | Selection | Player / boost select |
+| `reveal.mp3` | Selection | Choice / offer reveal |
+| `reroll.mp3` | Quick Mode | Respin activation |
+| `slot-spin-start.mp3` / `slot-spin-tick.mp3` / `slot-land.mp3` | Quick Mode | Spin cadence + land |
+| `draft-place.mp3` / `remove.mp3` / `autofill.mp3` | Draft | Placement actions |
+| `complete.mp3` | Success | Position filled / calendar complete alias |
+| `success.mp3` / `warning.mp3` / `fail.mp3` | Feedback | Confirm / soft fail |
+| `hard-on.mp3` / `hard-off.mp3` | Mode | Hard Mode toggle |
+| `era-on.mp3` / `era-off.mp3` | Mode | Era Mode toggle |
+| `simulate-round.mp3` / `simulate-all.mp3` | Simulation | Round sim / Progress Week file alias |
+| `season-start.mp3` | Match | Kick-off / match started alias |
+| `win.mp3` / `loss.mp3` / `big-win.mp3` / `upset.mp3` | Match | Result presentation |
+| `trophy.mp3` / `cup-loss.mp3` | Trophy | Cup / achievement |
+| `perfect.mp3` / `disaster.mp3` / `crowd.mp3` | Season | Season outcomes / FT alias |
+| `expand.mp3` / `panel-close.mp3` | Panel | Expand / collapse |
+| `historic.mp3` / `legend.mp3` / `goat.mp3` | Special | Offer rarity |
+| `joe-mellor.mp3` / `super-sam-hallas.mp3` | Easter egg | Mode easter eggs |
+| `mode-normal.mp3` / `mode-hard.mp3` / `mode-draft.mp3` / `challenge-cup.mp3` | Mode start | Mode activation |
 
-Keep files short (&lt; 100 KB) and normalized volume for best results.
+Semantic IDs without dedicated files reuse the paths above (see `SOUND_FILES` in
+`manager.ts`) and have dedicated synth tones where important:
 
-Sound toggle lives in the sidebar only (`27-0-sound-muted` in localStorage).
+- `tryScored`, `conversion`, `conversionMiss`, `halfTime`
+- `progressWeek`, `calendarComplete`, `goldenPointStart`
+- `achievementUnlock`
+
+Keep files short (&lt; 100 KB), CC0 / owned / properly licensed only — never
+ripped from commercial sports games.

@@ -203,12 +203,62 @@ export function generateWeeklyNews(career: ManagerCareer): LatestNewsItem[] {
     });
   }
 
-  for (const tx of career.leagueTransfers.slice(0, 2)) {
+  for (const tx of career.leagueTransfers.slice(0, 3)) {
+    const buyerRow = career.leagueTable.find((r) => r.team === tx.toClub);
+    const headline =
+      buyerRow && buyerRow.position <= 4
+        ? `${tx.toClub} strengthen title push — ${tx.playerName} arrives from ${tx.fromClub}.`
+        : `${tx.playerName} joined ${tx.toClub} from ${tx.fromClub}.`;
     items.push({
       id: `news-league-tx-${tx.id}`,
       week: tx.week,
       type: "transfer",
-      text: `${tx.playerName} joined ${tx.toClub} from ${tx.fromClub}.`,
+      text: headline,
+    });
+  }
+
+  // Form storyline from recent round results
+  const formByClub = new Map<string, string>();
+  for (const m of career.roundMatches) {
+    if (m.round < week - 5 || m.round > week) continue;
+    const homeWon = m.homeScore > m.awayScore;
+    const draw = m.homeScore === m.awayScore;
+    const homeResult = draw ? "D" : homeWon ? "W" : "L";
+    const awayResult = draw ? "D" : homeWon ? "L" : "W";
+    formByClub.set(
+      m.homeTeam,
+      `${formByClub.get(m.homeTeam) ?? ""}${homeResult}`.slice(-5)
+    );
+    formByClub.set(
+      m.awayTeam,
+      `${formByClub.get(m.awayTeam) ?? ""}${awayResult}`.slice(-5)
+    );
+  }
+  const hot = [...formByClub.entries()]
+    .filter(([team]) => team !== career.club)
+    .map(([team, form]) => ({
+      team,
+      form,
+      wins: (form.match(/W/g) ?? []).length,
+      position:
+        career.leagueTable.find((r) => r.team === team)?.position ?? 99,
+    }))
+    .filter((r) => r.wins >= 4)
+    .sort((a, b) => b.wins - a.wins)[0];
+  if (hot && rng() < 0.55) {
+    const ord =
+      hot.position === 1
+        ? "st"
+        : hot.position === 2
+          ? "nd"
+          : hot.position === 3
+            ? "rd"
+            : "th";
+    items.push({
+      id: `news-form-${hot.team}-w${week}`,
+      week,
+      type: "result",
+      text: `${hot.team}'s young squad impresses — ${hot.wins} wins in five (now ${hot.position}${ord}).`,
     });
   }
 

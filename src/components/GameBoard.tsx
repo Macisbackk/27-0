@@ -2476,48 +2476,6 @@ export function GameBoard({
             ) : (
               <CurrentRatingExplanation compact className="w-full" />
             )}
-            <GameButton
-              variant="theme"
-              size="sm"
-              fullWidth={false}
-              onClick={handleAutofill}
-              disabled={choosing}
-              className="px-6"
-            >
-              Auto Fill Squad
-            </GameButton>
-          </div>
-        )}
-
-        {phase === "pitch" &&
-          filledCount < TOTAL_SLOTS &&
-          !superSamHallasMode &&
-          !isDraftMode &&
-          !isSlotRecruitMode && (
-          <div className="mt-4 flex justify-center">
-            <GameButton
-              variant="theme"
-              size="sm"
-              fullWidth={false}
-              onClick={handleAutofill}
-              className="px-6"
-            >
-              Auto Fill Squad
-            </GameButton>
-          </div>
-        )}
-
-        {phase === "pitch" && filledCount >= TOTAL_SLOTS && (
-          <div className="mt-4 flex justify-center">
-            <GameButton
-              variant="theme"
-              size="sm"
-              fullWidth={false}
-              onClick={() => startTournamentSimulation(squad)}
-              className="px-6"
-            >
-              Simulate Season
-            </GameButton>
           </div>
         )}
 
@@ -2722,7 +2680,7 @@ export function GameBoard({
                 disabled={choosing || hideActionBar}
                 className="min-h-[var(--mobile-tap-target)] flex-1 px-3 text-xs"
               >
-                Auto Fill
+                Auto Fill Squad
               </GameButton>
             )}
             {phase === "pitch" && filledCount >= TOTAL_SLOTS && (

@@ -13,7 +13,7 @@ export function LogoMark({
 
   return (
     <span
-      className={`logo-mark inline-flex flex-col items-start whitespace-nowrap font-black tracking-tight ${sizeClass} ${className}`}
+      className={`logo-mark inline-flex flex-col items-center whitespace-nowrap font-black tracking-tight ${sizeClass} ${className}`}
     >
       <span className="inline-flex items-baseline leading-none">
         <span className="logo-mark-27">27</span>

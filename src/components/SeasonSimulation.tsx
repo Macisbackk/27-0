@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
-  playFullTime,
   playMatchBigWin,
   playMatchDefeat,
   playMatchNarrowWin,
@@ -49,7 +48,6 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
       setPhase("complete");
       if (!seasonCompleteSoundPlayed.current) {
         seasonCompleteSoundPlayed.current = true;
-        playFullTime();
         if (result.isPerfect) playPerfectSeason();
         else if (result.wins === 0) playWinlessSeason();
         else playSeasonComplete();
