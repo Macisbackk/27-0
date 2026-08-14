@@ -2,7 +2,14 @@
  * Single eligibility gate for transfer / loan / reserve / FA intents.
  */
 import { isSameManagerClub } from "../clubs/super-league-display";
-import type { ManagerCareer, TransferListingType } from "./types";
+import type {
+  ContractStatus,
+  ManagerCareer,
+  ManagerCompetitionId,
+  TransferListingType,
+} from "./types";
+import { resolveClubCompetitionForCareer } from "./leagueMembership";
+import { getContractStatus } from "./managerContracts";
 import { getPlayerRegistration } from "./playerRegistration";
 import {
   getProtectedTransferPlayerIds,
@@ -35,6 +42,68 @@ export type TransferEligibility = {
   reason?: string;
   registration: ReturnType<typeof getPlayerRegistration>;
 };
+
+export type MarketSquadStatus = "FIRST_TEAM" | "RESERVE" | "FREE_AGENT";
+
+export type PlayerMarketAvailability = {
+  playerId: string;
+  availableForTransfer: boolean;
+  availableForLoan: boolean;
+  currentClub: string | null;
+  competition: ManagerCompetitionId | null;
+  contractStatus: ContractStatus | null;
+  squadStatus: MarketSquadStatus;
+  transferListed: boolean;
+  loanListed: boolean;
+};
+
+function marketSquadStatus(
+  registration: ReturnType<typeof getPlayerRegistration>
+): MarketSquadStatus {
+  if (registration.freeAgent || registration.squadStatus === "UNATTACHED") {
+    return "FREE_AGENT";
+  }
+  if (registration.squadStatus === "RESERVES" || registration.squadStatus === "YOUTH") {
+    return "RESERVE";
+  }
+  return "FIRST_TEAM";
+}
+
+/** Authoritative market projection — UI lists and TX validation share this. */
+export function getPlayerMarketAvailability(
+  career: ManagerCareer,
+  playerId: string
+): PlayerMarketAvailability {
+  const registration = getPlayerRegistration(career, playerId);
+  const listing = career.leagueListedPlayers.find((row) => row.playerId === playerId);
+  const listingType = listing?.listingType ?? registration.listingType ?? null;
+  const currentClub = registration.playingClubId;
+  const buy = getTransferEligibility(career, playerId, "permanent_buy", {
+    fromClub: currentClub ?? undefined,
+    listed: Boolean(listing && listingAllowsPermanent(listingType)),
+    listingType,
+  });
+  const loan = getTransferEligibility(career, playerId, "loan_in", {
+    fromClub: currentClub ?? undefined,
+    listed: Boolean(listing && listingAllowsLoan(listingType)),
+    listingType,
+  });
+  const fa = getTransferEligibility(career, playerId, "free_agent_sign");
+  const contract = currentClub ? career.contracts[playerId] : undefined;
+  return {
+    playerId,
+    availableForTransfer: buy.allowed || fa.allowed,
+    availableForLoan: loan.allowed,
+    currentClub,
+    competition: currentClub
+      ? resolveClubCompetitionForCareer(currentClub, career)
+      : null,
+    contractStatus: contract ? getContractStatus(contract) : null,
+    squadStatus: marketSquadStatus(registration),
+    transferListed: Boolean(listing && listingAllowsPermanent(listingType)),
+    loanListed: Boolean(listing && listingAllowsLoan(listingType)),
+  };
+}
 
 function hasPendingOfferFromClub(
   career: ManagerCareer,

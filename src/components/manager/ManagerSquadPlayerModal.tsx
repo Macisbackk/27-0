@@ -19,7 +19,6 @@ import {
   unlistPlayerFromTransfer,
 } from "@/lib/manager/managerTransferLeague";
 import {
-  completeOutgoingLoan,
   canUserLoanOutPlayers,
   evaluateLoanWageShareOffer,
   getLoanOutDestinationClubs,
@@ -28,6 +27,8 @@ import {
   suggestedLoanFee,
 } from "@/lib/manager/managerLoans";
 import { dismissTransferRequest } from "@/lib/manager/transferRequests";
+import { executeLoanOut } from "@/lib/manager/transferTransactions";
+import { getTransferEligibility } from "@/lib/manager/transferEligibility";
 import { findPlayerMatchdaySlot } from "@/lib/manager/managerMatchdaySquad";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
@@ -103,13 +104,23 @@ export function ManagerSquadPlayerModal({
       setErrorDialog(shareEval.reason);
       return;
     }
-    onUpdate(
-      completeOutgoingLoan(career, playerId, loanClub, {
-        loanFee,
-        parentWageShare: shareEval.userWageShare,
-        canRecall: true,
-      })
-    );
+    const eligibility = getTransferEligibility(career, playerId, "loan_out", {
+      toClub: loanClub,
+    });
+    if (!eligibility.allowed) {
+      setErrorDialog(eligibility.reason ?? "This player cannot be loaned out.");
+      return;
+    }
+    const loanTx = executeLoanOut(career, playerId, loanClub, {
+      loanFee,
+      parentWageShare: shareEval.userWageShare,
+      canRecall: true,
+    });
+    if (!loanTx.ok) {
+      setErrorDialog(loanTx.error ?? "Loan could not be completed.");
+      return;
+    }
+    onUpdate(loanTx.career);
     onClose();
   };
 

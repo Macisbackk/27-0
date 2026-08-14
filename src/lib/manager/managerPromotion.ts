@@ -21,6 +21,7 @@ export function shouldShowPromotionCelebration(
 ): boolean {
   if (career.promotionCelebrationShown) return false;
   if (!career.isSeasonComplete) return false;
+  // Championship playoff winners are not promoted — only auto-1st or MPG win.
   return (
     userFinishedInPromotionPlaces(career) ||
     career.millionPoundGame?.winner === career.club

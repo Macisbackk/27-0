@@ -41,7 +41,7 @@ console.log("Boost definitions\n");
 
 assert(STORE_BOOSTS.length === 8, "exactly 8 store boosts");
 assert(getQuickModeBoosts().length === 2, "exactly 2 Quick Mode boosts");
-assert(getManagerModeBoosts().length === 6, "exactly 6 Manager boosts");
+assert(getManagerModeBoosts().length === 5, "exactly 5 Manager boosts");
 assert(
   getQuickModeBoosts().every((b) => b.category === "quick-mode"),
   "QM boosts are quick-mode category"
@@ -110,7 +110,7 @@ assert(
   "GOAT/HOF pair contains eligible legend/HOF"
 );
 
-console.log("\nManager boosts + No Sacking\n");
+console.log("\nManager boosts + board retain\n");
 
 let career = createNewCareer("Leeds Rhinos");
 const beforeFinance =
@@ -136,12 +136,7 @@ const protect = applyManagerBoost({
   career,
   usageId: "test-nosack-1",
 });
-assert(protect.success && Boolean(protect.career), "No Sacking applies");
-career = protect.career!;
-assert(
-  career.managerProtection?.noSacking === true,
-  "No Sacking sets managerProtection.noSacking"
-);
+assert(!protect.success, "retired No Sacking boost does not apply");
 
 const failing: ManagerCareer = {
   ...career,
@@ -159,22 +154,11 @@ const evalSack = evaluateBoardSeason({
   ...failing,
   managerProtection: undefined,
 });
-assert(evalSack.recommendation === "sack", "poor season recommends sack");
-assert(evalSack.finalDecision === "sack", "unprotected finalDecision is sack");
+assert(evalSack.recommendation === "retain", "poor season still retains");
+assert(evalSack.finalDecision === "retain", "sacking removed — always retain");
 
 const evalProtect = evaluateBoardSeason(failing);
-assert(
-  evalProtect.recommendation === "sack",
-  "protected season still recommends sack internally"
-);
-assert(
-  evalProtect.finalDecision === "retain",
-  "No Sacking overrides finalDecision to retain"
-);
-assert(
-  evalProtect.protectedByNoSacking === true,
-  "protectedByNoSacking flag set"
-);
+assert(evalProtect.finalDecision === "retain", "board always retains");
 
 const once = getOrCreateBoardSeasonEvaluation(failing);
 const twice = getOrCreateBoardSeasonEvaluation({
@@ -194,7 +178,7 @@ const gameWeek = career.gameWeek;
 const otherClub =
   career.leagueTable.find((r) => !r.isUserTeam)?.team ?? "Wigan Warriors";
 
-const left = takeOverClub(career, otherClub, "sacked");
+const left = takeOverClub(career, otherClub, "club-change");
 assert(left.club === otherClub, `took over ${otherClub}`);
 assert(left.seasonYear === seasonYear, "season year preserved");
 assert(left.gameWeek === gameWeek, "game week preserved");

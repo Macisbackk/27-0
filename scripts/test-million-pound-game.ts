@@ -3,7 +3,7 @@
  * Run: npx tsx scripts/test-million-pound-game.ts
  */
 import { createNewCareer } from "../src/lib/manager/managerState";
-import { applyPromotionRelegation } from "../src/lib/manager/leagueMembership";
+import { applyPromotionRelegation } from "../src/lib/manager/managerSeasonTransition";
 import {
   getAutoPromoteCount,
   getAutoRelegateCount,

@@ -16,20 +16,19 @@ import { getPlayerById } from "@/lib/players";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { formatSquadRatingStars } from "@/lib/manager/club-config";
 import { getCareerClubStars } from "@/lib/manager/managerDifficulty";
-import { playSeasonComplete, playSeasonReviewMajor, playUiClick, playManagerSacked } from "@/lib/sound";
+import { playSeasonComplete, playSeasonReviewMajor, playUiClick } from "@/lib/sound";
 import {
   ManagerInfoRow,
   ManagerSectionCard,
   boardConfidenceTone,
 } from "@/components/manager/manager-ui";
 import { ManagerBoostsPanel } from "@/components/manager/ManagerBoostsPanel";
-import { isUserInChampionship, getUserLeagueClubs, PROMOTE_RELEGATE_COUNT } from "@/lib/manager/leagueMembership";
+import { isUserInChampionship, getUserLeagueClubs } from "@/lib/manager/leagueMembership";
 import { getChampionshipPlayoffWinner } from "@/lib/manager/managerChampionshipPlayoffs";
 
 interface ManagerSeasonReviewProps {
   career: ManagerCareer;
   onViewRewards: () => void;
-  onChooseNextClub: () => void;
   onCareerUpdate: (career: ManagerCareer) => void;
   onHome: () => void;
 }
@@ -37,7 +36,6 @@ interface ManagerSeasonReviewProps {
 export function ManagerSeasonReview({
   career,
   onViewRewards,
-  onChooseNextClub,
   onCareerUpdate,
   onHome,
 }: ManagerSeasonReviewProps) {
@@ -76,19 +74,12 @@ export function ManagerSeasonReview({
     evaluatedCareer.club;
   const trophies = getSeasonSummaryTrophyLabels(summary);
   const clubStars = getCareerClubStars(evaluatedCareer);
-  const sacked = evaluation.finalDecision === "sack";
-  const sackSoundRef = useRef(false);
   const reviewSoundRef = useRef(false);
   useEffect(() => {
     if (reviewSoundRef.current) return;
     reviewSoundRef.current = true;
-    if (sacked) {
-      sackSoundRef.current = true;
-      playManagerSacked();
-    } else {
-      playSeasonReviewMajor();
-    }
-  }, [sacked]);
+    playSeasonReviewMajor();
+  }, []);
 
   const bestPlayer = summary.bestPlayerId
     ? getPlayerById(summary.bestPlayerId)
@@ -97,10 +88,8 @@ export function ManagerSeasonReview({
     ? getPlayerById(summary.topTryScorerId)
     : null;
 
-  const boardDecisionLabel =
-    evaluation.finalDecision === "retain" ? "Board Retain" : "Board Sack";
-  const boardDecisionTone =
-    evaluation.finalDecision === "retain" ? "primary" : "red";
+  const boardDecisionLabel = "Board Retain";
+  const boardDecisionTone = "primary" as const;
 
   return (
     <div className={`mx-auto max-w-lg ${SPACING.stackLg}`}>
@@ -127,19 +116,22 @@ export function ManagerSeasonReview({
         {isUserInChampionship(evaluatedCareer) ? (
           <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-200`}>
             {summary.position === 1
-              ? "Championship Champions · Promoted"
+              ? "Championship Champions · Automatic Promotion"
               : mpgWon
                 ? "Promoted to Super League"
                 : championshipPlayoffWinner
-                  ? "Championship play-off winners — Million Pound Game pathway"
+                  ? "Qualified for the Million Pound Game"
                   : summary.position >= 2 && summary.position <= 5
                     ? "Championship play-offs — Million Pound Game pathway"
                   : "Championship finish"}
           </p>
-        ) : summary.position >
-          getUserLeagueClubs(evaluatedCareer).length - PROMOTE_RELEGATE_COUNT ? (
+        ) : evaluatedCareer.millionPoundGame?.loser === evaluatedCareer.club ? (
           <p className={`mt-2 text-center ${TYPO.bodySm} text-red-300`}>
-            Relegation places — Championship next season
+            Million Pound Game defeat — Championship next season
+          </p>
+        ) : summary.position === getUserLeagueClubs(evaluatedCareer).length ? (
+          <p className={`mt-2 text-center ${TYPO.bodySm} text-red-300`}>
+            Automatic relegation — Championship next season
           </p>
         ) : null}
         <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-300`}>
@@ -319,7 +311,7 @@ export function ManagerSeasonReview({
         </ManagerSectionCard>
       )}
 
-      <ManagerSectionCard title="Board Decision" accent={sacked ? "red" : "primary"}>
+      <ManagerSectionCard title="Board Decision" accent="primary">
         <div className={`mt-2 ${SPACING.stackMd}`}>
           <ManagerInfoRow
             label="Decision"
@@ -331,13 +323,6 @@ export function ManagerSeasonReview({
             value={`${evaluation.performanceScore}/100`}
             tone={evaluation.performanceScore >= 70 ? "primary" : evaluation.performanceScore >= 50 ? "amber" : "red"}
           />
-          {evaluation.protectedByNoSacking && (
-            <ManagerInfoRow
-              label="Protection"
-              value="Sacking Protection Active"
-              tone="gold"
-            />
-          )}
           <ul className={`${SPACING.stackSm} text-sm text-pitch-300`}>
             {evaluation.explanation.map((line) => (
               <li key={line} className="leading-relaxed">
@@ -484,13 +469,11 @@ export function ManagerSeasonReview({
             tone="gold"
           />
           <ManagerInfoRow label="Board Verdict" value={summary.boardVerdict} tone="default" />
-          {!sacked && (
-            <ManagerInfoRow
-              label="Club Funds (on continue)"
-              value={`+${formatWage(summary.budgetChange)}`}
-              tone="gold"
-            />
-          )}
+          <ManagerInfoRow
+            label="Club Funds (on continue)"
+            value={`+${formatWage(summary.budgetChange)}`}
+            tone="gold"
+          />
           {trophies.length > 0 && (
             <ManagerInfoRow
               label="Trophies"
@@ -501,22 +484,11 @@ export function ManagerSeasonReview({
         </div>
       </ManagerSectionCard>
 
-      {!evaluatedCareer.managerProtection?.noSacking && (
-        <ManagerBoostsPanel
-          career={evaluatedCareer}
-          stage="manager-end-season"
-          onApplied={onCareerUpdate}
-        />
-      )}
-
-      {evaluatedCareer.managerProtection?.noSacking && (
-        <ManagerSectionCard accent="gold">
-          <p className="text-sm text-accent-gold">
-            Sacking Protection Active — board expectations and confidence still apply,
-            but you cannot be dismissed.
-          </p>
-        </ManagerSectionCard>
-      )}
+      <ManagerBoostsPanel
+        career={evaluatedCareer}
+        stage="manager-end-season"
+        onApplied={onCareerUpdate}
+      />
 
       <ManagerSeasonRecapCard
         club={evaluatedCareer.club}
@@ -552,28 +524,16 @@ export function ManagerSeasonReview({
         <GuestSaveNudge context="manager-season" />
       )}
 
-      {sacked ? (
-        <GameButton
-          variant="theme"
-          onClick={() => {
-            playUiClick();
-            onChooseNextClub();
-          }}
-        >
-          Choose Next Club
-        </GameButton>
-      ) : (
-        <GameButton
-          variant="theme"
-          onClick={() => {
-            playSeasonComplete();
-            playUiClick();
-            onViewRewards();
-          }}
-        >
-          View Potential Review
-        </GameButton>
-      )}
+      <GameButton
+        variant="theme"
+        onClick={() => {
+          playSeasonComplete();
+          playUiClick();
+          onViewRewards();
+        }}
+      >
+        View Potential Review
+      </GameButton>
       <GameButton
         variant="secondary"
         onClick={() => {

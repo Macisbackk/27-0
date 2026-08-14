@@ -6,13 +6,13 @@ import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
-import { getClubColors } from "@/lib/clubs";
-import { getReadableClubTextColour } from "@/lib/ui/contrast";
-import { getUserLeagueTablePosition } from "@/lib/manager/managerFixtures";
 import { playSeasonComplete, playUiClick } from "@/lib/sound";
 import {
+  buildSeasonTransitionPreview,
+  MILLION_POUND_GAME_NAME,
+} from "@/lib/manager/seasonTransitionPreview";
+import {
   managerModalHeaderClass,
-  managerPillClass,
 } from "@/lib/manager/managerSurfaces";
 
 interface ManagerPromotionModalProps {
@@ -20,15 +20,28 @@ interface ManagerPromotionModalProps {
   onContinue: () => void;
 }
 
+function ClubList({
+  label,
+  clubs,
+}: {
+  label: string;
+  clubs: string[];
+}) {
+  return (
+    <div>
+      <p className={`${TYPO.sectionLabel}`}>{label}</p>
+      <p className={`mt-1 ${TYPO.bodySm} text-pitch-200`}>
+        {clubs.length > 0 ? clubs.join(", ") : "None"}
+      </p>
+    </div>
+  );
+}
+
 export function ManagerPromotionModal({
   career,
   onContinue,
 }: ManagerPromotionModalProps) {
-  const colors = getClubColors(career.club);
-  const badgeTextColour = getReadableClubTextColour(colors);
-  const position = getUserLeagueTablePosition(career);
-  const champions = position === 1;
-  const mpgWinners = career.millionPoundGame?.winner === career.club;
+  const preview = buildSeasonTransitionPreview(career);
 
   const handleContinue = useCallback(() => {
     playUiClick();
@@ -54,46 +67,47 @@ export function ManagerPromotionModal({
         className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div
-          className={managerModalHeaderClass("gold", { centered: true })}
-          style={{
-            background: `linear-gradient(to bottom, ${colors.primary}22, transparent)`,
-          }}
-        >
-          <p className="text-5xl" aria-hidden>
-            {champions ? "🏆" : "⬆️"}
-          </p>
-          <span className={`mt-3 ${managerPillClass("gold")}`}>
-            {champions ? "Champions & promoted" : "Million Pound Game winners"}
-          </span>
-          <h2 id="promotion-title" className={`mt-3 ${TYPO.pageTitle}`}>
-            {champions
-              ? "Championship Champions"
-              : "Promoted to Super League"}
+        <div className={managerModalHeaderClass("gold", { centered: true })}>
+          <h2 id="promotion-title" className={`mt-1 ${TYPO.pageTitle}`}>
+            Promotion & Relegation
           </h2>
           <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
-            {champions
-              ? `${career.club} finished 1st in ${career.seasonYear}.`
-              : `${career.club} won the Million Pound Game in ${career.seasonYear}.`}
+            {preview.userHeadline ?? `${career.seasonYear} season complete.`}
           </p>
         </div>
 
-        <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
-          {champions
-            ? "Title winners — Super League next season."
-            : mpgWinners
-              ? "Million Pound Game victory — Super League next season."
-              : "Promotion secured — Super League next season."}
-        </p>
-        <p
-          className={`mt-2 text-center text-[10px] font-bold uppercase tracking-wider`}
-          style={{ color: badgeTextColour }}
-        >
-          Welcome to the top flight
-        </p>
+        <div className={`${SPACING.stackMd} mt-4`}>
+          <div>
+            <p className={TYPO.sectionLabel}>Super League Playoffs</p>
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-200`}>
+              Winner: {preview.slPlayoffWinner ?? "Not contested / pending"}
+            </p>
+          </div>
+          <div>
+            <p className={TYPO.sectionLabel}>Championship Playoffs</p>
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-200`}>
+              Winner: {preview.champPlayoffWinner ?? "Pending"} — Million Pound Game qualifier
+            </p>
+          </div>
+          <div>
+            <p className={TYPO.sectionLabel}>{MILLION_POUND_GAME_NAME}</p>
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-200`}>
+              {preview.mpg.slClub ?? "SL 11th"} vs {preview.mpg.champClub ?? "Champ playoff winner"}
+            </p>
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-300`}>
+              {preview.mpg.winner
+                ? `${preview.mpg.winner} won. ${preview.mpg.outcome}`
+                : preview.mpg.outcome}
+            </p>
+          </div>
+          <ClubList label="Automatic Promotion" clubs={preview.autoPromoted} />
+          <ClubList label="Million Pound Game Promotion" clubs={preview.mpgPromoted} />
+          <ClubList label="Automatic Relegation" clubs={preview.autoRelegated} />
+          <ClubList label="Million Pound Game Relegation" clubs={preview.mpgRelegated} />
+        </div>
 
         <GameButton variant="theme" className="mt-5" onClick={handleContinue}>
-          Continue
+          Continue to Season Review
         </GameButton>
       </div>
     </div>

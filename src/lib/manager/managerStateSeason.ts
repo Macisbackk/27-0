@@ -3,7 +3,6 @@ import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import type { ManagerCareer, ManagerSeasonSummary, SeasonHighlightResult } from "./types";
 import { buildManagerSchedule, buildLeagueTableFromMatches, getManagerLeagueTable, buildManagerScheduleFromChampionship } from "./managerFixtures";
 import {
-  applyPromotionRelegation,
   getCareerChampionshipClubs,
   getCareerSuperLeagueClubs,
   getUserCompetitionId,
@@ -11,6 +10,8 @@ import {
   getUserSeasonGames,
   isUserInChampionship,
 } from "./leagueMembership";
+import { applyPromotionRelegation } from "./managerSeasonTransition";
+import { markSeasonTransitionComplete } from "./competitionPhase";
 import { generateLeagueListedPlayers } from "./managerTransferLeague";
 import { mergeUserListingsIntoLeagueMarket } from "./transferLedger";
 import { getUserLeagueTablePosition } from "./managerFixtures";
@@ -221,6 +222,11 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
       ? (mpgLost ? "million_pound_game" : position === 12 ? "auto" : undefined)
       : undefined,
   };
+}
+
+/** Authoritative season rollover — membership, next fixtures, preserved player data. */
+export function completeSeasonTransition(career: ManagerCareer): ManagerCareer {
+  return advanceToNextSeason(career);
 }
 
 export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
@@ -499,9 +505,11 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
 
   const aged = hydrateManagerPlayerRegistryAges(withChampion);
   const withTenure = tickReserveYearsAtClub(aged);
-  return ensureAllClubReserveDepth(
-    applyAutoPromoteByRating(
-      scheduleWorldClubChallengeForSeason(withTenure)
+  return markSeasonTransitionComplete(
+    ensureAllClubReserveDepth(
+      applyAutoPromoteByRating(
+        scheduleWorldClubChallengeForSeason(withTenure)
+      )
     )
   );
 }

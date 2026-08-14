@@ -12,6 +12,7 @@ import {
 import { RIVAL_CLUBS } from "./managerRivals";
 import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 import { DEFAULT_TRANSFER_ACTIVITY_CONFIG } from "./transferActivityConfig";
+import { executeAiPermanentMove } from "./transferTransactions";
 
 const MAX_TRANSFER_HISTORY = 32;
 
@@ -143,20 +144,24 @@ export function maybeGenerateAiTransfers(
   clubFunds[toClub] = Math.max(0, buyerFunds - fee);
   clubFunds[fromClub] = (clubFunds[fromClub] ?? 0) + fee;
 
-  const withRoster = transferLeaguePlayer(
-    {
-      ...career,
-      clubFunds,
-      leagueListedPlayers,
-      leagueTransfers: [activity, ...(career.leagueTransfers ?? [])].slice(
-        0,
-        MAX_TRANSFER_HISTORY
+  const tx = executeAiPermanentMove(
+    career,
+    (current) =>
+      transferLeaguePlayer(
+        {
+          ...current,
+          clubFunds,
+          leagueListedPlayers,
+          leagueTransfers: [activity, ...(current.leagueTransfers ?? [])].slice(
+            0,
+            MAX_TRANSFER_HISTORY
+          ),
+        },
+        playerId,
+        fromClub,
+        toClub
       ),
-    },
-    playerId,
-    fromClub,
-    toClub
+    { playerId, fromClub, toClub, fee }
   );
-
-  return withRoster;
+  return tx.ok ? tx.career : career;
 }

@@ -37,7 +37,6 @@ const ManagerPlayGame = dynamic(
 );
 import { ManagerMatchReview } from "@/components/manager/ManagerMatchReview";
 import { ManagerSeasonReview } from "@/components/manager/ManagerSeasonReview";
-import { ManagerChooseNextClub } from "@/components/manager/ManagerChooseNextClub";
 import { ManagerDevelopmentReview } from "@/components/manager/ManagerDevelopmentReview";
 import { ManagerSeasonRewards } from "@/components/manager/ManagerSeasonRewards";
 import { ManagerTrophyModal } from "@/components/manager/ManagerTrophyModal";
@@ -74,7 +73,7 @@ import {
   flushManagerCareerToDisk,
   deleteManagerCareer,
   createNewCareer,
-  advanceToNextSeason,
+  completeSeasonTransition,
   hydrateManagerCareer,
   prepareManagerCareerForSave,
   getActiveSaveSlot,
@@ -82,7 +81,6 @@ import {
   listManagerSaveSlots,
   type ManagerSaveSlotSummary,
 } from "@/lib/manager/managerState";
-import { takeOverClub } from "@/lib/manager/managerClubChange";
 import {
   advanceManagerMatchWeek,
   getNextManagerFixture,
@@ -114,10 +112,9 @@ import {
 } from "@/lib/manager/managerBoardInbox";
 import { acknowledgePlayoffsIntro, needsPlayoffsIntro, shouldShowLeagueWinnersCelebration } from "@/lib/manager/managerPlayoffs";
 import {
-  acknowledgePromotionCelebration,
-  shouldShowPromotionCelebration,
-} from "@/lib/manager/managerPromotion";
-import { wasManagerSacked } from "@/lib/manager/boardSeasonEvaluation";
+  acknowledgeSeasonTransitionPreview,
+  shouldShowSeasonTransitionPreview,
+} from "@/lib/manager/seasonTransitionPreview";
 import { shouldShowChallengeCupCelebration } from "@/lib/manager/managerChallengeCup";
 import { shouldShowWorldClubChallengeCelebration } from "@/lib/manager/worldClubChallenge";
 import {
@@ -234,7 +231,6 @@ const SCROLL_TOP_VIEWS: ManagerView[] = [
   "season-review",
   "development-review",
   "season-rewards",
-  "choose-next-club",
 ];
 
 function scrollManagerPageToTop() {
@@ -377,8 +373,7 @@ export default function ManagerPage() {
         next === "match-review" ||
         next === "season-review" ||
         next === "development-review" ||
-        next === "season-rewards" ||
-        next === "choose-next-club"
+        next === "season-rewards"
       ) {
         setManagerView(setView, next);
         return;
@@ -588,7 +583,7 @@ export default function ManagerPage() {
         ? shouldShowLeagueWinnersCelebration(nextCareer!)
         : pendingLeagueWinnersCelebration;
       const wantPromotion = fromCareer
-        ? shouldShowPromotionCelebration(nextCareer!)
+        ? shouldShowSeasonTransitionPreview(nextCareer!)
         : pendingPromotionCelebration;
       const wantTrophy = fromCareer
         ? Boolean(
@@ -983,7 +978,7 @@ export default function ManagerPage() {
           setChallengeCupWinModalOpen(true);
         } else if (shouldShowLeagueWinnersCelebration(saved)) {
           setLeagueWinnersModalOpen(true);
-        } else if (shouldShowPromotionCelebration(saved)) {
+        } else if (shouldShowSeasonTransitionPreview(saved)) {
           setPromotionModalOpen(true);
         } else if (shouldShowPerfectSeasonCelebration(saved)) {
           setSeasonRecordModalOpen("perfect");
@@ -1150,7 +1145,7 @@ export default function ManagerPage() {
 
     const seasonRecord = resolvePendingSeasonRecordCelebration(withSeasonStats);
     const wonLeagueTable = shouldShowLeagueWinnersCelebration(withSeasonStats);
-    const earnedPromotion = shouldShowPromotionCelebration(withSeasonStats);
+    const earnedPromotion = shouldShowSeasonTransitionPreview(withSeasonStats);
     const wonChallengeCup = shouldShowChallengeCupCelebration(withSeasonStats);
     const wonWorldClubChallenge =
       shouldShowWorldClubChallengeCelebration(withSeasonStats);
@@ -1780,7 +1775,7 @@ export default function ManagerPage() {
 
   const handlePromotionModalContinue = () => {
     if (!career) return;
-    const updated = acknowledgePromotionCelebration(career);
+    const updated = acknowledgeSeasonTransitionPreview(career);
     persist(updated);
     setPromotionModalOpen(false);
     continueCelebrationQueue("trophy", updated);
@@ -2043,34 +2038,9 @@ export default function ManagerPage() {
     afterMatch(next);
   };
 
-  const handleTakeOverClub = (newClub: string) => {
-    if (!career) return;
-    let base = career;
-    if (base.isSeasonComplete) {
-      base = hydrateManagerCareer(advanceToNextSeason(base));
-    }
-    const next = hydrateManagerCareer(takeOverClub(base, newClub, "sacked"));
-    if (next.club !== newClub) {
-      setAlertDialog({
-        title: "Take over failed",
-        message:
-          "That club is no longer available after the season rolled over. Pick another offer.",
-      });
-      // Keep the sacked end-of-season save — never persist the advanced old club.
-      return;
-    }
-    playManagerAppointed();
-    persist(next);
-    goToView("hub");
-  };
-
   const handleContinueSeason = () => {
     if (!career) return;
-    if (wasManagerSacked(career)) {
-      goToView("choose-next-club", { syncUrl: false });
-      return;
-    }
-    const next = hydrateManagerCareer(advanceToNextSeason(career));
+    const next = hydrateManagerCareer(completeSeasonTransition(career));
     persist(next);
     const loanEnded = getPendingLoanEndedPopup(next);
     if (loanEnded) {
@@ -2464,20 +2434,11 @@ export default function ManagerPage() {
         <ManagerSeasonReview
           career={career}
           onViewRewards={() => goToView("development-review", { syncUrl: false })}
-          onChooseNextClub={() => goToView("choose-next-club", { syncUrl: false })}
           onCareerUpdate={persist}
           onHome={() => {
             playUiClick();
             router.push("/");
           }}
-        />
-      )}
-
-      {career && view === "choose-next-club" && (
-        <ManagerChooseNextClub
-          career={career}
-          onTakeOver={handleTakeOverClub}
-          onBack={() => goToView("season-review", { syncUrl: false })}
         />
       )}
 

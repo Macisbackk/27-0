@@ -4,7 +4,6 @@ import { areRivalClubs } from "./managerRivals";
 import { getManagerSeasonTrophyLabels } from "./managerSeasonTrophies";
 import { shouldShowChallengeCupCelebration } from "./managerChallengeCup";
 import { shouldShowLeagueWinnersCelebration } from "./managerPlayoffs";
-import { shouldShowPromotionCelebration } from "./managerPromotion";
 import {
   isUserInChampionship,
 } from "./leagueMembership";
@@ -123,16 +122,17 @@ function maybeTrophyMails(career: ManagerCareer): ManagerCareer {
     );
   }
 
-  if (
+  const autoPromoted =
     isUserInChampionship(career) &&
-    (shouldShowPromotionCelebration(career) ||
-      getUserLeagueTablePosition(career) <= getAutoPromoteCount())
-  ) {
+    career.isSeasonComplete &&
+    getUserLeagueTablePosition(career) <= getAutoPromoteCount();
+  const mpgPromoted = career.millionPoundGame?.winner === career.club;
+  if (autoPromoted || mpgPromoted) {
     next = appendBoardMail(
       next,
       `board-promoted-${year}`,
       "Board — Promoted to Super League",
-      career.millionPoundGame?.winner === career.club
+      mpgPromoted
         ? "Million Pound Game victory. The board celebrates promotion — Super League next season."
         : "Championship title secured. The board celebrates automatic promotion — Super League next season."
     );

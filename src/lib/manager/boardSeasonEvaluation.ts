@@ -16,7 +16,8 @@ import {
 } from "./leagueMembership";
 import { getAutoPromoteCount } from "./managerLeagues";
 
-export const BOARD_SACKING_SCHEMA_VERSION = 2;
+/** Schema bump: sacking removed; board always retains. */
+export const BOARD_SACKING_SCHEMA_VERSION = 3;
 
 export function buildBoardSeasonId(career: ManagerCareer): string {
   return `${career.club}-${career.seasonYear}`;
@@ -115,6 +116,10 @@ function championshipPathwayObjective(
   };
 }
 
+/**
+ * End-of-season board review. Manager Mode has no sacking — the user always
+ * retains their club. Confidence and objectives remain for narrative/scoring.
+ */
 export function evaluateBoardSeason(
   career: ManagerCareer
 ): BoardSeasonEvaluation {
@@ -218,7 +223,11 @@ export function evaluateBoardSeason(
     );
   }
 
-  if (inChamp && (summary.position <= getAutoPromoteCount() || career.millionPoundGame?.winner === career.club)) {
+  if (
+    inChamp &&
+    (summary.position <= getAutoPromoteCount() ||
+      career.millionPoundGame?.winner === career.club)
+  ) {
     explanation.push("Promoted to Super League.");
   } else if (inChamp && pathwayObjective.status === "partial") {
     explanation.push("Close to the promotion places.");
@@ -232,56 +241,15 @@ export function evaluateBoardSeason(
 
   explanation.push(`Board confidence stands at ${career.boardConfidence}%.`);
 
-  let recommendation: "retain" | "sack" = "retain";
-
-  // Weak / survival clubs that meet (or nearly meet) expectation keep the job.
-  const survivalClub =
-    tier === "avoid-bottom" || tier === "survive" || tier === "mid-table";
-  const finishedWithinExpectation =
-    primaryMet ||
-    (survivalClub &&
-      !isTerriblePositionForTier(
-        tier,
-        summary.position,
-        getUserLeagueClubs(career).length
-      ));
-
-  if (primaryMet || finishedWithinExpectation) {
+  if (primaryMet) {
+    explanation.push("Primary objective delivered — the board retain you.");
+  } else if (terriblePosition || career.boardConfidence < 50) {
     explanation.push(
-      primaryMet
-        ? "Primary objective delivered — the board will retain you."
-        : "Finish is in line with club strength and board expectation — the board will retain you."
+      "The board are disappointed with the season, but you continue as manager."
     );
-  } else if (career.boardConfidence < 30) {
-    recommendation = "sack";
-    explanation.push(
-      "Confidence below 30% with the primary target missed."
-    );
-  } else if (career.boardConfidence < 50 || terriblePosition) {
-    // Title/top clubs finishing bottom: sack risk. Survival clubs already retained above.
-    recommendation = "sack";
-    if (career.boardConfidence < 50) {
-      explanation.push(
-        "Confidence below 50% with the primary target missed."
-      );
-    }
-    if (terriblePosition) {
-      explanation.push(
-        `League position (${summary.position}${summary.position === 1 ? "st" : summary.position === 2 ? "nd" : summary.position === 3 ? "rd" : "th"}) is unacceptable for a ${tier} club.`
-      );
-    }
   } else {
     explanation.push(
       "The board are disappointed but will offer another season."
-    );
-  }
-
-  const protectedByNoSacking = career.managerProtection?.noSacking === true;
-  const finalDecision = protectedByNoSacking ? "retain" : recommendation;
-
-  if (protectedByNoSacking && recommendation === "sack") {
-    explanation.push(
-      "Sacking protection is active — the board cannot dismiss you this season."
     );
   }
 
@@ -292,9 +260,9 @@ export function evaluateBoardSeason(
     objectiveResults,
     boardConfidence: career.boardConfidence,
     performanceScore,
-    recommendation,
-    finalDecision,
-    protectedByNoSacking,
+    recommendation: "retain",
+    finalDecision: "retain",
+    protectedByNoSacking: false,
     explanation,
     decisionId,
   };
@@ -312,17 +280,10 @@ export function getOrCreateBoardSeasonEvaluation(career: ManagerCareer): {
     existing &&
     existing.seasonId === seasonId &&
     existing.clubId === career.club &&
-    (career.boardSackingSchemaVersion ?? 0) >= BOARD_SACKING_SCHEMA_VERSION
+    (career.boardSackingSchemaVersion ?? 0) >= BOARD_SACKING_SCHEMA_VERSION &&
+    existing.finalDecision === "retain"
   ) {
-    // Re-evaluate if no-sacking was activated after a stale sack decision.
-    if (
-      career.managerProtection?.noSacking &&
-      existing.finalDecision === "sack"
-    ) {
-      // fall through to recompute
-    } else {
-      return { career, evaluation: existing };
-    }
+    return { career, evaluation: existing };
   }
 
   const evaluation = evaluateBoardSeason(career);
@@ -343,7 +304,7 @@ export function getOrCreateBoardSeasonEvaluation(career: ManagerCareer): {
   };
 }
 
-/** Drop cached board eval for the current season (e.g. after no-sacking boost). */
+/** Drop cached board eval for the current season. */
 export function invalidateBoardSeasonEvaluation(
   career: ManagerCareer
 ): ManagerCareer {
@@ -361,9 +322,7 @@ export function invalidateBoardSeasonEvaluation(
   };
 }
 
-export function wasManagerSacked(career: ManagerCareer): boolean {
-  const evaluation =
-    career.boardSeasonEvaluation ??
-    career.boardSeasonEvaluations?.[buildBoardSeasonId(career)];
-  return evaluation?.finalDecision === "sack";
+/** @deprecated Sacking removed — always false. */
+export function wasManagerSacked(_career: ManagerCareer): boolean {
+  return false;
 }

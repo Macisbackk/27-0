@@ -122,6 +122,7 @@ import {
   measureCareerSaveSize,
 } from "./managerSaveDiagnostics";
 import { stampManagerSaveVersion, SIMPLIFIED_PLAYER_SYSTEMS_VERSION } from "./managerSaveVersion";
+import { migrateManagerRebuildSave } from "./migrateManagerRebuild";
 
 export const PLAYER_SHOWCASE_VERSION = 2;
 export const HISTORIC_AGE_DATA_VERSION = 2;
@@ -515,6 +516,7 @@ export function hydrateManagerCareer(raw: ManagerCareer): ManagerCareer {
   career = migrateChallengeCupRoundLabels(career);
   career = migrateCareerHistory(career);
   career = repairPrematureLeaguePhaseCredit(career);
+  career = migrateManagerRebuildSave(career);
   return syncManagerInboxMessages(career);
 }
 
@@ -829,7 +831,8 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     ],
     managerCareerWorldSchemaVersion: 2,
     boostUsage: {},
-    boardSackingSchemaVersion: 1,
+    boardSackingSchemaVersion: 3,
+    competitionPhase: "REGULAR_SEASON_ACTIVE",
     playerRatingSchemaVersion: PLAYER_RATING_SCHEMA_VERSION,
     reserveRatingScaleVersion: RESERVE_RATING_SCALE_VERSION,
     playerShowcaseVersion: PLAYER_SHOWCASE_VERSION,
@@ -855,7 +858,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
   return hydrated;
 }
 
-export { buildSeasonSummary, advanceToNextSeason } from "./managerStateSeason";
+export { buildSeasonSummary, advanceToNextSeason, completeSeasonTransition } from "./managerStateSeason";
 
 export {
   getActiveSaveSlot,

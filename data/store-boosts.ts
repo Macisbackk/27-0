@@ -123,8 +123,8 @@ export const STORE_BOOSTS: readonly GameBoost[] = [
   },
   {
     id: "mgr-no-sacking",
-    name: "No Sacking",
-    description: "Board cannot sack you this save.",
+    name: "No Sacking (retired)",
+    description: "Retired — Manager Mode no longer includes sacking.",
     category: "manager-mode",
     compatibleModes: ["MANAGER"],
     price: 4_000_000,
@@ -162,7 +162,9 @@ export function getQuickModeBoosts(): GameBoost[] {
 }
 
 export function getManagerModeBoosts(): GameBoost[] {
-  return STORE_BOOSTS.filter((b) => b.category === "manager-mode");
+  return STORE_BOOSTS.filter(
+    (b) => b.category === "manager-mode" && b.id !== "mgr-no-sacking"
+  );
 }
 
 /** Suggested Financial Takeover cash injection (club economy, not Store). */

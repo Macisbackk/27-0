@@ -97,6 +97,7 @@ import {
   finalizeMillionPoundGameIfNeeded,
   isMillionPoundGameComplete,
 } from "./managerMillionPoundGame";
+import { deriveCompetitionPhase, syncCompetitionPhase } from "./competitionPhase";
 import {
   buildWorldClubChallengeScheduledFixture,
   completeUserWorldClubChallenge,
@@ -157,14 +158,10 @@ export function getNextManagerFixture(
   const mpgFixture = buildMillionPoundGameScheduledFixture(withMpgEntrant);
   if (mpgFixture) return mpgFixture;
 
-  if (
-    userQualifiedForManagerPlayoffs(synced) &&
-    !synced.playoffsIntroAcknowledged
-  ) {
-    return null;
-  }
-
-  const withPlayoffs = ensurePlayoffsReady(synced);
+  const withPlayoffs = ensurePlayoffsReady({
+    ...synced,
+    playoffsIntroAcknowledged: true,
+  });
   if (isPlayoffsPhaseComplete(withPlayoffs)) return null;
 
   const prepared = preparePlayoffRound(withPlayoffs);
@@ -197,24 +194,14 @@ export function isManagerSeasonCompleteLite(career: ManagerCareer): boolean {
     return false;
   }
   if (!userQualifiedForManagerPlayoffs(synced)) return true;
-  if (!synced.playoffsIntroAcknowledged) return false;
   const playoffs = synced.playoffs;
   if (!playoffs) return false;
   return isPlayoffsPhaseComplete({ ...synced, playoffs });
 }
 
 export function isManagerSeasonComplete(career: ManagerCareer): boolean {
-  const synced = syncManagerLeagueTable(career);
-  if (!isLeagueAndCupPhaseComplete(synced)) return false;
-  if (isUserInChampionship(synced)) return isManagerSeasonCompleteLite(synced);
-  const mpgReady = ensureMillionPoundGameReady(
-    finalizeChampionshipPlayoffsForMpgEntrant(synced)
-  );
-  if (mpgReady.millionPoundGame?.userParticipating && !isMillionPoundGameComplete(mpgReady)) {
-    return false;
-  }
-  const withPlayoffs = ensurePlayoffsReady(synced);
-  return isPlayoffsPhaseComplete(withPlayoffs);
+  return deriveCompetitionPhase(syncManagerLeagueTable(career)) ===
+    "SEASON_TRANSITION_READY";
 }
 
 /** Squad + cup/playoff bracket prep before resolving or playing the next fixture. */
@@ -1187,6 +1174,7 @@ export function advanceManagerMatchWeek(
 
   // AI WCC result only after Game Week 3 (gameday) has passed.
   next = resolveAiWorldClubChallengeIfDue(next);
+  next = syncCompetitionPhase(next);
 
   return { ok: true, career: next };
 }

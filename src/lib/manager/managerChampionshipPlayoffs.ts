@@ -43,6 +43,7 @@ export function userQualifiedForChampionshipPlayoffs(career: ManagerCareer): boo
 
 export function createChampionshipPlayoffs(career: ManagerCareer): PlayoffBracketState {
   const userClub = career.club;
+  // Championship 1st is automatically promoted and never enters this bracket.
   return {
     seed: `${career.seed}-championship-playoffs`,
     leaguePosition: getUserLeaguePosition(getManagerLeagueTable(career), userClub),
@@ -142,7 +143,11 @@ export function advanceChampionshipPlayoffsAfterUserMatch(career: ManagerCareer)
 }
 
 export function ensureChampionshipPlayoffsReady(career: ManagerCareer): ManagerCareer {
-  if (!isLeagueAndCupPhaseComplete(career) || !userQualifiedForChampionshipPlayoffs(career)) return career;
+  if (!isLeagueAndCupPhaseComplete(career)) return career;
+  if (!userQualifiedForChampionshipPlayoffs(career) && career.championshipPlayoffs) {
+    return career;
+  }
+  if (!userQualifiedForChampionshipPlayoffs(career)) return career;
   return { ...career, championshipPlayoffs: prepareChampionshipPlayoffRound(career) };
 }
 

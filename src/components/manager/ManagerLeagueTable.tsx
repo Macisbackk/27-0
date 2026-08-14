@@ -6,6 +6,11 @@ import { TYPO } from "@/lib/ui/typography";
 import { getClubIndicatorColor } from "@/lib/clubs";
 import type { ManagerCareer } from "@/lib/manager/types";
 import { isUserInChampionship } from "@/lib/manager/leagueMembership";
+import {
+  getTableZone,
+  getTableZoneLegend,
+  type TableZoneKind,
+} from "@/lib/manager/tableZones";
 import { playUiClick } from "@/lib/sound";
 
 function ordinal(n: number): string {
@@ -14,36 +19,11 @@ function ordinal(n: number): string {
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
-type TableZone =
-  | "playoffs"
-  | "auto-promote"
-  | "champ-playoffs"
-  | "mpg"
-  | "auto-relegate"
-  | "wooden-spoon"
-  | null;
-
-function getTableZone(
-  position: number,
-  championshipTable: boolean
-): TableZone {
-  if (championshipTable) {
-    if (position === 1) return "auto-promote";
-    if (position >= 2 && position <= 5) return "champ-playoffs";
-    if (position >= 18) return "wooden-spoon";
-    return null;
-  }
-  if (position <= 6) return "playoffs";
-  if (position === 11) return "mpg";
-  if (position === 12) return "auto-relegate";
-  return null;
-}
-
-function zoneRowClass(zone: TableZone, isUser: boolean): string {
+function zoneRowClass(zone: TableZoneKind, isUser: boolean): string {
   if (isUser) return "border-theme-primary/35 bg-theme-primary/10";
   switch (zone) {
     case "playoffs":
-    case "champ-playoffs":
+    case "champion":
       return "border-amber-500/25 bg-amber-500/5";
     case "auto-promote":
       return "border-theme-primary/30 bg-theme-primary/8";
@@ -58,11 +38,11 @@ function zoneRowClass(zone: TableZone, isUser: boolean): string {
   }
 }
 
-function zoneRowClassDesktop(zone: TableZone, isUser: boolean): string {
+function zoneRowClassDesktop(zone: TableZoneKind, isUser: boolean): string {
   if (isUser) return "bg-theme-primary/10";
   switch (zone) {
     case "playoffs":
-    case "champ-playoffs":
+    case "champion":
       return "bg-amber-500/5";
     case "auto-promote":
       return "bg-theme-primary/5";
@@ -167,7 +147,11 @@ export function ManagerLeagueTable({
       <ul className={`mt-3 space-y-2 sm:hidden ${SPACING.stackSm}`}>
         {displayRows.map((row) => {
           const indicatorColor = getClubIndicatorColor(row.team);
-          const zone = getTableZone(row.position, championshipTable);
+          const zone = getTableZone(
+            championshipTable ? "championship" : "super-league",
+            row.position,
+            rows.length
+          ).kind;
           const inner = (
             <>
               <span className="font-mono text-sm text-pitch-400">{row.position}</span>
@@ -245,7 +229,11 @@ export function ManagerLeagueTable({
               const indicatorColor = getClubIndicatorColor(row.team);
               const draws =
                 row.draws ?? Math.max(0, row.played - row.wins - row.losses);
-              const zone = getTableZone(row.position, championshipTable);
+              const zone = getTableZone(
+                championshipTable ? "championship" : "super-league",
+                row.position,
+                rows.length
+              ).kind;
               return (
                 <tr
                   key={row.team}
@@ -325,19 +313,26 @@ export function ManagerLeagueTable({
         </table>
       </div>
       <div className={`mt-3 flex flex-wrap gap-x-3 gap-y-1 ${TYPO.meta} text-pitch-500`}>
-        {championshipTable ? (
-          <>
-            <span className="text-theme-primary">1 Auto promote</span>
-            <span className="text-amber-300">2–5 Play-offs</span>
-            <span className="text-accent-gold">Winner → Million Pound Game</span>
-          </>
-        ) : (
-          <>
-            <span className="text-amber-300">1–6 Play-offs</span>
-            <span className="text-accent-gold">11 Million Pound Game</span>
-            <span className="text-red-300">12 Auto relegate</span>
-          </>
-        )}
+        {getTableZoneLegend(
+          championshipTable ? "championship" : "super-league"
+        ).map((item) => (
+          <span
+            key={item.kind}
+            className={
+              item.kind === "auto-promote" || item.kind === "champion"
+                ? "text-theme-primary"
+                : item.kind === "playoffs"
+                  ? "text-amber-300"
+                  : item.kind === "mpg"
+                    ? "text-accent-gold"
+                    : item.kind === "auto-relegate"
+                      ? "text-red-300"
+                      : "text-pitch-400"
+            }
+          >
+            {item.label}
+          </span>
+        ))}
       </div>
     </div>
   );

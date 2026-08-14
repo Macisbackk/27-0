@@ -105,7 +105,6 @@ export function ManagerBoostsPanel({
 
   if (
     ownedBoosts.length === 0 &&
-    !career.managerProtection?.noSacking &&
     !alwaysShow
   ) {
     return null;
@@ -182,15 +181,9 @@ export function ManagerBoostsPanel({
         title={panelTitle}
         subtitle="Apply owned boosts from the Store. Effects are permanent for this career."
         variant="elevated"
-        accent={career.managerProtection?.noSacking ? "gold" : "primary"}
+        accent="primary"
         className={compact ? "mt-3" : undefined}
       >
-        {career.managerProtection?.noSacking && (
-          <p className="mb-3 rounded-lg border border-accent-gold/30 bg-accent-gold/10 px-3 py-2 text-sm text-accent-gold">
-            Sacking Protection Active — the board cannot dismiss you this save.
-          </p>
-        )}
-
         {ownedBoosts.length === 0 ? (
           <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
             <p className={`${TYPO.bodySm}`}>No owned boosts for this screen.</p>

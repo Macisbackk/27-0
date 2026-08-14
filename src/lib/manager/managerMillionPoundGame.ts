@@ -3,17 +3,20 @@ import { getGeneratedClubSquadStrength } from "../game/opponent-squad-strength";
 import { getManagerLeagueTable } from "./managerFixtures";
 import { isUserInChampionship } from "./leagueMembership";
 import { getChampionshipPlayoffWinner } from "./managerChampionshipPlayoffs";
+import { isLeagueAndCupPhaseComplete } from "./managerChallengeCup";
 import type { ManagerCareer, ManagerScheduledFixture, MillionPoundGameState } from "./types";
 
 export const MILLION_POUND_GAME_NAME = "Million Pound Game";
 
 export function resolveMillionPoundGameClubs(career: ManagerCareer): { slClub: string; champClub: string } | null {
+  if (!isLeagueAndCupPhaseComplete(career)) return null;
   const slTable = isUserInChampionship(career)
     ? career.aiSuperLeagueStandings
     : getManagerLeagueTable(career);
   const slClub = slTable?.find((row) => row.position === 11)?.team;
   const champClub = getChampionshipPlayoffWinner(career.championshipPlayoffs);
-  return slClub && champClub ? { slClub, champClub } : null;
+  if (!slClub || !champClub) return null;
+  return { slClub, champClub };
 }
 
 export function ensureMillionPoundGameReady(career: ManagerCareer): ManagerCareer {

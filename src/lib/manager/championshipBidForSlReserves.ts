@@ -21,6 +21,7 @@ import { addTransferIncome, syncManagerFinance } from "./managerFinance";
 import { computeCareerWageBill } from "./managerReserveContracts";
 import { formatWage } from "./managerContracts";
 import { DEFAULT_TRANSFER_ACTIVITY_CONFIG } from "./transferActivityConfig";
+import { applyTransferTransaction } from "./transferTransactions";
 import {
   getTransferOfferGenerationPhase,
   recordTransferOfferDiagnostic,
@@ -578,42 +579,55 @@ export function acceptReserveTransferOffer(
     return { ok: false, error: "Buying club could not be found." };
   }
 
-  let next = completeReserveToChampionshipTransfer(career, {
-    reserve,
-    fromClub: career.club,
-    isUserReserve: true,
-    toClubId: champClub.id,
-    fee: msg.offerAmount,
-    week: career.gameWeek,
-  });
-
-  next = {
-    ...next,
-    inboxMessages: next.inboxMessages.map((m) =>
-      m.id === messageId ? { ...m, resolved: true, read: true } : m
-    ),
-  };
-
-  next = pushInboxMessage(next, {
-    id: `champ-reserve-sale-${reserve.id}-w${career.gameWeek}`,
-    type: "transfer_complete",
-    title: "Reserve Sold",
-    body: `${reserve.name} has joined ${champClub.name} for ${formatWage(msg.offerAmount)}.`,
-    week: career.gameWeek,
-    season: career.seasonYear,
-    gameWeek: career.gameWeek,
-    createdAt: new Date().toISOString(),
-    read: false,
-    resolved: false,
+  const fee: number = msg.offerAmount;
+  const tx = applyTransferTransaction(career, {
+    id: `reserve-champ-${reserve.id}-${messageId}`,
+    type: "RESERVE_TO_CHAMP",
     playerId: reserve.id,
-    playerName: reserve.name,
-    offerClub: champClub.name,
-    offerAmount: msg.offerAmount,
+    fromClubId: career.club,
+    toClubId: champClub.name,
+    fee,
+    meta: {
+      skipInbox: true,
+      playerName: reserve.name,
+      apply: (current) => {
+        let next = completeReserveToChampionshipTransfer(current, {
+          reserve,
+          fromClub: current.club,
+          isUserReserve: true,
+          toClubId: champClub.id,
+          fee,
+          week: current.gameWeek,
+        });
+        next = {
+          ...next,
+          inboxMessages: next.inboxMessages.map((m) =>
+            m.id === messageId ? { ...m, resolved: true, read: true } : m
+          ),
+        };
+        next = pushInboxMessage(next, {
+          id: `champ-reserve-sale-${reserve.id}-w${current.gameWeek}`,
+          type: "transfer_complete",
+          title: "Reserve Sold",
+          body: `${reserve.name} has joined ${champClub.name} for ${formatWage(fee)}.`,
+          week: current.gameWeek,
+          season: current.seasonYear,
+          gameWeek: current.gameWeek,
+          createdAt: new Date().toISOString(),
+          read: false,
+          resolved: false,
+          playerId: reserve.id,
+          playerName: reserve.name,
+          offerClub: champClub.name,
+          offerAmount: msg.offerAmount,
+        });
+        return syncManagerFinance(next);
+      },
+    },
   });
 
-  next = syncManagerFinance(next);
-
-  return { ok: true, career: next };
+  if (!tx.ok) return { ok: false, error: tx.error };
+  return { ok: true, career: tx.career };
 }
 
 /** Reject a Championship club's bid for a reserve, with a short interest cooldown. */

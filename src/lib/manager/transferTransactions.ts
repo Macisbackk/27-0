@@ -23,6 +23,7 @@ import {
 } from "./managerLoans";
 import { completeFreeAgentSigning } from "./managerFreeAgents";
 import type { BuyOffer } from "./managerTransferLeague";
+import { completePlayerPurchase } from "./managerTransferLeague";
 import { getManagerPlayer } from "./managerPlayers";
 
 export type TransferTransactionType =
@@ -214,7 +215,10 @@ export function applyTransferTransaction(
   }
 
   // Loans already append history inside completeIncoming/OutgoingLoan.
-  const skipHistory = tx.type === "LOAN_RETURN" || tx.type === "LOAN";
+  const skipHistory =
+    tx.type === "LOAN_RETURN" ||
+    tx.type === "LOAN" ||
+    Boolean(tx.meta?.skipInbox);
 
   if (!skipHistory) {
     const transferType =
@@ -281,4 +285,127 @@ export function finalizeAppliedTransfer(
     })
   );
   return markTransferTxProcessed(next, tx.id);
+}
+
+function txId(
+  career: ManagerCareer,
+  kind: string,
+  playerId: string
+): string {
+  return `${kind}-${playerId}-s${career.seasonYear}-w${career.gameWeek}-${career.fixtures.length}`;
+}
+
+export function executePermanentBuy(
+  career: ManagerCareer,
+  playerId: string,
+  fromClub: string,
+  offer: BuyOffer,
+  listed: boolean
+): TransferTransactionResult {
+  return applyTransferTransaction(career, {
+    id: txId(career, "buy", playerId),
+    type: "PERMANENT",
+    playerId,
+    fromClubId: fromClub,
+    toClubId: career.club,
+    fee: offer.transferFee,
+    permanentOffer: offer,
+    listed,
+    meta: {
+      skipInbox: true,
+      apply: (next) =>
+        completePlayerPurchase(next, playerId, fromClub, offer, listed),
+    },
+  });
+}
+
+export function executeLoanIn(
+  career: ManagerCareer,
+  playerId: string,
+  fromClub: string,
+  opts: {
+    loanFee: number;
+    parentWageShare?: number;
+    wagePerYear?: number;
+    yearsRequested?: number;
+    squadRole?: SquadRole;
+  }
+): TransferTransactionResult {
+  return applyTransferTransaction(career, {
+    id: txId(career, "loan-in", playerId),
+    type: "LOAN",
+    playerId,
+    fromClubId: fromClub,
+    toClubId: career.club,
+    fee: opts.loanFee,
+    loanTerms: {
+      direction: "in",
+      parentWageShare: opts.parentWageShare,
+      wagePerYear: opts.wagePerYear,
+      yearsRequested: opts.yearsRequested,
+      squadRole: opts.squadRole,
+    },
+  });
+}
+
+export function executeLoanOut(
+  career: ManagerCareer,
+  playerId: string,
+  toClub: string,
+  opts: {
+    loanFee: number;
+    parentWageShare?: number;
+    canRecall?: boolean;
+  }
+): TransferTransactionResult {
+  return applyTransferTransaction(career, {
+    id: txId(career, "loan-out", playerId),
+    type: "LOAN",
+    playerId,
+    fromClubId: career.club,
+    toClubId: toClub,
+    fee: opts.loanFee,
+    loanTerms: {
+      direction: "out",
+      parentWageShare: opts.parentWageShare,
+      canRecall: opts.canRecall,
+    },
+  });
+}
+
+export function executeFreeAgentSign(
+  career: ManagerCareer,
+  playerId: string,
+  offer: BuyOffer
+): TransferTransactionResult {
+  return applyTransferTransaction(career, {
+    id: txId(career, "fa", playerId),
+    type: "FREE_AGENT_SIGN",
+    playerId,
+    fromClubId: "free-agent",
+    toClubId: career.club,
+    fee: 0,
+    permanentOffer: offer,
+  });
+}
+
+export function executeAiPermanentMove(
+  career: ManagerCareer,
+  apply: (next: ManagerCareer) => ManagerCareer,
+  details: {
+    playerId: string;
+    fromClub: string;
+    toClub: string;
+    fee: number;
+  }
+): TransferTransactionResult {
+  return applyTransferTransaction(career, {
+    id: txId(career, "ai", details.playerId),
+    type: "PERMANENT",
+    playerId: details.playerId,
+    fromClubId: details.fromClub,
+    toClubId: details.toClub,
+    fee: details.fee,
+    meta: { skipInbox: true, apply },
+  });
 }

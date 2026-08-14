@@ -83,6 +83,7 @@
     "test:playoffs": "tsx scripts/test-playoff-simulation.ts",
     "test:cup-fixtures": "tsx scripts/test-cup-fixture-resolution.ts",
     "test:manager-audit": "tsx scripts/test-manager-audit-fixes.ts",
+    "test:manager-rebuild": "tsx scripts/test-manager-rebuild.ts",
     "test:boosts-sackings": "tsx scripts/test-boosts-and-sackings.ts",
     "test:manager-suggestions": "tsx scripts/test-manager-suggestions.ts",
     "merge:coachbeard-accounts": "tsx scripts/merge-coachbeard-accounts.ts",

@@ -57,7 +57,10 @@ export function userQualifiedForManagerPlayoffs(career: ManagerCareer): boolean 
 
 
 export function createManagerPlayoffs(career: ManagerCareer): PlayoffBracketState {
-  const table = getManagerLeagueTable(career);
+  const table = getManagerLeagueTable(career).filter((row) => {
+    const sl = career.superLeagueClubNames;
+    return !sl?.length || sl.includes(row.team);
+  });
   const position = getUserLeaguePosition(table, career.club);
   return createPlayoffBracket(
     `${career.seed}-playoffs`,
@@ -460,7 +463,7 @@ export function needsPlayoffsIntro(career: ManagerCareer): boolean {
 }
 
 export function isManagerPlayoffsActive(career: ManagerCareer): boolean {
-  if (!career.playoffs || !career.playoffsIntroAcknowledged) return false;
+  if (!career.playoffs) return false;
   if (!userQualifiedForManagerPlayoffs(career)) return false;
   return !isPlayoffsPhaseComplete(career);
 }

@@ -11,7 +11,6 @@ import { pushInboxMessage } from "../manager/managerInbox";
 import { getPlayerPotential } from "../manager/managerPlayerDevelopment";
 import { getManagerPlayer } from "../manager/managerPlayers";
 import { managerClubSeasonKey } from "../manager/managerClubChange";
-import { invalidateBoardSeasonEvaluation } from "../manager/boardSeasonEvaluation";
 import { generateReserveYouthContract } from "../manager/managerReserveContracts";
 import { createYouthProspect } from "../manager/managerReserves";
 import type {
@@ -339,42 +338,11 @@ function applyUnlockedPotential(
   return { success: true, career: next };
 }
 
-function applyNoSacking(
-  career: ManagerCareer,
-  boostId: GameBoostId,
-  usageId: string
-): ApplyManagerBoostResult {
-  if (career.managerProtection?.noSacking) {
-    return { success: false, reason: "No Sacking is already active on this save." };
-  }
-
-  let next: ManagerCareer = {
-    ...career,
-    managerProtection: {
-      noSacking: true,
-      activatedByBoostId: boostId,
-      activatedAtSeason: career.seasonYear,
-    },
-    updatedAt: new Date().toISOString(),
+function applyNoSacking(): ApplyManagerBoostResult {
+  return {
+    success: false,
+    reason: "Sacking has been removed from Manager Mode.",
   };
-
-  // Drop stale sack eval so season review re-runs with protection.
-  next = invalidateBoardSeasonEvaluation(next);
-
-  next = pushInboxMessage(next, {
-    id: `boost-no-sacking-${usageId}`,
-    type: "board",
-    title: "Sacking protection activated",
-    body: "The board cannot dismiss you for the remainder of this Manager save. Expectations and confidence still apply.",
-    week: next.gameWeek,
-    season: next.seasonYear,
-    gameWeek: next.gameWeek,
-    createdAt: new Date().toISOString(),
-    read: false,
-    sender: "Board",
-  });
-
-  return { success: true, career: next };
 }
 
 function applyHealAll(career: ManagerCareer): ApplyManagerBoostResult {
@@ -445,7 +413,7 @@ export function applyManagerBoost(input: {
       }
       return applyUnlockedPotential(career, reserveId, usageId);
     case "mgr-no-sacking":
-      return applyNoSacking(career, boostId, usageId);
+      return applyNoSacking();
     case "mgr-heal-all":
       return applyHealAll(career);
     default:
@@ -525,10 +493,7 @@ export function canApplyManagerBoost(
       }
       return { ok: true };
     case "mgr-no-sacking":
-      if (career.managerProtection?.noSacking) {
-        return { ok: false, reason: "Already active on this save." };
-      }
-      return { ok: true };
+      return { ok: false, reason: "Sacking has been removed from Manager Mode." };
     case "mgr-heal-all": {
       const seniorInjured = career.squad.some(
         (p) => p.injury && p.injury.type !== "suspension"

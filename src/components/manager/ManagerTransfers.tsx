@@ -40,7 +40,6 @@ import { formatWage } from "@/lib/manager/managerContracts";
 import { getManagerPlayer, getManagerPlayerAge } from "@/lib/manager/managerPlayers";
 import { applyManagerModeRatingToPlayer } from "@/lib/manager/managerSquadRatings";
 import {
-  completePlayerPurchase,
   evaluateBuyOffer,
   getBuyerMinimumTransferFee,
   getProtectedTransferPlayerIds,
@@ -53,7 +52,6 @@ import {
   findPlayerLeagueClub,
 } from "@/lib/manager/managerLeagueRosters";
 import {
-  completeIncomingLoan,
   canUserLoanInPlayers,
   evaluateLoanWageShareOffer,
   isValidLoanDirection,
@@ -62,7 +60,6 @@ import {
   suggestedLoanFee,
 } from "@/lib/manager/managerLoans";
 import {
-  completeFreeAgentSigning,
   evaluateFreeAgentOffer,
   formatFreeAgentSource,
 } from "@/lib/manager/managerFreeAgents";
@@ -70,7 +67,15 @@ import { getPlayerSigningDemand } from "@/lib/manager/managerTransfers";
 import {
   toggleTransferWatchlist,
 } from "@/lib/manager/managerWatchlist";
-import { getTransferEligibility } from "@/lib/manager/transferEligibility";
+import {
+  getPlayerMarketAvailability,
+  getTransferEligibility,
+} from "@/lib/manager/transferEligibility";
+import {
+  executeFreeAgentSign,
+  executeLoanIn,
+  executePermanentBuy,
+} from "@/lib/manager/transferTransactions";
 import { getPlayerById } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Player, Position } from "@/lib/types";
@@ -326,17 +331,21 @@ export function ManagerTransfers({
     if (tab === "loans" && !canLoanIn) return [];
     return career.leagueListedPlayers
       .filter((entry) => !isSameManagerClub(entry.club, career.club))
-      .filter((entry) =>
-        tab === "loans"
-          ? listingAllowsLoan(entry.listingType) &&
-            isValidLoanDirection(career, entry.club, career.club) &&
-            getTransferEligibility(career, entry.playerId, "loan_in", {
-              fromClub: entry.club,
-              listed: true,
-              listingType: entry.listingType,
-            }).allowed
-          : listingAllowsPermanent(entry.listingType)
-      )
+      .filter((entry) => {
+        const availability = getPlayerMarketAvailability(career, entry.playerId);
+        if (tab === "loans") {
+          return (
+            availability.availableForLoan &&
+            availability.loanListed &&
+            isValidLoanDirection(career, entry.club, career.club)
+          );
+        }
+        return (
+          availability.availableForTransfer &&
+          availability.transferListed &&
+          listingAllowsPermanent(entry.listingType)
+        );
+      })
       .map((entry) => {
         const raw =
           getManagerPlayer(career, entry.playerId) ??
@@ -581,14 +590,15 @@ export function ManagerTransfers({
       });
       if (accepted) {
         playTransferComplete();
-        const afterLoan = completeIncomingLoan(career, playerId, club, {
+        const loanTx = executeLoanIn(career, playerId, club, {
           loanFee,
           parentWageShare,
           wagePerYear,
           yearsRequested: 1,
           squadRole: demand.squadRole,
         });
-        if (!afterLoan.squad.some((p) => p.playerId === playerId)) {
+        const afterLoan = loanTx.career;
+        if (!loanTx.ok || !afterLoan.squad.some((p) => p.playerId === playerId)) {
           setTransferResult({
             playerName: player?.name ?? "Player",
             club,
@@ -642,7 +652,21 @@ export function ManagerTransfers({
 
     if (result.accepted) {
       playTransferComplete();
-      onUpdate(completePlayerPurchase(career, playerId, club, offer, listed));
+      const buyTx = executePermanentBuy(career, playerId, club, offer, listed);
+      if (!buyTx.ok) {
+        setTransferResult({
+          playerName: player?.name ?? "Player",
+          club,
+          fee: offer.transferFee,
+          wagePerYear: offer.wagePerYear,
+          years: offer.yearsRequested,
+          accepted: false,
+          reason: buyTx.error ?? "Transfer could not be completed.",
+        });
+        playTransferOffer();
+        return;
+      }
+      onUpdate(buyTx.career);
       setOfferPlayerId(null);
       setListedNegotiateId(null);
     } else {
@@ -741,7 +765,22 @@ export function ManagerTransfers({
 
     if (result.accepted) {
       playTransferComplete();
-      onUpdate(completeFreeAgentSigning(career, playerId, offer));
+      const faTx = executeFreeAgentSign(career, playerId, offer);
+      if (!faTx.ok) {
+        setTransferResult({
+          playerName: player?.name ?? "Player",
+          club: formerClub,
+          fee: 0,
+          wagePerYear: offer.wagePerYear,
+          years: offer.yearsRequested,
+          accepted: false,
+          reason: faTx.error ?? "Could not sign this free agent.",
+          freeTransfer: true,
+        });
+        playTransferOffer();
+        return;
+      }
+      onUpdate(faTx.career);
       setFreeAgentNegotiateId(null);
       setListedNegotiateId(null);
       setOfferPlayerId(null);

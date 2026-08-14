@@ -59,6 +59,17 @@ export type ManagerCompetition =
  */
 export type ManagerCompetitionId = "super-league" | "championship";
 
+/** Authoritative post-season / membership phase. */
+export type ManagerCompetitionPhase =
+  | "REGULAR_SEASON_ACTIVE"
+  | "REGULAR_SEASON_COMPLETE"
+  | "SL_PLAYOFFS_ACTIVE"
+  | "CHAMPIONSHIP_PLAYOFFS_ACTIVE"
+  | "MILLION_POUND_GAME_PENDING"
+  | "MILLION_POUND_GAME_COMPLETE"
+  | "SEASON_TRANSITION_READY"
+  | "SEASON_TRANSITION_COMPLETE";
+
 export type CupRoundKey =
   | "round_one"
   | "round_two"
@@ -105,10 +116,18 @@ export interface ManagerTactics {
   defenceFocus: DefenceFocus;
 }
 
+export type LoanStatus = "active" | "returned" | "recalled";
+
 export interface ActiveLoan {
   playerId: string;
   parentClub: string; // owning club name
   loaneeClub: string; // club currently using player
+  /** Aliases for the rebuilt loan transaction record. */
+  parentClubId?: string;
+  loanClubId?: string;
+  startDate?: string;
+  endDate?: string;
+  status?: LoanStatus;
   /** Absolute game week when loan ends (or season-end handled separately) */
   endsAtSeasonYear: number; // return at advanceToNextSeason for this year
   parentWageShare: number; // 0-1 portion parent still pays
@@ -465,7 +484,8 @@ export interface BoardSeasonEvaluation {
   performanceScore: number;
   recommendation: "retain" | "sack";
   finalDecision: "retain" | "sack";
-  protectedByNoSacking: boolean;
+  /** @deprecated Sacking removed — always false. */
+  protectedByNoSacking?: boolean;
   explanation: string[];
   decisionId: string;
 }
@@ -479,7 +499,8 @@ export interface ManagerBoostUsage {
 }
 
 export interface ManagerProtection {
-  noSacking: boolean;
+  /** @deprecated Sacking removed — ignored. */
+  noSacking?: boolean;
   activatedByBoostId?: string;
   activatedAtSeason?: number;
 }
@@ -553,8 +574,7 @@ export type ManagerView =
   | "match-review"
   | "season-review"
   | "development-review"
-  | "season-rewards"
-  | "choose-next-club";
+  | "season-rewards";
 
 export type ManagerAutoRenewContractYears = 1 | 2 | 3 | 4;
 
@@ -1053,6 +1073,10 @@ export interface ManagerCareer {
   leagueWinnersCelebrationShown?: boolean;
   /** Championship promotion celebration shown (automatic or Million Pound Game). */
   promotionCelebrationShown?: boolean;
+  /** Authoritative competition / post-season phase. */
+  competitionPhase?: ManagerCompetitionPhase;
+  /** Pre-Season-Review prom/rel summary has been shown. */
+  seasonTransitionPreviewShown?: boolean;
   /** Perfect 27-0 league season celebration shown. */
   perfectSeasonCelebrationShown?: boolean;
   /** Winless 0-27 league season celebration shown. */

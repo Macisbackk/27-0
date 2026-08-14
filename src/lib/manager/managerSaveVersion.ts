@@ -1,5 +1,5 @@
 /** Increment when save shape or migration logic changes. */
-export const MANAGER_SAVE_VERSION = 2;
+export const MANAGER_SAVE_VERSION = 3;
 
 /** Fan Mood + Fitness removal; availability simplified. */
 export const SIMPLIFIED_PLAYER_SYSTEMS_VERSION = 1;

@@ -120,7 +120,6 @@ export const MANAGER_OVERLAY_VIEWS: ManagerView[] = [
   "season-review",
   "development-review",
   "season-rewards",
-  "choose-next-club",
   "landing",
   "club-select",
 ];
@@ -135,7 +134,6 @@ export const MANAGER_STATE_OVERLAY_VIEWS: ManagerView[] = [
   "season-review",
   "development-review",
   "season-rewards",
-  "choose-next-club",
 ];
 
 export function isManagerStateOverlayView(view: ManagerView): boolean {
