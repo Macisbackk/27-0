@@ -22,6 +22,7 @@ import {
   canAffordAdditionalWage,
   evaluateClubSigningAppeal,
   getComfortableSigningRating,
+  getManagerPlayerListingRating,
   getTransferBudget,
   getWageBillPercent,
   isPlayerReachableOnTransferMarket,
@@ -91,7 +92,6 @@ interface ManagerTransfersProps {
 
 type TransferTab = "listed" | "loans" | "freeAgents" | "unlisted" | "watch";
 type DealType = "permanent" | "loan";
-type MarketScope = "available" | "all";
 
 /** Cap cards per tab so Championship-sized markets stay interactive. */
 const TRANSFER_CARD_PAGE = 24;
@@ -114,6 +114,21 @@ const TRANSFER_TAB_SHORT_LABELS: Record<TransferTab, string> = {
 
 function withManagerRating(player: Player): Player {
   return applyManagerModeRatingToPlayer(player);
+}
+
+function signingAppealForPlayer(
+  career: ManagerCareer,
+  playerId: string,
+  careerStars: ReturnType<typeof getCareerClubStars>,
+  competition: ReturnType<typeof getUserCompetitionId>
+) {
+  const rating = getManagerPlayerListingRating(career, playerId);
+  return evaluateClubSigningAppeal(
+    career.club,
+    rating,
+    careerStars,
+    competition
+  );
 }
 
 function DealTypeToggle({
@@ -176,7 +191,6 @@ export function ManagerTransfers({
   const [freeAgentOfferYears, setFreeAgentOfferYears] = useState(1);
   const [visibleLimit, setVisibleLimit] = useState(TRANSFER_CARD_PAGE);
   const [transferDebugId, setTransferDebugId] = useState<string | null>(null);
-  const [marketScope, setMarketScope] = useState<MarketScope>("available");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -205,7 +219,7 @@ export function ManagerTransfers({
 
   useEffect(() => {
     setVisibleLimit(TRANSFER_CARD_PAGE);
-  }, [tab, positionFilter, deferredSearch, leagueSort, marketScope]);
+  }, [tab, positionFilter, deferredSearch, leagueSort]);
 
   const toggleWatchlist = (playerId: string) => {
     playUiClick();
@@ -240,14 +254,14 @@ export function ManagerTransfers({
       clubKey: string;
       peakRating: number;
       positions: Position[];
-      obtainable: boolean;
     }[] = [];
     for (const [playerId, club] of leagueClubByPlayerId) {
+      if (isSameManagerClub(club, career.club)) continue;
       if (listedPlayerIds.has(playerId) || freeAgentIds.has(playerId)) continue;
       if (activeLoanIds.has(playerId)) continue;
       const availability = getPlayerMarketAvailability(career, playerId);
       if (!availability.availableForTransfer) continue;
-      if (marketScope === "available" && !availability.obtainableForBuy) continue;
+      if (!availability.obtainable) continue;
       const raw =
         getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
       if (!raw) continue;
@@ -258,7 +272,6 @@ export function ManagerTransfers({
         clubKey: club.toLowerCase(),
         peakRating: raw.peakRating,
         positions: getPlayerEligiblePositions(raw),
-        obtainable: availability.obtainableForBuy,
       });
     }
     return rows;
@@ -271,7 +284,6 @@ export function ManagerTransfers({
     careerStars,
     listedPlayerIds,
     freeAgentIds,
-    marketScope,
   ]);
 
   const tabCounts = useMemo(
@@ -283,7 +295,7 @@ export function ManagerTransfers({
         if (!availability.availableForTransfer || !availability.transferListed) {
           return false;
         }
-        if (marketScope === "available" && !availability.obtainableForBuy) return false;
+        if (!availability.obtainableForBuy) return false;
         const player =
           getManagerPlayer(career, entry.playerId) ??
           getPlayerById(entry.playerId);
@@ -300,7 +312,7 @@ export function ManagerTransfers({
             if (!availability.availableForLoan || !availability.loanListed) {
               return false;
             }
-            if (marketScope === "available" && !availability.obtainableForLoan) {
+            if (!availability.obtainableForLoan) {
               return false;
             }
             const player =
@@ -312,7 +324,7 @@ export function ManagerTransfers({
       freeAgents: (career.freeAgents ?? []).filter((entry) => {
         const availability = getPlayerMarketAvailability(career, entry.playerId);
         if (!availability.availableForTransfer) return false;
-        if (marketScope === "available" && !availability.obtainableForFreeAgent) return false;
+        if (!availability.obtainableForFreeAgent) return false;
         const player =
           getManagerPlayer(career, entry.playerId) ??
           getPlayerById(entry.playerId);
@@ -332,7 +344,6 @@ export function ManagerTransfers({
       careerStars,
       competition,
       watchlistIds,
-      marketScope,
     ]
   );
 
@@ -366,7 +377,7 @@ export function ManagerTransfers({
           tab === "loans"
             ? availability.obtainableForLoan
             : availability.obtainableForBuy;
-        if (marketScope === "available" && !intentObtainable) {
+        if (!intentObtainable) {
           return null;
         }
         const raw =
@@ -376,7 +387,6 @@ export function ManagerTransfers({
         return {
           ...entry,
           player: withManagerRating(raw),
-          obtainable: intentObtainable,
         };
       })
       .filter((r): r is NonNullable<typeof r> => r !== null)
@@ -397,7 +407,6 @@ export function ManagerTransfers({
     canLoanIn,
     positionFilter,
     tab,
-    marketScope,
   ]);
 
   useEffect(() => {
@@ -415,7 +424,7 @@ export function ManagerTransfers({
       .map((entry) => {
         const availability = getPlayerMarketAvailability(career, entry.playerId);
         if (!availability.availableForTransfer) return null;
-        if (marketScope === "available" && !availability.obtainableForFreeAgent) return null;
+        if (!availability.obtainableForFreeAgent) return null;
         const raw =
           getManagerPlayer(career, entry.playerId) ??
           getPlayerById(entry.playerId);
@@ -423,7 +432,6 @@ export function ManagerTransfers({
         return {
           ...entry,
           player: withManagerRating(raw),
-          obtainable: availability.obtainableForFreeAgent,
         };
       })
       .filter((r): r is NonNullable<typeof r> => r !== null)
@@ -443,7 +451,6 @@ export function ManagerTransfers({
     career.seasonYear,
     careerStars,
     positionFilter,
-    marketScope,
   ]);
 
   const filteredUnlistedIndex = useMemo(() => {
@@ -482,7 +489,6 @@ export function ManagerTransfers({
           playerId: row.playerId,
           club: row.club,
           player: managed ? raw : withManagerRating(raw),
-          obtainable: row.obtainable,
         },
       ];
     });
@@ -524,7 +530,7 @@ export function ManagerTransfers({
           reachable,
         };
       })
-      .filter((row): row is NonNullable<typeof row> => row !== null);
+      .filter((row): row is NonNullable<typeof row> => row !== null && row.reachable);
   }, [
     tab,
     watchlistIds,
@@ -898,28 +904,6 @@ export function ManagerTransfers({
           onChange={switchTab}
         />
       </div>
-      <div className="flex flex-wrap justify-center gap-1.5">
-        {(
-          [
-            ["available", "Available Players"],
-            ["all", "All Players"],
-          ] as const
-        ).map(([id, label]) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => {
-              playUiClick();
-              setMarketScope(id);
-            }}
-            className={`${FILTER.chipTouch} rounded-sm ${
-              marketScope === id ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
 
       <ManagerSectionCard title="Funds & wages" variant="elevated" accent="primary">
         <div className="mt-2 grid grid-cols-2 gap-3">
@@ -956,7 +940,8 @@ export function ManagerTransfers({
           </div>
         </div>
         <p className={`mt-3 ${TYPO.bodySm} text-pitch-500`}>
-          Reach ~{comfortableTarget} OVR
+          Showing players who would consider joining {career.club}. Reach ~
+          {comfortableTarget} OVR for your tier.
         </p>
       </ManagerSectionCard>
 
@@ -990,7 +975,7 @@ export function ManagerTransfers({
       {(tab === "listed" || tab === "loans") && (
       <section className="space-y-3">
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
-          {visibleListedPlayers.map(({ player, club, listingType, obtainable }) => {
+          {visibleListedPlayers.map(({ player, club, listingType }) => {
             const demand = getPlayerSigningDemand(career, player.id);
             const listedPrice = getSellerAskingPrice(
               career,
@@ -1016,7 +1001,12 @@ export function ManagerTransfers({
                   ? "loan"
                   : "permanent";
             const dealFee = effectiveDeal === "loan" ? loanFee : buyerFee;
-            const appeal = evaluateClubSigningAppeal(career.club, player.peakRating, careerStars, competition);
+            const appeal = signingAppealForPlayer(
+              career,
+              player.id,
+              careerStars,
+              competition
+            );
             const isNegotiating = listedNegotiateId === player.id;
             const canAffordFee = getTransferBudget(career) >= dealFee;
             const wageCheck =
@@ -1035,7 +1025,6 @@ export function ManagerTransfers({
               appeal.allowed &&
               canAffordFee &&
               canAffordAdditionalWage(career, wageCheck);
-            const isAvailable = obtainable !== false;
             return (
               <ManagerTransferPlayerCard
                 key={`${tab}-${player.id}`}
@@ -1055,8 +1044,6 @@ export function ManagerTransfers({
                 }
                 watched={watchlistSet.has(player.id)}
                 onToggleWatch={() => toggleWatchlist(player.id)}
-                available={isAvailable}
-                showUnavailableBadge={!isAvailable}
               >
                 {isNegotiating ? (
                   <div className="space-y-3">
@@ -1216,8 +1203,8 @@ export function ManagerTransfers({
           {listedPlayers.length === 0 && (
             <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
               {tab === "loans"
-                ? "No Super League loan listings right now. Use Bid and switch to Loan for fringe Super League players, or check again after the market refreshes."
-                : "No transfer-listed players available right now."}
+                ? "No loan listings are realistic for your club right now. Try Bid for fringe Super League players, or check again after the market refreshes."
+                : "No listed players are realistic signings for your club right now."}
             </p>
           )}
           {showMoreButton(listedPlayers.length)}
@@ -1228,9 +1215,14 @@ export function ManagerTransfers({
       {tab === "freeAgents" && (
       <section className="space-y-3">
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
-          {visibleFreeAgents.map(({ player, formerClub, playerId, source, obtainable }) => {
+          {visibleFreeAgents.map(({ player, formerClub, playerId, source }) => {
             const demand = getPlayerSigningDemand(career, player.id);
-            const appeal = evaluateClubSigningAppeal(career.club, player.peakRating, careerStars, competition);
+            const appeal = signingAppealForPlayer(
+              career,
+              playerId,
+              careerStars,
+              competition
+            );
             const isNegotiating = freeAgentNegotiateId === player.id;
             const canAffordNegotiated =
               appeal.allowed &&
@@ -1238,7 +1230,6 @@ export function ManagerTransfers({
             const age =
               getManagerPlayerAge(career, playerId) ??
               getManagerPlayerAge(career, player.id);
-            const isAvailable = obtainable !== false;
             return (
               <ManagerTransferPlayerCard
                 key={playerId}
@@ -1255,8 +1246,6 @@ export function ManagerTransfers({
                 }
                 watched={watchlistSet.has(playerId)}
                 onToggleWatch={() => toggleWatchlist(playerId)}
-                available={isAvailable}
-                showUnavailableBadge={!isAvailable}
               >
                 {isNegotiating ? (
                   <div className="space-y-3">
@@ -1334,8 +1323,8 @@ export function ManagerTransfers({
           })}
           {freeAgents.length === 0 && (
             <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
-              No free agents available right now. The pool tops up during the
-              season and when contracts expire.
+              No free agents are realistic signings for your club right now. The
+              pool tops up during the season and when contracts expire.
             </p>
           )}
           {showMoreButton(freeAgents.length)}
@@ -1399,7 +1388,7 @@ export function ManagerTransfers({
           ))}
         </div>
         <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
-          {visibleUnlistedPlayers.map(({ player, club, obtainable }) => {
+          {visibleUnlistedPlayers.map(({ player, club }) => {
             const listedPrice = getSellerAskingPrice(
               career,
               player.id,
@@ -1419,7 +1408,12 @@ export function ManagerTransfers({
               !getProtectedTransferPlayerIds(career, club).has(player.id);
             const unlistedDeal: DealType =
               dealType === "loan" && canLoanThisClub ? "loan" : "permanent";
-            const appeal = evaluateClubSigningAppeal(career.club, player.peakRating, careerStars, competition);
+            const appeal = signingAppealForPlayer(
+              career,
+              player.id,
+              careerStars,
+              competition
+            );
             const demand = getPlayerSigningDemand(career, player.id);
             const isOffering = offerPlayerId === player.id;
             const offerDealFee =
@@ -1432,7 +1426,6 @@ export function ManagerTransfers({
               appeal.allowed &&
               getTransferBudget(career) >=
                 (unlistedDeal === "loan" ? loanFee : buyerFee);
-            const isAvailable = obtainable !== false;
             return (
               <ManagerTransferPlayerCard
                 key={player.id}
@@ -1449,8 +1442,6 @@ export function ManagerTransfers({
                 yearsRequested={demand.yearsRequested}
                 watched={watchlistSet.has(player.id)}
                 onToggleWatch={() => toggleWatchlist(player.id)}
-                available={isAvailable}
-                showUnavailableBadge={!isAvailable}
               >
                 {isOffering ? (
                   <div className="space-y-2">
@@ -1641,11 +1632,6 @@ export function ManagerTransfers({
                   watched
                   onToggleWatch={() => toggleWatchlist(playerId)}
                 >
-                  {!reachable ? (
-                    <p className={`mb-2 ${TYPO.meta} text-amber-300`}>
-                      Out of reach for {career.club} right now — kept on watchlist.
-                    </p>
-                  ) : null}
                   <div className="space-y-2">
                     <p className={`${TYPO.bodySm} text-pitch-400`}>
                       {freeAgent
@@ -1710,12 +1696,17 @@ export function ManagerTransfers({
                 </ManagerTransferPlayerCard>
               );
             })}
-            {watchedPlayers.length === 0 && (
+            {watchlistIds.length === 0 ? (
               <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
                 No players on your watchlist yet. Tap Watch on any transfer card
                 or league squad player to track them here.
               </p>
-            )}
+            ) : watchedPlayers.length === 0 ? (
+              <p className={`col-span-full ${TYPO.bodySm} text-pitch-400`}>
+                None of your watched players are realistic signings for{" "}
+                {career.club} right now.
+              </p>
+            ) : null}
           </div>
         </section>
       )}

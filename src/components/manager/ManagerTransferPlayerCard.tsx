@@ -5,7 +5,6 @@ import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import { ClubNameLabel } from "@/components/ClubNameLabel";
 import {
   MANAGER_LABEL,
-  ManagerSectionCard,
   ManagerStat,
   type ManagerValueTone,
 } from "@/components/manager/manager-ui";
@@ -54,10 +53,6 @@ interface ManagerTransferPlayerCardProps {
   yearsRequested?: number;
   watched?: boolean;
   onToggleWatch?: () => void;
-  /** When false, hide Buy/Loan/offer actions (watchlist still OK). */
-  available?: boolean;
-  /** Show UNAVAILABLE badge (e.g. all-market unobtainable players). */
-  showUnavailableBadge?: boolean;
   children?: ReactNode;
 }
 
@@ -75,8 +70,6 @@ export function ManagerTransferPlayerCard({
   yearsRequested,
   watched = false,
   onToggleWatch,
-  available = true,
-  showUnavailableBadge = false,
   children,
 }: ManagerTransferPlayerCardProps) {
   const rating = player.peakRating;
@@ -95,12 +88,10 @@ export function ManagerTransferPlayerCard({
         : listed
           ? "TRANSFER LISTED"
           : "UNLISTED";
+  const surface = listed || freeAgent ? CARD.elevated : CARD.inset;
 
   return (
-    <ManagerSectionCard
-      variant={listed || freeAgent ? "elevated" : "inset"}
-      className="!p-0 overflow-hidden flex h-[280px] flex-col"
-    >
+    <div className={`${surface} flex flex-col overflow-hidden`}>
       <div
         className={`shrink-0 border-b border-pitch-700/40 px-3 py-2.5 sm:px-4 ${
           freeAgent ? "border-t-2 border-t-theme-primary" : ""
@@ -127,11 +118,6 @@ export function ManagerTransferPlayerCard({
                   {listingLabel}
                 </span>
               )}
-              {showUnavailableBadge || !available ? (
-                <span className="inline-flex rounded-full border border-red-400/40 bg-red-500/12 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-300">
-                  Unavailable
-                </span>
-              ) : null}
               {onToggleWatch ? (
                 <button
                   type="button"
@@ -195,8 +181,7 @@ export function ManagerTransferPlayerCard({
         </div>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto">
-        <div className="grid grid-cols-2 gap-2 px-3 py-2.5 sm:px-4">
+      <div className="grid grid-cols-2 gap-2 px-3 py-2.5 sm:px-4">
         <ManagerStat
           label={
             freeAgent
@@ -244,25 +229,26 @@ export function ManagerTransferPlayerCard({
           }
           tone="muted"
         />
+      </div>
+
+      {sellerListedFee != null && (
+        <p className={`px-3 pb-1 sm:px-4 ${TYPO.bodySm} text-pitch-400`}>
+          Listed at {formatWage(sellerListedFee)} — your club pays a tier premium.
+        </p>
+      )}
+
+      {!listed && !freeAgent && (
+        <p className={`px-3 pb-1 sm:px-4 ${TYPO.bodySm} text-amber-300/90`}>
+          Unlisted bids need a premium fee to tempt the selling club.
+        </p>
+      )}
+
+      {children ? (
+        <div className="shrink-0 border-t border-pitch-700/40 px-3 py-2.5 sm:px-4">
+          {children}
         </div>
-
-        {sellerListedFee != null && (
-          <p className={`px-3 pb-1 sm:px-4 ${TYPO.bodySm} text-pitch-400`}>
-            Listed at {formatWage(sellerListedFee)} — your club pays a tier premium.
-          </p>
-        )}
-
-        {!listed && !freeAgent && available && (
-          <p className={`px-3 pb-1 sm:px-4 ${TYPO.bodySm} text-amber-300/90`}>
-            Unlisted bids need a premium fee to tempt the selling club.
-          </p>
-        )}
-      </div>
-
-      <div className="shrink-0 border-t border-pitch-700/40 px-3 py-2.5 sm:px-4">
-        {children}
-      </div>
-    </ManagerSectionCard>
+      ) : null}
+    </div>
   );
 }
 
