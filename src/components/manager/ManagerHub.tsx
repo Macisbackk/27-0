@@ -36,8 +36,6 @@ import {
 } from "@/lib/manager/managerAttendance";
 import { getManagerHubUrgentAlerts } from "@/lib/manager/managerHubAlerts";
 import { ManagerHubAlertsPanel } from "@/components/manager/ManagerHubAlertsPanel";
-import { ManagerOnboardingStrip } from "@/components/manager/ManagerOnboardingStrip";
-import { shouldShowManagerOnboardingStrip } from "@/lib/manager/managerOnboarding";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import {
@@ -89,7 +87,6 @@ interface ManagerHubProps {
   onNavigate?: (view: ManagerView) => void;
   onOpenCupFixtures?: () => void;
   onOpenMatchReview?: (fixtureId: string) => void;
-  onOpenOnboardingGuide?: () => void;
 }
 
 function ordinal(n: number): string {
@@ -181,7 +178,6 @@ export function ManagerHub({
   onNavigate,
   onOpenCupFixtures,
   onOpenMatchReview,
-  onOpenOnboardingGuide,
 }: ManagerHubProps) {
   const [dialog, setDialog] = useState<{ title: string; message: string } | null>(
     null
@@ -288,7 +284,11 @@ export function ManagerHub({
 
   const nextFixtureCard =
     nextFixture && !seasonComplete && !playoffsPending && matchOccasion ? (
-      <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28">
+      <div
+        id={MANAGER_HUB_SCROLL_TARGET_ID}
+        className="scroll-mt-28"
+        data-tutorial-id="manager-hub-next-fixture"
+      >
       <ScoreboardPanel
         variant="elevated"
         padded
@@ -420,27 +420,31 @@ export function ManagerHub({
           </div>
         )}
         <div className="mt-4 hidden grid-cols-1 gap-2 sm:grid sm:grid-cols-2">
-          <GameButton
-            variant="theme"
-            disabled={!canPlay}
-            onClick={() => {
-              playUiClick();
-              onPlayGame();
-            }}
-          >
-            {matchOccasion.playCta}
-          </GameButton>
-          <GameButton
-            variant="secondary"
-            disabled={!canPlay}
-            onClick={() => {
-              playSimulateRound();
-              playUiClick();
-              onSimulate();
-            }}
-          >
-            {matchOccasion.simulateCta}
-          </GameButton>
+          <div data-tutorial-id="manager-hub-play-game">
+            <GameButton
+              variant="theme"
+              disabled={!canPlay}
+              onClick={() => {
+                playUiClick();
+                onPlayGame();
+              }}
+            >
+              {matchOccasion.playCta}
+            </GameButton>
+          </div>
+          <div data-tutorial-id="manager-hub-simulate">
+            <GameButton
+              variant="secondary"
+              disabled={!canPlay}
+              onClick={() => {
+                playSimulateRound();
+                playUiClick();
+                onSimulate();
+              }}
+            >
+              {matchOccasion.simulateCta}
+            </GameButton>
+          </div>
         </div>
       </ScoreboardPanel>
       </div>
@@ -512,16 +516,11 @@ export function ManagerHub({
       <ManagerHubAlertsPanel alerts={hubAlerts} onNavigate={onNavigate} />
     ) : null;
 
-  const onboardingStrip =
-    onOpenOnboardingGuide && shouldShowManagerOnboardingStrip(career) ? (
-      <ManagerOnboardingStrip
-        onNavigate={onNavigate}
-        onOpenGuide={onOpenOnboardingGuide}
-      />
-    ) : null;
-
   const seasonProgressCard = (
-    <div className={showStickyPlayBar ? "hidden sm:block" : undefined}>
+    <div
+      className={showStickyPlayBar ? "hidden sm:block" : undefined}
+      data-tutorial-id="manager-hub-season-progress"
+    >
       <ProgrammePanel padded>
         <GameSectionHeader
           label="Season"
@@ -579,15 +578,17 @@ export function ManagerHub({
               Season Review
             </GameButton>
           ) : (
-            <GameButton
-              variant="theme"
-              size="md"
-              onClick={onAdvanceWeek}
-              disabled={!canAdvance}
-              className="min-h-11 text-sm font-semibold tracking-wide"
-            >
-              {advanceLabels.full}
-            </GameButton>
+            <div data-tutorial-id="manager-hub-advance-week">
+              <GameButton
+                variant="theme"
+                size="md"
+                onClick={onAdvanceWeek}
+                disabled={!canAdvance}
+                className="min-h-11 text-sm font-semibold tracking-wide"
+              >
+                {advanceLabels.full}
+              </GameButton>
+            </div>
           )}
           {!career.isSeasonComplete && advanceHint ? (
             <p className="text-[11px] leading-snug text-[var(--app-muted)]">
@@ -649,7 +650,7 @@ export function ManagerHub({
 
   const hubStandingsCard =
     shouldShowChallengeCupBracketOnHub(hubCareer, nextFixture) ? (
-      <div className={SPACING.stackSm}>
+      <div className={SPACING.stackSm} data-tutorial-id="manager-hub-challenge-cup">
         <GameSectionHeader label="Results" title="Challenge Cup" />
         <HubChallengeCupBracketPanel
           career={hubCareer}
@@ -689,8 +690,7 @@ export function ManagerHub({
 
   const hubBody = (
     <>
-      <div className="space-y-4">
-        {onboardingStrip}
+      <div className="space-y-4" data-tutorial-id="manager-hub-root">
         {commandCentre}
         {nextFixtureCard}
         {seasonProgressCard}

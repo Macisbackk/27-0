@@ -64,17 +64,19 @@ export function ManagerHubStickyActions({
         portal
         className={visible ? undefined : "invisible pointer-events-none"}
       >
-        <GameButton
-          variant="theme"
-          size="md"
-          className="min-h-[var(--mobile-tap-target)] min-w-0 flex-1 text-sm font-semibold tracking-wide"
-          disabled={!visible || !canAdvanceWeek}
-          onClick={() => {
-            onAdvanceWeek();
-          }}
-        >
-          {advanceWeekLabel}
-        </GameButton>
+        <div data-tutorial-id="manager-hub-advance-week" className="min-w-0 flex-1">
+          <GameButton
+            variant="theme"
+            size="md"
+            className="min-h-[var(--mobile-tap-target)] min-w-0 w-full text-sm font-semibold tracking-wide"
+            disabled={!visible || !canAdvanceWeek}
+            onClick={() => {
+              onAdvanceWeek();
+            }}
+          >
+            {advanceWeekLabel}
+          </GameButton>
+        </div>
       </StickyActionBar>
     );
   }
@@ -85,30 +87,34 @@ export function ManagerHubStickyActions({
       portal
       className={visible ? undefined : "invisible pointer-events-none"}
     >
-      <GameButton
-        variant="theme"
-        size="sm"
-        className="min-h-[var(--mobile-tap-target)] min-w-0 flex-1"
-        disabled={!canPlay || !visible}
-        onClick={() => {
-          playUiClick();
-          onPlayGame();
-        }}
-      >
-        {playLabel}
-      </GameButton>
-      <GameButton
-        variant="secondary"
-        size="sm"
-        className="min-h-[var(--mobile-tap-target)] min-w-0 flex-1"
-        disabled={!canPlay || !visible}
-        onClick={() => {
-          playSimulateRound();
-          onSimulate();
-        }}
-      >
-        {simulateLabel}
-      </GameButton>
+      <div data-tutorial-id="manager-hub-play-game" className="min-w-0 flex-1">
+        <GameButton
+          variant="theme"
+          size="sm"
+          className="min-h-[var(--mobile-tap-target)] min-w-0 w-full"
+          disabled={!canPlay || !visible}
+          onClick={() => {
+            playUiClick();
+            onPlayGame();
+          }}
+        >
+          {playLabel}
+        </GameButton>
+      </div>
+      <div data-tutorial-id="manager-hub-simulate" className="min-w-0 flex-1">
+        <GameButton
+          variant="secondary"
+          size="sm"
+          className="min-h-[var(--mobile-tap-target)] min-w-0 w-full"
+          disabled={!canPlay || !visible}
+          onClick={() => {
+            playSimulateRound();
+            onSimulate();
+          }}
+        >
+          {simulateLabel}
+        </GameButton>
+      </div>
     </StickyActionBar>
   );
 }

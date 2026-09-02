@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameModal } from "@/components/ui/GameModal";
 import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
@@ -44,7 +44,6 @@ import {
   patchManagerCareerSettings,
   resolveManagerSettings,
 } from "@/components/manager/ManagerSettings";
-import { markOnboardingStepComplete } from "@/lib/manager/managerOnboarding";
 
 type ContractFilter =
   | "all"
@@ -92,10 +91,6 @@ export function ManagerContracts({
   const [releaseConfirmId, setReleaseConfirmId] = useState<string | null>(null);
 
   const settings = resolveManagerSettings(career);
-
-  useEffect(() => {
-    markOnboardingStepComplete("finances");
-  }, []);
 
   const expiringCount = useMemo(
     () =>

@@ -1095,6 +1095,30 @@ export interface ManagerCareer {
   pendingClubStarRiseFrom?: number;
   /** Career-start board objectives popup dismissed. */
   objectivesIntroShown?: boolean;
+  /**
+   * Mandatory interactive tutorial status.
+   * Missing on legacy saves → treated as completed (never force old careers).
+   */
+  tutorialStatus?:
+    | "not_started"
+    | "active"
+    | "completed"
+    | "skipped";
+  /** Current tutorial step id while `tutorialStatus === "active"`. */
+  tutorialStep?:
+    | "welcome"
+    | "hub"
+    | "season-progress"
+    | "fixture"
+    | "squad"
+    | "reserves"
+    | "contracts"
+    | "transfers"
+    | "fixtures"
+    | "stats"
+    | "cup"
+    | "playoffs"
+    | "finish";
   /** Consecutive weeks wage bill exceeded budget — triggers board pressure. */
   wagePressureWeeks?: number;
   matchdayXiii: string[];

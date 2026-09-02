@@ -56,7 +56,8 @@ import { triggerManagerMatchAchievements } from "@/lib/achievements/achievementT
 import { ManagerPositionRetrainingCompleteModal } from "@/components/manager/ManagerPositionRetrainingCompleteModal";
 import { ManagerPlayoffsIntroModal } from "@/components/manager/ManagerPlayoffsIntroModal";
 import { ManagerObjectivesIntroModal } from "@/components/manager/ManagerObjectivesIntroModal";
-import { ManagerOnboardingModal } from "@/components/manager/ManagerOnboardingModal";
+import { ManagerTutorialChoiceModal } from "@/components/manager/ManagerTutorialChoiceModal";
+import { ManagerTutorialOverlay } from "@/components/manager/ManagerTutorialOverlay";
 import {
   getPendingFutureStarReveal,
   ManagerFutureStarRevealModal,
@@ -151,7 +152,6 @@ import { useMountDiagnostic } from "@/lib/ui/use-mount-diagnostic";
 import {
   confirmFriendlySchedule,
   ensureFriendlyChoices,
-  FRIENDLIES_REQUIRED,
   isAwaitingFriendlyChoice,
   isAwaitingFriendlyScheduleConfirm,
   selectFriendlyOpponent,
@@ -204,9 +204,8 @@ import {
   refreshManagerCareersFromCloud,
 } from "@/lib/storage/manager-career-cloud";
 import {
-  markOnboardingStepComplete,
-  shouldShowManagerOnboarding,
-} from "@/lib/manager/managerOnboarding";
+  isManagerTutorialActive,
+} from "@/lib/manager/managerTutorial";
 import { shouldShowSaveMigrationNotice } from "@/lib/manager/managerSaveMigration";
 import { managerFixtureDisplayId } from "@/lib/manager/managerFixtureDisplay";
 import { ManagerSaveMigrationNotice } from "@/components/manager/ManagerSaveMigrationNotice";
@@ -348,8 +347,10 @@ export default function ManagerPage() {
     message: string;
   } | null>(null);
   const [showSaveMigration, setShowSaveMigration] = useState(false);
-  const [onboardingRevision, setOnboardingRevision] = useState(0);
   const [creatingCareer, setCreatingCareer] = useState(false);
+  const [pendingTutorialClub, setPendingTutorialClub] = useState<string | null>(
+    null
+  );
 
   /** Slot whose career is already in React state — skip disk re-hydrate on tab switches. */
   const careerSlotRef = useRef<number | null>(null);
@@ -511,10 +512,6 @@ export default function ManagerPage() {
     (next: ManagerCareer) => {
       const slot = getActiveSaveSlot();
       const prepared = prepareManagerCareerForSave(next);
-      const xiiiFilled = prepared.matchdayXiii.filter(Boolean).length;
-      if (xiiiFilled >= 13) {
-        markOnboardingStepComplete("lineup");
-      }
       const result = saveManagerCareer(prepared, slot);
       if (!result.ok) {
         flushErrorRef.current = result.error;
@@ -789,6 +786,7 @@ export default function ManagerPage() {
 
   const awaitingFriendlyChoice =
     career != null &&
+    !isManagerTutorialActive(career) &&
     (isAwaitingFriendlyChoice(career) ||
       isAwaitingFriendlyScheduleConfirm(career));
 
@@ -1052,15 +1050,24 @@ export default function ManagerPage() {
     }
   };
 
-  const handleSelectClub = useCallback(
-    (club: string) => {
+  const handleSelectClub = useCallback((club: string) => {
+    if (creatingCareer || pendingTutorialClub) return;
+    playUiClick();
+    setPendingTutorialClub(club);
+  }, [creatingCareer, pendingTutorialClub]);
+
+  const finishCreateCareer = useCallback(
+    (club: string, tutorialChoice: "start" | "skip") => {
       if (creatingCareer) return;
       setCreatingCareer(true);
       window.setTimeout(() => {
         let next;
         try {
           const slot = getActiveSaveSlot();
-          next = createNewCareer(club, slot);
+          next = createNewCareer(club, slot, {
+            tutorialStatus: tutorialChoice === "start" ? "active" : "skipped",
+            tutorialStep: tutorialChoice === "start" ? "welcome" : undefined,
+          });
           careerSlotRef.current = slot;
           setCareerState(next);
           refreshSaveSlots();
@@ -1074,8 +1081,10 @@ export default function ManagerPage() {
                 : "Something went wrong creating your save.",
           });
           setCreatingCareer(false);
+          setPendingTutorialClub(null);
           return;
         }
+        setPendingTutorialClub(null);
         goToView("hub");
         setCreatingCareer(false);
       }, 0);
@@ -1102,19 +1111,6 @@ export default function ManagerPage() {
       playResultSound(won, fixture);
       recordMatchResult(won, margin, won ? 25_000 : 10_000);
       triggerManagerMatchAchievements(next, fixture);
-    }
-    if (next.preSeason.friendliesPlayed >= FRIENDLIES_REQUIRED) {
-      markOnboardingStepComplete("friendlies");
-    }
-    const leagueFixturesPlayed = next.fixtures.filter(
-      (f) => (f.competition ?? "league") === "league"
-    ).length;
-    if (
-      fixture &&
-      (fixture.competition ?? "league") === "league" &&
-      leagueFixturesPlayed >= 1
-    ) {
-      markOnboardingStepComplete("first-match");
     }
     const withLeagueStats = recordLeaguePhaseAchievementsIfNeeded(next);
     // Match apply leaves isSeasonComplete false; recompute before celebrations.
@@ -2232,14 +2228,23 @@ export default function ManagerPage() {
 
       {displayView === "club-select" && (
         <ManagerClubSelect
-          busy={creatingCareer}
+          busy={creatingCareer || pendingTutorialClub != null}
           onSelect={handleSelectClub}
           onBack={() => {
-            if (creatingCareer) return;
+            if (creatingCareer || pendingTutorialClub) return;
             playUiClick();
             refreshSaveSlots();
             goToView("landing");
           }}
+        />
+      )}
+
+      {pendingTutorialClub && (
+        <ManagerTutorialChoiceModal
+          club={pendingTutorialClub}
+          busy={creatingCareer}
+          onStartTutorial={() => finishCreateCareer(pendingTutorialClub, "start")}
+          onSkipTutorial={() => finishCreateCareer(pendingTutorialClub, "skip")}
         />
       )}
 
@@ -2311,9 +2316,6 @@ export default function ManagerPage() {
                     onNavigate={handleNavNavigate}
                     onOpenCupFixtures={handleOpenCupFixtures}
                     onOpenMatchReview={handleOpenHubMatchReview}
-                    onOpenOnboardingGuide={() =>
-                      setOnboardingRevision((n) => n + 1)
-                    }
                   />
                 </ManagerKeepAlivePane>
 
@@ -2328,38 +2330,48 @@ export default function ManagerPage() {
                   label="manager-tab-squad"
                   active={chromeNavView === "squad" && panesInteractive}
                 >
-                  <ManagerSquad
-                    career={career}
-                    onUpdate={persistAndSurfaceIncomingBids}
-                    subTab={squadSubTab}
-                  />
+                  <div data-tutorial-id="manager-section-squad">
+                    <ManagerSquad
+                      career={career}
+                      onUpdate={persistAndSurfaceIncomingBids}
+                      subTab={squadSubTab}
+                    />
+                  </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "reserves" && panesInteractive}>
-                  <ManagerReserves
-                    career={career}
-                    onUpdate={persistAndSurfaceIncomingBids}
-                  />
+                  <div data-tutorial-id="manager-section-reserves">
+                    <ManagerReserves
+                      career={career}
+                      onUpdate={persistAndSurfaceIncomingBids}
+                    />
+                  </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "contracts" && panesInteractive}>
-                  <ManagerContracts career={career} onUpdate={persist} />
+                  <div data-tutorial-id="manager-section-contracts">
+                    <ManagerContracts career={career} onUpdate={persist} />
+                  </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "transfers" && panesInteractive}>
-                  <ManagerTransfers
-                    career={career}
-                    onUpdate={persistAndSurfaceIncomingBids}
-                  />
+                  <div data-tutorial-id="manager-section-transfers">
+                    <ManagerTransfers
+                      career={career}
+                      onUpdate={persistAndSurfaceIncomingBids}
+                    />
+                  </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "club" && panesInteractive}>
                   <ManagerClub career={career} onUpdate={persist} />
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "fixtures" && panesInteractive}>
-                  <ManagerFixtures
-                    career={career}
-                    onUpdate={persistAfterCalendarSim}
-                    initialFilter={fixturesInitialFilter ?? "calendar"}
-                    onOpenMatchPrep={handleOpenMatchPrep}
-                    onSelectFixture={handleSelectFixtureReview}
-                  />
+                  <div data-tutorial-id="manager-section-fixtures">
+                    <ManagerFixtures
+                      career={career}
+                      onUpdate={persistAfterCalendarSim}
+                      initialFilter={fixturesInitialFilter ?? "calendar"}
+                      onOpenMatchPrep={handleOpenMatchPrep}
+                      onSelectFixture={handleSelectFixtureReview}
+                    />
+                  </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "across-league" && panesInteractive}>
                   <ManagerAcrossLeague
@@ -2369,7 +2381,9 @@ export default function ManagerPage() {
                   />
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "stats" && panesInteractive}>
-                  <ManagerStatsView career={career} />
+                  <div data-tutorial-id="manager-section-stats">
+                    <ManagerStatsView career={career} />
+                  </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "settings" && panesInteractive}>
                   <ManagerSettings career={career} onUpdate={persist} />
@@ -2545,20 +2559,19 @@ export default function ManagerPage() {
       )}
 
       {career &&
-        canShowManagerHubIntroModals &&
-        !shouldShowManagerObjectivesIntro(career) &&
-        shouldShowManagerOnboarding(career) && (
-        <ManagerOnboardingModal
-          key={onboardingRevision}
-          onNavigate={handleNavNavigate}
-          onDismiss={() => setOnboardingRevision((n) => n + 1)}
-        />
-      )}
+        isManagerTutorialActive(career) &&
+        !shouldShowManagerObjectivesIntro(career) && (
+          <ManagerTutorialOverlay
+            career={career}
+            onUpdate={persist}
+            onNavigate={handleNavNavigate}
+          />
+        )}
 
       {career &&
         canShowManagerHubIntroModals &&
         !shouldShowManagerObjectivesIntro(career) &&
-        !shouldShowManagerOnboarding(career) &&
+        !isManagerTutorialActive(career) &&
         needsPlayoffsIntro(career) && (
         <ManagerPlayoffsIntroModal
           career={career}

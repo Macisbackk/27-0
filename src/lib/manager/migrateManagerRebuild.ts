@@ -7,8 +7,9 @@ import { MANAGER_SAVE_VERSION } from "./managerSaveVersion";
 import { normalizeTransferMarketState } from "./transferMarket";
 import { syncCompetitionPhase } from "./competitionPhase";
 import { BOARD_SACKING_SCHEMA_VERSION } from "./boardSeasonEvaluation";
+import { normalizeManagerTutorialState } from "./managerTutorial";
 
-export const MANAGER_REBUILD_SAVE_VERSION = 4;
+export const MANAGER_REBUILD_SAVE_VERSION = 5;
 
 function normalizeLoans(career: ManagerCareer): ManagerCareer {
   const activeLoans = (career.activeLoans ?? []).map((loan) => ({
@@ -67,6 +68,7 @@ export function migrateManagerRebuildSave(career: ManagerCareer): ManagerCareer 
 
   next = normalizeLoans(next);
   next = normalizeTransferMarketState(next);
+  next = normalizeManagerTutorialState(next);
   next = {
     ...next,
     boardSackingSchemaVersion: Math.max(

@@ -48,6 +48,7 @@ export function ManagerMobileBottomNav({
                 key={tab.id}
                 type="button"
                 disabled={disabled}
+                data-tutorial-id={`manager-nav-${tab.id}`}
                 onClick={() => navigate(tab.id)}
                 className={`btn-press relative flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-sm border-2 px-0.5 py-2 text-center transition ${
                   isActive
@@ -68,6 +69,7 @@ export function ManagerMobileBottomNav({
           <button
             type="button"
             disabled={disabled}
+            data-tutorial-id="manager-nav-more"
             onClick={() => {
               setMoreOpen((open) => {
                 if (open) playMenuClose();
@@ -116,6 +118,7 @@ export function ManagerMobileBottomNav({
                   <button
                     key={item.id}
                     type="button"
+                    data-tutorial-id={`manager-nav-${item.id}`}
                     onClick={() => navigate(item.id)}
                     className={`btn-press flex min-h-[52px] items-center gap-3 rounded-sm border px-4 py-3 text-left transition ${
                       isActive

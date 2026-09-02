@@ -610,9 +610,21 @@ export function hasManagerCareer(slot?: number): boolean {
   return hasManagerCareerInSlot(slot);
 }
 
-export function createNewCareer(club: string, slot?: number): ManagerCareer {
+export function createNewCareer(
+  club: string,
+  slot?: number,
+  options?: {
+    tutorialStatus?: ManagerCareer["tutorialStatus"];
+    tutorialStep?: ManagerCareer["tutorialStep"];
+  }
+): ManagerCareer {
   const targetSlot = slot ?? getActiveSaveSlot();
   setActiveSaveSlot(targetSlot);
+  const tutorialStatus = options?.tutorialStatus ?? "skipped";
+  const tutorialStep =
+    tutorialStatus === "active"
+      ? options?.tutorialStep ?? "welcome"
+      : undefined;
   const config = getManagerClubConfig(club);
   const seed = `mgr-${club}-${Date.now()}`;
   const isChampCareer = config.competition === "championship";
@@ -807,6 +819,8 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     generatedChampionshipSquadsVersion: championshipSquads?.version,
     hubResultsExpanded: false,
     objectivesIntroShown: false,
+    tutorialStatus,
+    tutorialStep,
     leagueClubStates: initLeagueClubStates(),
     leagueClubStatesWeek: 0,
     // Parallel SL AI world even when the user starts in the Championship.
