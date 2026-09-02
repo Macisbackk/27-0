@@ -39,7 +39,6 @@ import { ensureChampionshipSystems } from "@/lib/manager/championship/ensureCham
 import { getChampionshipPlayer } from "@/lib/manager/championship/championshipSquads";
 import { isChampionshipClubName } from "@/lib/clubs/championship-clubs";
 import { isCurrentPlayableClub } from "@/lib/clubs/super-league-display";
-import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import {
   ensureAiSuperLeague,
   getCompetitionClubNames,
