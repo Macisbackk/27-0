@@ -89,11 +89,11 @@ export const MOBILE = {
 
 /** Mobile-first modal / bottom-sheet pattern (matches ManagerDialog). */
 export const MODAL = {
-  backdrop: `fixed inset-0 z-40 flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} sm:items-center`,
+  backdrop: `fixed inset-0 ui-layer-modal-backdrop flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} sm:items-center`,
   panel:
-    "game-modal-panel w-full max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden sm:max-w-3xl",
+    "game-modal-panel w-full max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden sm:max-w-3xl",
   panelWide:
-    "game-modal-panel w-full max-h-[min(92dvh,900px)] overflow-y-auto overflow-x-hidden sm:max-w-4xl",
+    "game-modal-panel w-full max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden sm:max-w-4xl",
   panelPadding: `p-3 sm:p-6 ${SPACING.safeBottom}`,
 } as const;
 

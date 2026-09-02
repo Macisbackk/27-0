@@ -14,6 +14,7 @@ import {
 import {
   managerModalHeaderClass,
 } from "@/lib/manager/managerSurfaces";
+import { uiLayerClass } from "@/lib/ui/layers";
 
 interface ManagerPromotionModalProps {
   career: ManagerCareer;
@@ -56,7 +57,7 @@ export function ManagerPromotionModal({
 
   return (
     <div
-      className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/80 ${SPACING.modalBackdrop} ${SPACING.safeBottom} overflow-y-auto sm:items-center`}
+      className={`fixed inset-0 ${uiLayerClass("modalBackdrop")} flex items-end justify-center overflow-hidden bg-black/80 ${SPACING.modalBackdrop} ${SPACING.safeBottom} sm:items-center`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="promotion-title"

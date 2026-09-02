@@ -82,6 +82,12 @@
   --z-modal-backdrop: 9999;
   --z-modal: 10000;
   --z-critical-animation: 10001;
+
+  /* Motion tokens — prefer these over one-off durations */
+  --motion-fast: 120ms;
+  --motion-medium: 200ms;
+  --motion-slow: 320ms;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /*

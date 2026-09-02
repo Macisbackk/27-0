@@ -91,7 +91,7 @@ export function ManagerTransferPlayerCard({
   const surface = listed || freeAgent ? CARD.elevated : CARD.inset;
 
   return (
-    <div className={`${surface} flex flex-col overflow-hidden`}>
+    <div className={`${surface} flex min-h-[300px] flex-col overflow-hidden`}>
       <div
         className={`shrink-0 border-b border-pitch-700/40 px-3 py-2.5 sm:px-4 ${
           freeAgent ? "border-t-2 border-t-theme-primary" : ""
@@ -244,10 +244,12 @@ export function ManagerTransferPlayerCard({
       )}
 
       {children ? (
-        <div className="shrink-0 border-t border-pitch-700/40 px-3 py-2.5 sm:px-4">
+        <div className="mt-auto min-h-[52px] shrink-0 border-t border-pitch-700/40 px-3 py-2.5 sm:px-4">
           {children}
         </div>
-      ) : null}
+      ) : (
+        <div className="mt-auto min-h-[52px] shrink-0" aria-hidden />
+      )}
     </div>
   );
 }

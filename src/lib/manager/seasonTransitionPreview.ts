@@ -6,6 +6,7 @@ import type { ManagerCareer } from "./types";
 import { getChampionshipPlayoffWinner } from "./managerChampionshipPlayoffs";
 import { MILLION_POUND_GAME_NAME } from "./managerMillionPoundGame";
 import { resolveSeasonMembershipMoves } from "./managerSeasonTransition";
+import { getSeasonOutcomeSummary } from "./seasonOutcomeHeadline";
 
 export type SeasonTransitionPreview = {
   slPlayoffWinner: string | null;
@@ -48,25 +49,29 @@ export function buildSeasonTransitionPreview(
   const moves = resolveSeasonMembershipMoves(career);
   const mpg = career.millionPoundGame;
   const champWinner = getChampionshipPlayoffWinner(career.championshipPlayoffs);
-  let outcome = "Pending";
+  let mpgOutcome = "Pending";
   if (mpg?.status === "complete" && mpg.winner && mpg.loser) {
-    outcome =
+    mpgOutcome =
       mpg.winner === mpg.champClub
         ? `${mpg.champClub} promoted · ${mpg.slClub} relegated`
         : `${mpg.slClub} stay in Super League · ${mpg.champClub} remain in the Championship`;
   }
 
   let userHeadline: string | null = null;
-  if (moves.autoPromoted.includes(career.club)) {
-    userHeadline = "Automatic Promotion";
-  } else if (moves.mpgPromoted.includes(career.club)) {
-    userHeadline = "Promoted to Super League";
-  } else if (champWinner === career.club && mpg?.status !== "complete") {
-    userHeadline = "Qualified for the Million Pound Game";
-  } else if (moves.autoRelegated.includes(career.club)) {
-    userHeadline = "Automatic Relegation";
-  } else if (moves.mpgRelegated.includes(career.club)) {
-    userHeadline = "Relegated to the Championship";
+  const seasonOutcome = getSeasonOutcomeSummary(career);
+  if (
+    moves.autoPromoted.includes(career.club) ||
+    moves.mpgPromoted.includes(career.club) ||
+    moves.autoRelegated.includes(career.club) ||
+    moves.mpgRelegated.includes(career.club) ||
+    champWinner === career.club ||
+    mpg?.slClub === career.club ||
+    mpg?.champClub === career.club ||
+    seasonOutcome.tone === "gold" ||
+    seasonOutcome.tone === "red" ||
+    seasonOutcome.tone === "amber"
+  ) {
+    userHeadline = seasonOutcome.headline;
   }
 
   return {
@@ -79,7 +84,7 @@ export function buildSeasonTransitionPreview(
       champClub: mpg?.champClub ?? null,
       winner: mpg?.winner ?? null,
       loser: mpg?.loser ?? null,
-      outcome,
+      outcome: mpgOutcome,
     },
     autoPromoted: moves.autoPromoted,
     mpgPromoted: moves.mpgPromoted,

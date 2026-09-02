@@ -10,6 +10,7 @@ import {
   getUserSeasonGames,
   isUserInChampionship,
 } from "./leagueMembership";
+import { getChampionshipPlayoffWinner } from "./managerChampionshipPlayoffs";
 import { applyPromotionRelegation } from "./managerSeasonTransition";
 import { markSeasonTransitionComplete } from "./competitionPhase";
 import { generateLeagueListedPlayers } from "./managerTransferLeague";
@@ -78,20 +79,43 @@ import { hydrateManagerPlayerRegistryAges } from "./managerPlayers";
 export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary {
   const position = getUserLeagueTablePosition(career);
   let bestPlayerId: string | null = null;
-  let bestRating = 0;
+  let bestAvg = -1;
   let topTryScorerId: string | null = null;
   let topTries = 0;
+
+  const leagueGames = Math.max(1, getUserSeasonGames(career));
+  const minAppsForBest = Math.max(3, Math.ceil(leagueGames * 0.25));
 
   for (const ps of career.squad) {
     const player = getManagerPlayer(career, ps.playerId);
     if (!player) continue;
-    if (player.peakRating > bestRating) {
-      bestRating = player.peakRating;
+    const seasonStats = career.playerSeasonStats[ps.playerId];
+    const apps = seasonStats?.appearances ?? 0;
+    const avg = seasonStats?.averageRating;
+    if (
+      apps >= minAppsForBest &&
+      typeof avg === "number" &&
+      avg > bestAvg
+    ) {
+      bestAvg = avg;
       bestPlayerId = ps.playerId;
     }
     if (ps.seasonTries > topTries) {
       topTries = ps.seasonTries;
       topTryScorerId = ps.playerId;
+    }
+  }
+
+  // Fallback: highest avg among anyone with apps if nobody hit the floor.
+  if (!bestPlayerId) {
+    for (const [playerId, stats] of Object.entries(career.playerSeasonStats)) {
+      const apps = stats.appearances ?? 0;
+      const avg = stats.averageRating;
+      if (apps < 1 || typeof avg !== "number") continue;
+      if (avg > bestAvg) {
+        bestAvg = avg;
+        bestPlayerId = playerId;
+      }
     }
   }
 
@@ -101,6 +125,8 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
   const mpg = career.millionPoundGame;
   const mpgWon = mpg?.winner === career.club;
   const mpgLost = mpg?.loser === career.club;
+  const champPoWinner =
+    getChampionshipPlayoffWinner(career.championshipPlayoffs) === career.club;
 
   let budgetChange = 0;
   if (playoffFinish === "Super League Champions") budgetChange = 600_000;
@@ -117,10 +143,10 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
       boardVerdict = "Outstanding — Championship champions.";
     } else if (mpgWon) {
       boardVerdict = `Promoted — ${MILLION_POUND_GAME_NAME} winners.`;
+    } else if (mpgLost && champPoWinner) {
+      boardVerdict = `${MILLION_POUND_GAME_NAME} defeat — promotion must wait.`;
     } else if (position <= 5) {
-      boardVerdict = mpgLost
-        ? `${MILLION_POUND_GAME_NAME} defeat — promotion must wait.`
-        : "Championship play-off finish.";
+      boardVerdict = "Championship play-off finish.";
     } else if (position >= 18) {
       boardVerdict = "Disappointing — improvements required.";
     }
@@ -172,10 +198,10 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
           : `Promoted to Super League via the ${MILLION_POUND_GAME_NAME}.`;
     } else if (cupOutcome.isWinner) {
       seasonVerdict = "Cup winners. League unfinished business.";
+    } else if (mpgLost && champPoWinner) {
+      seasonVerdict = `${MILLION_POUND_GAME_NAME} defeat — promotion denied.`;
     } else if (position <= 5) {
-      seasonVerdict = mpgLost
-        ? `${MILLION_POUND_GAME_NAME} defeat — promotion denied.`
-        : "Championship play-off campaign complete.";
+      seasonVerdict = "Championship play-off campaign complete.";
     }
   } else if (cupOutcome.isWinner) {
     seasonVerdict = "A trophy-winning campaign.";

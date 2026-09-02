@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -8,33 +8,61 @@ import type { ManagerCareer } from "@/lib/manager/types";
 import { buildSeasonSummary } from "@/lib/manager/managerState";
 import { getOrCreateBoardSeasonEvaluation } from "@/lib/manager/boardSeasonEvaluation";
 import { getSeasonSummaryTrophyLabels } from "@/lib/manager/managerSeasonTrophies";
-import { ManagerSeasonRecapCard } from "@/components/manager/ManagerSeasonRecapCard";
+import { getSeasonOutcomeSummary } from "@/lib/manager/seasonOutcomeHeadline";
 import { ShareSeasonButton } from "@/components/ShareSeasonButton";
 import { GuestSaveNudge } from "@/components/EconomyExplainer";
 import { useAuth } from "@/lib/auth-context";
 import { getPlayerById } from "@/lib/players";
 import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { formatWage } from "@/lib/manager/managerContracts";
-import { formatSquadRatingStars } from "@/lib/manager/club-config";
-import { getCareerClubStars } from "@/lib/manager/managerDifficulty";
-import { playSeasonComplete, playSeasonReviewMajor, playUiClick } from "@/lib/sound";
+import { playSeasonReviewMajor, playUiClick } from "@/lib/sound";
 import {
   ManagerInfoRow,
   ManagerSectionCard,
 } from "@/components/manager/manager-ui";
 import { ManagerBoostsPanel } from "@/components/manager/ManagerBoostsPanel";
-import { isUserInChampionship, getUserLeagueClubs } from "@/lib/manager/leagueMembership";
-import { getChampionshipPlayoffWinner } from "@/lib/manager/managerChampionshipPlayoffs";
-import {
-  getAutoRelegateTablePosition,
-  getMillionPoundGameTablePosition,
-} from "@/lib/manager/managerLeagues";
+import { ManagerLeagueTable } from "@/components/manager/ManagerLeagueTable";
+import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
+import { POSITION_SHORT } from "@/lib/positions";
+import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
 
 interface ManagerSeasonReviewProps {
   career: ManagerCareer;
   onViewRewards: () => void;
   onCareerUpdate: (career: ManagerCareer) => void;
   onHome: () => void;
+}
+
+type ReviewStep =
+  | "summary"
+  | "table"
+  | "squad"
+  | "players"
+  | "postseason"
+  | "finish";
+
+const REVIEW_STEPS: { id: ReviewStep; label: string; short: string }[] = [
+  { id: "summary", label: "Summary", short: "Sum" },
+  { id: "table", label: "Table", short: "Table" },
+  { id: "squad", label: "Team", short: "Team" },
+  { id: "players", label: "Players", short: "Play" },
+  { id: "postseason", label: "Cup & PO", short: "Cup" },
+  { id: "finish", label: "Outcome", short: "End" },
+];
+
+function toneClass(tone: string): string {
+  switch (tone) {
+    case "gold":
+      return "text-accent-gold";
+    case "primary":
+      return "text-theme-primary";
+    case "amber":
+      return "text-amber-300";
+    case "red":
+      return "text-red-300";
+    default:
+      return "text-pitch-200";
+  }
 }
 
 export function ManagerSeasonReview({
@@ -44,6 +72,7 @@ export function ManagerSeasonReview({
   onHome,
 }: ManagerSeasonReviewProps) {
   const { isLoggedIn, loading } = useAuth();
+  const [step, setStep] = useState<ReviewStep>("summary");
 
   const { evaluation, career: evaluatedCareer } = useMemo(() => {
     const result = getOrCreateBoardSeasonEvaluation(career);
@@ -71,22 +100,16 @@ export function ManagerSeasonReview({
     onCareerUpdate,
   ]);
 
-  const summary = buildSeasonSummary(evaluatedCareer);
-  const leagueSize = getUserLeagueClubs(evaluatedCareer).length;
-  const mpgTablePosition = getMillionPoundGameTablePosition(
-    isUserInChampionship(evaluatedCareer) ? "championship" : "super-league",
-    leagueSize
+  const summary = useMemo(
+    () => buildSeasonSummary(evaluatedCareer),
+    [evaluatedCareer]
   );
-  const autoRelegatePosition = getAutoRelegateTablePosition(
-    "super-league",
-    leagueSize
+  const outcome = useMemo(
+    () => getSeasonOutcomeSummary(evaluatedCareer),
+    [evaluatedCareer]
   );
-  const mpgWon = evaluatedCareer.millionPoundGame?.winner === evaluatedCareer.club;
-  const championshipPlayoffWinner =
-    getChampionshipPlayoffWinner(evaluatedCareer.championshipPlayoffs) ===
-    evaluatedCareer.club;
   const trophies = getSeasonSummaryTrophyLabels(summary);
-  const clubStars = getCareerClubStars(evaluatedCareer);
+
   const reviewSoundRef = useRef(false);
   useEffect(() => {
     if (reviewSoundRef.current) return;
@@ -98,257 +121,370 @@ export function ManagerSeasonReview({
     ? getManagerPlayer(evaluatedCareer, summary.bestPlayerId) ??
       getPlayerById(summary.bestPlayerId)
     : null;
+  const bestAvg =
+    summary.bestPlayerId != null
+      ? evaluatedCareer.playerSeasonStats[summary.bestPlayerId]?.averageRating
+      : null;
   const topScorer = summary.topTryScorerId
     ? getManagerPlayer(evaluatedCareer, summary.topTryScorerId) ??
       getPlayerById(summary.topTryScorerId)
     : null;
 
-  const boardDecisionLabel = "Board Retain";
-  const boardDecisionTone = "primary" as const;
+  const teamSheet = useMemo(() => {
+    const ids = (evaluatedCareer.matchdayXiii ?? []).filter(Boolean) as string[];
+    let source = ids.length >= 10 ? ids : [];
+    if (source.length === 0) {
+      source = evaluatedCareer.squad
+        .filter((ps) => {
+          const role = evaluatedCareer.contracts[ps.playerId]?.squadRole;
+          return (
+            role === "key-player" ||
+            role === "first-team" ||
+            role === "rotation"
+          );
+        })
+        .map((ps) => ps.playerId)
+        .slice(0, 13);
+    }
+    if (source.length === 0) {
+      source = evaluatedCareer.squad.map((ps) => ps.playerId).slice(0, 13);
+    }
+    return source
+      .map((id) => {
+        const player = getManagerPlayer(evaluatedCareer, id) ?? getPlayerById(id);
+        if (!player) return null;
+        const stats = evaluatedCareer.playerSeasonStats[id];
+        const pos = getPlayerEligiblePositions(player)[0];
+        return {
+          id,
+          name: player.name,
+          rating: player.peakRating,
+          pos: pos ? POSITION_SHORT[pos] : "—",
+          apps: stats?.appearances ?? 0,
+          avg: stats?.averageRating,
+        };
+      })
+      .filter((row): row is NonNullable<typeof row> => row !== null);
+  }, [evaluatedCareer]);
+
+  const playerRows = useMemo(
+    () =>
+      Object.entries(evaluatedCareer.playerSeasonStats)
+        .filter(([, stats]) => (stats.appearances ?? 0) > 0)
+        .sort(
+          ([, a], [, b]) => (b.averageRating ?? 0) - (a.averageRating ?? 0)
+        )
+        .slice(0, 14),
+    [evaluatedCareer.playerSeasonStats]
+  );
+
+  const stepIndex = REVIEW_STEPS.findIndex((s) => s.id === step);
+  const goNext = () => {
+    playUiClick();
+    if (stepIndex >= REVIEW_STEPS.length - 1) {
+      onViewRewards();
+      return;
+    }
+    setStep(REVIEW_STEPS[stepIndex + 1]!.id);
+  };
+  const goBack = () => {
+    playUiClick();
+    if (stepIndex <= 0) {
+      onHome();
+      return;
+    }
+    setStep(REVIEW_STEPS[stepIndex - 1]!.id);
+  };
+
+  const boardDecisionLabel =
+    evaluation.finalDecision === "sack"
+      ? "Board Concern"
+      : evaluation.recommendation === "retain"
+        ? "Board Retain"
+        : "Board Review";
 
   return (
-    <div className={`mx-auto max-w-lg ${SPACING.stackLg}`}>
-      <GameButton variant="secondary" fullWidth={false} size="sm" onClick={onHome}>
-        Return Home
-      </GameButton>
-
-      <ManagerSectionCard variant="featured">
-        <p className={`${TYPO.sectionLabel} text-center`}>Season Review</p>
-        <h1 className={`mt-2 text-center ${TYPO.pageTitle}`}>
-          {evaluatedCareer.club} · {evaluatedCareer.seasonYear}
-        </h1>
-        <p className={`mt-2 text-center text-2xl font-bold text-accent-gold sm:text-3xl`}>
-          {summary.position}
-          {summary.position === 1
-            ? "st"
-            : summary.position === 2
-              ? "nd"
-              : summary.position === 3
-                ? "rd"
-                : "th"}{" "}
-          Place
+    <div className={`mx-auto max-w-lg ${SPACING.stackMd}`}>
+      <div className="flex items-center justify-between gap-2">
+        <GameButton variant="secondary" fullWidth={false} size="sm" onClick={goBack}>
+          {stepIndex <= 0 ? "Home" : "Back"}
+        </GameButton>
+        <p className={`${TYPO.meta} text-pitch-500`}>
+          {stepIndex + 1}/{REVIEW_STEPS.length}
         </p>
-        {isUserInChampionship(evaluatedCareer) ? (
-          <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-200`}>
-            {summary.position === 1
-              ? "Championship Champions · Automatic Promotion"
-              : mpgWon
-                ? "Promoted to Super League"
-                : championshipPlayoffWinner
-                  ? "Qualified for the Million Pound Game"
-                  : summary.position >= 2 && summary.position <= 5
-                    ? "Championship play-offs"
-                  : "Championship finish"}
-          </p>
-        ) : evaluatedCareer.millionPoundGame?.loser === evaluatedCareer.club ? (
-          <p className={`mt-2 text-center ${TYPO.bodySm} text-red-300`}>
-            Million Pound Game defeat — Championship next season
-          </p>
-        ) : summary.position === autoRelegatePosition ? (
-          <p className={`mt-2 text-center ${TYPO.bodySm} text-red-300`}>
-            Automatic relegation — Championship next season
-          </p>
-        ) : null}
-        <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-300`}>
-          {summary.seasonVerdict}
-        </p>
-      </ManagerSectionCard>
+      </div>
 
-      <ManagerSectionCard title="Season player ratings" accent="primary">
-        <div className="mt-2 overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="border-b border-pitch-700/50 text-pitch-400">
-                <th className="py-1.5 pr-2 font-medium">Player</th>
-                <th className="px-2 py-1.5 text-center font-medium">Apps</th>
-                <th className="px-2 py-1.5 text-center font-medium">Tries</th>
-                <th className="py-1.5 pl-2 text-center font-medium">Avg</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(evaluatedCareer.playerSeasonStats)
-                .filter(([, stats]) => (stats.appearances ?? 0) > 0)
-                .sort(
-                  ([, a], [, b]) =>
-                    (b.averageRating ?? 0) - (a.averageRating ?? 0)
-                )
-                .slice(0, 12)
-                .map(([playerId, stats]) => (
-                  <tr
-                    key={playerId}
-                    className="border-b border-pitch-800/40 text-pitch-200"
-                  >
-                    <td className="py-1.5 pr-2 font-medium text-white">
-                      {getManagerPlayer(evaluatedCareer, playerId)?.name ??
-                        getPlayerById(playerId)?.name ??
-                        playerId}
-                    </td>
-                    <td className="px-2 py-1.5 text-center tabular-nums">
-                      {stats.appearances}
-                    </td>
-                    <td className="px-2 py-1.5 text-center tabular-nums">
-                      {stats.tries}
-                    </td>
-                    <td
-                      className={`py-1.5 pl-2 text-center tabular-nums font-semibold ${
-                        (stats.averageRating ?? 0) >= 7
-                          ? "text-theme-primary"
-                          : "text-white"
-                      }`}
-                    >
-                      {stats.averageRating != null
-                        ? stats.averageRating.toFixed(1)
-                        : "—"}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
-      </ManagerSectionCard>
+      <ManagerSubTabBar
+        tabs={REVIEW_STEPS.map((s) => ({
+          id: s.id,
+          label: s.label,
+          shortLabel: s.short,
+        }))}
+        active={step}
+        onChange={(id) => {
+          playUiClick();
+          setStep(id as ReviewStep);
+        }}
+        ariaLabel="Season review sections"
+      />
 
-      {isUserInChampionship(evaluatedCareer) ? (
-        <ManagerSectionCard
-          title="Championship Pathway"
-          accent={
-            (summary.position === 1 || mpgWon) ? "gold" : "primary"
-          }
-        >
-          <div className={`mt-2 ${SPACING.stackMd}`}>
+      {step === "summary" && (
+        <ManagerSectionCard variant="featured">
+          <p className={`${TYPO.sectionLabel} text-center`}>Season Review</p>
+          <h1 className={`mt-2 text-center ${TYPO.pageTitle}`}>
+            {evaluatedCareer.club} · {evaluatedCareer.seasonYear}
+          </h1>
+          <p
+            className={`mt-3 text-center text-lg font-bold sm:text-xl ${toneClass(outcome.tone)}`}
+          >
+            {outcome.headline}
+          </p>
+          <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-300`}>
+            {summary.seasonVerdict}
+          </p>
+          <div className={`mt-4 ${SPACING.stackSm}`}>
+            <ManagerInfoRow
+              label="Record"
+              value={`${summary.wins}W · ${summary.draws ?? 0}D · ${summary.losses}L`}
+              tone="primary"
+            />
+            <ManagerInfoRow
+              label="Points for / against"
+              value={`${summary.pointsFor} / ${summary.pointsAgainst}`}
+              tone={summary.pointsDifference >= 0 ? "primary" : "red"}
+            />
             <ManagerInfoRow
               label="Board aim"
               value={evaluatedCareer.boardExpectation}
               tone="gold"
             />
-            <ManagerInfoRow
-              label="Promotion"
-              value={
-                summary.position === 1
-                  ? "Earned — Super League next"
-                  : mpgWon
-                    ? "Earned — Million Pound Game won"
-                    : championshipPlayoffWinner
-                      ? "Play-off won — Million Pound Game next"
-                      : summary.position >= 2 && summary.position <= 5
-                        ? "Play-off route — Million Pound Game required"
-                        : "Missed — finish first or win the pathway"
-              }
-              tone={
-                summary.position === 1 || mpgWon
-                  ? "gold"
-                  : summary.position >= 2 && summary.position <= 5
-                    ? "amber"
-                    : "red"
-              }
-            />
-            {evaluatedCareer.championshipPlayoffs?.tournamentComplete ? (
+            {trophies.length > 0 ? (
               <ManagerInfoRow
-                label="Championship play-offs"
-                value={
-                  getChampionshipPlayoffWinner(
-                    evaluatedCareer.championshipPlayoffs
-                  ) ?? "Complete"
-                }
-                tone="amber"
-              />
-            ) : null}
-            {evaluatedCareer.millionPoundGame?.status === "complete" ? (
-              <ManagerInfoRow
-                label="Million Pound Game"
-                value={`${evaluatedCareer.millionPoundGame.slClub} vs ${evaluatedCareer.millionPoundGame.champClub} — ${evaluatedCareer.millionPoundGame.winner} won`}
-                tone={mpgWon ? "gold" : "default"}
+                label="Silverware"
+                value={trophies.join(" · ")}
+                tone="gold"
               />
             ) : null}
           </div>
         </ManagerSectionCard>
-      ) : (
-        <ManagerSectionCard title="Promotion & Relegation" accent="primary">
-          <div className={`mt-2 ${SPACING.stackMd}`}>
-            <ManagerInfoRow
-              label="League finish"
-              value={`${summary.position}${summary.position === 1 ? "st" : summary.position === 2 ? "nd" : summary.position === 3 ? "rd" : "th"}`}
-              tone={
-                summary.position <= 6
-                  ? "amber"
-                  : summary.position >= 12
-                    ? "red"
-                    : "default"
-              }
-            />
-            <ManagerInfoRow
-              label="Play-offs"
-              value={
-                evaluatedCareer.playoffs?.finish ??
-                (summary.position <= 6 ? "Qualified" : "Missed")
-              }
-              tone={
-                evaluatedCareer.playoffs?.finish === "Super League Champions"
-                  ? "gold"
-                  : "default"
-              }
-            />
-            <ManagerInfoRow
-              label="Million Pound Game"
-              value={
-                evaluatedCareer.millionPoundGame?.status === "complete"
-                  ? `${evaluatedCareer.millionPoundGame.winner} won (${evaluatedCareer.millionPoundGame.slClub} vs ${evaluatedCareer.millionPoundGame.champClub})`
-                  : summary.position === mpgTablePosition
-                    ? `Entered as Super League ${mpgTablePosition}${mpgTablePosition === 1 ? "st" : mpgTablePosition === 2 ? "nd" : mpgTablePosition === 3 ? "rd" : "th"}`
-                    : "Not involved"
-              }
-              tone={
-                evaluatedCareer.millionPoundGame?.winner === evaluatedCareer.club
-                  ? "gold"
-                  : summary.position === mpgTablePosition
-                    ? "amber"
-                    : "default"
-              }
-            />
-            <ManagerInfoRow
-              label="Relegation"
-              value={
-                summary.position >= autoRelegatePosition
-                  ? "Automatically relegated"
-                  : evaluatedCareer.millionPoundGame?.loser ===
-                      evaluatedCareer.club
-                    ? "Relegated via Million Pound Game"
-                    : "Safe"
-              }
-              tone={
-                summary.position >= 12 ||
-                evaluatedCareer.millionPoundGame?.loser === evaluatedCareer.club
-                  ? "red"
-                  : "primary"
-              }
+      )}
+
+      {step === "table" && (
+        <ManagerSectionCard title="Final league table" accent="primary">
+          <div className="mt-2">
+            <ManagerLeagueTable
+              career={evaluatedCareer}
+              subtitle={`Season ${evaluatedCareer.seasonYear}`}
+              defaultExpanded
             />
           </div>
         </ManagerSectionCard>
       )}
 
-      <ManagerSectionCard title="Board Decision" accent="primary">
-        <div className={`mt-2 ${SPACING.stackMd}`}>
-          <ManagerInfoRow
-            label="Decision"
-            value={boardDecisionLabel}
-            tone={boardDecisionTone}
-          />
-          <ManagerInfoRow
-            label="Performance score"
-            value={`${evaluation.performanceScore}/100`}
-            tone={evaluation.performanceScore >= 70 ? "primary" : evaluation.performanceScore >= 50 ? "amber" : "red"}
-          />
-          <ul className={`${SPACING.stackSm} text-sm text-pitch-300`}>
-            {evaluation.explanation.map((line) => (
-              <li key={line} className="leading-relaxed">
-                {line}
+      {step === "squad" && (
+        <ManagerSectionCard title="Team sheet" accent="primary">
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+            First-team focus from your matchday squad.
+          </p>
+          <ul className={`mt-3 ${SPACING.stackSm}`}>
+            {teamSheet.map((row) => (
+              <li
+                key={row.id}
+                className="flex items-center justify-between gap-2 border-b border-pitch-800/50 py-1.5 text-sm"
+              >
+                <span className="min-w-0 flex-1 truncate text-white">
+                  <span className="mr-2 text-pitch-500">{row.pos}</span>
+                  {row.name}
+                </span>
+                <span className="shrink-0 tabular-nums text-pitch-300">
+                  {row.rating}
+                  {row.avg != null ? ` · ${row.avg.toFixed(1)}` : ""}
+                </span>
               </li>
             ))}
+            {teamSheet.length === 0 ? (
+              <li className={TYPO.bodySm}>No squad data available.</li>
+            ) : null}
           </ul>
-          <div className="border-t border-pitch-700/40 pt-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-pitch-500">
-              Objectives
+        </ManagerSectionCard>
+      )}
+
+      {step === "players" && (
+        <>
+          <ManagerSectionCard title="Season player ratings" accent="primary">
+            <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+              Average match rating — not current ability.
             </p>
-            <ul className={`mt-2 ${SPACING.stackSm}`}>
+            <div className="mt-2">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-pitch-700/50 text-pitch-400">
+                    <th className="py-1.5 pr-2 font-medium">Player</th>
+                    <th className="px-2 py-1.5 text-center font-medium">Apps</th>
+                    <th className="px-2 py-1.5 text-center font-medium">Tries</th>
+                    <th className="py-1.5 pl-2 text-center font-medium">Avg</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {playerRows.map(([playerId, stats]) => (
+                    <tr
+                      key={playerId}
+                      className="border-b border-pitch-800/40 text-pitch-200"
+                    >
+                      <td className="py-1.5 pr-2 font-medium text-white">
+                        {getManagerPlayer(evaluatedCareer, playerId)?.name ??
+                          getPlayerById(playerId)?.name ??
+                          playerId}
+                      </td>
+                      <td className="px-2 py-1.5 text-center tabular-nums">
+                        {stats.appearances}
+                      </td>
+                      <td className="px-2 py-1.5 text-center tabular-nums">
+                        {stats.tries}
+                      </td>
+                      <td
+                        className={`py-1.5 pl-2 text-center tabular-nums font-semibold ${
+                          (stats.averageRating ?? 0) >= 7
+                            ? "text-theme-primary"
+                            : "text-white"
+                        }`}
+                      >
+                        {stats.averageRating != null
+                          ? stats.averageRating.toFixed(1)
+                          : "—"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </ManagerSectionCard>
+          <ManagerSectionCard title="Standouts" accent="gold">
+            <div className={`mt-2 ${SPACING.stackSm}`}>
+              {bestPlayer ? (
+                <ManagerInfoRow
+                  label="Best performer"
+                  value={`${bestPlayer.name}${
+                    bestAvg != null ? ` · ${bestAvg.toFixed(1)} avg` : ""
+                  }`}
+                  tone="gold"
+                />
+              ) : null}
+              {topScorer ? (
+                <ManagerInfoRow
+                  label="Top try scorer"
+                  value={`${topScorer.name} (${summary.topTryScorerTries})`}
+                  tone="primary"
+                />
+              ) : null}
+              <ManagerInfoRow
+                label="Biggest win"
+                value={
+                  summary.biggestWin
+                    ? `${summary.biggestWin.pointsFor}–${summary.biggestWin.pointsAgainst} vs ${summary.biggestWin.opponent}`
+                    : "—"
+                }
+                tone="primary"
+              />
+              <ManagerInfoRow
+                label="Biggest defeat"
+                value={
+                  summary.biggestDefeat
+                    ? `${summary.biggestDefeat.pointsFor}–${summary.biggestDefeat.pointsAgainst} vs ${summary.biggestDefeat.opponent}`
+                    : "—"
+                }
+                tone="red"
+              />
+            </div>
+          </ManagerSectionCard>
+        </>
+      )}
+
+      {step === "postseason" && (
+        <>
+          <ManagerSectionCard title="Challenge Cup" accent="gold">
+            <div className={`mt-2 ${SPACING.stackSm}`}>
+              <ManagerInfoRow
+                label="Result"
+                value={summary.challengeCupResult}
+                tone="gold"
+              />
+            </div>
+          </ManagerSectionCard>
+          {(outcome.playoffLabel || outcome.mpgLabel) && (
+            <ManagerSectionCard title="After the league" accent="primary">
+              <div className={`mt-2 ${SPACING.stackSm}`}>
+                {outcome.playoffLabel ? (
+                  <ManagerInfoRow
+                    label="Play-offs"
+                    value={outcome.playoffLabel}
+                    tone="amber"
+                  />
+                ) : null}
+                {outcome.mpgLabel ? (
+                  <ManagerInfoRow
+                    label="Million Pound Game"
+                    value={outcome.mpgLabel}
+                    tone={
+                      evaluatedCareer.millionPoundGame?.winner ===
+                      evaluatedCareer.club
+                        ? "gold"
+                        : evaluatedCareer.millionPoundGame?.loser ===
+                            evaluatedCareer.club
+                          ? "red"
+                          : "default"
+                    }
+                  />
+                ) : null}
+              </div>
+            </ManagerSectionCard>
+          )}
+          {!outcome.playoffLabel && !outcome.mpgLabel ? (
+            <ManagerSectionCard title="After the league" accent="primary">
+              <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
+                No playoff or Million Pound Game involvement this season.
+              </p>
+            </ManagerSectionCard>
+          ) : null}
+        </>
+      )}
+
+      {step === "finish" && (
+        <>
+          <ManagerSectionCard variant="featured">
+            <p className={`${TYPO.sectionLabel} text-center`}>Final outcome</p>
+            <p
+              className={`mt-2 text-center text-lg font-bold ${toneClass(outcome.tone)}`}
+            >
+              {outcome.headline}
+            </p>
+            <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-300`}>
+              {outcome.pathwayLabel}
+            </p>
+            <div className={`mt-4 ${SPACING.stackSm}`}>
+              <ManagerInfoRow
+                label="Board"
+                value={boardDecisionLabel}
+                tone="primary"
+              />
+              <ManagerInfoRow
+                label="Performance"
+                value={`${evaluation.performanceScore}/100`}
+                tone={
+                  evaluation.performanceScore >= 70
+                    ? "primary"
+                    : evaluation.performanceScore >= 50
+                      ? "amber"
+                      : "red"
+                }
+              />
+              <ManagerInfoRow
+                label="Funds boost"
+                value={`+${formatWage(summary.budgetChange)}`}
+                tone="gold"
+              />
+            </div>
+            <ul className={`mt-3 ${SPACING.stackSm}`}>
               {evaluation.objectiveResults.map((obj) => (
                 <li
                   key={obj.id}
@@ -371,187 +507,43 @@ export function ManagerSeasonReview({
                 </li>
               ))}
             </ul>
-          </div>
-        </div>
-      </ManagerSectionCard>
+          </ManagerSectionCard>
 
-      <ManagerSectionCard title="Season Record" accent="primary">
-        <div className={`mt-2 ${SPACING.stackMd}`}>
-          <ManagerInfoRow
-            label="Record"
-            value={`${summary.wins}W - ${summary.draws ?? 0}D - ${summary.losses}L`}
-            tone="primary"
+          <ManagerBoostsPanel
+            career={evaluatedCareer}
+            stage="manager-end-season"
+            onApplied={onCareerUpdate}
           />
-          <ManagerInfoRow
-            label="Points"
-            value={`${summary.pointsFor} for / ${summary.pointsAgainst} against (PD ${summary.pointsDifference > 0 ? "+" : ""}${summary.pointsDifference})`}
-            tone={
-              summary.pointsDifference > 0
-                ? "primary"
-                : summary.pointsDifference < 0
-                  ? "red"
-                  : "default"
-            }
-          />
-          <ManagerInfoRow
-            label="Challenge Cup"
-            value={summary.challengeCupResult}
-            tone="gold"
-          />
-          {bestPlayer && (
-            <ManagerInfoRow label="Best Player" value={bestPlayer.name} tone="gold" />
-          )}
-          {topScorer && (
-            <ManagerInfoRow
-              label="Top Try Scorer"
-              value={`${topScorer.name} (${summary.topTryScorerTries})`}
-              tone="primary"
-            />
-          )}
-          <ManagerInfoRow
-            label="Biggest Win"
-            value={
-              summary.biggestWin
-                ? `${summary.biggestWin.pointsFor}-${summary.biggestWin.pointsAgainst} vs ${summary.biggestWin.opponent}`
-                : "—"
-            }
-            tone="primary"
-          />
-          <ManagerInfoRow
-            label="Biggest Defeat"
-            value={
-              summary.biggestDefeat
-                ? `${summary.biggestDefeat.pointsFor}-${summary.biggestDefeat.pointsAgainst} vs ${summary.biggestDefeat.opponent}`
-                : "—"
-            }
-            tone="red"
-          />
-        </div>
-      </ManagerSectionCard>
 
-      <ManagerSectionCard title="Attendance" accent="sky">
-        <div className={`mt-2 ${SPACING.stackMd}`}>
-          <ManagerInfoRow
-            label="Average"
-            value={summary.averageAttendance.toLocaleString()}
-            tone="sky"
+          <ShareSeasonButton
+            data={{
+              title: evaluatedCareer.club,
+              subtitle: `${evaluatedCareer.seasonYear} Manager season`,
+              recordLine: `${summary.wins}W-${summary.draws ?? 0}D-${summary.losses}L`,
+              detailLines: [
+                outcome.headline,
+                trophies.length > 0
+                  ? `Trophies: ${trophies.join(" · ")}`
+                  : "No silverware this year",
+                summary.boardVerdict,
+              ],
+            }}
+            filename={`27-0-${evaluatedCareer.club}-${evaluatedCareer.seasonYear}.png`}
           />
-          <ManagerInfoRow
-            label="Highest"
-            value={summary.highestAttendance.toLocaleString()}
-            tone="primary"
-          />
-          <ManagerInfoRow
-            label="Lowest"
-            value={
-              summary.lowestAttendance > 0
-                ? summary.lowestAttendance.toLocaleString()
-                : "—"
-            }
-            tone="muted"
-          />
-        </div>
-      </ManagerSectionCard>
 
-      <ManagerSectionCard title="Contracts & Board" accent={summary.expiringContracts > 0 ? "amber" : undefined}>
-        <div className={`mt-2 ${SPACING.stackMd}`}>
-          <ManagerInfoRow
-            label="Expiring Contracts"
-            value={`${summary.expiringContracts}`}
-            tone={summary.expiringContracts > 0 ? "amber" : "default"}
-          />
-          {summary.playersLeaving.length > 0 && (
-            <ManagerInfoRow
-              label="Players Leaving"
-              value={summary.playersLeaving.join(", ")}
-              tone="red"
-            />
-          )}
-          <ManagerInfoRow
-            label="Club Status"
-            value={`${clubStars}-star · ${formatSquadRatingStars(
-              clubStars,
-              isUserInChampionship(evaluatedCareer)
-                ? "championship"
-                : "super-league"
-            )}`}
-            tone="gold"
-          />
-          <ManagerInfoRow label="Board Verdict" value={summary.boardVerdict} tone="default" />
-          <ManagerInfoRow
-            label="Club Funds (on continue)"
-            value={`+${formatWage(summary.budgetChange)}`}
-            tone="gold"
-          />
-          {trophies.length > 0 && (
-            <ManagerInfoRow
-              label="Trophies"
-              value={trophies.join(", ")}
-              tone="gold"
-            />
-          )}
-        </div>
-      </ManagerSectionCard>
-
-      <ManagerBoostsPanel
-        career={evaluatedCareer}
-        stage="manager-end-season"
-        onApplied={onCareerUpdate}
-      />
-
-      <ManagerSeasonRecapCard
-        club={evaluatedCareer.club}
-        seasonYear={evaluatedCareer.seasonYear}
-        summary={summary}
-      />
-
-      <ShareSeasonButton
-        data={{
-          title: evaluatedCareer.club,
-          subtitle: `${evaluatedCareer.seasonYear} Manager season`,
-          recordLine: `${summary.wins}W-${summary.draws ?? 0}D-${summary.losses}L`,
-          detailLines: [
-            `Finished ${summary.position}${
-              summary.position === 1
-                ? "st"
-                : summary.position === 2
-                  ? "nd"
-                  : summary.position === 3
-                    ? "rd"
-                    : "th"
-            }`,
-            trophies.length > 0
-              ? `Trophies: ${trophies.join(" · ")}`
-              : "No silverware this year",
-            summary.boardVerdict,
-          ],
-        }}
-        filename={`27-0-${evaluatedCareer.club}-${evaluatedCareer.seasonYear}.png`}
-      />
-
-      {!loading && !isLoggedIn && (
-        <GuestSaveNudge context="manager-season" />
+          {!loading && !isLoggedIn ? (
+            <GuestSaveNudge context="manager-season" />
+          ) : null}
+        </>
       )}
 
-      <GameButton
-        variant="theme"
-        onClick={() => {
-          playSeasonComplete();
-          playUiClick();
-          onViewRewards();
-        }}
-      >
-        View Potential Review
-      </GameButton>
-      <GameButton
-        variant="secondary"
-        onClick={() => {
-          playUiClick();
-          onHome();
-        }}
-      >
-        Return Home
-      </GameButton>
+      <div className={`sticky bottom-2 z-10 ${SPACING.stackSm} pb-[env(safe-area-inset-bottom)]`}>
+        <GameButton variant="theme" onClick={goNext}>
+          {stepIndex >= REVIEW_STEPS.length - 1
+            ? "Continue to Rewards"
+            : "Next"}
+        </GameButton>
+      </div>
     </div>
   );
 }

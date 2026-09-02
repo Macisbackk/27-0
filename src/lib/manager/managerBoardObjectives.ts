@@ -29,11 +29,11 @@ export function getBoardObjectiveSuccessDetail(
   if (competition === "championship") {
     switch (tier) {
       case "title":
-        return "Win the Championship for automatic promotion. Finish 2nd–5th to reach the play-offs.";
+        return "Win the Championship or earn a playoff path.";
       case "top":
-        return "Finish first for automatic promotion, or 2nd–5th to reach the Championship play-offs.";
+        return "Challenge for automatic promotion or the playoffs.";
       case "playoffs":
-        return "Finish 2nd–5th to reach the Championship play-offs.";
+        return "Reach the Championship playoffs.";
       case "mid-table":
         return "Finish mid-table or higher.";
       case "avoid-bottom":
@@ -43,16 +43,16 @@ export function getBoardObjectiveSuccessDetail(
   }
   switch (tier) {
     case "title":
-      return "Win the Grand Final.";
+      return "Challenge for the Super League title.";
     case "top":
-      return "Finish top 3.";
+      return "Finish among the top clubs.";
     case "playoffs":
-      return "Finish top 6.";
+      return "Reach the playoffs.";
     case "mid-table":
-      return "Finish 10th or higher.";
+      return "Secure a solid mid-table finish.";
     case "avoid-bottom":
     case "survive":
-      return "Finish 11th or higher to avoid the Million Pound Game.";
+      return "Stay clear of the drop.";
   }
 }
 
