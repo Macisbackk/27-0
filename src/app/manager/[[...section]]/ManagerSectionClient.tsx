@@ -204,6 +204,8 @@ import {
   refreshManagerCareersFromCloud,
 } from "@/lib/storage/manager-career-cloud";
 import {
+  advanceManagerTutorial,
+  getActiveManagerTutorialStep,
   isManagerTutorialActive,
 } from "@/lib/manager/managerTutorial";
 import { shouldShowSaveMigrationNotice } from "@/lib/manager/managerSaveMigration";
@@ -789,6 +791,53 @@ export default function ManagerPage() {
     !isManagerTutorialActive(career) &&
     (isAwaitingFriendlyChoice(career) ||
       isAwaitingFriendlyScheduleConfirm(career));
+
+  /** Surface weekly popups deferred while the mandatory tutorial was active. */
+  const tutorialWasActiveRef = useRef(false);
+  useEffect(() => {
+    const active = Boolean(career && isManagerTutorialActive(career));
+    if (tutorialWasActiveRef.current && !active && career) {
+      const boardMail = getPendingNarrativeInboxPopup(career);
+      const incomingBid = getPendingIncomingClubBid(career);
+      const contractExpiry = getPendingContractExpiryPopup(career);
+      const loanEnded = getPendingLoanEndedPopup(career);
+      const retirementIntent = getPendingRetirementIntentPopup(career);
+      const retrainingComplete = getPendingPositionRetrainingPopup(career);
+      const reserveReport = getPendingReserveReportPopup(career);
+
+      setPendingBoardMessageId(boardMail?.id ?? null);
+      setPendingIncomingBidId(incomingBid?.id ?? null);
+      setPendingContractExpiryId(contractExpiry?.id ?? null);
+      setPendingLoanEndedId(loanEnded?.id ?? null);
+      setPendingRetirementIntentId(retirementIntent?.id ?? null);
+      setPendingPositionRetrainingId(retrainingComplete?.id ?? null);
+      setPendingReserveReportId(reserveReport?.id ?? null);
+
+      if (boardMail) setBoardMessageModalOpen(true);
+      else if (incomingBid) setIncomingBidModalOpen(true);
+      else if (contractExpiry) setContractExpiryModalOpen(true);
+      else if (loanEnded) setLoanEndedModalOpen(true);
+      else if (retirementIntent) setRetirementIntentModalOpen(true);
+      else if (retrainingComplete) setPositionRetrainingCompleteModalOpen(true);
+      else if (reserveReport) setReserveReportModalOpen(true);
+    }
+    tutorialWasActiveRef.current = active;
+  }, [career, career?.tutorialStatus]);
+
+  /** Cup tutorial step always opens Fixtures on the Cup tab. */
+  useEffect(() => {
+    if (!career || !isManagerTutorialActive(career)) return;
+    const stepId = getActiveManagerTutorialStep(career)?.id;
+    if (stepId === "cup") {
+      setFixturesInitialFilter("cup");
+      return;
+    }
+    // Leave Cup filter once the tutorial moves on so later Fixtures visits
+    // are not stuck on an empty early-season Cup tab.
+    if (stepId === "playoffs" || stepId === "finish") {
+      setFixturesInitialFilter(null);
+    }
+  }, [career, career?.tutorialStep, career?.tutorialStatus]);
 
   useLayoutEffect(() => {
     if (!awaitingFriendlyChoice) return;
@@ -1929,44 +1978,55 @@ export default function ManagerPage() {
 
       const eventIds = collectWeeklyManagerEventIds(result.career);
       const withQueue = withWeeklyManagerEventQueue(result.career, eventIds);
-      persist(withQueue);
+      const afterTutorial =
+        getActiveManagerTutorialStep(withQueue)?.action === "advance-week"
+          ? advanceManagerTutorial(withQueue)
+          : withQueue;
+      persist(afterTutorial);
 
       // Weekly popups only — never auto-open or play the next fixture.
-      const boardMail = getPendingNarrativeInboxPopup(withQueue);
-      const incomingBid = getPendingIncomingClubBid(withQueue);
-      const contractExpiry = getPendingContractExpiryPopup(withQueue);
-      const loanEnded = getPendingLoanEndedPopup(withQueue);
-      const retirementIntent = getPendingRetirementIntentPopup(withQueue);
-      const retrainingComplete = getPendingPositionRetrainingPopup(withQueue);
-      const reserveReport = getPendingReserveReportPopup(withQueue);
+      // During the mandatory tutorial, leave events queued in career state and
+      // surface them when the tutorial finishes (see tutorialWasActiveRef effect).
+      if (!isManagerTutorialActive(afterTutorial)) {
+        const boardMail = getPendingNarrativeInboxPopup(afterTutorial);
+        const incomingBid = getPendingIncomingClubBid(afterTutorial);
+        const contractExpiry = getPendingContractExpiryPopup(afterTutorial);
+        const loanEnded = getPendingLoanEndedPopup(afterTutorial);
+        const retirementIntent = getPendingRetirementIntentPopup(afterTutorial);
+        const retrainingComplete = getPendingPositionRetrainingPopup(afterTutorial);
+        const reserveReport = getPendingReserveReportPopup(afterTutorial);
 
-      setPendingBoardMessageId(boardMail?.id ?? null);
-      setPendingIncomingBidId(incomingBid?.id ?? null);
-      setPendingContractExpiryId(contractExpiry?.id ?? null);
-      setPendingLoanEndedId(loanEnded?.id ?? null);
-      setPendingRetirementIntentId(retirementIntent?.id ?? null);
-      setPendingPositionRetrainingId(retrainingComplete?.id ?? null);
-      setPendingReserveReportId(reserveReport?.id ?? null);
+        setPendingBoardMessageId(boardMail?.id ?? null);
+        setPendingIncomingBidId(incomingBid?.id ?? null);
+        setPendingContractExpiryId(contractExpiry?.id ?? null);
+        setPendingLoanEndedId(loanEnded?.id ?? null);
+        setPendingRetirementIntentId(retirementIntent?.id ?? null);
+        setPendingPositionRetrainingId(retrainingComplete?.id ?? null);
+        setPendingReserveReportId(reserveReport?.id ?? null);
 
-      if (withQueue.isSeasonComplete) {
-        continueCelebrationQueue("wcc", withQueue);
+        if (afterTutorial.isSeasonComplete) {
+          continueCelebrationQueue("wcc", afterTutorial);
+          return;
+        }
+
+        if (boardMail) {
+          setBoardMessageModalOpen(true);
+        } else if (incomingBid) {
+          setIncomingBidModalOpen(true);
+        } else if (contractExpiry) {
+          setContractExpiryModalOpen(true);
+        } else if (loanEnded) {
+          setLoanEndedModalOpen(true);
+        } else if (retirementIntent) {
+          setRetirementIntentModalOpen(true);
+        } else if (retrainingComplete) {
+          setPositionRetrainingCompleteModalOpen(true);
+        } else if (reserveReport) {
+          setReserveReportModalOpen(true);
+        }
+      } else if (afterTutorial.isSeasonComplete) {
+        continueCelebrationQueue("wcc", afterTutorial);
         return;
-      }
-
-      if (boardMail) {
-        setBoardMessageModalOpen(true);
-      } else if (incomingBid) {
-        setIncomingBidModalOpen(true);
-      } else if (contractExpiry) {
-        setContractExpiryModalOpen(true);
-      } else if (loanEnded) {
-        setLoanEndedModalOpen(true);
-      } else if (retirementIntent) {
-        setRetirementIntentModalOpen(true);
-      } else if (retrainingComplete) {
-        setPositionRetrainingCompleteModalOpen(true);
-      } else if (reserveReport) {
-        setReserveReportModalOpen(true);
       }
 
       goToView("hub");
@@ -2560,7 +2620,8 @@ export default function ManagerPage() {
 
       {career &&
         isManagerTutorialActive(career) &&
-        !shouldShowManagerObjectivesIntro(career) && (
+        !shouldShowManagerObjectivesIntro(career) &&
+        !managerCelebrationModalsOpen && (
           <ManagerTutorialOverlay
             career={career}
             onUpdate={persist}

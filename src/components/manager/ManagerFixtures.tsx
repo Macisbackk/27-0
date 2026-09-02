@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { ClubColorChip } from "@/components/ClubColorChip";
 import { FixtureResultRow } from "@/components/FixtureResultRow";
 import { ManagerCompetitionBadge } from "@/components/manager/ManagerCompetitionBadge";
@@ -638,6 +638,10 @@ export function ManagerFixtures({
   const [filter, setFilter] = useState<FixtureFilter>(initialFilter);
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
 
+  useEffect(() => {
+    setFilter(initialFilter);
+  }, [initialFilter]);
+
   const readyCareer = syncBracketProgress(career);
   const nextFixture = getNextManagerFixture(readyCareer);
   const seasonComplete = isManagerSeasonComplete(readyCareer);
@@ -931,8 +935,7 @@ export function ManagerFixtures({
     showNextMatch ||
     showAllCombined ||
     (showWcc && wccPanelContent) ||
-    hasCupBracket ||
-    (showChallengeCup && challengeCupItems.length > 0) ||
+    showChallengeCup ||
     (showSuperLeague && leagueUpcomingItems.length > 0) ||
     showPlayoffs ||
     showCompletedResults;
@@ -1074,29 +1077,40 @@ export function ManagerFixtures({
         </GamePanel>
       )}
 
-      {showChallengeCup && hasCupBracket && (
-        <GamePanel padded label="Challenge Cup Bracket">
-          <ManagerChallengeCupBracket
-            career={career}
-            variant="full"
-            onOpenMatchReview={onSelectFixture}
-            onOpenMatchPrep={onOpenMatchPrep}
-          />
-        </GamePanel>
-      )}
-
-      {showChallengeCup && !hasCupBracket && challengeCupItems.length > 0 && (
-        <GamePanel
-          padded
-          label={`Challenge Cup (${challengeCupItems.length})`}
-        >
-          <FixtureItemList
-            items={challengeCupItems}
-            club={career.club}
-            onSelectFixture={onSelectFixture}
-            compact={false}
-          />
-        </GamePanel>
+      {showChallengeCup && (
+        <div data-tutorial-id="manager-section-challenge-cup" className={SPACING.stackMd}>
+          {hasCupBracket ? (
+            <GamePanel padded label="Challenge Cup Bracket">
+              <ManagerChallengeCupBracket
+                career={career}
+                variant="full"
+                onOpenMatchReview={onSelectFixture}
+                onOpenMatchPrep={onOpenMatchPrep}
+              />
+            </GamePanel>
+          ) : null}
+          {!hasCupBracket && challengeCupItems.length > 0 ? (
+            <GamePanel
+              padded
+              label={`Challenge Cup (${challengeCupItems.length})`}
+            >
+              <FixtureItemList
+                items={challengeCupItems}
+                club={career.club}
+                onSelectFixture={onSelectFixture}
+                compact={false}
+              />
+            </GamePanel>
+          ) : null}
+          {!hasCupBracket && challengeCupItems.length === 0 ? (
+            <GamePanel padded label="Challenge Cup">
+              <p className={`${TYPO.bodySm} text-pitch-300`}>
+                Challenge Cup fixtures and the bracket appear here when your
+                club is drawn into the competition.
+              </p>
+            </GamePanel>
+          ) : null}
+        </div>
       )}
 
       {showSuperLeague && leagueUpcomingItems.length > 0 && (

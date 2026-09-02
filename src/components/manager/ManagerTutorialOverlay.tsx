@@ -3,7 +3,6 @@
 import {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -15,10 +14,22 @@ import {
   advanceManagerTutorial,
   completeManagerTutorial,
   getActiveManagerTutorialStep,
-  resolveTutorialTargetElement,
   tutorialStepNeedsAction,
+  waitForTutorialTarget,
   type ManagerTutorialStepDef,
 } from "@/lib/manager/managerTutorial";
+import {
+  holeBlockerPanels,
+  isViewportFixedTarget,
+  layoutRectFromElement,
+  measureUsableViewport,
+  placeTutorialCallout,
+  scrollTargetIntoUsableRegion,
+  spotlightRectForTarget,
+  waitFrames,
+  type CalloutBox,
+  type LayoutRect,
+} from "@/lib/manager/tutorialTargetLayout";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import { acquireScrollLock, releaseScrollLock } from "@/lib/ui/scroll-lock";
 import { uiLayerClass } from "@/lib/ui/layers";
@@ -26,20 +37,30 @@ import { focusWithoutScroll } from "@/lib/ui/focus";
 import { TYPO } from "@/lib/ui/typography";
 import { playUiClick } from "@/lib/sound";
 
-const PAD = 8;
-
 interface ManagerTutorialOverlayProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
   onNavigate: (view: ManagerView) => void;
 }
 
-type CalloutPlacement = "above" | "below" | "center";
-
 function prefersReducedMotion(): boolean {
   if (typeof window === "undefined") return false;
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
+
+type LayoutState = {
+  spotlight: LayoutRect | null;
+  callout: CalloutBox | null;
+  actionHole: LayoutRect | null;
+  ready: boolean;
+};
+
+const EMPTY_LAYOUT: LayoutState = {
+  spotlight: null,
+  callout: null,
+  actionHole: null,
+  ready: false,
+};
 
 export function ManagerTutorialOverlay({
   career,
@@ -50,54 +71,127 @@ export function ManagerTutorialOverlay({
   const needsAction = tutorialStepNeedsAction(career, step);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const lockRef = useRef<ReturnType<typeof acquireScrollLock> | null>(null);
-  const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
-  const [placement, setPlacement] = useState<CalloutPlacement>("center");
+  const targetElRef = useRef<HTMLElement | null>(null);
+  const layoutGenRef = useRef(0);
+  const [layout, setLayout] = useState<LayoutState>(EMPTY_LAYOUT);
+  const [vw, setVw] = useState(0);
+  const [vh, setVh] = useState(0);
 
-  const measure = useCallback(() => {
-    if (!step) {
-      setTargetRect(null);
-      return;
-    }
-    const el = resolveTutorialTargetElement(step.targets);
-    if (!el) {
-      setTargetRect(null);
-      setPlacement("center");
-      return;
-    }
-    const rect = el.getBoundingClientRect();
-    setTargetRect(rect);
-    const spaceAbove = rect.top;
-    const spaceBelow = window.innerHeight - rect.bottom;
-    if (spaceBelow >= 160 || spaceBelow >= spaceAbove) {
-      setPlacement("below");
-    } else if (spaceAbove >= 140) {
-      setPlacement("above");
-    } else {
-      setPlacement("center");
-    }
+  /** Overflow is locked; temporarily allow programmatic document scroll. */
+  const withProgrammaticScroll = useCallback((fn: () => void) => {
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtml = html.style.overflow;
+    const prevBody = body.style.overflow;
+    html.style.overflow = "";
+    body.style.overflow = "";
     try {
-      el.scrollIntoView({
-        block: "nearest",
-        inline: "nearest",
-        behavior: prefersReducedMotion() ? "auto" : "smooth",
-      });
-    } catch {
-      /* ignore */
+      fn();
+    } finally {
+      html.style.overflow = prevHtml || "hidden";
+      body.style.overflow = prevBody || "hidden";
     }
-  }, [step]);
+  }, []);
 
-  useLayoutEffect(() => {
-    measure();
-    const onResize = () => measure();
-    window.addEventListener("resize", onResize);
-    window.addEventListener("orientationchange", onResize);
-    const interval = window.setInterval(measure, 350);
-    return () => {
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("orientationchange", onResize);
-      window.clearInterval(interval);
-    };
-  }, [measure, career.tutorialStep]);
+  const computeLayout = useCallback(
+    (el: HTMLElement | null, actionRequired: boolean) => {
+      const vv = window.visualViewport;
+      const viewW = vv?.width ?? window.innerWidth;
+      const viewH = vv?.height ?? window.innerHeight;
+      setVw(viewW);
+      setVh(viewH);
+
+      if (!el) {
+        const usable = measureUsableViewport();
+        const width = Math.min(usable.width, usable.isCompact ? 340 : 360);
+        const height = Math.min(
+          panelRef.current?.offsetHeight || 180,
+          usable.height
+        );
+        setLayout({
+          spotlight: null,
+          callout: {
+            top: usable.top + Math.max(0, (usable.height - height) * 0.28),
+            left: usable.left + (usable.width - width) / 2,
+            width,
+            maxHeight: usable.height,
+            placement: "dock-top",
+          },
+          actionHole: null,
+          ready: true,
+        });
+        return;
+      }
+
+      const reservePlaybar =
+        !isViewportFixedTarget(el) && !el.closest(".mobile-action-bar");
+      const usable = measureUsableViewport({
+        reserveStickyPlaybar: reservePlaybar,
+      });
+      const target = layoutRectFromElement(el);
+      const spotlight = spotlightRectForTarget(target, usable);
+
+      const measuredH = panelRef.current?.offsetHeight || (usable.isCompact ? 168 : 190);
+      const measuredW = Math.min(usable.width, usable.isCompact ? 340 : 360);
+      const callout = placeTutorialCallout(target, usable, {
+        width: measuredW,
+        height: measuredH,
+      });
+
+      setLayout({
+        spotlight,
+        callout,
+        actionHole: actionRequired ? spotlight : null,
+        ready: true,
+      });
+    },
+    []
+  );
+
+  const syncTargetLayout = useCallback(
+    async (opts?: { scroll?: boolean }) => {
+      if (!step) {
+        setLayout(EMPTY_LAYOUT);
+        targetElRef.current = null;
+        return;
+      }
+
+      const gen = ++layoutGenRef.current;
+      setLayout((prev) => ({ ...prev, ready: false }));
+
+      await waitFrames(2);
+      if (gen !== layoutGenRef.current) return;
+
+      const el = await waitForTutorialTarget(step.targets, {
+        timeoutMs: step.targets?.length ? 2000 : 0,
+      });
+      if (gen !== layoutGenRef.current) return;
+
+      targetElRef.current = el;
+
+      if (el && opts?.scroll !== false) {
+        const reservePlaybar =
+          !isViewportFixedTarget(el) && !el.closest(".mobile-action-bar");
+        const usable = measureUsableViewport({
+          reserveStickyPlaybar: reservePlaybar,
+        });
+        withProgrammaticScroll(() => {
+          scrollTargetIntoUsableRegion(el, usable);
+        });
+        await waitFrames(2);
+        if (gen !== layoutGenRef.current) return;
+      }
+
+      computeLayout(el, tutorialStepNeedsAction(career, step));
+
+      // Second pass after callout paints — height is accurate for placement.
+      requestAnimationFrame(() => {
+        if (gen !== layoutGenRef.current) return;
+        computeLayout(targetElRef.current, tutorialStepNeedsAction(career, step));
+      });
+    },
+    [step, career, computeLayout, withProgrammaticScroll]
+  );
 
   useEffect(() => {
     if (!step?.view) return;
@@ -111,6 +205,73 @@ export function ManagerTutorialOverlay({
       lockRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    void syncTargetLayout({ scroll: true });
+  }, [syncTargetLayout, career.tutorialStep, needsAction]);
+
+  useEffect(() => {
+    let debounce: number | null = null;
+    let orientationTimer: number | null = null;
+
+    const runFullSync = () => {
+      void syncTargetLayout({ scroll: true });
+    };
+
+    const onViewportChange = () => {
+      if (debounce != null) window.clearTimeout(debounce);
+      debounce = window.setTimeout(() => {
+        debounce = null;
+        runFullSync();
+      }, 60);
+    };
+
+    const onOrientation = () => {
+      // Mobile browsers often update visualViewport after orientationchange.
+      onViewportChange();
+      if (orientationTimer != null) window.clearTimeout(orientationTimer);
+      orientationTimer = window.setTimeout(() => {
+        orientationTimer = null;
+        runFullSync();
+      }, 280);
+    };
+
+    window.addEventListener("resize", onViewportChange);
+    window.addEventListener("orientationchange", onOrientation);
+    document.addEventListener("visibilitychange", onViewportChange);
+    const vv = window.visualViewport;
+    vv?.addEventListener("resize", onViewportChange);
+    vv?.addEventListener("scroll", onViewportChange);
+
+    const refine = () => {
+      if (debounce != null) window.clearTimeout(debounce);
+      debounce = window.setTimeout(() => {
+        debounce = null;
+        const el = targetElRef.current;
+        if (el && document.contains(el)) {
+          computeLayout(el, needsAction);
+        } else if (step?.targets?.length) {
+          void syncTargetLayout({ scroll: false });
+        }
+      }, 100);
+    };
+
+    const ro = new ResizeObserver(refine);
+    if (targetElRef.current) ro.observe(targetElRef.current);
+    if (panelRef.current) ro.observe(panelRef.current);
+    ro.observe(document.documentElement);
+
+    return () => {
+      window.removeEventListener("resize", onViewportChange);
+      window.removeEventListener("orientationchange", onOrientation);
+      document.removeEventListener("visibilitychange", onViewportChange);
+      vv?.removeEventListener("resize", onViewportChange);
+      vv?.removeEventListener("scroll", onViewportChange);
+      if (debounce != null) window.clearTimeout(debounce);
+      if (orientationTimer != null) window.clearTimeout(orientationTimer);
+      ro.disconnect();
+    };
+  }, [syncTargetLayout, computeLayout, needsAction, step?.id, layout.ready]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -171,62 +332,72 @@ export function ManagerTutorialOverlay({
   ].indexOf(step.id);
   const stepTotal = 13;
 
+  const blockers = holeBlockerPanels(
+    needsAction ? layout.actionHole : null,
+    vw || (typeof window !== "undefined" ? window.innerWidth : 0),
+    vh || (typeof window !== "undefined" ? window.innerHeight : 0)
+  );
+
+  const showSpotlight = Boolean(layout.ready && layout.spotlight);
+
   return (
     <BodyPortal>
       <div
-        className={`manager-tutorial-overlay fixed inset-0 ${uiLayerClass("criticalAnimation")} overflow-hidden`}
+        className={`manager-tutorial-overlay pointer-events-none fixed inset-0 ${uiLayerClass("criticalAnimation")} overflow-hidden overscroll-none`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="manager-tutorial-title"
-        onClick={(e) => e.stopPropagation()}
       >
-        {targetRect ? (
+        {showSpotlight && layout.spotlight ? (
           <div
             aria-hidden
-            className={`pointer-events-none absolute rounded-xl ring-2 ring-theme-primary ${
+            className={`pointer-events-none absolute rounded-xl ring-2 ring-theme-primary/90 ${
               prefersReducedMotion()
                 ? ""
-                : "transition-[top,left,width,height] duration-200"
+                : "transition-[top,left,width,height] duration-[var(--motion-medium)] ease-[var(--motion-ease)]"
             }`}
             style={{
-              top: Math.max(0, targetRect.top - PAD),
-              left: Math.max(0, targetRect.left - PAD),
-              width: targetRect.width + PAD * 2,
-              height: targetRect.height + PAD * 2,
+              top: layout.spotlight.top,
+              left: layout.spotlight.left,
+              width: layout.spotlight.width,
+              height: layout.spotlight.height,
               boxShadow: "0 0 0 9999px rgba(0,0,0,0.78)",
+              opacity: layout.ready ? 1 : 0,
             }}
           />
         ) : (
-          <div aria-hidden className="absolute inset-0 bg-black/80" />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-black/80"
+            style={{ opacity: layout.ready ? 1 : 0.92 }}
+          />
         )}
 
-        {/* Full-screen interaction block (spotlight hit-area sits above this). */}
-        <div className="absolute inset-0" aria-hidden />
-
-        {needsAction && targetRect ? (
-          <button
-            type="button"
-            aria-label="Continue tutorial"
-            className="absolute z-[2] rounded-xl border-2 border-theme-primary/90 bg-theme-primary/15"
+        {blockers.map((panel, i) => (
+          <div
+            key={`block-${i}`}
+            aria-hidden
+            className="pointer-events-auto absolute"
             style={{
-              top: Math.max(0, targetRect.top - PAD),
-              left: Math.max(0, targetRect.left - PAD),
-              width: targetRect.width + PAD * 2,
-              height: targetRect.height + PAD * 2,
+              top: panel.top,
+              left: panel.left,
+              width: panel.width,
+              height: panel.height,
             }}
-            onClick={goNext}
+            onClick={(e) => e.stopPropagation()}
+            onWheel={(e) => e.preventDefault()}
           />
-        ) : null}
+        ))}
 
         <TutorialCallout
           step={step}
           needsAction={needsAction}
           stepIndex={Math.max(0, stepIndex)}
           stepTotal={stepTotal}
-          placement={placement}
-          targetRect={targetRect}
+          callout={layout.callout}
           panelRef={panelRef}
           onNext={goNext}
+          visible={layout.ready}
         />
       </div>
     </BodyPortal>
@@ -238,50 +409,56 @@ function TutorialCallout({
   needsAction,
   stepIndex,
   stepTotal,
-  placement,
-  targetRect,
+  callout,
   panelRef,
   onNext,
+  visible,
 }: {
   step: ManagerTutorialStepDef;
   needsAction: boolean;
   stepIndex: number;
   stepTotal: number;
-  placement: CalloutPlacement;
-  targetRect: DOMRect | null;
+  callout: CalloutBox | null;
   panelRef: RefObject<HTMLDivElement | null>;
   onNext: () => void;
+  visible: boolean;
 }) {
   return (
     <div
       ref={panelRef}
       tabIndex={-1}
-      className="absolute z-[3] w-[min(calc(100vw-1.5rem),22rem)] outline-none"
-      style={calloutStyle(placement, targetRect)}
+      className="pointer-events-auto absolute z-[3] outline-none overflow-hidden"
+      style={{
+        ...calloutStyle(callout),
+        opacity: visible ? 1 : 0,
+        pointerEvents: visible ? "auto" : "none",
+      }}
     >
-      <div className="rounded-xl border border-theme-primary/40 bg-pitch-950 px-3.5 py-3 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
-        <div className="flex items-center justify-between gap-2">
-          <p className={`${TYPO.keyLabel} text-theme-primary`}>
-            Tutorial · {stepIndex + 1}/{stepTotal}
-          </p>
-        </div>
+      <div className="rounded-xl border border-theme-primary/40 bg-pitch-950 px-3 py-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+        <p className={`${TYPO.keyLabel} text-theme-primary`}>
+          Step {stepIndex + 1} of {stepTotal}
+        </p>
         <h2
           id="manager-tutorial-title"
-          className="mt-1.5 text-base font-bold leading-snug text-white"
+          className="mt-1 text-[0.95rem] font-bold leading-snug text-white sm:text-base"
         >
           {step.title}
         </h2>
-        <p className="mt-1.5 text-sm leading-snug text-pitch-300">{step.body}</p>
-        {step.hint ? (
-          <p className="mt-1.5 text-xs leading-snug text-pitch-400">{step.hint}</p>
-        ) : null}
+        <p className="mt-1 text-[0.8125rem] leading-snug text-pitch-300 sm:text-sm">
+          {step.body}
+        </p>
         {needsAction ? (
-          <p className="mt-2.5 rounded-md border border-theme-primary/35 bg-theme-primary/10 px-2.5 py-2 text-xs font-semibold text-theme-primary">
-            Tap the highlighted control to continue.
+          <p className="mt-2 rounded-md border border-theme-primary/35 bg-theme-primary/10 px-2.5 py-1.5 text-[0.75rem] font-semibold leading-snug text-theme-primary">
+            {step.hint ?? "Tap the highlighted control to continue."}
           </p>
         ) : (
-          <div className="mt-3">
-            <GameButton variant="theme" size="sm" onClick={onNext}>
+          <div className="mt-2.5">
+            <GameButton
+              variant="theme"
+              size="sm"
+              className="min-h-10 min-w-[5.5rem]"
+              onClick={onNext}
+            >
               {step.nextLabel ?? "Next"}
             </GameButton>
           </div>
@@ -291,38 +468,20 @@ function TutorialCallout({
   );
 }
 
-function calloutStyle(
-  placement: CalloutPlacement,
-  targetRect: DOMRect | null
-): CSSProperties {
-  if (!targetRect || placement === "center") {
+function calloutStyle(callout: CalloutBox | null): CSSProperties {
+  if (!callout) {
     return {
       left: "50%",
-      top: "42%",
+      top: "40%",
       transform: "translate(-50%, -50%)",
+      width: "min(calc(100vw - 1.5rem), 21rem)",
     };
   }
-
-  if (placement === "below") {
-    const top = Math.min(
-      targetRect.bottom + 12,
-      typeof window !== "undefined" ? window.innerHeight - 210 : 400
-    );
-    return {
-      left: "50%",
-      transform: "translateX(-50%)",
-      top,
-    };
-  }
-
-  const bottom =
-    typeof window !== "undefined"
-      ? Math.max(80, window.innerHeight - targetRect.top + 12)
-      : 80;
   return {
-    left: "50%",
-    transform: "translateX(-50%)",
-    bottom,
-    top: "auto",
+    top: callout.top,
+    left: callout.left,
+    width: callout.width,
+    maxHeight: callout.maxHeight,
+    transform: "none",
   };
 }

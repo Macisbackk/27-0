@@ -48,7 +48,8 @@ export type ManagerTutorialTargetId =
   | "manager-section-contracts"
   | "manager-section-transfers"
   | "manager-section-fixtures"
-  | "manager-section-stats";
+  | "manager-section-stats"
+  | "manager-section-challenge-cup";
 
 export interface ManagerTutorialStepDef {
   id: ManagerTutorialStepId;
@@ -80,14 +81,19 @@ export const MANAGER_TUTORIAL_STEPS: readonly ManagerTutorialStepDef[] = [
     title: "Club Hub",
     body: "This is your main hub. Use it to see what is happening at your club and what needs your attention.",
     view: "hub",
-    targets: ["manager-hub-root", "manager-nav-hub"],
+    targets: [
+      "manager-hub-next-fixture",
+      "manager-hub-season-progress",
+      "manager-hub-root",
+      "manager-nav-hub",
+    ],
     nextLabel: "Next",
   },
   {
     id: "season-progress",
     title: "Season Progress",
-    body: "This shows where you are in the season and what is coming next.",
-    hint: "Advance the week to move your season forward when there is no match to play.",
+    body: "Advance the week when there is no match to play — that moves your season forward.",
+    hint: "Tap Advance Week to continue.",
     view: "hub",
     targets: ["manager-hub-advance-week", "manager-hub-season-progress"],
     nextLabel: "Next",
@@ -97,7 +103,7 @@ export const MANAGER_TUTORIAL_STEPS: readonly ManagerTutorialStepDef[] = [
   {
     id: "fixture",
     title: "Next Fixture",
-    body: "Your next match appears here. This is where you can play or simulate your upcoming fixture.",
+    body: "Your next match appears here. Play or simulate from this card when a fixture is due.",
     view: "hub",
     targets: [
       "manager-hub-next-fixture",
@@ -162,23 +168,33 @@ export const MANAGER_TUTORIAL_STEPS: readonly ManagerTutorialStepDef[] = [
   {
     id: "cup",
     title: "Challenge Cup",
-    body: "Cup matches are separate from the league and can give you another route to silverware.",
-    view: "hub",
-    targets: ["manager-hub-challenge-cup", "manager-hub-root"],
+    body: "Cup ties are separate from the league — another route to silverware when your club is involved.",
+    view: "fixtures",
+    targets: [
+      "manager-section-challenge-cup",
+      "manager-hub-challenge-cup",
+      "manager-section-fixtures",
+      "manager-nav-fixtures",
+      "manager-nav-more",
+    ],
     nextLabel: "Next",
   },
   {
     id: "playoffs",
     title: "Season & playoffs",
-    body: "Your league position decides what happens at the end of the regular season — playoffs, the Million Pound Game, promotion or relegation.",
+    body: "League position decides playoffs, the Million Pound Game, promotion or relegation.",
     view: "hub",
-    targets: ["manager-hub-season-progress", "manager-hub-root"],
+    targets: [
+      "manager-hub-season-progress",
+      "manager-hub-next-fixture",
+      "manager-hub-root",
+    ],
     nextLabel: "Next",
   },
   {
     id: "finish",
     title: "You're ready to manage",
-    body: "Keep an eye on your squad, fixtures and transfers, make smart decisions and try to build your club into a Super League champion.",
+    body: "Watch squad, fixtures and transfers — build your club into a Super League champion.",
     nextLabel: "Start Managing",
   },
 ] as const;
@@ -308,20 +324,51 @@ export function tutorialStepNeedsAction(
   return true;
 }
 
+function isTutorialTargetVisible(el: HTMLElement): boolean {
+  if (el.closest("[hidden]")) return false;
+  let node: HTMLElement | null = el;
+  while (node && node !== document.documentElement) {
+    const style = window.getComputedStyle(node);
+    if (style.display === "none" || style.visibility === "hidden") return false;
+    if (node.classList.contains("invisible")) return false;
+    node = node.parentElement;
+  }
+  const rect = el.getBoundingClientRect();
+  return rect.width >= 2 && rect.height >= 2;
+}
+
+/**
+ * Resolve the first *visible* tutorial target.
+ * Prefer later DOM matches when earlier duplicates are hidden (e.g. hub Advance
+ * Week card vs mobile sticky play bar).
+ */
 export function resolveTutorialTargetElement(
   targets: ManagerTutorialTargetId[] | undefined
 ): HTMLElement | null {
   if (typeof document === "undefined" || !targets?.length) return null;
   for (const id of targets) {
-    const el = document.querySelector<HTMLElement>(
-      `[data-tutorial-id="${id}"]`
-    );
-    if (!el) continue;
-    const style = window.getComputedStyle(el);
-    if (style.display === "none" || style.visibility === "hidden") continue;
-    const rect = el.getBoundingClientRect();
-    if (rect.width < 2 || rect.height < 2) continue;
-    return el;
+    const nodes = document.querySelectorAll(`[data-tutorial-id="${id}"]`);
+    for (const node of nodes) {
+      if (!(node instanceof HTMLElement)) continue;
+      if (!isTutorialTargetVisible(node)) continue;
+      return node;
+    }
   }
   return null;
+}
+
+/** Retry locating a target after route/view mounts. */
+export async function waitForTutorialTarget(
+  targets: ManagerTutorialTargetId[] | undefined,
+  options?: { timeoutMs?: number; intervalMs?: number }
+): Promise<HTMLElement | null> {
+  const timeoutMs = options?.timeoutMs ?? 1800;
+  const intervalMs = options?.intervalMs ?? 50;
+  const start = performance.now();
+  let el = resolveTutorialTargetElement(targets);
+  while (!el && performance.now() - start < timeoutMs) {
+    await new Promise<void>((r) => setTimeout(r, intervalMs));
+    el = resolveTutorialTargetElement(targets);
+  }
+  return el;
 }
