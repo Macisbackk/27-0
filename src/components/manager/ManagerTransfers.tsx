@@ -74,7 +74,10 @@ import {
   executeFreeAgentSign,
   executeLoanIn,
   executePermanentBuy,
+  executePermanentSell,
+  executeLoanAcceptBid,
 } from "@/lib/manager/transferTransactions";
+import { playerUnavailableMessage } from "@/lib/manager/transferMarket";
 import { getPlayerById } from "@/lib/players";
 import { POSITION_SHORT } from "@/lib/positions";
 import type { Player, Position } from "@/lib/types";

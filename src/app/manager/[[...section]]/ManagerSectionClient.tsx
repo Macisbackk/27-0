@@ -168,10 +168,10 @@ import {
   rejectReserveTransferOffer,
 } from "@/lib/manager/championshipBidForSlReserves";
 import {
-  acceptIncomingOffer,
   getPendingIncomingClubBid,
   rejectIncomingOffer,
 } from "@/lib/manager/managerTransferLeague";
+import { executePermanentSell } from "@/lib/manager/transferTransactions";
 import {
   acknowledgeRetirementIntentPopup,
   convincePlayerToStay,
@@ -1355,7 +1355,10 @@ export default function ManagerPage() {
     const offer = career.inboxMessages.find((m) => m.id === pendingIncomingBidId);
     const result = offer?.reserveOffer
       ? acceptReserveTransferOffer(career, pendingIncomingBidId)
-      : acceptIncomingOffer(career, pendingIncomingBidId);
+      : (() => {
+          const tx = executePermanentSell(career, pendingIncomingBidId);
+          return { ok: tx.ok, career: tx.career, error: tx.error };
+        })();
     if (!result.ok || !result.career) {
       setAlertDialog({
         title: "Transfer failed",

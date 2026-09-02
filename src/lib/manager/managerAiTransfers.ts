@@ -127,16 +127,6 @@ export function maybeGenerateAiTransfers(
   const buyerFunds = clubFunds[toClub] ?? 0;
   if (fee > 0 && buyerFunds < fee) return career;
 
-  const activity: LeagueTransferActivity = {
-    id: `ai-tx-w${career.gameWeek}-a${attempt}-${playerId}`,
-    week: career.gameWeek,
-    fromClub,
-    toClub,
-    playerId,
-    playerName: player.name,
-    fee,
-  };
-
   const leagueListedPlayers = career.leagueListedPlayers.filter(
     (l) => l.playerId !== playerId
   );
@@ -152,10 +142,6 @@ export function maybeGenerateAiTransfers(
           ...current,
           clubFunds,
           leagueListedPlayers,
-          leagueTransfers: [activity, ...(current.leagueTransfers ?? [])].slice(
-            0,
-            MAX_TRANSFER_HISTORY
-          ),
         },
         playerId,
         fromClub,

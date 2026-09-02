@@ -14,10 +14,10 @@ import {
 } from "@/components/manager/manager-ui";
 import type { InboxMessage, InboxMessageType, ManagerCareer, ManagerView } from "@/lib/manager/types";
 import {
-  acceptIncomingOffer,
   negotiateIncomingOffer,
   rejectIncomingOffer,
 } from "@/lib/manager/managerTransferLeague";
+import { executePermanentSell } from "@/lib/manager/transferTransactions";
 import {
   acceptReserveTransferOffer,
   rejectReserveTransferOffer,
@@ -124,7 +124,10 @@ export function ManagerInbox({
     const msg = career.inboxMessages.find((m) => m.id === id);
     const result = msg?.reserveOffer
       ? acceptReserveTransferOffer(career, id)
-      : acceptIncomingOffer(career, id);
+      : (() => {
+          const tx = executePermanentSell(career, id);
+          return { ok: tx.ok, career: tx.career, error: tx.error };
+        })();
     if (result.ok && result.career) {
       setFeedback(null);
       onUpdate(result.career);

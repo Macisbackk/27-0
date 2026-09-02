@@ -58,11 +58,6 @@ import { getLeagueSeasonIndex } from "./managerLeagueSeason";
 import { DEFAULT_TRANSFER_ACTIVITY_CONFIG } from "./transferActivityConfig";
 import { pruneTransferWatchlist } from "./managerWatchlist";
 import {
-  appendCanonicalTransferActivity,
-  buildTransferActivity,
-  clearAllMarketPresenceForPlayer,
-  markTransferTxProcessed,
-  wasTransferTxProcessed,
   syncUserListingToLeagueMarket,
   removePlayerFromLeagueMarket,
 } from "./transferLedger";
@@ -663,7 +658,7 @@ export function releasePlayerWithCost(
     };
   }
 
-  const player = getPlayerById(playerId);
+  const player = getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
   const xiii = career.matchdayXiii.map((id) => (id === playerId ? "" : id));
   const interchange = career.matchdayInterchange.map((id) =>
     id === playerId ? "" : id
@@ -939,8 +934,8 @@ export function completePlayerPurchase(
     offer.transferFee
   );
 
-  const player = getPlayerById(playerId);
-  const withMail = pruneTransferWatchlist(
+  const player = getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
+  return pruneTransferWatchlist(
     pruneLeagueListedPlayers(
       addBoardTransferMilestoneInbox(
         pushInboxMessage(
@@ -962,25 +957,6 @@ export function completePlayerPurchase(
     ),
     [playerId]
   );
-
-  const txId = `perm-buy-${playerId}-w${career.gameWeek}-${offer.transferFee}`;
-  if (wasTransferTxProcessed(withMail, txId)) return withMail;
-  let next = clearAllMarketPresenceForPlayer(withMail, playerId);
-  next = appendCanonicalTransferActivity(
-    next,
-    buildTransferActivity({
-      id: `hist-${txId}`,
-      career: next,
-      playerId,
-      playerName: player?.name ?? "Player",
-      fromClub: club,
-      toClub: career.club,
-      fee: offer.transferFee,
-      transferType: "permanent",
-      sourceSquad: "senior",
-    })
-  );
-  return markTransferTxProcessed(next, txId);
 }
 
 export function generateIncomingTransferOffers(
@@ -1446,7 +1422,8 @@ export function getPendingUnsolicitedOffer(
   return getPendingIncomingClubBid(career);
 }
 
-export function acceptIncomingOffer(
+/** Permanent sale mutation from an inbox bid — ledger handled by transferTransactions. */
+export function mutatePermanentSellFromInbox(
   career: ManagerCareer,
   messageId: string
 ): { ok: boolean; career?: ManagerCareer; error?: string } {
@@ -1456,7 +1433,7 @@ export function acceptIncomingOffer(
   }
 
   if (msg.loanOffer) {
-    return acceptIncomingLoanOffer(career, messageId);
+    return { ok: false, error: "Use loan acceptance for this offer." };
   }
 
   if (msg.offerAmount == null || msg.offerAmount < 0) {
@@ -1536,9 +1513,14 @@ export function acceptIncomingOffer(
   nextCareer = addTransferIncome(nextCareer, msg.offerAmount);
   nextCareer = transferLeaguePlayer(nextCareer, playerId, career.club, buyer);
   nextCareer = rememberPlayerDeparture(nextCareer, playerId);
+  const playerName =
+    msg.playerName ??
+    getManagerPlayer(nextCareer, playerId)?.name ??
+    getPlayerById(playerId)?.name ??
+    "Player";
   const saleMsg = createPlayerSaleMessage(
     nextCareer,
-    msg.playerName ?? getPlayerById(playerId)?.name ?? "Player",
+    playerName,
     buyer,
     msg.offerAmount,
     playerId,
@@ -1548,7 +1530,7 @@ export function acceptIncomingOffer(
   nextCareer = addBoardTransferMilestoneInbox(
     nextCareer,
     "sale",
-    msg.playerName ?? getPlayerById(playerId)?.name ?? "Player",
+    playerName,
     msg.offerAmount,
     playerId
   );
@@ -1556,30 +1538,24 @@ export function acceptIncomingOffer(
 
   dispatchAchievementCheck({ trigger: "player-sold", playerSold: true });
 
-  const saleTxId = `perm-sale-${playerId}-${messageId}`;
-  if (!wasTransferTxProcessed(nextCareer, saleTxId)) {
-    nextCareer = clearAllMarketPresenceForPlayer(nextCareer, playerId);
-    nextCareer = appendCanonicalTransferActivity(
-      nextCareer,
-      buildTransferActivity({
-        id: `hist-${saleTxId}`,
-        career: nextCareer,
-        playerId,
-        playerName: msg.playerName ?? getPlayerById(playerId)?.name ?? "Player",
-        fromClub: career.club,
-        toClub: buyer,
-        fee: msg.offerAmount,
-        transferType: "permanent",
-        sourceSquad: "senior",
-      })
-    );
-    nextCareer = markTransferTxProcessed(nextCareer, saleTxId);
-  }
-
   return {
     ok: true,
     career: nextCareer,
   };
+}
+
+export function acceptIncomingOffer(
+  career: ManagerCareer,
+  messageId: string
+): { ok: boolean; career?: ManagerCareer; error?: string } {
+  const msg = career.inboxMessages.find((m) => m.id === messageId);
+  if (!msg || msg.resolved || !msg.playerId) {
+    return { ok: false, error: "Offer not found" };
+  }
+  if (msg.loanOffer) {
+    return acceptIncomingLoanOffer(career, messageId);
+  }
+  return mutatePermanentSellFromInbox(career, messageId);
 }
 
 /** Accept a Championship loan approach for a loan-listed squad player. */

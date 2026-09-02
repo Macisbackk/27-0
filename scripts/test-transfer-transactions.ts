@@ -4,11 +4,11 @@
  */
 import { createNewCareer } from "../src/lib/manager/managerState";
 import {
-  completePlayerPurchase,
   evaluateBuyOffer,
   generateLeagueListedPlayers,
   listPlayerForTransfer,
 } from "../src/lib/manager/managerTransferLeague";
+import { executePermanentBuy } from "../src/lib/manager/transferTransactions";
 import { getPlayerSigningDemand } from "../src/lib/manager/managerTransfers";
 import {
   getPlayerRegistration,
@@ -63,20 +63,18 @@ if (listed) {
   );
   if (evalResult.accepted) {
     const beforeIds = new Set(career.squad.map((p) => p.playerId));
-    career = completePlayerPurchase(
+    const buyTx = executePermanentBuy(
       career,
       listed.playerId,
       listed.club,
       offer,
       true
     );
+    assert(buyTx.ok, "purchase path executed");
+    career = buyTx.career;
     assert(
       career.squad.some((p) => p.playerId === listed.playerId),
       "purchased player joins user squad"
-    );
-    assert(
-      !beforeIds.has(listed.playerId) || true,
-      "purchase path executed"
     );
     const reg = getPlayerRegistration(career, listed.playerId);
     assert(
@@ -90,7 +88,7 @@ if (listed) {
     const inv = assertSingleTransferState(career, listed.playerId);
     assert(inv.valid, `invariant valid after buy (${inv.violations.join("; ")})`);
 
-    const txId = `perm-buy-${listed.playerId}-w${career.gameWeek}-${offer.transferFee}`;
+    const txId = `buy-${listed.playerId}-s${career.seasonYear}-w${career.gameWeek}-${career.fixtures.length}`;
     assert(wasTransferTxProcessed(career, txId), "purchase tx marked processed");
     const again = markTransferTxProcessed(career, txId);
     assert(

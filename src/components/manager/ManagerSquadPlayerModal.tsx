@@ -14,10 +14,10 @@ import {
   computeReleaseCost,
   listPlayerForLoanWithOffers,
   listPlayerForTransferWithOffers,
-  releasePlayerWithCost,
   suggestedAskingPrice,
   unlistPlayerFromTransfer,
 } from "@/lib/manager/managerTransferLeague";
+import { dismissTransferRequest } from "@/lib/manager/transferRequests";
 import {
   canUserLoanOutPlayers,
   evaluateLoanWageShareOffer,
@@ -26,8 +26,7 @@ import {
   normalizeLoanWageSharePct,
   suggestedLoanFee,
 } from "@/lib/manager/managerLoans";
-import { dismissTransferRequest } from "@/lib/manager/transferRequests";
-import { executeLoanOut } from "@/lib/manager/transferTransactions";
+import { executeLoanOut, executeRelease } from "@/lib/manager/transferTransactions";
 import { getTransferEligibility } from "@/lib/manager/transferEligibility";
 import { findPlayerMatchdaySlot } from "@/lib/manager/managerMatchdaySquad";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
@@ -130,12 +129,12 @@ export function ManagerSquadPlayerModal({
 
   const confirmRelease = () => {
     setReleaseConfirmOpen(false);
-    const result = releasePlayerWithCost(career, playerId);
-    if (!result.ok) {
-      setErrorDialog(result.error ?? "Could not release this player.");
+    const tx = executeRelease(career, playerId);
+    if (!tx.ok) {
+      setErrorDialog(tx.error ?? "Could not release this player.");
       return;
     }
-    if (result.career) onUpdate(result.career);
+    onUpdate(tx.career);
     onClose();
   };
 

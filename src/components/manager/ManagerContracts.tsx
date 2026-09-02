@@ -26,7 +26,7 @@ import {
   isLoanSquadContract,
 } from "@/lib/manager/managerContracts";
 import { bulkRenewExpiringContractsWithInbox, renewManagerContract } from "@/lib/manager/managerInbox";
-import { releasePlayerWithCost } from "@/lib/manager/managerTransferLeague";
+import { executeRelease } from "@/lib/manager/transferTransactions";
 import { getWageBillPercent, isWageOverBudget } from "@/lib/manager/managerFinance";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import {
@@ -210,10 +210,10 @@ export function ManagerContracts({
 
   const confirmRelease = () => {
     if (!releaseConfirmId) return;
-    const result = releasePlayerWithCost(career, releaseConfirmId);
+    const tx = executeRelease(career, releaseConfirmId);
     setReleaseConfirmId(null);
-    if (!result.ok || !result.career) return;
-    onUpdate(result.career);
+    if (!tx.ok) return;
+    onUpdate(tx.career);
     closeModal();
   };
 

@@ -483,10 +483,6 @@ export function completeIncomingLoan(
       ]),
     ],
     activeLoans: [...(career.activeLoans ?? []), loan],
-    leagueTransfers: [
-      recordLoanTransfer(career, loan, getPlayerById(playerId)?.name ?? "Player"),
-      ...(career.leagueTransfers ?? []),
-    ].slice(0, 48),
     updatedAt: new Date().toISOString(),
   };
 
@@ -571,16 +567,6 @@ export function completeOutgoingLoan(
     // Keep contract — parent still owns and pays parentWageShare
     playerTransferStatus: nextTransfer,
     activeLoans: [...(career.activeLoans ?? []), loan],
-    leagueTransfers: [
-      recordLoanTransfer(
-        career,
-        loan,
-        getManagerPlayer(career, playerId)?.name ??
-          getPlayerById(playerId)?.name ??
-          "Player"
-      ),
-      ...(career.leagueTransfers ?? []),
-    ].slice(0, 48),
     updatedAt: new Date().toISOString(),
   };
 

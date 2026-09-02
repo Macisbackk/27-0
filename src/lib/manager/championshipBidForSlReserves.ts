@@ -588,7 +588,7 @@ export function acceptReserveTransferOffer(
     toClubId: champClub.name,
     fee,
     meta: {
-      skipInbox: true,
+      skipHistory: true,
       playerName: reserve.name,
       apply: (current) => {
         let next = completeReserveToChampionshipTransfer(current, {

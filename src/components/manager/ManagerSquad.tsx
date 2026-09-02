@@ -39,7 +39,7 @@ import { managerAlertPanelClass } from "@/lib/manager/managerSurfaces";
 import { playUiClick } from "@/lib/sound";
 import { listUserLoanedOutPlayers, listUserLoanedInPlayers } from "@/lib/manager/playerRegistration";
 import { getPlayerById } from "@/lib/players";
-import { recallLoan } from "@/lib/manager/managerLoans";
+import { executeRecallLoan } from "@/lib/manager/transferTransactions";
 
 interface ManagerSquadProps {
   career: ManagerCareer;
@@ -834,7 +834,7 @@ export function ManagerSquad({
                     size="sm"
                     onClick={() => {
                       playUiClick();
-                      onUpdate(recallLoan(career, loan.playerId));
+                      onUpdate(executeRecallLoan(career, loan.playerId).career);
                     }}
                   >
                     Recall

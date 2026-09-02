@@ -23,7 +23,11 @@ import {
 } from "./managerLoans";
 import { completeFreeAgentSigning } from "./managerFreeAgents";
 import type { BuyOffer } from "./managerTransferLeague";
-import { completePlayerPurchase } from "./managerTransferLeague";
+import {
+  completePlayerPurchase,
+  mutatePermanentSellFromInbox,
+  releasePlayerWithCost,
+} from "./managerTransferLeague";
 import { getManagerPlayer } from "./managerPlayers";
 
 export type TransferTransactionType =
@@ -55,7 +59,7 @@ export type TransferTransaction = {
   listed?: boolean;
   meta?: {
     playerName?: string;
-    skipInbox?: boolean;
+    skipHistory?: boolean;
     /** Pre-built career mutator for complex reserve/permanent paths. */
     apply?: (career: ManagerCareer) => ManagerCareer;
   };
@@ -209,22 +213,21 @@ export function applyTransferTransaction(
     };
   }
 
-  // Market presence must clear after completed moves (except pure loan-return batch).
-  if (tx.type !== "LOAN_RETURN") {
+  // Market presence must clear after completed moves (except batch loan-return).
+  if (tx.type !== "LOAN_RETURN" && tx.playerId !== "batch") {
     next = clearAllMarketPresenceForPlayer(next, tx.playerId);
   }
 
-  // Loans already append history inside completeIncoming/OutgoingLoan.
+  // Loans append inbox inside completeIncoming/OutgoingLoan; history via ledger below.
   const skipHistory =
-    tx.type === "LOAN_RETURN" ||
-    tx.type === "LOAN" ||
-    Boolean(tx.meta?.skipInbox);
+    tx.type === "LOAN_RETURN" || Boolean(tx.meta?.skipHistory);
 
   if (!skipHistory) {
     const transferType =
-      tx.type === "RECALL_LOAN"
+      tx.type === "LOAN" || tx.type === "RECALL_LOAN"
         ? "loan"
-        : fee <= 0 && tx.type === "FREE_AGENT_SIGN"
+        : fee <= 0 &&
+            (tx.type === "FREE_AGENT_SIGN" || tx.type === "RELEASE_TO_FA")
           ? "free"
           : "permanent";
     next = appendCanonicalTransferActivity(
@@ -249,7 +252,9 @@ export function applyTransferTransaction(
   }
 
   next = markTransferTxProcessed(next, tx.id);
-  logTransferInvariantFailure(next, tx.playerId, `tx:${tx.type}`);
+  if (tx.playerId !== "batch") {
+    logTransferInvariantFailure(next, tx.playerId, `tx:${tx.type}`);
+  }
   return { ok: true, career: next };
 }
 
@@ -312,10 +317,133 @@ export function executePermanentBuy(
     permanentOffer: offer,
     listed,
     meta: {
-      skipInbox: true,
       apply: (next) =>
         completePlayerPurchase(next, playerId, fromClub, offer, listed),
     },
+  });
+}
+
+export function executeRelease(
+  career: ManagerCareer,
+  playerId: string
+): TransferTransactionResult {
+  const eligibility = getTransferEligibility(career, playerId, "release_to_fa");
+  if (!eligibility.allowed) {
+    return { ok: false, career, error: eligibility.reason };
+  }
+  return applyTransferTransaction(career, {
+    id: txId(career, "release", playerId),
+    type: "RELEASE_TO_FA",
+    playerId,
+    fromClubId: career.club,
+    toClubId: "free-agent",
+    fee: 0,
+    meta: {
+      apply: (next) => {
+        const result = releasePlayerWithCost(next, playerId);
+        if (!result.ok || !result.career) {
+          throw new Error(result.error ?? "Release failed.");
+        }
+        return result.career;
+      },
+    },
+  });
+}
+
+export function executePermanentSell(
+  career: ManagerCareer,
+  messageId: string
+): TransferTransactionResult {
+  const msg = career.inboxMessages.find((m) => m.id === messageId);
+  if (!msg?.playerId) {
+    return { ok: false, career, error: "Offer not found." };
+  }
+  if (msg.loanOffer) {
+    return executeLoanAcceptBid(career, messageId);
+  }
+  const eligibility = getTransferEligibility(
+    career,
+    msg.playerId,
+    "permanent_sell",
+    { toClub: msg.offerClub ?? undefined }
+  );
+  if (!eligibility.allowed) {
+    return { ok: false, career, error: eligibility.reason };
+  }
+  return applyTransferTransaction(career, {
+    id: txId(career, `sell-${messageId}`, msg.playerId),
+    type: "PERMANENT",
+    playerId: msg.playerId,
+    fromClubId: career.club,
+    toClubId: msg.offerClub ?? "Unknown",
+    fee: msg.offerAmount ?? 0,
+    meta: {
+      apply: (next) => {
+        const result = mutatePermanentSellFromInbox(next, messageId);
+        if (!result.ok || !result.career) {
+          throw new Error(result.error ?? "Sale failed.");
+        }
+        return result.career;
+      },
+    },
+  });
+}
+
+export function executeLoanAcceptBid(
+  career: ManagerCareer,
+  messageId: string
+): TransferTransactionResult {
+  const msg = career.inboxMessages.find((m) => m.id === messageId);
+  if (!msg?.playerId || !msg.loanOffer || !msg.offerClub) {
+    return { ok: false, career, error: "Offer not found." };
+  }
+  const parentWageShare =
+    typeof msg.loanParentWageShare === "number" ? msg.loanParentWageShare : 0.5;
+  const tx = executeLoanOut(career, msg.playerId, msg.offerClub, {
+    loanFee: Math.max(0, msg.offerAmount ?? 0),
+    parentWageShare,
+    canRecall: true,
+  });
+  if (!tx.ok) return tx;
+  return {
+    ...tx,
+    career: {
+      ...tx.career,
+      inboxMessages: tx.career.inboxMessages.map((m) =>
+        m.id === messageId ? { ...m, resolved: true, read: true } : m
+      ),
+    },
+  };
+}
+
+export function executeRecallLoan(
+  career: ManagerCareer,
+  playerId: string
+): TransferTransactionResult {
+  const loan = getActiveLoan(career, playerId);
+  if (!loan) {
+    return { ok: false, career, error: "No active loan for this player." };
+  }
+  return applyTransferTransaction(career, {
+    id: txId(career, "recall", playerId),
+    type: "RECALL_LOAN",
+    playerId,
+    fromClubId: loan.loaneeClub,
+    toClubId: loan.parentClub,
+    fee: 0,
+  });
+}
+
+export function executeSeasonLoanReturns(
+  career: ManagerCareer
+): TransferTransactionResult {
+  return applyTransferTransaction(career, {
+    id: `loan-return-s${career.seasonYear}-from-${career.seasonYear - 1}`,
+    type: "LOAN_RETURN",
+    playerId: "batch",
+    fromClubId: career.club,
+    toClubId: career.club,
+    fee: 0,
   });
 }
 
@@ -406,6 +534,6 @@ export function executeAiPermanentMove(
     fromClubId: details.fromClub,
     toClubId: details.toClub,
     fee: details.fee,
-    meta: { skipInbox: true, apply },
+    meta: { apply },
   });
 }
