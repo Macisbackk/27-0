@@ -13,6 +13,7 @@ import {
 import {
   getAutoPromoteCount,
   getAutoRelegateCount,
+  getAutoRelegateTablePosition,
 } from "./managerLeagues";
 import {
   finalizeMillionPoundGameIfNeeded,
@@ -96,8 +97,12 @@ export function resolveSeasonMembershipMoves(
     .map((r) => r.team)
     .filter((t) => champClubs.includes(t));
 
+  const autoRelegatePos = getAutoRelegateTablePosition(
+    "super-league",
+    Math.max(slOrdered.length, slClubs.length)
+  );
   const autoRelegated = slOrdered
-    .filter((r) => r.position === 12)
+    .filter((r) => r.position === autoRelegatePos)
     .slice(0, autoRelegateCount)
     .map((r) => r.team)
     .filter((t) => slClubs.includes(t));

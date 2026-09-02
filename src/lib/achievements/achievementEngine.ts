@@ -152,7 +152,7 @@ function evaluateUnlock(
     case "packed-house":
       return (ctx.stadiumCapacityPct ?? 0) >= 95;
     case "board-favourite":
-      return (ctx.boardConfidence ?? 0) >= 80;
+      return (ctx.boardSeasonPerformanceScore ?? 0) >= 80;
     case "first-purchase":
       return ctx.themePurchased === true || progress.storeThemesUnlocked >= 1;
     case "theme-collector":

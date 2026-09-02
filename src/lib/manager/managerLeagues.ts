@@ -83,7 +83,7 @@ const SUPER_LEAGUE_DEF: ManagerLeagueDefinition = {
   shortName: "SL",
   bio: "England's top flight — the biggest budgets, best squads, Grand Final glory, and a Million Pound Game survival battle.",
   clubSelectBlurb:
-    "Top-tier money, ratings, and board targets. Finish 11th or higher to avoid the Million Pound Game.",
+    "Top-tier money, ratings, and board targets. Finish 13th or higher to avoid automatic relegation — 13th plays the Million Pound Game.",
   sortOrder: 1,
   selectable: true,
   seasonGames: MANAGER_SEASON_GAMES,
@@ -99,7 +99,7 @@ const SUPER_LEAGUE_DEF: ManagerLeagueDefinition = {
     topMaxPosition: 3,
     playoffsMaxPosition: 6,
     midTableMaxPosition: 10,
-    surviveMaxPosition: 11,
+    surviveMaxPosition: 13,
   },
   promotionRelegation: {
     promoteCount: 0,
@@ -227,6 +227,23 @@ export function getAutoRelegateCount(
   id: ManagerCompetitionId = "super-league"
 ): number {
   return MANAGER_LEAGUES[id].promotionRelegation?.relegateFromLinkedCount ?? 0;
+}
+
+/** Position that enters the Million Pound Game (penultimate place). */
+export function getMillionPoundGameTablePosition(
+  competitionId: ManagerCompetitionId = "super-league",
+  tableSize?: number
+): number {
+  const size = tableSize ?? getDefaultClubsForLeague(competitionId).length;
+  return Math.max(1, size - 1);
+}
+
+/** Position that is automatically relegated (last place). */
+export function getAutoRelegateTablePosition(
+  competitionId: ManagerCompetitionId = "super-league",
+  tableSize?: number
+): number {
+  return tableSize ?? getDefaultClubsForLeague(competitionId).length;
 }
 
 /** The current SL ↔ Championship link includes a Million Pound Game. */

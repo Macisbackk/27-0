@@ -54,7 +54,11 @@ interface ManagerTransferPlayerCardProps {
   yearsRequested?: number;
   watched?: boolean;
   onToggleWatch?: () => void;
-  children: ReactNode;
+  /** When false, hide Buy/Loan/offer actions (watchlist still OK). */
+  available?: boolean;
+  /** Show UNAVAILABLE badge (e.g. all-market unobtainable players). */
+  showUnavailableBadge?: boolean;
+  children?: ReactNode;
 }
 
 export function ManagerTransferPlayerCard({
@@ -71,6 +75,8 @@ export function ManagerTransferPlayerCard({
   yearsRequested,
   watched = false,
   onToggleWatch,
+  available = true,
+  showUnavailableBadge = false,
   children,
 }: ManagerTransferPlayerCardProps) {
   const rating = player.peakRating;
@@ -93,10 +99,10 @@ export function ManagerTransferPlayerCard({
   return (
     <ManagerSectionCard
       variant={listed || freeAgent ? "elevated" : "inset"}
-      className="!p-0 overflow-hidden"
+      className="!p-0 overflow-hidden flex h-[280px] flex-col"
     >
       <div
-        className={`border-b border-pitch-700/40 px-4 py-3 sm:px-4 ${
+        className={`border-b border-pitch-700/40 px-3 py-2.5 sm:px-4 ${
           freeAgent ? "border-t-2 border-t-theme-primary" : ""
         }`}
         style={
@@ -121,6 +127,11 @@ export function ManagerTransferPlayerCard({
                   {listingLabel}
                 </span>
               )}
+              {showUnavailableBadge || !available ? (
+                <span className="inline-flex rounded-full border border-red-400/40 bg-red-500/12 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-300">
+                  Unavailable
+                </span>
+              ) : null}
               {onToggleWatch ? (
                 <button
                   type="button"
@@ -184,7 +195,7 @@ export function ManagerTransferPlayerCard({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 px-4 py-3 sm:px-4">
+      <div className="grid grid-cols-2 gap-2 px-3 py-2.5 sm:px-4">
         <ManagerStat
           label={
             freeAgent
@@ -235,18 +246,20 @@ export function ManagerTransferPlayerCard({
       </div>
 
       {sellerListedFee != null && (
-        <p className={`px-4 pb-1 sm:px-4 ${TYPO.bodySm} text-pitch-400`}>
+        <p className={`px-3 pb-1 sm:px-4 ${TYPO.bodySm} text-pitch-400`}>
           Listed at {formatWage(sellerListedFee)} — your club pays a tier premium.
         </p>
       )}
 
-      {!listed && !freeAgent && (
-        <p className={`px-4 pb-1 sm:px-4 ${TYPO.bodySm} text-amber-300/90`}>
+      {!listed && !freeAgent && available && (
+        <p className={`px-3 pb-1 sm:px-4 ${TYPO.bodySm} text-amber-300/90`}>
           Unlisted bids need a premium fee to tempt the selling club.
         </p>
       )}
 
-      <div className="border-t border-pitch-700/40 px-4 py-3 sm:px-4">{children}</div>
+      <div className="mt-auto min-h-[52px] max-h-[120px] overflow-y-auto border-t border-pitch-700/40 px-3 py-2.5 sm:px-4">
+        {available ? children : null}
+      </div>
     </ManagerSectionCard>
   );
 }

@@ -101,6 +101,27 @@ export function getPlayerRegistration(
   };
 }
 
+/** Players on loan at the user's club from another club. */
+export function listUserLoanedInPlayers(career: ManagerCareer): Array<{
+  playerId: string;
+  parentClub: string;
+  endsAtSeasonYear: number;
+  userWageShare: number;
+}> {
+  return (career.activeLoans ?? [])
+    .filter(
+      (loan) =>
+        isSameManagerClub(loan.loaneeClub, career.club) &&
+        !isSameManagerClub(loan.parentClub, career.club)
+    )
+    .map((loan) => ({
+      playerId: loan.playerId,
+      parentClub: loan.parentClub,
+      endsAtSeasonYear: loan.endsAtSeasonYear,
+      userWageShare: 1 - loan.parentWageShare,
+    }));
+}
+
 /** Players the user owns who are away on loan (not in selectable squad). */
 export function listUserLoanedOutPlayers(career: ManagerCareer): Array<{
   playerId: string;

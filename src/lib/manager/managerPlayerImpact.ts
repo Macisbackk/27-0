@@ -106,15 +106,22 @@ export function impactDevelopmentDelta(
   impact: number,
   appearances: number
 ): number {
-  if (appearances === 0) return impact < 35 ? -0.25 : 0;
+  // Tiny samples never swing ratings hard.
+  if (appearances === 0) return 0;
+  if (appearances < 4) return impact < 30 ? -0.15 : 0;
 
-  if (appearances >= 14 && impact < 42) return -0.75;
-  if (impact < 28) return -1.15;
-  if (impact < 35) return -0.85;
-  if (impact < 40) return -0.6;
-  if (impact < 45) return -0.35;
-  if (impact >= 78) return 0.55;
-  if (impact >= 65) return 0.3;
+  // Sustained poor form can decline; one weak stretch should not crater a star.
+  if (appearances >= 18 && impact < 38) return -0.55;
+  if (appearances >= 12 && impact < 32) return -0.7;
+  if (appearances >= 12 && impact < 40) return -0.35;
+  if (appearances >= 8 && impact < 28) return -0.45;
+  if (impact < 35 && appearances >= 8) return -0.2;
+
+  // High impact needs minutes — strong sample, meaningful upside.
+  if (appearances >= 16 && impact >= 78) return 0.45;
+  if (appearances >= 12 && impact >= 72) return 0.3;
+  if (appearances >= 10 && impact >= 65) return 0.2;
+  if (appearances >= 8 && impact >= 58) return 0.1;
   return 0;
 }
 
@@ -124,11 +131,12 @@ export function rollImpactRegression(
   appearances: number,
   rng: () => number
 ): number {
-  if (appearances < 4 || impact >= 45) return 0;
-  if (impact < 28) return rng() < 0.55 ? -1 : 0;
-  if (impact < 35) return rng() < 0.42 ? -1 : 0;
-  if (impact < 40) return rng() < 0.3 ? -1 : 0;
-  return rng() < 0.15 ? -1 : 0;
+  // Need a real sample — a handful of games must not tank a career.
+  if (appearances < 10 || impact >= 48) return 0;
+  if (impact < 28) return rng() < 0.32 ? -1 : 0;
+  if (impact < 35) return rng() < 0.22 ? -1 : 0;
+  if (impact < 40) return rng() < 0.12 ? -1 : 0;
+  return 0;
 }
 
 export function isPoorSeasonImpact(impact: number): boolean {
@@ -166,39 +174,52 @@ export function computeImpactBasedGrowth(
   age: number,
   potentialGap: number,
   teamMod: number,
-  minAppearances = 8
+  minAppearances = 10
 ): number {
   if (appearances < minAppearances || isPoorSeasonImpact(impact)) return 0;
+  // Low-impact / fringe roles: no automatic climb from a few tidy games.
+  if (impact < 55) return 0;
 
-  const impactNorm = Math.max(0, Math.min(1, (impact - 42) / 36));
+  const impactNorm = Math.max(0, Math.min(1, (impact - 55) / 30));
   if (impactNorm <= 0) return 0;
 
+  // Diminishing returns — youth can still rise, stars climb slowly.
   const maxGain =
     age <= 21
-      ? 2.25
+      ? 1.65
       : age <= 24
-        ? 1.85
+        ? 1.35
         : age <= 27
-          ? 1.35
+          ? 0.95
           : age <= 29
-            ? 0.85
-            : 0.45;
+            ? 0.55
+            : 0.25;
 
   const appFactor =
-    appearances >= 20
+    appearances >= 22
       ? 1
-      : appearances >= 16
-        ? 0.9
-        : appearances >= 12
-          ? 0.75
+      : appearances >= 18
+        ? 0.88
+        : appearances >= 14
+          ? 0.72
           : appearances >= minAppearances
-            ? 0.55
+            ? 0.5
             : 0;
 
-  let gain = impactNorm * maxGain * appFactor * teamMod;
+  // Near potential → much smaller gains.
+  const gapFactor =
+    potentialGap <= 0
+      ? 0
+      : potentialGap <= 2
+        ? 0.35
+        : potentialGap <= 5
+          ? 0.65
+          : 1;
 
-  if (impact >= 58 && potentialGap >= 6 && age <= 26) {
-    gain += 0.15 * Math.min(1, potentialGap / 12) * impactNorm;
+  let gain = impactNorm * maxGain * appFactor * teamMod * gapFactor;
+
+  if (impact >= 72 && potentialGap >= 8 && age <= 25 && appearances >= 16) {
+    gain += 0.12 * Math.min(1, potentialGap / 12) * impactNorm;
   }
 
   return gain;

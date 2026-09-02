@@ -214,7 +214,6 @@ export function generateRenewalDemand(
   let wageBump = 1.03;
   if (happiness >= 70) wageBump += 0.03;
   if (appearances >= 10) wageBump += 0.03;
-  if (career.boardConfidence >= 70) wageBump += 0.02;
   if (rating >= 88) wageBump += 0.04;
 
   const yearsRequested =
@@ -403,12 +402,6 @@ export function evaluateRenewalOffer(
     return {
       accepted: false,
       reason: "Declined — club performance is below expectations.",
-    };
-  }
-  if (happiness < 30 && career.boardConfidence < 40) {
-    return {
-      accepted: false,
-      reason: "Declined — wants to leave the club.",
     };
   }
   if (

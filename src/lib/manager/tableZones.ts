@@ -6,9 +6,11 @@ import type { ManagerCompetitionId } from "./types";
 import {
   getAutoPromoteCount,
   getAutoRelegateCount,
+  getAutoRelegateTablePosition,
   getDefaultClubsForLeague,
   getManagerLeague,
   leagueHasMillionPoundGame,
+  getMillionPoundGameTablePosition,
 } from "./managerLeagues";
 
 export type TableZoneKind =
@@ -68,7 +70,8 @@ export function getTableZone(
 }
 
 export function getTableZoneLegend(
-  competitionId: ManagerCompetitionId
+  competitionId: ManagerCompetitionId,
+  tableSize?: number
 ): { kind: Exclude<TableZoneKind, null>; label: string }[] {
   if (competitionId === "championship") {
     return [
@@ -77,9 +80,13 @@ export function getTableZoneLegend(
       { kind: "wooden-spoon", label: "Bottom Wooden Spoon" },
     ];
   }
+  const size = tableSize ?? getDefaultClubsForLeague(competitionId).length;
+  const mpg = getMillionPoundGameTablePosition(competitionId, size);
+  const autoRel = getAutoRelegateTablePosition(competitionId, size);
   return [
+    { kind: "champion", label: "1 League winners" },
     { kind: "playoffs", label: "1–6 Play-offs" },
-    { kind: "mpg", label: "11 Million Pound Game" },
-    { kind: "auto-relegate", label: "12 Automatic Relegation" },
+    { kind: "mpg", label: `${mpg} Million Pound Game` },
+    { kind: "auto-relegate", label: `${autoRel} Automatic Relegation` },
   ];
 }

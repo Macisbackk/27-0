@@ -831,7 +831,7 @@ export function createNewCareer(club: string, slot?: number): ManagerCareer {
     ],
     managerCareerWorldSchemaVersion: 2,
     boostUsage: {},
-    boardSackingSchemaVersion: 3,
+    boardSackingSchemaVersion: 5,
     competitionPhase: "REGULAR_SEASON_ACTIVE",
     playerRatingSchemaVersion: PLAYER_RATING_SCHEMA_VERSION,
     reserveRatingScaleVersion: RESERVE_RATING_SCALE_VERSION,

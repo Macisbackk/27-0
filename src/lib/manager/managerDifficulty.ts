@@ -509,11 +509,6 @@ export function getManagerDifficultySimAdjustments(
     }
   }
 
-  if (career.boardConfidence < 35) {
-    opponentRatingDelta += 0.4;
-    formDelta -= 0.15;
-  }
-
   if ((career.wagePressureWeeks ?? 0) >= 2) {
     formDelta -= 0.2;
   }
@@ -564,14 +559,6 @@ export function getManagerDifficultyPressure(
   const position = getUserLeaguePosition(career.leagueTable, career.club);
   const target = MANAGER_EXPECTATION_LABELS[tier];
   const stars = getCareerClubStars(career);
-
-  if (career.boardConfidence < 30) {
-    return {
-      label: "Board ultimatum",
-      detail: `Confidence at ${career.boardConfidence}% — results must improve quickly.`,
-      tone: "red",
-    };
-  }
 
   if ((career.wagePressureWeeks ?? 0) >= 3) {
     return {
@@ -635,35 +622,6 @@ export function getManagerDifficultyPressure(
 export function maybeAddBoardUltimatumInbox(
   career: ManagerCareer
 ): ManagerCareer {
-  if (career.boardConfidence >= 30) return career;
-  // Once per season — weekly ultimatums repeated the same warning.
-  const msgId = `board-ultimatum-s${career.seasonYear}`;
-  if (
-    career.inboxMessages.some(
-      (m) =>
-        m.id === msgId ||
-        m.eventId === msgId ||
-        (typeof m.id === "string" &&
-          m.id.startsWith(`board-ultimatum-s${career.seasonYear}`))
-    )
-  ) {
-    return career;
-  }
-
-  return pushInboxMessage(career, {
-    id: msgId,
-    eventId: msgId,
-    type: "board",
-    sender: "Board",
-    title: "Board ultimatum",
-    body: `Confidence ${career.boardConfidence}%. Need ${career.boardExpectation} or face the sack.`,
-    week: career.gameWeek,
-    season: career.seasonYear,
-    gameWeek: career.gameWeek,
-    createdAt: new Date().toISOString(),
-    read: false,
-    resolved: false,
-    deadlineLabel: "Immediate",
-    requiredAction: "Win matches and restore board confidence",
-  });
+  // Confidence-based ultimatums disabled — keep field for save compatibility.
+  return career;
 }

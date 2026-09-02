@@ -29,7 +29,7 @@ export function getBoardObjectiveSuccessDetail(
   if (competition === "championship") {
     switch (tier) {
       case "title":
-        return "Win the Championship for automatic promotion. Positions 2–5 enter the Million Pound Game route.";
+        return "Win the Championship for automatic promotion. Finish 2nd–5th to reach the play-offs.";
       case "top":
         return "Finish first for automatic promotion, or 2nd–5th to reach the Championship play-offs.";
       case "playoffs":
@@ -73,6 +73,6 @@ export function getManagerBoardObjectiveIntro(
     secondaryAims: inChamp
       ? ["Earn promotion", "Championship play-offs", "Build the squad"]
       : ["Challenge Cup run", "Control wages", "Build the squad"],
-    confidenceNote: `${career.boardConfidence}% confidence · hit ${career.boardExpectation}.`,
+    confidenceNote: `Primary target: ${career.boardExpectation}.`,
   };
 }

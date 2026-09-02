@@ -23,8 +23,6 @@ const FACILITY_BOARD_LABELS: Record<FacilityType, string> = {
 };
 
 const BIG_TRANSFER_FEE = 250_000;
-// Confidence is always visible as a percentage; reserve mail for major swings.
-const BOARD_CONFIDENCE_JUMP = 20;
 const STRONG_GATE_CAPACITY_PCT = 0.9;
 const YOUTH_CALLUP_THRESHOLD = 3;
 
@@ -280,31 +278,9 @@ function maybeAttendanceMail(
 
 function maybeConfidenceMail(
   career: ManagerCareer,
-  previousBoardConfidence: number | undefined
+  _previousBoardConfidence: number | undefined
 ): ManagerCareer {
-  if (previousBoardConfidence == null) return career;
-  const jump = career.boardConfidence - previousBoardConfidence;
-  if (jump >= BOARD_CONFIDENCE_JUMP) {
-    // Once per season — weekly boost letters were identical spam.
-    return appendBoardMail(
-      career,
-      `board-confidence-boost-${seasonTag(career)}`,
-      "Board — confidence rising",
-      `Confidence ${career.boardConfidence}% (+${jump}).`
-    );
-  }
-  if (jump <= -BOARD_CONFIDENCE_JUMP) {
-    return appendBoardMail(
-      career,
-      `board-confidence-drop-${seasonTag(career)}`,
-      "Board — performance warning",
-      `Confidence ${career.boardConfidence}% (−${Math.abs(jump)}). Improve results.`,
-      {
-        deadlineLabel: "Next review",
-        requiredAction: "Improve results",
-      }
-    );
-  }
+  // Board confidence mail disabled — field retained for save compat only.
   return career;
 }
 
@@ -461,7 +437,7 @@ export function ensureBoardObjectivesInbox(
     career,
     id,
     "Board — season objectives",
-    `Target: ${career.boardExpectation} · ${career.boardConfidence}% confidence.`,
+    `Target: ${career.boardExpectation}.`,
     {
       deadlineLabel: `End of ${career.seasonYear}`,
       requiredAction: career.boardExpectation,
@@ -479,7 +455,7 @@ export function ensureBoardEndOfSeasonReviewInbox(
     career,
     id,
     "Board — end-of-season review",
-    `${career.seasonYear} review · Target ${career.boardExpectation} · Confidence ${career.boardConfidence}%.`,
+    `${career.seasonYear} review · Target ${career.boardExpectation}.`,
     {
       deadlineLabel: "Off-season",
       requiredAction: "Continue to next season",

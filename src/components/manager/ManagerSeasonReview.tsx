@@ -13,6 +13,7 @@ import { ShareSeasonButton } from "@/components/ShareSeasonButton";
 import { GuestSaveNudge } from "@/components/EconomyExplainer";
 import { useAuth } from "@/lib/auth-context";
 import { getPlayerById } from "@/lib/players";
+import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { formatWage } from "@/lib/manager/managerContracts";
 import { formatSquadRatingStars } from "@/lib/manager/club-config";
 import { getCareerClubStars } from "@/lib/manager/managerDifficulty";
@@ -20,11 +21,14 @@ import { playSeasonComplete, playSeasonReviewMajor, playUiClick } from "@/lib/so
 import {
   ManagerInfoRow,
   ManagerSectionCard,
-  boardConfidenceTone,
 } from "@/components/manager/manager-ui";
 import { ManagerBoostsPanel } from "@/components/manager/ManagerBoostsPanel";
 import { isUserInChampionship, getUserLeagueClubs } from "@/lib/manager/leagueMembership";
 import { getChampionshipPlayoffWinner } from "@/lib/manager/managerChampionshipPlayoffs";
+import {
+  getAutoRelegateTablePosition,
+  getMillionPoundGameTablePosition,
+} from "@/lib/manager/managerLeagues";
 
 interface ManagerSeasonReviewProps {
   career: ManagerCareer;
@@ -68,6 +72,15 @@ export function ManagerSeasonReview({
   ]);
 
   const summary = buildSeasonSummary(evaluatedCareer);
+  const leagueSize = getUserLeagueClubs(evaluatedCareer).length;
+  const mpgTablePosition = getMillionPoundGameTablePosition(
+    isUserInChampionship(evaluatedCareer) ? "championship" : "super-league",
+    leagueSize
+  );
+  const autoRelegatePosition = getAutoRelegateTablePosition(
+    "super-league",
+    leagueSize
+  );
   const mpgWon = evaluatedCareer.millionPoundGame?.winner === evaluatedCareer.club;
   const championshipPlayoffWinner =
     getChampionshipPlayoffWinner(evaluatedCareer.championshipPlayoffs) ===
@@ -82,10 +95,12 @@ export function ManagerSeasonReview({
   }, []);
 
   const bestPlayer = summary.bestPlayerId
-    ? getPlayerById(summary.bestPlayerId)
+    ? getManagerPlayer(evaluatedCareer, summary.bestPlayerId) ??
+      getPlayerById(summary.bestPlayerId)
     : null;
   const topScorer = summary.topTryScorerId
-    ? getPlayerById(summary.topTryScorerId)
+    ? getManagerPlayer(evaluatedCareer, summary.topTryScorerId) ??
+      getPlayerById(summary.topTryScorerId)
     : null;
 
   const boardDecisionLabel = "Board Retain";
@@ -122,14 +137,14 @@ export function ManagerSeasonReview({
                 : championshipPlayoffWinner
                   ? "Qualified for the Million Pound Game"
                   : summary.position >= 2 && summary.position <= 5
-                    ? "Championship play-offs — Million Pound Game pathway"
+                    ? "Championship play-offs"
                   : "Championship finish"}
           </p>
         ) : evaluatedCareer.millionPoundGame?.loser === evaluatedCareer.club ? (
           <p className={`mt-2 text-center ${TYPO.bodySm} text-red-300`}>
             Million Pound Game defeat — Championship next season
           </p>
-        ) : summary.position === getUserLeagueClubs(evaluatedCareer).length ? (
+        ) : summary.position === autoRelegatePosition ? (
           <p className={`mt-2 text-center ${TYPO.bodySm} text-red-300`}>
             Automatic relegation — Championship next season
           </p>
@@ -164,7 +179,9 @@ export function ManagerSeasonReview({
                     className="border-b border-pitch-800/40 text-pitch-200"
                   >
                     <td className="py-1.5 pr-2 font-medium text-white">
-                      {getPlayerById(playerId)?.name ?? playerId}
+                      {getManagerPlayer(evaluatedCareer, playerId)?.name ??
+                        getPlayerById(playerId)?.name ??
+                        playerId}
                     </td>
                     <td className="px-2 py-1.5 text-center tabular-nums">
                       {stats.appearances}
@@ -242,9 +259,6 @@ export function ManagerSeasonReview({
                 tone={mpgWon ? "gold" : "default"}
               />
             ) : null}
-            <p className={`${TYPO.meta} text-pitch-400`}>
-              First promotes automatically. Positions 2–5 enter the Championship play-offs, with the winner facing Super League 11th in the Million Pound Game.
-            </p>
           </div>
         </ManagerSectionCard>
       ) : (
@@ -278,14 +292,14 @@ export function ManagerSeasonReview({
               value={
                 evaluatedCareer.millionPoundGame?.status === "complete"
                   ? `${evaluatedCareer.millionPoundGame.winner} won (${evaluatedCareer.millionPoundGame.slClub} vs ${evaluatedCareer.millionPoundGame.champClub})`
-                  : summary.position === 11
-                    ? "Entered as Super League 11th"
+                  : summary.position === mpgTablePosition
+                    ? `Entered as Super League ${mpgTablePosition}${mpgTablePosition === 1 ? "st" : mpgTablePosition === 2 ? "nd" : mpgTablePosition === 3 ? "rd" : "th"}`
                     : "Not involved"
               }
               tone={
                 evaluatedCareer.millionPoundGame?.winner === evaluatedCareer.club
                   ? "gold"
-                  : summary.position === 11
+                  : summary.position === mpgTablePosition
                     ? "amber"
                     : "default"
               }
@@ -293,7 +307,7 @@ export function ManagerSeasonReview({
             <ManagerInfoRow
               label="Relegation"
               value={
-                summary.position >= 12
+                summary.position >= autoRelegatePosition
                   ? "Automatically relegated"
                   : evaluatedCareer.millionPoundGame?.loser ===
                       evaluatedCareer.club
@@ -453,11 +467,6 @@ export function ManagerSeasonReview({
               tone="red"
             />
           )}
-          <ManagerInfoRow
-            label="Board Confidence"
-            value={`${evaluatedCareer.boardConfidence}%`}
-            tone={boardConfidenceTone(evaluatedCareer.boardConfidence)}
-          />
           <ManagerInfoRow
             label="Club Status"
             value={`${clubStars}-star · ${formatSquadRatingStars(

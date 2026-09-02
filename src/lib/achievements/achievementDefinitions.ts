@@ -278,7 +278,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "board-favourite",
     name: "Board Favourite",
-    description: "Finish a season with high board confidence.",
+    description: "Finish a season with an outstanding board review score.",
     category: "manager",
     points: 30,
   },

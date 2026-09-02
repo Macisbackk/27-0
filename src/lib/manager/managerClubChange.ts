@@ -474,7 +474,7 @@ export function takeOverClub(
       wageBill,
       clubFunds: transferBudget + (next.managerFinance?.operatingBalance ?? 0),
     },
-    boardConfidence: Math.min(65, Math.max(45, next.boardConfidence)),
+    boardConfidence: next.boardConfidence,
     managerCareerHistory: [...closedHistory, historyEntry],
     playerTransferStatus: {},
     processedTransferTxIds: next.processedTransferTxIds ?? [],

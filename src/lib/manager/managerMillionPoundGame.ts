@@ -1,9 +1,10 @@
 import seedrandom from "seedrandom";
 import { getGeneratedClubSquadStrength } from "../game/opponent-squad-strength";
 import { getManagerLeagueTable } from "./managerFixtures";
-import { isUserInChampionship } from "./leagueMembership";
+import { isUserInChampionship, getCareerSuperLeagueClubs } from "./leagueMembership";
 import { getChampionshipPlayoffWinner } from "./managerChampionshipPlayoffs";
 import { isLeagueAndCupPhaseComplete } from "./managerChallengeCup";
+import { getMillionPoundGameTablePosition } from "./managerLeagues";
 import type { ManagerCareer, ManagerScheduledFixture, MillionPoundGameState } from "./types";
 
 export const MILLION_POUND_GAME_NAME = "Million Pound Game";
@@ -13,7 +14,12 @@ export function resolveMillionPoundGameClubs(career: ManagerCareer): { slClub: s
   const slTable = isUserInChampionship(career)
     ? career.aiSuperLeagueStandings
     : getManagerLeagueTable(career);
-  const slClub = slTable?.find((row) => row.position === 11)?.team;
+  const size = Math.max(
+    slTable?.length ?? 0,
+    getCareerSuperLeagueClubs(career).length
+  );
+  const mpgPos = getMillionPoundGameTablePosition("super-league", size);
+  const slClub = slTable?.find((row) => row.position === mpgPos)?.team;
   const champClub = getChampionshipPlayoffWinner(career.championshipPlayoffs);
   if (!slClub || !champClub) return null;
   return { slClub, champClub };

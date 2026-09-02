@@ -9,6 +9,7 @@ import { useModalA11y } from "@/hooks/useModalA11y";
 import { formatWage } from "@/lib/manager/managerContracts";
 import type { InboxMessage, ManagerCareer } from "@/lib/manager/types";
 import { getPlayerById } from "@/lib/players";
+import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { getFullPositionName } from "@/lib/positions";
 import {
   managerModalHeaderClass,
@@ -29,7 +30,9 @@ export function ManagerIncomingBidModal({
   onAccept,
   onReject,
 }: ManagerIncomingBidModalProps) {
-  const senior = offer.playerId ? getPlayerById(offer.playerId) : null;
+  const senior = offer.playerId
+    ? getManagerPlayer(career, offer.playerId) ?? getPlayerById(offer.playerId)
+    : null;
   const reserve = offer.playerId
     ? career.reserves.find((r) => r.id === offer.playerId)
     : undefined;

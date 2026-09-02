@@ -89,7 +89,7 @@ export function ManagerObjectivesIntroModal({
       }
     >
       <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3">
           <ManagerStat
             label="Club status"
             value={formatSquadRatingStars(
@@ -97,11 +97,6 @@ export function ManagerObjectivesIntroModal({
               isUserInChampionship(career) ? "championship" : "super-league"
             )}
             tone="gold"
-          />
-          <ManagerStat
-            label="Board confidence"
-            value={`${career.boardConfidence}%`}
-            tone="primary"
           />
         </div>
 
@@ -134,8 +129,6 @@ export function ManagerObjectivesIntroModal({
             ))}
           </ul>
         </div>
-
-        <p className={`${TYPO.bodySm} text-pitch-400`}>{intro.confidenceNote}</p>
       </div>
     </ManagerModal>
   );

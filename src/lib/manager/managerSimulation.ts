@@ -216,7 +216,6 @@ export function prepareCareerForNextMatch(career: ManagerCareer): ManagerCareer 
   return ensurePlayoffsReady(next);
 }
 
-import { countExpiringContracts } from "./managerContracts";
 import { developSquadAtSeasonEnd } from "./managerPlayerDevelopment";
 import {
   advanceLiveToFullTime,
@@ -254,7 +253,6 @@ import {
   getManagerMatchKeyMoment,
 } from "./managerMatchMoments";
 import {
-  getManagerDifficultyBoardDelta,
   getManagerDifficultySimAdjustments,
   maybeAddBoardUltimatumInbox,
 } from "./managerDifficulty";
@@ -797,38 +795,13 @@ export function applyManagerMatchResult(
   record.matchBio = matchBio;
 
   let boardConfidence = career.boardConfidence;
-  if (won) boardConfidence = Math.min(100, boardConfidence + 3);
-  else if (isDraw) boardConfidence = Math.max(0, boardConfidence - 1);
-  else boardConfidence = Math.max(0, boardConfidence - 4);
-  if (position <= 4) boardConfidence = Math.min(100, boardConfidence + 1);
-  if (position >= 12) boardConfidence = Math.max(0, boardConfidence - 2);
-  if (isCup && won) boardConfidence = Math.min(100, boardConfidence + 5);
-  if (isCup && !won) boardConfidence = Math.max(0, boardConfidence - 3);
-  if (isPlayoff && won) boardConfidence = Math.min(100, boardConfidence + 6);
-  if (isPlayoff && !won) boardConfidence = Math.max(0, boardConfidence - 5);
-  if (isWcc && won) boardConfidence = Math.min(100, boardConfidence + 5);
-  if (isWcc && !won) boardConfidence = Math.max(0, boardConfidence - 3);
 
   let wagePressureWeeks = career.wagePressureWeeks ?? 0;
   if (career.wageBill > career.wageBudget) {
     wagePressureWeeks += 1;
-    boardConfidence = Math.max(0, boardConfidence - 2);
-    if (wagePressureWeeks >= 4) {
-      boardConfidence = Math.max(0, boardConfidence - 4);
-    }
   } else {
     wagePressureWeeks = 0;
   }
-  const expiring = countExpiringContracts(career);
-  if (expiring >= 4) boardConfidence = Math.max(0, boardConfidence - 3);
-
-  boardConfidence = Math.max(
-    0,
-    Math.min(
-      100,
-      boardConfidence + getManagerDifficultyBoardDelta(career, position, won)
-    )
-  );
 
   const commercialMult = getCommercialMatchIncomeMultiplier(
     career.clubFacilities?.commercial ?? 0

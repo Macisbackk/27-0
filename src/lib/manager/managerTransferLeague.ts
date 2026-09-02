@@ -761,8 +761,13 @@ export function evaluateBuyOffer(
   offer: BuyOffer,
   listed: boolean
 ): { accepted: boolean; reason: string } {
-  const player = getPlayerById(playerId);
-  if (!player) return { accepted: false, reason: "Player not found" };
+  const player = getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
+  if (!player) {
+    return {
+      accepted: false,
+      reason: "Player is no longer available",
+    };
+  }
 
   if (isFreeAgent(career, playerId)) {
     return {

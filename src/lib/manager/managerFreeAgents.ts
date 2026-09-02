@@ -379,7 +379,7 @@ export function evaluateFreeAgentOffer(
   }
 
   const player = getManagerPlayer(career, playerId);
-  if (!player) return { accepted: false, reason: "Player not found." };
+  if (!player) return { accepted: false, reason: "Player is no longer available." };
 
   if (offer.transferFee > 0) {
     return {
@@ -465,14 +465,37 @@ export function completeFreeAgentSigning(
     (f) => f.playerId !== playerId
   );
 
+  const player =
+    getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
+  const playerName = player?.name ?? "Player";
+  const rating =
+    career.playerDevelopment?.[playerId]?.rating ??
+    player?.peakRating ??
+    70;
+  const withDev: ManagerCareer =
+    career.playerDevelopment?.[playerId] != null
+      ? career
+      : {
+          ...career,
+          playerDevelopment: {
+            ...(career.playerDevelopment ?? {}),
+            [playerId]: {
+              rating,
+              peakRating: Math.max(rating, player?.peakRating ?? rating),
+              potential: Math.max(rating + 2, player?.peakRating ?? rating),
+              seasonStartRating: rating,
+            },
+          },
+        };
+
   const signed: ManagerCareer = syncManagerFinance(
     transferLeaguePlayer(
       {
-        ...career,
-        squad: [...career.squad, createInitialPlayerState(playerId)],
+        ...withDev,
+        squad: [...withDev.squad, createInitialPlayerState(playerId)],
         contracts: nextContracts,
         wageBill: computeCareerWageBill({
-          ...career,
+          ...withDev,
           contracts: nextContracts,
         } as ManagerCareer),
         freeAgents,
@@ -484,7 +507,6 @@ export function completeFreeAgentSigning(
     )
   );
 
-  const player = getPlayerById(playerId);
   dispatchAchievementCheck({ trigger: "player-signed", playerSigned: true });
   const withMail = pruneTransferWatchlist(
     pushInboxMessage(
@@ -492,7 +514,7 @@ export function completeFreeAgentSigning(
       createFreeAgentSigningMessage(
         signed,
         playerId,
-        player?.name ?? "Player",
+        playerName,
         formerClub,
         offer.wagePerYear
       )
@@ -509,7 +531,7 @@ export function completeFreeAgentSigning(
       id: `hist-${txId}`,
       career: next,
       playerId,
-      playerName: player?.name ?? "Player",
+      playerName,
       fromClub: formerClub,
       toClub: career.club,
       fee: 0,

@@ -168,8 +168,9 @@ export function ensureManagerFixtureScoring(
         Number.isFinite(e.player.peakRating) &&
         e.player.peakRating > 0
           ? e.player.peakRating
-          : 80;
-      const ability = Math.pow(Math.max(80, rating) / 83, 2.35);
+          : 72;
+      // Use true rating — never floor at 80 (that made generated/reserves score like elites).
+      const ability = Math.pow(Math.max(55, rating) / 83, 2.35);
       return Math.max(
         0.05,
         ability * e.tryWeightMultiplier * (0.9 + rng() * 0.2)
@@ -182,7 +183,7 @@ export function ensureManagerFixtureScoring(
         Number.isFinite(e.player.peakRating) &&
         e.player.peakRating > 0
           ? e.player.peakRating
-          : 80
+          : 72
       ),
       seasonTriesSoFar: entries.map(
         (e) => career.playerSeasonStats[e.player.id]?.tries ?? 0

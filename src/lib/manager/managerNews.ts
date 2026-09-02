@@ -295,22 +295,6 @@ export function generateWeeklyNews(career: ManagerCareer): LatestNewsItem[] {
     });
   }
 
-  if (career.boardConfidence >= 75) {
-    items.push({
-      id: `news-board-${week}`,
-      week,
-      type: "board",
-      text: `The board are pleased with progress at ${career.club}.`,
-    });
-  } else if (career.boardConfidence < 40) {
-    items.push({
-      id: `news-board-low-${week}`,
-      week,
-      type: "board",
-      text: `Pressure growing on the ${career.club} manager after a tough run.`,
-    });
-  }
-
   const listed = career.leagueListedPlayers[0];
   if (listed && rng() < 0.35) {
     // Skip stale listings whose player can no longer be resolved by id.

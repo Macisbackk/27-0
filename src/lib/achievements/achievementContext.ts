@@ -57,7 +57,7 @@ export type AchievementCheckContext = {
   playerSold?: boolean;
   contractRenewed?: boolean;
   stadiumCapacityPct?: number;
-  boardConfidence?: number;
+  boardSeasonPerformanceScore?: number;
   managerSeasonRewardClaimed?: boolean;
   // Store
   themePurchased?: boolean;

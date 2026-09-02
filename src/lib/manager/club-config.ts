@@ -182,6 +182,38 @@ export function championshipSquadRatingFromBaseStrength(
   return Math.round(58 + ((baseStrength - 55) / 20) * 14);
 }
 
+/**
+ * Display team OVR for club select / friendlies — Championship uses real
+ * squad/baseStrength scale (same as friendly opponents), not the cup-tier offset.
+ */
+export function getClubDisplayTeamRating(
+  clubName: string,
+  career?: { championshipSquads?: {
+    rosterByClub: Record<string, string[]>;
+    players: Record<string, { peakRating?: number }>;
+  } } | null
+): number {
+  const champ = getChampionshipClubByName(clubName);
+  if (champ) {
+    const squads = career?.championshipSquads;
+    if (squads) {
+      const roster = squads.rosterByClub[champ.id] ?? [];
+      const ratings = roster
+        .map((id) => squads.players[id]?.peakRating)
+        .filter((r): r is number => typeof r === "number" && Number.isFinite(r))
+        .sort((a, b) => b - a)
+        .slice(0, 17);
+      if (ratings.length >= 13) {
+        return Math.round(
+          ratings.reduce((sum, r) => sum + r, 0) / ratings.length
+        );
+      }
+    }
+    return champ.baseStrength;
+  }
+  return getManagerClubTeamRating(clubName);
+}
+
 /** Championship transfer/wage budgets vs Super League star midpoints. */
 export const CHAMPIONSHIP_ECONOMY_SCALE =
   getLeagueEconomyScale("championship");
@@ -207,11 +239,7 @@ export function didMeetManagerBoardExpectation(
 }
 
 export function getManagerClubRating(clubName: string): number {
-  const champ = getChampionshipClubByName(clubName);
-  if (champ) {
-    return championshipSquadRatingFromBaseStrength(champ.baseStrength);
-  }
-  return getManagerClubTeamRating(clubName);
+  return getClubDisplayTeamRating(clubName);
 }
 
 function getChampionshipManagerClubConfig(
@@ -238,7 +266,7 @@ function getChampionshipManagerClubConfig(
     expectationTier,
     budget: midBudget,
     difficulty: stars,
-    squadRating: championshipSquadRatingFromBaseStrength(champ.baseStrength),
+    squadRating: getClubDisplayTeamRating(clubName),
     primaryColor: uiColors.primary,
     secondaryColor: uiColors.secondary,
     competition: "championship",

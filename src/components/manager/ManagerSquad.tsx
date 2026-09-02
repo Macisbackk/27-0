@@ -37,7 +37,7 @@ import {
 } from "@/lib/manager/manager-routes";
 import { managerAlertPanelClass } from "@/lib/manager/managerSurfaces";
 import { playUiClick } from "@/lib/sound";
-import { listUserLoanedOutPlayers } from "@/lib/manager/playerRegistration";
+import { listUserLoanedOutPlayers, listUserLoanedInPlayers } from "@/lib/manager/playerRegistration";
 import { getPlayerById } from "@/lib/players";
 import { recallLoan } from "@/lib/manager/managerLoans";
 
@@ -780,6 +780,32 @@ export function ManagerSquad({
         </div>
       </div>
         </>
+      )}
+
+      {listUserLoanedInPlayers(career).length > 0 && (
+        <div className={`mt-4 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
+          <p className={TYPO.keyLabel}>Loaned in</p>
+          <ul className={`mt-2 ${SPACING.stackSm}`}>
+            {listUserLoanedInPlayers(career).map((loan) => {
+              const name =
+                getManagerPlayer(career, loan.playerId)?.name ??
+                getPlayerById(loan.playerId)?.name ??
+                "Player";
+              return (
+                <li
+                  key={loan.playerId}
+                  className="border-b border-pitch-700/40 py-2 last:border-b-0"
+                >
+                  <p className="text-sm font-medium text-white">{name}</p>
+                  <p className={`${TYPO.bodySm} text-pitch-400`}>
+                    ON LOAN FROM: {loan.parentClub} · Returns end of season · You
+                    pay {Math.round(loan.userWageShare * 100)}% wages
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       )}
 
       {listUserLoanedOutPlayers(career).length > 0 && (

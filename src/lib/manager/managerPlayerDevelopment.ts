@@ -25,7 +25,7 @@ const VETERAN_AGE = 30;
 /** Chance a veteran with a good season gains +1 when performance alone wouldn't. */
 const VETERAN_UPSIDE_CHANCE = 0.18;
 /** Minimum appearances before a player can gain rating at season end. */
-const MIN_APPEARANCES_FOR_INCREASE = 8;
+const MIN_APPEARANCES_FOR_INCREASE = 10;
 
 function computePotential(peakRating: number, age: number): number {
   if (age <= 21) return Math.min(95, peakRating + 8);
@@ -84,7 +84,7 @@ function developOnePlayer(
   rng?: () => number,
   clubForTeamMod?: string
 ): PlayerDevelopmentState | null {
-  const base = getPlayerById(playerId) ?? getManagerPlayer(career, playerId);
+  const base = getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
   if (!base) return null;
 
   const age = getManagerPlayerAge(career, playerId) ?? 25;
@@ -129,28 +129,38 @@ function developOnePlayer(
   }
 
   if (!protectFromDecline) {
+    // High-impact veterans with a full season: mild decline only when truly past it.
+    const strongSeason = impact >= 65 && appearances >= 14;
     if (age >= 33 && (impact < 50 || !playedEnoughForIncrease)) {
-      delta -= 0.85;
+      delta -= strongSeason ? 0.25 : 0.55;
     } else if (age >= 30 && impact < 48) {
-      delta -= 0.45;
-    } else if (before >= potential && age >= 30) {
-      delta -= age >= 33 ? 0.75 : 0.35;
+      delta -= 0.3;
+    } else if (before >= potential && age >= 32 && !strongSeason) {
+      delta -= 0.25;
+    } else if (before >= potential && age >= 30 && impact < 58) {
+      delta -= 0.15;
     }
   }
 
-  if (appearances >= 14 && poorIndividualSeason) {
-    delta -= 0.2;
-  } else if (appearances < 4 && extras) {
-    delta -= 0.35;
+  if (appearances >= 18 && poorIndividualSeason) {
+    delta -= 0.15;
   }
 
-  if (protectFromDecline) {
+  if (protectFromDecline || (impact >= 70 && appearances >= 12)) {
+    // High-impact seasons should not finish as a net decrease.
     delta = Math.max(0, delta);
   }
 
   let finalDelta = Math.round(delta);
-  const maxPositiveDelta =
-    age <= 21 ? 3 : age <= 24 ? 2 : age <= 27 ? 2 : 1;
+  // Cap upside: low-impact / fringe roles never jump multiple OVR in one season.
+  let maxPositiveDelta =
+    age <= 21 ? 2 : age <= 24 ? 2 : age <= 27 ? 1 : 1;
+  if (impact < 60 || appearances < 14) {
+    maxPositiveDelta = Math.min(maxPositiveDelta, 1);
+  }
+  if (impact < 55) {
+    maxPositiveDelta = 0;
+  }
   if (finalDelta > maxPositiveDelta) {
     finalDelta = maxPositiveDelta;
   }

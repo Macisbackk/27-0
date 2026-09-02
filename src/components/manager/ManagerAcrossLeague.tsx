@@ -20,7 +20,6 @@ import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import { CollapsibleDetails } from "@/components/ui/MobileLayout";
 import { CARD, SPACING, SUB_TAB_BAR_SHELL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { formatWage } from "@/lib/manager/managerContracts";
 import {
   getChampionshipTopTryScorers,
   getLeagueTopTryScorers,
@@ -33,6 +32,7 @@ import type {
   ManagerView,
 } from "@/lib/manager/types";
 import { getPlayerById } from "@/lib/players";
+import { getManagerPlayer } from "@/lib/manager/managerPlayers";
 import { POSITION_SHORT } from "@/lib/positions";
 import { getPlayerEligiblePositions } from "@/lib/players/player-positions";
 import { ensureChampionshipSystems } from "@/lib/manager/championship/ensureChampionship";
@@ -189,23 +189,13 @@ export function ManagerAcrossLeague({
       .slice(0, 8);
   }, [selectedCompetitionId, champFixtures]);
 
-  const otherClubListings = useMemo(() => {
-    return career.leagueListedPlayers
-      .filter((entry) => entry.club !== career.club)
-      .map((entry) => {
-        const player = getPlayerById(entry.playerId);
-        if (!player) return null;
-        return { ...entry, player };
-      })
-      .filter((entry): entry is NonNullable<typeof entry> => entry !== null)
-      .sort((a, b) => b.player.peakRating - a.player.peakRating);
-  }, [career.leagueListedPlayers, career.club]);
-
   const freeAgentsElsewhere = useMemo(() => {
     return (career.freeAgents ?? [])
       .filter((entry) => entry.formerClub !== career.club)
       .map((entry) => {
-        const player = getPlayerById(entry.playerId);
+        const player =
+          getManagerPlayer(career, entry.playerId) ??
+          getPlayerById(entry.playerId);
         if (!player) return null;
         return { ...entry, player };
       })
@@ -436,61 +426,6 @@ export function ManagerAcrossLeague({
               ))}
             </ul>
           </ManagerSectionCard>
-        )}
-
-        {selectedCompetitionId === "super-league" &&
-          otherClubListings.length > 0 && (
-          <CollapsibleDetails summary="Players Listed by Other Clubs">
-            <p className={`${TYPO.bodySm} text-pitch-400`}>
-              Talent available on the market — head to Transfers to make an offer.
-            </p>
-            <ul className="mt-2 space-y-2">
-              {otherClubListings.map((entry) => {
-                const positions = getPlayerEligiblePositions(entry.player);
-                const posLabel = positions.map((p) => POSITION_SHORT[p]).join("/");
-                const watched = isOnTransferWatchlist(career, entry.playerId);
-                return (
-                  <li
-                    key={`${entry.club}-${entry.playerId}`}
-                    className={`${CARD.inset} flex items-center gap-3 ${SPACING.cardPaddingSm}`}
-                  >
-                    <ClubDualSwatch club={entry.club} size="xs" />
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate font-semibold text-white">
-                        {entry.player.name}
-                      </p>
-                      <p className={`${TYPO.bodySm} text-pitch-400`}>
-                        {entry.club} · {posLabel} · {entry.player.peakRating} OVR
-                      </p>
-                    </div>
-                    <div className="shrink-0 text-right">
-                      <p className="font-semibold text-accent-gold">
-                        {formatWage(entry.askingPrice)}
-                      </p>
-                      <p className={`${TYPO.bodySm} text-pitch-500`}>
-                        W{entry.listedAtWeek}
-                      </p>
-                      {onUpdate && (
-                        <GameButton
-                          variant={watched ? "secondary" : "theme"}
-                          size="sm"
-                          className="mt-1.5"
-                          onClick={() => {
-                            playUiClick();
-                            onUpdate(
-                              toggleTransferWatchlist(career, entry.playerId)
-                            );
-                          }}
-                        >
-                          {watched ? "Watching" : "Watch"}
-                        </GameButton>
-                      )}
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </CollapsibleDetails>
         )}
 
         {selectedCompetitionId === "super-league" &&

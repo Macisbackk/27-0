@@ -82,7 +82,7 @@ export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
       title: wageOver ? "Wages over budget" : "Wages watched",
       body: wageOver
         ? "Cut wages or release players."
-        : `${wagePressure}w over — confidence at risk.`,
+        : `${wagePressure}w over — review contracts.`,
       actionLabel: "Contracts",
       actionView: "contracts",
     });
@@ -105,7 +105,7 @@ export function getManagerHubAlerts(career: ManagerCareer): HubAlert[] {
     title: career.boardExpectation,
     body: `${position}${
       position === 1 ? "st" : position === 2 ? "nd" : position === 3 ? "rd" : "th"
-    } · ${career.boardConfidence}% confidence`,
+    } in the table`,
   });
 
   return alerts;

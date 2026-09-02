@@ -22,17 +22,16 @@ function ordinal(n: number): string {
 function zoneRowClass(zone: TableZoneKind, isUser: boolean): string {
   if (isUser) return "border-theme-primary/35 bg-theme-primary/10";
   switch (zone) {
-    case "playoffs":
     case "champion":
-      return "border-amber-500/25 bg-amber-500/5";
     case "auto-promote":
-      return "border-theme-primary/30 bg-theme-primary/8";
+      return "border-emerald-500/30 bg-emerald-500/8";
+    case "playoffs":
+      return "border-amber-500/25 bg-amber-500/5";
     case "mpg":
       return "border-accent-gold/35 bg-accent-gold/8";
     case "auto-relegate":
-      return "border-red-400/30 bg-red-500/8";
     case "wooden-spoon":
-      return "border-pitch-600/50 bg-pitch-950/50";
+      return "border-red-400/30 bg-red-500/8";
     default:
       return "border-pitch-700/50 bg-pitch-950/40";
   }
@@ -41,17 +40,35 @@ function zoneRowClass(zone: TableZoneKind, isUser: boolean): string {
 function zoneRowClassDesktop(zone: TableZoneKind, isUser: boolean): string {
   if (isUser) return "bg-theme-primary/10";
   switch (zone) {
-    case "playoffs":
     case "champion":
-      return "bg-amber-500/5";
     case "auto-promote":
-      return "bg-theme-primary/5";
+      return "bg-emerald-500/8";
+    case "playoffs":
+      return "bg-amber-500/5";
     case "mpg":
       return "bg-accent-gold/8";
     case "auto-relegate":
+    case "wooden-spoon":
       return "bg-red-500/8";
     default:
       return "";
+  }
+}
+
+function zoneToneClass(zone: TableZoneKind): string {
+  switch (zone) {
+    case "champion":
+    case "auto-promote":
+      return "text-emerald-300";
+    case "playoffs":
+      return "text-amber-300";
+    case "mpg":
+      return "text-accent-gold";
+    case "auto-relegate":
+    case "wooden-spoon":
+      return "text-red-300";
+    default:
+      return "text-white";
   }
 }
 
@@ -118,25 +135,13 @@ export function ManagerLeagueTable({
       {userRow && (
         <p className={`mt-1 ${TYPO.cardTitle}`}>
           <span
-            className={
-              championshipTable
-                ? userRow.position === 1
-                  ? "text-theme-primary"
-                  : userRow.position <= 5
-                    ? "text-amber-300"
-                    : userRow.position >= 18
-                      ? "text-red-300"
-                      : "text-white"
-                : userRow.position === 1
-                  ? "text-accent-gold"
-                  : userRow.position <= 6
-                    ? "text-amber-300"
-                    : userRow.position === 11
-                      ? "text-accent-gold"
-                      : userRow.position >= 12
-                        ? "text-red-300"
-                        : "text-white"
-            }
+            className={zoneToneClass(
+              getTableZone(
+                championshipTable ? "championship" : "super-league",
+                userRow.position,
+                rows.length
+              ).kind
+            )}
           >
             {ordinal(userRow.position)}
           </span>
@@ -314,21 +319,12 @@ export function ManagerLeagueTable({
       </div>
       <div className={`mt-3 flex flex-wrap gap-x-3 gap-y-1 ${TYPO.meta} text-pitch-500`}>
         {getTableZoneLegend(
-          championshipTable ? "championship" : "super-league"
+          championshipTable ? "championship" : "super-league",
+          rows.length
         ).map((item) => (
           <span
             key={item.kind}
-            className={
-              item.kind === "auto-promote" || item.kind === "champion"
-                ? "text-theme-primary"
-                : item.kind === "playoffs"
-                  ? "text-amber-300"
-                  : item.kind === "mpg"
-                    ? "text-accent-gold"
-                    : item.kind === "auto-relegate"
-                      ? "text-red-300"
-                      : "text-pitch-400"
-            }
+            className={zoneToneClass(item.kind)}
           >
             {item.label}
           </span>

@@ -482,10 +482,12 @@ function createPlayerDevelopmentFromReserve(
   reserve: ManagerReservePlayer,
   seasonYear: number
 ): PlayerDevelopmentState {
-  const seasonStartRating = reserve.baseRating ?? reserve.rating;
+  // Season-start must be the rating at promotion — not generation baseRating —
+  // otherwise Potential Review shows fake jumps from reserve training.
+  const seasonStartRating = reserve.rating;
   return {
     rating: reserve.rating,
-    peakRating: Math.max(reserve.rating, seasonStartRating),
+    peakRating: Math.max(reserve.rating, reserve.baseRating ?? reserve.rating),
     potential: reserve.potentialRating,
     developmentRate: reserve.developmentRate,
     seasonStartRating,

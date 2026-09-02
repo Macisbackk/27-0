@@ -34,11 +34,11 @@ import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
 import { pruneTransferWatchlist } from "./managerWatchlist";
 import {
   getCareerChampionshipClubs,
-  getCareerSuperLeagueClubs,
   isUserInChampionship,
   resolveClubCompetitionForCareer,
 } from "./leagueMembership";
 import { getManagerModePlayerRating } from "./managerSquadRatings";
+import { getManagerClubStarRating } from "./club-config";
 
 function listingAllowsLoanType(
   listingType?: "permanent" | "loan" | "both" | null
@@ -90,6 +90,11 @@ export interface LoanDealOpts {
  * - ~25% uncommon
  * - 0% rare
  */
+/**
+ * Parent → loanee direction rules:
+ * - Super League can loan to Championship (development pathway).
+ * - Championship can loan to a lower-star (or equal if lowest) Championship club.
+ */
 export function isValidLoanDirection(
   career: ManagerCareer,
   parentClub: string,
@@ -98,27 +103,59 @@ export function isValidLoanDirection(
   if (isSameManagerClub(parentClub, loaneeClub)) return false;
   const parentCompetition = resolveClubCompetitionForCareer(parentClub, career);
   const loaneeCompetition = resolveClubCompetitionForCareer(loaneeClub, career);
-  return (
-    parentCompetition === "super-league" &&
-    (loaneeCompetition === "championship" || loaneeCompetition === "super-league")
-  );
+
+  if (parentCompetition === "super-league") {
+    return loaneeCompetition === "championship";
+  }
+
+  if (
+    parentCompetition === "championship" &&
+    loaneeCompetition === "championship"
+  ) {
+    const parentStars = getCareerClubStarsForClub(career, parentClub);
+    const loaneeStars = getCareerClubStarsForClub(career, loaneeClub);
+    if (loaneeStars < parentStars) return true;
+    // Lowest tier can still loan within the same star band.
+    const champClubs = getCareerChampionshipClubs(career);
+    const minStars = Math.min(
+      ...champClubs.map((c) => getCareerClubStarsForClub(career, c))
+    );
+    return parentStars === minStars && loaneeStars === parentStars;
+  }
+
+  return false;
 }
 
-/** Super League managers can loan players out / list them for loan. */
+/** Both leagues can loan out under their destination rules. */
 export function canUserLoanOutPlayers(career: ManagerCareer): boolean {
-  return !isUserInChampionship(career);
+  return Boolean(career.club);
 }
 
-/** Both playable leagues can take eligible Super League players on loan. */
+/** Both playable leagues can take eligible loan players. */
 export function canUserLoanInPlayers(career: ManagerCareer): boolean {
   return Boolean(career.club);
 }
 
-/** SL parents can loan to Championship or another Super League club (never self). */
+function getCareerClubStarsForClub(_career: ManagerCareer, club: string): number {
+  return getManagerClubStarRating(club);
+}
+
+/** Destinations for Loan Out Now — SL→Champ, Champ→lower/equal stars. */
 export function getLoanOutDestinationClubs(career: ManagerCareer): string[] {
-  const championship = getCareerChampionshipClubs(career);
-  const superLeague = getCareerSuperLeagueClubs(career);
-  return [...new Set([...championship, ...superLeague])].filter(
+  if (isUserInChampionship(career)) {
+    const parentStars = getCareerClubStarsForClub(career, career.club);
+    const champClubs = getCareerChampionshipClubs(career);
+    const minStars = Math.min(
+      ...champClubs.map((c) => getCareerClubStarsForClub(career, c))
+    );
+    return champClubs.filter((club) => {
+      if (isSameManagerClub(club, career.club)) return false;
+      const stars = getCareerClubStarsForClub(career, club);
+      if (stars < parentStars) return true;
+      return parentStars === minStars && stars === parentStars;
+    });
+  }
+  return getCareerChampionshipClubs(career).filter(
     (club) => !isSameManagerClub(club, career.club)
   );
 }

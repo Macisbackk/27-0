@@ -8,7 +8,10 @@ import type {
   ManagerCompetitionId,
   TransferListingType,
 } from "./types";
-import { resolveClubCompetitionForCareer } from "./leagueMembership";
+import {
+  getUserCompetitionId,
+  resolveClubCompetitionForCareer,
+} from "./leagueMembership";
 import { getContractStatus } from "./managerContracts";
 import { getPlayerRegistration } from "./playerRegistration";
 import {
@@ -25,6 +28,11 @@ import {
 } from "./managerLoans";
 import { isFreeAgent } from "./managerFreeAgents";
 import { DEFAULT_TRANSFER_ACTIVITY_CONFIG } from "./transferActivityConfig";
+import {
+  evaluateClubSigningAppeal,
+  getManagerPlayerListingRating,
+} from "./managerFinance";
+import { getCareerClubStars } from "./managerDifficulty";
 
 export type TransferIntent =
   | "permanent_buy"
@@ -49,6 +57,9 @@ export type PlayerMarketAvailability = {
   playerId: string;
   availableForTransfer: boolean;
   availableForLoan: boolean;
+  /** Club-tier / appeal allows a realistic signing attempt. */
+  obtainable: boolean;
+  obtainableReason?: string;
   currentClub: string | null;
   competition: ManagerCompetitionId | null;
   contractStatus: ContractStatus | null;
@@ -90,10 +101,22 @@ export function getPlayerMarketAvailability(
   });
   const fa = getTransferEligibility(career, playerId, "free_agent_sign");
   const contract = currentClub ? career.contracts[playerId] : undefined;
+  const rating = getManagerPlayerListingRating(career, playerId);
+  const appeal = evaluateClubSigningAppeal(
+    career.club,
+    rating,
+    getCareerClubStars(career),
+    getUserCompetitionId(career)
+  );
+  const structurallyAvailable = buy.allowed || fa.allowed;
   return {
     playerId,
-    availableForTransfer: buy.allowed || fa.allowed,
+    availableForTransfer: structurallyAvailable,
     availableForLoan: loan.allowed,
+    obtainable: structurallyAvailable && appeal.allowed,
+    obtainableReason: appeal.allowed
+      ? undefined
+      : appeal.reason ?? "Not a realistic signing for your club.",
     currentClub,
     competition: currentClub
       ? resolveClubCompetitionForCareer(currentClub, career)
@@ -208,7 +231,7 @@ export function getTransferEligibility(
     const fromClub = opts?.fromClub ?? registration.playingClubId;
     if (!fromClub) return deny("Player has no parent club.");
     if (!isValidLoanDirection(career, fromClub, career.club)) {
-      return deny("Loans must come from a different Super League parent club.");
+      return deny("This loan direction is not allowed.");
     }
     const listing =
       career.leagueListedPlayers.find((row) => row.playerId === playerId) ??
@@ -239,7 +262,7 @@ export function getTransferEligibility(
     }
     const toClub = opts?.toClub;
     if (toClub && !isValidLoanDirection(career, career.club, toClub)) {
-      return deny("Loans must come from a Super League parent club.");
+      return deny("That club is not an eligible loan destination.");
     }
     return allow();
   }
@@ -259,7 +282,7 @@ export function getTransferEligibility(
       return deny("Player is no longer at your club.");
     }
     if (intent === "list_loan" && !canUserLoanOutPlayers(career)) {
-      return deny("Championship clubs cannot list players for loan.");
+      return deny("Your club cannot list players for loan.");
     }
     return allow();
   }

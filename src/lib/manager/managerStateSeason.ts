@@ -219,7 +219,11 @@ export function buildSeasonSummary(career: ManagerCareer): ManagerSeasonSummary 
       : undefined,
     promotedVia: position === 1 ? "auto" : mpgWon ? "million_pound_game" : undefined,
     relegatedVia: career.userCompetitionId === "super-league"
-      ? (mpgLost ? "million_pound_game" : position === 12 ? "auto" : undefined)
+      ? (mpgLost
+          ? "million_pound_game"
+          : position === getUserLeagueClubs(career).length
+            ? "auto"
+            : undefined)
       : undefined,
   };
 }
@@ -279,12 +283,6 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
 
   const clearedTransfers = clearSeasonTransferState(withFreeAgents);
 
-  const leaving = [...squadLeaving, ...reserveLeaving];
-
-  let boardConfidence = clearedTransfers.boardConfidence;
-  if (leaving.length >= 3) boardConfidence = Math.max(0, boardConfidence - 10);
-  else if (leaving.length > 0) boardConfidence = Math.max(0, boardConfidence - 4);
-
   // Prestige drift for the season just played — BEFORE prom/rel so success
   // updates the correct league track (and returning SL clubs keep earned stars).
   const seasonCompetition = getUserCompetitionId(clearedTransfers);
@@ -294,7 +292,6 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
       previousSeasonLeagueTable,
       previousSeasonChampionshipTable,
       leagueTable: getManagerLeagueTable(career),
-      boardConfidence,
     },
     summary,
     { seasonStartFacilities, seasonCompetition }
@@ -371,7 +368,7 @@ export function advanceToNextSeason(career: ManagerCareer): ManagerCareer {
     seed: newSeed,
     budget: transferBudget,
     clubFundsEarned: afterReserveContracts.clubFundsEarned,
-    boardConfidence: Math.min(85, boardConfidence + 10),
+    boardConfidence: clearedTransfers.boardConfidence,
     boardExpectation: afterPromRel.boardExpectation,
     schedule,
     fixtures: [],

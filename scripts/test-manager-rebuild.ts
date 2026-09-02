@@ -7,6 +7,10 @@ import { applyPromotionRelegation } from "../src/lib/manager/managerSeasonTransi
 import { evaluateBoardSeason, wasManagerSacked } from "../src/lib/manager/boardSeasonEvaluation";
 import { deriveCompetitionPhase } from "../src/lib/manager/competitionPhase";
 import { getTableZone } from "../src/lib/manager/tableZones";
+import {
+  getAutoRelegateTablePosition,
+  getMillionPoundGameTablePosition,
+} from "../src/lib/manager/managerLeagues";
 import { createChampionshipPlayoffs } from "../src/lib/manager/managerChampionshipPlayoffs";
 import { getTransferWatchlistIds } from "../src/lib/manager/managerWatchlist";
 import { transferLeaguePlayer } from "../src/lib/manager/managerLeagueRosters";
@@ -138,16 +142,21 @@ function membership(result: ReturnType<typeof applyPromotionRelegation>) {
   return { slClubs, champClubs, overlap };
 }
 
-// Case 1: Champ 1st auto promote, SL 12th auto relegate, MPG champ wins
+const mpgIdx = getMillionPoundGameTablePosition("super-league", sl.length) - 1;
+const autoRelIdx = getAutoRelegateTablePosition("super-league", sl.length) - 1;
+const mpgClub = sl[mpgIdx]!;
+const autoRelClub = sl[autoRelIdx]!;
+
+// Case 1: Champ 1st auto promote, SL last auto relegate, MPG champ wins
 const case1 = applyPromotionRelegation({
   ...seedTables(champCareer, sl, champ),
   millionPoundGame: {
     seasonYear: champCareer.seasonYear,
-    slClub: sl[10]!,
+    slClub: mpgClub,
     champClub: champ[1]!,
-    homeClub: sl[10]!,
+    homeClub: mpgClub,
     winner: champ[1]!,
-    loser: sl[10]!,
+    loser: mpgClub,
     status: "complete",
     userParticipating: false,
   },
@@ -155,22 +164,22 @@ const case1 = applyPromotionRelegation({
 const m1 = membership(case1);
 assert(case1.promoted.includes(champ[0]!), "Case 1: Champ 1st auto-promoted");
 assert(case1.promoted.includes(champ[1]!), "Case 2: Champ playoff/MPG winner promoted");
-assert(case1.relegated.includes(sl[11]!), "Case 6: SL 12th auto-relegated");
-assert(case1.relegated.includes(sl[10]!), "Case 5: SL 11th MPG loser relegated");
+assert(case1.relegated.includes(autoRelClub), "Case 6: SL last auto-relegated");
+assert(case1.relegated.includes(mpgClub), "Case 5: MPG loser relegated");
 assert(m1.overlap.length === 0, "no club in both competitions");
 assert(m1.slClubs.length === 12 || m1.slClubs.length === 14, "SL membership sized");
-assert(!m1.slClubs.includes(sl[11]!), "SL 12th left Super League");
+assert(!m1.slClubs.includes(autoRelClub), "SL last left Super League");
 assert(m1.slClubs.includes(champ[0]!), "Champ 1st now in Super League");
 
-// Case 3/4: MPG SL 11th wins — champ playoff winner stays down
+// Case 3/4: MPG SL penultimate wins — champ playoff winner stays down
 const case3 = applyPromotionRelegation({
   ...seedTables(champCareer, sl, champ),
   millionPoundGame: {
     seasonYear: champCareer.seasonYear,
-    slClub: sl[10]!,
+    slClub: mpgClub,
     champClub: champ[1]!,
-    homeClub: sl[10]!,
-    winner: sl[10]!,
+    homeClub: mpgClub,
+    winner: mpgClub,
     loser: champ[1]!,
     status: "complete",
     userParticipating: false,
@@ -178,8 +187,8 @@ const case3 = applyPromotionRelegation({
 });
 assert(case3.promoted.includes(champ[0]!), "auto promote still happens");
 assert(!case3.promoted.includes(champ[1]!), "Case 3: MPG loser stays Championship");
-assert(case3.relegated.includes(sl[11]!), "SL 12th still auto-relegated");
-assert(!case3.relegated.includes(sl[10]!), "Case 4: SL 11th MPG winner stays SL");
+assert(case3.relegated.includes(autoRelClub), "SL last still auto-relegated");
+assert(!case3.relegated.includes(mpgClub), "Case 4: MPG winner stays SL");
 
 console.log("\nMulti-season membership\n");
 let world = case1.career;
@@ -190,10 +199,10 @@ for (let i = 0; i < 3; i++) {
     ...seedTables(world, slNow, champNow),
     millionPoundGame: {
       seasonYear: world.seasonYear + i,
-      slClub: slNow[10]!,
+      slClub: slNow[getMillionPoundGameTablePosition("super-league", slNow.length) - 1]!,
       champClub: champNow[1]!,
-      homeClub: slNow[10]!,
-      winner: slNow[10]!,
+      homeClub: slNow[getMillionPoundGameTablePosition("super-league", slNow.length) - 1]!,
+      winner: slNow[getMillionPoundGameTablePosition("super-league", slNow.length) - 1]!,
       loser: champNow[1]!,
       status: "complete",
       userParticipating: false,

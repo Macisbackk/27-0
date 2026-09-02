@@ -7,7 +7,9 @@ import { applyPromotionRelegation } from "../src/lib/manager/managerSeasonTransi
 import {
   getAutoPromoteCount,
   getAutoRelegateCount,
+  getAutoRelegateTablePosition,
   getLinkedPromoteRelegateCount,
+  getMillionPoundGameTablePosition,
 } from "../src/lib/manager/managerLeagues";
 import { MILLION_POUND_GAME_NAME } from "../src/lib/manager/managerMillionPoundGame";
 import type { ManagerCareer } from "../src/lib/manager/types";
@@ -35,6 +37,11 @@ assert(MILLION_POUND_GAME_NAME === "Million Pound Game", "exact MPG name");
 const career = createNewCareer("Bradford Bulls");
 const sl = [...(career.superLeagueClubNames ?? [])];
 const champ = [...(career.championshipClubNames ?? [])];
+
+const mpgIdx = getMillionPoundGameTablePosition("super-league", sl.length) - 1;
+const autoRelIdx = getAutoRelegateTablePosition("super-league", sl.length) - 1;
+const mpgClub = sl[mpgIdx]!;
+const autoRelClub = sl[autoRelIdx]!;
 
 const seeded: ManagerCareer = {
   ...career,
@@ -71,11 +78,11 @@ const seeded: ManagerCareer = {
   },
   millionPoundGame: {
     seasonYear: career.seasonYear,
-    slClub: sl[10]!,
+    slClub: mpgClub,
     champClub: champ[1]!,
-    homeClub: sl[10]!,
+    homeClub: mpgClub,
     winner: champ[1]!,
-    loser: sl[10]!,
+    loser: mpgClub,
     status: "complete",
     userParticipating: false,
   },
@@ -84,8 +91,8 @@ const seeded: ManagerCareer = {
 const result = applyPromotionRelegation(seeded);
 assert(result.promoted.includes(champ[0]!), "Champ 1st auto-promoted");
 assert(result.promoted.includes(champ[1]!), "MPG winner promoted");
-assert(result.relegated.includes(sl[11]!), "SL 12th auto-relegated");
-assert(result.relegated.includes(sl[10]!), "MPG loser relegated");
+assert(result.relegated.includes(autoRelClub), "SL last auto-relegated");
+assert(result.relegated.includes(mpgClub), "MPG loser relegated");
 assert(!result.promoted.includes(champ[2]!), "Champ 3rd not auto-promoted");
 assert(
   result.career.inboxMessages.some((m) =>

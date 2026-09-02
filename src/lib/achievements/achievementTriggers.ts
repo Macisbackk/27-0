@@ -232,7 +232,11 @@ export function triggerManagerSeasonAchievements(career: ManagerCareer): void {
     cupWon: cupWinner,
     cupFinalReached:
       cupOutcome.isWinner || cupOutcome.finish === "Runners-Up",
-    boardConfidence: career.boardConfidence,
+    boardSeasonPerformanceScore:
+      career.boardSeasonEvaluation?.performanceScore ??
+      career.boardSeasonEvaluations?.[
+        `${career.club}-${career.seasonYear}`
+      ]?.performanceScore,
     ...trophyFlags,
   });
 }

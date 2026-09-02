@@ -2,10 +2,10 @@ import seedrandom from "seedrandom";
 import { CURRENT_PLAYABLE_CLUBS } from "../clubs/super-league-display";
 import {
   CHAMPIONSHIP_CLUB_NAMES,
-  getChampionshipClubByName,
   isChampionshipClubName,
 } from "../clubs/championship-clubs";
 import { getClubBaseStrength } from "../game/club-strength";
+import { getClubDisplayTeamRating } from "./club-config";
 import { getManagerClubTeamRating } from "./managerRating";
 import {
   expectsLimitedCrossChannelFriendlyAwaySupport,
@@ -54,24 +54,7 @@ function championshipFriendlyTeamRating(
   club: string,
   career?: Pick<ManagerCareer, "championshipSquads"> | null
 ): number {
-  const squads = career?.championshipSquads;
-  const champ = getChampionshipClubByName(club);
-  if (squads && champ) {
-    const roster = squads.rosterByClub[champ.id] ?? [];
-    const ratings = roster
-      .map((id) => squads.players[id]?.peakRating)
-      .filter((r): r is number => typeof r === "number" && Number.isFinite(r))
-      .sort((a, b) => b - a)
-      .slice(0, 17);
-    if (ratings.length >= 13) {
-      return Math.round(
-        ratings.reduce((sum, r) => sum + r, 0) / ratings.length
-      );
-    }
-  }
-  // Raw Champ club strength (54–74) — same band as player peak ratings, not the
-  // cup-tier offset (~40–62) used for SL-vs-Champ match dampening.
-  return champ?.baseStrength ?? 62;
+  return getClubDisplayTeamRating(club, career);
 }
 
 /** Cup-tier strength for Super League users facing Championship friendlies. */

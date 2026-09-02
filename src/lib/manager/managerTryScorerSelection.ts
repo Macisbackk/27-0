@@ -8,8 +8,8 @@ import {
 import type { ManagerCareer } from "./types";
 import { getManagerPlayer, getManagerPlayerEligiblePositions } from "./managerPlayers";
 
-/** Conservative ability when rating is missing — floor of new professional scale. */
-export const CONSERVATIVE_FALLBACK_RATING = 80;
+/** Conservative ability when rating is missing — mid squad, not elite. */
+export const CONSERVATIVE_FALLBACK_RATING = 72;
 
 export interface ScorerCandidate {
   id: string;
