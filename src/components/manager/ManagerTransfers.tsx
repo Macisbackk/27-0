@@ -247,7 +247,7 @@ export function ManagerTransfers({
       if (activeLoanIds.has(playerId)) continue;
       const availability = getPlayerMarketAvailability(career, playerId);
       if (!availability.availableForTransfer) continue;
-      if (marketScope === "available" && !availability.obtainable) continue;
+      if (marketScope === "available" && !availability.obtainableForBuy) continue;
       const raw =
         getManagerPlayer(career, playerId) ?? getPlayerById(playerId);
       if (!raw) continue;
@@ -258,7 +258,7 @@ export function ManagerTransfers({
         clubKey: club.toLowerCase(),
         peakRating: raw.peakRating,
         positions: getPlayerEligiblePositions(raw),
-        obtainable: availability.obtainable,
+        obtainable: availability.obtainableForBuy,
       });
     }
     return rows;
@@ -283,7 +283,7 @@ export function ManagerTransfers({
         if (!availability.availableForTransfer || !availability.transferListed) {
           return false;
         }
-        if (marketScope === "available" && !availability.obtainable) return false;
+        if (marketScope === "available" && !availability.obtainableForBuy) return false;
         const player =
           getManagerPlayer(career, entry.playerId) ??
           getPlayerById(entry.playerId);
@@ -300,7 +300,7 @@ export function ManagerTransfers({
             if (!availability.availableForLoan || !availability.loanListed) {
               return false;
             }
-            if (marketScope === "available" && !availability.obtainable) {
+            if (marketScope === "available" && !availability.obtainableForLoan) {
               return false;
             }
             const player =
@@ -312,7 +312,7 @@ export function ManagerTransfers({
       freeAgents: (career.freeAgents ?? []).filter((entry) => {
         const availability = getPlayerMarketAvailability(career, entry.playerId);
         if (!availability.availableForTransfer) return false;
-        if (marketScope === "available" && !availability.obtainable) return false;
+        if (marketScope === "available" && !availability.obtainableForFreeAgent) return false;
         const player =
           getManagerPlayer(career, entry.playerId) ??
           getPlayerById(entry.playerId);
@@ -362,7 +362,11 @@ export function ManagerTransfers({
         ) {
           return null;
         }
-        if (marketScope === "available" && !availability.obtainable) {
+        const intentObtainable =
+          tab === "loans"
+            ? availability.obtainableForLoan
+            : availability.obtainableForBuy;
+        if (marketScope === "available" && !intentObtainable) {
           return null;
         }
         const raw =
@@ -372,7 +376,7 @@ export function ManagerTransfers({
         return {
           ...entry,
           player: withManagerRating(raw),
-          obtainable: availability.obtainable,
+          obtainable: intentObtainable,
         };
       })
       .filter((r): r is NonNullable<typeof r> => r !== null)
@@ -411,7 +415,7 @@ export function ManagerTransfers({
       .map((entry) => {
         const availability = getPlayerMarketAvailability(career, entry.playerId);
         if (!availability.availableForTransfer) return null;
-        if (marketScope === "available" && !availability.obtainable) return null;
+        if (marketScope === "available" && !availability.obtainableForFreeAgent) return null;
         const raw =
           getManagerPlayer(career, entry.playerId) ??
           getPlayerById(entry.playerId);
@@ -419,7 +423,7 @@ export function ManagerTransfers({
         return {
           ...entry,
           player: withManagerRating(raw),
-          obtainable: availability.obtainable,
+          obtainable: availability.obtainableForFreeAgent,
         };
       })
       .filter((r): r is NonNullable<typeof r> => r !== null)

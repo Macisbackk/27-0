@@ -102,7 +102,7 @@ export function ManagerTransferPlayerCard({
       className="!p-0 overflow-hidden flex h-[280px] flex-col"
     >
       <div
-        className={`border-b border-pitch-700/40 px-3 py-2.5 sm:px-4 ${
+        className={`shrink-0 border-b border-pitch-700/40 px-3 py-2.5 sm:px-4 ${
           freeAgent ? "border-t-2 border-t-theme-primary" : ""
         }`}
         style={
@@ -195,7 +195,8 @@ export function ManagerTransferPlayerCard({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 px-3 py-2.5 sm:px-4">
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="grid grid-cols-2 gap-2 px-3 py-2.5 sm:px-4">
         <ManagerStat
           label={
             freeAgent
@@ -243,22 +244,23 @@ export function ManagerTransferPlayerCard({
           }
           tone="muted"
         />
+        </div>
+
+        {sellerListedFee != null && (
+          <p className={`px-3 pb-1 sm:px-4 ${TYPO.bodySm} text-pitch-400`}>
+            Listed at {formatWage(sellerListedFee)} — your club pays a tier premium.
+          </p>
+        )}
+
+        {!listed && !freeAgent && available && (
+          <p className={`px-3 pb-1 sm:px-4 ${TYPO.bodySm} text-amber-300/90`}>
+            Unlisted bids need a premium fee to tempt the selling club.
+          </p>
+        )}
       </div>
 
-      {sellerListedFee != null && (
-        <p className={`px-3 pb-1 sm:px-4 ${TYPO.bodySm} text-pitch-400`}>
-          Listed at {formatWage(sellerListedFee)} — your club pays a tier premium.
-        </p>
-      )}
-
-      {!listed && !freeAgent && available && (
-        <p className={`px-3 pb-1 sm:px-4 ${TYPO.bodySm} text-amber-300/90`}>
-          Unlisted bids need a premium fee to tempt the selling club.
-        </p>
-      )}
-
-      <div className="mt-auto min-h-[52px] max-h-[120px] overflow-y-auto border-t border-pitch-700/40 px-3 py-2.5 sm:px-4">
-        {available ? children : null}
+      <div className="shrink-0 border-t border-pitch-700/40 px-3 py-2.5 sm:px-4">
+        {children}
       </div>
     </ManagerSectionCard>
   );

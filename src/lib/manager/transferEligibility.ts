@@ -57,8 +57,11 @@ export type PlayerMarketAvailability = {
   playerId: string;
   availableForTransfer: boolean;
   availableForLoan: boolean;
-  /** Club-tier / appeal allows a realistic signing attempt. */
+  /** Club-tier / appeal allows a realistic signing attempt (any intent). */
   obtainable: boolean;
+  obtainableForBuy: boolean;
+  obtainableForLoan: boolean;
+  obtainableForFreeAgent: boolean;
   obtainableReason?: string;
   currentClub: string | null;
   competition: ManagerCompetitionId | null;
@@ -109,12 +112,20 @@ export function getPlayerMarketAvailability(
     getUserCompetitionId(career)
   );
   const structurallyAvailable = buy.allowed || fa.allowed;
+  const appealOk = appeal.allowed;
+  const obtainableForBuy = buy.allowed && appealOk;
+  const obtainableForLoan = loan.allowed && appealOk;
+  const obtainableForFreeAgent = fa.allowed && appealOk;
   return {
     playerId,
     availableForTransfer: structurallyAvailable,
     availableForLoan: loan.allowed,
-    obtainable: structurallyAvailable && appeal.allowed,
-    obtainableReason: appeal.allowed
+    obtainable:
+      obtainableForBuy || obtainableForLoan || obtainableForFreeAgent,
+    obtainableForBuy,
+    obtainableForLoan,
+    obtainableForFreeAgent,
+    obtainableReason: appealOk
       ? undefined
       : appeal.reason ?? "Not a realistic signing for your club.",
     currentClub,

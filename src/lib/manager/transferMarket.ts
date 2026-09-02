@@ -33,7 +33,10 @@ export function playerUnavailableMessage(
   if (!availability.availableForLoan && intent === "loan") {
     return "This player is no longer available for loan.";
   }
-  if (!availability.obtainable && intent === "buy") {
+  if (!availability.obtainableForBuy && intent === "buy") {
+    return availability.obtainableReason ?? "The player is not eligible for this club.";
+  }
+  if (!availability.obtainableForLoan && intent === "loan") {
     return availability.obtainableReason ?? "The player is not eligible for this club.";
   }
   return "This player is no longer available.";
