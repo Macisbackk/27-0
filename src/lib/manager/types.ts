@@ -1114,6 +1114,7 @@ export interface ManagerCareer {
     | "reserves"
     | "contracts"
     | "transfers"
+    | "more"
     | "fixtures"
     | "stats"
     | "cup"

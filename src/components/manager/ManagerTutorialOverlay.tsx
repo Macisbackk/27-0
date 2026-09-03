@@ -3,6 +3,7 @@
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type CSSProperties,
@@ -14,7 +15,14 @@ import {
   advanceManagerTutorial,
   completeManagerTutorial,
   getActiveManagerTutorialStep,
-  tutorialStepNeedsAction,
+  getManagerTutorialStepCount,
+  getManagerTutorialStepIndex,
+  isTutorialCompactViewport,
+  resolveTutorialInteractionPhase,
+  resolveTutorialPhaseTargets,
+  tutorialCanRequireAdvanceWeek,
+  tutorialLockTargetForPhase,
+  tutorialPhaseNeedsTap,
   waitForTutorialTarget,
   type ManagerTutorialStepDef,
 } from "@/lib/manager/managerTutorial";
@@ -36,11 +44,16 @@ import { uiLayerClass } from "@/lib/ui/layers";
 import { focusWithoutScroll } from "@/lib/ui/focus";
 import { TYPO } from "@/lib/ui/typography";
 import { playUiClick } from "@/lib/sound";
+import type { ManagerMoreTutorialLock } from "@/components/manager/ManagerMobileBottomNav";
 
 interface ManagerTutorialOverlayProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
   onNavigate: (view: ManagerView) => void;
+  currentView: ManagerView;
+  moreMenuOpen: boolean;
+  onMoreMenuOpenChange: (open: boolean) => void;
+  onTutorialLockChange: (lock: ManagerMoreTutorialLock) => void;
 }
 
 function prefersReducedMotion(): boolean {
@@ -66,18 +79,48 @@ export function ManagerTutorialOverlay({
   career,
   onUpdate,
   onNavigate,
+  currentView,
+  moreMenuOpen,
+  onMoreMenuOpenChange,
+  onTutorialLockChange,
 }: ManagerTutorialOverlayProps) {
   const step = getActiveManagerTutorialStep(career);
-  const needsAction = tutorialStepNeedsAction(career, step);
+  const [compact, setCompact] = useState(isTutorialCompactViewport);
+  const phase = useMemo(() => {
+    if (!step) return "next" as const;
+    if (
+      step.action === "advance-week" &&
+      !tutorialCanRequireAdvanceWeek(career)
+    ) {
+      return "next" as const;
+    }
+    return resolveTutorialInteractionPhase(step, {
+      compact,
+      moreOpen: moreMenuOpen,
+      currentView,
+    });
+  }, [step, compact, moreMenuOpen, currentView, career]);
+
+  const phaseTargets = step
+    ? resolveTutorialPhaseTargets(step, phase)
+    : undefined;
+  const needsTap = Boolean(step && tutorialPhaseNeedsTap(phase));
+  const showNext =
+    Boolean(step) &&
+    (phase === "next" ||
+      phase === "content" ||
+      (step?.action === "advance-week" &&
+        !tutorialCanRequireAdvanceWeek(career)));
+
   const panelRef = useRef<HTMLDivElement | null>(null);
   const lockRef = useRef<ReturnType<typeof acquireScrollLock> | null>(null);
   const targetElRef = useRef<HTMLElement | null>(null);
   const layoutGenRef = useRef(0);
+  const advancedMoreRef = useRef<string | null>(null);
   const [layout, setLayout] = useState<LayoutState>(EMPTY_LAYOUT);
   const [vw, setVw] = useState(0);
   const [vh, setVh] = useState(0);
 
-  /** Overflow is locked; temporarily allow programmatic document scroll. */
   const withProgrammaticScroll = useCallback((fn: () => void) => {
     const html = document.documentElement;
     const body = document.body;
@@ -96,10 +139,8 @@ export function ManagerTutorialOverlay({
   const computeLayout = useCallback(
     (el: HTMLElement | null, actionRequired: boolean) => {
       const vv = window.visualViewport;
-      const viewW = vv?.width ?? window.innerWidth;
-      const viewH = vv?.height ?? window.innerHeight;
-      setVw(viewW);
-      setVh(viewH);
+      setVw(vv?.width ?? window.innerWidth);
+      setVh(vv?.height ?? window.innerHeight);
 
       if (!el) {
         const usable = measureUsableViewport();
@@ -123,15 +164,21 @@ export function ManagerTutorialOverlay({
         return;
       }
 
+      const inMoreSheet = Boolean(el.closest("[data-manager-more-sheet]"));
+      const inMobileNav = Boolean(el.closest("[data-manager-mobile-nav]"));
       const reservePlaybar =
-        !isViewportFixedTarget(el) && !el.closest(".mobile-action-bar");
+        !isViewportFixedTarget(el) &&
+        !el.closest(".mobile-action-bar") &&
+        !inMoreSheet &&
+        !inMobileNav;
       const usable = measureUsableViewport({
         reserveStickyPlaybar: reservePlaybar,
+        includeBottomChrome: inMoreSheet || inMobileNav,
       });
       const target = layoutRectFromElement(el);
       const spotlight = spotlightRectForTarget(target, usable);
-
-      const measuredH = panelRef.current?.offsetHeight || (usable.isCompact ? 168 : 190);
+      const measuredH =
+        panelRef.current?.offsetHeight || (usable.isCompact ? 150 : 180);
       const measuredW = Math.min(usable.width, usable.isCompact ? 340 : 360);
       const callout = placeTutorialCallout(target, usable, {
         width: measuredW,
@@ -162,53 +209,108 @@ export function ManagerTutorialOverlay({
       await waitFrames(2);
       if (gen !== layoutGenRef.current) return;
 
-      const el = await waitForTutorialTarget(step.targets, {
-        timeoutMs: step.targets?.length ? 2000 : 0,
+      const el = await waitForTutorialTarget(phaseTargets, {
+        timeoutMs: phaseTargets?.length ? 2200 : 0,
       });
       if (gen !== layoutGenRef.current) return;
 
       targetElRef.current = el;
 
       if (el && opts?.scroll !== false) {
-        const reservePlaybar =
-          !isViewportFixedTarget(el) && !el.closest(".mobile-action-bar");
-        const usable = measureUsableViewport({
-          reserveStickyPlaybar: reservePlaybar,
-        });
-        withProgrammaticScroll(() => {
-          scrollTargetIntoUsableRegion(el, usable);
-        });
-        await waitFrames(2);
-        if (gen !== layoutGenRef.current) return;
+        const inChrome =
+          el.closest("[data-manager-more-sheet]") ||
+          el.closest("[data-manager-mobile-nav]") ||
+          isViewportFixedTarget(el);
+        if (!inChrome) {
+          const usable = measureUsableViewport({
+            reserveStickyPlaybar: !el.closest(".mobile-action-bar"),
+          });
+          withProgrammaticScroll(() => {
+            scrollTargetIntoUsableRegion(el, usable);
+          });
+          await waitFrames(2);
+          if (gen !== layoutGenRef.current) return;
+        }
       }
 
-      computeLayout(el, tutorialStepNeedsAction(career, step));
-
-      // Second pass after callout paints — height is accurate for placement.
+      computeLayout(el, needsTap);
       requestAnimationFrame(() => {
         if (gen !== layoutGenRef.current) return;
-        computeLayout(targetElRef.current, tutorialStepNeedsAction(career, step));
+        computeLayout(targetElRef.current, needsTap);
       });
     },
-    [step, career, computeLayout, withProgrammaticScroll]
+    [step, phaseTargets, needsTap, computeLayout, withProgrammaticScroll]
   );
 
+  // Soft auto-nav only for non-interactive / content showcase steps.
   useEffect(() => {
     if (!step?.view) return;
-    onNavigate(step.view);
-  }, [step?.id, step?.view, onNavigate]);
+    if (step.requireAction && step.action === "nav") return;
+    if (step.requireAction && step.action === "open-more") return;
+    if (phase === "content" || phase === "next") {
+      if (currentView !== step.view) onNavigate(step.view);
+    } else if (!step.requireAction) {
+      onNavigate(step.view);
+    }
+  }, [step?.id, step?.view, step?.requireAction, step?.action, phase, currentView, onNavigate]);
+
+  // Skip mobile-only steps on desktop.
+  useEffect(() => {
+    if (!step?.mobileOnly) return;
+    if (compact) return;
+    onUpdate(advanceManagerTutorial(career));
+  }, [step?.id, step?.mobileOnly, compact, career, onUpdate]);
+
+  // Advance when dedicated More step completes (menu opened).
+  useEffect(() => {
+    if (!step || step.action !== "open-more") return;
+    if (!moreMenuOpen) {
+      advancedMoreRef.current = null;
+      return;
+    }
+    if (advancedMoreRef.current === step.id) return;
+    advancedMoreRef.current = step.id;
+    onUpdate(advanceManagerTutorial(career));
+  }, [step, moreMenuOpen, career, onUpdate]);
+
+  // Publish tutorial lock so nav elevates + only the target stays tappable.
+  useEffect(() => {
+    if (!step) {
+      onTutorialLockChange(null);
+      return;
+    }
+    const lock = tutorialLockTargetForPhase(step, phase);
+    onTutorialLockChange(lock);
+    return () => onTutorialLockChange(null);
+  }, [step, phase, onTutorialLockChange]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => setCompact(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     lockRef.current = acquireScrollLock("manager-tutorial");
     return () => {
       releaseScrollLock(lockRef.current);
       lockRef.current = null;
+      onMoreMenuOpenChange(false);
+      onTutorialLockChange(null);
     };
-  }, []);
+  }, [onMoreMenuOpenChange, onTutorialLockChange]);
 
   useEffect(() => {
     void syncTargetLayout({ scroll: true });
-  }, [syncTargetLayout, career.tutorialStep, needsAction]);
+  }, [
+    syncTargetLayout,
+    career.tutorialStep,
+    phase,
+    moreMenuOpen,
+    currentView,
+  ]);
 
   useEffect(() => {
     let debounce: number | null = null;
@@ -227,7 +329,6 @@ export function ManagerTutorialOverlay({
     };
 
     const onOrientation = () => {
-      // Mobile browsers often update visualViewport after orientationchange.
       onViewportChange();
       if (orientationTimer != null) window.clearTimeout(orientationTimer);
       orientationTimer = window.setTimeout(() => {
@@ -249,8 +350,8 @@ export function ManagerTutorialOverlay({
         debounce = null;
         const el = targetElRef.current;
         if (el && document.contains(el)) {
-          computeLayout(el, needsAction);
-        } else if (step?.targets?.length) {
+          computeLayout(el, needsTap);
+        } else if (phaseTargets?.length) {
           void syncTargetLayout({ scroll: false });
         }
       }, 100);
@@ -271,7 +372,14 @@ export function ManagerTutorialOverlay({
       if (orientationTimer != null) window.clearTimeout(orientationTimer);
       ro.disconnect();
     };
-  }, [syncTargetLayout, computeLayout, needsAction, step?.id, layout.ready]);
+  }, [
+    syncTargetLayout,
+    computeLayout,
+    needsTap,
+    step?.id,
+    layout.ready,
+    phaseTargets,
+  ]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -301,7 +409,7 @@ export function ManagerTutorialOverlay({
       focusWithoutScroll(btn ?? panelRef.current);
     });
     return () => window.removeEventListener("keydown", onKey, true);
-  }, [step?.id]);
+  }, [step?.id, phase]);
 
   const goNext = useCallback(() => {
     playUiClick();
@@ -310,103 +418,122 @@ export function ManagerTutorialOverlay({
       onUpdate(completeManagerTutorial(career));
       return;
     }
+    onMoreMenuOpenChange(false);
     onUpdate(advanceManagerTutorial(career));
-  }, [career, onUpdate, step]);
+  }, [career, onUpdate, step, onMoreMenuOpenChange]);
 
   if (!step) return null;
 
-  const stepIndex = [
-    "welcome",
-    "hub",
-    "season-progress",
-    "fixture",
-    "squad",
-    "reserves",
-    "contracts",
-    "transfers",
-    "fixtures",
-    "stats",
-    "cup",
-    "playoffs",
-    "finish",
-  ].indexOf(step.id);
-  const stepTotal = 13;
+  // When elevated nav owns the tap target, skip overlay hole blockers for that
+  // region — the real control sits above the dim and must receive touches.
+  const elevatedNavInteraction = needsTap && Boolean(
+    tutorialLockTargetForPhase(step, phase)
+  );
 
   const blockers = holeBlockerPanels(
-    needsAction ? layout.actionHole : null,
+    needsTap && !elevatedNavInteraction ? layout.actionHole : null,
     vw || (typeof window !== "undefined" ? window.innerWidth : 0),
     vh || (typeof window !== "undefined" ? window.innerHeight : 0)
   );
 
+  // When nav is elevated, still block page behind with full-screen blockers,
+  // but cut a hole so dim spotlight reads correctly... Actually elevated
+  // controls are above overlay; use full-screen blockers under them.
+  const pageBlockers =
+    elevatedNavInteraction
+      ? holeBlockerPanels(
+          null,
+          vw || window.innerWidth,
+          vh || window.innerHeight
+        )
+      : blockers;
+
   const showSpotlight = Boolean(layout.ready && layout.spotlight);
+  const stepIndex = getManagerTutorialStepIndex(step.id);
+  const stepTotal = getManagerTutorialStepCount(compact);
+  const actionHint =
+    phase === "open-more"
+      ? "Tap ⋯ More in the bottom bar."
+      : compact && phase === "action" && step.moreHint
+        ? step.moreHint
+        : step.hint ?? "Tap the highlighted control to continue.";
 
   return (
-    <BodyPortal>
-      <div
-        className={`manager-tutorial-overlay pointer-events-none fixed inset-0 ${uiLayerClass("criticalAnimation")} overflow-hidden overscroll-none`}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="manager-tutorial-title"
-      >
-        {showSpotlight && layout.spotlight ? (
-          <div
-            aria-hidden
-            className={`pointer-events-none absolute rounded-xl ring-2 ring-theme-primary/90 ${
-              prefersReducedMotion()
-                ? ""
-                : "transition-[top,left,width,height] duration-[var(--motion-medium)] ease-[var(--motion-ease)]"
-            }`}
-            style={{
-              top: layout.spotlight.top,
-              left: layout.spotlight.left,
-              width: layout.spotlight.width,
-              height: layout.spotlight.height,
-              boxShadow: "0 0 0 9999px rgba(0,0,0,0.78)",
-              opacity: layout.ready ? 1 : 0,
-            }}
-          />
-        ) : (
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 bg-black/80"
-            style={{ opacity: layout.ready ? 1 : 0.92 }}
-          />
-        )}
+    <>
+      <BodyPortal>
+        <div
+          className={`manager-tutorial-overlay pointer-events-none fixed inset-0 ${uiLayerClass("criticalAnimation")} overflow-hidden overscroll-none`}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="manager-tutorial-title"
+        >
+          {showSpotlight && layout.spotlight ? (
+            <div
+              aria-hidden
+              className={`pointer-events-none absolute rounded-xl ring-2 ring-theme-primary/90 ${
+                prefersReducedMotion()
+                  ? ""
+                  : "transition-[top,left,width,height] duration-[var(--motion-medium)] ease-[var(--motion-ease)]"
+              }`}
+              style={{
+                top: layout.spotlight.top,
+                left: layout.spotlight.left,
+                width: layout.spotlight.width,
+                height: layout.spotlight.height,
+                boxShadow: "0 0 0 9999px rgba(0,0,0,0.78)",
+                opacity: layout.ready ? 1 : 0,
+              }}
+            />
+          ) : (
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-black/80"
+              style={{ opacity: layout.ready ? 1 : 0.92 }}
+            />
+          )}
 
-        {blockers.map((panel, i) => (
-          <div
-            key={`block-${i}`}
-            aria-hidden
-            className="pointer-events-auto absolute"
-            style={{
-              top: panel.top,
-              left: panel.left,
-              width: panel.width,
-              height: panel.height,
-            }}
-            onClick={(e) => e.stopPropagation()}
-            onWheel={(e) => e.preventDefault()}
+          {pageBlockers.map((panel, i) => (
+            <div
+              key={`block-${i}`}
+              aria-hidden
+              className="pointer-events-auto absolute"
+              style={{
+                top: panel.top,
+                left: panel.left,
+                width: panel.width,
+                height: panel.height,
+              }}
+              onClick={(e) => e.stopPropagation()}
+              onWheel={(e) => e.preventDefault()}
+            />
+          ))}
+        </div>
+      </BodyPortal>
+      <BodyPortal>
+        <div className="manager-tutorial-callout-layer pointer-events-none fixed inset-0 overflow-hidden">
+          <TutorialCallout
+            step={step}
+            needsAction={needsTap}
+            actionHint={actionHint}
+            showNext={showNext}
+            stepIndex={stepIndex}
+            stepTotal={stepTotal}
+            callout={layout.callout}
+            panelRef={panelRef}
+            onNext={goNext}
+            visible={layout.ready}
           />
-        ))}
-
-        <TutorialCallout
-          step={step}
-          needsAction={needsAction}
-          stepIndex={Math.max(0, stepIndex)}
-          stepTotal={stepTotal}
-          callout={layout.callout}
-          panelRef={panelRef}
-          onNext={goNext}
-          visible={layout.ready}
-        />
-      </div>
-    </BodyPortal>
+        </div>
+      </BodyPortal>
+    </>
   );
 }
 
 function TutorialCallout({
   step,
   needsAction,
+  actionHint,
+  showNext,
   stepIndex,
   stepTotal,
   callout,
@@ -416,6 +543,8 @@ function TutorialCallout({
 }: {
   step: ManagerTutorialStepDef;
   needsAction: boolean;
+  actionHint: string;
+  showNext: boolean;
   stepIndex: number;
   stepTotal: number;
   callout: CalloutBox | null;
@@ -449,9 +578,9 @@ function TutorialCallout({
         </p>
         {needsAction ? (
           <p className="mt-2 rounded-md border border-theme-primary/35 bg-theme-primary/10 px-2.5 py-1.5 text-[0.75rem] font-semibold leading-snug text-theme-primary">
-            {step.hint ?? "Tap the highlighted control to continue."}
+            {actionHint}
           </p>
-        ) : (
+        ) : showNext ? (
           <div className="mt-2.5">
             <GameButton
               variant="theme"
@@ -462,7 +591,7 @@ function TutorialCallout({
               {step.nextLabel ?? "Next"}
             </GameButton>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

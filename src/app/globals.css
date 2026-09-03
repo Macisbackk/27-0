@@ -82,6 +82,8 @@
   --z-modal-backdrop: 9999;
   --z-modal: 10000;
   --z-critical-animation: 10001;
+  /* Tutorial elevates real nav / More sheet above the dim layer */
+  --z-tutorial-target: 10002;
 
   /* Motion tokens — prefer these over one-off durations */
   --motion-fast: 120ms;
@@ -129,6 +131,14 @@
 
 .ui-layer-critical-animation {
   z-index: var(--z-critical-animation);
+}
+
+.manager-tutorial-nav-elevated {
+  z-index: var(--z-tutorial-target);
+}
+
+.manager-tutorial-callout-layer {
+  z-index: calc(var(--z-tutorial-target) + 1);
 }
 
 html {

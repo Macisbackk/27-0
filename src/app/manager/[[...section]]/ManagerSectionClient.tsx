@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { ManagerLanding } from "@/components/manager/ManagerLanding";
 import { ManagerClubSelect } from "@/components/manager/ManagerClubSelect";
 import { ManagerNav } from "@/components/manager/ManagerNav";
-import { ManagerMobileBottomNav } from "@/components/manager/ManagerMobileBottomNav";
+import { ManagerMobileBottomNav, type ManagerMoreTutorialLock } from "@/components/manager/ManagerMobileBottomNav";
 import { ManagerKeepAlivePane } from "@/components/manager/ManagerKeepAlivePane";
 import { ManagerHub } from "@/components/manager/ManagerHub";
 import { ManagerSquad } from "@/components/manager/ManagerSquad";
@@ -329,6 +329,9 @@ export default function ManagerPage() {
     string | null
   >(null);
   const [boardMessageModalOpen, setBoardMessageModalOpen] = useState(false);
+  const [managerMoreMenuOpen, setManagerMoreMenuOpen] = useState(false);
+  const [managerTutorialNavLock, setManagerTutorialNavLock] =
+    useState<ManagerMoreTutorialLock>(null);
   const [pendingPositionRetrainingId, setPendingPositionRetrainingId] =
     useState<string | null>(null);
   const [positionRetrainingCompleteModalOpen, setPositionRetrainingCompleteModalOpen] =
@@ -2333,6 +2336,11 @@ export default function ManagerPage() {
             }
             unreadInbox={countUnreadInbox(career)}
             contextTabs={squadContextTabs}
+            tutorialLock={
+              managerTutorialNavLock === "more"
+                ? null
+                : managerTutorialNavLock
+            }
           />
 
           <div className={`flex min-w-0 flex-col ${PAGE.section}`}>
@@ -2457,6 +2465,9 @@ export default function ManagerPage() {
             disabled={
               playGameOpen || awaitingFriendlyChoice || managerOverlayActive
             }
+            moreOpen={managerMoreMenuOpen}
+            onMoreOpenChange={setManagerMoreMenuOpen}
+            tutorialLock={managerTutorialNavLock}
           />
         </div>
       )}
@@ -2626,6 +2637,10 @@ export default function ManagerPage() {
             career={career}
             onUpdate={persist}
             onNavigate={handleNavNavigate}
+            currentView={displayView}
+            moreMenuOpen={managerMoreMenuOpen}
+            onMoreMenuOpenChange={setManagerMoreMenuOpen}
+            onTutorialLockChange={setManagerTutorialNavLock}
           />
         )}
 

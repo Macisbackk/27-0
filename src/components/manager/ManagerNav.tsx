@@ -21,6 +21,8 @@ interface ManagerNavProps {
   onNavigate: (view: ManagerView) => void;
   disabled?: boolean;
   unreadInbox?: number;
+  /** Tutorial: only this desktop tab stays tappable. */
+  tutorialLock?: ManagerView | null;
   /** Contextual sub-tabs for the active section (e.g. Squad / Tactics). */
   contextTabs?: {
     tabs: readonly ManagerSubTabOption<string>[];
@@ -38,6 +40,7 @@ export function ManagerNav({
   onNavigate,
   disabled,
   unreadInbox = 0,
+  tutorialLock = null,
   contextTabs,
 }: ManagerNavProps) {
   const seasonMeta =
@@ -49,6 +52,7 @@ export function ManagerNav({
 
   const navigate = (tab: ManagerView) => {
     if (disabled) return;
+    if (tutorialLock && tutorialLock !== tab) return;
     if (active !== tab) playTabChange();
     playUiClick();
     onNavigate(tab);
@@ -113,30 +117,43 @@ export function ManagerNav({
         </button>
       </div>
 
-      <div className="hidden flex-col items-center gap-1.5 sm:flex">
+      <div
+        className={`hidden flex-col items-center gap-1.5 sm:flex ${
+          tutorialLock ? "manager-tutorial-nav-elevated relative z-[10002]" : ""
+        }`}
+      >
         <nav
           className="flex w-full flex-wrap justify-center gap-1"
           aria-label="Manager sections"
         >
-          {MANAGER_DESKTOP_NAV_TABS.map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => navigate(tab.id)}
-              disabled={disabled}
-              data-tutorial-id={`manager-nav-${tab.id}`}
-              className={`btn-press shrink-0 rounded-sm border-b-2 px-2.5 py-2 text-center font-display text-[length:var(--text-small)] font-bold uppercase tracking-wide transition sm:px-3 ${
-                active === tab.id
-                  ? `${BTN.tabActive} border-b-[var(--theme-text-on-primary)]`
-                  : `${BTN.tabIdle} border-b-transparent`
-              } ${disabled ? "pointer-events-none opacity-40" : ""}`}
-              aria-current={active === tab.id ? "page" : undefined}
-              title={tab.label}
-            >
-              <span className="xl:hidden">{tab.shortLabel}</span>
-              <span className="hidden xl:inline">{tab.label}</span>
-            </button>
-          ))}
+          {MANAGER_DESKTOP_NAV_TABS.map((tab) => {
+            const locked = Boolean(tutorialLock && tutorialLock !== tab.id);
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => navigate(tab.id)}
+                disabled={disabled || locked}
+                data-tutorial-id={`manager-nav-${tab.id}`}
+                className={`btn-press shrink-0 rounded-sm border-b-2 px-2.5 py-2 text-center font-display text-[length:var(--text-small)] font-bold uppercase tracking-wide transition sm:px-3 ${
+                  active === tab.id
+                    ? `${BTN.tabActive} border-b-[var(--theme-text-on-primary)]`
+                    : `${BTN.tabIdle} border-b-transparent`
+                } ${
+                  disabled || locked ? "pointer-events-none opacity-40" : ""
+                } ${
+                  tutorialLock === tab.id
+                    ? "ring-2 ring-theme-primary ring-offset-1 ring-offset-pitch-950"
+                    : ""
+                }`}
+                aria-current={active === tab.id ? "page" : undefined}
+                title={tab.label}
+              >
+                <span className="xl:hidden">{tab.shortLabel}</span>
+                <span className="hidden xl:inline">{tab.label}</span>
+              </button>
+            );
+          })}
         </nav>
 
         {/* Reserve real SubTabBar height (GameSegmentedControl ≈ 50px).

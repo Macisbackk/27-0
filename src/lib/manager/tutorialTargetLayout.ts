@@ -114,6 +114,11 @@ export function isViewportFixedTarget(el: HTMLElement): boolean {
 export function measureUsableViewport(options?: {
   /** When true, also reserve the hub sticky play bar above the bottom nav. */
   reserveStickyPlaybar?: boolean;
+  /**
+   * When highlighting bottom-nav / More-sheet controls, keep them inside the
+   * usable band so callouts can sit above them instead of clamping them away.
+   */
+  includeBottomChrome?: boolean;
 }): UsableViewport {
   const vv = window.visualViewport;
   const vw = vv?.width ?? window.innerWidth;
@@ -131,29 +136,31 @@ export function measureUsableViewport(options?: {
 
   let chromeBottom = offsetTop + vh - safe.bottom;
 
-  const nav = document.querySelector<HTMLElement>("[data-manager-mobile-nav]");
-  if (isCompact && nav) {
-    const nr = nav.getBoundingClientRect();
-    if (nr.height > 1) chromeBottom = Math.min(chromeBottom, nr.top);
-  } else if (isCompact) {
-    chromeBottom = Math.min(
-      chromeBottom,
-      offsetTop + vh - readRootCssPx("--manager-mobile-nav-h")
-    );
-  }
+  if (!options?.includeBottomChrome) {
+    const nav = document.querySelector<HTMLElement>("[data-manager-mobile-nav]");
+    if (isCompact && nav) {
+      const nr = nav.getBoundingClientRect();
+      if (nr.height > 1) chromeBottom = Math.min(chromeBottom, nr.top);
+    } else if (isCompact) {
+      chromeBottom = Math.min(
+        chromeBottom,
+        offsetTop + vh - readRootCssPx("--manager-mobile-nav-h")
+      );
+    }
 
-  if (options?.reserveStickyPlaybar && isCompact) {
-    const playbar = document.querySelector<HTMLElement>(
-      ".mobile-action-bar--above-nav:not(.invisible)"
-    );
-    if (playbar) {
-      const pr = playbar.getBoundingClientRect();
-      if (pr.height > 1 && getComputedStyle(playbar).visibility !== "hidden") {
-        chromeBottom = Math.min(chromeBottom, pr.top);
+    if (options?.reserveStickyPlaybar && isCompact) {
+      const playbar = document.querySelector<HTMLElement>(
+        ".mobile-action-bar--above-nav:not(.invisible)"
+      );
+      if (playbar) {
+        const pr = playbar.getBoundingClientRect();
+        if (pr.height > 1 && getComputedStyle(playbar).visibility !== "hidden") {
+          chromeBottom = Math.min(chromeBottom, pr.top);
+        }
+      } else {
+        const playbarH = readRootCssPx("--manager-mobile-playbar-h");
+        if (playbarH > 0) chromeBottom -= playbarH;
       }
-    } else {
-      const playbarH = readRootCssPx("--manager-mobile-playbar-h");
-      if (playbarH > 0) chromeBottom -= playbarH;
     }
   }
 
