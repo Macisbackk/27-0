@@ -101,9 +101,10 @@ export function ManagerTutorialOverlay({
     });
   }, [step, compact, moreMenuOpen, currentView, career]);
 
-  const phaseTargets = step
-    ? resolveTutorialPhaseTargets(step, phase)
-    : undefined;
+  const phaseTargets = useMemo(
+    () => (step ? resolveTutorialPhaseTargets(step, phase) : undefined),
+    [step, phase]
+  );
   const needsTap = Boolean(step && tutorialPhaseNeedsTap(phase));
   const showNext =
     Boolean(step) &&
@@ -117,7 +118,10 @@ export function ManagerTutorialOverlay({
   const targetElRef = useRef<HTMLElement | null>(null);
   const layoutGenRef = useRef(0);
   const advancedMoreRef = useRef<string | null>(null);
+  const careerRef = useRef(career);
+  careerRef.current = career;
   const [layout, setLayout] = useState<LayoutState>(EMPTY_LAYOUT);
+  const [targetMissing, setTargetMissing] = useState(false);
   const [vw, setVw] = useState(0);
   const [vh, setVh] = useState(0);
 
@@ -139,8 +143,11 @@ export function ManagerTutorialOverlay({
   const computeLayout = useCallback(
     (el: HTMLElement | null, actionRequired: boolean) => {
       const vv = window.visualViewport;
-      setVw(vv?.width ?? window.innerWidth);
-      setVh(vv?.height ?? window.innerHeight);
+      const viewW = vv?.width ?? window.innerWidth;
+      const viewH = vv?.height ?? window.innerHeight;
+
+      const nextVw = viewW;
+      const nextVh = viewH;
 
       if (!el) {
         const usable = measureUsableViewport();
@@ -149,6 +156,8 @@ export function ManagerTutorialOverlay({
           panelRef.current?.offsetHeight || 180,
           usable.height
         );
+        setVw(nextVw);
+        setVh(nextVh);
         setLayout({
           spotlight: null,
           callout: {
@@ -185,6 +194,8 @@ export function ManagerTutorialOverlay({
         height: measuredH,
       });
 
+      setVw(nextVw);
+      setVh(nextVh);
       setLayout({
         spotlight,
         callout,
@@ -204,6 +215,7 @@ export function ManagerTutorialOverlay({
       }
 
       const gen = ++layoutGenRef.current;
+      setTargetMissing(false);
       setLayout((prev) => ({ ...prev, ready: false }));
 
       await waitFrames(2);
@@ -234,6 +246,7 @@ export function ManagerTutorialOverlay({
       }
 
       computeLayout(el, needsTap);
+      setTargetMissing(!el && Boolean(phaseTargets?.length));
       requestAnimationFrame(() => {
         if (gen !== layoutGenRef.current) return;
         computeLayout(targetElRef.current, needsTap);
@@ -258,8 +271,8 @@ export function ManagerTutorialOverlay({
   useEffect(() => {
     if (!step?.mobileOnly) return;
     if (compact) return;
-    onUpdate(advanceManagerTutorial(career));
-  }, [step?.id, step?.mobileOnly, compact, career, onUpdate]);
+    onUpdate(advanceManagerTutorial(careerRef.current));
+  }, [step?.id, step?.mobileOnly, compact, onUpdate]);
 
   // Advance when dedicated More step completes (menu opened).
   useEffect(() => {
@@ -270,19 +283,18 @@ export function ManagerTutorialOverlay({
     }
     if (advancedMoreRef.current === step.id) return;
     advancedMoreRef.current = step.id;
-    onUpdate(advanceManagerTutorial(career));
-  }, [step, moreMenuOpen, career, onUpdate]);
+    onUpdate(advanceManagerTutorial(careerRef.current));
+  }, [step, moreMenuOpen, onUpdate]);
 
   // Publish tutorial lock so nav elevates + only the target stays tappable.
   useEffect(() => {
-    if (!step) {
-      onTutorialLockChange(null);
-      return;
-    }
-    const lock = tutorialLockTargetForPhase(step, phase);
+    const lock = step ? tutorialLockTargetForPhase(step, phase) : null;
     onTutorialLockChange(lock);
-    return () => onTutorialLockChange(null);
   }, [step, phase, onTutorialLockChange]);
+
+  useEffect(() => {
+    return () => onTutorialLockChange(null);
+  }, [onTutorialLockChange]);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 639px)");
@@ -360,7 +372,6 @@ export function ManagerTutorialOverlay({
     const ro = new ResizeObserver(refine);
     if (targetElRef.current) ro.observe(targetElRef.current);
     if (panelRef.current) ro.observe(panelRef.current);
-    ro.observe(document.documentElement);
 
     return () => {
       window.removeEventListener("resize", onViewportChange);
@@ -372,14 +383,7 @@ export function ManagerTutorialOverlay({
       if (orientationTimer != null) window.clearTimeout(orientationTimer);
       ro.disconnect();
     };
-  }, [
-    syncTargetLayout,
-    computeLayout,
-    needsTap,
-    step?.id,
-    layout.ready,
-    phaseTargets,
-  ]);
+  }, [syncTargetLayout, computeLayout, needsTap, step?.id, phaseTargets]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -424,8 +428,10 @@ export function ManagerTutorialOverlay({
 
   if (!step) return null;
 
+  const allowNext = showNext || targetMissing;
+  const waitingForTap = needsTap && !targetMissing;
   const blockers = holeBlockerPanels(
-    needsTap ? layout.actionHole : null,
+    waitingForTap ? layout.actionHole : null,
     vw || (typeof window !== "undefined" ? window.innerWidth : 0),
     vh || (typeof window !== "undefined" ? window.innerHeight : 0)
   );
@@ -507,9 +513,9 @@ export function ManagerTutorialOverlay({
         <div className="manager-tutorial-callout-layer pointer-events-none fixed inset-0">
           <TutorialCallout
             step={step}
-            needsAction={needsTap}
+            needsAction={waitingForTap}
             actionHint={actionHint}
-            showNext={showNext}
+            showNext={allowNext}
             stepIndex={stepIndex}
             stepTotal={stepTotal}
             callout={layout.callout}
@@ -517,7 +523,7 @@ export function ManagerTutorialOverlay({
             onNext={goNext}
             visible={layout.ready}
           />
-          {needsTap && layout.actionHole ? (
+          {waitingForTap && layout.actionHole ? (
             <button
               type="button"
               aria-label={actionHint}

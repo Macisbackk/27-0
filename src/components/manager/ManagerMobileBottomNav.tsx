@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
@@ -46,12 +46,15 @@ export function ManagerMobileBottomNav({
     onMoreOpenChange?.(next);
   };
 
+  const dismissMore = useCallback(() => {
+    if (tutorialLock) return;
+    if (!controlled) setMoreOpenUncontrolled(false);
+    onMoreOpenChange?.(false);
+  }, [tutorialLock, controlled, onMoreOpenChange]);
+
   const moreActive = isManagerMobileMoreNavView(active);
   const tutorialElevate = tutorialLock != null;
-  const panelRef = useModalA11y(moreOpen, () => {
-    if (tutorialLock) return; // tutorial owns dismiss
-    setMoreOpen(false);
-  });
+  const panelRef = useModalA11y(moreOpen, dismissMore);
 
   // Close More when leaving compact layout (desktop).
   useEffect(() => {
