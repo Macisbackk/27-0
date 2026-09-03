@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { SPACING } from "@/lib/ui/design-system";
+import { ManagerModal } from "@/components/manager/ManagerModal";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -48,19 +48,18 @@ export function ManagerChallengeCupWinModal({
   const panelRef = useModalA11y(true, handleContinue);
 
   return (
-    <div
-      className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/80 ${SPACING.modalBackdrop} ${SPACING.safeBottom} overflow-y-auto sm:items-center`}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="challenge-cup-win-title"
-    >
-      <div
-        ref={panelRef}
-        tabIndex={-1}
-        className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className={managerModalHeaderClass("gold", { centered: true, wide: true })}>
+    <ManagerModal
+      open
+      labelledBy="challenge-cup-win-title"
+      panelRef={panelRef}
+      header={
+        <div
+          className={managerModalHeaderClass("gold", {
+            centered: true,
+            wide: true,
+            slotted: true,
+          })}
+        >
           <p className="text-5xl" aria-hidden>
             🏆
           </p>
@@ -76,15 +75,16 @@ export function ManagerChallengeCupWinModal({
             {scoreline ? ` ${scoreline}` : "."}
           </p>
         </div>
-
-        <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
-          You lifted the trophy at Wembley — a historic night for the club.
-        </p>
-
-        <GameButton variant="theme" className="mt-5" onClick={handleContinue}>
+      }
+      footer={
+        <GameButton variant="theme" onClick={handleContinue}>
           Continue
         </GameButton>
-      </div>
-    </div>
+      }
+    >
+      <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
+        You lifted the trophy at Wembley — a historic night for the club.
+      </p>
+    </ManagerModal>
   );
 }

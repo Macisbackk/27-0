@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { SPACING } from "@/lib/ui/design-system";
+import { ManagerModal } from "@/components/manager/ManagerModal";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import type { InboxMessage, ManagerCareer } from "@/lib/manager/types";
@@ -59,19 +59,12 @@ export function ManagerPositionRetrainingCompleteModal({
       : null;
 
   return (
-    <div
-      className={`fixed inset-0 z-[94] flex items-end justify-center bg-black/80 ${SPACING.modalBackdrop} ${SPACING.safeBottom} overflow-y-auto sm:items-center`}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="retraining-complete-title"
-    >
-      <div
-        ref={panelRef}
-        tabIndex={-1}
-        className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className={managerModalHeaderClass("primary", { centered: true })}>
+    <ManagerModal
+      open
+      labelledBy="retraining-complete-title"
+      panelRef={panelRef}
+      header={
+        <div className={managerModalHeaderClass("primary", { centered: true, slotted: true })}>
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border-2 border-theme-primary/45 bg-theme-primary/15 shadow-inner">
             <span className="font-display text-xl font-black text-theme-primary" aria-hidden>
               {toPosition ? POSITION_SHORT[toPosition] : "2P"}
@@ -87,35 +80,9 @@ export function ManagerPositionRetrainingCompleteModal({
             <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>{pathLabel}</p>
           ) : null}
         </div>
-
-        <div className={`mt-4 space-y-3 ${TYPO.bodySm} text-pitch-300`}>
-          {squadRating !== null ? (
-            <p className="text-center text-pitch-400">
-              Squad rating{" "}
-              <span className="font-bold text-theme-primary">{squadRating}</span>
-            </p>
-          ) : null}
-          {fromPosition && toPosition ? (
-            <p className="text-center">
-              Can now play{" "}
-              <span className="font-semibold text-white">
-                {POSITION_LABELS[fromPosition]}
-              </span>{" "}
-              and{" "}
-              <span className="font-semibold text-white">
-                {POSITION_LABELS[toPosition]}
-              </span>
-              .
-            </p>
-          ) : (
-            <p className="text-center">{message.body}</p>
-          )}
-          <p className="text-center text-pitch-500">
-            Deploy them in either role from your matchday squad and tactics.
-          </p>
-        </div>
-
-        <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+      }
+      footer={
+        <div className="flex flex-col gap-2 sm:flex-row">
           {onViewTactics ? (
             <GameButton
               variant="secondary"
@@ -133,7 +100,34 @@ export function ManagerPositionRetrainingCompleteModal({
             Continue
           </GameButton>
         </div>
+      }
+    >
+      <div className={`space-y-3 ${TYPO.bodySm} text-pitch-300`}>
+        {squadRating !== null ? (
+          <p className="text-center text-pitch-400">
+            Squad rating{" "}
+            <span className="font-bold text-theme-primary">{squadRating}</span>
+          </p>
+        ) : null}
+        {fromPosition && toPosition ? (
+          <p className="text-center">
+            Can now play{" "}
+            <span className="font-semibold text-white">
+              {POSITION_LABELS[fromPosition]}
+            </span>{" "}
+            and{" "}
+            <span className="font-semibold text-white">
+              {POSITION_LABELS[toPosition]}
+            </span>
+            .
+          </p>
+        ) : (
+          <p className="text-center">{message.body}</p>
+        )}
+        <p className="text-center text-pitch-500">
+          Deploy them in either role from your matchday squad and tactics.
+        </p>
       </div>
-    </div>
+    </ManagerModal>
   );
 }

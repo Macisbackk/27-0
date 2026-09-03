@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { SPACING } from "@/lib/ui/design-system";
+import { ManagerModal } from "@/components/manager/ManagerModal";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -33,19 +33,12 @@ export function ManagerTrophyModal({
   }, []);
 
   return (
-    <div
-      className={`fixed inset-0 z-[95] flex items-end justify-center bg-black/80 ${SPACING.modalBackdrop} ${SPACING.safeBottom} overflow-y-auto sm:items-center`}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="trophy-title"
-    >
-      <div
-        ref={panelRef}
-        tabIndex={-1}
-        className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className={managerModalHeaderClass("gold", { centered: true })}>
+    <ManagerModal
+      open
+      labelledBy="trophy-title"
+      panelRef={panelRef}
+      header={
+        <div className={managerModalHeaderClass("gold", { centered: true, slotted: true })}>
           <p className="text-5xl" aria-hidden>
             🏆
           </p>
@@ -59,15 +52,16 @@ export function ManagerTrophyModal({
             {career.club} have won the league title in {career.seasonYear}.
           </p>
         </div>
-
-        <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
-          You lifted the trophy at the Grand Final — a season to remember.
-        </p>
-
-        <GameButton variant="theme" className="mt-5" onClick={handleContinue}>
+      }
+      footer={
+        <GameButton variant="theme" onClick={handleContinue}>
           Continue
         </GameButton>
-      </div>
-    </div>
+      }
+    >
+      <p className={`text-center ${TYPO.bodySm} text-pitch-400`}>
+        You lifted the trophy at the Grand Final — a season to remember.
+      </p>
+    </ManagerModal>
   );
 }

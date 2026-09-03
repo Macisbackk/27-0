@@ -12,7 +12,23 @@ import { isPlayerAwayOnLoan, isPlayerLoanedIn } from "./managerLoans";
 import { pushInboxMessage, normalizeInboxMessage } from "./managerInbox";
 import { getLeagueClubRosterIds } from "./managerLeagueRosters";
 import { getManagerSeasonTrophyLabels } from "./managerSeasonTrophies";
-import { getUserLeagueTablePosition } from "./managerFixtures";
+import { countLeagueFixturesPlayed } from "./managerChallengeCup";
+import {
+  getManagerLeagueTable,
+  getUserLeagueTablePosition,
+} from "./managerFixtures";
+import {
+  getUserCompetitionId,
+  getUserSeasonGames,
+} from "./leagueMembership";
+import {
+  getMillionPoundGameTablePosition,
+  MANAGER_LEAGUES,
+} from "./managerLeagues";
+import {
+  isMagicWeekendFixture,
+  MAGIC_WEEKEND_VENUE,
+} from "./managerMagicWeekend";
 import type {
   ClubMoment,
   InboxMessage,
@@ -612,7 +628,6 @@ function maybeCupGiantKilling(
   const userInSl = (CURRENT_PLAYABLE_CLUBS as readonly string[]).includes(
     career.club
   );
-  // User Championship / lower beating SL opponent, or heavy cup upset margin
   const oppIsSl = (CURRENT_PLAYABLE_CLUBS as readonly string[]).includes(
     last.opponent
   );
@@ -641,6 +656,323 @@ function maybeCupGiantKilling(
   };
   return { career: next, story: nextStory, emitted: true };
 }
+
+function maybeCupRoundProgress(
+  career: ManagerCareer,
+  story: ManagerWorldStory
+): { career: ManagerCareer; story: ManagerWorldStory; emitted: boolean } {
+  const last = career.lastMatchFixture;
+  if (!last || last.competition !== "challenge_cup") {
+    return { career, story, emitted: false };
+  }
+  if (last.result !== "W") return { career, story, emitted: false };
+  const round = last.meta?.cupRound ?? "";
+  let title: string | null = null;
+  let body: string | null = null;
+  if (round === "semi_final" || /semi/i.test(round)) {
+    title = "Cup Final Reached";
+    body = `One more win stands between you and the Challenge Cup after beating ${last.opponent}.`;
+  } else if (round === "quarter_final" || /quarter/i.test(round)) {
+    title = "Cup Semi-Final";
+    body = `${career.club} are into the Challenge Cup semi-finals after beating ${last.opponent}.`;
+  } else if (round === "final" || /^final$/i.test(round)) {
+    return { career, story, emitted: false };
+  }
+  if (!title || !body) return { career, story, emitted: false };
+  const id = `story-cup-round-${round}-s${career.seasonYear}`;
+  if (story.shownMilestoneIds.includes(id)) {
+    return { career, story, emitted: false };
+  }
+  let next = pushStoryInbox(career, id, title, body);
+  let nextStory = appendMoment(story, {
+    id,
+    week: career.gameWeek,
+    seasonYear: career.seasonYear,
+    kind: "cup",
+    title,
+    body,
+  });
+  nextStory = {
+    ...nextStory,
+    shownMilestoneIds: [...nextStory.shownMilestoneIds, id],
+  };
+  return { career: next, story: nextStory, emitted: true };
+}
+
+function nextUpcomingScheduleFixture(career: ManagerCareer) {
+  return (
+    career.schedule.find((f) => f.round > career.currentRound) ??
+    career.schedule[career.currentFixtureIndex] ??
+    null
+  );
+}
+
+function lastMatchWasCupOrRival(career: ManagerCareer): boolean {
+  const last = career.lastMatchFixture;
+  if (!last) return false;
+  if (last.competition === "challenge_cup") return true;
+  return areRivalClubs(career.club, last.opponent);
+}
+
+function maybeBigMatchPreview(
+  career: ManagerCareer,
+  story: ManagerWorldStory
+): { career: ManagerCareer; story: ManagerWorldStory; emitted: boolean } {
+  if (lastMatchWasCupOrRival(career)) {
+    return { career, story, emitted: false };
+  }
+
+  const nextFix = nextUpcomingScheduleFixture(career);
+  if (!nextFix || nextFix.competition === "friendly") {
+    return { career, story, emitted: false };
+  }
+
+  const fixtureKey =
+    nextFix.id ??
+    `${nextFix.competition}-${nextFix.round}-${nextFix.opponent}`;
+  const id = `story-big-match-${fixtureKey}-s${career.seasonYear}`;
+  if (story.shownMilestoneIds.includes(id)) {
+    return { career, story, emitted: false };
+  }
+
+  let title: string | null = null;
+  let body: string | null = null;
+
+  if (nextFix.competition === "million_pound_game") {
+    title = "Million Pound Game";
+    body = `Everything is on the line against ${nextFix.opponent} — the winner stays in Super League.`;
+  } else if (
+    nextFix.competition === "challenge_cup" &&
+    (nextFix.cupRound === "final" || /^final$/i.test(nextFix.cupRound ?? ""))
+  ) {
+    title = "Cup Final";
+    body = `The Challenge Cup final against ${nextFix.opponent} is next.`;
+  } else if (isMagicWeekendFixture(nextFix)) {
+    title = "Magic Weekend";
+    body = `${career.club} head to Magic Weekend at ${MAGIC_WEEKEND_VENUE} to face ${nextFix.opponent}.`;
+  } else if (nextFix.competition === "league") {
+    const position = getUserLeagueTablePosition(career);
+    const seasonGames = getUserSeasonGames(career);
+    const remaining = seasonGames - countLeagueFixturesPlayed(career);
+    if (
+      position >= 1 &&
+      position <= 2 &&
+      remaining > 0 &&
+      remaining <= 4
+    ) {
+      title = "Title Race";
+      body =
+        position === 1
+          ? `${career.club} lead the table with ${remaining} league game${remaining === 1 ? "" : "s"} left.`
+          : `${career.club} are ${position === 2 ? "second" : `${position}th`} with ${remaining} league game${remaining === 1 ? "" : "s"} left in the title race.`;
+    }
+  }
+
+  if (!title && areRivalClubs(career.club, nextFix.opponent)) {
+    title = "Big Match";
+    body = `You're facing rivals ${nextFix.opponent} this week.`;
+  }
+
+  if (!title || !body) return { career, story, emitted: false };
+
+  let next = pushStoryInbox(career, id, title, body, {
+    offerClub: nextFix.opponent,
+  });
+  let nextStory = appendMoment(story, {
+    id,
+    week: career.gameWeek,
+    seasonYear: career.seasonYear,
+    kind: "fixture",
+    title,
+    body,
+  });
+  nextStory = {
+    ...nextStory,
+    shownMilestoneIds: [...nextStory.shownMilestoneIds, id],
+  };
+  return { career: next, story: nextStory, emitted: true };
+}
+
+function maybeLeagueTableMoment(
+  career: ManagerCareer,
+  story: ManagerWorldStory
+): { career: ManagerCareer; story: ManagerWorldStory; emitted: boolean } {
+  const position = getUserLeagueTablePosition(career);
+  if (position <= 0) return { career, story, emitted: false };
+
+  const competitionId = getUserCompetitionId(career);
+  const rules = MANAGER_LEAGUES[competitionId].boardRules;
+  const table = getManagerLeagueTable(career);
+  const seasonGames = getUserSeasonGames(career);
+  const remaining = Math.max(0, seasonGames - countLeagueFixturesPlayed(career));
+  const maxPtsPerGame = 2;
+  const userRow = table.find((r) => r.team === career.club);
+
+  type Beat = { id: string; title: string; body: string; weight: number };
+  const beats: Beat[] = [];
+
+  if (position === 1) {
+    beats.push({
+      id: `story-league-leaders-s${career.seasonYear}`,
+      title: "League leaders",
+      body: `${career.club} sit top of the table.`,
+      weight: 5,
+    });
+  }
+
+  if (career.gameWeek > 6 && position <= rules.playoffsMaxPosition) {
+    beats.push({
+      id: `story-playoff-places-s${career.seasonYear}`,
+      title: "Playoff places",
+      body: `${career.club} are inside the playoff places.`,
+      weight: 4,
+    });
+  }
+
+  if (
+    userRow &&
+    position <= rules.playoffsMaxPosition &&
+    remaining > 0 &&
+    rules.playoffsMaxPosition < table.length
+  ) {
+    const outsider = table.find(
+      (r) => r.position === rules.playoffsMaxPosition + 1
+    );
+    if (
+      outsider &&
+      userRow.leaguePoints > outsider.leaguePoints + remaining * maxPtsPerGame
+    ) {
+      beats.push({
+        id: `story-playoff-qualified-s${career.seasonYear}`,
+        title: "Playoff Qualification Secured",
+        body: `${career.club} cannot fall outside the playoff places.`,
+        weight: 6,
+      });
+    }
+  }
+
+  const mpgPos = getMillionPoundGameTablePosition(competitionId, table.length);
+  if (userRow && position < mpgPos && remaining > 0) {
+    const dangerRow = table.find((r) => r.position === mpgPos);
+    if (
+      dangerRow &&
+      userRow.leaguePoints > dangerRow.leaguePoints + remaining * maxPtsPerGame
+    ) {
+      beats.push({
+        id: `story-survival-secured-s${career.seasonYear}`,
+        title: "Survival Secured",
+        body: `${career.club} are mathematically safe from the relegation zone.`,
+        weight: 5,
+      });
+    }
+  }
+
+  const fresh = beats
+    .filter((b) => !story.shownMilestoneIds.includes(b.id))
+    .sort((a, b) => b.weight - a.weight);
+  if (fresh.length === 0) return { career, story, emitted: false };
+
+  const pick = fresh[0]!;
+  let next = pushStoryInbox(career, pick.id, pick.title, pick.body);
+  let nextStory = appendMoment(story, {
+    id: pick.id,
+    week: career.gameWeek,
+    seasonYear: career.seasonYear,
+    kind: "league",
+    title: pick.title,
+    body: pick.body,
+  });
+  nextStory = {
+    ...nextStory,
+    shownMilestoneIds: [...nextStory.shownMilestoneIds, pick.id],
+  };
+  return { career: next, story: nextStory, emitted: true };
+}
+
+function getCurrentWinStreak(career: ManagerCareer): number {
+  const played = career.fixtures.filter(
+    (f) => (f.competition ?? "league") !== "friendly"
+  );
+  let streak = 0;
+  for (let i = played.length - 1; i >= 0; i -= 1) {
+    if (played[i]!.result === "W") streak += 1;
+    else break;
+  }
+  return streak;
+}
+
+function maybeWinStreak(
+  career: ManagerCareer,
+  story: ManagerWorldStory
+): { career: ManagerCareer; story: ManagerWorldStory; emitted: boolean } {
+  const streak = getCurrentWinStreak(career);
+  const milestones = [10, 8, 5] as const;
+  const hit = milestones.find(
+    (m) =>
+      streak >= m &&
+      !story.shownMilestoneIds.includes(`story-win-streak-${m}`)
+  );
+  if (!hit) return { career, story, emitted: false };
+
+  const id = `story-win-streak-${hit}`;
+  const title = "Winning run";
+  const body = `${career.club} are on a ${streak}-match winning streak.`;
+  let next = pushStoryInbox(career, id, title, body);
+  let nextStory = appendMoment(story, {
+    id,
+    week: career.gameWeek,
+    seasonYear: career.seasonYear,
+    kind: "streak",
+    title,
+    body,
+  });
+  nextStory = {
+    ...nextStory,
+    shownMilestoneIds: [...nextStory.shownMilestoneIds, id],
+  };
+  return { career: next, story: nextStory, emitted: true };
+}
+
+function getCareerTotalWins(career: ManagerCareer): number {
+  let total = career.wins;
+  for (const s of career.seasonHistory) {
+    total += s.wins;
+  }
+  return total;
+}
+
+function maybeManagerCareerWins(
+  career: ManagerCareer,
+  story: ManagerWorldStory
+): { career: ManagerCareer; story: ManagerWorldStory; emitted: boolean } {
+  const total = getCareerTotalWins(career);
+  const thresholds = [200, 100, 50] as const;
+  const hit = thresholds.find(
+    (t) =>
+      total >= t &&
+      !story.shownMilestoneIds.includes(`story-career-wins-${t}`)
+  );
+  if (!hit) return { career, story, emitted: false };
+
+  const id = `story-career-wins-${hit}`;
+  const title = "Career milestone";
+  const body = `You have recorded ${hit} wins as a manager.`;
+  let next = pushStoryInbox(career, id, title, body);
+  let nextStory = appendMoment(story, {
+    id,
+    week: career.gameWeek,
+    seasonYear: career.seasonYear,
+    kind: "career",
+    title,
+    body,
+  });
+  nextStory = {
+    ...nextStory,
+    shownMilestoneIds: [...nextStory.shownMilestoneIds, id],
+  };
+  return { career: next, story: nextStory, emitted: true };
+}
+
 
 function syncRivalryFromLastMatch(
   career: ManagerCareer,
@@ -684,10 +1016,25 @@ export function processWorldStoryForWeek(career: ManagerCareer): ManagerCareer {
   story = former.story;
   if (former.emitted) return withStory(next, story);
 
-  const cup = maybeCupGiantKilling(next, story);
-  next = cup.career;
-  story = cup.story;
-  if (cup.emitted) return withStory(next, story);
+  const cupClassic = maybeCupGiantKilling(next, story);
+  next = cupClassic.career;
+  story = cupClassic.story;
+  if (cupClassic.emitted) return withStory(next, story);
+
+  const cupRound = maybeCupRoundProgress(next, story);
+  next = cupRound.career;
+  story = cupRound.story;
+  if (cupRound.emitted) return withStory(next, story);
+
+  const bigMatch = maybeBigMatchPreview(next, story);
+  next = bigMatch.career;
+  story = bigMatch.story;
+  if (bigMatch.emitted) return withStory(next, story);
+
+  const leagueMoment = maybeLeagueTableMoment(next, story);
+  next = leagueMoment.career;
+  story = leagueMoment.story;
+  if (leagueMoment.emitted) return withStory(next, story);
 
   const opp = next.lastMatchFixture?.opponent;
   if (opp) {
@@ -701,6 +1048,16 @@ export function processWorldStoryForWeek(career: ManagerCareer): ManagerCareer {
   next = br.career;
   story = br.story;
   if (br.emitted) return withStory(next, story);
+
+  const streak = maybeWinStreak(next, story);
+  next = streak.career;
+  story = streak.story;
+  if (streak.emitted) return withStory(next, story);
+
+  const careerWins = maybeManagerCareerWins(next, story);
+  next = careerWins.career;
+  story = careerWins.story;
+  if (careerWins.emitted) return withStory(next, story);
 
   const enq = maybeTransferEnquiry(next, story, rng);
   next = enq.career;

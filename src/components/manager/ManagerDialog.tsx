@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameModal } from "@/components/ui/GameModal";
 import { useModalA11y } from "@/hooks/useModalA11y";
+import { uiLayerClass } from "@/lib/ui/layers";
 import { TYPO } from "@/lib/ui/typography";
 import { playPanelClose, playUiClick } from "@/lib/sound";
 
@@ -47,7 +48,7 @@ export function ManagerDialog({
       open={open}
       onClose={handleCancel}
       labelledBy="manager-dialog-title"
-      zClass="z-[9999]"
+      zClass={uiLayerClass("modalBackdrop")}
       panelRef={panelRef}
       className="max-w-md outline-none sm:max-w-md"
     >

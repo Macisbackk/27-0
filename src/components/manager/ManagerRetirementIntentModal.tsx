@@ -4,13 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 import { ClubNameLabel } from "@/components/ClubNameLabel";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { GameButton } from "@/components/ui/GameButton";
+import { ManagerModal } from "@/components/manager/ManagerModal";
 import {
   MANAGER_LABEL,
   ManagerInboxBadge,
   ManagerSectionCard,
   ManagerStat,
 } from "@/components/manager/manager-ui";
-import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { formatWage } from "@/lib/manager/managerContracts";
@@ -93,39 +93,55 @@ export function ManagerRetirementIntentModal({
       : "Expires this season";
 
   return (
-    <div
-      className={`fixed inset-0 z-[94] flex items-end justify-center overflow-y-auto bg-black/80 ${SPACING.modalBackdrop} ${SPACING.safeBottom} sm:items-center sm:py-6`}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="retirement-intent-title"
-    >
-      <div
-        ref={panelRef}
-        tabIndex={-1}
-        className={`game-modal-panel my-auto flex w-full max-w-lg max-h-[min(92dvh,900px)] flex-col overflow-hidden outline-none sm:rounded-2xl`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className={`flex-1 overflow-y-auto overflow-x-hidden ${SPACING.cardPadding}`}>
-        <div className={managerModalHeaderClass("stone", { centered: true })}>
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border-2 border-stone-400/50 bg-stone-500/20 shadow-inner">
-            <span
-              className="font-display text-xl font-black text-stone-100"
-              aria-hidden
+    <>
+      <ManagerModal
+        open
+        labelledBy="retirement-intent-title"
+        panelRef={panelRef}
+        header={
+          <div className={managerModalHeaderClass("stone", { centered: true, slotted: true })}>
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border-2 border-stone-400/50 bg-stone-500/20 shadow-inner">
+              <span
+                className="font-display text-xl font-black text-stone-100"
+                aria-hidden
+              >
+                R
+              </span>
+            </div>
+            <div className="mt-3 flex justify-center">
+              <ManagerInboxBadge type="retirement" />
+            </div>
+            <h2 id="retirement-intent-title" className={`mt-3 ${TYPO.cardTitle}`}>
+              Retirement Planned
+            </h2>
+            <p className={`mx-auto mt-2 max-w-sm ${TYPO.bodySm} text-pitch-300`}>
+              A veteran squad member is considering calling time on their career.
+            </p>
+          </div>
+        }
+        footer={
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {canConvince && (
+              <GameButton
+                variant="theme"
+                onClick={() => {
+                  playUiClick();
+                  setConfirmStayOpen(true);
+                }}
+              >
+                Convince to stay
+              </GameButton>
+            )}
+            <GameButton
+              variant={canConvince ? "secondary" : "theme"}
+              className={canConvince ? undefined : "sm:col-span-2"}
+              onClick={handleAcknowledge}
             >
-              R
-            </span>
+              {canConvince ? "Let them retire" : "Understood"}
+            </GameButton>
           </div>
-          <div className="mt-3 flex justify-center">
-            <ManagerInboxBadge type="retirement" />
-          </div>
-          <h2 id="retirement-intent-title" className={`mt-3 ${TYPO.cardTitle}`}>
-            Retirement Planned
-          </h2>
-          <p className={`mx-auto mt-2 max-w-sm ${TYPO.bodySm} text-pitch-300`}>
-            A veteran squad member is considering calling time on their career.
-          </p>
-        </div>
-
+        }
+      >
         <ManagerSectionCard
           variant="inset"
           className="!p-0 overflow-hidden border-stone-400/25"
@@ -261,33 +277,7 @@ export function ManagerRetirementIntentModal({
             </p>
           )}
         </div>
-        </div>
-
-        <div
-          className={`shrink-0 border-t border-pitch-700/50 bg-pitch-950/90 ${SPACING.cardPadding} pt-4`}
-        >
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {canConvince && (
-            <GameButton
-              variant="theme"
-              onClick={() => {
-                playUiClick();
-                setConfirmStayOpen(true);
-              }}
-            >
-              Convince to stay
-            </GameButton>
-          )}
-          <GameButton
-            variant={canConvince ? "secondary" : "theme"}
-            className={canConvince ? undefined : "sm:col-span-2"}
-            onClick={handleAcknowledge}
-          >
-            {canConvince ? "Let them retire" : "Understood"}
-          </GameButton>
-        </div>
-        </div>
-      </div>
+      </ManagerModal>
 
       <ManagerDialog
         open={confirmStayOpen}
@@ -303,6 +293,6 @@ export function ManagerRetirementIntentModal({
         onConfirm={handleConfirmStay}
         onCancel={() => setConfirmStayOpen(false)}
       />
-    </div>
+    </>
   );
 }

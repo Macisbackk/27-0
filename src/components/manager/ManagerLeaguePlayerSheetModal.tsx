@@ -2,8 +2,8 @@
 
 import { useCallback } from "react";
 import { ClubMark } from "@/components/ClubBadge";
-import { BodyPortal } from "@/components/ui/BodyPortal";
 import { GameButton } from "@/components/ui/GameButton";
+import { ManagerModal } from "@/components/manager/ManagerModal";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import {
   formatWage,
@@ -26,6 +26,7 @@ import {
 } from "@/lib/manager/managerWatchlist";
 import { listingAllowsLoan } from "@/lib/manager/managerTransferLeague";
 import { isSameManagerClub } from "@/lib/clubs/super-league-display";
+import { managerModalHeaderClass } from "@/lib/manager/managerSurfaces";
 
 interface ManagerLeaguePlayerSheetModalProps {
   career: ManagerCareer;
@@ -92,97 +93,88 @@ export function ManagerLeaguePlayerSheetModal({
     Boolean(onUpdate) && !isSameManagerClub(club, career.club);
 
   return (
-    <BodyPortal>
-      <div
-        className={`fixed inset-0 z-[100] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} ${SPACING.safeBottom} overflow-y-auto sm:items-center`}
-        role="presentation"
-        onClick={handleClose}
-      >
-        <div
-          ref={panelRef}
-          tabIndex={-1}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="league-player-sheet-title"
-          className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
-          onClick={(e) => e.stopPropagation()}
-        >
+    <ManagerModal
+      open
+      onClose={handleClose}
+      labelledBy="league-player-sheet-title"
+      panelRef={panelRef}
+      header={
+        <div className={managerModalHeaderClass("primary", { slotted: true })}>
           <div className="flex items-start gap-3">
             <ClubMark club={club} size="sm" />
             <div className="min-w-0 flex-1">
               <h2 id="league-player-sheet-title" className={TYPO.cardTitle}>
                 {player.name}
               </h2>
-              <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
-                {club}
-              </p>
+              <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>{club}</p>
             </div>
           </div>
-
-          <dl className={`${CARD.inset} ${SPACING.cardPaddingSm} mt-4 space-y-2`}>
-            <DetailRow
-              label="Matchday role"
-              value={slotLabel ?? (inStartingXiii ? "Starting XIII" : "Interchange")}
-            />
-            <DetailRow label="Position" value={naturalLabel} />
-            {age != null && <DetailRow label="Age" value={`${age}`} />}
-            <DetailRow
-              label="Rating"
-              value={String(player.peakRating)}
-              valueClassName="font-display font-bold text-theme-primary"
-            />
-            <DetailRow
-              label="Value"
-              value={formatValue(player.value)}
-              valueClassName="font-semibold text-accent-gold"
-            />
-            <DetailRow
-              label="Wage"
-              value={`${formatWage(contract.wagePerYear)}/yr`}
-            />
-            <DetailRow
-              label="Contract"
-              value={
-                contract.yearsRemaining === 1
-                  ? "1 year left"
-                  : `${contract.yearsRemaining} years left`
-              }
-            />
-            <DetailRow label="Squad role" value={contract.squadRole} />
-            {listing && (
-              <DetailRow
-                label="Transfer list"
-                value={
-                  listingAllowsLoan(listing.listingType) &&
-                  listing.listingType === "loan"
-                    ? "Available on loan · free"
-                    : listingAllowsLoan(listing.listingType)
-                      ? `Listed · ${formatWage(listing.askingPrice)} · loan available`
-                      : `Listed · ${formatWage(listing.askingPrice)}`
-                }
-                valueClassName="font-semibold text-accent-gold"
-              />
-            )}
-          </dl>
-
-          <div className="mt-4 grid gap-2">
-            {canWatch && (
-              <GameButton
-                variant={watched ? "secondary" : "theme"}
-                onClick={() => {
-                  playUiClick();
-                  onUpdate!(toggleTransferWatchlist(career, playerId));
-                }}
-              >
-                {watched ? "Remove from Watchlist" : "Add to Watchlist"}
-              </GameButton>
-            )}
-            <GameButton variant="secondary" onClick={handleClose}>
-              Close
-            </GameButton>
-          </div>
         </div>
-      </div>
-    </BodyPortal>
+      }
+      footer={
+        <div className="grid gap-2">
+          {canWatch && (
+            <GameButton
+              variant={watched ? "secondary" : "theme"}
+              onClick={() => {
+                playUiClick();
+                onUpdate!(toggleTransferWatchlist(career, playerId));
+              }}
+            >
+              {watched ? "Remove from Watchlist" : "Add to Watchlist"}
+            </GameButton>
+          )}
+          <GameButton variant="secondary" onClick={handleClose}>
+            Close
+          </GameButton>
+        </div>
+      }
+    >
+      <dl className={`${CARD.inset} ${SPACING.cardPaddingSm} space-y-2`}>
+        <DetailRow
+          label="Matchday role"
+          value={slotLabel ?? (inStartingXiii ? "Starting XIII" : "Interchange")}
+        />
+        <DetailRow label="Position" value={naturalLabel} />
+        {age != null && <DetailRow label="Age" value={`${age}`} />}
+        <DetailRow
+          label="Rating"
+          value={String(player.peakRating)}
+          valueClassName="font-display font-bold text-theme-primary"
+        />
+        <DetailRow
+          label="Value"
+          value={formatValue(player.value)}
+          valueClassName="font-semibold text-accent-gold"
+        />
+        <DetailRow
+          label="Wage"
+          value={`${formatWage(contract.wagePerYear)}/yr`}
+        />
+        <DetailRow
+          label="Contract"
+          value={
+            contract.yearsRemaining === 1
+              ? "1 year left"
+              : `${contract.yearsRemaining} years left`
+          }
+        />
+        <DetailRow label="Squad role" value={contract.squadRole} />
+        {listing && (
+          <DetailRow
+            label="Transfer list"
+            value={
+              listingAllowsLoan(listing.listingType) &&
+              listing.listingType === "loan"
+                ? "Available on loan · free"
+                : listingAllowsLoan(listing.listingType)
+                  ? `Listed · ${formatWage(listing.askingPrice)} · loan available`
+                  : `Listed · ${formatWage(listing.askingPrice)}`
+            }
+            valueClassName="font-semibold text-accent-gold"
+          />
+        )}
+      </dl>
+    </ManagerModal>
   );
 }

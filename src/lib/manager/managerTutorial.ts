@@ -448,8 +448,12 @@ export function tutorialPhaseNeedsTap(
 export function tutorialLockTargetForPhase(
   step: ManagerTutorialStepDef,
   phase: TutorialInteractionPhase
-): "more" | ManagerView | null {
-  if (phase === "open-more" || step.action === "open-more") return "more";
+): "more" | "advance-week" | ManagerView | null {
+  if (phase === "open-more") return "more";
+  if (step.action === "open-more" && phase === "action") return "more";
+  if (phase === "action" && step.action === "advance-week") {
+    return "advance-week";
+  }
   if (phase === "action" && step.action === "nav" && step.navView) {
     return step.navView;
   }

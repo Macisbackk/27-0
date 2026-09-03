@@ -18,6 +18,8 @@ interface ManagerHubStickyActionsProps {
   advanceWeekLabel?: string | null;
   canAdvanceWeek?: boolean;
   onAdvanceWeek?: () => void;
+  /** Lift the play bar above the tutorial dim layer. */
+  tutorialElevate?: boolean;
 }
 
 /** Fixed Play / Simulate bar above mobile bottom nav on Manager Hub. */
@@ -33,12 +35,14 @@ export function ManagerHubStickyActions({
   advanceWeekLabel,
   canAdvanceWeek = false,
   onAdvanceWeek,
+  tutorialElevate = false,
 }: ManagerHubStickyActionsProps) {
   if (seasonReviewLabel && onSeasonReview) {
     return (
       <StickyActionBar
         aboveNav
         portal
+        tutorialElevate={tutorialElevate}
         className={visible ? undefined : "invisible pointer-events-none"}
       >
         <GameButton
@@ -62,6 +66,7 @@ export function ManagerHubStickyActions({
       <StickyActionBar
         aboveNav
         portal
+        tutorialElevate={tutorialElevate}
         className={visible ? undefined : "invisible pointer-events-none"}
       >
         <div data-tutorial-id="manager-hub-advance-week" className="min-w-0 flex-1">
@@ -85,6 +90,7 @@ export function ManagerHubStickyActions({
     <StickyActionBar
       aboveNav
       portal
+      tutorialElevate={tutorialElevate}
       className={visible ? undefined : "invisible pointer-events-none"}
     >
       <div data-tutorial-id="manager-hub-play-game" className="min-w-0 flex-1">

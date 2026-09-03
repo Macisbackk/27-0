@@ -160,12 +160,16 @@ const MODAL_HEADER_TONE: Record<ManagerModalHeaderTone, string> = {
 
 export function managerModalHeaderClass(
   tone: ManagerModalHeaderTone,
-  options?: { centered?: boolean; wide?: boolean }
+  options?: { centered?: boolean; wide?: boolean; slotted?: boolean }
 ): string {
+  const centered = options?.centered ? "text-center" : "";
+  // ManagerModal `header` slot already pads — skip negative-margin bleed.
+  if (options?.slotted) {
+    return `border-b ${centered} ${MODAL_HEADER_TONE[tone]}`.trim();
+  }
   const inset = options?.wide
     ? "-mx-5 -mt-5 mb-4 px-5 py-5 sm:-mx-6 sm:-mt-6 sm:px-6"
     : "-mx-4 -mt-4 mb-4 px-4 py-4 sm:-mx-6 sm:-mt-6 sm:px-6";
-  const centered = options?.centered ? "text-center" : "";
   return `border-b ${inset} ${centered} ${MODAL_HEADER_TONE[tone]}`.trim();
 }
 

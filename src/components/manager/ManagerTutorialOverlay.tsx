@@ -32,6 +32,7 @@ import {
   layoutRectFromElement,
   measureUsableViewport,
   placeTutorialCallout,
+  elevateTutorialTarget,
   scrollTargetIntoUsableRegion,
   spotlightRectForTarget,
   waitFrames,
@@ -324,6 +325,14 @@ export function ManagerTutorialOverlay({
     currentView,
   ]);
 
+  // Elevate the REAL target above the dim so it receives taps (no proxy).
+  useEffect(() => {
+    if (!needsTap || targetMissing || !layout.ready) return;
+    const el = targetElRef.current;
+    if (!el || !document.contains(el)) return;
+    return elevateTutorialTarget(el);
+  }, [needsTap, targetMissing, layout.ready, step?.id, phase, moreMenuOpen, currentView]);
+
   useEffect(() => {
     let debounce: number | null = null;
     let orientationTimer: number | null = null;
@@ -446,18 +455,6 @@ export function ManagerTutorialOverlay({
         ? step.moreHint
         : step.hint ?? "Tap the highlighted control to continue.";
 
-  const activateHighlightedControl = () => {
-    const el = targetElRef.current;
-    if (!el) return;
-    const control =
-      el.matches("button, a, [role='button']")
-        ? el
-        : el.querySelector<HTMLElement>("button, a, [role='button']");
-    const target = control ?? el;
-    if (target instanceof HTMLButtonElement && target.disabled) return;
-    target.click();
-  };
-
   return (
     <>
       <BodyPortal>
@@ -523,20 +520,6 @@ export function ManagerTutorialOverlay({
             onNext={goNext}
             visible={layout.ready}
           />
-          {waitingForTap && layout.actionHole ? (
-            <button
-              type="button"
-              aria-label={actionHint}
-              className="pointer-events-auto absolute z-[2] rounded-xl border-0 bg-transparent p-0"
-              style={{
-                top: layout.actionHole.top,
-                left: layout.actionHole.left,
-                width: Math.max(layout.actionHole.width, 44),
-                height: Math.max(layout.actionHole.height, 44),
-              }}
-              onClick={activateHighlightedControl}
-            />
-          ) : null}
         </div>
       </BodyPortal>
     </>

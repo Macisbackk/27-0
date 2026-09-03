@@ -93,13 +93,15 @@ import {
   acknowledgeManagerEventId,
   canAdvanceMatchWeek,
   canPlayNextMatch,
-  collectWeeklyManagerEventIds,
   getAdvanceWeekButtonLabel,
   getMatchWeekPhase,
   getPendingNarrativeInboxPopup,
   hasBlockingManagerDecision,
-  withWeeklyManagerEventQueue,
 } from "@/lib/manager/managerMatchWeek";
+import {
+  enqueueWeeklyManagerEvents,
+  throttlePendingManagerEvents,
+} from "@/lib/manager/managerEventQueue";
 import { scrollToManagerHubNextFixture } from "@/lib/manager/managerHubScroll";
 import { getManagerMatchOccasionPresentation } from "@/lib/manager/managerMatchOccasion";
 import {
@@ -661,8 +663,9 @@ export default function ManagerPage() {
         prepared.isSeasonComplete || isManagerSeasonComplete(prepared)
           ? { ...prepared, isSeasonComplete: true as const }
           : prepared;
-      const eventIds = collectWeeklyManagerEventIds(complete);
-      const withQueue = withWeeklyManagerEventQueue(complete, eventIds);
+      const withQueue = throttlePendingManagerEvents(
+        enqueueWeeklyManagerEvents(complete)
+      );
       persist(withQueue);
 
       if (withQueue.isSeasonComplete) {
@@ -1176,8 +1179,9 @@ export default function ManagerPage() {
     ) {
       const advanced = advanceManagerMatchWeek(prepared);
       if (advanced.ok) {
-        const eventIds = collectWeeklyManagerEventIds(advanced.career);
-        prepared = withWeeklyManagerEventQueue(advanced.career, eventIds);
+        prepared = throttlePendingManagerEvents(
+          enqueueWeeklyManagerEvents(advanced.career)
+        );
       }
     }
 
@@ -1979,8 +1983,9 @@ export default function ManagerPage() {
         return;
       }
 
-      const eventIds = collectWeeklyManagerEventIds(result.career);
-      const withQueue = withWeeklyManagerEventQueue(result.career, eventIds);
+      const withQueue = throttlePendingManagerEvents(
+        enqueueWeeklyManagerEvents(result.career)
+      );
       const afterTutorial =
         getActiveManagerTutorialStep(withQueue)?.action === "advance-week"
           ? advanceManagerTutorial(withQueue)
@@ -2337,7 +2342,8 @@ export default function ManagerPage() {
             unreadInbox={countUnreadInbox(career)}
             contextTabs={squadContextTabs}
             tutorialLock={
-              managerTutorialNavLock === "more"
+              managerTutorialNavLock === "more" ||
+              managerTutorialNavLock === "advance-week"
                 ? null
                 : managerTutorialNavLock
             }
@@ -2499,6 +2505,7 @@ export default function ManagerPage() {
           onAdvanceWeek={
             hubSticky.mode === "advance-week" ? handleAdvanceWeek : undefined
           }
+          tutorialElevate={managerTutorialNavLock === "advance-week"}
         />
       )}
 

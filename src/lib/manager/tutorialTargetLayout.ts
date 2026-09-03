@@ -374,6 +374,106 @@ export function layoutRectFromElement(el: HTMLElement): LayoutRect {
   return rectFromDOMRect(el.getBoundingClientRect());
 }
 
+type ElevateSnapshot = {
+  position: string;
+  top: string;
+  left: string;
+  width: string;
+  height: string;
+  zIndex: string;
+  margin: string;
+  boxShadow: string;
+  placeholder: HTMLElement | null;
+};
+
+/**
+ * Lift a tutorial target above the dim layer (z 10001) and under the callout
+ * (z 10003). Chrome already elevated via `.manager-tutorial-nav-elevated` only
+ * gets a local stack bump — never rip fixed-nav / sticky-bar controls out of flow.
+ */
+export function elevateTutorialTarget(el: HTMLElement): () => void {
+  if (el.dataset.tutorialElevated === "1") {
+    return () => undefined;
+  }
+
+  const rect = el.getBoundingClientRect();
+  const computed = getComputedStyle(el);
+  const alreadyFixed = computed.position === "fixed";
+  const chromeAlreadyElevated = Boolean(
+    el.closest(".manager-tutorial-nav-elevated")
+  );
+  const inFixedChrome = isViewportFixedTarget(el);
+  const snapshot: ElevateSnapshot = {
+    position: el.style.position,
+    top: el.style.top,
+    left: el.style.left,
+    width: el.style.width,
+    height: el.style.height,
+    zIndex: el.style.zIndex,
+    margin: el.style.margin,
+    boxShadow: el.style.boxShadow,
+    placeholder: null,
+  };
+
+  // Nav / More / sticky playbar: parent is already above the dim. Keep in-flow.
+  if (chromeAlreadyElevated || (inFixedChrome && !alreadyFixed)) {
+    if (computed.position === "static") {
+      el.style.position = "relative";
+    }
+    el.style.zIndex = "2";
+    el.style.boxShadow =
+      el.style.boxShadow ||
+      "0 0 0 2px var(--theme-primary), 0 8px 24px rgba(0,0,0,0.45)";
+    el.dataset.tutorialElevated = "1";
+    return () => {
+      el.style.position = snapshot.position;
+      el.style.zIndex = snapshot.zIndex;
+      el.style.boxShadow = snapshot.boxShadow;
+      delete el.dataset.tutorialElevated;
+    };
+  }
+
+  if (!alreadyFixed && el.parentElement) {
+    const placeholder = document.createElement("div");
+    placeholder.setAttribute("aria-hidden", "true");
+    placeholder.dataset.tutorialPlaceholder = "1";
+    placeholder.style.width = `${rect.width}px`;
+    placeholder.style.height = `${rect.height}px`;
+    placeholder.style.flex = "none";
+    placeholder.style.pointerEvents = "none";
+    el.parentElement.insertBefore(placeholder, el);
+    snapshot.placeholder = placeholder;
+
+    el.style.position = "fixed";
+    el.style.top = `${rect.top}px`;
+    el.style.left = `${rect.left}px`;
+    el.style.width = `${rect.width}px`;
+    el.style.height = `${rect.height}px`;
+    el.style.margin = "0";
+  }
+
+  el.style.zIndex = "10002";
+  el.style.boxShadow =
+    el.style.boxShadow ||
+    "0 0 0 2px var(--theme-primary), 0 8px 24px rgba(0,0,0,0.45)";
+  el.dataset.tutorialElevated = "1";
+
+  return () => {
+    if (snapshot.placeholder?.isConnected) {
+      snapshot.placeholder.remove();
+    }
+    el.style.position = snapshot.position;
+    el.style.top = snapshot.top;
+    el.style.left = snapshot.left;
+    el.style.width = snapshot.width;
+    el.style.height = snapshot.height;
+    el.style.zIndex = snapshot.zIndex;
+    el.style.margin = snapshot.margin;
+    el.style.boxShadow = snapshot.boxShadow;
+    delete el.dataset.tutorialElevated;
+  };
+}
+
 /** Four blocker panels around a hole (viewport coords). */
 export function holeBlockerPanels(
   hole: LayoutRect | null,

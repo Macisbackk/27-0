@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { ManagerModal } from "@/components/manager/ManagerModal";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
@@ -33,6 +34,7 @@ import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidatio
 import { formatInjuryLabel } from "@/lib/manager/managerTransfers";
 import { playPanelClose, playUiClick } from "@/lib/sound";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
+import { managerModalHeaderClass } from "@/lib/manager/managerSurfaces";
 
 interface ManagerSquadPlayerModalProps {
   career: ManagerCareer;
@@ -147,20 +149,21 @@ export function ManagerSquadPlayerModal({
   })();
 
   return (
-    <div
-      className={`fixed inset-0 z-[90] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} ${SPACING.safeBottom} overflow-y-auto sm:items-center`}
-      role="dialog"
-      aria-modal="true"
-      onClick={handleClose}
-    >
-      <div
-        ref={panelRef}
-        tabIndex={-1}
-        className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
-        onClick={(e) => e.stopPropagation()}
+    <>
+      <ManagerModal
+        open
+        onClose={handleClose}
+        labelledBy="squad-player-title"
+        panelRef={panelRef}
+        header={
+          <div className={managerModalHeaderClass("primary", { slotted: true })}>
+            <h2 id="squad-player-title" className={TYPO.cardTitle}>
+              {player.name}
+            </h2>
+          </div>
+        }
       >
-        <h2 className={TYPO.cardTitle}>{player.name}</h2>
-        <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+        <div className="grid grid-cols-2 gap-2 text-sm">
           <span>{POSITION_SHORT[player.position]}</span>
           <span className="text-theme-primary">
             {player.peakRating} rated
@@ -362,7 +365,7 @@ export function ManagerSquadPlayerModal({
             Close
           </GameButton>
         </div>
-      </div>
+      </ManagerModal>
 
       <ManagerDialog
         open={releaseConfirmOpen}
@@ -383,6 +386,6 @@ export function ManagerSquadPlayerModal({
         onConfirm={() => setErrorDialog(null)}
         onCancel={() => setErrorDialog(null)}
       />
-    </div>
+    </>
   );
 }

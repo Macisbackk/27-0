@@ -12,7 +12,11 @@ import type { ManagerView } from "@/lib/manager/types";
 import { playMenuClose, playMenuOpen, playTabChange } from "@/lib/sound";
 import { useModalA11y } from "@/hooks/useModalA11y";
 
-export type ManagerMoreTutorialLock = "more" | ManagerView | null;
+export type ManagerMoreTutorialLock =
+  | "more"
+  | "advance-week"
+  | ManagerView
+  | null;
 
 interface ManagerMobileBottomNavProps {
   active: ManagerView;
@@ -79,6 +83,7 @@ export function ManagerMobileBottomNav({
 
   const tabLockedOut = (id: ManagerView | "more") => {
     if (!tutorialLock) return false;
+    if (tutorialLock === "advance-week") return true;
     return tutorialLock !== id;
   };
 

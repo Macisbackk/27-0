@@ -340,6 +340,8 @@ interface StickyActionBarProps {
   mobileOnly?: boolean;
   /** Render via root portal — escapes overflow/transform ancestors. */
   portal?: boolean;
+  /** Lift above Manager Mode tutorial dim layer. */
+  tutorialElevate?: boolean;
 }
 
 /**
@@ -352,12 +354,13 @@ export function StickyActionBar({
   className = "",
   mobileOnly = true,
   portal = false,
+  tutorialElevate = false,
 }: StickyActionBarProps) {
   const bar = (
     <div
       className={`mobile-action-bar ${aboveNav ? "mobile-action-bar--above-nav" : ""} ${
         mobileOnly ? "sm:hidden" : ""
-      } ${className}`.trim()}
+      } ${tutorialElevate ? "manager-tutorial-nav-elevated z-[10002]" : ""} ${className}`.trim()}
       role="toolbar"
     >
       <div className="mobile-action-bar__inner">{children}</div>

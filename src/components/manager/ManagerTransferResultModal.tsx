@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { CARD, SPACING } from "@/lib/ui/design-system";
+import { ManagerModal } from "@/components/manager/ManagerModal";
 import { TYPO } from "@/lib/ui/typography";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { ManagerStat } from "@/components/manager/manager-ui";
@@ -39,24 +39,18 @@ export function ManagerTransferResultModal({
   const panelRef = useModalA11y(true, handleClose);
 
   return (
-    <div
-      className={`fixed inset-0 z-[90] flex items-end justify-center bg-black/75 ${SPACING.modalBackdrop} ${SPACING.safeBottom} overflow-y-auto sm:items-center`}
-      role="dialog"
-      aria-modal="true"
-      onClick={handleClose}
-    >
-      <div
-        ref={panelRef}
-        tabIndex={-1}
-        className={`game-modal-panel w-full max-w-md max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden outline-none ${SPACING.cardPadding}`}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ManagerModal
+      open
+      onClose={handleClose}
+      labelledBy="transfer-result-title"
+      panelRef={panelRef}
+      header={
         <div
-          className={`-mx-4 -mt-4 mb-4 border-b px-4 py-3 sm:-mx-6 sm:-mt-6 sm:px-6 ${
+          className={
             result.accepted
-              ? "border-theme-primary/30 bg-theme-primary/10"
-              : "border-red-500/30 bg-red-500/10"
-          }`}
+              ? "border-b border-theme-primary/30 bg-theme-primary/10"
+              : "border-b border-red-500/30 bg-red-500/10"
+          }
         >
           <span
             className={`inline-flex rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
@@ -67,60 +61,62 @@ export function ManagerTransferResultModal({
           >
             {result.accepted ? "Deal agreed" : "Bid rejected"}
           </span>
-          <h2 className={`mt-2 ${TYPO.cardTitle}`}>{result.playerName}</h2>
+          <h2 id="transfer-result-title" className={`mt-2 ${TYPO.cardTitle}`}>
+            {result.playerName}
+          </h2>
           <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
             From <span className="text-white">{result.club}</span>
           </p>
         </div>
-
-        <div className="grid grid-cols-2 gap-3">
+      }
+    >
+      <div className="grid grid-cols-2 gap-3">
+        <ManagerStat
+          label="Transfer fee"
+          value={
+            result.loanWageSharePct != null
+              ? "Loan"
+              : result.freeTransfer || result.fee <= 0
+                ? "Free"
+                : formatWage(result.fee)
+          }
+          tone="gold"
+        />
+        <ManagerStat
+          label={
+            result.loanWageSharePct != null ? "Your wage cost" : "Wage"
+          }
+          value={`${formatWage(result.wagePerYear)}/yr`}
+          tone="default"
+        />
+        {result.loanWageSharePct != null ? (
           <ManagerStat
-            label="Transfer fee"
-            value={
-              result.loanWageSharePct != null
-                ? "Loan"
-                : result.freeTransfer || result.fee <= 0
-                  ? "Free"
-                  : formatWage(result.fee)
-            }
-            tone="gold"
+            label="Your wage share"
+            value={`${result.loanWageSharePct}%`}
+            tone="muted"
           />
+        ) : (
           <ManagerStat
-            label={
-              result.loanWageSharePct != null ? "Your wage cost" : "Wage"
-            }
-            value={`${formatWage(result.wagePerYear)}/yr`}
-            tone="default"
+            label="Contract"
+            value={`${result.years} year${result.years === 1 ? "" : "s"}`}
+            tone="muted"
           />
-          {result.loanWageSharePct != null ? (
-            <ManagerStat
-              label="Your wage share"
-              value={`${result.loanWageSharePct}%`}
-              tone="muted"
-            />
-          ) : (
-            <ManagerStat
-              label="Contract"
-              value={`${result.years} year${result.years === 1 ? "" : "s"}`}
-              tone="muted"
-            />
-          )}
-        </div>
-
-        <p
-          className={`mt-4 rounded-lg border px-3 py-2.5 text-sm ${
-            result.accepted
-              ? "border-theme-primary/35 bg-theme-primary/8 text-theme-primary"
-              : "border-red-500/35 bg-red-500/8 text-red-200"
-          }`}
-        >
-          {result.reason}
-        </p>
-
-        <GameButton variant="theme" className="mt-4" onClick={onClose}>
-          {result.accepted ? "Done" : "Close"}
-        </GameButton>
+        )}
       </div>
-    </div>
+
+      <p
+        className={`mt-4 rounded-lg border px-3 py-2.5 text-sm ${
+          result.accepted
+            ? "border-theme-primary/35 bg-theme-primary/8 text-theme-primary"
+            : "border-red-500/35 bg-red-500/8 text-red-200"
+        }`}
+      >
+        {result.reason}
+      </p>
+
+      <GameButton variant="theme" className="mt-4" onClick={onClose}>
+        {result.accepted ? "Done" : "Close"}
+      </GameButton>
+    </ManagerModal>
   );
 }

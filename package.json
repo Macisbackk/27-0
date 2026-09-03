@@ -94,7 +94,8 @@
     "audit:button-colours": "tsx scripts/audit-button-colours.ts",
     "audit:ui-consistency": "tsx scripts/audit-ui-consistency.ts",
     "audit:mobile": "tsx scripts/audit-mobile.ts",
-    "audit:team-colours": "tsx scripts/audit-team-colours.ts"
+    "audit:team-colours": "tsx scripts/audit-team-colours.ts",
+    "audit:manager-tutorial": "tsx scripts/audit-manager-tutorial.ts"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.0",
