@@ -424,29 +424,11 @@ export function ManagerTutorialOverlay({
 
   if (!step) return null;
 
-  // When elevated nav owns the tap target, skip overlay hole blockers for that
-  // region — the real control sits above the dim and must receive touches.
-  const elevatedNavInteraction = needsTap && Boolean(
-    tutorialLockTargetForPhase(step, phase)
-  );
-
   const blockers = holeBlockerPanels(
-    needsTap && !elevatedNavInteraction ? layout.actionHole : null,
+    needsTap ? layout.actionHole : null,
     vw || (typeof window !== "undefined" ? window.innerWidth : 0),
     vh || (typeof window !== "undefined" ? window.innerHeight : 0)
   );
-
-  // When nav is elevated, still block page behind with full-screen blockers,
-  // but cut a hole so dim spotlight reads correctly... Actually elevated
-  // controls are above overlay; use full-screen blockers under them.
-  const pageBlockers =
-    elevatedNavInteraction
-      ? holeBlockerPanels(
-          null,
-          vw || window.innerWidth,
-          vh || window.innerHeight
-        )
-      : blockers;
 
   const showSpotlight = Boolean(layout.ready && layout.spotlight);
   const stepIndex = getManagerTutorialStepIndex(step.id);
@@ -457,6 +439,18 @@ export function ManagerTutorialOverlay({
       : compact && phase === "action" && step.moreHint
         ? step.moreHint
         : step.hint ?? "Tap the highlighted control to continue.";
+
+  const activateHighlightedControl = () => {
+    const el = targetElRef.current;
+    if (!el) return;
+    const control =
+      el.matches("button, a, [role='button']")
+        ? el
+        : el.querySelector<HTMLElement>("button, a, [role='button']");
+    const target = control ?? el;
+    if (target instanceof HTMLButtonElement && target.disabled) return;
+    target.click();
+  };
 
   return (
     <>
@@ -492,7 +486,7 @@ export function ManagerTutorialOverlay({
             />
           )}
 
-          {pageBlockers.map((panel, i) => (
+          {blockers.map((panel, i) => (
             <div
               key={`block-${i}`}
               aria-hidden
@@ -510,7 +504,7 @@ export function ManagerTutorialOverlay({
         </div>
       </BodyPortal>
       <BodyPortal>
-        <div className="manager-tutorial-callout-layer pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="manager-tutorial-callout-layer pointer-events-none fixed inset-0">
           <TutorialCallout
             step={step}
             needsAction={needsTap}
@@ -523,6 +517,20 @@ export function ManagerTutorialOverlay({
             onNext={goNext}
             visible={layout.ready}
           />
+          {needsTap && layout.actionHole ? (
+            <button
+              type="button"
+              aria-label={actionHint}
+              className="pointer-events-auto absolute z-[2] rounded-xl border-0 bg-transparent p-0"
+              style={{
+                top: layout.actionHole.top,
+                left: layout.actionHole.left,
+                width: Math.max(layout.actionHole.width, 44),
+                height: Math.max(layout.actionHole.height, 44),
+              }}
+              onClick={activateHighlightedControl}
+            />
+          ) : null}
         </div>
       </BodyPortal>
     </>
