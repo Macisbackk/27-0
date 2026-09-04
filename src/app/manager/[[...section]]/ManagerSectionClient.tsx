@@ -2337,7 +2337,10 @@ export default function ManagerPage() {
             gameWeek={career.gameWeek}
             onNavigate={handleNavNavigate}
             disabled={
-              playGameOpen || awaitingFriendlyChoice || managerOverlayActive
+              playGameOpen ||
+              awaitingFriendlyChoice ||
+              managerOverlayActive ||
+              managerTutorialNavLock === "advance-week"
             }
             unreadInbox={countUnreadInbox(career)}
             contextTabs={squadContextTabs}

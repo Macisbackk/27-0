@@ -473,26 +473,41 @@ function isTutorialTargetVisible(el: HTMLElement): boolean {
   return rect.width >= 2 && rect.height >= 2;
 }
 
+function tutorialTargetSurfaceScore(el: HTMLElement, compact: boolean): number {
+  // Prefer the responsive surface that matches the current viewport.
+  if (el.closest("[data-manager-more-sheet]")) return compact ? 100 : 10;
+  if (el.closest("[data-manager-mobile-nav]")) return compact ? 90 : 10;
+  if (el.closest(".mobile-action-bar")) return compact ? 85 : 15;
+  // Desktop nav is hidden below sm; if still somehow visible, deprioritize on compact.
+  if (el.closest("nav[aria-label='Manager sections']")) return compact ? 20 : 90;
+  return 50;
+}
+
 /**
- * Resolve the first *visible* tutorial target.
- * Prefer later DOM matches when earlier duplicates are hidden (e.g. hub Advance
- * Week card vs mobile sticky play bar).
+ * Resolve the best *visible* tutorial target for the current viewport.
+ * Prefer the responsive surface (mobile nav / More / sticky bar vs desktop nav)
+ * rather than "last DOM match".
  */
 export function resolveTutorialTargetElement(
   targets: ManagerTutorialTargetId[] | undefined
 ): HTMLElement | null {
   if (typeof document === "undefined" || !targets?.length) return null;
+  const compact = isTutorialCompactViewport();
+
   for (const id of targets) {
     const nodes = document.querySelectorAll(`[data-tutorial-id="${id}"]`);
-    // Prefer the last visible match so mobile More sheet items win over
-    // hidden desktop duplicates when both exist.
-    let found: HTMLElement | null = null;
+    let best: HTMLElement | null = null;
+    let bestScore = -1;
     for (const node of nodes) {
       if (!(node instanceof HTMLElement)) continue;
       if (!isTutorialTargetVisible(node)) continue;
-      found = node;
+      const score = tutorialTargetSurfaceScore(node, compact);
+      if (score >= bestScore) {
+        best = node;
+        bestScore = score;
+      }
     }
-    if (found) return found;
+    if (best) return best;
   }
   return null;
 }

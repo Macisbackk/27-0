@@ -57,12 +57,20 @@ function rectFromDOMRect(r: DOMRect | LayoutRect): LayoutRect {
   };
 }
 
+/** Cached safe-area insets — probe DOM once, reuse until viewport changes. */
+let _cachedInsets: { top: number; right: number; bottom: number; left: number } | null = null;
+let _insetsVw = 0;
+let _insetsVh = 0;
+
 function measureSafeInsets(): {
   top: number;
   right: number;
   bottom: number;
   left: number;
 } {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  if (_cachedInsets && _insetsVw === vw && _insetsVh === vh) return _cachedInsets;
   const probe = document.createElement("div");
   probe.setAttribute("aria-hidden", "true");
   probe.style.cssText =
@@ -78,7 +86,15 @@ function measureSafeInsets(): {
     left: parseFloat(cs.paddingLeft) || 0,
   };
   probe.remove();
+  _cachedInsets = insets;
+  _insetsVw = vw;
+  _insetsVh = vh;
   return insets;
+}
+
+/** Invalidate cached insets on viewport change. */
+export function invalidateSafeInsetCache(): void {
+  _cachedInsets = null;
 }
 
 function resolveCssLength(value: string): number {
@@ -298,7 +314,8 @@ export function spotlightRectForTarget(
 export function placeTutorialCallout(
   target: LayoutRect,
   usable: UsableViewport,
-  callout: { width: number; height: number }
+  callout: { width: number; height: number },
+  preferredPlacement?: CalloutPlacement | null
 ): CalloutBox {
   const width = Math.min(callout.width, usable.width);
   const shortViewport = usable.height < 420;
@@ -314,17 +331,38 @@ export function placeTutorialCallout(
   const fitsAbove = spaceAbove >= height + CALLOUT_GAP;
   const targetDominates = target.height > usable.height * 0.55;
 
+  // Hysteresis: keep the previous side when both still fit, so tiny scroll
+  // drift doesn't flip the callout every frame.
+  const preferAbove =
+    preferredPlacement === "above" || preferredPlacement === "dock-top";
+  const preferBelow =
+    preferredPlacement === "below" || preferredPlacement === "dock-bottom";
+
   let placement: CalloutPlacement;
   let top: number;
 
   if (targetDominates) {
-    if (spaceBelow >= spaceAbove) {
+    if (preferAbove && fitsAbove) {
+      placement = "dock-top";
+      top = usable.top;
+    } else if (preferBelow && fitsBelow) {
+      placement = "dock-bottom";
+      top = usable.bottom - height;
+    } else if (spaceBelow >= spaceAbove) {
       placement = "dock-bottom";
       top = usable.bottom - height;
     } else {
       placement = "dock-top";
       top = usable.top;
     }
+  } else if (preferBelow && fitsBelow) {
+    placement = "below";
+    top = target.bottom + CALLOUT_GAP;
+    if (top + height > usable.bottom) top = usable.bottom - height;
+  } else if (preferAbove && fitsAbove) {
+    placement = "above";
+    top = target.top - CALLOUT_GAP - height;
+    if (top < usable.top) top = usable.top;
   } else if (fitsBelow && (!fitsAbove || spaceBelow >= spaceAbove)) {
     placement = "below";
     top = target.bottom + CALLOUT_GAP;
@@ -392,6 +430,9 @@ type ElevateSnapshot = {
  * gets a local stack bump — never rip fixed-nav / sticky-bar controls out of flow.
  */
 export function elevateTutorialTarget(el: HTMLElement): () => void {
+  // Guard: already elevated by a prior effect that hasn't cleaned up yet.
+  // Return a no-op — the prior cleanup will restore the element correctly.
+  // This handles React Strict Mode double-fire and effect overlap.
   if (el.dataset.tutorialElevated === "1") {
     return () => undefined;
   }
@@ -422,7 +463,6 @@ export function elevateTutorialTarget(el: HTMLElement): () => void {
     }
     el.style.zIndex = "2";
     el.style.boxShadow =
-      el.style.boxShadow ||
       "0 0 0 2px var(--theme-primary), 0 8px 24px rgba(0,0,0,0.45)";
     el.dataset.tutorialElevated = "1";
     return () => {
@@ -454,7 +494,6 @@ export function elevateTutorialTarget(el: HTMLElement): () => void {
 
   el.style.zIndex = "10002";
   el.style.boxShadow =
-    el.style.boxShadow ||
     "0 0 0 2px var(--theme-primary), 0 8px 24px rgba(0,0,0,0.45)";
   el.dataset.tutorialElevated = "1";
 
@@ -532,6 +571,40 @@ export function holeBlockerPanels(
     }
   }
   return panels;
+}
+
+/**
+ * Compare two LayoutRects — returns true when they differ by more than `threshold` px.
+ * Used to prevent re-renders from sub-pixel drift.
+ */
+export function rectMateriallyChanged(
+  a: LayoutRect | null,
+  b: LayoutRect | null,
+  threshold = 1.5
+): boolean {
+  if (a === b) return false;
+  if (!a || !b) return true;
+  return (
+    Math.abs(a.top - b.top) > threshold ||
+    Math.abs(a.left - b.left) > threshold ||
+    Math.abs(a.width - b.width) > threshold ||
+    Math.abs(a.height - b.height) > threshold
+  );
+}
+
+export function calloutMateriallyChanged(
+  a: CalloutBox | null,
+  b: CalloutBox | null,
+  threshold = 1.5
+): boolean {
+  if (a === b) return false;
+  if (!a || !b) return true;
+  return (
+    Math.abs(a.top - b.top) > threshold ||
+    Math.abs(a.left - b.left) > threshold ||
+    Math.abs(a.width - b.width) > threshold ||
+    a.placement !== b.placement
+  );
 }
 
 export function waitFrames(count: number): Promise<void> {

@@ -27,12 +27,15 @@ import {
   type ManagerTutorialStepDef,
 } from "@/lib/manager/managerTutorial";
 import {
+  calloutMateriallyChanged,
   holeBlockerPanels,
+  invalidateSafeInsetCache,
   isViewportFixedTarget,
   layoutRectFromElement,
   measureUsableViewport,
   placeTutorialCallout,
   elevateTutorialTarget,
+  rectMateriallyChanged,
   scrollTargetIntoUsableRegion,
   spotlightRectForTarget,
   waitFrames,
@@ -87,6 +90,8 @@ export function ManagerTutorialOverlay({
 }: ManagerTutorialOverlayProps) {
   const step = getActiveManagerTutorialStep(career);
   const [compact, setCompact] = useState(isTutorialCompactViewport);
+
+  // ── Phase & derived values ──────────────────────────────────────────────────
   const phase = useMemo(() => {
     if (!step) return "next" as const;
     if (
@@ -106,6 +111,11 @@ export function ManagerTutorialOverlay({
     () => (step ? resolveTutorialPhaseTargets(step, phase) : undefined),
     [step, phase]
   );
+
+  // Stable string key for phaseTargets so ResizeObserver effect doesn't re-create
+  // on every render when the targets array is referentially new but content-equal.
+  const phaseTargetsKey = phaseTargets?.join(",") ?? "";
+
   const needsTap = Boolean(step && tutorialPhaseNeedsTap(phase));
   const showNext =
     Boolean(step) &&
@@ -114,6 +124,7 @@ export function ManagerTutorialOverlay({
       (step?.action === "advance-week" &&
         !tutorialCanRequireAdvanceWeek(career)));
 
+  // ── Refs ────────────────────────────────────────────────────────────────────
   const panelRef = useRef<HTMLDivElement | null>(null);
   const lockRef = useRef<ReturnType<typeof acquireScrollLock> | null>(null);
   const targetElRef = useRef<HTMLElement | null>(null);
@@ -121,11 +132,35 @@ export function ManagerTutorialOverlay({
   const advancedMoreRef = useRef<string | null>(null);
   const careerRef = useRef(career);
   careerRef.current = career;
+  /** Cleanup for the currently elevated target — owned by syncTargetLayout. */
+  const unelevateRef = useRef<(() => void) | null>(null);
+  const elevationSignalRef = useRef(0);
+  /** Lets the ResizeObserver re-attach after a new target is resolved. */
+  const [targetEpoch, setTargetEpoch] = useState(0);
+
+  /** Ref holding the last committed layout — avoids setState for sub-pixel drift. */
+  const layoutRef = useRef<LayoutState>(EMPTY_LAYOUT);
+
+  /** Ref-stable versions of frequently changing props used by stable callbacks. */
+  const needsTapRef = useRef(needsTap);
+  needsTapRef.current = needsTap;
+  const phaseTargetsRef = useRef(phaseTargets);
+  phaseTargetsRef.current = phaseTargets;
+
+  // ── State ───────────────────────────────────────────────────────────────────
   const [layout, setLayout] = useState<LayoutState>(EMPTY_LAYOUT);
   const [targetMissing, setTargetMissing] = useState(false);
   const [vw, setVw] = useState(0);
   const [vh, setVh] = useState(0);
 
+  const clearElevation = useCallback(() => {
+    if (unelevateRef.current) {
+      unelevateRef.current();
+      unelevateRef.current = null;
+    }
+  }, []);
+
+  // ── Helpers ─────────────────────────────────────────────────────────────────
   const withProgrammaticScroll = useCallback((fn: () => void) => {
     const html = document.documentElement;
     const body = document.body;
@@ -141,14 +176,19 @@ export function ManagerTutorialOverlay({
     }
   }, []);
 
+  /**
+   * computeLayout: measure and commit geometry.
+   * Uses layoutRef to skip setState when nothing has materially changed,
+   * breaking the measure→setState→render→measure loop.
+   *
+   * IMPORTANT: does NOT set `ready: false` — callers do that via syncTargetLayout.
+   * This function only transitions to `ready: true` when it has real geometry.
+   */
   const computeLayout = useCallback(
     (el: HTMLElement | null, actionRequired: boolean) => {
       const vv = window.visualViewport;
       const viewW = vv?.width ?? window.innerWidth;
       const viewH = vv?.height ?? window.innerHeight;
-
-      const nextVw = viewW;
-      const nextVh = viewH;
 
       if (!el) {
         const usable = measureUsableViewport();
@@ -157,9 +197,7 @@ export function ManagerTutorialOverlay({
           panelRef.current?.offsetHeight || 180,
           usable.height
         );
-        setVw(nextVw);
-        setVh(nextVh);
-        setLayout({
+        const next: LayoutState = {
           spotlight: null,
           callout: {
             top: usable.top + Math.max(0, (usable.height - height) * 0.28),
@@ -170,7 +208,23 @@ export function ManagerTutorialOverlay({
           },
           actionHole: null,
           ready: true,
-        });
+        };
+
+        // Only commit if this is genuinely different from current
+        const prev = layoutRef.current;
+        if (
+          prev.ready &&
+          !prev.spotlight &&
+          !calloutMateriallyChanged(prev.callout, next.callout) &&
+          Boolean(prev.actionHole) === actionRequired
+        ) {
+          return;
+        }
+
+        layoutRef.current = next;
+        setVw(viewW);
+        setVh(viewH);
+        setLayout(next);
         return;
       }
 
@@ -190,40 +244,73 @@ export function ManagerTutorialOverlay({
       const measuredH =
         panelRef.current?.offsetHeight || (usable.isCompact ? 150 : 180);
       const measuredW = Math.min(usable.width, usable.isCompact ? 340 : 360);
-      const callout = placeTutorialCallout(target, usable, {
-        width: measuredW,
-        height: measuredH,
-      });
+      const callout = placeTutorialCallout(
+        target,
+        usable,
+        {
+          width: measuredW,
+          height: measuredH,
+        },
+        layoutRef.current.ready ? layoutRef.current.callout?.placement : null
+      );
 
-      setVw(nextVw);
-      setVh(nextVh);
-      setLayout({
+      const prev = layoutRef.current;
+      // Skip state update when geometry hasn't materially changed — stops feedback loop.
+      if (
+        prev.ready &&
+        !rectMateriallyChanged(prev.spotlight, spotlight) &&
+        !calloutMateriallyChanged(prev.callout, callout) &&
+        Boolean(prev.actionHole) === actionRequired
+      ) {
+        return;
+      }
+
+      const next: LayoutState = {
         spotlight,
         callout,
         actionHole: actionRequired ? spotlight : null,
         ready: true,
-      });
+      };
+      layoutRef.current = next;
+      setVw(viewW);
+      setVh(viewH);
+      setLayout(next);
     },
-    []
+    [] // No deps — reads from refs, stable forever
   );
 
+  /**
+   * syncTargetLayout: authoritative layout sync.
+   * Resets layout to not-ready, waits for the target to appear,
+   * optionally scrolls it into view, then calls computeLayout once.
+   *
+   * The generation counter (layoutGenRef) ensures only the latest invocation
+   * commits — stale async chains abort.
+   */
   const syncTargetLayout = useCallback(
     async (opts?: { scroll?: boolean }) => {
       if (!step) {
+        clearElevation();
+        layoutRef.current = EMPTY_LAYOUT;
         setLayout(EMPTY_LAYOUT);
         targetElRef.current = null;
         return;
       }
 
       const gen = ++layoutGenRef.current;
+      // Drop stale elevation/target immediately so we never highlight the previous step.
+      clearElevation();
+      targetElRef.current = null;
       setTargetMissing(false);
+      layoutRef.current = EMPTY_LAYOUT;
       setLayout((prev) => ({ ...prev, ready: false }));
 
       await waitFrames(2);
       if (gen !== layoutGenRef.current) return;
 
-      const el = await waitForTutorialTarget(phaseTargets, {
-        timeoutMs: phaseTargets?.length ? 2200 : 0,
+      const targets = phaseTargetsRef.current;
+      const el = await waitForTutorialTarget(targets, {
+        timeoutMs: targets?.length ? 2200 : 0,
       });
       if (gen !== layoutGenRef.current) return;
 
@@ -246,15 +333,25 @@ export function ManagerTutorialOverlay({
         }
       }
 
-      computeLayout(el, needsTap);
-      setTargetMissing(!el && Boolean(phaseTargets?.length));
-      requestAnimationFrame(() => {
-        if (gen !== layoutGenRef.current) return;
-        computeLayout(targetElRef.current, needsTap);
-      });
+      // Measure first (in-flow), then elevate so ResizeObserver sees elevation as intentional.
+      const actionRequired = needsTapRef.current;
+      computeLayout(el, actionRequired);
+      setTargetMissing(!el && Boolean(targets?.length));
+
+      if (el && actionRequired && document.contains(el)) {
+        elevationSignalRef.current++;
+        clearElevation();
+        unelevateRef.current = elevateTutorialTarget(el);
+      }
+
+      setTargetEpoch((n) => n + 1);
     },
-    [step, phaseTargets, needsTap, computeLayout, withProgrammaticScroll]
+    // phaseTargets read via phaseTargetsRef — keep this stable across phase-internal array identity.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [step?.id, computeLayout, withProgrammaticScroll, clearElevation]
   );
+
+  // ── Effects ─────────────────────────────────────────────────────────────────
 
   // Soft auto-nav only for non-interactive / content showcase steps.
   useEffect(() => {
@@ -266,7 +363,9 @@ export function ManagerTutorialOverlay({
     } else if (!step.requireAction) {
       onNavigate(step.view);
     }
-  }, [step?.id, step?.view, step?.requireAction, step?.action, phase, currentView, onNavigate]);
+    // currentView is intentionally not in deps — we only want to react to step/phase changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step?.id, step?.view, step?.requireAction, step?.action, phase, onNavigate]);
 
   // Skip mobile-only steps on desktop.
   useEffect(() => {
@@ -285,18 +384,19 @@ export function ManagerTutorialOverlay({
     if (advancedMoreRef.current === step.id) return;
     advancedMoreRef.current = step.id;
     onUpdate(advanceManagerTutorial(careerRef.current));
-  }, [step, moreMenuOpen, onUpdate]);
+  }, [step?.id, step?.action, moreMenuOpen, onUpdate]);
 
   // Publish tutorial lock so nav elevates + only the target stays tappable.
   useEffect(() => {
     const lock = step ? tutorialLockTargetForPhase(step, phase) : null;
     onTutorialLockChange(lock);
-  }, [step, phase, onTutorialLockChange]);
+  }, [step?.id, phase, onTutorialLockChange]);
 
   useEffect(() => {
     return () => onTutorialLockChange(null);
   }, [onTutorialLockChange]);
 
+  // Compact breakpoint.
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 639px)");
     const sync = () => setCompact(mq.matches);
@@ -305,6 +405,7 @@ export function ManagerTutorialOverlay({
     return () => mq.removeEventListener("change", sync);
   }, []);
 
+  // Scroll lock — acquire once for the tutorial lifetime.
   useEffect(() => {
     lockRef.current = acquireScrollLock("manager-tutorial");
     return () => {
@@ -317,22 +418,13 @@ export function ManagerTutorialOverlay({
 
   useEffect(() => {
     void syncTargetLayout({ scroll: true });
-  }, [
-    syncTargetLayout,
-    career.tutorialStep,
-    phase,
-    moreMenuOpen,
-    currentView,
-  ]);
+  }, [syncTargetLayout, phase]);
 
-  // Elevate the REAL target above the dim so it receives taps (no proxy).
   useEffect(() => {
-    if (!needsTap || targetMissing || !layout.ready) return;
-    const el = targetElRef.current;
-    if (!el || !document.contains(el)) return;
-    return elevateTutorialTarget(el);
-  }, [needsTap, targetMissing, layout.ready, step?.id, phase, moreMenuOpen, currentView]);
+    return () => clearElevation();
+  }, [clearElevation]);
 
+  // Viewport / orientation — stable for the tutorial lifetime of this sync fn.
   useEffect(() => {
     let debounce: number | null = null;
     let orientationTimer: number | null = null;
@@ -343,10 +435,11 @@ export function ManagerTutorialOverlay({
 
     const onViewportChange = () => {
       if (debounce != null) window.clearTimeout(debounce);
+      invalidateSafeInsetCache();
       debounce = window.setTimeout(() => {
         debounce = null;
         runFullSync();
-      }, 60);
+      }, 120);
     };
 
     const onOrientation = () => {
@@ -365,23 +458,6 @@ export function ManagerTutorialOverlay({
     vv?.addEventListener("resize", onViewportChange);
     vv?.addEventListener("scroll", onViewportChange);
 
-    const refine = () => {
-      if (debounce != null) window.clearTimeout(debounce);
-      debounce = window.setTimeout(() => {
-        debounce = null;
-        const el = targetElRef.current;
-        if (el && document.contains(el)) {
-          computeLayout(el, needsTap);
-        } else if (phaseTargets?.length) {
-          void syncTargetLayout({ scroll: false });
-        }
-      }, 100);
-    };
-
-    const ro = new ResizeObserver(refine);
-    if (targetElRef.current) ro.observe(targetElRef.current);
-    if (panelRef.current) ro.observe(panelRef.current);
-
     return () => {
       window.removeEventListener("resize", onViewportChange);
       window.removeEventListener("orientationchange", onOrientation);
@@ -390,10 +466,44 @@ export function ManagerTutorialOverlay({
       vv?.removeEventListener("scroll", onViewportChange);
       if (debounce != null) window.clearTimeout(debounce);
       if (orientationTimer != null) window.clearTimeout(orientationTimer);
+    };
+  }, [syncTargetLayout]);
+
+  // Observe only the current target + callout panel; reattach when targetEpoch bumps.
+  useEffect(() => {
+    let debounce: number | null = null;
+    let lastElevationSignal = elevationSignalRef.current;
+
+    const refine = () => {
+      const currentSignal = elevationSignalRef.current;
+      if (currentSignal !== lastElevationSignal) {
+        lastElevationSignal = currentSignal;
+        return;
+      }
+
+      if (debounce != null) window.clearTimeout(debounce);
+      debounce = window.setTimeout(() => {
+        debounce = null;
+        const el = targetElRef.current;
+        if (el && document.contains(el)) {
+          computeLayout(el, needsTapRef.current);
+        } else if (phaseTargetsRef.current?.length) {
+          void syncTargetLayout({ scroll: false });
+        }
+      }, 150);
+    };
+
+    const ro = new ResizeObserver(refine);
+    if (targetElRef.current) ro.observe(targetElRef.current);
+    if (panelRef.current) ro.observe(panelRef.current);
+
+    return () => {
+      if (debounce != null) window.clearTimeout(debounce);
       ro.disconnect();
     };
-  }, [syncTargetLayout, computeLayout, needsTap, step?.id, phaseTargets]);
+  }, [computeLayout, syncTargetLayout, targetEpoch, phaseTargetsKey]);
 
+  // Keyboard trap.
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -424,6 +534,7 @@ export function ManagerTutorialOverlay({
     return () => window.removeEventListener("keydown", onKey, true);
   }, [step?.id, phase]);
 
+  // ── Actions ──────────────────────────────────────────────────────────────────
   const goNext = useCallback(() => {
     playUiClick();
     if (!step) return;
@@ -435,6 +546,7 @@ export function ManagerTutorialOverlay({
     onUpdate(advanceManagerTutorial(career));
   }, [career, onUpdate, step, onMoreMenuOpenChange]);
 
+  // ── Render ───────────────────────────────────────────────────────────────────
   if (!step) return null;
 
   const allowNext = showNext || targetMissing;
@@ -507,6 +619,7 @@ export function ManagerTutorialOverlay({
         </div>
       </BodyPortal>
       <BodyPortal>
+        {/* z is established by .manager-tutorial-callout-layer CSS class = 10003 */}
         <div className="manager-tutorial-callout-layer pointer-events-none fixed inset-0">
           <TutorialCallout
             step={step}
@@ -553,7 +666,7 @@ function TutorialCallout({
     <div
       ref={panelRef}
       tabIndex={-1}
-      className="pointer-events-auto absolute z-[3] outline-none overflow-hidden"
+      className="pointer-events-auto absolute outline-none overflow-hidden"
       style={{
         ...calloutStyle(callout),
         opacity: visible ? 1 : 0,
