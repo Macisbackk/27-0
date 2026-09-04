@@ -877,7 +877,14 @@ export default function ManagerPage() {
       if (next !== "fixtures") {
         setFixturesInitialFilter(null);
       }
-      if (career && isAwaitingFriendlyChoice(career) && next !== "hub") {
+      // Pre-season friendlies lock tabs to Hub — but the mandatory tutorial must
+      // still navigate (Squad, Reserves, …). Same exemption as awaitingFriendlyChoice UI.
+      if (
+        career &&
+        !isManagerTutorialActive(career) &&
+        isAwaitingFriendlyChoice(career) &&
+        next !== "hub"
+      ) {
         goToView("hub");
         return;
       }

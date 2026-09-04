@@ -54,18 +54,19 @@ if (overlay.includes("acquireScrollLock")) {
 if (overlay.includes("onNavigate")) {
   err("overlay must not drive Manager Mode navigation");
 }
-// Chrome targets must use the same hole-through architecture — never a
-// full-screen blocker that assumes z-index elevation will win hit-testing.
-if (/waiting && spotlight && !chrome/.test(overlay)) {
+if (overlay.includes("data-tutorial-blocker") || overlay.includes("holeBlocker")) {
   err(
-    "overlay must not skip the hole for chrome targets (!chrome) — that full-screen blocker eats Squad clicks when nav elevation is trapped in a stacking context"
+    "overlay must not use hit-testing blocker panels — they sit above Manager chrome and steal Squad clicks"
   );
 }
-if (!overlay.includes("elementFromPoint") && !overlay.includes("elementsFromPoint")) {
-  warn("overlay should expose elementFromPoint diagnostics in debug mode");
+if (!overlay.includes('addEventListener("click"') && !overlay.includes("addEventListener('click'")) {
+  err("overlay must use document capture to lock outside clicks while allowing the real target");
 }
-if (!overlay.includes("data-tutorial-blocker")) {
-  warn("blockers should be tagged data-tutorial-blocker for hit-test diagnosis");
+if (overlay.includes("aria-modal")) {
+  err("visual tutorial overlay must not use aria-modal (can inert the real Squad control)");
+}
+if (!overlay.includes("elementFromPoint")) {
+  warn("overlay should expose elementFromPoint diagnostics in debug mode");
 }
 
 for (const step of MANAGER_TUTORIAL_STEPS) {
