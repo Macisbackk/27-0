@@ -118,9 +118,7 @@ export function ManagerNav({
       </div>
 
       <div
-        className={`hidden flex-col items-center gap-1.5 sm:flex ${
-          tutorialLock ? "manager-tutorial-nav-elevated relative z-[10002]" : ""
-        }`}
+        className="hidden flex-col items-center gap-1.5 sm:flex"
       >
         <nav
           className="flex w-full flex-wrap justify-center gap-1"

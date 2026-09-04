@@ -55,7 +55,6 @@ export function ManagerMobileBottomNav({
   }, [tutorialLock, controlled, onMoreOpenChange]);
 
   const moreActive = isManagerMobileMoreNavView(active);
-  const tutorialElevate = tutorialLock != null;
   const panelRef = useModalA11y(moreOpen, dismissMore);
 
   // Close More when leaving compact layout (desktop).
@@ -88,11 +87,7 @@ export function ManagerMobileBottomNav({
     <>
       <nav
         data-manager-mobile-nav
-        className={`fixed inset-x-0 bottom-0 border-t border-pitch-700/50 bg-pitch-950 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(0,0,0,0.35)] sm:hidden ${
-          tutorialElevate
-            ? "manager-tutorial-nav-elevated z-[10002]"
-            : "z-50"
-        }`}
+        className="fixed inset-x-0 bottom-0 z-50 border-t border-pitch-700/50 bg-pitch-950 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(0,0,0,0.35)] sm:hidden"
         aria-label="Manager mobile navigation"
       >
         <div className="mx-auto grid max-w-lg grid-cols-6 gap-0.5 overflow-hidden px-1.5 pt-2">
@@ -114,7 +109,7 @@ export function ManagerMobileBottomNav({
                   disabled || locked ? "pointer-events-none opacity-40" : ""
                 } ${
                   tutorialLock === tab.id
-                    ? "z-[1] ring-2 ring-theme-primary shadow-[0_0_0_9999px_transparent]"
+                    ? "ring-2 ring-theme-primary"
                     : ""
                 }`}
                 aria-current={isActive ? "page" : undefined}
@@ -149,9 +144,7 @@ export function ManagerMobileBottomNav({
                 ? "pointer-events-none opacity-40"
                 : ""
             } ${
-              tutorialLock === "more"
-                ? "z-[1] ring-2 ring-theme-primary"
-                : ""
+              tutorialLock === "more" ? "ring-2 ring-theme-primary" : ""
             }`}
             aria-expanded={moreOpen}
             aria-haspopup="dialog"
@@ -170,11 +163,7 @@ export function ManagerMobileBottomNav({
       {moreOpen && (
         <div
           data-manager-more-sheet
-          className={`fixed inset-0 flex items-end justify-center sm:hidden ${
-            tutorialElevate
-              ? "manager-tutorial-nav-elevated z-[10002]"
-              : "z-[60]"
-          } ${tutorialElevate ? "bg-black/50" : "bg-black/60"}`}
+          className="fixed inset-0 z-[60] flex items-end justify-center bg-black/60 sm:hidden"
           onClick={() => {
             if (tutorialLock) return;
             setMoreOpen(false);

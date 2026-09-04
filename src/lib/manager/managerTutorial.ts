@@ -506,7 +506,11 @@ export function isTutorialChromeElement(el: HTMLElement): boolean {
     el.closest("[data-manager-mobile-nav]") ||
       el.closest("[data-manager-more-sheet]") ||
       el.closest(".mobile-action-bar") ||
-      el.closest("nav[aria-label='Manager sections']")
+      el.closest("nav[aria-label='Manager sections']") ||
+      // Desktop ManagerNav lives in page flow (not sticky) — treat as chrome
+      // so Squad/etc. scroll the page top rather than leaving tabs off-screen.
+      el.getAttribute("data-tutorial-target")?.startsWith("manager-nav-") ||
+      el.getAttribute("data-tutorial-target") === "manager-more"
   );
 }
 

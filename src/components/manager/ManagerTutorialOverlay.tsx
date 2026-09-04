@@ -44,6 +44,7 @@ import {
 import { isManagerMobileMoreNavView } from "@/lib/manager/manager-nav-config";
 import type { ManagerCareer, ManagerView } from "@/lib/manager/types";
 import { uiLayerClass } from "@/lib/ui/layers";
+import { scrollDocumentToTop } from "@/lib/ui/scroll";
 import { TYPO } from "@/lib/ui/typography";
 import { playUiClick } from "@/lib/sound";
 
@@ -62,6 +63,14 @@ type Rect = { top: number; left: number; width: number; height: number };
 const PAD = 8;
 const CALLOUT_GAP = 12;
 
+function stickyAppHeaderBottom(): number {
+  if (typeof document === "undefined") return 0;
+  const header = document.querySelector(".app-header");
+  if (!(header instanceof HTMLElement)) return 0;
+  const bottom = header.getBoundingClientRect().bottom;
+  return Number.isFinite(bottom) ? Math.max(0, bottom) : 0;
+}
+
 function safeViewport(): {
   top: number;
   bottom: number;
@@ -69,7 +78,9 @@ function safeViewport(): {
   right: number;
 } {
   const vv = window.visualViewport;
-  const top = (vv?.offsetTop ?? 0) + 8;
+  // ManagerNav scrolls under the sticky app header — keep targets clear of it.
+  const headerBottom = stickyAppHeaderBottom();
+  const top = Math.max((vv?.offsetTop ?? 0) + 8, headerBottom + 8);
   const left = (vv?.offsetLeft ?? 0) + 8;
   const width = vv?.width ?? window.innerWidth;
   const height = vv?.height ?? window.innerHeight;
@@ -80,7 +91,7 @@ function safeViewport(): {
     top,
     left,
     right: left + width - 16,
-    bottom: top + height - bottomChrome - 8,
+    bottom: (vv?.offsetTop ?? 0) + height - bottomChrome - 8,
   };
 }
 
@@ -93,19 +104,61 @@ function padRect(r: DOMRect): Rect {
   };
 }
 
-function rectInSafeArea(
-  r: Rect,
-  safe: ReturnType<typeof safeViewport>
-): boolean {
-  return r.top >= safe.top - 2 && r.top + r.height <= safe.bottom + 2;
+function rectNearlyEqual(a: Rect | null, b: Rect | null, eps = 1.5): boolean {
+  if (a === b) return true;
+  if (!a || !b) return false;
+  return (
+    Math.abs(a.top - b.top) < eps &&
+    Math.abs(a.left - b.left) < eps &&
+    Math.abs(a.width - b.width) < eps &&
+    Math.abs(a.height - b.height) < eps
+  );
 }
 
-function minimalScrollIntoSafeArea(el: HTMLElement): void {
+function calloutNearlyEqual(
+  a: { top: number; left: number; width: number },
+  b: { top: number; left: number; width: number },
+  eps = 2
+): boolean {
+  return (
+    Math.abs(a.top - b.top) < eps &&
+    Math.abs(a.left - b.left) < eps &&
+    Math.abs(a.width - b.width) < eps
+  );
+}
+
+/**
+ * Chrome (desktop ManagerNav) scrolls with the page — bring it back without
+ * relying on the user to scroll up for Squad / other tabs.
+ * Fixed mobile bottom nav needs no scroll.
+ */
+function ensureChromeVisible(el: HTMLElement): void {
+  if (
+    el.closest("[data-manager-mobile-nav]") ||
+    el.closest("[data-manager-more-sheet]") ||
+    el.closest(".mobile-action-bar")
+  ) {
+    return;
+  }
   const safe = safeViewport();
   const r = el.getBoundingClientRect();
+  if (r.top >= safe.top - 2 && r.bottom <= safe.bottom + 2) return;
+  // Jump to top so the section tabs sit under the sticky app header.
+  scrollDocumentToTop();
+}
+
+/**
+ * Page targets: only keep the TOP of the control visible.
+ * Scrolling a tall card fully into view buries ManagerNav above it (Squad bug).
+ */
+function ensurePageTargetTopVisible(el: HTMLElement): void {
+  const safe = safeViewport();
+  const r = el.getBoundingClientRect();
+  // Top already readable — leave scroll alone.
+  if (r.top >= safe.top - 2 && r.top <= safe.bottom - 96) return;
   let delta = 0;
   if (r.top < safe.top) delta = r.top - safe.top - 12;
-  else if (r.bottom > safe.bottom) delta = r.bottom - safe.bottom + 12;
+  else delta = r.top - (safe.top + 72);
   if (Math.abs(delta) < 4) return;
   window.scrollBy({ top: delta, left: 0, behavior: "auto" });
 }
@@ -283,16 +336,22 @@ export function ManagerTutorialOverlay({
   const measure = useCallback(
     (el: HTMLElement | null, asChrome: boolean) => {
       if (!el) {
-        setSpotlight(null);
-        setCallout(placeCallout(null, false));
+        setSpotlight((prev) => (prev == null ? prev : null));
+        setCallout((prev) => {
+          const next = placeCallout(null, false);
+          return calloutNearlyEqual(prev, next) ? prev : next;
+        });
         setChrome(false);
         runHitTest(null, null);
         return;
       }
       const rect = padRect(el.getBoundingClientRect());
-      setSpotlight(rect);
+      setSpotlight((prev) => (rectNearlyEqual(prev, rect) ? prev : rect));
       setChrome(asChrome);
-      setCallout(placeCallout(rect, true));
+      setCallout((prev) => {
+        const next = placeCallout(rect, true);
+        return calloutNearlyEqual(prev, next) ? prev : next;
+      });
       // Hit-test after layout paint so callout position is applied.
       requestAnimationFrame(() => runHitTest(el, rect));
     },
@@ -303,8 +362,11 @@ export function ManagerTutorialOverlay({
     (opts?: { allowScroll?: boolean }) => {
       if (!step) return;
       const hit = resolveTutorialTarget(targetId);
-      setMatchCount(hit.matchCount);
-      setFound(Boolean(hit.el));
+      setMatchCount((n) => (n === hit.matchCount ? n : hit.matchCount));
+      setFound((f) => {
+        const next = Boolean(hit.el);
+        return f === next ? f : next;
+      });
       targetElRef.current = hit.el;
 
       if (!hit.el) {
@@ -315,20 +377,20 @@ export function ManagerTutorialOverlay({
       const isChrome = isTutorialChromeElement(hit.el);
       const key = `${step.id}:${targetId}`;
 
-      if (
-        opts?.allowScroll &&
-        scrolledForKeyRef.current !== key &&
-        !isChrome
-      ) {
-        const safe = safeViewport();
-        const r = padRect(hit.el.getBoundingClientRect());
-        if (!rectInSafeArea(r, safe)) {
-          minimalScrollIntoSafeArea(hit.el);
-        }
+      if (opts?.allowScroll && scrolledForKeyRef.current !== key) {
         scrolledForKeyRef.current = key;
+        if (isChrome) {
+          ensureChromeVisible(hit.el);
+        } else {
+          ensurePageTargetTopVisible(hit.el);
+        }
+        // One remasure after scroll settles — avoid double immediate measure.
         requestAnimationFrame(() => {
-          if (targetElRef.current === hit.el) measure(hit.el, isChrome);
+          requestAnimationFrame(() => {
+            if (targetElRef.current === hit.el) measure(hit.el, isChrome);
+          });
         });
+        return;
       }
 
       measure(hit.el, isChrome);
@@ -462,10 +524,11 @@ export function ManagerTutorialOverlay({
     let debounce: number | null = null;
     const remasure = () => {
       if (debounce != null) window.clearTimeout(debounce);
+      // Longer debounce — scroll+spotlight thrash repaints sticky chrome.
       debounce = window.setTimeout(() => {
         debounce = null;
         sync({ allowScroll: false });
-      }, 80);
+      }, 120);
     };
     window.addEventListener("resize", remasure);
     window.addEventListener("scroll", remasure, { passive: true });
