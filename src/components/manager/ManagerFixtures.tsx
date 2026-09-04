@@ -1078,7 +1078,10 @@ export function ManagerFixtures({
       )}
 
       {showChallengeCup && (
-        <div data-tutorial-id="manager-section-challenge-cup" className={SPACING.stackMd}>
+        <div
+          data-tutorial-target="manager-section-challenge-cup"
+          className={SPACING.stackMd}
+        >
           {hasCupBracket ? (
             <GamePanel padded label="Challenge Cup Bracket">
               <ManagerChallengeCupBracket

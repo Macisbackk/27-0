@@ -287,7 +287,7 @@ export function ManagerHub({
       <div
         id={MANAGER_HUB_SCROLL_TARGET_ID}
         className="scroll-mt-28"
-        data-tutorial-id="manager-hub-next-fixture"
+        data-tutorial-target="manager-hub-next-fixture"
       >
       <ScoreboardPanel
         variant="elevated"
@@ -420,7 +420,7 @@ export function ManagerHub({
           </div>
         )}
         <div className="mt-4 hidden grid-cols-1 gap-2 sm:grid sm:grid-cols-2">
-          <div data-tutorial-id="manager-hub-play-game">
+          <div data-tutorial-target="manager-hub-play-game-desktop">
             <GameButton
               variant="theme"
               disabled={!canPlay}
@@ -432,7 +432,7 @@ export function ManagerHub({
               {matchOccasion.playCta}
             </GameButton>
           </div>
-          <div data-tutorial-id="manager-hub-simulate">
+          <div data-tutorial-target="manager-hub-simulate-desktop">
             <GameButton
               variant="secondary"
               disabled={!canPlay}
@@ -519,7 +519,7 @@ export function ManagerHub({
   const seasonProgressCard = (
     <div
       className={showStickyPlayBar ? "hidden sm:block" : undefined}
-      data-tutorial-id="manager-hub-season-progress"
+      data-tutorial-target="manager-hub-season-progress"
     >
       <ProgrammePanel padded>
         <GameSectionHeader
@@ -578,7 +578,9 @@ export function ManagerHub({
               Season Review
             </GameButton>
           ) : (
-            <div data-tutorial-id="manager-hub-advance-week">
+            <div
+              data-tutorial-target="manager-hub-advance-week-desktop"
+            >
               <GameButton
                 variant="theme"
                 size="md"
@@ -650,7 +652,10 @@ export function ManagerHub({
 
   const hubStandingsCard =
     shouldShowChallengeCupBracketOnHub(hubCareer, nextFixture) ? (
-      <div className={SPACING.stackSm} data-tutorial-id="manager-hub-challenge-cup">
+      <div
+        className={SPACING.stackSm}
+        data-tutorial-target="manager-hub-challenge-cup"
+      >
         <GameSectionHeader label="Results" title="Challenge Cup" />
         <HubChallengeCupBracketPanel
           career={hubCareer}
@@ -690,7 +695,10 @@ export function ManagerHub({
 
   const hubBody = (
     <>
-      <div className="space-y-4" data-tutorial-id="manager-hub-root">
+      <div
+        className="space-y-4"
+        data-tutorial-target="manager-hub-root"
+      >
         {commandCentre}
         {nextFixtureCard}
         {seasonProgressCard}

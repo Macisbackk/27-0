@@ -1,6 +1,6 @@
 /**
- * Mobile-first Manager Mode tutorial target positioning.
- * One layout engine for usable viewport, safe chrome, scroll-into-band, and callout placement.
+ * Pure geometry helpers for Manager Mode tutorial.
+ * No DOM elevation / style mutation — click-through uses hole blockers only.
  */
 
 import { getDocumentScrollY, scrollDocumentTo } from "@/lib/ui/scroll";
@@ -57,8 +57,12 @@ function rectFromDOMRect(r: DOMRect | LayoutRect): LayoutRect {
   };
 }
 
-/** Cached safe-area insets — probe DOM once, reuse until viewport changes. */
-let _cachedInsets: { top: number; right: number; bottom: number; left: number } | null = null;
+let _cachedInsets: {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+} | null = null;
 let _insetsVw = 0;
 let _insetsVh = 0;
 
@@ -92,7 +96,6 @@ function measureSafeInsets(): {
   return insets;
 }
 
-/** Invalidate cached insets on viewport change. */
 export function invalidateSafeInsetCache(): void {
   _cachedInsets = null;
 }
@@ -116,7 +119,6 @@ function readRootCssPx(varName: string): number {
   return resolveCssLength(raw);
 }
 
-/** True when the element (or an ancestor) is fixed to the viewport. */
 export function isViewportFixedTarget(el: HTMLElement): boolean {
   let node: HTMLElement | null = el;
   while (node && node !== document.documentElement) {
@@ -128,12 +130,7 @@ export function isViewportFixedTarget(el: HTMLElement): boolean {
 }
 
 export function measureUsableViewport(options?: {
-  /** When true, also reserve the hub sticky play bar above the bottom nav. */
   reserveStickyPlaybar?: boolean;
-  /**
-   * When highlighting bottom-nav / More-sheet controls, keep them inside the
-   * usable band so callouts can sit above them instead of clamping them away.
-   */
   includeBottomChrome?: boolean;
 }): UsableViewport {
   const vv = window.visualViewport;
@@ -219,10 +216,7 @@ function scrollOverflowAncestors(el: HTMLElement, deltaY: number): void {
   }
 }
 
-/**
- * Move the page just enough so `el` sits in the usable band (with callout reserve).
- * Caller must temporarily release scroll-lock around this call.
- */
+/** Scroll once so the target sits in the usable band. */
 export function scrollTargetIntoUsableRegion(
   el: HTMLElement,
   usable: UsableViewport
@@ -234,7 +228,10 @@ export function scrollTargetIntoUsableRegion(
   const shortViewport = usable.height < 420;
   const reserve = Math.min(
     CALLOUT_RESERVE,
-    Math.max(shortViewport ? 72 : 96, usable.height * (shortViewport ? 0.24 : 0.32))
+    Math.max(
+      shortViewport ? 72 : 96,
+      usable.height * (shortViewport ? 0.24 : 0.32)
+    )
   );
 
   const spaceAbove = rect.top - usable.top;
@@ -277,13 +274,9 @@ export function spotlightRectForTarget(
   let width = target.width + pad * 2;
   let height = target.height + pad * 2;
 
-  // Huge targets (full hub): keep a readable spotlight within the usable band.
   const maxH = Math.max(120, usable.height * (usable.isCompact ? 0.42 : 0.55));
-  if (height > maxH) {
-    height = maxH;
-  }
+  if (height > maxH) height = maxH;
 
-  // Keep spotlight inside the visual viewport (not under chrome).
   if (top < usable.top) {
     const shrink = usable.top - top;
     top = usable.top;
@@ -331,8 +324,6 @@ export function placeTutorialCallout(
   const fitsAbove = spaceAbove >= height + CALLOUT_GAP;
   const targetDominates = target.height > usable.height * 0.55;
 
-  // Hysteresis: keep the previous side when both still fit, so tiny scroll
-  // drift doesn't flip the callout every frame.
   const preferAbove =
     preferredPlacement === "above" || preferredPlacement === "dock-top";
   const preferBelow =
@@ -379,9 +370,7 @@ export function placeTutorialCallout(
     top = usable.top;
   }
 
-  // Never cover the target — nudge to the opposite side if we still overlap.
-  const overlaps =
-    top < target.bottom - 1 && top + height > target.top + 1;
+  const overlaps = top < target.bottom - 1 && top + height > target.top + 1;
   if (overlaps) {
     if (spaceBelow >= height + CALLOUT_GAP) {
       placement = "below";
@@ -401,7 +390,6 @@ export function placeTutorialCallout(
   }
 
   top = Math.max(usable.top, Math.min(top, usable.bottom - height));
-
   let left = target.left + target.width / 2 - width / 2;
   left = Math.max(usable.left, Math.min(left, usable.right - width));
 
@@ -412,108 +400,7 @@ export function layoutRectFromElement(el: HTMLElement): LayoutRect {
   return rectFromDOMRect(el.getBoundingClientRect());
 }
 
-type ElevateSnapshot = {
-  position: string;
-  top: string;
-  left: string;
-  width: string;
-  height: string;
-  zIndex: string;
-  margin: string;
-  boxShadow: string;
-  placeholder: HTMLElement | null;
-};
-
-/**
- * Lift a tutorial target above the dim layer (z 10001) and under the callout
- * (z 10003). Chrome already elevated via `.manager-tutorial-nav-elevated` only
- * gets a local stack bump — never rip fixed-nav / sticky-bar controls out of flow.
- */
-export function elevateTutorialTarget(el: HTMLElement): () => void {
-  // Guard: already elevated by a prior effect that hasn't cleaned up yet.
-  // Return a no-op — the prior cleanup will restore the element correctly.
-  // This handles React Strict Mode double-fire and effect overlap.
-  if (el.dataset.tutorialElevated === "1") {
-    return () => undefined;
-  }
-
-  const rect = el.getBoundingClientRect();
-  const computed = getComputedStyle(el);
-  const alreadyFixed = computed.position === "fixed";
-  const chromeAlreadyElevated = Boolean(
-    el.closest(".manager-tutorial-nav-elevated")
-  );
-  const inFixedChrome = isViewportFixedTarget(el);
-  const snapshot: ElevateSnapshot = {
-    position: el.style.position,
-    top: el.style.top,
-    left: el.style.left,
-    width: el.style.width,
-    height: el.style.height,
-    zIndex: el.style.zIndex,
-    margin: el.style.margin,
-    boxShadow: el.style.boxShadow,
-    placeholder: null,
-  };
-
-  // Nav / More / sticky playbar: parent is already above the dim. Keep in-flow.
-  if (chromeAlreadyElevated || (inFixedChrome && !alreadyFixed)) {
-    if (computed.position === "static") {
-      el.style.position = "relative";
-    }
-    el.style.zIndex = "2";
-    el.style.boxShadow =
-      "0 0 0 2px var(--theme-primary), 0 8px 24px rgba(0,0,0,0.45)";
-    el.dataset.tutorialElevated = "1";
-    return () => {
-      el.style.position = snapshot.position;
-      el.style.zIndex = snapshot.zIndex;
-      el.style.boxShadow = snapshot.boxShadow;
-      delete el.dataset.tutorialElevated;
-    };
-  }
-
-  if (!alreadyFixed && el.parentElement) {
-    const placeholder = document.createElement("div");
-    placeholder.setAttribute("aria-hidden", "true");
-    placeholder.dataset.tutorialPlaceholder = "1";
-    placeholder.style.width = `${rect.width}px`;
-    placeholder.style.height = `${rect.height}px`;
-    placeholder.style.flex = "none";
-    placeholder.style.pointerEvents = "none";
-    el.parentElement.insertBefore(placeholder, el);
-    snapshot.placeholder = placeholder;
-
-    el.style.position = "fixed";
-    el.style.top = `${rect.top}px`;
-    el.style.left = `${rect.left}px`;
-    el.style.width = `${rect.width}px`;
-    el.style.height = `${rect.height}px`;
-    el.style.margin = "0";
-  }
-
-  el.style.zIndex = "10002";
-  el.style.boxShadow =
-    "0 0 0 2px var(--theme-primary), 0 8px 24px rgba(0,0,0,0.45)";
-  el.dataset.tutorialElevated = "1";
-
-  return () => {
-    if (snapshot.placeholder?.isConnected) {
-      snapshot.placeholder.remove();
-    }
-    el.style.position = snapshot.position;
-    el.style.top = snapshot.top;
-    el.style.left = snapshot.left;
-    el.style.width = snapshot.width;
-    el.style.height = snapshot.height;
-    el.style.zIndex = snapshot.zIndex;
-    el.style.margin = snapshot.margin;
-    el.style.boxShadow = snapshot.boxShadow;
-    delete el.dataset.tutorialElevated;
-  };
-}
-
-/** Four blocker panels around a hole (viewport coords). */
+/** Four blocker panels around a hole — click-through strategy (no DOM elevate). */
 export function holeBlockerPanels(
   hole: LayoutRect | null,
   vw: number,
@@ -573,14 +460,10 @@ export function holeBlockerPanels(
   return panels;
 }
 
-/**
- * Compare two LayoutRects — returns true when they differ by more than `threshold` px.
- * Used to prevent re-renders from sub-pixel drift.
- */
 export function rectMateriallyChanged(
   a: LayoutRect | null,
   b: LayoutRect | null,
-  threshold = 1.5
+  threshold = 2
 ): boolean {
   if (a === b) return false;
   if (!a || !b) return true;
@@ -595,7 +478,7 @@ export function rectMateriallyChanged(
 export function calloutMateriallyChanged(
   a: CalloutBox | null,
   b: CalloutBox | null,
-  threshold = 1.5
+  threshold = 2
 ): boolean {
   if (a === b) return false;
   if (!a || !b) return true;

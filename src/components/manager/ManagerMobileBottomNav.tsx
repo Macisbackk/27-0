@@ -8,15 +8,13 @@ import {
   MANAGER_PRIMARY_NAV_TABS,
   isManagerMobileMoreNavView,
 } from "@/lib/manager/manager-nav-config";
+import type { ManagerTutorialNavLock } from "@/lib/manager/managerTutorial";
 import type { ManagerView } from "@/lib/manager/types";
 import { playMenuClose, playMenuOpen, playTabChange } from "@/lib/sound";
 import { useModalA11y } from "@/hooks/useModalA11y";
 
-export type ManagerMoreTutorialLock =
-  | "more"
-  | "advance-week"
-  | ManagerView
-  | null;
+/** @deprecated Prefer ManagerTutorialNavLock — kept as alias for existing imports. */
+export type ManagerMoreTutorialLock = ManagerTutorialNavLock;
 
 interface ManagerMobileBottomNavProps {
   active: ManagerView;
@@ -107,7 +105,7 @@ export function ManagerMobileBottomNav({
                 key={tab.id}
                 type="button"
                 disabled={disabled || locked}
-                data-tutorial-id={`manager-nav-${tab.id}`}
+                data-tutorial-target={`manager-nav-${tab.id}-mobile`}
                 onClick={() => navigate(tab.id)}
                 className={`btn-press relative flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-sm border-2 px-0.5 py-2 text-center transition ${
                   isActive
@@ -134,7 +132,7 @@ export function ManagerMobileBottomNav({
           <button
             type="button"
             disabled={disabled || tabLockedOut("more")}
-            data-tutorial-id="manager-nav-more"
+            data-tutorial-target="manager-nav-more"
             onClick={() => {
               if (tutorialLock && tutorialLock !== "more") return;
               setMoreOpen((open) => {
@@ -205,7 +203,7 @@ export function ManagerMobileBottomNav({
                     key={item.id}
                     type="button"
                     disabled={locked}
-                    data-tutorial-id={`manager-nav-${item.id}`}
+                    data-tutorial-target={`manager-nav-${item.id}-more`}
                     onClick={() => navigate(item.id)}
                     className={`btn-press flex min-h-[52px] items-center gap-3 rounded-sm border px-4 py-3 text-left transition ${
                       isActive || isTutorialTarget

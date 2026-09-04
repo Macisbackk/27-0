@@ -69,7 +69,14 @@ export function ManagerHubStickyActions({
         tutorialElevate={tutorialElevate}
         className={visible ? undefined : "invisible pointer-events-none"}
       >
-        <div data-tutorial-id="manager-hub-advance-week" className="min-w-0 flex-1">
+        <div
+          {...(visible
+            ? {
+                "data-tutorial-target": "manager-hub-advance-week-mobile",
+              }
+            : {})}
+          className="min-w-0 flex-1"
+        >
           <GameButton
             variant="theme"
             size="md"
@@ -93,7 +100,14 @@ export function ManagerHubStickyActions({
       tutorialElevate={tutorialElevate}
       className={visible ? undefined : "invisible pointer-events-none"}
     >
-      <div data-tutorial-id="manager-hub-play-game" className="min-w-0 flex-1">
+      <div
+        {...(visible
+          ? {
+              "data-tutorial-target": "manager-hub-play-game-mobile",
+            }
+          : {})}
+        className="min-w-0 flex-1"
+      >
         <GameButton
           variant="theme"
           size="sm"
@@ -107,7 +121,14 @@ export function ManagerHubStickyActions({
           {playLabel}
         </GameButton>
       </div>
-      <div data-tutorial-id="manager-hub-simulate" className="min-w-0 flex-1">
+      <div
+        {...(visible
+          ? {
+              "data-tutorial-target": "manager-hub-simulate-mobile",
+            }
+          : {})}
+        className="min-w-0 flex-1"
+      >
         <GameButton
           variant="secondary"
           size="sm"

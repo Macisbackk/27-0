@@ -2407,7 +2407,7 @@ export default function ManagerPage() {
                   label="manager-tab-squad"
                   active={chromeNavView === "squad" && panesInteractive}
                 >
-                  <div data-tutorial-id="manager-section-squad">
+                  <div data-tutorial-target="manager-section-squad">
                     <ManagerSquad
                       career={career}
                       onUpdate={persistAndSurfaceIncomingBids}
@@ -2416,7 +2416,7 @@ export default function ManagerPage() {
                   </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "reserves" && panesInteractive}>
-                  <div data-tutorial-id="manager-section-reserves">
+                  <div data-tutorial-target="manager-section-reserves">
                     <ManagerReserves
                       career={career}
                       onUpdate={persistAndSurfaceIncomingBids}
@@ -2424,12 +2424,12 @@ export default function ManagerPage() {
                   </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "contracts" && panesInteractive}>
-                  <div data-tutorial-id="manager-section-contracts">
+                  <div data-tutorial-target="manager-section-contracts">
                     <ManagerContracts career={career} onUpdate={persist} />
                   </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "transfers" && panesInteractive}>
-                  <div data-tutorial-id="manager-section-transfers">
+                  <div data-tutorial-target="manager-section-transfers">
                     <ManagerTransfers
                       career={career}
                       onUpdate={persistAndSurfaceIncomingBids}
@@ -2440,7 +2440,7 @@ export default function ManagerPage() {
                   <ManagerClub career={career} onUpdate={persist} />
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "fixtures" && panesInteractive}>
-                  <div data-tutorial-id="manager-section-fixtures">
+                  <div data-tutorial-target="manager-section-fixtures">
                     <ManagerFixtures
                       career={career}
                       onUpdate={persistAfterCalendarSim}
@@ -2458,7 +2458,7 @@ export default function ManagerPage() {
                   />
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "stats" && panesInteractive}>
-                  <div data-tutorial-id="manager-section-stats">
+                  <div data-tutorial-target="manager-section-stats">
                     <ManagerStatsView career={career} />
                   </div>
                 </ManagerKeepAlivePane>
