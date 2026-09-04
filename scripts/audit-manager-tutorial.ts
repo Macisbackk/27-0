@@ -54,6 +54,19 @@ if (overlay.includes("acquireScrollLock")) {
 if (overlay.includes("onNavigate")) {
   err("overlay must not drive Manager Mode navigation");
 }
+// Chrome targets must use the same hole-through architecture — never a
+// full-screen blocker that assumes z-index elevation will win hit-testing.
+if (/waiting && spotlight && !chrome/.test(overlay)) {
+  err(
+    "overlay must not skip the hole for chrome targets (!chrome) — that full-screen blocker eats Squad clicks when nav elevation is trapped in a stacking context"
+  );
+}
+if (!overlay.includes("elementFromPoint") && !overlay.includes("elementsFromPoint")) {
+  warn("overlay should expose elementFromPoint diagnostics in debug mode");
+}
+if (!overlay.includes("data-tutorial-blocker")) {
+  warn("blockers should be tagged data-tutorial-blocker for hit-test diagnosis");
+}
 
 for (const step of MANAGER_TUTORIAL_STEPS) {
   if (step.action === "click") {

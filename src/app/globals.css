@@ -137,8 +137,9 @@
   z-index: var(--z-tutorial-target);
 }
 
-/* Callout sits above the dim layer but BELOW elevated chrome (nav / More /
-   sticky). That way the highlighted real control always receives the click. */
+/* Callout shares the dim layer z-index. Interactive chrome stays under the
+   portal; clicks reach real controls through the spotlight HOLE — do not rely
+   on elevating nav above this layer for hit-testing. */
 .manager-tutorial-callout-layer {
   z-index: var(--z-critical-animation);
 }

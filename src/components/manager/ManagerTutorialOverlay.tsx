@@ -1,10 +1,17 @@
 "use client";
 
 /**
- * Manager Mode tutorial overlay — rebuilt from zero.
+ * Manager Mode tutorial overlay.
  *
- * Guide only: highlight real controls, let the user click them, observe app state.
- * No scroll loops, no body lock, no fake navigation, no continuous measure loops.
+ * Hit-testing architecture (critical):
+ * - Visual dim/spotlight: pointer-events none only.
+ * - Outside the target: four blocker panels (pointer-events auto).
+ * - Over the target: NO blocker — events fall through the portal to the
+ *   REAL application control underneath (Squad button, More, etc.).
+ * - Never rely on elevating nav above the overlay: app chrome often lives
+ *   inside a lower stacking context, so z-index elevation fails and a
+ *   full-screen blocker would eat the click.
+ * - Callout is interactive but docked away from the target.
  */
 import {
   useCallback,
@@ -46,7 +53,6 @@ interface Props {
   moreMenuOpen: boolean;
   onMoreMenuOpenChange: (open: boolean) => void;
   onTutorialLockChange: (lock: ManagerTutorialNavLock) => void;
-  /** Club Office sub-tab from ManagerClub (authoritative). */
   clubOfficeTab?: "finances" | "boosts" | "facilities" | "settings" | null;
 }
 
@@ -55,7 +61,12 @@ type Rect = { top: number; left: number; width: number; height: number };
 const PAD = 8;
 const CALLOUT_GAP = 12;
 
-function safeViewport(): { top: number; bottom: number; left: number; right: number } {
+function safeViewport(): {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+} {
   const vv = window.visualViewport;
   const top = (vv?.offsetTop ?? 0) + 8;
   const left = (vv?.offsetLeft ?? 0) + 8;
@@ -81,28 +92,27 @@ function padRect(r: DOMRect): Rect {
   };
 }
 
-function rectInSafeArea(r: Rect, safe: ReturnType<typeof safeViewport>): boolean {
+function rectInSafeArea(
+  r: Rect,
+  safe: ReturnType<typeof safeViewport>
+): boolean {
   return r.top >= safe.top - 2 && r.top + r.height <= safe.bottom + 2;
 }
 
-/** Smallest scroll needed to expose target — never centers the page. */
+/** Only for in-flow page content — never for fixed nav / More. */
 function minimalScrollIntoSafeArea(el: HTMLElement): void {
   const safe = safeViewport();
   const r = el.getBoundingClientRect();
-  const top = r.top;
-  const bottom = r.bottom;
   let delta = 0;
-  if (top < safe.top) {
-    delta = top - safe.top - 12;
-  } else if (bottom > safe.bottom) {
-    delta = bottom - safe.bottom + 12;
-  }
+  if (r.top < safe.top) delta = r.top - safe.top - 12;
+  else if (r.bottom > safe.bottom) delta = r.bottom - safe.bottom + 12;
   if (Math.abs(delta) < 4) return;
   window.scrollBy({ top: delta, left: 0, behavior: "auto" });
 }
 
-function holeBlockers(hole: Rect | null, vw: number, vh: number): Rect[] {
-  if (!hole) {
+/** Four panels around a hole. Null hole = full-screen lock (no target yet). */
+function holeBlockerPanels(hole: Rect | null, vw: number, vh: number): Rect[] {
+  if (!hole || hole.width < 2 || hole.height < 2) {
     return [{ top: 0, left: 0, width: vw, height: vh }];
   }
   const top = Math.max(0, hole.top);
@@ -119,7 +129,12 @@ function holeBlockers(hole: Rect | null, vw: number, vh: number): Rect[] {
       panels.push({ top, left: 0, width: left, height: bottom - top });
     }
     if (vw - right > 0) {
-      panels.push({ top, left: right, width: vw - right, height: bottom - top });
+      panels.push({
+        top,
+        left: right,
+        width: vw - right,
+        height: bottom - top,
+      });
     }
   }
   return panels;
@@ -147,7 +162,29 @@ function placeCallout(
   else top = safe.top;
   let left = target.left + target.width / 2 - width / 2;
   left = Math.max(safe.left, Math.min(left, safe.right - width));
+  // Never leave the callout covering the tap target.
+  if (
+    top < target.top + target.height &&
+    top + height > target.top
+  ) {
+    return {
+      top: safe.top,
+      left: safe.left + (safe.right - safe.left - width) / 2,
+      width,
+    };
+  }
   return { top, left, width };
+}
+
+function describeEl(el: Element | null): string {
+  if (!(el instanceof HTMLElement)) return String(el);
+  const id = el.getAttribute("data-tutorial-target");
+  const tag = el.tagName.toLowerCase();
+  const cls = (el.className && String(el.className).slice(0, 60)) || "";
+  const text = (el.innerText || "").replace(/\s+/g, " ").trim().slice(0, 40);
+  return id
+    ? `${tag}[data-tutorial-target=${id}] "${text}"`
+    : `${tag}.${cls} "${text}"`;
 }
 
 export function ManagerTutorialOverlay({
@@ -185,6 +222,7 @@ export function ManagerTutorialOverlay({
   const [chrome, setChrome] = useState(false);
   const [found, setFound] = useState(false);
   const [matchCount, setMatchCount] = useState(0);
+  const [hitTest, setHitTest] = useState<string>("—");
   const [vw, setVw] = useState(0);
   const [vh, setVh] = useState(0);
 
@@ -195,21 +233,60 @@ export function ManagerTutorialOverlay({
   careerRef.current = career;
   const panelRef = useRef<HTMLDivElement | null>(null);
 
-  const measure = useCallback((el: HTMLElement | null, asChrome: boolean) => {
-    const vv = window.visualViewport;
-    setVw(vv?.width ?? window.innerWidth);
-    setVh(vv?.height ?? window.innerHeight);
-    if (!el) {
-      setSpotlight(null);
-      setCallout(placeCallout(null, true));
-      setChrome(false);
+  const runHitTest = useCallback((el: HTMLElement | null, rect: Rect | null) => {
+    if (!debug || !el || !rect) {
+      setHitTest("—");
       return;
     }
-    const rect = padRect(el.getBoundingClientRect());
-    setSpotlight(rect);
-    setChrome(asChrome);
-    setCallout(placeCallout(rect, asChrome));
-  }, []);
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const top = document.elementFromPoint(x, y);
+    const stack = document
+      .elementsFromPoint(x, y)
+      .slice(0, 6)
+      .map(describeEl)
+      .join(" → ");
+    const pe = window.getComputedStyle(el).pointerEvents;
+    const ok =
+      top === el ||
+      (top instanceof Node && el.contains(top)) ||
+      (top instanceof HTMLElement &&
+        top.closest(`[data-tutorial-target="${el.getAttribute("data-tutorial-target")}"]`) ===
+          el);
+    setHitTest(
+      `${ok ? "OK" : "BLOCKED"} @(${Math.round(x)},${Math.round(y)}) top=${describeEl(top)} | pe=${pe} | stack: ${stack}`
+    );
+    if (!ok) {
+      // eslint-disable-next-line no-console
+      console.error("[manager-tutorial] hit-test FAIL", {
+        target: describeEl(el),
+        top: describeEl(top),
+        stack,
+      });
+    }
+  }, [debug]);
+
+  const measure = useCallback(
+    (el: HTMLElement | null, asChrome: boolean) => {
+      const vv = window.visualViewport;
+      setVw(vv?.width ?? window.innerWidth);
+      setVh(vv?.height ?? window.innerHeight);
+      if (!el) {
+        setSpotlight(null);
+        setCallout(placeCallout(null, true));
+        setChrome(false);
+        runHitTest(null, null);
+        return;
+      }
+      const rect = padRect(el.getBoundingClientRect());
+      setSpotlight(rect);
+      setChrome(asChrome);
+      // Always dock callout away from interactive targets so it cannot steal clicks.
+      setCallout(placeCallout(rect, asChrome || needsTap));
+      runHitTest(el, rect);
+    },
+    [runHitTest, needsTap]
+  );
 
   const sync = useCallback(
     (opts?: { allowScroll?: boolean }) => {
@@ -228,15 +305,18 @@ export function ManagerTutorialOverlay({
       const isChrome = isTutorialChromeElement(hit.el);
       const key = `${step.id}:${id}`;
 
-      // Scroll at most once per step/target — only if target is off-screen.
-      if (opts?.allowScroll && scrolledForKeyRef.current !== key && !isChrome) {
+      // Never page-scroll for fixed chrome (bottom nav / More / desktop tabs).
+      if (
+        opts?.allowScroll &&
+        scrolledForKeyRef.current !== key &&
+        !isChrome
+      ) {
         const safe = safeViewport();
         const r = padRect(hit.el.getBoundingClientRect());
         if (!rectInSafeArea(r, safe)) {
           minimalScrollIntoSafeArea(hit.el);
         }
         scrolledForKeyRef.current = key;
-        // One remasure after scroll (no loop).
         requestAnimationFrame(() => {
           if (targetElRef.current === hit.el) {
             measure(hit.el, isChrome);
@@ -249,7 +329,6 @@ export function ManagerTutorialOverlay({
     [step, targetId, measure]
   );
 
-  // Compact breakpoint.
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 639px)");
     const onChange = () => setCompact(mq.matches);
@@ -258,13 +337,11 @@ export function ManagerTutorialOverlay({
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  // Skip mobile-only steps on desktop.
   useEffect(() => {
     if (!step?.mobileOnly || compact) return;
     onUpdate(advanceManagerTutorial(careerRef.current));
   }, [step?.id, step?.mobileOnly, compact, onUpdate]);
 
-  // Advance when real expected state is met (click / open-menu).
   useEffect(() => {
     if (!step) return;
     if (step.action === "inspect") return;
@@ -287,7 +364,6 @@ export function ManagerTutorialOverlay({
     onUpdate(nextCareer);
   }, [step, ctx, compact, onUpdate, onMoreMenuOpenChange]);
 
-  // Publish nav lock so only the taught control stays interactive + elevated.
   useEffect(() => {
     if (!step) {
       onTutorialLockChange(null);
@@ -298,14 +374,12 @@ export function ManagerTutorialOverlay({
 
   useEffect(() => () => onTutorialLockChange(null), [onTutorialLockChange]);
 
-  // Resolve target when step / app state changes.
   useEffect(() => {
     scrolledForKeyRef.current = null;
     const t = window.setTimeout(() => sync({ allowScroll: true }), 40);
     return () => window.clearTimeout(t);
-  }, [sync, step?.id, targetId, currentView, moreMenuOpen]);
+  }, [sync, step?.id, targetId, currentView, moreMenuOpen, clubOfficeTab]);
 
-  // Remeasure on resize / user scroll — never auto-scroll here.
   useEffect(() => {
     let debounce: number | null = null;
     const remasure = () => {
@@ -326,7 +400,6 @@ export function ManagerTutorialOverlay({
     };
   }, [sync]);
 
-  // Escape never dismisses.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -359,15 +432,23 @@ export function ManagerTutorialOverlay({
   if (!step) return null;
 
   const waiting = needsTap && Boolean(targetId);
-  // Chrome: full blockers (elevated control sits above). In-page: hole.
-  const blockers = holeBlockers(
-    waiting && spotlight && !chrome ? spotlight : null,
-    vw || (typeof window !== "undefined" ? window.innerWidth : 0),
-    vh || (typeof window !== "undefined" ? window.innerHeight : 0)
+  const viewW = vw || (typeof window !== "undefined" ? window.innerWidth : 0);
+  const viewH = vh || (typeof window !== "undefined" ? window.innerHeight : 0);
+
+  /**
+   * Interactive step with a measured target → cut a hole so the REAL control
+   * receives the click (chrome and in-page alike). Full-screen blockers only
+   * when there is nothing to tap yet (or inspect/Next-only).
+   */
+  const blockers = holeBlockerPanels(
+    waiting && spotlight ? spotlight : null,
+    viewW,
+    viewH
   );
 
-  // Missing inspect target → still allow Next so the player is never stuck.
-  const allowNext = showNext || (step.action === "inspect" && !found && Boolean(step.targetId));
+  const allowNext =
+    showNext ||
+    (step.action === "inspect" && !found && Boolean(step.targetId));
   const actionHint =
     targetId === "manager-more" && step.targetId !== "manager-more"
       ? "Tap ⋯ More in the bottom bar first."
@@ -427,6 +508,7 @@ export function ManagerTutorialOverlay({
             <div
               key={i}
               aria-hidden
+              data-tutorial-blocker=""
               className="pointer-events-auto absolute"
               style={{
                 top: p.top,
@@ -435,6 +517,7 @@ export function ManagerTutorialOverlay({
                 height: p.height,
               }}
               onClick={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
             />
           ))}
         </div>
@@ -464,14 +547,15 @@ export function ManagerTutorialOverlay({
       {debug ? (
         <BodyPortal>
           <div
-            className="pointer-events-none fixed bottom-2 left-2 z-[10050] max-w-[min(100vw-1rem,20rem)] rounded border border-lime-500/50 bg-black/90 p-2 font-mono text-[10px] leading-snug text-lime-200"
+            className="pointer-events-none fixed bottom-2 left-2 z-[10050] max-w-[min(100vw-1rem,22rem)] rounded border border-lime-500/50 bg-black/90 p-2 font-mono text-[10px] leading-snug text-lime-200"
             aria-hidden
           >
             <div className="font-bold text-lime-300">Tutorial debug</div>
             <div>Step: {step.id}</div>
             <div>Target: {targetId ?? "(none)"}</div>
             <div>
-              Found: {found ? "YES" : "NO"} · Matches: {matchCount}
+              Found: {found ? "YES" : "NO"} · Matches: {matchCount} · Chrome:{" "}
+              {chrome ? "YES" : "NO"}
             </div>
             <div>
               Tab: {currentView} · More: {moreMenuOpen ? "OPEN" : "closed"}
@@ -479,11 +563,9 @@ export function ManagerTutorialOverlay({
             </div>
             <div>
               Expected:{" "}
-              {step.expected
-                ? JSON.stringify(step.expected)
-                : "—"}
+              {step.expected ? JSON.stringify(step.expected) : "—"}
             </div>
-            <div>Chrome: {chrome ? "YES" : "NO"} · Compact: {compact ? "YES" : "NO"}</div>
+            <div className="mt-1 break-all text-amber-200">Hit: {hitTest}</div>
           </div>
         </BodyPortal>
       ) : null}
