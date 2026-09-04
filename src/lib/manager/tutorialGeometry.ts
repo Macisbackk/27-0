@@ -308,7 +308,8 @@ export function placeTutorialCallout(
   target: LayoutRect,
   usable: UsableViewport,
   callout: { width: number; height: number },
-  preferredPlacement?: CalloutPlacement | null
+  preferredPlacement?: CalloutPlacement | null,
+  options?: { forceDockTop?: boolean }
 ): CalloutBox {
   const width = Math.min(callout.width, usable.width);
   const shortViewport = usable.height < 420;
@@ -317,6 +318,18 @@ export function placeTutorialCallout(
     usable.height * (shortViewport ? 0.42 : 0.9)
   );
   const maxHeight = Math.max(96, usable.height * (shortViewport ? 0.45 : 0.92));
+
+  // Chrome / bottom-nav targets: always dock the callout at the top so it
+  // never covers the tappable control (callout sits above elevated chrome).
+  if (options?.forceDockTop) {
+    return {
+      top: usable.top,
+      left: usable.left + (usable.width - width) / 2,
+      width,
+      maxHeight,
+      placement: "dock-top",
+    };
+  }
 
   const spaceAbove = Math.max(0, target.top - usable.top);
   const spaceBelow = Math.max(0, usable.bottom - target.bottom);
@@ -370,7 +383,7 @@ export function placeTutorialCallout(
     top = usable.top;
   }
 
-  const overlaps = top < target.bottom - 1 && top + height > target.top + 1;
+  let overlaps = top < target.bottom - 1 && top + height > target.top + 1;
   if (overlaps) {
     if (spaceBelow >= height + CALLOUT_GAP) {
       placement = "below";
@@ -378,18 +391,19 @@ export function placeTutorialCallout(
     } else if (spaceAbove >= height + CALLOUT_GAP) {
       placement = "above";
       top = target.top - CALLOUT_GAP - height;
-    } else if (spaceBelow >= spaceAbove) {
-      placement = "dock-bottom";
-      top = Math.max(target.bottom + 4, usable.bottom - height);
-      if (top < target.bottom) top = usable.bottom - height;
     } else {
       placement = "dock-top";
-      top = Math.min(target.top - height - 4, usable.top);
-      if (top + height > target.top) top = usable.top;
+      top = usable.top;
     }
   }
 
   top = Math.max(usable.top, Math.min(top, usable.bottom - height));
+  overlaps = top < target.bottom - 1 && top + height > target.top + 1;
+  if (overlaps) {
+    placement = "dock-top";
+    top = usable.top;
+  }
+
   let left = target.left + target.width / 2 - width / 2;
   left = Math.max(usable.left, Math.min(left, usable.right - width));
 

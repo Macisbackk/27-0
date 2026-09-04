@@ -1,12 +1,14 @@
 #!/usr/bin/env npx tsx
 /**
- * Regression audit for rebuilt Manager Mode tutorial.
+ * Regression audit for Manager Mode tutorial step → target → action → state.
  * Run: npx tsx scripts/audit-manager-tutorial.ts
  */
 
 import {
   MANAGER_TUTORIAL_STEPS,
+  getTutorialStepCopy,
   resolveTutorialInteractionPhase,
+  resolveTutorialPhaseTargetId,
   resolveTutorialPhaseTargets,
   tutorialLockTargetForPhase,
   tutorialPhaseNeedsTap,
@@ -59,16 +61,29 @@ const overlayPath = join(
 );
 const overlaySrc = readFileSync(overlayPath, "utf8");
 if (overlaySrc.includes("elevateTutorialTarget")) {
-  err("overlay still elevates DOM targets — hole blockers only");
+  err("overlay still elevates DOM targets — hole blockers / chrome elevate only");
 }
 if (overlaySrc.includes("ResizeObserver")) {
   err("overlay must not use ResizeObserver (measurement loops)");
 }
-if (overlaySrc.includes("visualViewport") && overlaySrc.includes('"scroll"')) {
-  // soft check — scroll listener on visualViewport is a known flicker source
-  if (/visualViewport[\s\S]{0,200}addEventListener\(\s*["']scroll["']/.test(overlaySrc)) {
-    err("overlay must not listen to visualViewport scroll");
-  }
+if (/visualViewport[\s\S]{0,200}addEventListener\(\s*["']scroll["']/.test(overlaySrc)) {
+  err("overlay must not listen to visualViewport scroll");
+}
+if (!overlaySrc.includes("isTutorialChromeTarget")) {
+  err("overlay must distinguish chrome vs in-page targets for click architecture");
+}
+if (!overlaySrc.includes("getTutorialStepCopy")) {
+  err("overlay must use phase-aware copy from the step definition");
+}
+if (!overlaySrc.includes("waitForTutorialTarget")) {
+  err("overlay must wait for real targets");
+}
+// Must unwrap resolve result (not treat object as HTMLElement).
+if (
+  /const el = await waitForTutorialTarget/.test(overlaySrc) &&
+  !/result\.(el|ambiguous)/.test(overlaySrc)
+) {
+  err("overlay must use waitForTutorialTarget().el — not the result object as element");
 }
 
 for (const step of MANAGER_TUTORIAL_STEPS) {
@@ -78,20 +93,39 @@ for (const step of MANAGER_TUTORIAL_STEPS) {
   if (step.action === "nav" && !step.navView) {
     err(`${step.id}: nav action missing navView`);
   }
-  if (step.requireAction && step.action === "nav" && !step.targets) {
-    err(`${step.id}: interactive nav step needs targets`);
-  }
-  if (step.targets) {
-    if (!step.targets.desktop?.length || !step.targets.mobile?.length) {
-      err(`${step.id}: targets must define desktop and mobile lists`);
+  if (step.requireAction && (step.action === "nav" || step.action === "advance-week" || step.action === "open-more")) {
+    if (!step.target?.desktop || !step.target?.mobile) {
+      err(`${step.id}: interactive step needs target.desktop and target.mobile`);
     }
+  }
+  if (step.target) {
+    if (!step.target.desktop || !step.target.mobile) {
+      err(`${step.id}: target must define desktop and mobile ids`);
+    }
+  }
+  if ((step as { targets?: unknown }).targets) {
+    err(`${step.id}: legacy targets[] lists — use single target.{desktop,mobile}`);
+  }
+  if ((step as { contentTargets?: unknown }).contentTargets) {
+    err(`${step.id}: legacy contentTargets — use contentTarget`);
+  }
+  if (step.action === "nav" && step.contentTarget) {
+    if (!step.contentTarget.desktop || !step.contentTarget.mobile) {
+      err(`${step.id}: contentTarget must define desktop and mobile`);
+    }
+  }
+  if (step.action === "nav" && !step.expectedState?.view) {
+    err(`${step.id}: nav step must declare expectedState.view`);
+  }
+  if (step.action === "open-more" && step.expectedState?.moreOpen !== true) {
+    err(`${step.id}: open-more must expect moreOpen: true`);
   }
   if (step.action === "open-more" && !step.mobileOnly) {
     err(`${step.id}: open-more must be mobileOnly`);
   }
   if (
     step.action === "open-more" &&
-    !step.targets?.mobile.includes("manager-nav-more")
+    step.target?.mobile !== "manager-nav-more"
   ) {
     err(`${step.id}: open-more must target manager-nav-more`);
   }
@@ -100,6 +134,14 @@ for (const step of MANAGER_TUTORIAL_STEPS) {
     warn(
       `${step.id}: interactive nav step also sets view="${step.view}" (soft-nav risk)`
     );
+  }
+
+  // Copy must name the control for action phases.
+  if (step.requireAction && step.action === "nav") {
+    const actionCopy = getTutorialStepCopy(step, "action", false);
+    if (!actionCopy.hint) {
+      err(`${step.id}: nav action needs hint naming the control`);
+    }
   }
 
   if (step.action === "nav" && step.navView) {
@@ -116,13 +158,20 @@ for (const step of MANAGER_TUTORIAL_STEPS) {
         { compact: true, moreOpen: true, currentView: "hub" },
         "action"
       );
-      const openTargets = resolveTutorialPhaseTargets(step, "open-more", true);
-      if (!openTargets?.includes("manager-nav-more")) {
-        err(`${step.id}: open-more phase must spotlight More`);
+      const openId = resolveTutorialPhaseTargetId(step, "open-more", true);
+      if (openId !== "manager-nav-more") {
+        err(`${step.id}: open-more phase must spotlight manager-nav-more`);
       }
-      const actionTargets = resolveTutorialPhaseTargets(step, "action", true);
-      if (actionTargets?.some((t) => t.includes("-desktop"))) {
-        err(`${step.id}: mobile action must not use desktop targets`);
+      const actionId = resolveTutorialPhaseTargetId(step, "action", true);
+      if (actionId?.includes("-desktop")) {
+        err(`${step.id}: mobile action must not use desktop target`);
+      }
+      if (!actionId?.endsWith("-more")) {
+        err(`${step.id}: mobile More-path action should use *-more target`);
+      }
+      const moreCopy = getTutorialStepCopy(step, "action", true);
+      if (!moreCopy.hint) {
+        err(`${step.id}: More-path action needs moreHint/hint`);
       }
     }
     assertPhase(
@@ -131,9 +180,9 @@ for (const step of MANAGER_TUTORIAL_STEPS) {
       "action"
     );
 
-    const deskTargets = resolveTutorialPhaseTargets(step, "action", false);
-    if (deskTargets?.some((t) => t.endsWith("-mobile") || t.endsWith("-more"))) {
-      err(`${step.id}: desktop action must not use mobile/more targets`);
+    const deskId = resolveTutorialPhaseTargetId(step, "action", false);
+    if (deskId?.endsWith("-mobile") || deskId?.endsWith("-more")) {
+      err(`${step.id}: desktop action must not use mobile/more target`);
     }
 
     assertPhase(
@@ -143,8 +192,14 @@ for (const step of MANAGER_TUTORIAL_STEPS) {
         moreOpen: inMore,
         currentView: step.navView,
       },
-      step.contentTargets ? "content" : "next"
+      step.contentTarget ? "content" : "next"
     );
+
+    if (step.expectedState?.view !== step.navView) {
+      err(
+        `${step.id}: expectedState.view (${step.expectedState?.view}) must match navView (${step.navView})`
+      );
+    }
 
     const actionPhase = resolveTutorialInteractionPhase(step, {
       compact: true,
@@ -174,16 +229,13 @@ for (const step of MANAGER_TUTORIAL_STEPS) {
     if (lock !== "advance-week") {
       err(`${step.id}: advance-week lock should be "advance-week"`);
     }
-    const mobile = resolveTutorialPhaseTargets(step, "action", true) ?? [];
-    const desktop = resolveTutorialPhaseTargets(step, "action", false) ?? [];
-    if (!mobile.includes("manager-hub-advance-week-mobile")) {
-      err(`${step.id}: mobile must prefer advance-week-mobile`);
+    const mobile = resolveTutorialPhaseTargetId(step, "action", true);
+    const desktop = resolveTutorialPhaseTargetId(step, "action", false);
+    if (mobile !== "manager-hub-advance-week-mobile") {
+      err(`${step.id}: mobile must use advance-week-mobile`);
     }
-    if (!desktop.includes("manager-hub-advance-week-desktop")) {
+    if (desktop !== "manager-hub-advance-week-desktop") {
       err(`${step.id}: desktop must use advance-week-desktop`);
-    }
-    if (desktop.includes("manager-hub-advance-week-mobile")) {
-      err(`${step.id}: desktop must not list sticky mobile target`);
     }
   }
 
@@ -241,10 +293,84 @@ for (const rel of srcRoots) {
   }
 }
 
+// Collect every target id referenced by steps and ensure it appears in sources.
+const allTargetIds = new Set<string>();
+for (const step of MANAGER_TUTORIAL_STEPS) {
+  if (step.target) {
+    allTargetIds.add(step.target.desktop);
+    allTargetIds.add(step.target.mobile);
+  }
+  if (step.contentTarget) {
+    allTargetIds.add(step.contentTarget.desktop);
+    allTargetIds.add(step.contentTarget.mobile);
+  }
+}
+allTargetIds.add("manager-nav-more");
+
+const scanned = srcRoots
+  .map((rel) => {
+    const full = join(process.cwd(), rel);
+    return existsSync(full) ? readFileSync(full, "utf8") : "";
+  })
+  .join("\n");
+
+for (const id of allTargetIds) {
+  // Dynamic attrs like manager-nav-${tab.id}-desktop won't appear literally.
+  if (
+    id.startsWith("manager-nav-") &&
+    (id.endsWith("-desktop") || id.endsWith("-mobile") || id.endsWith("-more"))
+  ) {
+    const stem = id
+      .replace(/^manager-nav-/, "")
+      .replace(/-desktop$/, "")
+      .replace(/-mobile$/, "")
+      .replace(/-more$/, "");
+    if (stem === "more") {
+      if (!scanned.includes('data-tutorial-target="manager-nav-more"')) {
+        err(`DOM missing data-tutorial-target="manager-nav-more"`);
+      }
+      continue;
+    }
+    // Pattern constructed in JSX templates.
+    if (
+      !scanned.includes("manager-nav-${") &&
+      !scanned.includes(`data-tutorial-target="${id}"`)
+    ) {
+      warn(`${id}: no literal or template nav target pattern found`);
+    }
+    continue;
+  }
+  const literal = `data-tutorial-target="${id}"`;
+  const jsxProp = `"data-tutorial-target": "${id}"`;
+  if (!scanned.includes(literal) && !scanned.includes(jsxProp)) {
+    err(`DOM missing data-tutorial-target="${id}"`);
+  }
+}
+
 const interactive = MANAGER_TUTORIAL_STEPS.filter((s) => s.requireAction);
 console.log(
   `Tutorial steps: ${MANAGER_TUTORIAL_STEPS.length} (${interactive.length} interactive)`
 );
+console.log("\nStep | Text action | Desktop target | Mobile target | Expected state");
+console.log("-".repeat(90));
+for (const step of MANAGER_TUTORIAL_STEPS) {
+  const textAction =
+    step.action === "nav"
+      ? step.hint ?? `open ${step.navView}`
+      : step.action === "open-more"
+        ? step.hint ?? "open More"
+        : step.action === "advance-week"
+          ? step.hint ?? "Advance Week"
+          : "observe / Next";
+  const desk = step.target?.desktop ?? "—";
+  const mob = step.target?.mobile ?? "—";
+  const expected = step.expectedState
+    ? JSON.stringify(step.expectedState)
+    : "—";
+  console.log(
+    `${step.id} | ${textAction} | ${desk} | ${mob} | ${expected}`
+  );
+}
 
 const errors = findings.filter((f) => f.severity === "error");
 const warns = findings.filter((f) => f.severity === "warn");
