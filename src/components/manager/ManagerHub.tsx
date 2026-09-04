@@ -287,7 +287,6 @@ export function ManagerHub({
       <div
         id={MANAGER_HUB_SCROLL_TARGET_ID}
         className="scroll-mt-28"
-        data-tutorial-target="manager-hub-next-fixture"
       >
       <ScoreboardPanel
         variant="elevated"
@@ -420,7 +419,7 @@ export function ManagerHub({
           </div>
         )}
         <div className="mt-4 hidden grid-cols-1 gap-2 sm:grid sm:grid-cols-2">
-          <div data-tutorial-target="manager-hub-play-game-desktop">
+          <div>
             <GameButton
               variant="theme"
               disabled={!canPlay}
@@ -432,7 +431,7 @@ export function ManagerHub({
               {matchOccasion.playCta}
             </GameButton>
           </div>
-          <div data-tutorial-target="manager-hub-simulate-desktop">
+          <div>
             <GameButton
               variant="secondary"
               disabled={!canPlay}
@@ -517,10 +516,7 @@ export function ManagerHub({
     ) : null;
 
   const seasonProgressCard = (
-    <div
-      className={showStickyPlayBar ? "hidden sm:block" : undefined}
-      data-tutorial-target="manager-hub-season-progress"
-    >
+    <div data-tutorial-target="manager-season-progress">
       <ProgrammePanel padded>
         <GameSectionHeader
           label="Season"
@@ -563,7 +559,12 @@ export function ManagerHub({
             }}
           />
         </div>
-        <div className="mt-4 flex flex-col gap-1.5">
+        {/* Sticky play bar owns these CTAs on mobile — keep the card visible for tutorial. */}
+        <div
+          className={`mt-4 flex flex-col gap-1.5 ${
+            showStickyPlayBar ? "hidden sm:flex" : ""
+          }`}
+        >
           {career.isSeasonComplete ? (
             <GameButton
               variant="theme"
@@ -578,9 +579,7 @@ export function ManagerHub({
               Season Review
             </GameButton>
           ) : (
-            <div
-              data-tutorial-target="manager-hub-advance-week-desktop"
-            >
+            <div>
               <GameButton
                 variant="theme"
                 size="md"
@@ -652,10 +651,7 @@ export function ManagerHub({
 
   const hubStandingsCard =
     shouldShowChallengeCupBracketOnHub(hubCareer, nextFixture) ? (
-      <div
-        className={SPACING.stackSm}
-        data-tutorial-target="manager-hub-challenge-cup"
-      >
+      <div className={SPACING.stackSm}>
         <GameSectionHeader label="Results" title="Challenge Cup" />
         <HubChallengeCupBracketPanel
           career={hubCareer}
@@ -697,7 +693,7 @@ export function ManagerHub({
     <>
       <div
         className="space-y-4"
-        data-tutorial-target="manager-hub-root"
+        data-tutorial-target="manager-hub"
       >
         {commandCentre}
         {nextFixtureCard}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import {
   ManagerPage,
@@ -39,9 +39,13 @@ import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 interface ManagerClubProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
+  /** Reports Club Office sub-tab for tutorial observation. */
+  onOfficeTabChange?: (tab: ClubOfficeSubTab) => void;
 }
 
 type ClubOfficeSubTab = "finances" | "boosts" | "facilities" | "settings";
+
+export type ManagerClubOfficeTab = ClubOfficeSubTab;
 
 const FACILITY_ORDER: FacilityType[] = [
   "youth",
@@ -57,13 +61,21 @@ const FACILITY_ICONS: Record<FacilityType, string> = {
   commercial: "📈",
 };
 
-export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
+export function ManagerClub({
+  career,
+  onUpdate,
+  onOfficeTabChange,
+}: ManagerClubProps) {
   const [error, setError] = useState<string | null>(null);
   const [subTab, setSubTab] = useState<ClubOfficeSubTab>("finances");
   const settings = resolveManagerSettings(career);
   const facilities = getClubFacilities(career);
   const transferFund = getTransferBudget(career);
   const baseCapacity = getClubAttendanceProfile(career.club).capacity;
+
+  useEffect(() => {
+    onOfficeTabChange?.(subTab);
+  }, [subTab, onOfficeTabChange]);
 
   const facilityRows = useMemo(
     () =>
@@ -111,7 +123,11 @@ export function ManagerClub({ career, onUpdate }: ManagerClubProps) {
           { id: "finances", label: "Finances" },
           { id: "boosts", label: "Boosts" },
           { id: "facilities", label: "Facilities" },
-          { id: "settings", label: "Settings" },
+          {
+            id: "settings",
+            label: "Settings",
+            tutorialTarget: "manager-club-settings",
+          },
         ]}
       />
 

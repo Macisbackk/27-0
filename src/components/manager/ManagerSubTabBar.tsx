@@ -16,6 +16,8 @@ export interface ManagerSubTabOption<T extends string> {
   /** Tooltip / accessible full name when the visible label is abbreviated. */
   title?: string;
   variant?: "normal" | "current" | "hard" | "era" | "gold";
+  /** Stable tutorial target on the real tab control. */
+  tutorialTarget?: string;
 }
 
 interface ManagerSubTabBarProps<T extends string> {
@@ -85,7 +87,7 @@ export function ManagerSubTabBar<T extends string>({
   return (
     <div className={shellClass}>
       <div className={groupClass} role="tablist" aria-label={ariaLabel}>
-        {tabs.map(({ id, label, shortLabel, title, variant = "normal" }) => {
+        {tabs.map(({ id, label, shortLabel, title, variant = "normal", tutorialTarget }) => {
           // Scroll rails pack many chips — prefer short labels so long names (WCC) fit.
           const compactLabel = shortLabel ?? label;
           const desktopLabel =
@@ -97,6 +99,7 @@ export function ManagerSubTabBar<T extends string>({
               role="tab"
               aria-selected={active === id}
               title={title ?? label}
+              data-tutorial-target={tutorialTarget}
               className={tabGroupButtonClass(
                 active === id,
                 variant,

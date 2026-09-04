@@ -134,7 +134,7 @@ export function ManagerNav({
                 type="button"
                 onClick={() => navigate(tab.id)}
                 disabled={disabled || locked}
-                data-tutorial-target={`manager-nav-${tab.id}-desktop`}
+                data-tutorial-target={`manager-nav-${tab.id}`}
                 className={`btn-press shrink-0 rounded-sm border-b-2 px-2.5 py-2 text-center font-display text-[length:var(--text-small)] font-bold uppercase tracking-wide transition sm:px-3 ${
                   active === tab.id
                     ? `${BTN.tabActive} border-b-[var(--theme-text-on-primary)]`

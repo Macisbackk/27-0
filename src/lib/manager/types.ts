@@ -1108,6 +1108,7 @@ export interface ManagerCareer {
   tutorialStep?:
     | "welcome"
     | "hub"
+    | "season"
     | "season-progress"
     | "fixture"
     | "squad"
@@ -1117,6 +1118,8 @@ export interface ManagerCareer {
     | "more"
     | "fixtures"
     | "stats"
+    | "club"
+    | "settings"
     | "cup"
     | "playoffs"
     | "finish";

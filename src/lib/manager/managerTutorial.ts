@@ -1,14 +1,10 @@
 /**
- * Manager Mode tutorial — one authoritative step contract.
+ * Manager Mode tutorial — minimal guide over real UI.
  *
- * Every interactive step binds together:
- *   text → exact target id → clickable control → expected app state → next
- *
- * Persisted on career: tutorialStatus / tutorialStep.
+ * Career persists: tutorialStatus + tutorialStep.
+ * Manager Mode owns tabs / More; this module only defines steps and observes.
  */
 import type { ManagerCareer, ManagerView } from "./types";
-import { canAdvanceMatchWeek } from "./managerMatchWeek";
-import { dismissManagerOnboarding } from "./managerOnboarding";
 import { isManagerMobileMoreNavView } from "./manager-nav-config";
 
 export type ManagerTutorialStatus =
@@ -20,8 +16,7 @@ export type ManagerTutorialStatus =
 export type ManagerTutorialStepId =
   | "welcome"
   | "hub"
-  | "season-progress"
-  | "fixture"
+  | "season"
   | "squad"
   | "reserves"
   | "contracts"
@@ -29,338 +24,205 @@ export type ManagerTutorialStepId =
   | "more"
   | "fixtures"
   | "stats"
-  | "cup"
-  | "playoffs"
+  | "club"
+  | "settings"
   | "finish";
 
-/** Unique per responsive surface — never share desktop/mobile IDs. */
+export type ManagerTutorialAction = "inspect" | "click" | "open-menu";
+
+/** Exact DOM id on the real control (`data-tutorial-target`). */
 export type ManagerTutorialTargetId =
-  | "manager-hub-root"
-  | "manager-hub-season-progress"
-  | "manager-hub-next-fixture"
-  | "manager-hub-advance-week-desktop"
-  | "manager-hub-advance-week-mobile"
-  | "manager-hub-play-game-desktop"
-  | "manager-hub-play-game-mobile"
-  | "manager-hub-simulate-desktop"
-  | "manager-hub-simulate-mobile"
-  | "manager-hub-challenge-cup"
-  | "manager-nav-hub-desktop"
-  | "manager-nav-hub-mobile"
-  | "manager-nav-squad-desktop"
-  | "manager-nav-squad-mobile"
-  | "manager-nav-reserves-desktop"
-  | "manager-nav-reserves-mobile"
-  | "manager-nav-contracts-desktop"
-  | "manager-nav-contracts-mobile"
-  | "manager-nav-transfers-desktop"
-  | "manager-nav-transfers-mobile"
-  | "manager-nav-fixtures-desktop"
-  | "manager-nav-fixtures-more"
-  | "manager-nav-stats-desktop"
-  | "manager-nav-stats-more"
-  | "manager-nav-more"
-  | "manager-section-squad"
-  | "manager-section-reserves"
-  | "manager-section-contracts"
-  | "manager-section-transfers"
-  | "manager-section-fixtures"
-  | "manager-section-stats"
-  | "manager-section-challenge-cup";
+  | "manager-hub"
+  | "manager-season-progress"
+  | "manager-nav-squad"
+  | "manager-nav-reserves"
+  | "manager-nav-contracts"
+  | "manager-nav-transfers"
+  | "manager-more"
+  | "manager-nav-fixtures"
+  | "manager-nav-stats"
+  | "manager-nav-club"
+  | "manager-club-settings";
 
-export type ManagerTutorialAction =
-  | "advance-week"
-  | "open-more"
-  | "nav"
-  | "observe";
+export type ManagerTutorialNavLock = ManagerView | "more" | null;
 
-export type TutorialInteractionPhase =
-  | "open-more"
-  | "action"
-  | "content"
-  | "next";
+export type ManagerTutorialClubTab =
+  | "finances"
+  | "boosts"
+  | "facilities"
+  | "settings";
 
-export type ManagerTutorialExpectedState = {
-  view?: ManagerView;
-  moreOpen?: boolean;
-};
-
-/**
- * One step = one teaching moment.
- * Interactive steps must declare exactly one desktop + one mobile target
- * for the action the copy asks for.
- */
-export interface ManagerTutorialStepDef {
+export interface ManagerTutorialStep {
   id: ManagerTutorialStepId;
   title: string;
-  /** Copy while waiting for the required tap / for observe+Next. */
-  body: string;
-  /** Copy after a nav action succeeds (content phase). */
-  contentBody?: string;
-  /** Short action line — must name the exact control. */
-  hint?: string;
-  /** Mobile More-path action line — must name the exact More item. */
-  moreHint?: string;
-  nextLabel?: string;
-  /** Soft-navigate for observe/content steps only. */
-  view?: ManagerView;
-  /**
-   * Exact control the action copy refers to.
-   * ONE id per viewport — no fallback lists.
-   */
-  target?: {
-    desktop: ManagerTutorialTargetId;
-    mobile: ManagerTutorialTargetId;
+  description: string;
+  /** Exact control the description refers to (omit for welcome/finish). */
+  targetId?: ManagerTutorialTargetId;
+  action: ManagerTutorialAction;
+  /** Real app state that proves a click / open-menu succeeded. */
+  expected?: {
+    tab?: ManagerView;
+    moreOpen?: boolean;
+    clubTab?: ManagerTutorialClubTab;
   };
-  /** Exact content surface after successful navigation. */
-  contentTarget?: {
-    desktop: ManagerTutorialTargetId;
-    mobile: ManagerTutorialTargetId;
-  };
-  requireAction?: boolean;
-  action?: ManagerTutorialAction;
-  navView?: ManagerView;
+  /** Skip on desktop (More is mobile-only). */
   mobileOnly?: boolean;
-  /** Real Manager Mode state that proves the action succeeded. */
-  expectedState?: ManagerTutorialExpectedState;
+  nextLabel?: string;
 }
 
-export const MANAGER_TUTORIAL_STEPS: readonly ManagerTutorialStepDef[] = [
+/**
+ * One list. Text always names the same control as targetId.
+ * Click steps advance only when expected app state matches.
+ */
+export const MANAGER_TUTORIAL_STEPS: readonly ManagerTutorialStep[] = [
   {
     id: "welcome",
     title: "Welcome to Manager Mode",
-    body: "You are now managing your club. Build your squad, manage fixtures, make transfers and guide your team through the season.",
+    description:
+      "You manage this club now — squad, transfers, fixtures and the season. Press Next to begin.",
+    action: "inspect",
     nextLabel: "Next",
-    action: "observe",
   },
   {
     id: "hub",
     title: "Club Hub",
-    body: "This is your Club Hub — the home screen for your season. Press Next when you are ready to keep exploring.",
-    view: "hub",
-    target: {
-      desktop: "manager-hub-root",
-      mobile: "manager-hub-root",
-    },
+    description:
+      "This is your Club Hub — the home screen for your season. Press Next when ready.",
+    targetId: "manager-hub",
+    action: "inspect",
     nextLabel: "Next",
-    action: "observe",
-    expectedState: { view: "hub" },
   },
   {
-    id: "season-progress",
-    title: "Advance Week",
-    body: "When you have no match to play, use Advance Week to move the season forward.",
-    hint: "Tap the highlighted Advance Week button.",
-    view: "hub",
-    target: {
-      desktop: "manager-hub-advance-week-desktop",
-      mobile: "manager-hub-advance-week-mobile",
-    },
+    id: "season",
+    title: "Season Progress",
+    description:
+      "Season Progress tracks your week, league position and path through the season. Press Next to continue.",
+    targetId: "manager-season-progress",
+    action: "inspect",
     nextLabel: "Next",
-    requireAction: true,
-    action: "advance-week",
-    expectedState: { view: "hub" },
-  },
-  {
-    id: "fixture",
-    title: "Next Fixture",
-    body: "Your next match card lives here on the Hub. Press Next to continue.",
-    view: "hub",
-    target: {
-      desktop: "manager-hub-next-fixture",
-      mobile: "manager-hub-next-fixture",
-    },
-    nextLabel: "Next",
-    action: "observe",
-    expectedState: { view: "hub" },
   },
   {
     id: "squad",
     title: "Open Squad",
-    body: "Open Squad to manage your first-team players, ratings and selection.",
-    contentBody:
-      "This is Squad — ratings, roles and selection for your first team. Press Next to continue.",
-    hint: "Tap Squad.",
-    target: {
-      desktop: "manager-nav-squad-desktop",
-      mobile: "manager-nav-squad-mobile",
-    },
-    contentTarget: {
-      desktop: "manager-section-squad",
-      mobile: "manager-section-squad",
-    },
-    nextLabel: "Next",
-    requireAction: true,
-    action: "nav",
-    navView: "squad",
-    expectedState: { view: "squad" },
+    description:
+      "Open Squad to manage senior players, positions and team selection.",
+    targetId: "manager-nav-squad",
+    action: "click",
+    expected: { tab: "squad" },
   },
   {
     id: "reserves",
     title: "Open Reserves",
-    body: "Open Reserves to develop younger and fringe players.",
-    contentBody:
-      "This is Reserves — promote, contract and call up players here. Press Next to continue.",
-    hint: "Tap Reserves.",
-    target: {
-      desktop: "manager-nav-reserves-desktop",
-      mobile: "manager-nav-reserves-mobile",
-    },
-    contentTarget: {
-      desktop: "manager-section-reserves",
-      mobile: "manager-section-reserves",
-    },
-    nextLabel: "Next",
-    requireAction: true,
-    action: "nav",
-    navView: "reserves",
-    expectedState: { view: "reserves" },
+    description:
+      "Open Reserves to develop younger and fringe players.",
+    targetId: "manager-nav-reserves",
+    action: "click",
+    expected: { tab: "reserves" },
   },
   {
     id: "contracts",
     title: "Open Contracts",
-    body: "Open Contracts to watch expiring deals before important players leave.",
-    contentBody:
-      "This is Contracts — keep an eye on expiring deals. Press Next to continue.",
-    hint: "Tap Contracts.",
-    target: {
-      desktop: "manager-nav-contracts-desktop",
-      mobile: "manager-nav-contracts-mobile",
-    },
-    contentTarget: {
-      desktop: "manager-section-contracts",
-      mobile: "manager-section-contracts",
-    },
-    nextLabel: "Next",
-    requireAction: true,
-    action: "nav",
-    navView: "contracts",
-    expectedState: { view: "contracts" },
+    description:
+      "Open Contracts to watch expiring deals before important players leave.",
+    targetId: "manager-nav-contracts",
+    action: "click",
+    expected: { tab: "contracts" },
   },
   {
     id: "transfers",
     title: "Open Transfers",
-    body: "Open Transfers to find players, make offers and manage market activity.",
-    contentBody:
-      "This is Transfers — the market and your transfer activity. Press Next to continue.",
-    hint: "Tap Transfers.",
-    target: {
-      desktop: "manager-nav-transfers-desktop",
-      mobile: "manager-nav-transfers-mobile",
-    },
-    contentTarget: {
-      desktop: "manager-section-transfers",
-      mobile: "manager-section-transfers",
-    },
-    nextLabel: "Next",
-    requireAction: true,
-    action: "nav",
-    navView: "transfers",
-    expectedState: { view: "transfers" },
+    description:
+      "Open Transfers to find players and manage incoming and outgoing deals.",
+    targetId: "manager-nav-transfers",
+    action: "click",
+    expected: { tab: "transfers" },
   },
   {
     id: "more",
     title: "Open More",
-    body: "Some Manager Mode sections live inside More. Open More to reach them.",
-    hint: "Tap ⋯ More.",
-    target: {
-      desktop: "manager-nav-more",
-      mobile: "manager-nav-more",
-    },
-    nextLabel: "Next",
-    requireAction: true,
-    action: "open-more",
+    description:
+      "Open More to find the rest of your Manager Mode sections.",
+    targetId: "manager-more",
+    action: "open-menu",
+    expected: { moreOpen: true },
     mobileOnly: true,
-    expectedState: { moreOpen: true },
   },
   {
     id: "fixtures",
     title: "Open Fixtures",
-    body: "Open Fixtures to see your upcoming league and cup schedule.",
-    contentBody:
-      "This is Fixtures — your schedule for league and cup matches. Press Next to continue.",
-    hint: "Tap Fixtures.",
-    moreHint: "Fixtures is inside More. Tap Fixtures.",
-    target: {
-      desktop: "manager-nav-fixtures-desktop",
-      mobile: "manager-nav-fixtures-more",
-    },
-    contentTarget: {
-      desktop: "manager-section-fixtures",
-      mobile: "manager-section-fixtures",
-    },
-    nextLabel: "Next",
-    requireAction: true,
-    action: "nav",
-    navView: "fixtures",
-    expectedState: { view: "fixtures" },
+    description:
+      "Open Fixtures to view upcoming matches and play or simulate them.",
+    targetId: "manager-nav-fixtures",
+    action: "click",
+    expected: { tab: "fixtures" },
   },
   {
     id: "stats",
     title: "Open Stats",
-    body: "Open Stats to track player and team performances.",
-    contentBody:
-      "This is Stats — performances across your season. Press Next to continue.",
-    hint: "Tap Stats.",
-    moreHint: "Stats is inside More. Tap Stats.",
-    target: {
-      desktop: "manager-nav-stats-desktop",
-      mobile: "manager-nav-stats-more",
-    },
-    contentTarget: {
-      desktop: "manager-section-stats",
-      mobile: "manager-section-stats",
-    },
-    nextLabel: "Next",
-    requireAction: true,
-    action: "nav",
-    navView: "stats",
-    expectedState: { view: "stats" },
+    description:
+      "Open Stats to track player and team performances this season.",
+    targetId: "manager-nav-stats",
+    action: "click",
+    expected: { tab: "stats" },
   },
   {
-    id: "cup",
-    title: "Challenge Cup",
-    body: "Cup ties live in Fixtures — another route to silverware. Press Next to continue.",
-    view: "fixtures",
-    target: {
-      desktop: "manager-section-challenge-cup",
-      mobile: "manager-section-challenge-cup",
-    },
-    nextLabel: "Next",
-    action: "observe",
-    expectedState: { view: "fixtures" },
+    id: "club",
+    title: "Open Club",
+    description:
+      "Open Club for finances, boosts and facilities.",
+    targetId: "manager-nav-club",
+    action: "click",
+    expected: { tab: "club" },
   },
   {
-    id: "playoffs",
-    title: "Season & playoffs",
-    body: "Season progress on the Hub tracks league position, playoffs and promotion. Press Next to continue.",
-    view: "hub",
-    target: {
-      desktop: "manager-hub-season-progress",
-      mobile: "manager-hub-season-progress",
-    },
-    nextLabel: "Next",
-    action: "observe",
-    expectedState: { view: "hub" },
+    id: "settings",
+    title: "Open Settings",
+    description:
+      "Open Settings in Club Office to adjust gameplay preferences.",
+    targetId: "manager-club-settings",
+    action: "click",
+    expected: { tab: "club", clubTab: "settings" },
   },
   {
     id: "finish",
     title: "You're ready to manage",
-    body: "Watch squad, fixtures and transfers — build your club into a Super League champion.",
+    description:
+      "Use Hub, Squad, Transfers and Fixtures to build a Super League champion.",
+    action: "inspect",
     nextLabel: "Start Managing",
-    action: "observe",
   },
 ] as const;
 
 const STEP_INDEX = Object.fromEntries(
-  MANAGER_TUTORIAL_STEPS.map((step, index) => [step.id, index])
+  MANAGER_TUTORIAL_STEPS.map((step, i) => [step.id, i])
 ) as Record<ManagerTutorialStepId, number>;
 
-export function getManagerTutorialStepDef(
-  stepId: ManagerTutorialStepId | null | undefined
-): ManagerTutorialStepDef | null {
-  if (!stepId) return null;
-  return MANAGER_TUTORIAL_STEPS.find((s) => s.id === stepId) ?? null;
+/** Map legacy step ids from prior tutorial versions onto the new list. */
+const LEGACY_STEP: Record<string, ManagerTutorialStepId> = {
+  welcome: "welcome",
+  hub: "hub",
+  season: "season",
+  "season-progress": "season",
+  fixture: "season",
+  squad: "squad",
+  reserves: "reserves",
+  contracts: "contracts",
+  transfers: "transfers",
+  more: "more",
+  fixtures: "fixtures",
+  stats: "stats",
+  club: "club",
+  settings: "settings",
+  cup: "finish",
+  playoffs: "finish",
+  finish: "finish",
+};
+
+export function getManagerTutorialStep(
+  id: ManagerTutorialStepId | null | undefined
+): ManagerTutorialStep | null {
+  if (!id) return null;
+  return MANAGER_TUTORIAL_STEPS.find((s) => s.id === id) ?? null;
 }
 
 export function isManagerTutorialActive(
@@ -378,20 +240,22 @@ export function shouldOfferManagerTutorialChoice(
 export function normalizeManagerTutorialState(
   career: ManagerCareer
 ): ManagerCareer {
-  if (career.tutorialStatus != null) {
-    if (
-      career.tutorialStatus === "active" &&
-      !getManagerTutorialStepDef(career.tutorialStep)
-    ) {
-      return { ...career, tutorialStep: "welcome" };
-    }
-    return career;
+  if (career.tutorialStatus == null) {
+    return {
+      ...career,
+      tutorialStatus: "completed",
+      tutorialStep: undefined,
+    };
   }
-  return {
-    ...career,
-    tutorialStatus: "completed",
-    tutorialStep: undefined,
-  };
+  if (career.tutorialStatus !== "active") return career;
+  const mapped = LEGACY_STEP[career.tutorialStep ?? "welcome"] ?? "welcome";
+  if (!getManagerTutorialStep(mapped)) {
+    return { ...career, tutorialStep: "welcome" };
+  }
+  if (mapped !== career.tutorialStep) {
+    return { ...career, tutorialStep: mapped };
+  }
+  return career;
 }
 
 export function startManagerTutorial(career: ManagerCareer): ManagerCareer {
@@ -403,11 +267,6 @@ export function startManagerTutorial(career: ManagerCareer): ManagerCareer {
 }
 
 export function skipManagerTutorial(career: ManagerCareer): ManagerCareer {
-  try {
-    dismissManagerOnboarding();
-  } catch {
-    /* ignore */
-  }
   return {
     ...career,
     tutorialStatus: "skipped",
@@ -416,11 +275,6 @@ export function skipManagerTutorial(career: ManagerCareer): ManagerCareer {
 }
 
 export function completeManagerTutorial(career: ManagerCareer): ManagerCareer {
-  try {
-    dismissManagerOnboarding();
-  } catch {
-    /* ignore */
-  }
   return {
     ...career,
     tutorialStatus: "completed",
@@ -430,9 +284,11 @@ export function completeManagerTutorial(career: ManagerCareer): ManagerCareer {
 
 export function getActiveManagerTutorialStep(
   career: ManagerCareer
-): ManagerTutorialStepDef | null {
+): ManagerTutorialStep | null {
   if (!isManagerTutorialActive(career)) return null;
-  return getManagerTutorialStepDef(career.tutorialStep ?? "welcome");
+  const id = (LEGACY_STEP[career.tutorialStep ?? "welcome"] ??
+    "welcome") as ManagerTutorialStepId;
+  return getManagerTutorialStep(id);
 }
 
 export function isTutorialCompactViewport(): boolean {
@@ -442,9 +298,8 @@ export function isTutorialCompactViewport(): boolean {
 
 function nextStepId(
   current: ManagerTutorialStepId,
-  opts?: { compact?: boolean }
+  compact: boolean
 ): ManagerTutorialStepId | "done" {
-  const compact = opts?.compact ?? isTutorialCompactViewport();
   let index = STEP_INDEX[current];
   if (index == null) return "done";
   while (index + 1 < MANAGER_TUTORIAL_STEPS.length) {
@@ -460,228 +315,125 @@ function nextStepId(
 
 export function advanceManagerTutorial(career: ManagerCareer): ManagerCareer {
   if (!isManagerTutorialActive(career)) return career;
-  const current = (career.tutorialStep ?? "welcome") as ManagerTutorialStepId;
-  if (current === "finish") {
-    return completeManagerTutorial(career);
-  }
-  const next = nextStepId(current);
-  if (next === "done") {
-    return completeManagerTutorial(career);
-  }
+  const current = (LEGACY_STEP[career.tutorialStep ?? "welcome"] ??
+    "welcome") as ManagerTutorialStepId;
+  if (current === "finish") return completeManagerTutorial(career);
+  const next = nextStepId(current, isTutorialCompactViewport());
+  if (next === "done") return completeManagerTutorial(career);
   return { ...career, tutorialStep: next };
 }
 
-export function tutorialCanRequireAdvanceWeek(career: ManagerCareer): boolean {
-  return canAdvanceMatchWeek(career);
-}
-
-export function resolveTutorialInteractionPhase(
-  step: ManagerTutorialStepDef,
-  opts: {
-    compact: boolean;
-    moreOpen: boolean;
-    currentView: ManagerView | null | undefined;
-  }
-): TutorialInteractionPhase {
-  if (!step.requireAction || !step.action) return "next";
-
-  if (step.action === "advance-week") return "action";
-
-  if (step.action === "open-more") {
-    return opts.moreOpen ? "next" : "action";
-  }
-
-  if (step.action === "nav" && step.navView) {
-    if (opts.currentView === step.navView) {
-      return step.contentTarget ? "content" : "next";
-    }
-    const needsMore =
-      opts.compact && isManagerMobileMoreNavView(step.navView);
-    if (needsMore && !opts.moreOpen) return "open-more";
-    return "action";
-  }
-
-  return "next";
-}
-
-/** Exactly one target id for the current phase + viewport. */
-export function resolveTutorialPhaseTargetId(
-  step: ManagerTutorialStepDef,
-  phase: TutorialInteractionPhase,
-  compact: boolean
-): ManagerTutorialTargetId | null {
-  if (phase === "open-more") return "manager-nav-more";
-  if (phase === "action") {
-    return compact ? step.target?.mobile ?? null : step.target?.desktop ?? null;
-  }
-  if (phase === "content") {
-    return compact
-      ? step.contentTarget?.mobile ?? null
-      : step.contentTarget?.desktop ?? null;
-  }
-  // Observe / next with an optional spotlight.
-  if (step.target) {
-    return compact ? step.target.mobile : step.target.desktop;
-  }
-  return null;
-}
-
-export function resolveTutorialPhaseTargets(
-  step: ManagerTutorialStepDef,
-  phase: TutorialInteractionPhase,
-  compact: boolean
-): ManagerTutorialTargetId[] | undefined {
-  const id = resolveTutorialPhaseTargetId(step, phase, compact);
-  return id ? [id] : undefined;
-}
-
-export function tutorialPhaseNeedsTap(
-  phase: TutorialInteractionPhase
-): boolean {
-  return phase === "open-more" || phase === "action";
-}
-
-export type ManagerTutorialNavLock =
-  | "more"
-  | "advance-week"
-  | ManagerView
-  | null;
-
-export function tutorialLockTargetForPhase(
-  step: ManagerTutorialStepDef,
-  phase: TutorialInteractionPhase
-): ManagerTutorialNavLock {
-  if (phase === "open-more") return "more";
-  if (step.action === "open-more" && phase === "action") return "more";
-  if (phase === "action" && step.action === "advance-week") {
-    return "advance-week";
-  }
-  if (phase === "action" && step.action === "nav" && step.navView) {
-    return step.navView;
-  }
-  return null;
-}
-
-export function getTutorialStepCopy(
-  step: ManagerTutorialStepDef,
-  phase: TutorialInteractionPhase,
-  compact: boolean
-): { title: string; body: string; hint: string | null } {
-  if (phase === "content" && step.contentBody) {
-    return { title: step.title, body: step.contentBody, hint: null };
-  }
-  if (phase === "open-more") {
-    return {
-      title: step.title,
-      body: step.body,
-      hint: "Tap ⋯ More in the bottom bar.",
-    };
-  }
-  if (phase === "action") {
-    const hint =
-      compact && step.moreHint && step.action === "nav"
-        ? step.moreHint
-        : step.hint ?? null;
-    return { title: step.title, body: step.body, hint };
-  }
-  return { title: step.title, body: step.body, hint: null };
-}
-
-function isTutorialTargetUsable(el: HTMLElement): boolean {
-  if (el.closest("[hidden]")) return false;
-  if (el.closest("[aria-hidden='true']")) return false;
-  let node: HTMLElement | null = el;
-  while (node && node !== document.documentElement) {
-    const style = window.getComputedStyle(node);
-    if (style.display === "none" || style.visibility === "hidden") return false;
-    if (Number.parseFloat(style.opacity || "1") < 0.05) return false;
-    if (node.classList.contains("invisible")) return false;
-    if (node.hasAttribute("inert")) return false;
-    node = node.parentElement;
-  }
-
-  let blocked = false;
-  node = el.parentElement;
-  while (node && node !== document.documentElement) {
-    if (window.getComputedStyle(node).pointerEvents === "none") {
-      blocked = true;
-      break;
-    }
-    node = node.parentElement;
-  }
-  if (blocked && window.getComputedStyle(el).pointerEvents !== "auto") {
-    return false;
-  }
-  if (window.getComputedStyle(el).pointerEvents === "none") return false;
-
-  const rect = el.getBoundingClientRect();
-  return rect.width >= 2 && rect.height >= 2;
-}
-
-export type TutorialTargetResolveResult = {
-  el: HTMLElement | null;
-  id: ManagerTutorialTargetId | null;
-  matchCount: number;
-  ambiguous: boolean;
+export type TutorialObserveOpts = {
+  compact: boolean;
+  moreOpen: boolean;
+  currentView: ManagerView;
+  clubOfficeTab?: ManagerTutorialClubTab | null;
 };
 
+function navTargetForView(view: ManagerView): ManagerTutorialTargetId | null {
+  switch (view) {
+    case "squad":
+      return "manager-nav-squad";
+    case "reserves":
+      return "manager-nav-reserves";
+    case "contracts":
+      return "manager-nav-contracts";
+    case "transfers":
+      return "manager-nav-transfers";
+    case "fixtures":
+      return "manager-nav-fixtures";
+    case "stats":
+      return "manager-nav-stats";
+    case "club":
+      return "manager-nav-club";
+    default:
+      return null;
+  }
+}
+
 /**
- * Resolve exactly one visible target. Ambiguous matches return null
- * (never guess the first duplicate).
+ * Which control must stay clickable (and elevated) for this step.
+ * Null = inspect / finished / in-page sub-control — no nav lock.
  */
-export function resolveTutorialTargetElement(
-  targets: ManagerTutorialTargetId[] | undefined
-): TutorialTargetResolveResult {
-  if (typeof document === "undefined" || !targets?.length) {
-    return { el: null, id: null, matchCount: 0, ambiguous: false };
+export function tutorialNavLockForStep(
+  step: ManagerTutorialStep,
+  opts: TutorialObserveOpts
+): ManagerTutorialNavLock {
+  if (step.action === "open-menu") {
+    return opts.moreOpen ? null : "more";
   }
-
-  for (const id of targets) {
-    const nodes = document.querySelectorAll(`[data-tutorial-target="${id}"]`);
-    const usable: HTMLElement[] = [];
-    for (const node of nodes) {
-      if (!(node instanceof HTMLElement)) continue;
-      if (!isTutorialTargetUsable(node)) continue;
-      usable.push(node);
+  if (step.action !== "click" || !step.expected?.tab) return null;
+  if (opts.currentView === step.expected.tab) {
+    // Stay on this tab while teaching an in-page Club sub-tab.
+    if (
+      step.expected.clubTab &&
+      opts.clubOfficeTab !== step.expected.clubTab
+    ) {
+      return step.expected.tab;
     }
-    if (usable.length === 1) {
-      return { el: usable[0]!, id, matchCount: 1, ambiguous: false };
-    }
-    if (usable.length > 1) {
-      tutorialDebugLog("target-ambiguous", { id, matchCount: usable.length });
-      return { el: null, id, matchCount: usable.length, ambiguous: true };
-    }
+    return null;
   }
-  return { el: null, id: targets[0] ?? null, matchCount: 0, ambiguous: false };
+  const needsMore =
+    opts.compact && isManagerMobileMoreNavView(step.expected.tab);
+  if (needsMore && !opts.moreOpen) return "more";
+  return step.expected.tab;
 }
 
-export async function waitForTutorialTarget(
-  targets: ManagerTutorialTargetId[] | undefined,
-  options?: { timeoutMs?: number; intervalMs?: number }
-): Promise<TutorialTargetResolveResult> {
-  const timeoutMs = options?.timeoutMs ?? 2000;
-  const intervalMs = options?.intervalMs ?? 50;
-  const start = performance.now();
-  let result = resolveTutorialTargetElement(targets);
-  while (
-    !result.el &&
-    !result.ambiguous &&
-    performance.now() - start < timeoutMs
-  ) {
-    await new Promise<void>((r) => setTimeout(r, intervalMs));
-    result = resolveTutorialTargetElement(targets);
+/**
+ * Effective target for this step given real viewport + More + Club state.
+ * Hidden More items are never resolved while More is closed.
+ */
+export function resolveStepTargetId(
+  step: ManagerTutorialStep,
+  opts: TutorialObserveOpts
+): ManagerTutorialTargetId | null {
+  if (step.action === "open-menu") {
+    return opts.moreOpen ? null : "manager-more";
   }
-  return result;
+  if (step.action === "click" && step.expected?.tab) {
+    const tab = step.expected.tab;
+    if (opts.currentView !== tab) {
+      const needsMore =
+        opts.compact && isManagerMobileMoreNavView(tab);
+      if (needsMore && !opts.moreOpen) return "manager-more";
+      // Reach the parent tab before any in-page sub-control.
+      if (step.expected.clubTab) {
+        return navTargetForView(tab);
+      }
+      return step.targetId ?? null;
+    }
+    if (step.expected.clubTab) {
+      if (opts.clubOfficeTab === step.expected.clubTab) return null;
+      return step.targetId ?? null;
+    }
+    return null;
+  }
+  return step.targetId ?? null;
 }
 
-/** True when the element is Manager chrome that sits above page content. */
-export function isTutorialChromeTarget(el: HTMLElement): boolean {
-  return Boolean(
-    el.closest("[data-manager-mobile-nav]") ||
-      el.closest("[data-manager-more-sheet]") ||
-      el.closest(".mobile-action-bar") ||
-      el.closest("nav[aria-label='Manager sections']")
-  );
+export function stepNeedsUserTap(
+  step: ManagerTutorialStep,
+  opts: TutorialObserveOpts
+): boolean {
+  return resolveStepTargetId(step, opts) != null && step.action !== "inspect";
+}
+
+export function stepExpectationMet(
+  step: ManagerTutorialStep,
+  opts: Pick<TutorialObserveOpts, "moreOpen" | "currentView" | "clubOfficeTab">
+): boolean {
+  if (step.action === "inspect") return false;
+  if (step.action === "open-menu") {
+    return opts.moreOpen === true;
+  }
+  if (step.action === "click" && step.expected?.tab) {
+    if (opts.currentView !== step.expected.tab) return false;
+    if (step.expected.clubTab) {
+      return opts.clubOfficeTab === step.expected.clubTab;
+    }
+    return true;
+  }
+  return false;
 }
 
 export function getManagerTutorialStepIndex(
@@ -695,6 +447,69 @@ export function getManagerTutorialStepCount(compact = true): number {
     .length;
 }
 
+function isElementUsable(el: HTMLElement): boolean {
+  if (!el.isConnected) return false;
+  if (el.closest("[hidden]")) return false;
+  if (el.closest("[aria-hidden='true']")) return false;
+  let node: HTMLElement | null = el;
+  while (node && node !== document.documentElement) {
+    const style = window.getComputedStyle(node);
+    if (style.display === "none" || style.visibility === "hidden") return false;
+    if (Number.parseFloat(style.opacity || "1") < 0.05) return false;
+    if (node.classList.contains("invisible")) return false;
+    if (node.hasAttribute("inert")) return false;
+    node = node.parentElement;
+  }
+  const rect = el.getBoundingClientRect();
+  return rect.width >= 2 && rect.height >= 2;
+}
+
+export type TutorialTargetHit = {
+  el: HTMLElement | null;
+  matchCount: number;
+  ambiguous: boolean;
+};
+
+/** Exactly one visible match — never guess among duplicates. */
+export function resolveTutorialTarget(
+  targetId: ManagerTutorialTargetId | null | undefined
+): TutorialTargetHit {
+  if (typeof document === "undefined" || !targetId) {
+    return { el: null, matchCount: 0, ambiguous: false };
+  }
+  const nodes = document.querySelectorAll(
+    `[data-tutorial-target="${targetId}"]`
+  );
+  const usable: HTMLElement[] = [];
+  for (const node of nodes) {
+    if (node instanceof HTMLElement && isElementUsable(node)) {
+      usable.push(node);
+    }
+  }
+  if (usable.length === 1) {
+    return { el: usable[0]!, matchCount: 1, ambiguous: false };
+  }
+  if (usable.length > 1) {
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.error(
+        `[manager-tutorial] target ambiguity: ${targetId} matches=${usable.length}`
+      );
+    }
+    return { el: null, matchCount: usable.length, ambiguous: true };
+  }
+  return { el: null, matchCount: 0, ambiguous: false };
+}
+
+export function isTutorialChromeElement(el: HTMLElement): boolean {
+  return Boolean(
+    el.closest("[data-manager-mobile-nav]") ||
+      el.closest("[data-manager-more-sheet]") ||
+      el.closest(".mobile-action-bar") ||
+      el.closest("nav[aria-label='Manager sections']")
+  );
+}
+
 export function isManagerTutorialDebugEnabled(): boolean {
   if (typeof window === "undefined") return false;
   if (process.env.NODE_ENV === "production") return false;
@@ -705,11 +520,32 @@ export function isManagerTutorialDebugEnabled(): boolean {
   }
 }
 
-export function tutorialDebugLog(
-  event: string,
-  payload?: Record<string, unknown>
-): void {
-  if (!isManagerTutorialDebugEnabled()) return;
-  // eslint-disable-next-line no-console
-  console.debug(`[manager-tutorial] ${event}`, payload ?? "");
+/** Dev-only: audit every known target id in the DOM. */
+export function auditManagerTutorialTargets(): void {
+  if (typeof document === "undefined") return;
+  const ids = new Set<string>();
+  for (const step of MANAGER_TUTORIAL_STEPS) {
+    if (step.targetId) ids.add(step.targetId);
+  }
+  ids.add("manager-more");
+  for (const id of ids) {
+    const hit = resolveTutorialTarget(id as ManagerTutorialTargetId);
+    // eslint-disable-next-line no-console
+    console.info(`[tutorial-audit] ${id}`, {
+      found: Boolean(hit.el),
+      matches: hit.matchCount,
+      ambiguous: hit.ambiguous,
+      size: hit.el
+        ? {
+            w: Math.round(hit.el.getBoundingClientRect().width),
+            h: Math.round(hit.el.getBoundingClientRect().height),
+          }
+        : null,
+    });
+  }
+}
+
+if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
+  (window as unknown as { __auditManagerTutorialTargets?: () => void })
+    .__auditManagerTutorialTargets = auditManagerTutorialTargets;
 }

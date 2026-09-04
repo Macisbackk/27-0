@@ -206,8 +206,6 @@ import {
   refreshManagerCareersFromCloud,
 } from "@/lib/storage/manager-career-cloud";
 import {
-  advanceManagerTutorial,
-  getActiveManagerTutorialStep,
   isManagerTutorialActive,
 } from "@/lib/manager/managerTutorial";
 import { shouldShowSaveMigrationNotice } from "@/lib/manager/managerSaveMigration";
@@ -334,6 +332,9 @@ export default function ManagerPage() {
   const [managerMoreMenuOpen, setManagerMoreMenuOpen] = useState(false);
   const [managerTutorialNavLock, setManagerTutorialNavLock] =
     useState<ManagerMoreTutorialLock>(null);
+  const [clubOfficeTab, setClubOfficeTab] = useState<
+    "finances" | "boosts" | "facilities" | "settings" | null
+  >(null);
   const [pendingPositionRetrainingId, setPendingPositionRetrainingId] =
     useState<string | null>(null);
   const [positionRetrainingCompleteModalOpen, setPositionRetrainingCompleteModalOpen] =
@@ -829,21 +830,6 @@ export default function ManagerPage() {
     }
     tutorialWasActiveRef.current = active;
   }, [career, career?.tutorialStatus]);
-
-  /** Cup tutorial step always opens Fixtures on the Cup tab. */
-  useEffect(() => {
-    if (!career || !isManagerTutorialActive(career)) return;
-    const stepId = getActiveManagerTutorialStep(career)?.id;
-    if (stepId === "cup") {
-      setFixturesInitialFilter("cup");
-      return;
-    }
-    // Leave Cup filter once the tutorial moves on so later Fixtures visits
-    // are not stuck on an empty early-season Cup tab.
-    if (stepId === "playoffs" || stepId === "finish") {
-      setFixturesInitialFilter(null);
-    }
-  }, [career, career?.tutorialStep, career?.tutorialStatus]);
 
   useLayoutEffect(() => {
     if (!awaitingFriendlyChoice) return;
@@ -1986,23 +1972,19 @@ export default function ManagerPage() {
       const withQueue = throttlePendingManagerEvents(
         enqueueWeeklyManagerEvents(result.career)
       );
-      const afterTutorial =
-        getActiveManagerTutorialStep(withQueue)?.action === "advance-week"
-          ? advanceManagerTutorial(withQueue)
-          : withQueue;
-      persist(afterTutorial);
+      persist(withQueue);
 
       // Weekly popups only — never auto-open or play the next fixture.
       // During the mandatory tutorial, leave events queued in career state and
       // surface them when the tutorial finishes (see tutorialWasActiveRef effect).
-      if (!isManagerTutorialActive(afterTutorial)) {
-        const boardMail = getPendingNarrativeInboxPopup(afterTutorial);
-        const incomingBid = getPendingIncomingClubBid(afterTutorial);
-        const contractExpiry = getPendingContractExpiryPopup(afterTutorial);
-        const loanEnded = getPendingLoanEndedPopup(afterTutorial);
-        const retirementIntent = getPendingRetirementIntentPopup(afterTutorial);
-        const retrainingComplete = getPendingPositionRetrainingPopup(afterTutorial);
-        const reserveReport = getPendingReserveReportPopup(afterTutorial);
+      if (!isManagerTutorialActive(withQueue)) {
+        const boardMail = getPendingNarrativeInboxPopup(withQueue);
+        const incomingBid = getPendingIncomingClubBid(withQueue);
+        const contractExpiry = getPendingContractExpiryPopup(withQueue);
+        const loanEnded = getPendingLoanEndedPopup(withQueue);
+        const retirementIntent = getPendingRetirementIntentPopup(withQueue);
+        const retrainingComplete = getPendingPositionRetrainingPopup(withQueue);
+        const reserveReport = getPendingReserveReportPopup(withQueue);
 
         setPendingBoardMessageId(boardMail?.id ?? null);
         setPendingIncomingBidId(incomingBid?.id ?? null);
@@ -2012,8 +1994,8 @@ export default function ManagerPage() {
         setPendingPositionRetrainingId(retrainingComplete?.id ?? null);
         setPendingReserveReportId(reserveReport?.id ?? null);
 
-        if (afterTutorial.isSeasonComplete) {
-          continueCelebrationQueue("wcc", afterTutorial);
+        if (withQueue.isSeasonComplete) {
+          continueCelebrationQueue("wcc", withQueue);
           return;
         }
 
@@ -2032,8 +2014,8 @@ export default function ManagerPage() {
         } else if (reserveReport) {
           setReserveReportModalOpen(true);
         }
-      } else if (afterTutorial.isSeasonComplete) {
-        continueCelebrationQueue("wcc", afterTutorial);
+      } else if (withQueue.isSeasonComplete) {
+        continueCelebrationQueue("wcc", withQueue);
         return;
       }
 
@@ -2339,14 +2321,12 @@ export default function ManagerPage() {
             disabled={
               playGameOpen ||
               awaitingFriendlyChoice ||
-              managerOverlayActive ||
-              managerTutorialNavLock === "advance-week"
+              managerOverlayActive
             }
             unreadInbox={countUnreadInbox(career)}
             contextTabs={squadContextTabs}
             tutorialLock={
-              managerTutorialNavLock === "more" ||
-              managerTutorialNavLock === "advance-week"
+              managerTutorialNavLock === "more"
                 ? null
                 : managerTutorialNavLock
             }
@@ -2407,7 +2387,7 @@ export default function ManagerPage() {
                   label="manager-tab-squad"
                   active={chromeNavView === "squad" && panesInteractive}
                 >
-                  <div data-tutorial-target="manager-section-squad">
+                  <div>
                     <ManagerSquad
                       career={career}
                       onUpdate={persistAndSurfaceIncomingBids}
@@ -2416,7 +2396,7 @@ export default function ManagerPage() {
                   </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "reserves" && panesInteractive}>
-                  <div data-tutorial-target="manager-section-reserves">
+                  <div>
                     <ManagerReserves
                       career={career}
                       onUpdate={persistAndSurfaceIncomingBids}
@@ -2424,12 +2404,12 @@ export default function ManagerPage() {
                   </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "contracts" && panesInteractive}>
-                  <div data-tutorial-target="manager-section-contracts">
+                  <div>
                     <ManagerContracts career={career} onUpdate={persist} />
                   </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "transfers" && panesInteractive}>
-                  <div data-tutorial-target="manager-section-transfers">
+                  <div>
                     <ManagerTransfers
                       career={career}
                       onUpdate={persistAndSurfaceIncomingBids}
@@ -2437,10 +2417,14 @@ export default function ManagerPage() {
                   </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "club" && panesInteractive}>
-                  <ManagerClub career={career} onUpdate={persist} />
+                  <ManagerClub
+                    career={career}
+                    onUpdate={persist}
+                    onOfficeTabChange={setClubOfficeTab}
+                  />
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "fixtures" && panesInteractive}>
-                  <div data-tutorial-target="manager-section-fixtures">
+                  <div>
                     <ManagerFixtures
                       career={career}
                       onUpdate={persistAfterCalendarSim}
@@ -2458,7 +2442,7 @@ export default function ManagerPage() {
                   />
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "stats" && panesInteractive}>
-                  <div data-tutorial-target="manager-section-stats">
+                  <div>
                     <ManagerStatsView career={career} />
                   </div>
                 </ManagerKeepAlivePane>
@@ -2508,7 +2492,7 @@ export default function ManagerPage() {
           onAdvanceWeek={
             hubSticky.mode === "advance-week" ? handleAdvanceWeek : undefined
           }
-          tutorialElevate={managerTutorialNavLock === "advance-week"}
+          tutorialElevate={false}
         />
       )}
 
@@ -2646,11 +2630,11 @@ export default function ManagerPage() {
           <ManagerTutorialOverlay
             career={career}
             onUpdate={persist}
-            onNavigate={handleNavNavigate}
             currentView={displayView}
             moreMenuOpen={managerMoreMenuOpen}
             onMoreMenuOpenChange={setManagerMoreMenuOpen}
             onTutorialLockChange={setManagerTutorialNavLock}
+            clubOfficeTab={displayView === "club" ? clubOfficeTab : null}
           />
         )}
 
