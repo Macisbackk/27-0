@@ -24,7 +24,7 @@ export function BracketMobileRoundNav({
   if (useSnapScroll) {
     return (
       <div
-        className="bracket-round-nav flex snap-x snap-mandatory gap-1.5 overflow-x-auto pb-0.5 scroll-pl-1 [-ms-overflow-style:none] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden"
+        className="bracket-round-nav flex snap-x snap-mandatory gap-1.5 overflow-x-auto pb-0.5 scroll-pl-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:hidden [&::-webkit-scrollbar]:hidden"
         role="tablist"
         aria-label="Bracket rounds"
       >
@@ -77,7 +77,7 @@ export function BracketMobileRoundNav({
 
   return (
     <div
-      className={`bracket-round-nav grid gap-2 md:hidden ${columnClass}`}
+      className={`bracket-round-nav grid gap-2 sm:hidden ${columnClass}`}
       role="tablist"
       aria-label="Bracket rounds"
     >

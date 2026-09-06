@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 /** Matches Tailwind `sm` and Manager compact chrome (bottom nav, tutorial). */
 export const COMPACT_MAX_PX = 639;
 export const COMPACT_MEDIA_QUERY = `(max-width: ${COMPACT_MAX_PX}px)`;
+export const WIDE_MIN_PX = COMPACT_MAX_PX + 1;
 
 export function isCompactViewport(): boolean {
   if (typeof window === "undefined") return true;

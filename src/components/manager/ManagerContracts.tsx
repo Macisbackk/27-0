@@ -33,6 +33,8 @@ import {
   ManagerPlayerCard,
   ManagerPlayerCardHeader,
 } from "@/components/manager/ManagerPlayerCard";
+import { CompactPlayerCard } from "@/components/ui/CompactPlayerCard";
+import { useCompactViewport } from "@/lib/ui/viewport";
 import { playContractSigned, playPanelClose, playUiClick } from "@/lib/sound";
 import { managerCalloutClass, managerClubAccentCardStyle } from "@/lib/manager/managerSurfaces";
 import { ManagerPage, ManagerSection } from "@/components/manager/manager-ui";
@@ -75,6 +77,7 @@ export function ManagerContracts({
   career,
   onUpdate,
 }: ManagerContractsProps) {
+  const compact = useCompactViewport();
   const [subTab, setSubTab] = useState<ContractsSubTab>("contracts");
   const [filter, setFilter] = useState<ContractFilter>("all");
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
@@ -387,6 +390,31 @@ export function ManagerContracts({
             : contract.retiringAtSeasonEnd
             ? "Retiring end of season"
             : STATUS_LABELS[status] ?? status;
+          if (compact) {
+            return (
+              <CompactPlayerCard
+                key={player.id}
+                name={player.name}
+                position={formatSquadRole(contract.squadRole)}
+                rating={rating}
+                onClick={() => {
+                  playUiClick();
+                  openRenewal(player.id);
+                }}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className={`${TYPO.bodySm} text-pitch-400`}>
+                    {formatWage(contract.wagePerYear)}/yr · {contract.yearsRemaining}yr
+                  </span>
+                  <span
+                    className={`shrink-0 rounded-sm border px-2 py-1 text-[11px] font-semibold ${statusColor}`}
+                  >
+                    {statusLabel}
+                  </span>
+                </div>
+              </CompactPlayerCard>
+            );
+          }
           return (
             <ManagerPlayerCard
               key={player.id}

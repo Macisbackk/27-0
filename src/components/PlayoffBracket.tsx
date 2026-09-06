@@ -37,6 +37,7 @@ import {
   PlayoffMatchCard,
 } from "./PlayoffBracketVisuals";
 import { resolveSquadClubColorOverride } from "@/lib/players/squad-club-accent";
+import { COMPACT_MEDIA_QUERY } from "@/lib/ui/viewport";
 
 interface PlayoffBracketProps {
   squad: SquadSlot[];
@@ -125,7 +126,7 @@ export function PlayoffBracket({
     if (!selectedId) return;
     const match = state.matches.find((m) => m.id === selectedId);
     if (match?.status !== "complete") return;
-    if (!window.matchMedia("(max-width: 767px)").matches) return;
+    if (!window.matchMedia(COMPACT_MEDIA_QUERY).matches) return;
     matchDetailsRef.current?.scrollIntoView({
       behavior: "auto",
       block: "nearest",
@@ -163,7 +164,7 @@ export function PlayoffBracket({
         simulatedRound !== undefined &&
         isPlayoffRoundComplete(next, simulatedRound) &&
         getActiveRound(next) > simulatedRound &&
-        window.matchMedia("(max-width: 767px)").matches
+        window.matchMedia(COMPACT_MEDIA_QUERY).matches
       ) {
         // Keep mobile on the finished round until the player taps Proceed.
         setMobileViewRound(simulatedRound);
@@ -181,7 +182,7 @@ export function PlayoffBracket({
     if (
       isPlayoffRoundComplete(next, activeRound) &&
       getActiveRound(next) > activeRound &&
-      window.matchMedia("(max-width: 767px)").matches
+      window.matchMedia(COMPACT_MEDIA_QUERY).matches
     ) {
       setMobileViewRound(activeRound);
     }
@@ -219,7 +220,7 @@ export function PlayoffBracket({
           />
         </div>
 
-        <div className="mx-auto mt-2 w-full space-y-2.5 md:hidden sm:mt-5 sm:space-y-3">
+        <div className="mx-auto mt-2 w-full space-y-2.5 sm:hidden">
           {getMatchesForRound(state, mobileViewRound).map((match) => (
             <PlayoffMatchCard
               key={match.id}
@@ -304,7 +305,7 @@ export function PlayoffBracket({
                 size="md"
                 fullWidth={false}
                 onClick={handleProceedToNextRound}
-                className="w-full min-w-[12rem] sm:w-auto md:hidden"
+                className="w-full min-w-[12rem] sm:hidden"
               >
                 Proceed to {getPlayoffRoundLabel(activeRound)}
               </GameButton>
@@ -316,7 +317,7 @@ export function PlayoffBracket({
               disabled={!canSimRound}
               onClick={handleSimulateRound}
               className={`w-full min-w-[12rem] sm:w-auto disabled:opacity-40 ${
-                showProceedToNextRound ? "hidden md:inline-flex" : ""
+                showProceedToNextRound ? "hidden sm:inline-flex" : ""
               }`}
             >
               Simulate Round

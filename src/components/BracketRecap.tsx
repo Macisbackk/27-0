@@ -194,7 +194,7 @@ export function BracketRecap({
       />
 
       {expanded && viewRound === 1 && roundOneByes.length > 0 ? (
-        <div className="mt-3 rounded-lg border border-pitch-600/40 bg-pitch-900/40 p-3 md:hidden">
+        <div className="mt-3 rounded-lg border border-pitch-600/40 bg-pitch-900/40 p-3 sm:hidden">
           <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-sky-300">
             Bye to Round Two
           </p>
@@ -207,7 +207,7 @@ export function BracketRecap({
       ) : null}
 
       {expanded && viewRound === 2 && roundTwoByes.length > 0 ? (
-        <div className="mt-3 rounded-lg border border-pitch-600/40 bg-pitch-900/40 p-3 md:hidden">
+        <div className="mt-3 rounded-lg border border-pitch-600/40 bg-pitch-900/40 p-3 sm:hidden">
           <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-sky-300">
             Seeded bye to Last 16
           </p>
@@ -219,7 +219,7 @@ export function BracketRecap({
         </div>
       ) : null}
 
-      <div className="mt-4 md:hidden">
+      <div className="mt-4 sm:hidden">
         <CupRoundTitle
           round={viewRound}
           activeRound={activeRound}

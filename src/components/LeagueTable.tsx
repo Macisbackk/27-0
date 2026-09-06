@@ -11,8 +11,35 @@ interface LeagueTableProps {
 
 export const LeagueTable = memo(function LeagueTable({ rows }: LeagueTableProps) {
   return (
-    <div className="w-full min-w-0 max-w-full overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch]">
-      <table className="w-full min-w-0 border-collapse text-left text-[11px] sm:text-xs max-sm:min-w-[300px]">
+    <div className="w-full min-w-0 max-w-full">
+      <ul className="space-y-2 sm:hidden">
+        {rows.map((row) => (
+          <li
+            key={row.team}
+            className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2 ${
+              row.isUserTeam
+                ? "border-theme-primary/35 bg-theme-primary/10"
+                : "border-pitch-700/50 bg-pitch-950/40"
+            }`}
+          >
+            <span className="w-6 shrink-0 font-mono text-sm text-pitch-400">
+              {row.position}
+            </span>
+            <span
+              className={`min-w-0 flex-1 truncate text-sm ${
+                row.isUserTeam ? "font-semibold text-theme-primary" : "text-pitch-200"
+              }`}
+            >
+              {row.team}
+            </span>
+            <span className="shrink-0 text-right text-[11px] leading-tight text-pitch-400">
+              P {row.played} · W {row.wins} · PTS {row.leaguePoints}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <div className="hidden overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch] sm:block">
+      <table className="w-full min-w-0 border-collapse text-left text-[11px] sm:text-xs">
         <thead>
           <tr className={`border-b border-pitch-700/60 ${TYPO.statLabel}`}>
             <th className="sticky left-0 z-10 bg-pitch-950 px-1.5 py-2 sm:px-2 sm:py-2.5">
@@ -36,6 +63,7 @@ export const LeagueTable = memo(function LeagueTable({ rows }: LeagueTableProps)
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 });

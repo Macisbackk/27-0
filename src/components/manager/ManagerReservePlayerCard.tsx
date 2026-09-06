@@ -19,6 +19,7 @@ import {
 } from "@/components/manager/ManagerPlayerCard";
 import { playUiClick } from "@/lib/sound";
 import { UI_COPY } from "@/lib/ui/copy";
+import { CompactPlayerCard } from "@/components/ui/CompactPlayerCard";
 
 interface ManagerReservePlayerCardProps {
   model: ReserveCardModel;
@@ -31,6 +32,7 @@ interface ManagerReservePlayerCardProps {
   onCancelCallUp?: (id: string) => void;
   onPromote: (id: string) => void;
   onViewDetails: (id: string) => void;
+  compact?: boolean;
 }
 
 export function ManagerReservePlayerCard({
@@ -43,10 +45,73 @@ export function ManagerReservePlayerCard({
   onCancelCallUp,
   onPromote,
   onViewDetails,
+  compact = false,
 }: ManagerReservePlayerCardProps) {
   const { contract, promotion } = model;
   const calledUp = !model.canCallUp;
   const [menuOpen, setMenuOpen] = useState(false);
+
+  if (compact) {
+    return (
+      <CompactPlayerCard
+        name={model.name}
+        position={model.metaLine}
+        rating={model.currentRating}
+      >
+        <div className="flex gap-2">
+          {calledUp && onCancelCallUp ? (
+            <GameButton
+              variant="secondary"
+              size="sm"
+              className="min-h-11 min-w-0 flex-1"
+              onClick={() => {
+                playUiClick();
+                onCancelCallUp(model.id);
+              }}
+            >
+              Cancel
+            </GameButton>
+          ) : (
+            <GameButton
+              variant="theme"
+              size="sm"
+              className="min-h-11 min-w-0 flex-1"
+              disabled={!model.canCallUp}
+              onClick={() => {
+                playUiClick();
+                onCallUp(model.id);
+              }}
+            >
+              Call Up
+            </GameButton>
+          )}
+          <GameButton
+            variant="secondary"
+            size="sm"
+            className="min-h-11 min-w-0 flex-1"
+            onClick={() => {
+              playUiClick();
+              onViewDetails(model.id);
+            }}
+          >
+            View
+          </GameButton>
+          <GameButton
+            variant="secondary"
+            size="sm"
+            className="min-h-11 min-w-0 flex-1"
+            disabled={!promotion.allowed}
+            onClick={() => {
+              playUiClick();
+              onPromote(model.id);
+            }}
+          >
+            Promote
+          </GameButton>
+        </div>
+      </CompactPlayerCard>
+    );
+  }
 
   return (
     <ManagerPlayerCard

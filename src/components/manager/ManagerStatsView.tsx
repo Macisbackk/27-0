@@ -188,7 +188,39 @@ function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
 
       {playerRows.length > 0 ? (
         <ManagerSectionCard title="Player Stats" className="overflow-x-auto !p-0">
-          <table className="mt-2 w-full min-w-[400px] text-left text-sm">
+          <ul className="space-y-2 p-3 sm:hidden">
+            {playerRows.map((row, idx) => (
+              <li
+                key={row.playerId}
+                className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2 ${
+                  idx === 0
+                    ? "border-accent-gold/35 bg-accent-gold/5"
+                    : idx < 3
+                      ? "border-theme-primary/30 bg-theme-primary/5"
+                      : "border-pitch-700/50 bg-pitch-950/40"
+                }`}
+              >
+                <span
+                  className={`min-w-0 flex-1 truncate text-sm ${
+                    idx === 0
+                      ? "font-semibold text-accent-gold"
+                      : idx < 3
+                        ? "font-medium text-theme-primary"
+                        : "text-pitch-200"
+                  }`}
+                >
+                  {getManagerPlayer(career, row.playerId)?.name ?? row.playerId}
+                </span>
+                <span className="shrink-0 text-right text-[11px] leading-tight text-pitch-400">
+                  {row.appearances} apps · {row.tries} tries
+                  {row.averageRating != null
+                    ? ` · ${row.averageRating.toFixed(1)}`
+                    : ""}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <table className="mt-2 hidden w-full min-w-[400px] text-left text-sm sm:table">
             <thead>
               <tr className="border-b border-pitch-700/50 text-pitch-400">
                 <th className="px-3 py-2 sm:px-5">Player</th>
@@ -382,7 +414,33 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
 
       {careerSave.seasonRows.length > 0 ? (
         <ManagerSectionCard title="Season History" className="overflow-x-auto !p-0">
-          <table className="mt-2 w-full min-w-[480px] text-left text-sm">
+          <ul className="space-y-2 p-3 sm:hidden">
+            {careerSave.seasonRows.map((row) => (
+              <li
+                key={`${row.seasonYear}-${row.inProgress ? "current" : "done"}`}
+                className={`rounded-lg border px-3 py-2 ${
+                  row.inProgress
+                    ? "border-theme-primary/35 bg-theme-primary/5"
+                    : "border-pitch-700/50 bg-pitch-950/40"
+                }`}
+              >
+                <p
+                  className={`text-sm font-semibold ${
+                    row.inProgress ? "text-theme-primary" : "text-white"
+                  }`}
+                >
+                  {row.seasonYear}
+                  {row.inProgress ? " · Current" : ""}
+                  <span className="ml-2 text-accent-gold">{ordinal(row.position)}</span>
+                </p>
+                <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-400`}>
+                  {row.wins}W-{row.draws}D-{row.losses}L
+                  {row.trophies.length > 0 ? ` · ${row.trophies.join(", ")}` : ""}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <table className="mt-2 hidden w-full min-w-[480px] text-left text-sm sm:table">
             <thead>
               <tr className="border-b border-pitch-700/50 text-pitch-400">
                 <th className="px-3 py-2 sm:px-5">Season</th>
@@ -645,7 +703,58 @@ function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
 
       {retired.length > 0 ? (
         <ManagerSectionCard title="Retired players" variant="elevated">
-          <div className="overflow-x-auto">
+          <div className="mb-3 flex gap-1.5 overflow-x-auto pb-0.5 sm:hidden">
+            {(
+              [
+                ["season", "Season"],
+                ["peak", "Peak"],
+                ["tries", "Tries"],
+                ["name", "Name"],
+              ] as const
+            ).map(([key, label]) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => toggleSort(key)}
+                className={`shrink-0 rounded-sm border px-2.5 py-2 text-[11px] font-semibold ${
+                  sortKey === key ? "border-theme-primary/50 text-theme-primary" : "border-pitch-600 text-pitch-300"
+                }`}
+              >
+                {label}
+                {sortKey === key ? (sortDir === "asc" ? " ↑" : " ↓") : ""}
+              </button>
+            ))}
+          </div>
+          <ul className="space-y-2 sm:hidden">
+            {retired.map((player: RetiredPlayer) => {
+              const club = player.club ?? career.club;
+              const saveStats = getRetiredPlayerSaveStats(career, player);
+              return (
+                <li
+                  key={`${player.playerId}-${player.seasonRetired}`}
+                  className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2 ${
+                    club === career.club
+                      ? "border-theme-primary/35 bg-theme-primary/5"
+                      : "border-pitch-700/50 bg-pitch-950/40"
+                  }`}
+                >
+                  <ClubDualSwatch club={club} size="xs" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-medium text-white">
+                      {player.playerName}
+                    </span>
+                    <span className={`${TYPO.meta} text-pitch-400`}>
+                      {player.positionLabel} · {player.seasonRetired}
+                    </span>
+                  </span>
+                  <span className="shrink-0 text-right text-[11px] leading-tight text-pitch-400">
+                    {player.peakRating} · {saveStats.tries} tries
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="hidden overflow-x-auto sm:block">
             <table className="w-full min-w-[560px] text-left text-sm">
               <thead>
                 <tr className="border-b border-pitch-700/50 text-[10px] uppercase tracking-wider">

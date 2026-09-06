@@ -10,6 +10,8 @@ import {
   ManagerClubFinancesPanel,
 } from "@/components/manager/manager-ui";
 import { CARD, SPACING } from "@/lib/ui/design-system";
+import { CollapsibleDetails } from "@/components/ui/MobileLayout";
+import { useCompactViewport } from "@/lib/ui/viewport";
 import { TYPO } from "@/lib/ui/typography";
 import type { FacilityType, ManagerCareer } from "@/lib/manager/types";
 import { formatWage } from "@/lib/manager/managerContracts";
@@ -66,6 +68,7 @@ export function ManagerClub({
   onUpdate,
   onOfficeTabChange,
 }: ManagerClubProps) {
+  const compact = useCompactViewport();
   const [error, setError] = useState<string | null>(null);
   const [subTab, setSubTab] = useState<ClubOfficeSubTab>("finances");
   const settings = resolveManagerSettings(career);
@@ -138,6 +141,7 @@ export function ManagerClub({
           career={career}
           stage="all-manager"
           title="Boosts"
+          compact={compact}
           onApplied={onUpdate}
         />
       ) : subTab === "settings" ? (
@@ -201,18 +205,36 @@ export function ManagerClub({
               )}
             </div>
 
-            <p className={`mt-3 ${TYPO.bodySm} text-pitch-400`}>
-              {FACILITY_DESCRIPTIONS[type]}
-            </p>
-
-            <p className={`mt-2 ${TYPO.bodySm} text-theme-primary`}>
-              {getFacilityEffectSummary(type, level)}
-            </p>
-
-            {!maxed && getNextFacilityEffectPreview(type, level) && (
-              <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
-                Next star: {getNextFacilityEffectPreview(type, level)}
-              </p>
+            {compact ? (
+              <div className="mt-3">
+                <p className={`${TYPO.bodySm} text-theme-primary`}>
+                  {getFacilityEffectSummary(type, level)}
+                </p>
+                <CollapsibleDetails summary="Details" className="mt-2">
+                  <p className={`${TYPO.bodySm} text-pitch-400`}>
+                    {FACILITY_DESCRIPTIONS[type]}
+                  </p>
+                  {!maxed && getNextFacilityEffectPreview(type, level) ? (
+                    <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
+                      Next: {getNextFacilityEffectPreview(type, level)}
+                    </p>
+                  ) : null}
+                </CollapsibleDetails>
+              </div>
+            ) : (
+              <>
+                <p className={`mt-3 ${TYPO.bodySm} text-pitch-400`}>
+                  {FACILITY_DESCRIPTIONS[type]}
+                </p>
+                <p className={`mt-2 ${TYPO.bodySm} text-theme-primary`}>
+                  {getFacilityEffectSummary(type, level)}
+                </p>
+                {!maxed && getNextFacilityEffectPreview(type, level) && (
+                  <p className={`mt-1 ${TYPO.bodySm} text-pitch-500`}>
+                    Next star: {getNextFacilityEffectPreview(type, level)}
+                  </p>
+                )}
+              </>
             )}
 
             <div className="mt-4 border-t border-pitch-700/40 pt-4">

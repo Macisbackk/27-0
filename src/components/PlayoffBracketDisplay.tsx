@@ -121,7 +121,7 @@ export function PlayoffBracketDisplay({
           activeClassName="border-theme-primary/55 bg-theme-primary/12 text-theme-primary"
         />
 
-        <div className="mt-4 md:hidden">
+        <div className="mt-4 sm:hidden">
           <PlayoffRoundTitle round={viewRound} activeRound={activeRound} />
           <div className="mt-3 space-y-3">
             {mobileRoundMatches.map((match) =>

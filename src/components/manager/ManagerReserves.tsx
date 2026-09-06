@@ -6,6 +6,7 @@ import { GamePanel } from "@/components/ui/GamePanel";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { GameEmptyState } from "@/components/ui/GameEmptyState";
 import { FILTER } from "@/lib/ui/design-system";
+import { useCompactViewport } from "@/lib/ui/viewport";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer, ManagerReservePlayer } from "@/lib/manager/types";
 import { POSITION_SHORT, getFullPositionName } from "@/lib/positions";
@@ -77,6 +78,7 @@ interface ManagerReservesProps {
 }
 
 export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
+  const compact = useCompactViewport();
   const [subTab, setSubTab] = useState<ReservesSubTab>("squad");
   const [filter, setFilter] = useState<ReserveFilter>("all");
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
@@ -646,6 +648,7 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
                 return (
                   <ManagerReservePlayerCard
                     key={r.id}
+                    compact={compact}
                     model={buildReserveCardModel(career, r)}
                     club={career.club}
                     extraChips={review.flags.map((flag) => ({
