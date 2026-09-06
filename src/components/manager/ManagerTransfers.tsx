@@ -33,6 +33,7 @@ import { getUserCompetitionId } from "@/lib/manager/leagueMembership";
 import { isSameManagerClub } from "@/lib/clubs/super-league-display";
 import { FILTER, SPACING } from "@/lib/ui/design-system";
 import { useCompactViewport } from "@/lib/ui/viewport";
+import { MobileBottomSheet } from "@/components/ui/MobileOverlay";
 import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
@@ -196,6 +197,7 @@ export function ManagerTransfers({
   const [freeAgentOfferWage, setFreeAgentOfferWage] = useState(0);
   const [freeAgentOfferYears, setFreeAgentOfferYears] = useState(1);
   const [visibleLimit, setVisibleLimit] = useState(TRANSFER_CARD_PAGE);
+  const [filterSheetOpen, setFilterSheetOpen] = useState(false);
   const [transferDebugId, setTransferDebugId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -897,12 +899,14 @@ export function ManagerTransfers({
   return (
     <ManagerPage>
       <ManagerSection>
+      <div className={compact ? "hidden" : undefined}>
       <GameSectionHeader
         size="page"
         label="Transfers"
         title="Transfers"
         subtitle={tabSubtitle}
       />
+      </div>
       <div className="flex w-full min-w-0 justify-center">
         <ManagerSubTabBar
           tabs={transferSubTabs}
@@ -911,6 +915,7 @@ export function ManagerTransfers({
         />
       </div>
 
+      <div className={compact ? "hidden" : undefined}>
       <ManagerSectionCard title="Funds & wages" variant="elevated" accent="primary">
         <div className="mt-2 grid grid-cols-2 gap-3">
           <ManagerStat
@@ -950,7 +955,77 @@ export function ManagerTransfers({
           {comfortableTarget} OVR for your tier.
         </p>
       </ManagerSectionCard>
+      </div>
+      {compact ? (
+        <p className="text-[13px] text-pitch-400">
+          Transfer fund {formatWage(transferFund)}
+          <span className="text-pitch-600"> · </span>
+          Wages {formatWage(career.wageBill)}
+        </p>
+      ) : null}
 
+      {compact ? (
+        <>
+          <GameButton
+            variant="secondary"
+            className="min-h-11 w-full"
+            onClick={() => {
+              playUiClick();
+              setFilterSheetOpen(true);
+            }}
+          >
+            Filter
+            {positionFilter !== "all" ? ` · ${POSITION_SHORT[positionFilter]}` : ""}
+          </GameButton>
+          <MobileBottomSheet
+            open={filterSheetOpen}
+            onClose={() => setFilterSheetOpen(false)}
+            title="Filter players"
+            footer={
+              <GameButton
+                variant="theme"
+                className="min-h-11 w-full"
+                onClick={() => {
+                  playUiClick();
+                  setFilterSheetOpen(false);
+                }}
+              >
+                Apply
+              </GameButton>
+            }
+          >
+            <div className="grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  playUiClick();
+                  setPositionFilter("all");
+                }}
+                className={`${FILTER.chipTouch} min-h-11 ${
+                  positionFilter === "all" ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
+                }`}
+              >
+                All
+              </button>
+              {(Object.keys(POSITION_SHORT) as Position[]).map((pos) => (
+                <button
+                  key={pos}
+                  type="button"
+                  onClick={() => {
+                    playUiClick();
+                    setPositionFilter(pos);
+                  }}
+                  className={`${FILTER.chipTouch} min-h-11 ${
+                    positionFilter === pos ? FILTER.chipActive : "border-pitch-600 text-pitch-300"
+                  }`}
+                >
+                  {POSITION_SHORT[pos]}
+                </button>
+              ))}
+            </div>
+          </MobileBottomSheet>
+        </>
+      ) : (
       <ClipboardPanel padded>
         <p className={`${TYPO.sectionLabel} mb-3`}>Filter by position</p>
         <div className="flex flex-wrap gap-2">
@@ -977,6 +1052,7 @@ export function ManagerTransfers({
           ))}
         </div>
       </ClipboardPanel>
+      )}
 
       {(tab === "listed" || tab === "loans") && (
       <section className="space-y-3">

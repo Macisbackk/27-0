@@ -23,6 +23,7 @@ import {
 import { isSoundMuted, toggleSoundMuted } from "@/lib/sound/manager";
 import { prefersReducedMotion } from "@/lib/haptics";
 import { useCompactViewport } from "@/lib/ui/viewport";
+import { MobileList, MobileListRow, MobileSection } from "@/components/mobile/MobileKit";
 import Link from "next/link";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
@@ -209,13 +210,77 @@ export function ManagerSettings({ career, onUpdate, onNavigate }: ManagerSetting
   return (
     <ManagerPage>
       <ManagerSection width="narrow">
+        <div className={compact ? "hidden" : undefined}>
         <GameSectionHeader
           size="page"
           label="Preferences"
           title="Settings"
           subtitle={compact ? undefined : "Gameplay, account, and accessibility."}
         />
+        </div>
 
+        {compact ? (
+          <>
+            <MobileSection label="Game">
+              <ul className="m-list">
+                <SettingsToggle
+                  label="Sound"
+                  description="Match and menu audio."
+                  on={!soundMuted}
+                  onToggle={() => setSoundMuted(toggleSoundMuted())}
+                />
+                {TOGGLE_OPTIONS.map((option) => (
+                  <SettingsToggle
+                    key={option.key}
+                    label={option.label}
+                    description={option.description}
+                    on={settings[option.key]}
+                    onToggle={() =>
+                      patchSettings({ [option.key]: !settings[option.key] })
+                    }
+                  />
+                ))}
+              </ul>
+            </MobileSection>
+            <MobileSection label="Account">
+              <MobileList>
+                <MobileListRow
+                  primary="Club"
+                  secondary="Finances, boosts, and facilities"
+                  chevron
+                  onClick={() => {
+                    playUiClick();
+                    onNavigate?.("club");
+                  }}
+                />
+                <li>
+                  <Link
+                    href="/profile"
+                    className="m-row"
+                    onClick={() => playUiClick()}
+                  >
+                    <span className="m-row__body">
+                      <span className="m-row__primary">Profile & data</span>
+                      <span className="m-row__secondary">
+                        Saves live on the Manager home screen
+                      </span>
+                    </span>
+                    <span className="m-row__chevron" aria-hidden>
+                      ›
+                    </span>
+                  </Link>
+                </li>
+              </MobileList>
+            </MobileSection>
+            <MobileSection label="Accessibility">
+              <p className="m-row__secondary">
+                Reduced motion follows your device setting
+                {reducedMotionOn ? " — currently on." : "."}
+              </p>
+            </MobileSection>
+          </>
+        ) : (
+          <>
         <ManagerSectionCard title="Game" variant="elevated">
           <ul className="mt-2 divide-y divide-pitch-700/50">
             <SettingsToggle
@@ -268,6 +333,8 @@ export function ManagerSettings({ career, onUpdate, onNavigate }: ManagerSetting
             either way.
           </p>
         </ManagerSectionCard>
+          </>
+        )}
       </ManagerSection>
     </ManagerPage>
   );

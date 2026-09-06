@@ -176,19 +176,11 @@ export function ManagerMatchReview({
     <ManagerPage>
       <ManagerSection>
       <div className={SPACING.stackLg}>
-      <MatchReviewBackBar onClose={onClose} />
+      {compact ? null : <MatchReviewBackBar onClose={onClose} />}
 
       {compact ? (
-        <div className="px-1 py-2 text-center">
-          <p className="text-[11px] font-medium text-pitch-500">Full time</p>
-          <p
-            className={`mt-2 font-display text-[2.4rem] font-semibold tracking-tight ${
-              won ? "text-theme-primary" : lost ? "text-red-300" : "text-accent-gold"
-            }`}
-          >
-            {won ? "Win" : lost ? "Loss" : "Draw"}
-          </p>
-          <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>{roundLabel}</p>
+        <div className="m-event">
+          <p className="m-event__kicker">Full time</p>
           {(() => {
             const homeName = fixture.isHome ? career.club : fixture.opponent;
             const awayName = !fixture.isHome ? career.club : fixture.opponent;
@@ -199,31 +191,65 @@ export function ManagerMatchReview({
               ? fixture.pointsAgainst
               : fixture.pointsFor;
             return (
-              <p className="mt-3 font-[family-name:var(--font-pitch)] text-xl font-bold uppercase leading-tight text-white">
-                {homeName}{" "}
-                <span className="font-display text-2xl tabular-nums text-theme-primary">
-                  {homePts}–{awayPts}
-                </span>{" "}
-                {awayName}
-              </p>
+              <>
+                <p className="m-event__club">{homeName}</p>
+                <p className="m-event__score">
+                  {homePts} — {awayPts}
+                </p>
+                <p className="m-event__club">{awayName}</p>
+              </>
             );
           })()}
+          <p
+            className={`m-event__result ${
+              won ? "text-theme-primary" : lost ? "text-red-300" : "text-accent-gold"
+            }`}
+          >
+            {won ? "Win" : lost ? "Loss" : "Draw"}
+          </p>
+          <p className="m-event__meta">{roundLabel}</p>
           {keyMoment ? (
-            <p className={`mt-3 text-sm font-semibold ${momentToneClass[keyMoment.tone]}`}>
+            <p className={`m-event__meta ${momentToneClass[keyMoment.tone]}`}>
               {keyMoment.label}
             </p>
           ) : null}
           {fixture.manOfTheMatch ? (
-            <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
-              Best:{" "}
-              <span className="font-semibold text-white">
+            <div className="mt-5 text-left">
+              <p className="m-section__label">Player of the match</p>
+              <p className="m-row__primary">
                 {fixture.manOfTheMatch.playerName}
-              </span>
-            </p>
+              </p>
+              <p className="m-row__secondary">
+                {fixture.meta?.matchRatingsByPlayer?.[
+                  fixture.manOfTheMatch.playerId
+                ] != null
+                  ? `${fixture.meta.matchRatingsByPlayer[fixture.manOfTheMatch.playerId]!.toFixed(1)}`
+                  : fixture.manOfTheMatch.performanceSummary ?? "Best on ground"}
+              </p>
+            </div>
+          ) : null}
+          {fixture.meta?.liveEvents && fixture.meta.liveEvents.length > 0 ? (
+            <div className="mt-5 text-left">
+              <p className="m-section__label">Key events</p>
+              <ul>
+                {fixture.meta.liveEvents
+                  .filter((ev) => ev.type === "try")
+                  .slice(0, 6)
+                  .map((ev, i) => (
+                    <ManagerMatchEventLine
+                      key={`${ev.minute}-${i}`}
+                      event={ev}
+                      userClub={career.club}
+                      opponentClub={fixture.opponent}
+                      className="py-2"
+                    />
+                  ))}
+              </ul>
+            </div>
           ) : null}
           <GameButton
             variant="theme"
-            className="mt-5 min-h-12 w-full text-sm font-semibold"
+            className="mt-6 min-h-12 w-full text-sm font-semibold"
             onClick={onClose}
           >
             Continue

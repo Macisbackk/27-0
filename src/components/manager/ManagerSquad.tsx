@@ -20,6 +20,13 @@ import {
   type MatchdaySlotTarget,
 } from "@/lib/manager/managerMatchdaySquad";
 import { ManagerMatchdayFormation } from "@/components/manager/ManagerMatchdayFormation";
+import { MobileSquadRoster } from "@/components/manager/mobile/MobileSquadRoster";
+import { useCompactViewport } from "@/lib/ui/viewport";
+import {
+  MobileList,
+  MobileListRow,
+  MobileSection,
+} from "@/components/mobile/MobileKit";
 import { ManagerSquadPlayerModal } from "@/components/manager/ManagerSquadPlayerModal";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import { validateFitMatchdaySquad } from "@/lib/manager/managerMatchdayValidation";
@@ -192,6 +199,7 @@ export function ManagerSquad({
   onUpdate,
   subTab,
 }: ManagerSquadProps) {
+  const compact = useCompactViewport();
   const finePointer = useFinePointer();
   const clickTimerRef = useRef<number | null>(null);
   const squadPoolPanelRef = useRef<HTMLDivElement>(null);
@@ -482,6 +490,7 @@ export function ManagerSquad({
   return (
     <ManagerPage>
       <ManagerSection>
+      <div className={compact ? "hidden" : undefined}>
       <ManagerViewHeader
         title={subTab === "tactics" ? "Tactics" : "Squad"}
         subtitle={subTab === "squad" ? squadHelpText : tacticsHelpText}
@@ -508,6 +517,7 @@ export function ManagerSquad({
           ) : undefined
         }
       />
+      </div>
 
       {subTab === "tactics" ? (
         <ClipboardPanel padded>
@@ -555,6 +565,37 @@ export function ManagerSquad({
           ref={matchdayPanelRef}
           className={`mx-auto min-w-0 w-full max-w-[min(100%,26.25rem)] lg:mx-0 lg:max-w-none ${SPACING.stackMd}`}
         >
+          {compact && subTab === "squad" ? (
+            <>
+              <GameButton
+                variant="secondary"
+                size="sm"
+                className="mb-2 min-h-11 w-full"
+                onClick={() => {
+                  playUiClick();
+                  const result = autoSortMatchdaySquad(career);
+                  onUpdate(result.career);
+                  setPendingAssignId(null);
+                  setSelectedTarget(null);
+                  setReplaceSourcePlayerId(null);
+                  if (!result.ok) {
+                    setDialog({ title: "Auto Sort failed", message: result.message });
+                  }
+                }}
+              >
+                Auto Sort Best XI
+              </GameButton>
+              <MobileSquadRoster
+                career={career}
+                selectedTarget={selectedTarget}
+                pendingAssignId={pendingAssignId}
+                replaceSourcePlayerId={replaceSourcePlayerId}
+                onSlotClick={handleSelectSlot}
+                onPlayerClick={handleMatchdayPlayerPrimaryClick}
+              />
+            </>
+          ) : null}
+          <div className={compact ? "hidden" : undefined}>
           <ManagerMatchdayFormation
             career={career}
             interactive
@@ -665,10 +706,18 @@ export function ManagerSquad({
               })}
             </div>
           </div>
+          </div>
         </div>
 
-        <div ref={squadPoolPanelRef} className={`min-w-0 w-full ${CARD.clipboard} ${SPACING.cardPadding}`}>
-          <p className={`${TYPO.sectionLabel} mb-2`}>Squad Players</p>
+        <div ref={squadPoolPanelRef} className={`min-w-0 w-full ${compact ? "" : `${CARD.clipboard} ${SPACING.cardPadding}`}`}>
+          <p className={`${TYPO.sectionLabel} mb-2 ${compact ? "hidden" : ""}`}>
+            Squad Players
+          </p>
+          {compact ? (
+            <MobileSection label="Squad">
+              <p className="m-row__secondary mb-1">{squadPoolHelpText}</p>
+            </MobileSection>
+          ) : null}
           <div
             className={`mb-2 ${TYPO.bodySm} ${
               pendingAssignId || replaceSourcePlayerId || selectedTarget
@@ -730,6 +779,32 @@ export function ManagerSquad({
             ))}
           </div>
           <div className="min-w-0">
+            {compact ? (
+              <MobileList>
+                {displayPool.map((entry) => {
+                  const player = getManagerPlayer(career, entry.playerId);
+                  if (!player) return null;
+                  const selected = getPoolPlayerRole(entry.playerId) !== "idle";
+                  return (
+                    <MobileListRow
+                      key={entry.playerId}
+                      primary={player.name}
+                      secondary={`${getFullPositionNames(
+                        getManagerPlayerEligiblePositions(career, entry.playerId)
+                      )}${entry.unavailable ? " · Unavailable" : ""}`}
+                      value={player.peakRating}
+                      selected={selected}
+                      onClick={() =>
+                        handlePoolPlayerPrimaryClick(
+                          entry.playerId,
+                          entry.unavailable
+                        )
+                      }
+                    />
+                  );
+                })}
+              </MobileList>
+            ) : (
             <ul className={SQUAD_POOL_GRID_CLASS}>
               {displayPool.map((entry) => {
                 const selectingForSlot =
@@ -762,6 +837,7 @@ export function ManagerSquad({
                 );
               })}
             </ul>
+            )}
           </div>
           {displayPool.length === 0 && (
             <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>

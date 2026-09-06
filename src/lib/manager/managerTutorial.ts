@@ -505,6 +505,8 @@ export function isTutorialChromeElement(el: HTMLElement): boolean {
   return Boolean(
     el.closest("[data-manager-mobile-nav]") ||
       el.closest("[data-manager-more-sheet]") ||
+      el.closest("[data-manager-more-screen]") ||
+      el.closest("[data-manager-mobile-header]") ||
       el.closest(".mobile-action-bar") ||
       el.closest("nav[aria-label='Manager sections']") ||
       // Desktop ManagerNav lives in page flow (not sticky) — treat as chrome

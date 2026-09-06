@@ -12,6 +12,7 @@ import {
   type TableZoneKind,
 } from "@/lib/manager/tableZones";
 import { playUiClick } from "@/lib/sound";
+import { useCompactViewport } from "@/lib/ui/viewport";
 
 function ordinal(n: number): string {
   const s = ["th", "st", "nd", "rd"];
@@ -94,6 +95,7 @@ export function ManagerLeagueTable({
   /** When set, drives promotion/relegation zone legend (otherwise inferred from career). */
   competitionId?: "super-league" | "championship";
 }) {
+  const compact = useCompactViewport();
   const [expanded, setExpanded] = useState(defaultExpanded);
   const rows = rowsProp ?? career.leagueTable;
   if (rows.length === 0) return null;
@@ -113,7 +115,7 @@ export function ManagerLeagueTable({
     : rows;
 
   return (
-    <div className={`${CARD.elevated} ${SPACING.cardPadding}`}>
+    <div className={compact ? "" : `${CARD.elevated} ${SPACING.cardPadding}`}>
       <div className="flex items-center justify-between gap-2">
         <p className={TYPO.sectionLabel}>{title}</p>
         {!defaultExpanded && rows.length > 6 && (

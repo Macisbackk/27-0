@@ -7,6 +7,16 @@ import { ManagerLanding } from "@/components/manager/ManagerLanding";
 import { ManagerClubSelect } from "@/components/manager/ManagerClubSelect";
 import { ManagerNav } from "@/components/manager/ManagerNav";
 import { ManagerMobileBottomNav, type ManagerMoreTutorialLock } from "@/components/manager/ManagerMobileBottomNav";
+import { MobileAppHeader } from "@/components/mobile/MobileAppHeader";
+import { MobileMoreScreen } from "@/components/mobile/MobileMoreScreen";
+import { useCompactViewport } from "@/lib/ui/viewport";
+import {
+  isManagerMobileMoreNavView,
+} from "@/lib/manager/manager-nav-config";
+import {
+  isPrimaryMobileView,
+  MOBILE_SCREEN_TITLES,
+} from "@/lib/manager/manager-mobile-more";
 import { ManagerKeepAlivePane } from "@/components/manager/ManagerKeepAlivePane";
 import { ManagerHub } from "@/components/manager/ManagerHub";
 import { ManagerSquad } from "@/components/manager/ManagerSquad";
@@ -346,7 +356,7 @@ export default function ManagerPage() {
     useState(false);
   const [advancingWeek, setAdvancingWeek] = useState(false);
   const [fixturesInitialFilter, setFixturesInitialFilter] = useState<
-    "calendar" | "all" | "cup" | null
+    "calendar" | "all" | "cup" | "playoffs" | null
   >(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleteSlot, setDeleteSlot] = useState<number | null>(null);
@@ -900,6 +910,8 @@ export default function ManagerPage() {
   const prevNavViewRef = useRef<ManagerView | null>(null);
   const navScrollYRef = useRef<Partial<Record<ManagerView, number>>>({});
   const lastNavViewRef = useRef<ManagerView>("hub");
+  const lastPrimaryMobileViewRef = useRef<ManagerView>("hub");
+  const compactChrome = useCompactViewport();
   useLayoutEffect(() => {
     if (!isManagerNavView(displayView)) {
       prevNavViewRef.current = displayView;
@@ -2037,6 +2049,11 @@ export default function ManagerPage() {
     handleNavNavigate("fixtures");
   }, [handleNavNavigate]);
 
+  const handleOpenPlayoffFixtures = useCallback(() => {
+    setFixturesInitialFilter("playoffs");
+    handleNavNavigate("fixtures");
+  }, [handleNavNavigate]);
+
   const handleOpenHubMatchReview = useCallback(
     (fixtureId: string) => {
       setReviewFixtureId(fixtureId);
@@ -2126,6 +2143,39 @@ export default function ManagerPage() {
       ? displayView
       : lastNavViewRef.current
   ) as (typeof MANAGER_NAV_VIEWS)[number];
+  if (isPrimaryMobileView(chromeNavView)) {
+    lastPrimaryMobileViewRef.current = chromeNavView;
+  }
+
+  const showMoreScreen =
+    compactChrome &&
+    managerMoreMenuOpen &&
+    !awaitingFriendlyChoice &&
+    !playGameOpen &&
+    !managerOverlayActive;
+
+  const mobileHeaderTitle = showMoreScreen
+    ? "More"
+    : chromeNavView === "hub"
+      ? career?.club ?? "Hub"
+      : MOBILE_SCREEN_TITLES[chromeNavView] ?? "Manager";
+
+  const mobileHeaderShowBack =
+    compactChrome &&
+    (showMoreScreen || isManagerMobileMoreNavView(chromeNavView));
+
+  const handleMobileHeaderBack = () => {
+    if (managerMoreMenuOpen) {
+      setManagerMoreMenuOpen(false);
+      if (isManagerMobileMoreNavView(chromeNavView)) {
+        handleNavNavigate(lastPrimaryMobileViewRef.current);
+      }
+      return;
+    }
+    if (isManagerMobileMoreNavView(chromeNavView)) {
+      setManagerMoreMenuOpen(true);
+    }
+  };
 
   // Keep Manager chrome + keep-alive panes mounted during overlay views
   // so mobile does not remount the shell when opening match review / season flow.
@@ -2208,6 +2258,7 @@ export default function ManagerPage() {
   const showHubStickyBar =
     Boolean(hubSticky) &&
     chromeNavView === "hub" &&
+    !managerMoreMenuOpen &&
     !awaitingFriendlyChoice &&
     !playGameOpen &&
     !managerOverlayActive;
@@ -2319,6 +2370,19 @@ export default function ManagerPage() {
           aria-hidden={managerOverlayActive || playGameOpen}
           inert={managerOverlayActive || playGameOpen ? true : undefined}
         >
+          {compactChrome ? (
+            <MobileAppHeader
+              title={mobileHeaderTitle}
+              subtitle={
+                chromeNavView === "hub" && !showMoreScreen
+                  ? `S${career.seasonYear} · W${career.gameWeek}`
+                  : undefined
+              }
+              showBack={mobileHeaderShowBack}
+              onBack={handleMobileHeaderBack}
+            />
+          ) : null}
+
           <ManagerNav
             active={awaitingFriendlyChoice ? "hub" : chromeNavView}
             club={career.club}
@@ -2331,7 +2395,7 @@ export default function ManagerPage() {
               managerOverlayActive
             }
             unreadInbox={countUnreadInbox(career)}
-            contextTabs={squadContextTabs}
+            contextTabs={showMoreScreen ? undefined : squadContextTabs}
             tutorialLock={
               managerTutorialNavLock === "more"
                 ? null
@@ -2366,6 +2430,30 @@ export default function ManagerPage() {
               />
             ) : (
               <div className="relative min-h-[40vh] [overflow-anchor:none]">
+                {showMoreScreen ? (
+                  <MobileMoreScreen
+                    active={chromeNavView}
+                    unreadInbox={countUnreadInbox(career)}
+                    tutorialLock={managerTutorialNavLock}
+                    onNavigate={(view) => {
+                      setManagerMoreMenuOpen(false);
+                      handleNavNavigate(view);
+                    }}
+                    onOpenCup={() => {
+                      setManagerMoreMenuOpen(false);
+                      handleOpenCupFixtures();
+                    }}
+                    onOpenPlayoffs={() => {
+                      setManagerMoreMenuOpen(false);
+                      handleOpenPlayoffFixtures();
+                    }}
+                    onNavigateHref={(href) => {
+                      setManagerMoreMenuOpen(false);
+                      router.push(href);
+                    }}
+                  />
+                ) : null}
+                <div className={showMoreScreen ? "hidden" : undefined}>
                 <ManagerKeepAlivePane
                   label="manager-tab-hub"
                   active={chromeNavView === "hub" && panesInteractive}
@@ -2460,6 +2548,7 @@ export default function ManagerPage() {
                     onNavigate={handleNavNavigate}
                   />
                 </ManagerKeepAlivePane>
+                </div>
               </div>
             )}
           </div>

@@ -111,12 +111,14 @@ export function ManagerClub({
   return (
     <ManagerPage>
       <ManagerSection>
+      <div className={compact ? "hidden" : undefined}>
       <GameSectionHeader
         size="page"
         label="Club Office"
         title="Club"
         subtitle="Finances, boosts, facilities and club preferences."
       />
+      </div>
 
       <ManagerSubTabBar
         ariaLabel="Club Office sections"

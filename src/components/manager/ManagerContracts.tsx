@@ -229,12 +229,14 @@ export function ManagerContracts({
   return (
     <ManagerPage>
       <ManagerSection>
+      <div className={compact ? "hidden" : undefined}>
       <GameSectionHeader
         size="page"
         label="Contracts"
         title="Contracts"
         subtitle="Manage wages, renewals, and squad roles"
       />
+      </div>
 
       <ManagerSubTabBar
         ariaLabel="Contracts sections"

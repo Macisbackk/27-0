@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CollapsibleDetails, CompactFixtureCard } from "@/components/ui/MobileLayout";
 import { useCompactViewport } from "@/lib/ui/viewport";
+import { MobileManagerHub } from "@/components/manager/mobile/MobileManagerHub";
 import { getClubIndicatorColor } from "@/lib/clubs";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
@@ -187,6 +188,21 @@ export function ManagerHub({
     null
   );
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
+
+  if (compact) {
+    return (
+      <MobileManagerHub
+        career={career}
+        onPlayGame={onPlayGame}
+        onAdvanceWeek={onAdvanceWeek}
+        advancingWeek={advancingWeek}
+        onUpdate={onUpdate}
+        onNavigate={onNavigate}
+        onOpenCupFixtures={onOpenCupFixtures}
+        onOpenMatchReview={onOpenMatchReview}
+      />
+    );
+  }
 
   const hubAlerts = getManagerHubUrgentAlerts(career);
 

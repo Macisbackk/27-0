@@ -5,6 +5,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
 import { CollapsibleDetails } from "@/components/ui/MobileLayout";
+import { useCompactViewport } from "@/lib/ui/viewport";
 import { CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
@@ -104,6 +105,7 @@ export function ManagerInbox({
   const [counterAmount, setCounterAmount] = useState(0);
   const [filter, setFilter] = useState<InboxFilter>("all");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const compact = useCompactViewport();
 
   const messages = career.inboxMessages.filter((m) => !m.resolved);
   const filteredMessages = useMemo(
@@ -181,6 +183,7 @@ export function ManagerInbox({
   return (
     <ManagerPage>
       <ManagerSection>
+      <div className={compact ? "hidden" : undefined}>
       <GameSectionHeader
         size="page"
         label="Inbox"
@@ -199,6 +202,17 @@ export function ManagerInbox({
           ) : undefined
         }
       />
+      </div>
+      {compact && showViewAllAsSeen ? (
+        <GameButton
+          variant="secondary"
+          size="sm"
+          className="mb-2 min-h-11 w-full"
+          onClick={handleViewAllAsSeen}
+        >
+          Mark all seen
+        </GameButton>
+      ) : null}
 
       {messages.length > 0 && (
         <div className="flex gap-1.5 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible">
@@ -262,6 +276,7 @@ export function ManagerInbox({
             key={msg.id}
             message={msg}
             expanded={isExpanded}
+            flush={compact}
             onToggleExpand={() => {
               playUiClick();
               setExpandedId(isExpanded ? null : msg.id);
@@ -468,6 +483,7 @@ export function ManagerInbox({
                 key={msg.id}
                 message={msg}
                 compact
+                flush={compact}
               />
             ))}
           </div>

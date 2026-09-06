@@ -51,6 +51,7 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
   return (
     <ManagerPage>
       <ManagerSection>
+      <div className="hidden sm:block">
       <GameSectionHeader
         size="page"
         label="Stats"
@@ -65,6 +66,7 @@ export function ManagerStatsView({ career }: ManagerStatsViewProps) {
                 : "Players who have retired during this save"
         }
       />
+      </div>
       <div className="flex w-full min-w-0 justify-center">
         <ManagerSubTabBar
           tabs={[

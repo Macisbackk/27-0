@@ -163,14 +163,23 @@ export function ManagerSquadPlayerModal({
           </div>
         }
       >
-        <div className="grid grid-cols-2 gap-2 text-sm">
-          <span>{POSITION_SHORT[player.position]}</span>
-          <span className="text-theme-primary">
-            {player.peakRating} rated
-          </span>
+        <div className="space-y-3 text-sm">
+          <div>
+            <p className="text-[11px] font-medium text-pitch-500">Player</p>
+            <p className="mt-0.5 text-lg font-semibold text-white">
+              {player.peakRating} · {POSITION_SHORT[player.position]}
+            </p>
+          </div>
+          {contract ? (
+            <div>
+              <p className="text-[11px] font-medium text-pitch-500">Contract</p>
+              <p className="mt-0.5 text-white">
+                {contract.yearsRemaining} years · {formatWage(contract.wagePerYear)}/yr
+              </p>
+            </div>
+          ) : null}
+          <div className="grid grid-cols-2 gap-2 text-pitch-300">
           <span>{formatValue(player.value)}</span>
-          {contract && <span>{formatWage(contract.wagePerYear)}/yr</span>}
-          {contract && <span>{contract.yearsRemaining}yr left</span>}
           {slot && (
             <span>{slot.kind === "xiii" ? "Starter" : "Interchange"}</span>
           )}
@@ -197,9 +206,11 @@ export function ManagerSquadPlayerModal({
               — {formatWage(transferStatus.askingPrice)}
             </span>
           )}
+          </div>
         </div>
 
         <div className="mt-4 grid gap-2">
+          <p className="text-[11px] font-medium text-pitch-500">Actions</p>
           {transferStatus?.transferRequested && !transferStatus.listed && (
             <div className={`${CARD.inset} ${SPACING.cardPaddingSm}`}>
               <p className={`${TYPO.bodySm} text-amber-200`}>

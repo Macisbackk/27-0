@@ -457,13 +457,35 @@ function UpcomingFixtureRow({
         ? opponentColors ?? userColors
         : userColors;
 
+  if (compact) {
+    const occasion = getManagerMatchOccasionPresentation(sched);
+    return (
+      <div className="border-b border-white/10 py-3 last:border-b-0">
+        <p className="text-[11px] font-medium text-pitch-500">
+          {occasion.weekLabel}
+          {isNext ? " · Next" : ""}
+        </p>
+        <p className="mt-1 text-[15px] font-semibold leading-snug text-white">
+          {homeName}
+        </p>
+        <p className="text-[11px] text-pitch-500">vs</p>
+        <p className="text-[15px] font-semibold leading-snug text-white">
+          {awayName}
+        </p>
+        <p className="mt-1 text-[12px] text-pitch-400">
+          {getManagerScheduledFixtureVenueLabel(sched)}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`${managerFixtureRowClass({
         isNext,
         competition: sched.competition,
         hasFriendlyStyle: false,
-      })}${compact ? " !py-2" : ""}`}
+      })}`}
     >
       <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
         <div className="flex min-w-0 flex-wrap items-center gap-2">
@@ -826,7 +848,7 @@ export function ManagerFixtures({
             <WccResultBox
               result={r}
               club={career.club}
-              compact={false}
+              compact={compact}
             />
           </li>
         ))}
@@ -844,7 +866,7 @@ export function ManagerFixtures({
               wcc={wccScheduled}
               club={career.club}
               isNext={nextFixture?.id === wccScheduled.id}
-              compact={false}
+              compact={compact}
             />
             <p className={TYPO.bodySm}>
               Game Week {wccScheduled.gameWeek} · Season {wccScheduled.seasonYear}
@@ -873,7 +895,7 @@ export function ManagerFixtures({
               result={wccCurrentSeasonResult}
               club={career.club}
               defaultOpen={false}
-              compact={false}
+              compact={compact}
             />
           </div>
         ) : wccPastResults.length > 0 || wccStats.results.length > 0 ? (
@@ -951,6 +973,7 @@ export function ManagerFixtures({
   return (
     <ManagerPage>
       <ManagerSection className="manager-fixtures">
+      <div className={compact ? "hidden" : undefined}>
       <GameSectionHeader
         size="page"
         label="Fixtures"
@@ -961,6 +984,7 @@ export function ManagerFixtures({
             : `Season ${career.seasonYear} · ${career.club}`
         }
       />
+      </div>
 
       <div className="flex w-full min-w-0 justify-center">
         <ManagerSubTabBar
@@ -990,7 +1014,33 @@ export function ManagerFixtures({
         )
       ) : (
       <div className="flex w-full min-w-0 flex-col gap-4 sm:gap-5">
-      {showNextMatch && nextFixture && nextMatchOccasion && (
+      {showNextMatch && nextFixture && nextMatchOccasion && compact ? (
+        <div className="m-event border-b border-white/10 pb-4">
+          <p className="m-event__kicker">{nextMatchOccasion.weekLabel}</p>
+          <p className="m-event__club">{career.club}</p>
+          <p className="m-event__vs">
+            {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
+          </p>
+          <p className="m-event__club">{nextFixture.opponent}</p>
+          <p className="m-event__meta">
+            {getManagerScheduledFixtureVenueLabel(nextFixture)}
+          </p>
+          {onOpenMatchPrep ? (
+            <GameButton
+              variant="theme"
+              className="mt-4 min-h-12 w-full"
+              onClick={() => {
+                playUiClick();
+                onOpenMatchPrep();
+              }}
+            >
+              {nextMatchOccasion.playCta}
+            </GameButton>
+          ) : null}
+        </div>
+      ) : null}
+
+      {showNextMatch && nextFixture && nextMatchOccasion && !compact && (
         <ScoreboardPanel
           variant="elevated"
           padded
@@ -1101,7 +1151,7 @@ export function ManagerFixtures({
             items={allTabItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
-            compact={false}
+            compact={compact}
           />
         </GamePanel>
       )}
@@ -1127,7 +1177,7 @@ export function ManagerFixtures({
                 items={challengeCupItems}
                 club={career.club}
                 onSelectFixture={onSelectFixture}
-                compact={false}
+                compact={compact}
               />
             </GamePanel>
           ) : null}
@@ -1151,7 +1201,7 @@ export function ManagerFixtures({
             items={leagueUpcomingItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
-            compact={false}
+            compact={compact}
           />
         </GamePanel>
       )}
@@ -1162,7 +1212,7 @@ export function ManagerFixtures({
             items={playoffItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
-            compact={false}
+            compact={compact}
           />
         </GamePanel>
       )}
@@ -1176,7 +1226,7 @@ export function ManagerFixtures({
             items={completedResultsItems}
             club={career.club}
             onSelectFixture={onSelectFixture}
-            compact={false}
+            compact={compact}
           />
         </GamePanel>
       )}

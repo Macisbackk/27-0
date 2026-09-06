@@ -54,7 +54,7 @@ export function ManagerPage({
 }) {
   return (
     <div
-      className={`${wide ? MANAGER.pageWide : MANAGER.page} max-sm:text-center ${className}`}
+      className={`${wide ? MANAGER.pageWide : MANAGER.page} ${className}`}
     >
       {children}
     </div>
@@ -581,6 +581,7 @@ export function ManagerInboxMessageCard({
   children,
   compact = false,
   expanded = true,
+  flush = false,
   onToggleExpand,
 }: {
   message: InboxMessage;
@@ -588,15 +589,20 @@ export function ManagerInboxMessageCard({
   compact?: boolean;
   /** When false, show a compact summary row; tap to expand. */
   expanded?: boolean;
+  /** Phone list chrome — no card frame. */
+  flush?: boolean;
   onToggleExpand?: () => void;
 }) {
   const style = INBOX_MESSAGE_STYLE[message.type];
   const weekLabel = `Week ${message.gameWeek}`;
+  const compactChrome = flush;
 
   if (compact) {
     return (
       <article
-        className={`${CARD.inset} relative flex items-center gap-3 overflow-hidden ${SPACING.listItem} opacity-80`}
+        className={`${
+          compactChrome ? "m-row opacity-80" : `${CARD.inset} ${SPACING.listItem} opacity-80`
+        } relative flex items-center gap-3 overflow-hidden`}
       >
         <span
           className={`absolute inset-x-0 top-0 h-0.5 ${style.accentBar}`}
@@ -632,9 +638,13 @@ export function ManagerInboxMessageCard({
       <button
         type="button"
         onClick={onToggleExpand}
-        className={`${CARD.base} relative flex w-full items-center gap-3 overflow-hidden border-l-[3px] ${
+        className={`${
+          compactChrome
+            ? "m-row w-full"
+            : `${CARD.base} ${SPACING.listItem} hover:bg-pitch-900/40`
+        } relative flex w-full items-center gap-3 overflow-hidden border-l-[3px] ${
           !message.read ? "border-l-theme-primary/70" : "border-l-transparent"
-        } ${SPACING.listItem} text-left transition hover:bg-pitch-900/40`}
+        } text-left transition`}
       >
         <span
           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border text-[10px] font-bold ${style.iconBox}`}
@@ -660,8 +670,14 @@ export function ManagerInboxMessageCard({
           </p>
           <p className={`mt-0.5 line-clamp-1 ${TYPO.meta}`}>{message.body}</p>
         </div>
-        <span className="shrink-0 rounded-sm border border-pitch-600 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white">
-          View
+        <span
+          className={
+            compactChrome
+              ? "m-row__chevron"
+              : "shrink-0 rounded-sm border border-pitch-600 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white"
+          }
+        >
+          {compactChrome ? "›" : "View"}
         </span>
       </button>
     );
@@ -669,7 +685,9 @@ export function ManagerInboxMessageCard({
 
   return (
     <article
-      className={`${CARD.base} relative flex flex-col overflow-hidden border-l-[3px] ${
+      className={`${
+        compactChrome ? "border-b border-white/10 bg-transparent" : CARD.base
+      } relative flex flex-col overflow-hidden border-l-[3px] ${
         !message.read ? "border-l-theme-primary/70" : "border-l-transparent"
       }`}
     >

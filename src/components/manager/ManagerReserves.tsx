@@ -334,12 +334,14 @@ export function ManagerReserves({ career, onUpdate }: ManagerReservesProps) {
   return (
     <ManagerPage>
       <ManagerSection>
+      <div className={compact ? "hidden" : undefined}>
       <GameSectionHeader
         size="page"
         label="Academy"
         title="Reserves"
         subtitle={`Youth & reserve squad · ${career.club}`}
       />
+      </div>
 
       <ManagerSubTabBar
         ariaLabel="Reserves sections"
