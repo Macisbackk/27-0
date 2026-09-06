@@ -20,6 +20,7 @@ interface ManagerMobileBottomNavProps {
   active: ManagerView;
   onNavigate: (view: ManagerView) => void;
   disabled?: boolean;
+  unreadInbox?: number;
   /** Controlled More sheet (tutorial drives open/close). */
   moreOpen?: boolean;
   onMoreOpenChange?: (open: boolean) => void;
@@ -37,6 +38,7 @@ export function ManagerMobileBottomNav({
   moreOpen: moreOpenControlled,
   onMoreOpenChange,
   tutorialLock = null,
+  unreadInbox = 0,
 }: ManagerMobileBottomNavProps) {
   const [moreOpenUncontrolled, setMoreOpenUncontrolled] = useState(false);
   const controlled = typeof moreOpenControlled === "boolean";
@@ -90,7 +92,7 @@ export function ManagerMobileBottomNav({
         className="fixed inset-x-0 bottom-0 z-50 border-t border-pitch-700/50 bg-pitch-950 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(0,0,0,0.35)] sm:hidden"
         aria-label="Manager mobile navigation"
       >
-        <div className="mx-auto grid max-w-lg grid-cols-6 gap-0.5 overflow-hidden px-1.5 pt-2">
+        <div className="mx-auto grid max-w-lg grid-cols-5 gap-0.5 overflow-hidden px-1.5 pt-2">
           {MANAGER_PRIMARY_NAV_TABS.map((tab) => {
             const isActive = active === tab.id;
             const locked = tabLockedOut(tab.id);
@@ -156,6 +158,11 @@ export function ManagerMobileBottomNav({
             <span className="font-display text-[10px] font-bold uppercase tracking-wide leading-tight">
               More
             </span>
+            {unreadInbox > 0 ? (
+              <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-theme-primary px-1 text-[9px] font-bold leading-none text-[var(--theme-text-on-primary)]">
+                {unreadInbox > 9 ? "9+" : unreadInbox}
+              </span>
+            ) : null}
           </button>
         </div>
       </nav>
@@ -205,9 +212,14 @@ export function ManagerMobileBottomNav({
                     >
                       {item.icon}
                     </span>
-                    <span className="font-display text-sm font-bold uppercase tracking-wide">
+                    <span className="min-w-0 flex-1 font-display text-sm font-bold uppercase tracking-wide">
                       {item.label}
                     </span>
+                    {item.id === "inbox" && unreadInbox > 0 ? (
+                      <span className="rounded-full bg-theme-primary px-2 py-0.5 text-[10px] font-bold text-[var(--theme-text-on-primary)]">
+                        {unreadInbox > 9 ? "9+" : unreadInbox}
+                      </span>
+                    ) : null}
                   </button>
                 );
               })}

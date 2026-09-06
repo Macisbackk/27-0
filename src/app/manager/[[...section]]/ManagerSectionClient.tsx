@@ -2454,7 +2454,11 @@ export default function ManagerPage() {
                   </div>
                 </ManagerKeepAlivePane>
                 <ManagerKeepAlivePane active={chromeNavView === "settings" && panesInteractive}>
-                  <ManagerSettings career={career} onUpdate={persist} />
+                  <ManagerSettings
+                    career={career}
+                    onUpdate={persist}
+                    onNavigate={handleNavNavigate}
+                  />
                 </ManagerKeepAlivePane>
               </div>
             )}
@@ -2465,6 +2469,7 @@ export default function ManagerPage() {
             disabled={
               playGameOpen || awaitingFriendlyChoice || managerOverlayActive
             }
+            unreadInbox={countUnreadInbox(career)}
             moreOpen={managerMoreMenuOpen}
             onMoreOpenChange={setManagerMoreMenuOpen}
             tutorialLock={managerTutorialNavLock}

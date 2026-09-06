@@ -583,6 +583,89 @@
   min-width: 0;
 }
 
+@media (max-width: 639px) {
+  .squad-side-player-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.4rem;
+  }
+
+  .squad-side-player-card,
+  .squad-side-player-card__main {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 0.5rem;
+  }
+
+  .squad-side-player-card {
+    min-height: 44px;
+    padding-inline: 0.7rem;
+  }
+
+  .squad-side-player-card__name {
+    text-align: left;
+    flex: 1;
+    font-size: 0.8125rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: normal;
+  }
+
+  .squad-side-player-card__statusRow {
+    justify-content: flex-start;
+  }
+
+  .squad-side-player-card__footer {
+    margin-left: auto;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    text-align: right;
+  }
+
+  .squad-side-player-card__rating {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .squad-side-player-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.4rem;
+  }
+
+  .squad-side-player-card,
+  .squad-side-player-card__main {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 0.5rem;
+  }
+
+  .squad-side-player-card__name {
+    text-align: left;
+    flex: 1;
+    font-size: 0.8125rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: normal;
+  }
+
+  .squad-side-player-card__footer {
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .squad-side-player-card__rating {
+    font-size: 1rem;
+  }
+}
+
 .squad-side-player-card {
   width: 100%;
   min-width: 0;
@@ -1813,6 +1896,34 @@
   /* Overlay itself does not scroll — panel (or manager body) is the sole scroller. */
   overflow: hidden;
   overscroll-behavior: contain;
+}
+
+@media (max-width: 639px) {
+  .game-modal-overlay {
+    place-items: end center;
+    padding: 0.75rem 0.75rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .game-modal-card,
+  .game-modal-panel,
+  .contract-modal-card {
+    width: min(100%, 520px);
+    max-height: min(82dvh, 720px);
+  }
+}
+
+@media (max-width: 639px) {
+  .game-modal-overlay {
+    place-items: end center;
+    padding: 0.75rem 0.75rem max(0.75rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .game-modal-card,
+  .contract-modal-card,
+  .game-modal-panel {
+    width: min(100%, 520px);
+    max-height: min(82dvh, 720px);
+  }
 }
 
 .game-modal-card,

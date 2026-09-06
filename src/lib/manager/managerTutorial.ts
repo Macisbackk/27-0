@@ -6,6 +6,7 @@
  */
 import type { ManagerCareer, ManagerView } from "./types";
 import { isManagerMobileMoreNavView } from "./manager-nav-config";
+import { isCompactViewport } from "@/lib/ui/viewport";
 
 export type ManagerTutorialStatus =
   | "not_started"
@@ -141,7 +142,7 @@ export const MANAGER_TUTORIAL_STEPS: readonly ManagerTutorialStep[] = [
     id: "more",
     title: "Open More",
     description:
-      "Open More to find the rest of your Manager Mode sections.",
+      "Open More for Reserves, Contracts, Club, Inbox and Settings.",
     targetId: "manager-more",
     action: "open-menu",
     expected: { moreOpen: true },
@@ -292,8 +293,7 @@ export function getActiveManagerTutorialStep(
 }
 
 export function isTutorialCompactViewport(): boolean {
-  if (typeof window === "undefined") return true;
-  return window.matchMedia("(max-width: 639px)").matches;
+  return isCompactViewport();
 }
 
 function nextStepId(

@@ -7,6 +7,7 @@ import { MatchPlayerOfTheMatchCard } from "@/components/MatchPlayerOfTheMatchCar
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { CollapsibleDetails } from "@/components/ui/MobileLayout";
+import { useCompactViewport } from "@/lib/ui/viewport";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import type { ManagerCareer } from "@/lib/manager/types";
@@ -69,6 +70,7 @@ export function ManagerMatchReview({
   fixtureId,
   onClose,
 }: ManagerMatchReviewProps) {
+  const compact = useCompactViewport();
   const [mobileTab, setMobileTab] = useState<"story" | "stats" | "tactics">(
     "story"
   );
@@ -176,7 +178,59 @@ export function ManagerMatchReview({
       <div className={SPACING.stackLg}>
       <MatchReviewBackBar onClose={onClose} />
 
-      <div className="flex flex-wrap items-center gap-3">
+      {compact ? (
+        <div className={`${CARD.elevated} ${SPACING.cardPadding} text-center`}>
+          <p
+            className={`font-display text-4xl font-black uppercase tracking-tight ${
+              won ? "text-theme-primary" : lost ? "text-red-300" : "text-accent-gold"
+            }`}
+          >
+            {won ? "Win" : lost ? "Loss" : "Draw"}
+          </p>
+          <p className={`mt-2 ${TYPO.bodySm} text-pitch-400`}>{roundLabel}</p>
+          {(() => {
+            const homeName = fixture.isHome ? career.club : fixture.opponent;
+            const awayName = !fixture.isHome ? career.club : fixture.opponent;
+            const homePts = fixture.isHome
+              ? fixture.pointsFor
+              : fixture.pointsAgainst;
+            const awayPts = fixture.isHome
+              ? fixture.pointsAgainst
+              : fixture.pointsFor;
+            return (
+              <p className="mt-3 font-[family-name:var(--font-pitch)] text-xl font-bold uppercase leading-tight text-white">
+                {homeName}{" "}
+                <span className="font-display text-2xl tabular-nums text-theme-primary">
+                  {homePts}–{awayPts}
+                </span>{" "}
+                {awayName}
+              </p>
+            );
+          })()}
+          {keyMoment ? (
+            <p className={`mt-3 text-sm font-semibold ${momentToneClass[keyMoment.tone]}`}>
+              {keyMoment.label}
+            </p>
+          ) : null}
+          {fixture.manOfTheMatch ? (
+            <p className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
+              Best:{" "}
+              <span className="font-semibold text-white">
+                {fixture.manOfTheMatch.playerName}
+              </span>
+            </p>
+          ) : null}
+          <GameButton
+            variant="theme"
+            className="mt-5 min-h-12 w-full text-sm font-semibold"
+            onClick={onClose}
+          >
+            Continue
+          </GameButton>
+        </div>
+      ) : null}
+
+      <div className={`flex flex-wrap items-center gap-3 ${compact ? "hidden" : ""}`}>
         <h1 className={TYPO.viewTitle}>Match Review</h1>
         {fixture.competition && (
           <ManagerCompetitionBadge
@@ -202,7 +256,7 @@ export function ManagerMatchReview({
       </div>
 
       <div
-        className={`${CARD.elevated} ${SPACING.cardPadding} matchday-scoreboard ${
+        className={`${compact ? "hidden" : ""} ${CARD.elevated} ${SPACING.cardPadding} matchday-scoreboard ${
           matchOccasion
             ? `${matchOccasion.surfaceClass} ${matchOccasion.matchdayModifier}`
             : ""
@@ -255,7 +309,7 @@ export function ManagerMatchReview({
         </div>
 
         {fixture.matchBio ? (
-          <div className="mt-4 border-t border-pitch-700/45 pt-3 text-left">
+          <div className="mt-4 hidden border-t border-pitch-700/45 pt-3 text-left sm:block">
             <p className={TYPO.sectionLabel}>Match Story</p>
             <p
               className={`mt-2 leading-relaxed whitespace-pre-line ${TYPO.bodySm} text-pitch-200`}

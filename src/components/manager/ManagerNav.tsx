@@ -90,7 +90,7 @@ export function ManagerNav({
         </div>
       </div>
 
-      <div className="center-action-row">
+      <div className="center-action-row hidden sm:flex">
         <button
           type="button"
           onClick={() => navigate("inbox")}

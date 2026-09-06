@@ -217,7 +217,7 @@ export function ManagerInbox({
                     setFilter(f.id);
                     setExpandedId(null);
                   }}
-                  className={`shrink-0 rounded-sm border px-2.5 py-1.5 text-[11px] font-medium transition min-h-[36px] sm:min-h-[44px] ${
+                  className={`shrink-0 rounded-sm border px-2.5 py-1.5 text-[11px] font-medium transition min-h-[44px] ${
                     filter === f.id ? FILTER.chipActive : FILTER.chipIdle
                   }`}
                 >

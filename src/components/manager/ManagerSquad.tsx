@@ -100,7 +100,7 @@ const SQUAD_PLAYER_NAME_CLASS =
 
 /** Wrap in 2 columns so ratings never clip (3-col horizontal strip was too wide for the side panel). */
 const SQUAD_POOL_GRID_CLASS =
-  "squad-side-player-grid grid w-full min-w-0 grid-cols-2 items-stretch gap-1.5 sm:gap-2";
+  "squad-side-player-grid grid w-full min-w-0 grid-cols-1 items-stretch gap-1.5 sm:grid-cols-2 sm:gap-2";
 
 function squadPlayerBoxClass(
   selectionRole: SquadSelectionRole,

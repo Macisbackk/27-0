@@ -18,7 +18,12 @@ import {
   type ManagerCareer,
   type ManagerReserveDevelopmentSettings,
   type ManagerSettings,
+  type ManagerView,
 } from "@/lib/manager/types";
+import { isSoundMuted, toggleSoundMuted } from "@/lib/sound/manager";
+import { prefersReducedMotion } from "@/lib/haptics";
+import { useCompactViewport } from "@/lib/ui/viewport";
+import Link from "next/link";
 import { GameButton } from "@/components/ui/GameButton";
 import { ManagerDialog } from "@/components/manager/ManagerDialog";
 import {
@@ -30,6 +35,7 @@ import {
 interface ManagerSettingsProps {
   career: ManagerCareer;
   onUpdate: (career: ManagerCareer) => void;
+  onNavigate?: (view: ManagerView) => void;
 }
 
 const CONTRACT_YEAR_OPTIONS: ManagerAutoRenewContractYears[] = [1, 2, 3, 4];
@@ -128,7 +134,9 @@ function SettingsToggle({
     <li className="flex items-start justify-between gap-4 py-3 first:pt-0 last:pb-0">
       <div className="min-w-0 flex-1">
         <p className={`${TYPO.bodySm} font-semibold text-white`}>{label}</p>
-        <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-500`}>{description}</p>
+        <p className={`mt-0.5 ${TYPO.bodySm} text-pitch-500`}>
+          {description}
+        </p>
       </div>
       <button
         type="button"
@@ -136,7 +144,7 @@ function SettingsToggle({
         aria-checked={on}
         aria-label={label}
         onClick={onToggle}
-        className={`relative mt-0.5 h-7 w-12 shrink-0 rounded-full border transition ${
+        className={`relative mt-0.5 h-11 min-h-[44px] w-12 shrink-0 rounded-full border transition ${
           on
             ? "border-theme-primary/50 bg-theme-primary/80"
             : "border-pitch-600/55 bg-pitch-800"
@@ -185,8 +193,14 @@ function SettingsNumberInput({
   );
 }
 
-export function ManagerSettings({ career, onUpdate }: ManagerSettingsProps) {
+export function ManagerSettings({ career, onUpdate, onNavigate }: ManagerSettingsProps) {
+  const compact = useCompactViewport();
   const settings = getSettings(career);
+  const [soundMuted, setSoundMuted] = useState(() =>
+    typeof window === "undefined" ? false : isSoundMuted()
+  );
+  const reducedMotionOn =
+    typeof window !== "undefined" ? prefersReducedMotion() : false;
 
   const patchSettings = (patch: Partial<ManagerSettings>) => {
     patchManagerCareerSettings(career, onUpdate, settings, patch);
@@ -199,14 +213,61 @@ export function ManagerSettings({ career, onUpdate }: ManagerSettingsProps) {
           size="page"
           label="Preferences"
           title="Settings"
-          subtitle="Preferences now live on Contracts, Reserves, and Club."
+          subtitle={compact ? undefined : "Gameplay, account, and accessibility."}
         />
-        <p className={`${CARD.base} ${SPACING.cardPadding} ${TYPO.bodySm} text-pitch-400`}>
-          Contract renewals are under <span className="text-white">Contracts → Settings</span>.
-          Reserve rules are under <span className="text-white">Reserves → Settings</span>.
-          Matchday toggles are on the <span className="text-white">Club</span> page.
-        </p>
-        <GameplaySettingsCard settings={settings} onPatch={patchSettings} />
+
+        <ManagerSectionCard title="Game" variant="elevated">
+          <ul className="mt-2 divide-y divide-pitch-700/50">
+            <SettingsToggle
+              label="Sound"
+              description="Match and menu audio."
+              on={!soundMuted}
+              onToggle={() => setSoundMuted(toggleSoundMuted())}
+            />
+            {TOGGLE_OPTIONS.map((option) => (
+              <SettingsToggle
+                key={option.key}
+                label={option.label}
+                description={option.description}
+                on={settings[option.key]}
+                onToggle={() => patchSettings({ [option.key]: !settings[option.key] })}
+              />
+            ))}
+          </ul>
+        </ManagerSectionCard>
+
+        <ManagerSectionCard title="Account" variant="elevated">
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+            Saves, export, and new careers live on the Manager home screen.
+          </p>
+          <div className="mt-3 grid gap-2">
+            <GameButton
+              variant="secondary"
+              className="min-h-11"
+              onClick={() => {
+                playUiClick();
+                onNavigate?.("club");
+              }}
+            >
+              Club
+            </GameButton>
+            <Link
+              href="/profile"
+              className={`${CARD.inset} flex min-h-11 items-center justify-center px-3 text-sm font-semibold text-white`}
+              onClick={() => playUiClick()}
+            >
+              Profile & data
+            </Link>
+          </div>
+        </ManagerSectionCard>
+
+        <ManagerSectionCard title="Accessibility" variant="elevated">
+          <p className={`mt-1 ${TYPO.bodySm} text-pitch-400`}>
+            Reduced motion follows your device setting
+            {reducedMotionOn ? " — currently on." : "."} Animations stay short
+            either way.
+          </p>
+        </ManagerSectionCard>
       </ManagerSection>
     </ManagerPage>
   );

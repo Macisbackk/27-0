@@ -91,8 +91,8 @@ for (const step of MANAGER_TUTORIAL_STEPS) {
   }
 }
 
-// Mobile More gating for fixtures/stats/club
-for (const id of ["fixtures", "stats", "club"] as const) {
+// Mobile More gating for secondary tabs (fixtures is now bottom-nav primary).
+for (const id of ["reserves", "contracts", "stats", "club"] as const) {
   const step = MANAGER_TUTORIAL_STEPS.find((s) => s.id === id)!;
   if (!step.expected?.tab || !isManagerMobileMoreNavView(step.expected.tab)) {
     err(`${id}: should live under mobile More`);
@@ -173,7 +173,7 @@ for (const id of ["fixtures", "stats", "club"] as const) {
   }
 }
 
-for (const id of ["squad", "reserves", "contracts", "transfers"] as const) {
+for (const id of ["squad", "transfers", "fixtures"] as const) {
   const step = MANAGER_TUTORIAL_STEPS.find((s) => s.id === id)!;
   if (isManagerMobileMoreNavView(step.expected!.tab!)) {
     err(`${id}: should NOT be under mobile More`);

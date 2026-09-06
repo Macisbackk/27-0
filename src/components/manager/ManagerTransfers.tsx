@@ -32,6 +32,7 @@ import { getCareerClubStars } from "@/lib/manager/managerDifficulty";
 import { getUserCompetitionId } from "@/lib/manager/leagueMembership";
 import { isSameManagerClub } from "@/lib/clubs/super-league-display";
 import { FILTER, SPACING } from "@/lib/ui/design-system";
+import { useCompactViewport } from "@/lib/ui/viewport";
 import { ClipboardPanel } from "@/components/ui/ClipboardPanel";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
@@ -168,6 +169,11 @@ export function ManagerTransfers({
   career,
   onUpdate,
 }: ManagerTransfersProps) {
+  const compact = useCompactViewport();
+  const transferCardLayout = compact ? "row" : "card";
+  const marketGridClass = compact
+    ? "grid gap-2"
+    : `grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`;
   const [tab, setTab] = useState<TransferTab>("listed");
   const [positionFilter, setPositionFilter] = useState<Position | "all">("all");
   const [leagueSort, setLeagueSort] = useState<"rating" | "team" | "name">(
@@ -974,7 +980,7 @@ export function ManagerTransfers({
 
       {(tab === "listed" || tab === "loans") && (
       <section className="space-y-3">
-        <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
+        <div className={marketGridClass}>
           {visibleListedPlayers.map(({ player, club, listingType }) => {
             const demand = getPlayerSigningDemand(career, player.id);
             const listedPrice = getSellerAskingPrice(
@@ -1028,6 +1034,7 @@ export function ManagerTransfers({
             return (
               <ManagerTransferPlayerCard
                 key={`${tab}-${player.id}`}
+                layout={transferCardLayout}
                 player={player}
                 club={club}
                 listed
@@ -1214,7 +1221,7 @@ export function ManagerTransfers({
 
       {tab === "freeAgents" && (
       <section className="space-y-3">
-        <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
+        <div className={marketGridClass}>
           {visibleFreeAgents.map(({ player, formerClub, playerId, source }) => {
             const demand = getPlayerSigningDemand(career, player.id);
             const appeal = signingAppealForPlayer(
@@ -1233,6 +1240,7 @@ export function ManagerTransfers({
             return (
               <ManagerTransferPlayerCard
                 key={playerId}
+                layout={transferCardLayout}
                 player={player}
                 club={formerClub}
                 listed={false}
@@ -1387,7 +1395,7 @@ export function ManagerTransfers({
             </button>
           ))}
         </div>
-        <div className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 ${SPACING.cardGridGap}`}>
+        <div className={marketGridClass}>
           {visibleUnlistedPlayers.map(({ player, club }) => {
             const listedPrice = getSellerAskingPrice(
               career,
@@ -1429,6 +1437,7 @@ export function ManagerTransfers({
             return (
               <ManagerTransferPlayerCard
                 key={player.id}
+                layout={transferCardLayout}
                 player={player}
                 club={club}
                 listed={false}
@@ -1589,7 +1598,7 @@ export function ManagerTransfers({
 
       {tab === "watch" && (
         <section aria-label="Watchlist">
-          <div className={`grid gap-3 sm:grid-cols-2 ${SPACING.stackMd}`}>
+          <div className={compact ? "grid gap-2" : `grid gap-3 sm:grid-cols-2 ${SPACING.stackMd}`}>
             {watchedPlayers.map(
               ({
                 player,
@@ -1621,6 +1630,7 @@ export function ManagerTransfers({
               return (
                 <ManagerTransferPlayerCard
                   key={playerId}
+                  layout={transferCardLayout}
                   player={player}
                   club={club}
                   listed={listed}

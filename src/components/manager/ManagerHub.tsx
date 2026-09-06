@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { CollapsibleDetails, CompactFixtureCard } from "@/components/ui/MobileLayout";
+import { useCompactViewport } from "@/lib/ui/viewport";
+import { getClubIndicatorColor } from "@/lib/clubs";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { ProgrammePanel } from "@/components/ui/ProgrammePanel";
@@ -179,6 +182,7 @@ export function ManagerHub({
   onOpenCupFixtures,
   onOpenMatchReview,
 }: ManagerHubProps) {
+  const compact = useCompactViewport();
   const [dialog, setDialog] = useState<{ title: string; message: string } | null>(
     null
   );
@@ -282,7 +286,74 @@ export function ManagerHub({
 
   const hubNews = getHubNewsItems(career);
 
-  const nextFixtureCard =
+  const fixtureAccent = nextFixture
+    ? getClubIndicatorColor(career.club)
+    : undefined;
+
+  const mobileNextFixtureCard =
+    nextFixture && !seasonComplete && !playoffsPending && matchOccasion ? (
+      <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28">
+        <CompactFixtureCard accentColor={fixtureAccent}>
+          <p className={`${TYPO.keyLabel} text-pitch-400`}>
+            {matchOccasion.weekLabel}
+          </p>
+          <p className="mt-1 text-center font-[family-name:var(--font-pitch)] text-lg font-bold uppercase leading-tight tracking-wide text-white">
+            {career.club}
+          </p>
+          <p className="mt-0.5 text-center text-xs font-semibold uppercase tracking-wider text-pitch-500">
+            {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
+          </p>
+          <p className="mt-0.5 text-center font-[family-name:var(--font-pitch)] text-lg font-bold uppercase leading-tight tracking-wide text-white">
+            {nextFixture.opponent}
+          </p>
+          <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-400`}>
+            {getManagerScheduledFixtureVenueLabel(nextFixture)}
+            <span className="text-pitch-600"> · </span>
+            {ordinal(position)}
+          </p>
+          {matchOccasion.momentLine ? (
+            <p
+              className={`mt-2 text-center text-sm font-semibold ${matchOccasion.momentTextClass}`}
+            >
+              {matchOccasion.momentLine}
+            </p>
+          ) : null}
+          {!squadCheck.valid && (
+            <div
+              className={`mt-3 ${managerCalloutClass("amber")} px-3 py-2 ${TYPO.bodySm} whitespace-pre-line`}
+            >
+              {squadCheck.message}
+              {onUpdate && (
+                <GameButton
+                  variant="theme"
+                  size="sm"
+                  className="mt-2 min-h-11 w-full"
+                  onClick={() => {
+                    playUiClick();
+                    handleAutoFix();
+                  }}
+                >
+                  Auto Fix Squad
+                </GameButton>
+              )}
+            </div>
+          )}
+          <GameButton
+            variant="theme"
+            disabled={!canPlay}
+            className="mt-3 min-h-12 w-full text-sm font-semibold"
+            onClick={() => {
+              playUiClick();
+              onPlayGame();
+            }}
+          >
+            {matchOccasion.playCta}
+          </GameButton>
+        </CompactFixtureCard>
+      </div>
+    ) : null;
+
+  const desktopNextFixtureCard =
     nextFixture && !seasonComplete && !playoffsPending && matchOccasion ? (
       <div
         id={MANAGER_HUB_SCROLL_TARGET_ID}
@@ -362,7 +433,7 @@ export function ManagerHub({
             results={career.recentForm.slice(-5) as ("W" | "L" | "D")[]}
           />
         </div>
-        <ManagerStatGrid cols={4} className="mt-3 text-sm [&>*:nth-child(n+5)]:hidden sm:[&>*:nth-child(n+5)]:block">
+        <ManagerStatGrid cols={4} className="mt-3 hidden text-sm sm:grid">
           <ManagerStat label="Your rating" value={String(teamRating)} tone="primary" />
           {oppRating !== null && (
             <ManagerStat label="Opponent rating" value={String(oppRating)} tone="default" />
@@ -418,7 +489,7 @@ export function ManagerHub({
             )}
           </div>
         )}
-        <div className="mt-4 hidden grid-cols-1 gap-2 sm:grid sm:grid-cols-2">
+        <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
           <div>
             <GameButton
               variant="theme"
@@ -431,7 +502,7 @@ export function ManagerHub({
               {matchOccasion.playCta}
             </GameButton>
           </div>
-          <div>
+          <div className="hidden sm:block">
             <GameButton
               variant="secondary"
               disabled={!canPlay}
@@ -448,6 +519,8 @@ export function ManagerHub({
       </ScoreboardPanel>
       </div>
     ) : null;
+
+  const nextFixtureCard = compact ? mobileNextFixtureCard : desktopNextFixtureCard;
 
   const newsTickerCard =
     hubNews.length > 0 ? (
@@ -520,14 +593,22 @@ export function ManagerHub({
       <ProgrammePanel padded>
         <GameSectionHeader
           label="Season"
-          title="Season Progress"
-          subtitle={`Season ${career.seasonYear}`}
+          title={compact ? "Progress" : "Season Progress"}
+          subtitle={compact ? undefined : `Season ${career.seasonYear}`}
         />
         <p className={`mt-2 ${TYPO.cardTitle}`}>
-          Week{" "}
-          <span className="text-theme-primary">{career.gameWeek}</span>
-          <span className="text-pitch-500">/{career.schedule.length}</span>
-          <span className="text-pitch-500"> · </span>
+          {compact ? (
+            <>
+              League:{" "}
+            </>
+          ) : (
+            <>
+              Week{" "}
+              <span className="text-theme-primary">{career.gameWeek}</span>
+              <span className="text-pitch-500">/{career.schedule.length}</span>
+              <span className="text-pitch-500"> · </span>
+            </>
+          )}
           <span
             className={
               leaguePositionTone(position) === "gold"
@@ -541,6 +622,14 @@ export function ManagerHub({
           >
             {ordinal(position)}
           </span>
+          {compact ? (
+            <>
+              <span className="text-pitch-500"> · </span>
+              <span className="text-pitch-400">
+                Next: Round {career.gameWeek}
+              </span>
+            </>
+          ) : null}
         </p>
         {wageOverBudget && (
           <p className={`mt-2 ${TYPO.bodySm} text-amber-300`}>
@@ -689,20 +778,28 @@ export function ManagerHub({
       leagueTableCard
     );
 
-  const hubBody = (
-    <>
-      <div
-        className="space-y-4"
-        data-tutorial-target="manager-hub"
-      >
-        {commandCentre}
-        {nextFixtureCard}
-        {seasonProgressCard}
-        {newsTickerCard}
+  const hubBody = compact ? (
+    <div className="space-y-3" data-tutorial-target="manager-hub">
+      {nextFixtureCard}
+      {seasonProgressCard}
+      {commandCentre}
+      {squadAvailabilityCard}
+      {newsTickerCard ? (
+        <CollapsibleDetails summary="News">{newsTickerCard}</CollapsibleDetails>
+      ) : null}
+      <CollapsibleDetails summary="Table" defaultOpen={false}>
         {hubStandingsCard}
-        {squadAvailabilityCard}
-      </div>
-    </>
+      </CollapsibleDetails>
+    </div>
+  ) : (
+    <div className="space-y-4" data-tutorial-target="manager-hub">
+      {commandCentre}
+      {nextFixtureCard}
+      {seasonProgressCard}
+      {newsTickerCard}
+      {hubStandingsCard}
+      {squadAvailabilityCard}
+    </div>
   );
 
   if (playoffsActive && hubCareer.playoffs) {

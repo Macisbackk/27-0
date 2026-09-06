@@ -49,12 +49,14 @@ function BoostCard({
 
   return (
     <li className={`${CARD.panel} overflow-hidden rounded-xl border-pitch-700/50`}>
-      <div className={SPACING.cardPaddingSm}>
+      <div className={`${SPACING.cardPaddingSm} sm:space-y-0`}>
         <div className="min-w-0">
-          <p className="truncate font-display text-sm font-bold text-white sm:text-base">
+          <p className="truncate font-display text-sm font-bold uppercase tracking-wide text-white sm:text-base sm:normal-case sm:tracking-normal">
             {boost.name}
           </p>
-          <p className={`mt-1 ${TYPO.bodySm} text-gray-400`}>{boost.description}</p>
+          <p className={`mt-1 line-clamp-2 ${TYPO.bodySm} text-gray-400 sm:line-clamp-none`}>
+            {boost.description}
+          </p>
           <p className={`mt-2 ${TYPO.bodySm} text-pitch-500`}>
             {boost.usageLimitLabel}
           </p>
@@ -72,6 +74,7 @@ function BoostCard({
           <GameButton
             variant="theme"
             size="sm"
+            className="min-h-11 w-full sm:w-auto"
             disabled={!canAfford || purchasing}
             onClick={() => onPurchase(boost)}
           >

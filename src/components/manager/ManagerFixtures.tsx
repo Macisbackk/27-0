@@ -16,6 +16,7 @@ import { getHubOpponentRating } from "@/lib/manager/managerOpponentRating";
 import { resolveCareerForMatchSimulation } from "@/lib/manager/managerAutoFix";
 import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
 import { SPACING } from "@/lib/ui/design-system";
+import { useCompactViewport } from "@/lib/ui/viewport";
 import { GameSectionHeader } from "@/components/ui/GameSectionHeader";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
@@ -635,12 +636,19 @@ export function ManagerFixtures({
   initialFilter = "calendar",
   onOpenMatchPrep,
 }: ManagerFixturesProps) {
+  const compact = useCompactViewport();
   const [filter, setFilter] = useState<FixtureFilter>(initialFilter);
   const [viewClubSheet, setViewClubSheet] = useState<string | null>(null);
 
   useEffect(() => {
     setFilter(initialFilter);
   }, [initialFilter]);
+
+  useEffect(() => {
+    if (compact && initialFilter === "calendar") {
+      setFilter("all");
+    }
+  }, [compact, initialFilter]);
 
   const readyCareer = syncBracketProgress(career);
   const nextFixture = getNextManagerFixture(readyCareer);
@@ -956,7 +964,15 @@ export function ManagerFixtures({
 
       <div className="flex w-full min-w-0 justify-center">
         <ManagerSubTabBar
-          tabs={FILTERS}
+          tabs={
+            compact
+              ? [
+                  FILTERS.find((f) => f.id === "all")!,
+                  ...FILTERS.filter((f) => f.id !== "all" && f.id !== "calendar"),
+                  FILTERS.find((f) => f.id === "calendar")!,
+                ]
+              : FILTERS
+          }
           active={filter}
           onChange={setFilter}
           scrollable
@@ -1023,7 +1039,7 @@ export function ManagerFixtures({
               {homeAttendanceOutlook.label}
             </p>
           )}
-          <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+          <div className="mt-2 hidden grid-cols-2 gap-2 text-sm sm:grid sm:grid-cols-4">
             {homeAttendanceOutlook && (
               <ManagerStat
                 label="Expected gate"
@@ -1046,10 +1062,23 @@ export function ManagerFixtures({
               />
             )}
           </div>
+          {onOpenMatchPrep ? (
+            <GameButton
+              variant="theme"
+              size="md"
+              className="mt-4 min-h-11 w-full sm:hidden"
+              onClick={() => {
+                playUiClick();
+                onOpenMatchPrep();
+              }}
+            >
+              {nextMatchOccasion.playCta}
+            </GameButton>
+          ) : null}
           <GameButton
             variant="secondary"
             size="sm"
-            className="mt-4 w-full sm:w-auto"
+            className="mt-3 hidden w-full sm:mt-4 sm:inline-flex sm:w-auto"
             onClick={() => {
               playUiClick();
               setViewClubSheet(nextFixture.opponent);

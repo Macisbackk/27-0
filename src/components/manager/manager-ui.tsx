@@ -660,8 +660,8 @@ export function ManagerInboxMessageCard({
           </p>
           <p className={`mt-0.5 line-clamp-1 ${TYPO.meta}`}>{message.body}</p>
         </div>
-        <span className="shrink-0 text-pitch-500" aria-hidden>
-          ▸
+        <span className="shrink-0 rounded-sm border border-pitch-600 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white">
+          View
         </span>
       </button>
     );

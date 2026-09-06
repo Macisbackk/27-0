@@ -144,8 +144,6 @@ export function isManagerStateOverlayView(view: ManagerView): boolean {
 export function resolveManagerScreenFromPathname(pathname: string): ManagerView | null {
   const fromPath = managerViewFromPathname(pathname);
   if (fromPath === "club-select") return "club-select";
-  // Legacy Settings URL → Club (preferences moved to Club / Contracts / Reserves).
-  if (fromPath === "settings") return "club";
   // Legacy Calendar URL → Fixtures (calendar lives under Fixtures).
   if (fromPath === "calendar") return "fixtures";
   const normalized = pathname.replace(/\/+$/, "") || "/manager";

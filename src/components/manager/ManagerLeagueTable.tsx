@@ -156,34 +156,53 @@ export function ManagerLeagueTable({
             championshipTable ? "championship" : "super-league",
             row.position,
             rows.length
-          ).kind;
+          );
+          const zoneShort =
+            zone.kind === "champion"
+              ? "Leaders"
+              : zone.kind === "playoffs"
+                ? "Playoffs"
+                : zone.kind === "auto-promote"
+                  ? "Promote"
+                  : zone.kind === "mpg"
+                    ? "MPG"
+                    : zone.kind === "auto-relegate"
+                      ? "Relegate"
+                      : zone.kind === "wooden-spoon"
+                        ? "Spoon"
+                        : null;
           const inner = (
             <>
               <span className="font-mono text-sm text-pitch-400">{row.position}</span>
               <span
                 className="inline-block h-2 w-2 shrink-0 rounded-full"
                 style={{ backgroundColor: indicatorColor }}
+                aria-hidden
               />
-              <span
-                className={`min-w-0 flex-1 truncate text-sm ${
-                  row.isUserTeam ? "font-semibold text-theme-primary" : "text-pitch-200"
-                }`}
-              >
-                {row.team}
+              <span className="min-w-0 flex-1">
+                <span
+                  className={`block truncate text-sm ${
+                    row.isUserTeam ? "font-semibold text-theme-primary" : "text-pitch-200"
+                  }`}
+                >
+                  {row.team}
+                </span>
+                {zoneShort ? (
+                  <span className={`block text-[10px] font-semibold uppercase tracking-wide ${zoneToneClass(zone.kind)}`}>
+                    {zoneShort}
+                  </span>
+                ) : null}
               </span>
-              <span className="text-xs text-pitch-400">
-                {showDraws
-                  ? `${row.wins}W-${row.draws ?? 0}D-${row.losses}L`
-                  : `${row.wins}W-${row.losses}L`}
+              <span className="shrink-0 text-right text-[11px] leading-tight text-pitch-400">
+                P {row.played} · W {row.wins} · PTS {row.leaguePoints}
               </span>
-              <span className="font-semibold text-accent-gold">{row.leaguePoints}pts</span>
             </>
           );
           return (
             <li
               key={row.team}
               className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2 ${zoneRowClass(
-                zone,
+                zone.kind,
                 Boolean(row.isUserTeam)
               )}`}
             >

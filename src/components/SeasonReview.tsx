@@ -521,7 +521,8 @@ export function SeasonReview({
                   onContinuePlayoffs?.();
                 }}
               >
-                Continue to Play-Offs →
+                <span className="sm:hidden">Playoffs</span>
+                <span className="hidden sm:inline">Continue to Play-Offs →</span>
               </GameButton>
             </div>
           </div>

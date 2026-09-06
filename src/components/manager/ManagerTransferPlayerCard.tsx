@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { CompactPlayerCard } from "@/components/ui/CompactPlayerCard";
 import { ClubDualSwatch } from "@/components/ClubDualSwatch";
 import { ClubNameLabel } from "@/components/ClubNameLabel";
 import {
@@ -53,6 +54,8 @@ interface ManagerTransferPlayerCardProps {
   yearsRequested?: number;
   watched?: boolean;
   onToggleWatch?: () => void;
+  /** Compact market row on phones; full card on desktop. */
+  layout?: "card" | "row";
   children?: ReactNode;
 }
 
@@ -70,6 +73,7 @@ export function ManagerTransferPlayerCard({
   yearsRequested,
   watched = false,
   onToggleWatch,
+  layout = "card",
   children,
 }: ManagerTransferPlayerCardProps) {
   const rating = player.peakRating;
@@ -89,9 +93,52 @@ export function ManagerTransferPlayerCard({
           ? "TRANSFER LISTED"
           : "UNLISTED";
   const surface = listed || freeAgent ? CARD.elevated : CARD.inset;
+  const feeLabel =
+    freeAgent || fee <= 0
+      ? showsLoan && listingType === "loan"
+        ? "Season loan"
+        : "Free"
+      : formatWage(fee);
+
+  if (layout === "row") {
+    return (
+      <CompactPlayerCard
+        name={player.name}
+        position={positions.map((pos) => POSITION_SHORT[pos]).join(" · ")}
+        club={freeAgent ? "Free agent" : club}
+        rating={rating}
+        accentColor={accent}
+      >
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="min-w-0">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-pitch-400">
+              {listingLabel}
+            </p>
+            <p className={`mt-0.5 ${TYPO.bodySm} text-accent-gold`}>{feeLabel}</p>
+          </div>
+          {onToggleWatch ? (
+            <button
+              type="button"
+              onClick={onToggleWatch}
+              className={`inline-flex min-h-11 items-center rounded-full border px-3 text-[11px] font-bold uppercase tracking-wider ${
+                watched
+                  ? "border-accent-gold/50 bg-accent-gold/15 text-accent-gold"
+                  : "border-pitch-600 text-pitch-400"
+              }`}
+              aria-pressed={watched}
+              aria-label={watched ? "Remove from watchlist" : "Add to watchlist"}
+            >
+              {watched ? "Watching" : "Watch"}
+            </button>
+          ) : null}
+        </div>
+        {children ? <div className="mt-2">{children}</div> : null}
+      </CompactPlayerCard>
+    );
+  }
 
   return (
-    <div className={`${surface} flex min-h-[300px] flex-col overflow-hidden`}>
+    <div className={`${surface} flex min-h-0 flex-col overflow-hidden sm:min-h-[300px]`}>
       <div
         className={`shrink-0 border-b border-pitch-700/40 px-3 py-2.5 sm:px-4 ${
           freeAgent ? "border-t-2 border-t-theme-primary" : ""
@@ -205,30 +252,34 @@ export function ManagerTransferPlayerCard({
           }
           tone="gold"
         />
-        <ManagerStat
-          label="Market value"
-          value={formatValue(player.value)}
-          tone="gold"
-        />
+        <div className="hidden sm:block">
+          <ManagerStat
+            label="Market value"
+            value={formatValue(player.value)}
+            tone="gold"
+          />
+        </div>
         <ManagerStat
           label="Age"
           value={ageValue}
           tone="muted"
         />
         <ManagerStat
-          label="Wage demand"
+          label="Wage"
           value={`${formatWage(wagePerYear)}/yr`}
           tone="default"
         />
-        <ManagerStat
-          label="Contract"
-          value={
-            yearsRequested
-              ? `${yearsRequested}yr${yearsRequested === 1 ? "" : "s"}`
-              : "—"
-          }
-          tone="muted"
-        />
+        <div className="hidden sm:block">
+          <ManagerStat
+            label="Contract"
+            value={
+              yearsRequested
+                ? `${yearsRequested}yr${yearsRequested === 1 ? "" : "s"}`
+                : "—"
+            }
+            tone="muted"
+          />
+        </div>
       </div>
 
       {sellerListedFee != null && (
