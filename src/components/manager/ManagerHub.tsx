@@ -294,19 +294,19 @@ export function ManagerHub({
     nextFixture && !seasonComplete && !playoffsPending && matchOccasion ? (
       <div id={MANAGER_HUB_SCROLL_TARGET_ID} className="scroll-mt-28">
         <CompactFixtureCard accentColor={fixtureAccent}>
-          <p className={`${TYPO.keyLabel} text-pitch-400`}>
+          <p className="text-[11px] font-medium text-pitch-500">
             {matchOccasion.weekLabel}
           </p>
-          <p className="mt-1 text-center font-[family-name:var(--font-pitch)] text-lg font-bold uppercase leading-tight tracking-wide text-white">
+          <p className="mt-3 text-center font-[family-name:var(--font-pitch)] text-[1.35rem] font-semibold leading-tight tracking-tight text-white">
             {career.club}
           </p>
-          <p className="mt-0.5 text-center text-xs font-semibold uppercase tracking-wider text-pitch-500">
+          <p className="mt-1 text-center text-[11px] font-medium text-pitch-500">
             {nextFixture.isNeutral || nextFixture.isHome ? "vs" : "@"}
           </p>
-          <p className="mt-0.5 text-center font-[family-name:var(--font-pitch)] text-lg font-bold uppercase leading-tight tracking-wide text-white">
+          <p className="mt-1 text-center font-[family-name:var(--font-pitch)] text-[1.35rem] font-semibold leading-tight tracking-tight text-white">
             {nextFixture.opponent}
           </p>
-          <p className={`mt-2 text-center ${TYPO.bodySm} text-pitch-400`}>
+          <p className={`mt-2 text-center text-[12px] text-pitch-500`}>
             {getManagerScheduledFixtureVenueLabel(nextFixture)}
             <span className="text-pitch-600"> · </span>
             {ordinal(position)}
@@ -590,11 +590,51 @@ export function ManagerHub({
 
   const seasonProgressCard = (
     <div data-tutorial-target="manager-season-progress">
+      {compact ? (
+        <div className="pt-1">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-pitch-500">
+            Season
+          </p>
+          <p className={`mt-1 text-[1.35rem] font-semibold tracking-tight ${
+            leaguePositionTone(position) === "gold"
+              ? "text-accent-gold"
+              : leaguePositionTone(position) === "primary"
+                ? "text-theme-primary"
+                : leaguePositionTone(position) === "red"
+                  ? "text-red-300"
+                  : "text-white"
+          }`}>
+            {ordinal(position)}
+          </p>
+          <p className="mt-0.5 text-[13px] text-pitch-400">
+            {career.gameWeek} / {career.schedule.length}
+            <span className="text-pitch-600"> · </span>
+            Next: Round {career.gameWeek}
+          </p>
+          {wageOverBudget && (
+            <p className={`mt-2 ${TYPO.bodySm} text-amber-300`}>
+              Wages over budget
+              {wagePressure >= 4 ? " — board wants cuts" : ""}
+            </p>
+          )}
+          <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/10">
+            <div
+              className="h-full bg-theme-primary"
+              style={{
+                width: `${Math.min(
+                  100,
+                  (career.gameWeek / Math.max(1, career.schedule.length)) * 100
+                )}%`,
+              }}
+            />
+          </div>
+        </div>
+      ) : (
       <ProgrammePanel padded>
         <GameSectionHeader
           label="Season"
-          title={compact ? "Progress" : "Season Progress"}
-          subtitle={compact ? undefined : `Season ${career.seasonYear}`}
+          title="Season Progress"
+          subtitle={`Season ${career.seasonYear}`}
         />
         <p className={`mt-2 ${TYPO.cardTitle}`}>
           {compact ? (
@@ -687,6 +727,7 @@ export function ManagerHub({
           ) : null}
         </div>
       </ProgrammePanel>
+      )}
     </div>
   );
 

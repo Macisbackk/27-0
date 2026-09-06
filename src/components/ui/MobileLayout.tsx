@@ -28,12 +28,12 @@ export function CollapsibleDetails({
   const [open, setOpen] = useState(defaultOpen);
   return (
     <details
-      className={`w-full min-w-0 rounded-lg border border-pitch-700/40 bg-pitch-950/40 ${className}`}
+      className={`w-full min-w-0 border-0 bg-transparent ${className}`}
       open={open}
       onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}
     >
       <summary
-        className={`${MOBILE.touchTarget} cursor-pointer list-none px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-pitch-400 marker:content-none [&::-webkit-details-marker]:hidden`}
+        className={`${MOBILE.touchTarget} cursor-pointer list-none px-0 py-2 text-left text-[13px] font-medium text-pitch-400 marker:content-none [&::-webkit-details-marker]:hidden`}
       >
         <span className="inline-flex items-center gap-2">
           <span aria-hidden className="text-pitch-500">
@@ -42,7 +42,7 @@ export function CollapsibleDetails({
           {summary}
         </span>
       </summary>
-      <div className={`border-t border-pitch-700/30 px-3 py-2 ${SPACING.stackSm}`}>
+      <div className={`border-t border-white/5 px-0 py-2 ${SPACING.stackSm}`}>
         {children}
       </div>
     </details>

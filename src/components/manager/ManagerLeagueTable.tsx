@@ -201,10 +201,9 @@ export function ManagerLeagueTable({
           return (
             <li
               key={row.team}
-              className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2 ${zoneRowClass(
-                zone.kind,
-                Boolean(row.isUserTeam)
-              )}`}
+              className={`flex min-h-[44px] items-center gap-2 border-b border-white/5 px-0 py-2.5 ${
+                row.isUserTeam ? "bg-transparent" : "bg-transparent"
+              }`}
             >
               {onViewClub ? (
                 <button

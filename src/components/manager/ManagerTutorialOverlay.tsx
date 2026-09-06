@@ -612,7 +612,7 @@ export function ManagerTutorialOverlay({
           {spotlight ? (
             <div
               aria-hidden
-              className="pointer-events-none absolute rounded-xl ring-2 ring-theme-primary/90"
+              className="pointer-events-none absolute rounded-md ring-1 ring-theme-primary/80"
               style={{
                 top: spotlight.top,
                 left: spotlight.left,
@@ -728,7 +728,7 @@ function Callout({
       className="pointer-events-auto absolute overflow-hidden outline-none"
       style={style}
     >
-      <div className="rounded-xl border border-theme-primary/40 bg-pitch-950 px-3 py-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.55)]">
+      <div className="rounded-lg border border-white/10 bg-[#0c1210] px-3 py-2.5 shadow-[0_12px_32px_rgba(0,0,0,0.5)]">
         <p className={`${TYPO.keyLabel} text-theme-primary`}>
           Step {stepIndex + 1} of {stepTotal}
         </p>

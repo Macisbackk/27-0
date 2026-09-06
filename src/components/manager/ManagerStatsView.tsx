@@ -192,13 +192,7 @@ function SeasonStatsPanel({ career }: { career: ManagerCareer }) {
             {playerRows.map((row, idx) => (
               <li
                 key={row.playerId}
-                className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2 ${
-                  idx === 0
-                    ? "border-accent-gold/35 bg-accent-gold/5"
-                    : idx < 3
-                      ? "border-theme-primary/30 bg-theme-primary/5"
-                      : "border-pitch-700/50 bg-pitch-950/40"
-                }`}
+                className="flex min-h-[44px] items-center gap-2 border-b border-white/5 px-0 py-2.5"
               >
                 <span
                   className={`min-w-0 flex-1 truncate text-sm ${
@@ -418,11 +412,7 @@ function CareerStatsPanel({ career }: { career: ManagerCareer }) {
             {careerSave.seasonRows.map((row) => (
               <li
                 key={`${row.seasonYear}-${row.inProgress ? "current" : "done"}`}
-                className={`rounded-lg border px-3 py-2 ${
-                  row.inProgress
-                    ? "border-theme-primary/35 bg-theme-primary/5"
-                    : "border-pitch-700/50 bg-pitch-950/40"
-                }`}
+                className="border-b border-white/5 px-0 py-2.5"
               >
                 <p
                   className={`text-sm font-semibold ${
@@ -732,11 +722,7 @@ function RetiredPlayersPanel({ career }: { career: ManagerCareer }) {
               return (
                 <li
                   key={`${player.playerId}-${player.seasonRetired}`}
-                  className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2 ${
-                    club === career.club
-                      ? "border-theme-primary/35 bg-theme-primary/5"
-                      : "border-pitch-700/50 bg-pitch-950/40"
-                  }`}
+                  className="flex min-h-[44px] items-center gap-2 border-b border-white/5 px-0 py-2.5"
                 >
                   <ClubDualSwatch club={club} size="xs" />
                   <span className="min-w-0 flex-1">

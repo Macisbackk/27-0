@@ -52,16 +52,14 @@ export function CompactPlayerCard({
 
   return (
     <div
-      className={`${MOBILE.compactCard} overflow-hidden rounded-[var(--mobile-radius-medium)] border ${
-        selected
-          ? "border-white/20 ring-1 ring-white/10"
-          : "border-[color:var(--mobile-divider)]"
-      } bg-[var(--mobile-surface-secondary)] ${className}`.trim()}
+      className={`${MOBILE.compactCard} overflow-hidden border-0 border-b border-[color:var(--mobile-hairline,rgba(255,255,255,0.06))] bg-transparent ${
+        selected ? "text-theme-primary" : ""
+      } ${className}`.trim()}
       style={style}
     >
       <div className={MOBILE.clubAccentStrip} aria-hidden />
       <div
-        className={`flex min-w-0 items-start gap-2 px-2.5 py-2 text-left ${
+        className={`flex min-w-0 items-start gap-2 px-0 py-2.5 text-left ${
           onClick ? "btn-press cursor-pointer" : ""
         }`}
         onClick={onClick}
@@ -84,7 +82,7 @@ export function CompactPlayerCard({
         ) : null}
       </div>
       {children ? (
-        <div className="border-t border-[color:var(--mobile-divider)] px-2.5 py-1.5">
+        <div className="border-t border-[color:var(--mobile-hairline,rgba(255,255,255,0.06))] px-0 py-2">
           {children}
         </div>
       ) : null}

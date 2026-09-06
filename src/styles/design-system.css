@@ -54,12 +54,16 @@
   --mobile-tap-target: 44px;
   --mobile-line-height-body: 1.45;
   --mobile-line-height-tight: 1.25;
-  --mobile-radius-small: 6px;
-  --mobile-radius-medium: 10px;
-  --mobile-divider: rgba(255, 255, 255, 0.1);
+  --mobile-radius-small: 4px;
+  --mobile-radius-medium: 8px;
+  --mobile-radius-pill: 999px;
+  --mobile-divider: rgba(255, 255, 255, 0.08);
+  --mobile-hairline: rgba(255, 255, 255, 0.06);
   --mobile-surface-primary: #0a1210;
   --mobile-surface-secondary: #080c0d;
-  --mobile-surface-raised: #0e1614;
+  --mobile-surface-raised: #0c1210;
+  --mobile-shadow: none;
+  --mobile-shadow-overlay: 0 -12px 32px rgba(0, 0, 0, 0.45);
   --mobile-text-primary: #ffffff;
   --mobile-text-secondary: #d1d5db;
   --mobile-text-muted: #9ca3af;
@@ -2560,6 +2564,199 @@
 @media (prefers-reduced-motion: reduce) {
   .quick-player-card {
     transition: none;
+  }
+}
+
+/*
+ * Mobile visual language — phones only.
+ * Surfaces flatten; hierarchy comes from type, space, and hairlines.
+ * Desktop panels / tabs / buttons stay unchanged.
+ */
+@media (max-width: 639px) {
+  :root {
+    --mobile-section-gap: 1.35rem;
+    --mobile-surface-secondary: transparent;
+    --mobile-divider: rgba(255, 255, 255, 0.06);
+    --text-page-title: 1.35rem;
+    --text-section-title: 1rem;
+    --text-section-header: 1.05rem;
+    --text-card-title: 0.95rem;
+  }
+
+  .game-panel,
+  .programme-panel,
+  .scoreboard-panel,
+  .clipboard-panel,
+  .card-glass,
+  .matchday-panel,
+  .mobile-section,
+  .mobile-fixture-card,
+  .compact-info-card,
+  .game-stat-card,
+  .scoreboard-value-panel {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .game-panel--elevated,
+  .game-panel--inset,
+  .game-panel--featured,
+  .scoreboard-panel--elevated,
+  .clipboard-panel--elevated,
+  .programme-panel--featured {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .game-panel .game-panel,
+  .programme-panel .game-panel,
+  .scoreboard-panel .game-panel,
+  .clipboard-panel .game-panel,
+  .mobile-section .game-panel {
+    padding-inline: 0;
+    border: none;
+    background: transparent;
+  }
+
+  .mobile-section {
+    padding: 0;
+  }
+
+  .mobile-fixture-card {
+    padding: 0.15rem 0 0.35rem;
+    border-left: 2px solid var(--card-accent, var(--theme-primary));
+    padding-left: 0.85rem;
+    background: transparent;
+  }
+
+  .mobile-page-header {
+    border-bottom-color: var(--mobile-hairline);
+  }
+
+  .mobile-metric-row,
+  .mobile-result-row,
+  .mobile-data-row {
+    border-bottom-color: var(--mobile-hairline);
+  }
+
+  .game-section-header__title,
+  .game-header__title {
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+
+  .game-section-header__label,
+  .game-header__eyebrow,
+  .game-section-title__label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #8b9390;
+  }
+
+  .uppercase.tracking-wide,
+  .uppercase.tracking-wider,
+  .uppercase.tracking-\[0\.3em\] {
+    letter-spacing: 0.04em;
+  }
+
+  .font-display.text-lg.font-bold.uppercase,
+  .font-display.text-sm.font-bold.uppercase {
+    text-transform: none;
+    letter-spacing: -0.015em;
+    font-weight: 650;
+  }
+
+  a.game-button,
+  button.game-button,
+  .game-button {
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0;
+  }
+
+  a.game-button--theme,
+  button.game-button--theme,
+  .game-button--theme {
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  a.game-button--secondary,
+  button.game-button--secondary,
+  .game-button--secondary {
+    border: none !important;
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    box-shadow: none !important;
+  }
+
+  .tab-group {
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    gap: 0.15rem;
+  }
+
+  .tab-group-btn-active {
+    background: transparent !important;
+    color: var(--theme-primary) !important;
+    box-shadow: inset 0 -2px 0 var(--theme-primary);
+  }
+
+  [data-manager-mobile-nav] {
+    border-top: 1px solid var(--mobile-hairline);
+    background: #070b0a;
+    box-shadow: none;
+  }
+
+  [data-manager-more-sheet] button:last-of-type {
+    border-bottom: none;
+  }
+
+  .squad-side-player-card {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .manager-player-card,
+  .manager-player-card.game-panel {
+    border: none;
+    background: transparent;
+  }
+
+  details.w-full.min-w-0.rounded-lg {
+    border: none;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  details.w-full.min-w-0.rounded-lg > div {
+    border-top-color: var(--mobile-hairline);
+  }
+
+  .mobile-action-bar {
+    border-top: 1px solid var(--mobile-hairline);
+    background: #070b0a;
+    box-shadow: none;
+  }
+
+  .game-modal-panel,
+  .game-modal-card,
+  .contract-modal-card {
+    border: 1px solid var(--mobile-hairline);
+    box-shadow: var(--mobile-shadow-overlay);
+    border-radius: 12px 12px 0 0;
+  }
+
+  .mobile-club-accent-strip {
+    height: 0;
+    display: none;
   }
 }
 

@@ -16,11 +16,7 @@ export const LeagueTable = memo(function LeagueTable({ rows }: LeagueTableProps)
         {rows.map((row) => (
           <li
             key={row.team}
-            className={`flex min-h-[44px] items-center gap-2 rounded-lg border px-3 py-2 ${
-              row.isUserTeam
-                ? "border-theme-primary/35 bg-theme-primary/10"
-                : "border-pitch-700/50 bg-pitch-950/40"
-            }`}
+            className="flex min-h-[44px] items-center gap-2 border-b border-white/5 px-0 py-2.5"
           >
             <span className="w-6 shrink-0 font-mono text-sm text-pitch-400">
               {row.position}

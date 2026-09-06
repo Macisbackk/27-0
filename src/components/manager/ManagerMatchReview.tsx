@@ -179,9 +179,10 @@ export function ManagerMatchReview({
       <MatchReviewBackBar onClose={onClose} />
 
       {compact ? (
-        <div className={`${CARD.elevated} ${SPACING.cardPadding} text-center`}>
+        <div className="px-1 py-2 text-center">
+          <p className="text-[11px] font-medium text-pitch-500">Full time</p>
           <p
-            className={`font-display text-4xl font-black uppercase tracking-tight ${
+            className={`mt-2 font-display text-[2.4rem] font-semibold tracking-tight ${
               won ? "text-theme-primary" : lost ? "text-red-300" : "text-accent-gold"
             }`}
           >

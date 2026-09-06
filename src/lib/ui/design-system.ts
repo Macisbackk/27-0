@@ -205,7 +205,7 @@ export const FILTER = {
   chipTouch:
     "min-h-[44px] rounded-lg border px-3 py-2 text-sm font-medium transition",
   tabGroup:
-    "mx-auto inline-flex w-fit max-w-full flex-nowrap items-stretch rounded-xl border border-theme-tertiary/25 bg-[rgba(7,12,11,0.94)] p-1 sm:w-auto",
+    "tab-group mx-auto inline-flex w-fit max-w-full flex-nowrap items-stretch rounded-xl border border-theme-tertiary/25 bg-[rgba(7,12,11,0.94)] p-1 sm:w-auto",
 } as const;
 
 /** Centered shell for segmented sub-tab bars (Squad/Tactics, Transfers, Stats, etc.). */
