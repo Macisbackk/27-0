@@ -28,14 +28,11 @@ import {
   markEmailConfirmPending,
 } from "./auth-callback";
 import { refreshCareerStatsFromCloud } from "./storage/stats";
-import { refreshManagerStatsFromCloud } from "./manager/managerStats";
 import { loadCloudClubFunds } from "./storage/club-funds-cloud";
 import { mergeClubFundsFromCloud, syncClubFundsLeaderboardOnLoad } from "./storage/club-funds";
 import { syncTrophyCabinetLeaderboardOnLoad } from "./storage/trophy-cabinet-leaderboard";
-import { syncManagerLeaderboardOnLoad } from "./storage/manager-leaderboard";
 import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
 import { refreshBoostInventoryFromCloud } from "./boosts/boostInventory";
-import { refreshManagerCareersFromCloud } from "./storage/manager-career-cloud";
 import { refreshAchievementsFromCloud } from "./achievements/achievementStorage";
 
 interface AuthContextValue {
@@ -62,7 +59,6 @@ let hydratedSessionKey: string | null = null;
 
 async function hydrateStatsFromCloud(): Promise<void> {
   await refreshCareerStatsFromCloud();
-  await refreshManagerStatsFromCloud();
 }
 
 async function hydrateClubFundsFromCloud(): Promise<void> {
@@ -70,7 +66,6 @@ async function hydrateClubFundsFromCloud(): Promise<void> {
   mergeClubFundsFromCloud(cloud);
   syncClubFundsLeaderboardOnLoad();
   syncTrophyCabinetLeaderboardOnLoad();
-  syncManagerLeaderboardOnLoad();
 }
 
 async function hydrateUiThemeFromCloud(): Promise<void> {
@@ -79,10 +74,6 @@ async function hydrateUiThemeFromCloud(): Promise<void> {
 
 async function hydrateBoostInventoryFromCloud(): Promise<void> {
   await refreshBoostInventoryFromCloud();
-}
-
-async function hydrateManagerCareersFromCloud(): Promise<void> {
-  await refreshManagerCareersFromCloud();
 }
 
 async function hydrateAchievementsFromCloud(): Promise<void> {
@@ -163,7 +154,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         hydrateClubFundsFromCloud(),
         hydrateUiThemeFromCloud(),
         hydrateBoostInventoryFromCloud(),
-        hydrateManagerCareersFromCloud(),
         hydrateAchievementsFromCloud(),
       ]);
       if (generation !== syncGenerationRef.current) return;

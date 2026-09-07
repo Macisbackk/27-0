@@ -173,20 +173,8 @@ export function playGoldenPointWin(): void {
   playSound("goldenPointWin");
 }
 
-export function playManagerSacked(): void {
-  playSound("managerSacked");
-}
-
-export function playManagerAppointed(): void {
-  playSound("managerAppointed");
-}
-
 export function playCalendarComplete(): void {
   playSound("calendarComplete");
-}
-
-export function playFriendlyConfirm(): void {
-  playSound("friendlyConfirm");
 }
 
 export function playAchievementUnlock(): void {

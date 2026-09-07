@@ -1,10 +1,9 @@
 "use client";
 
-import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
-import type { ManagerSubTabOption } from "@/components/manager/ManagerSubTabBar";
+import { SubTabBar, type SubTabOption } from "@/components/ui/SubTabBar";
 
 interface GameTabsProps<T extends string> {
-  tabs: readonly ManagerSubTabOption<T>[];
+  tabs: readonly SubTabOption<T>[];
   active: T;
   onChange: (id: T) => void;
   className?: string;
@@ -14,7 +13,7 @@ interface GameTabsProps<T extends string> {
   hardAccent?: boolean;
 }
 
-/** Site-wide segmented tabs — same control as Manager Mode. */
+/** Site-wide segmented tabs. */
 export function GameTabs<T extends string>(props: GameTabsProps<T>) {
-  return <ManagerSubTabBar {...props} />;
+  return <SubTabBar {...props} />;
 }

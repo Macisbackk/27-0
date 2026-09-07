@@ -36,6 +36,9 @@
   ],
   "exclude": [
     "node_modules",
-    "scripts"
+    "scripts",
+    "_tmp_*.ts",
+    "_tmp_*.tsx",
+    "_tmp_*.js"
   ]
 }

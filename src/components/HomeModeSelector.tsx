@@ -76,26 +76,6 @@ export function HomeModeSelector() {
 
       <div className="flex flex-col items-center gap-[var(--mobile-section-gap)]">
         <MobileSection className="flex w-full flex-col items-center text-center">
-          <p className={`w-full text-center ${TYPO.keyLabel}`}>Career</p>
-          <h2 className={`mt-1 w-full text-center ${TYPO.homeModeTitle}`}>
-            Manager Mode
-          </h2>
-          <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
-            Manage a club. Win trophies.
-          </p>
-          <div className="mt-4 flex w-full justify-center">
-            <GameButton
-              variant="theme"
-              href="/manager"
-              onClick={() => playUiClick()}
-              className="max-w-sm"
-            >
-              Enter Manager Mode
-            </GameButton>
-          </div>
-        </MobileSection>
-
-        <MobileSection className="flex w-full flex-col items-center text-center">
           <p className={`w-full text-center ${TYPO.keyLabel}`}>Quick Mode</p>
           <h2 className={`mt-1 w-full text-center ${TYPO.homeModeTitle}`}>
             Draft &amp; go 27-0
@@ -198,6 +178,26 @@ export function HomeModeSelector() {
               Loading today&apos;s challenge…
             </p>
           )}
+        </MobileSection>
+
+        <MobileSection className="flex w-full flex-col items-center text-center">
+          <p className={`w-full text-center ${TYPO.keyLabel}`}>Quiz</p>
+          <h2 className={`mt-1 w-full text-center ${TYPO.homeModeTitle}`}>
+            Super League Quiz
+          </h2>
+          <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
+            Test your Super League knowledge. How far can you go?
+          </p>
+          <div className="mt-4 flex w-full justify-center">
+            <GameButton
+              variant="secondary"
+              href="/quiz"
+              onClick={() => playUiClick()}
+              className="max-w-sm"
+            >
+              Play Quiz Mode
+            </GameButton>
+          </div>
         </MobileSection>
       </div>
     </div>

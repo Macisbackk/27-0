@@ -2,7 +2,7 @@ import { getAllStats } from "../storage/stats";
 import { getClubFundsBalance, getClubFundsTotalEarned } from "../storage/club-funds";
 import { getUiThemeStoreState } from "../storage/ui-theme-store";
 import { UI_THEMES } from "../ui-themes";
-import { loadManagerStats } from "../manager/managerStats";
+import { loadQuizStats } from "../quiz/storage";
 
 /** Snapshot used to evaluate achievement progress and unlock conditions. */
 export type AchievementCheckContext = {
@@ -36,29 +36,6 @@ export type AchievementCheckContext = {
   cupFinalReached?: boolean;
   eraCup?: boolean;
   beatStrongerTeam?: boolean;
-  // Manager session
-  managerCareerStarted?: boolean;
-  managerWin?: boolean;
-  managerSeasonComplete?: boolean;
-  managerFinishPosition?: number;
-  /** League size for Safe Pair Of Hands / finish-based unlocks. */
-  managerLeagueSize?: number;
-  managerLeagueWinner?: boolean;
-  managerGrandFinalWinner?: boolean;
-  managerDoubleWinner?: boolean;
-  managerTrebleWinner?: boolean;
-  managerQuadrupleWinner?: boolean;
-  managerCleanSweep?: boolean;
-  managerWorldClubChallengeWinner?: boolean;
-  managerPerfectTrophySeason?: boolean;
-  reserveCalledUp?: boolean;
-  reservePromoted?: boolean;
-  playerSigned?: boolean;
-  playerSold?: boolean;
-  contractRenewed?: boolean;
-  stadiumCapacityPct?: number;
-  boardSeasonPerformanceScore?: number;
-  managerSeasonRewardClaimed?: boolean;
   // Store
   themePurchased?: boolean;
   // Easter eggs
@@ -73,15 +50,21 @@ export type AchievementCheckContext = {
   dailyChallengeCompleted?: boolean;
   dailyCurrentStreak?: number;
   dailyBestStreak?: number;
+  quizQuestionsAnswered?: number;
+  quizQuestionsCorrect?: number;
+  quizHighestPrize?: number;
+  quizPerfectRun?: boolean;
+  quizNoLifelines?: boolean;
+  quizTeamCompleted?: boolean;
+  quizTeamMillionaire?: boolean;
 };
 
 export type AchievementProgressSnapshot = {
   totalWins: number;
-  /** Quick Mode wins only (excludes Manager) — used by First Win. */
+  /** Quick Mode wins — used by First Win. */
   quickModeWins: number;
   totalLosses: number;
   totalSeasons: number;
-  managerSeasonsCompleted: number;
   challengeCupsWon: number;
   storeThemesUnlocked: number;
   totalStoreThemes: number;
@@ -89,15 +72,10 @@ export type AchievementProgressSnapshot = {
   lifetimeClubFundsEarned: number;
   unbeatenSeasons: number;
   perfectSeasons: number;
-  playersSold: number;
-  playersSigned: number;
-  contractsRenewed: number;
-  reserveCallUps: number;
-  reservePromotions: number;
   seasonWinsCurrent: number;
-  managerWins: number;
   cupFinals: number;
-  managerCareersStarted: number;
+  quizQuestionsAnswered: number;
+  quizQuestionsCorrect: number;
 };
 
 function sumStatWins(): number {
@@ -174,35 +152,30 @@ function sumUnbeatenSeasons(): number {
 export function buildAchievementProgress(
   ctx: AchievementCheckContext = {}
 ): AchievementProgressSnapshot {
-  const manager = loadManagerStats();
   const themeStore = getUiThemeStoreState();
   const purchasedThemes = themeStore.unlockedThemeIds.filter(
     (id) => id !== "default"
   );
   const quickModeWins = sumStatWins();
+  const quizStats = loadQuizStats();
 
   return {
-    totalWins: quickModeWins + (manager.wins ?? 0),
+    totalWins: quickModeWins,
     quickModeWins,
-    totalLosses: sumStatLosses() + (manager.losses ?? 0),
-    totalSeasons: sumSeasons() + (manager.seasonsCompleted ?? 0),
-    managerSeasonsCompleted: manager.seasonsCompleted ?? 0,
-    challengeCupsWon: manager.challengeCups ?? 0,
+    totalLosses: sumStatLosses(),
+    totalSeasons: sumSeasons(),
+    challengeCupsWon: 0,
     storeThemesUnlocked: purchasedThemes.length,
     totalStoreThemes: UI_THEMES.length - 1,
     clubFundsBalance: getClubFundsBalance(),
     lifetimeClubFundsEarned: getClubFundsTotalEarned(),
     unbeatenSeasons: sumUnbeatenSeasons(),
     perfectSeasons: sumPerfectSeasons(),
-    playersSold: 0,
-    playersSigned: 0,
-    contractsRenewed: 0,
-    reserveCallUps: 0,
-    reservePromotions: 0,
     seasonWinsCurrent: ctx.seasonWins ?? 0,
-    managerWins: manager.wins ?? 0,
-    cupFinals: manager.cupFinals ?? 0,
-    managerCareersStarted: manager.careersStarted ?? 0,
+    cupFinals: 0,
+    quizQuestionsAnswered:
+      quizStats.questionsCorrect + quizStats.questionsIncorrect,
+    quizQuestionsCorrect: quizStats.questionsCorrect,
   };
 }
 

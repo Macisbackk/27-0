@@ -47,7 +47,7 @@ export function CapacitorAppShell() {
         '[data-modal-close], [aria-label="Close"], [aria-label="Close dialog"], button[aria-label="Close"]'
       );
       const openDialog = document.querySelector(
-        '[role="dialog"][aria-modal="true"], .mobile-bottom-sheet, .manager-modal-open'
+        '[role="dialog"][aria-modal="true"], .mobile-bottom-sheet'
       );
       if (openDialog && closeBtn) {
         closeBtn.click();
@@ -66,10 +66,6 @@ export function CapacitorAppShell() {
 
       if (pathname.startsWith("/play") && pathname !== "/play") {
         router.replace("/play");
-        return;
-      }
-      if (pathname.startsWith("/manager/") && pathname !== "/manager") {
-        router.replace("/manager");
         return;
       }
       if (pathname !== "/") {

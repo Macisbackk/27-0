@@ -589,14 +589,12 @@ export interface SimulateFixtureOptions {
   cupMode?: boolean;
   /** Use opponent squad average rating instead of club base strength. */
   opponentRatingOverride?: number;
-  /** Manager UI team rating — aligns sim with hub/preview strength. */
+  /** UI team rating — aligns sim with hub/preview strength. */
   userRatingOverride?: number;
   /** Draft Mode — stronger teams rewarded, fewer unrealistic upsets. */
   draftMode?: boolean;
   /** Current Mode — opponents use 2026 team-year pools only. */
   currentSeasonOnly?: boolean;
-  /** Manager career — outcomes track team rating and form more closely. */
-  managerCareerMode?: boolean;
   /** Override RNG key when round alone is not unique (e.g. pre-season friendlies). */
   matchKey?: string;
   /**
@@ -678,17 +676,6 @@ function getDraftWinProbabilityFloor(ratingGap: number): number | null {
   return null;
 }
 
-function getManagerWinProbabilityFloor(ratingGap: number): number | null {
-  if (ratingGap >= 12) return 0.97;
-  if (ratingGap >= 10) return 0.94;
-  if (ratingGap >= 8) return 0.9;
-  if (ratingGap >= 5) return 0.84;
-  if (ratingGap >= 3) return 0.74;
-  if (ratingGap >= 1) return 0.66;
-  if (ratingGap >= 0) return 0.56;
-  return null;
-}
-
 /**
  * Normal / Era floors — aligned closer to Draft so a strong Quick Mode
  * squad can sustain a genuine title challenge / 27-0 run.
@@ -728,14 +715,8 @@ function getCurrentTeamRatingBonus(avgRating: number): number {
  */
 function getWinProbabilityCeiling(
   ratingGap: number,
-  draftMode: boolean,
-  managerMode: boolean
+  draftMode: boolean
 ): number {
-  if (managerMode) {
-    if (ratingGap >= 12) return 0.99;
-    if (ratingGap >= 8) return 0.985;
-    return 0.98;
-  }
   if (draftMode) {
     if (ratingGap >= 10) return 0.985;
     if (ratingGap >= 7) return 0.98;
@@ -767,11 +748,10 @@ function resolveOutcome(
   const draftMode = options.draftMode ?? false;
   const valueBonus = getValueConsistencyBonus(totalValue, draftMode);
   const cupMode = options.cupMode ?? false;
-  const managerMode = options.managerCareerMode ?? false;
 
-  const currentMode = (options.currentSeasonOnly ?? false) && !draftMode && !managerMode;
+  const currentMode = (options.currentSeasonOnly ?? false) && !draftMode;
   const homeAdvantage = isHome ? 1.5 : -1;
-  const formEffect = form * (managerMode ? 0.55 : 0.4);
+  const formEffect = form * 0.4;
   const draftRatingBonus = draftMode ? getDraftTeamRatingBonus(avgRating) : 0;
   const currentRatingBonus = currentMode
     ? getCurrentTeamRatingBonus(avgRating)
@@ -779,7 +759,7 @@ function resolveOutcome(
 
   // Current Mode: less noise — compressed 2026 ratings made Normal's ±3.5 chaos
   // feel like coin flips even with a strong XIII.
-  let noiseScale = draftMode ? 8 : managerMode ? 2.6 : currentMode ? 4.2 : 7;
+  let noiseScale = draftMode ? 8 : currentMode ? 4.2 : 7;
   const absGap = Math.abs(ratingGap);
   if (absGap >= 10) noiseScale = draftMode ? 2 : currentMode ? 1.8 : 2.5;
   else if (absGap >= 8) noiseScale = draftMode ? 2.8 : currentMode ? 2.6 : 3.5;
@@ -790,17 +770,11 @@ function resolveOutcome(
 
   const noise = (rng() - 0.5) * noiseScale;
   const strengthGap = strength - opponentStrength;
-  const ratingWeight = draftMode
-    ? 1.55
-    : managerMode
-      ? 1.62
-      : currentMode
-        ? 1.48
-        : 1.34;
-  const valueWeight = draftMode ? 0.85 : managerMode ? 0.65 : 0.8;
+  const ratingWeight = draftMode ? 1.55 : currentMode ? 1.48 : 1.34;
+  const valueWeight = draftMode ? 0.85 : 0.8;
   const diff =
     ratingGap * ratingWeight +
-    strengthGap * (managerMode ? 0.42 : currentMode ? 0.4 : 0.35) +
+    strengthGap * (currentMode ? 0.4 : 0.35) +
     valueBonus * valueWeight +
     homeAdvantage +
     formEffect +
@@ -808,13 +782,7 @@ function resolveOutcome(
     currentRatingBonus +
     noise;
 
-  const logisticDivisor = draftMode
-    ? 3.9
-    : managerMode
-      ? 3.6
-      : currentMode
-        ? 3.7
-        : 4.2;
+  const logisticDivisor = draftMode ? 3.9 : currentMode ? 3.7 : 4.2;
   let winProbability = 1 / (1 + Math.exp(-diff / logisticDivisor));
 
   if (draftMode) {
@@ -822,11 +790,9 @@ function resolveOutcome(
     if (floor !== null) winProbability = Math.max(winProbability, floor);
     else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.74);
   } else {
-    const floor = managerMode
-      ? getManagerWinProbabilityFloor(ratingGap)
-      : currentMode
-        ? getCurrentWinProbabilityFloor(ratingGap)
-        : getNormalWinProbabilityFloor(ratingGap);
+    const floor = currentMode
+      ? getCurrentWinProbabilityFloor(ratingGap)
+      : getNormalWinProbabilityFloor(ratingGap);
     if (floor !== null) winProbability = Math.max(winProbability, floor);
     else if (ratingGap >= 5) winProbability = Math.max(winProbability, 0.72);
   }
@@ -835,12 +801,12 @@ function resolveOutcome(
   else if (ratingGap <= -8) winProbability = Math.min(winProbability, 0.16);
   else if (ratingGap <= -5) winProbability = Math.min(winProbability, 0.26);
 
-  const ceiling = getWinProbabilityCeiling(ratingGap, draftMode, managerMode);
+  const ceiling = getWinProbabilityCeiling(ratingGap, draftMode);
   winProbability = Math.max(0.04, Math.min(ceiling, winProbability));
 
   // Soft boost for close / slight-favourite games — Current extends further
   // so a solid ~85–88 side gets help without Era lottery mid-table.
-  if (!draftMode && !managerMode) {
+  if (!draftMode) {
     if (ratingGap >= -3 && ratingGap <= 2) {
       winProbability = Math.min(ceiling, winProbability + (currentMode ? 0.09 : 0.07));
     } else if (currentMode && ratingGap > 2 && ratingGap <= 6) {
@@ -856,28 +822,13 @@ function resolveOutcome(
   let won = rng() < winProbability;
   let isUpset = false;
 
-  // Favourite losses — rare when rating gap is large (manager mode: minimal when clearly stronger)
+  // Favourite losses — rare when rating gap is large
   if (won && ratingGap >= 2) {
-    const upsetChance =
-      managerMode && ratingGap >= 3
-        ? ratingGap >= 10
-          ? cupMode
-            ? 0.006
-            : 0.003
-          : ratingGap >= 8
-            ? cupMode
-              ? 0.01
-              : 0.006
-            : ratingGap >= 5
-              ? cupMode
-                ? 0.015
-                : 0.008
-              : 0
-        : draftMode
-          ? getDraftFavoriteUpsetChance(ratingGap, cupMode)
-          : currentMode
-            ? getCurrentFavoriteUpsetChance(ratingGap, cupMode)
-            : getNormalFavoriteUpsetChance(ratingGap, cupMode);
+    const upsetChance = draftMode
+      ? getDraftFavoriteUpsetChance(ratingGap, cupMode)
+      : currentMode
+        ? getCurrentFavoriteUpsetChance(ratingGap, cupMode)
+        : getNormalFavoriteUpsetChance(ratingGap, cupMode);
     if (upsetChance > 0 && rng() < upsetChance) {
       won = false;
       isUpset = true;

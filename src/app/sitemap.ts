@@ -11,13 +11,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     "",
     "/play",
-    "/manager",
     "/leaderboard",
     "/showcase",
     "/store",
     "/profile",
     "/stats",
     "/login",
+    "/quiz",
   ];
 
   return routes.map((path) => ({

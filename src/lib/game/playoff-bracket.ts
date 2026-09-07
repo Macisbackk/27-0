@@ -27,6 +27,8 @@ import type {
   PlayoffRoundResult,
 } from "./playoff-simulation";
 
+export const GRAND_FINAL_VENUE = "Old Trafford";
+
 export interface PlayoffBracketScoringDetail {
   home: TeamScoringDetail;
   away: TeamScoringDetail;

@@ -3,7 +3,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import type { UserStatsData } from "@/lib/types";
 import { formatValue } from "@/lib/players";
-import { formatClubFunds } from "@/lib/club-funds";
 import { useAuth } from "@/lib/auth-context";
 import {
   EMPTY_STATS,
@@ -12,7 +11,6 @@ import {
   refreshCareerStatsFromCloud,
 } from "@/lib/storage/stats";
 import { SHOW_DRAFT_MODE } from "@/lib/feature-flags";
-import { getUsername } from "@/lib/storage/user";
 import {
   STATS_TABS,
   getOverallView,
@@ -22,45 +20,24 @@ import {
   formatCountStat,
   type StatsTabId,
 } from "@/lib/stats-views";
-import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
+import { SubTabBar } from "@/components/ui/SubTabBar";
 import { RecordWithPercentage } from "./RecordWithPercentage";
 import { RL_INFO_BOX_CLASS } from "./cards/rl-card";
 import { TYPO } from "@/lib/ui/typography";
 import { runStatsPageValidation } from "@/lib/validation/stats-page-validation";
-import {
-  loadManagerStats,
-  EMPTY_MANAGER_STATS,
-  flushManagerStatsToCloud,
-  refreshManagerStatsFromCloud,
-} from "@/lib/manager/managerStats";
-import {
-  MANAGER_STATS_TABS,
-  getManagerChallengeCupView,
-  getManagerOverallView,
-  getManagerSuperLeagueView,
-  type ManagerStatsTabId,
-} from "@/lib/manager/manager-stats-views";
-import type { ManagerLifetimeStats } from "@/lib/manager/types";
 import {
   getNormalEraVariant,
   NORMAL_ERA_VARIANT_CHANGED_EVENT,
   setNormalEraVariant,
 } from "@/lib/storage/preferences";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
-
-type StatsModeId = "quick" | "manager";
-
-const STATS_MODE_TABS: { id: StatsModeId; label: string }[] = [
-  { id: "manager", label: "Manager Mode" },
-  { id: "quick", label: "Quick Mode" },
-];
+import { loadQuizStats } from "@/lib/quiz/storage";
+import { formatClubFundsExact } from "@/lib/club-funds";
+import { QUIZ_CLUBS } from "@/lib/quiz/clubs";
 
 export function StatsPanel() {
   const { isLoggedIn } = useAuth();
-  const [modeTab, setModeTab] = useState<StatsModeId>("manager");
   const [activeTab, setActiveTab] = useState<StatsTabId>("overall");
-  const [managerTab, setManagerTab] =
-    useState<ManagerStatsTabId>("overall");
   const [normalStats, setNormalStats] = useState<UserStatsData | null>(null);
   const [hardStats, setHardStats] = useState<UserStatsData | null>(null);
   const [draftNormalStats, setDraftNormalStats] =
@@ -72,7 +49,7 @@ export function StatsPanel() {
     null
   );
   const [normalEraMode, setNormalEraMode] = useState(false);
-  const [managerStats, setManagerStats] = useState(EMPTY_MANAGER_STATS);
+  const [quizStats, setQuizStats] = useState<ReturnType<typeof loadQuizStats> | null>(null);
 
   const refresh = () => {
     const stored = getAllStats();
@@ -81,7 +58,7 @@ export function StatsPanel() {
     setDraftNormalStats(stored.draftNormal);
     setDraftHardStats(stored.draftHard);
     setEraNormalStats(stored.eraNormal);
-    setManagerStats(loadManagerStats());
+    setQuizStats(loadQuizStats());
   };
 
   useEffect(() => {
@@ -104,15 +81,12 @@ export function StatsPanel() {
 
     const pullFromCloud = () => {
       if (!isLoggedIn) return;
-      void Promise.all([
-        refreshCareerStatsFromCloud(),
-        refreshManagerStatsFromCloud(),
-      ]).then(refresh);
+      void refreshCareerStatsFromCloud().then(refresh);
     };
 
     const flushToCloud = () => {
       if (!isLoggedIn) return;
-      void Promise.all([flushCareerStatsToCloud(), flushManagerStatsToCloud()]);
+      void flushCareerStatsToCloud();
     };
 
     const onVisible = () => {
@@ -172,94 +146,81 @@ export function StatsPanel() {
     (SHOW_DRAFT_MODE && draftNormalStats.totalSeasonsSimulated > 0) ||
     (SHOW_DRAFT_MODE && draftHardStats.totalSeasonsSimulated > 0);
 
-  const hasAnyManagerStats =
-    managerStats.seasonsCompleted > 0 ||
-    managerStats.careersStarted > 0 ||
-    managerStats.wins > 0 ||
-    managerStats.losses > 0;
-
   const publicDraftNormal = SHOW_DRAFT_MODE ? draftNormalStats : EMPTY_STATS;
   const publicDraftHard = SHOW_DRAFT_MODE ? draftHardStats : EMPTY_STATS;
 
   return (
     <div className="space-y-6">
-      <nav className="mb-5" aria-label="Stats mode">
-        <ManagerSubTabBar
-          tabs={STATS_MODE_TABS}
-          active={modeTab}
-          onChange={setModeTab}
-          ariaLabel="Stats mode"
+      <nav className="mb-5" aria-label="Quick mode stats">
+        <SubTabBar
+          tabs={STATS_TABS}
+          active={activeTab}
+          onChange={setActiveTab}
+          ariaLabel="Quick mode stats"
         />
       </nav>
 
-      {modeTab === "quick" && (
-        <>
-          <nav className="mb-5" aria-label="Quick mode stats">
-            <ManagerSubTabBar
-              tabs={STATS_TABS}
-              active={activeTab}
-              onChange={setActiveTab}
-              ariaLabel="Quick mode stats"
-            />
-          </nav>
-
-          {!hasAnyRuns && (
-            <div className="game-panel game-panel--elevated p-6 text-center text-gray-500">
-              No runs yet. Play a game to start tracking your stats.
-            </div>
-          )}
-
-          {activeTab === "overall" && (
-            <OverallTab
-              normal={normalStats}
-              hard={hardStats}
-              draftNormal={publicDraftNormal}
-              draftHard={publicDraftHard}
-              eraNormal={eraNormalStats}
-            />
-          )}
-          {activeTab === "super-league" && (
-            <SuperLeagueTab
-              normal={normalStats}
-              eraNormal={eraNormalStats}
-              eraMode={normalEraMode}
-              onEraModeChange={(era) => {
-                setNormalEraMode(era);
-                setNormalEraVariant(era);
-              }}
-            />
-          )}
-        </>
+      {!hasAnyRuns && (
+        <div className="game-panel game-panel--elevated p-6 text-center text-gray-500">
+          No runs yet. Play a game to start tracking your stats.
+        </div>
       )}
 
-      {modeTab === "manager" && (
-        <>
-          <nav className="mb-5" aria-label="Manager mode stats">
-            <ManagerSubTabBar
-              tabs={MANAGER_STATS_TABS}
-              active={managerTab}
-              onChange={setManagerTab}
-              ariaLabel="Manager mode stats"
-            />
-          </nav>
+      {quizStats && quizStats.quizzesPlayed > 0 && (
+        <StatsSection title="Quiz Mode">
+          <StatCard label="Quizzes played" value={quizStats.quizzesPlayed} />
+          <StatCard
+            label="Highest prize"
+            value={formatClubFundsExact(quizStats.highestPrize)}
+            highlight
+          />
+          <StatCard
+            label="Total winnings"
+            value={formatClubFundsExact(quizStats.totalWinnings)}
+          />
+          <StatCard
+            label="Questions correct"
+            value={`${quizStats.questionsCorrect}`}
+            sub={`${quizStats.questionsIncorrect} incorrect`}
+          />
+          <StatCard label="Longest run" value={`${quizStats.longestRun}/15`} />
+          <StatCard label="15/15 finishes" value={quizStats.perfectRuns} />
+          {QUIZ_CLUBS.filter((club) => (quizStats.teamStats[club.id]?.bestQuestionReached ?? 0) > 0)
+            .slice(0, 3)
+            .map((club) => {
+              const team = quizStats.teamStats[club.id];
+              if (!team) return null;
+              return (
+                <StatCard
+                  key={club.id}
+                  label={`${club.name} best`}
+                  value={formatClubFundsExact(team.highestPrize)}
+                  sub={`Q${team.bestQuestionReached} · ${team.completions} titles`}
+                />
+              );
+            })}
+        </StatsSection>
+      )}
 
-          {!hasAnyManagerStats && (
-            <div className="game-panel game-panel--elevated p-6 text-center text-gray-500">
-              No manager seasons yet. Start a career in Manager Mode to track
-              stats.
-            </div>
-          )}
-
-          {managerTab === "overall" && (
-            <ManagerOverallTab stats={managerStats} />
-          )}
-          {managerTab === "super-league" && (
-            <ManagerSuperLeagueTab stats={managerStats} />
-          )}
-          {managerTab === "challenge-cup" && (
-            <ManagerChallengeCupTab stats={managerStats} />
-          )}
-        </>
+      {activeTab === "overall" && (
+        <OverallTab
+          normal={normalStats}
+          hard={hardStats}
+          draftNormal={publicDraftNormal}
+          draftHard={publicDraftHard}
+          eraNormal={eraNormalStats}
+        />
+      )}
+      {activeTab === "super-league" && (
+        <SuperLeagueTab
+          normal={normalStats}
+          eraNormal={eraNormalStats}
+          eraMode={normalEraMode}
+          onEraModeChange={(era) => {
+            setNormalEraMode(era);
+            setNormalEraVariant(era);
+          }}
+        />
       )}
 
       <p className="text-center text-xs text-gray-600">
@@ -267,183 +228,6 @@ export function StatsPanel() {
           ? "Stats sync when logged in."
           : "Saved on this device until you log in."}
       </p>
-    </div>
-  );
-}
-
-function ManagerOverallTab({ stats }: { stats: ManagerLifetimeStats }) {
-  const view = getManagerOverallView(stats);
-
-  return (
-    <div className="space-y-8">
-      <StatsSection title="Career">
-        <StatCard label="Total Seasons" value={formatCountStat(view.totalSeasons)} />
-        <StatCard label="Total Wins" value={formatCountStat(view.totalWins)} />
-        <StatCard label="Total Losses" value={formatCountStat(view.totalLosses)} />
-        <StatCard
-          label="Careers Started"
-          value={formatCountStat(view.careersStarted)}
-        />
-      </StatsSection>
-
-      <StatsSection title="Records">
-        <StatCard
-          label="Total Record"
-          value={formatRecordOrDash(view.totalRecord)}
-          highlight={(view.totalRecord?.wins ?? 0) >= 20}
-        />
-        <StatCard
-          label="Worst Season Record"
-          value={formatRecordOrDash(view.worstRecord)}
-        />
-        <StatCard
-          label="Biggest Win Margin"
-          value={view.biggestWin > 0 ? `${formatCountStat(view.biggestWin)} pts` : "—"}
-          highlight={view.biggestWin >= 20}
-        />
-        <StatCard
-          label="Biggest Defeat Margin"
-          value={
-            view.biggestDefeat > 0 ? `${formatCountStat(view.biggestDefeat)} pts` : "—"
-          }
-        />
-      </StatsSection>
-
-      <StatsSection title="Achievements">
-        <StatCard
-          label="League Titles"
-          value={formatCountStat(view.leagueTitles)}
-          highlight={view.leagueTitles > 0}
-        />
-        <StatCard
-          label="Super League Titles"
-          value={formatCountStat(view.superLeagueTitles)}
-          highlight={view.superLeagueTitles > 0}
-        />
-        <StatCard
-          label="Challenge Cups"
-          value={formatCountStat(view.challengeCups)}
-          highlight={view.challengeCups > 0}
-        />
-        <StatCard
-          label="Total 27-0 Seasons"
-          value={formatCountStat(view.perfectSeasons)}
-          highlight={view.perfectSeasons > 0}
-        />
-        <StatCard
-          label="Total 0-27 Seasons"
-          value={formatCountStat(view.winlessSeasons)}
-        />
-        <StatCard
-          label="Total Trophies"
-          value={formatCountStat(view.trophies)}
-          highlight={view.trophies > 0}
-        />
-      </StatsSection>
-
-      <StatsSection title="Career Highlights">
-        <StatCard label="Best League Finish" value={view.bestFinish} />
-        <StatCard
-          label="Favourite Club"
-          value={view.favouriteClub ?? "—"}
-        />
-        <StatCard
-          label="Total Earnings"
-          value={
-            view.totalEarnings > 0 ? formatClubFunds(view.totalEarnings) : "—"
-          }
-          highlight={view.totalEarnings >= 500_000}
-        />
-      </StatsSection>
-    </div>
-  );
-}
-
-function ManagerSuperLeagueTab({ stats }: { stats: ManagerLifetimeStats }) {
-  const view = getManagerSuperLeagueView(stats);
-
-  return (
-    <div className="space-y-8">
-      <StatsSection title="Super League">
-        <StatCard label="Seasons Completed" value={formatCountStat(view.seasons)} />
-        <StatCard label="Match Wins" value={formatCountStat(view.wins)} />
-        <StatCard label="Match Losses" value={formatCountStat(view.losses)} />
-        <StatCard
-          label="Total Record"
-          value={formatRecordOrDash(
-            view.hasSeasons ? view.totalRecord : null
-          )}
-          highlight={view.totalRecord.wins >= 20}
-        />
-        <StatCard
-          label="Worst Season Record"
-          value={formatRecordOrDash(
-            view.hasSeasons ? view.worstRecord : null
-          )}
-        />
-        <StatCard
-          label="League Titles"
-          value={formatCountStat(view.leagueTitles)}
-          highlight={view.leagueTitles > 0}
-        />
-        <StatCard
-          label="Super League Titles"
-          value={formatCountStat(view.superLeagueTitles)}
-          highlight={view.superLeagueTitles > 0}
-        />
-        <StatCard
-          label="Top-Six Finishes"
-          value={formatCountStat(view.topSixFinishes)}
-          highlight={view.topSixFinishes > 0}
-        />
-        <StatCard label="Best League Finish" value={view.bestFinish} />
-        <StatCard
-          label="27-0 Seasons"
-          value={formatCountStat(view.perfectSeasons)}
-          highlight={view.perfectSeasons > 0}
-        />
-        <StatCard
-          label="0-27 Seasons"
-          value={formatCountStat(view.winlessSeasons)}
-        />
-        <StatCard
-          label="Favourite Club"
-          value={view.favouriteClub ?? "—"}
-        />
-      </StatsSection>
-    </div>
-  );
-}
-
-function ManagerChallengeCupTab({ stats }: { stats: ManagerLifetimeStats }) {
-  const view = getManagerChallengeCupView(stats);
-
-  return (
-    <div className="space-y-8">
-      <StatsSection title="Challenge Cup">
-        <StatCard
-          label="Seasons Played"
-          value={formatCountStat(view.seasons)}
-        />
-        <StatCard
-          label="Challenge Cups Won"
-          value={formatCountStat(view.cupsWon)}
-          highlight={view.cupsWon > 0}
-        />
-        <StatCard
-          label="Finals Reached"
-          value={formatCountStat(view.finals)}
-          highlight={view.finals > 0}
-        />
-      </StatsSection>
-
-      <StatsSection title="Achievements">
-        <StatCard
-          label="Total Trophies"
-          value={formatCountStat(view.trophies)}
-          highlight={view.trophies > 0}
-        />
-      </StatsSection>
     </div>
   );
 }

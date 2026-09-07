@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import type { PlayoffBracketMatch } from "@/lib/game/playoff-bracket";
 import { getPlayoffRoundLabel } from "@/lib/game/playoff-bracket";
-import { GRAND_FINAL_VENUE } from "@/lib/manager/managerPlayoffs";
+import { GRAND_FINAL_VENUE } from "@/lib/game/playoff-bracket";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { CollapsibleDetails } from "@/components/ui/MobileLayout";

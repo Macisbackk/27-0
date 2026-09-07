@@ -1,10 +1,10 @@
 export type AchievementCategory =
-  | "manager"
   | "normal"
   | "challenge-cup"
   | "profile"
   | "store"
-  | "easter-egg";
+  | "easter-egg"
+  | "quiz";
 
 export type AchievementDefinition = {
   id: string;
@@ -138,151 +138,6 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     target: 5,
   },
 
-  // Manager Mode
-  {
-    id: "first-day-job",
-    name: "First Day In The Job",
-    description: "Start your first Manager Mode career.",
-    category: "manager",
-    points: 10,
-  },
-  {
-    id: "first-manager-win",
-    name: "First Manager Win",
-    description: "Win your first Manager Mode match.",
-    category: "manager",
-    points: 15,
-  },
-  {
-    id: "safe-pair-hands",
-    name: "Safe Pair Of Hands",
-    description: "Avoid finishing bottom in Manager Mode.",
-    category: "manager",
-    points: 20,
-  },
-  {
-    id: "playoff-coach",
-    name: "Playoff Coach",
-    description: "Reach the playoffs in Manager Mode.",
-    category: "manager",
-    points: 35,
-  },
-  {
-    id: "league-leaders",
-    name: "League Leaders",
-    description: "Finish top of the league in Manager Mode.",
-    category: "manager",
-    points: 50,
-  },
-  {
-    id: "grand-final-winners",
-    name: "Grand Final Winners",
-    description: "Win the Grand Final in Manager Mode.",
-    category: "manager",
-    points: 75,
-    rewardClubFunds: 250_000,
-  },
-  {
-    id: "double-winners",
-    name: "Double Winners",
-    description:
-      "Win the league and Challenge Cup in the same Manager season.",
-    category: "manager",
-    points: 100,
-    rewardClubFunds: 400_000,
-  },
-  {
-    id: "treble-winners",
-    name: "Treble Winners",
-    description: "Win three major trophies in one Manager season.",
-    category: "manager",
-    points: 125,
-    rewardClubFunds: 500_000,
-  },
-  {
-    id: "quadruple-winners",
-    name: "Quadruple Winners",
-    description: "Win four major trophies in one Manager season.",
-    category: "manager",
-    points: 150,
-    rewardClubFunds: 750_000,
-  },
-  {
-    id: "clean-sweep",
-    name: "Clean Sweep",
-    description:
-      "Win every available trophy in a Manager season.",
-    category: "manager",
-    points: 160,
-    rewardClubFunds: 800_000,
-  },
-  {
-    id: "world-champions",
-    name: "World Champions",
-    description: "Win the World Club Challenge in Manager Mode.",
-    category: "manager",
-    points: 80,
-    rewardClubFunds: 300_000,
-  },
-  {
-    id: "perfect-trophy-season",
-    name: "Perfect Trophy Season",
-    description:
-      "Go unbeaten and win every available trophy in a Manager season.",
-    category: "manager",
-    points: 200,
-    rewardClubFunds: 1_000_000,
-  },
-  {
-    id: "academy-trust",
-    name: "Academy Trust",
-    description: "Call up a reserve player and win the match.",
-    category: "manager",
-    points: 20,
-  },
-  {
-    id: "youth-breakthrough",
-    name: "Youth Breakthrough",
-    description: "Promote a reserve player to the senior squad.",
-    category: "manager",
-    points: 25,
-  },
-  {
-    id: "transfer-room",
-    name: "Transfer Room",
-    description: "Complete your first signing.",
-    category: "manager",
-    points: 15,
-  },
-  {
-    id: "selling-club",
-    name: "Selling Club",
-    description: "Sell a player for a transfer fee.",
-    category: "manager",
-    points: 15,
-  },
-  {
-    id: "contract-secured",
-    name: "Contract Secured",
-    description: "Renew a player contract.",
-    category: "manager",
-    points: 10,
-  },
-  {
-    id: "packed-house",
-    name: "Packed House",
-    description: "Reach 95% stadium capacity for a home game.",
-    category: "manager",
-    points: 20,
-  },
-  {
-    id: "board-favourite",
-    name: "Board Favourite",
-    description: "Finish a season with an outstanding board review score.",
-    category: "manager",
-    points: 30,
-  },
-
   // Store / Club Funds
   {
     id: "first-purchase",
@@ -322,14 +177,6 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     points: 50,
     target: 5_000_000,
   },
-  {
-    id: "reward-claimed",
-    name: "Reward Claimed",
-    description: "Claim an end-of-season Manager reward.",
-    category: "store",
-    points: 15,
-  },
-
   // Profile / General
   {
     id: "getting-started",
@@ -446,6 +293,79 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     category: "normal",
     points: 60,
     target: 7,
+  },
+
+  {
+    id: "quiz-first-question",
+    name: "First Question",
+    description: "Answer your first Quiz Mode question.",
+    category: "quiz",
+    points: 10,
+    rewardClubFunds: 5_000,
+    target: 1,
+  },
+  {
+    id: "quiz-safe-1000",
+    name: "Getting Started",
+    description: "Reach the £1,000 safe haven in Quiz Mode.",
+    category: "quiz",
+    points: 20,
+    rewardClubFunds: 10_000,
+  },
+  {
+    id: "quiz-safe-32000",
+    name: "Halfway There",
+    description: "Reach the £32,000 safe haven in Quiz Mode.",
+    category: "quiz",
+    points: 35,
+    rewardClubFunds: 25_000,
+  },
+  {
+    id: "quiz-big-money",
+    name: "Big Money",
+    description: "Reach £250,000 in a Quiz Mode run.",
+    category: "quiz",
+    points: 50,
+    rewardClubFunds: 40_000,
+  },
+  {
+    id: "quiz-millionaire",
+    name: "Millionaire",
+    description: "Answer all 15 Super League Millionaire questions correctly.",
+    category: "quiz",
+    points: 100,
+    rewardClubFunds: 100_000,
+  },
+  {
+    id: "quiz-no-help",
+    name: "No Help Needed",
+    description: "Complete a Quiz Mode run without using a lifeline.",
+    category: "quiz",
+    points: 40,
+  },
+  {
+    id: "quiz-club-expert",
+    name: "Club Expert",
+    description: "Complete a Team Challenge quiz.",
+    category: "quiz",
+    points: 25,
+    rewardClubFunds: 15_000,
+  },
+  {
+    id: "quiz-club-millionaire",
+    name: "Club Millionaire",
+    description: "Reach £1,000,000 in Team Challenge.",
+    category: "quiz",
+    points: 80,
+    rewardClubFunds: 75_000,
+  },
+  {
+    id: "quiz-super-league-expert",
+    name: "Super League Expert",
+    description: "Answer 250 Quiz Mode questions correctly.",
+    category: "quiz",
+    points: 60,
+    target: 250,
   },
 ];
 

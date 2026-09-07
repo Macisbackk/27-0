@@ -23,7 +23,7 @@ export function validateBoostOwned(boostId: GameBoostId): BoostValidationResult 
 
 export function validateBoostCategory(
   boostId: GameBoostId,
-  expected: "quick-mode" | "manager-mode"
+  expected: "quick-mode"
 ): BoostValidationResult {
   const def = getBoostDefinition(boostId);
   if (!def) return { ok: false, reason: "Unknown boost." };
@@ -32,10 +32,7 @@ export function validateBoostCategory(
   if (def.category !== expected) {
     return {
       ok: false,
-      reason:
-        expected === "quick-mode"
-          ? "Manager Mode boosts cannot be used in Quick Modes."
-          : "Quick Mode boosts cannot be used in Manager Mode.",
+      reason: "This boost cannot be used here.",
     };
   }
   return { ok: true };

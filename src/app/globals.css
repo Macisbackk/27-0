@@ -67,12 +67,6 @@
   --danger-rgb: 239 68 68;
   --theme-soft: var(--theme-primary-soft);
 
-  /* Manager mobile chrome — keep bottom nav + hub play bar aligned */
-  --manager-mobile-nav-h: calc(
-    0.5rem + 3.5rem + max(0.5rem, env(safe-area-inset-bottom))
-  );
-  --manager-mobile-playbar-h: calc(1rem + 2.75rem);
-
   /* Central UI layering — keep in sync with src/lib/ui/layers.ts */
   --z-page: 0;
   --z-sticky-nav: 30;
@@ -83,8 +77,6 @@
   --z-modal-backdrop: 9999;
   --z-modal: 10000;
   --z-critical-animation: 10001;
-  /* Tutorial elevates real nav / More sheet above the dim layer */
-  --z-tutorial-target: 10002;
 
   /* Motion tokens — prefer these over one-off durations */
   --motion-fast: 120ms;
@@ -131,17 +123,6 @@
 }
 
 .ui-layer-critical-animation {
-  z-index: var(--z-critical-animation);
-}
-
-.manager-tutorial-nav-elevated {
-  z-index: var(--z-tutorial-target);
-}
-
-/* Callout shares the dim layer z-index. Interactive chrome stays under the
-   portal; clicks reach real controls through the spotlight HOLE — do not rely
-   on elevating nav above this layer for hit-testing. */
-.manager-tutorial-callout-layer {
   z-index: var(--z-critical-animation);
 }
 

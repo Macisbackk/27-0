@@ -1,68 +1,10 @@
 import type { MatchFixture } from "../game/season-simulation";
-import { deriveCupOutcomeFromBracket } from "../game/challenge-cup-bracket";
 import { getSeasonGradeFromSquad } from "../grades";
 import { getSquadValue } from "../positions";
-import { getUserLeagueTablePosition } from "../manager/managerFixtures";
-import { getEffectiveStadiumCapacity, ensureClubFacilities } from "../manager/managerFacilities";
-import { getManagerSeasonTrophyLabels } from "../manager/managerSeasonTrophies";
-import { shouldScheduleWorldClubChallenge } from "../manager/worldClubChallenge";
-import { getUserLeagueClubs } from "../manager/leagueMembership";
-import type { ManagerCareer, ManagerFixtureRecord } from "../manager/types";
 import type { SquadSlot } from "../types";
 import type { AchievementCheckContext } from "./achievementContext";
 import { dispatchAchievementCheck } from "./achievementNotify";
 
-const MAJOR_TROPHY_LABELS = [
-  "League Leaders",
-  "Super League Champions",
-  "Challenge Cup",
-  "World Club Challenge",
-] as const;
-
-function getMajorTrophiesWon(labels: string[]): string[] {
-  return labels.filter((label) =>
-    (MAJOR_TROPHY_LABELS as readonly string[]).includes(label)
-  );
-}
-
-function getAvailableMajorTrophies(career: ManagerCareer): string[] {
-  const available: string[] = [
-    "League Leaders",
-    "Super League Champions",
-    "Challenge Cup",
-  ];
-  if (shouldScheduleWorldClubChallenge(career)) {
-    available.push("World Club Challenge");
-  }
-  return available;
-}
-
-function buildManagerTrophySeasonFlags(
-  career: ManagerCareer
-): Pick<
-  AchievementCheckContext,
-  | "managerTrebleWinner"
-  | "managerQuadrupleWinner"
-  | "managerCleanSweep"
-  | "managerWorldClubChallengeWinner"
-  | "managerPerfectTrophySeason"
-> {
-  const trophies = getMajorTrophiesWon(getManagerSeasonTrophyLabels(career));
-  const available = getAvailableMajorTrophies(career);
-  const majorCount = trophies.length;
-  const cleanSweep =
-    available.length > 0 && available.every((label) => trophies.includes(label));
-  const unbeaten = career.losses === 0 && career.wins > 0;
-  const worldClubChallengeWinner = trophies.includes("World Club Challenge");
-
-  return {
-    managerTrebleWinner: majorCount >= 3,
-    managerQuadrupleWinner: majorCount >= 4,
-    managerCleanSweep: cleanSweep,
-    managerWorldClubChallengeWinner: worldClubChallengeWinner,
-    managerPerfectTrophySeason: unbeaten && cleanSweep,
-  };
-}
 function countBradfordPlayers(squad: SquadSlot[]): number {
   return squad.filter((slot) => {
     const club = slot.player?.club ?? slot.player?.displayClub ?? "";
@@ -181,76 +123,24 @@ export function triggerDailyChallengeAchievements(
   });
 }
 
-export function triggerManagerMatchAchievements(
-  career: ManagerCareer,
-  fixture: MatchFixture
-): void {
-  const won = fixture.result === "W";
-  const margin = Math.abs(fixture.pointsFor - fixture.pointsAgainst);
-  const record = fixture as ManagerFixtureRecord;
-  const attendance = record.meta?.attendance;
-  const stadiumCapacity = getEffectiveStadiumCapacity(
-    career.club,
-    ensureClubFacilities(career.clubFacilities)
-  );
-  const capacityPct =
-    attendance && stadiumCapacity > 0
-      ? (attendance.attendance / stadiumCapacity) * 100
-      : undefined;
-  const reserveCalledUp = career.calledUpReserveIds.length > 0;
-
+export function triggerQuizAchievements(input: {
+  questionsAnswered: number;
+  questionsCorrect: number;
+  highestPrize: number;
+  perfectRun: boolean;
+  noLifelines: boolean;
+  teamCompleted: boolean;
+  teamMillionaire: boolean;
+}): void {
   triggerAchievementCheck({
-    trigger: "manager-match-completed",
-    managerWin: won,
-    // Do not set matchWon — that flag is for Quick/Normal Mode (First Win, etc.).
-    marginOfVictory: won ? margin : undefined,
-    reserveCalledUp,
-    stadiumCapacityPct: capacityPct,
-    cupPlayed: record.competition === "challenge_cup",
-    beatStrongerTeam: fixture.isUpset === true,
-  });
-}
-
-export function triggerManagerSeasonAchievements(career: ManagerCareer): void {
-  const position = getUserLeagueTablePosition(career);
-  const cupOutcome = deriveCupOutcomeFromBracket(career.challengeCup);
-  const leagueWinner = position === 1;
-  const grandFinalWinner =
-    career.playoffs?.finish === "Super League Champions";
-  const cupWinner = cupOutcome.isWinner;
-  const doubleWinner = leagueWinner && cupWinner;
-  const trophyFlags = buildManagerTrophySeasonFlags(career);
-
-  triggerAchievementCheck({
-    trigger: "manager-season-completed",
-    managerSeasonComplete: true,
-    managerFinishPosition: position,
-    managerLeagueSize: getUserLeagueClubs(career).length,
-    managerLeagueWinner: leagueWinner,
-    managerGrandFinalWinner: grandFinalWinner,
-    managerDoubleWinner: doubleWinner,
-    cupWon: cupWinner,
-    cupFinalReached:
-      cupOutcome.isWinner || cupOutcome.finish === "Runners-Up",
-    boardSeasonPerformanceScore:
-      career.boardSeasonEvaluation?.performanceScore ??
-      career.boardSeasonEvaluations?.[
-        `${career.club}-${career.seasonYear}`
-      ]?.performanceScore,
-    ...trophyFlags,
-  });
-}
-
-export function triggerManagerWorldClubChallengeAchievements(
-  career: ManagerCareer
-): void {
-  const trophyFlags = buildManagerTrophySeasonFlags(career);
-  if (!trophyFlags.managerWorldClubChallengeWinner) return;
-
-  triggerAchievementCheck({
-    trigger: "manager-world-club-challenge-won",
-    managerWorldClubChallengeWinner: true,
-    ...trophyFlags,
+    trigger: "quiz-completed",
+    quizQuestionsAnswered: input.questionsAnswered,
+    quizQuestionsCorrect: input.questionsCorrect,
+    quizHighestPrize: input.highestPrize,
+    quizPerfectRun: input.perfectRun,
+    quizNoLifelines: input.noLifelines,
+    quizTeamCompleted: input.teamCompleted,
+    quizTeamMillionaire: input.teamMillionaire,
   });
 }
 

@@ -48,6 +48,9 @@ export const STORAGE_KEYS = {
   mobileHeaderVersion: "27-0-mobile-header-version",
   quickModeSelectionUIVersion: "27-0-qm-selection-ui-version",
   reserveSettingsVersion: "27-0-reserve-settings-version",
+  quizRun: "27-0-quiz-run",
+  quizStats: "27-0-quiz-stats",
+  quizLeaderboard: "27-0-quiz-leaderboard",
 } as const;
 
 /** Bump when achievement hydration / acknowledgement migration changes. */

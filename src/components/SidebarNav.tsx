@@ -203,26 +203,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 
               <section>
                 <p className={`${NAV.sectionLabel} sidebar-section-label !mx-0 !mt-0`}>
-                  Manager
-                </p>
-                <ul className={NAV.playModeList}>
-                  <li className={NAV.playModeGroup}>
-                    <Link
-                      href="/manager"
-                      onClick={handleNavClick}
-                      className={`${navLinkClass(pathname.startsWith("/manager"))} w-full font-semibold`}
-                    >
-                      Manager Mode
-                      {pathname.startsWith("/manager") && (
-                        <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-theme-primary" />
-                      )}
-                    </Link>
-                  </li>
-                </ul>
-              </section>
-
-              <section className={NAV.sectionGap}>
-                <p className={`${NAV.sectionLabel} sidebar-section-label !mx-0 !mt-0`}>
                   Play
                 </p>
                 <ul className={NAV.playModeList}>
@@ -250,6 +230,18 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         onEraModeChange={handleNormalVariantChange}
                       />
                     </div>
+                  </li>
+                  <li className={NAV.playModeGroup}>
+                    <Link
+                      href="/quiz"
+                      onClick={handleNavClick}
+                      className={navLinkClass(pathname.startsWith("/quiz"))}
+                    >
+                      Quiz
+                      {pathname.startsWith("/quiz") && (
+                        <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-theme-primary" />
+                      )}
+                    </Link>
                   </li>
                 </ul>
               </section>

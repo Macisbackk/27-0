@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { CoachbeardMergeRunner } from "@/components/CoachbeardMergeRunner";
+import { ManagerDataPurgeRunner } from "@/components/ManagerDataPurgeRunner";
 import { Header } from "@/components/Header";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SoundUnlock } from "@/components/SoundUnlock";
@@ -62,6 +63,7 @@ export default function RootLayout({
           <CapacitorAppShell />
           <ExternalLinkGuard />
           <CoachbeardMergeRunner />
+          <ManagerDataPurgeRunner />
           <UiThemeProvider />
           <AchievementProvider>
             <SoundUnlock />

@@ -2,11 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { BracketMatch } from "@/lib/game/challenge-cup-bracket";
-import { getCupRoundLabel } from "@/lib/game/challenge-cup-bracket";
 import {
+  getCupRoundLabel,
   getExpandedCupRoundLabel,
   type ExpandedCupMeta,
-} from "@/lib/manager/championship/championshipChallengeCup";
+} from "@/lib/game/challenge-cup-bracket";
 import { getReadableTextColor } from "@/lib/ui/contrast";
 import { UI_SURFACES } from "@/lib/ui/surfaces";
 import { playUiClick } from "@/lib/sound";

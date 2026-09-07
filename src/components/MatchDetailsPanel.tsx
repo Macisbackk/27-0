@@ -5,12 +5,9 @@ import { motion } from "framer-motion";
 import type { MatchFixture } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import type { SquadSlot } from "@/lib/types";
-import type { ManagerFixtureRecord, LiveMatchEvent } from "@/lib/manager/types";
 import { resolveEraTeamClubName } from "@/lib/players/era-teams";
 import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { generateSimulatedMatchEvents } from "@/lib/manager/matchEventGenerator";
-import { ManagerMatchEventLine } from "@/components/manager/ManagerMatchEventLine";
 import { TeamScoringBreakdown } from "./TeamScoringBreakdown";
 import { MatchPlayerOfTheMatchCard } from "./MatchPlayerOfTheMatchCard";
 import {
@@ -32,7 +29,7 @@ interface MatchDetailsPanelProps {
   eraTeamValues?: Record<string, number>;
   /** Current Mode — opponent summary uses 2026 squad pool only. */
   currentSeasonOnly?: boolean;
-  /** Hide match story when shown elsewhere (e.g. manager match review). */
+  /** Hide match story when shown elsewhere. */
   hideMatchStory?: boolean;
   /** Hide MOTM when rendered separately above scoring. */
   hideMotm?: boolean;
@@ -55,60 +52,18 @@ export function MatchDetailsPanel({
   scoringOnly = false,
 }: MatchDetailsPanelProps) {
   const detail = fixture.scoringDetail;
-  const savedEvents: LiveMatchEvent[] | undefined = (
-    fixture as ManagerFixtureRecord
-  ).meta?.liveEvents;
   const matchId = `qm-r${fixture.round}-${fixture.opponent}`;
-
-  const matchEvents = useMemo(() => {
-    if (savedEvents && savedEvents.length > 0) return savedEvents;
-    return generateSimulatedMatchEvents({
-      seed,
-      fixtureKey: matchId,
-      userClub: userTeamName,
-      opponent: fixture.opponent,
-      userScore: fixture.pointsFor,
-      oppScore: fixture.pointsAgainst,
-      userTries: fixture.triesFor,
-      oppTries: fixture.triesAgainst,
-      userScorers:
-        detail?.dreamTeam.tryScorers.map((s) => ({
-          name: s.name,
-          playerId: s.playerId,
-          tries: s.tries,
-        })) ?? [],
-      opponentScorers:
-        detail?.opponent.tryScorers.map((s) => ({
-          name: s.name,
-          playerId: s.playerId,
-          tries: s.tries,
-        })) ?? [],
-      userKicker: detail?.dreamTeam.kicking?.name,
-      opponentKicker: detail?.opponent.kicking?.name,
-    });
-  }, [
-    savedEvents,
-    seed,
-    matchId,
-    fixture.opponent,
-    fixture.pointsFor,
-    fixture.pointsAgainst,
-    fixture.triesFor,
-    fixture.triesAgainst,
-    userTeamName,
-    detail,
-  ]);
 
   const canonicalEvents = useMemo(
     () =>
-      normalizeMatchEvents(matchEvents, {
+      normalizeMatchEvents([], {
         matchId,
         userTeamId: userTeamName,
         opponentTeamId: fixture.opponent,
         userTeamName,
         opponentTeamName: fixture.opponent,
       }),
-    [matchEvents, matchId, userTeamName, fixture.opponent]
+    [matchId, userTeamName, fixture.opponent]
   );
 
   const matchStory = useMemo(() => {
@@ -205,20 +160,22 @@ export function MatchDetailsPanel({
 
         {scoringBlock}
 
-        {matchEvents.length > 0 ? (
+        {canonicalEvents.length > 0 ? (
           <div>
             <p className={TYPO.sectionLabel}>Match Events</p>
             <ul className="mt-2 divide-y divide-pitch-700/30">
-              {matchEvents
+              {canonicalEvents
                 .filter((e) => e.type !== "half_time" && e.type !== "full_time")
                 .map((event, index) => (
-                  <ManagerMatchEventLine
+                  <li
                     key={event.id ?? `${event.minute}-${index}`}
-                    event={event}
-                    userClub={userTeamName}
-                    opponentClub={fixture.opponent}
-                    className="py-1.5"
-                  />
+                    className="py-1.5 text-sm text-pitch-200"
+                  >
+                    <span className="tabular-nums text-pitch-400">
+                      {event.minute}&apos;
+                    </span>{" "}
+                    {event.description}
+                  </li>
                 ))}
             </ul>
           </div>

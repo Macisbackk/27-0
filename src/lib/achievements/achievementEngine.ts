@@ -55,7 +55,6 @@ function evaluateUnlock(
 ): boolean {
   switch (def.id) {
     case "first-win":
-      // Quick/Normal Mode only — Manager wins use first-manager-win.
       return (
         progress.quickModeWins >= 1 ||
         (ctx.trigger === "quick-match-completed" && ctx.matchWon === true) ||
@@ -104,55 +103,6 @@ function evaluateUnlock(
       return ctx.beatStrongerTeam === true;
     case "cup-dynasty":
       return progress.challengeCupsWon >= 5;
-    case "first-day-job":
-      return (
-        ctx.managerCareerStarted === true || progress.managerCareersStarted >= 1
-      );
-    case "first-manager-win":
-      return ctx.managerWin === true || progress.managerWins >= 1;
-    case "safe-pair-hands": {
-      const size = ctx.managerLeagueSize ?? 12;
-      const lastSafe = Math.max(1, size - 1);
-      return (
-        ctx.managerSeasonComplete === true &&
-        (ctx.managerFinishPosition ?? 99) <= lastSafe
-      );
-    }
-    case "playoff-coach":
-      return (
-        ctx.managerSeasonComplete === true &&
-        (ctx.managerFinishPosition ?? 99) <= 6
-      );
-    case "league-leaders":
-      return ctx.managerLeagueWinner === true;
-    case "grand-final-winners":
-      return ctx.managerGrandFinalWinner === true;
-    case "double-winners":
-      return ctx.managerDoubleWinner === true;
-    case "treble-winners":
-      return ctx.managerTrebleWinner === true;
-    case "quadruple-winners":
-      return ctx.managerQuadrupleWinner === true;
-    case "clean-sweep":
-      return ctx.managerCleanSweep === true;
-    case "world-champions":
-      return ctx.managerWorldClubChallengeWinner === true;
-    case "perfect-trophy-season":
-      return ctx.managerPerfectTrophySeason === true;
-    case "academy-trust":
-      return ctx.reserveCalledUp === true && ctx.managerWin === true;
-    case "youth-breakthrough":
-      return ctx.reservePromoted === true;
-    case "transfer-room":
-      return ctx.playerSigned === true;
-    case "selling-club":
-      return ctx.playerSold === true;
-    case "contract-secured":
-      return ctx.contractRenewed === true;
-    case "packed-house":
-      return (ctx.stadiumCapacityPct ?? 0) >= 95;
-    case "board-favourite":
-      return (ctx.boardSeasonPerformanceScore ?? 0) >= 80;
     case "first-purchase":
       return ctx.themePurchased === true || progress.storeThemesUnlocked >= 1;
     case "theme-collector":
@@ -163,8 +113,6 @@ function evaluateUnlock(
       return progress.clubFundsBalance >= 1_000_000;
     case "big-earner":
       return progress.lifetimeClubFundsEarned >= 5_000_000;
-    case "reward-claimed":
-      return ctx.managerSeasonRewardClaimed === true;
     case "getting-started":
       return ctx.profileOpened === true;
     case "regular-coach":
@@ -177,7 +125,7 @@ function evaluateUnlock(
       return progress.totalLosses >= 50;
     case "close-one":
       return (
-        (ctx.matchWon === true || ctx.managerWin === true) &&
+        ctx.matchWon === true &&
         ctx.marginOfVictory === 1
       );
     case "mellor-miracle":
@@ -196,6 +144,28 @@ function evaluateUnlock(
     case "developers-favourite":
       // Bradford-heavy Joe Mellor run — not auto-unlocked by merely playing JM.
       return ctx.bradfordChallengeComplete === true;
+    case "quiz-first-question":
+      return (
+        (ctx.quizQuestionsAnswered ?? progress.quizQuestionsAnswered) >= 1
+      );
+    case "quiz-safe-1000":
+      return (ctx.quizHighestPrize ?? 0) >= 1_000;
+    case "quiz-safe-32000":
+      return (ctx.quizHighestPrize ?? 0) >= 32_000;
+    case "quiz-big-money":
+      return (ctx.quizHighestPrize ?? 0) >= 250_000;
+    case "quiz-millionaire":
+      return ctx.quizPerfectRun === true;
+    case "quiz-no-help":
+      return ctx.quizPerfectRun === true && ctx.quizNoLifelines === true;
+    case "quiz-club-expert":
+      return ctx.quizTeamCompleted === true;
+    case "quiz-club-millionaire":
+      return ctx.quizTeamMillionaire === true;
+    case "quiz-super-league-expert":
+      return (
+        (ctx.quizQuestionsCorrect ?? progress.quizQuestionsCorrect) >= 250
+      );
     case "daily-debut":
       return (
         ctx.dailyChallengeCompleted === true ||
@@ -268,6 +238,22 @@ export function getAchievementProgress(
     case "tough-lessons":
       return {
         current: Math.min(progress.totalLosses, def.target),
+        target: def.target,
+      };
+    case "quiz-first-question":
+      return {
+        current: Math.min(
+          ctx.quizQuestionsAnswered ?? progress.quizQuestionsAnswered,
+          def.target
+        ),
+        target: def.target,
+      };
+    case "quiz-super-league-expert":
+      return {
+        current: Math.min(
+          ctx.quizQuestionsCorrect ?? progress.quizQuestionsCorrect,
+          def.target
+        ),
         target: def.target,
       };
     case "daily-streak-3":

@@ -10,7 +10,7 @@ import {
 } from "@/lib/storage/user";
 import { BTN, CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { ManagerSubTabBar } from "@/components/manager/ManagerSubTabBar";
+import { SubTabBar } from "@/components/ui/SubTabBar";
 
 type AuthMode = "signup" | "login";
 
@@ -134,7 +134,7 @@ export function LoginForm() {
       </p>
 
       <div className="mt-6">
-        <ManagerSubTabBar
+        <SubTabBar
           tabs={[
             { id: "login", label: "Log In" },
             { id: "signup", label: "Create Account" },

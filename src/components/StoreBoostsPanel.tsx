@@ -14,7 +14,6 @@ import {
   getBoostQuantity,
 } from "@/lib/boosts/boostInventory";
 import {
-  getManagerModeBoosts,
   getQuickModeBoosts,
   type GameBoost,
   type GameBoostId,
@@ -23,7 +22,7 @@ import { purchaseBoost } from "@/lib/boosts/purchaseBoost";
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
-import { ManagerDialog } from "@/components/manager/ManagerDialog";
+import { GameModal } from "./ui/GameModal";
 import {
   playThemePurchaseFail,
   playThemePurchaseSuccess,
@@ -135,7 +134,7 @@ export function StoreBoostsPanel() {
   const refresh = useCallback(() => {
     setBalance(getClubFundsBalance());
     const next: Record<string, number> = {};
-    for (const boost of [...getQuickModeBoosts(), ...getManagerModeBoosts()]) {
+    for (const boost of getQuickModeBoosts()) {
       next[boost.id] = getBoostQuantity(boost.id);
     }
     setQuantities(next);
@@ -230,28 +229,40 @@ export function StoreBoostsPanel() {
           purchasingId={purchasingId}
           onPurchase={handlePurchase}
         />
-
-        <BoostSection
-          title="Manager Mode Boosts"
-          description="Use in Manager on the matching screen."
-          boosts={getManagerModeBoosts()}
-          balance={balance}
-          quantities={quantities}
-          purchasingId={purchasingId}
-          onPurchase={handlePurchase}
-        />
       </div>
 
       {confirmBoost && (
-        <ManagerDialog
+        <GameModal
           open
-          variant="confirm"
-          title={`Buy ${confirmBoost.name}?`}
-          message={`Costs ${formatClubFundsExact(confirmBoost.price)}. Use in-game, not here.`}
-          confirmLabel={`Buy — ${formatClubFunds(confirmBoost.price)}`}
-          onConfirm={() => executePurchase(confirmBoost)}
-          onCancel={() => setConfirmBoost(null)}
-        />
+          onClose={() => setConfirmBoost(null)}
+          labelledBy="boost-purchase-confirm"
+        >
+          <p id="boost-purchase-confirm" className={TYPO.sectionTitle}>
+            Buy {confirmBoost.name}?
+          </p>
+          <p className={`mt-2 ${TYPO.bodySm}`}>
+            Costs {formatClubFundsExact(confirmBoost.price)}. Use in-game, not
+            here.
+          </p>
+          <div className="mt-4 flex flex-wrap justify-end gap-2">
+            <GameButton
+              variant="secondary"
+              size="sm"
+              fullWidth={false}
+              onClick={() => setConfirmBoost(null)}
+            >
+              Cancel
+            </GameButton>
+            <GameButton
+              variant="theme"
+              size="sm"
+              fullWidth={false}
+              onClick={() => executePurchase(confirmBoost)}
+            >
+              Buy — {formatClubFunds(confirmBoost.price)}
+            </GameButton>
+          </div>
+        </GameModal>
       )}
     </div>
   );

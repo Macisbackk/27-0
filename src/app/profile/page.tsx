@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { sendPasswordResetEmail } from "@/lib/auth";
 import { getAllStats, resetCareerStats } from "@/lib/storage/stats";
-import { resetManagerStats } from "@/lib/manager/managerStats";
 import type { UserStatsData } from "@/lib/types";
 import {
   formatRecordOrDash,
@@ -135,7 +134,6 @@ export default function ProfilePage() {
     setStatsResetError(null);
     const result = await resetCareerStats();
     if (result.ok) {
-      resetManagerStats();
       setStats(getAllStats());
       setStatsResetConfirm(false);
       setStatsResetMsg(

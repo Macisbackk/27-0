@@ -1093,6 +1093,27 @@ export function buildChallengeCupResult(
   };
 }
 
+export const EXPANDED_CUP_ROUND_LABELS: Record<number, string> = {
+  1: "Round One",
+  2: "Round Two",
+  3: "Last 16",
+  4: "Quarter-Final",
+  5: "Semi-Final",
+  6: "Final",
+};
+
+export interface ExpandedCupMeta {
+  schemaVersion: 2 | 3 | 4;
+  roundOneByes: string[];
+  roundOneParticipants?: string[];
+  roundTwoByes?: string[];
+  seedingSource?: "previous_season" | "default_strength";
+}
+
+export function getExpandedCupRoundLabel(round: number): string {
+  return EXPANDED_CUP_ROUND_LABELS[round] ?? `Round ${round}`;
+}
+
 export function getCupRoundLabel(round: number): string {
   const named = CUP_ROUND_NAMES[round - 1];
   if (named) return named;

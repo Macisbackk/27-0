@@ -4,12 +4,12 @@ import { TYPO } from "@/lib/ui/typography";
 
 const GUIDE_ITEMS = [
   {
-    title: "Manager Mode",
-    body: "Take charge of a Super League or Championship club. Build your squad, handle contracts and loans, develop reserves, manage the transfer market, and chase trophies across seasons.",
-  },
-  {
     title: "Quick Mode",
     body: "Draft a 17 from Current or Era player pools and try to build a side good enough to go 27-0 through the league and playoffs.",
+  },
+  {
+    title: "Quiz Mode",
+    body: "Climb a 15-question Super League prize ladder, or take a Team Challenge where every question is about one club.",
   },
   {
     title: "Club Funds",
@@ -17,7 +17,7 @@ const GUIDE_ITEMS = [
   },
   {
     title: "Coach Profile",
-    body: "Track your records, achievements, trophies, stats and long-term progress across both modes.",
+    body: "Track your records, achievements, trophies, stats and long-term progress.",
   },
   {
     title: "Store",
@@ -38,7 +38,7 @@ export function HowToPlaySection() {
           id="how-to-play-heading"
           className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm} text-pitch-400`}
         >
-          Manager Mode is the main career. Quick Mode is the draft challenge —
+          Draft a Super League side, chase 27-0, and track your progress —
           here&apos;s what each area does.
         </p>
       </div>
