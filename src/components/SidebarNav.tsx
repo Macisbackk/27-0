@@ -233,15 +233,51 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   </li>
                   <li className={NAV.playModeGroup}>
                     <Link
-                      href="/quiz"
+                      href="/mini-games"
                       onClick={handleNavClick}
-                      className={navLinkClass(pathname.startsWith("/quiz"))}
+                      className={navLinkClass(
+                        pathname.startsWith("/mini-games") ||
+                          pathname.startsWith("/quiz")
+                      )}
                     >
-                      Quiz
-                      {pathname.startsWith("/quiz") && (
+                      Mini Games
+                      {(pathname.startsWith("/mini-games") ||
+                        pathname.startsWith("/quiz")) && (
                         <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-theme-primary" />
                       )}
                     </Link>
+                    <div className={NAV.nestedBlock}>
+                      <ul className={NAV.list}>
+                        {[
+                          { href: "/mini-games/quiz", label: "Quiz" },
+                          { href: "/mini-games/wordle", label: "Wordle" },
+                          { href: "/mini-games/hangman", label: "Hangman" },
+                          {
+                            href: "/mini-games/higher-lower",
+                            label: "Higher or Lower",
+                          },
+                        ].map((item) => {
+                          const nestedActive =
+                            pathname === item.href ||
+                            (item.href === "/mini-games/quiz" &&
+                              pathname.startsWith("/quiz"));
+                          return (
+                            <li key={item.href}>
+                              <Link
+                                href={item.href}
+                                onClick={handleNavClick}
+                                className={navLinkClass(nestedActive)}
+                              >
+                                {item.label}
+                                {nestedActive && (
+                                  <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-theme-primary" />
+                                )}
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
                   </li>
                 </ul>
               </section>

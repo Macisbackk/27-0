@@ -90,7 +90,10 @@
     "audit:team-colours": "tsx scripts/audit-team-colours.ts",
     "generate:quiz": "tsx scripts/generate-quiz-bank.ts",
     "validate:quiz": "tsx scripts/validate-quiz-bank.ts",
-    "test:quiz": "tsx scripts/test-quiz-engine.ts && tsx scripts/test-quiz-reward.ts"
+    "test:quiz": "tsx scripts/test-quiz-engine.ts && tsx scripts/test-quiz-reward.ts",
+    "test:wordle": "tsx scripts/test-wordle-engine.ts",
+    "test:hangman": "tsx scripts/test-hangman-engine.ts",
+    "test:higher-lower": "tsx scripts/test-higher-lower-engine.ts"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.0",

@@ -390,7 +390,7 @@ export function LeaderboardTable() {
                   variant="theme"
                   size="sm"
                   fullWidth={false}
-                  href={isQuizMode ? "/quiz" : "/play"}
+                  href={isQuizMode ? "/mini-games/quiz" : "/play"}
                 >
                   {isQuizMode ? "Play Quiz Mode" : "Play Quick Mode"}
                 </GameButton>

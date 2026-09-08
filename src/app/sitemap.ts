@@ -18,6 +18,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/stats",
     "/login",
     "/quiz",
+    "/mini-games",
+    "/mini-games/quiz",
+    "/mini-games/wordle",
+    "/mini-games/hangman",
+    "/mini-games/higher-lower",
   ];
 
   return routes.map((path) => ({

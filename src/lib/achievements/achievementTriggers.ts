@@ -144,6 +144,21 @@ export function triggerQuizAchievements(input: {
   });
 }
 
+export function triggerMiniGameAchievements(input: {
+  played?: boolean;
+  wordleWon?: boolean;
+  hangmanWon?: boolean;
+  higherLowerBestStreak?: number;
+}): void {
+  triggerAchievementCheck({
+    trigger: "mini-game",
+    miniGamePlayed: input.played,
+    wordleWon: input.wordleWon,
+    hangmanWon: input.hangmanWon,
+    higherLowerBestStreak: input.higherLowerBestStreak,
+  });
+}
+
 export function triggerClubFundsAchievements(): void {
   triggerAchievementCheck({ trigger: "club-funds-updated" });
 }

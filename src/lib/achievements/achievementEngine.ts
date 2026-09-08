@@ -166,6 +166,20 @@ function evaluateUnlock(
       return (
         (ctx.quizQuestionsCorrect ?? progress.quizQuestionsCorrect) >= 250
       );
+    case "mini-game-starter":
+      return (
+        ctx.miniGamePlayed === true ||
+        progress.miniGamesPlayed >= 1 ||
+        progress.quizQuestionsAnswered >= 1
+      );
+    case "wordle-win":
+      return ctx.wordleWon === true || progress.wordleWins >= 1;
+    case "hangman-win":
+      return ctx.hangmanWon === true || progress.hangmanWins >= 1;
+    case "higher-lower-streak-10":
+      return (
+        (ctx.higherLowerBestStreak ?? progress.higherLowerBestStreak) >= 10
+      );
     case "daily-debut":
       return (
         ctx.dailyChallengeCompleted === true ||
@@ -252,6 +266,40 @@ export function getAchievementProgress(
       return {
         current: Math.min(
           ctx.quizQuestionsCorrect ?? progress.quizQuestionsCorrect,
+          def.target
+        ),
+        target: def.target,
+      };
+    case "mini-game-starter":
+      return {
+        current: Math.min(
+          ctx.miniGamePlayed === true ? 1 : progress.miniGamesPlayed,
+          def.target
+        ),
+        target: def.target,
+      };
+    case "wordle-win":
+      return {
+        current: Math.min(
+          ctx.wordleWon === true ? Math.max(progress.wordleWins, 1) : progress.wordleWins,
+          def.target
+        ),
+        target: def.target,
+      };
+    case "hangman-win":
+      return {
+        current: Math.min(
+          ctx.hangmanWon === true
+            ? Math.max(progress.hangmanWins, 1)
+            : progress.hangmanWins,
+          def.target
+        ),
+        target: def.target,
+      };
+    case "higher-lower-streak-10":
+      return {
+        current: Math.min(
+          ctx.higherLowerBestStreak ?? progress.higherLowerBestStreak,
           def.target
         ),
         target: def.target,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import "@/app/quiz/quiz.css";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameModal } from "@/components/ui/GameModal";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
@@ -355,6 +356,11 @@ function QuizLanding({
             Every question is about one club.
           </p>
         </button>
+      </div>
+      <div className="mx-auto mt-6 max-w-sm">
+        <GameButton variant="secondary" href="/mini-games">
+          Mini Games
+        </GameButton>
       </div>
     </div>
   );

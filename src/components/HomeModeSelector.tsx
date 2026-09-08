@@ -33,9 +33,9 @@ export function HomeModeSelector() {
           }}
         />
         <HomePlayChoice
-          title="Super League Quiz"
-          description="Test your knowledge."
-          href="/quiz"
+          title="Mini Games"
+          description="Quiz, Wordle, Hangman & Higher or Lower"
+          href="/mini-games"
           onClick={() => playUiClick()}
           accent
         />

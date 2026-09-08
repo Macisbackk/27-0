@@ -51,6 +51,12 @@ export const STORAGE_KEYS = {
   quizRun: "27-0-quiz-run",
   quizStats: "27-0-quiz-stats",
   quizLeaderboard: "27-0-quiz-leaderboard",
+  wordleRun: "27-0-wordle-run",
+  wordleStats: "27-0-wordle-stats",
+  hangmanRun: "27-0-hangman-run",
+  hangmanStats: "27-0-hangman-stats",
+  higherLowerRun: "27-0-higher-lower-run",
+  higherLowerStats: "27-0-higher-lower-stats",
 } as const;
 
 /** Bump when achievement hydration / acknowledgement migration changes. */

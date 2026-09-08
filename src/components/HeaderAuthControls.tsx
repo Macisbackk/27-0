@@ -8,7 +8,7 @@ import { TYPO } from "@/lib/ui/typography";
 const AUTH_SLOT_CLASS =
   "flex h-10 min-h-[44px] items-center justify-center sm:h-11 sm:w-[8.25rem]";
 
-const AUTH_BUTTON_CLASS = `${BTN.header} h-10 min-h-[44px] w-auto min-w-0 border-pitch-600/80 px-2.5 text-xs sm:h-11 sm:w-full sm:px-4 sm:text-sm`;
+const AUTH_BUTTON_CLASS = `${BTN.header} h-10 min-h-[44px] w-auto min-w-0 px-2.5 text-xs sm:h-11 sm:w-full sm:px-4 sm:text-sm`;
 
 export function HeaderAuthControls() {
   const { loading, isLoggedIn } = useAuth();

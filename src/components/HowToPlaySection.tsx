@@ -8,8 +8,8 @@ const GUIDE_ITEMS = [
     body: "Draft a 17 from Current or Era player pools and try to build a side good enough to go 27-0 through the league and playoffs.",
   },
   {
-    title: "Quiz Mode",
-    body: "Climb a 15-question Super League prize ladder, or take a Team Challenge where every question is about one club.",
+    title: "Mini Games",
+    body: "Quiz, Wordle, Hangman and Higher or Lower — Super League puzzles away from the main season.",
   },
   {
     title: "Club Funds",

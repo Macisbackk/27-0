@@ -30,7 +30,7 @@ const CATEGORY_TABS: { id: CategoryFilter; label: string }[] = [
   { id: "normal", label: "Normal" },
   { id: "challenge-cup", label: "Challenge Cup" },
   { id: "store", label: "Store" },
-  { id: "quiz", label: "Quiz" },
+  { id: "quiz", label: "Mini Games" },
   { id: "easter-egg", label: "Easter Eggs" },
 ];
 

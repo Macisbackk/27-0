@@ -3,6 +3,9 @@ import { getClubFundsBalance, getClubFundsTotalEarned } from "../storage/club-fu
 import { getUiThemeStoreState } from "../storage/ui-theme-store";
 import { UI_THEMES } from "../ui-themes";
 import { loadQuizStats } from "../quiz/storage";
+import { loadWordleStats } from "../mini-games/wordle/storage";
+import { loadHangmanStats } from "../mini-games/hangman/storage";
+import { loadHigherLowerStats } from "../mini-games/higher-lower/storage";
 
 /** Snapshot used to evaluate achievement progress and unlock conditions. */
 export type AchievementCheckContext = {
@@ -57,6 +60,10 @@ export type AchievementCheckContext = {
   quizNoLifelines?: boolean;
   quizTeamCompleted?: boolean;
   quizTeamMillionaire?: boolean;
+  miniGamePlayed?: boolean;
+  wordleWon?: boolean;
+  hangmanWon?: boolean;
+  higherLowerBestStreak?: number;
 };
 
 export type AchievementProgressSnapshot = {
@@ -76,6 +83,10 @@ export type AchievementProgressSnapshot = {
   cupFinals: number;
   quizQuestionsAnswered: number;
   quizQuestionsCorrect: number;
+  wordleWins: number;
+  hangmanWins: number;
+  higherLowerBestStreak: number;
+  miniGamesPlayed: number;
 };
 
 function sumStatWins(): number {
@@ -158,6 +169,9 @@ export function buildAchievementProgress(
   );
   const quickModeWins = sumStatWins();
   const quizStats = loadQuizStats();
+  const wordleStats = loadWordleStats();
+  const hangmanStats = loadHangmanStats();
+  const higherLowerStats = loadHigherLowerStats();
 
   return {
     totalWins: quickModeWins,
@@ -176,6 +190,14 @@ export function buildAchievementProgress(
     quizQuestionsAnswered:
       quizStats.questionsCorrect + quizStats.questionsIncorrect,
     quizQuestionsCorrect: quizStats.questionsCorrect,
+    wordleWins: wordleStats.wins,
+    hangmanWins: hangmanStats.wins,
+    higherLowerBestStreak: higherLowerStats.bestStreak,
+    miniGamesPlayed:
+      quizStats.quizzesPlayed +
+      wordleStats.played +
+      hangmanStats.played +
+      higherLowerStats.plays,
   };
 }
 

@@ -367,6 +367,42 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     points: 60,
     target: 250,
   },
+  {
+    id: "mini-game-starter",
+    name: "Mini Game Starter",
+    description: "Play a Mini Game.",
+    category: "quiz",
+    points: 10,
+    rewardClubFunds: 5_000,
+    target: 1,
+  },
+  {
+    id: "wordle-win",
+    name: "Wordle Win",
+    description: "Guess today's rugby league player in Wordle.",
+    category: "quiz",
+    points: 25,
+    rewardClubFunds: 10_000,
+    target: 1,
+  },
+  {
+    id: "hangman-win",
+    name: "Hangman Win",
+    description: "Solve a Rugby League Hangman puzzle.",
+    category: "quiz",
+    points: 25,
+    rewardClubFunds: 10_000,
+    target: 1,
+  },
+  {
+    id: "higher-lower-streak-10",
+    name: "Ten in a Row",
+    description: "Get a Higher or Lower streak of 10.",
+    category: "quiz",
+    points: 40,
+    rewardClubFunds: 15_000,
+    target: 10,
+  },
 ];
 
 export const ACHIEVEMENT_BY_ID = new Map(
