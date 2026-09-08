@@ -28,7 +28,7 @@ export function Header() {
                 playMenuOpen();
                 setMenuOpen(true);
               }}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--mobile-radius-medium)] border border-white/10 bg-[rgba(7,12,11,0.95)] text-base text-pitch-300 transition hover:border-white/20 hover:text-white sm:h-11 sm:w-auto sm:gap-2 sm:px-3 sm:text-sm sm:font-medium"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--mobile-radius-medium)] text-base text-pitch-300 transition hover:text-white sm:h-11 sm:w-auto sm:gap-2 sm:px-3 sm:text-sm sm:font-medium"
               aria-label="Open menu"
             >
               <span aria-hidden className="leading-none">

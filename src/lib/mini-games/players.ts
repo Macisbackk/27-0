@@ -5,17 +5,26 @@ import { normalizePlayerNameKey } from "@/lib/player-name-normalize";
 import { POSITION_LABELS } from "@/lib/positions";
 import { getCurrentSeasonYearNumber } from "@/lib/players/rating-context";
 import { parseYearFromPlayerId } from "@/lib/players/year-card";
+import { getClubByName } from "@/lib/clubs";
 import type { Player, Position } from "@/lib/types";
+import {
+  isEligibleMiniGamePlayer,
+  normalizeMiniGameNationKey,
+  resolveMiniGameClubName,
+} from "./eligibility";
 
 export type MiniGamePlayer = {
   id: string;
   identityId: string;
   displayName: string;
   club: string;
+  clubId: string;
   position: Position;
   positionLabel: string;
   nationality: string;
+  nationalityKey: string;
   rating: number;
+  /** Internal season pin — never show in Wordle UI. */
   year: number;
   isHistoric: boolean;
 };
@@ -43,8 +52,11 @@ function resolveCardYear(player: Player): number | undefined {
 }
 
 function toMiniGamePlayer(player: Player): MiniGamePlayer | null {
+  if (!isEligibleMiniGamePlayer(player)) return null;
   const displayName = getPlayerDisplayName(player).trim();
-  const club = (player.displayClub ?? player.team ?? player.club ?? "").trim();
+  const rawClub = (player.displayClub ?? player.team ?? player.club ?? "").trim();
+  const club = resolveMiniGameClubName(rawClub) ?? rawClub;
+  const clubRecord = getClubByName(club);
   const nationality = (player.nationality ?? "").trim();
   const rating = player.peakRating;
   const year = resolveCardYear(player);
@@ -61,9 +73,11 @@ function toMiniGamePlayer(player: Player): MiniGamePlayer | null {
     identityId: playerIdentityId(player),
     displayName,
     club,
+    clubId: clubRecord?.id ?? club.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
     position,
     positionLabel,
     nationality,
+    nationalityKey: normalizeMiniGameNationKey(nationality),
     rating: Math.round(rating),
     year,
     isHistoric: isHistoricPlayer(player),
@@ -80,7 +94,7 @@ function preferWordleCard(a: MiniGamePlayer, b: MiniGamePlayer): MiniGamePlayer 
 let wordlePoolCache: MiniGamePlayer[] | null = null;
 let higherLowerPoolCache: MiniGamePlayer[] | null = null;
 
-/** One canonical card per real-world player for Wordle. */
+/** One canonical card per real-world Super League player for Wordle. */
 export function getWordlePlayerPool(): MiniGamePlayer[] {
   if (wordlePoolCache) return wordlePoolCache;
   const byIdentity = new Map<string, MiniGamePlayer>();
@@ -105,26 +119,34 @@ export function getWordlePlayerPool(): MiniGamePlayer[] {
   return wordlePoolCache;
 }
 
-/** Year cards stay distinct so historic HoL prompts can show a season. */
+/**
+ * Higher or Lower uses one card per identity (peak rating) so season labels
+ * are optional presentation, not duplicate people.
+ */
 export function getHigherLowerPlayerPool(): MiniGamePlayer[] {
   if (higherLowerPoolCache) return higherLowerPoolCache;
-  const seen = new Set<string>();
-  const pool: MiniGamePlayer[] = [];
+  const byIdentity = new Map<string, MiniGamePlayer>();
   for (const raw of getShowcasePlayers()) {
     const player = toMiniGamePlayer(raw);
     if (!player) continue;
-    if (seen.has(player.id)) continue;
-    seen.add(player.id);
-    pool.push(player);
+    const existing = byIdentity.get(player.identityId);
+    byIdentity.set(
+      player.identityId,
+      existing ? preferWordleCard(existing, player) : player
+    );
   }
-  higherLowerPoolCache = pool;
-  return pool;
+  higherLowerPoolCache = [...byIdentity.values()];
+  return higherLowerPoolCache;
 }
 
-export function formatMiniGamePlayerLabel(player: MiniGamePlayer): string {
-  return player.isHistoric
-    ? `${player.displayName} — ${player.year}`
-    : player.displayName;
+export function formatMiniGamePlayerLabel(
+  player: MiniGamePlayer,
+  options?: { showYear?: boolean }
+): string {
+  if (options?.showYear && player.isHistoric) {
+    return `${player.displayName} — ${player.year}`;
+  }
+  return player.displayName;
 }
 
 export function findMiniGamePlayerById(

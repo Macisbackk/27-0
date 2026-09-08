@@ -34,7 +34,7 @@ export function HomeModeSelector() {
         />
         <HomePlayChoice
           title="Mini Games"
-          description="Quiz, Wordle, Hangman & Higher or Lower"
+          description="Quiz · Wordle · Hangman · Higher or Lower"
           href="/mini-games"
           onClick={() => playUiClick()}
           accent

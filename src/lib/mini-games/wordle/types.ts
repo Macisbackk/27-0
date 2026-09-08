@@ -1,17 +1,24 @@
 import type { MiniGamePlayer } from "../players";
 
 export const WORDLE_MAX_GUESSES = 6;
-export const WORDLE_STATS_SCHEMA = 1;
+export const WORDLE_STATS_SCHEMA = 2;
 
 export type WordleClueTone = "match" | "miss";
 export type WordleTrend = "higher" | "lower" | "match";
 
+export type WordleAttributeKey = "nationality" | "position" | "club" | "rating";
+
 export type WordleClues = {
-  club: WordleClueTone;
-  position: WordleClueTone;
   nationality: WordleClueTone;
+  position: WordleClueTone;
+  club: WordleClueTone;
   rating: WordleTrend;
-  year: WordleTrend;
+};
+
+export type WordleDiscoveredClue = {
+  key: WordleAttributeKey;
+  label: string;
+  order: number;
 };
 
 export type WordleGuess = {
@@ -21,8 +28,6 @@ export type WordleGuess = {
   positionLabel: string;
   nationality: string;
   rating: number;
-  year: number;
-  isHistoric: boolean;
   clues: WordleClues;
 };
 
@@ -32,6 +37,7 @@ export type WordleRun = {
   date: string;
   answerId: string;
   guesses: WordleGuess[];
+  discoveredClues: WordleDiscoveredClue[];
   status: WordleStatus;
   rewardClaimed: boolean;
 };
@@ -46,3 +52,10 @@ export type WordleStats = {
 };
 
 export type WordleAnswer = MiniGamePlayer;
+
+export const WORDLE_ATTRIBUTE_LABEL: Record<WordleAttributeKey, string> = {
+  nationality: "NATION",
+  position: "POSITION",
+  club: "CLUB",
+  rating: "RATING",
+};

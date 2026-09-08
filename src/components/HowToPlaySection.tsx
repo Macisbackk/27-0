@@ -9,7 +9,7 @@ const GUIDE_ITEMS = [
   },
   {
     title: "Mini Games",
-    body: "Quiz, Wordle, Hangman and Higher or Lower — Super League puzzles away from the main season.",
+    body: "Quiz · Wordle · Hangman · Higher or Lower — Super League puzzles away from the main season.",
   },
   {
     title: "Club Funds",

@@ -7,8 +7,8 @@ import {
   applyHigherLowerResult,
   createEmptyHigherLowerStats,
   createHigherLowerRun,
-  higherPlayer,
-  pickHigherLowerPair,
+  HIGHER_LOWER_HISTORY_SIZE,
+  resolveHigherLowerPlayers,
 } from "../src/lib/mini-games/higher-lower/engine";
 import type { MiniGamePlayer } from "../src/lib/mini-games/players";
 
@@ -31,18 +31,21 @@ function player(
   year: number,
   historic = true
 ): MiniGamePlayer {
+  const displayName = id
+    .split("-")
+    .filter((part) => !/^\d{4}$/.test(part))
+    .map((part) => part[0]!.toUpperCase() + part.slice(1))
+    .join(" ");
   return {
     id,
     identityId: id.replace(/-\d{4}$/, ""),
-    displayName: id
-      .split("-")
-      .filter((part) => !/^\d{4}$/.test(part))
-      .map((part) => part[0]!.toUpperCase() + part.slice(1))
-      .join(" "),
+    displayName,
     club: "Leeds Rhinos",
+    clubId: "leeds",
     position: "LOOSE_FORWARD",
     positionLabel: "Loose Forward",
     nationality: "England",
+    nationalityKey: "england",
     rating,
     year,
     isHistoric: historic,
@@ -58,40 +61,38 @@ const pool: MiniGamePlayer[] = [
   player("foxtrot-2020", 74, 2020),
   player("golf-2005", 94, 2005),
   player("hotel-2026", 71, 2026, false),
+  player("india-2011", 83, 2011),
+  player("juliet-2016", 80, 2016),
 ];
 
 console.log("Higher or Lower engine");
 
-for (let round = 0; round < 12; round++) {
-  const pair = pickHigherLowerPair("seed-a", round, pool);
-  assert(pair.left.rating !== pair.right.rating, `round ${round} ratings differ`);
-  assert(
-    pair.left.identityId !== pair.right.identityId,
-    `round ${round} uses two people`
-  );
-  if (round <= 2) {
-    assert(
-      Math.abs(pair.left.rating - pair.right.rating) >= 12,
-      `early round ${round} uses a wide gap`
-    );
-  }
-}
-
-const close = pickHigherLowerPair("seed-b", 10, pool);
+const run = createHigherLowerRun(pool, "seed-c");
 assert(
-  Math.abs(close.left.rating - close.right.rating) <= 4,
-  "late rounds use a close gap when possible"
+  run.historyIds.length === HIGHER_LOWER_HISTORY_SIZE,
+  "starts with five history cards"
 );
+const board = resolveHigherLowerPlayers(run, pool)!;
+assert(Boolean(board.base && board.challenge), "base and challenge resolve");
+assert(
+  board.base.identityId !== board.challenge.identityId,
+  "challenge is a different player"
+);
+assert(board.base.rating !== board.challenge.rating, "ratings differ");
 
-const run = createHigherLowerRun("seed-c", pool);
-const pair = {
-  left: pool.find((item) => item.id === run.leftId)!,
-  right: pool.find((item) => item.id === run.rightId)!,
-};
-const winner = higherPlayer(pair);
-assert(winner !== "tie", "created pair is never a tie");
-const answered = answerHigherLower(run, winner, pool);
-assert(answered.correct, "picking the higher player is correct");
+const choice =
+  board.challenge.rating > board.base.rating ? "higher" : "lower";
+const answered = answerHigherLower(run, choice, pool);
+assert(answered.correct, "correct HIGHER/LOWER wins the round");
+assert(answered.run.revealed, "rating is revealed after the guess");
+
+const wrong = answerHigherLower(
+  createHigherLowerRun(pool, "seed-d"),
+  choice === "higher" ? "lower" : "higher",
+  pool
+);
+assert(!wrong.correct, "wrong HIGHER/LOWER fails");
+assert(wrong.run.status === "lost", "wrong guess ends the run");
 
 const stats = applyHigherLowerResult(createEmptyHigherLowerStats(), true);
 const ten = Array.from({ length: 9 }, () => true).reduce(

@@ -1,6 +1,6 @@
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { WORDLE_STATS_SCHEMA, type WordleRun, type WordleStats } from "./types";
-import { createEmptyWordleStats } from "./engine";
+import { createEmptyWordleStats, normalizeWordleRun } from "./engine";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -41,7 +41,13 @@ function isWordleRun(value: unknown): value is WordleRun {
 
 export function loadWordleRun(): WordleRun | null {
   const value = readJson(STORAGE_KEYS.wordleRun);
-  return isWordleRun(value) ? value : null;
+  if (!isWordleRun(value)) return null;
+  return normalizeWordleRun({
+    ...value,
+    discoveredClues: Array.isArray((value as WordleRun).discoveredClues)
+      ? (value as WordleRun).discoveredClues
+      : [],
+  });
 }
 
 export function saveWordleRun(run: WordleRun): void {

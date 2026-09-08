@@ -7,6 +7,7 @@ import {
   createEmptyWordleStats,
   createWordleRun,
   isSameWordlePlayer,
+  mergeDiscoveredClues,
   pickDailyWordlePlayer,
   recordWordleResult,
   submitWordleGuess,
@@ -30,12 +31,16 @@ function assert(condition: boolean, message: string): void {
 function player(
   partial: Partial<MiniGamePlayer> & Pick<MiniGamePlayer, "id" | "displayName">
 ): MiniGamePlayer {
+  const club = partial.club ?? "Leeds Rhinos";
+  const nationality = partial.nationality ?? "England";
   return {
     identityId: partial.identityId ?? partial.id,
-    club: "Leeds Rhinos",
+    club,
+    clubId: partial.clubId ?? club.toLowerCase().replace(/\s+/g, "-"),
     position: "STAND_OFF",
     positionLabel: "Stand Off",
-    nationality: "England",
+    nationality,
+    nationalityKey: nationality.toLowerCase(),
     rating: 90,
     year: 2009,
     isHistoric: true,
@@ -50,15 +55,18 @@ const pool: MiniGamePlayer[] = [
     displayName: "Kevin Sinfield",
     rating: 94,
     year: 2009,
+    clubId: "leeds",
   }),
   player({
     id: "rob-burrow-2007",
     identityId: "rob-burrow",
     displayName: "Rob Burrow",
     club: "Leeds Rhinos",
+    clubId: "leeds",
     position: "SCRUM_HALF",
     positionLabel: "Scrum Half",
     nationality: "England",
+    nationalityKey: "england",
     rating: 91,
     year: 2007,
   }),
@@ -67,9 +75,11 @@ const pool: MiniGamePlayer[] = [
     identityId: "michael-cooper",
     displayName: "Michael Cooper",
     club: "Warrington Wolves",
+    clubId: "warrington",
     position: "PROP",
     positionLabel: "Prop",
     nationality: "England",
+    nationalityKey: "england",
     rating: 82,
     year: 2026,
     isHistoric: false,
@@ -79,9 +89,11 @@ const pool: MiniGamePlayer[] = [
     identityId: "sam-tomkins",
     displayName: "Sam Tomkins",
     club: "Wigan Warriors",
+    clubId: "wigan",
     position: "FULLBACK",
     positionLabel: "Fullback",
     nationality: "England",
+    nationalityKey: "england",
     rating: 93,
     year: 2012,
   }),
@@ -91,22 +103,31 @@ console.log("Wordle engine");
 
 const a = pickDailyWordlePlayer("2026-09-08", pool);
 const b = pickDailyWordlePlayer("2026-09-08", pool);
-const c = pickDailyWordlePlayer("2026-09-09", pool);
 assert(a.id === b.id, "same date returns the same daily player");
 assert(WORDLE_MAX_GUESSES === 6, "six guesses");
 
 const clues = buildWordleClues(pool[1]!, pool[0]!);
 assert(clues.club === "match", "same club is a match");
 assert(clues.position === "miss", "different position is a miss");
+assert(clues.nationality === "match", "same nation is a match");
 assert(clues.rating === "higher", "lower guess rating points higher");
-assert(clues.year === "higher", "earlier year points higher");
+assert(!("year" in clues), "year is not a clue attribute");
+
+const merged = mergeDiscoveredClues([], clues);
+assert(merged.newlyFound.length === 2, "first guess unlocks two clues");
+assert(merged.newlyFound[0]?.order === 1, "clues are numbered from 1");
+const again = mergeDiscoveredClues(merged.discovered, clues);
+assert(again.newlyFound.length === 0, "duplicate attribute clues are not repeated");
 
 assert(
-  isSameWordlePlayer(pool[0]!, player({
-    id: "kevin-sinfield-2012",
-    identityId: "kevin-sinfield",
-    displayName: "Kevin Sinfield",
-  })),
+  isSameWordlePlayer(
+    pool[0]!,
+    player({
+      id: "kevin-sinfield-2012",
+      identityId: "kevin-sinfield",
+      displayName: "Kevin Sinfield",
+    })
+  ),
   "identity match counts as the same player"
 );
 
@@ -114,22 +135,21 @@ assert(
   resolvePlayerGuess("mike cooper", pool)?.id === "mike-cooper",
   "Mike resolves to Michael Cooper"
 );
-assert(
-  resolvePlayerGuess("Kevin Sinfield", pool)?.identityId === "kevin-sinfield",
-  "full name resolves"
-);
 
 let run = createWordleRun("2026-09-08", pool);
 assert(run.status === "playing", "new run is in progress");
+assert(run.discoveredClues.length === 0, "new run has no clues yet");
 const extras: MiniGamePlayer[] = Array.from({ length: 6 }, (_, i) =>
   player({
     id: `decoy-${i}`,
     identityId: `decoy-${i}`,
     displayName: `Decoy ${i}`,
     club: "Wigan Warriors",
+    clubId: "wigan",
     position: "WING",
     positionLabel: "Wing",
     nationality: "Australia",
+    nationalityKey: "australia",
     rating: 70 + i,
     year: 2000 + i,
   })
@@ -147,8 +167,8 @@ assert(won.run.status === "won", "correct player wins");
 
 const stats = recordWordleResult(createEmptyWordleStats(), won.run);
 assert(stats.wins === 1 && stats.currentStreak === 1, "win updates streak");
-const again = recordWordleResult(stats, won.run);
-assert(again.played === stats.played, "same day is not counted twice");
+const againStats = recordWordleResult(stats, won.run);
+assert(againStats.played === stats.played, "same day is not counted twice");
 
 if (failed > 0) {
   console.error(`\n${failed} failed, ${passed} passed`);

@@ -12,6 +12,14 @@ import { triggerQuizAchievements } from "@/lib/achievements/achievementTriggers"
 import { playUiClick } from "@/lib/sound";
 import { getQuizQuestionBank } from "@/lib/quiz/bank";
 import { QUIZ_CLUBS, getQuizClub, getQuizClubColors } from "@/lib/quiz/clubs";
+import { isEligibleMiniGameQuizTeamId } from "@/lib/mini-games/eligibility";
+import {
+  playMiniCorrect,
+  playMiniIncorrect,
+  playMiniMilestone,
+  playMiniSelect,
+  playMiniWin,
+} from "@/lib/mini-games/sound";
 import { settleCompletedQuizRun } from "@/lib/quiz/complete";
 import {
   continueAfterReveal,
@@ -131,7 +139,7 @@ export function QuizModeApp() {
 
   const handleLock = (displayIndex: number) => {
     if (!run || run.phase !== "question_active") return;
-    playUiClick();
+    playMiniSelect();
     const locked = lockAnswer(run, displayIndex);
     updateRun(locked);
     if (lockTimer.current) window.clearTimeout(lockTimer.current);
@@ -140,6 +148,15 @@ export function QuizModeApp() {
         if (!current) return current;
         const revealed = revealAnswer(current, bank);
         persist(revealed);
+        const slot = revealed.questions[revealed.questionIndex];
+        if (slot?.correct) {
+          playMiniCorrect();
+          const correctSoFar = countCorrectAnswers(revealed);
+          if (correctSoFar === 5 || correctSoFar === 10) playMiniMilestone();
+          if (correctSoFar === 15) playMiniWin();
+        } else if (slot?.correct === false) {
+          playMiniIncorrect();
+        }
         const storedStats = loadQuizStats();
         const runCorrect = countCorrectAnswers(revealed);
         const runAnswered = revealed.questions.filter(
@@ -321,7 +338,7 @@ function QuizLanding({
 }) {
   return (
     <div className="mx-auto w-full max-w-xl text-center">
-      <p className={TYPO.sectionLabel}>Super League Quiz</p>
+      <p className={TYPO.sectionLabel}>Super League Millionaire</p>
       <h1 className={`mt-2 ${TYPO.pageTitle}`}>Who Wants to Be a Millionaire?</h1>
       <p className={`mx-auto mt-3 max-w-md ${TYPO.pageSubtitle}`}>
         Test your Super League knowledge. How far can you go?
@@ -381,8 +398,10 @@ function QuizTeamSelect({
   onBack: () => void;
   onStart: () => void;
 }) {
-  const filtered = QUIZ_CLUBS.filter((club) =>
-    club.name.toLowerCase().includes(query.trim().toLowerCase())
+  const filtered = QUIZ_CLUBS.filter(
+    (club) =>
+      isEligibleMiniGameQuizTeamId(club.id) &&
+      club.name.toLowerCase().includes(query.trim().toLowerCase())
   );
   const selected = teamId ? getQuizClub(teamId) : null;
 
@@ -477,7 +496,6 @@ function QuizPlayScreen({
   const nextPrize = getNextPrize(correctCount);
   const guaranteed = getGuaranteedPrize(correctCount);
   const questionNumber = run.questionIndex + 1;
-  const remaining = 15 - questionNumber;
   const isFinal = questionNumber === 15;
   const locked = run.phase !== "question_active";
   const revealed = run.phase === "answer_revealed";
@@ -518,8 +536,10 @@ function QuizPlayScreen({
       <section className="min-w-0">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className={TYPO.sectionLabel}>Super League Quiz</p>
-            {club && <p className={`mt-1 ${TYPO.clubName}`}>{club.name}</p>}
+            <p className={TYPO.sectionLabel}>Super League Millionaire</p>
+            {club && (
+              <p className={`mt-1 ${TYPO.clubName}`}>{club.name} Team Challenge</p>
+            )}
           </div>
           <button
             type="button"
@@ -534,19 +554,55 @@ function QuizPlayScreen({
           <div className="quiz-final-banner mt-4">
             <p className={TYPO.keyLabel}>Final question</p>
             <p className="quiz-prize mt-1 text-3xl">£1,000,000</p>
-            <p className={`mt-1 ${TYPO.meta}`}>15 of 15</p>
+            <p className={`mt-1 ${TYPO.meta}`}>
+              15 of 15 — one question from £1,000,000
+            </p>
           </div>
         ) : (
-          <div className="mt-4">
-            <p className="quiz-prize text-3xl sm:text-4xl">
-              {formatClubFundsExact(getPrizeForQuestionNumber(questionNumber))}
-            </p>
-            <p className={`mt-1 ${TYPO.keyLabel}`}>
+          <div className="mt-4 rounded-lg border border-white/10 bg-[#0c1210] px-3 py-3">
+            <p className={`text-center ${TYPO.keyLabel}`}>
               Question {questionNumber} of 15
             </p>
-            <p className={`mt-1 ${TYPO.meta}`}>
-              {remaining} question{remaining === 1 ? "" : "s"} to go
+            <p className="quiz-prize mt-1 text-center text-3xl sm:text-4xl">
+              {formatClubFundsExact(getPrizeForQuestionNumber(questionNumber))}
             </p>
+            <div
+              className={`mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1 text-center ${TYPO.bodySm}`}
+            >
+              <span>
+                Next: {nextPrize ? formatClubFundsExact(nextPrize) : "—"}
+              </span>
+              <span>Safe: {formatClubFundsExact(guaranteed)}</span>
+              <span>{15 - questionNumber} to £1,000,000</span>
+            </div>
+            <details className="mt-3 lg:hidden">
+              <summary className={`cursor-pointer text-center ${TYPO.meta}`}>
+                Prize ladder
+              </summary>
+              <ol className="mt-2 max-h-40 space-y-0.5 overflow-y-auto">
+                {[...QUIZ_PRIZE_LADDER]
+                  .map((amount, index) => {
+                    const number = index + 1;
+                    const current = number === questionNumber;
+                    const safe = isSafeQuestionNumber(number);
+                    return (
+                      <li
+                        key={amount}
+                        className={`flex justify-between px-1 text-xs ${
+                          current ? "text-white" : "text-gray-500"
+                        }`}
+                      >
+                        <span>
+                          {number}
+                          {safe ? " · SAFE" : ""}
+                        </span>
+                        <span>{formatClubFundsExact(amount)}</span>
+                      </li>
+                    );
+                  })
+                  .reverse()}
+              </ol>
+            </details>
           </div>
         )}
 
@@ -559,7 +615,6 @@ function QuizPlayScreen({
 
         <div className={`mt-3 flex flex-wrap gap-x-4 gap-y-1 ${TYPO.meta}`}>
           <span>Current: {formatClubFundsExact(currentPrize)}</span>
-          <span>Next: {nextPrize ? formatClubFundsExact(nextPrize) : "—"}</span>
           <span>Guaranteed: {formatClubFundsExact(guaranteed)}</span>
         </div>
 

@@ -10,7 +10,8 @@ import {
   wrongGuessCount,
   HANGMAN_MAX_WRONG,
 } from "../src/lib/mini-games/hangman/engine";
-import { pickHangmanPuzzle } from "../src/lib/mini-games/hangman/answers";
+import { pickHangmanPuzzle, getHangmanBank } from "../src/lib/mini-games/hangman/answers";
+import { isEligibleMiniGameCurrentTeam } from "../src/lib/mini-games/eligibility";
 import type { HangmanPuzzle, HangmanRun } from "../src/lib/mini-games/hangman/types";
 
 let passed = 0;
@@ -92,6 +93,18 @@ const created = createHangmanRun({ date: "2026-09-08", daily: true });
 const createdAgain = createHangmanRun({ date: "2026-09-08", daily: true });
 assert(created.puzzleId === createdAgain.puzzleId, "daily hangman is stable for the date");
 assert(created.daily, "daily flag is set");
+
+const liveBank = getHangmanBank();
+const clubAnswers = liveBank.filter((item) => item.category === "club");
+assert(clubAnswers.length > 0, "club pool is non-empty");
+assert(
+  clubAnswers.every((item) => isEligibleMiniGameCurrentTeam(item.answer)),
+  "club answers are current Super League only"
+);
+assert(
+  !clubAnswers.some((item) => /salford|widnes|london|halifax|sheffield|oldham/i.test(item.answer)),
+  "Championship / non-current clubs are excluded from Hangman clubs"
+);
 
 if (failed > 0) {
   console.error(`\n${failed} failed, ${passed} passed`);

@@ -42,7 +42,63 @@ export function filterTeamChallengeQuestions(
   questions: readonly QuizQuestion[],
   teamId: QuizTeamId
 ): QuizQuestion[] {
-  return questions.filter((question) => question.teams.includes(teamId));
+  return questions.filter((question) => {
+    if (!question.teams.includes(teamId)) return false;
+    return !isObviousTeamChallengeAnswer(question, teamId);
+  });
+}
+
+/**
+ * Team Challenge must not ask "which club won X?" when the answer is the
+ * selected club — the theme already gives it away.
+ */
+export function isObviousTeamChallengeAnswer(
+  question: QuizQuestion,
+  teamId: QuizTeamId
+): boolean {
+  const answer = question.correctAnswer.trim().toLowerCase();
+  const clubNames = teamChallengeAliases(teamId);
+  if (!clubNames.some((name) => answer === name)) return false;
+
+  const stem = question.question.toLowerCase();
+  if (
+    /which (club|team|side)/.test(stem) ||
+    /who won/.test(stem) ||
+    /which of these clubs/.test(stem)
+  ) {
+    return true;
+  }
+  // Pure club-name answers that are also multiple-choice club lists.
+  const optionClubs = question.options.filter((option) =>
+    clubNames.some((name) => option.trim().toLowerCase() === name) ||
+    /bulls|tigers|dragons|giants|rhinos|leopards|warriors|wolves|kr|fc|trinity|knights|olympique|saints|helens/i.test(
+      option
+    )
+  );
+  return optionClubs.length >= 3;
+}
+
+function teamChallengeAliases(teamId: QuizTeamId): string[] {
+  const aliases: Record<string, string[]> = {
+    bradford: ["bradford bulls", "bradford"],
+    castleford: ["castleford tigers", "castleford"],
+    catalans: ["catalans dragons", "catalans"],
+    huddersfield: ["huddersfield giants", "huddersfield"],
+    "hull-fc": ["hull fc", "hull"],
+    "hull-kr": ["hull kr", "hull kingston rovers"],
+    leeds: ["leeds rhinos", "leeds"],
+    leigh: ["leigh leopards", "leigh"],
+    london: ["london broncos", "london"],
+    salford: ["salford red devils", "salford"],
+    "st-helens": ["st helens", "st. helens", "saints"],
+    toulouse: ["toulouse olympique", "toulouse"],
+    wakefield: ["wakefield trinity", "wakefield"],
+    warrington: ["warrington wolves", "warrington"],
+    widnes: ["widnes vikings", "widnes"],
+    wigan: ["wigan warriors", "wigan"],
+    york: ["york knights", "york"],
+  };
+  return aliases[teamId] ?? [teamId];
 }
 
 export function filterMillionaireQuestions(

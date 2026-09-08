@@ -35,9 +35,11 @@ function isHigherLowerRun(value: unknown): value is HigherLowerRun {
   return (
     typeof value.seed === "string" &&
     typeof value.roundIndex === "number" &&
-    typeof value.leftId === "string" &&
-    typeof value.rightId === "string" &&
-    typeof value.revealed === "boolean"
+    Array.isArray(value.historyIds) &&
+    typeof value.baseId === "string" &&
+    typeof value.challengeId === "string" &&
+    typeof value.revealed === "boolean" &&
+    (value.status === "playing" || value.status === "lost")
   );
 }
 
@@ -50,9 +52,18 @@ export function saveHigherLowerRun(run: HigherLowerRun): void {
   writeJson(STORAGE_KEYS.higherLowerRun, run);
 }
 
+export function clearHigherLowerRun(): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(STORAGE_KEYS.higherLowerRun);
+  } catch {
+    // ignore
+  }
+}
+
 export function loadHigherLowerStats(): HigherLowerStats {
   const value = readJson(STORAGE_KEYS.higherLowerStats);
-  if (!isRecord(value) || value.schemaVersion !== HIGHER_LOWER_STATS_SCHEMA) {
+  if (!isRecord(value)) {
     return createEmptyHigherLowerStats();
   }
   return {
@@ -74,5 +85,8 @@ export function loadHigherLowerStats(): HigherLowerStats {
 }
 
 export function saveHigherLowerStats(stats: HigherLowerStats): void {
-  writeJson(STORAGE_KEYS.higherLowerStats, stats);
+  writeJson(STORAGE_KEYS.higherLowerStats, {
+    ...stats,
+    schemaVersion: HIGHER_LOWER_STATS_SCHEMA,
+  });
 }

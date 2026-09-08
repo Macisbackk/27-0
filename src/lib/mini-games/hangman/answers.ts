@@ -1,5 +1,9 @@
 import { createRng, pickIndex } from "@/lib/quiz/rng";
-import { SUPER_LEAGUE_CLUBS } from "@/lib/clubs";
+import { getClubByName } from "@/lib/clubs";
+import {
+  getEligibleMiniGameCurrentTeamNames,
+  isEligibleMiniGameCurrentTeam,
+} from "../eligibility";
 import { getWordlePlayerPool } from "../players";
 import type { HangmanCategory, HangmanPuzzle } from "./types";
 
@@ -67,14 +71,17 @@ function isHangmanFriendly(text: string): boolean {
 }
 
 function clubPuzzles(): HangmanPuzzle[] {
-  return SUPER_LEAGUE_CLUBS.filter((club) => isHangmanFriendly(club.name)).map(
-    (club) => ({
-      id: `club-${club.id}`,
-      category: "club" as const,
-      answer: club.name,
-      hint: "A Super League club",
-    })
-  );
+  return getEligibleMiniGameCurrentTeamNames()
+    .filter((name) => isHangmanFriendly(name) && isEligibleMiniGameCurrentTeam(name))
+    .map((name) => {
+      const club = getClubByName(name);
+      return {
+        id: `club-${club?.id ?? name.toLowerCase().replace(/\s+/g, "-")}`,
+        category: "club" as const,
+        answer: name,
+        hint: "A current Super League club",
+      };
+    });
 }
 
 function playerPuzzles(): HangmanPuzzle[] {

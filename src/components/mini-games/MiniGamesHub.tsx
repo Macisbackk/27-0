@@ -36,7 +36,7 @@ export function MiniGamesHub() {
         <p className={`text-center ${TYPO.sectionLabel}`}>Play</p>
         <h1 className={`mt-2 text-center ${TYPO.pageTitle}`}>Mini Games</h1>
         <p className={`mx-auto mt-3 max-w-md text-center ${TYPO.pageSubtitle}`}>
-          Quiz, Wordle, Hangman and Higher or Lower.
+          Quiz · Wordle · Hangman · Higher or Lower
         </p>
         <ul className="mt-8 grid gap-3">
           {GAMES.map((game) => (

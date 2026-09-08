@@ -1,22 +1,24 @@
 import type { MiniGamePlayer } from "../players";
 
-export const HIGHER_LOWER_STATS_SCHEMA = 1;
+export const HIGHER_LOWER_STATS_SCHEMA = 2;
 
-export type HigherLowerChoice = "left" | "right";
+export type HigherLowerChoice = "higher" | "lower";
 
-export type HigherLowerPair = {
-  left: MiniGamePlayer;
-  right: MiniGamePlayer;
-};
+export type HigherLowerStatus = "playing" | "lost";
 
 export type HigherLowerRun = {
   seed: string;
   roundIndex: number;
-  leftId: string;
-  rightId: string;
+  /** Up to five visible history cards (names). */
+  historyIds: string[];
+  /** Comparison baseline — last settled player. */
+  baseId: string;
+  /** Challenge player — rating hidden until guess. */
+  challengeId: string;
   revealed: boolean;
   lastChoice: HigherLowerChoice | null;
   lastCorrect: boolean | null;
+  status: HigherLowerStatus;
 };
 
 export type HigherLowerStats = {
@@ -27,4 +29,10 @@ export type HigherLowerStats = {
   correct: number;
   lastFiveRewardDate: string | null;
   lastTenRewardDate: string | null;
+};
+
+export type HigherLowerBoard = {
+  history: MiniGamePlayer[];
+  base: MiniGamePlayer;
+  challenge: MiniGamePlayer;
 };
