@@ -35,6 +35,7 @@ import { GameEmptyState } from "@/components/ui/GameEmptyState";
 import { GameButton } from "@/components/ui/GameButton";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { useAuth } from "@/lib/auth-context";
+import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
 
@@ -89,8 +90,12 @@ export function LeaderboardTable() {
     const params = new URLSearchParams(window.location.search);
     const trackerParam = params.get("tracker");
     if (trackerParam === "daily_streak") {
-      setLeaderboardMode("daily");
-      setTracker("daily_streak");
+      if (SHOW_DAILY_CHALLENGE_UI) {
+        setLeaderboardMode("daily");
+        setTracker("daily_streak");
+      } else {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
     }
     if (trackerParam === "quiz_prize") {
       setLeaderboardMode("quiz");
@@ -121,7 +126,8 @@ export function LeaderboardTable() {
         ? tracker
         : getDefaultTrackerForDbMode(leaderboardMode);
 
-  const isDailyMode = leaderboardMode === "daily";
+  const isDailyMode =
+    SHOW_DAILY_CHALLENGE_UI && leaderboardMode === "daily";
   const isTrophyCabinetMode = leaderboardMode === "trophy-cabinet";
 
   const handleQuickModeChange = (mode: QuickLeaderboardMode) => {
@@ -250,12 +256,17 @@ export function LeaderboardTable() {
 
   const statColumnLabel = STAT_COLUMN[effectiveTracker] ?? "Stat";
 
-  const quickModeOptions = [
+  const quickModeOptions: {
+    id: QuickLeaderboardMode;
+    label: string;
+  }[] = [
     { id: "super-league" as const, label: "Quick Mode" },
     { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
-    { id: "daily" as const, label: "Daily" },
+    ...(SHOW_DAILY_CHALLENGE_UI
+      ? [{ id: "daily" as const, label: "Daily" }]
+      : []),
     { id: "quiz" as const, label: "Quiz" },
-  ] as const;
+  ];
 
   const emptyStateMessage = isDailyMode
     ? "No streaks yet. Finish a Daily Challenge."

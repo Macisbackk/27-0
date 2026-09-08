@@ -1,4 +1,10 @@
-export const QUIZ_DIFFICULTIES = ["easy", "medium", "hard", "expert"] as const;
+export const QUIZ_DIFFICULTIES = [
+  "easy",
+  "medium",
+  "hard",
+  "very-hard",
+  "expert",
+] as const;
 export type QuizDifficulty = (typeof QUIZ_DIFFICULTIES)[number];
 
 export const QUIZ_CATEGORIES = [
@@ -64,6 +70,8 @@ export type QuizPhase =
 
 export interface QuizQuestion {
   id: string;
+  /** Stable identifier for the underlying fact, independent of wording. */
+  topicId: string;
   question: string;
   options: [string, string, string, string];
   correctAnswer: string;
@@ -147,10 +155,11 @@ export interface QuizStats {
   categoryAccuracy: Partial<Record<QuizCategory, QuizCategoryAccuracy>>;
   teamStats: Partial<Record<QuizTeamId, QuizTeamStats>>;
   recentQuestionIds: string[];
+  recentTopicIds: string[];
   recordedRunIds: string[];
 }
 
 export const QUIZ_SCHEMA_VERSION = 1;
-export const QUIZ_STATS_SCHEMA_VERSION = 1;
+export const QUIZ_STATS_SCHEMA_VERSION = 2;
 export const QUIZ_QUESTION_COUNT = 15;
 export const QUIZ_RECENT_QUESTION_LIMIT = 80;

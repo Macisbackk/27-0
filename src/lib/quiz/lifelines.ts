@@ -9,6 +9,7 @@ const CROWD_CORRECT_WEIGHT: Record<QuizDifficulty, [number, number]> = {
   easy: [0.58, 0.86],
   medium: [0.42, 0.72],
   hard: [0.28, 0.56],
+  "very-hard": [0.2, 0.48],
   expert: [0.16, 0.44],
 };
 
@@ -16,6 +17,7 @@ const PHONE_CORRECT_CHANCE: Record<QuizDifficulty, number> = {
   easy: 0.82,
   medium: 0.62,
   hard: 0.4,
+  "very-hard": 0.3,
   expert: 0.24,
 };
 
@@ -63,7 +65,7 @@ export function buildCrowdResult(
   if (difficulty === "hard" && rng() < 0.28) {
     correctShare = lerp(rng, 0.18, 0.36);
   }
-  if (difficulty === "expert" && rng() < 0.42) {
+  if ((difficulty === "very-hard" || difficulty === "expert") && rng() < 0.42) {
     correctShare = lerp(rng, 0.1, 0.32);
   }
 

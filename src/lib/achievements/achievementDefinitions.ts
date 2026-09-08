@@ -339,7 +339,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-no-help",
     name: "No Help Needed",
-    description: "Complete a Quiz Mode run without using a lifeline.",
+    description: "Answer all 15 quiz questions correctly without using a lifeline.",
     category: "quiz",
     points: 40,
   },

@@ -11,6 +11,7 @@ import {
 import { getPlayPageTitle } from "@/lib/mode-labels";
 import { isNormalEraMode } from "@/lib/play-links";
 import type { GameDifficulty, GameMode } from "@/lib/types";
+import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 
 export function PlayPageClient() {
   const router = useRouter();
@@ -29,10 +30,15 @@ export function PlayPageClient() {
   const wantsSuperSamHallas = superSamHallas === "1";
   const wantsJoeMellor = joeMellor === "1" && !wantsSuperSamHallas;
   const isHiddenMode = wantsJoeMellor || wantsSuperSamHallas;
-  const isDaily = isDailyChallengeActive({ daily });
+  const isDaily =
+    SHOW_DAILY_CHALLENGE_UI && isDailyChallengeActive({ daily });
   const dailyScenario = isDaily ? getDailyChallengeScenario() : null;
 
   useEffect(() => {
+    if (!SHOW_DAILY_CHALLENGE_UI && daily === "1") {
+      router.replace("/play");
+      return;
+    }
     if (
       !isHiddenMode &&
       (cup === "1" ||
@@ -59,6 +65,7 @@ export function PlayPageClient() {
     fantasy,
     draft,
     difficultyParam,
+    daily,
     router,
     isDaily,
     dailyScenario,

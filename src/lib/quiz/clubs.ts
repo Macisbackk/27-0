@@ -78,7 +78,7 @@ export const QUIZ_CLUBS: readonly QuizClubInfo[] = [
     id: "toulouse",
     name: "Toulouse Olympique",
     blurb:
-      "Stade Ernest-Wallon club. First Super League season was 2022; back in the competition in 27-0's current roster.",
+      "Stade Ernest-Wallon club. First Super League season was 2022.",
   },
   {
     id: "wakefield",
@@ -108,7 +108,7 @@ export const QUIZ_CLUBS: readonly QuizClubInfo[] = [
     id: "york",
     name: "York Knights",
     blurb:
-      "York Community Stadium club. In 27-0's current Super League as a newly promoted side.",
+      "York Community Stadium club. Newly promoted Super League side for the 2026 season.",
   },
 ] as const;
 

@@ -5,7 +5,7 @@ import {
 } from "./lifelines";
 import { getEndPayout, type QuizEndReason } from "./prizes";
 import { createRng, createRunId } from "./rng";
-import { selectQuizQuestions } from "./selection";
+import { selectQuizQuestions, selectReplacementQuestion } from "./selection";
 import type {
   QuizMode,
   QuizPhase,
@@ -139,6 +139,7 @@ export function createQuizRun(options: {
   mode: QuizMode;
   teamId?: QuizTeamId | null;
   recentIds?: readonly string[];
+  recentTopicIds?: readonly string[];
 }): QuizRun {
   const id = createRunId();
   const selected = selectQuizQuestions({
@@ -146,6 +147,7 @@ export function createQuizRun(options: {
     mode: options.mode,
     teamId: options.teamId,
     recentIds: options.recentIds,
+    recentTopicIds: options.recentTopicIds,
     seed: id,
   });
 
@@ -334,7 +336,8 @@ export function usePhone(run: QuizRun, bank: readonly QuizQuestion[]): QuizRun {
 export function useChangeQuestion(
   run: QuizRun,
   bank: readonly QuizQuestion[],
-  recentIds: readonly string[] = []
+  recentIds: readonly string[] = [],
+  recentTopicIds: readonly string[] = []
 ): QuizRun {
   if (run.phase !== "question_active" || run.lifelines.change) return run;
   const usedIds = new Set(run.questions.map((question) => question.questionId));
@@ -343,20 +346,30 @@ export function useChangeQuestion(
   const currentQuestion = getQuestionById(bank, current.questionId);
   if (!currentQuestion) return run;
 
-  const replacementPool = selectQuizQuestions({
+  const usedTopics = new Set(
+    run.questions
+      .map((slot) => getQuestionById(bank, slot.questionId)?.topicId)
+      .filter((topicId): topicId is string => Boolean(topicId))
+  );
+  usedTopics.add(currentQuestion.topicId);
+
+  const previous = run.questions
+    .slice(0, run.questionIndex)
+    .map((slot) => getQuestionById(bank, slot.questionId))
+    .filter((question): question is QuizQuestion => Boolean(question));
+
+  const replacement = selectReplacementQuestion({
     questions: bank,
     mode: run.mode,
     teamId: run.teamId,
-    recentIds: [...recentIds, ...usedIds],
+    excludeIds: usedIds,
+    excludeTopics: usedTopics,
+    recentIds,
+    recentTopicIds,
+    preferredDifficulty: currentQuestion.difficulty,
+    previous,
     seed: `${run.id}:change:${run.questionIndex}`,
   });
-  const replacement =
-    replacementPool.find(
-      (question) =>
-        !usedIds.has(question.id) &&
-        question.difficulty === currentQuestion.difficulty
-    ) ??
-    replacementPool.find((question) => !usedIds.has(question.id));
 
   if (!replacement) return run;
 

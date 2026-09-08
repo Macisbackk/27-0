@@ -55,6 +55,16 @@ export function recordCompletedQuizRun(
     ...stats.recentQuestionIds,
   ];
   stats.recentQuestionIds = [...new Set(recent)].slice(0, QUIZ_RECENT_QUESTION_LIMIT);
+  const recentTopics = [
+    ...run.questions
+      .map((slot) => getQuestionById(bank, slot.questionId)?.topicId)
+      .filter((topicId): topicId is string => Boolean(topicId)),
+    ...stats.recentTopicIds,
+  ];
+  stats.recentTopicIds = [...new Set(recentTopics)].slice(
+    0,
+    QUIZ_RECENT_QUESTION_LIMIT
+  );
 
   if (run.mode === "team" && run.teamId) {
     const team: QuizTeamStats = { ...getTeamStats(stats, run.teamId) };

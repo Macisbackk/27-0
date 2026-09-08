@@ -32,6 +32,7 @@ import {
   getDailyChallengeProgress,
   getDailyChallengeStreak,
 } from "@/lib/daily-challenge";
+import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 
 const PLAYOFF_AWARD_TITLES: Record<string, string> = {
   "Player of the Season": "Best Player of the Play-Offs",
@@ -142,7 +143,13 @@ export function PlayoffReview({
   }, [playoffBracketState]);
 
   const shareAction = useMemo(() => {
-    if (!dailyChallengeMode || !dailyScenario) return null;
+    if (
+      !SHOW_DAILY_CHALLENGE_UI ||
+      !dailyChallengeMode ||
+      !dailyScenario
+    ) {
+      return null;
+    }
     const progress = getDailyChallengeProgress();
     const streak = getDailyChallengeStreak();
     const overallWins = seasonResult.wins + playoffResult.wins;
@@ -223,7 +230,7 @@ export function PlayoffReview({
             onPlayAgain={onPlayAgain}
             onReturnHome={onReturnHome}
             leaderboardHref={
-              dailyChallengeMode
+              dailyChallengeMode && SHOW_DAILY_CHALLENGE_UI
                 ? "/leaderboard?tracker=daily_streak"
                 : "/leaderboard"
             }

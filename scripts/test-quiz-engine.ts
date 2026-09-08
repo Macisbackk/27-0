@@ -45,27 +45,44 @@ function assert(condition: boolean, message: string): void {
 function makeQuestion(
   id: string,
   difficulty: QuizQuestion["difficulty"],
-  teams: QuizQuestion["teams"] = []
+  teams: QuizQuestion["teams"] = [],
+  category: QuizQuestion["category"] = "general"
 ): QuizQuestion {
   return {
     id,
+    topicId: `topic:${id}`,
     question: `Question ${id}?`,
     options: ["Alpha", "Bravo", "Charlie", "Delta"],
     correctAnswer: "Alpha",
     difficulty,
-    category: "general",
+    category,
     teams,
     sourceType: "curated",
   };
 }
 
 const bank: QuizQuestion[] = [];
-const diffs = ["easy", "medium", "hard", "expert"] as const;
-for (let i = 0; i < 80; i++) {
-  bank.push(makeQuestion(`gen-${i}`, diffs[i % 4], i % 5 === 0 ? ["leeds"] : []));
+const diffs = ["easy", "medium", "hard", "very-hard", "expert"] as const;
+const cats = ["history", "players", "clubs", "stadiums", "grand-finals"] as const;
+for (let i = 0; i < 100; i++) {
+  bank.push(
+    makeQuestion(
+      `gen-${i}`,
+      diffs[i % diffs.length]!,
+      i % 5 === 0 ? ["leeds"] : [],
+      cats[i % cats.length]
+    )
+  );
 }
-for (let i = 0; i < 40; i++) {
-  bank.push(makeQuestion(`leeds-${i}`, diffs[i % 4], ["leeds"]));
+for (let i = 0; i < 50; i++) {
+  bank.push(
+    makeQuestion(
+      `leeds-${i}`,
+      diffs[i % diffs.length]!,
+      ["leeds"],
+      cats[i % cats.length]
+    )
+  );
 }
 
 console.log("Quiz validation");
@@ -86,7 +103,16 @@ console.log("\nQuestion selection");
   assert(selected.length === 15, "selects 15 questions");
   assert(new Set(selected.map((q) => q.id)).size === 15, "no duplicate questions in a run");
   assert(selected[0]?.difficulty === "easy", "Q1 is easy");
+  assert(
+    selected[12]?.difficulty === "very-hard" &&
+      selected[13]?.difficulty === "very-hard",
+    "Q13 and Q14 are very hard"
+  );
   assert(selected[14]?.difficulty === "expert", "Q15 is expert");
+  assert(
+    new Set(selected.map((q) => q.topicId)).size === 15,
+    "run has 15 unique topics"
+  );
 
   const team = filterTeamChallengeQuestions(bank, "leeds");
   assert(team.every((q) => q.teams.includes("leeds")), "team filter keeps only Leeds questions");
@@ -110,10 +136,25 @@ console.log("\nQuestion selection");
       seed: `coverage-${teamId}`,
     });
     assert(
-      realTeamRun.length === 15 && realTeamRun.every((q) => q.teams.includes(teamId)),
-      `real Team Challenge run is ${teamId}-only`
+      realTeamRun.length === 15 &&
+        realTeamRun.every((q) => q.teams.includes(teamId)) &&
+        new Set(realTeamRun.map((q) => q.topicId)).size === 15,
+      `real Team Challenge run is ${teamId}-only with unique topics`
     );
   }
+
+  let uniqueTopicRuns = 0;
+  for (let i = 0; i < 8; i++) {
+    const run = selectQuizQuestions({
+      questions: realBank,
+      mode: "millionaire",
+      seed: `diversity-${i}`,
+      recentIds: selected.map((q) => q.id),
+      recentTopicIds: selected.map((q) => q.topicId),
+    });
+    if (new Set(run.map((q) => q.topicId)).size === 15) uniqueTopicRuns += 1;
+  }
+  assert(uniqueTopicRuns === 8, "repeated millionaire runs keep unique topics");
 }
 
 console.log("\nPrize ladder");

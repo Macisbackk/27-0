@@ -6,6 +6,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import {
   CHALLENGE_CUPS,
+  CLUB_HISTORY,
   GRAND_FINALS,
   LEAGUE_LEADERS,
   STADIUMS,
@@ -97,6 +98,7 @@ function difficultyForYear(year: number, base: QuizDifficulty): QuizDifficulty {
   if (year <= 2004 && base === "easy") return "medium";
   if (year <= 2004 && base === "medium") return "hard";
   if (year >= 2022 && base === "expert") return "hard";
+  if (base === "expert" && year % 2 === 0) return "very-hard";
   return base;
 }
 
@@ -125,7 +127,10 @@ function makeQuestion(
   distractors: string[],
   extra: Omit<QuizQuestion, "id" | "question" | "options" | "correctAnswer">
 ): QuizQuestion | null {
-  const options = unique([correct, ...distractors]).filter(Boolean);
+  const variedDistractors = unique(
+    distractors.filter((value) => value && value !== correct)
+  ).sort((a, b) => stableHash(`${id}:${a}`) - stableHash(`${id}:${b}`));
+  const options = [correct, ...variedDistractors].filter(Boolean);
   if (options.length < 4 || !correct) return null;
   const four = options.slice(0, 4) as [string, string, string, string];
   if (!four.includes(correct)) return null;
@@ -137,6 +142,15 @@ function makeQuestion(
     correctAnswer: correct,
     ...extra,
   };
+}
+
+function stableHash(value: string): number {
+  let hash = 2166136261;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
 }
 
 function isTeamId(value: string): value is QuizTeamId {
@@ -153,10 +167,6 @@ function buildFinalsQuestions(): QuizQuestion[] {
     prefix: string
   ) => {
     const winners = unique(records.map((record) => record.winnerName));
-    const clubs = unique([
-      ...records.map((record) => record.winnerName),
-      ...records.map((record) => record.runnerUpName),
-    ]);
 
     for (const record of records) {
       const winnerTeams = isTeamId(record.winnerId) ? [record.winnerId] : [];
@@ -173,68 +183,15 @@ function buildFinalsQuestions(): QuizQuestion[] {
           record.winnerName,
           pickDistractors(record.winnerName, winners, 6),
           {
+            topicId: `final:${prefix}:${record.year}`,
             difficulty: yearDiff,
             category,
-            teams: [],
+            teams: [...winnerTeams, ...runnerTeams],
             era: eraForYear(record.year),
             sourceType: "finals",
           }
         )!
       );
-
-      questions.push(
-        makeQuestion(
-          `${prefix}-winner-team-${record.year}`,
-          `Who did ${record.winnerName} defeat in the ${record.year} ${competition}?`,
-          record.runnerUpName,
-          pickDistractors(record.runnerUpName, clubs, 6),
-          {
-            difficulty: yearDiff === "easy" ? "medium" : yearDiff,
-            category,
-            teams: winnerTeams,
-            era: eraForYear(record.year),
-            sourceType: "finals",
-          }
-        )!
-      );
-
-      questions.push(
-        makeQuestion(
-          `${prefix}-loser-team-${record.year}`,
-          `Which club beat ${record.runnerUpName} in the ${record.year} ${competition}?`,
-          record.winnerName,
-          pickDistractors(record.winnerName, clubs, 6),
-          {
-            difficulty: yearDiff === "easy" ? "medium" : yearDiff,
-            category,
-            teams: runnerTeams,
-            era: eraForYear(record.year),
-            sourceType: "finals",
-          }
-        )!
-      );
-
-      if (record.score) {
-        questions.push(
-          makeQuestion(
-            `${prefix}-score-${record.year}`,
-            `What was the score when ${record.winnerName} beat ${record.runnerUpName} in the ${record.year} ${competition}?`,
-            record.score,
-            pickDistractors(
-              record.score,
-              records.map((item) => item.score).filter((score): score is string => Boolean(score)),
-              6
-            ),
-            {
-              difficulty: "expert",
-              category,
-              teams: [...winnerTeams, ...runnerTeams],
-              era: eraForYear(record.year),
-              sourceType: "finals",
-            }
-          )!
-        );
-      }
     }
   };
 
@@ -250,27 +207,9 @@ function buildFinalsQuestions(): QuizQuestion[] {
         row.name,
         pickDistractors(row.name, llsNames, 6),
         {
+          topicId: `league-leaders:${row.year}`,
           difficulty: row.year >= 2021 ? "medium" : "hard",
           category: "records",
-          teams: [],
-          era: eraForYear(row.year),
-          sourceType: "records",
-        }
-      )!
-    );
-    questions.push(
-      makeQuestion(
-        `lls-team-${row.year}`,
-        `In which Super League season did ${row.name} win the League Leaders' Shield?`,
-        String(row.year),
-        pickDistractors(
-          String(row.year),
-          LEAGUE_LEADERS.map((item) => String(item.year)),
-          6
-        ),
-        {
-          difficulty: "hard",
-          category: "seasons",
           teams: [row.id],
           era: eraForYear(row.year),
           sourceType: "records",
@@ -284,8 +223,6 @@ function buildFinalsQuestions(): QuizQuestion[] {
 
 function buildStadiumQuestions(): QuizQuestion[] {
   const questions: QuizQuestion[] = [];
-  const stadiums = STADIUMS.map((row) => row.stadium);
-  const cities = unique(STADIUMS.map((row) => row.city));
   const names = STADIUMS.map((row) => {
     const club = Object.entries(NAME_TO_ID).find(([, id]) => id === row.id);
     return club?.[0] ?? row.id;
@@ -297,38 +234,11 @@ function buildStadiumQuestions(): QuizQuestion[] {
     questions.push(
       makeQuestion(
         `stad-${row.id}`,
-        `Which Super League club plays its home matches at ${row.stadium}?`,
+        `Which rugby league club is associated with ${row.stadium}?`,
         clubName,
         pickDistractors(clubName, names, 6),
         {
-          difficulty: "easy",
-          category: "stadiums",
-          teams: [row.id],
-          sourceType: "curated",
-        }
-      )!
-    );
-    questions.push(
-      makeQuestion(
-        `stad-home-${row.id}`,
-        `What is the home ground of ${clubName}?`,
-        row.stadium,
-        pickDistractors(row.stadium, stadiums, 6),
-        {
-          difficulty: "easy",
-          category: "stadiums",
-          teams: [row.id],
-          sourceType: "curated",
-        }
-      )!
-    );
-    questions.push(
-      makeQuestion(
-        `stad-city-${row.id}`,
-        `In which city is ${row.stadium} located?`,
-        row.city,
-        pickDistractors(row.city, [...cities, "Manchester", "Liverpool", "Paris", "Cardiff"], 6),
-        {
+          topicId: `stadium:${row.id}:home`,
           difficulty: "easy",
           category: "stadiums",
           teams: [row.id],
@@ -388,10 +298,11 @@ function buildStarting17Questions(): QuizQuestion[] {
 
       const shirt = makeQuestion(
         `s17-${teamId}-${row.year}-n${number}`,
-        `Who is listed as shirt number ${number} in 27-0's historic Super League ${row.year} side for ${label}?`,
+        `Who wore shirt number ${number} in ${possessive(label)} ${row.year} Super League squad?`,
         player.name,
         distractors,
         {
+          topicId: `squad:${teamId}:${row.year}:shirt-${number}`,
           difficulty: difficultyForYear(row.year, base),
           category: "players",
           teams: [teamId],
@@ -470,33 +381,43 @@ function buildRosterQuestions(): QuizQuestion[] {
     const needsPositionDepth = ["york", "toulouse", "widnes", "leigh"].includes(teamId);
 
     for (const [playerIndex, player] of rosterTargets.entries()) {
-      const who = makeQuestion(
-        `ros-who-${teamId}-${slug(player.name)}`,
-        `Which of these players is listed on ${possessive(club)} current roster in 27-0?`,
-        player.name,
-        pickDistractors(player.name, others, 8),
-        {
-          difficulty: "easy",
-          category: "players",
-          teams: [teamId],
-          era: "current",
-          sourceType: "roster",
-        }
-      );
-      if (who) questions.push(who);
+      if (playerIndex === 0) {
+        const who = makeQuestion(
+          `ros-who-${teamId}-${slug(player.name)}`,
+          `Which of these players was named in ${possessive(club)} 2026 squad?`,
+          player.name,
+          pickDistractors(player.name, others, 8),
+          {
+            topicId: `squad:${teamId}:2026:${slug(player.name)}:membership`,
+            difficulty: "easy",
+            category: "players",
+            teams: [teamId],
+            era: "current",
+            sourceType: "roster",
+          }
+        );
+        if (who) questions.push(who);
+      }
 
       const posLabel = player.position
         ? POSITION_LABEL[player.position] ?? player.position.toLowerCase().replace(/_/g, " ")
         : "";
       if (posLabel && needsPositionDepth) {
         const positionDifficulty: QuizDifficulty =
-          playerIndex < 5 ? "medium" : playerIndex < 11 ? "hard" : "expert";
+          playerIndex < 5
+            ? "medium"
+            : playerIndex < (teamId === "york" ? 8 : 7)
+              ? "hard"
+              : playerIndex === rosterTargets.length - 1
+                ? "expert"
+                : "very-hard";
         const pos = makeQuestion(
           `ros-pos-${teamId}-${slug(player.name)}`,
-          `In 27-0's current roster data, which position is ${player.name} listed at for ${club}?`,
+          `Which position did ${player.name} play for ${club} in the 2026 squad?`,
           posLabel,
           pickDistractors(posLabel, Object.values(POSITION_LABEL), 8),
           {
+            topicId: `squad:${teamId}:2026:${slug(player.name)}:position`,
             difficulty: positionDifficulty,
             category: "players",
             teams: [teamId],
@@ -523,19 +444,77 @@ function possessive(value: string): string {
   return value.endsWith("s") ? `${value}'` : `${value}'s`;
 }
 
+function buildClubHistoryQuestions(): QuizQuestion[] {
+  const questions: QuizQuestion[] = [];
+  for (const club of CLUB_HISTORY) {
+    const founded = makeQuestion(
+      `hist-founded-${club.id}`,
+      club.foundedQuestion,
+      club.founded,
+      club.foundedDistractors,
+      {
+        topicId: `history:${club.id}:founded`,
+        difficulty: "easy",
+        category: "history",
+        teams: [club.id],
+        sourceType: "records",
+      }
+    );
+    if (founded) questions.push(founded);
+
+    if (club.formerName && club.formerNameQuestion && club.formerNameDistractors) {
+      const former = makeQuestion(
+        `hist-former-${club.id}`,
+        club.formerNameQuestion,
+        club.formerName,
+        club.formerNameDistractors,
+        {
+          topicId: `history:${club.id}:former-name`,
+          difficulty: "hard",
+          category: "clubs",
+          teams: [club.id],
+          sourceType: "records",
+        }
+      );
+      if (former) questions.push(former);
+    }
+
+    const milestone = makeQuestion(
+      `hist-mile-${club.id}`,
+      club.milestoneQuestion,
+      club.milestone,
+      club.milestoneDistractors,
+      {
+        topicId: `history:${club.id}:milestone`,
+        difficulty: club.milestoneDifficulty ?? "medium",
+        category: club.milestoneCategory ?? "history",
+        teams: [club.id],
+        sourceType: "records",
+      }
+    );
+    if (milestone) questions.push(milestone);
+  }
+  return questions;
+}
+
 function main(): void {
   const questions = [
     ...buildFinalsQuestions(),
     ...buildStadiumQuestions(),
+    ...buildClubHistoryQuestions(),
     ...buildStarting17Questions(),
     ...buildRosterQuestions(),
   ].filter(Boolean);
 
-  const seen = new Set<string>();
+  const seenIds = new Set<string>();
+  const seenTopics = new Set<string>();
   const uniqueQuestions: QuizQuestion[] = [];
   for (const question of questions) {
-    if (!question || seen.has(question.id)) continue;
-    seen.add(question.id);
+    if (!question || seenIds.has(question.id) || seenTopics.has(question.topicId)) {
+      continue;
+    }
+    seenIds.add(question.id);
+    seenTopics.add(question.topicId);
     uniqueQuestions.push(question);
   }
 

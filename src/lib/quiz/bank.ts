@@ -15,10 +15,19 @@ export function getQuizQuestionBank(): QuizQuestion[] {
   const generated = asQuestions(generatedBank);
   const merged = [...CURATED_QUIZ_QUESTIONS, ...generated];
   const seen = new Set<string>();
+  const seenTopics = new Set<string>();
   const unique: QuizQuestion[] = [];
   for (const question of merged) {
-    if (!question?.id || seen.has(question.id)) continue;
+    if (
+      !question?.id ||
+      !question.topicId ||
+      seen.has(question.id) ||
+      seenTopics.has(question.topicId)
+    ) {
+      continue;
+    }
     seen.add(question.id);
+    seenTopics.add(question.topicId);
     unique.push(question);
   }
   assertValidQuestionBank(unique);
@@ -39,13 +48,19 @@ export function summarizeQuestionBank(bank: readonly QuizQuestion[]): {
   byTeam: Record<QuizTeamId, number>;
   byDifficulty: Record<string, number>;
   byCategory: Record<string, number>;
+  bySource: Record<string, number>;
+  topics: number;
 } {
   const byTeam = {} as Record<QuizTeamId, number>;
   const byDifficulty: Record<string, number> = {};
   const byCategory: Record<string, number> = {};
+  const bySource: Record<string, number> = {};
+  const topics = new Set<string>();
   for (const question of bank) {
     byDifficulty[question.difficulty] = (byDifficulty[question.difficulty] ?? 0) + 1;
     byCategory[question.category] = (byCategory[question.category] ?? 0) + 1;
+    bySource[question.sourceType] = (bySource[question.sourceType] ?? 0) + 1;
+    topics.add(question.topicId);
     for (const team of question.teams) {
       byTeam[team] = (byTeam[team] ?? 0) + 1;
     }
@@ -56,5 +71,7 @@ export function summarizeQuestionBank(bank: readonly QuizQuestion[]): {
     byTeam,
     byDifficulty,
     byCategory,
+    bySource,
+    topics: topics.size,
   };
 }

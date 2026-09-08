@@ -33,6 +33,7 @@ import { buildLeagueTable } from "@/lib/game/league-table";
 import { userQualifiedForPlayoffs } from "@/lib/game/playoff-simulation";
 import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
 import { LeagueTable } from "./LeagueTable";
+import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
 import { NORMAL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
@@ -205,8 +206,10 @@ export function SeasonReview({
 
   const hideEndOfRunNav = showPlayoffPrompt;
 
+  const showDailyPresentation =
+    SHOW_DAILY_CHALLENGE_UI && dailyChallengeMode;
   const shareCardData = useMemo(() => {
-    if (dailyChallengeMode && dailyScenario) {
+    if (showDailyPresentation && dailyScenario) {
       const progress = getDailyChallengeProgress();
       const streak = getDailyChallengeStreak();
       const detailLines = [
@@ -242,7 +245,7 @@ export function SeasonReview({
       ].filter(Boolean),
     };
   }, [
-    dailyChallengeMode,
+    showDailyPresentation,
     dailyScenario,
     gradeInfo.grade,
     reviewLabel,
@@ -257,7 +260,7 @@ export function SeasonReview({
     <ShareSeasonButton
       data={shareCardData}
       filename={
-        dailyChallengeMode ? "27-0-daily.png" : "27-0-quick-season.png"
+        showDailyPresentation ? "daily-challenge.png" : "27-0-quick-season.png"
       }
     />
   );

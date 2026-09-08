@@ -1,5 +1,19 @@
 import type { QuizQuestion, QuizTeamId } from "@/lib/quiz/types";
 
+const TOPIC_OVERRIDES: Record<string, string> = {
+  "cur-sl-first-champ": "history:st-helens:milestone",
+  "cur-first-gf": "final:gf:1998",
+  "cur-sheffield-cc": "final:cc:1998",
+  "cur-catalans-cc": "final:cc:2018",
+  "cur-leigh-cc-2023": "final:cc:2023",
+  "cur-kr-2025": "final:gf:2025",
+  "cur-catalans-lls": "league-leaders:2021",
+  "cur-tony-smith-wire": "history:warrington:milestone",
+  "cur-central-park": "history:wigan:former-name",
+  "cur-oloughlin": "history:wigan:milestone",
+  "cur-sinfield": "history:leeds:milestone",
+};
+
 function q(
   id: string,
   question: string,
@@ -12,6 +26,7 @@ function q(
 ): QuizQuestion {
   return {
     id,
+    topicId: TOPIC_OVERRIDES[id] ?? `curated:${id.replace(/^cur-/, "")}`,
     question,
     options: [correct, ...others],
     correctAnswer: correct,
@@ -48,7 +63,7 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
   q("cur-cas-2017", "Which club reached their first Super League Grand Final in 2017?", "Castleford Tigers", ["Salford Red Devils", "Catalans Dragons", "Hull KR"], "medium", "grand-finals", ["castleford"], "2010s"),
   q("cur-salford-2019", "Which club reached their first Super League Grand Final in 2019?", "Salford Red Devils", ["Castleford Tigers", "Hull KR", "Wakefield Trinity"], "medium", "grand-finals", ["salford"], "2010s"),
   q("cur-toulouse-2022", "In which Super League season did Toulouse Olympique first compete?", "2022", ["2018", "2020", "2024"], "medium", "history", ["toulouse"], "2020s"),
-  q("cur-york-current", "Which newly promoted club is in 27-0's current Super League alongside the established sides?", "York Knights", ["Halifax", "Featherstone Rovers", "Oldham"], "easy", "clubs", ["york"], "current"),
+  q("cur-york-current", "Which club joined Super League for the 2026 season?", "York Knights", ["Halifax", "Featherstone Rovers", "Oldham"], "easy", "clubs", ["york"], "2020s"),
   q("cur-knowsley", "What was St Helens' long-time home ground before moving in 2012?", "Knowsley Road", ["Headingley", "Wilderspool", "Central Park"], "medium", "stadiums", ["st-helens"]),
   q("cur-wilderspool", "What was Warrington's Super League home before Halliwell Jones Stadium?", "Wilderspool", ["Odsal", "The Boulevard", "Knowsley Road"], "hard", "stadiums", ["warrington"]),
   q("cur-central-park", "What was Wigan's historic home ground before the DW Stadium?", "Central Park", ["Knowsley Road", "Headingley", "Odsal"], "medium", "stadiums", ["wigan"]),

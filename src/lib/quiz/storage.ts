@@ -38,6 +38,7 @@ export function createEmptyQuizStats(): QuizStats {
     categoryAccuracy: {},
     teamStats: {},
     recentQuestionIds: [],
+    recentTopicIds: [],
     recordedRunIds: [],
   };
 }
@@ -85,6 +86,7 @@ function isStoredQuizRun(value: Record<string, unknown>): boolean {
   if (!validPhases.has(String(value.phase))) return false;
   if (
     typeof value.questionIndex !== "number" ||
+    !Number.isInteger(value.questionIndex) ||
     value.questionIndex < 0 ||
     value.questionIndex > 14
   ) {
@@ -105,13 +107,34 @@ function isStoredQuizRun(value: Record<string, unknown>): boolean {
             typeof option !== "number" || option < 0 || option > 3
         ) ||
         new Set(slot.optionOrder).size !== 4 ||
-        !Array.isArray(slot.hiddenOptionIndexes)
+        !Array.isArray(slot.hiddenOptionIndexes) ||
+        !slot.hiddenOptionIndexes.every(
+          (option) =>
+            typeof option === "number" &&
+            Number.isInteger(option) &&
+            option >= 0 &&
+            option <= 3
+        ) ||
+        (slot.selectedDisplayIndex !== null &&
+          (typeof slot.selectedDisplayIndex !== "number" ||
+            !Number.isInteger(slot.selectedDisplayIndex) ||
+            slot.selectedDisplayIndex < 0 ||
+            slot.selectedDisplayIndex > 3)) ||
+        (slot.correct !== null && typeof slot.correct !== "boolean")
     )
   ) {
     return false;
   }
   const lifelines = value.lifelines;
   if (!isRecord(lifelines)) return false;
+  if (
+    typeof value.rewardClaimed !== "boolean" ||
+    typeof value.rewardAmount !== "number" ||
+    !Number.isFinite(value.rewardAmount) ||
+    value.rewardAmount < 0
+  ) {
+    return false;
+  }
   return ["fiftyFifty", "crowd", "phone", "change"].every(
     (key) => typeof lifelines[key] === "boolean"
   );
@@ -142,13 +165,33 @@ export function clearQuizRun(): void {
 
 export function loadQuizStats(): QuizStats {
   const parsed = readJson(STORAGE_KEYS.quizStats);
-  if (!isRecord(parsed) || parsed.schemaVersion !== QUIZ_STATS_SCHEMA_VERSION) {
+  if (
+    !isRecord(parsed) ||
+    (parsed.schemaVersion !== 1 &&
+      parsed.schemaVersion !== QUIZ_STATS_SCHEMA_VERSION)
+  ) {
     return createEmptyQuizStats();
   }
+  const stored = parsed as unknown as Partial<QuizStats>;
   return {
     ...createEmptyQuizStats(),
-    ...(parsed as unknown as QuizStats),
+    ...stored,
     schemaVersion: QUIZ_STATS_SCHEMA_VERSION,
+    recentQuestionIds: Array.isArray(stored.recentQuestionIds)
+      ? stored.recentQuestionIds.filter(
+          (id): id is string => typeof id === "string"
+        )
+      : [],
+    recentTopicIds: Array.isArray(stored.recentTopicIds)
+      ? stored.recentTopicIds.filter(
+          (id): id is string => typeof id === "string"
+        )
+      : [],
+    recordedRunIds: Array.isArray(stored.recordedRunIds)
+      ? stored.recordedRunIds.filter(
+          (id): id is string => typeof id === "string"
+        )
+      : [],
   };
 }
 

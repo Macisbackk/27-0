@@ -23,6 +23,29 @@ function uniqueStrings(values: string[]): boolean {
   return new Set(values.map((value) => value.trim().toLowerCase())).size === values.length;
 }
 
+export function normalizeQuestionStem(question: string): string {
+  return question
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function tokenSet(value: string): Set<string> {
+  return new Set(normalizeQuestionStem(value).split(" ").filter(Boolean));
+}
+
+export function stemSimilarity(a: string, b: string): number {
+  const left = tokenSet(a);
+  const right = tokenSet(b);
+  if (left.size === 0 || right.size === 0) return 0;
+  let overlap = 0;
+  for (const token of left) {
+    if (right.has(token)) overlap += 1;
+  }
+  return overlap / Math.max(left.size, right.size);
+}
+
 export function validateQuestion(question: QuizQuestion): QuizValidationIssue[] {
   const issues: QuizValidationIssue[] = [];
   const prefix = question.id || "(missing-id)";
@@ -30,8 +53,14 @@ export function validateQuestion(question: QuizQuestion): QuizValidationIssue[] 
   if (!question.id?.trim()) {
     issues.push({ id: prefix, message: "Missing question id" });
   }
+  if (!question.topicId?.trim()) {
+    issues.push({ id: prefix, message: "Missing topicId" });
+  }
   if (!question.question?.trim()) {
     issues.push({ id: prefix, message: "Missing question text" });
+  }
+  if (/27-0/i.test(question.question ?? "")) {
+    issues.push({ id: prefix, message: "Question text mentions 27-0" });
   }
   if (!Array.isArray(question.options) || question.options.length !== 4) {
     issues.push({ id: prefix, message: "Must have exactly four options" });
@@ -75,18 +104,66 @@ export function validateQuestion(question: QuizQuestion): QuizValidationIssue[] 
   return issues;
 }
 
+/** Fast structural validation for runtime bank load. */
 export function validateQuestionBank(questions: QuizQuestion[]): QuizValidationIssue[] {
   const issues: QuizValidationIssue[] = [];
-  const seen = new Set<string>();
+  const seenIds = new Set<string>();
+  const seenTopics = new Set<string>();
+  const seenStems = new Map<string, string>();
 
   for (const question of questions) {
-    if (seen.has(question.id)) {
+    if (seenIds.has(question.id)) {
       issues.push({ id: question.id, message: "Duplicate question id" });
     }
-    seen.add(question.id);
+    seenIds.add(question.id);
+
+    if (question.topicId) {
+      if (seenTopics.has(question.topicId)) {
+        issues.push({
+          id: question.id,
+          message: `Duplicate topicId: ${question.topicId}`,
+        });
+      }
+      seenTopics.add(question.topicId);
+    }
+
+    const stem = normalizeQuestionStem(question.question ?? "");
+    const existingStem = seenStems.get(stem);
+    if (existingStem) {
+      issues.push({
+        id: question.id,
+        message: `Duplicate normalized stem (same as ${existingStem})`,
+      });
+    } else if (stem) {
+      seenStems.set(stem, question.id);
+    }
+
     issues.push(...validateQuestion(question));
   }
 
+  return issues;
+}
+
+/** Slower similarity audit for CLI tooling only. */
+export function auditSimilarQuestions(
+  questions: QuizQuestion[]
+): QuizValidationIssue[] {
+  const issues: QuizValidationIssue[] = [];
+  for (let i = 0; i < questions.length; i++) {
+    const left = questions[i];
+    if (!left) continue;
+    for (let j = i + 1; j < questions.length; j++) {
+      const right = questions[j];
+      if (!right) continue;
+      if (left.topicId === right.topicId) continue;
+      if (stemSimilarity(left.question, right.question) >= 0.92) {
+        issues.push({
+          id: left.id,
+          message: `Highly similar to ${right.id}`,
+        });
+      }
+    }
+  }
   return issues;
 }
 

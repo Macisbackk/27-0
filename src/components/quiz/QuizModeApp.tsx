@@ -94,11 +94,16 @@ export function QuizModeApp() {
 
   const startMillionaire = () => {
     playUiClick();
+    if (run && isActiveQuizPhase(run.phase)) {
+      const ok = window.confirm("Start a new quiz and abandon the current run?");
+      if (!ok) return;
+    }
     const stats = loadQuizStats();
     const next = createQuizRun({
       bank,
       mode: "millionaire",
       recentIds: stats.recentQuestionIds,
+      recentTopicIds: stats.recentTopicIds,
     });
     updateRun(next);
     setView("play");
@@ -107,12 +112,17 @@ export function QuizModeApp() {
   const startTeam = () => {
     if (!teamId) return;
     playUiClick();
+    if (run && isActiveQuizPhase(run.phase)) {
+      const ok = window.confirm("Start a new quiz and abandon the current run?");
+      if (!ok) return;
+    }
     const stats = loadQuizStats();
     const next = createQuizRun({
       bank,
       mode: "team",
       teamId,
       recentIds: stats.recentQuestionIds,
+      recentTopicIds: stats.recentTopicIds,
     });
     updateRun(next);
     setView("play");
@@ -178,13 +188,14 @@ export function QuizModeApp() {
 
   const playAgain = () => {
     playUiClick();
+    const stats = loadQuizStats();
     if (run?.mode === "team" && run.teamId) {
-      const stats = loadQuizStats();
       const next = createQuizRun({
         bank,
         mode: "team",
         teamId: run.teamId,
         recentIds: stats.recentQuestionIds,
+        recentTopicIds: stats.recentTopicIds,
       });
       updateRun(next);
       setView("play");
@@ -238,9 +249,17 @@ export function QuizModeApp() {
             onFifty={() => updateRun(useFiftyFifty(run, bank))}
             onCrowd={() => updateRun(useCrowd(run, bank))}
             onPhone={() => updateRun(usePhone(run, bank))}
-            onChange={() =>
-              updateRun(useChangeQuestion(run, bank, loadQuizStats().recentQuestionIds))
-            }
+            onChange={() => {
+              const stats = loadQuizStats();
+              updateRun(
+                useChangeQuestion(
+                  run,
+                  bank,
+                  stats.recentQuestionIds,
+                  stats.recentTopicIds
+                )
+              );
+            }}
             onHub={() => setView("landing")}
           />
         ) : view === "result" && run ? (
@@ -301,8 +320,8 @@ function QuizLanding({
 }) {
   return (
     <div className="mx-auto w-full max-w-xl text-center">
-      <p className={TYPO.sectionLabel}>Quiz</p>
-      <h1 className={`mt-2 ${TYPO.pageTitle}`}>Quiz Mode</h1>
+      <p className={TYPO.sectionLabel}>Super League Quiz</p>
+      <h1 className={`mt-2 ${TYPO.pageTitle}`}>Who Wants to Be a Millionaire?</h1>
       <p className={`mx-auto mt-3 max-w-md ${TYPO.pageSubtitle}`}>
         Test your Super League knowledge. How far can you go?
       </p>
@@ -315,27 +334,25 @@ function QuizLanding({
         </div>
       )}
 
-      <div className="mt-8 grid gap-4">
+      <div className="mt-8 grid gap-3">
         <button
           type="button"
           onClick={onMillionaire}
-          className="w-full rounded-lg border border-white/10 bg-[#0c1210] px-4 py-5 text-left"
+          className="w-full border border-white/10 bg-[#0c1210] px-4 py-4 text-left"
         >
           <p className={TYPO.keyLabel}>Super League Millionaire</p>
-          <p className={`mt-1 ${TYPO.cardTitle}`}>15 questions. One life.</p>
-          <p className={`mt-2 ${TYPO.bodySm}`}>
-            General Super League knowledge, climbing a prize ladder to £1,000,000.
+          <p className={`mt-1 ${TYPO.bodySm}`}>
+            15 questions. Climb to £1,000,000.
           </p>
         </button>
         <button
           type="button"
           onClick={onTeam}
-          className="w-full rounded-lg border border-white/10 bg-[#0c1210] px-4 py-5 text-left"
+          className="w-full border border-white/10 bg-[#0c1210] px-4 py-4 text-left"
         >
           <p className={TYPO.keyLabel}>Team Challenge</p>
-          <p className={`mt-1 ${TYPO.cardTitle}`}>Pick a club. Stay there.</p>
-          <p className={`mt-2 ${TYPO.bodySm}`}>
-            Every question is about your chosen Super League club.
+          <p className={`mt-1 ${TYPO.bodySm}`}>
+            Every question is about one club.
           </p>
         </button>
       </div>
@@ -454,6 +471,8 @@ function QuizPlayScreen({
   const nextPrize = getNextPrize(correctCount);
   const guaranteed = getGuaranteedPrize(correctCount);
   const questionNumber = run.questionIndex + 1;
+  const remaining = 15 - questionNumber;
+  const isFinal = questionNumber === 15;
   const locked = run.phase !== "question_active";
   const revealed = run.phase === "answer_revealed";
   const club = run.teamId ? getQuizClub(run.teamId) : null;
@@ -468,14 +487,21 @@ function QuizPlayScreen({
             const number = index + 1;
             const current = number === questionNumber;
             const safe = isSafeQuestionNumber(number);
+            const final = number === 15;
             return (
               <li
                 key={amount}
-                className={`flex items-center justify-between rounded px-2 py-1 text-sm ${
+                className={`flex items-center justify-between px-2 py-1 text-sm ${
                   current ? "quiz-ladder-item--current" : ""
-                } ${safe ? "quiz-ladder-item--safe" : "text-gray-400"}`}
+                } ${safe ? "quiz-ladder-item--safe" : "text-gray-400"} ${
+                  final ? "quiz-ladder-item--final" : ""
+                }`}
               >
-                <span>{number}</span>
+                <span>
+                  {number}
+                  {safe ? " · SAFE" : ""}
+                  {final ? " · FINAL" : ""}
+                </span>
                 <span className="tabular-nums">{formatClubFundsExact(amount)}</span>
               </li>
             );
@@ -486,12 +512,7 @@ function QuizPlayScreen({
       <section className="min-w-0">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className={`quiz-prize text-3xl sm:text-4xl`}>
-              {formatClubFundsExact(getPrizeForQuestionNumber(questionNumber))}
-            </p>
-            <p className={`mt-1 ${TYPO.keyLabel}`}>
-              Question {questionNumber} / 15
-            </p>
+            <p className={TYPO.sectionLabel}>Super League Quiz</p>
             {club && <p className={`mt-1 ${TYPO.clubName}`}>{club.name}</p>}
           </div>
           <button
@@ -503,10 +524,37 @@ function QuizPlayScreen({
           </button>
         </div>
 
+        {isFinal ? (
+          <div className="quiz-final-banner mt-4">
+            <p className={TYPO.keyLabel}>Final question</p>
+            <p className="quiz-prize mt-1 text-3xl">£1,000,000</p>
+            <p className={`mt-1 ${TYPO.meta}`}>15 of 15</p>
+          </div>
+        ) : (
+          <div className="mt-4">
+            <p className="quiz-prize text-3xl sm:text-4xl">
+              {formatClubFundsExact(getPrizeForQuestionNumber(questionNumber))}
+            </p>
+            <p className={`mt-1 ${TYPO.keyLabel}`}>
+              Question {questionNumber} of 15
+            </p>
+            <p className={`mt-1 ${TYPO.meta}`}>
+              {remaining} question{remaining === 1 ? "" : "s"} to go
+            </p>
+          </div>
+        )}
+
+        <div className="quiz-progress-track mt-3" aria-hidden>
+          <div
+            className="quiz-progress-fill"
+            style={{ width: `${(questionNumber / 15) * 100}%` }}
+          />
+        </div>
+
         <div className={`mt-3 flex flex-wrap gap-x-4 gap-y-1 ${TYPO.meta}`}>
           <span>Current: {formatClubFundsExact(currentPrize)}</span>
-          <span>Guaranteed: {formatClubFundsExact(guaranteed)}</span>
           <span>Next: {nextPrize ? formatClubFundsExact(nextPrize) : "—"}</span>
+          <span>Guaranteed: {formatClubFundsExact(guaranteed)}</span>
         </div>
 
         <p className={`mt-5 text-lg leading-snug text-white sm:text-xl`}>
@@ -560,9 +608,10 @@ function QuizPlayScreen({
           </div>
         )}
 
-        <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <div className="mt-5 grid grid-cols-4 gap-1.5">
           <GameButton
             variant="secondary"
+            size="sm"
             className="quiz-lifeline"
             disabled={run.lifelines.fiftyFifty || locked}
             onClick={onFifty}
@@ -571,6 +620,7 @@ function QuizPlayScreen({
           </GameButton>
           <GameButton
             variant="secondary"
+            size="sm"
             className="quiz-lifeline"
             disabled={run.lifelines.crowd || locked}
             onClick={onCrowd}
@@ -579,6 +629,7 @@ function QuizPlayScreen({
           </GameButton>
           <GameButton
             variant="secondary"
+            size="sm"
             className="quiz-lifeline"
             disabled={run.lifelines.phone || locked}
             onClick={onPhone}
@@ -587,6 +638,7 @@ function QuizPlayScreen({
           </GameButton>
           <GameButton
             variant="secondary"
+            size="sm"
             className="quiz-lifeline"
             disabled={run.lifelines.change || locked}
             onClick={onChange}
@@ -622,7 +674,6 @@ function QuizResultScreen({
   const answered = run.questions.filter((question) => question.correct !== null).length;
   const lastSlot = [...run.questions].reverse().find((question) => question.correct !== null);
   const lastQuestion = lastSlot ? getQuestionById(bank, lastSlot.questionId) : undefined;
-  const stats = loadQuizStats();
   const club = run.teamId ? getQuizClub(run.teamId) : null;
   const title =
     run.phase === "quiz_complete"
@@ -631,32 +682,19 @@ function QuizResultScreen({
         ? "You banked it"
         : "Quiz over";
 
-  const categoryLines = Object.entries(
-    run.questions.reduce<
-      Record<string, { correct: number; answered: number }>
-    >((categories, slot) => {
-      if (slot.correct === null) return categories;
-      const question = getQuestionById(bank, slot.questionId);
-      if (!question) return categories;
-      const current = categories[question.category] ?? {
-        correct: 0,
-        answered: 0,
-      };
-      categories[question.category] = {
-        correct: current.correct + Number(slot.correct),
-        answered: current.answered + 1,
-      };
-      return categories;
-    }, {})
-  );
-
   return (
     <div className="mx-auto w-full max-w-xl text-center">
-      <p className={TYPO.sectionLabel}>{club ? club.name : "Super League Millionaire"}</p>
+      <p className={TYPO.sectionLabel}>{club ? club.name : "Super League Quiz"}</p>
       <h1 className={`mt-2 ${TYPO.pageTitle}`}>{title}</h1>
-      <p className={`mt-3 ${TYPO.pageSubtitle}`}>
-        You reached Question {run.questionIndex + 1}
-      </p>
+      {run.phase === "quiz_complete" ? (
+        <p className={`mt-3 ${TYPO.pageSubtitle}`}>
+          You answered all 15 questions correctly.
+        </p>
+      ) : (
+        <p className={`mt-3 ${TYPO.pageSubtitle}`}>
+          You reached Question {run.questionIndex + 1}
+        </p>
+      )}
       <p className="quiz-prize mt-4 text-4xl">{formatClubFundsExact(run.rewardAmount)}</p>
       {run.phase === "quiz_walked_away" && (
         <p className={`mt-2 ${TYPO.body}`}>You banked {formatClubFundsExact(run.rewardAmount)}.</p>
@@ -669,7 +707,8 @@ function QuizResultScreen({
       <ul className={`mx-auto mt-5 max-w-sm space-y-1 text-left ${TYPO.bodySm}`}>
         <li>Questions answered: {answered}</li>
         <li>Correct: {correct}</li>
-        <li>Highest prize this run: {formatClubFundsExact(getCurrentPrize(correct))}</li>
+        <li>Incorrect: {Math.max(0, answered - correct)}</li>
+        <li>Money won: {formatClubFundsExact(run.rewardAmount)}</li>
         <li>
           Lifelines used:{" "}
           {[
@@ -681,17 +720,7 @@ function QuizResultScreen({
             .filter(Boolean)
             .join(", ") || "None"}
         </li>
-        <li>Best-ever prize: {formatClubFundsExact(stats.highestPrize)}</li>
       </ul>
-      {categoryLines.length > 0 && (
-        <div className={`mx-auto mt-4 max-w-sm text-left ${TYPO.meta}`}>
-          {categoryLines.map(([category, value]) => (
-            <p key={category}>
-              {category}: {value.correct}/{value.answered}
-            </p>
-          ))}
-        </div>
-      )}
       <div className="mt-6 grid gap-2 sm:grid-cols-2">
         <GameButton variant="theme" onClick={onAgain}>
           Play Again

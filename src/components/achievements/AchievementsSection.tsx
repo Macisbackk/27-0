@@ -9,7 +9,6 @@ import {
   type AchievementDefinition,
 } from "@/lib/achievements/achievementDefinitions";
 import {
-  countAchievementPoints,
   getAchievementProgress,
   getUnlockedAchievements,
 } from "@/lib/achievements/achievementEngine";
@@ -21,6 +20,7 @@ import { GameStatCard } from "@/components/ui/GameStatCard";
 import { GameTabs } from "@/components/ui/GameTabs";
 import { TYPO } from "@/lib/ui/typography";
 import { ACHIEVEMENTS_CHANGED_EVENT } from "@/lib/achievements/achievementStorage";
+import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 
 type CategoryFilter = "all" | AchievementCategory;
 type StatusFilter = "all" | "locked" | "unlocked";
@@ -39,6 +39,10 @@ const STATUS_TABS: { id: StatusFilter; label: string }[] = [
   { id: "unlocked", label: "Unlocked" },
   { id: "locked", label: "Locked" },
 ];
+
+const VISIBLE_ACHIEVEMENTS = SHOW_DAILY_CHALLENGE_UI
+  ? ACHIEVEMENT_DEFINITIONS
+  : ACHIEVEMENT_DEFINITIONS.filter((def) => !def.id.startsWith("daily-"));
 
 function formatUnlockDate(iso: string): string {
   const date = new Date(iso);
@@ -133,7 +137,7 @@ export function AchievementsSection() {
     return map;
   }, [refreshKey]);
 
-  const visible = ACHIEVEMENT_DEFINITIONS.filter((def) => {
+  const visible = VISIBLE_ACHIEVEMENTS.filter((def) => {
     const isUnlocked = unlockedMap.has(def.id);
     if (category !== "all" && def.category !== category) return false;
     if (status === "unlocked" && !isUnlocked) return false;
@@ -141,9 +145,14 @@ export function AchievementsSection() {
     return true;
   });
 
-  const totalUnlocked = unlockedMap.size;
-  const totalAvailable = ACHIEVEMENT_DEFINITIONS.length;
-  const points = countAchievementPoints();
+  const totalUnlocked = VISIBLE_ACHIEVEMENTS.filter((def) =>
+    unlockedMap.has(def.id)
+  ).length;
+  const totalAvailable = VISIBLE_ACHIEVEMENTS.length;
+  const points = VISIBLE_ACHIEVEMENTS.reduce(
+    (sum, def) => sum + (unlockedMap.has(def.id) ? (def.points ?? 0) : 0),
+    0
+  );
 
   return (
     <div id="achievements" className="scroll-mt-24">
