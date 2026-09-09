@@ -125,10 +125,7 @@ export function useWordleHint(
   if (!answer) {
     return { run, error: "Could not load today's player." };
   }
-  const knownKeys = [
-    ...run.discoveredClues.map((clue) => clue.key),
-    ...(run.answerHint ? [run.answerHint.key] : []),
-  ];
+  const knownKeys = run.discoveredClues.map((clue) => clue.key);
   const key = pickWordleHintKey(run.date, knownKeys);
   if (!key) {
     return { run, error: "All attributes are already unlocked." };
