@@ -757,8 +757,6 @@ function QuizResultScreen({
   onAgain: () => void;
   onBack: () => void;
 }) {
-  const correct = countCorrectAnswers(run);
-  const answered = run.questions.filter((question) => question.correct !== null).length;
   const lastSlot = [...run.questions].reverse().find((question) => question.correct !== null);
   const lastQuestion = lastSlot ? getQuestionById(bank, lastSlot.questionId) : undefined;
   const club = run.teamId ? getQuizClub(run.teamId) : null;
@@ -798,23 +796,6 @@ function QuizResultScreen({
           Correct answer: {lastQuestion.correctAnswer}
         </p>
       )}
-      <ul className={`mx-auto mt-5 max-w-sm space-y-1 text-left ${TYPO.bodySm}`}>
-        <li>Questions answered: {answered}</li>
-        <li>Correct: {correct}</li>
-        <li>Incorrect: {Math.max(0, answered - correct)}</li>
-        <li>Money won: {formatClubFundsExact(run.rewardAmount)}</li>
-        <li>
-          Lifelines used:{" "}
-          {[
-            run.lifelines.fiftyFifty && "50/50",
-            run.lifelines.crowd && "Crowd",
-            run.lifelines.phone && "Phone",
-            run.lifelines.change && "Change",
-          ]
-            .filter(Boolean)
-            .join(", ") || "None"}
-        </li>
-      </ul>
       <MiniGameEndActions onPlayAgain={onAgain} playAgainLabel="Play again" />
       <div className="mx-auto mt-2 w-full max-w-xs">
         <GameButton variant="secondary" onClick={onBack}>

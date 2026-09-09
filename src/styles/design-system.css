@@ -3112,13 +3112,14 @@
 
 .hol-face {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.65rem;
   width: 100%;
   border-radius: 0.75rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(0, 0, 0, 0.3);
-  padding: 0.55rem 0.7rem;
+  padding: 0.65rem 0.75rem;
+  text-align: center;
 }
 
 /*

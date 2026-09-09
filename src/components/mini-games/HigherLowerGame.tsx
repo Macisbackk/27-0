@@ -81,17 +81,17 @@ function PlayerFace({
 }) {
   return (
     <div className="hol-face">
-      <ClubLogoBox club={player.club} size="sm" showAbbrev={false} />
-      <div className="min-w-0 flex-1 text-left">
-        <p className={`truncate ${TYPO.playerNameSm}`}>
-          {formatMiniGamePlayerLabel(player)}
-        </p>
-        <p className={TYPO.meta}>
-          {player.isHistoric ? `Era · ${player.year}` : "Current"}
-        </p>
+      <div className="flex justify-center">
+        <ClubLogoBox club={player.club} size="sm" showAbbrev={false} />
       </div>
+      <p className={`mt-1.5 truncate ${TYPO.playerNameSm}`}>
+        {formatMiniGamePlayerLabel(player)}
+      </p>
+      <p className={`mt-0.5 ${TYPO.meta}`}>
+        {player.isHistoric ? `Era · ${player.year}` : "Current"}
+      </p>
       <p
-        className={`shrink-0 font-display text-2xl tabular-nums leading-none ${
+        className={`mt-1.5 font-display text-2xl tabular-nums leading-none ${
           showRating ? "text-white" : "text-pitch-600"
         }`}
         aria-label={showRating ? `Rating ${player.rating}` : "Rating hidden"}
