@@ -111,16 +111,23 @@ console.log("\nQuestion selection");
   });
   assert(selected.length === 15, "selects 15 questions");
   assert(new Set(selected.map((q) => q.id)).size === 15, "no duplicate questions in a run");
-  assert(selected[0]?.difficulty === "easy", "Q1 is easy");
   assert(
-    selected[12]?.difficulty === "very-hard" &&
-      selected[13]?.difficulty === "very-hard",
-    "Q13 and Q14 are very hard"
+    ["hard", "very-hard", "expert"].includes(selected[14]?.difficulty ?? ""),
+    "Q15 (win question) is hard-tier"
   );
-  assert(selected[14]?.difficulty === "expert", "Q15 is expert");
   assert(
     new Set(selected.map((q) => q.topicId)).size === 15,
     "run has 15 unique topics"
+  );
+
+  const orderSeeds = ["order-a", "order-b", "order-c", "order-d"];
+  const firstIds = orderSeeds.map(
+    (seed) =>
+      selectQuizQuestions({ questions: bank, mode: "millionaire", seed })[0]?.id
+  );
+  assert(
+    new Set(firstIds).size > 1,
+    "leading question order varies across seeds"
   );
 
   const team = filterTeamChallengeQuestions(bank, "leeds");

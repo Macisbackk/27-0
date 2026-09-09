@@ -1,25 +1,23 @@
 import { isEligibleMiniGameQuizTeamId } from "@/lib/mini-games/eligibility";
 import { createRng, shuffledCopy } from "./rng";
 import type { QuizCategory, QuizDifficulty, QuizQuestion, QuizTeamId } from "./types";
-import { QUIZ_QUESTION_COUNT } from "./types";
+import { QUIZ_DIFFICULTIES, QUIZ_QUESTION_COUNT } from "./types";
 
-export const QUESTION_DIFFICULTY_BANDS: QuizDifficulty[][] = [
-  ["easy"],
-  ["easy"],
-  ["easy"],
-  ["easy", "medium"],
-  ["easy", "medium"],
-  ["easy", "medium"],
-  ["medium"],
-  ["medium"],
-  ["medium"],
-  ["hard"],
-  ["hard"],
-  ["hard"],
-  ["very-hard"],
-  ["very-hard"],
-  ["expert"],
+/** Final (Q15) must be hard-tier so the win question stays tough. */
+export const FINAL_QUESTION_DIFFICULTIES: QuizDifficulty[] = [
+  "hard",
+  "very-hard",
+  "expert",
 ];
+
+/** @deprecated Kept for callers that still import the old ladder shape. */
+export const QUESTION_DIFFICULTY_BANDS: QuizDifficulty[][] = Array.from(
+  { length: QUIZ_QUESTION_COUNT },
+  (_, index) =>
+    index === QUIZ_QUESTION_COUNT - 1
+      ? FINAL_QUESTION_DIFFICULTIES
+      : [...QUIZ_DIFFICULTIES]
+);
 
 const CATEGORY_SOFT_CAPS: Partial<Record<QuizCategory, number>> = {
   stadiums: 3,
@@ -263,42 +261,43 @@ export function selectQuizQuestions(options: {
   const usedFamilies = new Set<string>();
   const usedCategories = new Set<QuizCategory>();
   const categoryCounts = new Map<QuizCategory, number>();
-  const selected: QuizQuestion[] = [];
 
-  for (let index = 0; index < QUIZ_QUESTION_COUNT; index++) {
-    const band = QUESTION_DIFFICULTY_BANDS[index] ?? ["medium"];
+  const pickNext = (
+    band: readonly QuizDifficulty[],
+    previous: readonly QuizQuestion[]
+  ): QuizQuestion => {
     let candidates = bandCandidates(source, band, usedIds);
-    const previous = selected[selected.length - 1];
+    const prior = previous[previous.length - 1];
     if (
-      previous &&
-      candidates.some((question) => question.category !== previous.category)
+      prior &&
+      candidates.some((question) => question.category !== prior.category)
     ) {
       candidates = candidates.filter(
-        (question) => question.category !== previous.category
+        (question) => question.category !== prior.category
       );
     }
     if (
-      previous &&
+      prior &&
       candidates.some(
         (question) =>
-          topicFamily(question.topicId) !== topicFamily(previous.topicId)
+          topicFamily(question.topicId) !== topicFamily(prior.topicId)
       )
     ) {
       candidates = candidates.filter(
         (question) =>
-          topicFamily(question.topicId) !== topicFamily(previous.topicId)
+          topicFamily(question.topicId) !== topicFamily(prior.topicId)
       );
     }
     if (
       options.mode === "millionaire" &&
-      previous &&
-      primaryTeam(previous) &&
+      prior &&
+      primaryTeam(prior) &&
       candidates.some(
-        (question) => primaryTeam(question) !== primaryTeam(previous)
+        (question) => primaryTeam(question) !== primaryTeam(prior)
       )
     ) {
       candidates = candidates.filter(
-        (question) => primaryTeam(question) !== primaryTeam(previous)
+        (question) => primaryTeam(question) !== primaryTeam(prior)
       );
     }
     const pool = shuffledCopy(candidates, rng);
@@ -306,7 +305,7 @@ export function selectQuizQuestions(options: {
       pickWeighted(pool, (question) =>
         scoreCandidate({
           question,
-          previous: selected,
+          previous,
           recentIds,
           recentTopics,
           usedTopics,
@@ -322,15 +321,22 @@ export function selectQuizQuestions(options: {
       throw new Error("Could not fill a 15-question quiz run");
     }
 
-    selected.push(pick);
     usedIds.add(pick.id);
     usedTopics.add(pick.topicId);
     usedFamilies.add(topicFamily(pick.topicId));
     usedCategories.add(pick.category);
     categoryCounts.set(pick.category, (categoryCounts.get(pick.category) ?? 0) + 1);
+    return pick;
+  };
+
+  // Lock the win question as hard-tier first, then fill and shuffle the rest.
+  const finalQuestion = pickNext(FINAL_QUESTION_DIFFICULTIES, []);
+  const leading: QuizQuestion[] = [];
+  for (let index = 0; index < QUIZ_QUESTION_COUNT - 1; index++) {
+    leading.push(pickNext(QUIZ_DIFFICULTIES, leading));
   }
 
-  return selected;
+  return [...shuffledCopy(leading, rng), finalQuestion];
 }
 
 export function selectReplacementQuestion(options: {
