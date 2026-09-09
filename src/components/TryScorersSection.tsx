@@ -23,6 +23,53 @@ interface TryScorersSectionProps {
   compact?: boolean;
 }
 
+function ScorerCard({
+  scorer,
+  index,
+  squad,
+  featured,
+}: {
+  scorer: PlayerTryTotal;
+  index: number;
+  squad?: SquadSlot[];
+  featured?: boolean;
+}) {
+  const rankStyle = featured
+    ? (RANK_STYLES[index] ?? "text-gray-400")
+    : "text-pitch-500";
+
+  return (
+    <div className={`${CARD.inset} px-3 py-3 text-center`}>
+      <p
+        className={`font-display font-black leading-none ${
+          featured ? "text-xl sm:text-2xl" : `text-sm ${TYPO.statLabel}`
+        } ${rankStyle}`}
+      >
+        {featured ? index + 1 : `#${index + 1}`}
+      </p>
+      <p className={`mt-2 break-words ${featured ? TYPO.playerNameSm : TYPO.statValue}`}>
+        {scorer.name}
+      </p>
+      <div className="mt-1.5 flex justify-center">
+        <TryScorerClubBadge club={scorer.club} />
+      </div>
+      <p className={`mt-1.5 ${TYPO.bodySm}`}>
+        {formatTryScorerPosition(scorer, squad)}
+      </p>
+      <p
+        className={`mt-2 font-display font-black text-accent-gold ${
+          featured ? "text-xl sm:text-2xl" : "text-lg"
+        }`}
+      >
+        {scorer.tries}
+      </p>
+      <p className={TYPO.statLabel}>
+        {scorer.tries === 1 ? "Try" : "Tries"}
+      </p>
+    </div>
+  );
+}
+
 export function TryScorersSection({
   tryScorers,
   expectedTotalTries,
@@ -30,52 +77,25 @@ export function TryScorersSection({
   compact = false,
 }: TryScorersSectionProps) {
   const [expanded, setExpanded] = useState(false);
-  const topThree = tryScorers.slice(0, compact ? 3 : 3);
+  const topThree = tryScorers.slice(0, 3);
   const listedTotal = tryScorers.reduce((sum, s) => sum + s.tries, 0);
 
   if (tryScorers.length === 0) return null;
 
   return (
     <div
-      className={`${compact ? "" : `${CARD.base} ${SPACING.cardPaddingSm}`} text-left`}
+      className={`${compact ? "" : `${CARD.base} ${SPACING.cardPaddingSm}`} text-center`}
     >
       <div className={SPACING.stackSm}>
-        {topThree.map((scorer, index) => {
-          const rankStyle = RANK_STYLES[index] ?? "text-gray-400";
-          return (
-            <div
-              key={scorer.playerId}
-              className={`${CARD.inset} px-3 py-2.5`}
-            >
-              <div className="flex items-start gap-3">
-                <span
-                  className={`w-7 shrink-0 font-display text-xl font-black leading-none sm:text-2xl ${rankStyle}`}
-                >
-                  {index + 1}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className={`break-words ${TYPO.playerNameSm}`}>
-                    {scorer.name}
-                  </p>
-                  <div className="mt-1">
-                    <TryScorerClubBadge club={scorer.club} />
-                  </div>
-                  <p className={`mt-1.5 ${TYPO.bodySm}`}>
-                    {formatTryScorerPosition(scorer, squad)}
-                  </p>
-                </div>
-                <div className="shrink-0 text-right">
-                  <p className="font-display text-xl font-black text-accent-gold sm:text-2xl">
-                    {scorer.tries}
-                  </p>
-                  <p className={TYPO.statLabel}>
-                    {scorer.tries === 1 ? "Try" : "Tries"}
-                  </p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        {topThree.map((scorer, index) => (
+          <ScorerCard
+            key={scorer.playerId}
+            scorer={scorer}
+            index={index}
+            squad={squad}
+            featured
+          />
+        ))}
       </div>
 
       {tryScorers.length > 3 && (
@@ -105,30 +125,12 @@ export function TryScorersSection({
               >
                 <div className={`mt-2 ${SPACING.stackSm}`}>
                   {tryScorers.map((scorer, index) => (
-                    <div
+                    <ScorerCard
                       key={scorer.playerId}
-                      className={`${CARD.inset} px-3 py-2.5`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className={`w-6 shrink-0 text-center ${TYPO.statLabel}`}>
-                          {index + 1}
-                        </span>
-                        <div className="min-w-0 flex-1">
-                          <p className={`break-words ${TYPO.statValue}`}>
-                            {scorer.name}
-                          </p>
-                          <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                            <TryScorerClubBadge club={scorer.club} />
-                            <span className={TYPO.bodySm}>
-                              {formatTryScorerPosition(scorer, squad)}
-                            </span>
-                          </div>
-                        </div>
-                        <span className={`shrink-0 ${TYPO.statValueLg} text-accent-gold`}>
-                          {scorer.tries}
-                        </span>
-                      </div>
-                    </div>
+                      scorer={scorer}
+                      index={index}
+                      squad={squad}
+                    />
                   ))}
                 </div>
               </motion.div>
@@ -138,9 +140,11 @@ export function TryScorersSection({
       )}
 
       {!compact && (
-        <div className={`mt-3 flex items-center justify-between ${CARD.inset} px-3 py-2 ${TYPO.statLabel}`}>
+        <div
+          className={`mt-3 ${CARD.inset} px-3 py-2 text-center ${TYPO.statLabel}`}
+        >
           <span>Total tries</span>
-          <span className={`${TYPO.statValue} font-display`}>
+          <span className={`ml-2 ${TYPO.statValue} font-display`}>
             {listedTotal}
             {listedTotal !== expectedTotalTries && (
               <span className="ml-1 text-red-400">/ {expectedTotalTries}</span>

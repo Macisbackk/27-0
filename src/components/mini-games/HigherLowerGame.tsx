@@ -80,14 +80,17 @@ function PlayerFace({
   player,
   showRating,
   label,
+  hint,
 }: {
   player: MiniGamePlayer;
   showRating: boolean;
   label: string;
+  hint?: string;
 }) {
   return (
     <div className="mx-auto w-full max-w-[16rem] border border-white/10 bg-[#0c1210] px-4 py-4 text-center">
       <p className={TYPO.keyLabel}>{label}</p>
+      {hint ? <p className={`mt-1 ${TYPO.meta}`}>{hint}</p> : null}
       <div className="mt-3 flex justify-center">
         <ClubLogoBox club={player.club} size="md" showAbbrev={false} />
       </div>
@@ -112,6 +115,11 @@ function PlayerFace({
       >
         {showRating ? player.rating : "?"}
       </p>
+      {!showRating ? (
+        <p className={`mt-1 ${TYPO.meta}`}>Rating hidden</p>
+      ) : (
+        <p className={`mt-1 ${TYPO.meta}`}>Rating</p>
+      )}
     </div>
   );
 }
@@ -238,7 +246,7 @@ export function HigherLowerGame() {
   };
 
   const pickNumber = run ? higherLowerPickNumber(run) : 1;
-  const showRatings = Boolean(run?.revealed);
+  const challengeRevealed = Boolean(run?.revealed);
   const runOver = run?.status === "won" || run?.status === "lost";
 
   return (
@@ -246,7 +254,8 @@ export function HigherLowerGame() {
       {celebrate && <Confetti />}
       <div className="mini-game-play mx-auto flex w-full max-w-sm flex-col items-center">
         <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
-          Five picks. Is the challenge player&apos;s rating higher or lower?
+          Compare ratings. The top player&apos;s score is shown — guess if the
+          bottom player is higher or lower.
         </p>
         <div className="text-center">
           <MiniGameStatLine
@@ -267,6 +276,20 @@ export function HigherLowerGame() {
                 : `PICK ${pickNumber} / ${HIGHER_LOWER_PICKS}`}
             </p>
 
+            {!run.revealed && run.status === "playing" ? (
+              <p className={`mt-2 text-center ${TYPO.bodySm}`}>
+                Is{" "}
+                <span className="font-semibold text-white">
+                  {formatMiniGamePlayerLabel(board.challenge)}
+                </span>{" "}
+                rated higher or lower than{" "}
+                <span className="font-semibold text-white">
+                  {board.base.rating}
+                </span>
+                ?
+              </p>
+            ) : null}
+
             <div
               className={`mt-4 w-full transition ${
                 flash === "good"
@@ -278,34 +301,45 @@ export function HigherLowerGame() {
             >
               <PlayerFace
                 player={board.base}
-                showRating={showRatings}
-                label="Current player"
+                showRating
+                label="Known rating"
+                hint="Compare against this"
               />
               <p className={`my-3 text-center ${TYPO.keyLabel}`}>VS</p>
               <PlayerFace
                 player={board.challenge}
-                showRating={showRatings}
-                label="Challenge"
+                showRating={challengeRevealed}
+                label="Mystery rating"
+                hint="Guess higher or lower"
               />
             </div>
 
-            {showRatings && (
+            {challengeRevealed && (
               <p className={`mt-4 text-center ${TYPO.bodySm}`}>
                 {formatMiniGamePlayerLabel(board.challenge, { showYear: true })}{" "}
                 is{" "}
-                {board.challenge.rating > board.base.rating ? "HIGHER" : "LOWER"}{" "}
+                <span className="font-semibold text-white">
+                  {board.challenge.rating > board.base.rating
+                    ? "HIGHER"
+                    : "LOWER"}
+                </span>{" "}
                 ({board.challenge.rating} vs {board.base.rating})
               </p>
             )}
 
             {!run.revealed && run.status === "playing" && (
-              <div className="mt-5 grid w-full grid-cols-2 gap-3">
-                <GameButton variant="theme" onClick={() => pick("higher")}>
-                  Higher
-                </GameButton>
-                <GameButton variant="secondary" onClick={() => pick("lower")}>
-                  Lower
-                </GameButton>
+              <div className="mt-5 grid w-full gap-3">
+                <p className={`text-center ${TYPO.meta}`}>
+                  {formatMiniGamePlayerLabel(board.challenge)}&apos;s rating is…
+                </p>
+                <div className="grid w-full grid-cols-2 gap-3">
+                  <GameButton variant="theme" onClick={() => pick("higher")}>
+                    Higher
+                  </GameButton>
+                  <GameButton variant="secondary" onClick={() => pick("lower")}>
+                    Lower
+                  </GameButton>
+                </div>
               </div>
             )}
 

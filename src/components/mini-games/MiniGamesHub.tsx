@@ -9,18 +9,13 @@ import { playUiClick } from "@/lib/sound";
 const GAMES = [
   {
     href: "/mini-games/quiz",
-    title: "Super League Millionaire",
-    blurb: "Climb the prize ladder to £1,000,000.",
-  },
-  {
-    href: "/mini-games/quiz?mode=team",
-    title: "Team Challenge",
-    blurb: "Fifteen questions about one Super League club.",
+    title: "Quiz",
+    blurb: "Millionaire or Team Challenge — pick your format.",
   },
   {
     href: "/mini-games/wordle",
     title: "Rugby League Wordle",
-    blurb: "Guess today's rugby league player.",
+    blurb: "Guess today's rugby league player. One optional reveal clue.",
   },
   {
     href: "/mini-games/hangman",
@@ -30,7 +25,7 @@ const GAMES = [
   {
     href: "/mini-games/higher-lower",
     title: "Higher or Lower",
-    blurb: "Five picks. Is the next rating higher or lower?",
+    blurb: "Five picks. Is the next player's rating higher or lower?",
   },
 ] as const;
 

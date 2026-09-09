@@ -6,10 +6,9 @@ import type { MatchFixture } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import type { SquadSlot } from "@/lib/types";
 import { resolveEraTeamClubName } from "@/lib/players/era-teams";
-import { CARD, BTN, SPACING } from "@/lib/ui/design-system";
+import { CARD, BTN } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { TeamScoringBreakdown } from "./TeamScoringBreakdown";
-import { MatchPlayerOfTheMatchCard } from "./MatchPlayerOfTheMatchCard";
 import {
   buildMatchStoryFromEvents,
   normalizeMatchEvents,
@@ -29,7 +28,7 @@ interface MatchDetailsPanelProps {
   eraTeamValues?: Record<string, number>;
   /** Current Mode — opponent summary uses 2026 squad pool only. */
   currentSeasonOnly?: boolean;
-  /** Hide match story when shown elsewhere. */
+  /** Hide match story (default — keeps the expand panel scannable). */
   hideMatchStory?: boolean;
   /** Hide MOTM when rendered separately above scoring. */
   hideMotm?: boolean;
@@ -47,7 +46,7 @@ export function MatchDetailsPanel({
   userClubColorOverride,
   eraClubLookup,
   currentSeasonOnly: _currentSeasonOnly = false,
-  hideMatchStory = false,
+  hideMatchStory = true,
   hideMotm = false,
   scoringOnly = false,
 }: MatchDetailsPanelProps) {
@@ -80,16 +79,10 @@ export function MatchDetailsPanel({
       }
       return null;
     }
-  }, [
-    hideMatchStory,
-    fixture,
-    seed,
-    canonicalEvents,
-    userTeamName,
-  ]);
+  }, [hideMatchStory, fixture, seed, canonicalEvents, userTeamName]);
 
   const scoringBlock = detail ? (
-    <div className="space-y-3">
+    <div className="space-y-2.5">
       <TeamScoringBreakdown
         teamName={userTeamName}
         colorClub={
@@ -99,60 +92,49 @@ export function MatchDetailsPanel({
         scoring={detail.dreamTeam}
         userSquad={userSquad}
         variant="user"
+        flat
       />
       <TeamScoringBreakdown
         teamName={fixture.opponent}
         colorClub={resolveEraTeamClubName(fixture.opponent, eraClubLookup)}
         scoring={detail.opponent}
         variant="opponent"
+        flat
       />
     </div>
   ) : (
-    <p className={TYPO.body}>Scoring data unavailable.</p>
+    <p className={`text-center ${TYPO.bodySm}`}>Scoring data unavailable.</p>
   );
 
   if (scoringOnly) {
-    // No height collapse animation — Match Review keeps this panel in a
-    // `hidden` mobile tab, which measures height as 0 and can clip scorers.
     return (
       <div className={CARD.base}>
-        <div className={SPACING.cardPadding}>
-          <p className={TYPO.sectionLabel}>Scoring</p>
-          <div className="mt-3">{scoringBlock}</div>
+        <div className="p-3 sm:p-4">
+          <p className={`text-center ${TYPO.sectionLabel}`}>Scoring</p>
+          <div className="mt-2.5">{scoringBlock}</div>
         </div>
       </div>
     );
   }
 
+  const motm = fixture.manOfTheMatch;
+
   return (
     <motion.div
-      className={`match-details-expand ${CARD.base} border-theme-primary/30 shadow-lg`}
+      className={`match-details-expand ${CARD.base} border-white/10`}
       initial={{ opacity: 0, y: -6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -4 }}
       transition={{ duration: 0.18, ease: "easeOut" }}
     >
-      <div className="space-y-3 p-3 sm:space-y-4 sm:p-5">
-        <div className="flex items-start justify-between gap-3">
-          <div className={`min-w-0 flex-1 ${SPACING.stackMd}`}>
-            <p className={TYPO.sectionLabel}>
-              {roundLabel ?? `Round ${fixture.round}`} · Match Details
-            </p>
-            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-              {!fixture.isNeutral && (
-                <>{fixture.isHome ? "Home" : "Away"} · </>
-              )}
-              vs {fixture.opponent}
-            </p>
-            {matchStory && (
-              <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
-                <p className={TYPO.sectionTitle}>Match Story</p>
-                <p className={`mt-1.5 whitespace-pre-line ${TYPO.bodySm}`}>
-                  {matchStory}
-                </p>
-              </div>
-            )}
-          </div>
+      <div className="space-y-2.5 p-2.5 sm:p-3">
+        <div className="flex items-center justify-between gap-2">
+          <p className={`min-w-0 flex-1 text-center ${TYPO.keyLabel}`}>
+            {roundLabel ?? `Round ${fixture.round}`}
+            {!fixture.isNeutral ? (
+              <> · {fixture.isHome ? "Home" : "Away"}</>
+            ) : null}
+          </p>
           <button type="button" onClick={onClose} className={BTN.closeSm}>
             Close
           </button>
@@ -160,33 +142,21 @@ export function MatchDetailsPanel({
 
         {scoringBlock}
 
-        {canonicalEvents.length > 0 ? (
-          <div>
-            <p className={TYPO.sectionLabel}>Match Events</p>
-            <ul className="mt-1.5 divide-y divide-pitch-700/30">
-              {canonicalEvents
-                .filter((e) => e.type !== "half_time" && e.type !== "full_time")
-                .map((event, index) => (
-                  <li
-                    key={event.id ?? `${event.minute}-${index}`}
-                    className="py-1.5 text-sm text-pitch-200"
-                  >
-                    <span className="tabular-nums text-pitch-400">
-                      {event.minute}&apos;
-                    </span>{" "}
-                    {event.description}
-                  </li>
-                ))}
-            </ul>
-          </div>
+        {motm && !hideMotm ? (
+          <p className={`text-center ${TYPO.bodySm}`}>
+            <span className="text-pitch-500">POTM </span>
+            <span className="font-semibold text-white">{motm.playerName}</span>
+            {motm.performanceSummary ? (
+              <span className="text-pitch-400"> · {motm.performanceSummary}</span>
+            ) : null}
+          </p>
         ) : null}
 
-        {fixture.manOfTheMatch && !hideMotm && (
-          <MatchPlayerOfTheMatchCard
-            motm={fixture.manOfTheMatch}
-            userClub={userTeamName}
-          />
-        )}
+        {matchStory ? (
+          <p className={`whitespace-pre-line text-center ${TYPO.meta}`}>
+            {matchStory}
+          </p>
+        ) : null}
       </div>
     </motion.div>
   );

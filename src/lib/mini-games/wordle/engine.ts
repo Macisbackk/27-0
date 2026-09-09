@@ -3,6 +3,7 @@ import { getWordlePlayerPool, resolvePlayerGuess, type MiniGamePlayer } from "..
 import {
   WORDLE_ATTRIBUTE_LABEL,
   WORDLE_MAX_GUESSES,
+  type WordleAnswerHint,
   type WordleAttributeKey,
   type WordleClues,
   type WordleDiscoveredClue,
@@ -13,6 +14,13 @@ import {
 } from "./types";
 
 export { WORDLE_MAX_GUESSES };
+
+const WORDLE_HINT_KEYS: WordleAttributeKey[] = [
+  "nationality",
+  "position",
+  "club",
+  "rating",
+];
 
 function trend(guess: number, answer: number): WordleTrend {
   if (guess === answer) return "match";
@@ -64,6 +72,78 @@ export function mergeDiscoveredClues(
   };
 }
 
+export function answerHintValue(
+  answer: MiniGamePlayer,
+  key: WordleAttributeKey
+): string {
+  switch (key) {
+    case "nationality":
+      return answer.nationality;
+    case "position":
+      return answer.positionLabel;
+    case "club":
+      return answer.club;
+    case "rating":
+      return String(answer.rating);
+  }
+}
+
+export function buildWordleAnswerHint(
+  answer: MiniGamePlayer,
+  key: WordleAttributeKey
+): WordleAnswerHint {
+  return {
+    key,
+    label: WORDLE_ATTRIBUTE_LABEL[key],
+    value: answerHintValue(answer, key),
+  };
+}
+
+/** Prefer attributes not already unlocked by matching guesses. */
+export function pickWordleHintKey(
+  date: string,
+  alreadyKnown: readonly WordleAttributeKey[]
+): WordleAttributeKey | null {
+  const known = new Set(alreadyKnown);
+  const candidates = WORDLE_HINT_KEYS.filter((key) => !known.has(key));
+  if (candidates.length === 0) return null;
+  const rng = createRng(`wordle-hint:${date}`);
+  return candidates[pickIndex(rng, candidates.length)]!;
+}
+
+export function useWordleHint(
+  run: WordleRun,
+  pool: readonly MiniGamePlayer[] = getWordlePlayerPool()
+): { run: WordleRun; error?: string; hint?: WordleAnswerHint } {
+  if (run.status !== "playing") {
+    return { run, error: "Today's Wordle is already finished." };
+  }
+  if (run.hintUsed || run.answerHint) {
+    return { run, error: "You already used today's clue." };
+  }
+  const answer = pool.find((player) => player.id === run.answerId);
+  if (!answer) {
+    return { run, error: "Could not load today's player." };
+  }
+  const knownKeys = [
+    ...run.discoveredClues.map((clue) => clue.key),
+    ...(run.answerHint ? [run.answerHint.key] : []),
+  ];
+  const key = pickWordleHintKey(run.date, knownKeys);
+  if (!key) {
+    return { run, error: "All attributes are already unlocked." };
+  }
+  const hint = buildWordleAnswerHint(answer, key);
+  return {
+    run: {
+      ...run,
+      hintUsed: true,
+      answerHint: hint,
+    },
+    hint,
+  };
+}
+
 export function pickDailyWordlePlayer(
   date: string,
   pool: readonly MiniGamePlayer[] = getWordlePlayerPool()
@@ -85,6 +165,8 @@ export function createWordleRun(
     answerId: answer.id,
     guesses: [],
     discoveredClues: [],
+    hintUsed: false,
+    answerHint: null,
     status: "playing",
     rewardClaimed: false,
   };
@@ -211,5 +293,7 @@ export function normalizeWordleRun(value: WordleRun): WordleRun {
   return {
     ...value,
     discoveredClues: discovered,
+    hintUsed: Boolean(value.hintUsed || value.answerHint),
+    answerHint: value.answerHint ?? null,
   };
 }

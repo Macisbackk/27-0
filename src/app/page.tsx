@@ -11,7 +11,7 @@ import { GAME_VERSION } from "../../data/version";
 
 export default function HomePage() {
   return (
-    <PageShell withLights compact>
+    <PageShell withLights compact className="matchday-arena--flat">
       <section className={`${PAGE.sectionHero} text-center`}>
         <div className="mx-auto flex max-w-xl flex-col items-center gap-2">
           <LogoMark size="lg" className="items-center justify-center" />

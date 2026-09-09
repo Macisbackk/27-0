@@ -248,6 +248,28 @@
   background: var(--mobile-surface-secondary);
 }
 
+/* Home mode cards stay opaque — mobile flattening must not reveal arena wash. */
+.home-play-card.mobile-section,
+.home-play-card {
+  background: #0d110e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--mobile-radius-medium);
+  box-shadow: none;
+}
+
+.home-play-card--current {
+  border-color: color-mix(in srgb, var(--theme-primary) 30%, transparent);
+}
+
+.home-play-card--era {
+  border-color: color-mix(in srgb, var(--accent-gold, #eab308) 35%, transparent);
+}
+
+.home-play-card .game-button--current,
+.home-play-card .game-button--era {
+  box-shadow: none;
+}
+
 .mobile-section--flush {
   padding: 0;
   border: none;
@@ -2154,6 +2176,13 @@
     linear-gradient(180deg, #0a1210 0%, #060a09 100%);
 }
 
+/* Flat home / menu surfaces — no coloured arena wash under CTAs. */
+.matchday-arena--flat,
+.game-arena--flat {
+  background-color: #060a09;
+  background-image: none;
+}
+
 /* Optional local overlays — absolute + clipped to arena, never fixed. */
 .stadium-backdrop,
 .stadium-lights {
@@ -2624,6 +2653,23 @@
 
   .mobile-section {
     padding: 0;
+  }
+
+  .home-play-card.mobile-section,
+  .home-play-card {
+    background: #0d110e;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--mobile-radius-medium);
+    padding: var(--mobile-card-padding);
+    box-shadow: none;
+  }
+
+  .home-play-card--current {
+    border-color: color-mix(in srgb, var(--theme-primary) 30%, transparent);
+  }
+
+  .home-play-card--era {
+    border-color: color-mix(in srgb, var(--accent-gold, #eab308) 35%, transparent);
   }
 
   .mobile-fixture-card {

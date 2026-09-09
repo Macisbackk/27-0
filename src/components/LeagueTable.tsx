@@ -1,135 +1,175 @@
 "use client";
 
-import { memo } from "react";
+import { memo, Fragment } from "react";
 import type { LeagueTableRow } from "@/lib/game/league-table";
+import { PLAYOFF_QUALIFIERS } from "@/lib/game/playoff-simulation";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubNameLabel } from "./ClubNameLabel";
 
 interface LeagueTableProps {
   rows: LeagueTableRow[];
+  /** Last automatic play-off place (Super League top six). */
+  playoffCutoff?: number;
 }
 
-export const LeagueTable = memo(function LeagueTable({ rows }: LeagueTableProps) {
+function positionTone(position: number): string {
+  if (position === 1) return "text-accent-gold";
+  if (position === 2) return "text-pitch-200";
+  if (position === 3) return "text-amber-600";
+  return "text-pitch-400";
+}
+
+function formatDiff(diff: number): string {
+  if (diff > 0) return `+${diff}`;
+  return String(diff);
+}
+
+export const LeagueTable = memo(function LeagueTable({
+  rows,
+  playoffCutoff = PLAYOFF_QUALIFIERS,
+}: LeagueTableProps) {
+  const userRow = rows.find((row) => row.isUserTeam);
+  const userInPlayoffs = Boolean(
+    userRow && userRow.position <= playoffCutoff
+  );
+
   return (
-    <div className="w-full min-w-0 max-w-full">
-      <ul className="space-y-2 sm:hidden">
-        {rows.map((row) => (
-          <li
-            key={row.team}
-            className="flex min-h-[44px] items-center gap-2 border-b border-white/5 px-0 py-2.5"
-          >
-            <span className="w-6 shrink-0 font-mono text-sm text-pitch-400">
-              {row.position}
+    <div className="w-full min-w-0 max-w-full text-center">
+      <div className="mb-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+        <p className={TYPO.meta}>
+          <span className="inline-block h-2 w-2 rounded-sm bg-theme-primary/70 align-middle" />{" "}
+          Play-off places 1–{playoffCutoff}
+        </p>
+        {userRow ? (
+          <p className={TYPO.meta}>
+            You finished{" "}
+            <span className="font-semibold text-theme-primary">
+              {userRow.position}
+              {userRow.position === 1
+                ? "st"
+                : userRow.position === 2
+                  ? "nd"
+                  : userRow.position === 3
+                    ? "rd"
+                    : "th"}
             </span>
-            <span
-              className={`min-w-0 flex-1 truncate text-sm ${
-                row.isUserTeam ? "font-semibold text-theme-primary" : "text-pitch-200"
-              }`}
-            >
-              {row.team}
-            </span>
-            <span className="shrink-0 text-right text-[11px] leading-tight text-pitch-400">
-              P {row.played} · W {row.wins} · PTS {row.leaguePoints}
-            </span>
-          </li>
-        ))}
-      </ul>
-      <div className="hidden overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch] sm:block">
-      <table className="w-full min-w-0 border-collapse text-left text-[11px] sm:text-xs">
-        <thead>
-          <tr className={`border-b border-pitch-700/60 ${TYPO.statLabel}`}>
-            <th className="sticky left-0 z-10 bg-pitch-950 px-1.5 py-2 sm:px-2 sm:py-2.5">
-              Pos
-            </th>
-            <th className="min-w-0 max-w-[9rem] truncate px-1.5 py-2 sm:min-w-[8rem] sm:max-w-none sm:px-2 sm:py-2.5">
-              Team
-            </th>
-            <th className="px-1.5 py-2 text-center sm:px-2 sm:py-2.5">P</th>
-            <th className="px-1.5 py-2 text-center sm:px-2 sm:py-2.5">W</th>
-            <th className="px-1.5 py-2 text-center sm:px-2 sm:py-2.5">L</th>
-            <th className="hidden px-2 py-2.5 text-center sm:table-cell">PF</th>
-            <th className="hidden px-2 py-2.5 text-center sm:table-cell">PA</th>
-            <th className="hidden px-2 py-2.5 text-center md:table-cell">PD</th>
-            <th className="px-1.5 py-2 text-center sm:px-2 sm:py-2.5">Pts</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <LeagueTableRowView key={row.team} row={row} />
-          ))}
-        </tbody>
-      </table>
+            {userInPlayoffs ? " · qualified" : ""}
+          </p>
+        ) : null}
       </div>
+
+      <ol className="space-y-1.5">
+        {rows.map((row) => {
+          const showCut =
+            row.position === playoffCutoff + 1 && rows.length > playoffCutoff;
+          return (
+            <Fragment key={row.team}>
+              {showCut ? (
+                <li
+                  className="flex list-none items-center gap-3 py-1.5"
+                  aria-hidden
+                >
+                  <span className="h-px flex-1 bg-white/10" />
+                  <span className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.16em] text-pitch-500">
+                    Play-off cut
+                  </span>
+                  <span className="h-px flex-1 bg-white/10" />
+                </li>
+              ) : null}
+              <LeagueStandingRow
+                row={row}
+                inPlayoffZone={row.position <= playoffCutoff}
+              />
+            </Fragment>
+          );
+        })}
+      </ol>
     </div>
   );
 });
 
-const LeagueTableRowView = memo(function LeagueTableRowView({
+const LeagueStandingRow = memo(function LeagueStandingRow({
   row,
+  inPlayoffZone,
 }: {
   row: LeagueTableRow;
+  inPlayoffZone: boolean;
 }) {
   const highlight = row.isUserTeam;
 
   return (
-    <tr
-      className={`border-b border-pitch-800/50 transition ${
+    <li
+      className={`list-none rounded-xl border px-2.5 py-2.5 text-left sm:px-3 ${
         highlight
-          ? "border-l-2 border-l-theme-primary bg-theme-primary/10"
-          : "hover:bg-pitch-900/40"
+          ? "border-theme-primary/45 bg-theme-primary/10 shadow-[inset_3px_0_0_var(--theme-primary)]"
+          : inPlayoffZone
+            ? "border-theme-primary/20 bg-theme-primary/[0.06]"
+            : "border-white/10 bg-[#0c1210]"
       }`}
     >
-      <td
-        className={`sticky left-0 z-10 px-2 py-2.5 font-display font-bold ${
-          highlight
-            ? "bg-theme-primary/10 text-theme-primary"
-            : "bg-pitch-950 text-gray-400"
-        }`}
-      >
-        {row.position}
-      </td>
-      <td className="max-w-[10rem] px-2 py-2.5 sm:max-w-none">
-        <ClubNameLabel
-          club={row.team}
-          variant="inline"
-          compact
-          className="max-w-full truncate"
-        />
-      </td>
-      <td className="px-2 py-2.5 text-center text-gray-400">{row.played}</td>
-      <td
-        className={`px-2 py-2.5 text-center font-semibold ${
-          highlight ? "text-theme-primary" : "text-white"
-        }`}
-      >
-        {row.wins}
-      </td>
-      <td className="px-2 py-2.5 text-center text-gray-400">{row.losses}</td>
-      <td className="hidden px-2 py-2.5 text-center text-gray-300 sm:table-cell">
-        {row.pointsFor}
-      </td>
-      <td className="hidden px-2 py-2.5 text-center text-gray-300 sm:table-cell">
-        {row.pointsAgainst}
-      </td>
-      <td
-        className={`hidden px-2 py-2.5 text-center font-medium md:table-cell ${
-          row.pointsDifference > 0
-            ? "text-theme-primary"
-            : row.pointsDifference < 0
-              ? "text-red-400"
-              : "text-gray-400"
-        }`}
-      >
-        {row.pointsDifference > 0 ? "+" : ""}
-        {row.pointsDifference}
-      </td>
-      <td
-        className={`px-2 py-2.5 text-center font-display font-bold ${
-          highlight ? "text-theme-primary" : "text-white"
-        }`}
-      >
-        {row.leaguePoints}
-      </td>
-    </tr>
+      <div className="grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-2 sm:gap-3">
+        <span
+          className={`font-display text-lg font-black tabular-nums leading-none sm:text-xl ${positionTone(
+            row.position
+          )} ${highlight ? "!text-theme-primary" : ""}`}
+        >
+          {row.position}
+        </span>
+
+        <div className="min-w-0">
+          <div className="flex min-w-0 items-center gap-2">
+            <ClubNameLabel
+              club={row.team}
+              variant="row"
+              compact
+              className="min-w-0 flex-1 truncate"
+            />
+            {highlight ? (
+              <span className="shrink-0 rounded border border-theme-primary/40 bg-theme-primary/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-theme-primary">
+                You
+              </span>
+            ) : null}
+          </div>
+          <p className={`mt-1 ${TYPO.meta}`}>
+            <span className="text-pitch-300">P{row.played}</span>
+            <span className="text-pitch-600"> · </span>
+            <span className="text-white">W{row.wins}</span>
+            {row.draws > 0 ? (
+              <>
+                <span className="text-pitch-600"> · </span>
+                <span className="text-pitch-300">D{row.draws}</span>
+              </>
+            ) : null}
+            <span className="text-pitch-600"> · </span>
+            <span className="text-pitch-300">L{row.losses}</span>
+            <span className="text-pitch-600"> · </span>
+            <span
+              className={
+                row.pointsDifference > 0
+                  ? "text-theme-primary"
+                  : row.pointsDifference < 0
+                    ? "text-red-400"
+                    : "text-pitch-400"
+              }
+            >
+              {formatDiff(row.pointsDifference)} PD
+            </span>
+          </p>
+        </div>
+
+        <div className="shrink-0 text-right">
+          <p
+            className={`font-display text-xl font-black tabular-nums leading-none sm:text-2xl ${
+              highlight ? "text-theme-primary" : "text-white"
+            }`}
+          >
+            {row.leaguePoints}
+          </p>
+          <p className="mt-0.5 text-[9px] font-semibold uppercase tracking-wider text-pitch-500">
+            Pts
+          </p>
+        </div>
+      </div>
+    </li>
   );
 });

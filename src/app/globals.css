@@ -1573,7 +1573,7 @@ html[data-ui-overlay="1"] .site-footer {
     background: var(--mode-current);
     background-image: none;
     color: var(--mode-current-text) !important;
-    box-shadow: 0 8px 20px color-mix(in srgb, var(--mode-current) 22%, transparent);
+    box-shadow: none;
   }
 
   .game-button--current:hover:not(:disabled) {
@@ -1586,7 +1586,7 @@ html[data-ui-overlay="1"] .site-footer {
     background: var(--mode-era);
     background-image: none;
     color: var(--mode-era-text) !important;
-    box-shadow: 0 8px 20px color-mix(in srgb, var(--mode-era) 22%, transparent);
+    box-shadow: none;
   }
 
   .game-button--era:hover:not(:disabled) {
@@ -2594,6 +2594,7 @@ button.game-button--current,
   background-image: none !important;
   border-color: var(--mode-current-border) !important;
   color: var(--mode-current-text) !important;
+  box-shadow: none !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
@@ -2605,6 +2606,7 @@ button.game-button--era,
   background-image: none !important;
   border-color: var(--mode-era-border) !important;
   color: var(--mode-era-text) !important;
+  box-shadow: none !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }

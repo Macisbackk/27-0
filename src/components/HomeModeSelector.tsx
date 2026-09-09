@@ -75,13 +75,11 @@ function HomePlayChoice({
   onClick: () => void;
 }) {
   const accentClass =
-    variant === "era"
-      ? "border-accent-gold/35 bg-[#0d110e]"
-      : "border-theme-primary/30 bg-[#0d110e]";
+    variant === "era" ? "home-play-card--era" : "home-play-card--current";
 
   return (
     <MobileSection
-      className={`flex min-h-0 flex-col items-center overflow-hidden p-4 text-center sm:p-6 ${accentClass}`}
+      className={`home-play-card flex min-h-0 flex-col items-center overflow-hidden p-4 text-center sm:p-6 ${accentClass}`}
     >
       <p
         className={`text-[11px] font-semibold uppercase tracking-[0.16em] ${

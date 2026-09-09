@@ -38,32 +38,26 @@ export function TryScorersPanel({
       {tryScorers.map((scorer, index) => (
         <div
           key={scorer.playerId}
-          className="rounded-lg border border-pitch-700/50 bg-pitch-950/60 px-3 py-2.5"
+          className="rounded-lg border border-pitch-700/50 bg-pitch-950/60 px-3 py-3 text-center"
         >
-          <div className="flex items-center gap-3">
-            <span className="w-6 shrink-0 text-center font-display text-xs font-bold text-gray-500">
-              {index + 1}
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold text-white">
-                {scorer.name}
-              </p>
-              <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                <TryScorerClubBadge club={scorer.club} />
-                <span className="text-[11px] text-gray-500">
-                  {formatScorerPosition(scorer)}
-                </span>
-              </div>
-            </div>
-            <span className="shrink-0 font-display text-lg font-bold text-accent-gold">
-              {scorer.tries}
+          <p className="font-display text-xs font-bold text-gray-500">
+            #{index + 1}
+          </p>
+          <p className="mt-1.5 text-sm font-semibold text-white">{scorer.name}</p>
+          <div className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5">
+            <TryScorerClubBadge club={scorer.club} />
+            <span className="text-[11px] text-gray-500">
+              {formatScorerPosition(scorer)}
             </span>
           </div>
+          <p className="mt-2 font-display text-lg font-bold text-accent-gold">
+            {scorer.tries}
+          </p>
         </div>
       ))}
-      <div className="flex items-center justify-between rounded-lg border border-pitch-700/40 bg-pitch-900/40 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+      <div className="rounded-lg border border-pitch-700/40 bg-pitch-900/40 px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-gray-500">
         <span>Total tries</span>
-        <span className="font-display text-sm text-white">
+        <span className="ml-2 font-display text-sm text-white">
           {listedTotal}
           {listedTotal !== expectedTotalTries && (
             <span className="ml-1 text-red-400">/ {expectedTotalTries}</span>
@@ -74,7 +68,7 @@ export function TryScorersPanel({
   );
 
   if (inline) {
-    return <div className="text-left">{listContent}</div>;
+    return <div className="text-center">{listContent}</div>;
   }
 
   return (

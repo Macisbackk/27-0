@@ -21,6 +21,13 @@ export type WordleDiscoveredClue = {
   order: number;
 };
 
+/** One-time optional reveal of a single answer attribute. */
+export type WordleAnswerHint = {
+  key: WordleAttributeKey;
+  label: string;
+  value: string;
+};
+
 export type WordleGuess = {
   playerId: string;
   name: string;
@@ -40,6 +47,9 @@ export type WordleRun = {
   answerId: string;
   guesses: WordleGuess[];
   discoveredClues: WordleDiscoveredClue[];
+  /** True after the optional one-time attribute reveal is used. */
+  hintUsed: boolean;
+  answerHint: WordleAnswerHint | null;
   status: WordleStatus;
   rewardClaimed: boolean;
 };

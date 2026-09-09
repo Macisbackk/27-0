@@ -17,6 +17,7 @@ import {
   recordWordleResult,
   remainingWordleGuesses,
   submitWordleGuess,
+  useWordleHint,
   WORDLE_MAX_GUESSES,
 } from "@/lib/mini-games/wordle/engine";
 import {
@@ -187,13 +188,34 @@ export function WordleGame() {
     }
   };
 
+  const revealClue = () => {
+    if (!run || run.status !== "playing") return;
+    playMiniSelect();
+    const result = useWordleHint(run, pool);
+    if (result.error) {
+      setError(result.error);
+      playMiniIncorrect();
+      return;
+    }
+    setError(null);
+    playMiniClue();
+    saveWordleRun(result.run);
+    setRun(result.run);
+  };
+
+  const canUseHint =
+    run?.status === "playing" &&
+    !run.hintUsed &&
+    !run.answerHint &&
+    run.discoveredClues.length < 4;
+
   return (
     <MiniGameShell title="Rugby League Wordle">
       {celebrate && <Confetti />}
       <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">
         <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
           Guess today&apos;s Super League player. Matching attributes unlock
-          numbered clues.
+          numbered clues — or use one reveal clue.
         </p>
         <div className="text-center">
           <MiniGameStatLine
@@ -214,8 +236,13 @@ export function WordleGame() {
           </p>
         ) : (
           <>
-            {run.discoveredClues.length > 0 && (
+            {(run.discoveredClues.length > 0 || run.answerHint) && (
               <ul className="mt-5 flex flex-wrap justify-center gap-2">
+                {run.answerHint ? (
+                  <li className="mini-game-clue rounded-md border border-accent-gold/40 bg-accent-gold/15 px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-accent-gold">
+                    Reveal — {run.answerHint.label}: {run.answerHint.value}
+                  </li>
+                ) : null}
                 {run.discoveredClues.map((clue) => (
                   <li
                     key={clue.key}
@@ -259,6 +286,22 @@ export function WordleGame() {
                 </GameButton>
               </form>
             )}
+
+            {canUseHint ? (
+              <div className="mt-3 w-full max-w-xs">
+                <GameButton
+                  variant="secondary"
+                  size="sm"
+                  onClick={revealClue}
+                >
+                  Reveal one clue
+                </GameButton>
+                <p className={`mt-1.5 text-center ${TYPO.meta}`}>
+                  Once per day — shows nation, position, club, or rating.
+                </p>
+              </div>
+            ) : null}
+
             {error && (
               <p className="mt-2 text-center text-sm text-red-400" role="alert">
                 {error}

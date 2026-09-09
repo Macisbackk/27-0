@@ -260,19 +260,10 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                           {[
                             {
                               href: "/mini-games/quiz",
-                              label: "Super League Millionaire",
+                              label: "Quiz",
                               active:
-                                (pathname.startsWith("/mini-games/quiz") ||
-                                  pathname.startsWith("/quiz")) &&
-                                searchParams.get("mode") !== "team",
-                            },
-                            {
-                              href: "/mini-games/quiz?mode=team",
-                              label: "Team Challenge",
-                              active:
-                                (pathname.startsWith("/mini-games/quiz") ||
-                                  pathname.startsWith("/quiz")) &&
-                                searchParams.get("mode") === "team",
+                                pathname.startsWith("/mini-games/quiz") ||
+                                pathname.startsWith("/quiz"),
                             },
                             {
                               href: "/mini-games/wordle",

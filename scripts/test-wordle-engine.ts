@@ -11,6 +11,7 @@ import {
   pickDailyWordlePlayer,
   recordWordleResult,
   submitWordleGuess,
+  useWordleHint,
   WORDLE_MAX_GUESSES,
 } from "../src/lib/mini-games/wordle/engine";
 import { resolvePlayerGuess, type MiniGamePlayer } from "../src/lib/mini-games/players";
@@ -169,6 +170,18 @@ const stats = recordWordleResult(createEmptyWordleStats(), won.run);
 assert(stats.wins === 1 && stats.currentStreak === 1, "win updates streak");
 const againStats = recordWordleResult(stats, won.run);
 assert(againStats.played === stats.played, "same day is not counted twice");
+
+const hintRun = createWordleRun("2026-09-11", pool);
+assert(hintRun.hintUsed === false, "new run has unused hint");
+const hinted = useWordleHint(hintRun, pool);
+assert(Boolean(hinted.hint), "hint reveals one attribute");
+assert(hinted.run.hintUsed === true, "hint is marked used");
+assert(
+  hinted.hint?.value !== undefined && hinted.hint.value.length > 0,
+  "hint includes a value"
+);
+const secondHint = useWordleHint(hinted.run, pool);
+assert(Boolean(secondHint.error), "second hint is blocked");
 
 if (failed > 0) {
   console.error(`\n${failed} failed, ${passed} passed`);

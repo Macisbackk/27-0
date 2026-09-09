@@ -357,10 +357,10 @@ function QuizLanding({
 }) {
   return (
     <div className="mx-auto w-full max-w-xl text-center">
-      <p className={TYPO.sectionLabel}>Super League Millionaire</p>
-      <h1 className={`mt-2 ${TYPO.pageTitle}`}>Who Wants to Be a Millionaire?</h1>
+      <p className={TYPO.sectionLabel}>Quiz</p>
+      <h1 className={`mt-2 ${TYPO.pageTitle}`}>Choose your quiz</h1>
       <p className={`mx-auto mt-3 max-w-md ${TYPO.pageSubtitle}`}>
-        Test your Super League knowledge. How far can you go?
+        Play the classic ladder or take on a Team Challenge.
       </p>
 
       {hasActiveRun && (
@@ -375,17 +375,17 @@ function QuizLanding({
         <button
           type="button"
           onClick={onMillionaire}
-          className="w-full border border-white/10 bg-[#0c1210] px-4 py-4 text-left"
+          className="w-full border border-white/10 bg-[#0c1210] px-4 py-4 text-center"
         >
-          <p className={TYPO.keyLabel}>Super League Millionaire</p>
+          <p className={TYPO.keyLabel}>Normal Quiz</p>
           <p className={`mt-1 ${TYPO.bodySm}`}>
-            15 questions. Climb to £1,000,000.
+            Super League Millionaire — 15 questions to £1,000,000.
           </p>
         </button>
         <button
           type="button"
           onClick={onTeam}
-          className="w-full border border-white/10 bg-[#0c1210] px-4 py-4 text-left"
+          className="w-full border border-white/10 bg-[#0c1210] px-4 py-4 text-center"
         >
           <p className={TYPO.keyLabel}>Team Challenge</p>
           <p className={`mt-1 ${TYPO.bodySm}`}>
