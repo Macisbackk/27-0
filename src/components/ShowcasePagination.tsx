@@ -45,7 +45,7 @@ export function ShowcasePagination({
   return (
     <GamePanel as="nav" variant="elevated" flush aria-label="Player showcase pagination">
       <div className="flex min-w-0 flex-col gap-2 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:px-4 sm:py-3">
-        <p className="min-w-0 text-center text-xs text-gray-500 sm:text-left sm:text-sm">
+        <p className="min-w-0 text-center text-xs text-gray-500 sm:text-sm">
           Showing{" "}
           <span className="font-medium text-gray-300">
             {rangeStart}–{rangeEnd}

@@ -1,6 +1,6 @@
 import { QUIZ_QUESTION_COUNT } from "./types";
 
-/** Club Funds prize ladder — same shape as WWTBAM, scaled to 27-0 economy. */
+/** Club Funds prize ladder — WWTBAM shape; Q15 (all correct) pays £1,000,000. */
 export const QUIZ_PRIZE_LADDER = [
   100, 200, 300, 500, 1_000, 2_000, 4_000, 8_000, 16_000, 32_000, 64_000,
   125_000, 250_000, 500_000, 1_000_000,

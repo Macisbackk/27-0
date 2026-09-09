@@ -145,6 +145,8 @@ export function submitWordleGuess(
     positionLabel: resolved.positionLabel,
     nationality: resolved.nationality,
     rating: resolved.rating,
+    isHistoric: resolved.isHistoric,
+    year: resolved.year,
     clues,
   };
   const guesses = [...run.guesses, guess];

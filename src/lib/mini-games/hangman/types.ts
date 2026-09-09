@@ -14,6 +14,9 @@ export type HangmanPuzzle = {
   category: HangmanCategory;
   answer: string;
   hint: string;
+  /** Present for player answers from historic/era cards. */
+  isHistoric?: boolean;
+  year?: number;
 };
 
 export type HangmanStatus = "playing" | "won" | "lost";
@@ -29,6 +32,8 @@ export type HangmanRun = {
   guessed: string[];
   status: HangmanStatus;
   rewardClaimed: boolean;
+  isHistoric?: boolean;
+  year?: number;
 };
 
 export type HangmanStats = {

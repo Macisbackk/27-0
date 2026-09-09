@@ -58,12 +58,14 @@ export function FixtureResultRow({
             ? `${CARD.base} border-2 border-accent-gold/50 bg-accent-gold/10 ring-1 ring-accent-gold/25`
             : `${CARD.base} bg-pitch-900/40`
       } ${onClick ? CARD.interactive : ""} ${
-        compact ? "px-2 py-1.5" : "px-2.5 py-2 sm:px-3 sm:py-2.5"
+        compact ? "px-2 py-1.5 sm:px-2.5 sm:py-2" : "px-2.5 py-2 sm:px-3 sm:py-2.5"
       }`}
     >
       {showRound && (
         <p
-          className={`mb-1.5 line-clamp-2 px-0.5 text-center text-[10px] leading-snug sm:mb-2 sm:px-0 sm:text-inherit ${TYPO.statLabel}`}
+          className={`mb-1 line-clamp-2 px-0.5 text-center leading-snug ${
+            compact ? "text-[9px] sm:text-[10px]" : "text-[10px] sm:text-inherit"
+          } ${TYPO.statLabel}`}
         >
           {roundLabel ?? `Round ${fixture.round}`}
           {!compact && !roundLabel && (
@@ -73,7 +75,11 @@ export function FixtureResultRow({
           )}
         </p>
       )}
-      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1 sm:gap-3">
+      <div
+        className={`grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center ${
+          compact ? "gap-1 sm:gap-2" : "gap-1 sm:gap-3"
+        }`}
+      >
         <ClubColorChip
           name={homeName}
           primary={homeColors.primary}
@@ -83,9 +89,17 @@ export function FixtureResultRow({
           align="left"
           surface={selected ? "resultRowSelected" : "resultRow"}
         />
-        <div className="flex min-w-[3.25rem] flex-col items-center justify-center gap-0.5 px-0.5 sm:min-w-[4.75rem] sm:gap-1 sm:px-1">
+        <div
+          className={`flex flex-col items-center justify-center gap-0.5 px-0.5 ${
+            compact
+              ? "min-w-[2.75rem] sm:min-w-[3.5rem]"
+              : "min-w-[3.25rem] sm:min-w-[4.75rem] sm:px-1"
+          }`}
+        >
           <span
-            className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-black sm:h-7 sm:w-7 sm:text-xs ${
+            className={`inline-flex items-center justify-center rounded-full font-black ${
+              compact ? "h-5 w-5 text-[9px] sm:h-6 sm:w-6 sm:text-[10px]" : "h-6 w-6 text-[10px] sm:h-7 sm:w-7 sm:text-xs"
+            } ${
               fixture.result === "W"
                 ? "bg-theme-primary/25 text-theme-primary"
                 : fixture.result === "D"
@@ -95,7 +109,11 @@ export function FixtureResultRow({
           >
             {fixture.result}
           </span>
-          <p className="fixture-score whitespace-nowrap font-display text-xs font-black leading-none text-white sm:text-sm">
+          <p
+            className={`fixture-score whitespace-nowrap font-display font-black leading-none text-white ${
+              compact ? "text-[11px] sm:text-xs" : "text-xs sm:text-sm"
+            }`}
+          >
             {homeScore} - {awayScore}
           </p>
         </div>

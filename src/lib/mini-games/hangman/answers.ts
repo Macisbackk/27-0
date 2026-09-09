@@ -97,6 +97,8 @@ function playerPuzzles(): HangmanPuzzle[] {
       category: "player",
       answer: player.displayName,
       hint: `${player.positionLabel} · ${player.club}`,
+      isHistoric: player.isHistoric,
+      year: player.year,
     });
   }
   return puzzles;

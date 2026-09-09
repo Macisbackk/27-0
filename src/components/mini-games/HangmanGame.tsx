@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { GameButton } from "@/components/ui/GameButton";
-import { MiniGameShell, MiniGameStatLine } from "./MiniGameShell";
+import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
 import { TYPO } from "@/lib/ui/typography";
 import { formatClubFundsExact } from "@/lib/club-funds";
 import { getLocalDateKey } from "@/lib/mini-games/date";
-import { HANGMAN_CATEGORY_LABEL } from "@/lib/mini-games/hangman/answers";
+import { HANGMAN_CATEGORY_LABEL, getHangmanBank } from "@/lib/mini-games/hangman/answers";
 import {
   createHangmanRun,
   guessHangmanLetter,
@@ -127,6 +126,21 @@ export function HangmanGame() {
 
   const letters = useMemo(() => (run ? displayAnswer(run) : []), [run]);
   const words = useMemo(() => answerWords(letters), [letters]);
+  const eraMeta = useMemo(() => {
+    if (!run || run.category !== "player") return null;
+    if (typeof run.year === "number" && run.isHistoric !== undefined) {
+      return { isHistoric: run.isHistoric, year: run.year };
+    }
+    const puzzle = getHangmanBank().find((item) => item.id === run.puzzleId);
+    if (
+      puzzle &&
+      typeof puzzle.year === "number" &&
+      puzzle.isHistoric !== undefined
+    ) {
+      return { isHistoric: puzzle.isHistoric, year: puzzle.year };
+    }
+    return null;
+  }, [run]);
   const letterCount = letters.filter((char) => char !== " ").length;
   const answerFontClass =
     letterCount > 16
@@ -188,7 +202,7 @@ export function HangmanGame() {
   return (
     <MiniGameShell title="Rugby League Hangman">
       {celebrate && <Confetti />}
-      <div className="mx-auto w-full max-w-lg">
+      <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">
         <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
           Guess the player, club or rugby league term. Eight wrong letters and
           you&apos;re done.
@@ -212,6 +226,17 @@ export function HangmanGame() {
               {run.daily ? " · Daily" : " · Practice"}
             </p>
             <p className={`mt-1 text-center ${TYPO.bodySm}`}>{run.hint}</p>
+            {eraMeta &&
+              (eraMeta.isHistoric ? (
+                <p
+                  className="mt-1.5 text-center font-display text-[11px] font-bold uppercase tracking-[0.14em] text-accent-gold"
+                  aria-label={`Era player from ${eraMeta.year}`}
+                >
+                  Era · {eraMeta.year}
+                </p>
+              ) : (
+                <p className={`mt-1.5 text-center ${TYPO.meta}`}>Current</p>
+              ))}
 
             <div
               className={`mt-6 flex w-full max-w-full flex-wrap items-center justify-center gap-x-4 gap-y-3 font-display text-white ${answerFontClass} ${
@@ -242,7 +267,7 @@ export function HangmanGame() {
 
             <div className="mx-auto mt-8 flex w-full max-w-md flex-col gap-1.5">
               {ROWS.map((row) => (
-                <div key={row} className="flex justify-center gap-1">
+                <div key={row} className="flex w-full justify-center gap-1">
                   {[...row].map((letter) => {
                     const used = run.guessed.includes(letter);
                     const inAnswer = run.answer
@@ -278,16 +303,20 @@ export function HangmanGame() {
                   {run.status === "won" ? "Solved" : "Out of lives"}
                 </p>
                 <p className={`mt-2 ${TYPO.body}`}>{run.answer}</p>
+                {eraMeta?.isHistoric && (
+                  <p className="mt-1 font-display text-[11px] font-bold uppercase tracking-[0.14em] text-accent-gold">
+                    Era · {eraMeta.year}
+                  </p>
+                )}
                 {run.status === "won" && run.payoutAwarded && (
                   <p className={`mt-2 ${TYPO.bodySm}`}>
                     +{formatClubFundsExact(HANGMAN_WIN_REWARD)} Club Funds
                   </p>
                 )}
-                <div className="mx-auto mt-4 max-w-xs">
-                  <GameButton variant="theme" onClick={startPractice}>
-                    Play another
-                  </GameButton>
-                </div>
+                <MiniGameEndActions
+                  onPlayAgain={startPractice}
+                  playAgainLabel="Play again"
+                />
               </div>
             )}
           </>

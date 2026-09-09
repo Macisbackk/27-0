@@ -37,17 +37,17 @@ const GAMES = [
 export function MiniGamesHub() {
   return (
     <StandardPageShell>
-      <div className={`${PAGE.section} mini-game-arena mx-auto w-full max-w-xl`}>
-        <p className={`text-center ${TYPO.sectionLabel}`}>Play</p>
-        <h1 className={`mt-2 text-center ${TYPO.pageTitle}`}>Mini Games</h1>
-        <p className={`mx-auto mt-3 max-w-md text-center ${TYPO.pageSubtitle}`}>
+      <div className={`${PAGE.section} mini-game-arena mx-auto flex w-full max-w-xl flex-col items-center text-center`}>
+        <p className={TYPO.sectionLabel}>Play</p>
+        <h1 className={`mt-2 ${TYPO.pageTitle}`}>Mini Games</h1>
+        <p className={`mx-auto mt-3 max-w-md ${TYPO.pageSubtitle}`}>
           Quiz · Wordle · Hangman · Higher or Lower
         </p>
-        <ul className="mt-8 grid gap-3">
+        <ul className="mt-8 grid w-full gap-3 text-left">
           {GAMES.map((game) => (
             <li key={game.href}>
               <div className="flex items-center gap-3 border border-white/10 bg-[#0c1210] px-4 py-4">
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 flex-1 text-left">
                   <p className={TYPO.keyLabel}>{game.title}</p>
                   <p className={`mt-1 ${TYPO.bodySm}`}>{game.blurb}</p>
                 </div>

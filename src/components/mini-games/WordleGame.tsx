@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
-import { MiniGameShell, MiniGameStatLine } from "./MiniGameShell";
+import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
 import { PlayerAutocomplete } from "./PlayerAutocomplete";
 import { TYPO } from "@/lib/ui/typography";
 import { formatClubFundsExact } from "@/lib/club-funds";
@@ -63,6 +63,16 @@ function GuessRow({ guess, shake }: { guess: WordleGuess; shake?: boolean }) {
       }`}
     >
       <p className={TYPO.playerNameSm}>{guess.name}</p>
+      {guess.isHistoric ? (
+        <p
+          className="mt-1.5 text-center font-display text-[11px] font-bold uppercase tracking-[0.14em] text-accent-gold"
+          aria-label={`Era player from ${guess.year}`}
+        >
+          Era · {guess.year}
+        </p>
+      ) : (
+        <p className={`mt-1.5 text-center ${TYPO.meta}`}>Current</p>
+      )}
       <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-2 text-sm sm:grid-cols-4">
         <div>
           <dt className={TYPO.keyLabel}>Nation</dt>
@@ -180,7 +190,7 @@ export function WordleGame() {
   return (
     <MiniGameShell title="Rugby League Wordle">
       {celebrate && <Confetti />}
-      <div className="mx-auto w-full max-w-lg">
+      <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">
         <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
           Guess today&apos;s Super League player. Matching attributes unlock
           numbered clues.
@@ -219,13 +229,13 @@ export function WordleGame() {
 
             {run.status === "playing" && (
               <form
-                className="mt-6 flex flex-col gap-3 sm:flex-row"
+                className="mt-6 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:items-center"
                 onSubmit={(event) => {
                   event.preventDefault();
                   submit(query);
                 }}
               >
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 flex-1 text-left">
                   <PlayerAutocomplete
                     value={query}
                     onChange={(value) => {
@@ -243,7 +253,7 @@ export function WordleGame() {
                   type="submit"
                   size="sm"
                   fullWidth={false}
-                  className="shrink-0"
+                  className="mx-auto shrink-0 sm:mx-0"
                 >
                   Guess
                 </GameButton>
@@ -255,7 +265,7 @@ export function WordleGame() {
               </p>
             )}
 
-            <ul className="mt-6 space-y-2">
+            <ul className="mt-6 w-full space-y-2 text-left">
               {run.guesses.map((guess) => (
                 <GuessRow
                   key={guess.playerId}
@@ -274,6 +284,16 @@ export function WordleGame() {
                 <p className={TYPO.cardTitle}>
                   {run.status === "won" ? "Got it" : "Unlucky"}
                 </p>
+                {answer.isHistoric ? (
+                  <p
+                    className="mt-1.5 text-center font-display text-[11px] font-bold uppercase tracking-[0.14em] text-accent-gold"
+                    aria-label={`Era player from ${answer.year}`}
+                  >
+                    Era · {answer.year}
+                  </p>
+                ) : (
+                  <p className={`mt-1.5 text-center ${TYPO.meta}`}>Current</p>
+                )}
                 <p className={`mt-2 ${TYPO.body}`}>
                   {formatMiniGamePlayerLabel(answer)}
                   {" · "}
@@ -291,6 +311,7 @@ export function WordleGame() {
                 <p className={`mt-3 ${TYPO.bodySm}`}>
                   Come back tomorrow for a new player.
                 </p>
+                <MiniGameEndActions />
               </div>
             )}
           </>

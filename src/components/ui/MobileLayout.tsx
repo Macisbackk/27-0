@@ -65,7 +65,7 @@ export function MobileSectionHeader({
   title,
   subtitle,
   collapseSubtitleOnMobile = true,
-  align = "left",
+  align = "center",
   className = "",
 }: MobileSectionHeaderProps) {
   return (
@@ -100,7 +100,7 @@ interface MobilePageHeaderProps {
   className?: string;
 }
 
-/** Left-aligned page title + optional context / trailing actions. */
+/** Centred page title + optional context / trailing actions. */
 export function MobilePageHeader({
   title,
   context,
@@ -109,8 +109,14 @@ export function MobilePageHeader({
 }: MobilePageHeaderProps) {
   return (
     <header className={`${MOBILE.pageHeader} ${className}`.trim()}>
-      <div className="flex min-w-0 items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
+      <div
+        className={`flex min-w-0 gap-3 ${
+          actions ? "items-start justify-between" : "flex-col items-center"
+        }`}
+      >
+        <div
+          className={`min-w-0 flex-1 ${actions ? "text-left" : "text-center"}`}
+        >
           <h1 className={MOBILE.pageHeaderTitle}>{title}</h1>
           {context ? (
             <div className={MOBILE.pageHeaderContext}>{context}</div>

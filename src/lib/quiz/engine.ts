@@ -321,7 +321,12 @@ export function usePhone(run: QuizRun, bank: readonly QuizQuestion[]): QuizRun {
     4,
     question.difficulty,
     slot.hiddenOptionIndexes,
-    `${run.id}:${slot.questionId}`
+    `${run.id}:${slot.questionId}`,
+    {
+      stem: question.question,
+      options: question.options,
+      category: question.category,
+    }
   );
   const questions = run.questions.map((entry, index) =>
     index === run.questionIndex ? { ...entry, phone } : entry

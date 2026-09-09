@@ -7,6 +7,7 @@ import { Confetti } from "@/components/Confetti";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameModal } from "@/components/ui/GameModal";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
+import { MiniGameEndActions } from "@/components/mini-games/MiniGameShell";
 import { PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { formatClubFundsExact } from "@/lib/club-funds";
@@ -243,7 +244,7 @@ export function QuizModeApp() {
 
   return (
     <StandardPageShell>
-      <div className={`${PAGE.section} quiz-arena mx-auto flex w-full max-w-5xl flex-col items-stretch`}>
+      <div className={`${PAGE.section} quiz-arena mx-auto flex w-full max-w-5xl flex-col items-center`}>
         {!ready ? (
           <p className={`text-center ${TYPO.meta}`}>Loading Quiz Mode…</p>
         ) : view === "landing" ? (
@@ -522,9 +523,9 @@ function QuizPlayScreen({
   const correctDisplay = question && slot ? getCorrectDisplayIndex(question, slot) : -1;
 
   return (
-    <div className="mx-auto grid w-full max-w-5xl gap-5 lg:grid-cols-[220px_minmax(0,1fr)]">
-      <aside className="hidden lg:block">
-        <ol className="space-y-1">
+    <div className="mx-auto grid w-full max-w-5xl gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,36rem)_minmax(0,1fr)] lg:items-start">
+      <aside className="hidden lg:block lg:justify-self-end lg:pt-1">
+        <ol className="w-[13.5rem] space-y-1 text-left">
           {[...QUIZ_PRIZE_LADDER].map((amount, index) => {
             const number = index + 1;
             const current = number === questionNumber;
@@ -551,9 +552,9 @@ function QuizPlayScreen({
         </ol>
       </aside>
 
-      <section className="min-w-0">
-        <div className="flex items-start justify-between gap-3">
-          <div>
+      <section className="mx-auto min-w-0 w-full max-w-xl text-center lg:col-start-2">
+        <div className="flex flex-col items-center gap-2 sm:flex-row sm:items-start sm:justify-center sm:gap-4">
+          <div className="min-w-0">
             <p className={TYPO.sectionLabel}>Super League Millionaire</p>
             {club && (
               <p className={`mt-1 ${TYPO.clubName}`}>{club.name} Team Challenge</p>
@@ -597,7 +598,7 @@ function QuizPlayScreen({
               <summary className={`cursor-pointer text-center ${TYPO.meta}`}>
                 Prize ladder
               </summary>
-              <ol className="mt-2 max-h-40 space-y-0.5 overflow-y-auto">
+              <ol className="mt-2 max-h-40 space-y-0.5 overflow-y-auto text-left">
                 {[...QUIZ_PRIZE_LADDER]
                   .map((amount, index) => {
                     const number = index + 1;
@@ -631,7 +632,9 @@ function QuizPlayScreen({
           />
         </div>
 
-        <div className={`mt-3 flex flex-wrap gap-x-4 gap-y-1 ${TYPO.meta}`}>
+        <div
+          className={`mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 ${TYPO.meta}`}
+        >
           <span>Current: {formatClubFundsExact(currentPrize)}</span>
           <span>Guaranteed: {formatClubFundsExact(guaranteed)}</span>
         </div>
@@ -640,7 +643,7 @@ function QuizPlayScreen({
           {question?.question ?? "Question unavailable."}
         </p>
 
-        <div className="mt-4 grid gap-2 md:grid-cols-2">
+        <div className="mt-4 grid gap-2 text-left md:grid-cols-2">
           {options.map((option, index) => {
             const hidden = slot?.hiddenOptionIndexes.includes(index);
             const selected = slot?.selectedDisplayIndex === index;
@@ -674,20 +677,24 @@ function QuizPlayScreen({
 
         {slot?.phone && (
           <p className={`mt-3 ${TYPO.bodySm}`}>
-            Phone a fan ({slot.phone.confidence}): {slot.phone.quote} They would pick{" "}
-            {LETTERS[slot.phone.suggestionIndex]}.
+            Phone a fan ({slot.phone.confidence}): {slot.phone.quote} They&apos;re on{" "}
+            {LETTERS[slot.phone.suggestionIndex]}
+            {options[slot.phone.suggestionIndex]
+              ? ` — ${options[slot.phone.suggestionIndex]}`
+              : ""}
+            .
           </p>
         )}
 
         {revealed && (
-          <div className="mt-5">
+          <div className="mx-auto mt-5 w-full max-w-xs">
             <GameButton variant="theme" onClick={onContinue}>
               {slot?.correct ? "Continue" : "See result"}
             </GameButton>
           </div>
         )}
 
-        <div className="mt-5 grid grid-cols-4 gap-1.5">
+        <div className="mt-5 grid w-full grid-cols-4 gap-1.5">
           <GameButton
             variant="secondary"
             size="sm"
@@ -727,13 +734,14 @@ function QuizPlayScreen({
         </div>
 
         {run.phase === "question_active" && (
-          <div className="mt-3">
+          <div className="mx-auto mt-3 w-full max-w-xs">
             <GameButton variant="secondary" onClick={onWalkAway}>
               Walk Away
             </GameButton>
           </div>
         )}
       </section>
+      <div className="hidden lg:block" aria-hidden />
     </div>
   );
 }
@@ -770,14 +778,18 @@ function QuizResultScreen({
       <h1 className={`mt-2 ${TYPO.pageTitle}`}>{title}</h1>
       {run.phase === "quiz_complete" ? (
         <p className={`mt-3 ${TYPO.pageSubtitle}`}>
-          You answered all 15 questions correctly.
+          You answered all 15 questions correctly — Super League Millionaire payout.
         </p>
       ) : (
         <p className={`mt-3 ${TYPO.pageSubtitle}`}>
           You reached Question {run.questionIndex + 1}
         </p>
       )}
-      <p className="quiz-prize mt-4 text-4xl">{formatClubFundsExact(run.rewardAmount)}</p>
+      <p className="quiz-prize mt-4 text-4xl">
+        {run.phase === "quiz_complete"
+          ? "£1,000,000"
+          : formatClubFundsExact(run.rewardAmount)}
+      </p>
       {run.phase === "quiz_walked_away" && (
         <p className={`mt-2 ${TYPO.body}`}>You banked {formatClubFundsExact(run.rewardAmount)}.</p>
       )}
@@ -803,10 +815,8 @@ function QuizResultScreen({
             .join(", ") || "None"}
         </li>
       </ul>
-      <div className="mt-6 grid gap-2 sm:grid-cols-2">
-        <GameButton variant="theme" onClick={onAgain}>
-          Play Again
-        </GameButton>
+      <MiniGameEndActions onPlayAgain={onAgain} playAgainLabel="Play again" />
+      <div className="mx-auto mt-2 w-full max-w-xs">
         <GameButton variant="secondary" onClick={onBack}>
           Back to Quiz
         </GameButton>

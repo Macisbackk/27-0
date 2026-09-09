@@ -24,6 +24,10 @@ import {
 } from "../src/lib/quiz/prizes";
 import { isEligibleMiniGameQuizTeamId } from "../src/lib/mini-games/eligibility";
 import {
+  buildPhoneResult,
+  inferPhoneAnswerKind,
+} from "../src/lib/quiz/lifelines";
+import {
   filterTeamChallengeQuestions,
   isObviousTeamChallengeAnswer,
   selectQuizQuestions,
@@ -224,6 +228,39 @@ console.log("\nPrize ladder");
   assert(getEndPayout("failed", 9) === 1_000, "fail after Q9 is guaranteed 1000");
 }
 
+console.log("\nPhone lifeline wording");
+{
+  assert(
+    inferPhoneAnswerKind({
+      stem: "What was the final score?",
+      options: ["24-6", "18-12", "10-8", "30-0"],
+      category: "famous-matches",
+    }) === "score",
+    "score options infer score kind"
+  );
+  assert(
+    inferPhoneAnswerKind({
+      stem: "In which year did Wigan win?",
+      options: ["1998", "2002", "2010", "2018"],
+      category: "history",
+    }) === "year",
+    "year options infer year kind"
+  );
+  const scorePhone = buildPhoneResult(0, 4, "hard", [], "phone-score-test", {
+    stem: "What was the final score?",
+    options: ["24-6", "18-12", "10-8", "30-0"],
+    category: "famous-matches",
+  });
+  assert(/\bscore/i.test(scorePhone.quote), "score questions talk about a score");
+  assert(!/\bname\b/i.test(scorePhone.quote), "score questions never say name");
+  const playerPhone = buildPhoneResult(0, 4, "easy", [], "phone-player-test", {
+    stem: "Which player scored the try?",
+    options: ["Rob Burrow", "Kevin Sinfield", "Sean Long", "Paul Wellens"],
+    category: "players",
+  });
+  assert(/\bname\b/i.test(playerPhone.quote), "player questions can mention a name");
+}
+
 console.log("\nRun state and lifelines");
 {
   let run = createQuizRun({ bank, mode: "millionaire" });
@@ -277,6 +314,9 @@ console.log("\nRun state and lifelines");
   assert(run.lifelines.crowd && run.questions[1]?.crowd, "crowd lifeline stores percents");
   run = usePhone(run, bank);
   assert(run.lifelines.phone && run.questions[1]?.phone, "phone lifeline stores a suggestion");
+  const phoneQuote = run.questions[1]?.phone?.quote ?? "";
+  assert(phoneQuote.length > 0, "phone quote is non-empty");
+  assert(!/just the name that jumped out/i.test(phoneQuote), "phone quote is not the old name-only line");
   const beforeChange = run.questions[1]?.questionId;
   run = useChangeQuestion(run, bank);
   assert(run.lifelines.change, "change lifeline is consumed");

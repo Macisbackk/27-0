@@ -8,7 +8,7 @@ interface GameHeaderProps {
   className?: string;
 }
 
-/** Scorebug-style page / section header. */
+/** Scorebug-style page / section header — centred unless an action sits beside it. */
 export function GameHeader({
   eyebrow,
   title,
@@ -18,8 +18,12 @@ export function GameHeader({
 }: GameHeaderProps) {
   return (
     <header className={`game-header ${className}`.trim()}>
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
+      <div
+        className={`flex gap-3 ${
+          action ? "items-start justify-between" : "flex-col items-center"
+        }`}
+      >
+        <div className={`min-w-0 flex-1 ${action ? "text-left" : "text-center"}`}>
           {eyebrow ? <p className="game-header__eyebrow">{eyebrow}</p> : null}
           <h1 className="game-header__title">{title}</h1>
           {subtitle ? (

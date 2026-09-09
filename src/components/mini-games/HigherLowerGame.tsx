@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ClubLogoBox } from "@/components/ClubBadge";
 import { GameButton } from "@/components/ui/GameButton";
-import { MiniGameShell, MiniGameStatLine } from "./MiniGameShell";
+import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
 import { TYPO } from "@/lib/ui/typography";
 import { formatClubFundsExact } from "@/lib/club-funds";
 import {
@@ -94,6 +94,16 @@ function PlayerFace({
       <p className={`mt-3 ${TYPO.playerNameSm}`}>
         {formatMiniGamePlayerLabel(player)}
       </p>
+      {player.isHistoric ? (
+        <p
+          className={`mt-1.5 font-display text-[11px] font-bold uppercase tracking-[0.14em] text-accent-gold`}
+          aria-label={`Era player from ${player.year}`}
+        >
+          Era · {player.year}
+        </p>
+      ) : (
+        <p className={`mt-1.5 ${TYPO.meta}`}>Current</p>
+      )}
       <p
         className={`mt-3 font-display text-3xl tabular-nums ${
           showRating ? "text-white" : "text-pitch-600"
@@ -234,7 +244,7 @@ export function HigherLowerGame() {
   return (
     <MiniGameShell title="Higher or Lower">
       {celebrate && <Confetti />}
-      <div className="mx-auto flex w-full max-w-sm flex-col items-center">
+      <div className="mini-game-play mx-auto flex w-full max-w-sm flex-col items-center">
         <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
           Five picks. Is the challenge player&apos;s rating higher or lower?
         </p>
@@ -281,7 +291,8 @@ export function HigherLowerGame() {
 
             {showRatings && (
               <p className={`mt-4 text-center ${TYPO.bodySm}`}>
-                {formatMiniGamePlayerLabel(board.challenge)} is{" "}
+                {formatMiniGamePlayerLabel(board.challenge, { showYear: true })}{" "}
+                is{" "}
                 {board.challenge.rating > board.base.rating ? "HIGHER" : "LOWER"}{" "}
                 ({board.challenge.rating} vs {board.base.rating})
               </p>
@@ -308,7 +319,7 @@ export function HigherLowerGame() {
                       : "Wrong"}
                 </p>
                 {note && <p className={`mt-2 ${TYPO.bodySm}`}>{note}</p>}
-                <div className="mx-auto mt-4 max-w-xs">
+                <div className="mx-auto mt-4 w-full max-w-xs">
                   {run.status === "playing" &&
                   run.lastCorrect &&
                   !isFinalHigherLowerPick(run) ? (
@@ -316,9 +327,7 @@ export function HigherLowerGame() {
                       Next pick
                     </GameButton>
                   ) : runOver ? (
-                    <GameButton variant="theme" onClick={restart}>
-                      Play again
-                    </GameButton>
+                    <MiniGameEndActions onPlayAgain={restart} />
                   ) : null}
                 </div>
               </div>

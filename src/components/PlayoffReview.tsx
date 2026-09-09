@@ -195,7 +195,7 @@ export function PlayoffReview({
     >
       {isChampion && <Confetti />}
 
-      <div className="relative flex w-full flex-col items-center py-4 sm:py-8">
+      <div className="relative flex w-full flex-col items-center py-3 sm:py-5">
         <div className="manager-section w-full items-center px-0">
         <motion.header
           initial={{ opacity: 0, y: 20 }}
@@ -221,7 +221,7 @@ export function PlayoffReview({
         </motion.header>
 
         <motion.div
-          className="mt-6 w-full"
+          className="mt-4 w-full"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -239,14 +239,30 @@ export function PlayoffReview({
         </motion.div>
 
         <motion.div
-          className="mt-4 w-full"
+          className="mt-3 w-full"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <ClubFundsEarned payout={fundsPayout} />
         </motion.div>
 
-        <CollapsibleReviewSection title="Play-Off Summary" delay={0.2} defaultOpen>
+        <CollapsibleReviewSection title="Playoff Squad Review" delay={0.2}>
+          <SquadReviewSection
+            squad={squad}
+            awards={playerAwards}
+            tryScorers={playoffResult.tryScorers}
+            expectedTotalTries={playoffResult.tryScorers.reduce(
+              (sum, row) => sum + row.tries,
+              0
+            )}
+            totalMatches={
+              playoffMatchCount > 0 ? playoffMatchCount : undefined
+            }
+            statsScope="playoff"
+          />
+        </CollapsibleReviewSection>
+
+        <CollapsibleReviewSection title="Play-Off Summary" delay={0.24}>
           <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
             <p>
               Play-Off Record:{" "}
@@ -287,8 +303,7 @@ export function PlayoffReview({
         {playoffBracketState && (
           <CollapsibleReviewSection
             title="Play-Off Bracket"
-            delay={0.25}
-            defaultOpen
+            delay={0.28}
             helper="Tap a match for details."
           >
             <PlayoffBracketDisplay
@@ -302,28 +317,8 @@ export function PlayoffReview({
           </CollapsibleReviewSection>
         )}
 
-        <CollapsibleReviewSection
-          title="Playoff Squad Review"
-          delay={0.32}
-          defaultOpen={false}
-        >
-          <SquadReviewSection
-            squad={squad}
-            awards={playerAwards}
-            tryScorers={playoffResult.tryScorers}
-            expectedTotalTries={playoffResult.tryScorers.reduce(
-              (sum, row) => sum + row.tries,
-              0
-            )}
-            totalMatches={
-              playoffMatchCount > 0 ? playoffMatchCount : undefined
-            }
-            statsScope="playoff"
-          />
-        </CollapsibleReviewSection>
-
         <motion.footer
-          className="mt-8 w-full"
+          className="mt-6 w-full"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}

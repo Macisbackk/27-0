@@ -40,9 +40,11 @@ export function StandardPageShell({
       className={className}
     >
       {contentColumn ? (
-        <div className={`${PAGE.content} w-full min-w-0`}>{children}</div>
+        <div className={`${PAGE.content} site-page-center w-full min-w-0`}>
+          {children}
+        </div>
       ) : (
-        children
+        <div className="site-page-center w-full min-w-0">{children}</div>
       )}
     </PageShell>
   );

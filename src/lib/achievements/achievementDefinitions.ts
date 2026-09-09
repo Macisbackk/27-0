@@ -331,7 +331,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-millionaire",
     name: "Millionaire",
-    description: "Answer all 15 Super League Millionaire questions correctly.",
+    description: "Answer all 15 Super League Millionaire questions correctly and bank £1,000,000.",
     category: "quiz",
     points: 100,
     rewardClubFunds: 100_000,

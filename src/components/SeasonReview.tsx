@@ -16,7 +16,6 @@ import { getSeasonReviewLabel } from "@/lib/mode-labels";
 import { getSquadValue } from "@/lib/positions";
 import { formatValue } from "@/lib/players";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
-import { formatSeasonWinPercentageOrDash } from "@/lib/stats-views";
 import { playGradeSound, playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { MatchReviewActions } from "./MatchReviewActions";
 import { ShareSeasonButton } from "./ShareSeasonButton";
@@ -286,7 +285,7 @@ export function SeasonReview({
     >
         {showCelebration && <Confetti />}
 
-          <div className="relative flex w-full min-w-0 flex-col items-center py-2 sm:py-6">
+          <div className="relative flex w-full min-w-0 flex-col items-center py-2 sm:py-4">
             <div className="manager-section w-full items-center px-0">
             <motion.header
               initial={{ opacity: 0, y: 20 }}
@@ -355,7 +354,7 @@ export function SeasonReview({
             </motion.header>
 
             <motion.div
-              className="mt-6 w-full"
+              className="mt-4 w-full"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
@@ -368,13 +367,23 @@ export function SeasonReview({
                 </div>
               ) : null}
               {clubFundsPayout ? (
-                <div className="mt-4">
+                <div className="mt-3">
                   <ClubFundsEarned payout={clubFundsPayout} />
                 </div>
               ) : null}
             </motion.div>
 
-            <CollapsibleReviewSection title="Season Summary" delay={0.32} defaultOpen>
+            <CollapsibleReviewSection title="Squad Review" delay={0.32}>
+              <SquadReviewSection
+                squad={squad}
+                awards={playerAwards}
+                tryScorers={seasonResult.tryScorers}
+                expectedTotalTries={expectedTries}
+                totalMatches={seasonResult.fixtures.length}
+              />
+            </CollapsibleReviewSection>
+
+            <CollapsibleReviewSection title="Season Summary" delay={0.34}>
               <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
                 <p>
                   Regular Season Record:{" "}
@@ -427,17 +436,16 @@ export function SeasonReview({
               </div>
             </CollapsibleReviewSection>
 
-            <CollapsibleReviewSection title="League Table" delay={0.34} defaultOpen>
+            <CollapsibleReviewSection title="League Table" delay={0.36}>
               <LeagueTable rows={leagueTable} />
             </CollapsibleReviewSection>
 
             <CollapsibleReviewSection
               title="Match Results"
-              delay={0.36}
-              defaultOpen={false}
+              delay={0.38}
               helper="Tap a result for details."
             >
-              <div className="min-w-0 space-y-2 text-left">
+              <div className="min-w-0 space-y-1.5 text-left">
                 {seasonResult.fixtures.map((fixture) => {
                   const isSelected = selectedFixture?.round === fixture.round;
                   return (
@@ -448,6 +456,7 @@ export function SeasonReview({
                     >
                       <FixtureResultRow
                         fixture={fixture}
+                        compact
                         onClick={() => {
                           if (!isSelected) playPanelExpand();
                           else playPanelClose();
@@ -480,18 +489,8 @@ export function SeasonReview({
               </div>
             </CollapsibleReviewSection>
 
-            <CollapsibleReviewSection title="Squad Review" delay={0.38} defaultOpen={false}>
-              <SquadReviewSection
-                squad={squad}
-                awards={playerAwards}
-                tryScorers={seasonResult.tryScorers}
-                expectedTotalTries={expectedTries}
-                totalMatches={seasonResult.fixtures.length}
-              />
-            </CollapsibleReviewSection>
-
             <motion.footer
-              className="mt-8 w-full space-y-3"
+              className="mt-6 w-full space-y-3"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.65 }}

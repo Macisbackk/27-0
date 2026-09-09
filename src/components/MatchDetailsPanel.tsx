@@ -89,7 +89,7 @@ export function MatchDetailsPanel({
   ]);
 
   const scoringBlock = detail ? (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <TeamScoringBreakdown
         teamName={userTeamName}
         colorClub={
@@ -132,7 +132,7 @@ export function MatchDetailsPanel({
       exit={{ opacity: 0, y: -4 }}
       transition={{ duration: 0.18, ease: "easeOut" }}
     >
-      <div className={`${SPACING.cardPadding} ${SPACING.stackLg}`}>
+      <div className="space-y-3 p-3 sm:space-y-4 sm:p-5">
         <div className="flex items-start justify-between gap-3">
           <div className={`min-w-0 flex-1 ${SPACING.stackMd}`}>
             <p className={TYPO.sectionLabel}>
@@ -147,7 +147,7 @@ export function MatchDetailsPanel({
             {matchStory && (
               <div className={`${CARD.stat} ${SPACING.cardPaddingSm}`}>
                 <p className={TYPO.sectionTitle}>Match Story</p>
-                <p className={`mt-2 whitespace-pre-line ${TYPO.bodySm}`}>
+                <p className={`mt-1.5 whitespace-pre-line ${TYPO.bodySm}`}>
                   {matchStory}
                 </p>
               </div>
@@ -163,7 +163,7 @@ export function MatchDetailsPanel({
         {canonicalEvents.length > 0 ? (
           <div>
             <p className={TYPO.sectionLabel}>Match Events</p>
-            <ul className="mt-2 divide-y divide-pitch-700/30">
+            <ul className="mt-1.5 divide-y divide-pitch-700/30">
               {canonicalEvents
                 .filter((e) => e.type !== "half_time" && e.type !== "full_time")
                 .map((event, index) => (

@@ -18,8 +18,10 @@ export function MiniGameShell({
 }) {
   return (
     <StandardPageShell>
-      <div className={`${PAGE.section} mini-game-arena mx-auto flex w-full max-w-xl flex-col items-stretch`}>
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+      <div
+        className={`${PAGE.section} mini-game-arena mx-auto flex w-full max-w-xl flex-col items-center text-center`}
+      >
+        <div className="mb-5 flex w-full flex-wrap items-center justify-center gap-3">
           <GameButton
             variant="secondary"
             size="sm"
@@ -30,7 +32,7 @@ export function MiniGameShell({
           </GameButton>
           {actions}
         </div>
-        <h1 className={`text-center ${TYPO.pageTitle}`}>{title}</h1>
+        <h1 className={TYPO.pageTitle}>{title}</h1>
         <div className="flex w-full flex-col items-center">{children}</div>
       </div>
     </StandardPageShell>
@@ -43,7 +45,7 @@ export function MiniGameStatLine({
   items: { label: string; value: string | number }[];
 }) {
   return (
-    <p className={`mt-2 ${TYPO.bodySm}`}>
+    <p className={`mt-2 text-center ${TYPO.bodySm}`}>
       {items.map((item, index) => (
         <span key={item.label}>
           {index > 0 ? " · " : ""}
@@ -65,5 +67,33 @@ export function MiniGameLink({
     <Link href={href} className="text-sm text-theme-primary hover:underline">
       {children}
     </Link>
+  );
+}
+
+/** End-of-run actions: replay this game and jump back to the Mini Games hub. */
+export function MiniGameEndActions({
+  onPlayAgain,
+  playAgainLabel = "Play again",
+  hubLabel = "Play another mini game",
+  className = "",
+}: {
+  onPlayAgain?: () => void;
+  playAgainLabel?: string;
+  hubLabel?: string;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`mx-auto mt-4 grid w-full max-w-xs gap-2 ${className}`.trim()}
+    >
+      {onPlayAgain && (
+        <GameButton variant="theme" onClick={onPlayAgain}>
+          {playAgainLabel}
+        </GameButton>
+      )}
+      <GameButton variant="secondary" href="/mini-games">
+        {hubLabel}
+      </GameButton>
+    </div>
   );
 }

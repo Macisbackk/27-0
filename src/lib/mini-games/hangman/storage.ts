@@ -28,17 +28,31 @@ function writeJson(key: string, value: unknown): void {
 
 function isHangmanRun(value: unknown): value is HangmanRun {
   if (!isRecord(value)) return false;
-  return (
-    typeof value.id === "string" &&
-    typeof value.date === "string" &&
-    typeof value.daily === "boolean" &&
-    typeof value.puzzleId === "string" &&
-    typeof value.answer === "string" &&
-    Array.isArray(value.guessed) &&
-    (value.status === "playing" ||
-      value.status === "won" ||
-      value.status === "lost")
-  );
+  if (
+    !(
+      typeof value.id === "string" &&
+      typeof value.date === "string" &&
+      typeof value.daily === "boolean" &&
+      typeof value.puzzleId === "string" &&
+      typeof value.answer === "string" &&
+      Array.isArray(value.guessed) &&
+      (value.status === "playing" ||
+        value.status === "won" ||
+        value.status === "lost")
+    )
+  ) {
+    return false;
+  }
+  if (
+    value.isHistoric !== undefined &&
+    typeof value.isHistoric !== "boolean"
+  ) {
+    return false;
+  }
+  if (value.year !== undefined && typeof value.year !== "number") {
+    return false;
+  }
+  return true;
 }
 
 export function loadHangmanRun(): HangmanRun | null {

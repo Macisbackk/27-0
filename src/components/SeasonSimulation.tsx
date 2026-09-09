@@ -81,7 +81,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
   const currentRound = Math.min(gameIndex + 1, SEASON_GAMES);
 
   return (
-    <div className="flex w-full flex-col items-center justify-center px-4 py-6">
+    <div className="flex w-full flex-col items-center justify-center px-3 py-4 sm:px-4 sm:py-6">
       <motion.p
         className="font-display text-xs font-bold uppercase tracking-[0.35em] text-theme-primary"
         initial={{ opacity: 0 }}
@@ -98,20 +98,20 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
         Season
       </motion.h2>
 
-      <div className="mt-6 w-full max-w-lg">
-        <ScoreboardPanel className="p-5 text-center sm:p-6">
+      <div className="mt-4 w-full max-w-lg">
+        <ScoreboardPanel className="p-3.5 text-center sm:p-5">
           <p className={`text-sm ${TYPO.bodySm}`}>
             Round {currentRound} of {SEASON_GAMES}
           </p>
 
-          <div className="mt-4 flex items-center justify-center gap-8">
+          <div className="mt-3 flex items-center justify-center gap-5 sm:gap-8">
             <div>
               <p className={TYPO.statLabel}>
                 Wins
               </p>
               <motion.p
                 key={wins}
-                className="font-display text-2xl font-black text-theme-primary sm:text-4xl"
+                className="font-display text-xl font-black text-theme-primary sm:text-4xl"
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
               >
@@ -125,7 +125,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               </p>
               <motion.p
                 key={losses}
-                className="font-display text-2xl font-black text-red-400 sm:text-4xl"
+                className="font-display text-xl font-black text-red-400 sm:text-4xl"
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
               >
@@ -138,7 +138,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
             {currentFixture && phase === "simulating" && (
               <motion.div
                 key={gameIndex}
-                className="mt-5"
+                className="mt-4"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}
@@ -172,7 +172,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mt-6"
+              className="mt-5"
             >
               <p className="font-display text-2xl font-black">
                 Final Record: {result.wins}-{result.losses}
@@ -201,15 +201,15 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
           )}
         </ScoreboardPanel>
 
-        <div className="mt-4 rounded-xl border border-pitch-700/50 bg-pitch-950/50 p-3">
+        <div className="mt-3 rounded-xl border border-pitch-700/50 bg-pitch-950/50 p-2.5 sm:p-3">
           <p className={`mb-2 ${TYPO.statLabel}`}>
             Results
           </p>
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             {result.fixtures.slice(0, gameIndex).map((f) => (
               <div
                 key={f.round}
-                className="flex items-center justify-between gap-2 text-[11px]"
+                className="flex items-center justify-between gap-2 text-[10px] sm:text-[11px]"
               >
                 <span className="truncate text-gray-400">
                   R{f.round}: {formatFixtureScore(f)}

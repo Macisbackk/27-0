@@ -70,6 +70,8 @@ export function createHangmanRun(options: {
     guessed: [],
     status: "playing",
     rewardClaimed: false,
+    isHistoric: puzzle.isHistoric,
+    year: puzzle.year,
   };
 }
 

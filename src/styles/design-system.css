@@ -259,7 +259,7 @@
   width: 100%;
   min-width: 0;
   margin-bottom: var(--mobile-row-gap);
-  text-align: left;
+  text-align: center;
 }
 
 .mobile-page-header {
@@ -268,7 +268,7 @@
   padding-bottom: var(--mobile-row-gap);
   border-bottom: 1px solid var(--mobile-divider);
   margin-bottom: var(--mobile-section-gap);
-  text-align: left;
+  text-align: center;
 }
 
 .mobile-page-header__title {
@@ -1431,6 +1431,7 @@
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+  text-align: center;
 }
 
 .game-header__eyebrow,
@@ -2788,10 +2789,42 @@
   animation: mini-game-shake 0.32s var(--motion-ease, ease);
 }
 
+/*
+ * Site page middle-align — StandardPageShell, Mini Games, Quiz, Home chrome.
+ * Children stay full width of the column; text/controls centre by default.
+ * Opt out with `.site-page-center--start` or local `text-left` / `items-start`.
+ */
+.site-page-center,
 .mini-game-arena,
 .quiz-arena {
   width: 100%;
   margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.site-page-center > *,
+.mini-game-arena > *,
+.quiz-arena > * {
+  width: 100%;
+  max-width: 100%;
+}
+
+.site-page-center--start {
+  align-items: stretch;
+  text-align: left;
+}
+
+.mini-game-play {
+  display: flex;
+  width: 100%;
+  max-width: 32rem;
+  margin-inline: auto;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .mini-game-clue {

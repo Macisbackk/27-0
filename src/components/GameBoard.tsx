@@ -2319,8 +2319,8 @@ export function GameBoard({
         }`}
       >
       {!isReviewPhase && (title || subtitle || dailyScenario) && (
-        <div className="pt-1 text-center lg:pt-0 sm:text-left">
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start">
+        <div className="pt-1 text-center lg:pt-0">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             {title && (
               <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>
                 {dailyScenario

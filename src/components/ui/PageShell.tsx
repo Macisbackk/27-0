@@ -47,7 +47,7 @@ export function PageShell({
       className={`matchday-arena arena-surface relative flex min-h-full min-w-0 max-w-full flex-1 flex-col ${desktopFit ? "lg:desktop-page-fit" : ""} ${className}`}
     >
       <div
-        className={`relative flex w-full min-w-0 max-w-full flex-col ${WIDTH_CLASS[width]} ${flushX ? "game-page--flush" : ""} ${padY} ${desktopFit ? "lg:min-h-0 lg:flex-1" : ""} ${innerClassName}`}
+        className={`site-page-center relative flex w-full min-w-0 max-w-full flex-col ${WIDTH_CLASS[width]} ${flushX ? "game-page--flush" : ""} ${padY} ${desktopFit ? "lg:min-h-0 lg:flex-1" : ""} ${innerClassName}`}
       >
         {children}
       </div>

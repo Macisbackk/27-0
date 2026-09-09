@@ -28,6 +28,8 @@ export type WordleGuess = {
   positionLabel: string;
   nationality: string;
   rating: number;
+  isHistoric?: boolean;
+  year?: number;
   clues: WordleClues;
 };
 
