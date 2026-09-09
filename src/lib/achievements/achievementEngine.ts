@@ -178,7 +178,8 @@ function evaluateUnlock(
       return ctx.hangmanWon === true || progress.hangmanWins >= 1;
     case "higher-lower-streak-10":
       return (
-        (ctx.higherLowerBestStreak ?? progress.higherLowerBestStreak) >= 10
+        (ctx.higherLowerFivePickWins ?? progress.higherLowerFivePickWins) >= 1 ||
+        (ctx.higherLowerBestStreak ?? progress.higherLowerBestStreak) >= 1
       );
     case "daily-debut":
       return (
@@ -299,7 +300,7 @@ export function getAchievementProgress(
     case "higher-lower-streak-10":
       return {
         current: Math.min(
-          ctx.higherLowerBestStreak ?? progress.higherLowerBestStreak,
+          ctx.higherLowerFivePickWins ?? progress.higherLowerFivePickWins,
           def.target
         ),
         target: def.target,

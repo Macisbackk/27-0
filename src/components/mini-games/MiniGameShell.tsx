@@ -18,7 +18,7 @@ export function MiniGameShell({
 }) {
   return (
     <StandardPageShell>
-      <div className={`${PAGE.section} mini-game-arena mx-auto w-full max-w-xl`}>
+      <div className={`${PAGE.section} mini-game-arena mx-auto flex w-full max-w-xl flex-col items-stretch`}>
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
           <GameButton
             variant="secondary"
@@ -31,7 +31,7 @@ export function MiniGameShell({
           {actions}
         </div>
         <h1 className={`text-center ${TYPO.pageTitle}`}>{title}</h1>
-        {children}
+        <div className="flex w-full flex-col items-center">{children}</div>
       </div>
     </StandardPageShell>
   );

@@ -170,7 +170,6 @@ function buildFinalsQuestions(): QuizQuestion[] {
 
     for (const record of records) {
       const winnerTeams = isTeamId(record.winnerId) ? [record.winnerId] : [];
-      const runnerTeams = isTeamId(record.runnerUpId) ? [record.runnerUpId] : [];
       const yearDiff = difficultyForYear(
         record.year,
         record.year >= 2018 ? "easy" : record.year >= 2010 ? "medium" : "hard"
@@ -186,9 +185,10 @@ function buildFinalsQuestions(): QuizQuestion[] {
             topicId: `final:${prefix}:${record.year}`,
             difficulty: yearDiff,
             category,
-            teams: [...winnerTeams, ...runnerTeams],
+            teams: winnerTeams,
             era: eraForYear(record.year),
             sourceType: "finals",
+            answerType: "objective",
           }
         )!
       );
@@ -197,6 +197,32 @@ function buildFinalsQuestions(): QuizQuestion[] {
 
   expand(GRAND_FINALS, "Super League Grand Final", "grand-finals", "gf");
   expand(CHALLENGE_CUPS, "Challenge Cup final", "challenge-cup", "cc");
+
+  for (const record of GRAND_FINALS) {
+    if (!record.score) continue;
+    const winnerTeams = isTeamId(record.winnerId) ? [record.winnerId] : [];
+    const runnerTeams = isTeamId(record.runnerUpId) ? [record.runnerUpId] : [];
+    const scores = unique(
+      GRAND_FINALS.map((row) => row.score).filter((value): value is string => Boolean(value))
+    );
+    questions.push(
+      makeQuestion(
+        `gf-score-${record.year}`,
+        `What was the score in the ${record.year} Super League Grand Final?`,
+        record.score,
+        pickDistractors(record.score, scores, 6),
+        {
+          topicId: `final:gf:${record.year}:score`,
+          difficulty: record.year >= 2020 ? "medium" : "hard",
+          category: "grand-finals",
+          teams: [...winnerTeams, ...runnerTeams],
+          era: eraForYear(record.year),
+          sourceType: "finals",
+          answerType: "objective",
+        }
+      )!
+    );
+  }
 
   const llsNames = unique(LEAGUE_LEADERS.map((row) => row.name));
   for (const row of LEAGUE_LEADERS) {
@@ -213,6 +239,7 @@ function buildFinalsQuestions(): QuizQuestion[] {
           teams: [row.id],
           era: eraForYear(row.year),
           sourceType: "records",
+          answerType: "objective",
         }
       )!
     );
@@ -223,10 +250,7 @@ function buildFinalsQuestions(): QuizQuestion[] {
 
 function buildStadiumQuestions(): QuizQuestion[] {
   const questions: QuizQuestion[] = [];
-  const names = STADIUMS.map((row) => {
-    const club = Object.entries(NAME_TO_ID).find(([, id]) => id === row.id);
-    return club?.[0] ?? row.id;
-  });
+  const stadiumNames = STADIUMS.map((row) => row.stadium);
 
   for (const row of STADIUMS) {
     const clubName =
@@ -234,15 +258,16 @@ function buildStadiumQuestions(): QuizQuestion[] {
     questions.push(
       makeQuestion(
         `stad-${row.id}`,
-        `Which rugby league club is associated with ${row.stadium}?`,
-        clubName,
-        pickDistractors(clubName, names, 6),
+        `What is ${possessive(clubName)} Super League home stadium?`,
+        row.stadium,
+        pickDistractors(row.stadium, stadiumNames, 6),
         {
           topicId: `stadium:${row.id}:home`,
           difficulty: "easy",
           category: "stadiums",
           teams: [row.id],
           sourceType: "curated",
+          answerType: "objective",
         }
       )!
     );
@@ -329,13 +354,10 @@ function loadCurrentRosters(): RosterPlayer[] {
     "hull-kr.json",
     "leeds-rhinos.json",
     "leigh-leopards.json",
-    "london-broncos.json",
-    "salford-red-devils.json",
     "st-helens.json",
     "toulouse-olympique.json",
     "wakefield-trinity.json",
     "warrington-wolves.json",
-    "widnes-vikings.json",
     "wigan-warriors.json",
     "york-knights.json",
   ];

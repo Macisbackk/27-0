@@ -13,6 +13,11 @@ const GAMES = [
     blurb: "Climb the prize ladder to £1,000,000.",
   },
   {
+    href: "/mini-games/quiz?mode=team",
+    title: "Team Challenge",
+    blurb: "Fifteen questions about one Super League club.",
+  },
+  {
     href: "/mini-games/wordle",
     title: "Rugby League Wordle",
     blurb: "Guess today's rugby league player.",
@@ -25,14 +30,14 @@ const GAMES = [
   {
     href: "/mini-games/higher-lower",
     title: "Higher or Lower",
-    blurb: "Can you work out which player has the higher rating?",
+    blurb: "Five picks. Is the next rating higher or lower?",
   },
 ] as const;
 
 export function MiniGamesHub() {
   return (
     <StandardPageShell>
-      <div className={`${PAGE.section} mx-auto w-full max-w-xl`}>
+      <div className={`${PAGE.section} mini-game-arena mx-auto w-full max-w-xl`}>
         <p className={`text-center ${TYPO.sectionLabel}`}>Play</p>
         <h1 className={`mt-2 text-center ${TYPO.pageTitle}`}>Mini Games</h1>
         <p className={`mx-auto mt-3 max-w-md text-center ${TYPO.pageSubtitle}`}>

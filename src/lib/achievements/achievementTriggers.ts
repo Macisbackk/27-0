@@ -149,6 +149,7 @@ export function triggerMiniGameAchievements(input: {
   wordleWon?: boolean;
   hangmanWon?: boolean;
   higherLowerBestStreak?: number;
+  higherLowerFivePickWins?: number;
 }): void {
   triggerAchievementCheck({
     trigger: "mini-game",
@@ -156,6 +157,7 @@ export function triggerMiniGameAchievements(input: {
     wordleWon: input.wordleWon,
     hangmanWon: input.hangmanWon,
     higherLowerBestStreak: input.higherLowerBestStreak,
+    higherLowerFivePickWins: input.higherLowerFivePickWins,
   });
 }
 

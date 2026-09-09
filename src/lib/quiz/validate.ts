@@ -101,6 +101,13 @@ export function validateQuestion(question: QuizQuestion): QuizValidationIssue[] 
       }
     }
   }
+  if (
+    question.answerType &&
+    question.answerType !== "objective" &&
+    question.answerType !== "subjective"
+  ) {
+    issues.push({ id: prefix, message: `Invalid answerType: ${question.answerType}` });
+  }
   return issues;
 }
 

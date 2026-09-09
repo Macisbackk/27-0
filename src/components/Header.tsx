@@ -28,7 +28,7 @@ export function Header() {
                 playMenuOpen();
                 setMenuOpen(true);
               }}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--mobile-radius-medium)] text-base text-pitch-300 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 sm:h-11 sm:w-auto sm:gap-2 sm:px-3 sm:text-sm sm:font-medium"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--mobile-radius-medium)] border-0 bg-transparent text-base text-pitch-300 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 sm:h-11 sm:w-auto sm:gap-2 sm:px-3 sm:text-sm sm:font-medium"
               aria-label="Open menu"
             >
               <span aria-hidden className="leading-none">

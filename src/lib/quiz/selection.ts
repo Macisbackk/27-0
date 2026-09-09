@@ -30,11 +30,20 @@ const CATEGORY_SOFT_CAPS: Partial<Record<QuizCategory, number>> = {
 
 export function topicFamily(topicId: string): string {
   const parts = topicId.split(":");
-  if (parts[0] === "stadium" || parts[0] === "history" || parts[0] === "squad") {
+  if (parts[0] === "stadium" && parts[1]) {
+    return `stadium:${parts[1]}`;
+  }
+  if (parts[0] === "record" && parts[1] && parts[2]) {
+    return `record:${parts[1]}:${parts[2]}`;
+  }
+  if (parts[0] === "history" || parts[0] === "squad") {
     return parts.slice(0, 2).join(":");
   }
   if (parts[0] === "final") {
     return parts.slice(0, 3).join(":");
+  }
+  if (parts[0] === "curated") {
+    return topicId;
   }
   return topicId;
 }
@@ -45,13 +54,32 @@ export function filterTeamChallengeQuestions(
 ): QuizQuestion[] {
   return questions.filter((question) => {
     if (!question.teams.includes(teamId)) return false;
+    if (question.answerType === "subjective") return false;
+    if (isGenericTeamChallengeQuestion(question)) return false;
     return !isObviousTeamChallengeAnswer(question, teamId);
   });
 }
 
+const SUBJECTIVE_TEAM_STEM =
+  /\b(who led|who was the most important|who was the greatest|who was the key|who was the star|who was the main reason|who was the best|who inspired|who was the most influential|who is considered|mainstay|major figure|central to)\b/i;
+
+const GENERIC_RIVALRY_STEM =
+  /which (two )?(clubs?|teams?|sides?).*(derby|rival)|who (are|is) .{0,40}(main |local )?rival|traditional local rivals/i;
+
+export function isGenericTeamChallengeQuestion(question: QuizQuestion): boolean {
+  const stem = question.question.toLowerCase();
+  if (SUBJECTIVE_TEAM_STEM.test(stem)) return true;
+  if (!GENERIC_RIVALRY_STEM.test(stem)) return false;
+  if (/\b(19|20)\d{2}\b/.test(stem)) return false;
+  if (/\b(score|final|trophy|first meeting|record|commonly called|good friday)\b/.test(stem)) {
+    return false;
+  }
+  return true;
+}
+
 /**
- * Team Challenge must not ask "which club won X?" when the answer is the
- * selected club — the theme already gives it away.
+ * Team Challenge must not ask a question whose answer is handed over by
+ * selecting the club (winner, home stadium occupant, nickname-as-club).
  */
 export function isObviousTeamChallengeAnswer(
   question: QuizQuestion,
@@ -59,22 +87,31 @@ export function isObviousTeamChallengeAnswer(
 ): boolean {
   const answer = question.correctAnswer.trim().toLowerCase();
   const clubNames = teamChallengeAliases(teamId);
-  if (!clubNames.some((name) => answer === name)) return false;
-
+  const answerIsSelectedClub = clubNames.some(
+    (name) => answer === name || answer.startsWith(`${name} and `) || answer.endsWith(` and ${name}`)
+  );
   const stem = question.question.toLowerCase();
+
   if (
-    /which (club|team|side)/.test(stem) ||
-    /who won/.test(stem) ||
-    /which of these clubs/.test(stem)
+    answerIsSelectedClub &&
+    (/which (club|team|side|of these clubs)/.test(stem) ||
+      /who won/.test(stem) ||
+      /associated with/.test(stem) ||
+      /based at/.test(stem) ||
+      /plays? (its |their )?(home )?(matches )?at/.test(stem) ||
+      /which club is that/.test(stem))
   ) {
     return true;
   }
-  // Pure club-name answers that are also multiple-choice club lists.
-  const optionClubs = question.options.filter((option) =>
-    clubNames.some((name) => option.trim().toLowerCase() === name) ||
-    /bulls|tigers|dragons|giants|rhinos|leopards|warriors|wolves|kr|fc|trinity|knights|olympique|saints|helens/i.test(
-      option
-    )
+
+  if (!answerIsSelectedClub) return false;
+
+  const optionClubs = question.options.filter(
+    (option) =>
+      clubNames.some((name) => option.trim().toLowerCase() === name) ||
+      /bulls|tigers|dragons|giants|rhinos|leopards|warriors|wolves|kr|fc|trinity|knights|olympique|saints|helens/i.test(
+        option
+      )
   );
   return optionClubs.length >= 3;
 }

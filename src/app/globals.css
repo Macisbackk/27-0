@@ -1930,6 +1930,31 @@ html[data-ui-overlay="1"] .site-footer {
     -webkit-backdrop-filter: none;
   }
 
+  .recruitment-choice-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: rgba(0, 0, 0, 0.82);
+    padding: max(0.75rem, env(safe-area-inset-top, 0px)) 0.75rem
+      max(0.75rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .recruitment-choice-panel {
+    width: min(100%, 40rem);
+    max-width: min(92vw, 40rem);
+    margin-block: auto;
+    min-width: 0;
+    max-height: min(88dvh, 820px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
   .slot-reveal-display-text {
     font-size: clamp(0.68rem, 2.1vw + 0.38rem, 0.92rem);
     line-height: 1;

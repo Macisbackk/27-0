@@ -1,17 +1,18 @@
 import type { MiniGamePlayer } from "../players";
 
-export const HIGHER_LOWER_STATS_SCHEMA = 2;
+export const HIGHER_LOWER_STATS_SCHEMA = 3;
+export const HIGHER_LOWER_PICKS = 5;
 
 export type HigherLowerChoice = "higher" | "lower";
 
-export type HigherLowerStatus = "playing" | "lost";
+export type HigherLowerStatus = "playing" | "lost" | "won";
 
 export type HigherLowerRun = {
   seed: string;
-  roundIndex: number;
-  /** Up to five visible history cards (names). */
-  historyIds: string[];
-  /** Comparison baseline — last settled player. */
+  /** Zero-based pick index. Final successful pick is 4 (PICK 5 / 5). */
+  pickIndex: number;
+  usedIds: string[];
+  /** Comparison baseline — current player. */
   baseId: string;
   /** Challenge player — rating hidden until guess. */
   challengeId: string;
@@ -19,20 +20,24 @@ export type HigherLowerRun = {
   lastChoice: HigherLowerChoice | null;
   lastCorrect: boolean | null;
   status: HigherLowerStatus;
+  rewardClaimed: boolean;
 };
 
 export type HigherLowerStats = {
   schemaVersion: number;
+  /** Consecutive five-pick completions. */
   currentStreak: number;
   bestStreak: number;
+  /** Completed runs (wins + losses). */
   plays: number;
+  /** Individual correct picks across all runs. */
   correct: number;
-  lastFiveRewardDate: string | null;
-  lastTenRewardDate: string | null;
+  fivePickWins: number;
+  failedRuns: number;
+  lastRewardedRunId: string | null;
 };
 
 export type HigherLowerBoard = {
-  history: MiniGamePlayer[];
   base: MiniGamePlayer;
   challenge: MiniGamePlayer;
 };

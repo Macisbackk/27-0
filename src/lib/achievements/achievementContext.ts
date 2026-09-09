@@ -64,6 +64,7 @@ export type AchievementCheckContext = {
   wordleWon?: boolean;
   hangmanWon?: boolean;
   higherLowerBestStreak?: number;
+  higherLowerFivePickWins?: number;
 };
 
 export type AchievementProgressSnapshot = {
@@ -86,6 +87,7 @@ export type AchievementProgressSnapshot = {
   wordleWins: number;
   hangmanWins: number;
   higherLowerBestStreak: number;
+  higherLowerFivePickWins: number;
   miniGamesPlayed: number;
 };
 
@@ -193,6 +195,7 @@ export function buildAchievementProgress(
     wordleWins: wordleStats.wins,
     hangmanWins: hangmanStats.wins,
     higherLowerBestStreak: higherLowerStats.bestStreak,
+    higherLowerFivePickWins: higherLowerStats.fivePickWins,
     miniGamesPlayed:
       quizStats.quizzesPlayed +
       wordleStats.played +

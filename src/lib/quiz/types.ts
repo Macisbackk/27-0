@@ -81,6 +81,8 @@ export interface QuizQuestion {
   teams: QuizTeamId[];
   era?: string;
   sourceType: QuizSourceType;
+  /** Team Challenge should use objective facts only. */
+  answerType?: "objective" | "subjective";
 }
 
 export interface QuizLifelineState {

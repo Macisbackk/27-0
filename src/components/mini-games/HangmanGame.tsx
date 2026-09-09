@@ -214,7 +214,7 @@ export function HangmanGame() {
             <p className={`mt-1 text-center ${TYPO.bodySm}`}>{run.hint}</p>
 
             <div
-              className={`mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-display text-white ${answerFontClass} ${
+              className={`mt-6 flex w-full max-w-full flex-wrap items-center justify-center gap-x-4 gap-y-3 font-display text-white ${answerFontClass} ${
                 flash === "bad" ? "mini-game-shake" : ""
               }`}
               aria-label={letters.join("")}
@@ -222,7 +222,7 @@ export function HangmanGame() {
               {words.map((word, wordIndex) => (
                 <span
                   key={`word-${wordIndex}`}
-                  className="inline-flex items-center gap-[0.2em]"
+                  className="inline-flex max-w-full shrink-0 flex-nowrap items-center justify-center gap-[0.18em] whitespace-nowrap"
                 >
                   {word.map((char, index) => (
                     <span

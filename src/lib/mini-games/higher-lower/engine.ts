@@ -4,21 +4,22 @@ import {
   getHigherLowerPlayerPool,
   type MiniGamePlayer,
 } from "../players";
-import type {
-  HigherLowerChoice,
-  HigherLowerRun,
-  HigherLowerStats,
+import {
+  HIGHER_LOWER_PICKS,
+  HIGHER_LOWER_STATS_SCHEMA,
+  type HigherLowerChoice,
+  type HigherLowerRun,
+  type HigherLowerStats,
 } from "./types";
 
-export const HIGHER_LOWER_HISTORY_SIZE = 5;
+export { HIGHER_LOWER_PICKS };
 
 type GapBand = { min: number; max: number };
 
-function gapBandForStreak(streak: number): GapBand {
-  if (streak <= 2) return { min: 8, max: 35 };
-  if (streak <= 5) return { min: 4, max: 14 };
-  if (streak <= 9) return { min: 2, max: 8 };
-  return { min: 1, max: 5 };
+function gapBandForPick(pickIndex: number): GapBand {
+  if (pickIndex <= 1) return { min: 8, max: 28 };
+  if (pickIndex <= 3) return { min: 4, max: 16 };
+  return { min: 2, max: 12 };
 }
 
 function ratingGap(a: MiniGamePlayer, b: MiniGamePlayer): number {
@@ -45,18 +46,17 @@ function pickFromBand(
 
 export function pickChallengePlayer(
   seed: string,
-  roundIndex: number,
+  pickIndexValue: number,
   base: MiniGamePlayer,
   pool: readonly MiniGamePlayer[],
-  usedIds: readonly string[],
-  streak: number
+  usedIds: readonly string[]
 ): MiniGamePlayer {
-  const rng = createRng(`${seed}:challenge:${roundIndex}`);
+  const rng = createRng(`${seed}:challenge:${pickIndexValue}`);
   const used = new Set(usedIds);
   used.add(base.id);
   used.add(base.identityId);
   const bands: GapBand[] = [
-    gapBandForStreak(streak),
+    gapBandForPick(pickIndexValue),
     { min: 1, max: 20 },
     { min: 1, max: 99 },
   ];
@@ -68,7 +68,8 @@ export function pickChallengePlayer(
     (player) =>
       player.identityId !== base.identityId &&
       player.rating !== base.rating &&
-      !used.has(player.id)
+      !used.has(player.id) &&
+      !used.has(player.identityId)
   );
   if (!fallback) {
     throw new Error("Higher or Lower pool is too small");
@@ -76,47 +77,51 @@ export function pickChallengePlayer(
   return fallback;
 }
 
+function usedKeys(player: MiniGamePlayer): string[] {
+  return [player.id, player.identityId];
+}
+
 export function createHigherLowerRun(
   pool: readonly MiniGamePlayer[] = getHigherLowerPlayerPool(),
   seed: string = createRunId()
 ): HigherLowerRun {
-  if (pool.length < HIGHER_LOWER_HISTORY_SIZE + 2) {
+  if (pool.length < HIGHER_LOWER_PICKS + 1) {
     throw new Error("Higher or Lower pool is too small");
   }
   const rng = createRng(`${seed}:seed`);
   const shuffled = shuffledCopy(pool, rng);
-  const history = shuffled.slice(0, HIGHER_LOWER_HISTORY_SIZE);
-  const base = history[history.length - 1]!;
-  const used = history.flatMap((player) => [player.id, player.identityId]);
-  const challenge = pickChallengePlayer(seed, 0, base, pool, used, 0);
+  const base = shuffled[0]!;
+  const challenge = pickChallengePlayer(seed, 0, base, pool, usedKeys(base));
   return {
     seed,
-    roundIndex: 0,
-    historyIds: history.map((player) => player.id),
+    pickIndex: 0,
+    usedIds: [...usedKeys(base), ...usedKeys(challenge)],
     baseId: base.id,
     challengeId: challenge.id,
     revealed: false,
     lastChoice: null,
     lastCorrect: null,
     status: "playing",
+    rewardClaimed: false,
   };
 }
 
 export function resolveHigherLowerPlayers(
   run: HigherLowerRun,
   pool: readonly MiniGamePlayer[] = getHigherLowerPlayerPool()
-): {
-  history: MiniGamePlayer[];
-  base: MiniGamePlayer;
-  challenge: MiniGamePlayer;
-} | null {
-  const history = run.historyIds
-    .map((id) => findMiniGamePlayerById(id, pool))
-    .filter((player): player is MiniGamePlayer => Boolean(player));
+): { base: MiniGamePlayer; challenge: MiniGamePlayer } | null {
   const base = findMiniGamePlayerById(run.baseId, pool);
   const challenge = findMiniGamePlayerById(run.challengeId, pool);
-  if (!base || !challenge || history.length === 0) return null;
-  return { history, base, challenge };
+  if (!base || !challenge) return null;
+  return { base, challenge };
+}
+
+export function higherLowerPickNumber(run: HigherLowerRun): number {
+  return run.pickIndex + 1;
+}
+
+export function isFinalHigherLowerPick(run: HigherLowerRun): boolean {
+  return run.pickIndex >= HIGHER_LOWER_PICKS - 1;
 }
 
 export function answerHigherLower(
@@ -134,13 +139,16 @@ export function answerHigherLower(
   const correct =
     (choice === "higher" && challengeIsHigher) ||
     (choice === "lower" && !challengeIsHigher);
+  let status: HigherLowerRun["status"] = "playing";
+  if (!correct) status = "lost";
+  else if (isFinalHigherLowerPick(run)) status = "won";
   return {
     run: {
       ...run,
       revealed: true,
       lastChoice: choice,
       lastCorrect: correct,
-      status: correct ? "playing" : "lost",
+      status,
     },
     correct,
   };
@@ -148,62 +156,77 @@ export function answerHigherLower(
 
 export function advanceHigherLower(
   run: HigherLowerRun,
-  streak: number,
   pool: readonly MiniGamePlayer[] = getHigherLowerPlayerPool()
 ): HigherLowerRun {
+  if (
+    run.status !== "playing" ||
+    !run.revealed ||
+    !run.lastCorrect ||
+    isFinalHigherLowerPick(run)
+  ) {
+    return run;
+  }
   const resolved = resolveHigherLowerPlayers(run, pool);
   if (!resolved) return run;
-  const nextHistory = [...run.historyIds, run.challengeId].slice(
-    -HIGHER_LOWER_HISTORY_SIZE
-  );
-  const used = nextHistory.flatMap((id) => {
-    const player = findMiniGamePlayerById(id, pool);
-    return player ? [player.id, player.identityId] : [id];
-  });
-  const nextRound = run.roundIndex + 1;
+  const nextPick = run.pickIndex + 1;
+  if (nextPick >= HIGHER_LOWER_PICKS) return run;
+  const nextBase = resolved.challenge;
   const challenge = pickChallengePlayer(
     run.seed,
-    nextRound,
-    resolved.challenge,
+    nextPick,
+    nextBase,
     pool,
-    used,
-    streak
+    run.usedIds
   );
   return {
     seed: run.seed,
-    roundIndex: nextRound,
-    historyIds: nextHistory,
-    baseId: resolved.challenge.id,
+    pickIndex: nextPick,
+    usedIds: [...run.usedIds, ...usedKeys(challenge)],
+    baseId: nextBase.id,
     challengeId: challenge.id,
     revealed: false,
     lastChoice: null,
     lastCorrect: null,
     status: "playing",
+    rewardClaimed: run.rewardClaimed,
   };
 }
 
 export function createEmptyHigherLowerStats(): HigherLowerStats {
   return {
-    schemaVersion: 2,
+    schemaVersion: HIGHER_LOWER_STATS_SCHEMA,
     currentStreak: 0,
     bestStreak: 0,
     plays: 0,
     correct: 0,
-    lastFiveRewardDate: null,
-    lastTenRewardDate: null,
+    fivePickWins: 0,
+    failedRuns: 0,
+    lastRewardedRunId: null,
   };
 }
 
-export function applyHigherLowerResult(
+export function applyHigherLowerPick(
   stats: HigherLowerStats,
   correct: boolean
 ): HigherLowerStats {
-  const currentStreak = correct ? stats.currentStreak + 1 : 0;
   return {
     ...stats,
-    schemaVersion: 2,
-    plays: stats.plays + 1,
+    schemaVersion: HIGHER_LOWER_STATS_SCHEMA,
     correct: stats.correct + (correct ? 1 : 0),
+  };
+}
+
+export function applyHigherLowerRunEnd(
+  stats: HigherLowerStats,
+  won: boolean
+): HigherLowerStats {
+  const currentStreak = won ? stats.currentStreak + 1 : 0;
+  return {
+    ...stats,
+    schemaVersion: HIGHER_LOWER_STATS_SCHEMA,
+    plays: stats.plays + 1,
+    fivePickWins: stats.fivePickWins + (won ? 1 : 0),
+    failedRuns: stats.failedRuns + (won ? 0 : 1),
     currentStreak,
     bestStreak: Math.max(stats.bestStreak, currentStreak),
   };

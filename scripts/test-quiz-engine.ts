@@ -153,6 +153,27 @@ console.log("\nQuestion selection");
     isObviousTeamChallengeAnswer(obvious, "hull-fc"),
     "themed club-name answers are filtered from Team Challenge"
   );
+  const stadiumGiveaway = {
+    ...realBank[0]!,
+    question: "Which club is based at Headingley?",
+    correctAnswer: "Leeds Rhinos",
+    options: ["Leeds Rhinos", "Bradford Bulls", "Wakefield Trinity", "Castleford Tigers"] as QuizQuestion["options"],
+  };
+  assert(
+    isObviousTeamChallengeAnswer(stadiumGiveaway, "leeds"),
+    "home-stadium occupant questions are filtered from Team Challenge"
+  );
+  const genericDerby = realBank.find((question) =>
+    /which two clubs contest the super league derby between leeds and bradford/i.test(
+      question.question
+    )
+  );
+  assert(!genericDerby, "generic Leeds-Bradford derby question is removed");
+  const rhinosBulls = realBank.find((question) => question.id === "cur-rhinos-bulls");
+  assert(
+    Boolean(rhinosBulls && rhinosBulls.correctAnswer === "2004 and 2005"),
+    "Leeds-Bradford question is a specific Grand Final fact"
+  );
   for (const { id: teamId } of QUIZ_CLUBS) {
     if (!isEligibleMiniGameQuizTeamId(teamId)) {
       assert(true, `${teamId} is not a current Super League Team Challenge club`);

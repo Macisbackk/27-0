@@ -2561,13 +2561,13 @@ export function GameBoard({
               activeSpinTarget && (
               <BodyPortal key={slotChoiceKey}>
                 <motion.div
-                  className={`recruitment-choice-backdrop fixed inset-0 flex items-center justify-center bg-black/82 p-3 sm:p-6 ${uiLayerClass("modalBackdrop")}`}
+                  className={`recruitment-choice-backdrop recruitment-choice-overlay ${uiLayerClass("modalBackdrop")}`}
                   initial={false}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 1 }}
                 >
                   <motion.div
-                    className="manager-section w-full min-w-0 max-h-[min(92dvh,900px)] overflow-x-hidden overflow-y-auto overscroll-contain"
+                    className="recruitment-choice-panel"
                     initial={{ y: 16 }}
                     animate={{ y: 0 }}
                     exit={{ y: 8 }}
@@ -2601,13 +2601,13 @@ export function GameBoard({
               playerPair && (
               <BodyPortal key={choiceKey}>
               <motion.div
-                className={`recruitment-choice-backdrop fixed inset-0 flex items-center justify-center bg-black/82 p-3 sm:p-6 ${uiLayerClass("modalBackdrop")}`}
+                className={`recruitment-choice-backdrop recruitment-choice-overlay ${uiLayerClass("modalBackdrop")}`}
                 initial={false}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 1 }}
               >
                 <motion.div
-                  className={`${CARD.panel} ${MODAL.panelWide} ${MODAL.panelPadding} max-h-[min(92dvh,900px)] overflow-x-hidden overflow-y-auto overscroll-contain`}
+                  className={`${CARD.panel} recruitment-choice-panel ${MODAL.panelPadding}`}
                   initial={{ y: 16 }}
                   animate={{ y: 0 }}
                   exit={{ y: 8 }}

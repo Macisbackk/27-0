@@ -290,7 +290,7 @@ export const BTN = {
   modeCurrentOutlineSm: `border border-mode-current/50 bg-mode-current/10 text-mode-current hover:bg-mode-current/20`,
   close: `shrink-0 min-h-[44px] rounded-lg border border-pitch-600 px-2.5 py-1 text-gray-400 transition hover:text-white sm:min-h-[36px]`,
   closeSm: `shrink-0 rounded-lg border border-pitch-600 px-2 py-1 text-gray-400 transition hover:text-white`,
-  header: `header-control-btn flex h-11 min-h-[44px] min-w-[5.75rem] items-center justify-center gap-2 rounded-lg px-4 text-sm font-medium text-gray-300 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30`,
+  header: `header-control-btn flex h-11 min-h-[44px] min-w-[5.75rem] items-center justify-center gap-2 rounded-lg border-0 bg-transparent px-4 text-sm font-medium text-gray-300 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30`,
 } as const;
 
 /** Normal / Current mode visual tokens — green only for mode-state controls. */

@@ -396,12 +396,12 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   },
   {
     id: "higher-lower-streak-10",
-    name: "Ten in a Row",
-    description: "Get a Higher or Lower streak of 10.",
+    name: "Five from Five",
+    description: "Complete a Higher or Lower five-pick run.",
     category: "quiz",
     points: 40,
     rewardClubFunds: 15_000,
-    target: 10,
+    target: 1,
   },
 ];
 

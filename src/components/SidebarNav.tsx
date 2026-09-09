@@ -58,6 +58,9 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const { balance, ready: fundsReady } = useClubFunds();
   const [normalEraVariant, setNormalEraVariantState] = useState(false);
   const [muted, setMuted] = useState(false);
+  const inMiniGames =
+    pathname.startsWith("/mini-games") || pathname.startsWith("/quiz");
+  const [miniGamesOpen, setMiniGamesOpen] = useState(inMiniGames);
   const closeMenu = useCallback(() => {
     playMenuClose();
     onClose();
@@ -73,6 +76,10 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     setMuted(isSoundMuted());
     setNormalEraVariantState(getNormalEraVariant());
   }, [open]);
+
+  useEffect(() => {
+    if (inMiniGames) setMiniGamesOpen(true);
+  }, [inMiniGames]);
 
   const playSearch = {
     cup: searchParams.get("cup"),
@@ -232,52 +239,75 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     </div>
                   </li>
                   <li className={NAV.playModeGroup}>
-                    <Link
-                      href="/mini-games"
-                      onClick={handleNavClick}
-                      className={navLinkClass(
-                        pathname.startsWith("/mini-games") ||
-                          pathname.startsWith("/quiz")
-                      )}
+                    <button
+                      type="button"
+                      aria-expanded={miniGamesOpen}
+                      aria-controls="sidebar-mini-games"
+                      onClick={() => {
+                        playUiClick();
+                        setMiniGamesOpen((open) => !open);
+                      }}
+                      className={`${navLinkClass(inMiniGames)} w-full`}
                     >
                       Mini Games
-                      {(pathname.startsWith("/mini-games") ||
-                        pathname.startsWith("/quiz")) && (
-                        <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-theme-primary" />
-                      )}
-                    </Link>
-                    <div className={NAV.nestedBlock}>
-                      <ul className={NAV.list}>
-                        {[
-                          { href: "/mini-games/quiz", label: "Quiz" },
-                          { href: "/mini-games/wordle", label: "Wordle" },
-                          { href: "/mini-games/hangman", label: "Hangman" },
-                          {
-                            href: "/mini-games/higher-lower",
-                            label: "Higher or Lower",
-                          },
-                        ].map((item) => {
-                          const nestedActive =
-                            pathname === item.href ||
-                            (item.href === "/mini-games/quiz" &&
-                              pathname.startsWith("/quiz"));
-                          return (
+                      <span className="ml-auto text-[11px] text-pitch-400" aria-hidden>
+                        {miniGamesOpen ? "▾" : "▸"}
+                      </span>
+                    </button>
+                    {miniGamesOpen && (
+                      <div id="sidebar-mini-games" className={`${NAV.nestedBlock} pl-2`}>
+                        <ul className={NAV.list}>
+                          {[
+                            {
+                              href: "/mini-games/quiz",
+                              label: "Super League Millionaire",
+                              active:
+                                (pathname.startsWith("/mini-games/quiz") ||
+                                  pathname.startsWith("/quiz")) &&
+                                searchParams.get("mode") !== "team",
+                            },
+                            {
+                              href: "/mini-games/quiz?mode=team",
+                              label: "Team Challenge",
+                              active:
+                                (pathname.startsWith("/mini-games/quiz") ||
+                                  pathname.startsWith("/quiz")) &&
+                                searchParams.get("mode") === "team",
+                            },
+                            {
+                              href: "/mini-games/wordle",
+                              label: "Rugby League Wordle",
+                              active: pathname.startsWith("/mini-games/wordle"),
+                            },
+                            {
+                              href: "/mini-games/hangman",
+                              label: "Rugby League Hangman",
+                              active: pathname.startsWith("/mini-games/hangman"),
+                            },
+                            {
+                              href: "/mini-games/higher-lower",
+                              label: "Higher or Lower",
+                              active: pathname.startsWith(
+                                "/mini-games/higher-lower"
+                              ),
+                            },
+                          ].map((item) => (
                             <li key={item.href}>
                               <Link
                                 href={item.href}
                                 onClick={handleNavClick}
-                                className={navLinkClass(nestedActive)}
+                                className={navLinkClass(item.active)}
                               >
                                 {item.label}
-                                {nestedActive && (
+                                {item.active && (
                                   <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-theme-primary" />
                                 )}
                               </Link>
                             </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </li>
                 </ul>
               </section>

@@ -13,11 +13,11 @@
     "difficulty": "hard",
     "category": "grand-finals",
     "teams": [
-      "wigan",
-      "leeds"
+      "wigan"
     ],
     "era": "1990s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-1999",
@@ -33,11 +33,11 @@
     "difficulty": "hard",
     "category": "grand-finals",
     "teams": [
-      "st-helens",
-      "bradford"
+      "st-helens"
     ],
     "era": "1990s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2000",
@@ -53,11 +53,11 @@
     "difficulty": "hard",
     "category": "grand-finals",
     "teams": [
-      "st-helens",
-      "wigan"
+      "st-helens"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2001",
@@ -73,11 +73,11 @@
     "difficulty": "hard",
     "category": "grand-finals",
     "teams": [
-      "bradford",
-      "wigan"
+      "bradford"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2002",
@@ -93,11 +93,11 @@
     "difficulty": "hard",
     "category": "grand-finals",
     "teams": [
-      "st-helens",
-      "bradford"
+      "st-helens"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2003",
@@ -113,11 +113,11 @@
     "difficulty": "hard",
     "category": "grand-finals",
     "teams": [
-      "bradford",
-      "wigan"
+      "bradford"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2004",
@@ -133,11 +133,11 @@
     "difficulty": "hard",
     "category": "grand-finals",
     "teams": [
-      "leeds",
-      "bradford"
+      "leeds"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2005",
@@ -153,11 +153,11 @@
     "difficulty": "hard",
     "category": "grand-finals",
     "teams": [
-      "bradford",
-      "leeds"
+      "bradford"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2006",
@@ -173,11 +173,11 @@
     "difficulty": "hard",
     "category": "grand-finals",
     "teams": [
-      "st-helens",
-      "hull-fc"
+      "st-helens"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2007",
@@ -193,11 +193,11 @@
     "difficulty": "hard",
     "category": "grand-finals",
     "teams": [
-      "leeds",
-      "st-helens"
+      "leeds"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2008",
@@ -213,11 +213,11 @@
     "difficulty": "hard",
     "category": "grand-finals",
     "teams": [
-      "leeds",
-      "st-helens"
+      "leeds"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2009",
@@ -233,11 +233,11 @@
     "difficulty": "hard",
     "category": "grand-finals",
     "teams": [
-      "leeds",
-      "st-helens"
+      "leeds"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2010",
@@ -253,11 +253,11 @@
     "difficulty": "medium",
     "category": "grand-finals",
     "teams": [
-      "wigan",
-      "st-helens"
+      "wigan"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2011",
@@ -273,11 +273,11 @@
     "difficulty": "medium",
     "category": "grand-finals",
     "teams": [
-      "leeds",
-      "st-helens"
+      "leeds"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2012",
@@ -293,11 +293,11 @@
     "difficulty": "medium",
     "category": "grand-finals",
     "teams": [
-      "leeds",
-      "warrington"
+      "leeds"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2013",
@@ -313,11 +313,11 @@
     "difficulty": "medium",
     "category": "grand-finals",
     "teams": [
-      "wigan",
-      "warrington"
+      "wigan"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2014",
@@ -333,11 +333,11 @@
     "difficulty": "medium",
     "category": "grand-finals",
     "teams": [
-      "st-helens",
-      "wigan"
+      "st-helens"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2015",
@@ -353,11 +353,11 @@
     "difficulty": "medium",
     "category": "grand-finals",
     "teams": [
-      "leeds",
-      "wigan"
+      "leeds"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2016",
@@ -373,11 +373,11 @@
     "difficulty": "medium",
     "category": "grand-finals",
     "teams": [
-      "wigan",
-      "warrington"
+      "wigan"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2017",
@@ -393,11 +393,11 @@
     "difficulty": "medium",
     "category": "grand-finals",
     "teams": [
-      "leeds",
-      "castleford"
+      "leeds"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2018",
@@ -413,11 +413,11 @@
     "difficulty": "easy",
     "category": "grand-finals",
     "teams": [
-      "wigan",
-      "warrington"
+      "wigan"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2019",
@@ -433,11 +433,11 @@
     "difficulty": "easy",
     "category": "grand-finals",
     "teams": [
-      "st-helens",
-      "salford"
+      "st-helens"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2020",
@@ -453,11 +453,11 @@
     "difficulty": "easy",
     "category": "grand-finals",
     "teams": [
-      "st-helens",
-      "wigan"
+      "st-helens"
     ],
     "era": "2020s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2021",
@@ -473,11 +473,11 @@
     "difficulty": "easy",
     "category": "grand-finals",
     "teams": [
-      "st-helens",
-      "catalans"
+      "st-helens"
     ],
     "era": "2020s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2022",
@@ -493,11 +493,11 @@
     "difficulty": "easy",
     "category": "grand-finals",
     "teams": [
-      "st-helens",
-      "leeds"
+      "st-helens"
     ],
     "era": "2020s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2023",
@@ -513,11 +513,11 @@
     "difficulty": "easy",
     "category": "grand-finals",
     "teams": [
-      "wigan",
-      "catalans"
+      "wigan"
     ],
     "era": "2020s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2024",
@@ -533,11 +533,11 @@
     "difficulty": "easy",
     "category": "grand-finals",
     "teams": [
-      "wigan",
-      "hull-kr"
+      "wigan"
     ],
     "era": "2020s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "gf-winner-2025",
@@ -553,11 +553,11 @@
     "difficulty": "easy",
     "category": "grand-finals",
     "teams": [
-      "hull-kr",
-      "wigan"
+      "hull-kr"
     ],
     "era": "2020s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-1996",
@@ -573,11 +573,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "st-helens",
-      "bradford"
+      "st-helens"
     ],
     "era": "1990s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-1997",
@@ -593,11 +593,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "st-helens",
-      "bradford"
+      "st-helens"
     ],
     "era": "1990s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-1998",
@@ -612,11 +612,10 @@
     "topicId": "final:cc:1998",
     "difficulty": "hard",
     "category": "challenge-cup",
-    "teams": [
-      "wigan"
-    ],
+    "teams": [],
     "era": "1990s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-1999",
@@ -632,11 +631,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "leeds",
-      "london"
+      "leeds"
     ],
     "era": "1990s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2000",
@@ -652,11 +651,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "bradford",
-      "leeds"
+      "bradford"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2001",
@@ -672,11 +671,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "st-helens",
-      "bradford"
+      "st-helens"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2002",
@@ -692,11 +691,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "wigan",
-      "st-helens"
+      "wigan"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2003",
@@ -712,11 +711,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "bradford",
-      "leeds"
+      "bradford"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2004",
@@ -732,11 +731,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "st-helens",
-      "wigan"
+      "st-helens"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2005",
@@ -752,11 +751,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "hull-fc",
-      "leeds"
+      "hull-fc"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2006",
@@ -772,11 +771,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "st-helens",
-      "huddersfield"
+      "st-helens"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2007",
@@ -792,11 +791,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "st-helens",
-      "catalans"
+      "st-helens"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2008",
@@ -812,11 +811,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "st-helens",
-      "hull-fc"
+      "st-helens"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2009",
@@ -832,11 +831,11 @@
     "difficulty": "hard",
     "category": "challenge-cup",
     "teams": [
-      "warrington",
-      "huddersfield"
+      "warrington"
     ],
     "era": "2000s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2010",
@@ -852,11 +851,11 @@
     "difficulty": "medium",
     "category": "challenge-cup",
     "teams": [
-      "warrington",
-      "leeds"
+      "warrington"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2011",
@@ -872,11 +871,11 @@
     "difficulty": "medium",
     "category": "challenge-cup",
     "teams": [
-      "wigan",
-      "leeds"
+      "wigan"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2012",
@@ -892,11 +891,11 @@
     "difficulty": "medium",
     "category": "challenge-cup",
     "teams": [
-      "warrington",
-      "leeds"
+      "warrington"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2013",
@@ -912,11 +911,11 @@
     "difficulty": "medium",
     "category": "challenge-cup",
     "teams": [
-      "wigan",
-      "hull-fc"
+      "wigan"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2014",
@@ -932,11 +931,11 @@
     "difficulty": "medium",
     "category": "challenge-cup",
     "teams": [
-      "leeds",
-      "castleford"
+      "leeds"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2015",
@@ -952,11 +951,11 @@
     "difficulty": "medium",
     "category": "challenge-cup",
     "teams": [
-      "leeds",
-      "hull-kr"
+      "leeds"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2016",
@@ -972,11 +971,11 @@
     "difficulty": "medium",
     "category": "challenge-cup",
     "teams": [
-      "hull-fc",
-      "warrington"
+      "hull-fc"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2017",
@@ -992,11 +991,11 @@
     "difficulty": "medium",
     "category": "challenge-cup",
     "teams": [
-      "hull-fc",
-      "wigan"
+      "hull-fc"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2018",
@@ -1012,11 +1011,11 @@
     "difficulty": "easy",
     "category": "challenge-cup",
     "teams": [
-      "catalans",
-      "warrington"
+      "catalans"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2019",
@@ -1032,11 +1031,11 @@
     "difficulty": "easy",
     "category": "challenge-cup",
     "teams": [
-      "warrington",
-      "st-helens"
+      "warrington"
     ],
     "era": "2010s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2020",
@@ -1052,11 +1051,11 @@
     "difficulty": "easy",
     "category": "challenge-cup",
     "teams": [
-      "leeds",
-      "salford"
+      "leeds"
     ],
     "era": "2020s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2021",
@@ -1072,11 +1071,11 @@
     "difficulty": "easy",
     "category": "challenge-cup",
     "teams": [
-      "st-helens",
-      "castleford"
+      "st-helens"
     ],
     "era": "2020s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2022",
@@ -1092,11 +1091,11 @@
     "difficulty": "easy",
     "category": "challenge-cup",
     "teams": [
-      "wigan",
-      "huddersfield"
+      "wigan"
     ],
     "era": "2020s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2023",
@@ -1112,11 +1111,11 @@
     "difficulty": "easy",
     "category": "challenge-cup",
     "teams": [
-      "leigh",
-      "hull-kr"
+      "leigh"
     ],
     "era": "2020s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2024",
@@ -1132,11 +1131,11 @@
     "difficulty": "easy",
     "category": "challenge-cup",
     "teams": [
-      "wigan",
-      "warrington"
+      "wigan"
     ],
     "era": "2020s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "cc-winner-2025",
@@ -1152,11 +1151,599 @@
     "difficulty": "easy",
     "category": "challenge-cup",
     "teams": [
-      "hull-kr",
-      "warrington"
+      "hull-kr"
     ],
     "era": "2020s",
-    "sourceType": "finals"
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-1998",
+    "question": "What was the score in the 1998 Super League Grand Final?",
+    "options": [
+      "10-4",
+      "37-6",
+      "29-16",
+      "25-12"
+    ],
+    "correctAnswer": "10-4",
+    "topicId": "final:gf:1998:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "wigan",
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-1999",
+    "question": "What was the score in the 1999 Super League Grand Final?",
+    "options": [
+      "8-6",
+      "16-8",
+      "10-4",
+      "37-6"
+    ],
+    "correctAnswer": "8-6",
+    "topicId": "final:gf:1999:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "st-helens",
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2000",
+    "question": "What was the score in the 2000 Super League Grand Final?",
+    "options": [
+      "29-16",
+      "19-18",
+      "10-4",
+      "8-6"
+    ],
+    "correctAnswer": "29-16",
+    "topicId": "final:gf:2000:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "st-helens",
+      "wigan"
+    ],
+    "era": "2000s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2001",
+    "question": "What was the score in the 2001 Super League Grand Final?",
+    "options": [
+      "37-6",
+      "16-8",
+      "10-4",
+      "25-12"
+    ],
+    "correctAnswer": "37-6",
+    "topicId": "final:gf:2001:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "bradford",
+      "wigan"
+    ],
+    "era": "2000s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2002",
+    "question": "What was the score in the 2002 Super League Grand Final?",
+    "options": [
+      "19-18",
+      "37-6",
+      "29-16",
+      "8-6"
+    ],
+    "correctAnswer": "19-18",
+    "topicId": "final:gf:2002:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "st-helens",
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2003",
+    "question": "What was the score in the 2003 Super League Grand Final?",
+    "options": [
+      "25-12",
+      "8-6",
+      "29-16",
+      "10-4"
+    ],
+    "correctAnswer": "25-12",
+    "topicId": "final:gf:2003:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "bradford",
+      "wigan"
+    ],
+    "era": "2000s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2004",
+    "question": "What was the score in the 2004 Super League Grand Final?",
+    "options": [
+      "16-8",
+      "37-6",
+      "10-4",
+      "25-12"
+    ],
+    "correctAnswer": "16-8",
+    "topicId": "final:gf:2004:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "leeds",
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2005",
+    "question": "What was the score in the 2005 Super League Grand Final?",
+    "options": [
+      "15-6",
+      "8-6",
+      "10-4",
+      "29-16"
+    ],
+    "correctAnswer": "15-6",
+    "topicId": "final:gf:2005:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "bradford",
+      "leeds"
+    ],
+    "era": "2000s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2006",
+    "question": "What was the score in the 2006 Super League Grand Final?",
+    "options": [
+      "26-4",
+      "29-16",
+      "8-6",
+      "37-6"
+    ],
+    "correctAnswer": "26-4",
+    "topicId": "final:gf:2006:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "st-helens",
+      "hull-fc"
+    ],
+    "era": "2000s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2007",
+    "question": "What was the score in the 2007 Super League Grand Final?",
+    "options": [
+      "33-6",
+      "8-6",
+      "25-12",
+      "10-4"
+    ],
+    "correctAnswer": "33-6",
+    "topicId": "final:gf:2007:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "leeds",
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2008",
+    "question": "What was the score in the 2008 Super League Grand Final?",
+    "options": [
+      "24-16",
+      "29-16",
+      "10-4",
+      "19-18"
+    ],
+    "correctAnswer": "24-16",
+    "topicId": "final:gf:2008:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "leeds",
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2009",
+    "question": "What was the score in the 2009 Super League Grand Final?",
+    "options": [
+      "18-10",
+      "25-12",
+      "19-18",
+      "8-6"
+    ],
+    "correctAnswer": "18-10",
+    "topicId": "final:gf:2009:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "leeds",
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2010",
+    "question": "What was the score in the 2010 Super League Grand Final?",
+    "options": [
+      "22-10",
+      "29-16",
+      "25-12",
+      "19-18"
+    ],
+    "correctAnswer": "22-10",
+    "topicId": "final:gf:2010:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "wigan",
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2011",
+    "question": "What was the score in the 2011 Super League Grand Final?",
+    "options": [
+      "32-16",
+      "37-6",
+      "8-6",
+      "29-16"
+    ],
+    "correctAnswer": "32-16",
+    "topicId": "final:gf:2011:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "leeds",
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2012",
+    "question": "What was the score in the 2012 Super League Grand Final?",
+    "options": [
+      "26-18",
+      "29-16",
+      "10-4",
+      "8-6"
+    ],
+    "correctAnswer": "26-18",
+    "topicId": "final:gf:2012:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "leeds",
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2013",
+    "question": "What was the score in the 2013 Super League Grand Final?",
+    "options": [
+      "30-16",
+      "10-4",
+      "29-16",
+      "25-12"
+    ],
+    "correctAnswer": "30-16",
+    "topicId": "final:gf:2013:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "wigan",
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2014",
+    "question": "What was the score in the 2014 Super League Grand Final?",
+    "options": [
+      "14-6",
+      "19-18",
+      "10-4",
+      "8-6"
+    ],
+    "correctAnswer": "14-6",
+    "topicId": "final:gf:2014:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "st-helens",
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2015",
+    "question": "What was the score in the 2015 Super League Grand Final?",
+    "options": [
+      "22-20",
+      "19-18",
+      "29-16",
+      "37-6"
+    ],
+    "correctAnswer": "22-20",
+    "topicId": "final:gf:2015:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "leeds",
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2016",
+    "question": "What was the score in the 2016 Super League Grand Final?",
+    "options": [
+      "12-6",
+      "37-6",
+      "10-4",
+      "19-18"
+    ],
+    "correctAnswer": "12-6",
+    "topicId": "final:gf:2016:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "wigan",
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2017",
+    "question": "What was the score in the 2017 Super League Grand Final?",
+    "options": [
+      "24-6",
+      "19-18",
+      "10-4",
+      "8-6"
+    ],
+    "correctAnswer": "24-6",
+    "topicId": "final:gf:2017:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "leeds",
+      "castleford"
+    ],
+    "era": "2010s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2018",
+    "question": "What was the score in the 2018 Super League Grand Final?",
+    "options": [
+      "12-4",
+      "29-16",
+      "10-4",
+      "19-18"
+    ],
+    "correctAnswer": "12-4",
+    "topicId": "final:gf:2018:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "wigan",
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2019",
+    "question": "What was the score in the 2019 Super League Grand Final?",
+    "options": [
+      "23-6",
+      "25-12",
+      "10-4",
+      "29-16"
+    ],
+    "correctAnswer": "23-6",
+    "topicId": "final:gf:2019:score",
+    "difficulty": "hard",
+    "category": "grand-finals",
+    "teams": [
+      "st-helens",
+      "salford"
+    ],
+    "era": "2010s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2020",
+    "question": "What was the score in the 2020 Super League Grand Final?",
+    "options": [
+      "8-4",
+      "10-4",
+      "37-6",
+      "29-16"
+    ],
+    "correctAnswer": "8-4",
+    "topicId": "final:gf:2020:score",
+    "difficulty": "medium",
+    "category": "grand-finals",
+    "teams": [
+      "st-helens",
+      "wigan"
+    ],
+    "era": "2020s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2021",
+    "question": "What was the score in the 2021 Super League Grand Final?",
+    "options": [
+      "12-10",
+      "37-6",
+      "25-12",
+      "19-18"
+    ],
+    "correctAnswer": "12-10",
+    "topicId": "final:gf:2021:score",
+    "difficulty": "medium",
+    "category": "grand-finals",
+    "teams": [
+      "st-helens",
+      "catalans"
+    ],
+    "era": "2020s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2022",
+    "question": "What was the score in the 2022 Super League Grand Final?",
+    "options": [
+      "24-12",
+      "10-4",
+      "25-12",
+      "8-6"
+    ],
+    "correctAnswer": "24-12",
+    "topicId": "final:gf:2022:score",
+    "difficulty": "medium",
+    "category": "grand-finals",
+    "teams": [
+      "st-helens",
+      "leeds"
+    ],
+    "era": "2020s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2023",
+    "question": "What was the score in the 2023 Super League Grand Final?",
+    "options": [
+      "10-2",
+      "8-6",
+      "25-12",
+      "37-6"
+    ],
+    "correctAnswer": "10-2",
+    "topicId": "final:gf:2023:score",
+    "difficulty": "medium",
+    "category": "grand-finals",
+    "teams": [
+      "wigan",
+      "catalans"
+    ],
+    "era": "2020s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2024",
+    "question": "What was the score in the 2024 Super League Grand Final?",
+    "options": [
+      "9-2",
+      "19-18",
+      "10-4",
+      "8-6"
+    ],
+    "correctAnswer": "9-2",
+    "topicId": "final:gf:2024:score",
+    "difficulty": "medium",
+    "category": "grand-finals",
+    "teams": [
+      "wigan",
+      "hull-kr"
+    ],
+    "era": "2020s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-score-2025",
+    "question": "What was the score in the 2025 Super League Grand Final?",
+    "options": [
+      "24-6",
+      "37-6",
+      "25-12",
+      "29-16"
+    ],
+    "correctAnswer": "24-6",
+    "topicId": "final:gf:2025:score",
+    "difficulty": "medium",
+    "category": "grand-finals",
+    "teams": [
+      "hull-kr",
+      "wigan"
+    ],
+    "era": "2020s",
+    "sourceType": "finals",
+    "answerType": "objective"
   },
   {
     "id": "lls-winner-2006",
@@ -1175,7 +1762,8 @@
       "st-helens"
     ],
     "era": "2000s",
-    "sourceType": "records"
+    "sourceType": "records",
+    "answerType": "objective"
   },
   {
     "id": "lls-winner-2007",
@@ -1194,7 +1782,8 @@
       "st-helens"
     ],
     "era": "2000s",
-    "sourceType": "records"
+    "sourceType": "records",
+    "answerType": "objective"
   },
   {
     "id": "lls-winner-2008",
@@ -1213,7 +1802,8 @@
       "st-helens"
     ],
     "era": "2000s",
-    "sourceType": "records"
+    "sourceType": "records",
+    "answerType": "objective"
   },
   {
     "id": "lls-winner-2014",
@@ -1232,7 +1822,8 @@
       "st-helens"
     ],
     "era": "2010s",
-    "sourceType": "records"
+    "sourceType": "records",
+    "answerType": "objective"
   },
   {
     "id": "lls-winner-2017",
@@ -1251,7 +1842,8 @@
       "castleford"
     ],
     "era": "2010s",
-    "sourceType": "records"
+    "sourceType": "records",
+    "answerType": "objective"
   },
   {
     "id": "lls-winner-2019",
@@ -1270,7 +1862,8 @@
       "st-helens"
     ],
     "era": "2010s",
-    "sourceType": "records"
+    "sourceType": "records",
+    "answerType": "objective"
   },
   {
     "id": "lls-winner-2021",
@@ -1289,7 +1882,8 @@
       "catalans"
     ],
     "era": "2020s",
-    "sourceType": "records"
+    "sourceType": "records",
+    "answerType": "objective"
   },
   {
     "id": "lls-winner-2022",
@@ -1308,7 +1902,8 @@
       "st-helens"
     ],
     "era": "2020s",
-    "sourceType": "records"
+    "sourceType": "records",
+    "answerType": "objective"
   },
   {
     "id": "lls-winner-2023",
@@ -1327,7 +1922,8 @@
       "wigan"
     ],
     "era": "2020s",
-    "sourceType": "records"
+    "sourceType": "records",
+    "answerType": "objective"
   },
   {
     "id": "lls-winner-2024",
@@ -1346,7 +1942,8 @@
       "wigan"
     ],
     "era": "2020s",
-    "sourceType": "records"
+    "sourceType": "records",
+    "answerType": "objective"
   },
   {
     "id": "lls-winner-2025",
@@ -1365,313 +1962,331 @@
       "hull-kr"
     ],
     "era": "2020s",
-    "sourceType": "records"
+    "sourceType": "records",
+    "answerType": "objective"
   },
   {
     "id": "stad-leeds",
-    "question": "Which rugby league club is associated with Headingley?",
+    "question": "What is Leeds Rhinos' Super League home stadium?",
     "options": [
-      "Leeds Rhinos",
-      "St Helens",
-      "Wigan Warriors",
-      "Hull KR"
+      "Headingley",
+      "The Jungle",
+      "Halliwell Jones Stadium",
+      "MKM Stadium"
     ],
-    "correctAnswer": "Leeds Rhinos",
+    "correctAnswer": "Headingley",
     "topicId": "stadium:leeds:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "leeds"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-wigan",
-    "question": "Which rugby league club is associated with DW Stadium?",
+    "question": "What is Wigan Warriors' Super League home stadium?",
     "options": [
-      "Wigan Warriors",
-      "Castleford Tigers",
-      "Hull FC",
-      "Warrington Wolves"
+      "DW Stadium",
+      "MKM Stadium",
+      "Halliwell Jones Stadium",
+      "Totally Wicked Stadium"
     ],
-    "correctAnswer": "Wigan Warriors",
+    "correctAnswer": "DW Stadium",
     "topicId": "stadium:wigan:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "wigan"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-st-helens",
-    "question": "Which rugby league club is associated with Totally Wicked Stadium?",
+    "question": "What is St Helens' Super League home stadium?",
     "options": [
-      "St Helens",
-      "Hull KR",
-      "Castleford Tigers",
-      "Warrington Wolves"
+      "Totally Wicked Stadium",
+      "The Jungle",
+      "Halliwell Jones Stadium",
+      "MKM Stadium"
     ],
-    "correctAnswer": "St Helens",
+    "correctAnswer": "Totally Wicked Stadium",
     "topicId": "stadium:st-helens:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "st-helens"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-warrington",
-    "question": "Which rugby league club is associated with Halliwell Jones Stadium?",
+    "question": "What is Warrington Wolves' Super League home stadium?",
     "options": [
-      "Warrington Wolves",
-      "Wigan Warriors",
-      "St Helens",
-      "Castleford Tigers"
+      "Halliwell Jones Stadium",
+      "Totally Wicked Stadium",
+      "MKM Stadium",
+      "Craven Park"
     ],
-    "correctAnswer": "Warrington Wolves",
+    "correctAnswer": "Halliwell Jones Stadium",
     "topicId": "stadium:warrington:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "warrington"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-hull-fc",
-    "question": "Which rugby league club is associated with MKM Stadium?",
+    "question": "What is Hull FC's Super League home stadium?",
     "options": [
-      "Hull FC",
-      "Hull KR",
-      "Warrington Wolves",
-      "Wigan Warriors"
+      "MKM Stadium",
+      "Craven Park",
+      "Headingley",
+      "Totally Wicked Stadium"
     ],
-    "correctAnswer": "Hull FC",
+    "correctAnswer": "MKM Stadium",
     "topicId": "stadium:hull-fc:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "hull-fc"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-hull-kr",
-    "question": "Which rugby league club is associated with Craven Park?",
+    "question": "What is Hull KR's Super League home stadium?",
     "options": [
-      "Hull KR",
-      "Hull FC",
-      "St Helens",
-      "Leeds Rhinos"
+      "Craven Park",
+      "The Jungle",
+      "MKM Stadium",
+      "Halliwell Jones Stadium"
     ],
-    "correctAnswer": "Hull KR",
+    "correctAnswer": "Craven Park",
     "topicId": "stadium:hull-kr:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "hull-kr"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-castleford",
-    "question": "Which rugby league club is associated with The Jungle?",
+    "question": "What is Castleford Tigers' Super League home stadium?",
     "options": [
-      "Castleford Tigers",
-      "Leeds Rhinos",
-      "Wigan Warriors",
-      "Hull FC"
+      "The Jungle",
+      "Headingley",
+      "DW Stadium",
+      "MKM Stadium"
     ],
-    "correctAnswer": "Castleford Tigers",
+    "correctAnswer": "The Jungle",
     "topicId": "stadium:castleford:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "castleford"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-wakefield",
-    "question": "Which rugby league club is associated with Belle Vue?",
+    "question": "What is Wakefield Trinity's Super League home stadium?",
     "options": [
-      "Wakefield Trinity",
-      "Warrington Wolves",
-      "Hull FC",
-      "Wigan Warriors"
+      "Belle Vue",
+      "Totally Wicked Stadium",
+      "Headingley",
+      "MKM Stadium"
     ],
-    "correctAnswer": "Wakefield Trinity",
+    "correctAnswer": "Belle Vue",
     "topicId": "stadium:wakefield:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "wakefield"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-huddersfield",
-    "question": "Which rugby league club is associated with John Smith's Stadium?",
+    "question": "What is Huddersfield Giants' Super League home stadium?",
     "options": [
-      "Huddersfield Giants",
-      "St Helens",
-      "Wigan Warriors",
-      "Warrington Wolves"
+      "John Smith's Stadium",
+      "Halliwell Jones Stadium",
+      "Totally Wicked Stadium",
+      "DW Stadium"
     ],
-    "correctAnswer": "Huddersfield Giants",
+    "correctAnswer": "John Smith's Stadium",
     "topicId": "stadium:huddersfield:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "huddersfield"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-catalans",
-    "question": "Which rugby league club is associated with Stade Gilbert Brutus?",
+    "question": "What is Catalans Dragons' Super League home stadium?",
     "options": [
-      "Catalans Dragons",
-      "Warrington Wolves",
-      "Hull KR",
-      "Leeds Rhinos"
+      "Stade Gilbert Brutus",
+      "Halliwell Jones Stadium",
+      "Totally Wicked Stadium",
+      "MKM Stadium"
     ],
-    "correctAnswer": "Catalans Dragons",
+    "correctAnswer": "Stade Gilbert Brutus",
     "topicId": "stadium:catalans:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "catalans"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-leigh",
-    "question": "Which rugby league club is associated with Leigh Sports Village?",
+    "question": "What is Leigh Leopards' Super League home stadium?",
     "options": [
-      "Leigh Leopards",
-      "Hull FC",
-      "Warrington Wolves",
-      "Wigan Warriors"
+      "Leigh Sports Village",
+      "Totally Wicked Stadium",
+      "DW Stadium",
+      "Craven Park"
     ],
-    "correctAnswer": "Leigh Leopards",
+    "correctAnswer": "Leigh Sports Village",
     "topicId": "stadium:leigh:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "leigh"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-salford",
-    "question": "Which rugby league club is associated with Salford Community Stadium?",
+    "question": "What is Salford Red Devils' Super League home stadium?",
     "options": [
-      "Salford Red Devils",
-      "St Helens",
-      "Wigan Warriors",
-      "Warrington Wolves"
+      "Salford Community Stadium",
+      "Headingley",
+      "DW Stadium",
+      "Totally Wicked Stadium"
     ],
-    "correctAnswer": "Salford Red Devils",
+    "correctAnswer": "Salford Community Stadium",
     "topicId": "stadium:salford:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "salford"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-bradford",
-    "question": "Which rugby league club is associated with Odsal?",
+    "question": "What is Bradford Bulls' Super League home stadium?",
     "options": [
-      "Bradford Bulls",
-      "Leeds Rhinos",
-      "Wigan Warriors",
-      "Hull KR"
+      "Odsal",
+      "Headingley",
+      "Halliwell Jones Stadium",
+      "Craven Park"
     ],
-    "correctAnswer": "Bradford Bulls",
+    "correctAnswer": "Odsal",
     "topicId": "stadium:bradford:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "bradford"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-london",
-    "question": "Which rugby league club is associated with The Stoop?",
+    "question": "What is London Broncos' Super League home stadium?",
     "options": [
-      "London Broncos",
-      "Warrington Wolves",
-      "Leeds Rhinos",
-      "Wigan Warriors"
+      "The Stoop",
+      "Craven Park",
+      "Totally Wicked Stadium",
+      "DW Stadium"
     ],
-    "correctAnswer": "London Broncos",
+    "correctAnswer": "The Stoop",
     "topicId": "stadium:london:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "london"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-toulouse",
-    "question": "Which rugby league club is associated with Stade Ernest-Wallon?",
+    "question": "What is Toulouse Olympique's Super League home stadium?",
     "options": [
-      "Toulouse Olympique",
-      "Leeds Rhinos",
-      "Wigan Warriors",
-      "St Helens"
+      "Stade Ernest-Wallon",
+      "DW Stadium",
+      "Halliwell Jones Stadium",
+      "Craven Park"
     ],
-    "correctAnswer": "Toulouse Olympique",
+    "correctAnswer": "Stade Ernest-Wallon",
     "topicId": "stadium:toulouse:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "toulouse"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-york",
-    "question": "Which rugby league club is associated with York Community Stadium?",
+    "question": "What is York Knights' Super League home stadium?",
     "options": [
-      "York Knights",
-      "Warrington Wolves",
-      "Leeds Rhinos",
-      "Hull KR"
+      "York Community Stadium",
+      "MKM Stadium",
+      "Halliwell Jones Stadium",
+      "Craven Park"
     ],
-    "correctAnswer": "York Knights",
+    "correctAnswer": "York Community Stadium",
     "topicId": "stadium:york:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "york"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "stad-widnes",
-    "question": "Which rugby league club is associated with Halton Stadium?",
+    "question": "What is Widnes Vikings' Super League home stadium?",
     "options": [
-      "Widnes Vikings",
-      "Warrington Wolves",
-      "Wigan Warriors",
-      "Leeds Rhinos"
+      "Halton Stadium",
+      "Headingley",
+      "MKM Stadium",
+      "DW Stadium"
     ],
-    "correctAnswer": "Widnes Vikings",
+    "correctAnswer": "Halton Stadium",
     "topicId": "stadium:widnes:home",
     "difficulty": "easy",
     "category": "stadiums",
     "teams": [
       "widnes"
     ],
-    "sourceType": "curated"
+    "sourceType": "curated",
+    "answerType": "objective"
   },
   {
     "id": "hist-founded-bradford",
@@ -6702,44 +7317,6 @@
     "sourceType": "roster"
   },
   {
-    "id": "ros-who-london-harry-aldous",
-    "question": "Which of these players was named in London Broncos' 2026 squad?",
-    "options": [
-      "Harry Aldous",
-      "Andy Ackers",
-      "Ethan Ryan",
-      "Dan Russell"
-    ],
-    "correctAnswer": "Harry Aldous",
-    "topicId": "squad:london:2026:harry-aldous:membership",
-    "difficulty": "easy",
-    "category": "players",
-    "teams": [
-      "london"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-who-salford-ellis-robson",
-    "question": "Which of these players was named in Salford Red Devils' 2026 squad?",
-    "options": [
-      "Ellis Robson",
-      "Ed Chamberlain",
-      "Ethan Ryan",
-      "Andy Ackers"
-    ],
-    "correctAnswer": "Ellis Robson",
-    "topicId": "squad:salford:2026:ellis-robson:membership",
-    "difficulty": "easy",
-    "category": "players",
-    "teams": [
-      "salford"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
     "id": "ros-who-toulouse-anthony-marion",
     "question": "Which of these players was named in Toulouse Olympique's 2026 squad?",
     "options": [
@@ -7096,44 +7673,6 @@
     "category": "players",
     "teams": [
       "wakefield"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-who-widnes-nathan-connell",
-    "question": "Which of these players was named in Widnes Vikings' 2026 squad?",
-    "options": [
-      "Nathan Connell",
-      "Ebon Scurr",
-      "Andy Ackers",
-      "Ed Chamberlain"
-    ],
-    "correctAnswer": "Nathan Connell",
-    "topicId": "squad:widnes:2026:nathan-connell:membership",
-    "difficulty": "easy",
-    "category": "players",
-    "teams": [
-      "widnes"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-widnes-nathan-connell",
-    "question": "Which position did Nathan Connell play for Widnes Vikings in the 2026 squad?",
-    "options": [
-      "wing",
-      "loose forward",
-      "prop",
-      "full-back"
-    ],
-    "correctAnswer": "wing",
-    "topicId": "squad:widnes:2026:nathan-connell:position",
-    "difficulty": "medium",
-    "category": "players",
-    "teams": [
-      "widnes"
     ],
     "era": "current",
     "sourceType": "roster"

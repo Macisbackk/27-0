@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import "@/app/quiz/quiz.css";
 import { Confetti } from "@/components/Confetti";
 import { GameButton } from "@/components/ui/GameButton";
@@ -70,7 +71,11 @@ function persist(run: QuizRun | null): QuizRun | null {
 
 export function QuizModeApp() {
   const bank = useMemo(() => getQuizQuestionBank(), []);
-  const [view, setView] = useState<QuizView>("landing");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [view, setView] = useState<QuizView>(
+    searchParams.get("mode") === "team" ? "team" : "landing"
+  );
   const [run, setRun] = useState<QuizRun | null>(null);
   const [teamId, setTeamId] = useState<QuizTeamId | null>(null);
   const [teamQuery, setTeamQuery] = useState("");
@@ -91,12 +96,14 @@ export function QuizModeApp() {
       setView("result");
     } else if (stored && isActiveQuizPhase(stored.phase)) {
       setView("play");
+    } else if (searchParams.get("mode") === "team") {
+      setView("team");
     }
     setReady(true);
     return () => {
       if (lockTimer.current) window.clearTimeout(lockTimer.current);
     };
-  }, [bank]);
+  }, [bank, searchParams]);
 
   const updateRun = useCallback((next: QuizRun) => {
     setRun(persist(next));
@@ -115,6 +122,7 @@ export function QuizModeApp() {
       recentIds: stats.recentQuestionIds,
       recentTopicIds: stats.recentTopicIds,
     });
+    router.replace("/mini-games/quiz");
     updateRun(next);
     setView("play");
   };
@@ -134,6 +142,7 @@ export function QuizModeApp() {
       recentIds: stats.recentQuestionIds,
       recentTopicIds: stats.recentTopicIds,
     });
+    router.replace("/mini-games/quiz?mode=team");
     updateRun(next);
     setView("play");
   };
@@ -229,11 +238,12 @@ export function QuizModeApp() {
     setRun(null);
     setView("landing");
     setTeamId(null);
+    router.replace("/mini-games/quiz");
   };
 
   return (
     <StandardPageShell>
-      <div className={`${PAGE.section} quiz-arena`}>
+      <div className={`${PAGE.section} quiz-arena mx-auto flex w-full max-w-5xl flex-col items-stretch`}>
         {!ready ? (
           <p className={`text-center ${TYPO.meta}`}>Loading Quiz Mode…</p>
         ) : view === "landing" ? (
@@ -246,6 +256,7 @@ export function QuizModeApp() {
             onMillionaire={startMillionaire}
             onTeam={() => {
               playUiClick();
+              router.replace("/mini-games/quiz?mode=team");
               setView("team");
             }}
           />
@@ -255,7 +266,10 @@ export function QuizModeApp() {
             query={teamQuery}
             onQuery={setTeamQuery}
             onSelect={setTeamId}
-            onBack={() => setView("landing")}
+            onBack={() => {
+              router.replace("/mini-games/quiz");
+              setView("landing");
+            }}
             onStart={startTeam}
           />
         ) : view === "play" && run ? (
@@ -288,7 +302,10 @@ export function QuizModeApp() {
             hasActiveRun={false}
             onResume={() => undefined}
             onMillionaire={startMillionaire}
-            onTeam={() => setView("team")}
+            onTeam={() => {
+              router.replace("/mini-games/quiz?mode=team");
+              setView("team");
+            }}
           />
         )}
       </div>

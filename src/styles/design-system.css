@@ -2788,6 +2788,12 @@
   animation: mini-game-shake 0.32s var(--motion-ease, ease);
 }
 
+.mini-game-arena,
+.quiz-arena {
+  width: 100%;
+  margin-inline: auto;
+}
+
 .mini-game-clue {
   animation: mini-game-clue-in 0.28s var(--motion-ease, ease);
 }

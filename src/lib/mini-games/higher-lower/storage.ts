@@ -32,14 +32,18 @@ function writeJson(key: string, value: unknown): void {
 
 function isHigherLowerRun(value: unknown): value is HigherLowerRun {
   if (!isRecord(value)) return false;
+  const status = value.status;
   return (
     typeof value.seed === "string" &&
-    typeof value.roundIndex === "number" &&
-    Array.isArray(value.historyIds) &&
+    typeof value.pickIndex === "number" &&
+    value.pickIndex >= 0 &&
+    value.pickIndex < 5 &&
+    Array.isArray(value.usedIds) &&
     typeof value.baseId === "string" &&
     typeof value.challengeId === "string" &&
     typeof value.revealed === "boolean" &&
-    (value.status === "playing" || value.status === "lost")
+    (status === "playing" || status === "lost" || status === "won") &&
+    typeof value.rewardClaimed === "boolean"
   );
 }
 
@@ -73,13 +77,12 @@ export function loadHigherLowerStats(): HigherLowerStats {
     bestStreak: typeof value.bestStreak === "number" ? value.bestStreak : 0,
     plays: typeof value.plays === "number" ? value.plays : 0,
     correct: typeof value.correct === "number" ? value.correct : 0,
-    lastFiveRewardDate:
-      typeof value.lastFiveRewardDate === "string"
-        ? value.lastFiveRewardDate
-        : null,
-    lastTenRewardDate:
-      typeof value.lastTenRewardDate === "string"
-        ? value.lastTenRewardDate
+    fivePickWins:
+      typeof value.fivePickWins === "number" ? value.fivePickWins : 0,
+    failedRuns: typeof value.failedRuns === "number" ? value.failedRuns : 0,
+    lastRewardedRunId:
+      typeof value.lastRewardedRunId === "string"
+        ? value.lastRewardedRunId
         : null,
   };
 }
