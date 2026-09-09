@@ -176,8 +176,10 @@ export function HangmanGame() {
       setFlash("bad");
     }
     window.setTimeout(() => setFlash(null), 280);
-    const next =
-      result.run.status === "playing" ? result.run : settleHangman(result.run);
+    const next: HangmanView =
+      result.run.status === "playing"
+        ? result.run
+        : settleHangman(result.run);
     if (next.status === "won") {
       playMiniWin();
       setCelebrate(true);

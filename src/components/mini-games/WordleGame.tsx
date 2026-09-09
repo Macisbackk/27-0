@@ -176,8 +176,10 @@ export function WordleGame() {
     if (result.newlyFound && result.newlyFound.length > 0) {
       playMiniClue();
     }
-    const next =
-      result.run.status === "playing" ? result.run : settleWordle(result.run);
+    const next: WordleRunView =
+      result.run.status === "playing"
+        ? result.run
+        : settleWordle(result.run);
     saveWordleRun(next);
     setRun(next);
     setStats(loadWordleStats());
