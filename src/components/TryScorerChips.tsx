@@ -17,35 +17,51 @@ interface TryScorerChipsProps {
   compact?: boolean;
 }
 
-/** Try scorers rendered like conversions/penalties — stacked stat lines in a scoring section. */
+/** Try scorers as compact chips (expand) or denser text lines. */
 export function TryScorerChips({ scorers, compact = false }: TryScorerChipsProps) {
   const grouped = groupTryScorersForDisplay(scorers);
   if (grouped.length === 0) return null;
 
-  const textClass = compact ? TYPO.bodySm : TYPO.statValue;
+  if (compact) {
+    return (
+      <ul className="flex flex-wrap justify-center gap-1.5 sm:justify-start">
+        {grouped.map((scorer) => {
+          const label =
+            scorer.tries > 1
+              ? `${scorer.name} ×${scorer.tries}`
+              : scorer.name;
+
+          return (
+            <li
+              key={scorer.playerId}
+              className="match-score-chip"
+              title={scorer.positionNote ?? undefined}
+            >
+              {label}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
 
   return (
-    <p className={`${textClass} flex flex-wrap gap-x-1 gap-y-0.5 text-gray-300`}>
-      {grouped.map((scorer, index) => {
+    <ul className={`space-y-1 ${TYPO.statValue}`}>
+      {grouped.map((scorer) => {
         const label =
-          scorer.tries > 1 ? `${scorer.name} x${scorer.tries}` : scorer.name;
+          scorer.tries > 1 ? `${scorer.name} ×${scorer.tries}` : scorer.name;
 
         return (
-          <span
+          <li
             key={scorer.playerId}
-            className="inline-flex max-w-full items-center"
+            className="break-words text-gray-200"
             title={scorer.positionNote ?? undefined}
           >
-            {index > 0 && (
-              <span className="mr-1 text-gray-600" aria-hidden>
-                ·
-              </span>
-            )}
-            <span className="break-words text-gray-200">{label}</span>
-          </span>
+            {label}
+          </li>
         );
       })}
-    </p>
+    </ul>
   );
 }
 

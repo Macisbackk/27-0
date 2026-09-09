@@ -12,18 +12,25 @@ export function MiniGameShell({
   eyebrow = "Mini Games",
   children,
   actions,
+  compact = false,
 }: {
   title: string;
   eyebrow?: string;
   children: ReactNode;
   actions?: ReactNode;
+  /** Tighter chrome for short mobile play loops (e.g. Higher or Lower). */
+  compact?: boolean;
 }) {
   return (
     <StandardPageShell>
       <div
         className={`${PAGE.section} mini-game-arena mx-auto flex w-full max-w-xl flex-col items-center text-center`}
       >
-        <div className="mb-4 flex w-full flex-wrap items-center justify-center gap-3">
+        <div
+          className={`flex w-full flex-wrap items-center justify-center gap-3 ${
+            compact ? "mb-2" : "mb-4"
+          }`}
+        >
           <GameButton
             variant="secondary"
             size="sm"
@@ -35,11 +42,15 @@ export function MiniGameShell({
           {actions}
         </div>
 
-        <div className="mini-game-board">
+        <div
+          className={`mini-game-board${compact ? " mini-game-board--compact" : ""}`}
+        >
           <span className="mini-game-board__accent" aria-hidden />
           <div className="mini-game-board__body">
             <p className={TYPO.sectionLabel}>{eyebrow}</p>
-            <h1 className={`mt-1.5 ${TYPO.pageTitle}`}>{title}</h1>
+            <h1 className={`${compact ? "mt-1" : "mt-1.5"} ${TYPO.pageTitle}`}>
+              {title}
+            </h1>
             <div className="mt-1 flex w-full flex-col items-center">{children}</div>
           </div>
         </div>

@@ -5,7 +5,7 @@ import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameS
 import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
 import { TYPO } from "@/lib/ui/typography";
 import { getLocalDateKey } from "@/lib/mini-games/date";
-import { HANGMAN_CATEGORY_LABEL, getHangmanBank } from "@/lib/mini-games/hangman/answers";
+import { getHangmanBank } from "@/lib/mini-games/hangman/answers";
 import {
   createHangmanRun,
   guessHangmanLetter,
@@ -232,11 +232,7 @@ export function HangmanGame() {
           <p className={`mt-6 text-center ${TYPO.meta}`}>Loading puzzle…</p>
         ) : (
           <>
-            <p className={`mt-6 text-center ${TYPO.keyLabel}`}>
-              {HANGMAN_CATEGORY_LABEL[run.category]}
-              {run.daily ? " · Daily" : " · Practice"}
-            </p>
-            <p className={`mt-1 text-center ${TYPO.bodySm}`}>{run.hint}</p>
+            <p className={`mt-6 text-center ${TYPO.bodySm}`}>{run.hint}</p>
             {eraMeta &&
               (eraMeta.isHistoric ? (
                 <p

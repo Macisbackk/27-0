@@ -35,28 +35,32 @@ export function PlayoffMatchDetailsPanel({
   const motm = match.userFixture?.manOfTheMatch;
 
   const scoringBlock = scoring ? (
-    <div className="space-y-2.5">
-      <TeamScoringBreakdown
-        teamName={match.homeTeam}
-        colorClub={
-          match.homeTeam === DREAM_TEAM_NAME && userClubColorOverride
-            ? userClubColorOverride
-            : match.homeTeam
-        }
-        scoring={scoring.home}
-        flat
-      />
-      <TeamScoringBreakdown
-        teamName={match.awayTeam}
-        colorClub={
-          match.awayTeam === DREAM_TEAM_NAME && userClubColorOverride
-            ? userClubColorOverride
-            : match.awayTeam
-        }
-        scoring={scoring.away}
-        variant="opponent"
-        flat
-      />
+    <div className="divide-y divide-white/10">
+      <div className="pb-2.5">
+        <TeamScoringBreakdown
+          teamName={match.homeTeam}
+          colorClub={
+            match.homeTeam === DREAM_TEAM_NAME && userClubColorOverride
+              ? userClubColorOverride
+              : match.homeTeam
+          }
+          scoring={scoring.home}
+          flat
+        />
+      </div>
+      <div className="pt-2.5">
+        <TeamScoringBreakdown
+          teamName={match.awayTeam}
+          colorClub={
+            match.awayTeam === DREAM_TEAM_NAME && userClubColorOverride
+              ? userClubColorOverride
+              : match.awayTeam
+          }
+          scoring={scoring.away}
+          variant="opponent"
+          flat
+        />
+      </div>
     </div>
   ) : (
     <p className={`text-center ${TYPO.bodySm}`}>Scoring data unavailable.</p>

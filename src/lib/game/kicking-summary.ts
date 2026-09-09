@@ -5,7 +5,13 @@ export interface KickingSummaryLine {
   label: string;
 }
 
-/** Build grouped kicking lines for match details (conversions, penalties, drop goals). */
+export interface GoalSummaryTag {
+  key: "conversion" | "penalty" | "drop";
+  label: string;
+  count: number;
+}
+
+/** Build grouped goal lines for match details (conversions, penalties, drop goals). */
 export function buildKickingSummaryLines(
   kicking: FixtureKicking | null | undefined
 ): KickingSummaryLine[] {
@@ -18,7 +24,7 @@ export function buildKickingSummaryLines(
       name: kicking.name,
       label:
         kicking.conversions > 1
-          ? `Conversion x${kicking.conversions}`
+          ? `Conversion ×${kicking.conversions}`
           : "Conversion",
     });
   }
@@ -27,8 +33,8 @@ export function buildKickingSummaryLines(
       name: kicking.name,
       label:
         kicking.penalties > 1
-          ? `Penalty Goal x${kicking.penalties}`
-          : "Penalty Goal",
+          ? `Penalty ×${kicking.penalties}`
+          : "Penalty",
     });
   }
   if (kicking.dropGoals > 0) {
@@ -36,10 +42,50 @@ export function buildKickingSummaryLines(
       name: kicking.name,
       label:
         kicking.dropGoals > 1
-          ? `Drop Goal x${kicking.dropGoals}`
-          : "Drop Goal",
+          ? `Drop ×${kicking.dropGoals}`
+          : "Drop",
     });
   }
 
   return lines;
+}
+
+/** Compact goal tags for the expand panel (one kicker, short type chips). */
+export function buildGoalSummaryTags(
+  kicking: FixtureKicking | null | undefined
+): GoalSummaryTag[] {
+  if (!kicking) return [];
+
+  const tags: GoalSummaryTag[] = [];
+
+  if (kicking.conversions > 0) {
+    tags.push({
+      key: "conversion",
+      count: kicking.conversions,
+      label:
+        kicking.conversions > 1
+          ? `Conv ×${kicking.conversions}`
+          : "Conv",
+    });
+  }
+  if (kicking.penalties > 0) {
+    tags.push({
+      key: "penalty",
+      count: kicking.penalties,
+      label:
+        kicking.penalties > 1 ? `Pen ×${kicking.penalties}` : "Pen",
+    });
+  }
+  if (kicking.dropGoals > 0) {
+    tags.push({
+      key: "drop",
+      count: kicking.dropGoals,
+      label:
+        kicking.dropGoals > 1
+          ? `Drop ×${kicking.dropGoals}`
+          : "Drop",
+    });
+  }
+
+  return tags;
 }

@@ -22,7 +22,7 @@ interface TeamScoringBreakdownProps {
   flat?: boolean;
 }
 
-/** Compact tries + kicking breakdown for match detail panels. */
+/** Compact tries + goals breakdown for match detail panels. */
 export function TeamScoringBreakdown({
   teamName,
   colorClub,
@@ -40,34 +40,37 @@ export function TeamScoringBreakdown({
 
   if (!hasTries && !hasKicking) {
     return (
-      <div className={flat ? "space-y-1 text-center" : "space-y-2"}>
-        <ClubTeamLabel club={teamName} colorClub={colorClub} compact />
+      <div className={flat ? "space-y-2 text-center sm:text-left" : "space-y-2"}>
+        <ClubTeamLabel
+          club={teamName}
+          colorClub={colorClub}
+          compact
+          className={flat ? "justify-center sm:justify-start" : undefined}
+        />
         <TryScorersEmptyNote />
       </div>
     );
   }
 
   const tryBlock = hasTries ? (
-    <div>
+    <div className="space-y-1.5">
       <p className={TYPO.statLabel}>Tries</p>
-      <div className="mt-0.5">
-        <TryScorerChips
-          compact
-          scorers={scoring.tryScorers.map((s) => {
-            const slot = userSquad
-              ? findSlotByPlayerId(userSquad, s.playerId)
-              : undefined;
-            const extras = formatPlayerLineExtras(slot);
-            return {
-              playerId: s.playerId,
-              name: s.name,
-              tries: s.tries,
-              positionNote: extras.positionNote,
-            };
-          })}
-          variant={variant}
-        />
-      </div>
+      <TryScorerChips
+        compact
+        scorers={scoring.tryScorers.map((s) => {
+          const slot = userSquad
+            ? findSlotByPlayerId(userSquad, s.playerId)
+            : undefined;
+          const extras = formatPlayerLineExtras(slot);
+          return {
+            playerId: s.playerId,
+            name: s.name,
+            tries: s.tries,
+            positionNote: extras.positionNote,
+          };
+        })}
+        variant={variant}
+      />
     </div>
   ) : null;
 
@@ -77,14 +80,14 @@ export function TeamScoringBreakdown({
 
   if (flat) {
     return (
-      <div className="space-y-1 text-center">
+      <div className="space-y-2 text-center sm:text-left">
         <ClubTeamLabel
           club={teamName}
           colorClub={colorClub}
           compact
-          className="justify-center"
+          className="justify-center sm:justify-start"
         />
-        <div className="space-y-1 [&_p]:justify-center">
+        <div className="space-y-2.5">
           {tryBlock}
           {kickBlock}
         </div>
@@ -96,7 +99,7 @@ export function TeamScoringBreakdown({
     <div className="space-y-2">
       <ClubTeamLabel club={teamName} colorClub={colorClub} compact />
       <TeamColouredScoringSection colorClub={colorClub} compact>
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {tryBlock}
           {hasTries && hasKicking && (
             <div className="border-t border-white/10" aria-hidden />

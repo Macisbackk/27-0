@@ -7,26 +7,10 @@ import { TYPO } from "@/lib/ui/typography";
 import { playUiClick } from "@/lib/sound";
 
 const GAMES = [
-  {
-    href: "/mini-games/quiz",
-    title: "Quiz",
-    blurb: "Millionaire or Team Challenge — pick your format.",
-  },
-  {
-    href: "/mini-games/wordle",
-    title: "Rugby League Wordle",
-    blurb: "Guess Super League players anytime. Historic or Current goes green when it matches.",
-  },
-  {
-    href: "/mini-games/hangman",
-    title: "Rugby League Hangman",
-    blurb: "Guess the player, club or rugby league term.",
-  },
-  {
-    href: "/mini-games/higher-lower",
-    title: "Higher or Lower",
-    blurb: "Five picks. Is the next player's rating higher or lower?",
-  },
+  { href: "/mini-games/quiz", title: "Quiz" },
+  { href: "/mini-games/wordle", title: "Rugby League Wordle" },
+  { href: "/mini-games/hangman", title: "Rugby League Hangman" },
+  { href: "/mini-games/higher-lower", title: "Higher or Lower" },
 ] as const;
 
 export function MiniGamesHub() {
@@ -45,10 +29,9 @@ export function MiniGamesHub() {
           {GAMES.map((game) => (
             <li key={game.href}>
               <div className="mini-game-hub-row">
-                <div className="min-w-0 flex-1 text-center sm:text-left">
-                  <p className={TYPO.keyLabel}>{game.title}</p>
-                  <p className={`mt-1 ${TYPO.bodySm}`}>{game.blurb}</p>
-                </div>
+                <p className={`min-w-0 flex-1 text-center sm:text-left ${TYPO.keyLabel}`}>
+                  {game.title}
+                </p>
                 <GameButton
                   variant="theme"
                   size="sm"

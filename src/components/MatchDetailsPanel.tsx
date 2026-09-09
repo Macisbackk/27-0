@@ -82,25 +82,29 @@ export function MatchDetailsPanel({
   }, [hideMatchStory, fixture, seed, canonicalEvents, userTeamName]);
 
   const scoringBlock = detail ? (
-    <div className="space-y-2.5">
-      <TeamScoringBreakdown
-        teamName={userTeamName}
-        colorClub={
-          userClubColorOverride ??
-          resolveEraTeamClubName(userTeamName, eraClubLookup)
-        }
-        scoring={detail.dreamTeam}
-        userSquad={userSquad}
-        variant="user"
-        flat
-      />
-      <TeamScoringBreakdown
-        teamName={fixture.opponent}
-        colorClub={resolveEraTeamClubName(fixture.opponent, eraClubLookup)}
-        scoring={detail.opponent}
-        variant="opponent"
-        flat
-      />
+    <div className="divide-y divide-white/10">
+      <div className="pb-2.5">
+        <TeamScoringBreakdown
+          teamName={userTeamName}
+          colorClub={
+            userClubColorOverride ??
+            resolveEraTeamClubName(userTeamName, eraClubLookup)
+          }
+          scoring={detail.dreamTeam}
+          userSquad={userSquad}
+          variant="user"
+          flat
+        />
+      </div>
+      <div className="pt-2.5">
+        <TeamScoringBreakdown
+          teamName={fixture.opponent}
+          colorClub={resolveEraTeamClubName(fixture.opponent, eraClubLookup)}
+          scoring={detail.opponent}
+          variant="opponent"
+          flat
+        />
+      </div>
     </div>
   ) : (
     <p className={`text-center ${TYPO.bodySm}`}>Scoring data unavailable.</p>

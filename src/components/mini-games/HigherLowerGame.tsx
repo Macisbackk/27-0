@@ -76,46 +76,31 @@ function PlayerFace({
   player,
   showRating,
   label,
-  hint,
 }: {
   player: MiniGamePlayer;
   showRating: boolean;
   label: string;
-  hint?: string;
 }) {
   return (
-    <div className="mx-auto w-full max-w-[16rem] rounded-xl border border-white/10 bg-black/30 px-4 py-4 text-center">
-      <p className={TYPO.keyLabel}>{label}</p>
-      {hint ? <p className={`mt-1 ${TYPO.meta}`}>{hint}</p> : null}
-      <div className="mt-3 flex justify-center">
-        <ClubLogoBox club={player.club} size="md" showAbbrev={false} />
-      </div>
-      <p className={`mt-3 ${TYPO.playerNameSm}`}>
-        {formatMiniGamePlayerLabel(player)}
-      </p>
-      {player.isHistoric ? (
-        <p
-          className={`mt-1.5 font-display text-[11px] font-bold uppercase tracking-[0.14em] text-accent-gold`}
-          aria-label={`Era player from ${player.year}`}
-        >
-          Era · {player.year}
+    <div className="hol-face">
+      <ClubLogoBox club={player.club} size="sm" showAbbrev={false} />
+      <div className="min-w-0 flex-1 text-left">
+        <p className={TYPO.keyLabel}>{label}</p>
+        <p className={`truncate ${TYPO.playerNameSm}`}>
+          {formatMiniGamePlayerLabel(player)}
         </p>
-      ) : (
-        <p className={`mt-1.5 ${TYPO.meta}`}>Current</p>
-      )}
+        <p className={TYPO.meta}>
+          {player.isHistoric ? `Era · ${player.year}` : "Current"}
+        </p>
+      </div>
       <p
-        className={`mt-3 font-display text-3xl tabular-nums ${
+        className={`shrink-0 font-display text-2xl tabular-nums leading-none ${
           showRating ? "text-white" : "text-pitch-600"
         }`}
         aria-label={showRating ? `Rating ${player.rating}` : "Rating hidden"}
       >
         {showRating ? player.rating : "?"}
       </p>
-      {!showRating ? (
-        <p className={`mt-1 ${TYPO.meta}`}>Rating hidden</p>
-      ) : (
-        <p className={`mt-1 ${TYPO.meta}`}>Rating</p>
-      )}
     </div>
   );
 }
@@ -246,7 +231,7 @@ export function HigherLowerGame() {
   const runOver = run?.status === "won" || run?.status === "lost";
 
   return (
-    <MiniGameShell title="Higher or Lower">
+    <MiniGameShell title="Higher or Lower" compact>
       {celebrate && <Confetti />}
       <MiniGameRewardPopup
         open={rewardOpen}
@@ -254,11 +239,7 @@ export function HigherLowerGame() {
         detail="Reward for completing all 5 picks."
         onClose={() => setRewardOpen(false)}
       />
-      <div className="mini-game-play mx-auto flex w-full max-w-sm flex-col items-center">
-        <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
-          Compare ratings. The top player&apos;s score is shown — guess if the
-          bottom player is higher or lower.
-        </p>
+      <div className="mini-game-play hol-play mx-auto flex w-full max-w-sm flex-col items-center">
         <div className="text-center">
           <MiniGameStatLine
             items={[
@@ -269,17 +250,16 @@ export function HigherLowerGame() {
         </div>
 
         {!ready || !run || !board ? (
-          <p className={`mt-6 text-center ${TYPO.meta}`}>Loading players…</p>
+          <p className={`mt-4 text-center ${TYPO.meta}`}>Loading players…</p>
         ) : (
           <>
-            <p className={`mt-5 text-center ${TYPO.keyLabel}`}>
-              {run.status === "won"
-                ? "5 PICKS COMPLETE"
-                : `PICK ${pickNumber} / ${HIGHER_LOWER_PICKS}`}
-            </p>
             <div
-              className="mini-game-pick-track"
-              aria-label={`Pick ${pickNumber} of ${HIGHER_LOWER_PICKS}`}
+              className="mini-game-pick-track hol-pick-track"
+              aria-label={
+                run.status === "won"
+                  ? "5 picks complete"
+                  : `Pick ${pickNumber} of ${HIGHER_LOWER_PICKS}`
+              }
             >
               {Array.from({ length: HIGHER_LOWER_PICKS }, (_, index) => {
                 const done = index < pickNumber - 1 || run.status === "won";
@@ -301,48 +281,32 @@ export function HigherLowerGame() {
               })}
             </div>
 
-            {!run.revealed && run.status === "playing" ? (
-              <p className={`mt-3 text-center ${TYPO.bodySm}`}>
-                Is{" "}
-                <span className="font-semibold text-white">
-                  {formatMiniGamePlayerLabel(board.challenge)}
-                </span>{" "}
-                rated higher or lower than{" "}
-                <span className="font-semibold text-white">
-                  {board.base.rating}
-                </span>
-                ?
-              </p>
-            ) : null}
-
             <div
-              className={`mt-4 w-full rounded-xl p-1 transition ${
+              className={`mt-3 w-full rounded-xl transition ${
                 flash === "good"
-                  ? "border border-emerald-400/40 bg-emerald-500/5"
+                  ? "border border-emerald-400/40 bg-emerald-500/5 p-1"
                   : flash === "bad"
-                    ? "mini-game-shake border border-red-400/40 bg-red-500/5"
+                    ? "mini-game-shake border border-red-400/40 bg-red-500/5 p-1"
                     : "border border-transparent"
               }`}
             >
               <PlayerFace
                 player={board.base}
                 showRating
-                label="Known rating"
-                hint="Compare against this"
+                label="Known"
               />
-              <div className="mini-game-vs-badge" aria-hidden>
+              <div className="mini-game-vs-badge mini-game-vs-badge--tight" aria-hidden>
                 VS
               </div>
               <PlayerFace
                 player={board.challenge}
                 showRating={challengeRevealed}
-                label="Mystery rating"
-                hint="Guess higher or lower"
+                label="Mystery"
               />
             </div>
 
             {challengeRevealed && (
-              <p className={`mt-4 text-center ${TYPO.bodySm}`}>
+              <p className={`mt-2 text-center ${TYPO.bodySm}`}>
                 {formatMiniGamePlayerLabel(board.challenge, { showYear: true })}{" "}
                 is{" "}
                 <span className="font-semibold text-white">
@@ -355,31 +319,26 @@ export function HigherLowerGame() {
             )}
 
             {!run.revealed && run.status === "playing" && (
-              <div className="mt-5 grid w-full gap-3">
-                <p className={`text-center ${TYPO.meta}`}>
-                  {formatMiniGamePlayerLabel(board.challenge)}&apos;s rating is…
-                </p>
-                <div className="grid w-full grid-cols-2 gap-3">
-                  <GameButton variant="theme" onClick={() => pick("higher")}>
-                    Higher
-                  </GameButton>
-                  <GameButton variant="secondary" onClick={() => pick("lower")}>
-                    Lower
-                  </GameButton>
-                </div>
+              <div className="mt-3 grid w-full grid-cols-2 gap-2">
+                <GameButton variant="theme" onClick={() => pick("higher")}>
+                  Higher
+                </GameButton>
+                <GameButton variant="secondary" onClick={() => pick("lower")}>
+                  Lower
+                </GameButton>
               </div>
             )}
 
             {run.revealed && (
-              <div className="mt-6 w-full text-center">
-                <p className={TYPO.cardTitle}>
+              <div className="mt-3 w-full text-center">
+                <p className={TYPO.keyLabel}>
                   {run.status === "won"
                     ? "5 picks complete"
                     : run.lastCorrect
                       ? "Correct"
                       : "Wrong"}
                 </p>
-                <div className="mx-auto mt-4 w-full max-w-xs">
+                <div className="mx-auto mt-2.5 w-full max-w-xs">
                   {run.status === "playing" &&
                   run.lastCorrect &&
                   !isFinalHigherLowerPick(run) ? (
