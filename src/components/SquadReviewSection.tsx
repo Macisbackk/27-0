@@ -49,7 +49,7 @@ export function SquadReviewSection({
       )}
       <div className="grid gap-4 lg:grid-cols-2 lg:items-start">
         <div className="min-w-0">
-          <p className="mb-2 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+          <p className="mb-2 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500">
             Team Sheet
           </p>
           <TeamSheet
@@ -68,10 +68,10 @@ export function SquadReviewSection({
           <div className="min-w-0 space-y-4">
             {hasAwards && (
               <div>
-                <p className="mb-2 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                <p className="mb-2 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500">
                   Player Awards
                 </p>
-                <div className="grid gap-3 text-left sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                <div className="grid gap-3 text-center sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                   {awards.map((award) => (
                     <RLAwardCard
                       key={award.title}
@@ -91,7 +91,7 @@ export function SquadReviewSection({
 
             {hasPerformance && (
               <div>
-                <p className="mb-2 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                <p className="mb-2 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500">
                   {performanceTitle}
                 </p>
                 {performance}
@@ -100,7 +100,7 @@ export function SquadReviewSection({
 
             {hasTryScorers && (
               <div>
-                <p className="mb-2 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                <p className="mb-2 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500">
                   Try Scorers
                 </p>
                 <TryScorersSection

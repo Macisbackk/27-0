@@ -36,13 +36,11 @@ export function GameSectionHeader({
     .join(" ");
 
   return (
-    <header className={`game-section-header ${sizeClass} ${className}`.trim()}>
-      <div
-        className={`flex gap-3 ${
-          action ? "items-start justify-between" : "flex-col items-center"
-        }`}
-      >
-        <div className={`min-w-0 flex-1 ${action ? "text-left" : "text-center"}`}>
+    <header
+      className={`game-section-header text-center ${sizeClass} ${className}`.trim()}
+    >
+      <div className="flex flex-col items-center gap-3">
+        <div className="min-w-0 w-full text-center">
           <p className="game-section-header__label">{label}</p>
           <h2 className="game-section-header__title">{title}</h2>
           {subtitle ? <div className={subtitleClass}>{subtitle}</div> : null}

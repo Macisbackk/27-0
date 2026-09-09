@@ -2792,7 +2792,7 @@
 /*
  * Site page middle-align — StandardPageShell, Mini Games, Quiz, Home chrome.
  * Children stay full width of the column; text/controls centre by default.
- * Opt out with `.site-page-center--start` or local `text-left` / `items-start`.
+ * Opt out with `.site-page-center--start` on a subtree (tables, dense lists).
  */
 .site-page-center,
 .mini-game-arena,
@@ -2812,9 +2812,29 @@
   max-width: 100%;
 }
 
+.site-page-center h1,
+.site-page-center h2,
+.site-page-center h3,
+.site-page-center .game-header,
+.site-page-center .game-section-header,
+.mini-game-arena h1,
+.mini-game-arena h2,
+.mini-game-arena h3,
+.quiz-arena h1,
+.quiz-arena h2,
+.quiz-arena h3 {
+  text-align: center;
+}
+
 .site-page-center--start {
   align-items: stretch;
   text-align: left;
+}
+
+.site-page-center--start h1,
+.site-page-center--start h2,
+.site-page-center--start h3 {
+  text-align: inherit;
 }
 
 .mini-game-play {

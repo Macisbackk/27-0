@@ -108,22 +108,18 @@ export function MobilePageHeader({
   className = "",
 }: MobilePageHeaderProps) {
   return (
-    <header className={`${MOBILE.pageHeader} ${className}`.trim()}>
-      <div
-        className={`flex min-w-0 gap-3 ${
-          actions ? "items-start justify-between" : "flex-col items-center"
-        }`}
-      >
-        <div
-          className={`min-w-0 flex-1 ${actions ? "text-left" : "text-center"}`}
-        >
+    <header className={`${MOBILE.pageHeader} text-center ${className}`.trim()}>
+      <div className="flex min-w-0 flex-col items-center gap-3">
+        <div className="min-w-0 w-full text-center">
           <h1 className={MOBILE.pageHeaderTitle}>{title}</h1>
           {context ? (
             <div className={MOBILE.pageHeaderContext}>{context}</div>
           ) : null}
         </div>
         {actions ? (
-          <div className="flex shrink-0 items-center gap-2">{actions}</div>
+          <div className="flex shrink-0 items-center justify-center gap-2">
+            {actions}
+          </div>
         ) : null}
       </div>
     </header>

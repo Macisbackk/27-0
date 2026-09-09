@@ -43,11 +43,11 @@ export function MiniGamesHub() {
         <p className={`mx-auto mt-3 max-w-md ${TYPO.pageSubtitle}`}>
           Quiz · Wordle · Hangman · Higher or Lower
         </p>
-        <ul className="mt-8 grid w-full gap-3 text-left">
+        <ul className="mt-8 grid w-full gap-3 text-center">
           {GAMES.map((game) => (
             <li key={game.href}>
-              <div className="flex items-center gap-3 border border-white/10 bg-[#0c1210] px-4 py-4">
-                <div className="min-w-0 flex-1 text-left">
+              <div className="flex flex-col items-center gap-3 border border-white/10 bg-[#0c1210] px-4 py-4 sm:flex-row sm:text-left">
+                <div className="min-w-0 flex-1 text-center sm:text-left">
                   <p className={TYPO.keyLabel}>{game.title}</p>
                   <p className={`mt-1 ${TYPO.bodySm}`}>{game.blurb}</p>
                 </div>

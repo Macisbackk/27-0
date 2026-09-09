@@ -43,8 +43,8 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
         padded={featured}
         className={featured ? "" : "p-3 sm:p-4"}
       >
-        <div className="flex w-full items-center gap-3 text-left">
-          <h3 className={`min-w-0 flex-1 ${titleClass}`}>{title}</h3>
+        <div className="w-full text-center">
+          <h3 className={`min-w-0 ${titleClass}`}>{title}</h3>
         </div>
 
         <div
@@ -55,7 +55,9 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
           }
         >
           {helper && (
-            <p className={`${SPACING.headingMargin} ${TYPO.bodySm}`}>
+            <p
+              className={`${SPACING.headingMargin} text-center ${TYPO.bodySm}`}
+            >
               {helper}
             </p>
           )}
