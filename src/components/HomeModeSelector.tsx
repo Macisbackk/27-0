@@ -76,8 +76,8 @@ function HomePlayChoice({
 }) {
   const accentClass =
     variant === "era"
-      ? "border-accent-gold/35 bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.18),transparent_42%),linear-gradient(180deg,rgba(40,31,8,0.95),rgba(13,17,14,0.98))]"
-      : "border-theme-primary/30 bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.16),transparent_42%),linear-gradient(180deg,rgba(7,25,20,0.95),rgba(13,17,14,0.98))]";
+      ? "border-accent-gold/35 bg-[#0d110e]"
+      : "border-theme-primary/30 bg-[#0d110e]";
 
   return (
     <MobileSection

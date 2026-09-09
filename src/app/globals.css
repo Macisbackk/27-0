@@ -17,7 +17,7 @@
   --text-muted: #6b7280;
   --border-subtle: rgba(255, 255, 255, 0.1);
   --header-bg: rgba(10, 15, 13, 0.95);
-  --sidebar-bg: linear-gradient(180deg, #0f1814 0%, #0a0f0d 100%);
+  --sidebar-bg: #0a0f0d;
   --arena-bg: #070b12;
 
   --theme-primary: #22c55e;
@@ -440,11 +440,7 @@ html[data-ui-overlay="1"] .site-footer {
 .sidebar-nav-scroll::-webkit-scrollbar-thumb {
   border-radius: 9999px;
   border: 1px solid var(--theme-primary-soft);
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--theme-primary) 55%, transparent) 0%,
-    color-mix(in srgb, var(--theme-primary) 28%, transparent) 100%
-  );
+  background: color-mix(in srgb, var(--theme-primary) 40%, transparent);
 }
 
 .sidebar-nav-scroll::-webkit-scrollbar-thumb:hover {
