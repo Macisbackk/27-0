@@ -75,17 +75,14 @@ function settleWin(
 function PlayerFace({
   player,
   showRating,
-  label,
 }: {
   player: MiniGamePlayer;
   showRating: boolean;
-  label: string;
 }) {
   return (
     <div className="hol-face">
       <ClubLogoBox club={player.club} size="sm" showAbbrev={false} />
       <div className="min-w-0 flex-1 text-left">
-        <p className={TYPO.keyLabel}>{label}</p>
         <p className={`truncate ${TYPO.playerNameSm}`}>
           {formatMiniGamePlayerLabel(player)}
         </p>
@@ -281,6 +278,20 @@ export function HigherLowerGame() {
               })}
             </div>
 
+            {!run.revealed && run.status === "playing" ? (
+              <p className={`mt-3 text-center ${TYPO.bodySm}`}>
+                Is{" "}
+                <span className="font-semibold text-white">
+                  {formatMiniGamePlayerLabel(board.challenge)}
+                </span>{" "}
+                rated higher or lower than{" "}
+                <span className="font-semibold text-white">
+                  {board.base.rating}
+                </span>
+                ?
+              </p>
+            ) : null}
+
             <div
               className={`mt-3 w-full rounded-xl transition ${
                 flash === "good"
@@ -290,18 +301,13 @@ export function HigherLowerGame() {
                     : "border border-transparent"
               }`}
             >
-              <PlayerFace
-                player={board.base}
-                showRating
-                label="Known"
-              />
+              <PlayerFace player={board.base} showRating />
               <div className="mini-game-vs-badge mini-game-vs-badge--tight" aria-hidden>
                 VS
               </div>
               <PlayerFace
                 player={board.challenge}
                 showRating={challengeRevealed}
-                label="Mystery"
               />
             </div>
 
