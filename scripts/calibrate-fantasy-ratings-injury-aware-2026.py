@@ -27,9 +27,7 @@ from pathlib import Path
 import openpyxl
 
 ROOT = Path(__file__).resolve().parents[1]
-FANTASY_MD = Path(
-    r"C:\Users\Macis\.cursor\projects\c-Users-Macis-Projects-27-0\agent-tools\a69fd1e7-4d18-41fb-9e73-7305eee4c674.txt"
-)
+FANTASY_MD = ROOT / "data" / "imports" / "fantasy-super-league-players-2026.md"
 OUT_BATCH = ROOT / "data" / "player-attr-batch.json"
 OUT_REPORT = ROOT / "data" / "fantasy-rating-injury-aware-2026-report.json"
 OUT_PRESERVE = ROOT / "data" / "player-rating-manual-preserve-snapshot-2026.json"
