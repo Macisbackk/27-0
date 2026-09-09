@@ -90,12 +90,29 @@ assert(isHangmanPunctuation("'"), "O'Neill keeps the apostrophe visible");
 const o = guessHangmanLetter(apostrophe, "o").run;
 assert(o.guessed.includes("O"), "O is stored uppercase");
 
-const created = createHangmanRun({ date: "2026-09-08", daily: true });
-const createdAgain = createHangmanRun({ date: "2026-09-08", daily: true });
+const created = createHangmanRun({
+  date: "2026-09-08",
+  daily: true,
+  poolMode: "current",
+});
+const createdAgain = createHangmanRun({
+  date: "2026-09-08",
+  daily: true,
+  poolMode: "current",
+});
 assert(created.puzzleId === createdAgain.puzzleId, "daily hangman is stable for the date");
 assert(created.daily, "daily flag is set");
+assert(created.poolMode === "current", "pool mode is stored");
 
-const liveBank = getHangmanBank();
+const eraDaily = createHangmanRun({
+  date: "2026-09-08",
+  daily: true,
+  poolMode: "era",
+});
+assert(eraDaily.poolMode === "era", "era daily stores pool mode");
+assert(eraDaily.id !== created.id, "current and era daily use distinct seeds");
+
+const liveBank = getHangmanBank("current");
 const clubAnswers = liveBank.filter((item) => item.category === "club");
 assert(clubAnswers.length > 0, "club pool is non-empty");
 assert(
@@ -107,7 +124,21 @@ assert(
   "Championship / non-current clubs are excluded from Hangman clubs"
 );
 
-const currentWordle = getWordlePlayerPool().filter((player) => !player.isHistoric);
+const eraBank = getHangmanBank("era");
+assert(
+  eraBank.every((item) => item.category !== "club"),
+  "era hangman has no current-club answers"
+);
+assert(
+  eraBank.some((item) => item.category === "player" && item.isHistoric),
+  "era hangman includes historic players"
+);
+
+const currentWordle = getWordlePlayerPool("current");
+assert(
+  currentWordle.every((player) => !player.isHistoric),
+  "current Wordle pool is current-only"
+);
 assert(
   currentWordle.every((player) => isEligibleMiniGameCurrentTeam(player.club)),
   "current Wordle/Hangman players are at current Super League clubs"

@@ -14,7 +14,7 @@ import {
   useWordleHint,
   WORDLE_MAX_GUESSES,
 } from "../src/lib/mini-games/wordle/engine";
-import { resolvePlayerGuess, type MiniGamePlayer } from "../src/lib/mini-games/players";
+import { resolvePlayerGuess, getWordlePlayerPool, type MiniGamePlayer } from "../src/lib/mini-games/players";
 
 let passed = 0;
 let failed = 0;
@@ -43,6 +43,7 @@ function player(
     nationality,
     nationalityKey: nationality.toLowerCase(),
     rating: 90,
+    age: 28,
     year: 2009,
     isHistoric: true,
     ...partial,
@@ -55,6 +56,7 @@ const pool: MiniGamePlayer[] = [
     identityId: "kevin-sinfield",
     displayName: "Kevin Sinfield",
     rating: 94,
+    age: 29,
     year: 2009,
     clubId: "leeds",
   }),
@@ -69,6 +71,7 @@ const pool: MiniGamePlayer[] = [
     nationality: "England",
     nationalityKey: "england",
     rating: 91,
+    age: 25,
     year: 2007,
   }),
   player({
@@ -82,6 +85,7 @@ const pool: MiniGamePlayer[] = [
     nationality: "England",
     nationalityKey: "england",
     rating: 82,
+    age: 32,
     year: 2026,
     isHistoric: false,
   }),
@@ -96,6 +100,7 @@ const pool: MiniGamePlayer[] = [
     nationality: "England",
     nationalityKey: "england",
     rating: 93,
+    age: 23,
     year: 2012,
   }),
 ];
@@ -112,6 +117,7 @@ assert(clues.club === "match", "same club is a match");
 assert(clues.position === "miss", "different position is a miss");
 assert(clues.nationality === "match", "same nation is a match");
 assert(clues.rating === "higher", "lower guess rating points higher");
+assert(clues.age === "higher", "younger guess age points higher");
 assert(clues.status === "match", "both historic is a status match");
 assert(!("year" in clues), "year is not a clue attribute");
 
@@ -193,6 +199,19 @@ assert(
 );
 const secondHint = useWordleHint(hinted.run, pool);
 assert(Boolean(secondHint.error), "second hint is blocked");
+
+console.log("\nWordle current-vs-historic pool");
+{
+  const live = getWordlePlayerPool();
+  const charnley = live.find((p) => p.displayName === "Josh Charnley");
+  assert(Boolean(charnley), "Josh Charnley is in the Wordle pool");
+  assert(charnley?.club === "Leigh Leopards", "Charnley uses his Leigh card");
+  assert(charnley?.isHistoric === false, "Leigh Charnley counts as Current");
+  assert(
+    !live.some((p) => p.displayName === "Josh Charnley" && p.club === "Wigan Warriors"),
+    "historic Wigan Charnley is not a separate Wordle answer"
+  );
+}
 
 if (failed > 0) {
   console.error(`\n${failed} failed, ${passed} passed`);

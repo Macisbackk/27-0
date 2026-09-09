@@ -4,6 +4,7 @@ import {
   getHigherLowerPlayerPool,
   type MiniGamePlayer,
 } from "../players";
+import type { MiniGamePoolMode } from "../pool-mode";
 import {
   HIGHER_LOWER_PICKS,
   HIGHER_LOWER_STATS_SCHEMA,
@@ -83,7 +84,8 @@ function usedKeys(player: MiniGamePlayer): string[] {
 
 export function createHigherLowerRun(
   pool: readonly MiniGamePlayer[] = getHigherLowerPlayerPool(),
-  seed: string = createRunId()
+  seed: string = createRunId(),
+  poolMode?: MiniGamePoolMode
 ): HigherLowerRun {
   if (pool.length < HIGHER_LOWER_PICKS + 1) {
     throw new Error("Higher or Lower pool is too small");
@@ -103,6 +105,7 @@ export function createHigherLowerRun(
     lastCorrect: null,
     status: "playing",
     rewardClaimed: false,
+    poolMode,
   };
 }
 

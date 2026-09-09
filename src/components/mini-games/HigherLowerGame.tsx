@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ClubLogoBox } from "@/components/ClubBadge";
 import { GameButton } from "@/components/ui/GameButton";
 import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
+import { MiniGamePoolSelect } from "./MiniGamePoolSelect";
 import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
 import { TYPO } from "@/lib/ui/typography";
 import {
@@ -11,6 +12,11 @@ import {
   getHigherLowerPlayerPool,
   type MiniGamePlayer,
 } from "@/lib/mini-games/players";
+import {
+  isMiniGamePoolMode,
+  MINI_GAME_POOL_MODE_LABEL,
+  type MiniGamePoolMode,
+} from "@/lib/mini-games/pool-mode";
 import {
   advanceHigherLower,
   answerHigherLower,
@@ -48,6 +54,8 @@ import {
   playMiniSelect,
   playMiniWin,
 } from "@/lib/mini-games/sound";
+
+type View = "select" | "play";
 
 function settleWin(
   run: HigherLowerRun,
@@ -103,7 +111,8 @@ function PlayerFace({
 }
 
 export function HigherLowerGame() {
-  const pool = useMemo(() => getHigherLowerPlayerPool(), []);
+  const [view, setView] = useState<View>("select");
+  const [poolMode, setPoolMode] = useState<MiniGamePoolMode | null>(null);
   const [run, setRun] = useState<HigherLowerRun | null>(null);
   const [stats, setStats] = useState<HigherLowerStats | null>(null);
   const [rewardOpen, setRewardOpen] = useState(false);
@@ -112,34 +121,74 @@ export function HigherLowerGame() {
   const [celebrate, setCelebrate] = useState(false);
   const advanceTimer = useRef<number | null>(null);
 
+  const pool = useMemo(
+    () => getHigherLowerPlayerPool(poolMode ?? undefined),
+    [poolMode]
+  );
+
   useEffect(() => {
     const storedStats = loadHigherLowerStats();
     const storedRun = loadHigherLowerRun();
-    const nextRun =
-      storedRun && storedRun.status === "playing"
-        ? storedRun
-        : createHigherLowerRun(pool);
-    saveHigherLowerRun(nextRun);
-    setRun(nextRun);
     setStats(storedStats);
-    triggerMiniGameAchievements({
-      played: true,
-      higherLowerBestStreak: storedStats.bestStreak,
-      higherLowerFivePickWins: storedStats.fivePickWins,
-    });
+    if (
+      storedRun &&
+      storedRun.status === "playing" &&
+      isMiniGamePoolMode(storedRun.poolMode)
+    ) {
+      setPoolMode(storedRun.poolMode);
+      setRun(storedRun);
+    }
     setReady(true);
     return () => {
       if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
     };
-  }, [pool]);
+  }, []);
 
   const board = run ? resolveHigherLowerPlayers(run, pool) : null;
+  const hasResume =
+    Boolean(run) &&
+    run?.status === "playing" &&
+    isMiniGamePoolMode(run.poolMode);
 
   const persist = (nextRun: HigherLowerRun, nextStats: HigherLowerStats) => {
     saveHigherLowerRun(nextRun);
     saveHigherLowerStats(nextStats);
     setRun(nextRun);
     setStats(nextStats);
+  };
+
+  const startMode = (mode: MiniGamePoolMode) => {
+    const stored = loadHigherLowerRun();
+    if (
+      stored &&
+      stored.status === "playing" &&
+      stored.poolMode === mode
+    ) {
+      setPoolMode(mode);
+      setRun(stored);
+      setView("play");
+      return;
+    }
+    const nextPool = getHigherLowerPlayerPool(mode);
+    const next = createHigherLowerRun(nextPool, undefined, mode);
+    saveHigherLowerRun(next);
+    setPoolMode(mode);
+    setRun(next);
+    setFlash(null);
+    setCelebrate(false);
+    setRewardOpen(false);
+    setView("play");
+    triggerMiniGameAchievements({
+      played: true,
+      higherLowerBestStreak: stats?.bestStreak ?? 0,
+      higherLowerFivePickWins: stats?.fivePickWins ?? 0,
+    });
+  };
+
+  const resume = () => {
+    if (!run || !isMiniGamePoolMode(run.poolMode)) return;
+    setPoolMode(run.poolMode);
+    setView("play");
   };
 
   const pick = (choice: HigherLowerChoice) => {
@@ -209,13 +258,19 @@ export function HigherLowerGame() {
   };
 
   const restart = () => {
+    if (!poolMode) {
+      clearHigherLowerRun();
+      setRun(null);
+      setView("select");
+      return;
+    }
     if (advanceTimer.current) {
       window.clearTimeout(advanceTimer.current);
       advanceTimer.current = null;
     }
     playMiniSelect();
     clearHigherLowerRun();
-    const next = createHigherLowerRun(pool);
+    const next = createHigherLowerRun(pool, undefined, poolMode);
     saveHigherLowerRun(next);
     setRun(next);
     setFlash(null);
@@ -227,6 +282,31 @@ export function HigherLowerGame() {
   const challengeRevealed = Boolean(run?.revealed);
   const runOver = run?.status === "won" || run?.status === "lost";
 
+  if (!ready) {
+    return (
+      <MiniGameShell title="Higher or Lower" compact>
+        <p className={`mt-4 text-center ${TYPO.meta}`}>Loading…</p>
+      </MiniGameShell>
+    );
+  }
+
+  if (view === "select") {
+    return (
+      <MiniGameShell
+        eyebrow="Higher or Lower"
+        title="Choose Current or Era"
+        compact
+      >
+        <MiniGamePoolSelect
+          subtitle="Compare ratings from today’s Super League or historic era cards."
+          onSelect={startMode}
+          resumeLabel={hasResume ? "Resume Higher or Lower" : undefined}
+          onResume={hasResume ? resume : undefined}
+        />
+      </MiniGameShell>
+    );
+  }
+
   return (
     <MiniGameShell title="Higher or Lower" compact>
       {celebrate && <Confetti />}
@@ -237,6 +317,11 @@ export function HigherLowerGame() {
         onClose={() => setRewardOpen(false)}
       />
       <div className="mini-game-play hol-play mx-auto flex w-full max-w-sm flex-col items-center">
+        {poolMode ? (
+          <p className={`mt-1 text-center ${TYPO.meta}`}>
+            {MINI_GAME_POOL_MODE_LABEL[poolMode]} pool
+          </p>
+        ) : null}
         <div className="text-center">
           <MiniGameStatLine
             items={[
@@ -246,7 +331,7 @@ export function HigherLowerGame() {
           />
         </div>
 
-        {!ready || !run || !board ? (
+        {!run || !board ? (
           <p className={`mt-4 text-center ${TYPO.meta}`}>Loading players…</p>
         ) : (
           <>

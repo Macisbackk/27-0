@@ -1,4 +1,5 @@
 import { createRunId } from "@/lib/quiz/rng";
+import type { MiniGamePoolMode } from "../pool-mode";
 import { getHangmanBank, pickHangmanPuzzle } from "./answers";
 import { HANGMAN_MAX_WRONG, type HangmanRun, type HangmanStats } from "./types";
 
@@ -49,14 +50,15 @@ export function isHangmanSolved(run: HangmanRun): boolean {
 export function createHangmanRun(options: {
   date: string;
   daily: boolean;
+  poolMode: MiniGamePoolMode;
   excludePuzzleId?: string;
 }): HangmanRun {
   const seed = options.daily
-    ? `hangman-daily:${options.date}`
-    : `hangman-practice:${createRunId()}`;
+    ? `hangman-daily:${options.date}:${options.poolMode}`
+    : `hangman-practice:${options.poolMode}:${createRunId()}`;
   const puzzle = pickHangmanPuzzle(
     seed,
-    getHangmanBank(),
+    getHangmanBank(options.poolMode),
     options.excludePuzzleId
   );
   return {
@@ -72,6 +74,7 @@ export function createHangmanRun(options: {
     rewardClaimed: false,
     isHistoric: puzzle.isHistoric,
     year: puzzle.year,
+    poolMode: options.poolMode,
   };
 }
 

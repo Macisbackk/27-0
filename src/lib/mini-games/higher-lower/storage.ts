@@ -33,18 +33,30 @@ function writeJson(key: string, value: unknown): void {
 function isHigherLowerRun(value: unknown): value is HigherLowerRun {
   if (!isRecord(value)) return false;
   const status = value.status;
-  return (
-    typeof value.seed === "string" &&
-    typeof value.pickIndex === "number" &&
-    value.pickIndex >= 0 &&
-    value.pickIndex < 5 &&
-    Array.isArray(value.usedIds) &&
-    typeof value.baseId === "string" &&
-    typeof value.challengeId === "string" &&
-    typeof value.revealed === "boolean" &&
-    (status === "playing" || status === "lost" || status === "won") &&
-    typeof value.rewardClaimed === "boolean"
-  );
+  if (
+    !(
+      typeof value.seed === "string" &&
+      typeof value.pickIndex === "number" &&
+      value.pickIndex >= 0 &&
+      value.pickIndex < 5 &&
+      Array.isArray(value.usedIds) &&
+      typeof value.baseId === "string" &&
+      typeof value.challengeId === "string" &&
+      typeof value.revealed === "boolean" &&
+      (status === "playing" || status === "lost" || status === "won") &&
+      typeof value.rewardClaimed === "boolean"
+    )
+  ) {
+    return false;
+  }
+  if (
+    value.poolMode !== undefined &&
+    value.poolMode !== "current" &&
+    value.poolMode !== "era"
+  ) {
+    return false;
+  }
+  return true;
 }
 
 export function loadHigherLowerRun(): HigherLowerRun | null {

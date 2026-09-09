@@ -1,4 +1,5 @@
 import type { MiniGamePlayer } from "../players";
+import type { MiniGamePoolMode } from "../pool-mode";
 
 export const WORDLE_MAX_GUESSES = 6;
 export const WORDLE_STATS_SCHEMA = 3;
@@ -11,6 +12,7 @@ export type WordleAttributeKey =
   | "position"
   | "club"
   | "rating"
+  | "age"
   | "status";
 
 export type WordleClues = {
@@ -18,6 +20,7 @@ export type WordleClues = {
   position: WordleClueTone;
   club: WordleClueTone;
   rating: WordleTrend;
+  age: WordleTrend;
   /** Historic vs current pool match. */
   status: WordleClueTone;
 };
@@ -42,6 +45,7 @@ export type WordleGuess = {
   positionLabel: string;
   nationality: string;
   rating: number;
+  age: number;
   isHistoric: boolean;
   clues: WordleClues;
 };
@@ -59,6 +63,8 @@ export type WordleRun = {
   answerHint: WordleAnswerHint | null;
   status: WordleStatus;
   rewardClaimed: boolean;
+  /** Current vs Era pool for this run. */
+  poolMode?: MiniGamePoolMode;
 };
 
 export type WordleStats = {
@@ -77,6 +83,7 @@ export const WORDLE_ATTRIBUTE_LABEL: Record<WordleAttributeKey, string> = {
   position: "POSITION",
   club: "CLUB",
   rating: "RATING",
+  age: "AGE",
   status: "STATUS",
 };
 

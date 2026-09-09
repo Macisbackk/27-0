@@ -4,14 +4,23 @@ import { expandNameLookupKeys } from "@/lib/players/player-name-resolve";
 import { normalizePlayerNameKey } from "@/lib/player-name-normalize";
 import { POSITION_LABELS } from "@/lib/positions";
 import { getCurrentSeasonYearNumber } from "@/lib/players/rating-context";
+import { resolveBirthYear } from "@/lib/players/player-age";
 import { parseYearFromPlayerId } from "@/lib/players/year-card";
 import { getClubByName } from "@/lib/clubs";
+import birthYearsData from "../../../data/birth-years.json";
 import type { Player, Position } from "@/lib/types";
 import {
+  isEligibleMiniGameCurrentTeam,
   isEligibleMiniGamePlayer,
   normalizeMiniGameNationKey,
   resolveMiniGameClubName,
 } from "./eligibility";
+import {
+  filterPoolByMode,
+  type MiniGamePoolMode,
+} from "./pool-mode";
+
+const BIRTH_YEARS = birthYearsData as Record<string, number>;
 
 export type MiniGamePlayer = {
   id: string;
@@ -24,6 +33,8 @@ export type MiniGamePlayer = {
   nationality: string;
   nationalityKey: string;
   rating: number;
+  /** Age at the card season year (Wordle / player info). */
+  age: number;
   /** Internal season pin — never show in Wordle UI. */
   year: number;
   isHistoric: boolean;
@@ -37,6 +48,32 @@ function playerIdentityId(player: Player): string {
     return player.id.slice(0, -(String(yearFromId).length + 1));
   }
   return player.id;
+}
+
+function birthYearForMiniGame(player: Player): number | undefined {
+  const direct = resolveBirthYear(
+    player.birthYear,
+    player.dateOfBirth,
+    player.yearsActive
+  );
+  if (direct !== undefined) return direct;
+
+  const candidates = [
+    player.id,
+    player.basePlayerId,
+    player.baseId,
+    playerIdentityId(player),
+  ].filter((id): id is string => Boolean(id));
+
+  for (const id of candidates) {
+    if (BIRTH_YEARS[id] != null) return BIRTH_YEARS[id];
+    const asCurrent = id
+      .replace(/-hist-era-/g, "-cur-")
+      .replace(/-hist-/g, "-cur-")
+      .replace(/-\d{4}$/, "");
+    if (BIRTH_YEARS[asCurrent] != null) return BIRTH_YEARS[asCurrent];
+  }
+  return undefined;
 }
 
 function resolveCardYear(player: Player): number | undefined {
@@ -64,6 +101,10 @@ function toMiniGamePlayer(player: Player): MiniGamePlayer | null {
   if (typeof rating !== "number" || !Number.isFinite(rating) || rating < 40) {
     return null;
   }
+  const birthYear = birthYearForMiniGame(player);
+  if (birthYear === undefined) return null;
+  const age = year - birthYear;
+  if (!Number.isFinite(age) || age < 16 || age > 55) return null;
   const position = player.position;
   const positionLabel = POSITION_LABELS[position];
   if (!positionLabel) return null;
@@ -79,6 +120,7 @@ function toMiniGamePlayer(player: Player): MiniGamePlayer | null {
     nationality,
     nationalityKey: normalizeMiniGameNationKey(nationality),
     rating: Math.round(rating),
+    age,
     year,
     isHistoric: isHistoricPlayer(player),
   };
@@ -91,52 +133,97 @@ function preferWordleCard(a: MiniGamePlayer, b: MiniGamePlayer): MiniGamePlayer 
   return a.displayName.localeCompare(b.displayName) <= 0 ? a : b;
 }
 
+/**
+ * Recent Super League season cards (current or previous year) count as Current
+ * for Wordle even when filed under historic team-year packs — e.g. Josh Charnley
+ * at Leigh 2025, not his older Wigan historic cards.
+ */
+function isWordlePlayingTodayCard(player: MiniGamePlayer): boolean {
+  if (!player.isHistoric) return true;
+  if (player.year < getCurrentSeasonYearNumber() - 1) return false;
+  return isEligibleMiniGameCurrentTeam(player.club);
+}
+
 let wordlePoolCache: MiniGamePlayer[] | null = null;
 let higherLowerPoolCache: MiniGamePlayer[] | null = null;
 
-/** One canonical card per real-world Super League player for Wordle. */
-export function getWordlePlayerPool(): MiniGamePlayer[] {
-  if (wordlePoolCache) return wordlePoolCache;
-  const byIdentity = new Map<string, MiniGamePlayer>();
+/**
+ * One canonical card per real-world Super League player for Wordle.
+ * Prefer a true current card; never keep a historic card when a current
+ * namesake exists. Historic status is only for players not playing today.
+ */
+export function getWordlePlayerPool(
+  mode?: MiniGamePoolMode
+): MiniGamePlayer[] {
+  if (!wordlePoolCache) {
+    wordlePoolCache = buildWordlePlayerPool();
+  }
+  return mode ? filterPoolByMode(wordlePoolCache, mode) : wordlePoolCache;
+}
+
+function buildWordlePlayerPool(): MiniGamePlayer[] {
+  const currentByName = new Map<string, MiniGamePlayer>();
+  const historicByName = new Map<string, MiniGamePlayer>();
+
   for (const raw of getShowcasePlayers()) {
     const player = toMiniGamePlayer(raw);
     if (!player) continue;
-    const existing = byIdentity.get(player.identityId);
-    byIdentity.set(
-      player.identityId,
+    const nameKey = normalizePlayerNameKey(player.displayName);
+    if (!player.isHistoric) {
+      const existing = currentByName.get(nameKey);
+      currentByName.set(
+        nameKey,
+        existing ? preferWordleCard(existing, player) : player
+      );
+      continue;
+    }
+    const existing = historicByName.get(nameKey);
+    historicByName.set(
+      nameKey,
       existing ? preferWordleCard(existing, player) : player
     );
   }
-  const byName = new Map<string, MiniGamePlayer>();
-  for (const player of byIdentity.values()) {
-    const nameKey = normalizePlayerNameKey(player.displayName);
-    const existing = byName.get(nameKey);
-    byName.set(nameKey, existing ? preferWordleCard(existing, player) : player);
+
+  const pool: MiniGamePlayer[] = [];
+  const seen = new Set<string>();
+
+  for (const [nameKey, current] of currentByName) {
+    seen.add(nameKey);
+    pool.push({ ...current, isHistoric: false });
   }
-  wordlePoolCache = [...byName.values()].sort((a, b) =>
-    a.displayName.localeCompare(b.displayName)
-  );
-  return wordlePoolCache;
+
+  for (const [nameKey, historic] of historicByName) {
+    if (seen.has(nameKey) || currentByName.has(nameKey)) continue;
+    const playingToday = isWordlePlayingTodayCard(historic);
+    pool.push({ ...historic, isHistoric: !playingToday });
+  }
+
+  return pool.sort((a, b) => a.displayName.localeCompare(b.displayName));
 }
 
 /**
  * Higher or Lower uses one card per identity (peak rating) so season labels
  * are optional presentation, not duplicate people.
  */
-export function getHigherLowerPlayerPool(): MiniGamePlayer[] {
-  if (higherLowerPoolCache) return higherLowerPoolCache;
-  const byIdentity = new Map<string, MiniGamePlayer>();
-  for (const raw of getShowcasePlayers()) {
-    const player = toMiniGamePlayer(raw);
-    if (!player) continue;
-    const existing = byIdentity.get(player.identityId);
-    byIdentity.set(
-      player.identityId,
-      existing ? preferWordleCard(existing, player) : player
-    );
+export function getHigherLowerPlayerPool(
+  mode?: MiniGamePoolMode
+): MiniGamePlayer[] {
+  if (!higherLowerPoolCache) {
+    const byIdentity = new Map<string, MiniGamePlayer>();
+    for (const raw of getShowcasePlayers()) {
+      const player = toMiniGamePlayer(raw);
+      if (!player) continue;
+      const existing = byIdentity.get(player.identityId);
+      byIdentity.set(
+        player.identityId,
+        existing ? preferWordleCard(existing, player) : player
+      );
+    }
+    higherLowerPoolCache = [...byIdentity.values()];
   }
-  higherLowerPoolCache = [...byIdentity.values()];
-  return higherLowerPoolCache;
+  return mode
+    ? filterPoolByMode(higherLowerPoolCache, mode)
+    : higherLowerPoolCache;
 }
 
 export function formatMiniGamePlayerLabel(

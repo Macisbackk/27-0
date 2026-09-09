@@ -51,6 +51,7 @@ function player(
     nationality: "England",
     nationalityKey: "england",
     rating,
+    age: Math.max(18, year - 1990),
     year,
     isHistoric: historic,
   };

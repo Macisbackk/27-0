@@ -1,5 +1,6 @@
 import { createRng, createRunId, pickIndex } from "@/lib/quiz/rng";
 import { getWordlePlayerPool, resolvePlayerGuess, type MiniGamePlayer } from "../players";
+import type { MiniGamePoolMode } from "../pool-mode";
 import {
   WORDLE_ATTRIBUTE_LABEL,
   WORDLE_MAX_GUESSES,
@@ -21,6 +22,7 @@ const WORDLE_HINT_KEYS: WordleAttributeKey[] = [
   "position",
   "club",
   "rating",
+  "age",
   "status",
 ];
 
@@ -41,6 +43,7 @@ export function buildWordleClues(
     position: guess.position === answer.position ? "match" : "miss",
     club: guess.clubId === answer.clubId ? "match" : "miss",
     rating: trend(guess.rating, answer.rating),
+    age: trend(guess.age, answer.age),
     status: guess.isHistoric === answer.isHistoric ? "match" : "miss",
   };
 }
@@ -51,6 +54,7 @@ function matchingAttributes(clues: WordleClues): WordleAttributeKey[] {
   if (clues.position === "match") keys.push("position");
   if (clues.club === "match") keys.push("club");
   if (clues.rating === "match") keys.push("rating");
+  if (clues.age === "match") keys.push("age");
   if (clues.status === "match") keys.push("status");
   return keys;
 }
@@ -91,6 +95,8 @@ export function answerHintValue(
       return answer.club;
     case "rating":
       return String(answer.rating);
+    case "age":
+      return String(answer.age);
     case "status":
       return wordleStatusLabel(answer.isHistoric);
   }
@@ -170,7 +176,8 @@ export function pickDailyWordlePlayer(
 
 export function createWordleRun(
   pool: readonly MiniGamePlayer[] = getWordlePlayerPool(),
-  seed: string = createRunId()
+  seed: string = createRunId(),
+  poolMode?: MiniGamePoolMode
 ): WordleRun {
   const answer = pickWordlePlayer(seed, pool);
   return {
@@ -182,6 +189,7 @@ export function createWordleRun(
     answerHint: null,
     status: "playing",
     rewardClaimed: false,
+    poolMode,
   };
 }
 
@@ -240,6 +248,7 @@ export function submitWordleGuess(
     positionLabel: resolved.positionLabel,
     nationality: resolved.nationality,
     rating: resolved.rating,
+    age: resolved.age,
     isHistoric: resolved.isHistoric,
     clues,
   };
@@ -300,6 +309,7 @@ function normalizeGuessClues(clues: WordleClues): WordleClues {
     position: clues.position ?? "miss",
     club: clues.club ?? "miss",
     rating: clues.rating ?? "miss",
+    age: clues.age ?? "miss",
     status: clues.status ?? "miss",
   };
 }
@@ -308,6 +318,7 @@ function normalizeGuessClues(clues: WordleClues): WordleClues {
 export function normalizeWordleRun(value: WordleRun): WordleRun {
   const guesses = value.guesses.map((guess) => ({
     ...guess,
+    age: typeof guess.age === "number" ? guess.age : 0,
     isHistoric: Boolean(guess.isHistoric),
     clues: normalizeGuessClues(guess.clues),
   }));

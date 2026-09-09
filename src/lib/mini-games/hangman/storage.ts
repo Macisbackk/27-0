@@ -52,6 +52,13 @@ function isHangmanRun(value: unknown): value is HangmanRun {
   if (value.year !== undefined && typeof value.year !== "number") {
     return false;
   }
+  if (
+    value.poolMode !== undefined &&
+    value.poolMode !== "current" &&
+    value.poolMode !== "era"
+  ) {
+    return false;
+  }
   return true;
 }
 

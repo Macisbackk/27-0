@@ -1,3 +1,5 @@
+import type { MiniGamePoolMode } from "../pool-mode";
+
 export const HANGMAN_MAX_WRONG = 8;
 export const HANGMAN_STATS_SCHEMA = 1;
 
@@ -34,6 +36,8 @@ export type HangmanRun = {
   rewardClaimed: boolean;
   isHistoric?: boolean;
   year?: number;
+  /** Current vs Era pool for this run. */
+  poolMode?: MiniGamePoolMode;
 };
 
 export type HangmanStats = {

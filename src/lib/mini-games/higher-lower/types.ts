@@ -1,4 +1,5 @@
 import type { MiniGamePlayer } from "../players";
+import type { MiniGamePoolMode } from "../pool-mode";
 
 export const HIGHER_LOWER_STATS_SCHEMA = 3;
 export const HIGHER_LOWER_PICKS = 5;
@@ -21,6 +22,8 @@ export type HigherLowerRun = {
   lastCorrect: boolean | null;
   status: HigherLowerStatus;
   rewardClaimed: boolean;
+  /** Current vs Era pool for this run. */
+  poolMode?: MiniGamePoolMode;
 };
 
 export type HigherLowerStats = {

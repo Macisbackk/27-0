@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
+import { MiniGamePoolSelect } from "./MiniGamePoolSelect";
 import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
 import { PlayerAutocomplete } from "./PlayerAutocomplete";
 import { TYPO } from "@/lib/ui/typography";
@@ -11,6 +12,11 @@ import {
   formatMiniGamePlayerLabel,
   getWordlePlayerPool,
 } from "@/lib/mini-games/players";
+import {
+  isMiniGamePoolMode,
+  MINI_GAME_POOL_MODE_LABEL,
+  type MiniGamePoolMode,
+} from "@/lib/mini-games/pool-mode";
 import {
   createWordleRun,
   recordWordleResult,
@@ -46,6 +52,7 @@ import {
 } from "@/lib/mini-games/sound";
 
 type WordleRunView = WordleRun & { payoutAwarded?: boolean };
+type View = "select" | "play";
 
 function trendText(trend: "higher" | "lower" | "match"): string {
   if (trend === "match") return "=";
@@ -77,6 +84,11 @@ function GuessRow({ guess, shake }: { guess: WordleGuess; shake?: boolean }) {
       label: "Club",
       value: guess.club,
       match: guess.clues.club === "match",
+    },
+    {
+      label: "Age",
+      value: `${guess.age} ${trendText(guess.clues.age)}`,
+      match: guess.clues.age === "match",
     },
     {
       label: "Rating",
@@ -129,7 +141,8 @@ function settleWordle(run: WordleRun): WordleRunView {
 }
 
 export function WordleGame() {
-  const pool = useMemo(() => getWordlePlayerPool(), []);
+  const [view, setView] = useState<View>("select");
+  const [poolMode, setPoolMode] = useState<MiniGamePoolMode | null>(null);
   const [run, setRun] = useState<WordleRunView | null>(null);
   const [query, setQuery] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -143,24 +156,62 @@ export function WordleGame() {
     wins: 0,
   }));
 
+  const pool = useMemo(
+    () => getWordlePlayerPool(poolMode ?? undefined),
+    [poolMode]
+  );
+
   useEffect(() => {
     const stored = loadWordleRun();
-    const next =
-      stored && stored.status === "playing"
-        ? stored
-        : stored && (stored.status === "won" || stored.status === "lost")
-          ? stored
-          : createWordleRun(pool);
-    const settled =
-      next.status !== "playing" && !next.rewardClaimed ? settleWordle(next) : next;
-    saveWordleRun(settled);
-    setRun(settled);
     setStats(loadWordleStats());
-    triggerMiniGameAchievements({ played: true });
+    if (
+      stored &&
+      stored.status === "playing" &&
+      isMiniGamePoolMode(stored.poolMode)
+    ) {
+      setPoolMode(stored.poolMode);
+      setRun(stored);
+    }
     setReady(true);
-  }, [pool]);
+  }, []);
 
   const answer = run ? findMiniGamePlayerById(run.answerId, pool) : undefined;
+  const hasResume =
+    Boolean(run) &&
+    run?.status === "playing" &&
+    isMiniGamePoolMode(run.poolMode);
+
+  const startMode = (mode: MiniGamePoolMode) => {
+    const stored = loadWordleRun();
+    if (
+      stored &&
+      stored.status === "playing" &&
+      stored.poolMode === mode
+    ) {
+      setPoolMode(mode);
+      setRun(stored);
+      setView("play");
+      return;
+    }
+    const nextPool = getWordlePlayerPool(mode);
+    const next = createWordleRun(nextPool, undefined, mode);
+    saveWordleRun(next);
+    setPoolMode(mode);
+    setRun(next);
+    setQuery("");
+    setError(null);
+    setShakeId(null);
+    setCelebrate(false);
+    setRewardOpen(false);
+    setView("play");
+    triggerMiniGameAchievements({ played: true });
+  };
+
+  const resume = () => {
+    if (!run || !isMiniGamePoolMode(run.poolMode)) return;
+    setPoolMode(run.poolMode);
+    setView("play");
+  };
 
   const submit = (text: string) => {
     if (!run) return;
@@ -194,6 +245,7 @@ export function WordleGame() {
         last.clues.nationality === "match" ||
         last.clues.position === "match" ||
         last.clues.club === "match" ||
+        last.clues.age === "match" ||
         last.clues.rating === "match";
       if (!anyMatch) {
         setShakeId(last.playerId);
@@ -219,9 +271,15 @@ export function WordleGame() {
   };
 
   const restart = () => {
+    if (!poolMode) {
+      clearWordleRun();
+      setRun(null);
+      setView("select");
+      return;
+    }
     playMiniSelect();
     clearWordleRun();
-    const next = createWordleRun(pool);
+    const next = createWordleRun(pool, undefined, poolMode);
     saveWordleRun(next);
     setRun(next);
     setQuery("");
@@ -238,6 +296,30 @@ export function WordleGame() {
     !run.answerHint &&
     run.discoveredClues.length < WORDLE_ATTRIBUTE_COUNT;
 
+  if (!ready) {
+    return (
+      <MiniGameShell title="Rugby League Wordle">
+        <p className={`mt-6 text-center ${TYPO.meta}`}>Loading…</p>
+      </MiniGameShell>
+    );
+  }
+
+  if (view === "select") {
+    return (
+      <MiniGameShell
+        eyebrow="Rugby League Wordle"
+        title="Choose Current or Era"
+      >
+        <MiniGamePoolSelect
+          subtitle="Guess a Super League player from today’s game or from the eras."
+          onSelect={startMode}
+          resumeLabel={hasResume ? "Resume Wordle" : undefined}
+          onResume={hasResume ? resume : undefined}
+        />
+      </MiniGameShell>
+    );
+  }
+
   return (
     <MiniGameShell title="Rugby League Wordle">
       {celebrate && <Confetti />}
@@ -249,8 +331,9 @@ export function WordleGame() {
       />
       <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">
         <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
-          Guess the Super League player. Matching attributes go green — including
-          Historic or Current.
+          {poolMode
+            ? `${MINI_GAME_POOL_MODE_LABEL[poolMode]} pool — matching attributes go green.`
+            : "Guess the Super League player. Matching attributes go green."}
         </p>
         <div className="text-center">
           <MiniGameStatLine
@@ -265,7 +348,7 @@ export function WordleGame() {
           />
         </div>
 
-        {!ready || !run ? (
+        {!run ? (
           <p className={`mt-6 text-center ${TYPO.meta}`}>Loading player…</p>
         ) : (
           <>
@@ -368,6 +451,8 @@ export function WordleGame() {
                   {answer.club}
                   {" · "}
                   {answer.positionLabel}
+                  {" · "}
+                  {answer.age}
                   {" · "}
                   {answer.rating}
                 </p>

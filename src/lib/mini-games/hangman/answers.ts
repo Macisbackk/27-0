@@ -5,6 +5,7 @@ import {
   isEligibleMiniGameCurrentTeam,
 } from "../eligibility";
 import { getWordlePlayerPool } from "../players";
+import type { MiniGamePoolMode } from "../pool-mode";
 import type { HangmanCategory, HangmanPuzzle } from "./types";
 
 const CURATED: readonly HangmanPuzzle[] = [
@@ -84,10 +85,10 @@ function clubPuzzles(): HangmanPuzzle[] {
     });
 }
 
-function playerPuzzles(): HangmanPuzzle[] {
+function playerPuzzles(mode?: MiniGamePoolMode): HangmanPuzzle[] {
   const seen = new Set<string>();
   const puzzles: HangmanPuzzle[] = [];
-  for (const player of getWordlePlayerPool()) {
+  for (const player of getWordlePlayerPool(mode)) {
     if (!isHangmanFriendly(player.displayName)) continue;
     const key = player.displayName.toLowerCase();
     if (seen.has(key)) continue;
@@ -104,12 +105,24 @@ function playerPuzzles(): HangmanPuzzle[] {
   return puzzles;
 }
 
-let bankCache: HangmanPuzzle[] | null = null;
+const bankCache = new Map<string, HangmanPuzzle[]>();
 
-export function getHangmanBank(): HangmanPuzzle[] {
-  if (bankCache) return bankCache;
-  bankCache = [...CURATED, ...clubPuzzles(), ...playerPuzzles()];
-  return bankCache;
+/**
+ * Hangman answer bank. Current includes today’s clubs + current players;
+ * Era uses historic/era player cards. Shared stadiums/coaches/terms stay in both.
+ */
+export function getHangmanBank(mode?: MiniGamePoolMode): HangmanPuzzle[] {
+  const key = mode ?? "all";
+  const cached = bankCache.get(key);
+  if (cached) return cached;
+  const bank =
+    mode === "era"
+      ? [...CURATED, ...playerPuzzles("era")]
+      : mode === "current"
+        ? [...CURATED, ...clubPuzzles(), ...playerPuzzles("current")]
+        : [...CURATED, ...clubPuzzles(), ...playerPuzzles()];
+  bankCache.set(key, bank);
+  return bank;
 }
 
 export function pickHangmanPuzzle(

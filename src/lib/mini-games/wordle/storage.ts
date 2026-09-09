@@ -28,15 +28,27 @@ function writeJson(key: string, value: unknown): void {
 
 function isWordleRun(value: unknown): value is WordleRun {
   if (!isRecord(value)) return false;
-  return (
-    typeof value.date === "string" &&
-    typeof value.answerId === "string" &&
-    Array.isArray(value.guesses) &&
-    (value.status === "playing" ||
-      value.status === "won" ||
-      value.status === "lost") &&
-    typeof value.rewardClaimed === "boolean"
-  );
+  if (
+    !(
+      typeof value.date === "string" &&
+      typeof value.answerId === "string" &&
+      Array.isArray(value.guesses) &&
+      (value.status === "playing" ||
+        value.status === "won" ||
+        value.status === "lost") &&
+      typeof value.rewardClaimed === "boolean"
+    )
+  ) {
+    return false;
+  }
+  if (
+    value.poolMode !== undefined &&
+    value.poolMode !== "current" &&
+    value.poolMode !== "era"
+  ) {
+    return false;
+  }
+  return true;
 }
 
 export function loadWordleRun(): WordleRun | null {
