@@ -54,6 +54,15 @@ export function saveWordleRun(run: WordleRun): void {
   writeJson(STORAGE_KEYS.wordleRun, run);
 }
 
+export function clearWordleRun(): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(STORAGE_KEYS.wordleRun);
+  } catch {
+    // Quota / private mode
+  }
+}
+
 export function loadWordleStats(): WordleStats {
   const value = readJson(STORAGE_KEYS.wordleStats);
   if (!isRecord(value) || value.schemaVersion !== WORDLE_STATS_SCHEMA) {

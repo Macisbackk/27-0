@@ -1,8 +1,9 @@
-import { createRng, pickIndex } from "@/lib/quiz/rng";
+import { createRng, createRunId, pickIndex } from "@/lib/quiz/rng";
 import { getWordlePlayerPool, resolvePlayerGuess, type MiniGamePlayer } from "../players";
 import {
   WORDLE_ATTRIBUTE_LABEL,
   WORDLE_MAX_GUESSES,
+  wordleStatusLabel,
   type WordleAnswerHint,
   type WordleAttributeKey,
   type WordleClues,
@@ -13,14 +14,17 @@ import {
   type WordleTrend,
 } from "./types";
 
-export { WORDLE_MAX_GUESSES };
+export { WORDLE_MAX_GUESSES, wordleStatusLabel };
 
 const WORDLE_HINT_KEYS: WordleAttributeKey[] = [
   "nationality",
   "position",
   "club",
   "rating",
+  "status",
 ];
+
+export const WORDLE_ATTRIBUTE_COUNT = WORDLE_HINT_KEYS.length;
 
 function trend(guess: number, answer: number): WordleTrend {
   if (guess === answer) return "match";
@@ -37,6 +41,7 @@ export function buildWordleClues(
     position: guess.position === answer.position ? "match" : "miss",
     club: guess.clubId === answer.clubId ? "match" : "miss",
     rating: trend(guess.rating, answer.rating),
+    status: guess.isHistoric === answer.isHistoric ? "match" : "miss",
   };
 }
 
@@ -46,6 +51,7 @@ function matchingAttributes(clues: WordleClues): WordleAttributeKey[] {
   if (clues.position === "match") keys.push("position");
   if (clues.club === "match") keys.push("club");
   if (clues.rating === "match") keys.push("rating");
+  if (clues.status === "match") keys.push("status");
   return keys;
 }
 
@@ -85,6 +91,8 @@ export function answerHintValue(
       return answer.club;
     case "rating":
       return String(answer.rating);
+    case "status":
+      return wordleStatusLabel(answer.isHistoric);
   }
 }
 
@@ -101,13 +109,13 @@ export function buildWordleAnswerHint(
 
 /** Prefer attributes not already unlocked by matching guesses. */
 export function pickWordleHintKey(
-  date: string,
+  runId: string,
   alreadyKnown: readonly WordleAttributeKey[]
 ): WordleAttributeKey | null {
   const known = new Set(alreadyKnown);
   const candidates = WORDLE_HINT_KEYS.filter((key) => !known.has(key));
   if (candidates.length === 0) return null;
-  const rng = createRng(`wordle-hint:${date}`);
+  const rng = createRng(`wordle-hint:${runId}`);
   return candidates[pickIndex(rng, candidates.length)]!;
 }
 
@@ -116,14 +124,14 @@ export function useWordleHint(
   pool: readonly MiniGamePlayer[] = getWordlePlayerPool()
 ): { run: WordleRun; error?: string; hint?: WordleAnswerHint } {
   if (run.status !== "playing") {
-    return { run, error: "Today's Wordle is already finished." };
+    return { run, error: "This Wordle is already finished." };
   }
   if (run.hintUsed || run.answerHint) {
-    return { run, error: "You already used today's clue." };
+    return { run, error: "You already used the reveal clue." };
   }
   const answer = pool.find((player) => player.id === run.answerId);
   if (!answer) {
-    return { run, error: "Could not load today's player." };
+    return { run, error: "Could not load this Wordle player." };
   }
   const knownKeys = run.discoveredClues.map((clue) => clue.key);
   const key = pickWordleHintKey(run.date, knownKeys);
@@ -141,24 +149,32 @@ export function useWordleHint(
   };
 }
 
-export function pickDailyWordlePlayer(
-  date: string,
+export function pickWordlePlayer(
+  seed: string,
   pool: readonly MiniGamePlayer[] = getWordlePlayerPool()
 ): MiniGamePlayer {
   if (pool.length === 0) {
     throw new Error("Wordle player pool is empty");
   }
-  const rng = createRng(`wordle:${date}`);
+  const rng = createRng(`wordle:${seed}`);
   return pool[pickIndex(rng, pool.length)]!;
 }
 
-export function createWordleRun(
+/** @deprecated Use pickWordlePlayer — kept for older call sites/tests. */
+export function pickDailyWordlePlayer(
   date: string,
   pool: readonly MiniGamePlayer[] = getWordlePlayerPool()
+): MiniGamePlayer {
+  return pickWordlePlayer(date, pool);
+}
+
+export function createWordleRun(
+  pool: readonly MiniGamePlayer[] = getWordlePlayerPool(),
+  seed: string = createRunId()
 ): WordleRun {
-  const answer = pickDailyWordlePlayer(date, pool);
+  const answer = pickWordlePlayer(seed, pool);
   return {
-    date,
+    date: seed,
     answerId: answer.id,
     guesses: [],
     discoveredClues: [],
@@ -182,11 +198,11 @@ export function submitWordleGuess(
   pool: readonly MiniGamePlayer[] = getWordlePlayerPool()
 ): { run: WordleRun; error?: string; newlyFound?: WordleDiscoveredClue[] } {
   if (run.status !== "playing") {
-    return { run, error: "Today's Wordle is already finished." };
+    return { run, error: "This Wordle is already finished." };
   }
   const answer = pool.find((player) => player.id === run.answerId);
   if (!answer) {
-    return { run, error: "Could not load today's player." };
+    return { run, error: "Could not load this Wordle player." };
   }
   const resolved = resolvePlayerGuess(query, pool);
   if (!resolved) {
@@ -225,7 +241,6 @@ export function submitWordleGuess(
     nationality: resolved.nationality,
     rating: resolved.rating,
     isHistoric: resolved.isHistoric,
-    year: resolved.year,
     clues,
   };
   const guesses = [...run.guesses, guess];
@@ -247,7 +262,7 @@ export function submitWordleGuess(
 
 export function createEmptyWordleStats(): WordleStats {
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     played: 0,
     wins: 0,
     currentStreak: 0,
@@ -266,7 +281,7 @@ export function recordWordleResult(
   const currentStreak = won ? stats.currentStreak + 1 : 0;
   return {
     ...stats,
-    schemaVersion: 2,
+    schemaVersion: 3,
     played: stats.played + 1,
     wins: stats.wins + (won ? 1 : 0),
     currentStreak,
@@ -279,16 +294,32 @@ export function remainingWordleGuesses(run: WordleRun): number {
   return Math.max(0, WORDLE_MAX_GUESSES - run.guesses.length);
 }
 
-/** Migrate older persisted runs that lack discoveredClues / still store year. */
+function normalizeGuessClues(clues: WordleClues): WordleClues {
+  return {
+    nationality: clues.nationality ?? "miss",
+    position: clues.position ?? "miss",
+    club: clues.club ?? "miss",
+    rating: clues.rating ?? "miss",
+    status: clues.status ?? "miss",
+  };
+}
+
+/** Migrate older persisted runs. */
 export function normalizeWordleRun(value: WordleRun): WordleRun {
+  const guesses = value.guesses.map((guess) => ({
+    ...guess,
+    isHistoric: Boolean(guess.isHistoric),
+    clues: normalizeGuessClues(guess.clues),
+  }));
   const discovered =
     Array.isArray(value.discoveredClues) && value.discoveredClues.length > 0
       ? value.discoveredClues
-      : value.guesses.reduce<WordleDiscoveredClue[]>((acc, guess) => {
+      : guesses.reduce<WordleDiscoveredClue[]>((acc, guess) => {
           return mergeDiscoveredClues(acc, guess.clues).discovered;
         }, []);
   return {
     ...value,
+    guesses,
     discoveredClues: discovered,
     hintUsed: Boolean(value.hintUsed || value.answerHint),
     answerHint: value.answerHint ?? null,

@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
+import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
 import { TYPO } from "@/lib/ui/typography";
-import { formatClubFundsExact } from "@/lib/club-funds";
 import { getLocalDateKey } from "@/lib/mini-games/date";
 import { HANGMAN_CATEGORY_LABEL, getHangmanBank } from "@/lib/mini-games/hangman/answers";
 import {
@@ -87,6 +87,7 @@ export function HangmanGame() {
   const [ready, setReady] = useState(false);
   const [flash, setFlash] = useState<"good" | "bad" | null>(null);
   const [celebrate, setCelebrate] = useState(false);
+  const [rewardOpen, setRewardOpen] = useState(false);
   const [stats, setStats] = useState(() => ({
     currentStreak: 0,
     bestStreak: 0,
@@ -180,6 +181,7 @@ export function HangmanGame() {
     if (next.status === "won") {
       playMiniWin();
       setCelebrate(true);
+      if (next.payoutAwarded) setRewardOpen(true);
     }
     if (next.status === "lost") playMiniLose();
     void beforeWrong;
@@ -196,12 +198,19 @@ export function HangmanGame() {
     });
     setFlash(null);
     setCelebrate(false);
+    setRewardOpen(false);
     persist(next);
   };
 
   return (
     <MiniGameShell title="Rugby League Hangman">
       {celebrate && <Confetti />}
+      <MiniGameRewardPopup
+        open={rewardOpen}
+        amount={HANGMAN_WIN_REWARD}
+        detail="Reward for solving today's Hangman."
+        onClose={() => setRewardOpen(false)}
+      />
       <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">
         <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
           Guess the player, club or rugby league term. Eight wrong letters and
@@ -222,7 +231,7 @@ export function HangmanGame() {
         ) : (
           <>
             <p className={`mt-6 text-center ${TYPO.keyLabel}`}>
-              Category: {HANGMAN_CATEGORY_LABEL[run.category]}
+              {HANGMAN_CATEGORY_LABEL[run.category]}
               {run.daily ? " · Daily" : " · Practice"}
             </p>
             <p className={`mt-1 text-center ${TYPO.bodySm}`}>{run.hint}</p>
@@ -239,7 +248,23 @@ export function HangmanGame() {
               ))}
 
             <div
-              className={`mt-6 flex w-full max-w-full flex-wrap items-center justify-center gap-x-4 gap-y-3 font-display text-white ${answerFontClass} ${
+              className="mini-game-lives"
+              aria-label={`${remainingHangmanLives(run)} lives remaining`}
+            >
+              {Array.from({ length: 8 }, (_, index) => {
+                const lost = index >= remainingHangmanLives(run);
+                return (
+                  <span
+                    key={index}
+                    className={`mini-game-life ${lost ? "mini-game-life--lost" : ""}`}
+                    aria-hidden
+                  />
+                );
+              })}
+            </div>
+
+            <div
+              className={`mt-5 flex w-full max-w-full flex-wrap items-center justify-center gap-x-3 gap-y-3 font-display text-white ${answerFontClass} ${
                 flash === "bad" ? "mini-game-shake" : ""
               }`}
               aria-label={letters.join("")}
@@ -247,25 +272,31 @@ export function HangmanGame() {
               {words.map((word, wordIndex) => (
                 <span
                   key={`word-${wordIndex}`}
-                  className="inline-flex max-w-full shrink-0 flex-nowrap items-center justify-center gap-[0.18em] whitespace-nowrap"
+                  className="inline-flex max-w-full shrink-0 flex-nowrap items-center justify-center gap-[0.2em] whitespace-nowrap"
                 >
-                  {word.map((char, index) => (
-                    <span
-                      key={`${char}-${wordIndex}-${index}`}
-                      className={`inline-flex min-w-[0.85em] justify-center border-b border-white/25 pb-0.5 ${
-                        flash === "good" && char !== "_"
-                          ? "text-emerald-300"
-                          : ""
-                      }`}
-                    >
-                      {char}
-                    </span>
-                  ))}
+                  {word.map((char, index) => {
+                    const empty = char === "_";
+                    const hit = flash === "good" && !empty;
+                    return (
+                      <span
+                        key={`${char}-${wordIndex}-${index}`}
+                        className={`mini-game-letter-slot ${
+                          empty
+                            ? "mini-game-letter-slot--empty"
+                            : hit
+                              ? "mini-game-letter-slot--hit"
+                              : ""
+                        }`}
+                      >
+                        {empty ? "?" : char}
+                      </span>
+                    );
+                  })}
                 </span>
               ))}
             </div>
 
-            <div className="mx-auto mt-8 flex w-full max-w-md flex-col gap-1.5">
+            <div className="mx-auto mt-7 flex w-full max-w-md flex-col gap-1.5">
               {ROWS.map((row) => (
                 <div key={row} className="flex w-full justify-center gap-1">
                   {[...row].map((letter) => {
@@ -281,12 +312,12 @@ export function HangmanGame() {
                         type="button"
                         disabled={run.status !== "playing" || used}
                         onClick={() => playLetter(letter)}
-                        className={`hangman-key flex min-h-[44px] min-w-0 flex-1 items-center justify-center rounded-md border text-sm font-semibold ${
+                        className={`hangman-key flex min-h-[44px] min-w-0 flex-1 items-center justify-center rounded-lg border text-sm font-semibold ${
                           used
                             ? inAnswer
                               ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-300"
                               : "border-white/5 bg-white/5 text-gray-500"
-                            : "border-white/15 bg-[#0c1210] text-white"
+                            : "border-white/15 bg-black/35 text-white"
                         }`}
                       >
                         {letter}
@@ -298,7 +329,7 @@ export function HangmanGame() {
             </div>
 
             {run.status !== "playing" && (
-              <div className="mt-6 border border-white/10 bg-[#0c1210] px-4 py-4 text-center">
+              <div className="mini-game-guess-card mt-6">
                 <p className={TYPO.cardTitle}>
                   {run.status === "won" ? "Solved" : "Out of lives"}
                 </p>
@@ -306,11 +337,6 @@ export function HangmanGame() {
                 {eraMeta?.isHistoric && (
                   <p className="mt-1 font-display text-[11px] font-bold uppercase tracking-[0.14em] text-accent-gold">
                     Era · {eraMeta.year}
-                  </p>
-                )}
-                {run.status === "won" && run.payoutAwarded && (
-                  <p className={`mt-2 ${TYPO.bodySm}`}>
-                    +{formatClubFundsExact(HANGMAN_WIN_REWARD)} Club Funds
                   </p>
                 )}
                 <MiniGameEndActions

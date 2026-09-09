@@ -9,10 +9,12 @@ import { TYPO } from "@/lib/ui/typography";
 
 export function MiniGameShell({
   title,
+  eyebrow = "Mini Games",
   children,
   actions,
 }: {
   title: string;
+  eyebrow?: string;
   children: ReactNode;
   actions?: ReactNode;
 }) {
@@ -21,7 +23,7 @@ export function MiniGameShell({
       <div
         className={`${PAGE.section} mini-game-arena mx-auto flex w-full max-w-xl flex-col items-center text-center`}
       >
-        <div className="mb-5 flex w-full flex-wrap items-center justify-center gap-3">
+        <div className="mb-4 flex w-full flex-wrap items-center justify-center gap-3">
           <GameButton
             variant="secondary"
             size="sm"
@@ -32,8 +34,15 @@ export function MiniGameShell({
           </GameButton>
           {actions}
         </div>
-        <h1 className={TYPO.pageTitle}>{title}</h1>
-        <div className="flex w-full flex-col items-center">{children}</div>
+
+        <div className="mini-game-board">
+          <span className="mini-game-board__accent" aria-hidden />
+          <div className="mini-game-board__body">
+            <p className={TYPO.sectionLabel}>{eyebrow}</p>
+            <h1 className={`mt-1.5 ${TYPO.pageTitle}`}>{title}</h1>
+            <div className="mt-1 flex w-full flex-col items-center">{children}</div>
+          </div>
+        </div>
       </div>
     </StandardPageShell>
   );
@@ -45,14 +54,14 @@ export function MiniGameStatLine({
   items: { label: string; value: string | number }[];
 }) {
   return (
-    <p className={`mt-2 text-center ${TYPO.bodySm}`}>
-      {items.map((item, index) => (
-        <span key={item.label}>
-          {index > 0 ? " · " : ""}
-          {item.label} {item.value}
-        </span>
+    <div className="mini-game-stat-row" role="group" aria-label="Game stats">
+      {items.map((item) => (
+        <div key={item.label} className="mini-game-stat-chip">
+          <span className="mini-game-stat-chip__label">{item.label}</span>
+          <span className="mini-game-stat-chip__value">{item.value}</span>
+        </div>
       ))}
-    </p>
+    </div>
   );
 }
 

@@ -3,10 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
+import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
 import { PlayerAutocomplete } from "./PlayerAutocomplete";
 import { TYPO } from "@/lib/ui/typography";
-import { formatClubFundsExact } from "@/lib/club-funds";
-import { getLocalDateKey } from "@/lib/mini-games/date";
 import {
   findMiniGamePlayerById,
   formatMiniGamePlayerLabel,
@@ -18,9 +17,12 @@ import {
   remainingWordleGuesses,
   submitWordleGuess,
   useWordleHint,
+  WORDLE_ATTRIBUTE_COUNT,
   WORDLE_MAX_GUESSES,
+  wordleStatusLabel,
 } from "@/lib/mini-games/wordle/engine";
 import {
+  clearWordleRun,
   loadWordleRun,
   loadWordleStats,
   saveWordleRun,
@@ -45,59 +47,64 @@ import {
 
 type WordleRunView = WordleRun & { payoutAwarded?: boolean };
 
-function clueClass(match: boolean): string {
-  return match
-    ? "rounded-md bg-emerald-500/20 px-1.5 py-0.5 text-emerald-300 ring-1 ring-emerald-400/40"
-    : "text-gray-400";
-}
-
 function trendText(trend: "higher" | "lower" | "match"): string {
   if (trend === "match") return "=";
   return trend === "higher" ? "↑" : "↓";
 }
 
 function GuessRow({ guess, shake }: { guess: WordleGuess; shake?: boolean }) {
+  const tiles: {
+    label: string;
+    value: string;
+    match: boolean;
+  }[] = [
+    {
+      label: "Status",
+      value: wordleStatusLabel(guess.isHistoric),
+      match: guess.clues.status === "match",
+    },
+    {
+      label: "Nation",
+      value: guess.nationality,
+      match: guess.clues.nationality === "match",
+    },
+    {
+      label: "Pos",
+      value: guess.positionLabel,
+      match: guess.clues.position === "match",
+    },
+    {
+      label: "Club",
+      value: guess.club,
+      match: guess.clues.club === "match",
+    },
+    {
+      label: "Rating",
+      value: `${guess.rating} ${trendText(guess.clues.rating)}`,
+      match: guess.clues.rating === "match",
+    },
+  ];
+
   return (
     <li
-      className={`border border-white/10 bg-[#0c1210] px-3 py-3 ${
+      className={`mini-game-guess-card ${
         shake ? "mini-game-shake ring-1 ring-red-400/40" : ""
       }`}
     >
       <p className={TYPO.playerNameSm}>{guess.name}</p>
-      {guess.isHistoric ? (
-        <p
-          className="mt-1.5 text-center font-display text-[11px] font-bold uppercase tracking-[0.14em] text-accent-gold"
-          aria-label={`Era player from ${guess.year}`}
-        >
-          Era · {guess.year}
-        </p>
-      ) : (
-        <p className={`mt-1.5 text-center ${TYPO.meta}`}>Current</p>
-      )}
-      <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-2 text-sm sm:grid-cols-4">
-        <div>
-          <dt className={TYPO.keyLabel}>Nation</dt>
-          <dd className={clueClass(guess.clues.nationality === "match")}>
-            {guess.nationality}
-          </dd>
-        </div>
-        <div>
-          <dt className={TYPO.keyLabel}>Pos</dt>
-          <dd className={clueClass(guess.clues.position === "match")}>
-            {guess.positionLabel}
-          </dd>
-        </div>
-        <div>
-          <dt className={TYPO.keyLabel}>Club</dt>
-          <dd className={clueClass(guess.clues.club === "match")}>{guess.club}</dd>
-        </div>
-        <div>
-          <dt className={TYPO.keyLabel}>Rating</dt>
-          <dd className={clueClass(guess.clues.rating === "match")}>
-            {guess.rating} {trendText(guess.clues.rating)}
-          </dd>
-        </div>
-      </dl>
+      <div className="mini-game-attr-grid">
+        {tiles.map((tile) => (
+          <div
+            key={tile.label}
+            className={`mini-game-attr-tile ${
+              tile.match ? "mini-game-attr-tile--match" : "mini-game-attr-tile--miss"
+            }`}
+          >
+            <span className="mini-game-attr-tile__label">{tile.label}</span>
+            <span className="mini-game-attr-tile__value">{tile.value}</span>
+          </div>
+        ))}
+      </div>
     </li>
   );
 }
@@ -129,6 +136,7 @@ export function WordleGame() {
   const [ready, setReady] = useState(false);
   const [shakeId, setShakeId] = useState<string | null>(null);
   const [celebrate, setCelebrate] = useState(false);
+  const [rewardOpen, setRewardOpen] = useState(false);
   const [stats, setStats] = useState(() => ({
     currentStreak: 0,
     bestStreak: 0,
@@ -136,10 +144,13 @@ export function WordleGame() {
   }));
 
   useEffect(() => {
-    const today = getLocalDateKey();
     const stored = loadWordleRun();
     const next =
-      stored && stored.date === today ? stored : createWordleRun(today, pool);
+      stored && stored.status === "playing"
+        ? stored
+        : stored && (stored.status === "won" || stored.status === "lost")
+          ? stored
+          : createWordleRun(pool);
     const settled =
       next.status !== "playing" && !next.rewardClaimed ? settleWordle(next) : next;
     saveWordleRun(settled);
@@ -174,8 +185,10 @@ export function WordleGame() {
     if (next.status === "won") {
       playMiniWin();
       setCelebrate(true);
+      if (next.payoutAwarded) setRewardOpen(true);
     } else if (last) {
       const anyMatch =
+        last.clues.status === "match" ||
         last.clues.nationality === "match" ||
         last.clues.position === "match" ||
         last.clues.club === "match" ||
@@ -203,19 +216,39 @@ export function WordleGame() {
     setRun(result.run);
   };
 
+  const restart = () => {
+    playMiniSelect();
+    clearWordleRun();
+    const next = createWordleRun(pool);
+    saveWordleRun(next);
+    setRun(next);
+    setQuery("");
+    setError(null);
+    setShakeId(null);
+    setCelebrate(false);
+    setRewardOpen(false);
+    setStats(loadWordleStats());
+  };
+
   const canUseHint =
     run?.status === "playing" &&
     !run.hintUsed &&
     !run.answerHint &&
-    run.discoveredClues.length < 4;
+    run.discoveredClues.length < WORDLE_ATTRIBUTE_COUNT;
 
   return (
     <MiniGameShell title="Rugby League Wordle">
       {celebrate && <Confetti />}
+      <MiniGameRewardPopup
+        open={rewardOpen}
+        amount={WORDLE_WIN_REWARD}
+        detail="Reward for solving this Wordle."
+        onClose={() => setRewardOpen(false)}
+      />
       <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">
         <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
-          Guess today&apos;s Super League player. Matching attributes unlock
-          numbered clues — or use one reveal clue.
+          Guess the Super League player. Matching attributes go green — including
+          Historic or Current.
         </p>
         <div className="text-center">
           <MiniGameStatLine
@@ -231,9 +264,7 @@ export function WordleGame() {
         </div>
 
         {!ready || !run ? (
-          <p className={`mt-6 text-center ${TYPO.meta}`}>
-            Loading today&apos;s player…
-          </p>
+          <p className={`mt-6 text-center ${TYPO.meta}`}>Loading player…</p>
         ) : (
           <>
             {(run.discoveredClues.length > 0 || run.answerHint) && (
@@ -297,7 +328,7 @@ export function WordleGame() {
                   Reveal one clue
                 </GameButton>
                 <p className={`mt-1.5 text-center ${TYPO.meta}`}>
-                  Once per day — shows nation, position, club, or rating.
+                  Once per round — status, nation, position, club, or rating.
                 </p>
               </div>
             ) : null}
@@ -308,7 +339,7 @@ export function WordleGame() {
               </p>
             )}
 
-            <ul className="mt-6 w-full space-y-2 text-left">
+            <ul className="mt-6 w-full space-y-2">
               {run.guesses.map((guess) => (
                 <GuessRow
                   key={guess.playerId}
@@ -320,25 +351,17 @@ export function WordleGame() {
 
             {run.status !== "playing" && answer && (
               <div
-                className={`mt-6 border border-white/10 bg-[#0c1210] px-4 py-4 text-center ${
+                className={`mini-game-guess-card mt-6 ${
                   celebrate ? "ring-1 ring-emerald-400/50" : ""
                 }`}
               >
                 <p className={TYPO.cardTitle}>
                   {run.status === "won" ? "Got it" : "Unlucky"}
                 </p>
-                {answer.isHistoric ? (
-                  <p
-                    className="mt-1.5 text-center font-display text-[11px] font-bold uppercase tracking-[0.14em] text-accent-gold"
-                    aria-label={`Era player from ${answer.year}`}
-                  >
-                    Era · {answer.year}
-                  </p>
-                ) : (
-                  <p className={`mt-1.5 text-center ${TYPO.meta}`}>Current</p>
-                )}
                 <p className={`mt-2 ${TYPO.body}`}>
                   {formatMiniGamePlayerLabel(answer)}
+                  {" · "}
+                  {wordleStatusLabel(answer.isHistoric)}
                   {" · "}
                   {answer.club}
                   {" · "}
@@ -346,15 +369,7 @@ export function WordleGame() {
                   {" · "}
                   {answer.rating}
                 </p>
-                {run.status === "won" && run.payoutAwarded && (
-                  <p className={`mt-2 ${TYPO.bodySm}`}>
-                    +{formatClubFundsExact(WORDLE_WIN_REWARD)} Club Funds
-                  </p>
-                )}
-                <p className={`mt-3 ${TYPO.bodySm}`}>
-                  Come back tomorrow for a new player.
-                </p>
-                <MiniGameEndActions />
+                <MiniGameEndActions onPlayAgain={restart} />
               </div>
             )}
           </>

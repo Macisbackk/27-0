@@ -1,18 +1,25 @@
 import type { MiniGamePlayer } from "../players";
 
 export const WORDLE_MAX_GUESSES = 6;
-export const WORDLE_STATS_SCHEMA = 2;
+export const WORDLE_STATS_SCHEMA = 3;
 
 export type WordleClueTone = "match" | "miss";
 export type WordleTrend = "higher" | "lower" | "match";
 
-export type WordleAttributeKey = "nationality" | "position" | "club" | "rating";
+export type WordleAttributeKey =
+  | "nationality"
+  | "position"
+  | "club"
+  | "rating"
+  | "status";
 
 export type WordleClues = {
   nationality: WordleClueTone;
   position: WordleClueTone;
   club: WordleClueTone;
   rating: WordleTrend;
+  /** Historic vs current pool match. */
+  status: WordleClueTone;
 };
 
 export type WordleDiscoveredClue = {
@@ -35,14 +42,14 @@ export type WordleGuess = {
   positionLabel: string;
   nationality: string;
   rating: number;
-  isHistoric?: boolean;
-  year?: number;
+  isHistoric: boolean;
   clues: WordleClues;
 };
 
 export type WordleStatus = "playing" | "won" | "lost";
 
 export type WordleRun = {
+  /** Unique run id (not a calendar day). */
   date: string;
   answerId: string;
   guesses: WordleGuess[];
@@ -70,4 +77,9 @@ export const WORDLE_ATTRIBUTE_LABEL: Record<WordleAttributeKey, string> = {
   position: "POSITION",
   club: "CLUB",
   rating: "RATING",
+  status: "STATUS",
 };
+
+export function wordleStatusLabel(isHistoric: boolean): string {
+  return isHistoric ? "Historic" : "Current";
+}

@@ -8,7 +8,7 @@ import {
   createWordleRun,
   isSameWordlePlayer,
   mergeDiscoveredClues,
-  pickDailyWordlePlayer,
+  pickWordlePlayer,
   recordWordleResult,
   submitWordleGuess,
   useWordleHint,
@@ -102,9 +102,9 @@ const pool: MiniGamePlayer[] = [
 
 console.log("Wordle engine");
 
-const a = pickDailyWordlePlayer("2026-09-08", pool);
-const b = pickDailyWordlePlayer("2026-09-08", pool);
-assert(a.id === b.id, "same date returns the same daily player");
+const a = pickWordlePlayer("seed-a", pool);
+const b = pickWordlePlayer("seed-a", pool);
+assert(a.id === b.id, "same seed returns the same player");
 assert(WORDLE_MAX_GUESSES === 6, "six guesses");
 
 const clues = buildWordleClues(pool[1]!, pool[0]!);
@@ -112,10 +112,14 @@ assert(clues.club === "match", "same club is a match");
 assert(clues.position === "miss", "different position is a miss");
 assert(clues.nationality === "match", "same nation is a match");
 assert(clues.rating === "higher", "lower guess rating points higher");
+assert(clues.status === "match", "both historic is a status match");
 assert(!("year" in clues), "year is not a clue attribute");
 
+const statusMiss = buildWordleClues(pool[2]!, pool[0]!);
+assert(statusMiss.status === "miss", "current vs historic is a status miss");
+
 const merged = mergeDiscoveredClues([], clues);
-assert(merged.newlyFound.length === 2, "first guess unlocks two clues");
+assert(merged.newlyFound.length === 3, "first guess unlocks three clues");
 assert(merged.newlyFound[0]?.order === 1, "clues are numbered from 1");
 const again = mergeDiscoveredClues(merged.discovered, clues);
 assert(again.newlyFound.length === 0, "duplicate attribute clues are not repeated");
@@ -137,7 +141,7 @@ assert(
   "Mike resolves to Michael Cooper"
 );
 
-let run = createWordleRun("2026-09-08", pool);
+let run = createWordleRun(pool, "lose-seed");
 assert(run.status === "playing", "new run is in progress");
 assert(run.discoveredClues.length === 0, "new run has no clues yet");
 const extras: MiniGamePlayer[] = Array.from({ length: 6 }, (_, i) =>
@@ -153,6 +157,7 @@ const extras: MiniGamePlayer[] = Array.from({ length: 6 }, (_, i) =>
     nationalityKey: "australia",
     rating: 70 + i,
     year: 2000 + i,
+    isHistoric: true,
   })
 );
 const losePool = [...pool, ...extras];
@@ -160,18 +165,24 @@ for (const decoy of extras) {
   const next = submitWordleGuess(run, decoy.id, losePool);
   run = next.run;
 }
-assert(run.status === "lost", "six wrong guesses lose the day");
+assert(run.status === "lost", "six wrong guesses lose the round");
 
-const winRun = createWordleRun("2026-09-10", pool);
+const winRun = createWordleRun(pool, "win-seed");
 const won = submitWordleGuess(winRun, winRun.answerId, pool);
 assert(won.run.status === "won", "correct player wins");
 
 const stats = recordWordleResult(createEmptyWordleStats(), won.run);
 assert(stats.wins === 1 && stats.currentStreak === 1, "win updates streak");
 const againStats = recordWordleResult(stats, won.run);
-assert(againStats.played === stats.played, "same day is not counted twice");
+assert(againStats.played === stats.played, "same run is not counted twice");
 
-const hintRun = createWordleRun("2026-09-11", pool);
+const secondWin = createWordleRun(pool, "win-seed-2");
+const secondWon = submitWordleGuess(secondWin, secondWin.answerId, pool);
+const streakStats = recordWordleResult(stats, secondWon.run);
+assert(streakStats.played === 2, "a new run counts again");
+assert(streakStats.currentStreak === 2, "wins keep the streak going");
+
+const hintRun = createWordleRun(pool, "hint-seed");
 assert(hintRun.hintUsed === false, "new run has unused hint");
 const hinted = useWordleHint(hintRun, pool);
 assert(Boolean(hinted.hint), "hint reveals one attribute");

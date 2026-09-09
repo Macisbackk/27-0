@@ -4,8 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ClubLogoBox } from "@/components/ClubBadge";
 import { GameButton } from "@/components/ui/GameButton";
 import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
+import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
 import { TYPO } from "@/lib/ui/typography";
-import { formatClubFundsExact } from "@/lib/club-funds";
 import {
   formatMiniGamePlayerLabel,
   getHigherLowerPlayerPool,
@@ -49,15 +49,13 @@ import {
   playMiniWin,
 } from "@/lib/mini-games/sound";
 
-type PayoutNote = string | null;
-
 function settleWin(
   run: HigherLowerRun,
   stats: HigherLowerStats
-): { run: HigherLowerRun; stats: HigherLowerStats; note: PayoutNote } {
+): { run: HigherLowerRun; stats: HigherLowerStats; awarded: boolean } {
   const ended = applyHigherLowerRunEnd(stats, true);
   if (run.rewardClaimed) {
-    return { run, stats: ended, note: null };
+    return { run, stats: ended, awarded: false };
   }
   const payout = claimMiniGameReward(
     `hol_five:${run.seed}`,
@@ -70,9 +68,7 @@ function settleWin(
   return {
     run: { ...run, rewardClaimed: true },
     stats: nextStats,
-    note: payout.awarded
-      ? `+${formatClubFundsExact(HIGHER_LOWER_FIVE_REWARD)} for 5 picks complete`
-      : null,
+    awarded: payout.awarded,
   };
 }
 
@@ -88,7 +84,7 @@ function PlayerFace({
   hint?: string;
 }) {
   return (
-    <div className="mx-auto w-full max-w-[16rem] border border-white/10 bg-[#0c1210] px-4 py-4 text-center">
+    <div className="mx-auto w-full max-w-[16rem] rounded-xl border border-white/10 bg-black/30 px-4 py-4 text-center">
       <p className={TYPO.keyLabel}>{label}</p>
       {hint ? <p className={`mt-1 ${TYPO.meta}`}>{hint}</p> : null}
       <div className="mt-3 flex justify-center">
@@ -128,7 +124,7 @@ export function HigherLowerGame() {
   const pool = useMemo(() => getHigherLowerPlayerPool(), []);
   const [run, setRun] = useState<HigherLowerRun | null>(null);
   const [stats, setStats] = useState<HigherLowerStats | null>(null);
-  const [note, setNote] = useState<PayoutNote>(null);
+  const [rewardOpen, setRewardOpen] = useState(false);
   const [ready, setReady] = useState(false);
   const [flash, setFlash] = useState<"good" | "bad" | null>(null);
   const [celebrate, setCelebrate] = useState(false);
@@ -171,16 +167,19 @@ export function HigherLowerGame() {
     playMiniReveal();
     let nextStats = applyHigherLowerPick(stats, result.correct);
     let nextRun = result.run;
-    let payout: PayoutNote = null;
+    let awarded = false;
 
     if (result.correct && nextRun.status === "won") {
       const settled = settleWin(nextRun, nextStats);
       nextRun = settled.run;
       nextStats = settled.stats;
-      payout = settled.note;
+      awarded = settled.awarded;
       playMiniCorrect();
       playMiniWin();
-      if (payout) playMiniMilestone();
+      if (awarded) {
+        playMiniMilestone();
+        setRewardOpen(true);
+      }
       setCelebrate(true);
     } else if (result.correct) {
       playMiniCorrect();
@@ -190,7 +189,6 @@ export function HigherLowerGame() {
     }
 
     persist(nextRun, nextStats);
-    setNote(payout);
     setFlash(result.correct ? "good" : "bad");
     triggerMiniGameAchievements({
       played: true,
@@ -209,7 +207,6 @@ export function HigherLowerGame() {
           const advanced = advanceHigherLower(current, pool);
           saveHigherLowerRun(advanced);
           setFlash(null);
-          setNote(null);
           return advanced;
         });
       }, 1100);
@@ -226,7 +223,6 @@ export function HigherLowerGame() {
     const next = advanceHigherLower(run, pool);
     saveHigherLowerRun(next);
     setRun(next);
-    setNote(null);
     setFlash(null);
   };
 
@@ -240,9 +236,9 @@ export function HigherLowerGame() {
     const next = createHigherLowerRun(pool);
     saveHigherLowerRun(next);
     setRun(next);
-    setNote(null);
     setFlash(null);
     setCelebrate(false);
+    setRewardOpen(false);
   };
 
   const pickNumber = run ? higherLowerPickNumber(run) : 1;
@@ -252,6 +248,12 @@ export function HigherLowerGame() {
   return (
     <MiniGameShell title="Higher or Lower">
       {celebrate && <Confetti />}
+      <MiniGameRewardPopup
+        open={rewardOpen}
+        amount={HIGHER_LOWER_FIVE_REWARD}
+        detail="Reward for completing all 5 picks."
+        onClose={() => setRewardOpen(false)}
+      />
       <div className="mini-game-play mx-auto flex w-full max-w-sm flex-col items-center">
         <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
           Compare ratings. The top player&apos;s score is shown — guess if the
@@ -275,9 +277,32 @@ export function HigherLowerGame() {
                 ? "5 PICKS COMPLETE"
                 : `PICK ${pickNumber} / ${HIGHER_LOWER_PICKS}`}
             </p>
+            <div
+              className="mini-game-pick-track"
+              aria-label={`Pick ${pickNumber} of ${HIGHER_LOWER_PICKS}`}
+            >
+              {Array.from({ length: HIGHER_LOWER_PICKS }, (_, index) => {
+                const done = index < pickNumber - 1 || run.status === "won";
+                const current =
+                  run.status === "playing" && index === pickNumber - 1;
+                return (
+                  <span
+                    key={index}
+                    className={`mini-game-pick-dot ${
+                      done
+                        ? "mini-game-pick-dot--done"
+                        : current
+                          ? "mini-game-pick-dot--current"
+                          : ""
+                    }`}
+                    aria-hidden
+                  />
+                );
+              })}
+            </div>
 
             {!run.revealed && run.status === "playing" ? (
-              <p className={`mt-2 text-center ${TYPO.bodySm}`}>
+              <p className={`mt-3 text-center ${TYPO.bodySm}`}>
                 Is{" "}
                 <span className="font-semibold text-white">
                   {formatMiniGamePlayerLabel(board.challenge)}
@@ -291,7 +316,7 @@ export function HigherLowerGame() {
             ) : null}
 
             <div
-              className={`mt-4 w-full transition ${
+              className={`mt-4 w-full rounded-xl p-1 transition ${
                 flash === "good"
                   ? "border border-emerald-400/40 bg-emerald-500/5"
                   : flash === "bad"
@@ -305,7 +330,9 @@ export function HigherLowerGame() {
                 label="Known rating"
                 hint="Compare against this"
               />
-              <p className={`my-3 text-center ${TYPO.keyLabel}`}>VS</p>
+              <div className="mini-game-vs-badge" aria-hidden>
+                VS
+              </div>
               <PlayerFace
                 player={board.challenge}
                 showRating={challengeRevealed}
@@ -352,7 +379,6 @@ export function HigherLowerGame() {
                       ? "Correct"
                       : "Wrong"}
                 </p>
-                {note && <p className={`mt-2 ${TYPO.bodySm}`}>{note}</p>}
                 <div className="mx-auto mt-4 w-full max-w-xs">
                   {run.status === "playing" &&
                   run.lastCorrect &&
