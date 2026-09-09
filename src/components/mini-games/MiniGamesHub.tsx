@@ -21,9 +21,6 @@ export function MiniGamesHub() {
       >
         <p className={TYPO.sectionLabel}>Play</p>
         <h1 className={`mt-1.5 ${TYPO.pageTitle}`}>Mini Games</h1>
-        <p className={`mx-auto mt-2 max-w-md ${TYPO.pageSubtitle}`}>
-          Quick Super League puzzles away from the main season.
-        </p>
 
         <ul className="mt-6 grid w-full gap-2">
           {GAMES.map((game) => (

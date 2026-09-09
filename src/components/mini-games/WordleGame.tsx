@@ -12,10 +12,7 @@ import {
   formatMiniGamePlayerLabel,
   getWordlePlayerPool,
 } from "@/lib/mini-games/players";
-import {
-  MINI_GAME_POOL_MODE_LABEL,
-  type MiniGamePoolMode,
-} from "@/lib/mini-games/pool-mode";
+import type { MiniGamePoolMode } from "@/lib/mini-games/pool-mode";
 import {
   createWordleRun,
   recordWordleResult,
@@ -279,10 +276,7 @@ export function WordleGame() {
         eyebrow="Rugby League Wordle"
         title="Choose Current or Era"
       >
-        <MiniGamePoolSelect
-          subtitle="Guess a Super League player from today’s game or from the eras."
-          onSelect={startMode}
-        />
+        <MiniGamePoolSelect onSelect={startMode} />
       </MiniGameShell>
     );
   }
@@ -297,11 +291,6 @@ export function WordleGame() {
         onClose={() => setRewardOpen(false)}
       />
       <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">
-        <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
-          {poolMode
-            ? `${MINI_GAME_POOL_MODE_LABEL[poolMode]} pool — matching attributes go green.`
-            : "Guess the Super League player. Matching attributes go green."}
-        </p>
         <div className="text-center">
           <MiniGameStatLine
             items={[

@@ -12,20 +12,16 @@ const MODES: MiniGamePoolMode[] = ["current", "era"];
 
 /**
  * Current vs Era picker — same card style as Quiz Normal / Team Challenge.
- * Title lives on MiniGameShell; this renders subtitle + mode cards.
+ * Title lives on MiniGameShell; this renders the mode cards only.
  */
 export function MiniGamePoolSelect({
-  subtitle,
   onSelect,
 }: {
-  subtitle: string;
   onSelect: (mode: MiniGamePoolMode) => void;
 }) {
   return (
-    <div className="mx-auto w-full max-w-xl text-center">
-      <p className={`mx-auto mt-2 max-w-md ${TYPO.pageSubtitle}`}>{subtitle}</p>
-
-      <div className="mt-8 grid gap-3">
+    <div className="mx-auto mt-6 w-full max-w-xl text-center">
+      <div className="grid gap-3">
         {MODES.map((mode) => (
           <button
             key={mode}

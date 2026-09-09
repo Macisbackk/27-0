@@ -12,10 +12,7 @@ import {
   getHigherLowerPlayerPool,
   type MiniGamePlayer,
 } from "@/lib/mini-games/players";
-import {
-  MINI_GAME_POOL_MODE_LABEL,
-  type MiniGamePoolMode,
-} from "@/lib/mini-games/pool-mode";
+import type { MiniGamePoolMode } from "@/lib/mini-games/pool-mode";
 import {
   advanceHigherLower,
   answerHigherLower,
@@ -265,10 +262,7 @@ export function HigherLowerGame() {
         title="Choose Current or Era"
         compact
       >
-        <MiniGamePoolSelect
-          subtitle="Compare ratings from today’s Super League or historic era cards."
-          onSelect={startMode}
-        />
+        <MiniGamePoolSelect onSelect={startMode} />
       </MiniGameShell>
     );
   }
@@ -283,11 +277,6 @@ export function HigherLowerGame() {
         onClose={() => setRewardOpen(false)}
       />
       <div className="mini-game-play hol-play mx-auto flex w-full max-w-sm flex-col items-center">
-        {poolMode ? (
-          <p className={`mt-1 text-center ${TYPO.meta}`}>
-            {MINI_GAME_POOL_MODE_LABEL[poolMode]} pool
-          </p>
-        ) : null}
         <div className="text-center">
           <MiniGameStatLine
             items={[

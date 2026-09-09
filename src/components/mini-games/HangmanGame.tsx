@@ -21,10 +21,7 @@ import {
   saveHangmanStats,
 } from "@/lib/mini-games/hangman/storage";
 import type { HangmanRun } from "@/lib/mini-games/hangman/types";
-import {
-  MINI_GAME_POOL_MODE_LABEL,
-  type MiniGamePoolMode,
-} from "@/lib/mini-games/pool-mode";
+import type { MiniGamePoolMode } from "@/lib/mini-games/pool-mode";
 import {
   claimMiniGameReward,
   HANGMAN_WIN_REWARD,
@@ -236,10 +233,7 @@ export function HangmanGame() {
         eyebrow="Rugby League Hangman"
         title="Choose Current or Era"
       >
-        <MiniGamePoolSelect
-          subtitle="Guess players, clubs and rugby league terms from today’s game or the eras."
-          onSelect={startMode}
-        />
+        <MiniGamePoolSelect onSelect={startMode} />
       </MiniGameShell>
     );
   }
@@ -254,11 +248,6 @@ export function HangmanGame() {
         onClose={() => setRewardOpen(false)}
       />
       <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">
-        <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
-          {poolMode
-            ? `${MINI_GAME_POOL_MODE_LABEL[poolMode]} — eight wrong letters and you\u2019re done.`
-            : "Guess the player, club or rugby league term. Eight wrong letters and you\u2019re done."}
-        </p>
         <div className="text-center">
           <MiniGameStatLine
             items={[

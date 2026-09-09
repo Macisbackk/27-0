@@ -328,9 +328,6 @@ function QuizLanding({
     <div className="mx-auto w-full max-w-xl text-center">
       <p className={TYPO.sectionLabel}>Quiz</p>
       <h1 className={`mt-2 ${TYPO.pageTitle}`}>Choose your quiz</h1>
-      <p className={`mx-auto mt-3 max-w-md ${TYPO.pageSubtitle}`}>
-        Play the classic ladder or take on a Team Challenge.
-      </p>
 
       <div className="mt-8 grid gap-3">
         <button
