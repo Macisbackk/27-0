@@ -13,7 +13,6 @@ import {
   getWordlePlayerPool,
 } from "@/lib/mini-games/players";
 import {
-  isMiniGamePoolMode,
   MINI_GAME_POOL_MODE_LABEL,
   type MiniGamePoolMode,
 } from "@/lib/mini-games/pool-mode";
@@ -29,7 +28,6 @@ import {
 } from "@/lib/mini-games/wordle/engine";
 import {
   clearWordleRun,
-  loadWordleRun,
   loadWordleStats,
   saveWordleRun,
   saveWordleStats,
@@ -162,37 +160,14 @@ export function WordleGame() {
   );
 
   useEffect(() => {
-    const stored = loadWordleRun();
+    clearWordleRun();
     setStats(loadWordleStats());
-    if (
-      stored &&
-      stored.status === "playing" &&
-      isMiniGamePoolMode(stored.poolMode)
-    ) {
-      setPoolMode(stored.poolMode);
-      setRun(stored);
-    }
     setReady(true);
   }, []);
 
   const answer = run ? findMiniGamePlayerById(run.answerId, pool) : undefined;
-  const hasResume =
-    Boolean(run) &&
-    run?.status === "playing" &&
-    isMiniGamePoolMode(run.poolMode);
 
   const startMode = (mode: MiniGamePoolMode) => {
-    const stored = loadWordleRun();
-    if (
-      stored &&
-      stored.status === "playing" &&
-      stored.poolMode === mode
-    ) {
-      setPoolMode(mode);
-      setRun(stored);
-      setView("play");
-      return;
-    }
     const nextPool = getWordlePlayerPool(mode);
     const next = createWordleRun(nextPool, undefined, mode);
     saveWordleRun(next);
@@ -205,12 +180,6 @@ export function WordleGame() {
     setRewardOpen(false);
     setView("play");
     triggerMiniGameAchievements({ played: true });
-  };
-
-  const resume = () => {
-    if (!run || !isMiniGamePoolMode(run.poolMode)) return;
-    setPoolMode(run.poolMode);
-    setView("play");
   };
 
   const submit = (text: string) => {
@@ -313,8 +282,6 @@ export function WordleGame() {
         <MiniGamePoolSelect
           subtitle="Guess a Super League player from today’s game or from the eras."
           onSelect={startMode}
-          resumeLabel={hasResume ? "Resume Wordle" : undefined}
-          onResume={hasResume ? resume : undefined}
         />
       </MiniGameShell>
     );

@@ -15,14 +15,13 @@ import {
   remainingHangmanLives,
 } from "@/lib/mini-games/hangman/engine";
 import {
-  loadHangmanRun,
+  clearHangmanRun,
   loadHangmanStats,
   saveHangmanRun,
   saveHangmanStats,
 } from "@/lib/mini-games/hangman/storage";
 import type { HangmanRun } from "@/lib/mini-games/hangman/types";
 import {
-  isMiniGamePoolMode,
   MINI_GAME_POOL_MODE_LABEL,
   type MiniGamePoolMode,
 } from "@/lib/mini-games/pool-mode";
@@ -105,18 +104,8 @@ export function HangmanGame() {
   }));
 
   useEffect(() => {
-    const today = getLocalDateKey();
-    const stored = loadHangmanRun();
+    clearHangmanRun();
     setStats(loadHangmanStats());
-    if (
-      stored &&
-      stored.date === today &&
-      stored.status === "playing" &&
-      isMiniGamePoolMode(stored.poolMode)
-    ) {
-      setPoolMode(stored.poolMode);
-      setRun(stored);
-    }
     setReady(true);
   }, []);
 
@@ -160,11 +149,6 @@ export function HangmanGame() {
         ? "text-xl tracking-[0.14em] sm:text-2xl"
         : "text-2xl tracking-[0.18em] sm:text-3xl";
 
-  const hasResume =
-    Boolean(run) &&
-    run?.status === "playing" &&
-    isMiniGamePoolMode(run.poolMode);
-
   const persist = (next: HangmanView) => {
     saveHangmanRun(next);
     setRun(next);
@@ -173,30 +157,11 @@ export function HangmanGame() {
 
   const startMode = (mode: MiniGamePoolMode) => {
     const today = getLocalDateKey();
-    const stored = loadHangmanRun();
-    if (
-      stored &&
-      stored.date === today &&
-      stored.poolMode === mode &&
-      (stored.status === "playing" ||
-        stored.status === "won" ||
-        stored.status === "lost")
-    ) {
-      const settled =
-        stored.status !== "playing" && !stored.rewardClaimed
-          ? settleHangman(stored)
-          : stored;
-      if (settled !== stored) saveHangmanRun(settled);
-      setPoolMode(mode);
-      setRun(settled);
-      setView("play");
-      setFlash(null);
-      setCelebrate(settled.status === "won");
-      setRewardOpen(Boolean(settled.payoutAwarded && settled.status === "won"));
-      triggerMiniGameAchievements({ played: true });
-      return;
-    }
-    const next = createHangmanRun({ date: today, daily: true, poolMode: mode });
+    const next = createHangmanRun({
+      date: today,
+      daily: true,
+      poolMode: mode,
+    });
     setPoolMode(mode);
     setFlash(null);
     setCelebrate(false);
@@ -204,12 +169,6 @@ export function HangmanGame() {
     persist(next);
     setView("play");
     triggerMiniGameAchievements({ played: true });
-  };
-
-  const resume = () => {
-    if (!run || !isMiniGamePoolMode(run.poolMode)) return;
-    setPoolMode(run.poolMode);
-    setView("play");
   };
 
   const playLetter = (raw: string) => {
@@ -280,8 +239,6 @@ export function HangmanGame() {
         <MiniGamePoolSelect
           subtitle="Guess players, clubs and rugby league terms from today’s game or the eras."
           onSelect={startMode}
-          resumeLabel={hasResume ? "Resume Hangman" : undefined}
-          onResume={hasResume ? resume : undefined}
         />
       </MiniGameShell>
     );

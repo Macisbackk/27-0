@@ -1,6 +1,5 @@
 "use client";
 
-import { GameButton } from "@/components/ui/GameButton";
 import { playUiClick } from "@/lib/sound";
 import { TYPO } from "@/lib/ui/typography";
 import {
@@ -18,25 +17,13 @@ const MODES: MiniGamePoolMode[] = ["current", "era"];
 export function MiniGamePoolSelect({
   subtitle,
   onSelect,
-  resumeLabel,
-  onResume,
 }: {
   subtitle: string;
   onSelect: (mode: MiniGamePoolMode) => void;
-  resumeLabel?: string;
-  onResume?: () => void;
 }) {
   return (
     <div className="mx-auto w-full max-w-xl text-center">
       <p className={`mx-auto mt-2 max-w-md ${TYPO.pageSubtitle}`}>{subtitle}</p>
-
-      {resumeLabel && onResume ? (
-        <div className="mx-auto mt-5 max-w-sm">
-          <GameButton variant="theme" onClick={onResume}>
-            {resumeLabel}
-          </GameButton>
-        </div>
-      ) : null}
 
       <div className="mt-8 grid gap-3">
         {MODES.map((mode) => (

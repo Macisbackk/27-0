@@ -71,6 +71,15 @@ export function saveHangmanRun(run: HangmanRun): void {
   writeJson(STORAGE_KEYS.hangmanRun, run);
 }
 
+export function clearHangmanRun(): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(STORAGE_KEYS.hangmanRun);
+  } catch {
+    // Quota / private mode
+  }
+}
+
 export function loadHangmanStats(): HangmanStats {
   const value = readJson(STORAGE_KEYS.hangmanStats);
   if (!isRecord(value) || value.schemaVersion !== HANGMAN_STATS_SCHEMA) {

@@ -31,7 +31,6 @@ import {
   getCorrectDisplayIndex,
   getDisplayedOptions,
   getQuestionById,
-  isActiveQuizPhase,
   isTerminalQuizPhase,
   lockAnswer,
   revealAnswer,
@@ -51,7 +50,6 @@ import {
 } from "@/lib/quiz/prizes";
 import {
   clearQuizRun,
-  loadQuizRun,
   loadQuizStats,
   saveQuizRun,
 } from "@/lib/quiz/storage";
@@ -85,26 +83,16 @@ export function QuizModeApp() {
   const lockTimer = useRef<number | null>(null);
 
   useEffect(() => {
-    const loaded = loadQuizRun();
-    const stored =
-      loaded?.phase === "answer_locked"
-        ? revealAnswer(loaded, bank)
-        : loaded;
-    if (stored !== loaded) persist(stored);
-    setRun(stored);
-    if (stored && isTerminalQuizPhase(stored.phase)) {
-      setRun(persist(settleCompletedQuizRun(stored, bank)));
-      setView("result");
-    } else if (stored && isActiveQuizPhase(stored.phase)) {
-      setView("play");
-    } else if (searchParams.get("mode") === "team") {
-      setView("team");
-    }
+    clearQuizRun();
+    setRun(null);
+    setView(searchParams.get("mode") === "team" ? "team" : "landing");
     setReady(true);
     return () => {
       if (lockTimer.current) window.clearTimeout(lockTimer.current);
     };
-  }, [bank, searchParams]);
+    // Fresh landing every visit — do not re-run when in-play router replaces.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const updateRun = useCallback((next: QuizRun) => {
     setRun(persist(next));
@@ -112,10 +100,6 @@ export function QuizModeApp() {
 
   const startMillionaire = () => {
     playUiClick();
-    if (run && isActiveQuizPhase(run.phase)) {
-      const ok = window.confirm("Start a new quiz and abandon the current run?");
-      if (!ok) return;
-    }
     const stats = loadQuizStats();
     const next = createQuizRun({
       bank,
@@ -131,10 +115,6 @@ export function QuizModeApp() {
   const startTeam = () => {
     if (!teamId) return;
     playUiClick();
-    if (run && isActiveQuizPhase(run.phase)) {
-      const ok = window.confirm("Start a new quiz and abandon the current run?");
-      if (!ok) return;
-    }
     const stats = loadQuizStats();
     const next = createQuizRun({
       bank,
@@ -249,11 +229,6 @@ export function QuizModeApp() {
           <p className={`text-center ${TYPO.meta}`}>Loading Quiz Mode…</p>
         ) : view === "landing" ? (
           <QuizLanding
-            hasActiveRun={Boolean(run && isActiveQuizPhase(run.phase))}
-            onResume={() => {
-              playUiClick();
-              setView("play");
-            }}
             onMillionaire={startMillionaire}
             onTeam={() => {
               playUiClick();
@@ -300,8 +275,6 @@ export function QuizModeApp() {
           <QuizResultScreen run={run} bank={bank} onAgain={playAgain} onBack={backToQuiz} />
         ) : (
           <QuizLanding
-            hasActiveRun={false}
-            onResume={() => undefined}
             onMillionaire={startMillionaire}
             onTeam={() => {
               router.replace("/mini-games/quiz?mode=team");
@@ -345,13 +318,9 @@ export function QuizModeApp() {
 }
 
 function QuizLanding({
-  hasActiveRun,
-  onResume,
   onMillionaire,
   onTeam,
 }: {
-  hasActiveRun: boolean;
-  onResume: () => void;
   onMillionaire: () => void;
   onTeam: () => void;
 }) {
@@ -362,14 +331,6 @@ function QuizLanding({
       <p className={`mx-auto mt-3 max-w-md ${TYPO.pageSubtitle}`}>
         Play the classic ladder or take on a Team Challenge.
       </p>
-
-      {hasActiveRun && (
-        <div className="mx-auto mt-5 max-w-sm">
-          <GameButton variant="theme" onClick={onResume}>
-            Resume quiz
-          </GameButton>
-        </div>
-      )}
 
       <div className="mt-8 grid gap-3">
         <button

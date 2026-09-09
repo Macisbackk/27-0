@@ -13,7 +13,6 @@ import {
   type MiniGamePlayer,
 } from "@/lib/mini-games/players";
 import {
-  isMiniGamePoolMode,
   MINI_GAME_POOL_MODE_LABEL,
   type MiniGamePoolMode,
 } from "@/lib/mini-games/pool-mode";
@@ -30,7 +29,6 @@ import {
 } from "@/lib/mini-games/higher-lower/engine";
 import {
   clearHigherLowerRun,
-  loadHigherLowerRun,
   loadHigherLowerStats,
   saveHigherLowerRun,
   saveHigherLowerStats,
@@ -127,17 +125,8 @@ export function HigherLowerGame() {
   );
 
   useEffect(() => {
-    const storedStats = loadHigherLowerStats();
-    const storedRun = loadHigherLowerRun();
-    setStats(storedStats);
-    if (
-      storedRun &&
-      storedRun.status === "playing" &&
-      isMiniGamePoolMode(storedRun.poolMode)
-    ) {
-      setPoolMode(storedRun.poolMode);
-      setRun(storedRun);
-    }
+    clearHigherLowerRun();
+    setStats(loadHigherLowerStats());
     setReady(true);
     return () => {
       if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
@@ -145,10 +134,6 @@ export function HigherLowerGame() {
   }, []);
 
   const board = run ? resolveHigherLowerPlayers(run, pool) : null;
-  const hasResume =
-    Boolean(run) &&
-    run?.status === "playing" &&
-    isMiniGamePoolMode(run.poolMode);
 
   const persist = (nextRun: HigherLowerRun, nextStats: HigherLowerStats) => {
     saveHigherLowerRun(nextRun);
@@ -158,17 +143,6 @@ export function HigherLowerGame() {
   };
 
   const startMode = (mode: MiniGamePoolMode) => {
-    const stored = loadHigherLowerRun();
-    if (
-      stored &&
-      stored.status === "playing" &&
-      stored.poolMode === mode
-    ) {
-      setPoolMode(mode);
-      setRun(stored);
-      setView("play");
-      return;
-    }
     const nextPool = getHigherLowerPlayerPool(mode);
     const next = createHigherLowerRun(nextPool, undefined, mode);
     saveHigherLowerRun(next);
@@ -183,12 +157,6 @@ export function HigherLowerGame() {
       higherLowerBestStreak: stats?.bestStreak ?? 0,
       higherLowerFivePickWins: stats?.fivePickWins ?? 0,
     });
-  };
-
-  const resume = () => {
-    if (!run || !isMiniGamePoolMode(run.poolMode)) return;
-    setPoolMode(run.poolMode);
-    setView("play");
   };
 
   const pick = (choice: HigherLowerChoice) => {
@@ -300,8 +268,6 @@ export function HigherLowerGame() {
         <MiniGamePoolSelect
           subtitle="Compare ratings from today’s Super League or historic era cards."
           onSelect={startMode}
-          resumeLabel={hasResume ? "Resume Higher or Lower" : undefined}
-          onResume={hasResume ? resume : undefined}
         />
       </MiniGameShell>
     );
