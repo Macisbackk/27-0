@@ -22,7 +22,12 @@ import {
   getWalkAwayPayout,
   getWrongAnswerPayout,
 } from "../src/lib/quiz/prizes";
-import { filterTeamChallengeQuestions, selectQuizQuestions } from "../src/lib/quiz/selection";
+import { isEligibleMiniGameQuizTeamId } from "../src/lib/mini-games/eligibility";
+import {
+  filterTeamChallengeQuestions,
+  isObviousTeamChallengeAnswer,
+  selectQuizQuestions,
+} from "../src/lib/quiz/selection";
 import { quizRewardRunId } from "../src/lib/quiz/rewards";
 import { validateQuestionBank } from "../src/lib/quiz/validate";
 import { getQuizQuestionBank } from "../src/lib/quiz/bank";
@@ -128,7 +133,31 @@ console.log("\nQuestion selection");
   );
 
   const realBank = getQuizQuestionBank();
+  const recordIds = [
+    "cur-sl-try-record",
+    "cur-sl-apps-record",
+    "cur-leeds-points-record",
+    "cur-hull-fc-apps-record",
+  ];
+  assert(
+    recordIds.every((id) => realBank.some((question) => question.id === id)),
+    "player-record questions are in the bank"
+  );
+  const obvious = {
+    ...realBank[0]!,
+    question: "Which club won the Challenge Cup in 2016?",
+    correctAnswer: "Hull FC",
+    options: ["Hull FC", "Wigan Warriors", "Leeds Rhinos", "St Helens"] as QuizQuestion["options"],
+  };
+  assert(
+    isObviousTeamChallengeAnswer(obvious, "hull-fc"),
+    "themed club-name answers are filtered from Team Challenge"
+  );
   for (const { id: teamId } of QUIZ_CLUBS) {
+    if (!isEligibleMiniGameQuizTeamId(teamId)) {
+      assert(true, `${teamId} is not a current Super League Team Challenge club`);
+      continue;
+    }
     const realTeamRun = selectQuizQuestions({
       questions: realBank,
       mode: "team",

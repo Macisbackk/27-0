@@ -28,6 +28,13 @@ const TOPIC_OVERRIDES: Record<string, string> = {
   "cur-kr-founded": "history:hull-kr:founded",
   "cur-wake-founded": "history:wakefield:founded",
   "cur-bradford-northern": "history:bradford:former-name",
+  "cur-sl-try-record": "record:super-league:tries",
+  "cur-sl-apps-record": "record:super-league:appearances",
+  "cur-leeds-points-record": "record:leeds:points",
+  "cur-hull-fc-apps-record": "record:hull-fc:appearances",
+  "cur-wigan-points-record": "record:wigan:points",
+  "cur-wigan-apps-record": "record:wigan:appearances",
+  "cur-giants-points-record": "record:huddersfield:points",
 };
 
 function q(
@@ -208,4 +215,11 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
   q("cur-kr-founded", "In which year were Hull Kingston Rovers founded?", "1882", ["1865", "1879", "1895"], "hard", "history", ["hull-kr"]),
   q("cur-wake-founded", "In which year were Wakefield Trinity founded?", "1873", ["1865", "1885", "1895"], "hard", "history", ["wakefield"]),
   q("cur-bradford-northern", "Under which former name did Bradford's Super League club compete for most of the 20th century?", "Bradford Northern", ["Bradford City", "Bradford Park Avenue", "Odsal Bulls"], "hard", "history", ["bradford"]),
+  q("cur-sl-try-record", "Who is Super League's all-time leading try-scorer?", "Danny McGuire", ["Ryan Hall", "Tommy Makinson", "Josh Charnley"], "hard", "records", ["leeds"]),
+  q("cur-sl-apps-record", "Who holds Super League's all-time appearance record?", "James Roby", ["Paul Wellens", "Kevin Sinfield", "Sean O'Loughlin"], "hard", "records", ["st-helens"]),
+  q("cur-leeds-points-record", "Who is Leeds Rhinos' Super League-era record points scorer?", "Kevin Sinfield", ["Danny McGuire", "Rob Burrow", "Kallum Watkins"], "hard", "records", ["leeds"]),
+  q("cur-hull-fc-apps-record", "Which Hull FC hooker holds the club's Super League appearance record?", "Danny Houghton", ["Richard Horne", "Kirk Yeaman", "Gareth Raynor"], "hard", "records", ["hull-fc"]),
+  q("cur-wigan-points-record", "Which Wigan Warriors winger became the club's Super League record points scorer?", "Pat Richards", ["Andy Farrell", "Frano Botica", "Harry Smith"], "hard", "records", ["wigan"]),
+  q("cur-wigan-apps-record", "Which Wigan Warriors forward made the most Super League appearances for the club?", "Sean O'Loughlin", ["Andy Farrell", "Kris Radlinski", "Liam Farrell"], "hard", "records", ["wigan"]),
+  q("cur-giants-points-record", "Which Huddersfield Giants half-back is the club's Super League-era record points scorer?", "Danny Brough", ["Luke Robinson", "Leroy Cudjoe", "Eorl Crabtree"], "hard", "records", ["huddersfield"]),
 ];

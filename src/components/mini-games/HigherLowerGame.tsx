@@ -36,6 +36,7 @@ import {
   HIGHER_LOWER_TEN_REWARD,
 } from "@/lib/mini-games/rewards";
 import { triggerMiniGameAchievements } from "@/lib/achievements/achievementTriggers";
+import { Confetti } from "@/components/Confetti";
 import {
   playMiniCorrect,
   playMiniMilestone,
@@ -112,6 +113,7 @@ export function HigherLowerGame() {
   const [note, setNote] = useState<PayoutNote>(null);
   const [ready, setReady] = useState(false);
   const [flash, setFlash] = useState<"good" | "bad" | null>(null);
+  const [celebrate, setCelebrate] = useState(false);
 
   useEffect(() => {
     const storedStats = loadHigherLowerStats();
@@ -149,8 +151,12 @@ export function HigherLowerGame() {
     setStats(rewarded.stats);
     setNote(rewarded.note);
     setFlash(result.correct ? "good" : "bad");
-    if (result.correct) playMiniCorrect();
-    else playMiniLose();
+    if (result.correct) {
+      playMiniCorrect();
+      if (rewarded.stats.currentStreak > 0 && rewarded.stats.currentStreak % 5 === 0) {
+        setCelebrate(true);
+      }
+    } else playMiniLose();
     triggerMiniGameAchievements({
       played: true,
       higherLowerBestStreak: rewarded.stats.bestStreak,
@@ -165,6 +171,7 @@ export function HigherLowerGame() {
     setRun(next);
     setNote(null);
     setFlash(null);
+    setCelebrate(false);
   };
 
   const restart = () => {
@@ -175,6 +182,7 @@ export function HigherLowerGame() {
     setRun(next);
     setNote(null);
     setFlash(null);
+    setCelebrate(false);
   };
 
   const revealedIds = new Set<string>();
@@ -191,6 +199,7 @@ export function HigherLowerGame() {
 
   return (
     <MiniGameShell title="Higher or Lower">
+      {celebrate && <Confetti />}
       <div className="mx-auto w-full max-w-lg">
         <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
           Five players lead the run. A new challenge appears — is their rating
@@ -228,7 +237,7 @@ export function HigherLowerGame() {
                 flash === "good"
                   ? "border-emerald-400/50 bg-emerald-500/10"
                   : flash === "bad"
-                    ? "border-red-400/50 bg-red-500/10"
+                    ? "mini-game-shake border-red-400/50 bg-red-500/10"
                     : "border-white/10 bg-[#0c1210]"
               }`}
             >

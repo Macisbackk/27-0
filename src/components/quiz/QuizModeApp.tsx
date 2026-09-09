@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "@/app/quiz/quiz.css";
+import { Confetti } from "@/components/Confetti";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameModal } from "@/components/ui/GameModal";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
@@ -745,7 +746,10 @@ function QuizResultScreen({
 
   return (
     <div className="mx-auto w-full max-w-xl text-center">
-      <p className={TYPO.sectionLabel}>{club ? club.name : "Super League Quiz"}</p>
+      {run.phase === "quiz_complete" && <Confetti />}
+      <p className={TYPO.sectionLabel}>
+        {club ? club.name : "Super League Millionaire"}
+      </p>
       <h1 className={`mt-2 ${TYPO.pageTitle}`}>{title}</h1>
       {run.phase === "quiz_complete" ? (
         <p className={`mt-3 ${TYPO.pageSubtitle}`}>

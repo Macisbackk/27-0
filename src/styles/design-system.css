@@ -2760,3 +2760,42 @@
   }
 }
 
+@keyframes mini-game-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes mini-game-clue-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.mini-game-shake {
+  animation: mini-game-shake 0.32s var(--motion-ease, ease);
+}
+
+.mini-game-clue {
+  animation: mini-game-clue-in 0.28s var(--motion-ease, ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-game-shake,
+  .mini-game-clue {
+    animation: none;
+  }
+}
+

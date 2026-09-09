@@ -26,6 +26,7 @@ import {
   HANGMAN_WIN_REWARD,
 } from "@/lib/mini-games/rewards";
 import { triggerMiniGameAchievements } from "@/lib/achievements/achievementTriggers";
+import { Confetti } from "@/components/Confetti";
 import {
   playMiniCorrect,
   playMiniIncorrect,
@@ -86,6 +87,7 @@ export function HangmanGame() {
   const [run, setRun] = useState<HangmanView | null>(null);
   const [ready, setReady] = useState(false);
   const [flash, setFlash] = useState<"good" | "bad" | null>(null);
+  const [celebrate, setCelebrate] = useState(false);
   const [stats, setStats] = useState(() => ({
     currentStreak: 0,
     bestStreak: 0,
@@ -161,7 +163,10 @@ export function HangmanGame() {
     window.setTimeout(() => setFlash(null), 280);
     const next =
       result.run.status === "playing" ? result.run : settleHangman(result.run);
-    if (next.status === "won") playMiniWin();
+    if (next.status === "won") {
+      playMiniWin();
+      setCelebrate(true);
+    }
     if (next.status === "lost") playMiniLose();
     void beforeWrong;
     persist(next);
@@ -176,11 +181,13 @@ export function HangmanGame() {
       excludePuzzleId: run?.puzzleId,
     });
     setFlash(null);
+    setCelebrate(false);
     persist(next);
   };
 
   return (
     <MiniGameShell title="Rugby League Hangman">
+      {celebrate && <Confetti />}
       <div className="mx-auto w-full max-w-lg">
         <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
           Guess the player, club or rugby league term. Eight wrong letters and
@@ -208,7 +215,7 @@ export function HangmanGame() {
 
             <div
               className={`mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-display text-white ${answerFontClass} ${
-                flash === "bad" ? "translate-x-0" : ""
+                flash === "bad" ? "mini-game-shake" : ""
               }`}
               aria-label={letters.join("")}
             >

@@ -48,6 +48,13 @@
 .quiz-answer--wrong {
   border-color: #f87171;
   background: color-mix(in srgb, #ef4444 16%, #0c1210);
+  animation: mini-game-shake 0.32s var(--motion-ease, ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-answer--wrong {
+    animation: none;
+  }
 }
 
 .quiz-answer--hidden {

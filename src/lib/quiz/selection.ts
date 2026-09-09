@@ -1,3 +1,4 @@
+import { isEligibleMiniGameQuizTeamId } from "@/lib/mini-games/eligibility";
 import { createRng, shuffledCopy } from "./rng";
 import type { QuizCategory, QuizDifficulty, QuizQuestion, QuizTeamId } from "./types";
 import { QUIZ_QUESTION_COUNT } from "./types";
@@ -199,6 +200,12 @@ export function selectQuizQuestions(options: {
   seed: string;
 }): QuizQuestion[] {
   const rng = createRng(`${options.seed}:select`);
+  if (
+    options.mode === "team" &&
+    (!options.teamId || !isEligibleMiniGameQuizTeamId(options.teamId))
+  ) {
+    throw new Error("Team Challenge is limited to current Super League clubs");
+  }
   const source =
     options.mode === "team" && options.teamId
       ? filterTeamChallengeQuestions(options.questions, options.teamId)
@@ -302,6 +309,12 @@ export function selectReplacementQuestion(options: {
   seed: string;
 }): QuizQuestion | null {
   const rng = createRng(`${options.seed}:replace`);
+  if (
+    options.mode === "team" &&
+    (!options.teamId || !isEligibleMiniGameQuizTeamId(options.teamId))
+  ) {
+    return null;
+  }
   const source =
     options.mode === "team" && options.teamId
       ? filterTeamChallengeQuestions(options.questions, options.teamId)

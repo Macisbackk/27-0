@@ -47,6 +47,11 @@ export function isEligibleMiniGamePlayer(player: Player): boolean {
   if (!isSuperLeagueEligiblePlayer(player)) return false;
   if (player.availableInGame === false) return false;
   const club = player.displayClub ?? player.team ?? player.club;
+  // Current Championship squads must not leak in via era-historic club names
+  // (London / Widnes still sit on ERA_PLAYABLE_CLUBS for Super League history).
+  if (player.category === "current") {
+    return isEligibleMiniGameCurrentTeam(club);
+  }
   return isEligibleMiniGameTeam(club);
 }
 

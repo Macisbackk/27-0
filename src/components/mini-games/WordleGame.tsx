@@ -34,6 +34,7 @@ import {
   WORDLE_WIN_REWARD,
 } from "@/lib/mini-games/rewards";
 import { triggerMiniGameAchievements } from "@/lib/achievements/achievementTriggers";
+import { Confetti } from "@/components/Confetti";
 import {
   playMiniClue,
   playMiniIncorrect,
@@ -58,7 +59,7 @@ function GuessRow({ guess, shake }: { guess: WordleGuess; shake?: boolean }) {
   return (
     <li
       className={`border border-white/10 bg-[#0c1210] px-3 py-3 ${
-        shake ? "ring-1 ring-red-400/40" : ""
+        shake ? "mini-game-shake ring-1 ring-red-400/40" : ""
       }`}
     >
       <p className={TYPO.playerNameSm}>{guess.name}</p>
@@ -178,6 +179,7 @@ export function WordleGame() {
 
   return (
     <MiniGameShell title="Rugby League Wordle">
+      {celebrate && <Confetti />}
       <div className="mx-auto w-full max-w-lg">
         <p className={`mt-2 text-center ${TYPO.pageSubtitle}`}>
           Guess today&apos;s Super League player. Matching attributes unlock
@@ -207,7 +209,7 @@ export function WordleGame() {
                 {run.discoveredClues.map((clue) => (
                   <li
                     key={clue.key}
-                    className="rounded-md border border-emerald-400/35 bg-emerald-500/15 px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-emerald-300"
+                    className="mini-game-clue rounded-md border border-emerald-400/35 bg-emerald-500/15 px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-emerald-300"
                   >
                     Clue {clue.order} — {clue.label} ✓
                   </li>

@@ -9,8 +9,8 @@ import { playUiClick } from "@/lib/sound";
 const GAMES = [
   {
     href: "/mini-games/quiz",
-    title: "Super League Quiz",
-    blurb: "Test your Super League knowledge.",
+    title: "Super League Millionaire",
+    blurb: "Climb the prize ladder to £1,000,000.",
   },
   {
     href: "/mini-games/wordle",

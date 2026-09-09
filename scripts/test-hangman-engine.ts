@@ -12,6 +12,7 @@ import {
 } from "../src/lib/mini-games/hangman/engine";
 import { pickHangmanPuzzle, getHangmanBank } from "../src/lib/mini-games/hangman/answers";
 import { isEligibleMiniGameCurrentTeam } from "../src/lib/mini-games/eligibility";
+import { getWordlePlayerPool } from "../src/lib/mini-games/players";
 import type { HangmanPuzzle, HangmanRun } from "../src/lib/mini-games/hangman/types";
 
 let passed = 0;
@@ -104,6 +105,20 @@ assert(
 assert(
   !clubAnswers.some((item) => /salford|widnes|london|halifax|sheffield|oldham/i.test(item.answer)),
   "Championship / non-current clubs are excluded from Hangman clubs"
+);
+
+const currentWordle = getWordlePlayerPool().filter((player) => !player.isHistoric);
+assert(
+  currentWordle.every((player) => isEligibleMiniGameCurrentTeam(player.club)),
+  "current Wordle/Hangman players are at current Super League clubs"
+);
+assert(
+  !currentWordle.some((player) =>
+    /london broncos|widnes vikings|salford|halifax|sheffield eagles|oldham/i.test(
+      player.club
+    )
+  ),
+  "current Championship clubs do not appear on Wordle cards"
 );
 
 if (failed > 0) {
