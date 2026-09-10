@@ -41,7 +41,8 @@ export function QuickModePreGameBoostSetup({
 }: QuickModePreGameBoostSetupProps) {
   const [, setTick] = useState(0);
   const [picked, setPicked] = useState<QmSelectionBoostId | null>(null);
-  const autoSkippedRef = useRef(false);
+  const onConfirmRef = useRef(onConfirm);
+  onConfirmRef.current = onConfirm;
 
   useEffect(() => {
     const refresh = () => setTick((n) => n + 1);
@@ -66,13 +67,16 @@ export function QuickModePreGameBoostSetup({
   };
 
   useEffect(() => {
-    if (boosts.length > 0 || autoSkippedRef.current) return;
-    autoSkippedRef.current = true;
-    onConfirm(null);
-  }, [boosts.length, onConfirm]);
+    if (boosts.length > 0) return;
+    onConfirmRef.current(null);
+  }, [boosts.length]);
 
   if (boosts.length === 0) {
-    return null;
+    return (
+      <div className="mx-auto w-full max-w-xl px-3 py-4 text-center">
+        <p className={TYPO.bodySm}>Starting…</p>
+      </div>
+    );
   }
 
   return (

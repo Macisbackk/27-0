@@ -147,10 +147,14 @@ import {
   armBoostForGame,
   cancelArmedBoost,
   clearArmedBoost,
+  getBoostQuantity,
   tryConsumeBoostFromInventory,
 } from "@/lib/boosts/boostInventory";
 import type { GameBoostId } from "@/lib/boosts/boostDefinitions";
-import { getBoostDefinition } from "@/lib/boosts/boostDefinitions";
+import {
+  getBoostDefinition,
+  getQuickModeBoosts,
+} from "@/lib/boosts/boostDefinitions";
 import {
   isQmSelectionBoostAllowedInMode,
   selectionHasBoostedPlayer,
@@ -161,9 +165,19 @@ import {
   createUnselectedPreGameBoost,
   isPreGameBoostPending,
   isPreGameBoostReady,
+  isQmSelectionBoostId,
   QUICK_MODE_PRE_GAME_BOOST_VERSION,
   type QuickModePreGameBoostState,
 } from "@/lib/game/quick-mode-pregame-boost";
+
+function ownsEligiblePreGameBoost(eraMode: boolean): boolean {
+  return getQuickModeBoosts().some(
+    (b) =>
+      isQmSelectionBoostId(b.id) &&
+      getBoostQuantity(b.id) > 0 &&
+      isQmSelectionBoostAllowedInMode(b.id, eraMode)
+  );
+}
 
 interface GameBoardProps {
   mode: GameMode;
@@ -252,9 +266,13 @@ export function GameBoard({
   const dailyScenario = dailyChallengeMode
     ? getDailyChallengeScenario()
     : null;
-  /** Daily + special modes: no inventory boosts (fair shared seed / fixed squad). */
+  /** Daily + special modes: no inventory boosts (fair shared seed / fixed squad).
+   * Also skip the chooser when the player owns no eligible boosts — avoids a blank screen. */
   const skipPreGameBoosts =
-    dailyChallengeMode || joeMellorMode || superSamHallasMode;
+    dailyChallengeMode ||
+    joeMellorMode ||
+    superSamHallasMode ||
+    !ownsEligiblePreGameBoost(normalEraMode);
   const isSlotRecruitMode = mode === "CLASSIC";
   const [runKey, setRunKey] = useState(0);
   const [phase, setPhase] = useState<GamePhase>("pitch");
