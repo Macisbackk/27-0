@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { GameDifficulty, GameMode, SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
-import { getSeasonSummaryMessage } from "@/lib/game/season-simulation";
 import { SquadReviewSection } from "./SquadReviewSection";
 import { generateSeasonAwards } from "@/lib/season-awards";
 import {
@@ -14,7 +13,7 @@ import {
 } from "@/lib/grades";
 import { getSeasonReviewLabel } from "@/lib/mode-labels";
 import { getSquadValue } from "@/lib/positions";
-import { formatValue } from "@/lib/players";
+import { getAverageSquadRating } from "@/lib/squad-analysis";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { playGradeSound, playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { MatchReviewActions } from "./MatchReviewActions";
@@ -182,13 +181,7 @@ export function SeasonReview({
   }, []);
 
   const leaguePositionLabel = formatLeaguePosition(dreamTeamTablePosition);
-  const summaryMessage = getSeasonSummaryMessage(
-    dreamTeamTablePosition,
-    seasonResult.losses,
-    seasonResult.wins,
-    gradeInfo.grade,
-    seasonResultForReview
-  );
+  const averageTeamRating = getAverageSquadRating(squad);
   const expectedTries = getSeasonTryTotal(seasonResult.fixtures);
 
   const qualifiedForPlayoffs = userQualifiedForPlayoffs(dreamTeamTablePosition);
@@ -239,8 +232,7 @@ export function SeasonReview({
       ),
       detailLines: [
         `League position ${leaguePositionLabel}`,
-        `Team value ${formatValue(totalValue)}`,
-        summaryMessage,
+        `Average team rating ${averageTeamRating.toFixed(1)}`,
       ].filter(Boolean),
     };
   }, [
@@ -251,8 +243,7 @@ export function SeasonReview({
     seasonResult.wins,
     seasonResult.losses,
     leaguePositionLabel,
-    totalValue,
-    summaryMessage,
+    averageTeamRating,
   ]);
 
   const shareAction = (
@@ -373,17 +364,7 @@ export function SeasonReview({
               ) : null}
             </motion.div>
 
-            <CollapsibleReviewSection title="Squad Review" delay={0.32}>
-              <SquadReviewSection
-                squad={squad}
-                awards={playerAwards}
-                tryScorers={seasonResult.tryScorers}
-                expectedTotalTries={expectedTries}
-                totalMatches={seasonResult.fixtures.length}
-              />
-            </CollapsibleReviewSection>
-
-            <CollapsibleReviewSection title="Season Summary" delay={0.34}>
+            <CollapsibleReviewSection title="Season Summary" delay={0.32}>
               <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
                 <p>
                   Regular Season Record:{" "}
@@ -410,30 +391,22 @@ export function SeasonReview({
                   </span>
                 </p>
                 <p>
-                  Total Team Value:{" "}
+                  Average Team Rating:{" "}
                   <span className="font-semibold text-accent-gold">
-                    {formatValue(totalValue)}
+                    {averageTeamRating.toFixed(1)}
                   </span>
                 </p>
-                <p className="pt-2 text-gray-500">{summaryMessage}</p>
-                {seasonResult.insights.length > 0 && (
-                  <div className="border-t border-pitch-700/40 pt-3 text-center">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-                      Season Highlights
-                    </p>
-                    <ul className="mx-auto mt-2 max-w-md space-y-1.5 text-sm text-gray-400">
-                      {seasonResult.insights.map((insight) => (
-                        <li
-                          key={insight}
-                          className="rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2 text-center leading-relaxed"
-                        >
-                          {insight}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
               </div>
+            </CollapsibleReviewSection>
+
+            <CollapsibleReviewSection title="Squad Review" delay={0.34}>
+              <SquadReviewSection
+                squad={squad}
+                awards={playerAwards}
+                tryScorers={seasonResult.tryScorers}
+                expectedTotalTries={expectedTries}
+                totalMatches={seasonResult.fixtures.length}
+              />
             </CollapsibleReviewSection>
 
             <CollapsibleReviewSection title="League Table" delay={0.36}>
@@ -443,7 +416,6 @@ export function SeasonReview({
             <CollapsibleReviewSection
               title="Match Results"
               delay={0.38}
-              helper="Tap a result for details."
             >
               <div className="min-w-0 space-y-1.5 text-left">
                 {seasonResult.fixtures.map((fixture) => {

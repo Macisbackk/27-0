@@ -19,11 +19,6 @@ function positionTone(position: number): string {
   return "text-pitch-400";
 }
 
-function formatDiff(diff: number): string {
-  if (diff > 0) return `+${diff}`;
-  return String(diff);
-}
-
 export const LeagueTable = memo(function LeagueTable({
   rows,
   playoffCutoff = PLAYOFF_QUALIFIERS,
@@ -133,7 +128,7 @@ const LeagueStandingRow = memo(function LeagueStandingRow({
           <p className={`mt-1 ${TYPO.meta}`}>
             <span className="text-pitch-300">P{row.played}</span>
             <span className="text-pitch-600"> · </span>
-            <span className="text-white">W{row.wins}</span>
+            <span className="text-theme-primary">W{row.wins}</span>
             {row.draws > 0 ? (
               <>
                 <span className="text-pitch-600"> · </span>
@@ -141,19 +136,7 @@ const LeagueStandingRow = memo(function LeagueStandingRow({
               </>
             ) : null}
             <span className="text-pitch-600"> · </span>
-            <span className="text-pitch-300">L{row.losses}</span>
-            <span className="text-pitch-600"> · </span>
-            <span
-              className={
-                row.pointsDifference > 0
-                  ? "text-theme-primary"
-                  : row.pointsDifference < 0
-                    ? "text-red-400"
-                    : "text-pitch-400"
-              }
-            >
-              {formatDiff(row.pointsDifference)} PD
-            </span>
+            <span className="text-red-400">L{row.losses}</span>
           </p>
         </div>
 

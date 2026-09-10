@@ -24,14 +24,14 @@ export function KickingSummarySection({
     if (tags.length === 0 || !kicking) return null;
 
     return (
-      <div className="space-y-1.5">
+      <div className="space-y-1.5 text-center">
         <p className={TYPO.statLabel}>Goals</p>
         <p className={`${TYPO.bodySm} font-semibold text-white`}>
           {kicking.name}
         </p>
-        <ul className="flex flex-wrap justify-center gap-1.5 sm:justify-start">
+        <ul className="flex flex-nowrap justify-center gap-1 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {tags.map((tag) => (
-            <li key={tag.key} className="match-score-chip">
+            <li key={tag.key} className="match-score-chip shrink-0">
               {tag.label}
             </li>
           ))}

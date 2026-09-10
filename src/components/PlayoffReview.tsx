@@ -304,7 +304,6 @@ export function PlayoffReview({
           <CollapsibleReviewSection
             title="Play-Off Bracket"
             delay={0.28}
-            helper="Tap a match for details."
           >
             <PlayoffBracketDisplay
               state={playoffBracketState}

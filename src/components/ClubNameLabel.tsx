@@ -107,7 +107,7 @@ export function ClubNameLabel({
         secondary={colors.secondary}
         size={swatchSize}
       />
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0">
         {compact && showAbbreviation && colors.shortName !== "???" && (
           <span
             className={`mb-0.5 inline-block rounded bg-pitch-800/80 px-1 py-px ${TYPO.statLabel}`}

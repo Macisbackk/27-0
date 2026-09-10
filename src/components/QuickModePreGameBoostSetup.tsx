@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MobileSection } from "@/components/ui/MobileLayout";
 import { CARD, SPACING } from "@/lib/ui/design-system";
@@ -31,7 +31,7 @@ interface QuickModePreGameBoostSetupProps {
 
 /**
  * Compact pre-game boost chooser — must complete before any spin.
- * Visual language matches home Quick Mode sections (keyLabel + MobileSection).
+ * Skips entirely when the player owns no eligible boosts.
  */
 export function QuickModePreGameBoostSetup({
   runId: _runId,
@@ -41,6 +41,7 @@ export function QuickModePreGameBoostSetup({
 }: QuickModePreGameBoostSetupProps) {
   const [, setTick] = useState(0);
   const [picked, setPicked] = useState<QmSelectionBoostId | null>(null);
+  const autoSkippedRef = useRef(false);
 
   useEffect(() => {
     const refresh = () => setTick((n) => n + 1);
@@ -64,6 +65,16 @@ export function QuickModePreGameBoostSetup({
     onConfirm(boostId);
   };
 
+  useEffect(() => {
+    if (boosts.length > 0 || autoSkippedRef.current) return;
+    autoSkippedRef.current = true;
+    onConfirm(null);
+  }, [boosts.length, onConfirm]);
+
+  if (boosts.length === 0) {
+    return null;
+  }
+
   return (
     <div className="mx-auto w-full max-w-xl px-3 py-4 text-center">
       <MobileSection className="flex w-full flex-col items-center text-center">
@@ -71,57 +82,37 @@ export function QuickModePreGameBoostSetup({
         <h2 className={`mt-1 w-full text-center ${TYPO.homeModeTitle}`}>
           Use a boost
         </h2>
-        <p className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm}`}>
-          One boost · locks after first spin
-          {!eraMode ? " Legend boosts are Era only." : null}
-        </p>
 
         <div className={`mt-5 w-full ${SPACING.stackSm}`}>
-          {boosts.length === 0 ? (
-            <div
-              className={`${CARD.inset} ${SPACING.cardPaddingSm} text-center`}
-            >
-              <p className={`${TYPO.bodySm} text-pitch-400`}>
-                No boosts owned.
-              </p>
-              <p className={`mt-1 ${TYPO.meta}`}>
-                Buy in Store, or skip.
-              </p>
-            </div>
-          ) : (
-            <ul className={SPACING.stackSm} role="list">
-              {boosts.map((boost) => {
-                const qty = getBoostQuantity(boost.id);
-                const selected = picked === boost.id;
-                return (
-                  <li key={boost.id}>
-                    <button
-                      type="button"
-                      aria-pressed={selected}
-                      className={`${CARD.elevated} ${CARD.interactive} flex w-full flex-col items-center gap-1 ${SPACING.cardPaddingSm} text-center ${
-                        selected ? CARD.selected : ""
-                      }`}
-                      onClick={() => {
-                        playUiClick();
-                        setPicked(boost.id as QmSelectionBoostId);
-                      }}
-                    >
-                      <span className={`w-full truncate ${TYPO.cardTitle}`}>
-                        {boost.name}
-                      </span>
-                      <span className={`w-full ${TYPO.bodySm}`}>
-                        {boost.description}
-                      </span>
-                      <span className={`mt-0.5 ${TYPO.meta}`}>
-                        Owned ×{qty}
-                        {selected ? " · Selected" : ""}
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+          <ul className={SPACING.stackSm} role="list">
+            {boosts.map((boost) => {
+              const qty = getBoostQuantity(boost.id);
+              const selected = picked === boost.id;
+              return (
+                <li key={boost.id}>
+                  <button
+                    type="button"
+                    aria-pressed={selected}
+                    className={`${CARD.elevated} ${CARD.interactive} flex w-full flex-col items-center gap-1 ${SPACING.cardPaddingSm} text-center ${
+                      selected ? CARD.selected : ""
+                    }`}
+                    onClick={() => {
+                      playUiClick();
+                      setPicked(boost.id as QmSelectionBoostId);
+                    }}
+                  >
+                    <span className={`w-full truncate ${TYPO.cardTitle}`}>
+                      {boost.name}
+                    </span>
+                    <span className={`mt-0.5 ${TYPO.meta}`}>
+                      Owned ×{qty}
+                      {selected ? " · Selected" : ""}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
 
           {notice ? (
             <p

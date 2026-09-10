@@ -40,20 +40,17 @@ export function TeamScoringBreakdown({
 
   if (!hasTries && !hasKicking) {
     return (
-      <div className={flat ? "space-y-2 text-center sm:text-left" : "space-y-2"}>
-        <ClubTeamLabel
-          club={teamName}
-          colorClub={colorClub}
-          compact
-          className={flat ? "justify-center sm:justify-start" : undefined}
-        />
+      <div className={`space-y-2 ${flat ? "text-center" : "text-left"}`}>
+        <div className={flat ? "flex justify-center" : undefined}>
+          <ClubTeamLabel club={teamName} colorClub={colorClub} compact />
+        </div>
         <TryScorersEmptyNote />
       </div>
     );
   }
 
   const tryBlock = hasTries ? (
-    <div className="space-y-1.5">
+    <div className={`space-y-1.5 ${flat ? "text-center" : ""}`}>
       <p className={TYPO.statLabel}>Tries</p>
       <TryScorerChips
         compact
@@ -80,13 +77,10 @@ export function TeamScoringBreakdown({
 
   if (flat) {
     return (
-      <div className="space-y-2 text-center sm:text-left">
-        <ClubTeamLabel
-          club={teamName}
-          colorClub={colorClub}
-          compact
-          className="justify-center sm:justify-start"
-        />
+      <div className="space-y-2 text-center">
+        <div className="flex justify-center">
+          <ClubTeamLabel club={teamName} colorClub={colorClub} compact />
+        </div>
         <div className="space-y-2.5">
           {tryBlock}
           {kickBlock}

@@ -24,7 +24,7 @@ export function TryScorerChips({ scorers, compact = false }: TryScorerChipsProps
 
   if (compact) {
     return (
-      <ul className="flex flex-wrap justify-center gap-1.5 sm:justify-start">
+      <ul className="flex flex-nowrap justify-center gap-1 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {grouped.map((scorer) => {
           const label =
             scorer.tries > 1
@@ -34,7 +34,7 @@ export function TryScorerChips({ scorers, compact = false }: TryScorerChipsProps
           return (
             <li
               key={scorer.playerId}
-              className="match-score-chip"
+              className="match-score-chip shrink-0"
               title={scorer.positionNote ?? undefined}
             >
               {label}

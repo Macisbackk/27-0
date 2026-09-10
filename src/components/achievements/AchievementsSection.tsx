@@ -64,9 +64,6 @@ function AchievementRow({
   const isUnlocked = Boolean(unlockedAt);
   const hiddenLocked = def.hidden && !isUnlocked;
   const name = hiddenLocked ? HIDDEN_ACHIEVEMENT_LABEL : def.name;
-  const description = hiddenLocked
-    ? HIDDEN_ACHIEVEMENT_DESCRIPTION
-    : def.description;
   const progress =
     !hiddenLocked && def.target
       ? getAchievementProgress(def.id)
@@ -77,7 +74,11 @@ function AchievementRow({
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <p className="font-semibold text-white">{name}</p>
-          <p className={`mt-0.5 ${TYPO.bodySm}`}>{description}</p>
+          {hiddenLocked ? (
+            <p className={`mt-0.5 ${TYPO.bodySm}`}>
+              {HIDDEN_ACHIEVEMENT_DESCRIPTION}
+            </p>
+          ) : null}
           {progress && !isUnlocked ? (
             <div className="mt-2">
               <p className="text-[10px] text-gray-400">
@@ -149,26 +150,15 @@ export function AchievementsSection() {
     unlockedMap.has(def.id)
   ).length;
   const totalAvailable = VISIBLE_ACHIEVEMENTS.length;
-  const points = VISIBLE_ACHIEVEMENTS.reduce(
-    (sum, def) => sum + (unlockedMap.has(def.id) ? (def.points ?? 0) : 0),
-    0
-  );
 
   return (
     <div id="achievements" className="scroll-mt-24">
     <GamePanel padded label="Achievements">
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="max-w-xs">
         <GameStatCard
           label="Unlocked"
           value={`${totalUnlocked} / ${totalAvailable}`}
           neutral
-        />
-        <GameStatCard label="Points" value={String(points)} neutral />
-        <GameStatCard
-          label="Remaining"
-          value={String(totalAvailable - totalUnlocked)}
-          neutral
-          muted
         />
       </div>
 

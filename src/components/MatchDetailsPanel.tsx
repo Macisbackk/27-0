@@ -132,14 +132,18 @@ export function MatchDetailsPanel({
       transition={{ duration: 0.18, ease: "easeOut" }}
     >
       <div className="space-y-2.5 p-2.5 sm:p-3">
-        <div className="flex items-center justify-between gap-2">
-          <p className={`min-w-0 flex-1 text-center ${TYPO.keyLabel}`}>
+        <div className="relative flex items-center justify-center pr-14">
+          <p className={`min-w-0 text-center ${TYPO.keyLabel}`}>
             {roundLabel ?? `Round ${fixture.round}`}
             {!fixture.isNeutral ? (
               <> · {fixture.isHome ? "Home" : "Away"}</>
             ) : null}
           </p>
-          <button type="button" onClick={onClose} className={BTN.closeSm}>
+          <button
+            type="button"
+            onClick={onClose}
+            className={`absolute right-0 top-1/2 -translate-y-1/2 ${BTN.closeSm}`}
+          >
             Close
           </button>
         </div>

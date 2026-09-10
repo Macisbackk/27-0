@@ -5,23 +5,23 @@ import { TYPO } from "@/lib/ui/typography";
 const GUIDE_ITEMS = [
   {
     title: "Quick Mode",
-    body: "Draft a 17 from Current or Era player pools and try to build a side good enough to go 27-0 through the league and playoffs.",
+    body: "Draft a 17 and chase 27-0 through the league and playoffs.",
   },
   {
     title: "Mini Games",
-    body: "Quiz · Wordle · Hangman · Higher or Lower — Super League puzzles away from the main season.",
+    body: "Quiz, Wordle, Hangman, and Higher or Lower.",
   },
   {
     title: "Club Funds",
-    body: "Earn rewards through seasons, achievements and trophies, then spend them in the Store on team UI themes.",
+    body: "Earn from seasons and achievements, spend in the Store.",
   },
   {
     title: "Coach Profile",
-    body: "Track your records, achievements, trophies, stats and long-term progress.",
+    body: "Records, achievements, and long-term progress.",
   },
   {
     title: "Store",
-    body: "Unlock team UI themes with Club Funds. Themes change the interface look — not club or player colours.",
+    body: "Unlock UI themes with Club Funds.",
   },
 ] as const;
 
@@ -34,13 +34,6 @@ export function HowToPlaySection() {
           heading="How to play"
           className="items-center text-center"
         />
-        <p
-          id="how-to-play-heading"
-          className={`mx-auto mt-2 max-w-md text-center ${TYPO.bodySm} text-pitch-400`}
-        >
-          Draft a Super League side, chase 27-0, and track your progress —
-          here&apos;s what each area does.
-        </p>
       </div>
 
       <ul className={`mt-3 ${SPACING.stackSm}`}>

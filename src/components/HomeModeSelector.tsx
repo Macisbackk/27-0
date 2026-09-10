@@ -19,7 +19,6 @@ export function HomeModeSelector() {
         <HomePlayChoice
           eyebrow="Current squads"
           title="Normal Mode"
-          description="Build from today's Super League pool."
           href={buildPlayHref("classic", false)}
           variant="current"
           cta="Play Current"
@@ -32,7 +31,6 @@ export function HomeModeSelector() {
         <HomePlayChoice
           eyebrow="Historic squads"
           title="Era Mode"
-          description="Draft legends from classic seasons."
           href={buildPlayHref("classic", true)}
           variant="era"
           cta="Play Era"
@@ -60,7 +58,6 @@ export function HomeModeSelector() {
 function HomePlayChoice({
   eyebrow,
   title,
-  description,
   href,
   variant,
   cta,
@@ -68,7 +65,6 @@ function HomePlayChoice({
 }: {
   eyebrow: string;
   title: string;
-  description: string;
   href: string;
   variant: "current" | "era";
   cta: string;
@@ -89,7 +85,6 @@ function HomePlayChoice({
         {eyebrow}
       </p>
       <h2 className={`mt-1.5 ${TYPO.homeModeTitle}`}>{title}</h2>
-      <p className={`mx-auto mt-1.5 max-w-sm ${TYPO.bodySm}`}>{description}</p>
 
       <div className="mt-4 w-full max-w-xs">
         <GameButton variant={variant} href={href} onClick={onClick} size="sm">
