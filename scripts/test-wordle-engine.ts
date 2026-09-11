@@ -125,8 +125,12 @@ const statusMiss = buildWordleClues(pool[2]!, pool[0]!);
 assert(statusMiss.status === "miss", "current vs historic is a status miss");
 
 const merged = mergeDiscoveredClues([], clues);
-assert(merged.newlyFound.length === 3, "first guess unlocks three clues");
+assert(merged.newlyFound.length === 2, "first guess unlocks two clues (status excluded)");
 assert(merged.newlyFound[0]?.order === 1, "clues are numbered from 1");
+assert(
+  !merged.newlyFound.some((clue) => clue.key === "status"),
+  "status is not unlocked as a discovery clue"
+);
 const again = mergeDiscoveredClues(merged.discovered, clues);
 assert(again.newlyFound.length === 0, "duplicate attribute clues are not repeated");
 
@@ -197,6 +201,7 @@ assert(
   hinted.hint?.value !== undefined && hinted.hint.value.length > 0,
   "hint includes a value"
 );
+assert(hinted.hint?.key !== "status", "hint never reveals Current/Historic status");
 const secondHint = useWordleHint(hinted.run, pool);
 assert(Boolean(secondHint.error), "second hint is blocked");
 

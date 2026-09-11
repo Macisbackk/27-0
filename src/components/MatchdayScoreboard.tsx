@@ -49,16 +49,16 @@ export function MatchdayScoreboard({
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-4">
-          <div className="text-center">
-            <p className={`${TYPO.statLabel}`}>Squad</p>
+        <div className="grid w-full max-w-md grid-cols-2 items-center justify-items-center gap-3">
+          <div className="w-full text-center">
+            <p className={TYPO.statLabel}>Squad</p>
             <p className="font-display text-2xl font-black text-white">
               {filledCount}
               <span className="text-base text-gray-500">/{totalSlots}</span>
             </p>
           </div>
 
-          <div className="scoreboard-value-panel rounded-lg px-4 py-2 text-center">
+          <div className="scoreboard-value-panel w-full rounded-lg px-3 py-2 text-center">
             <p className={TYPO.keyLabel}>Your Rating</p>
             <p className="font-display text-xl font-black text-white sm:text-2xl">
               {showRating ? averageSquadRating.toFixed(1) : "—"}

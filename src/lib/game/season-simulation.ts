@@ -659,12 +659,12 @@ function getNormalFavoriteUpsetChance(ratingGap: number, cupMode: boolean): numb
   return 0;
 }
 
-/** Current Quick Mode — fewer favourite flips than Era Normal. */
+/** Current Quick Mode — slightly more favourite flips than the soft pass. */
 function getCurrentFavoriteUpsetChance(ratingGap: number, cupMode: boolean): number {
-  if (ratingGap >= 10) return cupMode ? 0.008 : 0.003;
-  if (ratingGap >= 8) return cupMode ? 0.012 : 0.006;
-  if (ratingGap >= 5) return cupMode ? 0.022 : 0.01;
-  if (ratingGap >= 2) return cupMode ? 0.035 : 0.018;
+  if (ratingGap >= 10) return cupMode ? 0.01 : 0.004;
+  if (ratingGap >= 8) return cupMode ? 0.015 : 0.008;
+  if (ratingGap >= 5) return cupMode ? 0.026 : 0.014;
+  if (ratingGap >= 2) return cupMode ? 0.04 : 0.024;
   return 0;
 }
 
@@ -689,22 +689,22 @@ function getNormalWinProbabilityFloor(ratingGap: number): number | null {
   return null;
 }
 
-/** Current Mode floors — reward a good XIII more than Era Normal. */
+/** Current Mode floors — between soft Current and Era Normal. */
 function getCurrentWinProbabilityFloor(ratingGap: number): number | null {
-  if (ratingGap >= 10) return 0.96;
-  if (ratingGap >= 7) return 0.91;
-  if (ratingGap >= 5) return 0.86;
-  if (ratingGap >= 3) return 0.78;
-  if (ratingGap >= 1) return 0.68;
-  if (ratingGap >= 0) return 0.58;
+  if (ratingGap >= 10) return 0.94;
+  if (ratingGap >= 7) return 0.87;
+  if (ratingGap >= 5) return 0.8;
+  if (ratingGap >= 3) return 0.72;
+  if (ratingGap >= 1) return 0.62;
+  if (ratingGap >= 0) return 0.54;
   return null;
 }
 
 function getCurrentTeamRatingBonus(avgRating: number): number {
-  if (avgRating >= 90) return 2.2;
-  if (avgRating >= 88) return 1.6;
-  if (avgRating >= 86) return 1.1;
-  if (avgRating >= 84) return 0.6;
+  if (avgRating >= 90) return 1.5;
+  if (avgRating >= 88) return 1.1;
+  if (avgRating >= 86) return 0.7;
+  if (avgRating >= 84) return 0.4;
   return 0;
 }
 
@@ -757,20 +757,19 @@ function resolveOutcome(
     ? getCurrentTeamRatingBonus(avgRating)
     : 0;
 
-  // Current Mode: less noise — compressed 2026 ratings made Normal's ±3.5 chaos
-  // feel like coin flips even with a strong XIII.
-  let noiseScale = draftMode ? 8 : currentMode ? 4.2 : 7;
+  // Current Mode: moderate noise — between soft Current and Era chaos.
+  let noiseScale = draftMode ? 8 : currentMode ? 5.0 : 7;
   const absGap = Math.abs(ratingGap);
-  if (absGap >= 10) noiseScale = draftMode ? 2 : currentMode ? 1.8 : 2.5;
-  else if (absGap >= 8) noiseScale = draftMode ? 2.8 : currentMode ? 2.6 : 3.5;
-  else if (absGap >= 7) noiseScale = draftMode ? 3.2 : currentMode ? 3.1 : 4;
-  else if (absGap >= 5) noiseScale = draftMode ? 4 : currentMode ? 3.4 : 5;
-  else if (absGap >= 4) noiseScale = draftMode ? 4.8 : currentMode ? 3.7 : 5.8;
-  else if (absGap >= 3) noiseScale = draftMode ? 5.5 : currentMode ? 4.0 : 6.5;
+  if (absGap >= 10) noiseScale = draftMode ? 2 : currentMode ? 2.1 : 2.5;
+  else if (absGap >= 8) noiseScale = draftMode ? 2.8 : currentMode ? 2.9 : 3.5;
+  else if (absGap >= 7) noiseScale = draftMode ? 3.2 : currentMode ? 3.4 : 4;
+  else if (absGap >= 5) noiseScale = draftMode ? 4 : currentMode ? 3.8 : 5;
+  else if (absGap >= 4) noiseScale = draftMode ? 4.8 : currentMode ? 4.2 : 5.8;
+  else if (absGap >= 3) noiseScale = draftMode ? 5.5 : currentMode ? 4.6 : 6.5;
 
   const noise = (rng() - 0.5) * noiseScale;
   const strengthGap = strength - opponentStrength;
-  const ratingWeight = draftMode ? 1.55 : currentMode ? 1.48 : 1.34;
+  const ratingWeight = draftMode ? 1.55 : currentMode ? 1.4 : 1.34;
   const valueWeight = draftMode ? 0.85 : 0.8;
   const diff =
     ratingGap * ratingWeight +
@@ -804,15 +803,14 @@ function resolveOutcome(
   const ceiling = getWinProbabilityCeiling(ratingGap, draftMode);
   winProbability = Math.max(0.04, Math.min(ceiling, winProbability));
 
-  // Soft boost for close / slight-favourite games — Current extends further
-  // so a solid ~85–88 side gets help without Era lottery mid-table.
+  // Soft boost for close games — Current still slightly kinder than Era.
   if (!draftMode) {
     if (ratingGap >= -3 && ratingGap <= 2) {
-      winProbability = Math.min(ceiling, winProbability + (currentMode ? 0.09 : 0.07));
+      winProbability = Math.min(ceiling, winProbability + (currentMode ? 0.04 : 0.07));
     } else if (currentMode && ratingGap > 2 && ratingGap <= 6) {
       winProbability = Math.min(
         ceiling,
-        winProbability + (ratingGap <= 4 ? 0.07 : 0.04)
+        winProbability + (ratingGap <= 4 ? 0.03 : 0.015)
       );
     } else if (!currentMode && ratingGap > 2 && ratingGap <= 4) {
       winProbability = Math.min(ceiling, winProbability + 0.05);

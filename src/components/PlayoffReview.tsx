@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import type { SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
@@ -87,9 +87,6 @@ export function PlayoffReview({
   const fundsPayout = useMemo(
     () => mergeClubFundsPayouts(clubFundsPayout, playoffFundsPayout),
     [clubFundsPayout, playoffFundsPayout]
-  );
-  const [clubFundsPopupOpen, setClubFundsPopupOpen] = useState(
-    () => Boolean(fundsPayout?.lines.length)
   );
 
   const playoffLikeResult: SeasonResult = useMemo(() => {
@@ -241,29 +238,9 @@ export function PlayoffReview({
           />
         </motion.div>
 
-        <ClubFundsEarned
-          payout={fundsPayout}
-          open={clubFundsPopupOpen}
-          onClose={() => setClubFundsPopupOpen(false)}
-        />
+        <ClubFundsEarned payout={fundsPayout} />
 
-        <CollapsibleReviewSection title="Playoff Squad Review" delay={0.2}>
-          <SquadReviewSection
-            squad={squad}
-            awards={playerAwards}
-            tryScorers={playoffResult.tryScorers}
-            expectedTotalTries={playoffResult.tryScorers.reduce(
-              (sum, row) => sum + row.tries,
-              0
-            )}
-            totalMatches={
-              playoffMatchCount > 0 ? playoffMatchCount : undefined
-            }
-            statsScope="playoff"
-          />
-        </CollapsibleReviewSection>
-
-        <CollapsibleReviewSection title="Play-Off Summary" delay={0.24}>
+        <CollapsibleReviewSection title="Play-Off Summary" delay={0.2}>
           <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
             <p>
               Play-Off Record:{" "}
@@ -299,6 +276,22 @@ export function PlayoffReview({
               </span>
             </p>
           </div>
+        </CollapsibleReviewSection>
+
+        <CollapsibleReviewSection title="Playoff Squad Review" delay={0.24}>
+          <SquadReviewSection
+            squad={squad}
+            awards={playerAwards}
+            tryScorers={playoffResult.tryScorers}
+            expectedTotalTries={playoffResult.tryScorers.reduce(
+              (sum, row) => sum + row.tries,
+              0
+            )}
+            totalMatches={
+              playoffMatchCount > 0 ? playoffMatchCount : undefined
+            }
+            statsScope="playoff"
+          />
         </CollapsibleReviewSection>
 
         {playoffBracketState && (

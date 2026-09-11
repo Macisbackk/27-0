@@ -117,6 +117,7 @@ const LeagueStandingRow = memo(function LeagueStandingRow({
               club={row.team}
               variant="row"
               compact
+              showAccent={false}
               className="min-w-0 truncate"
             />
             {highlight ? (

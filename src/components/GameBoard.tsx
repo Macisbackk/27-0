@@ -2337,7 +2337,7 @@ export function GameBoard({
         }`}
       >
       {!isReviewPhase && (title || subtitle || dailyScenario) && (
-        <div className="pt-1 text-center lg:pt-0">
+        <div className="mb-4 pt-1 text-center sm:mb-5 lg:pt-0">
           <div className="flex flex-wrap items-center justify-center gap-3">
             {title && (
               <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>
@@ -2348,11 +2348,11 @@ export function GameBoard({
             )}
           </div>
           {dailyScenario ? (
-            <p className="text-sm text-gray-400">
+            <p className="mt-1 text-sm text-gray-400">
               League Leaders + Grand Final bonuses
             </p>
           ) : subtitle ? (
-            <p className="text-sm text-gray-400">{subtitle}</p>
+            <p className="mt-1 text-sm text-gray-400">{subtitle}</p>
           ) : null}
         </div>
       )}

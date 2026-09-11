@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
-import { MiniGamePoolSelect } from "./MiniGamePoolSelect";
+import { MiniGamePoolSelect, MiniGamePoolSelectTitle } from "./MiniGamePoolSelect";
 import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
 import { PlayerAutocomplete } from "./PlayerAutocomplete";
 import { TYPO } from "@/lib/ui/typography";
@@ -12,7 +12,10 @@ import {
   formatMiniGamePlayerLabel,
   getWordlePlayerPool,
 } from "@/lib/mini-games/players";
-import type { MiniGamePoolMode } from "@/lib/mini-games/pool-mode";
+import {
+  MINI_GAME_POOL_MODE_LABEL,
+  type MiniGamePoolMode,
+} from "@/lib/mini-games/pool-mode";
 import {
   createWordleRun,
   recordWordleResult,
@@ -21,7 +24,6 @@ import {
   useWordleHint,
   WORDLE_ATTRIBUTE_COUNT,
   WORDLE_MAX_GUESSES,
-  wordleStatusLabel,
 } from "@/lib/mini-games/wordle/engine";
 import {
   clearWordleRun,
@@ -60,11 +62,6 @@ function GuessRow({ guess, shake }: { guess: WordleGuess; shake?: boolean }) {
     value: string;
     match: boolean;
   }[] = [
-    {
-      label: "Status",
-      value: wordleStatusLabel(guess.isHistoric),
-      match: guess.clues.status === "match",
-    },
     {
       label: "Nation",
       value: guess.nationality,
@@ -207,7 +204,6 @@ export function WordleGame() {
       if (next.payoutAwarded) setRewardOpen(true);
     } else if (last) {
       const anyMatch =
-        last.clues.status === "match" ||
         last.clues.nationality === "match" ||
         last.clues.position === "match" ||
         last.clues.club === "match" ||
@@ -274,7 +270,7 @@ export function WordleGame() {
     return (
       <MiniGameShell
         eyebrow="Rugby League Wordle"
-        title="Choose Current or Era"
+        title={<MiniGamePoolSelectTitle />}
       >
         <MiniGamePoolSelect onSelect={startMode} />
       </MiniGameShell>
@@ -334,7 +330,7 @@ export function WordleGame() {
                   submit(query);
                 }}
               >
-                <div className="min-w-0 flex-1 text-left">
+                <div className="min-w-0 flex-1 text-center">
                   <PlayerAutocomplete
                     value={query}
                     onChange={(value) => {
@@ -360,17 +356,16 @@ export function WordleGame() {
             )}
 
             {canUseHint ? (
-              <div className="mt-3 w-full max-w-xs">
+              <div className="mt-2 flex w-full justify-end">
                 <GameButton
-                  variant="secondary"
+                  variant="ghost"
                   size="sm"
+                  fullWidth={false}
+                  className="!min-h-0 !px-2 !py-1 text-[11px] font-medium text-pitch-400 hover:text-pitch-200"
                   onClick={revealClue}
                 >
-                  Reveal one clue
+                  Reveal clue
                 </GameButton>
-                <p className={`mt-1.5 text-center ${TYPO.meta}`}>
-                  Once per round — status, nation, position, club, or rating.
-                </p>
               </div>
             ) : null}
 
@@ -401,8 +396,7 @@ export function WordleGame() {
                 </p>
                 <p className={`mt-2 ${TYPO.body}`}>
                   {formatMiniGamePlayerLabel(answer)}
-                  {" · "}
-                  {wordleStatusLabel(answer.isHistoric)}
+                  {poolMode ? ` · ${MINI_GAME_POOL_MODE_LABEL[poolMode]}` : ""}
                   {" · "}
                   {answer.club}
                   {" · "}

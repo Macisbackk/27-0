@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
-import { MiniGamePoolSelect } from "./MiniGamePoolSelect";
+import { MiniGamePoolSelect, MiniGamePoolSelectTitle } from "./MiniGamePoolSelect";
 import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
 import { TYPO } from "@/lib/ui/typography";
 import { getLocalDateKey } from "@/lib/mini-games/date";
@@ -231,7 +231,7 @@ export function HangmanGame() {
     return (
       <MiniGameShell
         eyebrow="Rugby League Hangman"
-        title="Choose Current or Era"
+        title={<MiniGamePoolSelectTitle />}
       >
         <MiniGamePoolSelect onSelect={startMode} />
       </MiniGameShell>

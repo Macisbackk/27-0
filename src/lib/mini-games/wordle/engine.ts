@@ -23,7 +23,6 @@ const WORDLE_HINT_KEYS: WordleAttributeKey[] = [
   "club",
   "rating",
   "age",
-  "status",
 ];
 
 export const WORDLE_ATTRIBUTE_COUNT = WORDLE_HINT_KEYS.length;
@@ -55,7 +54,7 @@ function matchingAttributes(clues: WordleClues): WordleAttributeKey[] {
   if (clues.club === "match") keys.push("club");
   if (clues.rating === "match") keys.push("rating");
   if (clues.age === "match") keys.push("age");
-  if (clues.status === "match") keys.push("status");
+  // Status is fixed by Current/Era pool choice — never treat as a discovery clue.
   return keys;
 }
 

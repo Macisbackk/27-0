@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameModal } from "@/components/ui/GameModal";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
@@ -8,23 +9,31 @@ import { playUiClick } from "@/lib/sound";
 import { TYPO } from "@/lib/ui/typography";
 
 interface ClubFundsEarnedProps {
-  payout: ClubFundsPayoutResult | null;
-  open: boolean;
-  onClose: () => void;
+  payout: ClubFundsPayoutResult | null | undefined;
   title?: string;
 }
 
 /** Club Funds breakdown popup for season / playoff review. */
 export function ClubFundsEarned({
   payout,
-  open,
-  onClose,
   title = "Club Funds Earned",
 }: ClubFundsEarnedProps) {
-  if (!payout || payout.lines.length === 0) return null;
+  const hasLines = Boolean(payout?.lines.length);
+  const [open, setOpen] = useState(hasLines);
+
+  // Funds are often awarded in a parent effect after review mounts.
+  useEffect(() => {
+    if (hasLines) setOpen(true);
+  }, [hasLines, payout?.runId, payout?.total]);
+
+  if (!payout || !hasLines) return null;
 
   return (
-    <GameModal open={open} onClose={onClose} labelledBy="club-funds-earned-title">
+    <GameModal
+      open={open}
+      onClose={() => setOpen(false)}
+      labelledBy="club-funds-earned-title"
+    >
       <div className="space-y-4 text-center">
         <p id="club-funds-earned-title" className={TYPO.sectionLabel}>
           {title}
@@ -54,7 +63,7 @@ export function ClubFundsEarned({
             variant="theme"
             onClick={() => {
               playUiClick();
-              onClose();
+              setOpen(false);
             }}
           >
             Continue

@@ -161,16 +161,16 @@ export function getGeneratedClubSquadStrength(
 
   const rawAvg = averageRating(squad);
   const baseTier = getClubBaseStrength(canonical);
-  // Current Mode: lean on club tier + stronger ease so a good recruited XIII
-  // (~85–88) isn't constantly coin-flipping vs stacked AI first teams.
+  // Current Mode: mild ease so a good recruited XIII (~85–88) can
+  // challenge without Era-level mid-table lottery; not a free ride.
   const squadWeight = options.currentSeasonOnly ? 0.38 : 0.35;
   const tierWeight = options.currentSeasonOnly ? 0.62 : 0.65;
-  const currentEase = options.currentSeasonOnly ? -2.6 : 0;
+  const currentEase = options.currentSeasonOnly ? -0.8 : 0;
   const strength = Math.round(
     (rawAvg * squadWeight +
       baseTier * tierWeight +
       currentEase +
-      (rng() - 0.5) * (options.currentSeasonOnly ? 1.8 : 2.5)) *
+      (rng() - 0.5) * (options.currentSeasonOnly ? 2.2 : 2.5)) *
       10
   ) / 10;
 
@@ -211,10 +211,10 @@ export function getMatchClubStrength(
 ): number {
   const base = getGeneratedClubSquadStrength(club, seed, "season", options);
   const rng = seedrandom(`${seed}-match-${round}-${club}`);
-  // Current Mode: less home/match jitter so good sides aren't
-  // randomly "away-punched" into coin flips every other week.
-  const homeBoost = options.currentSeasonOnly ? 0.6 : 1.5;
-  const matchJitter = options.currentSeasonOnly ? 2.2 : 4;
+  // Current Mode: modest home/match variance — harder than the soft
+  // pass, still calmer than Era away swings.
+  const homeBoost = options.currentSeasonOnly ? 1.0 : 1.5;
+  const matchJitter = options.currentSeasonOnly ? 3.0 : 4;
   return base + (home ? homeBoost : 0) + (rng() - 0.5) * matchJitter;
 }
 

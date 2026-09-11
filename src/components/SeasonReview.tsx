@@ -137,9 +137,6 @@ export function SeasonReview({
     : joeMellorMode
       ? "Joe Mellor GOAT Mode Season Review"
       : getSeasonReviewLabel(mode, "NORMAL", normalEraMode);
-  const [clubFundsPopupOpen, setClubFundsPopupOpen] = useState(
-    () => Boolean(clubFundsPayout?.lines.length)
-  );
   const [selectedFixture, setSelectedFixture] = useState<MatchFixture | null>(
     null
   );
@@ -362,11 +359,7 @@ export function SeasonReview({
               </motion.div>
             ) : null}
 
-            <ClubFundsEarned
-              payout={clubFundsPayout}
-              open={clubFundsPopupOpen}
-              onClose={() => setClubFundsPopupOpen(false)}
-            />
+            <ClubFundsEarned payout={clubFundsPayout} />
 
             <CollapsibleReviewSection title="Season Summary" delay={0.32}>
               <div className={`${MANAGER.statGrid2} mx-auto max-w-lg`}>
