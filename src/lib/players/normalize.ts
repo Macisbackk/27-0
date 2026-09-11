@@ -12,7 +12,13 @@ import { resolveDisplayClub } from "../clubs/super-league-display";
 import { resolveCareerTries } from "./career-tries";
 import { resolveCategory } from "./active";
 import { resolveSuperLeagueEligible } from "./super-league-eligibility";
-import { getDreamTeamYears, getGoldenBootYears, getLeagueLeadersYears, getSuperLeagueChampionYears, getChallengeCupYears } from "./achievements";
+import {
+  resolveDreamTeamYears,
+  resolveGoldenBootYears,
+  resolveLeagueLeadersYears,
+  resolveSuperLeagueChampionYears,
+  resolveChallengeCupYears,
+} from "./achievements";
 import {
   buildPlayerTeamYearId,
   categoryToCardStatus,
@@ -178,11 +184,36 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     superLeagueWinner: raw.superLeagueWinner as boolean | undefined,
     lanceToddTrophy: raw.lanceToddTrophy as boolean | undefined,
     hallOfFame: raw.hallOfFame === true ? true : undefined,
-    dreamTeamYears: getDreamTeamYears(id),
-    goldenBootYears: getGoldenBootYears(id),
-    leagueLeadersYears: getLeagueLeadersYears(id),
-    superLeagueChampionYears: getSuperLeagueChampionYears(id),
-    challengeCupYears: getChallengeCupYears(id),
+    dreamTeamYears: resolveDreamTeamYears({
+      id,
+      basePlayerId,
+      year,
+      cardYear,
+    }),
+    goldenBootYears: resolveGoldenBootYears({
+      id,
+      basePlayerId,
+      year,
+      cardYear,
+    }),
+    leagueLeadersYears: resolveLeagueLeadersYears({
+      id,
+      basePlayerId,
+      year,
+      cardYear,
+    }),
+    superLeagueChampionYears: resolveSuperLeagueChampionYears({
+      id,
+      basePlayerId,
+      year,
+      cardYear,
+    }),
+    challengeCupYears: resolveChallengeCupYears({
+      id,
+      basePlayerId,
+      year,
+      cardYear,
+    }),
     availableInGame:
       raw.availableInGame === false ? false : undefined,
     superLeagueEligible:

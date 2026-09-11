@@ -1,6 +1,8 @@
 {
   "adrian-morley": [
     1999,
+    2009,
+    2010,
     2012
   ],
   "andy-farrell": [
@@ -144,6 +146,7 @@
     2003
   ],
   "brett-hodgson": [
+    2009,
     2012
   ],
   "brian-carney": [
@@ -152,12 +155,16 @@
   "castleford-cur-alex-mellor": [
     2020
   ],
+  "castleford-cur-brad-singleton": [
+    2014,
+    2022
+  ],
   "castleford-cur-jordan-thompson-2009": [
     2016,
     2017
   ],
-  "castleford-hist-era-jack-broadbent": [
-    2025
+  "castleford-cur-tyler-dupree": [
+    2024
   ],
   "castleford-hist-kenny-edwards": [
     2018
@@ -173,6 +180,10 @@
   ],
   "catalans-cur-julian-bousquet": [
     2018
+  ],
+  "catalans-cur-kruise-leeming": [
+    2020,
+    2024
   ],
   "catalans-cur-lewis-dodd": [
     2021
@@ -199,6 +210,7 @@
     2018
   ],
   "catalans-hist-louis-anderson": [
+    2009,
     2010,
     2018
   ],
@@ -263,6 +275,11 @@
   "hull-fc-cur-john-asiata": [
     2023
   ],
+  "hull-fc-cur-tom-briscoe": [
+    2014,
+    2015,
+    2023
+  ],
   "hull-fc-cur-zak-hardaker": [
     2014,
     2015,
@@ -272,6 +289,7 @@
     2017
   ],
   "hull-fc-hist-carlos-tuimavave": [
+    2016,
     2017
   ],
   "hull-fc-hist-carlos-tuimavave-2016": [
@@ -298,7 +316,8 @@
     2005
   ],
   "hull-fc-hist-fetuli-talanoa": [
-    2005
+    2005,
+    2016
   ],
   "hull-fc-hist-fetuli-talanoa-2016": [
     2016
@@ -313,6 +332,7 @@
     2017
   ],
   "hull-fc-hist-jamie-shaul": [
+    2016,
     2017
   ],
   "hull-fc-hist-jamie-shaul-2016": [
@@ -329,18 +349,21 @@
     2017
   ],
   "hull-fc-hist-kirk-yeaman": [
-    2005
+    2005,
+    2016
   ],
   "hull-fc-hist-kirk-yeaman-2016": [
     2016
   ],
   "hull-fc-hist-liam-watts": [
+    2016,
     2017
   ],
   "hull-fc-hist-liam-watts-2016": [
     2016
   ],
   "hull-fc-hist-mahe-fonua": [
+    2016,
     2017
   ],
   "hull-fc-hist-mahe-fonua-2016": [
@@ -353,6 +376,7 @@
     2017
   ],
   "hull-fc-hist-mark-minichiello": [
+    2016,
     2017
   ],
   "hull-fc-hist-mark-minichiello-2016": [
@@ -375,6 +399,7 @@
   ],
   "hull-fc-hist-scott-taylor": [
     2013,
+    2016,
     2017
   ],
   "hull-fc-hist-scott-taylor-2016": [
@@ -385,6 +410,7 @@
   ],
   "hull-fc-hist-sika-manu": [
     2005,
+    2016,
     2017
   ],
   "hull-fc-hist-sika-manu-2016": [
@@ -392,6 +418,7 @@
   ],
   "hull-fc-hist-steve-michaels": [
     2005,
+    2016,
     2017
   ],
   "hull-fc-hist-steve-michaels-2016": [
@@ -407,6 +434,9 @@
   "hull-kr-cur-arthur-mourgue": [
     2025
   ],
+  "hull-kr-cur-bill-leyland": [
+    2025
+  ],
   "hull-kr-cur-danny-richardson": [
     2025
   ],
@@ -416,7 +446,16 @@
   "hull-kr-cur-elliot-minchella": [
     2025
   ],
+  "hull-kr-cur-harvey-horne": [
+    2025
+  ],
+  "hull-kr-cur-jack-broadbent": [
+    2025
+  ],
   "hull-kr-cur-jack-brown": [
+    2025
+  ],
+  "hull-kr-cur-jack-charles": [
     2025
   ],
   "hull-kr-cur-jai-whitbread": [
@@ -434,13 +473,29 @@
   "hull-kr-cur-kelepi-tanginoa": [
     2025
   ],
+  "hull-kr-cur-lee-kershaw": [
+    2025
+  ],
+  "hull-kr-cur-louix-gorman": [
+    2025
+  ],
   "hull-kr-cur-mikey-lewis": [
+    2025
+  ],
+  "hull-kr-cur-noah-booth": [
     2025
   ],
   "hull-kr-cur-oliver-gildart": [
     2025
   ],
   "hull-kr-cur-peta-hiku": [
+    2025
+  ],
+  "hull-kr-cur-rhyse-martin": [
+    2020,
+    2025
+  ],
+  "hull-kr-cur-sam-luckley": [
     2025
   ],
   "hull-kr-cur-sauaso-sue": [
@@ -454,6 +509,9 @@
     2025
   ],
   "hull-kr-cur-tyrone-may": [
+    2025
+  ],
+  "hull-kr-cur-zach-fishwick": [
     2025
   ],
   "hull-kr-hist-era-jared-waerea-hargreaves": [
@@ -473,15 +531,20 @@
     1999
   ],
   "james-graham": [
-    2007
+    2007,
+    2008
   ],
   "james-roby": [
-    2008
+    2007,
+    2008,
+    2021
   ],
   "jamie-jones-buchanan": [
     1999
   ],
   "jamie-peacock": [
+    2000,
+    2003,
     2014
   ],
   "joel-monaghan": [
@@ -492,6 +555,7 @@
     1997,
     2001,
     2004,
+    2006,
     2007,
     2008
   ],
@@ -502,6 +566,7 @@
     2014
   ],
   "lee-briers": [
+    2009,
     2010,
     2012
   ],
@@ -518,12 +583,19 @@
   "leeds-cur-jake-connor": [
     2017
   ],
+  "leeds-cur-kallum-watkins": [
+    2014,
+    2015
+  ],
   "leeds-cur-kallum-watkins-2015": [
     2014,
     2015
   ],
   "leeds-cur-mikolaj-oledzki": [
     2020
+  ],
+  "leeds-cur-ryan-hall": [
+    2014
   ],
   "leeds-cur-tom-briscoe-2015": [
     2014,
@@ -558,7 +630,8 @@
     2014
   ],
   "leeds-hist-brett-delaney": [
-    2014
+    2014,
+    2015
   ],
   "leeds-hist-brett-delaney-2015": [
     2015
@@ -576,13 +649,11 @@
     1999
   ],
   "leeds-hist-era-kruise-leeming": [
-    2020
+    2020,
+    2024
   ],
   "leeds-hist-era-rhyse-martin": [
     2020
-  ],
-  "leeds-hist-era-ryan-hall": [
-    2014
   ],
   "leeds-hist-francis-cummins": [
     1999
@@ -597,7 +668,8 @@
     1999
   ],
   "leeds-hist-joel-moon": [
-    2014
+    2014,
+    2015
   ],
   "leeds-hist-joel-moon-2015": [
     2015
@@ -684,10 +756,23 @@
   "leigh-cur-gareth-o-brien": [
     2023
   ],
+  "leigh-cur-jack-hughes": [
+    2013,
+    2019
+  ],
+  "leigh-cur-josh-charnley": [
+    2011,
+    2013,
+    2019,
+    2023
+  ],
   "leigh-cur-kai-o-donnell": [
     2023
   ],
   "leigh-cur-lachlan-lam": [
+    2023
+  ],
+  "leigh-cur-matt-davis": [
     2023
   ],
   "leigh-cur-robbie-mulhern": [
@@ -696,19 +781,17 @@
   "leigh-hist-ben-reynolds": [
     2023
   ],
-  "leigh-hist-era-jack-hughes": [
-    2013
-  ],
   "leigh-hist-era-josh-charnley": [
-    2023
-  ],
-  "leigh-hist-era-matt-davis": [
+    2019,
     2023
   ],
   "leigh-hist-ricky-leutele": [
     2023
   ],
   "leon-pryce": [
+    2000,
+    2003,
+    2006,
     2007,
     2008
   ],
@@ -720,6 +803,7 @@
     1997
   ],
   "michael-monaghan": [
+    2009,
     2010
   ],
   "oldham-cur-jake-bibby": [
@@ -741,6 +825,7 @@
   "paul-wellens": [
     2001,
     2004,
+    2006,
     2007,
     2008
   ],
@@ -754,6 +839,7 @@
     1997,
     2001,
     2004,
+    2006,
     2007,
     2008
   ],
@@ -805,6 +891,7 @@
   ],
   "st-helens-hist-ade-gardner": [
     2004,
+    2006,
     2007,
     2008
   ],
@@ -879,6 +966,7 @@
     1996
   ],
   "st-helens-hist-francis-meli": [
+    2006,
     2007,
     2008
   ],
@@ -905,6 +993,7 @@
     2006
   ],
   "st-helens-hist-jason-cayless": [
+    2006,
     2007,
     2008
   ],
@@ -912,7 +1001,8 @@
     2006
   ],
   "st-helens-hist-jason-hooper": [
-    2004
+    2004,
+    2006
   ],
   "st-helens-hist-jason-hooper-2006": [
     2006
@@ -927,6 +1017,7 @@
   "st-helens-hist-jon-wilkin": [
     2001,
     2004,
+    2006,
     2007,
     2008
   ],
@@ -951,7 +1042,8 @@
     2001
   ],
   "st-helens-hist-kevin-naiqama": [
-    2007
+    2007,
+    2021
   ],
   "st-helens-hist-kevin-naiqama-2021": [
     2021
@@ -963,7 +1055,8 @@
     2007
   ],
   "st-helens-hist-lachlan-coote": [
-    2008
+    2008,
+    2021
   ],
   "st-helens-hist-lachlan-coote-2021": [
     2021
@@ -975,6 +1068,7 @@
     1997,
     2003,
     2004,
+    2006,
     2007,
     2008
   ],
@@ -1073,6 +1167,7 @@
   ],
   "st-helens-hist-willie-talau": [
     2004,
+    2006,
     2007,
     2008
   ],
@@ -1101,9 +1196,11 @@
     2019
   ],
   "wakefield-hist-chris-hicks": [
+    2009,
     2010
   ],
   "wakefield-hist-chris-riley": [
+    2009,
     2010,
     2012
   ],
@@ -1114,6 +1211,7 @@
     2019
   ],
   "wakefield-hist-matt-king": [
+    2009,
     2010
   ],
   "wakefield-hist-ricky-bibey": [
@@ -1141,6 +1239,10 @@
   ],
   "warrington-cur-joe-philbin": [
     2019
+  ],
+  "warrington-cur-liam-byrne": [
+    2022,
+    2024
   ],
   "warrington-cur-marc-sneyd": [
     2016,
@@ -1173,6 +1275,7 @@
     2019
   ],
   "warrington-hist-chris-bridge": [
+    2009,
     2012
   ],
   "warrington-hist-chris-bridge-2009": [
@@ -1190,6 +1293,7 @@
   ],
   "warrington-hist-garreth-carvell": [
     2005,
+    2009,
     2010
   ],
   "warrington-hist-garreth-carvell-2009": [
@@ -1266,6 +1370,9 @@
     2024,
     2026
   ],
+  "wigan-cur-george-hirst": [
+    2026
+  ],
   "wigan-cur-harry-smith": [
     2022,
     2024,
@@ -1307,6 +1414,16 @@
     2024,
     2026
   ],
+  "wigan-cur-nathan-lowe": [
+    2026
+  ],
+  "wigan-cur-noah-hodkinson": [
+    2026
+  ],
+  "wigan-cur-oliver-partington": [
+    2022,
+    2026
+  ],
   "wigan-cur-oliver-wilson": [
     2026
   ],
@@ -1319,6 +1436,15 @@
     2026
   ],
   "wigan-cur-sam-walters": [
+    2026
+  ],
+  "wigan-cur-taylor-kerr": [
+    2026
+  ],
+  "wigan-cur-tiaki-chan": [
+    2026
+  ],
+  "wigan-cur-tom-forber": [
     2026
   ],
   "wigan-cur-zach-eckersley": [
@@ -1550,5 +1676,191 @@
   ],
   "york-cur-josh-griffin": [
     2017
+  ],
+  "wigan-hist-era-liam-byrne": [
+    2022,
+    2024
+  ],
+  "leeds-hist-era-brad-singleton": [
+    2014,
+    2022
+  ],
+  "hull-fc-hist-era-liam-sutcliffe": [
+    2014,
+    2020
+  ],
+  "wigan-hist-era-abbas-miski": [
+    2024
+  ],
+  "leigh-hist-era-jack-hughes": [
+    2019
+  ],
+  "wigan-hist-era-bradley-o-neill": [
+    2024
+  ],
+  "st-helens-hist-thomas-makinson": [
+    2021
+  ],
+  "wigan-hist-oliver-partington": [
+    2022
+  ],
+  "wakefield-hist-jason-clark": [
+    2019
+  ],
+  "leeds-hist-era-jack-walker": [
+    2020
+  ],
+  "wigan-hist-era-morgan-smithies": [
+    2022
+  ],
+  "leeds-hist-matt-prior": [
+    2020
+  ],
+  "leeds-hist-ava-seumanufagai": [
+    2020
+  ],
+  "leeds-hist-luke-briscoe": [
+    2020
+  ],
+  "bradford-hist-karl-pratt": [
+    2003
+  ],
+  "bradford-hist-brad-mackay": [
+    2000
+  ],
+  "bradford-hist-james-lowes": [
+    2000,
+    2003
+  ],
+  "bradford-hist-mike-forshaw": [
+    2000,
+    2003
+  ],
+  "widnes-hist-julian-o-neill": [
+    1997,
+    2002
+  ],
+  "leeds-hist-james-donaldson": [
+    2020
+  ],
+  "leeds-hist-brad-dwyer": [
+    2020
+  ],
+  "wigan-hist-paul-johnson": [
+    2009
+  ],
+  "hull-fc-hist-lee-radford": [
+    2000,
+    2003
+  ],
+  "wigan-hist-jacob-wardle": [
+    2024
+  ],
+  "st-helens-hist-sione-mata-utia": [
+    2021
+  ],
+  "bradford-hist-michael-withers": [
+    2000
+  ],
+  "wakefield-hist-richard-myler": [
+    2010,
+    2012,
+    2020
+  ],
+  "warrington-hist-richie-myler": [
+    2010,
+    2012,
+    2020
+  ],
+  "salford-hist-robert-lui": [
+    2020
+  ],
+  "remi-casty": [
+    2018
+  ],
+  "wakefield-hist-blake-austin": [
+    2019
+  ],
+  "bradford-hist-daniel-gartner": [
+    2003
+  ],
+  "st-helens-hist-morgan-knowles": [
+    2021
+  ],
+  "paul-anderson": [
+    2000,
+    2003,
+    2006
+  ],
+  "stuart-fielden": [
+    2000,
+    2003
+  ],
+  "wakefield-hist-paul-sykes": [
+    2000
+  ],
+  "wakefield-hist-tom-lineham": [
+    2019
+  ],
+  "st-helens-hist-regan-grace": [
+    2021
+  ],
+  "salford-hist-martin-gleeson": [
+    2004
+  ],
+  "wakefield-hist-ben-murdoch-masila": [
+    2019
+  ],
+  "richard-horne": [
+    2005
+  ],
+  "bradford-hist-john-bateman-2011": [
+    2011
+  ],
+  "tevita-vaikona": [
+    2000,
+    2003
+  ],
+  "oldham-hist-david-hodgson": [
+    2002
+  ],
+  "wakefield-hist-jake-mamo": [
+    2019
+  ],
+  "tommy-martyn": [
+    1997
+  ],
+  "paul-deacon": [
+    2000,
+    2003,
+    2011
+  ],
+  "henry-paul": [
+    2000
+  ],
+  "bradford-hist-shontayne-hape": [
+    2003
+  ],
+  "bradford-leg-robbie-hunter-paul": [
+    2000,
+    2003
+  ],
+  "paul-newlove": [
+    1996,
+    1997,
+    2001
+  ],
+  "nick-fozzard": [
+    2004,
+    2007
+  ],
+  "lesley-vainikolo": [
+    2003
+  ],
+  "st-helens-hist-konrad-hurrell": [
+    2020
+  ],
+  "jamie-lyon": [
+    2006
   ]
 }

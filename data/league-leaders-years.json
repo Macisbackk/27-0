@@ -168,13 +168,18 @@
     2007
   ],
   "james-graham": [
-    2007
+    2007,
+    2008
   ],
   "james-roby": [
+    2007,
     2008,
+    2014,
+    2019,
     2022
   ],
   "keiron-cunningham": [
+    2006,
     2007,
     2008
   ],
@@ -182,11 +187,13 @@
     2017
   ],
   "leon-pryce": [
+    2006,
     2007,
     2008
   ],
   "louie-mccarthy-scarsbrook": [
     2006,
+    2014,
     2019,
     2022
   ],
@@ -195,6 +202,7 @@
     2008
   ],
   "paul-wellens": [
+    2006,
     2007,
     2008,
     2014
@@ -206,6 +214,7 @@
     2014
   ],
   "sean-long": [
+    2006,
     2007,
     2008
   ],
@@ -287,8 +296,10 @@
     2014
   ],
   "st-helens-hist-ade-gardner": [
+    2006,
     2007,
-    2008
+    2008,
+    2014
   ],
   "st-helens-hist-ade-gardner-2006": [
     2006
@@ -312,7 +323,8 @@
     2014
   ],
   "st-helens-hist-dominique-peyroux": [
-    2007
+    2007,
+    2019
   ],
   "st-helens-hist-dominique-peyroux-2019": [
     2019
@@ -324,6 +336,7 @@
     2022
   ],
   "st-helens-hist-francis-meli": [
+    2006,
     2007,
     2008
   ],
@@ -349,6 +362,7 @@
     2006
   ],
   "st-helens-hist-jason-cayless": [
+    2006,
     2007,
     2008
   ],
@@ -359,8 +373,10 @@
     2006
   ],
   "st-helens-hist-jon-wilkin": [
+    2006,
     2007,
-    2008
+    2008,
+    2014
   ],
   "st-helens-hist-jon-wilkin-2006": [
     2006
@@ -376,7 +392,8 @@
     2006
   ],
   "st-helens-hist-kevin-naiqama": [
-    2007
+    2007,
+    2019
   ],
   "st-helens-hist-kevin-naiqama-2019": [
     2019
@@ -392,7 +409,8 @@
     2007
   ],
   "st-helens-hist-lachlan-coote": [
-    2008
+    2008,
+    2019
   ],
   "st-helens-hist-lachlan-coote-2019": [
     2019
@@ -401,6 +419,7 @@
     2014
   ],
   "st-helens-hist-lee-gilmour": [
+    2006,
     2007,
     2008
   ],
@@ -434,13 +453,15 @@
     2007
   ],
   "st-helens-hist-morgan-knowles": [
+    2019,
     2022
   ],
   "st-helens-hist-morgan-knowles-2019": [
     2019
   ],
   "st-helens-hist-mose-masoe": [
-    2007
+    2007,
+    2014
   ],
   "st-helens-hist-mose-masoe-2014": [
     2014
@@ -452,7 +473,8 @@
     2006
   ],
   "st-helens-hist-regan-grace": [
-    2014
+    2014,
+    2019
   ],
   "st-helens-hist-regan-grace-2019": [
     2019
@@ -477,6 +499,7 @@
   ],
   "st-helens-hist-thomas-makinson": [
     2014,
+    2019,
     2022
   ],
   "st-helens-hist-thomas-makinson-2019": [
@@ -489,6 +512,7 @@
     2014
   ],
   "st-helens-hist-willie-talau": [
+    2006,
     2007,
     2008
   ],
@@ -620,10 +644,12 @@
     2024
   ],
   "wigan-hist-era-abbas-miski": [
-    2023
+    2023,
+    2024
   ],
   "wigan-hist-era-bradley-o-neill": [
-    2023
+    2023,
+    2024
   ],
   "wigan-hist-era-tyler-dupree": [
     2024
@@ -717,5 +743,64 @@
   ],
   "york-cur-paul-mcshane": [
     2017
+  ],
+  "wigan-hist-era-liam-byrne": [
+    2023,
+    2024
+  ],
+  "leeds-hist-era-kruise-leeming": [
+    2024
+  ],
+  "st-helens-hist-josh-jones": [
+    2014
+  ],
+  "wigan-hist-era-morgan-smithies": [
+    2023
+  ],
+  "wigan-hist-era-kai-pearce-paul": [
+    2023
+  ],
+  "st-helens-hist-luke-walsh": [
+    2014
+  ],
+  "st-helens-hist-sia-soliola": [
+    2014
+  ],
+  "st-helens-hist-lance-hohaia": [
+    2014
+  ],
+  "andy-lynch": [
+    2017
+  ],
+  "st-helens-hist-zeb-taia": [
+    2019
+  ],
+  "wigan-hist-jacob-wardle": [
+    2023,
+    2024
+  ],
+  "st-helens-hist-theo-fages": [
+    2019
+  ],
+  "hull-fc-hist-willie-manu": [
+    2014
+  ],
+  "st-helens-hist-jason-hooper": [
+    2006
+  ],
+  "paul-anderson": [
+    2006
+  ],
+  "st-helens-hist-jordan-turner": [
+    2014
+  ],
+  "nick-fozzard": [
+    2007
+  ],
+  "luke-gale": [
+    2017
+  ],
+  "jamie-lyon": [
+    2006
   ]
 }

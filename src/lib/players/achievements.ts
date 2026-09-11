@@ -62,6 +62,52 @@ export const ACHIEVEMENT_CATEGORY_TITLES: Record<
   challengeCups: "Challenge Cups",
 };
 
+type HonourRef = {
+  id: string;
+  basePlayerId?: string | null;
+  year?: number | null;
+  cardYear?: number | null;
+};
+
+function uniqueSortedYears(years: number[]): number[] {
+  return [...new Set(years.filter((y) => Number.isFinite(y)))].sort(
+    (a, b) => a - b
+  );
+}
+
+/** Honour map keys to check: card id + basePlayerId (year cards inherit from base). */
+export function honourLookupIds(player: HonourRef): string[] {
+  const ids = [player.id];
+  if (player.basePlayerId && player.basePlayerId !== player.id) {
+    ids.push(player.basePlayerId);
+  }
+  return ids;
+}
+
+function yearsFromMap(
+  map: Record<string, number[]>,
+  player: HonourRef
+): number[] {
+  return uniqueSortedYears(
+    honourLookupIds(player).flatMap((id) => map[id] ?? [])
+  );
+}
+
+/**
+ * Year-pinned cards (id ends with -YYYY) only show honours earned that season.
+ * Career / Current / non-pinned historic cards keep the full year list.
+ */
+export function filterHonourYearsForCard(
+  player: HonourRef,
+  years: number[]
+): number[] {
+  const pinned = /-\d{4}$/.test(player.id);
+  if (!pinned) return years;
+  const cardYear = player.year ?? player.cardYear;
+  if (typeof cardYear !== "number" || !Number.isFinite(cardYear)) return years;
+  return years.filter((y) => y === cardYear);
+}
+
 export function getManOfSteelYears(playerId: string): number[] {
   return MOS_WINNERS[playerId] ?? [];
 }
@@ -88,6 +134,49 @@ export function getChallengeCupYears(playerId: string): number[] {
 
 export function hasLanceToddTrophy(playerId: string): boolean {
   return LANCE_TODD_WINNERS.has(playerId);
+}
+
+export function resolveManOfSteelYears(player: HonourRef): number[] {
+  return filterHonourYearsForCard(player, yearsFromMap(MOS_WINNERS, player));
+}
+
+export function resolveDreamTeamYears(player: HonourRef): number[] {
+  return filterHonourYearsForCard(
+    player,
+    yearsFromMap(DREAM_TEAM_YEARS, player)
+  );
+}
+
+export function resolveGoldenBootYears(player: HonourRef): number[] {
+  return filterHonourYearsForCard(
+    player,
+    yearsFromMap(GOLDEN_BOOT_YEARS, player)
+  );
+}
+
+export function resolveLeagueLeadersYears(player: HonourRef): number[] {
+  return filterHonourYearsForCard(
+    player,
+    yearsFromMap(LEAGUE_LEADERS_YEARS, player)
+  );
+}
+
+export function resolveSuperLeagueChampionYears(player: HonourRef): number[] {
+  return filterHonourYearsForCard(
+    player,
+    yearsFromMap(SUPER_LEAGUE_CHAMPION_YEARS, player)
+  );
+}
+
+export function resolveChallengeCupYears(player: HonourRef): number[] {
+  return filterHonourYearsForCard(
+    player,
+    yearsFromMap(CHALLENGE_CUP_YEARS, player)
+  );
+}
+
+export function resolveHasLanceToddTrophy(player: HonourRef): boolean {
+  return honourLookupIds(player).some((id) => LANCE_TODD_WINNERS.has(id));
 }
 
 export function hasDreamTeamSelection(playerId: string): boolean {
@@ -126,7 +215,7 @@ export function getPlayerAchievementGroups(
     byCategory.set(category, list);
   };
 
-  for (const year of getManOfSteelYears(player.id)) {
+  for (const year of resolveManOfSteelYears(player)) {
     push("individualHonours", {
       label: `Man of Steel ${year}`,
       color: "green",
@@ -134,7 +223,7 @@ export function getPlayerAchievementGroups(
     });
   }
 
-  if (hasLanceToddTrophy(player.id)) {
+  if (resolveHasLanceToddTrophy(player)) {
     push("individualHonours", {
       label: "Lance Todd Trophy",
       color: "green",
@@ -142,8 +231,7 @@ export function getPlayerAchievementGroups(
     });
   }
 
-  const dreamYears =
-    player.dreamTeamYears ?? getDreamTeamYears(player.id);
+  const dreamYears = resolveDreamTeamYears(player);
   if (dreamYears.length > 0) {
     push("individualHonours", {
       label: "Dream Team",
@@ -153,8 +241,7 @@ export function getPlayerAchievementGroups(
     });
   }
 
-  const goldenYears =
-    player.goldenBootYears ?? getGoldenBootYears(player.id);
+  const goldenYears = resolveGoldenBootYears(player);
   if (goldenYears.length > 0) {
     push("individualHonours", {
       label: "Golden Boot",
@@ -164,8 +251,7 @@ export function getPlayerAchievementGroups(
     });
   }
 
-  const leagueLeadersYears =
-    player.leagueLeadersYears ?? getLeagueLeadersYears(player.id);
+  const leagueLeadersYears = resolveLeagueLeadersYears(player);
   if (leagueLeadersYears.length > 0) {
     push("leagueTitles", {
       label: "League Leaders",
@@ -175,8 +261,7 @@ export function getPlayerAchievementGroups(
     });
   }
 
-  const championYears =
-    player.superLeagueChampionYears ?? getSuperLeagueChampionYears(player.id);
+  const championYears = resolveSuperLeagueChampionYears(player);
   if (championYears.length > 0) {
     push("leagueTitles", {
       label: "Super League Champion",
@@ -184,7 +269,8 @@ export function getPlayerAchievementGroups(
       category: "leagueTitles",
       superLeagueChampionYears: championYears,
     });
-  } else if (player.superLeagueWinner) {
+  } else if (player.superLeagueWinner && !/-\d{4}$/.test(player.id)) {
+    // Bare flag only on non-year-pinned cards; year cards need a matching year.
     push("leagueTitles", {
       label: "Super League Champion",
       color: "green",
@@ -192,8 +278,7 @@ export function getPlayerAchievementGroups(
     });
   }
 
-  const challengeCupYears =
-    player.challengeCupYears ?? getChallengeCupYears(player.id);
+  const challengeCupYears = resolveChallengeCupYears(player);
   if (challengeCupYears.length > 0) {
     push("challengeCups", {
       label: "Challenge Cup Winner",
@@ -201,7 +286,7 @@ export function getPlayerAchievementGroups(
       category: "challengeCups",
       challengeCupYears,
     });
-  } else if (player.challengeCupWinner) {
+  } else if (player.challengeCupWinner && !/-\d{4}$/.test(player.id)) {
     push("challengeCups", {
       label: "Challenge Cup Winner",
       color: "gold",

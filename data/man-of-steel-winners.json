@@ -1,32 +1,142 @@
 {
-  "andy-farrell": [1996, 2004],
-  "bradford-hist-james-lowes": [1997],
-  "iestyn-harris": [1998],
-  "castleford-hist-adrian-vowles": [1999],
-  "sean-long": [2000],
-  "paul-sculthorpe": [2001, 2002],
-  "jamie-peacock": [2003],
-  "jamie-lyon": [2005],
-  "paul-wellens": [2006],
-  "james-roby": [2007],
-  "james-graham": [2008],
-  "brett-hodgson": [2009],
-  "pat-richards": [2010],
-  "rangi-chase": [2011],
-  "wigan-hist-sam-tomkins": [2012, 2021],
-  "danny-brough": [2013],
-  "st-helens-cur-daryl-clark": [2014],
-  "hull-fc-cur-zak-hardaker": [2015],
-  "danny-houghton": [2016],
-  "luke-gale": [2017],
-  "st-helens-hist-ben-barba": [2018],
-  "wigan-hist-jackson-hastings": [2019],
-  "york-cur-paul-mcshane": [2020],
-  "leeds-cur-brodie-croft": [2022],
-  "wigan-cur-bevan-french": [2023],
-  "hull-kr-cur-mikey-lewis": [2024],
-  "leeds-cur-jake-connor": [2025],
-  "ellery-hanley": [1985, 1987, 1989],
-  "martin-offiah": [1988],
-  "garry-schofield": [1991]
+  "andy-farrell": [
+    1996,
+    2004
+  ],
+  "bradford-hist-james-lowes": [
+    1997
+  ],
+  "iestyn-harris": [
+    1998
+  ],
+  "castleford-hist-adrian-vowles": [
+    1999
+  ],
+  "sean-long": [
+    2000
+  ],
+  "paul-sculthorpe": [
+    2001,
+    2002
+  ],
+  "jamie-peacock": [
+    2003
+  ],
+  "jamie-lyon": [
+    2005
+  ],
+  "paul-wellens": [
+    2006
+  ],
+  "james-roby": [
+    2007
+  ],
+  "james-graham": [
+    2008
+  ],
+  "brett-hodgson": [
+    2009
+  ],
+  "pat-richards": [
+    2010
+  ],
+  "rangi-chase": [
+    2011
+  ],
+  "wigan-hist-sam-tomkins": [
+    2012,
+    2021
+  ],
+  "danny-brough": [
+    2013
+  ],
+  "st-helens-cur-daryl-clark": [
+    2014
+  ],
+  "hull-fc-cur-zak-hardaker": [
+    2015
+  ],
+  "danny-houghton": [
+    2016
+  ],
+  "luke-gale": [
+    2017
+  ],
+  "st-helens-hist-ben-barba": [
+    2018
+  ],
+  "wigan-hist-jackson-hastings": [
+    2019
+  ],
+  "york-cur-paul-mcshane": [
+    2020
+  ],
+  "leeds-cur-brodie-croft": [
+    2022
+  ],
+  "wigan-cur-bevan-french": [
+    2023
+  ],
+  "hull-kr-cur-mikey-lewis": [
+    2024
+  ],
+  "leeds-cur-jake-connor": [
+    2025
+  ],
+  "ellery-hanley": [
+    1985,
+    1987,
+    1989
+  ],
+  "martin-offiah": [
+    1988
+  ],
+  "garry-schofield": [
+    1991
+  ],
+  "bradford-hist-james-lowes-1997": [
+    1997
+  ],
+  "huddersfield-hist-danny-brough-2013": [
+    2013
+  ],
+  "wigan-leg-sam-tomkins-2012": [
+    2012
+  ],
+  "bradford-leg-jamie-peacock-2003": [
+    2003
+  ],
+  "st-helens-hist-paul-wellens-2006": [
+    2006
+  ],
+  "leeds-leg-iestyn-harris-1998": [
+    1998
+  ],
+  "st-helens-leg-james-roby-2007": [
+    2007
+  ],
+  "st-helens-leg-sean-long-2000": [
+    2000
+  ],
+  "st-helens-leg-paul-sculthorpe-2002": [
+    2002
+  ],
+  "st-helens-leg-jamie-lyon-2005": [
+    2005
+  ],
+  "st-helens-leg-james-graham-2008": [
+    2008
+  ],
+  "huddersfield-hist-brett-hodgson-2009": [
+    2009
+  ],
+  "leeds-hist-jake-connor-2025": [
+    2025
+  ],
+  "wigan-hist-bevan-french-2023": [
+    2023
+  ],
+  "wigan-leg-andy-farrell-1996": [
+    1996
+  ]
 }
