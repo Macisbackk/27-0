@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
-import { MiniGamePoolSelect, MiniGamePoolSelectTitle } from "./MiniGamePoolSelect";
+import { MiniGamePoolSelect } from "./MiniGamePoolSelect";
 import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
 import { PlayerAutocomplete } from "./PlayerAutocomplete";
 import { TYPO } from "@/lib/ui/typography";
@@ -270,7 +270,7 @@ export function WordleGame() {
     return (
       <MiniGameShell
         eyebrow="Rugby League Wordle"
-        title={<MiniGamePoolSelectTitle />}
+        title="Choose Current or Era"
       >
         <MiniGamePoolSelect onSelect={startMode} />
       </MiniGameShell>
@@ -339,7 +339,7 @@ export function WordleGame() {
                     }}
                     onPick={(player) => {
                       setQuery(player.displayName);
-                      submit(player.id);
+                      setError(null);
                     }}
                     pool={pool}
                   />

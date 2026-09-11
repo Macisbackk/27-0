@@ -2777,7 +2777,6 @@ export function GameBoard({
           playoffResult={seasonResult.playoffResult}
           playoffBracketState={completedPlayoffBracketState}
           playoffFundsPayout={playoffFundsPayout}
-          clubFundsPayout={clubFundsPayout}
           dailyChallengeMode={dailyChallengeMode}
           dailyScenario={dailyScenario}
           onFinalizeRun={handleFinalizePlayoffRun}

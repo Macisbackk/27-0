@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ClubLogoBox } from "@/components/ClubBadge";
 import { GameButton } from "@/components/ui/GameButton";
 import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
-import { MiniGamePoolSelect, MiniGamePoolSelectTitle } from "./MiniGamePoolSelect";
+import { MiniGamePoolSelect } from "./MiniGamePoolSelect";
 import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
 import { TYPO } from "@/lib/ui/typography";
 import {
@@ -259,7 +259,7 @@ export function HigherLowerGame() {
     return (
       <MiniGameShell
         eyebrow="Higher or Lower"
-        title={<MiniGamePoolSelectTitle />}
+        title="Choose Current or Era"
         compact
       >
         <MiniGamePoolSelect onSelect={startMode} />

@@ -50,14 +50,12 @@ export const CollapsibleReviewSection = memo(function CollapsibleReviewSection({
         <div
           className={
             featured
-              ? SPACING.sectionContentTopFeatured
-              : SPACING.sectionContentTop
+              ? "mt-4 sm:mt-5"
+              : "mt-3.5 sm:mt-4"
           }
         >
           {helper && (
-            <p
-              className={`${SPACING.headingMargin} text-center ${TYPO.bodySm}`}
-            >
+            <p className={`mb-3 text-center sm:mb-3.5 ${TYPO.bodySm}`}>
               {helper}
             </p>
           )}

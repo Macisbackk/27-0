@@ -370,16 +370,19 @@ export function SeasonReview({
                     seasonResult.losses
                   )}
                   neutral
+                  className="text-center"
                 />
                 <GameStatCard
                   label="League Position"
                   value={leaguePositionLabel}
                   neutral
+                  className="text-center"
                 />
                 <GameStatCard
                   label="National Rank"
                   value={runRank ? `#${runRank}` : "—"}
                   neutral
+                  className="text-center"
                 />
                 <GameStatCard
                   label="Average Team Rating"
@@ -389,10 +392,11 @@ export function SeasonReview({
                     </span>
                   }
                   neutral
+                  className="text-center"
                 />
               </div>
               {missedPlayoffs ? (
-                <p className={`mt-3 text-center font-semibold text-gray-500`}>
+                <p className="mt-3.5 text-center text-sm font-semibold text-gray-500 sm:mt-4">
                   Missed Play-Offs
                 </p>
               ) : null}
@@ -416,7 +420,10 @@ export function SeasonReview({
               title="Match Results"
               delay={0.38}
             >
-              <div className="min-w-0 space-y-1.5 text-left">
+              <div
+                className="max-h-[min(48vh,22rem)] min-w-0 space-y-1 overflow-y-auto overscroll-contain text-left pr-0.5"
+                data-scroll-lock-allow="true"
+              >
                 {seasonResult.fixtures.map((fixture) => {
                   const isSelected = selectedFixture?.round === fixture.round;
                   return (

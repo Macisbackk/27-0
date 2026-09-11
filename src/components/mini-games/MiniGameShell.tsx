@@ -14,7 +14,7 @@ export function MiniGameShell({
   actions,
   compact = false,
 }: {
-  title: ReactNode;
+  title: string;
   eyebrow?: string;
   children: ReactNode;
   actions?: ReactNode;

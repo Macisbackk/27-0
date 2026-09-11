@@ -15,15 +15,14 @@ import {
 } from "@/lib/game/tournament-awards";
 import { MatchReviewActions } from "./MatchReviewActions";
 import { ClubFundsEarned } from "./ClubFundsEarned";
-import { mergeClubFundsPayouts } from "@/lib/club-funds";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { SquadReviewSection } from "./SquadReviewSection";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { PlayoffBracketDisplay } from "./PlayoffBracketDisplay";
 import { Confetti } from "./Confetti";
-import { TYPO } from "@/lib/ui/typography";
-import { NORMAL } from "@/lib/ui/design-system";
+import { MANAGER, NORMAL } from "@/lib/ui/design-system";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
+import { GameStatCard } from "@/components/ui/GameStatCard";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
 import { ShareSeasonButton } from "./ShareSeasonButton";
 import type { DailyChallengeScenario } from "@/lib/daily-challenge";
@@ -45,7 +44,6 @@ interface PlayoffReviewProps {
   playoffResult: PlayoffResult;
   playoffBracketState?: PlayoffBracketState | null;
   playoffFundsPayout?: ClubFundsPayoutResult | null;
-  clubFundsPayout?: ClubFundsPayoutResult | null;
   dailyChallengeMode?: boolean;
   dailyScenario?: DailyChallengeScenario | null;
   onFinalizeRun?: () => void;
@@ -60,7 +58,6 @@ export function PlayoffReview({
   playoffResult,
   playoffBracketState = null,
   playoffFundsPayout = null,
-  clubFundsPayout = null,
   dailyChallengeMode = false,
   dailyScenario = null,
   onFinalizeRun,
@@ -84,10 +81,18 @@ export function PlayoffReview({
     [playoffResult, seasonResult.wins]
   );
 
-  const fundsPayout = useMemo(
-    () => mergeClubFundsPayouts(clubFundsPayout, playoffFundsPayout),
-    [clubFundsPayout, playoffFundsPayout]
-  );
+  // Only show funds earned in this playoff run — don't re-popup regular-season awards.
+  const playoffFundsToShow = useMemo(() => {
+    if (
+      !playoffFundsPayout ||
+      !playoffFundsPayout.awarded ||
+      playoffFundsPayout.total <= 0 ||
+      playoffFundsPayout.lines.length === 0
+    ) {
+      return null;
+    }
+    return playoffFundsPayout;
+  }, [playoffFundsPayout]);
 
   const playoffLikeResult: SeasonResult = useMemo(() => {
     const pointsFor = playoffResult.userFixtures.reduce(
@@ -238,43 +243,47 @@ export function PlayoffReview({
           />
         </motion.div>
 
-        <ClubFundsEarned payout={fundsPayout} />
+        <ClubFundsEarned payout={playoffFundsToShow} />
 
         <CollapsibleReviewSection title="Play-Off Summary" delay={0.2}>
-          <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
-            <p>
-              Play-Off Record:{" "}
-              <span className="font-semibold text-white">
-                {formatRecordWithPercentage(
-                  playoffResult.wins,
-                  playoffResult.losses
-                )}
-              </span>
-            </p>
-            <p>
-              Regular Season:{" "}
-              <span className="font-semibold text-gray-300">
-                {formatRecordWithPercentage(
-                  seasonResult.wins,
-                  seasonResult.losses
-                )}
-              </span>
-            </p>
-            <p>
-              Overall Season:{" "}
-              <span className="font-semibold text-theme-primary">
-                {formatRecordWithPercentage(
-                  seasonResult.wins + playoffResult.wins,
-                  seasonResult.losses + playoffResult.losses
-                )}
-              </span>
-            </p>
-            <p>
-              Regular Season Finish:{" "}
-              <span className="font-semibold text-white">
-                {formatLeaguePosition(playoffResult.leaguePosition)}
-              </span>
-            </p>
+          <div className={`${MANAGER.statGrid2} mx-auto max-w-lg`}>
+            <GameStatCard
+              label="Play-Off Record"
+              value={formatRecordWithPercentage(
+                playoffResult.wins,
+                playoffResult.losses
+              )}
+              neutral
+              className="text-center"
+            />
+            <GameStatCard
+              label="Regular Season"
+              value={formatRecordWithPercentage(
+                seasonResult.wins,
+                seasonResult.losses
+              )}
+              neutral
+              className="text-center"
+            />
+            <GameStatCard
+              label="Overall Season"
+              value={
+                <span className="text-theme-primary">
+                  {formatRecordWithPercentage(
+                    seasonResult.wins + playoffResult.wins,
+                    seasonResult.losses + playoffResult.losses
+                  )}
+                </span>
+              }
+              neutral
+              className="text-center"
+            />
+            <GameStatCard
+              label="Regular Season Finish"
+              value={formatLeaguePosition(playoffResult.leaguePosition)}
+              neutral
+              className="text-center"
+            />
           </div>
         </CollapsibleReviewSection>
 

@@ -10,15 +10,15 @@ import {
 
 const MODES: MiniGamePoolMode[] = ["current", "era"];
 
-/** Shared picker heading — Current green, Era gold. */
-export function MiniGamePoolSelectTitle() {
-  return (
-    <>
-      Choose <span className="text-theme-primary">Current</span> or{" "}
-      <span className="text-accent-gold">Era</span>
-    </>
-  );
-}
+const MODE_CARD_CLASS: Record<MiniGamePoolMode, string> = {
+  current: "border-theme-primary/40",
+  era: "border-accent-gold/40",
+};
+
+const MODE_TITLE_CLASS: Record<MiniGamePoolMode, string> = {
+  current: "text-theme-primary",
+  era: "text-accent-gold",
+};
 
 /**
  * Current vs Era picker — same card style as Quiz Normal / Team Challenge.
@@ -40,12 +40,10 @@ export function MiniGamePoolSelect({
               playUiClick();
               onSelect(mode);
             }}
-            className="w-full border border-white/10 bg-[#0c1210] px-4 py-4 text-center"
+            className={`w-full border bg-[#0c1210] px-4 py-4 text-center ${MODE_CARD_CLASS[mode]}`}
           >
             <p
-              className={`${TYPO.keyLabel} ${
-                mode === "era" ? "text-accent-gold" : "text-theme-primary"
-              }`}
+              className={`font-display text-base font-bold uppercase tracking-wide sm:text-lg ${MODE_TITLE_CLASS[mode]}`}
             >
               {MINI_GAME_POOL_MODE_LABEL[mode]}
             </p>

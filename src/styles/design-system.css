@@ -1704,15 +1704,16 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #8b929a;
+  line-height: 1.25;
 }
 
 .game-stat-card__value {
-  margin-top: 0.25rem;
+  margin-top: 0.4rem;
   font-family: var(--font-display), "Arial Black", Impact, sans-serif;
   font-size: 1.25rem;
   letter-spacing: -0.01em;
   color: #fff;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 /* Compact scorer / goal chips in expanded match results */
