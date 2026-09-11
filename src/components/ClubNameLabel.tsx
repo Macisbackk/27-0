@@ -21,6 +21,8 @@ export interface ClubNameLabelProps {
   className?: string;
   /** When set, swatch and accent colours use this club instead of `club`. */
   colorClub?: string;
+  /** Override dual-colour swatch size. */
+  swatchSize?: "xs" | "sm" | "md";
 }
 
 function resolveColors(club: string) {
@@ -43,6 +45,7 @@ export function ClubNameLabel({
   showAccent = true,
   className = "",
   colorClub,
+  swatchSize: swatchSizeProp,
 }: ClubNameLabelProps) {
   const colors = resolveColors(colorClub ?? club);
   const isRight = align === "right";
@@ -80,23 +83,29 @@ export function ClubNameLabel({
     );
   }
 
-  const swatchSize = compact ? "sm" : "md";
+  const swatchSize = swatchSizeProp ?? (compact ? "sm" : "md");
   const nameClass = compact
     ? "line-clamp-2 text-[11px] leading-snug sm:text-xs"
     : "text-xs leading-snug sm:text-sm";
 
   return (
     <div
-      className={`flex min-w-0 items-center gap-2.5 ${
+      className={`flex min-w-0 items-center ${
+        swatchSize === "xs" ? "gap-1.5" : "gap-2.5"
+      } ${
         isRight ? "flex-row-reverse text-right" : ""
       } ${className}`}
       style={
         showAccent
           ? {
-              borderLeft: isRight ? undefined : `3px solid ${getClubIndicatorColor(colorClub ?? club)}`,
-              borderRight: isRight ? `3px solid ${getClubIndicatorColor(colorClub ?? club)}` : undefined,
-              paddingLeft: isRight ? 0 : "0.625rem",
-              paddingRight: isRight ? "0.625rem" : 0,
+              borderLeft: isRight
+                ? undefined
+                : `2px solid ${getClubIndicatorColor(colorClub ?? club)}`,
+              borderRight: isRight
+                ? `2px solid ${getClubIndicatorColor(colorClub ?? club)}`
+                : undefined,
+              paddingLeft: isRight ? 0 : "0.5rem",
+              paddingRight: isRight ? "0.5rem" : 0,
             }
           : undefined
       }

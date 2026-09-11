@@ -102,35 +102,37 @@ export function SlotTeamYearPicker({
           }}
         >
           {onBack && (
-            <button
-              type="button"
-              onClick={onBack}
-              disabled={disabled}
-              className={`mb-2 ${LINK.subtle} disabled:opacity-40`}
-            >
-              ← Back to team sheet
-            </button>
+            <div className="mb-2 flex justify-center">
+              <button
+                type="button"
+                onClick={onBack}
+                disabled={disabled}
+                className={`${LINK.subtle} disabled:opacity-40`}
+              >
+                ← Back to team sheet
+              </button>
+            </div>
           )}
 
-          <div className="flex items-start gap-3 sm:gap-4">
+          <div className="flex flex-col items-center text-center">
             <ClubLogoBox
               club={target.team}
               size="md"
               showAbbrev={false}
-              className="hidden shrink-0 sm:flex"
+              className="hidden sm:flex"
             />
             <ClubLogoBox
               club={target.team}
               size="sm"
               showAbbrev={false}
-              className="shrink-0 sm:hidden"
+              className="sm:hidden"
             />
-            <div className="min-w-0 flex-1">
+            <div className="mt-2 min-w-0 w-full">
               <p className={TYPO.sectionLabel}>Pick your signing</p>
               <h2 className="mt-0.5 font-display text-lg font-bold leading-tight text-white sm:text-2xl">
                 {target.team}
               </h2>
-              <div className="mt-1.5 flex flex-wrap items-center gap-2">
+              <div className="mt-1.5 flex flex-wrap items-center justify-center gap-2">
                 <span className="rounded-md border border-white/10 bg-pitch-950/70 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-theme-primary">
                   {shortYear}
                 </span>

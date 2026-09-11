@@ -14,8 +14,8 @@ interface ClubDualSwatchProps {
 }
 
 const SIZE_CLASS = {
-  xs: "h-2.5 w-5",
-  sm: "h-3 w-6",
+  xs: "h-2 w-3.5",
+  sm: "h-2.5 w-4.5",
   md: "h-4 w-8",
 } as const;
 

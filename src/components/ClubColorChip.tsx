@@ -15,6 +15,8 @@ interface ClubColorChipProps {
   showAccent?: boolean;
   /** Compact abbreviation badge above the name — off by default for denser rows. */
   showAbbreviation?: boolean;
+  /** Dual-colour swatch size. */
+  swatchSize?: "xs" | "sm" | "md";
 }
 
 /** Fixture/results club chip with dual-colour swatch. */
@@ -25,6 +27,7 @@ export function ClubColorChip({
   surface = "resultRow",
   showAccent = true,
   showAbbreviation = false,
+  swatchSize,
 }: ClubColorChipProps) {
   return (
     <ClubNameLabel
@@ -35,6 +38,7 @@ export function ClubColorChip({
       align={align}
       surface={surface}
       showAccent={showAccent}
+      swatchSize={swatchSize ?? (compact ? "xs" : "sm")}
       className={`min-w-0 flex-1 ${
         compact ? "gap-1.5 [&_p]:line-clamp-1 [&_p]:leading-tight" : ""
       }`}
