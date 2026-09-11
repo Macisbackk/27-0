@@ -1,8 +1,10 @@
 import type { Player, PlayerCategory, Position } from "../types";
+import { isShowcaseCurrentPlayer } from "./current-season";
 import { getPlayerDisplayName } from "./display-name-resolver";
 import { POSITION_LABELS } from "../positions";
 import { getPlayerEligiblePositions } from "./player-positions";
 import { isHiddenPlayer } from "./goat";
+import { formatShowcaseDisplayName } from "./showcase-view-model";
 import {
   isGameplayYearCard,
   parseYearsActiveEnd,
@@ -122,7 +124,7 @@ export function computeShowcaseDbStats(players: Player[]): ShowcaseDbStats {
 
   return {
     total: players.length,
-    current: players.filter((p) => p.category === "current").length,
+    current: players.filter((p) => isShowcaseCurrentPlayer(p)).length,
     historic: players.filter((p) => p.category === "historic").length,
     legends: players.filter((p) => p.category === "legend").length,
     highestRated,
@@ -210,9 +212,11 @@ function matchesSearch(player: Player, query: string): boolean {
 
   const positionLabel = POSITION_LABELS[player.position].toLowerCase();
   const displayName = getPlayerDisplayName(player).toLowerCase();
+  const showcaseName = formatShowcaseDisplayName(player).toLowerCase();
 
   return (
     displayName.includes(q) ||
+    showcaseName.includes(q) ||
     player.club.toLowerCase().includes(q) ||
     positionLabel.includes(q) ||
     player.position.toLowerCase().replace(/_/g, " ").includes(q) ||
@@ -222,12 +226,14 @@ function matchesSearch(player: Player, query: string): boolean {
   );
 }
 
-/** 1. Status */
+/** 1. Status — "Current" is the active season only (2026 for now). */
 function passesStatusFilter(
   player: Player,
   status: ShowcaseFilters["status"]
 ): boolean {
-  return status === "all" || player.category === status;
+  if (status === "all") return true;
+  if (status === "current") return isShowcaseCurrentPlayer(player);
+  return player.category === status;
 }
 
 function passesTeamFilter(player: Player, filters: ShowcaseFilters): boolean {

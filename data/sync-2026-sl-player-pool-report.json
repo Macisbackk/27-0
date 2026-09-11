@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-09-11T21:57:11.518Z",
+  "currentSlPlayableBefore": 236,
+  "currentSlPlayableAfter": 250,
+  "championshipHidden": [
+    "barrow-cur-ellis-robson",
+    "london-cur-harry-aldous",
+    "london-cur-jack-campagnolo",
+    "london-cur-jacob-jones",
+    "london-cur-jeremiah-simbiken",
+    "london-cur-jimmy-meadows",
+    "london-cur-lewis-bienek",
+    "london-cur-oliver-leyland",
+    "london-cur-robbie-storey",
+    "london-cur-robert-butler",
+    "london-cur-sam-davis",
+    "midlands-cur-toby-warren",
+    "midlands-cur-zach-jebson",
+    "oldham-cur-jake-bibby",
+    "oldham-cur-jonty-gorley",
+    "sheffield-cur-joe-brown",
+    "sheffield-cur-jordan-lilley",
+    "sheffield-cur-kai-morgan",
+    "sheffield-cur-matty-marsh",
+    "widnes-cur-nathan-connell"
+  ],
+  "removedErroneous": [
+    "leigh-cur-darnell-mcintosh"
+  ],
+  "added": [
+    "leigh-cur-josh-charnley",
+    "leigh-cur-innes-senior",
+    "hull-kr-cur-jack-broadbent",
+    "hull-fc-cur-logan-moy",
+    "leeds-cur-ryan-hall",
+    "leeds-cur-chris-hankinson",
+    "castleford-cur-phoenix-laulu-togagae",
+    "castleford-cur-tyler-dupree",
+    "warrington-cur-josh-smith",
+    "castleford-cur-louis-senior",
+    "catalans-cur-kruise-leeming",
+    "bradford-cur-joe-keyes",
+    "bradford-cur-sam-hallas",
+    "leeds-cur-danny-levi",
+    "leigh-cur-aj-towse"
+  ],
+  "updated": [],
+  "unresolved": [
+    {
+      "name": "Logan Moy",
+      "field": "dateOfBirth/birthYear",
+      "reason": "No verified DOB/birth year located yet"
+    },
+    {
+      "name": "Chris Hankinson",
+      "field": "dateOfBirth/birthYear",
+      "reason": "No verified DOB/birth year located yet"
+    },
+    {
+      "name": "Phoenix Laulu-Togaga'e",
+      "field": "dateOfBirth/birthYear",
+      "reason": "No verified DOB/birth year located yet"
+    },
+    {
+      "name": "Josh Smith",
+      "field": "dateOfBirth/birthYear",
+      "reason": "No verified DOB/birth year located yet"
+    },
+    {
+      "name": "Kruise Leeming",
+      "field": "dateOfBirth/birthYear",
+      "reason": "No verified DOB/birth year located yet"
+    },
+    {
+      "name": "Joe Keyes",
+      "field": "dateOfBirth/birthYear",
+      "reason": "No verified DOB/birth year located yet"
+    },
+    {
+      "name": "Sam Hallas",
+      "field": "dateOfBirth/birthYear",
+      "reason": "No verified DOB/birth year located yet"
+    },
+    {
+      "name": "Danny Levi",
+      "field": "dateOfBirth/birthYear",
+      "reason": "No verified DOB/birth year located yet"
+    },
+    {
+      "name": "AJ Towse",
+      "field": "dateOfBirth/birthYear",
+      "reason": "No verified DOB/birth year located yet"
+    }
+  ],
+  "note": "Team-year spin pools unchanged except Leigh first-team JSON fix (McIntosh→Charnley). Re-run apply:2026-squads then build:player-chunks."
+}

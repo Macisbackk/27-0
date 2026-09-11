@@ -27,7 +27,6 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-ata-hingano",
     "primaryPosition": "SO",
-    "rating": 80,
     "availableInGame": true,
     "superLeagueEligible": true
   },
@@ -61,7 +60,6 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-ben-jones-bishop",
     "primaryPosition": "WG",
-    "rating": 78,
     "availableInGame": true,
     "superLeagueEligible": true
   },
@@ -93,7 +91,6 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-denive-balmforth",
     "primaryPosition": "HK",
-    "rating": 82,
     "availableInGame": true,
     "superLeagueEligible": true
   },
@@ -127,7 +124,6 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-jack-martin",
     "primaryPosition": "PF",
-    "rating": 78,
     "availableInGame": true,
     "superLeagueEligible": true
   },
@@ -159,9 +155,38 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-jesse-dee",
     "primaryPosition": "SR",
-    "rating": 78,
     "availableInGame": true,
     "superLeagueEligible": true
+  },
+  {
+    "id": "york-cur-jonathan-bennison",
+    "name": "Jon Bennison",
+    "club": "York Knights",
+    "currentClub": "York Knights",
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "position": "WING",
+    "positions": [
+      "WING"
+    ],
+    "primaryPosition": "WING",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2022–2022",
+    "category": "current",
+    "peakRating": 81,
+    "value": 115000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "york-knights-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "york-cur-jonathan-bennison",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "dateOfBirth": "2002-12-01",
+    "birthYear": 2002
   },
   {
     "id": "york-cur-jordan-lipp",
@@ -188,7 +213,6 @@
     "basePlayerId": "york-cur-jordan-lipp",
     "primaryPosition": "CE",
     "birthYear": 2001,
-    "rating": 79,
     "availableInGame": true,
     "superLeagueEligible": true
   },
@@ -221,7 +245,6 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-jordan-thompson",
     "primaryPosition": "LF/SR",
-    "rating": 78,
     "availableInGame": true,
     "superLeagueEligible": true
   },
@@ -254,7 +277,6 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-josh-griffin",
     "primaryPosition": "SR/CE",
-    "rating": 82,
     "availableInGame": true,
     "superLeagueEligible": true
   },
@@ -287,9 +309,67 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-justin-sangare",
     "primaryPosition": "PF/SR",
-    "rating": 78,
     "availableInGame": true,
     "superLeagueEligible": true
+  },
+  {
+    "id": "york-cur-kieran-buchanan",
+    "name": "Kieran Buchanan",
+    "club": "York Knights",
+    "currentClub": "York Knights",
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "position": "CENTRE",
+    "positions": [
+      "CENTRE"
+    ],
+    "primaryPosition": "CENTRE",
+    "nationality": "Scotland",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2020–Present",
+    "category": "current",
+    "peakRating": 81,
+    "value": 116000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "york-knights-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "york-cur-kieran-buchanan",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "birthYear": 1999
+  },
+  {
+    "id": "york-cur-kieran-hudson",
+    "name": "Kieran Hudson",
+    "club": "York Knights",
+    "currentClub": "York Knights",
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "position": "PROP",
+    "positions": [
+      "PROP"
+    ],
+    "primaryPosition": "PROP",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2020–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 90000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "york-knights-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "york-cur-kieran-hudson",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "dateOfBirth": "2000-06-13",
+    "birthYear": 2000
   },
   {
     "id": "york-cur-liam-harris",
@@ -319,9 +399,37 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-liam-harris",
     "primaryPosition": "SH",
-    "rating": 82,
     "availableInGame": true,
     "superLeagueEligible": true
+  },
+  {
+    "id": "york-cur-nikau-williams",
+    "name": "Nikau Williams",
+    "club": "York Knights",
+    "currentClub": "York Knights",
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "position": "STAND_OFF",
+    "positions": [
+      "STAND_OFF"
+    ],
+    "primaryPosition": "STAND_OFF",
+    "nationality": "New Zealand",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2020–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 143000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "york-knights-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "york-cur-nikau-williams",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "birthYear": 1999
   },
   {
     "id": "york-cur-oliver-field",
@@ -348,7 +456,6 @@
     "basePlayerId": "york-cur-oliver-field",
     "primaryPosition": "SR",
     "birthYear": 2002,
-    "rating": 84,
     "availableInGame": true,
     "superLeagueEligible": true
   },
@@ -380,7 +487,6 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-paul-mcshane",
     "primaryPosition": "HK",
-    "rating": 79,
     "availableInGame": true,
     "superLeagueEligible": true
   },
@@ -412,7 +518,6 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-paul-vaughan",
     "primaryPosition": "PF",
-    "rating": 87,
     "availableInGame": true,
     "superLeagueEligible": true
   },
@@ -444,7 +549,6 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-sam-wood",
     "primaryPosition": "CE",
-    "rating": 78,
     "availableInGame": true,
     "superLeagueEligible": true
   },
@@ -476,7 +580,6 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-scott-galeano",
     "primaryPosition": "WG",
-    "rating": 78,
     "availableInGame": true,
     "superLeagueEligible": true
   },
@@ -508,9 +611,37 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-toa-mataafa",
     "primaryPosition": "FB",
-    "rating": 78,
     "availableInGame": true,
     "superLeagueEligible": true
+  },
+  {
+    "id": "york-cur-will-dagger",
+    "name": "Will Dagger",
+    "club": "York Knights",
+    "currentClub": "York Knights",
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "position": "FULLBACK",
+    "positions": [
+      "FULLBACK"
+    ],
+    "primaryPosition": "FULLBACK",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2020–2020",
+    "category": "current",
+    "peakRating": 81,
+    "value": 118000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "york-knights-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "york-cur-will-dagger",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "birthYear": 1999
   },
   {
     "id": "york-cur-xavier-vaa",
@@ -540,7 +671,6 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-xavier-vaa",
     "primaryPosition": "PF",
-    "rating": 77,
     "availableInGame": true,
     "superLeagueEligible": true
   }

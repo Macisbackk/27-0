@@ -199,7 +199,6 @@ function main(): void {
         yearsActive: prev?.yearsActive ?? "2020–Present",
         category: "current",
         peakRating: rating,
-        rating,
         value,
         // Never inherit transfer leftovers / NRL flags onto SL 2026 cards.
         availableInGame: true,
@@ -254,18 +253,27 @@ function main(): void {
     report.teams[club] = { playerIds, count: playerIds.length };
   }
 
+  const preservedDepth: string[] = [];
   for (const p of existing) {
     if (SL_2026_CLUBS.includes(p.club) && !newIds.has(p.id)) {
-      report.removed.push(`${p.id} (${p.name} @ ${p.club})`);
+      // Playable depth / mid-season additions stay in Current DB for Showcase &
+      // mini-games, but are NOT written into the 16–18 spin team-year pools.
+      if (p.availableInGame !== false && p.superLeagueEligible !== false) {
+        preservedDepth.push(`${p.id} (${p.name} @ ${p.club})`);
+      } else {
+        report.removed.push(`${p.id} (${p.name} @ ${p.club})`);
+      }
     }
   }
 
-  // Keep non-SL clubs + unavailable SL leftovers, but never duplicate an applied id.
+  // Keep non-SL clubs, unavailable SL leftovers, and playable depth extras.
   const kept = existing.filter((p) => {
     if (newIds.has(p.id)) return false;
     if (!SL_2026_CLUBS.includes(p.club)) return true;
-    return p.availableInGame === false;
+    if (p.availableInGame === false) return true;
+    return p.superLeagueEligible !== false;
   });
+  (report as { preservedDepth?: string[] }).preservedDepth = preservedDepth;
 
   const merged = [...kept, ...newPlayers].sort((a, b) =>
     a.club.localeCompare(b.club) || a.name.localeCompare(b.name)

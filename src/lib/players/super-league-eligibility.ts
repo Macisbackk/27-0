@@ -1,3 +1,4 @@
+import { isCurrentPlayableClub } from "../clubs/super-league-display";
 import type { Player } from "../types";
 import { isSuperLeagueSeason } from "./super-league-club-years";
 
@@ -58,7 +59,11 @@ export function isPreSuperLeagueOnlyPlayer(player: Player): boolean {
 export function isSuperLeagueEligiblePlayer(player: Player): boolean {
   if (player.superLeagueEligible === false) return false;
   if (player.superLeagueEligible === true) return true;
-  if (player.category === "current") return true;
+  // Current-category Championship leftovers must not auto-qualify.
+  if (player.category === "current") {
+    const club = player.displayClub ?? player.team ?? player.club;
+    return isCurrentPlayableClub(club);
+  }
   if (isPreSuperLeagueOnlyPlayer(player)) return false;
 
   const idYear = parseYearFromId(player.id);

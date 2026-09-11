@@ -19,6 +19,7 @@
     "icons:mobile": "tsx scripts/generate-mobile-icons.ts && tsx scripts/apply-android-icons.ts",
     "import:historic-ratings": "node scripts/import-historic-season-ratings.js",
     "validate:players": "tsx scripts/validate-players.ts",
+    "validate:player-database": "tsx scripts/validate-player-database.ts",
     "validate:championship": "tsx scripts/validate-championship.ts",
     "simulate:championship": "tsx scripts/monte-carlo-championship.ts",
     "build:player-chunks": "tsx scripts/split-current-squads-chunks.ts",

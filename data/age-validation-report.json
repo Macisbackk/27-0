@@ -1,136 +1,2462 @@
 {
-  "generatedAt": "2026-06-15T15:26:20.868Z",
+  "generatedAt": "2026-09-11T22:03:39.773Z",
   "summary": {
-    "totalPlayers": 1726,
-    "withBirthData": 1484,
-    "withoutBirthData": 242,
-    "errors": 0,
-    "warnings": 9,
-    "informational": 144
+    "totalPlayers": 3300,
+    "withBirthData": 2762,
+    "withoutBirthData": 538,
+    "errors": 9,
+    "warnings": 0,
+    "informational": 534
   },
   "issues": [
     {
-      "playerId": "wigan-cur-sam-walters",
-      "name": "Sam Walters",
-      "category": "current",
-      "birthYear": 1939,
-      "age": 87,
-      "severity": "warning",
-      "message": "Suspicious current player age: 87"
+      "playerId": "catalans-hist-era-reimis-smith",
+      "name": "Reimis Smith",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "st-helens-cur-harry-robertson",
-      "name": "Harry Robertson",
-      "category": "current",
-      "birthYear": 1943,
-      "age": 83,
-      "severity": "warning",
-      "message": "Suspicious current player age: 83"
+      "playerId": "bradford-hist-cain-southernwood",
+      "name": "Cain Southernwood",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "bradford-cur-dan-russell",
-      "name": "Dan Russell",
-      "category": "current",
-      "birthYear": 1932,
-      "age": 94,
-      "severity": "warning",
-      "message": "Suspicious current player age: 94"
+      "playerId": "bradford-hist-max-clarke",
+      "name": "Max Clarke",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "wakefield-cur-harvey-smith",
+      "playerId": "bradford-hist-george-milton",
+      "name": "George Milton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-andrew-thornley",
+      "name": "Andrew Thornley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-sam-smith",
+      "name": "Sam Smith",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-tristan-powell",
+      "name": "Tristan Powell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-danny-levi",
+      "name": "Danny Levi",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-jack-cogger",
+      "name": "Jack Cogger",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-james-gavet",
+      "name": "James Gavet",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-josh-reynolds",
+      "name": "Josh Reynolds",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-kane-evans",
+      "name": "Kane Evans",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-frank-pritchard",
+      "name": "Frank Pritchard",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-wade-mckinnon",
+      "name": "Wade McKinnon",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-adam-dykes",
+      "name": "Adam Dykes",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-hutch-maiava",
+      "name": "Hutch Maiava",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-stephen-kearney",
+      "name": "Stephen Kearney",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-dean-treister",
+      "name": "Dean Treister",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-hitro-okesene",
+      "name": "Hitro Okesene",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-kris-keating",
+      "name": "Kris Keating",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-michael-weyman",
+      "name": "Michael Weyman",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-neville-costigan",
+      "name": "Neville Costigan",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-alex-brown",
+      "name": "Alex Brown",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-evarn-tuimavave",
+      "name": "Evarn Tuimavave",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-byron-ford",
+      "name": "Byron Ford",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-jonathon-goddard",
+      "name": "Jonathon Goddard",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-paul-momirovski",
+      "name": "Paul Momirovski",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-james-segeyaro",
+      "name": "James Segeyaro",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-greg-eastwood",
+      "name": "Greg Eastwood",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-ben-walker",
+      "name": "Ben Walker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-anthony-gibbons",
+      "name": "Anthony Gibbons",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-jim-fallon",
+      "name": "Jim Fallon",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-carl-hall",
+      "name": "Carl Hall",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-mick-shaw",
+      "name": "Mick Shaw",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-era-gregg-mcnally",
+      "name": "Gregg McNally",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-era-adam-higson",
+      "name": "Adam Higson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-era-jamie-acton",
+      "name": "Jamie Acton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-era-lachlan-burr",
+      "name": "Lachlan Burr",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-era-sam-hopkins",
+      "name": "Sam Hopkins",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-chad-robinson",
+      "name": "Chad Robinson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-radney-bowker",
+      "name": "Radney Bowker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-andrew-king",
+      "name": "Andrew King",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-bill-peden",
+      "name": "Bill Peden",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-damian-kennedy",
+      "name": "Damian Kennedy",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-wayne-evans",
+      "name": "Wayne Evans",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-frank-napoli",
+      "name": "Frank Napoli",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-grant-young",
+      "name": "Grant Young",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-mark-carroll",
+      "name": "Mark Carroll",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-darren-higgins",
+      "name": "Darren Higgins",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-damien-chapman",
+      "name": "Damien Chapman",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-john-minto",
+      "name": "John Minto",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-graham-strutton",
+      "name": "Graham Strutton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-kevin-langer",
+      "name": "Kevin Langer",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-tony-rea",
+      "name": "Tony Rea",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-gavin-allen",
+      "name": "Gavin Allen",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-leo-dynevor",
+      "name": "Leo Dynevor",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-darryl-pitt",
+      "name": "Darryl Pitt",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-justin-bryant",
+      "name": "Justin Bryant",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-kevin-proctor",
+      "name": "Kevin Proctor",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-era-tom-o-reilly",
+      "name": "Tom O'Reilly",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-era-adam-doyle",
+      "name": "Adam Doyle",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-era-kris-watson",
+      "name": "Kris Watson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-era-paul-cullen",
+      "name": "Paul Cullen",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-era-paul-hulme",
+      "name": "Paul Hulme",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-era-mark-jones",
+      "name": "Mark Jones",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "widnes-hist-era-kurt-haggerty",
+      "name": "Kurt Haggerty",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "widnes-hist-era-tim-holmes",
+      "name": "Tim Holmes",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "widnes-hist-era-andrew-emelio",
+      "name": "Andrew Emelio",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "widnes-hist-era-jon-whittle",
+      "name": "Jon Whittle",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "widnes-hist-era-owen-craigie",
+      "name": "Owen Craigie",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "widnes-hist-era-sala-fa-alogo",
+      "name": "Sala Fa'Alogo",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "widnes-hist-era-stephen-rowlands",
+      "name": "Stephen Rowlands",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "widnes-hist-era-nicky-royle",
+      "name": "Nicky Royle",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "widnes-hist-era-troy-wozniak",
+      "name": "Troy Wozniak",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "widnes-hist-era-steve-carter",
+      "name": "Steve Carter",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-era-matthew-johns",
+      "name": "Matthew Johns",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-era-mark-bell",
+      "name": "Mark Bell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-era-robbie-mccormack",
+      "name": "Robbie McCormack",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-era-kelvin-skerrett",
+      "name": "Kelvin Skerrett",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-era-adam-henry",
+      "name": "Adam Henry",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-era-shad-royston",
+      "name": "Shad Royston",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-era-matt-orford",
+      "name": "Matt Orford",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-era-joe-tamani",
+      "name": "Joe Tamani",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-era-karl-fairbank",
+      "name": "Karl Fairbank",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-awen-guttenbeil",
+      "name": "Awen Guttenbeil",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-simon-middleton",
+      "name": "Simon Middleton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-jason-lidden",
+      "name": "Jason Lidden",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-adrian-flynn",
+      "name": "Adrian Flynn",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-diccon-edwards",
+      "name": "Diccon Edwards",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-frano-botica",
+      "name": "Frano Botica",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-ian-smales",
+      "name": "Ian Smales",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-richard-goddard",
+      "name": "Richard Goddard",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-era-dylan-napa",
+      "name": "Dylan Napa",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-era-israel-folau",
+      "name": "Israel Folau",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-era-thibaut-margalet",
+      "name": "Thibaut Margalet",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-era-dave-taylor",
+      "name": "Dave Taylor",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-era-damien-cardace",
+      "name": "Damien Cardace",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-era-jason-ryles",
+      "name": "Jason Ryles",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-era-laurent-frayssinous",
+      "name": "Laurent Frayssinous",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-akuila-uate",
+      "name": "Akuila Uate",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-luke-o-donnell",
+      "name": "Luke O'Donnell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-chris-langley",
+      "name": "Chris Langley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-chris-molyneux",
+      "name": "Chris Molyneux",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-jim-lenihan",
+      "name": "Jim Lenihan",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-andrew-tangata-toa",
+      "name": "Andrew Tangata-Toa",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-chris-orr",
+      "name": "Chris Orr",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-steve-booth",
+      "name": "Steve Booth",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-wayne-collins",
+      "name": "Wayne Collins",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-era-matt-moylan",
+      "name": "Matt Moylan",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-matty-fozard",
+      "name": "Matty Fozard",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-nick-mardon",
+      "name": "Nick Mardon",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-era-david-krause",
+      "name": "David Krause",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-jack-littlejohn",
+      "name": "Jack Littlejohn",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-kristian-brining",
+      "name": "Kristian Brining",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-jake-mullaney",
+      "name": "Jake Mullaney",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-steve-rapira",
+      "name": "Steve Rapira",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-dean-mcgilvray",
+      "name": "Dean Mcgilvray",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-greg-ebrill",
+      "name": "Greg Ebrill",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-damien-driscoll",
+      "name": "Damien Driscoll",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-garen-casey",
+      "name": "Garen Casey",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-iefata-sini",
+      "name": "Iefata Sini",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-andy-platt",
+      "name": "Andy Platt",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-john-cartwright",
+      "name": "John Cartwright",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-era-joel-thompson",
+      "name": "Joel Thompson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-era-dom-fe-aunati",
+      "name": "Dom Fe'Aunati",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-era-damien-smith",
+      "name": "Damien Smith",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-era-scott-gibbs",
+      "name": "Scott Gibbs",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-era-adam-fogerty",
+      "name": "Adam Fogerty",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-era-corey-norman",
+      "name": "Corey Norman",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-era-daniel-alvaro",
+      "name": "Daniel Alvaro",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-anthony-tupou",
+      "name": "Anthony Tupou",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-steve-southern",
+      "name": "Steve Southern",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-kieran-hyde",
+      "name": "Kieran Hyde",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-justin-ryder",
+      "name": "Justin Ryder",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-matt-seers",
+      "name": "Matt Seers",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-richard-newlove",
+      "name": "Richard Newlove",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-damon-keating",
+      "name": "Damon Keating",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-richard-smith",
+      "name": "Richard Smith",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-ben-rauter",
+      "name": "Ben Rauter",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-paul-sampson",
+      "name": "Paul Sampson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-adrian-brunker",
+      "name": "Adrian Brunker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-era-nigel-vagana",
+      "name": "Nigel Vagana",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-joe-bretherton-2022",
+      "name": "Joe Bretherton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-joe-bretherton-2023",
+      "name": "Joe Bretherton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-joe-bretherton-2024",
+      "name": "Joe Bretherton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-joe-bretherton-2025",
+      "name": "Joe Bretherton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-john-wilshire",
+      "name": "John Wilshire",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-kieran-rush",
+      "name": "Kieran Rush",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-louis-senior",
+      "name": "Louis Senior",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-liam-knight",
+      "name": "Liam Knight",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-yusuf-aydin",
+      "name": "Yusuf Aydin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-brad-fash",
+      "name": "Brad Fash",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-logan-moy",
+      "name": "Logan Moy",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-jack-charles",
+      "name": "Jack Charles",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-will-gardiner",
+      "name": "Will Gardiner",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-joe-cator",
+      "name": "Joe Cator",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-connor-wynne",
+      "name": "Connor Wynne",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-keenan-palasia",
+      "name": "Keenan Palasia",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-rhyse-martin",
+      "name": "Rhyse Martin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-era-bailey-hodgson",
+      "name": "Bailey Hodgson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-era-matt-davis",
+      "name": "Matt Davis",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-lachlan-walmsley",
+      "name": "Lachlan Walmsley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-caius-faatili",
+      "name": "Caius Faatili",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-harvey-smith",
       "name": "Harvey Smith",
-      "category": "current",
-      "birthYear": 1945,
-      "age": 81,
-      "severity": "warning",
-      "message": "Suspicious current player age: 81"
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "york-cur-jack-smith",
-      "name": "Jack Smith",
-      "category": "current",
-      "birthYear": 1918,
-      "age": 108,
-      "severity": "warning",
-      "message": "Suspicious current player age: 108"
+      "playerId": "wakefield-hist-era-isaiah-vagana",
+      "name": "Isaiah Vagana",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "leeds-cur-corey-johnson",
+      "playerId": "wakefield-hist-era-lee-kershaw",
+      "name": "Lee Kershaw",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-era-liam-byrne",
+      "name": "Liam Byrne",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-josh-simm",
+      "name": "Josh Simm",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-liam-horne",
+      "name": "Liam Horne",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-sam-hall",
+      "name": "Sam Hall",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-era-guillermo-aispuro-bichet",
+      "name": "Guillermo Aispuro-Bichet",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-era-matthieu-laguerre",
+      "name": "Matthieu Laguerre",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-will-dagger",
+      "name": "Will Dagger",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-nene-macdonald",
+      "name": "Nene Macdonald",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-era-chris-hankinson",
+      "name": "Chris Hankinson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-era-kyle-feldt",
+      "name": "Kyle Feldt",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-era-jon-bennison",
+      "name": "Jon Bennison",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-era-guy-armitage",
+      "name": "Guy Armitage",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-joe-cator-2022",
+      "name": "Joe Cator",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-joe-cator-2023",
+      "name": "Joe Cator",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-joe-cator-2024",
+      "name": "Joe Cator",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-joe-cator-2025",
+      "name": "Joe Cator",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-brad-singleton-2016",
+      "name": "Brad Singleton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-innes-senior",
+      "name": "Innes Senior",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-jack-ashworth",
+      "name": "Jack Ashworth",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-liam-sutcliffe",
+      "name": "Liam Sutcliffe",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-chris-atkin",
+      "name": "Chris Atkin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-brad-singleton",
+      "name": "Brad Singleton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-era-tyler-dupree",
+      "name": "Tyler Dupree",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-era-abbas-miski",
+      "name": "Abbas Miski",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-jack-broadbent",
+      "name": "Jack Broadbent",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-sam-luckley",
+      "name": "Sam Luckley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-era-agnatius-paasi",
+      "name": "Agnatius Paasi",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-eldon-myers",
+      "name": "Eldon Myers",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-thomas-burgess",
+      "name": "Thomas Burgess",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-ryan-hall",
+      "name": "Ryan Hall",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-kruise-leeming",
+      "name": "Kruise Leeming",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-era-josh-charnley",
+      "name": "Josh Charnley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-era-jack-hughes",
+      "name": "Jack Hughes",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-era-tevita-pangai-junior",
+      "name": "Tevita Pangai Junior",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-billy-jowitt",
+      "name": "Billy Jowitt",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-teddy-sadaoui",
+      "name": "Teddy Sadaoui",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-james-grehan",
+      "name": "James Grehan",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-elie-el-zakhem",
+      "name": "Elie El-Zakhem",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-semi-tadulala-2009",
+      "name": "Semi Tadulala",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-brad-walker",
+      "name": "Brad Walker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-kallum-watkins-2008",
+      "name": "Kallum Watkins",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-brad-gallagher",
+      "name": "Brad Gallagher",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-sam-burgess-2006",
+      "name": "Sam Burgess",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-olivier-elima-2012",
+      "name": "Olivier Elima",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-aaron-murphy-2009",
+      "name": "Aaron Murphy",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-joe-bretherton-2016",
+      "name": "Joe Bretherton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-john-bateman-2012",
+      "name": "John Bateman",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-ryan-sutton-2015",
+      "name": "Ryan Sutton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-harvey-livett-2020",
+      "name": "Harvey Livett",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-tom-burgess-2012",
+      "name": "Tom Burgess",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-kallum-watkins-2009",
+      "name": "Kallum Watkins",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-reece-lyne-2012",
+      "name": "Reece Lyne",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-ryan-hampshire-2015",
+      "name": "Ryan Hampshire",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-ryan-sutton-2016",
+      "name": "Ryan Sutton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-mikey-lewis-2020",
+      "name": "Mikey Lewis",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-dean-hadley-2020",
+      "name": "Dean Hadley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-morgan-smith",
+      "name": "Morgan Smith",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-brad-schneider",
+      "name": "Brad Schneider",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-george-flanagan-sr",
+      "name": "George Flanagan Sr",
+      "category": "historic",
+      "birthYear": 1986,
+      "referenceYear": 1996,
+      "age": 10,
+      "severity": "error",
+      "message": "Impossibly young at reference year: age 10"
+    },
+    {
+      "playerId": "leeds-hist-liam-hood-2013",
+      "name": "Liam Hood",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-craig-hall-2009",
+      "name": "Craig Hall",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-jacob-miller-2013",
+      "name": "Jacob Miller",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-oliver-gildart-2015",
+      "name": "Oliver Gildart",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-gareth-o-brien-2015",
+      "name": "Gareth O'Brien",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-morgan-smith-2019",
+      "name": "Morgan Smith",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-paul-sykes-2009",
+      "name": "Paul Sykes",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-ben-jones-bishop-2009",
+      "name": "Ben Jones-Bishop",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-tom-briscoe-2009",
+      "name": "Tom Briscoe",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-matty-russell-2012",
+      "name": "Matty Russell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-ben-crooks-2012",
+      "name": "Ben Crooks",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-oliver-gildart-2016",
+      "name": "Oliver Gildart",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-kevin-penny-2015",
+      "name": "Kevin Penny",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-anthony-england-2015",
+      "name": "Anthony England",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-jack-ashworth-2015",
+      "name": "Jack Ashworth",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-jez-litten-2020",
+      "name": "Jez Litten",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-era-bradley-o-neill",
+      "name": "Bradley O'Neill",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-chris-nero-2009",
+      "name": "Chris Nero",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-paul-sykes-2012",
+      "name": "Paul Sykes",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-ben-jeffries-2012",
+      "name": "Ben Jeffries",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-ben-crooks-2013",
+      "name": "Ben Crooks",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-toby-king-2015",
+      "name": "Toby King",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-luke-polselli-2022",
+      "name": "Luke Polselli",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-henry-o-kane-2022",
+      "name": "Henry O'Kane",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-luke-polselli-2023",
+      "name": "Luke Polselli",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-henry-o-kane-2023",
+      "name": "Henry O'Kane",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-luke-polselli-2025",
+      "name": "Luke Polselli",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-henry-o-kane-2025",
+      "name": "Henry O'Kane",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-jared-waerea-hargreaves",
+      "name": "Jared Waerea-Hargreaves",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-ryan-atkins-2006",
+      "name": "Ryan Atkins",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-paul-johnson-2006",
+      "name": "Paul Johnson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-ben-jeffries-2009",
+      "name": "Ben Jeffries",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-mark-calderwood-2009",
+      "name": "Mark Calderwood",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-tom-lineham-2012",
+      "name": "Tom Lineham",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-george-williams-2015",
+      "name": "George Williams",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-matty-russell-2015",
+      "name": "Matty Russell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-adam-swift-2015",
+      "name": "Adam Swift",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-luke-thompson-2015",
+      "name": "Luke Thompson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-mitch-garbutt-2020",
+      "name": "Mitch Garbutt",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-riley-dean",
+      "name": "Riley Dean",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-brett-ferres-2006",
+      "name": "Brett Ferres",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-chev-walker-2012",
+      "name": "Chev Walker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-danny-williams-2008",
+      "name": "Danny Williams",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-ben-jones-bishop-2013",
+      "name": "Ben Jones-Bishop",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-ash-handley-2016",
+      "name": "Ash Handley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-tom-lineham-2013",
+      "name": "Tom Lineham",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-paul-johnson-2013",
+      "name": "Paul Johnson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-ben-harrison-2015",
+      "name": "Ben Harrison",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-greg-minikin-2020",
+      "name": "Greg Minikin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-robbie-mulhern-2020",
+      "name": "Robbie Mulhern",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-luke-polselli-2024",
+      "name": "Luke Polselli",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-henry-o-kane-2024",
+      "name": "Henry O'Kane",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-luke-gale-2012",
+      "name": "Luke Gale",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-tom-briscoe-2016",
+      "name": "Tom Briscoe",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-brett-ferres-2016",
+      "name": "Brett Ferres",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-jordan-turner-2012",
+      "name": "Jordan Turner",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-andy-lynch-2013",
+      "name": "Andy Lynch",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-joe-westerman-2012",
+      "name": "Joe Westerman",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-tom-briscoe-2013",
+      "name": "Tom Briscoe",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-joe-burgess-2015",
+      "name": "Joe Burgess",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-george-williams-2016",
+      "name": "George Williams",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-ben-currie-2015",
+      "name": "Ben Currie",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-mark-percival-2015",
+      "name": "Mark Percival",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-jordan-abdull-2020",
+      "name": "Jordan Abdull",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-weller-hauraki-2020",
+      "name": "Weller Hauraki",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "widnes-hist-ben-davies",
+      "name": "Ben Davies",
+      "category": "historic",
+      "birthYear": 2000,
+      "referenceYear": 2007,
+      "age": 7,
+      "severity": "error",
+      "message": "Impossibly young at reference year: age 7"
+    },
+    {
+      "playerId": "bradford-hist-matt-diskin-2012",
+      "name": "Matt Diskin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-andy-lynch-2012",
+      "name": "Andy Lynch",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-richard-horne-2013",
+      "name": "Richard Horne",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-stefan-ratchford-2015",
+      "name": "Stefan Ratchford",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-terry-newton-2006",
+      "name": "Terry Newton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-richard-horne-2012",
+      "name": "Richard Horne",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-josh-charnley-2015",
+      "name": "Josh Charnley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-daryl-clark-2015",
+      "name": "Daryl Clark",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-alex-walmsley-2015",
+      "name": "Alex Walmsley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-terry-newton-2009",
+      "name": "Terry Newton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-farrell-2015",
+      "name": "Liam Farrell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-josh-charnley-2016",
+      "name": "Josh Charnley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-chris-hill-2015",
+      "name": "Chris Hill",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-sylvester-namo",
+      "name": "Sylvester Namo",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-muizz-mustapha",
+      "name": "Muizz Mustapha",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-gareth-ellis-2008",
+      "name": "Gareth Ellis",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-ryan-hall-2009",
+      "name": "Ryan Hall",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-zak-hardaker-2013",
+      "name": "Zak Hardaker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-daniel-holdsworth-2013",
+      "name": "Daniel Holdsworth",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-farrell-2016",
+      "name": "Liam Farrell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-reni-maitua",
+      "name": "Reni Maitua",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-reni-maitua-2015",
+      "name": "Reni Maitua",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-iestyn-harris-2006",
+      "name": "Iestyn Harris",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-ryan-hall-2013",
+      "name": "Ryan Hall",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-gareth-ellis-2013",
+      "name": "Gareth Ellis",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-travis-burns-2015",
+      "name": "Travis Burns",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-kallum-watkins-2013",
+      "name": "Kallum Watkins",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-zak-hardaker-2016",
+      "name": "Zak Hardaker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-era-matthew-storton",
+      "name": "Matthew Storton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-joe-burton",
+      "name": "Joe Burton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-kallum-watkins-2016",
+      "name": "Kallum Watkins",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-era-corey-johnson",
       "name": "Corey Johnson",
-      "category": "current",
-      "birthYear": 1961,
-      "age": 65,
-      "severity": "warning",
-      "message": "Suspicious current player age: 65"
-    },
-    {
-      "playerId": "london-cur-jacob-jones",
-      "name": "Jacob Jones",
-      "category": "current",
-      "birthYear": 1949,
-      "age": 77,
-      "severity": "warning",
-      "message": "Suspicious current player age: 77"
-    },
-    {
-      "playerId": "hull-kr-hist-michael-dobson",
-      "name": "Michael Dobson",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "castleford-hist-ben-roberts",
-      "name": "Ben Roberts",
+      "playerId": "catalans-hist-era-luke-keary",
+      "name": "Luke Keary",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "huddersfield-hist-keith-mason",
-      "name": "Keith Mason",
+      "playerId": "leigh-hist-era-alec-tuitavake",
+      "name": "Alec Tuitavake",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "huddersfield-hist-michael-lawrence",
-      "name": "Michael Lawrence",
+      "playerId": "catalans-hist-renaud-guigue",
+      "name": "Renaud Guigue",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "salford-hist-ian-watson",
-      "name": "Ian Watson",
+      "playerId": "bradford-hist-steve-menzies-2009",
+      "name": "Steve Menzies",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "salford-hist-gareth-hock",
-      "name": "Gareth Hock",
+      "playerId": "bradford-hist-mikey-wood",
+      "name": "Mikey Wood",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "oldham-hist-neil-holdsworth",
-      "name": "Neil Holdsworth",
+      "playerId": "catalans-hist-shane-perry",
+      "name": "Shane Perry",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "oldham-hist-phil-vievers",
-      "name": "Phil Vievers",
+      "playerId": "catalans-hist-shane-perry-2009",
+      "name": "Shane Perry",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "york-hist-graeme-steadman",
-      "name": "Graeme Steadman",
+      "playerId": "leeds-hist-era-jack-walker",
+      "name": "Jack Walker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-era-thomas-mikaele",
+      "name": "Thomas Mikaele",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "castleford-hist-era-jacques-o-neill",
+      "name": "Jacques O'Neill",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-era-joe-chan",
+      "name": "Joe Chan",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-era-morgan-smithies",
+      "name": "Morgan Smithies",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-joe-lovodua",
+      "name": "Joe Lovodua",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-adam-rooks",
+      "name": "Adam Rooks",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-era-lucas-albert",
+      "name": "Lucas Albert",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-matthew-petersen-2009",
+      "name": "Matthew Petersen",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-ross-oakes",
+      "name": "Ross Oakes",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-kr-hist-era-luis-johnson",
+      "name": "Luis Johnson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-era-oliver-russell",
+      "name": "Oliver Russell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-aaron-smith-2004",
+      "name": "Aaron Smith",
+      "category": "historic",
+      "birthYear": 1996,
+      "referenceYear": 2004,
+      "age": 8,
+      "severity": "error",
+      "message": "Impossibly young at reference year: age 8"
+    },
+    {
+      "playerId": "wigan-hist-era-kai-pearce-paul",
+      "name": "Kai Pearce-Paul",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-marc-herbert",
+      "name": "Marc Herbert",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-marc-herbert-2011",
+      "name": "Marc Herbert",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-tiaki-chan-2022",
+      "name": "Tiaki Chan",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-tiaki-chan-2023",
+      "name": "Tiaki Chan",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "toulouse-hist-tiaki-chan-2025",
+      "name": "Tiaki Chan",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
@@ -143,36 +2469,77 @@
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "crusaders-hist-gareth-thomas",
-      "name": "Gareth Thomas",
+      "playerId": "bradford-hist-brad-england",
+      "name": "Brad England",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "psg-hist-frederic-banquet",
-      "name": "Frederic Banquet",
+      "playerId": "toulouse-hist-tiaki-chan-2024",
+      "name": "Tiaki Chan",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "psg-hist-david-frayssinous",
-      "name": "David Frayssinous",
+      "playerId": "hull-kr-hist-era-will-oakes",
+      "name": "Will Oakes",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "salford-hist-shannon-ball",
-      "name": "Shannon Ball",
+      "playerId": "huddersfield-hist-era-elliot-wallis",
+      "name": "Elliot Wallis",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "warrington-hist-paul-wood",
-      "name": "Paul Wood",
+      "playerId": "salford-hist-era-matthew-costello",
+      "name": "Matthew Costello",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-api-pewhairangi-2018",
+      "name": "Api Pewhairangi",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-jake-clifford",
+      "name": "Jake Clifford",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "catalans-hist-jerome-guisset",
+      "name": "Jerome Guisset",
+      "category": "historic",
+      "birthYear": 1978,
+      "referenceYear": 1992,
+      "age": 14,
+      "severity": "error",
+      "message": "Impossibly young at reference year: age 14"
+    },
+    {
+      "playerId": "york-hist-jason-golden",
+      "name": "Jason Golden",
+      "category": "historic",
+      "birthYear": 1985,
+      "referenceYear": 1995,
+      "age": 10,
+      "severity": "error",
+      "message": "Impossibly young at reference year: age 10"
+    },
+    {
+      "playerId": "warrington-hist-era-rodrick-tai",
+      "name": "Rodrick Tai",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
@@ -185,8 +2552,102 @@
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "catalans-hist-stacy-jones",
-      "name": "Stacy Jones",
+      "playerId": "warrington-hist-era-connor-wrench",
+      "name": "Connor Wrench",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-jake-butler-fleming",
+      "name": "Jake Butler-Fleming",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-callum-bustin",
+      "name": "Callum Bustin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-era-jacob-trueman",
+      "name": "Jacob Trueman",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-matt-diskin-2014",
+      "name": "Matt Diskin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-tuoyo-egodo",
+      "name": "Tuoyo Egodo",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-matt-diskin-2013",
+      "name": "Matt Diskin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-mark-calderwood-2006",
+      "name": "Mark Calderwood",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-era-jake-thewlis",
+      "name": "Jake Thewlis",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-matt-diskin-2011",
+      "name": "Matt Diskin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-richie-barnett",
+      "name": "Richie Barnett",
+      "category": "historic",
+      "birthYear": 1981,
+      "referenceYear": 1989,
+      "age": 8,
+      "severity": "error",
+      "message": "Impossibly young at reference year: age 8"
+    },
+    {
+      "playerId": "hull-fc-hist-era-tex-hoy",
+      "name": "Tex Hoy",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-aaron-murphy-2010",
+      "name": "Aaron Murphy",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-shannon-ball",
+      "name": "Shannon Ball",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
@@ -199,890 +2660,195 @@
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "salford-hist-malcolm-alker",
-      "name": "Malcolm Alker",
+      "playerId": "bradford-hist-ben-jeffries-2011",
+      "name": "Ben Jeffries",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "wakefield-hist-david-alstead",
-      "name": "David Alstead",
+      "playerId": "catalans-hist-mark-hughes",
+      "name": "Mark Hughes",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "st-helens-hist-tom-armstrong",
-      "name": "Tom Armstrong",
+      "playerId": "catalans-hist-stacy-jones",
+      "name": "Stacy Jones",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "huddersfield-hist-david-atkins",
-      "name": "David Atkins",
+      "playerId": "toulouse-hist-sylvain-houles",
+      "name": "Sylvain Houles",
       "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-fc-hist-david-baildon",
-      "name": "David Baildon",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "huddersfield-hist-julian-bailey",
-      "name": "Julian Bailey",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "london-hist-greg-barwick",
-      "name": "Greg Barwick",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "salford-hist-neil-baynes",
-      "name": "Neil Baynes",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "oldham-hist-adrian-belle",
-      "name": "Adrian Belle",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "salford-hist-dave-bradbury",
-      "name": "Dave Bradbury",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "leeds-hist-luke-burgess",
-      "name": "Luke Burgess",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-darryl-cardiss",
-      "name": "Darryl Cardiss",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "huddersfield-hist-dale-cardoza",
-      "name": "Dale Cardoza",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-kr-hist-keale-carlile",
-      "name": "Keale Carlile",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "sheffield-hist-paul-carr",
-      "name": "Paul Carr",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-gary-chambers",
-      "name": "Gary Chambers",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "castleford-hist-david-chapman",
-      "name": "David Chapman",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "huddersfield-hist-andy-cheetham",
-      "name": "Andy Cheetham",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-jason-clark",
-      "name": "Jason Clark",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "oldham-hist-john-clarke",
-      "name": "John Clarke",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "huddersfield-hist-ben-cooper",
-      "name": "Ben Cooper",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-kr-hist-jordan-cox",
-      "name": "Jordan Cox",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-fc-hist-steve-craven",
-      "name": "Steve Craven",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wigan-hist-dominic-crosby",
-      "name": "Dominic Crosby",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "castleford-hist-brad-davis",
-      "name": "Brad Davis",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "widnes-hist-paul-devlin",
-      "name": "Paul Devlin",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "leeds-hist-james-donaldson",
-      "name": "James Donaldson",
-      "category": "current",
-      "birthYear": 1957,
-      "age": 69,
-      "severity": "warning",
-      "message": "Suspicious current player age: 69"
-    },
-    {
-      "playerId": "sheffield-hist-rod-doyle",
-      "name": "Rod Doyle",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "salford-hist-joe-faimalo",
-      "name": "Joe Faimalo",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-andy-fisher",
-      "name": "Andy Fisher",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "castleford-hist-alex-foster",
-      "name": "Alex Foster",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "huddersfield-hist-matt-gardner",
-      "name": "Matt Gardner",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "widnes-hist-chris-giles",
-      "name": "Chris Giles",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-simon-gillies",
-      "name": "Simon Gillies",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "widnes-hist-tom-gilmore",
-      "name": "Tom Gilmore",
-      "category": "current",
-      "birthYear": 1948,
-      "age": 78,
-      "severity": "warning",
-      "message": "Suspicious current player age: 78"
-    },
-    {
-      "playerId": "hull-kr-hist-james-greenwood",
-      "name": "James Greenwood",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "huddersfield-hist-dean-hanger",
-      "name": "Dean Hanger",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "st-helens-hist-bryn-hargreaves",
-      "name": "Bryn Hargreaves",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "london-hist-tommy-haughey",
-      "name": "Tommy Haughey",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "castleford-hist-andrew-henderson",
-      "name": "Andrew Henderson",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "catalans-hist-ian-henderson",
-      "name": "Ian Henderson",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "widnes-hist-aaron-heremaia",
-      "name": "Aaron Heremaia",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "castleford-hist-liam-higgins",
-      "name": "Liam Higgins",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "oldham-hist-howard-hill",
-      "name": "Howard Hill",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-andy-hodgson",
-      "name": "Andy Hodgson",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "st-helens-hist-jason-hooper",
-      "name": "Jason Hooper",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "london-hist-david-howell",
-      "name": "David Howell",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "st-helens-hist-konrad-hurrell",
-      "name": "Konrad Hurrell",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-fc-hist-andy-ireland",
-      "name": "Andy Ireland",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "leeds-hist-lee-jackson",
-      "name": "Lee Jackson",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wigan-hist-phil-jones",
-      "name": "Phil Jones",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "huddersfield-hist-david-king",
-      "name": "David King",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "st-helens-hist-john-kirkpatrick",
-      "name": "John Kirkpatrick",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-kr-hist-sam-latus",
-      "name": "Sam Latus",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-graham-law",
-      "name": "Graham Law",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-fc-hist-jim-leatham",
-      "name": "Jim Leatham",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-fc-hist-gary-lester",
-      "name": "Gary Lester",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "huddersfield-hist-jamaal-lolesi",
-      "name": "Jamaal Lolesi",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "oldham-hist-gary-lord",
-      "name": "Gary Lord",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "huddersfield-hist-shaun-lunt",
-      "name": "Shaun Lunt",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "catalans-hist-james-maloney",
-      "name": "James Maloney",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "widnes-hist-stefan-marsh",
-      "name": "Stefan Marsh",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "salford-hist-scott-martin",
-      "name": "Scott Martin",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "castleford-hist-peter-mata-utia",
-      "name": "Peter Mata'utia",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "st-helens-hist-vila-mata-utia",
-      "name": "Vila Mata'utia",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "widnes-hist-david-mills",
-      "name": "David Mills",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-jon-molloy",
-      "name": "Jon Molloy",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "huddersfield-hist-iain-morrison",
-      "name": "Iain Morrison",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "huddersfield-hist-mark-moxon",
-      "name": "Mark Moxon",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "catalans-hist-justin-murphy",
-      "name": "Justin Murphy",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "widnes-hist-stephen-myler",
-      "name": "Stephen Myler",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "castleford-hist-richard-mckell",
-      "name": "Richard Mckell",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "castleford-hist-kirk-netherton",
-      "name": "Kirk Netherton",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "salford-hist-jason-nicol",
-      "name": "Jason Nicol",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-fc-hist-rob-nolan",
-      "name": "Rob Nolan",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-sam-obst",
-      "name": "Sam Obst",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-gene-ormsby",
-      "name": "Gene Ormsby",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-fc-hist-paul-parker",
-      "name": "Paul Parker",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-kevin-penny",
-      "name": "Kevin Penny",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-lee-penny",
-      "name": "Lee Penny",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "widnes-hist-chris-percival",
-      "name": "Chris Percival",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
+      "birthYear": 1981,
+      "referenceYear": 1992,
+      "age": 11,
+      "severity": "error",
+      "message": "Impossibly young at reference year: age 11"
     },
     {
-      "playerId": "leeds-hist-willie-poching",
-      "name": "Willie Poching",
+      "playerId": "huddersfield-hist-brett-ferres-2013",
+      "name": "Brett Ferres",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "widnes-hist-dan-potter",
-      "name": "Dan Potter",
+      "playerId": "bradford-hist-lee-radford-2004",
+      "name": "Lee Radford",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "hull-fc-hist-craig-poucher",
-      "name": "Craig Poucher",
+      "playerId": "bradford-hist-paul-johnson-2004",
+      "name": "Paul Johnson",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "hull-fc-hist-steve-prescott",
-      "name": "Steve Prescott",
+      "playerId": "wakefield-hist-paul-johnson-2010",
+      "name": "Paul Johnson",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "salford-hist-craig-randall",
-      "name": "Craig Randall",
+      "playerId": "bradford-hist-lee-radford-1999",
+      "name": "Lee Radford",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "st-helens-hist-greg-richards",
-      "name": "Greg Richards",
+      "playerId": "bradford-hist-lee-radford-2003",
+      "name": "Lee Radford",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "st-helens-hist-daniel-richardson",
-      "name": "Daniel Richardson",
+      "playerId": "bradford-hist-paul-johnson-2005",
+      "name": "Paul Johnson",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "hull-fc-hist-robert-roberts",
-      "name": "Robert Roberts",
+      "playerId": "bradford-hist-lee-radford-2000",
+      "name": "Lee Radford",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "wakefield-hist-jamie-rooney",
-      "name": "Jamie Rooney",
+      "playerId": "bradford-hist-lee-radford-2002",
+      "name": "Lee Radford",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "bradford-hist-kieran-gill",
-      "name": "Kieran Gill",
+      "playerId": "bradford-hist-lee-radford-2001",
+      "name": "Lee Radford",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "psg-hist-jason-sands",
-      "name": "Jason Sands",
+      "playerId": "york-hist-graeme-steadman",
+      "name": "Graeme Steadman",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "salford-hist-lokeni-savelio",
-      "name": "Lokeni Savelio",
+      "playerId": "paul-clough",
+      "name": "Paul Clough",
       "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "bradford-hist-jonathan-scales",
-      "name": "Jonathan Scales",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "castleford-hist-andrew-schick",
-      "name": "Andrew Schick",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "st-helens-hist-chris-smith",
-      "name": "Chris Smith",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "bradford-hist-hudson-smith",
-      "name": "Hudson Smith",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-fc-hist-jamie-smith",
-      "name": "Jamie Smith",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "salford-hist-jeremy-smith",
-      "name": "Jeremy Smith",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "london-hist-ady-spencer",
-      "name": "Ady Spencer",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-rob-spicer",
-      "name": "Rob Spicer",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "leigh-hist-craig-stapleton",
-      "name": "Craig Stapleton",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "london-hist-francis-stephenson",
-      "name": "Francis Stephenson",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-warren-stevens",
-      "name": "Warren Stevens",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "wakefield-hist-tony-tatupu",
-      "name": "Tony Tatupu",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "salford-hist-bobby-thompson",
-      "name": "Bobby Thompson",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "london-hist-john-timu",
-      "name": "John Timu",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "castleford-hist-ian-tonks",
-      "name": "Ian Tonks",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "oldham-hist-paul-topping",
-      "name": "Paul Topping",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "sheffield-hist-darren-turner",
-      "name": "Darren Turner",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "sheffield-hist-marcus-vassilakopoulos",
-      "name": "Marcus Vassilakopoulos",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "st-helens-hist-atelea-vea",
-      "name": "Atelea Vea",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-kr-hist-michael-vella",
-      "name": "Michael Vella",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "st-helens-hist-ant-walker",
-      "name": "Ant Walker",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "salford-hist-jason-webber",
-      "name": "Jason Webber",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "widnes-hist-matthew-whitaker",
-      "name": "Matthew Whitaker",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "hull-fc-hist-alex-wilkinson",
-      "name": "Alex Wilkinson",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
-    },
-    {
-      "playerId": "huddersfield-hist-aaron-murphy",
-      "name": "Aaron Murphy",
-      "category": "historic",
-      "severity": "info",
-      "message": "Missing birth year for historic/legend player"
+      "birthYear": 1987,
+      "referenceYear": 2001,
+      "age": 14,
+      "severity": "error",
+      "message": "Impossibly young at reference year: age 14"
     },
     {
-      "playerId": "wigan-hist-garry-connolly",
-      "name": "Garry Connolly",
+      "playerId": "warrington-hist-era-matthew-ashton",
+      "name": "Matthew Ashton",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "wakefield-hist-paul-sykes",
+      "playerId": "bradford-hist-paul-sykes-2011",
       "name": "Paul Sykes",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "wigan-hist-terry-newton",
-      "name": "Terry Newton",
+      "playerId": "bradford-hist-paul-sykes-1999",
+      "name": "Paul Sykes",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "henry-paul",
-      "name": "Henry Paul",
+      "playerId": "bradford-hist-paul-sykes-2000",
+      "name": "Paul Sykes",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "ali-lauitiiti",
-      "name": "Ali Lauitiiti",
+      "playerId": "bradford-hist-paul-sykes-2002",
+      "name": "Paul Sykes",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "vaaiga-tuigamala",
-      "name": "Va'aiga Tuigamala",
+      "playerId": "bradford-hist-paul-sykes-2001",
+      "name": "Paul Sykes",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "brian-carney",
-      "name": "Brian Carney",
+      "playerId": "bradford-hist-chev-walker-2011",
+      "name": "Chev Walker",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "andy-lynch",
-      "name": "Andy Lynch",
+      "playerId": "bradford-hist-chev-walker-2014",
+      "name": "Chev Walker",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "bradford-hist-chev-walker-2013",
+      "name": "Chev Walker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "paul-anderson",
+      "name": "Paul Anderson",
+      "category": "historic",
+      "birthYear": 1977,
+      "referenceYear": 1991,
+      "age": 14,
+      "severity": "error",
+      "message": "Impossibly young at reference year: age 14"
     },
     {
       "playerId": "alex-murphy",
@@ -1092,8 +2858,981 @@
       "message": "Missing birth year for historic/legend player"
     },
     {
-      "playerId": "rob-burrow",
-      "name": "Rob Burrow",
+      "playerId": "warrington-hist-ben-harrison-2009",
+      "name": "Ben Harrison",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-gareth-ellis-2016",
+      "name": "Gareth Ellis",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-gareth-o-brien-2016",
+      "name": "Gareth O'Brien",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "salford-hist-josh-jones-2016",
+      "name": "Josh Jones",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-mark-percival-2016",
+      "name": "Mark Percival",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-adam-swift-2016",
+      "name": "Adam Swift",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "st-helens-hist-alex-walmsley-2016",
+      "name": "Alex Walmsley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-ben-jones-bishop-2016",
+      "name": "Ben Jones-Bishop",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-jordan-turner-2020",
+      "name": "Jordan Turner",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-brad-fash-2020",
+      "name": "Brad Fash",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-ash-handley-2020",
+      "name": "Ash Handley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-jack-walker-2020",
+      "name": "Jack Walker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-liam-sutcliffe-2020",
+      "name": "Liam Sutcliffe",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-luke-gale-2020",
+      "name": "Luke Gale",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-daryl-clark-2020",
+      "name": "Daryl Clark",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-ben-currie-2020",
+      "name": "Ben Currie",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-toby-king-2020",
+      "name": "Toby King",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-chris-hill-2020",
+      "name": "Chris Hill",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-jack-hughes-2020",
+      "name": "Jack Hughes",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-stefan-ratchford-2020",
+      "name": "Stefan Ratchford",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-josh-charnley-2020",
+      "name": "Josh Charnley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-tom-lineham-2020",
+      "name": "Tom Lineham",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-farrell-2020",
+      "name": "Liam Farrell",
+      "category": "legend",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-morgan-smithies-2020",
+      "name": "Morgan Smithies",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-joe-burgess-2020",
+      "name": "Joe Burgess",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-zak-hardaker-2020",
+      "name": "Zak Hardaker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-josh-jones-2021",
+      "name": "Josh Jones",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-james-gavet-2021",
+      "name": "James Gavet",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-adam-swift-2021",
+      "name": "Adam Swift",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-brad-fash-2021",
+      "name": "Brad Fash",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-rhyse-martin-2021",
+      "name": "Rhyse Martin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-ash-handley-2021",
+      "name": "Ash Handley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-kruise-leeming-2021",
+      "name": "Kruise Leeming",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-liam-sutcliffe-2021",
+      "name": "Liam Sutcliffe",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-luke-gale-2021",
+      "name": "Luke Gale",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-tom-briscoe-2021",
+      "name": "Tom Briscoe",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-daryl-clark-2021",
+      "name": "Daryl Clark",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-ben-currie-2021",
+      "name": "Ben Currie",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-toby-king-2021",
+      "name": "Toby King",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-chris-hill-2021",
+      "name": "Chris Hill",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-jack-hughes-2021",
+      "name": "Jack Hughes",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-josh-charnley-2021",
+      "name": "Josh Charnley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-matt-davis-2021",
+      "name": "Matt Davis",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-stefan-ratchford-2021",
+      "name": "Stefan Ratchford",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-tom-lineham-2021",
+      "name": "Tom Lineham",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-robbie-mulhern-2021",
+      "name": "Robbie Mulhern",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-farrell-2021",
+      "name": "Liam Farrell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-brad-singleton-2021",
+      "name": "Brad Singleton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-oliver-gildart-2021",
+      "name": "Oliver Gildart",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-zak-hardaker-2021",
+      "name": "Zak Hardaker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-byrne-2021",
+      "name": "Liam Byrne",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-chris-hill-2022",
+      "name": "Chris Hill",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-oliver-russell-2022",
+      "name": "Oliver Russell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-josh-jones-2022",
+      "name": "Josh Jones",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-adam-swift-2022",
+      "name": "Adam Swift",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-luke-gale-2022",
+      "name": "Luke Gale",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-brad-fash-2022",
+      "name": "Brad Fash",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-josh-reynolds-2022",
+      "name": "Josh Reynolds",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-kruise-leeming-2022",
+      "name": "Kruise Leeming",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-rhyse-martin-2022",
+      "name": "Rhyse Martin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-ash-handley-2022",
+      "name": "Ash Handley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-liam-sutcliffe-2022",
+      "name": "Liam Sutcliffe",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-zak-hardaker-2022",
+      "name": "Zak Hardaker",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-liam-hood-2022",
+      "name": "Liam Hood",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-daryl-clark-2022",
+      "name": "Daryl Clark",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-george-williams-2022",
+      "name": "George Williams",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-toby-king-2022",
+      "name": "Toby King",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-ben-currie-2022",
+      "name": "Ben Currie",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-stefan-ratchford-2022",
+      "name": "Stefan Ratchford",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-josh-charnley-2022",
+      "name": "Josh Charnley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-matthew-ashton-2022",
+      "name": "Matthew Ashton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-robbie-mulhern-2022",
+      "name": "Robbie Mulhern",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-farrell-2022",
+      "name": "Liam Farrell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-brad-singleton-2022",
+      "name": "Brad Singleton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-byrne-2022",
+      "name": "Liam Byrne",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-morgan-smithies-2022",
+      "name": "Morgan Smithies",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-chris-hill-2023",
+      "name": "Chris Hill",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-adam-swift-2023",
+      "name": "Adam Swift",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-brad-fash-2023",
+      "name": "Brad Fash",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-joe-cator-2023",
+      "name": "Joe Cator",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-liam-sutcliffe-2023",
+      "name": "Liam Sutcliffe",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-joe-lovodua-2023",
+      "name": "Joe Lovodua",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-ash-handley-2023",
+      "name": "Ash Handley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-rhyse-martin-2023",
+      "name": "Rhyse Martin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-liam-hood-2023",
+      "name": "Liam Hood",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-morgan-smith-2023",
+      "name": "Morgan Smith",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-george-williams-2023",
+      "name": "George Williams",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-ben-currie-2023",
+      "name": "Ben Currie",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-matthew-ashton-2023",
+      "name": "Matthew Ashton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-stefan-ratchford-2023",
+      "name": "Stefan Ratchford",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-daryl-clark-2023",
+      "name": "Daryl Clark",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-farrell-2023",
+      "name": "Liam Farrell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-toby-king-2023",
+      "name": "Toby King",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-morgan-smithies-2023",
+      "name": "Morgan Smithies",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-kai-pearce-paul-2023",
+      "name": "Kai Pearce-Paul",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-byrne-2023",
+      "name": "Liam Byrne",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-adam-swift-2024",
+      "name": "Adam Swift",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-chris-hill-2024",
+      "name": "Chris Hill",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-oliver-russell-2024",
+      "name": "Oliver Russell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-liam-sutcliffe-2024",
+      "name": "Liam Sutcliffe",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-morgan-smith-2024",
+      "name": "Morgan Smith",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-brad-fash-2024",
+      "name": "Brad Fash",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-ash-handley-2024",
+      "name": "Ash Handley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-rhyse-martin-2024",
+      "name": "Rhyse Martin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-george-williams-2024",
+      "name": "George Williams",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-toby-king-2024",
+      "name": "Toby King",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-ben-currie-2024",
+      "name": "Ben Currie",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-matthew-ashton-2024",
+      "name": "Matthew Ashton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-farrell-2024",
+      "name": "Liam Farrell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-luke-thompson-2024",
+      "name": "Luke Thompson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-abbas-miski-2024",
+      "name": "Abbas Miski",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-bradley-o-neill-2024",
+      "name": "Bradley O'Neill",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-byrne-2024",
+      "name": "Liam Byrne",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-kruise-leeming-2024",
+      "name": "Kruise Leeming",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "huddersfield-hist-adam-swift-2025",
+      "name": "Adam Swift",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-yusuf-aydin-2025",
+      "name": "Yusuf Aydin",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-tom-briscoe-2025",
+      "name": "Tom Briscoe",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-jack-ashworth-2025",
+      "name": "Jack Ashworth",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "hull-fc-hist-brad-fash-2025",
+      "name": "Brad Fash",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-kallum-watkins-2025",
+      "name": "Kallum Watkins",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-ash-handley-2025",
+      "name": "Ash Handley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-hist-ryan-hall-2025",
+      "name": "Ryan Hall",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-robbie-mulhern-2025",
+      "name": "Robbie Mulhern",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-gareth-o-brien-2025",
+      "name": "Gareth O'Brien",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-josh-charnley-2025",
+      "name": "Josh Charnley",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-jack-hughes-2025",
+      "name": "Jack Hughes",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leigh-hist-matt-davis-2025",
+      "name": "Matt Davis",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-jacob-trueman-2025",
+      "name": "Jacob Trueman",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wakefield-hist-liam-hood-2025",
+      "name": "Liam Hood",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-george-williams-2025",
+      "name": "George Williams",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-ben-currie-2025",
+      "name": "Ben Currie",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-toby-king-2025",
+      "name": "Toby King",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "warrington-hist-rodrick-tai-2025",
+      "name": "Rodrick Tai",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-farrell-2025",
+      "name": "Liam Farrell",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-bradley-o-neill-2025",
+      "name": "Bradley O'Neill",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-liam-byrne-2025",
+      "name": "Liam Byrne",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-luke-thompson-2025",
+      "name": "Luke Thompson",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-kruise-leeming-2025",
+      "name": "Kruise Leeming",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "wigan-hist-tyler-dupree-2025",
+      "name": "Tyler Dupree",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "leeds-leg-gareth-ellis-2007",
+      "name": "Gareth Ellis",
       "category": "legend",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"

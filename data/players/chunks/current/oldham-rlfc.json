@@ -33,7 +33,9 @@
     "clubsPlayedFor": [
       "Huddersfield Giants",
       "Oldham RLFC"
-    ]
+    ],
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "oldham-cur-jonty-gorley",
@@ -54,6 +56,8 @@
     "basePlayerId": "oldham-cur-jonty-gorley",
     "status": "Current",
     "primaryPosition": "STAND_OFF",
-    "birthYear": 2004
+    "birthYear": 2004,
+    "availableInGame": false,
+    "superLeagueEligible": false
   }
 ]

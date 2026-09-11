@@ -4,7 +4,7 @@
     "name": "Nathan Connell",
     "position": "WING",
     "club": "Widnes Vikings",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -26,6 +26,8 @@
     "clubsPlayedFor": [
       "Salford Red Devils",
       "Widnes Vikings"
-    ]
+    ],
+    "availableInGame": false,
+    "superLeagueEligible": false
   }
 ]

@@ -15,7 +15,9 @@ const CACHE_DIR = join(__dirname, "rlp-cache");
 const FILES = ["current-squads.json", "historic-players.json", "legends.json"] as const;
 
 function parsePlayerName(html: string): string | null {
-  const m = html.match(/<title>([^<]+?)\s*-\s*RLP<\/title>/i);
+  const m =
+    html.match(/<title>([^<]+?)\s*-\s*RLP<\/title>/i) ||
+    html.match(/<title>([^<]+?)\s*-\s*Playing Career<\/title>/i);
   return m?.[1]?.trim() ?? null;
 }
 

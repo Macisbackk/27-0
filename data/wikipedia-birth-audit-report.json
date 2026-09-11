@@ -1,235 +1,140 @@
 {
-  "generatedAt": "2026-07-03T11:46:59.806Z",
+  "generatedAt": "2026-09-11T22:12:35.905Z",
   "source": "Wikipedia only",
   "summary": {
-    "targets": 31,
-    "found": 18,
-    "notFound": 13,
-    "ambiguous": 1,
-    "totalPlayers": 2565,
-    "withBirthData": 2153,
-    "withoutBirthData": 412
+    "targets": 18,
+    "found": 9,
+    "notFound": 9,
+    "ambiguous": 0,
+    "totalPlayers": 3384,
+    "withBirthData": 2913,
+    "withoutBirthData": 471
   },
   "entries": [
     {
-      "playerId": "bradford-cur-mitch-souter",
-      "name": "Mitch Souter",
+      "playerId": "bradford-cur-alfie-leake",
+      "name": "Alfie Leake",
       "status": "not_found",
       "sourceUrl": null
     },
     {
-      "playerId": "catalans-cur-arthur-romano",
-      "name": "Arthur Romano",
+      "playerId": "castleford-cur-phoenix-laulu-togagae",
+      "name": "Phoenix Laulu-Togaga'e",
       "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Arthur_Romano",
-      "birthYear": 1997
-    },
-    {
-      "playerId": "catalans-cur-bayley-sironen",
-      "name": "Bayley Sironen",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Bayley_Sironen",
-      "birthYear": 1996,
-      "dateOfBirth": "1996-12-23"
-    },
-    {
-      "playerId": "catalans-cur-jordan-dezaria",
-      "name": "Jordan Dezaria",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Jordan_Dezaria",
-      "birthYear": 1996,
-      "dateOfBirth": "1996-11-06"
-    },
-    {
-      "playerId": "catalans-cur-manase-kaho",
-      "name": "Manase Kaho",
-      "status": "not_found",
-      "sourceUrl": null
-    },
-    {
-      "playerId": "catalans-cur-paul-seguier",
-      "name": "Paul Séguier",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Paul_Séguier",
-      "birthYear": 1997,
-      "dateOfBirth": "1997-09-08"
-    },
-    {
-      "playerId": "huddersfield-cur-oliver-wilson",
-      "name": "Oliver Wilson",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Oliver_Wilson_(rugby_league)",
-      "birthYear": 2000,
-      "dateOfBirth": "2000-03-22"
-    },
-    {
-      "playerId": "hull-kr-cur-danny-richardson",
-      "name": "Danny Richardson",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Danny_Richardson",
-      "birthYear": 1996
-    },
-    {
-      "playerId": "hull-kr-cur-kelepi-tanginoa",
-      "name": "Kelepi Tanginoa",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Kelepi_Tanginoa",
-      "birthYear": 1994,
-      "dateOfBirth": "1994-03-01"
-    },
-    {
-      "playerId": "leeds-cur-james-bentley",
-      "name": "James Bentley",
-      "status": "ambiguous",
-      "sourceUrl": "https://en.wikipedia.org/wiki/James_Bentley",
-      "birthYear": 1992,
-      "note": "Multiple Wikipedia pages with conflicting birth years"
-    },
-    {
-      "playerId": "leeds-cur-sam-lisone",
-      "name": "Sam Lisone",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Sam_Lisone",
-      "birthYear": 1994,
-      "dateOfBirth": "1994-02-19"
-    },
-    {
-      "playerId": "leigh-cur-darnell-mcintosh",
-      "name": "Darnell McIntosh",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Darnell_McIntosh",
-      "birthYear": 1997,
-      "dateOfBirth": "1997-07-05"
-    },
-    {
-      "playerId": "leigh-cur-ethan-o-neill",
-      "name": "Ethan O'Neill",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Ethan_O'Neill",
-      "birthYear": 1999,
-      "dateOfBirth": "1999-06-01"
-    },
-    {
-      "playerId": "london-cur-harry-aldous",
-      "name": "Harry Aldous",
-      "status": "not_found",
-      "sourceUrl": null
-    },
-    {
-      "playerId": "oldham-cur-jonty-gorley",
-      "name": "Jonty Gorley",
-      "status": "not_found",
-      "sourceUrl": null
-    },
-    {
-      "playerId": "salford-cur-brodie-shields",
-      "name": "Brodie Shields",
-      "status": "not_found",
-      "sourceUrl": null
-    },
-    {
-      "playerId": "salford-cur-chris-savelio",
-      "name": "Chris Savelio",
-      "status": "not_found",
-      "sourceUrl": null
-    },
-    {
-      "playerId": "salford-cur-dele-sule",
-      "name": "Dele Sule",
-      "status": "not_found",
-      "sourceUrl": null
-    },
-    {
-      "playerId": "salford-cur-logan-ewington",
-      "name": "Logan Ewington",
-      "status": "not_found",
-      "sourceUrl": null
-    },
-    {
-      "playerId": "salford-cur-ryan-kingston",
-      "name": "Ryan Kingston",
-      "status": "not_found",
-      "sourceUrl": null
-    },
-    {
-      "playerId": "salford-cur-sitili-ngahe",
-      "name": "Sitili-Losala Ngahe",
-      "status": "not_found",
-      "sourceUrl": null
-    },
-    {
-      "playerId": "st-helens-cur-morgan-knowles",
-      "name": "Morgan Knowles",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Morgan_Knowles",
-      "birthYear": 1996,
-      "dateOfBirth": "1996-11-05"
-    },
-    {
-      "playerId": "toulouse-cur-eloi-pelissier",
-      "name": "Eloi Pelissier",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Eloi_Pelissier",
-      "birthYear": 1991,
-      "dateOfBirth": "1991-06-18"
-    },
-    {
-      "playerId": "toulouse-cur-john-toleafoa",
-      "name": "John Toleafoa",
-      "status": "not_found",
-      "sourceUrl": null
-    },
-    {
-      "playerId": "toulouse-cur-justin-sangare",
-      "name": "Justin Sangaré",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Justin_Sangaré",
-      "birthYear": 1998,
-      "dateOfBirth": "1998-03-07"
-    },
-    {
-      "playerId": "wakefield-cur-cameron-scott",
-      "name": "Cameron Scott",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Cameron_Scott",
-      "birthYear": 1999,
-      "dateOfBirth": "1999-10-07"
-    },
-    {
-      "playerId": "wakefield-cur-liam-hood",
-      "name": "Liam Hood",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Liam_Hood",
-      "birthYear": 1992,
-      "dateOfBirth": "1992-01-06"
-    },
-    {
-      "playerId": "wakefield-cur-renouf-atoni",
-      "name": "Renouf Atoni",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Renouf_Atoni",
-      "birthYear": 1995,
-      "dateOfBirth": "1995-06-25"
-    },
-    {
-      "playerId": "warrington-cur-matty-nicholson",
-      "name": "Matty Nicholson",
-      "status": "found",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Matty_Nicholson",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Phoenix_Laulu-Togaga'e",
       "birthYear": 2003,
-      "dateOfBirth": "2003-07-18"
+      "dateOfBirth": "2003-04-16"
     },
     {
-      "playerId": "york-cur-jordan-lipp",
-      "name": "Jordan Lipp",
+      "playerId": "catalans-cur-alexis-lis",
+      "name": "Alexis Lis",
       "status": "not_found",
       "sourceUrl": null
     },
     {
-      "playerId": "york-cur-oliver-field",
-      "name": "Oliver Field",
+      "playerId": "catalans-cur-clement-martin",
+      "name": "Clement Martin",
       "status": "not_found",
       "sourceUrl": null
+    },
+    {
+      "playerId": "catalans-cur-giovanni-descalzi",
+      "name": "Giovanni Descalzi",
+      "status": "not_found",
+      "sourceUrl": null
+    },
+    {
+      "playerId": "catalans-cur-kruise-leeming",
+      "name": "Kruise Leeming",
+      "status": "found",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Kruise_Leeming",
+      "birthYear": 1995,
+      "dateOfBirth": "1995-09-07"
+    },
+    {
+      "playerId": "hull-fc-cur-lennon-clark",
+      "name": "Lennon Clark",
+      "status": "not_found",
+      "sourceUrl": null
+    },
+    {
+      "playerId": "hull-kr-cur-harvey-horne",
+      "name": "Harvey Horne",
+      "status": "not_found",
+      "sourceUrl": null
+    },
+    {
+      "playerId": "hull-kr-cur-zach-fishwick",
+      "name": "Zach Fishwick",
+      "status": "found",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Zach_Fishwick",
+      "birthYear": 2005,
+      "dateOfBirth": "2005-03-09"
+    },
+    {
+      "playerId": "leeds-cur-tom-nicholson-watton",
+      "name": "Tom Nicholson-Watton",
+      "status": "not_found",
+      "sourceUrl": null
+    },
+    {
+      "playerId": "st-helens-cur-jacob-douglas",
+      "name": "Jacob Douglas",
+      "status": "found",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Jacob_Douglas_(rugby_league)",
+      "birthYear": 2004,
+      "dateOfBirth": "2004-03-03"
+    },
+    {
+      "playerId": "st-helens-cur-jake-davies",
+      "name": "Jake Davies",
+      "status": "not_found",
+      "sourceUrl": null
+    },
+    {
+      "playerId": "toulouse-cur-henry-okane",
+      "name": "Henry O'Kane",
+      "status": "found",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Henry_O'Kane",
+      "birthYear": 2002,
+      "dateOfBirth": "2002-04-05"
+    },
+    {
+      "playerId": "toulouse-cur-hugo-garrigues",
+      "name": "Hugo Garrigues",
+      "status": "not_found",
+      "sourceUrl": null
+    },
+    {
+      "playerId": "wakefield-cur-will-tate",
+      "name": "Will Tate",
+      "status": "found",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Will_Tate",
+      "birthYear": 2001
+    },
+    {
+      "playerId": "wigan-cur-george-hirst",
+      "name": "George Hirst",
+      "status": "found",
+      "sourceUrl": "https://en.wikipedia.org/wiki/George_Hirst_(rugby_league)",
+      "birthYear": 2001,
+      "dateOfBirth": "2001-05-27"
+    },
+    {
+      "playerId": "wigan-cur-noah-hodkinson",
+      "name": "Noah Hodkinson",
+      "status": "found",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Noah_Hodkinson",
+      "birthYear": 2005,
+      "dateOfBirth": "2005-11-29"
+    },
+    {
+      "playerId": "york-cur-jonathan-bennison",
+      "name": "Jon Bennison",
+      "status": "found",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Jon_Bennison",
+      "birthYear": 2002,
+      "dateOfBirth": "2002-12-01"
     }
   ]
 }

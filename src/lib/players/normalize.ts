@@ -12,7 +12,7 @@ import { resolveDisplayClub } from "../clubs/super-league-display";
 import { resolveCareerTries } from "./career-tries";
 import { resolveCategory } from "./active";
 import { resolveSuperLeagueEligible } from "./super-league-eligibility";
-import { getDreamTeamYears, getGoldenBootYears } from "./achievements";
+import { getDreamTeamYears, getGoldenBootYears, getLeagueLeadersYears, getSuperLeagueChampionYears, getChallengeCupYears } from "./achievements";
 import {
   buildPlayerTeamYearId,
   categoryToCardStatus,
@@ -180,6 +180,9 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
     hallOfFame: raw.hallOfFame === true ? true : undefined,
     dreamTeamYears: getDreamTeamYears(id),
     goldenBootYears: getGoldenBootYears(id),
+    leagueLeadersYears: getLeagueLeadersYears(id),
+    superLeagueChampionYears: getSuperLeagueChampionYears(id),
+    challengeCupYears: getChallengeCupYears(id),
     availableInGame:
       raw.availableInGame === false ? false : undefined,
     superLeagueEligible:

@@ -30,7 +30,9 @@
     "basePlayerId": "midlands-cur-toby-warren",
     "status": "Current",
     "primaryPosition": "CENTRE",
-    "currentClub": "Midlands Hurricanes"
+    "currentClub": "Midlands Hurricanes",
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "midlands-cur-zach-jebson",
@@ -59,6 +61,8 @@
     "clubsPlayedFor": [
       "Oldham RLFC",
       "Midlands Hurricanes"
-    ]
+    ],
+    "availableInGame": false,
+    "superLeagueEligible": false
   }
 ]

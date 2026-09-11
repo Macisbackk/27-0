@@ -9,8 +9,6 @@ interface AchievementChipListProps {
   achievements: PlayerAchievement[];
   compactMobile?: boolean;
   className?: string;
-  /** When true, year-based honour chips start expanded (e.g. player detail modal). */
-  dreamTeamDefaultExpanded?: boolean;
 }
 
 const HonourYearChip = memo(function HonourYearChip({
@@ -32,15 +30,13 @@ const HonourYearsCollapsibleChip = memo(function HonourYearsCollapsibleChip({
   years,
   variant,
   compactMobile,
-  defaultExpanded = false,
 }: {
   label: string;
   years: readonly number[];
   variant: (typeof ACHIEVEMENT_TAG_VARIANT)[keyof typeof ACHIEVEMENT_TAG_VARIANT];
   compactMobile?: boolean;
-  defaultExpanded?: boolean;
 }) {
-  const [open, setOpen] = useState(defaultExpanded);
+  const [open, setOpen] = useState(false);
   const toggle = useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
@@ -92,7 +88,6 @@ function AchievementChipListInner({
   achievements,
   compactMobile,
   className = "",
-  dreamTeamDefaultExpanded = false,
 }: AchievementChipListProps) {
   if (achievements.length === 0) return null;
 
@@ -110,7 +105,6 @@ function AchievementChipListInner({
               years={achievement.dreamTeamYears}
               variant={ACHIEVEMENT_TAG_VARIANT.purple}
               compactMobile={compactMobile}
-              defaultExpanded={dreamTeamDefaultExpanded}
             />
           );
         }
@@ -123,7 +117,42 @@ function AchievementChipListInner({
               years={achievement.goldenBootYears}
               variant={ACHIEVEMENT_TAG_VARIANT.gold}
               compactMobile={compactMobile}
-              defaultExpanded={dreamTeamDefaultExpanded}
+            />
+          );
+        }
+
+        if (achievement.leagueLeadersYears?.length) {
+          return (
+            <HonourYearsCollapsibleChip
+              key={`league-leaders-${index}`}
+              label="League Leaders"
+              years={achievement.leagueLeadersYears}
+              variant={ACHIEVEMENT_TAG_VARIANT.silver}
+              compactMobile={compactMobile}
+            />
+          );
+        }
+
+        if (achievement.superLeagueChampionYears?.length) {
+          return (
+            <HonourYearsCollapsibleChip
+              key={`sl-champion-${index}`}
+              label="Super League Champion"
+              years={achievement.superLeagueChampionYears}
+              variant={ACHIEVEMENT_TAG_VARIANT.green}
+              compactMobile={compactMobile}
+            />
+          );
+        }
+
+        if (achievement.challengeCupYears?.length) {
+          return (
+            <HonourYearsCollapsibleChip
+              key={`challenge-cup-${index}`}
+              label="Challenge Cup Winner"
+              years={achievement.challengeCupYears}
+              variant={ACHIEVEMENT_TAG_VARIANT.gold}
+              compactMobile={compactMobile}
             />
           );
         }

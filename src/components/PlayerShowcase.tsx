@@ -16,6 +16,7 @@ import {
   getShowcasePlayers,
   formatValue,
   getPlayerDisplayName,
+  toPlayerShowcaseViewModel,
 } from "@/lib/players";
 import type { PlayerCategory, Position } from "@/lib/types";
 import { POSITION_LABELS } from "@/lib/positions";
@@ -68,7 +69,7 @@ const TIER_OPTIONS = Object.entries(TIER_FILTER_LABELS) as [
 function formatPlayerTypeLabel(status: PlayerCategory | "all"): string {
   switch (status) {
     case "current":
-      return "Current";
+      return "Current ('26)";
     case "historic":
       return "Historic";
     case "legend":
@@ -347,7 +348,7 @@ export function PlayerShowcase() {
           }
           className={FILTER.input}
         >
-          <option value="current">Current</option>
+          <option value="current">Current ('26)</option>
           <option value="historic">Historic</option>
           <option value="legend">Legend</option>
           <option value="all">All</option>
@@ -450,7 +451,7 @@ export function PlayerShowcase() {
           />
           <GameStatCard
             neutral
-            label="Current Players"
+            label="Current ('26)"
             value={String(dbStats.current)}
           />
           <GameStatCard
@@ -649,7 +650,7 @@ export function PlayerShowcase() {
       {detailPlayer && (
         <PlayerDetailModal
           player={detailPlayer}
-          cardDisplayName={getPlayerDisplayName(detailPlayer)}
+          cardDisplayName={toPlayerShowcaseViewModel(detailPlayer).displayName}
           onClose={() => setDetailPlayerId(null)}
         />
       )}

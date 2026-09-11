@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-09-11T22:37:31.697Z",
+  "totals": {
+    "players": 3384,
+    "current": 376,
+    "historic": 2968,
+    "legends": 18,
+    "unknownFieldHits": 0,
+    "duplicateIds": 0
+  },
+  "unknownByField": {},
+  "currentByClub": {
+    "Bradford Bulls": 28,
+    "Castleford Tigers": 26,
+    "Catalans Dragons": 32,
+    "Huddersfield Giants": 26,
+    "Hull FC": 26,
+    "Hull KR": 27,
+    "Leeds Rhinos": 27,
+    "Leigh Leopards": 27,
+    "St Helens": 29,
+    "Toulouse Olympique": 28,
+    "Warrington Wolves": 26,
+    "Wakefield Trinity": 27,
+    "Wigan Warriors": 25,
+    "York Knights": 22
+  },
+  "unexpectedCurrentClubs": {},
+  "duplicateIds": [],
+  "issues": []
+}

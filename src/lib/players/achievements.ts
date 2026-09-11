@@ -3,11 +3,20 @@ import manOfSteelWinners from "../../../data/man-of-steel-winners.json";
 import lanceToddWinners from "../../../data/lance-todd-winners.json";
 import dreamTeamYearsData from "../../../data/dream-team-years.json";
 import goldenBootYearsData from "../../../data/golden-boot-years.json";
+import leagueLeadersYearsData from "../../../data/league-leaders-years.json";
+import superLeagueChampionYearsData from "../../../data/super-league-champion-years.json";
+import challengeCupYearsData from "../../../data/challenge-cup-years.json";
 
 const MOS_WINNERS = manOfSteelWinners as Record<string, number[]>;
 const LANCE_TODD_WINNERS = new Set(lanceToddWinners as string[]);
 const DREAM_TEAM_YEARS = dreamTeamYearsData as Record<string, number[]>;
 const GOLDEN_BOOT_YEARS = goldenBootYearsData as Record<string, number[]>;
+const LEAGUE_LEADERS_YEARS = leagueLeadersYearsData as Record<string, number[]>;
+const SUPER_LEAGUE_CHAMPION_YEARS = superLeagueChampionYearsData as Record<
+  string,
+  number[]
+>;
+const CHALLENGE_CUP_YEARS = challengeCupYearsData as Record<string, number[]>;
 
 export type AchievementCategoryId =
   | "individualHonours"
@@ -24,6 +33,12 @@ export interface PlayerAchievement {
   dreamTeamYears?: number[];
   /** When set, cards render one collapsible Golden Boot chip with year sub-chips. */
   goldenBootYears?: number[];
+  /** When set, cards render one collapsible League Leaders chip with year sub-chips. */
+  leagueLeadersYears?: number[];
+  /** When set, cards render one collapsible Super League Champion chip with year sub-chips. */
+  superLeagueChampionYears?: number[];
+  /** When set, cards render one collapsible Challenge Cup chip with year sub-chips. */
+  challengeCupYears?: number[];
 }
 
 export interface PlayerAchievementGroup {
@@ -59,6 +74,18 @@ export function getGoldenBootYears(playerId: string): number[] {
   return GOLDEN_BOOT_YEARS[playerId] ?? [];
 }
 
+export function getLeagueLeadersYears(playerId: string): number[] {
+  return LEAGUE_LEADERS_YEARS[playerId] ?? [];
+}
+
+export function getSuperLeagueChampionYears(playerId: string): number[] {
+  return SUPER_LEAGUE_CHAMPION_YEARS[playerId] ?? [];
+}
+
+export function getChallengeCupYears(playerId: string): number[] {
+  return CHALLENGE_CUP_YEARS[playerId] ?? [];
+}
+
 export function hasLanceToddTrophy(playerId: string): boolean {
   return LANCE_TODD_WINNERS.has(playerId);
 }
@@ -69,6 +96,10 @@ export function hasDreamTeamSelection(playerId: string): boolean {
 
 export function hasGoldenBootAward(playerId: string): boolean {
   return (GOLDEN_BOOT_YEARS[playerId]?.length ?? 0) > 0;
+}
+
+export function hasLeagueLeadersAward(playerId: string): boolean {
+  return (LEAGUE_LEADERS_YEARS[playerId]?.length ?? 0) > 0;
 }
 
 export function getPlayerAchievements(
@@ -133,7 +164,27 @@ export function getPlayerAchievementGroups(
     });
   }
 
-  if (player.superLeagueWinner) {
+  const leagueLeadersYears =
+    player.leagueLeadersYears ?? getLeagueLeadersYears(player.id);
+  if (leagueLeadersYears.length > 0) {
+    push("leagueTitles", {
+      label: "League Leaders",
+      color: "silver",
+      category: "leagueTitles",
+      leagueLeadersYears,
+    });
+  }
+
+  const championYears =
+    player.superLeagueChampionYears ?? getSuperLeagueChampionYears(player.id);
+  if (championYears.length > 0) {
+    push("leagueTitles", {
+      label: "Super League Champion",
+      color: "green",
+      category: "leagueTitles",
+      superLeagueChampionYears: championYears,
+    });
+  } else if (player.superLeagueWinner) {
     push("leagueTitles", {
       label: "Super League Champion",
       color: "green",
@@ -141,7 +192,16 @@ export function getPlayerAchievementGroups(
     });
   }
 
-  if (player.challengeCupWinner) {
+  const challengeCupYears =
+    player.challengeCupYears ?? getChallengeCupYears(player.id);
+  if (challengeCupYears.length > 0) {
+    push("challengeCups", {
+      label: "Challenge Cup Winner",
+      color: "gold",
+      category: "challengeCups",
+      challengeCupYears,
+    });
+  } else if (player.challengeCupWinner) {
     push("challengeCups", {
       label: "Challenge Cup Winner",
       color: "gold",

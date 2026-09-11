@@ -144,9 +144,21 @@ export {
 } from "./display-name-resolver";
 export {
   toPlayerShowcaseViewModel,
+  formatShowcaseDisplayName,
   assertShowcaseCardPopupNameMatch,
   type PlayerShowcaseViewModel,
 } from "./showcase-view-model";
+export {
+  CURRENT_SEASON_YEAR,
+  CURRENT_ERA_SEASON_YEARS,
+  isCurrentEraSeasonYear,
+  isActiveCurrentSeasonYear,
+  getUpcomingCurrentEraSeasonYears,
+  resolveCurrentCardSeasonYear,
+  isShowcaseCurrentPlayer,
+  isCurrentSuperLeaguePlayer,
+  type CurrentEraSeasonYear,
+} from "./current-season";
 export {
   isGoatPlayer,
   isHiddenPlayer,

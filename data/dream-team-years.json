@@ -120,9 +120,6 @@
   "sheffield-hist-dale-laughton": [
     1998
   ],
-  "leeds-cur-ned-mccormack": [
-    1998
-  ],
   "london-hist-steele-retchless": [
     1998
   ],
@@ -406,12 +403,6 @@
   "hull-kr-hist-peter-fox": [
     2009
   ],
-  "leeds-cur-ryan-hall": [
-    2009,
-    2010,
-    2012,
-    2014
-  ],
   "wigan-hist-sam-tomkins": [
     2009,
     2010,
@@ -451,9 +442,6 @@
     2017,
     2018
   ],
-  "hull-fc-cur-tom-briscoe": [
-    2011
-  ],
   "joel-monaghan": [
     2011
   ],
@@ -469,11 +457,6 @@
   ],
   "catalans-hist-steve-menzies": [
     2011
-  ],
-  "leigh-cur-josh-charnley": [
-    2012,
-    2013,
-    2023
   ],
   "warrington-hist-ryan-atkins": [
     2012,
@@ -530,11 +513,6 @@
   ],
   "catalans-cur-tommy-makinson": [
     2014
-  ],
-  "leeds-cur-kallum-watkins": [
-    2014,
-    2015,
-    2023
   ],
   "castleford-hist-michael-shenton": [
     2014,
@@ -659,9 +637,6 @@
     2020,
     2021
   ],
-  "york-cur-danny-richardson": [
-    2018
-  ],
   "wigan-cur-luke-thompson": [
     2018,
     2019,
@@ -747,9 +722,6 @@
   "catalans-hist-sam-kasiano": [
     2021
   ],
-  "wigan-cur-kruise-leeming": [
-    2021
-  ],
   "hull-kr-hist-kane-linnett": [
     2021
   ],
@@ -821,9 +793,6 @@
   "wigan-cur-junior-nsemba": [
     2024
   ],
-  "hull-kr-cur-rhyse-martin": [
-    2024
-  ],
   "hull-kr-cur-elliot-minchella": [
     2024
   ],
@@ -856,5 +825,36 @@
   ],
   "hull-fc-hist-andy-ireland": [
     2025
+  ],
+  "leeds-hist-kruise-leeming-2021": [
+    2021
+  ],
+  "leeds-hist-rhyse-martin-2024": [
+    2024
+  ],
+  "leeds-hist-era-ryan-hall": [
+    2009,
+    2010,
+    2012,
+    2014
+  ],
+  "hull-fc-hist-tom-briscoe-2009": [
+    2011
+  ],
+  "leigh-hist-era-josh-charnley": [
+    2012,
+    2013,
+    2023
+  ],
+  "leeds-cur-kallum-watkins-2015": [
+    2014,
+    2015,
+    2023
+  ],
+  "wigan-hist-era-robbie-mccormack": [
+    1998
+  ],
+  "st-helens-hist-danny-richardson-2018": [
+    2018
   ]
 }

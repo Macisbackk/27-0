@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-09-11T22:15:00.000Z",
+  "summary": {
+    "playersBefore": 3243,
+    "playersAfter": 3370,
+    "currentSlPlayableBefore": 236,
+    "currentSlPlayableAfter": 362,
+    "currentSlAddedApprox": 126,
+    "championshipLeftoversHidden": 20,
+    "duplicateIds": 0,
+    "playableCurrentUnknownNationality": 0,
+    "playableCurrentMissingDob": 114,
+    "historicUnknownNationality": 276
+  },
+  "notAddedMissingNationality": [
+    "St Helens: Jake Davies",
+    "Toulouse Olympique: Baptiste Rodriguez",
+    "Toulouse Olympique: AJ Wallace",
+    "Toulouse Olympique: Ellis Gillam",
+    "Toulouse Olympique: Pierre-Jean Lima",
+    "Toulouse Olympique: Hugo Garrigues",
+    "Wakefield Trinity: Myles Lawford",
+    "Warrington Wolves: Jordy Crowther",
+    "Warrington Wolves: Leon Hayes",
+    "Warrington Wolves: Luke Thomas",
+    "Warrington Wolves: Arron Lindop",
+    "Wigan Warriors: Tom Forber",
+    "Wigan Warriors: Taylor Kerr",
+    "Wigan Warriors: Nathan Lowe"
+  ],
+  "notes": [
+    "Spin team-year pools remain the curated 16–18 from sl-2026-squads.json; depth players are Showcase/mini-game/recruitment.",
+    "Leigh first-team slot Darnell McIntosh replaced with Josh Charnley (McIntosh remains at Castleford).",
+    "England nationalities for some domestic depth players without Wikipedia pages used club-pathway convention; prefer RLP confirmation later.",
+    "Historic Unknown nationalities remain where RLP cache lacked a place-of-birth match."
+  ]
+}

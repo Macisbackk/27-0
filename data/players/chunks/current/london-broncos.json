@@ -18,7 +18,9 @@
     "basePlayerId": "london-cur-harry-aldous",
     "status": "Current",
     "primaryPosition": "PROP",
-    "birthYear": 2004
+    "birthYear": 2004,
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "london-cur-jack-campagnolo",
@@ -54,14 +56,16 @@
     "displayClub": "London Broncos",
     "basePlayerId": "london-cur-jack-campagnolo",
     "status": "Current",
-    "primaryPosition": "SCRUM_HALF"
+    "primaryPosition": "SCRUM_HALF",
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "london-cur-jacob-jones",
     "name": "Jacob Jones",
     "position": "SECOND_ROW",
     "club": "London Broncos",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -86,7 +90,9 @@
     "displayClub": "London Broncos",
     "basePlayerId": "london-cur-jacob-jones",
     "status": "Current",
-    "primaryPosition": "SECOND_ROW"
+    "primaryPosition": "SECOND_ROW",
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "london-cur-jeremiah-simbiken",
@@ -135,7 +141,9 @@
     "team": "London Broncos",
     "displayClub": "London Broncos",
     "basePlayerId": "london-cur-jeremiah-simbiken",
-    "primaryPosition": "SR"
+    "primaryPosition": "SR",
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "london-cur-jimmy-meadows",
@@ -159,7 +167,9 @@
     "displayClub": "London Broncos",
     "basePlayerId": "london-cur-jimmy-meadows",
     "status": "Current",
-    "primaryPosition": "SCRUM_HALF"
+    "primaryPosition": "SCRUM_HALF",
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "london-cur-lewis-bienek",
@@ -183,7 +193,9 @@
     "displayClub": "London Broncos",
     "basePlayerId": "london-cur-lewis-bienek",
     "status": "Current",
-    "primaryPosition": "PROP"
+    "primaryPosition": "PROP",
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "london-cur-oliver-leyland",
@@ -207,7 +219,9 @@
     "displayClub": "London Broncos",
     "basePlayerId": "london-cur-oliver-leyland",
     "status": "Current",
-    "primaryPosition": "STAND_OFF"
+    "primaryPosition": "STAND_OFF",
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "london-cur-robbie-storey",
@@ -231,14 +245,16 @@
     "displayClub": "London Broncos",
     "basePlayerId": "london-cur-robbie-storey",
     "status": "Current",
-    "primaryPosition": "CENTRE"
+    "primaryPosition": "CENTRE",
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "london-cur-robert-butler",
     "name": "Robert Butler",
     "position": "PROP",
     "club": "London Broncos",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -264,14 +280,16 @@
     "displayClub": "London Broncos",
     "basePlayerId": "london-cur-robert-butler",
     "status": "Current",
-    "primaryPosition": "PROP"
+    "primaryPosition": "PROP",
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "london-cur-sam-davis",
     "name": "Sam Davis",
     "position": "HOOKER",
     "club": "London Broncos",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -294,6 +312,8 @@
     "displayClub": "London Broncos",
     "basePlayerId": "london-cur-sam-davis",
     "status": "Current",
-    "primaryPosition": "HOOKER"
+    "primaryPosition": "HOOKER",
+    "availableInGame": false,
+    "superLeagueEligible": false
   }
 ]

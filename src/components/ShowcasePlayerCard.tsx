@@ -6,7 +6,6 @@ import {
   assertShowcaseCardPopupNameMatch,
   toPlayerShowcaseViewModel,
 } from "@/lib/players/showcase-view-model";
-import { getPlayerDisplayName } from "@/lib/players/display-name-resolver";
 import { resolvePlayerCardColourContext } from "@/lib/players/player-card-colours";
 import { POSITION_LABELS } from "@/lib/positions";
 import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
@@ -58,11 +57,10 @@ export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
 
   const handleOpen = useCallback(() => {
     playUiClick();
-    const popupName = getPlayerDisplayName(player);
     assertShowcaseCardPopupNameMatch(
       view.playerId,
       view.displayName,
-      popupName
+      toPlayerShowcaseViewModel(player).displayName
     );
     onOpenDetail(view.playerId);
   }, [player, onOpenDetail, view.displayName, view.playerId]);

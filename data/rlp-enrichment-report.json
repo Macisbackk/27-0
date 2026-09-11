@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-06-21T19:38:18.316Z",
+  "generatedAt": "2026-09-11T22:07:37.269Z",
   "source": "rugbyleagueproject.org",
-  "processed": 1850,
+  "processed": 3348,
   "withRlpMatch": 0,
   "cacheHits": 0,
   "skippedHidden": 0,
-  "skippedArchived": 1,
-  "ratingOverridesUntouched": 99,
-      "fieldCounts": {
-        "nationality": 0,
-      "yearsActive": 0,
+  "skippedArchived": 22,
+  "ratingOverridesUntouched": 1064,
+  "fieldCounts": {
+    "nationality": 0,
+    "yearsActive": 0,
     "tries": 0,
-      "position": 0,
+    "position": 0,
     "dateOfBirth": 0,
     "birthYear": 0,
     "clubsPlayedFor": 0,
@@ -22,496 +22,21 @@
   "updatedPlayers": [],
   "stillMissingCount": 0,
   "stillMissing": [],
-  "unmatchedCount": 1850,
+  "unmatchedCount": 3348,
   "unmatched": [
     {
-      "id": "wigan-cur-jai-field",
-      "name": "Jai Field",
+      "id": "bradford-cur-alfie-leake",
+      "name": "Alfie Leake",
       "file": "current-squads.json"
     },
     {
-      "id": "wigan-cur-zach-eckersley",
-      "name": "Zach Eckersley",
+      "id": "bradford-cur-andy-ackers",
+      "name": "Andy Ackers",
       "file": "current-squads.json"
     },
     {
-      "id": "wigan-cur-adam-keighran",
-      "name": "Adam Keighran",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-jake-wardle",
-      "name": "Jake Wardle",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-liam-marshall",
-      "name": "Liam Marshall",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-bevan-french",
-      "name": "Bevan French",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-harry-smith",
-      "name": "Harry Smith",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-ethan-havard",
-      "name": "Ethan Havard",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-brad-oneill",
-      "name": "Brad O'Neill",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-luke-thompson",
-      "name": "Luke Thompson",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-junior-nsemba",
-      "name": "Junior Nsemba",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-liam-farrell",
-      "name": "Liam Farrell",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-kaide-ellis",
-      "name": "Kaide Ellis",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-sam-walters",
-      "name": "Sam Walters",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-patrick-mago",
-      "name": "Patrick Mago",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-abbas-miski",
-      "name": "Abbas Miski",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-kruise-leeming",
-      "name": "Kruise Leeming",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-jack-farrimond",
-      "name": "Jack Farrimond",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-sam-eseh",
-      "name": "Sam Eseh",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-oliver-wilson",
-      "name": "Oliver Wilson",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-tom-forber",
-      "name": "Tom Forber",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-kian-mcdermott",
-      "name": "Kian McDermott",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-harvey-makin",
-      "name": "Harvey Makin",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-taylor-kerr",
-      "name": "Taylor Kerr",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "wigan-cur-nathan-lowe",
-      "name": "Nathan Lowe",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-jack-welsby",
-      "name": "Jack Welsby",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-kyle-feldt",
-      "name": "Kyle Feldt",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-harry-robertson",
-      "name": "Harry Robertson",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-mark-percival",
-      "name": "Mark Percival",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-deon-cross",
-      "name": "Deon Cross",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-tristan-sailor",
-      "name": "Tristan Sailor",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-jonny-lomax",
-      "name": "Jonny Lomax",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-alex-walmsley",
-      "name": "Alex Walmsley",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-daryl-clark",
-      "name": "Daryl Clark",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-matty-lees",
-      "name": "Matty Lees",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-curtis-sironen",
-      "name": "Curtis Sironen",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-david-klemmer",
-      "name": "David Klemmer",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-jacob-host",
-      "name": "Jacob Host",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-george-delaney",
-      "name": "George Delaney",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-matt-whitley",
-      "name": "Matt Whitley",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-george-whitby",
-      "name": "George Whitby",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-jake-wingfield",
-      "name": "Jake Wingfield",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-agnatius-paasi",
-      "name": "Agnatius Paasi",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-lewis-murphy",
-      "name": "Lewis Murphy",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-noah-stephens",
-      "name": "Noah Stephens",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-jake-burns",
-      "name": "Jake Burns",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-owen-dagnall",
-      "name": "Owen Dagnall",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "st-helens-cur-nene-macdonald",
-      "name": "Nene Macdonald",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-lachie-miller",
-      "name": "Lachie Miller",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-maika-sivo",
-      "name": "Maika Sivo",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-harry-newman",
-      "name": "Harry Newman",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-ash-handley",
-      "name": "Ash Handley",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-ryan-hall",
-      "name": "Ryan Hall",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-brodie-croft",
-      "name": "Brodie Croft",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-jake-connor",
-      "name": "Jake Connor",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-mikolaj-oledzki",
-      "name": "Mikolaj Oledzki",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-jarrod-oconnor",
-      "name": "Jarrod O'Connor",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-tom-holroyd",
-      "name": "Tom Holroyd",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-kallum-watkins",
-      "name": "Kallum Watkins",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-james-mcdonnell",
-      "name": "James McDonnell",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-keenan-palasia",
-      "name": "Keenan Palasia",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-chris-hankinson",
-      "name": "Chris Hankinson",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-cooper-jenkins",
-      "name": "Cooper Jenkins",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-ethan-oneill",
-      "name": "Ethan O'Neill",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-cameron-smith",
-      "name": "Cameron Smith",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-max-simpson",
-      "name": "Max Simpson",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-jeremiah-matautia",
-      "name": "Jeremiah Mata'utia",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-presley-cassell",
-      "name": "Presley Cassell",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-alfie-edgell",
-      "name": "Alfie Edgell",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-riley-lumb",
-      "name": "Riley Lumb",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-danny-levi",
-      "name": "Danny Levi",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-ned-mccormack",
-      "name": "Ned McCormack",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "leeds-cur-ben-littlewood",
-      "name": "Ben Littlewood",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-cai-taylor-wray",
-      "name": "Cai Taylor-Wray",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-josh-thewlis",
-      "name": "Josh Thewlis",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-toby-king",
-      "name": "Toby King",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-albert-hopoate",
-      "name": "Albert Hopoate",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-matty-ashton",
-      "name": "Matty Ashton",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-george-williams",
-      "name": "George Williams",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-marc-sneyd",
-      "name": "Marc Sneyd",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-luke-yates",
-      "name": "Luke Yates",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-danny-walker",
-      "name": "Danny Walker",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-james-harrison",
-      "name": "James Harrison",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-adam-holroyd",
-      "name": "Adam Holroyd",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-sam-stone",
-      "name": "Sam Stone",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-ben-currie",
-      "name": "Ben Currie",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-sam-powell",
-      "name": "Sam Powell",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-toafofoa-sipley",
-      "name": "Toafofoa Sipley",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-liam-byrne",
-      "name": "Liam Byrne",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-jordy-crowther",
-      "name": "Jordy Crowther",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-ewan-irwin",
-      "name": "Ewan Irwin",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-leon-hayes",
-      "name": "Leon Hayes",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-james-bentley",
-      "name": "James Bentley",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-luke-thomas",
-      "name": "Luke Thomas",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-joe-philbin",
-      "name": "Joe Philbin",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-arron-lindop",
-      "name": "Arron Lindop",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-max-wood",
-      "name": "Max Wood",
-      "file": "current-squads.json"
-    },
-    {
-      "id": "warrington-cur-josh-smith",
-      "name": "Josh Smith",
+      "id": "bradford-cur-brandon-douglas",
+      "name": "Brandon Douglas",
       "file": "current-squads.json"
     },
     {
@@ -520,606 +45,2714 @@
       "file": "current-squads.json"
     },
     {
+      "id": "bradford-cur-connor-wynne",
+      "name": "Connor Wynne",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-dan-russell",
+      "name": "Dan Russell",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-ebon-scurr",
+      "name": "Ebon Scurr",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-ed-chamberlain",
+      "name": "Ed Chamberlain",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-eliot-peposhi",
+      "name": "Eliot Peposhi",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-eribe-doro",
+      "name": "Eribe Doro",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-esan-marsters",
+      "name": "Esan Marsters",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-ethan-ryan",
+      "name": "Ethan Ryan",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-guy-armitage",
+      "name": "Guy Armitage",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-jamie-gill",
+      "name": "Jamie Gill",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-jayden-nikorima",
+      "name": "Jayden Nikorima",
+      "file": "current-squads.json"
+    },
+    {
       "id": "bradford-cur-jayden-okunbor",
       "name": "Jayden Okunbor",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-joe-keyes",
+      "name": "Joe Keyes",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-joe-mellor",
+      "name": "Joe Mellor",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-leon-ruan",
+      "name": "Leon Ruan",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-loghan-lewis",
+      "name": "Loghan Lewis",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-luke-hooley",
+      "name": "Luke Hooley",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-mitch-souter",
+      "name": "Mitch Souter",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-rowan-milnes",
+      "name": "Rowan Milnes",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-ryan-sutton",
+      "name": "Ryan Sutton",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-sam-hallas",
+      "name": "Sam Hallas",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-waqa-blake",
+      "name": "Waqa Blake",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-will-gardiner",
+      "name": "Will Gardiner",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "bradford-cur-zac-fulton",
+      "name": "Zac Fulton",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-alex-mellor",
+      "name": "Alex Mellor",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-blake-taaffe",
+      "name": "Blake Taaffe",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-brad-singleton",
+      "name": "Brad Singleton",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-brock-greacen",
+      "name": "Brock Greacen",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-cain-robb",
+      "name": "Cain Robb",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-chris-atkin",
+      "name": "Chris Atkin",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-daejarn-asi",
+      "name": "Daejarn Asi",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-darnell-mcintosh",
+      "name": "Darnell McIntosh",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-fletcher-rooney",
+      "name": "Fletcher Rooney",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-george-lawler",
+      "name": "George Lawler",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-jack-ashworth",
+      "name": "Jack Ashworth",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-jason-qareqare",
+      "name": "Jason Qareqare",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-joe-stimson",
+      "name": "Joe Stimson",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-joe-westerman",
+      "name": "Joe Westerman",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-jordan-lane",
+      "name": "Jordan Lane",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-krystian-mapapalangi",
+      "name": "Krystian Mapapalangi",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-liam-hood",
+      "name": "Liam Hood",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-louis-senior",
+      "name": "Louis Senior",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-mikaele-ravalawa",
+      "name": "Mikaele Ravalawa",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-phoenix-laulu-togagae",
+      "name": "Phoenix Laulu-Togaga'e",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-renouf-atoni",
+      "name": "Renouf Atoni",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-sam-hall",
+      "name": "Sam Hall",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-semi-valemei",
+      "name": "Semi Valemei",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-tom-weaver",
+      "name": "Tom Weaver",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-tyler-dupree",
+      "name": "Tyler Dupree",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "castleford-cur-zac-cini",
+      "name": "Zac Cini",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-alexis-lis",
+      "name": "Alexis Lis",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-alrix-da-costa",
+      "name": "Alrix Da Costa",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-arthur-romano",
+      "name": "Arthur Romano",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-bayley-sironen",
+      "name": "Bayley Sironen",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-ben-condon",
+      "name": "Ben Condon",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-benjamin-garcia",
+      "name": "Benjamin Garcia",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-cesar-rouge",
+      "name": "César Rougé",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-charlie-staines",
+      "name": "Charlie Staines",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-chris-satae",
+      "name": "Chris Satae",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-clement-martin",
+      "name": "Clement Martin",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-franck-maria",
+      "name": "Franck Maria",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-giovanni-descalzi",
+      "name": "Giovanni Descalzi",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-guillermo-aispuro-bichet",
+      "name": "Guillermo Aispuro-Bichet",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-harvey-wilson",
+      "name": "Harvey Wilson",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-iszac-faasuamaleaui",
+      "name": "Iszac Fa'asuamaleaui",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-jordan-dezaria",
+      "name": "Jordan Dezaria",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-josh-allen",
+      "name": "Josh Allen",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-julian-bousquet",
+      "name": "Julian Bousquet",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-kruise-leeming",
+      "name": "Kruise Leeming",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-lenny-marc",
+      "name": "Lenny Marc",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-leo-darrelatour",
+      "name": "Leo Darrelatour",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-lewis-dodd",
+      "name": "Lewis Dodd",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-manase-kaho",
+      "name": "Manase Kaho",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-matthieu-laguerre",
+      "name": "Matthieu Laguerre",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-nick-cotric",
+      "name": "Nick Čotrić",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-paul-seguier",
+      "name": "Paul Séguier",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-romain-navarette",
+      "name": "Romain Navarette",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-solomona-faataape",
+      "name": "Solomona Faataape",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-toby-sexton",
+      "name": "Toby Sexton",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-tommy-makinson",
+      "name": "Tommy Makinson",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-ugo-tison",
+      "name": "Ugo Tison",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "catalans-cur-zac-lipowicz",
+      "name": "Zac Lipowicz",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-adam-clune",
+      "name": "Adam Clune",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-adam-swift",
+      "name": "Adam Swift",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-archie-sykes",
+      "name": "Archie Sykes",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-asher-odonnell",
+      "name": "Asher O'Donnell",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-chris-patolo",
+      "name": "Chris Patolo",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-connor-carr",
+      "name": "Connor Carr",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-fenton-rogers",
+      "name": "Fenton Rogers",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-george-flanagan-jr",
+      "name": "George Flanagan Jr",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-george-king",
+      "name": "George King",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-harry-rushton",
+      "name": "Harry Rushton",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-jack-billington",
+      "name": "Jack Billington",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-jacob-gagai",
+      "name": "Jacob Gagai",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-joe-greenwood",
+      "name": "Joe Greenwood",
+      "file": "current-squads.json"
+    },
+    {
+      "id": "huddersfield-cur-kieran-rush",
+      "name": "Kieran Rush",
       "file": "current-squads.json"
     }
   ],
   "duplicateIssues": [
     {
-      "name": "ash handley",
+      "name": "andy ackers",
       "ids": [
-        "leeds-cur-ash-handley",
-        "leeds-cur-ash-handley-2015"
+        "bradford-cur-andy-ackers",
+        "leeds-hist-andy-ackers-2024"
       ]
     },
     {
-      "name": "kallum watkins",
+      "name": "connor wynne",
       "ids": [
-        "leeds-cur-kallum-watkins",
-        "leeds-cur-kallum-watkins-2015"
+        "bradford-cur-connor-wynne",
+        "hull-fc-hist-era-connor-wynne"
       ]
     },
     {
-      "name": "oliver gildart",
+      "name": "ed chamberlain",
       "ids": [
-        "hull-kr-cur-oliver-gildart",
-        "salford-hist-oliver-gildart-2015"
+        "bradford-cur-ed-chamberlain",
+        "hull-fc-hist-ed-chamberlain-2025"
       ]
     },
     {
-      "name": "zak hardaker",
+      "name": "esan marsters",
       "ids": [
-        "hull-fc-cur-zak-hardaker",
-        "leeds-cur-zak-hardaker-2015"
+        "bradford-cur-esan-marsters",
+        "huddersfield-hist-esan-marsters-2023",
+        "huddersfield-hist-esan-marsters-2024"
       ]
     },
     {
-      "name": "tom briscoe",
+      "name": "guy armitage",
       "ids": [
-        "hull-fc-cur-tom-briscoe",
-        "leeds-cur-tom-briscoe-2015"
+        "bradford-cur-guy-armitage",
+        "toulouse-hist-era-guy-armitage"
       ]
     },
     {
-      "name": "jay pitts",
+      "name": "jayden okunbor",
       "ids": [
-        "wakefield-cur-jay-pitts",
-        "london-hist-jay-pitts-2018"
+        "bradford-cur-jayden-okunbor",
+        "hull-fc-hist-jayden-okunbor-2024"
+      ]
+    },
+    {
+      "name": "ryan sutton",
+      "ids": [
+        "bradford-cur-ryan-sutton",
+        "wigan-hist-ryan-sutton-2015",
+        "wigan-hist-ryan-sutton-2016"
+      ]
+    },
+    {
+      "name": "will gardiner",
+      "ids": [
+        "bradford-cur-will-gardiner",
+        "hull-fc-hist-era-will-gardiner"
+      ]
+    },
+    {
+      "name": "alex mellor",
+      "ids": [
+        "castleford-cur-alex-mellor",
+        "bradford-cur-alex-mellor-2014",
+        "leeds-hist-alex-mellor-2020",
+        "leeds-hist-alex-mellor-2021"
+      ]
+    },
+    {
+      "name": "brad singleton",
+      "ids": [
+        "castleford-cur-brad-singleton",
+        "leeds-hist-brad-singleton-2016",
+        "leeds-hist-era-brad-singleton",
+        "wigan-hist-brad-singleton-2021",
+        "wigan-hist-brad-singleton-2022"
+      ]
+    },
+    {
+      "name": "chris atkin",
+      "ids": [
+        "castleford-cur-chris-atkin",
+        "hull-kr-hist-era-chris-atkin"
+      ]
+    },
+    {
+      "name": "darnell mcintosh",
+      "ids": [
+        "castleford-cur-darnell-mcintosh",
+        "huddersfield-hist-darnell-mcintosh-2020",
+        "hull-fc-hist-darnell-mcintosh-2022",
+        "hull-fc-hist-darnell-mcintosh-2023"
+      ]
+    },
+    {
+      "name": "jack ashworth",
+      "ids": [
+        "castleford-cur-jack-ashworth",
+        "hull-fc-hist-era-jack-ashworth",
+        "st-helens-hist-jack-ashworth-2015",
+        "hull-fc-hist-jack-ashworth-2025"
+      ]
+    },
+    {
+      "name": "joe westerman",
+      "ids": [
+        "castleford-cur-joe-westerman",
+        "hull-fc-hist-joe-westerman-2012",
+        "castleford-cur-joe-westerman-2009"
+      ]
+    },
+    {
+      "name": "jordan lane",
+      "ids": [
+        "castleford-cur-jordan-lane",
+        "hull-fc-hist-jordan-lane-2020",
+        "hull-fc-hist-jordan-lane-2021",
+        "hull-fc-hist-jordan-lane-2022",
+        "hull-fc-hist-jordan-lane-2023",
+        "hull-fc-hist-jordan-lane-2024",
+        "hull-fc-hist-jordan-lane-2025"
       ]
     },
     {
       "name": "liam hood",
       "ids": [
         "castleford-cur-liam-hood",
-        "salford-hist-liam-hood-2015"
+        "wakefield-cur-liam-hood",
+        "leeds-hist-liam-hood-2013",
+        "salford-hist-liam-hood-2015",
+        "salford-cur-liam-hood-2015",
+        "wakefield-hist-liam-hood-2022",
+        "wakefield-hist-liam-hood-2023",
+        "wakefield-hist-liam-hood-2025"
+      ]
+    },
+    {
+      "name": "louis senior",
+      "ids": [
+        "castleford-cur-louis-senior",
+        "huddersfield-hist-era-louis-senior"
+      ]
+    },
+    {
+      "name": "renouf atoni",
+      "ids": [
+        "castleford-cur-renouf-atoni",
+        "wakefield-cur-renouf-atoni",
+        "wakefield-hist-renouf-atoni-2023",
+        "wakefield-hist-renouf-atoni-2025"
+      ]
+    },
+    {
+      "name": "sam hall",
+      "ids": [
+        "castleford-cur-sam-hall",
+        "castleford-hist-era-sam-hall"
+      ]
+    },
+    {
+      "name": "tyler dupree",
+      "ids": [
+        "castleford-cur-tyler-dupree",
+        "wigan-hist-era-tyler-dupree",
+        "wigan-hist-tyler-dupree-2025"
+      ]
+    },
+    {
+      "name": "bayley sironen",
+      "ids": [
+        "catalans-cur-bayley-sironen",
+        "catalans-hist-bayley-sironen"
+      ]
+    },
+    {
+      "name": "benjamin garcia",
+      "ids": [
+        "catalans-cur-benjamin-garcia",
+        "catalans-cur-benjamin-garcia-2015"
+      ]
+    },
+    {
+      "name": "guillermo aispurobichet",
+      "ids": [
+        "catalans-cur-guillermo-aispuro-bichet",
+        "catalans-hist-era-guillermo-aispuro-bichet"
+      ]
+    },
+    {
+      "name": "julian bousquet",
+      "ids": [
+        "catalans-cur-julian-bousquet",
+        "catalans-cur-julian-bousquet-2012",
+        "catalans-cur-julian-bousquet-2013",
+        "catalans-cur-julian-bousquet-2015"
+      ]
+    },
+    {
+      "name": "kruise leeming",
+      "ids": [
+        "catalans-cur-kruise-leeming",
+        "leeds-hist-era-kruise-leeming",
+        "leeds-hist-kruise-leeming-2021",
+        "leeds-hist-kruise-leeming-2022",
+        "wigan-hist-kruise-leeming-2024",
+        "wigan-hist-kruise-leeming-2025"
+      ]
+    },
+    {
+      "name": "lewis dodd",
+      "ids": [
+        "catalans-cur-lewis-dodd",
+        "st-helens-cur-lewis-dodd-2021"
+      ]
+    },
+    {
+      "name": "matthieu laguerre",
+      "ids": [
+        "catalans-cur-matthieu-laguerre",
+        "catalans-hist-era-matthieu-laguerre"
+      ]
+    },
+    {
+      "name": "paul seguier",
+      "ids": [
+        "catalans-cur-paul-seguier",
+        "catalans-hist-paul-seguier"
+      ]
+    },
+    {
+      "name": "tommy makinson",
+      "ids": [
+        "catalans-cur-tommy-makinson",
+        "st-helens-cur-tommy-makinson-2014",
+        "st-helens-cur-tommy-makinson-2020"
+      ]
+    },
+    {
+      "name": "adam clune",
+      "ids": [
+        "huddersfield-cur-adam-clune",
+        "huddersfield-hist-adam-clune-2024"
+      ]
+    },
+    {
+      "name": "adam swift",
+      "ids": [
+        "huddersfield-cur-adam-swift",
+        "st-helens-hist-adam-swift-2015",
+        "st-helens-hist-adam-swift-2016",
+        "hull-fc-hist-adam-swift-2021",
+        "hull-fc-hist-adam-swift-2022",
+        "hull-fc-hist-adam-swift-2023",
+        "huddersfield-hist-adam-swift-2024",
+        "huddersfield-hist-adam-swift-2025"
+      ]
+    },
+    {
+      "name": "george flanagan jr",
+      "ids": [
+        "huddersfield-cur-george-flanagan-jr",
+        "huddersfield-hist-george-flanagan-jr-2025"
+      ]
+    },
+    {
+      "name": "george king",
+      "ids": [
+        "huddersfield-cur-george-king",
+        "warrington-cur-george-king-2016"
+      ]
+    },
+    {
+      "name": "harry rushton",
+      "ids": [
+        "huddersfield-cur-harry-rushton",
+        "huddersfield-hist-harry-rushton-2024",
+        "huddersfield-hist-harry-rushton-2025"
+      ]
+    },
+    {
+      "name": "joe greenwood",
+      "ids": [
+        "huddersfield-cur-joe-greenwood",
+        "st-helens-hist-joe-greenwood-2016",
+        "huddersfield-hist-joe-greenwood-2021",
+        "huddersfield-hist-joe-greenwood-2022",
+        "huddersfield-hist-joe-greenwood-2023",
+        "huddersfield-hist-joe-greenwood-2024",
+        "huddersfield-hist-joe-greenwood-2025"
+      ]
+    },
+    {
+      "name": "kieran rush",
+      "ids": [
+        "huddersfield-cur-kieran-rush",
+        "huddersfield-hist-era-kieran-rush"
+      ]
+    },
+    {
+      "name": "matty english",
+      "ids": [
+        "huddersfield-cur-matty-english",
+        "huddersfield-hist-matty-english-2020",
+        "huddersfield-hist-matty-english-2021",
+        "huddersfield-hist-matty-english-2022",
+        "huddersfield-hist-matty-english-2023",
+        "huddersfield-hist-matty-english-2025"
       ]
     },
     {
       "name": "niall evalds",
       "ids": [
         "huddersfield-cur-niall-evalds",
-        "salford-hist-niall-evalds-2015"
+        "salford-hist-niall-evalds-2015",
+        "salford-cur-niall-evalds-2015"
+      ]
+    },
+    {
+      "name": "oliver russell",
+      "ids": [
+        "huddersfield-cur-oliver-russell",
+        "huddersfield-hist-era-oliver-russell",
+        "huddersfield-hist-oliver-russell-2022",
+        "huddersfield-hist-oliver-russell-2024"
+      ]
+    },
+    {
+      "name": "oliver wilson",
+      "ids": [
+        "huddersfield-cur-oliver-wilson",
+        "wigan-cur-oliver-wilson",
+        "huddersfield-hist-oliver-wilson-2022",
+        "huddersfield-hist-oliver-wilson-2023",
+        "huddersfield-hist-oliver-wilson-2024",
+        "huddersfield-hist-oliver-wilson-2025"
+      ]
+    },
+    {
+      "name": "sam halsall",
+      "ids": [
+        "huddersfield-cur-sam-halsall",
+        "huddersfield-hist-sam-halsall-2023",
+        "huddersfield-hist-sam-halsall-2025"
+      ]
+    },
+    {
+      "name": "sam hewitt",
+      "ids": [
+        "huddersfield-cur-sam-hewitt",
+        "huddersfield-hist-sam-hewitt-2023",
+        "huddersfield-hist-sam-hewitt-2024"
+      ]
+    },
+    {
+      "name": "taane milne",
+      "ids": [
+        "huddersfield-cur-taane-milne",
+        "huddersfield-hist-taane-milne-2025"
+      ]
+    },
+    {
+      "name": "thomas burgess",
+      "ids": [
+        "huddersfield-cur-thomas-burgess",
+        "huddersfield-hist-era-thomas-burgess"
+      ]
+    },
+    {
+      "name": "tristan powell",
+      "ids": [
+        "huddersfield-cur-tristan-powell",
+        "huddersfield-hist-era-tristan-powell"
+      ]
+    },
+    {
+      "name": "tui lolohea",
+      "ids": [
+        "huddersfield-cur-tui-lolohea",
+        "huddersfield-hist-tui-lolohea-2022",
+        "huddersfield-hist-tui-lolohea-2023",
+        "huddersfield-hist-tui-lolohea-2024",
+        "huddersfield-hist-tui-lolohea-2025"
+      ]
+    },
+    {
+      "name": "zac woolford",
+      "ids": [
+        "huddersfield-cur-zac-woolford",
+        "huddersfield-hist-zac-woolford-2025"
+      ]
+    },
+    {
+      "name": "aidan sezer",
+      "ids": [
+        "hull-fc-cur-aidan-sezer",
+        "huddersfield-hist-aidan-sezer-2020",
+        "leeds-hist-aidan-sezer-2022",
+        "leeds-hist-aidan-sezer-2023",
+        "hull-fc-hist-aidan-sezer-2025"
+      ]
+    },
+    {
+      "name": "amir bourouh",
+      "ids": [
+        "hull-fc-cur-amir-bourouh",
+        "hull-fc-hist-amir-bourouh-2025"
+      ]
+    },
+    {
+      "name": "brad fash",
+      "ids": [
+        "hull-fc-cur-brad-fash",
+        "hull-fc-hist-era-brad-fash",
+        "hull-fc-hist-brad-fash-2020",
+        "hull-fc-hist-brad-fash-2021",
+        "hull-fc-hist-brad-fash-2022",
+        "hull-fc-hist-brad-fash-2023",
+        "hull-fc-hist-brad-fash-2024",
+        "hull-fc-hist-brad-fash-2025"
+      ]
+    },
+    {
+      "name": "cade cust",
+      "ids": [
+        "hull-fc-cur-cade-cust",
+        "wigan-hist-cade-cust-2022",
+        "hull-fc-hist-cade-cust-2025"
+      ]
+    },
+    {
+      "name": "davy litten",
+      "ids": [
+        "hull-fc-cur-davy-litten",
+        "hull-fc-hist-davy-litten-2025"
+      ]
+    },
+    {
+      "name": "harvey barron",
+      "ids": [
+        "hull-fc-cur-harvey-barron",
+        "hull-fc-hist-harvey-barron-2024",
+        "hull-fc-hist-harvey-barron-2025"
+      ]
+    },
+    {
+      "name": "herman eseese",
+      "ids": [
+        "hull-fc-cur-herman-eseese",
+        "hull-fc-hist-herman-ese-ese-2024",
+        "hull-fc-hist-herman-ese-ese-2025"
+      ]
+    },
+    {
+      "name": "joe batchelor",
+      "ids": [
+        "hull-fc-cur-joe-batchelor",
+        "st-helens-cur-joe-batchelor-2021",
+        "st-helens-cur-joe-batchelor-2020"
+      ]
+    },
+    {
+      "name": "john asiata",
+      "ids": [
+        "hull-fc-cur-john-asiata",
+        "hull-fc-hist-john-asiata-2025"
+      ]
+    },
+    {
+      "name": "lewis martin",
+      "ids": [
+        "hull-fc-cur-lewis-martin",
+        "hull-fc-hist-lewis-martin-2024",
+        "hull-fc-hist-lewis-martin-2025"
+      ]
+    },
+    {
+      "name": "liam knight",
+      "ids": [
+        "hull-fc-cur-liam-knight",
+        "hull-fc-hist-era-liam-knight"
+      ]
+    },
+    {
+      "name": "ligi sao",
+      "ids": [
+        "hull-fc-cur-ligi-sao",
+        "hull-fc-hist-ligi-sao-2020",
+        "hull-fc-hist-ligi-sao-2021",
+        "hull-fc-hist-ligi-sao-2022",
+        "hull-fc-hist-ligi-sao-2024"
+      ]
+    },
+    {
+      "name": "logan moy",
+      "ids": [
+        "hull-fc-cur-logan-moy",
+        "hull-fc-hist-era-logan-moy"
+      ]
+    },
+    {
+      "name": "sam lisone",
+      "ids": [
+        "hull-fc-cur-sam-lisone",
+        "leeds-cur-sam-lisone",
+        "leeds-hist-sam-lisone-2023",
+        "leeds-hist-sam-lisone-2024",
+        "leeds-hist-sam-lisone-2025"
+      ]
+    },
+    {
+      "name": "tom briscoe",
+      "ids": [
+        "hull-fc-cur-tom-briscoe",
+        "hull-fc-hist-tom-briscoe-2009",
+        "leeds-hist-tom-briscoe-2016",
+        "hull-fc-hist-tom-briscoe-2013",
+        "leeds-cur-tom-briscoe-2015",
+        "leeds-hist-tom-briscoe-2021",
+        "hull-fc-hist-tom-briscoe-2025"
+      ]
+    },
+    {
+      "name": "will pryce",
+      "ids": [
+        "hull-fc-cur-will-pryce",
+        "huddersfield-hist-will-pryce-2023",
+        "hull-fc-hist-will-pryce-2025"
+      ]
+    },
+    {
+      "name": "yusuf aydin",
+      "ids": [
+        "hull-fc-cur-yusuf-aydin",
+        "hull-fc-hist-era-yusuf-aydin",
+        "hull-fc-hist-yusuf-aydin-2025"
+      ]
+    },
+    {
+      "name": "zak hardaker",
+      "ids": [
+        "hull-fc-cur-zak-hardaker",
+        "leeds-hist-zak-hardaker-2013",
+        "leeds-hist-zak-hardaker-2016",
+        "leeds-cur-zak-hardaker-2015",
+        "wigan-hist-zak-hardaker-2020",
+        "wigan-hist-zak-hardaker-2021",
+        "leeds-hist-zak-hardaker-2022"
+      ]
+    },
+    {
+      "name": "danny richardson",
+      "ids": [
+        "hull-kr-cur-danny-richardson",
+        "st-helens-hist-danny-richardson-2018"
+      ]
+    },
+    {
+      "name": "dean hadley",
+      "ids": [
+        "hull-kr-cur-dean-hadley",
+        "hull-kr-hist-dean-hadley-2020"
+      ]
+    },
+    {
+      "name": "jack broadbent",
+      "ids": [
+        "hull-kr-cur-jack-broadbent",
+        "castleford-hist-era-jack-broadbent"
+      ]
+    },
+    {
+      "name": "jack brown",
+      "ids": [
+        "hull-kr-cur-jack-brown",
+        "hull-fc-hist-jack-brown-2022"
+      ]
+    },
+    {
+      "name": "jack charles",
+      "ids": [
+        "hull-kr-cur-jack-charles",
+        "hull-fc-hist-era-jack-charles"
+      ]
+    },
+    {
+      "name": "jai whitbread",
+      "ids": [
+        "hull-kr-cur-jai-whitbread",
+        "wakefield-hist-jai-whitbread-2022",
+        "wakefield-hist-jai-whitbread-2023"
+      ]
+    },
+    {
+      "name": "james batchelor",
+      "ids": [
+        "hull-kr-cur-james-batchelor",
+        "wakefield-hist-james-batchelor-2022"
+      ]
+    },
+    {
+      "name": "jez litten",
+      "ids": [
+        "hull-kr-cur-jez-litten",
+        "hull-kr-hist-jez-litten-2020"
+      ]
+    },
+    {
+      "name": "joe burgess",
+      "ids": [
+        "hull-kr-cur-joe-burgess",
+        "wigan-hist-joe-burgess-2015",
+        "wigan-hist-joe-burgess-2020"
+      ]
+    },
+    {
+      "name": "kelepi tanginoa",
+      "ids": [
+        "hull-kr-cur-kelepi-tanginoa",
+        "wakefield-hist-kelepi-tanginoa",
+        "wakefield-hist-kelepi-tanginoa-2022"
+      ]
+    },
+    {
+      "name": "lee kershaw",
+      "ids": [
+        "hull-kr-cur-lee-kershaw",
+        "wakefield-hist-era-lee-kershaw"
+      ]
+    },
+    {
+      "name": "mikey lewis",
+      "ids": [
+        "hull-kr-cur-mikey-lewis",
+        "hull-kr-hist-mikey-lewis-2020"
+      ]
+    },
+    {
+      "name": "oliver gildart",
+      "ids": [
+        "hull-kr-cur-oliver-gildart",
+        "wigan-hist-oliver-gildart-2015",
+        "wigan-hist-oliver-gildart-2016",
+        "salford-hist-oliver-gildart-2015",
+        "salford-cur-oliver-gildart-2015",
+        "wigan-hist-oliver-gildart-2021"
+      ]
+    },
+    {
+      "name": "rhyse martin",
+      "ids": [
+        "hull-kr-cur-rhyse-martin",
+        "leeds-hist-era-rhyse-martin",
+        "leeds-hist-rhyse-martin-2021",
+        "leeds-hist-rhyse-martin-2022",
+        "leeds-hist-rhyse-martin-2023",
+        "leeds-hist-rhyse-martin-2024"
+      ]
+    },
+    {
+      "name": "sam luckley",
+      "ids": [
+        "hull-kr-cur-sam-luckley",
+        "hull-kr-hist-era-sam-luckley"
+      ]
+    },
+    {
+      "name": "ash handley",
+      "ids": [
+        "leeds-cur-ash-handley",
+        "leeds-hist-ash-handley-2016",
+        "leeds-cur-ash-handley-2015",
+        "leeds-hist-ash-handley-2020",
+        "leeds-hist-ash-handley-2021",
+        "leeds-hist-ash-handley-2022",
+        "leeds-hist-ash-handley-2023",
+        "leeds-hist-ash-handley-2024",
+        "leeds-hist-ash-handley-2025"
+      ]
+    },
+    {
+      "name": "brodie croft",
+      "ids": [
+        "leeds-cur-brodie-croft",
+        "leeds-hist-brodie-croft-2024",
+        "leeds-hist-brodie-croft-2025"
+      ]
+    },
+    {
+      "name": "cameron smith",
+      "ids": [
+        "leeds-cur-cameron-smith",
+        "leeds-hist-cameron-smith-2020",
+        "leeds-hist-cameron-smith-2021",
+        "leeds-hist-cameron-smith-2022",
+        "leeds-hist-cameron-smith-2023",
+        "leeds-hist-cameron-smith-2024"
+      ]
+    },
+    {
+      "name": "chris hankinson",
+      "ids": [
+        "leeds-cur-chris-hankinson",
+        "salford-hist-era-chris-hankinson"
+      ]
+    },
+    {
+      "name": "cooper jenkins",
+      "ids": [
+        "leeds-cur-cooper-jenkins",
+        "leeds-hist-cooper-jenkins-2025"
+      ]
+    },
+    {
+      "name": "danny levi",
+      "ids": [
+        "leeds-cur-danny-levi",
+        "huddersfield-hist-era-danny-levi"
+      ]
+    },
+    {
+      "name": "harry newman",
+      "ids": [
+        "leeds-cur-harry-newman",
+        "leeds-hist-harry-newman-2021",
+        "leeds-hist-harry-newman-2023",
+        "leeds-hist-harry-newman-2024",
+        "leeds-hist-harry-newman-2025"
+      ]
+    },
+    {
+      "name": "jake connor",
+      "ids": [
+        "leeds-cur-jake-connor",
+        "huddersfield-hist-jake-connor-2016",
+        "hull-fc-hist-jake-connor-2020",
+        "hull-fc-hist-jake-connor-2021",
+        "hull-fc-hist-jake-connor-2022",
+        "huddersfield-hist-jake-connor-2023",
+        "huddersfield-hist-jake-connor-2024",
+        "leeds-hist-jake-connor-2025"
+      ]
+    },
+    {
+      "name": "james bentley",
+      "ids": [
+        "leeds-cur-james-bentley",
+        "leeds-hist-james-bentley-2022",
+        "leeds-hist-james-bentley-2023",
+        "leeds-hist-james-bentley-2024",
+        "leeds-hist-james-bentley-2025"
+      ]
+    },
+    {
+      "name": "james mcdonnell",
+      "ids": [
+        "leeds-cur-james-mcdonnell",
+        "leeds-hist-james-mcdonnell-2023",
+        "leeds-hist-james-mcdonnell-2024",
+        "leeds-hist-james-mcdonnell-2025"
+      ]
+    },
+    {
+      "name": "jarrod oconnor",
+      "ids": [
+        "leeds-cur-jarrod-o-connor",
+        "leeds-hist-jarrod-o-connor-2022",
+        "leeds-hist-jarrod-o-connor-2023",
+        "leeds-hist-jarrod-o-connor-2024",
+        "leeds-hist-jarrod-o-connor-2025"
+      ]
+    },
+    {
+      "name": "kallum watkins",
+      "ids": [
+        "leeds-cur-kallum-watkins",
+        "leeds-hist-kallum-watkins-2008",
+        "leeds-hist-kallum-watkins-2009",
+        "leeds-hist-kallum-watkins-2013",
+        "leeds-hist-kallum-watkins-2016",
+        "leeds-cur-kallum-watkins-2015",
+        "leeds-hist-kallum-watkins-2025"
+      ]
+    },
+    {
+      "name": "keenan palasia",
+      "ids": [
+        "leeds-cur-keenan-palasia",
+        "leeds-hist-era-keenan-palasia"
+      ]
+    },
+    {
+      "name": "mikolaj oledzki",
+      "ids": [
+        "leeds-cur-mikolaj-oledzki",
+        "leeds-hist-mikolaj-oledzki-2020",
+        "leeds-hist-mikolaj-oledzki-2021",
+        "leeds-hist-mikolaj-oledzki-2022",
+        "leeds-hist-mikolaj-oledzki-2023",
+        "leeds-hist-mikolaj-oledzki-2024",
+        "leeds-hist-mikolaj-oledzki-2025"
+      ]
+    },
+    {
+      "name": "morgan gannon",
+      "ids": [
+        "leeds-cur-morgan-gannon",
+        "leeds-hist-morgan-gannon-2022",
+        "leeds-hist-morgan-gannon-2025"
+      ]
+    },
+    {
+      "name": "riley lumb",
+      "ids": [
+        "leeds-cur-riley-lumb",
+        "leeds-hist-riley-lumb-2025"
+      ]
+    },
+    {
+      "name": "ryan hall",
+      "ids": [
+        "leeds-cur-ryan-hall",
+        "leeds-hist-era-ryan-hall",
+        "leeds-hist-ryan-hall-2009",
+        "leeds-hist-ryan-hall-2013",
+        "leeds-hist-ryan-hall-2025"
+      ]
+    },
+    {
+      "name": "tom holroyd",
+      "ids": [
+        "leeds-cur-tom-holroyd",
+        "leeds-hist-tom-holroyd-2023",
+        "leeds-hist-tom-holroyd-2025"
+      ]
+    },
+    {
+      "name": "bailey hodgson",
+      "ids": [
+        "leigh-cur-bailey-hodgson",
+        "leigh-hist-era-bailey-hodgson"
+      ]
+    },
+    {
+      "name": "edwin ipape",
+      "ids": [
+        "leigh-cur-edwin-ipape",
+        "leigh-hist-edwin-ipape-2025"
+      ]
+    },
+    {
+      "name": "ethan oneill",
+      "ids": [
+        "leigh-cur-ethan-o-neill",
+        "leigh-hist-ethan-o-neill-2025"
+      ]
+    },
+    {
+      "name": "frankie halton",
+      "ids": [
+        "leigh-cur-frankie-halton",
+        "leigh-hist-frankie-halton-2025"
+      ]
+    },
+    {
+      "name": "gareth obrien",
+      "ids": [
+        "leigh-cur-gareth-o-brien",
+        "warrington-hist-gareth-o-brien-2015",
+        "salford-hist-gareth-o-brien-2016",
+        "leigh-hist-gareth-o-brien-2025"
+      ]
+    },
+    {
+      "name": "innes senior",
+      "ids": [
+        "leigh-cur-innes-senior",
+        "huddersfield-hist-era-innes-senior"
+      ]
+    },
+    {
+      "name": "isaac liu",
+      "ids": [
+        "leigh-cur-isaac-liu",
+        "leigh-hist-isaac-liu-2025"
+      ]
+    },
+    {
+      "name": "jack hughes",
+      "ids": [
+        "leigh-cur-jack-hughes",
+        "leigh-hist-era-jack-hughes",
+        "warrington-hist-jack-hughes-2020",
+        "warrington-hist-jack-hughes-2021",
+        "leigh-hist-jack-hughes-2025"
+      ]
+    },
+    {
+      "name": "joe ofahengaue",
+      "ids": [
+        "leigh-cur-joe-ofahengaue",
+        "leigh-hist-joe-ofahengaue-2025"
+      ]
+    },
+    {
+      "name": "josh charnley",
+      "ids": [
+        "leigh-cur-josh-charnley",
+        "leigh-hist-era-josh-charnley",
+        "wigan-hist-josh-charnley-2015",
+        "wigan-hist-josh-charnley-2016",
+        "warrington-hist-josh-charnley-2020",
+        "warrington-hist-josh-charnley-2021",
+        "warrington-hist-josh-charnley-2022",
+        "leigh-hist-josh-charnley-2025"
+      ]
+    },
+    {
+      "name": "keanan brand",
+      "ids": [
+        "leigh-cur-keanan-brand",
+        "leigh-hist-keanan-brand-2025"
+      ]
+    },
+    {
+      "name": "lachlan lam",
+      "ids": [
+        "leigh-cur-lachlan-lam",
+        "leigh-hist-lachlan-lam-2025"
+      ]
+    },
+    {
+      "name": "liam horne",
+      "ids": [
+        "leigh-cur-liam-horne",
+        "castleford-hist-era-liam-horne"
+      ]
+    },
+    {
+      "name": "matt davis",
+      "ids": [
+        "leigh-cur-matt-davis",
+        "leigh-hist-era-matt-davis",
+        "warrington-hist-matt-davis-2021",
+        "leigh-hist-matt-davis-2025"
+      ]
+    },
+    {
+      "name": "owen trout",
+      "ids": [
+        "leigh-cur-owen-trout",
+        "huddersfield-hist-owen-trout-2021",
+        "huddersfield-hist-owen-trout-2022",
+        "leigh-hist-owen-trout-2025"
+      ]
+    },
+    {
+      "name": "robbie mulhern",
+      "ids": [
+        "leigh-cur-robbie-mulhern",
+        "hull-kr-hist-robbie-mulhern-2020",
+        "warrington-hist-robbie-mulhern-2021",
+        "warrington-hist-robbie-mulhern-2022",
+        "leigh-hist-robbie-mulhern-2025"
+      ]
+    },
+    {
+      "name": "tesi niu",
+      "ids": [
+        "leigh-cur-tesi-niu",
+        "leigh-hist-tesi-niu-2025"
+      ]
+    },
+    {
+      "name": "umyla hanley",
+      "ids": [
+        "leigh-cur-umyla-hanley",
+        "leigh-hist-umyla-hanley-2025"
+      ]
+    },
+    {
+      "name": "agnatius paasi",
+      "ids": [
+        "st-helens-cur-agnatius-paasi",
+        "st-helens-hist-era-agnatius-paasi"
+      ]
+    },
+    {
+      "name": "alex walmsley",
+      "ids": [
+        "st-helens-cur-alex-walmsley",
+        "st-helens-hist-alex-walmsley-2015",
+        "st-helens-cur-alex-walmsley-2019",
+        "st-helens-cur-alex-walmsley-2021",
+        "st-helens-cur-alex-walmsley-2020",
+        "st-helens-hist-alex-walmsley-2016"
+      ]
+    },
+    {
+      "name": "daryl clark",
+      "ids": [
+        "st-helens-cur-daryl-clark",
+        "warrington-hist-daryl-clark-2015",
+        "warrington-cur-daryl-clark-2016",
+        "castleford-cur-daryl-clark-2012",
+        "warrington-hist-daryl-clark-2020",
+        "warrington-hist-daryl-clark-2021",
+        "warrington-hist-daryl-clark-2022",
+        "warrington-hist-daryl-clark-2023"
+      ]
+    },
+    {
+      "name": "jack welsby",
+      "ids": [
+        "st-helens-cur-jack-welsby",
+        "st-helens-cur-jack-welsby-2020"
+      ]
+    },
+    {
+      "name": "jackson hastings",
+      "ids": [
+        "st-helens-cur-jackson-hastings",
+        "wigan-hist-jackson-hastings",
+        "wigan-hist-jackson-hastings-2020",
+        "wigan-hist-jackson-hastings-2021"
+      ]
+    },
+    {
+      "name": "joe shorrocks",
+      "ids": [
+        "st-helens-cur-joe-shorrocks",
+        "wigan-hist-joe-shorrocks-2021",
+        "wigan-hist-joe-shorrocks-2023"
+      ]
+    },
+    {
+      "name": "jonny lomax",
+      "ids": [
+        "st-helens-cur-jonny-lomax",
+        "st-helens-cur-jonny-lomax-2014",
+        "st-helens-cur-jonny-lomax-2019",
+        "st-helens-cur-jonny-lomax-2021",
+        "st-helens-cur-jonny-lomax-2020",
+        "st-helens-hist-jonny-lomax-2016"
+      ]
+    },
+    {
+      "name": "kyle feldt",
+      "ids": [
+        "st-helens-cur-kyle-feldt",
+        "st-helens-hist-era-kyle-feldt"
+      ]
+    },
+    {
+      "name": "lewis murphy",
+      "ids": [
+        "st-helens-cur-lewis-murphy",
+        "wakefield-hist-lewis-murphy-2022"
+      ]
+    },
+    {
+      "name": "mark percival",
+      "ids": [
+        "st-helens-cur-mark-percival",
+        "st-helens-hist-mark-percival-2015",
+        "st-helens-cur-mark-percival-2014",
+        "st-helens-cur-mark-percival-2019",
+        "st-helens-cur-mark-percival-2021",
+        "st-helens-cur-mark-percival-2020",
+        "st-helens-hist-mark-percival-2016"
+      ]
+    },
+    {
+      "name": "matty lees",
+      "ids": [
+        "st-helens-cur-matty-lees",
+        "st-helens-cur-matty-lees-2021",
+        "st-helens-cur-matty-lees-2020"
+      ]
+    },
+    {
+      "name": "morgan knowles",
+      "ids": [
+        "st-helens-cur-morgan-knowles",
+        "st-helens-hist-morgan-knowles-2019",
+        "st-helens-hist-morgan-knowles-2021",
+        "st-helens-hist-morgan-knowles"
+      ]
+    },
+    {
+      "name": "nene macdonald",
+      "ids": [
+        "st-helens-cur-nene-macdonald",
+        "salford-hist-era-nene-macdonald"
+      ]
+    },
+    {
+      "name": "benjamin laguerre",
+      "ids": [
+        "toulouse-cur-benjamin-laguerre",
+        "toulouse-hist-benjamin-laguerre-2022",
+        "toulouse-hist-benjamin-laguerre-2023",
+        "toulouse-hist-benjamin-laguerre-2025",
+        "toulouse-hist-benjamin-laguerre-2024"
+      ]
+    },
+    {
+      "name": "calum gahan",
+      "ids": [
+        "toulouse-cur-calum-gahan",
+        "toulouse-hist-calum-gahan-2022",
+        "toulouse-hist-calum-gahan-2023",
+        "toulouse-hist-calum-gahan-2025",
+        "toulouse-hist-calum-gahan-2024"
+      ]
+    },
+    {
+      "name": "eloi pelissier",
+      "ids": [
+        "toulouse-cur-eloi-pelissier",
+        "london-hist-eloi-pelissier-2018",
+        "london-cur-eloi-pelissier-2018",
+        "catalans-hist-eloi-pelissier",
+        "catalans-cur-eloi-pelissier-2011",
+        "london-hist-eloi-pelissier-2019",
+        "catalans-cur-eloi-pelissier-2012",
+        "catalans-cur-eloi-pelissier-2013",
+        "catalans-cur-eloi-pelissier-2016",
+        "catalans-cur-eloi-pelissier-2015"
+      ]
+    },
+    {
+      "name": "henry okane",
+      "ids": [
+        "toulouse-cur-henry-okane",
+        "toulouse-hist-henry-o-kane-2022",
+        "toulouse-hist-henry-o-kane-2023",
+        "toulouse-hist-henry-o-kane-2025",
+        "toulouse-hist-henry-o-kane-2024"
+      ]
+    },
+    {
+      "name": "jake shorrocks",
+      "ids": [
+        "toulouse-cur-jake-shorrocks",
+        "toulouse-hist-jake-shorrocks-2022",
+        "toulouse-hist-jake-shorrocks-2023",
+        "toulouse-hist-jake-shorrocks-2025",
+        "toulouse-hist-jake-shorrocks-2024"
+      ]
+    },
+    {
+      "name": "joe bretherton",
+      "ids": [
+        "toulouse-cur-joe-bretherton",
+        "toulouse-hist-joe-bretherton-2022",
+        "toulouse-hist-joe-bretherton-2023",
+        "toulouse-hist-joe-bretherton-2024",
+        "toulouse-hist-joe-bretherton-2025",
+        "wigan-hist-joe-bretherton-2016"
+      ]
+    },
+    {
+      "name": "joe cator",
+      "ids": [
+        "toulouse-cur-joe-cator",
+        "hull-fc-hist-era-joe-cator",
+        "toulouse-hist-joe-cator-2022",
+        "toulouse-hist-joe-cator-2023",
+        "toulouse-hist-joe-cator-2024",
+        "toulouse-hist-joe-cator-2025",
+        "hull-fc-hist-joe-cator-2023"
+      ]
+    },
+    {
+      "name": "justin sangare",
+      "ids": [
+        "toulouse-cur-justin-sangare",
+        "york-cur-justin-sangare",
+        "leeds-hist-justin-sangare-2023",
+        "leeds-hist-justin-sangare-2024"
+      ]
+    },
+    {
+      "name": "luke polselli",
+      "ids": [
+        "toulouse-cur-luke-polselli",
+        "toulouse-hist-luke-polselli-2022",
+        "toulouse-hist-luke-polselli-2023",
+        "toulouse-hist-luke-polselli-2025",
+        "toulouse-hist-luke-polselli-2024"
+      ]
+    },
+    {
+      "name": "mathieu jussaume",
+      "ids": [
+        "toulouse-cur-mathieu-jussaume",
+        "toulouse-hist-mathieu-jussaume-2022",
+        "toulouse-hist-mathieu-jussaume-2023",
+        "toulouse-hist-mathieu-jussaume-2025",
+        "toulouse-hist-mathieu-jussaume-2024"
+      ]
+    },
+    {
+      "name": "maxime stefani",
+      "ids": [
+        "toulouse-cur-maxime-stefani",
+        "toulouse-hist-maxime-stefani-2022",
+        "toulouse-hist-maxime-stefani-2023",
+        "toulouse-hist-maxime-stefani-2025",
+        "toulouse-hist-maxime-stefani-2024"
+      ]
+    },
+    {
+      "name": "olly ashallbott",
+      "ids": [
+        "toulouse-cur-olly-ashall-bott",
+        "toulouse-hist-olly-ashall-bott-2022",
+        "toulouse-hist-olly-ashall-bott-2023",
+        "toulouse-hist-olly-ashall-bott-2025",
+        "toulouse-hist-olly-ashall-bott-2024"
+      ]
+    },
+    {
+      "name": "paul ulberg",
+      "ids": [
+        "toulouse-cur-paul-ulberg",
+        "toulouse-hist-paul-ulberg-2022",
+        "toulouse-hist-paul-ulberg-2023",
+        "toulouse-hist-paul-ulberg-2025",
+        "toulouse-hist-paul-ulberg-2024"
+      ]
+    },
+    {
+      "name": "reubenn rennie",
+      "ids": [
+        "toulouse-cur-reubenn-rennie",
+        "toulouse-hist-reubenn-rennie-2022",
+        "toulouse-hist-reubenn-rennie-2023",
+        "toulouse-hist-reubenn-rennie-2025",
+        "toulouse-hist-reubenn-rennie-2024"
+      ]
+    },
+    {
+      "name": "caius faatili",
+      "ids": [
+        "wakefield-cur-caius-faatili",
+        "wakefield-hist-era-caius-faatili"
+      ]
+    },
+    {
+      "name": "cameron scott",
+      "ids": [
+        "wakefield-cur-cameron-scott",
+        "hull-fc-hist-cameron-scott-2021",
+        "hull-fc-hist-cameron-scott-2023",
+        "wakefield-hist-cameron-scott-2025"
+      ]
+    },
+    {
+      "name": "corey hall",
+      "ids": [
+        "wakefield-cur-corey-hall",
+        "wakefield-hist-corey-hall-2022",
+        "wakefield-hist-corey-hall-2025"
+      ]
+    },
+    {
+      "name": "harvey smith",
+      "ids": [
+        "wakefield-cur-harvey-smith",
+        "wakefield-hist-era-harvey-smith"
+      ]
+    },
+    {
+      "name": "isaiah vagana",
+      "ids": [
+        "wakefield-cur-isaiah-vagana",
+        "wakefield-hist-era-isaiah-vagana"
+      ]
+    },
+    {
+      "name": "jay pitts",
+      "ids": [
+        "wakefield-cur-jay-pitts",
+        "london-hist-jay-pitts-2018",
+        "london-cur-jay-pitts-2018",
+        "bradford-cur-jay-pitts-2014",
+        "london-hist-jay-pitts-2019",
+        "wakefield-hist-jay-pitts-2022",
+        "wakefield-hist-jay-pitts-2023",
+        "wakefield-hist-jay-pitts-2025"
+      ]
+    },
+    {
+      "name": "lachlan walmsley",
+      "ids": [
+        "wakefield-cur-lachlan-walmsley",
+        "wakefield-hist-era-lachlan-walmsley"
+      ]
+    },
+    {
+      "name": "mason lino",
+      "ids": [
+        "wakefield-cur-mason-lino",
+        "wakefield-hist-mason-lino-2022",
+        "wakefield-hist-mason-lino-2023",
+        "wakefield-hist-mason-lino-2025"
+      ]
+    },
+    {
+      "name": "max jowitt",
+      "ids": [
+        "wakefield-cur-max-jowitt",
+        "wakefield-hist-max-jowitt-2016",
+        "wakefield-hist-max-jowitt-2022",
+        "wakefield-hist-max-jowitt-2023",
+        "wakefield-hist-max-jowitt-2025"
+      ]
+    },
+    {
+      "name": "mike mcmeeken",
+      "ids": [
+        "wakefield-cur-mike-mcmeeken",
+        "castleford-cur-mike-mcmeeken-2016",
+        "wakefield-hist-mike-mcmeeken-2025"
+      ]
+    },
+    {
+      "name": "oliver pratt",
+      "ids": [
+        "wakefield-cur-oliver-pratt",
+        "wakefield-hist-oliver-pratt-2025"
+      ]
+    },
+    {
+      "name": "tom johnstone",
+      "ids": [
+        "wakefield-cur-tom-johnstone",
+        "wakefield-hist-tom-johnstone-2016",
+        "wakefield-hist-tom-johnstone-2022",
+        "wakefield-hist-tom-johnstone-2025"
+      ]
+    },
+    {
+      "name": "adam holroyd",
+      "ids": [
+        "warrington-cur-adam-holroyd",
+        "warrington-hist-adam-holroyd-2025"
+      ]
+    },
+    {
+      "name": "ben currie",
+      "ids": [
+        "warrington-cur-ben-currie",
+        "warrington-hist-ben-currie-2015",
+        "warrington-cur-ben-currie-2016",
+        "warrington-hist-ben-currie-2020",
+        "warrington-hist-ben-currie-2021",
+        "warrington-hist-ben-currie-2022",
+        "warrington-hist-ben-currie-2023",
+        "warrington-hist-ben-currie-2024",
+        "warrington-hist-ben-currie-2025"
+      ]
+    },
+    {
+      "name": "danny walker",
+      "ids": [
+        "warrington-cur-danny-walker",
+        "warrington-hist-danny-walker-2020",
+        "warrington-hist-danny-walker-2021",
+        "warrington-hist-danny-walker-2022",
+        "warrington-hist-danny-walker-2023",
+        "warrington-hist-danny-walker-2024",
+        "warrington-hist-danny-walker-2025"
+      ]
+    },
+    {
+      "name": "george williams",
+      "ids": [
+        "warrington-cur-george-williams",
+        "wigan-hist-george-williams-2015",
+        "wigan-hist-george-williams-2016",
+        "warrington-hist-george-williams-2022",
+        "warrington-hist-george-williams-2023",
+        "warrington-hist-george-williams-2024",
+        "warrington-hist-george-williams-2025"
+      ]
+    },
+    {
+      "name": "jake thewlis",
+      "ids": [
+        "warrington-cur-jake-thewlis",
+        "warrington-hist-era-jake-thewlis"
+      ]
+    },
+    {
+      "name": "james harrison",
+      "ids": [
+        "warrington-cur-james-harrison",
+        "warrington-hist-james-harrison-2023",
+        "warrington-hist-james-harrison-2024",
+        "warrington-hist-james-harrison-2025"
+      ]
+    },
+    {
+      "name": "joe philbin",
+      "ids": [
+        "warrington-cur-joe-philbin",
+        "warrington-hist-joe-philbin-2020",
+        "warrington-hist-joe-philbin-2021",
+        "warrington-hist-joe-philbin-2022",
+        "warrington-hist-joe-philbin-2023",
+        "warrington-hist-joe-philbin-2024",
+        "warrington-hist-joe-philbin-2025"
+      ]
+    },
+    {
+      "name": "josh thewlis",
+      "ids": [
+        "warrington-cur-josh-thewlis",
+        "warrington-hist-josh-thewlis-2022",
+        "warrington-hist-josh-thewlis-2023",
+        "warrington-hist-josh-thewlis-2024",
+        "warrington-hist-josh-thewlis-2025"
+      ]
+    },
+    {
+      "name": "liam byrne",
+      "ids": [
+        "warrington-cur-liam-byrne",
+        "wigan-hist-era-liam-byrne",
+        "wigan-hist-liam-byrne-2021",
+        "wigan-hist-liam-byrne-2022",
+        "wigan-hist-liam-byrne-2023",
+        "wigan-hist-liam-byrne-2024",
+        "wigan-hist-liam-byrne-2025"
+      ]
+    },
+    {
+      "name": "luke yates",
+      "ids": [
+        "warrington-cur-luke-yates",
+        "london-hist-luke-yates-2019",
+        "huddersfield-hist-luke-yates-2021",
+        "huddersfield-hist-luke-yates-2022",
+        "huddersfield-hist-luke-yates-2023",
+        "warrington-hist-luke-yates-2025"
+      ]
+    },
+    {
+      "name": "marc sneyd",
+      "ids": [
+        "warrington-cur-marc-sneyd",
+        "hull-fc-hist-marc-sneyd-2016",
+        "hull-fc-hist-marc-sneyd-2020",
+        "hull-fc-hist-marc-sneyd-2021",
+        "warrington-hist-marc-sneyd-2025"
+      ]
+    },
+    {
+      "name": "matty nicholson",
+      "ids": [
+        "warrington-cur-matty-nicholson",
+        "warrington-hist-matty-nicholson-2023",
+        "warrington-hist-matty-nicholson-2024"
+      ]
+    },
+    {
+      "name": "sam powell",
+      "ids": [
+        "warrington-cur-sam-powell",
+        "wigan-hist-sam-powell-2020",
+        "wigan-hist-sam-powell-2021",
+        "wigan-hist-sam-powell-2022",
+        "wigan-hist-sam-powell-2023",
+        "warrington-hist-sam-powell-2024",
+        "warrington-hist-sam-powell-2025"
+      ]
+    },
+    {
+      "name": "toby king",
+      "ids": [
+        "warrington-cur-toby-king",
+        "warrington-hist-toby-king-2015",
+        "warrington-cur-toby-king-2016",
+        "warrington-hist-toby-king-2020",
+        "warrington-hist-toby-king-2021",
+        "warrington-hist-toby-king-2022",
+        "wigan-hist-toby-king-2023",
+        "warrington-hist-toby-king-2024",
+        "warrington-hist-toby-king-2025"
+      ]
+    },
+    {
+      "name": "adam keighran",
+      "ids": [
+        "wigan-cur-adam-keighran",
+        "wigan-hist-adam-keighran-2024",
+        "wigan-hist-adam-keighran-2025"
+      ]
+    },
+    {
+      "name": "bevan french",
+      "ids": [
+        "wigan-cur-bevan-french",
+        "wigan-hist-bevan-french-2020",
+        "wigan-hist-bevan-french-2022",
+        "wigan-hist-bevan-french-2023",
+        "wigan-hist-bevan-french-2024",
+        "wigan-hist-bevan-french-2025"
+      ]
+    },
+    {
+      "name": "ethan havard",
+      "ids": [
+        "wigan-cur-ethan-havard",
+        "wigan-hist-ethan-havard-2020",
+        "wigan-hist-ethan-havard-2021",
+        "wigan-hist-ethan-havard-2022",
+        "wigan-hist-ethan-havard-2023",
+        "wigan-hist-ethan-havard-2024"
+      ]
+    },
+    {
+      "name": "harry smith",
+      "ids": [
+        "wigan-cur-harry-smith",
+        "wigan-hist-harry-smith-2020",
+        "wigan-hist-harry-smith-2021",
+        "wigan-hist-harry-smith-2022",
+        "wigan-hist-harry-smith-2023",
+        "wigan-hist-harry-smith-2024",
+        "wigan-hist-harry-smith-2025"
+      ]
+    },
+    {
+      "name": "jai field",
+      "ids": [
+        "wigan-cur-jai-field",
+        "wigan-hist-jai-field-2022",
+        "wigan-hist-jai-field-2023",
+        "wigan-hist-jai-field-2024",
+        "wigan-hist-jai-field-2025"
+      ]
+    },
+    {
+      "name": "junior nsemba",
+      "ids": [
+        "wigan-cur-junior-nsemba",
+        "wigan-hist-junior-nsemba-2024",
+        "wigan-hist-junior-nsemba-2025"
+      ]
+    },
+    {
+      "name": "kaide ellis",
+      "ids": [
+        "wigan-cur-kaide-ellis",
+        "wigan-hist-kaide-ellis-2022",
+        "wigan-hist-kaide-ellis-2023",
+        "wigan-hist-kaide-ellis-2024",
+        "wigan-hist-kaide-ellis-2025"
+      ]
+    },
+    {
+      "name": "liam farrell",
+      "ids": [
+        "wigan-cur-liam-farrell",
+        "wigan-hist-liam-farrell-2015",
+        "wigan-hist-liam-farrell-2016",
+        "wigan-hist-liam-farrell-2020",
+        "wigan-hist-liam-farrell-2021",
+        "wigan-hist-liam-farrell-2022",
+        "wigan-hist-liam-farrell-2023",
+        "wigan-hist-liam-farrell-2024",
+        "wigan-hist-liam-farrell-2025"
+      ]
+    },
+    {
+      "name": "liam marshall",
+      "ids": [
+        "wigan-cur-liam-marshall",
+        "wigan-hist-liam-marshall-2021",
+        "wigan-hist-liam-marshall-2022",
+        "wigan-hist-liam-marshall-2023",
+        "wigan-hist-liam-marshall-2024",
+        "wigan-hist-liam-marshall-2025"
+      ]
+    },
+    {
+      "name": "luke thompson",
+      "ids": [
+        "wigan-cur-luke-thompson",
+        "st-helens-hist-luke-thompson-2015",
+        "st-helens-cur-luke-thompson-2019",
+        "wigan-hist-luke-thompson-2024",
+        "wigan-hist-luke-thompson-2025"
+      ]
+    },
+    {
+      "name": "oliver partington",
+      "ids": [
+        "wigan-cur-oliver-partington",
+        "wigan-hist-oliver-partington",
+        "wigan-hist-oliver-partington-2020",
+        "wigan-hist-oliver-partington-2021",
+        "wigan-hist-oliver-partington-2022"
+      ]
+    },
+    {
+      "name": "patrick mago",
+      "ids": [
+        "wigan-cur-patrick-mago",
+        "wigan-hist-patrick-mago-2022",
+        "wigan-hist-patrick-mago-2023",
+        "wigan-hist-patrick-mago-2024",
+        "wigan-hist-patrick-mago-2025"
+      ]
+    },
+    {
+      "name": "sam eseh",
+      "ids": [
+        "wigan-cur-sam-eseh",
+        "hull-fc-hist-sam-eseh-2025"
+      ]
+    },
+    {
+      "name": "sam walters",
+      "ids": [
+        "wigan-cur-sam-walters",
+        "wigan-hist-sam-walters-2025"
+      ]
+    },
+    {
+      "name": "tiaki chan",
+      "ids": [
+        "wigan-cur-tiaki-chan",
+        "toulouse-hist-tiaki-chan-2022",
+        "toulouse-hist-tiaki-chan-2023",
+        "toulouse-hist-tiaki-chan-2025",
+        "toulouse-hist-tiaki-chan-2024"
+      ]
+    },
+    {
+      "name": "zach eckersley",
+      "ids": [
+        "wigan-cur-zach-eckersley",
+        "wigan-hist-zach-eckersley-2025"
       ]
     },
     {
       "name": "ben jonesbishop",
       "ids": [
         "york-cur-ben-jones-bishop",
-        "salford-hist-ben-jones-bishop-2015"
+        "leeds-hist-ben-jones-bishop-2009",
+        "leeds-hist-ben-jones-bishop-2013",
+        "salford-hist-ben-jones-bishop-2015",
+        "salford-cur-ben-jones-bishop-2015",
+        "wakefield-hist-ben-jones-bishop-2016"
       ]
     },
     {
-      "name": "ben hellewell",
+      "name": "denive balmforth",
       "ids": [
-        "salford-cur-ben-hellewell",
-        "london-hist-ben-hellewell-2018"
+        "york-cur-denive-balmforth",
+        "hull-fc-hist-denive-balmforth-2024"
       ]
     },
     {
-      "name": "jake bibby",
+      "name": "jon bennison",
       "ids": [
-        "huddersfield-cur-jake-bibby",
-        "salford-hist-jake-bibby-2015"
+        "york-cur-jonathan-bennison",
+        "st-helens-hist-era-jon-bennison"
       ]
     },
     {
-      "name": "thomas leuluai",
+      "name": "jordan thompson",
       "ids": [
-        "wigan-hist-thomas-leuluai",
-        "wigan-hist-thomas-leuluai-2008"
+        "york-cur-jordan-thompson",
+        "castleford-cur-jordan-thompson-2009"
       ]
     },
     {
-      "name": "ryan atkins",
+      "name": "josh griffin",
       "ids": [
-        "warrington-hist-ryan-atkins",
-        "wakefield-hist-ryan-atkins-2009"
+        "york-cur-josh-griffin",
+        "salford-hist-josh-griffin-2016",
+        "hull-fc-hist-josh-griffin-2020",
+        "hull-fc-hist-josh-griffin-2021",
+        "hull-fc-hist-josh-griffin-2022",
+        "hull-fc-hist-josh-griffin-2023",
+        "wakefield-hist-josh-griffin-2025"
       ]
     },
     {
-      "name": "matt blaymire",
+      "name": "paul vaughan",
       "ids": [
-        "wakefield-hist-matt-blaymire",
-        "wakefield-hist-matt-blaymire-2009"
+        "york-cur-paul-vaughan",
+        "warrington-hist-paul-vaughan-2023",
+        "warrington-hist-paul-vaughan-2024",
+        "warrington-hist-paul-vaughan-2025"
       ]
     },
     {
-      "name": "damien blanch",
+      "name": "sam wood",
       "ids": [
-        "wakefield-hist-damien-blanch",
-        "wakefield-hist-damien-blanch-2009"
+        "york-cur-sam-wood",
+        "huddersfield-hist-sam-wood-2020",
+        "huddersfield-hist-sam-wood-2021"
       ]
     },
     {
-      "name": "gareth hock",
+      "name": "will dagger",
       "ids": [
-        "salford-hist-gareth-hock",
-        "wigan-hist-gareth-hock-2006",
-        "wigan-hist-gareth-hock-2008"
+        "york-cur-will-dagger",
+        "hull-kr-hist-era-will-dagger"
       ]
     },
     {
-      "name": "dennis moran",
+      "name": "james gavet",
       "ids": [
-        "london-hist-dennis-moran",
-        "wigan-hist-dennis-moran-2006"
+        "huddersfield-hist-era-james-gavet",
+        "huddersfield-hist-james-gavet-2021"
       ]
     },
     {
-      "name": "cameron phelps",
+      "name": "josh reynolds",
       "ids": [
-        "widnes-hist-cameron-phelps",
-        "wigan-hist-cameron-phelps-2008"
+        "hull-fc-hist-era-josh-reynolds",
+        "hull-fc-hist-josh-reynolds-2022"
       ]
     },
     {
-      "name": "sadiq adebiyi",
+      "name": "liam sutcliffe",
       "ids": [
-        "london-hist-sadiq-adebiyi",
-        "london-hist-sadiq-adebiyi-2018"
+        "hull-fc-hist-era-liam-sutcliffe",
+        "leeds-hist-liam-sutcliffe-2020",
+        "leeds-hist-liam-sutcliffe-2021",
+        "leeds-hist-liam-sutcliffe-2022",
+        "hull-fc-hist-liam-sutcliffe-2023",
+        "hull-fc-hist-liam-sutcliffe-2024"
       ]
     },
     {
-      "name": "paul aiton",
+      "name": "abbas miski",
       "ids": [
-        "wakefield-hist-paul-aiton",
-        "leeds-hist-paul-aiton-2015"
+        "wigan-hist-era-abbas-miski",
+        "wigan-hist-abbas-miski-2024"
       ]
     },
     {
-      "name": "trent barrett",
+      "name": "semi tadulala",
       "ids": [
-        "wigan-hist-trent-barrett",
-        "wigan-hist-trent-barrett-2008"
+        "bradford-hist-semi-tadulala-2009",
+        "wakefield-hist-semi-tadulala"
       ]
     },
     {
-      "name": "eddie battye",
+      "name": "sam burgess",
       "ids": [
-        "wakefield-hist-eddie-battye",
-        "london-hist-eddie-battye-2018"
+        "bradford-hist-sam-burgess-2006",
+        "sam-burgess"
       ]
     },
     {
-      "name": "ricky bibey",
+      "name": "olivier elima",
       "ids": [
-        "wakefield-hist-ricky-bibey",
-        "wakefield-hist-ricky-bibey-2009"
-      ]
-    },
-    {
-      "name": "brett dallas",
-      "ids": [
-        "wigan-hist-brett-dallas",
-        "wigan-hist-brett-dallas-2006"
-      ]
-    },
-    {
-      "name": "brett delaney",
-      "ids": [
-        "leeds-hist-brett-delaney",
-        "leeds-hist-brett-delaney-2015"
-      ]
-    },
-    {
-      "name": "kieran dixon",
-      "ids": [
-        "london-hist-kieran-dixon",
-        "london-hist-kieran-dixon-2018"
-      ]
-    },
-    {
-      "name": "luke george",
-      "ids": [
-        "wakefield-hist-luke-george",
-        "wakefield-hist-luke-george-2009"
-      ]
-    },
-    {
-      "name": "sean gleeson",
-      "ids": [
-        "wakefield-hist-sean-gleeson",
-        "wigan-hist-sean-gleeson-2006"
-      ]
-    },
-    {
-      "name": "james greenwood",
-      "ids": [
-        "hull-kr-hist-james-greenwood",
-        "salford-hist-james-greenwood-2015"
-      ]
-    },
-    {
-      "name": "mark ioane",
-      "ids": [
-        "london-hist-mark-ioane",
-        "london-hist-mark-ioane-2018"
-      ]
-    },
-    {
-      "name": "greg johnson",
-      "ids": [
-        "salford-hist-greg-johnson",
-        "salford-hist-greg-johnson-2015"
-      ]
-    },
-    {
-      "name": "stacey jones",
-      "ids": [
-        "catalans-hist-stacey-jones",
-        "catalans-hist-stacey-jones-2008"
-      ]
-    },
-    {
-      "name": "elliot kear",
-      "ids": [
-        "bradford-hist-elliot-kear",
-        "london-hist-elliot-kear-2018"
-      ]
-    },
-    {
-      "name": "olsi krasniqi",
-      "ids": [
-        "london-hist-olsi-krasniqi",
-        "salford-hist-olsi-krasniqi-2015"
-      ]
-    },
-    {
-      "name": "scott logan",
-      "ids": [
-        "hull-fc-hist-scott-logan",
-        "wigan-hist-scott-logan-2006"
-      ]
-    },
-    {
-      "name": "will lovell",
-      "ids": [
-        "london-hist-will-lovell",
-        "london-hist-will-lovell-2018"
-      ]
-    },
-    {
-      "name": "joel moon",
-      "ids": [
-        "leeds-hist-joel-moon",
-        "leeds-hist-joel-moon-2015"
-      ]
-    },
-    {
-      "name": "lee mossop",
-      "ids": [
-        "wigan-hist-lee-mossop",
-        "wigan-hist-lee-mossop-2008"
-      ]
-    },
-    {
-      "name": "gregory mounis",
-      "ids": [
-        "catalans-hist-gregory-mounis",
-        "catalans-hist-gregory-mounis-2008"
-      ]
-    },
-    {
-      "name": "sam obst",
-      "ids": [
-        "wakefield-hist-sam-obst",
-        "wakefield-hist-sam-obst-2009"
-      ]
-    },
-    {
-      "name": "karl pryce",
-      "ids": [
-        "bradford-hist-karl-pryce",
-        "wigan-hist-karl-pryce-2008"
-      ]
-    },
-    {
-      "name": "eloi pelissier",
-      "ids": [
-        "catalans-hist-eloi-pelissier",
-        "london-hist-eloi-pelissier-2018"
-      ]
-    },
-    {
-      "name": "jamie rooney",
-      "ids": [
-        "wakefield-hist-jamie-rooney",
-        "wakefield-hist-jamie-rooney-2009"
-      ]
-    },
-    {
-      "name": "jarrod sammut",
-      "ids": [
-        "bradford-hist-jarrod-sammut",
-        "london-hist-jarrod-sammut-2018"
-      ]
-    },
-    {
-      "name": "danny sculthorpe",
-      "ids": [
-        "wigan-hist-danny-sculthorpe",
-        "wakefield-hist-danny-sculthorpe-2009"
-      ]
-    },
-    {
-      "name": "steve snitch",
-      "ids": [
-        "wakefield-hist-steve-snitch",
-        "wakefield-hist-steve-snitch-2009"
-      ]
-    },
-    {
-      "name": "iain thornley",
-      "ids": [
-        "wigan-hist-iain-thornley",
-        "salford-hist-iain-thornley-2015"
-      ]
-    },
-    {
-      "name": "alex walker",
-      "ids": [
-        "london-hist-alex-walker",
-        "london-hist-alex-walker-2018"
-      ]
-    },
-    {
-      "name": "oliver wilkes",
-      "ids": [
-        "wakefield-hist-oliver-wilkes",
-        "wakefield-hist-oliver-wilkes-2009"
-      ]
-    },
-    {
-      "name": "rhys williams",
-      "ids": [
-        "salford-hist-rhys-williams",
-        "london-hist-rhys-williams-2018"
-      ]
-    },
-    {
-      "name": "josh wood",
-      "ids": [
-        "salford-hist-josh-wood",
-        "salford-hist-josh-wood-2015"
+        "bradford-hist-olivier-elima-2012",
+        "catalans-hist-olivier-elima",
+        "catalans-hist-olivier-elima-2009",
+        "catalans-hist-olivier-elima-2010"
       ]
     },
     {
       "name": "aaron murphy",
       "ids": [
-        "huddersfield-hist-aaron-murphy",
         "wakefield-hist-aaron-murphy-2009",
-        "huddersfield-leg-aaron-murphy"
+        "huddersfield-hist-aaron-murphy",
+        "huddersfield-hist-aaron-murphy-2013",
+        "wakefield-hist-aaron-murphy-2010",
+        "huddersfield-hist-aaron-murphy-2016"
       ]
     },
     {
-      "name": "ben jeffries",
+      "name": "john bateman",
       "ids": [
-        "wakefield-hist-ben-jeffries",
-        "wakefield-leg-ben-jeffries"
+        "bradford-hist-john-bateman-2012",
+        "bradford-hist-john-bateman-2011",
+        "wigan-hist-john-bateman",
+        "wigan-hist-john-bateman-2021",
+        "wigan-hist-john-bateman-2022"
       ]
     },
     {
-      "name": "brett ferres",
+      "name": "harvey livett",
       "ids": [
-        "castleford-hist-brett-ferres",
-        "castleford-leg-brett-ferres"
+        "hull-kr-hist-harvey-livett-2020",
+        "wakefield-hist-harvey-livett"
       ]
     },
     {
-      "name": "chev walker",
+      "name": "reece lyne",
       "ids": [
-        "leeds-hist-chev-walker",
-        "leeds-leg-chev-walker"
+        "hull-fc-hist-reece-lyne-2012",
+        "wakefield-hist-reece-lyne",
+        "wakefield-hist-reece-lyne-2016",
+        "wakefield-hist-reece-lyne-2022",
+        "wakefield-hist-reece-lyne-2023"
       ]
     },
     {
-      "name": "francis cummins",
+      "name": "jamie shaul",
       "ids": [
-        "leeds-hist-francis-cummins",
-        "leeds-leg-francis-cummins"
+        "hull-fc-hist-jamie-shaul-2013",
+        "hull-fc-hist-jamie-shaul",
+        "hull-fc-hist-jamie-shaul-2016",
+        "hull-fc-hist-jamie-shaul-2020"
       ]
     },
     {
-      "name": "garry connolly",
+      "name": "ryan hampshire",
       "ids": [
-        "wigan-hist-garry-connolly",
-        "wigan-leg-gary-connolly"
+        "wigan-hist-ryan-hampshire-2015",
+        "wakefield-hist-ryan-hampshire",
+        "castleford-hist-ryan-hampshire-2016"
       ]
     },
     {
-      "name": "jermaine mcgillvary",
+      "name": "morgan smith",
       "ids": [
-        "huddersfield-hist-jermaine-mcgillvary",
-        "huddersfield-leg-jermaine-mcgillvary"
+        "hull-fc-hist-era-morgan-smith",
+        "london-hist-morgan-smith-2019",
+        "wakefield-hist-morgan-smith-2023",
+        "hull-fc-hist-morgan-smith-2024"
       ]
     },
     {
-      "name": "joel tomkins",
+      "name": "craig hall",
       "ids": [
-        "wigan-hist-joel-tomkins",
-        "wigan-hist-joel-tomkins-2008",
-        "wigan-leg-joel-tomkins"
+        "hull-fc-hist-craig-hall-2009",
+        "hull-kr-hist-craig-hall"
       ]
     },
     {
-      "name": "lee radford",
+      "name": "jacob miller",
       "ids": [
-        "hull-fc-hist-lee-radford",
-        "hull-fc-leg-lee-radford"
-      ]
-    },
-    {
-      "name": "leroy cudjoe",
-      "ids": [
-        "huddersfield-hist-leroy-cudjoe",
-        "huddersfield-leg-leroy-cudjoe"
-      ]
-    },
-    {
-      "name": "matt diskin",
-      "ids": [
-        "leeds-hist-matt-diskin",
-        "leeds-leg-matt-diskin"
+        "hull-fc-hist-jacob-miller-2013",
+        "wakefield-hist-jacob-miller",
+        "wakefield-hist-jacob-miller-2016",
+        "wakefield-hist-jacob-miller-2022"
       ]
     },
     {
       "name": "paul sykes",
       "ids": [
+        "bradford-hist-paul-sykes-2009",
+        "bradford-hist-paul-sykes-2012",
         "wakefield-hist-paul-sykes",
-        "london-leg-paul-sykes"
+        "bradford-hist-paul-sykes-2011",
+        "bradford-hist-paul-sykes-1999",
+        "bradford-hist-paul-sykes-2000",
+        "bradford-hist-paul-sykes-2002",
+        "bradford-hist-paul-sykes-2001"
+      ]
+    },
+    {
+      "name": "matty russell",
+      "ids": [
+        "hull-fc-hist-matty-russell-2012",
+        "warrington-hist-matty-russell-2015"
+      ]
+    },
+    {
+      "name": "ben crooks",
+      "ids": [
+        "hull-fc-hist-ben-crooks-2012",
+        "hull-fc-hist-ben-crooks-2013",
+        "hull-kr-hist-ben-crooks-2020",
+        "castleford-hist-ben-crooks-2016",
+        "hull-kr-hist-ben-crooks"
+      ]
+    },
+    {
+      "name": "kevin penny",
+      "ids": [
+        "warrington-hist-kevin-penny-2015",
+        "warrington-hist-kevin-penny-2016",
+        "wakefield-hist-kevin-penny"
+      ]
+    },
+    {
+      "name": "anthony england",
+      "ids": [
+        "warrington-hist-anthony-england-2015",
+        "wakefield-hist-anthony-england",
+        "wakefield-hist-anthony-england-2016"
+      ]
+    },
+    {
+      "name": "josh jones",
+      "ids": [
+        "st-helens-hist-josh-jones-2015",
+        "st-helens-hist-josh-jones",
+        "salford-hist-josh-jones-2016",
+        "huddersfield-hist-josh-jones-2021",
+        "huddersfield-hist-josh-jones-2022"
+      ]
+    },
+    {
+      "name": "tom holmes",
+      "ids": [
+        "huddersfield-hist-tom-holmes",
+        "huddersfield-hist-tom-holmes-2020"
+      ]
+    },
+    {
+      "name": "barry ward",
+      "ids": [
+        "st-helens-hist-barry-ward",
+        "st-helens-hist-barry-ward-2002"
+      ]
+    },
+    {
+      "name": "bradley oneill",
+      "ids": [
+        "wigan-hist-era-bradley-o-neill",
+        "wigan-hist-bradley-o-neill-2024",
+        "wigan-hist-bradley-o-neill-2025"
+      ]
+    },
+    {
+      "name": "chris nero",
+      "ids": [
+        "bradford-hist-chris-nero-2009",
+        "huddersfield-hist-chris-nero"
+      ]
+    },
+    {
+      "name": "ben jeffries",
+      "ids": [
+        "bradford-hist-ben-jeffries-2012",
+        "bradford-hist-ben-jeffries-2009",
+        "wakefield-hist-ben-jeffries",
+        "bradford-hist-ben-jeffries-2011",
+        "wakefield-hist-ben-jeffries-2010"
+      ]
+    },
+    {
+      "name": "john clarke",
+      "ids": [
+        "oldham-hist-john-clarke",
+        "warrington-hist-john-clarke-2009"
+      ]
+    },
+    {
+      "name": "ryan atkins",
+      "ids": [
+        "bradford-hist-ryan-atkins-2006",
+        "wakefield-hist-ryan-atkins-2009",
+        "warrington-hist-ryan-atkins-2015",
+        "warrington-hist-ryan-atkins-2016",
+        "warrington-hist-ryan-atkins"
       ]
     },
     {
       "name": "paul johnson",
       "ids": [
+        "bradford-hist-paul-johnson-2006",
+        "hull-fc-hist-paul-johnson-2013",
         "wigan-hist-paul-johnson",
-        "wigan-leg-paul-johnson"
-      ]
-    },
-    {
-      "name": "terry newton",
-      "ids": [
-        "wigan-hist-terry-newton",
-        "wigan-leg-terry-newton"
-      ]
-    },
-    {
-      "name": "richie mathers",
-      "ids": [
-        "leeds-hist-richard-mathers",
-        "wigan-hist-richie-mathers-2008"
+        "bradford-hist-paul-johnson-2004",
+        "wakefield-hist-paul-johnson-2010",
+        "bradford-hist-paul-johnson-2005"
       ]
     },
     {
       "name": "mark calderwood",
       "ids": [
-        "leeds-hist-mark-calderwood",
+        "hull-fc-hist-mark-calderwood-2009",
         "wigan-hist-mark-calderwood-2006",
-        "leeds-leg-mark-calderwood"
+        "leeds-hist-mark-calderwood"
       ]
     },
     {
-      "name": "danny tickle",
+      "name": "tom lineham",
       "ids": [
-        "hull-fc-hist-danny-tickle",
-        "hull-fc-leg-danny-tickle"
+        "hull-fc-hist-tom-lineham-2012",
+        "hull-fc-hist-tom-lineham-2013",
+        "warrington-cur-tom-lineham-2016",
+        "wakefield-hist-tom-lineham",
+        "warrington-hist-tom-lineham-2020",
+        "warrington-hist-tom-lineham-2021",
+        "wakefield-hist-tom-lineham-2023"
       ]
     },
     {
-      "name": "jon wells",
+      "name": "dan sarginson",
       "ids": [
-        "castleford-hist-jon-wells",
-        "castleford-leg-jon-wells"
+        "wigan-hist-dan-sarginson-2016",
+        "wigan-hist-dan-sarginson"
       ]
     },
     {
-      "name": "mickey higham",
+      "name": "mitch garbutt",
       "ids": [
-        "warrington-hist-mickey-higham",
-        "wigan-hist-mickey-higham-2006"
+        "hull-kr-hist-mitch-garbutt-2020",
+        "leeds-hist-mitch-garbutt-2016",
+        "leeds-hist-mitch-garbutt"
       ]
     },
     {
-      "name": "adrian morley",
+      "name": "sadiq adebiyi",
       "ids": [
-        "adrian-morley",
-        "salford-hist-adrian-morley-2015"
+        "london-hist-sadiq-adebiyi-2018",
+        "london-cur-sadiq-adebiyi-2018",
+        "london-hist-sadiq-adebiyi"
       ]
     },
     {
-      "name": "kris radlinski",
+      "name": "brett ferres",
       "ids": [
-        "kris-radlinski",
-        "wigan-hist-kris-radlinski-2006"
+        "bradford-hist-brett-ferres-2006",
+        "leeds-hist-brett-ferres-2016",
+        "huddersfield-hist-brett-ferres-2013",
+        "castleford-hist-brett-ferres-2009",
+        "castleford-hist-brett-ferres-2012",
+        "castleford-hist-brett-ferres"
       ]
     },
     {
-      "name": "danny mcguire",
+      "name": "chev walker",
       "ids": [
-        "danny-mcguire",
-        "leeds-hist-danny-mcguire-2015"
+        "bradford-hist-chev-walker-2012",
+        "leeds-hist-chev-walker",
+        "bradford-hist-chev-walker-2011",
+        "bradford-hist-chev-walker-2014",
+        "bradford-hist-chev-walker-2013"
       ]
     },
     {
-      "name": "jamie jonesbuchanan",
+      "name": "danny williams",
       "ids": [
-        "jamie-jones-buchanan",
-        "leeds-leg-jamie-jones-buchanan-2015"
+        "leeds-hist-danny-williams-2008",
+        "salford-hist-danny-williams",
+        "bradford-hist-danny-williams-2014",
+        "salford-hist-danny-williams-2014"
       ]
     },
     {
-      "name": "sean oloughlin",
+      "name": "stevie ward",
       "ids": [
-        "sean-oloughlin",
-        "wigan-hist-sean-oloughlin-2006",
-        "wigan-hist-sean-oloughlin-2008"
+        "leeds-hist-stevie-ward-2016",
+        "leeds-hist-stevie-ward"
       ]
     },
     {
-      "name": "stuart fielden",
+      "name": "ben harrison",
       "ids": [
-        "stuart-fielden",
-        "wigan-hist-stuart-fielden-2006",
-        "wigan-hist-stuart-fielden-2008"
+        "warrington-hist-ben-harrison-2015",
+        "wakefield-hist-ben-harrison",
+        "warrington-hist-ben-harrison-2009"
       ]
     },
     {
-      "name": "danny brough",
+      "name": "greg minikin",
       "ids": [
-        "danny-brough",
-        "wakefield-hist-danny-brough-2009"
+        "hull-kr-hist-greg-minikin-2020",
+        "castleford-hist-greg-minikin",
+        "castleford-hist-greg-minikin-2016"
       ]
     },
     {
-      "name": "kevin brown",
+      "name": "luke gale",
       "ids": [
-        "kevin-brown",
-        "wigan-hist-kevin-brown-2006"
+        "bradford-hist-luke-gale-2012",
+        "bradford-hist-luke-gale-2013",
+        "castleford-hist-luke-gale-2016",
+        "bradford-hist-luke-gale-2014",
+        "luke-gale",
+        "leeds-hist-luke-gale-2020",
+        "leeds-hist-luke-gale-2021",
+        "hull-fc-hist-luke-gale-2022"
       ]
     },
     {
-      "name": "kylie leuluai",
+      "name": "jordan turner",
       "ids": [
-        "kylie-leuluai",
-        "leeds-hist-kylie-leuluai-2015"
+        "hull-fc-hist-jordan-turner-2012",
+        "st-helens-hist-jordan-turner",
+        "salford-cur-jordan-turner-2009",
+        "st-helens-cur-jordan-turner-2014",
+        "st-helens-hist-jordan-turner-2016",
+        "huddersfield-hist-jordan-turner-2020"
       ]
     },
     {
-      "name": "thomas bosc",
+      "name": "andy lynch",
       "ids": [
-        "thomas-bosc",
-        "catalans-hist-thomas-bosc-2008"
+        "hull-fc-hist-andy-lynch-2013",
+        "hull-fc-hist-andy-lynch-2012",
+        "castleford-hist-andy-lynch-2016",
+        "bradford-hist-andy-lynch-2006",
+        "bradford-hist-andy-lynch-2011",
+        "bradford-hist-andy-lynch-2009",
+        "andy-lynch"
       ]
     },
     {
-      "name": "pat richards",
+      "name": "jordan abdull",
       "ids": [
-        "pat-richards",
-        "wigan-hist-pat-richards-2006",
-        "wigan-hist-pat-richards-2008"
+        "hull-kr-hist-jordan-abdull-2020",
+        "hull-fc-hist-jordan-abdull",
+        "london-hist-jordan-abdull-2019"
       ]
     },
     {
-      "name": "rangi chase",
+      "name": "weller hauraki",
       "ids": [
-        "rangi-chase",
-        "salford-hist-rangi-chase-2015"
+        "hull-kr-hist-weller-hauraki-2020",
+        "salford-hist-weller-hauraki"
       ]
     },
     {
-      "name": "michael mcilorum",
+      "name": "kane linnett",
       "ids": [
-        "wigan-hist-michael-mcilorum",
-        "wigan-hist-michael-mcilorum-2006",
-        "wigan-hist-michael-mcilorum-2008"
+        "hull-kr-hist-kane-linnett-2020",
+        "hull-kr-hist-kane-linnett"
+      ]
+    },
+    {
+      "name": "olsi krasniqi",
+      "ids": [
+        "salford-hist-olsi-krasniqi-2015",
+        "london-hist-olsi-krasniqi"
+      ]
+    },
+    {
+      "name": "jon molloy",
+      "ids": [
+        "wakefield-hist-jon-molloy",
+        "wakefield-hist-jon-molloy-2016"
+      ]
+    },
+    {
+      "name": "matt diskin",
+      "ids": [
+        "bradford-hist-matt-diskin-2012",
+        "bradford-hist-matt-diskin-2014",
+        "leeds-hist-matt-diskin-2008",
+        "bradford-hist-matt-diskin-2013",
+        "leeds-hist-matt-diskin-2009",
+        "bradford-hist-matt-diskin-2011",
+        "leeds-hist-matt-diskin"
+      ]
+    },
+    {
+      "name": "richard horne",
+      "ids": [
+        "hull-fc-hist-richard-horne-2013",
+        "hull-fc-hist-richard-horne-2012",
+        "hull-fc-hist-richard-horne-2009",
+        "richard-horne"
       ]
     },
     {
       "name": "stefan ratchford",
       "ids": [
+        "warrington-hist-stefan-ratchford-2015",
         "wakefield-leg-stefan-ratchford",
-        "wakefield-leg-stefan-ratchford"
+        "warrington-hist-stefan-ratchford-2016",
+        "salford-hist-stefan-ratchford-2009",
+        "warrington-hist-stefan-ratchford-2020",
+        "warrington-hist-stefan-ratchford-2021",
+        "warrington-hist-stefan-ratchford-2022",
+        "warrington-hist-stefan-ratchford-2023"
+      ]
+    },
+    {
+      "name": "terry newton",
+      "ids": [
+        "bradford-hist-terry-newton-2006",
+        "bradford-hist-terry-newton-2009",
+        "wigan-hist-terry-newton"
+      ]
+    },
+    {
+      "name": "thomas makinson",
+      "ids": [
+        "st-helens-hist-thomas-makinson-2015",
+        "st-helens-hist-thomas-makinson-2019",
+        "st-helens-hist-thomas-makinson-2021",
+        "st-helens-hist-thomas-makinson"
+      ]
+    },
+    {
+      "name": "shaun kennydowall",
+      "ids": [
+        "hull-kr-hist-shaun-kenny-dowall-2020",
+        "hull-kr-hist-shaun-kenny-dowall"
+      ]
+    },
+    {
+      "name": "chris hill",
+      "ids": [
+        "warrington-hist-chris-hill-2015",
+        "warrington-hist-chris-hill-2016",
+        "wakefield-hist-chris-hill",
+        "warrington-hist-chris-hill-2020",
+        "warrington-hist-chris-hill-2021",
+        "huddersfield-hist-chris-hill-2022",
+        "huddersfield-hist-chris-hill-2023",
+        "huddersfield-hist-chris-hill-2024"
+      ]
+    },
+    {
+      "name": "gareth ellis",
+      "ids": [
+        "leeds-hist-gareth-ellis-2008",
+        "hull-fc-hist-gareth-ellis-2013",
+        "gareth-ellis",
+        "hull-fc-hist-gareth-ellis-2016",
+        "leeds-leg-gareth-ellis-2007"
+      ]
+    },
+    {
+      "name": "daniel holdsworth",
+      "ids": [
+        "hull-fc-hist-daniel-holdsworth-2013",
+        "salford-hist-daniel-holdsworth"
       ]
     },
     {
@@ -1130,31 +2763,3203 @@
       ]
     },
     {
+      "name": "iestyn harris",
+      "ids": [
+        "bradford-hist-iestyn-harris-2006",
+        "bradford-hist-iestyn-harris-2004",
+        "iestyn-harris",
+        "leeds-leg-iestyn-harris-1998"
+      ]
+    },
+    {
+      "name": "travis burns",
+      "ids": [
+        "st-helens-hist-travis-burns-2015",
+        "hull-kr-hist-travis-burns"
+      ]
+    },
+    {
+      "name": "karl temata",
+      "ids": [
+        "london-hist-karl-te-mata",
+        "london-hist-karl-te-mata-2009"
+      ]
+    },
+    {
+      "name": "zane musgrove",
+      "ids": [
+        "wakefield-hist-zane-musgrove",
+        "warrington-hist-zane-musgrove-2024"
+      ]
+    },
+    {
+      "name": "steve menzies",
+      "ids": [
+        "bradford-hist-steve-menzies-2009",
+        "catalans-hist-steve-menzies-2011",
+        "catalans-hist-steve-menzies-2013",
+        "catalans-hist-steve-menzies-2012",
+        "catalans-hist-steve-menzies"
+      ]
+    },
+    {
+      "name": "scott logan",
+      "ids": [
+        "wigan-hist-scott-logan-2006",
+        "hull-fc-hist-scott-logan"
+      ]
+    },
+    {
+      "name": "ryan clayton",
+      "ids": [
+        "castleford-hist-ryan-clayton",
+        "castleford-hist-ryan-clayton-2009"
+      ]
+    },
+    {
+      "name": "jason clark",
+      "ids": [
+        "wakefield-hist-jason-clark",
+        "warrington-hist-jason-clark-2020",
+        "warrington-hist-jason-clark-2021",
+        "warrington-hist-jason-clark-2022"
+      ]
+    },
+    {
+      "name": "nathan massey",
+      "ids": [
+        "castleford-hist-nathan-massey",
+        "castleford-hist-nathan-massey-2016"
+      ]
+    },
+    {
+      "name": "danny ward",
+      "ids": [
+        "leeds-hist-danny-ward",
+        "london-hist-danny-ward-2009"
+      ]
+    },
+    {
+      "name": "shane perry",
+      "ids": [
+        "catalans-hist-shane-perry",
+        "catalans-hist-shane-perry-2009"
+      ]
+    },
+    {
+      "name": "lachlan fitzgibbon",
+      "ids": [
+        "wakefield-hist-lachlan-fitzgibbon",
+        "warrington-hist-lachlan-fitzgibbon-2024",
+        "warrington-hist-lachlan-fitzgibbon-2025"
+      ]
+    },
+    {
+      "name": "ray cashmere",
+      "ids": [
+        "salford-hist-ray-cashmere",
+        "salford-hist-ray-cashmere-2009"
+      ]
+    },
+    {
+      "name": "jack walker",
+      "ids": [
+        "leeds-hist-era-jack-walker",
+        "leeds-hist-jack-walker-2020"
+      ]
+    },
+    {
+      "name": "ben hellewell",
+      "ids": [
+        "london-hist-ben-hellewell-2018",
+        "london-cur-ben-hellewell-2018",
+        "london-hist-ben-hellewell-2019",
+        "salford-hist-ben-hellewell-2026"
+      ]
+    },
+    {
+      "name": "antoni maria",
+      "ids": [
+        "catalans-hist-antoni-maria",
+        "catalans-hist-antoni-maria-2016"
+      ]
+    },
+    {
+      "name": "ashton sims",
+      "ids": [
+        "wakefield-hist-ashton-sims",
+        "warrington-hist-ashton-sims-2016"
+      ]
+    },
+    {
+      "name": "greg richards",
+      "ids": [
+        "st-helens-hist-greg-richards",
+        "london-hist-greg-richards-2019"
+      ]
+    },
+    {
+      "name": "george griffin",
+      "ids": [
+        "castleford-hist-george-griffin",
+        "salford-hist-george-griffin-2016"
+      ]
+    },
+    {
+      "name": "joe bullock",
+      "ids": [
+        "wigan-hist-joe-bullock",
+        "wigan-hist-joe-bullock-2020",
+        "wigan-hist-joe-bullock-2021",
+        "warrington-hist-joe-bullock-2022",
+        "warrington-hist-joe-bullock-2023"
+      ]
+    },
+    {
+      "name": "ashton golding",
+      "ids": [
+        "huddersfield-hist-ashton-golding",
+        "huddersfield-hist-ashton-golding-2020",
+        "huddersfield-hist-ashton-golding-2021",
+        "huddersfield-hist-ashton-golding-2022",
+        "huddersfield-hist-ashton-golding-2024",
+        "huddersfield-hist-ashton-golding-2025"
+      ]
+    },
+    {
+      "name": "josh wood",
+      "ids": [
+        "salford-hist-josh-wood",
+        "salford-hist-josh-wood-2015"
+      ]
+    },
+    {
+      "name": "morgan smithies",
+      "ids": [
+        "wigan-hist-era-morgan-smithies",
+        "wigan-hist-morgan-smithies-2020",
+        "wigan-hist-morgan-smithies-2022",
+        "wigan-hist-morgan-smithies-2023"
+      ]
+    },
+    {
+      "name": "joe lovodua",
+      "ids": [
+        "hull-fc-hist-era-joe-lovodua",
+        "hull-fc-hist-joe-lovodua-2023"
+      ]
+    },
+    {
+      "name": "todd carney",
+      "ids": [
+        "catalans-hist-todd-carney",
+        "catalans-hist-todd-carney-2015",
+        "catalans-hist-todd-carney-2016"
+      ]
+    },
+    {
+      "name": "danny addy",
+      "ids": [
+        "bradford-hist-danny-addy",
+        "bradford-hist-danny-addy-2014"
+      ]
+    },
+    {
+      "name": "cyrille gossard",
+      "ids": [
+        "catalans-hist-cyrille-gossard",
+        "catalans-hist-cyrille-gossard-2006",
+        "catalans-hist-cyrille-gossard-2009",
+        "catalans-hist-cyrille-gossard-2007"
+      ]
+    },
+    {
+      "name": "will sharp",
+      "ids": [
+        "london-hist-will-sharp",
+        "london-hist-will-sharp-2009"
+      ]
+    },
+    {
+      "name": "andrew dixon",
+      "ids": [
+        "st-helens-hist-andrew-dixon",
+        "salford-hist-andrew-dixon-2014"
+      ]
+    },
+    {
+      "name": "ricky bibey",
+      "ids": [
+        "wakefield-hist-ricky-bibey-2009",
+        "wakefield-hist-ricky-bibey"
+      ]
+    },
+    {
+      "name": "jeremy smith",
+      "ids": [
+        "salford-hist-jeremy-smith",
+        "salford-hist-jeremy-smith-2009"
+      ]
+    },
+    {
+      "name": "kirk netherton",
+      "ids": [
+        "castleford-hist-kirk-netherton",
+        "castleford-hist-kirk-netherton-2009"
+      ]
+    },
+    {
+      "name": "mark ioane",
+      "ids": [
+        "london-hist-mark-ioane",
+        "london-hist-mark-ioane-2018"
+      ]
+    },
+    {
+      "name": "darren britt",
+      "ids": [
+        "st-helens-hist-darren-britt",
+        "st-helens-hist-darren-britt-2002"
+      ]
+    },
+    {
+      "name": "zane tetevano",
+      "ids": [
+        "leeds-hist-zane-tetevano",
+        "leeds-hist-zane-tetevano-2021"
+      ]
+    },
+    {
+      "name": "sam rapira",
+      "ids": [
+        "huddersfield-hist-sam-rapira",
+        "huddersfield-hist-sam-rapira-2016"
+      ]
+    },
+    {
+      "name": "bruno verges",
+      "ids": [
+        "catalans-hist-bruno-verges",
+        "catalans-hist-bruno-verges-2006"
+      ]
+    },
+    {
+      "name": "eddie battye",
+      "ids": [
+        "london-hist-eddie-battye-2018",
+        "wakefield-hist-eddie-battye",
+        "london-hist-eddie-battye-2019",
+        "wakefield-hist-eddie-battye-2022",
+        "wakefield-hist-eddie-battye-2023"
+      ]
+    },
+    {
+      "name": "aaron smith",
+      "ids": [
+        "st-helens-hist-aaron-smith",
+        "bradford-hist-aaron-smith-2004"
+      ]
+    },
+    {
+      "name": "jordan johnstone",
+      "ids": [
+        "hull-fc-hist-jordan-johnstone",
+        "hull-fc-hist-jordan-johnstone-2020",
+        "hull-fc-hist-jordan-johnstone-2021",
+        "hull-fc-hist-jordan-johnstone-2022"
+      ]
+    },
+    {
+      "name": "alex walker",
+      "ids": [
+        "london-hist-alex-walker-2018",
+        "london-hist-alex-walker",
+        "london-cur-alex-walker-2018",
+        "london-hist-alex-walker-2019"
+      ]
+    },
+    {
+      "name": "steve hall",
+      "ids": [
+        "st-helens-hist-steve-hall",
+        "st-helens-hist-steve-hall-2000"
+      ]
+    },
+    {
+      "name": "kai pearcepaul",
+      "ids": [
+        "wigan-hist-era-kai-pearce-paul",
+        "wigan-hist-kai-pearce-paul-2023"
+      ]
+    },
+    {
+      "name": "kane bentley",
+      "ids": [
+        "catalans-hist-kane-bentley",
+        "catalans-hist-kane-bentley-2008",
+        "catalans-hist-kane-bentley-2007"
+      ]
+    },
+    {
+      "name": "matt prior",
+      "ids": [
+        "leeds-hist-matt-prior",
+        "leeds-hist-matt-prior-2020",
+        "leeds-hist-matt-prior-2021",
+        "leeds-hist-matt-prior-2022"
+      ]
+    },
+    {
+      "name": "liam kay",
+      "ids": [
+        "wakefield-hist-liam-kay",
+        "wakefield-hist-liam-kay-2023"
+      ]
+    },
+    {
+      "name": "david fifita",
+      "ids": [
+        "wakefield-hist-david-fifita",
+        "wakefield-hist-david-fifita-2022"
+      ]
+    },
+    {
+      "name": "david ferriol",
+      "ids": [
+        "catalans-hist-david-ferriol",
+        "catalans-hist-david-ferriol-2008",
+        "catalans-hist-david-ferriol-2011"
+      ]
+    },
+    {
+      "name": "ben fisher",
+      "ids": [
+        "hull-kr-hist-ben-fisher",
+        "hull-kr-hist-ben-fisher-2009"
+      ]
+    },
+    {
+      "name": "michael korkidas",
+      "ids": [
+        "wakefield-hist-michael-korkidas",
+        "wakefield-hist-michael-korkidas-2010"
+      ]
+    },
+    {
+      "name": "will lovell",
+      "ids": [
+        "london-hist-will-lovell-2018",
+        "london-cur-will-lovell-2018",
+        "london-hist-will-lovell",
+        "london-hist-will-lovell-2019"
+      ]
+    },
+    {
+      "name": "michael sio",
+      "ids": [
+        "wakefield-hist-michael-sio",
+        "wakefield-hist-michael-sio-2016"
+      ]
+    },
+    {
+      "name": "marc herbert",
+      "ids": [
+        "bradford-hist-marc-herbert",
+        "bradford-hist-marc-herbert-2011"
+      ]
+    },
+    {
+      "name": "jeff wittenberg",
+      "ids": [
+        "huddersfield-hist-jeff-wittenberg",
+        "bradford-hist-jeff-wittenberg-1997"
+      ]
+    },
+    {
+      "name": "liam higgins",
+      "ids": [
+        "castleford-hist-liam-higgins",
+        "castleford-hist-liam-higgins-2009"
+      ]
+    },
+    {
+      "name": "manase manuokafoa",
+      "ids": [
+        "bradford-hist-manase-manuokafoa",
+        "bradford-hist-manase-manuokafoa-2014"
+      ]
+    },
+    {
+      "name": "john wilson",
+      "ids": [
+        "catalans-hist-john-wilson",
+        "catalans-hist-john-wilson-2008",
+        "catalans-hist-john-wilson-2006",
+        "catalans-hist-john-wilson-2007"
+      ]
+    },
+    {
+      "name": "ian hindmarsh",
+      "ids": [
+        "catalans-hist-ian-hindmarsh",
+        "catalans-hist-ian-hindmarsh-2006"
+      ]
+    },
+    {
+      "name": "paul white",
+      "ids": [
+        "huddersfield-hist-paul-white",
+        "salford-hist-paul-white-2009"
+      ]
+    },
+    {
+      "name": "richie mathers",
+      "ids": [
+        "wigan-hist-richie-mathers-2008",
+        "leeds-hist-richard-mathers",
+        "warrington-hist-richie-mathers-2009"
+      ]
+    },
+    {
+      "name": "nathan peats",
+      "ids": [
+        "huddersfield-hist-nathan-peats",
+        "huddersfield-hist-nathan-peats-2021",
+        "huddersfield-hist-nathan-peats-2023"
+      ]
+    },
+    {
+      "name": "elliot kear",
+      "ids": [
+        "bradford-hist-elliot-kear",
+        "bradford-hist-elliot-kear-2013",
+        "london-hist-elliot-kear-2018"
+      ]
+    },
+    {
+      "name": "jason croker",
+      "ids": [
+        "catalans-hist-jason-croker",
+        "catalans-hist-jason-croker-2008",
+        "catalans-hist-jason-croker-2007"
+      ]
+    },
+    {
+      "name": "larne patrick",
+      "ids": [
+        "huddersfield-hist-larne-patrick",
+        "huddersfield-hist-larne-patrick-2016"
+      ]
+    },
+    {
+      "name": "danny sculthorpe",
+      "ids": [
+        "wakefield-hist-danny-sculthorpe-2009",
+        "wigan-hist-danny-sculthorpe"
+      ]
+    },
+    {
+      "name": "jordan crowther",
+      "ids": [
+        "wakefield-hist-jordan-crowther",
+        "wakefield-hist-jordan-crowther-2022",
+        "wakefield-hist-jordan-crowther-2023",
+        "warrington-hist-jordan-crowther-2024",
+        "warrington-hist-jordan-crowther-2025"
+      ]
+    },
+    {
+      "name": "brent sherwin",
+      "ids": [
+        "castleford-hist-brent-sherwin",
+        "castleford-hist-brent-sherwin-2009"
+      ]
+    },
+    {
+      "name": "mark flanagan",
+      "ids": [
+        "salford-hist-mark-flanagan",
+        "salford-hist-mark-flanagan-2016"
+      ]
+    },
+    {
+      "name": "cyril stacul",
+      "ids": [
+        "catalans-hist-cyril-stacul",
+        "catalans-hist-cyril-stacul-2010",
+        "catalans-hist-cyril-stacul-2012",
+        "catalans-hist-cyril-stacul-2011"
+      ]
+    },
+    {
+      "name": "bodene thompson",
+      "ids": [
+        "leeds-hist-bodene-thompson",
+        "leeds-hist-bodene-thompson-2021"
+      ]
+    },
+    {
+      "name": "paul cook",
+      "ids": [
+        "bradford-hist-paul-cook",
+        "bradford-hist-paul-cook-1997"
+      ]
+    },
+    {
+      "name": "suaia matagi",
+      "ids": [
+        "huddersfield-hist-suaia-matagi",
+        "huddersfield-hist-suaia-matagi-2020"
+      ]
+    },
+    {
+      "name": "jamal fakir",
+      "ids": [
+        "catalans-hist-jamal-fakir",
+        "catalans-hist-jamal-fakir-2006"
+      ]
+    },
+    {
+      "name": "keith mason",
+      "ids": [
+        "huddersfield-hist-keith-mason",
+        "huddersfield-hist-keith-mason-2009"
+      ]
+    },
+    {
+      "name": "keith lulia",
+      "ids": [
+        "bradford-hist-keith-lulia",
+        "bradford-hist-keith-lulia-2013"
+      ]
+    },
+    {
+      "name": "jason cayless",
+      "ids": [
+        "st-helens-hist-jason-cayless",
+        "st-helens-hist-jason-cayless-2006"
+      ]
+    },
+    {
+      "name": "bryn hargreaves",
+      "ids": [
+        "st-helens-hist-bryn-hargreaves",
+        "st-helens-hist-bryn-hargreaves-2009"
+      ]
+    },
+    {
+      "name": "dominique peyroux",
+      "ids": [
+        "st-helens-hist-dominique-peyroux",
+        "st-helens-hist-dominique-peyroux-2019",
+        "st-helens-hist-dominique-peyroux-2016"
+      ]
+    },
+    {
+      "name": "tevita satae",
+      "ids": [
+        "hull-fc-hist-tevita-satae",
+        "hull-fc-hist-tevita-satae-2020",
+        "hull-fc-hist-tevita-satae-2021",
+        "hull-fc-hist-tevita-satae-2022",
+        "hull-fc-hist-tevita-satae-2023"
+      ]
+    },
+    {
+      "name": "gregory mounis",
+      "ids": [
+        "catalans-hist-gregory-mounis-2008",
+        "catalans-hist-gregory-mounis-2006",
+        "catalans-hist-gregory-mounis-2007",
+        "catalans-hist-gregory-mounis-2010",
+        "catalans-hist-gregory-mounis-2011",
+        "catalans-hist-gregory-mounis"
+      ]
+    },
+    {
+      "name": "alex chan",
+      "ids": [
+        "catalans-hist-alex-chan",
+        "catalans-hist-alex-chan-2007"
+      ]
+    },
+    {
+      "name": "liam finn",
+      "ids": [
+        "wakefield-hist-liam-finn",
+        "wakefield-hist-liam-finn-2016"
+      ]
+    },
+    {
+      "name": "julien rinaldi",
+      "ids": [
+        "toulouse-hist-julien-rinaldi",
+        "catalans-hist-julien-rinaldi-2006"
+      ]
+    },
+    {
+      "name": "jamie cording",
+      "ids": [
+        "huddersfield-hist-jamie-cording",
+        "huddersfield-hist-jamie-cording-2013"
+      ]
+    },
+    {
+      "name": "tinirau arona",
+      "ids": [
+        "wakefield-hist-tinirau-arona",
+        "wakefield-hist-tinirau-arona-2022"
+      ]
+    },
+    {
+      "name": "luke williamson",
+      "ids": [
+        "london-hist-luke-williamson",
+        "london-hist-luke-williamson-2009"
+      ]
+    },
+    {
+      "name": "abi ekoku",
+      "ids": [
+        "bradford-hist-abi-ekoku",
+        "bradford-hist-abi-ekoku-1997"
+      ]
+    },
+    {
+      "name": "josh bowden",
+      "ids": [
+        "hull-fc-hist-josh-bowden",
+        "wakefield-hist-josh-bowden-2023"
+      ]
+    },
+    {
+      "name": "anthony stewart",
+      "ids": [
+        "st-helens-hist-anthony-stewart",
+        "st-helens-hist-anthony-stewart-2002"
+      ]
+    },
+    {
+      "name": "ava seumanufagai",
+      "ids": [
+        "leeds-hist-ava-seumanufagai",
+        "leeds-hist-ava-seumanufagai-2020"
+      ]
+    },
+    {
+      "name": "james greenwood",
+      "ids": [
+        "salford-hist-james-greenwood-2015",
+        "hull-kr-hist-james-greenwood"
+      ]
+    },
+    {
+      "name": "paul aiton",
+      "ids": [
+        "wakefield-hist-paul-aiton",
+        "leeds-hist-paul-aiton-2015"
+      ]
+    },
+    {
+      "name": "luke adamson",
+      "ids": [
+        "salford-hist-luke-adamson",
+        "salford-hist-luke-adamson-2009"
+      ]
+    },
+    {
+      "name": "trent barrett",
+      "ids": [
+        "wigan-hist-trent-barrett-2008",
+        "wigan-hist-trent-barrett"
+      ]
+    },
+    {
+      "name": "stacey jones",
+      "ids": [
+        "catalans-hist-stacey-jones-2008",
+        "catalans-hist-stacey-jones-2007",
+        "catalans-hist-stacey-jones"
+      ]
+    },
+    {
+      "name": "oliver wilkes",
+      "ids": [
+        "wakefield-hist-oliver-wilkes",
+        "wakefield-hist-oliver-wilkes-2009"
+      ]
+    },
+    {
+      "name": "paul jackson",
+      "ids": [
+        "huddersfield-hist-paul-jackson",
+        "huddersfield-hist-paul-jackson-2009"
+      ]
+    },
+    {
+      "name": "craig kopczak",
+      "ids": [
+        "bradford-hist-craig-kopczak",
+        "bradford-hist-craig-kopczak-2011",
+        "bradford-hist-craig-kopczak-2012",
+        "salford-hist-craig-kopczak-2016"
+      ]
+    },
+    {
+      "name": "peter matautia",
+      "ids": [
+        "castleford-hist-peter-mata-utia",
+        "warrington-hist-peter-mata-utia-2022",
+        "warrington-hist-peter-mata-utia-2023"
+      ]
+    },
+    {
+      "name": "tim jonkers",
+      "ids": [
+        "st-helens-hist-tim-jonkers",
+        "st-helens-hist-tim-jonkers-2000",
+        "st-helens-hist-tim-jonkers-2002"
+      ]
+    },
+    {
+      "name": "jimmy keinhorst",
+      "ids": [
+        "leeds-hist-jimmy-keinhorst-2016",
+        "leeds-hist-jimmy-keinhorst"
+      ]
+    },
+    {
+      "name": "jarrod sammut",
+      "ids": [
+        "london-hist-jarrod-sammut-2018",
+        "bradford-hist-jarrod-sammut",
+        "bradford-hist-jarrod-sammut-2013"
+      ]
+    },
+    {
+      "name": "scott wheeldon",
+      "ids": [
+        "hull-kr-hist-scott-wheeldon",
+        "hull-kr-hist-scott-wheeldon-2009"
+      ]
+    },
+    {
+      "name": "jerome guisset",
+      "ids": [
+        "catalans-hist-jerome-guisset",
+        "catalans-hist-jerome-guisset-2009",
+        "catalans-hist-jerome-guisset-2010"
+      ]
+    },
+    {
+      "name": "adam sidlow",
+      "ids": [
+        "salford-hist-adam-sidlow",
+        "bradford-hist-adam-sidlow-2013",
+        "salford-hist-adam-sidlow-2009"
+      ]
+    },
+    {
+      "name": "rhys williams",
+      "ids": [
+        "london-hist-rhys-williams-2018",
+        "salford-hist-rhys-williams",
+        "london-hist-rhys-williams-2019"
+      ]
+    },
+    {
+      "name": "luke briscoe",
+      "ids": [
+        "leeds-hist-luke-briscoe",
+        "leeds-hist-luke-briscoe-2020",
+        "leeds-hist-luke-briscoe-2021"
+      ]
+    },
+    {
+      "name": "manu mau",
+      "ids": [
+        "hull-fc-hist-manu-ma-u",
+        "hull-fc-hist-manu-ma-u-2020",
+        "hull-fc-hist-manu-ma-u-2021",
+        "hull-fc-hist-manu-ma-u-2022"
+      ]
+    },
+    {
+      "name": "matt frawley",
+      "ids": [
+        "leeds-hist-matt-frawley",
+        "leeds-hist-matt-frawley-2024",
+        "huddersfield-hist-matt-frawley-2025"
+      ]
+    },
+    {
+      "name": "brett seymour",
+      "ids": [
+        "hull-fc-hist-brett-seymour",
+        "hull-fc-hist-brett-seymour-2012"
+      ]
+    },
+    {
+      "name": "sika manu",
+      "ids": [
+        "hull-fc-hist-sika-manu",
+        "hull-fc-hist-sika-manu-2016"
+      ]
+    },
+    {
+      "name": "rodrick tai",
+      "ids": [
+        "warrington-hist-era-rodrick-tai",
+        "warrington-hist-rodrick-tai-2025"
+      ]
+    },
+    {
+      "name": "tommy lee",
+      "ids": [
+        "hull-fc-hist-tommy-lee",
+        "salford-hist-tommy-lee-2014",
+        "hull-fc-hist-tommy-lee-2009"
+      ]
+    },
+    {
+      "name": "mickael goudemand",
+      "ids": [
+        "catalans-hist-mickael-goudemand",
+        "leeds-hist-mickael-goudemand-2024"
+      ]
+    },
+    {
+      "name": "mike bennett",
+      "ids": [
+        "st-helens-hist-mike-bennett",
+        "st-helens-hist-mike-bennett-2002"
+      ]
+    },
+    {
+      "name": "paul king",
+      "ids": [
+        "wakefield-hist-paul-king-2010",
+        "hull-fc-hist-paul-king-2009",
+        "hull-fc-hist-paul-king"
+      ]
+    },
+    {
+      "name": "motu tony",
+      "ids": [
+        "hull-fc-hist-motu-tony",
+        "hull-fc-hist-motu-tony-2009"
+      ]
+    },
+    {
+      "name": "andy raleigh",
+      "ids": [
+        "huddersfield-hist-andy-raleigh",
+        "huddersfield-hist-andy-raleigh-2009"
+      ]
+    },
+    {
+      "name": "sebastien raguin",
+      "ids": [
+        "catalans-hist-sebastien-raguin",
+        "catalans-hist-sebastien-raguin-2008",
+        "catalans-hist-sebastien-raguin-2011",
+        "catalans-hist-sebastien-raguin-2010"
+      ]
+    },
+    {
+      "name": "jamie thackray",
+      "ids": [
+        "hull-fc-hist-jamie-thackray-2009",
+        "hull-fc-hist-jamie-thackray"
+      ]
+    },
+    {
+      "name": "adrian purtell",
+      "ids": [
+        "bradford-hist-adrian-purtell",
+        "bradford-hist-adrian-purtell-2014"
+      ]
+    },
+    {
+      "name": "david faiumu",
+      "ids": [
+        "huddersfield-hist-david-faiumu",
+        "huddersfield-hist-david-faiumu-2013"
+      ]
+    },
+    {
+      "name": "bureta faraimo",
+      "ids": [
+        "hull-fc-hist-bureta-faraimo",
+        "hull-fc-hist-bureta-faraimo-2020",
+        "hull-fc-hist-bureta-faraimo-2021"
+      ]
+    },
+    {
+      "name": "kurt gidley",
+      "ids": [
+        "warrington-hist-kurt-gidley-2016",
+        "wakefield-hist-kurt-gidley"
+      ]
+    },
+    {
+      "name": "luke robinson",
+      "ids": [
+        "huddersfield-hist-luke-robinson",
+        "huddersfield-hist-luke-robinson-2009"
+      ]
+    },
+    {
+      "name": "dane carlaw",
+      "ids": [
+        "catalans-hist-dane-carlaw",
+        "catalans-hist-dane-carlaw-2010"
+      ]
+    },
+    {
+      "name": "paul medley",
+      "ids": [
+        "bradford-hist-paul-medley",
+        "bradford-hist-paul-medley-1998"
+      ]
+    },
+    {
+      "name": "jacob trueman",
+      "ids": [
+        "hull-fc-hist-era-jacob-trueman",
+        "wakefield-hist-jacob-trueman-2025"
+      ]
+    },
+    {
+      "name": "karl pratt",
+      "ids": [
+        "bradford-hist-karl-pratt",
+        "bradford-hist-karl-pratt-2005",
+        "bradford-hist-karl-pratt-2003"
+      ]
+    },
+    {
+      "name": "frankie mariano",
+      "ids": [
+        "wakefield-hist-frankie-mariano",
+        "castleford-hist-frankie-mariano-2016"
+      ]
+    },
+    {
+      "name": "mark riddell",
+      "ids": [
+        "wigan-hist-mark-riddell",
+        "wigan-hist-mark-riddell-2009"
+      ]
+    },
+    {
+      "name": "jeanphilippe baile",
+      "ids": [
+        "catalans-hist-jean-philippe-baile",
+        "catalans-hist-jean-philippe-baile-2009",
+        "catalans-hist-jean-philippe-baile-2013",
+        "catalans-hist-jean-philippe-baile-2011"
+      ]
+    },
+    {
+      "name": "greg johnson",
+      "ids": [
+        "salford-hist-greg-johnson-2015",
+        "salford-hist-greg-johnson",
+        "salford-hist-greg-johnson-2016"
+      ]
+    },
+    {
+      "name": "logan tomkins",
+      "ids": [
+        "salford-hist-logan-tomkins",
+        "salford-hist-logan-tomkins-2016"
+      ]
+    },
+    {
+      "name": "bernard dwyer",
+      "ids": [
+        "bradford-hist-bernard-dwyer",
+        "bradford-hist-bernard-dwyer-1997"
+      ]
+    },
+    {
+      "name": "david howell",
+      "ids": [
+        "london-hist-david-howell",
+        "london-hist-david-howell-2009"
+      ]
+    },
+    {
+      "name": "luke walsh",
+      "ids": [
+        "st-helens-hist-luke-walsh",
+        "st-helens-hist-luke-walsh-2014",
+        "st-helens-hist-luke-walsh-2015",
+        "st-helens-hist-luke-walsh-2016"
+      ]
+    },
+    {
+      "name": "jamie ellis",
+      "ids": [
+        "castleford-hist-jamie-ellis",
+        "huddersfield-hist-jamie-ellis-2016"
+      ]
+    },
+    {
+      "name": "ryan hinchcliffe",
+      "ids": [
+        "huddersfield-hist-ryan-hinchcliffe",
+        "huddersfield-hist-ryan-hinchcliffe-2016"
+      ]
+    },
+    {
+      "name": "danny washbrook",
+      "ids": [
+        "hull-fc-hist-danny-washbrook",
+        "hull-fc-hist-danny-washbrook-2009"
+      ]
+    },
+    {
+      "name": "brad mackay",
+      "ids": [
+        "bradford-hist-brad-mackay",
+        "bradford-hist-brad-mackay-2000"
+      ]
+    },
+    {
+      "name": "gareth widdop",
+      "ids": [
+        "wakefield-hist-gareth-widdop",
+        "warrington-hist-gareth-widdop-2020",
+        "warrington-hist-gareth-widdop-2021"
+      ]
+    },
+    {
+      "name": "steve snitch",
+      "ids": [
+        "wakefield-hist-steve-snitch-2009",
+        "wakefield-hist-steve-snitch",
+        "castleford-hist-steve-snitch-2012"
+      ]
+    },
+    {
+      "name": "liam watts",
+      "ids": [
+        "hull-fc-hist-liam-watts-2012",
+        "hull-fc-hist-liam-watts",
+        "hull-fc-hist-liam-watts-2016"
+      ]
+    },
+    {
+      "name": "atelea vea",
+      "ids": [
+        "st-helens-hist-atelea-vea",
+        "st-helens-hist-atelea-vea-2015"
+      ]
+    },
+    {
+      "name": "kyle wood",
+      "ids": [
+        "wakefield-hist-kyle-wood",
+        "huddersfield-hist-kyle-wood-2013"
+      ]
+    },
+    {
+      "name": "adam mogg",
+      "ids": [
+        "catalans-hist-adam-mogg-2007",
+        "catalans-hist-adam-mogg-2009",
+        "catalans-hist-adam-mogg-2008",
+        "catalans-hist-adam-mogg"
+      ]
+    },
+    {
+      "name": "rob parker",
+      "ids": [
+        "bradford-hist-rob-parker",
+        "salford-hist-rob-parker-2009"
+      ]
+    },
+    {
+      "name": "michael wainwright",
+      "ids": [
+        "castleford-hist-michael-wainwright",
+        "castleford-hist-michael-wainwright-2009"
+      ]
+    },
+    {
+      "name": "chris melling",
+      "ids": [
+        "london-hist-chris-melling",
+        "london-hist-chris-melling-2009"
+      ]
+    },
+    {
+      "name": "james lowes",
+      "ids": [
+        "bradford-hist-james-lowes-1997",
+        "bradford-hist-james-lowes-2003",
+        "bradford-hist-james-lowes-1998",
+        "bradford-hist-james-lowes-2002",
+        "bradford-hist-james-lowes-1999",
+        "bradford-hist-james-lowes-2001",
+        "bradford-hist-james-lowes-2000",
+        "bradford-hist-james-lowes"
+      ]
+    },
+    {
+      "name": "craig huby",
+      "ids": [
+        "castleford-hist-craig-huby",
+        "castleford-hist-craig-huby-2009",
+        "castleford-hist-craig-huby-2012",
+        "huddersfield-hist-craig-huby-2016"
+      ]
+    },
+    {
+      "name": "kevin brown",
+      "ids": [
+        "wigan-hist-kevin-brown-2006",
+        "kevin-brown",
+        "huddersfield-hist-kevin-brown-2009"
+      ]
+    },
+    {
+      "name": "kenny edwards",
+      "ids": [
+        "castleford-hist-kenny-edwards",
+        "huddersfield-hist-kenny-edwards-2020"
+      ]
+    },
+    {
+      "name": "michael lawrence",
+      "ids": [
+        "huddersfield-hist-michael-lawrence",
+        "huddersfield-hist-michael-lawrence-2009",
+        "huddersfield-hist-michael-lawrence-2016",
+        "huddersfield-hist-michael-lawrence-2020",
+        "huddersfield-hist-michael-lawrence-2021"
+      ]
+    },
+    {
+      "name": "adam obrien",
+      "ids": [
+        "huddersfield-hist-adam-o-brien",
+        "huddersfield-hist-adam-o-brien-2020"
+      ]
+    },
+    {
+      "name": "michael platt",
+      "ids": [
+        "bradford-hist-michael-platt",
+        "bradford-hist-michael-platt-2009",
+        "bradford-hist-michael-platt-2013",
+        "bradford-hist-michael-platt-2011"
+      ]
+    },
+    {
+      "name": "tony puletua",
+      "ids": [
+        "st-helens-hist-tony-puletua",
+        "salford-hist-tony-puletua-2014"
+      ]
+    },
+    {
+      "name": "lachlan miller",
+      "ids": [
+        "leeds-hist-lachlan-miller",
+        "leeds-hist-lachlan-miller-2024",
+        "leeds-hist-lachlan-miller-2025"
+      ]
+    },
+    {
+      "name": "scott murrell",
+      "ids": [
+        "hull-kr-hist-scott-murrell",
+        "hull-kr-hist-scott-murrell-2009"
+      ]
+    },
+    {
+      "name": "graeme bradley",
+      "ids": [
+        "bradford-hist-graeme-bradley-1997",
+        "bradford-hist-graeme-bradley-1998",
+        "bradford-hist-graeme-bradley"
+      ]
+    },
+    {
+      "name": "michael oldfield",
+      "ids": [
+        "catalans-hist-michael-oldfield",
+        "catalans-hist-michael-oldfield-2015"
+      ]
+    },
+    {
+      "name": "mike forshaw",
+      "ids": [
+        "bradford-hist-mike-forshaw-2003",
+        "bradford-hist-mike-forshaw-1997",
+        "bradford-hist-mike-forshaw-2002",
+        "bradford-hist-mike-forshaw-1999",
+        "bradford-hist-mike-forshaw-2001",
+        "bradford-hist-mike-forshaw-2000",
+        "bradford-hist-mike-forshaw"
+      ]
+    },
+    {
+      "name": "jason demetriou",
+      "ids": [
+        "wakefield-hist-jason-demetriou-2010",
+        "wakefield-hist-jason-demetriou"
+      ]
+    },
+    {
+      "name": "thomas bosc",
+      "ids": [
+        "catalans-hist-thomas-bosc-2008",
+        "thomas-bosc",
+        "catalans-hist-thomas-bosc-2007",
+        "catalans-hist-thomas-bosc-2016",
+        "catalans-hist-thomas-bosc-2009",
+        "catalans-hist-thomas-bosc-2011",
+        "catalans-hist-thomas-bosc-2010"
+      ]
+    },
+    {
+      "name": "andre savelio",
+      "ids": [
+        "hull-fc-hist-andre-savelio",
+        "hull-fc-hist-andre-savelio-2021"
+      ]
+    },
+    {
+      "name": "chris sandow",
+      "ids": [
+        "wakefield-hist-chris-sandow",
+        "warrington-hist-chris-sandow-2016"
+      ]
+    },
+    {
+      "name": "casey mcguire",
+      "ids": [
+        "catalans-hist-casey-mcguire",
+        "catalans-hist-casey-mcguire-2009",
+        "catalans-hist-casey-mcguire-2010"
+      ]
+    },
+    {
+      "name": "matt cook",
+      "ids": [
+        "castleford-hist-matt-cook",
+        "castleford-hist-matt-cook-2016"
+      ]
+    },
+    {
+      "name": "adam milner",
+      "ids": [
+        "castleford-hist-adam-milner",
+        "castleford-hist-adam-milner-2016",
+        "huddersfield-hist-adam-milner-2024"
+      ]
+    },
+    {
+      "name": "richard owen",
+      "ids": [
+        "castleford-hist-richard-owen",
+        "castleford-hist-richard-owen-2012"
+      ]
+    },
+    {
+      "name": "david fusitua",
+      "ids": [
+        "leeds-hist-david-fusitu-a",
+        "leeds-hist-david-fusitu-a-2022",
+        "leeds-hist-david-fusitu-a-2023",
+        "leeds-hist-david-fusitu-a-2024"
+      ]
+    },
+    {
+      "name": "sean gleeson",
+      "ids": [
+        "wigan-hist-sean-gleeson-2006",
+        "wakefield-hist-sean-gleeson"
+      ]
+    },
+    {
+      "name": "sam obst",
+      "ids": [
+        "wakefield-hist-sam-obst-2009",
+        "wakefield-hist-sam-obst",
+        "wakefield-hist-sam-obst-2010"
+      ]
+    },
+    {
+      "name": "paul cooke",
+      "ids": [
+        "wakefield-hist-paul-cooke-2010",
+        "hull-fc-hist-paul-cooke",
+        "hull-kr-hist-paul-cooke-2009"
+      ]
+    },
+    {
+      "name": "mark henry",
+      "ids": [
+        "salford-hist-mark-henry",
+        "salford-hist-mark-henry-2009"
+      ]
+    },
+    {
+      "name": "apollo perelini",
+      "ids": [
+        "st-helens-hist-apollo-perelini-2000",
+        "st-helens-hist-apollo-perelini"
+      ]
+    },
+    {
+      "name": "julian oneill",
+      "ids": [
+        "widnes-hist-julian-o-neill",
+        "st-helens-hist-julian-o-neill-2000"
+      ]
+    },
+    {
+      "name": "jeremy donougher",
+      "ids": [
+        "bradford-hist-jeremy-donougher",
+        "bradford-hist-jeremy-donougher-1998"
+      ]
+    },
+    {
+      "name": "matt blaymire",
+      "ids": [
+        "wakefield-hist-matt-blaymire",
+        "wakefield-hist-matt-blaymire-2009",
+        "wakefield-hist-matt-blaymire-2010"
+      ]
+    },
+    {
+      "name": "chris flannery",
+      "ids": [
+        "st-helens-hist-chris-flannery",
+        "st-helens-hist-chris-flannery-2009"
+      ]
+    },
+    {
+      "name": "scott grix",
+      "ids": [
+        "wakefield-hist-scott-grix",
+        "huddersfield-hist-scott-grix-2013"
+      ]
+    },
+    {
+      "name": "robert purdham",
+      "ids": [
+        "london-hist-robert-purdham",
+        "london-hist-robert-purdham-2009"
+      ]
+    },
+    {
+      "name": "james donaldson",
+      "ids": [
+        "leeds-hist-james-donaldson",
+        "leeds-hist-james-donaldson-2020",
+        "leeds-hist-james-donaldson-2021",
+        "leeds-hist-james-donaldson-2022",
+        "leeds-hist-james-donaldson-2023"
+      ]
+    },
+    {
+      "name": "steve mcnamara",
+      "ids": [
+        "bradford-hist-steve-mcnamara",
+        "bradford-hist-steve-mcnamara-1997",
+        "bradford-hist-steve-mcnamara-1999",
+        "bradford-hist-steve-mcnamara-1998"
+      ]
+    },
+    {
+      "name": "stuart jones",
+      "ids": [
+        "huddersfield-hist-stuart-jones",
+        "castleford-hist-stuart-jones-2012"
+      ]
+    },
+    {
+      "name": "karl fitzpatrick",
+      "ids": [
+        "salford-hist-karl-fitzpatrick",
+        "salford-hist-karl-fitzpatrick-2009"
+      ]
+    },
+    {
+      "name": "setaimata sa",
+      "ids": [
+        "catalans-hist-setaimata-sa",
+        "catalans-hist-setaimata-sa-2010",
+        "catalans-hist-setaimata-sa-2012"
+      ]
+    },
+    {
+      "name": "jack owens",
+      "ids": [
+        "widnes-hist-jack-owens",
+        "st-helens-hist-jack-owens-2016"
+      ]
+    },
+    {
+      "name": "rikki sheriffe",
+      "ids": [
+        "bradford-hist-rikki-sheriffe",
+        "bradford-hist-rikki-sheriffe-2009"
+      ]
+    },
+    {
+      "name": "mose masoe",
+      "ids": [
+        "st-helens-hist-mose-masoe",
+        "st-helens-hist-mose-masoe-2014"
+      ]
+    },
+    {
+      "name": "dimitri pelo",
+      "ids": [
+        "catalans-hist-dimitri-pelo",
+        "catalans-hist-dimitri-pelo-2010",
+        "catalans-hist-dimitri-pelo-2007",
+        "catalans-hist-dimitri-pelo-2009",
+        "catalans-hist-dimitri-pelo-2008"
+      ]
+    },
+    {
+      "name": "ben roberts",
+      "ids": [
+        "castleford-hist-ben-roberts",
+        "castleford-hist-ben-roberts-2016"
+      ]
+    },
+    {
+      "name": "oliver holmes",
+      "ids": [
+        "castleford-hist-oliver-holmes",
+        "castleford-hist-oliver-holmes-2012",
+        "warrington-hist-oliver-holmes-2022"
+      ]
+    },
+    {
+      "name": "justin horo",
+      "ids": [
+        "wakefield-hist-justin-horo",
+        "catalans-hist-justin-horo-2016"
+      ]
+    },
+    {
+      "name": "paul prescott",
+      "ids": [
+        "wigan-hist-paul-prescott",
+        "wigan-hist-paul-prescott-2009"
+      ]
+    },
+    {
+      "name": "nick scruton",
+      "ids": [
+        "bradford-hist-nick-scruton",
+        "bradford-hist-nick-scruton-2013",
+        "wakefield-hist-nick-scruton-2016"
+      ]
+    },
+    {
+      "name": "liam colbon",
+      "ids": [
+        "wigan-hist-liam-colbon",
+        "hull-kr-hist-liam-colbon-2009"
+      ]
+    },
+    {
+      "name": "vincent duport",
+      "ids": [
+        "catalans-hist-vincent-duport",
+        "catalans-hist-vincent-duport-2009",
+        "catalans-hist-vincent-duport-2016",
+        "catalans-hist-vincent-duport-2011",
+        "catalans-hist-vincent-duport-2013",
+        "catalans-hist-vincent-duport-2012"
+      ]
+    },
+    {
+      "name": "ian henderson",
+      "ids": [
+        "catalans-hist-ian-henderson",
+        "bradford-hist-ian-henderson-2005"
+      ]
+    },
+    {
+      "name": "jason baitieri",
+      "ids": [
+        "catalans-hist-jason-baitieri",
+        "catalans-hist-jason-baitieri-2012",
+        "catalans-hist-jason-baitieri-2016",
+        "catalans-hist-jason-baitieri-2013"
+      ]
+    },
+    {
+      "name": "chad randall",
+      "ids": [
+        "london-hist-chad-randall",
+        "london-hist-chad-randall-2009"
+      ]
+    },
+    {
+      "name": "tony clubb",
+      "ids": [
+        "london-hist-tony-clubb",
+        "wigan-hist-tony-clubb-2021"
+      ]
+    },
+    {
+      "name": "patrick ah van",
+      "ids": [
+        "widnes-hist-patrick-ah-van",
+        "bradford-hist-patrick-ah-van-2011"
+      ]
+    },
+    {
+      "name": "dennis moran",
+      "ids": [
+        "london-hist-dennis-moran",
+        "wigan-hist-dennis-moran-2006"
+      ]
+    },
+    {
+      "name": "samisoni langi",
+      "ids": [
+        "catalans-hist-samisoni-langi",
+        "wakefield-hist-samisoni-langi-2023"
+      ]
+    },
+    {
+      "name": "joe wardle",
+      "ids": [
+        "huddersfield-hist-joe-wardle",
+        "huddersfield-hist-joe-wardle-2013",
+        "huddersfield-hist-joe-wardle-2020"
+      ]
+    },
+    {
+      "name": "sean hoppe",
+      "ids": [
+        "st-helens-hist-sean-hoppe",
+        "st-helens-hist-sean-hoppe-2000"
+      ]
+    },
+    {
+      "name": "joe arundel",
+      "ids": [
+        "wakefield-hist-joe-arundel",
+        "bradford-cur-joe-arundel-2014",
+        "castleford-cur-joe-arundel-2012",
+        "wakefield-hist-joe-arundel-2016"
+      ]
+    },
+    {
+      "name": "sia soliola",
+      "ids": [
+        "st-helens-hist-sia-soliola",
+        "st-helens-hist-sia-soliola-2014"
+      ]
+    },
+    {
+      "name": "andy coley",
+      "ids": [
+        "wigan-hist-andy-coley",
+        "wigan-hist-andy-coley-2009"
+      ]
+    },
+    {
+      "name": "jamie rooney",
+      "ids": [
+        "wakefield-hist-jamie-rooney-2009",
+        "wakefield-hist-jamie-rooney"
+      ]
+    },
+    {
+      "name": "tony gigot",
+      "ids": [
+        "catalans-hist-tony-gigot-2010",
+        "catalans-hist-tony-gigot-2015",
+        "catalans-hist-tony-gigot"
+      ]
+    },
+    {
+      "name": "danny orr",
+      "ids": [
+        "castleford-hist-danny-orr-2012",
+        "castleford-hist-danny-orr",
+        "london-hist-danny-orr-2009"
+      ]
+    },
+    {
+      "name": "brad dwyer",
+      "ids": [
+        "leeds-hist-brad-dwyer",
+        "leeds-hist-brad-dwyer-2020",
+        "leeds-hist-brad-dwyer-2021",
+        "leeds-hist-brad-dwyer-2022",
+        "hull-fc-hist-brad-dwyer-2023"
+      ]
+    },
+    {
+      "name": "brett delaney",
+      "ids": [
+        "leeds-hist-brett-delaney",
+        "leeds-hist-brett-delaney-2015"
+      ]
+    },
+    {
+      "name": "luke george",
+      "ids": [
+        "wakefield-hist-luke-george-2009",
+        "wakefield-hist-luke-george",
+        "wakefield-hist-luke-george-2010"
+      ]
+    },
+    {
+      "name": "darrell griffin",
+      "ids": [
+        "huddersfield-hist-darrell-griffin",
+        "salford-hist-darrell-griffin-2014"
+      ]
+    },
+    {
+      "name": "josh drinkwater",
+      "ids": [
+        "catalans-hist-josh-drinkwater",
+        "warrington-hist-josh-drinkwater-2023",
+        "warrington-hist-josh-drinkwater-2024"
+      ]
+    },
+    {
+      "name": "damien blanch",
+      "ids": [
+        "wakefield-hist-damien-blanch",
+        "wakefield-hist-damien-blanch-2009",
+        "catalans-hist-damien-blanch-2013",
+        "wakefield-hist-damien-blanch-2010"
+      ]
+    },
+    {
+      "name": "michael dobson",
+      "ids": [
+        "catalans-hist-michael-dobson-2006",
+        "hull-kr-hist-michael-dobson",
+        "hull-kr-hist-michael-dobson-2009",
+        "salford-hist-michael-dobson-2016"
+      ]
+    },
+    {
+      "name": "lance hohaia",
+      "ids": [
+        "st-helens-hist-lance-hohaia",
+        "st-helens-hist-lance-hohaia-2014"
+      ]
+    },
+    {
+      "name": "ukuma taai",
+      "ids": [
+        "huddersfield-hist-ukuma-ta-ai",
+        "huddersfield-hist-ukuma-ta-ai-2016"
+      ]
+    },
+    {
+      "name": "steve michaels",
+      "ids": [
+        "hull-fc-hist-steve-michaels",
+        "hull-fc-hist-steve-michaels-2016"
+      ]
+    },
+    {
+      "name": "matt gafa",
+      "ids": [
+        "london-hist-matt-gafa",
+        "london-hist-matt-gafa-2009"
+      ]
+    },
+    {
+      "name": "lee gaskell",
+      "ids": [
+        "huddersfield-hist-lee-gaskell",
+        "bradford-hist-lee-gaskell-2014",
+        "huddersfield-hist-lee-gaskell-2020"
+      ]
+    },
+    {
+      "name": "cameron phelps",
+      "ids": [
+        "widnes-hist-cameron-phelps",
+        "wigan-hist-cameron-phelps-2008",
+        "wigan-hist-cameron-phelps-2009"
+      ]
+    },
+    {
+      "name": "simon finnigan",
+      "ids": [
+        "widnes-hist-simon-finnigan",
+        "huddersfield-hist-simon-finnigan-2009"
+      ]
+    },
+    {
+      "name": "lee mossop",
+      "ids": [
+        "wigan-hist-lee-mossop-2008",
+        "wigan-hist-lee-mossop",
+        "wigan-hist-lee-mossop-2015"
+      ]
+    },
+    {
+      "name": "ryan brierley",
+      "ids": [
+        "salford-hist-ryan-brierley",
+        "huddersfield-hist-ryan-brierley-2016"
+      ]
+    },
+    {
+      "name": "brandon costin",
+      "ids": [
+        "huddersfield-hist-brandon-costin",
+        "bradford-hist-brandon-costin-2002"
+      ]
+    },
+    {
+      "name": "carlos tuimavave",
+      "ids": [
+        "hull-fc-hist-carlos-tuimavave",
+        "hull-fc-hist-carlos-tuimavave-2016",
+        "hull-fc-hist-carlos-tuimavave-2020",
+        "hull-fc-hist-carlos-tuimavave-2021",
+        "hull-fc-hist-carlos-tuimavave-2023",
+        "hull-fc-hist-carlos-tuimavave-2024"
+      ]
+    },
+    {
+      "name": "jamie foster",
+      "ids": [
+        "st-helens-hist-jamie-foster",
+        "bradford-hist-jamie-foster-2013",
+        "bradford-hist-jamie-foster-2014"
+      ]
+    },
+    {
+      "name": "ratu naulago",
+      "ids": [
+        "hull-fc-hist-ratu-naulago",
+        "hull-fc-hist-ratu-naulago-2020"
+      ]
+    },
+    {
+      "name": "elliott whitehead",
+      "ids": [
+        "catalans-hist-elliott-whitehead-2015",
+        "bradford-hist-elliott-whitehead-2011",
+        "bradford-hist-elliott-whitehead-2013",
+        "bradford-hist-elliott-whitehead-2012",
+        "bradford-hist-elliott-whitehead"
+      ]
+    },
+    {
+      "name": "brian mcdermott",
+      "ids": [
+        "bradford-hist-brian-mcdermott",
+        "bradford-hist-brian-mcdermott-1997"
+      ]
+    },
+    {
+      "name": "ian kirke",
+      "ids": [
+        "leeds-hist-ian-kirke",
+        "leeds-hist-ian-kirke-2013"
+      ]
+    },
+    {
+      "name": "scott naylor",
+      "ids": [
+        "bradford-hist-scott-naylor",
+        "bradford-hist-scott-naylor-1999"
+      ]
+    },
+    {
+      "name": "stuart fielden",
+      "ids": [
+        "wigan-hist-stuart-fielden-2006",
+        "wigan-hist-stuart-fielden-2008",
+        "huddersfield-leg-stuart-fielden-2013",
+        "bradford-leg-stuart-fielden-1998",
+        "bradford-leg-stuart-fielden-2006",
+        "bradford-leg-stuart-fielden-1999",
+        "bradford-leg-stuart-fielden-2005",
+        "bradford-leg-stuart-fielden-2002",
+        "bradford-leg-stuart-fielden-2004",
+        "bradford-leg-stuart-fielden-2003",
+        "stuart-fielden"
+      ]
+    },
+    {
+      "name": "willie isa",
+      "ids": [
+        "wigan-hist-willie-isa",
+        "wigan-hist-willie-isa-2020",
+        "wigan-hist-willie-isa-2021"
+      ]
+    },
+    {
+      "name": "kyle amor",
+      "ids": [
+        "st-helens-hist-kyle-amor",
+        "st-helens-hist-kyle-amor-2016"
+      ]
+    },
+    {
+      "name": "gareth hock",
+      "ids": [
+        "wigan-hist-gareth-hock-2006",
+        "wigan-hist-gareth-hock-2008",
+        "salford-hist-gareth-hock-2014",
+        "salford-hist-gareth-hock",
+        "wigan-hist-gareth-hock-2009"
+      ]
+    },
+    {
+      "name": "michael mcilorum",
+      "ids": [
+        "wigan-hist-michael-mcilorum-2006",
+        "wigan-hist-michael-mcilorum-2008",
+        "wigan-hist-michael-mcilorum",
+        "wigan-hist-michael-mcilorum-2015",
+        "wigan-hist-michael-mcilorum-2016"
+      ]
+    },
+    {
+      "name": "sebastine ikahihifo",
+      "ids": [
+        "huddersfield-hist-sebastine-ikahihifo",
+        "huddersfield-hist-sebastine-ikahihifo-2023",
+        "huddersfield-hist-sebastine-ikahihifo-2024"
+      ]
+    },
+    {
+      "name": "kieran dixon",
+      "ids": [
+        "london-hist-kieran-dixon-2018",
+        "london-hist-kieran-dixon",
+        "london-hist-kieran-dixon-2019"
+      ]
+    },
+    {
+      "name": "james evans",
+      "ids": [
+        "huddersfield-hist-james-evans",
+        "castleford-hist-james-evans-2009"
+      ]
+    },
+    {
+      "name": "danny peacock",
+      "ids": [
+        "bradford-hist-danny-peacock-1997",
+        "bradford-hist-danny-peacock-1998",
+        "bradford-hist-danny-peacock"
+      ]
+    },
+    {
+      "name": "kirk dixon",
+      "ids": [
+        "castleford-hist-kirk-dixon",
+        "castleford-hist-kirk-dixon-2009",
+        "castleford-hist-kirk-dixon-2012"
+      ]
+    },
+    {
+      "name": "zeb taia",
+      "ids": [
+        "st-helens-hist-zeb-taia-2020",
+        "st-helens-hist-zeb-taia-2019",
+        "catalans-hist-zeb-taia-2013",
+        "catalans-hist-zeb-taia-2015",
+        "st-helens-hist-zeb-taia"
+      ]
+    },
+    {
+      "name": "daryl millard",
+      "ids": [
+        "catalans-hist-daryl-millard",
+        "catalans-hist-daryl-millard-2013",
+        "catalans-hist-daryl-millard-2012",
+        "wakefield-hist-daryl-millard-2010",
+        "catalans-hist-daryl-millard-2011"
+      ]
+    },
+    {
+      "name": "lee radford",
+      "ids": [
+        "hull-fc-hist-lee-radford",
+        "bradford-hist-lee-radford-2004",
+        "bradford-hist-lee-radford-1999",
+        "bradford-hist-lee-radford-2003",
+        "bradford-hist-lee-radford-2000",
+        "bradford-hist-lee-radford-2002",
+        "bradford-hist-lee-radford-2001"
+      ]
+    },
+    {
+      "name": "glenn morrison",
+      "ids": [
+        "bradford-hist-glenn-morrison-2009",
+        "wakefield-hist-glenn-morrison-2010",
+        "bradford-hist-glenn-morrison"
+      ]
+    },
+    {
+      "name": "justin carney",
+      "ids": [
+        "castleford-hist-justin-carney",
+        "salford-hist-justin-carney-2016"
+      ]
+    },
+    {
+      "name": "jacob wardle",
+      "ids": [
+        "wigan-hist-jacob-wardle",
+        "huddersfield-hist-jacob-wardle-2020",
+        "huddersfield-hist-jacob-wardle-2021",
+        "wigan-hist-jacob-wardle-2023",
+        "wigan-hist-jacob-wardle-2024",
+        "wigan-hist-jacob-wardle-2025"
+      ]
+    },
+    {
+      "name": "shaun lunt",
+      "ids": [
+        "huddersfield-hist-shaun-lunt-2013",
+        "huddersfield-hist-shaun-lunt"
+      ]
+    },
+    {
+      "name": "matt calland",
+      "ids": [
+        "bradford-hist-matt-calland",
+        "bradford-hist-matt-calland-1997",
+        "bradford-hist-matt-calland-1998"
+      ]
+    },
+    {
+      "name": "jamie langley",
+      "ids": [
+        "bradford-hist-jamie-langley",
+        "bradford-hist-jamie-langley-2013",
+        "bradford-hist-jamie-langley-2004",
+        "bradford-hist-jamie-langley-2005",
+        "bradford-hist-jamie-langley-2011",
+        "bradford-hist-jamie-langley-2009"
+      ]
+    },
+    {
+      "name": "fetuli talanoa",
+      "ids": [
+        "hull-fc-hist-fetuli-talanoa",
+        "hull-fc-hist-fetuli-talanoa-2016"
+      ]
+    },
+    {
+      "name": "sione matautia",
+      "ids": [
+        "st-helens-hist-sione-mata-utia",
+        "st-helens-hist-sione-mata-utia-2021"
+      ]
+    },
+    {
+      "name": "jake bibby",
+      "ids": [
+        "salford-hist-jake-bibby-2015",
+        "salford-cur-jake-bibby-2015",
+        "wigan-hist-jake-bibby-2020",
+        "wigan-hist-jake-bibby-2021",
+        "wigan-hist-jake-bibby-2022",
+        "huddersfield-hist-jake-bibby-2025"
+      ]
+    },
+    {
+      "name": "sam kasiano",
+      "ids": [
+        "catalans-hist-sam-kasiano",
+        "warrington-hist-sam-kasiano-2023"
+      ]
+    },
+    {
+      "name": "amos roberts",
+      "ids": [
+        "wigan-hist-amos-roberts",
+        "wigan-hist-amos-roberts-2009"
+      ]
+    },
+    {
+      "name": "eorl crabtree",
+      "ids": [
+        "huddersfield-hist-eorl-crabtree-2013",
+        "eorl-crabtree"
+      ]
+    },
+    {
+      "name": "michael withers",
+      "ids": [
+        "bradford-hist-michael-withers",
+        "bradford-hist-michael-withers-2006",
+        "bradford-hist-michael-withers-2000",
+        "bradford-hist-michael-withers-2005"
+      ]
+    },
+    {
+      "name": "kirk yeaman",
+      "ids": [
+        "hull-fc-hist-kirk-yeaman-2013",
+        "hull-fc-hist-kirk-yeaman",
+        "hull-fc-hist-kirk-yeaman-2016"
+      ]
+    },
+    {
+      "name": "krisnan inu",
+      "ids": [
+        "catalans-hist-krisnan-inu-2015",
+        "catalans-hist-krisnan-inu-2016",
+        "salford-hist-krisnan-inu"
+      ]
+    },
+    {
+      "name": "richard myler",
+      "ids": [
+        "wakefield-hist-richard-myler",
+        "leeds-hist-richard-myler-2020",
+        "leeds-hist-richard-myler-2021",
+        "leeds-hist-richard-myler-2022",
+        "leeds-hist-richard-myler-2023"
+      ]
+    },
+    {
+      "name": "gareth raynor",
+      "ids": [
+        "hull-fc-hist-gareth-raynor",
+        "hull-fc-hist-gareth-raynor-2009"
+      ]
+    },
+    {
+      "name": "brett kearney",
+      "ids": [
+        "bradford-hist-brett-kearney",
+        "bradford-hist-brett-kearney-2012",
+        "bradford-hist-brett-kearney-2014",
+        "bradford-hist-brett-kearney-2013"
+      ]
+    },
+    {
+      "name": "theo fages",
+      "ids": [
+        "st-helens-hist-theo-fages",
+        "salford-hist-theo-fages-2014",
+        "st-helens-hist-theo-fages-2020",
+        "st-helens-hist-theo-fages-2019",
+        "huddersfield-hist-theo-fages-2022"
+      ]
+    },
+    {
+      "name": "scott moore",
+      "ids": [
+        "st-helens-hist-scott-moore",
+        "huddersfield-hist-scott-moore-2009",
+        "wakefield-hist-scott-moore-2016"
+      ]
+    },
+    {
+      "name": "karl pryce",
+      "ids": [
+        "bradford-hist-karl-pryce",
+        "bradford-hist-karl-pryce-2005",
+        "bradford-hist-karl-pryce-2012",
+        "bradford-hist-karl-pryce-2006",
+        "wigan-hist-karl-pryce-2008"
+      ]
+    },
+    {
+      "name": "brett dallas",
+      "ids": [
+        "wigan-hist-brett-dallas-2006",
+        "wigan-hist-brett-dallas"
+      ]
+    },
+    {
+      "name": "robert lui",
+      "ids": [
+        "salford-hist-robert-lui",
+        "salford-hist-robert-lui-2016",
+        "leeds-hist-robert-lui-2020"
+      ]
+    },
+    {
+      "name": "ricky leutele",
+      "ids": [
+        "leigh-hist-ricky-leutele",
+        "huddersfield-hist-ricky-leutele-2021",
+        "huddersfield-hist-ricky-leutele-2022"
+      ]
+    },
+    {
+      "name": "junior sau",
+      "ids": [
+        "salford-hist-junior-sa-u",
+        "salford-hist-junior-sa-u-2014",
+        "salford-hist-junior-sa-u-2016"
+      ]
+    },
+    {
+      "name": "remi casty",
+      "ids": [
+        "catalans-hist-remi-casty-2007",
+        "catalans-hist-remi-casty-2016",
+        "catalans-hist-remi-casty-2008",
+        "catalans-hist-remi-casty-2009",
+        "catalans-hist-remi-casty-2013",
+        "catalans-hist-remi-casty-2015",
+        "catalans-hist-remi-casty-2010",
+        "catalans-hist-remi-casty-2012",
+        "catalans-hist-remi-casty-2011",
+        "remi-casty"
+      ]
+    },
+    {
+      "name": "paul whatuira",
+      "ids": [
+        "huddersfield-hist-paul-whatuira",
+        "huddersfield-hist-paul-whatuira-2009"
+      ]
+    },
+    {
+      "name": "willie manu",
+      "ids": [
+        "hull-fc-hist-willie-manu",
+        "hull-fc-hist-willie-manu-2009",
+        "st-helens-hist-willie-manu-2014",
+        "hull-fc-hist-willie-manu-2012"
+      ]
+    },
+    {
+      "name": "ryan morgan",
+      "ids": [
+        "st-helens-hist-ryan-morgan",
+        "london-hist-ryan-morgan-2019"
+      ]
+    },
+    {
+      "name": "kevin iro",
+      "ids": [
+        "st-helens-hist-kevin-iro",
+        "st-helens-hist-kevin-iro-2000"
+      ]
+    },
+    {
+      "name": "jake webster",
+      "ids": [
+        "castleford-hist-jake-webster",
+        "hull-kr-hist-jake-webster-2009"
+      ]
+    },
+    {
+      "name": "anthony gelling",
+      "ids": [
+        "wigan-hist-anthony-gelling",
+        "wigan-hist-anthony-gelling-2015",
+        "warrington-hist-anthony-gelling-2020"
+      ]
+    },
+    {
+      "name": "shaun ainscough",
+      "ids": [
+        "bradford-hist-shaun-ainscough",
+        "bradford-hist-shaun-ainscough-2011",
+        "bradford-hist-shaun-ainscough-2012"
+      ]
+    },
+    {
+      "name": "jon wells",
+      "ids": [
+        "castleford-hist-jon-wells",
+        "london-hist-jon-wells-2009"
+      ]
+    },
+    {
+      "name": "mickey higham",
+      "ids": [
+        "wigan-hist-mickey-higham-2006",
+        "warrington-hist-mickey-higham"
+      ]
+    },
+    {
+      "name": "morgan escare",
+      "ids": [
+        "catalans-hist-morgan-escare",
+        "catalans-hist-morgan-escare-2013",
+        "catalans-hist-morgan-escare-2016",
+        "catalans-hist-morgan-escare-2015"
+      ]
+    },
+    {
+      "name": "luke dorn",
+      "ids": [
+        "london-hist-luke-dorn",
+        "london-hist-luke-dorn-2009"
+      ]
+    },
+    {
+      "name": "scott dureau",
+      "ids": [
+        "catalans-hist-scott-dureau-2015",
+        "catalans-hist-scott-dureau-2011",
+        "catalans-hist-scott-dureau-2013",
+        "catalans-hist-scott-dureau-2012",
+        "scott-durea"
+      ]
+    },
+    {
+      "name": "adrian morley",
+      "ids": [
+        "salford-hist-adrian-morley-2015",
+        "bradford-leg-adrian-morley-2005",
+        "salford-leg-adrian-morley-2014",
+        "warrington-hist-adrian-morley-2009",
+        "warrington-leg-adrian-morley-2010",
+        "adrian-morley"
+      ]
+    },
+    {
+      "name": "matty smith",
+      "ids": [
+        "wigan-hist-matty-smith-2015",
+        "wigan-hist-matty-smith-2016",
+        "wigan-hist-matty-smith"
+      ]
+    },
+    {
+      "name": "paul clough",
+      "ids": [
+        "paul-clough",
+        "st-helens-hist-paul-clough-2009"
+      ]
+    },
+    {
+      "name": "clint greenshields",
+      "ids": [
+        "catalans-hist-clint-greenshields-2012",
+        "catalans-hist-clint-greenshields-2007",
+        "catalans-hist-clint-greenshields-2011",
+        "catalans-hist-clint-greenshields-2008",
+        "catalans-hist-clint-greenshields-2010",
+        "catalans-hist-clint-greenshields-2009",
+        "catalans-hist-clint-greenshields"
+      ]
+    },
+    {
+      "name": "blake austin",
+      "ids": [
+        "wakefield-hist-blake-austin",
+        "warrington-hist-blake-austin-2020",
+        "warrington-hist-blake-austin-2021",
+        "leeds-hist-blake-austin-2022",
+        "leeds-hist-blake-austin-2023"
+      ]
+    },
+    {
+      "name": "matthew ashton",
+      "ids": [
+        "warrington-hist-era-matthew-ashton",
+        "warrington-hist-matthew-ashton-2022",
+        "warrington-hist-matthew-ashton-2023",
+        "warrington-hist-matthew-ashton-2024"
+      ]
+    },
+    {
+      "name": "justin murphy",
+      "ids": [
+        "catalans-hist-justin-murphy-2008",
+        "catalans-hist-justin-murphy-2006",
+        "catalans-hist-justin-murphy-2007",
+        "catalans-hist-justin-murphy"
+      ]
+    },
+    {
+      "name": "kylie leuluai",
+      "ids": [
+        "leeds-hist-kylie-leuluai-2015",
+        "kylie-leuluai",
+        "leeds-hist-kylie-leuluai-2008",
+        "leeds-hist-kylie-leuluai-2013",
+        "leeds-hist-kylie-leuluai-2009"
+      ]
+    },
+    {
+      "name": "jason hooper",
+      "ids": [
+        "st-helens-hist-jason-hooper",
+        "st-helens-hist-jason-hooper-2006"
+      ]
+    },
+    {
+      "name": "anthony sullivan",
+      "ids": [
+        "st-helens-hist-anthony-sullivan-2000",
+        "st-helens-hist-anthony-sullivan"
+      ]
+    },
+    {
+      "name": "louis anderson",
+      "ids": [
+        "catalans-hist-louis-anderson",
+        "catalans-hist-louis-anderson-2012",
+        "catalans-hist-louis-anderson-2016",
+        "warrington-hist-louis-anderson-2009"
+      ]
+    },
+    {
+      "name": "daniel gartner",
+      "ids": [
+        "bradford-hist-daniel-gartner",
+        "bradford-hist-daniel-gartner-2001",
+        "bradford-hist-daniel-gartner-2003"
+      ]
+    },
+    {
+      "name": "jodie broughton",
+      "ids": [
+        "salford-hist-jodie-broughton",
+        "catalans-hist-jodie-broughton-2016"
+      ]
+    },
+    {
+      "name": "lee gilmour",
+      "ids": [
+        "st-helens-hist-lee-gilmour",
+        "st-helens-hist-lee-gilmour-2006",
+        "st-helens-hist-lee-gilmour-2009"
+      ]
+    },
+    {
+      "name": "brent webb",
+      "ids": [
+        "leeds-hist-brent-webb",
+        "leeds-hist-brent-webb-2008"
+      ]
+    },
+    {
+      "name": "lachlan coote",
+      "ids": [
+        "st-helens-hist-lachlan-coote-2019",
+        "st-helens-hist-lachlan-coote-2021",
+        "st-helens-hist-lachlan-coote"
+      ]
+    },
+    {
+      "name": "paul anderson",
+      "ids": [
+        "st-helens-hist-paul-anderson-2006",
+        "bradford-hist-paul-anderson-1997",
+        "bradford-hist-paul-anderson-1998",
+        "bradford-hist-paul-anderson-1999",
+        "bradford-hist-paul-anderson-2003",
+        "bradford-hist-paul-anderson-2004",
+        "bradford-hist-paul-anderson-2000",
+        "bradford-hist-paul-anderson-2002",
+        "bradford-hist-paul-anderson-2001",
+        "paul-anderson"
+      ]
+    },
+    {
+      "name": "fouad yaha",
+      "ids": [
+        "catalans-hist-fouad-yaha",
+        "catalans-hist-fouad-yaha-2015"
+      ]
+    },
+    {
+      "name": "ben galea",
+      "ids": [
+        "hull-kr-hist-ben-galea",
+        "hull-kr-hist-ben-galea-2009"
+      ]
+    },
+    {
+      "name": "mike cooper",
+      "ids": [
+        "warrington-hist-mike-cooper",
+        "warrington-hist-mike-cooper-2020",
+        "warrington-hist-mike-cooper-2021",
+        "warrington-hist-mike-cooper-2022"
+      ]
+    },
+    {
+      "name": "greg bird",
+      "ids": [
+        "greg-bird",
+        "catalans-hist-greg-bird-2009"
+      ]
+    },
+    {
+      "name": "jermaine mcgillvary",
+      "ids": [
+        "huddersfield-hist-jermaine-mcgillvary-2013",
+        "huddersfield-hist-jermaine-mcgillvary",
+        "huddersfield-hist-jermaine-mcgillvary-2016",
+        "huddersfield-hist-jermaine-mcgillvary-2020",
+        "huddersfield-hist-jermaine-mcgillvary-2021",
+        "huddersfield-hist-jermaine-mcgillvary-2022",
+        "huddersfield-hist-jermaine-mcgillvary-2023"
+      ]
+    },
+    {
+      "name": "keiron cunningham",
+      "ids": [
+        "st-helens-hist-keiron-cunningham-2000",
+        "st-helens-hist-keiron-cunningham-2006",
+        "st-helens-hist-keiron-cunningham-2002",
+        "keiron-cunningham",
+        "st-helens-hist-keiron-cunningham-2009"
+      ]
+    },
+    {
+      "name": "harrison hansen",
+      "ids": [
+        "wigan-hist-harrison-hansen",
+        "wigan-hist-harrison-hansen-2009"
+      ]
+    },
+    {
+      "name": "regan grace",
+      "ids": [
+        "st-helens-hist-regan-grace",
+        "st-helens-hist-regan-grace-2019",
+        "st-helens-hist-regan-grace-2021",
+        "st-helens-hist-regan-grace-2020"
+      ]
+    },
+    {
+      "name": "chris bridge",
+      "ids": [
+        "warrington-hist-chris-bridge",
+        "warrington-hist-chris-bridge-2009"
+      ]
+    },
+    {
+      "name": "martin gleeson",
+      "ids": [
+        "salford-hist-martin-gleeson-2014",
+        "st-helens-hist-martin-gleeson-2002",
+        "salford-hist-martin-gleeson",
+        "wigan-hist-martin-gleeson-2009"
+      ]
+    },
+    {
+      "name": "ben murdochmasila",
+      "ids": [
+        "wakefield-hist-ben-murdoch-masila",
+        "salford-hist-ben-murdoch-masila-2016",
+        "warrington-hist-ben-murdoch-masila-2020"
+      ]
+    },
+    {
+      "name": "thomas leuluai",
+      "ids": [
+        "wigan-hist-thomas-leuluai-2008",
+        "wigan-hist-thomas-leuluai",
+        "wigan-hist-thomas-leuluai-2009",
+        "wigan-hist-thomas-leuluai-2020"
+      ]
+    },
+    {
+      "name": "joel tomkins",
+      "ids": [
+        "wigan-hist-joel-tomkins-2016",
+        "wigan-hist-joel-tomkins-2008",
+        "wigan-hist-joel-tomkins-2015",
+        "wigan-hist-joel-tomkins"
+      ]
+    },
+    {
+      "name": "danny tickle",
+      "ids": [
+        "hull-fc-hist-danny-tickle",
+        "hull-fc-hist-danny-tickle-2009",
+        "hull-fc-hist-danny-tickle-2013",
+        "hull-fc-hist-danny-tickle-2012"
+      ]
+    },
+    {
+      "name": "willie talau",
+      "ids": [
+        "st-helens-hist-willie-talau",
+        "st-helens-hist-willie-talau-2006",
+        "salford-hist-willie-talau-2009"
+      ]
+    },
+    {
+      "name": "greg eden",
+      "ids": [
+        "salford-hist-greg-eden-2014",
+        "castleford-hist-greg-eden"
+      ]
+    },
+    {
+      "name": "jon wilkin",
+      "ids": [
+        "st-helens-hist-jon-wilkin-2006",
+        "st-helens-hist-jon-wilkin-2014",
+        "st-helens-hist-jon-wilkin",
+        "st-helens-hist-jon-wilkin-2009",
+        "st-helens-hist-jon-wilkin-2016"
+      ]
+    },
+    {
+      "name": "ade gardner",
+      "ids": [
+        "st-helens-hist-ade-gardner-2006",
+        "st-helens-hist-ade-gardner-2014",
+        "st-helens-hist-ade-gardner",
+        "st-helens-hist-ade-gardner-2009"
+      ]
+    },
+    {
+      "name": "jamie jonesbuchanan",
+      "ids": [
+        "leeds-leg-jamie-jones-buchanan-2015",
+        "jamie-jones-buchanan",
+        "leeds-hist-jamie-jones-buchanan-2009",
+        "leeds-leg-jamie-jones-buchanan-2016",
+        "leeds-hist-jamie-jones-buchanan-2013"
+      ]
+    },
+    {
+      "name": "chris riley",
+      "ids": [
+        "wakefield-hist-chris-riley",
+        "warrington-hist-chris-riley-2009"
+      ]
+    },
+    {
+      "name": "garreth carvell",
+      "ids": [
+        "warrington-hist-garreth-carvell",
+        "warrington-hist-garreth-carvell-2009"
+      ]
+    },
+    {
+      "name": "iain thornley",
+      "ids": [
+        "salford-hist-iain-thornley-2015",
+        "wigan-hist-iain-thornley"
+      ]
+    },
+    {
+      "name": "leroy cudjoe",
+      "ids": [
+        "huddersfield-hist-leroy-cudjoe-2013",
+        "huddersfield-hist-leroy-cudjoe",
+        "huddersfield-hist-leroy-cudjoe-2009",
+        "huddersfield-hist-leroy-cudjoe-2016",
+        "huddersfield-hist-leroy-cudjoe-2020",
+        "huddersfield-hist-leroy-cudjoe-2022",
+        "huddersfield-hist-leroy-cudjoe-2023",
+        "huddersfield-hist-leroy-cudjoe-2024",
+        "huddersfield-hist-leroy-cudjoe-2025"
+      ]
+    },
+    {
+      "name": "shaun briscoe",
+      "ids": [
+        "hull-kr-hist-shaun-briscoe",
+        "hull-kr-hist-shaun-briscoe-2009"
+      ]
+    },
+    {
+      "name": "kris welham",
+      "ids": [
+        "hull-kr-hist-kris-welham",
+        "hull-kr-hist-kris-welham-2009"
+      ]
+    },
+    {
+      "name": "scott donald",
+      "ids": [
+        "leeds-hist-scott-donald-2008",
+        "leeds-hist-scott-donald-2009",
+        "leeds-hist-scott-donald"
+      ]
+    },
+    {
+      "name": "mat ashurst",
+      "ids": [
+        "wakefield-hist-mat-ashurst",
+        "wakefield-hist-mat-ashurst-2016",
+        "wakefield-hist-mat-ashurst-2022",
+        "wakefield-hist-mat-ashurst-2023"
+      ]
+    },
+    {
+      "name": "louie mccarthyscarsbrook",
+      "ids": [
+        "louie-mccarthy-scarsbrook",
+        "st-helens-hist-louie-mccarthy-scarsbrook-2014",
+        "st-helens-hist-louie-mccarthy-scarsbrook-2020",
+        "st-helens-hist-louie-mccarthy-scarsbrook-2015",
+        "st-helens-hist-louie-mccarthy-scarsbrook-2016"
+      ]
+    },
+    {
+      "name": "tevita vaikona",
+      "ids": [
+        "bradford-hist-tevita-vaikona-2004",
+        "bradford-hist-tevita-vaikona-1998",
+        "bradford-hist-tevita-vaikona-2003",
+        "bradford-hist-tevita-vaikona-2000",
+        "bradford-hist-tevita-vaikona-2002",
+        "bradford-hist-tevita-vaikona-2001",
+        "tevita-vaikona"
+      ]
+    },
+    {
+      "name": "david hodgson",
+      "ids": [
+        "oldham-hist-david-hodgson",
+        "huddersfield-hist-david-hodgson-2009"
+      ]
+    },
+    {
+      "name": "jake mamo",
+      "ids": [
+        "wakefield-hist-jake-mamo",
+        "warrington-hist-jake-mamo-2021"
+      ]
+    },
+    {
+      "name": "denny solomona",
+      "ids": [
+        "castleford-hist-denny-solomona-2016",
+        "castleford-hist-denny-solomona"
+      ]
+    },
+    {
+      "name": "dominic manfredi",
+      "ids": [
+        "wigan-hist-dominic-manfredi-2016",
+        "wigan-hist-dominic-manfredi",
+        "wigan-hist-dominic-manfredi-2020"
+      ]
+    },
+    {
+      "name": "michael shenton",
+      "ids": [
+        "castleford-hist-michael-shenton-2009",
+        "castleford-hist-michael-shenton"
+      ]
+    },
+    {
+      "name": "ali lauitiiti",
+      "ids": [
+        "leeds-hist-ali-lauitiiti-2008",
+        "leeds-hist-ali-lauitiiti-2009",
+        "ali-lauitiiti"
+      ]
+    },
+    {
+      "name": "stephen wild",
+      "ids": [
+        "huddersfield-hist-stephen-wild",
+        "huddersfield-hist-stephen-wild-2009"
+      ]
+    },
+    {
+      "name": "chris hicks",
+      "ids": [
+        "wakefield-hist-chris-hicks",
+        "warrington-hist-chris-hicks-2009"
+      ]
+    },
+    {
+      "name": "tommy martyn",
+      "ids": [
+        "st-helens-hist-tommy-martyn-2000",
+        "tommy-martyn"
+      ]
+    },
+    {
+      "name": "chris joynt",
+      "ids": [
+        "st-helens-hist-chris-joynt-2000",
+        "st-helens-hist-chris-joynt-2002",
+        "chris-joynt"
+      ]
+    },
+    {
+      "name": "paul deacon",
+      "ids": [
+        "paul-deacon",
+        "bradford-hist-paul-deacon-2009",
+        "bradford-hist-paul-deacon-1999",
+        "bradford-hist-paul-deacon-2005",
+        "bradford-hist-paul-deacon-2006",
+        "bradford-hist-paul-deacon-2000",
+        "bradford-hist-paul-deacon-2001",
+        "bradford-hist-paul-deacon-2002",
+        "bradford-hist-paul-deacon-2004",
+        "bradford-hist-paul-deacon-2003"
+      ]
+    },
+    {
+      "name": "clint newton",
+      "ids": [
+        "hull-kr-hist-clint-newton",
+        "hull-kr-hist-clint-newton-2009"
+      ]
+    },
+    {
+      "name": "ben westwood",
+      "ids": [
+        "warrington-hist-ben-westwood-2015",
+        "warrington-hist-ben-westwood-2016",
+        "ben-westwood",
+        "warrington-hist-ben-westwood-2009"
+      ]
+    },
+    {
+      "name": "kevin naiqama",
+      "ids": [
+        "st-helens-hist-kevin-naiqama-2019",
+        "st-helens-hist-kevin-naiqama-2021",
+        "st-helens-hist-kevin-naiqama-2020",
+        "st-helens-hist-kevin-naiqama",
+        "huddersfield-hist-kevin-naiqama-2023",
+        "huddersfield-hist-kevin-naiqama-2024"
+      ]
+    },
+    {
+      "name": "francis meli",
+      "ids": [
+        "st-helens-hist-francis-meli",
+        "salford-hist-francis-meli-2014",
+        "st-helens-hist-francis-meli-2006",
+        "st-helens-hist-francis-meli-2009"
+      ]
+    },
+    {
+      "name": "matt dufty",
+      "ids": [
+        "wakefield-hist-matt-dufty",
+        "warrington-hist-matt-dufty-2023",
+        "warrington-hist-matt-dufty-2024",
+        "warrington-hist-matt-dufty-2025"
+      ]
+    },
+    {
+      "name": "mark minichiello",
+      "ids": [
+        "hull-fc-hist-mark-minichiello",
+        "hull-fc-hist-mark-minichiello-2016"
+      ]
+    },
+    {
+      "name": "rangi chase",
+      "ids": [
+        "salford-hist-rangi-chase-2015",
+        "salford-hist-rangi-chase-2014",
+        "castleford-hist-rangi-chase-2012",
+        "rangi-chase"
+      ]
+    },
+    {
+      "name": "leon pryce",
+      "ids": [
+        "bradford-hist-leon-pryce-1998",
+        "bradford-hist-leon-pryce-1999",
+        "catalans-hist-leon-pryce-2013",
+        "bradford-hist-leon-pryce-2000",
+        "catalans-hist-leon-pryce-2012",
+        "st-helens-hist-leon-pryce-2006",
+        "bradford-hist-leon-pryce-2001",
+        "bradford-hist-leon-pryce-2002",
+        "bradford-hist-leon-pryce-2004",
+        "bradford-hist-leon-pryce-2003",
+        "leon-pryce",
+        "st-helens-hist-leon-pryce-2009"
+      ]
+    },
+    {
+      "name": "henry paul",
+      "ids": [
+        "bradford-hist-henry-paul-1999",
+        "bradford-hist-henry-paul-2001",
+        "bradford-hist-henry-paul-2000",
+        "henry-paul"
+      ]
+    },
+    {
+      "name": "shontayne hape",
+      "ids": [
+        "bradford-hist-shontayne-hape",
+        "bradford-hist-shontayne-hape-2006",
+        "bradford-hist-shontayne-hape-2003",
+        "bradford-hist-shontayne-hape-2005"
+      ]
+    },
+    {
+      "name": "graham mackay",
+      "ids": [
+        "bradford-hist-graham-mackay-2001",
+        "hull-fc-hist-graham-mackay"
+      ]
+    },
+    {
+      "name": "danny brough",
+      "ids": [
+        "wakefield-hist-danny-brough-2009",
+        "huddersfield-hist-danny-brough-2013",
+        "danny-brough",
+        "huddersfield-hist-danny-brough-2016"
+      ]
+    },
+    {
+      "name": "scott taylor",
+      "ids": [
+        "hull-fc-hist-scott-taylor",
+        "hull-fc-hist-scott-taylor-2016",
+        "hull-fc-hist-scott-taylor-2020",
+        "hull-fc-hist-scott-taylor-2023"
+      ]
+    },
+    {
+      "name": "joel moon",
+      "ids": [
+        "leeds-hist-joel-moon-2015",
+        "leeds-hist-joel-moon",
+        "leeds-hist-joel-moon-2013"
+      ]
+    },
+    {
+      "name": "pat richards",
+      "ids": [
+        "wigan-hist-pat-richards-2008",
+        "wigan-hist-pat-richards-2006",
+        "catalans-hist-pat-richards-2016",
+        "pat-richards",
+        "wigan-hist-pat-richards-2009",
+        "wigan-leg-pat-richards-2010"
+      ]
+    },
+    {
+      "name": "kevin sinfield",
+      "ids": [
+        "leeds-leg-kevin-sinfield-2008",
+        "leeds-leg-kevin-sinfield-2009",
+        "leeds-leg-kevin-sinfield-2013",
+        "leeds-leg-kevin-sinfield-2015",
+        "leeds-leg-kevin-sinfield-2012",
+        "kevin-sinfield"
+      ]
+    },
+    {
       "name": "rob burrow",
       "ids": [
+        "leeds-leg-rob-burrow-2009",
+        "leeds-leg-rob-burrow-2013",
+        "leeds-leg-rob-burrow-2016",
         "leeds-leg-rob-burrow-2015",
+        "leeds-leg-rob-burrow-2007",
         "rob-burrow"
+      ]
+    },
+    {
+      "name": "matt gidley",
+      "ids": [
+        "matt-gidley",
+        "st-helens-hist-matt-gidley-2009"
+      ]
+    },
+    {
+      "name": "mahe fonua",
+      "ids": [
+        "hull-fc-hist-mahe-fonua",
+        "hull-fc-hist-mahe-fonua-2016",
+        "hull-fc-hist-mahe-fonua-2020",
+        "hull-fc-hist-mahe-fonua-2021"
+      ]
+    },
+    {
+      "name": "keith senior",
+      "ids": [
+        "leeds-hist-keith-senior-2008",
+        "leeds-hist-keith-senior-2009",
+        "keith-senior"
+      ]
+    },
+    {
+      "name": "matt king",
+      "ids": [
+        "wakefield-hist-matt-king",
+        "warrington-hist-matt-king-2009"
+      ]
+    },
+    {
+      "name": "danny mcguire",
+      "ids": [
+        "leeds-leg-danny-mcguire-2008",
+        "leeds-leg-danny-mcguire-2009",
+        "leeds-leg-danny-mcguire-2016",
+        "leeds-leg-danny-mcguire-2013",
+        "leeds-hist-danny-mcguire-2015",
+        "danny-mcguire"
+      ]
+    },
+    {
+      "name": "robbie hunterpaul",
+      "ids": [
+        "bradford-leg-robbie-hunter-paul-1997",
+        "bradford-leg-robbie-hunter-paul-1998",
+        "salford-leg-robbie-hunter-paul-2009",
+        "bradford-leg-robbie-hunter-paul-2005",
+        "bradford-leg-robbie-hunter-paul-1999",
+        "bradford-leg-robbie-hunter-paul-2000",
+        "bradford-leg-robbie-hunter-paul-2004",
+        "bradford-leg-robbie-hunter-paul-2001",
+        "bradford-leg-robbie-hunter-paul-2003",
+        "bradford-leg-robbie-hunter-paul-2002",
+        "bradford-leg-robbie-hunter-paul"
+      ]
+    },
+    {
+      "name": "paul newlove",
+      "ids": [
+        "st-helens-leg-paul-newlove-2002",
+        "paul-newlove"
+      ]
+    },
+    {
+      "name": "lee briers",
+      "ids": [
+        "lee-briers",
+        "warrington-hist-lee-briers-2009",
+        "warrington-leg-lee-briers-2011"
+      ]
+    },
+    {
+      "name": "nick fozzard",
+      "ids": [
+        "nick-fozzard",
+        "hull-kr-hist-nick-fozzard-2009"
+      ]
+    },
+    {
+      "name": "joel monaghan",
+      "ids": [
+        "warrington-hist-joel-monaghan-2015",
+        "castleford-hist-joel-monaghan-2016",
+        "joel-monaghan"
+      ]
+    },
+    {
+      "name": "michael monaghan",
+      "ids": [
+        "michael-monaghan",
+        "warrington-hist-michael-monaghan-2009"
+      ]
+    },
+    {
+      "name": "chris mcqueen",
+      "ids": [
+        "huddersfield-hist-chris-mcqueen",
+        "huddersfield-hist-chris-mcqueen-2021",
+        "huddersfield-hist-chris-mcqueen-2022",
+        "huddersfield-hist-chris-mcqueen-2023"
+      ]
+    },
+    {
+      "name": "danny houghton",
+      "ids": [
+        "hull-fc-hist-danny-houghton-2009",
+        "hull-fc-hist-danny-houghton-2013",
+        "hull-fc-hist-danny-houghton-2012",
+        "danny-houghton",
+        "hull-fc-hist-danny-houghton-2016",
+        "hull-fc-hist-danny-houghton-2020",
+        "hull-fc-hist-danny-houghton-2021",
+        "hull-fc-hist-danny-houghton-2022",
+        "hull-fc-hist-danny-houghton-2023",
+        "hull-fc-hist-danny-houghton-2024"
       ]
     },
     {
       "name": "jamie peacock",
       "ids": [
         "leeds-leg-jamie-peacock-2015",
+        "bradford-leg-jamie-peacock-1999",
+        "bradford-leg-jamie-peacock-2000",
+        "leeds-leg-jamie-peacock-2013",
+        "bradford-leg-jamie-peacock-2001",
+        "bradford-leg-jamie-peacock-2002",
+        "leeds-leg-jamie-peacock-2008",
+        "leeds-leg-jamie-peacock-2009",
+        "bradford-leg-jamie-peacock-2005",
+        "bradford-leg-jamie-peacock-2004",
+        "bradford-leg-jamie-peacock-2003",
         "jamie-peacock"
       ]
     },
     {
-      "name": "kevin sinfield",
+      "name": "lesley vainikolo",
       "ids": [
-        "leeds-leg-kevin-sinfield-2015",
-        "kevin-sinfield"
+        "bradford-hist-lesley-vainikolo-2006",
+        "bradford-hist-lesley-vainikolo-2002",
+        "bradford-hist-lesley-vainikolo-2005",
+        "bradford-hist-lesley-vainikolo-2003",
+        "bradford-hist-lesley-vainikolo-2004",
+        "lesley-vainikolo"
+      ]
+    },
+    {
+      "name": "konrad hurrell",
+      "ids": [
+        "st-helens-hist-konrad-hurrell",
+        "leeds-hist-konrad-hurrell-2020"
+      ]
+    },
+    {
+      "name": "kris radlinski",
+      "ids": [
+        "wigan-hist-kris-radlinski-2006",
+        "kris-radlinski",
+        "wigan-leg-kris-radlinski-2002"
+      ]
+    },
+    {
+      "name": "peter fox",
+      "ids": [
+        "hull-kr-hist-peter-fox",
+        "hull-kr-hist-peter-fox-2009"
       ]
     },
     {
       "name": "sam tomkins",
       "ids": [
         "wigan-hist-sam-tomkins-2008",
+        "wigan-leg-sam-tomkins-2016",
+        "wigan-hist-sam-tomkins-2009",
+        "wigan-leg-sam-tomkins-2012",
         "wigan-hist-sam-tomkins"
+      ]
+    },
+    {
+      "name": "sean oloughlin",
+      "ids": [
+        "wigan-hist-sean-oloughlin-2006",
+        "wigan-hist-sean-oloughlin-2008",
+        "wigan-hist-sean-o-loughlin-2015",
+        "wigan-hist-sean-o-loughlin-2016",
+        "sean-oloughlin",
+        "wigan-hist-sean-o-loughlin-2009",
+        "wigan-hist-sean-o-loughlin-2020",
+        "wigan-leg-sean-o-loughlin-2013"
+      ]
+    },
+    {
+      "name": "george carmont",
+      "ids": [
+        "wigan-hist-george-carmont",
+        "wigan-hist-george-carmont-2009"
+      ]
+    },
+    {
+      "name": "shaun edwards",
+      "ids": [
+        "shaun-edwards",
+        "bradford-hist-shaun-edwards-1998"
+      ]
+    },
+    {
+      "name": "paul wellens",
+      "ids": [
+        "st-helens-hist-paul-wellens-2015",
+        "st-helens-hist-paul-wellens-2000",
+        "st-helens-hist-paul-wellens-2006",
+        "st-helens-hist-paul-wellens-2002",
+        "paul-wellens",
+        "st-helens-hist-paul-wellens-2009"
+      ]
+    },
+    {
+      "name": "james roby",
+      "ids": [
+        "st-helens-hist-james-roby-2021",
+        "st-helens-hist-james-roby-2014",
+        "st-helens-hist-james-roby-2015",
+        "st-helens-hist-james-roby-2020",
+        "st-helens-hist-james-roby-2019",
+        "james-roby",
+        "st-helens-hist-james-roby-2016",
+        "st-helens-leg-james-roby-2007"
+      ]
+    },
+    {
+      "name": "sean long",
+      "ids": [
+        "st-helens-leg-sean-long-2000",
+        "st-helens-leg-sean-long-2002",
+        "st-helens-leg-sean-long-2006",
+        "st-helens-hist-sean-long-2009",
+        "sean-long"
+      ]
+    },
+    {
+      "name": "paul sculthorpe",
+      "ids": [
+        "st-helens-leg-paul-sculthorpe-2000",
+        "st-helens-leg-paul-sculthorpe-2002",
+        "paul-sculthorpe"
+      ]
+    },
+    {
+      "name": "jamie lyon",
+      "ids": [
+        "st-helens-hist-jamie-lyon-2006",
+        "jamie-lyon",
+        "st-helens-leg-jamie-lyon-2005"
+      ]
+    },
+    {
+      "name": "james graham",
+      "ids": [
+        "james-graham",
+        "st-helens-hist-james-graham-2009",
+        "st-helens-leg-james-graham-2008"
+      ]
+    },
+    {
+      "name": "brett hodgson",
+      "ids": [
+        "brett-hodgson",
+        "huddersfield-hist-brett-hodgson-2009"
+      ]
+    },
+    {
+      "name": "andy farrell",
+      "ids": [
+        "wigan-leg-andy-farrell-1996",
+        "andy-farrell"
+      ]
+    },
+    {
+      "name": "jason robinson",
+      "ids": [
+        "wigan-leg-jason-robinson-1998",
+        "jason-robinson"
       ]
     }
   ],

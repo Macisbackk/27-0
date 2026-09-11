@@ -1,11 +1,16 @@
 import type { Player, PlayerCategory } from "../types";
 import { getCachedPlayerAchievements } from "./achievement-cache";
+import {
+  CURRENT_SEASON_YEAR,
+  resolveCurrentCardSeasonYear,
+} from "./current-season";
 import { getPlayerDisplayName } from "./display-name-resolver";
 import { getPlayerAge } from "./player-age";
 import {
   getPlayerRatingContext,
   type PlayerRatingContext,
 } from "./rating-context";
+import { formatShortYear } from "./prime-year";
 import { formatShowcaseClubYear } from "./year-card";
 
 export type PlayerShowcaseViewModel = {
@@ -30,8 +35,27 @@ export type PlayerShowcaseViewModel = {
 };
 
 function resolveShowcaseYear(player: Player): number | undefined {
+  if (player.category === "current") {
+    return resolveCurrentCardSeasonYear(player);
+  }
   const year = player.year ?? player.cardYear ?? player.primeYear;
   return typeof year === "number" && Number.isFinite(year) ? year : undefined;
+}
+
+/**
+ * Showcase titles always carry a short year when known:
+ * Current → "Bevan French '26"; year cards → "Jamie Peacock '03".
+ * Future current-era seasons (e.g. '27) use their card year once squads exist.
+ */
+export function formatShowcaseDisplayName(player: Player): string {
+  const name = getPlayerDisplayName(player);
+  if (!name) return name;
+  if (/\s'\d{2}$/.test(name)) return name;
+
+  const year = resolveShowcaseYear(player);
+  if (year === undefined) return name;
+
+  return `${name} ${formatShortYear(year)}`;
 }
 
 /**
@@ -41,7 +65,7 @@ function resolveShowcaseYear(player: Player): number | undefined {
 export function toPlayerShowcaseViewModel(
   player: Player
 ): PlayerShowcaseViewModel {
-  const displayName = getPlayerDisplayName(player);
+  const displayName = formatShowcaseDisplayName(player);
   const achievements = getCachedPlayerAchievements(player, "compact").map(
     (a) => a.label
   );
@@ -58,7 +82,7 @@ export function toPlayerShowcaseViewModel(
     rating: player.peakRating,
     ratingContext: getPlayerRatingContext(player),
     playerType: player.category,
-    year: resolveShowcaseYear(player),
+    year: resolveShowcaseYear(player) ?? CURRENT_SEASON_YEAR,
     yearsActive: player.yearsActive,
     age: age ?? undefined,
     appearances: player.appearances,

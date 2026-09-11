@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-09-11T22:25:00.000Z",
+  "beforeThisPass": {
+    "depthMissingNationality": 14,
+    "currentMissingDob": 114,
+    "historicUnknownNationality": 276
+  },
+  "after": {
+    "depthMissingNationality": 0,
+    "currentMissingDob": 1,
+    "currentMissingDobNames": ["Alfie Leake"],
+    "historicUnknownNationality": 216,
+    "playableCurrentUnknownNationality": 0
+  },
+  "sourcesUsed": [
+    "RLP summary cache (Place Of Birth → nationality, Born → DOB)",
+    "Wikipedia nationality enrich (13 historic)",
+    "Wikipedia birth enrich + birth-years.json (plausible 1981–2010 only)",
+    "Verified club/Wikipedia/RLP lookups for depth 14 and remaining DOBs"
+  ],
+  "unresolvedReasons": {
+    "Alfie Leake": "RLP page has no Born/Place Of Birth; club article only says age 18 in Feb 2025 (no exact DOB).",
+    "historicUnknownNationality": "No Place Of Birth on RLP and no reliable Wikipedia rugby-league nationality extract. Left Unknown rather than invent England."
+  }
+}

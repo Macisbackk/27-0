@@ -19,7 +19,9 @@
     "displayClub": "Sheffield Eagles",
     "basePlayerId": "sheffield-cur-joe-brown",
     "status": "Current",
-    "primaryPosition": "FULLBACK"
+    "primaryPosition": "FULLBACK",
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "sheffield-cur-jordan-lilley",
@@ -57,14 +59,16 @@
       "Bradford",
       "Leigh",
       "Sheffield"
-    ]
+    ],
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "sheffield-cur-kai-morgan",
     "name": "Kai Morgan",
     "position": "SCRUM_HALF",
     "club": "Sheffield Eagles",
-    "nationality": "Unknown",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -90,7 +94,9 @@
     "basePlayerId": "sheffield-cur-kai-morgan",
     "status": "Current",
     "primaryPosition": "SCRUM_HALF",
-    "currentClub": "Sheffield Eagles"
+    "currentClub": "Sheffield Eagles",
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "sheffield-cur-matty-marsh",
@@ -114,6 +120,8 @@
     "displayClub": "Sheffield Eagles",
     "basePlayerId": "sheffield-cur-matty-marsh",
     "status": "Current",
-    "primaryPosition": "FULLBACK"
+    "primaryPosition": "FULLBACK",
+    "availableInGame": false,
+    "superLeagueEligible": false
   }
 ]

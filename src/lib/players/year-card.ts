@@ -1,9 +1,8 @@
 import type { Player, PlayerCategory } from "../types";
+import { CURRENT_SEASON_YEAR } from "./current-season";
 import { parsePlayerId } from "./prime-year";
 
 export type PlayerCardStatus = "Current" | "Historic" | "Legend";
-
-const CURRENT_SEASON_YEAR = 2026;
 
 export function slugifyClubName(club: string): string {
   return club

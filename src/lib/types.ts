@@ -54,6 +54,12 @@ export interface PlayerAchievements {
   dreamTeamYears?: number[];
   /** Populated at load from data/golden-boot-years.json */
   goldenBootYears?: number[];
+  /** Populated at load from data/league-leaders-years.json */
+  leagueLeadersYears?: number[];
+  /** Populated at load from data/super-league-champion-years.json */
+  superLeagueChampionYears?: number[];
+  /** Populated at load from data/challenge-cup-years.json */
+  challengeCupYears?: number[];
 }
 
 export interface Player extends PlayerAchievements {

@@ -132,10 +132,7 @@ export function PlayerDetailModal({
       {achievements.length > 0 && (
         <div className={`mt-4 min-w-0 ${CARD.inset} ${SPACING.cardPaddingSm}`}>
           <p className={`${TYPO.sectionTitle} mb-2`}>Achievements</p>
-          <AchievementChipList
-            achievements={achievements}
-            dreamTeamDefaultExpanded
-          />
+          <AchievementChipList achievements={achievements} />
         </div>
       )}
     </MobileBottomSheet>
