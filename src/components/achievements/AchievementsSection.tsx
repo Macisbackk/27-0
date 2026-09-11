@@ -13,11 +13,12 @@ import {
   getUnlockedAchievements,
 } from "@/lib/achievements/achievementEngine";
 import { formatClubFunds } from "@/lib/club-funds";
-import { GamePanel } from "@/components/ui/GamePanel";
+import { SectionCard } from "@/components/ui/SectionCard";
 import { GameBadge } from "@/components/ui/GameBadge";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameStatCard } from "@/components/ui/GameStatCard";
 import { GameTabs } from "@/components/ui/GameTabs";
+import { MANAGER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ACHIEVEMENTS_CHANGED_EVENT } from "@/lib/achievements/achievementStorage";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
@@ -70,7 +71,7 @@ function AchievementRow({
       : null;
 
   return (
-    <li className="rounded-lg border border-pitch-700/40 bg-pitch-900/30 p-3">
+    <li className="rounded-lg border border-pitch-700/40 bg-pitch-900/30 p-3 text-left">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <p className="font-semibold text-white">{name}</p>
@@ -153,51 +154,54 @@ export function AchievementsSection() {
 
   return (
     <div id="achievements" className="scroll-mt-24">
-    <GamePanel padded label="Achievements">
-      <div className="max-w-xs">
-        <GameStatCard
-          label="Unlocked"
-          value={`${totalUnlocked} / ${totalAvailable}`}
-          neutral
-        />
-      </div>
-
-      <div className="mt-4 space-y-3">
-        <GameTabs
-          tabs={CATEGORY_TABS}
-          active={category}
-          onChange={setCategory}
-          ariaLabel="Achievement categories"
-          scrollable
-        />
-        <div className="flex flex-wrap gap-2">
-          {STATUS_TABS.map((tab) => (
-            <GameButton
-              key={tab.id}
-              type="button"
-              size="sm"
-              variant={status === tab.id ? "theme" : "ghost"}
-              onClick={() => setStatus(tab.id)}
-            >
-              {tab.label}
-            </GameButton>
-          ))}
-        </div>
-      </div>
-
-      <ul className="mt-4 space-y-2">
-        {visible.map((def) => (
-          <AchievementRow
-            key={def.id}
-            def={def}
-            unlockedAt={unlockedMap.get(def.id)}
+      <SectionCard title="Achievements">
+        <div className="mx-auto max-w-xs">
+          <GameStatCard
+            label="Unlocked"
+            value={`${totalUnlocked} / ${totalAvailable}`}
+            neutral
           />
-        ))}
-      </ul>
-      {visible.length === 0 ? (
-        <p className={`mt-4 ${TYPO.bodySm}`}>No achievements match these filters.</p>
-      ) : null}
-    </GamePanel>
+        </div>
+
+        <div className="mt-4 space-y-3">
+          <GameTabs
+            tabs={CATEGORY_TABS}
+            active={category}
+            onChange={setCategory}
+            ariaLabel="Achievement categories"
+            scrollable
+          />
+          <div className={MANAGER.chipRow}>
+            {STATUS_TABS.map((tab) => (
+              <GameButton
+                key={tab.id}
+                type="button"
+                size="sm"
+                fullWidth={false}
+                variant={status === tab.id ? "theme" : "ghost"}
+                onClick={() => setStatus(tab.id)}
+              >
+                {tab.label}
+              </GameButton>
+            ))}
+          </div>
+        </div>
+
+        <ul className="mt-4 space-y-2">
+          {visible.map((def) => (
+            <AchievementRow
+              key={def.id}
+              def={def}
+              unlockedAt={unlockedMap.get(def.id)}
+            />
+          ))}
+        </ul>
+        {visible.length === 0 ? (
+          <p className={`mt-4 text-center ${TYPO.bodySm}`}>
+            No achievements match these filters.
+          </p>
+        ) : null}
+      </SectionCard>
     </div>
   );
 }

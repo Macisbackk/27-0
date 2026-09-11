@@ -7,7 +7,6 @@ import {
   formatValue,
   getPlayerDisplayName,
 } from "@/lib/players";
-import { getGoldenBootYears } from "@/lib/players/achievements";
 import { getCachedPlayerAchievements } from "@/lib/players/achievement-cache";
 import {
   assertShowcaseCardPopupNameMatch,
@@ -55,7 +54,6 @@ export function PlayerDetailModal({
     [player]
   );
   const achievements = getCachedPlayerAchievements(player, "expanded");
-  const goldenBootYears = getGoldenBootYears(player.id);
   const resolvedRatingContext = getPlayerRatingContext(player, ratingContext);
   const resolvedSeasonYear = getPlayerSeasonRatingYear(player, seasonYear);
   const ratingLabel = getPlayerRatingLabel(resolvedRatingContext);
@@ -138,17 +136,6 @@ export function PlayerDetailModal({
             achievements={achievements}
             dreamTeamDefaultExpanded
           />
-        </div>
-      )}
-
-      {goldenBootYears.length > 0 && (
-        <div
-          className={`mt-3 min-w-0 overflow-hidden ${CARD.inset} ${SPACING.cardPaddingSm}`}
-        >
-          <p className={TYPO.statLabel}>Golden Boot</p>
-          <p className={`mt-1 break-words ${TYPO.body}`}>
-            {goldenBootYears.join(", ")}
-          </p>
         </div>
       )}
     </MobileBottomSheet>

@@ -22,6 +22,8 @@ export interface PlayerAchievement {
   category: AchievementCategoryId;
   /** When set, cards render one collapsible Dream Team chip with year sub-chips. */
   dreamTeamYears?: number[];
+  /** When set, cards render one collapsible Golden Boot chip with year sub-chips. */
+  goldenBootYears?: number[];
 }
 
 export interface PlayerAchievementGroup {
@@ -120,11 +122,14 @@ export function getPlayerAchievementGroups(
     });
   }
 
-  if (hasGoldenBootAward(player.id)) {
+  const goldenYears =
+    player.goldenBootYears ?? getGoldenBootYears(player.id);
+  if (goldenYears.length > 0) {
     push("individualHonours", {
-      label: "Golden Boot Winner",
+      label: "Golden Boot",
       color: "gold",
       category: "individualHonours",
+      goldenBootYears: goldenYears,
     });
   }
 

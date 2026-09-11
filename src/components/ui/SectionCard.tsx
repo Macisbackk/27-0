@@ -2,7 +2,6 @@
 
 import type { ReactNode } from "react";
 import { GamePanel } from "@/components/ui/GamePanel";
-import { GameSectionTitle } from "@/components/ui/GameSectionTitle";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -14,6 +13,10 @@ interface SectionCardProps {
   className?: string;
 }
 
+/**
+ * Site-page section panel — same elevated GamePanel + centred section title
+ * language as CollapsibleReviewSection (Season Review).
+ */
 export function SectionCard({
   title,
   helper,
@@ -21,20 +24,35 @@ export function SectionCard({
   children,
   className = "",
 }: SectionCardProps) {
+  const titleClass = featured
+    ? `${TYPO.sectionTitle} text-theme-primary`
+    : TYPO.sectionTitle;
+
   return (
     <GamePanel
       as="section"
       variant={featured ? "featured" : "elevated"}
-      padded
-      className={className}
+      className={`p-3 sm:p-4 ${className}`.trim()}
     >
       {title ? (
-        <header className={SPACING.headingMargin}>
-          <GameSectionTitle heading={title} />
-          {helper ? <p className={`mt-1 ${TYPO.bodySm}`}>{helper}</p> : null}
+        <header className="w-full text-center">
+          <h3 className={`min-w-0 ${titleClass}`}>{title}</h3>
+          {helper ? (
+            <p className={`mt-1 ${TYPO.bodySm}`}>{helper}</p>
+          ) : null}
         </header>
       ) : null}
-      {children}
+      <div
+        className={
+          title
+            ? featured
+              ? SPACING.sectionContentTopFeatured
+              : SPACING.sectionContentTop
+            : undefined
+        }
+      >
+        {children}
+      </div>
     </GamePanel>
   );
 }

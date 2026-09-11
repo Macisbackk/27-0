@@ -13,12 +13,13 @@ import {
 } from "@/lib/stats-views";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
-import { RL_INFO_BOX_CLASS } from "@/components/cards/rl-card";
-import { BTN, CARD, LINK, PAGE } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
+import { GameButton } from "@/components/ui/GameButton";
+import { GameStatCard } from "@/components/ui/GameStatCard";
+import { GameTabs } from "@/components/ui/GameTabs";
 import { AchievementsSection } from "@/components/achievements/AchievementsSection";
 import { useAchievements } from "@/components/achievements/AchievementProvider";
-import { GameTabs } from "@/components/ui/GameTabs";
+import { CARD, LINK, MANAGER, PAGE } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 interface StoredStats {
   normal: UserStatsData;
@@ -53,31 +54,6 @@ function tabFromHash(): ProfileTab {
   if (hash === "achievements") return "achievements";
   if (hash === "password") return "password";
   return "account";
-}
-
-function ProfileStatCard({
-  label,
-  value,
-  highlight = false,
-}: {
-  label: string;
-  value: string;
-  highlight?: boolean;
-}) {
-  return (
-    <div className={`${RL_INFO_BOX_CLASS} p-4`}>
-      <p className="text-[10px] font-medium uppercase tracking-wider text-gray-500">
-        {label}
-      </p>
-      <p
-        className={`mt-1 font-display text-xl font-bold ${
-          highlight ? "text-accent-gold" : "text-white"
-        }`}
-      >
-        {value}
-      </p>
-    </div>
-  );
 }
 
 export default function ProfilePage() {
@@ -134,8 +110,7 @@ export default function ProfilePage() {
 
   const selectTab = (next: ProfileTab) => {
     setTab(next);
-    const hash =
-      next === "account" ? "/profile" : `/profile#${next}`;
+    const hash = next === "account" ? "/profile" : `/profile#${next}`;
     window.history.replaceState(null, "", hash);
   };
 
@@ -182,7 +157,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <StandardPageShell compact>
-        <p className={TYPO.bodySm}>Loading profile…</p>
+        <p className={`text-center ${TYPO.bodySm}`}>Loading profile…</p>
       </StandardPageShell>
     );
   }
@@ -190,9 +165,12 @@ export default function ProfilePage() {
   if (!isLoggedIn) {
     return (
       <StandardPageShell compact>
-        <div className={`${CARD.hero} p-4 sm:p-6`}>
+        <div className={`${CARD.hero} p-4 text-center sm:p-6`}>
           <p className={TYPO.body}>Log in to view your coach profile.</p>
-          <Link href="/login?redirect=/profile" className={`mt-3 inline-block ${LINK.accent}`}>
+          <Link
+            href="/login?redirect=/profile"
+            className={`mt-3 inline-block ${LINK.accent}`}
+          >
             Log in →
           </Link>
         </div>
@@ -210,19 +188,17 @@ export default function ProfilePage() {
         stats.eraNormal
       )
     : null;
-  const totalRecord = view
-    ? formatRecordOrDash(view.totalRecord)
-    : "—";
+  const totalRecord = view ? formatRecordOrDash(view.totalRecord) : "—";
 
   return (
     <StandardPageShell withLights compact>
-      <div className={PAGE.section}>
-        <header>
+      <div className={`${PAGE.section} text-center`}>
+        <header className="w-full text-center">
           <p className={TYPO.sectionLabel}>Account</p>
           <h1 className={`mt-1 ${TYPO.pageTitle}`}>Coach Profile</h1>
         </header>
 
-        <div className="mt-4">
+        <div className="mt-4 flex justify-center">
           <GameTabs
             tabs={PROFILE_TABS}
             active={tab}
@@ -235,21 +211,25 @@ export default function ProfilePage() {
           {tab === "account" ? (
             <>
               <SectionCard title="Account">
-                <dl className="grid gap-4 sm:grid-cols-2">
+                <dl className={`${MANAGER.panelCenter} grid gap-4 sm:grid-cols-2`}>
                   <div>
                     <dt className={TYPO.sectionLabel}>Coach name</dt>
-                    <dd className={`mt-1 ${TYPO.cardTitle}`}>{coachName ?? "—"}</dd>
+                    <dd className={`mt-1 ${TYPO.cardTitle}`}>
+                      {coachName ?? "—"}
+                    </dd>
                   </div>
                   <div>
                     <dt className={TYPO.sectionLabel}>Email</dt>
-                    <dd className={`mt-1 break-all ${TYPO.body}`}>{email ?? "—"}</dd>
+                    <dd className={`mt-1 break-all ${TYPO.body}`}>
+                      {email ?? "—"}
+                    </dd>
                   </div>
-                  {memberSince && (
+                  {memberSince ? (
                     <div className="sm:col-span-2">
                       <dt className={TYPO.sectionLabel}>Member since</dt>
                       <dd className={`mt-1 ${TYPO.body}`}>{memberSince}</dd>
                     </div>
-                  )}
+                  ) : null}
                 </dl>
               </SectionCard>
 
@@ -257,38 +237,74 @@ export default function ProfilePage() {
                 {statsLoading || !view ? (
                   <p className={TYPO.bodySm}>Loading career stats…</p>
                 ) : (
-                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                    <ProfileStatCard
+                  <div className={MANAGER.statGrid3}>
+                    <GameStatCard
                       label="Seasons Played"
                       value={String(view.totalSeasons)}
+                      neutral
                     />
-                    <ProfileStatCard
+                    <GameStatCard
                       label="Match Wins"
                       value={String(view.totalRecord.wins)}
+                      neutral
                     />
-                    <ProfileStatCard
+                    <GameStatCard
                       label="Match Losses"
                       value={String(view.totalRecord.losses)}
+                      neutral
                     />
-                    <ProfileStatCard label="Match Record" value={totalRecord} />
-                    <ProfileStatCard
+                    <GameStatCard
+                      label="Match Record"
+                      value={totalRecord}
+                      neutral
+                    />
+                    <GameStatCard
                       label="Minor Premierships"
-                      value={String(view.leagueTitles)}
-                      highlight={view.leagueTitles > 0}
+                      value={
+                        <span
+                          className={
+                            view.leagueTitles > 0 ? "text-accent-gold" : undefined
+                          }
+                        >
+                          {view.leagueTitles}
+                        </span>
+                      }
+                      neutral
                     />
-                    <ProfileStatCard
+                    <GameStatCard
                       label="Super League Titles"
-                      value={String(view.superLeagueTitles)}
-                      highlight={view.superLeagueTitles > 0}
+                      value={
+                        <span
+                          className={
+                            view.superLeagueTitles > 0
+                              ? "text-accent-gold"
+                              : undefined
+                          }
+                        >
+                          {view.superLeagueTitles}
+                        </span>
+                      }
+                      neutral
                     />
-                    <ProfileStatCard
+                    <GameStatCard
                       label="27-0 Seasons"
-                      value={String(view.perfectSeasons)}
-                      highlight={view.perfectSeasons > 0}
+                      value={
+                        <span
+                          className={
+                            view.perfectSeasons > 0
+                              ? "text-accent-gold"
+                              : undefined
+                          }
+                        >
+                          {view.perfectSeasons}
+                        </span>
+                      }
+                      neutral
                     />
-                    <ProfileStatCard
+                    <GameStatCard
                       label="0-27 Seasons"
                       value={String(view.winlessSeasons)}
+                      neutral
                     />
                   </div>
                 )}
@@ -298,56 +314,58 @@ export default function ProfilePage() {
                   </Link>
                 </p>
                 <div className="mt-5 border-t border-pitch-700/50 pt-4">
-                  <p className={TYPO.bodySm}>
-                    Clears Quick Mode career stats. Not Manager saves or leaderboards.
-                  </p>
                   {statsResetConfirm ? (
-                    <div className="mt-3 rounded-lg border border-red-500/35 bg-red-950/20 p-3">
+                    <div className="mx-auto max-w-md rounded-lg border border-red-500/35 bg-red-950/20 p-3">
                       <p className={`${TYPO.bodySm} text-red-200`}>
                         Clear all career stats? Can&apos;t undo.
                       </p>
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        <button
-                          type="button"
+                      <div className={MANAGER.actionRow}>
+                        <GameButton
+                          variant="danger"
+                          size="sm"
+                          fullWidth={false}
                           disabled={statsResetBusy}
                           onClick={() => void handleResetCareerStats()}
-                          className={`${BTN.base} ${BTN.danger} text-xs`}
                         >
                           Yes, reset career stats
-                        </button>
-                        <button
-                          type="button"
+                        </GameButton>
+                        <GameButton
+                          variant="secondary"
+                          size="sm"
+                          fullWidth={false}
                           disabled={statsResetBusy}
                           onClick={() => {
                             setStatsResetConfirm(false);
                             setStatsResetError(null);
                           }}
-                          className={`${BTN.base} ${BTN.secondary} text-xs`}
                         >
                           Cancel
-                        </button>
+                        </GameButton>
                       </div>
                     </div>
                   ) : (
-                    <button
-                      type="button"
-                      disabled={statsResetBusy}
-                      onClick={() => void handleResetCareerStats()}
-                      className={`${BTN.base} ${BTN.danger} mt-3 text-xs`}
-                    >
-                      Reset career stats
-                    </button>
+                    <div className="flex justify-center">
+                      <GameButton
+                        variant="danger"
+                        size="sm"
+                        fullWidth={false}
+                        disabled={statsResetBusy}
+                        onClick={() => void handleResetCareerStats()}
+                      >
+                        Reset career stats
+                      </GameButton>
+                    </div>
                   )}
-                  {statsResetMsg && (
+                  {statsResetMsg ? (
                     <p className={`mt-3 ${TYPO.body} text-theme-primary`}>
                       {statsResetMsg}
                     </p>
-                  )}
-                  {statsResetError && (
+                  ) : null}
+                  {statsResetError ? (
                     <p className={`mt-3 ${TYPO.body} text-red-400`}>
                       {statsResetError}
                     </p>
-                  )}
+                  ) : null}
                 </div>
               </SectionCard>
             </>
@@ -357,39 +375,49 @@ export default function ProfilePage() {
 
           {tab === "password" ? (
             <SectionCard title="Password">
-              <p className={TYPO.bodySm}>
+              <p className={`${MANAGER.panelCenter} ${TYPO.bodySm}`}>
                 Send a reset link to your account email to choose a new password.
               </p>
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
+              <div className="mt-4 flex justify-center">
+                <GameButton
+                  variant="secondary"
+                  size="sm"
+                  fullWidth={false}
+                  className="mx-auto"
                   disabled={resetBusy || !email}
                   onClick={() => void handlePasswordReset()}
-                  className={`${BTN.base} ${BTN.secondary} text-[10px] sm:text-xs`}
                 >
                   Send Password Reset Email
-                </button>
+                </GameButton>
               </div>
-              {resetMsg && (
-                <p className={`mt-3 ${TYPO.body} text-theme-primary`}>{resetMsg}</p>
-              )}
-              {resetError && (
+              {resetMsg ? (
+                <p className={`mt-3 ${TYPO.body} text-theme-primary`}>
+                  {resetMsg}
+                </p>
+              ) : null}
+              {resetError ? (
                 <p className={`mt-3 ${TYPO.body} text-red-400`}>{resetError}</p>
-              )}
+              ) : null}
             </SectionCard>
           ) : null}
 
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
+          <div className={`${MANAGER.actionRow} mt-2`}>
+            <GameButton
+              variant="danger"
+              size="sm"
+              fullWidth={false}
               onClick={() => void signOut()}
-              className={`${BTN.base} ${BTN.danger} text-xs`}
             >
               Log Out
-            </button>
-            <Link href="/" className={`${BTN.base} ${BTN.secondary} text-xs`}>
+            </GameButton>
+            <GameButton
+              variant="secondary"
+              size="sm"
+              fullWidth={false}
+              href="/"
+            >
               Back to Home
-            </Link>
+            </GameButton>
           </div>
         </div>
       </div>

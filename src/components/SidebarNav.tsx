@@ -60,7 +60,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const [muted, setMuted] = useState(false);
   const inMiniGames =
     pathname.startsWith("/mini-games") || pathname.startsWith("/quiz");
-  const [miniGamesOpen, setMiniGamesOpen] = useState(inMiniGames);
+  const [miniGamesOpen, setMiniGamesOpen] = useState(false);
   const closeMenu = useCallback(() => {
     playMenuClose();
     onClose();
@@ -76,10 +76,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     setMuted(isSoundMuted());
     setNormalEraVariantState(getNormalEraVariant());
   }, [open]);
-
-  useEffect(() => {
-    if (inMiniGames) setMiniGamesOpen(true);
-  }, [inMiniGames]);
 
   const playSearch = {
     cup: searchParams.get("cup"),
@@ -255,7 +251,10 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       </span>
                     </button>
                     {miniGamesOpen && (
-                      <div id="sidebar-mini-games" className={`${NAV.nestedBlock} pl-2`}>
+                      <div
+                        id="sidebar-mini-games"
+                        className={`${NAV.nestedBlock} pl-2`}
+                      >
                         <ul className={NAV.list}>
                           {[
                             {

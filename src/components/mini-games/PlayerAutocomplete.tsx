@@ -46,7 +46,7 @@ export function PlayerAutocomplete({
           aria-autocomplete="list"
           aria-expanded={open && suggestions.length > 0}
           aria-controls={listId}
-          className={`${FILTER.input} w-full`}
+          className={`${FILTER.input} w-full text-center`}
           onChange={(event) => {
             onChange(event.target.value);
             setOpen(true);

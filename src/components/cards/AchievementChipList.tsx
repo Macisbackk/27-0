@@ -9,28 +9,34 @@ interface AchievementChipListProps {
   achievements: PlayerAchievement[];
   compactMobile?: boolean;
   className?: string;
-  /** When true, Dream Team years start expanded (e.g. player detail modal). */
+  /** When true, year-based honour chips start expanded (e.g. player detail modal). */
   dreamTeamDefaultExpanded?: boolean;
 }
 
-const DreamTeamYearChip = memo(function DreamTeamYearChip({
+const HonourYearChip = memo(function HonourYearChip({
+  label,
   year,
 }: {
+  label: string;
   year: number;
 }) {
   return (
-    <span className="rl-tag-year" aria-label={`Dream Team ${year}`}>
+    <span className="rl-tag-year" aria-label={`${label} ${year}`}>
       {year}
     </span>
   );
 });
 
-const DreamTeamCollapsibleChip = memo(function DreamTeamCollapsibleChip({
+const HonourYearsCollapsibleChip = memo(function HonourYearsCollapsibleChip({
+  label,
   years,
+  variant,
   compactMobile,
   defaultExpanded = false,
 }: {
+  label: string;
   years: readonly number[];
+  variant: (typeof ACHIEVEMENT_TAG_VARIANT)[keyof typeof ACHIEVEMENT_TAG_VARIANT];
   compactMobile?: boolean;
   defaultExpanded?: boolean;
 }) {
@@ -52,18 +58,14 @@ const DreamTeamCollapsibleChip = memo(function DreamTeamCollapsibleChip({
         aria-expanded={open}
         aria-label={
           open
-            ? "Collapse Dream Team years"
-            : `Dream Team — ${years.length} selections`
+            ? `Collapse ${label} years`
+            : `${label} — ${years.length} awards`
         }
         onClick={toggle}
         className="inline-flex max-w-full cursor-pointer border-0 bg-transparent p-0"
       >
-        <RLTag
-          variant={ACHIEVEMENT_TAG_VARIANT.purple}
-          compact={compactMobile}
-          className="gap-0.5"
-        >
-          Dream Team{" "}
+        <RLTag variant={variant} compact={compactMobile} className="gap-0.5">
+          {label}{" "}
           <span className="opacity-80" aria-hidden>
             {open ? "▲" : "▼"}
           </span>
@@ -78,7 +80,7 @@ const DreamTeamCollapsibleChip = memo(function DreamTeamCollapsibleChip({
           onClick={(event) => event.stopPropagation()}
         >
           {years.map((year) => (
-            <DreamTeamYearChip key={year} year={year} />
+            <HonourYearChip key={year} label={label} year={year} />
           ))}
         </div>
       )}
@@ -102,9 +104,24 @@ function AchievementChipListInner({
       {achievements.map((achievement, index) => {
         if (achievement.dreamTeamYears?.length) {
           return (
-            <DreamTeamCollapsibleChip
+            <HonourYearsCollapsibleChip
               key={`dream-team-${index}`}
+              label="Dream Team"
               years={achievement.dreamTeamYears}
+              variant={ACHIEVEMENT_TAG_VARIANT.purple}
+              compactMobile={compactMobile}
+              defaultExpanded={dreamTeamDefaultExpanded}
+            />
+          );
+        }
+
+        if (achievement.goldenBootYears?.length) {
+          return (
+            <HonourYearsCollapsibleChip
+              key={`golden-boot-${index}`}
+              label="Golden Boot"
+              years={achievement.goldenBootYears}
+              variant={ACHIEVEMENT_TAG_VARIANT.gold}
               compactMobile={compactMobile}
               defaultExpanded={dreamTeamDefaultExpanded}
             />

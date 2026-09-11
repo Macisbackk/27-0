@@ -33,11 +33,12 @@ import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
 import { LeagueTable } from "./LeagueTable";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
-import { NORMAL } from "@/lib/ui/design-system";
+import { NORMAL, MANAGER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GuestSaveNudge } from "@/components/EconomyExplainer";
 import { useAuth } from "@/lib/auth-context";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
+import { GameStatCard } from "@/components/ui/GameStatCard";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
 import { resolveSquadClubColorOverride } from "@/lib/players/squad-club-accent";
 import type { DailyChallengeScenario } from "@/lib/daily-challenge";
@@ -136,6 +137,9 @@ export function SeasonReview({
     : joeMellorMode
       ? "Joe Mellor GOAT Mode Season Review"
       : getSeasonReviewLabel(mode, "NORMAL", normalEraMode);
+  const [clubFundsPopupOpen, setClubFundsPopupOpen] = useState(
+    () => Boolean(clubFundsPayout?.lines.length)
+  );
   const [selectedFixture, setSelectedFixture] = useState<MatchFixture | null>(
     null
   );
@@ -344,59 +348,61 @@ export function SeasonReview({
               )}
             </motion.header>
 
-            <motion.div
-              className="mt-4 w-full"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25 }}
-            >
-              {showPlayoffPrompt ? (
-                <div className="text-center">
-                  <p className={TYPO.bodySm}>
-                    Play-offs unlocked — finish the knockout stage.
-                  </p>
-                </div>
-              ) : null}
-              {clubFundsPayout ? (
-                <div className="mt-3">
-                  <ClubFundsEarned payout={clubFundsPayout} />
-                </div>
-              ) : null}
-            </motion.div>
+            {showPlayoffPrompt ? (
+              <motion.div
+                className="mt-4 w-full text-center"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+              >
+                <p className={TYPO.bodySm}>
+                  Play-offs unlocked — finish the knockout stage to earn more
+                  Club Funds
+                </p>
+              </motion.div>
+            ) : null}
+
+            <ClubFundsEarned
+              payout={clubFundsPayout}
+              open={clubFundsPopupOpen}
+              onClose={() => setClubFundsPopupOpen(false)}
+            />
 
             <CollapsibleReviewSection title="Season Summary" delay={0.32}>
-              <div className={`mx-auto max-w-md space-y-2 text-center ${TYPO.body}`}>
-                <p>
-                  Regular Season Record:{" "}
-                  <span className="font-semibold text-white">
-                    {formatRecordWithPercentage(
-                      seasonResult.wins,
-                      seasonResult.losses
-                    )}
-                  </span>
-                </p>
-                {missedPlayoffs && (
-                  <p className="font-semibold text-gray-500">Missed Play-Offs</p>
-                )}
-                <p>
-                  League Position:{" "}
-                  <span className="font-semibold text-white">
-                    {leaguePositionLabel}
-                  </span>
-                </p>
-                <p>
-                  National Rank:{" "}
-                  <span className="font-semibold text-white">
-                    {runRank ? `#${runRank}` : "—"}
-                  </span>
-                </p>
-                <p>
-                  Average Team Rating:{" "}
-                  <span className="font-semibold text-accent-gold">
-                    {averageTeamRating.toFixed(1)}
-                  </span>
-                </p>
+              <div className={`${MANAGER.statGrid2} mx-auto max-w-lg`}>
+                <GameStatCard
+                  label="Regular Season Record"
+                  value={formatRecordWithPercentage(
+                    seasonResult.wins,
+                    seasonResult.losses
+                  )}
+                  neutral
+                />
+                <GameStatCard
+                  label="League Position"
+                  value={leaguePositionLabel}
+                  neutral
+                />
+                <GameStatCard
+                  label="National Rank"
+                  value={runRank ? `#${runRank}` : "—"}
+                  neutral
+                />
+                <GameStatCard
+                  label="Average Team Rating"
+                  value={
+                    <span className="text-accent-gold">
+                      {averageTeamRating.toFixed(1)}
+                    </span>
+                  }
+                  neutral
+                />
               </div>
+              {missedPlayoffs ? (
+                <p className={`mt-3 text-center font-semibold text-gray-500`}>
+                  Missed Play-Offs
+                </p>
+              ) : null}
             </CollapsibleReviewSection>
 
             <CollapsibleReviewSection title="Squad Review" delay={0.34}>

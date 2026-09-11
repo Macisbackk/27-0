@@ -94,7 +94,7 @@ const LeagueStandingRow = memo(function LeagueStandingRow({
 
   return (
     <li
-      className={`list-none rounded-xl border px-2.5 py-2.5 text-left sm:px-3 ${
+      className={`list-none rounded-xl border px-2.5 py-2.5 text-center sm:px-3 ${
         highlight
           ? "border-theme-primary/45 bg-theme-primary/10 shadow-[inset_3px_0_0_var(--theme-primary)]"
           : inPlayoffZone
@@ -102,7 +102,7 @@ const LeagueStandingRow = memo(function LeagueStandingRow({
             : "border-white/10 bg-[#0c1210]"
       }`}
     >
-      <div className="grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-2 sm:gap-3">
+      <div className="grid grid-cols-[2rem_minmax(0,1fr)_2.5rem] items-center gap-2 sm:gap-3">
         <span
           className={`font-display text-lg font-black tabular-nums leading-none sm:text-xl ${positionTone(
             row.position
@@ -111,13 +111,13 @@ const LeagueStandingRow = memo(function LeagueStandingRow({
           {row.position}
         </span>
 
-        <div className="min-w-0">
-          <div className="flex min-w-0 items-center gap-2">
+        <div className="min-w-0 text-center">
+          <div className="flex min-w-0 items-center justify-center gap-2">
             <ClubNameLabel
               club={row.team}
               variant="row"
               compact
-              className="min-w-0 flex-1 truncate"
+              className="min-w-0 truncate"
             />
             {highlight ? (
               <span className="shrink-0 rounded border border-theme-primary/40 bg-theme-primary/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-theme-primary">
@@ -140,7 +140,7 @@ const LeagueStandingRow = memo(function LeagueStandingRow({
           </p>
         </div>
 
-        <div className="shrink-0 text-right">
+        <div className="shrink-0 text-center">
           <p
             className={`font-display text-xl font-black tabular-nums leading-none sm:text-2xl ${
               highlight ? "text-theme-primary" : "text-white"

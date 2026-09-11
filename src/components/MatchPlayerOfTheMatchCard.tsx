@@ -61,7 +61,7 @@ export function MatchPlayerOfTheMatchCard({
           >
             Player of the Match
           </p>
-          <h3 className="mt-1 font-display text-xl font-bold leading-tight text-white sm:text-2xl">
+          <h3 className="mt-1 font-display text-xl font-bold leading-tight text-accent-gold sm:text-2xl">
             {motm.playerName}
           </h3>
           <div className="mt-2">

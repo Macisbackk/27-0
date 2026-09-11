@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
@@ -87,6 +87,9 @@ export function PlayoffReview({
   const fundsPayout = useMemo(
     () => mergeClubFundsPayouts(clubFundsPayout, playoffFundsPayout),
     [clubFundsPayout, playoffFundsPayout]
+  );
+  const [clubFundsPopupOpen, setClubFundsPopupOpen] = useState(
+    () => Boolean(fundsPayout?.lines.length)
   );
 
   const playoffLikeResult: SeasonResult = useMemo(() => {
@@ -238,13 +241,11 @@ export function PlayoffReview({
           />
         </motion.div>
 
-        <motion.div
-          className="mt-3 w-full"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <ClubFundsEarned payout={fundsPayout} />
-        </motion.div>
+        <ClubFundsEarned
+          payout={fundsPayout}
+          open={clubFundsPopupOpen}
+          onClose={() => setClubFundsPopupOpen(false)}
+        />
 
         <CollapsibleReviewSection title="Playoff Squad Review" delay={0.2}>
           <SquadReviewSection

@@ -153,7 +153,7 @@ export function MatchDetailsPanel({
         {motm && !hideMotm ? (
           <p className={`text-center ${TYPO.bodySm}`}>
             <span className="text-pitch-500">POTM </span>
-            <span className="font-semibold text-white">{motm.playerName}</span>
+            <span className="font-semibold text-accent-gold">{motm.playerName}</span>
             {motm.performanceSummary ? (
               <span className="text-pitch-400"> · {motm.performanceSummary}</span>
             ) : null}
