@@ -15,7 +15,12 @@ import type {
   PlayerSuspension,
   Position,
 } from "./types";
-import { decomposeRLScore } from "../game/rl-scores";
+import {
+  decomposeRLScore,
+  ensureScoreAhead,
+  pickWinningMargin,
+  snapToRLScore,
+} from "../game/rl-scores";
 
 export interface MatchSimulationResult {
   fixture: ManagerFixture;
@@ -100,23 +105,56 @@ export function simulateManagerMatch(
   // 2. Compute effective team ratings
   function calculateTeamRating(squad: ManagerPlayer[], club: ManagerClub, isHome: boolean): number {
     if (squad.length === 0) return 60;
-    const avgRating = squad.reduce((sum, p) => sum + p.rating, 0) / squad.length;
+
+    // Weight starting 13 heavily (80%) vs interchange bench (20%)
+    const starters = squad.slice(0, 13);
+    const bench = squad.slice(13, 17);
+    const starterAvg =
+      starters.length > 0
+        ? starters.reduce((sum, p) => sum + p.rating, 0) / starters.length
+        : 60;
+    const benchAvg =
+      bench.length > 0
+        ? bench.reduce((sum, p) => sum + p.rating, 0) / bench.length
+        : starterAvg;
+    const baseWeightedRating = starterAvg * 0.8 + benchAvg * 0.2;
+
+    // Key Spine impact (Fullback, Stand-Off, Scrum-Half, Hooker: indices 0, 5, 6, 8)
+    const spineIndices = [0, 5, 6, 8];
+    const spinePlayers = spineIndices
+      .map((i) => starters[i])
+      .filter((p): p is ManagerPlayer => Boolean(p));
+    let spineBonus = 0;
+    if (spinePlayers.length > 0) {
+      const spineAvg =
+        spinePlayers.reduce((sum, p) => sum + p.rating, 0) / spinePlayers.length;
+      spineBonus = Math.max(-1.5, Math.min(1.5, (spineAvg - 80) * 0.15));
+    }
+
     const avgForm = squad.reduce((sum, p) => sum + p.form, 0) / squad.length;
     const avgMorale = squad.reduce((sum, p) => sum + p.morale, 0) / squad.length;
     const avgFatigue = squad.reduce((sum, p) => sum + p.fatigue, 0) / squad.length;
 
-    let effective = avgRating;
-    // Form bonus (-2 to +2)
-    effective += (avgForm - 7.0) * 1.5;
-    // Morale bonus (-2 to +2)
-    effective += ((avgMorale - 75) / 25) * 1.5;
-    // Fatigue penalty (up to -5)
-    effective -= (avgFatigue / 100) * 5;
-    // Tactics intensity bonus
-    if (club.tactics.trainingIntensity === "high") effective += 1.5;
-    if (club.tactics.trainingIntensity === "low") effective -= 1.5;
-    // Home advantage (+2.5)
-    if (isHome) effective += 2.5;
+    let effective = baseWeightedRating + spineBonus;
+
+    // Form bonus (-1.2 to +1.2)
+    effective += Math.max(-1.2, Math.min(1.2, (avgForm - 7.0) * 0.8));
+    // Morale bonus (-1.0 to +1.0)
+    effective += Math.max(-1.0, Math.min(1.0, ((avgMorale - 75) / 25) * 0.8));
+    // Fatigue penalty (up to -3.0)
+    effective -= (avgFatigue / 100) * 3.0;
+
+    // Coaching quality impact (-0.8 to +0.8)
+    if (club.coachingQuality) {
+      effective += (club.coachingQuality - 3) * 0.4;
+    }
+
+    // Tactics intensity bonus (-1.0 to +1.0)
+    if (club.tactics.trainingIntensity === "high") effective += 1.0;
+    if (club.tactics.trainingIntensity === "low") effective -= 1.0;
+
+    // Home advantage (+1.5 rating points ~ 58-60% win rate between identical teams)
+    if (isHome) effective += 1.5;
 
     return Math.max(45, Math.min(99, effective));
   }
@@ -124,23 +162,49 @@ export function simulateManagerMatch(
   const homeEffective = calculateTeamRating(homeSquad, homeClub, true);
   const awayEffective = calculateTeamRating(awaySquad, awayClub, false);
 
-  // 3. Generate match score based on rating differential
+  // 3. Generate match score based on rating differential with authentic RL variance
   const diff = homeEffective - awayEffective;
-  // Expected margin ~ diff * 0.8
-  const baseMargin = diff * 0.8;
-  const randomness = (Math.random() * 20) - 10;
-  const finalMargin = Math.round(baseMargin + randomness);
 
-  // Base points in rugby league match ~ 36 - 48 total points
-  const totalBasePoints = Math.round(36 + (Math.random() * 16));
-  let homeScoreRaw = Math.max(0, Math.round((totalBasePoints + finalMargin) / 2));
-  let awayScoreRaw = Math.max(0, Math.round((totalBasePoints - finalMargin) / 2));
+  // Expected margin scales with rating difference (~1.25 scoreboard points per rating diff)
+  const expectedMargin = diff * 1.25;
 
-  // Snap to realistic rugby league scores
-  const homeBreakdown = decomposeRLScore(homeScoreRaw);
-  const awayBreakdown = decomposeRLScore(awayScoreRaw);
-  let homeScore = homeBreakdown.points;
-  let awayScore = awayBreakdown.points;
+  // Bell-curve match variance (Irwin-Hall n=3, range [-1.5, +1.5] * 10.5)
+  // Ensures most matches (~70%) stay close to expected talent levels,
+  // while upsets remain authentic, dramatic tail events.
+  const bellRoll = Math.random() + Math.random() + Math.random() - 1.5;
+  const noise = bellRoll * 10.5;
+  const rawMargin = expectedMargin + noise;
+
+  // Match tempo & total points variance:
+  // - 15% Defensive slog / Armwrestle (14 - 28 points)
+  // - 55% Standard competitive rugby league match (30 - 48 points)
+  // - 20% Open attacking shootout (48 - 64 points)
+  // - 10% High-scoring blowout / runaway (60 - 76 points)
+  const tempoRoll = Math.random();
+  let baseTotal: number;
+  if (tempoRoll < 0.15) {
+    baseTotal = 14 + Math.random() * 14;
+  } else if (tempoRoll < 0.70) {
+    baseTotal = 30 + Math.random() * 18;
+  } else if (tempoRoll < 0.90) {
+    baseTotal = 48 + Math.random() * 16;
+  } else {
+    baseTotal = 60 + Math.random() * 16;
+  }
+
+  // Large talent disparity naturally inflates points for the superior attacking side
+  const gapBonus = Math.max(0, (Math.abs(diff) - 4) * 0.6);
+  const totalPoints = baseTotal + gapBonus;
+
+  // Derive raw team scores
+  const homeRaw = Math.max(0, (totalPoints + rawMargin) / 2);
+  const awayRaw = Math.max(0, (totalPoints - rawMargin) / 2);
+
+  // Drop goal allowed: rare (~4%), mostly in tight games (|margin| <= 3)
+  const allowDropGoal = Math.abs(rawMargin) <= 3 && Math.random() < 0.05;
+
+  let homeScore = snapToRLScore(Math.round(homeRaw), allowDropGoal);
+  let awayScore = snapToRLScore(Math.round(awayRaw), allowDropGoal);
 
   // Knockout golden point rule (Challenge Cup, Playoffs, Eliminators, Finals, Million Pound Game)
   const isKnockout =
@@ -151,17 +215,40 @@ export function simulateManagerMatch(
     fixture.roundName.includes("Grand Final") ||
     fixture.roundName.includes("Million Pound Game");
 
+  // Draw resolution: only ~2-3% of regular league matches finish as regulation draws
+  const absMargin = Math.abs(rawMargin);
+  const isNaturalDraw = absMargin < 0.6 && !isKnockout && Math.random() < 0.35;
+
   let goldenPointWinner: "home" | "away" | null = null;
-  if (isKnockout && homeScore === awayScore) {
-    const homeProb = (homeEffective + 5) / (homeEffective + awayEffective + 10);
-    if (Math.random() < homeProb) {
-      homeScore += 1;
-      goldenPointWinner = "home";
-    } else {
-      awayScore += 1;
-      goldenPointWinner = "away";
+  if (homeScore === awayScore) {
+    if (isKnockout) {
+      // Golden point drop goal in extra time
+      const homeProb = (homeEffective + 2) / (homeEffective + awayEffective + 4);
+      if (Math.random() < homeProb) {
+        homeScore += 1;
+        goldenPointWinner = "home";
+      } else {
+        awayScore += 1;
+        goldenPointWinner = "away";
+      }
+    } else if (!isNaturalDraw) {
+      // Decisively separate by realistic margin (2, 4, or 6 points)
+      const margin = pickWinningMargin(Math.random);
+      if (rawMargin >= 0) {
+        homeScore = snapToRLScore(awayScore + Math.min(6, margin), allowDropGoal);
+      } else {
+        awayScore = snapToRLScore(homeScore + Math.min(6, margin), allowDropGoal);
+      }
     }
+  } else if (rawMargin > 2.5 && homeScore < awayScore) {
+    homeScore = ensureScoreAhead(homeScore, awayScore, Math.random, allowDropGoal);
+  } else if (rawMargin < -2.5 && awayScore < homeScore) {
+    awayScore = ensureScoreAhead(awayScore, homeScore, Math.random, allowDropGoal);
   }
+
+  // Snap to realistic rugby league scores and decompose
+  const homeBreakdown = decomposeRLScore(homeScore);
+  const awayBreakdown = decomposeRLScore(awayScore);
 
   const homeWon = homeScore > awayScore;
   const awayWon = awayScore > homeScore;
@@ -287,6 +374,44 @@ export function simulateManagerMatch(
         upd.statsDelta.goals += 1;
         upd.statsDelta.points += 2;
         upd.statsDelta.matchRating = Math.min(10, upd.statsDelta.matchRating + 0.3);
+      }
+    }
+  }
+
+  // Regulation drop goals (home)
+  for (let d = 0; d < homeBreakdown.dropGoals; d++) {
+    if (homeKicker) {
+      scoreEvents.push({
+        minute: Math.floor(Math.random() * 10) + 70,
+        type: "DROP_GOAL",
+        playerId: homeKicker.id,
+        playerName: homeKicker.name,
+        clubId: homeClub.id,
+      });
+      const upd = playerUpdates[homeKicker.id];
+      if (upd) {
+        upd.statsDelta.dropGoals += 1;
+        upd.statsDelta.points += 1;
+        upd.statsDelta.matchRating = Math.min(10, upd.statsDelta.matchRating + 0.6);
+      }
+    }
+  }
+
+  // Regulation drop goals (away)
+  for (let d = 0; d < awayBreakdown.dropGoals; d++) {
+    if (awayKicker) {
+      scoreEvents.push({
+        minute: Math.floor(Math.random() * 10) + 70,
+        type: "DROP_GOAL",
+        playerId: awayKicker.id,
+        playerName: awayKicker.name,
+        clubId: awayClub.id,
+      });
+      const upd = playerUpdates[awayKicker.id];
+      if (upd) {
+        upd.statsDelta.dropGoals += 1;
+        upd.statsDelta.points += 1;
+        upd.statsDelta.matchRating = Math.min(10, upd.statsDelta.matchRating + 0.6);
       }
     }
   }

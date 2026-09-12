@@ -41,9 +41,9 @@ console.log("\n=== Validating Manager Mode Championship World ===");
 const state = initializeManagerDatabase("widnes-vikings", "Test Manager");
 const champComp = state.competitions["championship"];
 
-assert(champComp.clubIds.length === 12, "Manager Mode Championship has 12 playable clubs");
-assert(champComp.fixtures.length === (12 * 22) / 2, "Exact 132 league fixtures for 22 rounds");
-assert(champComp.standings.length === 12, "12 standings rows initialized");
+assert(champComp.clubIds.length === 14, "Manager Mode Championship has 14 playable clubs");
+assert(champComp.fixtures.length === (14 * 26) / 2, "Exact 182 league fixtures for 26 rounds");
+assert(champComp.standings.length === 14, "14 standings rows initialized");
 
 // Validate Championship Club Squads
 for (const clubId of champComp.clubIds) {

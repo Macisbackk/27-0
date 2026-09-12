@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useManager } from "@/lib/manager/context";
 import {
   CLUB_REPUTATION_BY_NAME,
@@ -15,21 +15,17 @@ export function ManagerClubSelect() {
   const [activeTier, setActiveTier] = useState<"championship" | "super-league">("championship");
   const [selectedClubName, setSelectedClubName] = useState<string>("Widnes Vikings");
   const [managerName, setManagerName] = useState<string>("Coach");
+  const [champFilter, setChampFilter] = useState<"all" | 3 | 2 | 1>("all");
 
-  const champClubs = [
-    "Salford RLFC",
-    "London Broncos",
-    "Widnes Vikings",
-    "Halifax Panthers",
-    "Sheffield Eagles",
-    "Oldham RLFC",
-    "Doncaster RLFC",
-    "Barrow Raiders",
-    "Batley Bulldogs",
-    "Newcastle Thunder",
-    "Hunslet RLFC",
-    "Whitehaven RLFC",
-  ];
+  const champClubs = useMemo(() => {
+    const list = Object.keys(CHAMPIONSHIP_CLUB_REPUTATION_BY_NAME).sort((a, b) => {
+      const repDiff = (CHAMPIONSHIP_CLUB_REPUTATION_BY_NAME[b] || 1) - (CHAMPIONSHIP_CLUB_REPUTATION_BY_NAME[a] || 1);
+      if (repDiff !== 0) return repDiff;
+      return a.localeCompare(b);
+    });
+    if (champFilter === "all") return list;
+    return list.filter((name) => CHAMPIONSHIP_CLUB_REPUTATION_BY_NAME[name] === champFilter);
+  }, [champFilter]);
 
   const slClubs = Object.keys(CLUB_REPUTATION_BY_NAME);
 
@@ -99,41 +95,93 @@ export function ManagerClubSelect() {
       {/* Main Grid: Clubs List + Selected Preview */}
       <div className="grid gap-6 lg:grid-cols-12 items-start">
         {/* Left: Club Selection Cards */}
-        <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-[500px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-pitch-700">
-          {displayClubs.map((clubName) => {
-            const isSelected = selectedClubName === clubName;
-            const stars =
-              activeTier === "championship"
-                ? CHAMPIONSHIP_CLUB_REPUTATION_BY_NAME[clubName] || 2
-                : CLUB_REPUTATION_BY_NAME[clubName] || 3;
-            const colors = CLUB_COLORS[clubName] || { primary: "#1E4D9B", text: "#FFFFFF" };
-
-            return (
+        <div className="lg:col-span-7 flex flex-col gap-2.5">
+          {activeTier === "championship" && (
+            <div className="flex flex-wrap items-center gap-1.5 pb-1">
+              <span className="text-xs text-pitch-400 font-semibold mr-1">Filter:</span>
               <button
-                key={clubName}
                 type="button"
-                onClick={() => setSelectedClubName(clubName)}
-                className={`flex flex-col items-center justify-between p-3 rounded-xl border text-center transition-all ${
-                  isSelected
-                    ? "border-emerald-400 bg-pitch-800/90 ring-2 ring-emerald-500/50 shadow-md"
-                    : "border-pitch-800 bg-pitch-900/60 hover:bg-pitch-800/60 hover:border-pitch-700"
+                onClick={() => setChampFilter("all")}
+                className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-all ${
+                  champFilter === "all"
+                    ? "bg-pitch-700 text-white border border-pitch-600"
+                    : "text-pitch-400 hover:text-white bg-pitch-900 border border-pitch-800"
                 }`}
               >
-                <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-xs shadow-sm mb-2 border border-white/20"
-                  style={{ backgroundColor: colors.primary, color: colors.text }}
-                >
-                  {clubName.slice(0, 3).toUpperCase()}
-                </div>
-                <div className="font-bold text-xs text-white truncate w-full">
-                  {clubName}
-                </div>
-                <div className="flex gap-0.5 mt-1 text-amber-400 text-xs">
-                  {"★".repeat(stars)}
-                </div>
+                All (22)
               </button>
-            );
-          })}
+              <button
+                type="button"
+                onClick={() => setChampFilter(3)}
+                className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-all ${
+                  champFilter === 3
+                    ? "bg-amber-600/30 text-amber-300 border border-amber-500/50"
+                    : "text-pitch-400 hover:text-white bg-pitch-900 border border-pitch-800"
+                }`}
+              >
+                ★★★ Elite (4)
+              </button>
+              <button
+                type="button"
+                onClick={() => setChampFilter(2)}
+                className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-all ${
+                  champFilter === 2
+                    ? "bg-emerald-600/30 text-emerald-300 border border-emerald-500/50"
+                    : "text-pitch-400 hover:text-white bg-pitch-900 border border-pitch-800"
+                }`}
+              >
+                ★★ Contenders (7)
+              </button>
+              <button
+                type="button"
+                onClick={() => setChampFilter(1)}
+                className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-all ${
+                  champFilter === 1
+                    ? "bg-sky-600/30 text-sky-300 border border-sky-500/50"
+                    : "text-pitch-400 hover:text-white bg-pitch-900 border border-pitch-800"
+                }`}
+              >
+                ★ Underdogs (11)
+              </button>
+            </div>
+          )}
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-[500px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-pitch-700">
+            {displayClubs.map((clubName) => {
+              const isSelected = selectedClubName === clubName;
+              const stars =
+                activeTier === "championship"
+                  ? CHAMPIONSHIP_CLUB_REPUTATION_BY_NAME[clubName] || 2
+                  : CLUB_REPUTATION_BY_NAME[clubName] || 3;
+              const colors = CLUB_COLORS[clubName] || { primary: "#1E4D9B", text: "#FFFFFF" };
+
+              return (
+                <button
+                  key={clubName}
+                  type="button"
+                  onClick={() => setSelectedClubName(clubName)}
+                  className={`flex flex-col items-center justify-between p-3 rounded-xl border text-center transition-all ${
+                    isSelected
+                      ? "border-emerald-400 bg-pitch-800/90 ring-2 ring-emerald-500/50 shadow-md"
+                      : "border-pitch-800 bg-pitch-900/60 hover:bg-pitch-800/60 hover:border-pitch-700"
+                  }`}
+                >
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-xs shadow-sm mb-2 border border-white/20"
+                    style={{ backgroundColor: colors.primary, color: colors.text }}
+                  >
+                    {clubName.slice(0, 3).toUpperCase()}
+                  </div>
+                  <div className="font-bold text-xs text-white truncate w-full">
+                    {clubName}
+                  </div>
+                  <div className="flex gap-0.5 mt-1 text-amber-400 text-xs">
+                    {"★".repeat(stars)}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Right: Selected Club Profile & Launch Form */}
@@ -183,8 +231,8 @@ export function ManagerClubSelect() {
               <span className="text-pitch-400">Board Expectation</span>
               <span className="font-semibold text-amber-300">
                 {activeTier === "championship"
-                  ? (currentClubRep === 3 ? "Promotion Favourites" : "Playoff Contenders")
-                  : (currentClubRep >= 4 ? "Championship Contenders" : "Top 6 Playoff Spot")}
+                  ? (currentClubRep === 3 ? "Promotion Favourites" : (currentClubRep === 2 ? "Championship Playoff Contenders" : "Consolidate Championship Status"))
+                  : (currentClubRep >= 4 ? "Grand Final Contenders" : (currentClubRep === 3 ? "Top 6 Playoff Spot" : "Avoid Relegation"))}
               </span>
             </div>
           </div>

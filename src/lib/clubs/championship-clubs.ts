@@ -64,7 +64,7 @@ function asChampionshipClub(
   };
 }
 
-/** All 20 active 2026 Championship clubs (stable IDs, not indexes). */
+/** All 22 active 2026 Championship / semi-pro clubs (stable IDs, not indexes). */
 export const CHAMPIONSHIP_CLUBS: ChampionshipClub[] = (() => {
   const fromJson = FROM_JSON.map((c) => ({
     ...c,
@@ -83,8 +83,8 @@ export const CHAMPIONSHIP_CLUBS: ChampionshipClub[] = (() => {
     byId.set(club.id, club);
   }
   const list = [...byId.values()].sort((a, b) => a.name.localeCompare(b.name));
-  if (list.length !== 20) {
-    console.warn(`[championship] Expected 20 clubs, found ${list.length}`);
+  if (list.length !== 22) {
+    console.warn(`[championship] Expected 22 clubs, found ${list.length}`);
   }
   return list;
 })();

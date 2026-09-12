@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import { calculateSalaryCapUsage } from "@/lib/manager/contracts";
+import { formatPositionShort, formatSquadRole } from "@/lib/manager";
 import type { ManagerPlayer, SquadRole } from "@/lib/manager/types";
 
 export function ManagerContractsView() {
@@ -129,7 +130,7 @@ export function ManagerContractsView() {
                 <tr key={player.id} className="hover:bg-pitch-800/40">
                   <td className="py-2.5 px-3">
                     <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
-                      {player.position.slice(0, 2)}
+                      {formatPositionShort(player.position)}
                     </span>
                   </td>
                   <td className="py-2.5 px-3 font-medium text-white">
@@ -144,8 +145,8 @@ export function ManagerContractsView() {
                   </td>
                   <td className="py-2.5 px-2 text-center text-pitch-400">{player.age}</td>
                   <td className="py-2.5 px-2 text-center font-bold text-white">{player.rating}</td>
-                  <td className="py-2.5 px-3 capitalize text-pitch-300">
-                    {player.contract?.role.replace("_", " ") || "Member"}
+                  <td className="py-2.5 px-3 text-pitch-300">
+                    {player.contract?.role ? formatSquadRole(player.contract.role) : "Member"}
                   </td>
                   <td className="py-2.5 px-3 text-right font-bold text-emerald-400">
                     £{player.contract?.wageWeekly.toLocaleString() || "0"}/wk

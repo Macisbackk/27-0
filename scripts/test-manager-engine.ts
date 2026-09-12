@@ -68,7 +68,7 @@ function runTests() {
 
   assert(state !== null, "State initializes properly");
   assert(state.manager.clubId === "widnes-vikings", "User club is set to Widnes Vikings (Championship)");
-  assert(Object.keys(state.clubs).length === 26, "Contains 14 Super League + 12 Championship clubs");
+  assert(Object.keys(state.clubs).length === 28, "Contains 14 Super League + 14 Championship clubs");
   assert(Object.keys(state.players).length > 700, "Contains comprehensive player database (> 700 players)");
 
   const invariantCheck = validateSquadInvariants(state);
@@ -407,7 +407,7 @@ function runTests() {
   const importedState = importSaveFromJson(exportedJson);
   assert(importedState !== null, "State imports back from JSON cleanly");
   assert(importedState?.calendar.currentSeason === 2027, "Imported state preserves currentSeason 2027");
-  assert(Object.keys(importedState?.clubs || {}).length === 26, "Imported state preserves all 26 clubs");
+  assert(Object.keys(importedState?.clubs || {}).length === 28, "Imported state preserves all 28 clubs");
   assert(Object.keys(importedState?.players || {}).length > 700, "Imported state preserves all players");
 
   console.log("\n====================================================");

@@ -34,6 +34,23 @@
     "baseStrength": 66
   },
   {
+    "id": "cornwall",
+    "name": "Cornwall RLFC",
+    "shortName": "COR",
+    "abbreviation": "COR",
+    "country": "England",
+    "competitionTier2026": "championship",
+    "previousTier2025": "league-one",
+    "primaryColor": "#111111",
+    "secondaryColor": "#D4AF37",
+    "accentColor": "#FFFFFF",
+    "textColour": "#FFFFFF",
+    "challengeCupEligible": true,
+    "managerSelectable": true,
+    "generatedSquad": true,
+    "baseStrength": 54
+  },
+  {
     "id": "dewsbury",
     "name": "Dewsbury Rams",
     "shortName": "DEW",
@@ -66,6 +83,23 @@
     "managerSelectable": true,
     "generatedSquad": true,
     "baseStrength": 67
+  },
+  {
+    "id": "featherstone",
+    "name": "Featherstone Rovers",
+    "shortName": "FEA",
+    "abbreviation": "FEA",
+    "country": "England",
+    "competitionTier2026": "championship",
+    "previousTier2025": "championship",
+    "primaryColor": "#0B2A5B",
+    "secondaryColor": "#FFFFFF",
+    "accentColor": "#D4AF37",
+    "textColour": "#FFFFFF",
+    "challengeCupEligible": true,
+    "managerSelectable": true,
+    "generatedSquad": true,
+    "baseStrength": 72
   },
   {
     "id": "goole",

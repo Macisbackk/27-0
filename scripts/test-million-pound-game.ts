@@ -137,7 +137,7 @@ async function runMillionPoundGameTests() {
   const s2SlClubsA = Object.values(nextSeasonA.clubs).filter((c) => c.competitionId === "super-league");
   const s2ChampClubsA = Object.values(nextSeasonA.clubs).filter((c) => c.competitionId === "championship");
   assert(s2SlClubsA.length === 14, `Super League maintains exactly 14 clubs (has ${s2SlClubsA.length})`);
-  assert(s2ChampClubsA.length === 12, `Championship maintains exactly 12 clubs (has ${s2ChampClubsA.length})`);
+  assert(s2ChampClubsA.length === 14, `Championship maintains exactly 14 clubs (has ${s2ChampClubsA.length})`);
   assert(validateSquadInvariants(nextSeasonA).valid, "Squad invariants valid under Scenario A");
 
   // ----------------------------------------------------
@@ -174,7 +174,7 @@ async function runMillionPoundGameTests() {
   const s2SlClubsB = Object.values(nextSeasonB.clubs).filter((c) => c.competitionId === "super-league");
   const s2ChampClubsB = Object.values(nextSeasonB.clubs).filter((c) => c.competitionId === "championship");
   assert(s2SlClubsB.length === 14, `Super League maintains exactly 14 clubs (has ${s2SlClubsB.length})`);
-  assert(s2ChampClubsB.length === 12, `Championship maintains exactly 12 clubs (has ${s2ChampClubsB.length})`);
+  assert(s2ChampClubsB.length === 14, `Championship maintains exactly 14 clubs (has ${s2ChampClubsB.length})`);
   assert(validateSquadInvariants(nextSeasonB).valid, "Squad invariants valid under Scenario B");
 
   console.log("\n========================================================");

@@ -3,6 +3,7 @@
 import React from "react";
 import { useManager } from "@/lib/manager/context";
 import { calculateSalaryCapUsage } from "@/lib/manager/contracts";
+import { formatLedgerCategory } from "@/lib/manager";
 
 export function ManagerClubView() {
   const { state } = useManager();
@@ -150,7 +151,7 @@ export function ManagerClubView() {
               {finances.history.slice(0, 15).map((tx) => (
                 <tr key={tx.id} className="hover:bg-pitch-800/30">
                   <td className="py-2 px-3 text-pitch-400">Wk {tx.week}</td>
-                  <td className="py-2 px-3 capitalize text-pitch-300">{tx.category.replace("_", " ")}</td>
+                  <td className="py-2 px-3 text-pitch-300">{formatLedgerCategory(tx.category)}</td>
                   <td className="py-2 px-3 font-medium text-white">{tx.description}</td>
                   <td
                     className={`py-2 px-3 text-right font-bold ${

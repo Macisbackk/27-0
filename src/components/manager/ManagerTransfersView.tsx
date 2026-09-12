@@ -7,6 +7,12 @@ import {
   calculateMarketWage,
 } from "@/lib/manager/rules";
 import { calculateSalaryCapUsage } from "@/lib/manager/contracts";
+import {
+  formatPositionLabel,
+  formatPositionShort,
+  formatSquadRole,
+  formatBidStatus,
+} from "@/lib/manager";
 import type { ManagerPlayer, Position, SquadRole, TransferBid } from "@/lib/manager/types";
 
 export function ManagerTransfersView() {
@@ -215,7 +221,7 @@ export function ManagerTransfersView() {
                   <tr key={player.id} className="hover:bg-pitch-800/40 transition-colors">
                     <td className="py-2.5 px-3">
                       <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
-                        {player.position.slice(0, 2)}
+                        {formatPositionShort(player.position)}
                       </span>
                     </td>
                     <td className="py-2.5 px-3 font-medium text-white">{player.name}</td>
@@ -268,7 +274,7 @@ export function ManagerTransfersView() {
                     <tr key={player.id} className="hover:bg-pitch-800/40 transition-colors">
                       <td className="py-2.5 px-3">
                         <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
-                          {player.position.slice(0, 2)}
+                          {formatPositionShort(player.position)}
                         </span>
                       </td>
                       <td className="py-2.5 px-3 font-medium text-white">{player.name}</td>
@@ -327,7 +333,7 @@ export function ManagerTransfersView() {
                           £{bid.offeredFee.toLocaleString()} offer for {player?.name}
                         </h4>
                         <p className="text-xs text-pitch-400">
-                          Role: {bid.offeredRole} · Wage: £{bid.offeredWage.toLocaleString()}/wk
+                          Role: {formatSquadRole(bid.offeredRole)} · Wage: £{bid.offeredWage.toLocaleString()}/wk
                         </p>
                       </div>
 
@@ -385,7 +391,7 @@ export function ManagerTransfersView() {
                             : "bg-rose-500/20 text-rose-400"
                         }`}
                       >
-                        {bid.status.replace("_", " ")}
+                        {formatBidStatus(bid.status)}
                       </span>
                     </div>
                   );
@@ -451,7 +457,7 @@ export function ManagerTransfersView() {
             <div className="flex justify-between items-start mb-4 pb-3 border-b border-pitch-800">
               <div>
                 <span className="rounded bg-pitch-800 px-2 py-0.5 text-xs font-bold text-pitch-300">
-                  {targetPlayer.position}
+                  {formatPositionLabel(targetPlayer.position)}
                 </span>
                 <h3 className="text-xl font-bold text-white mt-1">
                   {targetPlayer.clubId ? `Bid for ${targetPlayer.name}` : `Sign ${targetPlayer.name}`}

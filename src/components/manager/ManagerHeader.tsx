@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useManager } from "@/lib/manager/context";
-import { calculateSalaryCapUsage } from "@/lib/manager";
+import { calculateSalaryCapUsage, formatCalendarPhase } from "@/lib/manager";
 import { TYPO } from "@/lib/ui/typography";
 import { BTN } from "@/lib/ui/design-system";
 
@@ -41,7 +41,7 @@ export function ManagerHeader() {
             </div>
             <p className="truncate text-xs text-pitch-400">
               Season {state.calendar.currentSeason} · Week {state.calendar.currentWeek} of {state.calendar.totalWeeks}
-              <span className="hidden sm:inline"> ({state.calendar.phase.replace("_", " ")})</span>
+              <span className="hidden sm:inline"> ({formatCalendarPhase(state.calendar.phase)})</span>
             </p>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import { setPlayerTrainingFocus } from "@/lib/manager/player";
+import { formatPositionShort } from "@/lib/manager";
 import type { TrainingFocus, TrainingIntensity } from "@/lib/manager/types";
 
 export function ManagerTrainingView() {
@@ -119,7 +120,7 @@ export function ManagerTrainingView() {
               <tr key={player.id} className="hover:bg-pitch-800/40">
                 <td className="py-2.5 px-3">
                   <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
-                    {player.position.slice(0, 2)}
+                    {formatPositionShort(player.position)}
                   </span>
                 </td>
                 <td className="py-2.5 px-3 font-medium text-white">{player.name}</td>

@@ -47,7 +47,7 @@ export function ManagerLeagueView() {
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Championship (12 Clubs)
+            Championship (14 Clubs)
           </button>
         </div>
       </div>

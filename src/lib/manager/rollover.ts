@@ -330,7 +330,7 @@ export function rolloverSeason(state: ManagerState): {
 
     for (let i = 0; i < intakeCount; i++) {
       const pos = STARTING_POSITIONS[Math.floor(Math.random() * STARTING_POSITIONS.length)];
-      const age = Math.random() < 0.7 ? 17 : 18;
+      const age = i < 2 ? 17 : (Math.random() < 0.6 ? 17 : 18);
       const baseRating = isSL ? (58 + Math.floor(Math.random() * 8)) : (52 + Math.floor(Math.random() * 8));
       const pot = Math.min(94, baseRating + Math.floor(Math.random() * 18) + 10); // high upside!
 

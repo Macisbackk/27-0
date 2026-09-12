@@ -60,6 +60,16 @@ export const STADIUMS: Record<string, { name: string; capacity: number }> = {
   "Newcastle Thunder": { name: "Kingston Park", capacity: 10200 },
   "Hunslet RLFC": { name: "South Leeds Stadium", capacity: 4000 },
   "Whitehaven RLFC": { name: "The Recreation Ground", capacity: 7500 },
+  "Featherstone Rovers": { name: "Millennium Stadium", capacity: 9850 },
+  "Dewsbury Rams": { name: "Flair Stadium", capacity: 5100 },
+  "Swinton Lions": { name: "Heywood Road", capacity: 3387 },
+  "Keighley Cougars": { name: "Cougar Park", capacity: 7800 },
+  "Rochdale Hornets": { name: "Crown Oil Arena", capacity: 10249 },
+  "Workington Town": { name: "Derwent Park", capacity: 10000 },
+  "Midlands Hurricanes": { name: "Alexander Stadium", capacity: 18000 },
+  "North Wales Crusaders": { name: "Stadiwm CSM", capacity: 5500 },
+  "Goole Vikings": { name: "Victoria Pleasure Ground", capacity: 3000 },
+  "Cornwall RLFC": { name: "The Memorial Ground", capacity: 4000 },
 };
 
 export const CLUB_COLORS: Record<string, { primary: string; secondary: string; accent: string; text: string }> = {
@@ -89,6 +99,16 @@ export const CLUB_COLORS: Record<string, { primary: string; secondary: string; a
   "Newcastle Thunder": { primary: "#111111", secondary: "#5BC2E7", accent: "#FFFFFF", text: "#FFFFFF" },
   "Hunslet RLFC": { primary: "#0B5C3B", secondary: "#FFFFFF", accent: "#F15A29", text: "#FFFFFF" },
   "Whitehaven RLFC": { primary: "#1E4D9B", secondary: "#FFFFFF", accent: "#0B2A5B", text: "#FFFFFF" },
+  "Featherstone Rovers": { primary: "#0B2A5B", secondary: "#FFFFFF", accent: "#D4AF37", text: "#FFFFFF" },
+  "Dewsbury Rams": { primary: "#C8102E", secondary: "#F5A623", accent: "#111111", text: "#FFFFFF" },
+  "Swinton Lions": { primary: "#1E4D9B", secondary: "#FFFFFF", accent: "#0B2A5B", text: "#FFFFFF" },
+  "Keighley Cougars": { primary: "#C8102E", secondary: "#1B7A3E", accent: "#FFFFFF", text: "#FFFFFF" },
+  "Rochdale Hornets": { primary: "#C8102E", secondary: "#FFFFFF", accent: "#1E4D9B", text: "#FFFFFF" },
+  "Workington Town": { primary: "#1E5AA8", secondary: "#FFFFFF", accent: "#0B2A5B", text: "#FFFFFF" },
+  "Midlands Hurricanes": { primary: "#5B2C8A", secondary: "#F5C518", accent: "#111111", text: "#FFFFFF" },
+  "North Wales Crusaders": { primary: "#C8102E", secondary: "#FFFFFF", accent: "#1B7A3E", text: "#FFFFFF" },
+  "Goole Vikings": { primary: "#B71C1C", secondary: "#111111", accent: "#FFFFFF", text: "#FFFFFF" },
+  "Cornwall RLFC": { primary: "#111111", secondary: "#D4AF37", accent: "#FFFFFF", text: "#FFFFFF" },
 };
 
 const FIRST_NAMES = [
@@ -254,10 +274,11 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
   const clubs: Record<string, ManagerClub> = {};
 
   const slClubNames = Object.keys(CLUB_REPUTATION_BY_NAME);
-  // Canonical 12 Championship clubs
-  const champClubNames = [
+  // Canonical 14 Championship clubs (26-round regular season)
+  const defaultChampClubNames = [
     "Salford RLFC",
     "London Broncos",
+    "Featherstone Rovers",
     "Widnes Vikings",
     "Halifax Panthers",
     "Sheffield Eagles",
@@ -265,10 +286,20 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
     "Doncaster RLFC",
     "Barrow Raiders",
     "Batley Bulldogs",
-    "Newcastle Thunder",
+    "Dewsbury Rams",
+    "Swinton Lions",
     "Hunslet RLFC",
     "Whitehaven RLFC",
   ];
+
+  let champClubNames = [...defaultChampClubNames];
+  // If user chose a Championship club outside the default 14, include them in the league!
+  const chosenChampName = Object.keys(CHAMPIONSHIP_CLUB_REPUTATION_BY_NAME).find(
+    (name) => toClubId(name) === chosenClubId
+  );
+  if (chosenChampName && !champClubNames.includes(chosenChampName)) {
+    champClubNames[champClubNames.length - 1] = chosenChampName;
+  }
 
   // Helper to init club record
   function initClub(name: string, compId: CompetitionId, stars: number): ManagerClub {

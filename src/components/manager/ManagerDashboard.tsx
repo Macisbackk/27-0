@@ -4,6 +4,7 @@ import React from "react";
 import { useManager } from "@/lib/manager/context";
 import { calculateSalaryCapUsage } from "@/lib/manager/contracts";
 import { sortStandings } from "@/lib/manager/competitions";
+import { cleanText } from "@/lib/manager";
 
 export function ManagerDashboard() {
   const { state, setActiveTab, advanceCurrentWeek, isAdvancing } = useManager();
@@ -197,7 +198,7 @@ export function ManagerDashboard() {
               {injuredPlayers.slice(0, 2).map((p) => (
                 <div key={p.id} className="flex justify-between items-center rounded bg-rose-950/40 px-2 py-1 text-rose-300 border border-rose-900/40">
                   <span className="truncate font-medium">{p.name}</span>
-                  <span className="text-[11px] shrink-0">{p.injury?.weeksRemaining}wks ({p.injury?.type})</span>
+                  <span className="text-[11px] shrink-0">{p.injury?.weeksRemaining}wks ({cleanText(p.injury?.type)})</span>
                 </div>
               ))}
             </div>

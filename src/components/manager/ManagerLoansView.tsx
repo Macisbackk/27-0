@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
+import { formatPositionLabel, formatPositionShort, formatSquadTier } from "@/lib/manager";
 import type { ManagerPlayer } from "@/lib/manager/types";
 
 export function ManagerLoansView() {
@@ -188,12 +189,12 @@ export function ManagerLoansView() {
                 <tr key={player.id} className="hover:bg-pitch-800/40">
                   <td className="py-2.5 px-3">
                     <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
-                      {player.position.slice(0, 2)}
+                      {formatPositionShort(player.position)}
                     </span>
                   </td>
                   <td className="py-2.5 px-3 font-medium text-white">{player.name}</td>
                   <td className="py-2.5 px-2 text-center text-pitch-400">{player.age}</td>
-                  <td className="py-2.5 px-2 text-center text-pitch-400 capitalize">{player.squadTier}</td>
+                  <td className="py-2.5 px-2 text-center text-pitch-400">{formatSquadTier(player.squadTier)}</td>
                   <td className="py-2.5 px-2 text-center font-bold text-white">{player.rating}</td>
                   <td className="py-2.5 px-2 text-center font-bold text-pitch-300">{player.potential}</td>
                   <td className="py-2.5 px-3 text-right">
@@ -223,7 +224,7 @@ export function ManagerLoansView() {
               <div>
                 <h3 className="text-xl font-bold text-white">Loan Out {targetPlayer.name}</h3>
                 <p className="text-xs text-pitch-400">
-                  {targetPlayer.position} · {targetPlayer.age} yrs · {targetPlayer.rating} OVR
+                  {formatPositionLabel(targetPlayer.position)} · {targetPlayer.age} yrs · {targetPlayer.rating} OVR
                 </p>
               </div>
               <button

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
+import { formatPositionLabel, formatPositionShort, formatSquadTier } from "@/lib/manager";
 import type { ManagerPlayer, Position, SquadTier } from "@/lib/manager/types";
 
 export function ManagerSquadView() {
@@ -126,7 +127,7 @@ export function ManagerSquadView() {
                     {/* Position */}
                     <td className="py-2.5 px-3">
                       <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300 border border-pitch-700">
-                        {player.position.slice(0, 2)}
+                        {formatPositionShort(player.position)}
                       </span>
                     </td>
 
@@ -283,11 +284,11 @@ export function ManagerSquadView() {
             <div className="flex justify-between items-start mb-4 pb-3 border-b border-pitch-800">
               <div>
                 <span className="rounded bg-pitch-800 px-2 py-0.5 text-xs font-bold text-pitch-300">
-                  {selectedPlayer.position}
+                  {formatPositionLabel(selectedPlayer.position)}
                 </span>
                 <h3 className="text-xl font-bold text-white mt-1">{selectedPlayer.name}</h3>
                 <p className="text-xs text-pitch-400">
-                  {selectedPlayer.age} yrs · {selectedPlayer.nationality} · Tier: {selectedPlayer.squadTier}
+                  {selectedPlayer.age} yrs · {selectedPlayer.nationality} · Tier: {formatSquadTier(selectedPlayer.squadTier)}
                 </p>
               </div>
               <button

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import { STARTING_POSITIONS } from "@/lib/manager/rules";
+import { formatPositionLabel, formatPositionShort } from "@/lib/manager";
 import type { ClubLineup, Position } from "@/lib/manager/types";
 
 export function ManagerTacticsView() {
@@ -109,7 +110,7 @@ export function ManagerTacticsView() {
                     </span>
                     <div className="min-w-0">
                       <span className="block text-[10px] font-bold text-pitch-400 uppercase tracking-wider">
-                        {pos}
+                        {formatPositionLabel(pos)}
                       </span>
                       <span className="block text-xs font-bold text-white truncate">
                         {player ? player.name : "Empty Slot"}
@@ -159,7 +160,7 @@ export function ManagerTacticsView() {
                     </span>
                     {player && (
                       <span className="text-[11px] font-semibold text-emerald-400 mt-0.5">
-                        {player.position.slice(0, 2)} · {player.rating}
+                        {formatPositionShort(player.position)} · {player.rating}
                       </span>
                     )}
                   </div>
@@ -234,7 +235,7 @@ export function ManagerTacticsView() {
           <div className="w-full max-w-md rounded-2xl border border-pitch-700 bg-pitch-900 p-5 shadow-2xl max-h-[85vh] flex flex-col">
             <div className="flex justify-between items-center mb-3 pb-2 border-b border-pitch-800">
               <h3 className="text-sm font-bold text-white">
-                Select Player for {isBenchSlot ? `Interchange #${14 + selectedSlotIdx}` : `${STARTING_POSITIONS[selectedSlotIdx]} (#${selectedSlotIdx + 1})`}
+                Select Player for {isBenchSlot ? `Interchange #${14 + selectedSlotIdx}` : `${formatPositionLabel(STARTING_POSITIONS[selectedSlotIdx])} (#${selectedSlotIdx + 1})`}
               </h3>
               <button
                 type="button"
@@ -267,7 +268,7 @@ export function ManagerTacticsView() {
                   >
                     <div className="flex items-center gap-2">
                       <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300">
-                        {p.position.slice(0, 2)}
+                        {formatPositionShort(p.position)}
                       </span>
                       <span className="text-xs font-bold text-white">{p.name}</span>
                     </div>

@@ -235,8 +235,8 @@ async function runMultiSeasonChampionshipTest() {
 
   // Check Championship Standings
   const champSorted = sortStandings(state.competitions["championship"].standings);
-  assert(champSorted.length === 12, "All 12 Championship clubs in final standings");
-  assert(champSorted[0].played === 22, "Championship clubs completed all 22 league fixtures");
+  assert(champSorted.length === 14, "All 14 Championship clubs in final standings");
+  assert(champSorted[0].played === 26, "Championship clubs completed all 26 league fixtures");
   assert(champSorted[0].points > 0, "Championship leaders have league points");
   console.log(`  🏆 Championship Season 1 Winner: ${state.clubs[champSorted[0].clubId]?.name} with ${champSorted[0].points} pts`);
 

@@ -84,6 +84,7 @@ export const CHAMPIONSHIP_CLUB_REPUTATION_BY_NAME: Readonly<
   // 3★ — Championship elite / promotion favourites
   "Salford RLFC": 3,
   "London Broncos": 3,
+  "Featherstone Rovers": 3,
   "Widnes Vikings": 3,
 
   // 2★ — established Championship pack
@@ -106,6 +107,7 @@ export const CHAMPIONSHIP_CLUB_REPUTATION_BY_NAME: Readonly<
   "Midlands Hurricanes": 1,
   "Goole Vikings": 1,
   "North Wales Crusaders": 1,
+  "Cornwall RLFC": 1,
 };
 
 export function getClubReputationStars(
