@@ -9,7 +9,7 @@ import { loadHangmanStats } from "@/lib/mini-games/hangman/storage";
 import { loadHigherLowerStats } from "@/lib/mini-games/higher-lower/storage";
 import { loadQuizStats } from "@/lib/quiz/storage";
 
-/** Mini-game win boards (score = total wins). Quiz prize stays on mode=quiz. */
+/** Mini-game win boards (score = total wins). */
 export type MiniGameWinsKind =
   | "wordle"
   | "hangman"
@@ -17,7 +17,7 @@ export type MiniGameWinsKind =
   | "quiz-wins";
 
 export const MINI_GAME_WINS_CATEGORIES: Array<{
-  id: MiniGameWinsKind | "quiz-prize";
+  id: MiniGameWinsKind;
   label: string;
   shortLabel: string;
   href: string;
@@ -44,12 +44,6 @@ export const MINI_GAME_WINS_CATEGORIES: Array<{
     id: "quiz-wins",
     label: "Quiz Wins",
     shortLabel: "Quiz",
-    href: "/mini-games/quiz",
-  },
-  {
-    id: "quiz-prize",
-    label: "Quiz Prize",
-    shortLabel: "Prize",
     href: "/mini-games/quiz",
   },
 ];

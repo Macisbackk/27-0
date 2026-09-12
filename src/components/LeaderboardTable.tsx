@@ -28,7 +28,6 @@ import {
   type LeaderboardTabAccent,
 } from "./LeaderboardTabBar";
 import { getDailyLeaderboardAsync } from "@/lib/storage/daily-leaderboard";
-import { getQuizLeaderboardAsync } from "@/lib/storage/quiz-leaderboard";
 import {
   getMiniGameWinsLeaderboardAsync,
   MINI_GAME_WINS_CATEGORIES,
@@ -44,8 +43,6 @@ import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
 
-type MiniGamesCategory = MiniGameWinsKind | "quiz-prize";
-
 const QUICK_MODE_ACCENTS = {
   "super-league": "green",
   "trophy-cabinet": "gold",
@@ -54,14 +51,13 @@ const QUICK_MODE_ACCENTS = {
 } as const satisfies Record<string, LeaderboardTabAccent>;
 
 const MINI_GAMES_CATEGORY_ACCENTS: Record<
-  MiniGamesCategory,
+  MiniGameWinsKind,
   LeaderboardTabAccent
 > = {
   wordle: "green",
   hangman: "amber",
   "higher-lower": "theme",
   "quiz-wins": "gold",
-  "quiz-prize": "gold",
 };
 
 const TRACKER_ACCENTS: Partial<
@@ -96,7 +92,7 @@ export function LeaderboardTable() {
     useState<QuickLeaderboardMode>("super-league");
   const [tracker, setTracker] = useState<LeaderboardTrackerType>("best_record");
   const [miniGamesCategory, setMiniGamesCategory] =
-    useState<MiniGamesCategory>("wordle");
+    useState<MiniGameWinsKind>("wordle");
   const [period, setPeriod] = useState<LeaderboardPeriod>("ALL_TIME");
   const difficulty: GameDifficulty = "NORMAL";
   const [entries, setEntries] = useState<LeaderboardTrackerRow[]>([]);
@@ -117,9 +113,9 @@ export function LeaderboardTable() {
         window.history.replaceState(null, "", window.location.pathname);
       }
     }
-    if (trackerParam === "quiz_prize") {
+    if (trackerParam === "quiz_prize" || trackerParam === "quiz_wins") {
       setLeaderboardMode("quiz");
-      setMiniGamesCategory("quiz-prize");
+      setMiniGamesCategory("quiz-wins");
     }
   }, []);
 
@@ -183,10 +179,7 @@ export function LeaderboardTable() {
 
     try {
       if (isMiniGamesMode) {
-        const result =
-          miniGamesCategory === "quiz-prize"
-            ? await getQuizLeaderboardAsync()
-            : await getMiniGameWinsLeaderboardAsync(miniGamesCategory);
+        const result = await getMiniGameWinsLeaderboardAsync(miniGamesCategory);
         if (currentRequest !== requestId.current) return;
         setEntries(result.rows);
         setUsingFallback(result.source === "local");
@@ -285,9 +278,7 @@ export function LeaderboardTable() {
         "Leaderboard");
 
   const statColumnLabel = isMiniGamesMode
-    ? miniGamesCategory === "quiz-prize"
-      ? "Highest Prize"
-      : "Total Wins"
+    ? "Total Wins"
     : (STAT_COLUMN[effectiveTracker] ?? "Stat");
 
   const quickModeOptions: {
@@ -305,9 +296,7 @@ export function LeaderboardTable() {
   const emptyStateMessage = isDailyMode
     ? "No streaks yet. Finish a Daily Challenge."
     : isMiniGamesMode
-      ? miniGamesCategory === "quiz-prize"
-        ? "No quiz prizes yet. Finish a Quiz Mode run."
-        : `No ${activeMiniGamesCategory.label.toLowerCase()} yet. Win a game to climb the board.`
+      ? `No ${activeMiniGamesCategory.label.toLowerCase()} yet. Win a game to climb the board.`
       : `No ${trackerLabel.toLowerCase()} entries yet. Finish a run.`;
 
   const showUpdatedColumn =
@@ -376,8 +365,7 @@ export function LeaderboardTable() {
               accent: MINI_GAMES_CATEGORY_ACCENTS[category.id],
             }))}
             active={miniGamesCategory}
-            onChange={(id) => setMiniGamesCategory(id as MiniGamesCategory)}
-            scrollable
+            onChange={(id) => setMiniGamesCategory(id as MiniGameWinsKind)}
             ariaLabel="Mini games category"
           />
         ) : (

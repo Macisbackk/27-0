@@ -1,6 +1,5 @@
 "use client";
 
-import { TAB_RAIL } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playTabChange } from "@/lib/sound";
 
@@ -20,6 +19,7 @@ interface LeaderboardTabBarProps<T extends string> {
   active: T;
   onChange: (id: T) => void;
   ariaLabel?: string;
+  /** @deprecated Category tabs always wrap and centre; kept for call-site compat. */
   scrollable?: boolean;
 }
 
@@ -108,7 +108,7 @@ export function LeaderboardTabBar<T extends string>({
   active,
   onChange,
   ariaLabel,
-  scrollable = false,
+  scrollable: _scrollable = false,
 }: LeaderboardTabBarProps<T>) {
   const handleSelect = (id: T) => {
     if (id === active) return;
@@ -179,14 +179,10 @@ export function LeaderboardTabBar<T extends string>({
   }
 
   if (tier === "category") {
-    const railClass = scrollable
-      ? TAB_RAIL.outer
-      : "flex justify-start sm:justify-center";
-
     return (
-      <div className={railClass}>
+      <div className="flex justify-center">
         <div
-          className={`${scrollable ? TAB_RAIL.inner : "flex flex-wrap justify-center"} gap-2`}
+          className="flex flex-wrap justify-center gap-2"
           role="tablist"
           aria-label={ariaLabel}
         >
@@ -199,9 +195,7 @@ export function LeaderboardTabBar<T extends string>({
                 type="button"
                 role="tab"
                 aria-selected={isActive}
-                className={`${categoryChipClass(isActive, accent)}${
-                  scrollable ? ` ${TAB_RAIL.item}` : ""
-                }`}
+                className={categoryChipClass(isActive, accent)}
                 onClick={() => handleSelect(tab.id)}
               >
                 {tab.label}
