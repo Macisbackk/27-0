@@ -79,6 +79,7 @@ export function ManagerLeagueView() {
               // Zones
               const isSuperLeague = activeTier === "super-league";
               const isPlayoffsSL = isSuperLeague && rank <= 6;
+              const isMpgSL = isSuperLeague && rank === 13;
               const isRelegationSL = isSuperLeague && rank === 14;
 
               const isPromotionChamp = !isSuperLeague && rank === 1;
@@ -97,10 +98,12 @@ export function ManagerLeagueView() {
                   <td className="py-2.5 px-3 text-center font-bold">
                     <span
                       className={`inline-flex h-6 w-6 items-center justify-center rounded-md text-xs ${
-                        isPromotionChamp || rank === 1
+                        isPromotionChamp || (isSuperLeague && rank === 1)
                           ? "bg-amber-500 text-slate-950 font-black shadow"
                           : isPlayoffsSL || isPlayoffsChamp
                           ? "bg-emerald-600/30 text-emerald-300 border border-emerald-500/40"
+                          : isMpgSL
+                          ? "bg-amber-600/30 text-amber-300 border border-amber-500/50"
                           : isRelegationSL
                           ? "bg-rose-600/30 text-rose-300 border border-rose-500/40"
                           : "text-pitch-400"
@@ -173,19 +176,23 @@ export function ManagerLeagueView() {
               <span>Super League Top 6 (Playoffs)</span>
             </div>
             <div className="flex items-center gap-1.5">
+              <span className="h-3 w-3 rounded bg-amber-500/40 border border-amber-500" />
+              <span>13th Place (The Million Pound Game)</span>
+            </div>
+            <div className="flex items-center gap-1.5">
               <span className="h-3 w-3 rounded bg-rose-500/40 border border-rose-500" />
-              <span>14th Place (Relegation to Championship)</span>
+              <span>14th Place (Automatic Relegation to Championship)</span>
             </div>
           </>
         ) : (
           <>
             <div className="flex items-center gap-1.5">
               <span className="h-3 w-3 rounded bg-amber-500" />
-              <span>1st Place (Automatic Promotion to Super League)</span>
+              <span>1st Place (Champions &amp; Automatic Promotion to Super League)</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="h-3 w-3 rounded bg-emerald-500/40 border border-emerald-500" />
-              <span>2nd - 6th Place (Championship Playoffs)</span>
+              <span>2nd - 6th Place (Championship Playoffs for Million Pound Game)</span>
             </div>
           </>
         )}

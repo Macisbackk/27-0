@@ -54,6 +54,33 @@ export function ManagerSeasonAwardsModal() {
           </div>
         </div>
 
+        {/* The Million Pound Game Banner (if played) */}
+        {awards.millionPoundGame && (
+          <div className="rounded-2xl border border-amber-500/50 bg-gradient-to-r from-amber-500/10 via-pitch-900 to-amber-500/10 p-4 space-y-2 text-center">
+            <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest block">
+              💰 The Million Pound Game (Relegation Playoff)
+            </span>
+            <div className="flex items-center justify-center gap-3 sm:gap-6 font-black text-base sm:text-lg text-white">
+              <span className="truncate max-w-[150px]">{awards.millionPoundGame.superLeagueTeam}</span>
+              <span className="rounded-lg bg-amber-500/20 px-3 py-1 font-mono text-sm text-amber-300 border border-amber-500/30">
+                {awards.millionPoundGame.score}
+              </span>
+              <span className="truncate max-w-[150px]">{awards.millionPoundGame.championshipTeam}</span>
+            </div>
+            <p className="text-xs font-semibold text-pitch-300">
+              {awards.millionPoundGame.superLeagueSurvived ? (
+                <span className="text-emerald-400">
+                  🛡️ {awards.millionPoundGame.superLeagueTeam} defended their Super League status!
+                </span>
+              ) : (
+                <span className="text-amber-400">
+                  ⚡ {awards.millionPoundGame.championshipTeam} earned promotion to Super League!
+                </span>
+              )}
+            </p>
+          </div>
+        )}
+
         {/* Promotion & Relegation Bulletin */}
         <div className="rounded-2xl border border-pitch-750 bg-pitch-900/60 p-4 space-y-3">
           <h4 className="text-xs font-black text-pitch-400 uppercase tracking-wider">
@@ -64,17 +91,39 @@ export function ManagerSeasonAwardsModal() {
               <span className="text-[10px] font-bold text-emerald-400 uppercase block">
                 ▲ Promoted to Super League
               </span>
-              <p className="text-sm font-black text-white mt-1">
-                {awards.promotedClub || "None"}
-              </p>
+              <div className="mt-1 space-y-1">
+                {awards.promotedClubs && awards.promotedClubs.length > 0 ? (
+                  awards.promotedClubs.map((club, idx) => (
+                    <div key={idx} className="flex items-center justify-between text-sm font-black text-white">
+                      <span>{club}</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-medium">
+                        {idx === 0 ? "Automatic (1st)" : "Million Pound Game"}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm font-black text-white">{awards.promotedClub || "None"}</p>
+                )}
+              </div>
             </div>
             <div className="rounded-xl bg-rose-500/10 border border-rose-500/20 p-3">
               <span className="text-[10px] font-bold text-rose-400 uppercase block">
                 ▼ Relegated to Championship
               </span>
-              <p className="text-sm font-black text-white mt-1">
-                {awards.relegatedClub || "None"}
-              </p>
+              <div className="mt-1 space-y-1">
+                {awards.relegatedClubs && awards.relegatedClubs.length > 0 ? (
+                  awards.relegatedClubs.map((club, idx) => (
+                    <div key={idx} className="flex items-center justify-between text-sm font-black text-white">
+                      <span>{club}</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 font-medium">
+                        {idx === 0 ? "Automatic (14th)" : "Million Pound Game"}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm font-black text-white">{awards.relegatedClub || "None"}</p>
+                )}
+              </div>
             </div>
           </div>
         </div>

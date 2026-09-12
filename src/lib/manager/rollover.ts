@@ -25,8 +25,19 @@ import type {
 export interface SeasonAwards {
   superLeagueChampion: string;
   championshipChampion: string;
+  promotedClubIds: string[];
+  relegatedClubIds: string[];
+  promotedClubs: string[];
+  relegatedClubs: string[];
   relegatedClub: string;
   promotedClub: string;
+  millionPoundGame?: {
+    superLeagueTeam: string;
+    championshipTeam: string;
+    winner: string;
+    score: string;
+    superLeagueSurvived: boolean;
+  } | null;
   topTryScorer: { name: string; clubName: string; tries: number } | null;
   manOfSteel: { name: string; clubName: string; motm: number } | null;
 }
@@ -35,10 +46,68 @@ export function calculateSeasonAwards(state: ManagerState): SeasonAwards {
   const slStandings = sortStandings(state.competitions["super-league"].standings);
   const champStandings = sortStandings(state.competitions["championship"].standings);
 
-  const slChampId = slStandings[0]?.clubId || "wigan-warriors";
+  // Super League Grand Final Winner (or regular season 1st fallback)
+  const slGfFixture = state.competitions["super-league"].fixtures.find(
+    (f) => f.roundName.includes("Grand Final") && f.isPlayed
+  );
+  let slChampId = slStandings[0]?.clubId || "wigan-warriors";
+  if (slGfFixture) {
+    slChampId =
+      (slGfFixture.homeScore || 0) > (slGfFixture.awayScore || 0)
+        ? slGfFixture.homeClubId
+        : slGfFixture.awayClubId;
+  }
+
+  // Championship Champion is 1st in regular season
   const champWinnerId = champStandings[0]?.clubId || "salford-rlfc";
-  const relegatedId = slStandings[slStandings.length - 1]?.clubId || "toulouse-olympique";
-  const promotedId = champWinnerId;
+
+  // Automatic promotion & relegation:
+  // - 1st in Championship is automatically promoted
+  // - Bottom (14th) in Super League is automatically relegated
+  const autoPromotedId = champStandings[0]?.clubId || "salford-rlfc";
+  const autoRelegatedId = slStandings[slStandings.length - 1]?.clubId || "toulouse-olympique";
+
+  const promotedClubIds: string[] = [autoPromotedId];
+  const relegatedClubIds: string[] = [autoRelegatedId];
+
+  // The Million Pound Game: 13th SL vs Championship Playoff Winner
+  const mpgFixture = state.competitions["super-league"].fixtures.find(
+    (f) => f.roundName === "The Million Pound Game" && f.isPlayed
+  );
+
+  let millionPoundGameInfo: SeasonAwards["millionPoundGame"] = null;
+
+  if (mpgFixture) {
+    const homeWon = (mpgFixture.homeScore || 0) > (mpgFixture.awayScore || 0);
+    const slClubId = mpgFixture.homeClubId;
+    const champClubId = mpgFixture.awayClubId;
+    const slName = state.clubs[slClubId]?.name || slClubId;
+    const champName = state.clubs[champClubId]?.name || champClubId;
+    const winnerName = homeWon ? slName : champName;
+    const score = `${mpgFixture.homeScore} - ${mpgFixture.awayScore}`;
+
+    millionPoundGameInfo = {
+      superLeagueTeam: slName,
+      championshipTeam: champName,
+      winner: winnerName,
+      score,
+      superLeagueSurvived: homeWon,
+    };
+
+    if (!homeWon) {
+      // Championship team won The Million Pound Game! Promoted!
+      if (!promotedClubIds.includes(champClubId)) {
+        promotedClubIds.push(champClubId);
+      }
+      // 13th SL club is relegated!
+      if (!relegatedClubIds.includes(slClubId)) {
+        relegatedClubIds.push(slClubId);
+      }
+    }
+  }
+
+  const promotedNames = promotedClubIds.map((id) => state.clubs[id]?.name || id);
+  const relegatedNames = relegatedClubIds.map((id) => state.clubs[id]?.name || id);
 
   // Find top try scorer and Man of Steel across all players
   let topScorer: { name: string; clubName: string; tries: number } | null = null;
@@ -64,8 +133,13 @@ export function calculateSeasonAwards(state: ManagerState): SeasonAwards {
   return {
     superLeagueChampion: state.clubs[slChampId]?.name || slChampId,
     championshipChampion: state.clubs[champWinnerId]?.name || champWinnerId,
-    relegatedClub: state.clubs[relegatedId]?.name || relegatedId,
-    promotedClub: state.clubs[promotedId]?.name || promotedId,
+    promotedClubIds,
+    relegatedClubIds,
+    promotedClubs: promotedNames,
+    relegatedClubs: relegatedNames,
+    promotedClub: promotedNames.join(", "),
+    relegatedClub: relegatedNames.join(", "),
+    millionPoundGame: millionPoundGameInfo,
     topTryScorer: topScorer,
     manOfSteel: topMotm,
   };
@@ -84,10 +158,8 @@ export function rolloverSeason(state: ManagerState): {
   const slStandings = sortStandings(state.competitions["super-league"].standings);
   const champStandings = sortStandings(state.competitions["championship"].standings);
 
-  const relegatedClubId = slStandings[slStandings.length - 1]?.clubId || "toulouse-olympique";
-  const promotedClubId = champStandings[0]?.clubId || "salford-rlfc";
-
   const awards = calculateSeasonAwards(state);
+  const { promotedClubIds, relegatedClubIds } = awards;
 
   // 1. Update Clubs: Promotion, Relegation, Reputation adjustments, and Financial reset
   const updatedClubs: Record<string, ManagerClub> = {};
@@ -96,16 +168,16 @@ export function rolloverSeason(state: ManagerState): {
     let competitionId: CompetitionId = club.competitionId;
     let reputation = club.reputation;
 
-    if (clubId === promotedClubId) {
+    if (promotedClubIds.includes(clubId)) {
       competitionId = "super-league";
       reputation = Math.min(5, reputation + 1);
-    } else if (clubId === relegatedClubId) {
+    } else if (relegatedClubIds.includes(clubId)) {
       competitionId = "championship";
       reputation = Math.max(1, reputation - 1);
     }
 
     const isSL = competitionId === "super-league";
-    const prizeMoney = clubId === slStandings[0]?.clubId ? 150000 : (clubId === promotedClubId ? 80000 : 25000);
+    const prizeMoney = clubId === slStandings[0]?.clubId ? 150000 : (promotedClubIds.includes(clubId) ? 80000 : 25000);
     const newBalance = club.finances.balance + prizeMoney;
     const weeklyWageBudget = isSL ? SALARY_CAP["super-league"].weeklyCap : SALARY_CAP["championship"].weeklyCap;
 

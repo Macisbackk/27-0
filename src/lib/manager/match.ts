@@ -139,8 +139,29 @@ export function simulateManagerMatch(
   // Snap to realistic rugby league scores
   const homeBreakdown = decomposeRLScore(homeScoreRaw);
   const awayBreakdown = decomposeRLScore(awayScoreRaw);
-  const homeScore = homeBreakdown.points;
-  const awayScore = awayBreakdown.points;
+  let homeScore = homeBreakdown.points;
+  let awayScore = awayBreakdown.points;
+
+  // Knockout golden point rule (Challenge Cup, Playoffs, Eliminators, Finals, Million Pound Game)
+  const isKnockout =
+    fixture.competitionId === "challenge-cup" ||
+    fixture.roundName.includes("Playoff") ||
+    fixture.roundName.includes("Eliminator") ||
+    fixture.roundName.includes("Semi-Final") ||
+    fixture.roundName.includes("Grand Final") ||
+    fixture.roundName.includes("Million Pound Game");
+
+  let goldenPointWinner: "home" | "away" | null = null;
+  if (isKnockout && homeScore === awayScore) {
+    const homeProb = (homeEffective + 5) / (homeEffective + awayEffective + 10);
+    if (Math.random() < homeProb) {
+      homeScore += 1;
+      goldenPointWinner = "home";
+    } else {
+      awayScore += 1;
+      goldenPointWinner = "away";
+    }
+  }
 
   const homeWon = homeScore > awayScore;
   const awayWon = awayScore > homeScore;
@@ -267,6 +288,37 @@ export function simulateManagerMatch(
         upd.statsDelta.points += 2;
         upd.statsDelta.matchRating = Math.min(10, upd.statsDelta.matchRating + 0.3);
       }
+    }
+  }
+
+  // Golden point winning drop goal event
+  if (goldenPointWinner === "home" && homeKicker) {
+    scoreEvents.push({
+      minute: 83,
+      type: "DROP_GOAL",
+      playerId: homeKicker.id,
+      playerName: homeKicker.name,
+      clubId: homeClub.id,
+    });
+    const upd = playerUpdates[homeKicker.id];
+    if (upd) {
+      upd.statsDelta.dropGoals += 1;
+      upd.statsDelta.points += 1;
+      upd.statsDelta.matchRating = Math.min(10, upd.statsDelta.matchRating + 1.2);
+    }
+  } else if (goldenPointWinner === "away" && awayKicker) {
+    scoreEvents.push({
+      minute: 83,
+      type: "DROP_GOAL",
+      playerId: awayKicker.id,
+      playerName: awayKicker.name,
+      clubId: awayClub.id,
+    });
+    const upd = playerUpdates[awayKicker.id];
+    if (upd) {
+      upd.statsDelta.dropGoals += 1;
+      upd.statsDelta.points += 1;
+      upd.statsDelta.matchRating = Math.min(10, upd.statsDelta.matchRating + 1.2);
     }
   }
 

@@ -5,9 +5,11 @@
 
 import type {
   CompetitionId,
+  InboxMessage,
   LeagueTableRow,
   ManagerCompetition,
   ManagerFixture,
+  ManagerState,
   PlayoffMatch,
 } from "./types";
 
@@ -188,8 +190,16 @@ export function updateStandingsForFixture(
   standings: LeagueTableRow[],
   fixture: ManagerFixture
 ): LeagueTableRow[] {
-  // CRITICAL: Friendlies and Cup matches must NOT affect league standings!
-  if (fixture.competitionId === "friendlies" || fixture.competitionId === "challenge-cup") {
+  // CRITICAL: Friendlies, Cup matches, Playoffs, and Million Pound Game must NOT affect regular league standings!
+  if (
+    fixture.competitionId === "friendlies" ||
+    fixture.competitionId === "challenge-cup" ||
+    fixture.roundName.includes("Playoff") ||
+    fixture.roundName.includes("Eliminator") ||
+    fixture.roundName.includes("Semi-Final") ||
+    fixture.roundName.includes("Grand Final") ||
+    fixture.roundName.includes("Million Pound Game")
+  ) {
     return standings;
   }
 
@@ -311,4 +321,445 @@ export function initializeTop6Playoffs(
       isPlayed: false,
     },
   ];
+}
+
+function getMatchWinnerId(fixture: ManagerFixture): string {
+  if (!fixture.isPlayed) return fixture.homeClubId;
+  return (fixture.homeScore || 0) > (fixture.awayScore || 0)
+    ? fixture.homeClubId
+    : fixture.awayClubId;
+}
+
+function getClubRankIndex(standings: LeagueTableRow[], clubId: string): number {
+  const idx = standings.findIndex((r) => r.clubId === clubId);
+  return idx >= 0 ? idx : 999;
+}
+
+function createPostSeasonInboxMessage(
+  state: ManagerState,
+  subject: string,
+  body: string
+): InboxMessage {
+  const week = state.calendar.currentWeek;
+  const season = state.calendar.currentSeason;
+  return {
+    id: `msg_ps_${season}_w${week}_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    season,
+    week,
+    dateStr: `Week ${week}, ${season}`,
+    sender: "Rugby Football League Operations",
+    subject,
+    body,
+    category: "general",
+    isRead: false,
+  };
+}
+
+/**
+ * Autonomously schedules progressive knockout cup fixtures, top 6 playoffs,
+ * and The Million Pound Game at the appropriate calendar weeks.
+ */
+export function schedulePostSeasonAndCupFixtures(
+  state: ManagerState,
+  targetWeek: number
+): ManagerState {
+  const season = state.calendar.currentSeason;
+  const newMessages: InboxMessage[] = [];
+
+  const updatedCompetitions = { ...state.competitions };
+  const ccComp = { ...updatedCompetitions["challenge-cup"] };
+  const slComp = { ...updatedCompetitions["super-league"] };
+  const champComp = { ...updatedCompetitions["championship"] };
+
+  const slStandings = sortStandings(slComp.standings);
+  const champStandings = sortStandings(champComp.standings);
+
+  // 1. CHALLENGE CUP PROGRESSION
+  // Week 16: Challenge Cup Quarter Finals
+  if (targetWeek === 16) {
+    const hasW16 = ccComp.fixtures.some((f) => f.week === 16);
+    if (!hasW16) {
+      const r5Played = ccComp.fixtures.filter((f) => f.week === 8 && f.isPlayed);
+      if (r5Played.length >= 8) {
+        const winners = r5Played.map(getMatchWinnerId);
+        const qfFixtures: ManagerFixture[] = [];
+        for (let i = 0; i < winners.length; i += 2) {
+          if (winners[i] && winners[i + 1]) {
+            qfFixtures.push({
+              id: `cc_${season}_qf_${i / 2 + 1}`,
+              competitionId: "challenge-cup",
+              season,
+              week: 16,
+              roundName: `Challenge Cup Quarter Final ${i / 2 + 1}`,
+              homeClubId: winners[i],
+              awayClubId: winners[i + 1],
+              isPlayed: false,
+            });
+          }
+        }
+        ccComp.fixtures = [...ccComp.fixtures, ...qfFixtures];
+      }
+    }
+  }
+
+  // Week 24: Challenge Cup Semi Finals
+  if (targetWeek === 24) {
+    const hasW24 = ccComp.fixtures.some((f) => f.week === 24);
+    if (!hasW24) {
+      const qfPlayed = ccComp.fixtures.filter((f) => f.week === 16 && f.isPlayed);
+      if (qfPlayed.length >= 4) {
+        const winners = qfPlayed.map(getMatchWinnerId);
+        const sfFixtures: ManagerFixture[] = [];
+        for (let i = 0; i < 4; i += 2) {
+          if (winners[i] && winners[i + 1]) {
+            sfFixtures.push({
+              id: `cc_${season}_sf_${i / 2 + 1}`,
+              competitionId: "challenge-cup",
+              season,
+              week: 24,
+              roundName: `Challenge Cup Semi-Final ${i / 2 + 1}`,
+              homeClubId: winners[i],
+              awayClubId: winners[i + 1],
+              isPlayed: false,
+            });
+          }
+        }
+        ccComp.fixtures = [...ccComp.fixtures, ...sfFixtures];
+      }
+    }
+  }
+
+  // Week 28: Challenge Cup Final (Wembley)
+  if (targetWeek === 28) {
+    const hasW28 = ccComp.fixtures.some((f) => f.week === 28);
+    if (!hasW28) {
+      const sfPlayed = ccComp.fixtures.filter((f) => f.week === 24 && f.isPlayed);
+      if (sfPlayed.length >= 2) {
+        const winners = sfPlayed.map(getMatchWinnerId);
+        ccComp.fixtures = [
+          ...ccComp.fixtures,
+          {
+            id: `cc_${season}_final`,
+            competitionId: "challenge-cup",
+            season,
+            week: 28,
+            roundName: "Challenge Cup Final",
+            homeClubId: winners[0],
+            awayClubId: winners[1],
+            isPlayed: false,
+          },
+        ];
+      }
+    }
+  }
+
+  // 2. PLAYOFF ELIMINATORS (WEEK 29)
+  if (targetWeek === 29) {
+    const slHasW29 = slComp.fixtures.some((f) => f.week === 29);
+    if (!slHasW29 && slStandings.length >= 6) {
+      // Super League Eliminators: 3rd vs 6th, 4th vs 5th
+      slComp.fixtures = [
+        ...slComp.fixtures,
+        {
+          id: `sl_${season}_w29_elim1`,
+          competitionId: "super-league",
+          season,
+          week: 29,
+          roundName: "Super League Eliminator 1",
+          homeClubId: slStandings[2].clubId,
+          awayClubId: slStandings[5].clubId,
+          isPlayed: false,
+        },
+        {
+          id: `sl_${season}_w29_elim2`,
+          competitionId: "super-league",
+          season,
+          week: 29,
+          roundName: "Super League Eliminator 2",
+          homeClubId: slStandings[3].clubId,
+          awayClubId: slStandings[4].clubId,
+          isPlayed: false,
+        },
+      ];
+    }
+
+    const champHasW29 = champComp.fixtures.some((f) => f.week === 29);
+    if (!champHasW29 && champStandings.length >= 6) {
+      // Championship Playoff Format:
+      // 1st place is Champion & automatically promoted to Super League!
+      // 2nd place receives a bye to semi-finals.
+      // 3rd vs 6th, 4th vs 5th contest eliminators for the Million Pound Game pathway.
+      champComp.fixtures = [
+        ...champComp.fixtures,
+        {
+          id: `champ_${season}_w29_elim1`,
+          competitionId: "championship",
+          season,
+          week: 29,
+          roundName: "Championship Eliminator 1",
+          homeClubId: champStandings[2].clubId,
+          awayClubId: champStandings[5].clubId,
+          isPlayed: false,
+        },
+        {
+          id: `champ_${season}_w29_elim2`,
+          competitionId: "championship",
+          season,
+          week: 29,
+          roundName: "Championship Eliminator 2",
+          homeClubId: champStandings[3].clubId,
+          awayClubId: champStandings[4].clubId,
+          isPlayed: false,
+        },
+      ];
+
+      // Send official news bulletin
+      const champChampName = state.clubs[champStandings[0]?.clubId]?.name || "Championship Champions";
+      const slRelegatedName = state.clubs[slStandings[13]?.clubId]?.name || "14th placed Super League club";
+      const slMpgName = state.clubs[slStandings[12]?.clubId]?.name || "13th placed Super League club";
+
+      newMessages.push(
+        createPostSeasonInboxMessage(
+          state,
+          `Championship Champions: ${champChampName} Promoted to Super League!`,
+          `Congratulations to ${champChampName}, who have officially finished 1st in the Betfred Championship! Under the competition rules, the top Championship team is automatically promoted to the Betfred Super League.\n\nMeanwhile, ${slRelegatedName} finish bottom (14th) in Super League and suffer automatic relegation to the Championship.\n\n${slMpgName} finish 13th in Super League and will enter The Million Pound Game against the winner of the Championship Playoffs!`
+        )
+      );
+    }
+  }
+
+  // 3. PLAYOFF SEMI-FINALS (WEEK 30)
+  if (targetWeek === 30) {
+    const slHasW30 = slComp.fixtures.some((f) => f.week === 30);
+    if (!slHasW30) {
+      const slElims = slComp.fixtures.filter(
+        (f) => f.week === 29 && f.roundName.includes("Eliminator") && f.isPlayed
+      );
+      if (slElims.length >= 2 && slStandings.length >= 2) {
+        const w1 = getMatchWinnerId(slElims[0]);
+        const w2 = getMatchWinnerId(slElims[1]);
+        const [higherSeed, lowerSeed] =
+          getClubRankIndex(slStandings, w1) < getClubRankIndex(slStandings, w2)
+            ? [w1, w2]
+            : [w2, w1];
+
+        slComp.fixtures = [
+          ...slComp.fixtures,
+          {
+            id: `sl_${season}_w30_sf1`,
+            competitionId: "super-league",
+            season,
+            week: 30,
+            roundName: "Super League Semi-Final 1",
+            homeClubId: slStandings[0].clubId,
+            awayClubId: lowerSeed,
+            isPlayed: false,
+          },
+          {
+            id: `sl_${season}_w30_sf2`,
+            competitionId: "super-league",
+            season,
+            week: 30,
+            roundName: "Super League Semi-Final 2",
+            homeClubId: slStandings[1].clubId,
+            awayClubId: higherSeed,
+            isPlayed: false,
+          },
+        ];
+      }
+    }
+
+    const champHasW30 = champComp.fixtures.some((f) => f.week === 30);
+    if (!champHasW30) {
+      const champElims = champComp.fixtures.filter(
+        (f) => f.week === 29 && f.roundName.includes("Eliminator") && f.isPlayed
+      );
+      if (champElims.length >= 2 && champStandings.length >= 2) {
+        const cw1 = getMatchWinnerId(champElims[0]);
+        const cw2 = getMatchWinnerId(champElims[1]);
+        const [higherSeed, lowerSeed] =
+          getClubRankIndex(champStandings, cw1) < getClubRankIndex(champStandings, cw2)
+            ? [cw1, cw2]
+            : [cw2, cw1];
+
+        champComp.fixtures = [
+          ...champComp.fixtures,
+          {
+            id: `champ_${season}_w30_sf1`,
+            competitionId: "championship",
+            season,
+            week: 30,
+            roundName: "Championship Semi-Final 1",
+            homeClubId: champStandings[1].clubId,
+            awayClubId: lowerSeed,
+            isPlayed: false,
+          },
+          {
+            id: `champ_${season}_w30_sf2`,
+            competitionId: "championship",
+            season,
+            week: 30,
+            roundName: "Championship Semi-Final 2",
+            homeClubId: higherSeed,
+            awayClubId: lowerSeed === cw1 ? cw2 : cw1,
+            isPlayed: false,
+          },
+        ];
+      }
+    }
+  }
+
+  // 4. FINALS (WEEK 31)
+  if (targetWeek === 31) {
+    const slHasW31 = slComp.fixtures.some((f) => f.week === 31);
+    if (!slHasW31) {
+      const slSfs = slComp.fixtures.filter(
+        (f) => f.week === 30 && f.roundName.includes("Semi-Final") && f.isPlayed
+      );
+      if (slSfs.length >= 2) {
+        const w1 = getMatchWinnerId(slSfs[0]);
+        const w2 = getMatchWinnerId(slSfs[1]);
+        const [homeClub, awayClub] =
+          getClubRankIndex(slStandings, w1) <= getClubRankIndex(slStandings, w2)
+            ? [w1, w2]
+            : [w2, w1];
+
+        slComp.fixtures = [
+          ...slComp.fixtures,
+          {
+            id: `sl_${season}_w31_grand_final`,
+            competitionId: "super-league",
+            season,
+            week: 31,
+            roundName: "Super League Grand Final",
+            homeClubId: homeClub,
+            awayClubId: awayClub,
+            isPlayed: false,
+          },
+        ];
+      }
+    }
+
+    const champHasW31 = champComp.fixtures.some((f) => f.week === 31);
+    if (!champHasW31) {
+      const champSfs = champComp.fixtures.filter(
+        (f) => f.week === 30 && f.roundName.includes("Semi-Final") && f.isPlayed
+      );
+      if (champSfs.length >= 2) {
+        const cw1 = getMatchWinnerId(champSfs[0]);
+        const cw2 = getMatchWinnerId(champSfs[1]);
+        const [homeClub, awayClub] =
+          getClubRankIndex(champStandings, cw1) <= getClubRankIndex(champStandings, cw2)
+            ? [cw1, cw2]
+            : [cw2, cw1];
+
+        champComp.fixtures = [
+          ...champComp.fixtures,
+          {
+            id: `champ_${season}_w31_playoff_final`,
+            competitionId: "championship",
+            season,
+            week: 31,
+            roundName: "Championship Playoff Final",
+            homeClubId: homeClub,
+            awayClubId: awayClub,
+            isPlayed: false,
+          },
+        ];
+      }
+    }
+  }
+
+  // 5. THE MILLION POUND GAME (WEEK 32)
+  if (targetWeek === 32) {
+    const slHasMpg = slComp.fixtures.some((f) => f.roundName === "The Million Pound Game");
+    if (!slHasMpg) {
+      const champFinal = champComp.fixtures.find(
+        (f) => f.week === 31 && f.roundName.includes("Playoff Final") && f.isPlayed
+      );
+      const champWinnerId = champFinal
+        ? getMatchWinnerId(champFinal)
+        : (champStandings[1]?.clubId || "toulouse-olympique");
+
+      // 13th place in Super League regular season (second bottom)
+      const sl13 = slStandings[12]?.clubId || "castleford-tigers";
+
+      const mpgFixture: ManagerFixture = {
+        id: `sl_${season}_w32_million_pound_game`,
+        competitionId: "super-league",
+        season,
+        week: 32,
+        roundName: "The Million Pound Game",
+        homeClubId: sl13,
+        awayClubId: champWinnerId,
+        isPlayed: false,
+      };
+
+      slComp.fixtures = [...slComp.fixtures, mpgFixture];
+
+      // Mirror into Championship fixtures so Championship managers see it in their fixtures list
+      const champMpgFixture: ManagerFixture = {
+        ...mpgFixture,
+        competitionId: "championship",
+      };
+      champComp.fixtures = [...champComp.fixtures, champMpgFixture];
+
+      const slClubName = state.clubs[sl13]?.name || sl13;
+      const champClubName = state.clubs[champWinnerId]?.name || champWinnerId;
+
+      newMessages.push(
+        createPostSeasonInboxMessage(
+          state,
+          `THE MILLION POUND GAME: ${slClubName} vs ${champClubName}`,
+          `The stage is set for rugby league's highest-stakes match: The Million Pound Game!\n\n${slClubName} (13th in Super League) take on Championship Playoff winners ${champClubName}.\n\nSTAKES:\n- If ${champClubName} win: They achieve promotion to the Betfred Super League, and ${slClubName} are relegated to the Championship.\n- If ${slClubName} win: They secure their Super League status, and ${champClubName} remain in the Championship.\n\nWinner takes all!`
+        )
+      );
+    }
+  }
+
+  // 6. POST-MPG BULLETIN (WEEK 33)
+  if (targetWeek === 33) {
+    const mpgFixture = slComp.fixtures.find(
+      (f) => f.roundName === "The Million Pound Game" && f.isPlayed
+    );
+    if (mpgFixture) {
+      const homeWon = (mpgFixture.homeScore || 0) > (mpgFixture.awayScore || 0);
+      const slClubName = state.clubs[mpgFixture.homeClubId]?.name || mpgFixture.homeClubId;
+      const champClubName = state.clubs[mpgFixture.awayClubId]?.name || mpgFixture.awayClubId;
+
+      if (!homeWon) {
+        newMessages.push(
+          createPostSeasonInboxMessage(
+            state,
+            `MILLION POUND GAME: ${champClubName} PROMOTED TO SUPER LEAGUE!`,
+            `${champClubName} have triumphed in The Million Pound Game (${mpgFixture.awayScore}-${mpgFixture.homeScore}) to earn promotion to the Betfred Super League!\n\n${slClubName} suffer relegation to the Betfred Championship.`
+          )
+        );
+      } else {
+        newMessages.push(
+          createPostSeasonInboxMessage(
+            state,
+            `MILLION POUND GAME: ${slClubName} SURVIVE IN SUPER LEAGUE!`,
+            `${slClubName} have defended their Super League status in The Million Pound Game with a ${mpgFixture.homeScore}-${mpgFixture.awayScore} victory over ${champClubName}!\n\n${slClubName} will play in Betfred Super League next season, while ${champClubName} will remain in the Betfred Championship.`
+          )
+        );
+      }
+    }
+  }
+
+  updatedCompetitions["challenge-cup"] = ccComp;
+  updatedCompetitions["super-league"] = slComp;
+  updatedCompetitions["championship"] = champComp;
+
+  const currentInbox = state.inbox || { messages: [], unreadCount: 0 };
+
+  return {
+    ...state,
+    competitions: updatedCompetitions,
+    inbox: {
+      ...currentInbox,
+      messages: [...newMessages, ...(currentInbox.messages || [])],
+      unreadCount: (currentInbox.unreadCount || 0) + newMessages.length,
+    },
+  };
 }

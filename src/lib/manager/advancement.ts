@@ -7,7 +7,7 @@
  * - Complete protection against duplicate button clicks, React rerenders, and race conditions.
  */
 
-import { updateStandingsForFixture } from "./competitions";
+import { updateStandingsForFixture, schedulePostSeasonAndCupFixtures } from "./competitions";
 import { processWeeklyFinances } from "./finances";
 import { tickActiveLoans } from "./loans";
 import { simulateManagerMatch } from "./match";
@@ -187,6 +187,9 @@ export function advanceWeek(state: ManagerState): ManagerState {
   } else if (currentWeek >= 32) {
     nextPhase = "season_end";
   }
+
+  // Schedule Cup knockout rounds, Top 6 Playoffs, and The Million Pound Game
+  intermediateState = schedulePostSeasonAndCupFixtures(intermediateState, nextWeek);
 
   const finalState: ManagerState = {
     ...intermediateState,

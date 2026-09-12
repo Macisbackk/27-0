@@ -232,7 +232,7 @@ export interface LeagueTableRow {
 
 export interface PlayoffMatch {
   id: string;
-  round: "eliminator" | "semi_final" | "grand_final";
+  round: "eliminator" | "semi_final" | "grand_final" | "million_pound_game";
   homeClubId: string;
   awayClubId: string;
   isPlayed: boolean;
