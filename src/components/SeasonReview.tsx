@@ -35,8 +35,6 @@ import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
 import { NORMAL, MANAGER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { GuestSaveNudge } from "@/components/EconomyExplainer";
-import { useAuth } from "@/lib/auth-context";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
 import { GameStatCard } from "@/components/ui/GameStatCard";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
@@ -81,7 +79,7 @@ export function SeasonReview({
   normalEraMode = false,
   dailyChallengeMode = false,
   dailyScenario = null,
-  runRank,
+  runRank: _runRank,
   submittedOnline = false,
   boostedRun = false,
   clubFundsPayout = null,
@@ -91,7 +89,6 @@ export function SeasonReview({
   onFinalizeSeason,
   onReturnHome,
 }: SeasonReviewProps) {
-  const { isLoggedIn, loading } = useAuth();
   const totalValue = getSquadValue(squad);
   const leagueTable = useMemo(
     () => buildLeagueTable(seasonResult, seed),
@@ -365,22 +362,13 @@ export function SeasonReview({
               <div className={`${MANAGER.statGrid2} mx-auto max-w-lg`}>
                 <GameStatCard
                   label="Regular Season Record"
-                  value={formatRecordWithPercentage(
-                    seasonResult.wins,
-                    seasonResult.losses
-                  )}
+                  value={`${Math.round(seasonResult.wins)}-${Math.round(seasonResult.losses)}`}
                   neutral
                   className="text-center"
                 />
                 <GameStatCard
                   label="League Position"
                   value={leaguePositionLabel}
-                  neutral
-                  className="text-center"
-                />
-                <GameStatCard
-                  label="National Rank"
-                  value={runRank ? `#${runRank}` : "—"}
                   neutral
                   className="text-center"
                 />
@@ -421,7 +409,7 @@ export function SeasonReview({
               delay={0.38}
             >
               <div
-                className="max-h-[min(48vh,22rem)] min-w-0 space-y-1 overflow-y-auto overscroll-contain text-left pr-0.5"
+                className="fixture-results-list max-h-[min(48vh,22rem)] min-w-0 overflow-y-auto overscroll-contain text-left pr-0.5"
                 data-scroll-lock-allow="true"
               >
                 {seasonResult.fixtures.map((fixture) => {
@@ -474,9 +462,6 @@ export function SeasonReview({
               transition={{ delay: 0.65 }}
             >
               <div className="space-y-3">
-                {!loading && !isLoggedIn && !showPlayoffPrompt && (
-                  <GuestSaveNudge context="quick-season" />
-                )}
                 {!showPlayoffPrompt ? (
                   <MatchReviewActions
                     onPlayAgain={handlePlayAgain}

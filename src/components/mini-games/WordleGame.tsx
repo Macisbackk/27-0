@@ -35,6 +35,7 @@ import type {
   WordleGuess,
   WordleRun,
 } from "@/lib/mini-games/wordle/types";
+import { syncMiniGameWins } from "@/lib/storage/mini-games-leaderboard";
 import {
   claimMiniGameReward,
   WORDLE_WIN_REWARD,
@@ -117,6 +118,7 @@ function settleWordle(run: WordleRun): WordleRunView {
   if (run.status === "playing" || run.rewardClaimed) return run;
   const stats = recordWordleResult(loadWordleStats(), run);
   saveWordleStats(stats);
+  syncMiniGameWins("wordle", stats.wins);
   triggerMiniGameAchievements({
     played: true,
     wordleWon: run.status === "won",

@@ -62,6 +62,39 @@ export function extractSquadNavboxPlayers(wikitext: string): string[] {
   return [...new Set(players)];
 }
 
+/** Parse {{Rugby league match squad}} home/away player slots from a final page. */
+export function extractMatchSquadPlayers(
+  wikitext: string,
+  side: "home" | "away"
+): string[] {
+  const prefix = side === "home" ? "home" : "away";
+  const players: string[] = [];
+  const slotRe = new RegExp(
+    String.raw`\|\s*${prefix}(?!Coach|team|Border|BGcolour|FGcolour)[A-Za-z0-9]+\s*=\s*([^\n]+)`,
+    "gi"
+  );
+  for (const match of wikitext.matchAll(slotRe)) {
+    const raw = match[1] ?? "";
+    for (const link of raw.matchAll(/\[\[([^\]|#]+)(?:\|[^\]]+)?\]\]/g)) {
+      const name = cleanWikiName(link[1] ?? "");
+      if (name && !/coach/i.test(name)) players.push(name);
+    }
+  }
+  return [...new Set(players)];
+}
+
+function winningSideFromInfobox(wikitext: string): "home" | "away" | null {
+  const homeTotal = wikitext.match(/\|\s*home_total\s*=\s*(\d+)/i);
+  const awayTotal = wikitext.match(/\|\s*away_total\s*=\s*(\d+)/i);
+  if (!homeTotal || !awayTotal) return null;
+  const home = Number(homeTotal[1]);
+  const away = Number(awayTotal[1]);
+  if (!Number.isFinite(home) || !Number.isFinite(away) || home === away) {
+    return null;
+  }
+  return home > away ? "home" : "away";
+}
+
 export function parsePlayerTrophyHonours(wikitext: string): {
   superLeague: boolean;
   challengeCup: boolean;
@@ -176,7 +209,19 @@ export async function extractWinnersFromFinalPage(
     }
   }
 
-  return extractSquadNavboxPlayers(wikitext);
+  const fromNavbox = extractSquadNavboxPlayers(wikitext);
+  if (fromNavbox.length > 0) return fromNavbox;
+
+  // Recent finals use {{Rugby league match squad}} instead of winners navboxes.
+  if (/Rugby league match squad/i.test(wikitext)) {
+    const side = winningSideFromInfobox(wikitext);
+    if (side) {
+      const matchSquad = extractMatchSquadPlayers(wikitext, side);
+      if (matchSquad.length > 0) return matchSquad;
+    }
+  }
+
+  return [];
 }
 
 export async function buildTrophyWinnerCache(options?: {

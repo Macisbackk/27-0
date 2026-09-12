@@ -27,6 +27,7 @@ import {
   HANGMAN_WIN_REWARD,
 } from "@/lib/mini-games/rewards";
 import { triggerMiniGameAchievements } from "@/lib/achievements/achievementTriggers";
+import { syncMiniGameWins } from "@/lib/storage/mini-games-leaderboard";
 import { Confetti } from "@/components/Confetti";
 import {
   playMiniCorrect,
@@ -69,7 +70,9 @@ function answerWords(letters: string[]): string[][] {
 
 function settleHangman(run: HangmanRun): HangmanView {
   if (run.status === "playing" || run.rewardClaimed) return run;
-  saveHangmanStats(recordHangmanResult(loadHangmanStats(), run));
+  const stats = recordHangmanResult(loadHangmanStats(), run);
+  saveHangmanStats(stats);
+  syncMiniGameWins("hangman", stats.wins);
   triggerMiniGameAchievements({
     played: true,
     hangmanWon: run.status === "won",

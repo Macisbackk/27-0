@@ -1,6 +1,7 @@
 import { triggerQuizAchievements } from "@/lib/achievements/achievementTriggers";
 import { getUsername } from "@/lib/storage/user";
 import { syncQuizLeaderboard } from "@/lib/storage/quiz-leaderboard";
+import { syncMiniGameWins } from "@/lib/storage/mini-games-leaderboard";
 import { countCorrectAnswers, isTerminalQuizPhase } from "./engine";
 import { getCurrentPrize } from "./prizes";
 import { claimQuizReward } from "./rewards";
@@ -44,6 +45,7 @@ export function settleCompletedQuizRun(
       millionaireRuns: stats.perfectRuns,
       questionsCorrect: stats.questionsCorrect,
     });
+    syncMiniGameWins("quiz-wins", stats.perfectRuns);
   }
 
   return paid;

@@ -1,17 +1,64 @@
 {
-  "generatedAt": "2026-06-11T08:50:28.549Z",
+  "generatedAt": "2026-09-11T21:40:23.602Z",
   "allowedSources": [
     "Wikipedia",
     "Official Super League website"
   ],
-  "cacheBuiltAt": "2026-06-11T08:46:40.682Z",
-  "superLeagueWinnersInCache": 226,
-  "challengeCupWinnersInCache": 162,
+  "cacheBuiltAt": "2026-09-11T21:40:11.222Z",
+  "superLeagueWinnersInCache": 225,
+  "challengeCupWinnersInCache": 167,
   "playersUpdated": [
     {
-      "id": "wigan-cur-harry-smith",
-      "name": "Harry Smith",
+      "id": "hull-kr-cur-kelepi-tanginoa",
+      "name": "Kelepi Tanginoa",
       "file": "current-squads.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-cur-oliver-wilson",
+      "name": "Oliver Wilson",
+      "file": "current-squads.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": false,
+      "sources": []
+    },
+    {
+      "id": "wigan-cur-sam-eseh",
+      "name": "Sam Eseh",
+      "file": "current-squads.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": false,
+      "sources": []
+    },
+    {
+      "id": "wigan-hist-era-robbie-mccormack",
+      "name": "Robbie McCormack",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "st-helens-hist-era-joel-thompson",
+      "name": "Joel Thompson",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-era-rhyse-martin",
+      "name": "Rhyse Martin",
+      "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": true,
       "sources": [
@@ -20,53 +67,9 @@
       ]
     },
     {
-      "id": "wigan-cur-luke-thompson",
-      "name": "Luke Thompson",
-      "file": "current-squads.json",
-      "superLeagueWinner": true,
-      "challengeCupWinner": true,
-      "sources": [
-        "Wikipedia",
-        "Official Super League website"
-      ]
-    },
-    {
-      "id": "leeds-cur-ryan-hall",
-      "name": "Ryan Hall",
-      "file": "current-squads.json",
-      "superLeagueWinner": true,
-      "challengeCupWinner": false,
-      "sources": [
-        "Wikipedia",
-        "Official Super League website"
-      ]
-    },
-    {
-      "id": "warrington-cur-toby-king",
-      "name": "Toby King",
-      "file": "current-squads.json",
-      "superLeagueWinner": true,
-      "challengeCupWinner": false,
-      "sources": [
-        "Wikipedia",
-        "Official Super League website"
-      ]
-    },
-    {
-      "id": "warrington-cur-george-williams",
-      "name": "George Williams",
-      "file": "current-squads.json",
-      "superLeagueWinner": true,
-      "challengeCupWinner": false,
-      "sources": [
-        "Wikipedia",
-        "Official Super League website"
-      ]
-    },
-    {
-      "id": "warrington-cur-liam-byrne",
+      "id": "wigan-hist-era-liam-byrne",
       "name": "Liam Byrne",
-      "file": "current-squads.json",
+      "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": true,
       "sources": [
@@ -75,9 +78,9 @@
       ]
     },
     {
-      "id": "warrington-cur-james-bentley",
-      "name": "James Bentley",
-      "file": "current-squads.json",
+      "id": "st-helens-hist-era-jon-bennison",
+      "name": "Jon Bennison",
+      "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": false,
       "sources": [
@@ -86,9 +89,9 @@
       ]
     },
     {
-      "id": "hull-kr-cur-tom-davies",
-      "name": "Tom Davies",
-      "file": "current-squads.json",
+      "id": "leeds-hist-brad-singleton-2016",
+      "name": "Brad Singleton",
+      "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": true,
       "sources": [
@@ -97,10 +100,21 @@
       ]
     },
     {
-      "id": "hull-kr-cur-james-batchelor",
-      "name": "James Batchelor",
-      "file": "current-squads.json",
-      "superLeagueWinner": false,
+      "id": "hull-fc-hist-era-jack-ashworth",
+      "name": "Jack Ashworth",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-era-liam-sutcliffe",
+      "name": "Liam Sutcliffe",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
       "challengeCupWinner": true,
       "sources": [
         "Wikipedia",
@@ -108,9 +122,42 @@
       ]
     },
     {
-      "id": "hull-kr-cur-jack-broadbent",
+      "id": "leeds-hist-era-brad-singleton",
+      "name": "Brad Singleton",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-era-tyler-dupree",
+      "name": "Tyler Dupree",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-era-abbas-miski",
+      "name": "Abbas Miski",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "castleford-hist-era-jack-broadbent",
       "name": "Jack Broadbent",
-      "file": "current-squads.json",
+      "file": "historic-players.json",
       "superLeagueWinner": false,
       "challengeCupWinner": true,
       "sources": [
@@ -119,9 +166,9 @@
       ]
     },
     {
-      "id": "hull-kr-cur-jack-brown",
-      "name": "Jack Brown",
-      "file": "current-squads.json",
+      "id": "hull-kr-hist-era-sam-luckley",
+      "name": "Sam Luckley",
+      "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": true,
       "sources": [
@@ -130,9 +177,53 @@
       ]
     },
     {
-      "id": "leigh-cur-jack-hughes",
+      "id": "st-helens-hist-era-agnatius-paasi",
+      "name": "Agnatius Paasi",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-era-ryan-hall",
+      "name": "Ryan Hall",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-era-kruise-leeming",
+      "name": "Kruise Leeming",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leigh-hist-era-josh-charnley",
+      "name": "Josh Charnley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leigh-hist-era-jack-hughes",
       "name": "Jack Hughes",
-      "file": "current-squads.json",
+      "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": false,
       "sources": [
@@ -141,58 +232,18 @@
       ]
     },
     {
-      "id": "huddersfield-cur-adam-swift",
-      "name": "Adam Swift",
-      "file": "current-squads.json",
+      "id": "leeds-hist-kallum-watkins-2008",
+      "name": "Kallum Watkins",
+      "file": "historic-players.json",
       "superLeagueWinner": true,
-      "challengeCupWinner": false,
+      "challengeCupWinner": true,
       "sources": [
         "Wikipedia",
         "Official Super League website"
       ]
     },
     {
-      "id": "leeds-cur-jack-walker",
-      "name": "Jack Walker",
-      "file": "current-squads.json",
-      "superLeagueWinner": true,
-      "challengeCupWinner": false,
-      "sources": [
-        "Wikipedia"
-      ]
-    },
-    {
-      "id": "bradford-hist-brian-mcdermott",
-      "name": "Brian McDermott",
-      "file": "historic-players.json",
-      "superLeagueWinner": true,
-      "challengeCupWinner": false,
-      "sources": [
-        "Wikipedia"
-      ]
-    },
-    {
-      "id": "widnes-hist-jon-clarke",
-      "name": "Jon Clarke",
-      "file": "historic-players.json",
-      "superLeagueWinner": false,
-      "challengeCupWinner": true,
-      "sources": [
-        "Wikipedia"
-      ]
-    },
-    {
-      "id": "warrington-hist-paul-wood",
-      "name": "Paul Wood",
-      "file": "historic-players.json",
-      "superLeagueWinner": false,
-      "challengeCupWinner": true,
-      "sources": [
-        "Wikipedia"
-      ]
-    },
-    {
-      "id": "wigan-hist-john-bateman",
+      "id": "bradford-hist-john-bateman-2012",
       "name": "John Bateman",
       "file": "historic-players.json",
       "superLeagueWinner": true,
@@ -202,77 +253,117 @@
       ]
     },
     {
-      "id": "leeds-hist-james-donaldson",
-      "name": "James Donaldson",
-      "file": "historic-players.json",
-      "superLeagueWinner": false,
-      "challengeCupWinner": true,
-      "sources": [
-        "Wikipedia"
-      ]
-    },
-    {
-      "id": "salford-hist-mark-flanagan",
-      "name": "Mark Flanagan",
+      "id": "wigan-hist-ryan-sutton-2015",
+      "name": "Ryan Sutton",
       "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": false,
       "sources": [
-        "Wikipedia"
+        "Wikipedia",
+        "Official Super League website"
       ]
     },
     {
-      "id": "bradford-hist-ben-harris",
-      "name": "Ben Harris",
+      "id": "leeds-hist-kallum-watkins-2009",
+      "name": "Kallum Watkins",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-ryan-sutton-2016",
+      "name": "Ryan Sutton",
       "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": false,
       "sources": [
-        "Wikipedia"
+        "Wikipedia",
+        "Official Super League website"
       ]
     },
     {
-      "id": "wakefield-hist-ben-harrison",
-      "name": "Ben Harrison",
+      "id": "hull-kr-hist-mikey-lewis-2020",
+      "name": "Mikey Lewis",
       "file": "historic-players.json",
-      "superLeagueWinner": false,
+      "superLeagueWinner": true,
       "challengeCupWinner": true,
       "sources": [
-        "Wikipedia"
+        "Wikipedia",
+        "Official Super League website"
       ]
     },
     {
-      "id": "catalans-hist-ian-henderson",
-      "name": "Ian Henderson",
+      "id": "hull-kr-hist-dean-hadley-2020",
+      "name": "Dean Hadley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-oliver-gildart-2015",
+      "name": "Oliver Gildart",
       "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": false,
       "sources": [
-        "Wikipedia"
+        "Wikipedia",
+        "Official Super League website"
       ]
     },
     {
-      "id": "wakefield-hist-chris-hicks",
-      "name": "Chris Hicks",
+      "id": "warrington-hist-gareth-o-brien-2015",
+      "name": "Gareth O'Brien",
       "file": "historic-players.json",
       "superLeagueWinner": false,
       "challengeCupWinner": true,
       "sources": [
-        "Wikipedia"
+        "Wikipedia",
+        "Official Super League website"
       ]
     },
     {
-      "id": "wakefield-hist-chris-hill",
-      "name": "Chris Hill",
+      "id": "leeds-hist-ben-jones-bishop-2009",
+      "name": "Ben Jones-Bishop",
       "file": "historic-players.json",
-      "superLeagueWinner": false,
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-tom-briscoe-2009",
+      "name": "Tom Briscoe",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
       "challengeCupWinner": true,
       "sources": [
-        "Wikipedia"
+        "Wikipedia",
+        "Official Super League website"
       ]
     },
     {
-      "id": "st-helens-hist-josh-jones",
+      "id": "wigan-hist-oliver-gildart-2016",
+      "name": "Oliver Gildart",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "st-helens-hist-josh-jones-2015",
       "name": "Josh Jones",
       "file": "historic-players.json",
       "superLeagueWinner": true,
@@ -282,8 +373,51 @@
       ]
     },
     {
-      "id": "wakefield-hist-matt-king",
-      "name": "Matt King",
+      "id": "st-helens-hist-jack-ashworth-2015",
+      "name": "Jack Ashworth",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-jez-litten-2020",
+      "name": "Jez Litten",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-toby-king-2015",
+      "name": "Toby King",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-era-jared-waerea-hargreaves",
+      "name": "Jared Waerea-Hargreaves",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-ryan-atkins-2006",
+      "name": "Ryan Atkins",
       "file": "historic-players.json",
       "superLeagueWinner": false,
       "challengeCupWinner": true,
@@ -292,28 +426,18 @@
       ]
     },
     {
-      "id": "wigan-hist-jeff-lima",
-      "name": "Jeff Lima",
+      "id": "bradford-hist-paul-johnson-2006",
+      "name": "Paul Johnson",
       "file": "historic-players.json",
-      "superLeagueWinner": false,
+      "superLeagueWinner": true,
       "challengeCupWinner": true,
       "sources": [
         "Wikipedia"
       ]
     },
     {
-      "id": "leeds-hist-matt-prior",
-      "name": "Matt Prior",
-      "file": "historic-players.json",
-      "superLeagueWinner": false,
-      "challengeCupWinner": true,
-      "sources": [
-        "Wikipedia"
-      ]
-    },
-    {
-      "id": "st-helens-hist-greg-richards",
-      "name": "Greg Richards",
+      "id": "hull-fc-hist-mark-calderwood-2009",
+      "name": "Mark Calderwood",
       "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": false,
@@ -322,18 +446,19 @@
       ]
     },
     {
-      "id": "wakefield-hist-chris-riley",
-      "name": "Chris Riley",
+      "id": "wigan-hist-george-williams-2015",
+      "name": "George Williams",
       "file": "historic-players.json",
-      "superLeagueWinner": false,
-      "challengeCupWinner": true,
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
       "sources": [
-        "Wikipedia"
+        "Wikipedia",
+        "Official Super League website"
       ]
     },
     {
-      "id": "st-helens-hist-aaron-smith",
-      "name": "Aaron Smith",
+      "id": "wigan-hist-dan-sarginson-2016",
+      "name": "Dan Sarginson",
       "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": false,
@@ -342,8 +467,30 @@
       ]
     },
     {
-      "id": "wigan-hist-matty-smith",
-      "name": "Matty Smith",
+      "id": "st-helens-hist-adam-swift-2015",
+      "name": "Adam Swift",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "st-helens-hist-luke-thompson-2015",
+      "name": "Luke Thompson",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-mitch-garbutt-2020",
+      "name": "Mitch Garbutt",
       "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": true,
@@ -352,11 +499,511 @@
       ]
     },
     {
-      "id": "hull-fc-hist-scott-taylor",
-      "name": "Scott Taylor",
+      "id": "bradford-hist-brett-ferres-2006",
+      "name": "Brett Ferres",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-chev-walker-2012",
+      "name": "Chev Walker",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-ben-jones-bishop-2013",
+      "name": "Ben Jones-Bishop",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-ash-handley-2016",
+      "name": "Ash Handley",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-stevie-ward-2016",
+      "name": "Stevie Ward",
       "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-paul-johnson-2013",
+      "name": "Paul Johnson",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-ben-harrison-2015",
+      "name": "Ben Harrison",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "hull-kr-hist-robbie-mulhern-2020",
+      "name": "Robbie Mulhern",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "bradford-hist-luke-gale-2012",
+      "name": "Luke Gale",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-tom-briscoe-2016",
+      "name": "Tom Briscoe",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-brett-ferres-2016",
+      "name": "Brett Ferres",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-jordan-turner-2012",
+      "name": "Jordan Turner",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-tom-briscoe-2013",
+      "name": "Tom Briscoe",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-joe-burgess-2015",
+      "name": "Joe Burgess",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-george-williams-2016",
+      "name": "George Williams",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "st-helens-hist-mark-percival-2015",
+      "name": "Mark Percival",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "bradford-hist-matt-diskin-2012",
+      "name": "Matt Diskin",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-stefan-ratchford-2015",
+      "name": "Stefan Ratchford",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-josh-charnley-2015",
+      "name": "Josh Charnley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "st-helens-hist-alex-walmsley-2015",
+      "name": "Alex Walmsley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2015",
+      "name": "Liam Farrell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-josh-charnley-2016",
+      "name": "Josh Charnley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-chris-hill-2015",
+      "name": "Chris Hill",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-gareth-ellis-2008",
+      "name": "Gareth Ellis",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-ryan-hall-2009",
+      "name": "Ryan Hall",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-zak-hardaker-2013",
+      "name": "Zak Hardaker",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2016",
+      "name": "Liam Farrell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "bradford-hist-iestyn-harris-2006",
+      "name": "Iestyn Harris",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-ryan-hall-2013",
+      "name": "Ryan Hall",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-gareth-ellis-2013",
+      "name": "Gareth Ellis",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-kallum-watkins-2013",
+      "name": "Kallum Watkins",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-zak-hardaker-2016",
+      "name": "Zak Hardaker",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-kallum-watkins-2016",
+      "name": "Kallum Watkins",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-oliver-partington",
+      "name": "Oliver Partington",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-era-jack-walker",
+      "name": "Jack Walker",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-era-morgan-smithies",
+      "name": "Morgan Smithies",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-mitch-garbutt-2016",
+      "name": "Mitch Garbutt",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-era-kai-pearce-paul",
+      "name": "Kai Pearce-Paul",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-jimmy-keinhorst-2016",
+      "name": "Jimmy Keinhorst",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-matt-diskin-2014",
+      "name": "Matt Diskin",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-matt-diskin-2008",
+      "name": "Matt Diskin",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-matt-diskin-2013",
+      "name": "Matt Diskin",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-matt-diskin-2009",
+      "name": "Matt Diskin",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-mark-calderwood-2006",
+      "name": "Mark Calderwood",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-matt-diskin-2011",
+      "name": "Matt Diskin",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-paul-aiton-2015",
+      "name": "Paul Aiton",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-brett-ferres-2013",
+      "name": "Brett Ferres",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "castleford-hist-brett-ferres-2009",
+      "name": "Brett Ferres",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "castleford-hist-brett-ferres-2012",
+      "name": "Brett Ferres",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
       "sources": [
         "Wikipedia"
       ]
@@ -372,8 +1019,8 @@
       ]
     },
     {
-      "id": "james-graham",
-      "name": "James Graham",
+      "id": "hull-fc-hist-lee-radford",
+      "name": "Lee Radford",
       "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": false,
@@ -382,8 +1029,8 @@
       ]
     },
     {
-      "id": "henry-paul",
-      "name": "Henry Paul",
+      "id": "bradford-hist-lee-radford-2004",
+      "name": "Lee Radford",
       "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": false,
@@ -392,72 +1039,3039 @@
       ]
     },
     {
-      "id": "paul-anderson",
-      "name": "Paul Anderson",
+      "id": "bradford-hist-paul-johnson-2004",
+      "name": "Paul Johnson",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wakefield-hist-paul-johnson-2010",
+      "name": "Paul Johnson",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-lee-radford-1999",
+      "name": "Lee Radford",
       "file": "historic-players.json",
       "superLeagueWinner": true,
       "challengeCupWinner": false,
       "sources": [
         "Wikipedia"
       ]
+    },
+    {
+      "id": "bradford-hist-lee-radford-2003",
+      "name": "Lee Radford",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-paul-johnson-2005",
+      "name": "Paul Johnson",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-lee-radford-2000",
+      "name": "Lee Radford",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-lee-radford-2002",
+      "name": "Lee Radford",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-lee-radford-2001",
+      "name": "Lee Radford",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-matt-diskin",
+      "name": "Matt Diskin",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-chev-walker",
+      "name": "Chev Walker",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-joel-tomkins-2016",
+      "name": "Joel Tomkins",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-joel-tomkins-2008",
+      "name": "Joel Tomkins",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-chev-walker-2011",
+      "name": "Chev Walker",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-chev-walker-2014",
+      "name": "Chev Walker",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-joel-tomkins-2015",
+      "name": "Joel Tomkins",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-chev-walker-2013",
+      "name": "Chev Walker",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "castleford-hist-brett-ferres",
+      "name": "Brett Ferres",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-cur-ash-handley-2015",
+      "name": "Ash Handley",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-joel-tomkins",
+      "name": "Joel Tomkins",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-lesley-vainikolo-2006",
+      "name": "Lesley Vainikolo",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-lesley-vainikolo-2002",
+      "name": "Lesley Vainikolo",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-lesley-vainikolo-2005",
+      "name": "Lesley Vainikolo",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-lesley-vainikolo-2003",
+      "name": "Lesley Vainikolo",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "bradford-hist-lesley-vainikolo-2004",
+      "name": "Lesley Vainikolo",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "lesley-vainikolo",
+      "name": "Lesley Vainikolo",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-garry-connolly",
+      "name": "Garry Connolly",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-ben-harrison-2009",
+      "name": "Ben Harrison",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-gareth-ellis-2016",
+      "name": "Gareth Ellis",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "salford-hist-gareth-o-brien-2016",
+      "name": "Gareth O'Brien",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "salford-hist-josh-jones-2016",
+      "name": "Josh Jones",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "st-helens-hist-mark-percival-2016",
+      "name": "Mark Percival",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "st-helens-hist-adam-swift-2016",
+      "name": "Adam Swift",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "st-helens-hist-alex-walmsley-2016",
+      "name": "Alex Walmsley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wakefield-hist-ben-jones-bishop-2016",
+      "name": "Ben Jones-Bishop",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-jordan-turner-2020",
+      "name": "Jordan Turner",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-scott-taylor-2020",
+      "name": "Scott Taylor",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-ash-handley-2020",
+      "name": "Ash Handley",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-alex-mellor-2020",
+      "name": "Alex Mellor",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-ava-seumanufagai-2020",
+      "name": "Ava Seumanufagai",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-jack-walker-2020",
+      "name": "Jack Walker",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-konrad-hurrell-2020",
+      "name": "Konrad Hurrell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-liam-sutcliffe-2020",
+      "name": "Liam Sutcliffe",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-luke-gale-2020",
+      "name": "Luke Gale",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-matt-prior-2020",
+      "name": "Matt Prior",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-robert-lui-2020",
+      "name": "Robert Lui",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-brad-dwyer-2020",
+      "name": "Brad Dwyer",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-james-donaldson-2020",
+      "name": "James Donaldson",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-toby-king-2020",
+      "name": "Toby King",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-chris-hill-2020",
+      "name": "Chris Hill",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-jack-hughes-2020",
+      "name": "Jack Hughes",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-stefan-ratchford-2020",
+      "name": "Stefan Ratchford",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-anthony-gelling-2020",
+      "name": "Anthony Gelling",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-josh-charnley-2020",
+      "name": "Josh Charnley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2020",
+      "name": "Liam Farrell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-bevan-french-2020",
+      "name": "Bevan French",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-sam-powell-2020",
+      "name": "Sam Powell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-morgan-smithies-2020",
+      "name": "Morgan Smithies",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-sean-o-loughlin-2020",
+      "name": "Sean O'Loughlin",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-dominic-manfredi-2020",
+      "name": "Dominic Manfredi",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-jake-bibby-2020",
+      "name": "Jake Bibby",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-joe-burgess-2020",
+      "name": "Joe Burgess",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-oliver-partington-2020",
+      "name": "Oliver Partington",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-thomas-leuluai-2020",
+      "name": "Thomas Leuluai",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-willie-isa-2020",
+      "name": "Willie Isa",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-zak-hardaker-2020",
+      "name": "Zak Hardaker",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-ethan-havard-2020",
+      "name": "Ethan Havard",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-harry-smith-2020",
+      "name": "Harry Smith",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-josh-jones-2021",
+      "name": "Josh Jones",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-joe-greenwood-2021",
+      "name": "Joe Greenwood",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-adam-swift-2021",
+      "name": "Adam Swift",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-rhyse-martin-2021",
+      "name": "Rhyse Martin",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-ash-handley-2021",
+      "name": "Ash Handley",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-kruise-leeming-2021",
+      "name": "Kruise Leeming",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-alex-mellor-2021",
+      "name": "Alex Mellor",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-liam-sutcliffe-2021",
+      "name": "Liam Sutcliffe",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-luke-gale-2021",
+      "name": "Luke Gale",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-matt-prior-2021",
+      "name": "Matt Prior",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-tom-briscoe-2021",
+      "name": "Tom Briscoe",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-brad-dwyer-2021",
+      "name": "Brad Dwyer",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-james-donaldson-2021",
+      "name": "James Donaldson",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-toby-king-2021",
+      "name": "Toby King",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-chris-hill-2021",
+      "name": "Chris Hill",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-jack-hughes-2021",
+      "name": "Jack Hughes",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-josh-charnley-2021",
+      "name": "Josh Charnley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-stefan-ratchford-2021",
+      "name": "Stefan Ratchford",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-robbie-mulhern-2021",
+      "name": "Robbie Mulhern",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2021",
+      "name": "Liam Farrell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-sam-powell-2021",
+      "name": "Sam Powell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-willie-isa-2021",
+      "name": "Willie Isa",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-brad-singleton-2021",
+      "name": "Brad Singleton",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-harry-smith-2021",
+      "name": "Harry Smith",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-jake-bibby-2021",
+      "name": "Jake Bibby",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-john-bateman-2021",
+      "name": "John Bateman",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-marshall-2021",
+      "name": "Liam Marshall",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-oliver-gildart-2021",
+      "name": "Oliver Gildart",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-oliver-partington-2021",
+      "name": "Oliver Partington",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-tony-clubb-2021",
+      "name": "Tony Clubb",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-zak-hardaker-2021",
+      "name": "Zak Hardaker",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-byrne-2021",
+      "name": "Liam Byrne",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-ethan-havard-2021",
+      "name": "Ethan Havard",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-joe-shorrocks-2021",
+      "name": "Joe Shorrocks",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-theo-fages-2022",
+      "name": "Théo Fages",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-chris-hill-2022",
+      "name": "Chris Hill",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-josh-jones-2022",
+      "name": "Josh Jones",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-joe-greenwood-2022",
+      "name": "Joe Greenwood",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-adam-swift-2022",
+      "name": "Adam Swift",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-luke-gale-2022",
+      "name": "Luke Gale",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-jack-brown-2022",
+      "name": "Jack Brown",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-kruise-leeming-2022",
+      "name": "Kruise Leeming",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-rhyse-martin-2022",
+      "name": "Rhyse Martin",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-ash-handley-2022",
+      "name": "Ash Handley",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-james-bentley-2022",
+      "name": "James Bentley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-liam-sutcliffe-2022",
+      "name": "Liam Sutcliffe",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-matt-prior-2022",
+      "name": "Matt Prior",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leeds-hist-zak-hardaker-2022",
+      "name": "Zak Hardaker",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-brad-dwyer-2022",
+      "name": "Brad Dwyer",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-james-donaldson-2022",
+      "name": "James Donaldson",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wakefield-hist-jai-whitbread-2022",
+      "name": "Jai Whitbread",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wakefield-hist-james-batchelor-2022",
+      "name": "James Batchelor",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wakefield-hist-kelepi-tanginoa-2022",
+      "name": "Kelepi Tanginoa",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-george-williams-2022",
+      "name": "George Williams",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-toby-king-2022",
+      "name": "Toby King",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-stefan-ratchford-2022",
+      "name": "Stefan Ratchford",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-josh-charnley-2022",
+      "name": "Josh Charnley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-robbie-mulhern-2022",
+      "name": "Robbie Mulhern",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-bevan-french-2022",
+      "name": "Bevan French",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-jai-field-2022",
+      "name": "Jai Field",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2022",
+      "name": "Liam Farrell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-harry-smith-2022",
+      "name": "Harry Smith",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-sam-powell-2022",
+      "name": "Sam Powell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-brad-singleton-2022",
+      "name": "Brad Singleton",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-cade-cust-2022",
+      "name": "Cade Cust",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-jake-bibby-2022",
+      "name": "Jake Bibby",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-john-bateman-2022",
+      "name": "John Bateman",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-byrne-2022",
+      "name": "Liam Byrne",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-marshall-2022",
+      "name": "Liam Marshall",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-morgan-smithies-2022",
+      "name": "Morgan Smithies",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-ethan-havard-2022",
+      "name": "Ethan Havard",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-kaide-ellis-2022",
+      "name": "Kaide Ellis",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-oliver-partington-2022",
+      "name": "Oliver Partington",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-patrick-mago-2022",
+      "name": "Patrick Mago",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-chris-hill-2023",
+      "name": "Chris Hill",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-kevin-naiqama-2023",
+      "name": "Kevin Naiqama",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-joe-greenwood-2023",
+      "name": "Joe Greenwood",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-adam-swift-2023",
+      "name": "Adam Swift",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-liam-sutcliffe-2023",
+      "name": "Liam Sutcliffe",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-scott-taylor-2023",
+      "name": "Scott Taylor",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-brad-dwyer-2023",
+      "name": "Brad Dwyer",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-ash-handley-2023",
+      "name": "Ash Handley",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-rhyse-martin-2023",
+      "name": "Rhyse Martin",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-james-bentley-2023",
+      "name": "James Bentley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-james-donaldson-2023",
+      "name": "James Donaldson",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wakefield-hist-jai-whitbread-2023",
+      "name": "Jai Whitbread",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wakefield-hist-samisoni-langi-2023",
+      "name": "Samisoni Langi",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-george-williams-2023",
+      "name": "George Williams",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-josh-drinkwater-2023",
+      "name": "Josh Drinkwater",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-stefan-ratchford-2023",
+      "name": "Stefan Ratchford",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-bevan-french-2023",
+      "name": "Bevan French",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-harry-smith-2023",
+      "name": "Harry Smith",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2023",
+      "name": "Liam Farrell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-jai-field-2023",
+      "name": "Jai Field",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-toby-king-2023",
+      "name": "Toby King",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-marshall-2023",
+      "name": "Liam Marshall",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-morgan-smithies-2023",
+      "name": "Morgan Smithies",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-kai-pearce-paul-2023",
+      "name": "Kai Pearce-Paul",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-hist-kaide-ellis-2023",
+      "name": "Kaide Ellis",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-byrne-2023",
+      "name": "Liam Byrne",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-sam-powell-2023",
+      "name": "Sam Powell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-ethan-havard-2023",
+      "name": "Ethan Havard",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-patrick-mago-2023",
+      "name": "Patrick Mago",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-joe-shorrocks-2023",
+      "name": "Joe Shorrocks",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-adam-swift-2024",
+      "name": "Adam Swift",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-chris-hill-2024",
+      "name": "Chris Hill",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-joe-greenwood-2024",
+      "name": "Joe Greenwood",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-kevin-naiqama-2024",
+      "name": "Kevin Naiqama",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-liam-sutcliffe-2024",
+      "name": "Liam Sutcliffe",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-ash-handley-2024",
+      "name": "Ash Handley",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-rhyse-martin-2024",
+      "name": "Rhyse Martin",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-james-bentley-2024",
+      "name": "James Bentley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-mickael-goudemand-2024",
+      "name": "Mickaël Goudemand",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-george-williams-2024",
+      "name": "George Williams",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-toby-king-2024",
+      "name": "Toby King",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-josh-drinkwater-2024",
+      "name": "Josh Drinkwater",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "warrington-hist-sam-powell-2024",
+      "name": "Sam Powell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-bevan-french-2024",
+      "name": "Bevan French",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-junior-nsemba-2024",
+      "name": "Junior Nsemba",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-harry-smith-2024",
+      "name": "Harry Smith",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2024",
+      "name": "Liam Farrell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-jai-field-2024",
+      "name": "Jai Field",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-kaide-ellis-2024",
+      "name": "Kaide Ellis",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-marshall-2024",
+      "name": "Liam Marshall",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-luke-thompson-2024",
+      "name": "Luke Thompson",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-abbas-miski-2024",
+      "name": "Abbas Miski",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-adam-keighran-2024",
+      "name": "Adam Keighran",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-ethan-havard-2024",
+      "name": "Ethan Havard",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-byrne-2024",
+      "name": "Liam Byrne",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-kruise-leeming-2024",
+      "name": "Kruise Leeming",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-patrick-mago-2024",
+      "name": "Patrick Mago",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-adam-swift-2025",
+      "name": "Adam Swift",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-joe-greenwood-2025",
+      "name": "Joe Greenwood",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "huddersfield-hist-jake-bibby-2025",
+      "name": "Jake Bibby",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-ed-chamberlain-2025",
+      "name": "Ed Chamberlain",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-john-asiata-2025",
+      "name": "John Asiata",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-cade-cust-2025",
+      "name": "Cade Cust",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-tom-briscoe-2025",
+      "name": "Tom Briscoe",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "hull-fc-hist-jack-ashworth-2025",
+      "name": "Jack Ashworth",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-kallum-watkins-2025",
+      "name": "Kallum Watkins",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-ash-handley-2025",
+      "name": "Ash Handley",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-ryan-hall-2025",
+      "name": "Ryan Hall",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-hist-james-bentley-2025",
+      "name": "James Bentley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leigh-hist-edwin-ipape-2025",
+      "name": "Edwin Ipape",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "leigh-hist-lachlan-lam-2025",
+      "name": "Lachlan Lam",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leigh-hist-robbie-mulhern-2025",
+      "name": "Robbie Mulhern",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leigh-hist-gareth-o-brien-2025",
+      "name": "Gareth O'Brien",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leigh-hist-josh-charnley-2025",
+      "name": "Josh Charnley",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leigh-hist-jack-hughes-2025",
+      "name": "Jack Hughes",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-george-williams-2025",
+      "name": "George Williams",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-toby-king-2025",
+      "name": "Toby King",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "warrington-hist-sam-powell-2025",
+      "name": "Sam Powell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-bevan-french-2025",
+      "name": "Bevan French",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-junior-nsemba-2025",
+      "name": "Junior Nsemba",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-kaide-ellis-2025",
+      "name": "Kaide Ellis",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-jai-field-2025",
+      "name": "Jai Field",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2025",
+      "name": "Liam Farrell",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-harry-smith-2025",
+      "name": "Harry Smith",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-byrne-2025",
+      "name": "Liam Byrne",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-liam-marshall-2025",
+      "name": "Liam Marshall",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-luke-thompson-2025",
+      "name": "Luke Thompson",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-adam-keighran-2025",
+      "name": "Adam Keighran",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-kruise-leeming-2025",
+      "name": "Kruise Leeming",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-zach-eckersley-2025",
+      "name": "Zach Eckersley",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-patrick-mago-2025",
+      "name": "Patrick Mago",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-sam-walters-2025",
+      "name": "Sam Walters",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": true,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "wigan-hist-tyler-dupree-2025",
+      "name": "Tyler Dupree",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia",
+        "Official Super League website"
+      ]
+    },
+    {
+      "id": "leeds-leg-gareth-ellis-2007",
+      "name": "Gareth Ellis",
+      "file": "historic-players.json",
+      "superLeagueWinner": true,
+      "challengeCupWinner": false,
+      "sources": [
+        "Wikipedia"
+      ]
+    },
+    {
+      "id": "wigan-leg-jason-robinson-1998",
+      "name": "Jason Robinson",
+      "file": "historic-players.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": false,
+      "sources": []
+    },
+    {
+      "id": "jason-robinson",
+      "name": "Jason Robinson",
+      "file": "legends.json",
+      "superLeagueWinner": false,
+      "challengeCupWinner": false,
+      "sources": []
     }
   ],
   "trophiesAdded": {
     "superLeague": [
-      "Aaron Smith",
+      "Abbas Miski",
+      "Abbas Miski",
+      "Adam Keighran",
+      "Adam Keighran",
       "Adam Swift",
-      "Ben Harris",
-      "Brian McDermott",
+      "Adam Swift",
+      "Adam Swift",
+      "Adam Swift",
+      "Adam Swift",
+      "Adam Swift",
+      "Adam Swift",
+      "Agnatius Paasi",
+      "Alex Walmsley",
+      "Alex Walmsley",
+      "Anthony Gelling",
+      "Ben Jones-Bishop",
+      "Ben Jones-Bishop",
+      "Ben Jones-Bishop",
+      "Bevan French",
+      "Bevan French",
+      "Bevan French",
+      "Bevan French",
+      "Bevan French",
+      "Brad Singleton",
+      "Brad Singleton",
+      "Brad Singleton",
+      "Brad Singleton",
+      "Brett Ferres",
+      "Brett Ferres",
+      "Brett Ferres",
+      "Brett Ferres",
+      "Brett Ferres",
+      "Brett Ferres",
+      "Chev Walker",
+      "Chev Walker",
+      "Chev Walker",
+      "Chev Walker",
+      "Chev Walker",
+      "Dan Sarginson",
+      "Dean Hadley",
+      "Dominic Manfredi",
+      "Ethan Havard",
+      "Ethan Havard",
+      "Ethan Havard",
+      "Ethan Havard",
+      "Ethan Havard",
+      "Gareth Ellis",
+      "Gareth Ellis",
+      "Gareth Ellis",
+      "Gareth Ellis",
+      "Garry Connolly",
       "George Williams",
-      "Greg Richards",
+      "George Williams",
+      "George Williams",
+      "George Williams",
+      "George Williams",
+      "George Williams",
       "Harry Smith",
-      "Henry Paul",
-      "Ian Henderson",
+      "Harry Smith",
+      "Harry Smith",
+      "Harry Smith",
+      "Harry Smith",
+      "Harry Smith",
+      "Iestyn Harris",
+      "Jack Ashworth",
+      "Jack Ashworth",
+      "Jack Ashworth",
       "Jack Brown",
       "Jack Hughes",
+      "Jack Hughes",
+      "Jack Hughes",
+      "Jack Hughes",
       "Jack Walker",
+      "Jack Walker",
+      "Jai Field",
+      "Jai Field",
+      "Jai Field",
+      "Jai Field",
+      "Jai Whitbread",
+      "Jai Whitbread",
       "James Bentley",
-      "James Graham",
+      "James Bentley",
+      "James Bentley",
+      "James Bentley",
+      "Jared Waerea-Hargreaves",
+      "Jez Litten",
+      "Jimmy Keinhorst",
+      "Joe Burgess",
+      "Joe Burgess",
+      "Joe Greenwood",
+      "Joe Greenwood",
+      "Joe Greenwood",
+      "Joe Greenwood",
+      "Joe Greenwood",
+      "Joe Shorrocks",
+      "Joe Shorrocks",
+      "Joel Tomkins",
+      "Joel Tomkins",
+      "Joel Tomkins",
+      "Joel Tomkins",
       "John Bateman",
+      "John Bateman",
+      "John Bateman",
+      "Jon Bennison",
+      "Jordan Turner",
+      "Jordan Turner",
+      "Josh Charnley",
+      "Josh Charnley",
+      "Josh Charnley",
+      "Josh Charnley",
+      "Josh Charnley",
+      "Josh Charnley",
+      "Josh Charnley",
       "Josh Jones",
+      "Josh Jones",
+      "Josh Jones",
+      "Josh Jones",
+      "Junior Nsemba",
+      "Junior Nsemba",
+      "Kai Pearce-Paul",
+      "Kai Pearce-Paul",
+      "Kaide Ellis",
+      "Kaide Ellis",
+      "Kaide Ellis",
+      "Kaide Ellis",
+      "Kallum Watkins",
+      "Kallum Watkins",
+      "Kallum Watkins",
+      "Kallum Watkins",
+      "Kallum Watkins",
+      "Kevin Naiqama",
+      "Kevin Naiqama",
+      "Konrad Hurrell",
+      "Kruise Leeming",
+      "Kruise Leeming",
+      "Kruise Leeming",
+      "Kruise Leeming",
+      "Kruise Leeming",
+      "Lee Radford",
+      "Lee Radford",
+      "Lee Radford",
+      "Lee Radford",
+      "Lee Radford",
+      "Lee Radford",
+      "Lee Radford",
       "Liam Byrne",
+      "Liam Byrne",
+      "Liam Byrne",
+      "Liam Byrne",
+      "Liam Byrne",
+      "Liam Byrne",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Marshall",
+      "Liam Marshall",
+      "Liam Marshall",
+      "Liam Marshall",
+      "Liam Marshall",
+      "Liam Sutcliffe",
+      "Liam Sutcliffe",
+      "Liam Sutcliffe",
+      "Liam Sutcliffe",
+      "Liam Sutcliffe",
+      "Liam Sutcliffe",
       "Luke Thompson",
-      "Mark Flanagan",
-      "Matty Smith",
-      "Paul Anderson",
+      "Luke Thompson",
+      "Luke Thompson",
+      "Mark Calderwood",
+      "Mark Calderwood",
+      "Mark Percival",
+      "Mark Percival",
+      "Matt Diskin",
+      "Matt Diskin",
+      "Matt Diskin",
+      "Matt Diskin",
+      "Matt Diskin",
+      "Matt Diskin",
+      "Matt Diskin",
+      "Mikey Lewis",
+      "Mitch Garbutt",
+      "Mitch Garbutt",
+      "Morgan Smithies",
+      "Morgan Smithies",
+      "Morgan Smithies",
+      "Morgan Smithies",
+      "Oliver Gildart",
+      "Oliver Gildart",
+      "Oliver Gildart",
+      "Patrick Mago",
+      "Patrick Mago",
+      "Patrick Mago",
+      "Patrick Mago",
       "Paul Johnson",
+      "Paul Johnson",
+      "Paul Johnson",
+      "Paul Johnson",
+      "Paul Johnson",
+      "Paul Johnson",
+      "Rhyse Martin",
+      "Rhyse Martin",
+      "Rhyse Martin",
+      "Rhyse Martin",
+      "Rhyse Martin",
+      "Robbie McCormack",
       "Ryan Hall",
+      "Ryan Hall",
+      "Ryan Hall",
+      "Ryan Hall",
+      "Ryan Sutton",
+      "Ryan Sutton",
+      "Sam Luckley",
+      "Sam Powell",
+      "Sam Powell",
+      "Sam Powell",
+      "Sam Powell",
+      "Sam Powell",
+      "Sam Powell",
       "Scott Taylor",
+      "Scott Taylor",
+      "Sean O'Loughlin",
+      "Stevie Ward",
+      "Thomas Leuluai",
+      "Théo Fages",
       "Toby King",
-      "Tom Davies"
+      "Toby King",
+      "Toby King",
+      "Toby King",
+      "Toby King",
+      "Toby King",
+      "Toby King",
+      "Tom Briscoe",
+      "Tom Briscoe",
+      "Tom Briscoe",
+      "Tom Briscoe",
+      "Tom Briscoe",
+      "Tony Clubb",
+      "Tyler Dupree",
+      "Tyler Dupree",
+      "Willie Isa",
+      "Willie Isa",
+      "Zak Hardaker",
+      "Zak Hardaker",
+      "Zak Hardaker",
+      "Zak Hardaker",
+      "Zak Hardaker"
     ],
     "challengeCup": [
+      "Abbas Miski",
+      "Abbas Miski",
+      "Adam Keighran",
+      "Adam Keighran",
+      "Agnatius Paasi",
+      "Alex Mellor",
+      "Alex Mellor",
+      "Alex Walmsley",
+      "Alex Walmsley",
+      "Ash Handley",
+      "Ash Handley",
+      "Ash Handley",
+      "Ash Handley",
+      "Ash Handley",
+      "Ash Handley",
+      "Ash Handley",
+      "Ava Seumanufagai",
       "Ben Harrison",
-      "Chris Hicks",
+      "Ben Harrison",
+      "Bevan French",
+      "Bevan French",
+      "Bevan French",
+      "Bevan French",
+      "Bevan French",
+      "Brad Dwyer",
+      "Brad Dwyer",
+      "Brad Dwyer",
+      "Brad Dwyer",
+      "Brad Singleton",
+      "Brad Singleton",
+      "Brad Singleton",
+      "Brad Singleton",
+      "Cade Cust",
+      "Cade Cust",
       "Chris Hill",
-      "Chris Riley",
+      "Chris Hill",
+      "Chris Hill",
+      "Chris Hill",
+      "Chris Hill",
+      "Chris Hill",
+      "Dean Hadley",
+      "Ed Chamberlain",
+      "Edwin Ipape",
+      "Ethan Havard",
+      "Ethan Havard",
+      "Ethan Havard",
+      "Ethan Havard",
+      "Ethan Havard",
+      "Gareth O'Brien",
+      "Gareth O'Brien",
+      "Gareth O'Brien",
+      "Harry Smith",
+      "Harry Smith",
+      "Harry Smith",
+      "Harry Smith",
+      "Harry Smith",
       "Harry Smith",
       "Jack Broadbent",
       "Jack Brown",
+      "Jai Field",
+      "Jai Field",
+      "Jai Field",
+      "Jai Field",
+      "Jai Whitbread",
+      "Jai Whitbread",
+      "Jake Bibby",
+      "Jake Bibby",
+      "Jake Bibby",
+      "Jake Bibby",
       "James Batchelor",
       "James Donaldson",
-      "Jeff Lima",
+      "James Donaldson",
+      "James Donaldson",
+      "James Donaldson",
+      "Jared Waerea-Hargreaves",
+      "Jez Litten",
+      "Joe Burgess",
+      "Joe Burgess",
+      "Joel Thompson",
+      "Joel Tomkins",
+      "Joel Tomkins",
+      "Joel Tomkins",
+      "Joel Tomkins",
+      "John Asiata",
       "John Bateman",
-      "Jon Clarke",
+      "John Bateman",
+      "John Bateman",
+      "Josh Charnley",
+      "Josh Charnley",
+      "Josh Charnley",
+      "Josh Charnley",
+      "Josh Charnley",
+      "Josh Charnley",
+      "Josh Charnley",
+      "Josh Drinkwater",
+      "Josh Drinkwater",
+      "Junior Nsemba",
+      "Junior Nsemba",
+      "Kaide Ellis",
+      "Kaide Ellis",
+      "Kaide Ellis",
+      "Kaide Ellis",
+      "Kallum Watkins",
+      "Kallum Watkins",
+      "Kallum Watkins",
+      "Kallum Watkins",
+      "Kallum Watkins",
+      "Kelepi Tanginoa",
+      "Kevin Naiqama",
+      "Kevin Naiqama",
+      "Konrad Hurrell",
+      "Kruise Leeming",
+      "Kruise Leeming",
+      "Kruise Leeming",
+      "Kruise Leeming",
+      "Kruise Leeming",
+      "Lachlan Lam",
       "Liam Byrne",
+      "Liam Byrne",
+      "Liam Byrne",
+      "Liam Byrne",
+      "Liam Byrne",
+      "Liam Byrne",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Farrell",
+      "Liam Marshall",
+      "Liam Marshall",
+      "Liam Marshall",
+      "Liam Marshall",
+      "Liam Marshall",
+      "Liam Sutcliffe",
+      "Liam Sutcliffe",
+      "Liam Sutcliffe",
+      "Liam Sutcliffe",
+      "Liam Sutcliffe",
+      "Liam Sutcliffe",
+      "Luke Gale",
+      "Luke Gale",
+      "Luke Gale",
+      "Luke Gale",
       "Luke Thompson",
-      "Matt King",
+      "Luke Thompson",
+      "Luke Thompson",
+      "Mark Percival",
+      "Mark Percival",
       "Matt Prior",
-      "Matty Smith",
+      "Matt Prior",
+      "Matt Prior",
+      "Mickaël Goudemand",
+      "Mikey Lewis",
+      "Mitch Garbutt",
+      "Mitch Garbutt",
+      "Morgan Smithies",
+      "Morgan Smithies",
+      "Morgan Smithies",
+      "Morgan Smithies",
+      "Oliver Partington",
+      "Oliver Partington",
+      "Oliver Partington",
+      "Oliver Partington",
+      "Patrick Mago",
+      "Patrick Mago",
+      "Patrick Mago",
+      "Patrick Mago",
       "Paul Johnson",
-      "Paul Wood",
+      "Paul Johnson",
+      "Paul Johnson",
+      "Paul Johnson",
+      "Paul Johnson",
+      "Paul Johnson",
+      "Rhyse Martin",
+      "Rhyse Martin",
+      "Rhyse Martin",
+      "Rhyse Martin",
+      "Rhyse Martin",
+      "Robbie Mulhern",
+      "Robbie Mulhern",
+      "Robbie Mulhern",
+      "Robbie Mulhern",
+      "Robert Lui",
+      "Ryan Atkins",
+      "Sam Luckley",
+      "Sam Walters",
+      "Samisoni Langi",
       "Scott Taylor",
-      "Tom Davies"
+      "Scott Taylor",
+      "Sean O'Loughlin",
+      "Stefan Ratchford",
+      "Stefan Ratchford",
+      "Stefan Ratchford",
+      "Stefan Ratchford",
+      "Stefan Ratchford",
+      "Stevie Ward",
+      "Thomas Leuluai",
+      "Théo Fages",
+      "Tom Briscoe",
+      "Tom Briscoe",
+      "Tom Briscoe",
+      "Tom Briscoe",
+      "Tom Briscoe",
+      "Zach Eckersley",
+      "Zak Hardaker",
+      "Zak Hardaker",
+      "Zak Hardaker",
+      "Zak Hardaker",
+      "Zak Hardaker"
     ]
   },
   "trophiesRemoved": {
-    "superLeague": [],
-    "challengeCup": []
+    "superLeague": [
+      "Ash Handley",
+      "Jason Robinson",
+      "Jason Robinson",
+      "Kelepi Tanginoa",
+      "Paul Aiton"
+    ],
+    "challengeCup": [
+      "Jason Robinson",
+      "Jason Robinson",
+      "Lesley Vainikolo",
+      "Lesley Vainikolo",
+      "Lesley Vainikolo",
+      "Lesley Vainikolo",
+      "Lesley Vainikolo",
+      "Lesley Vainikolo",
+      "Oliver Wilson",
+      "Sam Eseh"
+    ]
   },
-  "manualReview": []
+  "manualReview": [
+    {
+      "id": "wigan-cur-oliver-wilson",
+      "name": "Oliver Wilson",
+      "file": "current-squads.json",
+      "reason": "Removed unconfirmed flag (was SL:false CC:true)"
+    },
+    {
+      "id": "wigan-cur-sam-eseh",
+      "name": "Sam Eseh",
+      "file": "current-squads.json",
+      "reason": "Removed unconfirmed flag (was SL:false CC:true)"
+    },
+    {
+      "id": "wigan-leg-jason-robinson-1998",
+      "name": "Jason Robinson",
+      "file": "historic-players.json",
+      "reason": "Removed unconfirmed flag (was SL:true CC:true)"
+    },
+    {
+      "id": "jason-robinson",
+      "name": "Jason Robinson",
+      "file": "legends.json",
+      "reason": "Removed unconfirmed flag (was SL:true CC:true)"
+    }
+  ]
 }

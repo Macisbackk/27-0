@@ -8,6 +8,7 @@ import {
   CHALLENGE_CUPS,
   CLUB_HISTORY,
   GRAND_FINALS,
+  LANCE_TODD_WINNERS,
   LEAGUE_LEADERS,
   STADIUMS,
   type FinalRecord,
@@ -519,6 +520,243 @@ function buildClubHistoryQuestions(): QuizQuestion[] {
   return questions;
 }
 
+type HonourPlayer = {
+  id: string;
+  name: string;
+  club?: string;
+  displayClub?: string;
+  team?: string;
+};
+
+function loadHonourPlayers(): Map<string, HonourPlayer> {
+  const byId = new Map<string, HonourPlayer>();
+  for (const file of [
+    "historic-players.json",
+    "legends.json",
+    "current-squads.json",
+  ]) {
+    const rows = JSON.parse(
+      readFileSync(join(ROOT, "data", file), "utf8")
+    ) as HonourPlayer[];
+    for (const row of rows) {
+      if (row?.id && row?.name) byId.set(row.id, row);
+    }
+  }
+  return byId;
+}
+
+function teamsForPlayer(player: HonourPlayer | undefined): QuizTeamId[] {
+  if (!player) return [];
+  const club = String(player.displayClub ?? player.team ?? player.club ?? "");
+  const fromClub = NAME_TO_ID[club];
+  if (fromClub) return [fromClub];
+  for (const id of QUIZ_TEAM_IDS) {
+    if (player.id.startsWith(`${id}-`)) return [id];
+  }
+  return [];
+}
+
+function displayNameForId(
+  id: string,
+  byId: Map<string, HonourPlayer>
+): string | null {
+  return byId.get(id)?.name ?? null;
+}
+
+function preferCanonicalId(ids: string[]): string {
+  const scored = ids.map((id) => {
+    let score = 0;
+    if (!/-\d{4}$/.test(id)) score += 50;
+    if (!id.includes("-hist-") && !id.includes("-cur-") && !id.includes("-leg-")) {
+      score += 20;
+    }
+    return { id, score };
+  });
+  scored.sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
+  return scored[0]!.id;
+}
+
+function invertPlayerYearMap(
+  map: Record<string, number[]>,
+  byId: Map<string, HonourPlayer>
+): Map<number, { id: string; name: string; teams: QuizTeamId[] }> {
+  const byYear = new Map<number, string[]>();
+  for (const [id, years] of Object.entries(map)) {
+    if (!byId.has(id)) continue;
+    for (const year of years) {
+      if (!Number.isFinite(year)) continue;
+      const list = byYear.get(year) ?? [];
+      list.push(id);
+      byYear.set(year, list);
+    }
+  }
+  const out = new Map<number, { id: string; name: string; teams: QuizTeamId[] }>();
+  for (const [year, ids] of byYear) {
+    const id = preferCanonicalId([...new Set(ids)]);
+    const name = displayNameForId(id, byId);
+    if (!name) continue;
+    out.set(year, { id, name, teams: teamsForPlayer(byId.get(id)) });
+  }
+  return out;
+}
+
+function buildHonourQuestions(): QuizQuestion[] {
+  const questions: QuizQuestion[] = [];
+  const byId = loadHonourPlayers();
+
+  const manOfSteel = invertPlayerYearMap(
+    JSON.parse(
+      readFileSync(join(ROOT, "data/man-of-steel-winners.json"), "utf8")
+    ) as Record<string, number[]>,
+    byId
+  );
+  const goldenBoot = invertPlayerYearMap(
+    JSON.parse(
+      readFileSync(join(ROOT, "data/golden-boot-years.json"), "utf8")
+    ) as Record<string, number[]>,
+    byId
+  );
+  const dreamTeam = JSON.parse(
+    readFileSync(join(ROOT, "data/dream-team-years.json"), "utf8")
+  ) as Record<string, number[]>;
+
+  const mosNames = unique([...manOfSteel.values()].map((row) => row.name));
+  for (const [year, winner] of [...manOfSteel.entries()].sort(
+    (a, b) => a[0] - b[0]
+  )) {
+    const q = makeQuestion(
+      `mos-winner-${year}`,
+      `Who won the Man of Steel award in ${year}?`,
+      winner.name,
+      pickDistractors(winner.name, mosNames, 8),
+      {
+        topicId: `honour:man-of-steel:${year}`,
+        difficulty: difficultyForYear(
+          year,
+          year >= 2020 ? "easy" : year >= 2012 ? "medium" : "hard"
+        ),
+        category: "players",
+        teams: winner.teams,
+        era: eraForYear(year),
+        sourceType: "honours",
+        answerType: "objective",
+      }
+    );
+    if (q) questions.push(q);
+  }
+
+  const gbNames = unique([...goldenBoot.values()].map((row) => row.name));
+  for (const [year, winner] of [...goldenBoot.entries()].sort(
+    (a, b) => a[0] - b[0]
+  )) {
+    const q = makeQuestion(
+      `golden-boot-${year}`,
+      `Who won the Golden Boot in ${year}?`,
+      winner.name,
+      pickDistractors(winner.name, [...gbNames, ...mosNames], 8),
+      {
+        topicId: `honour:golden-boot:${year}`,
+        difficulty: difficultyForYear(year, "hard"),
+        category: "records",
+        teams: winner.teams,
+        era: eraForYear(year),
+        sourceType: "honours",
+        answerType: "objective",
+      }
+    );
+    if (q) questions.push(q);
+  }
+
+  const ltNames = unique(
+    LANCE_TODD_WINNERS.flatMap((row) =>
+      [row.winnerName, row.sharedWinnerName].filter(
+        (name): name is string => Boolean(name)
+      )
+    )
+  );
+  for (const row of LANCE_TODD_WINNERS) {
+    if (row.sharedWinnerName) continue;
+    const winnerName =
+      row.winnerName === "Robbie Hunter-Paul"
+        ? ([...byId.values()].find((p) => p.name === "Robbie Hunter-Paul")
+            ?.name ?? "Robbie Hunter-Paul")
+        : row.winnerName;
+    const player = [...byId.values()].find(
+      (p) => p.name.toLowerCase() === winnerName.toLowerCase()
+    );
+    const q = makeQuestion(
+      `lance-todd-${row.year}`,
+      `Who won the Lance Todd Trophy in the ${row.year} Challenge Cup final?`,
+      winnerName,
+      pickDistractors(winnerName, ltNames, 8),
+      {
+        topicId: `honour:lance-todd:${row.year}`,
+        difficulty: difficultyForYear(
+          row.year,
+          row.year >= 2020 ? "easy" : row.year >= 2012 ? "medium" : "hard"
+        ),
+        category: "challenge-cup",
+        teams: teamsForPlayer(player),
+        era: eraForYear(row.year),
+        sourceType: "honours",
+        answerType: "objective",
+      }
+    );
+    if (q) questions.push(q);
+  }
+
+  const dreamByYear = new Map<
+    number,
+    { id: string; name: string; teams: QuizTeamId[] }[]
+  >();
+  for (const [id, years] of Object.entries(dreamTeam)) {
+    if (/-\d{4}$/.test(id)) continue;
+    const name = displayNameForId(id, byId);
+    if (!name) continue;
+    for (const year of years) {
+      const list = dreamByYear.get(year) ?? [];
+      list.push({ id, name, teams: teamsForPlayer(byId.get(id)) });
+      dreamByYear.set(year, list);
+    }
+  }
+
+  const allDreamNames = unique(
+    [...dreamByYear.values()].flatMap((rows) => rows.map((row) => row.name))
+  );
+  for (const [year, rows] of [...dreamByYear.entries()].sort(
+    (a, b) => a[0] - b[0]
+  )) {
+    const uniqueRows = [
+      ...new Map(rows.map((row) => [row.name.toLowerCase(), row])).values(),
+    ];
+    if (uniqueRows.length === 0) continue;
+    uniqueRows.sort(
+      (a, b) =>
+        stableHash(`dream:${year}:${a.id}`) -
+        stableHash(`dream:${year}:${b.id}`)
+    );
+    const pick = uniqueRows[0]!;
+    const q = makeQuestion(
+      `dream-team-${year}-${slug(pick.name)}`,
+      `Which of these players was named in the ${year} Super League Dream Team?`,
+      pick.name,
+      pickDistractors(pick.name, allDreamNames, 8),
+      {
+        topicId: `honour:dream-team:${year}:${slug(pick.name)}`,
+        difficulty: difficultyForYear(year, year >= 2020 ? "medium" : "hard"),
+        category: "players",
+        teams: pick.teams,
+        era: eraForYear(year),
+        sourceType: "honours",
+        answerType: "objective",
+      }
+    );
+    if (q) questions.push(q);
+  }
+
+  return questions;
+}
+
 function main(): void {
   const questions = [
     ...buildFinalsQuestions(),
@@ -526,6 +764,7 @@ function main(): void {
     ...buildClubHistoryQuestions(),
     ...buildStarting17Questions(),
     ...buildRosterQuestions(),
+    ...buildHonourQuestions(),
   ].filter(Boolean);
 
   const seenIds = new Set<string>();
@@ -551,7 +790,11 @@ function main(): void {
     }
   }
 
+  const honourCount = uniqueQuestions.filter(
+    (question) => question.sourceType === "honours"
+  ).length;
   console.log(`Wrote ${uniqueQuestions.length} generated questions to ${OUT}`);
+  console.log(`Honour questions: ${honourCount}`);
   console.log("Per-team tagged counts:");
   for (const [id, count] of [...byTeam.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
     console.log(`  ${id}: ${count}`);

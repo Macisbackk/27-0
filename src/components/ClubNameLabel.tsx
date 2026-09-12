@@ -127,7 +127,7 @@ export function ClubNameLabel({
         )}
         <p
           title={club}
-          className={`min-w-0 break-words font-display font-bold uppercase tracking-wide text-white ${nameClass}`}
+          className={`min-w-0 break-words ${TYPO.matchClub} ${nameClass}`}
         >
           {club}
         </p>

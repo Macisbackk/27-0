@@ -51,6 +51,7 @@ export const STORAGE_KEYS = {
   quizRun: "27-0-quiz-run",
   quizStats: "27-0-quiz-stats",
   quizLeaderboard: "27-0-quiz-leaderboard",
+  miniGamesLeaderboard: "27-0-mini-games-leaderboard",
   wordleRun: "27-0-wordle-run",
   wordleStats: "27-0-wordle-stats",
   hangmanRun: "27-0-hangman-run",

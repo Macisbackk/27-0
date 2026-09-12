@@ -31002,5 +31002,96 @@
         "name": "Danny Ellison"
       }
     ]
+  },
+  {
+    "club": "Sheffield Eagles",
+    "year": 1998,
+    "squad": [
+      {
+        "number": 1,
+        "position": "FULLBACK",
+        "name": "Waisale Sovatabua"
+      },
+      {
+        "number": 2,
+        "position": "WING",
+        "name": "Nick Pinkney"
+      },
+      {
+        "number": 3,
+        "position": "CENTRE",
+        "name": "Whetu Taewa"
+      },
+      {
+        "number": 4,
+        "position": "CENTRE",
+        "name": "Keith Senior"
+      },
+      {
+        "number": 5,
+        "position": "WING",
+        "name": "Matt Crowther"
+      },
+      {
+        "number": 6,
+        "position": "STAND_OFF",
+        "name": "Dave Watson"
+      },
+      {
+        "number": 7,
+        "position": "SCRUM_HALF",
+        "name": "Mark Aston"
+      },
+      {
+        "number": 8,
+        "position": "PROP",
+        "name": "Paul Broadbent"
+      },
+      {
+        "number": 9,
+        "position": "HOOKER",
+        "name": "Johnny Lawless"
+      },
+      {
+        "number": 10,
+        "position": "PROP",
+        "name": "Dale Laughton"
+      },
+      {
+        "number": 11,
+        "position": "SECOND_ROW",
+        "name": "Paul Carr"
+      },
+      {
+        "number": 12,
+        "position": "SECOND_ROW",
+        "name": "Darren Shaw"
+      },
+      {
+        "number": 13,
+        "position": "LOOSE_FORWARD",
+        "name": "Rod Doyle"
+      },
+      {
+        "number": 14,
+        "position": "LOOSE_FORWARD",
+        "name": "Martin Wood"
+      },
+      {
+        "number": 15,
+        "position": "FULLBACK",
+        "name": "Lynton Stott"
+      },
+      {
+        "number": 16,
+        "position": "HOOKER",
+        "name": "Darren Turner"
+      },
+      {
+        "number": 17,
+        "position": "SECOND_ROW",
+        "name": "Michael Jackson"
+      }
+    ]
   }
 ]

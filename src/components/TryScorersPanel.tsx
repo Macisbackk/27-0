@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { PlayerTryTotal } from "@/lib/game/season-tries";
 import { POSITION_LABELS } from "@/lib/positions";
-import { TryScorerClubBadge } from "./TryScorerClubBadge";
+import { ClubDualSwatch } from "./ClubDualSwatch";
 import { playPanelExpand } from "@/lib/sound";
 
 function formatScorerPosition(scorer: PlayerTryTotal): string {
@@ -43,9 +43,9 @@ export function TryScorersPanel({
           <p className="font-display text-xs font-bold text-gray-500">
             #{index + 1}
           </p>
-          <p className="mt-1.5 text-sm font-semibold text-white">{scorer.name}</p>
           <div className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5">
-            <TryScorerClubBadge club={scorer.club} />
+            <ClubDualSwatch club={scorer.club} size="sm" />
+            <span className="text-sm font-semibold text-white">{scorer.name}</span>
             <span className="text-[11px] text-gray-500">
               {formatScorerPosition(scorer)}
             </span>

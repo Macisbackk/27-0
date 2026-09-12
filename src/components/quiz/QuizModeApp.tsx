@@ -43,11 +43,9 @@ import {
 import {
   getCurrentPrize,
   getGuaranteedPrize,
-  getNextPrize,
   getPrizeForQuestionNumber,
-  isSafeQuestionNumber,
-  QUIZ_PRIZE_LADDER,
 } from "@/lib/quiz/prizes";
+import { QuizPrizeLadder } from "@/components/quiz/QuizPrizeLadder";
 import {
   clearQuizRun,
   loadQuizStats,
@@ -333,9 +331,13 @@ function QuizLanding({
         <button
           type="button"
           onClick={onMillionaire}
-          className="w-full border border-white/10 bg-[#0c1210] px-4 py-4 text-center"
+          className="w-full border border-theme-primary/40 bg-[#0c1210] px-4 py-4 text-center"
         >
-          <p className={TYPO.keyLabel}>Normal Quiz</p>
+          <p
+            className={`font-display text-base font-bold uppercase tracking-wide sm:text-lg text-theme-primary`}
+          >
+            Normal Quiz
+          </p>
           <p className={`mt-1 ${TYPO.bodySm}`}>
             Super League Millionaire — 15 questions to £1,000,000.
           </p>
@@ -343,9 +345,13 @@ function QuizLanding({
         <button
           type="button"
           onClick={onTeam}
-          className="w-full border border-white/10 bg-[#0c1210] px-4 py-4 text-center"
+          className="w-full border border-accent-gold/40 bg-[#0c1210] px-4 py-4 text-center"
         >
-          <p className={TYPO.keyLabel}>Team Challenge</p>
+          <p
+            className={`font-display text-base font-bold uppercase tracking-wide sm:text-lg text-accent-gold`}
+          >
+            Team Challenge
+          </p>
           <p className={`mt-1 ${TYPO.bodySm}`}>
             Every question is about one club.
           </p>
@@ -383,16 +389,16 @@ function QuizTeamSelect({
   const selected = teamId ? getQuizClub(teamId) : null;
 
   return (
-    <div className="mx-auto w-full max-w-xl">
-      <p className={`text-center ${TYPO.sectionLabel}`}>Team Challenge</p>
-      <h1 className={`mt-2 text-center ${TYPO.pageTitle}`}>Choose your club</h1>
+    <div className="mx-auto w-full max-w-xl text-center">
+      <p className={TYPO.sectionLabel}>Team Challenge</p>
+      <h1 className={`mt-2 ${TYPO.pageTitle}`}>Choose your club</h1>
       <label className="mt-5 block">
         <span className="sr-only">Search teams</span>
         <input
           value={query}
           onChange={(event) => onQuery(event.target.value)}
           placeholder="Search teams..."
-          className="game-input w-full"
+          className="game-input w-full text-center"
         />
       </label>
       <ul className="mt-4 max-h-[50dvh] space-y-2 overflow-y-auto overscroll-contain pb-3">
@@ -407,36 +413,31 @@ function QuizTeamSelect({
                   playUiClick();
                   onSelect(club.id);
                 }}
-                className={`flex min-h-[56px] w-full items-center gap-3 rounded-lg border px-3 py-3 text-left ${
+                className={`flex min-h-[56px] w-full flex-col items-center justify-center gap-2 rounded-lg border px-3 py-3 text-center sm:flex-row sm:gap-3 ${
                   active
-                    ? "border-theme-primary bg-theme-primary/10"
+                    ? "border-accent-gold/50 bg-accent-gold/10"
                     : "border-white/10 bg-[#0c1210]"
                 }`}
               >
                 <span
                   className="h-8 w-8 shrink-0 rounded-full"
-                  style={{ background: colors.primary, boxShadow: `inset 0 0 0 2px ${colors.secondary}` }}
+                  style={{
+                    background: colors.primary,
+                    boxShadow: `inset 0 0 0 2px ${colors.secondary}`,
+                  }}
                 />
-                <span>
-                  <span className={`block ${TYPO.cardTitle}`}>{club.name}</span>
-                  {active && (
-                    <span className={`mt-1 block ${TYPO.bodySm}`}>{club.blurb}</span>
-                  )}
-                </span>
+                <span className={TYPO.cardTitle}>{club.name}</span>
               </button>
             </li>
           );
         })}
       </ul>
-      {selected && (
-        <p className={`mt-3 ${TYPO.bodySm}`}>{selected.blurb}</p>
-      )}
       <div className="mt-5 grid gap-2 sm:grid-cols-2">
         <GameButton variant="secondary" onClick={onBack}>
           Back
         </GameButton>
         <GameButton variant="theme" disabled={!teamId} onClick={onStart}>
-          Start Challenge
+          {selected ? `Start — ${selected.name}` : "Start Challenge"}
         </GameButton>
       </div>
     </div>
@@ -470,7 +471,6 @@ function QuizPlayScreen({
   const question = slot ? getQuestionById(bank, slot.questionId) : undefined;
   const correctCount = countCorrectAnswers(run);
   const currentPrize = getCurrentPrize(correctCount);
-  const nextPrize = getNextPrize(correctCount);
   const guaranteed = getGuaranteedPrize(correctCount);
   const questionNumber = run.questionIndex + 1;
   const isFinal = questionNumber === 15;
@@ -482,33 +482,7 @@ function QuizPlayScreen({
 
   return (
     <div className="mx-auto grid w-full max-w-5xl gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,36rem)_minmax(0,1fr)] lg:items-start">
-      <aside className="hidden lg:block lg:justify-self-end lg:pt-1">
-        <ol className="w-[13.5rem] space-y-1 text-left">
-          {[...QUIZ_PRIZE_LADDER].map((amount, index) => {
-            const number = index + 1;
-            const current = number === questionNumber;
-            const safe = isSafeQuestionNumber(number);
-            const final = number === 15;
-            return (
-              <li
-                key={amount}
-                className={`flex items-center justify-between px-2 py-1 text-sm ${
-                  current ? "quiz-ladder-item--current" : ""
-                } ${safe ? "quiz-ladder-item--safe" : "text-gray-400"} ${
-                  final ? "quiz-ladder-item--final" : ""
-                }`}
-              >
-                <span>
-                  {number}
-                  {safe ? " · SAFE" : ""}
-                  {final ? " · FINAL" : ""}
-                </span>
-                <span className="tabular-nums">{formatClubFundsExact(amount)}</span>
-              </li>
-            );
-          }).reverse()}
-        </ol>
-      </aside>
+      <div className="hidden lg:block" aria-hidden />
 
       <section className="mx-auto min-w-0 w-full max-w-xl text-center lg:col-start-2">
         <div className="flex flex-col items-center gap-2 sm:flex-row sm:items-start sm:justify-center sm:gap-4">
@@ -543,42 +517,13 @@ function QuizPlayScreen({
             <p className="quiz-prize mt-1 text-center text-3xl sm:text-4xl">
               {formatClubFundsExact(getPrizeForQuestionNumber(questionNumber))}
             </p>
-            <div
-              className={`mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1 text-center ${TYPO.bodySm}`}
-            >
-              <span>
-                Next: {nextPrize ? formatClubFundsExact(nextPrize) : "—"}
-              </span>
-              <span>Safe: {formatClubFundsExact(guaranteed)}</span>
-              <span>{15 - questionNumber} to £1,000,000</span>
-            </div>
             <details className="mt-3 lg:hidden">
               <summary className={`cursor-pointer text-center ${TYPO.meta}`}>
                 Prize ladder
               </summary>
-              <ol className="mt-2 max-h-40 space-y-0.5 overflow-y-auto text-left">
-                {[...QUIZ_PRIZE_LADDER]
-                  .map((amount, index) => {
-                    const number = index + 1;
-                    const current = number === questionNumber;
-                    const safe = isSafeQuestionNumber(number);
-                    return (
-                      <li
-                        key={amount}
-                        className={`flex justify-between px-1 text-xs ${
-                          current ? "text-white" : "text-gray-500"
-                        }`}
-                      >
-                        <span>
-                          {number}
-                          {safe ? " · SAFE" : ""}
-                        </span>
-                        <span>{formatClubFundsExact(amount)}</span>
-                      </li>
-                    );
-                  })
-                  .reverse()}
-              </ol>
+              <div className="mt-2 max-h-48 overflow-y-auto">
+                <QuizPrizeLadder questionNumber={questionNumber} compact />
+              </div>
             </details>
           </div>
         )}
@@ -699,7 +644,10 @@ function QuizPlayScreen({
           </div>
         )}
       </section>
-      <div className="hidden lg:block" aria-hidden />
+
+      <aside className="hidden lg:block lg:sticky lg:top-4 lg:justify-self-start lg:pt-1">
+        <QuizPrizeLadder questionNumber={questionNumber} />
+      </aside>
     </div>
   );
 }

@@ -25,6 +25,9 @@ export const TYPO = {
     "font-display text-[length:var(--text-card-title)] font-semibold leading-tight text-white",
   clubName:
     "text-[length:var(--text-small)] font-semibold tracking-tight text-gray-400",
+  /** Match / table club names — matches playoff bracket team text. */
+  matchClub:
+    "font-semibold leading-snug text-white [overflow-wrap:anywhere]",
   /** Fixture / rating key labels (e.g. Wins, Losses, Your Rating). */
   keyLabel:
     "text-[length:var(--text-small)] font-semibold uppercase tracking-wide text-gray-400",

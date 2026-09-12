@@ -31,6 +31,7 @@ export const QUIZ_SOURCE_TYPES = [
   "starting-17",
   "roster",
   "records",
+  "honours",
 ] as const;
 export type QuizSourceType = (typeof QUIZ_SOURCE_TYPES)[number];
 

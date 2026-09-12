@@ -781,6 +781,10 @@
   "leigh-hist-ben-reynolds": [
     2023
   ],
+  "leigh-hist-era-jack-hughes": [
+    2013,
+    2019
+  ],
   "leigh-hist-era-josh-charnley": [
     2019,
     2023
@@ -847,8 +851,59 @@
     2002,
     2011
   ],
+  "sheffield-hist-dale-laughton-1998": [
+    1998
+  ],
+  "sheffield-hist-darren-shaw-1998": [
+    1998
+  ],
+  "sheffield-hist-darren-turner-1998": [
+    1998
+  ],
   "sheffield-hist-daryl-powell": [
     1999
+  ],
+  "sheffield-hist-dave-watson-1998": [
+    1998
+  ],
+  "sheffield-hist-johnny-lawless-1998": [
+    1998
+  ],
+  "sheffield-hist-keith-senior-1998": [
+    1998
+  ],
+  "sheffield-hist-lynton-stott-1998": [
+    1998
+  ],
+  "sheffield-hist-mark-aston-1998": [
+    1998
+  ],
+  "sheffield-hist-martin-wood-1998": [
+    1998
+  ],
+  "sheffield-hist-matt-crowther-1998": [
+    1998
+  ],
+  "sheffield-hist-michael-jackson-1998": [
+    1998
+  ],
+  "sheffield-hist-nick-pinkney-1998": [
+    1998
+  ],
+  "sheffield-hist-paul-broadbent-1998": [
+    1998
+  ],
+  "sheffield-hist-paul-carr-1998": [
+    1998
+  ],
+  "sheffield-hist-rod-doyle-1998": [
+    1998
+  ],
+  "sheffield-hist-waisale-sovatabua-1998": [
+    1998
+  ],
+  "sheffield-hist-whetu-taewa-1998": [
+    1998
   ],
   "st-helens-cur-alex-walmsley": [
     2021
@@ -1692,17 +1747,23 @@
   "wigan-hist-era-abbas-miski": [
     2024
   ],
-  "leigh-hist-era-jack-hughes": [
-    2019
+  "sheffield-hist-dave-watson": [
+    1998
   ],
   "wigan-hist-era-bradley-o-neill": [
     2024
+  ],
+  "sheffield-hist-martin-wood": [
+    1998
   ],
   "st-helens-hist-thomas-makinson": [
     2021
   ],
   "wigan-hist-oliver-partington": [
     2022
+  ],
+  "sheffield-hist-whetu-taewa": [
+    1998
   ],
   "wakefield-hist-jason-clark": [
     2019
@@ -1713,8 +1774,17 @@
   "wigan-hist-era-morgan-smithies": [
     2022
   ],
+  "sheffield-hist-michael-jackson": [
+    1998
+  ],
+  "sheffield-hist-paul-carr": [
+    1998
+  ],
   "leeds-hist-matt-prior": [
     2020
+  ],
+  "sheffield-hist-darren-turner": [
+    1998
   ],
   "leeds-hist-ava-seumanufagai": [
     2020
@@ -1722,11 +1792,17 @@
   "leeds-hist-luke-briscoe": [
     2020
   ],
+  "sheffield-hist-johnny-lawless": [
+    1998
+  ],
   "bradford-hist-karl-pratt": [
     2003
   ],
   "bradford-hist-brad-mackay": [
     2000
+  ],
+  "sheffield-hist-rod-doyle": [
+    1998
   ],
   "bradford-hist-james-lowes": [
     2000,
@@ -1735,6 +1811,9 @@
   "bradford-hist-mike-forshaw": [
     2000,
     2003
+  ],
+  "sheffield-hist-waisale-sovatabua": [
+    1998
   ],
   "widnes-hist-julian-o-neill": [
     1997,
@@ -1748,6 +1827,9 @@
   ],
   "wigan-hist-paul-johnson": [
     2009
+  ],
+  "sheffield-hist-dale-laughton": [
+    1998
   ],
   "hull-fc-hist-lee-radford": [
     2000,
@@ -1778,8 +1860,14 @@
   "remi-casty": [
     2018
   ],
+  "sheffield-hist-paul-broadbent": [
+    1998
+  ],
   "wakefield-hist-blake-austin": [
     2019
+  ],
+  "sheffield-hist-lynton-stott": [
+    1998
   ],
   "bradford-hist-daniel-gartner": [
     2003
@@ -1834,6 +1922,9 @@
     2000,
     2003,
     2011
+  ],
+  "sheffield-hist-mark-aston": [
+    1998
   ],
   "henry-paul": [
     2000

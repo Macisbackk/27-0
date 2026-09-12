@@ -40,6 +40,7 @@ import {
   HIGHER_LOWER_FIVE_REWARD,
 } from "@/lib/mini-games/rewards";
 import { triggerMiniGameAchievements } from "@/lib/achievements/achievementTriggers";
+import { syncMiniGameWins } from "@/lib/storage/mini-games-leaderboard";
 import { Confetti } from "@/components/Confetti";
 import {
   playMiniCorrect,
@@ -57,6 +58,7 @@ function settleWin(
   stats: HigherLowerStats
 ): { run: HigherLowerRun; stats: HigherLowerStats; awarded: boolean } {
   const ended = applyHigherLowerRunEnd(stats, true);
+  syncMiniGameWins("higher-lower", ended.fivePickWins);
   if (run.rewardClaimed) {
     return { run, stats: ended, awarded: false };
   }

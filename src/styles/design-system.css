@@ -1897,6 +1897,32 @@
   background: color-mix(in srgb, var(--theme-tertiary) 28%, transparent);
 }
 
+/* Season Match Results — hairline separators, no panel accent strips */
+.fixture-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.fixture-results-list > * + * {
+  border-top: 1px solid color-mix(in srgb, var(--theme-primary) 18%, transparent);
+}
+
+.fixture-results-list .fixture-result-row.game-panel {
+  border-radius: 0;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.fixture-results-list .fixture-result-row.game-panel::before {
+  display: none;
+}
+
+.fixture-results-list .fixture-result-row--selected {
+  border-radius: 8px;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
 .game-input {
   width: 100%;
   min-height: 44px;

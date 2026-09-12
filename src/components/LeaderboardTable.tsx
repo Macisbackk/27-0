@@ -29,6 +29,11 @@ import {
 } from "./LeaderboardTabBar";
 import { getDailyLeaderboardAsync } from "@/lib/storage/daily-leaderboard";
 import { getQuizLeaderboardAsync } from "@/lib/storage/quiz-leaderboard";
+import {
+  getMiniGameWinsLeaderboardAsync,
+  MINI_GAME_WINS_CATEGORIES,
+  type MiniGameWinsKind,
+} from "@/lib/storage/mini-games-leaderboard";
 import { RecordWithPercentage, parseRecordWithPercentage } from "./RecordWithPercentage";
 import { GamePanel } from "@/components/ui/GamePanel";
 import { GameEmptyState } from "@/components/ui/GameEmptyState";
@@ -39,12 +44,25 @@ import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
 
+type MiniGamesCategory = MiniGameWinsKind | "quiz-prize";
+
 const QUICK_MODE_ACCENTS = {
   "super-league": "green",
   "trophy-cabinet": "gold",
   daily: "amber",
   quiz: "gold",
 } as const satisfies Record<string, LeaderboardTabAccent>;
+
+const MINI_GAMES_CATEGORY_ACCENTS: Record<
+  MiniGamesCategory,
+  LeaderboardTabAccent
+> = {
+  wordle: "green",
+  hangman: "amber",
+  "higher-lower": "theme",
+  "quiz-wins": "gold",
+  "quiz-prize": "gold",
+};
 
 const TRACKER_ACCENTS: Partial<
   Record<LeaderboardTrackerType, LeaderboardTabAccent>
@@ -77,6 +95,8 @@ export function LeaderboardTable() {
   const [leaderboardMode, setLeaderboardMode] =
     useState<QuickLeaderboardMode>("super-league");
   const [tracker, setTracker] = useState<LeaderboardTrackerType>("best_record");
+  const [miniGamesCategory, setMiniGamesCategory] =
+    useState<MiniGamesCategory>("wordle");
   const [period, setPeriod] = useState<LeaderboardPeriod>("ALL_TIME");
   const difficulty: GameDifficulty = "NORMAL";
   const [entries, setEntries] = useState<LeaderboardTrackerRow[]>([]);
@@ -99,6 +119,7 @@ export function LeaderboardTable() {
     }
     if (trackerParam === "quiz_prize") {
       setLeaderboardMode("quiz");
+      setMiniGamesCategory("quiz-prize");
     }
   }, []);
 
@@ -114,13 +135,13 @@ export function LeaderboardTable() {
     };
   }, []);
 
-  const isQuizMode = leaderboardMode === "quiz";
-  const availableTrackers = isQuizMode
+  const isMiniGamesMode = leaderboardMode === "quiz";
+  const availableTrackers = isMiniGamesMode
     ? []
     : getTrackersForDbMode(leaderboardMode);
 
   const activeTracker =
-    isQuizMode
+    isMiniGamesMode
       ? tracker
       : isTrackerValidForDbMode(tracker, leaderboardMode)
         ? tracker
@@ -129,6 +150,9 @@ export function LeaderboardTable() {
   const isDailyMode =
     SHOW_DAILY_CHALLENGE_UI && leaderboardMode === "daily";
   const isTrophyCabinetMode = leaderboardMode === "trophy-cabinet";
+  const activeMiniGamesCategory =
+    MINI_GAME_WINS_CATEGORIES.find((c) => c.id === miniGamesCategory) ??
+    MINI_GAME_WINS_CATEGORIES[0]!;
 
   const handleQuickModeChange = (mode: QuickLeaderboardMode) => {
     setLeaderboardMode(mode);
@@ -158,8 +182,11 @@ export function LeaderboardTable() {
     setLoading(true);
 
     try {
-      if (isQuizMode) {
-        const result = await getQuizLeaderboardAsync();
+      if (isMiniGamesMode) {
+        const result =
+          miniGamesCategory === "quiz-prize"
+            ? await getQuizLeaderboardAsync()
+            : await getMiniGameWinsLeaderboardAsync(miniGamesCategory);
         if (currentRequest !== requestId.current) return;
         setEntries(result.rows);
         setUsingFallback(result.source === "local");
@@ -211,7 +238,8 @@ export function LeaderboardTable() {
     isSuperLeagueMode,
     superLeagueModeVariant,
     normalEraMode,
-    isQuizMode,
+    isMiniGamesMode,
+    miniGamesCategory,
   ]);
 
   useEffect(() => {
@@ -223,7 +251,7 @@ export function LeaderboardTable() {
       }
       return;
     }
-    if (isQuizMode) return;
+    if (isMiniGamesMode) return;
     if (!isTrackerValidForDbMode(tracker, leaderboardMode)) {
       setTracker(getDefaultTrackerForDbMode(leaderboardMode));
     }
@@ -232,7 +260,7 @@ export function LeaderboardTable() {
     tracker,
     isTrophyCabinetMode,
     trophySection,
-    isQuizMode,
+    isMiniGamesMode,
   ]);
 
   useEffect(() => {
@@ -244,17 +272,23 @@ export function LeaderboardTable() {
       ? "Daily"
       : leaderboardMode === "trophy-cabinet"
         ? "Trophy Cabinet"
-        : leaderboardMode === "quiz"
-          ? "Quiz"
+        : isMiniGamesMode
+          ? "Mini Games"
           : "Quick Mode";
 
-  const trackerLabel = isTrophyCabinetMode
-    ? (TROPHY_CABINET_CATEGORIES.find((c) => c.logicalId === trophyLogicalId)
-        ?.label ?? "Leaderboard")
-    : (availableTrackers.find((t) => t.id === activeTracker)?.label ??
-      "Leaderboard");
+  const trackerLabel = isMiniGamesMode
+    ? activeMiniGamesCategory.label
+    : isTrophyCabinetMode
+      ? (TROPHY_CABINET_CATEGORIES.find((c) => c.logicalId === trophyLogicalId)
+          ?.label ?? "Leaderboard")
+      : (availableTrackers.find((t) => t.id === activeTracker)?.label ??
+        "Leaderboard");
 
-  const statColumnLabel = STAT_COLUMN[effectiveTracker] ?? "Stat";
+  const statColumnLabel = isMiniGamesMode
+    ? miniGamesCategory === "quiz-prize"
+      ? "Highest Prize"
+      : "Total Wins"
+    : (STAT_COLUMN[effectiveTracker] ?? "Stat");
 
   const quickModeOptions: {
     id: QuickLeaderboardMode;
@@ -265,18 +299,22 @@ export function LeaderboardTable() {
     ...(SHOW_DAILY_CHALLENGE_UI
       ? [{ id: "daily" as const, label: "Daily" }]
       : []),
-    { id: "quiz" as const, label: "Quiz" },
+    { id: "quiz" as const, label: "Mini Games" },
   ];
 
   const emptyStateMessage = isDailyMode
     ? "No streaks yet. Finish a Daily Challenge."
-    : isQuizMode
-      ? "No quiz prizes yet. Finish a Quiz Mode run."
+    : isMiniGamesMode
+      ? miniGamesCategory === "quiz-prize"
+        ? "No quiz prizes yet. Finish a Quiz Mode run."
+        : `No ${activeMiniGamesCategory.label.toLowerCase()} yet. Win a game to climb the board.`
       : `No ${trackerLabel.toLowerCase()} entries yet. Finish a run.`;
 
-  const showUpdatedColumn = !isDailyMode && !isTrophyCabinetMode && !isQuizMode;
+  const showUpdatedColumn =
+    !isDailyMode && !isTrophyCabinetMode && !isMiniGamesMode;
 
-  const showPeriodFilters = !isDailyMode && !isTrophyCabinetMode && !isQuizMode;
+  const showPeriodFilters =
+    !isDailyMode && !isTrophyCabinetMode && !isMiniGamesMode;
 
   return (
     <div>
@@ -328,6 +366,19 @@ export function LeaderboardTable() {
               setTracker(resolveTrophyCabinetTracker(logical, trophySection));
             }}
             ariaLabel="Trophy cabinet category"
+          />
+        ) : isMiniGamesMode ? (
+          <LeaderboardTabBar
+            tier="category"
+            tabs={MINI_GAME_WINS_CATEGORIES.map((category) => ({
+              id: category.id,
+              label: category.shortLabel,
+              accent: MINI_GAMES_CATEGORY_ACCENTS[category.id],
+            }))}
+            active={miniGamesCategory}
+            onChange={(id) => setMiniGamesCategory(id as MiniGamesCategory)}
+            scrollable
+            ariaLabel="Mini games category"
           />
         ) : (
           availableTrackers.length > 1 && (
@@ -390,9 +441,15 @@ export function LeaderboardTable() {
                   variant="theme"
                   size="sm"
                   fullWidth={false}
-                  href={isQuizMode ? "/mini-games/quiz" : "/play"}
+                  href={
+                    isMiniGamesMode
+                      ? activeMiniGamesCategory.href
+                      : "/play"
+                  }
                 >
-                  {isQuizMode ? "Play Quiz Mode" : "Play Quick Mode"}
+                  {isMiniGamesMode
+                    ? `Play ${activeMiniGamesCategory.shortLabel}`
+                    : "Play Quick Mode"}
                 </GameButton>
                 {!authLoading && !isLoggedIn ? (
                   <GameButton

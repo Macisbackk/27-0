@@ -7,11 +7,20 @@ import type {
 } from "./types";
 
 const CROWD_CORRECT_WEIGHT: Record<QuizDifficulty, [number, number]> = {
-  easy: [0.58, 0.86],
-  medium: [0.42, 0.72],
-  hard: [0.28, 0.56],
-  "very-hard": [0.2, 0.48],
-  expert: [0.16, 0.44],
+  easy: [0.72, 0.92],
+  medium: [0.58, 0.84],
+  hard: [0.48, 0.74],
+  "very-hard": [0.4, 0.66],
+  expert: [0.34, 0.6],
+};
+
+/** Chance the crowd poll plurality lands on the correct option. */
+const CROWD_CORRECT_LEAD_CHANCE: Record<QuizDifficulty, number> = {
+  easy: 0.98,
+  medium: 0.9,
+  hard: 0.78,
+  "very-hard": 0.68,
+  expert: 0.58,
 };
 
 const PHONE_CORRECT_CHANCE: Record<QuizDifficulty, number> = {
@@ -179,19 +188,20 @@ export function buildCrowdResult(
   const [min, max] = CROWD_CORRECT_WEIGHT[difficulty];
   let correctShare = lerp(rng, min, max);
 
-  // Harder questions can swing the crowd away from the right answer.
-  if (difficulty === "hard" && rng() < 0.28) {
-    correctShare = lerp(rng, 0.18, 0.36);
+  // Rare hard-question swing — less common / milder than before.
+  if (difficulty === "hard" && rng() < 0.12) {
+    correctShare = lerp(rng, 0.3, 0.44);
   }
-  if ((difficulty === "very-hard" || difficulty === "expert") && rng() < 0.42) {
-    correctShare = lerp(rng, 0.1, 0.32);
+  if ((difficulty === "very-hard" || difficulty === "expert") && rng() < 0.18) {
+    correctShare = lerp(rng, 0.24, 0.4);
   }
 
   const percents: [number, number, number, number] = [0, 0, 0, 0];
   if (!visible.includes(correctIndex)) {
     const even = Math.floor(100 / Math.max(visible.length, 1));
     visible.forEach((index, i) => {
-      percents[index] = i === visible.length - 1 ? 100 - even * (visible.length - 1) : even;
+      percents[index] =
+        i === visible.length - 1 ? 100 - even * (visible.length - 1) : even;
     });
     return { percents };
   }
@@ -217,7 +227,47 @@ export function buildCrowdResult(
   visible.forEach((index, i) => {
     percents[index] = Math.max(0, rounded[i] ?? 0);
   });
+
+  if (rng() < CROWD_CORRECT_LEAD_CHANCE[difficulty]) {
+    ensureCrowdCorrectLead(percents, correctIndex, visible, rng);
+  }
+
   return { percents };
+}
+
+/** Nudge percentages so the correct option uniquely leads the poll. */
+function ensureCrowdCorrectLead(
+  percents: [number, number, number, number],
+  correctIndex: number,
+  visible: readonly number[],
+  rng: () => number
+): void {
+  const others = visible.filter((index) => index !== correctIndex);
+  if (others.length === 0) return;
+
+  const correctPct = percents[correctIndex] ?? 0;
+  let leader = others[0]!;
+  let leaderPct = percents[leader] ?? 0;
+  for (const index of others) {
+    const value = percents[index] ?? 0;
+    if (value > leaderPct) {
+      leader = index;
+      leaderPct = value;
+    }
+  }
+
+  if (correctPct > leaderPct) return;
+
+  const margin = 2 + Math.floor(rng() * 7);
+  const needed = leaderPct - correctPct + margin;
+  const take = Math.min(needed, Math.max(0, leaderPct - 1));
+  percents[leader] = Math.max(0, leaderPct - take);
+  percents[correctIndex] = correctPct + take;
+
+  const total = percents.reduce((sum, value) => sum + value, 0);
+  if (total !== 100) {
+    percents[correctIndex] = Math.max(0, (percents[correctIndex] ?? 0) + (100 - total));
+  }
 }
 
 export function buildPhoneResult(

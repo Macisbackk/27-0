@@ -40,6 +40,10 @@ export function topicFamily(topicId: string): string {
   if (parts[0] === "final") {
     return parts.slice(0, 3).join(":");
   }
+  // One Man of Steel / Lance Todd / Golden Boot / Dream Team stem per run.
+  if (parts[0] === "honour" && parts[1]) {
+    return `honour:${parts[1]}`;
+  }
   if (parts[0] === "curated") {
     return topicId;
   }

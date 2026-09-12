@@ -8,7 +8,7 @@ import type { SquadSlot } from "@/lib/types";
 import { playPanelExpand } from "@/lib/sound";
 import { BTN, CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { TryScorerClubBadge } from "./TryScorerClubBadge";
+import { ClubDualSwatch } from "./ClubDualSwatch";
 
 const RANK_STYLES = [
   "text-accent-gold",
@@ -47,11 +47,11 @@ function ScorerCard({
       >
         {featured ? index + 1 : `#${index + 1}`}
       </p>
-      <p className={`mt-2 break-words ${featured ? TYPO.playerNameSm : TYPO.statValue}`}>
-        {scorer.name}
-      </p>
-      <div className="mt-1.5 flex justify-center">
-        <TryScorerClubBadge club={scorer.club} />
+      <div className="mt-2 flex items-center justify-center gap-2">
+        <ClubDualSwatch club={scorer.club} size="sm" />
+        <p className={`break-words ${featured ? TYPO.playerNameSm : TYPO.statValue}`}>
+          {scorer.name}
+        </p>
       </div>
       <p className={`mt-1.5 ${TYPO.bodySm}`}>
         {formatTryScorerPosition(scorer, squad)}

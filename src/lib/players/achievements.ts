@@ -94,8 +94,9 @@ function yearsFromMap(
 }
 
 /**
- * Year-pinned cards (id ends with -YYYY) only show honours earned that season.
- * Career / Current / non-pinned historic cards keep the full year list.
+ * Year-pinned cards (id ends with -YYYY) show honours earned in that season
+ * and earlier — career-to-date as of the card year. Current / career cards
+ * (no year suffix) keep the full year list.
  */
 export function filterHonourYearsForCard(
   player: HonourRef,
@@ -105,7 +106,7 @@ export function filterHonourYearsForCard(
   if (!pinned) return years;
   const cardYear = player.year ?? player.cardYear;
   if (typeof cardYear !== "number" || !Number.isFinite(cardYear)) return years;
-  return years.filter((y) => y === cardYear);
+  return years.filter((y) => y <= cardYear);
 }
 
 export function getManOfSteelYears(playerId: string): number[] {
@@ -176,7 +177,30 @@ export function resolveChallengeCupYears(player: HonourRef): number[] {
 }
 
 export function resolveHasLanceToddTrophy(player: HonourRef): boolean {
-  return honourLookupIds(player).some((id) => LANCE_TODD_WINNERS.has(id));
+  const ids = honourLookupIds(player);
+  if (ids.some((id) => LANCE_TODD_WINNERS.has(id))) {
+    const pinned = /-\d{4}$/.test(player.id);
+    const cardYear = player.year ?? player.cardYear;
+    // Year cards: only count Lance Todd if they (or a year-suffixed id) won by card year.
+    if (pinned && typeof cardYear === "number" && Number.isFinite(cardYear)) {
+      const base =
+        player.basePlayerId && player.basePlayerId !== player.id
+          ? player.basePlayerId
+          : player.id.replace(/-\d{4}$/, "");
+      for (const id of LANCE_TODD_WINNERS) {
+        if (id === player.id) return true;
+        const suffix = id.startsWith(`${base}-`)
+          ? id.slice(base.length + 1)
+          : null;
+        if (suffix && /^\d{4}$/.test(suffix) && Number(suffix) <= cardYear) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return true;
+  }
+  return false;
 }
 
 export function hasDreamTeamSelection(playerId: string): boolean {

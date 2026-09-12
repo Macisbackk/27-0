@@ -7,6 +7,7 @@ import {
   getClubTheme,
 } from "@/lib/clubs";
 import { getClubLogoTextColor } from "@/lib/ui/contrast";
+import { TYPO } from "@/lib/ui/typography";
 
 export type ClubLogoSize = "xs" | "sm" | "md" | "lg";
 
@@ -217,7 +218,7 @@ export function ClubNameStrip({
         />
       </div>
       <span
-        className={`min-w-0 flex-1 break-words font-display font-bold uppercase leading-snug tracking-wide ${
+        className={`min-w-0 flex-1 break-words ${TYPO.matchClub} ${
           compact ? "text-[9px]" : "text-[10px] sm:text-xs"
         }`}
         style={{ color: "inherit" }}
@@ -256,7 +257,7 @@ export function ClubIdentityStrip({
       )}
       {showClubName && (
         <span
-          className={`min-w-0 break-words font-display font-bold uppercase leading-snug tracking-wide ${
+          className={`min-w-0 break-words ${TYPO.matchClub} ${
             compact ? "text-[8px]" : "text-[10px] sm:text-xs"
           }`}
           style={{ color: "inherit" }}

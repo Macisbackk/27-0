@@ -59,11 +59,11 @@ export function FixtureResultRow({
       onClick={onClick}
       className={`fixture-result-row min-w-0 w-full max-w-full text-left transition ${
         selected
-          ? "fixture-result-row--selected border border-theme-primary/35 bg-theme-primary/[0.08] shadow-[inset_2px_0_0_var(--theme-primary)]"
+          ? "fixture-result-row--selected border border-white/20 bg-white/[0.06]"
           : cupHighlight
-            ? `${CARD.base} border-2 border-accent-gold/50 bg-accent-gold/10 ring-1 ring-accent-gold/25`
-            : `${CARD.base} bg-pitch-900/40`
-      } ${onClick ? CARD.interactive : ""} ${
+            ? `${CARD.base} game-panel--flush border border-accent-gold/40 bg-accent-gold/10`
+            : `${CARD.base} game-panel--flush border-white/10 bg-pitch-900/40`
+      } ${onClick ? "btn-press cursor-pointer transition hover:border-white/20 hover:bg-pitch-900/55" : ""} ${
         compact ? "px-1.5 py-1 sm:px-2 sm:py-1.5" : "px-2.5 py-2 sm:px-3 sm:py-2.5"
       }`}
     >

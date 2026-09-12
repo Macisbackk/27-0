@@ -1158,6 +1158,26 @@
     "answerType": "objective"
   },
   {
+    "id": "cc-winner-2026",
+    "question": "Which club won the 2026 Challenge Cup final?",
+    "options": [
+      "Wigan Warriors",
+      "Sheffield Eagles",
+      "Hull FC",
+      "Warrington Wolves"
+    ],
+    "correctAnswer": "Wigan Warriors",
+    "topicId": "final:cc:2026",
+    "difficulty": "easy",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2020s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
     "id": "gf-score-1998",
     "question": "What was the score in the 1998 Super League Grand Final?",
     "options": [
@@ -1960,6 +1980,26 @@
     "category": "records",
     "teams": [
       "hull-kr"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "lls-winner-2026",
+    "question": "Which club won the Super League League Leaders' Shield in 2026?",
+    "options": [
+      "Wigan Warriors",
+      "Catalans Dragons",
+      "Castleford Tigers",
+      "Hull KR"
+    ],
+    "correctAnswer": "Wigan Warriors",
+    "topicId": "league-leaders:2026",
+    "difficulty": "medium",
+    "category": "records",
+    "teams": [
+      "wigan"
     ],
     "era": "2020s",
     "sourceType": "records",
@@ -7075,8 +7115,8 @@
     "options": [
       "Alex Mellor",
       "Ed Chamberlain",
-      "Dan Russell",
-      "Andy Ackers"
+      "Alfie Leake",
+      "Dan Russell"
     ],
     "correctAnswer": "Alex Mellor",
     "topicId": "squad:castleford:2026:alex-mellor:membership",
@@ -7093,9 +7133,9 @@
     "question": "Which of these players was named in Huddersfield Giants' 2026 squad?",
     "options": [
       "Adam Clune",
-      "Ed Chamberlain",
-      "Dan Russell",
-      "Esan Marsters"
+      "Alfie Leake",
+      "Connor Wynne",
+      "Ed Chamberlain"
     ],
     "correctAnswer": "Adam Clune",
     "topicId": "squad:huddersfield:2026:adam-clune:membership",
@@ -7112,9 +7152,9 @@
     "question": "Which of these players was named in Leigh Leopards' 2026 squad?",
     "options": [
       "Aaron Pene",
-      "Eribe Doro",
-      "Esan Marsters",
-      "Caleb Aekins"
+      "Alfie Leake",
+      "Caleb Aekins",
+      "Ed Chamberlain"
     ],
     "correctAnswer": "Aaron Pene",
     "topicId": "squad:leigh:2026:aaron-pene:membership",
@@ -7146,6 +7186,82 @@
     "sourceType": "roster"
   },
   {
+    "id": "ros-pos-leigh-adam-cook",
+    "question": "Which position did Adam Cook play for Leigh Leopards in the 2026 squad?",
+    "options": [
+      "scrum-half",
+      "centre",
+      "stand-off",
+      "loose forward"
+    ],
+    "correctAnswer": "scrum-half",
+    "topicId": "squad:leigh:2026:adam-cook:position",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "leigh"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
+    "id": "ros-pos-leigh-aj-towse",
+    "question": "Which position did AJ Towse play for Leigh Leopards in the 2026 squad?",
+    "options": [
+      "wing",
+      "prop",
+      "second-row",
+      "centre"
+    ],
+    "correctAnswer": "wing",
+    "topicId": "squad:leigh:2026:aj-towse:position",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "leigh"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
+    "id": "ros-pos-leigh-andrew-badrock",
+    "question": "Which position did Andrew Badrock play for Leigh Leopards in the 2026 squad?",
+    "options": [
+      "second-row",
+      "scrum-half",
+      "hooker",
+      "stand-off"
+    ],
+    "correctAnswer": "second-row",
+    "topicId": "squad:leigh:2026:andrew-badrock:position",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "leigh"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
+    "id": "ros-pos-leigh-bailey-hodgson",
+    "question": "Which position did Bailey Hodgson play for Leigh Leopards in the 2026 squad?",
+    "options": [
+      "full-back",
+      "wing",
+      "hooker",
+      "scrum-half"
+    ],
+    "correctAnswer": "full-back",
+    "topicId": "squad:leigh:2026:bailey-hodgson:position",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "leigh"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
     "id": "ros-pos-leigh-ben-mcnamara",
     "question": "Which position did Ben McNamara play for Leigh Leopards in the 2026 squad?",
     "options": [
@@ -7156,7 +7272,7 @@
     ],
     "correctAnswer": "stand-off",
     "topicId": "squad:leigh:2026:ben-mcnamara:position",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "category": "players",
     "teams": [
       "leigh"
@@ -7175,7 +7291,7 @@
     ],
     "correctAnswer": "wing",
     "topicId": "squad:leigh:2026:darnell-mcintosh:position",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "category": "players",
     "teams": [
       "leigh"
@@ -7194,7 +7310,7 @@
     ],
     "correctAnswer": "full-back",
     "topicId": "squad:leigh:2026:david-armstrong:position",
-    "difficulty": "medium",
+    "difficulty": "very-hard",
     "category": "players",
     "teams": [
       "leigh"
@@ -7213,7 +7329,7 @@
     ],
     "correctAnswer": "hooker",
     "topicId": "squad:leigh:2026:edwin-ipape:position",
-    "difficulty": "medium",
+    "difficulty": "very-hard",
     "category": "players",
     "teams": [
       "leigh"
@@ -7232,82 +7348,6 @@
     ],
     "correctAnswer": "second-row",
     "topicId": "squad:leigh:2026:ethan-o-neill:position",
-    "difficulty": "hard",
-    "category": "players",
-    "teams": [
-      "leigh"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-leigh-frankie-halton",
-    "question": "Which position did Frankie Halton play for Leigh Leopards in the 2026 squad?",
-    "options": [
-      "second-row",
-      "prop",
-      "hooker",
-      "stand-off"
-    ],
-    "correctAnswer": "second-row",
-    "topicId": "squad:leigh:2026:frankie-halton:position",
-    "difficulty": "hard",
-    "category": "players",
-    "teams": [
-      "leigh"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-leigh-gareth-o-brien",
-    "question": "Which position did Gareth O'Brien play for Leigh Leopards in the 2026 squad?",
-    "options": [
-      "stand-off",
-      "full-back",
-      "scrum-half",
-      "second-row"
-    ],
-    "correctAnswer": "stand-off",
-    "topicId": "squad:leigh:2026:gareth-o-brien:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "leigh"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-leigh-isaac-liu",
-    "question": "Which position did Isaac Liu play for Leigh Leopards in the 2026 squad?",
-    "options": [
-      "loose forward",
-      "scrum-half",
-      "centre",
-      "second-row"
-    ],
-    "correctAnswer": "loose forward",
-    "topicId": "squad:leigh:2026:isaac-liu:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "leigh"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-leigh-joe-ofahengaue",
-    "question": "Which position did Joe Ofahengaue play for Leigh Leopards in the 2026 squad?",
-    "options": [
-      "prop",
-      "full-back",
-      "scrum-half",
-      "stand-off"
-    ],
-    "correctAnswer": "prop",
-    "topicId": "squad:leigh:2026:joe-ofahengaue:position",
     "difficulty": "expert",
     "category": "players",
     "teams": [
@@ -7317,17 +7357,36 @@
     "sourceType": "roster"
   },
   {
-    "id": "ros-who-toulouse-anthony-marion",
+    "id": "ros-who-toulouse-aj-wallace",
     "question": "Which of these players was named in Toulouse Olympique's 2026 squad?",
     "options": [
-      "Anthony Marion",
-      "Esan Marsters",
-      "Ed Chamberlain",
-      "Ethan Ryan"
+      "AJ Wallace",
+      "Brandon Douglas",
+      "Andy Ackers",
+      "Ebon Scurr"
     ],
-    "correctAnswer": "Anthony Marion",
-    "topicId": "squad:toulouse:2026:anthony-marion:membership",
+    "correctAnswer": "AJ Wallace",
+    "topicId": "squad:toulouse:2026:aj-wallace:membership",
     "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "toulouse"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
+    "id": "ros-pos-toulouse-aj-wallace",
+    "question": "Which position did AJ Wallace play for Toulouse Olympique in the 2026 squad?",
+    "options": [
+      "second-row",
+      "stand-off",
+      "hooker",
+      "centre"
+    ],
+    "correctAnswer": "second-row",
+    "topicId": "squad:toulouse:2026:aj-wallace:position",
+    "difficulty": "medium",
     "category": "players",
     "teams": [
       "toulouse"
@@ -7346,6 +7405,25 @@
     ],
     "correctAnswer": "loose forward",
     "topicId": "squad:toulouse:2026:anthony-marion:position",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "toulouse"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
+    "id": "ros-pos-toulouse-baptiste-rodriguez",
+    "question": "Which position did Baptiste Rodriguez play for Toulouse Olympique in the 2026 squad?",
+    "options": [
+      "hooker",
+      "stand-off",
+      "centre",
+      "scrum-half"
+    ],
+    "correctAnswer": "hooker",
+    "topicId": "squad:toulouse:2026:baptiste-rodriguez:position",
     "difficulty": "medium",
     "category": "players",
     "teams": [
@@ -7403,7 +7481,26 @@
     ],
     "correctAnswer": "second-row",
     "topicId": "squad:toulouse:2026:calum-gahan:position",
-    "difficulty": "medium",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "toulouse"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
+    "id": "ros-pos-toulouse-ellis-gillam",
+    "question": "Which position did Ellis Gillam play for Toulouse Olympique in the 2026 squad?",
+    "options": [
+      "second-row",
+      "prop",
+      "hooker",
+      "wing"
+    ],
+    "correctAnswer": "second-row",
+    "topicId": "squad:toulouse:2026:ellis-gillam:position",
+    "difficulty": "hard",
     "category": "players",
     "teams": [
       "toulouse"
@@ -7422,7 +7519,45 @@
     ],
     "correctAnswer": "hooker",
     "topicId": "squad:toulouse:2026:eloi-pelissier:position",
-    "difficulty": "medium",
+    "difficulty": "very-hard",
+    "category": "players",
+    "teams": [
+      "toulouse"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
+    "id": "ros-pos-toulouse-henry-o-kane",
+    "question": "Which position did Henry O'Kane play for Toulouse Olympique in the 2026 squad?",
+    "options": [
+      "second-row",
+      "wing",
+      "loose forward",
+      "scrum-half"
+    ],
+    "correctAnswer": "second-row",
+    "topicId": "squad:toulouse:2026:henry-o-kane:position",
+    "difficulty": "very-hard",
+    "category": "players",
+    "teams": [
+      "toulouse"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
+    "id": "ros-pos-toulouse-hugo-garrigues",
+    "question": "Which position did Hugo Garrigues play for Toulouse Olympique in the 2026 squad?",
+    "options": [
+      "hooker",
+      "second-row",
+      "prop",
+      "loose forward"
+    ],
+    "correctAnswer": "hooker",
+    "topicId": "squad:toulouse:2026:hugo-garrigues:position",
+    "difficulty": "very-hard",
     "category": "players",
     "teams": [
       "toulouse"
@@ -7441,7 +7576,7 @@
     ],
     "correctAnswer": "stand-off",
     "topicId": "squad:toulouse:2026:jake-shorrocks:position",
-    "difficulty": "hard",
+    "difficulty": "very-hard",
     "category": "players",
     "teams": [
       "toulouse"
@@ -7460,7 +7595,45 @@
     ],
     "correctAnswer": "prop",
     "topicId": "squad:toulouse:2026:james-roumanos:position",
-    "difficulty": "hard",
+    "difficulty": "very-hard",
+    "category": "players",
+    "teams": [
+      "toulouse"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
+    "id": "ros-pos-toulouse-joe-bretherton",
+    "question": "Which position did Joe Bretherton play for Toulouse Olympique in the 2026 squad?",
+    "options": [
+      "prop",
+      "second-row",
+      "full-back",
+      "scrum-half"
+    ],
+    "correctAnswer": "prop",
+    "topicId": "squad:toulouse:2026:joe-bretherton:position",
+    "difficulty": "very-hard",
+    "category": "players",
+    "teams": [
+      "toulouse"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
+    "id": "ros-pos-toulouse-joe-cator",
+    "question": "Which position did Joe Cator play for Toulouse Olympique in the 2026 squad?",
+    "options": [
+      "loose forward",
+      "centre",
+      "full-back",
+      "hooker"
+    ],
+    "correctAnswer": "loose forward",
+    "topicId": "squad:toulouse:2026:joe-cator:position",
+    "difficulty": "very-hard",
     "category": "players",
     "teams": [
       "toulouse"
@@ -7517,139 +7690,6 @@
     ],
     "correctAnswer": "prop",
     "topicId": "squad:toulouse:2026:lambert-belmas:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "toulouse"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-toulouse-mathieu-jussaume",
-    "question": "Which position did Mathieu Jussaume play for Toulouse Olympique in the 2026 squad?",
-    "options": [
-      "centre",
-      "prop",
-      "stand-off",
-      "loose forward"
-    ],
-    "correctAnswer": "centre",
-    "topicId": "squad:toulouse:2026:mathieu-jussaume:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "toulouse"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-toulouse-maxime-stefani",
-    "question": "Which position did Maxime Stefani play for Toulouse Olympique in the 2026 squad?",
-    "options": [
-      "second-row",
-      "centre",
-      "full-back",
-      "scrum-half"
-    ],
-    "correctAnswer": "second-row",
-    "topicId": "squad:toulouse:2026:maxime-stefani:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "toulouse"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-toulouse-olly-ashall-bott",
-    "question": "Which position did Olly Ashall-Bott play for Toulouse Olympique in the 2026 squad?",
-    "options": [
-      "full-back",
-      "wing",
-      "second-row",
-      "centre"
-    ],
-    "correctAnswer": "full-back",
-    "topicId": "squad:toulouse:2026:olly-ashall-bott:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "toulouse"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-toulouse-paul-marcon",
-    "question": "Which position did Paul Marcon play for Toulouse Olympique in the 2026 squad?",
-    "options": [
-      "wing",
-      "full-back",
-      "hooker",
-      "scrum-half"
-    ],
-    "correctAnswer": "wing",
-    "topicId": "squad:toulouse:2026:paul-marcon:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "toulouse"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-toulouse-paul-ulberg",
-    "question": "Which position did Paul Ulberg play for Toulouse Olympique in the 2026 squad?",
-    "options": [
-      "wing",
-      "hooker",
-      "full-back",
-      "centre"
-    ],
-    "correctAnswer": "wing",
-    "topicId": "squad:toulouse:2026:paul-ulberg:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "toulouse"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-toulouse-reubenn-rennie",
-    "question": "Which position did Reubenn Rennie play for Toulouse Olympique in the 2026 squad?",
-    "options": [
-      "centre",
-      "wing",
-      "scrum-half",
-      "second-row"
-    ],
-    "correctAnswer": "centre",
-    "topicId": "squad:toulouse:2026:reubenn-rennie:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "toulouse"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-toulouse-thomas-lacans",
-    "question": "Which position did Thomas Lacans play for Toulouse Olympique in the 2026 squad?",
-    "options": [
-      "scrum-half",
-      "stand-off",
-      "centre",
-      "loose forward"
-    ],
-    "correctAnswer": "scrum-half",
-    "topicId": "squad:toulouse:2026:thomas-lacans:position",
     "difficulty": "expert",
     "category": "players",
     "teams": [
@@ -7659,16 +7699,16 @@
     "sourceType": "roster"
   },
   {
-    "id": "ros-who-wakefield-caleb-hamlin-uele",
+    "id": "ros-who-wakefield-caius-faatili",
     "question": "Which of these players was named in Wakefield Trinity's 2026 squad?",
     "options": [
-      "Caleb Hamlin-Uele",
-      "Esan Marsters",
-      "Ed Chamberlain",
-      "Dan Russell"
+      "Caius Faatili",
+      "Connor Wynne",
+      "Caleb Aekins",
+      "Ed Chamberlain"
     ],
-    "correctAnswer": "Caleb Hamlin-Uele",
-    "topicId": "squad:wakefield:2026:caleb-hamlin-uele:membership",
+    "correctAnswer": "Caius Faatili",
+    "topicId": "squad:wakefield:2026:caius-faatili:membership",
     "difficulty": "easy",
     "category": "players",
     "teams": [
@@ -7683,7 +7723,7 @@
     "options": [
       "Ata Hingano",
       "Caleb Aekins",
-      "Eribe Doro",
+      "Brandon Douglas",
       "Andy Ackers"
     ],
     "correctAnswer": "Ata Hingano",
@@ -7792,6 +7832,25 @@
     "sourceType": "roster"
   },
   {
+    "id": "ros-pos-york-jon-bennison",
+    "question": "Which position did Jon Bennison play for York Knights in the 2026 squad?",
+    "options": [
+      "wing",
+      "hooker",
+      "scrum-half",
+      "centre"
+    ],
+    "correctAnswer": "wing",
+    "topicId": "squad:york:2026:jon-bennison:position",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "york"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
     "id": "ros-pos-york-jordan-lipp",
     "question": "Which position did Jordan Lipp play for York Knights in the 2026 squad?",
     "options": [
@@ -7840,7 +7899,7 @@
     ],
     "correctAnswer": "second-row",
     "topicId": "squad:york:2026:josh-griffin:position",
-    "difficulty": "hard",
+    "difficulty": "very-hard",
     "category": "players",
     "teams": [
       "york"
@@ -7868,6 +7927,44 @@
     "sourceType": "roster"
   },
   {
+    "id": "ros-pos-york-kieran-buchanan",
+    "question": "Which position did Kieran Buchanan play for York Knights in the 2026 squad?",
+    "options": [
+      "centre",
+      "full-back",
+      "second-row",
+      "scrum-half"
+    ],
+    "correctAnswer": "centre",
+    "topicId": "squad:york:2026:kieran-buchanan:position",
+    "difficulty": "very-hard",
+    "category": "players",
+    "teams": [
+      "york"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
+    "id": "ros-pos-york-kieran-hudson",
+    "question": "Which position did Kieran Hudson play for York Knights in the 2026 squad?",
+    "options": [
+      "prop",
+      "loose forward",
+      "scrum-half",
+      "second-row"
+    ],
+    "correctAnswer": "prop",
+    "topicId": "squad:york:2026:kieran-hudson:position",
+    "difficulty": "very-hard",
+    "category": "players",
+    "teams": [
+      "york"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
     "id": "ros-pos-york-liam-harris",
     "question": "Which position did Liam Harris play for York Knights in the 2026 squad?",
     "options": [
@@ -7878,6 +7975,25 @@
     ],
     "correctAnswer": "scrum-half",
     "topicId": "squad:york:2026:liam-harris:position",
+    "difficulty": "very-hard",
+    "category": "players",
+    "teams": [
+      "york"
+    ],
+    "era": "current",
+    "sourceType": "roster"
+  },
+  {
+    "id": "ros-pos-york-nikau-williams",
+    "question": "Which position did Nikau Williams play for York Knights in the 2026 squad?",
+    "options": [
+      "stand-off",
+      "second-row",
+      "full-back",
+      "wing"
+    ],
+    "correctAnswer": "stand-off",
+    "topicId": "squad:york:2026:nikau-williams:position",
     "difficulty": "very-hard",
     "category": "players",
     "teams": [
@@ -7935,82 +8051,6 @@
     ],
     "correctAnswer": "prop",
     "topicId": "squad:york:2026:paul-vaughan:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "york"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-york-sam-wood",
-    "question": "Which position did Sam Wood play for York Knights in the 2026 squad?",
-    "options": [
-      "centre",
-      "stand-off",
-      "hooker",
-      "loose forward"
-    ],
-    "correctAnswer": "centre",
-    "topicId": "squad:york:2026:sam-wood:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "york"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-york-scott-galeano",
-    "question": "Which position did Scott Galeano play for York Knights in the 2026 squad?",
-    "options": [
-      "wing",
-      "stand-off",
-      "full-back",
-      "centre"
-    ],
-    "correctAnswer": "wing",
-    "topicId": "squad:york:2026:scott-galeano:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "york"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-york-toa-mata-afa",
-    "question": "Which position did Toa Mata'afa play for York Knights in the 2026 squad?",
-    "options": [
-      "full-back",
-      "stand-off",
-      "scrum-half",
-      "loose forward"
-    ],
-    "correctAnswer": "full-back",
-    "topicId": "squad:york:2026:toa-mata-afa:position",
-    "difficulty": "very-hard",
-    "category": "players",
-    "teams": [
-      "york"
-    ],
-    "era": "current",
-    "sourceType": "roster"
-  },
-  {
-    "id": "ros-pos-york-xavier-va-a",
-    "question": "Which position did Xavier Va'a play for York Knights in the 2026 squad?",
-    "options": [
-      "prop",
-      "stand-off",
-      "centre",
-      "loose forward"
-    ],
-    "correctAnswer": "prop",
-    "topicId": "squad:york:2026:xavier-va-a:position",
     "difficulty": "expert",
     "category": "players",
     "teams": [
@@ -8018,5 +8058,3023 @@
     ],
     "era": "current",
     "sourceType": "roster"
+  },
+  {
+    "id": "mos-winner-1985",
+    "question": "Who won the Man of Steel award in 1985?",
+    "options": [
+      "Ellery Hanley",
+      "Andy Farrell",
+      "Jamie Peacock",
+      "Sean Long"
+    ],
+    "correctAnswer": "Ellery Hanley",
+    "topicId": "honour:man-of-steel:1985",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-1987",
+    "question": "Who won the Man of Steel award in 1987?",
+    "options": [
+      "Ellery Hanley",
+      "Jamie Lyon",
+      "Sean Long",
+      "Paul Sculthorpe"
+    ],
+    "correctAnswer": "Ellery Hanley",
+    "topicId": "honour:man-of-steel:1987",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-1988",
+    "question": "Who won the Man of Steel award in 1988?",
+    "options": [
+      "Martin Offiah",
+      "Paul Sculthorpe",
+      "James Lowes",
+      "Sean Long"
+    ],
+    "correctAnswer": "Martin Offiah",
+    "topicId": "honour:man-of-steel:1988",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-1989",
+    "question": "Who won the Man of Steel award in 1989?",
+    "options": [
+      "Ellery Hanley",
+      "Iestyn Harris",
+      "James Lowes",
+      "Paul Sculthorpe"
+    ],
+    "correctAnswer": "Ellery Hanley",
+    "topicId": "honour:man-of-steel:1989",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-1991",
+    "question": "Who won the Man of Steel award in 1991?",
+    "options": [
+      "Garry Schofield",
+      "Andy Farrell",
+      "Jamie Peacock",
+      "Adrian Vowles"
+    ],
+    "correctAnswer": "Garry Schofield",
+    "topicId": "honour:man-of-steel:1991",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-1996",
+    "question": "Who won the Man of Steel award in 1996?",
+    "options": [
+      "Andy Farrell",
+      "Adrian Vowles",
+      "Jamie Peacock",
+      "Jamie Lyon"
+    ],
+    "correctAnswer": "Andy Farrell",
+    "topicId": "honour:man-of-steel:1996",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-1997",
+    "question": "Who won the Man of Steel award in 1997?",
+    "options": [
+      "James Lowes",
+      "Paul Sculthorpe",
+      "Jamie Peacock",
+      "Sean Long"
+    ],
+    "correctAnswer": "James Lowes",
+    "topicId": "honour:man-of-steel:1997",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-1998",
+    "question": "Who won the Man of Steel award in 1998?",
+    "options": [
+      "Iestyn Harris",
+      "James Lowes",
+      "Sean Long",
+      "Paul Sculthorpe"
+    ],
+    "correctAnswer": "Iestyn Harris",
+    "topicId": "honour:man-of-steel:1998",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-1999",
+    "question": "Who won the Man of Steel award in 1999?",
+    "options": [
+      "Adrian Vowles",
+      "James Lowes",
+      "Paul Sculthorpe",
+      "Jamie Lyon"
+    ],
+    "correctAnswer": "Adrian Vowles",
+    "topicId": "honour:man-of-steel:1999",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "castleford"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2000",
+    "question": "Who won the Man of Steel award in 2000?",
+    "options": [
+      "Sean Long",
+      "Jamie Lyon",
+      "Adrian Vowles",
+      "Andy Farrell"
+    ],
+    "correctAnswer": "Sean Long",
+    "topicId": "honour:man-of-steel:2000",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2001",
+    "question": "Who won the Man of Steel award in 2001?",
+    "options": [
+      "Paul Sculthorpe",
+      "Adrian Vowles",
+      "Paul Wellens",
+      "Iestyn Harris"
+    ],
+    "correctAnswer": "Paul Sculthorpe",
+    "topicId": "honour:man-of-steel:2001",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2002",
+    "question": "Who won the Man of Steel award in 2002?",
+    "options": [
+      "Paul Sculthorpe",
+      "Adrian Vowles",
+      "Iestyn Harris",
+      "Jamie Lyon"
+    ],
+    "correctAnswer": "Paul Sculthorpe",
+    "topicId": "honour:man-of-steel:2002",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2003",
+    "question": "Who won the Man of Steel award in 2003?",
+    "options": [
+      "Jamie Peacock",
+      "Jamie Lyon",
+      "Andy Farrell",
+      "Iestyn Harris"
+    ],
+    "correctAnswer": "Jamie Peacock",
+    "topicId": "honour:man-of-steel:2003",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2004",
+    "question": "Who won the Man of Steel award in 2004?",
+    "options": [
+      "Andy Farrell",
+      "James Lowes",
+      "Paul Wellens",
+      "Paul Sculthorpe"
+    ],
+    "correctAnswer": "Andy Farrell",
+    "topicId": "honour:man-of-steel:2004",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2005",
+    "question": "Who won the Man of Steel award in 2005?",
+    "options": [
+      "Jamie Lyon",
+      "Sean Long",
+      "Adrian Vowles",
+      "Paul Sculthorpe"
+    ],
+    "correctAnswer": "Jamie Lyon",
+    "topicId": "honour:man-of-steel:2005",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2006",
+    "question": "Who won the Man of Steel award in 2006?",
+    "options": [
+      "Paul Wellens",
+      "Jamie Lyon",
+      "Jamie Peacock",
+      "Paul Sculthorpe"
+    ],
+    "correctAnswer": "Paul Wellens",
+    "topicId": "honour:man-of-steel:2006",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2007",
+    "question": "Who won the Man of Steel award in 2007?",
+    "options": [
+      "James Roby",
+      "Andy Farrell",
+      "Adrian Vowles",
+      "Sean Long"
+    ],
+    "correctAnswer": "James Roby",
+    "topicId": "honour:man-of-steel:2007",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2008",
+    "question": "Who won the Man of Steel award in 2008?",
+    "options": [
+      "James Graham",
+      "Jamie Peacock",
+      "Andy Farrell",
+      "Sean Long"
+    ],
+    "correctAnswer": "James Graham",
+    "topicId": "honour:man-of-steel:2008",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2009",
+    "question": "Who won the Man of Steel award in 2009?",
+    "options": [
+      "Brett Hodgson",
+      "Paul Sculthorpe",
+      "Iestyn Harris",
+      "Jamie Peacock"
+    ],
+    "correctAnswer": "Brett Hodgson",
+    "topicId": "honour:man-of-steel:2009",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2010",
+    "question": "Who won the Man of Steel award in 2010?",
+    "options": [
+      "Pat Richards",
+      "Paul Sculthorpe",
+      "Sean Long",
+      "Andy Farrell"
+    ],
+    "correctAnswer": "Pat Richards",
+    "topicId": "honour:man-of-steel:2010",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2011",
+    "question": "Who won the Man of Steel award in 2011?",
+    "options": [
+      "Rangi Chase",
+      "Andy Farrell",
+      "Jamie Peacock",
+      "Iestyn Harris"
+    ],
+    "correctAnswer": "Rangi Chase",
+    "topicId": "honour:man-of-steel:2011",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "castleford"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2012",
+    "question": "Who won the Man of Steel award in 2012?",
+    "options": [
+      "Sam Tomkins",
+      "Sean Long",
+      "Adrian Vowles",
+      "James Lowes"
+    ],
+    "correctAnswer": "Sam Tomkins",
+    "topicId": "honour:man-of-steel:2012",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2013",
+    "question": "Who won the Man of Steel award in 2013?",
+    "options": [
+      "Danny Brough",
+      "Adrian Vowles",
+      "Andy Farrell",
+      "Jamie Peacock"
+    ],
+    "correctAnswer": "Danny Brough",
+    "topicId": "honour:man-of-steel:2013",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "huddersfield"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2014",
+    "question": "Who won the Man of Steel award in 2014?",
+    "options": [
+      "Daryl Clark",
+      "Paul Sculthorpe",
+      "Andy Farrell",
+      "Jamie Peacock"
+    ],
+    "correctAnswer": "Daryl Clark",
+    "topicId": "honour:man-of-steel:2014",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2015",
+    "question": "Who won the Man of Steel award in 2015?",
+    "options": [
+      "Zak Hardaker",
+      "Paul Sculthorpe",
+      "Andy Farrell",
+      "Sean Long"
+    ],
+    "correctAnswer": "Zak Hardaker",
+    "topicId": "honour:man-of-steel:2015",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2016",
+    "question": "Who won the Man of Steel award in 2016?",
+    "options": [
+      "Danny Houghton",
+      "James Lowes",
+      "Jamie Peacock",
+      "Andy Farrell"
+    ],
+    "correctAnswer": "Danny Houghton",
+    "topicId": "honour:man-of-steel:2016",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2017",
+    "question": "Who won the Man of Steel award in 2017?",
+    "options": [
+      "Luke Gale",
+      "Adrian Vowles",
+      "James Lowes",
+      "Andy Farrell"
+    ],
+    "correctAnswer": "Luke Gale",
+    "topicId": "honour:man-of-steel:2017",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "castleford"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2018",
+    "question": "Who won the Man of Steel award in 2018?",
+    "options": [
+      "Ben Barba",
+      "James Lowes",
+      "Jamie Lyon",
+      "Iestyn Harris"
+    ],
+    "correctAnswer": "Ben Barba",
+    "topicId": "honour:man-of-steel:2018",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2019",
+    "question": "Who won the Man of Steel award in 2019?",
+    "options": [
+      "Jackson Hastings",
+      "Adrian Vowles",
+      "Jamie Lyon",
+      "Iestyn Harris"
+    ],
+    "correctAnswer": "Jackson Hastings",
+    "topicId": "honour:man-of-steel:2019",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2020",
+    "question": "Who won the Man of Steel award in 2020?",
+    "options": [
+      "Paul McShane",
+      "Andy Farrell",
+      "Sean Long",
+      "Paul Sculthorpe"
+    ],
+    "correctAnswer": "Paul McShane",
+    "topicId": "honour:man-of-steel:2020",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "york"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2021",
+    "question": "Who won the Man of Steel award in 2021?",
+    "options": [
+      "Sam Tomkins",
+      "James Lowes",
+      "Iestyn Harris",
+      "Jamie Lyon"
+    ],
+    "correctAnswer": "Sam Tomkins",
+    "topicId": "honour:man-of-steel:2021",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2022",
+    "question": "Who won the Man of Steel award in 2022?",
+    "options": [
+      "Brodie Croft",
+      "Iestyn Harris",
+      "Jamie Peacock",
+      "Jamie Lyon"
+    ],
+    "correctAnswer": "Brodie Croft",
+    "topicId": "honour:man-of-steel:2022",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2023",
+    "question": "Who won the Man of Steel award in 2023?",
+    "options": [
+      "Bevan French",
+      "Jamie Lyon",
+      "James Lowes",
+      "Sean Long"
+    ],
+    "correctAnswer": "Bevan French",
+    "topicId": "honour:man-of-steel:2023",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2024",
+    "question": "Who won the Man of Steel award in 2024?",
+    "options": [
+      "Mikey Lewis",
+      "Iestyn Harris",
+      "Adrian Vowles",
+      "Paul Sculthorpe"
+    ],
+    "correctAnswer": "Mikey Lewis",
+    "topicId": "honour:man-of-steel:2024",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "hull-kr"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "mos-winner-2025",
+    "question": "Who won the Man of Steel award in 2025?",
+    "options": [
+      "Jake Connor",
+      "Jamie Peacock",
+      "Sean Long",
+      "Adrian Vowles"
+    ],
+    "correctAnswer": "Jake Connor",
+    "topicId": "honour:man-of-steel:2025",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "golden-boot-1988",
+    "question": "Who won the Golden Boot in 1988?",
+    "options": [
+      "Ellery Hanley",
+      "Andrew Johns",
+      "Tommy Makinson",
+      "Kevin Sinfield"
+    ],
+    "correctAnswer": "Ellery Hanley",
+    "topicId": "honour:golden-boot:1988",
+    "difficulty": "hard",
+    "category": "records",
+    "teams": [
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "golden-boot-1990",
+    "question": "Who won the Golden Boot in 1990?",
+    "options": [
+      "Garry Schofield",
+      "Stacey Jones",
+      "Ellery Hanley",
+      "James Lowes"
+    ],
+    "correctAnswer": "Garry Schofield",
+    "topicId": "honour:golden-boot:1990",
+    "difficulty": "hard",
+    "category": "records",
+    "teams": [
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "golden-boot-1999",
+    "question": "Who won the Golden Boot in 1999?",
+    "options": [
+      "Andrew Johns",
+      "Iestyn Harris",
+      "Tommy Makinson",
+      "Stacey Jones"
+    ],
+    "correctAnswer": "Andrew Johns",
+    "topicId": "honour:golden-boot:1999",
+    "difficulty": "hard",
+    "category": "records",
+    "teams": [],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "golden-boot-2001",
+    "question": "Who won the Golden Boot in 2001?",
+    "options": [
+      "Andrew Johns",
+      "Kevin Sinfield",
+      "Tommy Makinson",
+      "Ellery Hanley"
+    ],
+    "correctAnswer": "Andrew Johns",
+    "topicId": "honour:golden-boot:2001",
+    "difficulty": "hard",
+    "category": "records",
+    "teams": [],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "golden-boot-2002",
+    "question": "Who won the Golden Boot in 2002?",
+    "options": [
+      "Stacey Jones",
+      "Ellery Hanley",
+      "Garry Schofield",
+      "Tommy Makinson"
+    ],
+    "correctAnswer": "Stacey Jones",
+    "topicId": "honour:golden-boot:2002",
+    "difficulty": "hard",
+    "category": "records",
+    "teams": [
+      "catalans"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "golden-boot-2004",
+    "question": "Who won the Golden Boot in 2004?",
+    "options": [
+      "Andy Farrell",
+      "Stacey Jones",
+      "Kevin Sinfield",
+      "Garry Schofield"
+    ],
+    "correctAnswer": "Andy Farrell",
+    "topicId": "honour:golden-boot:2004",
+    "difficulty": "hard",
+    "category": "records",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "golden-boot-2012",
+    "question": "Who won the Golden Boot in 2012?",
+    "options": [
+      "Kevin Sinfield",
+      "Garry Schofield",
+      "Iestyn Harris",
+      "Andy Farrell"
+    ],
+    "correctAnswer": "Kevin Sinfield",
+    "topicId": "honour:golden-boot:2012",
+    "difficulty": "hard",
+    "category": "records",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "golden-boot-2018",
+    "question": "Who won the Golden Boot in 2018?",
+    "options": [
+      "Tommy Makinson",
+      "Kevin Sinfield",
+      "Ellery Hanley",
+      "James Lowes"
+    ],
+    "correctAnswer": "Tommy Makinson",
+    "topicId": "honour:golden-boot:2018",
+    "difficulty": "hard",
+    "category": "records",
+    "teams": [
+      "catalans"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1946",
+    "question": "Who won the Lance Todd Trophy in the 1946 Challenge Cup final?",
+    "options": [
+      "Billy Stott",
+      "Jack Grundy",
+      "Billy Ivison",
+      "Frank Whitcombe"
+    ],
+    "correctAnswer": "Billy Stott",
+    "topicId": "honour:lance-todd:1946",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wakefield"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1947",
+    "question": "Who won the Lance Todd Trophy in the 1947 Challenge Cup final?",
+    "options": [
+      "Willie Davies",
+      "Ernest Ward",
+      "Cec Mountford",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Willie Davies",
+    "topicId": "honour:lance-todd:1947",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1948",
+    "question": "Who won the Lance Todd Trophy in the 1948 Challenge Cup final?",
+    "options": [
+      "Frank Whitcombe",
+      "Peter Ramsden",
+      "Billy Stott",
+      "Jack Grundy"
+    ],
+    "correctAnswer": "Frank Whitcombe",
+    "topicId": "honour:lance-todd:1948",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1949",
+    "question": "Who won the Lance Todd Trophy in the 1949 Challenge Cup final?",
+    "options": [
+      "Ernest Ward",
+      "Jack Grundy",
+      "Cec Mountford",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Ernest Ward",
+    "topicId": "honour:lance-todd:1949",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1950",
+    "question": "Who won the Lance Todd Trophy in the 1950 Challenge Cup final?",
+    "options": [
+      "Gerry Helme",
+      "Cec Mountford",
+      "Peter Ramsden",
+      "Jack Grundy"
+    ],
+    "correctAnswer": "Gerry Helme",
+    "topicId": "honour:lance-todd:1950",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "warrington"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1951",
+    "question": "Who won the Lance Todd Trophy in the 1951 Challenge Cup final?",
+    "options": [
+      "Cec Mountford",
+      "Peter Ramsden",
+      "Jack Grundy",
+      "Gerry Helme"
+    ],
+    "correctAnswer": "Cec Mountford",
+    "topicId": "honour:lance-todd:1951",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1952",
+    "question": "Who won the Lance Todd Trophy in the 1952 Challenge Cup final?",
+    "options": [
+      "Billy Ivison",
+      "Cec Mountford",
+      "Jack Grundy",
+      "Frank Whitcombe"
+    ],
+    "correctAnswer": "Billy Ivison",
+    "topicId": "honour:lance-todd:1952",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1953",
+    "question": "Who won the Lance Todd Trophy in the 1953 Challenge Cup final?",
+    "options": [
+      "Peter Ramsden",
+      "Ernest Ward",
+      "Billy Ivison",
+      "Billy Stott"
+    ],
+    "correctAnswer": "Peter Ramsden",
+    "topicId": "honour:lance-todd:1953",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "huddersfield"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1954",
+    "question": "Who won the Lance Todd Trophy in the 1954 Challenge Cup final?",
+    "options": [
+      "Gerry Helme",
+      "Ernest Ward",
+      "Jack Grundy",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Gerry Helme",
+    "topicId": "honour:lance-todd:1954",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "warrington"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1955",
+    "question": "Who won the Lance Todd Trophy in the 1955 Challenge Cup final?",
+    "options": [
+      "Jack Grundy",
+      "Willie Davies",
+      "Billy Ivison",
+      "Cec Mountford"
+    ],
+    "correctAnswer": "Jack Grundy",
+    "topicId": "honour:lance-todd:1955",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1956",
+    "question": "Who won the Lance Todd Trophy in the 1956 Challenge Cup final?",
+    "options": [
+      "Alan Prescott",
+      "Peter Ramsden",
+      "Gerry Helme",
+      "Willie Davies"
+    ],
+    "correctAnswer": "Alan Prescott",
+    "topicId": "honour:lance-todd:1956",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1957",
+    "question": "Who won the Lance Todd Trophy in the 1957 Challenge Cup final?",
+    "options": [
+      "Jeff Stevenson",
+      "Peter Ramsden",
+      "Ernest Ward",
+      "Frank Whitcombe"
+    ],
+    "correctAnswer": "Jeff Stevenson",
+    "topicId": "honour:lance-todd:1957",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1958",
+    "question": "Who won the Lance Todd Trophy in the 1958 Challenge Cup final?",
+    "options": [
+      "Rees Thomas",
+      "Billy Stott",
+      "Cec Mountford",
+      "Gerry Helme"
+    ],
+    "correctAnswer": "Rees Thomas",
+    "topicId": "honour:lance-todd:1958",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1959",
+    "question": "Who won the Lance Todd Trophy in the 1959 Challenge Cup final?",
+    "options": [
+      "Brian McTigue",
+      "Billy Stott",
+      "Billy Ivison",
+      "Frank Whitcombe"
+    ],
+    "correctAnswer": "Brian McTigue",
+    "topicId": "honour:lance-todd:1959",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1960",
+    "question": "Who won the Lance Todd Trophy in the 1960 Challenge Cup final?",
+    "options": [
+      "Tommy Harris",
+      "Billy Ivison",
+      "Billy Stott",
+      "Ernest Ward"
+    ],
+    "correctAnswer": "Tommy Harris",
+    "topicId": "honour:lance-todd:1960",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1961",
+    "question": "Who won the Lance Todd Trophy in the 1961 Challenge Cup final?",
+    "options": [
+      "Dick Huddart",
+      "Billy Stott",
+      "Willie Davies",
+      "Frank Whitcombe"
+    ],
+    "correctAnswer": "Dick Huddart",
+    "topicId": "honour:lance-todd:1961",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1962",
+    "question": "Who won the Lance Todd Trophy in the 1962 Challenge Cup final?",
+    "options": [
+      "Neil Fox",
+      "Frank Whitcombe",
+      "Willie Davies",
+      "Gerry Helme"
+    ],
+    "correctAnswer": "Neil Fox",
+    "topicId": "honour:lance-todd:1962",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wakefield"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1963",
+    "question": "Who won the Lance Todd Trophy in the 1963 Challenge Cup final?",
+    "options": [
+      "Harold Poynton",
+      "Peter Ramsden",
+      "Gerry Helme",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Harold Poynton",
+    "topicId": "honour:lance-todd:1963",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wakefield"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1964",
+    "question": "Who won the Lance Todd Trophy in the 1964 Challenge Cup final?",
+    "options": [
+      "Frank Collier",
+      "Willie Davies",
+      "Cec Mountford",
+      "Peter Ramsden"
+    ],
+    "correctAnswer": "Frank Collier",
+    "topicId": "honour:lance-todd:1964",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "widnes"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1966",
+    "question": "Who won the Lance Todd Trophy in the 1966 Challenge Cup final?",
+    "options": [
+      "Len Killeen",
+      "Ernest Ward",
+      "Gerry Helme",
+      "Peter Ramsden"
+    ],
+    "correctAnswer": "Len Killeen",
+    "topicId": "honour:lance-todd:1966",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1967",
+    "question": "Who won the Lance Todd Trophy in the 1967 Challenge Cup final?",
+    "options": [
+      "Carl Dooler",
+      "Willie Davies",
+      "Gerry Helme",
+      "Cec Mountford"
+    ],
+    "correctAnswer": "Carl Dooler",
+    "topicId": "honour:lance-todd:1967",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1968",
+    "question": "Who won the Lance Todd Trophy in the 1968 Challenge Cup final?",
+    "options": [
+      "Don Fox",
+      "Billy Stott",
+      "Peter Ramsden",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Don Fox",
+    "topicId": "honour:lance-todd:1968",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wakefield"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1969",
+    "question": "Who won the Lance Todd Trophy in the 1969 Challenge Cup final?",
+    "options": [
+      "Malcolm Reilly",
+      "Peter Ramsden",
+      "Frank Whitcombe",
+      "Cec Mountford"
+    ],
+    "correctAnswer": "Malcolm Reilly",
+    "topicId": "honour:lance-todd:1969",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "castleford"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1970",
+    "question": "Who won the Lance Todd Trophy in the 1970 Challenge Cup final?",
+    "options": [
+      "Bill Kirkbride",
+      "Ernest Ward",
+      "Willie Davies",
+      "Billy Stott"
+    ],
+    "correctAnswer": "Bill Kirkbride",
+    "topicId": "honour:lance-todd:1970",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "castleford"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1971",
+    "question": "Who won the Lance Todd Trophy in the 1971 Challenge Cup final?",
+    "options": [
+      "Alex Murphy",
+      "Billy Stott",
+      "Frank Whitcombe",
+      "Peter Ramsden"
+    ],
+    "correctAnswer": "Alex Murphy",
+    "topicId": "honour:lance-todd:1971",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1972",
+    "question": "Who won the Lance Todd Trophy in the 1972 Challenge Cup final?",
+    "options": [
+      "Kel Coslett",
+      "Cec Mountford",
+      "Billy Ivison",
+      "Frank Whitcombe"
+    ],
+    "correctAnswer": "Kel Coslett",
+    "topicId": "honour:lance-todd:1972",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1973",
+    "question": "Who won the Lance Todd Trophy in the 1973 Challenge Cup final?",
+    "options": [
+      "Steve Nash",
+      "Frank Whitcombe",
+      "Ernest Ward",
+      "Billy Stott"
+    ],
+    "correctAnswer": "Steve Nash",
+    "topicId": "honour:lance-todd:1973",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1974",
+    "question": "Who won the Lance Todd Trophy in the 1974 Challenge Cup final?",
+    "options": [
+      "Derek Whitehead",
+      "Ernest Ward",
+      "Willie Davies",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Derek Whitehead",
+    "topicId": "honour:lance-todd:1974",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "warrington"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1975",
+    "question": "Who won the Lance Todd Trophy in the 1975 Challenge Cup final?",
+    "options": [
+      "Ray Dutton",
+      "Billy Stott",
+      "Willie Davies",
+      "Gerry Helme"
+    ],
+    "correctAnswer": "Ray Dutton",
+    "topicId": "honour:lance-todd:1975",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "widnes"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1976",
+    "question": "Who won the Lance Todd Trophy in the 1976 Challenge Cup final?",
+    "options": [
+      "Geoff Pimblett",
+      "Cec Mountford",
+      "Billy Ivison",
+      "Willie Davies"
+    ],
+    "correctAnswer": "Geoff Pimblett",
+    "topicId": "honour:lance-todd:1976",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1977",
+    "question": "Who won the Lance Todd Trophy in the 1977 Challenge Cup final?",
+    "options": [
+      "Steve Pitchford",
+      "Cec Mountford",
+      "Ernest Ward",
+      "Frank Whitcombe"
+    ],
+    "correctAnswer": "Steve Pitchford",
+    "topicId": "honour:lance-todd:1977",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1978",
+    "question": "Who won the Lance Todd Trophy in the 1978 Challenge Cup final?",
+    "options": [
+      "George Nicholls",
+      "Ernest Ward",
+      "Gerry Helme",
+      "Peter Ramsden"
+    ],
+    "correctAnswer": "George Nicholls",
+    "topicId": "honour:lance-todd:1978",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1979",
+    "question": "Who won the Lance Todd Trophy in the 1979 Challenge Cup final?",
+    "options": [
+      "David Topliss",
+      "Billy Ivison",
+      "Willie Davies",
+      "Ernest Ward"
+    ],
+    "correctAnswer": "David Topliss",
+    "topicId": "honour:lance-todd:1979",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wakefield"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1980",
+    "question": "Who won the Lance Todd Trophy in the 1980 Challenge Cup final?",
+    "options": [
+      "Brian Lockwood",
+      "Ernest Ward",
+      "Willie Davies",
+      "Gerry Helme"
+    ],
+    "correctAnswer": "Brian Lockwood",
+    "topicId": "honour:lance-todd:1980",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "hull-kr"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1981",
+    "question": "Who won the Lance Todd Trophy in the 1981 Challenge Cup final?",
+    "options": [
+      "Mick Burke",
+      "Cec Mountford",
+      "Peter Ramsden",
+      "Gerry Helme"
+    ],
+    "correctAnswer": "Mick Burke",
+    "topicId": "honour:lance-todd:1981",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "widnes"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1982",
+    "question": "Who won the Lance Todd Trophy in the 1982 Challenge Cup final?",
+    "options": [
+      "Eddie Cunningham",
+      "Gerry Helme",
+      "Cec Mountford",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Eddie Cunningham",
+    "topicId": "honour:lance-todd:1982",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "widnes"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1983",
+    "question": "Who won the Lance Todd Trophy in the 1983 Challenge Cup final?",
+    "options": [
+      "David Hobbs",
+      "Billy Stott",
+      "Cec Mountford",
+      "Peter Ramsden"
+    ],
+    "correctAnswer": "David Hobbs",
+    "topicId": "honour:lance-todd:1983",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1984",
+    "question": "Who won the Lance Todd Trophy in the 1984 Challenge Cup final?",
+    "options": [
+      "Joe Lydon",
+      "Billy Stott",
+      "Billy Ivison",
+      "Cec Mountford"
+    ],
+    "correctAnswer": "Joe Lydon",
+    "topicId": "honour:lance-todd:1984",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "widnes"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1985",
+    "question": "Who won the Lance Todd Trophy in the 1985 Challenge Cup final?",
+    "options": [
+      "Brett Kenny",
+      "Ernest Ward",
+      "Billy Stott",
+      "Gerry Helme"
+    ],
+    "correctAnswer": "Brett Kenny",
+    "topicId": "honour:lance-todd:1985",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1986",
+    "question": "Who won the Lance Todd Trophy in the 1986 Challenge Cup final?",
+    "options": [
+      "Bob Beardmore",
+      "Ernest Ward",
+      "Gerry Helme",
+      "Cec Mountford"
+    ],
+    "correctAnswer": "Bob Beardmore",
+    "topicId": "honour:lance-todd:1986",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "castleford"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1987",
+    "question": "Who won the Lance Todd Trophy in the 1987 Challenge Cup final?",
+    "options": [
+      "Graham Eadie",
+      "Ernest Ward",
+      "Billy Ivison",
+      "Cec Mountford"
+    ],
+    "correctAnswer": "Graham Eadie",
+    "topicId": "honour:lance-todd:1987",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1988",
+    "question": "Who won the Lance Todd Trophy in the 1988 Challenge Cup final?",
+    "options": [
+      "Andy Gregory",
+      "Ernest Ward",
+      "Gerry Helme",
+      "Cec Mountford"
+    ],
+    "correctAnswer": "Andy Gregory",
+    "topicId": "honour:lance-todd:1988",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1989",
+    "question": "Who won the Lance Todd Trophy in the 1989 Challenge Cup final?",
+    "options": [
+      "Ellery Hanley",
+      "Gerry Helme",
+      "Willie Davies",
+      "Cec Mountford"
+    ],
+    "correctAnswer": "Ellery Hanley",
+    "topicId": "honour:lance-todd:1989",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1990",
+    "question": "Who won the Lance Todd Trophy in the 1990 Challenge Cup final?",
+    "options": [
+      "Andy Gregory",
+      "Frank Whitcombe",
+      "Cec Mountford",
+      "Willie Davies"
+    ],
+    "correctAnswer": "Andy Gregory",
+    "topicId": "honour:lance-todd:1990",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1991",
+    "question": "Who won the Lance Todd Trophy in the 1991 Challenge Cup final?",
+    "options": [
+      "Denis Betts",
+      "Billy Stott",
+      "Willie Davies",
+      "Ernest Ward"
+    ],
+    "correctAnswer": "Denis Betts",
+    "topicId": "honour:lance-todd:1991",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1992",
+    "question": "Who won the Lance Todd Trophy in the 1992 Challenge Cup final?",
+    "options": [
+      "Martin Offiah",
+      "Ernest Ward",
+      "Peter Ramsden",
+      "Willie Davies"
+    ],
+    "correctAnswer": "Martin Offiah",
+    "topicId": "honour:lance-todd:1992",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1993",
+    "question": "Who won the Lance Todd Trophy in the 1993 Challenge Cup final?",
+    "options": [
+      "Dean Bell",
+      "Willie Davies",
+      "Ernest Ward",
+      "Cec Mountford"
+    ],
+    "correctAnswer": "Dean Bell",
+    "topicId": "honour:lance-todd:1993",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1994",
+    "question": "Who won the Lance Todd Trophy in the 1994 Challenge Cup final?",
+    "options": [
+      "Martin Offiah",
+      "Ernest Ward",
+      "Willie Davies",
+      "Billy Stott"
+    ],
+    "correctAnswer": "Martin Offiah",
+    "topicId": "honour:lance-todd:1994",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1995",
+    "question": "Who won the Lance Todd Trophy in the 1995 Challenge Cup final?",
+    "options": [
+      "Jason Robinson",
+      "Gerry Helme",
+      "Billy Stott",
+      "Willie Davies"
+    ],
+    "correctAnswer": "Jason Robinson",
+    "topicId": "honour:lance-todd:1995",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1996",
+    "question": "Who won the Lance Todd Trophy in the 1996 Challenge Cup final?",
+    "options": [
+      "Robbie Hunter-Paul",
+      "Billy Stott",
+      "Peter Ramsden",
+      "Gerry Helme"
+    ],
+    "correctAnswer": "Robbie Hunter-Paul",
+    "topicId": "honour:lance-todd:1996",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1997",
+    "question": "Who won the Lance Todd Trophy in the 1997 Challenge Cup final?",
+    "options": [
+      "Tommy Martyn",
+      "Billy Stott",
+      "Peter Ramsden",
+      "Frank Whitcombe"
+    ],
+    "correctAnswer": "Tommy Martyn",
+    "topicId": "honour:lance-todd:1997",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1998",
+    "question": "Who won the Lance Todd Trophy in the 1998 Challenge Cup final?",
+    "options": [
+      "Mark Aston",
+      "Ernest Ward",
+      "Willie Davies",
+      "Cec Mountford"
+    ],
+    "correctAnswer": "Mark Aston",
+    "topicId": "honour:lance-todd:1998",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-1999",
+    "question": "Who won the Lance Todd Trophy in the 1999 Challenge Cup final?",
+    "options": [
+      "Leroy Rivett",
+      "Frank Whitcombe",
+      "Cec Mountford",
+      "Billy Stott"
+    ],
+    "correctAnswer": "Leroy Rivett",
+    "topicId": "honour:lance-todd:1999",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2000",
+    "question": "Who won the Lance Todd Trophy in the 2000 Challenge Cup final?",
+    "options": [
+      "Henry Paul",
+      "Willie Davies",
+      "Gerry Helme",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Henry Paul",
+    "topicId": "honour:lance-todd:2000",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2001",
+    "question": "Who won the Lance Todd Trophy in the 2001 Challenge Cup final?",
+    "options": [
+      "Sean Long",
+      "Ernest Ward",
+      "Gerry Helme",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Sean Long",
+    "topicId": "honour:lance-todd:2001",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2002",
+    "question": "Who won the Lance Todd Trophy in the 2002 Challenge Cup final?",
+    "options": [
+      "Kris Radlinski",
+      "Cec Mountford",
+      "Frank Whitcombe",
+      "Gerry Helme"
+    ],
+    "correctAnswer": "Kris Radlinski",
+    "topicId": "honour:lance-todd:2002",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2003",
+    "question": "Who won the Lance Todd Trophy in the 2003 Challenge Cup final?",
+    "options": [
+      "Garry Connolly",
+      "Ernest Ward",
+      "Billy Ivison",
+      "Peter Ramsden"
+    ],
+    "correctAnswer": "Garry Connolly",
+    "topicId": "honour:lance-todd:2003",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2004",
+    "question": "Who won the Lance Todd Trophy in the 2004 Challenge Cup final?",
+    "options": [
+      "Sean Long",
+      "Gerry Helme",
+      "Ernest Ward",
+      "Peter Ramsden"
+    ],
+    "correctAnswer": "Sean Long",
+    "topicId": "honour:lance-todd:2004",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2005",
+    "question": "Who won the Lance Todd Trophy in the 2005 Challenge Cup final?",
+    "options": [
+      "Kevin Sinfield",
+      "Peter Ramsden",
+      "Ernest Ward",
+      "Willie Davies"
+    ],
+    "correctAnswer": "Kevin Sinfield",
+    "topicId": "honour:lance-todd:2005",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2006",
+    "question": "Who won the Lance Todd Trophy in the 2006 Challenge Cup final?",
+    "options": [
+      "Sean Long",
+      "Peter Ramsden",
+      "Cec Mountford",
+      "Gerry Helme"
+    ],
+    "correctAnswer": "Sean Long",
+    "topicId": "honour:lance-todd:2006",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2008",
+    "question": "Who won the Lance Todd Trophy in the 2008 Challenge Cup final?",
+    "options": [
+      "Paul Wellens",
+      "Ernest Ward",
+      "Billy Stott",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Paul Wellens",
+    "topicId": "honour:lance-todd:2008",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2009",
+    "question": "Who won the Lance Todd Trophy in the 2009 Challenge Cup final?",
+    "options": [
+      "Michael Monaghan",
+      "Gerry Helme",
+      "Peter Ramsden",
+      "Cec Mountford"
+    ],
+    "correctAnswer": "Michael Monaghan",
+    "topicId": "honour:lance-todd:2009",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2010",
+    "question": "Who won the Lance Todd Trophy in the 2010 Challenge Cup final?",
+    "options": [
+      "Lee Briers",
+      "Frank Whitcombe",
+      "Billy Stott",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Lee Briers",
+    "topicId": "honour:lance-todd:2010",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2011",
+    "question": "Who won the Lance Todd Trophy in the 2011 Challenge Cup final?",
+    "options": [
+      "Jeff Lima",
+      "Peter Ramsden",
+      "Frank Whitcombe",
+      "Willie Davies"
+    ],
+    "correctAnswer": "Jeff Lima",
+    "topicId": "honour:lance-todd:2011",
+    "difficulty": "hard",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2012",
+    "question": "Who won the Lance Todd Trophy in the 2012 Challenge Cup final?",
+    "options": [
+      "Brett Hodgson",
+      "Ernest Ward",
+      "Gerry Helme",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Brett Hodgson",
+    "topicId": "honour:lance-todd:2012",
+    "difficulty": "medium",
+    "category": "challenge-cup",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2013",
+    "question": "Who won the Lance Todd Trophy in the 2013 Challenge Cup final?",
+    "options": [
+      "Matty Smith",
+      "Billy Stott",
+      "Willie Davies",
+      "Peter Ramsden"
+    ],
+    "correctAnswer": "Matty Smith",
+    "topicId": "honour:lance-todd:2013",
+    "difficulty": "medium",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2014",
+    "question": "Who won the Lance Todd Trophy in the 2014 Challenge Cup final?",
+    "options": [
+      "Ryan Hall",
+      "Cec Mountford",
+      "Billy Stott",
+      "Ernest Ward"
+    ],
+    "correctAnswer": "Ryan Hall",
+    "topicId": "honour:lance-todd:2014",
+    "difficulty": "medium",
+    "category": "challenge-cup",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2015",
+    "question": "Who won the Lance Todd Trophy in the 2015 Challenge Cup final?",
+    "options": [
+      "Tom Briscoe",
+      "Cec Mountford",
+      "Frank Whitcombe",
+      "Billy Stott"
+    ],
+    "correctAnswer": "Tom Briscoe",
+    "topicId": "honour:lance-todd:2015",
+    "difficulty": "medium",
+    "category": "challenge-cup",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2016",
+    "question": "Who won the Lance Todd Trophy in the 2016 Challenge Cup final?",
+    "options": [
+      "Marc Sneyd",
+      "Ernest Ward",
+      "Billy Stott",
+      "Peter Ramsden"
+    ],
+    "correctAnswer": "Marc Sneyd",
+    "topicId": "honour:lance-todd:2016",
+    "difficulty": "medium",
+    "category": "challenge-cup",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2017",
+    "question": "Who won the Lance Todd Trophy in the 2017 Challenge Cup final?",
+    "options": [
+      "Marc Sneyd",
+      "Cec Mountford",
+      "Willie Davies",
+      "Gerry Helme"
+    ],
+    "correctAnswer": "Marc Sneyd",
+    "topicId": "honour:lance-todd:2017",
+    "difficulty": "medium",
+    "category": "challenge-cup",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2018",
+    "question": "Who won the Lance Todd Trophy in the 2018 Challenge Cup final?",
+    "options": [
+      "Tony Gigot",
+      "Frank Whitcombe",
+      "Billy Ivison",
+      "Billy Stott"
+    ],
+    "correctAnswer": "Tony Gigot",
+    "topicId": "honour:lance-todd:2018",
+    "difficulty": "medium",
+    "category": "challenge-cup",
+    "teams": [
+      "catalans"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2019",
+    "question": "Who won the Lance Todd Trophy in the 2019 Challenge Cup final?",
+    "options": [
+      "Daryl Clark",
+      "Billy Ivison",
+      "Ernest Ward",
+      "Billy Stott"
+    ],
+    "correctAnswer": "Daryl Clark",
+    "topicId": "honour:lance-todd:2019",
+    "difficulty": "medium",
+    "category": "challenge-cup",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2020",
+    "question": "Who won the Lance Todd Trophy in the 2020 Challenge Cup final?",
+    "options": [
+      "Richie Myler",
+      "Frank Whitcombe",
+      "Gerry Helme",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Richie Myler",
+    "topicId": "honour:lance-todd:2020",
+    "difficulty": "easy",
+    "category": "challenge-cup",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2021",
+    "question": "Who won the Lance Todd Trophy in the 2021 Challenge Cup final?",
+    "options": [
+      "Niall Evalds",
+      "Billy Stott",
+      "Peter Ramsden",
+      "Billy Ivison"
+    ],
+    "correctAnswer": "Niall Evalds",
+    "topicId": "honour:lance-todd:2021",
+    "difficulty": "easy",
+    "category": "challenge-cup",
+    "teams": [
+      "salford"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2022",
+    "question": "Who won the Lance Todd Trophy in the 2022 Challenge Cup final?",
+    "options": [
+      "Chris McQueen",
+      "Billy Stott",
+      "Billy Ivison",
+      "Cec Mountford"
+    ],
+    "correctAnswer": "Chris McQueen",
+    "topicId": "honour:lance-todd:2022",
+    "difficulty": "easy",
+    "category": "challenge-cup",
+    "teams": [
+      "huddersfield"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2023",
+    "question": "Who won the Lance Todd Trophy in the 2023 Challenge Cup final?",
+    "options": [
+      "Lachlan Lam",
+      "Ernest Ward",
+      "Willie Davies",
+      "Frank Whitcombe"
+    ],
+    "correctAnswer": "Lachlan Lam",
+    "topicId": "honour:lance-todd:2023",
+    "difficulty": "easy",
+    "category": "challenge-cup",
+    "teams": [
+      "leigh"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2024",
+    "question": "Who won the Lance Todd Trophy in the 2024 Challenge Cup final?",
+    "options": [
+      "Bevan French",
+      "Gerry Helme",
+      "Billy Stott",
+      "Peter Ramsden"
+    ],
+    "correctAnswer": "Bevan French",
+    "topicId": "honour:lance-todd:2024",
+    "difficulty": "easy",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2025",
+    "question": "Who won the Lance Todd Trophy in the 2025 Challenge Cup final?",
+    "options": [
+      "Marc Sneyd",
+      "Willie Davies",
+      "Billy Ivison",
+      "Peter Ramsden"
+    ],
+    "correctAnswer": "Marc Sneyd",
+    "topicId": "honour:lance-todd:2025",
+    "difficulty": "easy",
+    "category": "challenge-cup",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "lance-todd-2026",
+    "question": "Who won the Lance Todd Trophy in the 2026 Challenge Cup final?",
+    "options": [
+      "Jack Farrimond",
+      "Willie Davies",
+      "Peter Ramsden",
+      "Frank Whitcombe"
+    ],
+    "correctAnswer": "Jack Farrimond",
+    "topicId": "honour:lance-todd:2026",
+    "difficulty": "easy",
+    "category": "challenge-cup",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-1996-va-aiga-tuigamala",
+    "question": "Which of these players was named in the 1996 Super League Dream Team?",
+    "options": [
+      "Va'aiga Tuigamala",
+      "Apollo Perelini",
+      "Keiron Cunningham",
+      "Anthony Sullivan"
+    ],
+    "correctAnswer": "Va'aiga Tuigamala",
+    "topicId": "honour:dream-team:1996:va-aiga-tuigamala",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-1997-james-lowes",
+    "question": "Which of these players was named in the 1997 Super League Dream Team?",
+    "options": [
+      "James Lowes",
+      "Va'aiga Tuigamala",
+      "Henry Paul",
+      "Jason Robinson"
+    ],
+    "correctAnswer": "James Lowes",
+    "topicId": "honour:dream-team:1997:james-lowes",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-1998-dale-laughton",
+    "question": "Which of these players was named in the 1998 Super League Dream Team?",
+    "options": [
+      "Dale Laughton",
+      "Paul Newlove",
+      "Bobbie Goulding",
+      "Henry Paul"
+    ],
+    "correctAnswer": "Dale Laughton",
+    "topicId": "honour:dream-team:1998:dale-laughton",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-1999-james-lowes",
+    "question": "Which of these players was named in the 1999 Super League Dream Team?",
+    "options": [
+      "James Lowes",
+      "Jason Robinson",
+      "Bobbie Goulding",
+      "Garry Connolly"
+    ],
+    "correctAnswer": "James Lowes",
+    "topicId": "honour:dream-team:1999:james-lowes",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2000-terry-o-connor",
+    "question": "Which of these players was named in the 2000 Super League Dream Team?",
+    "options": [
+      "Terry O'connor",
+      "Anthony Sullivan",
+      "Va'aiga Tuigamala",
+      "Apollo Perelini"
+    ],
+    "correctAnswer": "Terry O'connor",
+    "topicId": "honour:dream-team:2000:terry-o-connor",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2001-david-fairleigh",
+    "question": "Which of these players was named in the 2001 Super League Dream Team?",
+    "options": [
+      "David Fairleigh",
+      "Va'aiga Tuigamala",
+      "Paul Newlove",
+      "Apollo Perelini"
+    ],
+    "correctAnswer": "David Fairleigh",
+    "topicId": "honour:dream-team:2001:david-fairleigh",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2002-keiron-cunningham",
+    "question": "Which of these players was named in the 2002 Super League Dream Team?",
+    "options": [
+      "Keiron Cunningham",
+      "Apollo Perelini",
+      "Paul Newlove",
+      "Jason Robinson"
+    ],
+    "correctAnswer": "Keiron Cunningham",
+    "topicId": "honour:dream-team:2002:keiron-cunningham",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2003-keith-senior",
+    "question": "Which of these players was named in the 2003 Super League Dream Team?",
+    "options": [
+      "Keith Senior",
+      "Henry Paul",
+      "Bobbie Goulding",
+      "Anthony Sullivan"
+    ],
+    "correctAnswer": "Keith Senior",
+    "topicId": "honour:dream-team:2003:keith-senior",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2004-paul-sculthorpe",
+    "question": "Which of these players was named in the 2004 Super League Dream Team?",
+    "options": [
+      "Paul Sculthorpe",
+      "Henry Paul",
+      "Anthony Sullivan",
+      "Bobbie Goulding"
+    ],
+    "correctAnswer": "Paul Sculthorpe",
+    "topicId": "honour:dream-team:2004:paul-sculthorpe",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2005-mark-calderwood",
+    "question": "Which of these players was named in the 2005 Super League Dream Team?",
+    "options": [
+      "Mark Calderwood",
+      "Henry Paul",
+      "Jason Robinson",
+      "Va'aiga Tuigamala"
+    ],
+    "correctAnswer": "Mark Calderwood",
+    "topicId": "honour:dream-team:2005:mark-calderwood",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2006-jamie-lyon",
+    "question": "Which of these players was named in the 2006 Super League Dream Team?",
+    "options": [
+      "Jamie Lyon",
+      "Bobbie Goulding",
+      "Henry Paul",
+      "Jason Robinson"
+    ],
+    "correctAnswer": "Jamie Lyon",
+    "topicId": "honour:dream-team:2006:jamie-lyon",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2007-james-roby",
+    "question": "Which of these players was named in the 2007 Super League Dream Team?",
+    "options": [
+      "James Roby",
+      "Garry Connolly",
+      "Bobbie Goulding",
+      "Henry Paul"
+    ],
+    "correctAnswer": "James Roby",
+    "topicId": "honour:dream-team:2007:james-roby",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2008-sam-burgess",
+    "question": "Which of these players was named in the 2008 Super League Dream Team?",
+    "options": [
+      "Sam Burgess",
+      "Garry Connolly",
+      "Paul Newlove",
+      "Anthony Sullivan"
+    ],
+    "correctAnswer": "Sam Burgess",
+    "topicId": "honour:dream-team:2008:sam-burgess",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2009-clint-newton",
+    "question": "Which of these players was named in the 2009 Super League Dream Team?",
+    "options": [
+      "Clint Newton",
+      "Jason Robinson",
+      "Va'aiga Tuigamala",
+      "Apollo Perelini"
+    ],
+    "correctAnswer": "Clint Newton",
+    "topicId": "honour:dream-team:2009:clint-newton",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "hull-kr"
+    ],
+    "era": "2000s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2010-james-roby",
+    "question": "Which of these players was named in the 2010 Super League Dream Team?",
+    "options": [
+      "James Roby",
+      "Henry Paul",
+      "Paul Newlove",
+      "Bobbie Goulding"
+    ],
+    "correctAnswer": "James Roby",
+    "topicId": "honour:dream-team:2010:james-roby",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2011-kirk-yeaman",
+    "question": "Which of these players was named in the 2011 Super League Dream Team?",
+    "options": [
+      "Kirk Yeaman",
+      "Anthony Sullivan",
+      "Garry Connolly",
+      "Henry Paul"
+    ],
+    "correctAnswer": "Kirk Yeaman",
+    "topicId": "honour:dream-team:2011:kirk-yeaman",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2012-remi-casty",
+    "question": "Which of these players was named in the 2012 Super League Dream Team?",
+    "options": [
+      "Remi Casty",
+      "Anthony Sullivan",
+      "Bobbie Goulding",
+      "Garry Connolly"
+    ],
+    "correctAnswer": "Remi Casty",
+    "topicId": "honour:dream-team:2012:remi-casty",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "catalans"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2013-matty-smith",
+    "question": "Which of these players was named in the 2013 Super League Dream Team?",
+    "options": [
+      "Matty Smith",
+      "Anthony Sullivan",
+      "Henry Paul",
+      "Garry Connolly"
+    ],
+    "correctAnswer": "Matty Smith",
+    "topicId": "honour:dream-team:2013:matty-smith",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2014-chris-hill",
+    "question": "Which of these players was named in the 2014 Super League Dream Team?",
+    "options": [
+      "Chris Hill",
+      "Bobbie Goulding",
+      "Anthony Sullivan",
+      "Va'aiga Tuigamala"
+    ],
+    "correctAnswer": "Chris Hill",
+    "topicId": "honour:dream-team:2014:chris-hill",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wakefield"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2015-alex-walmsley",
+    "question": "Which of these players was named in the 2015 Super League Dream Team?",
+    "options": [
+      "Alex Walmsley",
+      "Va'aiga Tuigamala",
+      "Apollo Perelini",
+      "Garry Connolly"
+    ],
+    "correctAnswer": "Alex Walmsley",
+    "topicId": "honour:dream-team:2015:alex-walmsley",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2016-jamie-shaul",
+    "question": "Which of these players was named in the 2016 Super League Dream Team?",
+    "options": [
+      "Jamie Shaul",
+      "Anthony Sullivan",
+      "Apollo Perelini",
+      "Jason Robinson"
+    ],
+    "correctAnswer": "Jamie Shaul",
+    "topicId": "honour:dream-team:2016:jamie-shaul",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2017-luke-gale",
+    "question": "Which of these players was named in the 2017 Super League Dream Team?",
+    "options": [
+      "Luke Gale",
+      "Henry Paul",
+      "Va'aiga Tuigamala",
+      "Apollo Perelini"
+    ],
+    "correctAnswer": "Luke Gale",
+    "topicId": "honour:dream-team:2017:luke-gale",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "castleford"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2018-thomas-makinson",
+    "question": "Which of these players was named in the 2018 Super League Dream Team?",
+    "options": [
+      "Thomas Makinson",
+      "Anthony Sullivan",
+      "Bobbie Goulding",
+      "Jason Robinson"
+    ],
+    "correctAnswer": "Thomas Makinson",
+    "topicId": "honour:dream-team:2018:thomas-makinson",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2019-thomas-makinson",
+    "question": "Which of these players was named in the 2019 Super League Dream Team?",
+    "options": [
+      "Thomas Makinson",
+      "Henry Paul",
+      "Paul Newlove",
+      "Apollo Perelini"
+    ],
+    "correctAnswer": "Thomas Makinson",
+    "topicId": "honour:dream-team:2019:thomas-makinson",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2020-ash-handley",
+    "question": "Which of these players was named in the 2020 Super League Dream Team?",
+    "options": [
+      "Ash Handley",
+      "Anthony Sullivan",
+      "Henry Paul",
+      "Jason Robinson"
+    ],
+    "correctAnswer": "Ash Handley",
+    "topicId": "honour:dream-team:2020:ash-handley",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2021-sam-kasiano",
+    "question": "Which of these players was named in the 2021 Super League Dream Team?",
+    "options": [
+      "Sam Kasiano",
+      "Paul Newlove",
+      "Va'aiga Tuigamala",
+      "Garry Connolly"
+    ],
+    "correctAnswer": "Sam Kasiano",
+    "topicId": "honour:dream-team:2021:sam-kasiano",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "catalans"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2022-jai-field",
+    "question": "Which of these players was named in the 2022 Super League Dream Team?",
+    "options": [
+      "Jai Field",
+      "Jason Robinson",
+      "Va'aiga Tuigamala",
+      "Garry Connolly"
+    ],
+    "correctAnswer": "Jai Field",
+    "topicId": "honour:dream-team:2022:jai-field",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2023-john-asiata",
+    "question": "Which of these players was named in the 2023 Super League Dream Team?",
+    "options": [
+      "John Asiata",
+      "Garry Connolly",
+      "Henry Paul",
+      "Anthony Sullivan"
+    ],
+    "correctAnswer": "John Asiata",
+    "topicId": "honour:dream-team:2023:john-asiata",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2024-matty-ashton",
+    "question": "Which of these players was named in the 2024 Super League Dream Team?",
+    "options": [
+      "Matty Ashton",
+      "Paul Newlove",
+      "Jason Robinson",
+      "Apollo Perelini"
+    ],
+    "correctAnswer": "Matty Ashton",
+    "topicId": "honour:dream-team:2024:matty-ashton",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
+    "id": "dream-team-2025-andy-ireland",
+    "question": "Which of these players was named in the 2025 Super League Dream Team?",
+    "options": [
+      "Andy Ireland",
+      "Garry Connolly",
+      "Bobbie Goulding",
+      "Paul Newlove"
+    ],
+    "correctAnswer": "Andy Ireland",
+    "topicId": "honour:dream-team:2025:andy-ireland",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
   }
 ]
