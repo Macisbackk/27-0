@@ -233,7 +233,7 @@ export default function ProfilePage() {
                 </dl>
               </SectionCard>
 
-              <SectionCard title="Quick Mode snapshot">
+              <SectionCard title="Classic snapshot">
                 {statsLoading || !view ? (
                   <p className={TYPO.bodySm}>Loading career stats…</p>
                 ) : (

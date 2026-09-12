@@ -13,7 +13,7 @@ export type StatsTabId = "overall" | "super-league";
 
 export const STATS_TABS: { id: StatsTabId; label: string }[] = [
   { id: "overall", label: "Overall" },
-  { id: "super-league", label: "Quick Mode" },
+  { id: "super-league", label: "Classic" },
 ];
 
 function mergeDraftCounts(

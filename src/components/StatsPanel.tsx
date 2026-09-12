@@ -151,12 +151,12 @@ export function StatsPanel() {
 
   return (
     <div className="space-y-6">
-      <nav className="mb-5" aria-label="Quick mode stats">
+      <nav className="mb-5" aria-label="Classic stats">
         <SubTabBar
           tabs={STATS_TABS}
           active={activeTab}
           onChange={setActiveTab}
-          ariaLabel="Quick mode stats"
+          ariaLabel="Classic stats"
         />
       </nav>
 
@@ -404,7 +404,7 @@ function SuperLeagueTab({
 }) {
   const activeStats = eraMode ? eraNormal : normal;
   const view = getSuperLeagueView(activeStats);
-  const modeLabel = eraMode ? "Era Quick Mode" : "Quick Mode";
+  const modeLabel = eraMode ? "Era Classic" : "Classic";
 
   return (
     <div className="space-y-8">
@@ -416,9 +416,9 @@ function SuperLeagueTab({
       />
 
       <StatsSection title={modeLabel}>
-        <StatCard label="Quick Mode runs" value={formatCountStat(view.runs)} />
-        <StatCard label="Quick Mode wins" value={formatCountStat(view.wins)} />
-        <StatCard label="Quick Mode losses" value={formatCountStat(view.losses)} />
+        <StatCard label="Classic runs" value={formatCountStat(view.runs)} />
+        <StatCard label="Classic wins" value={formatCountStat(view.wins)} />
+        <StatCard label="Classic losses" value={formatCountStat(view.losses)} />
         <StatCard
           label="Regular Season Record"
           value={formatRecordOrDash(
@@ -448,7 +448,7 @@ function SuperLeagueTab({
           )}
         />
         <StatCard
-          label="Worst Quick Mode record"
+          label="Worst Classic record"
           value={formatRecordOrDash(
             view.hasSeasons ? view.worstRecord : null
           )}
@@ -494,16 +494,16 @@ function SuperLeagueTab({
           highlight={view.grandFinalAppearances > 0}
         />
         <StatCard
-          label="Quick Mode 27-0 seasons"
+          label="Classic 27-0 seasons"
           value={formatCountStat(view.perfectSeasons)}
           highlight={view.perfectSeasons > 0}
         />
         <StatCard
-          label="Quick Mode 0-27 seasons"
+          label="Classic 0-27 seasons"
           value={formatCountStat(view.winlessSeasons)}
         />
         <StatCard
-          label="Best Quick Mode ranking"
+          label="Best Classic ranking"
           value={formatRankingOrDash(view.bestRanking)}
           highlight={view.bestRanking === 1}
         />

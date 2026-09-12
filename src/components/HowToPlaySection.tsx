@@ -5,7 +5,7 @@ import { TYPO } from "@/lib/ui/typography";
 
 const GUIDE_ITEMS = [
   {
-    title: "Quick Mode",
+    title: "Classic",
     body: "Build a 17 from Current or Era squads, chase 27-0, then fight for the playoffs.",
   },
   ...(SHOW_DAILY_CHALLENGE_UI
@@ -30,7 +30,7 @@ const GUIDE_ITEMS = [
   },
   {
     title: "Store",
-    body: "Unlock UI themes and Quick Mode boosts with Club Funds.",
+    body: "Unlock UI themes and Classic boosts with Club Funds.",
   },
 ];
 

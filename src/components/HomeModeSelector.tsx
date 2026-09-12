@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { getDailyChallengeHref } from "@/lib/daily-challenge";
+import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { GameButton } from "@/components/ui/GameButton";
 import { MobileSection } from "@/components/ui/MobileLayout";
 import { buildPlayHref } from "@/lib/play-links";
-import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { setNormalEraVariant } from "@/lib/storage/preferences";
 import { playModeClassicStart, playUiClick } from "@/lib/sound";
 import { TYPO } from "@/lib/ui/typography";
@@ -20,7 +21,7 @@ export function HomeModeSelector() {
       <div className="mt-3 grid gap-3 sm:mt-4 sm:gap-4 lg:grid-cols-2">
         <HomePlayChoice
           eyebrow="Current squads · 2026"
-          title="Quick Mode"
+          title="Classic"
           href={buildPlayHref("classic", false)}
           variant="current"
           cta="Play Current"
@@ -32,7 +33,7 @@ export function HomeModeSelector() {
         />
         <HomePlayChoice
           eyebrow="Historic squads"
-          title="Era Quick Mode"
+          title="Era Classic"
           href={buildPlayHref("classic", true)}
           variant="era"
           cta="Play Era"
@@ -56,9 +57,8 @@ export function HomeModeSelector() {
           <>
             <span className="mx-2 text-pitch-600">·</span>
             <Link
-              href="/play?daily=1"
+              href={getDailyChallengeHref()}
               onClick={() => {
-                setNormalEraVariant(false);
                 playUiClick();
               }}
               className="text-sm font-semibold text-theme-primary hover:underline"

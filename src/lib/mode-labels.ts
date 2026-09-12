@@ -3,18 +3,22 @@ import type { GameDifficulty, GameMode } from "./types";
 export function getSeasonReviewLabel(
   mode: GameMode,
   _difficulty: GameDifficulty,
-  normalEraMode = false
+  normalEraMode = false,
+  dailyChallengeMode = false
 ): string {
+  if (dailyChallengeMode) {
+    return normalEraMode ? "Era Daily Challenge" : "Daily Challenge";
+  }
   if (mode === "DRAFT") return "Draft Review";
-  return normalEraMode ? "Era Review" : "Quick Review";
+  return normalEraMode ? "Era Classic Review" : "Classic Review";
 }
 
 export function getQuickModeLabel(normalEraMode = false): string {
-  return normalEraMode ? "Era Quick Mode" : "Quick Mode";
+  return normalEraMode ? "Era Classic" : "Classic";
 }
 
 export function getQuickSeasonLabel(normalEraMode = false): string {
-  return normalEraMode ? "Era quick season" : "Quick season";
+  return normalEraMode ? "Era classic season" : "Classic season";
 }
 
 export function getQuickSeasonStartLabel(normalEraMode = false): string {
@@ -31,7 +35,7 @@ export function getPlayPageTitle(
   normalEraMode = false
 ): string {
   if (mode === "DRAFT") return "Draft Mode";
-  return normalEraMode ? "Era Quick Mode" : "Quick Mode";
+  return normalEraMode ? "Era Classic" : "Classic";
 }
 
 export const DRAFT_MODE_INTRO =

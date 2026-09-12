@@ -36,11 +36,14 @@ export function isPlayModeActive(
     fantasy?: string | null;
     era?: string | null;
     difficulty?: string | null;
+    daily?: string | null;
   },
   mode: PublicPlayMode,
   eraMode?: boolean
 ): boolean {
   if (!pathname.startsWith("/play")) return false;
+  // Daily Challenge is its own play surface — never highlight Classic.
+  if (search.daily === "1") return false;
   const isHidden =
     search.cup === "1" ||
     search.draft === "1" ||

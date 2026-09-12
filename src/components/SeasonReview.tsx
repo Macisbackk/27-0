@@ -136,7 +136,12 @@ export function SeasonReview({
     ? "Super Sam Hallas Mode Season Review"
     : joeMellorMode
       ? "Joe Mellor GOAT Mode Season Review"
-      : getSeasonReviewLabel(mode, "NORMAL", normalEraMode);
+      : getSeasonReviewLabel(
+          mode,
+          "NORMAL",
+          normalEraMode,
+          Boolean(SHOW_DAILY_CHALLENGE_UI && dailyChallengeMode)
+        );
   const [selectedFixture, setSelectedFixture] = useState<MatchFixture | null>(
     null
   );
@@ -294,6 +299,7 @@ export function SeasonReview({
                 submittedOnline={submittedOnline}
                 specialRun={isSpecialMode}
                 boostedRun={boostedRun}
+                dailyChallenge={showDailyPresentation}
               />
 
               <motion.div
@@ -467,14 +473,25 @@ export function SeasonReview({
                 {!authLoading &&
                 !isLoggedIn &&
                 !showPlayoffPrompt &&
-                !submittedOnline ? (
+                !submittedOnline &&
+                !showDailyPresentation ? (
                   <GuestSaveNudge context="quick-season" />
+                ) : null}
+                {!authLoading &&
+                !isLoggedIn &&
+                !showPlayoffPrompt &&
+                showDailyPresentation ? (
+                  <GuestSaveNudge context="daily-challenge" />
                 ) : null}
                 {!showPlayoffPrompt ? (
                   <MatchReviewActions
                     onPlayAgain={handlePlayAgain}
                     onReturnHome={onReturnHome}
-                    leaderboardHref="/leaderboard"
+                    leaderboardHref={
+                      showDailyPresentation
+                        ? "/leaderboard?tracker=daily_streak"
+                        : "/leaderboard"
+                    }
                     shareAction={shareAction}
                   />
                 ) : null}

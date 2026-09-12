@@ -221,7 +221,7 @@ export function StoreBoostsPanel() {
 
       <div className={`mt-6 ${SPACING.stackLg}`}>
         <BoostSection
-          title="Quick Mode Boosts"
+          title="Classic Boosts"
           description="Use in Classic or Draft picks."
           boosts={getQuickModeBoosts()}
           balance={balance}

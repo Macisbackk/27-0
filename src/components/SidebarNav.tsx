@@ -8,6 +8,7 @@ import { LogoMark } from "@/components/LogoMark";
 import { useAuth } from "@/lib/auth-context";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { buildPlayHref, isPlayModeActive } from "@/lib/play-links";
+import { getDailyChallengeHref } from "@/lib/daily-challenge";
 import {
   getNormalEraVariant,
   setNormalEraVariant,
@@ -84,7 +85,13 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     fantasy: searchParams.get("fantasy"),
     era: searchParams.get("era"),
     difficulty: searchParams.get("difficulty"),
+    daily: searchParams.get("daily"),
   };
+
+  const isDailyActive =
+    SHOW_DAILY_CHALLENGE_UI &&
+    pathname.startsWith("/play") &&
+    playSearch.daily === "1";
 
   const isNormalEra = isPlayModeActive(pathname, playSearch, "classic", true);
   const isNormalCurrent = isPlayModeActive(pathname, playSearch, "classic", false);
@@ -111,6 +118,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   }, []);
 
   const handleNormalVariantChange = (era: boolean) => {
+    // Don't yank Current/Era preference or leave Daily mid-run via this toggle.
+    if (isDailyActive) return;
     setNormalEraVariant(era);
     setNormalEraVariantState(era);
     if (
@@ -216,7 +225,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       onClick={handleNormalNavigate}
                       className={`${navLinkClass(isNormalActive, isNormalEra)} w-full`}
                     >
-                      Quick Mode
+                      Classic
                       {isNormalActive && (
                         <span
                           className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
@@ -226,28 +235,26 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       )}
                     </button>
                     <div className={NAV.nestedBlock}>
-                      <ChallengeCupVariantToggle
-                        compact
-                        hideLabel
-                        sectionLabel="Mode"
-                        eraMode={normalEraVariant}
-                        onEraModeChange={handleNormalVariantChange}
-                      />
+                      {!isDailyActive ? (
+                        <ChallengeCupVariantToggle
+                          compact
+                          hideLabel
+                          sectionLabel="Mode"
+                          eraMode={normalEraVariant}
+                          onEraModeChange={handleNormalVariantChange}
+                        />
+                      ) : null}
                     </div>
                   </li>
                   {SHOW_DAILY_CHALLENGE_UI ? (
                     <li>
                       <Link
-                        href="/play?daily=1"
+                        href={getDailyChallengeHref()}
                         onClick={handleNavClick}
-                        className={navLinkClass(
-                          pathname.startsWith("/play") &&
-                            searchParams.get("daily") === "1"
-                        )}
+                        className={navLinkClass(isDailyActive)}
                       >
                         Daily Challenge
-                        {pathname.startsWith("/play") &&
-                          searchParams.get("daily") === "1" && (
+                        {isDailyActive && (
                             <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
                           )}
                       </Link>

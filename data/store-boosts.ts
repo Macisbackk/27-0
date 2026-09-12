@@ -15,7 +15,7 @@ export interface GameBoost {
   description: string;
   category: BoostCategory;
   compatibleModes: string[];
-  /** When true, Quick Mode boost only appears/arms in Era Mode (not Current). */
+  /** When true, Classic boost only appears/arms in Era Mode (not Current). */
   eraModeOnly?: boolean;
   price: number;
   activationStage: BoostActivationStage;

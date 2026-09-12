@@ -21,7 +21,7 @@ interface EraVariantToggleProps {
 }
 
 /**
- * Compact centred Current / Era control for Quick Mode.
+ * Compact centred Current / Era control for Classic.
  * Era selected = mode gold only; Current selected = mode green; idle = neutral.
  */
 export function EraVariantToggle({

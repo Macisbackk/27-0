@@ -14,7 +14,7 @@ export default async function LeaderboardPage() {
             <p className={TYPO.sectionLabel}>Rankings</p>
             <h1 className={`mt-1 ${TYPO.pageTitle}`}>Leaderboard</h1>
             <p className={`mt-2 ${TYPO.bodySm}`}>
-              Quick Mode rankings.
+              Classic, Daily Challenge, and Mini Games.
             </p>
           </header>
           <LeaderboardGuestNotice />

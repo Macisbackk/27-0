@@ -2367,7 +2367,7 @@ export function GameBoard({
               : undefined
         }
       >
-          <GuestNotice variant="play" />
+          <GuestNotice variant="play" dailyChallenge={dailyChallengeMode} />
 
         <div className="mb-3 sm:mb-4">
           <MobileStepIndicator
@@ -2489,11 +2489,12 @@ export function GameBoard({
             <p className={`w-full text-center ${TYPO.bodySm} text-gray-400`}>
               Tap an empty slot to spin
             </p>
-            {normalEraMode ? (
-              <EraRatingExplanation compact className="w-full" />
-            ) : (
-              <CurrentRatingExplanation compact className="w-full" />
-            )}
+            {!dailyChallengeMode &&
+              (normalEraMode ? (
+                <EraRatingExplanation compact className="w-full" />
+              ) : (
+                <CurrentRatingExplanation compact className="w-full" />
+              ))}
           </div>
         )}
 
@@ -2608,6 +2609,7 @@ export function GameBoard({
                       hardMode={difficulty === "HARD"}
                       boosted={Boolean(boostNotice)}
                       eraMode={normalEraMode}
+                      hideRatingNote={dailyChallengeMode}
                     />
                   </motion.div>
                 </motion.div>

@@ -211,7 +211,11 @@ export function PlayoffReview({
           <p
             className={`${TYPO.eyebrow} ${NORMAL.reviewAccent}`}
           >
-            Super League Play-Off Review
+            {dailyChallengeMode && SHOW_DAILY_CHALLENGE_UI
+              ? dailyScenario?.eraMode
+                ? "Era Daily Play-Off Review"
+                : "Daily Play-Off Review"
+              : "Super League Play-Off Review"}
           </p>
           <h1 className={`mt-4 ${TYPO.sectionTitle} text-2xl text-accent-gold sm:text-3xl`}>
             {playoffResult.finish}

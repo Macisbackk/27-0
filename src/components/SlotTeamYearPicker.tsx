@@ -33,6 +33,8 @@ interface SlotTeamYearPickerProps {
   hardMode?: boolean;
   boosted?: boolean;
   eraMode?: boolean;
+  /** Hide Current/Era “season’s form” rating note (e.g. Daily Challenge). */
+  hideRatingNote?: boolean;
 }
 
 export function SlotTeamYearPicker({
@@ -46,6 +48,7 @@ export function SlotTeamYearPicker({
   hardMode,
   boosted = false,
   eraMode = false,
+  hideRatingNote = false,
 }: SlotTeamYearPickerProps) {
   const [respinLocked, setRespinLocked] = useState(false);
 
@@ -151,7 +154,7 @@ export function SlotTeamYearPicker({
             </p>
           ) : (
             <>
-              {eraMode ? (
+              {hideRatingNote ? null : eraMode ? (
                 <EraRatingExplanation compact className="mb-1.5 px-1" />
               ) : (
                 <CurrentRatingExplanation compact className="mb-1.5 px-1" />

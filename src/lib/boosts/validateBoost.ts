@@ -59,7 +59,7 @@ export function validateQuickModeSelectionBoost(
   if (selectionBoostsUsedThisRun >= 2) {
     return {
       ok: false,
-      reason: "Maximum two Quick Mode selection boosts per run.",
+      reason: "Maximum two Classic selection boosts per run.",
     };
   }
   const alreadyArmed = getArmedBoostsForGame(gameSaveId).some((a) => {

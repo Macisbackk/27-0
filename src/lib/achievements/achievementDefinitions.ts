@@ -18,11 +18,11 @@ export type AchievementDefinition = {
 };
 
 export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
-  // Quick Mode
+  // Classic
   {
     id: "first-win",
     name: "First Win",
-    description: "Win your first Quick Mode game.",
+    description: "Win your first Classic game.",
     category: "normal",
     points: 10,
     rewardClubFunds: 25_000,
@@ -31,7 +31,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "winning-habit",
     name: "Winning Habit",
-    description: "Win 10 games in one Quick Mode season.",
+    description: "Win 10 games in one Classic season.",
     category: "normal",
     points: 25,
     target: 10,
@@ -39,7 +39,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "chaser-27-0",
     name: "27-0 Chaser",
-    description: "Win 20 games in one Quick Mode season.",
+    description: "Win 20 games in one Classic season.",
     category: "normal",
     points: 40,
     target: 20,
@@ -47,7 +47,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "perfect-season",
     name: "Perfect Season",
-    description: "Go 27-0 in Quick Mode.",
+    description: "Go 27-0 in Classic.",
     category: "normal",
     points: 100,
     rewardClubFunds: 250_000,
@@ -94,7 +94,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "era-cup-kings",
     name: "Era Champions",
-    description: "Win the Super League title in Era Quick Mode.",
+    description: "Win the Super League title in Era Classic.",
     category: "normal",
     points: 40,
   },

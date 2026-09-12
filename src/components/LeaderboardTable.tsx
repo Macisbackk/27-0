@@ -36,11 +36,12 @@ import {
 import { RecordWithPercentage, parseRecordWithPercentage } from "./RecordWithPercentage";
 import { GamePanel } from "@/components/ui/GamePanel";
 import { GameEmptyState } from "@/components/ui/GameEmptyState";
+import { getDailyChallengeHref } from "@/lib/daily-challenge";
+import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { GameButton } from "@/components/ui/GameButton";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 import { useAuth } from "@/lib/auth-context";
-import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
 
@@ -268,7 +269,7 @@ export function LeaderboardTable() {
         ? "Trophy Cabinet"
         : isMiniGamesMode
           ? "Mini Games"
-          : "Quick Mode";
+          : "Classic";
 
   const trackerLabel = isMiniGamesMode
     ? activeMiniGamesCategory.label
@@ -286,7 +287,7 @@ export function LeaderboardTable() {
     id: QuickLeaderboardMode;
     label: string;
   }[] = [
-    { id: "super-league" as const, label: "Quick Mode" },
+    { id: "super-league" as const, label: "Classic" },
     { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
     ...(SHOW_DAILY_CHALLENGE_UI
       ? [{ id: "daily" as const, label: "Daily" }]
@@ -308,7 +309,7 @@ export function LeaderboardTable() {
 
   return (
     <div>
-      <nav className="mb-5" aria-label="Quick mode leaderboards">
+      <nav className="mb-5" aria-label="Leaderboard modes">
         <LeaderboardTabBar
           tier="mode"
           tabs={quickModeOptions.map((mode) => ({
@@ -318,7 +319,7 @@ export function LeaderboardTable() {
           }))}
           active={leaderboardMode}
           onChange={(id) => handleQuickModeChange(id as QuickLeaderboardMode)}
-          ariaLabel="Quick mode leaderboards"
+          ariaLabel="Leaderboard modes"
         />
       </nav>
 
@@ -431,21 +432,29 @@ export function LeaderboardTable() {
                   size="sm"
                   fullWidth={false}
                   href={
-                    isMiniGamesMode
-                      ? activeMiniGamesCategory.href
-                      : "/play"
+                    isDailyMode
+                      ? getDailyChallengeHref()
+                      : isMiniGamesMode
+                        ? activeMiniGamesCategory.href
+                        : "/play"
                   }
                 >
-                  {isMiniGamesMode
-                    ? `Play ${activeMiniGamesCategory.shortLabel}`
-                    : "Play Quick Mode"}
+                  {isDailyMode
+                    ? "Play Daily Challenge"
+                    : isMiniGamesMode
+                      ? `Play ${activeMiniGamesCategory.shortLabel}`
+                      : "Play Classic"}
                 </GameButton>
                 {!authLoading && !isLoggedIn ? (
                   <GameButton
                     variant="secondary"
                     size="sm"
                     fullWidth={false}
-                    href="/login?redirect=/leaderboard"
+                    href={
+                      isDailyMode
+                        ? "/login?redirect=/leaderboard?tracker=daily_streak"
+                        : "/login?redirect=/leaderboard"
+                    }
                   >
                     Log in to submit
                   </GameButton>
