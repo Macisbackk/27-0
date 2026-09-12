@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { HomeAuthBar } from "@/components/HomeAuthBar";
 import { EmailConfirmedBanner } from "@/components/EmailConfirmedBanner";
 import { HomeModeSelector } from "@/components/HomeModeSelector";
+import { HowToPlaySection } from "@/components/HowToPlaySection";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
 import { LogoMark } from "@/components/LogoMark";
 import { PageShell } from "@/components/ui/PageShell";
@@ -22,7 +23,7 @@ export default function HomePage() {
 
         <h1 className="sr-only">27-0</h1>
         <p className="mx-auto mt-3 max-w-lg text-sm leading-snug text-gray-300 sm:mt-4 sm:text-base sm:leading-relaxed">
-          Draft a Super League side and chase the perfect season.
+          Build a Super League side and chase the perfect season.
         </p>
       </section>
 
@@ -36,6 +37,10 @@ export default function HomePage() {
 
       <div id="play-modes" className="mt-5 scroll-mt-8 sm:mt-7">
         <HomeModeSelector />
+      </div>
+
+      <div className="mt-6 sm:mt-8">
+        <HowToPlaySection />
       </div>
 
       <nav

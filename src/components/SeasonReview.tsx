@@ -35,6 +35,8 @@ import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
 import { NORMAL, MANAGER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { GuestSaveNudge } from "@/components/EconomyExplainer";
+import { useAuth } from "@/lib/auth-context";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
 import { GameStatCard } from "@/components/ui/GameStatCard";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
@@ -89,6 +91,7 @@ export function SeasonReview({
   onFinalizeSeason,
   onReturnHome,
 }: SeasonReviewProps) {
+  const { isLoggedIn, loading: authLoading } = useAuth();
   const totalValue = getSquadValue(squad);
   const leagueTable = useMemo(
     () => buildLeagueTable(seasonResult, seed),
@@ -462,6 +465,12 @@ export function SeasonReview({
               transition={{ delay: 0.65 }}
             >
               <div className="space-y-3">
+                {!authLoading &&
+                !isLoggedIn &&
+                !showPlayoffPrompt &&
+                !submittedOnline ? (
+                  <GuestSaveNudge context="quick-season" />
+                ) : null}
                 {!showPlayoffPrompt ? (
                   <MatchReviewActions
                     onPlayAgain={handlePlayAgain}

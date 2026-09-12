@@ -1,9 +1,9 @@
 import { QUIZ_QUESTION_COUNT } from "./types";
 
-/** Club Funds prize ladder — WWTBAM shape; Q15 (all correct) pays £1,000,000. */
+/** Club Funds prize ladder — scaled under season title (£200k) so quiz does not outpace Quick Mode. */
 export const QUIZ_PRIZE_LADDER = [
-  100, 200, 300, 500, 1_000, 2_000, 4_000, 8_000, 16_000, 32_000, 64_000,
-  125_000, 250_000, 500_000, 1_000_000,
+  50, 100, 200, 300, 500, 1_000, 2_000, 4_000, 8_000, 12_000, 20_000, 35_000,
+  50_000, 75_000, 100_000,
 ] as const;
 
 export const QUIZ_SAFE_QUESTION_NUMBERS = [5, 10] as const;
@@ -24,7 +24,7 @@ export function getNextPrize(correctCount: number): number | null {
   return getPrizeForQuestionNumber(correctCount + 1);
 }
 
-/** Last safe-haven prize reached (0 before Q5, £1,000 after Q5, £32,000 after Q10). */
+/** Last safe-haven prize reached (0 before Q5, £500 after Q5, £12,000 after Q10). */
 export function getGuaranteedPrize(correctCount: number): number {
   if (correctCount >= 10) return getPrizeForQuestionNumber(10);
   if (correctCount >= 5) return getPrizeForQuestionNumber(5);

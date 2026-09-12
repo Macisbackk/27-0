@@ -324,7 +324,7 @@ export function LeaderboardTable() {
       {showCupVariantToggle && (
         <div className="mb-5">
           <ChallengeCupVariantToggle
-            sectionLabel={isTrophyCabinetMode ? "Trophy Mode" : "Mode Variant"}
+            sectionLabel={isTrophyCabinetMode ? "Trophy Mode" : "Mode"}
             useShortLabels
             eraMode={normalEraMode}
             onEraModeChange={(era) => {

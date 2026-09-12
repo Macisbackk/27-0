@@ -212,6 +212,10 @@ const CLUB_FUNDS_INFO_LINES_SOURCE = [
   { label: "27-0 Perfect Season", amount: CLUB_FUNDS_REWARDS.perfectSeason },
   { label: "Season Completed", amount: CLUB_FUNDS_REWARDS.seasonComplete },
   { label: "20+ Wins in a Season", amount: CLUB_FUNDS_REWARDS.twentyWins },
+  { label: "Quiz Champion (15/15)", amount: 100_000 },
+  { label: "Wordle Win", amount: 8_000 },
+  { label: "Hangman Win", amount: 5_000 },
+  { label: "Higher-Lower Clear", amount: 2_500 },
 ] as const;
 
 /** Earn Club Funds panel — highest payouts first. */

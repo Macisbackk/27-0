@@ -33,6 +33,9 @@
 /scripts/rlp-cache/
 /scripts/rlp-players.html
 /scripts/rlp-sample-player*.html
+/scripts/wikipedia-cache/
+_tmp_*
+tsc-*.txt
 *.pem
 
 # debug

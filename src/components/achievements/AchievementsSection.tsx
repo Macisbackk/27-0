@@ -28,8 +28,7 @@ type StatusFilter = "all" | "locked" | "unlocked";
 
 const CATEGORY_TABS: { id: CategoryFilter; label: string }[] = [
   { id: "all", label: "All" },
-  { id: "normal", label: "Normal" },
-  { id: "challenge-cup", label: "Challenge Cup" },
+  { id: "normal", label: "Quick Mode" },
   { id: "store", label: "Store" },
   { id: "quiz", label: "Mini Games" },
   { id: "easter-egg", label: "Easter Eggs" },
@@ -41,9 +40,11 @@ const STATUS_TABS: { id: StatusFilter; label: string }[] = [
   { id: "locked", label: "Locked" },
 ];
 
-const VISIBLE_ACHIEVEMENTS = SHOW_DAILY_CHALLENGE_UI
-  ? ACHIEVEMENT_DEFINITIONS
-  : ACHIEVEMENT_DEFINITIONS.filter((def) => !def.id.startsWith("daily-"));
+const VISIBLE_ACHIEVEMENTS = (
+  SHOW_DAILY_CHALLENGE_UI
+    ? ACHIEVEMENT_DEFINITIONS
+    : ACHIEVEMENT_DEFINITIONS.filter((def) => !def.id.startsWith("daily-"))
+).filter((def) => def.category !== "challenge-cup");
 
 function formatUnlockDate(iso: string): string {
   const date = new Date(iso);

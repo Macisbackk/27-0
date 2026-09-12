@@ -18,11 +18,11 @@ export type AchievementDefinition = {
 };
 
 export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
-  // Normal Mode
+  // Quick Mode
   {
     id: "first-win",
     name: "First Win",
-    description: "Win your first Normal Mode game.",
+    description: "Win your first Quick Mode game.",
     category: "normal",
     points: 10,
     rewardClubFunds: 25_000,
@@ -31,7 +31,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "winning-habit",
     name: "Winning Habit",
-    description: "Win 10 games in one Normal Mode season.",
+    description: "Win 10 games in one Quick Mode season.",
     category: "normal",
     points: 25,
     target: 10,
@@ -39,7 +39,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "chaser-27-0",
     name: "27-0 Chaser",
-    description: "Win 20 games in one Normal Mode season.",
+    description: "Win 20 games in one Quick Mode season.",
     category: "normal",
     points: 40,
     target: 20,
@@ -47,7 +47,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "perfect-season",
     name: "Perfect Season",
-    description: "Go 27-0 in Normal Mode.",
+    description: "Go 27-0 in Quick Mode.",
     category: "normal",
     points: 100,
     rewardClubFunds: 250_000,
@@ -91,14 +91,22 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     category: "normal",
     points: 30,
   },
+  {
+    id: "era-cup-kings",
+    name: "Era Champions",
+    description: "Win the Super League title in Era Quick Mode.",
+    category: "normal",
+    points: 40,
+  },
 
-  // Challenge Cup
+  // Legacy Challenge Cup mode — hidden; cannot unlock (mode removed).
   {
     id: "cup-debut",
     name: "Cup Debut",
     description: "Play your first Challenge Cup run.",
     category: "challenge-cup",
     points: 10,
+    hidden: true,
   },
   {
     id: "cup-finalist",
@@ -106,6 +114,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     description: "Reach a Challenge Cup final.",
     category: "challenge-cup",
     points: 30,
+    hidden: true,
   },
   {
     id: "cup-winners",
@@ -114,13 +123,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     category: "challenge-cup",
     points: 50,
     rewardClubFunds: 150_000,
-  },
-  {
-    id: "era-cup-kings",
-    name: "Era Cup Kings",
-    description: "Win the Super League title in Era Mode.",
-    category: "challenge-cup",
-    points: 40,
+    hidden: true,
   },
   {
     id: "giant-killer",
@@ -128,6 +131,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     description: "Beat a stronger team in the Challenge Cup.",
     category: "challenge-cup",
     points: 25,
+    hidden: true,
   },
   {
     id: "cup-dynasty",
@@ -136,6 +140,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     category: "challenge-cup",
     points: 80,
     target: 5,
+    hidden: true,
   },
 
   // Store / Club Funds
@@ -307,7 +312,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-safe-1000",
     name: "Getting Started",
-    description: "Reach the £1,000 safe haven in Quiz Mode.",
+    description: "Reach the £500 safe haven in Quiz Mode.",
     category: "quiz",
     points: 20,
     rewardClubFunds: 10_000,
@@ -315,7 +320,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-safe-32000",
     name: "Halfway There",
-    description: "Reach the £32,000 safe haven in Quiz Mode.",
+    description: "Reach the £12,000 safe haven in Quiz Mode.",
     category: "quiz",
     points: 35,
     rewardClubFunds: 25_000,
@@ -323,18 +328,19 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-big-money",
     name: "Big Money",
-    description: "Reach £250,000 in a Quiz Mode run.",
+    description: "Reach £50,000 in a Quiz Mode run.",
     category: "quiz",
     points: 50,
     rewardClubFunds: 40_000,
   },
   {
     id: "quiz-millionaire",
-    name: "Millionaire",
-    description: "Answer all 15 Super League Millionaire questions correctly and bank £1,000,000.",
+    name: "Quiz Champion",
+    description:
+      "Answer all 15 Super League Millionaire questions correctly and bank £100,000.",
     category: "quiz",
     points: 100,
-    rewardClubFunds: 100_000,
+    rewardClubFunds: 50_000,
   },
   {
     id: "quiz-no-help",
@@ -353,11 +359,11 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   },
   {
     id: "quiz-club-millionaire",
-    name: "Club Millionaire",
-    description: "Reach £1,000,000 in Team Challenge.",
+    name: "Club Champion",
+    description: "Bank the top Team Challenge prize (£100,000).",
     category: "quiz",
     points: 80,
-    rewardClubFunds: 75_000,
+    rewardClubFunds: 40_000,
   },
   {
     id: "quiz-super-league-expert",

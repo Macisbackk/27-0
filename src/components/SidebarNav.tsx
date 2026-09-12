@@ -25,6 +25,7 @@ import {
 } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
+import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import {
   CoffeeIcon,
   SuggestionsIcon,
@@ -234,6 +235,24 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       />
                     </div>
                   </li>
+                  {SHOW_DAILY_CHALLENGE_UI ? (
+                    <li>
+                      <Link
+                        href="/play?daily=1"
+                        onClick={handleNavClick}
+                        className={navLinkClass(
+                          pathname.startsWith("/play") &&
+                            searchParams.get("daily") === "1"
+                        )}
+                      >
+                        Daily Challenge
+                        {pathname.startsWith("/play") &&
+                          searchParams.get("daily") === "1" && (
+                            <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
+                          )}
+                      </Link>
+                    </li>
+                  ) : null}
                   <li className={NAV.playModeGroup}>
                     <button
                       type="button"

@@ -339,7 +339,7 @@ function QuizLanding({
             Normal Quiz
           </p>
           <p className={`mt-1 ${TYPO.bodySm}`}>
-            Super League Millionaire — 15 questions to £1,000,000.
+            Super League Millionaire — 15 questions to £100,000.
           </p>
         </button>
         <button
@@ -504,9 +504,9 @@ function QuizPlayScreen({
         {isFinal ? (
           <div className="quiz-final-banner mt-4">
             <p className={TYPO.keyLabel}>Final question</p>
-            <p className="quiz-prize mt-1 text-3xl">£1,000,000</p>
+            <p className="quiz-prize mt-1 text-3xl">£100,000</p>
             <p className={`mt-1 ${TYPO.meta}`}>
-              15 of 15 — one question from £1,000,000
+              15 of 15 — one question from £100,000
             </p>
           </div>
         ) : (
@@ -682,7 +682,7 @@ function QuizResultScreen({
       <h1 className={`mt-2 ${TYPO.pageTitle}`}>{title}</h1>
       {run.phase === "quiz_complete" ? (
         <p className={`mt-3 ${TYPO.pageSubtitle}`}>
-          You answered all 15 questions correctly — Super League Millionaire payout.
+          You answered all 15 questions correctly — top Quiz payout.
         </p>
       ) : (
         <p className={`mt-3 ${TYPO.pageSubtitle}`}>
@@ -690,9 +690,7 @@ function QuizResultScreen({
         </p>
       )}
       <p className="quiz-prize mt-4 text-4xl">
-        {run.phase === "quiz_complete"
-          ? "£1,000,000"
-          : formatClubFundsExact(run.rewardAmount)}
+        {formatClubFundsExact(run.rewardAmount)}
       </p>
       {run.phase === "quiz_walked_away" && (
         <p className={`mt-2 ${TYPO.body}`}>You banked {formatClubFundsExact(run.rewardAmount)}.</p>

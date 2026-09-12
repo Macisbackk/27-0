@@ -1,19 +1,28 @@
 import { GameSectionTitle } from "@/components/ui/GameSectionTitle";
+import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 const GUIDE_ITEMS = [
   {
     title: "Quick Mode",
-    body: "Draft a 17 and chase 27-0 through the league and playoffs.",
+    body: "Build a 17 from Current or Era squads, chase 27-0, then fight for the playoffs.",
   },
+  ...(SHOW_DAILY_CHALLENGE_UI
+    ? [
+        {
+          title: "Daily Challenge",
+          body: "One forced opponent club each UK day — keep your streak alive.",
+        },
+      ]
+    : []),
   {
     title: "Mini Games",
-    body: "Quiz, Wordle, Hangman, and Higher or Lower.",
+    body: "Quiz, Wordle, Hangman, and Higher or Lower for Club Funds.",
   },
   {
     title: "Club Funds",
-    body: "Earn from seasons and achievements, spend in the Store.",
+    body: "Earn from seasons, playoffs, mini-games, and achievements — spend in the Store.",
   },
   {
     title: "Coach Profile",
@@ -21,9 +30,9 @@ const GUIDE_ITEMS = [
   },
   {
     title: "Store",
-    body: "Unlock UI themes with Club Funds.",
+    body: "Unlock UI themes and Quick Mode boosts with Club Funds.",
   },
-] as const;
+];
 
 export function HowToPlaySection() {
   return (

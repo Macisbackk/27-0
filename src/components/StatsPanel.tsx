@@ -409,7 +409,7 @@ function SuperLeagueTab({
   return (
     <div className="space-y-8">
       <ChallengeCupVariantToggle
-        sectionLabel="Mode Variant"
+        sectionLabel="Mode"
         useShortLabels
         eraMode={eraMode}
         onEraModeChange={onEraModeChange}
