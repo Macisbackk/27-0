@@ -833,6 +833,36 @@
     "birthYear": 1994
   },
   {
+    "id": "catalans-cur-romain-navarrete",
+    "name": "Romain Navarrete",
+    "club": "Catalans Dragons",
+    "currentClub": "Catalans Dragons",
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "position": "PROP",
+    "positions": [
+      "PROP"
+    ],
+    "primaryPosition": "PROP",
+    "nationality": "France",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2020–Present",
+    "category": "current",
+    "peakRating": 82,
+    "value": 135000,
+    "appearances": 186,
+    "tries": 5,
+    "teamYearId": "catalans-dragons-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "catalans-cur-romain-navarrete",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "dateOfBirth": "1994-06-30",
+    "birthYear": 1994
+  },
+  {
     "id": "catalans-cur-solomona-faataape",
     "name": "Solomona Faataape",
     "position": "CENTRE",

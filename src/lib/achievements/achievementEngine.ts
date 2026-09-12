@@ -149,11 +149,11 @@ function evaluateUnlock(
         (ctx.quizQuestionsAnswered ?? progress.quizQuestionsAnswered) >= 1
       );
     case "quiz-safe-1000":
-      return (ctx.quizHighestPrize ?? 0) >= 500;
+      return (ctx.quizHighestPrize ?? 0) >= 1_000;
     case "quiz-safe-32000":
-      return (ctx.quizHighestPrize ?? 0) >= 12_000;
+      return (ctx.quizHighestPrize ?? 0) >= 32_000;
     case "quiz-big-money":
-      return (ctx.quizHighestPrize ?? 0) >= 50_000;
+      return (ctx.quizHighestPrize ?? 0) >= 250_000;
     case "quiz-millionaire":
       return ctx.quizPerfectRun === true;
     case "quiz-no-help":

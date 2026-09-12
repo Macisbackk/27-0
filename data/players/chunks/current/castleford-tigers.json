@@ -373,6 +373,34 @@
     "superLeagueEligible": true
   },
   {
+    "id": "castleford-cur-jenson-windley",
+    "name": "Jenson Windley",
+    "club": "Castleford Tigers",
+    "currentClub": "Castleford Tigers",
+    "team": "Castleford Tigers",
+    "displayClub": "Castleford Tigers",
+    "position": "SCRUM_HALF",
+    "positions": [
+      "SCRUM_HALF"
+    ],
+    "primaryPosition": "SCRUM_HALF",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2020–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 95000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "castleford-tigers-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "castleford-cur-jenson-windley",
+    "availableInGame": true,
+    "superLeagueEligible": true
+  },
+  {
     "id": "castleford-cur-joe-stimson",
     "name": "Joe Stimson",
     "position": "LOOSE_FORWARD",

@@ -56,8 +56,22 @@ def main() -> None:
             print(f"  orphan {k}")
 
     lt_orph = sorted(i for i in lt if i not in by_id)
-    report["orphans"]["lanceTodd"] = lt_orph
-    print(f"lance-todd: keys={len(lt)} orphans={len(lt_orph)}")
+    # Base IDs without cards are not orphans when a year-suffixed card exists.
+    resolved = []
+    true_orphans = []
+    for oid in lt_orph:
+        variants = [
+            pid
+            for pid in by_id
+            if pid.startswith(oid + "-") and re.search(r"-\d{4}$", pid)
+        ]
+        if variants:
+            resolved.append({"id": oid, "via": variants[:3]})
+        else:
+            true_orphans.append(oid)
+    report["orphans"]["lanceTodd"] = true_orphans
+    report["lanceToddResolvedViaYearCards"] = resolved
+    print(f"lance-todd: keys={len(lt)} orphans={len(true_orphans)} resolvedViaYear={len(resolved)}")
 
     cov = Counter()
     for p in hist:
@@ -157,6 +171,7 @@ def main() -> None:
     print("year-card inheritance gaps", len(report["yearCardInheritanceGaps"]))
 
     # Known individual honour winners that should exist in DB
+    # Only real Lance Todd / Man of Steel winners (not Harry Sunderland / lookalikes).
     known = {
         "lanceTodd": [
             "Robbie Paul",
@@ -164,11 +179,11 @@ def main() -> None:
             "Dean Bell",
             "Brett Kenny",
             "Kevin Sinfield",
-            "Rob Burrow",
             "Paul Wellens",
             "Sean Long",
-            "Tommy Makinson",
             "Lachlan Lam",
+            "Bevan French",
+            "Marc Sneyd",
         ],
         "manOfSteel": [
             "James Roby",
@@ -176,11 +191,11 @@ def main() -> None:
             "Bevan French",
             "Daryl Clark",
             "Sam Tomkins",
-            "Ben Flower",
             "Jamie Peacock",
             "Paul Sculthorpe",
             "Andy Farrell",
             "Ellery Hanley",
+            "Mikey Lewis",
         ],
     }
 
@@ -198,23 +213,28 @@ def main() -> None:
         if in_db and not has:
             report["unmatchedKnownWinnersInDb"].setdefault("manOfSteel", []).append(name)
 
-    # Honour report unmatched lance still in DB?
+    # Honour report unmatched lance still in DB but missing from lance-todd map?
     honour_report = DATA / "honour-achievements-report.json"
     if honour_report.exists():
         hr = json.loads(honour_report.read_text(encoding="utf-8"))
         still = []
         for name in hr.get("unmatchedLance", []):
             hits = by_name.get(name.lower(), [])
-            if hits:
-                still.append(
-                    {
-                        "name": name,
-                        "ids": [p["id"] for p in hits],
-                        "categories": sorted({p.get("category") for p in hits}),
-                    }
-                )
+            if not hits:
+                continue
+            if name in lt_names:
+                continue
+            still.append(
+                {
+                    "name": name,
+                    "ids": [p["id"] for p in hits],
+                    "categories": sorted({p.get("category") for p in hits}),
+                }
+            )
         report["unmatchedLanceStillInDb"] = still
-        print("unmatched Lance Todd still in DB", len(still))
+        print("unmatched Lance Todd still in DB (and not in map)", len(still))
+    else:
+        report["unmatchedLanceStillInDb"] = []
 
     # Dream team years outside career / year card year wildly wrong
     suspicious_dream = []

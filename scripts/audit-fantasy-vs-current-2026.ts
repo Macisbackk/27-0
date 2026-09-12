@@ -41,6 +41,17 @@ const POS_SUFFIXES = [
 ];
 
 function norm(s: string): string {
+  // Match apply-2026-squads: punctuation → spaces ("O'Connor" → "o connor").
+  return s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+/** Apostrophe-stripped form ("Ese'ese" / "Eseese" → "eseese"). */
+function normCompact(s: string): string {
   return s
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -48,6 +59,38 @@ function norm(s: string): string {
     .replace(/[''`’]/g, "")
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
+}
+
+const NAME_ALIASES: Record<string, string> = {
+  "lachlan miller": "lachie miller",
+  "oliver ashall bott": "olly ashall bott",
+  "caleb uele": "caleb hamlin uele",
+  "tuimoala lolohea": "tui lolohea",
+  "george flanagan": "george flanagan jr",
+  "jonathan bennison": "jon bennison",
+  "herman eseese": "herman ese ese",
+  "toa mataafa": "toa mata afa",
+  "xavier vaa": "xavier va a",
+  "romain navarette": "romain navarrete",
+};
+
+function aliasKey(name: string): string {
+  const k = norm(name);
+  return NAME_ALIASES[k] ?? NAME_ALIASES[normCompact(name)] ?? k;
+}
+
+function nameKeys(name: string): string[] {
+  const keys = new Set<string>();
+  for (const raw of [norm(name), normCompact(name)]) {
+    keys.add(raw);
+    keys.add(aliasKey(raw));
+    const aliased = NAME_ALIASES[raw];
+    if (aliased) {
+      keys.add(aliased);
+      keys.add(normCompact(aliased));
+    }
+  }
+  return [...keys].filter(Boolean);
 }
 
 function stripPos(raw: string): { name: string; pos: string | null } {
@@ -102,15 +145,18 @@ function main() {
 
   const currentByNorm = new Map<string, Cur[]>();
   for (const p of current) {
-    const k = norm(p.name);
-    const list = currentByNorm.get(k) ?? [];
-    list.push(p);
-    currentByNorm.set(k, list);
+    for (const k of nameKeys(p.name)) {
+      const list = currentByNorm.get(k) ?? [];
+      list.push(p);
+      currentByNorm.set(k, list);
+    }
   }
 
   const firstTeamNorm = new Set<string>();
   for (const rows of Object.values(slSquads)) {
-    for (const r of rows) firstTeamNorm.add(norm(r.name));
+    for (const r of rows) {
+      for (const k of nameKeys(r.name)) firstTeamNorm.add(k);
+    }
   }
 
   const appeared = fantasy.filter((r) => r.minutes > 0);
@@ -119,13 +165,10 @@ function main() {
   const inDbNotFirstTeam: Array<{ name: string; clubs: string[] }> = [];
 
   for (const row of appeared) {
-    const hits = currentByNorm.get(norm(row.name)) ?? [];
+    const hits = nameKeys(row.name).flatMap((k) => currentByNorm.get(k) ?? []);
     const slHits = hits.filter((h) => SL.has(h.club) && h.availableInGame !== false);
     if (slHits.length === 0) {
       missingAppeared.push(row);
-      if (!firstTeamNorm.has(norm(row.name))) {
-        // also not in authoritative first-team json
-      }
     }
   }
 
@@ -140,19 +183,19 @@ function main() {
   const firstTeamMissing: string[] = [];
   for (const [club, rows] of Object.entries(slSquads)) {
     for (const r of rows) {
-      const hits = (currentByNorm.get(norm(r.name)) ?? []).filter(
-        (h) => h.club === club && h.availableInGame !== false
-      );
+      const hits = nameKeys(r.name)
+        .flatMap((k) => currentByNorm.get(k) ?? [])
+        .filter((h) => h.club === club && h.availableInGame !== false);
       if (hits.length === 0) firstTeamMissing.push(`${club}: ${r.name}`);
     }
   }
 
   // Current SL playable not in fantasy (unexpected / retired mid-season?)
-  const fantasyNorm = new Set(fantasy.map((r) => norm(r.name)));
+  const fantasyNorm = new Set(fantasy.flatMap((r) => nameKeys(r.name)));
   const inDbNotFantasy: string[] = [];
   for (const p of current) {
     if (!SL.has(p.club) || p.availableInGame === false) continue;
-    if (!fantasyNorm.has(norm(p.name))) {
+    if (!nameKeys(p.name).some((k) => fantasyNorm.has(k))) {
       inDbNotFantasy.push(`${p.club}: ${p.name} (${p.id})`);
     }
   }
@@ -178,6 +221,10 @@ function main() {
       minutes: r.minutes,
       score: r.score,
     })),
+    /** Academy / fringe minutes — intentionally excluded from Current SL playable pool. */
+    intentionalAcademyDepthMissing: anyMinutesMissing
+      .filter((r) => r.minutes < 30)
+      .map((r) => r.name),
     currentSlNotInFantasy: inDbNotFantasy,
   };
 

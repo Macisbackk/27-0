@@ -1,700 +1,16 @@
 {
-  "generatedAt": "2026-09-11T21:53:35.921Z",
+  "generatedAt": "2026-09-12T13:40:34.950Z",
   "fantasyTotal": 428,
   "fantasyAppeared": 381,
-  "currentSlPlayable": 236,
-  "firstTeamJsonCount": 229,
-  "firstTeamMissingFromCurrent": [
-    "Leeds Rhinos: Jarrod O Connor",
-    "Leigh Leopards: Gareth O Brien",
-    "Leigh Leopards: Ethan O Neill",
-    "Leigh Leopards: Kai O Donnell",
-    "Wigan Warriors: Brad O Neill"
-  ],
+  "currentSlPlayable": 380,
+  "firstTeamJsonCount": 238,
+  "firstTeamMissingFromCurrent": [],
   "fantasyAppearedMissingFromSlCurrent": [
-    {
-      "name": "Lachlan Miller",
-      "pos": "Full Back",
-      "minutes": 365,
-      "score": 1191
-    },
-    {
-      "name": "Innes Senior",
-      "pos": "Winger",
-      "minutes": 348,
-      "score": 1008
-    },
-    {
-      "name": "Jack Broadbent",
-      "pos": "Centre",
-      "minutes": 345,
-      "score": 878
-    },
-    {
-      "name": "Caleb Uele",
-      "pos": "Prop",
-      "minutes": 289,
-      "score": 1456
-    },
-    {
-      "name": "Phoenix Laulu-Togaga'e",
-      "pos": "Full Back",
-      "minutes": 287,
-      "score": 967
-    },
-    {
-      "name": "Logan Moy",
-      "pos": "Full Back",
-      "minutes": 278,
-      "score": 763
-    },
-    {
-      "name": "Josh Charnley",
-      "pos": "Winger",
-      "minutes": 235,
-      "score": 915
-    },
-    {
-      "name": "Ryan Hall",
-      "pos": "Winger",
-      "minutes": 228,
-      "score": 643
-    },
-    {
-      "name": "Oliver Ashall-Bott",
-      "pos": "Full Back",
-      "minutes": 216,
-      "score": 963
-    },
-    {
-      "name": "Josh Smith",
-      "pos": "Centre",
-      "minutes": 207,
-      "score": 752
-    },
-    {
-      "name": "Chris Hankinson",
-      "pos": "Winger",
-      "minutes": 203,
-      "score": 1085
-    },
-    {
-      "name": "Tom Briscoe",
-      "pos": "Winger",
-      "minutes": 183,
-      "score": 704
-    },
-    {
-      "name": "Connor Wynne",
-      "pos": "Centre",
-      "minutes": 182,
-      "score": 596
-    },
-    {
-      "name": "Caius Faatili",
-      "pos": "Prop",
-      "minutes": 181,
-      "score": 1048
-    },
-    {
-      "name": "Isaiah Vagana",
-      "pos": "Second Row",
-      "minutes": 172,
-      "score": 1081
-    },
-    {
-      "name": "Luke Polselli",
-      "pos": "Stand Off",
-      "minutes": 170,
-      "score": 703
-    },
-    {
-      "name": "Kallum Watkins",
-      "pos": "Second Row",
-      "minutes": 168,
-      "score": 1064
-    },
-    {
-      "name": "Rhyse Martin",
-      "pos": "Second Row",
-      "minutes": 167,
-      "score": 1069
-    },
-    {
-      "name": "Nikau Williams",
-      "pos": "Stand Off",
-      "minutes": 167,
-      "score": 649
-    },
-    {
-      "name": "Josh Rourke",
-      "pos": "Full Back",
-      "minutes": 166,
-      "score": 541
-    },
-    {
-      "name": "Oliver Partington",
-      "pos": "Loose Forward",
-      "minutes": 165,
-      "score": 1094
-    },
-    {
-      "name": "Zac Lipowicz",
-      "pos": "Second Row",
-      "minutes": 162,
-      "score": 1123
-    },
-    {
-      "name": "Jacob Alick-Wiencke",
-      "pos": "Second Row",
-      "minutes": 152,
-      "score": 1047
-    },
-    {
-      "name": "Joe Cator",
-      "pos": "Loose Forward",
-      "minutes": 150,
-      "score": 826
-    },
-    {
-      "name": "Jackson Hastings",
-      "pos": "Scrum Half",
-      "minutes": 149,
-      "score": 1036
-    },
-    {
-      "name": "George Flanagan",
-      "pos": "Full Back",
-      "minutes": 148,
-      "score": 622
-    },
-    {
-      "name": "Keenan Palasia",
-      "pos": "Loose Forward",
-      "minutes": 147,
-      "score": 615
-    },
-    {
-      "name": "Leo Darrelatour",
-      "pos": "Winger",
-      "minutes": 143,
-      "score": 533
-    },
-    {
-      "name": "Louis Brogan",
-      "pos": "Prop",
-      "minutes": 141,
-      "score": 719
-    },
-    {
-      "name": "Liam Byrne",
-      "pos": "Prop",
-      "minutes": 139,
-      "score": 764
-    },
-    {
-      "name": "Tyler Dupree",
-      "pos": "Prop",
-      "minutes": 139,
-      "score": 824
-    },
-    {
-      "name": "Guillermo Aispuro-Bichet",
-      "pos": "Full Back",
-      "minutes": 135,
-      "score": 647
-    },
-    {
-      "name": "Tiaki Chan",
-      "pos": "Prop",
-      "minutes": 133,
-      "score": 674
-    },
-    {
-      "name": "Josh Allen",
-      "pos": "Prop",
-      "minutes": 130,
-      "score": 933
-    },
-    {
-      "name": "Toafofoa Sipley",
-      "pos": "Prop",
-      "minutes": 130,
-      "score": 736
-    },
-    {
-      "name": "Owen Dagnall",
-      "pos": "Centre",
-      "minutes": 129,
-      "score": 448
-    },
-    {
-      "name": "Nene Macdonald",
-      "pos": "Centre",
-      "minutes": 128,
-      "score": 415
-    },
-    {
-      "name": "Tristan Powell",
-      "pos": "Prop",
-      "minutes": 125,
-      "score": 979
-    },
-    {
-      "name": "Romeo Tropis",
-      "pos": "Centre",
-      "minutes": 125,
-      "score": 559
-    },
-    {
-      "name": "Romain Navarrete",
-      "pos": "Prop",
-      "minutes": 122,
-      "score": 640
-    },
-    {
-      "name": "Chris Patolo",
-      "pos": "Prop",
-      "minutes": 122,
-      "score": 719
-    },
-    {
-      "name": "Jack Hughes",
-      "pos": "Second Row",
-      "minutes": 121,
-      "score": 692
-    },
-    {
-      "name": "Mikaele Ravalawa",
-      "pos": "Winger",
-      "minutes": 121,
-      "score": 361
-    },
-    {
-      "name": "Jacob Douglas",
-      "pos": "Winger",
-      "minutes": 118,
-      "score": 373
-    },
-    {
-      "name": "Jayden Myers",
-      "pos": "Winger",
-      "minutes": 117,
-      "score": 411
-    },
-    {
-      "name": "Louis Senior",
-      "pos": "Winger",
-      "minutes": 117,
-      "score": 334
-    },
-    {
-      "name": "Bailey Hodgson",
-      "pos": "Full Back",
-      "minutes": 115,
-      "score": 340
-    },
-    {
-      "name": "Chris Atkin",
-      "pos": "Scrum Half",
-      "minutes": 111,
-      "score": 883
-    },
-    {
-      "name": "Shane Wright",
-      "pos": "Second Row",
-      "minutes": 111,
-      "score": 1020
-    },
-    {
-      "name": "Jonathan Bennison",
-      "pos": "Winger",
-      "minutes": 107,
-      "score": 462
-    },
-    {
-      "name": "Lachlan Walmsley",
-      "pos": "Winger",
-      "minutes": 105,
-      "score": 325
-    },
-    {
-      "name": "Luke Hooley",
-      "pos": "Full Back",
-      "minutes": 102,
-      "score": 520
-    },
-    {
-      "name": "Kruise Leeming",
-      "pos": "Hooker",
-      "minutes": 102,
-      "score": 1007
-    },
-    {
-      "name": "Rob Butler",
-      "pos": "Prop",
-      "minutes": 100,
-      "score": 515
-    },
-    {
-      "name": "Mathieu Cozza",
-      "pos": "Loose Forward",
-      "minutes": 99,
-      "score": 735
-    },
-    {
-      "name": "Asher O'Donnell",
-      "pos": "Second Row",
-      "minutes": 96,
-      "score": 713
-    },
-    {
-      "name": "Jake Davies",
-      "pos": "Loose Forward",
-      "minutes": 95,
-      "score": 559
-    },
-    {
-      "name": "Tray Lolesio",
-      "pos": "Prop",
-      "minutes": 95,
-      "score": 470
-    },
-    {
-      "name": "George Hirst",
-      "pos": "Second Row",
-      "minutes": 91,
-      "score": 617
-    },
-    {
-      "name": "Jacob Host",
-      "pos": "Second Row",
-      "minutes": 91,
-      "score": 495
-    },
-    {
-      "name": "Tuimoala Lolohea",
-      "pos": "Stand Off",
-      "minutes": 90,
-      "score": 943
-    },
-    {
-      "name": "Lee Kershaw",
-      "pos": "Winger",
-      "minutes": 88,
-      "score": 190
-    },
-    {
-      "name": "Luke Thomas",
-      "pos": "Prop",
-      "minutes": 86,
-      "score": 486
-    },
-    {
-      "name": "Ewan Irwin",
-      "pos": "Scrum Half",
-      "minutes": 85,
-      "score": 827
-    },
-    {
-      "name": "Kieran Buchanan",
-      "pos": "Centre",
-      "minutes": 84,
-      "score": 362
-    },
-    {
-      "name": "Danny Levi",
-      "pos": "Hooker",
-      "minutes": 84,
-      "score": 722
-    },
-    {
-      "name": "Thomas Burgess",
-      "pos": "Prop",
-      "minutes": 82,
-      "score": 354
-    },
-    {
-      "name": "Noah Hodkinson",
-      "pos": "Full Back",
-      "minutes": 81,
-      "score": 494
-    },
-    {
-      "name": "Presley Cassell",
-      "pos": "Loose Forward",
-      "minutes": 80,
-      "score": 411
-    },
-    {
-      "name": "Adam Cook",
-      "pos": "Scrum Half",
-      "minutes": 80,
-      "score": 1337
-    },
-    {
-      "name": "Sam Luckley",
-      "pos": "Prop",
-      "minutes": 80,
-      "score": 577
-    },
-    {
-      "name": "Jack Sinfield",
-      "pos": "Stand Off",
-      "minutes": 80,
-      "score": 680
-    },
-    {
-      "name": "Will Tate",
-      "pos": "Winger",
-      "minutes": 74,
-      "score": 325
-    },
-    {
-      "name": "Joe Shorrocks",
-      "pos": "Loose Forward",
-      "minutes": 70,
-      "score": 1022
-    },
-    {
-      "name": "Yusuf Aydin",
-      "pos": "Prop",
-      "minutes": 69,
-      "score": 434
-    },
-    {
-      "name": "Sam Hall",
-      "pos": "Prop",
-      "minutes": 69,
-      "score": 570
-    },
-    {
-      "name": "Guy Armitage",
-      "pos": "Winger",
-      "minutes": 68,
-      "score": 272
-    },
-    {
-      "name": "Matt Davis",
-      "pos": "Loose Forward",
-      "minutes": 68,
-      "score": 415
-    },
-    {
-      "name": "Liam Horne",
-      "pos": "Hooker",
-      "minutes": 67,
-      "score": 747
-    },
-    {
-      "name": "Henry O'Kane",
-      "pos": "Second Row",
-      "minutes": 67,
-      "score": 646
-    },
-    {
-      "name": "Kyle Feldt",
-      "pos": "Winger",
-      "minutes": 64,
-      "score": 291
-    },
-    {
-      "name": "Jordy Crowther",
-      "pos": "Prop",
-      "minutes": 61,
-      "score": 480
-    },
-    {
-      "name": "Jeremiah Mata'utia",
-      "pos": "Prop",
-      "minutes": 60,
-      "score": 251
-    },
-    {
-      "name": "Leon Hayes",
-      "pos": "Scrum Half",
-      "minutes": 58,
-      "score": 611
-    },
-    {
-      "name": "AJ Wallace",
-      "pos": "Second Row",
-      "minutes": 58,
-      "score": 347
-    },
-    {
-      "name": "Brock Greacen",
-      "pos": "Prop",
-      "minutes": 56,
-      "score": 346
-    },
-    {
-      "name": "Will Gardiner",
-      "pos": "Prop",
-      "minutes": 55,
-      "score": 426
-    },
-    {
-      "name": "Matthieu Laguerre",
-      "pos": "Centre",
-      "minutes": 53,
-      "score": 398
-    },
-    {
-      "name": "Franck Maria",
-      "pos": "Prop",
-      "minutes": 49,
-      "score": 414
-    },
-    {
-      "name": "Kian McDermott",
-      "pos": "Prop",
-      "minutes": 49,
-      "score": 409
-    },
-    {
-      "name": "AJ Towse",
-      "pos": "Winger",
-      "minutes": 48,
-      "score": 165
-    },
-    {
-      "name": "Andrew Badrock",
-      "pos": "Second Row",
-      "minutes": 47,
-      "score": 191
-    },
-    {
-      "name": "Iszac Fa'asuamaleaui",
-      "pos": "Prop",
-      "minutes": 46,
-      "score": 294
-    },
-    {
-      "name": "Eliot Peposhi",
-      "pos": "Loose Forward",
-      "minutes": 46,
-      "score": 447
-    },
-    {
-      "name": "Taylor Kerr",
-      "pos": "Loose Forward",
-      "minutes": 45,
-      "score": 402
-    },
-    {
-      "name": "Noah Stephens",
-      "pos": "Prop",
-      "minutes": 45,
-      "score": 289
-    },
-    {
-      "name": "Clement Martin",
-      "pos": "Winger",
-      "minutes": 44,
-      "score": 174
-    },
-    {
-      "name": "Hugo Salabio",
-      "pos": "Prop",
-      "minutes": 43,
-      "score": 228
-    },
-    {
-      "name": "Harvey Smith",
-      "pos": "Hooker",
-      "minutes": 43,
-      "score": 492
-    },
-    {
-      "name": "Jamie Gill",
-      "pos": "Prop",
-      "minutes": 42,
-      "score": 296
-    },
-    {
-      "name": "Connor Bailey",
-      "pos": "Second Row",
-      "minutes": 41,
-      "score": 379
-    },
-    {
-      "name": "Noah Booth",
-      "pos": "Winger",
-      "minutes": 38,
-      "score": 125
-    },
-    {
-      "name": "Alfie Edgell",
-      "pos": "Full Back",
-      "minutes": 38,
-      "score": 103
-    },
-    {
-      "name": "Arron Lindop",
-      "pos": "Centre",
-      "minutes": 38,
-      "score": 159
-    },
-    {
-      "name": "Oliver Russell",
-      "pos": "Scrum Half",
-      "minutes": 37,
-      "score": 482
-    },
-    {
-      "name": "Alexis Lis",
-      "pos": "Prop",
-      "minutes": 36,
-      "score": 209
-    },
-    {
-      "name": "Harvey Wilson",
-      "pos": "Loose Forward",
-      "minutes": 36,
-      "score": 399
-    },
-    {
-      "name": "Jenson Windley",
-      "pos": "Scrum Half",
-      "minutes": 34,
-      "score": 118
-    },
-    {
-      "name": "Bill Leyland",
-      "pos": "Hooker",
-      "minutes": 30,
-      "score": 371
-    },
-    {
-      "name": "Brad Fash",
-      "pos": "Prop",
-      "minutes": 27,
-      "score": 279
-    },
     {
       "name": "Lloyd Kemp",
       "pos": "Full Back",
       "minutes": 27,
       "score": 154
-    },
-    {
-      "name": "Jack Ashworth",
-      "pos": "Prop",
-      "minutes": 26,
-      "score": 233
-    },
-    {
-      "name": "Connor Carr",
-      "pos": "Centre",
-      "minutes": 26,
-      "score": 43
-    },
-    {
-      "name": "Leon Ruan",
-      "pos": "Second Row",
-      "minutes": 26,
-      "score": 254
     },
     {
       "name": "Joshua Simm",
@@ -703,40 +19,10 @@
       "score": 91
     },
     {
-      "name": "Lenny Marc",
-      "pos": "Centre",
-      "minutes": 25,
-      "score": 117
-    },
-    {
-      "name": "Kieran Rush",
-      "pos": "Scrum Half",
-      "minutes": 25,
-      "score": 334
-    },
-    {
-      "name": "Ellis Gillam",
-      "pos": "Second Row",
-      "minutes": 24,
-      "score": 119
-    },
-    {
-      "name": "Jack Billington",
-      "pos": "Prop",
-      "minutes": 23,
-      "score": 126
-    },
-    {
       "name": "Ryan Brown",
       "pos": "Prop",
       "minutes": 21,
       "score": 105
-    },
-    {
-      "name": "Lennon Clark",
-      "pos": "Second Row",
-      "minutes": 21,
-      "score": 150
     },
     {
       "name": "Matthew Foster",
@@ -745,76 +31,10 @@
       "score": 167
     },
     {
-      "name": "Joe Bretherton",
-      "pos": "Prop",
-      "minutes": 20,
-      "score": 159
-    },
-    {
-      "name": "Liam Knight",
-      "pos": "Prop",
-      "minutes": 20,
-      "score": 128
-    },
-    {
-      "name": "Brandon Douglas",
-      "pos": "Prop",
-      "minutes": 19,
-      "score": 147
-    },
-    {
-      "name": "Ben Littlewood",
-      "pos": "Second Row",
-      "minutes": 19,
-      "score": 117
-    },
-    {
-      "name": "Will Dagger",
-      "pos": "Full Back",
-      "minutes": 17,
-      "score": 40
-    },
-    {
-      "name": "Matty Laidlaw",
-      "pos": "Prop",
-      "minutes": 17,
-      "score": 111
-    },
-    {
-      "name": "Nathan Lowe",
-      "pos": "Centre",
-      "minutes": 17,
-      "score": 43
-    },
-    {
       "name": "George O'Loughlin",
       "pos": "Centre",
       "minutes": 16,
       "score": 72
-    },
-    {
-      "name": "Louix Gorman",
-      "pos": "Centre",
-      "minutes": 15,
-      "score": 52
-    },
-    {
-      "name": "Kieran Hudson",
-      "pos": "Prop",
-      "minutes": 15,
-      "score": 49
-    },
-    {
-      "name": "Dayon Sambou",
-      "pos": "Winger",
-      "minutes": 15,
-      "score": 47
-    },
-    {
-      "name": "Hugo Garrigues",
-      "pos": "Hooker",
-      "minutes": 12,
-      "score": 89
     },
     {
       "name": "Mathieu Pons",
@@ -833,36 +53,6 @@
       "pos": "Second Row",
       "minutes": 11,
       "score": 107
-    },
-    {
-      "name": "Ugo Tison",
-      "pos": "Hooker",
-      "minutes": 11,
-      "score": 231
-    },
-    {
-      "name": "Giovanni Descalzi",
-      "pos": "Prop",
-      "minutes": 10,
-      "score": 77
-    },
-    {
-      "name": "Joe Keyes",
-      "pos": "Scrum Half",
-      "minutes": 10,
-      "score": 74
-    },
-    {
-      "name": "Ned McCormack",
-      "pos": "Centre",
-      "minutes": 10,
-      "score": 58
-    },
-    {
-      "name": "Jake Thewlis",
-      "pos": "Winger",
-      "minutes": 10,
-      "score": 37
     },
     {
       "name": "Callum Kemp",
@@ -889,12 +79,6 @@
       "score": 37
     },
     {
-      "name": "Tom Forber",
-      "pos": "Hooker",
-      "minutes": 7,
-      "score": 173
-    },
-    {
       "name": "Will Hutchinson",
       "pos": "Hooker",
       "minutes": 7,
@@ -907,40 +91,10 @@
       "score": 113
     },
     {
-      "name": "Pierre-Jean Lima",
-      "pos": "Second Row",
-      "minutes": 7,
-      "score": 66
-    },
-    {
-      "name": "Tom Nicholson-Watton",
-      "pos": "Prop",
-      "minutes": 7,
-      "score": 69
-    },
-    {
-      "name": "Agnatius Paasi",
-      "pos": "Prop",
-      "minutes": 6,
-      "score": 70
-    },
-    {
-      "name": "Fletcher Rooney",
-      "pos": "Full Back",
-      "minutes": 6,
-      "score": 25
-    },
-    {
       "name": "Alfie Sinclair",
       "pos": "Prop",
       "minutes": 6,
       "score": 60
-    },
-    {
-      "name": "Archie Sykes",
-      "pos": "Second Row",
-      "minutes": 6,
-      "score": 21
     },
     {
       "name": "Finlay Yeomans",
@@ -949,46 +103,10 @@
       "score": 25
     },
     {
-      "name": "Harvey Horne",
-      "pos": "Winger",
-      "minutes": 5,
-      "score": 8
-    },
-    {
-      "name": "Baptiste Rodriguez",
-      "pos": "Hooker",
-      "minutes": 5,
-      "score": 47
-    },
-    {
-      "name": "Jake Burns",
-      "pos": "Hooker",
-      "minutes": 4,
-      "score": 125
-    },
-    {
       "name": "Ben Johnson",
       "pos": "Centre",
       "minutes": 4,
       "score": 12
-    },
-    {
-      "name": "Jack Charles",
-      "pos": "Scrum Half",
-      "minutes": 3,
-      "score": 62
-    },
-    {
-      "name": "Myles Lawford",
-      "pos": "Scrum Half",
-      "minutes": 2,
-      "score": 44
-    },
-    {
-      "name": "Alfie Leake",
-      "pos": "Prop",
-      "minutes": 2,
-      "score": 45
     },
     {
       "name": "Finn McMillan",
@@ -997,22 +115,10 @@
       "score": 25
     },
     {
-      "name": "Brad Singleton",
-      "pos": "Prop",
-      "minutes": 2,
-      "score": 17
-    },
-    {
       "name": "Aiden Doolan",
       "pos": "Hooker",
       "minutes": 1,
       "score": 51
-    },
-    {
-      "name": "Zach Fishwick",
-      "pos": "Prop",
-      "minutes": 1,
-      "score": 19
     },
     {
       "name": "Declan Murphy",
@@ -1027,87 +133,38 @@
       "score": 38
     }
   ],
-  "fantasyHighMinutesMissing": [
-    {
-      "name": "Lachlan Miller",
-      "pos": "Full Back",
-      "minutes": 365,
-      "score": 1191
-    },
-    {
-      "name": "Innes Senior",
-      "pos": "Winger",
-      "minutes": 348,
-      "score": 1008
-    },
-    {
-      "name": "Jack Broadbent",
-      "pos": "Centre",
-      "minutes": 345,
-      "score": 878
-    },
-    {
-      "name": "Caleb Uele",
-      "pos": "Prop",
-      "minutes": 289,
-      "score": 1456
-    },
-    {
-      "name": "Phoenix Laulu-Togaga'e",
-      "pos": "Full Back",
-      "minutes": 287,
-      "score": 967
-    },
-    {
-      "name": "Logan Moy",
-      "pos": "Full Back",
-      "minutes": 278,
-      "score": 763
-    },
-    {
-      "name": "Josh Charnley",
-      "pos": "Winger",
-      "minutes": 235,
-      "score": 915
-    },
-    {
-      "name": "Ryan Hall",
-      "pos": "Winger",
-      "minutes": 228,
-      "score": 643
-    },
-    {
-      "name": "Oliver Ashall-Bott",
-      "pos": "Full Back",
-      "minutes": 216,
-      "score": 963
-    },
-    {
-      "name": "Josh Smith",
-      "pos": "Centre",
-      "minutes": 207,
-      "score": 752
-    },
-    {
-      "name": "Chris Hankinson",
-      "pos": "Winger",
-      "minutes": 203,
-      "score": 1085
-    }
+  "fantasyHighMinutesMissing": [],
+  "intentionalAcademyDepthMissing": [
+    "Lloyd Kemp",
+    "Joshua Simm",
+    "Ryan Brown",
+    "Matthew Foster",
+    "George O'Loughlin",
+    "Mathieu Pons",
+    "Will Roberts",
+    "Lukas Mason",
+    "Callum Kemp",
+    "Frankie Dearlove",
+    "Thomas Doyle",
+    "Will Brough",
+    "Will Hutchinson",
+    "Will Kirby",
+    "Alfie Sinclair",
+    "Finlay Yeomans",
+    "Ben Johnson",
+    "Finn McMillan",
+    "Aiden Doolan",
+    "Declan Murphy",
+    "Tom Whitehead"
   ],
   "currentSlNotInFantasy": [
     "Catalans Dragons: Bayley Sironen (catalans-cur-bayley-sironen)",
     "Catalans Dragons: Paul Séguier (catalans-cur-paul-seguier)",
-    "Huddersfield Giants: George Flanagan Jr (huddersfield-cur-george-flanagan-jr)",
-    "Huddersfield Giants: Tui Lolohea (huddersfield-cur-tui-lolohea)",
-    "Leeds Rhinos: Lachie Miller (leeds-cur-lachie-miller)",
     "Leeds Rhinos: Morgan Gannon (leeds-cur-morgan-gannon)",
     "Leigh Leopards: Kai O'Donnell (leigh-cur-kai-o-donnell)",
     "St Helens: Morgan Knowles (st-helens-cur-morgan-knowles)",
     "Toulouse Olympique: Eloi Pelissier (toulouse-cur-eloi-pelissier)",
     "Toulouse Olympique: John Toleafoa (toulouse-cur-john-toleafoa)",
-    "Toulouse Olympique: Olly Ashall-Bott (toulouse-cur-olly-ashall-bott)",
-    "Wakefield Trinity: Caleb Hamlin-Uele (wakefield-cur-caleb-hamlin-uele)",
     "Warrington Wolves: Matty Nicholson (warrington-cur-matty-nicholson)"
   ]
 }

@@ -8,6 +8,7 @@ import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { setNormalEraVariant } from "@/lib/storage/preferences";
 import { playModeClassicStart, playUiClick } from "@/lib/sound";
 import { TYPO } from "@/lib/ui/typography";
+import { SPACING } from "@/lib/ui/design-system";
 
 export function HomeModeSelector() {
   return (
@@ -91,10 +92,10 @@ function HomePlayChoice({
 
   return (
     <MobileSection
-      className={`home-play-card flex min-h-0 flex-col items-center overflow-hidden p-4 text-center sm:p-6 ${accentClass}`}
+      className={`home-play-card flex min-h-0 flex-col items-center overflow-hidden text-center ${SPACING.cardPaddingMobile} ${accentClass}`}
     >
       <p
-        className={`text-[11px] font-semibold uppercase tracking-[0.16em] ${
+        className={`${TYPO.eyebrow} ${
           variant === "era" ? "text-accent-gold" : "text-theme-primary"
         }`}
       >

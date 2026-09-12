@@ -1,5 +1,5 @@
 {
-  "historicCards": 2968,
+  "historicCards": 3032,
   "legends": 18,
   "orphans": {
     "mos": [],
@@ -11,12 +11,12 @@
     "lanceTodd": []
   },
   "coverage": {
-    "cc": 446,
-    "any": 881,
+    "cc": 476,
+    "any": 953,
     "sl": 448,
-    "dream": 287,
+    "dream": 286,
     "lls": 181,
-    "lt": 98,
+    "lt": 145,
     "mos": 30,
     "gb": 2
   },
@@ -30,28 +30,8 @@
   },
   "yearCardInheritanceGaps": [],
   "nameCollisionRisks": [],
-  "unmatchedKnownWinnersInDb": {
-    "lanceTodd": [
-      "Rob Burrow",
-      "Tommy Makinson"
-    ],
-    "manOfSteel": [
-      "Ben Flower"
-    ]
-  },
+  "unmatchedKnownWinnersInDb": {},
+  "lanceToddResolvedViaYearCards": [],
   "unmatchedLanceStillInDb": [],
-  "suspiciousDreamYearDistance": [
-    {
-      "id": "leeds-hist-wayne-mcdonald",
-      "name": "Wayne Mcdonald",
-      "cardYear": 1993,
-      "dreamYear": 2024
-    },
-    {
-      "id": "hull-fc-hist-andy-ireland",
-      "name": "Andy Ireland",
-      "cardYear": 1989,
-      "dreamYear": 2025
-    }
-  ]
+  "suspiciousDreamYearDistance": []
 }

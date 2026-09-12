@@ -29,7 +29,7 @@ import { BracketMobileRoundNav } from "./BracketMobileRoundNav";
 import { GameButton } from "./ui/GameButton";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
-import { MOBILE } from "@/lib/ui/design-system";
+import { MOBILE, SPACING } from "@/lib/ui/design-system";
 import {
   PLAYOFF_ROUND_SHORT,
   PlayoffBracketDesktop,
@@ -205,7 +205,7 @@ export function PlayoffBracket({
           tournamentComplete={state.tournamentComplete}
         />
 
-        <div className="playoff-bracket-panel mx-auto mt-2 w-full max-w-[var(--layout-page-compact)] p-1.5 sm:mt-5 sm:p-4 md:mt-6 md:p-5">
+        <div className={`playoff-bracket-panel mx-auto mt-2 w-full max-w-[var(--layout-page-compact)] sm:mt-5 md:mt-6 ${SPACING.cardPaddingSm}`}>
         <div className="mx-auto w-full">
           <BracketMobileRoundNav
             rounds={ROUNDS}

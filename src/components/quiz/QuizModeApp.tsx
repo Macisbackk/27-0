@@ -8,7 +8,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { GameModal } from "@/components/ui/GameModal";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
 import { MiniGameEndActions } from "@/components/mini-games/MiniGameShell";
-import { PAGE } from "@/lib/ui/design-system";
+import { PAGE, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { formatClubFundsExact } from "@/lib/club-funds";
 import { triggerQuizAchievements } from "@/lib/achievements/achievementTriggers";
@@ -327,29 +327,25 @@ function QuizLanding({
       <p className={TYPO.sectionLabel}>Quiz</p>
       <h1 className={`mt-2 ${TYPO.pageTitle}`}>Choose your quiz</h1>
 
-      <div className="mt-8 grid gap-3">
+      <div className={`${SPACING.sectionGap} grid gap-3`}>
         <button
           type="button"
           onClick={onMillionaire}
-          className="w-full border border-theme-primary/40 bg-[#0c1210] px-4 py-4 text-center"
+          className={`w-full border border-theme-primary/40 bg-[#0c1210] text-center ${SPACING.cardPaddingSm}`}
         >
-          <p
-            className={`font-display text-base font-bold uppercase tracking-wide sm:text-lg text-theme-primary`}
-          >
+          <p className={`${TYPO.modeCardTitle} text-theme-primary`}>
             Normal Quiz
           </p>
           <p className={`mt-1 ${TYPO.bodySm}`}>
-            Super League Millionaire — 15 questions to £100,000.
+            Super League Millionaire — 15 questions to £1,000,000.
           </p>
         </button>
         <button
           type="button"
           onClick={onTeam}
-          className="w-full border border-accent-gold/40 bg-[#0c1210] px-4 py-4 text-center"
+          className={`w-full border border-accent-gold/40 bg-[#0c1210] text-center ${SPACING.cardPaddingSm}`}
         >
-          <p
-            className={`font-display text-base font-bold uppercase tracking-wide sm:text-lg text-accent-gold`}
-          >
+          <p className={`${TYPO.modeCardTitle} text-accent-gold`}>
             Team Challenge
           </p>
           <p className={`mt-1 ${TYPO.bodySm}`}>
@@ -504,9 +500,9 @@ function QuizPlayScreen({
         {isFinal ? (
           <div className="quiz-final-banner mt-4">
             <p className={TYPO.keyLabel}>Final question</p>
-            <p className="quiz-prize mt-1 text-3xl">£100,000</p>
+            <p className={`quiz-prize mt-1 text-3xl ${TYPO.prizeDisplay}`}>£1,000,000</p>
             <p className={`mt-1 ${TYPO.meta}`}>
-              15 of 15 — one question from £100,000
+              15 of 15 — one question from £1,000,000
             </p>
           </div>
         ) : (
@@ -514,7 +510,7 @@ function QuizPlayScreen({
             <p className={`text-center ${TYPO.keyLabel}`}>
               Question {questionNumber} of 15
             </p>
-            <p className="quiz-prize mt-1 text-center text-3xl sm:text-4xl">
+            <p className={`quiz-prize mt-1 text-center text-3xl sm:text-4xl ${TYPO.prizeDisplay}`}>
               {formatClubFundsExact(getPrizeForQuestionNumber(questionNumber))}
             </p>
             <details className="mt-3 lg:hidden">
@@ -682,15 +678,17 @@ function QuizResultScreen({
       <h1 className={`mt-2 ${TYPO.pageTitle}`}>{title}</h1>
       {run.phase === "quiz_complete" ? (
         <p className={`mt-3 ${TYPO.pageSubtitle}`}>
-          You answered all 15 questions correctly — top Quiz payout.
+          You answered all 15 questions correctly — Super League Millionaire payout.
         </p>
       ) : (
         <p className={`mt-3 ${TYPO.pageSubtitle}`}>
           You reached Question {run.questionIndex + 1}
         </p>
       )}
-      <p className="quiz-prize mt-4 text-4xl">
-        {formatClubFundsExact(run.rewardAmount)}
+      <p className={`quiz-prize mt-4 text-4xl ${TYPO.prizeDisplay}`}>
+        {run.phase === "quiz_complete"
+          ? "£1,000,000"
+          : formatClubFundsExact(run.rewardAmount)}
       </p>
       {run.phase === "quiz_walked_away" && (
         <p className={`mt-2 ${TYPO.body}`}>You banked {formatClubFundsExact(run.rewardAmount)}.</p>

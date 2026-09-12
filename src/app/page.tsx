@@ -7,7 +7,8 @@ import { HowToPlaySection } from "@/components/HowToPlaySection";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
 import { LogoMark } from "@/components/LogoMark";
 import { PageShell } from "@/components/ui/PageShell";
-import { LINK, PAGE } from "@/lib/ui/design-system";
+import { LINK, PAGE, SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 import { GAME_VERSION } from "../../data/version";
 
 export default function HomePage() {
@@ -16,13 +17,13 @@ export default function HomePage() {
       <section className={`${PAGE.sectionHero} text-center`}>
         <div className="mx-auto flex max-w-xl flex-col items-center gap-2">
           <LogoMark size="lg" className="items-center justify-center" />
-          <p className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-pitch-300 sm:text-xs">
+          <p className={`${TYPO.meta} uppercase tracking-[0.18em]`}>
             {GAME_VERSION}
           </p>
         </div>
 
         <h1 className="sr-only">27-0</h1>
-        <p className="mx-auto mt-3 max-w-lg text-sm leading-snug text-gray-300 sm:mt-4 sm:text-base sm:leading-relaxed">
+        <p className={`mx-auto mt-3 max-w-lg sm:mt-4 ${TYPO.pageSubtitle}`}>
           Build a Super League side and chase the perfect season.
         </p>
       </section>
@@ -31,20 +32,20 @@ export default function HomePage() {
         <EmailConfirmedBanner />
       </Suspense>
 
-      <div className="mt-4 sm:mt-5">
+      <div className={SPACING.sectionGap}>
         <HomeAuthBar />
       </div>
 
-      <div id="play-modes" className="mt-5 scroll-mt-8 sm:mt-7">
+      <div id="play-modes" className={`scroll-mt-8 ${SPACING.sectionGap}`}>
         <HomeModeSelector />
       </div>
 
-      <div className="mt-6 sm:mt-8">
+      <div className={SPACING.sectionGap}>
         <HowToPlaySection />
       </div>
 
       <nav
-        className="mx-auto mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-x-5 gap-y-3 border-t border-[var(--mobile-divider)] pt-4 text-center sm:mt-8 sm:pt-5"
+        className={`mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-x-5 gap-y-3 border-t border-[var(--mobile-divider)] pt-4 text-center sm:pt-5 ${SPACING.sectionGap}`}
         aria-label="More"
       >
         <Link href="/leaderboard" className={LINK.subtle}>

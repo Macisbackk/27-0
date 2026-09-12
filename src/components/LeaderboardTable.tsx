@@ -38,6 +38,7 @@ import { GamePanel } from "@/components/ui/GamePanel";
 import { GameEmptyState } from "@/components/ui/GameEmptyState";
 import { GameButton } from "@/components/ui/GameButton";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
+import { TYPO } from "@/lib/ui/typography";
 import { useAuth } from "@/lib/auth-context";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 
@@ -473,13 +474,13 @@ export function LeaderboardTable() {
               >
                 <div className="flex min-w-0 items-center gap-3">
                   <span
-                    className={`shrink-0 font-bold tabular-nums ${
+                    className={`shrink-0 font-display font-bold tabular-nums ${
                       entry.rank <= 3 ? "text-accent-gold" : "text-gray-400"
                     }`}
                   >
                     {entry.rank}
                   </span>
-                  <span className="truncate font-medium">{entry.username}</span>
+                  <span className={`truncate ${TYPO.identityLine}`}>{entry.username}</span>
                 </div>
                 <div className="shrink-0 text-right font-semibold text-accent-gold">
                   {renderLeaderboardStat(entry, effectiveTracker)}
@@ -511,7 +512,7 @@ export function LeaderboardTable() {
                 >
                   <td className="px-4 py-3">
                     <span
-                      className={`font-bold ${
+                      className={`font-display font-bold tabular-nums ${
                         entry.rank <= 3 ? "text-accent-gold" : "text-gray-400"
                       }`}
                     >
@@ -519,7 +520,7 @@ export function LeaderboardTable() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="font-medium">{entry.username}</span>
+                    <span className={TYPO.identityLine}>{entry.username}</span>
                   </td>
                   <td className="px-4 py-3 font-semibold text-accent-gold">
                     {renderLeaderboardStat(entry, effectiveTracker)}

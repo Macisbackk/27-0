@@ -1,6 +1,7 @@
 "use client";
 
 import { TYPO } from "@/lib/ui/typography";
+import { MATCHDAY } from "@/lib/ui/design-system";
 
 interface MatchdayScoreboardProps {
   filledCount: number;
@@ -19,15 +20,15 @@ export function MatchdayScoreboard({
   const showRating = !hardMode && filledCount > 0;
 
   return (
-    <div className="matchday-scoreboard relative overflow-hidden border border-white/10 bg-[#080c0d] px-4 py-3 shadow-[0_14px_34px_rgba(0,0,0,0.28)]">
+    <div
+      className={`matchday-scoreboard relative overflow-hidden border border-white/10 bg-[#080c0d] shadow-[0_14px_34px_rgba(0,0,0,0.28)] ${MATCHDAY.cardPadding}`}
+    >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_42%)]" />
       <div className="relative flex flex-col items-center gap-3">
         <div className="flex w-full max-w-md flex-col items-center text-center">
           <div className="flex items-center justify-center gap-2">
             <span className="h-2 w-2 animate-pulse rounded-full bg-theme-primary" />
-            <p className="font-display text-sm font-black uppercase tracking-wider text-white sm:text-base">
-              Squad Builder
-            </p>
+            <p className={TYPO.sectionTitle}>Squad Builder</p>
           </div>
           <p className={`mt-1 ${TYPO.bodySm} uppercase tracking-wider`}>
             {filledCount} of {totalSlots} positions filled
@@ -52,7 +53,7 @@ export function MatchdayScoreboard({
         <div className="grid w-full max-w-md grid-cols-2 items-center justify-items-center gap-3">
           <div className="w-full text-center">
             <p className={TYPO.statLabel}>Squad</p>
-            <p className="font-display text-2xl font-black text-white">
+            <p className={TYPO.statValueLg}>
               {filledCount}
               <span className="text-base text-gray-500">/{totalSlots}</span>
             </p>
@@ -60,7 +61,7 @@ export function MatchdayScoreboard({
 
           <div className="scoreboard-value-panel w-full rounded-lg px-3 py-2 text-center">
             <p className={TYPO.keyLabel}>Your Rating</p>
-            <p className="font-display text-xl font-black text-white sm:text-2xl">
+            <p className={TYPO.statValueLg}>
               {showRating ? averageSquadRating.toFixed(1) : "—"}
             </p>
           </div>

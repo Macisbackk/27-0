@@ -285,7 +285,7 @@ export function SeasonReview({
               className="w-full min-w-0 text-center"
             >
               <p
-                className={`font-display text-[10px] font-semibold uppercase tracking-wider sm:text-xs sm:tracking-[0.3em] ${NORMAL.reviewAccent}`}
+                className={`${TYPO.eyebrow} ${NORMAL.reviewAccent}`}
               >
                 {reviewLabel}
               </p>
@@ -306,15 +306,14 @@ export function SeasonReview({
                   className="font-display text-2xl font-black uppercase tracking-tight sm:text-5xl"
                   style={{
                     color: gradeInfo.color,
-                    fontFamily: "var(--font-display)",
                   }}
                 >
                   {gradeInfo.grade} Grade
                 </p>
-                <p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-accent-gold sm:mt-2 sm:text-xs">
+                <p className={`mt-1 sm:mt-2 ${TYPO.eyebrow} text-accent-gold`}>
                   {getSeasonStoryHeading(mode)}
                 </p>
-                <p className="mt-1 text-sm font-semibold text-gray-300">
+                <p className={`mt-1 ${TYPO.body} font-semibold text-gray-300`}>
                   {gradeInfo.label}
                 </p>
                 <p className="mx-auto mt-2 hidden max-w-md text-sm leading-relaxed text-gray-500 sm:mt-3 sm:block">

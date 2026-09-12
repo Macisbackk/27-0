@@ -16,13 +16,13 @@
       "club": "Castleford Tigers",
       "slug": "castleford-tigers",
       "file": "castleford-tigers.json",
-      "count": 26
+      "count": 27
     },
     {
       "club": "Catalans Dragons",
       "slug": "catalans-dragons",
       "file": "catalans-dragons.json",
-      "count": 32
+      "count": 33
     },
     {
       "club": "Huddersfield Giants",
@@ -112,7 +112,7 @@
       "club": "Wigan Warriors",
       "slug": "wigan-warriors",
       "file": "wigan-warriors.json",
-      "count": 25
+      "count": 27
     },
     {
       "club": "Wynnum Manly Seagulls",

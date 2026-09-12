@@ -770,9 +770,6 @@
   "warrington-cur-matty-ashton": [
     2024
   ],
-  "leeds-hist-wayne-mcdonald": [
-    2024
-  ],
   "wigan-cur-liam-marshall": [
     2024,
     2025
@@ -818,12 +815,6 @@
     2025
   ],
   "leeds-cur-james-mcdonnell": [
-    2025
-  ],
-  "wakefield-hist-anthony-england": [
-    2025
-  ],
-  "hull-fc-hist-andy-ireland": [
     2025
   ],
   "leeds-hist-kruise-leeming-2021": [
@@ -1203,5 +1194,14 @@
   ],
   "sheffield-hist-dale-laughton-1998": [
     1998
+  ],
+  "st-helens-cur-nene-macdonald": [
+    2024
+  ],
+  "salford-hist-era-nene-macdonald": [
+    2024
+  ],
+  "st-helens-cur-morgan-knowles": [
+    2025
   ]
 }

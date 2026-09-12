@@ -35,9 +35,11 @@ const config: Config = {
         "mode-era": "rgb(var(--mode-era-rgb) / <alpha-value>)",
       },
       fontFamily: {
-        display: ["Arial Black", "Impact", "var(--font-display)", "sans-serif"],
+        /* Anton via --font-display; Arial Black only as paint fallback. */
+        display: ["var(--font-display)", "Arial Black", "Impact", "sans-serif"],
         body: ["var(--font-body)", "system-ui", "sans-serif"],
-        pitch: ["var(--font-pitch)", "Anton", "Arial Black", "Impact", "sans-serif"],
+        /* Alias — prefer font-display in new code. */
+        pitch: ["var(--font-display)", "Arial Black", "Impact", "sans-serif"],
       },
       animation: {
         "card-in": "cardIn 0.35s ease-out forwards",

@@ -6,7 +6,7 @@
 }
 
 .quiz-prize {
-  font-family: var(--font-pitch), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-display), sans-serif;
   color: var(--quiz-gold);
   letter-spacing: -0.03em;
 }

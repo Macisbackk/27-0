@@ -29,50 +29,31 @@ export const SeasonShareCard = forwardRef<HTMLDivElement, SeasonShareCardProps>(
         }}
       >
         <div>
-          <p
-            className="text-sm font-semibold uppercase tracking-[0.28em] text-theme-primary/90"
-            style={{ fontFamily: "system-ui, sans-serif" }}
-          >
+          <p className={`${TYPO.eyebrow} text-sm tracking-[0.28em] text-theme-primary/90`}>
             27-0
           </p>
-          <h2
-            className="mt-6 text-6xl font-black leading-tight tracking-tight"
-            style={{ fontFamily: "system-ui, sans-serif" }}
-          >
+          <h2 className={`mt-6 text-6xl leading-tight ${TYPO.pageTitle}`}>
             {data.title}
           </h2>
-          <p
-            className="mt-4 text-2xl text-white/70"
-            style={{ fontFamily: "system-ui, sans-serif" }}
-          >
+          <p className={`mt-4 text-2xl text-white/70 ${TYPO.pageSubtitle}`}>
             {data.subtitle}
           </p>
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-black/35 p-10">
-          <p
-            className="text-5xl font-bold tabular-nums tracking-tight"
-            style={{ fontFamily: "system-ui, sans-serif" }}
-          >
+          <p className={`text-5xl tracking-tight ${TYPO.statValueLg} tabular-nums`}>
             {data.recordLine}
           </p>
           <ul className="mt-8 space-y-4">
             {data.detailLines.map((line) => (
-              <li
-                key={line}
-                className="text-2xl text-white/80"
-                style={{ fontFamily: "system-ui, sans-serif" }}
-              >
+              <li key={line} className={`text-2xl text-white/80 ${TYPO.body}`}>
                 {line}
               </li>
             ))}
           </ul>
         </div>
 
-        <p
-          className={`text-xl text-white/50 ${TYPO.meta}`}
-          style={{ fontFamily: "system-ui, sans-serif" }}
-        >
+        <p className={`text-xl text-white/50 ${TYPO.meta}`}>
           {data.footer ?? "www.27-0.co.uk"}
         </p>
       </div>

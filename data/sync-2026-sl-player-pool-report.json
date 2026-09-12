@@ -1,33 +1,16 @@
 {
-  "generatedAt": "2026-09-11T21:57:11.518Z",
-  "currentSlPlayableBefore": 236,
-  "currentSlPlayableAfter": 250,
-  "championshipHidden": [
-    "barrow-cur-ellis-robson",
-    "london-cur-harry-aldous",
-    "london-cur-jack-campagnolo",
-    "london-cur-jacob-jones",
-    "london-cur-jeremiah-simbiken",
-    "london-cur-jimmy-meadows",
-    "london-cur-lewis-bienek",
-    "london-cur-oliver-leyland",
-    "london-cur-robbie-storey",
-    "london-cur-robert-butler",
-    "london-cur-sam-davis",
-    "midlands-cur-toby-warren",
-    "midlands-cur-zach-jebson",
-    "oldham-cur-jake-bibby",
-    "oldham-cur-jonty-gorley",
-    "sheffield-cur-joe-brown",
-    "sheffield-cur-jordan-lilley",
-    "sheffield-cur-kai-morgan",
-    "sheffield-cur-matty-marsh",
-    "widnes-cur-nathan-connell"
-  ],
-  "removedErroneous": [
-    "leigh-cur-darnell-mcintosh"
-  ],
+  "generatedAt": "2026-09-12T13:38:09.932Z",
+  "currentSlPlayableBefore": 376,
+  "currentSlPlayableAfter": 380,
+  "championshipHidden": [],
+  "removedErroneous": [],
   "added": [
+    "catalans-cur-romain-navarrete",
+    "wigan-cur-kian-mcdermott",
+    "castleford-cur-jenson-windley",
+    "wigan-cur-dayon-sambou"
+  ],
+  "updated": [
     "leigh-cur-josh-charnley",
     "leigh-cur-innes-senior",
     "hull-kr-cur-jack-broadbent",
@@ -44,50 +27,19 @@
     "leeds-cur-danny-levi",
     "leigh-cur-aj-towse"
   ],
-  "updated": [],
   "unresolved": [
     {
-      "name": "Logan Moy",
+      "name": "Kian McDermott",
       "field": "dateOfBirth/birthYear",
       "reason": "No verified DOB/birth year located yet"
     },
     {
-      "name": "Chris Hankinson",
+      "name": "Jenson Windley",
       "field": "dateOfBirth/birthYear",
       "reason": "No verified DOB/birth year located yet"
     },
     {
-      "name": "Phoenix Laulu-Togaga'e",
-      "field": "dateOfBirth/birthYear",
-      "reason": "No verified DOB/birth year located yet"
-    },
-    {
-      "name": "Josh Smith",
-      "field": "dateOfBirth/birthYear",
-      "reason": "No verified DOB/birth year located yet"
-    },
-    {
-      "name": "Kruise Leeming",
-      "field": "dateOfBirth/birthYear",
-      "reason": "No verified DOB/birth year located yet"
-    },
-    {
-      "name": "Joe Keyes",
-      "field": "dateOfBirth/birthYear",
-      "reason": "No verified DOB/birth year located yet"
-    },
-    {
-      "name": "Sam Hallas",
-      "field": "dateOfBirth/birthYear",
-      "reason": "No verified DOB/birth year located yet"
-    },
-    {
-      "name": "Danny Levi",
-      "field": "dateOfBirth/birthYear",
-      "reason": "No verified DOB/birth year located yet"
-    },
-    {
-      "name": "AJ Towse",
+      "name": "Dayon Sambou",
       "field": "dateOfBirth/birthYear",
       "reason": "No verified DOB/birth year located yet"
     }

@@ -7,6 +7,8 @@ import { getPlayoffRoundLabel, getPlayoffTeamDisplayInfo } from "@/lib/game/play
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { UI_COPY } from "@/lib/ui/copy";
+import { SPACING } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 
 export const PLAYOFF_ROUND_SHORT: Record<number, string> = {
   1: "EF",
@@ -113,18 +115,18 @@ export function PlayoffBracketHeader({
       : "Simulate matches to advance");
 
   return (
-    <div className="playoff-bracket-header scoreboard-panel overflow-hidden px-3 py-2.5 text-center sm:px-6 sm:py-6">
+    <div className={`playoff-bracket-header scoreboard-panel overflow-hidden text-center ${SPACING.cardPadding}`}>
       <div className="playoff-bracket-header__shine pointer-events-none" aria-hidden />
-      <p className="font-display text-[9px] font-bold uppercase tracking-[0.2em] text-theme-primary sm:text-xs sm:tracking-[0.4em]">
+      <p className={TYPO.eyebrow}>
         {eyebrow}
       </p>
-      <h2 className="mt-0.5 font-display text-lg font-black tracking-tight text-white sm:mt-2 sm:text-3xl">
+      <h2 className={`mt-0.5 sm:mt-2 ${TYPO.sectionTitle} text-lg sm:text-3xl`}>
         {tournamentComplete
           ? "Knockout Bracket"
           : getPlayoffRoundLabel(activeRound)}
       </h2>
       {resolvedSubtitle ? (
-        <p className="mt-1 hidden text-sm text-gray-400 sm:mt-2 sm:block">
+        <p className={`mt-1 hidden sm:mt-2 sm:block ${TYPO.bodySm}`}>
           {resolvedSubtitle}
         </p>
       ) : null}
@@ -146,10 +148,10 @@ export function PlayoffChampionBanner({ champion }: { champion: string }) {
       animate={{ opacity: 1, y: 0 }}
       className="playoff-champion-banner mb-5 px-4 py-4 text-center sm:px-5 sm:py-5"
     >
-      <p className="font-display text-[10px] font-bold uppercase tracking-[0.35em] text-accent-gold/80">
+      <p className={`${TYPO.eyebrow} text-accent-gold/80`}>
         Super League Champions
       </p>
-      <p className="mt-1 font-display text-lg font-black text-accent-gold sm:text-xl">
+      <p className={`mt-1 ${TYPO.sectionTitle} text-lg text-accent-gold sm:text-xl`}>
         {champion}
       </p>
     </motion.div>

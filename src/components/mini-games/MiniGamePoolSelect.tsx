@@ -1,6 +1,7 @@
 "use client";
 
 import { playUiClick } from "@/lib/sound";
+import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
   MINI_GAME_POOL_MODE_BLURB,
@@ -30,7 +31,7 @@ export function MiniGamePoolSelect({
   onSelect: (mode: MiniGamePoolMode) => void;
 }) {
   return (
-    <div className="mx-auto mt-6 w-full max-w-xl text-center">
+    <div className={`mx-auto w-full max-w-xl text-center ${SPACING.sectionGap}`}>
       <div className="grid gap-3">
         {MODES.map((mode) => (
           <button
@@ -40,10 +41,10 @@ export function MiniGamePoolSelect({
               playUiClick();
               onSelect(mode);
             }}
-            className={`w-full border bg-[#0c1210] px-4 py-4 text-center ${MODE_CARD_CLASS[mode]}`}
+            className={`w-full border bg-[#0c1210] text-center ${SPACING.cardPaddingSm} ${MODE_CARD_CLASS[mode]}`}
           >
             <p
-              className={`font-display text-base font-bold uppercase tracking-wide sm:text-lg ${MODE_TITLE_CLASS[mode]}`}
+              className={`${TYPO.modeCardTitle} ${MODE_TITLE_CLASS[mode]}`}
             >
               {MINI_GAME_POOL_MODE_LABEL[mode]}
             </p>

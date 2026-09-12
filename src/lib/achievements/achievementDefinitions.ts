@@ -312,7 +312,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-safe-1000",
     name: "Getting Started",
-    description: "Reach the £500 safe haven in Quiz Mode.",
+    description: "Reach the £1,000 safe haven in Quiz Mode.",
     category: "quiz",
     points: 20,
     rewardClubFunds: 10_000,
@@ -320,7 +320,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-safe-32000",
     name: "Halfway There",
-    description: "Reach the £12,000 safe haven in Quiz Mode.",
+    description: "Reach the £32,000 safe haven in Quiz Mode.",
     category: "quiz",
     points: 35,
     rewardClubFunds: 25_000,
@@ -328,19 +328,19 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-big-money",
     name: "Big Money",
-    description: "Reach £50,000 in a Quiz Mode run.",
+    description: "Reach £250,000 in a Quiz Mode run.",
     category: "quiz",
     points: 50,
     rewardClubFunds: 40_000,
   },
   {
     id: "quiz-millionaire",
-    name: "Quiz Champion",
+    name: "Millionaire",
     description:
-      "Answer all 15 Super League Millionaire questions correctly and bank £100,000.",
+      "Answer all 15 Super League Millionaire questions correctly and bank £1,000,000.",
     category: "quiz",
     points: 100,
-    rewardClubFunds: 50_000,
+    rewardClubFunds: 100_000,
   },
   {
     id: "quiz-no-help",
@@ -359,11 +359,11 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   },
   {
     id: "quiz-club-millionaire",
-    name: "Club Champion",
-    description: "Bank the top Team Challenge prize (£100,000).",
+    name: "Club Millionaire",
+    description: "Reach £1,000,000 in Team Challenge.",
     category: "quiz",
     points: 80,
-    rewardClubFunds: 40_000,
+    rewardClubFunds: 75_000,
   },
   {
     id: "quiz-super-league-expert",

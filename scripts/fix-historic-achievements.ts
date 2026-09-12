@@ -8,7 +8,7 @@
  *
  * Run: npx tsx scripts/fix-historic-achievements.ts
  */
-import { readFileSync, writeFileSync } from "fs";
+import { existsSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 
 const DATA = join(__dirname, "..", "data");
@@ -77,9 +77,76 @@ function main(): void {
   const cc = loadJson<Record<string, number[]>>("challenge-cup-years.json");
   let lanceTodd = loadJson<string[]>("lance-todd-winners.json");
 
+  // Verified Dream Team repairs (name-collision / bad surname matches).
+  // 2024 centre = Nene Macdonald (not Leeds historic Wayne Mcdonald).
+  // 2025 props = Mike McMeeken + Herman Ese'ese (not Andy Ireland / Anthony England).
+  const DREAM_REMOVE: Array<{ id: string; year: number }> = [
+    { id: "leeds-hist-wayne-mcdonald", year: 2024 },
+    { id: "hull-fc-hist-andy-ireland", year: 2025 },
+    { id: "wakefield-hist-anthony-england", year: 2025 },
+  ];
+  const DREAM_ENSURE: Array<{ id: string; year: number }> = [
+    { id: "st-helens-cur-nene-macdonald", year: 2024 },
+    { id: "salford-hist-era-nene-macdonald", year: 2024 },
+    { id: "wakefield-cur-mike-mcmeeken", year: 2025 },
+    { id: "wakefield-hist-mike-mcmeeken-2025", year: 2025 },
+    { id: "st-helens-cur-morgan-knowles", year: 2025 },
+    { id: "st-helens-hist-morgan-knowles", year: 2025 },
+    { id: "wigan-cur-jai-field", year: 2025 },
+  ];
+  let dreamRepairs = 0;
+  for (const { id, year } of DREAM_REMOVE) {
+    const years = dream[id];
+    if (!years?.includes(year)) continue;
+    dream[id] = years.filter((y) => y !== year);
+    if (dream[id]!.length === 0) delete dream[id];
+    dreamRepairs++;
+  }
+  for (const { id, year } of DREAM_ENSURE) {
+    if (!byId.has(id)) continue;
+    const before = (dream[id] ?? []).join(",");
+    mergeYears(dream, id, [year]);
+    if ((dream[id] ?? []).join(",") !== before) dreamRepairs++;
+  }
+
   const ltSet = new Set(lanceTodd);
   for (const id of EXTRA_LANCE_TODD) {
     if (byId.has(id)) ltSet.add(id);
+  }
+
+  // Drop Lance Todd IDs that don't exist when a year-suffixed card does.
+  let lanceToddOrphansCleared = 0;
+  for (const id of [...ltSet]) {
+    if (byId.has(id)) continue;
+    const yearVariants = [...byId.keys()].filter(
+      (pid) => pid.startsWith(`${id}-`) && /-\d{4}$/.test(pid)
+    );
+    if (yearVariants.length > 0) {
+      ltSet.delete(id);
+      for (const vid of yearVariants) ltSet.add(vid);
+      lanceToddOrphansCleared++;
+    }
+  }
+
+  // Seed year-card Lance Todd winners that exist in DB but were left unmatched.
+  const honourReportPath = join(DATA, "honour-achievements-report.json");
+  let lanceToddSeededFromReport = 0;
+  if (existsSync(honourReportPath)) {
+    const hr = loadJson<{ unmatchedLance?: string[] }>(
+      "honour-achievements-report.json"
+    );
+    for (const name of hr.unmatchedLance ?? []) {
+      const hits = all.filter(
+        (p) => p.name.toLowerCase() === name.toLowerCase()
+      );
+      if (hits.length === 0) continue;
+      for (const hit of hits) {
+        if (!ltSet.has(hit.id)) {
+          ltSet.add(hit.id);
+          lanceToddSeededFromReport++;
+        }
+      }
+    }
   }
 
   // Build base clusters
@@ -193,6 +260,9 @@ function main(): void {
   const report = {
     generatedAt: new Date().toISOString(),
     baseFixes,
+    dreamRepairs,
+    lanceToddOrphansCleared,
+    lanceToddSeededFromReport,
     extraLanceToddSeeded: EXTRA_LANCE_TODD.filter((id) => byId.has(id)),
     lanceToddCount: lanceTodd.length,
     propagatedYearEntries: propagatedYears,

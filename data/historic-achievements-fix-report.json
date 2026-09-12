@@ -1,13 +1,16 @@
 {
-  "generatedAt": "2026-09-11T23:08:01.354Z",
+  "generatedAt": "2026-09-12T13:39:54.940Z",
   "baseFixes": 0,
+  "dreamRepairs": 0,
+  "lanceToddOrphansCleared": 43,
+  "lanceToddSeededFromReport": 0,
   "extraLanceToddSeeded": [
     "leon-pryce",
     "bradford-leg-robbie-hunter-paul",
     "wakefield-hist-richard-myler"
   ],
-  "lanceToddCount": 200,
-  "propagatedYearEntries": 109,
-  "flagsSet": 13,
-  "flagsCleared": 49
+  "lanceToddCount": 157,
+  "propagatedYearEntries": 0,
+  "flagsSet": 0,
+  "flagsCleared": 0
 }

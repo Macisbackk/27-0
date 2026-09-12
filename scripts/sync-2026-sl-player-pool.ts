@@ -91,6 +91,8 @@ const NAME_ALIASES: Record<string, string> = {
   "oliver ashall bott": "olly ashall bott",
   "caleb uele": "caleb hamlin uele",
   "paul seguier": "paul seguier",
+  "tuimoala lolohea": "tui lolohea",
+  "jonathan bennison": "jon bennison",
 };
 
 function aliasKey(name: string): string {
@@ -243,6 +245,38 @@ const DEPTH_ADDITIONS: DepthRow[] = [
     nationality: "England",
     rating: 81,
     source: "Leigh #20 registered squad — DOB not yet verified",
+  },
+  {
+    name: "Romain Navarrete",
+    club: "Catalans Dragons",
+    position: "PROP",
+    nationality: "France",
+    rating: 82,
+    source: "Catalans 2026 rotation; Fantasy 122m; historic catalans-hist-romain-navarrete",
+  },
+  {
+    name: "Kian McDermott",
+    club: "Wigan Warriors",
+    position: "PROP",
+    nationality: "England",
+    rating: 78,
+    source: "Wigan 2026 squad depth; Fantasy 49m — DOB not yet verified",
+  },
+  {
+    name: "Jenson Windley",
+    club: "Castleford Tigers",
+    position: "SCRUM_HALF",
+    nationality: "England",
+    rating: 79,
+    source: "Castleford 2026 squad depth; Fantasy 34m — DOB not yet verified",
+  },
+  {
+    name: "Dayon Sambou",
+    club: "Wigan Warriors",
+    position: "CENTRE",
+    nationality: "England",
+    rating: 78,
+    source: "Wigan 2026 (from London path); Fantasy 15m — DOB not yet verified",
   },
 ];
 

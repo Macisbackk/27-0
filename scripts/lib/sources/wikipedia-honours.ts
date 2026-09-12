@@ -93,17 +93,48 @@ export async function fetchDreamTeamByYear(): Promise<
 
 export function matchPlayerIdByName(
   wikiName: string,
-  players: { id: string; name: string }[]
+  players: { id: string; name: string; category?: string; year?: number }[]
 ): string | null {
   const key = trophyWinnerNameKey(wikiName);
-  const exact = players.find((p) => trophyWinnerNameKey(p.name) === key);
-  if (exact) return exact.id;
+  const aliased = DREAM_TEAM_NAME_ALIASES[key] ?? key;
 
-  const parts = key.split(" ");
-  const surname = parts[parts.length - 1];
-  const candidates = players.filter((p) =>
-    trophyWinnerNameKey(p.name).includes(surname)
+  const exact = players.find((p) => trophyWinnerNameKey(p.name) === aliased);
+  if (exact) return preferCurrentId(exact.id, players, aliased);
+
+  const parts = aliased.split(" ");
+  if (parts.length < 2) return null;
+  const first = parts[0]!;
+  const surname = parts[parts.length - 1]!;
+
+  // Require first+surname agreement — never surname-only (McDonald/Macdonald collisions).
+  const candidates = players.filter((p) => {
+    const pk = trophyWinnerNameKey(p.name);
+    const pp = pk.split(" ");
+    return pp[0] === first && pp[pp.length - 1] === surname;
+  });
+  if (candidates.length === 0) return null;
+  if (candidates.length === 1) return candidates[0]!.id;
+
+  const current = candidates.filter(
+    (p) => p.category === "current" || p.id.includes("-cur-")
   );
-  if (candidates.length === 1) return candidates[0].id;
+  if (current.length === 1) return current[0]!.id;
   return null;
+}
+
+/** Wikipedia / source spelling variants → canonical normalize key. */
+const DREAM_TEAM_NAME_ALIASES: Record<string, string> = {
+  "nene mcdonald": "nene macdonald",
+};
+
+function preferCurrentId(
+  matchedId: string,
+  players: { id: string; name: string; category?: string }[],
+  key: string
+): string {
+  const sameName = players.filter((p) => trophyWinnerNameKey(p.name) === key);
+  const current = sameName.find(
+    (p) => p.category === "current" || p.id.includes("-cur-")
+  );
+  return current?.id ?? matchedId;
 }

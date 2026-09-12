@@ -1,4 +1,6 @@
-/** Shared typography tokens — clean sports hierarchy (matches --text-* vars). */
+/** Shared typography tokens — clean sports hierarchy (matches --text-* vars).
+ *  Display = Anton (playoff bracket chrome). Body = UI sans for readable copy.
+ */
 
 export const TYPO = {
   pageTitle:
@@ -11,6 +13,15 @@ export const TYPO = {
     "font-display text-[clamp(1.28rem,3vw,1.85rem)] font-bold tracking-tight text-white leading-[1.2]",
   homeModeBody:
     "mt-2 max-w-xl text-[length:var(--text-body)] leading-relaxed text-gray-300",
+  /** Playoff / review eyebrow — uppercase micro label above a display title. */
+  eyebrow:
+    "font-display text-[9px] font-bold uppercase tracking-[0.2em] text-theme-primary sm:text-xs sm:tracking-[0.3em]",
+  /** Quiz / mini-game mode picker card titles. */
+  modeCardTitle:
+    "font-display text-base font-bold uppercase tracking-wide sm:text-lg",
+  /** Millionaire prize amounts and other hero money figures. */
+  prizeDisplay:
+    "font-display font-black tabular-nums tracking-tight text-accent-gold",
   pageSubtitle:
     "text-[length:var(--text-body)] text-gray-300 leading-relaxed",
   sectionLabel:

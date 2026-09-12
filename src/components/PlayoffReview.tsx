@@ -21,6 +21,7 @@ import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { PlayoffBracketDisplay } from "./PlayoffBracketDisplay";
 import { Confetti } from "./Confetti";
 import { MANAGER, NORMAL } from "@/lib/ui/design-system";
+import { TYPO } from "@/lib/ui/typography";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
 import { GameStatCard } from "@/components/ui/GameStatCard";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
@@ -208,18 +209,18 @@ export function PlayoffReview({
           className="w-full text-center"
         >
           <p
-            className={`font-display text-xs font-semibold uppercase tracking-[0.3em] ${NORMAL.reviewAccent}`}
+            className={`${TYPO.eyebrow} ${NORMAL.reviewAccent}`}
           >
             Super League Play-Off Review
           </p>
-          <h1 className="mt-4 font-display text-2xl font-black text-accent-gold sm:text-3xl">
+          <h1 className={`mt-4 ${TYPO.sectionTitle} text-2xl text-accent-gold sm:text-3xl`}>
             {playoffResult.finish}
           </h1>
-          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-500">
+          <p className={`mx-auto mt-3 max-w-md ${TYPO.bodySm}`}>
             {titleBio}
           </p>
           {isChampion && (
-            <p className="mt-2 text-sm font-semibold text-theme-primary">
+            <p className={`mt-2 ${TYPO.body} font-semibold text-theme-primary`}>
               Super League Champions.
             </p>
           )}
