@@ -10,6 +10,7 @@ const AD_HOC_KEYS = [
 ] as const;
 
 function isManagerStorageKey(key: string): boolean {
+  if (key.includes("v3")) return false;
   return (
     key.startsWith("27-0-manager") ||
     key.startsWith("manager_") ||

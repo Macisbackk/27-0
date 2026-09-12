@@ -18,6 +18,34 @@ export function HomeModeSelector() {
         Play
       </p>
 
+      {/* Featured: Manager Mode */}
+      <div className="mt-3 sm:mt-4">
+        <MobileSection className="home-play-card flex min-h-0 flex-col items-center overflow-hidden text-center border-emerald-500/40 bg-gradient-to-b from-emerald-950/40 via-pitch-900/60 to-pitch-950 p-5 sm:p-6 shadow-xl">
+          <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-[11px] font-black uppercase tracking-widest text-emerald-400 border border-emerald-500/30">
+            Full Career Simulation
+          </span>
+          <h2 className="mt-2 text-2xl sm:text-3xl font-black text-white tracking-tight">
+            Rugby League Manager Mode
+          </h2>
+          <p className="mt-2 max-w-xl text-xs sm:text-sm text-pitch-300 leading-relaxed">
+            Take control of a Super League or Championship club. Scout, negotiate transfers, manage
+            contracts &amp; salary cap, develop academy prospects, and fight for promotion and silverware.
+          </p>
+
+          <div className="mt-4 flex flex-wrap justify-center gap-3 w-full max-w-sm">
+            <GameButton
+              variant="current"
+              href="/manager"
+              onClick={() => playUiClick()}
+              size="md"
+              className="w-full sm:w-auto px-8 py-2.5 font-black bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 shadow-lg hover:brightness-110"
+            >
+              Play Manager Mode →
+            </GameButton>
+          </div>
+        </MobileSection>
+      </div>
+
       <div className="mt-3 grid gap-3 sm:mt-4 sm:gap-4 lg:grid-cols-2">
         <HomePlayChoice
           eyebrow="Current squads · 2026"

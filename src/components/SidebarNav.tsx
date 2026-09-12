@@ -246,6 +246,21 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       ) : null}
                     </div>
                   </li>
+                  <li>
+                    <Link
+                      href="/manager"
+                      onClick={handleNavClick}
+                      className={navLinkClass(pathname.startsWith("/manager"))}
+                    >
+                      Manager Mode
+                      <span className="ml-2 rounded bg-emerald-500/20 px-1.5 py-0.5 text-[9px] font-bold text-emerald-400 border border-emerald-500/30 uppercase">
+                        New
+                      </span>
+                      {pathname.startsWith("/manager") && (
+                        <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-theme-primary" />
+                      )}
+                    </Link>
+                  </li>
                   {SHOW_DAILY_CHALLENGE_UI ? (
                     <li>
                       <Link
