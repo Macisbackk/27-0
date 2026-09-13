@@ -370,7 +370,7 @@ export function completeTransfer(
     ],
   };
 
-  // 2. Clean selling club's lineup
+  // 2. Clean selling club's lineup (and loan destination if player was out on loan)
   const sellerStarting13 = sellingClub.lineup.starting13.map(id => id === player.id ? null : id);
   const sellerBench = sellingClub.lineup.bench.map(id => id === player.id ? null : id);
 
@@ -385,12 +385,32 @@ export function completeTransfer(
     finances: updatedBuyerFinances,
   };
 
-  // 3. Update player
+  const clubsPatch: Record<string, typeof sellingClub> = {
+    [sellingClub.id]: updatedSellingClub,
+    [buyingClub.id]: updatedBuyingClub,
+  };
+
+  if (player.loan?.destinationClubId) {
+    const loanDestId = player.loan.destinationClubId;
+    const loanDest = state.clubs[loanDestId];
+    if (loanDest && loanDestId !== sellingClub.id && loanDestId !== buyingClub.id) {
+      clubsPatch[loanDestId] = {
+        ...loanDest,
+        lineup: {
+          starting13: loanDest.lineup.starting13.map((id) => (id === player.id ? null : id)),
+          bench: loanDest.lineup.bench.map((id) => (id === player.id ? null : id)),
+        },
+      };
+    }
+  }
+
+  // 3. Update player — always clear any active loan on permanent transfer
   const updatedPlayer = {
     ...player,
     clubId: buyingClub.id,
     squadTier: "first" as const,
     isTransferListed: false,
+    loan: null,
     contract: {
       wageWeekly: bid.offeredWage,
       expiresSeason: currentSeason + bid.offeredContractYears,
@@ -423,6 +443,9 @@ export function completeTransfer(
   ];
 
   const nextListed = state.transfers.listedPlayerIds.filter((id) => id !== player.id);
+  const nextActiveLoans = (state.transfers.activeLoans || []).filter(
+    (l) => l.playerId !== player.id
+  );
 
   const nextState: ManagerState = {
     ...state,
@@ -432,14 +455,14 @@ export function completeTransfer(
     },
     clubs: {
       ...state.clubs,
-      [sellingClub.id]: updatedSellingClub,
-      [buyingClub.id]: updatedBuyingClub,
+      ...clubsPatch,
     },
     transfers: {
       ...state.transfers,
       activeBids: nextBids,
       completedTransfers: nextCompleted,
       listedPlayerIds: nextListed,
+      activeLoans: nextActiveLoans,
     },
     inbox: {
       ...state.inbox,

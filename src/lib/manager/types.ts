@@ -104,6 +104,8 @@ export interface ManagerPlayer {
   isTransferListed?: boolean;
   isLoanListed?: boolean;
   isRetired?: boolean;
+  /** Club that developed this player in the academy (survives promotion to reserves/first). */
+  academyProductOfClubId?: string | null;
   careerBuffs?: PlayerCareerBuff[];
 }
 
@@ -462,6 +464,9 @@ export interface SeasonHistoryRecord {
   challengeCupWinner?: string;
   challengeCupRunnerUp?: string;
   challengeCupFinalScore?: string;
+  /** Explicit auto up/down (Championship 1st / Super League 14th) — not MPG movements. */
+  autoPromotedClub?: string;
+  autoRelegatedClub?: string;
   millionPoundGame?: {
     superLeagueTeam: string;
     championshipTeam: string;

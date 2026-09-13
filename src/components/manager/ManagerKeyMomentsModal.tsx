@@ -41,7 +41,7 @@ function getMomentBadge(type: KeyMomentType) {
   }
 }
 
-function getMomentCardStyle(type: KeyMomentType) {
+function getMomentCardStyle(type: KeyMomentType | "KICK_OFF") {
   switch (type) {
     case "TRY":
       return "border-emerald-500/40 bg-gradient-to-b from-emerald-950/30 to-pitch-950 shadow-emerald-950/30";
@@ -61,6 +61,8 @@ function getMomentCardStyle(type: KeyMomentType) {
       return "border-cyan-500/40 bg-gradient-to-b from-cyan-950/25 to-pitch-950 shadow-cyan-950/20";
     case "FULL_TIME":
       return "border-emerald-400/50 bg-gradient-to-b from-emerald-950/40 to-pitch-950 shadow-emerald-950/40";
+    case "KICK_OFF":
+      return "border-pitch-700 bg-gradient-to-b from-pitch-900/80 to-pitch-950";
     default:
       return "border-pitch-800 bg-pitch-900/60";
   }
@@ -74,27 +76,30 @@ export function ManagerKeyMomentsModal() {
     setLastPlayedMatchReview,
   } = useManager();
 
-  const [currentIdx, setCurrentIdx] = useState(0);
+  // -1 = kick-off (0', 0-0) before the first scored moment
+  const [currentIdx, setCurrentIdx] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [playSpeed, setPlaySpeed] = useState<"1x" | "2x">("1x");
-  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
+  const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Lock document scroll while matchcast is active (no page scrollbar).
-  useScrollLock(Boolean(activeKeyMomentsFixture), "manager-key-moments");
-
-  // Ensure moments exist
   const moments: ManagerKeyMoment[] = useMemo(() => {
     if (!activeKeyMomentsFixture) return [];
     return ensureFixtureKeyMoments(activeKeyMomentsFixture, state?.clubs);
   }, [activeKeyMomentsFixture, state?.clubs]);
 
-  // Reset index when fixture changes
+  const matchcastOpen = Boolean(activeKeyMomentsFixture) && moments.length > 0;
+  useScrollLock(matchcastOpen, "manager-key-moments");
+
   useEffect(() => {
-    setCurrentIdx(0);
+    if (activeKeyMomentsFixture && moments.length === 0) {
+      closeKeyMoments();
+    }
+  }, [activeKeyMomentsFixture, moments.length, closeKeyMoments]);
+
+  useEffect(() => {
+    setCurrentIdx(-1);
     setIsPlaying(true);
   }, [activeKeyMomentsFixture?.id]);
 
-  // Play audio sound for active moment
   const playSoundForMoment = (moment: ManagerKeyMoment | undefined) => {
     if (!moment || state?.settings?.soundEnabled === false) return;
     try {
@@ -130,34 +135,6 @@ export function ManagerKeyMomentsModal() {
     }
   };
 
-  // Step forward
-  const handleNext = () => {
-    if (currentIdx < moments.length - 1) {
-      const nextIdx = currentIdx + 1;
-      setCurrentIdx(nextIdx);
-      playSoundForMoment(moments[nextIdx]);
-    } else {
-      setIsPlaying(false);
-    }
-  };
-
-  // Step backward
-  const handlePrev = () => {
-    if (currentIdx > 0) {
-      const prevIdx = currentIdx - 1;
-      setCurrentIdx(prevIdx);
-      playSoundForMoment(moments[prevIdx]);
-    }
-  };
-
-  // Jump to specific index
-  const handleJumpToMoment = (idx: number) => {
-    setCurrentIdx(idx);
-    setIsPlaying(false);
-    playSoundForMoment(moments[idx]);
-  };
-
-  // Jump straight to full-time
   const handleSkipToFullTime = () => {
     if (moments.length > 0) {
       const lastIdx = moments.length - 1;
@@ -167,35 +144,35 @@ export function ManagerKeyMomentsModal() {
     }
   };
 
-  // Auto-play timer loop
   useEffect(() => {
     if (!isPlaying) {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
       return;
     }
 
-    if (currentIdx >= moments.length - 1) {
+    if (currentIdx >= moments.length - 1 && moments.length > 0) {
       setIsPlaying(false);
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
       return;
     }
 
-    const intervalMs = playSpeed === "2x" ? 1200 : 2500;
     autoPlayRef.current = setInterval(() => {
       setCurrentIdx((prev) => {
         const next = prev + 1;
         if (next >= moments.length - 1) {
           setIsPlaying(false);
         }
-        playSoundForMoment(moments[next]);
-        return next;
+        if (next >= 0 && next < moments.length) {
+          playSoundForMoment(moments[next]);
+        }
+        return Math.min(next, moments.length - 1);
       });
-    }, intervalMs);
+    }, 2200);
 
     return () => {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     };
-  }, [isPlaying, currentIdx, moments.length, playSpeed]);
+  }, [isPlaying, currentIdx, moments.length]);
 
   if (!activeKeyMomentsFixture || !state || moments.length === 0) {
     return null;
@@ -204,13 +181,17 @@ export function ManagerKeyMomentsModal() {
   const fixture = activeKeyMomentsFixture;
   const homeClub = state.clubs[fixture.homeClubId];
   const awayClub = state.clubs[fixture.awayClubId];
-  const activeMoment = moments[currentIdx] || moments[0];
-  const badgeInfo = getMomentBadge(activeMoment.type);
-  const cardStyle = getMomentCardStyle(activeMoment.type);
-  const isFullTime = currentIdx === moments.length - 1;
-
-  // Progress percentage across match minutes
-  const progressPercent = Math.min(100, Math.max(0, (activeMoment.minute / 80) * 100));
+  const isKickOff = currentIdx < 0;
+  const activeMoment = isKickOff ? null : moments[currentIdx] || moments[0];
+  const displayMinute = isKickOff ? 0 : activeMoment!.minute;
+  const displayHome = isKickOff ? 0 : activeMoment!.homeScoreAfter;
+  const displayAway = isKickOff ? 0 : activeMoment!.awayScoreAfter;
+  const badgeInfo = isKickOff
+    ? { icon: "🏟️", label: "KICK OFF", color: "bg-pitch-800 text-pitch-200 border-pitch-600" }
+    : getMomentBadge(activeMoment!.type);
+  const cardStyle = getMomentCardStyle(isKickOff ? "KICK_OFF" : activeMoment!.type);
+  const isFullTime = !isKickOff && currentIdx === moments.length - 1;
+  const progressPercent = Math.min(100, Math.max(0, (displayMinute / 80) * 100));
 
   const handleOpenFullReview = () => {
     closeKeyMoments();
@@ -222,39 +203,25 @@ export function ManagerKeyMomentsModal() {
       className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden overscroll-none bg-black/80 p-3 sm:p-5"
       role="dialog"
       aria-modal="true"
-      aria-label="Key Moments Matchcast"
+      aria-label="Match"
     >
       <div className="flex w-full max-w-3xl max-h-[min(92dvh,100%)] flex-col overflow-hidden rounded-3xl border border-pitch-700 bg-pitch-950 p-4 sm:p-6 shadow-2xl">
-        {/* Header Bar */}
         <div className="flex shrink-0 items-center justify-between border-b border-pitch-800 pb-3">
-          <div className="flex items-center gap-2">
-            <span className="rounded-full bg-emerald-500/20 px-3 py-0.5 text-[11px] font-bold text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
-              {fixture.roundName}
-            </span>
-            <span className="text-xs text-pitch-400 hidden sm:inline">
-              Key Moments Matchcast
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono text-pitch-400">
-              {currentIdx + 1} / {moments.length}
-            </span>
-            <button
-              type="button"
-              onClick={closeKeyMoments}
-              className="text-pitch-400 hover:text-white text-base p-1 rounded-lg hover:bg-pitch-800 transition-colors"
-              title="Close Key Moments"
-            >
-              ✕
-            </button>
-          </div>
+          <span className="rounded-full bg-emerald-500/20 px-3 py-0.5 text-[11px] font-bold text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
+            {fixture.roundName}
+          </span>
+          <button
+            type="button"
+            onClick={closeKeyMoments}
+            className="text-pitch-400 hover:text-white text-base p-1 rounded-lg hover:bg-pitch-800 transition-colors"
+            title="Close"
+          >
+            ✕
+          </button>
         </div>
 
-        {/* Dynamic Running Scoreboard */}
         <div className="mt-3 shrink-0 rounded-2xl border border-pitch-800 bg-gradient-to-b from-pitch-900 to-pitch-950 p-3 sm:p-4 shadow-lg">
           <div className="grid grid-cols-7 items-center gap-2">
-            {/* Home Team */}
             <div className="col-span-3 flex items-center justify-end gap-3 text-right">
               <div className="min-w-0">
                 <span className="block text-xs sm:text-sm font-black text-white truncate">
@@ -275,33 +242,28 @@ export function ManagerKeyMomentsModal() {
               </div>
             </div>
 
-            {/* Scoreboard Clock & Points */}
             <div className="col-span-1 flex flex-col items-center justify-center px-1">
-              {/* Minute badge */}
               <span className="rounded-full bg-pitch-950 px-2 py-0.5 text-[10px] font-mono font-bold text-emerald-400 border border-pitch-800 mb-1">
-                {activeMoment.minute}&apos;
+                {displayMinute}&apos;
               </span>
-
-              {/* Running Score */}
               <div className="flex items-baseline gap-1 text-2xl sm:text-3xl font-black text-white tracking-tight">
-                <span>{activeMoment.homeScoreAfter}</span>
+                <span>{displayHome}</span>
                 <span className="text-pitch-500 text-lg">-</span>
-                <span>{activeMoment.awayScoreAfter}</span>
+                <span>{displayAway}</span>
               </div>
-
-              {/* Points delta badge */}
-              {activeMoment.pointsAdded ? (
-                <span className="text-[10px] font-bold text-emerald-400 animate-pulse mt-0.5">
-                  +{activeMoment.pointsAdded} pts
-                </span>
-              ) : (
-                <span className="text-[9px] text-pitch-500 uppercase mt-0.5">
-                  {activeMoment.type === "HALF_TIME" ? "Break" : activeMoment.type === "FULL_TIME" ? "Final" : "Play"}
-                </span>
-              )}
+              <span className="text-[9px] text-pitch-500 uppercase mt-0.5">
+                {isKickOff
+                  ? "Kick off"
+                  : activeMoment!.pointsAdded
+                    ? `+${activeMoment!.pointsAdded} pts`
+                    : activeMoment!.type === "HALF_TIME"
+                      ? "Break"
+                      : activeMoment!.type === "FULL_TIME"
+                        ? "Final"
+                        : "Play"}
+              </span>
             </div>
 
-            {/* Away Team */}
             <div className="col-span-3 flex items-center justify-start gap-3 text-left">
               <div
                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-black text-xs sm:text-sm shadow-md border border-white/20 shrink-0"
@@ -323,7 +285,6 @@ export function ManagerKeyMomentsModal() {
             </div>
           </div>
 
-          {/* Clock progress bar */}
           <div className="mt-3 w-full bg-pitch-950 rounded-full h-1.5 overflow-hidden border border-pitch-800/80">
             <div
               className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-300"
@@ -332,11 +293,9 @@ export function ManagerKeyMomentsModal() {
           </div>
         </div>
 
-        {/* Feature Hero Card for Current Moment */}
         <div
           className={`mt-3 min-h-0 flex-1 overflow-hidden rounded-2xl border p-3 sm:p-5 shadow-lg space-y-2 sm:space-y-3 transition-all ${cardStyle}`}
         >
-          {/* Top row: Minute, Badge, Team */}
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-black border ${badgeInfo.color}`}>
@@ -344,136 +303,59 @@ export function ManagerKeyMomentsModal() {
                 <span>{badgeInfo.label}</span>
               </span>
               <span className="text-xs font-mono font-bold text-pitch-400">
-                {activeMoment.minute}&apos; Minute
+                {displayMinute}&apos;
               </span>
             </div>
-
-            <span className="text-xs font-bold text-pitch-300">
-              {activeMoment.clubName}
-            </span>
+            {!isKickOff && (
+              <span className="text-xs font-bold text-pitch-300">{activeMoment!.clubName}</span>
+            )}
           </div>
 
-          {/* Headline */}
           <div>
             <h3 className="text-base sm:text-lg font-black text-white leading-tight">
-              {activeMoment.headline || activeMoment.title}
+              {isKickOff
+                ? "Kick off"
+                : activeMoment!.headline || activeMoment!.title}
             </h3>
           </div>
 
-          {/* Commentary Body */}
           <div className="min-h-0 overflow-hidden rounded-xl bg-pitch-950/70 border border-pitch-800/60 p-3 sm:p-3.5">
             <p className="text-xs sm:text-sm text-pitch-200 leading-relaxed italic line-clamp-5 sm:line-clamp-6">
-              &ldquo;{activeMoment.description}&rdquo;
+              {isKickOff
+                ? `“${homeClub?.name || "Home"} and ${awayClub?.name || "Away"} are underway.”`
+                : `“${activeMoment!.description}”`}
             </p>
           </div>
 
-          {/* Player Involved Banner (if present) */}
-          {activeMoment.playerName && (
+          {!isKickOff && activeMoment!.playerName && (
             <div className="flex items-center justify-between pt-1 border-t border-pitch-800/50 text-xs">
               <div className="flex items-center gap-2 min-w-0">
-                {activeMoment.playerPosition && (
+                {activeMoment!.playerPosition && (
                   <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300 shrink-0">
-                    {formatPositionShort(activeMoment.playerPosition)}
+                    {formatPositionShort(activeMoment!.playerPosition)}
                   </span>
                 )}
-                <span className="font-bold text-white truncate">
-                  {activeMoment.playerName}
-                </span>
-                <span className="text-[11px] text-pitch-400">
-                  ({activeMoment.clubName})
-                </span>
+                <span className="font-bold text-white truncate">{activeMoment!.playerName}</span>
+                <span className="text-[11px] text-pitch-400">({activeMoment!.clubName})</span>
               </div>
-
-              {activeMoment.importance === "critical" && (
-                <span className="rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 px-2 py-0.5 text-[10px] font-black uppercase">
-                  ⚡ Critical
-                </span>
-              )}
             </div>
           )}
         </div>
 
-        {/* Timeline Strip (Pills for every moment) */}
-        <div className="mt-3 shrink-0 space-y-1.5">
-          <div className="flex items-center justify-between text-[11px] text-pitch-400 font-semibold px-1">
-            <span>Match Timeline</span>
-            <span className="hidden sm:inline">Click any event to inspect</span>
-          </div>
-
-          <div className="flex items-center gap-1.5 overflow-x-auto overflow-y-hidden pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {moments.map((m, idx) => {
-              const isSelected = idx === currentIdx;
-              const isHome = m.isHome;
-              const badge = getMomentBadge(m.type);
-
-              return (
-                <button
-                  key={m.id || idx}
-                  type="button"
-                  onClick={() => handleJumpToMoment(idx)}
-                  className={`shrink-0 flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-bold transition-all border ${
-                    isSelected
-                      ? "ring-2 ring-emerald-400 border-emerald-400 bg-pitch-800 text-white shadow-md scale-105"
-                      : isHome
-                      ? "border-pitch-700 bg-pitch-900/80 text-pitch-300 hover:border-pitch-600 hover:text-white"
-                      : "border-pitch-800 bg-pitch-950/70 text-pitch-400 hover:border-pitch-700 hover:text-white"
-                  }`}
-                  title={`${m.minute}' ${m.title} - ${m.clubName}`}
-                >
-                  <span className="font-mono text-[10px] text-pitch-400">{m.minute}&apos;</span>
-                  <span>{badge.icon}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Playback Controls Bar */}
         <div className="mt-3 flex shrink-0 flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-pitch-800">
-          {/* Navigation & Auto-Play Controls */}
-          <div className="flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={handlePrev}
-              disabled={currentIdx === 0}
-              className="rounded-xl border border-pitch-700 bg-pitch-900 px-3 py-2 text-xs font-bold text-white hover:bg-pitch-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-            >
-              ◀ Prev
-            </button>
+          <button
+            type="button"
+            onClick={() => setIsPlaying(!isPlaying)}
+            disabled={isFullTime}
+            className={`rounded-xl px-3.5 py-2 text-xs font-bold transition-all disabled:opacity-40 ${
+              isPlaying
+                ? "bg-amber-600 text-white hover:bg-amber-500"
+                : "bg-emerald-600 text-white hover:bg-emerald-500"
+            }`}
+          >
+            {isPlaying ? "Pause" : "Play"}
+          </button>
 
-            <button
-              type="button"
-              onClick={() => setIsPlaying(!isPlaying)}
-              className={`rounded-xl px-3.5 py-2 text-xs font-bold flex items-center gap-1.5 shadow transition-all ${
-                isPlaying
-                  ? "bg-amber-600 text-white hover:bg-amber-500"
-                  : "bg-emerald-600 text-white hover:bg-emerald-500"
-              }`}
-            >
-              <span>{isPlaying ? "⏸ Pause" : "⏵ Auto-Play"}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={handleNext}
-              disabled={currentIdx >= moments.length - 1}
-              className="rounded-xl border border-pitch-700 bg-pitch-900 px-3 py-2 text-xs font-bold text-white hover:bg-pitch-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-            >
-              Next ▶
-            </button>
-
-            {/* Speed Toggle */}
-            <button
-              type="button"
-              onClick={() => setPlaySpeed(playSpeed === "1x" ? "2x" : "1x")}
-              className="rounded-xl border border-pitch-800 bg-pitch-950 px-2.5 py-2 text-[11px] font-mono font-bold text-pitch-300 hover:text-white"
-              title="Toggle Auto-Play Speed"
-            >
-              {playSpeed}
-            </button>
-          </div>
-
-          {/* Action Buttons: Skip to Result or Full Review */}
           <div className="flex items-center gap-2">
             {!isFullTime && (
               <button
@@ -481,16 +363,15 @@ export function ManagerKeyMomentsModal() {
                 onClick={handleSkipToFullTime}
                 className="rounded-xl border border-pitch-700 bg-pitch-900/80 px-3 py-2 text-xs font-semibold text-pitch-300 hover:text-white transition-all"
               >
-                ⏭ Skip to Full Time
+                Skip to full time
               </button>
             )}
-
             <button
               type="button"
               onClick={handleOpenFullReview}
               className="rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-2 text-xs font-black text-slate-950 shadow hover:brightness-110 active:scale-95 transition-all"
             >
-              📊 Match Ratings &amp; Report
+              Match report
             </button>
           </div>
         </div>

@@ -13,6 +13,9 @@ import {
   getMatchdayLineupReadiness,
   canClubPlayMatchday,
   safeguardClubMatchdayLineup,
+  isPlayerAvailableForClub,
+  autoPickClubLineup,
+  cleanAllClubLineups,
 } from "../src/lib/manager/squad";
 import { renewPlayerContract, signFreeAgent } from "../src/lib/manager/contracts";
 import {
@@ -56,6 +59,11 @@ import {
   getStadiumExpansionCost,
   getPlayerInvestmentCost,
 } from "../src/lib/manager/facilities";
+import {
+  refreshClubBoardObjectives,
+  isRegularSeasonSettled,
+  countAcademyGraduateFirstTeamApps,
+} from "../src/lib/manager/objectives";
 
 let testCount = 0;
 let passedCount = 0;
@@ -1068,6 +1076,334 @@ async function runBreakTests() {
 
   // Clean up global window
   delete (globalThis as any).window;
+
+  // ----------------------------------------------------
+  // BREAK TEST 15: Loaned-out players must not play for parent
+  // ----------------------------------------------------
+  console.log("\n--- Break Test 15: Loan Availability & Transfer Clears Loan ---");
+  let loanState = initializeManagerDatabase("wigan-warriors", "Loan Breaker");
+  const parentId = "wigan-warriors";
+  const destId = "widnes-vikings";
+  const loanPlayer = Object.values(loanState.players).find(
+    (p) =>
+      p.clubId === parentId &&
+      p.squadTier === "first" &&
+      !p.loan &&
+      !p.injury &&
+      !p.suspension
+  );
+  assert(!!loanPlayer, "Found a loanable first-team player at Wigan");
+
+  const loanOut = createLoanAgreement(loanState, parentId, destId, loanPlayer!.id, 10, 50, true);
+  assert(loanOut.success, "Loan out to Championship club succeeds");
+  loanState = loanOut.state;
+  const onLoan = loanState.players[loanPlayer!.id];
+  assert(!!onLoan.loan, "Player has active loan record");
+  assert(
+    !isPlayerAvailableForClub(onLoan, parentId),
+    "Loaned-out player is NOT available for parent club"
+  );
+  assert(
+    isPlayerAvailableForClub(onLoan, destId),
+    "Loaned-out player IS available for destination club"
+  );
+
+  // Force parent lineup to still name the loaned player and ensure clean strips them
+  const parentClub = loanState.clubs[parentId];
+  loanState = {
+    ...loanState,
+    clubs: {
+      ...loanState.clubs,
+      [parentId]: {
+        ...parentClub,
+        lineup: {
+          starting13: parentClub.lineup.starting13.map((id, i) => (i === 0 ? onLoan.id : id)),
+          bench: parentClub.lineup.bench,
+        },
+      },
+    },
+  };
+  loanState = cleanAllClubLineups(loanState);
+  const cleanedParent = loanState.clubs[parentId];
+  const stillNamed = [...cleanedParent.lineup.starting13, ...cleanedParent.lineup.bench].includes(
+    onLoan.id
+  );
+  assert(!stillNamed, "cleanAllClubLineups removes loaned-out player from parent 17");
+
+  const forceSelect = setClubLineup(loanState, parentId, {
+    starting13: parentClub.lineup.starting13.map((id, i) => (i === 0 ? onLoan.id : id)),
+    bench: parentClub.lineup.bench,
+  });
+  assert(!forceSelect.success, "setClubLineup rejects loaned-out player for parent");
+
+  // Inject an accepted bid and complete — proves permanent move clears loan state
+  const fakeBidId = `bid_loan_clear_${onLoan.id}`;
+  // Free salary-cap room at buyer so the transfer can complete
+  const buyerId = "st-helens";
+  const buyerPlayersPatched = { ...loanState.players };
+  for (const [pid, p] of Object.entries(buyerPlayersPatched)) {
+    if (p.clubId === buyerId && p.contract) {
+      buyerPlayersPatched[pid] = {
+        ...p,
+        contract: { ...p.contract, wageWeekly: 100 },
+      };
+    }
+  }
+  loanState = {
+    ...loanState,
+    players: buyerPlayersPatched,
+    clubs: {
+      ...loanState.clubs,
+      [buyerId]: {
+        ...loanState.clubs[buyerId],
+        finances: {
+          ...loanState.clubs[buyerId].finances,
+          balance: 50_000_000,
+        },
+      },
+    },
+    transfers: {
+      ...loanState.transfers,
+      activeBids: [
+        {
+          id: fakeBidId,
+          season: loanState.calendar.currentSeason,
+          week: loanState.calendar.currentWeek,
+          playerId: onLoan.id,
+          fromClubId: buyerId,
+          toClubId: parentId,
+          offeredFee: 50_000,
+          offeredWage: 100,
+          offeredRole: "rotation",
+          offeredContractYears: 2,
+          status: "player_accepted",
+        },
+        ...loanState.transfers.activeBids,
+      ],
+    },
+  };
+  const done = completeTransfer(loanState, fakeBidId);
+  assert(done.success, `Transfer of loaned player completes (${done.error || "ok"})`);
+  loanState = done.state;
+  const moved = loanState.players[onLoan.id];
+  assert(moved.loan === null, "Completed transfer clears player.loan");
+  assert(moved.clubId === buyerId, "Player now belongs to buying club");
+  assert(
+    !(loanState.transfers.activeLoans || []).some((l) => l.playerId === onLoan.id),
+    "activeLoans no longer lists transferred player"
+  );
+
+  // Auto-pick pulls from reserves/academy when first team is short
+  let depthState = initializeManagerDatabase("widnes-vikings", "Depth Test");
+  const ft = Object.values(depthState.players).filter(
+    (p) => p.clubId === "widnes-vikings" && p.squadTier === "first" && !p.loan
+  );
+  // Injure most of first team
+  for (const p of ft.slice(0, Math.max(0, ft.length - 8))) {
+    depthState = {
+      ...depthState,
+      players: {
+        ...depthState.players,
+        [p.id]: {
+          ...p,
+          injury: { type: "Knock", weeksRemaining: 4, severity: "moderate" },
+        },
+      },
+    };
+  }
+  const auto = autoPickClubLineup(depthState, "widnes-vikings");
+  assert(auto.success, "Auto-pick succeeds by promoting from reserves/academy when FT is injured");
+  const autoReady = getMatchdayLineupReadiness(auto.state, "widnes-vikings");
+  assert(autoReady.ready, "Auto-pick produces a matchday-ready 17");
+
+  // ----------------------------------------------------
+  // BREAK TEST 16: League end-of-season objectives & youth graduates
+  // ----------------------------------------------------
+  console.log("\n--- Break Test 16: Board Objectives Settlement ---");
+
+  let objState = initializeManagerDatabase("wigan-warriors", "Objective Tester");
+  const wigan = objState.clubs["wigan-warriors"];
+  const leagueObj = (wigan.boardObjectives || []).find((o) => o.category === "league")!;
+  assert(!!leagueObj, "Wigan has a league board objective");
+  assert(
+    /grand final|top 6|relegation/i.test(leagueObj.title),
+    `Wigan league objective is a known title (${leagueObj.title})`
+  );
+
+  // Mid-season: do NOT complete Grand Final / Top 6 objectives from a good early table
+  const sl = objState.competitions["super-league"];
+  objState = {
+    ...objState,
+    calendar: { ...objState.calendar, phase: "regular_season", currentWeek: 10 },
+    competitions: {
+      ...objState.competitions,
+      "super-league": {
+        ...sl,
+        standings: sl.standings.map((row) =>
+          row.clubId === "wigan-warriors"
+            ? { ...row, played: 8, points: 16, pointsDifference: 40 }
+            : { ...row, played: 8, points: Math.max(0, (row.points || 0) - 4) }
+        ),
+      },
+    },
+  };
+  // Force Wigan to rank 1 mid-season
+  const midStandings = [...objState.competitions["super-league"].standings].sort((a, b) => {
+    if (a.clubId === "wigan-warriors") return -1;
+    if (b.clubId === "wigan-warriors") return 1;
+    return b.points - a.points;
+  });
+  // Assign descending points so Wigan is clearly 1st
+  const forced = midStandings.map((row, idx) => ({
+    ...row,
+    played: 8,
+    points: 30 - idx,
+    pointsDifference: 50 - idx * 2,
+  }));
+  // Put Wigan first explicitly
+  const wiganRow = forced.find((r) => r.clubId === "wigan-warriors")!;
+  const others = forced.filter((r) => r.clubId !== "wigan-warriors");
+  objState = {
+    ...objState,
+    competitions: {
+      ...objState.competitions,
+      "super-league": {
+        ...objState.competitions["super-league"],
+        standings: [
+          { ...wiganRow, played: 8, points: 30, pointsDifference: 80 },
+          ...others.map((r, i) => ({ ...r, played: 8, points: 28 - i, pointsDifference: 40 - i })),
+        ],
+      },
+    },
+  };
+
+  assert(
+    !isRegularSeasonSettled(objState, objState.competitions["super-league"]),
+    "Week 10 with 8 games each is NOT regular-season settled"
+  );
+  const midClub = refreshClubBoardObjectives(objState, "wigan-warriors");
+  const midLeague = midClub.boardObjectives.find((o) => o.category === "league")!;
+  assert(
+    midLeague.currentValue === 1,
+    "Mid-season league objective tracks rank 1"
+  );
+  if (/grand final|top 6/i.test(midLeague.title)) {
+    assert(
+      !midLeague.isCompleted && !midLeague.isFailed,
+      "Grand Final / Top 6 objectives do not settle mid-season"
+    );
+  }
+
+  // End of regular season: top-4 / top-6 completes
+  objState = {
+    ...objState,
+    calendar: { ...objState.calendar, phase: "playoffs", currentWeek: 29 },
+    clubs: { ...objState.clubs, "wigan-warriors": midClub },
+  };
+  assert(
+    isRegularSeasonSettled(objState, objState.competitions["super-league"]),
+    "Playoffs phase marks regular season settled"
+  );
+  const endClub = refreshClubBoardObjectives(objState, "wigan-warriors");
+  const endLeague = endClub.boardObjectives.find((o) => o.category === "league")!;
+  if (/grand final/i.test(endLeague.title)) {
+    assert(endLeague.isCompleted, "Compete for Grand Final completes in top 4 after RS");
+  } else if (/top\s*6|play-?off/i.test(endLeague.title)) {
+    assert(endLeague.isCompleted, "Top 6 playoff objective completes when ranked top 6 after RS");
+  }
+
+  // Youth: promote academy graduate, give apps, still counts
+  let youthState = initializeManagerDatabase("widnes-vikings", "Youth Tester");
+  const academyKid = Object.values(youthState.players).find(
+    (p) => p.clubId === "widnes-vikings" && p.squadTier === "academy"
+  );
+  assert(!!academyKid, "Found academy prospect");
+  assert(
+    academyKid!.academyProductOfClubId === "widnes-vikings",
+    "New academy players are tagged as academy products"
+  );
+  const promoted = movePlayerTier(youthState, academyKid!.id, "first");
+  assert(promoted.success, "Promote academy kid to first team");
+  youthState = promoted.state;
+  const grad = youthState.players[academyKid!.id];
+  assert(
+    grad.academyProductOfClubId === "widnes-vikings",
+    "Graduate keeps academyProductOfClubId after promotion"
+  );
+  assert(grad.squadTier === "first", "Graduate is now first team");
+
+  youthState = {
+    ...youthState,
+    players: {
+      ...youthState.players,
+      [grad.id]: {
+        ...grad,
+        stats: { ...grad.stats, apps: 5 },
+      },
+    },
+  };
+  assert(
+    countAcademyGraduateFirstTeamApps(youthState, "widnes-vikings") >= 5,
+    "Graduate first-team apps count toward youth objective"
+  );
+  const youthClub = refreshClubBoardObjectives(youthState, "widnes-vikings");
+  const youthObj = youthClub.boardObjectives.find((o) => o.category === "youth")!;
+  assert(youthObj.isCompleted, "Youth objective completes when graduate apps hit target");
+  assert(
+    Number(youthObj.currentValue) >= 5,
+    "Youth currentValue reflects graduate appearance total"
+  );
+
+  // Avoid Relegation mid-season must not complete just for being mid-table early
+  let relState = initializeManagerDatabase("salford-rlfc", "Rel Tester");
+  // Force Salford into bottom reputation avoid-relegation style objective if needed
+  const salfordObj = {
+    ...(relState.clubs["salford-rlfc"].boardObjectives.find((o) => o.category === "league") || {
+      id: "test_rel",
+      title: "Avoid Relegation",
+      description: "Stay up",
+      category: "league" as const,
+      targetValue: 13,
+      currentValue: 1,
+      isCompleted: false,
+      isFailed: false,
+      importance: "high" as const,
+    }),
+    title: "Avoid Relegation",
+    targetValue: 13,
+    isCompleted: false,
+    isFailed: false,
+  };
+  relState = {
+    ...relState,
+    calendar: { ...relState.calendar, phase: "regular_season", currentWeek: 12 },
+    clubs: {
+      ...relState.clubs,
+      "salford-rlfc": {
+        ...relState.clubs["salford-rlfc"],
+        boardObjectives: [
+          salfordObj,
+          ...relState.clubs["salford-rlfc"].boardObjectives.filter((o) => o.category !== "league"),
+        ],
+      },
+    },
+    competitions: {
+      ...relState.competitions,
+      "super-league": {
+        ...relState.competitions["super-league"],
+        standings: relState.competitions["super-league"].standings.map((row, i) => ({
+          ...row,
+          played: 10,
+          points: row.clubId === "salford-rlfc" ? 12 : 20 - (i % 10),
+          pointsDifference: row.clubId === "salford-rlfc" ? -10 : 10 - i,
+        })),
+      },
+    },
+  };
+  const relMid = refreshClubBoardObjectives(relState, "salford-rlfc");
+  const relLeague = relMid.boardObjectives.find((o) => o.category === "league")!;
+  assert(!relLeague.isCompleted, "Avoid Relegation does not complete mid-season");
+  assert(!relLeague.isFailed, "Avoid Relegation does not fail mid-season when clear of bottom");
 
   console.log("\n========================================================");
   console.log(`ALL BREAK TESTS PASSED: ${passedCount} / ${testCount}`);

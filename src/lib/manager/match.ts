@@ -25,6 +25,16 @@ import {
 } from "../game/rl-scores";
 import { CHAMPIONSHIP_ECONOMY } from "./rules";
 
+function isPlayerAvailableForClub(
+  player: ManagerPlayer,
+  clubId: string
+): boolean {
+  if (player.loan) {
+    return player.loan.destinationClubId === clubId;
+  }
+  return player.clubId === clubId;
+}
+
 export interface MatchSimulationResult {
   fixture: ManagerFixture;
   playerUpdates: Record<
@@ -136,7 +146,7 @@ export function simulateManagerMatch(
     const result: ManagerPlayer[] = [];
     for (const id of ids) {
       const p = allPlayers[id];
-      if (p && !p.injury && !p.suspension) {
+      if (p && !p.injury && !p.suspension && isPlayerAvailableForClub(p, club.id)) {
         result.push(p);
       }
     }
@@ -146,7 +156,7 @@ export function simulateManagerMatch(
       const backup = Object.values(allPlayers)
         .filter(
           p =>
-            (p.clubId === club.id || p.loan?.destinationClubId === club.id) &&
+            isPlayerAvailableForClub(p, club.id) &&
             !p.injury &&
             !p.suspension &&
             !existingIds.has(p.id)
@@ -1052,10 +1062,10 @@ export function simulateManagerMatch(
   }
 
   if (goldenPointWinner) {
-    assembledMoments.push({
+    const gpBanner = {
       id: `km_gp_${fixture.id}`,
       minute: 80,
-      type: "GOLDEN_POINT",
+      type: "GOLDEN_POINT" as const,
       clubId: homeClub.id,
       clubName: homeClub.name,
       title: "Golden Point Extra Time",
@@ -1064,7 +1074,14 @@ export function simulateManagerMatch(
       pointsAdded: 0,
       isHome: true,
       priorityOrder: 9,
-    });
+    };
+    // Insert before any post-80 scoring moment (winning drop goal), not after it
+    const extraTimeIdx = assembledMoments.findIndex((m) => m.minute > 80);
+    if (extraTimeIdx >= 0) {
+      assembledMoments.splice(extraTimeIdx, 0, gpBanner);
+    } else {
+      assembledMoments.push(gpBanner);
+    }
   }
 
   // Full-time moment

@@ -834,7 +834,7 @@ export function schedulePostSeasonAndCupFixtures(
           createPostSeasonInboxMessage(
             state,
             `MILLION POUND GAME: ${champClubName} PROMOTED TO SUPER LEAGUE!`,
-            `${champClubName} have triumphed in The Million Pound Game (${champScore}-${slScore}) to earn promotion to the Betfred Super League!\n\n${slClubName} suffer relegation to the Betfred Championship.`
+            `${champClubName} have triumphed in The Million Pound Game (${slClubName} ${slScore}-${champScore} ${champClubName}) to earn promotion to the Betfred Super League!\n\n${slClubName} suffer relegation to the Betfred Championship.`
           )
         );
       } else {
@@ -842,7 +842,7 @@ export function schedulePostSeasonAndCupFixtures(
           createPostSeasonInboxMessage(
             state,
             `MILLION POUND GAME: ${slClubName} SURVIVE IN SUPER LEAGUE!`,
-            `${slClubName} have defended their Super League status in The Million Pound Game (${slScore}-${champScore}) against ${champClubName}!\n\n${slClubName} will play in Betfred Super League next season, while ${champClubName} will remain in the Betfred Championship.`
+            `${slClubName} have defended their Super League status in The Million Pound Game (${slClubName} ${slScore}-${champScore} ${champClubName}) against ${champClubName}!\n\n${slClubName} will play in Betfred Super League next season, while ${champClubName} will remain in the Betfred Championship.`
           )
         );
       }

@@ -30,6 +30,21 @@ export interface MatchdayLineupReadiness {
 }
 
 /**
+ * True if the player can be named/played for this club right now.
+ * Loaned-out players stay on the parent roster for contracts/cap but are
+ * only available at the destination club until the loan ends.
+ */
+export function isPlayerAvailableForClub(
+  player: ManagerPlayer,
+  clubId: string
+): boolean {
+  if (player.loan) {
+    return player.loan.destinationClubId === clubId;
+  }
+  return player.clubId === clubId;
+}
+
+/**
  * Counts eligible players currently named in a club's matchday 17.
  * Injured/suspended/departed players in slots do not count.
  */
@@ -63,9 +78,7 @@ export function getMatchdayLineupReadiness(
         continue;
       }
       const eligible =
-        !p.injury &&
-        !p.suspension &&
-        (p.clubId === clubId || p.loan?.destinationClubId === clubId);
+        !p.injury && !p.suspension && isPlayerAvailableForClub(p, clubId);
       if (!eligible) {
         unavailableNames.push(p.name);
         continue;
@@ -125,9 +138,7 @@ export function safeguardClubMatchdayLineup(
   if (!club) return state;
 
   const eligible = (p: ManagerPlayer) =>
-    !p.injury &&
-    !p.suspension &&
-    (p.clubId === clubId || p.loan?.destinationClubId === clubId);
+    !p.injury && !p.suspension && isPlayerAvailableForClub(p, clubId);
 
   const firstAndLoans = Object.values(state.players).filter(
     (p) =>
@@ -230,6 +241,11 @@ export function movePlayerTier(
   const updatedPlayer = {
     ...player,
     squadTier: targetTier,
+    // Promoting out of the academy permanently marks them as that club's graduate
+    academyProductOfClubId:
+      player.squadTier === "academy" && player.clubId
+        ? player.clubId
+        : player.academyProductOfClubId ?? null,
   };
 
   const club = state.clubs[player.clubId];
@@ -298,13 +314,13 @@ export function setClubLineup(
       return { success: false, state, error: `Invalid player in lineup: ${id}` };
     }
 
-    const isDirectMember = p.clubId === clubId;
-    const isLoanedIn = p.loan && p.loan.destinationClubId === clubId;
-    if (!isDirectMember && !isLoanedIn) {
+    if (!isPlayerAvailableForClub(p, clubId)) {
       return {
         success: false,
         state,
-        error: `${p.name} does not belong to ${club.name}.`,
+        error: p.loan
+          ? `${p.name} is on loan and cannot be selected by ${club.name}.`
+          : `${p.name} does not belong to ${club.name}.`,
       };
     }
 
@@ -342,6 +358,7 @@ export function setClubLineup(
 
 /**
  * Automatically picks the best available 17-man lineup for a club.
+ * Uses first team + loaned-in, then reserves, then academy (same pool as safeguard).
  */
 export function autoPickClubLineup(
   state: ManagerState,
@@ -352,14 +369,44 @@ export function autoPickClubLineup(
     return { success: false, state, error: "Club not found." };
   }
 
-  const clubPlayers = Object.values(state.players).filter(
+  const eligible = (p: ManagerPlayer) =>
+    !p.injury && !p.suspension && isPlayerAvailableForClub(p, clubId);
+
+  const firstAndLoans = Object.values(state.players).filter(
     (p) =>
-      (p.clubId === clubId && p.squadTier === "first" && !p.loan) ||
-      (p.loan && p.loan.destinationClubId === clubId)
+      eligible(p) &&
+      ((p.clubId === clubId && p.squadTier === "first" && !p.loan) ||
+        p.loan?.destinationClubId === clubId)
   );
+  const reserves = Object.values(state.players).filter(
+    (p) => eligible(p) && p.clubId === clubId && p.squadTier === "reserves" && !p.loan
+  );
+  const academy = Object.values(state.players).filter(
+    (p) => eligible(p) && p.clubId === clubId && p.squadTier === "academy" && !p.loan
+  );
+  const clubPlayers = [...firstAndLoans, ...reserves, ...academy];
+
+  if (clubPlayers.length < MATCHDAY_RULES.SQUAD_SIZE) {
+    return {
+      success: false,
+      state,
+      error: `Not enough available players for a full 17 (${clubPlayers.length}/${MATCHDAY_RULES.SQUAD_SIZE}).`,
+    };
+  }
 
   const bestLineup = buildBestLineup(clubPlayers);
-  return setClubLineup(state, clubId, bestLineup);
+  const result = setClubLineup(state, clubId, bestLineup);
+  if (!result.success) return result;
+
+  const readiness = getMatchdayLineupReadiness(result.state, clubId);
+  if (!readiness.ready) {
+    return {
+      success: false,
+      state: result.state,
+      error: readiness.error || "Could not fill a complete matchday 17.",
+    };
+  }
+  return result;
 }
 
 /**
@@ -475,7 +522,7 @@ export function cleanAllClubLineups(
           p &&
           !p.injury &&
           !p.suspension &&
-          (p.clubId === clubId || p.loan?.destinationClubId === clubId);
+          isPlayerAvailableForClub(p, clubId);
 
         if (!isEligible || selectedIds.has(pid)) {
           starting13[i] = null;
@@ -494,7 +541,7 @@ export function cleanAllClubLineups(
           p &&
           !p.injury &&
           !p.suspension &&
-          (p.clubId === clubId || p.loan?.destinationClubId === clubId);
+          isPlayerAvailableForClub(p, clubId);
 
         if (!isEligible || selectedIds.has(pid)) {
           bench[i] = null;
@@ -510,7 +557,7 @@ export function cleanAllClubLineups(
       const availableBackups = Object.values(state.players)
         .filter(
           (p) =>
-            (p.clubId === clubId || p.loan?.destinationClubId === clubId) &&
+            isPlayerAvailableForClub(p, clubId) &&
             !p.injury &&
             !p.suspension &&
             !selectedIds.has(p.id)

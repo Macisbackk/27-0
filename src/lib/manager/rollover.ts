@@ -24,12 +24,39 @@ import type {
   BoardObjective,
   CompetitionId,
   ManagerClub,
+  ManagerFixture,
   ManagerPlayer,
   ManagerState,
   SeasonHistoryRecord,
   SeasonTableSnapshotRow,
   UserClubSeasonSummary,
 } from "./types";
+
+/** True Challenge Cup Final only — not Quarter Final / Semi-Final. */
+export function isChallengeCupFinalRound(roundName: string | undefined): boolean {
+  if (!roundName) return false;
+  return /challenge\s*cup\s*final/i.test(roundName) && !/semi|quarter/i.test(roundName);
+}
+
+export function findChallengeCupFinal(
+  fixtures: ManagerFixture[] | undefined,
+  season: number
+): ManagerFixture | undefined {
+  if (!fixtures) return undefined;
+  return fixtures.find(
+    (f) =>
+      f.isPlayed &&
+      (!f.season || f.season === season) &&
+      isChallengeCupFinalRound(f.roundName)
+  );
+}
+
+function knockoutWinnerId(fixture: ManagerFixture): string {
+  const home = fixture.homeScore || 0;
+  const away = fixture.awayScore || 0;
+  if (home === away) return fixture.homeClubId; // golden point should prevent; home fallback
+  return home > away ? fixture.homeClubId : fixture.awayClubId;
+}
 
 export interface SeasonAwards {
   superLeagueChampion: string;
@@ -67,33 +94,27 @@ export function calculateSeasonAwards(state: ManagerState): SeasonAwards {
   // Super League Grand Final Winner (or regular season 1st fallback)
   const slGfFixture = state.competitions["super-league"]?.fixtures.find(
     (f) =>
-      f.roundName.includes("Grand Final") &&
+      /grand\s*final/i.test(f.roundName || "") &&
       f.isPlayed &&
       (!f.season || f.season === currentSeason)
   );
   let slChampId = slStandings[0]?.clubId || "wigan-warriors";
   if (slGfFixture) {
-    slChampId =
-      (slGfFixture.homeScore || 0) > (slGfFixture.awayScore || 0)
-        ? slGfFixture.homeClubId
-        : slGfFixture.awayClubId;
+    slChampId = knockoutWinnerId(slGfFixture);
   }
 
   // League Leaders' Shield (1st in regular season Super League)
   const llsClubId = slStandings[0]?.clubId;
   const llsClubName = llsClubId ? state.clubs[llsClubId]?.name || llsClubId : undefined;
 
-  // Challenge Cup Winner (if concluded this season)
-  const ccFinal = state.competitions["challenge-cup"]?.fixtures.find(
-    (f) =>
-      (f.roundName.includes("Final") || f.week === 28) &&
-      f.isPlayed &&
-      (!f.season || f.season === currentSeason)
+  // Challenge Cup Winner (true Final only — never Quarter/Semi)
+  const ccFinal = findChallengeCupFinal(
+    state.competitions["challenge-cup"]?.fixtures,
+    currentSeason
   );
   let ccWinnerName: string | undefined;
   if (ccFinal) {
-    const homeWon = (ccFinal.homeScore || 0) > (ccFinal.awayScore || 0);
-    const ccWinnerId = homeWon ? ccFinal.homeClubId : ccFinal.awayClubId;
+    const ccWinnerId = knockoutWinnerId(ccFinal);
     ccWinnerName = state.clubs[ccWinnerId]?.name || ccWinnerId;
   }
 
@@ -349,6 +370,17 @@ export function buildRflSeasonReviewEmail(
  * Reconstructs a formatted RFL Season Review email from an archived SeasonHistoryRecord.
  */
 export function formatRflSeasonReviewFromBodyRecord(record: SeasonHistoryRecord): string {
+  const autoPromoted =
+    record.autoPromotedClub ||
+    record.championshipChampion ||
+    record.promotedClubs[0] ||
+    "Championship Champions";
+  const autoRelegated =
+    record.autoRelegatedClub ||
+    record.tables?.superLeague?.[record.tables.superLeague.length - 1]?.clubName ||
+    record.relegatedClubs[0] ||
+    "Super League 14th";
+
   const lines: string[] = [
     `The ${record.season} Rugby Football League season has officially concluded. Here is the official season review, honours, and promotion / relegation bulletin from the RFL:`,
     "",
@@ -366,12 +398,12 @@ export function formatRflSeasonReviewFromBodyRecord(record: SeasonHistoryRecord)
 
   lines.push("");
   lines.push("⬆️ PROMOTION & RELEGATION");
-  if (record.promotedClubs.length > 0) {
-    lines.push(`• Automatic Promotion to Super League: ${record.promotedClubs[0]} (Championship Champions)`);
-  }
-  if (record.relegatedClubs.length > 0) {
-    lines.push(`• Automatic Relegation to Championship: ${record.relegatedClubs[0]} (Super League 14th Place)`);
-  }
+  lines.push(
+    `• Automatic Promotion to Super League: ${autoPromoted} (Championship Champions)`
+  );
+  lines.push(
+    `• Automatic Relegation to Championship: ${autoRelegated} (Super League 14th Place)`
+  );
 
   if (record.millionPoundGame) {
     const mpg = record.millionPoundGame;
@@ -438,7 +470,7 @@ export function createSeasonHistoryRecord(
 
   const slGfFixture = state.competitions["super-league"].fixtures.find(
     (f) =>
-      f.roundName.includes("Grand Final") &&
+      /grand\s*final/i.test(f.roundName || "") &&
       f.isPlayed &&
       (!f.season || f.season === season)
   );
@@ -446,9 +478,11 @@ export function createSeasonHistoryRecord(
   let slRunnerUpId: string | undefined;
   let slScore: string | undefined;
   if (slGfFixture) {
-    const homeWon = (slGfFixture.homeScore || 0) >= (slGfFixture.awayScore || 0);
-    slChampId = homeWon ? slGfFixture.homeClubId : slGfFixture.awayClubId;
-    slRunnerUpId = homeWon ? slGfFixture.awayClubId : slGfFixture.homeClubId;
+    slChampId = knockoutWinnerId(slGfFixture);
+    slRunnerUpId =
+      slChampId === slGfFixture.homeClubId
+        ? slGfFixture.awayClubId
+        : slGfFixture.homeClubId;
     slScore = `${slGfFixture.homeScore} - ${slGfFixture.awayScore}`;
   }
 
@@ -466,26 +500,23 @@ export function createSeasonHistoryRecord(
   );
   let champPlayoffWinnerName: string | undefined;
   if (champFinalFixture) {
-    const homeWon = (champFinalFixture.homeScore || 0) >= (champFinalFixture.awayScore || 0);
-    const wid = homeWon ? champFinalFixture.homeClubId : champFinalFixture.awayClubId;
+    const wid = knockoutWinnerId(champFinalFixture);
     champPlayoffWinnerName = state.clubs[wid]?.name || wid;
   }
 
-  // Challenge Cup
-  const ccFinal = state.competitions["challenge-cup"]?.fixtures.find(
-    (f) =>
-      (f.roundName.includes("Final") || f.week === 28) &&
-      f.isPlayed &&
-      (!f.season || f.season === season)
+  // Challenge Cup — true Final only
+  const ccFinal = findChallengeCupFinal(
+    state.competitions["challenge-cup"]?.fixtures,
+    season
   );
   let ccWinnerName: string | undefined;
   let ccRunnerUpName: string | undefined;
   let ccScore: string | undefined;
   let ccWinnerClubId: string | undefined;
   if (ccFinal) {
-    const homeWon = (ccFinal.homeScore || 0) > (ccFinal.awayScore || 0);
-    ccWinnerClubId = homeWon ? ccFinal.homeClubId : ccFinal.awayClubId;
-    const runnerId = homeWon ? ccFinal.awayClubId : ccFinal.homeClubId;
+    ccWinnerClubId = knockoutWinnerId(ccFinal);
+    const runnerId =
+      ccWinnerClubId === ccFinal.homeClubId ? ccFinal.awayClubId : ccFinal.homeClubId;
     ccWinnerName = state.clubs[ccWinnerClubId]?.name || ccWinnerClubId;
     ccRunnerUpName = state.clubs[runnerId]?.name || runnerId;
     ccScore = `${ccFinal.homeScore} - ${ccFinal.awayScore}`;
@@ -627,6 +658,8 @@ export function createSeasonHistoryRecord(
     challengeCupWinner: ccWinnerName,
     challengeCupRunnerUp: ccRunnerUpName,
     challengeCupFinalScore: ccScore,
+    autoPromotedClub: awards.autoPromotedClub,
+    autoRelegatedClub: awards.autoRelegatedClub,
     millionPoundGame: awards.millionPoundGame,
     promotedClubs: awards.promotedClubs,
     relegatedClubs: awards.relegatedClubs,

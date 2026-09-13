@@ -188,6 +188,7 @@ export function createGeneratedPlayer(
       role: squadTier === "first" ? (clampedRating >= 80 ? "star" : "first_team") : (squadTier === "reserves" ? "rotation" : "youth"),
     } : null,
     trainingFocus: "balanced",
+    academyProductOfClubId: squadTier === "academy" && clubId ? clubId : null,
     stats: {
       apps: 0,
       tries: 0,
@@ -804,6 +805,14 @@ export function ensureClubSquadDepth(
         newPlayers[p.id] = p;
         updatedAny = true;
       }
+    }
+  }
+
+  // Backfill academy graduate flags for current academy members (legacy saves)
+  for (const [id, p] of Object.entries(newPlayers)) {
+    if (p.squadTier === "academy" && p.clubId && !p.academyProductOfClubId) {
+      newPlayers[id] = { ...p, academyProductOfClubId: p.clubId };
+      updatedAny = true;
     }
   }
 

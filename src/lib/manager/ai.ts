@@ -76,6 +76,7 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
           [talent.id]: {
             ...talent,
             squadTier: "reserves",
+            academyProductOfClubId: talent.academyProductOfClubId || clubId,
             morale: Math.min(100, talent.morale + 10),
           },
         },

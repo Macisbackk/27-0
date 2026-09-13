@@ -40,23 +40,32 @@ export function ManagerInboxView() {
     (b) => b.toClubId === state.manager.clubId && b.status === "pending_club"
   );
 
+  const resolveIncomingBidId = (
+    msg: InboxMessage,
+    payload?: { bidId?: string; playerId?: string }
+  ): string | null => {
+    if (payload?.bidId && pendingIncomingBids.some((b) => b.id === payload.bidId)) {
+      return payload.bidId;
+    }
+    if (msg.relatedEntityId && pendingIncomingBids.some((b) => b.id === msg.relatedEntityId)) {
+      return msg.relatedEntityId;
+    }
+    const byName = pendingIncomingBids.find((b) => {
+      const pname = state.players[b.playerId]?.name;
+      return pname && msg.subject.includes(pname);
+    });
+    return byName?.id || null;
+  };
+
   const runInboxAction = (
     actionType: "accept_bid" | "reject_bid" | "renew_contract" | "recall_loan" | "dismiss",
     msg: InboxMessage,
     payload?: { bidId?: string; playerId?: string }
   ) => {
     if (actionType === "accept_bid" || actionType === "reject_bid") {
-      const byName = pendingIncomingBids.find((b) => {
-        const pname = state.players[b.playerId]?.name;
-        return pname && msg.subject.includes(pname);
-      });
-      const id =
-        payload?.bidId ||
-        msg.relatedEntityId ||
-        byName?.id ||
-        pendingIncomingBids[0]?.id;
+      const id = resolveIncomingBidId(msg, payload);
       if (!id) {
-        setActionMsg("No pending club bid found — open Transfers.");
+        setActionMsg("No matching pending bid for this message — open Transfers.");
         setActiveTab("transfers");
         return;
       }
@@ -170,7 +179,8 @@ export function ManagerInboxView() {
         <p className="text-xs font-semibold text-emerald-400">{actionMsg}</p>
       )}
       {(selectedMessage.actions?.length ||
-        (selectedMessage.category === "transfer" && pendingIncomingBids.length > 0)) && (
+        (selectedMessage.category === "transfer" &&
+          resolveIncomingBidId(selectedMessage) !== null)) && (
         <div className="pt-4 border-t border-pitch-800 flex flex-wrap gap-2">
           {selectedMessage.actions?.length
             ? selectedMessage.actions.map((action) => (
@@ -221,7 +231,7 @@ export function ManagerInboxView() {
         </div>
       )}
       {selectedMessage.category === "transfer" &&
-        !(selectedMessage.actions?.length || pendingIncomingBids.length > 0) && (
+        !(selectedMessage.actions?.length || resolveIncomingBidId(selectedMessage)) && (
         <div className="pt-4 border-t border-pitch-800">
           <button
             type="button"
