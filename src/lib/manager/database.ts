@@ -21,7 +21,7 @@ import {
   DEVELOPMENT_SQUAD_SIZE,
   calculateMarketWage,
 } from "./rules";
-import { FIRST_NAMES, LAST_NAMES, generateRandomPlayerName } from "./names";
+import { FIRST_NAMES, LAST_NAMES, generateRandomPlayerName, clearOccupiedPlayerNames, registerOccupiedPlayerNames } from "./names";
 export { FIRST_NAMES, LAST_NAMES, generateRandomPlayerName };
 import type {
   ManagerState,
@@ -264,6 +264,7 @@ export function buildBestLineup(players: ManagerPlayer[]): ClubLineup {
  * and canonical players.
  */
 export function initializeManagerDatabase(chosenClubId: string, managerName = "Coach"): ManagerState {
+  clearOccupiedPlayerNames();
   const players: Record<string, ManagerPlayer> = {};
   const clubs: Record<string, ManagerClub> = {};
 
@@ -498,6 +499,8 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
     clubPlayersMap[clubId].push(player);
   }
 
+  registerOccupiedPlayerNames(Object.values(players).map((p) => p.name));
+
   // 3. Ensure every club has a complete squad across First Team (20+), Reserves (5), and Academy (5)
   // All real players imported from current-squads.json are senior First Team squad members.
   for (const [clubId, club] of Object.entries(clubs)) {
@@ -697,6 +700,7 @@ export function ensureClubSquadDepth(
 
   let newPlayers = { ...state.players };
   let updatedAny = false;
+  registerOccupiedPlayerNames(Object.values(newPlayers).map((p) => p.name));
 
   for (const club of clubsToInspect) {
     const clubId = club.id;

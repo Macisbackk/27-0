@@ -12,7 +12,7 @@
 
 import { generateFixturesForCompetition, sortStandings } from "./competitions";
 import { createGeneratedPlayer, toClubId, ensureClubSquadDepth } from "./database";
-import { generateRandomPlayerName } from "./names";
+import { generateRandomPlayerName, registerOccupiedPlayerNames } from "./names";
 import { cleanAllClubLineups } from "./squad";
 import { forceRetainAiExpiringContracts } from "./ai";
 import {
@@ -888,6 +888,7 @@ export function rolloverSeason(state: ManagerState): {
   }
 
   // 3. Youth Intake Generation: Generate prospects for every club's academy, enhanced by Youth Facility tier
+  registerOccupiedPlayerNames(Object.values(updatedPlayers).map((p) => p.name));
   for (const [clubId, club] of Object.entries(updatedClubs)) {
     const isSL = club.competitionId === "super-league";
     const youthLevel = club.facilities?.youth || 3;
