@@ -11,6 +11,8 @@ import {
   ELITE_SQUAD_LIMITS,
   RENEWAL_CAP_BUFFER,
   SALARY_CAP_COUNTABLE_FIRST_TEAM,
+  describeTransferWindow,
+  isTransferWindowOpen,
 } from "./rules";
 import type {
   ManagerState,
@@ -601,6 +603,15 @@ export function signFreeAgent(
   const club = state.clubs[clubId];
   if (!club) return { success: false, state, error: "Club not found." };
 
+  if (!isTransferWindowOpen(state.calendar.currentWeek)) {
+    const info = describeTransferWindow(state.calendar.currentWeek);
+    return {
+      success: false,
+      state,
+      error: `${info.label}. Free agents can only be signed while a window is open. ${info.detail}.`,
+    };
+  }
+
   // 1. Evaluate player acceptance
   const evaluation = evaluateContractOffer(player, club, offeredWage, offeredRole, {
     context: "free_agent",
@@ -626,12 +637,15 @@ export function signFreeAgent(
   }
 
   const currentSeason = state.calendar.currentSeason;
+  const currentWeek = state.calendar.currentWeek;
   const expiresSeason = currentSeason + contractYears;
 
   const updatedPlayer = {
     ...player,
     clubId,
     squadTier: "first" as const,
+    joinedSeason: currentSeason,
+    joinedWeek: currentWeek,
     contract: {
       wageWeekly: offeredWage,
       expiresSeason,

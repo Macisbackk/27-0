@@ -106,6 +106,9 @@ export interface ManagerPlayer {
   isTransferListed?: boolean;
   isLoanListed?: boolean;
   isRetired?: boolean;
+  /** Season/week the player last joined their current club (permanent move). */
+  joinedSeason?: number;
+  joinedWeek?: number;
   /** Club that developed this player in the academy (survives promotion to reserves/first). */
   academyProductOfClubId?: string | null;
   careerBuffs?: PlayerCareerBuff[];

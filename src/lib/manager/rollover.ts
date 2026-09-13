@@ -14,6 +14,7 @@ import { generateFixturesForCompetition, sortStandings } from "./competitions";
 import { createGeneratedPlayer, toClubId, ensureClubSquadDepth } from "./database";
 import { generateRandomPlayerName } from "./names";
 import { cleanAllClubLineups } from "./squad";
+import { forceRetainAiExpiringContracts } from "./ai";
 import {
   STARTING_POSITIONS,
   SALARY_CAP,
@@ -810,9 +811,12 @@ export function rolloverSeason(state: ManagerState): {
   }
 
   // 2. Player Updates: Ageing, Expired Contracts, Retirements, and Reset Season Stats
+  // AI clubs get a final flat-renewal pass so quality talent is not dumped to free agency
+  // solely because a wage bump would not fit under the cap.
+  const playersForRollover = forceRetainAiExpiringContracts(state, oldSeason).players;
   const updatedPlayers: Record<string, ManagerPlayer> = {};
 
-  for (const [pid, player] of Object.entries(state.players)) {
+  for (const [pid, player] of Object.entries(playersForRollover)) {
     if (player.isRetired) {
       updatedPlayers[pid] = player;
       continue;

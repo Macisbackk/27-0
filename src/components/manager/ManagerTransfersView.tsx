@@ -6,6 +6,9 @@ import {
   calculateTransferFeeBetweenClubs,
   calculateMarketWage,
   CONTRACT_NEGOTIATION,
+  describeTransferWindow,
+  isRecentlySignedPlayer,
+  TRANSFER_PROTECTION,
 } from "@/lib/manager/rules";
 import { calculateSalaryCapUsage, evaluateContractOffer } from "@/lib/manager/contracts";
 import {
@@ -140,6 +143,8 @@ export function ManagerTransfersView() {
     (b) => b.fromClubId === userClubId
   );
 
+  const windowInfo = describeTransferWindow(state.calendar.currentWeek);
+
   return (
     <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6 space-y-4">
       {/* Header */}
@@ -198,6 +203,18 @@ export function ManagerTransfersView() {
             History ({state.transfers.completedTransfers.length})
           </button>
         </div>
+      </div>
+
+      <div
+        className={`rounded-xl border px-3 py-2.5 text-xs ${
+          windowInfo.open
+            ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-100"
+            : "border-amber-500/40 bg-amber-500/10 text-amber-100"
+        }`}
+      >
+        <span className="font-black">{windowInfo.label}. </span>
+        {windowInfo.detail}. Recently signed players are protected for{" "}
+        {TRANSFER_PROTECTION.RECENT_SIGNING_WEEKS} weeks.
       </div>
 
       {/* Filter Bar (for market & free agents) */}
@@ -275,13 +292,22 @@ export function ManagerTransfersView() {
                       £{estValue.toLocaleString()}
                     </td>
                     <td className="py-2.5 px-3 text-right">
-                      <button
-                        type="button"
-                        onClick={() => openBidModal(player)}
-                        className="rounded bg-emerald-600/20 px-3 py-1 text-[11px] font-bold text-emerald-300 hover:bg-emerald-600/40 border border-emerald-500/40 transition-all"
-                      >
-                        Make Bid
-                      </button>
+                      {isRecentlySignedPlayer(
+                        player,
+                        state.calendar.currentSeason,
+                        state.calendar.currentWeek
+                      ) ? (
+                        <span className="text-[10px] font-bold text-pitch-500">Protected</span>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => openBidModal(player)}
+                          disabled={!windowInfo.open}
+                          className="rounded bg-emerald-600/20 px-3 py-1 text-[11px] font-bold text-emerald-300 hover:bg-emerald-600/40 border border-emerald-500/40 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          {windowInfo.open ? "Make Bid" : "Window Closed"}
+                        </button>
+                      )}
                     </td>
                   </tr>
                 );
@@ -330,9 +356,10 @@ export function ManagerTransfersView() {
                         <button
                           type="button"
                           onClick={() => openBidModal(player)}
-                          className="rounded bg-emerald-600 px-3 py-1 text-[11px] font-bold text-white hover:bg-emerald-500 shadow transition-all"
+                          disabled={!windowInfo.open}
+                          className="rounded bg-emerald-600 px-3 py-1 text-[11px] font-bold text-white hover:bg-emerald-500 shadow transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                         >
-                          Sign Free Agent
+                          {windowInfo.open ? "Sign Free Agent" : "Window Closed"}
                         </button>
                       </td>
                     </tr>

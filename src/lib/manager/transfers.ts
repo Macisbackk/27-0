@@ -4,7 +4,13 @@
  */
 
 import { calculateSalaryCapUsage, evaluateContractOffer, wouldExceedEliteSquadLimit } from "./contracts";
-import { CALENDAR_RULES, calculateTransferFeeBetweenClubs } from "./rules";
+import {
+  calculateTransferFeeBetweenClubs,
+  describeTransferWindow,
+  isRecentlySignedPlayer,
+  isTransferWindowOpen,
+  TRANSFER_PROTECTION,
+} from "./rules";
 import type {
   ManagerState,
   SquadRole,
@@ -73,11 +79,12 @@ export function submitTransferBid(
   options?: TransferEvalOptions
 ): TransferOperationResult {
   // 1. Transfer window validation
-  if (state.calendar.currentWeek > CALENDAR_RULES.TRANSFER_WINDOW_DEADLINE_WEEK) {
+  if (!isTransferWindowOpen(state.calendar.currentWeek)) {
+    const info = describeTransferWindow(state.calendar.currentWeek);
     return {
       success: false,
       state,
-      error: `Transfer window is closed. (Deadline was Round ${CALENDAR_RULES.TRANSFER_WINDOW_DEADLINE_WEEK}).`,
+      error: `${info.label}. ${info.detail}.`,
     };
   }
 
@@ -85,6 +92,20 @@ export function submitTransferBid(
   if (!player) return { success: false, state, error: "Player not found." };
   if (!player.clubId) return { success: false, state, error: "Use Free Agent signing for unattached players." };
   if (player.clubId === fromClubId) return { success: false, state, error: "Cannot submit a bid for your own player." };
+
+  if (
+    isRecentlySignedPlayer(
+      player,
+      state.calendar.currentSeason,
+      state.calendar.currentWeek
+    )
+  ) {
+    return {
+      success: false,
+      state,
+      error: `Transfer protection: ${player.name} only recently signed and cannot be approached for ${TRANSFER_PROTECTION.RECENT_SIGNING_WEEKS} weeks after joining.`,
+    };
+  }
 
   const buyingClub = state.clubs[fromClubId];
   const sellingClub = state.clubs[player.clubId];
@@ -471,6 +492,8 @@ export function completeTransfer(
     squadTier: "first" as const,
     isTransferListed: false,
     loan: null,
+    joinedSeason: currentSeason,
+    joinedWeek: currentWeek,
     contract: {
       wageWeekly: bid.offeredWage,
       expiresSeason: currentSeason + bid.offeredContractYears,

@@ -6,7 +6,7 @@
 
 import { buildBestLineup } from "./database";
 import { calculateSalaryCapUsage } from "./contracts";
-import { calculateMarketWage, calculateTransferFeeBetweenClubs } from "./rules";
+import { calculateMarketWage, calculateTransferFeeBetweenClubs, AI_CONTRACT_RETENTION, isRecentlySignedPlayer, isTransferWindowOpen } from "./rules";
 import {
   submitTransferBid,
   evaluateSellingClubBid,
@@ -125,23 +125,36 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
     });
 
     for (const expPlayer of renewPriority) {
-      const keep =
+      const mustKeep =
         expPlayer.squadTier === "first" ||
-        expPlayer.rating >= 66 ||
-        expPlayer.potential >= 80 ||
+        expPlayer.rating >= AI_CONTRACT_RETENTION.MUST_KEEP_RATING ||
         expPlayer.contract?.role === "star";
+      const keep =
+        mustKeep ||
+        expPlayer.rating >= AI_CONTRACT_RETENTION.KEEP_RATING ||
+        expPlayer.potential >= 80;
       if (!keep) continue;
 
       const bump = expPlayer.rating >= 80 ? 1.06 : 1.04;
-      const proposedWage = Math.round((expPlayer.contract!.wageWeekly * bump) / 50) * 50;
-      const wageDelta = proposedWage - expPlayer.contract!.wageWeekly;
+      const bumpedWage = Math.round((expPlayer.contract!.wageWeekly * bump) / 50) * 50;
+      const flatWage = expPlayer.contract!.wageWeekly;
+      const wageDelta = bumpedWage - flatWage;
       const loyaltyBuffer =
         expPlayer.rating < 86
           ? Math.round(cap.capLimitWeekly * 0.12)
           : 0;
 
+      let proposedWage = bumpedWage;
       if (wageDelta > 0 && cap.availableCapWeekly + loyaltyBuffer < wageDelta) {
-        continue;
+        // Cap squeeze: still flat-renew quality players instead of dumping them to FA.
+        if (
+          mustKeep ||
+          expPlayer.rating >= AI_CONTRACT_RETENTION.FLAT_RENEW_RATING
+        ) {
+          proposedWage = flatWage;
+        } else {
+          continue;
+        }
       }
 
       nextState = {
@@ -153,9 +166,11 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
             contract: {
               ...expPlayer.contract!,
               wageWeekly: proposedWage,
-              expiresSeason: currentSeason + (expPlayer.rating >= 78 ? 3 : 2),
+              expiresSeason:
+                currentSeason +
+                (expPlayer.rating >= 78 ? 3 : expPlayer.rating >= 70 ? 2 : 1),
             },
-            morale: Math.min(100, expPlayer.morale + 6),
+            morale: Math.min(100, expPlayer.morale + (proposedWage > flatWage ? 6 : 3)),
           },
         },
       };
@@ -192,7 +207,7 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
     cap = calculateSalaryCapUsage(nextState, clubId);
 
     // 3. Transfers & free agents during the open window
-    if (currentWeek <= 24 && currentWeek % 2 === 0) {
+    if (isTransferWindowOpen(currentWeek) && currentWeek % 2 === 0) {
       // 3a. Explicit chase of listed / star human players (not only positional holes)
       if (userBidsThisWeek < 2 && club.finances.balance > 25_000) {
         const userTargets = Object.values(nextState.players)
@@ -202,6 +217,7 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
               !p.loan &&
               !p.injury &&
               !p.suspension &&
+              !isRecentlySignedPlayer(p, currentSeason, currentWeek) &&
               (p.isTransferListed ||
                 p.contract?.role === "star" ||
                 (p.rating >= 78 && p.squadTier === "first") ||
@@ -297,6 +313,10 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
               !p.loan &&
               p.clubId !== clubId &&
               p.rating >= minRating &&
+              !(
+                p.clubId &&
+                isRecentlySignedPlayer(p, currentSeason, currentWeek)
+              ) &&
               (p.isTransferListed ||
                 p.clubId === null ||
                 // Unlisted targets: only if they are a clear need / value chase
@@ -346,6 +366,8 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
                   ...target,
                   clubId,
                   squadTier: "first",
+                  joinedSeason: currentSeason,
+                  joinedWeek: currentWeek,
                   contract: {
                     wageWeekly: proposedWage,
                     expiresSeason: currentSeason + 2,
@@ -518,4 +540,55 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
   nextState = resolvePendingAiAiBids(nextState, userClubId);
 
   return nextState;
+}
+
+/**
+ * Last-chance flat renewals before season rollover dumps unre-signed talent to free agency.
+ * User club is never auto-renewed.
+ */
+export function forceRetainAiExpiringContracts(
+  state: ManagerState,
+  expiringSeason: number
+): ManagerState {
+  const userClubId = state.manager.clubId;
+  let nextPlayers = { ...state.players };
+  let changed = false;
+
+  for (const clubId of Object.keys(state.clubs)) {
+    if (clubId === userClubId) continue;
+
+    const expiring = Object.values(nextPlayers).filter(
+      (p) =>
+        p.clubId === clubId &&
+        !p.isRetired &&
+        !p.loan &&
+        p.contract &&
+        p.contract.expiresSeason <= expiringSeason
+    );
+
+    for (const p of expiring) {
+      const mustKeep =
+        p.squadTier === "first" ||
+        p.rating >= AI_CONTRACT_RETENTION.MUST_KEEP_RATING ||
+        p.contract?.role === "star";
+      if (!mustKeep && p.rating < AI_CONTRACT_RETENTION.FLAT_RENEW_RATING) {
+        continue;
+      }
+
+      nextPlayers[p.id] = {
+        ...p,
+        contract: {
+          ...p.contract!,
+          // Flat renew — no wage bump at the hard boundary
+          expiresSeason:
+            expiringSeason + (p.rating >= 78 ? 3 : p.rating >= 70 ? 2 : 1),
+        },
+        morale: Math.min(100, p.morale + 2),
+      };
+      changed = true;
+    }
+  }
+
+  if (!changed) return state;
+  return { ...state, players: nextPlayers };
 }

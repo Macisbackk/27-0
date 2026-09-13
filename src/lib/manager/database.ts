@@ -459,7 +459,16 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
       loan: null,
       contract: {
         wageWeekly: wage,
-        expiresSeason: 2026 + (Math.random() < 0.4 ? 1 : 2),
+        // Quality players get longer deals so the league does not flood free agency every summer
+        expiresSeason:
+          2026 +
+          (rating >= 82
+            ? 3 + (Math.random() < 0.5 ? 1 : 0)
+            : rating >= 75
+              ? 2 + (Math.random() < 0.55 ? 1 : 0)
+              : Math.random() < 0.25
+                ? 1
+                : 2),
         role: rating >= 82 ? "star" : (rating >= 76 ? "first_team" : "rotation"),
       },
       trainingFocus: "balanced",
@@ -582,12 +591,12 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
     }
   }
 
-  // 4. Seed initial Free Agents market (18 free agents across positions)
+  // 4. Seed initial Free Agents market (depth fillers — not elites)
   for (let i = 0; i < 18; i++) {
     const pos = STARTING_POSITIONS[i % STARTING_POSITIONS.length];
     const age = Math.floor(Math.random() * 12) + 21;
-    const rating = Math.floor(Math.random() * 18) + 64; // 64 - 82 rating
-    const pot = Math.max(rating, Math.min(88, rating + (age < 24 ? 6 : 1)));
+    const rating = Math.floor(Math.random() * 11) + 62; // 62 - 72 rating
+    const pot = Math.max(rating, Math.min(80, rating + (age < 24 ? 5 : 1)));
     const { fullName, nationality } = generateRandomPlayerName(null);
     const fa = createGeneratedPlayer(fullName, pos, age, rating, pot, null, null, "super-league", nationality);
     players[fa.id] = fa;
@@ -736,7 +745,44 @@ export function ensureClubSquadDepth(
 
     // 1. Ensure First Team has at least 17 players (can field a full matchday 17)
     if (firstTeam.length < DEVELOPMENT_SQUAD_SIZE) {
-      const needed = DEVELOPMENT_SQUAD_SIZE - firstTeam.length;
+      let needed = DEVELOPMENT_SQUAD_SIZE - firstTeam.length;
+      const userClubId = state.manager.clubId;
+      // AI clubs (and full-league passes) claim free agents before inventing fillers —
+      // stops good FAs rotting while generated 70-ovr players spawn into squads.
+      if (clubId !== userClubId) {
+        const season = state.calendar.currentSeason;
+        const week = state.calendar.currentWeek;
+        const freeAgents = Object.values(newPlayers)
+          .filter(
+            (p) =>
+              p.clubId === null &&
+              !p.isRetired &&
+              p.rating >= baseStrength - 10 &&
+              p.rating <= baseStrength + 5
+          )
+          .sort((a, b) => b.rating - a.rating);
+
+        for (const fa of freeAgents) {
+          if (needed <= 0) break;
+          const wage = calculateMarketWage(fa.rating, fa.age, club.competitionId);
+          newPlayers[fa.id] = {
+            ...fa,
+            clubId,
+            squadTier: "first",
+            joinedSeason: season,
+            joinedWeek: week,
+            contract: {
+              wageWeekly: wage,
+              expiresSeason: season + (fa.rating >= 78 ? 3 : 2),
+              role: fa.rating >= 82 ? "star" : "first_team",
+            },
+            morale: 78,
+          };
+          needed--;
+          updatedAny = true;
+        }
+      }
+
       for (let i = 0; i < needed; i++) {
         const pos = STARTING_POSITIONS[i % STARTING_POSITIONS.length];
         const age = Math.floor(Math.random() * 8) + 21;

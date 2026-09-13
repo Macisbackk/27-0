@@ -129,7 +129,7 @@ export const MANAGER_TUTORIAL_STEPS: ManagerTutorialStep[] = [
     id: "market",
     eyebrow: "Squad building",
     title: "Transfers, loans & contracts",
-    body: "Bid for players, loan for depth, and renew deals before they hit free agency. The transfer window closes after week 24.",
+    body: "Bid for players, loan for depth, and renew deals before they hit free agency. Summer (weeks 1–8) and winter (weeks 18–22) transfer windows apply — recently signed players are protected for 8 weeks.",
     bullets: [
       "Transfers — market bids and free agents",
       "Loans — short-term cover without a permanent fee",

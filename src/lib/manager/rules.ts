@@ -89,8 +89,121 @@ export const CALENDAR_RULES = {
   REGULAR_SEASON_WEEKS: 26,
   PLAYOFF_WEEKS: 4,
   TOTAL_WEEKS: 32,
-  TRANSFER_WINDOW_DEADLINE_WEEK: 24, // Transfers close after week 24
+  /**
+   * @deprecated Prefer isTransferWindowOpen() — kept as the last winter close week
+   * for older copy / save migrations.
+   */
+  TRANSFER_WINDOW_DEADLINE_WEEK: 22,
 } as const;
+
+/**
+ * Two discrete windows per season (not a continuous open market to week 24).
+ * Summer: pre-season + early rounds. Winter: mid-season top-up.
+ * Free-agent signings and transfer bids both require an open window.
+ */
+export const TRANSFER_WINDOWS = {
+  SUMMER_OPEN_WEEK: 1,
+  SUMMER_CLOSE_WEEK: 8,
+  WINTER_OPEN_WEEK: 18,
+  WINTER_CLOSE_WEEK: 22,
+} as const;
+
+/** Cooling-off after a permanent move before another club can bid. */
+export const TRANSFER_PROTECTION = {
+  /** Absolute weeks after join before bids/listings for that player are allowed. */
+  RECENT_SIGNING_WEEKS: 8,
+} as const;
+
+/** AI contract retention — stop quality players leaking to free agency. */
+export const AI_CONTRACT_RETENTION = {
+  /** Soft keep floor (attempt renew with wage bump). */
+  KEEP_RATING: 66,
+  /** If a wage bump fails, still flat-renew at this rating+. */
+  FLAT_RENEW_RATING: 72,
+  /** Never allow these (or first-team/star) to expire mid-cap squeeze. */
+  MUST_KEEP_RATING: 78,
+} as const;
+
+export function isTransferWindowOpen(week: number): boolean {
+  const w = Math.max(1, week);
+  return (
+    (w >= TRANSFER_WINDOWS.SUMMER_OPEN_WEEK && w <= TRANSFER_WINDOWS.SUMMER_CLOSE_WEEK) ||
+    (w >= TRANSFER_WINDOWS.WINTER_OPEN_WEEK && w <= TRANSFER_WINDOWS.WINTER_CLOSE_WEEK)
+  );
+}
+
+export function describeTransferWindow(week: number): {
+  open: boolean;
+  label: string;
+  detail: string;
+} {
+  const open = isTransferWindowOpen(week);
+  if (
+    week >= TRANSFER_WINDOWS.SUMMER_OPEN_WEEK &&
+    week <= TRANSFER_WINDOWS.SUMMER_CLOSE_WEEK
+  ) {
+    return {
+      open: true,
+      label: "Summer window open",
+      detail: `Closes after week ${TRANSFER_WINDOWS.SUMMER_CLOSE_WEEK}`,
+    };
+  }
+  if (
+    week >= TRANSFER_WINDOWS.WINTER_OPEN_WEEK &&
+    week <= TRANSFER_WINDOWS.WINTER_CLOSE_WEEK
+  ) {
+    return {
+      open: true,
+      label: "Winter window open",
+      detail: `Closes after week ${TRANSFER_WINDOWS.WINTER_CLOSE_WEEK}`,
+    };
+  }
+  if (week < TRANSFER_WINDOWS.WINTER_OPEN_WEEK) {
+    return {
+      open: false,
+      label: "Transfer window closed",
+      detail: `Winter window opens week ${TRANSFER_WINDOWS.WINTER_OPEN_WEEK}`,
+    };
+  }
+  return {
+    open: false,
+    label: "Transfer window closed",
+    detail: "Reopens in pre-season next year",
+  };
+}
+
+export function absoluteCalendarWeek(season: number, week: number): number {
+  return season * CALENDAR_RULES.TOTAL_WEEKS + week;
+}
+
+export function weeksSinceClubJoin(
+  joinedSeason: number | undefined,
+  joinedWeek: number | undefined,
+  currentSeason: number,
+  currentWeek: number
+): number | null {
+  if (joinedSeason == null || joinedWeek == null) return null;
+  return (
+    absoluteCalendarWeek(currentSeason, currentWeek) -
+    absoluteCalendarWeek(joinedSeason, joinedWeek)
+  );
+}
+
+/** True when a permanent move is still inside the cooling-off period. */
+export function isRecentlySignedPlayer(
+  player: { joinedSeason?: number; joinedWeek?: number },
+  currentSeason: number,
+  currentWeek: number
+): boolean {
+  const elapsed = weeksSinceClubJoin(
+    player.joinedSeason,
+    player.joinedWeek,
+    currentSeason,
+    currentWeek
+  );
+  if (elapsed == null) return false;
+  return elapsed >= 0 && elapsed < TRANSFER_PROTECTION.RECENT_SIGNING_WEEKS;
+}
 
 /** Matchday squad must always be a full 17 (13 starters + 4 interchange). */
 export const MATCHDAY_RULES = {
