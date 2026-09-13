@@ -272,8 +272,8 @@ export function ManagerSettingsView() {
           Backup &amp; Migration
         </h3>
         <p className="text-xs text-pitch-400">
-          Export your career save file to your local computer to ensure your progress is preserved
-          across browsers and devices.
+          Export your career save file to your local computer as a backup. When signed in, careers
+          also sync to your account automatically across desktop and mobile.
         </p>
 
         <div className="flex flex-wrap gap-3">

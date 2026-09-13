@@ -55,6 +55,11 @@ drop policy if exists "Users delete own stats" on public.user_stats;
 create policy "Users delete own stats"
   on public.user_stats for delete using (auth.uid() = user_id);
 
+-- Manager Mode careers (signed-in sync) reuse user_stats:
+--   mode = 'MANAGER'
+--   stat_key = 'manager_slot_0' | 'manager_slot_1' | 'manager_slot_2' | 'manager_autosave'
+--   stat_json = { meta, state } pruned ManagerState
+
 -- ─── Leaderboard alterations ────────────────────────────────────────────────
 alter table public.leaderboard add column if not exists user_id uuid references auth.users(id);
 alter table public.leaderboard add column if not exists coach_name text;

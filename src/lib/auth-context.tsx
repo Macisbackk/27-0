@@ -80,6 +80,15 @@ async function hydrateAchievementsFromCloud(): Promise<void> {
   await refreshAchievementsFromCloud();
 }
 
+async function hydrateManagerSavesFromCloud(): Promise<void> {
+  try {
+    const { syncManagerSavesWithCloud } = await import("@/lib/manager/saves-cloud");
+    await syncManagerSavesWithCloud();
+  } catch (err) {
+    console.error("[auth] manager save sync failed:", err);
+  }
+}
+
 function applySession(session: Session | null, profile: UserProfile | null) {
   const user = session?.user ?? null;
   setAuthCache(
@@ -155,6 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         hydrateUiThemeFromCloud(),
         hydrateBoostInventoryFromCloud(),
         hydrateAchievementsFromCloud(),
+        hydrateManagerSavesFromCloud(),
       ]);
       if (generation !== syncGenerationRef.current) return;
 

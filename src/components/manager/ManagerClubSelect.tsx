@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useManager } from "@/lib/manager/context";
 import {
   CLUB_REPUTATION_BY_NAME,
@@ -13,6 +13,8 @@ import {
   getSaveSlotMetadata,
   type SaveMetadata,
 } from "@/lib/manager/storage";
+import { isLoggedIn } from "@/lib/auth-session";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 export function ManagerClubSelect() {
   const { startNewGame, loadFromSlot, deleteSave, importSave } = useManager();
@@ -22,6 +24,9 @@ export function ManagerClubSelect() {
   const [recentSave, setRecentSave] = useState<SaveMetadata | null>(null);
   const [slotMetas, setSlotMetas] = useState<Record<string, SaveMetadata | null>>({});
   const [deleteConfirmSlot, setDeleteConfirmSlot] = useState<number | "auto" | null>(null);
+  const [cloudSyncStatus, setCloudSyncStatus] = useState<"idle" | "syncing" | "done" | "skipped">(
+    "idle"
+  );
 
   // Active Start Screen Mode: "load" | "new" | "import"
   const [mode, setMode] = useState<"load" | "new" | "import">("load");
@@ -41,7 +46,7 @@ export function ManagerClubSelect() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Refresh available saves on mount
-  const refreshSaves = () => {
+  const refreshSaves = useCallback(() => {
     const all = getAllAvailableSaves();
     const recent = getMostRecentSave();
     setAvailableSaves(all);
@@ -61,11 +66,41 @@ export function ManagerClubSelect() {
     } else {
       setMode("load");
     }
-  };
+  }, []);
 
   useEffect(() => {
-    refreshSaves();
-  }, []);
+    let cancelled = false;
+
+    const run = async () => {
+      refreshSaves();
+      if (!isSupabaseConfigured || !isLoggedIn()) {
+        setCloudSyncStatus("skipped");
+        return;
+      }
+      setCloudSyncStatus("syncing");
+      try {
+        const { syncManagerSavesWithCloud } = await import("@/lib/manager/saves-cloud");
+        await syncManagerSavesWithCloud();
+      } catch {
+        /* local list still usable */
+      }
+      if (!cancelled) {
+        refreshSaves();
+        setCloudSyncStatus("done");
+      }
+    };
+
+    void run();
+
+    const onAuth = () => {
+      void run();
+    };
+    window.addEventListener("auth-state-changed", onAuth);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("auth-state-changed", onAuth);
+    };
+  }, [refreshSaves]);
 
   const champClubs = useMemo(() => {
     const list = Object.keys(CHAMPIONSHIP_CLUB_REPUTATION_BY_NAME).sort((a, b) => {
@@ -154,6 +189,17 @@ export function ManagerClubSelect() {
         <p className="text-sm sm:text-base text-pitch-300 max-w-2xl mx-auto">
           Resume a career or start fresh — Championship promotion or Super League silverware.
         </p>
+        {cloudSyncStatus === "syncing" ? (
+          <p className="text-xs text-emerald-400/90 mt-2">Syncing careers with your account…</p>
+        ) : cloudSyncStatus === "done" && isLoggedIn() ? (
+          <p className="text-xs text-pitch-400 mt-2">
+            Signed in — careers sync across desktop and mobile on this account.
+          </p>
+        ) : cloudSyncStatus === "skipped" && isSupabaseConfigured ? (
+          <p className="text-xs text-pitch-500 mt-2">
+            Sign in to sync Manager careers between desktop and mobile. JSON import still works offline.
+          </p>
+        ) : null}
       </div>
 
       {/* Quick Resume Hero Banner (When a recent save is available) */}
@@ -654,7 +700,7 @@ export function ManagerClubSelect() {
           <div className="text-center">
             <h2 className="text-xl font-bold text-white">Import Career Save File</h2>
             <p className="text-xs sm:text-sm text-pitch-400 mt-1">
-              Restore a JSON backup exported from another device or previous browser session.
+              Restore a JSON backup. Signed-in careers also sync automatically between devices.
             </p>
           </div>
 

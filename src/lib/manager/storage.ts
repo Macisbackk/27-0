@@ -273,7 +273,8 @@ export async function persistManagerProgress(state: ManagerState): Promise<{
 
 export async function saveManagerState(
   state: ManagerState,
-  slot: number | "auto" = "auto"
+  slot: number | "auto" = "auto",
+  options?: { skipCloud?: boolean }
 ): Promise<{ success: boolean; error?: string }> {
   if (typeof window === "undefined") {
     return { success: false, error: "Window unavailable" };
@@ -312,6 +313,12 @@ export async function saveManagerState(
       }
     }
     writeMeta(slot, meta);
+
+    if (wrote && !options?.skipCloud) {
+      void import("./saves-cloud").then(({ scheduleManagerCloudPush }) => {
+        scheduleManagerCloudPush(slot, pruned, meta);
+      });
+    }
 
     return { success: wrote };
   } catch (err: unknown) {
@@ -512,6 +519,9 @@ export async function deleteSaveSlot(slot: number | "auto"): Promise<boolean> {
       /* ignore */
     }
     clearSlotLocalMeta(slot);
+    void import("./saves-cloud").then(({ deleteManagerSaveFromCloud }) => {
+      void deleteManagerSaveFromCloud(slot);
+    });
     return true;
   } catch {
     return false;

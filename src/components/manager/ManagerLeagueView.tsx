@@ -95,8 +95,8 @@ export function ManagerLeagueView() {
                 }`}
               >
                 <span className="text-xs font-black text-pitch-300">{rank}</span>
-                <span className={`truncate text-sm font-semibold ${isUserClub ? "text-emerald-300" : "text-white"}`}>
-                  {club?.abbreviation || club?.name || row.clubId}
+                <span className={`min-w-0 truncate text-sm font-semibold ${isUserClub ? "text-emerald-300" : "text-white"}`}>
+                  {club?.name || row.clubId}
                 </span>
                 <span className="text-center text-xs text-pitch-400">{row.played}</span>
                 <span
