@@ -6,9 +6,16 @@
 @tailwind utilities;
 
 :root {
-  /* Manager Mode mobile chrome (bottom nav + Continue play bar). */
-  --manager-mobile-nav-h: 4.5rem;
+  /* Manager Mode mobile chrome (bottom nav + Continue play bar).
+     Nav height includes safe-area so the play bar sits cleanly above it. */
+  --manager-mobile-nav-content-h: 4.5rem;
+  --manager-mobile-nav-h: calc(
+    var(--manager-mobile-nav-content-h) + env(safe-area-inset-bottom, 0px)
+  );
+  /* Continue row visual min; pad uses reserve so error strip can grow. */
   --manager-mobile-playbar-h: 3.75rem;
+  --manager-mobile-playbar-reserve: 5.5rem;
+  --manager-mobile-chrome-gap: 0.75rem;
 
   /* Fallback before next/font Anton (--font-pitch) is on <html>. */
   --font-display: "Arial Black", "Impact", "Segoe UI", system-ui, sans-serif;
@@ -180,18 +187,19 @@ html[data-ui-overlay="1"] {
     padding-bottom: var(--manager-mobile-nav-h);
   }
 
-  /* Full hub pad when Hub owns chrome alone (legacy). Prefer playbar-extra when
-     the shell already applies manager-mobile-nav-pad. */
+  /* Clears fixed bottom nav + play bar (+ gap). Use alone on the shell. */
   .manager-mobile-hub-pad {
     padding-bottom: calc(
-      var(--manager-mobile-nav-h) + var(--manager-mobile-playbar-h)
+      var(--manager-mobile-nav-h) + var(--manager-mobile-playbar-reserve) +
+        var(--manager-mobile-chrome-gap, 0.75rem)
     );
   }
 
-  /* Hub sticky play bar only — shell already reserved nav height. */
+  /* Legacy: only when shell already reserved nav height separately. Prefer hub-pad. */
   .manager-mobile-playbar-extra {
     padding-bottom: calc(
-      var(--manager-mobile-playbar-h) + env(safe-area-inset-bottom, 0px)
+      var(--manager-mobile-playbar-reserve) +
+        var(--manager-mobile-chrome-gap, 0.75rem)
     );
   }
 

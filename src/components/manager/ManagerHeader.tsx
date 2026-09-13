@@ -29,7 +29,7 @@ export function ManagerHeader() {
   const lineupShort = readiness != null && !readiness.ready;
 
   return (
-    <header className="sticky top-0 z-30 border-b border-pitch-700 bg-pitch-950 px-3 py-2.5 sm:px-6 sm:py-3 shadow-lg">
+    <header className="sticky top-12 z-30 border-b border-pitch-700 bg-pitch-950 px-3 pb-2.5 pt-2.5 sm:top-[3.25rem] sm:px-6 sm:py-3 shadow-lg">
       <div className="mx-auto max-w-7xl space-y-2">
         <div className="flex items-center justify-between gap-3">
           {/* Left: Club Identity & Season Context */}

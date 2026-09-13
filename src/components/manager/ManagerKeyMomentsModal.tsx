@@ -6,6 +6,7 @@ import { ensureFixtureKeyMoments } from "@/lib/manager/match";
 import { formatPositionShort } from "@/lib/manager/formatters";
 import { synth } from "@/lib/sound/synth";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { uiLayerClass } from "@/lib/ui/layers";
 import type { ManagerKeyMoment, KeyMomentType } from "@/lib/manager/types";
 
 function getMomentBadge(type: KeyMomentType) {
@@ -200,29 +201,29 @@ export function ManagerKeyMomentsModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden overscroll-none bg-black/80 p-3 sm:p-5"
+      className={`fixed inset-0 ${uiLayerClass("modalBackdrop")} flex items-end justify-center overflow-hidden overscroll-none bg-black p-0 sm:items-center sm:p-5`}
       role="dialog"
       aria-modal="true"
       aria-label="Match"
     >
-      <div className="flex w-full max-w-3xl max-h-[min(92dvh,100%)] flex-col overflow-hidden rounded-3xl border border-pitch-700 bg-pitch-950 p-4 sm:p-6 shadow-2xl">
-        <div className="flex shrink-0 items-center justify-between border-b border-pitch-800 pb-3">
-          <span className="rounded-full bg-emerald-500/20 px-3 py-0.5 text-[11px] font-bold text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
+      <div className="flex w-full max-w-3xl max-h-[min(100dvh,100%)] flex-col overflow-hidden rounded-t-3xl border border-pitch-700 bg-pitch-950 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] shadow-2xl sm:max-h-[min(92dvh,100%)] sm:rounded-3xl sm:p-6 sm:pb-6">
+        <div className="flex shrink-0 items-center justify-between border-b border-pitch-800 pb-2.5">
+          <span className="rounded-full bg-emerald-500/20 px-3 py-0.5 text-[11px] font-bold text-emerald-400 border border-emerald-500/30 uppercase tracking-wider truncate max-w-[85%]">
             {fixture.roundName}
           </span>
           <button
             type="button"
             onClick={closeKeyMoments}
-            className="text-pitch-400 hover:text-white text-base p-1 rounded-lg hover:bg-pitch-800 transition-colors"
+            className="text-pitch-400 hover:text-white text-base p-1 rounded-lg hover:bg-pitch-800 transition-colors shrink-0"
             title="Close"
           >
             ✕
           </button>
         </div>
 
-        <div className="mt-3 shrink-0 rounded-2xl border border-pitch-800 bg-gradient-to-b from-pitch-900 to-pitch-950 p-3 sm:p-4 shadow-lg">
-          <div className="grid grid-cols-7 items-center gap-2">
-            <div className="col-span-3 flex items-center justify-end gap-3 text-right">
+        <div className="mt-2.5 shrink-0 rounded-2xl border border-pitch-800 bg-gradient-to-b from-pitch-900 to-pitch-950 p-3 sm:p-4 shadow-lg">
+          <div className="grid grid-cols-7 items-center gap-1.5 sm:gap-2">
+            <div className="col-span-3 flex items-center justify-end gap-2 sm:gap-3 text-right">
               <div className="min-w-0">
                 <span className="block text-xs sm:text-sm font-black text-white truncate">
                   {homeClub?.shortName || fixture.homeClubId}
@@ -232,23 +233,23 @@ export function ManagerKeyMomentsModal() {
                 </span>
               </div>
               <div
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-black text-xs sm:text-sm shadow-md border border-white/20 shrink-0"
+                className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-black text-[10px] sm:text-sm shadow-md border border-white/20 shrink-0"
                 style={{
                   backgroundColor: homeClub?.primaryColor || "#1E4D9B",
                   color: homeClub?.textColour || "#FFFFFF",
                 }}
               >
-                {homeClub?.shortName?.slice(0, 3) || "HOM"}
+                {homeClub?.abbreviation || homeClub?.shortName?.slice(0, 3) || "HOM"}
               </div>
             </div>
 
-            <div className="col-span-1 flex flex-col items-center justify-center px-1">
+            <div className="col-span-1 flex flex-col items-center justify-center px-0.5">
               <span className="rounded-full bg-pitch-950 px-2 py-0.5 text-[10px] font-mono font-bold text-emerald-400 border border-pitch-800 mb-1">
                 {displayMinute}&apos;
               </span>
-              <div className="flex items-baseline gap-1 text-2xl sm:text-3xl font-black text-white tracking-tight">
+              <div className="flex items-baseline gap-0.5 text-xl sm:text-3xl font-black text-white tracking-tight">
                 <span>{displayHome}</span>
-                <span className="text-pitch-500 text-lg">-</span>
+                <span className="text-pitch-500 text-base sm:text-lg">-</span>
                 <span>{displayAway}</span>
               </div>
               <span className="text-[9px] text-pitch-500 uppercase mt-0.5">
@@ -264,15 +265,15 @@ export function ManagerKeyMomentsModal() {
               </span>
             </div>
 
-            <div className="col-span-3 flex items-center justify-start gap-3 text-left">
+            <div className="col-span-3 flex items-center justify-start gap-2 sm:gap-3 text-left">
               <div
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-black text-xs sm:text-sm shadow-md border border-white/20 shrink-0"
+                className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-black text-[10px] sm:text-sm shadow-md border border-white/20 shrink-0"
                 style={{
                   backgroundColor: awayClub?.primaryColor || "#D00000",
                   color: awayClub?.textColour || "#FFFFFF",
                 }}
               >
-                {awayClub?.shortName?.slice(0, 3) || "AWY"}
+                {awayClub?.abbreviation || awayClub?.shortName?.slice(0, 3) || "AWY"}
               </div>
               <div className="min-w-0">
                 <span className="block text-xs sm:text-sm font-black text-white truncate">
@@ -294,20 +295,20 @@ export function ManagerKeyMomentsModal() {
         </div>
 
         <div
-          className={`mt-3 min-h-0 flex-1 overflow-hidden rounded-2xl border p-3 sm:p-5 shadow-lg space-y-2 sm:space-y-3 transition-all ${cardStyle}`}
+          className={`mt-2.5 min-h-0 flex-1 overflow-hidden rounded-2xl border p-3 sm:p-5 shadow-lg space-y-2 sm:space-y-3 transition-all ${cardStyle}`}
         >
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <span className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-black border ${badgeInfo.color}`}>
+            <div className="flex items-center gap-2 min-w-0">
+              <span className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-black border shrink-0 ${badgeInfo.color}`}>
                 <span>{badgeInfo.icon}</span>
                 <span>{badgeInfo.label}</span>
               </span>
-              <span className="text-xs font-mono font-bold text-pitch-400">
+              <span className="text-xs font-mono font-bold text-pitch-400 shrink-0">
                 {displayMinute}&apos;
               </span>
             </div>
             {!isKickOff && (
-              <span className="text-xs font-bold text-pitch-300">{activeMoment!.clubName}</span>
+              <span className="text-xs font-bold text-pitch-300 truncate">{activeMoment!.clubName}</span>
             )}
           </div>
 
@@ -320,7 +321,7 @@ export function ManagerKeyMomentsModal() {
           </div>
 
           <div className="min-h-0 overflow-hidden rounded-xl bg-pitch-950/70 border border-pitch-800/60 p-3 sm:p-3.5">
-            <p className="text-xs sm:text-sm text-pitch-200 leading-relaxed italic line-clamp-5 sm:line-clamp-6">
+            <p className="text-xs sm:text-sm text-pitch-200 leading-relaxed italic line-clamp-4 sm:line-clamp-6">
               {isKickOff
                 ? `“${homeClub?.name || "Home"} and ${awayClub?.name || "Away"} are underway.”`
                 : `“${activeMoment!.description}”`}
@@ -336,18 +337,18 @@ export function ManagerKeyMomentsModal() {
                   </span>
                 )}
                 <span className="font-bold text-white truncate">{activeMoment!.playerName}</span>
-                <span className="text-[11px] text-pitch-400">({activeMoment!.clubName})</span>
+                <span className="text-[11px] text-pitch-400 truncate">({activeMoment!.clubName})</span>
               </div>
             </div>
           )}
         </div>
 
-        <div className="mt-3 flex shrink-0 flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-pitch-800">
+        <div className="mt-2.5 flex shrink-0 flex-wrap items-center gap-2 border-t border-pitch-800 pt-2.5">
           <button
             type="button"
             onClick={() => setIsPlaying(!isPlaying)}
             disabled={isFullTime}
-            className={`rounded-xl px-3.5 py-2 text-xs font-bold transition-all disabled:opacity-40 ${
+            className={`min-h-11 flex-1 rounded-xl px-3.5 py-2 text-xs font-bold transition-all disabled:opacity-40 sm:flex-none ${
               isPlaying
                 ? "bg-amber-600 text-white hover:bg-amber-500"
                 : "bg-emerald-600 text-white hover:bg-emerald-500"
@@ -356,24 +357,22 @@ export function ManagerKeyMomentsModal() {
             {isPlaying ? "Pause" : "Play"}
           </button>
 
-          <div className="flex items-center gap-2">
-            {!isFullTime && (
-              <button
-                type="button"
-                onClick={handleSkipToFullTime}
-                className="rounded-xl border border-pitch-700 bg-pitch-900/80 px-3 py-2 text-xs font-semibold text-pitch-300 hover:text-white transition-all"
-              >
-                Skip to full time
-              </button>
-            )}
+          {!isFullTime && (
             <button
               type="button"
-              onClick={handleOpenFullReview}
-              className="rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-2 text-xs font-black text-slate-950 shadow hover:brightness-110 active:scale-95 transition-all"
+              onClick={handleSkipToFullTime}
+              className="min-h-11 flex-1 rounded-xl border border-pitch-700 bg-pitch-900/80 px-3 py-2 text-xs font-semibold text-pitch-300 hover:text-white transition-all sm:flex-none"
             >
-              Match report
+              Skip to FT
             </button>
-          </div>
+          )}
+          <button
+            type="button"
+            onClick={handleOpenFullReview}
+            className="min-h-11 flex-[1.2] rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-2 text-xs font-black text-slate-950 shadow hover:brightness-110 active:scale-95 transition-all sm:flex-none"
+          >
+            Match report
+          </button>
         </div>
       </div>
     </div>

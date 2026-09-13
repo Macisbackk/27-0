@@ -38,22 +38,25 @@ export function ManagerFixturesView() {
         </div>
 
         {/* Competition filter buttons */}
-        <div className="flex items-center justify-center sm:justify-end gap-1.5 overflow-x-auto pb-1">
+        <div className="flex items-center justify-center sm:justify-end gap-1.5 overflow-x-auto pb-1 flex-nowrap">
           <button
             type="button"
             onClick={() => setSelectedCompId(userClub?.competitionId || "super-league")}
-            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+            className={`shrink-0 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
               selectedCompId === userClub?.competitionId
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            My League ({userClub?.competitionId === "super-league" ? "Super League" : "Championship"})
+            <span className="sm:hidden">My League</span>
+            <span className="hidden sm:inline">
+              My League ({userClub?.competitionId === "super-league" ? "Super League" : "Championship"})
+            </span>
           </button>
           <button
             type="button"
             onClick={() => setSelectedCompId("challenge-cup")}
-            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+            className={`shrink-0 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
               selectedCompId === "challenge-cup"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
@@ -64,7 +67,7 @@ export function ManagerFixturesView() {
           <button
             type="button"
             onClick={() => setSelectedCompId("friendlies")}
-            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+            className={`shrink-0 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
               selectedCompId === "friendlies"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"

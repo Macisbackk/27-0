@@ -10,13 +10,18 @@ const DISCLAIMER =
   "27-0 is an unofficial fan-made rugby league squad-building game. It is not affiliated with, endorsed by, sponsored by, or connected to the Rugby Football League, Super League, RL Commercial, any rugby league club, broadcaster, player, or governing body. All names, clubs, and references are used for fan entertainment purposes only.";
 
 const MINIMAL_CHROME_PATHS = ["/login", "/auth/reset-password", "/auth/callback"];
+/** Full-chrome immersive modes — site footer collides with fixed bottom UI. */
+const HIDE_FOOTER_PATHS = ["/manager"];
 
 export function SiteFooter() {
   const pathname = usePathname();
+  const hideFooter = HIDE_FOOTER_PATHS.some((path) => pathname.startsWith(path));
   const minimalChrome = MINIMAL_CHROME_PATHS.some((path) =>
     pathname.startsWith(path)
   );
   useMountDiagnostic("app-footer");
+
+  if (hideFooter) return null;
 
   if (minimalChrome) {
     return (

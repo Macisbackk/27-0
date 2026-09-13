@@ -24,7 +24,7 @@ export function ManagerSeasonAwardsModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-3 sm:p-5 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-3 sm:p-5">
       <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-pitch-700 bg-pitch-950 p-6 sm:p-8 shadow-2xl space-y-6 scrollbar-thin scrollbar-thumb-pitch-700">
         {/* Banner Eyebrow */}
         <div className="text-center space-y-1">

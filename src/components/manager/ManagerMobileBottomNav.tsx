@@ -79,7 +79,7 @@ export function ManagerMobileBottomNav() {
     <>
       <nav
         data-manager-mobile-nav
-        className="fixed inset-x-0 bottom-0 z-40 sm:hidden border-t border-pitch-800 bg-pitch-950 pb-[env(safe-area-inset-bottom,0px)]"
+        className="fixed inset-x-0 bottom-0 z-40 ui-layer-sticky-footer sm:hidden border-t border-pitch-800 bg-pitch-950 pb-[env(safe-area-inset-bottom,0px)]"
         aria-label="Manager navigation"
       >
         <div className="grid grid-cols-5 gap-0.5 px-1 pt-1.5 pb-1">

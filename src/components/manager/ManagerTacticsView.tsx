@@ -113,7 +113,8 @@ export function ManagerTacticsView() {
             }}
             className="rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-2 text-xs sm:text-sm font-bold text-slate-950 shadow-md hover:brightness-110 active:scale-95 transition-all"
           >
-            Auto Pick Optimal 17
+            <span className="sm:hidden">Auto-Pick</span>
+            <span className="hidden sm:inline">Auto Pick Optimal 17</span>
           </button>
         </div>
       </div>
@@ -331,8 +332,8 @@ export function ManagerTacticsView() {
 
       {/* Slot Selection Modal */}
       {selectedSlotIdx !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-pitch-700 bg-pitch-900 p-5 shadow-2xl max-h-[85vh] flex flex-col">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 sm:p-4">
+          <div className="w-full max-w-md max-h-[min(90dvh,100%)] overflow-hidden rounded-2xl border border-pitch-700 bg-pitch-900 p-5 shadow-2xl flex flex-col">
             <div className="flex justify-between items-center mb-3 pb-2 border-b border-pitch-800">
               <h3 className="text-sm font-bold text-white">
                 Select Player for {isBenchSlot ? `Interchange #${14 + selectedSlotIdx}` : `${formatPositionLabel(STARTING_POSITIONS[selectedSlotIdx])} (#${selectedSlotIdx + 1})`}

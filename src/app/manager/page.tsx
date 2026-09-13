@@ -48,7 +48,7 @@ function ManagerModeContent() {
   return (
     <div
       className={`min-h-screen bg-pitch-950 text-pitch-100 flex flex-col ${
-        compact ? "manager-mobile-nav-pad manager-mobile-playbar-extra" : ""
+        compact ? "manager-mobile-hub-pad" : ""
       }`}
     >
       <ManagerHeader />

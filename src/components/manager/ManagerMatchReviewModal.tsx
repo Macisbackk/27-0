@@ -5,6 +5,7 @@ import { useManager } from "@/lib/manager/context";
 import { formatPositionLabel, formatPositionShort, formatScoreEventType } from "@/lib/manager";
 import { reconcileFixtureScoreEvents } from "@/lib/manager/match";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { uiLayerClass } from "@/lib/ui/layers";
 import type { ManagerFixture, ManagerClub, MatchPlayerPerformance } from "@/lib/manager/types";
 
 function PlayerRatingRow({
@@ -237,15 +238,15 @@ export function ManagerMatchReviewModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden overscroll-none bg-black/80 p-3 sm:p-5"
+      className={`fixed inset-0 ${uiLayerClass("modalBackdrop")} flex items-end justify-center overflow-hidden overscroll-none bg-black p-0 sm:items-center sm:p-5`}
       role="dialog"
       aria-modal="true"
       aria-label="Match Review"
     >
-      <div className="w-full max-w-4xl max-h-[min(90dvh,100%)] overflow-y-auto overflow-x-hidden rounded-3xl border border-pitch-700 bg-pitch-950 p-5 sm:p-7 shadow-2xl space-y-5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="w-full max-w-4xl max-h-[min(100dvh,100%)] overflow-y-auto overflow-x-hidden rounded-t-3xl border border-pitch-700 bg-pitch-950 p-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] sm:max-h-[min(90dvh,100%)] sm:rounded-3xl sm:p-7 sm:pb-7 shadow-2xl space-y-5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Header Eyebrow */}
-        <div className="flex items-center justify-between border-b border-pitch-800 pb-3 gap-2">
-          <div className="flex items-center gap-2 min-w-0 flex-wrap">
+        <div className="flex flex-col gap-2 border-b border-pitch-800 pb-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
             <span className="rounded-full bg-emerald-500/20 px-3 py-0.5 text-xs font-bold text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
               {fixture.roundName} Review
             </span>
@@ -262,7 +263,7 @@ export function ManagerMatchReviewModal() {
               <span>Watch Key Moments</span>
             </button>
           </div>
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-auto">
             <button
               type="button"
               onClick={returnToHub}

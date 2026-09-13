@@ -653,8 +653,8 @@ export function ManagerLoansView() {
 
       {/* MODAL 1: Loan IN Proposal */}
       {loanInTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-pitch-700 bg-pitch-900 p-5 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 sm:p-4">
+          <div className="w-full max-w-md max-h-[min(90dvh,100%)] overflow-y-auto rounded-2xl border border-pitch-700 bg-pitch-900 p-5 shadow-2xl">
             <div className="flex justify-between items-start mb-4 pb-3 border-b border-pitch-800">
               <div>
                 <span className="rounded bg-pitch-800 px-2 py-0.5 text-xs font-bold text-pitch-300">
@@ -789,8 +789,8 @@ export function ManagerLoansView() {
 
       {/* MODAL 2: Loan OUT Proposal */}
       {targetPlayer && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-pitch-700 bg-pitch-900 p-5 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 sm:p-4">
+          <div className="w-full max-w-md max-h-[min(90dvh,100%)] overflow-y-auto rounded-2xl border border-pitch-700 bg-pitch-900 p-5 shadow-2xl">
             <div className="flex justify-between items-start mb-4 pb-3 border-b border-pitch-800">
               <div>
                 <h3 className="text-xl font-bold text-white">Loan Out {targetPlayer.name}</h3>
