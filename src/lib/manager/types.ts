@@ -370,6 +370,21 @@ export interface ActiveLoan {
   canRecall: boolean;
 }
 
+/** AI / club loan enquiry awaiting human accept/reject (popup, not inbox). */
+export interface PendingLoanOffer {
+  id: string;
+  playerId: string;
+  parentClubId: string;
+  destinationClubId: string;
+  totalWeeks: number;
+  wageContributionPct: number;
+  canRecall: boolean;
+  season: number;
+  week: number;
+  /** in = player joining user club; out = user's player leaving on loan */
+  direction: "in" | "out";
+}
+
 export interface InboxMessage {
   id: string;
   season: number;
@@ -511,6 +526,7 @@ export interface ManagerState {
     activeBids: TransferBid[];
     completedTransfers: CompletedTransfer[];
     activeLoans: ActiveLoan[];
+    pendingLoanOffers?: PendingLoanOffer[];
   };
   inbox: {
     messages: InboxMessage[];

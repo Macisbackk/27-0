@@ -132,7 +132,7 @@ function getTryCommentary(player: ManagerPlayer): string {
     }
   }
   const template = pool[Math.floor(Math.random() * pool.length)] || "{player} crosses the try line to score!";
-  return template.replace("{player}", player.name);
+  return template.replace("{player}", player?.name || "A player");
 }
 
 export function simulateManagerMatch(
@@ -1344,6 +1344,9 @@ export function ensureFixtureKeyMoments(
   fixture: ManagerFixture,
   clubs?: Record<string, ManagerClub>
 ): ManagerKeyMoment[] {
+  if (!fixture?.homeClubId || !fixture?.awayClubId) {
+    return [];
+  }
   if (fixture.keyMoments && fixture.keyMoments.length > 0) {
     return reconcileFixtureKeyMoments(fixture.keyMoments, fixture);
   }
@@ -1405,7 +1408,7 @@ export function ensureFixtureKeyMoments(
       playerName: evt.playerName,
       title: `${evt.type === "TRY" ? "TRY!" : evt.type === "CONVERSION" ? "Conversion Goal" : evt.type === "PENALTY_GOAL" ? "Penalty Goal" : "DROP GOAL!"} (${evt.playerName})`,
       headline: `${clubShort} ${evt.type === "TRY" ? "Crosses The Line!" : "Scores Off The Tee"}`,
-      description: `${evt.playerName} registers a ${evt.type.toLowerCase().replace(/_/g, " ")} for ${clubName}.`,
+      description: `${evt.playerName || "A player"} registers a ${(evt.type || "TRY").toLowerCase().replace(/_/g, " ")} for ${clubName}.`,
       homeScoreAfter: runningHome,
       awayScoreAfter: runningAway,
       isHome,

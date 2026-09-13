@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import type {
   ClubLineup,
   ClubTactics,
@@ -81,6 +81,16 @@ export type ManagerTab =
   | "history"
   | "settings";
 
+export type ManagerOfferPopup =
+  | { kind: "transfer_bid"; bidId: string }
+  | { kind: "loan_offer"; offerId: string };
+
+function offerPopupKey(offer: ManagerOfferPopup): string {
+  return offer.kind === "transfer_bid"
+    ? `bid:${offer.bidId}`
+    : `loan:${offer.offerId}`;
+}
+
 interface ManagerContextValue {
   state: ManagerState | null;
   isLoading: boolean;
@@ -96,6 +106,8 @@ interface ManagerContextValue {
   setSeasonAwardsModal: (awards: SeasonAwards | null) => void;
   contractExpiryModalPlayers: ManagerPlayer[] | null;
   dismissContractExpiryModal: () => void;
+  offerPopup: ManagerOfferPopup | null;
+  deferOfferPopup: () => void;
   tutorialOpen: boolean;
   openTutorial: () => void;
   dismissTutorial: () => void;
@@ -165,7 +177,9 @@ interface ManagerContextValue {
     totalWeeks: number;
     wageContributionPct: number;
     canRecall: boolean;
+    offerId?: string;
   }) => { success: boolean; error?: string };
+  rejectPendingLoanOffer: (offerId: string) => void;
   loanPlayerOut: (
     playerId: string,
     destClubId: string,
@@ -215,6 +229,8 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
   const [contractExpiryModalPlayers, setContractExpiryModalPlayers] = useState<ManagerPlayer[] | null>(
     null
   );
+  const [offerPopup, setOfferPopup] = useState<ManagerOfferPopup | null>(null);
+  const deferredOfferIdsRef = useRef<Set<string>>(new Set());
   const [lastAdvanceError, setLastAdvanceError] = useState<string | null>(null);
   const [tutorialOpen, setTutorialOpen] = useState(false);
 
@@ -252,6 +268,13 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     setContractExpiryModalPlayers(null);
   }, [state, contractExpiryModalPlayers]);
 
+  const deferOfferPopup = useCallback(() => {
+    if (offerPopup) {
+      deferredOfferIdsRef.current.add(offerPopupKey(offerPopup));
+    }
+    setOfferPopup(null);
+  }, [offerPopup]);
+
   // First-run Manager tutorial (blocks contract-expiry until dismissed)
   useEffect(() => {
     if (!state || isLoading) return;
@@ -268,11 +291,40 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     lastPlayedMatchReview,
   ]);
 
+  // Incoming transfer/loan offers as popups (before contract expiry mail clutter)
+  useEffect(() => {
+    if (!state || isLoading) return;
+    if (tutorialOpen) return;
+    if (seasonAwardsModal || activeKeyMomentsFixture || lastPlayedMatchReview) return;
+    if (offerPopup) return;
+
+    const uid = state.manager.clubId;
+    const bidOffers: ManagerOfferPopup[] = state.transfers.activeBids
+      .filter((b) => b.toClubId === uid && b.status === "pending_club")
+      .map((b) => ({ kind: "transfer_bid" as const, bidId: b.id }));
+    const loanOffers: ManagerOfferPopup[] = (state.transfers.pendingLoanOffers || []).map(
+      (o) => ({ kind: "loan_offer" as const, offerId: o.id })
+    );
+    const next = [...bidOffers, ...loanOffers].find(
+      (o) => !deferredOfferIdsRef.current.has(offerPopupKey(o))
+    );
+    if (next) setOfferPopup(next);
+  }, [
+    state,
+    isLoading,
+    tutorialOpen,
+    seasonAwardsModal,
+    activeKeyMomentsFixture,
+    lastPlayedMatchReview,
+    offerPopup,
+  ]);
+
   // Surface contract expiry popups once higher-priority modals are clear
   useEffect(() => {
     if (!state) return;
     if (tutorialOpen) return;
     if (seasonAwardsModal || activeKeyMomentsFixture || lastPlayedMatchReview) return;
+    if (offerPopup) return;
     if (contractExpiryModalPlayers && contractExpiryModalPlayers.length > 0) return;
 
     const warnings = getUnacknowledgedContractExpiryWarnings(state, state.manager.clubId);
@@ -285,6 +337,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     seasonAwardsModal,
     activeKeyMomentsFixture,
     lastPlayedMatchReview,
+    offerPopup,
     contractExpiryModalPlayers,
   ]);
 
@@ -329,6 +382,8 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     setActiveKeyMomentsFixture(null);
     setSeasonAwardsModal(null);
     setContractExpiryModalPlayers(null);
+    setOfferPopup(null);
+    deferredOfferIdsRef.current.clear();
     setLastAdvanceError(null);
   }, []);
 
@@ -389,6 +444,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
       }
 
       setState(nextState);
+      deferredOfferIdsRef.current.clear();
       void persistManagerProgress(nextState);
       return true;
     } finally {
@@ -634,21 +690,25 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
   const decideOnIncomingBid = useCallback(
     (bidId: string, decision: "accept" | "reject") => {
       if (!state) return { success: false, error: "No active game" };
-      const evalRes = evaluateSellingClubBid(state, bidId, decision);
+      const evalRes = evaluateSellingClubBid(state, bidId, decision, { silent: true });
       if (!evalRes.success) return { success: false, error: evalRes.error };
 
       let updatedState = evalRes.state;
       if (decision === "accept") {
-        const evalPlayer = evaluatePlayerTransferTerms(updatedState, bidId);
+        const evalPlayer = evaluatePlayerTransferTerms(updatedState, bidId, { silent: true });
         updatedState = evalPlayer.state;
         if (evalPlayer.bid?.status === "player_accepted") {
           const compRes = completeTransfer(updatedState, bidId);
           if (compRes.success) {
             updatedState = compRes.state;
+          } else {
+            setOfferPopup(null);
+            return { success: false, error: compRes.error };
           }
         }
       }
 
+      setOfferPopup(null);
       setState(updatedState);
       return { success: true };
     },
@@ -663,6 +723,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
       totalWeeks: number;
       wageContributionPct: number;
       canRecall: boolean;
+      offerId?: string;
     }) => {
       if (!state) return { success: false, error: "No active game" };
       const res = createLoanAgreement(
@@ -674,10 +735,55 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
         payload.wageContributionPct,
         payload.canRecall
       );
-      if (res.success) {
-        setState(res.state);
+      if (!res.success) return { success: res.success, error: res.error };
+
+      let next = res.state;
+      if (payload.offerId) {
+        next = {
+          ...next,
+          transfers: {
+            ...next.transfers,
+            pendingLoanOffers: (next.transfers.pendingLoanOffers || []).filter(
+              (o) => o.id !== payload.offerId
+            ),
+          },
+        };
+      } else {
+        next = {
+          ...next,
+          transfers: {
+            ...next.transfers,
+            pendingLoanOffers: (next.transfers.pendingLoanOffers || []).filter(
+              (o) =>
+                !(
+                  o.playerId === payload.playerId &&
+                  o.parentClubId === payload.parentClubId &&
+                  o.destinationClubId === payload.destinationClubId
+                )
+            ),
+          },
+        };
       }
-      return { success: res.success, error: res.error };
+      setOfferPopup(null);
+      setState(next);
+      return { success: true };
+    },
+    [state]
+  );
+
+  const rejectPendingLoanOffer = useCallback(
+    (offerId: string) => {
+      if (!state) return;
+      setOfferPopup(null);
+      setState({
+        ...state,
+        transfers: {
+          ...state.transfers,
+          pendingLoanOffers: (state.transfers.pendingLoanOffers || []).filter(
+            (o) => o.id !== offerId
+          ),
+        },
+      });
     },
     [state]
   );
@@ -978,6 +1084,8 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
         setSeasonAwardsModal,
         contractExpiryModalPlayers,
         dismissContractExpiryModal,
+        offerPopup,
+        deferOfferPopup,
         tutorialOpen,
         openTutorial,
         dismissTutorial,
@@ -1003,6 +1111,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
         bidOnPlayer,
         decideOnIncomingBid,
         decideOnLoanOffer,
+        rejectPendingLoanOffer,
         loanPlayerOut,
         loanPlayerIn: loanPlayerInAction,
         recallPlayerLoan,

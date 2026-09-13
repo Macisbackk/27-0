@@ -18,7 +18,7 @@ import type {
   ManagerState,
   ManagerPlayer,
   Position,
-  InboxMessage,
+  PendingLoanOffer,
 } from "./types";
 
 const EMPTY_POS_COUNTS = (): Record<Position, number> => ({
@@ -43,12 +43,20 @@ function countPositions(players: ManagerPlayer[]): Record<Position, number> {
   return counts;
 }
 
-function pushInbox(state: ManagerState, message: InboxMessage): ManagerState {
+function pushPendingLoanOffer(
+  state: ManagerState,
+  offer: PendingLoanOffer
+): ManagerState {
+  const existing = state.transfers.pendingLoanOffers || [];
+  if (existing.some((o) => o.id === offer.id)) return state;
+  if (existing.some((o) => o.playerId === offer.playerId && o.direction === offer.direction)) {
+    return state;
+  }
   return {
     ...state,
-    inbox: {
-      messages: [message, ...state.inbox.messages],
-      unreadCount: state.inbox.unreadCount + 1,
+    transfers: {
+      ...state.transfers,
+      pendingLoanOffers: [offer, ...existing],
     },
   };
 }
@@ -79,43 +87,6 @@ function resolvePendingAiAiBids(state: ManagerState, userClubId: string): Manage
   }
 
   return next;
-}
-
-function appendIncomingBidMail(
-  state: ManagerState,
-  clubName: string,
-  playerName: string,
-  fee: number,
-  bidId: string | undefined,
-  season: number,
-  week: number
-): ManagerState {
-  if (!bidId) return state;
-  return pushInbox(state, {
-    id: `inbox_incoming_bid_${bidId}`,
-    season,
-    week,
-    dateStr: `Week ${week}`,
-    sender: `${clubName} Chief Executive`,
-    subject: `Transfer Bid Received: £${fee.toLocaleString()} for ${playerName}`,
-    body: `${clubName} has submitted an official transfer offer of £${fee.toLocaleString()} for ${playerName}. Accept or reject below, or review in Transfers.`,
-    category: "transfer",
-    isRead: false,
-    actionRequired: true,
-    relatedEntityId: bidId,
-    actions: [
-      {
-        label: "Accept Bid",
-        actionType: "accept_bid",
-        payload: { bidId, playerId: undefined },
-      },
-      {
-        label: "Reject Bid",
-        actionType: "reject_bid",
-        payload: { bidId },
-      },
-    ],
-  });
 }
 
 export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
@@ -284,18 +255,11 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
               fairFee,
               proposedWage,
               role,
-              2
+              2,
+              { silent: true }
             );
             if (bidResult.success) {
-              nextState = appendIncomingBidMail(
-                bidResult.state,
-                club.name,
-                hunt.name,
-                fairFee,
-                bidResult.bid?.id,
-                currentSeason,
-                currentWeek
-              );
+              nextState = bidResult.state;
               userBidsThisWeek++;
               cap = calculateSalaryCapUsage(nextState, clubId);
             }
@@ -429,18 +393,11 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
                 fairFee,
                 proposedWage,
                 role,
-                2
+                2,
+                { silent: true }
               );
               if (bidResult.success) {
-                nextState = appendIncomingBidMail(
-                  bidResult.state,
-                  club.name,
-                  target.name,
-                  fairFee,
-                  bidResult.bid?.id,
-                  currentSeason,
-                  currentWeek
-                );
+                nextState = bidResult.state;
                 userBidsThisWeek++;
               }
             }
@@ -469,38 +426,17 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
             : champClubs[Math.floor(Math.random() * champClubs.length)];
 
         if (dest && dest.id === userClubId) {
-          // Offer a loan *into* the user's club — requires accept
-          nextState = pushInbox(nextState, {
-            id: `inbox_loan_in_${loanCandidate.id}_${currentWeek}`,
+          nextState = pushPendingLoanOffer(nextState, {
+            id: `loan_offer_in_${loanCandidate.id}_${currentWeek}`,
+            playerId: loanCandidate.id,
+            parentClubId: clubId,
+            destinationClubId: userClubId,
+            totalWeeks: 8,
+            wageContributionPct: 50,
+            canRecall: true,
             season: currentSeason,
             week: currentWeek,
-            dateStr: `Week ${currentWeek}`,
-            sender: `${club.name} Academy Manager`,
-            subject: `Loan Offer: ${loanCandidate.name} available`,
-            body: `${club.name} are offering ${loanCandidate.name} (${loanCandidate.position}, ${loanCandidate.rating} OVR, age ${loanCandidate.age}) on an 8-week loan. Destination would pay 50% of wages. Accept to confirm.`,
-            category: "loan",
-            isRead: false,
-            actionRequired: true,
-            relatedEntityId: loanCandidate.id,
-            actions: [
-              {
-                label: "Accept Loan",
-                actionType: "accept_loan",
-                payload: {
-                  playerId: loanCandidate.id,
-                  parentClubId: clubId,
-                  destinationClubId: userClubId,
-                  totalWeeks: 8,
-                  wageContributionPct: 50,
-                  canRecall: true,
-                },
-              },
-              {
-                label: "Decline",
-                actionType: "reject_loan",
-                payload: { playerId: loanCandidate.id },
-              },
-            ],
+            direction: "in",
           });
           userLoanOffersThisWeek++;
         } else if (dest && dest.id !== userClubId) {
@@ -543,37 +479,17 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
         const canBorrow =
           !(parentComp === "championship" && club.competitionId === "super-league");
         if (canBorrow) {
-          nextState = pushInbox(nextState, {
-            id: `inbox_loan_out_${pick.id}_${clubId}_${currentWeek}`,
+          nextState = pushPendingLoanOffer(nextState, {
+            id: `loan_offer_out_${pick.id}_${clubId}_${currentWeek}`,
+            playerId: pick.id,
+            parentClubId: userClubId,
+            destinationClubId: clubId,
+            totalWeeks: 10,
+            wageContributionPct: 60,
+            canRecall: true,
             season: currentSeason,
             week: currentWeek,
-            dateStr: `Week ${currentWeek}`,
-            sender: `${club.name} Head Coach`,
-            subject: `Loan Enquiry: ${pick.name}`,
-            body: `${club.name} want ${pick.name} on loan for 10 weeks and will cover 60% of wages. You retain recall rights.`,
-            category: "loan",
-            isRead: false,
-            actionRequired: true,
-            relatedEntityId: pick.id,
-            actions: [
-              {
-                label: "Accept Loan",
-                actionType: "accept_loan",
-                payload: {
-                  playerId: pick.id,
-                  parentClubId: userClubId,
-                  destinationClubId: clubId,
-                  totalWeeks: 10,
-                  wageContributionPct: 60,
-                  canRecall: true,
-                },
-              },
-              {
-                label: "Decline",
-                actionType: "reject_loan",
-                payload: { playerId: pick.id },
-              },
-            ],
+            direction: "out",
           });
           userLoanOffersThisWeek++;
         }

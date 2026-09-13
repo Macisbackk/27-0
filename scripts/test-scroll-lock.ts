@@ -34,7 +34,7 @@ function installDomStub(): void {
   };
   (globalThis as { document?: unknown }).document = {
     body: { style: bodyStyle },
-    documentElement: { style: htmlStyle },
+    documentElement: { style: htmlStyle, dataset: {} as Record<string, string> },
     addEventListener() {},
     removeEventListener() {},
   };

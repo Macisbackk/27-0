@@ -633,6 +633,7 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
       activeBids: [],
       completedTransfers: [],
       activeLoans: [],
+      pendingLoanOffers: [],
     },
     seasonHistory: [],
     inbox: {

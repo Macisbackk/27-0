@@ -108,6 +108,7 @@ export function pruneManagerStateForStorage(state: ManagerState): ManagerState {
       activeBids: state.transfers.activeBids || [],
       activeLoans: state.transfers.activeLoans || [],
       listedPlayerIds: state.transfers.listedPlayerIds || [],
+      pendingLoanOffers: state.transfers.pendingLoanOffers || [],
     },
     seasonHistory: (state.seasonHistory || []).slice(-8),
   };
@@ -336,14 +337,26 @@ function upgradeLoadedManagerState(state: ManagerState): ManagerState {
   }
   const withDev = clubsTouched ? { ...state, clubs } : state;
 
-  if (withDev.seasonHistory && withDev.seasonHistory.length > 0 && withDev.inbox?.messages) {
+  const withOffers: ManagerState = {
+    ...withDev,
+    transfers: {
+      ...withDev.transfers,
+      activeBids: withDev.transfers.activeBids || [],
+      activeLoans: withDev.transfers.activeLoans || [],
+      listedPlayerIds: withDev.transfers.listedPlayerIds || [],
+      completedTransfers: withDev.transfers.completedTransfers || [],
+      pendingLoanOffers: withDev.transfers.pendingLoanOffers || [],
+    },
+  };
+
+  if (withOffers.seasonHistory && withOffers.seasonHistory.length > 0 && withOffers.inbox?.messages) {
     let updated = false;
-    const messages = withDev.inbox.messages.map((m) => {
+    const messages = withOffers.inbox.messages.map((m) => {
       if (
         m.sender === "Rugby Football League" &&
         m.subject.includes("Season Review & Roll of Honour")
       ) {
-        const historyRecord = withDev.seasonHistory!.find((rec) =>
+        const historyRecord = withOffers.seasonHistory!.find((rec) =>
           m.subject.includes(`${rec.season} Season Review`)
         );
         if (historyRecord && !m.body.includes("PROMOTION & RELEGATION")) {
@@ -359,16 +372,16 @@ function upgradeLoadedManagerState(state: ManagerState): ManagerState {
 
     if (updated) {
       return {
-        ...withDev,
+        ...withOffers,
         inbox: {
-          ...withDev.inbox,
+          ...withOffers.inbox,
           messages,
         },
       };
     }
   }
 
-  return withDev;
+  return withOffers;
 }
 
 function parseManagerStateRaw(raw: string): ManagerState | null {

@@ -10,7 +10,6 @@ import {
   getPlayerRatingContext,
   type PlayerRatingContext,
 } from "./rating-context";
-import { formatShortYear } from "./prime-year";
 import { formatShowcaseClubYear } from "./year-card";
 
 export type PlayerShowcaseViewModel = {
@@ -43,19 +42,11 @@ function resolveShowcaseYear(player: Player): number | undefined {
 }
 
 /**
- * Showcase titles always carry a short year when known:
- * Current → "Bevan French '26"; year cards → "Jamie Peacock '03".
- * Future current-era seasons (e.g. '27) use their card year once squads exist.
+ * Showcase card/popup title is the player's name only.
+ * Season years belong in clubYearLabel / year metadata — not the title.
  */
 export function formatShowcaseDisplayName(player: Player): string {
-  const name = getPlayerDisplayName(player);
-  if (!name) return name;
-  if (/\s'\d{2}$/.test(name)) return name;
-
-  const year = resolveShowcaseYear(player);
-  if (year === undefined) return name;
-
-  return `${name} ${formatShortYear(year)}`;
+  return getPlayerDisplayName(player);
 }
 
 /**

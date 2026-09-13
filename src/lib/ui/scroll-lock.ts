@@ -196,7 +196,7 @@ export function resetScrollLockForTests(): void {
     document.body.style.top = "";
     document.body.style.paddingRight = "";
     document.documentElement.style.paddingRight = "";
-    delete document.documentElement.dataset.uiOverlay;
+    delete document.documentElement.dataset?.uiOverlay;
     detachTouchBlocker();
   }
 }

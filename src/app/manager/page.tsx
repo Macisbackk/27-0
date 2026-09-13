@@ -24,6 +24,7 @@ import { ManagerMatchReviewModal } from "@/components/manager/ManagerMatchReview
 import { ManagerKeyMomentsModal } from "@/components/manager/ManagerKeyMomentsModal";
 import { ManagerSeasonAwardsModal } from "@/components/manager/ManagerSeasonAwardsModal";
 import { ManagerContractExpiryModal } from "@/components/manager/ManagerContractExpiryModal";
+import { ManagerIncomingOfferModal } from "@/components/manager/ManagerIncomingOfferModal";
 import { ManagerTutorialModal } from "@/components/manager/ManagerTutorialModal";
 import { useCompactViewport } from "@/lib/ui/viewport";
 
@@ -80,6 +81,7 @@ function ManagerModeContent() {
       <ManagerKeyMomentsModal />
       <ManagerMatchReviewModal />
       <ManagerSeasonAwardsModal />
+      <ManagerIncomingOfferModal />
       <ManagerContractExpiryModal />
     </div>
   );

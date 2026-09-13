@@ -1005,6 +1005,7 @@ export function rolloverSeason(state: ManagerState): {
       activeBids: [],
       completedTransfers: [],
       activeLoans: [],
+      pendingLoanOffers: [],
     },
     seasonHistory: [...(state.seasonHistory || []), historyRecord],
     inbox: {

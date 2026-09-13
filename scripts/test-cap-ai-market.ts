@@ -141,7 +141,8 @@ if (listable) {
 
 let sawTransferMail = false;
 let sawLoanMail = false;
-let aiAiCompleted = 0;
+let sawTransferBid = false;
+let sawLoanOffer = false;
 for (let w = 0; w < 12; w++) {
   try {
     aiState = advanceWeek(aiState);
@@ -152,11 +153,22 @@ for (let w = 0; w < 12; w++) {
   const mail = aiState.inbox.messages;
   if (mail.some((m) => m.category === "transfer" && m.actionRequired)) sawTransferMail = true;
   if (mail.some((m) => m.category === "loan" && m.actionRequired)) sawLoanMail = true;
-  aiAiCompleted += aiState.transfers.completedTransfers?.length || 0;
+  if (
+    aiState.transfers.activeBids.some(
+      (b) => b.toClubId === "bradford-bulls" && b.status === "pending_club"
+    )
+  ) {
+    sawTransferBid = true;
+  }
+  if ((aiState.transfers.pendingLoanOffers || []).length > 0) sawLoanOffer = true;
 }
-assert(sawTransferMail || aiState.transfers.activeBids.some((b) => b.toClubId === "bradford-bulls"),
-  "User receives transfer activity (mail or pending bid)");
-assert(sawLoanMail, "User receives at least one loan offer in inbox over early weeks");
+assert(
+  sawTransferBid,
+  "User receives pending transfer bid (popup queue source)"
+);
+assert(!sawTransferMail, "Transfer bids do not clog inbox with action mail");
+assert(sawLoanOffer, "User receives pending loan offer for popup");
+assert(!sawLoanMail, "Loan offers do not clog inbox with action mail");
 
 console.log("\n=== Loan offer accept path ===");
 let loanState = initializeManagerDatabase("york-knights", "Loan Path");
