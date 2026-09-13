@@ -9,14 +9,16 @@ import {
   PLAYER_INVESTMENT_DEFINITIONS,
   getPlayerInvestmentCost,
   canPlayerReceiveInvestment,
+  getDevelopmentResultsForTier,
   type PlayerInvestmentType,
 } from "@/lib/manager";
 import type { ManagerPlayer, Position, SquadTier } from "@/lib/manager/types";
 
 export function ManagerSquadView() {
-  const { state, movePlayer, replenishSquadTiers, investInPlayerCareer, renewAllTierContracts } =
+  const { state, movePlayer, replenishSquadTiers, investInPlayerCareer, renewAllTierContracts, setTransferListed, setLoanListed } =
     useManager();
   const [activeTier, setActiveTier] = useState<SquadTier | "unavailable">("first");
+  const [devPanel, setDevPanel] = useState<"roster" | "results">("roster");
   const [selectedPlayer, setSelectedPlayer] = useState<ManagerPlayer | null>(null);
   const [posFilter, setPosFilter] = useState<string>("ALL");
   const [showInvestments, setShowInvestments] = useState<boolean>(false);
@@ -94,8 +96,8 @@ export function ManagerSquadView() {
       {/* Header and Tier Tabs */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-white">Squad Management</h2>
-          <p className="text-xs text-pitch-400">
+          <h2 className="text-lg sm:text-2xl font-black text-white">Squad</h2>
+          <p className="hidden sm:block text-xs text-pitch-400">
             Organise First Team, Reserves, and Academy tiers. Move developing prospects up the ranks.
           </p>
         </div>
@@ -104,7 +106,10 @@ export function ManagerSquadView() {
         <div className="flex items-center justify-center sm:justify-end gap-1.5 overflow-x-auto pb-1">
           <button
             type="button"
-            onClick={() => setActiveTier("first")}
+            onClick={() => {
+              setActiveTier("first");
+              setDevPanel("roster");
+            }}
             className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
               activeTier === "first"
                 ? "bg-emerald-600 text-white shadow"
@@ -115,7 +120,10 @@ export function ManagerSquadView() {
           </button>
           <button
             type="button"
-            onClick={() => setActiveTier("reserves")}
+            onClick={() => {
+              setActiveTier("reserves");
+              setDevPanel("roster");
+            }}
             className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
               activeTier === "reserves"
                 ? "bg-emerald-600 text-white shadow"
@@ -126,7 +134,10 @@ export function ManagerSquadView() {
           </button>
           <button
             type="button"
-            onClick={() => setActiveTier("academy")}
+            onClick={() => {
+              setActiveTier("academy");
+              setDevPanel("roster");
+            }}
             className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
               activeTier === "academy"
                 ? "bg-emerald-600 text-white shadow"
@@ -137,19 +148,103 @@ export function ManagerSquadView() {
           </button>
           <button
             type="button"
-            onClick={() => setActiveTier("unavailable")}
+            onClick={() => {
+              setActiveTier("unavailable");
+              setDevPanel("roster");
+            }}
             className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
               activeTier === "unavailable"
                 ? "bg-rose-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Unavailable ({unavailableCount})
+            Out ({unavailableCount})
           </button>
         </div>
       </div>
 
       {(activeTier === "academy" || activeTier === "reserves") && (
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => setDevPanel("roster")}
+            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+              devPanel === "roster"
+                ? "bg-pitch-700 text-white border border-pitch-600"
+                : "bg-pitch-900 text-pitch-400 border border-pitch-800"
+            }`}
+          >
+            Squad
+          </button>
+          <button
+            type="button"
+            onClick={() => setDevPanel("results")}
+            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+              devPanel === "results"
+                ? "bg-pitch-700 text-white border border-pitch-600"
+                : "bg-pitch-900 text-pitch-400 border border-pitch-800"
+            }`}
+          >
+            Results
+          </button>
+        </div>
+      )}
+
+      {(activeTier === "academy" || activeTier === "reserves") && devPanel === "results" && (
+        <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow overflow-hidden">
+          <div className="border-b border-pitch-800 px-3 py-2.5 sm:px-4">
+            <h3 className="text-sm font-bold text-white">
+              {activeTier === "academy" ? "Academy" : "Reserves"} Results
+            </h3>
+            <p className="text-[11px] text-pitch-400">
+              Grade fixtures are simulated each week when you Continue.
+            </p>
+          </div>
+          <ul className="divide-y divide-pitch-800/60">
+            {getDevelopmentResultsForTier(state, userClubId, activeTier).length ? (
+              getDevelopmentResultsForTier(state, userClubId, activeTier).map((result) => {
+                const won = result.ourScore > result.theirScore;
+                const drew = result.ourScore === result.theirScore;
+                return (
+                  <li
+                    key={result.id}
+                    className="flex items-center justify-between gap-3 px-3 py-2.5 sm:px-4"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-pitch-500">
+                        Wk {result.week} · S{result.season}
+                      </p>
+                      <p className="truncate text-sm font-semibold text-white">
+                        {result.isHome ? "vs" : "@"} {result.opponentName}
+                      </p>
+                    </div>
+                    <div className="shrink-0 text-right">
+                      <p
+                        className={`text-base font-black ${
+                          won ? "text-emerald-400" : drew ? "text-amber-300" : "text-rose-400"
+                        }`}
+                      >
+                        {result.ourScore}–{result.theirScore}
+                      </p>
+                      <p className="text-[10px] font-bold text-pitch-500">
+                        {won ? "W" : drew ? "D" : "L"}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })
+            ) : (
+              <li className="px-3 py-8 text-center text-xs text-pitch-500 italic sm:px-4">
+                No grade results yet. Press Continue to simulate this week&apos;s Academy and Reserves
+                fixtures.
+              </li>
+            )}
+          </ul>
+        </div>
+      )}
+
+      {(activeTier === "academy" || activeTier === "reserves") &&
+        devPanel === "roster" && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-xl border border-pitch-800 bg-pitch-900/60 px-3 py-2.5">
           <p className="text-[11px] text-pitch-400">
             Bulk-extend every {activeTier === "academy" ? "Academy" : "Reserves"} contract by 2 years at
@@ -167,7 +262,7 @@ export function ManagerSquadView() {
         </div>
       )}
 
-      {renewMsg && (
+      {renewMsg && devPanel === "roster" && (
         <div
           className={`rounded-xl p-3 text-xs border ${
             renewMsg.isError
@@ -179,8 +274,59 @@ export function ManagerSquadView() {
         </div>
       )}
 
-      {/* Players Table */}
-      <div className="overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+      {/* Hide roster lists while viewing grade Results */}
+      {(activeTier === "first" ||
+        activeTier === "unavailable" ||
+        devPanel === "roster") && (
+        <>
+      {/* Mobile player cards */}
+      <div className="sm:hidden space-y-2">
+        {tierPlayers.length ? (
+          tierPlayers.map((player) => {
+            const isInjured = player.injury !== null;
+            const isSuspended = player.suspension !== null;
+            return (
+              <button
+                key={player.id}
+                type="button"
+                onClick={() => {
+                  setSelectedPlayer(player);
+                  setShowInvestments(false);
+                  setInvestMessage(null);
+                }}
+                className="manager-player-card manager-player-card--interactive w-full text-left rounded-xl border border-pitch-800 bg-pitch-900/80 px-3 py-2.5"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0 flex items-center gap-2.5">
+                    <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300">
+                      {formatPositionShort(player.position)}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-bold text-white">{player.name}</p>
+                      <p className="text-[11px] text-pitch-400">
+                        Age {player.age}
+                        {isInjured ? ` · Inj ${player.injury?.weeksRemaining}w` : ""}
+                        {isSuspended ? ` · Susp ${player.suspension?.weeksRemaining}w` : ""}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="shrink-0 text-right">
+                    <p className="text-base font-black text-emerald-400">{player.rating}</p>
+                    <p className="text-[10px] text-pitch-500">POT {player.potential}</p>
+                  </div>
+                </div>
+              </button>
+            );
+          })
+        ) : (
+          <p className="rounded-xl border border-dashed border-pitch-700 px-3 py-6 text-center text-xs text-pitch-500">
+            No players in this group.
+          </p>
+        )}
+      </div>
+
+      {/* Desktop players table */}
+      <div className="overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow hidden sm:block">
         <table className="w-full text-left text-xs">
           <thead className="border-b border-pitch-800 bg-pitch-950/80 text-pitch-400 font-semibold uppercase">
             <tr>
@@ -408,14 +554,14 @@ export function ManagerSquadView() {
                 <td colSpan={10} className="py-10 text-center">
                   <p className="text-pitch-300 font-semibold mb-1">No players currently in Reserves.</p>
                   <p className="text-xs text-pitch-500 mb-3">
-                    Bring in reserve players to provide crucial matchday backup and squad depth.
+                    Bring in players to restore a full Reserves matchday 17.
                   </p>
                   <button
                     type="button"
                     onClick={() => replenishSquadTiers("reserves")}
                     className="rounded-xl bg-emerald-600/20 px-3.5 py-1.5 text-xs font-bold text-emerald-300 hover:bg-emerald-600/40 border border-emerald-500/40 transition-all shadow"
                   >
-                    + Generate Reserve Players
+                    + Fill Reserves to 17
                   </button>
                 </td>
               </tr>
@@ -424,14 +570,14 @@ export function ManagerSquadView() {
                 <td colSpan={10} className="py-10 text-center">
                   <p className="text-pitch-300 font-semibold mb-1">No players currently in Academy.</p>
                   <p className="text-xs text-pitch-500 mb-3">
-                    Host youth trials to recruit high-potential prospects for your development ranks.
+                    Host youth trials to restore a full Academy matchday 17.
                   </p>
                   <button
                     type="button"
                     onClick={() => replenishSquadTiers("academy")}
                     className="rounded-xl bg-emerald-600/20 px-3.5 py-1.5 text-xs font-bold text-emerald-300 hover:bg-emerald-600/40 border border-emerald-500/40 transition-all shadow"
                   >
-                    + Hold Youth Trials / Generate Academy
+                    + Fill Academy to 17
                   </button>
                 </td>
               </tr>
@@ -445,6 +591,8 @@ export function ManagerSquadView() {
           </tbody>
         </table>
       </div>
+        </>
+      )}
 
       {/* Player Detail Modal */}
       {selectedPlayer && (() => {
@@ -583,6 +731,35 @@ export function ManagerSquadView() {
                   )}
                 </div>
               </div>
+
+              {isOwned && !activePlayer.loan && (
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setTransferListed(activePlayer.id, !activePlayer.isTransferListed)
+                    }
+                    className={`rounded-xl px-3 py-2 text-[11px] font-bold border ${
+                      activePlayer.isTransferListed
+                        ? "border-amber-500/50 bg-amber-500/15 text-amber-200"
+                        : "border-pitch-700 bg-pitch-900 text-pitch-300"
+                    }`}
+                  >
+                    {activePlayer.isTransferListed ? "Listed for Transfer ✓" : "List for Transfer"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLoanListed(activePlayer.id, !activePlayer.isLoanListed)}
+                    className={`rounded-xl px-3 py-2 text-[11px] font-bold border ${
+                      activePlayer.isLoanListed
+                        ? "border-sky-500/50 bg-sky-500/15 text-sky-200"
+                        : "border-pitch-700 bg-pitch-900 text-pitch-300"
+                    }`}
+                  >
+                    {activePlayer.isLoanListed ? "Listed for Loan ✓" : "List for Loan"}
+                  </button>
+                </div>
+              )}
 
               {/* Loan Details */}
               {activePlayer.loan && (

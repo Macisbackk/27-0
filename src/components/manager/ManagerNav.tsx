@@ -36,7 +36,7 @@ export function ManagerNav() {
   ];
 
   return (
-    <nav className="border-b border-pitch-800 bg-pitch-900 px-2 sm:px-6 sticky top-[57px] sm:top-[65px] z-20">
+    <nav className="border-b border-pitch-800 bg-pitch-900 px-2 sm:px-6 sticky top-0 z-20">
       <div className="mx-auto max-w-7xl overflow-x-auto py-1.5 scrollbar-none">
         <div className="flex w-max min-w-full items-center justify-center gap-1 px-1">
           {NAV_ITEMS.map((item) => {

@@ -16,6 +16,7 @@ export function ManagerHeader() {
     setSeasonAwardsModal,
     setActiveTab,
     exitToMenu,
+    autoPickSquad,
   } = useManager();
 
   if (!state) return null;
@@ -44,18 +45,23 @@ export function ManagerHeader() {
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <h1 className="truncate text-base font-bold text-white sm:text-lg">
+                <h1 className="truncate text-sm font-bold text-white sm:text-lg">
                   {club?.name || "My Club"}
                 </h1>
-                <span className="shrink-0 rounded-full bg-pitch-800 px-2 py-0.5 text-xs font-semibold uppercase text-pitch-300 border border-pitch-600">
+                <span className="hidden sm:inline-flex shrink-0 rounded-full bg-pitch-800 px-2 py-0.5 text-xs font-semibold uppercase text-pitch-300 border border-pitch-600">
                   {club?.competitionId === "super-league" ? "Super League" : "Championship"}
                 </span>
               </div>
-              <p className="truncate text-xs text-pitch-400">
+              <p className="truncate text-[11px] text-pitch-400 sm:hidden">
+                {isSeasonEnded
+                  ? `S${state.calendar.currentSeason} · Complete`
+                  : `S${state.calendar.currentSeason} · Wk ${state.calendar.currentWeek}/${state.calendar.totalWeeks}`}
+              </p>
+              <p className="hidden sm:block truncate text-xs text-pitch-400">
                 {isSeasonEnded
                   ? `Season ${state.calendar.currentSeason} · Complete`
                   : `Season ${state.calendar.currentSeason} · Week ${state.calendar.currentWeek} of ${state.calendar.totalWeeks}`}
-                <span className="hidden sm:inline"> ({formatCalendarPhase(state.calendar.phase)})</span>
+                <span> ({formatCalendarPhase(state.calendar.phase)})</span>
               </p>
             </div>
           </div>
@@ -126,52 +132,55 @@ export function ManagerHeader() {
               )}
             </button>
 
-            {isSeasonEnded ? (
-              <button
-                type="button"
-                onClick={() => {
-                  const awards = calculateSeasonAwards(state);
-                  setSeasonAwardsModal(awards);
-                }}
-                className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 px-4 py-2 font-bold text-slate-950 shadow-md hover:brightness-110 active:scale-95 transition-all text-sm"
-              >
-                <span>Review Season</span>
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </button>
-            ) : (
-              <button
-                type="button"
-                disabled={isAdvancing}
-                onClick={() => advanceCurrentWeek()}
-                className={`flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-2 font-bold text-slate-950 shadow-md hover:brightness-110 active:scale-95 transition-all text-sm ${
-                  isAdvancing ? "opacity-75 cursor-wait" : ""
-                }`}
-              >
-                {isAdvancing ? (
-                  <>
-                    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    <span>Simulating...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Continue</span>
-                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </>
-                )}
-              </button>
-            )}
+            {/* Desktop Continue — mobile uses the bottom play bar. */}
+            <div className="hidden sm:block">
+              {isSeasonEnded ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const awards = calculateSeasonAwards(state);
+                    setSeasonAwardsModal(awards);
+                  }}
+                  className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 px-4 py-2 font-bold text-slate-950 shadow-md hover:brightness-110 active:scale-95 transition-all text-sm"
+                >
+                  <span>Review Season</span>
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  disabled={isAdvancing}
+                  onClick={() => advanceCurrentWeek()}
+                  className={`flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-2 font-bold text-slate-950 shadow-md hover:brightness-110 active:scale-95 transition-all text-sm ${
+                    isAdvancing ? "opacity-75 cursor-wait" : ""
+                  }`}
+                >
+                  {isAdvancing ? (
+                    <>
+                      <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      <span>Simulating...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Continue</span>
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
         {lastAdvanceError && (
-          <div className="flex items-start justify-between gap-3 rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs text-amber-100">
+          <div className="hidden sm:flex items-start justify-between gap-3 rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs text-amber-100">
             <p className="leading-relaxed">
               <span className="font-black text-amber-300">Cannot play: </span>
               {lastAdvanceError}
@@ -180,12 +189,22 @@ export function ManagerHeader() {
               <button
                 type="button"
                 onClick={() => {
+                  autoPickSquad();
                   clearAdvanceError();
-                  setActiveTab("tactics");
                 }}
                 className="rounded-lg bg-amber-500/20 px-2.5 py-1 font-bold text-amber-200 border border-amber-500/40 hover:bg-amber-500/30"
               >
-                Fix Lineup
+                Auto-Fill 17
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  clearAdvanceError();
+                  setActiveTab("tactics");
+                }}
+                className="rounded-lg bg-pitch-800 px-2.5 py-1 font-bold text-pitch-200 border border-pitch-700 hover:bg-pitch-700"
+              >
+                Tactics
               </button>
               <button
                 type="button"

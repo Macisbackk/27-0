@@ -60,6 +60,14 @@ export function progressPlayerWeek(
   } else if (trainingFocus === "fitness") {
     fatigue = Math.max(0, fatigue - 20 - sportsScienceFatigueBonus);
     fitness = Math.min(100, fitness + 25 + Math.round(sportsScienceFatigueBonus / 2));
+  } else if (trainingFocus === "attack") {
+    fatigue = Math.max(0, fatigue - 12 - Math.round(sportsScienceFatigueBonus / 2));
+    fitness = Math.min(100, fitness + 8 + Math.round(sportsScienceFatigueBonus / 3));
+    form = Math.min(10, form + 0.15);
+  } else if (trainingFocus === "defence") {
+    fatigue = Math.max(0, fatigue - 18 - sportsScienceFatigueBonus);
+    fitness = Math.min(100, fitness + 12 + Math.round(sportsScienceFatigueBonus / 2));
+    form = Math.min(10, form + 0.1);
   } else {
     // Normal / balanced / skill training
     if (intensity === "low") {
@@ -89,6 +97,18 @@ export function progressPlayerWeek(
 
       // Training regime bonus
       if (trainingFocus === "development") growthChance += 0.06;
+      if (trainingFocus === "attack") {
+        const isBack = ["FULLBACK", "WING", "CENTRE", "STAND_OFF", "SCRUM_HALF"].includes(
+          player.position
+        );
+        growthChance += isBack ? 0.05 : 0.02;
+      }
+      if (trainingFocus === "defence") {
+        const isForward = ["PROP", "HOOKER", "SECOND_ROW", "LOOSE_FORWARD"].includes(
+          player.position
+        );
+        growthChance += isForward ? 0.05 : 0.02;
+      }
       if (intensity === "high") growthChance += 0.04;
       if (intensity === "low") growthChance -= 0.03;
 

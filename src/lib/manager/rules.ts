@@ -69,6 +69,9 @@ export const MATCHDAY_RULES = {
   SQUAD_SIZE: 17,
 } as const;
 
+/** Academy and Reserves grades field a full 17 like the first team. */
+export const DEVELOPMENT_SQUAD_SIZE = 17;
+
 /**
  * Championship economy tuning — keep Super League cash untouched while
  * preventing second-tier clubs from stacking SL-level transfer war chests.
@@ -93,6 +96,18 @@ export const CHAMPIONSHIP_ECONOMY = {
   STARTING_BALANCE_DEFAULT: 25_000,
   /** Championship wages as a fraction of Super League market rates. */
   WAGE_MULTIPLIER: 0.75,
+} as const;
+
+/** Personal-terms negotiation — players accept below their full ask. */
+export const CONTRACT_NEGOTIATION = {
+  MIN_WEEKLY_WAGE: 200,
+  /** Soft floor as a fraction of asking wage (negotiation room). */
+  ACCEPTANCE_FLOOR_PCT: 0.85,
+  /** Players moving clubs (transfer / free agent) ask slightly less. */
+  MOVE_ASK_DISCOUNT: 0.95,
+  /** Per contract year beyond the first, slight ask reduction (capped). */
+  YEAR_ASK_DISCOUNT: 0.02,
+  MAX_YEAR_ASK_DISCOUNT: 0.06,
 } as const;
 
 /**

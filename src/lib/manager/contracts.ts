@@ -3,7 +3,12 @@
  * Pure simulation logic.
  */
 
-import { SALARY_CAP, calculateMarketWage, CALENDAR_RULES } from "./rules";
+import {
+  SALARY_CAP,
+  calculateMarketWage,
+  CALENDAR_RULES,
+  CONTRACT_NEGOTIATION,
+} from "./rules";
 import type {
   ManagerState,
   ManagerPlayer,
@@ -11,10 +16,20 @@ import type {
   SquadRole,
 } from "./types";
 
+export type ContractOfferContext = "renewal" | "transfer" | "free_agent";
+
 export interface ContractEvaluationResult {
   accepted: boolean;
   reason: string;
+  /** Soft floor — offers at or above this are accepted. */
   minimumAcceptableWage: number;
+  /** Agent's preferred / asking wage (UI guidance). */
+  askingWage: number;
+}
+
+export interface EvaluateContractOfferOptions {
+  context?: ContractOfferContext;
+  contractYears?: number;
 }
 
 export interface ContractOperationResult {
@@ -110,41 +125,79 @@ export function calculateSalaryCapUsage(state: ManagerState, clubId: string): {
   };
 }
 
+function roundWageToStep(weekly: number): number {
+  return Math.max(
+    CONTRACT_NEGOTIATION.MIN_WEEKLY_WAGE,
+    Math.round(weekly / 50) * 50
+  );
+}
+
 /**
  * Evaluates whether a player accepts a contract offer.
+ * Asking wage is the preferred figure; players still accept from the soft floor
+ * (~15% below ask) so negotiations have leeway.
  */
 export function evaluateContractOffer(
   player: { rating: number; age: number; morale: number; form: number },
   club: { reputation: number; competitionId: string },
   offeredWage: number,
-  offeredRole: SquadRole
+  offeredRole: SquadRole,
+  options?: EvaluateContractOfferOptions
 ): ContractEvaluationResult {
-  const marketWage = calculateMarketWage(player.rating, player.age, club.competitionId as any);
+  const marketWage = calculateMarketWage(
+    player.rating,
+    player.age,
+    club.competitionId as "super-league" | "championship"
+  );
 
-  // Minimum acceptable wage varies with role expectation and club reputation
   let roleMultiplier = 1.0;
   if (offeredRole === "star") roleMultiplier = 1.15;
   if (offeredRole === "rotation") roleMultiplier = 0.9;
   if (offeredRole === "youth" || offeredRole === "backup") roleMultiplier = 0.8;
 
-  // Morale effect: low morale demands higher wage to stay
-  const moraleDiscount = player.morale >= 80 ? 0.95 : (player.morale < 60 ? 1.15 : 1.0);
+  // Morale: happy players settle cheaper; unhappy ones push for more
+  const moraleFactor = player.morale >= 80 ? 0.95 : player.morale < 60 ? 1.12 : 1.0;
 
-  const minimumAcceptable = Math.round(marketWage * roleMultiplier * moraleDiscount);
+  // Stronger clubs are more attractive — slight ask reduction
+  const rep = club.reputation || 50;
+  const reputationFactor = rep >= 80 ? 0.94 : rep >= 65 ? 0.97 : 1.0;
+
+  const context = options?.context ?? "renewal";
+  const moveFactor =
+    context === "transfer" || context === "free_agent"
+      ? CONTRACT_NEGOTIATION.MOVE_ASK_DISCOUNT
+      : 1.0;
+
+  const years = Math.max(1, options?.contractYears ?? 1);
+  const yearFactor = Math.max(
+    1 - CONTRACT_NEGOTIATION.MAX_YEAR_ASK_DISCOUNT,
+    1 - Math.max(0, years - 1) * CONTRACT_NEGOTIATION.YEAR_ASK_DISCOUNT
+  );
+
+  const askingWage = roundWageToStep(
+    marketWage * roleMultiplier * moraleFactor * reputationFactor * moveFactor * yearFactor
+  );
+  const minimumAcceptable = roundWageToStep(
+    askingWage * CONTRACT_NEGOTIATION.ACCEPTANCE_FLOOR_PCT
+  );
 
   if (offeredWage >= minimumAcceptable) {
+    const negotiated = offeredWage < askingWage;
     return {
       accepted: true,
-      reason: "The player is satisfied with the financial terms and offered squad role.",
+      reason: negotiated
+        ? `Personal terms agreed after negotiation (£${offeredWage.toLocaleString()}/wk; agent had asked ~£${askingWage.toLocaleString()}/wk).`
+        : "The player is satisfied with the financial terms and offered squad role.",
       minimumAcceptableWage: minimumAcceptable,
+      askingWage,
     };
   }
 
-  const shortfall = minimumAcceptable - offeredWage;
   return {
     accepted: false,
-    reason: `The offered wage (£${offeredWage.toLocaleString()}/wk) is below the player's expectation. Minimum acceptable is £${minimumAcceptable.toLocaleString()}/wk.`,
+    reason: `The offered wage (£${offeredWage.toLocaleString()}/wk) is below what the player will accept. They are looking for around £${askingWage.toLocaleString()}/wk (likely to accept from £${minimumAcceptable.toLocaleString()}/wk).`,
     minimumAcceptableWage: minimumAcceptable,
+    askingWage,
   };
 }
 
@@ -167,7 +220,10 @@ export function renewPlayerContract(
   if (!club) return { success: false, state, error: "Club not found." };
 
   // 1. Evaluate player acceptance
-  const evaluation = evaluateContractOffer(player, club, offeredWage, offeredRole);
+  const evaluation = evaluateContractOffer(player, club, offeredWage, offeredRole, {
+    context: "renewal",
+    contractYears,
+  });
   if (!evaluation.accepted) {
     return { success: false, state, error: evaluation.reason };
   }
@@ -314,7 +370,10 @@ export function renewAllSquadTierContracts(
       player.contract?.role ||
       (player.squadTier === "academy" ? "youth" : "rotation");
     const currentWage = player.contract?.wageWeekly || 0;
-    const evaluation = evaluateContractOffer(player, club, currentWage, role);
+    const evaluation = evaluateContractOffer(player, club, currentWage, role, {
+      context: "renewal",
+      contractYears,
+    });
     const offeredWage = Math.max(currentWage, evaluation.minimumAcceptableWage);
 
     const res = renewPlayerContract(
@@ -484,7 +543,10 @@ export function signFreeAgent(
   if (!club) return { success: false, state, error: "Club not found." };
 
   // 1. Evaluate player acceptance
-  const evaluation = evaluateContractOffer(player, club, offeredWage, offeredRole);
+  const evaluation = evaluateContractOffer(player, club, offeredWage, offeredRole, {
+    context: "free_agent",
+    contractYears,
+  });
   if (!evaluation.accepted) {
     return { success: false, state, error: evaluation.reason };
   }

@@ -15,6 +15,7 @@ export function ManagerDashboard() {
     markAllMessagesRead,
     getUserMatchdayReadiness,
     lastAdvanceError,
+    autoPickSquad,
   } = useManager();
 
   if (!state) return null;
@@ -25,19 +26,15 @@ export function ManagerDashboard() {
   const readiness = getUserMatchdayReadiness();
   const lineupShort = readiness != null && !readiness.ready;
 
-  // Find next fixture for the manager's club
-  const compId = club?.competitionId || "super-league";
-  const comp = state.competitions[compId];
-  const nextFixture =
-    state.competitions["friendlies"]?.fixtures.find(
-      (f) => !f.isPlayed && (f.homeClubId === userClubId || f.awayClubId === userClubId)
-    ) ||
-    state.competitions["challenge-cup"]?.fixtures.find(
-      (f) => !f.isPlayed && (f.homeClubId === userClubId || f.awayClubId === userClubId)
-    ) ||
-    comp?.fixtures.find(
-      (f) => !f.isPlayed && (f.homeClubId === userClubId || f.awayClubId === userClubId)
-    );
+  // Find next fixture chronologically across competitions
+  const nextFixture = Object.values(state.competitions)
+    .flatMap((c) => c.fixtures)
+    .filter(
+      (f) =>
+        !f.isPlayed &&
+        (f.homeClubId === userClubId || f.awayClubId === userClubId)
+    )
+    .sort((a, b) => a.week - b.week || a.roundName.localeCompare(b.roundName))[0];
 
   const opponentClubId = nextFixture
     ? nextFixture.homeClubId === userClubId
@@ -47,6 +44,8 @@ export function ManagerDashboard() {
   const opponentClub = opponentClubId ? state.clubs[opponentClubId] : null;
 
   // Standings position
+  const compId = club?.competitionId || "super-league";
+  const comp = state.competitions[compId];
   const sorted = comp ? sortStandings(comp.standings) : [];
   const currentRank = sorted.findIndex((s) => s.clubId === userClubId) + 1;
   const userStanding = sorted.find((s) => s.clubId === userClubId);
@@ -60,15 +59,15 @@ export function ManagerDashboard() {
   const recentInbox = state.inbox.messages.slice(0, 3);
 
   return (
-    <div className="mx-auto max-w-7xl space-y-5 px-3 py-4 sm:px-6 sm:py-6">
+    <div className="mx-auto max-w-7xl space-y-3 px-3 py-3 sm:space-y-5 sm:px-6 sm:py-6">
       {/* Top Banner: Next Match Highlight */}
-      <section className="relative overflow-hidden rounded-2xl border border-pitch-700 bg-gradient-to-br from-pitch-900 to-pitch-950 p-5 shadow-lg">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <span className="rounded-full bg-emerald-500/20 px-2.5 py-0.5 text-xs font-bold text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
+      <section className="relative overflow-hidden rounded-2xl border border-pitch-700 bg-gradient-to-br from-pitch-900 to-pitch-950 p-4 sm:p-5 shadow-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+          <div className="min-w-0">
+            <span className="rounded-full bg-emerald-500/20 px-2.5 py-0.5 text-[10px] sm:text-xs font-bold text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
               {nextFixture ? nextFixture.roundName : "Season Complete"}
             </span>
-            <h2 className="mt-2 text-xl sm:text-2xl font-black text-white">
+            <h2 className="mt-1.5 text-lg sm:text-2xl font-black text-white truncate">
               {nextFixture && opponentClub ? (
                 <>
                   {nextFixture.homeClubId === userClubId ? "vs" : "@"} {opponentClub.name}
@@ -77,17 +76,34 @@ export function ManagerDashboard() {
                 "End of Season"
               )}
             </h2>
-            <p className="text-xs sm:text-sm text-pitch-400 mt-0.5">
+            <p className="text-[11px] sm:text-sm text-pitch-400 mt-0.5 truncate">
               {nextFixture
-                ? `${nextFixture.competitionId === "friendlies" ? "Pre-Season Friendly" : (nextFixture.competitionId === "challenge-cup" ? "Challenge Cup" : (club?.competitionId === "super-league" ? "Super League" : "Championship"))} · Week ${nextFixture.week}`
-                : "All fixtures complete for this campaign."}
+                ? `${nextFixture.competitionId === "friendlies" ? "Friendly" : (nextFixture.competitionId === "challenge-cup" ? "Cup" : (club?.competitionId === "super-league" ? "Super League" : "Championship"))} · Wk ${nextFixture.week}`
+                : "All fixtures complete."}
             </p>
+            <div className="mt-2 flex flex-wrap gap-2 text-[11px] sm:hidden">
+              <span className="rounded-lg border border-pitch-800 bg-pitch-950/70 px-2 py-1 text-pitch-300">
+                Balance <span className="font-bold text-emerald-400">£{(club?.finances.balance || 0).toLocaleString()}</span>
+              </span>
+              <span className="rounded-lg border border-pitch-800 bg-pitch-950/70 px-2 py-1 text-pitch-300">
+                Cap <span className={`font-bold ${cap.isOverCap ? "text-rose-400" : "text-sky-400"}`}>£{Math.max(0, cap.availableCapWeekly).toLocaleString()}</span>
+              </span>
+              <span className="rounded-lg border border-pitch-800 bg-pitch-950/70 px-2 py-1 text-pitch-300">
+                Pos <span className="font-bold text-white">{currentRank > 0 ? `#${currentRank}` : "-"}</span>
+              </span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-3">
             <button
               type="button"
-              onClick={() => setActiveTab("tactics")}
+              onClick={() => {
+                if (lineupShort) {
+                  autoPickSquad();
+                } else {
+                  setActiveTab("tactics");
+                }
+              }}
               className={`rounded-xl border px-4 py-2.5 text-xs sm:text-sm font-semibold transition-colors ${
                 lineupShort
                   ? "border-amber-500/50 bg-amber-500/15 text-amber-200 hover:bg-amber-500/25"
@@ -95,7 +111,7 @@ export function ManagerDashboard() {
               }`}
             >
               {lineupShort
-                ? `Fix Lineup (${readiness?.selectedCount ?? 0}/17)`
+                ? `Auto-Fill Lineup (${readiness?.selectedCount ?? 0}/17)`
                 : "Matchday Tactics"}
             </button>
             <button
@@ -110,18 +126,18 @@ export function ManagerDashboard() {
         </div>
 
         {(lineupShort || lastAdvanceError) && (
-          <p className="mt-3 text-xs text-amber-300/90 leading-relaxed">
+          <p className="mt-3 text-xs text-amber-300/90 leading-relaxed sm:block">
             {lastAdvanceError ||
               readiness?.error ||
-              "Name a full 17 (13 starters + 4 interchange) in Tactics before playing a match week."}
+              "Name a full 17 before playing a match week. Use Auto-Fill Lineup to complete empty slots."}
           </p>
         )}
       </section>
 
-      {/* Grid: 3 Main Cards */}
-      <div className="grid gap-5 md:grid-cols-3">
+      {/* Grid: 3 Main Cards — tighter on mobile */}
+      <div className="grid gap-3 sm:gap-5 grid-cols-1 md:grid-cols-3">
         {/* Card 1: League Standing Mini */}
-        <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-5 shadow">
+        <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-3.5 sm:p-5 shadow">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold text-sm text-white">League Position</h3>
             <button
@@ -186,7 +202,7 @@ export function ManagerDashboard() {
         </div>
 
         {/* Card 2: Squad Status & Health */}
-        <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-5 shadow">
+        <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-3.5 sm:p-5 shadow">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold text-sm text-white">Squad Status</h3>
             <button
@@ -232,7 +248,7 @@ export function ManagerDashboard() {
         </div>
 
         {/* Card 3: Board Confidence & Objectives */}
-        <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-5 shadow">
+        <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-3.5 sm:p-5 shadow">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold text-sm text-white">Board Confidence</h3>
             <span className="font-bold text-emerald-400 text-sm">{club?.boardConfidence}%</span>
@@ -257,7 +273,13 @@ export function ManagerDashboard() {
             {club?.boardObjectives.slice(0, 2).map((obj) => (
               <div key={obj.id} className="rounded-lg bg-pitch-950/60 p-2 border border-pitch-800/40">
                 <span className="font-medium text-white block">{obj.title}</span>
-                <span className="text-[11px] text-pitch-400">{obj.description}</span>
+                <span className="text-[11px] text-pitch-400">
+                  {obj.isCompleted
+                    ? "Completed"
+                    : obj.isFailed
+                    ? "Failed"
+                    : `Progress: ${String(obj.currentValue)}`}
+                </span>
               </div>
             ))}
           </div>
@@ -265,9 +287,9 @@ export function ManagerDashboard() {
       </div>
 
       {/* Bottom Section: Recent Inbox Messages */}
-      <section className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-5 shadow">
+      <section className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-3.5 sm:p-5 shadow">
         <div className="flex items-center justify-between mb-3 pb-2 border-b border-pitch-800">
-          <h3 className="font-bold text-sm text-white">Recent Inbox News</h3>
+          <h3 className="font-bold text-sm text-white">Inbox</h3>
           <div className="flex items-center gap-3">
             {state.inbox.unreadCount > 0 && (
               <button

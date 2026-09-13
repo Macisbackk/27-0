@@ -34,8 +34,8 @@ export function ManagerHistoryView() {
     <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6 space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-black text-white">Career History & Season Archives</h2>
-        <p className="text-xs text-pitch-400">
+        <h2 className="text-lg sm:text-2xl font-black text-white">History</h2>
+        <p className="hidden sm:block text-xs text-pitch-400">
           Permanent historical record of domestic champions, silverware, league tables, awards, and your club&apos;s honours.
         </p>
       </div>

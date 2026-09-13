@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useManager } from "@/lib/manager/context";
-import { setPlayerTrainingFocus } from "@/lib/manager/player";
 import { formatPositionShort } from "@/lib/manager";
 import type { TrainingFocus, TrainingIntensity } from "@/lib/manager/types";
 
 export function ManagerTrainingView() {
-  const { state } = useManager();
-  const [, setRerender] = useState({});
+  const { state, setTrainingFocus, setTrainingIntensity } = useManager();
 
   if (!state) return null;
 
@@ -20,23 +18,18 @@ export function ManagerTrainingView() {
   clubPlayers.sort((a, b) => b.rating - a.rating);
 
   const handleIntensityChange = (intensity: TrainingIntensity) => {
-    club.tactics.trainingIntensity = intensity;
-    setRerender({});
+    setTrainingIntensity(intensity);
   };
 
   const handlePlayerFocusChange = (playerId: string, focus: TrainingFocus) => {
-    const player = state.players[playerId];
-    if (player) {
-      state.players[playerId] = setPlayerTrainingFocus(player, focus);
-      setRerender({});
-    }
+    setTrainingFocus(playerId, focus);
   };
 
   return (
     <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6 space-y-5">
       <div>
-        <h2 className="text-xl sm:text-2xl font-black text-white">Training & Conditioning</h2>
-        <p className="text-xs text-pitch-400">
+        <h2 className="text-lg sm:text-2xl font-black text-white">Training</h2>
+        <p className="hidden sm:block text-xs text-pitch-400">
           Balance weekly match sharpness and player growth against fatigue and injury prevention.
         </p>
       </div>

@@ -5,7 +5,7 @@ import { useManager } from "@/lib/manager/context";
 import { ensureFixtureKeyMoments } from "@/lib/manager/match";
 import { formatPositionShort } from "@/lib/manager/formatters";
 import { synth } from "@/lib/sound/synth";
-import { acquireScrollLock, releaseScrollLock } from "@/lib/ui/scroll-lock";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import type { ManagerKeyMoment, KeyMomentType } from "@/lib/manager/types";
 
 function getMomentBadge(type: KeyMomentType) {
@@ -79,14 +79,8 @@ export function ManagerKeyMomentsModal() {
   const [playSpeed, setPlaySpeed] = useState<"1x" | "2x">("1x");
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Lock document scroll while modal is active
-  useEffect(() => {
-    if (!activeKeyMomentsFixture) return;
-    const lockId = acquireScrollLock("manager-key-moments");
-    return () => {
-      releaseScrollLock(lockId);
-    };
-  }, [activeKeyMomentsFixture]);
+  // Lock document scroll while matchcast is active (no page scrollbar).
+  useScrollLock(Boolean(activeKeyMomentsFixture), "manager-key-moments");
 
   // Ensure moments exist
   const moments: ManagerKeyMoment[] = useMemo(() => {
@@ -224,10 +218,15 @@ export function ManagerKeyMomentsModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 sm:p-5 backdrop-blur-md">
-      <div className="w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-3xl border border-pitch-700 bg-pitch-950 p-4 sm:p-6 shadow-2xl space-y-4 scrollbar-thin scrollbar-thumb-pitch-700">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden overscroll-none bg-black/80 p-3 sm:p-5"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Key Moments Matchcast"
+    >
+      <div className="flex w-full max-w-3xl max-h-[min(92dvh,100%)] flex-col overflow-hidden rounded-3xl border border-pitch-700 bg-pitch-950 p-4 sm:p-6 shadow-2xl">
         {/* Header Bar */}
-        <div className="flex items-center justify-between border-b border-pitch-800 pb-3">
+        <div className="flex shrink-0 items-center justify-between border-b border-pitch-800 pb-3">
           <div className="flex items-center gap-2">
             <span className="rounded-full bg-emerald-500/20 px-3 py-0.5 text-[11px] font-bold text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
               {fixture.roundName}
@@ -253,7 +252,7 @@ export function ManagerKeyMomentsModal() {
         </div>
 
         {/* Dynamic Running Scoreboard */}
-        <div className="rounded-2xl border border-pitch-800 bg-gradient-to-b from-pitch-900 to-pitch-950 p-4 shadow-lg">
+        <div className="mt-3 shrink-0 rounded-2xl border border-pitch-800 bg-gradient-to-b from-pitch-900 to-pitch-950 p-3 sm:p-4 shadow-lg">
           <div className="grid grid-cols-7 items-center gap-2">
             {/* Home Team */}
             <div className="col-span-3 flex items-center justify-end gap-3 text-right">
@@ -334,7 +333,9 @@ export function ManagerKeyMomentsModal() {
         </div>
 
         {/* Feature Hero Card for Current Moment */}
-        <div className={`rounded-2xl border p-4 sm:p-5 shadow-lg space-y-3 transition-all ${cardStyle}`}>
+        <div
+          className={`mt-3 min-h-0 flex-1 overflow-hidden rounded-2xl border p-3 sm:p-5 shadow-lg space-y-2 sm:space-y-3 transition-all ${cardStyle}`}
+        >
           {/* Top row: Minute, Badge, Team */}
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
@@ -360,8 +361,8 @@ export function ManagerKeyMomentsModal() {
           </div>
 
           {/* Commentary Body */}
-          <div className="rounded-xl bg-pitch-950/70 border border-pitch-800/60 p-3 sm:p-3.5">
-            <p className="text-xs sm:text-sm text-pitch-200 leading-relaxed italic">
+          <div className="min-h-0 overflow-hidden rounded-xl bg-pitch-950/70 border border-pitch-800/60 p-3 sm:p-3.5">
+            <p className="text-xs sm:text-sm text-pitch-200 leading-relaxed italic line-clamp-5 sm:line-clamp-6">
               &ldquo;{activeMoment.description}&rdquo;
             </p>
           </div>
@@ -393,13 +394,13 @@ export function ManagerKeyMomentsModal() {
         </div>
 
         {/* Timeline Strip (Pills for every moment) */}
-        <div className="space-y-1.5">
+        <div className="mt-3 shrink-0 space-y-1.5">
           <div className="flex items-center justify-between text-[11px] text-pitch-400 font-semibold px-1">
             <span>Match Timeline</span>
-            <span>Click any event to inspect</span>
+            <span className="hidden sm:inline">Click any event to inspect</span>
           </div>
 
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-pitch-700">
+          <div className="flex items-center gap-1.5 overflow-x-auto overflow-y-hidden pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {moments.map((m, idx) => {
               const isSelected = idx === currentIdx;
               const isHome = m.isHome;
@@ -428,7 +429,7 @@ export function ManagerKeyMomentsModal() {
         </div>
 
         {/* Playback Controls Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-pitch-800">
+        <div className="mt-3 flex shrink-0 flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-pitch-800">
           {/* Navigation & Auto-Play Controls */}
           <div className="flex items-center gap-1.5">
             <button

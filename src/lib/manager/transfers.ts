@@ -258,8 +258,14 @@ export function evaluatePlayerTransferTerms(
   const buyingClub = state.clubs[bid.fromClubId];
   if (!player || !buyingClub) return { success: false, state, error: "Invalid bid data." };
 
-  // Evaluate personal contract terms
-  const evaluation = evaluateContractOffer(player, buyingClub, bid.offeredWage, bid.offeredRole);
+  // Evaluate personal contract terms (leeway below asking wage)
+  const evaluation = evaluateContractOffer(
+    player,
+    buyingClub,
+    bid.offeredWage,
+    bid.offeredRole,
+    { context: "transfer", contractYears: bid.offeredContractYears }
+  );
 
   const updatedBid: TransferBid = {
     ...bid,

@@ -16,44 +16,98 @@ export function ManagerLeagueView() {
   const sorted = comp ? sortStandings(comp.standings) : [];
 
   return (
-    <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6 space-y-4">
+    <div className="mx-auto max-w-7xl px-3 py-3 sm:py-6 sm:px-6 space-y-3 sm:space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-white">League Standings</h2>
-          <p className="text-xs text-pitch-400">
+          <h2 className="text-lg sm:text-2xl font-black text-white">League</h2>
+          <p className="hidden sm:block text-xs text-pitch-400">
             Official league tables with promotion, playoff, and relegation cutoffs.
           </p>
         </div>
 
         {/* Division switch */}
-        <div className="flex items-center justify-center sm:justify-end gap-1.5">
+        <div className="flex items-center gap-1.5">
           <button
             type="button"
             onClick={() => setActiveTier("super-league")}
-            className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all ${
+            className={`flex-1 sm:flex-none rounded-lg px-3 py-2 text-xs font-bold transition-all ${
               activeTier === "super-league"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Super League (14 Clubs)
+            Super League
           </button>
           <button
             type="button"
             onClick={() => setActiveTier("championship")}
-            className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all ${
+            className={`flex-1 sm:flex-none rounded-lg px-3 py-2 text-xs font-bold transition-all ${
               activeTier === "championship"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Championship (14 Clubs)
+            Championship
           </button>
         </div>
       </div>
 
-      {/* Standings Table */}
-      <div className="overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+      {/* Mobile compact standings */}
+      <div className="sm:hidden rounded-2xl border border-pitch-800 bg-pitch-900/80 overflow-hidden">
+        <div className="grid grid-cols-[2rem_1fr_2rem_2.5rem_2.5rem] gap-1 border-b border-pitch-800 bg-pitch-950/80 px-2.5 py-2 text-[10px] font-bold uppercase text-pitch-500">
+          <span>#</span>
+          <span>Club</span>
+          <span className="text-center">P</span>
+          <span className="text-center">Diff</span>
+          <span className="text-center">Pts</span>
+        </div>
+        <ul className="divide-y divide-pitch-800/60">
+          {sorted.map((row, idx) => {
+            const rank = idx + 1;
+            const club = state.clubs[row.clubId];
+            const isUserClub = row.clubId === userClub?.id;
+            const isSuperLeague = activeTier === "super-league";
+            const zone =
+              isSuperLeague && rank <= 6
+                ? "border-l-emerald-500"
+                : isSuperLeague && rank === 13
+                  ? "border-l-amber-500"
+                  : isSuperLeague && rank === 14
+                    ? "border-l-rose-500"
+                    : !isSuperLeague && rank === 1
+                      ? "border-l-amber-400"
+                      : !isSuperLeague && rank <= 6
+                        ? "border-l-emerald-500"
+                        : "border-l-transparent";
+
+            return (
+              <li
+                key={row.clubId}
+                className={`grid grid-cols-[2rem_1fr_2rem_2.5rem_2.5rem] gap-1 items-center px-2.5 py-2.5 border-l-2 ${zone} ${
+                  isUserClub ? "bg-emerald-500/10" : ""
+                }`}
+              >
+                <span className="text-xs font-black text-pitch-300">{rank}</span>
+                <span className={`truncate text-sm font-semibold ${isUserClub ? "text-emerald-300" : "text-white"}`}>
+                  {club?.abbreviation || club?.name || row.clubId}
+                </span>
+                <span className="text-center text-xs text-pitch-400">{row.played}</span>
+                <span
+                  className={`text-center text-xs font-semibold ${
+                    row.pointsDifference >= 0 ? "text-emerald-400" : "text-rose-400"
+                  }`}
+                >
+                  {row.pointsDifference > 0 ? `+${row.pointsDifference}` : row.pointsDifference}
+                </span>
+                <span className="text-center text-sm font-black text-sky-400">{row.points}</span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      {/* Desktop Standings Table */}
+      <div className="hidden sm:block overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
         <table className="w-full text-left text-xs">
           <thead className="border-b border-pitch-800 bg-pitch-950/80 text-pitch-400 font-semibold uppercase">
             <tr>
@@ -168,7 +222,7 @@ export function ManagerLeagueView() {
       </div>
 
       {/* Legend Footer */}
-      <div className="flex flex-wrap items-center gap-4 text-xs text-pitch-400 pt-1">
+      <div className="hidden sm:flex flex-wrap items-center gap-4 text-xs text-pitch-400 pt-1">
         {activeTier === "super-league" ? (
           <>
             <div className="flex items-center gap-1.5">

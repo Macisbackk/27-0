@@ -3,23 +3,22 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import type {
   ClubLineup,
+  ClubTactics,
   ManagerFixture,
   ManagerPlayer,
+  ManagerSettings,
   ManagerState,
   SquadRole,
   SquadTier,
   FacilityType,
   PlayerInvestmentType,
+  TrainingFocus,
+  TrainingIntensity,
 } from "./types";
 import {
   initializeManagerDatabase,
   ensureClubSquadDepth,
-  createGeneratedPlayer,
-  generateRandomPlayerName,
-  FIRST_NAMES,
-  LAST_NAMES,
 } from "./database";
-import { STARTING_POSITIONS } from "./rules";
 import { advanceWeek, canAdvanceWeek } from "./advancement";
 import { rolloverSeason, type SeasonAwards } from "./rollover";
 import { movePlayerTier, setClubLineup, autoPickClubLineup, getMatchdayLineupReadiness } from "./squad";
@@ -41,8 +40,16 @@ import {
   evaluateSellingClubBid,
   evaluatePlayerTransferTerms,
   completeTransfer,
+  setPlayerTransferListed,
 } from "./transfers";
-import { createLoanAgreement, recallLoan, loanPlayerIn, terminateIncomingLoan } from "./loans";
+import {
+  createLoanAgreement,
+  recallLoan,
+  loanPlayerIn,
+  terminateIncomingLoan,
+  setPlayerLoanListed,
+} from "./loans";
+import { setPlayerTrainingFocus } from "./player";
 import {
   upgradeClubFacility,
   upgradeCoachingStaff,
@@ -52,9 +59,11 @@ import {
 import {
   loadManagerState,
   saveManagerState,
+  persistManagerProgress,
   deleteSaveSlot,
   exportSaveToJson,
   importSaveFromJson,
+  getActiveSlotIndex,
 } from "./storage";
 
 export type ManagerTab =
@@ -100,6 +109,27 @@ interface ManagerContextValue {
   movePlayer: (playerId: string, targetTier: SquadTier) => { success: boolean; error?: string };
   saveLineup: (lineup: ClubLineup) => { success: boolean; error?: string };
   autoPickSquad: () => { success: boolean; error?: string };
+  updateClubTactics: (
+    patch: Partial<ClubTactics>
+  ) => { success: boolean; error?: string };
+  setTrainingFocus: (
+    playerId: string,
+    focus: TrainingFocus
+  ) => { success: boolean; error?: string };
+  setTrainingIntensity: (
+    intensity: TrainingIntensity
+  ) => { success: boolean; error?: string };
+  setTransferListed: (
+    playerId: string,
+    isListed: boolean
+  ) => { success: boolean; error?: string };
+  setLoanListed: (
+    playerId: string,
+    isListed: boolean
+  ) => { success: boolean; error?: string };
+  updateSettings: (
+    patch: Partial<ManagerSettings>
+  ) => { success: boolean; error?: string };
   renewContract: (
     playerId: string,
     wage: number,
@@ -207,7 +237,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
         contractExpiryModalPlayers.map((p) => p.id)
       );
       setState(next);
-      saveManagerState(next, 0);
+      persistManagerProgress(next);
     }
     setContractExpiryModalPlayers(null);
   }, [state, contractExpiryModalPlayers]);
@@ -248,16 +278,18 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     contractExpiryModalPlayers,
   ]);
 
-  // Check if restoring an active session in the current tab
+  // Restore in-tab session from autosave (numbered slots are manual checkpoints)
   useEffect(() => {
     try {
       const inSession =
         typeof window !== "undefined" &&
         window.sessionStorage.getItem("27-0-manager-in-session") === "true";
       if (inSession) {
-        const activeSlotStr = window.localStorage.getItem("27-0-manager-active-slot-v3");
-        const slot = activeSlotStr ? parseInt(activeSlotStr, 10) : 0;
-        const loaded = loadManagerState(isNaN(slot) ? 0 : slot) || loadManagerState("auto");
+        const activeSlot = getActiveSlotIndex();
+        const loaded =
+          loadManagerState("auto") ||
+          (activeSlot != null ? loadManagerState(activeSlot) : null) ||
+          loadManagerState(0);
         if (loaded) {
           setState(ensureClubSquadDepth(loaded));
         }
@@ -269,10 +301,11 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Auto-save on state change
+  // Autosave career progress on every state change (never overwrites numbered slots)
   useEffect(() => {
     if (!state || isLoading) return;
-    saveManagerState(state, "auto");
+    if (state.settings?.autoSaveEnabled === false) return;
+    persistManagerProgress(state);
   }, [state, isLoading]);
 
   const startNewGame = useCallback((clubId: string, managerName: string, targetSlot: number = 0) => {
@@ -331,7 +364,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
       }
 
       setState(nextState);
-      saveManagerState(nextState, 0);
+      persistManagerProgress(nextState);
       return true;
     } finally {
       setIsAdvancing(false);
@@ -347,7 +380,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     const { state: nextState, awards } = rolloverSeason(state);
     setState(nextState);
     setSeasonAwardsModal(awards);
-    saveManagerState(nextState, 0);
+    persistManagerProgress(nextState);
     return true;
   }, [state]);
 
@@ -387,6 +420,93 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     }
     return { success: res.success, error: res.error };
   }, [state]);
+
+  const updateClubTactics = useCallback(
+    (patch: Partial<ClubTactics>) => {
+      if (!state) return { success: false, error: "No active game" };
+      const clubId = state.manager.clubId;
+      const club = state.clubs[clubId];
+      if (!club) return { success: false, error: "Club not found" };
+      setState({
+        ...state,
+        clubs: {
+          ...state.clubs,
+          [clubId]: {
+            ...club,
+            tactics: { ...club.tactics, ...patch },
+          },
+        },
+      });
+      return { success: true };
+    },
+    [state]
+  );
+
+  const setTrainingFocus = useCallback(
+    (playerId: string, focus: TrainingFocus) => {
+      if (!state) return { success: false, error: "No active game" };
+      const player = state.players[playerId];
+      if (!player || player.clubId !== state.manager.clubId) {
+        return { success: false, error: "Player not found at your club" };
+      }
+      setState({
+        ...state,
+        players: {
+          ...state.players,
+          [playerId]: setPlayerTrainingFocus(player, focus),
+        },
+      });
+      return { success: true };
+    },
+    [state]
+  );
+
+  const setTrainingIntensity = useCallback(
+    (intensity: TrainingIntensity) => {
+      return updateClubTactics({ trainingIntensity: intensity });
+    },
+    [updateClubTactics]
+  );
+
+  const setTransferListed = useCallback(
+    (playerId: string, isListed: boolean) => {
+      if (!state) return { success: false, error: "No active game" };
+      const player = state.players[playerId];
+      if (!player || player.clubId !== state.manager.clubId) {
+        return { success: false, error: "Can only list your own players" };
+      }
+      const res = setPlayerTransferListed(state, playerId, isListed);
+      if (res.success) setState(res.state);
+      return { success: res.success, error: res.error };
+    },
+    [state]
+  );
+
+  const setLoanListed = useCallback(
+    (playerId: string, isListed: boolean) => {
+      if (!state) return { success: false, error: "No active game" };
+      const player = state.players[playerId];
+      if (!player || player.clubId !== state.manager.clubId) {
+        return { success: false, error: "Can only list your own players" };
+      }
+      const res = setPlayerLoanListed(state, playerId, isListed);
+      if (res.success) setState(res.state);
+      return { success: res.success, error: res.error };
+    },
+    [state]
+  );
+
+  const updateSettings = useCallback(
+    (patch: Partial<ManagerSettings>) => {
+      if (!state) return { success: false, error: "No active game" };
+      setState({
+        ...state,
+        settings: { ...state.settings, ...patch },
+      });
+      return { success: true };
+    },
+    [state]
+  );
 
   const renewContract = useCallback(
     (playerId: string, wage: number, years: number, role: SquadRole) => {
@@ -706,7 +826,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
 
   const exitToMenu = useCallback(() => {
     if (state) {
-      saveManagerState(state, "auto");
+      persistManagerProgress(state);
     }
     if (typeof window !== "undefined") {
       window.sessionStorage.removeItem("27-0-manager-in-session");
@@ -730,62 +850,47 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
       const club = state.clubs[userClubId];
       if (!club) return;
 
-      const isSL = club.competitionId === "super-league";
-      const baseStrength = isSL
-        ? (club.reputation >= 4 ? 78 : 72)
-        : (club.reputation === 3 ? 68 : 62);
-
-      const newPlayers = { ...state.players };
-      for (let i = 0; i < 5; i++) {
-        const pos = STARTING_POSITIONS[(i + (tier === "reserves" ? 3 : 5)) % STARTING_POSITIONS.length];
-        const age = tier === "reserves" ? Math.floor(Math.random() * 6) + 20 : Math.floor(Math.random() * 3) + 17;
-        const rating = tier === "reserves"
-          ? Math.max(52, Math.round(baseStrength - 5 + (Math.random() * 6 - 3)))
-          : Math.max(48, Math.round(baseStrength - 12 + (Math.random() * 6 - 3)));
-        const potential = tier === "reserves"
-          ? Math.min(90, Math.round(rating + Math.random() * 5))
-          : Math.min(94, Math.round(rating + 14 + Math.random() * 10));
-
-        const { fullName, nationality } = generateRandomPlayerName(userClubId);
-        const p = createGeneratedPlayer(
-          fullName,
-          pos,
-          age,
-          rating,
-          potential,
-          userClubId,
-          tier,
-          club.competitionId,
-          nationality
-        );
-        newPlayers[p.id] = p;
+      const currentCount = Object.values(state.players).filter(
+        (p) => p.clubId === userClubId && p.squadTier === tier && !p.isRetired
+      ).length;
+      const needed = Math.max(0, 17 - currentCount);
+      if (needed === 0) {
+        const filled = ensureClubSquadDepth(state, userClubId);
+        setState(filled);
+        return;
       }
 
+      const topped = ensureClubSquadDepth(state, userClubId);
+      const added =
+        Object.values(topped.players).filter(
+          (p) => p.clubId === userClubId && p.squadTier === tier && !p.isRetired
+        ).length - currentCount;
+
       const title = tier === "reserves" ? "Reserve Squad Replenished" : "Youth Trials Completed";
-      const body = tier === "reserves"
-        ? "5 reserve grade players have joined the squad to provide essential matchday rotation depth."
-        : "5 promising youth prospects have been recruited to the academy through open trials.";
+      const body =
+        tier === "reserves"
+          ? `${added > 0 ? added : needed} reserve grade players have been brought in to restore a full matchday 17.`
+          : `${added > 0 ? added : needed} academy prospects have been recruited to restore a full matchday 17.`;
 
       const nextState: ManagerState = {
-        ...state,
-        players: newPlayers,
+        ...topped,
         inbox: {
-          ...state.inbox,
+          ...topped.inbox,
           messages: [
             {
               id: `inbox_replenish_${tier}_${Date.now()}`,
-              season: state.calendar.currentSeason,
-              week: state.calendar.currentWeek,
-              dateStr: `Week ${state.calendar.currentWeek}`,
+              season: topped.calendar.currentSeason,
+              week: topped.calendar.currentWeek,
+              dateStr: `Week ${topped.calendar.currentWeek}`,
               sender: tier === "reserves" ? "Reserve Grade Coach" : "Head of Youth",
               subject: title,
               body,
               category: "general",
               isRead: false,
             },
-            ...state.inbox.messages,
+            ...topped.inbox.messages,
           ],
-          unreadCount: state.inbox.unreadCount + 1,
+          unreadCount: topped.inbox.unreadCount + 1,
         },
       };
 
@@ -823,6 +928,12 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
         movePlayer,
         saveLineup,
         autoPickSquad,
+        updateClubTactics,
+        setTrainingFocus,
+        setTrainingIntensity,
+        setTransferListed,
+        setLoanListed,
+        updateSettings,
         renewContract,
         renewAllTierContracts,
         releasePlayer,

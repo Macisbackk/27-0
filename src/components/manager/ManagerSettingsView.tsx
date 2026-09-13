@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useManager } from "@/lib/manager/context";
 import {
   getSaveSlotMetadata,
+  getActiveSlotIndex,
   type SaveMetadata,
 } from "@/lib/manager/storage";
 
@@ -18,6 +19,7 @@ export function ManagerSettingsView() {
     exportSave,
     importSave,
     openTutorial,
+    updateSettings,
   } = useManager();
 
   const [importJson, setImportJson] = useState("");
@@ -91,8 +93,8 @@ export function ManagerSettingsView() {
   return (
     <div className="mx-auto max-w-5xl px-3 py-4 sm:px-6 sm:py-6 space-y-6">
       <div>
-        <h2 className="text-xl sm:text-2xl font-black text-white">Manager Settings &amp; Saves</h2>
-        <p className="text-xs text-pitch-400">
+        <h2 className="text-lg sm:text-2xl font-black text-white">Settings</h2>
+        <p className="hidden sm:block text-xs text-pitch-400">
           Manage your career save slots, export/import backups, or initiate a fresh managerial journey.
         </p>
       </div>
@@ -129,18 +131,57 @@ export function ManagerSettingsView() {
         </button>
       </div>
 
+      {/* Gameplay options */}
+      <div className="rounded-2xl border border-pitch-700 bg-pitch-900/80 p-5 shadow space-y-4">
+        <h3 className="text-sm font-black text-white uppercase tracking-wider">Gameplay</h3>
+        <label className="flex items-center justify-between gap-3 text-xs">
+          <span className="text-pitch-200 font-semibold">Match sound effects</span>
+          <input
+            type="checkbox"
+            checked={state.settings?.soundEnabled !== false}
+            onChange={(e) => updateSettings({ soundEnabled: e.target.checked })}
+            className="h-4 w-4 accent-emerald-500"
+          />
+        </label>
+        <label className="flex items-center justify-between gap-3 text-xs">
+          <span className="text-pitch-200 font-semibold">Autosave progress</span>
+          <input
+            type="checkbox"
+            checked={state.settings?.autoSaveEnabled !== false}
+            onChange={(e) => updateSettings({ autoSaveEnabled: e.target.checked })}
+            className="h-4 w-4 accent-emerald-500"
+          />
+        </label>
+        <div className="space-y-1.5">
+          <span className="text-xs text-pitch-200 font-semibold">Match simulation</span>
+          <select
+            value={state.settings?.matchSimulationSpeed || "normal"}
+            onChange={(e) =>
+              updateSettings({
+                matchSimulationSpeed: e.target.value as "instant" | "normal" | "detailed",
+              })
+            }
+            className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs text-white"
+          >
+            <option value="instant">Instant (skip key moments → full report)</option>
+            <option value="normal">Normal (key moments matchcast)</option>
+            <option value="detailed">Detailed (same as normal, fuller commentary)</option>
+          </select>
+        </div>
+      </div>
+
       {/* Save Slots Grid */}
       <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-5 shadow-lg space-y-4">
         <h3 className="text-sm font-black text-white uppercase tracking-wider">Save Slots</h3>
+        <p className="text-[11px] text-pitch-500 -mt-2">
+          Manual checkpoints — Save freezes a slot; Load restores that exact week. Ongoing play is kept in Autosave only.
+        </p>
 
         <div className="grid gap-3 sm:grid-cols-3">
           {[0, 1, 2].map((slotIdx) => {
             const meta = slotMetas[slotIdx];
-            const isCurrent =
-              meta &&
-              meta.clubName === state.clubs[state.manager.clubId]?.name &&
-              meta.season === state.calendar.currentSeason &&
-              meta.week === state.calendar.currentWeek;
+            const activeSlot = getActiveSlotIndex();
+            const isCurrent = activeSlot === slotIdx;
 
             return (
               <div

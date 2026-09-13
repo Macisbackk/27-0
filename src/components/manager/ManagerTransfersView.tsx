@@ -5,8 +5,9 @@ import { useManager } from "@/lib/manager/context";
 import {
   calculateTransferFeeBetweenClubs,
   calculateMarketWage,
+  CONTRACT_NEGOTIATION,
 } from "@/lib/manager/rules";
-import { calculateSalaryCapUsage } from "@/lib/manager/contracts";
+import { calculateSalaryCapUsage, evaluateContractOffer } from "@/lib/manager/contracts";
 import {
   formatPositionLabel,
   formatPositionShort,
@@ -15,16 +16,22 @@ import {
 } from "@/lib/manager";
 import type { ManagerPlayer, Position, SquadRole, TransferBid } from "@/lib/manager/types";
 
+function parseMoneyDraft(raw: string, min: number): number {
+  const n = parseInt(raw.replace(/[^\d]/g, ""), 10);
+  if (!Number.isFinite(n)) return min;
+  return Math.max(min, n);
+}
+
 export function ManagerTransfersView() {
   const { state, bidOnPlayer, signFreeAgentPlayer, decideOnIncomingBid } = useManager();
   const [subTab, setSubTab] = useState<"market" | "free_agents" | "bids" | "history">("market");
   const [posFilter, setPosFilter] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Bid modal state
+  // Bid modal state — string drafts so typing is not clamped mid-keystroke
   const [targetPlayer, setTargetPlayer] = useState<ManagerPlayer | null>(null);
-  const [offeredFee, setOfferedFee] = useState<number>(50000);
-  const [offeredWage, setOfferedWage] = useState<number>(2000);
+  const [offeredFeeDraft, setOfferedFeeDraft] = useState<string>("50000");
+  const [offeredWageDraft, setOfferedWageDraft] = useState<string>("2000");
   const [offeredRole, setOfferedRole] = useState<SquadRole>("first_team");
   const [offeredYears, setOfferedYears] = useState<number>(2);
   const [bidError, setBidError] = useState<string | null>(null);
@@ -71,11 +78,21 @@ export function ManagerTransfersView() {
       userClub?.competitionId || "super-league",
       sellingComp
     );
-    const fairW = calculateMarketWage(player.rating, player.age, userClub?.competitionId || "super-league");
+    const role: SquadRole = "first_team";
+    const context = player.clubId ? "transfer" : "free_agent";
+    const terms = userClub
+      ? evaluateContractOffer(player, userClub, 0, role, {
+          context,
+          contractYears: 2,
+        })
+      : null;
+    const fairW =
+      terms?.askingWage ??
+      calculateMarketWage(player.rating, player.age, userClub?.competitionId || "super-league");
     setTargetPlayer(player);
-    setOfferedFee(fairVal);
-    setOfferedWage(fairW);
-    setOfferedRole("first_team");
+    setOfferedFeeDraft(String(fairVal));
+    setOfferedWageDraft(String(fairW));
+    setOfferedRole(role);
     setOfferedYears(2);
     setBidError(null);
     setBidSuccess(null);
@@ -84,6 +101,14 @@ export function ManagerTransfersView() {
   const handleExecuteBid = () => {
     if (!targetPlayer) return;
     setBidError(null);
+
+    const offeredFee = parseMoneyDraft(offeredFeeDraft, 0);
+    const offeredWage = parseMoneyDraft(
+      offeredWageDraft,
+      CONTRACT_NEGOTIATION.MIN_WEEKLY_WAGE
+    );
+    setOfferedFeeDraft(String(offeredFee));
+    setOfferedWageDraft(String(offeredWage));
 
     if (targetPlayer.clubId === null) {
       // Free agent signing
@@ -120,8 +145,8 @@ export function ManagerTransfersView() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-white">Transfer Market</h2>
-          <p className="text-xs text-pitch-400">
+          <h2 className="text-lg sm:text-2xl font-black text-white">Transfers</h2>
+          <p className="hidden sm:block text-xs text-pitch-400">
             Scout targets, sign unattached Free Agents, negotiate bids, and review incoming offers.
           </p>
         </div>
@@ -508,10 +533,16 @@ export function ManagerTransfersView() {
                     Transfer Fee Offered (£)
                   </label>
                   <input
-                    type="number"
-                    step={5000}
-                    value={offeredFee}
-                    onChange={(e) => setOfferedFee(Math.max(0, parseInt(e.target.value) || 0))}
+                    type="text"
+                    inputMode="numeric"
+                    value={offeredFeeDraft}
+                    onChange={(e) => {
+                      const raw = e.target.value.replace(/[^\d]/g, "");
+                      setOfferedFeeDraft(raw);
+                    }}
+                    onBlur={() =>
+                      setOfferedFeeDraft(String(parseMoneyDraft(offeredFeeDraft, 0)))
+                    }
                     className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 font-bold"
                   />
                   <span className="text-[11px] text-pitch-500 mt-0.5 block">
@@ -525,15 +556,45 @@ export function ManagerTransfersView() {
                   Weekly Wage Offered (£/wk)
                 </label>
                 <input
-                  type="number"
-                  step={100}
-                  value={offeredWage}
-                  onChange={(e) => setOfferedWage(Math.max(200, parseInt(e.target.value) || 0))}
+                  type="text"
+                  inputMode="numeric"
+                  value={offeredWageDraft}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/[^\d]/g, "");
+                    setOfferedWageDraft(raw);
+                  }}
+                  onBlur={() =>
+                    setOfferedWageDraft(
+                      String(
+                        parseMoneyDraft(
+                          offeredWageDraft,
+                          CONTRACT_NEGOTIATION.MIN_WEEKLY_WAGE
+                        )
+                      )
+                    )
+                  }
                   className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 font-bold"
                 />
-                <span className="text-[11px] text-pitch-500 mt-0.5 block">
-                  Weekly Salary Cap headroom: £{Math.max(0, cap.availableCapWeekly).toLocaleString()}/wk
-                </span>
+                {(() => {
+                  const terms =
+                    userClub &&
+                    evaluateContractOffer(targetPlayer, userClub, 0, offeredRole, {
+                      context: targetPlayer.clubId ? "transfer" : "free_agent",
+                      contractYears: offeredYears,
+                    });
+                  return terms ? (
+                    <span className="text-[11px] text-pitch-500 mt-0.5 block">
+                      Agent ask ~£{terms.askingWage.toLocaleString()}/wk · likely accepts from £
+                      {terms.minimumAcceptableWage.toLocaleString()}/wk · Cap room £
+                      {Math.max(0, cap.availableCapWeekly).toLocaleString()}/wk
+                    </span>
+                  ) : (
+                    <span className="text-[11px] text-pitch-500 mt-0.5 block">
+                      Weekly Salary Cap headroom: £
+                      {Math.max(0, cap.availableCapWeekly).toLocaleString()}/wk
+                    </span>
+                  );
+                })()}
               </div>
 
               <div className="grid grid-cols-2 gap-3">

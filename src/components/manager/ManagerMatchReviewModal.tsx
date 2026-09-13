@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import { formatPositionLabel, formatPositionShort, formatScoreEventType } from "@/lib/manager";
+import { reconcileFixtureScoreEvents } from "@/lib/manager/match";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import type { ManagerFixture, ManagerClub, MatchPlayerPerformance } from "@/lib/manager/types";
 
 function PlayerRatingRow({
@@ -190,9 +192,12 @@ export function ManagerMatchReviewModal() {
   const { lastPlayedMatchReview, setLastPlayedMatchReview, openKeyMoments, state } = useManager();
   const [teamView, setTeamView] = useState<"both" | "home" | "away">("both");
 
+  useScrollLock(Boolean(lastPlayedMatchReview), "manager-match-review");
+
   if (!lastPlayedMatchReview || !state) return null;
 
   const fixture: ManagerFixture = lastPlayedMatchReview;
+  const scoreEvents = reconcileFixtureScoreEvents(fixture);
   const homeClub = state.clubs[fixture.homeClubId];
   const awayClub = state.clubs[fixture.awayClubId];
   const userClubId = state.manager.clubId;
@@ -220,8 +225,13 @@ export function ManagerMatchReviewModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 sm:p-5 backdrop-blur-md">
-      <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl border border-pitch-700 bg-pitch-950 p-5 sm:p-7 shadow-2xl space-y-5 scrollbar-thin scrollbar-thumb-pitch-700">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden overscroll-none bg-black/80 p-3 sm:p-5"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Match Review"
+    >
+      <div className="w-full max-w-4xl max-h-[min(90dvh,100%)] overflow-y-auto overflow-x-hidden rounded-3xl border border-pitch-700 bg-pitch-950 p-5 sm:p-7 shadow-2xl space-y-5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Header Eyebrow */}
         <div className="flex items-center justify-between border-b border-pitch-800 pb-3">
           <div className="flex items-center gap-2">
@@ -322,13 +332,13 @@ export function ManagerMatchReviewModal() {
         )}
 
         {/* Score Events Timeline */}
-        {fixture.scoreEvents && fixture.scoreEvents.length > 0 && (
+        {scoreEvents.length > 0 && (
           <div className="space-y-2">
             <h4 className="text-xs font-bold text-pitch-400 uppercase tracking-wider">
               Scoring Timeline
             </h4>
             <div className="rounded-xl border border-pitch-800 bg-pitch-900/60 divide-y divide-pitch-800/40 max-h-48 overflow-y-auto">
-              {fixture.scoreEvents.map((evt, idx) => {
+              {scoreEvents.map((evt, idx) => {
                 const isHome = evt.clubId === fixture.homeClubId;
                 return (
                   <div

@@ -472,8 +472,8 @@ async function runBreakTests() {
   const repairedRes = repairedClubPlayers.filter((p) => p.squadTier === "reserves").length;
   const repairedAcad = repairedClubPlayers.filter((p) => p.squadTier === "academy").length;
 
-  assert(repairedRes >= 4, `Reserves automatically generated if none (now ${repairedRes})`);
-  assert(repairedAcad >= 4, `Academy automatically generated if none (now ${repairedAcad})`);
+  assert(repairedRes >= 17, `Reserves automatically generated if none (now ${repairedRes})`);
+  assert(repairedAcad >= 17, `Academy automatically generated if none (now ${repairedAcad})`);
   assert(validateSquadInvariants(repairedState).valid, "Squad invariants 100% valid after generating missing tiers");
 
   // ----------------------------------------------------

@@ -13,12 +13,14 @@ import { tickActiveLoans } from "./loans";
 import { simulateManagerMatch } from "./match";
 import { progressPlayerWeek } from "./player";
 import { processAiDecisionsForWeek } from "./ai";
+import { refreshAllBoardObjectives } from "./objectives";
 import {
   canClubPlayMatchday,
   getMatchdayLineupReadiness,
   safeguardAllClubMatchdayLineups,
   cleanAllClubLineups,
 } from "./squad";
+import { simulateWeeklyDevelopmentResults } from "./development-matches";
 import type {
   ManagerFixture,
   ManagerState,
@@ -224,6 +226,9 @@ export function advanceWeek(state: ManagerState): ManagerState {
   // 7. AI Decisions Tick (renewals, transfers, squad moves)
   intermediateState = processAiDecisionsForWeek(intermediateState);
 
+  // 7b. Academy / Reserves grade fixtures (lightweight weekly results)
+  intermediateState = simulateWeeklyDevelopmentResults(intermediateState);
+
   // 8. Board Confidence Adjustment for user's club
   const userClub = intermediateState.clubs[intermediateState.manager.clubId];
   if (userClub) {
@@ -249,6 +254,9 @@ export function advanceWeek(state: ManagerState): ManagerState {
       },
     };
   }
+
+  // 8b. Refresh board objectives across all clubs (progress / complete / fail)
+  intermediateState = refreshAllBoardObjectives(intermediateState);
 
   // 9. Calendar Progression & Phase Changes
   let nextPhase = intermediateState.calendar.phase;

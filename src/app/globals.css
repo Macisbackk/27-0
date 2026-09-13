@@ -6,6 +6,10 @@
 @tailwind utilities;
 
 :root {
+  /* Manager Mode mobile chrome (bottom nav + Continue play bar). */
+  --manager-mobile-nav-h: 4.5rem;
+  --manager-mobile-playbar-h: 3.75rem;
+
   /* Fallback before next/font Anton (--font-pitch) is on <html>. */
   --font-display: "Arial Black", "Impact", "Segoe UI", system-ui, sans-serif;
   --font-body: "Segoe UI", system-ui, sans-serif;
@@ -166,6 +170,11 @@ html[data-ui-overlay="1"] .site-footer {
   pointer-events: none;
 }
 
+/* Drop the reserved gutter while locked so no empty scrollbar track shows. */
+html[data-ui-overlay="1"] {
+  scrollbar-gutter: auto;
+}
+
 @media (max-width: 639px) {
   .manager-mobile-nav-pad {
     padding-bottom: var(--manager-mobile-nav-h);
@@ -188,7 +197,8 @@ html[data-ui-overlay="1"] .site-footer {
 
   .manager-mobile-play-bar {
     bottom: var(--manager-mobile-nav-h);
-    height: var(--manager-mobile-playbar-h);
+    min-height: var(--manager-mobile-playbar-h);
+    height: auto;
   }
 }
 

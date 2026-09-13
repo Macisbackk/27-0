@@ -214,6 +214,18 @@ export function simulateManagerMatch(
     if (club.tactics.trainingIntensity === "high") effective += 1.0;
     if (club.tactics.trainingIntensity === "low") effective -= 1.0;
 
+    // Attacking style
+    const style = club.tactics.style || "balanced";
+    if (style === "expansive") effective += 0.55;
+    if (style === "attritional") effective += isHome ? 0.25 : 0.45;
+    if (style === "direct") effective += 0.35;
+
+    // Kicking philosophy
+    const kick = club.tactics.kickingFocus || "territory";
+    if (kick === "territory") effective += 0.35;
+    if (kick === "attacking") effective += 0.25;
+    if (kick === "retention") effective += 0.2;
+
     // Home advantage (+1.5 rating points ~ 58-60% win rate between identical teams)
     if (isHome) effective += 1.5;
 
@@ -227,7 +239,12 @@ export function simulateManagerMatch(
   const diff = homeEffective - awayEffective;
 
   // Expected margin scales with rating difference (~1.25 scoreboard points per rating diff)
-  const expectedMargin = diff * 1.25;
+  let expectedMargin = diff * 1.25;
+  if (homeClub.tactics.style === "direct" && diff > 0) expectedMargin *= 1.08;
+  if (awayClub.tactics.style === "direct" && diff < 0) expectedMargin *= 1.08;
+  if (homeClub.tactics.style === "attritional" || awayClub.tactics.style === "attritional") {
+    expectedMargin *= 0.92;
+  }
 
   // Bell-curve match variance (Irwin-Hall n=3, range [-1.5, +1.5] * 10.5)
   // Ensures most matches (~70%) stay close to expected talent levels,
@@ -236,12 +253,15 @@ export function simulateManagerMatch(
   const noise = bellRoll * 10.5;
   const rawMargin = expectedMargin + noise;
 
-  // Match tempo & total points variance:
-  // - 15% Defensive slog / Armwrestle (14 - 28 points)
-  // - 55% Standard competitive rugby league match (30 - 48 points)
-  // - 20% Open attacking shootout (48 - 64 points)
-  // - 10% High-scoring blowout / runaway (60 - 76 points)
-  const tempoRoll = Math.random();
+  // Match tempo & total points variance — styles push tempo distribution
+  const homeStyle = homeClub.tactics.style || "balanced";
+  const awayStyle = awayClub.tactics.style || "balanced";
+  const expansiveBias =
+    (homeStyle === "expansive" ? 0.08 : 0) + (awayStyle === "expansive" ? 0.08 : 0);
+  const attritionalBias =
+    (homeStyle === "attritional" ? 0.08 : 0) + (awayStyle === "attritional" ? 0.08 : 0);
+  let tempoRoll = Math.random() - attritionalBias + expansiveBias;
+  tempoRoll = Math.max(0, Math.min(1, tempoRoll));
   let baseTotal: number;
   if (tempoRoll < 0.15) {
     baseTotal = 14 + Math.random() * 14;
@@ -251,6 +271,20 @@ export function simulateManagerMatch(
     baseTotal = 48 + Math.random() * 16;
   } else {
     baseTotal = 60 + Math.random() * 16;
+  }
+
+  // Attacking kick focus slightly opens the scoring
+  if (
+    homeClub.tactics.kickingFocus === "attacking" ||
+    awayClub.tactics.kickingFocus === "attacking"
+  ) {
+    baseTotal += 2 + Math.random() * 3;
+  }
+  if (
+    homeClub.tactics.kickingFocus === "territory" &&
+    awayClub.tactics.kickingFocus === "territory"
+  ) {
+    baseTotal -= 2;
   }
 
   // Large talent disparity naturally inflates points for the superior attacking side
@@ -307,9 +341,14 @@ export function simulateManagerMatch(
     awayScore = ensureScoreAhead(awayScore, homeScore, Math.random, allowDropGoal);
   }
 
-  // Snap to realistic rugby league scores and decompose
-  const homeBreakdown = decomposeRLScore(homeScore);
-  const awayBreakdown = decomposeRLScore(awayScore);
+  // Snap / decompose regulation scores BEFORE golden-point +1 so the GP drop goal
+  // is not also emitted as a regulation DG (odd finals always decompose with dropGoals: 1).
+  const regulationHomeScore =
+    goldenPointWinner === "home" ? Math.max(0, homeScore - 1) : homeScore;
+  const regulationAwayScore =
+    goldenPointWinner === "away" ? Math.max(0, awayScore - 1) : awayScore;
+  const homeBreakdown = decomposeRLScore(regulationHomeScore);
+  const awayBreakdown = decomposeRLScore(regulationAwayScore);
 
   const homeWon = homeScore > awayScore;
   const awayWon = awayScore > homeScore;
@@ -1065,12 +1104,16 @@ export function simulateManagerMatch(
     if (m.type === "GOLDEN_POINT" || m.type === "RED_CARD") {
       importance = "critical";
     } else if (m.type === "FULL_TIME") {
-      importance = Math.abs(runningHome - runningAway) <= 4 ? "critical" : "high";
+      importance = Math.abs(homeScore - awayScore) <= 4 ? "critical" : "high";
     } else if (m.type === "TRY" || m.type === "DROP_GOAL") {
       importance = m.minute >= 70 && Math.abs(runningHome - runningAway) <= 6 ? "critical" : "high";
     } else if (m.type === "SIN_BIN" || m.type === "TRY_SAVER" || m.type === "FORTY_TWENTY" || m.type === "HALF_TIME") {
       importance = "high";
     }
+
+    // FULL_TIME must mirror the fixture scoreline (never inflated running totals)
+    const scoreHome = m.type === "FULL_TIME" ? homeScore : runningHome;
+    const scoreAway = m.type === "FULL_TIME" ? awayScore : runningAway;
 
     return {
       id: m.id,
@@ -1084,8 +1127,8 @@ export function simulateManagerMatch(
       title: m.title,
       headline: m.headline,
       description: desc,
-      homeScoreAfter: runningHome,
-      awayScoreAfter: runningAway,
+      homeScoreAfter: scoreHome,
+      awayScoreAfter: scoreAway,
       isHome: m.isHome,
       importance,
       pointsAdded: m.pointsAdded > 0 ? m.pointsAdded : undefined,
@@ -1144,8 +1187,134 @@ export function simulateManagerMatch(
 }
 
 /**
+ * Event points for score timeline reconciliation.
+ */
+function scoreEventPoints(type: MatchScoreEvent["type"]): number {
+  if (type === "TRY") return 4;
+  if (type === "DROP_GOAL") return 1;
+  return 2;
+}
+
+/**
+ * Strip scoring events that overshoot the official fixture result
+ * (legacy golden-point double-count left an extra DROP_GOAL in the timeline).
+ */
+export function reconcileFixtureScoreEvents(fixture: ManagerFixture): MatchScoreEvent[] {
+  const events = [...(fixture.scoreEvents || [])].sort((a, b) => a.minute - b.minute);
+  const targetHome = fixture.homeScore || 0;
+  const targetAway = fixture.awayScore || 0;
+  if (events.length === 0) return events;
+
+  const sumEvents = (list: MatchScoreEvent[]) => {
+    let h = 0;
+    let a = 0;
+    for (const e of list) {
+      const pts = scoreEventPoints(e.type);
+      if (e.clubId === fixture.homeClubId) h += pts;
+      else a += pts;
+    }
+    return { h, a };
+  };
+
+  let { h, a } = sumEvents(events);
+  if (h === targetHome && a === targetAway) return events;
+
+  const next = [...events];
+  while (next.length > 0 && (h > targetHome || a > targetAway)) {
+    let removeIdx = -1;
+    for (let i = next.length - 1; i >= 0; i--) {
+      const e = next[i];
+      if (e.type !== "DROP_GOAL") continue;
+      const isHome = e.clubId === fixture.homeClubId;
+      if ((isHome && h > targetHome) || (!isHome && a > targetAway)) {
+        removeIdx = i;
+        break;
+      }
+    }
+    if (removeIdx < 0) break;
+    next.splice(removeIdx, 1);
+    ({ h, a } = sumEvents(next));
+  }
+
+  return next;
+}
+
+/**
+ * Align stored key-moment scoreboards with the official fixture result.
+ * Drops surplus scoring moments that overshoot (legacy GP double-count).
+ */
+export function reconcileFixtureKeyMoments(
+  moments: ManagerKeyMoment[],
+  fixture: ManagerFixture
+): ManagerKeyMoment[] {
+  const targetHome = fixture.homeScore || 0;
+  const targetAway = fixture.awayScore || 0;
+  if (!moments.length) return moments;
+
+  const sorted = [...moments].sort((a, b) => {
+    if (a.minute !== b.minute) return a.minute - b.minute;
+    const order = (t: KeyMomentType) =>
+      t === "HALF_TIME" ? 0 : t === "GOLDEN_POINT" ? 8 : t === "FULL_TIME" ? 9 : 1;
+    return order(a.type) - order(b.type);
+  });
+
+  let runningHome = 0;
+  let runningAway = 0;
+  const out: ManagerKeyMoment[] = [];
+
+  for (const m of sorted) {
+    const pts = m.pointsAdded || 0;
+    if (pts > 0) {
+      const nextH = m.isHome ? runningHome + pts : runningHome;
+      const nextA = m.isHome ? runningAway : runningAway + pts;
+      if (nextH > targetHome || nextA > targetAway) {
+        continue;
+      }
+      runningHome = nextH;
+      runningAway = nextA;
+    }
+
+    if (m.type === "FULL_TIME") {
+      out.push({
+        ...m,
+        homeScoreAfter: targetHome,
+        awayScoreAfter: targetAway,
+        description: m.description
+          .replace(/\d+\s*-\s*\d+/g, `${targetHome} - ${targetAway}`)
+          .replace(/\d+\s*–\s*\d+/g, `${targetHome} – ${targetAway}`),
+      });
+    } else {
+      out.push({
+        ...m,
+        homeScoreAfter: runningHome,
+        awayScoreAfter: runningAway,
+      });
+    }
+  }
+
+  if (!out.some((m) => m.type === "FULL_TIME")) {
+    out.push({
+      id: `heal_ft_${fixture.id}`,
+      minute: 80,
+      type: "FULL_TIME",
+      clubId: fixture.homeClubId,
+      clubName: sorted[0]?.clubName || fixture.homeClubId,
+      title: "Full-Time Hooter",
+      headline: "Full Time",
+      description: `Full-time: ${targetHome} - ${targetAway}`,
+      homeScoreAfter: targetHome,
+      awayScoreAfter: targetAway,
+      isHome: true,
+      importance: "high",
+    });
+  }
+
+  return out;
+}
+
+/**
  * Ensures a fixture has key moments.
- * If fixture.keyMoments is populated, returns it.
+ * If fixture.keyMoments is populated, returns it (reconciled to official scores).
  * Otherwise, synthesizes realistic chronological key moments from score events,
  * player performances, and full-time scorelines so managers can always view key moments.
  */
@@ -1154,7 +1323,7 @@ export function ensureFixtureKeyMoments(
   clubs?: Record<string, ManagerClub>
 ): ManagerKeyMoment[] {
   if (fixture.keyMoments && fixture.keyMoments.length > 0) {
-    return fixture.keyMoments;
+    return reconcileFixtureKeyMoments(fixture.keyMoments, fixture);
   }
 
   const homeClub = clubs?.[fixture.homeClubId] || {
@@ -1170,7 +1339,7 @@ export function ensureFixtureKeyMoments(
 
   const homeScore = fixture.homeScore || 0;
   const awayScore = fixture.awayScore || 0;
-  const rawEvents = [...(fixture.scoreEvents || [])].sort((a, b) => a.minute - b.minute);
+  const rawEvents = reconcileFixtureScoreEvents(fixture);
 
   let runningHome = 0;
   let runningAway = 0;

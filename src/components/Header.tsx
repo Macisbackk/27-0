@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Suspense, useState } from "react";
+import { usePathname } from "next/navigation";
 import { ClubFundsDisplay } from "./ClubFundsDisplay";
 import { HeaderAuthControls } from "./HeaderAuthControls";
 import { LogoMark } from "./LogoMark";
@@ -12,9 +13,12 @@ import { useMountDiagnostic } from "@/lib/ui/use-mount-diagnostic";
 /**
  * Site header: true three-column grid so the logo stays viewport-centred.
  * Mobile hides Club Funds in the header (lives in the side menu).
+ * Manager Mode hides Quick Mode club funds (Manager has its own balance).
  */
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const hidePlayFunds = pathname?.startsWith("/manager");
   useMountDiagnostic("app-header");
 
   return (
@@ -49,9 +53,11 @@ export function Header() {
           </div>
 
           <div className="mobile-header__right flex min-h-[44px] min-w-0 items-center justify-end gap-1 sm:gap-2">
-            <div className="hidden sm:block">
-              <ClubFundsDisplay />
-            </div>
+            {!hidePlayFunds && (
+              <div className="hidden sm:block">
+                <ClubFundsDisplay />
+              </div>
+            )}
             <HeaderAuthControls />
           </div>
         </div>

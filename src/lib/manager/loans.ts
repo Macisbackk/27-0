@@ -18,6 +18,33 @@ export interface LoanOperationResult {
   loan?: ActiveLoan;
 }
 
+/** Toggle loan-list flag so destination clubs can take the player on loan more easily. */
+export function setPlayerLoanListed(
+  state: ManagerState,
+  playerId: string,
+  isListed: boolean
+): LoanOperationResult {
+  const player = state.players[playerId];
+  if (!player) return { success: false, state, error: "Player not found." };
+  if (!player.clubId) {
+    return { success: false, state, error: "Free agents cannot be loan listed." };
+  }
+  if (player.loan) {
+    return { success: false, state, error: "Player is already out on loan." };
+  }
+
+  return {
+    success: true,
+    state: {
+      ...state,
+      players: {
+        ...state.players,
+        [playerId]: { ...player, isLoanListed: isListed },
+      },
+    },
+  };
+}
+
 /**
  * Creates an authoritative loan agreement between parent and destination club.
  */

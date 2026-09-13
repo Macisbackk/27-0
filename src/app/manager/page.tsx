@@ -5,6 +5,8 @@ import { ManagerProvider, useManager } from "@/lib/manager/context";
 import { ManagerClubSelect } from "@/components/manager/ManagerClubSelect";
 import { ManagerHeader } from "@/components/manager/ManagerHeader";
 import { ManagerNav } from "@/components/manager/ManagerNav";
+import { ManagerMobileBottomNav } from "@/components/manager/ManagerMobileBottomNav";
+import { ManagerMobilePlayBar } from "@/components/manager/ManagerMobilePlayBar";
 import { ManagerDashboard } from "@/components/manager/ManagerDashboard";
 import { ManagerSquadView } from "@/components/manager/ManagerSquadView";
 import { ManagerTacticsView } from "@/components/manager/ManagerTacticsView";
@@ -23,9 +25,11 @@ import { ManagerKeyMomentsModal } from "@/components/manager/ManagerKeyMomentsMo
 import { ManagerSeasonAwardsModal } from "@/components/manager/ManagerSeasonAwardsModal";
 import { ManagerContractExpiryModal } from "@/components/manager/ManagerContractExpiryModal";
 import { ManagerTutorialModal } from "@/components/manager/ManagerTutorialModal";
+import { useCompactViewport } from "@/lib/ui/viewport";
 
 function ManagerModeContent() {
   const { state, activeTab, isLoading } = useManager();
+  const compact = useCompactViewport();
 
   if (isLoading) {
     return (
@@ -41,15 +45,18 @@ function ManagerModeContent() {
   }
 
   return (
-    <div className="min-h-screen bg-pitch-950 text-pitch-100 flex flex-col">
-      {/* Sticky Top Header */}
+    <div
+      className={`min-h-screen bg-pitch-950 text-pitch-100 flex flex-col ${
+        compact ? "manager-mobile-nav-pad manager-mobile-playbar-extra" : ""
+      }`}
+    >
       <ManagerHeader />
+      {/* Desktop top tabs — hidden on phones (bottom nav replaces them). */}
+      <div className="hidden sm:block">
+        <ManagerNav />
+      </div>
 
-      {/* Main Tab Navigation */}
-      <ManagerNav />
-
-      {/* Main Tab Viewport */}
-      <main className="flex-1 pb-16">
+      <main className="flex-1 min-w-0">
         {activeTab === "dashboard" && <ManagerDashboard />}
         {activeTab === "inbox" && <ManagerInboxView />}
         {activeTab === "squad" && <ManagerSquadView />}
@@ -65,7 +72,10 @@ function ManagerModeContent() {
         {activeTab === "settings" && <ManagerSettingsView />}
       </main>
 
-      {/* Modals */}
+      {/* Mobile chrome — always mounted; StickyActionBar / nav self-hide on sm+. */}
+      <ManagerMobilePlayBar />
+      <ManagerMobileBottomNav />
+
       <ManagerTutorialModal />
       <ManagerKeyMomentsModal />
       <ManagerMatchReviewModal />

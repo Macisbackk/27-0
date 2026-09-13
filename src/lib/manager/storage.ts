@@ -30,9 +30,33 @@ export function getSlotStorageKey(slot: number | "auto"): string {
   return slot === "auto" ? AUTO_SAVE_KEY : `${SAVE_KEY_PREFIX}${slot}`;
 }
 
+/** Numbered career slot last chosen via Save / New Game / Load (not autosave). */
+export function getActiveSlotIndex(): number | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(ACTIVE_SLOT_KEY);
+    if (raw == null || raw === "") return null;
+    const slot = parseInt(raw, 10);
+    return Number.isFinite(slot) ? slot : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Persist ongoing career progress. Always writes the autosave only —
+ * numbered slots are manual checkpoints and must not be overwritten by play.
+ */
+export function persistManagerProgress(state: ManagerState): {
+  success: boolean;
+  error?: string;
+} {
+  return saveManagerState(state, "auto");
+}
+
 export function saveManagerState(
   state: ManagerState,
-  slot: number | "auto" = 0
+  slot: number | "auto" = "auto"
 ): { success: boolean; error?: string } {
   if (typeof window === "undefined") return { success: false, error: "Window unavailable" };
 
@@ -83,15 +107,29 @@ export function saveManagerState(
 function upgradeLoadedManagerState(state: ManagerState): ManagerState {
   if (!state) return state;
 
+  // Ensure optional developmentResults arrays exist on older saves
+  let clubs = state.clubs;
+  let clubsTouched = false;
+  for (const [id, club] of Object.entries(state.clubs)) {
+    if (!club.developmentResults) {
+      if (!clubsTouched) {
+        clubs = { ...state.clubs };
+        clubsTouched = true;
+      }
+      clubs[id] = { ...club, developmentResults: [] };
+    }
+  }
+  const withDev = clubsTouched ? { ...state, clubs } : state;
+
   // Upgrade / repair any outdated RFL Season Review inbox messages from archived history
-  if (state.seasonHistory && state.seasonHistory.length > 0 && state.inbox?.messages) {
+  if (withDev.seasonHistory && withDev.seasonHistory.length > 0 && withDev.inbox?.messages) {
     let updated = false;
-    const messages = state.inbox.messages.map((m) => {
+    const messages = withDev.inbox.messages.map((m) => {
       if (
         m.sender === "Rugby Football League" &&
         m.subject.includes("Season Review & Roll of Honour")
       ) {
-        const historyRecord = state.seasonHistory!.find((rec) =>
+        const historyRecord = withDev.seasonHistory!.find((rec) =>
           m.subject.includes(`${rec.season} Season Review`)
         );
         if (historyRecord && !m.body.includes("PROMOTION & RELEGATION")) {
@@ -107,16 +145,16 @@ function upgradeLoadedManagerState(state: ManagerState): ManagerState {
 
     if (updated) {
       return {
-        ...state,
+        ...withDev,
         inbox: {
-          ...state.inbox,
+          ...withDev.inbox,
           messages,
         },
       };
     }
   }
 
-  return state;
+  return withDev;
 }
 
 export function loadManagerState(slot: number | "auto" = 0): ManagerState | null {
@@ -212,15 +250,7 @@ export function getMostRecentSave(): SaveMetadata | null {
   const all = getAllAvailableSaves();
   if (all.length === 0) return null;
 
-  if (typeof window !== "undefined") {
-    const activeSlotStr = window.localStorage.getItem(ACTIVE_SLOT_KEY);
-    if (activeSlotStr) {
-      const activeSlot = parseInt(activeSlotStr, 10);
-      const match = all.find((s) => s.slot === activeSlot);
-      if (match) return match;
-    }
-  }
-
+  // Prefer true recency (autosave advances every week; numbered slots are checkpoints).
   all.sort((a, b) => (b.savedAtTimestamp || 0) - (a.savedAtTimestamp || 0));
   return all[0];
 }

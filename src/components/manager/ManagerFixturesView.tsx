@@ -6,7 +6,10 @@ import type { CompetitionId, ManagerFixture } from "@/lib/manager/types";
 
 export function ManagerFixturesView() {
   const { state, setLastPlayedMatchReview, openKeyMoments } = useManager();
-  const [selectedCompId, setSelectedCompId] = useState<CompetitionId>("super-league");
+  const userClubId = state?.manager.clubId;
+  const userComp =
+    (userClubId && state?.clubs[userClubId]?.competitionId) || "super-league";
+  const [selectedCompId, setSelectedCompId] = useState<CompetitionId>(userComp);
 
   if (!state) return null;
 
@@ -28,8 +31,8 @@ export function ManagerFixturesView() {
     <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6 space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-white">Fixtures & Results</h2>
-          <p className="text-xs text-pitch-400">
+          <h2 className="text-lg sm:text-2xl font-black text-white">Fixtures</h2>
+          <p className="hidden sm:block text-xs text-pitch-400">
             Official league schedule, Challenge Cup ties, and match scores.
           </p>
         </div>

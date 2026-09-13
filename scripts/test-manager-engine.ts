@@ -81,8 +81,19 @@ function runTests() {
   const academyCount = widnesPlayers.filter((p) => p.squadTier === "academy").length;
 
   assert(firstCount >= 17, `Widnes First Team has at least 17 players (${firstCount})`);
-  assert(reservesCount >= 4, `Widnes Reserves has at least 4 players (${reservesCount})`);
-  assert(academyCount >= 4, `Widnes Academy has at least 4 players (${academyCount})`);
+  assert(reservesCount >= 17, `Widnes Reserves has at least 17 players (${reservesCount})`);
+  assert(academyCount >= 17, `Widnes Academy has at least 17 players (${academyCount})`);
+
+  const afterDevWeek = advanceWeek(state);
+  const widnesDev = afterDevWeek.clubs["widnes-vikings"]?.developmentResults || [];
+  assert(
+    widnesDev.some((r) => r.tier === "reserves" && r.week === 1),
+    "Widnes Reserves have a Week 1 grade result after advance"
+  );
+  assert(
+    widnesDev.some((r) => r.tier === "academy" && r.week === 1),
+    "Widnes Academy have a Week 1 grade result after advance"
+  );
 
   // ----------------------------------------------------
   // TEST GROUP 2: Squad Movement Invariants

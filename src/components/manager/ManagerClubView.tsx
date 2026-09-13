@@ -95,8 +95,8 @@ export function ManagerClubView() {
     <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6 space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-black text-white">{club.name} Operations & Infrastructure</h2>
-        <p className="text-xs text-pitch-400">
+        <h2 className="text-lg sm:text-2xl font-black text-white truncate">{club.name}</h2>
+        <p className="hidden sm:block text-xs text-pitch-400">
           Invest club treasury balance into world-class facilities, stadium capacity, and coaching to unlock career buffs for your squad.
         </p>
       </div>
@@ -408,14 +408,27 @@ export function ManagerClubView() {
         </h3>
         <div className="grid gap-3 sm:grid-cols-2">
           {club.boardObjectives.map((obj) => (
-            <div key={obj.id} className="rounded-xl bg-pitch-950 p-3 border border-pitch-800 text-xs space-y-1">
-              <div className="flex justify-between items-center">
+            <div
+              key={obj.id}
+              className={`rounded-xl p-3 border text-xs space-y-1 ${
+                obj.isCompleted
+                  ? "bg-emerald-950/40 border-emerald-700/50"
+                  : obj.isFailed
+                  ? "bg-rose-950/40 border-rose-800/50"
+                  : "bg-pitch-950 border-pitch-800"
+              }`}
+            >
+              <div className="flex justify-between items-center gap-2">
                 <span className="font-bold text-white">{obj.title}</span>
-                <span className="text-[10px] uppercase font-bold text-pitch-400 rounded bg-pitch-900 px-2 py-0.5">
-                  {obj.category}
+                <span className="text-[10px] uppercase font-bold text-pitch-400 rounded bg-pitch-900 px-2 py-0.5 shrink-0">
+                  {obj.isCompleted ? "Done" : obj.isFailed ? "Failed" : obj.category}
                 </span>
               </div>
               <p className="text-[11px] text-pitch-400">{obj.description}</p>
+              <p className="text-[11px] text-pitch-300 font-semibold">
+                Progress: {String(obj.currentValue)}
+                {obj.targetValue != null ? ` / ${String(obj.targetValue)}` : ""}
+              </p>
             </div>
           ))}
         </div>

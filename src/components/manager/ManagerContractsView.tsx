@@ -2,15 +2,26 @@
 
 import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
-import { calculateSalaryCapUsage, isContractUnderSixMonths } from "@/lib/manager/contracts";
+import {
+  calculateSalaryCapUsage,
+  evaluateContractOffer,
+  isContractUnderSixMonths,
+} from "@/lib/manager/contracts";
+import { CONTRACT_NEGOTIATION } from "@/lib/manager/rules";
 import { formatPositionShort, formatSquadRole, formatSquadTier } from "@/lib/manager";
 import type { ManagerPlayer, SquadRole } from "@/lib/manager/types";
+
+function parseMoneyDraft(raw: string, min: number): number {
+  const n = parseInt(raw.replace(/[^\d]/g, ""), 10);
+  if (!Number.isFinite(n)) return min;
+  return Math.max(min, n);
+}
 
 export function ManagerContractsView() {
   const { state, renewContract, renewAllTierContracts, releasePlayer } = useManager();
   const [filterExpiring, setFilterExpiring] = useState<boolean>(false);
   const [targetPlayer, setTargetPlayer] = useState<ManagerPlayer | null>(null);
-  const [offeredWage, setOfferedWage] = useState<number>(2000);
+  const [offeredWageDraft, setOfferedWageDraft] = useState<string>("2000");
   const [offeredYears, setOfferedYears] = useState<number>(2);
   const [offeredRole, setOfferedRole] = useState<SquadRole>("first_team");
   const [statusMsg, setStatusMsg] = useState<{ text: string; isError: boolean } | null>(null);
@@ -37,7 +48,7 @@ export function ManagerContractsView() {
   const openRenewalModal = (player: ManagerPlayer) => {
     const currentWage = player.contract?.wageWeekly || 1000;
     setTargetPlayer(player);
-    setOfferedWage(Math.round(currentWage * 1.1));
+    setOfferedWageDraft(String(Math.round(currentWage * 1.1)));
     setOfferedYears(2);
     setOfferedRole(player.contract?.role || "first_team");
     setStatusMsg(null);
@@ -45,6 +56,11 @@ export function ManagerContractsView() {
 
   const handleExecuteRenewal = () => {
     if (!targetPlayer) return;
+    const offeredWage = parseMoneyDraft(
+      offeredWageDraft,
+      CONTRACT_NEGOTIATION.MIN_WEEKLY_WAGE
+    );
+    setOfferedWageDraft(String(offeredWage));
     const res = renewContract(targetPlayer.id, offeredWage, offeredYears, offeredRole);
     if (res.success) {
       setStatusMsg({ text: `Contract extension signed with ${targetPlayer.name}!`, isError: false });
@@ -93,8 +109,8 @@ export function ManagerContractsView() {
     <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6 space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-white">Contracts & Wage Management</h2>
-          <p className="text-xs text-pitch-400">
+          <h2 className="text-lg sm:text-2xl font-black text-white">Contracts</h2>
+          <p className="hidden sm:block text-xs text-pitch-400">
             Monitor player expiry dates, negotiate extensions, and manage club commitments under the salary cap.
           </p>
         </div>
@@ -297,12 +313,42 @@ export function ManagerContractsView() {
                   New Weekly Wage (£/wk)
                 </label>
                 <input
-                  type="number"
-                  step={100}
-                  value={offeredWage}
-                  onChange={(e) => setOfferedWage(Math.max(200, parseInt(e.target.value) || 0))}
+                  type="text"
+                  inputMode="numeric"
+                  value={offeredWageDraft}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/[^\d]/g, "");
+                    setOfferedWageDraft(raw);
+                  }}
+                  onBlur={() =>
+                    setOfferedWageDraft(
+                      String(
+                        parseMoneyDraft(
+                          offeredWageDraft,
+                          CONTRACT_NEGOTIATION.MIN_WEEKLY_WAGE
+                        )
+                      )
+                    )
+                  }
                   className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 font-bold"
                 />
+                {(() => {
+                  const club = state.clubs[userClubId];
+                  if (!club || !targetPlayer) return null;
+                  const terms = evaluateContractOffer(
+                    targetPlayer,
+                    club,
+                    0,
+                    offeredRole,
+                    { context: "renewal", contractYears: offeredYears }
+                  );
+                  return (
+                    <span className="text-[11px] text-pitch-500 mt-0.5 block">
+                      Agent ask ~£{terms.askingWage.toLocaleString()}/wk · likely accepts from £
+                      {terms.minimumAcceptableWage.toLocaleString()}/wk
+                    </span>
+                  );
+                })()}
               </div>
 
               <div className="grid grid-cols-2 gap-3">

@@ -17,6 +17,7 @@ import {
   CALENDAR_RULES,
   SALARY_CAP,
   CHAMPIONSHIP_ECONOMY,
+  DEVELOPMENT_SQUAD_SIZE,
   calculateMarketWage,
 } from "./rules";
 import { FIRST_NAMES, LAST_NAMES, generateRandomPlayerName } from "./names";
@@ -520,8 +521,8 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
       }
     }
 
-    // Every club starts with dedicated Reserves (5 players, ages 20-25, role: rotation/youth)
-    for (let i = 0; i < 5; i++) {
+    // Every club starts with a full Reserves grade (17 players, ages 20-25)
+    for (let i = 0; i < 17; i++) {
       const pos = STARTING_POSITIONS[(i + 3) % STARTING_POSITIONS.length];
       const age = Math.floor(Math.random() * 6) + 20;
       const rating = Math.max(50, Math.round(baseStrength - 6 + (Math.random() * 6 - 3)));
@@ -543,8 +544,8 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
       players[genReserve.id] = genReserve;
     }
 
-    // Every club starts with dedicated Academy prospects (5 players, ages 17-19, high upside potential)
-    for (let i = 0; i < 5; i++) {
+    // Every club starts with a full Academy grade (17 players, ages 17-19, high upside)
+    for (let i = 0; i < 17; i++) {
       const pos = STARTING_POSITIONS[(i + 5) % STARTING_POSITIONS.length];
       const age = Math.floor(Math.random() * 3) + 17;
       const rating = Math.max(48, Math.round(baseStrength - 13 + (Math.random() * 6 - 3)));
@@ -671,8 +672,8 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
 }
 
 /**
- * Guarantees healthy squad depth across First Team (17+), Reserves (4+), and Academy (4+).
- * If a club has none in reserves or academy (or fewer than 4), realistic players are automatically generated.
+ * Guarantees healthy squad depth across First Team, Reserves, and Academy (17 each).
+ * Short development grades are auto-filled so both can field a full matchday 17.
  */
 export function ensureClubSquadDepth(
   state: ManagerState,
@@ -731,8 +732,8 @@ export function ensureClubSquadDepth(
     const academy = currentClubPlayers.filter((p) => p.squadTier === "academy");
 
     // 1. Ensure First Team has at least 17 players (can field a full matchday 17)
-    if (firstTeam.length < 17) {
-      const needed = 17 - firstTeam.length;
+    if (firstTeam.length < DEVELOPMENT_SQUAD_SIZE) {
+      const needed = DEVELOPMENT_SQUAD_SIZE - firstTeam.length;
       for (let i = 0; i < needed; i++) {
         const pos = STARTING_POSITIONS[i % STARTING_POSITIONS.length];
         const age = Math.floor(Math.random() * 8) + 21;
@@ -755,9 +756,9 @@ export function ensureClubSquadDepth(
       }
     }
 
-    // 2. Ensure Reserves has at least 4-5 players (generated if none)
-    if (reserves.length < 4) {
-      const needed = Math.max(4 - reserves.length, reserves.length === 0 ? 5 : 0);
+    // 2. Ensure Reserves has a full grade of 17
+    if (reserves.length < DEVELOPMENT_SQUAD_SIZE) {
+      const needed = DEVELOPMENT_SQUAD_SIZE - reserves.length;
       for (let i = 0; i < needed; i++) {
         const pos = STARTING_POSITIONS[(i + 3) % STARTING_POSITIONS.length];
         const age = Math.floor(Math.random() * 6) + 20;
@@ -780,9 +781,9 @@ export function ensureClubSquadDepth(
       }
     }
 
-    // 3. Ensure Academy has at least 4-5 players (generated if none)
-    if (academy.length < 4) {
-      const needed = Math.max(4 - academy.length, academy.length === 0 ? 5 : 0);
+    // 3. Ensure Academy has a full grade of 17
+    if (academy.length < DEVELOPMENT_SQUAD_SIZE) {
+      const needed = DEVELOPMENT_SQUAD_SIZE - academy.length;
       for (let i = 0; i < needed; i++) {
         const pos = STARTING_POSITIONS[(i + 5) % STARTING_POSITIONS.length];
         const age = Math.floor(Math.random() * 3) + 17;

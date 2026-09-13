@@ -150,7 +150,7 @@ export function ManagerClubSelect() {
           Manager Mode Headquarters
         </h1>
         <p className="text-sm sm:text-base text-pitch-300 max-w-2xl mx-auto">
-          Take control of tactics, squad depth, transfers, youth academies, and finances under the salary cap — or resume your managerial legacy.
+          Resume a career or start fresh — Championship promotion or Super League silverware.
         </p>
       </div>
 

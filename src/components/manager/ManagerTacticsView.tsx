@@ -4,11 +4,17 @@ import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import { STARTING_POSITIONS } from "@/lib/manager/rules";
 import { formatPositionLabel, formatPositionShort } from "@/lib/manager";
-import type { ClubLineup, Position } from "@/lib/manager/types";
+import type { ClubLineup, ClubTactics, Position } from "@/lib/manager/types";
 
 export function ManagerTacticsView() {
-  const { state, autoPickSquad, saveLineup, getUserMatchdayReadiness, clearAdvanceError } =
-    useManager();
+  const {
+    state,
+    autoPickSquad,
+    saveLineup,
+    getUserMatchdayReadiness,
+    clearAdvanceError,
+    updateClubTactics,
+  } = useManager();
   const [selectedSlotIdx, setSelectedSlotIdx] = useState<number | null>(null);
   const [isBenchSlot, setIsBenchSlot] = useState<boolean>(false);
 
@@ -64,21 +70,19 @@ export function ManagerTacticsView() {
     setSelectedSlotIdx(null);
   };
 
-  const handleStyleChange = (style: any) => {
-    club.tactics.style = style;
-  };
-
-  const handleIntensityChange = (intensity: any) => {
-    club.tactics.trainingIntensity = intensity;
-  };
+  const kickerCandidates = availablePlayers
+    .filter((p) =>
+      ["SCRUM_HALF", "STAND_OFF", "FULLBACK", "WING", "CENTRE"].includes(p.position)
+    )
+    .sort((a, b) => b.rating - a.rating);
 
   return (
     <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6 space-y-5">
       {/* Header with Quick Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-white">Tactics & Matchday Lineup</h2>
-          <p className="text-xs text-pitch-400">
+          <h2 className="text-lg sm:text-2xl font-black text-white">Tactics</h2>
+          <p className="hidden sm:block text-xs text-pitch-400">
             Select your starting 13 and 4 interchange substitutes. Tune team playstyle and intensity.
           </p>
         </div>
@@ -242,14 +246,21 @@ export function ManagerTacticsView() {
               </label>
               <select
                 value={club.tactics.style}
-                onChange={(e) => handleStyleChange(e.target.value)}
+                onChange={(e) =>
+                  updateClubTactics({
+                    style: e.target.value as ClubTactics["style"],
+                  })
+                }
                 className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-emerald-500"
               >
                 <option value="balanced">Balanced (Structured & Patient)</option>
-                <option value="expansive">Expansive (Shift Early & High Risk)</option>
+                <option value="expansive">Expansive (Open Tempo & High Risk)</option>
                 <option value="attritional">Attritional (Arm-wrestle & Power)</option>
                 <option value="direct">Direct (Hit the Ad-Line)</option>
               </select>
+              <p className="mt-1 text-[10px] text-pitch-500">
+                Affects match tempo and scoreline shape.
+              </p>
             </div>
 
             {/* Kicking Focus */}
@@ -259,7 +270,11 @@ export function ManagerTacticsView() {
               </label>
               <select
                 value={club.tactics.kickingFocus}
-                onChange={(e) => (club.tactics.kickingFocus = e.target.value as any)}
+                onChange={(e) =>
+                  updateClubTactics({
+                    kickingFocus: e.target.value as ClubTactics["kickingFocus"],
+                  })
+                }
                 className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-emerald-500"
               >
                 <option value="territory">Territory (Pin Opponent Deep)</option>
@@ -268,20 +283,30 @@ export function ManagerTacticsView() {
               </select>
             </div>
 
-            {/* Training Intensity */}
+            {/* Goal Kicker */}
             <div>
               <label className="block text-xs font-semibold text-pitch-300 mb-1.5">
-                Match Intensity
+                Primary Goal Kicker
               </label>
               <select
-                value={club.tactics.trainingIntensity}
-                onChange={(e) => handleIntensityChange(e.target.value)}
+                value={club.tactics.primaryGoalKickerId || ""}
+                onChange={(e) =>
+                  updateClubTactics({
+                    primaryGoalKickerId: e.target.value || undefined,
+                  })
+                }
                 className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-emerald-500"
               >
-                <option value="low">Low Intensity (-Fatigue, Safe)</option>
-                <option value="normal">Normal Intensity (Standard Balance)</option>
-                <option value="high">High Intensity (+Rating, +Injury Risk)</option>
+                <option value="">Auto (best half / fullback)</option>
+                {kickerCandidates.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name} · {formatPositionShort(p.position)} · {p.rating}
+                  </option>
+                ))}
               </select>
+              <p className="mt-1 text-[10px] text-pitch-500">
+                Team intensity is set on the Training tab.
+              </p>
             </div>
           </div>
         </div>

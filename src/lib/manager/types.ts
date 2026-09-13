@@ -195,6 +195,20 @@ export interface ManagerClub {
   tactics: ClubTactics;
   lineup: ClubLineup;
   stadiumName: string;
+  /** Recent Academy / Reserves grade results (newest first). */
+  developmentResults?: DevelopmentMatchResult[];
+}
+
+export interface DevelopmentMatchResult {
+  id: string;
+  season: number;
+  week: number;
+  tier: "reserves" | "academy";
+  opponentClubId: string;
+  opponentName: string;
+  isHome: boolean;
+  ourScore: number;
+  theirScore: number;
 }
 
 export interface MatchScoreEvent {
