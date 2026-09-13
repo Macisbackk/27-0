@@ -189,12 +189,23 @@ function TeamRatingsSection({
 }
 
 export function ManagerMatchReviewModal() {
-  const { lastPlayedMatchReview, setLastPlayedMatchReview, openKeyMoments, state } = useManager();
+  const {
+    lastPlayedMatchReview,
+    setLastPlayedMatchReview,
+    openKeyMoments,
+    setActiveTab,
+    state,
+  } = useManager();
   const [teamView, setTeamView] = useState<"both" | "home" | "away">("both");
 
   useScrollLock(Boolean(lastPlayedMatchReview), "manager-match-review");
 
   if (!lastPlayedMatchReview || !state) return null;
+
+  const returnToHub = () => {
+    setLastPlayedMatchReview(null);
+    setActiveTab("dashboard");
+  };
 
   const fixture: ManagerFixture = lastPlayedMatchReview;
   const scoreEvents = reconcileFixtureScoreEvents(fixture);
@@ -233,8 +244,8 @@ export function ManagerMatchReviewModal() {
     >
       <div className="w-full max-w-4xl max-h-[min(90dvh,100%)] overflow-y-auto overflow-x-hidden rounded-3xl border border-pitch-700 bg-pitch-950 p-5 sm:p-7 shadow-2xl space-y-5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Header Eyebrow */}
-        <div className="flex items-center justify-between border-b border-pitch-800 pb-3">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between border-b border-pitch-800 pb-3 gap-2">
+          <div className="flex items-center gap-2 min-w-0 flex-wrap">
             <span className="rounded-full bg-emerald-500/20 px-3 py-0.5 text-xs font-bold text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
               {fixture.roundName} Review
             </span>
@@ -251,13 +262,23 @@ export function ManagerMatchReviewModal() {
               <span>Watch Key Moments</span>
             </button>
           </div>
-          <button
-            type="button"
-            onClick={() => setLastPlayedMatchReview(null)}
-            className="text-pitch-400 hover:text-white text-lg p-1"
-          >
-            ✕
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              type="button"
+              onClick={returnToHub}
+              className="rounded-lg bg-emerald-600/90 hover:bg-emerald-500 px-2.5 py-1 text-[11px] sm:text-xs font-bold text-white shadow-sm transition-colors"
+            >
+              Return to Hub
+            </button>
+            <button
+              type="button"
+              onClick={returnToHub}
+              className="text-pitch-400 hover:text-white text-lg p-1"
+              aria-label="Close match review"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Scoreboard Hero Banner */}
@@ -462,7 +483,7 @@ export function ManagerMatchReviewModal() {
           </button>
           <button
             type="button"
-            onClick={() => setLastPlayedMatchReview(null)}
+            onClick={returnToHub}
             className="w-full sm:w-auto flex-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 py-3 text-center text-xs sm:text-sm font-bold text-slate-950 shadow-md hover:brightness-110 active:scale-98 transition-all"
           >
             Return to Hub

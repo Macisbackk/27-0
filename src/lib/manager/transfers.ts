@@ -3,7 +3,7 @@
  * Pure simulation logic.
  */
 
-import { calculateSalaryCapUsage, evaluateContractOffer } from "./contracts";
+import { calculateSalaryCapUsage, evaluateContractOffer, wouldExceedEliteSquadLimit } from "./contracts";
 import { CALENDAR_RULES, calculateTransferFeeBetweenClubs } from "./rules";
 import type {
   ManagerState,
@@ -17,6 +17,8 @@ export interface TransferOperationResult {
   error?: string;
   bid?: TransferBid;
 }
+
+export type TransferEvalOptions = { silent?: boolean };
 
 /**
  * Toggles a player's transfer list status.
@@ -67,7 +69,8 @@ export function submitTransferBid(
   offeredFee: number,
   offeredWage: number,
   offeredRole: SquadRole,
-  contractYears: number
+  contractYears: number,
+  options?: TransferEvalOptions
 ): TransferOperationResult {
   // 1. Transfer window validation
   if (state.calendar.currentWeek > CALENDAR_RULES.TRANSFER_WINDOW_DEADLINE_WEEK) {
@@ -106,6 +109,11 @@ export function submitTransferBid(
     };
   }
 
+  const eliteBlock = wouldExceedEliteSquadLimit(state, fromClubId, player.rating);
+  if (eliteBlock) {
+    return { success: false, state, error: eliteBlock };
+  }
+
   const bidId = `bid_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
   const bid: TransferBid = {
     id: bidId,
@@ -120,6 +128,24 @@ export function submitTransferBid(
     offeredContractYears: contractYears,
     status: "pending_club",
   };
+
+  const userClubId = state.manager.clubId;
+  const involvesUser = fromClubId === userClubId || player.clubId === userClubId;
+  const silent = options?.silent || !involvesUser;
+
+  if (silent) {
+    return {
+      success: true,
+      state: {
+        ...state,
+        transfers: {
+          ...state.transfers,
+          activeBids: [bid, ...state.transfers.activeBids],
+        },
+      },
+      bid,
+    };
+  }
 
   const nextState: ManagerState = {
     ...state,
@@ -156,7 +182,8 @@ export function submitTransferBid(
 export function evaluateSellingClubBid(
   state: ManagerState,
   bidId: string,
-  forceDecision?: "accept" | "reject"
+  forceDecision?: "accept" | "reject",
+  options?: TransferEvalOptions
 ): TransferOperationResult {
   const bid = state.transfers.activeBids.find((b) => b.id === bidId);
   if (!bid) return { success: false, state, error: "Bid not found." };
@@ -184,6 +211,12 @@ export function evaluateSellingClubBid(
     let valueMultiplier = 1.0;
     if (player.contract?.role === "star") valueMultiplier = 1.3;
     if (player.isTransferListed) valueMultiplier = 0.85;
+    // Fringe / aging players sell cheaper
+    if (player.rating < 72 || player.age >= 32) valueMultiplier *= 0.9;
+    // Keep key first-teamers unless fee is strong
+    if (player.squadTier === "first" && player.rating >= 80 && !player.isTransferListed) {
+      valueMultiplier *= 1.15;
+    }
 
     const minimumRequiredFee = Math.round(fairValue * valueMultiplier);
 
@@ -213,6 +246,17 @@ export function evaluateSellingClubBid(
   };
 
   const updatedBids = state.transfers.activeBids.map((b) => (b.id === bidId ? updatedBid : b));
+
+  if (options?.silent) {
+    return {
+      success: true,
+      state: {
+        ...state,
+        transfers: { ...state.transfers, activeBids: updatedBids },
+      },
+      bid: updatedBid,
+    };
+  }
 
   const nextState: ManagerState = {
     ...state,
@@ -248,7 +292,8 @@ export function evaluateSellingClubBid(
  */
 export function evaluatePlayerTransferTerms(
   state: ManagerState,
-  bidId: string
+  bidId: string,
+  options?: TransferEvalOptions
 ): TransferOperationResult {
   const bid = state.transfers.activeBids.find((b) => b.id === bidId);
   if (!bid) return { success: false, state, error: "Bid not found." };
@@ -274,6 +319,17 @@ export function evaluatePlayerTransferTerms(
   };
 
   const updatedBids = state.transfers.activeBids.map((b) => (b.id === bidId ? updatedBid : b));
+
+  if (options?.silent) {
+    return {
+      success: true,
+      state: {
+        ...state,
+        transfers: { ...state.transfers, activeBids: updatedBids },
+      },
+      bid: updatedBid,
+    };
+  }
 
   const nextState: ManagerState = {
     ...state,
@@ -330,6 +386,10 @@ export function completeTransfer(
   const cap = calculateSalaryCapUsage(state, buyingClub.id);
   if (cap.availableCapWeekly < bid.offeredWage) {
     return { success: false, state, error: "Buying club salary cap would be breached." };
+  }
+  const eliteBlock = wouldExceedEliteSquadLimit(state, buyingClub.id, player.rating);
+  if (eliteBlock) {
+    return { success: false, state, error: eliteBlock };
   }
 
   const currentSeason = state.calendar.currentSeason;

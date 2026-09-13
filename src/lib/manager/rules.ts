@@ -23,35 +23,65 @@ export const STARTING_POSITIONS: Position[] = [
   "LOOSE_FORWARD", // 13
 ];
 
+/**
+ * Salary cap — sized so a full first team can renew at market wages.
+ * Pressure comes from stacking elites (full wage after marquee slots),
+ * not from routine squad retention.
+ */
 export const SALARY_CAP = {
   "super-league": {
-    annualCap: 2_100_000,
-    weeklyCap: Math.round(2_100_000 / 52), // ~£40,385
-    maxMarqueePlayers: 2,
-    marqueeWeeklyCapCharge: Math.round(150_000 / 52), // Marquee player counts as £150k max against cap
+    annualCap: 3_200_000,
+    weeklyCap: Math.round(3_200_000 / 52), // ~£61,538
+    maxMarqueePlayers: 3,
+    marqueeWeeklyCapCharge: Math.round(200_000 / 52), // Marquee counts as £200k/yr max against cap
     homegrownDiscountPct: 0.5, // 50% discount for academy graduates under 21
   },
   "championship": {
-    annualCap: 1_000_000,
-    weeklyCap: Math.round(1_000_000 / 52), // ~£19,230
-    maxMarqueePlayers: 1,
-    marqueeWeeklyCapCharge: Math.round(75_000 / 52),
+    annualCap: 1_600_000,
+    weeklyCap: Math.round(1_600_000 / 52), // ~£30,769
+    maxMarqueePlayers: 2,
+    marqueeWeeklyCapCharge: Math.round(100_000 / 52),
     homegrownDiscountPct: 0.5,
   },
   "challenge-cup": {
-    annualCap: 2_100_000,
-    weeklyCap: Math.round(2_100_000 / 52),
-    maxMarqueePlayers: 2,
-    marqueeWeeklyCapCharge: Math.round(150_000 / 52),
+    annualCap: 3_200_000,
+    weeklyCap: Math.round(3_200_000 / 52),
+    maxMarqueePlayers: 3,
+    marqueeWeeklyCapCharge: Math.round(200_000 / 52),
     homegrownDiscountPct: 0.5,
   },
   "friendlies": {
-    annualCap: 2_100_000,
-    weeklyCap: Math.round(2_100_000 / 52),
-    maxMarqueePlayers: 2,
-    marqueeWeeklyCapCharge: Math.round(150_000 / 52),
+    annualCap: 3_200_000,
+    weeklyCap: Math.round(3_200_000 / 52),
+    maxMarqueePlayers: 3,
+    marqueeWeeklyCapCharge: Math.round(200_000 / 52),
     homegrownDiscountPct: 0.5,
   },
+} as const;
+
+/**
+ * Only this many highest first-team wages count against the cap.
+ * Extra depth / reserves / academy do not block routine renewals —
+ * the cap exists to limit elite wage stacking, not paperwork.
+ */
+export const SALARY_CAP_COUNTABLE_FIRST_TEAM = 17;
+
+/** Soft ceiling on elite first-team depth — stops endless 86+ stacking. */
+export const ELITE_SQUAD_LIMITS = {
+  "super-league": { minRating: 86, maxFirstTeam: 8 },
+  "championship": { minRating: 84, maxFirstTeam: 4 },
+  "challenge-cup": { minRating: 86, maxFirstTeam: 8 },
+  "friendlies": { minRating: 86, maxFirstTeam: 8 },
+} as const;
+
+/** Loyalty renewals (≤ market ask, non-elite) get modest cap headroom. */
+export const RENEWAL_CAP_BUFFER = {
+  /** Fraction of weekly cap added as temporary room for loyalty renewals. */
+  LOYALTY_HEADROOM_PCT: 0.12,
+  /** Players at/above this rating do not get loyalty headroom. */
+  ELITE_RATING_FLOOR: 86,
+  /** Offered wage must stay within this multiple of market wage. */
+  MAX_MARKET_MULTIPLIER: 1.12,
 } as const;
 
 export const CALENDAR_RULES = {

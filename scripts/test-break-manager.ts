@@ -1138,13 +1138,14 @@ async function runBreakTests() {
 
   // Inject an accepted bid and complete — proves permanent move clears loan state
   const fakeBidId = `bid_loan_clear_${onLoan.id}`;
-  // Free salary-cap room at buyer so the transfer can complete
+  // Free salary-cap room + elite slots at buyer so the transfer can complete
   const buyerId = "st-helens";
   const buyerPlayersPatched = { ...loanState.players };
   for (const [pid, p] of Object.entries(buyerPlayersPatched)) {
     if (p.clubId === buyerId && p.contract) {
       buyerPlayersPatched[pid] = {
         ...p,
+        rating: Math.min(p.rating, 84),
         contract: { ...p.contract, wageWeekly: 100 },
       };
     }

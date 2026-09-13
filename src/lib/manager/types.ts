@@ -384,7 +384,14 @@ export interface InboxMessage {
   relatedEntityId?: string; // e.g. playerId or bidId
   actions?: {
     label: string;
-    actionType: "accept_bid" | "reject_bid" | "renew_contract" | "recall_loan" | "dismiss";
+    actionType:
+      | "accept_bid"
+      | "reject_bid"
+      | "accept_loan"
+      | "reject_loan"
+      | "renew_contract"
+      | "recall_loan"
+      | "dismiss";
     payload?: any;
   }[];
 }

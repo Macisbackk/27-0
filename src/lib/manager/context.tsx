@@ -158,6 +158,14 @@ interface ManagerContextValue {
     bidId: string,
     decision: "accept" | "reject"
   ) => { success: boolean; error?: string };
+  decideOnLoanOffer: (payload: {
+    playerId: string;
+    parentClubId: string;
+    destinationClubId: string;
+    totalWeeks: number;
+    wageContributionPct: number;
+    canRecall: boolean;
+  }) => { success: boolean; error?: string };
   loanPlayerOut: (
     playerId: string,
     destClubId: string,
@@ -647,6 +655,33 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     [state]
   );
 
+  const decideOnLoanOffer = useCallback(
+    (payload: {
+      playerId: string;
+      parentClubId: string;
+      destinationClubId: string;
+      totalWeeks: number;
+      wageContributionPct: number;
+      canRecall: boolean;
+    }) => {
+      if (!state) return { success: false, error: "No active game" };
+      const res = createLoanAgreement(
+        state,
+        payload.parentClubId,
+        payload.destinationClubId,
+        payload.playerId,
+        payload.totalWeeks,
+        payload.wageContributionPct,
+        payload.canRecall
+      );
+      if (res.success) {
+        setState(res.state);
+      }
+      return { success: res.success, error: res.error };
+    },
+    [state]
+  );
+
   const loanPlayerOut = useCallback(
     (
       playerId: string,
@@ -967,6 +1002,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
         signFreeAgentPlayer,
         bidOnPlayer,
         decideOnIncomingBid,
+        decideOnLoanOffer,
         loanPlayerOut,
         loanPlayerIn: loanPlayerInAction,
         recallPlayerLoan,

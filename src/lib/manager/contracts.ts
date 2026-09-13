@@ -8,12 +8,16 @@ import {
   calculateMarketWage,
   CALENDAR_RULES,
   CONTRACT_NEGOTIATION,
+  ELITE_SQUAD_LIMITS,
+  RENEWAL_CAP_BUFFER,
+  SALARY_CAP_COUNTABLE_FIRST_TEAM,
 } from "./rules";
 import type {
   ManagerState,
   ManagerPlayer,
   PlayerContract,
   SquadRole,
+  CompetitionId,
 } from "./types";
 
 export type ContractOfferContext = "renewal" | "transfer" | "free_agent";
@@ -72,33 +76,40 @@ export function calculateSalaryCapUsage(state: ManagerState, clubId: string): {
   );
 
   let totalWageBillWeekly = 0;
-  // Sort players by wage descending to identify marquee candidates
-  const sortedByWage = [...clubPlayers].sort(
-    (a, b) => (b.contract?.wageWeekly || 0) - (a.contract?.wageWeekly || 0)
-  );
-
-  const marqueePlayerIds: string[] = [];
-  let capChargeWeekly = 0;
-
-  sortedByWage.forEach((p) => {
+  for (const p of clubPlayers) {
     const rawWage = p.contract?.wageWeekly || 0;
-    // If player is loaned out, parent club only pays the remaining wage percentage
     const wage =
       p.loan && p.loan.parentClubId === clubId
         ? Math.round((rawWage * (100 - p.loan.wageContributionPct)) / 100)
         : rawWage;
-
     totalWageBillWeekly += wage;
+  }
 
-    // Check marquee exemption eligibility
-    if (marqueePlayerIds.length < rules.maxMarqueePlayers && wage > rules.marqueeWeeklyCapCharge) {
+  // Cap charge: highest N first-team wages only (reserves/academy excluded)
+  const firstTeamForCap = clubPlayers
+    .filter((p) => p.squadTier === "first")
+    .map((p) => {
+      const rawWage = p.contract?.wageWeekly || 0;
+      const wage =
+        p.loan && p.loan.parentClubId === clubId
+          ? Math.round((rawWage * (100 - p.loan.wageContributionPct)) / 100)
+          : rawWage;
+      return { id: p.id, wage, age: p.age };
+    })
+    .sort((a, b) => b.wage - a.wage)
+    .slice(0, SALARY_CAP_COUNTABLE_FIRST_TEAM);
+
+  const marqueePlayerIds: string[] = [];
+  let capChargeWeekly = 0;
+
+  firstTeamForCap.forEach((p) => {
+    if (marqueePlayerIds.length < rules.maxMarqueePlayers && p.wage > rules.marqueeWeeklyCapCharge) {
       marqueePlayerIds.push(p.id);
       capChargeWeekly += rules.marqueeWeeklyCapCharge;
-    } else if (p.squadTier === "academy" && p.age <= 21) {
-      // Homegrown youth discount
-      capChargeWeekly += Math.round(wage * rules.homegrownDiscountPct);
+    } else if (p.age <= 21) {
+      capChargeWeekly += Math.round(p.wage * rules.homegrownDiscountPct);
     } else {
-      capChargeWeekly += wage;
+      capChargeWeekly += p.wage;
     }
   });
 
@@ -123,6 +134,46 @@ export function calculateSalaryCapUsage(state: ManagerState, clubId: string): {
     isOverCap: capChargeWeekly > capLimitWeekly,
     marqueePlayerIds,
   };
+}
+
+/** Count first-team elites already at a club (excludes a player being replaced). */
+export function countEliteFirstTeamPlayers(
+  state: ManagerState,
+  clubId: string,
+  excludePlayerId?: string
+): { count: number; limit: number; minRating: number } {
+  const club = state.clubs[clubId];
+  const compId: CompetitionId = club?.competitionId || "super-league";
+  const limits = ELITE_SQUAD_LIMITS[compId] || ELITE_SQUAD_LIMITS["super-league"];
+  const count = Object.values(state.players).filter(
+    (p) =>
+      p.clubId === clubId &&
+      !p.isRetired &&
+      p.squadTier === "first" &&
+      !p.loan &&
+      p.id !== excludePlayerId &&
+      p.rating >= limits.minRating
+  ).length;
+  return { count, limit: limits.maxFirstTeam, minRating: limits.minRating };
+}
+
+/** Block signing another elite when the club already sits on the soft elite ceiling. */
+export function wouldExceedEliteSquadLimit(
+  state: ManagerState,
+  clubId: string,
+  incomingRating: number,
+  excludePlayerId?: string
+): string | null {
+  const { count, limit, minRating } = countEliteFirstTeamPlayers(
+    state,
+    clubId,
+    excludePlayerId
+  );
+  if (incomingRating < minRating) return null;
+  if (count >= limit) {
+    return `Elite squad limit: this club already has ${count} first-team players rated ${minRating}+ (max ${limit}). Move someone on before stacking more stars.`;
+  }
+  return null;
 }
 
 function roundWageToStep(weekly: number): number {
@@ -228,16 +279,24 @@ export function renewPlayerContract(
     return { success: false, state, error: evaluation.reason };
   }
 
-  // 2. Test salary cap impact
+  // 2. Test salary cap impact — loyalty renewals get modest headroom so a full
+  // squad can be retained; elite wage hikes still need real unused cap room.
   const currentWage = player.contract?.wageWeekly || 0;
   const wageDelta = offeredWage - currentWage;
   const currentCap = calculateSalaryCapUsage(state, club.id);
+  const marketWage = calculateMarketWage(player.rating, player.age, club.competitionId);
+  const loyaltyEligible =
+    player.rating < RENEWAL_CAP_BUFFER.ELITE_RATING_FLOOR &&
+    offeredWage <= Math.round(marketWage * RENEWAL_CAP_BUFFER.MAX_MARKET_MULTIPLIER);
+  const loyaltyHeadroom = loyaltyEligible
+    ? Math.round(currentCap.capLimitWeekly * RENEWAL_CAP_BUFFER.LOYALTY_HEADROOM_PCT)
+    : 0;
 
-  if (wageDelta > 0 && currentCap.availableCapWeekly < wageDelta) {
+  if (wageDelta > 0 && currentCap.availableCapWeekly + loyaltyHeadroom < wageDelta) {
     return {
       success: false,
       state,
-      error: `Salary Cap Breach: This renewal increases weekly wages by £${wageDelta.toLocaleString()}/wk, but the club only has £${Math.max(0, currentCap.availableCapWeekly).toLocaleString()}/wk cap room.`,
+      error: `Salary Cap Breach: This renewal increases weekly wages by £${wageDelta.toLocaleString()}/wk, but the club only has £${Math.max(0, currentCap.availableCapWeekly).toLocaleString()}/wk cap room${loyaltyEligible ? " (including loyalty buffer)" : ""}.`,
     };
   }
 
@@ -559,6 +618,11 @@ export function signFreeAgent(
       state,
       error: `Salary Cap Breach: Signing ${player.name} requires £${offeredWage.toLocaleString()}/wk, but the club only has £${Math.max(0, currentCap.availableCapWeekly).toLocaleString()}/wk room under the cap.`,
     };
+  }
+
+  const eliteBlock = wouldExceedEliteSquadLimit(state, clubId, player.rating);
+  if (eliteBlock) {
+    return { success: false, state, error: eliteBlock };
   }
 
   const currentSeason = state.calendar.currentSeason;

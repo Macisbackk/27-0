@@ -12,6 +12,7 @@ export function ManagerInboxView() {
     markAllMessagesRead,
     setActiveTab,
     decideOnIncomingBid,
+    decideOnLoanOffer,
   } = useManager();
   const compact = useCompactViewport();
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(null);
@@ -58,9 +59,24 @@ export function ManagerInboxView() {
   };
 
   const runInboxAction = (
-    actionType: "accept_bid" | "reject_bid" | "renew_contract" | "recall_loan" | "dismiss",
+    actionType:
+      | "accept_bid"
+      | "reject_bid"
+      | "accept_loan"
+      | "reject_loan"
+      | "renew_contract"
+      | "recall_loan"
+      | "dismiss",
     msg: InboxMessage,
-    payload?: { bidId?: string; playerId?: string }
+    payload?: {
+      bidId?: string;
+      playerId?: string;
+      parentClubId?: string;
+      destinationClubId?: string;
+      totalWeeks?: number;
+      wageContributionPct?: number;
+      canRecall?: boolean;
+    }
   ) => {
     if (actionType === "accept_bid" || actionType === "reject_bid") {
       const id = resolveIncomingBidId(msg, payload);
@@ -75,6 +91,33 @@ export function ManagerInboxView() {
           ? `Bid ${actionType === "accept_bid" ? "accepted" : "rejected"}.`
           : res.error || "Failed"
       );
+      return;
+    }
+    if (actionType === "accept_loan") {
+      if (
+        !payload?.playerId ||
+        !payload.parentClubId ||
+        !payload.destinationClubId ||
+        !payload.totalWeeks
+      ) {
+        setActionMsg("Loan offer is missing details.");
+        return;
+      }
+      const res = decideOnLoanOffer({
+        playerId: payload.playerId,
+        parentClubId: payload.parentClubId,
+        destinationClubId: payload.destinationClubId,
+        totalWeeks: payload.totalWeeks,
+        wageContributionPct: payload.wageContributionPct ?? 50,
+        canRecall: payload.canRecall ?? true,
+      });
+      setActionMsg(res.success ? "Loan agreement confirmed." : res.error || "Loan failed");
+      if (res.success) markMessageRead(msg.id);
+      return;
+    }
+    if (actionType === "reject_loan") {
+      markMessageRead(msg.id);
+      setActionMsg("Loan offer declined.");
       return;
     }
     if (actionType === "renew_contract") {
@@ -191,9 +234,11 @@ export function ManagerInboxView() {
                     runInboxAction(action.actionType, selectedMessage, action.payload)
                   }
                   className={`rounded-xl px-4 py-2 text-xs font-bold ${
-                    action.actionType === "accept_bid"
+                    action.actionType === "accept_bid" ||
+                    action.actionType === "accept_loan"
                       ? "bg-emerald-600 text-white"
-                      : action.actionType === "reject_bid"
+                      : action.actionType === "reject_bid" ||
+                          action.actionType === "reject_loan"
                       ? "bg-rose-700 text-white"
                       : "bg-pitch-800 text-white border border-pitch-700"
                   }`}

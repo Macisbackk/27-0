@@ -1,13 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import { sortStandings } from "@/lib/manager/competitions";
 import type { CompetitionId } from "@/lib/manager/types";
 
 export function ManagerLeagueView() {
   const { state } = useManager();
-  const [activeTier, setActiveTier] = useState<CompetitionId>("super-league");
+  const userComp =
+    (state?.manager.clubId && state.clubs[state.manager.clubId]?.competitionId) ||
+    "super-league";
+  const [activeTier, setActiveTier] = useState<CompetitionId>(userComp);
+
+  useEffect(() => {
+    setActiveTier(userComp);
+  }, [userComp]);
 
   if (!state) return null;
 
