@@ -187,7 +187,7 @@ function TeamRatingsSection({
 }
 
 export function ManagerMatchReviewModal() {
-  const { lastPlayedMatchReview, setLastPlayedMatchReview, state } = useManager();
+  const { lastPlayedMatchReview, setLastPlayedMatchReview, openKeyMoments, state } = useManager();
   const [teamView, setTeamView] = useState<"both" | "home" | "away">("both");
 
   if (!lastPlayedMatchReview || !state) return null;
@@ -224,9 +224,23 @@ export function ManagerMatchReviewModal() {
       <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl border border-pitch-700 bg-pitch-950 p-5 sm:p-7 shadow-2xl space-y-5 scrollbar-thin scrollbar-thumb-pitch-700">
         {/* Header Eyebrow */}
         <div className="flex items-center justify-between border-b border-pitch-800 pb-3">
-          <span className="rounded-full bg-emerald-500/20 px-3 py-0.5 text-xs font-bold text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
-            {fixture.roundName} Review
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-emerald-500/20 px-3 py-0.5 text-xs font-bold text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
+              {fixture.roundName} Review
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                setLastPlayedMatchReview(null);
+                openKeyMoments(fixture);
+              }}
+              className="rounded-lg bg-pitch-900 border border-pitch-750 px-2.5 py-1 text-xs font-bold text-emerald-400 hover:bg-pitch-800 hover:text-white transition-colors flex items-center gap-1 shadow-sm"
+              title="Watch animated key moments popup of this game"
+            >
+              <span>⚡</span>
+              <span>Watch Key Moments</span>
+            </button>
+          </div>
           <button
             type="button"
             onClick={() => setLastPlayedMatchReview(null)}
@@ -424,14 +438,26 @@ export function ManagerMatchReviewModal() {
           </div>
         )}
 
-        {/* Dismiss Button */}
-        <button
-          type="button"
-          onClick={() => setLastPlayedMatchReview(null)}
-          className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 py-3 text-center text-xs sm:text-sm font-bold text-slate-950 shadow-md hover:brightness-110 active:scale-98 transition-all"
-        >
-          Return to Hub
-        </button>
+        {/* Bottom Actions */}
+        <div className="flex flex-col sm:flex-row items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              setLastPlayedMatchReview(null);
+              openKeyMoments(fixture);
+            }}
+            className="w-full sm:w-auto flex-1 rounded-xl border border-pitch-700 bg-pitch-900 py-3 text-center text-xs sm:text-sm font-bold text-white hover:bg-pitch-800 active:scale-98 transition-all flex items-center justify-center gap-1.5"
+          >
+            <span>⚡ Replay Key Moments</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setLastPlayedMatchReview(null)}
+            className="w-full sm:w-auto flex-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 py-3 text-center text-xs sm:text-sm font-bold text-slate-950 shadow-md hover:brightness-110 active:scale-98 transition-all"
+          >
+            Return to Hub
+          </button>
+        </div>
       </div>
     </div>
   );

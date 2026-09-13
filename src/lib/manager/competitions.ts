@@ -325,7 +325,7 @@ export function initializeTop6Playoffs(
 
 function getMatchWinnerId(fixture: ManagerFixture): string {
   if (!fixture.isPlayed) return fixture.homeClubId;
-  return (fixture.homeScore || 0) > (fixture.awayScore || 0)
+  return (fixture.homeScore || 0) >= (fixture.awayScore || 0)
     ? fixture.homeClubId
     : fixture.awayClubId;
 }
@@ -333,6 +333,11 @@ function getMatchWinnerId(fixture: ManagerFixture): string {
 function getClubRankIndex(standings: LeagueTableRow[], clubId: string): number {
   const idx = standings.findIndex((r) => r.clubId === clubId);
   return idx >= 0 ? idx : 999;
+}
+
+/** Season-scoped fixture predicate (legacy fixtures without season still match). */
+function isCurrentSeasonFixture(fixture: ManagerFixture, season: number): boolean {
+  return !fixture.season || fixture.season === season;
 }
 
 function createPostSeasonInboxMessage(
@@ -377,9 +382,11 @@ export function schedulePostSeasonAndCupFixtures(
   // 1. CHALLENGE CUP PROGRESSION
   // Week 16: Challenge Cup Quarter Finals
   if (targetWeek === 16) {
-    const hasW16 = ccComp.fixtures.some((f) => f.week === 16);
+    const hasW16 = ccComp.fixtures.some((f) => f.week === 16 && isCurrentSeasonFixture(f, season));
     if (!hasW16) {
-      const r5Played = ccComp.fixtures.filter((f) => f.week === 8 && f.isPlayed);
+      const r5Played = ccComp.fixtures.filter(
+        (f) => f.week === 8 && isCurrentSeasonFixture(f, season) && f.isPlayed
+      );
       if (r5Played.length >= 8) {
         const winners = r5Played.map(getMatchWinnerId);
         const qfFixtures: ManagerFixture[] = [];
@@ -404,9 +411,11 @@ export function schedulePostSeasonAndCupFixtures(
 
   // Week 24: Challenge Cup Semi Finals
   if (targetWeek === 24) {
-    const hasW24 = ccComp.fixtures.some((f) => f.week === 24);
+    const hasW24 = ccComp.fixtures.some((f) => f.week === 24 && isCurrentSeasonFixture(f, season));
     if (!hasW24) {
-      const qfPlayed = ccComp.fixtures.filter((f) => f.week === 16 && f.isPlayed);
+      const qfPlayed = ccComp.fixtures.filter(
+        (f) => f.week === 16 && isCurrentSeasonFixture(f, season) && f.isPlayed
+      );
       if (qfPlayed.length >= 4) {
         const winners = qfPlayed.map(getMatchWinnerId);
         const sfFixtures: ManagerFixture[] = [];
@@ -431,9 +440,11 @@ export function schedulePostSeasonAndCupFixtures(
 
   // Week 28: Challenge Cup Final (Wembley)
   if (targetWeek === 28) {
-    const hasW28 = ccComp.fixtures.some((f) => f.week === 28);
+    const hasW28 = ccComp.fixtures.some((f) => f.week === 28 && isCurrentSeasonFixture(f, season));
     if (!hasW28) {
-      const sfPlayed = ccComp.fixtures.filter((f) => f.week === 24 && f.isPlayed);
+      const sfPlayed = ccComp.fixtures.filter(
+        (f) => f.week === 24 && isCurrentSeasonFixture(f, season) && f.isPlayed
+      );
       if (sfPlayed.length >= 2) {
         const winners = sfPlayed.map(getMatchWinnerId);
         ccComp.fixtures = [
@@ -455,7 +466,7 @@ export function schedulePostSeasonAndCupFixtures(
 
   // 2. PLAYOFF ELIMINATORS (WEEK 29)
   if (targetWeek === 29) {
-    const slHasW29 = slComp.fixtures.some((f) => f.week === 29);
+    const slHasW29 = slComp.fixtures.some((f) => f.week === 29 && isCurrentSeasonFixture(f, season));
     if (!slHasW29 && slStandings.length >= 6) {
       // Super League Eliminators: 3rd vs 6th, 4th vs 5th
       slComp.fixtures = [
@@ -483,11 +494,13 @@ export function schedulePostSeasonAndCupFixtures(
       ];
     }
 
-    const champHasW29 = champComp.fixtures.some((f) => f.week === 29);
+    const champHasW29 = champComp.fixtures.some(
+      (f) => f.week === 29 && isCurrentSeasonFixture(f, season)
+    );
     if (!champHasW29 && champStandings.length >= 6) {
       // Championship Playoff Format:
       // 1st place is Champion & automatically promoted to Super League!
-      // 2nd place receives a bye to semi-finals.
+      // 2nd place receives a bye to the Semi-Final.
       // 3rd vs 6th, 4th vs 5th contest eliminators for the Million Pound Game pathway.
       champComp.fixtures = [
         ...champComp.fixtures,
@@ -515,8 +528,11 @@ export function schedulePostSeasonAndCupFixtures(
 
       // Send official news bulletin
       const champChampName = state.clubs[champStandings[0]?.clubId]?.name || "Championship Champions";
-      const slRelegatedName = state.clubs[slStandings[13]?.clubId]?.name || "14th placed Super League club";
-      const slMpgName = state.clubs[slStandings[12]?.clubId]?.name || "13th placed Super League club";
+      const slRelegatedName =
+        state.clubs[slStandings[slStandings.length - 1]?.clubId]?.name ||
+        "14th placed Super League club";
+      const slMpgName =
+        state.clubs[slStandings[12]?.clubId]?.name || "13th placed Super League club";
 
       newMessages.push(
         createPostSeasonInboxMessage(
@@ -530,10 +546,14 @@ export function schedulePostSeasonAndCupFixtures(
 
   // 3. PLAYOFF SEMI-FINALS (WEEK 30)
   if (targetWeek === 30) {
-    const slHasW30 = slComp.fixtures.some((f) => f.week === 30);
+    const slHasW30 = slComp.fixtures.some((f) => f.week === 30 && isCurrentSeasonFixture(f, season));
     if (!slHasW30) {
       const slElims = slComp.fixtures.filter(
-        (f) => f.week === 29 && f.roundName.includes("Eliminator") && f.isPlayed
+        (f) =>
+          f.week === 29 &&
+          isCurrentSeasonFixture(f, season) &&
+          f.roundName.includes("Eliminator") &&
+          f.isPlayed
       );
       if (slElims.length >= 2 && slStandings.length >= 2) {
         const w1 = getMatchWinnerId(slElims[0]);
@@ -569,10 +589,16 @@ export function schedulePostSeasonAndCupFixtures(
       }
     }
 
-    const champHasW30 = champComp.fixtures.some((f) => f.week === 30);
+    const champHasW30 = champComp.fixtures.some(
+      (f) => f.week === 30 && isCurrentSeasonFixture(f, season)
+    );
     if (!champHasW30) {
       const champElims = champComp.fixtures.filter(
-        (f) => f.week === 29 && f.roundName.includes("Eliminator") && f.isPlayed
+        (f) =>
+          f.week === 29 &&
+          isCurrentSeasonFixture(f, season) &&
+          f.roundName.includes("Eliminator") &&
+          f.isPlayed
       );
       if (champElims.length >= 2 && champStandings.length >= 2) {
         const cw1 = getMatchWinnerId(champElims[0]);
@@ -582,6 +608,10 @@ export function schedulePostSeasonAndCupFixtures(
             ? [cw1, cw2]
             : [cw2, cw1];
 
+        // Championship playoff path (1st already auto-promoted):
+        // - Semi-Final: 2nd vs lower-seeded elim winner
+        // - Higher-seeded elim winner receives a bye straight to the Playoff Final
+        // Never schedule a self-fixture for the bye club.
         champComp.fixtures = [
           ...champComp.fixtures,
           {
@@ -589,32 +619,37 @@ export function schedulePostSeasonAndCupFixtures(
             competitionId: "championship",
             season,
             week: 30,
-            roundName: "Championship Semi-Final 1",
+            roundName: "Championship Semi-Final",
             homeClubId: champStandings[1].clubId,
             awayClubId: lowerSeed,
             isPlayed: false,
           },
-          {
-            id: `champ_${season}_w30_sf2`,
-            competitionId: "championship",
-            season,
-            week: 30,
-            roundName: "Championship Semi-Final 2",
-            homeClubId: higherSeed,
-            awayClubId: lowerSeed === cw1 ? cw2 : cw1,
-            isPlayed: false,
-          },
         ];
+
+        const byeClubName = state.clubs[higherSeed]?.name || higherSeed;
+        const sfHomeName = state.clubs[champStandings[1].clubId]?.name || champStandings[1].clubId;
+        const sfAwayName = state.clubs[lowerSeed]?.name || lowerSeed;
+        newMessages.push(
+          createPostSeasonInboxMessage(
+            state,
+            `Championship Playoffs: ${byeClubName} receive Final bye`,
+            `${sfHomeName} (2nd) will face ${sfAwayName} in the Championship Semi-Final.\n\n${byeClubName} (higher-seeded Eliminator winners) receive a bye to the Championship Playoff Final — winner progresses to The Million Pound Game.`
+          )
+        );
       }
     }
   }
 
   // 4. FINALS (WEEK 31)
   if (targetWeek === 31) {
-    const slHasW31 = slComp.fixtures.some((f) => f.week === 31);
+    const slHasW31 = slComp.fixtures.some((f) => f.week === 31 && isCurrentSeasonFixture(f, season));
     if (!slHasW31) {
       const slSfs = slComp.fixtures.filter(
-        (f) => f.week === 30 && f.roundName.includes("Semi-Final") && f.isPlayed
+        (f) =>
+          f.week === 30 &&
+          isCurrentSeasonFixture(f, season) &&
+          f.roundName.includes("Semi-Final") &&
+          f.isPlayed
       );
       if (slSfs.length >= 2) {
         const w1 = getMatchWinnerId(slSfs[0]);
@@ -640,99 +675,166 @@ export function schedulePostSeasonAndCupFixtures(
       }
     }
 
-    const champHasW31 = champComp.fixtures.some((f) => f.week === 31);
+    const champHasW31 = champComp.fixtures.some(
+      (f) => f.week === 31 && isCurrentSeasonFixture(f, season)
+    );
     if (!champHasW31) {
-      const champSfs = champComp.fixtures.filter(
-        (f) => f.week === 30 && f.roundName.includes("Semi-Final") && f.isPlayed
+      const champSf = champComp.fixtures.find(
+        (f) =>
+          f.week === 30 &&
+          isCurrentSeasonFixture(f, season) &&
+          f.roundName.includes("Semi-Final") &&
+          f.isPlayed
       );
-      if (champSfs.length >= 2) {
-        const cw1 = getMatchWinnerId(champSfs[0]);
-        const cw2 = getMatchWinnerId(champSfs[1]);
-        const [homeClub, awayClub] =
-          getClubRankIndex(champStandings, cw1) <= getClubRankIndex(champStandings, cw2)
-            ? [cw1, cw2]
-            : [cw2, cw1];
+      const champElims = champComp.fixtures.filter(
+        (f) =>
+          f.week === 29 &&
+          isCurrentSeasonFixture(f, season) &&
+          f.roundName.includes("Eliminator") &&
+          f.isPlayed
+      );
 
-        champComp.fixtures = [
-          ...champComp.fixtures,
-          {
-            id: `champ_${season}_w31_playoff_final`,
-            competitionId: "championship",
-            season,
-            week: 31,
-            roundName: "Championship Playoff Final",
-            homeClubId: homeClub,
-            awayClubId: awayClub,
-            isPlayed: false,
-          },
-        ];
+      if (champSf && champElims.length >= 2) {
+        const cw1 = getMatchWinnerId(champElims[0]);
+        const cw2 = getMatchWinnerId(champElims[1]);
+        const higherSeed =
+          getClubRankIndex(champStandings, cw1) < getClubRankIndex(champStandings, cw2)
+            ? cw1
+            : cw2;
+        const sfWinner = getMatchWinnerId(champSf);
+
+        // Playoff Final: Semi-Final winner vs higher-seeded Eliminator bye
+        const [homeClub, awayClub] =
+          getClubRankIndex(champStandings, sfWinner) <= getClubRankIndex(champStandings, higherSeed)
+            ? [sfWinner, higherSeed]
+            : [higherSeed, sfWinner];
+
+        if (homeClub !== awayClub) {
+          champComp.fixtures = [
+            ...champComp.fixtures,
+            {
+              id: `champ_${season}_w31_playoff_final`,
+              competitionId: "championship",
+              season,
+              week: 31,
+              roundName: "Championship Playoff Final",
+              homeClubId: homeClub,
+              awayClubId: awayClub,
+              isPlayed: false,
+            },
+          ];
+        }
       }
     }
   }
 
   // 5. THE MILLION POUND GAME (WEEK 32)
   if (targetWeek === 32) {
-    const slHasMpg = slComp.fixtures.some((f) => f.roundName === "The Million Pound Game");
+    const slHasMpg = slComp.fixtures.some(
+      (f) => f.roundName === "The Million Pound Game" && isCurrentSeasonFixture(f, season)
+    );
     if (!slHasMpg) {
       const champFinal = champComp.fixtures.find(
-        (f) => f.week === 31 && f.roundName.includes("Playoff Final") && f.isPlayed
+        (f) =>
+          f.week === 31 &&
+          isCurrentSeasonFixture(f, season) &&
+          f.roundName.includes("Playoff Final") &&
+          f.isPlayed
       );
-      const champWinnerId = champFinal
-        ? getMatchWinnerId(champFinal)
-        : (champStandings[1]?.clubId || "toulouse-olympique");
 
-      // 13th place in Super League regular season (second bottom)
-      const sl13 = slStandings[12]?.clubId || "castleford-tigers";
+      // Only schedule once the Championship Playoff Final has a real winner.
+      // Never invent a playoff winner from regular-season 2nd place.
+      if (champFinal) {
+        const champWinnerId = getMatchWinnerId(champFinal);
+        const sl13 = slStandings[12]?.clubId || "castleford-tigers";
 
-      const mpgFixture: ManagerFixture = {
-        id: `sl_${season}_w32_million_pound_game`,
-        competitionId: "super-league",
-        season,
-        week: 32,
-        roundName: "The Million Pound Game",
-        homeClubId: sl13,
-        awayClubId: champWinnerId,
-        isPlayed: false,
-      };
+        const mpgFixture: ManagerFixture = {
+          id: `sl_${season}_w32_million_pound_game`,
+          competitionId: "super-league",
+          season,
+          week: 32,
+          roundName: "The Million Pound Game",
+          homeClubId: sl13,
+          awayClubId: champWinnerId,
+          isPlayed: false,
+        };
 
-      slComp.fixtures = [...slComp.fixtures, mpgFixture];
+        slComp.fixtures = [...slComp.fixtures, mpgFixture];
 
-      // Mirror into Championship fixtures so Championship managers see it in their fixtures list
-      const champMpgFixture: ManagerFixture = {
-        ...mpgFixture,
-        competitionId: "championship",
-      };
-      champComp.fixtures = [...champComp.fixtures, champMpgFixture];
+        // Mirror into Championship fixtures so Championship managers see it in their fixtures list
+        const champMpgFixture: ManagerFixture = {
+          ...mpgFixture,
+          competitionId: "championship",
+        };
+        champComp.fixtures = [...champComp.fixtures, champMpgFixture];
 
-      const slClubName = state.clubs[sl13]?.name || sl13;
-      const champClubName = state.clubs[champWinnerId]?.name || champWinnerId;
+        const slClubName = state.clubs[sl13]?.name || sl13;
+        const champClubName = state.clubs[champWinnerId]?.name || champWinnerId;
 
-      newMessages.push(
-        createPostSeasonInboxMessage(
-          state,
-          `THE MILLION POUND GAME: ${slClubName} vs ${champClubName}`,
-          `The stage is set for rugby league's highest-stakes match: The Million Pound Game!\n\n${slClubName} (13th in Super League) take on Championship Playoff winners ${champClubName}.\n\nSTAKES:\n- If ${champClubName} win: They achieve promotion to the Betfred Super League, and ${slClubName} are relegated to the Championship.\n- If ${slClubName} win: They secure their Super League status, and ${champClubName} remain in the Championship.\n\nWinner takes all!`
-        )
-      );
+        newMessages.push(
+          createPostSeasonInboxMessage(
+            state,
+            `THE MILLION POUND GAME: ${slClubName} vs ${champClubName}`,
+            `The stage is set for rugby league's highest-stakes match: The Million Pound Game!\n\n${slClubName} (13th in Super League) take on Championship Playoff winners ${champClubName}.\n\nSTAKES:\n- If ${champClubName} win: They achieve promotion to the Betfred Super League, and ${slClubName} are relegated to the Championship.\n- If ${slClubName} win: They secure their Super League status, and ${champClubName} remain in the Championship.\n\nWinner takes all!`
+          )
+        );
+      }
     }
   }
 
   // 6. POST-MPG BULLETIN (WEEK 33)
   if (targetWeek === 33) {
-    const mpgFixture = slComp.fixtures.find(
-      (f) => f.roundName === "The Million Pound Game" && f.isPlayed
-    );
+    const mpgFixture =
+      slComp.fixtures.find(
+        (f) =>
+          f.roundName === "The Million Pound Game" &&
+          isCurrentSeasonFixture(f, season) &&
+          f.isPlayed
+      ) ||
+      champComp.fixtures.find(
+        (f) =>
+          f.roundName === "The Million Pound Game" &&
+          isCurrentSeasonFixture(f, season) &&
+          f.isPlayed
+      );
     if (mpgFixture) {
-      const homeWon = (mpgFixture.homeScore || 0) > (mpgFixture.awayScore || 0);
-      const slClubName = state.clubs[mpgFixture.homeClubId]?.name || mpgFixture.homeClubId;
-      const champClubName = state.clubs[mpgFixture.awayClubId]?.name || mpgFixture.awayClubId;
+      const homeInSL = slStandings.some((s) => s.clubId === mpgFixture.homeClubId);
+      const awayInSL = slStandings.some((s) => s.clubId === mpgFixture.awayClubId);
 
-      if (!homeWon) {
+      let slClubId: string;
+      let champClubId: string;
+      let slScore: number;
+      let champScore: number;
+
+      if (homeInSL && !awayInSL) {
+        slClubId = mpgFixture.homeClubId;
+        champClubId = mpgFixture.awayClubId;
+        slScore = mpgFixture.homeScore || 0;
+        champScore = mpgFixture.awayScore || 0;
+      } else if (awayInSL && !homeInSL) {
+        slClubId = mpgFixture.awayClubId;
+        champClubId = mpgFixture.homeClubId;
+        slScore = mpgFixture.awayScore || 0;
+        champScore = mpgFixture.homeScore || 0;
+      } else {
+        // Scheduled convention: home = SL 13th, away = Championship playoff winner
+        slClubId = mpgFixture.homeClubId;
+        champClubId = mpgFixture.awayClubId;
+        slScore = mpgFixture.homeScore || 0;
+        champScore = mpgFixture.awayScore || 0;
+      }
+
+      // Align with calculateSeasonAwards: SL survives on win OR draw
+      const slSurvived = slScore >= champScore;
+      const slClubName = state.clubs[slClubId]?.name || slClubId;
+      const champClubName = state.clubs[champClubId]?.name || champClubId;
+
+      if (!slSurvived) {
         newMessages.push(
           createPostSeasonInboxMessage(
             state,
             `MILLION POUND GAME: ${champClubName} PROMOTED TO SUPER LEAGUE!`,
-            `${champClubName} have triumphed in The Million Pound Game (${mpgFixture.awayScore}-${mpgFixture.homeScore}) to earn promotion to the Betfred Super League!\n\n${slClubName} suffer relegation to the Betfred Championship.`
+            `${champClubName} have triumphed in The Million Pound Game (${champScore}-${slScore}) to earn promotion to the Betfred Super League!\n\n${slClubName} suffer relegation to the Betfred Championship.`
           )
         );
       } else {
@@ -740,7 +842,7 @@ export function schedulePostSeasonAndCupFixtures(
           createPostSeasonInboxMessage(
             state,
             `MILLION POUND GAME: ${slClubName} SURVIVE IN SUPER LEAGUE!`,
-            `${slClubName} have defended their Super League status in The Million Pound Game with a ${mpgFixture.homeScore}-${mpgFixture.awayScore} victory over ${champClubName}!\n\n${slClubName} will play in Betfred Super League next season, while ${champClubName} will remain in the Betfred Championship.`
+            `${slClubName} have defended their Super League status in The Million Pound Game (${slScore}-${champScore}) against ${champClubName}!\n\n${slClubName} will play in Betfred Super League next season, while ${champClubName} will remain in the Betfred Championship.`
           )
         );
       }

@@ -4,9 +4,10 @@
  */
 
 import { buildBestLineup } from "./database";
-import { STARTING_POSITIONS } from "./rules";
+import { STARTING_POSITIONS, MATCHDAY_RULES } from "./rules";
 import type {
   ClubLineup,
+  ManagerPlayer,
   ManagerState,
   SquadTier,
 } from "./types";
@@ -15,6 +16,189 @@ export interface SquadOperationResult {
   success: boolean;
   state: ManagerState;
   error?: string;
+}
+
+export interface MatchdayLineupReadiness {
+  ready: boolean;
+  required: number;
+  selectedCount: number;
+  starterCount: number;
+  benchCount: number;
+  missingSlots: number;
+  unavailableNames: string[];
+  error?: string;
+}
+
+/**
+ * Counts eligible players currently named in a club's matchday 17.
+ * Injured/suspended/departed players in slots do not count.
+ */
+export function getMatchdayLineupReadiness(
+  state: ManagerState,
+  clubId: string
+): MatchdayLineupReadiness {
+  const club = state.clubs[clubId];
+  const required = MATCHDAY_RULES.SQUAD_SIZE;
+  if (!club) {
+    return {
+      ready: false,
+      required,
+      selectedCount: 0,
+      starterCount: 0,
+      benchCount: 0,
+      missingSlots: required,
+      unavailableNames: [],
+      error: "Club not found.",
+    };
+  }
+
+  const unavailableNames: string[] = [];
+  const countEligible = (ids: (string | null)[]) => {
+    let count = 0;
+    for (const id of ids) {
+      if (!id) continue;
+      const p = state.players[id];
+      if (!p) {
+        unavailableNames.push("Unknown player");
+        continue;
+      }
+      const eligible =
+        !p.injury &&
+        !p.suspension &&
+        (p.clubId === clubId || p.loan?.destinationClubId === clubId);
+      if (!eligible) {
+        unavailableNames.push(p.name);
+        continue;
+      }
+      count++;
+    }
+    return count;
+  };
+
+  const starterCount = countEligible(club.lineup.starting13);
+  const benchCount = countEligible(club.lineup.bench);
+  const selectedCount = starterCount + benchCount;
+  const missingSlots = Math.max(0, required - selectedCount);
+  const ready =
+    starterCount === MATCHDAY_RULES.STARTERS &&
+    benchCount === MATCHDAY_RULES.BENCH &&
+    selectedCount === required;
+
+  let error: string | undefined;
+  if (!ready) {
+    if (selectedCount < required) {
+      error = `Matchday squad incomplete: ${selectedCount}/${required} players named (need ${MATCHDAY_RULES.STARTERS} starters and ${MATCHDAY_RULES.BENCH} interchange). Fill your lineup in Tactics before playing.`;
+    } else if (starterCount < MATCHDAY_RULES.STARTERS) {
+      error = `Starting 13 incomplete: ${starterCount}/${MATCHDAY_RULES.STARTERS} starters selected.`;
+    } else if (benchCount < MATCHDAY_RULES.BENCH) {
+      error = `Interchange incomplete: ${benchCount}/${MATCHDAY_RULES.BENCH} bench players selected.`;
+    }
+    if (unavailableNames.length > 0) {
+      error = `${error || "Lineup issue."} Unavailable in lineup: ${unavailableNames.slice(0, 3).join(", ")}${unavailableNames.length > 3 ? "…" : ""}.`;
+    }
+  }
+
+  return {
+    ready,
+    required,
+    selectedCount,
+    starterCount,
+    benchCount,
+    missingSlots,
+    unavailableNames,
+    error,
+  };
+}
+
+/**
+ * Safeguard: rebuilds a club's lineup to a full eligible 17 if short or invalid.
+ * Prefer first-team / loaned-in, then reserves, then academy.
+ */
+export function safeguardClubMatchdayLineup(
+  state: ManagerState,
+  clubId: string
+): ManagerState {
+  const readiness = getMatchdayLineupReadiness(state, clubId);
+  if (readiness.ready) return state;
+
+  const club = state.clubs[clubId];
+  if (!club) return state;
+
+  const eligible = (p: ManagerPlayer) =>
+    !p.injury &&
+    !p.suspension &&
+    (p.clubId === clubId || p.loan?.destinationClubId === clubId);
+
+  const firstAndLoans = Object.values(state.players).filter(
+    (p) =>
+      eligible(p) &&
+      ((p.clubId === clubId && p.squadTier === "first" && !p.loan) ||
+        p.loan?.destinationClubId === clubId)
+  );
+  const reserves = Object.values(state.players).filter(
+    (p) => eligible(p) && p.clubId === clubId && p.squadTier === "reserves" && !p.loan
+  );
+  const academy = Object.values(state.players).filter(
+    (p) => eligible(p) && p.clubId === clubId && p.squadTier === "academy" && !p.loan
+  );
+
+  const pool = [...firstAndLoans, ...reserves, ...academy];
+  if (pool.length < MATCHDAY_RULES.SQUAD_SIZE) {
+    // Still try — buildBestLineup fills what it can; caller may still block user play
+    const partial = buildBestLineup(pool);
+    return {
+      ...state,
+      clubs: {
+        ...state.clubs,
+        [clubId]: { ...club, lineup: partial },
+      },
+    };
+  }
+
+  const lineup = buildBestLineup(pool);
+  return {
+    ...state,
+    clubs: {
+      ...state.clubs,
+      [clubId]: { ...club, lineup },
+    },
+  };
+}
+
+/**
+ * Safeguard every club to a legal matchday 17 before fixtures are simulated.
+ * Pass `skipClubId` to leave the user manager's named squad untouched (they must fix it).
+ */
+export function safeguardAllClubMatchdayLineups(
+  state: ManagerState,
+  options?: { skipClubId?: string }
+): ManagerState {
+  const skipIds = options?.skipClubId ? [options.skipClubId] : [];
+  let next = cleanAllClubLineups(state, { skipAutoFillClubIds: skipIds });
+  for (const clubId of Object.keys(next.clubs)) {
+    if (options?.skipClubId && clubId === options.skipClubId) continue;
+    next = safeguardClubMatchdayLineup(next, clubId);
+  }
+  return next;
+}
+
+/**
+ * User-facing gate: may this club advance into match week with its current lineup?
+ * Does not auto-fix the user's lineup — they must complete Tactics themselves.
+ */
+export function canClubPlayMatchday(
+  state: ManagerState,
+  clubId: string
+): { allowed: boolean; error?: string; readiness: MatchdayLineupReadiness } {
+  const readiness = getMatchdayLineupReadiness(state, clubId);
+  if (readiness.ready) {
+    return { allowed: true, readiness };
+  }
+  return {
+    allowed: false,
+    error: readiness.error || `Need a full ${MATCHDAY_RULES.SQUAD_SIZE}-man matchday squad.`,
+    readiness,
+  };
 }
 
 /**
@@ -35,7 +219,7 @@ export function movePlayerTier(
     return { success: false, state, error: "Free agents do not belong to a squad tier." };
   }
 
-  if (player.loan && player.loan.parentClubId === player.clubId) {
+  if (player.loan) {
     return { success: false, state, error: "Cannot change squad tier of a player currently on loan." };
   }
 
@@ -263,10 +447,17 @@ export function validateSquadInvariants(state: ManagerState): {
  * Sweeps all clubs in the universe to ensure no injured, suspended, or
  * transferred players remain in matchday lineups. Automatically fills empty
  * slots from available reserves so teams remain competitive.
+ *
+ * Pass `skipAutoFillClubIds` to remove invalid names without auto-completing
+ * those clubs to 17 (used so the user must finish their own matchday 17).
  */
-export function cleanAllClubLineups(state: ManagerState): ManagerState {
+export function cleanAllClubLineups(
+  state: ManagerState,
+  options?: { skipAutoFillClubIds?: string[] }
+): ManagerState {
   const updatedClubs = { ...state.clubs };
   let modified = false;
+  const skipFill = new Set(options?.skipAutoFillClubIds || []);
 
   for (const [clubId, club] of Object.entries(state.clubs)) {
     const starting13 = [...club.lineup.starting13];
@@ -314,33 +505,35 @@ export function cleanAllClubLineups(state: ManagerState): ManagerState {
       }
     }
 
-    // 2. If any slots are null, fill from available club players
-    const availableBackups = Object.values(state.players)
-      .filter(
-        (p) =>
-          (p.clubId === clubId || p.loan?.destinationClubId === clubId) &&
-          !p.injury &&
-          !p.suspension &&
-          !selectedIds.has(p.id)
-      )
-      .sort((a, b) => b.rating - a.rating);
+    // 2. If any slots are null, fill from available club players (unless skipped)
+    if (!skipFill.has(clubId)) {
+      const availableBackups = Object.values(state.players)
+        .filter(
+          (p) =>
+            (p.clubId === clubId || p.loan?.destinationClubId === clubId) &&
+            !p.injury &&
+            !p.suspension &&
+            !selectedIds.has(p.id)
+        )
+        .sort((a, b) => b.rating - a.rating);
 
-    let backupIdx = 0;
-    for (let i = 0; i < starting13.length; i++) {
-      if (starting13[i] === null && backupIdx < availableBackups.length) {
-        starting13[i] = availableBackups[backupIdx].id;
-        selectedIds.add(availableBackups[backupIdx].id);
-        backupIdx++;
-        clubModified = true;
+      let backupIdx = 0;
+      for (let i = 0; i < starting13.length; i++) {
+        if (starting13[i] === null && backupIdx < availableBackups.length) {
+          starting13[i] = availableBackups[backupIdx].id;
+          selectedIds.add(availableBackups[backupIdx].id);
+          backupIdx++;
+          clubModified = true;
+        }
       }
-    }
 
-    for (let i = 0; i < bench.length; i++) {
-      if (bench[i] === null && backupIdx < availableBackups.length) {
-        bench[i] = availableBackups[backupIdx].id;
-        selectedIds.add(availableBackups[backupIdx].id);
-        backupIdx++;
-        clubModified = true;
+      for (let i = 0; i < bench.length; i++) {
+        if (bench[i] === null && backupIdx < availableBackups.length) {
+          bench[i] = availableBackups[backupIdx].id;
+          selectedIds.add(availableBackups[backupIdx].id);
+          backupIdx++;
+          clubModified = true;
+        }
       }
     }
 

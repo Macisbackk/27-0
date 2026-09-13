@@ -7,7 +7,8 @@ import { formatPositionLabel, formatPositionShort } from "@/lib/manager";
 import type { ClubLineup, Position } from "@/lib/manager/types";
 
 export function ManagerTacticsView() {
-  const { state, autoPickSquad, saveLineup } = useManager();
+  const { state, autoPickSquad, saveLineup, getUserMatchdayReadiness, clearAdvanceError } =
+    useManager();
   const [selectedSlotIdx, setSelectedSlotIdx] = useState<number | null>(null);
   const [isBenchSlot, setIsBenchSlot] = useState<boolean>(false);
 
@@ -18,12 +19,25 @@ export function ManagerTacticsView() {
   if (!club) return null;
 
   const lineup = club.lineup;
+  const readiness = getUserMatchdayReadiness();
+  const lineupShort = readiness != null && !readiness.ready;
 
-  // Available players for selection (first team players who are not injured/suspended)
+  const isSlotEligible = (playerId: string | null) => {
+    if (!playerId) return false;
+    const p = state.players[playerId];
+    if (!p) return false;
+    return (
+      !p.injury &&
+      !p.suspension &&
+      (p.clubId === userClubId || p.loan?.destinationClubId === userClubId)
+    );
+  };
+
+  // Available players for selection (first team players who are not injured/suspended, or players on loan to this club)
   const availablePlayers = Object.values(state.players).filter(
     (p) =>
-      p.clubId === userClubId &&
-      p.squadTier === "first" &&
+      ((p.clubId === userClubId && p.squadTier === "first" && !p.loan) ||
+        (p.loan && p.loan.destinationClubId === userClubId)) &&
       !p.injury &&
       !p.suspension
   );
@@ -46,6 +60,7 @@ export function ManagerTacticsView() {
       saveLineup({ ...lineup, starting13: newStarting });
     }
 
+    clearAdvanceError();
     setSelectedSlotIdx(null);
   };
 
@@ -68,14 +83,36 @@ export function ManagerTacticsView() {
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => autoPickSquad()}
-          className="self-start sm:self-auto rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-2 text-xs sm:text-sm font-bold text-slate-950 shadow-md hover:brightness-110 active:scale-95 transition-all"
-        >
-          Auto Pick Optimal 17
-        </button>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <span
+            className={`rounded-xl border px-3 py-2 text-xs font-black ${
+              lineupShort
+                ? "border-amber-500/40 bg-amber-500/15 text-amber-300"
+                : "border-emerald-500/40 bg-emerald-500/15 text-emerald-300"
+            }`}
+          >
+            {readiness?.selectedCount ?? 0}/17 named
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              autoPickSquad();
+              clearAdvanceError();
+            }}
+            className="rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-2 text-xs sm:text-sm font-bold text-slate-950 shadow-md hover:brightness-110 active:scale-95 transition-all"
+          >
+            Auto Pick Optimal 17
+          </button>
+        </div>
       </div>
+
+      {lineupShort && (
+        <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2.5 text-xs text-amber-100 leading-relaxed">
+          <span className="font-black text-amber-300">Matchday rule: </span>
+          {readiness?.error ||
+            "You need a full 17 (13 starters + 4 interchange) before playing a match week. Empty or unavailable slots are highlighted below."}
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Left: Starting 13 Pitch View */}
@@ -90,6 +127,8 @@ export function ManagerTacticsView() {
             {STARTING_POSITIONS.map((pos, slotIdx) => {
               const playerId = lineup.starting13[slotIdx];
               const player = playerId ? state.players[playerId] : null;
+              const eligible = isSlotEligible(playerId);
+              const slotProblem = !playerId || !eligible;
 
               return (
                 <div
@@ -99,9 +138,11 @@ export function ManagerTacticsView() {
                     setIsBenchSlot(false);
                   }}
                   className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition-all ${
-                    player
+                    eligible
                       ? "border-pitch-700/80 bg-pitch-900/60 hover:bg-pitch-800/60"
-                      : "border-dashed border-pitch-700 bg-pitch-950/40 hover:border-emerald-500"
+                      : slotProblem
+                        ? "border-dashed border-amber-500/50 bg-amber-500/10 hover:border-amber-400"
+                        : "border-dashed border-pitch-700 bg-pitch-950/40 hover:border-emerald-500"
                   }`}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -112,19 +153,27 @@ export function ManagerTacticsView() {
                       <span className="block text-[10px] font-bold text-pitch-400 uppercase tracking-wider">
                         {formatPositionLabel(pos)}
                       </span>
-                      <span className="block text-xs font-bold text-white truncate">
-                        {player ? player.name : "Empty Slot"}
+                      <span
+                        className={`block text-xs font-bold truncate ${
+                          eligible ? "text-white" : "text-amber-200"
+                        }`}
+                      >
+                        {player
+                          ? eligible
+                            ? player.name
+                            : `${player.name} (unavailable)`
+                          : "Empty Slot"}
                       </span>
                     </div>
                   </div>
 
-                  {player ? (
+                  {eligible && player ? (
                     <div className="flex items-center gap-2 shrink-0">
                       <span className="text-xs font-black text-emerald-400">{player.rating}</span>
                       <span className="text-[10px] text-pitch-400">OVR</span>
                     </div>
                   ) : (
-                    <span className="text-xs text-emerald-400 font-bold">+ Pick</span>
+                    <span className="text-xs text-amber-300 font-bold">+ Pick</span>
                   )}
                 </div>
               );
@@ -140,6 +189,7 @@ export function ManagerTacticsView() {
               {[0, 1, 2, 3].map((benchIdx) => {
                 const playerId = lineup.bench[benchIdx];
                 const player = playerId ? state.players[playerId] : null;
+                const eligible = isSlotEligible(playerId);
 
                 return (
                   <div
@@ -149,16 +199,24 @@ export function ManagerTacticsView() {
                       setIsBenchSlot(true);
                     }}
                     className={`flex flex-col items-center justify-center p-2.5 rounded-xl border cursor-pointer text-center transition-all ${
-                      player
+                      eligible
                         ? "border-pitch-700/80 bg-pitch-900/60 hover:bg-pitch-800/60"
-                        : "border-dashed border-pitch-700 bg-pitch-950/40 hover:border-emerald-500"
+                        : "border-dashed border-amber-500/50 bg-amber-500/10 hover:border-amber-400"
                     }`}
                   >
                     <span className="text-[10px] font-bold text-pitch-400">#{14 + benchIdx}</span>
-                    <span className="text-xs font-bold text-white truncate w-full mt-0.5">
-                      {player ? player.name : "+ Select"}
+                    <span
+                      className={`text-xs font-bold truncate w-full mt-0.5 ${
+                        eligible ? "text-white" : "text-amber-200"
+                      }`}
+                    >
+                      {player
+                        ? eligible
+                          ? player.name
+                          : `${player.name} (out)`
+                        : "+ Select"}
                     </span>
-                    {player && (
+                    {eligible && player && (
                       <span className="text-[11px] font-semibold text-emerald-400 mt-0.5">
                         {formatPositionShort(player.position)} · {player.rating}
                       </span>

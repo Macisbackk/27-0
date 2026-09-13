@@ -2,18 +2,19 @@
 
 import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
-import { calculateSalaryCapUsage } from "@/lib/manager/contracts";
-import { formatPositionShort, formatSquadRole } from "@/lib/manager";
+import { calculateSalaryCapUsage, isContractUnderSixMonths } from "@/lib/manager/contracts";
+import { formatPositionShort, formatSquadRole, formatSquadTier } from "@/lib/manager";
 import type { ManagerPlayer, SquadRole } from "@/lib/manager/types";
 
 export function ManagerContractsView() {
-  const { state, renewContract, releasePlayer } = useManager();
+  const { state, renewContract, renewAllTierContracts, releasePlayer } = useManager();
   const [filterExpiring, setFilterExpiring] = useState<boolean>(false);
   const [targetPlayer, setTargetPlayer] = useState<ManagerPlayer | null>(null);
   const [offeredWage, setOfferedWage] = useState<number>(2000);
   const [offeredYears, setOfferedYears] = useState<number>(2);
   const [offeredRole, setOfferedRole] = useState<SquadRole>("first_team");
   const [statusMsg, setStatusMsg] = useState<{ text: string; isError: boolean } | null>(null);
+  const [bulkMsg, setBulkMsg] = useState<{ text: string; isError: boolean } | null>(null);
 
   if (!state) return null;
 
@@ -21,13 +22,17 @@ export function ManagerContractsView() {
   const currentSeason = state.calendar.currentSeason;
   const cap = calculateSalaryCapUsage(state, userClubId);
 
-  let clubPlayers = Object.values(state.players).filter((p) => p.clubId === userClubId);
+  const allClubPlayers = Object.values(state.players).filter((p) => p.clubId === userClubId);
+  let clubPlayers = [...allClubPlayers];
 
   if (filterExpiring) {
     clubPlayers = clubPlayers.filter((p) => p.contract && p.contract.expiresSeason <= currentSeason);
   }
 
   clubPlayers.sort((a, b) => (b.contract?.wageWeekly || 0) - (a.contract?.wageWeekly || 0));
+
+  const academyCount = allClubPlayers.filter((p) => p.squadTier === "academy").length;
+  const reservesCount = allClubPlayers.filter((p) => p.squadTier === "reserves").length;
 
   const openRenewalModal = (player: ManagerPlayer) => {
     const currentWage = player.contract?.wageWeekly || 1000;
@@ -55,6 +60,35 @@ export function ManagerContractsView() {
     }
   };
 
+  const handleRenewAll = (tier: "academy" | "reserves") => {
+    const label = tier === "academy" ? "Academy" : "Reserves";
+    const count = tier === "academy" ? academyCount : reservesCount;
+    if (count === 0) {
+      setBulkMsg({ text: `No ${label} players to renew.`, isError: true });
+      return;
+    }
+    if (
+      !confirm(
+        `Renew all ${count} ${label} player contract${count === 1 ? "" : "s"} for 2 years?\n\nWages stay the same unless a player requires a small bump to accept.`
+      )
+    ) {
+      return;
+    }
+    const res = renewAllTierContracts([tier], 2);
+    if (res.success) {
+      const failNote =
+        res.failedCount && res.failedCount > 0
+          ? ` (${res.failedCount} could not be renewed — check salary cap.)`
+          : "";
+      setBulkMsg({
+        text: `Renewed ${res.renewedCount} ${label} contract${res.renewedCount === 1 ? "" : "s"}.${failNote}`,
+        isError: false,
+      });
+    } else {
+      setBulkMsg({ text: res.error || `Failed to renew ${label} contracts.`, isError: true });
+    }
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6 space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -65,18 +99,48 @@ export function ManagerContractsView() {
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setFilterExpiring(!filterExpiring)}
-          className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all ${
-            filterExpiring
-              ? "bg-amber-600 text-white shadow"
-              : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => handleRenewAll("academy")}
+            disabled={academyCount === 0}
+            className="rounded-lg bg-sky-600/20 px-3.5 py-1.5 text-xs font-bold text-sky-300 border border-sky-500/40 hover:bg-sky-600/40 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Renew All Academy ({academyCount})
+          </button>
+          <button
+            type="button"
+            onClick={() => handleRenewAll("reserves")}
+            disabled={reservesCount === 0}
+            className="rounded-lg bg-violet-600/20 px-3.5 py-1.5 text-xs font-bold text-violet-300 border border-violet-500/40 hover:bg-violet-600/40 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Renew All Reserves ({reservesCount})
+          </button>
+          <button
+            type="button"
+            onClick={() => setFilterExpiring(!filterExpiring)}
+            className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all ${
+              filterExpiring
+                ? "bg-amber-600 text-white shadow"
+                : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
+            }`}
+          >
+            {filterExpiring ? "Show All Players" : "Show Expiring This Season Only"}
+          </button>
+        </div>
+      </div>
+
+      {bulkMsg && (
+        <div
+          className={`rounded-xl p-3 text-xs border ${
+            bulkMsg.isError
+              ? "bg-rose-950/60 text-rose-300 border-rose-800"
+              : "bg-emerald-950/60 text-emerald-300 border-emerald-800"
           }`}
         >
-          {filterExpiring ? "Show All Players" : "Show Expiring This Season Only"}
-        </button>
-      </div>
+          {bulkMsg.text}
+        </div>
+      )}
 
       {/* Salary Cap Status Box */}
       <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-4 shadow">
@@ -116,6 +180,7 @@ export function ManagerContractsView() {
               <th className="py-3 px-3">Player</th>
               <th className="py-3 px-2 text-center">Age</th>
               <th className="py-3 px-2 text-center">OVR</th>
+              <th className="py-3 px-3">Tier</th>
               <th className="py-3 px-3">Role</th>
               <th className="py-3 px-3 text-right">Weekly Wage</th>
               <th className="py-3 px-2 text-center">Expiry Year</th>
@@ -125,6 +190,13 @@ export function ManagerContractsView() {
           <tbody className="divide-y divide-pitch-800/50 text-pitch-200">
             {clubPlayers.map((player) => {
               const isExpiring = player.contract && player.contract.expiresSeason <= currentSeason;
+              const underSixMonths =
+                player.contract &&
+                isContractUnderSixMonths(
+                  currentSeason,
+                  state.calendar.currentWeek,
+                  player.contract.expiresSeason
+                );
 
               return (
                 <tr key={player.id} className="hover:bg-pitch-800/40">
@@ -134,9 +206,14 @@ export function ManagerContractsView() {
                     </span>
                   </td>
                   <td className="py-2.5 px-3 font-medium text-white">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span>{player.name}</span>
-                      {isExpiring && (
+                      {underSixMonths && (
+                        <span className="rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-amber-400 border border-amber-500/40">
+                          &lt;6 months
+                        </span>
+                      )}
+                      {isExpiring && !underSixMonths && (
                         <span className="rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-amber-400 border border-amber-500/40">
                           Expiring
                         </span>
@@ -145,6 +222,9 @@ export function ManagerContractsView() {
                   </td>
                   <td className="py-2.5 px-2 text-center text-pitch-400">{player.age}</td>
                   <td className="py-2.5 px-2 text-center font-bold text-white">{player.rating}</td>
+                  <td className="py-2.5 px-3 text-pitch-300">
+                    {player.squadTier ? formatSquadTier(player.squadTier) : "—"}
+                  </td>
                   <td className="py-2.5 px-3 text-pitch-300">
                     {player.contract?.role ? formatSquadRole(player.contract.role) : "Member"}
                   </td>

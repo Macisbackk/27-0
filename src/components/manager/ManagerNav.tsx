@@ -31,34 +31,37 @@ export function ManagerNav() {
     { id: "fixtures", label: "Fixtures" },
     { id: "league", label: "League" },
     { id: "club", label: "Club & Finances" },
+    { id: "history", label: "History" },
     { id: "settings", label: "Settings" },
   ];
 
   return (
-    <nav className="border-b border-pitch-800 bg-pitch-900/90 px-2 sm:px-6 sticky top-[57px] sm:top-[65px] z-20 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto py-1.5 scrollbar-none">
-        {NAV_ITEMS.map((item) => {
-          const isActive = activeTab === item.id;
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setActiveTab(item.id)}
-              className={`relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs sm:text-sm font-semibold transition-all ${
-                isActive
-                  ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm"
-                  : "text-pitch-300 hover:bg-pitch-800/60 hover:text-white"
-              }`}
-            >
-              <span>{item.label}</span>
-              {item.badge && item.badge > 0 ? (
-                <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">
-                  {item.badge}
-                </span>
-              ) : null}
-            </button>
-          );
-        })}
+    <nav className="border-b border-pitch-800 bg-pitch-900 px-2 sm:px-6 sticky top-[57px] sm:top-[65px] z-20">
+      <div className="mx-auto max-w-7xl overflow-x-auto py-1.5 scrollbar-none">
+        <div className="flex w-max min-w-full items-center justify-center gap-1 px-1">
+          {NAV_ITEMS.map((item) => {
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setActiveTab(item.id)}
+                className={`relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs sm:text-sm font-semibold transition-all ${
+                  isActive
+                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm"
+                    : "text-pitch-300 hover:bg-pitch-800/60 hover:text-white"
+                }`}
+              >
+                <span>{item.label}</span>
+                {item.badge && item.badge > 0 ? (
+                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">
+                    {item.badge}
+                  </span>
+                ) : null}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </nav>
   );

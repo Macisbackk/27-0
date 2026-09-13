@@ -12,9 +12,12 @@ export function ManagerSettingsView() {
     state,
     saveToSlot,
     loadFromSlot,
+    deleteSave,
     resetCareer,
+    exitToMenu,
     exportSave,
     importSave,
+    openTutorial,
   } = useManager();
 
   const [importJson, setImportJson] = useState("");
@@ -77,6 +80,14 @@ export function ManagerSettingsView() {
     }
   };
 
+  const handleDeleteSlot = (slot: number) => {
+    if (window.confirm(`Are you sure you want to delete Slot ${slot + 1}?`)) {
+      deleteSave(slot);
+      setSlotMetas((prev) => ({ ...prev, [slot]: null }));
+      setStatusNotice(`Slot ${slot + 1} deleted.`);
+    }
+  };
+
   return (
     <div className="mx-auto max-w-5xl px-3 py-4 sm:px-6 sm:py-6 space-y-6">
       <div>
@@ -98,6 +109,25 @@ export function ManagerSettingsView() {
           </button>
         </div>
       )}
+
+      {/* Help / Tutorial */}
+      <div className="rounded-2xl border border-pitch-700 bg-pitch-900/80 p-5 shadow space-y-3">
+        <h3 className="text-sm font-black text-white uppercase tracking-wider">Help</h3>
+        <p className="text-xs text-pitch-400">
+          New to Manager Mode? Replay the quick guide covering Continue, the matchday 17 rule, salary
+          cap, and transfers.
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            openTutorial();
+            setStatusNotice("Manager guide opened.");
+          }}
+          className="rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-2.5 text-xs font-black text-slate-950 shadow-md hover:brightness-110"
+        >
+          Replay Manager Guide
+        </button>
+      </div>
 
       {/* Save Slots Grid */}
       <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-5 shadow-lg space-y-4">
@@ -146,7 +176,7 @@ export function ManagerSettingsView() {
                   )}
                 </div>
 
-                <div className="flex gap-2 pt-4 border-t border-pitch-800/60 mt-3">
+                <div className="flex items-center gap-1.5 pt-4 border-t border-pitch-800/60 mt-3">
                   <button
                     type="button"
                     onClick={() => handleSaveToSlot(slotIdx)}
@@ -155,18 +185,44 @@ export function ManagerSettingsView() {
                     Save
                   </button>
                   {meta && (
-                    <button
-                      type="button"
-                      onClick={() => handleLoadSlot(slotIdx)}
-                      className="flex-1 rounded-xl bg-emerald-600/80 py-1.5 text-center text-xs font-bold text-white hover:bg-emerald-500 transition-all"
-                    >
-                      Load
-                    </button>
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => handleLoadSlot(slotIdx)}
+                        className="flex-1 rounded-xl bg-emerald-600/80 py-1.5 text-center text-xs font-bold text-white hover:bg-emerald-500 transition-all"
+                      >
+                        Load
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteSlot(slotIdx)}
+                        className="rounded-xl bg-rose-950/60 border border-rose-800/60 px-2 py-1.5 text-center text-xs font-bold text-rose-300 hover:bg-rose-900/80 transition-all"
+                        title="Delete this save slot"
+                      >
+                        ✕
+                      </button>
+                    </>
                   )}
                 </div>
               </div>
             );
           })}
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-pitch-800">
+          <p className="text-xs text-pitch-400">
+            Want to switch saves or load another career?
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              saveToSlot("auto");
+              exitToMenu();
+            }}
+            className="rounded-xl border border-pitch-700 bg-pitch-800 hover:bg-pitch-700 px-3.5 py-2 text-xs font-bold text-pitch-200 hover:text-white transition-all shadow flex items-center gap-2"
+          >
+            <span>🚪 Exit to Manager Start Menu / Switch Save</span>
+          </button>
         </div>
       </div>
 

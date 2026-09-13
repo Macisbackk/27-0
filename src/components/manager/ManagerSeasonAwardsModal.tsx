@@ -10,10 +10,16 @@ export function ManagerSeasonAwardsModal() {
   if (!seasonAwardsModal || !state) return null;
 
   const awards = seasonAwardsModal;
-  const newSeasonNumber = state.calendar.currentSeason + 1;
+  const isSeasonEndedPhase = state.calendar.phase === "season_end";
+  const completedSeason = isSeasonEndedPhase
+    ? state.calendar.currentSeason
+    : state.calendar.currentSeason - 1;
+  const nextSeason = completedSeason + 1;
 
   const handleStartNextSeason = async () => {
-    rolloverCurrentSeason();
+    if (state.calendar.phase === "season_end") {
+      rolloverCurrentSeason();
+    }
     setSeasonAwardsModal(null);
   };
 
@@ -26,7 +32,7 @@ export function ManagerSeasonAwardsModal() {
             End of Season Honours
           </span>
           <h2 className="text-2xl sm:text-3xl font-black text-white">
-            Season {state.calendar.currentSeason} Complete
+            Season {completedSeason} Complete
           </h2>
           <p className="text-xs text-pitch-400">
             All domestic league and cup fixtures have concluded. Here are the official season awards.
@@ -58,14 +64,28 @@ export function ManagerSeasonAwardsModal() {
         {awards.millionPoundGame && (
           <div className="rounded-2xl border border-amber-500/50 bg-gradient-to-r from-amber-500/10 via-pitch-900 to-amber-500/10 p-4 space-y-2 text-center">
             <span className="text-[10px] font-black text-amber-400 uppercase tracking-widest block">
-              💰 The Million Pound Game (Relegation Playoff)
+              💰 The Million Pound Game (Promotion / Relegation Playoff)
             </span>
             <div className="flex items-center justify-center gap-3 sm:gap-6 font-black text-base sm:text-lg text-white">
-              <span className="truncate max-w-[150px]">{awards.millionPoundGame.superLeagueTeam}</span>
-              <span className="rounded-lg bg-amber-500/20 px-3 py-1 font-mono text-sm text-amber-300 border border-amber-500/30">
+              <div className="text-right min-w-0 max-w-[150px] sm:max-w-[200px]">
+                <span className="block text-sm sm:text-base text-white font-extrabold truncate">
+                  {awards.millionPoundGame.superLeagueTeam}
+                </span>
+                <span className="text-[10px] text-pitch-400 font-semibold uppercase tracking-wider block">
+                  Super League
+                </span>
+              </div>
+              <span className="rounded-xl bg-amber-500/20 px-3.5 py-1.5 font-mono text-base sm:text-lg text-amber-300 border border-amber-500/30 shrink-0 font-bold shadow-sm">
                 {awards.millionPoundGame.score}
               </span>
-              <span className="truncate max-w-[150px]">{awards.millionPoundGame.championshipTeam}</span>
+              <div className="text-left min-w-0 max-w-[150px] sm:max-w-[200px]">
+                <span className="block text-sm sm:text-base text-white font-extrabold truncate">
+                  {awards.millionPoundGame.championshipTeam}
+                </span>
+                <span className="text-[10px] text-sky-400 font-semibold uppercase tracking-wider block">
+                  Championship
+                </span>
+              </div>
             </div>
             <p className="text-xs font-semibold text-pitch-300">
               {awards.millionPoundGame.superLeagueSurvived ? (
@@ -129,30 +149,90 @@ export function ManagerSeasonAwardsModal() {
         </div>
 
         {/* Individual Accolades */}
-        <div className="grid gap-3 sm:grid-cols-2">
-          {awards.manOfSteel && (
-            <div className="rounded-xl border border-pitch-800 bg-pitch-900/50 p-3">
-              <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider block">
-                ⭐ Man of Steel
-              </span>
-              <p className="text-sm font-bold text-white mt-0.5">{awards.manOfSteel.name}</p>
-              <p className="text-xs text-pitch-400">
-                {awards.manOfSteel.clubName} · {awards.manOfSteel.motm} Man of the Match awards
-              </p>
-            </div>
-          )}
+        <div className="space-y-3">
+          <h4 className="text-xs font-black text-pitch-400 uppercase tracking-wider">
+            Individual Season Accolades
+          </h4>
 
-          {awards.topTryScorer && (
-            <div className="rounded-xl border border-pitch-800 bg-pitch-900/50 p-3">
-              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">
-                ⚡ Top Try Scorer
-              </span>
-              <p className="text-sm font-bold text-white mt-0.5">{awards.topTryScorer.name}</p>
-              <p className="text-xs text-pitch-400">
-                {awards.topTryScorer.clubName} · {awards.topTryScorer.tries} tries
-              </p>
+          {/* Super League Section */}
+          <div className="rounded-2xl border border-amber-500/20 bg-pitch-900/40 p-3.5 space-y-2.5">
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 block">
+              Betfred Super League
+            </span>
+            <div className="grid gap-2.5 sm:grid-cols-2">
+              {awards.manOfSteel ? (
+                <div className="rounded-xl border border-amber-500/30 bg-pitch-900/80 p-3">
+                  <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider block">
+                    ⭐ Man of Steel (Super League POTY)
+                  </span>
+                  <p className="text-sm font-bold text-white mt-0.5 truncate">{awards.manOfSteel.name}</p>
+                  <p className="text-xs text-pitch-300 truncate">
+                    {awards.manOfSteel.clubName} · <span className="text-amber-300 font-semibold">{awards.manOfSteel.motm}</span> MOTM awards
+                  </p>
+                </div>
+              ) : (
+                <div className="rounded-xl border border-pitch-800 bg-pitch-900/50 p-3 text-xs text-pitch-500 italic">
+                  No Super League Man of Steel recorded
+                </div>
+              )}
+
+              {awards.topTryScorer ? (
+                <div className="rounded-xl border border-emerald-500/30 bg-pitch-900/80 p-3">
+                  <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">
+                    ⚡ Super League Top Try Scorer
+                  </span>
+                  <p className="text-sm font-bold text-white mt-0.5 truncate">{awards.topTryScorer.name}</p>
+                  <p className="text-xs text-pitch-300 truncate">
+                    {awards.topTryScorer.clubName} · <span className="text-emerald-300 font-semibold">{awards.topTryScorer.tries}</span> tries
+                  </p>
+                </div>
+              ) : (
+                <div className="rounded-xl border border-pitch-800 bg-pitch-900/50 p-3 text-xs text-pitch-500 italic">
+                  No Super League Top Try Scorer recorded
+                </div>
+              )}
             </div>
-          )}
+          </div>
+
+          {/* Championship Section */}
+          <div className="rounded-2xl border border-sky-500/20 bg-pitch-900/40 p-3.5 space-y-2.5">
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-sky-400 block">
+              Betfred Championship
+            </span>
+            <div className="grid gap-2.5 sm:grid-cols-2">
+              {awards.championshipPlayerOfYear ? (
+                <div className="rounded-xl border border-sky-500/30 bg-pitch-900/80 p-3">
+                  <span className="text-[10px] font-bold text-sky-400 uppercase tracking-wider block">
+                    🎖️ Championship Player of the Year
+                  </span>
+                  <p className="text-sm font-bold text-white mt-0.5 truncate">{awards.championshipPlayerOfYear.name}</p>
+                  <p className="text-xs text-pitch-300 truncate">
+                    {awards.championshipPlayerOfYear.clubName} · <span className="text-sky-300 font-semibold">{awards.championshipPlayerOfYear.motm}</span> MOTM awards
+                  </p>
+                </div>
+              ) : (
+                <div className="rounded-xl border border-pitch-800 bg-pitch-900/50 p-3 text-xs text-pitch-500 italic">
+                  No Championship Player of the Year recorded
+                </div>
+              )}
+
+              {awards.championshipTopTryScorer ? (
+                <div className="rounded-xl border border-emerald-500/30 bg-pitch-900/80 p-3">
+                  <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">
+                    ⚡ Championship Top Try Scorer
+                  </span>
+                  <p className="text-sm font-bold text-white mt-0.5 truncate">{awards.championshipTopTryScorer.name}</p>
+                  <p className="text-xs text-pitch-300 truncate">
+                    {awards.championshipTopTryScorer.clubName} · <span className="text-emerald-300 font-semibold">{awards.championshipTopTryScorer.tries}</span> tries
+                  </p>
+                </div>
+              ) : (
+                <div className="rounded-xl border border-pitch-800 bg-pitch-900/50 p-3 text-xs text-pitch-500 italic">
+                  No Championship Top Try Scorer recorded
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Rollover Action */}
@@ -163,11 +243,16 @@ export function ManagerSeasonAwardsModal() {
             onClick={handleStartNextSeason}
             className="w-full rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-400 py-3.5 text-center text-sm font-black text-slate-950 shadow-lg hover:brightness-110 active:scale-98 transition-all disabled:opacity-50"
           >
-            {isAdvancing ? "Transitioning Season..." : `Begin Season ${newSeasonNumber} →`}
+            {isAdvancing
+              ? "Transitioning Season..."
+              : isSeasonEndedPhase
+              ? `Begin Season ${nextSeason} →`
+              : `Enter Season ${state.calendar.currentSeason} →`}
           </button>
           <p className="text-[11px] text-pitch-400 text-center mt-2">
-            Will age players, process retirements, intake new academy youth, and generate the new
-            competition fixture lists.
+            {isSeasonEndedPhase
+              ? "Will age players, process retirements, intake new academy youth, and generate the new competition fixture lists."
+              : "Squads updated, youth intaken, and new fixtures generated. Good luck in the new season!"}
           </p>
         </div>
       </div>

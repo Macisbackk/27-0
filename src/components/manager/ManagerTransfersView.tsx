@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import {
-  calculatePlayerValue,
+  calculateTransferFeeBetweenClubs,
   calculateMarketWage,
 } from "@/lib/manager/rules";
 import { calculateSalaryCapUsage } from "@/lib/manager/contracts";
@@ -61,7 +61,16 @@ export function ManagerTransfersView() {
   freeAgents.sort((a, b) => b.rating - a.rating);
 
   const openBidModal = (player: ManagerPlayer) => {
-    const fairVal = calculatePlayerValue(player.rating, player.potential, player.age);
+    const sellingComp = player.clubId
+      ? state.clubs[player.clubId]?.competitionId || "super-league"
+      : userClub?.competitionId || "super-league";
+    const fairVal = calculateTransferFeeBetweenClubs(
+      player.rating,
+      player.potential,
+      player.age,
+      userClub?.competitionId || "super-league",
+      sellingComp
+    );
     const fairW = calculateMarketWage(player.rating, player.age, userClub?.competitionId || "super-league");
     setTargetPlayer(player);
     setOfferedFee(fairVal);
@@ -118,7 +127,7 @@ export function ManagerTransfersView() {
         </div>
 
         {/* Sub-tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+        <div className="flex items-center justify-center gap-1.5 overflow-x-auto pb-1">
           <button
             type="button"
             onClick={() => setSubTab("market")}
@@ -215,7 +224,13 @@ export function ManagerTransfersView() {
             <tbody className="divide-y divide-pitch-800/50 text-pitch-200">
               {marketPlayers.slice(0, 50).map((player) => {
                 const club = player.clubId ? state.clubs[player.clubId] : null;
-                const estValue = calculatePlayerValue(player.rating, player.potential, player.age);
+                const estValue = calculateTransferFeeBetweenClubs(
+                  player.rating,
+                  player.potential,
+                  player.age,
+                  userClub?.competitionId || "super-league",
+                  club?.competitionId || "super-league"
+                );
 
                 return (
                   <tr key={player.id} className="hover:bg-pitch-800/40 transition-colors">

@@ -62,6 +62,74 @@ export const CALENDAR_RULES = {
   TRANSFER_WINDOW_DEADLINE_WEEK: 24, // Transfers close after week 24
 } as const;
 
+/** Matchday squad must always be a full 17 (13 starters + 4 interchange). */
+export const MATCHDAY_RULES = {
+  STARTERS: 13,
+  BENCH: 4,
+  SQUAD_SIZE: 17,
+} as const;
+
+/**
+ * Championship economy tuning — keep Super League cash untouched while
+ * preventing second-tier clubs from stacking SL-level transfer war chests.
+ */
+export const CHAMPIONSHIP_ECONOMY = {
+  TICKET_PRICE: 8,
+  SUPER_LEAGUE_TICKET_PRICE: 22,
+  COMMERCIAL_PER_REPUTATION: 500,
+  SUPER_LEAGUE_COMMERCIAL_PER_REPUTATION: 3000,
+  /** Crowd fill vs Super League model (weaker midweek/weekend Championship gates). */
+  ATTENDANCE_FILL_MULTIPLIER: 0.6,
+  /** Soft-cap retained cash when remaining in / relegated to Championship. */
+  CARRYOVER_SOFT_CAP_BY_REPUTATION: {
+    1: 60_000,
+    2: 90_000,
+    3: 120_000,
+    4: 140_000,
+    5: 160_000,
+  } as Record<number, number>,
+  DEFAULT_SEASON_PRIZE: 8_000,
+  STARTING_BALANCE_TOP: 55_000,
+  STARTING_BALANCE_DEFAULT: 25_000,
+  /** Championship wages as a fraction of Super League market rates. */
+  WAGE_MULTIPLIER: 0.75,
+} as const;
+
+/**
+ * Championship clubs pay a premium to prise players out of Super League,
+ * especially elites — stops cash-rich Champ sides shopping the top division cheaply.
+ */
+export function getCrossDivisionTransferFeeMultiplier(
+  buyingComp: CompetitionId,
+  sellingComp: CompetitionId,
+  rating: number
+): number {
+  if (buyingComp !== "championship" || sellingComp !== "super-league") {
+    return 1;
+  }
+  if (rating >= 85) return 2.4;
+  if (rating >= 80) return 2.0;
+  if (rating >= 75) return 1.6;
+  return 1.3;
+}
+
+export function calculateTransferFeeBetweenClubs(
+  rating: number,
+  potential: number,
+  age: number,
+  buyingComp: CompetitionId,
+  sellingComp: CompetitionId
+): number {
+  const base = calculatePlayerValue(rating, potential, age);
+  const mult = getCrossDivisionTransferFeeMultiplier(buyingComp, sellingComp, rating);
+  return Math.max(5_000, Math.round((base * mult) / 1_000) * 1_000);
+}
+
+export function getChampionshipCarryoverSoftCap(reputation: number): number {
+  const key = Math.max(1, Math.min(5, Math.round(reputation)));
+  return CHAMPIONSHIP_ECONOMY.CARRYOVER_SOFT_CAP_BY_REPUTATION[key] ?? 100_000;
+}
+
 /** Wage valuation based on player rating and tier */
 export function calculateMarketWage(rating: number, age: number, comp: CompetitionId): number {
   const baseRating = Math.max(40, Math.min(99, rating));
@@ -92,7 +160,7 @@ export function calculateMarketWage(rating: number, age: number, comp: Competiti
   }
 
   if (comp === "championship") {
-    weekly = Math.round(weekly * 0.6); // Championship wages ~60% of SL
+    weekly = Math.round(weekly * CHAMPIONSHIP_ECONOMY.WAGE_MULTIPLIER);
   }
 
   return Math.max(200, Math.round(weekly / 50) * 50);

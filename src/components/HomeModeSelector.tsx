@@ -27,10 +27,6 @@ export function HomeModeSelector() {
           <h2 className="mt-2 text-2xl sm:text-3xl font-black text-white tracking-tight">
             Rugby League Manager Mode
           </h2>
-          <p className="mt-2 max-w-xl text-xs sm:text-sm text-pitch-300 leading-relaxed">
-            Take control of a Super League or Championship club. Scout, negotiate transfers, manage
-            contracts &amp; salary cap, develop academy prospects, and fight for promotion and silverware.
-          </p>
 
           <div className="mt-4 flex flex-wrap justify-center gap-3 w-full max-w-sm">
             <GameButton

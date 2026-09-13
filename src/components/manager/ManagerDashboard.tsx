@@ -7,13 +7,23 @@ import { sortStandings } from "@/lib/manager/competitions";
 import { cleanText } from "@/lib/manager";
 
 export function ManagerDashboard() {
-  const { state, setActiveTab, advanceCurrentWeek, isAdvancing } = useManager();
+  const {
+    state,
+    setActiveTab,
+    advanceCurrentWeek,
+    isAdvancing,
+    markAllMessagesRead,
+    getUserMatchdayReadiness,
+    lastAdvanceError,
+  } = useManager();
 
   if (!state) return null;
 
   const userClubId = state.manager.clubId;
   const club = state.clubs[userClubId];
   const cap = calculateSalaryCapUsage(state, userClubId);
+  const readiness = getUserMatchdayReadiness();
+  const lineupShort = readiness != null && !readiness.ready;
 
   // Find next fixture for the manager's club
   const compId = club?.competitionId || "super-league";
@@ -78,9 +88,15 @@ export function ManagerDashboard() {
             <button
               type="button"
               onClick={() => setActiveTab("tactics")}
-              className="rounded-xl border border-pitch-700 bg-pitch-900/80 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white hover:bg-pitch-800 transition-colors"
+              className={`rounded-xl border px-4 py-2.5 text-xs sm:text-sm font-semibold transition-colors ${
+                lineupShort
+                  ? "border-amber-500/50 bg-amber-500/15 text-amber-200 hover:bg-amber-500/25"
+                  : "border-pitch-700 bg-pitch-900/80 text-white hover:bg-pitch-800"
+              }`}
             >
-              Matchday Tactics
+              {lineupShort
+                ? `Fix Lineup (${readiness?.selectedCount ?? 0}/17)`
+                : "Matchday Tactics"}
             </button>
             <button
               type="button"
@@ -92,6 +108,14 @@ export function ManagerDashboard() {
             </button>
           </div>
         </div>
+
+        {(lineupShort || lastAdvanceError) && (
+          <p className="mt-3 text-xs text-amber-300/90 leading-relaxed">
+            {lastAdvanceError ||
+              readiness?.error ||
+              "Name a full 17 (13 starters + 4 interchange) in Tactics before playing a match week."}
+          </p>
+        )}
       </section>
 
       {/* Grid: 3 Main Cards */}
@@ -244,13 +268,26 @@ export function ManagerDashboard() {
       <section className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-5 shadow">
         <div className="flex items-center justify-between mb-3 pb-2 border-b border-pitch-800">
           <h3 className="font-bold text-sm text-white">Recent Inbox News</h3>
-          <button
-            type="button"
-            onClick={() => setActiveTab("inbox")}
-            className="text-xs text-emerald-400 hover:underline"
-          >
-            Open Inbox ({state.inbox.unreadCount} unread) →
-          </button>
+          <div className="flex items-center gap-3">
+            {state.inbox.unreadCount > 0 && (
+              <button
+                type="button"
+                onClick={() => markAllMessagesRead()}
+                className="text-xs font-semibold text-pitch-400 hover:text-emerald-400 transition-colors flex items-center gap-1 active:scale-95"
+                title="Mark all messages as seen"
+              >
+                <span>✓✓</span>
+                <span>Seen All</span>
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setActiveTab("inbox")}
+              className="text-xs text-emerald-400 hover:underline"
+            >
+              Open Inbox ({state.inbox.unreadCount} unread) →
+            </button>
+          </div>
         </div>
 
         <div className="divide-y divide-pitch-800/60">

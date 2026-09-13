@@ -4,7 +4,7 @@
  */
 
 import { calculateSalaryCapUsage, evaluateContractOffer } from "./contracts";
-import { CALENDAR_RULES, calculatePlayerValue } from "./rules";
+import { CALENDAR_RULES, calculateTransferFeeBetweenClubs } from "./rules";
 import type {
   ManagerState,
   SquadRole,
@@ -167,7 +167,13 @@ export function evaluateSellingClubBid(
   const buyingClub = state.clubs[bid.fromClubId];
   if (!player || !sellingClub || !buyingClub) return { success: false, state, error: "Data integrity error for bid." };
 
-  const fairValue = calculatePlayerValue(player.rating, player.potential, player.age);
+  const fairValue = calculateTransferFeeBetweenClubs(
+    player.rating,
+    player.potential,
+    player.age,
+    buyingClub.competitionId,
+    sellingClub.competitionId
+  );
 
   // If forced (e.g. human manager accepting/rejecting via UI)
   let accepted = forceDecision === "accept";
@@ -186,7 +192,12 @@ export function evaluateSellingClubBid(
       reason = `${sellingClub.name} has accepted the transfer offer of £${bid.offeredFee.toLocaleString()}.`;
     } else {
       accepted = false;
-      reason = `${sellingClub.name} rejected the offer. They value ${player.name} at no less than £${minimumRequiredFee.toLocaleString()}.`;
+      const crossDivNote =
+        buyingClub.competitionId === "championship" &&
+        sellingClub.competitionId === "super-league"
+          ? " Super League clubs demand a premium from Championship buyers."
+          : "";
+      reason = `${sellingClub.name} rejected the offer. They value ${player.name} at no less than £${minimumRequiredFee.toLocaleString()}.${crossDivNote}`;
     }
   } else {
     reason = accepted

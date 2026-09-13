@@ -15,10 +15,14 @@ import { ManagerTrainingView } from "@/components/manager/ManagerTrainingView";
 import { ManagerFixturesView } from "@/components/manager/ManagerFixturesView";
 import { ManagerLeagueView } from "@/components/manager/ManagerLeagueView";
 import { ManagerClubView } from "@/components/manager/ManagerClubView";
+import { ManagerHistoryView } from "@/components/manager/ManagerHistoryView";
 import { ManagerInboxView } from "@/components/manager/ManagerInboxView";
 import { ManagerSettingsView } from "@/components/manager/ManagerSettingsView";
 import { ManagerMatchReviewModal } from "@/components/manager/ManagerMatchReviewModal";
+import { ManagerKeyMomentsModal } from "@/components/manager/ManagerKeyMomentsModal";
 import { ManagerSeasonAwardsModal } from "@/components/manager/ManagerSeasonAwardsModal";
+import { ManagerContractExpiryModal } from "@/components/manager/ManagerContractExpiryModal";
+import { ManagerTutorialModal } from "@/components/manager/ManagerTutorialModal";
 
 function ManagerModeContent() {
   const { state, activeTab, isLoading } = useManager();
@@ -57,12 +61,16 @@ function ManagerModeContent() {
         {activeTab === "fixtures" && <ManagerFixturesView />}
         {activeTab === "league" && <ManagerLeagueView />}
         {activeTab === "club" && <ManagerClubView />}
+        {activeTab === "history" && <ManagerHistoryView />}
         {activeTab === "settings" && <ManagerSettingsView />}
       </main>
 
       {/* Modals */}
+      <ManagerTutorialModal />
+      <ManagerKeyMomentsModal />
       <ManagerMatchReviewModal />
       <ManagerSeasonAwardsModal />
+      <ManagerContractExpiryModal />
     </div>
   );
 }

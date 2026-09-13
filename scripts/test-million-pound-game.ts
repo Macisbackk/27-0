@@ -6,7 +6,7 @@
  * 2. Automatic relegation of 14th placed Super League club.
  * 3. Championship Top 6 Playoffs (2nd-6th) leading to Playoff Final Winner.
  * 4. The Million Pound Game scheduled for Week 32 between 13th SL & Championship Playoff Winner.
- * 5. Case A: Championship team wins MPG -> 2 promoted, 2 relegated, club counts preserved (14 SL, 12 Champ).
+ * 5. Case A: Championship team wins MPG -> 2 promoted, 2 relegated, club counts preserved (14 SL, 14 Champ).
  * 6. Case B: Super League team wins MPG -> 1 promoted, 1 relegated, 13th SL survives, club counts preserved.
  */
 
@@ -72,7 +72,11 @@ async function runMillionPoundGameTests() {
   const slW30Fixtures = state.competitions["super-league"].fixtures.filter((f) => f.week === 30);
   const champW30Fixtures = state.competitions["championship"].fixtures.filter((f) => f.week === 30);
   assert(slW30Fixtures.length === 2, "Super League has 2 Semi-Final fixtures at Week 30");
-  assert(champW30Fixtures.length === 2, "Championship has 2 Semi-Final fixtures at Week 30");
+  assert(champW30Fixtures.length === 1, "Championship has exactly 1 Semi-Final (2nd vs lower elim; higher elim bye to Final)");
+  assert(
+    champW30Fixtures[0].homeClubId !== champW30Fixtures[0].awayClubId,
+    "Championship Semi-Final is never a club vs itself"
+  );
 
   // Advance Week 30 (Semi-Finals played)
   console.log("\n--- 3. Simulating Week 30 Semi-Finals ---");
@@ -176,6 +180,86 @@ async function runMillionPoundGameTests() {
   assert(s2SlClubsB.length === 14, `Super League maintains exactly 14 clubs (has ${s2SlClubsB.length})`);
   assert(s2ChampClubsB.length === 14, `Championship maintains exactly 14 clubs (has ${s2ChampClubsB.length})`);
   assert(validateSquadInvariants(nextSeasonB).valid, "Squad invariants valid under Scenario B");
+
+  // ----------------------------------------------------
+  // TEST SCENARIO C: Natural Simulation via advanceWeek (Score Parity & Honours Check)
+  // ----------------------------------------------------
+  console.log("\n--- 7. Scenario C: Natural Simulation via advanceWeek (Score Parity & Honours) ---");
+  // state is currently at Week 32 with unplayed MPG fixtures in both SL and Championship
+  const simulatedState = advanceWeek(state);
+  assert(simulatedState.calendar.currentWeek === 33, "Advanced to Week 33");
+  assert(simulatedState.calendar.phase === "season_end", "Phase transitioned to season_end");
+
+  const slMpgPlayed = simulatedState.competitions["super-league"].fixtures.find(
+    (f) => f.roundName === "The Million Pound Game" && f.week === 32
+  );
+  const champMpgPlayed = simulatedState.competitions["championship"].fixtures.find(
+    (f) => f.roundName === "The Million Pound Game" && f.week === 32
+  );
+
+  assert(!!slMpgPlayed && slMpgPlayed.isPlayed, "Super League MPG fixture is played");
+  assert(!!champMpgPlayed && champMpgPlayed.isPlayed, "Championship MPG fixture is played");
+  assert(slMpgPlayed!.homeScore === champMpgPlayed!.homeScore, `SL home score (${slMpgPlayed!.homeScore}) matches Championship home score (${champMpgPlayed!.homeScore})`);
+  assert(slMpgPlayed!.awayScore === champMpgPlayed!.awayScore, `SL away score (${slMpgPlayed!.awayScore}) matches Championship away score (${champMpgPlayed!.awayScore})`);
+
+  const awardsC = calculateSeasonAwards(simulatedState);
+  assert(awardsC.millionPoundGame !== null, "Honours include Million Pound Game");
+  assert(
+    awardsC.millionPoundGame!.score === `${slMpgPlayed!.homeScore} - ${slMpgPlayed!.awayScore}`,
+    `Honours score (${awardsC.millionPoundGame!.score}) exactly matches match engine score (${slMpgPlayed!.homeScore} - ${slMpgPlayed!.awayScore})`
+  );
+  const expectedWinner =
+    slMpgPlayed!.homeScore! >= slMpgPlayed!.awayScore!
+      ? simulatedState.clubs[slMpgPlayed!.homeClubId].name
+      : simulatedState.clubs[slMpgPlayed!.awayClubId].name;
+  assert(
+    awardsC.millionPoundGame!.winner === expectedWinner,
+    `Honours winner (${awardsC.millionPoundGame!.winner}) matches match winner (${expectedWinner})`
+  );
+
+  // ----------------------------------------------------
+  // TEST SCENARIO D: Equal-score MPG — SL survives (aligned awards + bulletin rule)
+  // ----------------------------------------------------
+  console.log("\n--- 8. Scenario D: Equal-score MPG draw awards SL survival ---");
+  const stateScenarioD = JSON.parse(JSON.stringify(state));
+  const mpgIndexD = stateScenarioD.competitions["super-league"].fixtures.findIndex(
+    (f: any) => f.roundName === "The Million Pound Game"
+  );
+  stateScenarioD.competitions["super-league"].fixtures[mpgIndexD] = {
+    ...stateScenarioD.competitions["super-league"].fixtures[mpgIndexD],
+    isPlayed: true,
+    homeScore: 18,
+    awayScore: 18,
+  };
+  // Mirror Champ copy too
+  const champMpgIndexD = stateScenarioD.competitions["championship"].fixtures.findIndex(
+    (f: any) => f.roundName === "The Million Pound Game"
+  );
+  if (champMpgIndexD >= 0) {
+    stateScenarioD.competitions["championship"].fixtures[champMpgIndexD] = {
+      ...stateScenarioD.competitions["championship"].fixtures[champMpgIndexD],
+      isPlayed: true,
+      homeScore: 18,
+      awayScore: 18,
+    };
+  }
+
+  const awardsD = calculateSeasonAwards(stateScenarioD);
+  assert(awardsD.millionPoundGame?.superLeagueSurvived === true, "Equal score: Super League survives via >= rule");
+  assert(awardsD.promotedClubIds.length === 1, "Equal score: exactly 1 club promoted");
+  assert(awardsD.relegatedClubIds.length === 1, "Equal score: exactly 1 club relegated");
+  assert(!awardsD.promotedClubIds.includes(champPlayoffWinner), "Equal score: Champ playoff winner NOT promoted");
+  assert(!awardsD.relegatedClubIds.includes(mpgSL13), "Equal score: 13th SL NOT relegated");
+
+  const rolloverC = rolloverSeason(simulatedState);
+  assert(
+    rolloverC.awards.millionPoundGame!.score === `${slMpgPlayed!.homeScore} - ${slMpgPlayed!.awayScore}`,
+    "Rollover awards preserve exact Million Pound Game score"
+  );
+  assert(
+    rolloverC.state.seasonHistory![0].millionPoundGame!.score === `${slMpgPlayed!.homeScore} - ${slMpgPlayed!.awayScore}`,
+    "Archived season history record preserves exact Million Pound Game score"
+  );
 
   console.log("\n========================================================");
   console.log(`ALL MILLION POUND GAME TESTS PASSED: ${passedCount} / ${testCount}`);

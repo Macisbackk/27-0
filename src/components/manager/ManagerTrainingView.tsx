@@ -74,28 +74,45 @@ export function ManagerTrainingView() {
         </div>
 
         <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-4 shadow text-xs space-y-2">
-          <h3 className="font-bold text-sm text-white">Training Facilities</h3>
-          <div className="flex justify-between">
-            <span className="text-pitch-400">Senior Gym & Pitches:</span>
-            <span className="text-amber-400 font-bold">{"★".repeat(club.facilities.training)}</span>
+          <div className="flex justify-between items-center mb-1">
+            <h3 className="font-bold text-sm text-white">Infrastructure Standards</h3>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
+            <span className="text-pitch-400">Senior Training Ground:</span>
+            <span className="text-amber-400 font-bold">{"★".repeat(club.facilities.training || 3)}</span>
+          </div>
+          <div className="flex justify-between items-center">
             <span className="text-pitch-400">Youth Academy Complex:</span>
-            <span className="text-amber-400 font-bold">{"★".repeat(club.facilities.youth)}</span>
+            <span className="text-amber-400 font-bold">{"★".repeat(club.facilities.youth || 3)}</span>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
+            <span className="text-pitch-400">Medical & Rehab Centre:</span>
+            <span className="text-amber-400 font-bold">{"★".repeat(club.facilities.medical || 3)}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-pitch-400">Sports Science & Conditioning:</span>
+            <span className="text-amber-400 font-bold">{"★".repeat(club.facilities.performance || 3)}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-pitch-400">Tactical Analytics Suite:</span>
+            <span className="text-amber-400 font-bold">{"★".repeat(club.facilities.analytics || 2)}</span>
+          </div>
+          <div className="flex justify-between items-center pt-1 border-t border-pitch-800/60">
             <span className="text-pitch-400">Coaching Staff Quality:</span>
-            <span className="text-amber-400 font-bold">{"★".repeat(club.coachingQuality)}</span>
+            <span className="text-amber-400 font-bold">{"★".repeat(club.coachingQuality || 3)}</span>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-4 shadow text-xs space-y-1.5">
-          <h3 className="font-bold text-sm text-white">Development Science</h3>
-          <p className="text-pitch-400 text-[11px]">
-            Players aged 17–23 with high potential develop fastest with regular playing time and Development focus.
+        <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-4 shadow text-xs space-y-2">
+          <h3 className="font-bold text-sm text-white">Development & Science Notes</h3>
+          <p className="text-pitch-400 text-[11px] leading-relaxed">
+            <strong className="text-emerald-400 font-semibold">Growth:</strong> Players aged 17–23 with high potential develop fastest with regular first-team minutes and higher coaching standards.
           </p>
-          <p className="text-pitch-400 text-[11px]">
-            Veterans (32+) plateau and gradually decline. Use Recovery focus to preserve their stamina.
+          <p className="text-pitch-400 text-[11px] leading-relaxed">
+            <strong className="text-sky-400 font-semibold">Conditioning:</strong> Upgraded Sports Science labs shed extra weekly fatigue and shield veterans (32+) against physical decline.
+          </p>
+          <p className="text-pitch-400 text-[11px] leading-relaxed">
+            <strong className="text-amber-400 font-semibold">Career Programs:</strong> Sponsoring direct player career masterclasses or specialist biomechanics permanently boosts player upside.
           </p>
         </div>
       </div>

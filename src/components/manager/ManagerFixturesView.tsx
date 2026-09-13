@@ -5,7 +5,7 @@ import { useManager } from "@/lib/manager/context";
 import type { CompetitionId, ManagerFixture } from "@/lib/manager/types";
 
 export function ManagerFixturesView() {
-  const { state, setLastPlayedMatchReview } = useManager();
+  const { state, setLastPlayedMatchReview, openKeyMoments } = useManager();
   const [selectedCompId, setSelectedCompId] = useState<CompetitionId>("super-league");
 
   if (!state) return null;
@@ -35,7 +35,7 @@ export function ManagerFixturesView() {
         </div>
 
         {/* Competition filter buttons */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+        <div className="flex items-center justify-center sm:justify-end gap-1.5 overflow-x-auto pb-1">
           <button
             type="button"
             onClick={() => setSelectedCompId(userClub?.competitionId || "super-league")}
@@ -127,11 +127,24 @@ export function ManagerFixturesView() {
                       </div>
 
                       {/* Score or VS */}
-                      <div className="mx-3 flex items-center justify-center min-w-16">
+                      <div className="mx-2 sm:mx-3 flex items-center justify-center shrink-0">
                         {fixture.isPlayed ? (
-                          <span className="rounded-lg bg-pitch-900 px-2.5 py-1 text-xs font-black text-emerald-400 border border-pitch-700 shadow-sm">
-                            {fixture.homeScore} - {fixture.awayScore}
-                          </span>
+                          <div className="flex items-center gap-1.5">
+                            <span className="rounded-lg bg-pitch-900 px-2.5 py-1 text-xs font-black text-emerald-400 border border-pitch-700 shadow-sm">
+                              {fixture.homeScore} - {fixture.awayScore}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openKeyMoments(fixture);
+                              }}
+                              className="hidden sm:inline-flex rounded-lg bg-pitch-800/90 hover:bg-emerald-600 px-1.5 py-1 text-[10px] font-bold text-pitch-300 hover:text-white border border-pitch-700 transition-colors"
+                              title="Watch Key Moments"
+                            >
+                              ⚡ Moments
+                            </button>
+                          </div>
                         ) : (
                           <span className="text-xs font-semibold text-pitch-500 uppercase">
                             vs

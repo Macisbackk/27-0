@@ -8,6 +8,7 @@ import type {
   SquadRole,
   SquadTier,
   MatchScoreEvent,
+  KeyMomentType,
 } from "./types";
 
 /**
@@ -210,6 +211,43 @@ export function formatScoreEventType(type?: MatchScoreEvent["type"] | string | n
       return "Penalty Goal";
     case "DROP_GOAL":
       return "Drop Goal";
+    default:
+      return cleanText(type);
+  }
+}
+
+/**
+ * Formats match key moment event types cleanly.
+ */
+export function formatKeyMomentType(type?: KeyMomentType | string | null): string {
+  if (!type) return "Moment";
+  switch (type.toUpperCase()) {
+    case "TRY":
+      return "Try";
+    case "CONVERSION":
+      return "Conversion";
+    case "MISSED_CONVERSION":
+      return "Missed Conversion";
+    case "PENALTY_GOAL":
+      return "Penalty Goal";
+    case "DROP_GOAL":
+      return "Drop Goal";
+    case "SIN_BIN":
+      return "Sin Bin (10 min)";
+    case "RED_CARD":
+      return "Red Card";
+    case "INJURY":
+      return "Injury";
+    case "TRY_SAVER":
+      return "Try Saver";
+    case "FORTY_TWENTY":
+      return "40/20 Kick";
+    case "HALF_TIME":
+      return "Half Time";
+    case "FULL_TIME":
+      return "Full Time";
+    case "GOLDEN_POINT":
+      return "Golden Point";
     default:
       return cleanText(type);
   }

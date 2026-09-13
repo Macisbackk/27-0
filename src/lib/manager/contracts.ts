@@ -3,9 +3,10 @@
  * Pure simulation logic.
  */
 
-import { SALARY_CAP, calculateMarketWage } from "./rules";
+import { SALARY_CAP, calculateMarketWage, CALENDAR_RULES } from "./rules";
 import type {
   ManagerState,
+  ManagerPlayer,
   PlayerContract,
   SquadRole,
 } from "./types";
@@ -65,7 +66,13 @@ export function calculateSalaryCapUsage(state: ManagerState, clubId: string): {
   let capChargeWeekly = 0;
 
   sortedByWage.forEach((p) => {
-    const wage = p.contract?.wageWeekly || 0;
+    const rawWage = p.contract?.wageWeekly || 0;
+    // If player is loaned out, parent club only pays the remaining wage percentage
+    const wage =
+      p.loan && p.loan.parentClubId === clubId
+        ? Math.round((rawWage * (100 - p.loan.wageContributionPct)) / 100)
+        : rawWage;
+
     totalWageBillWeekly += wage;
 
     // Check marquee exemption eligibility
@@ -78,6 +85,17 @@ export function calculateSalaryCapUsage(state: ManagerState, clubId: string): {
     } else {
       capChargeWeekly += wage;
     }
+  });
+
+  // Include wage commitments for players loaned IN to this club
+  const loanedInPlayers = Object.values(state.players).filter(
+    (p) => p.loan && p.loan.destinationClubId === clubId && p.contract && !p.isRetired
+  );
+  loanedInPlayers.forEach((p) => {
+    const rawWage = p.contract?.wageWeekly || 0;
+    const loanWageCharge = Math.round((rawWage * (p.loan?.wageContributionPct || 0)) / 100);
+    totalWageBillWeekly += loanWageCharge;
+    capChargeWeekly += loanWageCharge;
   });
 
   const availableCapWeekly = capLimitWeekly - capChargeWeekly;
@@ -138,7 +156,8 @@ export function renewPlayerContract(
   playerId: string,
   offeredWage: number,
   contractYears: number,
-  offeredRole: SquadRole
+  offeredRole: SquadRole,
+  options?: { silent?: boolean }
 ): ContractOperationResult {
   const player = state.players[playerId];
   if (!player) return { success: false, state, error: "Player not found." };
@@ -181,6 +200,19 @@ export function renewPlayerContract(
     morale: Math.min(100, player.morale + 10), // Renewal boosts morale
   };
 
+  if (options?.silent) {
+    return {
+      success: true,
+      state: {
+        ...state,
+        players: {
+          ...state.players,
+          [playerId]: updatedPlayer,
+        },
+      },
+    };
+  }
+
   const nextState: ManagerState = {
     ...state,
     players: {
@@ -208,6 +240,162 @@ export function renewPlayerContract(
   };
 
   return { success: true, state: nextState };
+}
+
+export interface BulkRenewalResult {
+  success: boolean;
+  state: ManagerState;
+  renewedCount: number;
+  failedCount: number;
+  renewedNames: string[];
+  failedNames: string[];
+  error?: string;
+}
+
+/**
+ * Bulk-renews contracts for all Academy and/or Reserves players at a club.
+ * Keeps current wage when the player will accept it; otherwise bumps to their
+ * minimum acceptable. Preserves squad role. Uses a single summary inbox message.
+ */
+export function renewAllSquadTierContracts(
+  state: ManagerState,
+  clubId: string,
+  tiers: Array<"academy" | "reserves">,
+  contractYears = 2
+): BulkRenewalResult {
+  const club = state.clubs[clubId];
+  if (!club) {
+    return {
+      success: false,
+      state,
+      renewedCount: 0,
+      failedCount: 0,
+      renewedNames: [],
+      failedNames: [],
+      error: "Club not found.",
+    };
+  }
+
+  const tierSet = new Set(tiers);
+  const candidates = Object.values(state.players).filter(
+    (p) =>
+      p.clubId === clubId &&
+      p.contract &&
+      !p.isRetired &&
+      p.squadTier &&
+      tierSet.has(p.squadTier as "academy" | "reserves")
+  );
+
+  if (candidates.length === 0) {
+    return {
+      success: false,
+      state,
+      renewedCount: 0,
+      failedCount: 0,
+      renewedNames: [],
+      failedNames: [],
+      error: "No Academy/Reserves players available to renew.",
+    };
+  }
+
+  let workingState = state;
+  const renewedNames: string[] = [];
+  const failedNames: string[] = [];
+  const currentSeason = state.calendar.currentSeason;
+  const expiresSeason = currentSeason + contractYears;
+
+  // Renew cheapest first so salary-cap pressure hits later / lower-priority names
+  const sorted = [...candidates].sort(
+    (a, b) => (a.contract?.wageWeekly || 0) - (b.contract?.wageWeekly || 0)
+  );
+
+  for (const player of sorted) {
+    const role: SquadRole =
+      player.contract?.role ||
+      (player.squadTier === "academy" ? "youth" : "rotation");
+    const currentWage = player.contract?.wageWeekly || 0;
+    const evaluation = evaluateContractOffer(player, club, currentWage, role);
+    const offeredWage = Math.max(currentWage, evaluation.minimumAcceptableWage);
+
+    const res = renewPlayerContract(
+      workingState,
+      player.id,
+      offeredWage,
+      contractYears,
+      role,
+      { silent: true }
+    );
+    if (res.success) {
+      workingState = res.state;
+      renewedNames.push(player.name);
+    } else {
+      failedNames.push(player.name);
+    }
+  }
+
+  if (renewedNames.length === 0) {
+    return {
+      success: false,
+      state,
+      renewedCount: 0,
+      failedCount: failedNames.length,
+      renewedNames,
+      failedNames,
+      error:
+        failedNames.length > 0
+          ? `Could not renew any contracts (salary cap or terms). Failed: ${failedNames.slice(0, 3).join(", ")}${failedNames.length > 3 ? "…" : ""}`
+          : "No contracts renewed.",
+    };
+  }
+
+  const tierLabel =
+    tiers.length === 2
+      ? "Academy & Reserves"
+      : tiers[0] === "academy"
+        ? "Academy"
+        : "Reserves";
+
+  const summaryBody = [
+    `${renewedNames.length} ${tierLabel} contract${renewedNames.length === 1 ? "" : "s"} extended by ${contractYears} year${contractYears === 1 ? "" : "s"} (until end of ${expiresSeason}).`,
+    "",
+    `Renewed: ${renewedNames.join(", ")}.`,
+    failedNames.length > 0
+      ? `\nCould not renew (${failedNames.length}): ${failedNames.join(", ")}.`
+      : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const nextState: ManagerState = {
+    ...workingState,
+    inbox: {
+      ...workingState.inbox,
+      messages: [
+        {
+          id: `contract_bulk_renewed_${tiers.join("_")}_${Date.now()}`,
+          season: currentSeason,
+          week: workingState.calendar.currentWeek,
+          dateStr: `Season ${currentSeason}`,
+          sender: "Club Secretary",
+          subject: `${tierLabel} Contracts Renewed (${renewedNames.length})`,
+          body: summaryBody,
+          category: "contract",
+          isRead: false,
+        },
+        ...workingState.inbox.messages,
+      ],
+      unreadCount: workingState.inbox.unreadCount + 1,
+    },
+  };
+
+  return {
+    success: true,
+    state: nextState,
+    renewedCount: renewedNames.length,
+    failedCount: failedNames.length,
+    renewedNames,
+    failedNames,
+  };
 }
 
 /**
@@ -372,4 +560,101 @@ export function signFreeAgent(
   };
 
   return { success: true, state: nextState };
+}
+
+/** Campaign length treated as ~8 calendar months (Feb–Oct). */
+const SEASON_CAMPAIGN_MONTHS = 8;
+
+/**
+ * Approximate months remaining on a deal that ends at the close of `expiresSeason`.
+ * Used for the "< 6 months left" contract warning popup.
+ */
+export function estimateContractMonthsRemaining(
+  currentSeason: number,
+  currentWeek: number,
+  expiresSeason: number,
+  totalWeeks: number = CALENDAR_RULES.TOTAL_WEEKS
+): number {
+  if (expiresSeason < currentSeason) return 0;
+  if (expiresSeason > currentSeason) {
+    // Full future seasons remain — well beyond the 6-month warning window
+    return (expiresSeason - currentSeason) * 12;
+  }
+
+  const weeksLeft = Math.max(0, totalWeeks - currentWeek + 1);
+  return (weeksLeft / totalWeeks) * SEASON_CAMPAIGN_MONTHS;
+}
+
+export function isContractUnderSixMonths(
+  currentSeason: number,
+  currentWeek: number,
+  expiresSeason: number
+): boolean {
+  return estimateContractMonthsRemaining(currentSeason, currentWeek, expiresSeason) < 6;
+}
+
+/**
+ * User-club players whose contracts have less than 6 months remaining.
+ * Skips retired players and free agents.
+ */
+export function getPlayersWithUnderSixMonthsLeft(
+  state: ManagerState,
+  clubId: string
+): ManagerPlayer[] {
+  const { currentSeason, currentWeek } = state.calendar;
+  return Object.values(state.players)
+    .filter(
+      (p) =>
+        p.clubId === clubId &&
+        !!p.contract &&
+        !p.isRetired &&
+        isContractUnderSixMonths(currentSeason, currentWeek, p.contract.expiresSeason)
+    )
+    .sort((a, b) => {
+      const tierRank = (t: string | null) =>
+        t === "first" ? 0 : t === "reserves" ? 1 : 2;
+      const td = tierRank(a.squadTier) - tierRank(b.squadTier);
+      if (td !== 0) return td;
+      return b.rating - a.rating;
+    });
+}
+
+/**
+ * Players entering the <6-month window who have not yet been acknowledged this season.
+ */
+export function getUnacknowledgedContractExpiryWarnings(
+  state: ManagerState,
+  clubId: string
+): ManagerPlayer[] {
+  const players = getPlayersWithUnderSixMonthsLeft(state, clubId);
+  const ack = state.settings?.contractExpiryAcknowledged;
+  if (!ack || ack.season !== state.calendar.currentSeason) {
+    return players;
+  }
+  const seen = new Set(ack.playerIds);
+  return players.filter((p) => !seen.has(p.id));
+}
+
+/**
+ * Marks the given players as acknowledged for this season's expiry popup.
+ */
+export function acknowledgeContractExpiryWarnings(
+  state: ManagerState,
+  playerIds: string[]
+): ManagerState {
+  const season = state.calendar.currentSeason;
+  const prev = state.settings?.contractExpiryAcknowledged;
+  const existing = prev && prev.season === season ? prev.playerIds : [];
+  const merged = Array.from(new Set([...existing, ...playerIds]));
+
+  return {
+    ...state,
+    settings: {
+      ...state.settings,
+      contractExpiryAcknowledged: {
+        season,
+        playerIds: merged,
+      },
+    },
+  };
 }

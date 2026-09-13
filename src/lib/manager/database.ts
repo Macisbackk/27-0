@@ -16,8 +16,11 @@ import {
   STARTING_POSITIONS,
   CALENDAR_RULES,
   SALARY_CAP,
+  CHAMPIONSHIP_ECONOMY,
   calculateMarketWage,
 } from "./rules";
+import { FIRST_NAMES, LAST_NAMES, generateRandomPlayerName } from "./names";
+export { FIRST_NAMES, LAST_NAMES, generateRandomPlayerName };
 import type {
   ManagerState,
   ManagerClub,
@@ -111,22 +114,6 @@ export const CLUB_COLORS: Record<string, { primary: string; secondary: string; a
   "Cornwall RLFC": { primary: "#111111", secondary: "#D4AF37", accent: "#FFFFFF", text: "#FFFFFF" },
 };
 
-const FIRST_NAMES = [
-  "Liam", "Jack", "Harry", "Oliver", "George", "Noah", "Charlie", "Jacob", "Alfie", "Freddie",
-  "Sam", "Ben", "Joe", "Tom", "Will", "Dan", "Luke", "Alex", "Matty", "Brad",
-  "Callum", "Cameron", "Lewis", "Josh", "Morgan", "Jordan", "Connor", "Tyler", "Kieran", "Ellis",
-  "Mason", "Harvey", "Ethan", "Archie", "Oscar", "Lucas", "James", "Max", "Leo", "Logan",
-  "Tevita", "Junior", "Sione", "Kelepi", "Kavalo", "Maika", "Siua", "Paul", "Jean", "Mathieu"
-];
-
-const LAST_NAMES = [
-  "Smith", "Jones", "Taylor", "Brown", "Williams", "Wilson", "Johnson", "Davies", "Robinson", "Wright",
-  "Thompson", "Evans", "Walker", "White", "Roberts", "Green", "Hall", "Wood", "Jackson", "Clarke",
-  "Clark", "Turnbull", "Hastings", "Hardaker", "Burgess", "Sinfield", "Farrell", "Lomax", "Newman", "Field",
-  "French", "Welsby", "Percival", "Makinson", "Walmsley", "Leeming", "Gale", "Sneyd", "Ackers", "Doro",
-  "Fulton", "Milnes", "Okunbor", "Ryan", "Blake", "Roby", "Cunningham", "Radford", "Peacock", "Sculthorpe"
-];
-
 export function toClubId(clubName: string): string {
   return clubName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
@@ -161,7 +148,8 @@ export function createGeneratedPlayer(
   potential: number,
   clubId: string | null,
   squadTier: SquadTier | null,
-  competitionId: CompetitionId = "championship"
+  competitionId: CompetitionId = "championship",
+  overrideNationality?: string
 ): ManagerPlayer {
   const id = generateUniquePlayerId(clubId ? clubId.slice(0, 4) : "fa");
   const birthYear = 2026 - age;
@@ -173,12 +161,14 @@ export function createGeneratedPlayer(
   const clampedPot = Math.max(clampedRating, Math.min(99, Math.round(potential)));
   const wage = calculateMarketWage(clampedRating, age, competitionId);
 
+  const defaultNat = Math.random() < 0.85 ? "England" : (Math.random() < 0.5 ? "Australia" : "New Zealand");
+
   return {
     id,
     name,
     dob,
     age,
-    nationality: Math.random() < 0.85 ? "England" : (Math.random() < 0.5 ? "Australia" : "New Zealand"),
+    nationality: overrideNationality || defaultNat,
     position: pos,
     rating: clampedRating,
     potential: clampedPot,
@@ -310,13 +300,19 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
     const abbreviation = (name.split(" ").map(w => w[0]).join("") + "RL").slice(0, 3).toUpperCase();
 
     const isSL = compId === "super-league";
-    const baseBudget = isSL ? (stars >= 4 ? 350000 : 150000) : (stars === 3 ? 100000 : 40000);
+    const baseBudget = isSL
+      ? stars >= 4
+        ? 350000
+        : 150000
+      : stars === 3
+        ? CHAMPIONSHIP_ECONOMY.STARTING_BALANCE_TOP
+        : CHAMPIONSHIP_ECONOMY.STARTING_BALANCE_DEFAULT;
     const wageCap = isSL ? SALARY_CAP["super-league"].weeklyCap : SALARY_CAP["championship"].weeklyCap;
 
     const finances: ClubFinances = {
       balance: baseBudget,
       wageBudgetWeekly: wageCap,
-      transferBudget: Math.round(baseBudget * 0.7),
+      transferBudget: Math.round(baseBudget * (isSL ? 0.7 : 0.4)),
       seasonRevenue: 0,
       seasonExpenses: 0,
       history: [
@@ -334,6 +330,9 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
     const facilities: ClubFacilities = {
       training: Math.min(5, Math.max(1, stars)),
       youth: Math.min(5, Math.max(1, isSL ? stars : stars + 1)),
+      medical: Math.min(5, Math.max(1, stars)),
+      performance: Math.min(5, Math.max(1, stars)),
+      analytics: Math.min(5, Math.max(1, isSL ? stars : stars - 1 || 1)),
       stadiumCapacity: stadium.capacity,
     };
 
@@ -485,64 +484,90 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
     clubPlayersMap[clubId].push(player);
   }
 
-  // 3. Ensure every club has a complete squad across First Team (17-21), Reserves (5-6), and Academy (4-6)
-  // For Championship clubs or Super League clubs with gaps, synthesize realistic players to ensure depth.
+  // 3. Ensure every club has a complete squad across First Team (20+), Reserves (5), and Academy (5)
+  // All real players imported from current-squads.json are senior First Team squad members.
   for (const [clubId, club] of Object.entries(clubs)) {
-    const existing = clubPlayersMap[clubId] || [];
     const isSL = club.competitionId === "super-league";
-    const targetSize = 28; // standard healthy squad size
+    const baseStrength = isSL ? (club.reputation >= 4 ? 78 : 72) : (club.reputation === 3 ? 68 : 62);
 
-    // If squad needs more players, generate them
-    if (existing.length < targetSize) {
-      const needed = targetSize - existing.length;
-      const baseStrength = isSL ? (club.reputation >= 4 ? 78 : 72) : (club.reputation === 3 ? 68 : 62);
+    // All real players imported from current-squads.json are senior First Team squad members
+    const clubFirstTeam = clubPlayersMap[clubId] || [];
 
-      for (let i = 0; i < needed; i++) {
+    // Ensure First Team has at least 20 players (for Championship or clubs with small imported squads)
+    if (clubFirstTeam.length < 20) {
+      const neededFirst = 20 - clubFirstTeam.length;
+      for (let i = 0; i < neededFirst; i++) {
         const pos = STARTING_POSITIONS[i % STARTING_POSITIONS.length];
-        const isAcademyAge = i >= (needed - 5);
-        const age = isAcademyAge ? Math.floor(Math.random() * 3) + 17 : Math.floor(Math.random() * 10) + 21;
-        const ratingVariation = (Math.random() * 8) - 4;
-        const rating = isAcademyAge
-          ? Math.max(50, Math.round(baseStrength - 12 + ratingVariation))
-          : Math.max(55, Math.round(baseStrength - 4 + ratingVariation));
-        const potential = isAcademyAge
-          ? Math.min(92, Math.round(rating + 14 + Math.random() * 10))
-          : Math.min(90, Math.round(rating + Math.random() * 4));
+        const age = Math.floor(Math.random() * 8) + 21;
+        const rating = Math.max(55, Math.round(baseStrength - 2 + (Math.random() * 6 - 3)));
+        const potential = Math.min(94, Math.max(rating, rating + Math.floor(Math.random() * 4)));
 
-        const fn = FIRST_NAMES[Math.floor(Math.random() * FIRST_NAMES.length)];
-        const ln = LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
+        const { fullName, nationality } = generateRandomPlayerName(clubId);
         const genPlayer = createGeneratedPlayer(
-          `${fn} ${ln}`,
+          fullName,
           pos,
           age,
           rating,
           potential,
           clubId,
-          isAcademyAge ? "academy" : "reserves",
-          club.competitionId
+          "first",
+          club.competitionId,
+          nationality
         );
 
         players[genPlayer.id] = genPlayer;
-        existing.push(genPlayer);
+        clubFirstTeam.push(genPlayer);
       }
     }
 
-    // Sort squad by rating descending
-    existing.sort((a, b) => b.rating - a.rating);
+    // Every club starts with dedicated Reserves (5 players, ages 20-25, role: rotation/youth)
+    for (let i = 0; i < 5; i++) {
+      const pos = STARTING_POSITIONS[(i + 3) % STARTING_POSITIONS.length];
+      const age = Math.floor(Math.random() * 6) + 20;
+      const rating = Math.max(50, Math.round(baseStrength - 6 + (Math.random() * 6 - 3)));
+      const potential = Math.min(88, Math.round(rating + Math.random() * 6));
 
-    // Assign tiers: Top 18 -> First Team, Next 6 -> Reserves, Remainder -> Academy
-    existing.forEach((p, idx) => {
-      if (idx < 18) {
-        p.squadTier = "first";
-      } else if (idx < 24) {
-        p.squadTier = "reserves";
-      } else {
-        p.squadTier = "academy";
-      }
-    });
+      const { fullName, nationality } = generateRandomPlayerName(clubId);
+      const genReserve = createGeneratedPlayer(
+        fullName,
+        pos,
+        age,
+        rating,
+        potential,
+        clubId,
+        "reserves",
+        club.competitionId,
+        nationality
+      );
 
-    // Generate initial matchday lineup for this club
-    const firstTeam = existing.filter(p => p.squadTier === "first");
+      players[genReserve.id] = genReserve;
+    }
+
+    // Every club starts with dedicated Academy prospects (5 players, ages 17-19, high upside potential)
+    for (let i = 0; i < 5; i++) {
+      const pos = STARTING_POSITIONS[(i + 5) % STARTING_POSITIONS.length];
+      const age = Math.floor(Math.random() * 3) + 17;
+      const rating = Math.max(48, Math.round(baseStrength - 13 + (Math.random() * 6 - 3)));
+      const potential = Math.min(94, Math.round(rating + 14 + Math.random() * 10));
+
+      const { fullName, nationality } = generateRandomPlayerName(clubId);
+      const genAcademy = createGeneratedPlayer(
+        fullName,
+        pos,
+        age,
+        rating,
+        potential,
+        clubId,
+        "academy",
+        club.competitionId,
+        nationality
+      );
+
+      players[genAcademy.id] = genAcademy;
+    }
+
+    // Generate initial matchday lineup for this club from First Team
+    const firstTeam = Object.values(players).filter(p => p.clubId === clubId && p.squadTier === "first");
     club.lineup = buildBestLineup(firstTeam);
 
     // Auto-select goal kicker (highest rated back)
@@ -560,9 +585,8 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
     const age = Math.floor(Math.random() * 12) + 21;
     const rating = Math.floor(Math.random() * 18) + 64; // 64 - 82 rating
     const pot = Math.max(rating, Math.min(88, rating + (age < 24 ? 6 : 1)));
-    const fn = FIRST_NAMES[Math.floor(Math.random() * FIRST_NAMES.length)];
-    const ln = LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
-    const fa = createGeneratedPlayer(`${fn} ${ln}`, pos, age, rating, pot, null, null, "super-league");
+    const { fullName, nationality } = generateRandomPlayerName(null);
+    const fa = createGeneratedPlayer(fullName, pos, age, rating, pot, null, null, "super-league", nationality);
     players[fa.id] = fa;
   }
 
@@ -607,6 +631,7 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
       completedTransfers: [],
       activeLoans: [],
     },
+    seasonHistory: [],
     inbox: {
       messages: [
         {
@@ -642,5 +667,149 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
     },
   };
 
-  return state;
+  return ensureClubSquadDepth(state);
+}
+
+/**
+ * Guarantees healthy squad depth across First Team (17+), Reserves (4+), and Academy (4+).
+ * If a club has none in reserves or academy (or fewer than 4), realistic players are automatically generated.
+ */
+export function ensureClubSquadDepth(
+  state: ManagerState,
+  targetClubId?: string
+): ManagerState {
+  const clubsToInspect = targetClubId
+    ? [state.clubs[targetClubId]].filter(Boolean)
+    : Object.values(state.clubs);
+
+  let newPlayers = { ...state.players };
+  let updatedAny = false;
+
+  for (const club of clubsToInspect) {
+    const clubId = club.id;
+    const isSL = club.competitionId === "super-league";
+    const baseStrength = isSL
+      ? (club.reputation >= 4 ? 78 : 72)
+      : (club.reputation === 3 ? 68 : 62);
+
+    const clubPlayers = Object.values(newPlayers).filter(
+      (p) => p.clubId === clubId && !p.isRetired
+    );
+
+    // 0. Sanitize any displaced first-teamers mistakenly placed in academy or reserves
+    for (const p of clubPlayers) {
+      if (p.squadTier === "academy") {
+        // Adult (>21) or player with first_team/star contract or high senior rating in academy
+        if (
+          p.age > 21 ||
+          p.contract?.role === "star" ||
+          p.contract?.role === "first_team" ||
+          (isSL ? p.rating >= 76 : p.rating >= 68)
+        ) {
+          newPlayers[p.id] = { ...p, squadTier: "first" };
+          updatedAny = true;
+        }
+      } else if (p.squadTier === "reserves") {
+        // Senior star or key first_team player in reserves from previous bad tier slice
+        if (
+          p.contract?.role === "star" ||
+          p.contract?.role === "first_team" ||
+          (isSL ? p.rating >= 78 : p.rating >= 72)
+        ) {
+          newPlayers[p.id] = { ...p, squadTier: "first" };
+          updatedAny = true;
+        }
+      }
+    }
+
+    const currentClubPlayers = Object.values(newPlayers).filter(
+      (p) => p.clubId === clubId && !p.isRetired
+    );
+
+    const firstTeam = currentClubPlayers.filter((p) => p.squadTier === "first");
+    const reserves = currentClubPlayers.filter((p) => p.squadTier === "reserves");
+    const academy = currentClubPlayers.filter((p) => p.squadTier === "academy");
+
+    // 1. Ensure First Team has at least 17 players (can field a full matchday 17)
+    if (firstTeam.length < 17) {
+      const needed = 17 - firstTeam.length;
+      for (let i = 0; i < needed; i++) {
+        const pos = STARTING_POSITIONS[i % STARTING_POSITIONS.length];
+        const age = Math.floor(Math.random() * 8) + 21;
+        const rating = Math.max(55, Math.round(baseStrength - 2 + (Math.random() * 6 - 3)));
+        const potential = Math.min(94, Math.max(rating, rating + Math.floor(Math.random() * 4)));
+        const { fullName, nationality } = generateRandomPlayerName(clubId);
+        const p = createGeneratedPlayer(
+          fullName,
+          pos,
+          age,
+          rating,
+          potential,
+          clubId,
+          "first",
+          club.competitionId,
+          nationality
+        );
+        newPlayers[p.id] = p;
+        updatedAny = true;
+      }
+    }
+
+    // 2. Ensure Reserves has at least 4-5 players (generated if none)
+    if (reserves.length < 4) {
+      const needed = Math.max(4 - reserves.length, reserves.length === 0 ? 5 : 0);
+      for (let i = 0; i < needed; i++) {
+        const pos = STARTING_POSITIONS[(i + 3) % STARTING_POSITIONS.length];
+        const age = Math.floor(Math.random() * 6) + 20;
+        const rating = Math.max(52, Math.round(baseStrength - 5 + (Math.random() * 6 - 3)));
+        const potential = Math.min(90, Math.round(rating + Math.random() * 5));
+        const { fullName, nationality } = generateRandomPlayerName(clubId);
+        const p = createGeneratedPlayer(
+          fullName,
+          pos,
+          age,
+          rating,
+          potential,
+          clubId,
+          "reserves",
+          club.competitionId,
+          nationality
+        );
+        newPlayers[p.id] = p;
+        updatedAny = true;
+      }
+    }
+
+    // 3. Ensure Academy has at least 4-5 players (generated if none)
+    if (academy.length < 4) {
+      const needed = Math.max(4 - academy.length, academy.length === 0 ? 5 : 0);
+      for (let i = 0; i < needed; i++) {
+        const pos = STARTING_POSITIONS[(i + 5) % STARTING_POSITIONS.length];
+        const age = Math.floor(Math.random() * 3) + 17;
+        const rating = Math.max(48, Math.round(baseStrength - 12 + (Math.random() * 6 - 3)));
+        const potential = Math.min(94, Math.round(rating + 14 + Math.random() * 10));
+        const { fullName, nationality } = generateRandomPlayerName(clubId);
+        const p = createGeneratedPlayer(
+          fullName,
+          pos,
+          age,
+          rating,
+          potential,
+          clubId,
+          "academy",
+          club.competitionId,
+          nationality
+        );
+        newPlayers[p.id] = p;
+        updatedAny = true;
+      }
+    }
+  }
+
+  if (!updatedAny) return state;
+
+  return {
+    ...state,
+    players: newPlayers,
+  };
 }

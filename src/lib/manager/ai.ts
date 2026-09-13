@@ -7,7 +7,7 @@
 
 import { buildBestLineup } from "./database";
 import { calculateSalaryCapUsage } from "./contracts";
-import { calculateMarketWage, calculatePlayerValue } from "./rules";
+import { calculateMarketWage, calculateTransferFeeBetweenClubs } from "./rules";
 import { submitTransferBid } from "./transfers";
 import { createLoanAgreement } from "./loans";
 import type {
@@ -112,7 +112,16 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
 
         const target = candidates[0];
         if (target) {
-          const fairFee = calculatePlayerValue(target.rating, target.potential, target.age);
+          const sellingComp = target.clubId
+            ? nextState.clubs[target.clubId]?.competitionId || club.competitionId
+            : club.competitionId;
+          const fairFee = calculateTransferFeeBetweenClubs(
+            target.rating,
+            target.potential,
+            target.age,
+            club.competitionId,
+            sellingComp
+          );
           const proposedWage = calculateMarketWage(target.rating, target.age, club.competitionId);
 
           if (target.clubId === null && cap.availableCapWeekly >= proposedWage) {

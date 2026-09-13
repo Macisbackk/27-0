@@ -7,7 +7,9 @@ import type {
   ActiveLoan,
   ManagerState,
   PlayerLoanInfo,
+  ManagerPlayer,
 } from "./types";
+import { calculateSalaryCapUsage } from "./contracts";
 
 export interface LoanOperationResult {
   success: boolean;
@@ -44,6 +46,14 @@ export function createLoanAgreement(
   const parentClub = state.clubs[parentClubId];
   const destClub = state.clubs[destinationClubId];
   if (!parentClub || !destClub) return { success: false, state, error: "Invalid clubs involved in loan." };
+
+  if (parentClub.competitionId === "championship" && destClub.competitionId === "super-league") {
+    return {
+      success: false,
+      state,
+      error: "Unrealistic loan: Championship clubs cannot loan players to Super League clubs.",
+    };
+  }
 
   const currentSeason = state.calendar.currentSeason;
   const currentWeek = state.calendar.currentWeek;
@@ -296,4 +306,225 @@ export function tickActiveLoans(state: ManagerState): ManagerState {
   }
 
   return nextState;
+}
+
+/**
+ * Checks if a player from another club is eligible to be loaned in.
+ */
+export function isPlayerEligibleForLoanIn(
+  player: ManagerPlayer,
+  parentClub: { competitionId: string },
+  destinationClub: { competitionId: string }
+): { eligible: boolean; reason?: string } {
+  if (player.loan !== null) {
+    return { eligible: false, reason: "Already out on loan." };
+  }
+  if (player.isRetired) {
+    return { eligible: false, reason: "Player has retired." };
+  }
+  if (player.injury) {
+    return { eligible: false, reason: "Player is injured." };
+  }
+  if (player.suspension) {
+    return { eligible: false, reason: "Player is suspended." };
+  }
+
+  // Realistic constraint: Super League teams cannot loan in from Championship
+  if (destinationClub.competitionId === "super-league" && parentClub.competitionId === "championship") {
+    return {
+      eligible: false,
+      reason: "Super League clubs do not loan players in from Championship clubs.",
+    };
+  }
+
+  // Key first-team regulars (80+ OVR in first team) are not available for loan
+  if (player.squadTier === "first" && player.rating >= 80 && !player.isLoanListed) {
+    return {
+      eligible: false,
+      reason: "Player is an indispensable first-team regular.",
+    };
+  }
+
+  return { eligible: true };
+}
+
+/**
+ * Loans a player IN to a destination club from a parent club.
+ * Validates salary cap, realistic league flows, and parent club loan willingness.
+ */
+export function loanPlayerIn(
+  state: ManagerState,
+  destinationClubId: string,
+  playerId: string,
+  totalWeeks: number,
+  wageContributionPct = 50,
+  canRecall = true
+): LoanOperationResult {
+  const player = state.players[playerId];
+  if (!player) return { success: false, state, error: "Player not found." };
+  if (!player.clubId) return { success: false, state, error: "Player is a free agent." };
+  if (player.clubId === destinationClubId) {
+    return { success: false, state, error: "Player already belongs to this club." };
+  }
+
+  const parentClub = state.clubs[player.clubId];
+  const destClub = state.clubs[destinationClubId];
+  if (!parentClub || !destClub) {
+    return { success: false, state, error: "Invalid clubs involved in loan." };
+  }
+
+  // Eligibility check
+  const eligibility = isPlayerEligibleForLoanIn(player, parentClub, destClub);
+  if (!eligibility.eligible) {
+    return {
+      success: false,
+      state,
+      error: eligibility.reason || "Player is not available for loan.",
+    };
+  }
+
+  // Wage contribution check
+  if (wageContributionPct < 50 && player.age > 22 && !player.isLoanListed) {
+    return {
+      success: false,
+      state,
+      error: `${parentClub.name} requires at least a 50% wage contribution to loan out ${player.name}.`,
+    };
+  }
+
+  // Salary cap headroom validation for destination club
+  const weeklyCost = Math.round(((player.contract?.wageWeekly || 0) * wageContributionPct) / 100);
+  const currentCap = calculateSalaryCapUsage(state, destinationClubId);
+  if (weeklyCost > 0 && currentCap.availableCapWeekly < weeklyCost) {
+    return {
+      success: false,
+      state,
+      error: `Salary Cap Breach: Loaning ${player.name} requires £${weeklyCost.toLocaleString()}/wk cap room, but ${destClub.name} only has £${Math.max(0, currentCap.availableCapWeekly).toLocaleString()}/wk available.`,
+    };
+  }
+
+  // Create authoritative loan agreement
+  const agreement = createLoanAgreement(
+    state,
+    parentClub.id,
+    destinationClubId,
+    playerId,
+    totalWeeks,
+    wageContributionPct,
+    canRecall
+  );
+
+  if (!agreement.success) {
+    return agreement;
+  }
+
+  const currentSeason = state.calendar.currentSeason;
+  const currentWeek = state.calendar.currentWeek;
+
+  const nextState: ManagerState = {
+    ...agreement.state,
+    inbox: {
+      ...agreement.state.inbox,
+      messages: [
+        {
+          id: `inbox_loan_in_${playerId}_${Date.now()}`,
+          season: currentSeason,
+          week: currentWeek,
+          dateStr: `Week ${currentWeek}`,
+          sender: `${parentClub.name} Chief Executive`,
+          subject: `Loan Signing Confirmed: ${player.name}`,
+          body: `${player.name} has arrived at ${destClub.name} on a ${totalWeeks}-week loan from ${parentClub.name} (${wageContributionPct}% wage share, £${weeklyCost.toLocaleString()}/wk). The player is immediately available for squad selection in Tactics.`,
+          category: "loan",
+          isRead: false,
+        },
+        ...agreement.state.inbox.messages,
+      ],
+      unreadCount: agreement.state.inbox.unreadCount + 1,
+    },
+  };
+
+  return { success: true, state: nextState, loan: agreement.loan };
+}
+
+/**
+ * Terminates an incoming loan early from the destination club side.
+ * Returns the player back to their parent club.
+ */
+export function terminateIncomingLoan(
+  state: ManagerState,
+  playerId: string,
+  destinationClubId: string
+): LoanOperationResult {
+  const player = state.players[playerId];
+  if (!player || !player.loan) {
+    return { success: false, state, error: "Player is not currently on loan." };
+  }
+  if (player.loan.destinationClubId !== destinationClubId) {
+    return { success: false, state, error: "Player is not on loan to this club." };
+  }
+
+  const { parentClubId } = player.loan;
+  const parentClub = state.clubs[parentClubId];
+  const destClub = state.clubs[destinationClubId];
+
+  // Remove from destination club lineup
+  let updatedDestClub = destClub;
+  if (destClub) {
+    const destStarting13 = destClub.lineup.starting13.map((id) => (id === playerId ? null : id));
+    const destBench = destClub.lineup.bench.map((id) => (id === playerId ? null : id));
+    updatedDestClub = {
+      ...destClub,
+      lineup: { starting13: destStarting13, bench: destBench },
+    };
+  }
+
+  const updatedPlayer: ManagerPlayer = {
+    ...player,
+    loan: null,
+  };
+
+  const updatedActiveLoans = state.transfers.activeLoans.filter((l) => l.playerId !== playerId);
+
+  const nextClubs = updatedDestClub
+    ? {
+        ...state.clubs,
+        [destinationClubId]: updatedDestClub,
+      }
+    : state.clubs;
+
+  const currentSeason = state.calendar.currentSeason;
+  const currentWeek = state.calendar.currentWeek;
+
+  const nextState: ManagerState = {
+    ...state,
+    players: {
+      ...state.players,
+      [playerId]: updatedPlayer,
+    },
+    clubs: nextClubs,
+    transfers: {
+      ...state.transfers,
+      activeLoans: updatedActiveLoans,
+    },
+    inbox: {
+      ...state.inbox,
+      messages: [
+        {
+          id: `inbox_loan_terminated_${playerId}_${Date.now()}`,
+          season: currentSeason,
+          week: currentWeek,
+          dateStr: `Week ${currentWeek}`,
+          sender: "Loan Coordinator",
+          subject: `Loan Terminated: ${player.name}`,
+          body: `${player.name} has concluded their loan spell at ${destClub?.name || "destination club"} early and returned to ${parentClub?.name || "parent squad"}.`,
+          category: "loan",
+          isRead: false,
+        },
+        ...state.inbox.messages,
+      ],
+      unreadCount: state.inbox.unreadCount + 1,
+    },
+  };
+
+  return { success: true, state: nextState };
 }

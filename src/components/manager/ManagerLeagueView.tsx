@@ -26,7 +26,7 @@ export function ManagerLeagueView() {
         </div>
 
         {/* Division switch */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center justify-center sm:justify-end gap-1.5">
           <button
             type="button"
             onClick={() => setActiveTier("super-league")}

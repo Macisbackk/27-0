@@ -104,6 +104,22 @@ export interface ManagerPlayer {
   isTransferListed?: boolean;
   isLoanListed?: boolean;
   isRetired?: boolean;
+  careerBuffs?: PlayerCareerBuff[];
+}
+
+export type PlayerInvestmentType =
+  | "elite_masterclass"
+  | "accelerated_rehab"
+  | "physical_transformation"
+  | "sports_psychology";
+
+export interface PlayerCareerBuff {
+  id: string;
+  type: PlayerInvestmentType;
+  title: string;
+  description: string;
+  appliedSeason: number;
+  appliedWeek: number;
 }
 
 export interface FinancialTransaction {
@@ -125,10 +141,15 @@ export interface ClubFinances {
 }
 
 export interface ClubFacilities {
-  training: number; // 1 - 5 stars
-  youth: number; // 1 - 5 stars
+  training: number; // 1 - 5 stars: Senior Training Ground
+  youth: number; // 1 - 5 stars: Youth Academy Complex
+  medical?: number; // 1 - 5 stars: Medical & Rehabilitation Centre
+  performance?: number; // 1 - 5 stars: Sports Science & Conditioning Lab
+  analytics?: number; // 1 - 5 stars: Tactical Video & Analytics Suite
   stadiumCapacity: number;
 }
+
+export type FacilityType = "training" | "youth" | "medical" | "performance" | "analytics";
 
 export interface BoardObjective {
   id: string;
@@ -184,6 +205,40 @@ export interface MatchScoreEvent {
   clubId: string;
 }
 
+export type KeyMomentType =
+  | "TRY"
+  | "CONVERSION"
+  | "MISSED_CONVERSION"
+  | "PENALTY_GOAL"
+  | "DROP_GOAL"
+  | "SIN_BIN"
+  | "RED_CARD"
+  | "INJURY"
+  | "TRY_SAVER"
+  | "FORTY_TWENTY"
+  | "HALF_TIME"
+  | "FULL_TIME"
+  | "GOLDEN_POINT";
+
+export interface ManagerKeyMoment {
+  id: string;
+  minute: number;
+  type: KeyMomentType;
+  clubId: string;
+  clubName: string;
+  playerId?: string;
+  playerName?: string;
+  playerPosition?: Position;
+  title: string;
+  headline?: string;
+  description: string;
+  homeScoreAfter: number;
+  awayScoreAfter: number;
+  isHome: boolean;
+  importance: "standard" | "high" | "critical";
+  pointsAdded?: number;
+}
+
 export interface MatchPlayerPerformance {
   playerId: string;
   playerName: string;
@@ -214,6 +269,7 @@ export interface ManagerFixture {
   playerPerformances?: MatchPlayerPerformance[];
   manOfTheMatchPlayerId?: string;
   attendance?: number;
+  keyMoments?: ManagerKeyMoment[];
 }
 
 export interface LeagueTableRow {
@@ -337,6 +393,82 @@ export interface ManagerSettings {
   autoSaveEnabled: boolean;
   currencySymbol: string;
   matchSimulationSpeed: "instant" | "normal" | "detailed";
+  /** Player IDs already shown in the <6-month contract expiry popup for a given season */
+  contractExpiryAcknowledged?: {
+    season: number;
+    playerIds: string[];
+  };
+}
+
+export interface SeasonTableSnapshotRow {
+  position: number;
+  clubId: string;
+  clubName: string;
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  pointsFor: number;
+  pointsAgainst: number;
+  pointsDifference: number;
+  points: number;
+}
+
+export interface UserClubSeasonSummary {
+  clubId: string;
+  clubName: string;
+  competitionId: CompetitionId;
+  competitionName: string;
+  finishPosition: number;
+  totalClubs: number;
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  points: number;
+  pointsFor: number;
+  pointsAgainst: number;
+  pointsDifference: number;
+  boardConfidence: number;
+  trophiesWon: string[];
+  topScorer?: { name: string; tries: number; points: number } | null;
+  bestPlayer?: { name: string; rating: number; apps: number; avgMatchRating: number } | null;
+}
+
+export interface SeasonHistoryRecord {
+  season: number;
+  superLeagueChampion: string;
+  superLeagueChampionId?: string;
+  superLeagueRunnerUp?: string;
+  superLeagueGrandFinalScore?: string;
+  leagueLeadersShieldWinner?: string;
+  championshipChampion: string;
+  championshipChampionId?: string;
+  championshipPlayoffWinner?: string;
+  challengeCupWinner?: string;
+  challengeCupRunnerUp?: string;
+  challengeCupFinalScore?: string;
+  millionPoundGame?: {
+    superLeagueTeam: string;
+    championshipTeam: string;
+    superLeagueScore?: number;
+    championshipScore?: number;
+    winner: string;
+    score: string;
+    superLeagueSurvived: boolean;
+  } | null;
+  promotedClubs: string[];
+  relegatedClubs: string[];
+  manOfSteel?: { name: string; clubName: string; motm: number } | null;
+  championshipPlayerOfYear?: { name: string; clubName: string; motm: number } | null;
+  topTryScorer?: { name: string; clubName: string; tries: number } | null;
+  championshipTopTryScorer?: { name: string; clubName: string; tries: number } | null;
+  topPointsScorer?: { name: string; clubName: string; points: number } | null;
+  tables: {
+    superLeague: SeasonTableSnapshotRow[];
+    championship: SeasonTableSnapshotRow[];
+  };
+  userClub: UserClubSeasonSummary;
 }
 
 export interface ManagerState {
@@ -357,4 +489,5 @@ export interface ManagerState {
     unreadCount: number;
   };
   settings: ManagerSettings;
+  seasonHistory?: SeasonHistoryRecord[];
 }

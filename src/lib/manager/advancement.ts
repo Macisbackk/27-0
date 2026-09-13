@@ -13,7 +13,12 @@ import { tickActiveLoans } from "./loans";
 import { simulateManagerMatch } from "./match";
 import { progressPlayerWeek } from "./player";
 import { processAiDecisionsForWeek } from "./ai";
-import { cleanAllClubLineups } from "./squad";
+import {
+  canClubPlayMatchday,
+  getMatchdayLineupReadiness,
+  safeguardAllClubMatchdayLineups,
+  cleanAllClubLineups,
+} from "./squad";
 import type {
   ManagerFixture,
   ManagerState,
@@ -23,9 +28,54 @@ export function getWeekKey(season: number, week: number): string {
   return `${season}_w${week}`;
 }
 
+/** True if the manager's club has an unplayed fixture scheduled this calendar week. */
+export function userClubHasMatchThisWeek(state: ManagerState): boolean {
+  const clubId = state.manager.clubId;
+  const week = state.calendar.currentWeek;
+  for (const comp of Object.values(state.competitions)) {
+    const hit = comp.fixtures.some(
+      (f) =>
+        f.week === week &&
+        !f.isPlayed &&
+        (f.homeClubId === clubId || f.awayClubId === clubId)
+    );
+    if (hit) return true;
+  }
+  return false;
+}
+
+/**
+ * Gate before week advance: user must name a full 17 if they have a match this week.
+ */
+export function canAdvanceWeek(state: ManagerState): {
+  allowed: boolean;
+  error?: string;
+  readiness?: ReturnType<typeof getMatchdayLineupReadiness>;
+} {
+  const weekKey = getWeekKey(state.calendar.currentSeason, state.calendar.currentWeek);
+  if (state.calendar.processedWeekKeys.includes(weekKey)) {
+    return { allowed: false, error: "This week has already been processed." };
+  }
+
+  if (!userClubHasMatchThisWeek(state)) {
+    return { allowed: true };
+  }
+
+  const gate = canClubPlayMatchday(state, state.manager.clubId);
+  if (!gate.allowed) {
+    return {
+      allowed: false,
+      error: gate.error,
+      readiness: gate.readiness,
+    };
+  }
+  return { allowed: true, readiness: gate.readiness };
+}
+
 /**
  * Authoritative advanceWeek function.
  * Pure function: takes current ManagerState, returns next ManagerState.
+ * Callers must check canAdvanceWeek first for user-facing blocks.
  */
 export function advanceWeek(state: ManagerState): ManagerState {
   const currentSeason = state.calendar.currentSeason;
@@ -36,6 +86,10 @@ export function advanceWeek(state: ManagerState): ManagerState {
   if (state.calendar.processedWeekKeys.includes(weekKey)) {
     return state;
   }
+
+  // 1b. Safeguard: AI clubs always field a legal 17. User lineup is scrubbed of
+  // injured/suspended names but NOT auto-completed — canAdvanceWeek enforces their 17.
+  state = safeguardAllClubMatchdayLineups(state, { skipClubId: state.manager.clubId });
 
   // 2. Weekly Training & Player Recovery Tick
   let updatedPlayers = { ...state.players };
@@ -48,6 +102,7 @@ export function advanceWeek(state: ManagerState): ManagerState {
   // 3. Match Simulation for this week's fixtures across all competitions
   const updatedCompetitions = { ...state.competitions };
   const matchesPlayedThisWeek: { homeClubId: string; attendance?: number }[] = [];
+  const simulatedFixturesById = new Map<string, ManagerFixture>();
 
   for (const [compId, comp] of Object.entries(updatedCompetitions)) {
     let compStandings = comp.standings;
@@ -55,12 +110,31 @@ export function advanceWeek(state: ManagerState): ManagerState {
 
     for (const fixture of comp.fixtures) {
       if (fixture.week === currentWeek && !fixture.isPlayed) {
+        // Prevent double-simulation of cross-competition or mirrored fixtures (e.g. The Million Pound Game)
+        const alreadySimulated =
+          simulatedFixturesById.get(fixture.id) ||
+          (fixture.roundName === "The Million Pound Game"
+            ? Array.from(simulatedFixturesById.values()).find(
+                (f) => f.roundName === "The Million Pound Game" && f.week === fixture.week
+              )
+            : undefined);
+
+        if (alreadySimulated) {
+          compFixtures.push({
+            ...alreadySimulated,
+            id: fixture.id,
+            competitionId: compId as any,
+          });
+          continue;
+        }
+
         const homeClub = state.clubs[fixture.homeClubId];
         const awayClub = state.clubs[fixture.awayClubId];
 
         if (homeClub && awayClub) {
           const simResult = simulateManagerMatch(fixture, homeClub, awayClub, updatedPlayers);
           compFixtures.push(simResult.fixture);
+          simulatedFixturesById.set(fixture.id, simResult.fixture);
           matchesPlayedThisWeek.push({
             homeClubId: simResult.fixture.homeClubId,
             attendance: simResult.fixture.attendance,

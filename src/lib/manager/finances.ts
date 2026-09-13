@@ -6,9 +6,9 @@
 import type {
   ClubFinances,
   FinancialTransaction,
-  ManagerClub,
   ManagerState,
 } from "./types";
+import { CHAMPIONSHIP_ECONOMY } from "./rules";
 
 export function processWeeklyFinances(
   state: ManagerState,
@@ -64,7 +64,10 @@ export function processWeeklyFinances(
     const homeMatches = matchesPlayedThisWeek.filter((m) => m.homeClubId === clubId);
     for (const m of homeMatches) {
       const att = m.attendance || Math.round(club.facilities.stadiumCapacity * 0.6);
-      const ticketPrice = club.competitionId === "super-league" ? 22 : 14;
+      const ticketPrice =
+        club.competitionId === "super-league"
+          ? CHAMPIONSHIP_ECONOMY.SUPER_LEAGUE_TICKET_PRICE
+          : CHAMPIONSHIP_ECONOMY.TICKET_PRICE;
       const matchRevenue = Math.round(att * ticketPrice);
 
       balance += matchRevenue;
@@ -80,9 +83,10 @@ export function processWeeklyFinances(
     }
 
     // 3. Weekly commercial baseline (sponsorship, retail)
-    const commercialIncome = club.competitionId === "super-league"
-      ? (club.reputation * 3000)
-      : (club.reputation * 1200);
+    const commercialIncome =
+      club.competitionId === "super-league"
+        ? club.reputation * CHAMPIONSHIP_ECONOMY.SUPER_LEAGUE_COMMERCIAL_PER_REPUTATION
+        : club.reputation * CHAMPIONSHIP_ECONOMY.COMMERCIAL_PER_REPUTATION;
 
     balance += commercialIncome;
     seasonRevenue += commercialIncome;
