@@ -8,9 +8,6 @@ import {
 } from "../../../data/club-reputation";
 import { STADIUMS, CLUB_COLORS, toClubId } from "@/lib/manager/database";
 import {
-  getAllAvailableSaves,
-  getMostRecentSave,
-  getSaveSlotMetadata,
   type SaveMetadata,
 } from "@/lib/manager/storage";
 import { isLoggedIn } from "@/lib/auth-session";
@@ -46,8 +43,11 @@ export function ManagerClubSelect() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Refresh available saves on mount
-  const refreshSaves = useCallback(() => {
-    const all = getAllAvailableSaves();
+  const refreshSaves = useCallback(async () => {
+    const { recoverAllSaveMetadata, getMostRecentSave, getSaveSlotMetadata } = await import(
+      "@/lib/manager/storage"
+    );
+    const all = await recoverAllSaveMetadata();
     const recent = getMostRecentSave();
     setAvailableSaves(all);
     setRecentSave(recent);
@@ -72,12 +72,12 @@ export function ManagerClubSelect() {
     let cancelled = false;
 
     const run = async () => {
-      refreshSaves();
+      await refreshSaves();
       if (!isSupabaseConfigured || !isLoggedIn()) {
-        setCloudSyncStatus("skipped");
+        if (!cancelled) setCloudSyncStatus("skipped");
         return;
       }
-      setCloudSyncStatus("syncing");
+      if (!cancelled) setCloudSyncStatus("syncing");
       try {
         const { syncManagerSavesWithCloud } = await import("@/lib/manager/saves-cloud");
         await syncManagerSavesWithCloud();
@@ -85,7 +85,7 @@ export function ManagerClubSelect() {
         /* local list still usable */
       }
       if (!cancelled) {
-        refreshSaves();
+        await refreshSaves();
         setCloudSyncStatus("done");
       }
     };
@@ -135,7 +135,7 @@ export function ManagerClubSelect() {
   const handleDelete = async (slot: number | "auto") => {
     await deleteSave(slot);
     setDeleteConfirmSlot(null);
-    refreshSaves();
+    void refreshSaves();
   };
 
   const handleImportSubmit = async () => {

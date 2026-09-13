@@ -231,6 +231,8 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
   );
   const [offerPopup, setOfferPopup] = useState<ManagerOfferPopup | null>(null);
   const deferredOfferIdsRef = useRef<Set<string>>(new Set());
+  const stateRef = useRef<ManagerState | null>(null);
+  stateRef.current = state;
   const [lastAdvanceError, setLastAdvanceError] = useState<string | null>(null);
   const [tutorialOpen, setTutorialOpen] = useState(false);
 
@@ -376,6 +378,37 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     if (state.settings?.autoSaveEnabled === false) return;
     void persistManagerProgress(state);
   }, [state, isLoading]);
+
+  // Mobile-critical: flush local + cloud autosave when the tab backgrounds or unloads.
+  // iOS often kills debounced cloud timers; club funds already use this pattern.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const flushAutosave = () => {
+      const current = stateRef.current;
+      if (!current || current.settings?.autoSaveEnabled === false) return;
+      void (async () => {
+        await persistManagerProgress(current);
+        try {
+          const { flushManagerCloudAutosave } = await import("./saves-cloud");
+          await flushManagerCloudAutosave();
+        } catch {
+          /* local write still attempted */
+        }
+      })();
+    };
+
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") flushAutosave();
+    };
+
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("pagehide", flushAutosave);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("pagehide", flushAutosave);
+    };
+  }, []);
 
   const clearCareerOverlays = useCallback(() => {
     setLastPlayedMatchReview(null);
@@ -991,15 +1024,25 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const exitToMenu = useCallback(() => {
-    if (state) {
-      void persistManagerProgress(state);
-    }
+    const current = state;
     if (typeof window !== "undefined") {
       window.sessionStorage.removeItem("27-0-manager-in-session");
     }
     clearCareerOverlays();
     setState(null);
     setActiveTab("dashboard");
+    // Await local + cloud flush before Club Select sync can race (do not block UI clear)
+    if (current && current.settings?.autoSaveEnabled !== false) {
+      void (async () => {
+        await persistManagerProgress(current);
+        try {
+          const { flushManagerCloudAutosave } = await import("./saves-cloud");
+          await flushManagerCloudAutosave();
+        } catch {
+          /* ignore */
+        }
+      })();
+    }
   }, [state, clearCareerOverlays]);
 
   const resetCareer = useCallback(() => {

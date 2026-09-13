@@ -7,7 +7,7 @@ import { isSupabaseConfigured, supabase } from "../supabase";
 import { getAuthUserId } from "../auth-session";
 import type { ManagerState } from "./types";
 import {
-  getSaveSlotMetadata,
+  ensureSlotMetadata,
   loadManagerState,
   pruneManagerStateForStorage,
   saveManagerState,
@@ -36,6 +36,14 @@ function metaTimestamp(meta: SaveMetadata | null | undefined): number {
   }
   const parsed = Date.parse(meta.savedAt || "");
   return Number.isFinite(parsed) ? parsed : 0;
+}
+
+/** Season/week progress — used when meta timestamps are missing (common on mobile). */
+function careerProgress(state: ManagerState | null | undefined): number {
+  if (!state?.calendar) return 0;
+  const season = state.calendar.currentSeason || 0;
+  const week = state.calendar.currentWeek || 0;
+  return season * 1000 + week;
 }
 
 export async function pushManagerSaveToCloud(
@@ -123,6 +131,7 @@ async function loadCloudManagerSave(
 
 /**
  * Bidirectional sync: cloud wins when newer; otherwise upload local.
+ * Never wipes a local IDB career just because localStorage meta is missing.
  * Returns how many slots were written locally from cloud (UI refresh signal).
  */
 export async function syncManagerSavesWithCloud(): Promise<{
@@ -139,12 +148,31 @@ export async function syncManagerSavesWithCloud(): Promise<{
 
   for (const slot of ALL_SLOTS) {
     const cloud = await loadCloudManagerSave(slot);
-    const localMeta = getSaveSlotMetadata(slot);
     const localState = await loadManagerState(slot);
+    // Rebuild meta from IDB when localStorage meta was lost (Safari / low storage)
+    const localMeta = await ensureSlotMetadata(slot);
     const cloudTs = metaTimestamp(cloud?.meta);
     const localTs = metaTimestamp(localMeta);
+    const localProg = careerProgress(localState);
+    const cloudProg = careerProgress(cloud?.state);
 
+    // Local exists, cloud newer by timestamp — still protect if local calendar is ahead
     if (cloud && cloudTs > localTs) {
+      if (localState && localProg > cloudProg) {
+        if (localMeta) {
+          await pushManagerSaveToCloud(slot, localState, localMeta);
+          pushed++;
+        }
+        continue;
+      }
+      // Missing local meta used to force localTs=0 and wipe newer local IDB
+      if (localState && localTs === 0 && localProg >= cloudProg) {
+        if (localMeta) {
+          await pushManagerSaveToCloud(slot, localState, localMeta);
+          pushed++;
+        }
+        continue;
+      }
       const res = await saveManagerState(cloud.state, slot, { skipCloud: true });
       if (res.success) pulled++;
       continue;
@@ -168,6 +196,7 @@ export async function syncManagerSavesWithCloud(): Promise<{
 
 /** Fire-and-forget helper used after local writes. */
 let autosaveCloudTimer: ReturnType<typeof setTimeout> | null = null;
+let pendingAutosavePush: { state: ManagerState; meta: SaveMetadata } | null = null;
 
 export function scheduleManagerCloudPush(
   slot: number | "auto",
@@ -177,13 +206,33 @@ export function scheduleManagerCloudPush(
   if (!getAuthUserId() || !isSupabaseConfigured) return;
 
   if (slot === "auto") {
+    pendingAutosavePush = { state, meta };
     if (autosaveCloudTimer) clearTimeout(autosaveCloudTimer);
     autosaveCloudTimer = setTimeout(() => {
       autosaveCloudTimer = null;
-      void pushManagerSaveToCloud("auto", state, meta);
+      const pending = pendingAutosavePush;
+      pendingAutosavePush = null;
+      if (pending) {
+        void pushManagerSaveToCloud("auto", pending.state, pending.meta);
+      }
     }, 2500);
     return;
   }
 
   void pushManagerSaveToCloud(slot, state, meta);
+}
+
+/**
+ * Immediate cloud flush for autosave — call on visibility hidden / pagehide / exit.
+ * Cancels the 2.5s debounce so iOS backgrounding does not drop the push.
+ */
+export async function flushManagerCloudAutosave(): Promise<void> {
+  if (autosaveCloudTimer) {
+    clearTimeout(autosaveCloudTimer);
+    autosaveCloudTimer = null;
+  }
+  const pending = pendingAutosavePush;
+  pendingAutosavePush = null;
+  if (!pending) return;
+  await pushManagerSaveToCloud("auto", pending.state, pending.meta);
 }

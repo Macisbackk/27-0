@@ -263,12 +263,66 @@ function tryLocalStorageWrite(slotKey: string, serialized: string): boolean {
 /**
  * Persist ongoing career progress. Always writes the autosave only —
  * numbered slots are manual checkpoints and must not be overwritten by play.
+ * Serializes overlapping writes and coalesces to the latest state (critical on mobile).
  */
+let autoPersistChain: Promise<{ success: boolean; error?: string }> = Promise.resolve({
+  success: true,
+});
+let pendingAutoPersist: ManagerState | null = null;
+let autoPersistRunning = false;
+
 export async function persistManagerProgress(state: ManagerState): Promise<{
   success: boolean;
   error?: string;
 }> {
-  return saveManagerState(state, "auto");
+  pendingAutoPersist = state;
+  if (autoPersistRunning) {
+    return autoPersistChain;
+  }
+
+  autoPersistRunning = true;
+  autoPersistChain = (async () => {
+    let last: { success: boolean; error?: string } = { success: true };
+    try {
+      while (pendingAutoPersist) {
+        const next = pendingAutoPersist;
+        pendingAutoPersist = null;
+        last = await saveManagerState(next, "auto");
+      }
+      return last;
+    } finally {
+      autoPersistRunning = false;
+      // A write may have been queued after the loop checked pending but before
+      // we cleared the running flag — kick another pass if so.
+      if (pendingAutoPersist) {
+        void persistManagerProgress(pendingAutoPersist);
+      }
+    }
+  })();
+
+  return autoPersistChain;
+}
+
+/** Rebuild localStorage meta from an IndexedDB/local blob when meta is missing. */
+export async function ensureSlotMetadata(
+  slot: number | "auto"
+): Promise<SaveMetadata | null> {
+  const existing = getSaveSlotMetadata(slot);
+  if (existing) return existing;
+  const state = await loadManagerState(slot);
+  if (!state) return null;
+  const meta = buildSaveMetadata(state, slot);
+  writeMeta(slot, meta);
+  return meta;
+}
+
+/** Recover missing meta for all slots (autosave list can look empty on mobile otherwise). */
+export async function recoverAllSaveMetadata(): Promise<SaveMetadata[]> {
+  const slots: (number | "auto")[] = [0, 1, 2, "auto"];
+  for (const slot of slots) {
+    await ensureSlotMetadata(slot);
+  }
+  return getAllAvailableSaves();
 }
 
 export async function saveManagerState(
