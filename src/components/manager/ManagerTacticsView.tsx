@@ -4,6 +4,11 @@ import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import { STARTING_POSITIONS } from "@/lib/manager/rules";
 import { formatPositionLabel, formatPositionShort } from "@/lib/manager";
+import {
+  getPlayerGoalKicking,
+  isEligibleGoalKickerPosition,
+  pickBestGoalKicker,
+} from "@/lib/manager/goal-kicking";
 import type { ClubLineup, ClubTactics, Position } from "@/lib/manager/types";
 
 export function ManagerTacticsView() {
@@ -71,10 +76,13 @@ export function ManagerTacticsView() {
   };
 
   const kickerCandidates = availablePlayers
-    .filter((p) =>
-      ["SCRUM_HALF", "STAND_OFF", "FULLBACK", "WING", "CENTRE"].includes(p.position)
-    )
-    .sort((a, b) => b.rating - a.rating);
+    .filter((p) => isEligibleGoalKickerPosition(p.position))
+    .sort((a, b) => {
+      const gk = getPlayerGoalKicking(b) - getPlayerGoalKicking(a);
+      if (gk !== 0) return gk;
+      return b.rating - a.rating;
+    });
+  const recommendedKicker = pickBestGoalKicker(availablePlayers);
 
   return (
     <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6 space-y-5">
@@ -297,15 +305,24 @@ export function ManagerTacticsView() {
                 }
                 className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs font-medium text-white focus:outline-none focus:border-emerald-500"
               >
-                <option value="">Auto (best half / fullback)</option>
-                {kickerCandidates.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name} · {formatPositionShort(p.position)} · {p.rating}
-                  </option>
-                ))}
+                <option value="">
+                  Auto
+                  {recommendedKicker
+                    ? ` → ${recommendedKicker.name} (recommended)`
+                    : " (best available)"}
+                </option>
+                {kickerCandidates.map((p) => {
+                  const isRecommended = recommendedKicker?.id === p.id;
+                  return (
+                    <option key={p.id} value={p.id}>
+                      {p.name} · {formatPositionShort(p.position)}
+                      {isRecommended ? " (recommended)" : ""}
+                    </option>
+                  );
+                })}
               </select>
               <p className="mt-1 text-[10px] text-pitch-500">
-                Team intensity is set on the Training tab.
+                Recommended is the squad&apos;s best tee-kicker. Props are excluded.
               </p>
             </div>
           </div>

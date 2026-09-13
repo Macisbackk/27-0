@@ -92,6 +92,8 @@ export interface ManagerPlayer {
   loan: PlayerLoanInfo | null;
   contract: PlayerContract | null;
   trainingFocus: TrainingFocus;
+  /** Hidden tee-kicking ability 1–99 (not shown on Quick Mode cards). */
+  goalKicking?: number;
   stats: PlayerMatchStats;
   careerStats: {
     apps: number;

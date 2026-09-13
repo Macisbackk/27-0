@@ -12,6 +12,7 @@ import {
 } from "../../../data/club-reputation";
 import { PLAYER_POTENTIAL_OVERRIDES } from "../../../data/player-potential-overrides";
 import { PLAYER_RATING_OVERRIDES } from "../../../data/player-rating-overrides";
+import { assignGoalKicking, pickBestGoalKicker } from "./goal-kicking";
 import {
   STARTING_POSITIONS,
   CALENDAR_RULES,
@@ -189,6 +190,7 @@ export function createGeneratedPlayer(
     } : null,
     trainingFocus: "balanced",
     academyProductOfClubId: squadTier === "academy" && clubId ? clubId : null,
+    goalKicking: assignGoalKicking(id, pos, false),
     stats: {
       apps: 0,
       tries: 0,
@@ -461,6 +463,7 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
         role: rating >= 82 ? "star" : (rating >= 76 ? "first_team" : "rotation"),
       },
       trainingFocus: "balanced",
+      goalKicking: assignGoalKicking(raw.id, pos, true),
       stats: {
         apps: 0,
         tries: 0,
@@ -572,12 +575,10 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
     const firstTeam = Object.values(players).filter(p => p.clubId === clubId && p.squadTier === "first");
     club.lineup = buildBestLineup(firstTeam);
 
-    // Auto-select goal kicker (highest rated back)
-    const kickers = firstTeam
-      .filter(p => ["SCRUM_HALF", "STAND_OFF", "FULLBACK", "WING"].includes(p.position))
-      .sort((a, b) => b.rating - a.rating);
-    if (kickers[0]) {
-      club.tactics.primaryGoalKickerId = kickers[0].id;
+    // Auto-select goal kicker (best hidden goal-kicking ability; never props)
+    const bestKicker = pickBestGoalKicker(firstTeam);
+    if (bestKicker) {
+      club.tactics.primaryGoalKickerId = bestKicker.id;
     }
   }
 
@@ -812,6 +813,13 @@ export function ensureClubSquadDepth(
   for (const [id, p] of Object.entries(newPlayers)) {
     if (p.squadTier === "academy" && p.clubId && !p.academyProductOfClubId) {
       newPlayers[id] = { ...p, academyProductOfClubId: p.clubId };
+      updatedAny = true;
+    }
+    if (typeof p.goalKicking !== "number") {
+      newPlayers[id] = {
+        ...newPlayers[id],
+        goalKicking: assignGoalKicking(id, p.position, true),
+      };
       updatedAny = true;
     }
   }

@@ -94,22 +94,22 @@ export function ManagerClubSelect() {
   };
 
   const handleLoad = (slot: number | "auto") => {
-    loadFromSlot(slot);
+    void loadFromSlot(slot);
   };
 
-  const handleDelete = (slot: number | "auto") => {
-    deleteSave(slot);
+  const handleDelete = async (slot: number | "auto") => {
+    await deleteSave(slot);
     setDeleteConfirmSlot(null);
     refreshSaves();
   };
 
-  const handleImportSubmit = () => {
+  const handleImportSubmit = async () => {
     setImportError(null);
     if (!importJson.trim()) {
       setImportError("Please provide save JSON contents or select a .json file.");
       return;
     }
-    const ok = importSave(importJson.trim(), importTargetSlot);
+    const ok = await importSave(importJson.trim(), importTargetSlot);
     if (!ok) {
       setImportError("Failed to import save. The JSON file is invalid or not a valid Manager Mode save.");
     }
@@ -119,14 +119,16 @@ export function ManagerClubSelect() {
     setImportError(null);
     const reader = new FileReader();
     reader.onload = (e) => {
-      const content = e.target?.result as string;
-      if (content) {
-        setImportJson(content);
-        const ok = importSave(content, importTargetSlot);
-        if (!ok) {
-          setImportError("Failed to import save from uploaded file. Invalid JSON structure.");
+      void (async () => {
+        const content = e.target?.result as string;
+        if (content) {
+          setImportJson(content);
+          const ok = await importSave(content, importTargetSlot);
+          if (!ok) {
+            setImportError("Failed to import save from uploaded file. Invalid JSON structure.");
+          }
         }
-      }
+      })();
     };
     reader.onerror = () => {
       setImportError("Failed to read file.");

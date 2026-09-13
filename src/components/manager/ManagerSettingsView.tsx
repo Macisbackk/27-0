@@ -51,9 +51,9 @@ export function ManagerSettingsView() {
     setStatusNotice("Save exported successfully.");
   };
 
-  const handleImportSubmit = () => {
+  const handleImportSubmit = async () => {
     if (!importJson.trim()) return;
-    const ok = importSave(importJson.trim());
+    const ok = await importSave(importJson.trim());
     if (ok) {
       setStatusNotice("Save game imported and loaded successfully!");
       setShowImportArea(false);
@@ -63,8 +63,8 @@ export function ManagerSettingsView() {
     }
   };
 
-  const handleSaveToSlot = (slot: number) => {
-    const res = saveToSlot(slot);
+  const handleSaveToSlot = async (slot: number) => {
+    const res = await saveToSlot(slot);
     if (res.success) {
       setStatusNotice(`Game saved successfully to Slot ${slot + 1}.`);
       setSlotMetas((prev) => ({ ...prev, [slot]: getSaveSlotMetadata(slot) }));
@@ -73,8 +73,8 @@ export function ManagerSettingsView() {
     }
   };
 
-  const handleLoadSlot = (slot: number) => {
-    const ok = loadFromSlot(slot);
+  const handleLoadSlot = async (slot: number) => {
+    const ok = await loadFromSlot(slot);
     if (ok) {
       setStatusNotice(`Loaded game from Slot ${slot + 1}.`);
     } else {
@@ -82,9 +82,9 @@ export function ManagerSettingsView() {
     }
   };
 
-  const handleDeleteSlot = (slot: number) => {
+  const handleDeleteSlot = async (slot: number) => {
     if (window.confirm(`Are you sure you want to delete Slot ${slot + 1}?`)) {
-      deleteSave(slot);
+      await deleteSave(slot);
       setSlotMetas((prev) => ({ ...prev, [slot]: null }));
       setStatusNotice(`Slot ${slot + 1} deleted.`);
     }
@@ -257,8 +257,7 @@ export function ManagerSettingsView() {
           <button
             type="button"
             onClick={() => {
-              saveToSlot("auto");
-              exitToMenu();
+              void saveToSlot("auto").then(() => exitToMenu());
             }}
             className="rounded-xl border border-pitch-700 bg-pitch-800 hover:bg-pitch-700 px-3.5 py-2 text-xs font-bold text-pitch-200 hover:text-white transition-all shadow flex items-center gap-2"
           >

@@ -182,11 +182,13 @@ interface ManagerContextValue {
   ) => { success: boolean; error?: string };
   markMessageRead: (messageId: string) => void;
   markAllMessagesRead: () => void;
-  saveToSlot: (slot: number | "auto") => { success: boolean; error?: string };
-  loadFromSlot: (slot: number | "auto") => boolean;
-  deleteSave: (slot: number | "auto") => boolean;
+  saveToSlot: (
+    slot: number | "auto"
+  ) => Promise<{ success: boolean; error?: string }>;
+  loadFromSlot: (slot: number | "auto") => Promise<boolean>;
+  deleteSave: (slot: number | "auto") => Promise<boolean>;
   exportSave: () => string;
-  importSave: (jsonStr: string, targetSlot?: number) => boolean;
+  importSave: (jsonStr: string, targetSlot?: number) => Promise<boolean>;
   resetCareer: () => void;
   exitToMenu: () => void;
   replenishSquadTiers: (tier: "reserves" | "academy") => void;
@@ -237,7 +239,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
         contractExpiryModalPlayers.map((p) => p.id)
       );
       setState(next);
-      persistManagerProgress(next);
+      void persistManagerProgress(next);
     }
     setContractExpiryModalPlayers(null);
   }, [state, contractExpiryModalPlayers]);
@@ -280,32 +282,38 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
 
   // Restore in-tab session from autosave (numbered slots are manual checkpoints)
   useEffect(() => {
-    try {
-      const inSession =
-        typeof window !== "undefined" &&
-        window.sessionStorage.getItem("27-0-manager-in-session") === "true";
-      if (inSession) {
-        const activeSlot = getActiveSlotIndex();
-        const loaded =
-          loadManagerState("auto") ||
-          (activeSlot != null ? loadManagerState(activeSlot) : null) ||
-          loadManagerState(0);
-        if (loaded) {
-          setState(ensureClubSquadDepth(loaded));
+    let cancelled = false;
+    (async () => {
+      try {
+        const inSession =
+          typeof window !== "undefined" &&
+          window.sessionStorage.getItem("27-0-manager-in-session") === "true";
+        if (inSession) {
+          const activeSlot = getActiveSlotIndex();
+          const loaded =
+            (await loadManagerState("auto")) ||
+            (activeSlot != null ? await loadManagerState(activeSlot) : null) ||
+            (await loadManagerState(0));
+          if (!cancelled && loaded) {
+            setState(ensureClubSquadDepth(loaded));
+          }
         }
+      } catch {
+        /* ignore */
+      } finally {
+        if (!cancelled) setIsLoading(false);
       }
-    } catch {
-      /* ignore */
-    } finally {
-      setIsLoading(false);
-    }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Autosave career progress on every state change (never overwrites numbered slots)
   useEffect(() => {
     if (!state || isLoading) return;
     if (state.settings?.autoSaveEnabled === false) return;
-    persistManagerProgress(state);
+    void persistManagerProgress(state);
   }, [state, isLoading]);
 
   const clearCareerOverlays = useCallback(() => {
@@ -320,7 +328,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     const newState = initializeManagerDatabase(clubId, managerName);
     clearCareerOverlays();
     setState(newState);
-    saveManagerState(newState, targetSlot);
+    void saveManagerState(newState, targetSlot);
     if (typeof window !== "undefined") {
       window.sessionStorage.setItem("27-0-manager-in-session", "true");
       window.localStorage.setItem("27-0-manager-active-slot-v3", String(targetSlot));
@@ -373,7 +381,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
       }
 
       setState(nextState);
-      persistManagerProgress(nextState);
+      void persistManagerProgress(nextState);
       return true;
     } finally {
       setIsAdvancing(false);
@@ -389,7 +397,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     const { state: nextState, awards } = rolloverSeason(state);
     setState(nextState);
     setSeasonAwardsModal(awards);
-    persistManagerProgress(nextState);
+    void persistManagerProgress(nextState);
     return true;
   }, [state]);
 
@@ -786,58 +794,64 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
   }, [state]);
 
   const saveToSlot = useCallback(
-    (slot: number | "auto") => {
+    async (slot: number | "auto") => {
       if (!state) return { success: false, error: "No game to save" };
       return saveManagerState(state, slot);
     },
     [state]
   );
 
-  const loadFromSlot = useCallback((slot: number | "auto") => {
-    const loaded = loadManagerState(slot);
-    if (loaded) {
-      clearCareerOverlays();
-      setState(ensureClubSquadDepth(loaded));
-      if (typeof window !== "undefined") {
-        window.sessionStorage.setItem("27-0-manager-in-session", "true");
-        if (slot !== "auto") {
-          window.localStorage.setItem("27-0-manager-active-slot-v3", String(slot));
+  const loadFromSlot = useCallback(
+    async (slot: number | "auto") => {
+      const loaded = await loadManagerState(slot);
+      if (loaded) {
+        clearCareerOverlays();
+        setState(ensureClubSquadDepth(loaded));
+        if (typeof window !== "undefined") {
+          window.sessionStorage.setItem("27-0-manager-in-session", "true");
+          if (slot !== "auto") {
+            window.localStorage.setItem("27-0-manager-active-slot-v3", String(slot));
+          }
         }
+        setActiveTab("dashboard");
+        return true;
       }
-      setActiveTab("dashboard");
-      return true;
-    }
-    return false;
-  }, [clearCareerOverlays]);
+      return false;
+    },
+    [clearCareerOverlays]
+  );
 
   const exportSave = useCallback(() => {
     if (!state) return "";
     return exportSaveToJson(state);
   }, [state]);
 
-  const importSave = useCallback((jsonStr: string, targetSlot: number = 0) => {
-    const imported = importSaveFromJson(jsonStr);
-    if (imported) {
-      clearCareerOverlays();
-      setState(ensureClubSquadDepth(imported));
-      saveManagerState(imported, targetSlot);
-      if (typeof window !== "undefined") {
-        window.sessionStorage.setItem("27-0-manager-in-session", "true");
-        window.localStorage.setItem("27-0-manager-active-slot-v3", String(targetSlot));
+  const importSave = useCallback(
+    async (jsonStr: string, targetSlot: number = 0) => {
+      const imported = importSaveFromJson(jsonStr);
+      if (imported) {
+        clearCareerOverlays();
+        setState(ensureClubSquadDepth(imported));
+        await saveManagerState(imported, targetSlot);
+        if (typeof window !== "undefined") {
+          window.sessionStorage.setItem("27-0-manager-in-session", "true");
+          window.localStorage.setItem("27-0-manager-active-slot-v3", String(targetSlot));
+        }
+        setActiveTab("dashboard");
+        return true;
       }
-      setActiveTab("dashboard");
-      return true;
-    }
-    return false;
-  }, [clearCareerOverlays]);
+      return false;
+    },
+    [clearCareerOverlays]
+  );
 
-  const deleteSave = useCallback((slot: number | "auto") => {
+  const deleteSave = useCallback(async (slot: number | "auto") => {
     return deleteSaveSlot(slot);
   }, []);
 
   const exitToMenu = useCallback(() => {
     if (state) {
-      persistManagerProgress(state);
+      void persistManagerProgress(state);
     }
     if (typeof window !== "undefined") {
       window.sessionStorage.removeItem("27-0-manager-in-session");

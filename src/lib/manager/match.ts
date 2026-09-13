@@ -24,6 +24,7 @@ import {
   snapToRLScore,
 } from "../game/rl-scores";
 import { CHAMPIONSHIP_ECONOMY } from "./rules";
+import { pickBestGoalKicker } from "./goal-kicking";
 
 function isPlayerAvailableForClub(
   player: ManagerPlayer,
@@ -416,11 +417,15 @@ export function simulateManagerMatch(
     return squad[0] || squad[0];
   }
 
-  // Pick goal kickers
-  const homeKicker = homeSquad.find(p => p.id === homeClub.tactics.primaryGoalKickerId) ||
-    homeSquad.filter(p => ["SCRUM_HALF", "STAND_OFF", "FULLBACK"].includes(p.position)).sort((a, b) => b.rating - a.rating)[0] || homeSquad[0];
-  const awayKicker = awaySquad.find(p => p.id === awayClub.tactics.primaryGoalKickerId) ||
-    awaySquad.filter(p => ["SCRUM_HALF", "STAND_OFF", "FULLBACK"].includes(p.position)).sort((a, b) => b.rating - a.rating)[0] || awaySquad[0];
+  // Pick goal kickers — named primary, else best hidden goal-kicking ability
+  const homeKicker =
+    homeSquad.find((p) => p.id === homeClub.tactics.primaryGoalKickerId) ||
+    pickBestGoalKicker(homeSquad) ||
+    homeSquad[0];
+  const awayKicker =
+    awaySquad.find((p) => p.id === awayClub.tactics.primaryGoalKickerId) ||
+    pickBestGoalKicker(awaySquad) ||
+    awaySquad[0];
 
   interface RawMatchMoment {
     id: string;

@@ -24,3 +24,4 @@ export * from "./facilities";
 export * from "./onboarding";
 export * from "./development-matches";
 export * from "./objectives";
+export * from "./goal-kicking";

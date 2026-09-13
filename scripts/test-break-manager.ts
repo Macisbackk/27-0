@@ -33,12 +33,12 @@ import {
 import {
   exportSaveToJson,
   importSaveFromJson,
-  saveManagerState,
-  loadManagerState,
+  saveManagerStateSync as saveManagerState,
+  loadManagerStateSync as loadManagerState,
   getSaveSlotMetadata,
   getAllAvailableSaves,
   getMostRecentSave,
-  deleteSaveSlot,
+  deleteSaveSlotSync as deleteSaveSlot,
 } from "../src/lib/manager/storage";
 import { simulateManagerMatch, ensureFixtureKeyMoments } from "../src/lib/manager/match";
 import { FIRST_NAMES, LAST_NAMES, generateRandomPlayerName } from "../src/lib/manager/names";
