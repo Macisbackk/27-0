@@ -24,6 +24,18 @@ export function ManagerIncomingOfferModal() {
   const open = Boolean(state && offerPopup);
   useScrollLock(open, "manager-incoming-offer");
 
+  // Modal stays mounted across consecutive offers; reset action lock when the offer changes
+  // (successful Accept left busy=true and greying out the next offer's buttons).
+  const popupKey = offerPopup
+    ? offerPopup.kind === "transfer_bid"
+      ? `bid:${offerPopup.bidId}`
+      : `loan:${offerPopup.offerId}`
+    : null;
+  useEffect(() => {
+    setBusy(false);
+    setError(null);
+  }, [popupKey]);
+
   // Drop stale popup entries after accept/reject/expire without setState-in-render
   useEffect(() => {
     if (!state || !offerPopup) return;
