@@ -13,7 +13,7 @@ export function ManagerFriendlySelectModal() {
   const [busy, setBusy] = useState(false);
 
   const open = Boolean(
-    state && needsFriendlySelection(state) && state.calendar.currentWeek <= 2
+    state && needsFriendlySelection(state) && state.calendar.currentWeek <= 3
   );
   useScrollLock(open, "manager-friendly-select");
 

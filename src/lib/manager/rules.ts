@@ -85,7 +85,7 @@ export const RENEWAL_CAP_BUFFER = {
 } as const;
 
 export const CALENDAR_RULES = {
-  PRE_SEASON_WEEKS: 2,
+  PRE_SEASON_WEEKS: 3,
   REGULAR_SEASON_WEEKS: 26,
   PLAYOFF_WEEKS: 4,
   TOTAL_WEEKS: 32,

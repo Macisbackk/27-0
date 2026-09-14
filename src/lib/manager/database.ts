@@ -172,7 +172,7 @@ function buildChampionshipBaseStrengthIndex(): Map<string, number> {
 const CHAMPIONSHIP_BASE_STRENGTH_INDEX = buildChampionshipBaseStrengthIndex();
 
 /** Soft-cap ceiling for imported Championship players relative to club baseStrength. */
-const CHAMP_IMPORT_RATING_CAP_OFFSET = 8;
+const CHAMP_IMPORT_RATING_CAP_OFFSET = 5;
 
 /**
  * Championship club base strength from championship-clubs.json (by id or toClubId(name)),

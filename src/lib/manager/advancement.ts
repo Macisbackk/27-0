@@ -59,7 +59,7 @@ export function canAdvanceWeek(state: ManagerState): {
     return { allowed: false, error: "This week has already been processed." };
   }
 
-  if (needsFriendlySelection(state) && state.calendar.currentWeek <= 2) {
+  if (needsFriendlySelection(state) && state.calendar.currentWeek <= 3) {
     return {
       allowed: false,
       error: "Select your three pre-season friendly opponents before advancing.",

@@ -80,8 +80,8 @@ export function generateFixturesForCompetition(
     const roundPairs = generateRoundRobinPairs(clubIds);
     // In Super League (14 clubs = 13 rounds first half, 13 rounds reverse = 26 rounds)
     // In Championship (12 clubs = 11 rounds first half, 11 rounds reverse = 22 rounds)
-    // Regular season runs from Week 3 to Week 28 (weeks 1 and 2 are pre-season friendlies)
-    const startWeek = 3;
+    // Regular season runs from Week 4 (weeks 1–3 are the three selectable friendlies)
+    const startWeek = 4;
     let currentWeek = startWeek;
     let roundNum = 1;
 
