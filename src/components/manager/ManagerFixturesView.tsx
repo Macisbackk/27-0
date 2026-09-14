@@ -38,17 +38,17 @@ export function ManagerFixturesView() {
         </div>
 
         {/* Competition filter buttons */}
-        <div className="flex items-center justify-center sm:justify-end gap-1.5 overflow-x-auto pb-1 flex-nowrap">
+        <div className="grid grid-cols-3 gap-1 sm:flex sm:items-center sm:justify-end sm:gap-1.5">
           <button
             type="button"
             onClick={() => setSelectedCompId(userClub?.competitionId || "super-league")}
-            className={`shrink-0 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+            className={`rounded-lg px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition-all ${
               selectedCompId === userClub?.competitionId
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            <span className="sm:hidden">My League</span>
+            <span className="sm:hidden">League</span>
             <span className="hidden sm:inline">
               My League ({userClub?.competitionId === "super-league" ? "Super League" : "Championship"})
             </span>
@@ -56,24 +56,26 @@ export function ManagerFixturesView() {
           <button
             type="button"
             onClick={() => setSelectedCompId("challenge-cup")}
-            className={`shrink-0 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+            className={`rounded-lg px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition-all ${
               selectedCompId === "challenge-cup"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Challenge Cup
+            <span className="sm:hidden">Cup</span>
+            <span className="hidden sm:inline">Challenge Cup</span>
           </button>
           <button
             type="button"
             onClick={() => setSelectedCompId("friendlies")}
-            className={`shrink-0 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+            className={`rounded-lg px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition-all ${
               selectedCompId === "friendlies"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Friendlies
+            <span className="sm:hidden">Friendly</span>
+            <span className="hidden sm:inline">Friendlies</span>
           </button>
         </div>
       </div>

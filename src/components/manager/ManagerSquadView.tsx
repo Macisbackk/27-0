@@ -124,20 +124,21 @@ export function ManagerSquadView() {
         </div>
 
         {/* Tier Buttons */}
-        <div className="flex items-center justify-center sm:justify-end gap-1.5 overflow-x-auto pb-1">
+        <div className="grid grid-cols-4 gap-1 sm:flex sm:items-center sm:justify-end sm:gap-1.5">
           <button
             type="button"
             onClick={() => {
               setActiveTier("first");
               setDevPanel("roster");
             }}
-            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+            className={`rounded-lg px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition-all ${
               activeTier === "first"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            First Team ({firstCount})
+            <span className="sm:hidden">1st</span>
+            <span className="hidden sm:inline">First Team ({firstCount})</span>
           </button>
           <button
             type="button"
@@ -145,13 +146,14 @@ export function ManagerSquadView() {
               setActiveTier("reserves");
               setDevPanel("roster");
             }}
-            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+            className={`rounded-lg px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition-all ${
               activeTier === "reserves"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Reserves ({reservesCount})
+            <span className="sm:hidden">Res</span>
+            <span className="hidden sm:inline">Reserves ({reservesCount})</span>
           </button>
           <button
             type="button"
@@ -159,13 +161,14 @@ export function ManagerSquadView() {
               setActiveTier("academy");
               setDevPanel("roster");
             }}
-            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+            className={`rounded-lg px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition-all ${
               activeTier === "academy"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Academy ({academyCount})
+            <span className="sm:hidden">Aca</span>
+            <span className="hidden sm:inline">Academy ({academyCount})</span>
           </button>
           <button
             type="button"
@@ -173,13 +176,13 @@ export function ManagerSquadView() {
               setActiveTier("unavailable");
               setDevPanel("roster");
             }}
-            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+            className={`rounded-lg px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition-all ${
               activeTier === "unavailable"
                 ? "bg-rose-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Out ({unavailableCount})
+            Out{activeTier === "unavailable" || unavailableCount > 0 ? ` (${unavailableCount})` : ""}
           </button>
         </div>
       </div>

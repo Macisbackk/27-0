@@ -128,8 +128,48 @@ export function ManagerTrainingView() {
         </div>
       </div>
 
-      {/* Individual Training Focus Table */}
-      <div className="overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+      {/* Individual Training Focus — mobile */}
+      <div className="sm:hidden space-y-2">
+        {clubPlayers.map((player) => (
+          <div
+            key={player.id}
+            className="rounded-xl border border-pitch-800 bg-pitch-900/80 px-3 py-2.5"
+          >
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0 flex items-center gap-2">
+                <span className="shrink-0 rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300">
+                  {formatPositionPair(player.position, player.secondaryPosition)}
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-bold text-white">{player.name}</p>
+                  <p className="text-[11px] text-pitch-400">
+                    Fat {player.fatigue}% · Fit {player.fitness}%
+                  </p>
+                </div>
+              </div>
+              <div className="shrink-0 text-right">
+                <p className="text-base font-black text-emerald-400 leading-none">{player.rating}</p>
+                <p className="text-[10px] text-pitch-500">POT {player.potential}</p>
+              </div>
+            </div>
+            <select
+              value={player.trainingFocus}
+              onChange={(e) => handlePlayerFocusChange(player.id, e.target.value as TrainingFocus)}
+              className="mt-2 w-full rounded-lg border border-pitch-700 bg-pitch-950 px-2.5 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+            >
+              <option value="balanced">Balanced</option>
+              <option value="attack">Attack</option>
+              <option value="defence">Defence</option>
+              <option value="fitness">Fitness</option>
+              <option value="recovery">Recovery</option>
+              <option value="development">Development</option>
+            </select>
+          </div>
+        ))}
+      </div>
+
+      {/* Individual Training Focus Table — desktop */}
+      <div className="hidden sm:block overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
         <table className="w-full text-left text-xs">
           <thead className="border-b border-pitch-800 bg-pitch-950/80 text-pitch-400 font-semibold uppercase">
             <tr>

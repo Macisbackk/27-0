@@ -30,7 +30,7 @@ export function ManagerNav() {
     { id: "training", label: "Training" },
     { id: "fixtures", label: "Fixtures" },
     { id: "league", label: "League" },
-    { id: "club", label: "Club & Finances" },
+    { id: "club", label: "Club" },
     { id: "history", label: "History" },
     { id: "settings", label: "Settings" },
   ];

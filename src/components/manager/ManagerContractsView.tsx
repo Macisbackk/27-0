@@ -201,8 +201,67 @@ export function ManagerContractsView() {
         </div>
       </div>
 
-      {/* Contracts Table */}
-      <div className="overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+      {/* Contracts — mobile cards */}
+      <div className="sm:hidden space-y-2">
+        {clubPlayers.map((player) => {
+          const isExpiring = player.contract && player.contract.expiresSeason <= currentSeason;
+          const underSixMonths =
+            player.contract &&
+            isContractUnderSixMonths(
+              currentSeason,
+              state.calendar.currentWeek,
+              player.contract.expiresSeason
+            );
+          return (
+            <div
+              key={player.id}
+              className="rounded-xl border border-pitch-800 bg-pitch-900/80 px-3 py-2.5"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0 flex items-center gap-2">
+                  <span className="shrink-0 rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300">
+                    {formatPositionPair(player.position, player.secondaryPosition)}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-bold text-white">
+                      {player.name}
+                      {underSixMonths || isExpiring ? (
+                        <span className="ml-1 text-[9px] font-black text-amber-400">
+                          {underSixMonths ? "<6m" : "EXP"}
+                        </span>
+                      ) : null}
+                    </p>
+                    <p className="truncate text-[11px] text-pitch-400">
+                      £{(player.contract?.wageWeekly || 0).toLocaleString()}/wk · Exp{" "}
+                      {player.contract?.expiresSeason || "—"}
+                    </p>
+                  </div>
+                </div>
+                <p className="shrink-0 text-base font-black text-emerald-400">{player.rating}</p>
+              </div>
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => openRenewalModal(player)}
+                  className="rounded-lg bg-emerald-600/20 py-1.5 text-[11px] font-bold text-emerald-300 border border-emerald-500/40"
+                >
+                  Renew
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleRelease(player.id, player.name)}
+                  className="rounded-lg bg-pitch-800 py-1.5 text-[11px] font-semibold text-pitch-400"
+                >
+                  Release
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Contracts Table — desktop */}
+      <div className="hidden sm:block overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
         <table className="w-full text-left text-xs">
           <thead className="border-b border-pitch-800 bg-pitch-950/80 text-pitch-400 font-semibold uppercase">
             <tr>

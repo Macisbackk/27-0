@@ -246,50 +246,54 @@ export function ManagerLoansView() {
         </div>
 
         {/* Sub-tabs */}
-        <div className="flex items-center justify-center gap-1.5 overflow-x-auto pb-1">
+        <div className="grid grid-cols-4 gap-1 sm:flex sm:items-center sm:justify-center sm:gap-1.5">
           <button
             type="button"
             onClick={() => setSubTab("market")}
-            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all whitespace-nowrap ${
+            className={`rounded-lg px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition-all ${
               subTab === "market"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Loan Market ({loanInCandidates.length})
+            <span className="sm:hidden">Market</span>
+            <span className="hidden sm:inline">Loan Market ({loanInCandidates.length})</span>
           </button>
           <button
             type="button"
             onClick={() => setSubTab("incoming")}
-            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all whitespace-nowrap ${
+            className={`rounded-lg px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition-all ${
               subTab === "incoming"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Incoming ({incomingLoans.length})
+            <span className="sm:hidden">In</span>
+            <span className="hidden sm:inline">Incoming ({incomingLoans.length})</span>
           </button>
           <button
             type="button"
             onClick={() => setSubTab("outgoing")}
-            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all whitespace-nowrap ${
+            className={`rounded-lg px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition-all ${
               subTab === "outgoing"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Outgoing ({outgoingLoans.length})
+            <span className="sm:hidden">Out</span>
+            <span className="hidden sm:inline">Outgoing ({outgoingLoans.length})</span>
           </button>
           <button
             type="button"
             onClick={() => setSubTab("available")}
-            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all whitespace-nowrap ${
+            className={`rounded-lg px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold transition-all ${
               subTab === "available"
                 ? "bg-emerald-600 text-white shadow"
                 : "bg-pitch-900 text-pitch-400 hover:text-white border border-pitch-800"
             }`}
           >
-            Loan Out ({availablePlayers.length})
+            <span className="sm:hidden">Loan Out</span>
+            <span className="hidden sm:inline">Loan Out ({availablePlayers.length})</span>
           </button>
         </div>
       </div>
@@ -309,7 +313,7 @@ export function ManagerLoansView() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
               {/* Search */}
               <div>
-                <label className="block text-[11px] font-semibold text-pitch-400 mb-1">Search Player</label>
+                <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">Search Player</label>
                 <input
                   type="text"
                   placeholder="Player name..."
@@ -321,7 +325,7 @@ export function ManagerLoansView() {
 
               {/* Position Filter */}
               <div>
-                <label className="block text-[11px] font-semibold text-pitch-400 mb-1">Position</label>
+                <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">Position</label>
                 <select
                   value={marketPos}
                   onChange={(e) => setMarketPos(e.target.value as "ALL" | Position)}
@@ -337,7 +341,7 @@ export function ManagerLoansView() {
 
               {/* Parent Club Filter */}
               <div>
-                <label className="block text-[11px] font-semibold text-pitch-400 mb-1">Parent Club</label>
+                <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">Parent Club</label>
                 <select
                   value={marketClub}
                   onChange={(e) => setMarketClub(e.target.value)}
@@ -354,7 +358,7 @@ export function ManagerLoansView() {
 
               {/* Sort By */}
               <div>
-                <label className="block text-[11px] font-semibold text-pitch-400 mb-1">Sort By</label>
+                <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">Sort By</label>
                 <select
                   value={marketSort}
                   onChange={(e) => setMarketSort(e.target.value as "rating" | "potential" | "age" | "wage")}
@@ -369,20 +373,89 @@ export function ManagerLoansView() {
             </div>
 
             {/* Context helper */}
-            <div className="mt-3 flex items-center justify-between text-[11px] text-pitch-400 border-t border-pitch-800/60 pt-2.5">
-              <span>
-                {filteredLoanCandidates.length} eligible player{filteredLoanCandidates.length === 1 ? "" : "s"} found across other clubs.
-              </span>
-              <span>
-                Available Salary Cap: <strong className="text-emerald-400">£{capInfo.availableCapWeekly.toLocaleString()}/wk</strong>
+            <div className="mt-3 flex items-center justify-between gap-2 text-[11px] text-pitch-400 border-t border-pitch-800/60 pt-2.5">
+              <span className="truncate">{filteredLoanCandidates.length} players</span>
+              <span className="shrink-0">
+                Cap <strong className="text-emerald-400">£{capInfo.availableCapWeekly.toLocaleString()}/wk</strong>
               </span>
             </div>
           </div>
 
-          {/* Market Table */}
-          <div className="overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+          {/* Mobile cards */}
+          <div className="sm:hidden flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-pitch-800 bg-pitch-900/80">
+            <div className="min-h-0 flex-1 overflow-y-auto space-y-2 p-2">
+              {filteredLoanCandidates.length ? (
+                filteredLoanCandidates.slice(0, marketVisibleCount).map((player) => {
+                  const parentClub = player.clubId ? state.clubs[player.clubId] : null;
+                  return (
+                    <div
+                      key={player.id}
+                      className="rounded-xl border border-pitch-800 bg-pitch-950/70 px-3 py-2.5"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="min-w-0 flex items-center gap-2">
+                          <span className="shrink-0 rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300">
+                            {formatPositionPair(player.position, player.secondaryPosition)}
+                          </span>
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-bold text-white">
+                              {player.name}
+                              {player.isLoanListed ? (
+                                <span className="ml-1 text-[9px] font-black text-amber-400">LISTED</span>
+                              ) : null}
+                            </p>
+                            <p className="truncate text-[11px] text-pitch-400">
+                              {parentClub?.name || "?"} · {player.age} · £
+                              {(player.contract?.wageWeekly || 0).toLocaleString()}/wk
+                            </p>
+                          </div>
+                        </div>
+                        <div className="shrink-0 text-right">
+                          <p className="text-base font-black text-emerald-400 leading-none">{player.rating}</p>
+                          <p className="text-[10px] text-pitch-500">POT {player.potential}</p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setLoanInTarget(player);
+                          setLoanInWeeks(8);
+                          setLoanInWageShare(50);
+                          setLoanInCanRecall(true);
+                          setLoanInMsg(null);
+                          setLoanInError(null);
+                        }}
+                        className="mt-2 w-full rounded-lg bg-emerald-600/20 py-1.5 text-[11px] font-bold text-emerald-300 border border-emerald-500/40"
+                      >
+                        Loan In
+                      </button>
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="py-8 text-center text-xs text-pitch-500 italic">No loan targets found.</p>
+              )}
+            </div>
+            {filteredLoanCandidates.length > marketVisibleCount && (
+              <div className="shrink-0 border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
+                <button
+                  type="button"
+                  onClick={() => setMarketVisibleCount((n) => n + LOAN_PAGE_SIZE)}
+                  className="rounded-lg border border-emerald-500/50 bg-emerald-600/25 px-5 py-2.5 text-xs font-black text-emerald-200"
+                >
+                  Show more (
+                  {Math.min(LOAN_PAGE_SIZE, filteredLoanCandidates.length - marketVisibleCount)} of{" "}
+                  {filteredLoanCandidates.length - marketVisibleCount} remaining)
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Market Table */}
+          <div className="hidden sm:flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+            <div className="min-h-0 flex-1 overflow-x-auto overflow-y-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-pitch-800 bg-pitch-950/80 text-pitch-400 font-semibold uppercase">
+              <thead className="sticky top-0 z-10 border-b border-pitch-800 bg-pitch-950/95 text-pitch-400 font-semibold uppercase">
                 <tr>
                   <th className="py-3 px-3">Pos</th>
                   <th className="py-3 px-3">Player</th>
@@ -497,8 +570,9 @@ export function ManagerLoansView() {
                 )}
               </tbody>
             </table>
+            </div>
             {filteredLoanCandidates.length > marketVisibleCount && (
-              <div className="border-t border-pitch-800 px-3 py-3 text-center">
+              <div className="shrink-0 border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
                 <button
                   type="button"
                   onClick={() => setMarketVisibleCount((n) => n + LOAN_PAGE_SIZE)}
@@ -629,9 +703,75 @@ export function ManagerLoansView() {
 
       {/* TAB 4: Available to Loan Out */}
       {subTab === "available" && (
-        <div className="overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+        <>
+          <div className="sm:hidden flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-pitch-800 bg-pitch-900/80">
+            <div className="min-h-0 flex-1 overflow-y-auto space-y-2 p-2">
+              {availablePlayers.length ? (
+                availablePlayers.slice(0, availableVisibleCount).map((player) => (
+                  <div
+                    key={player.id}
+                    className="rounded-xl border border-pitch-800 bg-pitch-950/70 px-3 py-2.5"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0 flex items-center gap-2">
+                        <span className="shrink-0 rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300">
+                          {formatPositionPair(player.position, player.secondaryPosition)}
+                        </span>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-bold text-white">{player.name}</p>
+                          <p className="text-[11px] text-pitch-400">
+                            {player.age} · {formatSquadTier(player.squadTier)}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="shrink-0 text-right">
+                        <p className="text-base font-black text-emerald-400 leading-none">{player.rating}</p>
+                        <p className="text-[10px] text-pitch-500">POT {player.potential}</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setTargetPlayer(player);
+                        setLoanMsg(null);
+                        if (
+                          !eligibleDestinationClubs.some((c) => c.id === destClubId) &&
+                          eligibleDestinationClubs.length > 0
+                        ) {
+                          setDestClubId(eligibleDestinationClubs[0].id);
+                        }
+                      }}
+                      className="mt-2 w-full rounded-lg bg-sky-600/20 py-1.5 text-[11px] font-bold text-sky-300 border border-sky-500/40"
+                    >
+                      Loan Out
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p className="py-8 text-center text-xs text-pitch-500 italic">
+                  No reserves or academy players available.
+                </p>
+              )}
+            </div>
+            {availablePlayers.length > availableVisibleCount && (
+              <div className="shrink-0 border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
+                <button
+                  type="button"
+                  onClick={() => setAvailableVisibleCount((n) => n + LOAN_PAGE_SIZE)}
+                  className="rounded-lg border border-emerald-500/50 bg-emerald-600/25 px-5 py-2.5 text-xs font-black text-emerald-200"
+                >
+                  Show more (
+                  {Math.min(LOAN_PAGE_SIZE, availablePlayers.length - availableVisibleCount)} of{" "}
+                  {availablePlayers.length - availableVisibleCount} remaining)
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="hidden sm:flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+          <div className="min-h-0 flex-1 overflow-x-auto overflow-y-auto">
           <table className="w-full text-left text-xs">
-            <thead className="border-b border-pitch-800 bg-pitch-950/80 text-pitch-400 font-semibold uppercase">
+            <thead className="sticky top-0 z-10 border-b border-pitch-800 bg-pitch-950/95 text-pitch-400 font-semibold uppercase">
               <tr>
                 <th className="py-3 px-3">Pos</th>
                 <th className="py-3 px-3">Player</th>
@@ -685,8 +825,9 @@ export function ManagerLoansView() {
               )}
             </tbody>
           </table>
+          </div>
           {availablePlayers.length > availableVisibleCount && (
-            <div className="border-t border-pitch-800 px-3 py-3 text-center">
+            <div className="shrink-0 border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
               <button
                 type="button"
                 onClick={() => setAvailableVisibleCount((n) => n + LOAN_PAGE_SIZE)}
@@ -699,6 +840,7 @@ export function ManagerLoansView() {
             </div>
           )}
         </div>
+        </>
       )}
 
       {/* MODAL 1: Loan IN Proposal */}
