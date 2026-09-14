@@ -55,7 +55,8 @@ export function createLoanAgreement(
   playerId: string,
   totalWeeks: number,
   wageContributionPct = 50,
-  canRecall = true
+  canRecall = true,
+  options?: { silent?: boolean }
 ): LoanOperationResult {
   if (parentClubId === destinationClubId) {
     return { success: false, state, error: "Cannot loan player to the same club." };
@@ -123,7 +124,8 @@ export function createLoanAgreement(
 
   const userClubId = state.manager.clubId;
   const involvesUser =
-    parentClubId === userClubId || destinationClubId === userClubId;
+    !options?.silent &&
+    (parentClubId === userClubId || destinationClubId === userClubId);
 
   const nextState: ManagerState = {
     ...state,
@@ -254,11 +256,29 @@ export function recallLoan(
  * automatically returns players whose loan has expired.
  */
 export function tickActiveLoans(state: ManagerState): ManagerState {
-  let nextState = state;
+  // Drop orphaned active-loan rows (player.loan missing or parent mismatch) so they
+  // cannot linger forever across weekly ticks.
+  const syncedLoans = state.transfers.activeLoans.filter((loan) => {
+    const player = state.players[loan.playerId];
+    return !!(
+      player?.loan &&
+      player.loan.parentClubId === loan.parentClubId &&
+      player.loan.destinationClubId === loan.destinationClubId
+    );
+  });
+
+  let nextState: ManagerState =
+    syncedLoans.length === state.transfers.activeLoans.length
+      ? state
+      : {
+          ...state,
+          transfers: { ...state.transfers, activeLoans: syncedLoans },
+        };
+
   const expiredPlayerIds: string[] = [];
 
-  for (const loan of state.transfers.activeLoans) {
-    const player = state.players[loan.playerId];
+  for (const loan of nextState.transfers.activeLoans) {
+    const player = nextState.players[loan.playerId];
     if (!player || !player.loan) continue;
 
     const remaining = player.loan.weeksRemaining - 1;
@@ -452,7 +472,7 @@ export function loanPlayerIn(
     };
   }
 
-  // Create authoritative loan agreement
+  // Create authoritative loan agreement (silent — this wrapper posts the user inbox)
   const agreement = createLoanAgreement(
     state,
     parentClub.id,
@@ -460,7 +480,8 @@ export function loanPlayerIn(
     playerId,
     totalWeeks,
     wageContributionPct,
-    canRecall
+    canRecall,
+    { silent: true }
   );
 
   if (!agreement.success) {

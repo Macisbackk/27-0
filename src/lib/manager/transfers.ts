@@ -89,7 +89,7 @@ export function setPlayerTransfersBlocked(
   const updatedPlayer = {
     ...player,
     transfersBlocked: blocked,
-    ...(blocked ? { isTransferListed: false } : {}),
+    ...(blocked ? { isTransferListed: false, isLoanListed: false } : {}),
   };
 
   // Reject open approaches when blocking (club decision or personal terms outstanding)

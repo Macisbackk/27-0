@@ -308,157 +308,150 @@ export function ManagerTransfersView() {
       {/* Tab 1: Transfer Market List */}
       {subTab === "market" && (
         <>
-          {/* Mobile cards — no sideways scroll */}
-          <div className="sm:hidden flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-pitch-800 bg-pitch-900/80">
-            <div className="min-h-0 flex-1 overflow-y-auto space-y-2 p-2">
-              {marketPlayers.slice(0, marketVisibleCount).map((player) => {
-                const club = player.clubId ? state.clubs[player.clubId] : null;
-                const estValue = calculateTransferFeeBetweenClubs(
-                  player.rating,
-                  player.potential,
-                  player.age,
-                  userClub?.competitionId || "super-league",
-                  club?.competitionId || "super-league"
-                );
-                const protectedSigning = isRecentlySignedPlayer(
-                  player,
-                  state.calendar.currentSeason,
-                  state.calendar.currentWeek
-                );
-                return (
-                  <div
-                    key={player.id}
-                    className="rounded-xl border border-pitch-800 bg-pitch-950/70 px-3 py-2.5"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="min-w-0 flex items-center gap-2">
-                        <span className="shrink-0 rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300">
-                          {formatPositionPair(player.position, player.secondaryPosition)}
-                        </span>
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-bold text-white">
-                            {player.name}
-                            {player.isTransferListed ? (
-                              <span className="ml-1 text-[9px] font-black text-amber-400">LISTED</span>
-                            ) : null}
-                          </p>
-                          <p className="truncate text-[11px] text-pitch-400">
-                            {club?.name || "?"} · {player.age} · £{estValue.toLocaleString()}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="shrink-0 text-right">
-                        <p className="text-base font-black text-emerald-400 leading-none">{player.rating}</p>
-                        <p className="text-[10px] text-pitch-500">POT {player.potential}</p>
+          {/* Mobile cards — page scroll so Show more stays above sticky chrome */}
+          <div className="sm:hidden space-y-2">
+            {marketPlayers.slice(0, marketVisibleCount).map((player) => {
+              const club = player.clubId ? state.clubs[player.clubId] : null;
+              const estValue = calculateTransferFeeBetweenClubs(
+                player.rating,
+                player.potential,
+                player.age,
+                userClub?.competitionId || "super-league",
+                club?.competitionId || "super-league"
+              );
+              const protectedSigning = isRecentlySignedPlayer(
+                player,
+                state.calendar.currentSeason,
+                state.calendar.currentWeek
+              );
+              return (
+                <div
+                  key={player.id}
+                  className="rounded-xl border border-pitch-800 bg-pitch-900/80 px-3 py-2.5"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="min-w-0 flex items-center gap-2">
+                      <span className="shrink-0 rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300">
+                        {formatPositionPair(player.position, player.secondaryPosition)}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-bold text-white">
+                          {player.name}
+                          {player.isTransferListed ? (
+                            <span className="ml-1 text-[9px] font-black text-amber-400">LISTED</span>
+                          ) : null}
+                        </p>
+                        <p className="truncate text-[11px] text-pitch-400">
+                          {club?.name || "?"} · {player.age} · £{estValue.toLocaleString()}
+                        </p>
                       </div>
                     </div>
-                    <div className="mt-2">
-                      {protectedSigning ? (
-                        <span className="text-[10px] font-bold text-pitch-500">Protected</span>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => openBidModal(player)}
-                          disabled={!windowInfo.open}
-                          className="w-full rounded-lg bg-emerald-600/20 py-1.5 text-[11px] font-bold text-emerald-300 border border-emerald-500/40 disabled:opacity-40"
-                        >
-                          {windowInfo.open ? "Make Bid" : "Window Closed"}
-                        </button>
-                      )}
+                    <div className="shrink-0 text-right">
+                      <p className="text-base font-black text-emerald-400 leading-none">{player.rating}</p>
+                      <p className="text-[10px] text-pitch-500">POT {player.potential}</p>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                  <div className="mt-2">
+                    {protectedSigning ? (
+                      <span className="text-[10px] font-bold text-pitch-500">Protected</span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => openBidModal(player)}
+                        disabled={!windowInfo.open}
+                        className="w-full rounded-lg bg-emerald-600/20 py-1.5 text-[11px] font-bold text-emerald-300 border border-emerald-500/40 disabled:opacity-40"
+                      >
+                        {windowInfo.open ? "Make Bid" : "Window Closed"}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
             {marketPlayers.length > marketVisibleCount && (
-              <div className="shrink-0 border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
-                <button
-                  type="button"
-                  onClick={() => setMarketVisibleCount((n) => n + 50)}
-                  className="rounded-lg border border-emerald-500/50 bg-emerald-600/25 px-5 py-2.5 text-xs font-black text-emerald-200"
-                >
-                  Show more ({Math.min(50, marketPlayers.length - marketVisibleCount)} of{" "}
-                  {marketPlayers.length - marketVisibleCount} remaining)
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => setMarketVisibleCount((n) => n + 50)}
+                className="w-full rounded-xl border border-emerald-500/50 bg-emerald-600/25 px-4 py-3 text-xs font-black text-emerald-200"
+              >
+                Show more ({Math.min(50, marketPlayers.length - marketVisibleCount)} of{" "}
+                {marketPlayers.length - marketVisibleCount} remaining)
+              </button>
             )}
           </div>
 
           {/* Desktop table */}
-          <div className="hidden sm:flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
-            <div className="min-h-0 flex-1 overflow-x-auto overflow-y-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="sticky top-0 z-10 border-b border-pitch-800 bg-pitch-950/95 text-pitch-400 font-semibold uppercase">
-                  <tr>
-                    <th className="py-3 px-3">Pos</th>
-                    <th className="py-3 px-3">Player</th>
-                    <th className="py-3 px-3">Current Club</th>
-                    <th className="py-3 px-2 text-center">Age</th>
-                    <th className="py-3 px-2 text-center">OVR</th>
-                    <th className="py-3 px-2 text-center">Pot</th>
-                    <th className="py-3 px-3 text-right">Estimated Value</th>
-                    <th className="py-3 px-3 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-pitch-800/50 text-pitch-200">
-                  {marketPlayers.slice(0, marketVisibleCount).map((player) => {
-                    const club = player.clubId ? state.clubs[player.clubId] : null;
-                    const estValue = calculateTransferFeeBetweenClubs(
-                      player.rating,
-                      player.potential,
-                      player.age,
-                      userClub?.competitionId || "super-league",
-                      club?.competitionId || "super-league"
-                    );
-
-                    return (
-                      <tr key={player.id} className="hover:bg-pitch-800/40 transition-colors">
-                        <td className="py-2.5 px-3">
-                          <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
-                            {formatPositionPair(player.position, player.secondaryPosition)}
+          <div className="hidden sm:block overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+            <table className="w-full text-left text-xs">
+              <thead className="sticky top-0 z-10 border-b border-pitch-800 bg-pitch-950/95 text-pitch-400 font-semibold uppercase">
+                <tr>
+                  <th className="py-3 px-3">Pos</th>
+                  <th className="py-3 px-3">Player</th>
+                  <th className="py-3 px-3">Current Club</th>
+                  <th className="py-3 px-2 text-center">Age</th>
+                  <th className="py-3 px-2 text-center">OVR</th>
+                  <th className="py-3 px-2 text-center">Pot</th>
+                  <th className="py-3 px-3 text-right">Estimated Value</th>
+                  <th className="py-3 px-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-pitch-800/50 text-pitch-200">
+                {marketPlayers.slice(0, marketVisibleCount).map((player) => {
+                  const club = player.clubId ? state.clubs[player.clubId] : null;
+                  const estValue = calculateTransferFeeBetweenClubs(
+                    player.rating,
+                    player.potential,
+                    player.age,
+                    userClub?.competitionId || "super-league",
+                    club?.competitionId || "super-league"
+                  );
+                  return (
+                    <tr key={player.id} className="hover:bg-pitch-800/40 transition-colors">
+                      <td className="py-2.5 px-3">
+                        <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
+                          {formatPositionPair(player.position, player.secondaryPosition)}
+                        </span>
+                        {player.isTransferListed && (
+                          <span className="ml-1 rounded bg-amber-500/20 px-1 py-0.5 text-[9px] font-bold text-amber-400">
+                            LISTED
                           </span>
-                          {player.isTransferListed && (
-                            <span className="ml-1 rounded bg-amber-500/20 px-1 py-0.5 text-[9px] font-bold text-amber-400">
-                              LISTED
-                            </span>
-                          )}
-                        </td>
-                        <td className="py-2.5 px-3 font-medium text-white">{player.name}</td>
-                        <td className="py-2.5 px-3 text-pitch-400">{club?.name || "Unknown"}</td>
-                        <td className="py-2.5 px-2 text-center text-pitch-400">{player.age}</td>
-                        <td className="py-2.5 px-2 text-center">
-                          <span className="font-bold text-emerald-400 text-sm">{player.rating}</span>
-                        </td>
-                        <td className="py-2.5 px-2 text-center text-pitch-300 font-bold">{player.potential}</td>
-                        <td className="py-2.5 px-3 text-right font-medium text-amber-300">
-                          £{estValue.toLocaleString()}
-                        </td>
-                        <td className="py-2.5 px-3 text-right">
-                          {isRecentlySignedPlayer(
-                            player,
-                            state.calendar.currentSeason,
-                            state.calendar.currentWeek
-                          ) ? (
-                            <span className="text-[10px] font-bold text-pitch-500">Protected</span>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() => openBidModal(player)}
-                              disabled={!windowInfo.open}
-                              className="rounded bg-emerald-600/20 px-3 py-1 text-[11px] font-bold text-emerald-300 hover:bg-emerald-600/40 border border-emerald-500/40 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                            >
-                              {windowInfo.open ? "Make Bid" : "Window Closed"}
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                        )}
+                      </td>
+                      <td className="py-2.5 px-3 font-medium text-white">{player.name}</td>
+                      <td className="py-2.5 px-3 text-pitch-400">{club?.name || "Unknown"}</td>
+                      <td className="py-2.5 px-2 text-center text-pitch-400">{player.age}</td>
+                      <td className="py-2.5 px-2 text-center">
+                        <span className="font-bold text-emerald-400 text-sm">{player.rating}</span>
+                      </td>
+                      <td className="py-2.5 px-2 text-center text-pitch-300 font-bold">{player.potential}</td>
+                      <td className="py-2.5 px-3 text-right font-medium text-amber-300">
+                        £{estValue.toLocaleString()}
+                      </td>
+                      <td className="py-2.5 px-3 text-right">
+                        {isRecentlySignedPlayer(
+                          player,
+                          state.calendar.currentSeason,
+                          state.calendar.currentWeek
+                        ) ? (
+                          <span className="text-[10px] font-bold text-pitch-500">Protected</span>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => openBidModal(player)}
+                            disabled={!windowInfo.open}
+                            className="rounded bg-emerald-600/20 px-3 py-1 text-[11px] font-bold text-emerald-300 hover:bg-emerald-600/40 border border-emerald-500/40 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                          >
+                            {windowInfo.open ? "Make Bid" : "Window Closed"}
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
             {marketPlayers.length > marketVisibleCount && (
-              <div className="shrink-0 border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
+              <div className="border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
                 <button
                   type="button"
                   onClick={() => setMarketVisibleCount((n) => n + 50)}
@@ -476,111 +469,103 @@ export function ManagerTransfersView() {
       {/* Tab 2: Free Agents */}
       {subTab === "free_agents" && (
         <>
-          <div className="sm:hidden flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-pitch-800 bg-pitch-900/80">
-            <div className="min-h-0 flex-1 overflow-y-auto space-y-2 p-2">
-              {freeAgents.length ? (
-                freeAgents.slice(0, faVisibleCount).map((player) => (
-                  <div
-                    key={player.id}
-                    className="rounded-xl border border-pitch-800 bg-pitch-950/70 px-3 py-2.5"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="min-w-0 flex items-center gap-2">
-                        <span className="shrink-0 rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300">
-                          {formatPositionPair(player.position, player.secondaryPosition)}
-                        </span>
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-bold text-white">{player.name}</p>
-                          <p className="text-[11px] text-pitch-400">Age {player.age}</p>
-                        </div>
-                      </div>
-                      <div className="shrink-0 text-right">
-                        <p className="text-base font-black text-emerald-400 leading-none">{player.rating}</p>
-                        <p className="text-[10px] text-pitch-500">POT {player.potential}</p>
+          <div className="sm:hidden space-y-2">
+            {freeAgents.length ? (
+              freeAgents.slice(0, faVisibleCount).map((player) => (
+                <div
+                  key={player.id}
+                  className="rounded-xl border border-pitch-800 bg-pitch-900/80 px-3 py-2.5"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="min-w-0 flex items-center gap-2">
+                      <span className="shrink-0 rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300">
+                        {formatPositionPair(player.position, player.secondaryPosition)}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-bold text-white">{player.name}</p>
+                        <p className="text-[11px] text-pitch-400">Age {player.age}</p>
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => openBidModal(player)}
-                      disabled={!windowInfo.open}
-                      className="mt-2 w-full rounded-lg bg-emerald-600 py-1.5 text-[11px] font-bold text-white disabled:opacity-40"
-                    >
-                      {windowInfo.open ? "Sign" : "Window Closed"}
-                    </button>
+                    <div className="shrink-0 text-right">
+                      <p className="text-base font-black text-emerald-400 leading-none">{player.rating}</p>
+                      <p className="text-[10px] text-pitch-500">POT {player.potential}</p>
+                    </div>
                   </div>
-                ))
-              ) : (
-                <p className="py-8 text-center text-xs text-pitch-500 italic">No free agents available.</p>
-              )}
-            </div>
+                  <button
+                    type="button"
+                    onClick={() => openBidModal(player)}
+                    disabled={!windowInfo.open}
+                    className="mt-2 w-full rounded-lg bg-emerald-600 py-1.5 text-[11px] font-bold text-white disabled:opacity-40"
+                  >
+                    {windowInfo.open ? "Sign" : "Window Closed"}
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p className="py-8 text-center text-xs text-pitch-500 italic">No free agents available.</p>
+            )}
             {freeAgents.length > faVisibleCount && (
-              <div className="shrink-0 border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
-                <button
-                  type="button"
-                  onClick={() => setFaVisibleCount((n) => n + 50)}
-                  className="rounded-lg border border-emerald-500/50 bg-emerald-600/25 px-5 py-2.5 text-xs font-black text-emerald-200"
-                >
-                  Show more ({Math.min(50, freeAgents.length - faVisibleCount)} of{" "}
-                  {freeAgents.length - faVisibleCount} remaining)
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => setFaVisibleCount((n) => n + 50)}
+                className="w-full rounded-xl border border-emerald-500/50 bg-emerald-600/25 px-4 py-3 text-xs font-black text-emerald-200"
+              >
+                Show more ({Math.min(50, freeAgents.length - faVisibleCount)} of{" "}
+                {freeAgents.length - faVisibleCount} remaining)
+              </button>
             )}
           </div>
 
-          <div className="hidden sm:flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
-            <div className="min-h-0 flex-1 overflow-x-auto overflow-y-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="sticky top-0 z-10 border-b border-pitch-800 bg-pitch-950/95 text-pitch-400 font-semibold uppercase">
-                  <tr>
-                    <th className="py-3 px-3">Pos</th>
-                    <th className="py-3 px-3">Player</th>
-                    <th className="py-3 px-2 text-center">Age</th>
-                    <th className="py-3 px-2 text-center">OVR</th>
-                    <th className="py-3 px-2 text-center">Pot</th>
-                    <th className="py-3 px-3 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-pitch-800/50 text-pitch-200">
-                  {freeAgents.length ? (
-                    freeAgents.slice(0, faVisibleCount).map((player) => {
-                      return (
-                        <tr key={player.id} className="hover:bg-pitch-800/40 transition-colors">
-                          <td className="py-2.5 px-3">
-                            <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
-                              {formatPositionPair(player.position, player.secondaryPosition)}
-                            </span>
-                          </td>
-                          <td className="py-2.5 px-3 font-medium text-white">{player.name}</td>
-                          <td className="py-2.5 px-2 text-center text-pitch-400">{player.age}</td>
-                          <td className="py-2.5 px-2 text-center">
-                            <span className="font-bold text-emerald-400 text-sm">{player.rating}</span>
-                          </td>
-                          <td className="py-2.5 px-2 text-center text-pitch-300 font-bold">{player.potential}</td>
-                          <td className="py-2.5 px-3 text-right">
-                            <button
-                              type="button"
-                              onClick={() => openBidModal(player)}
-                              disabled={!windowInfo.open}
-                              className="rounded bg-emerald-600 px-3 py-1 text-[11px] font-bold text-white hover:bg-emerald-500 shadow transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                            >
-                              {windowInfo.open ? "Sign Free Agent" : "Window Closed"}
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  ) : (
-                    <tr>
-                      <td colSpan={6} className="py-8 text-center text-pitch-500 italic">
-                        No free agents currently available.
+          <div className="hidden sm:block overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+            <table className="w-full text-left text-xs">
+              <thead className="sticky top-0 z-10 border-b border-pitch-800 bg-pitch-950/95 text-pitch-400 font-semibold uppercase">
+                <tr>
+                  <th className="py-3 px-3">Pos</th>
+                  <th className="py-3 px-3">Player</th>
+                  <th className="py-3 px-2 text-center">Age</th>
+                  <th className="py-3 px-2 text-center">OVR</th>
+                  <th className="py-3 px-2 text-center">Pot</th>
+                  <th className="py-3 px-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-pitch-800/50 text-pitch-200">
+                {freeAgents.length ? (
+                  freeAgents.slice(0, faVisibleCount).map((player) => (
+                    <tr key={player.id} className="hover:bg-pitch-800/40 transition-colors">
+                      <td className="py-2.5 px-3">
+                        <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
+                          {formatPositionPair(player.position, player.secondaryPosition)}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 font-medium text-white">{player.name}</td>
+                      <td className="py-2.5 px-2 text-center text-pitch-400">{player.age}</td>
+                      <td className="py-2.5 px-2 text-center">
+                        <span className="font-bold text-emerald-400 text-sm">{player.rating}</span>
+                      </td>
+                      <td className="py-2.5 px-2 text-center text-pitch-300 font-bold">{player.potential}</td>
+                      <td className="py-2.5 px-3 text-right">
+                        <button
+                          type="button"
+                          onClick={() => openBidModal(player)}
+                          disabled={!windowInfo.open}
+                          className="rounded bg-emerald-600 px-3 py-1 text-[11px] font-bold text-white hover:bg-emerald-500 shadow transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          {windowInfo.open ? "Sign Free Agent" : "Window Closed"}
+                        </button>
                       </td>
                     </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-pitch-500 italic">
+                      No free agents currently available.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
             {freeAgents.length > faVisibleCount && (
-              <div className="shrink-0 border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
+              <div className="border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
                 <button
                   type="button"
                   onClick={() => setFaVisibleCount((n) => n + 50)}

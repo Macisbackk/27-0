@@ -218,13 +218,15 @@ export function calculateSeasonAwards(state: ManagerState): SeasonAwards {
     };
 
     if (!slSurvived) {
-      // Championship team won The Million Pound Game! Promoted!
-      if (!promotedClubIds.includes(champClubId)) {
+      // Championship playoff winner earns the second promotion slot — but only if they
+      // are not already the automatic champions (mis-scheduled MPG). Promoting an
+      // already-promoted club while still relegating 13th SL breaks the 14/14 split.
+      const newlyPromoted = !promotedClubIds.includes(champClubId);
+      if (newlyPromoted) {
         promotedClubIds.push(champClubId);
-      }
-      // 13th SL club is relegated!
-      if (!relegatedClubIds.includes(slClubId)) {
-        relegatedClubIds.push(slClubId);
+        if (!relegatedClubIds.includes(slClubId)) {
+          relegatedClubIds.push(slClubId);
+        }
       }
     }
   }
@@ -984,6 +986,38 @@ export function rolloverSeason(state: ManagerState): {
     console.warn(
       `[rolloverSeason] Unexpected division sizes after promotion/relegation: Super League=${slClubIds.length}, Championship=${champClubIds.length} (expected 14/14). Promoted=[${promotedClubIds.join(", ")}] Relegated=[${relegatedClubIds.join(", ")}]`
     );
+    // Last-resort repair: move lowest-rep overflow SL clubs down / highest-rep Champ clubs up
+    // until both divisions are 14. Prefer not to undo explicit promotions when possible.
+    while (slClubIds.length > 14) {
+      const overflowId = slClubIds
+        .filter((id) => !promotedClubIds.includes(id))
+        .sort(
+          (a, b) =>
+            (updatedClubs[a]?.reputation || 0) - (updatedClubs[b]?.reputation || 0)
+        )[0];
+      if (!overflowId) break;
+      updatedClubs[overflowId] = {
+        ...updatedClubs[overflowId],
+        competitionId: "championship",
+      };
+      slClubIds.splice(slClubIds.indexOf(overflowId), 1);
+      champClubIds.push(overflowId);
+    }
+    while (champClubIds.length > 14) {
+      const promoteId = champClubIds
+        .filter((id) => !relegatedClubIds.includes(id))
+        .sort(
+          (a, b) =>
+            (updatedClubs[b]?.reputation || 0) - (updatedClubs[a]?.reputation || 0)
+        )[0];
+      if (!promoteId) break;
+      updatedClubs[promoteId] = {
+        ...updatedClubs[promoteId],
+        competitionId: "super-league",
+      };
+      champClubIds.splice(champClubIds.indexOf(promoteId), 1);
+      slClubIds.push(promoteId);
+    }
   }
 
   const superLeagueComp = generateFixturesForCompetition("super-league", "Super League", 1, slClubIds, newSeason);

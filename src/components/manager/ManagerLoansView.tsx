@@ -382,8 +382,7 @@ export function ManagerLoansView() {
           </div>
 
           {/* Mobile cards */}
-          <div className="sm:hidden flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-pitch-800 bg-pitch-900/80">
-            <div className="min-h-0 flex-1 overflow-y-auto space-y-2 p-2">
+          <div className="sm:hidden space-y-2">
               {filteredLoanCandidates.length ? (
                 filteredLoanCandidates.slice(0, marketVisibleCount).map((player) => {
                   const parentClub = player.clubId ? state.clubs[player.clubId] : null;
@@ -435,25 +434,22 @@ export function ManagerLoansView() {
               ) : (
                 <p className="py-8 text-center text-xs text-pitch-500 italic">No loan targets found.</p>
               )}
-            </div>
             {filteredLoanCandidates.length > marketVisibleCount && (
-              <div className="shrink-0 border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
-                <button
+              <button
                   type="button"
                   onClick={() => setMarketVisibleCount((n) => n + LOAN_PAGE_SIZE)}
-                  className="rounded-lg border border-emerald-500/50 bg-emerald-600/25 px-5 py-2.5 text-xs font-black text-emerald-200"
+                  className="w-full rounded-xl border border-emerald-500/50 bg-emerald-600/25 px-4 py-3 text-xs font-black text-emerald-200"
                 >
                   Show more (
                   {Math.min(LOAN_PAGE_SIZE, filteredLoanCandidates.length - marketVisibleCount)} of{" "}
                   {filteredLoanCandidates.length - marketVisibleCount} remaining)
                 </button>
-              </div>
             )}
           </div>
 
           {/* Desktop Market Table */}
-          <div className="hidden sm:flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
-            <div className="min-h-0 flex-1 overflow-x-auto overflow-y-auto">
+          <div className="hidden sm:block overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+            <div>
             <table className="w-full text-left text-xs">
               <thead className="sticky top-0 z-10 border-b border-pitch-800 bg-pitch-950/95 text-pitch-400 font-semibold uppercase">
                 <tr>
@@ -704,8 +700,7 @@ export function ManagerLoansView() {
       {/* TAB 4: Available to Loan Out */}
       {subTab === "available" && (
         <>
-          <div className="sm:hidden flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-pitch-800 bg-pitch-900/80">
-            <div className="min-h-0 flex-1 overflow-y-auto space-y-2 p-2">
+          <div className="sm:hidden space-y-2">
               {availablePlayers.length ? (
                 availablePlayers.slice(0, availableVisibleCount).map((player) => (
                   <div
@@ -752,24 +747,21 @@ export function ManagerLoansView() {
                   No reserves or academy players available.
                 </p>
               )}
-            </div>
             {availablePlayers.length > availableVisibleCount && (
-              <div className="shrink-0 border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
-                <button
-                  type="button"
-                  onClick={() => setAvailableVisibleCount((n) => n + LOAN_PAGE_SIZE)}
-                  className="rounded-lg border border-emerald-500/50 bg-emerald-600/25 px-5 py-2.5 text-xs font-black text-emerald-200"
-                >
-                  Show more (
-                  {Math.min(LOAN_PAGE_SIZE, availablePlayers.length - availableVisibleCount)} of{" "}
-                  {availablePlayers.length - availableVisibleCount} remaining)
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => setAvailableVisibleCount((n) => n + LOAN_PAGE_SIZE)}
+                className="w-full rounded-xl border border-emerald-500/50 bg-emerald-600/25 px-4 py-3 text-xs font-black text-emerald-200"
+              >
+                Show more (
+                {Math.min(LOAN_PAGE_SIZE, availablePlayers.length - availableVisibleCount)} of{" "}
+                {availablePlayers.length - availableVisibleCount} remaining)
+              </button>
             )}
           </div>
 
-          <div className="hidden sm:flex max-h-[70vh] flex-col overflow-hidden rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
-          <div className="min-h-0 flex-1 overflow-x-auto overflow-y-auto">
+          <div className="hidden sm:block overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+          <div>
           <table className="w-full text-left text-xs">
             <thead className="sticky top-0 z-10 border-b border-pitch-800 bg-pitch-950/95 text-pitch-400 font-semibold uppercase">
               <tr>

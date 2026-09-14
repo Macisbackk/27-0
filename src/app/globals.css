@@ -82,7 +82,7 @@
   /* Central UI layering — keep in sync with src/lib/ui/layers.ts */
   --z-page: 0;
   --z-sticky-nav: 30;
-  --z-mobile-action-bar: 40;
+  --z-mobile-action-bar: 41;
   --z-sticky-footer: 50;
   --z-popover: 60;
   --z-sidebar: 70;

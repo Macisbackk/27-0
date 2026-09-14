@@ -52,7 +52,7 @@ const MORE_ITEMS: { id: ManagerTab; label: string }[] = [
   { id: "contracts", label: "Contracts" },
   { id: "training", label: "Training" },
   { id: "league", label: "League" },
-  { id: "club", label: "Club & Finances" },
+  { id: "club", label: "Club" },
   { id: "history", label: "History" },
   { id: "settings", label: "Settings" },
 ];
