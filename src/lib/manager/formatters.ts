@@ -26,7 +26,7 @@ export function cleanText(str?: string | null): string {
 
 /**
  * Formats a Rugby League Position into its authentic full display name.
- * Prevents raw enum strings (e.g. STAND_OFF, SCRUM_HALF, SECOND_ROW) from leaking to UI.
+ * Stand-Off and Scrum-Half both display as Halfback (HB) — too similar to split.
  */
 export function formatPositionLabel(pos?: string | null): string {
   if (!pos) return "";
@@ -38,9 +38,10 @@ export function formatPositionLabel(pos?: string | null): string {
     case "CENTRE":
       return "Centre";
     case "STAND_OFF":
-      return "Stand-Off";
     case "SCRUM_HALF":
-      return "Scrum-Half";
+    case "HALFBACK":
+    case "HB":
+      return "Halfback";
     case "PROP":
       return "Prop";
     case "HOOKER":
@@ -56,8 +57,7 @@ export function formatPositionLabel(pos?: string | null): string {
 
 /**
  * Returns standard 2-letter Rugby League abbreviations for positions.
- * Ensures Stand-Off (SO), Scrum-Half (SH), Second-Row (SR), Loose Forward (LF)
- * rather than naive slice(0, 2) strings like ST, SC, SE.
+ * SO and SH both render as HB.
  */
 export function formatPositionShort(pos?: string | null, slotIdx?: number): string {
   if (slotIdx !== undefined && slotIdx >= 13) return "INT";
@@ -71,9 +71,10 @@ export function formatPositionShort(pos?: string | null, slotIdx?: number): stri
     case "CENTRE":
       return "CE";
     case "STAND_OFF":
-      return "SO";
     case "SCRUM_HALF":
-      return "SH";
+    case "HALFBACK":
+    case "HB":
+      return "HB";
     case "PROP":
       return "PR";
     case "HOOKER":
@@ -87,8 +88,13 @@ export function formatPositionShort(pos?: string | null, slotIdx?: number): stri
   }
 }
 
+function isHalfbackShort(short: string): boolean {
+  return short === "HB" || short === "SO" || short === "SH";
+}
+
 /**
- * Primary (+ optional secondary) badge text, e.g. FB/WG.
+ * Primary (+ optional secondary) badge text, e.g. FB/WG or HB.
+ * SO+SH collapses to HB (not HB/HB or SO/SH).
  */
 export function formatPositionPair(
   primary?: string | null,
@@ -99,6 +105,7 @@ export function formatPositionPair(
   if (!secondary || (slotIdx !== undefined && slotIdx >= 13)) return primaryShort;
   const secondaryShort = formatPositionShort(secondary);
   if (secondaryShort === primaryShort) return primaryShort;
+  if (isHalfbackShort(primaryShort) && isHalfbackShort(secondaryShort)) return "HB";
   return `${primaryShort}/${secondaryShort}`;
 }
 

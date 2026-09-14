@@ -8,21 +8,31 @@ import {
   formatSquadTier,
   isPlayerEligibleForLoanIn,
   calculateSalaryCapUsage,
+  isHalfbackPosition,
 } from "@/lib/manager";
 import type { ManagerPlayer, Position } from "@/lib/manager/types";
 
-const POSITIONS: { id: "ALL" | Position; label: string }[] = [
+const POSITIONS: { id: string; label: string }[] = [
   { id: "ALL", label: "All Positions" },
   { id: "FULLBACK", label: "Fullback (FB)" },
   { id: "WING", label: "Wing (WG)" },
   { id: "CENTRE", label: "Centre (CE)" },
-  { id: "STAND_OFF", label: "Stand-Off (SO)" },
-  { id: "SCRUM_HALF", label: "Scrum-Half (SH)" },
+  { id: "HALFBACK", label: "Halfback (HB)" },
   { id: "PROP", label: "Prop (PR)" },
   { id: "HOOKER", label: "Hooker (HK)" },
   { id: "SECOND_ROW", label: "Second-Row (SR)" },
   { id: "LOOSE_FORWARD", label: "Loose Forward (LF)" },
 ];
+
+function matchesLoanPosFilter(player: ManagerPlayer, pos: string): boolean {
+  if (pos === "ALL") return true;
+  if (pos === "HALFBACK" || pos === "STAND_OFF" || pos === "SCRUM_HALF") {
+    return (
+      isHalfbackPosition(player.position) || isHalfbackPosition(player.secondaryPosition)
+    );
+  }
+  return player.position === pos || player.secondaryPosition === pos;
+}
 
 const LOAN_PAGE_SIZE = 40;
 
@@ -110,9 +120,7 @@ export function ManagerLoansView() {
     let list = loanInCandidates;
 
     if (marketPos !== "ALL") {
-      list = list.filter(
-        (p) => p.position === marketPos || p.secondaryPosition === marketPos
-      );
+      list = list.filter((p) => matchesLoanPosFilter(p, marketPos));
     }
 
     if (marketClub !== "ALL") {

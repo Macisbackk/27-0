@@ -17,6 +17,7 @@ import {
   formatBidStatus,
 } from "@/lib/manager";
 import type { ManagerPlayer, SquadRole } from "@/lib/manager/types";
+import { isHalfbackPosition } from "@/lib/manager/database";
 
 function parseMoneyDraft(raw: string, min: number): number {
   const n = parseInt(raw.replace(/[^\d]/g, ""), 10);
@@ -26,6 +27,11 @@ function parseMoneyDraft(raw: string, min: number): number {
 
 function matchesPositionFilter(player: ManagerPlayer, posFilter: string): boolean {
   if (posFilter === "ALL") return true;
+  if (posFilter === "HALFBACK" || posFilter === "STAND_OFF" || posFilter === "SCRUM_HALF") {
+    return (
+      isHalfbackPosition(player.position) || isHalfbackPosition(player.secondaryPosition)
+    );
+  }
   return player.position === posFilter || player.secondaryPosition === posFilter;
 }
 
@@ -259,8 +265,7 @@ export function ManagerTransfersView() {
             <option value="FULLBACK">Fullback</option>
             <option value="WING">Wing</option>
             <option value="CENTRE">Centre</option>
-            <option value="STAND_OFF">Stand-Off</option>
-            <option value="SCRUM_HALF">Scrum-Half</option>
+            <option value="HALFBACK">Halfback</option>
             <option value="PROP">Prop</option>
             <option value="HOOKER">Hooker</option>
             <option value="SECOND_ROW">Second-Row</option>

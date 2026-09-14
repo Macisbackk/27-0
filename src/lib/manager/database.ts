@@ -210,10 +210,12 @@ function softCapChampImportRating(rating: number, clubBaseStrength: number): num
 }
 
 function normalizePosition(pos: string): Position {
-  const p = (pos || "").toUpperCase();
+  const p = (pos || "").toUpperCase().replace(/\s+/g, "_");
   if (p.includes("FULL") || p === "FB") return "FULLBACK";
   if (p.includes("WING") || p === "WG") return "WING";
   if (p.includes("CENT") || p === "CE") return "CENTRE";
+  // SO / SH / HB are one halfback family for dual-position purposes (slots stay 6 & 7)
+  if (p === "HB" || p === "HALFBACK" || p.includes("HALF_BACK")) return "STAND_OFF";
   if (p.includes("STAND") || p === "SO" || p.includes("FIVE")) return "STAND_OFF";
   if (p.includes("SCRUM") || p === "SH" || p.includes("HALF")) return "SCRUM_HALF";
   if (p.includes("PROP") || p === "PR" || p === "PF") return "PROP";
@@ -221,6 +223,47 @@ function normalizePosition(pos: string): Position {
   if (p.includes("SECOND") || p === "SR") return "SECOND_ROW";
   if (p.includes("LOOSE") || p === "LF" || p.includes("LOCK")) return "LOOSE_FORWARD";
   return "PROP";
+}
+
+/** Stand-Off and Scrum-Half are interchangeable halfbacks (display as HB). */
+export function isHalfbackPosition(pos?: string | null): boolean {
+  if (!pos) return false;
+  const p = pos.toUpperCase();
+  return p === "STAND_OFF" || p === "SCRUM_HALF" || p === "HALFBACK" || p === "HB";
+}
+
+export function positionsMatchRole(playerPos: Position, slotPos: Position): boolean {
+  if (playerPos === slotPos) return true;
+  return isHalfbackPosition(playerPos) && isHalfbackPosition(slotPos);
+}
+
+/**
+ * Derive a true dual from squad `positions[]`.
+ * - No secondary if only one distinct role
+ * - SO+SH alone → no secondary (both are HB)
+ * - Otherwise first distinct non-halfback-equivalent role vs primary
+ */
+export function resolveSecondaryFromSquadPositions(
+  primary: Position,
+  rawPositions: unknown
+): Position | undefined {
+  if (!Array.isArray(rawPositions) || rawPositions.length === 0) return undefined;
+
+  const normalized = rawPositions
+    .filter((x): x is string => typeof x === "string" && x.trim().length > 0)
+    .map((x) => normalizePosition(x));
+
+  const distinct: Position[] = [];
+  for (const pos of normalized) {
+    const already = distinct.some((d) => positionsMatchRole(d, pos));
+    if (!already) distinct.push(pos);
+  }
+
+  if (distinct.length <= 1) return undefined;
+
+  // Prefer a secondary that is not the same halfback family / primary
+  const secondary = distinct.find((pos) => !positionsMatchRole(primary, pos));
+  return secondary;
 }
 
 let uniqueGenCounter = 1;
@@ -231,21 +274,24 @@ export function generateUniquePlayerId(prefix = "gen"): string {
   return `${prefix}_${ts}_${count}_${rnd}`;
 }
 
-/** Compatible RL dual-position options for a primary role. */
+/**
+ * Compatible RL duals for *generated* players.
+ * SO/SH are not duals of each other — they are the same HB role.
+ */
 const SECONDARY_POSITION_OPTIONS: Record<Position, Position[]> = {
   FULLBACK: ["WING", "CENTRE"],
   WING: ["CENTRE", "FULLBACK"],
-  CENTRE: ["WING", "STAND_OFF"],
-  STAND_OFF: ["SCRUM_HALF", "CENTRE"],
-  SCRUM_HALF: ["STAND_OFF", "HOOKER"],
-  PROP: ["SECOND_ROW", "HOOKER"],
-  HOOKER: ["SCRUM_HALF", "LOOSE_FORWARD"],
+  CENTRE: ["WING", "FULLBACK"],
+  STAND_OFF: ["CENTRE", "HOOKER"],
+  SCRUM_HALF: ["HOOKER", "CENTRE"],
+  PROP: ["SECOND_ROW"],
+  HOOKER: ["LOOSE_FORWARD", "PROP"],
   SECOND_ROW: ["PROP", "LOOSE_FORWARD"],
   LOOSE_FORWARD: ["SECOND_ROW", "HOOKER"],
 };
 
 /**
- * Picks a realistic secondary position for a primary RL role.
+ * Picks a realistic secondary position for a generated player (never SO↔SH).
  */
 export function pickSecondaryPosition(primary: Position): Position {
   const options = SECONDARY_POSITION_OPTIONS[primary] || ["CENTRE"];
@@ -335,9 +381,9 @@ export function buildBestLineup(players: ManagerPlayer[]): ClubLineup {
       .filter((p) => !usedIds.has(p.id) && predicate(p))
       .sort((a, b) => b.rating - a.rating)[0];
 
-  // Pass 1: primary position match
+  // Pass 1: primary position match (SO/SH interchangeable)
   STARTING_POSITIONS.forEach((pos, slotIdx) => {
-    const candidate = pickBest((p) => p.position === pos);
+    const candidate = pickBest((p) => positionsMatchRole(p.position, pos));
     if (candidate) {
       starting13[slotIdx] = candidate.id;
       usedIds.add(candidate.id);
@@ -347,7 +393,9 @@ export function buildBestLineup(players: ManagerPlayer[]): ClubLineup {
   // Pass 2: secondary position match for empty slots
   STARTING_POSITIONS.forEach((pos, slotIdx) => {
     if (starting13[slotIdx]) return;
-    const candidate = pickBest((p) => p.secondaryPosition === pos);
+    const candidate = pickBest(
+      (p) => !!p.secondaryPosition && positionsMatchRole(p.secondaryPosition, pos)
+    );
     if (candidate) {
       starting13[slotIdx] = candidate.id;
       usedIds.add(candidate.id);
@@ -573,7 +621,7 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
     const dob = raw.dateOfBirth || `${2026 - age}-01-01`;
     const wage = calculateMarketWage(rating, age, clubs[clubId].competitionId);
 
-    const secondaryPosition = Math.random() < 0.7 ? pickSecondaryPosition(pos) : undefined;
+    const secondaryPosition = resolveSecondaryFromSquadPositions(pos, raw.positions);
 
     const player: ManagerPlayer = {
       id: raw.id,
