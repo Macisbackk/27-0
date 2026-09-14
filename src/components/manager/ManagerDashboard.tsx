@@ -126,10 +126,17 @@ export function ManagerDashboard() {
         </div>
 
         {(lineupShort || lastAdvanceError) && (
-          <p className="mt-3 text-xs text-amber-300/90 leading-relaxed sm:block">
-            {lastAdvanceError ||
-              readiness?.error ||
-              "Name a full 17 before playing a match week. Use Auto-Fill Lineup to complete empty slots."}
+          <p className="mt-3 text-xs text-amber-300/90 leading-relaxed">
+            <span className="sm:hidden">
+              {lastAdvanceError
+                ? "Cannot advance — check lineup."
+                : "Need a full 17 to play. Use Auto-Fill."}
+            </span>
+            <span className="hidden sm:inline">
+              {lastAdvanceError ||
+                readiness?.error ||
+                "Name a full 17 before playing a match week. Use Auto-Fill Lineup to complete empty slots."}
+            </span>
           </p>
         )}
       </section>

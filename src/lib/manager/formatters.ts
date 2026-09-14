@@ -88,6 +88,21 @@ export function formatPositionShort(pos?: string | null, slotIdx?: number): stri
 }
 
 /**
+ * Primary (+ optional secondary) badge text, e.g. FB/WG.
+ */
+export function formatPositionPair(
+  primary?: string | null,
+  secondary?: string | null,
+  slotIdx?: number
+): string {
+  const primaryShort = formatPositionShort(primary, slotIdx);
+  if (!secondary || (slotIdx !== undefined && slotIdx >= 13)) return primaryShort;
+  const secondaryShort = formatPositionShort(secondary);
+  if (secondaryShort === primaryShort) return primaryShort;
+  return `${primaryShort}/${secondaryShort}`;
+}
+
+/**
  * Formats squad roles cleanly (e.g. first_team -> First Team).
  */
 export function formatSquadRole(role?: SquadRole | string | null): string {

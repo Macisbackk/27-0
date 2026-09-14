@@ -220,6 +220,7 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
               !p.loan &&
               !p.injury &&
               !p.suspension &&
+              !p.transfersBlocked &&
               !isRecentlySignedPlayer(p, currentSeason, currentWeek) &&
               (p.isTransferListed ||
                 p.contract?.role === "star" ||
@@ -310,10 +311,11 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
         const candidates = Object.values(nextState.players)
           .filter(
             (p) =>
-              p.position === neededPos &&
+              (p.position === neededPos || p.secondaryPosition === neededPos) &&
               !p.injury &&
               !p.suspension &&
               !p.loan &&
+              !p.transfersBlocked &&
               p.clubId !== clubId &&
               p.rating >= minRating &&
               !(

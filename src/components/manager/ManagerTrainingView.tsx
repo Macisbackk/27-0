@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useManager } from "@/lib/manager/context";
-import { formatPositionShort } from "@/lib/manager";
+import { formatPositionPair } from "@/lib/manager";
 import type { TrainingFocus, TrainingIntensity } from "@/lib/manager/types";
 
 export function ManagerTrainingView() {
@@ -57,7 +57,7 @@ export function ManagerTrainingView() {
               );
             })}
           </div>
-          <p className="text-[11px] text-pitch-400 mt-2.5">
+          <p className="hidden sm:block text-[11px] text-pitch-400 mt-2.5">
             {club.tactics.trainingIntensity === "high"
               ? "High Intensity: Boosts match rating and development speed, but increases fatigue and injury risk."
               : club.tactics.trainingIntensity === "low"
@@ -71,32 +71,50 @@ export function ManagerTrainingView() {
             <h3 className="font-bold text-sm text-white">Infrastructure Standards</h3>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-pitch-400">Senior Training Ground:</span>
+            <span className="text-pitch-400">
+              <span className="sm:hidden">Training</span>
+              <span className="hidden sm:inline">Senior Training Ground</span>:
+            </span>
             <span className="text-amber-400 font-bold">{"★".repeat(club.facilities.training || 3)}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-pitch-400">Youth Academy Complex:</span>
+            <span className="text-pitch-400">
+              <span className="sm:hidden">Youth</span>
+              <span className="hidden sm:inline">Youth Academy Complex</span>:
+            </span>
             <span className="text-amber-400 font-bold">{"★".repeat(club.facilities.youth || 3)}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-pitch-400">Medical & Rehab Centre:</span>
+            <span className="text-pitch-400">
+              <span className="sm:hidden">Medical</span>
+              <span className="hidden sm:inline">Medical & Rehab Centre</span>:
+            </span>
             <span className="text-amber-400 font-bold">{"★".repeat(club.facilities.medical || 3)}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-pitch-400">Sports Science & Conditioning:</span>
+            <span className="text-pitch-400">
+              <span className="sm:hidden">Science</span>
+              <span className="hidden sm:inline">Sports Science & Conditioning</span>:
+            </span>
             <span className="text-amber-400 font-bold">{"★".repeat(club.facilities.performance || 3)}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-pitch-400">Tactical Analytics Suite:</span>
+            <span className="text-pitch-400">
+              <span className="sm:hidden">Analytics</span>
+              <span className="hidden sm:inline">Tactical Analytics Suite</span>:
+            </span>
             <span className="text-amber-400 font-bold">{"★".repeat(club.facilities.analytics || 2)}</span>
           </div>
           <div className="flex justify-between items-center pt-1 border-t border-pitch-800/60">
-            <span className="text-pitch-400">Coaching Staff Quality:</span>
+            <span className="text-pitch-400">
+              <span className="sm:hidden">Coaching</span>
+              <span className="hidden sm:inline">Coaching Staff Quality</span>:
+            </span>
             <span className="text-amber-400 font-bold">{"★".repeat(club.coachingQuality || 3)}</span>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-4 shadow text-xs space-y-2">
+        <div className="hidden sm:block rounded-2xl border border-pitch-800 bg-pitch-900/80 p-4 shadow text-xs space-y-2">
           <h3 className="font-bold text-sm text-white">Development & Science Notes</h3>
           <p className="text-pitch-400 text-[11px] leading-relaxed">
             <strong className="text-emerald-400 font-semibold">Growth:</strong> Players aged 17–23 with high potential develop fastest with regular first-team minutes and higher coaching standards.
@@ -130,7 +148,7 @@ export function ManagerTrainingView() {
               <tr key={player.id} className="hover:bg-pitch-800/40">
                 <td className="py-2.5 px-3">
                   <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
-                    {formatPositionShort(player.position)}
+                    {formatPositionPair(player.position, player.secondaryPosition)}
                   </span>
                 </td>
                 <td className="py-2.5 px-3 font-medium text-white">{player.name}</td>

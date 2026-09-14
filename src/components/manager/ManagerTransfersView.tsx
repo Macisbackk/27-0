@@ -10,14 +10,13 @@ import {
   isRecentlySignedPlayer,
   TRANSFER_PROTECTION,
 } from "@/lib/manager/rules";
-import { calculateSalaryCapUsage, evaluateContractOffer } from "@/lib/manager/contracts";
+import { calculateSalaryCapUsage } from "@/lib/manager/contracts";
 import {
-  formatPositionLabel,
-  formatPositionShort,
+  formatPositionPair,
   formatSquadRole,
   formatBidStatus,
 } from "@/lib/manager";
-import type { ManagerPlayer, Position, SquadRole, TransferBid } from "@/lib/manager/types";
+import type { ManagerPlayer, SquadRole } from "@/lib/manager/types";
 
 function parseMoneyDraft(raw: string, min: number): number {
   const n = parseInt(raw.replace(/[^\d]/g, ""), 10);
@@ -25,10 +24,16 @@ function parseMoneyDraft(raw: string, min: number): number {
   return Math.max(min, n);
 }
 
+function matchesPositionFilter(player: ManagerPlayer, posFilter: string): boolean {
+  if (posFilter === "ALL") return true;
+  return player.position === posFilter || player.secondaryPosition === posFilter;
+}
+
 export function ManagerTransfersView() {
   const { state, bidOnPlayer, signFreeAgentPlayer, decideOnIncomingBid } = useManager();
   const [subTab, setSubTab] = useState<"market" | "free_agents" | "bids" | "history">("market");
   const [posFilter, setPosFilter] = useState<string>("ALL");
+  const [listedFilter, setListedFilter] = useState<"all" | "listed">("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Bid modal state — string drafts so typing is not clamped mid-keystroke
@@ -40,12 +45,14 @@ export function ManagerTransfersView() {
   const [bidError, setBidError] = useState<string | null>(null);
   const [bidSuccess, setBidSuccess] = useState<string | null>(null);
   const [marketVisibleCount, setMarketVisibleCount] = useState(50);
+  const [faVisibleCount, setFaVisibleCount] = useState(50);
   const [acceptingBidIds, setAcceptingBidIds] = useState<Set<string>>(() => new Set());
 
   // Reset pagination when filters change
   useEffect(() => {
     setMarketVisibleCount(50);
-  }, [posFilter, searchQuery, subTab]);
+    setFaVisibleCount(50);
+  }, [posFilter, searchQuery, listedFilter, subTab]);
 
   if (!state) return null;
 
@@ -55,7 +62,7 @@ export function ManagerTransfersView() {
 
   // Market players (players belonging to other clubs)
   let marketPlayers = Object.values(state.players).filter(
-    (p) => p.clubId !== null && p.clubId !== userClubId && !p.isRetired
+    (p) => p.clubId !== null && p.clubId !== userClubId && !p.isRetired && !p.transfersBlocked
   );
 
   // Free agents
@@ -65,8 +72,11 @@ export function ManagerTransfersView() {
 
   // Apply filters
   if (posFilter !== "ALL") {
-    marketPlayers = marketPlayers.filter((p) => p.position === posFilter);
-    freeAgents = freeAgents.filter((p) => p.position === posFilter);
+    marketPlayers = marketPlayers.filter((p) => matchesPositionFilter(p, posFilter));
+    freeAgents = freeAgents.filter((p) => matchesPositionFilter(p, posFilter));
+  }
+  if (listedFilter === "listed") {
+    marketPlayers = marketPlayers.filter((p) => !!p.isTransferListed);
   }
   if (searchQuery.trim()) {
     const q = searchQuery.toLowerCase();
@@ -74,7 +84,11 @@ export function ManagerTransfersView() {
     freeAgents = freeAgents.filter((p) => p.name.toLowerCase().includes(q));
   }
 
-  marketPlayers.sort((a, b) => b.rating - a.rating);
+  marketPlayers.sort((a, b) => {
+    const listedDiff = Number(!!b.isTransferListed) - Number(!!a.isTransferListed);
+    if (listedDiff !== 0) return listedDiff;
+    return b.rating - a.rating;
+  });
   freeAgents.sort((a, b) => b.rating - a.rating);
 
   const openBidModal = (player: ManagerPlayer) => {
@@ -89,16 +103,12 @@ export function ManagerTransfersView() {
       sellingComp
     );
     const role: SquadRole = "first_team";
-    const context = player.clubId ? "transfer" : "free_agent";
-    const terms = userClub
-      ? evaluateContractOffer(player, userClub, 0, role, {
-          context,
-          contractYears: 2,
-        })
-      : null;
-    const fairW =
-      terms?.askingWage ??
-      calculateMarketWage(player.rating, player.age, userClub?.competitionId || "super-league");
+    // Blind wage draft — never prefill asking/minimum accept (hides negotiation floor)
+    const fairW = calculateMarketWage(
+      player.rating,
+      player.age,
+      userClub?.competitionId || "super-league"
+    );
     setTargetPlayer(player);
     setOfferedFeeDraft(String(fairVal));
     setOfferedWageDraft(String(fairW));
@@ -219,9 +229,14 @@ export function ManagerTransfersView() {
             : "border-amber-500/40 bg-amber-500/10 text-amber-100"
         }`}
       >
-        <span className="font-black">{windowInfo.label}. </span>
-        {windowInfo.detail}. Recently signed players are protected for{" "}
-        {TRANSFER_PROTECTION.RECENT_SIGNING_WEEKS} weeks.
+        <span className="sm:hidden font-black">
+          {windowInfo.open ? "Window open." : "Window closed."}
+        </span>
+        <span className="hidden sm:inline">
+          <span className="font-black">{windowInfo.label}. </span>
+          {windowInfo.detail}. Recently signed players are protected for{" "}
+          {TRANSFER_PROTECTION.RECENT_SIGNING_WEEKS} weeks.
+        </span>
       </div>
 
       {/* Filter Bar (for market & free agents) */}
@@ -251,14 +266,41 @@ export function ManagerTransfersView() {
             <option value="SECOND_ROW">Second-Row</option>
             <option value="LOOSE_FORWARD">Loose Forward</option>
           </select>
+
+          {subTab === "market" && (
+            <div className="flex items-center rounded-lg border border-pitch-700 overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setListedFilter("all")}
+                className={`px-3 py-1.5 text-xs font-bold transition-colors ${
+                  listedFilter === "all"
+                    ? "bg-emerald-600 text-white"
+                    : "bg-pitch-950 text-pitch-400 hover:text-white"
+                }`}
+              >
+                All
+              </button>
+              <button
+                type="button"
+                onClick={() => setListedFilter("listed")}
+                className={`px-3 py-1.5 text-xs font-bold transition-colors border-l border-pitch-700 ${
+                  listedFilter === "listed"
+                    ? "bg-emerald-600 text-white"
+                    : "bg-pitch-950 text-pitch-400 hover:text-white"
+                }`}
+              >
+                Listed only
+              </button>
+            </div>
+          )}
         </div>
       )}
 
       {/* Tab 1: Transfer Market List */}
       {subTab === "market" && (
-        <div className="overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+        <div className="relative max-h-[70vh] overflow-x-auto overflow-y-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
           <table className="w-full text-left text-xs">
-            <thead className="border-b border-pitch-800 bg-pitch-950/80 text-pitch-400 font-semibold uppercase">
+            <thead className="sticky top-0 z-10 border-b border-pitch-800 bg-pitch-950/95 text-pitch-400 font-semibold uppercase">
               <tr>
                 <th className="py-3 px-3">Pos</th>
                 <th className="py-3 px-3">Player</th>
@@ -285,8 +327,13 @@ export function ManagerTransfersView() {
                   <tr key={player.id} className="hover:bg-pitch-800/40 transition-colors">
                     <td className="py-2.5 px-3">
                       <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
-                        {formatPositionShort(player.position)}
+                        {formatPositionPair(player.position, player.secondaryPosition)}
                       </span>
+                      {player.isTransferListed && (
+                        <span className="ml-1 rounded bg-amber-500/20 px-1 py-0.5 text-[9px] font-bold text-amber-400">
+                          LISTED
+                        </span>
+                      )}
                     </td>
                     <td className="py-2.5 px-3 font-medium text-white">{player.name}</td>
                     <td className="py-2.5 px-3 text-pitch-400">{club?.name || "Unknown"}</td>
@@ -322,11 +369,11 @@ export function ManagerTransfersView() {
             </tbody>
           </table>
           {marketPlayers.length > marketVisibleCount && (
-            <div className="border-t border-pitch-800 px-3 py-3 text-center">
+            <div className="sticky bottom-0 z-10 border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
               <button
                 type="button"
                 onClick={() => setMarketVisibleCount((n) => n + 50)}
-                className="rounded-lg border border-pitch-700 bg-pitch-950 px-4 py-2 text-xs font-bold text-pitch-200 hover:bg-pitch-800 hover:text-white transition-colors"
+                className="rounded-lg border border-emerald-500/50 bg-emerald-600/25 px-5 py-2.5 text-xs font-black text-emerald-200 hover:bg-emerald-600/45 shadow transition-colors"
               >
                 Show more ({Math.min(50, marketPlayers.length - marketVisibleCount)} of{" "}
                 {marketPlayers.length - marketVisibleCount} remaining)
@@ -338,28 +385,26 @@ export function ManagerTransfersView() {
 
       {/* Tab 2: Free Agents */}
       {subTab === "free_agents" && (
-        <div className="overflow-x-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
+        <div className="relative max-h-[70vh] overflow-x-auto overflow-y-auto rounded-2xl border border-pitch-800 bg-pitch-900/80 shadow">
           <table className="w-full text-left text-xs">
-            <thead className="border-b border-pitch-800 bg-pitch-950/80 text-pitch-400 font-semibold uppercase">
+            <thead className="sticky top-0 z-10 border-b border-pitch-800 bg-pitch-950/95 text-pitch-400 font-semibold uppercase">
               <tr>
                 <th className="py-3 px-3">Pos</th>
                 <th className="py-3 px-3">Player</th>
                 <th className="py-3 px-2 text-center">Age</th>
                 <th className="py-3 px-2 text-center">OVR</th>
                 <th className="py-3 px-2 text-center">Pot</th>
-                <th className="py-3 px-3 text-right">Wage Demand</th>
                 <th className="py-3 px-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-pitch-800/50 text-pitch-200">
               {freeAgents.length ? (
-                freeAgents.map((player) => {
-                  const estWage = calculateMarketWage(player.rating, player.age, userClub?.competitionId || "super-league");
+                freeAgents.slice(0, faVisibleCount).map((player) => {
                   return (
                     <tr key={player.id} className="hover:bg-pitch-800/40 transition-colors">
                       <td className="py-2.5 px-3">
                         <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
-                          {formatPositionShort(player.position)}
+                          {formatPositionPair(player.position, player.secondaryPosition)}
                         </span>
                       </td>
                       <td className="py-2.5 px-3 font-medium text-white">{player.name}</td>
@@ -368,9 +413,6 @@ export function ManagerTransfersView() {
                         <span className="font-bold text-emerald-400 text-sm">{player.rating}</span>
                       </td>
                       <td className="py-2.5 px-2 text-center text-pitch-300 font-bold">{player.potential}</td>
-                      <td className="py-2.5 px-3 text-right font-medium text-pitch-300">
-                        ~£{estWage.toLocaleString()}/wk
-                      </td>
                       <td className="py-2.5 px-3 text-right">
                         <button
                           type="button"
@@ -393,6 +435,18 @@ export function ManagerTransfersView() {
               )}
             </tbody>
           </table>
+          {freeAgents.length > faVisibleCount && (
+            <div className="sticky bottom-0 z-10 border-t border-emerald-500/30 bg-pitch-950 px-3 py-3 text-center">
+              <button
+                type="button"
+                onClick={() => setFaVisibleCount((n) => n + 50)}
+                className="rounded-lg border border-emerald-500/50 bg-emerald-600/25 px-5 py-2.5 text-xs font-black text-emerald-200 hover:bg-emerald-600/45 shadow transition-colors"
+              >
+                Show more ({Math.min(50, freeAgents.length - faVisibleCount)} of{" "}
+                {freeAgents.length - faVisibleCount} remaining)
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -557,7 +611,7 @@ export function ManagerTransfersView() {
             <div className="flex justify-between items-start mb-4 pb-3 border-b border-pitch-800">
               <div>
                 <span className="rounded bg-pitch-800 px-2 py-0.5 text-xs font-bold text-pitch-300">
-                  {formatPositionLabel(targetPlayer.position)}
+                  {formatPositionPair(targetPlayer.position, targetPlayer.secondaryPosition)}
                 </span>
                 <h3 className="text-xl font-bold text-white mt-1">
                   {targetPlayer.clubId ? `Bid for ${targetPlayer.name}` : `Sign ${targetPlayer.name}`}
@@ -636,19 +690,7 @@ export function ManagerTransfersView() {
                   className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 font-bold"
                 />
                 {(() => {
-                  const terms =
-                    userClub &&
-                    evaluateContractOffer(targetPlayer, userClub, 0, offeredRole, {
-                      context: targetPlayer.clubId ? "transfer" : "free_agent",
-                      contractYears: offeredYears,
-                    });
-                  return terms ? (
-                    <span className="text-[11px] text-pitch-500 mt-0.5 block">
-                      Agent ask ~£{terms.askingWage.toLocaleString()}/wk · likely accepts from £
-                      {terms.minimumAcceptableWage.toLocaleString()}/wk · Cap room £
-                      {Math.max(0, cap.availableCapWeekly).toLocaleString()}/wk
-                    </span>
-                  ) : (
+                  return (
                     <span className="text-[11px] text-pitch-500 mt-0.5 block">
                       Weekly Salary Cap headroom: £
                       {Math.max(0, cap.availableCapWeekly).toLocaleString()}/wk

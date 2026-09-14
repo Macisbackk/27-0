@@ -46,6 +46,7 @@ import {
   evaluatePlayerTransferTerms,
   completeTransfer,
   setPlayerTransferListed,
+  setPlayerTransfersBlocked,
 } from "./transfers";
 import {
   createLoanAgreement,
@@ -157,6 +158,10 @@ interface ManagerContextValue {
   setTransferListed: (
     playerId: string,
     isListed: boolean
+  ) => { success: boolean; error?: string };
+  setTransfersBlocked: (
+    playerId: string,
+    blocked: boolean
   ) => { success: boolean; error?: string };
   setLoanListed: (
     playerId: string,
@@ -753,6 +758,20 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     [state]
   );
 
+  const setTransfersBlocked = useCallback(
+    (playerId: string, blocked: boolean) => {
+      if (!state) return { success: false, error: "No active game" };
+      const player = state.players[playerId];
+      if (!player || player.clubId !== state.manager.clubId) {
+        return { success: false, error: "Can only block transfers for your own players" };
+      }
+      const res = setPlayerTransfersBlocked(state, playerId, blocked);
+      if (res.success) setState(res.state);
+      return { success: res.success, error: res.error };
+    },
+    [state]
+  );
+
   const setLoanListed = useCallback(
     (playerId: string, isListed: boolean) => {
       if (!state) return { success: false, error: "No active game" };
@@ -1337,6 +1356,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
         setTrainingFocus,
         setTrainingIntensity,
         setTransferListed,
+        setTransfersBlocked,
         setLoanListed,
         updateSettings,
         renewContract,

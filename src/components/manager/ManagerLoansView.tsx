@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useManager } from "@/lib/manager/context";
 import {
   formatPositionLabel,
-  formatPositionShort,
+  formatPositionPair,
   formatSquadTier,
   isPlayerEligibleForLoanIn,
   calculateSalaryCapUsage,
@@ -23,6 +23,8 @@ const POSITIONS: { id: "ALL" | Position; label: string }[] = [
   { id: "SECOND_ROW", label: "Second-Row (SR)" },
   { id: "LOOSE_FORWARD", label: "Loose Forward (LF)" },
 ];
+
+const LOAN_PAGE_SIZE = 40;
 
 export function ManagerLoansView() {
   const {
@@ -56,6 +58,8 @@ export function ManagerLoansView() {
   const [marketPos, setMarketPos] = useState<"ALL" | Position>("ALL");
   const [marketClub, setMarketClub] = useState<string>("ALL");
   const [marketSort, setMarketSort] = useState<"rating" | "potential" | "age" | "wage">("rating");
+  const [marketVisibleCount, setMarketVisibleCount] = useState(LOAN_PAGE_SIZE);
+  const [availableVisibleCount, setAvailableVisibleCount] = useState(LOAN_PAGE_SIZE);
 
   // Notifications
   const [actionNotice, setActionNotice] = useState<string | null>(null);
@@ -106,7 +110,9 @@ export function ManagerLoansView() {
     let list = loanInCandidates;
 
     if (marketPos !== "ALL") {
-      list = list.filter((p) => p.position === marketPos);
+      list = list.filter(
+        (p) => p.position === marketPos || p.secondaryPosition === marketPos
+      );
     }
 
     if (marketClub !== "ALL") {
@@ -149,6 +155,14 @@ export function ManagerLoansView() {
       setDestClubId(eligibleDestinationClubs[0].id);
     }
   }, [eligibleDestinationClubs, destClubId]);
+
+  useEffect(() => {
+    setMarketVisibleCount(LOAN_PAGE_SIZE);
+  }, [marketSearch, marketPos, marketClub, marketSort, subTab]);
+
+  useEffect(() => {
+    setAvailableVisibleCount(LOAN_PAGE_SIZE);
+  }, [subTab]);
 
   // Execute Loan Out
   const handleExecuteLoanOut = () => {
@@ -374,7 +388,7 @@ export function ManagerLoansView() {
               </thead>
               <tbody className="divide-y divide-pitch-800/50 text-pitch-200">
                 {filteredLoanCandidates.length ? (
-                  filteredLoanCandidates.map((player) => {
+                  filteredLoanCandidates.slice(0, marketVisibleCount).map((player) => {
                     const parentClub = player.clubId ? state.clubs[player.clubId] : null;
                     const isSL = parentClub?.competitionId === "super-league";
 
@@ -383,7 +397,7 @@ export function ManagerLoansView() {
                         {/* Position */}
                         <td className="py-2.5 px-3">
                           <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300 border border-pitch-700">
-                            {formatPositionShort(player.position)}
+                            {formatPositionPair(player.position, player.secondaryPosition)}
                           </span>
                         </td>
 
@@ -475,6 +489,19 @@ export function ManagerLoansView() {
                 )}
               </tbody>
             </table>
+            {filteredLoanCandidates.length > marketVisibleCount && (
+              <div className="border-t border-pitch-800 px-3 py-3 text-center">
+                <button
+                  type="button"
+                  onClick={() => setMarketVisibleCount((n) => n + LOAN_PAGE_SIZE)}
+                  className="rounded-lg border border-emerald-500/50 bg-emerald-600/25 px-5 py-2.5 text-xs font-black text-emerald-200 hover:bg-emerald-600/45 transition-colors"
+                >
+                  Show more (
+                  {Math.min(LOAN_PAGE_SIZE, filteredLoanCandidates.length - marketVisibleCount)} of{" "}
+                  {filteredLoanCandidates.length - marketVisibleCount} remaining)
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -499,7 +526,9 @@ export function ManagerLoansView() {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300 border border-pitch-700">
-                          {player ? formatPositionShort(player.position) : "PLAYER"}
+                          {player
+                            ? formatPositionPair(player.position, player.secondaryPosition)
+                            : "PLAYER"}
                         </span>
                         <h4 className="font-bold text-sm text-white">{loan.playerName}</h4>
                         {player && (
@@ -607,11 +636,11 @@ export function ManagerLoansView() {
             </thead>
             <tbody className="divide-y divide-pitch-800/50 text-pitch-200">
               {availablePlayers.length ? (
-                availablePlayers.map((player) => (
+                availablePlayers.slice(0, availableVisibleCount).map((player) => (
                   <tr key={player.id} className="hover:bg-pitch-800/40">
                     <td className="py-2.5 px-3">
                       <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300 border border-pitch-700">
-                        {formatPositionShort(player.position)}
+                        {formatPositionPair(player.position, player.secondaryPosition)}
                       </span>
                     </td>
                     <td className="py-2.5 px-3 font-medium text-white">{player.name}</td>
@@ -648,6 +677,19 @@ export function ManagerLoansView() {
               )}
             </tbody>
           </table>
+          {availablePlayers.length > availableVisibleCount && (
+            <div className="border-t border-pitch-800 px-3 py-3 text-center">
+              <button
+                type="button"
+                onClick={() => setAvailableVisibleCount((n) => n + LOAN_PAGE_SIZE)}
+                className="rounded-lg border border-emerald-500/50 bg-emerald-600/25 px-5 py-2.5 text-xs font-black text-emerald-200 hover:bg-emerald-600/45 transition-colors"
+              >
+                Show more (
+                {Math.min(LOAN_PAGE_SIZE, availablePlayers.length - availableVisibleCount)} of{" "}
+                {availablePlayers.length - availableVisibleCount} remaining)
+              </button>
+            </div>
+          )}
         </div>
       )}
 

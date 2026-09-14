@@ -105,6 +105,8 @@ export interface ManagerPlayer {
   };
   isTransferListed?: boolean;
   isLoanListed?: boolean;
+  /** When true, club refuses all incoming transfer approaches. */
+  transfersBlocked?: boolean;
   isRetired?: boolean;
   /** Season/week the player last joined their current club (permanent move). */
   joinedSeason?: number;

@@ -231,6 +231,27 @@ export function generateUniquePlayerId(prefix = "gen"): string {
   return `${prefix}_${ts}_${count}_${rnd}`;
 }
 
+/** Compatible RL dual-position options for a primary role. */
+const SECONDARY_POSITION_OPTIONS: Record<Position, Position[]> = {
+  FULLBACK: ["WING", "CENTRE"],
+  WING: ["CENTRE", "FULLBACK"],
+  CENTRE: ["WING", "STAND_OFF"],
+  STAND_OFF: ["SCRUM_HALF", "CENTRE"],
+  SCRUM_HALF: ["STAND_OFF", "HOOKER"],
+  PROP: ["SECOND_ROW", "HOOKER"],
+  HOOKER: ["SCRUM_HALF", "LOOSE_FORWARD"],
+  SECOND_ROW: ["PROP", "LOOSE_FORWARD"],
+  LOOSE_FORWARD: ["SECOND_ROW", "HOOKER"],
+};
+
+/**
+ * Picks a realistic secondary position for a primary RL role.
+ */
+export function pickSecondaryPosition(primary: Position): Position {
+  const options = SECONDARY_POSITION_OPTIONS[primary] || ["CENTRE"];
+  return options[Math.floor(Math.random() * options.length)];
+}
+
 export function createGeneratedPlayer(
   name: string,
   pos: Position,
@@ -253,6 +274,7 @@ export function createGeneratedPlayer(
   const wage = calculateMarketWage(clampedRating, age, competitionId);
 
   const defaultNat = Math.random() < 0.85 ? "England" : (Math.random() < 0.5 ? "Australia" : "New Zealand");
+  const secondaryPosition = Math.random() < 0.7 ? pickSecondaryPosition(pos) : undefined;
 
   return {
     id,
@@ -261,6 +283,7 @@ export function createGeneratedPlayer(
     age,
     nationality: overrideNationality || defaultNat,
     position: pos,
+    ...(secondaryPosition ? { secondaryPosition } : {}),
     rating: clampedRating,
     potential: clampedPot,
     form: 7.0,
@@ -307,28 +330,37 @@ export function buildBestLineup(players: ManagerPlayer[]): ClubLineup {
   const starting13: (string | null)[] = new Array(13).fill(null);
   const usedIds = new Set<string>();
 
-  // Slot 0..12 corresponding to STARTING_POSITIONS
-  STARTING_POSITIONS.forEach((pos, slotIdx) => {
-    const candidate = available
-      .filter((p) => !usedIds.has(p.id) && p.position === pos)
+  const pickBest = (predicate: (p: ManagerPlayer) => boolean): ManagerPlayer | undefined =>
+    available
+      .filter((p) => !usedIds.has(p.id) && predicate(p))
       .sort((a, b) => b.rating - a.rating)[0];
 
+  // Pass 1: primary position match
+  STARTING_POSITIONS.forEach((pos, slotIdx) => {
+    const candidate = pickBest((p) => p.position === pos);
     if (candidate) {
       starting13[slotIdx] = candidate.id;
       usedIds.add(candidate.id);
     }
   });
 
-  // Fallback for empty starting slots
+  // Pass 2: secondary position match for empty slots
   STARTING_POSITIONS.forEach((pos, slotIdx) => {
-    if (!starting13[slotIdx]) {
-      const fallback = available
-        .filter((p) => !usedIds.has(p.id))
-        .sort((a, b) => b.rating - a.rating)[0];
-      if (fallback) {
-        starting13[slotIdx] = fallback.id;
-        usedIds.add(fallback.id);
-      }
+    if (starting13[slotIdx]) return;
+    const candidate = pickBest((p) => p.secondaryPosition === pos);
+    if (candidate) {
+      starting13[slotIdx] = candidate.id;
+      usedIds.add(candidate.id);
+    }
+  });
+
+  // Pass 3: any remaining player for empty slots
+  STARTING_POSITIONS.forEach((_pos, slotIdx) => {
+    if (starting13[slotIdx]) return;
+    const fallback = pickBest(() => true);
+    if (fallback) {
+      starting13[slotIdx] = fallback.id;
+      usedIds.add(fallback.id);
     }
   });
 
@@ -541,6 +573,8 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
     const dob = raw.dateOfBirth || `${2026 - age}-01-01`;
     const wage = calculateMarketWage(rating, age, clubs[clubId].competitionId);
 
+    const secondaryPosition = Math.random() < 0.7 ? pickSecondaryPosition(pos) : undefined;
+
     const player: ManagerPlayer = {
       id: raw.id,
       name: raw.name,
@@ -548,6 +582,7 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
       age,
       nationality: raw.nationality || "England",
       position: pos,
+      ...(secondaryPosition ? { secondaryPosition } : {}),
       rating,
       potential,
       form: 7.0,

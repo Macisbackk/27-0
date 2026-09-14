@@ -37,6 +37,9 @@ export function setPlayerTransferListed(
   const player = state.players[playerId];
   if (!player) return { success: false, state, error: "Player not found." };
   if (!player.clubId) return { success: false, state, error: "Free agents cannot be transfer listed by a club." };
+  if (isListed && player.transfersBlocked) {
+    return { success: false, state, error: "Transfers are blocked for this player." };
+  }
 
   const updatedPlayer = {
     ...player,
@@ -59,6 +62,61 @@ export function setPlayerTransferListed(
     transfers: {
       ...state.transfers,
       listedPlayerIds: Array.from(listedIds),
+    },
+  };
+
+  return { success: true, state: nextState };
+}
+
+/**
+ * Blocks or unblocks incoming transfer approaches for a player.
+ * Blocking clears any active transfer listing.
+ */
+export function setPlayerTransfersBlocked(
+  state: ManagerState,
+  playerId: string,
+  blocked: boolean
+): TransferOperationResult {
+  const player = state.players[playerId];
+  if (!player) return { success: false, state, error: "Player not found." };
+  if (!player.clubId) return { success: false, state, error: "Free agents cannot have transfers blocked." };
+
+  const listedIds = new Set(state.transfers.listedPlayerIds);
+  if (blocked) {
+    listedIds.delete(playerId);
+  }
+
+  const updatedPlayer = {
+    ...player,
+    transfersBlocked: blocked,
+    ...(blocked ? { isTransferListed: false } : {}),
+  };
+
+  // Reject open approaches when blocking (club decision or personal terms outstanding)
+  const activeBids = blocked
+    ? state.transfers.activeBids.map((bid) => {
+        if (bid.playerId !== playerId) return bid;
+        if (bid.status !== "pending_club" && bid.status !== "club_accepted") {
+          return bid;
+        }
+        return {
+          ...bid,
+          status: "club_rejected" as const,
+          rejectionReason: `${player.name}'s club has blocked transfer approaches.`,
+        };
+      })
+    : state.transfers.activeBids;
+
+  const nextState: ManagerState = {
+    ...state,
+    players: {
+      ...state.players,
+      [playerId]: updatedPlayer,
+    },
+    transfers: {
+      ...state.transfers,
+      listedPlayerIds: Array.from(listedIds),
+      activeBids,
     },
   };
 
@@ -92,6 +150,13 @@ export function submitTransferBid(
   if (!player) return { success: false, state, error: "Player not found." };
   if (!player.clubId) return { success: false, state, error: "Use Free Agent signing for unattached players." };
   if (player.clubId === fromClubId) return { success: false, state, error: "Cannot submit a bid for your own player." };
+  if (player.transfersBlocked) {
+    return {
+      success: false,
+      state,
+      error: `${player.name}'s club has blocked transfer approaches.`,
+    };
+  }
 
   if (
     isRecentlySignedPlayer(
@@ -214,6 +279,23 @@ export function evaluateSellingClubBid(
   const sellingClub = state.clubs[bid.toClubId];
   const buyingClub = state.clubs[bid.fromClubId];
   if (!player || !sellingClub || !buyingClub) return { success: false, state, error: "Data integrity error for bid." };
+
+  if (player.transfersBlocked && forceDecision !== "accept") {
+    const blockedBid: TransferBid = {
+      ...bid,
+      status: "club_rejected",
+      rejectionReason: `${sellingClub.name} have blocked transfer approaches for ${player.name}.`,
+    };
+    const updatedBids = state.transfers.activeBids.map((b) => (b.id === bidId ? blockedBid : b));
+    return {
+      success: true,
+      state: {
+        ...state,
+        transfers: { ...state.transfers, activeBids: updatedBids },
+      },
+      bid: blockedBid,
+    };
+  }
 
   const fairValue = calculateTransferFeeBetweenClubs(
     player.rating,
@@ -491,6 +573,7 @@ export function completeTransfer(
     clubId: buyingClub.id,
     squadTier: "first" as const,
     isTransferListed: false,
+    transfersBlocked: false,
     loan: null,
     joinedSeason: currentSeason,
     joinedWeek: currentWeek,

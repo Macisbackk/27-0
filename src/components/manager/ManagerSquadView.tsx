@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import {
   formatPositionLabel,
-  formatPositionShort,
+  formatPositionPair,
   formatSquadTier,
   PLAYER_INVESTMENT_DEFINITIONS,
   getPlayerInvestmentCost,
@@ -12,11 +12,20 @@ import {
   getDevelopmentResultsForTier,
   type PlayerInvestmentType,
 } from "@/lib/manager";
-import type { ManagerPlayer, Position, SquadTier } from "@/lib/manager/types";
+import type { ManagerPlayer, SquadTier } from "@/lib/manager/types";
 
 export function ManagerSquadView() {
-  const { state, movePlayer, replenishSquadTiers, investInPlayerCareer, renewAllTierContracts, setTransferListed, setLoanListed } =
-    useManager();
+  const {
+    state,
+    movePlayer,
+    replenishSquadTiers,
+    investInPlayerCareer,
+    renewAllTierContracts,
+    setTransferListed,
+    setLoanListed,
+    setTransfersBlocked,
+    releasePlayer,
+  } = useManager();
   const [activeTier, setActiveTier] = useState<SquadTier | "unavailable">("first");
   const [devPanel, setDevPanel] = useState<"roster" | "results">("roster");
   const [selectedPlayer, setSelectedPlayer] = useState<ManagerPlayer | null>(null);
@@ -50,7 +59,9 @@ export function ManagerSquadView() {
   });
 
   if (posFilter !== "ALL") {
-    tierPlayers = tierPlayers.filter((p) => p.position === posFilter);
+    tierPlayers = tierPlayers.filter(
+      (p) => p.position === posFilter || p.secondaryPosition === posFilter
+    );
   }
 
   // Sort by rating descending
@@ -256,14 +267,17 @@ export function ManagerSquadView() {
       {(activeTier === "academy" || activeTier === "reserves" || activeTier === "first") &&
         (activeTier === "first" || devPanel === "roster") && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-xl border border-pitch-800 bg-pitch-900/60 px-3 py-2.5">
-          <p className="text-[11px] text-pitch-400">
+          <p className="hidden sm:block text-[11px] text-pitch-400">
             Bulk-extend every{" "}
             {activeTier === "academy"
               ? "Academy"
               : activeTier === "reserves"
                 ? "Reserves"
                 : "First Team"}{" "}
-            contract by 2 years at current wages (or the minimum they will accept).
+            contract by 2 years at current wages.
+          </p>
+          <p className="sm:hidden text-[11px] text-pitch-400">
+            Extend all contracts 2 years.
           </p>
           <button
             type="button"
@@ -331,7 +345,7 @@ export function ManagerSquadView() {
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0 flex items-center gap-2.5">
                     <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[10px] font-bold text-pitch-300">
-                      {formatPositionShort(player.position)}
+                      {formatPositionPair(player.position, player.secondaryPosition)}
                     </span>
                     <div className="min-w-0">
                       <p className="truncate text-sm font-bold text-white">{player.name}</p>
@@ -342,9 +356,47 @@ export function ManagerSquadView() {
                       </p>
                     </div>
                   </div>
-                  <div className="shrink-0 text-right">
-                    <p className="text-base font-black text-emerald-400">{player.rating}</p>
-                    <p className="text-[10px] text-pitch-500">POT {player.potential}</p>
+                  <div className="shrink-0 flex items-center gap-1.5">
+                    {player.clubId === userClubId && !player.loan && (
+                      <div
+                        className="flex items-center gap-1"
+                        onClick={(e) => e.stopPropagation()}
+                        onKeyDown={(e) => e.stopPropagation()}
+                      >
+                        <button
+                          type="button"
+                          title={player.isTransferListed ? "Unlist transfer" : "List transfer"}
+                          onClick={() =>
+                            setTransferListed(player.id, !player.isTransferListed)
+                          }
+                          className={`rounded px-1.5 py-1 text-[10px] font-black border ${
+                            player.isTransferListed
+                              ? "border-amber-500/50 bg-amber-500/20 text-amber-200"
+                              : "border-pitch-700 bg-pitch-950 text-pitch-400"
+                          }`}
+                        >
+                          L
+                        </button>
+                        <button
+                          type="button"
+                          title={player.transfersBlocked ? "Unblock transfers" : "Block transfers"}
+                          onClick={() =>
+                            setTransfersBlocked(player.id, !player.transfersBlocked)
+                          }
+                          className={`rounded px-1.5 py-1 text-[10px] font-black border ${
+                            player.transfersBlocked
+                              ? "border-rose-500/50 bg-rose-500/20 text-rose-200"
+                              : "border-pitch-700 bg-pitch-950 text-pitch-400"
+                          }`}
+                        >
+                          B
+                        </button>
+                      </div>
+                    )}
+                    <div className="text-right">
+                      <p className="text-base font-black text-emerald-400">{player.rating}</p>
+                      <p className="text-[10px] text-pitch-500">POT {player.potential}</p>
+                    </div>
                   </div>
                 </div>
               </button>
@@ -392,7 +444,7 @@ export function ManagerSquadView() {
                     {/* Position */}
                     <td className="py-2.5 px-3">
                       <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300 border border-pitch-700">
-                        {formatPositionShort(player.position)}
+                        {formatPositionPair(player.position, player.secondaryPosition)}
                       </span>
                     </td>
 
@@ -663,7 +715,13 @@ export function ManagerSquadView() {
               <div className="flex justify-between items-start pb-3 border-b border-pitch-800">
                 <div>
                   <span className="rounded bg-pitch-800 px-2 py-0.5 text-xs font-bold text-pitch-300">
+                    {formatPositionPair(activePlayer.position, activePlayer.secondaryPosition)}
+                  </span>
+                  <span className="ml-2 text-[11px] text-pitch-400">
                     {formatPositionLabel(activePlayer.position)}
+                    {activePlayer.secondaryPosition
+                      ? ` / ${formatPositionLabel(activePlayer.secondaryPosition)}`
+                      : ""}
                   </span>
                   <h3 className="text-xl font-bold text-white mt-1">{activePlayer.name}</h3>
                   <p className="text-xs text-pitch-400">
@@ -771,7 +829,8 @@ export function ManagerSquadView() {
                     onClick={() =>
                       setTransferListed(activePlayer.id, !activePlayer.isTransferListed)
                     }
-                    className={`rounded-xl px-3 py-2 text-[11px] font-bold border ${
+                    disabled={!!activePlayer.transfersBlocked}
+                    className={`rounded-xl px-3 py-2 text-[11px] font-bold border disabled:opacity-40 ${
                       activePlayer.isTransferListed
                         ? "border-amber-500/50 bg-amber-500/15 text-amber-200"
                         : "border-pitch-700 bg-pitch-900 text-pitch-300"
@@ -789,6 +848,42 @@ export function ManagerSquadView() {
                     }`}
                   >
                     {activePlayer.isLoanListed ? "Listed for Loan ✓" : "List for Loan"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setTransfersBlocked(activePlayer.id, !activePlayer.transfersBlocked)
+                    }
+                    className={`rounded-xl px-3 py-2 text-[11px] font-bold border ${
+                      activePlayer.transfersBlocked
+                        ? "border-rose-500/50 bg-rose-500/15 text-rose-200"
+                        : "border-pitch-700 bg-pitch-900 text-pitch-300"
+                    }`}
+                  >
+                    {activePlayer.transfersBlocked ? "Transfers Blocked ✓" : "Block Transfers"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (
+                        confirm(
+                          `Release ${activePlayer.name}? They will become a free agent and leave your wage bill.`
+                        )
+                      ) {
+                        const res = releasePlayer(activePlayer.id);
+                        if (res.success) {
+                          setSelectedPlayer(null);
+                        } else {
+                          setInvestMessage({
+                            text: res.error || "Failed to release player.",
+                            isError: true,
+                          });
+                        }
+                      }
+                    }}
+                    className="rounded-xl px-3 py-2 text-[11px] font-bold border border-rose-700/60 bg-rose-950/40 text-rose-300 hover:bg-rose-900/50"
+                  >
+                    Release
                   </button>
                 </div>
               )}

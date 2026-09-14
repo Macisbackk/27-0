@@ -4,11 +4,14 @@ import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import {
   calculateSalaryCapUsage,
-  evaluateContractOffer,
   isContractUnderSixMonths,
 } from "@/lib/manager/contracts";
 import { CONTRACT_NEGOTIATION } from "@/lib/manager/rules";
-import { formatPositionShort, formatSquadRole, formatSquadTier } from "@/lib/manager";
+import {
+  formatPositionPair,
+  formatSquadRole,
+  formatSquadTier,
+} from "@/lib/manager";
 import type { ManagerPlayer, SquadRole } from "@/lib/manager/types";
 
 function parseMoneyDraft(raw: string, min: number): number {
@@ -229,7 +232,7 @@ export function ManagerContractsView() {
                 <tr key={player.id} className="hover:bg-pitch-800/40">
                   <td className="py-2.5 px-3">
                     <span className="rounded bg-pitch-800 px-1.5 py-0.5 text-[11px] font-bold text-pitch-300">
-                      {formatPositionShort(player.position)}
+                      {formatPositionPair(player.position, player.secondaryPosition)}
                     </span>
                   </td>
                   <td className="py-2.5 px-3 font-medium text-white">
@@ -343,23 +346,6 @@ export function ManagerContractsView() {
                   }
                   className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 font-bold"
                 />
-                {(() => {
-                  const club = state.clubs[userClubId];
-                  if (!club || !targetPlayer) return null;
-                  const terms = evaluateContractOffer(
-                    targetPlayer,
-                    club,
-                    0,
-                    offeredRole,
-                    { context: "renewal", contractYears: offeredYears }
-                  );
-                  return (
-                    <span className="text-[11px] text-pitch-500 mt-0.5 block">
-                      Agent ask ~£{terms.askingWage.toLocaleString()}/wk · likely accepts from £
-                      {terms.minimumAcceptableWage.toLocaleString()}/wk
-                    </span>
-                  );
-                })()}
               </div>
 
               <div className="grid grid-cols-2 gap-3">
