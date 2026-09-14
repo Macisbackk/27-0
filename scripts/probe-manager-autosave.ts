@@ -94,6 +94,30 @@ async function main() {
   console.log("after_direct_week", after?.calendar?.currentWeek);
   if (after?.calendar?.currentWeek !== 8) throw new Error("Direct save failed");
 
+  // 5) Mobile unload path: prepare + sync flush must leave a localStorage blob
+  // (IndexedDB is aborted on iOS pagehide; LS is the durable fallback).
+  const {
+    prepareManagerAutosavePayloadSync,
+    flushManagerLocalAutosaveBeforeUnload,
+    flushManagerLocalAutosaveSync,
+  } = await import("../src/lib/manager/storage");
+  prepareManagerAutosavePayloadSync(weekState(12));
+  flushManagerLocalAutosaveBeforeUnload();
+  flushManagerLocalAutosaveSync();
+  const lsKey = "27-0-manager-save-v3-autosave";
+  const lsRaw = store.get(lsKey);
+  if (!lsRaw) throw new Error("Unload flush did not write localStorage blob");
+  const lsParsed = JSON.parse(lsRaw) as { calendar?: { currentWeek?: number } };
+  console.log("flush_ls_week", lsParsed.calendar?.currentWeek);
+  if (lsParsed.calendar?.currentWeek !== 12) {
+    throw new Error("Unload flush wrote stale week");
+  }
+  const afterFlush = await loadManagerState("auto");
+  console.log("after_flush_week", afterFlush?.calendar?.currentWeek);
+  if (afterFlush?.calendar?.currentWeek !== 12) {
+    throw new Error("loadManagerState did not pick flush localStorage week");
+  }
+
   console.log("PASS");
 }
 

@@ -4,9 +4,16 @@
  * (including the human manager), resolve AI↔AI deals, and generate loan offers.
  */
 
-import { buildBestLineup } from "./database";
+import { buildBestLineup, isHalfbackPosition } from "./database";
 import { calculateSalaryCapUsage } from "./contracts";
-import { calculateMarketWage, calculateTransferFeeBetweenClubs, AI_CONTRACT_RETENTION, isRecentlySignedPlayer, isTransferWindowOpen } from "./rules";
+import {
+  calculateMarketWage,
+  calculateTransferFeeBetweenClubs,
+  AI_CONTRACT_RETENTION,
+  isRecentlySignedPlayer,
+  isTransferWindowOpen,
+  MATCHDAY_RULES,
+} from "./rules";
 import {
   submitTransferBid,
   evaluateSellingClubBid,
@@ -41,6 +48,52 @@ function countPositions(players: ManagerPlayer[]): Record<Position, number> {
     }
   }
   return counts;
+}
+
+/** Fit first-team + loaned-in players currently available to the club. */
+function availableFirstTeamPool(
+  state: ManagerState,
+  clubId: string
+): ManagerPlayer[] {
+  return Object.values(state.players).filter(
+    (p) =>
+      !p.injury &&
+      !p.suspension &&
+      ((p.clubId === clubId && p.squadTier === "first" && !p.loan) ||
+        p.loan?.destinationClubId === clubId)
+  );
+}
+
+function playerCoversPosition(player: ManagerPlayer, pos: Position): boolean {
+  if (isHalfbackPosition(pos)) {
+    return (
+      isHalfbackPosition(player.position) ||
+      isHalfbackPosition(player.secondaryPosition)
+    );
+  }
+  return player.position === pos || player.secondaryPosition === pos;
+}
+
+/**
+ * AI may loan a player *into* the human club only when:
+ * - the matchday first-team pool is short of 17, or
+ * - the loanee is a clear upgrade over existing cover at that position
+ *   (stops spam offers for depth the squad already has).
+ */
+function shouldOfferIncomingLoanToUser(
+  state: ManagerState,
+  userClubId: string,
+  candidate: ManagerPlayer
+): boolean {
+  const pool = availableFirstTeamPool(state, userClubId);
+  if (pool.length < MATCHDAY_RULES.SQUAD_SIZE) return true;
+
+  const samePos = pool.filter((p) => playerCoversPosition(p, candidate.position));
+  if (samePos.length === 0) return true;
+
+  const weakest = Math.min(...samePos.map((p) => p.rating));
+  // Must beat current depth — marginal equals are not worth a popup.
+  return candidate.rating > weakest;
 }
 
 function pushPendingLoanOffer(
@@ -99,6 +152,23 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
 
   // Settle leftover AI↔AI bids before new ones are created
   nextState = resolvePendingAiAiBids(nextState, userClubId);
+
+  // Drop incoming loan popups that aren't useful (full squad, no upgrade).
+  {
+    const pending = nextState.transfers.pendingLoanOffers || [];
+    const kept = pending.filter((o) => {
+      if (o.direction !== "in" || o.destinationClubId !== userClubId) return true;
+      const player = nextState.players[o.playerId];
+      if (!player) return false;
+      return shouldOfferIncomingLoanToUser(nextState, userClubId, player);
+    });
+    if (kept.length !== pending.length) {
+      nextState = {
+        ...nextState,
+        transfers: { ...nextState.transfers, pendingLoanOffers: kept },
+      };
+    }
+  }
 
   // Shuffle so the same clubs (e.g. Widnes) are not always last for weekly loan quotas
   const clubIds = Object.keys(nextState.clubs)
@@ -447,10 +517,13 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
         const champClubs = Object.values(nextState.clubs)
           .filter((c) => c.competitionId === "championship")
           .sort(() => Math.random() - 0.5);
-        const dest =
-          userLoanOffersThisWeek < 1 && Math.random() < 0.35
-            ? nextState.clubs[userClubId]
-            : champClubs[0];
+        const userWantsLoan =
+          userLoanOffersThisWeek < 1 &&
+          Math.random() < 0.35 &&
+          shouldOfferIncomingLoanToUser(nextState, userClubId, loanCandidate);
+        const dest = userWantsLoan
+          ? nextState.clubs[userClubId]
+          : champClubs[0];
 
         if (dest && dest.id === userClubId) {
           nextState = pushPendingLoanOffer(nextState, {

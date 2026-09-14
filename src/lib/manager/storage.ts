@@ -324,13 +324,17 @@ export function prepareManagerAutosavePayloadSync(state: ManagerState): {
 }
 
 /**
- * Kick IndexedDB put + meta for the cached autosave payload. Does not await and
- * does not dynamically import cloud code (callers flush cloud separately).
+ * Kick IndexedDB put + meta for the cached autosave payload.
+ * Always sync-writes localStorage first when the blob fits — iOS/Android often
+ * abort in-flight IndexedDB on visibility/pagehide, leaving meta ahead of the blob.
  */
 export function flushManagerLocalAutosaveSync(): void {
   const payload = latestAutosavePayload;
   if (!payload || typeof window === "undefined") return;
   writeMeta("auto", payload.meta);
+  if (payload.serialized.length <= LS_UNLOAD_FALLBACK_MAX_CHARS) {
+    tryLocalStorageWrite(payload.key, payload.serialized);
+  }
   void idbPut(payload.key, payload.serialized).catch(() => {
     tryLocalStorageWrite(payload.key, payload.serialized);
   });
@@ -421,8 +425,14 @@ export async function saveManagerState(
     try {
       await idbPut(key, serialized);
       wrote = true;
-      // Free localStorage quota left by older unpruned v3 blobs
-      clearLegacyLocalSave(slot);
+      // Numbered slots: free localStorage quota left by older unpruned blobs.
+      // Autosave keeps a sync localStorage mirror when it fits — critical on mobile
+      // when the tab is backgrounded before IndexedDB commits.
+      if (slot === "auto" && serialized.length <= LS_UNLOAD_FALLBACK_MAX_CHARS) {
+        tryLocalStorageWrite(key, serialized);
+      } else {
+        clearLegacyLocalSave(slot);
+      }
     } catch {
       // Fall back to pruned localStorage (early-season / test environments)
       clearLegacyLocalSave(slot);
@@ -538,35 +548,64 @@ function parseManagerStateRaw(raw: string): ManagerState | null {
   }
 }
 
+function careerProgressScore(state: ManagerState): number {
+  const phaseRank =
+    state.calendar.phase === "season_end"
+      ? 4
+      : state.calendar.phase === "playoffs"
+        ? 3
+        : state.calendar.phase === "regular_season"
+          ? 2
+          : 1;
+  const processed = state.calendar.processedWeekKeys?.length || 0;
+  return (
+    state.calendar.currentSeason * 1_000_000 +
+    state.calendar.currentWeek * 1_000 +
+    phaseRank * 100 +
+    Math.min(processed, 99)
+  );
+}
+
 export async function loadManagerState(
   slot: number | "auto" = 0
 ): Promise<ManagerState | null> {
   if (typeof window === "undefined") return null;
 
   const key = getSlotStorageKey(slot);
+  let idbState: ManagerState | null = null;
+  let lsState: ManagerState | null = null;
 
   try {
     const fromIdb = await idbGet(key);
-    if (fromIdb) {
-      const parsed = parseManagerStateRaw(fromIdb);
-      if (parsed) return parsed;
-    }
+    if (fromIdb) idbState = parseManagerStateRaw(fromIdb);
   } catch {
-    /* fall through to localStorage */
+    /* fall through */
   }
 
   try {
     const raw = window.localStorage.getItem(key);
-    if (!raw) return null;
-    const parsed = parseManagerStateRaw(raw);
-    // Migrate legacy localStorage blob into IndexedDB in the background
-    if (parsed) {
-      void saveManagerState(parsed, slot);
-    }
-    return parsed;
+    if (raw) lsState = parseManagerStateRaw(raw);
   } catch {
-    return null;
+    /* ignore */
   }
+
+  // Mobile pagehide often leaves a fresher localStorage blob than IndexedDB.
+  let chosen: ManagerState | null = null;
+  if (idbState && lsState) {
+    chosen =
+      careerProgressScore(lsState) >= careerProgressScore(idbState) ? lsState : idbState;
+  } else {
+    chosen = idbState || lsState;
+  }
+
+  if (!chosen) return null;
+
+  // If localStorage won (or IDB was empty), migrate into IndexedDB in the background.
+  if (chosen === lsState && (!idbState || careerProgressScore(lsState!) > careerProgressScore(idbState))) {
+    void saveManagerState(chosen, slot, { skipCloud: true });
+  }
+
+  return chosen;
 }
 
 /** Sync load for Node tests / environments without IndexedDB. */

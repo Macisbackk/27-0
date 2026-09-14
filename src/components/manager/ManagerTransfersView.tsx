@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import {
   calculateTransferFeeBetweenClubs,
@@ -16,8 +16,26 @@ import {
   formatSquadRole,
   formatBidStatus,
 } from "@/lib/manager";
-import type { ManagerPlayer, SquadRole } from "@/lib/manager/types";
+import type { CompetitionId, ManagerPlayer, SquadRole } from "@/lib/manager/types";
 import { isHalfbackPosition } from "@/lib/manager/database";
+
+const POSITIONS: { id: string; label: string }[] = [
+  { id: "ALL", label: "All Positions" },
+  { id: "FULLBACK", label: "Fullback (FB)" },
+  { id: "WING", label: "Wing (WG)" },
+  { id: "CENTRE", label: "Centre (CE)" },
+  { id: "HALFBACK", label: "Halfback (HB)" },
+  { id: "PROP", label: "Prop (PR)" },
+  { id: "HOOKER", label: "Hooker (HK)" },
+  { id: "SECOND_ROW", label: "Second-Row (SR)" },
+  { id: "LOOSE_FORWARD", label: "Loose Forward (LF)" },
+];
+
+type LeagueFilter = "ALL" | "super-league" | "championship";
+type AgeFilter = "ALL" | "u21" | "u23" | "u25" | "u28" | "28plus";
+type MinRatingFilter = "ALL" | "70" | "75" | "80" | "85";
+type ContractFilter = "ALL" | "expiring" | "1yr" | "2plus";
+type SortKey = "rating" | "potential" | "age" | "value" | "wage";
 
 function parseMoneyDraft(raw: string, min: number): number {
   const n = parseInt(raw.replace(/[^\d]/g, ""), 10);
@@ -35,11 +53,54 @@ function matchesPositionFilter(player: ManagerPlayer, posFilter: string): boolea
   return player.position === posFilter || player.secondaryPosition === posFilter;
 }
 
+function matchesAgeFilter(age: number, ageFilter: AgeFilter): boolean {
+  if (ageFilter === "ALL") return true;
+  if (ageFilter === "u21") return age <= 21;
+  if (ageFilter === "u23") return age <= 23;
+  if (ageFilter === "u25") return age <= 25;
+  if (ageFilter === "u28") return age <= 28;
+  return age >= 28;
+}
+
+function matchesContractFilter(
+  player: ManagerPlayer,
+  contractFilter: ContractFilter,
+  currentSeason: number
+): boolean {
+  if (contractFilter === "ALL") return true;
+  const expires = player.contract?.expiresSeason;
+  if (expires == null) return contractFilter === "expiring";
+  const yearsLeft = expires - currentSeason;
+  if (contractFilter === "expiring") return yearsLeft <= 0;
+  if (contractFilter === "1yr") return yearsLeft <= 1;
+  return yearsLeft >= 2;
+}
+
+function playerEstValue(
+  player: ManagerPlayer,
+  buyerComp: CompetitionId,
+  sellerComp: CompetitionId
+): number {
+  return calculateTransferFeeBetweenClubs(
+    player.rating,
+    player.potential,
+    player.age,
+    buyerComp,
+    sellerComp
+  );
+}
+
 export function ManagerTransfersView() {
   const { state, bidOnPlayer, signFreeAgentPlayer, decideOnIncomingBid } = useManager();
   const [subTab, setSubTab] = useState<"market" | "free_agents" | "bids" | "history">("market");
   const [posFilter, setPosFilter] = useState<string>("ALL");
+  const [leagueFilter, setLeagueFilter] = useState<LeagueFilter>("ALL");
+  const [clubFilter, setClubFilter] = useState<string>("ALL");
+  const [ageFilter, setAgeFilter] = useState<AgeFilter>("ALL");
+  const [minRatingFilter, setMinRatingFilter] = useState<MinRatingFilter>("ALL");
+  const [contractFilter, setContractFilter] = useState<ContractFilter>("ALL");
   const [listedFilter, setListedFilter] = useState<"all" | "listed">("all");
+  const [sortKey, setSortKey] = useState<SortKey>("rating");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Bid modal state — string drafts so typing is not clamped mid-keystroke
@@ -58,44 +119,156 @@ export function ManagerTransfersView() {
   useEffect(() => {
     setMarketVisibleCount(50);
     setFaVisibleCount(50);
-  }, [posFilter, searchQuery, listedFilter, subTab]);
+  }, [
+    posFilter,
+    leagueFilter,
+    clubFilter,
+    ageFilter,
+    minRatingFilter,
+    contractFilter,
+    searchQuery,
+    listedFilter,
+    sortKey,
+    subTab,
+  ]);
+
+  const userClubId = state?.manager.clubId ?? "";
+  const userClub = state ? state.clubs[userClubId] : null;
+  const buyerComp: CompetitionId = userClub?.competitionId || "super-league";
+  const currentSeason = state?.calendar.currentSeason ?? 2026;
+
+  const marketBase = useMemo(() => {
+    if (!state) return [];
+    return Object.values(state.players).filter(
+      (p) => p.clubId !== null && p.clubId !== userClubId && !p.isRetired && !p.transfersBlocked
+    );
+  }, [state, userClubId]);
+
+  const freeAgentBase = useMemo(() => {
+    if (!state) return [];
+    return Object.values(state.players).filter((p) => p.clubId === null && !p.isRetired);
+  }, [state]);
+
+  const clubOptions = useMemo(() => {
+    if (!state) return [];
+    const clubIds = new Set(marketBase.map((p) => p.clubId!).filter(Boolean));
+    return Array.from(clubIds)
+      .map((id) => state.clubs[id])
+      .filter(Boolean)
+      .sort((a, b) => {
+        if (a.competitionId !== b.competitionId) {
+          return a.competitionId === "super-league" ? -1 : 1;
+        }
+        return a.name.localeCompare(b.name);
+      });
+  }, [marketBase, state]);
+
+  const marketPlayers = useMemo(() => {
+    if (!state) return [];
+    let list = marketBase;
+
+    if (posFilter !== "ALL") {
+      list = list.filter((p) => matchesPositionFilter(p, posFilter));
+    }
+    if (leagueFilter !== "ALL") {
+      list = list.filter((p) => state.clubs[p.clubId!]?.competitionId === leagueFilter);
+    }
+    if (clubFilter !== "ALL") {
+      list = list.filter((p) => p.clubId === clubFilter);
+    }
+    if (ageFilter !== "ALL") {
+      list = list.filter((p) => matchesAgeFilter(p.age, ageFilter));
+    }
+    if (minRatingFilter !== "ALL") {
+      const min = Number(minRatingFilter);
+      list = list.filter((p) => p.rating >= min);
+    }
+    if (contractFilter !== "ALL") {
+      list = list.filter((p) => matchesContractFilter(p, contractFilter, currentSeason));
+    }
+    if (listedFilter === "listed") {
+      list = list.filter((p) => !!p.isTransferListed);
+    }
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter((p) => p.name.toLowerCase().includes(q));
+    }
+
+    return [...list].sort((a, b) => {
+      if (sortKey === "rating") {
+        const listedDiff = Number(!!b.isTransferListed) - Number(!!a.isTransferListed);
+        if (listedDiff !== 0) return listedDiff;
+        return b.rating - a.rating;
+      }
+      if (sortKey === "potential") return b.potential - a.potential;
+      if (sortKey === "age") return a.age - b.age;
+      if (sortKey === "wage") {
+        return (a.contract?.wageWeekly || 0) - (b.contract?.wageWeekly || 0);
+      }
+      const aVal = playerEstValue(
+        a,
+        buyerComp,
+        state.clubs[a.clubId!]?.competitionId || "super-league"
+      );
+      const bVal = playerEstValue(
+        b,
+        buyerComp,
+        state.clubs[b.clubId!]?.competitionId || "super-league"
+      );
+      return aVal - bVal;
+    });
+  }, [
+    state,
+    marketBase,
+    posFilter,
+    leagueFilter,
+    clubFilter,
+    ageFilter,
+    minRatingFilter,
+    contractFilter,
+    listedFilter,
+    searchQuery,
+    sortKey,
+    buyerComp,
+    currentSeason,
+  ]);
+
+  const freeAgents = useMemo(() => {
+    let list = freeAgentBase;
+
+    if (posFilter !== "ALL") {
+      list = list.filter((p) => matchesPositionFilter(p, posFilter));
+    }
+    if (ageFilter !== "ALL") {
+      list = list.filter((p) => matchesAgeFilter(p.age, ageFilter));
+    }
+    if (minRatingFilter !== "ALL") {
+      const min = Number(minRatingFilter);
+      list = list.filter((p) => p.rating >= min);
+    }
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter((p) => p.name.toLowerCase().includes(q));
+    }
+
+    return [...list].sort((a, b) => {
+      if (sortKey === "potential") return b.potential - a.potential;
+      if (sortKey === "age") return a.age - b.age;
+      if (sortKey === "wage" || sortKey === "value") return b.rating - a.rating;
+      return b.rating - a.rating;
+    });
+  }, [
+    freeAgentBase,
+    posFilter,
+    ageFilter,
+    minRatingFilter,
+    searchQuery,
+    sortKey,
+  ]);
 
   if (!state) return null;
 
-  const userClubId = state.manager.clubId;
-  const userClub = state.clubs[userClubId];
   const cap = calculateSalaryCapUsage(state, userClubId);
-
-  // Market players (players belonging to other clubs)
-  let marketPlayers = Object.values(state.players).filter(
-    (p) => p.clubId !== null && p.clubId !== userClubId && !p.isRetired && !p.transfersBlocked
-  );
-
-  // Free agents
-  let freeAgents = Object.values(state.players).filter(
-    (p) => p.clubId === null && !p.isRetired
-  );
-
-  // Apply filters
-  if (posFilter !== "ALL") {
-    marketPlayers = marketPlayers.filter((p) => matchesPositionFilter(p, posFilter));
-    freeAgents = freeAgents.filter((p) => matchesPositionFilter(p, posFilter));
-  }
-  if (listedFilter === "listed") {
-    marketPlayers = marketPlayers.filter((p) => !!p.isTransferListed);
-  }
-  if (searchQuery.trim()) {
-    const q = searchQuery.toLowerCase();
-    marketPlayers = marketPlayers.filter((p) => p.name.toLowerCase().includes(q));
-    freeAgents = freeAgents.filter((p) => p.name.toLowerCase().includes(q));
-  }
-
-  marketPlayers.sort((a, b) => {
-    const listedDiff = Number(!!b.isTransferListed) - Number(!!a.isTransferListed);
-    if (listedDiff !== 0) return listedDiff;
-    return b.rating - a.rating;
-  });
-  freeAgents.sort((a, b) => b.rating - a.rating);
 
   const openBidModal = (player: ManagerPlayer) => {
     const sellingComp = player.clubId
@@ -251,57 +424,197 @@ export function ManagerTransfersView() {
 
       {/* Filter Bar (for market & free agents) */}
       {(subTab === "market" || subTab === "free_agents") && (
-        <div className="flex flex-wrap items-center gap-2 rounded-xl bg-pitch-900/60 p-2.5 border border-pitch-800">
-          <input
-            type="text"
-            placeholder="Search player name..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="rounded-lg border border-pitch-700 bg-pitch-950 px-3 py-1.5 text-xs text-white placeholder-pitch-500 focus:outline-none focus:border-emerald-500"
-          />
-
-          <select
-            value={posFilter}
-            onChange={(e) => setPosFilter(e.target.value)}
-            className="rounded-lg border border-pitch-700 bg-pitch-950 px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
-          >
-            <option value="ALL">All Positions</option>
-            <option value="FULLBACK">Fullback</option>
-            <option value="WING">Wing</option>
-            <option value="CENTRE">Centre</option>
-            <option value="HALFBACK">Halfback</option>
-            <option value="PROP">Prop</option>
-            <option value="HOOKER">Hooker</option>
-            <option value="SECOND_ROW">Second-Row</option>
-            <option value="LOOSE_FORWARD">Loose Forward</option>
-          </select>
-
-          {subTab === "market" && (
-            <div className="flex items-center rounded-lg border border-pitch-700 overflow-hidden">
-              <button
-                type="button"
-                onClick={() => setListedFilter("all")}
-                className={`px-3 py-1.5 text-xs font-bold transition-colors ${
-                  listedFilter === "all"
-                    ? "bg-emerald-600 text-white"
-                    : "bg-pitch-950 text-pitch-400 hover:text-white"
-                }`}
-              >
-                All
-              </button>
-              <button
-                type="button"
-                onClick={() => setListedFilter("listed")}
-                className={`px-3 py-1.5 text-xs font-bold transition-colors border-l border-pitch-700 ${
-                  listedFilter === "listed"
-                    ? "bg-emerald-600 text-white"
-                    : "bg-pitch-950 text-pitch-400 hover:text-white"
-                }`}
-              >
-                Listed only
-              </button>
+        <div className="rounded-2xl border border-pitch-800 bg-pitch-900/80 p-3.5 shadow">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
+            <div className="col-span-2 sm:col-span-1">
+              <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">
+                Search
+              </label>
+              <input
+                type="text"
+                placeholder="Player name..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs text-white placeholder-pitch-500 focus:outline-none focus:border-emerald-500"
+              />
             </div>
-          )}
+
+            <div>
+              <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">
+                Position
+              </label>
+              <select
+                value={posFilter}
+                onChange={(e) => setPosFilter(e.target.value)}
+                className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+              >
+                {POSITIONS.map((pos) => (
+                  <option key={pos.id} value={pos.id}>
+                    {pos.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {subTab === "market" && (
+              <div>
+                <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">
+                  League
+                </label>
+                <select
+                  value={leagueFilter}
+                  onChange={(e) => {
+                    setLeagueFilter(e.target.value as LeagueFilter);
+                    setClubFilter("ALL");
+                  }}
+                  className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                >
+                  <option value="ALL">All Leagues</option>
+                  <option value="super-league">Super League</option>
+                  <option value="championship">Championship</option>
+                </select>
+              </div>
+            )}
+
+            {subTab === "market" && (
+              <div>
+                <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">
+                  Club
+                </label>
+                <select
+                  value={clubFilter}
+                  onChange={(e) => setClubFilter(e.target.value)}
+                  className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                >
+                  <option value="ALL">All Clubs</option>
+                  {clubOptions
+                    .filter(
+                      (c) => leagueFilter === "ALL" || c.competitionId === leagueFilter
+                    )
+                    .map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name} (
+                        {c.competitionId === "super-league" ? "SL" : "Champ"})
+                      </option>
+                    ))}
+                </select>
+              </div>
+            )}
+
+            <div>
+              <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">
+                Age
+              </label>
+              <select
+                value={ageFilter}
+                onChange={(e) => setAgeFilter(e.target.value as AgeFilter)}
+                className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+              >
+                <option value="ALL">Any Age</option>
+                <option value="u21">U21</option>
+                <option value="u23">U23</option>
+                <option value="u25">U25</option>
+                <option value="u28">U28</option>
+                <option value="28plus">28+</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">
+                Min OVR
+              </label>
+              <select
+                value={minRatingFilter}
+                onChange={(e) => setMinRatingFilter(e.target.value as MinRatingFilter)}
+                className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+              >
+                <option value="ALL">Any Rating</option>
+                <option value="70">70+</option>
+                <option value="75">75+</option>
+                <option value="80">80+</option>
+                <option value="85">85+</option>
+              </select>
+            </div>
+
+            {subTab === "market" && (
+              <div>
+                <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">
+                  Contract
+                </label>
+                <select
+                  value={contractFilter}
+                  onChange={(e) => setContractFilter(e.target.value as ContractFilter)}
+                  className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+                >
+                  <option value="ALL">Any Contract</option>
+                  <option value="expiring">Expiring this season</option>
+                  <option value="1yr">1 year left or less</option>
+                  <option value="2plus">2+ years left</option>
+                </select>
+              </div>
+            )}
+
+            <div>
+              <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">
+                Sort By
+              </label>
+              <select
+                value={sortKey}
+                onChange={(e) => setSortKey(e.target.value as SortKey)}
+                className="w-full rounded-xl border border-pitch-700 bg-pitch-950 px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
+              >
+                <option value="rating">Overall Rating</option>
+                <option value="potential">Potential</option>
+                <option value="age">Youngest First</option>
+                {subTab === "market" && <option value="value">Lowest Value</option>}
+                {subTab === "market" && <option value="wage">Lowest Wage</option>}
+              </select>
+            </div>
+
+            {subTab === "market" && (
+              <div className="col-span-2 sm:col-span-1 flex flex-col justify-end">
+                <label className="hidden sm:block text-[11px] font-semibold text-pitch-400 mb-1">
+                  Listed
+                </label>
+                <div className="flex items-center rounded-xl border border-pitch-700 overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => setListedFilter("all")}
+                    className={`flex-1 px-3 py-2 text-xs font-bold transition-colors ${
+                      listedFilter === "all"
+                        ? "bg-emerald-600 text-white"
+                        : "bg-pitch-950 text-pitch-400 hover:text-white"
+                    }`}
+                  >
+                    All
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setListedFilter("listed")}
+                    className={`flex-1 px-3 py-2 text-xs font-bold transition-colors border-l border-pitch-700 ${
+                      listedFilter === "listed"
+                        ? "bg-emerald-600 text-white"
+                        : "bg-pitch-950 text-pitch-400 hover:text-white"
+                    }`}
+                  >
+                    Listed
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-3 flex items-center justify-between gap-2 text-[11px] text-pitch-400 border-t border-pitch-800/60 pt-2.5">
+            <span className="truncate">
+              {subTab === "market" ? marketPlayers.length : freeAgents.length} players
+            </span>
+            <span className="shrink-0">
+              Cap{" "}
+              <strong className="text-emerald-400">
+                £{cap.availableCapWeekly.toLocaleString()}/wk
+              </strong>
+            </span>
+          </div>
         </div>
       )}
 

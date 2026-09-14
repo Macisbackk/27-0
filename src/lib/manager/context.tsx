@@ -535,6 +535,8 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
       const current = stateRef.current;
       if (!current || current.settings?.autoSaveEnabled === false) return;
       const prepared = prepareManagerAutosavePayloadSync(current);
+      // Sync LS first (iOS aborts IDB on background), then kick IDB.
+      flushManagerLocalAutosaveBeforeUnload();
       flushManagerLocalAutosaveSync();
       if (prepared) {
         scheduleManagerCloudPush("auto", prepared.pruned, prepared.meta);
@@ -1241,6 +1243,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     // Module-level promise so Club Select / auth hydrate await before cloud sync
     if (current && current.settings?.autoSaveEnabled !== false) {
       const prepared = prepareManagerAutosavePayloadSync(current);
+      flushManagerLocalAutosaveBeforeUnload();
       flushManagerLocalAutosaveSync();
       if (prepared) {
         scheduleManagerCloudPush("auto", prepared.pruned, prepared.meta);
