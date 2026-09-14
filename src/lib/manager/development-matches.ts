@@ -20,16 +20,23 @@ function tierStrength(players: ManagerPlayer[]): number {
 
 function sampleScorePair(ourRating: number, theirRating: number): { us: number; them: number } {
   const diff = ourRating - theirRating;
-  const base = 18 + Math.random() * 14;
-  const swing = diff * 0.55 + (Math.random() - 0.5) * 10;
+  // Wider base + swing so academy/reserves results vary more week to week
+  const base = 12 + Math.random() * 28;
+  const swing = diff * 0.85 + (Math.random() - 0.5) * 22;
   let us = Math.round(base + swing);
-  let them = Math.round(base - swing * 0.85);
-  us = Math.max(0, Math.min(56, us));
-  them = Math.max(0, Math.min(56, them));
+  let them = Math.round(base - swing * 0.9 + (Math.random() - 0.5) * 12);
+  // Occasional blowout / low-scoring upset
+  if (Math.random() < 0.12) {
+    const blowout = 8 + Math.floor(Math.random() * 20);
+    if (Math.random() < 0.5) us += blowout;
+    else them += blowout;
+  }
+  us = Math.max(0, Math.min(72, us));
+  them = Math.max(0, Math.min(72, them));
   // Avoid draws most of the time for youth grades
   if (us === them) {
-    if (Math.random() < 0.7) us += Math.random() < 0.5 ? 2 : 4;
-    else them += Math.random() < 0.5 ? 2 : 4;
+    if (Math.random() < 0.75) us += Math.random() < 0.5 ? 2 : 6;
+    else them += Math.random() < 0.5 ? 2 : 6;
   }
   return {
     us: snapToRLScore(us, false),

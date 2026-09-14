@@ -35,14 +35,14 @@ export function ManagerHeader() {
           {/* Left: Club Identity & Season Context */}
           <div className="flex items-center gap-3 min-w-0">
             <div
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl font-bold shadow-md text-sm border border-white/20"
+              className="h-10 w-10 shrink-0 rounded-xl shadow-md border border-white/20 overflow-hidden"
               style={{
-                backgroundColor: club?.primaryColor || "#1E4D9B",
-                color: club?.textColour || "#FFFFFF",
+                background: `linear-gradient(135deg, ${club?.primaryColor || "#1E4D9B"} 50%, ${
+                  club?.secondaryColor || club?.primaryColor || "#0B1F3A"
+                } 50%)`,
               }}
-            >
-              {club?.abbreviation || "RL"}
-            </div>
+              aria-hidden
+            />
             <div className="min-w-0">
               <div className="flex items-center gap-2">
                 <h1 className="truncate text-sm font-bold text-white sm:text-lg">

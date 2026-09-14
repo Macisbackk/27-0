@@ -62,9 +62,19 @@ export function ManagerSquadView() {
   const unavailableCount = allClubPlayers.filter((p) => p.injury || p.suspension).length;
 
   const handleRenewAllCurrentTier = () => {
-    if (activeTier !== "academy" && activeTier !== "reserves") return;
-    const label = activeTier === "academy" ? "Academy" : "Reserves";
-    const count = activeTier === "academy" ? academyCount : reservesCount;
+    if (activeTier !== "academy" && activeTier !== "reserves" && activeTier !== "first") return;
+    const label =
+      activeTier === "academy"
+        ? "Academy"
+        : activeTier === "reserves"
+          ? "Reserves"
+          : "First Team";
+    const count =
+      activeTier === "academy"
+        ? academyCount
+        : activeTier === "reserves"
+          ? reservesCount
+          : firstCount;
     if (count === 0) {
       setRenewMsg({ text: `No ${label} players to renew.`, isError: true });
       return;
@@ -243,21 +253,43 @@ export function ManagerSquadView() {
         </div>
       )}
 
-      {(activeTier === "academy" || activeTier === "reserves") &&
-        devPanel === "roster" && (
+      {(activeTier === "academy" || activeTier === "reserves" || activeTier === "first") &&
+        (activeTier === "first" || devPanel === "roster") && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-xl border border-pitch-800 bg-pitch-900/60 px-3 py-2.5">
           <p className="text-[11px] text-pitch-400">
-            Bulk-extend every {activeTier === "academy" ? "Academy" : "Reserves"} contract by 2 years at
-            current wages (or the minimum they will accept).
+            Bulk-extend every{" "}
+            {activeTier === "academy"
+              ? "Academy"
+              : activeTier === "reserves"
+                ? "Reserves"
+                : "First Team"}{" "}
+            contract by 2 years at current wages (or the minimum they will accept).
           </p>
           <button
             type="button"
             onClick={handleRenewAllCurrentTier}
-            disabled={(activeTier === "academy" ? academyCount : reservesCount) === 0}
+            disabled={
+              (activeTier === "academy"
+                ? academyCount
+                : activeTier === "reserves"
+                  ? reservesCount
+                  : firstCount) === 0
+            }
             className="shrink-0 rounded-lg bg-emerald-600/20 px-3.5 py-1.5 text-xs font-bold text-emerald-300 border border-emerald-500/40 hover:bg-emerald-600/40 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Renew All {activeTier === "academy" ? "Academy" : "Reserves"} (
-            {activeTier === "academy" ? academyCount : reservesCount})
+            Renew All{" "}
+            {activeTier === "academy"
+              ? "Academy"
+              : activeTier === "reserves"
+                ? "Reserves"
+                : "First Team"}{" "}
+            (
+            {activeTier === "academy"
+              ? academyCount
+              : activeTier === "reserves"
+                ? reservesCount
+                : firstCount}
+            )
           </button>
         </div>
       )}

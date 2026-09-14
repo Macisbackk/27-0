@@ -100,7 +100,10 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
   // Settle leftover AI↔AI bids before new ones are created
   nextState = resolvePendingAiAiBids(nextState, userClubId);
 
-  const clubIds = Object.keys(nextState.clubs).filter((id) => id !== userClubId);
+  // Shuffle so the same clubs (e.g. Widnes) are not always last for weekly loan quotas
+  const clubIds = Object.keys(nextState.clubs)
+    .filter((id) => id !== userClubId)
+    .sort(() => Math.random() - 0.5);
 
   for (const clubId of clubIds) {
     const club = nextState.clubs[clubId];
@@ -439,13 +442,13 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
           !p.loan
       );
       if (loanCandidate) {
-        const champClubs = Object.values(nextState.clubs).filter(
-          (c) => c.competitionId === "championship"
-        );
+        const champClubs = Object.values(nextState.clubs)
+          .filter((c) => c.competitionId === "championship")
+          .sort(() => Math.random() - 0.5);
         const dest =
           userLoanOffersThisWeek < 1 && Math.random() < 0.35
             ? nextState.clubs[userClubId]
-            : champClubs[Math.floor(Math.random() * champClubs.length)];
+            : champClubs[0];
 
         if (dest && dest.id === userClubId) {
           nextState = pushPendingLoanOffer(nextState, {
@@ -483,18 +486,47 @@ export function processAiDecisionsForWeek(state: ManagerState): ManagerState {
       userLoanOffersThisWeek < 2 &&
       Math.random() < 0.4
     ) {
-      const userFringe = Object.values(nextState.players).filter(
-        (p) =>
-          p.clubId === userClubId &&
-          !p.loan &&
-          !p.injury &&
-          p.age <= 24 &&
-          p.rating >= 62 &&
-          p.rating <= 78 &&
-          (p.squadTier === "reserves" ||
-            p.squadTier === "academy" ||
-            (p.squadTier === "first" && p.rating < 74))
-      );
+      const userClub = nextState.clubs[userClubId];
+      const userIsChamp = userClub?.competitionId === "championship";
+      const userIsSL = userClub?.competitionId === "super-league";
+      const askerIsSL = club.competitionId === "super-league";
+      const askerBase = askerIsSL
+        ? club.reputation >= 4
+          ? 78
+          : 72
+        : club.reputation === 3
+          ? 68
+          : 62;
+
+      const userFringe = Object.values(nextState.players).filter((p) => {
+        if (
+          p.clubId !== userClubId ||
+          p.loan ||
+          p.injury ||
+          p.age > 24 ||
+          p.rating < 62 ||
+          p.rating > 78
+        ) {
+          return false;
+        }
+        const tierOk =
+          p.squadTier === "reserves" ||
+          p.squadTier === "academy" ||
+          (p.squadTier === "first" && p.rating < 74);
+        if (!tierOk) return false;
+
+        // SL askers: only from Champ users, or competitive SL fringe (≥70 and near asker level)
+        if (askerIsSL) {
+          if (userIsChamp) return true;
+          if (userIsSL) {
+            return p.rating >= 70 && p.rating >= askerBase - 3;
+          }
+          return false;
+        }
+        // Champ askers get equal chance via shuffled club order; can take Champ fringe (or SL youth)
+        return true;
+      });
+
       if (userFringe.length > 0) {
         const pick = userFringe[Math.floor(Math.random() * userFringe.length)];
         const parentComp = nextState.clubs[userClubId]?.competitionId;

@@ -82,7 +82,10 @@ async function hydrateAchievementsFromCloud(): Promise<void> {
 
 async function hydrateManagerSavesFromCloud(): Promise<void> {
   try {
-    const { syncManagerSavesWithCloud } = await import("@/lib/manager/saves-cloud");
+    const { awaitManagerExitFlush, syncManagerSavesWithCloud } = await import(
+      "@/lib/manager/saves-cloud"
+    );
+    await awaitManagerExitFlush();
     await syncManagerSavesWithCloud();
   } catch (err) {
     console.error("[auth] manager save sync failed:", err);

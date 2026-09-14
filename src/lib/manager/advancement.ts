@@ -7,7 +7,7 @@
  * - Complete protection against duplicate button clicks, React rerenders, and race conditions.
  */
 
-import { updateStandingsForFixture, schedulePostSeasonAndCupFixtures } from "./competitions";
+import { updateStandingsForFixture, schedulePostSeasonAndCupFixtures, needsFriendlySelection } from "./competitions";
 import { processWeeklyFinances } from "./finances";
 import { tickActiveLoans } from "./loans";
 import { simulateManagerMatch } from "./match";
@@ -57,6 +57,13 @@ export function canAdvanceWeek(state: ManagerState): {
   const weekKey = getWeekKey(state.calendar.currentSeason, state.calendar.currentWeek);
   if (state.calendar.processedWeekKeys.includes(weekKey)) {
     return { allowed: false, error: "This week has already been processed." };
+  }
+
+  if (needsFriendlySelection(state) && state.calendar.currentWeek <= 2) {
+    return {
+      allowed: false,
+      error: "Select your three pre-season friendly opponents before advancing.",
+    };
   }
 
   if (!userClubHasMatchThisWeek(state)) {

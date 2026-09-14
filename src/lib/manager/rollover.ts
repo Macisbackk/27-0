@@ -7,11 +7,12 @@
  * - Contract expiries & retirements.
  * - Player ageing & development/decline curves.
  * - Youth intake generation for all academies.
+ * - Reserves trialist intake each season.
  * - Fresh season fixtures and financial budgets.
  */
 
-import { generateFixturesForCompetition, sortStandings } from "./competitions";
-import { createGeneratedPlayer, toClubId, ensureClubSquadDepth } from "./database";
+import { generateFixturesForCompetition, pickPendingFriendlyOpponents, sortStandings } from "./competitions";
+import { createGeneratedPlayer, toClubId, ensureClubSquadDepth, getClubBaseStrength } from "./database";
 import { generateRandomPlayerName, registerOccupiedPlayerNames } from "./names";
 import { cleanAllClubLineups } from "./squad";
 import { forceRetainAiExpiringContracts } from "./ai";
@@ -926,6 +927,49 @@ export function rolloverSeason(state: ManagerState): {
 
       updatedPlayers[youth.id] = youth;
     }
+
+    // Reserves trialist intake: short-term senior depth (ages 19–22)
+    const clubStrength = getClubBaseStrength(
+      club.competitionId,
+      club.reputation,
+      clubId
+    );
+    const trialistCount = 2 + Math.floor(Math.random() * 3); // 2–4
+    for (let i = 0; i < trialistCount; i++) {
+      const pos = STARTING_POSITIONS[Math.floor(Math.random() * STARTING_POSITIONS.length)];
+      const age = 19 + Math.floor(Math.random() * 4); // 19–22
+      const rating = Math.max(
+        48,
+        Math.round(clubStrength - 8 + (Math.random() * 4 - 2))
+      );
+      const potential = Math.min(
+        92,
+        Math.max(rating + 4, rating + 6 + Math.floor(Math.random() * 8))
+      );
+      const { fullName, nationality } = generateRandomPlayerName(clubId);
+      const trialist = createGeneratedPlayer(
+        fullName,
+        pos,
+        age,
+        rating,
+        potential,
+        clubId,
+        "reserves",
+        club.competitionId,
+        nationality
+      );
+      updatedPlayers[trialist.id] = {
+        ...trialist,
+        contract: trialist.contract
+          ? {
+              ...trialist.contract,
+              // Short trialist deals (1 season)
+              expiresSeason: newSeason + 1,
+              role: "rotation",
+            }
+          : null,
+      };
+    }
   }
 
   // 4. Generate New Season Competitions & Fixtures
@@ -949,7 +993,8 @@ export function rolloverSeason(state: ManagerState): {
     "Challenge Cup",
     0,
     [...slClubIds, ...champClubIds],
-    newSeason
+    newSeason,
+    state.manager.clubId
   );
   const friendliesComp = generateFixturesForCompetition(
     "friendlies",
@@ -957,6 +1002,11 @@ export function rolloverSeason(state: ManagerState): {
     0,
     [state.manager.clubId],
     newSeason
+  );
+  const pendingFriendlyOpponents = pickPendingFriendlyOpponents(
+    Object.keys(updatedClubs),
+    state.manager.clubId,
+    6
   );
 
   // 5. Clean Lineups for all clubs
@@ -1012,6 +1062,8 @@ export function rolloverSeason(state: ManagerState): {
       activeLoans: [],
       pendingLoanOffers: [],
     },
+    pendingFriendlyOpponents,
+    friendlyFixturesConfirmed: false,
     seasonHistory: [...(state.seasonHistory || []), historyRecord],
     inbox: {
       messages: [
@@ -1022,7 +1074,7 @@ export function rolloverSeason(state: ManagerState): {
           dateStr: `1 Feb ${newSeason}`,
           sender: "Board of Directors",
           subject: `Season ${newSeason} Has Begun`,
-          body: `Welcome to the ${newSeason} season! The squad has returned for pre-season training. Our new youth academy intake has joined the club. Please review the updated board expectations and prepare for our upcoming friendlies.`,
+          body: `Welcome to the ${newSeason} season! The squad has returned for pre-season training. Our new youth academy intake has joined the club. Please review the updated board expectations and pick your pre-season friendly opponents.`,
           category: "board",
           isRead: false,
         },

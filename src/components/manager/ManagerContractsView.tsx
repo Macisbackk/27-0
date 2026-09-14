@@ -44,6 +44,7 @@ export function ManagerContractsView() {
 
   const academyCount = allClubPlayers.filter((p) => p.squadTier === "academy").length;
   const reservesCount = allClubPlayers.filter((p) => p.squadTier === "reserves").length;
+  const firstCount = allClubPlayers.filter((p) => p.squadTier === "first").length;
 
   const openRenewalModal = (player: ManagerPlayer) => {
     const currentWage = player.contract?.wageWeekly || 1000;
@@ -76,9 +77,11 @@ export function ManagerContractsView() {
     }
   };
 
-  const handleRenewAll = (tier: "academy" | "reserves") => {
-    const label = tier === "academy" ? "Academy" : "Reserves";
-    const count = tier === "academy" ? academyCount : reservesCount;
+  const handleRenewAll = (tier: "academy" | "reserves" | "first") => {
+    const label =
+      tier === "academy" ? "Academy" : tier === "reserves" ? "Reserves" : "First Team";
+    const count =
+      tier === "academy" ? academyCount : tier === "reserves" ? reservesCount : firstCount;
     if (count === 0) {
       setBulkMsg({ text: `No ${label} players to renew.`, isError: true });
       return;
@@ -116,6 +119,14 @@ export function ManagerContractsView() {
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => handleRenewAll("first")}
+            disabled={firstCount === 0}
+            className="rounded-lg bg-emerald-600/20 px-3.5 py-1.5 text-xs font-bold text-emerald-300 border border-emerald-500/40 hover:bg-emerald-600/40 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Renew All First Team ({firstCount})
+          </button>
           <button
             type="button"
             onClick={() => handleRenewAll("academy")}

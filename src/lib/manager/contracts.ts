@@ -370,14 +370,14 @@ export interface BulkRenewalResult {
 }
 
 /**
- * Bulk-renews contracts for all Academy and/or Reserves players at a club.
+ * Bulk-renews contracts for Academy, Reserves, and/or First Team players at a club.
  * Keeps current wage when the player will accept it; otherwise bumps to their
  * minimum acceptable. Preserves squad role. Uses a single summary inbox message.
  */
 export function renewAllSquadTierContracts(
   state: ManagerState,
   clubId: string,
-  tiers: Array<"academy" | "reserves">,
+  tiers: Array<"academy" | "reserves" | "first">,
   contractYears = 2
 ): BulkRenewalResult {
   const club = state.clubs[clubId];
@@ -400,7 +400,7 @@ export function renewAllSquadTierContracts(
       p.contract &&
       !p.isRetired &&
       p.squadTier &&
-      tierSet.has(p.squadTier as "academy" | "reserves")
+      tierSet.has(p.squadTier as "academy" | "reserves" | "first")
   );
 
   if (candidates.length === 0) {
@@ -411,7 +411,7 @@ export function renewAllSquadTierContracts(
       failedCount: 0,
       renewedNames: [],
       failedNames: [],
-      error: "No Academy/Reserves players available to renew.",
+      error: "No players available to renew for the selected squad tier(s).",
     };
   }
 
@@ -429,7 +429,11 @@ export function renewAllSquadTierContracts(
   for (const player of sorted) {
     const role: SquadRole =
       player.contract?.role ||
-      (player.squadTier === "academy" ? "youth" : "rotation");
+      (player.squadTier === "academy"
+        ? "youth"
+        : player.squadTier === "reserves"
+          ? "rotation"
+          : "first_team");
     const currentWage = player.contract?.wageWeekly || 0;
     const evaluation = evaluateContractOffer(player, club, currentWage, role, {
       context: "renewal",
@@ -469,11 +473,17 @@ export function renewAllSquadTierContracts(
   }
 
   const tierLabel =
-    tiers.length === 2
-      ? "Academy & Reserves"
+    tiers.length > 1
+      ? tiers
+          .map((t) =>
+            t === "academy" ? "Academy" : t === "reserves" ? "Reserves" : "First Team"
+          )
+          .join(" & ")
       : tiers[0] === "academy"
         ? "Academy"
-        : "Reserves";
+        : tiers[0] === "reserves"
+          ? "Reserves"
+          : "First Team";
 
   const summaryBody = [
     `${renewedNames.length} ${tierLabel} contract${renewedNames.length === 1 ? "" : "s"} extended by ${contractYears} year${contractYears === 1 ? "" : "s"} (until end of ${expiresSeason}).`,

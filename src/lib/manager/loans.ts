@@ -121,6 +121,10 @@ export function createLoanAgreement(
     loan: loanInfo,
   };
 
+  const userClubId = state.manager.clubId;
+  const involvesUser =
+    parentClubId === userClubId || destinationClubId === userClubId;
+
   const nextState: ManagerState = {
     ...state,
     players: {
@@ -135,24 +139,26 @@ export function createLoanAgreement(
       ...state.transfers,
       activeLoans: [activeLoan, ...state.transfers.activeLoans],
     },
-    inbox: {
-      ...state.inbox,
-      messages: [
-        {
-          id: `inbox_loan_start_${playerId}_${Date.now()}`,
-          season: currentSeason,
-          week: currentWeek,
-          dateStr: `Week ${currentWeek}`,
-          sender: "Loan Coordinator",
-          subject: `Loan Completed: ${player.name} to ${destClub.name}`,
-          body: `${player.name} has joined ${destClub.name} on a ${totalWeeks}-week loan from ${parentClub.name}. (${wageContributionPct}% wage contribution).`,
-          category: "loan",
-          isRead: false,
-        },
-        ...state.inbox.messages,
-      ],
-      unreadCount: state.inbox.unreadCount + 1,
-    },
+    inbox: involvesUser
+      ? {
+          ...state.inbox,
+          messages: [
+            {
+              id: `inbox_loan_start_${playerId}_${Date.now()}`,
+              season: currentSeason,
+              week: currentWeek,
+              dateStr: `Week ${currentWeek}`,
+              sender: "Loan Coordinator",
+              subject: `Loan Completed: ${player.name} to ${destClub.name}`,
+              body: `${player.name} has joined ${destClub.name} on a ${totalWeeks}-week loan from ${parentClub.name}. (${wageContributionPct}% wage contribution).`,
+              category: "loan",
+              isRead: false,
+            },
+            ...state.inbox.messages,
+          ],
+          unreadCount: state.inbox.unreadCount + 1,
+        }
+      : state.inbox,
   };
 
   return { success: true, state: nextState, loan: activeLoan };
@@ -203,6 +209,9 @@ export function recallLoan(
 
   const currentSeason = state.calendar.currentSeason;
   const currentWeek = state.calendar.currentWeek;
+  const userClubId = state.manager.clubId;
+  const involvesUser =
+    parentClubId === userClubId || destinationClubId === userClubId;
 
   const nextState: ManagerState = {
     ...state,
@@ -215,24 +224,26 @@ export function recallLoan(
       ...state.transfers,
       activeLoans: updatedActiveLoans,
     },
-    inbox: {
-      ...state.inbox,
-      messages: [
-        {
-          id: `inbox_loan_recalled_${playerId}_${Date.now()}`,
-          season: currentSeason,
-          week: currentWeek,
-          dateStr: `Week ${currentWeek}`,
-          sender: "Loan Coordinator",
-          subject: `Loan Recalled: ${player.name}`,
-          body: `${player.name} has been recalled from ${destClub?.name || "loan"} and has returned to ${parentClub?.name || "parent squad"}.`,
-          category: "loan",
-          isRead: false,
-        },
-        ...state.inbox.messages,
-      ],
-      unreadCount: state.inbox.unreadCount + 1,
-    },
+    inbox: involvesUser
+      ? {
+          ...state.inbox,
+          messages: [
+            {
+              id: `inbox_loan_recalled_${playerId}_${Date.now()}`,
+              season: currentSeason,
+              week: currentWeek,
+              dateStr: `Week ${currentWeek}`,
+              sender: "Loan Coordinator",
+              subject: `Loan Recalled: ${player.name}`,
+              body: `${player.name} has been recalled from ${destClub?.name || "loan"} and has returned to ${parentClub?.name || "parent squad"}.`,
+              category: "loan",
+              isRead: false,
+            },
+            ...state.inbox.messages,
+          ],
+          unreadCount: state.inbox.unreadCount + 1,
+        }
+      : state.inbox,
   };
 
   return { success: true, state: nextState };
@@ -282,6 +293,8 @@ export function tickActiveLoans(state: ManagerState): ManagerState {
     if (!p || !p.loan) continue;
     const destClub = nextState.clubs[p.loan.destinationClubId];
     const parentClub = nextState.clubs[p.loan.parentClubId];
+    const parentClubId = p.loan.parentClubId;
+    const destinationClubId = p.loan.destinationClubId;
 
     // Clean destination lineup
     let clubsUpdate = nextState.clubs;
@@ -311,25 +324,34 @@ export function tickActiveLoans(state: ManagerState): ManagerState {
         ...nextState.transfers,
         activeLoans: nextState.transfers.activeLoans.filter((l) => l.playerId !== pid),
       },
-      inbox: {
-        ...nextState.inbox,
-        messages: [
-          {
-            id: `inbox_loan_expired_${pid}_${Date.now()}`,
-            season: nextState.calendar.currentSeason,
-            week: nextState.calendar.currentWeek,
-            dateStr: `Week ${nextState.calendar.currentWeek}`,
-            sender: "Loan Coordinator",
-            subject: `Loan Expired: ${p.name}`,
-            body: `${p.name}'s loan spell at ${destClub?.name || "destination club"} has concluded. The player has returned to ${parentClub?.name || "parent squad"}.`,
-            category: "loan",
-            isRead: false,
-          },
-          ...nextState.inbox.messages,
-        ],
-        unreadCount: nextState.inbox.unreadCount + 1,
-      },
     };
+
+    const userClubId = nextState.manager.clubId;
+    const involvesUser =
+      parentClubId === userClubId || destinationClubId === userClubId;
+    if (involvesUser) {
+      nextState = {
+        ...nextState,
+        inbox: {
+          ...nextState.inbox,
+          messages: [
+            {
+              id: `inbox_loan_expired_${pid}_${Date.now()}`,
+              season: nextState.calendar.currentSeason,
+              week: nextState.calendar.currentWeek,
+              dateStr: `Week ${nextState.calendar.currentWeek}`,
+              sender: "Loan Coordinator",
+              subject: `Loan Expired: ${p.name}`,
+              body: `${p.name}'s loan spell at ${destClub?.name || "destination club"} has concluded. The player has returned to ${parentClub?.name || "parent squad"}.`,
+              category: "loan",
+              isRead: false,
+            },
+            ...nextState.inbox.messages,
+          ],
+          unreadCount: nextState.inbox.unreadCount + 1,
+        },
+      };
+    }
   }
 
   return nextState;
@@ -554,4 +576,88 @@ export function terminateIncomingLoan(
   };
 
   return { success: true, state: nextState };
+}
+
+export type ExpiringLoanAlert = {
+  key: string;
+  playerId: string;
+  playerName: string;
+  direction: "in" | "out";
+  otherClubId: string;
+  weeksRemaining: number;
+  canRecall: boolean;
+};
+
+function loanAlertKey(playerId: string, parentClubId: string, destinationClubId: string): string {
+  return `${playerId}:${parentClubId}:${destinationClubId}`;
+}
+
+/**
+ * Active loans involving the user club with weeksRemaining <= 2.
+ */
+export function getExpiringLoansForClub(
+  state: ManagerState,
+  clubId: string,
+  weeksThreshold = 2
+): ExpiringLoanAlert[] {
+  const alerts: ExpiringLoanAlert[] = [];
+  for (const loan of state.transfers.activeLoans || []) {
+    if (loan.weeksRemaining > weeksThreshold) continue;
+    const involves =
+      loan.parentClubId === clubId || loan.destinationClubId === clubId;
+    if (!involves) continue;
+    const player = state.players[loan.playerId];
+    const direction: "in" | "out" =
+      loan.destinationClubId === clubId ? "in" : "out";
+    const otherClubId =
+      direction === "in" ? loan.parentClubId : loan.destinationClubId;
+    alerts.push({
+      key: loanAlertKey(loan.playerId, loan.parentClubId, loan.destinationClubId),
+      playerId: loan.playerId,
+      playerName: player?.name || loan.playerName,
+      direction,
+      otherClubId,
+      weeksRemaining: loan.weeksRemaining,
+      canRecall: loan.canRecall,
+    });
+  }
+  alerts.sort(
+    (a, b) =>
+      a.weeksRemaining - b.weeksRemaining || a.playerName.localeCompare(b.playerName)
+  );
+  return alerts;
+}
+
+export function getUnacknowledgedLoanExpiryWarnings(
+  state: ManagerState,
+  clubId: string
+): ExpiringLoanAlert[] {
+  const alerts = getExpiringLoansForClub(state, clubId);
+  const ack = state.settings?.loanExpiryAcknowledged;
+  if (!ack || ack.season !== state.calendar.currentSeason) {
+    return alerts;
+  }
+  const seen = new Set(ack.loanKeys);
+  return alerts.filter((a) => !seen.has(a.key));
+}
+
+export function acknowledgeLoanExpiryWarnings(
+  state: ManagerState,
+  loanKeys: string[]
+): ManagerState {
+  const season = state.calendar.currentSeason;
+  const prev = state.settings?.loanExpiryAcknowledged;
+  const existing = prev && prev.season === season ? prev.loanKeys : [];
+  const merged = Array.from(new Set([...existing, ...loanKeys]));
+
+  return {
+    ...state,
+    settings: {
+      ...state.settings,
+      loanExpiryAcknowledged: {
+        season,
+        loanKeys: merged,
+      },
+    },
+  };
 }

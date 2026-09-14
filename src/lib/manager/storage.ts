@@ -271,6 +271,83 @@ let autoPersistChain: Promise<{ success: boolean; error?: string }> = Promise.re
 let pendingAutoPersist: ManagerState | null = null;
 let autoPersistRunning = false;
 
+/** Last successful auto slot write — used for pagehide/unload without re-serializing async. */
+let lastSuccessfulAutoMeta: SaveMetadata | null = null;
+let latestAutosavePayload: {
+  key: string;
+  serialized: string;
+  meta: SaveMetadata;
+  pruned: ManagerState;
+} | null = null;
+
+/** localStorage fallback ceiling for beforeunload (quota ~5MB; leave headroom). */
+const LS_UNLOAD_FALLBACK_MAX_CHARS = 2_800_000;
+
+export function isManagerLocalPersistInFlight(): boolean {
+  return autoPersistRunning || pendingAutoPersist != null;
+}
+
+export function getLastSuccessfulAutoMeta(): SaveMetadata | null {
+  return lastSuccessfulAutoMeta;
+}
+
+function rememberSuccessfulAutosave(
+  key: string,
+  serialized: string,
+  meta: SaveMetadata,
+  pruned: ManagerState
+): void {
+  latestAutosavePayload = { key, serialized, meta, pruned };
+  lastSuccessfulAutoMeta = meta;
+}
+
+/**
+ * Sync-prepare the latest autosave blob + meta (no await). Used on visibility/pagehide
+ * so iOS can start an IDB transaction before the tab is suspended.
+ */
+export function prepareManagerAutosavePayloadSync(state: ManagerState): {
+  pruned: ManagerState;
+  meta: SaveMetadata;
+} | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const key = getSlotStorageKey("auto");
+    const pruned = pruneManagerStateForStorage(state);
+    const serialized = JSON.stringify(pruned);
+    const meta = buildSaveMetadata(pruned, "auto");
+    rememberSuccessfulAutosave(key, serialized, meta, pruned);
+    writeMeta("auto", meta);
+    return { pruned, meta };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Kick IndexedDB put + meta for the cached autosave payload. Does not await and
+ * does not dynamically import cloud code (callers flush cloud separately).
+ */
+export function flushManagerLocalAutosaveSync(): void {
+  const payload = latestAutosavePayload;
+  if (!payload || typeof window === "undefined") return;
+  writeMeta("auto", payload.meta);
+  void idbPut(payload.key, payload.serialized).catch(() => {
+    tryLocalStorageWrite(payload.key, payload.serialized);
+  });
+}
+
+/**
+ * beforeunload-safe path: meta + localStorage blob if small enough (IDB is async).
+ */
+export function flushManagerLocalAutosaveBeforeUnload(): void {
+  const payload = latestAutosavePayload;
+  if (!payload || typeof window === "undefined") return;
+  writeMeta("auto", payload.meta);
+  if (payload.serialized.length <= LS_UNLOAD_FALLBACK_MAX_CHARS) {
+    tryLocalStorageWrite(payload.key, payload.serialized);
+  }
+}
+
 export async function persistManagerProgress(state: ManagerState): Promise<{
   success: boolean;
   error?: string;
@@ -367,6 +444,10 @@ export async function saveManagerState(
       }
     }
     writeMeta(slot, meta);
+
+    if (wrote && slot === "auto") {
+      rememberSuccessfulAutosave(key, serialized, meta, pruned);
+    }
 
     if (wrote && !options?.skipCloud) {
       void import("./saves-cloud").then(({ scheduleManagerCloudPush }) => {

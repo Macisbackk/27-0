@@ -115,6 +115,8 @@ export function ManagerIncomingOfferModal() {
         setBusy(false);
         return;
       }
+      // Keep Accept disabled after a successful accept
+      return;
     } else {
       const offer = (state.transfers.pendingLoanOffers || []).find(
         (o) => o.id === offerPopup.offerId
@@ -138,8 +140,8 @@ export function ManagerIncomingOfferModal() {
         setBusy(false);
         return;
       }
+      return;
     }
-    setBusy(false);
   };
 
   const handleReject = () => {

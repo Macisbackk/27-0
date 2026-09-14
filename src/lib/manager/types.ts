@@ -441,6 +441,11 @@ export interface ManagerSettings {
     season: number;
     playerIds: string[];
   };
+  /** Loan IDs (or playerIds) already shown in the loan-expiry popup for a given season */
+  loanExpiryAcknowledged?: {
+    season: number;
+    loanKeys: string[];
+  };
 }
 
 export interface SeasonTableSnapshotRow {
@@ -537,4 +542,8 @@ export interface ManagerState {
   };
   settings: ManagerSettings;
   seasonHistory?: SeasonHistoryRecord[];
+  /** Six candidate club ids for pre-season friendlies; cleared once confirmed. */
+  pendingFriendlyOpponents?: string[];
+  /** True after the manager has confirmed (or auto-picked) 3 friendly opponents. */
+  friendlyFixturesConfirmed?: boolean;
 }

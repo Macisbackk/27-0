@@ -20,6 +20,11 @@ import {
   ensureClubSquadDepth,
 } from "./database";
 import { advanceWeek, canAdvanceWeek } from "./advancement";
+import {
+  confirmFriendlyOpponents,
+  autoPickFriendlyOpponents,
+  needsFriendlySelection,
+} from "./competitions";
 import { rolloverSeason, type SeasonAwards } from "./rollover";
 import { movePlayerTier, setClubLineup, autoPickClubLineup, getMatchdayLineupReadiness } from "./squad";
 import type { MatchdayLineupReadiness } from "./squad";
@@ -48,6 +53,9 @@ import {
   loanPlayerIn,
   terminateIncomingLoan,
   setPlayerLoanListed,
+  getUnacknowledgedLoanExpiryWarnings,
+  acknowledgeLoanExpiryWarnings,
+  type ExpiringLoanAlert,
 } from "./loans";
 import { setPlayerTrainingFocus } from "./player";
 import {
@@ -60,11 +68,22 @@ import {
   loadManagerState,
   saveManagerState,
   persistManagerProgress,
+  prepareManagerAutosavePayloadSync,
+  flushManagerLocalAutosaveSync,
+  flushManagerLocalAutosaveBeforeUnload,
+  recoverAllSaveMetadata,
   deleteSaveSlot,
   exportSaveToJson,
   importSaveFromJson,
   getActiveSlotIndex,
+  getSaveSlotMetadata,
 } from "./storage";
+import {
+  beginManagerExitFlush,
+  flushManagerCloudAutosave,
+  flushManagerCloudAutosaveSync,
+  scheduleManagerCloudPush,
+} from "./saves-cloud";
 
 export type ManagerTab =
   | "dashboard"
@@ -106,6 +125,10 @@ interface ManagerContextValue {
   setSeasonAwardsModal: (awards: SeasonAwards | null) => void;
   contractExpiryModalPlayers: ManagerPlayer[] | null;
   dismissContractExpiryModal: () => void;
+  loanExpiryModalAlerts: ExpiringLoanAlert[] | null;
+  dismissLoanExpiryModal: () => void;
+  confirmFriendliesSelection: (opponentIds: string[]) => { success: boolean; error?: string };
+  autoPickFriendliesSelection: () => { success: boolean; error?: string };
   offerPopup: ManagerOfferPopup | null;
   deferOfferPopup: () => void;
   tutorialOpen: boolean;
@@ -149,7 +172,7 @@ interface ManagerContextValue {
     role: SquadRole
   ) => { success: boolean; error?: string };
   renewAllTierContracts: (
-    tiers: Array<"academy" | "reserves">,
+    tiers: Array<"academy" | "reserves" | "first">,
     years?: number
   ) => { success: boolean; error?: string; renewedCount?: number; failedCount?: number };
   releasePlayer: (playerId: string) => { success: boolean; error?: string };
@@ -214,6 +237,8 @@ interface ManagerContextValue {
   resetCareer: () => void;
   exitToMenu: () => void;
   replenishSquadTiers: (tier: "reserves" | "academy") => void;
+  persistWarning: string | null;
+  dismissPersistWarning: () => void;
 }
 
 const ManagerContext = createContext<ManagerContextValue | null>(null);
@@ -229,14 +254,21 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
   const [contractExpiryModalPlayers, setContractExpiryModalPlayers] = useState<ManagerPlayer[] | null>(
     null
   );
+  const [loanExpiryModalAlerts, setLoanExpiryModalAlerts] = useState<ExpiringLoanAlert[] | null>(
+    null
+  );
   const [offerPopup, setOfferPopup] = useState<ManagerOfferPopup | null>(null);
   const deferredOfferIdsRef = useRef<Set<string>>(new Set());
+  const acceptingBidsRef = useRef<Set<string>>(new Set());
   const stateRef = useRef<ManagerState | null>(null);
   stateRef.current = state;
   const [lastAdvanceError, setLastAdvanceError] = useState<string | null>(null);
   const [tutorialOpen, setTutorialOpen] = useState(false);
+  const [persistWarning, setPersistWarning] = useState<string | null>(null);
+  const persistFailNotifiedRef = useRef(false);
 
   const clearAdvanceError = useCallback(() => setLastAdvanceError(null), []);
+  const dismissPersistWarning = useCallback(() => setPersistWarning(null), []);
 
   const openTutorial = useCallback(() => setTutorialOpen(true), []);
 
@@ -270,6 +302,43 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     setContractExpiryModalPlayers(null);
   }, [state, contractExpiryModalPlayers]);
 
+  const dismissLoanExpiryModal = useCallback(() => {
+    if (loanExpiryModalAlerts && loanExpiryModalAlerts.length > 0 && state) {
+      const next = acknowledgeLoanExpiryWarnings(
+        state,
+        loanExpiryModalAlerts.map((a) => a.key)
+      );
+      setState(next);
+      void persistManagerProgress(next);
+    }
+    setLoanExpiryModalAlerts(null);
+  }, [state, loanExpiryModalAlerts]);
+
+  const confirmFriendliesSelection = useCallback(
+    (opponentIds: string[]) => {
+      const current = stateRef.current;
+      if (!current) return { success: false, error: "No active game" };
+      const res = confirmFriendlyOpponents(current, opponentIds);
+      if (res.success) {
+        setState(res.state);
+        void persistManagerProgress(res.state);
+      }
+      return { success: res.success, error: res.error };
+    },
+    []
+  );
+
+  const autoPickFriendliesSelection = useCallback(() => {
+    const current = stateRef.current;
+    if (!current) return { success: false, error: "No active game" };
+    const res = autoPickFriendlyOpponents(current);
+    if (res.success) {
+      setState(res.state);
+      void persistManagerProgress(res.state);
+    }
+    return { success: res.success, error: res.error };
+  }, []);
+
   const deferOfferPopup = useCallback(() => {
     if (offerPopup) {
       deferredOfferIdsRef.current.add(offerPopupKey(offerPopup));
@@ -298,6 +367,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     if (!state || isLoading) return;
     if (tutorialOpen) return;
     if (seasonAwardsModal || activeKeyMomentsFixture || lastPlayedMatchReview) return;
+    if (needsFriendlySelection(state) && state.calendar.currentWeek <= 2) return;
     if (offerPopup) return;
 
     const uid = state.manager.clubId;
@@ -327,6 +397,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     if (tutorialOpen) return;
     if (seasonAwardsModal || activeKeyMomentsFixture || lastPlayedMatchReview) return;
     if (offerPopup) return;
+    if (needsFriendlySelection(state) && state.calendar.currentWeek <= 2) return;
     if (contractExpiryModalPlayers && contractExpiryModalPlayers.length > 0) return;
 
     const warnings = getUnacknowledgedContractExpiryWarnings(state, state.manager.clubId);
@@ -343,7 +414,33 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     contractExpiryModalPlayers,
   ]);
 
-  // Restore in-tab session from autosave (numbered slots are manual checkpoints)
+  // Loan expiry popups (after contract expiry)
+  useEffect(() => {
+    if (!state) return;
+    if (tutorialOpen) return;
+    if (seasonAwardsModal || activeKeyMomentsFixture || lastPlayedMatchReview) return;
+    if (offerPopup) return;
+    if (needsFriendlySelection(state) && state.calendar.currentWeek <= 2) return;
+    if (contractExpiryModalPlayers && contractExpiryModalPlayers.length > 0) return;
+    if (loanExpiryModalAlerts && loanExpiryModalAlerts.length > 0) return;
+
+    const warnings = getUnacknowledgedLoanExpiryWarnings(state, state.manager.clubId);
+    if (warnings.length > 0) {
+      setLoanExpiryModalAlerts(warnings);
+    }
+  }, [
+    state,
+    tutorialOpen,
+    seasonAwardsModal,
+    activeKeyMomentsFixture,
+    lastPlayedMatchReview,
+    offerPopup,
+    contractExpiryModalPlayers,
+    loanExpiryModalAlerts,
+  ]);
+
+  // Restore in-tab session from autosave (numbered slots are manual checkpoints).
+  // Cold open (no session flag): recover meta early so Club Select can show Continue.
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -359,6 +456,18 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
             (await loadManagerState(0));
           if (!cancelled && loaded) {
             setState(ensureClubSquadDepth(loaded));
+          }
+        } else {
+          // Rebuild missing localStorage meta from IDB before Club Select paints.
+          await recoverAllSaveMetadata();
+          // Soft prompt: if an autosave exists, sessionStorage can hint Club Select
+          // without auto-entering the career (user still confirms Continue).
+          if (typeof window !== "undefined" && getSaveSlotMetadata("auto")) {
+            try {
+              window.sessionStorage.setItem("27-0-manager-soft-resume", "1");
+            } catch {
+              /* ignore */
+            }
           }
         }
       } catch {
@@ -376,37 +485,82 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!state || isLoading) return;
     if (state.settings?.autoSaveEnabled === false) return;
-    void persistManagerProgress(state);
+    void persistManagerProgress(state).then((res) => {
+      if (res.success || persistFailNotifiedRef.current) return;
+      persistFailNotifiedRef.current = true;
+      const message =
+        res.error ||
+        "Could not autosave career progress. Export a JSON backup if this keeps happening.";
+      console.warn("[manager] autosave failed:", message);
+      setPersistWarning(message);
+      setState((prev) => {
+        if (!prev) return prev;
+        if (prev.inbox.messages.some((m) => m.id === "inbox_autosave_fail")) return prev;
+        return {
+          ...prev,
+          inbox: {
+            ...prev.inbox,
+            messages: [
+              {
+                id: "inbox_autosave_fail",
+                season: prev.calendar.currentSeason,
+                week: prev.calendar.currentWeek,
+                dateStr: `Week ${prev.calendar.currentWeek}`,
+                sender: "Career Save System",
+                subject: "Autosave failed",
+                body: message,
+                category: "general" as const,
+                isRead: false,
+              },
+              ...prev.inbox.messages,
+            ],
+            unreadCount: prev.inbox.unreadCount + 1,
+          },
+        };
+      });
+    });
   }, [state, isLoading]);
 
   // Mobile-critical: flush local + cloud autosave when the tab backgrounds or unloads.
-  // iOS often kills debounced cloud timers; club funds already use this pattern.
+  // Must not await dynamic import — iOS suspends the page before that resolves.
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const flushAutosave = () => {
+    const flushAutosaveSync = () => {
       const current = stateRef.current;
       if (!current || current.settings?.autoSaveEnabled === false) return;
-      void (async () => {
-        await persistManagerProgress(current);
-        try {
-          const { flushManagerCloudAutosave } = await import("./saves-cloud");
-          await flushManagerCloudAutosave();
-        } catch {
-          /* local write still attempted */
-        }
-      })();
+      const prepared = prepareManagerAutosavePayloadSync(current);
+      flushManagerLocalAutosaveSync();
+      if (prepared) {
+        scheduleManagerCloudPush("auto", prepared.pruned, prepared.meta);
+      }
+      flushManagerCloudAutosaveSync();
+      // Also queue the normal persist chain for when the tab returns.
+      void persistManagerProgress(current);
     };
 
     const onVisibility = () => {
-      if (document.visibilityState === "hidden") flushAutosave();
+      if (document.visibilityState === "hidden") flushAutosaveSync();
+    };
+
+    const onBeforeUnload = () => {
+      const current = stateRef.current;
+      if (!current || current.settings?.autoSaveEnabled === false) return;
+      const prepared = prepareManagerAutosavePayloadSync(current);
+      flushManagerLocalAutosaveBeforeUnload();
+      if (prepared) {
+        scheduleManagerCloudPush("auto", prepared.pruned, prepared.meta);
+      }
+      flushManagerCloudAutosaveSync();
     };
 
     document.addEventListener("visibilitychange", onVisibility);
-    window.addEventListener("pagehide", flushAutosave);
+    window.addEventListener("pagehide", flushAutosaveSync);
+    window.addEventListener("beforeunload", onBeforeUnload);
     return () => {
       document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("pagehide", flushAutosave);
+      window.removeEventListener("pagehide", flushAutosaveSync);
+      window.removeEventListener("beforeunload", onBeforeUnload);
     };
   }, []);
 
@@ -415,13 +569,16 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     setActiveKeyMomentsFixture(null);
     setSeasonAwardsModal(null);
     setContractExpiryModalPlayers(null);
+    setLoanExpiryModalAlerts(null);
     setOfferPopup(null);
     deferredOfferIdsRef.current.clear();
+    acceptingBidsRef.current.clear();
     setLastAdvanceError(null);
   }, []);
 
   const startNewGame = useCallback((clubId: string, managerName: string, targetSlot: number = 0) => {
     const newState = initializeManagerDatabase(clubId, managerName);
+    acceptingBidsRef.current.clear();
     clearCareerOverlays();
     setState(newState);
     void saveManagerState(newState, targetSlot);
@@ -635,7 +792,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
   );
 
   const renewAllTierContracts = useCallback(
-    (tiers: Array<"academy" | "reserves">, years = 2) => {
+    (tiers: Array<"academy" | "reserves" | "first">, years = 2) => {
       if (!state) return { success: false, error: "No active game" };
       const res = renewAllSquadTierContracts(state, state.manager.clubId, tiers, years);
       if (res.success) {
@@ -722,9 +879,30 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
 
   const decideOnIncomingBid = useCallback(
     (bidId: string, decision: "accept" | "reject") => {
-      if (!state) return { success: false, error: "No active game" };
-      const evalRes = evaluateSellingClubBid(state, bidId, decision, { silent: true });
-      if (!evalRes.success) return { success: false, error: evalRes.error };
+      if (decision === "accept") {
+        if (acceptingBidsRef.current.has(bidId)) {
+          return { success: false, error: "Bid already being accepted." };
+        }
+        acceptingBidsRef.current.add(bidId);
+      }
+
+      const current = stateRef.current;
+      if (!current) {
+        acceptingBidsRef.current.delete(bidId);
+        return { success: false, error: "No active game" };
+      }
+
+      const latestBid = current.transfers.activeBids.find((b) => b.id === bidId);
+      if (!latestBid || latestBid.status !== "pending_club") {
+        acceptingBidsRef.current.delete(bidId);
+        return { success: false, error: "Bid is no longer pending." };
+      }
+
+      const evalRes = evaluateSellingClubBid(current, bidId, decision, { silent: true });
+      if (!evalRes.success) {
+        acceptingBidsRef.current.delete(bidId);
+        return { success: false, error: evalRes.error };
+      }
 
       let updatedState = evalRes.state;
       if (decision === "accept") {
@@ -735,6 +913,7 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
           if (compRes.success) {
             updatedState = compRes.state;
           } else {
+            acceptingBidsRef.current.delete(bidId);
             setOfferPopup(null);
             return { success: false, error: compRes.error };
           }
@@ -743,9 +922,13 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
 
       setOfferPopup(null);
       setState(updatedState);
+      // Keep bidId in acceptingBidsRef until unmount / new game to block double-accept races
+      if (decision !== "accept") {
+        acceptingBidsRef.current.delete(bidId);
+      }
       return { success: true };
     },
-    [state]
+    []
   );
 
   const decideOnLoanOffer = useCallback(
@@ -1027,21 +1210,26 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
     const current = state;
     if (typeof window !== "undefined") {
       window.sessionStorage.removeItem("27-0-manager-in-session");
+      try {
+        window.sessionStorage.setItem("27-0-manager-soft-resume", "1");
+      } catch {
+        /* ignore */
+      }
     }
     clearCareerOverlays();
     setState(null);
     setActiveTab("dashboard");
-    // Await local + cloud flush before Club Select sync can race (do not block UI clear)
+    // Module-level promise so Club Select / auth hydrate await before cloud sync
     if (current && current.settings?.autoSaveEnabled !== false) {
-      void (async () => {
+      const prepared = prepareManagerAutosavePayloadSync(current);
+      flushManagerLocalAutosaveSync();
+      if (prepared) {
+        scheduleManagerCloudPush("auto", prepared.pruned, prepared.meta);
+      }
+      beginManagerExitFlush(async () => {
         await persistManagerProgress(current);
-        try {
-          const { flushManagerCloudAutosave } = await import("./saves-cloud");
-          await flushManagerCloudAutosave();
-        } catch {
-          /* ignore */
-        }
-      })();
+        await flushManagerCloudAutosave();
+      });
     }
   }, [state, clearCareerOverlays]);
 
@@ -1127,6 +1315,10 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
         setSeasonAwardsModal,
         contractExpiryModalPlayers,
         dismissContractExpiryModal,
+        loanExpiryModalAlerts,
+        dismissLoanExpiryModal,
+        confirmFriendliesSelection,
+        autoPickFriendliesSelection,
         offerPopup,
         deferOfferPopup,
         tutorialOpen,
@@ -1173,6 +1365,8 @@ export function ManagerProvider({ children }: { children: React.ReactNode }) {
         resetCareer,
         exitToMenu,
         replenishSquadTiers,
+        persistWarning,
+        dismissPersistWarning,
       }}
     >
       {children}

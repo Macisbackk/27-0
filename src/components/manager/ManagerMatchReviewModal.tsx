@@ -111,16 +111,14 @@ function TeamRatingsSection({
       <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-pitch-800 bg-pitch-950/80">
         <div className="flex items-center gap-2.5 min-w-0">
           <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center font-black text-[11px] shadow-sm shrink-0 border border-white/20"
+            className="w-7 h-7 rounded-lg shadow-sm shrink-0 border border-white/20 overflow-hidden"
             style={{
-              backgroundColor: club?.primaryColor || "#1E4D9B",
-              color: club?.textColour || "#FFFFFF",
+              background: `linear-gradient(135deg, ${club?.primaryColor || "#1E4D9B"} 50%, ${
+                club?.secondaryColor || club?.primaryColor || "#0B1F3A"
+              } 50%)`,
             }}
-          >
-            {club?.abbreviation ||
-              club?.shortName?.slice(0, 3).toUpperCase() ||
-              (role === "Home" ? "HME" : "AWY")}
-          </div>
+            aria-hidden
+          />
           <div className="min-w-0">
             <div className="flex items-center gap-1.5">
               <h5 className="font-bold text-xs text-white truncate">
@@ -288,14 +286,14 @@ export function ManagerMatchReviewModal() {
             {/* Home Club */}
             <div className="col-span-2 flex flex-col items-center">
               <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center font-black text-lg shadow-md border border-white/20 mb-2"
+                className="w-14 h-14 rounded-2xl shadow-md border border-white/20 mb-2 overflow-hidden"
                 style={{
-                  backgroundColor: homeClub?.primaryColor || "#1E4D9B",
-                  color: homeClub?.textColour || "#FFFFFF",
+                  background: `linear-gradient(135deg, ${homeClub?.primaryColor || "#1E4D9B"} 50%, ${
+                    homeClub?.secondaryColor || homeClub?.primaryColor || "#0B1F3A"
+                  } 50%)`,
                 }}
-              >
-                {homeClub?.abbreviation || "HME"}
-              </div>
+                aria-hidden
+              />
               <h3 className="text-sm sm:text-base font-black text-white">{homeClub?.name}</h3>
             </div>
 
@@ -318,14 +316,14 @@ export function ManagerMatchReviewModal() {
             {/* Away Club */}
             <div className="col-span-2 flex flex-col items-center">
               <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center font-black text-lg shadow-md border border-white/20 mb-2"
+                className="w-14 h-14 rounded-2xl shadow-md border border-white/20 mb-2 overflow-hidden"
                 style={{
-                  backgroundColor: awayClub?.primaryColor || "#C8102E",
-                  color: awayClub?.textColour || "#FFFFFF",
+                  background: `linear-gradient(135deg, ${awayClub?.primaryColor || "#C8102E"} 50%, ${
+                    awayClub?.secondaryColor || awayClub?.primaryColor || "#5A0A14"
+                  } 50%)`,
                 }}
-              >
-                {awayClub?.abbreviation || "AWY"}
-              </div>
+                aria-hidden
+              />
               <h3 className="text-sm sm:text-base font-black text-white">{awayClub?.name}</h3>
             </div>
           </div>
@@ -348,7 +346,15 @@ export function ManagerMatchReviewModal() {
               </div>
             </div>
             <span className="text-xs font-bold text-amber-300">
-              {formatPositionLabel(motmPlayer.position)} · {state.clubs[motmPlayer.clubId || ""]?.name}
+              {formatPositionLabel(motmPlayer.position)} ·{" "}
+              {(() => {
+                const matchClubIds = new Set([fixture.homeClubId, fixture.awayClubId]);
+                const motmClubId =
+                  motmPlayer.loan && matchClubIds.has(motmPlayer.loan.destinationClubId)
+                    ? motmPlayer.loan.destinationClubId
+                    : motmPlayer.clubId || "";
+                return state.clubs[motmClubId]?.name;
+              })()}
             </span>
           </div>
         )}

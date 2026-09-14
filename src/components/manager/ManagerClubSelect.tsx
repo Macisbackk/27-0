@@ -42,8 +42,11 @@ export function ManagerClubSelect() {
   const [isDraggingFile, setIsDraggingFile] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Refresh available saves on mount
-  const refreshSaves = useCallback(async () => {
+  // Refresh available saves on mount — set mode only once after first recover
+  // (cloud re-sync must not flip new↔load and jitter the UI).
+  const modeInitializedRef = useRef(false);
+
+  const refreshSaves = useCallback(async (opts?: { initMode?: boolean }) => {
     const { recoverAllSaveMetadata, getMostRecentSave, getSaveSlotMetadata } = await import(
       "@/lib/manager/storage"
     );
@@ -60,11 +63,9 @@ export function ManagerClubSelect() {
     };
     setSlotMetas(metas);
 
-    // If no saves exist at all, default to "new" career mode
-    if (all.length === 0) {
-      setMode("new");
-    } else {
-      setMode("load");
+    if (opts?.initMode && !modeInitializedRef.current) {
+      modeInitializedRef.current = true;
+      setMode(all.length === 0 ? "new" : "load");
     }
   }, []);
 
@@ -72,14 +73,22 @@ export function ManagerClubSelect() {
     let cancelled = false;
 
     const run = async () => {
-      await refreshSaves();
+      const { awaitManagerExitFlush, syncManagerSavesWithCloud } = await import(
+        "@/lib/manager/saves-cloud"
+      );
+      // Wait for exit-to-menu flush so cloud sync cannot race a just-written autosave.
+      await awaitManagerExitFlush();
+      if (cancelled) return;
+
+      await refreshSaves({ initMode: true });
+      if (cancelled) return;
+
       if (!isSupabaseConfigured || !isLoggedIn()) {
         if (!cancelled) setCloudSyncStatus("skipped");
         return;
       }
       if (!cancelled) setCloudSyncStatus("syncing");
       try {
-        const { syncManagerSavesWithCloud } = await import("@/lib/manager/saves-cloud");
         await syncManagerSavesWithCloud();
       } catch {
         /* local list still usable */

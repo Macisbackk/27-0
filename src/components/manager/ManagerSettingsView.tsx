@@ -155,7 +155,7 @@ export function ManagerSettingsView() {
         <div className="space-y-1.5">
           <span className="text-xs text-pitch-200 font-semibold">Match simulation</span>
           <select
-            value={state.settings?.matchSimulationSpeed || "normal"}
+            value={state.settings?.matchSimulationSpeed || "instant"}
             onChange={(e) =>
               updateSettings({
                 matchSimulationSpeed: e.target.value as "instant" | "normal" | "detailed",

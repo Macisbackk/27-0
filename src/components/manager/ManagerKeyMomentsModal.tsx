@@ -233,14 +233,14 @@ export function ManagerKeyMomentsModal() {
                 </span>
               </div>
               <div
-                className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-black text-[10px] sm:text-sm shadow-md border border-white/20 shrink-0"
+                className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl shadow-md border border-white/20 shrink-0 overflow-hidden"
                 style={{
-                  backgroundColor: homeClub?.primaryColor || "#1E4D9B",
-                  color: homeClub?.textColour || "#FFFFFF",
+                  background: `linear-gradient(135deg, ${homeClub?.primaryColor || "#1E4D9B"} 50%, ${
+                    homeClub?.secondaryColor || homeClub?.primaryColor || "#0B1F3A"
+                  } 50%)`,
                 }}
-              >
-                {homeClub?.abbreviation || homeClub?.shortName?.slice(0, 3) || "HOM"}
-              </div>
+                aria-hidden
+              />
             </div>
 
             <div className="col-span-1 flex flex-col items-center justify-center px-0.5">
@@ -267,14 +267,14 @@ export function ManagerKeyMomentsModal() {
 
             <div className="col-span-3 flex items-center justify-start gap-2 sm:gap-3 text-left">
               <div
-                className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-black text-[10px] sm:text-sm shadow-md border border-white/20 shrink-0"
+                className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl shadow-md border border-white/20 shrink-0 overflow-hidden"
                 style={{
-                  backgroundColor: awayClub?.primaryColor || "#D00000",
-                  color: awayClub?.textColour || "#FFFFFF",
+                  background: `linear-gradient(135deg, ${awayClub?.primaryColor || "#D00000"} 50%, ${
+                    awayClub?.secondaryColor || awayClub?.primaryColor || "#5A0A14"
+                  } 50%)`,
                 }}
-              >
-                {awayClub?.abbreviation || awayClub?.shortName?.slice(0, 3) || "AWY"}
-              </div>
+                aria-hidden
+              />
               <div className="min-w-0">
                 <span className="block text-xs sm:text-sm font-black text-white truncate">
                   {awayClub?.shortName || fixture.awayClubId}

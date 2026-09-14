@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import {
   calculateTransferFeeBetweenClubs,
@@ -39,6 +39,13 @@ export function ManagerTransfersView() {
   const [offeredYears, setOfferedYears] = useState<number>(2);
   const [bidError, setBidError] = useState<string | null>(null);
   const [bidSuccess, setBidSuccess] = useState<string | null>(null);
+  const [marketVisibleCount, setMarketVisibleCount] = useState(50);
+  const [acceptingBidIds, setAcceptingBidIds] = useState<Set<string>>(() => new Set());
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    setMarketVisibleCount(50);
+  }, [posFilter, searchQuery, subTab]);
 
   if (!state) return null;
 
@@ -264,7 +271,7 @@ export function ManagerTransfersView() {
               </tr>
             </thead>
             <tbody className="divide-y divide-pitch-800/50 text-pitch-200">
-              {marketPlayers.slice(0, 50).map((player) => {
+              {marketPlayers.slice(0, marketVisibleCount).map((player) => {
                 const club = player.clubId ? state.clubs[player.clubId] : null;
                 const estValue = calculateTransferFeeBetweenClubs(
                   player.rating,
@@ -314,6 +321,18 @@ export function ManagerTransfersView() {
               })}
             </tbody>
           </table>
+          {marketPlayers.length > marketVisibleCount && (
+            <div className="border-t border-pitch-800 px-3 py-3 text-center">
+              <button
+                type="button"
+                onClick={() => setMarketVisibleCount((n) => n + 50)}
+                className="rounded-lg border border-pitch-700 bg-pitch-950 px-4 py-2 text-xs font-bold text-pitch-200 hover:bg-pitch-800 hover:text-white transition-colors"
+              >
+                Show more ({Math.min(50, marketPlayers.length - marketVisibleCount)} of{" "}
+                {marketPlayers.length - marketVisibleCount} remaining)
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -388,6 +407,7 @@ export function ManagerTransfersView() {
                 {incomingBids.map((bid) => {
                   const player = state.players[bid.playerId];
                   const buyer = state.clubs[bid.fromClubId];
+                  const accepting = acceptingBidIds.has(bid.id);
 
                   return (
                     <div
@@ -407,15 +427,28 @@ export function ManagerTransfersView() {
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
-                          onClick={() => decideOnIncomingBid(bid.id, "accept")}
-                          className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-500 shadow"
+                          disabled={accepting}
+                          onClick={() => {
+                            if (acceptingBidIds.has(bid.id)) return;
+                            setAcceptingBidIds((prev) => new Set(prev).add(bid.id));
+                            const res = decideOnIncomingBid(bid.id, "accept");
+                            if (!res.success) {
+                              setAcceptingBidIds((prev) => {
+                                const next = new Set(prev);
+                                next.delete(bid.id);
+                                return next;
+                              });
+                            }
+                          }}
+                          className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-500 shadow disabled:opacity-60 disabled:cursor-not-allowed"
                         >
-                          Accept £{bid.offeredFee.toLocaleString()}
+                          {accepting ? "Accepting…" : `Accept £${bid.offeredFee.toLocaleString()}`}
                         </button>
                         <button
                           type="button"
+                          disabled={accepting}
                           onClick={() => decideOnIncomingBid(bid.id, "reject")}
-                          className="rounded-lg bg-rose-600/20 px-3 py-1.5 text-xs font-bold text-rose-300 hover:bg-rose-600/40 border border-rose-500/40"
+                          className="rounded-lg bg-rose-600/20 px-3 py-1.5 text-xs font-bold text-rose-300 hover:bg-rose-600/40 border border-rose-500/40 disabled:opacity-60"
                         >
                           Reject
                         </button>

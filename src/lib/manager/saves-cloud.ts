@@ -8,6 +8,7 @@ import { getAuthUserId } from "../auth-session";
 import type { ManagerState } from "./types";
 import {
   ensureSlotMetadata,
+  isManagerLocalPersistInFlight,
   loadManagerState,
   pruneManagerStateForStorage,
   saveManagerState,
@@ -19,6 +20,9 @@ const STAT_MODE = "MANAGER";
 export type ManagerSaveSlot = 0 | 1 | 2 | "auto";
 
 const ALL_SLOTS: ManagerSaveSlot[] = [0, 1, 2, "auto"];
+
+/** keepalive fetch body limit (Chrome ~64KB); larger saves fall back to async push. */
+const KEEPALIVE_MAX_BODY_CHARS = 60_000;
 
 function slotStatKey(slot: ManagerSaveSlot): string {
   return slot === "auto" ? "manager_autosave" : `manager_slot_${slot}`;
@@ -129,12 +133,65 @@ async function loadCloudManagerSave(
   }
 }
 
+/** Single-flight mutex for bidirectional sync (auth hydrate + Club Select). */
+let syncManagerSaveMutex: Promise<unknown> = Promise.resolve();
+let managerSaveSyncInFlight = false;
+
+export function isManagerSaveSyncInFlight(): boolean {
+  return managerSaveSyncInFlight;
+}
+
+/** Exit-to-menu flush so Club Select / auth hydrate do not race an in-flight autosave. */
+let managerExitFlushPromise: Promise<void> | null = null;
+
+export function beginManagerExitFlush(work: () => Promise<void>): Promise<void> {
+  const p = work().finally(() => {
+    if (managerExitFlushPromise === p) {
+      managerExitFlushPromise = null;
+    }
+  });
+  managerExitFlushPromise = p;
+  return p;
+}
+
+export async function awaitManagerExitFlush(): Promise<void> {
+  const p = managerExitFlushPromise;
+  if (!p) return;
+  try {
+    await p;
+  } catch {
+    /* local/cloud best-effort */
+  }
+}
+
+export function getManagerPersistGate(): {
+  syncInFlight: boolean;
+  localPersistInFlight: boolean;
+  exitFlushPending: boolean;
+} {
+  return {
+    syncInFlight: managerSaveSyncInFlight,
+    localPersistInFlight: isManagerLocalPersistInFlight(),
+    exitFlushPending: managerExitFlushPromise != null,
+  };
+}
+
+async function waitBrieflyForLocalPersist(maxMs = 750): Promise<boolean> {
+  const start = Date.now();
+  while (isManagerLocalPersistInFlight() && Date.now() - start < maxMs) {
+    await new Promise((r) => setTimeout(r, 40));
+  }
+  return !isManagerLocalPersistInFlight();
+}
+
 /**
  * Bidirectional sync: cloud wins when newer; otherwise upload local.
  * Never wipes a local IDB career just because localStorage meta is missing.
  * Returns how many slots were written locally from cloud (UI refresh signal).
  */
-export async function syncManagerSavesWithCloud(): Promise<{
+async function syncManagerSavesWithCloudInner(options?: {
+  skipPull?: boolean;
+}): Promise<{
   pulled: number;
   pushed: number;
 }> {
@@ -143,6 +200,7 @@ export async function syncManagerSavesWithCloud(): Promise<{
     return { pulled: 0, pushed: 0 };
   }
 
+  const skipPull = options?.skipPull === true;
   let pulled = 0;
   let pushed = 0;
 
@@ -158,6 +216,13 @@ export async function syncManagerSavesWithCloud(): Promise<{
 
     // Local exists, cloud newer by timestamp — still protect if local calendar is ahead
     if (cloud && cloudTs > localTs) {
+      if (skipPull) {
+        if (localState && localMeta) {
+          await pushManagerSaveToCloud(slot, localState, localMeta);
+          pushed++;
+        }
+        continue;
+      }
       if (localState && localProg > cloudProg) {
         if (localMeta) {
           await pushManagerSaveToCloud(slot, localState, localMeta);
@@ -194,9 +259,37 @@ export async function syncManagerSavesWithCloud(): Promise<{
   return { pulled, pushed };
 }
 
+export async function syncManagerSavesWithCloud(): Promise<{
+  pulled: number;
+  pushed: number;
+}> {
+  const run = async () => {
+    managerSaveSyncInFlight = true;
+    try {
+      await awaitManagerExitFlush();
+      const localIdle = await waitBrieflyForLocalPersist();
+      return await syncManagerSavesWithCloudInner({ skipPull: !localIdle });
+    } finally {
+      managerSaveSyncInFlight = false;
+    }
+  };
+
+  const result = syncManagerSaveMutex.then(run, run) as Promise<{
+    pulled: number;
+    pushed: number;
+  }>;
+  syncManagerSaveMutex = result.then(
+    () => undefined,
+    () => undefined
+  );
+  return result;
+}
+
 /** Fire-and-forget helper used after local writes. */
 let autosaveCloudTimer: ReturnType<typeof setTimeout> | null = null;
 let pendingAutosavePush: { state: ManagerState; meta: SaveMetadata } | null = null;
+/** Survives after debounce fires so pagehide can still push the last known autosave. */
+let lastAutosaveForCloud: { state: ManagerState; meta: SaveMetadata } | null = null;
 
 export function scheduleManagerCloudPush(
   slot: number | "auto",
@@ -207,6 +300,7 @@ export function scheduleManagerCloudPush(
 
   if (slot === "auto") {
     pendingAutosavePush = { state, meta };
+    lastAutosaveForCloud = { state, meta };
     if (autosaveCloudTimer) clearTimeout(autosaveCloudTimer);
     autosaveCloudTimer = setTimeout(() => {
       autosaveCloudTimer = null;
@@ -222,17 +316,107 @@ export function scheduleManagerCloudPush(
   void pushManagerSaveToCloud(slot, state, meta);
 }
 
+function readSupabaseAccessTokenSync(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    for (let i = 0; i < window.localStorage.length; i++) {
+      const key = window.localStorage.key(i);
+      if (!key || !key.startsWith("sb-") || !key.endsWith("-auth-token")) continue;
+      const raw = window.localStorage.getItem(key);
+      if (!raw) continue;
+      const parsed = JSON.parse(raw) as {
+        access_token?: string;
+        currentSession?: { access_token?: string };
+      };
+      const token = parsed.access_token || parsed.currentSession?.access_token;
+      if (typeof token === "string" && token.length > 0) return token;
+    }
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
 /**
- * Immediate cloud flush for autosave — call on visibility hidden / pagehide / exit.
- * Cancels the 2.5s debounce so iOS backgrounding does not drop the push.
+ * Best-effort keepalive upsert for small payloads. Returns false when not used
+ * (too large / no token / not configured) so callers can fall back to async push.
  */
-export async function flushManagerCloudAutosave(): Promise<void> {
+function tryKeepaliveManagerAutosavePush(
+  state: ManagerState,
+  meta: SaveMetadata
+): boolean {
+  if (typeof window === "undefined" || typeof fetch === "undefined") return false;
+  const userId = getAuthUserId();
+  if (!userId || !isSupabaseConfigured) return false;
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+  if (!supabaseUrl || !anonKey) return false;
+
+  const accessToken = readSupabaseAccessTokenSync();
+  if (!accessToken) return false;
+
+  const pruned = pruneManagerStateForStorage(state);
+  const row = {
+    user_id: userId,
+    mode: STAT_MODE,
+    stat_key: slotStatKey("auto"),
+    stat_value: meta.savedAtTimestamp || Date.now(),
+    stat_json: { meta, state: pruned } satisfies CloudManagerSaveBundle,
+    updated_at: new Date().toISOString(),
+  };
+  const body = JSON.stringify(row);
+  if (body.length > KEEPALIVE_MAX_BODY_CHARS) return false;
+
+  try {
+    void fetch(`${supabaseUrl}/rest/v1/user_stats?on_conflict=user_id,mode,stat_key`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: anonKey,
+        Authorization: `Bearer ${accessToken}`,
+        Prefer: "resolution=merge-duplicates",
+      },
+      body,
+      keepalive: true,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function takePendingAutosaveForFlush(): {
+  state: ManagerState;
+  meta: SaveMetadata;
+} | null {
   if (autosaveCloudTimer) {
     clearTimeout(autosaveCloudTimer);
     autosaveCloudTimer = null;
   }
-  const pending = pendingAutosavePush;
+  const pending = pendingAutosavePush || lastAutosaveForCloud;
   pendingAutosavePush = null;
+  return pending;
+}
+
+/**
+ * Sync kickoff for visibility/pagehide — no dynamic import, no await.
+ * Uses fetch keepalive when the payload fits; otherwise fires async push.
+ */
+export function flushManagerCloudAutosaveSync(): void {
+  const pending = takePendingAutosaveForFlush();
   if (!pending) return;
+  if (tryKeepaliveManagerAutosavePush(pending.state, pending.meta)) return;
+  void pushManagerSaveToCloud("auto", pending.state, pending.meta);
+}
+
+/**
+ * Immediate cloud flush for autosave — call on exit (can await).
+ * Cancels the 2.5s debounce so iOS backgrounding does not drop the push.
+ */
+export async function flushManagerCloudAutosave(): Promise<void> {
+  const pending = takePendingAutosaveForFlush();
+  if (!pending) return;
+  if (tryKeepaliveManagerAutosavePush(pending.state, pending.meta)) return;
   await pushManagerSaveToCloud("auto", pending.state, pending.meta);
 }

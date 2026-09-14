@@ -24,12 +24,14 @@ import { ManagerMatchReviewModal } from "@/components/manager/ManagerMatchReview
 import { ManagerKeyMomentsModal } from "@/components/manager/ManagerKeyMomentsModal";
 import { ManagerSeasonAwardsModal } from "@/components/manager/ManagerSeasonAwardsModal";
 import { ManagerContractExpiryModal } from "@/components/manager/ManagerContractExpiryModal";
+import { ManagerLoanExpiryModal } from "@/components/manager/ManagerLoanExpiryModal";
+import { ManagerFriendlySelectModal } from "@/components/manager/ManagerFriendlySelectModal";
 import { ManagerIncomingOfferModal } from "@/components/manager/ManagerIncomingOfferModal";
 import { ManagerTutorialModal } from "@/components/manager/ManagerTutorialModal";
 import { useCompactViewport } from "@/lib/ui/viewport";
 
 function ManagerModeContent() {
-  const { state, activeTab, isLoading } = useManager();
+  const { state, activeTab, isLoading, persistWarning, dismissPersistWarning } = useManager();
   const compact = useCompactViewport();
 
   if (isLoading) {
@@ -51,6 +53,19 @@ function ManagerModeContent() {
         compact ? "manager-mobile-hub-pad" : ""
       }`}
     >
+      {persistWarning ? (
+        <div className="sticky top-0 z-40 border-b border-amber-500/40 bg-amber-950/95 px-4 py-2 text-center text-xs text-amber-100">
+          <span className="font-semibold">Autosave issue: </span>
+          {persistWarning}
+          <button
+            type="button"
+            onClick={dismissPersistWarning}
+            className="ml-3 underline underline-offset-2 hover:text-white"
+          >
+            Dismiss
+          </button>
+        </div>
+      ) : null}
       <ManagerHeader />
       {/* Desktop top tabs — hidden on phones (bottom nav replaces them). */}
       <div className="hidden sm:block">
@@ -78,11 +93,13 @@ function ManagerModeContent() {
       <ManagerMobileBottomNav />
 
       <ManagerTutorialModal />
+      <ManagerFriendlySelectModal />
       <ManagerKeyMomentsModal />
       <ManagerMatchReviewModal />
       <ManagerSeasonAwardsModal />
       <ManagerIncomingOfferModal />
       <ManagerContractExpiryModal />
+      <ManagerLoanExpiryModal />
     </div>
   );
 }

@@ -56,7 +56,9 @@ export function generateFixturesForCompetition(
   name: string,
   tier: number,
   clubIds: string[],
-  season: number
+  season: number,
+  /** Guaranteed entry for Challenge Cup Last 16 (typically the user's club). */
+  priorityClubId?: string
 ): ManagerCompetition {
   const standings: LeagueTableRow[] = clubIds.map((id) => ({
     clubId: id,
@@ -119,56 +121,42 @@ export function generateFixturesForCompetition(
       roundNum++;
     }
   } else if (compId === "challenge-cup") {
-    // Challenge cup knockout rounds seeded at specific weeks
-    // Round 1 (Last 16): Week 8
+    // Challenge Cup knockout rounds seeded at specific weeks
+    // Last 16: Week 8
     // Quarter Finals: Week 16
     // Semi Finals: Week 24
-    // Final: Week 30 (Wembley)
-    // We shuffle available clubs and pair them for Round 1
+    // Final: Week 28 (Wembley) — matches schedulePostSeasonAndCupFixtures
+    // Field all clubs when ≤16; otherwise keep priorityClubId + fill randomly to 16.
     const shuffled = [...clubIds].sort(() => Math.random() - 0.5);
-    const round1Clubs = shuffled.slice(0, 16); // Top 16 clubs enter
-    for (let i = 0; i < round1Clubs.length; i += 2) {
-      if (round1Clubs[i] && round1Clubs[i + 1]) {
-        fixtures.push({
-          id: `cc_${season}_r1_${round1Clubs[i]}_${round1Clubs[i + 1]}`,
-          competitionId: "challenge-cup",
-          season,
-          week: 8,
-          roundName: "Challenge Cup Round 5",
-          homeClubId: round1Clubs[i],
-          awayClubId: round1Clubs[i + 1],
-          isPlayed: false,
-        });
-      }
+    let round1Clubs: string[];
+    if (shuffled.length <= 16) {
+      round1Clubs = shuffled;
+    } else {
+      const guaranteed =
+        priorityClubId && clubIds.includes(priorityClubId) ? priorityClubId : null;
+      const pool = shuffled.filter((id) => id !== guaranteed);
+      round1Clubs = guaranteed
+        ? [guaranteed, ...pool.slice(0, 15)]
+        : pool.slice(0, 16);
+      round1Clubs = [...round1Clubs].sort(() => Math.random() - 0.5);
+    }
+
+    // Odd entrant count → last club receives a bye (unpaired)
+    for (let i = 0; i + 1 < round1Clubs.length; i += 2) {
+      fixtures.push({
+        id: `cc_${season}_r1_${round1Clubs[i]}_${round1Clubs[i + 1]}`,
+        competitionId: "challenge-cup",
+        season,
+        week: 8,
+        roundName: "Challenge Cup Last 16",
+        homeClubId: round1Clubs[i],
+        awayClubId: round1Clubs[i + 1],
+        isPlayed: false,
+      });
     }
   } else if (compId === "friendlies") {
-    // 2 pre-season friendlies at Week 1 and Week 2
-    const userClub = clubIds[0] || "leeds-rhinos";
-    // Pick 2 attractive opponents
-    const opp1 = userClub === "wigan-warriors" ? "st-helens" : "wigan-warriors";
-    const opp2 = userClub === "bradford-bulls" ? "leeds-rhinos" : "bradford-bulls";
-
-    fixtures.push({
-      id: `friendly_${season}_w1_${userClub}_${opp1}`,
-      competitionId: "friendlies",
-      season,
-      week: 1,
-      roundName: "Pre-Season Friendly 1",
-      homeClubId: userClub,
-      awayClubId: opp1,
-      isPlayed: false,
-    });
-
-    fixtures.push({
-      id: `friendly_${season}_w2_${opp2}_${userClub}`,
-      competitionId: "friendlies",
-      season,
-      week: 2,
-      roundName: "Pre-Season Friendly 2",
-      homeClubId: opp2,
-      awayClubId: userClub,
-      isPlayed: false,
-    });
+    // Fixtures are created after the manager picks 3 of 6 pending opponents
+    // (see pickPendingFriendlyOpponents / confirmFriendlyOpponents).
   }
 
   return {
@@ -180,6 +168,109 @@ export function generateFixturesForCompetition(
     fixtures,
     phase: "regular_season",
   };
+}
+
+/** Shuffle and pick up to 6 other clubs as friendly candidates. */
+export function pickPendingFriendlyOpponents(
+  allClubIds: string[],
+  userClubId: string,
+  count = 6
+): string[] {
+  const pool = allClubIds.filter((id) => id && id !== userClubId);
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, Math.min(count, pool.length));
+}
+
+/** Build 3 pre-season friendlies on weeks 1–3, alternating home/away. */
+export function buildFriendlyFixtures(
+  userClubId: string,
+  opponentIds: string[],
+  season: number
+): ManagerFixture[] {
+  const picked = opponentIds.slice(0, 3);
+  return picked.map((oppId, idx) => {
+    const week = idx + 1;
+    const userHome = idx % 2 === 0;
+    const homeClubId = userHome ? userClubId : oppId;
+    const awayClubId = userHome ? oppId : userClubId;
+    return {
+      id: `friendly_${season}_w${week}_${homeClubId}_${awayClubId}`,
+      competitionId: "friendlies" as const,
+      season,
+      week,
+      roundName: `Pre-Season Friendly ${week}`,
+      homeClubId,
+      awayClubId,
+      isPlayed: false,
+    };
+  });
+}
+
+/**
+ * Confirm 3 selected friendly opponents: write fixtures and clear pending choices.
+ */
+export function confirmFriendlyOpponents(
+  state: ManagerState,
+  selectedOpponentIds: string[]
+): { success: boolean; state: ManagerState; error?: string } {
+  const pending = state.pendingFriendlyOpponents || [];
+  if (state.friendlyFixturesConfirmed && !pending.length) {
+    return { success: false, state, error: "Friendlies already confirmed." };
+  }
+  if (selectedOpponentIds.length !== 3) {
+    return { success: false, state, error: "Select exactly 3 opponents." };
+  }
+  const pendingSet = new Set(pending);
+  if (selectedOpponentIds.some((id) => !pendingSet.has(id))) {
+    return { success: false, state, error: "Selection must come from the offered opponents." };
+  }
+
+  const userClubId = state.manager.clubId;
+  const season = state.calendar.currentSeason;
+  const fixtures = buildFriendlyFixtures(userClubId, selectedOpponentIds, season);
+  const friendlies = state.competitions.friendlies;
+
+  return {
+    success: true,
+    state: {
+      ...state,
+      pendingFriendlyOpponents: undefined,
+      friendlyFixturesConfirmed: true,
+      competitions: {
+        ...state.competitions,
+        friendlies: {
+          ...friendlies,
+          fixtures,
+          clubIds: [userClubId, ...selectedOpponentIds],
+        },
+      },
+    },
+  };
+}
+
+/** Auto-pick the first 3 pending friendly opponents. */
+export function autoPickFriendlyOpponents(state: ManagerState): {
+  success: boolean;
+  state: ManagerState;
+  error?: string;
+} {
+  const pending = state.pendingFriendlyOpponents || [];
+  if (pending.length < 3) {
+    return { success: false, state, error: "Not enough friendly opponents available." };
+  }
+  return confirmFriendlyOpponents(state, pending.slice(0, 3));
+}
+
+/**
+ * True when the manager still needs to pick pre-season friendlies.
+ */
+export function needsFriendlySelection(state: ManagerState): boolean {
+  if (state.friendlyFixturesConfirmed) return false;
+  const pending = state.pendingFriendlyOpponents;
+  return Boolean(pending && pending.length > 0);
 }
 
 /**

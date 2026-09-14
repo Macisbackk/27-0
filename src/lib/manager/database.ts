@@ -36,7 +36,7 @@ import type {
   ClubFinances,
   ClubFacilities,
 } from "./types";
-import { generateFixturesForCompetition } from "./competitions";
+import { generateFixturesForCompetition, pickPendingFriendlyOpponents } from "./competitions";
 
 export const STADIUMS: Record<string, { name: string; capacity: number }> = {
   "Wigan Warriors": { name: "Brick Community Stadium", capacity: 25138 },
@@ -118,6 +118,95 @@ export const CLUB_COLORS: Record<string, { primary: string; secondary: string; a
 
 export function toClubId(clubName: string): string {
   return clubName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+/** Map alternate squad / historic names onto Manager Mode club ids. */
+const CLUB_ID_IMPORT_ALIASES: Record<string, string> = {
+  "salford-red-devils": "salford-rlfc",
+  salford: "salford-rlfc",
+  "london-broncos": "london-broncos",
+  london: "london-broncos",
+};
+
+/**
+ * Resolve a raw club name from squad data to a Manager Mode club id.
+ */
+export function resolveImportedClubId(clubName: string): string {
+  const rawId = toClubId(clubName);
+  return CLUB_ID_IMPORT_ALIASES[rawId] || rawId;
+}
+
+type ChampClubStrengthRow = {
+  id: string;
+  name: string;
+  baseStrength?: number;
+};
+
+/** Strengths for default Champ clubs missing from championship-clubs.json (e.g. London). */
+const CHAMP_BASE_STRENGTH_FALLBACKS: Record<string, number> = {
+  "london-broncos": 72,
+  london: 72,
+  "widnes-vikings": 71,
+  widnes: 71,
+  "halifax-panthers": 70,
+  halifax: 70,
+  "sheffield-eagles": 69,
+  sheffield: 69,
+  "oldham-rlfc": 68,
+  oldham: 68,
+};
+
+function buildChampionshipBaseStrengthIndex(): Map<string, number> {
+  const index = new Map<string, number>();
+  for (const row of championshipClubsData as ChampClubStrengthRow[]) {
+    if (typeof row.baseStrength !== "number") continue;
+    index.set(row.id, row.baseStrength);
+    index.set(toClubId(row.name), row.baseStrength);
+  }
+  for (const [id, strength] of Object.entries(CHAMP_BASE_STRENGTH_FALLBACKS)) {
+    if (!index.has(id)) index.set(id, strength);
+  }
+  return index;
+}
+
+const CHAMPIONSHIP_BASE_STRENGTH_INDEX = buildChampionshipBaseStrengthIndex();
+
+/** Soft-cap ceiling for imported Championship players relative to club baseStrength. */
+const CHAMP_IMPORT_RATING_CAP_OFFSET = 8;
+
+/**
+ * Championship club base strength from championship-clubs.json (by id or toClubId(name)),
+ * with fallbacks for default Champ clubs not yet present in that file.
+ */
+export function getChampionshipBaseStrength(clubIdOrName: string): number | null {
+  const id = clubIdOrName.includes(" ") ? toClubId(clubIdOrName) : clubIdOrName;
+  const aliased = CLUB_ID_IMPORT_ALIASES[id] || id;
+  return (
+    CHAMPIONSHIP_BASE_STRENGTH_INDEX.get(aliased) ??
+    CHAMPIONSHIP_BASE_STRENGTH_INDEX.get(id) ??
+    null
+  );
+}
+
+/** Club first-team base strength used for fillers / depth generation. */
+export function getClubBaseStrength(
+  competitionId: string,
+  reputation: number,
+  clubId?: string
+): number {
+  if (competitionId === "super-league") {
+    return reputation >= 4 ? 78 : 72;
+  }
+  if (clubId) {
+    const fromData = getChampionshipBaseStrength(clubId);
+    if (fromData != null) return fromData;
+  }
+  return reputation === 3 ? 68 : 62;
+}
+
+function softCapChampImportRating(rating: number, clubBaseStrength: number): number {
+  const cap = clubBaseStrength + CHAMP_IMPORT_RATING_CAP_OFFSET;
+  return Math.max(40, Math.min(99, Math.min(rating, cap)));
 }
 
 function normalizePosition(pos: string): Position {
@@ -425,12 +514,24 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
   for (const raw of currentSquadsData as any[]) {
     const clubName = raw.club || raw.currentClub || raw.team;
     if (!clubName) continue;
-    const clubId = toClubId(clubName);
+    const clubId = resolveImportedClubId(clubName);
     if (!clubs[clubId]) continue; // ignore non-SL / non-Champ
 
     const pos = normalizePosition(raw.position || raw.primaryPosition);
     const ratingOverride = PLAYER_RATING_OVERRIDES[raw.id] || raw.peakRating || 75;
-    const rating = Math.max(40, Math.min(99, ratingOverride));
+    let rating = Math.max(40, Math.min(99, ratingOverride));
+
+    // Soft-cap Championship imports toward club baseStrength so season 1 isn't trivial
+    // (applies to ALL Champ clubs including London / ex-SL sides).
+    const importingClub = clubs[clubId];
+    if (importingClub?.competitionId === "championship") {
+      const champBase = getClubBaseStrength(
+        "championship",
+        importingClub.reputation,
+        clubId
+      );
+      rating = softCapChampImportRating(rating, champBase);
+    }
 
     const potentialOverride = PLAYER_POTENTIAL_OVERRIDES[raw.id];
     let potential = potentialOverride ?? (raw.potential || (rating + (raw.birthYear && (2026 - raw.birthYear) <= 23 ? 8 : 2)));
@@ -504,8 +605,11 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
   // 3. Ensure every club has a complete squad across First Team (20+), Reserves (5), and Academy (5)
   // All real players imported from current-squads.json are senior First Team squad members.
   for (const [clubId, club] of Object.entries(clubs)) {
-    const isSL = club.competitionId === "super-league";
-    const baseStrength = isSL ? (club.reputation >= 4 ? 78 : 72) : (club.reputation === 3 ? 68 : 62);
+    const baseStrength = getClubBaseStrength(
+      club.competitionId,
+      club.reputation,
+      clubId
+    );
 
     // All real players imported from current-squads.json are senior First Team squad members
     const clubFirstTeam = clubPlayersMap[clubId] || [];
@@ -611,8 +715,16 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
 
   const superLeagueComp = generateFixturesForCompetition("super-league", "Super League", 1, slClubIds, 2026);
   const championshipComp = generateFixturesForCompetition("championship", "Championship", 2, champClubIds, 2026);
-  const challengeCupComp = generateFixturesForCompetition("challenge-cup", "Challenge Cup", 0, [...slClubIds, ...champClubIds], 2026);
+  const challengeCupComp = generateFixturesForCompetition(
+    "challenge-cup",
+    "Challenge Cup",
+    0,
+    [...slClubIds, ...champClubIds],
+    2026,
+    chosenClubId
+  );
   const friendliesComp = generateFixturesForCompetition("friendlies", "Pre-Season Friendlies", 0, [chosenClubId], 2026);
+  const pendingFriendlyOpponents = pickPendingFriendlyOpponents(Object.keys(clubs), chosenClubId, 6);
 
   // 6. Assemble state
   const state: ManagerState = {
@@ -648,6 +760,8 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
       pendingLoanOffers: [],
     },
     seasonHistory: [],
+    pendingFriendlyOpponents,
+    friendlyFixturesConfirmed: false,
     inbox: {
       messages: [
         {
@@ -668,7 +782,7 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
           dateStr: "1 Feb 2026",
           sender: "Assistant Coach",
           subject: "Pre-Season Preparations & Squad Status",
-          body: "Squad training is underway. You can adjust individual training focuses in the Training tab and test combinations in our pre-season friendlies over the next 2 weeks.",
+          body: "Squad training is underway. Pick three pre-season friendly opponents from the six options offered, then test combinations over the opening weeks.",
           category: "general",
           isRead: false,
         },
@@ -679,7 +793,7 @@ export function initializeManagerDatabase(chosenClubId: string, managerName = "C
       soundEnabled: true,
       autoSaveEnabled: true,
       currencySymbol: "£",
-      matchSimulationSpeed: "normal",
+      matchSimulationSpeed: "instant",
     },
   };
 
@@ -705,9 +819,11 @@ export function ensureClubSquadDepth(
   for (const club of clubsToInspect) {
     const clubId = club.id;
     const isSL = club.competitionId === "super-league";
-    const baseStrength = isSL
-      ? (club.reputation >= 4 ? 78 : 72)
-      : (club.reputation === 3 ? 68 : 62);
+    const baseStrength = getClubBaseStrength(
+      club.competitionId,
+      club.reputation,
+      clubId
+    );
 
     const clubPlayers = Object.values(newPlayers).filter(
       (p) => p.clubId === clubId && !p.isRetired
