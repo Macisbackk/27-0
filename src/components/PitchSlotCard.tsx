@@ -8,7 +8,7 @@ import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
 /** Shared footprint for empty and filled pitch slots — scales with pitch width. */
 export const PITCH_SLOT_SIZE_CLASS =
-  "h-[clamp(54px,13vw,88px)] w-[clamp(50px,12vw,82px)] sm:h-[clamp(60px,13.5vw,96px)] sm:w-[clamp(54px,12.5vw,88px)] md:h-[clamp(68px,14vw,108px)] md:w-[clamp(62px,13vw,100px)]";
+  "h-[clamp(56px,13.5vw,88px)] w-[clamp(54px,14vw,82px)] sm:h-[clamp(60px,13.5vw,96px)] sm:w-[clamp(54px,12.5vw,88px)] md:h-[clamp(68px,14vw,108px)] md:w-[clamp(62px,13vw,100px)]";
 
 export const PITCH_SLOT_COMPACT_CLASS =
   "h-[clamp(42px,9.5vw,64px)] w-[clamp(40px,9vw,60px)]";
@@ -133,9 +133,11 @@ function TwoLineName({ name }: { name: string }) {
   const parts = name.trim().split(/\s+/);
   if (parts.length < 2) return <>{name}</>;
   const surname = parts[parts.length - 1]!;
-  const first = parts.slice(0, -1).join(" ");
+  const firstFull = parts.slice(0, -1).join(" ");
+  // Long first names collapse to an initial: the surname is what players recognise.
+  const first = firstFull.length > 7 ? `${firstFull[0]}.` : firstFull;
   const surnameSize =
-    surname.length <= 7 ? "" : surname.length <= 9 ? "text-[7px] sm:text-[8px]" : "text-[6.5px] sm:text-[7.5px]";
+    surname.length <= 7 ? "" : surname.length <= 9 ? "text-[7px] sm:text-[8px]" : "text-[6px] sm:text-[7.5px]";
   return (
     <>
       <span className="block truncate">{first}</span>
