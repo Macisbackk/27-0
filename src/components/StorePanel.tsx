@@ -42,50 +42,33 @@ const STORE_TABS = [
   { id: "boosts" as const, label: "Boosts" },
 ];
 
+/** Mini app preview in the theme's colours: header bar, accent text and a primary button. */
 function ThemePalette({ theme }: { theme: UiThemeDefinition }) {
-  const swatches = [
-    { label: "Primary", colour: theme.primary },
-    { label: "Secondary", colour: theme.secondary },
-    { label: "Tertiary", colour: theme.tertiary },
-  ];
-
   return (
     <div
-      className="border-b border-pitch-700/40 bg-pitch-950/80 px-2 py-2"
-      aria-label={`${theme.label} colour palette`}
+      className="relative overflow-hidden border-b border-pitch-700/40 bg-pitch-950 p-2"
+      aria-label={`${theme.label} colour preview`}
     >
-      <div className="grid grid-cols-3 gap-1.5">
-        {swatches.map((swatch) => (
-          <div key={swatch.label} className="min-w-0 text-center">
-            <span
-              className="mb-0.5 block h-6 w-full rounded border border-white/20"
-              style={{ backgroundColor: swatch.colour }}
-              title={swatch.label}
-            />
-            <span className="block truncate text-[9px] font-semibold uppercase tracking-wide text-gray-400">
-              {swatch.label}
-            </span>
-          </div>
-        ))}
-      </div>
-      <div className="mt-2 flex gap-1.5">
-        <span
-          className="flex-1 rounded-md px-2 py-1.5 text-center text-[10px] font-bold uppercase tracking-wide"
-          style={{
-            backgroundColor: theme.primary,
-            color: theme.textOnPrimary,
-            border: `1px solid ${theme.tertiary}`,
-          }}
-        >
-          Primary btn
+      <div
+        className="flex items-center justify-between rounded-md px-2 py-1"
+        style={{ backgroundColor: theme.secondary, borderBottom: `2px solid ${theme.tertiary}` }}
+      >
+        <span className="h-1.5 w-6 rounded-full bg-white/60" />
+        <span className="text-[10px] font-black" style={{ color: theme.primary }}>
+          27-0
         </span>
-        <span
-          className="flex-1 rounded-md border px-2 py-1.5 text-center text-[10px] font-bold uppercase tracking-wide text-gray-200"
-          style={{ borderColor: theme.tertiary }}
-        >
-          Secondary
-        </span>
+        <span className="h-1.5 w-4 rounded-full bg-white/40" />
       </div>
+      <div className="mt-2 flex items-center gap-1.5">
+        <span className="h-6 w-6 shrink-0 rounded-full" style={{ background: theme.primary, boxShadow: `inset 0 0 0 2px ${theme.tertiary}` }} />
+        <span className="h-1.5 flex-1 rounded-full bg-white/15" />
+      </div>
+      <span
+        className="mt-2 block rounded-md py-1 text-center text-[10px] font-black uppercase tracking-wide"
+        style={{ backgroundColor: theme.primary, color: theme.textOnPrimary, border: `1px solid ${theme.tertiary}` }}
+      >
+        Play
+      </span>
     </div>
   );
 }
@@ -189,9 +172,22 @@ export function StorePanel() {
             {formatClubFundsExact(balance)}
           </p>
         </div>
-        <p className={`max-w-xs ${TYPO.bodySm} text-gray-400`}>
-          Themes {formatClubFundsExact(UI_THEME_PURCHASE_PRICE)} each.
-        </p>
+        <div className="min-w-[9rem] flex-1 sm:max-w-xs">
+          <p className={`${TYPO.bodySm} text-gray-400`}>
+            Themes {formatClubFunds(UI_THEME_PURCHASE_PRICE)} each
+          </p>
+          <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-pitch-800" aria-hidden>
+            <div
+              className="h-full rounded-full bg-accent-gold"
+              style={{ width: `${Math.min(100, (balance / UI_THEME_PURCHASE_PRICE) * 100)}%` }}
+            />
+          </div>
+          <p className={`mt-1 ${TYPO.bodySm} ${balance >= UI_THEME_PURCHASE_PRICE ? "text-emerald-300" : "text-gray-500"}`}>
+            {balance >= UI_THEME_PURCHASE_PRICE
+              ? "You can afford a theme"
+              : `${formatClubFunds(UI_THEME_PURCHASE_PRICE - balance)} to your next theme`}
+          </p>
+        </div>
       </div>
 
       {purchaseError && (
@@ -200,7 +196,7 @@ export function StorePanel() {
         </p>
       )}
 
-      <ul className={`mt-6 grid gap-3 sm:grid-cols-2 ${SPACING.stackMd}`}>
+      <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
         {displayThemes.map((theme) => {
           const isUnlocked = unlocked.includes(theme.id);
           const isSelected = selectedId === theme.id;
@@ -216,21 +212,17 @@ export function StorePanel() {
               }`}
             >
               <ThemePalette theme={theme} />
-              <div className={SPACING.cardPaddingSm}>
+              <div className="p-2.5">
                 <div className="min-w-0">
-                  <p className="truncate font-display text-sm font-bold text-white sm:text-base">
+                  <p className="truncate font-display text-sm font-bold text-white">
                     {theme.label}
                   </p>
-                  <p className={`mt-0.5 ${TYPO.bodySm} text-gray-500`}>
-                    {isUnlocked
-                      ? isSelected
-                        ? "Selected"
-                        : "Unlocked"
-                      : formatClubFundsExact(UI_THEME_PURCHASE_PRICE)}
+                  <p className={`text-xs ${isSelected ? "text-emerald-300" : "text-gray-500"}`}>
+                    {isUnlocked ? (isSelected ? "✓ In use" : "Owned") : "Locked"}
                   </p>
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-2.5">
                   {isUnlocked ? (
                     <GameButton
                       variant={isSelected ? "theme" : "secondary"}
@@ -247,7 +239,7 @@ export function StorePanel() {
                       disabled={!canAfford || purchasingId === theme.id}
                       onClick={() => handlePurchase(theme)}
                     >
-                      Buy — {formatClubFunds(UI_THEME_PURCHASE_PRICE)}
+                      {canAfford ? `Buy · ${formatClubFunds(UI_THEME_PURCHASE_PRICE)}` : `🔒 ${formatClubFunds(UI_THEME_PURCHASE_PRICE)}`}
                     </GameButton>
                   )}
                 </div>

@@ -79,6 +79,12 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
   }, [gameIndex, result.fixtures, onComplete]);
 
   const currentRound = Math.min(gameIndex + 1, SEASON_GAMES);
+  const skipToEnd = () => {
+    if (phase !== "simulating") return;
+    setWins(result.fixtures.filter((f) => f.result === "W").length);
+    setLosses(result.fixtures.filter((f) => f.result !== "W").length);
+    setGameIndex(SEASON_GAMES);
+  };
 
   return (
     <div className="flex w-full flex-col items-center justify-center px-3 py-4 sm:px-4 sm:py-6">
@@ -95,7 +101,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        Season
+        {phase === "complete" ? "Full time on the season" : "Your season"}
       </motion.h2>
 
       <div className="mt-4 w-full max-w-lg">
@@ -103,6 +109,19 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
           <p className={`text-sm ${TYPO.bodySm}`}>
             Round {currentRound} of {SEASON_GAMES}
           </p>
+          <div
+            className="mx-auto mt-2 h-1.5 w-full max-w-xs overflow-hidden rounded-full bg-pitch-800"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={SEASON_GAMES}
+            aria-valuenow={Math.min(gameIndex, SEASON_GAMES)}
+            aria-label="Season progress"
+          >
+            <div
+              className="h-full rounded-full bg-theme-primary transition-[width] duration-150"
+              style={{ width: `${(Math.min(gameIndex, SEASON_GAMES) / SEASON_GAMES) * 100}%` }}
+            />
+          </div>
 
           <div className="mt-3 flex items-center justify-center gap-5 sm:gap-8">
             <div>
@@ -111,7 +130,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               </p>
               <motion.p
                 key={wins}
-                className="font-display text-xl font-black text-theme-primary sm:text-4xl"
+                className="font-display text-3xl font-black text-theme-primary sm:text-4xl"
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
               >
@@ -125,7 +144,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               </p>
               <motion.p
                 key={losses}
-                className="font-display text-xl font-black text-red-400 sm:text-4xl"
+                className="font-display text-3xl font-black text-red-400 sm:text-4xl"
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
               >
@@ -201,11 +220,47 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
           )}
         </ScoreboardPanel>
 
-        <div className="mt-3 rounded-xl border border-pitch-700/50 bg-pitch-950/50 p-2.5 sm:p-3">
-          <p className={`mb-2 ${TYPO.statLabel}`}>
-            Results
-          </p>
-          <div className="space-y-0.5">
+        {phase === "simulating" ? (
+          <div className="mt-3 flex justify-center">
+            <button
+              type="button"
+              onClick={skipToEnd}
+              className="btn-press rounded-full border border-white/15 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gray-300 hover:border-theme-primary/50 hover:text-white"
+            >
+              Skip to full time
+            </button>
+          </div>
+        ) : null}
+
+        {/* Form guide: one tile per round, filled in as results land. */}
+        <div className="mt-3 grid grid-cols-9 gap-1" aria-label="Results by round">
+          {result.fixtures.map((f, i) => {
+            const played = i < gameIndex;
+            return (
+              <span
+                key={f.round}
+                title={played ? `R${f.round}: ${formatFixtureScore(f)}` : `Round ${f.round}`}
+                className={`flex aspect-square items-center justify-center rounded-md text-[10px] font-black ${
+                  !played
+                    ? "bg-pitch-900 text-pitch-600"
+                    : f.result === "W"
+                      ? "bg-theme-primary/85 text-black"
+                      : f.result === "D"
+                        ? "bg-gray-500 text-black"
+                        : "bg-red-500/85 text-white"
+                }`}
+              >
+                {played ? f.result : f.round}
+              </span>
+            );
+          })}
+        </div>
+
+        <details className="mt-3 rounded-xl border border-pitch-700/50 bg-pitch-950/50 p-2.5 sm:p-3">
+          <summary className={`cursor-pointer select-none ${TYPO.statLabel}`}>
+            Results ({Math.min(gameIndex, SEASON_GAMES)})
+          </summary>
+          <div className="mt-2 space-y-0.5">
             {result.fixtures.slice(0, gameIndex).map((f) => (
               <div
                 key={f.round}
@@ -228,7 +283,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               </div>
             ))}
           </div>
-        </div>
+        </details>
       </div>
     </div>
   );

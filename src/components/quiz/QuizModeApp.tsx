@@ -634,7 +634,7 @@ function QuizPlayScreen({
             disabled={run.lifelines.change || locked}
             onClick={onChange}
           >
-            Change
+            Swap
           </GameButton>
         </div>
 

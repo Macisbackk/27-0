@@ -66,6 +66,10 @@
 
 .quiz-arena .quiz-lifeline {
   min-height: 48px;
+  padding-inline: 0.25rem;
+  white-space: nowrap;
+  letter-spacing: 0;
+  font-size: 0.8rem;
 }
 
 .quiz-ladder {

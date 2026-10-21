@@ -79,7 +79,7 @@ export function PitchSlotCard({
             isMatchdayPitch
               ? "text-[8px] leading-none sm:text-[9px] md:text-[10px]"
               : isTeamSheet
-                ? "line-clamp-2 px-0.5 text-[5.5px] leading-[1.08] sm:text-[6.5px]"
+                ? "line-clamp-2 px-0.5 text-[7px] leading-[1.08] sm:text-[7.5px]"
                 : "line-clamp-2 text-[7px] leading-[1.05] sm:text-[8px]"
           }`}
         >
@@ -98,10 +98,10 @@ export function PitchSlotCard({
           <p
             className={`min-h-0 w-full text-center font-display font-semibold text-white ${
               fullPlayerNames
-                ? "line-clamp-2 shrink-0 break-words [overflow-wrap:anywhere] px-0.5 text-[7px] leading-[1.08] sm:text-[8px]"
+                ? "line-clamp-2 shrink-0 break-words hyphens-auto px-0.5 text-[8px] leading-[1.1] sm:text-[9px]"
                 : compact
                   ? "truncate px-0.5 text-[8px] leading-[1.15] sm:text-[9px]"
-                  : "line-clamp-2 break-words text-[7px] leading-[1.15] sm:text-[8px]"
+                  : "line-clamp-2 break-words hyphens-auto text-[8px] leading-[1.15] sm:text-[9px]"
             }`}
           >
             {displayName}

@@ -531,7 +531,8 @@ function StatsSection({
         </h2>
         {headerExtra}
       </div>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{children}</div>
+      {/* Two tiles per row on phones: the old single column made this page ~3,000px tall. */}
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-3">{children}</div>
     </section>
   );
 }
@@ -548,12 +549,12 @@ function StatCard({
   highlight?: boolean;
 }) {
   return (
-    <div className={`${RL_INFO_BOX_CLASS} p-4`}>
-      <p className="text-[10px] font-medium uppercase tracking-wider text-gray-500">
+    <div className={`${RL_INFO_BOX_CLASS} min-w-0 p-3 sm:p-4`}>
+      <p className="text-[10px] font-medium uppercase leading-tight tracking-wider text-gray-500">
         {label}
       </p>
       <p
-        className={`mt-1 font-display text-xl font-bold ${
+        className={`mt-1 break-words font-display text-lg font-bold leading-tight sm:text-xl ${
           highlight ? "text-accent-gold" : "text-white"
         }`}
       >

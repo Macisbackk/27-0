@@ -22,7 +22,7 @@ export function getCurrentRatingExplanation(): string {
 }
 
 export function getCurrentRatingCompactExplanation(): string {
-  return UI_COPY.currentRatingNote;
+  return `Ratings reflect ${getCurrentSeasonYearNumber()} form.`;
 }
 
 export function getCurrentRatingSupportText(

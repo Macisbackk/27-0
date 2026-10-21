@@ -406,7 +406,7 @@ const SquadMarker = memo(function SquadMarker({
         <span
           className={`w-full text-center font-display font-semibold ${
             _compact || fullPlayerNames
-              ? "line-clamp-2 px-0.5 text-[5.5px] leading-[1.08] sm:text-[6.5px]"
+              ? "line-clamp-2 px-0.5 text-[7.5px] leading-[1.1] sm:text-[8px]"
               : "text-[8px] font-bold uppercase leading-tight tracking-wide sm:text-[9px] md:text-[10px]"
           } ${
             interactive ? "text-white" : "text-white/40"
@@ -428,6 +428,7 @@ const SquadMarker = memo(function SquadMarker({
           type="button"
           onClick={onClick}
           title={tooltip}
+          aria-label={`${slot.label}: empty — tap to spin`}
           className={`${EMPTY_SLOT_BASE_CLASS} btn-press ${slotSizeClass} ${stateClass} outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50`}
         >
           {inner}

@@ -2613,9 +2613,11 @@ export function GameBoard({
         {phase === "pitch" &&
           isSlotRecruitMode &&
           filledCount < TOTAL_SLOTS && (
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-            <p className={`w-full text-center ${TYPO.bodySm} text-gray-400`}>
-              Tap an empty slot to spin
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
+            <p className={`w-full text-center ${TYPO.bodySm} font-semibold text-white`}>
+              {filledCount === 0
+                ? "Tap any position to spin for a player"
+                : `Tap an empty position · ${TOTAL_SLOTS - filledCount} to go`}
             </p>
             {!dailyChallengeMode &&
               (normalEraMode ? (

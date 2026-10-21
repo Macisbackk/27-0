@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { getDailyChallengeHref } from "@/lib/daily-challenge";
+import { useEffect, useState } from "react";
+import {
+  getDailyChallengeHref,
+  getDailyChallengeProgress,
+  getDailyChallengeScenario,
+  type DailyChallengeScenario,
+} from "@/lib/daily-challenge";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { GameButton } from "@/components/ui/GameButton";
 import { MobileSection } from "@/components/ui/MobileLayout";
@@ -49,6 +55,7 @@ export function HomeModeSelector() {
         <HomePlayChoice
           eyebrow="Current squads · 2026"
           title="Classic"
+          blurb="Spin real 2026 squads, build a 13 and chase 27-0."
           href={buildPlayHref("classic", false)}
           variant="current"
           cta="Play Current"
@@ -61,6 +68,7 @@ export function HomeModeSelector() {
         <HomePlayChoice
           eyebrow="Historic squads"
           title="Era Classic"
+          blurb="Every Super League era, legends included."
           href={buildPlayHref("classic", true)}
           variant="era"
           cta="Play Era"
@@ -72,36 +80,68 @@ export function HomeModeSelector() {
         />
       </div>
 
-      <p className="mt-5 sm:mt-6">
+      <div className={`mt-3 grid gap-3 sm:mt-4 sm:gap-4 ${SHOW_DAILY_CHALLENGE_UI ? "grid-cols-2" : ""}`}>
+        {SHOW_DAILY_CHALLENGE_UI ? <HomeDailyCard /> : null}
         <Link
           href="/mini-games"
           onClick={() => playUiClick()}
-          className="text-sm font-semibold text-theme-primary hover:underline"
+          className="btn-press flex flex-col items-center justify-between gap-2 rounded-2xl border border-white/10 bg-pitch-900/70 p-4 text-center transition hover:border-theme-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60"
         >
-          Mini Games
+          <span className={`${TYPO.eyebrow} text-theme-primary`}>Quick games</span>
+          <span className="font-display text-lg font-black leading-tight text-white">Mini Games</span>
+          <span aria-hidden className="flex gap-1">
+            {["?", "W", "A_", "↕"].map((g) => (
+              <span key={g} className="flex h-7 w-7 items-center justify-center rounded-md border border-white/10 bg-pitch-950 text-xs font-black text-gray-300">
+                {g}
+              </span>
+            ))}
+          </span>
+          <span className="text-xs text-gray-400">Quiz · Wordle · Hangman · Higher/Lower</span>
         </Link>
-        {SHOW_DAILY_CHALLENGE_UI ? (
-          <>
-            <span className="mx-2 text-pitch-600">·</span>
-            <Link
-              href={getDailyChallengeHref()}
-              onClick={() => {
-                playUiClick();
-              }}
-              className="text-sm font-semibold text-theme-primary hover:underline"
-            >
-              Daily Challenge
-            </Link>
-          </>
-        ) : null}
-      </p>
+      </div>
     </section>
+  );
+}
+
+/** Today's Daily Challenge, filled in after mount (the date is the player's, not the server's). */
+function HomeDailyCard() {
+  const [today, setToday] = useState<{ scenario: DailyChallengeScenario; done: boolean } | null>(null);
+  useEffect(() => {
+    const progress = getDailyChallengeProgress();
+    setToday({
+      scenario: getDailyChallengeScenario(),
+      done: Boolean(progress.leagueLeaders && progress.playoffTitle),
+    });
+  }, []);
+  const scenario = today?.scenario;
+  return (
+    <Link
+      href={getDailyChallengeHref()}
+      onClick={() => playUiClick()}
+      className="btn-press flex flex-col items-center justify-between gap-2 rounded-2xl border border-accent-gold/30 bg-gradient-to-b from-accent-gold/10 to-pitch-950 p-4 text-center transition hover:border-accent-gold/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/60"
+    >
+      <span className={`${TYPO.eyebrow} text-accent-gold`}>
+        Daily{scenario?.eraMode ? " · Era" : ""}
+      </span>
+      <span className="font-display text-lg font-black leading-tight text-white">Daily Challenge</span>
+      <span className="min-h-[2.5rem] text-xs leading-snug text-gray-300">
+        {scenario ? `Every opponent is ${scenario.forceOpponentClub}` : "A new challenge every day"}
+      </span>
+      <span
+        className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${
+          today?.done ? "bg-emerald-500/15 text-emerald-300" : "bg-accent-gold/15 text-accent-gold"
+        }`}
+      >
+        {today?.done ? "✓ Done today" : "One attempt today"}
+      </span>
+    </Link>
   );
 }
 
 function HomePlayChoice({
   eyebrow,
   title,
+  blurb,
   href,
   variant,
   cta,
@@ -109,6 +149,7 @@ function HomePlayChoice({
 }: {
   eyebrow: string;
   title: string;
+  blurb: string;
   href: string;
   variant: "current" | "era";
   cta: string;
@@ -129,6 +170,7 @@ function HomePlayChoice({
         {eyebrow}
       </p>
       <h2 className={`mt-1.5 ${TYPO.homeModeTitle}`}>{title}</h2>
+      <p className="mt-1 text-sm text-gray-400">{blurb}</p>
 
       <div className="mt-4 w-full max-w-xs">
         <GameButton variant={variant} href={href} onClick={onClick} size="sm">
