@@ -90,7 +90,7 @@ export async function submitQuizLeaderboardOnline(input: {
     const currentScore = typeof existing?.score === "number" ? existing.score : 0;
     if (currentScore >= input.highestPrize) return;
 
-    await supabase.from("leaderboard").upsert(
+    const { error: upsertError } = await supabase.from("leaderboard").upsert(
       {
         user_id: userId,
         coach_name: coachName,
@@ -103,6 +103,7 @@ export async function submitQuizLeaderboardOnline(input: {
       },
       { onConflict: "user_id,mode,difficulty,mode_variant" }
     );
+    if (upsertError) throw upsertError;
   } catch (error) {
     console.error("[quiz-leaderboard] submit failed:", error);
   }

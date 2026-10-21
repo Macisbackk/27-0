@@ -17,6 +17,11 @@ export function useModalA11y(
   const panelRef = useRef<HTMLDivElement | null>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const scrollLockIdRef = useRef<ScrollLockId | null>(null);
+  // Keep the latest onClose without re-running the effect: callers often pass an inline
+  // function, and re-running would release/re-take the scroll lock and steal focus on every
+  // parent re-render while the modal is open.
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) return;
@@ -27,7 +32,7 @@ export function useModalA11y(
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        onClose();
+        onCloseRef.current();
         return;
       }
 
@@ -71,7 +76,7 @@ export function useModalA11y(
       releaseScrollLock(scrollLockIdRef.current);
       scrollLockIdRef.current = null;
     };
-  }, [open, onClose]);
+  }, [open]);
 
   return panelRef;
 }

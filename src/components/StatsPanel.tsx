@@ -81,7 +81,9 @@ export function StatsPanel() {
 
     const pullFromCloud = () => {
       if (!isLoggedIn) return;
-      void refreshCareerStatsFromCloud().then(refresh);
+      void refreshCareerStatsFromCloud()
+        .then(refresh)
+        .catch((error) => console.error("[stats] Cloud refresh failed:", error));
     };
 
     const flushToCloud = () => {
