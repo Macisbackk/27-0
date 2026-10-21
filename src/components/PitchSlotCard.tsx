@@ -104,7 +104,7 @@ export function PitchSlotCard({
                   : "line-clamp-2 break-words hyphens-auto text-[8px] leading-[1.15] sm:text-[9px]"
             }`}
           >
-            {displayName}
+            {fullPlayerNames ? <TwoLineName name={player.name} /> : displayName}
           </p>
         )}
         {!hardMode && (
@@ -122,5 +122,24 @@ export function PitchSlotCard({
         )}
       </div>
     </div>
+  );
+}
+
+/**
+ * First name over surname, with the surname shrinking a step when it is long, so names
+ * like "Marsters" or "Batchelor" fit the narrow pitch card instead of ending in "…".
+ */
+function TwoLineName({ name }: { name: string }) {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length < 2) return <>{name}</>;
+  const surname = parts[parts.length - 1]!;
+  const first = parts.slice(0, -1).join(" ");
+  const surnameSize =
+    surname.length <= 7 ? "" : surname.length <= 9 ? "text-[7px] sm:text-[8px]" : "text-[6.5px] sm:text-[7.5px]";
+  return (
+    <>
+      <span className="block truncate">{first}</span>
+      <span className={`block whitespace-nowrap ${surnameSize}`}>{surname}</span>
+    </>
   );
 }
