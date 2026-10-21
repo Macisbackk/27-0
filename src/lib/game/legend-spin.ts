@@ -1,5 +1,6 @@
 import seedrandom from "seedrandom";
 import type { SquadSlot } from "../types";
+import { normalizePlayerNameKey } from "../player-name-normalize";
 import { RECRUIT_SLOT_ORDER } from "../positions";
 import {
   getSpinTeamYearPoolsCached,
@@ -23,12 +24,16 @@ function eligibleLegendPlayersForSlot(
 ): boolean {
   const slot = squad.find((s) => s.slotIndex === slotIndex);
   if (!slot || slot.player) return false;
+  const signedNames = new Set(
+    squad.flatMap((s) => (s.player ? [normalizePlayerNameKey(s.player.name)] : []))
+  );
 
   return getRawPlayersForTeamYearPool(pool).some(
     (player) =>
       player.category === "legend" &&
       isPlayerInTeamYearPool(player.id, pool) &&
       !usedIds.has(player.id) &&
+      !signedNames.has(normalizePlayerNameKey(player.name)) &&
       canPlayerFillTeamYearSlot(pool.team, pool.year, player, slot.position)
   );
 }

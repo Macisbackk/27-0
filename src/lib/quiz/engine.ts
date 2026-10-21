@@ -94,6 +94,25 @@ function buildBalancedQuestionSlots(
     const j = Math.floor(rng() * (i + 1));
     [positions[i], positions[j]] = [positions[j]!, positions[i]!];
   }
+  // Never the same letter three times running (looks rigged, and the tests require it).
+  const used = Math.min(positions.length, questions.length);
+  const isTriple = (k: number) =>
+    k >= 2 && k < used && positions[k] === positions[k - 1] && positions[k] === positions[k - 2];
+  for (let guard = 0, i = 2; i < used && guard < 200; guard++) {
+    if (!isTriple(i)) {
+      i++;
+      continue;
+    }
+    let swapped = false;
+    for (let j = 0; j < positions.length && !swapped; j++) {
+      if (Math.abs(j - i) <= 2 || positions[j] === positions[i]) continue;
+      [positions[i], positions[j]] = [positions[j]!, positions[i]!];
+      const near = [i, i + 1, i + 2, j, j + 1, j + 2];
+      if (near.some(isTriple)) [positions[i], positions[j]] = [positions[j]!, positions[i]!];
+      else swapped = true;
+    }
+    i = swapped ? 2 : i + 1;
+  }
 
   return questions.map((question, index) => {
     const slot = shuffleOptions(question, seed);

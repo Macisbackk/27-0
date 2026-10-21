@@ -306,6 +306,29 @@ function saveProgressMap(map: Record<string, DailyProgress>): void {
   localStorage.setItem(STORAGE_KEYS.dailyChallengeClaims, JSON.stringify(trimmed));
 }
 
+const DAILY_ATTEMPT_KEY = "27-0-daily-attempt";
+
+/**
+ * One counted Daily attempt per UK day. The first run started today claims it; later runs
+ * (Leave run, reload, Play again) are practice and can't earn the Daily bonuses, so the Daily
+ * can't be replayed until it's won. Idempotent for the same runId.
+ */
+export function claimDailyChallengeAttempt(runId: string, date = new Date()): boolean {
+  if (typeof window === "undefined") return true;
+  const key = todayKey(date);
+  try {
+    const raw = localStorage.getItem(DAILY_ATTEMPT_KEY);
+    const stored = raw ? (JSON.parse(raw) as { date?: unknown; runId?: unknown }) : null;
+    if (stored && stored.date === key && typeof stored.runId === "string") {
+      return stored.runId === runId;
+    }
+    localStorage.setItem(DAILY_ATTEMPT_KEY, JSON.stringify({ date: key, runId }));
+    return true;
+  } catch {
+    return true;
+  }
+}
+
 export function getDailyChallengeProgress(date = new Date()): DailyProgress {
   return loadProgressMap()[todayKey(date)] ?? {};
 }
