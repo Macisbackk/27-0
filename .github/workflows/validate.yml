@@ -83,6 +83,12 @@ jobs:
           for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
           scripts/ci-run.sh "Manager Mode e2e" node scripts/e2e-career.mjs
           scripts/ci-run.sh "Manager Mode chaos e2e" node scripts/e2e-career-chaos.mjs
+      - name: Whole-site break test (mobile + desktop)
+        if: success() || failure()
+        run: |
+          curl -sf http://localhost:3000/ > /dev/null || (npx next start -p 3000 > /tmp/next2.log 2>&1 &)
+          for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
+          scripts/ci-run.sh "Site e2e" node scripts/e2e-site.mjs
       - name: Publish e2e screenshots (same-repo PRs only)
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && hashFiles('e2e-shots/*.png') != ''
         run: |
