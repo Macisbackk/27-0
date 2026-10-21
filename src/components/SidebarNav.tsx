@@ -45,6 +45,7 @@ const MAIN_NAV_ITEMS = [
   { href: "/showcase", label: "Player Showcase" },
   { href: "/stats", label: "Career Stats" },
   { href: "/leaderboard", label: "Leaderboard" },
+  { href: "/settings", label: "Settings" },
 ] as const;
 
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
@@ -349,7 +350,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 </p>
                 <ul className={NAV.list}>
                   {MAIN_NAV_ITEMS.filter((item) =>
-                    ["/store", "/showcase", "/stats", "/leaderboard"].includes(
+                    ["/store", "/showcase", "/stats", "/leaderboard", "/settings"].includes(
                       item.href
                     )
                   ).map((item) => {
@@ -406,7 +407,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
             </nav>
 
             <div className={NAV.footer}>
-              <p className={NAV.sectionLabel}>Settings</p>
+              <p className={NAV.sectionLabel}>Quick settings</p>
               <button
                 type="button"
                 onClick={handleToggleSound}

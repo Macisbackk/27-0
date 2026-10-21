@@ -57,6 +57,7 @@ for (const [route, name] of [
   ["/store", "store"],
   ["/showcase", "showcase"],
   ["/login", "login"],
+  ["/settings", "settings"],
 ]) {
   await go(page, route);
   await shot(page, name);

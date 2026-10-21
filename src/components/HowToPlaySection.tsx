@@ -40,7 +40,7 @@ const GUIDE_ITEMS = [
 
 export function HowToPlaySection() {
   return (
-    <section className="mx-auto max-w-2xl border-t border-[var(--mobile-divider)] pt-[var(--mobile-section-gap)] text-center">
+    <section id="how-to-play" className="mx-auto max-w-2xl scroll-mt-16 border-t border-[var(--mobile-divider)] pt-[var(--mobile-section-gap)] text-center">
       <div className="flex flex-col items-center text-center">
         <GameSectionTitle
           label="Guide"

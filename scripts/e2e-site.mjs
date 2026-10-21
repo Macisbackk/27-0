@@ -13,7 +13,7 @@ const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 const ROUTES = [
   "/", "/play", "/play?era=1", "/play?daily=1", "/manager", "/mini-games", "/mini-games/quiz", "/mini-games/wordle",
   "/mini-games/hangman", "/mini-games/higher-lower", "/quiz", "/leaderboard", "/stats", "/profile", "/store",
-  "/showcase", "/login", "/auth/callback", "/auth/reset-password",
+  "/showcase", "/settings", "/login", "/auth/callback", "/auth/reset-password",
 ];
 const EXPECT_404 = ["/dev/mobile-ui", "/this-route-does-not-exist"];
 const IGNORED = [/supabase/i, /Failed to fetch/i, /ERR_NAME_NOT_RESOLVED/i, /fetch failed/i, /Load failed/i, /net::ERR_/i, /_vercel\/insights/, /Failed to load resource/i, /\[career/, /leaderboard\].*failed/i, /\[auth\]/i, /sync failed/i, /cloud.*failed/i];
