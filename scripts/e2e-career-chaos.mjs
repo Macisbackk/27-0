@@ -90,11 +90,11 @@ try {
   const pageB = await newPage(context);
   await pageB.goto(`${BASE}/manager`, { waitUntil: "networkidle" });
   await pageB.getByRole("button", { name: /Play match|Continue/ }).first().waitFor({ timeout });
-  const headerB1 = await pageB.locator("header").first().innerText();
+  const headerB1 = await pageB.locator("header", { hasText: /Super League|Championship/ }).first().innerText();
   await page.getByRole("button", { name: /Play match|Continue/ }).first().click();
   await page.waitForTimeout(600);
   await pageB.waitForTimeout(600);
-  const headerB2 = await pageB.locator("header").first().innerText();
+  const headerB2 = await pageB.locator("header", { hasText: /Super League|Championship/ }).first().innerText();
   if (headerB1 === headerB2) errors.push("two tabs: tab B did not pick up progress from tab A");
   await pageB.close();
   step("Second tab follows the first");
