@@ -15,7 +15,7 @@ export const PITCH_SLOT_COMPACT_CLASS =
 
 /** Season review team sheet — compact two-line names without dead space. */
 export const PITCH_SLOT_REVIEW_CLASS =
-  "h-[clamp(48px,10.5vw,62px)] w-[clamp(50px,11vw,68px)] sm:h-[clamp(52px,11vw,66px)] sm:w-[clamp(54px,11.5vw,74px)]";
+  "h-[clamp(52px,10.5vw,62px)] w-[clamp(56px,11vw,68px)] sm:h-[clamp(52px,11vw,66px)] sm:w-[clamp(54px,11.5vw,74px)]";
 
 interface PitchSlotCardProps {
   slot: SquadSlot;
@@ -135,9 +135,9 @@ function TwoLineName({ name }: { name: string }) {
   const surname = parts[parts.length - 1]!;
   const firstFull = parts.slice(0, -1).join(" ");
   // Long first names collapse to an initial: the surname is what players recognise.
-  const first = firstFull.length > 7 ? `${firstFull[0]}.` : firstFull;
+  const first = firstFull.length > 6 ? `${firstFull[0]}.` : firstFull;
   const surnameSize =
-    surname.length <= 7 ? "" : surname.length <= 9 ? "text-[7px] sm:text-[8px]" : "text-[6px] sm:text-[7.5px]";
+    surname.length <= 6 ? "" : surname.length <= 8 ? "text-[7px] sm:text-[8px]" : "text-[6px] sm:text-[7px]";
   return (
     <>
       <span className="block truncate">{first}</span>
