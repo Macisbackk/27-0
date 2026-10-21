@@ -56,6 +56,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -80,6 +82,17 @@ jobs:
           npx next start -p 3000 > /tmp/next.log 2>&1 &
           for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
           scripts/ci-run.sh "Manager Mode e2e" node scripts/e2e-career.mjs
+      - name: Publish e2e screenshots (same-repo PRs only)
+        if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && hashFiles('e2e-shots/*.png') != ''
+        run: |
+          branch="ci-shots/pr-${{ github.event.pull_request.number }}"
+          mkdir -p /tmp/shots && cp e2e-shots/*.png /tmp/shots/
+          cd /tmp/shots
+          git init -q -b "$branch"
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add . && git commit -q -m "e2e screenshots for ${{ github.sha }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$branch"
       - name: Bundle size report
         continue-on-error: true
         run: |

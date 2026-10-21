@@ -5,6 +5,7 @@
  *
  * CI: npm install --no-save playwright && npx playwright install --with-deps chromium && node scripts/e2e-career.mjs
  */
+import { mkdirSync } from "node:fs";
 import { chromium } from "playwright";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
@@ -60,15 +61,15 @@ page.on("console", (msg) => {
 
 const timeout = 20_000;
 
-/** CI only: phone-sized JPEG of the current view, emitted as a notice so it can be fetched via the API. */
+/** CI only: phone-sized screenshots saved to e2e-shots/ (published to a throwaway branch by the workflow). */
 let shotCount = 0;
 async function shot(name) {
   if (!process.env.CI) return;
   try {
     await page.waitForTimeout(400);
-    const buf = await page.screenshot({ type: "jpeg", quality: 42, scale: "css" });
     shotCount += 1;
-    console.log(`::notice title=shot-${String(shotCount).padStart(2, "0")}-${name}::${buf.toString("base64")}`);
+    mkdirSync("e2e-shots", { recursive: true });
+    await page.screenshot({ path: `e2e-shots/${String(shotCount).padStart(2, "0")}-${name}.png`, scale: "css" });
   } catch (err) {
     console.log(`screenshot ${name} failed: ${err}`);
   }
