@@ -40,7 +40,7 @@ export function recordCompletedQuizRun(
   stats.questionsCorrect += correct;
   stats.questionsIncorrect += incorrect;
   stats.longestRun = Math.max(stats.longestRun, correct);
-  if (perfect) stats.perfectRuns += 1;
+  if (perfect && !run.rewardPractice) stats.perfectRuns += 1;
   stats.lifelinesUsed += countLifelinesUsed(run);
 
   for (const slot of run.questions) {

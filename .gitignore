@@ -61,3 +61,4 @@ next-env.d.ts
 /*-result*.txt
 /scripts/*-result*.txt
 /data/*.log
+/e2e-shots/

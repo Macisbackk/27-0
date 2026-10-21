@@ -124,6 +124,12 @@ export interface QuizRun {
   lifelines: QuizLifelineState;
   rewardClaimed: boolean;
   rewardAmount: number;
+  /**
+   * Team Challenge pays each club once per day; later runs for that club the same day are
+   * practice (no Club Funds, no leaderboard millionaire). Team pools are small enough to
+   * memorise, so unlimited £1M payouts were farmable.
+   */
+  rewardPractice?: boolean;
   createdAt: string;
   updatedAt: string;
 }

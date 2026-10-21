@@ -24,6 +24,15 @@ function gapBandForPick(pickIndex: number): GapBand {
   return { min: 2, max: 12 };
 }
 
+/** Some players appear at two clubs under different identity ids: never pair a name with itself. */
+function nameKey(player: MiniGamePlayer): string {
+  return `name:${player.displayName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim()}`;
+}
+
+function isUsed(player: MiniGamePlayer, used: Set<string>): boolean {
+  return used.has(player.id) || used.has(player.identityId) || used.has(nameKey(player));
+}
+
 function ratingGap(a: MiniGamePlayer, b: MiniGamePlayer): number {
   return Math.abs(a.rating - b.rating);
 }
@@ -36,7 +45,7 @@ function pickFromBand(
   rng: () => number
 ): MiniGamePlayer | null {
   const partners = pool.filter((player) => {
-    if (usedIds.has(player.id) || usedIds.has(player.identityId)) return false;
+    if (isUsed(player, usedIds)) return false;
     if (player.identityId === base.identityId) return false;
     if (player.rating === base.rating) return false;
     const gap = ratingGap(base, player);
@@ -57,6 +66,7 @@ export function pickChallengePlayer(
   const used = new Set(usedIds);
   used.add(base.id);
   used.add(base.identityId);
+  used.add(nameKey(base));
   const bands: GapBand[] = [
     gapBandForPick(pickIndexValue),
     { min: 1, max: 20 },
@@ -70,8 +80,7 @@ export function pickChallengePlayer(
     (player) =>
       player.identityId !== base.identityId &&
       player.rating !== base.rating &&
-      !used.has(player.id) &&
-      !used.has(player.identityId)
+      !isUsed(player, used)
   );
   if (!fallback) {
     throw new Error("Higher or Lower pool is too small");
@@ -80,7 +89,7 @@ export function pickChallengePlayer(
 }
 
 function usedKeys(player: MiniGamePlayer): string[] {
-  return [player.id, player.identityId];
+  return [player.id, player.identityId, nameKey(player)];
 }
 
 export function createHigherLowerRun(
@@ -193,6 +202,7 @@ export function advanceHigherLower(
     lastCorrect: null,
     status: "playing",
     rewardClaimed: run.rewardClaimed,
+    poolMode: run.poolMode,
   };
 }
 

@@ -63,8 +63,11 @@ import { getAverageSquadRating } from "@/lib/squad-analysis";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { mergeClubFundsPayouts } from "@/lib/club-funds";
 import {
+  claimDailyChallengeAttempt,
+  getDailyChallengeDateKey,
   getDailyChallengeLeagueRunId,
   getDailyChallengePlayoffRunId,
+  getDailyChallengeProgress,
   getDailyChallengeScenario,
   markDailyChallengeLeagueLeaders,
   markDailyChallengePlayoffTitle,
@@ -149,6 +152,7 @@ import {
   clearArmedBoost,
   getBoostQuantity,
   tryConsumeBoostFromInventory,
+  BOOST_INVENTORY_CHANGED_EVENT,
 } from "@/lib/boosts/boostInventory";
 import type { GameBoostId } from "@/lib/boosts/boostDefinitions";
 import {
@@ -263,16 +267,21 @@ export function GameBoard({
 }: GameBoardProps) {
   const spinVariant: SpinPoolVariant = normalEraMode ? "era" : "current";
   const isDraftMode = mode === "DRAFT";
-  const dailyScenario = dailyChallengeMode
-    ? getDailyChallengeScenario()
-    : null;
+  /**
+   * Boost ownership is snapshotted per run (refreshed only before the first pick). Reading the
+   * inventory live let a boost bought in another tab / merged from the cloud bring the chooser
+   * back mid-run, unmounting the season sim and resetting the run's boost counters.
+   */
+  const [ownsBoostAtRunStart, setOwnsBoostAtRunStart] = useState(() =>
+    ownsEligiblePreGameBoost(normalEraMode)
+  );
   /** Daily + special modes: no inventory boosts (fair shared seed / fixed squad).
    * Also skip the chooser when the player owns no eligible boosts — avoids a blank screen. */
   const skipPreGameBoosts =
     dailyChallengeMode ||
     joeMellorMode ||
     superSamHallasMode ||
-    !ownsEligiblePreGameBoost(normalEraMode);
+    !ownsBoostAtRunStart;
   const isSlotRecruitMode = mode === "CLASSIC";
   const [runKey, setRunKey] = useState(0);
   const [phase, setPhase] = useState<GamePhase>("pitch");
@@ -357,14 +366,40 @@ export function GameBoard({
     [isDraftMode]
   );
 
-  const { seed, runId } = useMemo(() => {
+  const { seed, runId, dailyDate } = useMemo(() => {
+    const startedAt = new Date();
+    if (dailyChallengeMode) {
+      // Shared daily seed: everyone (and every retry) gets the same spins today.
+      const dateKey = getDailyChallengeDateKey(startedAt);
+      return {
+        seed: `daily-${dateKey}`,
+        runId: `run-daily-${dateKey}-${createRunSeed(runKey)}`,
+        dailyDate: startedAt,
+      };
+    }
     const s = createRunSeed(runKey);
     return {
       seed: s,
       /** Stable for the run so first-pick hydration can remount safely. */
       runId: `run-${s}`,
+      dailyDate: startedAt,
     };
-  }, [runKey]);
+  }, [runKey, dailyChallengeMode]);
+  /** Frozen at run start so a run that crosses UK midnight keeps its club and bonus day. */
+  const dailyScenario = useMemo(
+    () => (dailyChallengeMode ? getDailyChallengeScenario(dailyDate) : null),
+    [dailyChallengeMode, dailyDate]
+  );
+  const lockedSlotTargetsRef = useRef(
+    new Map<number, { target: SlotRevealTarget; boosted: boolean }>()
+  );
+  useEffect(() => {
+    lockedSlotTargetsRef.current = new Map();
+  }, [runId]);
+  const [dailyAttemptCounts, setDailyAttemptCounts] = useState(true);
+  useEffect(() => {
+    if (dailyChallengeMode) setDailyAttemptCounts(claimDailyChallengeAttempt(runId, dailyDate));
+  }, [dailyChallengeMode, runId, dailyDate]);
 
   // Sync init — avoid first-frame boost ↔ pitch flash (Daily/Joe/Super Sam skip boost).
   const [preGameBoost, setPreGameBoost] =
@@ -842,6 +877,16 @@ export function GameBoard({
   const totalValue = getSquadValue(squad);
   const averageSquadRating = getAverageSquadRating(squad);
 
+  // Refresh the boost-ownership snapshot only while the run hasn't started.
+  const runNotStarted = filledCount === 0 && phase === "pitch";
+  useEffect(() => {
+    if (!runNotStarted) return;
+    const refresh = () => setOwnsBoostAtRunStart(ownsEligiblePreGameBoost(normalEraMode));
+    refresh();
+    window.addEventListener(BOOST_INVENTORY_CHANGED_EVENT, refresh);
+    return () => window.removeEventListener(BOOST_INVENTORY_CHANGED_EVENT, refresh);
+  }, [runNotStarted, runKey, normalEraMode]);
+
   const signedPlayerIds = useMemo(
     () =>
       new Set(
@@ -1130,10 +1175,13 @@ export function GameBoard({
           tablePosition === 1 &&
           mode === "CLASSIC" &&
           !joeMellorMode &&
-          !superSamHallasMode
+          !superSamHallasMode &&
+          dailyAttemptCounts &&
+          // Belt and braces with the payout-id ledger: one League Leaders bonus per day.
+          !getDailyChallengeProgress(dailyDate).leagueLeaders
         ) {
           const dailyPayout = awardClubFundsLines(
-            getDailyChallengeLeagueRunId(),
+            getDailyChallengeLeagueRunId(dailyDate),
             [
               {
                 id: "daily-league-leaders",
@@ -1143,7 +1191,7 @@ export function GameBoard({
             ]
           );
           if (dailyPayout.awarded) {
-            markDailyChallengeLeagueLeaders();
+            markDailyChallengeLeagueLeaders(dailyDate);
           }
           combined = mergeClubFundsPayouts(payout, dailyPayout);
         }
@@ -1182,6 +1230,8 @@ export function GameBoard({
       usedBoostThisRun,
       dailyScenario,
       dailyChallengeMode,
+      dailyAttemptCounts,
+      dailyDate,
     ]
   );
 
@@ -1295,6 +1345,27 @@ export function GameBoard({
     finalizeRegularSeason,
   ]);
 
+  // The season is already decided when the sim animation starts. Leaving or reloading during
+  // the ~8s animation used to skip recording it, so a bad season could be quietly binned.
+  const pendingSeasonRef = useRef<{ result: SeasonResult; squad: SquadSlot[] } | null>(null);
+  pendingSeasonRef.current =
+    phase === "simulation" && seasonResult && !joeMellorMode && !superSamHallasMode
+      ? { result: seasonResult, squad }
+      : null;
+  const finalizeRegularSeasonRef = useRef(finalizeRegularSeason);
+  finalizeRegularSeasonRef.current = finalizeRegularSeason;
+  useEffect(() => {
+    const flush = () => {
+      const pending = pendingSeasonRef.current;
+      if (pending) finalizeRegularSeasonRef.current(pending.result, pending.squad);
+    };
+    window.addEventListener("pagehide", flush);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+      flush(); // unmount = "Leave run" or navigating away mid-sim
+    };
+  }, []);
+
   useEffect(() => {
     if (phase !== "review") return;
     // Player selection / spin / achievement / match-detail locks must not
@@ -1341,10 +1412,12 @@ export function GameBoard({
             wonTitle &&
             mode === "CLASSIC" &&
             !joeMellorMode &&
-            !superSamHallasMode
+            !superSamHallasMode &&
+            dailyAttemptCounts &&
+            !getDailyChallengeProgress(dailyDate).playoffTitle
           ) {
             const dailyPayout = awardClubFundsLines(
-              getDailyChallengePlayoffRunId(),
+              getDailyChallengePlayoffRunId(dailyDate),
               [
                 {
                   id: "daily-playoff-title",
@@ -1354,7 +1427,7 @@ export function GameBoard({
               ]
             );
             if (dailyPayout.awarded) {
-              markDailyChallengePlayoffTitle();
+              markDailyChallengePlayoffTitle(dailyDate);
             }
             combined = mergeClubFundsPayouts(payout, dailyPayout);
           }
@@ -1377,6 +1450,8 @@ export function GameBoard({
       normalEraMode,
       finalizePlayoffRun,
       dailyScenario,
+      dailyAttemptCounts,
+      dailyDate,
     ]
   );
 
@@ -1433,12 +1508,26 @@ export function GameBoard({
           setBoostedSpinPlan((prev) =>
             prev ? markBoostedSpinPlanConsumed(prev) : prev
           );
+        } else {
+          // The boost is gone (e.g. spent in another tab): don't hand over the guaranteed
+          // player. Back to the team sheet; this slot re-spins without the boost.
+          lockedSlotTargetsRef.current.delete(selectedSlotIndex);
+          setSlotBoostGuaranteeId(null);
+          setBoostedSpinPlan(null);
+          setPendingPlayer(null);
+          setSelectedSlotIndex(null);
+          setSlotRecruitTarget(null);
+          setActiveSpinTarget(null);
+          setChoosing(false);
+          setPhase("pitch");
+          return;
         }
       } else if (isActiveBoostedFirstPick(boostedFirstPick)) {
         // First auto pick completed without consuming (non-matching choice).
         fulfillBoostedFirstPick();
       }
 
+      lockedSlotTargetsRef.current.delete(selectedSlotIndex);
       setSquad(newSquad);
       setPendingPlayer(null);
       setSelectedSlotIndex(null);
@@ -1519,8 +1608,25 @@ export function GameBoard({
           : null;
 
       let target: SlotRevealTarget | null = null;
+      // A slot that was already spun keeps its offer: backing out to the team sheet and
+      // spinning other slots used to let you peek at every slot and take the best.
+      const locked = lockedSlotTargetsRef.current.get(slotIndex);
+      // Boosted spins carry their own plan state, so only plain spins are locked.
+      const lockedTarget =
+        locked &&
+        !armedBoost &&
+        !locked.boosted &&
+        !usedTeamYearKeys.has(locked.target.teamYearKey) &&
+        prepareSlotTeamYearPlayers(locked.target, signedPlayerIds, squad, slotIndex, {
+          seed,
+          legendOnly: requireLegendPlayer,
+        }).length > 0
+          ? locked.target
+          : null;
 
-      if (armedBoost) {
+      if (lockedTarget) {
+        target = lockedTarget;
+      } else if (armedBoost) {
         const plan = buildBoostedSpinPlan({
           runId,
           seed,
@@ -1583,6 +1689,7 @@ export function GameBoard({
       }
 
       setRecruitNotice(null);
+      lockedSlotTargetsRef.current.set(slotIndex, { target, boosted: Boolean(armedBoost) });
 
       setPendingPlayer(null);
       lastScrolledPlayerIdRef.current = null;
@@ -1692,8 +1799,15 @@ export function GameBoard({
       );
       return false;
     }
+    // Only one team-year can fill this slot (e.g. the Era legend slot at Hooker): a respin
+    // would land on the same offer, so don't spend one.
+    if (activeSpinTarget && target.teamYearKey === activeSpinTarget.teamYearKey) {
+      setRecruitNotice("No other team can fill this slot — respin not used.");
+      return false;
+    }
 
     setRecruitNotice(null);
+    lockedSlotTargetsRef.current.set(selectedSlotIndex, { target, boosted: Boolean(armedBoost) });
 
     playReroll();
     setRespinsRemaining((n) => n - 1);
@@ -2361,7 +2475,9 @@ export function GameBoard({
           </div>
           {dailyScenario ? (
             <p className="mt-1 text-sm text-gray-400">
-              League Leaders + Grand Final bonuses
+              {dailyAttemptCounts
+                ? "League Leaders + Grand Final bonuses · one attempt per day"
+                : "Practice run — today's Daily attempt is used"}
             </p>
           ) : subtitle ? (
             <p className="mt-1 text-sm text-gray-400">{subtitle}</p>

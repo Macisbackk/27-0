@@ -1,5 +1,6 @@
 "use client";
 
+import { getLocalDateKey } from "@/lib/mini-games/date";
 import { useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
@@ -127,7 +128,8 @@ function settleWordle(run: WordleRun): WordleRunView {
     return { ...run, rewardClaimed: true };
   }
   const payout = claimMiniGameReward(
-    `wordle_win:${run.date}`,
+    // Once per UK day: run.date is a fresh id on every "Play again", so keying on it paid every win.
+    `wordle_win:${getLocalDateKey()}`,
     "Rugby League Wordle",
     WORDLE_WIN_REWARD
   );
@@ -285,7 +287,7 @@ export function WordleGame() {
       <MiniGameRewardPopup
         open={rewardOpen}
         amount={WORDLE_WIN_REWARD}
-        detail="Reward for solving this Wordle."
+        detail="Today's Wordle reward — one per day."
         onClose={() => setRewardOpen(false)}
       />
       <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">

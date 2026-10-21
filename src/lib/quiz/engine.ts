@@ -86,10 +86,32 @@ function buildBalancedQuestionSlots(
   seed: string
 ): QuizRunQuestion[] {
   const rng = createRng(`${seed}:answer-pattern`);
-  const positionCycle = [0, 1, 2, 3];
-  for (let i = positionCycle.length - 1; i > 0; i--) {
+  // Balanced (each of A–D used ~equally) but shuffled across the whole run. The old
+  // `index % 4` cycle repeated every 4 questions, so Q1–Q3 revealed every later answer.
+  const positions: number[] = [];
+  while (positions.length < questions.length) positions.push(0, 1, 2, 3);
+  for (let i = positions.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
-    [positionCycle[i], positionCycle[j]] = [positionCycle[j]!, positionCycle[i]!];
+    [positions[i], positions[j]] = [positions[j]!, positions[i]!];
+  }
+  // Never the same letter three times running (looks rigged, and the tests require it).
+  const used = Math.min(positions.length, questions.length);
+  const isTriple = (k: number) =>
+    k >= 2 && k < used && positions[k] === positions[k - 1] && positions[k] === positions[k - 2];
+  for (let guard = 0, i = 2; i < used && guard < 200; guard++) {
+    if (!isTriple(i)) {
+      i++;
+      continue;
+    }
+    let swapped = false;
+    for (let j = 0; j < positions.length && !swapped; j++) {
+      if (Math.abs(j - i) <= 2 || positions[j] === positions[i]) continue;
+      [positions[i], positions[j]] = [positions[j]!, positions[i]!];
+      const near = [i, i + 1, i + 2, j, j + 1, j + 2];
+      if (near.some(isTriple)) [positions[i], positions[j]] = [positions[j]!, positions[i]!];
+      else swapped = true;
+    }
+    i = swapped ? 2 : i + 1;
   }
 
   return questions.map((question, index) => {
@@ -98,7 +120,7 @@ function buildBalancedQuestionSlots(
       (option) => option === question.correctAnswer
     );
     const currentPosition = slot.optionOrder.indexOf(canonicalCorrect);
-    const targetPosition = positionCycle[index % positionCycle.length] ?? 0;
+    const targetPosition = positions[index] ?? 0;
     if (currentPosition !== targetPosition) {
       [
         slot.optionOrder[currentPosition],

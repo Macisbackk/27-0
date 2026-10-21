@@ -1,0 +1,57 @@
+import { STORAGE_KEYS } from "./keys";
+
+/**
+ * Which signed-in account the progress on this device belongs to.
+ *
+ * Without this, signing out of account A and into account B on the same phone merged A's
+ * Club Funds, boosts, themes, achievements and stats into B (and uploaded them to B's cloud).
+ * Guest progress (no owner yet) still merges into the first account that signs in.
+ */
+const OWNER_KEY = "27-0-account-owner";
+
+/** Per-account data that is backed up to the cloud and re-downloaded on sign-in. */
+const ACCOUNT_KEYS: readonly string[] = [
+  STORAGE_KEYS.stats,
+  STORAGE_KEYS.clubFunds,
+  STORAGE_KEYS.dailyChallengeClaims,
+  STORAGE_KEYS.dailyChallengeMeta,
+  STORAGE_KEYS.uiThemeStore,
+  STORAGE_KEYS.uiThemeCssCache,
+  STORAGE_KEYS.boostInventory,
+  STORAGE_KEYS.achievements,
+  "27-0-career-v2-save",
+  "27-0-career-v2-legacy",
+  // Device-only, but submitted to the mini-game leaderboards under whoever is signed in.
+  STORAGE_KEYS.quizStats,
+  STORAGE_KEYS.wordleStats,
+  STORAGE_KEYS.hangmanStats,
+  STORAGE_KEYS.higherLowerStats,
+];
+
+export function getDeviceAccountOwner(): string | null {
+  try {
+    return localStorage.getItem(OWNER_KEY);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Call before merging cloud data for `userId`. Returns true if another account's local
+ * progress was cleared.
+ */
+export function claimDeviceForAccount(userId: string): boolean {
+  if (typeof window === "undefined" || !userId) return false;
+  try {
+    const owner = localStorage.getItem(OWNER_KEY);
+    let cleared = false;
+    if (owner && owner !== userId) {
+      for (const key of ACCOUNT_KEYS) localStorage.removeItem(key);
+      cleared = true;
+    }
+    localStorage.setItem(OWNER_KEY, userId);
+    return cleared;
+  } catch {
+    return false;
+  }
+}

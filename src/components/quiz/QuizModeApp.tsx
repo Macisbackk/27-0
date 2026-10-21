@@ -24,6 +24,7 @@ import {
   playMiniWin,
 } from "@/lib/mini-games/sound";
 import { settleCompletedQuizRun } from "@/lib/quiz/complete";
+import { isTeamChallengeRewardBankedToday } from "@/lib/quiz/rewards";
 import {
   continueAfterReveal,
   countCorrectAnswers,
@@ -436,6 +437,11 @@ function QuizTeamSelect({
           {selected ? `Start — ${selected.name}` : "Start Challenge"}
         </GameButton>
       </div>
+      <p className={`mt-3 ${TYPO.body} text-gray-400`}>
+        {selected && isTeamChallengeRewardBankedToday(selected.id)
+          ? `${selected.name}'s reward is banked for today — this run is practice.`
+          : "Each club pays Club Funds once a day."}
+      </p>
     </div>
   );
 }
@@ -686,11 +692,18 @@ function QuizResultScreen({
         </p>
       )}
       <p className={`quiz-prize mt-4 text-4xl ${TYPO.prizeDisplay}`}>
-        {run.phase === "quiz_complete"
-          ? "£1,000,000"
-          : formatClubFundsExact(run.rewardAmount)}
+        {run.rewardPractice
+          ? "Practice run"
+          : run.phase === "quiz_complete"
+            ? "£1,000,000"
+            : formatClubFundsExact(run.rewardAmount)}
       </p>
-      {run.phase === "quiz_walked_away" && (
+      {run.rewardPractice && (
+        <p className={`mt-2 ${TYPO.body}`}>
+          You&apos;ve already banked today&apos;s {club ? club.name : "Team Challenge"} reward. Try another club, or come back tomorrow.
+        </p>
+      )}
+      {run.phase === "quiz_walked_away" && !run.rewardPractice && (
         <p className={`mt-2 ${TYPO.body}`}>You banked {formatClubFundsExact(run.rewardAmount)}.</p>
       )}
       {lastQuestion && lastSlot?.correct === false && (

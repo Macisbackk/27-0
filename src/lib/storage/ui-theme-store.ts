@@ -3,6 +3,7 @@ import {
   UI_THEME_PURCHASE_PRICE,
   getUiThemeById,
   isDefaultUiTheme,
+  isKnownUiThemeId,
   type UiThemeDefinition,
 } from "../ui-themes";
 import { STORAGE_KEYS } from "./keys";
@@ -34,7 +35,7 @@ function normalizeState(raw: Partial<UiThemeStoreState> | null): UiThemeStoreSta
   const unlocked = new Set<string>([DEFAULT_UI_THEME_ID]);
   if (Array.isArray(raw.unlockedThemeIds)) {
     for (const id of raw.unlockedThemeIds) {
-      if (typeof id === "string" && id.trim()) unlocked.add(id);
+      if (typeof id === "string" && isKnownUiThemeId(id)) unlocked.add(id);
     }
   }
 
@@ -106,7 +107,7 @@ export function isUiThemeUnlocked(themeId: string): boolean {
 export function selectUiTheme(themeId: string): boolean {
   const state = loadState();
   if (!isUiThemeUnlocked(themeId)) return false;
-  if (!getUiThemeById(themeId)) return false;
+  if (!isKnownUiThemeId(themeId)) return false;
   state.selectedThemeId = themeId;
   saveState(state);
   return true;
@@ -119,7 +120,8 @@ export interface UiThemePurchaseResult {
 }
 
 export function purchaseUiTheme(themeId: string): UiThemePurchaseResult {
-  if (isDefaultUiTheme(themeId) || !getUiThemeById(themeId)) {
+  // getUiThemeById falls back to the default theme, so it can't be used as an existence check.
+  if (isDefaultUiTheme(themeId) || !isKnownUiThemeId(themeId)) {
     return { success: false, reason: "invalid", newBalance: getClubFundsBalance() };
   }
 
@@ -155,8 +157,9 @@ export function purchaseUiTheme(themeId: string): UiThemePurchaseResult {
 }
 
 export async function mergeUiThemeStoreFromCloud(): Promise<void> {
-  const cloud = await loadCloudUiThemeStore();
-  if (!cloud) return;
+  const raw = await loadCloudUiThemeStore();
+  if (!raw || typeof raw !== "object") return;
+  const cloud = normalizeState(raw);
 
   const local = loadState();
   const unlocked = new Set([

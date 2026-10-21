@@ -9,7 +9,8 @@ export default function QuizRedirectPage() {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace("/mini-games/quiz");
+    // Keep ?mode=team etc. so old links still land on the right screen.
+    router.replace(`/mini-games/quiz${window.location.search}`);
   }, [router]);
 
   return (

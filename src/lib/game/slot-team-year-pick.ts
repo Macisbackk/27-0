@@ -4,6 +4,29 @@ import { formatShortYear } from "../players/prime-year";
 import { withRunClub } from "../players/run-club";
 import { withEraYear } from "../players/player-age";
 import type { Player, Position, SquadSlot } from "../types";
+import { normalizePlayerNameKey } from "../player-name-normalize";
+
+/**
+ * The same real player has a separate card per club/era (e.g. Jamie Peacock at Bradford and
+ * Leeds). Card ids differ, so filtering by id alone let one person be signed twice.
+ */
+function signedPersonKeys(squad: SquadSlot[]): Set<string> {
+  const keys = new Set<string>();
+  for (const slot of squad) {
+    if (!slot.player) continue;
+    keys.add(normalizePlayerNameKey(slot.player.name));
+    if (slot.player.basePlayerId) keys.add(`base:${slot.player.basePlayerId}`);
+  }
+  return keys;
+}
+
+export function isPersonAlreadySigned(player: Player, squad: SquadSlot[]): boolean {
+  const keys = signedPersonKeys(squad);
+  return (
+    keys.has(normalizePlayerNameKey(player.name)) ||
+    (player.basePlayerId ? keys.has(`base:${player.basePlayerId}`) : false)
+  );
+}
 import { RECRUIT_SLOT_ORDER } from "../positions";
 import { signPlayerToSlot } from "../positions";
 import {
@@ -113,6 +136,7 @@ export function placeSlotRecruitPlayerAtSlot(
 ): SquadSlot[] | null {
   const slot = squad.find((s) => s.slotIndex === slotIndex);
   if (!slot || slot.player) return null;
+  if (isPersonAlreadySigned(player, squad)) return null;
 
   const prepared = preparePlayerForTeamYear(player, target);
   warnTeamYearPoolLeak(prepared, target);
@@ -196,15 +220,21 @@ export function prepareSlotTeamYearPlayers(
 
   const slot = squad.find((s) => s.slotIndex === slotIndex);
   if (!slot || slot.player) return [];
+  const signed = signedPersonKeys(squad);
 
-  const entries = getRawPlayersForTeamYearPool(pool)
-    .filter(
-      (player) =>
-        isPlayerInTeamYearPool(player.id, pool) &&
-        !usedIds.has(player.id) &&
-        canPlayerFillTeamYearSlot(target.team, target.year, player, slot.position) &&
-        (!options.legendOnly || player.category === "legend")
-    )
+  const available = getRawPlayersForTeamYearPool(pool).filter(
+    (player) =>
+      isPlayerInTeamYearPool(player.id, pool) &&
+      !usedIds.has(player.id) &&
+      !signed.has(normalizePlayerNameKey(player.name)) &&
+      !(player.basePlayerId && signed.has(`base:${player.basePlayerId}`)) &&
+      canPlayerFillTeamYearSlot(target.team, target.year, player, slot.position)
+  );
+  const legends = options.legendOnly
+    ? available.filter((player) => player.category === "legend")
+    : available;
+  // Safety net: never leave the legend slot with an empty choice list (soft-lock).
+  const entries = (legends.length > 0 ? legends : available)
     .map((player) => {
       const prepared = preparePlayerForTeamYear(player, target);
       warnTeamYearPoolLeak(prepared, target);
@@ -365,11 +395,14 @@ export function eligiblePlayersForSlot(
 ): Player[] {
   const slot = squad.find((s) => s.slotIndex === slotIndex);
   if (!slot || slot.player) return [];
+  const signed = signedPersonKeys(squad);
 
   return getRawPlayersForTeamYearPool(pool).filter(
     (player) =>
       isPlayerInTeamYearPool(player.id, pool) &&
       !usedIds.has(player.id) &&
+      !signed.has(normalizePlayerNameKey(player.name)) &&
+      !(player.basePlayerId && signed.has(`base:${player.basePlayerId}`)) &&
       canPlayerFillTeamYearSlot(pool.team, pool.year, player, slot.position)
   );
 }
@@ -405,8 +438,10 @@ export function generateSlotTeamYearTargetForSlot(
       usedTeamYearKeys,
       options.spinVariant ?? "current"
     );
-    if (!legendPick) return null;
-    return buildSlotRevealTarget(legendPick.team, legendPick.year);
+    if (legendPick) return buildSlotRevealTarget(legendPick.team, legendPick.year);
+    // Every eligible legend is already in the squad (e.g. signed on another club's card):
+    // fall back to a normal spin rather than locking the slot.
+    options = { ...options, requireLegendPlayer: false };
   }
 
   const picked = pickTeamYearForSlot(

@@ -1,3 +1,4 @@
+import { normalizePlayerNameKey } from "../player-name-normalize";
 import { getPlayerById } from "../players";
 import { isSuperLeagueEligiblePlayer } from "../players/super-league-eligibility";
 import {
@@ -115,10 +116,15 @@ export function getEligiblePlayersForTeamYearPool(
   usedIds: Set<string>,
   squad: SquadSlot[]
 ): Player[] {
+  // Same real person on a different club/year card counts as already selected.
+  const signedNames = new Set(
+    squad.flatMap((slot) => (slot.player ? [normalizePlayerNameKey(slot.player.name)] : []))
+  );
   return getRawPlayersForTeamYearPool(pool).filter(
     (player) =>
       isPlayerInTeamYearPool(player.id, pool) &&
       !usedIds.has(player.id) &&
+      !signedNames.has(normalizePlayerNameKey(player.name)) &&
       canPlayerRecruitForRemainingSlots(player, squad)
   );
 }

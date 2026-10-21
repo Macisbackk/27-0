@@ -34,6 +34,7 @@ import { syncTrophyCabinetLeaderboardOnLoad } from "./storage/trophy-cabinet-lea
 import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
 import { refreshBoostInventoryFromCloud } from "./boosts/boostInventory";
 import { refreshAchievementsFromCloud } from "./achievements/achievementStorage";
+import { claimDeviceForAccount } from "./storage/account-owner";
 
 interface AuthContextValue {
   user: User | null;
@@ -78,18 +79,6 @@ async function hydrateBoostInventoryFromCloud(): Promise<void> {
 
 async function hydrateAchievementsFromCloud(): Promise<void> {
   await refreshAchievementsFromCloud();
-}
-
-async function hydrateManagerSavesFromCloud(): Promise<void> {
-  try {
-    const { awaitManagerExitFlush, syncManagerSavesWithCloud } = await import(
-      "@/lib/manager/saves-cloud"
-    );
-    await awaitManagerExitFlush();
-    await syncManagerSavesWithCloud();
-  } catch (err) {
-    console.error("[auth] manager save sync failed:", err);
-  }
 }
 
 function applySession(session: Session | null, profile: UserProfile | null) {
@@ -161,14 +150,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         !options?.forceHydrate && hydratedSessionKey === sessionKey;
       if (skipHydrate) return;
 
-      await Promise.all([
+      // Signing in on a device that holds another account's progress: drop it first so it
+      // isn't merged into (and uploaded to) this account.
+      claimDeviceForAccount(nextUser.id);
+      // allSettled: one bad cloud row must not stop the rest from loading.
+      const results = await Promise.allSettled([
         hydrateStatsFromCloud(),
         hydrateClubFundsFromCloud(),
         hydrateUiThemeFromCloud(),
         hydrateBoostInventoryFromCloud(),
         hydrateAchievementsFromCloud(),
-        hydrateManagerSavesFromCloud(),
       ]);
+      for (const r of results) {
+        if (r.status === "rejected") console.error("[auth] cloud hydrate step failed:", r.reason);
+      }
       if (generation !== syncGenerationRef.current) return;
 
       hydratedSessionKey = sessionKey;
