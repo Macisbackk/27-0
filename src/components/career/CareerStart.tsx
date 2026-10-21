@@ -76,7 +76,7 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
           : "Top 4 make the play-offs. Finish bottom and you go down."}
       </p>
 
-      <ul className="grid gap-2" aria-label="Clubs">
+      <ul className="grid grid-cols-[minmax(0,1fr)] gap-2" aria-label="Clubs">
         {list.map((c) => {
           const active = c.id === clubId;
           return (
