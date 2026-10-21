@@ -23,3 +23,73 @@ jobs:
         run: npm run validate:player-database
       - name: Validate quiz bank
         run: npm run validate:quiz
+
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Manager engine
+        if: success() || failure()
+        run: scripts/ci-run.sh "Manager engine" npm run test:manager
+      - name: Multi-season championship
+        if: success() || failure()
+        run: scripts/ci-run.sh "Multi-season championship" npm run test:manager:multi
+      - name: Break manager
+        if: success() || failure()
+        run: scripts/ci-run.sh "Break manager" npm run test:manager:break
+      - name: Million pound game
+        if: success() || failure()
+        run: scripts/ci-run.sh "Million pound game" npm run test:manager:mpg
+      - name: Play-off simulation
+        if: success() || failure()
+        run: scripts/ci-run.sh "Play-off simulation" npm run test:playoffs
+      - name: Quiz
+        if: success() || failure()
+        run: scripts/ci-run.sh "Quiz" npm run test:quiz
+      - name: Wordle
+        if: success() || failure()
+        run: scripts/ci-run.sh "Wordle" npm run test:wordle
+      - name: Hangman
+        if: success() || failure()
+        run: scripts/ci-run.sh "Hangman" npm run test:hangman
+      - name: Higher / Lower
+        if: success() || failure()
+        run: scripts/ci-run.sh "Higher / Lower" npm run test:higher-lower
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Production build
+        # Placeholder Supabase env so the build mirrors production config shape.
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: scripts/ci-run.sh "Production build" npm run build
+      - name: Bundle size report
+        continue-on-error: true
+        run: |
+          echo "## First-load JS per route" >> "$GITHUB_STEP_SUMMARY"
+          node -e '
+            const fs=require("fs"),path=require("path");
+            const m=JSON.parse(fs.readFileSync(".next/app-build-manifest.json","utf8")).pages;
+            const size=f=>{try{return fs.statSync(path.join(".next",f)).size}catch{return 0}};
+            const rows=Object.entries(m).filter(([r])=>r.endsWith("/page")).map(([r,fs_])=>[r,fs_.filter(f=>f.endsWith(".js")).reduce((a,f)=>a+size(f),0)]).sort((a,b)=>b[1]-a[1]);
+            const out=["| Route | First-load JS (raw) |","|---|---|",...rows.map(([r,s])=>`| ${r} | ${(s/1024).toFixed(0)} KB |`)].join("\n");
+            console.log(out); fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, out+"\n");
+            const top=rows.map(([r,s])=>`${r}: ${(s/1024).toFixed(0)} KB`).join("%0A");
+            console.log(`::notice title=First-load JS per route::${top}`);
+          '
