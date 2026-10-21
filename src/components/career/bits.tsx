@@ -49,7 +49,7 @@ export function Stars({ value, max = 5, label }: { value: number; max?: number; 
 }
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <section className={`rounded-2xl border border-pitch-700 bg-pitch-900/90 p-4 ${className}`}>{children}</section>;
+  return <section className={`rounded-2xl border border-pitch-700 bg-pitch-900/90 p-4 text-left ${className}`}>{children}</section>;
 }
 
 export function Eyebrow({ children }: { children: ReactNode }) {

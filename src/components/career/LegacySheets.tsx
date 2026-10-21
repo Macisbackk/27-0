@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MobileBottomSheet } from "@/components/ui/MobileOverlay";
-import { DIVISION_LABEL, POS_LABEL, TROPHY_LABEL, formatMoney, legendCatalog, ordinal, totalMajorTrophies, type TrophyId } from "@/lib/career";
+import { DIVISION_LABEL, POS_LABEL, TROPHY_LABEL, formatMoney, legendAsPlayer, legendCatalog, ordinal, totalMajorTrophies, type TrophyId } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playAchievementUnlock, playWarning } from "@/lib/sound";
 import { Eyebrow, RatingPill } from "./bits";
@@ -33,12 +33,12 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
           const owned = legacy.unlockedLegends.includes(l.id);
           const affordable = legacy.legacyPoints >= l.unlockCost;
           return (
-            <li key={l.id} className="flex items-center gap-3 py-2.5">
+            <li key={l.id} className="flex items-center gap-3 py-2.5 text-left">
               <RatingPill rating={l.peak} />
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-semibold text-white">{l.name}</span>
                 <span className="text-[11px] text-gray-400">
-                  {POS_LABEL[l.pos]} · {l.club} · signs for {formatMoney(l.signingFee)}
+                  {POS_LABEL[l.pos]} · {l.club} · plays at {legendAsPlayer(l).rating} · {formatMoney(l.signingFee)}
                 </span>
               </span>
               {owned ? (

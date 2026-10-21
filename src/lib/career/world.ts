@@ -72,9 +72,11 @@ export function buildWorld(seed: string): { clubs: Record<string, CareerClub>; p
   }
   const realCounts: Record<string, number> = {};
   for (const row of currentSquads as SquadRow[]) {
-    if (row.availableInGame === false) continue;
     const seedClub = byDataName.get((row.club ?? "").toLowerCase());
     if (!seedClub) continue;
+    // `availableInGame: false` hides Championship players from Classic (Super League only);
+    // Manager Mode has the Championship, so only honour the flag for Super League squads.
+    if (row.availableInGame === false && seedClub.division === "super-league") continue;
     const p = realPlayer(row, rng);
     players[p.id] = p;
     clubs[seedClub.id]!.squad.push(p.id);

@@ -147,7 +147,7 @@ export function MatchTab() {
               <ClubBadge club={opponent} size="lg" />
               <div className="min-w-0 flex-1">
                 <p className="text-xs uppercase tracking-wide text-gray-400">{fixture.home === s.userClubId ? "Home vs" : "Away at"}</p>
-                <p className="truncate font-display text-2xl font-bold text-white">{opponent.name}</p>
+                <p className="font-display text-xl font-bold leading-tight text-white sm:text-2xl">{opponent.name}</p>
                 {theirRow && fixture.kind === "league" ? (
                   <p className="mt-0.5 flex items-center gap-2 text-xs text-gray-400">
                     {ordinal(theirPos)} · {theirRow.w}W {theirRow.l}L <FormDots form={theirRow.form} />

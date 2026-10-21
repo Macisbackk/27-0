@@ -96,7 +96,7 @@ export function TransferWindow() {
             const from = l.fromClubId ? s.clubs[l.fromClubId] : null;
             const affordable = s.budget >= l.price;
             return (
-              <li key={l.playerId} className={`flex items-center gap-3 rounded-xl border px-3 py-2.5 ${l.legend ? "border-accent-gold/60 bg-accent-gold/5" : "border-pitch-700 bg-pitch-900/80"}`}>
+              <li key={l.playerId} className={`flex items-center gap-3 rounded-xl border px-3 py-2.5 text-left ${l.legend ? "border-accent-gold/60 bg-accent-gold/5" : "border-pitch-700 bg-pitch-900/80"}`}>
                 {from ? <ClubBadge club={from} size="sm" /> : <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-pitch-700 text-[10px] font-bold text-gray-300">{l.legend ? "★" : "FA"}</span>}
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-semibold text-white">
@@ -121,7 +121,7 @@ export function TransferWindow() {
       ) : (
         <ul className="grid gap-2">
           {squad.map((p) => (
-            <li key={p.id} className="flex items-center gap-3 rounded-xl border border-pitch-700 bg-pitch-900/80 px-3 py-2.5">
+            <li key={p.id} className="flex items-center gap-3 rounded-xl border border-pitch-700 bg-pitch-900/80 px-3 py-2.5 text-left">
               <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-white">

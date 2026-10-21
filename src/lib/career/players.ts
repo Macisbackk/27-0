@@ -121,30 +121,24 @@ export function generatePlayer(
   };
 }
 
-/** Best available XIII from a squad (greedy, strongest slot fits first). */
+/**
+ * Best available XIII: global greedy over every (slot, player) pairing by effective rating,
+ * so a strong centre can beat a weak natural fullback. Ties favour natural positions.
+ */
 export function autoPickLineup(squad: CareerPlayer[]): string[] {
-  const used = new Set<string>();
+  const pairs: Array<{ i: number; id: string; score: number }> = [];
+  LINEUP_SLOTS.forEach((slot, i) => {
+    for (const p of squad) {
+      pairs.push({ i, id: p.id, score: effectiveRating(p, slot) + (p.pos === slot ? 0.01 : 0) });
+    }
+  });
+  pairs.sort((a, b) => b.score - a.score || a.i - b.i);
   const lineup: string[] = new Array(LINEUP_SLOTS.length).fill("");
-  // Fill natural positions first (best players first), then fill gaps with best fits.
-  const order = LINEUP_SLOTS.map((slot, i) => ({ slot, i }));
-  for (const { slot, i } of order) {
-    const natural = squad
-      .filter((p) => !used.has(p.id) && p.pos === slot)
-      .sort((a, b) => b.rating - a.rating)[0];
-    if (natural) {
-      lineup[i] = natural.id;
-      used.add(natural.id);
-    }
-  }
-  for (const { slot, i } of order) {
-    if (lineup[i]) continue;
-    const best = squad
-      .filter((p) => !used.has(p.id))
-      .sort((a, b) => effectiveRating(b, slot) - effectiveRating(a, slot))[0];
-    if (best) {
-      lineup[i] = best.id;
-      used.add(best.id);
-    }
+  const used = new Set<string>();
+  for (const pair of pairs) {
+    if (lineup[pair.i] || used.has(pair.id)) continue;
+    lineup[pair.i] = pair.id;
+    used.add(pair.id);
   }
   return lineup;
 }
