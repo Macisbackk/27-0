@@ -257,7 +257,12 @@ export function ManagerSettingsView() {
           <button
             type="button"
             onClick={() => {
-              void saveToSlot("auto").then(() => exitToMenu());
+              void saveToSlot("auto")
+                .then(() => exitToMenu())
+                .catch((error) => {
+                  // Stay on this screen so the career isn't abandoned unsaved.
+                  console.error("[manager] Save before exit failed:", error);
+                });
             }}
             className="rounded-xl border border-pitch-700 bg-pitch-800 hover:bg-pitch-700 px-3.5 py-2 text-xs font-bold text-pitch-200 hover:text-white transition-all shadow flex items-center gap-2"
           >

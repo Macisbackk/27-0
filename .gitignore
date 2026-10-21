@@ -55,3 +55,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*
+
+# local run output (never commit)
+*.log
+/*-result*.txt
+/scripts/*-result*.txt
+/data/*.log

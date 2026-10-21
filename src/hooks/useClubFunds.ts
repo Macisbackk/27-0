@@ -24,7 +24,9 @@ export function useClubFunds() {
 
     const pullFromCloud = () => {
       if (!isLoggedIn()) return;
-      void refreshClubFundsFromCloud().then(sync);
+      void refreshClubFundsFromCloud()
+        .then(sync)
+        .catch((error) => console.error("[club-funds] Cloud refresh failed:", error));
     };
 
     sync();

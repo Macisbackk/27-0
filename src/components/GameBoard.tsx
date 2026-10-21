@@ -1104,10 +1104,16 @@ export function GameBoard({
           normalEraMode,
           dailyChallengeMode,
         }
-      ).then((completed) => {
-        setSubmittedOnline(completed.submittedOnline);
-        if (completed.nationalRank) setRunRank(completed.nationalRank);
-      });
+      )
+        .then((completed) => {
+          setSubmittedOnline(completed.submittedOnline);
+          if (completed.nationalRank) setRunRank(completed.nationalRank);
+        })
+        .catch((error) => {
+          // Network/Supabase failure — the run is still saved locally.
+          console.error("[run] Failed to record completed run online:", error);
+          setSubmittedOnline(false);
+        });
 
       if (!fundsAwardedRef.current) {
         fundsAwardedRef.current = true;
@@ -1225,10 +1231,16 @@ export function GameBoard({
           usedBoosts: usedBoostThisRun,
           dailyChallengeMode,
         }
-      ).then((completed) => {
-        setSubmittedOnline(completed.submittedOnline);
-        if (completed.nationalRank) setRunRank(completed.nationalRank);
-      });
+      )
+        .then((completed) => {
+          setSubmittedOnline(completed.submittedOnline);
+          if (completed.nationalRank) setRunRank(completed.nationalRank);
+        })
+        .catch((error) => {
+          // Network/Supabase failure — the run is still saved locally.
+          console.error("[run] Failed to record completed run online:", error);
+          setSubmittedOnline(false);
+        });
 
       triggerQuickSeasonAchievements(
         finalSquad,

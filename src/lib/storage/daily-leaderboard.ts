@@ -81,7 +81,7 @@ export async function submitDailyLeaderboardOnline(
       typeof existing?.score === "number" ? existing.score : 0;
     if (bestStreak < currentScore) return;
 
-    await supabase.from("leaderboard").upsert(
+    const { error: upsertError } = await supabase.from("leaderboard").upsert(
       {
         user_id: userId,
         coach_name: coachName,
@@ -94,6 +94,7 @@ export async function submitDailyLeaderboardOnline(
       },
       { onConflict: "user_id,mode,difficulty,mode_variant" }
     );
+    if (upsertError) throw upsertError;
   } catch (err) {
     console.error("[daily-leaderboard] submit failed:", err);
   }

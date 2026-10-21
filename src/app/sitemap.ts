@@ -10,14 +10,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
   const routes = [
     "",
+    "/manager",
     "/play",
     "/leaderboard",
     "/showcase",
     "/store",
-    "/profile",
-    "/stats",
-    "/login",
-    "/quiz",
     "/mini-games",
     "/mini-games/quiz",
     "/mini-games/wordle",

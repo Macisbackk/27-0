@@ -136,7 +136,7 @@ export async function submitMiniGameWinsOnline(
     const currentScore = typeof existing?.score === "number" ? existing.score : 0;
     if (currentScore >= wins) return;
 
-    await supabase.from("leaderboard").upsert(
+    const { error: upsertError } = await supabase.from("leaderboard").upsert(
       {
         user_id: userId,
         coach_name: coachName,
@@ -149,6 +149,7 @@ export async function submitMiniGameWinsOnline(
       },
       { onConflict: "user_id,mode,difficulty,mode_variant" }
     );
+    if (upsertError) throw upsertError;
   } catch (error) {
     console.error(`[mini-games-leaderboard] ${kind} submit failed:`, error);
   }

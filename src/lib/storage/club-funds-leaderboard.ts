@@ -83,7 +83,7 @@ export async function submitClubFundsLeaderboardOnline(
       typeof existing?.score === "number" ? existing.score : 0;
     if (totalEarned < currentScore) return;
 
-    await supabase.from("leaderboard").upsert(
+    const { error: upsertError } = await supabase.from("leaderboard").upsert(
       {
         user_id: userId,
         coach_name: coachName,
@@ -96,6 +96,7 @@ export async function submitClubFundsLeaderboardOnline(
       },
       { onConflict: "user_id,mode,difficulty,mode_variant" }
     );
+    if (upsertError) throw upsertError;
   } catch (err) {
     console.error("[club-funds-leaderboard] submit failed:", err);
   }

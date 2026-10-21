@@ -12,6 +12,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        disallow: ["/dev/", "/auth/", "/profile", "/stats", "/login"],
       },
       // Explicit allows so OpenAI search / browse tools do not treat us as opted out.
       {
