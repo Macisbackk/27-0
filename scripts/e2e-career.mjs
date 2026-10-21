@@ -59,6 +59,20 @@ page.on("console", (msg) => {
 });
 
 const timeout = 20_000;
+
+/** CI only: phone-sized JPEG of the current view, emitted as a notice so it can be fetched via the API. */
+let shotCount = 0;
+async function shot(name) {
+  if (!process.env.CI) return;
+  try {
+    await page.waitForTimeout(400);
+    const buf = await page.screenshot({ type: "jpeg", quality: 42, scale: "css" });
+    shotCount += 1;
+    console.log(`::notice title=shot-${String(shotCount).padStart(2, "0")}-${name}::${buf.toString("base64")}`);
+  } catch (err) {
+    console.log(`screenshot ${name} failed: ${err}`);
+  }
+}
 async function clickButton(name, opts = {}) {
   const btn = page.getByRole("button", { name, exact: opts.exact ?? false }).first();
   await btn.waitFor({ state: "visible", timeout });
@@ -69,6 +83,7 @@ try {
   await page.goto(`${BASE}/manager`, { waitUntil: "networkidle" });
   await page.getByRole("heading", { name: "Pick your club" }).waitFor({ timeout });
   step("Club picker renders");
+  await shot("picker");
 
   // Championship is the default list; pick the first club.
   const clubs = page.getByRole("list", { name: "Clubs" }).getByRole("button");
@@ -80,14 +95,19 @@ try {
   await clickButton(/Take charge of/);
   await page.getByRole("button", { name: "Play match" }).waitFor({ timeout });
   step(`Career started (${clubCount} Championship clubs listed)`);
+  await shot("hub-match");
 
   await clickButton("Play match");
   await page.getByText(/Last result/).first().waitFor({ timeout });
   step("Played a match and saw the result");
+  await page.getByText(/Last result/).first().scrollIntoViewIfNeeded();
+  await shot("result");
+  await page.evaluate(() => window.scrollTo(0, 0));
 
   await page.getByRole("tab", { name: "Team" }).click();
   await page.getByText("Starting XIII").waitFor({ timeout });
   const shirt1 = page.getByRole("button", { name: /Shirt 1,/ });
+  await shot("team");
   await shirt1.click();
   const sheetOptions = page.getByRole("dialog").getByRole("button");
   await sheetOptions.first().waitFor({ timeout });
@@ -99,11 +119,14 @@ try {
   const rows = await page.locator("table tbody tr").count();
   if (rows !== 22) throw new Error(`Expected 22 table rows, saw ${rows}`);
   step("Table tab (22 rows)");
+  await shot("table");
 
   await page.getByRole("tab", { name: "Club" }).click();
   await page.getByText("Season challenges").waitFor({ timeout });
+  await shot("club");
   await clickButton("Legend Vault");
   await page.getByText("Legend Vault").first().waitFor({ timeout });
+  await shot("vault");
   await page.keyboard.press("Escape");
   step("Club tab + Legend Vault");
 
@@ -111,9 +134,11 @@ try {
   await clickButton("Sim season");
   await page.getByText(/season review/i).first().waitFor({ timeout: 60_000 });
   step("Simulated the season → review screen");
+  await shot("review");
 
   await clickButton("Open the transfer window");
   await page.getByRole("heading", { name: "Build your squad" }).waitFor({ timeout });
+  await shot("transfers");
   await page.getByRole("tab", { name: "Sell" }).click();
   const sellButtons = page.getByRole("button", { name: /^Sell £/ });
   await sellButtons.first().waitFor({ timeout });
