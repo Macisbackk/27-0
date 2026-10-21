@@ -18,8 +18,8 @@ export const UI_COPY = {
   boostedFirstPick: "Boosted First Pick",
   randomValidPosition: (position: string) =>
     `Random valid position: ${position}`,
-  currentRatingNote: "This season’s form.",
-  eraRatingNote: "That season’s form.",
+  currentRatingNote: "Ratings reflect 2026 form.",
+  eraRatingNote: "Ratings reflect form in that season.",
   protectFromMassRelease: "Protect from mass release",
   previewPlayers: "Preview Players",
   releaseSelected: "Release",

@@ -8,14 +8,14 @@ import { getEffectivePeakRating } from "@/lib/squad-analysis";
 
 /** Shared footprint for empty and filled pitch slots — scales with pitch width. */
 export const PITCH_SLOT_SIZE_CLASS =
-  "h-[clamp(54px,13vw,88px)] w-[clamp(50px,12vw,82px)] sm:h-[clamp(60px,13.5vw,96px)] sm:w-[clamp(54px,12.5vw,88px)] md:h-[clamp(68px,14vw,108px)] md:w-[clamp(62px,13vw,100px)]";
+  "h-[clamp(56px,13.5vw,88px)] w-[clamp(54px,14vw,82px)] sm:h-[clamp(60px,13.5vw,96px)] sm:w-[clamp(54px,12.5vw,88px)] md:h-[clamp(68px,14vw,108px)] md:w-[clamp(62px,13vw,100px)]";
 
 export const PITCH_SLOT_COMPACT_CLASS =
   "h-[clamp(42px,9.5vw,64px)] w-[clamp(40px,9vw,60px)]";
 
 /** Season review team sheet — compact two-line names without dead space. */
 export const PITCH_SLOT_REVIEW_CLASS =
-  "h-[clamp(48px,10.5vw,62px)] w-[clamp(50px,11vw,68px)] sm:h-[clamp(52px,11vw,66px)] sm:w-[clamp(54px,11.5vw,74px)]";
+  "h-[clamp(52px,10.5vw,62px)] w-[clamp(56px,11vw,68px)] sm:h-[clamp(52px,11vw,66px)] sm:w-[clamp(54px,11.5vw,74px)]";
 
 interface PitchSlotCardProps {
   slot: SquadSlot;
@@ -79,7 +79,7 @@ export function PitchSlotCard({
             isMatchdayPitch
               ? "text-[8px] leading-none sm:text-[9px] md:text-[10px]"
               : isTeamSheet
-                ? "line-clamp-2 px-0.5 text-[5.5px] leading-[1.08] sm:text-[6.5px]"
+                ? "line-clamp-2 px-0.5 text-[7px] leading-[1.08] sm:text-[7.5px]"
                 : "line-clamp-2 text-[7px] leading-[1.05] sm:text-[8px]"
           }`}
         >
@@ -98,13 +98,13 @@ export function PitchSlotCard({
           <p
             className={`min-h-0 w-full text-center font-display font-semibold text-white ${
               fullPlayerNames
-                ? "line-clamp-2 shrink-0 break-words [overflow-wrap:anywhere] px-0.5 text-[7px] leading-[1.08] sm:text-[8px]"
+                ? "line-clamp-2 shrink-0 break-words hyphens-auto px-0.5 text-[8px] leading-[1.1] sm:text-[9px]"
                 : compact
                   ? "truncate px-0.5 text-[8px] leading-[1.15] sm:text-[9px]"
-                  : "line-clamp-2 break-words text-[7px] leading-[1.15] sm:text-[8px]"
+                  : "line-clamp-2 break-words hyphens-auto text-[8px] leading-[1.15] sm:text-[9px]"
             }`}
           >
-            {displayName}
+            {fullPlayerNames ? <TwoLineName name={player.name} /> : displayName}
           </p>
         )}
         {!hardMode && (
@@ -122,5 +122,26 @@ export function PitchSlotCard({
         )}
       </div>
     </div>
+  );
+}
+
+/**
+ * First name over surname, with the surname shrinking a step when it is long, so names
+ * like "Marsters" or "Batchelor" fit the narrow pitch card instead of ending in "…".
+ */
+function TwoLineName({ name }: { name: string }) {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length < 2) return <>{name}</>;
+  const surname = parts[parts.length - 1]!;
+  const firstFull = parts.slice(0, -1).join(" ");
+  // Long first names collapse to an initial: the surname is what players recognise.
+  const first = firstFull.length > 6 ? `${firstFull[0]}.` : firstFull;
+  const surnameSize =
+    surname.length <= 6 ? "" : surname.length <= 8 ? "text-[7px] sm:text-[8px]" : "text-[6px] sm:text-[7px]";
+  return (
+    <>
+      <span className="block truncate">{first}</span>
+      <span className={`block whitespace-nowrap ${surnameSize}`}>{surname}</span>
+    </>
   );
 }

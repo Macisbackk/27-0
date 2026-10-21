@@ -5,14 +5,18 @@ import { TYPO } from "@/lib/ui/typography";
 
 const GUIDE_ITEMS = [
   {
+    title: "Manager Mode",
+    body: "Run a real club round by round. Win the Championship, go up, lift the Grand Final and unlock legends.",
+  },
+  {
     title: "Classic",
-    body: "Build a 17 from Current or Era squads, chase 27-0, then fight for the playoffs.",
+    body: "Spin and sign a 13 from Current or Era squads, chase 27-0, then fight for the play-offs.",
   },
   ...(SHOW_DAILY_CHALLENGE_UI
     ? [
         {
           title: "Daily Challenge",
-          body: "One forced opponent club each UK day — keep your streak alive.",
+          body: "Every opponent is the same club. One counted attempt per UK day — keep your streak alive.",
         },
       ]
     : []),

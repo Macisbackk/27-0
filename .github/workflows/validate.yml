@@ -89,11 +89,18 @@ jobs:
           curl -sf http://localhost:3000/ > /dev/null || (npx next start -p 3000 > /tmp/next2.log 2>&1 &)
           for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
           scripts/ci-run.sh "Site e2e" node scripts/e2e-site.mjs
+      - name: UI audit screenshots (phone + desktop)
+        if: (success() || failure()) && github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          curl -sf http://localhost:3000/ > /dev/null || (npx next start -p 3000 > /tmp/next3.log 2>&1 &)
+          for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
+          node scripts/ui-audit.mjs
       - name: Publish e2e screenshots (same-repo PRs only)
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && hashFiles('e2e-shots/*.png') != ''
         run: |
           branch="ci-shots/pr-${{ github.event.pull_request.number }}"
-          mkdir -p /tmp/shots && cp e2e-shots/*.png /tmp/shots/
+          mkdir -p /tmp/shots && cp e2e-shots/*.png /tmp/shots/ && cp e2e-shots/*.txt /tmp/shots/ 2>/dev/null || true
           cd /tmp/shots
           git init -q -b "$branch"
           git config user.name "github-actions"
