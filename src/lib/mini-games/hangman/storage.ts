@@ -71,6 +71,29 @@ export function saveHangmanRun(run: HangmanRun): void {
   writeJson(STORAGE_KEYS.hangmanRun, run);
 }
 
+const DAILY_PREFIX = "27-0-hangman-daily:";
+
+/** Today's daily puzzle for a pool, so a reload resumes it instead of granting a fresh attempt. */
+export function loadHangmanDaily(date: string, poolMode: string): HangmanRun | null {
+  const value = readJson(`${DAILY_PREFIX}${date}:${poolMode}`);
+  return isHangmanRun(value) ? value : null;
+}
+
+export function saveHangmanDaily(run: HangmanRun): void {
+  if (!run.daily) return;
+  writeJson(`${DAILY_PREFIX}${run.date}:${run.poolMode ?? "current"}`, run);
+  // Keep only today's entries.
+  if (typeof window === "undefined") return;
+  try {
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const key = localStorage.key(i);
+      if (key?.startsWith(DAILY_PREFIX) && !key.startsWith(`${DAILY_PREFIX}${run.date}:`)) localStorage.removeItem(key);
+    }
+  } catch {
+    // Quota / private mode
+  }
+}
+
 export function clearHangmanRun(): void {
   if (typeof window === "undefined") return;
   try {

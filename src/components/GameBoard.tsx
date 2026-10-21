@@ -65,6 +65,7 @@ import { mergeClubFundsPayouts } from "@/lib/club-funds";
 import {
   getDailyChallengeLeagueRunId,
   getDailyChallengePlayoffRunId,
+  getDailyChallengeProgress,
   getDailyChallengeScenario,
   markDailyChallengeLeagueLeaders,
   markDailyChallengePlayoffTitle,
@@ -1130,7 +1131,9 @@ export function GameBoard({
           tablePosition === 1 &&
           mode === "CLASSIC" &&
           !joeMellorMode &&
-          !superSamHallasMode
+          !superSamHallasMode &&
+          // Belt and braces with the payout-id ledger: one League Leaders bonus per day.
+          !getDailyChallengeProgress().leagueLeaders
         ) {
           const dailyPayout = awardClubFundsLines(
             getDailyChallengeLeagueRunId(),
@@ -1341,7 +1344,8 @@ export function GameBoard({
             wonTitle &&
             mode === "CLASSIC" &&
             !joeMellorMode &&
-            !superSamHallasMode
+            !superSamHallasMode &&
+            !getDailyChallengeProgress().playoffTitle
           ) {
             const dailyPayout = awardClubFundsLines(
               getDailyChallengePlayoffRunId(),

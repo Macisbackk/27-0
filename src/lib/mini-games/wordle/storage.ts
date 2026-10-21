@@ -77,8 +77,19 @@ export function clearWordleRun(): void {
 
 export function loadWordleStats(): WordleStats {
   const value = readJson(STORAGE_KEYS.wordleStats);
-  if (!isRecord(value) || value.schemaVersion !== WORDLE_STATS_SCHEMA) {
-    return createEmptyWordleStats();
+  // Older schema versions (1, 2) used the same counters: carry them forward instead of
+  // wiping a player's wins and streaks on every format bump.
+  if (!isRecord(value)) return createEmptyWordleStats();
+  const n = (v: unknown) => (typeof v === "number" && Number.isFinite(v) && v >= 0 ? Math.floor(v) : 0);
+  if (value.schemaVersion !== WORDLE_STATS_SCHEMA) {
+    const migrated = {
+      ...createEmptyWordleStats(),
+      played: n(value.played),
+      wins: Math.min(n(value.wins), n(value.played) || n(value.wins)),
+      bestStreak: n(value.bestStreak),
+    };
+    saveWordleStats(migrated);
+    return migrated;
   }
   return {
     schemaVersion: WORDLE_STATS_SCHEMA,

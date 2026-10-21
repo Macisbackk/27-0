@@ -98,6 +98,11 @@ export function getUiThemeById(id: string): UiThemeDefinition {
   return DEFAULT_UI_THEME;
 }
 
+/** True only for ids that resolve to a real theme (getUiThemeById falls back to the default). */
+export function isKnownUiThemeId(id: string): boolean {
+  return id === DEFAULT_UI_THEME_ID || listTeamUiThemes().some((t) => t.id === id);
+}
+
 export function getUiThemeByClubName(clubName: string): UiThemeDefinition | null {
   const team = getTeamUiThemeByClubName(clubName);
   return team ? fromTeamColors(team) : null;

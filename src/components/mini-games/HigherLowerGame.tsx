@@ -1,5 +1,6 @@
 "use client";
 
+import { getLocalDateKey } from "@/lib/mini-games/date";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ClubLogoBox } from "@/components/ClubBadge";
 import { GameButton } from "@/components/ui/GameButton";
@@ -63,7 +64,8 @@ function settleWin(
     return { run, stats: ended, awarded: false };
   }
   const payout = claimMiniGameReward(
-    `hol_five:${run.seed}`,
+    // Once per UK day (keying on the run seed paid every completed run).
+    `hol_five:${getLocalDateKey()}`,
     "Higher or Lower — 5 picks complete",
     HIGHER_LOWER_FIVE_REWARD
   );
@@ -275,7 +277,7 @@ export function HigherLowerGame() {
       <MiniGameRewardPopup
         open={rewardOpen}
         amount={HIGHER_LOWER_FIVE_REWARD}
-        detail="Reward for completing all 5 picks."
+        detail="Today's Higher or Lower reward — one per day."
         onClose={() => setRewardOpen(false)}
       />
       <div className="mini-game-play hol-play mx-auto flex w-full max-w-sm flex-col items-center">

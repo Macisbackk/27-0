@@ -22,6 +22,33 @@ export interface ClubFundsState {
 }
 
 const MAX_PAID_RUN_IDS = 200;
+const DATED_ID_KEEP_DAYS = 45;
+
+/**
+ * Trim the paid-id ledger without re-opening old rewards. A plain `slice(-200)` let 200 cheap
+ * wins push out today's daily / achievement ids, which then paid out again.
+ * - permanent ids (achievements, themes, starter grant): kept forever (bounded by catalogue size)
+ * - dated ids (daily-YYYY-MM-DD-…, hangman_win:YYYY-MM-DD…, wordle_win:…, hol_five:…): kept 45 days
+ * - one-off run / boost ids: newest MAX_PAID_RUN_IDS
+ */
+export function trimPaidRunIds(ids: string[], now: Date = new Date()): string[] {
+  const cutoff = new Date(now.getTime() - DATED_ID_KEEP_DAYS * 86_400_000).toISOString().slice(0, 10);
+  const keep: string[] = [];
+  const oneOff: string[] = [];
+  for (const id of new Set(ids)) {
+    if (id === CLUB_FUNDS_STARTER_RUN_ID || id.startsWith("achievement-") || id.startsWith("theme-")) {
+      keep.push(id);
+      continue;
+    }
+    const date = /(\d{4}-\d{2}-\d{2})/.exec(id)?.[1];
+    if (date) {
+      if (date >= cutoff) keep.push(id);
+      continue;
+    }
+    oneOff.push(id);
+  }
+  return [...keep, ...oneOff.slice(-MAX_PAID_RUN_IDS)];
+}
 const pendingSpendIds = new Set<string>();
 
 function emptyState(): ClubFundsState {
@@ -108,7 +135,7 @@ function saveState(state: ClubFundsState): void {
   const trimmed: ClubFundsState = {
     balance: state.balance,
     totalEarned: state.totalEarned,
-    paidRunIds: state.paidRunIds.slice(-MAX_PAID_RUN_IDS),
+    paidRunIds: trimPaidRunIds(state.paidRunIds),
   };
   const current = loadState();
   if (clubFundsEqual(current, trimmed)) return;
@@ -119,6 +146,10 @@ function saveState(state: ClubFundsState): void {
 
 export function getClubFundsBalance(): number {
   return loadState().balance;
+}
+
+export function getPaidRunIds(): readonly string[] {
+  return loadState().paidRunIds;
 }
 
 export function getClubFundsTotalEarned(): number {
@@ -176,7 +207,7 @@ export function mergeClubFundsFromCloud(cloud: ClubFundsState | null): void {
   const merged: ClubFundsState = {
     balance,
     totalEarned,
-    paidRunIds: [...paidSet].slice(-MAX_PAID_RUN_IDS),
+    paidRunIds: trimPaidRunIds([...paidSet]),
   };
   saveState(merged);
   syncClubFundsLeaderboard(merged.totalEarned);

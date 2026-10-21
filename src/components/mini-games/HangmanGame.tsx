@@ -18,8 +18,7 @@ import {
   clearHangmanRun,
   loadHangmanStats,
   saveHangmanRun,
-  saveHangmanStats,
-} from "@/lib/mini-games/hangman/storage";
+  saveHangmanStats, loadHangmanDaily, saveHangmanDaily } from "@/lib/mini-games/hangman/storage";
 import type { HangmanRun } from "@/lib/mini-games/hangman/types";
 import type { MiniGamePoolMode } from "@/lib/mini-games/pool-mode";
 import {
@@ -151,17 +150,21 @@ export function HangmanGame() {
 
   const persist = (next: HangmanView) => {
     saveHangmanRun(next);
+    if (next.daily) saveHangmanDaily(next);
     setRun(next);
     setStats(loadHangmanStats());
   };
 
   const startMode = (mode: MiniGamePoolMode) => {
     const today = getLocalDateKey();
-    const next = createHangmanRun({
-      date: today,
-      daily: true,
-      poolMode: mode,
-    });
+    // Resume today's daily (in progress or finished) — reloading must not hand out a fresh attempt.
+    const next =
+      (loadHangmanDaily(today, mode) as HangmanView | null) ??
+      createHangmanRun({
+        date: today,
+        daily: true,
+        poolMode: mode,
+      });
     setPoolMode(mode);
     setFlash(null);
     setCelebrate(false);

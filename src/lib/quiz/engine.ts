@@ -86,10 +86,13 @@ function buildBalancedQuestionSlots(
   seed: string
 ): QuizRunQuestion[] {
   const rng = createRng(`${seed}:answer-pattern`);
-  const positionCycle = [0, 1, 2, 3];
-  for (let i = positionCycle.length - 1; i > 0; i--) {
+  // Balanced (each of A–D used ~equally) but shuffled across the whole run. The old
+  // `index % 4` cycle repeated every 4 questions, so Q1–Q3 revealed every later answer.
+  const positions: number[] = [];
+  while (positions.length < questions.length) positions.push(0, 1, 2, 3);
+  for (let i = positions.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
-    [positionCycle[i], positionCycle[j]] = [positionCycle[j]!, positionCycle[i]!];
+    [positions[i], positions[j]] = [positions[j]!, positions[i]!];
   }
 
   return questions.map((question, index) => {
@@ -98,7 +101,7 @@ function buildBalancedQuestionSlots(
       (option) => option === question.correctAnswer
     );
     const currentPosition = slot.optionOrder.indexOf(canonicalCorrect);
-    const targetPosition = positionCycle[index % positionCycle.length] ?? 0;
+    const targetPosition = positions[index] ?? 0;
     if (currentPosition !== targetPosition) {
       [
         slot.optionOrder[currentPosition],

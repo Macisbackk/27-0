@@ -148,21 +148,24 @@ export function getBoostQuantity(boostId: string): number {
 }
 
 export function mergeBoostInventoryFromCloud(
-  cloud: UserBoostInventory | null
+  rawCloud: UserBoostInventory | null
 ): void {
-  if (!cloud) return;
+  if (!rawCloud || typeof rawCloud !== "object") return;
+  const cloud = normalizeInventory(rawCloud);
 
   const local = loadBoostInventory();
 
-  const purchaseHistory = mergeRecordsById(
-    local.purchaseHistory,
-    cloud.purchaseHistory
-  ).slice(-200);
+  // Quantities are recomputed from the full histories, so they must never be truncated:
+  // the old slice(-200)/slice(-300) dropped old purchases (boosts vanished) or old usages
+  // (spent boosts came back) once a player passed those counts.
+  const byTime = <T>(at: (r: T) => string) => (a: T, b: T) => (Date.parse(at(a)) || 0) - (Date.parse(at(b)) || 0);
+  const purchaseHistory = mergeRecordsById(local.purchaseHistory, cloud.purchaseHistory)
+    .filter((p) => p && typeof p.id === "string" && Number.isFinite(p.quantity))
+    .sort(byTime((p: BoostPurchaseRecord) => p.purchasedAt));
 
-  const usageHistory = mergeRecordsById(
-    local.usageHistory,
-    cloud.usageHistory
-  ).slice(-300);
+  const usageHistory = mergeRecordsById(local.usageHistory, cloud.usageHistory)
+    .filter((u) => u && typeof u.id === "string")
+    .sort(byTime((u: BoostUsageRecord) => u.timestamp));
 
   const quantities = recomputeQuantities(purchaseHistory, usageHistory);
 

@@ -82,6 +82,13 @@ export function loadHigherLowerStats(): HigherLowerStats {
   if (!isRecord(value)) {
     return createEmptyHigherLowerStats();
   }
+  // Before schema 3 the streak counted single correct picks, not completed five-pick runs:
+  // keep the counters but don't carry a streak that means something else now.
+  const legacy = value.schemaVersion !== HIGHER_LOWER_STATS_SCHEMA;
+  if (legacy) {
+    value.currentStreak = 0;
+    value.bestStreak = 0;
+  }
   return {
     schemaVersion: HIGHER_LOWER_STATS_SCHEMA,
     currentStreak:
