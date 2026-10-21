@@ -1,0 +1,226 @@
+[
+ {
+  "name": "Andy Farrell",
+  "peakRating": 99,
+  "position": "Loose forward",
+  "club": "Wigan Warriors",
+  "nationality": "England"
+ },
+ {
+  "name": "Jamie Peacock",
+  "peakRating": 99,
+  "position": "SECOND_ROW",
+  "club": "Bradford Bulls",
+  "nationality": "England"
+ },
+ {
+  "name": "Paul Sculthorpe",
+  "peakRating": 99,
+  "position": "Loose forward",
+  "club": "St Helens",
+  "nationality": "England"
+ },
+ {
+  "name": "James Roby",
+  "peakRating": 98,
+  "position": "Hooker",
+  "club": "St Helens",
+  "nationality": "England"
+ },
+ {
+  "name": "Keiron Cunningham",
+  "peakRating": 98,
+  "position": "Hooker",
+  "club": "St Helens",
+  "nationality": "Wales"
+ },
+ {
+  "name": "Kevin Sinfield",
+  "peakRating": 98,
+  "position": "Loose forward",
+  "club": "Leeds Rhinos",
+  "nationality": "England"
+ },
+ {
+  "name": "Sam Tomkins",
+  "peakRating": 98,
+  "position": "Fullback",
+  "club": "Wigan Warriors",
+  "nationality": "England"
+ },
+ {
+  "name": "Sean Long",
+  "peakRating": 98,
+  "position": "Scrum-half",
+  "club": "St Helens",
+  "nationality": "England"
+ },
+ {
+  "name": "Danny McGuire",
+  "peakRating": 97,
+  "position": "STAND_OFF",
+  "club": "Leeds Rhinos",
+  "nationality": "England"
+ },
+ {
+  "name": "Ellery Hanley",
+  "peakRating": 97,
+  "position": "Centre",
+  "club": "Leeds Rhinos",
+  "nationality": "England"
+ },
+ {
+  "name": "Garry Schofield",
+  "peakRating": 97,
+  "position": "Stand-off",
+  "club": "Leeds Rhinos",
+  "nationality": "England"
+ },
+ {
+  "name": "James Graham",
+  "peakRating": 97,
+  "position": "Prop",
+  "club": "St Helens",
+  "nationality": "England"
+ },
+ {
+  "name": "Jamie Lyon",
+  "peakRating": 97,
+  "position": "Centre",
+  "club": "St Helens",
+  "nationality": "Australia"
+ },
+ {
+  "name": "Paul Wellens",
+  "peakRating": 97,
+  "position": "Fullback",
+  "club": "St Helens",
+  "nationality": "England"
+ },
+ {
+  "name": "Sean O'Loughlin",
+  "peakRating": 97,
+  "position": "LOOSE_FORWARD",
+  "club": "Wigan Warriors",
+  "nationality": "England"
+ },
+ {
+  "name": "Adrian Morley",
+  "peakRating": 96,
+  "position": "Prop",
+  "club": "Warrington Wolves",
+  "nationality": "England"
+ },
+ {
+  "name": "Andrew Johns",
+  "peakRating": 96,
+  "position": "Scrum-half",
+  "club": "Salford City Reds",
+  "nationality": "Australia"
+ },
+ {
+  "name": "Danny Brough",
+  "peakRating": 96,
+  "position": "Scrum-half",
+  "club": "Huddersfield Giants",
+  "nationality": "England"
+ },
+ {
+  "name": "Gareth Ellis",
+  "peakRating": 96,
+  "position": "SECOND_ROW",
+  "club": "Leeds Rhinos",
+  "nationality": "England"
+ },
+ {
+  "name": "Iestyn Harris",
+  "peakRating": 96,
+  "position": "Stand-off",
+  "club": "Leeds Rhinos",
+  "nationality": "Wales"
+ },
+ {
+  "name": "Jason Robinson",
+  "peakRating": 96,
+  "position": "Wing",
+  "club": "Wigan Warriors",
+  "nationality": "England"
+ },
+ {
+  "name": "Kris Radlinski",
+  "peakRating": 96,
+  "position": "FULLBACK",
+  "club": "Wigan Warriors",
+  "nationality": "England"
+ },
+ {
+  "name": "Leon Pryce",
+  "peakRating": 96,
+  "position": "Stand-off",
+  "club": "St Helens",
+  "nationality": "England"
+ },
+ {
+  "name": "Pat Richards",
+  "peakRating": 96,
+  "position": "WING",
+  "club": "Wigan Warriors",
+  "nationality": "Australia"
+ },
+ {
+  "name": "Rob Burrow",
+  "peakRating": 96,
+  "position": "Scrum-half",
+  "club": "Leeds Rhinos",
+  "nationality": "England"
+ },
+ {
+  "name": "Stuart Fielden",
+  "peakRating": 96,
+  "position": "Prop",
+  "club": "Bradford Bulls",
+  "nationality": "England"
+ },
+ {
+  "name": "Lee Briers",
+  "peakRating": 95,
+  "position": "Stand-off",
+  "club": "Warrington Wolves",
+  "nationality": "Wales"
+ },
+ {
+  "name": "Liam Farrell",
+  "peakRating": 95,
+  "position": "SECOND_ROW",
+  "club": "Wigan Warriors",
+  "nationality": "England"
+ },
+ {
+  "name": "Robbie Hunter-Paul",
+  "peakRating": 95,
+  "position": "SCRUM_HALF",
+  "club": "Bradford Bulls",
+  "nationality": "New Zealand"
+ },
+ {
+  "name": "Sam Burgess",
+  "peakRating": 95,
+  "position": "Prop",
+  "club": "Bradford Bulls",
+  "nationality": "England"
+ },
+ {
+  "name": "Martin Offiah",
+  "peakRating": 94,
+  "position": "Wing",
+  "club": "Wigan Warriors",
+  "nationality": "England"
+ },
+ {
+  "name": "Paul Newlove",
+  "peakRating": 92,
+  "position": "Centre",
+  "club": "Bradford Bulls",
+  "nationality": "England"
+ }
+]
