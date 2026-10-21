@@ -1,5 +1,5 @@
 -- 2026-10-21 — RLS + function hardening
--- Applied to production via Supabase MCP on 2026-10-21. Kept here for reference / re-runs.
+-- Applied to production on 2026-10-21 (via the Supabase SQL editor). Kept here for reference.
 --
 -- Fixes the Supabase advisor findings:
 --   * SECURITY DEFINER functions executable by anon/authenticated (handle_new_user, increment_cup_team_win)
