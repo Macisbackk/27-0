@@ -21,6 +21,7 @@ import {
   SALARY_CAP,
   CHAMPIONSHIP_ECONOMY,
   getChampionshipCarryoverSoftCap,
+  CALENDAR_RULES,
 } from "./rules";
 import type {
   BoardObjective,
@@ -1077,7 +1078,7 @@ export function rolloverSeason(state: ManagerState): {
     calendar: {
       currentSeason: newSeason,
       currentWeek: 1,
-      totalWeeks: 32,
+      totalWeeks: CALENDAR_RULES.TOTAL_WEEKS,
       phase: "pre_season",
       processedWeekKeys: [],
     },

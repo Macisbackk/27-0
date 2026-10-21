@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useManager } from "@/lib/manager/context";
 import { formatPositionShort } from "@/lib/manager";
 import type { SeasonHistoryRecord } from "@/lib/manager/types";
+import { SEASON_WEEKS } from "@/lib/manager/rules";
 
 export function ManagerHistoryView() {
   const { state } = useManager();
@@ -634,7 +635,7 @@ export function ManagerHistoryView() {
               <span className="font-bold text-white text-sm">Season Archive in Progress</span>
             </div>
             <p className="text-pitch-300 leading-relaxed text-[11px]">
-              Season {currentSeason} is currently underway. When all domestic fixtures and playoffs conclude at Week 32,
+              Season {currentSeason} is currently underway. When all domestic fixtures and playoffs conclude at Week {SEASON_WEEKS.MILLION_POUND_GAME},
               the season will be officially rolled over. Full final standings, individual honours (Man of Steel, Top Scorer),
               cup results, and your club&apos;s achievements will be permanently archived here for the rest of your save.
             </p>

@@ -428,7 +428,7 @@ export interface ManagerProfile {
 export interface ManagerCalendar {
   currentSeason: number; // e.g. 2026
   currentWeek: number; // 1 - 32
-  totalWeeks: number; // 32 weeks total (2 pre-season friendlies, 26 regular rounds, 4 playoff/cup rounds)
+  totalWeeks: number; // CALENDAR_RULES.TOTAL_WEEKS (3 pre-season friendlies, 26 league rounds, 4 play-off weeks = 33)
   phase: "pre_season" | "regular_season" | "playoffs" | "season_end";
   processedWeekKeys: string[]; // e.g. ["2026_w1", "2026_w2"] — CRITICAL: idempotent protection
 }

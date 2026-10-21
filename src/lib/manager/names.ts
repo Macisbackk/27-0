@@ -473,6 +473,11 @@ function poolsForRegion(region: NameRegion): {
   }
 }
 
+function isWelshClub(clubId?: string | null): boolean {
+  const normClub = (clubId || "").toLowerCase();
+  return normClub.includes("crusader") || normClub.includes("wales");
+}
+
 function pickRegionForClub(clubId?: string | null): NameRegion {
   const normClub = (clubId || "").toLowerCase();
 
@@ -485,8 +490,8 @@ function pickRegionForClub(clubId?: string | null): NameRegion {
     return "british";
   }
 
-  // Welsh clubs — lean Celtic
-  if (normClub.includes("crusader") || normClub.includes("wales")) {
+  // Welsh clubs — lean Celtic (and Celtic picks lean Welsh; see buildNameFromRegion)
+  if (isWelshClub(normClub)) {
     const roll = Math.random();
     if (roll < 0.55) return "celtic";
     if (roll < 0.78) return "british";
@@ -504,15 +509,23 @@ function pickRegionForClub(clubId?: string | null): NameRegion {
   return "other";
 }
 
-function buildNameFromRegion(region: NameRegion): GeneratedPlayerName {
+function buildNameFromRegion(region: NameRegion, clubId?: string | null): GeneratedPlayerName {
   const { firsts, lasts, nationality } = poolsForRegion(region);
   const firstName = pickRandom(firsts);
   const lastName = pickSafeLast(lasts);
+  // A Celtic-heritage player at a Welsh club is most likely Welsh, not an even split
+  // across Wales/Scotland/Ireland/England (which left Welsh clubs ~14% Welsh).
+  const resolvedNationality =
+    region === "celtic" && isWelshClub(clubId)
+      ? Math.random() < 0.75
+        ? "Wales"
+        : pickRandom(["England", "Scotland", "Ireland"])
+      : nationality();
   return {
     firstName,
     lastName,
     fullName: `${firstName} ${lastName}`,
-    nationality: nationality(),
+    nationality: resolvedNationality,
   };
 }
 
@@ -535,7 +548,7 @@ export function generateRandomPlayerName(clubId?: string | null): GeneratedPlaye
   let lastAttempt: GeneratedPlayerName | null = null;
 
   for (let attempt = 0; attempt < 40; attempt++) {
-    const candidate = buildNameFromRegion(region);
+    const candidate = buildNameFromRegion(region, clubId);
     lastAttempt = candidate;
     if (isBlockedSurname(candidate.lastName)) continue;
     if (isNameTaken(candidate.fullName)) continue;

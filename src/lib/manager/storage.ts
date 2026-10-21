@@ -4,7 +4,7 @@
  * save with key-moments balloons past that). Tiny metadata stays in localStorage.
  */
 
-import { MANAGER_SAVE_VERSION } from "./rules";
+import { CALENDAR_RULES, MANAGER_SAVE_VERSION } from "./rules";
 import { formatRflSeasonReviewFromBodyRecord } from "./rollover";
 import type { ManagerFixture, ManagerState } from "./types";
 
@@ -491,6 +491,11 @@ function upgradeLoadedManagerState(state: ManagerState): ManagerState {
 
   const withOffers: ManagerState = {
     ...withDev,
+    // Older saves stored 32 before the season grew to 3 friendlies + 26 rounds + 4 play-off weeks.
+    calendar:
+      withDev.calendar.totalWeeks === CALENDAR_RULES.TOTAL_WEEKS
+        ? withDev.calendar
+        : { ...withDev.calendar, totalWeeks: CALENDAR_RULES.TOTAL_WEEKS },
     transfers: {
       ...withDev.transfers,
       activeBids: withDev.transfers.activeBids || [],
