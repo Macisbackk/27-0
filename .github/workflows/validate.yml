@@ -70,6 +70,16 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
           NEXT_TELEMETRY_DISABLED: "1"
         run: scripts/ci-run.sh "Production build" npm run build
+      - name: Install Playwright (not in package.json)
+        run: npm install --no-save playwright@1.49.1 && npx playwright install --with-deps chromium
+      - name: Manager Mode end-to-end (mobile)
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
+        run: |
+          npx next start -p 3000 > /tmp/next.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
+          scripts/ci-run.sh "Manager Mode e2e" node scripts/e2e-career.mjs
       - name: Bundle size report
         continue-on-error: true
         run: |
