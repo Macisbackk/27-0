@@ -7,8 +7,8 @@ import { isSupabaseConfigured, supabase } from "../supabase";
 import { emptyLegacy, normalizeLegacy } from "./legacy";
 import type { CareerLegacy, CareerState } from "./types";
 
-const SAVE_KEY = "27-0-career-v2-save";
-const LEGACY_KEY = "27-0-career-v2-legacy";
+export const SAVE_KEY = "27-0-career-v2-save";
+export const LEGACY_KEY = "27-0-career-v2-legacy";
 const CLOUD_MODE = "CAREER_V2";
 
 function readJson<T>(key: string): T | null {
@@ -32,9 +32,22 @@ function writeJson(key: string, value: unknown): boolean {
   }
 }
 
-function isCareer(value: unknown): value is CareerState {
+/** Structural check before trusting a saved career (local or cloud). Bad saves are ignored, not loaded. */
+export function isCareer(value: unknown): value is CareerState {
   const v = value as CareerState | null;
-  return !!v && v.version === 1 && typeof v.userClubId === "string" && !!v.clubs && !!v.players && Array.isArray(v.calendar);
+  if (!v || typeof v !== "object" || v.version !== 1) return false;
+  if (typeof v.userClubId !== "string" || typeof v.seed !== "string") return false;
+  if (!v.clubs || typeof v.clubs !== "object" || !v.clubs[v.userClubId]) return false;
+  if (!v.players || typeof v.players !== "object") return false;
+  if (!Array.isArray(v.calendar) || !v.calendar.every((m) => m && Array.isArray(m.fixtures))) return false;
+  if (!Number.isInteger(v.matchdayIndex) || v.matchdayIndex < 0 || v.matchdayIndex > v.calendar.length) return false;
+  if (!["season", "review", "transfers"].includes(v.phase)) return false;
+  if (!v.tables || !Array.isArray(v.tables["super-league"]) || !Array.isArray(v.tables.championship)) return false;
+  if (!Array.isArray(v.lineup) || !Array.isArray(v.challenges) || !Array.isArray(v.news) || !Array.isArray(v.history)) return false;
+  if (!v.seasonTrack || typeof v.seasonTrack !== "object") return false;
+  if (v.phase === "review" && !v.lastOutcome) return false;
+  if (!Array.isArray(v.clubs[v.userClubId]!.squad) || !Number.isFinite(v.budget) || !Number.isFinite(v.prestige)) return false;
+  return true;
 }
 
 export function loadLocalCareer(): CareerState | null {

@@ -32,6 +32,9 @@ export interface CareerPlayer {
   /** Career totals while at any club in this save. */
   careerApps: number;
   careerTries: number;
+  /** Season (year) the user signed this player, and the fee paid — stops buy→sell arbitrage. */
+  signedYear?: number;
+  fee?: number;
 }
 
 export interface CareerClub {
@@ -205,5 +208,7 @@ export interface CareerLegacy {
   bestSeason?: { wins: number; losses: number; drawn: number; year: number; clubName: string };
   perfectSeasons: number;
   biggestWin?: { margin: number; score: string; opponent: string; year: number };
+  /** `${career seed}:${year}` of seasons already banked (stops double-banking from two tabs/devices). */
+  bankedSeasons?: string[];
   updatedAt: number;
 }

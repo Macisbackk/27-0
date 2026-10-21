@@ -31,11 +31,11 @@ function developPlayer(rngRoll: () => number, p: CareerPlayer) {
   if (p.age <= 23) {
     const room = Math.max(0, p.potential - p.rating);
     p.rating += Math.min(room, Math.floor(rngRoll() * 4) + (room > 6 ? 1 : 0));
-  } else if (p.age <= 29) {
+  } else if (p.age <= 28) {
     const room = Math.max(0, p.potential - p.rating);
-    if (room > 0 && rngRoll() < 0.5) p.rating += 1;
-  } else if (p.age <= 32) {
-    p.rating -= Math.floor(rngRoll() * 2);
+    if (room > 0 && rngRoll() < 0.4) p.rating += 1;
+  } else if (p.age <= 31) {
+    if (rngRoll() < 0.5) p.rating -= 1;
   } else {
     p.rating -= 1 + Math.floor(rngRoll() * 3);
   }
@@ -50,10 +50,19 @@ function retires(rngRoll: () => number, p: CareerPlayer): boolean {
 }
 
 /** Level used when topping up an AI squad: a touch below its current XIII. */
+/** Typical first-team level of each division on the 27-0 rating scale (2026 squads). */
+const DIVISION_ANCHOR = { "super-league": 81, championship: 74 } as const;
+
+/**
+ * Level used when topping up an AI squad. Pulled halfway toward the division norm so the
+ * world stays on the real rating scale over decades (no slow inflation or deflation).
+ */
 function clubLevel(state: CareerState, clubId: string): number {
+  const anchor = DIVISION_ANCHOR[state.clubs[clubId]?.division ?? "championship"];
   const squad = squadOf(state, clubId).sort((a, b) => b.rating - a.rating).slice(0, 13);
-  if (squad.length === 0) return state.clubs[clubId]?.division === "super-league" ? 80 : 74;
-  return squad.reduce((s, p) => s + p.rating, 0) / squad.length - 2;
+  if (squad.length === 0) return anchor;
+  const current = squad.reduce((s, p) => s + p.rating, 0) / squad.length - 2;
+  return (current + anchor) / 2;
 }
 
 function topUpSquad(state: CareerState, clubId: string, target = 24) {
@@ -67,7 +76,7 @@ function topUpSquad(state: CareerState, clubId: string, target = 24) {
     const neediest = (Object.keys(SQUAD_TEMPLATE) as Pos[]).sort(
       (a, b) => counts[a] - SQUAD_TEMPLATE[a] - (counts[b] - SQUAD_TEMPLATE[b])
     )[0]!;
-    const p = generatePlayer(rng, { clubId, pos: neediest, level, idPrefix: `g${state.year}` });
+    const p = generatePlayer(rng, { clubId, pos: neediest, level, maxPotential: Math.round(level + 5), idPrefix: `g${state.year}` });
     state.players[p.id] = p;
     club.squad.push(p.id);
     counts[neediest]++;
@@ -195,6 +204,8 @@ export function buyPlayer(
   if (listing.legend) {
     const card = legendById(listing.playerId.replace(/^legend-/, ""));
     if (!card) return { state, error: "not-available" };
+    // Already at a club (double tap / stale listing)? Then he isn't available.
+    if (Object.values(s.clubs).some((c) => c.squad.includes(`legend-${card.id}`))) return { state, error: "not-available" };
     s.players[`legend-${card.id}`] = legendAsPlayer(card);
   } else {
     const p = s.players[listing.playerId];
@@ -209,6 +220,8 @@ export function buyPlayer(
   }
   me.squad.push(listing.playerId);
   s.budget -= listing.price;
+  s.players[listing.playerId]!.signedYear = s.year;
+  s.players[listing.playerId]!.fee = listing.price;
   s.news = [`Signed ${s.players[listing.playerId]!.name} for ${formatMoney(listing.price)}.`, ...s.news].slice(0, 30);
   s.updatedAt = Date.now();
   return { state: s };
@@ -216,7 +229,13 @@ export function buyPlayer(
 
 export function sellPrice(state: CareerState, playerId: string): number {
   const p = state.players[playerId];
-  return p ? Math.round((playerValue(p) * 0.9) / 5000) * 5000 : 0;
+  if (!p) return 0;
+  let price = Math.round((playerValue(p) * 0.9) / 5000) * 5000;
+  // Legends are a reward, not an investment: they leave for at most half what you paid.
+  if (p.legend) price = Math.min(price, Math.round(((p.fee ?? legendById(playerId.replace(/^legend-/, ""))?.signingFee ?? 0) * 0.5) / 5000) * 5000);
+  // No instant flipping: anyone sold in the window you bought them goes for at most what you paid.
+  if (p.signedYear === state.year && p.fee != null) price = Math.min(price, p.fee);
+  return price;
 }
 
 export function sellPlayer(state: CareerState, playerId: string): { state: CareerState; error?: TransferError } {

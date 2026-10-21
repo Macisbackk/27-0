@@ -34,9 +34,25 @@ export function squadOf(state: CareerState, clubId: string) {
   return (state.clubs[clubId]?.squad ?? []).map((id) => state.players[id]!).filter(Boolean);
 }
 
+/**
+ * AI clubs' best XIII. Squads and ratings don't change mid-season, so cache per season+squad.
+ * (Big win for "Sim season" on phones: ~36 picks per matchday otherwise.)
+ */
+const aiLineupCache = new Map<string, string[]>();
+export function aiLineup(state: CareerState, clubId: string): string[] {
+  const squad = state.clubs[clubId]?.squad ?? [];
+  const key = `${state.seed}|${state.year}|${clubId}|${squad.join(",")}`;
+  const hit = aiLineupCache.get(key);
+  if (hit) return hit;
+  const lineup = autoPickLineup(squadOf(state, clubId));
+  if (aiLineupCache.size > 400) aiLineupCache.clear();
+  aiLineupCache.set(key, lineup);
+  return lineup;
+}
+
 /** Club strength = rating of its best XIII. */
 export function clubRating(state: CareerState, clubId: string): number {
-  const lineup = clubId === state.userClubId ? state.lineup : autoPickLineup(squadOf(state, clubId));
+  const lineup = clubId === state.userClubId ? state.lineup : aiLineup(state, clubId);
   return lineupRating(lineup, state.players);
 }
 
@@ -275,8 +291,7 @@ function drawPending(state: CareerState, md: Matchday) {
 
 function sheetFor(state: CareerState, clubId: string): TeamSheet {
   if (clubId === state.userClubId) return { clubId, lineup: state.lineup, tactic: state.tactic };
-  const lineup = autoPickLineup(squadOf(state, clubId));
-  return { clubId, lineup, tactic: "balanced" };
+  return { clubId, lineup: aiLineup(state, clubId), tactic: "balanced" };
 }
 
 function applyLeagueResult(state: CareerState, f: Fixture) {
@@ -385,8 +400,18 @@ export function userFixture(md: Matchday | undefined, userClubId: string): Fixtu
 export function playMatchday(state: CareerState): CareerState {
   if (state.phase !== "season") return state;
   const next: CareerState = structuredClone(state);
+  playMatchdayInPlace(next);
+  return next;
+}
+
+/** Plays one matchday by mutating `next` (callers clone first). */
+function playMatchdayInPlace(next: CareerState): void {
+  if (next.phase !== "season") return;
   const md = next.calendar[next.matchdayIndex];
-  if (!md) return finishSeason(next);
+  if (!md) {
+    finishSeason(next);
+    return;
+  }
   drawPending(next, md);
   next.lineup = repairLineup(next, next.lineup);
 
@@ -416,7 +441,7 @@ export function playMatchday(state: CareerState): CareerState {
   const upcoming = next.calendar[next.matchdayIndex];
   if (upcoming?.pendingDraw) drawPending(next, upcoming);
   next.updatedAt = Date.now();
-  return next.matchdayIndex >= next.calendar.length ? finishSeason(next) : next;
+  if (next.matchdayIndex >= next.calendar.length) finishSeason(next);
 }
 
 /** True when the matchday involves the user or is a showpiece worth stopping for. */
@@ -429,20 +454,22 @@ export function isBigMatchday(state: CareerState, md: Matchday | undefined): boo
 
 /** Sim forward until the next matchday that matters (cup tie, play-off, final) or season end. */
 export function simToNextBigGame(state: CareerState): CareerState {
-  let s = playMatchday(state);
+  if (state.phase !== "season") return state;
+  const s: CareerState = structuredClone(state);
+  playMatchdayInPlace(s);
   let guard = 0;
   while (s.phase === "season" && guard++ < 60) {
-    const md = s.calendar[s.matchdayIndex];
-    if (isBigMatchday(s, md)) break;
-    s = playMatchday(s);
+    if (isBigMatchday(s, s.calendar[s.matchdayIndex])) break;
+    playMatchdayInPlace(s);
   }
   return s;
 }
 
 export function simRestOfSeason(state: CareerState): CareerState {
-  let s = state;
+  if (state.phase !== "season") return state;
+  const s: CareerState = structuredClone(state);
   let guard = 0;
-  while (s.phase === "season" && guard++ < 60) s = playMatchday(s);
+  while (s.phase === "season" && guard++ < 60) playMatchdayInPlace(s);
   return s;
 }
 

@@ -97,7 +97,7 @@ let generatedCounter = 0;
 
 export function generatePlayer(
   rng: Rng,
-  opts: { clubId?: string; pos: Pos; level: number; age?: number; academy?: boolean; idPrefix: string }
+  opts: { clubId?: string; pos: Pos; level: number; age?: number; academy?: boolean; idPrefix: string; maxPotential?: number }
 ): CareerPlayer {
   const age = opts.age ?? randInt(rng, 19, 31);
   const rating = Math.max(60, Math.min(88, Math.round(opts.level + (rng() - 0.5) * 8)));
@@ -109,7 +109,7 @@ export function generatePlayer(
     name: fullName,
     pos: opts.pos,
     rating,
-    potential: Math.min(94, rating + youthHeadroom),
+    potential: Math.min(opts.maxPotential ?? 94, Math.max(rating, rating + youthHeadroom)),
     age,
     nationality,
     real: false,

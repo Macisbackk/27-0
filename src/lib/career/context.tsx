@@ -15,7 +15,16 @@ import {
   type TransferError,
 } from "./offseason";
 import { playMatchday, repairLineup, simRestOfSeason, simToNextBigGame, squadOf } from "./season";
-import { loadLocalCareer, loadLocalLegacy, pushCareerToCloud, saveLocalCareer, saveLocalLegacy, syncCareerFromCloud } from "./storage";
+import {
+  LEGACY_KEY,
+  SAVE_KEY,
+  loadLocalCareer,
+  loadLocalLegacy,
+  pushCareerToCloud,
+  saveLocalCareer,
+  saveLocalLegacy,
+  syncCareerFromCloud,
+} from "./storage";
 import type { CareerLegacy, CareerState, Tactic } from "./types";
 import { createCareer } from "./world";
 
@@ -54,16 +63,25 @@ export function CareerProvider({ children }: { children: ReactNode }) {
   legacyRef.current = legacy;
   const pushTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const schedulePush = useCallback(() => {
+  // Cloud backup is a full ~300 KB document, so batch it: at most every 20s of play,
+  // plus immediately at season end and when the app is hidden (see onHide).
+  const schedulePush = useCallback((immediate = false) => {
     if (!isLoggedIn()) return;
-    if (pushTimer.current) clearTimeout(pushTimer.current);
-    pushTimer.current = setTimeout(() => {
+    if (immediate) {
+      if (pushTimer.current) clearTimeout(pushTimer.current);
+      pushTimer.current = null;
       void pushCareerToCloud(stateRef.current, legacyRef.current);
-    }, 2500);
+      return;
+    }
+    if (pushTimer.current) return;
+    pushTimer.current = setTimeout(() => {
+      pushTimer.current = null;
+      void pushCareerToCloud(stateRef.current, legacyRef.current);
+    }, 20_000);
   }, []);
 
   const commit = useCallback(
-    (next: CareerState | null, nextLegacy?: CareerLegacy) => {
+    (next: CareerState | null, nextLegacy?: CareerLegacy, pushNow = false) => {
       setState(next);
       saveLocalCareer(next);
       if (nextLegacy) {
@@ -72,7 +90,7 @@ export function CareerProvider({ children }: { children: ReactNode }) {
       }
       stateRef.current = next;
       if (nextLegacy) legacyRef.current = nextLegacy;
-      schedulePush();
+      schedulePush(pushNow);
     },
     [schedulePush]
   );
@@ -85,7 +103,7 @@ export function CareerProvider({ children }: { children: ReactNode }) {
         const marked: CareerState = { ...next, lastOutcome: { ...next.lastOutcome, banked: true } };
         marked.history = marked.history.map((h, i) => (i === marked.history.length - 1 ? { ...h, banked: true } : h));
         setRecordBreaks(breaks);
-        commit(marked, banked);
+        commit(marked, banked, true);
         void submitCareerLeaderboards(banked);
         return;
       }
@@ -127,11 +145,25 @@ export function CareerProvider({ children }: { children: ReactNode }) {
         void pushCareerToCloud(stateRef.current, legacyRef.current);
       }
     };
+    // Another tab saved: adopt it so two open tabs never overwrite each other's progress.
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === SAVE_KEY) {
+        const next = loadLocalCareer();
+        setState(next);
+        stateRef.current = next;
+      } else if (e.key === LEGACY_KEY) {
+        const next = loadLocalLegacy();
+        setLegacy(next);
+        legacyRef.current = next;
+      }
+    };
     window.addEventListener("auth-state-changed", onAuth);
     document.addEventListener("visibilitychange", onHide);
+    window.addEventListener("storage", onStorage);
     return () => {
       window.removeEventListener("auth-state-changed", onAuth);
       document.removeEventListener("visibilitychange", onHide);
+      window.removeEventListener("storage", onStorage);
     };
   }, []);
 

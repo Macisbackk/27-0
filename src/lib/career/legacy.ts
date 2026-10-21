@@ -32,6 +32,7 @@ export function normalizeLegacy(raw: Partial<CareerLegacy> | null | undefined): 
     ...raw,
     trophies: { ...EMPTY_TROPHIES, ...(raw.trophies ?? {}) },
     unlockedLegends: Array.isArray(raw.unlockedLegends) ? raw.unlockedLegends : [],
+    bankedSeasons: Array.isArray(raw.bankedSeasons) ? raw.bankedSeasons : [],
   };
 }
 
@@ -49,7 +50,10 @@ export function bankSeason(
   state: CareerState,
   outcome: SeasonOutcome
 ): { legacy: CareerLegacy; breaks: RecordBreaks } {
+  const key = `${state.seed}:${outcome.year}`;
+  if (legacy.bankedSeasons?.includes(key)) return { legacy, breaks: {} };
   const next: CareerLegacy = structuredClone(legacy);
+  next.bankedSeasons = [...(next.bankedSeasons ?? []), key].slice(-200);
   const breaks: RecordBreaks = {};
   next.legacyPoints += outcome.legacyEarned;
   next.lifetimeLegacyPoints += outcome.legacyEarned;

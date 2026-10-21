@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import { DIVISION_LABEL, formatMoney, ordinal, sortTable } from "@/lib/career";
 import { CareerProvider, useCareer } from "@/lib/career/context";
+import { CareerErrorBoundary } from "./CareerErrorBoundary";
 import { CareerStart } from "./CareerStart";
 import { ClubTab } from "./ClubTab";
 import { LegendVaultSheet, RecordsSheet } from "./LegacySheets";
@@ -45,6 +46,9 @@ function CareerRouter() {
   const [tab, setTab] = useState<Tab>("match");
   const [vault, setVault] = useState(false);
   const [records, setRecords] = useState(false);
+  // A new career always opens on the Match tab.
+  const seed = state?.seed;
+  useEffect(() => setTab("match"), [seed]);
 
   const sheets = (
     <>
@@ -94,7 +98,9 @@ function CareerRouter() {
 export function CareerApp() {
   return (
     <CareerProvider>
-      <CareerRouter />
+      <CareerErrorBoundary>
+        <CareerRouter />
+      </CareerErrorBoundary>
     </CareerProvider>
   );
 }
