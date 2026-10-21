@@ -23,3 +23,56 @@ jobs:
         run: npm run validate:player-database
       - name: Validate quiz bank
         run: npm run validate:quiz
+
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Manager engine tests
+        run: npm run test:manager:full
+      - name: Play-off simulation
+        run: npm run test:playoffs
+      - name: Quiz
+        run: npm run test:quiz
+      - name: Wordle
+        run: npm run test:wordle
+      - name: Hangman
+        run: npm run test:hangman
+      - name: Higher / Lower
+        run: npm run test:higher-lower
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Production build
+        # Placeholder Supabase env so the build mirrors production config shape.
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: npm run build
+      - name: Bundle size report
+        continue-on-error: true
+        run: |
+          echo "## First-load JS per route" >> "$GITHUB_STEP_SUMMARY"
+          node -e '
+            const fs=require("fs"),path=require("path");
+            const m=JSON.parse(fs.readFileSync(".next/app-build-manifest.json","utf8")).pages;
+            const size=f=>{try{return fs.statSync(path.join(".next",f)).size}catch{return 0}};
+            const rows=Object.entries(m).filter(([r])=>r.endsWith("/page")).map(([r,fs_])=>[r,fs_.filter(f=>f.endsWith(".js")).reduce((a,f)=>a+size(f),0)]).sort((a,b)=>b[1]-a[1]);
+            const out=["| Route | First-load JS (raw) |","|---|---|",...rows.map(([r,s])=>`| ${r} | ${(s/1024).toFixed(0)} KB |`)].join("\n");
+            console.log(out); fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, out+"\n");
+          '
