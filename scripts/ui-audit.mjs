@@ -109,8 +109,8 @@ await page.waitForTimeout(2500);
 await shot(page, "classic-simulating", { full: false });
 for (let i = 0; i < 20; i++) {
   const text = await page.locator("main").innerText().catch(() => "");
-  if (/Regular Season Record|League Position/i.test(text)) break;
-  await tap(page, [/Skip/i, /^Continue$/i, /View (season )?review/i]);
+  if (/Regular Season Record/i.test(text)) break;
+  await tap(page, [/Skip to full time/i, /^Continue$/i, /View (season )?review/i]);
   await page.waitForTimeout(800);
 }
 await settle(page, 800);
@@ -132,6 +132,9 @@ await page.waitForTimeout(800);
 await shot(page, "era-pitch", { full: false });
 await go(page, "/play?daily=1", 1500);
 await shot(page, "daily-pitch", { full: false });
+
+await go(page, "/stats");
+await shot(page, "stats-after-a-run");
 
 // Quiz.
 await go(page, "/mini-games/quiz", 1200);
