@@ -67,7 +67,7 @@ export function TeamTab() {
                 >
                   <span className="w-6 text-right font-display text-sm font-bold text-gray-500">{i + 1}</span>
                   <span className="w-8 text-[11px] font-bold uppercase text-theme-primary">{pos}</span>
-                  <span className="min-w-0 flex-1 truncate text-white">
+                  <span className="min-w-0 flex-1 break-words leading-tight text-white">
                     {p?.name ?? "—"}
                     {p?.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
                     {p?.academy ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
@@ -88,7 +88,7 @@ export function TeamTab() {
             <li key={p.id} className="flex items-center gap-3 py-2">
               <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-white">
+                <span className="block break-words leading-tight text-white">
                   {p.name}
                   {p.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
                   {p.academy ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
@@ -133,7 +133,7 @@ export function TeamTab() {
                 >
                   <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-white">{p.name}</span>
+                    <span className="block break-words leading-tight text-white">{p.name}</span>
                     <span className="text-[11px] text-gray-500">
                       {current ? "Selected here" : elsewhere ? `In the XIII (#${s.lineup.indexOf(p.id) + 1}) — will swap` : `Age ${p.age}`}
                     </span>

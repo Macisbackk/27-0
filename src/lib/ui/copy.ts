@@ -29,5 +29,5 @@ export const UI_COPY = {
   /** Quick Mode playoff card — only when the tie can be simulated by tap. */
   tapToSimulate: "Tap to simulate",
   /** Manager review embed — user fixture is played from Hub sticky actions. */
-  playFromHub: "Play from Hub",
+  playFromHub: "Up next",
 } as const;

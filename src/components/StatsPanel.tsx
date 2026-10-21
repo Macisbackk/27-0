@@ -136,7 +136,7 @@ export function StatsPanel() {
   ) {
     return (
       <div className="game-panel game-panel--elevated p-12 text-center text-gray-500">
-        <p className={TYPO.body}>Loading stats...</p>
+        <p className={TYPO.body}>Loading stats…</p>
       </div>
     );
   }
@@ -169,7 +169,7 @@ export function StatsPanel() {
       )}
 
       {quizStats && quizStats.quizzesPlayed > 0 && (
-        <StatsSection title="Quiz Mode">
+        <StatsSection title="Super League Millionaire">
           <StatCard label="Quizzes played" value={quizStats.quizzesPlayed} />
           <StatCard
             label="Highest prize"
@@ -292,7 +292,7 @@ function OverallTab({
 
       <StatsSection title="Achievements">
         <StatCard
-          label="Minor Premierships"
+          label="League Leaders"
           value={formatCountStat(view.leagueTitles)}
           highlight={view.leagueTitles > 0}
         />
@@ -327,7 +327,7 @@ function OverallTab({
           }
         />
         <StatCard
-          label="Best National Ranking"
+          label="Best Leaderboard Rank"
           value={formatRankingOrDash(view.bestNationalRanking)}
           highlight={view.bestNationalRanking === 1}
         />
@@ -335,7 +335,7 @@ function OverallTab({
 
       <StatsSection title="Player Records">
         <StatCard
-          label="Most Valuable Player Drafted"
+          label="Most Valuable Signing"
           value={view.mostValuablePlayer.name ?? "—"}
           sub={
             view.mostValuablePlayer.value
@@ -376,15 +376,15 @@ function OverallTab({
       {view.totalRerollsUsed > 0 && (
         <StatsSection title="Recruitment">
           <StatCard
-            label="Total Rerolls Used"
+            label="Total Respins Used"
             value={formatCountStat(view.totalRerollsUsed)}
           />
           <StatCard
-            label="Most Rerolls In A Run"
+            label="Most Respins in a Run"
             value={formatCountStat(view.mostRerollsInRun)}
           />
           <StatCard
-            label="Average Rerolls Per Run"
+            label="Average Respins per Run"
             value={formatCountStat(view.averageRerollsPerRun)}
           />
         </StatsSection>
@@ -442,7 +442,7 @@ function SuperLeagueTab({
           highlight={view.totalRecord.wins >= 20}
         />
         <StatCard
-          label="Play-Off Record"
+          label="Play-off Record"
           value={formatRecordOrDash(
             view.playoffRecord.wins + view.playoffRecord.losses > 0
               ? view.playoffRecord
@@ -464,7 +464,7 @@ function SuperLeagueTab({
           )}
         />
         <StatCard
-          label="League Titles"
+          label="League Leaders"
           value={formatCountStat(view.leagueTitles)}
           highlight={view.leagueTitles > 0}
         />
@@ -479,7 +479,7 @@ function SuperLeagueTab({
           highlight={view.topSixFinishes > 0}
         />
         <StatCard
-          label="Play-Off Appearances"
+          label="Play-off Appearances"
           value={formatCountStat(view.playoffAppearances)}
         />
         <StatCard
@@ -487,7 +487,7 @@ function SuperLeagueTab({
           value={formatCountStat(view.playoffEliminatorWins)}
         />
         <StatCard
-          label="Semi-Final Wins"
+          label="Semi-final Wins"
           value={formatCountStat(view.playoffSemiFinalWins)}
         />
         <StatCard

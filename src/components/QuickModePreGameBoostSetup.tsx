@@ -141,7 +141,7 @@ export function QuickModePreGameBoostSetup({
               fullWidth
               onClick={() => confirm(null)}
             >
-              Start without boost
+              Skip boost
             </GameButton>
           </div>
         </div>

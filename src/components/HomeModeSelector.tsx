@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
+  getDailyChallengeAttemptUsed,
   getDailyChallengeHref,
   getDailyChallengeProgress,
   getDailyChallengeScenario,
@@ -34,7 +35,7 @@ export function HomeModeSelector() {
             Rugby League Manager Mode
           </h2>
           <p className="mt-2 max-w-md text-sm leading-relaxed text-gray-300">
-            Take charge of a real club. Play each round in a tap, climb from the Championship, lift the Grand Final and unlock legends.
+            Take charge of a real club. Play each round in a tap, chase promotion or the Grand Final, and unlock legends.
           </p>
 
           <div className="mt-4 flex flex-wrap justify-center gap-3 w-full max-w-sm">
@@ -96,7 +97,7 @@ export function HomeModeSelector() {
               </span>
             ))}
           </span>
-          <span className="text-xs text-gray-400">Quiz · Wordle · Hangman · Higher/Lower</span>
+          <span className="text-xs text-gray-400">Millionaire · Wordle · Hangman · Higher/Lower</span>
         </Link>
       </div>
     </section>
@@ -105,12 +106,13 @@ export function HomeModeSelector() {
 
 /** Today's Daily Challenge, filled in after mount (the date is the player's, not the server's). */
 function HomeDailyCard() {
-  const [today, setToday] = useState<{ scenario: DailyChallengeScenario; done: boolean } | null>(null);
+  const [today, setToday] = useState<{ scenario: DailyChallengeScenario; done: boolean; attemptUsed: boolean } | null>(null);
   useEffect(() => {
     const progress = getDailyChallengeProgress();
     setToday({
       scenario: getDailyChallengeScenario(),
       done: Boolean(progress.leagueLeaders && progress.playoffTitle),
+      attemptUsed: getDailyChallengeAttemptUsed(),
     });
   }, []);
   const scenario = today?.scenario;
@@ -129,10 +131,14 @@ function HomeDailyCard() {
       </span>
       <span
         className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${
-          today?.done ? "bg-emerald-500/15 text-emerald-300" : "bg-accent-gold/15 text-accent-gold"
+          today?.done
+            ? "bg-emerald-500/15 text-emerald-300"
+            : today?.attemptUsed
+              ? "bg-white/10 text-gray-300"
+              : "bg-accent-gold/15 text-accent-gold"
         }`}
       >
-        {today?.done ? "✓ Done today" : "One attempt today"}
+        {today?.done ? "✓ Done today" : today?.attemptUsed ? "Attempt used · practice only" : "1 attempt today"}
       </span>
     </Link>
   );

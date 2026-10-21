@@ -78,7 +78,7 @@ export function SlotRecruitPlacementConfirm({
         }}
         className={`mt-4 w-full ${BTN.theme}`}
       >
-        Confirm Placement
+        Confirm placement
       </button>
     </div>
   );

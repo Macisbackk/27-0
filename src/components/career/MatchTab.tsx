@@ -38,7 +38,7 @@ export function ResultCard({ state, fixture, title }: { state: CareerState; fixt
   const isHome = fixture.home === state.userClubId;
   const us = isHome ? r.homeScore : r.awayScore;
   const them = isHome ? r.awayScore : r.homeScore;
-  const verdict = us > them ? "WIN" : us < them ? "LOSS" : "DRAW";
+  const verdict = us > them ? "Win" : us < them ? "Loss" : "Draw";
   const tone = us > them ? "text-success" : us < them ? "text-danger" : "text-gray-300";
   const scorers = (ids: string[]) => {
     const counts = new Map<string, number>();
@@ -50,7 +50,7 @@ export function ResultCard({ state, fixture, title }: { state: CareerState; fixt
     <Card>
       <div className="flex items-center justify-between">
         <Eyebrow>{title ?? fixture.label}</Eyebrow>
-        <span className={`font-display text-sm font-bold ${tone}`}>{verdict}{r.goldenPoint ? " · GOLDEN POINT" : ""}</span>
+        <span className={`font-display text-sm font-bold ${tone}`}>{verdict}{r.goldenPoint ? " · golden point" : ""}</span>
       </div>
       <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
         <div className="flex min-w-0 flex-col items-center gap-1 text-center">
@@ -73,7 +73,7 @@ export function ResultCard({ state, fixture, title }: { state: CareerState; fixt
           <div><dt className="inline font-semibold text-gray-300">{away.short} tries: </dt><dd className="inline">{scorers(r.awayTries)}</dd></div>
         ) : null}
         {motm ? (
-          <div><dt className="inline font-semibold text-accent-gold">Man of the Match: </dt><dd className="inline">{motm.name}</dd></div>
+          <div><dt className="inline font-semibold text-accent-gold">Player of the Match: </dt><dd className="inline">{motm.name}</dd></div>
         ) : null}
       </dl>
     </Card>
@@ -158,12 +158,12 @@ export function MatchTab() {
             <div className="mt-4 grid grid-cols-3 items-center gap-2 text-center">
               <div>
                 <p className="font-display text-xl font-bold tabular-nums text-white">{myRating.toFixed(1)}</p>
-                <p className="text-[10px] uppercase tracking-wide text-gray-500">Your XIII</p>
+                <p className="text-[10px] uppercase tracking-wide text-gray-500">You</p>
               </div>
               <p className={`text-sm font-semibold ${edge > 0.5 ? "text-success" : edge < -0.5 ? "text-danger" : "text-gray-300"}`}>{outlook}</p>
               <div>
                 <p className="font-display text-xl font-bold tabular-nums text-white">{theirRating.toFixed(1)}</p>
-                <p className="text-[10px] uppercase tracking-wide text-gray-500">Their XIII</p>
+                <p className="text-[10px] uppercase tracking-wide text-gray-500">Them</p>
               </div>
             </div>
           </>
@@ -192,10 +192,10 @@ export function MatchTab() {
           </GameButton>
           <div className="grid grid-cols-2 gap-2">
             <GameButton size="sm" variant="secondary" disabled={busy || !md} onClick={() => { playUiClick(); run(simToBigGame); }}>
-              Sim to big game
+              Skip to big game
             </GameButton>
             <GameButton size="sm" variant="ghost" disabled={busy || !md} onClick={() => { playUiClick(); run(simSeason); }}>
-              Sim season
+              Simulate season
             </GameButton>
           </div>
         </div>

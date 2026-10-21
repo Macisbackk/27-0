@@ -36,14 +36,14 @@ export const MINI_GAME_WINS_CATEGORIES: Array<{
   },
   {
     id: "higher-lower",
-    label: "Higher-Lower Wins",
-    shortLabel: "H/L",
+    label: "Higher or Lower Wins",
+    shortLabel: "Higher/Lower",
     href: "/mini-games/higher-lower",
   },
   {
     id: "quiz-wins",
-    label: "Quiz Wins",
-    shortLabel: "Quiz",
+    label: "Millionaire Wins",
+    shortLabel: "Millionaire",
     href: "/mini-games/quiz",
   },
 ];

@@ -61,7 +61,7 @@ export function MatchReviewActions({
         {showEndNav ? (
           <>
             <ActionButton variant="theme" onClick={onPlayAgain}>
-              Play Again
+              Play again
             </ActionButton>
             {shareAction}
             <div
@@ -74,7 +74,7 @@ export function MatchReviewActions({
                 <ReturnHomeButton onBeforeNavigate={onReturnHome} />
               ) : (
                 <ActionButton variant="theme" href="/">
-                  Return Home
+                  Return home
                 </ActionButton>
               )}
             </div>

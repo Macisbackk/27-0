@@ -97,7 +97,7 @@ export function TransferWindow() {
             const affordable = s.budget >= l.price;
             return (
               <li key={l.playerId} className={`flex items-center gap-3 rounded-xl border px-3 py-2.5 text-left ${l.legend ? "border-accent-gold/60 bg-accent-gold/5" : "border-pitch-700 bg-pitch-900/80"}`}>
-                {from ? <ClubBadge club={from} size="sm" /> : <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-pitch-700 text-[10px] font-bold text-gray-300">{l.legend ? "★" : "FA"}</span>}
+                {from ? <ClubBadge club={from} size="sm" /> : <span title={l.legend ? "Legend" : "Free agent"} aria-label={l.legend ? "Legend" : "Free agent"} className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-pitch-700 text-[10px] font-bold text-gray-300">{l.legend ? "★" : "FA"}</span>}
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-semibold text-white">
                     {p?.name ?? "Unknown"}
@@ -164,7 +164,7 @@ export function TransferWindow() {
               finishTransfers();
             }}
           >
-            Start the {s.year} season
+            Start {s.year} season
           </GameButton>
         </div>
       </div>

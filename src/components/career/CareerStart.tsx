@@ -95,14 +95,14 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
                 <ClubBadge club={c} />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-semibold text-white">{c.name}</span>
-                  <span className="mt-0.5 flex items-center gap-2 text-xs text-gray-400">
+                  <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-gray-400">
                     <Stars value={c.prestige} label={`Prestige ${c.prestige} stars`} />
                     {c.realPlayers > 0 ? <span>{c.realPlayers} real players</span> : <span>Generated squad</span>}
                   </span>
                 </span>
-                <span className="text-right">
+                <span className="shrink-0 text-right">
                   <span className="block font-display text-lg font-bold tabular-nums text-white">{c.rating.toFixed(1)}</span>
-                  <span className="block text-[10px] uppercase tracking-wide text-gray-500">XIII</span>
+                  <span className="block text-[10px] uppercase tracking-wide text-gray-500">Rating</span>
                 </span>
               </button>
             </li>
@@ -132,7 +132,7 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
               newCareer(selected.id, name || "Coach", seed);
             }}
           >
-            {selected ? `Take charge of ${selected.name}` : "Choose a club"}
+            {selected ? `Take charge of ${selected.short}` : "Choose a club"}
           </GameButton>
         </div>
       </div>

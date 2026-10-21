@@ -53,7 +53,7 @@ export function validateQuickModeSelectionBoost(
   if (def.eraModeOnly && !options?.eraMode) {
     return {
       ok: false,
-      reason: "Legend Player boost can only be used in Era Mode.",
+      reason: "Legend Player boost can only be used in Era Classic.",
     };
   }
   if (selectionBoostsUsedThisRun >= 2) {

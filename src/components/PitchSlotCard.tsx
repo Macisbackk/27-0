@@ -42,7 +42,7 @@ export function PitchSlotCard({
   const isReviewSheet = fullPlayerNames;
   const isMatchdayPitch = !compact && !fullPlayerNames;
   const isTeamSheet = compact || fullPlayerNames;
-  const positionLabel = slot.label;
+  const positionLabel = pitchSlotLabel(slot.label);
   const effectiveRating = getEffectivePeakRating(slot);
   const ratingLabel = hardMode ? "??" : String(Math.round(effectiveRating));
   const sizeClass = fullPlayerNames
@@ -144,4 +144,9 @@ function TwoLineName({ name }: { name: string }) {
       <span className={`block whitespace-nowrap ${surnameSize}`}>{surname}</span>
     </>
   );
+}
+
+/** Pitch tiles are ~56px wide: "Left Second Row" can't fit in two lines, "Left 2nd Row" can. */
+export function pitchSlotLabel(label: string): string {
+  return label.replace("Second Row", "2nd Row");
 }

@@ -25,7 +25,7 @@ export function ReturnHomeButton({
         router.push("/");
       }}
     >
-      Return Home
+      Return home
     </ActionButton>
   );
 }

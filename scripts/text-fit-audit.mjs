@@ -105,8 +105,8 @@ for (const vp of VIEWPORTS) {
   // Classic pitch.
   await page.goto(`${BASE}/play`, { waitUntil: "domcontentloaded" });
   await page.waitForTimeout(1200);
-  await page.getByRole("button", { name: /Continue without boost/i }).first().click().catch(() => {});
-  await page.getByRole("button", { name: /Auto Fill Squad/i }).first().click().catch(() => {});
+  await page.getByRole("button", { name: /Skip boost|Continue without boost/i }).first().click().catch(() => {});
+  await page.getByRole("button", { name: /Auto.?fill squad/i }).first().click().catch(() => {});
   await page.waitForTimeout(1200);
   await audit(page, `classic full squad @${vp.name}`);
 

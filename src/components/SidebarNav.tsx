@@ -41,7 +41,7 @@ interface SidebarNavProps {
 }
 
 const MAIN_NAV_ITEMS = [
-  { href: "/store", label: "Club Store" },
+  { href: "/store", label: "Store" },
   { href: "/showcase", label: "Player Showcase" },
   { href: "/stats", label: "Career Stats" },
   { href: "/leaderboard", label: "Leaderboard" },
@@ -207,8 +207,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
               data-scroll-lock-allow="true"
             >
               <div className="shrink-0 rounded-md border border-white/10 bg-black/25 px-2.5 py-1.5 sm:hidden">
-                <p className="text-[9px] font-semibold uppercase tracking-wider text-pitch-500">
-                  Club Finances
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
+                  Club Funds
                 </p>
                 <p className="mt-0.5 text-sm font-semibold tabular-nums leading-tight text-theme-primary">
                   {fundsReady ? formatClubFunds(balance) : "—"}
@@ -254,7 +254,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       className={navLinkClass(pathname.startsWith("/manager"))}
                     >
                       Manager Mode
-                      <span className="ml-2 rounded bg-emerald-500/20 px-1.5 py-0.5 text-[9px] font-bold text-emerald-400 border border-emerald-500/30 uppercase">
+                      <span className="ml-2 rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-bold text-emerald-400 border border-emerald-500/30 uppercase">
                         New
                       </span>
                       {pathname.startsWith("/manager") && (
@@ -301,7 +301,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                           {[
                             {
                               href: "/mini-games/quiz",
-                              label: "Quiz",
+                              label: "Super League Millionaire",
                               active:
                                 pathname.startsWith("/mini-games/quiz") ||
                                 pathname.startsWith("/quiz"),
@@ -384,7 +384,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         onClick={handleNavClick}
                         className={navLinkClass(pathname.startsWith("/profile"))}
                       >
-                        Profile &amp; Achievements
+                        Coach Profile
                         {pathname.startsWith("/profile") && (
                           <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
                         )}
@@ -395,7 +395,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         onClick={handleNavClick}
                         className={navLinkClass(pathname.startsWith("/login"))}
                       >
-                        Log In
+                        Log in
                         {pathname.startsWith("/login") && (
                           <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
                         )}
@@ -413,8 +413,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 onClick={handleToggleSound}
                 aria-label={
                   muted
-                    ? "Sound off — click to enable"
-                    : "Sound on — click to mute"
+                    ? "Sound off — tap to enable"
+                    : "Sound on — tap to mute"
                 }
                 className={`${NAV.soundToggle} btn-press`}
               >
@@ -453,8 +453,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   href={COFFEE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Buy Me A Coffee — support 27-0"
-                  title="Buy Me A Coffee"
+                  aria-label="Buy Me a Coffee — support 27-0"
+                  title="Buy Me a Coffee"
                   className={NAV.supportLink}
                 >
                   <CoffeeIcon />

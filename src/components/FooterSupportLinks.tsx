@@ -21,8 +21,8 @@ export function FooterSupportLinks() {
         href={COFFEE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Buy Me A Coffee — support 27-0"
-        title="Buy Me A Coffee"
+        aria-label="Buy Me a Coffee — support 27-0"
+        title="Buy Me a Coffee"
         className={NAV.supportLink}
       >
         <CoffeeIcon />

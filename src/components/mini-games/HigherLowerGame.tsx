@@ -277,7 +277,7 @@ export function HigherLowerGame() {
       <MiniGameRewardPopup
         open={rewardOpen}
         amount={HIGHER_LOWER_FIVE_REWARD}
-        detail="Today's Higher or Lower reward — one per day."
+        detail="One reward per day. Resets at midnight UK time."
         onClose={() => setRewardOpen(false)}
       />
       <div className="mini-game-play hol-play mx-auto flex w-full max-w-sm flex-col items-center">
@@ -361,8 +361,8 @@ export function HigherLowerGame() {
                 is{" "}
                 <span className="font-semibold text-white">
                   {board.challenge.rating > board.base.rating
-                    ? "HIGHER"
-                    : "LOWER"}
+                    ? "higher"
+                    : "lower"}
                 </span>{" "}
                 ({board.challenge.rating} vs {board.base.rating})
               </p>

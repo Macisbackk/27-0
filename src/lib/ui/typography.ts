@@ -15,7 +15,7 @@ export const TYPO = {
     "mt-2 max-w-xl text-[length:var(--text-body)] leading-relaxed text-gray-300",
   /** Playoff / review eyebrow — uppercase micro label above a display title. */
   eyebrow:
-    "font-display text-[9px] font-bold uppercase tracking-[0.2em] text-theme-primary sm:text-xs sm:tracking-[0.3em]",
+    "font-display text-[10px] font-bold uppercase tracking-[0.16em] text-theme-primary sm:text-xs sm:tracking-[0.3em]",
   /** Quiz / mini-game mode picker card titles. */
   modeCardTitle:
     "font-display text-base font-bold uppercase tracking-wide sm:text-lg",

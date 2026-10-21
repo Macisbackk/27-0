@@ -211,7 +211,7 @@ export function SettingsPanel() {
         ) : isLoggedIn ? (
           <>
             <Row label={coachName ?? "Coach"} hint={email ?? undefined} />
-            <LinkRow href="/profile#achievements" label="Profile & achievements" />
+            <LinkRow href="/profile#achievements" label="Coach Profile" />
             <Row
               label="Password"
               hint={
@@ -248,7 +248,7 @@ export function SettingsPanel() {
 
       <Group title="Saved progress">
         <Row
-          label="Reset Classic stats"
+          label="Reset career stats"
           hint={
             resetState === "confirm"
               ? "This clears every Classic record and can't be undone."

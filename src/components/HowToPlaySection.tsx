@@ -6,7 +6,7 @@ import { TYPO } from "@/lib/ui/typography";
 const GUIDE_ITEMS = [
   {
     title: "Manager Mode",
-    body: "Run a real club round by round. Win the Championship, go up, lift the Grand Final and unlock legends.",
+    body: "Pick a real Super League or Championship club, play each round in a tap, chase the Grand Final and unlock legends.",
   },
   {
     title: "Classic",
@@ -16,21 +16,21 @@ const GUIDE_ITEMS = [
     ? [
         {
           title: "Daily Challenge",
-          body: "Every opponent is the same club. One counted attempt per UK day — keep your streak alive.",
+          body: "Every opponent is the same club. One counted attempt per UK day. Top the table and win the Grand Final to extend your streak.",
         },
       ]
     : []),
   {
     title: "Mini Games",
-    body: "Quiz, Wordle, Hangman, and Higher or Lower for Club Funds.",
+    body: "Super League Millionaire, Wordle, Hangman and Higher or Lower, all paying Club Funds.",
   },
   {
     title: "Club Funds",
-    body: "Earn from seasons, playoffs, mini-games, and achievements — spend in the Store.",
+    body: "Earn from seasons, play-offs, mini games and achievements — spend in the Store.",
   },
   {
     title: "Coach Profile",
-    body: "Records, achievements, and long-term progress.",
+    body: "Records, achievements and long-term progress.",
   },
   {
     title: "Store",

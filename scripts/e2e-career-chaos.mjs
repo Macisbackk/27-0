@@ -2,7 +2,7 @@
  * Adversarial e2e for Manager Mode: tries to break it like an impatient player would.
  * - garbage / half-valid saves in localStorage
  * - rapid repeated taps on Play
- * - a Championship season driven only by "Sim to big game" / "Continue"
+ * - a Championship season driven only by "Skip to big game" / "Continue"
  * - two tabs open on the same career
  * - 320px-wide screens: no sideways scrolling on any screen
  * Fails on any page error or unexpected HTTP / console error.
@@ -107,13 +107,13 @@ try {
   let guard = 0;
   while (guard++ < 40) {
     if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
-    const simBig = page.getByRole("button", { name: "Sim to big game" });
+    const simBig = page.getByRole("button", { name: "Skip to big game" });
     if (await simBig.isVisible().catch(() => false)) await simBig.click();
     await page.waitForTimeout(200);
   }
   await page.getByText(/season review/i).first().waitFor({ timeout: 30_000 });
   await noSidewaysScroll(page, "review @320");
-  step(`Championship season via Sim to big game (${guard} taps)`);
+  step(`Championship season via Skip to big game (${guard} taps)`);
 
   // Reload on the review screen must not re-bank Legacy.
   const lpBefore = await page.evaluate(() => JSON.parse(localStorage.getItem("27-0-career-v2-legacy") || "{}").lifetimeLegacyPoints ?? 0);
@@ -125,7 +125,7 @@ try {
   if (lpAfter !== lpBefore) errors.push(`reloading the review re-banked Legacy (${lpBefore} → ${lpAfter})`);
   step("Reloading the review screen doesn't re-award Legacy");
 
-  await page.getByRole("button", { name: "Open the transfer window" }).click();
+  await page.getByRole("button", { name: "Go to transfers" }).click();
   await page.getByRole("heading", { name: "Build your squad" }).waitFor({ timeout });
   await noSidewaysScroll(page, "transfers @320");
   // Try to sell the whole squad: must stop at the minimum without errors.
@@ -141,7 +141,7 @@ try {
   }, SAVE_KEY);
   if (squadSize !== 20) errors.push(`selling everything left the squad at ${squadSize} (expected 20)`);
   step("Can't sell below the 20-man minimum");
-  await page.getByRole("button", { name: /Start the \d{4} season/ }).click();
+  await page.getByRole("button", { name: /Start (the )?\d{4} season/ }).click();
   await page.getByRole("button", { name: /Play match|Continue/ }).first().waitFor({ timeout });
   step("Next season starts after a fire sale");
 

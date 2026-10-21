@@ -116,7 +116,9 @@ function auditFile(file: string): Finding[] {
       if (pattern.id === "generic-current-variant") {
         const genericHints = [
           "Play Again",
+          "Play again",
           "Return Home",
+          "Return home",
           "Continue",
           "Confirm",
           "Buy",

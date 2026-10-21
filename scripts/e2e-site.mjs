@@ -128,12 +128,12 @@ async function playClassic(route, label) {
   let reviewed = false;
   for (let i = 0; i < 60; i++) {
     const text = await page.locator("main").innerText().catch(() => "");
-    if (/Regular Season Record|League Position|Season review/i.test(text) && !/Simulate Season/.test(text)) {
+    if (/Regular Season Record|League Position|Season review/i.test(text) && !/Simulate season/i.test(text)) {
       reviewed = true;
       break;
     }
     const tapped = await tapFirst(page, [
-      /Continue without boost/i, /Auto Fill Squad/i, /Simulate Season/i, /Skip/i, /Sim(ulate)? (to )?(end|all|rest)/i,
+      /Skip boost|Continue without boost/i, /Auto.?fill squad/i, /Simulate season/i, /Skip/i, /Sim(ulate)? (to )?(end|all|rest)/i,
       /^Continue$/i, /Next/i, /View (season )?review/i, /See (your )?review/i, /Finish/i,
     ]);
     if (tapped) seen.push(tapped.replace(/\\|\^|\$|\/i/g, ""));
@@ -152,9 +152,9 @@ await playClassic("/play?daily=1", "Daily Challenge");
 currentWhere = "Classic rapid taps";
 await page.goto(`${BASE}/play`, { waitUntil: "domcontentloaded" });
 await settle(page);
-await tapFirst(page, [/Continue without boost/i]);
-for (let i = 0; i < 6; i++) await page.getByRole("button", { name: /Auto Fill Squad/i }).first().click({ force: true, noWaitAfter: true, timeout: 2000 }).catch(() => {});
-for (let i = 0; i < 6; i++) await page.getByRole("button", { name: /Simulate Season/i }).first().click({ force: true, noWaitAfter: true, timeout: 2000 }).catch(() => {});
+await tapFirst(page, [/Skip boost|Continue without boost/i]);
+for (let i = 0; i < 6; i++) await page.getByRole("button", { name: /Auto.?fill squad/i }).first().click({ force: true, noWaitAfter: true, timeout: 2000 }).catch(() => {});
+for (let i = 0; i < 6; i++) await page.getByRole("button", { name: /Simulate season/i }).first().click({ force: true, noWaitAfter: true, timeout: 2000 }).catch(() => {});
 await page.waitForTimeout(2500);
 note("Classic: rapid Auto Fill / Simulate taps");
 
@@ -162,8 +162,8 @@ note("Classic: rapid Auto Fill / Simulate taps");
 currentWhere = "Classic reload mid-run";
 await page.goto(`${BASE}/play`, { waitUntil: "domcontentloaded" });
 await settle(page);
-await tapFirst(page, [/Continue without boost/i]);
-await tapFirst(page, [/Auto Fill Squad/i]);
+await tapFirst(page, [/Skip boost|Continue without boost/i]);
+await tapFirst(page, [/Auto.?fill squad/i]);
 await page.waitForTimeout(600);
 await page.reload({ waitUntil: "domcontentloaded" });
 await settle(page);
@@ -174,7 +174,7 @@ async function miniGame(route, label, moves) {
   currentWhere = `${label}`;
   await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" });
   await settle(page, 1500);
-  await tapFirst(page, [/^Current/i, /Normal Quiz/i]);
+  await tapFirst(page, [/^Current/i, /Super League Millionaire|Normal Quiz/i]);
   await page.waitForTimeout(800);
   await moves();
   await shot(page, `${label.toLowerCase().replace(/\W+/g, "-")}-played`);

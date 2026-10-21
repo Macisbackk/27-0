@@ -475,6 +475,15 @@ export function simulatePlayoffs(
   };
 }
 
+/** Display copy for a finish. The `PlayoffFinish` values are stored keys — don't render them raw. */
+const PLAYOFF_FINISH_LABELS: Record<PlayoffFinish, string> = {
+  "Missed Play-Offs": "Missed the play-offs",
+  "Eliminated in Eliminator": "Eliminated in Eliminator",
+  "Eliminated in Semi-Final": "Eliminated in Semi-final",
+  "Grand Final Runner-Up": "Grand Final Runner-Up",
+  "Super League Champions": "Super League Champions",
+};
+
 export function getPlayoffFinishLabel(finish: PlayoffFinish): string {
-  return finish;
+  return PLAYOFF_FINISH_LABELS[finish] ?? finish;
 }
