@@ -1,4 +1,3 @@
-import { findBestPosition, buildSquadFromIds } from "../game/engine";
 
 import { getPeriodKey } from "../leaderboard";
 
@@ -9,7 +8,7 @@ import {
   type SeasonLifetimeInput,
 } from "../lifetime-stats";
 
-import { computeClubStats, mergeClubStats } from "../stats-helpers";
+import { mergeClubStats, type ClubSquadStats } from "../stats-helpers";
 
 import type { GameDifficulty, ModeVariant, UserStatsData } from "../types";
 
@@ -770,29 +769,23 @@ export function updateRerollStats(
 
 
 
-export function updateStats(
-
-  signedIds: string[],
-
-  totalValue: number,
-
-  difficulty: GameDifficulty = "NORMAL",
-
-  achievedAt = new Date(),
-
-  bucket: StatsBucket = "normal"
-
-): UserStatsData {
-
+/**
+ * Records a finished run using values already derived from the squad.
+ * Player lookups live in `stats-update.ts` (`updateStats`) so this module — which the
+ * site-wide layout imports — doesn't pull the player database into every page.
+ */
+export function applyRunStatsUpdate(input: {
+  totalValue: number;
+  bestPosition: { position: string; value: number };
+  clubStats: ClubSquadStats;
+  achievedAt?: Date;
+  bucket?: StatsBucket;
+}): UserStatsData {
+  const { totalValue, bestPosition, clubStats } = input;
+  const achievedAt = input.achievedAt ?? new Date();
+  const bucket: StatsBucket = input.bucket ?? "normal";
   const stored = loadStoredStats();
-
   const existing = stored[bucket];
-
-  const squad = buildSquadFromIds(signedIds);
-
-  const bestPosition = findBestPosition(squad);
-
-  const clubStats = computeClubStats(signedIds);
 
   const merged = mergeClubStats(
 

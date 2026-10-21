@@ -2,10 +2,12 @@ import {
   formatRecord,
   formatRecordWithPercentage,
   isWorseRecord,
+} from "./lifetime-stats";
+import {
   getMostSelectedPlayer,
   getMostSuccessfulPlayer,
   getWorstPerformingPlayer,
-} from "./lifetime-stats";
+} from "./lifetime-stats-players";
 import { EMPTY_STATS } from "./storage/stats";
 import type { UserStatsData } from "./types";
 

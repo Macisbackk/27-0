@@ -7,6 +7,7 @@ import {
 } from "../players";
 import type { Player, Position } from "../types";
 import { SQUAD_STRUCTURE } from "../positions";
+export { getWeeklyKey, getMonthlyKey } from "./period-keys";
 
 const MIN_OFFERS = 40;
 const MAX_OFFERS = 80;
@@ -118,23 +119,6 @@ function selectCategoryPool(rng: () => number): Player[] {
   }
 
   return HISTORIC_PLAYERS;
-}
-
-export function getWeeklyKey(date?: Date): string {
-  const d = date ?? new Date();
-  const startOfYear = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const weekNum = Math.ceil(
-    ((d.getTime() - startOfYear.getTime()) / 86400000 +
-      startOfYear.getUTCDay() +
-      1) /
-      7
-  );
-  return `${d.getUTCFullYear()}-W${String(weekNum).padStart(2, "0")}`;
-}
-
-export function getMonthlyKey(date?: Date): string {
-  const d = date ?? new Date();
-  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
 }
 
 export function generateRunSeed(): string {

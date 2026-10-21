@@ -1,6 +1,6 @@
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { HANGMAN_STATS_SCHEMA, type HangmanRun, type HangmanStats } from "./types";
-import { createEmptyHangmanStats } from "./engine";
+import { createEmptyHangmanStats } from "./stats-defaults";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;

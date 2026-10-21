@@ -4,7 +4,7 @@ import {
   type HigherLowerRun,
   type HigherLowerStats,
 } from "./types";
-import { createEmptyHigherLowerStats } from "./engine";
+import { createEmptyHigherLowerStats } from "./stats-defaults";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
