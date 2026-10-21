@@ -11,6 +11,9 @@ import {
 } from "./auth-errors";
 import { validateCoachName } from "./storage/user";
 
+/** Keep in sync with Supabase → Auth → Email → Minimum password length. */
+export const MIN_PASSWORD_LENGTH = 8;
+
 export type { AuthActionResult };
 
 export interface UserProfile {
@@ -125,8 +128,8 @@ export async function signUp(
   coachName: string
 ): Promise<AuthActionResult> {
   if (!email.trim()) return { ok: false, error: "Email is required." };
-  if (password.length < 6) {
-    return { ok: false, error: "Password must be at least 6 characters." };
+  if (password.length < MIN_PASSWORD_LENGTH) {
+    return { ok: false, error: `Password must be at least ${MIN_PASSWORD_LENGTH} characters.` };
   }
   const nameCheck = validateCoachName(coachName);
   if (!nameCheck.valid) return { ok: false, error: nameCheck.error };
@@ -191,8 +194,8 @@ export async function signOut(): Promise<void> {
 export async function updatePassword(
   password: string
 ): Promise<AuthActionResult> {
-  if (password.length < 6) {
-    return { ok: false, error: "Password must be at least 6 characters." };
+  if (password.length < MIN_PASSWORD_LENGTH) {
+    return { ok: false, error: `Password must be at least ${MIN_PASSWORD_LENGTH} characters.` };
   }
 
   try {

@@ -49,7 +49,7 @@ export function mapAuthError(
   ) {
     return {
       ok: false,
-      error: "Password must be at least 6 characters.",
+      error: "Password must be at least 8 characters.",
     };
   }
 
