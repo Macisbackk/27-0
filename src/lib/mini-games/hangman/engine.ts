@@ -2,6 +2,7 @@ import { createRunId } from "@/lib/quiz/rng";
 import type { MiniGamePoolMode } from "../pool-mode";
 import { getHangmanBank, pickHangmanPuzzle } from "./answers";
 import { HANGMAN_MAX_WRONG, type HangmanRun, type HangmanStats } from "./types";
+export { createEmptyHangmanStats } from "./stats-defaults";
 
 export { HANGMAN_MAX_WRONG };
 
@@ -98,16 +99,6 @@ export function guessHangmanLetter(
   return { run: next, accepted: true };
 }
 
-export function createEmptyHangmanStats(): HangmanStats {
-  return {
-    schemaVersion: 1,
-    played: 0,
-    wins: 0,
-    currentStreak: 0,
-    bestStreak: 0,
-    lastDailyWinDate: null,
-  };
-}
 
 export function recordHangmanResult(
   stats: HangmanStats,

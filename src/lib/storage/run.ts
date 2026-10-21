@@ -8,8 +8,8 @@ import {
   updatePlayoffLifetimeStats,
   updateRerollStats,
   updateSeasonLifetimeStats,
-  updateStats,
 } from "./stats";
+import { updateStats } from "./stats-update";
 import { gameModeToDbMode } from "./leaderboard";
 import { syncTrophyCabinetLeaderboard } from "./trophy-cabinet-leaderboard";
 

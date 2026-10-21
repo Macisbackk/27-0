@@ -1,4 +1,4 @@
-import { formatValue } from "./players";
+import { formatValue } from "./players/format-value";
 import { formatRecordWithPercentage } from "./lifetime-stats";
 import type { GameDifficulty, GameMode } from "./types";
 

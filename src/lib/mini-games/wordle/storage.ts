@@ -1,6 +1,6 @@
 import { STORAGE_KEYS } from "@/lib/storage/keys";
 import { WORDLE_STATS_SCHEMA, type WordleRun, type WordleStats } from "./types";
-import { createEmptyWordleStats, normalizeWordleRun } from "./engine";
+import { createEmptyWordleStats, normalizeWordleRun } from "./run-utils";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;

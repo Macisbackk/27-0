@@ -1,6 +1,8 @@
 import { createRng, createRunId, pickIndex } from "@/lib/quiz/rng";
 import { getWordlePlayerPool, resolvePlayerGuess, type MiniGamePlayer } from "../players";
 import type { MiniGamePoolMode } from "../pool-mode";
+import { mergeDiscoveredClues } from "./run-utils";
+export { mergeDiscoveredClues, normalizeWordleRun, createEmptyWordleStats } from "./run-utils";
 import {
   WORDLE_ATTRIBUTE_LABEL,
   WORDLE_MAX_GUESSES,
@@ -44,40 +46,6 @@ export function buildWordleClues(
     rating: trend(guess.rating, answer.rating),
     age: trend(guess.age, answer.age),
     status: guess.isHistoric === answer.isHistoric ? "match" : "miss",
-  };
-}
-
-function matchingAttributes(clues: WordleClues): WordleAttributeKey[] {
-  const keys: WordleAttributeKey[] = [];
-  if (clues.nationality === "match") keys.push("nationality");
-  if (clues.position === "match") keys.push("position");
-  if (clues.club === "match") keys.push("club");
-  if (clues.rating === "match") keys.push("rating");
-  if (clues.age === "match") keys.push("age");
-  // Status is fixed by Current/Era pool choice — never treat as a discovery clue.
-  return keys;
-}
-
-export function mergeDiscoveredClues(
-  existing: readonly WordleDiscoveredClue[],
-  clues: WordleClues
-): { discovered: WordleDiscoveredClue[]; newlyFound: WordleDiscoveredClue[] } {
-  const known = new Set(existing.map((clue) => clue.key));
-  const newlyFound: WordleDiscoveredClue[] = [];
-  let order = existing.length;
-  for (const key of matchingAttributes(clues)) {
-    if (known.has(key)) continue;
-    order += 1;
-    newlyFound.push({
-      key,
-      label: WORDLE_ATTRIBUTE_LABEL[key],
-      order,
-    });
-    known.add(key);
-  }
-  return {
-    discovered: [...existing, ...newlyFound],
-    newlyFound,
   };
 }
 
@@ -268,17 +236,6 @@ export function submitWordleGuess(
   };
 }
 
-export function createEmptyWordleStats(): WordleStats {
-  return {
-    schemaVersion: 3,
-    played: 0,
-    wins: 0,
-    currentStreak: 0,
-    bestStreak: 0,
-    lastPlayedDate: null,
-  };
-}
-
 export function recordWordleResult(
   stats: WordleStats,
   run: WordleRun
@@ -302,36 +259,3 @@ export function remainingWordleGuesses(run: WordleRun): number {
   return Math.max(0, WORDLE_MAX_GUESSES - run.guesses.length);
 }
 
-function normalizeGuessClues(clues: WordleClues): WordleClues {
-  return {
-    nationality: clues.nationality ?? "miss",
-    position: clues.position ?? "miss",
-    club: clues.club ?? "miss",
-    rating: clues.rating ?? "miss",
-    age: clues.age ?? "miss",
-    status: clues.status ?? "miss",
-  };
-}
-
-/** Migrate older persisted runs. */
-export function normalizeWordleRun(value: WordleRun): WordleRun {
-  const guesses = value.guesses.map((guess) => ({
-    ...guess,
-    age: typeof guess.age === "number" ? guess.age : 0,
-    isHistoric: Boolean(guess.isHistoric),
-    clues: normalizeGuessClues(guess.clues),
-  }));
-  const discovered =
-    Array.isArray(value.discoveredClues) && value.discoveredClues.length > 0
-      ? value.discoveredClues
-      : guesses.reduce<WordleDiscoveredClue[]>((acc, guess) => {
-          return mergeDiscoveredClues(acc, guess.clues).discovered;
-        }, []);
-  return {
-    ...value,
-    guesses,
-    discoveredClues: discovered,
-    hintUsed: Boolean(value.hintUsed || value.answerHint),
-    answerHint: value.answerHint ?? null,
-  };
-}

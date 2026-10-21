@@ -1,6 +1,6 @@
 import type { LeaderboardPeriod } from "./types";
 
-import { getMonthlyKey, getWeeklyKey } from "./game/generator";
+import { getMonthlyKey, getWeeklyKey } from "./game/period-keys";
 
 
 
