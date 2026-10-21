@@ -94,7 +94,7 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
               >
                 <ClubBadge club={c} />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate font-semibold text-white">{c.name}</span>
+                  <span className="block font-semibold leading-tight text-white">{c.name}</span>
                   <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-gray-400">
                     <Stars value={c.prestige} label={`Prestige ${c.prestige} stars`} />
                     {c.realPlayers > 0 ? <span>{c.realPlayers} real players</span> : <span>Generated squad</span>}

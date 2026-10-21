@@ -288,10 +288,7 @@ export function SettingsPanel() {
         <LinkRow href={X_URL} label="Follow @27and0 on X" external />
       </Group>
 
-      <p className="px-2 text-center text-xs leading-relaxed text-gray-500">
-        27-0 {GAME_VERSION} · An unofficial fan-made game, not affiliated with or endorsed by the RFL,
-        Super League or any club.
-      </p>
+      <p className="px-2 text-center text-xs text-gray-500">27-0 {GAME_VERSION}</p>
     </div>
   );
 }
