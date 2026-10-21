@@ -16,7 +16,22 @@ const step = (msg) => {
 };
 
 // Supabase is a placeholder in CI — network failures to it are expected, not bugs.
-const IGNORED = [/supabase/i, /Failed to fetch/i, /ERR_NAME_NOT_RESOLVED/i, /fetch failed/i, /\[career-leaderboard\]/, /\[career\] cloud/, /Load failed/i, /favicon/i, /net::ERR_/i];
+const IGNORED = [
+  /supabase/i,
+  /Failed to fetch/i,
+  /ERR_NAME_NOT_RESOLVED/i,
+  /fetch failed/i,
+  /\[career-leaderboard\]/,
+  /\[career\] cloud/,
+  /Load failed/i,
+  /net::ERR_/i,
+  // Vercel Analytics only exists on Vercel; a plain `next start` 404s it.
+  /_vercel\/insights/,
+  // Generic resource-load messages carry no URL; real 404s are caught by the response listener below.
+  /Failed to load resource/i,
+];
+/** Missing files that only exist on Vercel (or are placeholders) — not bugs. */
+const IGNORED_URLS = [/\/_vercel\//, /supabase/i, /favicon/i];
 
 const browser = await chromium.launch();
 const context = await browser.newContext({
@@ -29,6 +44,12 @@ const context = await browser.newContext({
 });
 const page = await context.newPage();
 page.on("pageerror", (err) => errors.push(`pageerror: ${err.message}`));
+page.on("response", (res) => {
+  if (res.status() < 400) return;
+  const url = res.url();
+  if (IGNORED_URLS.some((re) => re.test(url))) return;
+  errors.push(`HTTP ${res.status()}: ${url}`);
+});
 page.on("console", (msg) => {
   if (msg.type() !== "error") return;
   const text = msg.text();
