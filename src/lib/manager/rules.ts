@@ -84,16 +84,37 @@ export const RENEWAL_CAP_BUFFER = {
   MAX_MARKET_MULTIPLIER: 1.12,
 } as const;
 
+const PRE_SEASON_WEEKS = 3;
+const REGULAR_SEASON_WEEKS = 26;
+const PLAYOFF_WEEKS = 4;
+
 export const CALENDAR_RULES = {
-  PRE_SEASON_WEEKS: 3,
-  REGULAR_SEASON_WEEKS: 26,
-  PLAYOFF_WEEKS: 4,
-  TOTAL_WEEKS: 32,
+  PRE_SEASON_WEEKS,
+  REGULAR_SEASON_WEEKS,
+  PLAYOFF_WEEKS,
+  /** Derived — changing pre-season length must move the whole post-season with it. */
+  TOTAL_WEEKS: PRE_SEASON_WEEKS + REGULAR_SEASON_WEEKS + PLAYOFF_WEEKS,
   /**
    * @deprecated Prefer isTransferWindowOpen() — kept as the last winter close week
    * for older copy / save migrations.
    */
   TRANSFER_WINDOW_DEADLINE_WEEK: 22,
+} as const;
+
+/**
+ * Key weeks of a Manager Mode season, derived from CALENDAR_RULES so the league and
+ * post-season can never overlap. (Hard-coded play-off weeks broke when pre-season grew
+ * from 2 to 3 friendlies: Round 26 landed on the eliminator week and play-offs vanished.)
+ */
+export const SEASON_WEEKS = {
+  FIRST_LEAGUE_ROUND: PRE_SEASON_WEEKS + 1,
+  LAST_LEAGUE_ROUND: PRE_SEASON_WEEKS + REGULAR_SEASON_WEEKS,
+  PLAYOFF_ELIMINATORS: PRE_SEASON_WEEKS + REGULAR_SEASON_WEEKS + 1,
+  PLAYOFF_SEMI_FINALS: PRE_SEASON_WEEKS + REGULAR_SEASON_WEEKS + 2,
+  PLAYOFF_FINALS: PRE_SEASON_WEEKS + REGULAR_SEASON_WEEKS + 3,
+  MILLION_POUND_GAME: PRE_SEASON_WEEKS + REGULAR_SEASON_WEEKS + 4,
+  /** First week after the season (post-MPG bulletin, season-end phase). */
+  POST_SEASON: PRE_SEASON_WEEKS + REGULAR_SEASON_WEEKS + PLAYOFF_WEEKS + 1,
 } as const;
 
 /**

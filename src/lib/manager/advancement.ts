@@ -14,6 +14,7 @@ import { simulateManagerMatch } from "./match";
 import { progressPlayerWeek } from "./player";
 import { processAiDecisionsForWeek } from "./ai";
 import { refreshAllBoardObjectives } from "./objectives";
+import { SEASON_WEEKS } from "./rules";
 import {
   canClubPlayMatchday,
   getMatchdayLineupReadiness,
@@ -269,11 +270,11 @@ export function advanceWeek(state: ManagerState): ManagerState {
   let nextPhase = intermediateState.calendar.phase;
   const nextWeek = currentWeek + 1;
 
-  if (currentWeek === 2) {
+  if (currentWeek === SEASON_WEEKS.FIRST_LEAGUE_ROUND - 1) {
     nextPhase = "regular_season";
-  } else if (currentWeek === 28) {
+  } else if (currentWeek === SEASON_WEEKS.LAST_LEAGUE_ROUND) {
     nextPhase = "playoffs";
-  } else if (currentWeek >= 32) {
+  } else if (currentWeek >= SEASON_WEEKS.MILLION_POUND_GAME) {
     nextPhase = "season_end";
   }
 

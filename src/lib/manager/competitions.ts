@@ -12,6 +12,7 @@ import type {
   ManagerState,
   PlayoffMatch,
 } from "./types";
+import { SEASON_WEEKS } from "./rules";
 
 /**
  * Standard round-robin pairing algorithm using polygon rotation.
@@ -80,8 +81,8 @@ export function generateFixturesForCompetition(
     const roundPairs = generateRoundRobinPairs(clubIds);
     // In Super League (14 clubs = 13 rounds first half, 13 rounds reverse = 26 rounds)
     // In Championship (12 clubs = 11 rounds first half, 11 rounds reverse = 22 rounds)
-    // Regular season runs from Week 4 (weeks 1–3 are the three selectable friendlies)
-    const startWeek = 4;
+    // League starts the week after pre-season (weeks 1–3 are the selectable friendlies)
+    const startWeek = SEASON_WEEKS.FIRST_LEAGUE_ROUND;
     let currentWeek = startWeek;
     let roundNum = 1;
 
@@ -555,9 +556,9 @@ export function schedulePostSeasonAndCupFixtures(
     }
   }
 
-  // 2. PLAYOFF ELIMINATORS (WEEK 29)
-  if (targetWeek === 29) {
-    const slHasW29 = slComp.fixtures.some((f) => f.week === 29 && isCurrentSeasonFixture(f, season));
+  // 2. PLAYOFF ELIMINATORS (PLAYOFF_ELIMINATORS)
+  if (targetWeek === SEASON_WEEKS.PLAYOFF_ELIMINATORS) {
+    const slHasW29 = slComp.fixtures.some((f) => f.week === SEASON_WEEKS.PLAYOFF_ELIMINATORS && isCurrentSeasonFixture(f, season));
     if (!slHasW29 && slStandings.length >= 6) {
       // Super League Eliminators: 3rd vs 6th, 4th vs 5th
       slComp.fixtures = [
@@ -566,7 +567,7 @@ export function schedulePostSeasonAndCupFixtures(
           id: `sl_${season}_w29_elim1`,
           competitionId: "super-league",
           season,
-          week: 29,
+          week: SEASON_WEEKS.PLAYOFF_ELIMINATORS,
           roundName: "Super League Eliminator 1",
           homeClubId: slStandings[2].clubId,
           awayClubId: slStandings[5].clubId,
@@ -576,7 +577,7 @@ export function schedulePostSeasonAndCupFixtures(
           id: `sl_${season}_w29_elim2`,
           competitionId: "super-league",
           season,
-          week: 29,
+          week: SEASON_WEEKS.PLAYOFF_ELIMINATORS,
           roundName: "Super League Eliminator 2",
           homeClubId: slStandings[3].clubId,
           awayClubId: slStandings[4].clubId,
@@ -586,7 +587,7 @@ export function schedulePostSeasonAndCupFixtures(
     }
 
     const champHasW29 = champComp.fixtures.some(
-      (f) => f.week === 29 && isCurrentSeasonFixture(f, season)
+      (f) => f.week === SEASON_WEEKS.PLAYOFF_ELIMINATORS && isCurrentSeasonFixture(f, season)
     );
     if (!champHasW29 && champStandings.length >= 6) {
       // Championship Playoff Format:
@@ -599,7 +600,7 @@ export function schedulePostSeasonAndCupFixtures(
           id: `champ_${season}_w29_elim1`,
           competitionId: "championship",
           season,
-          week: 29,
+          week: SEASON_WEEKS.PLAYOFF_ELIMINATORS,
           roundName: "Championship Eliminator 1",
           homeClubId: champStandings[2].clubId,
           awayClubId: champStandings[5].clubId,
@@ -609,7 +610,7 @@ export function schedulePostSeasonAndCupFixtures(
           id: `champ_${season}_w29_elim2`,
           competitionId: "championship",
           season,
-          week: 29,
+          week: SEASON_WEEKS.PLAYOFF_ELIMINATORS,
           roundName: "Championship Eliminator 2",
           homeClubId: champStandings[3].clubId,
           awayClubId: champStandings[4].clubId,
@@ -635,13 +636,13 @@ export function schedulePostSeasonAndCupFixtures(
     }
   }
 
-  // 3. PLAYOFF SEMI-FINALS (WEEK 30)
-  if (targetWeek === 30) {
-    const slHasW30 = slComp.fixtures.some((f) => f.week === 30 && isCurrentSeasonFixture(f, season));
+  // 3. PLAYOFF SEMI-FINALS (PLAYOFF_SEMI_FINALS)
+  if (targetWeek === SEASON_WEEKS.PLAYOFF_SEMI_FINALS) {
+    const slHasW30 = slComp.fixtures.some((f) => f.week === SEASON_WEEKS.PLAYOFF_SEMI_FINALS && isCurrentSeasonFixture(f, season));
     if (!slHasW30) {
       const slElims = slComp.fixtures.filter(
         (f) =>
-          f.week === 29 &&
+          f.week === SEASON_WEEKS.PLAYOFF_ELIMINATORS &&
           isCurrentSeasonFixture(f, season) &&
           f.roundName.includes("Eliminator") &&
           f.isPlayed
@@ -660,7 +661,7 @@ export function schedulePostSeasonAndCupFixtures(
             id: `sl_${season}_w30_sf1`,
             competitionId: "super-league",
             season,
-            week: 30,
+            week: SEASON_WEEKS.PLAYOFF_SEMI_FINALS,
             roundName: "Super League Semi-Final 1",
             homeClubId: slStandings[0].clubId,
             awayClubId: lowerSeed,
@@ -670,7 +671,7 @@ export function schedulePostSeasonAndCupFixtures(
             id: `sl_${season}_w30_sf2`,
             competitionId: "super-league",
             season,
-            week: 30,
+            week: SEASON_WEEKS.PLAYOFF_SEMI_FINALS,
             roundName: "Super League Semi-Final 2",
             homeClubId: slStandings[1].clubId,
             awayClubId: higherSeed,
@@ -681,12 +682,12 @@ export function schedulePostSeasonAndCupFixtures(
     }
 
     const champHasW30 = champComp.fixtures.some(
-      (f) => f.week === 30 && isCurrentSeasonFixture(f, season)
+      (f) => f.week === SEASON_WEEKS.PLAYOFF_SEMI_FINALS && isCurrentSeasonFixture(f, season)
     );
     if (!champHasW30) {
       const champElims = champComp.fixtures.filter(
         (f) =>
-          f.week === 29 &&
+          f.week === SEASON_WEEKS.PLAYOFF_ELIMINATORS &&
           isCurrentSeasonFixture(f, season) &&
           f.roundName.includes("Eliminator") &&
           f.isPlayed
@@ -709,7 +710,7 @@ export function schedulePostSeasonAndCupFixtures(
             id: `champ_${season}_w30_sf1`,
             competitionId: "championship",
             season,
-            week: 30,
+            week: SEASON_WEEKS.PLAYOFF_SEMI_FINALS,
             roundName: "Championship Semi-Final",
             homeClubId: champStandings[1].clubId,
             awayClubId: lowerSeed,
@@ -731,13 +732,13 @@ export function schedulePostSeasonAndCupFixtures(
     }
   }
 
-  // 4. FINALS (WEEK 31)
-  if (targetWeek === 31) {
-    const slHasW31 = slComp.fixtures.some((f) => f.week === 31 && isCurrentSeasonFixture(f, season));
+  // 4. FINALS (PLAYOFF_FINALS)
+  if (targetWeek === SEASON_WEEKS.PLAYOFF_FINALS) {
+    const slHasW31 = slComp.fixtures.some((f) => f.week === SEASON_WEEKS.PLAYOFF_FINALS && isCurrentSeasonFixture(f, season));
     if (!slHasW31) {
       const slSfs = slComp.fixtures.filter(
         (f) =>
-          f.week === 30 &&
+          f.week === SEASON_WEEKS.PLAYOFF_SEMI_FINALS &&
           isCurrentSeasonFixture(f, season) &&
           f.roundName.includes("Semi-Final") &&
           f.isPlayed
@@ -756,7 +757,7 @@ export function schedulePostSeasonAndCupFixtures(
             id: `sl_${season}_w31_grand_final`,
             competitionId: "super-league",
             season,
-            week: 31,
+            week: SEASON_WEEKS.PLAYOFF_FINALS,
             roundName: "Super League Grand Final",
             homeClubId: homeClub,
             awayClubId: awayClub,
@@ -767,19 +768,19 @@ export function schedulePostSeasonAndCupFixtures(
     }
 
     const champHasW31 = champComp.fixtures.some(
-      (f) => f.week === 31 && isCurrentSeasonFixture(f, season)
+      (f) => f.week === SEASON_WEEKS.PLAYOFF_FINALS && isCurrentSeasonFixture(f, season)
     );
     if (!champHasW31) {
       const champSf = champComp.fixtures.find(
         (f) =>
-          f.week === 30 &&
+          f.week === SEASON_WEEKS.PLAYOFF_SEMI_FINALS &&
           isCurrentSeasonFixture(f, season) &&
           f.roundName.includes("Semi-Final") &&
           f.isPlayed
       );
       const champElims = champComp.fixtures.filter(
         (f) =>
-          f.week === 29 &&
+          f.week === SEASON_WEEKS.PLAYOFF_ELIMINATORS &&
           isCurrentSeasonFixture(f, season) &&
           f.roundName.includes("Eliminator") &&
           f.isPlayed
@@ -807,7 +808,7 @@ export function schedulePostSeasonAndCupFixtures(
               id: `champ_${season}_w31_playoff_final`,
               competitionId: "championship",
               season,
-              week: 31,
+              week: SEASON_WEEKS.PLAYOFF_FINALS,
               roundName: "Championship Playoff Final",
               homeClubId: homeClub,
               awayClubId: awayClub,
@@ -819,15 +820,15 @@ export function schedulePostSeasonAndCupFixtures(
     }
   }
 
-  // 5. THE MILLION POUND GAME (WEEK 32)
-  if (targetWeek === 32) {
+  // 5. THE MILLION POUND GAME (MILLION_POUND_GAME)
+  if (targetWeek === SEASON_WEEKS.MILLION_POUND_GAME) {
     const slHasMpg = slComp.fixtures.some(
       (f) => f.roundName === "The Million Pound Game" && isCurrentSeasonFixture(f, season)
     );
     if (!slHasMpg) {
       const champFinal = champComp.fixtures.find(
         (f) =>
-          f.week === 31 &&
+          f.week === SEASON_WEEKS.PLAYOFF_FINALS &&
           isCurrentSeasonFixture(f, season) &&
           f.roundName.includes("Playoff Final") &&
           f.isPlayed
@@ -843,7 +844,7 @@ export function schedulePostSeasonAndCupFixtures(
           id: `sl_${season}_w32_million_pound_game`,
           competitionId: "super-league",
           season,
-          week: 32,
+          week: SEASON_WEEKS.MILLION_POUND_GAME,
           roundName: "The Million Pound Game",
           homeClubId: sl13,
           awayClubId: champWinnerId,
@@ -873,8 +874,8 @@ export function schedulePostSeasonAndCupFixtures(
     }
   }
 
-  // 6. POST-MPG BULLETIN (WEEK 33)
-  if (targetWeek === 33) {
+  // 6. POST-MPG BULLETIN (POST_SEASON)
+  if (targetWeek === SEASON_WEEKS.POST_SEASON) {
     const mpgFixture =
       slComp.fixtures.find(
         (f) =>

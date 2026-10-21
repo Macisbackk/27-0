@@ -5,7 +5,7 @@
  * 1. Automatic promotion of 1st placed Championship club.
  * 2. Automatic relegation of 14th placed Super League club.
  * 3. Championship Top 6 Playoffs (2nd-6th) leading to Playoff Final Winner.
- * 4. The Million Pound Game scheduled for Week 32 between 13th SL & Championship Playoff Winner.
+ * 4. The Million Pound Game scheduled for Week 33 between 13th SL & Championship Playoff Winner.
  * 5. Case A: Championship team wins MPG -> 2 promoted, 2 relegated, club counts preserved (14 SL, 14 Champ).
  * 6. Case B: Super League team wins MPG -> 1 promoted, 1 relegated, 13th SL survives, club counts preserved.
  */
@@ -15,6 +15,9 @@ import { advanceWeek } from "../src/lib/manager/advancement";
 import { rolloverSeason, calculateSeasonAwards } from "../src/lib/manager/rollover";
 import { sortStandings } from "../src/lib/manager/competitions";
 import { validateSquadInvariants } from "../src/lib/manager/squad";
+import { SEASON_WEEKS } from "../src/lib/manager/rules";
+
+const W = SEASON_WEEKS;
 
 let testCount = 0;
 let passedCount = 0;
@@ -36,13 +39,13 @@ async function runMillionPoundGameTests() {
 
   let state = initializeManagerDatabase("castleford-tigers", "Craig Lingard");
 
-  // Advance to week 28 (end of regular season)
-  console.log("--- 1. Simulating Regular Season up to Week 28 ---");
-  while (state.calendar.currentWeek <= 28) {
+  // Advance to week 29 (end of regular season)
+  console.log(`--- 1. Simulating Regular Season up to Week ${W.LAST_LEAGUE_ROUND} ---`);
+  while (state.calendar.currentWeek <= W.LAST_LEAGUE_ROUND) {
     state = advanceWeek(state);
   }
 
-  assert(state.calendar.currentWeek === 29, "Advanced to Week 29 (Playoff Eliminators)");
+  assert(state.calendar.currentWeek === W.PLAYOFF_ELIMINATORS, `Advanced to Week ${W.PLAYOFF_ELIMINATORS} (Playoff Eliminators)`);
   assert(state.calendar.phase === "playoffs", "Calendar phase transitioned to playoffs");
 
   const slStandings = sortStandings(state.competitions["super-league"].standings);
@@ -56,49 +59,49 @@ async function runMillionPoundGameTests() {
   console.log(`  ▼ 14th Super League (Auto Relegated): ${state.clubs[autoRelegatedSL]?.name}`);
   console.log(`  ⚔️ 13th Super League (MPG Participant): ${state.clubs[mpgSL13]?.name}`);
 
-  // Check week 29 fixtures scheduled
-  const slW29Fixtures = state.competitions["super-league"].fixtures.filter((f) => f.week === 29);
-  const champW29Fixtures = state.competitions["championship"].fixtures.filter((f) => f.week === 29);
+  // Check week 30 fixtures scheduled
+  const slW29Fixtures = state.competitions["super-league"].fixtures.filter((f) => f.week === W.PLAYOFF_ELIMINATORS);
+  const champW29Fixtures = state.competitions["championship"].fixtures.filter((f) => f.week === W.PLAYOFF_ELIMINATORS);
 
-  assert(slW29Fixtures.length === 2, "Super League has 2 Eliminator fixtures at Week 29");
-  assert(champW29Fixtures.length === 2, "Championship has 2 Eliminator fixtures at Week 29");
+  assert(slW29Fixtures.length === 2, `Super League has 2 Eliminator fixtures at Week ${W.PLAYOFF_ELIMINATORS}`);
+  assert(champW29Fixtures.length === 2, `Championship has 2 Eliminator fixtures at Week ${W.PLAYOFF_ELIMINATORS}`);
 
-  // Advance Week 29 (Eliminators played)
-  console.log("\n--- 2. Simulating Week 29 Eliminators ---");
+  // Advance Week 30 (Eliminators played)
+  console.log(`\n--- 2. Simulating Week ${W.PLAYOFF_ELIMINATORS} Eliminators ---`);
   state = advanceWeek(state);
-  assert(state.calendar.currentWeek === 30, "Advanced to Week 30 (Semi-Finals)");
+  assert(state.calendar.currentWeek === W.PLAYOFF_SEMI_FINALS, `Advanced to Week ${W.PLAYOFF_SEMI_FINALS} (Semi-Finals)`);
 
-  // Check week 30 Semi-Finals scheduled
-  const slW30Fixtures = state.competitions["super-league"].fixtures.filter((f) => f.week === 30);
-  const champW30Fixtures = state.competitions["championship"].fixtures.filter((f) => f.week === 30);
-  assert(slW30Fixtures.length === 2, "Super League has 2 Semi-Final fixtures at Week 30");
+  // Check week 31 Semi-Finals scheduled
+  const slW30Fixtures = state.competitions["super-league"].fixtures.filter((f) => f.week === W.PLAYOFF_SEMI_FINALS);
+  const champW30Fixtures = state.competitions["championship"].fixtures.filter((f) => f.week === W.PLAYOFF_SEMI_FINALS);
+  assert(slW30Fixtures.length === 2, `Super League has 2 Semi-Final fixtures at Week ${W.PLAYOFF_SEMI_FINALS}`);
   assert(champW30Fixtures.length === 1, "Championship has exactly 1 Semi-Final (2nd vs lower elim; higher elim bye to Final)");
   assert(
     champW30Fixtures[0].homeClubId !== champW30Fixtures[0].awayClubId,
     "Championship Semi-Final is never a club vs itself"
   );
 
-  // Advance Week 30 (Semi-Finals played)
-  console.log("\n--- 3. Simulating Week 30 Semi-Finals ---");
+  // Advance Week 31 (Semi-Finals played)
+  console.log(`\n--- 3. Simulating Week ${W.PLAYOFF_SEMI_FINALS} Semi-Finals ---`);
   state = advanceWeek(state);
-  assert(state.calendar.currentWeek === 31, "Advanced to Week 31 (Finals)");
+  assert(state.calendar.currentWeek === W.PLAYOFF_FINALS, `Advanced to Week ${W.PLAYOFF_FINALS} (Finals)`);
 
-  // Check week 31 Finals scheduled
-  const slW31Fixtures = state.competitions["super-league"].fixtures.filter((f) => f.week === 31);
-  const champW31Fixtures = state.competitions["championship"].fixtures.filter((f) => f.week === 31);
-  assert(slW31Fixtures.length === 1, "Super League has Grand Final fixture at Week 31");
-  assert(champW31Fixtures.length === 1, "Championship has Playoff Final fixture at Week 31");
+  // Check week 32 Finals scheduled
+  const slW31Fixtures = state.competitions["super-league"].fixtures.filter((f) => f.week === W.PLAYOFF_FINALS);
+  const champW31Fixtures = state.competitions["championship"].fixtures.filter((f) => f.week === W.PLAYOFF_FINALS);
+  assert(slW31Fixtures.length === 1, `Super League has Grand Final fixture at Week ${W.PLAYOFF_FINALS}`);
+  assert(champW31Fixtures.length === 1, `Championship has Playoff Final fixture at Week ${W.PLAYOFF_FINALS}`);
 
-  // Advance Week 31 (Finals played)
-  console.log("\n--- 4. Simulating Week 31 Finals & Scheduling The Million Pound Game ---");
+  // Advance Week 32 (Finals played)
+  console.log(`\n--- 4. Simulating Week ${W.PLAYOFF_FINALS} Finals & Scheduling The Million Pound Game ---`);
   state = advanceWeek(state);
-  assert(state.calendar.currentWeek === 32, "Advanced to Week 32 (The Million Pound Game)");
+  assert(state.calendar.currentWeek === W.MILLION_POUND_GAME, `Advanced to Week ${W.MILLION_POUND_GAME} (The Million Pound Game)`);
 
-  // Verify The Million Pound Game is scheduled in Week 32
+  // Verify The Million Pound Game is scheduled in Week 33
   const mpgFixture = state.competitions["super-league"].fixtures.find(
-    (f) => f.week === 32 && f.roundName === "The Million Pound Game"
+    (f) => f.week === W.MILLION_POUND_GAME && f.roundName === "The Million Pound Game"
   );
-  assert(!!mpgFixture, "The Million Pound Game fixture exists at Week 32");
+  assert(!!mpgFixture, `The Million Pound Game fixture exists at Week ${W.MILLION_POUND_GAME}`);
   assert(mpgFixture?.homeClubId === mpgSL13, `Home club in MPG is 13th SL club (${state.clubs[mpgSL13]?.name})`);
 
   const champPlayoffWinner = mpgFixture!.awayClubId;
@@ -185,16 +188,16 @@ async function runMillionPoundGameTests() {
   // TEST SCENARIO C: Natural Simulation via advanceWeek (Score Parity & Honours Check)
   // ----------------------------------------------------
   console.log("\n--- 7. Scenario C: Natural Simulation via advanceWeek (Score Parity & Honours) ---");
-  // state is currently at Week 32 with unplayed MPG fixtures in both SL and Championship
+  // state is currently at Week 33 with unplayed MPG fixtures in both SL and Championship
   const simulatedState = advanceWeek(state);
-  assert(simulatedState.calendar.currentWeek === 33, "Advanced to Week 33");
+  assert(simulatedState.calendar.currentWeek === W.POST_SEASON, `Advanced to Week ${W.POST_SEASON}`);
   assert(simulatedState.calendar.phase === "season_end", "Phase transitioned to season_end");
 
   const slMpgPlayed = simulatedState.competitions["super-league"].fixtures.find(
-    (f) => f.roundName === "The Million Pound Game" && f.week === 32
+    (f) => f.roundName === "The Million Pound Game" && f.week === W.MILLION_POUND_GAME
   );
   const champMpgPlayed = simulatedState.competitions["championship"].fixtures.find(
-    (f) => f.roundName === "The Million Pound Game" && f.week === 32
+    (f) => f.roundName === "The Million Pound Game" && f.week === W.MILLION_POUND_GAME
   );
 
   assert(!!slMpgPlayed && slMpgPlayed.isPlayed, "Super League MPG fixture is played");
