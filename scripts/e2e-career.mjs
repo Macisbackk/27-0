@@ -31,7 +31,8 @@ const IGNORED = [
   /Failed to load resource/i,
 ];
 /** Missing files that only exist on Vercel (or are placeholders) — not bugs. */
-const IGNORED_URLS = [/\/_vercel\//, /supabase/i, /favicon/i];
+// /sounds/*.mp3 are optional: the sound manager probes once, then uses synth tones (public/sounds/README.md).
+const IGNORED_URLS = [/\/_vercel\//, /supabase/i, /favicon/i, /\/sounds\/[\w-]+\.mp3$/];
 
 const browser = await chromium.launch();
 const context = await browser.newContext({
