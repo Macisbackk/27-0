@@ -4,7 +4,7 @@
     "name": "Aaron Pene",
     "position": "PROP",
     "club": "Leigh Leopards",
-    "nationality": "New Zealand",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -48,8 +48,8 @@
     "category": "current",
     "peakRating": 86,
     "value": 192000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 28,
+    "tries": 6,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -78,8 +78,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 8,
+    "tries": 6,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -87,7 +87,8 @@
     "basePlayerId": "leigh-cur-aj-towse",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2003
+    "birthYear": 2003,
+    "dateOfBirth": "2003-08-19"
   },
   {
     "id": "leigh-cur-andrew-badrock",
@@ -107,8 +108,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 20,
+    "tries": 4,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -116,7 +117,8 @@
     "basePlayerId": "leigh-cur-andrew-badrock",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-10-25"
   },
   {
     "id": "leigh-cur-bailey-hodgson",
@@ -136,8 +138,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 36,
+    "tries": 8,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -145,7 +147,8 @@
     "basePlayerId": "leigh-cur-bailey-hodgson",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2002
+    "birthYear": 2002,
+    "dateOfBirth": "2002-09-05"
   },
   {
     "id": "leigh-cur-ben-mcnamara",
@@ -206,7 +209,9 @@
     "dateOfBirth": "1997-07-05",
     "birthYear": 1997,
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "appearances": 181,
+    "tries": 77
   },
   {
     "id": "leigh-cur-david-armstrong",
@@ -270,7 +275,8 @@
     "basePlayerId": "leigh-cur-edwin-ipape",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 12
   },
   {
     "id": "leigh-cur-ethan-o-neill",
@@ -299,14 +305,16 @@
     "dateOfBirth": "1999-06-01",
     "birthYear": 1999,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 36,
+    "tries": 10
   },
   {
     "id": "leigh-cur-frankie-halton",
     "name": "Frankie Halton",
     "position": "SECOND_ROW",
     "club": "Leigh Leopards",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -330,14 +338,15 @@
     "basePlayerId": "leigh-cur-frankie-halton",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 5
   },
   {
     "id": "leigh-cur-gareth-o-brien",
     "name": "Gareth O'Brien",
     "position": "STAND_OFF",
     "club": "Leigh Leopards",
-    "nationality": "Ireland",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -383,8 +392,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 153,
+    "tries": 72,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -393,7 +402,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2000-05-30",
-    "birthYear": 2000
+    "birthYear": 2000,
+    "intlCaps": 3
   },
   {
     "id": "leigh-cur-isaac-liu",
@@ -424,7 +434,8 @@
     "basePlayerId": "leigh-cur-isaac-liu",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 12
   },
   {
     "id": "leigh-cur-jack-hughes",
@@ -444,8 +455,8 @@
     "category": "current",
     "peakRating": 85,
     "value": 180000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 330,
+    "tries": 41,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -453,7 +464,9 @@
     "basePlayerId": "leigh-cur-jack-hughes",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1992
+    "birthYear": 1992,
+    "dateOfBirth": "1992-01-04",
+    "intlCaps": 2
   },
   {
     "id": "leigh-cur-jacob-alick-wiencke",
@@ -473,8 +486,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 24,
+    "tries": 7,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -483,7 +496,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1999-11-03",
-    "birthYear": 1999
+    "birthYear": 1999,
+    "intlCaps": 11
   },
   {
     "id": "leigh-cur-joe-ofahengaue",
@@ -514,7 +528,8 @@
     "basePlayerId": "leigh-cur-joe-ofahengaue",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 7
   },
   {
     "id": "leigh-cur-josh-charnley",
@@ -534,8 +549,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 347,
+    "tries": 281,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -545,7 +560,8 @@
     "superLeagueEligible": true,
     "dateOfBirth": "1991-06-26",
     "birthYear": 1991,
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "intlCaps": 8
   },
   {
     "id": "leigh-cur-kai-o-donnell",
@@ -589,7 +605,7 @@
     "name": "Keanan Brand",
     "position": "WING",
     "club": "Leigh Leopards",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -614,7 +630,8 @@
     "basePlayerId": "leigh-cur-keanan-brand",
     "primaryPosition": "WG/CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "leigh-cur-lachlan-lam",
@@ -647,7 +664,8 @@
     "basePlayerId": "leigh-cur-lachlan-lam",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 15
   },
   {
     "id": "leigh-cur-liam-horne",
@@ -661,14 +679,14 @@
       "HOOKER"
     ],
     "primaryPosition": "HOOKER",
-    "nationality": "England",
+    "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–2024",
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 76,
+    "tries": 9,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -676,7 +694,9 @@
     "basePlayerId": "leigh-cur-liam-horne",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-02-03",
+    "intlCaps": 8
   },
   {
     "id": "leigh-cur-louis-brogan",
@@ -696,8 +716,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 135000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 34,
+    "tries": 2,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -726,8 +746,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 150,
+    "tries": 13,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -767,7 +787,8 @@
     "basePlayerId": "leigh-cur-owen-trout",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "leigh-cur-robbie-mulhern",
@@ -800,7 +821,8 @@
     "basePlayerId": "leigh-cur-robbie-mulhern",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "leigh-cur-tesi-niu",
@@ -831,7 +853,8 @@
     "basePlayerId": "leigh-cur-tesi-niu",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "leigh-cur-umyla-hanley",
@@ -883,7 +906,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 11,
     "tries": 0,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
@@ -896,7 +919,8 @@
     "clubsPlayedFor": [
       "Wigan Warriors",
       "Leigh Leopards"
-    ]
+    ],
+    "dateOfBirth": "1999-12-29"
   },
   {
     "id": "leigh-cur-ryan-brown",
@@ -948,7 +972,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
+    "appearances": 1,
     "tries": 0,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
@@ -961,7 +985,8 @@
     "clubsPlayedFor": [
       "Wakefield Trinity",
       "Leigh Leopards"
-    ]
+    ],
+    "dateOfBirth": "2006-07-13"
   },
   {
     "id": "leigh-cur-oliver-polec",
@@ -993,7 +1018,9 @@
     "clubsPlayedFor": [
       "St Helens",
       "Leigh Leopards"
-    ]
+    ],
+    "dateOfBirth": "2006-10-13",
+    "birthYear": 2006
   },
   {
     "id": "leigh-cur-kavan-rothwell",
@@ -1026,6 +1053,8 @@
       "Wigan Warriors",
       "Barrow Raiders",
       "Leigh Leopards"
-    ]
+    ],
+    "dateOfBirth": "2003-02-01",
+    "birthYear": 2003
   }
 ]

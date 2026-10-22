@@ -1,0 +1,2643 @@
+{
+ "generatedAt": "2026-10-22T17:09:08Z",
+ "summary": {
+  "todo": 172,
+  "fixes": 172,
+  "neverAtClubSince1996": 66,
+  "unverified": 0,
+  "remaining": 0
+ },
+ "findings": [
+  "64 of the 74 Wakefield Trinity cards on this list are for players who never played for Wakefield. Almost all of them were Warrington players (Mark Forster, Lee Penny, Mark Hilton, Toa Kohe-Love, Stefan Ratchford and others), so a batch of Warrington players seems to have been imported under Wakefield. Where that applies, each fix has likelyIntendedClub with the Warrington seasons, a representative year and that season's appearances. The cards for Ben Harrison, Kevin Penny, Danny Halliwell and Nathan Wood have a real but minor Wakefield spell, so the Wakefield year is given and the Warrington alternative is also listed.",
+  "For Martin Hall (PSG) and Wayne Godwin (Halifax) the player never played for the card's club; see each note."
+ ],
+ "fixes": [
+  {
+   "id": "hull-fc-hist-curtis-naughton",
+   "name": "Curtis Naughton",
+   "club": "Hull FC",
+   "cardYearWas": 2013,
+   "seasonsAtClub": "2015–2016",
+   "suggestedYear": 2016,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/curtis-naughton/summary.html"
+   ],
+   "note": "2015: 13 apps, 2016: 16 apps"
+  },
+  {
+   "id": "wakefield-hist-chris-hicks",
+   "name": "Chris Hicks",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1995,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/chris-hicks/summary.html"
+   ],
+   "note": "Penrith 1997–2002, Manly 2004–07, Warrington 2008–10, Parramatta 2011; no Wakefield spell"
+  },
+  {
+   "id": "wakefield-hist-richard-henare",
+   "name": "Richard Henare",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1986,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/richard-henare/summary.html"
+   ],
+   "note": "Carlisle 1995–96, Warrington 1996–97, Workington 1998, Swinton 1999–2000; no Wakefield spell"
+  },
+  {
+   "id": "wakefield-hist-kurt-gidley",
+   "name": "Kurt Gidley",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2000,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/kurt-gidley/summary.html"
+   ],
+   "note": "Newcastle 2001–15, Warrington 2016–17; no Wakefield spell"
+  },
+  {
+   "id": "bradford-hist-andy-smith",
+   "name": "Andy Smith",
+   "club": "Bradford Bulls",
+   "cardYearWas": 2002,
+   "seasonsAtClub": "2004–2006",
+   "suggestedYear": 2004,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/andy-smith/summary.html"
+   ],
+   "note": "apps 8/6/5; DOB 1984-07-06 matches"
+  },
+  {
+   "id": "bradford-hist-matt-james",
+   "name": "Matt James",
+   "club": "Bradford Bulls",
+   "cardYearWas": 2005,
+   "seasonsAtClub": "2006–2009",
+   "suggestedYear": 2007,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/matt-james/summary.html"
+   ],
+   "note": "2007: 13 apps"
+  },
+  {
+   "id": "bradford-hist-neil-harmon",
+   "name": "Neil Harmon",
+   "club": "Bradford Bulls",
+   "cardYearWas": 1987,
+   "seasonsAtClub": "1998–2000",
+   "suggestedYear": 1999,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/neil-harmon/summary.html"
+   ],
+   "note": "1999: 19 apps"
+  },
+  {
+   "id": "bradford-hist-simon-knox",
+   "name": "Simon Knox",
+   "club": "Bradford Bulls",
+   "cardYearWas": 1990,
+   "seasonsAtClub": "1995/96–1998",
+   "suggestedYear": 1997,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/simon-knox/summary.html"
+   ],
+   "note": "1996: 16, 1997: 17 apps"
+  },
+  {
+   "id": "castleford-hist-alex-foster",
+   "name": "Alex Foster",
+   "club": "Castleford Tigers",
+   "cardYearWas": 2011,
+   "seasonsAtClub": "2017–2021; 2023",
+   "suggestedYear": 2017,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/alex-foster/summary.html"
+   ],
+   "note": "2017: 19 apps"
+  },
+  {
+   "id": "castleford-hist-danny-ellison",
+   "name": "Danny Ellison",
+   "club": "Castleford Tigers",
+   "cardYearWas": 1990,
+   "seasonsAtClub": "1998–1999",
+   "suggestedYear": 1999,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/danny-ellison/summary.html"
+   ],
+   "note": "1999: 15 apps"
+  },
+  {
+   "id": "castleford-hist-jy-hitchcox",
+   "name": "Jy Hitchcox",
+   "club": "Castleford Tigers",
+   "cardYearWas": 2007,
+   "seasonsAtClub": "2016–2018",
+   "suggestedYear": 2017,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jy-hitchcox/summary.html"
+   ],
+   "note": "2017: 10 apps"
+  },
+  {
+   "id": "castleford-hist-oliver-holmes",
+   "name": "Oliver Holmes",
+   "club": "Castleford Tigers",
+   "cardYearWas": 2010,
+   "seasonsAtClub": "2010–2021",
+   "suggestedYear": 2014,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/oliver-holmes/summary.html"
+   ],
+   "note": "2014: 32 apps"
+  },
+  {
+   "id": "castleford-hist-tyla-hepi",
+   "name": "Tyla Hepi",
+   "club": "Castleford Tigers",
+   "cardYearWas": 2011,
+   "seasonsAtClub": "2020–2022",
+   "suggestedYear": 2021,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tyla-hepi/summary.html"
+   ],
+   "note": "2021: 11 apps"
+  },
+  {
+   "id": "catalans-hist-fouad-yaha",
+   "name": "Fouad Yaha",
+   "club": "Catalans Dragons",
+   "cardYearWas": 2014,
+   "seasonsAtClub": "2015–2025",
+   "suggestedYear": 2022,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/fouad-yaha/summary.html"
+   ],
+   "note": "2022: 25 apps"
+  },
+  {
+   "id": "catalans-hist-julien-touxagas",
+   "name": "Julien Touxagas",
+   "club": "Catalans Dragons",
+   "cardYearWas": 2002,
+   "seasonsAtClub": "2006–2011",
+   "suggestedYear": 2007,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/julien-touxagas/summary.html"
+   ],
+   "note": "2007: 20 apps"
+  },
+  {
+   "id": "catalans-hist-mathias-pala",
+   "name": "Mathias Pala",
+   "club": "Catalans Dragons",
+   "cardYearWas": 2007,
+   "seasonsAtClub": "2011–2015",
+   "suggestedYear": 2013,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/mathias-pala/summary.html"
+   ],
+   "note": "2013: 14 apps"
+  },
+  {
+   "id": "catalans-hist-mathieu-griffi",
+   "name": "Mathieu Griffi",
+   "club": "Catalans Dragons",
+   "cardYearWas": 2001,
+   "seasonsAtClub": "2006–2008",
+   "suggestedYear": 2007,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/mathieu-griffi/summary.html"
+   ],
+   "note": "2007: 19 apps"
+  },
+  {
+   "id": "halifax-hist-wayne-godwin",
+   "name": "Wayne Godwin",
+   "club": "Halifax",
+   "cardYearWas": 2000,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/wayne-godwin/summary.html"
+   ],
+   "note": "RLP: Castleford 2001–04, Wigan 2005–06, Hull FC 2007, Bradford 2008–10, Salford 2011–13 and 2015, Dewsbury 2014–15. No Halifax seasons."
+  },
+  {
+   "id": "huddersfield-hist-jacob-fairbank",
+   "name": "Jacob Fairbank",
+   "club": "Huddersfield Giants",
+   "cardYearWas": 2008,
+   "seasonsAtClub": "2011–2015",
+   "suggestedYear": 2012,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jacob-fairbank/summary.html"
+   ],
+   "note": "2012: 7 apps (only 1–7 per season; his main club is Halifax 2015–)"
+  },
+  {
+   "id": "huddersfield-hist-josh-johnson",
+   "name": "Josh Johnson",
+   "club": "Huddersfield Giants",
+   "cardYearWas": 2012,
+   "seasonsAtClub": "2013–2016",
+   "suggestedYear": 2016,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/josh-johnson/summary.html"
+   ],
+   "note": "2016: 17 apps"
+  },
+  {
+   "id": "huddersfield-hist-matt-gardner",
+   "name": "Matt Gardner",
+   "club": "Huddersfield Giants",
+   "cardYearWas": 2002,
+   "seasonsAtClub": "2006–2007",
+   "suggestedYear": 2006,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/matt-gardner/summary.html"
+   ],
+   "note": "2006: 15 apps"
+  },
+  {
+   "id": "huddersfield-hist-rod-jensen",
+   "name": "Rod Jensen",
+   "club": "Huddersfield Giants",
+   "cardYearWas": 1997,
+   "seasonsAtClub": "2007–2008",
+   "suggestedYear": 2008,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/rod-jensen/summary.html"
+   ],
+   "note": "2008: 19 apps"
+  },
+  {
+   "id": "hull-fc-hist-alex-wilkinson",
+   "name": "Alex Wilkinson",
+   "club": "Hull FC",
+   "cardYearWas": 2000,
+   "seasonsAtClub": "2003–2004",
+   "suggestedYear": 2003,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/alex-wilkinson/summary.html"
+   ],
+   "note": "2003: 12 apps"
+  },
+  {
+   "id": "hull-fc-hist-andrew-hick",
+   "name": "Andrew Hick",
+   "club": "Hull FC",
+   "cardYearWas": 1989,
+   "seasonsAtClub": "2000",
+   "suggestedYear": 2000,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/andrew-hick/summary.html"
+   ],
+   "note": "2000: 16 apps"
+  },
+  {
+   "id": "hull-fc-hist-andy-last",
+   "name": "Andy Last",
+   "club": "Hull FC",
+   "cardYearWas": 1999,
+   "seasonsAtClub": "1999–2005",
+   "suggestedYear": 2003,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/andy-last/summary.html"
+   ],
+   "note": "2003: 17 apps"
+  },
+  {
+   "id": "hull-fc-hist-craig-poucher",
+   "name": "Craig Poucher",
+   "club": "Hull FC",
+   "cardYearWas": 1998,
+   "seasonsAtClub": "1999–2002",
+   "suggestedYear": 1999,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/craig-poucher/summary.html"
+   ],
+   "note": "1999 (Hull Sharks): 17 apps"
+  },
+  {
+   "id": "hull-fc-hist-jordan-abdull",
+   "name": "Jordan Abdull",
+   "club": "Hull FC",
+   "cardYearWas": 2014,
+   "seasonsAtClub": "2014–2016; 2018",
+   "suggestedYear": 2015,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jordan-abdull/summary.html"
+   ],
+   "note": "2015: 20 apps"
+  },
+  {
+   "id": "hull-fc-hist-mike-burnett",
+   "name": "Mike Burnett",
+   "club": "Hull FC",
+   "cardYearWas": 2006,
+   "seasonsAtClub": "2008–2010",
+   "suggestedYear": 2009,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/mike-burnett/summary.html"
+   ],
+   "note": "2009: 17 apps"
+  },
+  {
+   "id": "hull-fc-hist-richard-fletcher",
+   "name": "Richard Fletcher",
+   "club": "Hull FC",
+   "cardYearWas": 1999,
+   "seasonsAtClub": "1999–2004",
+   "suggestedYear": 2003,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/richard-fletcher/summary.html"
+   ],
+   "note": "2003: 18 apps"
+  },
+  {
+   "id": "hull-fc-hist-tommy-lee",
+   "name": "Tommy Lee",
+   "club": "Hull FC",
+   "cardYearWas": 2006,
+   "seasonsAtClub": "2005–2009",
+   "suggestedYear": 2008,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tommy-lee/summary.html"
+   ],
+   "note": "2008: 25 apps"
+  },
+  {
+   "id": "hull-kr-hist-chaz-i-anson",
+   "name": "Chaz I'anson",
+   "club": "Hull KR",
+   "cardYearWas": 2004,
+   "seasonsAtClub": "2007–2010",
+   "suggestedYear": 2009,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/chaz-ianson/summary.html"
+   ],
+   "note": "2009: 15 apps"
+  },
+  {
+   "id": "hull-kr-hist-dane-tilse",
+   "name": "Dane Tilse",
+   "club": "Hull KR",
+   "cardYearWas": 2003,
+   "seasonsAtClub": "2015–2016",
+   "suggestedYear": 2016,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/dane-tilse/summary.html"
+   ],
+   "note": "2016: 32 apps"
+  },
+  {
+   "id": "hull-kr-hist-john-boudebza",
+   "name": "John Boudebza",
+   "club": "Hull KR",
+   "cardYearWas": 2008,
+   "seasonsAtClub": "2015–2016",
+   "suggestedYear": 2015,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/john-boudebza/summary.html"
+   ],
+   "note": "2015: 27 apps"
+  },
+  {
+   "id": "hull-kr-hist-josh-mantellato",
+   "name": "Josh Mantellato",
+   "club": "Hull KR",
+   "cardYearWas": 2005,
+   "seasonsAtClub": "2015–2016",
+   "suggestedYear": 2015,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/josh-mantellato/summary.html"
+   ],
+   "note": "2015: 32 apps"
+  },
+  {
+   "id": "hull-kr-hist-thomas-minns",
+   "name": "Thomas Minns",
+   "club": "Hull KR",
+   "cardYearWas": 2012,
+   "seasonsAtClub": "2016–2018",
+   "suggestedYear": 2016,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/thomas-minns/summary.html"
+   ],
+   "note": "2016: 23 apps"
+  },
+  {
+   "id": "leeds-hist-dean-lawford",
+   "name": "Dean Lawford",
+   "club": "Leeds Rhinos",
+   "cardYearWas": 1995,
+   "seasonsAtClub": "1997–2000",
+   "suggestedYear": 2000,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/dean-lawford/summary.html"
+   ],
+   "note": "2000: 11 apps (1997: 10)"
+  },
+  {
+   "id": "leeds-hist-josh-walters",
+   "name": "Josh Walters",
+   "club": "Leeds Rhinos",
+   "cardYearWas": 2012,
+   "seasonsAtClub": "2014–2018",
+   "suggestedYear": 2018,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/josh-walters/summary.html"
+   ],
+   "note": "2018: 19 apps"
+  },
+  {
+   "id": "leeds-hist-liam-botham",
+   "name": "Liam Botham",
+   "club": "Leeds Rhinos",
+   "cardYearWas": 1995,
+   "seasonsAtClub": "2003–2005",
+   "suggestedYear": 2005,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/liam-botham/summary.html"
+   ],
+   "note": "2005: 13 apps"
+  },
+  {
+   "id": "leeds-hist-richard-mathers",
+   "name": "Richie Mathers",
+   "club": "Leeds Rhinos",
+   "cardYearWas": 2001,
+   "seasonsAtClub": "2002–2006",
+   "suggestedYear": 2005,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/richard-mathers/summary.html"
+   ],
+   "note": "2005: 35 apps"
+  },
+  {
+   "id": "hull-kr-hist-mark-o-neill",
+   "name": "Mark O'neill",
+   "club": "Hull KR",
+   "cardYearWas": 1993,
+   "seasonsAtClub": "2007",
+   "suggestedYear": 2007,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/mark-o-neill/summary.html"
+   ],
+   "note": "2007: 17 apps (Leeds 2006)"
+  },
+  {
+   "id": "leigh-hist-craig-stapleton",
+   "name": "Craig Stapleton",
+   "club": "Leigh Leopards",
+   "cardYearWas": 1996,
+   "seasonsAtClub": "2005",
+   "suggestedYear": 2005,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/craig-stapleton/summary.html"
+   ],
+   "note": "2005: 31 apps"
+  },
+  {
+   "id": "leigh-hist-mark-leafa",
+   "name": "Mark Leafa",
+   "club": "Leigh Leopards",
+   "cardYearWas": 1998,
+   "seasonsAtClub": "2005",
+   "suggestedYear": 2005,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/mark-leafa/summary.html"
+   ],
+   "note": "2005: 31 apps"
+  },
+  {
+   "id": "leigh-hist-steve-maden",
+   "name": "Steve Maden",
+   "club": "Leigh Leopards",
+   "cardYearWas": 2000,
+   "seasonsAtClub": "2004–2005; 2008–2014",
+   "suggestedYear": 2010,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/steve-maden/summary.html"
+   ],
+   "note": "29 apps in each of 2010, 2011 and 2013"
+  },
+  {
+   "id": "london-hist-ben-farrar",
+   "name": "Ben Farrar",
+   "club": "London Broncos",
+   "cardYearWas": 2004,
+   "seasonsAtClub": "2014–2015",
+   "suggestedYear": 2014,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/ben-farrar/summary.html"
+   ],
+   "note": "2014: 23 apps"
+  },
+  {
+   "id": "london-hist-iliess-macani",
+   "name": "Iliess Macani",
+   "club": "London Broncos",
+   "cardYearWas": 2011,
+   "seasonsAtClub": "2013–2016; 2022–2024",
+   "suggestedYear": 2015,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/iliess-macani/summary.html"
+   ],
+   "note": "30 apps in both 2015 and 2023"
+  },
+  {
+   "id": "london-hist-lamont-bryan",
+   "name": "Lamont Bryan",
+   "club": "London Broncos",
+   "cardYearWas": 2006,
+   "seasonsAtClub": "2008–2011 (as Harlequins RL)",
+   "suggestedYear": 2010,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/lamont-bryan/summary.html"
+   ],
+   "note": "2010: 14 apps"
+  },
+  {
+   "id": "london-hist-marcus-stock",
+   "name": "Marcus Stock",
+   "club": "London Broncos",
+   "cardYearWas": 2014,
+   "seasonsAtClub": "2023–2026",
+   "suggestedYear": 2023,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/marcus-stock/summary.html"
+   ],
+   "note": "2023: 33 apps"
+  },
+  {
+   "id": "london-hist-rhys-kennedy",
+   "name": "Rhys Kennedy",
+   "club": "London Broncos",
+   "cardYearWas": 2012,
+   "seasonsAtClub": "2024",
+   "suggestedYear": 2024,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/rhys-kennedy/summary.html"
+   ],
+   "note": "2024: 27 apps"
+  },
+  {
+   "id": "london-hist-tommy-haughey",
+   "name": "Tommy Haughey",
+   "club": "London Broncos",
+   "cardYearWas": 2000,
+   "seasonsAtClub": "2003–2004",
+   "suggestedYear": 2004,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tommy-haughey/summary.html"
+   ],
+   "note": "2004: 15 apps"
+  },
+  {
+   "id": "london-hist-hakim-miloudi",
+   "name": "Hakim Miloudi",
+   "club": "London Broncos",
+   "cardYearWas": 2011,
+   "seasonsAtClub": "2024",
+   "suggestedYear": 2024,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Hakim_Miloudi"
+   ],
+   "note": "2024: 16 apps"
+  },
+  {
+   "id": "london-hist-tony-martin",
+   "name": "Tony Martin",
+   "club": "London Broncos",
+   "cardYearWas": 1996,
+   "seasonsAtClub": "1996–1997; 2001–2003",
+   "suggestedYear": 2002,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tony-martin/summary.html"
+   ],
+   "note": "2002: 30 apps"
+  },
+  {
+   "id": "oldham-hist-adrian-belle",
+   "name": "Adrian Belle",
+   "club": "Oldham RLFC",
+   "cardYearWas": 1988,
+   "seasonsAtClub": "1993/94–1996",
+   "suggestedYear": 1996,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/adrian-belle/summary.html"
+   ],
+   "note": "1996: 20 apps (the only Super League-era Oldham season)"
+  },
+  {
+   "id": "oldham-hist-darren-abram",
+   "name": "Darren Abram",
+   "club": "Oldham RLFC",
+   "cardYearWas": 1985,
+   "seasonsAtClub": "1992/93–1997",
+   "suggestedYear": 1996,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/darren-abram/summary.html"
+   ],
+   "note": "16 apps in both 1996 and 1997"
+  },
+  {
+   "id": "oldham-hist-howard-hill",
+   "name": "Howard Hill",
+   "club": "Oldham RLFC",
+   "cardYearWas": 1993,
+   "seasonsAtClub": "1994/95–1997",
+   "suggestedYear": 1997,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/howard-hill/summary.html"
+   ],
+   "note": "1997: 29 apps"
+  },
+  {
+   "id": "oldham-hist-jason-temu",
+   "name": "Jason Temu",
+   "club": "Oldham RLFC",
+   "cardYearWas": 1990,
+   "seasonsAtClub": "1994/95–1997",
+   "suggestedYear": 1996,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jason-temu/summary.html"
+   ],
+   "note": "1996: 17 apps (1997: 14)"
+  },
+  {
+   "id": "oldham-hist-luke-goodwin",
+   "name": "Luke Goodwin",
+   "club": "Oldham RLFC",
+   "cardYearWas": 1991,
+   "seasonsAtClub": "1997",
+   "suggestedYear": 1997,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/luke-goodwin/summary.html"
+   ],
+   "note": "1997: 26 apps"
+  },
+  {
+   "id": "oldham-hist-martin-crompton",
+   "name": "Martin Crompton",
+   "club": "Oldham RLFC",
+   "cardYearWas": 1987,
+   "seasonsAtClub": "1993/94–1997",
+   "suggestedYear": 1997,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/martin-crompton/summary.html"
+   ],
+   "note": "1997: 25 apps"
+  },
+  {
+   "id": "oldham-hist-matt-munro",
+   "name": "Matt Munro",
+   "club": "Oldham RLFC",
+   "cardYearWas": 1989,
+   "seasonsAtClub": "1996–1997",
+   "suggestedYear": 1996,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/matt-munro/summary.html"
+   ],
+   "note": "1996: 19 apps"
+  },
+  {
+   "id": "oldham-hist-paul-topping",
+   "name": "Paul Topping",
+   "club": "Oldham RLFC",
+   "cardYearWas": 1983,
+   "seasonsAtClub": "1993/94–1997",
+   "suggestedYear": 1996,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/paul-topping/summary.html"
+   ],
+   "note": "1996: 22 apps"
+  },
+  {
+   "id": "psg-hist-didier-cabestany",
+   "name": "Didier Cabestany",
+   "club": "Paris Saint-Germain RL",
+   "cardYearWas": 1987,
+   "seasonsAtClub": "1996–1997",
+   "suggestedYear": 1996,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/didier-cabestany/summary.html"
+   ],
+   "note": "1996: 20 apps"
+  },
+  {
+   "id": "psg-hist-fabien-devecchi",
+   "name": "Fabien Devecchi",
+   "club": "Paris Saint-Germain RL",
+   "cardYearWas": 1993,
+   "seasonsAtClub": "1996–1997",
+   "suggestedYear": 1996,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/fabien-devecchi/summary.html"
+   ],
+   "note": "1996: 18 apps"
+  },
+  {
+   "id": "psg-hist-jason-sands",
+   "name": "Jason Sands",
+   "club": "Paris Saint-Germain RL",
+   "cardYearWas": 1989,
+   "seasonsAtClub": "1996–1997",
+   "suggestedYear": 1996,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jason-sands/summary.html"
+   ],
+   "note": "1996: 17 apps"
+  },
+  {
+   "id": "psg-hist-martin-hall",
+   "name": "Martin Hall",
+   "club": "Paris Saint-Germain RL",
+   "cardYearWas": 1986,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/martin-hall/summary.html"
+   ],
+   "note": "The Martin Hall born 1968 never played for PSG. RLP: Oldham, Rochdale, Wigan 1992–97, Castleford/Halifax 1998, Hull 1999. His Wigan 1996 season (26 apps) would be the natural card."
+  },
+  {
+   "id": "psg-hist-pierre-chamorin",
+   "name": "Pierre Chamorin",
+   "club": "Paris Saint-Germain RL",
+   "cardYearWas": 1988,
+   "seasonsAtClub": "1996–1997",
+   "suggestedYear": 1997,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/pierre-chamorin/summary.html"
+   ],
+   "note": "1997: 19 apps"
+  },
+  {
+   "id": "salford-hist-daniel-murray",
+   "name": "Daniel Murray",
+   "club": "Salford Red Devils",
+   "cardYearWas": 2014,
+   "seasonsAtClub": "2017–2019",
+   "suggestedYear": 2018,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/daniel-murray/summary.html"
+   ],
+   "note": "2018: 13 apps"
+  },
+  {
+   "id": "salford-hist-jason-walton",
+   "name": "Jason Walton",
+   "club": "Salford Red Devils",
+   "cardYearWas": 2008,
+   "seasonsAtClub": "2008–2009; 2014–2015",
+   "suggestedYear": 2014,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jason-walton/summary.html"
+   ],
+   "note": "2014: 14 apps"
+  },
+  {
+   "id": "salford-hist-stephen-nash",
+   "name": "Stephen Nash",
+   "club": "Salford Red Devils",
+   "cardYearWas": 2004,
+   "seasonsAtClub": "2007–2009",
+   "suggestedYear": 2009,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/stephen-nash/summary.html"
+   ],
+   "note": "2007: 10 apps, 2009: 11 apps; the 2008 count was not shown"
+  },
+  {
+   "id": "sheffield-hist-daio-powell",
+   "name": "Daio Powell",
+   "club": "Sheffield Eagles",
+   "cardYearWas": 1991,
+   "seasonsAtClub": "1999",
+   "suggestedYear": 1999,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/daio-powell/summary.html"
+   ],
+   "note": "1999: 15 apps"
+  },
+  {
+   "id": "sheffield-hist-danny-mcallister",
+   "name": "Danny Mcallister",
+   "club": "Sheffield Eagles",
+   "cardYearWas": 1992,
+   "seasonsAtClub": "1995/96–1997",
+   "suggestedYear": 1997,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/danny-mcallister/summary.html"
+   ],
+   "note": "1997: 28 apps"
+  },
+  {
+   "id": "sheffield-hist-david-mycoe",
+   "name": "David Mycoe",
+   "club": "Sheffield Eagles",
+   "cardYearWas": 1990,
+   "seasonsAtClub": "1989/90–1997",
+   "suggestedYear": 1997,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/david-mycoe/summary.html"
+   ],
+   "note": "1997: 22 apps"
+  },
+  {
+   "id": "sheffield-hist-gareth-stephens",
+   "name": "Gareth Stephens",
+   "club": "Sheffield Eagles",
+   "cardYearWas": 1992,
+   "seasonsAtClub": "1997–1999",
+   "suggestedYear": 1999,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/gareth-stephens/summary.html"
+   ],
+   "note": "1999: 16 apps"
+  },
+  {
+   "id": "sheffield-hist-jean-marc-garcia",
+   "name": "Jean-Marc Garcia",
+   "club": "Sheffield Eagles",
+   "cardYearWas": 1989,
+   "seasonsAtClub": "1995/96–1997",
+   "suggestedYear": 1996,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jean-marc-garcia/summary.html"
+   ],
+   "note": "23 apps in both 1996 and 1997"
+  },
+  {
+   "id": "sheffield-hist-jeff-hardy",
+   "name": "Jeff Hardy",
+   "club": "Sheffield Eagles",
+   "cardYearWas": 1984,
+   "seasonsAtClub": "1999 (also 1989/90)",
+   "suggestedYear": 1999,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jeff-hardy/summary.html"
+   ],
+   "note": "1999: 27 apps"
+  },
+  {
+   "id": "sheffield-hist-martin-pearson",
+   "name": "Martin Pearson",
+   "club": "Sheffield Eagles",
+   "cardYearWas": 1989,
+   "seasonsAtClub": "1999",
+   "suggestedYear": 1999,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/martin-pearson/summary.html"
+   ],
+   "note": "1999: 25 apps"
+  },
+  {
+   "id": "sheffield-hist-steve-molloy",
+   "name": "Steve Molloy",
+   "club": "Sheffield Eagles",
+   "cardYearWas": 1987,
+   "seasonsAtClub": "1998–1999",
+   "suggestedYear": 1999,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/steve-molloy/summary.html"
+   ],
+   "note": "1999: 28 apps"
+  },
+  {
+   "id": "sheffield-hist-willie-morganson",
+   "name": "Willie Morganson",
+   "club": "Sheffield Eagles",
+   "cardYearWas": 1990,
+   "seasonsAtClub": "1997–1998",
+   "suggestedYear": 1997,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/willie-morganson/summary.html"
+   ],
+   "note": "1997: 20 apps"
+  },
+  {
+   "id": "st-helens-hist-andrew-dixon",
+   "name": "Andrew Dixon",
+   "club": "St Helens",
+   "cardYearWas": 2008,
+   "seasonsAtClub": "2009–2012",
+   "suggestedYear": 2012,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/andrew-dixon/summary.html"
+   ],
+   "note": "2012: 20 apps"
+  },
+  {
+   "id": "st-helens-hist-andy-leathem",
+   "name": "Andy Leathem",
+   "club": "St Helens",
+   "cardYearWas": 1995,
+   "seasonsAtClub": "1996–1998",
+   "suggestedYear": 1997,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/andy-leathem/summary.html"
+   ],
+   "note": "1997: 19 apps"
+  },
+  {
+   "id": "st-helens-hist-ant-walker",
+   "name": "Ant Walker",
+   "club": "St Helens",
+   "cardYearWas": 2009,
+   "seasonsAtClub": "2013–2014",
+   "suggestedYear": 2013,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/ant-walker/summary.html"
+   ],
+   "note": "2013: 9 apps"
+  },
+  {
+   "id": "st-helens-hist-dan-norman",
+   "name": "Dan Norman",
+   "club": "St Helens",
+   "cardYearWas": 2015,
+   "seasonsAtClub": "2021–2023",
+   "suggestedYear": 2022,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/dan-norman/summary.html"
+   ],
+   "note": "2022: 12 apps"
+  },
+  {
+   "id": "st-helens-hist-dwayne-west",
+   "name": "Dwayne West",
+   "club": "St Helens",
+   "cardYearWas": 1998,
+   "seasonsAtClub": "2000–2002",
+   "suggestedYear": 2000,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/dwayne-west/summary.html"
+   ],
+   "note": "2000: 11 apps"
+  },
+  {
+   "id": "st-helens-hist-heath-cruckshank",
+   "name": "Heath Cruckshank",
+   "club": "St Helens",
+   "cardYearWas": 1994,
+   "seasonsAtClub": "2001",
+   "suggestedYear": 2001,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/heath-cruckshank/summary.html"
+   ],
+   "note": "2001: 13 apps"
+  },
+  {
+   "id": "st-helens-hist-joey-hayes",
+   "name": "Joey Hayes",
+   "club": "St Helens",
+   "cardYearWas": 1994,
+   "seasonsAtClub": "1995/96–1998",
+   "suggestedYear": 1996,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/joey-hayes/summary.html"
+   ],
+   "note": "1996: 12 apps"
+  },
+  {
+   "id": "st-helens-hist-john-kirkpatrick",
+   "name": "John Kirkpatrick",
+   "club": "St Helens",
+   "cardYearWas": 1997,
+   "seasonsAtClub": "2001–2003",
+   "suggestedYear": 2002,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/john-kirkpatrick/summary.html"
+   ],
+   "note": "2002: 10 apps"
+  },
+  {
+   "id": "st-helens-hist-josh-jones",
+   "name": "Josh Jones",
+   "club": "St Helens",
+   "cardYearWas": 2011,
+   "seasonsAtClub": "2012–2015",
+   "suggestedYear": 2013,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/josh-jones/summary.html"
+   ],
+   "note": "2013: 30 apps"
+  },
+  {
+   "id": "st-helens-hist-matty-fleming",
+   "name": "Matty Fleming",
+   "club": "St Helens",
+   "cardYearWas": 2014,
+   "seasonsAtClub": "2015–2017",
+   "suggestedYear": 2016,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/matty-fleming/summary.html"
+   ],
+   "note": "2016: 9 apps"
+  },
+  {
+   "id": "st-helens-hist-shannon-mcdonnell",
+   "name": "Shannon Mcdonnell",
+   "club": "St Helens",
+   "cardYearWas": 2005,
+   "seasonsAtClub": "2014–2016",
+   "suggestedYear": 2016,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/shannon-mcdonnell/summary.html"
+   ],
+   "note": "2016: 18 apps"
+  },
+  {
+   "id": "st-helens-hist-tim-jonkers",
+   "name": "Tim Jonkers",
+   "club": "St Helens",
+   "cardYearWas": 1999,
+   "seasonsAtClub": "1999–2004",
+   "suggestedYear": 2001,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tim-jonkers/summary.html"
+   ],
+   "note": "2001: 37 apps"
+  },
+  {
+   "id": "st-helens-hist-william-hopoate",
+   "name": "William Hopoate",
+   "club": "St Helens",
+   "cardYearWas": 2010,
+   "seasonsAtClub": "2022–2023",
+   "suggestedYear": 2023,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/william-hopoate/summary.html"
+   ],
+   "note": "2023: 19 apps"
+  },
+  {
+   "id": "st-helens-hist-matty-dawson-jones",
+   "name": "Matty Dawson-Jones",
+   "club": "St Helens",
+   "cardYearWas": 2008,
+   "seasonsAtClub": "2014–2016",
+   "suggestedYear": 2015,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Matty_Dawson-Jones"
+   ],
+   "note": "50 St Helens apps over 2014–16; no per-season split available, so 2015 (middle season) was picked"
+  },
+  {
+   "id": "wakefield-hist-alan-hunte",
+   "name": "Alan Hunte",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1988,
+   "seasonsAtClub": "1988/89 only (pre-Super League)",
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/alan-hunte/summary.html"
+   ],
+   "note": "Played 2 games for Wakefield in 1988/89 and none from 1996.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1999–2001",
+    "year": 1999,
+    "apps": 32
+   }
+  },
+  {
+   "id": "wakefield-hist-allan-langer",
+   "name": "Allan Langer",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1984,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/allan-langer/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2000–2001",
+    "year": 2000,
+    "apps": 32
+   }
+  },
+  {
+   "id": "wakefield-hist-andrew-gee",
+   "name": "Andrew Gee",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1988,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/andrew-gee/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2000–2001",
+    "year": 2000,
+    "apps": 31
+   }
+  },
+  {
+   "id": "wakefield-hist-andy-hodgson",
+   "name": "Andy Hodgson",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1994,
+   "seasonsAtClub": "1999",
+   "suggestedYear": 1999,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/andy-hodgson/summary.html"
+   ],
+   "note": "1999: 19 apps"
+  },
+  {
+   "id": "wakefield-hist-ashton-sims",
+   "name": "Ashton Sims",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2003,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/ashton-sims/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2015–2017",
+    "year": 2016,
+    "apps": 33
+   }
+  },
+  {
+   "id": "wakefield-hist-ben-evans",
+   "name": "Ben Evans",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2010,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/ben-evans/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2014–2015",
+    "year": 2014,
+    "apps": 18
+   }
+  },
+  {
+   "id": "wakefield-hist-ben-harrison",
+   "name": "Ben Harrison",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2006,
+   "seasonsAtClub": "2016",
+   "suggestedYear": 2016,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/ben-harrison/summary.html"
+   ],
+   "note": "Wakefield 2016 had only 3 apps; he was mainly a Warrington player.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2006–2015",
+    "year": 2010,
+    "apps": 32
+   }
+  },
+  {
+   "id": "wakefield-hist-ben-murdoch-masila",
+   "name": "Ben Murdoch-Masila",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2009,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/ben-murdoch-masila/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2018–2020",
+    "year": 2019,
+    "apps": 28
+   }
+  },
+  {
+   "id": "wakefield-hist-brent-grose",
+   "name": "Brent Grose",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1997,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/brent-grose/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2003–2007",
+    "year": 2003,
+    "apps": 30
+   }
+  },
+  {
+   "id": "wakefield-hist-bryson-goodwin",
+   "name": "Bryson Goodwin",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2003,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/bryson-goodwin/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2018–2019",
+    "year": 2018,
+    "apps": 33
+   }
+  },
+  {
+   "id": "wakefield-hist-chris-hill",
+   "name": "Chris Hill",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2005,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/chris-hill/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2012–2021",
+    "year": 2016,
+    "apps": 36
+   }
+  },
+  {
+   "id": "wakefield-hist-chris-leikvoll",
+   "name": "Chris Leikvoll",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1993,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/chris-leikvoll/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2004–2007",
+    "year": 2005,
+    "apps": 26
+   }
+  },
+  {
+   "id": "wakefield-hist-chris-rudd",
+   "name": "Chris Rudd",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1987,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/chris-rudd/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1988/89–1998",
+    "year": 1996,
+    "apps": 24
+   }
+  },
+  {
+   "id": "wakefield-hist-chris-sandow",
+   "name": "Chris Sandow",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2007,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/chris-sandow/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2015–2016",
+    "year": 2016,
+    "apps": 24
+   }
+  },
+  {
+   "id": "wakefield-hist-dale-morton",
+   "name": "Dale Morton",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2008,
+   "seasonsAtClub": "2009–2011",
+   "suggestedYear": 2010,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/dale-morton/summary.html"
+   ],
+   "note": "2010: 13 apps"
+  },
+  {
+   "id": "wakefield-hist-dane-dorahy",
+   "name": "Dane Dorahy",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1995,
+   "seasonsAtClub": "2000–2001",
+   "suggestedYear": 2001,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/dane-dorahy/summary.html"
+   ],
+   "note": "2001: 16 apps"
+  },
+  {
+   "id": "wakefield-hist-danny-farrar",
+   "name": "Danny Farrar",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1986,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/danny-farrar/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1998–2000",
+    "year": 1999,
+    "apps": 31
+   }
+  },
+  {
+   "id": "wakefield-hist-danny-halliwell",
+   "name": "Danny Halliwell",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1999,
+   "seasonsAtClub": "2002",
+   "suggestedYear": 2002,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/danny-halliwell/summary.html"
+   ],
+   "note": "2002: 3 apps for Wakefield (10 for Warrington the same year)",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2002",
+    "year": 2002,
+    "apps": 10
+   }
+  },
+  {
+   "id": "wakefield-hist-danny-nutley",
+   "name": "Danny Nutley",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1992,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/danny-nutley/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1998–2001",
+    "year": 1999,
+    "apps": 28
+   }
+  },
+  {
+   "id": "wakefield-hist-darren-burns",
+   "name": "Darren Burns",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1992,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/darren-burns/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2002–2004",
+    "year": 2003,
+    "apps": 28
+   }
+  },
+  {
+   "id": "wakefield-hist-darryl-cardiss",
+   "name": "Darryl Cardiss",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1995,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/darryl-cardiss/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2003–2004",
+    "year": 2004,
+    "apps": 21
+   }
+  },
+  {
+   "id": "wakefield-hist-david-alstead",
+   "name": "David Alstead",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2000,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/david-alstead/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2000–2002",
+    "year": 2002,
+    "apps": 18
+   }
+  },
+  {
+   "id": "wakefield-hist-david-kidwell",
+   "name": "David Kidwell",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1995,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/david-kidwell/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2001–2002",
+    "year": 2001,
+    "apps": 26
+   }
+  },
+  {
+   "id": "wakefield-hist-dean-busby",
+   "name": "Dean Busby",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1991,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/dean-busby/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1999–2002",
+    "year": 1999,
+    "apps": 23
+   }
+  },
+  {
+   "id": "wakefield-hist-dean-gaskell",
+   "name": "Dean Gaskell",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2001,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/dean-gaskell/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2002–2005",
+    "year": 2004,
+    "apps": 26
+   }
+  },
+  {
+   "id": "wakefield-hist-dec-patton",
+   "name": "Dec Patton",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2013,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/dec-patton/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2015–2020",
+    "year": 2019,
+    "apps": 31
+   }
+  },
+  {
+   "id": "wakefield-hist-gareth-widdop",
+   "name": "Gareth Widdop",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2007,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/gareth-widdop/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2020–2022",
+    "year": 2021,
+    "apps": 20
+   }
+  },
+  {
+   "id": "wakefield-hist-gary-chambers",
+   "name": "Gary Chambers",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1988,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/gary-chambers/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1989/90–2000",
+    "year": 1999,
+    "apps": 30
+   }
+  },
+  {
+   "id": "wakefield-hist-gary-hulse",
+   "name": "Gary Hulse",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1999,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/gary-hulse/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2001–2004",
+    "year": 2004,
+    "apps": 22
+   }
+  },
+  {
+   "id": "wakefield-hist-gene-ormsby",
+   "name": "Gene Ormsby",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2010,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/gene-ormsby/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2014–2016",
+    "year": 2014,
+    "apps": 20
+   }
+  },
+  {
+   "id": "wakefield-hist-george-mann",
+   "name": "George Mann",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1983,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/george-mann/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1997",
+    "year": 1997,
+    "apps": 24
+   }
+  },
+  {
+   "id": "wakefield-hist-jake-mamo",
+   "name": "Jake Mamo",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2012,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jake-mamo/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2019–2021",
+    "year": 2021,
+    "apps": 23
+   }
+  },
+  {
+   "id": "wakefield-hist-james-laithwaite",
+   "name": "James Laithwaite",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2009,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/james-laithwaite/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2013–2015",
+    "year": 2014,
+    "apps": 24
+   }
+  },
+  {
+   "id": "wakefield-hist-jason-roach",
+   "name": "Jason Roach",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1989,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jason-roach/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1998–1999",
+    "year": 1999,
+    "apps": 25
+   }
+  },
+  {
+   "id": "wakefield-hist-john-duffy",
+   "name": "John Duffy",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1998,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/john-duffy/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1997–1999",
+    "year": 1999,
+    "apps": 12
+   }
+  },
+  {
+   "id": "wakefield-hist-jon-roper",
+   "name": "Jon Roper",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1994,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jon-roper/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1993/94–2000",
+    "year": 1997,
+    "apps": 30
+   }
+  },
+  {
+   "id": "wakefield-hist-kelly-shelford",
+   "name": "Kelly Shelford",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1984,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/kelly-shelford/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1991/92–1997",
+    "year": 1997,
+    "apps": 28
+   }
+  },
+  {
+   "id": "wakefield-hist-lachlan-fitzgibbon",
+   "name": "Lachlan Fitzgibbon",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2012,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/lachlan-fitzgibbon/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2024–2025",
+    "year": 2025,
+    "apps": 24
+   }
+  },
+  {
+   "id": "wakefield-hist-kevin-crouthers",
+   "name": "Kevin Crouthers",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1994,
+   "seasonsAtClub": "1999",
+   "suggestedYear": 1999,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/kevin-crouthers/summary.html"
+   ],
+   "note": "1999: 11 apps"
+  },
+  {
+   "id": "wakefield-hist-kevin-penny",
+   "name": "Kevin Penny",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2005,
+   "seasonsAtClub": "2011",
+   "suggestedYear": 2011,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/kevin-penny/summary.html"
+   ],
+   "note": "Wakefield 2011 had only 5 apps; he was mainly a Warrington player.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2006–2009; 2014–2017",
+    "year": 2008,
+    "apps": 24
+   }
+  },
+  {
+   "id": "wakefield-hist-kyle-trout",
+   "name": "Kyle Trout",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2009,
+   "seasonsAtClub": "2012–2015",
+   "suggestedYear": 2012,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/kyle-trout/summary.html"
+   ],
+   "note": "2012: 11 apps"
+  },
+  {
+   "id": "wakefield-hist-lee-mitchell",
+   "name": "Lee Mitchell",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2006,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/lee-mitchell/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2007–2011",
+    "year": 2009,
+    "apps": 15
+   }
+  },
+  {
+   "id": "wakefield-hist-lee-penny",
+   "name": "Lee Penny",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1992,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/lee-penny/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1992/93–2003",
+    "year": 1999,
+    "apps": 31
+   }
+  },
+  {
+   "id": "wakefield-hist-logan-swann",
+   "name": "Logan Swann",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1993,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/logan-swann/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2005–2006",
+    "year": 2006,
+    "apps": 27
+   }
+  },
+  {
+   "id": "wakefield-hist-mark-forster",
+   "name": "Mark Forster",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1982,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/mark-forster/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1982/83–2000",
+    "year": 1999,
+    "apps": 32
+   }
+  },
+  {
+   "id": "wakefield-hist-mark-gleeson",
+   "name": "Mark Gleeson",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2000,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/mark-gleeson/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2000–2008",
+    "year": 2005,
+    "apps": 28
+   }
+  },
+  {
+   "id": "wakefield-hist-mark-hilton",
+   "name": "Mark Hilton",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1993,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/mark-hilton/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1993/94–2006",
+    "year": 2002,
+    "apps": 30
+   }
+  },
+  {
+   "id": "wakefield-hist-matt-dufty",
+   "name": "Matt Dufty",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2014,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/matt-dufty/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2022–2025",
+    "year": 2023,
+    "apps": 30
+   }
+  },
+  {
+   "id": "wakefield-hist-matt-king",
+   "name": "Matt King",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1998,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/matt-king/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2008–2011",
+    "year": 2010,
+    "apps": 31
+   }
+  },
+  {
+   "id": "wakefield-hist-michael-sullivan",
+   "name": "Michael Sullivan",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1998,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/michael-sullivan/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2006–2007",
+    "year": 2006,
+    "apps": 28
+   }
+  },
+  {
+   "id": "wakefield-hist-mike-wainwright",
+   "name": "Mike Wainwright",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1993,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/mike-wainwright/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1994/95–1999; 2003–2007",
+    "year": 1999,
+    "apps": 31
+   }
+  },
+  {
+   "id": "wakefield-hist-paul-marquet",
+   "name": "Paul Marquet",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1987,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/paul-marquet/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2002",
+    "year": 2002,
+    "apps": 26
+   }
+  },
+  {
+   "id": "wakefield-hist-nathan-wood",
+   "name": "Nathan Wood",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1990,
+   "seasonsAtClub": "2002",
+   "suggestedYear": 2002,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/nathan-wood/summary.html"
+   ],
+   "note": "2002: 14 apps for Wakefield (and 14 for Warrington); mainly a Warrington player",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2002–2005",
+    "year": 2003,
+    "apps": 29
+   }
+  },
+  {
+   "id": "wakefield-hist-paul-noone",
+   "name": "Paul Noone",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1999,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/paul-noone/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2000–2006",
+    "year": 2003,
+    "apps": 26
+   }
+  },
+  {
+   "id": "wakefield-hist-rhys-evans",
+   "name": "Rhys Evans",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2010,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/rhys-evans/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2010–2017",
+    "year": 2016,
+    "apps": 34
+   }
+  },
+  {
+   "id": "wakefield-hist-richard-myler",
+   "name": "Richard Myler",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2008,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/richard-myler/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2010–2015",
+    "year": 2011,
+    "apps": 27
+   }
+  },
+  {
+   "id": "wakefield-hist-rob-smyth",
+   "name": "Rob Smyth",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1995,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/rob-smyth/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2000–2003",
+    "year": 2001,
+    "apps": 26
+   }
+  },
+  {
+   "id": "wakefield-hist-salesi-finau",
+   "name": "Salesi Finau",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1991,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/salesi-finau/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1995/96–1997",
+    "year": 1997,
+    "apps": 26
+   }
+  },
+  {
+   "id": "wakefield-hist-scott-wilson",
+   "name": "Scott Wilson",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1988,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/scott-wilson/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1998–1999",
+    "year": 1999,
+    "apps": 27
+   }
+  },
+  {
+   "id": "wakefield-hist-simon-grix",
+   "name": "Simon Grix",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2003,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/simon-grix/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2006–2014",
+    "year": 2013,
+    "apps": 32
+   }
+  },
+  {
+   "id": "wakefield-hist-steve-mccurrie",
+   "name": "Steve Mccurrie",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1991,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/steve-mccurrie/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1998–2001",
+    "year": 2000,
+    "apps": 31
+   }
+  },
+  {
+   "id": "wakefield-hist-steve-pickersgill",
+   "name": "Steve Pickersgill",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2003,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/steve-pickersgill/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2005–2009",
+    "year": 2007,
+    "apps": 14
+   }
+  },
+  {
+   "id": "wakefield-hist-tawera-nikau",
+   "name": "Tawera Nikau",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1985,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tawera-nikau/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2000–2001",
+    "year": 2000,
+    "apps": 31
+   }
+  },
+  {
+   "id": "wakefield-hist-toa-kohe-love",
+   "name": "Toa Kohe-Love",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1994,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/toa-kohe-love/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1996–2001; 2005–2006",
+    "year": 1999,
+    "apps": 33
+   }
+  },
+  {
+   "id": "wakefield-hist-trent-waterhouse",
+   "name": "Trent Waterhouse",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1999,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/trent-waterhouse/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2012–2014",
+    "year": 2012,
+    "apps": 31
+   }
+  },
+  {
+   "id": "wakefield-hist-tyrone-roberts",
+   "name": "Tyrone Roberts",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2009,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tyrone-roberts/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2018",
+    "year": 2018,
+    "apps": 33
+   }
+  },
+  {
+   "id": "wakefield-hist-warren-stevens",
+   "name": "Warren Stevens",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1996,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/warren-stevens/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1996–1999; 2002–2005",
+    "year": 1997,
+    "apps": 25
+   }
+  },
+  {
+   "id": "wakefield-hist-willie-swann",
+   "name": "Willie Swann",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1992,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/willie-swann/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "1996–1997",
+    "year": 1997,
+    "apps": 21
+   }
+  },
+  {
+   "id": "wakefield-hist-zane-musgrove",
+   "name": "Zane Musgrove",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2014,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/zane-musgrove/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2024–2025",
+    "year": 2024,
+    "apps": 28
+   }
+  },
+  {
+   "id": "wakefield-leg-stefan-ratchford",
+   "name": "Stefan Ratchford",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 2006,
+   "seasonsAtClub": null,
+   "suggestedYear": null,
+   "neverAtClubSince1996": true,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/stefan-ratchford/summary.html"
+   ],
+   "note": "Never played for Wakefield.",
+   "likelyIntendedClub": {
+    "club": "Warrington Wolves",
+    "seasons": "2012–2025",
+    "year": 2018,
+    "apps": 35
+   }
+  },
+  {
+   "id": "wakefield-hist-vince-fawcett",
+   "name": "Vince Fawcett",
+   "club": "Wakefield Trinity",
+   "cardYearWas": 1988,
+   "seasonsAtClub": "1999",
+   "suggestedYear": 1999,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/vince-fawcett/summary.html"
+   ],
+   "note": "1999: 14 apps"
+  },
+  {
+   "id": "widnes-hist-andy-hobson",
+   "name": "Andy Hobson",
+   "club": "Widnes Vikings",
+   "cardYearWas": 1996,
+   "seasonsAtClub": "2004",
+   "suggestedYear": 2004,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/andy-hobson/summary.html"
+   ],
+   "note": "2004: 19 apps"
+  },
+  {
+   "id": "widnes-hist-damian-munro",
+   "name": "Damian Munro",
+   "club": "Widnes Vikings",
+   "cardYearWas": 1994,
+   "seasonsAtClub": "1998–2002",
+   "suggestedYear": 2001,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/damian-munro/summary.html"
+   ],
+   "note": "2001: 33 apps"
+  },
+  {
+   "id": "widnes-hist-danny-galea",
+   "name": "Danny Galea",
+   "club": "Widnes Vikings",
+   "cardYearWas": 2001,
+   "seasonsAtClub": "2014–2015",
+   "suggestedYear": 2014,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/danny-galea/summary.html"
+   ],
+   "note": "2014: 26 apps"
+  },
+  {
+   "id": "widnes-hist-sean-richardson",
+   "name": "Sean Richardson",
+   "club": "Widnes Vikings",
+   "cardYearWas": 1991,
+   "seasonsAtClub": "1997–1998; 2001–2002",
+   "suggestedYear": 2002,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/sean-richardson/summary.html"
+   ],
+   "note": "2002: 21 apps"
+  },
+  {
+   "id": "wigan-hist-andy-craig",
+   "name": "Andy Craig",
+   "club": "Wigan Warriors",
+   "cardYearWas": 1994,
+   "seasonsAtClub": "1993/94–1996",
+   "suggestedYear": 1996,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/andy-craig/summary.html"
+   ],
+   "note": "1996: 11 apps"
+  },
+  {
+   "id": "wigan-hist-jack-wells",
+   "name": "Jack Wells",
+   "club": "Wigan Warriors",
+   "cardYearWas": 2015,
+   "seasonsAtClub": "2016–2017; 2020",
+   "suggestedYear": 2017,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jack-wells/summary.html"
+   ],
+   "note": "2017: 13 apps"
+  },
+  {
+   "id": "wigan-hist-lee-mossop",
+   "name": "Lee Mossop",
+   "club": "Wigan Warriors",
+   "cardYearWas": 2007,
+   "seasonsAtClub": "2008–2013; 2015–2016",
+   "suggestedYear": 2011,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/lee-mossop/summary.html"
+   ],
+   "note": "29 apps in both 2011 and 2015"
+  },
+  {
+   "id": "wigan-hist-phil-jones",
+   "name": "Phil Jones",
+   "club": "Wigan Warriors",
+   "cardYearWas": 1995,
+   "seasonsAtClub": "1999–2001",
+   "suggestedYear": 1999,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/phil-jones/summary.html"
+   ],
+   "note": "1999: 11 apps"
+  },
+  {
+   "id": "wigan-hist-quentin-pongia",
+   "name": "Quentin Pongia",
+   "club": "Wigan Warriors",
+   "cardYearWas": 1988,
+   "seasonsAtClub": "2003–2004",
+   "suggestedYear": 2003,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/quentin-pongia/summary.html"
+   ],
+   "note": "2003: 16 apps"
+  },
+  {
+   "id": "oldham-hist-john-clarke",
+   "name": "John Clarke",
+   "club": "Oldham RLFC",
+   "cardYearWas": 1992,
+   "seasonsAtClub": "1993/94–1997",
+   "suggestedYear": 1997,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/john-clarke--ob-/summary.html"
+   ],
+   "note": "1997: 22 apps; DOB 1974-03-03 matches"
+  },
+  {
+   "id": "wigan-hist-michael-mcilorum",
+   "name": "Michael McIlorum",
+   "club": "Wigan Warriors",
+   "cardYearWas": 2006,
+   "seasonsAtClub": "2007–2017",
+   "suggestedYear": 2013,
+   "neverAtClubSince1996": false,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Micky_McIlorum"
+   ],
+   "note": "Spent 2007–2017 at Wigan, then Catalans 2018–. No per-season appearance split was found (no RLP page by that name), so 2013 was picked as a representative mid-career season."
+  }
+ ],
+ "unverified": []
+}

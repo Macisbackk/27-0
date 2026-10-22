@@ -1,0 +1,3960 @@
+{
+  "generatedAt": "2026-10-22T17:03:28+00:00",
+  "entries": [
+    {
+      "honour": "superLeagueChampion",
+      "year": 2026,
+      "club": "Wakefield Trinity",
+      "rule": "Grand Final 17",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Max Jowitt",
+          "ids": [
+            "wakefield-cur-max-jowitt"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Lachlan Walmsley",
+          "ids": [
+            "wakefield-cur-lachlan-walmsley"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Cameron Scott",
+          "ids": [
+            "wakefield-cur-cameron-scott"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Corey Hall",
+          "ids": [
+            "wakefield-cur-corey-hall"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Tom Johnstone",
+          "ids": [
+            "wakefield-cur-tom-johnstone"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Jake Trueman",
+          "ids": [
+            "wakefield-cur-jake-trueman"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Jack Sinfield",
+          "ids": [
+            "wakefield-cur-jack-sinfield"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Mike McMeeken",
+          "ids": [
+            "wakefield-cur-mike-mcmeeken"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Tyson Smoothy",
+          "ids": [
+            "wakefield-cur-tyson-smoothy"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Ky Rodwell",
+          "ids": [
+            "wakefield-cur-ky-rodwell"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Isaiah Vagana",
+          "ids": [
+            "wakefield-cur-isaiah-vagana"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Zac Lipowicz",
+          "ids": [
+            "catalans-cur-zac-lipowicz"
+          ],
+          "note": "Only row in data is a Catalans Dragons current-squad row (2026); same person played the GF for Wakefield - check his club in current-squads.json"
+        },
+        {
+          "name": "Jazz Tevaga",
+          "ids": [
+            "wakefield-cur-jazz-tevaga"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Mason Lino",
+          "ids": [
+            "wakefield-cur-mason-lino"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Jay Pitts",
+          "ids": [
+            "wakefield-cur-jay-pitts"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Caleb Hamlin-Uele",
+          "ids": [
+            "wakefield-cur-caleb-hamlin-uele"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Caius Faatili",
+          "ids": [
+            "wakefield-cur-caius-faatili"
+          ],
+          "note": ""
+        }
+      ],
+      "sources": [
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/how-super-league-grand-final-was-won-wakefield-trinity-23-warrington-wolves-10-match-report-9263085",
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/super-league-grand-final-wakefield-trinity-and-warrington-wolves-name-21-man-squads-for-old-trafford-9246296",
+        "https://skysports.com/rugby-league/warrington-vs-wakefield/report/63349"
+      ],
+      "note": "Wakefield Trinity 23-10 Warrington Wolves, Super League Grand Final, Old Trafford, 3 October 2026 (att. 71,728). Wakefield's first Super League title."
+    },
+    {
+      "honour": "manOfSteel",
+      "year": 2026,
+      "club": "Wigan Warriors",
+      "rule": "award",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Brad O'Neill",
+          "ids": [
+            "wigan-cur-brad-o-neill"
+          ],
+          "note": ""
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Man_of_Steel_Awards",
+        "https://www.yorkshirepost.co.uk/sport/rugby-league/super-league-2026-awards-the-shocks-stars-and-moments-that-defined-the-season-9276985",
+        "https://www.skysports.com/share/13590959"
+      ],
+      "note": "Announced 29 Sept 2026; beat Adam Keighran and Lachie Miller on the shortlist."
+    },
+    {
+      "honour": "dreamTeam",
+      "year": 2026,
+      "club": "various",
+      "rule": "award",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Lachlan Miller",
+          "ids": [
+            "leeds-cur-lachie-miller"
+          ],
+          "note": "FB"
+        },
+        {
+          "name": "Maika Sivo",
+          "ids": [
+            "leeds-cur-maika-sivo"
+          ],
+          "note": "WG"
+        },
+        {
+          "name": "Ash Handley",
+          "ids": [
+            "leeds-cur-ash-handley"
+          ],
+          "note": "CE"
+        },
+        {
+          "name": "Umyla Hanley",
+          "ids": [
+            "leigh-cur-umyla-hanley"
+          ],
+          "note": "CE"
+        },
+        {
+          "name": "Zach Eckersley",
+          "ids": [
+            "wigan-cur-zach-eckersley"
+          ],
+          "note": "WG"
+        },
+        {
+          "name": "Brodie Croft",
+          "ids": [
+            "leeds-cur-brodie-croft"
+          ],
+          "note": "SO"
+        },
+        {
+          "name": "Jake Connor",
+          "ids": [
+            "leeds-cur-jake-connor"
+          ],
+          "note": "SH"
+        },
+        {
+          "name": "Joe Ofahengaue",
+          "ids": [
+            "leigh-cur-joe-ofahengaue"
+          ],
+          "note": "PR"
+        },
+        {
+          "name": "Brad O'Neill",
+          "ids": [
+            "wigan-cur-brad-o-neill"
+          ],
+          "note": "HK"
+        },
+        {
+          "name": "Caleb Hamlin-Uele",
+          "ids": [
+            "wakefield-cur-caleb-hamlin-uele"
+          ],
+          "note": "PR"
+        },
+        {
+          "name": "Mathieu Jussaume",
+          "ids": [
+            "toulouse-cur-mathieu-jussaume"
+          ],
+          "note": "SR"
+        },
+        {
+          "name": "James McDonnell",
+          "ids": [
+            "leeds-cur-james-mcdonnell"
+          ],
+          "note": "SR"
+        },
+        {
+          "name": "Ben Currie",
+          "ids": [
+            "warrington-cur-ben-currie"
+          ],
+          "note": "LF"
+        }
+      ],
+      "sources": [
+        "https://www.zerotackle.com/ex-nrl-players-light-up-super-league-dream-team-as-bears-signing-makes-cut-238112/",
+        "https://www.yorkshirepost.co.uk/sport/rugby-league/super-league-2026-awards-the-shocks-stars-and-moments-that-defined-the-season-9276985"
+      ],
+      "note": "Full XIII from ZeroTackle (15 Sep 2026); Yorkshire Post confirms Hamlin-Uele was Wakefield's only Dream Team pick. No second source for the full list found."
+    },
+    {
+      "honour": "superLeagueChampion",
+      "year": 1996,
+      "club": "St Helens",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Steve Prescott",
+          "ids": [],
+          "note": "20 apps",
+          "otherClubIds": [
+            "hull-fc-hist-steve-prescott"
+          ]
+        },
+        {
+          "name": "Paul Newlove",
+          "ids": [
+            "st-helens-leg-paul-newlove-2002",
+            "paul-newlove"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Anthony Sullivan",
+          "ids": [
+            "st-helens-hist-anthony-sullivan-2000",
+            "st-helens-hist-anthony-sullivan"
+          ],
+          "note": "15 apps"
+        },
+        {
+          "name": "Karle Hammond",
+          "ids": [
+            "st-helens-hist-karle-hammond"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Bobbie Goulding",
+          "ids": [
+            "st-helens-hist-bobbie-goulding"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Apollo Perelini",
+          "ids": [
+            "st-helens-hist-apollo-perelini-2000",
+            "st-helens-hist-apollo-perelini"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Keiron Cunningham",
+          "ids": [
+            "st-helens-hist-keiron-cunningham-2000",
+            "st-helens-hist-keiron-cunningham-2006",
+            "st-helens-hist-keiron-cunningham-2002",
+            "keiron-cunningham",
+            "st-helens-hist-keiron-cunningham-2009"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Ian Pickavance",
+          "ids": [
+            "st-helens-hist-ian-pickavance"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Chris Joynt",
+          "ids": [
+            "st-helens-hist-chris-joynt-2000",
+            "st-helens-hist-chris-joynt-2002",
+            "chris-joynt"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Simon Booth",
+          "ids": [],
+          "note": "10 apps",
+          "otherClubIds": [
+            "hull-fc-hist-simon-booth"
+          ]
+        },
+        {
+          "name": "Danny Arnold",
+          "ids": [],
+          "note": "19 apps",
+          "otherClubIds": [
+            "huddersfield-hist-danny-arnold"
+          ]
+        },
+        {
+          "name": "Adam Fogerty",
+          "ids": [
+            "st-helens-hist-era-adam-fogerty"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Derek McVey",
+          "ids": [
+            "st-helens-hist-derek-mcvey"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Andy Haigh",
+          "ids": [
+            "st-helens-hist-andy-haigh"
+          ],
+          "note": "11 apps"
+        },
+        {
+          "name": "Alan Hunte",
+          "ids": [],
+          "note": "19 apps",
+          "otherClubIds": [
+            "wakefield-hist-alan-hunte"
+          ]
+        },
+        {
+          "name": "Tommy Martyn",
+          "ids": [
+            "st-helens-hist-tommy-martyn-2000",
+            "tommy-martyn"
+          ],
+          "note": "14 apps"
+        },
+        {
+          "name": "Vila Matautia",
+          "ids": [
+            "st-helens-hist-vila-mata-utia"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Chris Morley",
+          "ids": [
+            "st-helens-hist-chris-morley"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Andy Northey",
+          "ids": [
+            "st-helens-hist-andy-northey"
+          ],
+          "note": "10 apps (borderline)"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-1996/st-helens/summary.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-1996/st-helens/players.html",
+        "https://en.wikipedia.org/wiki/1996_St_Helens_R.F.C._season"
+      ],
+      "note": "Super League I had no Grand Final; St Helens finished top (P22 W20 L2, 40 pts) and were champions. League apps (starts+bench, SL rounds 1-22 only) counted from Rugby League Project per-match lineups; first 19 rows cross-checked against RLP summary table (all matched). Excluded with 9 league apps: Joey Hayes, Scott Gibbs, Andy Leathem; also John McAtee 3, Dean Busby 2, Phil Veivers 1, Paul Anderson 1, Jon Neill 1."
+    },
+    {
+      "honour": "superLeagueChampion",
+      "year": 1997,
+      "club": "Bradford Bulls",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "James Lowes",
+          "ids": [
+            "bradford-hist-james-lowes-1997"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Glen Tomlinson",
+          "ids": [],
+          "note": "22 apps",
+          "otherClubIds": [
+            "wakefield-hist-glen-tomlinson"
+          ]
+        },
+        {
+          "name": "Stuart Spruce",
+          "ids": [
+            "bradford-hist-stuart-spruce"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Steve McNamara",
+          "ids": [
+            "bradford-hist-steve-mcnamara-1997"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Paul Loughlin",
+          "ids": [
+            "bradford-hist-paul-loughlin"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Graeme Bradley",
+          "ids": [
+            "bradford-hist-graeme-bradley-1997"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Tahi Reihana",
+          "ids": [
+            "bradford-hist-tahi-reihana"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Danny Peacock",
+          "ids": [
+            "bradford-hist-danny-peacock-1997"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Paul Anderson",
+          "ids": [
+            "bradford-hist-paul-anderson-1997"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Jeff Wittenberg",
+          "ids": [
+            "bradford-hist-jeff-wittenberg-1997"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Brian McDermott",
+          "ids": [
+            "bradford-hist-brian-mcdermott-1997"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Nathan Graham",
+          "ids": [
+            "bradford-hist-nathan-graham"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Matt Calland",
+          "ids": [
+            "bradford-hist-matt-calland-1997"
+          ],
+          "note": "14 apps"
+        },
+        {
+          "name": "Bernard Dwyer",
+          "ids": [
+            "bradford-hist-bernard-dwyer-1997"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Sonny Nickle",
+          "ids": [],
+          "note": "13 apps",
+          "otherClubIds": [
+            "st-helens-hist-sonny-nickle"
+          ]
+        },
+        {
+          "name": "Jon Scales",
+          "ids": [
+            "bradford-hist-jonathan-scales"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Mike Forshaw",
+          "ids": [
+            "bradford-hist-mike-forshaw-1997"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Paul Medley",
+          "ids": [
+            "bradford-hist-paul-medley",
+            "bradford-hist-paul-medley-1998"
+          ],
+          "note": "12 apps"
+        },
+        {
+          "name": "Robbie Paul",
+          "ids": [
+            "bradford-leg-robbie-hunter-paul-1997",
+            "bradford-leg-robbie-hunter-paul"
+          ],
+          "note": "12 apps (listed as Robbie Hunter-Paul by RLP)"
+        },
+        {
+          "name": "Simon Knox",
+          "ids": [
+            "bradford-hist-simon-knox"
+          ],
+          "note": "12 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/bradford-bulls/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/bradford-bulls/summary.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/summary.html",
+        "https://en.wikipedia.org/wiki/1997_Bradford_Bulls_season"
+      ],
+      "note": "Super League II had no Grand Final; Bradford finished top (P22 W20 L2, 40 pts) and were champions. League apps (starts+bench, SL rounds 1-22) counted from Rugby League Project per-match lineups; cross-checked against RLP summary table rows 1-13 (all matched). Excluded (<10): Abi Ekoku 9, Paul Cook 8, Jeremy Donougher 6, Warren Jowitt 5, Andy Hodgson 5, Gary Christie 4, Kevin Crouthers 2."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2010,
+      "club": "Wigan Warriors",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Sam Tomkins",
+          "ids": [
+            "wigan-hist-sam-tomkins-2008",
+            "wigan-leg-sam-tomkins-2016",
+            "wigan-hist-sam-tomkins-2009",
+            "wigan-leg-sam-tomkins-2012",
+            "wigan-hist-sam-tomkins"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Joel Tomkins",
+          "ids": [
+            "wigan-hist-joel-tomkins-2016",
+            "wigan-hist-joel-tomkins-2008",
+            "wigan-hist-joel-tomkins-2015",
+            "wigan-hist-joel-tomkins"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Pat Richards",
+          "ids": [
+            "wigan-leg-pat-richards-2010"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Thomas Leuluai",
+          "ids": [
+            "wigan-hist-thomas-leuluai-2008",
+            "wigan-hist-thomas-leuluai",
+            "wigan-hist-thomas-leuluai-2009",
+            "wigan-hist-thomas-leuluai-2020"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Stuart Fielden",
+          "ids": [
+            "wigan-hist-stuart-fielden-2006",
+            "wigan-hist-stuart-fielden-2008",
+            "stuart-fielden"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Sean O'Loughlin",
+          "ids": [
+            "wigan-hist-sean-oloughlin-2006",
+            "wigan-hist-sean-oloughlin-2008",
+            "wigan-hist-sean-o-loughlin-2015",
+            "wigan-hist-sean-o-loughlin-2016",
+            "sean-oloughlin",
+            "wigan-hist-sean-o-loughlin-2009",
+            "wigan-hist-sean-o-loughlin-2020",
+            "wigan-leg-sean-o-loughlin-2013"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Mark Riddell",
+          "ids": [
+            "wigan-hist-mark-riddell",
+            "wigan-hist-mark-riddell-2009"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "George Carmont",
+          "ids": [
+            "wigan-hist-george-carmont",
+            "wigan-hist-george-carmont-2009"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Martin Gleeson",
+          "ids": [
+            "wigan-hist-martin-gleeson-2009"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Andy Coley",
+          "ids": [
+            "wigan-hist-andy-coley",
+            "wigan-hist-andy-coley-2009"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Paul Prescott",
+          "ids": [
+            "wigan-hist-paul-prescott",
+            "wigan-hist-paul-prescott-2009"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Darrell Goulding",
+          "ids": [
+            "wigan-hist-darrell-goulding"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Paul Deacon",
+          "ids": [],
+          "note": "17 apps",
+          "otherClubIds": [
+            "paul-deacon",
+            "bradford-hist-paul-deacon-2009",
+            "bradford-hist-paul-deacon-1999",
+            "bradford-hist-paul-deacon-2005",
+            "bradford-hist-paul-deacon-2006",
+            "bradford-hist-paul-deacon-2000",
+            "bradford-hist-paul-deacon-2001",
+            "bradford-hist-paul-deacon-2002",
+            "bradford-hist-paul-deacon-2004",
+            "bradford-hist-paul-deacon-2003"
+          ]
+        },
+        {
+          "name": "Iafeta Palea'aesina",
+          "ids": [
+            "wigan-hist-iafeta-paleaaesina"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Phil Bailey",
+          "ids": [
+            "wigan-hist-phil-bailey"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Lee Mossop",
+          "ids": [
+            "wigan-hist-lee-mossop-2008",
+            "wigan-hist-lee-mossop",
+            "wigan-hist-lee-mossop-2015"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Liam Farrell",
+          "ids": [
+            "wigan-cur-liam-farrell",
+            "wigan-hist-liam-farrell-2015",
+            "wigan-hist-liam-farrell-2016",
+            "wigan-hist-liam-farrell-2020",
+            "wigan-hist-liam-farrell-2021",
+            "wigan-hist-liam-farrell-2022",
+            "wigan-hist-liam-farrell-2023",
+            "wigan-hist-liam-farrell-2024",
+            "wigan-hist-liam-farrell-2025"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Amos Roberts",
+          "ids": [
+            "wigan-hist-amos-roberts",
+            "wigan-hist-amos-roberts-2009"
+          ],
+          "note": "15 apps"
+        },
+        {
+          "name": "Michael McIlorum",
+          "ids": [
+            "wigan-hist-michael-mcilorum-2006",
+            "wigan-hist-michael-mcilorum-2008",
+            "wigan-hist-michael-mcilorum",
+            "wigan-hist-michael-mcilorum-2015",
+            "wigan-hist-michael-mcilorum-2016"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Harrison Hansen",
+          "ids": [
+            "wigan-hist-harrison-hansen",
+            "wigan-hist-harrison-hansen-2009"
+          ],
+          "note": "12 apps"
+        },
+        {
+          "name": "Chris Tuson",
+          "ids": [
+            "wigan-hist-chris-tuson"
+          ],
+          "note": "12 apps"
+        },
+        {
+          "name": "Eamon O'Carroll",
+          "ids": [],
+          "note": "11 apps",
+          "otherClubIds": [
+            "widnes-hist-eamon-ocarroll"
+          ]
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2010/wigan-warriors/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2010/wigan-warriors/summary.html",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "Wigan won the 2010 League Leaders' Shield. Regular-season apps (27 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-14 (all matched once 4 play-off games added). Excluded (<10): Karl Pryce 7, Cameron Phelps 6, Stefan Marsh 5, Davies 5, others 1."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2005,
+      "club": "St Helens",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Keiron Cunningham",
+          "ids": [
+            "st-helens-hist-keiron-cunningham-2000",
+            "st-helens-hist-keiron-cunningham-2006",
+            "st-helens-hist-keiron-cunningham-2002",
+            "keiron-cunningham",
+            "st-helens-hist-keiron-cunningham-2009"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Nick Fozzard",
+          "ids": [
+            "nick-fozzard"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Paul Anderson",
+          "ids": [
+            "st-helens-hist-paul-anderson-2006",
+            "paul-anderson"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Ade Gardner",
+          "ids": [
+            "st-helens-hist-ade-gardner-2006",
+            "st-helens-hist-ade-gardner-2014",
+            "st-helens-hist-ade-gardner",
+            "st-helens-hist-ade-gardner-2009"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Jamie Lyon",
+          "ids": [
+            "st-helens-leg-jamie-lyon-2005"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Mike Bennett",
+          "ids": [
+            "st-helens-hist-mike-bennett",
+            "st-helens-hist-mike-bennett-2002"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Paul Wellens",
+          "ids": [
+            "st-helens-hist-paul-wellens-2015",
+            "st-helens-hist-paul-wellens-2000",
+            "st-helens-hist-paul-wellens-2006",
+            "st-helens-hist-paul-wellens-2002",
+            "paul-wellens",
+            "st-helens-hist-paul-wellens-2009"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Darren Albert",
+          "ids": [
+            "st-helens-hist-darren-albert"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "James Roby",
+          "ids": [
+            "st-helens-hist-james-roby-2021",
+            "st-helens-hist-james-roby-2014",
+            "st-helens-hist-james-roby-2015",
+            "st-helens-hist-james-roby-2020",
+            "st-helens-hist-james-roby-2019",
+            "james-roby",
+            "st-helens-hist-james-roby-2016",
+            "st-helens-leg-james-roby-2007"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Jon Wilkin",
+          "ids": [
+            "st-helens-hist-jon-wilkin-2006",
+            "st-helens-hist-jon-wilkin-2014",
+            "st-helens-hist-jon-wilkin",
+            "st-helens-hist-jon-wilkin-2009",
+            "st-helens-hist-jon-wilkin-2016"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Lee Gilmour",
+          "ids": [
+            "st-helens-hist-lee-gilmour",
+            "st-helens-hist-lee-gilmour-2006",
+            "st-helens-hist-lee-gilmour-2009"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Willie Talau",
+          "ids": [
+            "st-helens-hist-willie-talau",
+            "st-helens-hist-willie-talau-2006"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "James Graham",
+          "ids": [
+            "james-graham",
+            "st-helens-hist-james-graham-2009",
+            "st-helens-leg-james-graham-2008"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Sean Long",
+          "ids": [
+            "st-helens-leg-sean-long-2000",
+            "st-helens-leg-sean-long-2002",
+            "st-helens-leg-sean-long-2006",
+            "st-helens-hist-sean-long-2009",
+            "sean-long"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Maurie Fa'asavalu",
+          "ids": [
+            "st-helens-hist-maurie-fa-asavalu"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Mark Edmondson",
+          "ids": [
+            "st-helens-hist-mark-edmondson"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Vinnie Anderson",
+          "ids": [],
+          "note": "17 apps",
+          "otherClubIds": [
+            "wakefield-hist-vinnie-anderson"
+          ]
+        },
+        {
+          "name": "Jason Hooper",
+          "ids": [
+            "st-helens-hist-jason-hooper",
+            "st-helens-hist-jason-hooper-2006"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Mick Higham",
+          "ids": [],
+          "note": "14 apps",
+          "otherClubIds": [
+            "wigan-hist-mickey-higham-2006",
+            "warrington-hist-mickey-higham"
+          ]
+        },
+        {
+          "name": "Keith Mason",
+          "ids": [],
+          "note": "14 apps",
+          "otherClubIds": [
+            "huddersfield-hist-keith-mason",
+            "huddersfield-hist-keith-mason-2009"
+          ]
+        },
+        {
+          "name": "Paul Sculthorpe",
+          "ids": [
+            "st-helens-leg-paul-sculthorpe-2000",
+            "st-helens-leg-paul-sculthorpe-2002",
+            "paul-sculthorpe"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Ian Hardman",
+          "ids": [
+            "st-helens-hist-ian-hardman"
+          ],
+          "note": "13 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2005/st-helens/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2005/st-helens/summary.html",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "St Helens won the 2005 League Leaders' Shield. Regular-season apps (28 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-14 (all matched once play-offs added). Excluded (<10): Moore 4, Clough 1."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2004,
+      "club": "Leeds Rhinos",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Rob Burrow",
+          "ids": [
+            "leeds-leg-rob-burrow-2009",
+            "leeds-leg-rob-burrow-2013",
+            "leeds-leg-rob-burrow-2016",
+            "leeds-leg-rob-burrow-2015",
+            "leeds-leg-rob-burrow-2007",
+            "rob-burrow"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Kevin Sinfield",
+          "ids": [
+            "leeds-leg-kevin-sinfield-2008",
+            "leeds-leg-kevin-sinfield-2009",
+            "leeds-leg-kevin-sinfield-2013",
+            "leeds-leg-kevin-sinfield-2015",
+            "leeds-leg-kevin-sinfield-2012",
+            "kevin-sinfield"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Keith Senior",
+          "ids": [
+            "leeds-hist-keith-senior-2008",
+            "leeds-hist-keith-senior-2009",
+            "keith-senior"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Matt Diskin",
+          "ids": [
+            "leeds-hist-matt-diskin-2008",
+            "leeds-hist-matt-diskin-2009",
+            "leeds-hist-matt-diskin"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Marcus Bai",
+          "ids": [
+            "leeds-hist-marcus-bai"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Barrie McDermott",
+          "ids": [
+            "barrie-mcdermott"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Danny McGuire",
+          "ids": [
+            "leeds-leg-danny-mcguire-2008",
+            "leeds-leg-danny-mcguire-2009",
+            "leeds-leg-danny-mcguire-2016",
+            "leeds-leg-danny-mcguire-2013",
+            "leeds-hist-danny-mcguire-2015",
+            "danny-mcguire"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Richard Mathers",
+          "ids": [
+            "leeds-hist-richard-mathers"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Ryan Bailey",
+          "ids": [
+            "leeds-hist-ryan-bailey"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Willie Poching",
+          "ids": [
+            "leeds-hist-willie-poching"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Wayne McDonald",
+          "ids": [
+            "leeds-hist-wayne-mcdonald"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Andrew Dunemann",
+          "ids": [],
+          "note": "23 apps",
+          "otherClubIds": [
+            "gateshead-hist-andrew-dunemann"
+          ]
+        },
+        {
+          "name": "Chev Walker",
+          "ids": [
+            "leeds-hist-chev-walker"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Danny Ward",
+          "ids": [
+            "leeds-hist-danny-ward"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Francis Cummins",
+          "ids": [
+            "leeds-hist-francis-cummins"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Chris McKenna",
+          "ids": [
+            "leeds-hist-chris-mckenna"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Matt Adamson",
+          "ids": [
+            "leeds-hist-matt-adamson"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Ali Lauitiiti",
+          "ids": [
+            "leeds-hist-ali-lauitiiti-2008",
+            "leeds-hist-ali-lauitiiti-2009",
+            "ali-lauitiiti"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "David Furner",
+          "ids": [],
+          "note": "15 apps",
+          "otherClubIds": [
+            "wigan-hist-david-furner"
+          ]
+        },
+        {
+          "name": "Mark Calderwood",
+          "ids": [
+            "leeds-hist-mark-calderwood"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Jamie Jones-Buchanan",
+          "ids": [
+            "leeds-leg-jamie-jones-buchanan-2015",
+            "jamie-jones-buchanan",
+            "leeds-hist-jamie-jones-buchanan-2009",
+            "leeds-leg-jamie-jones-buchanan-2016",
+            "leeds-hist-jamie-jones-buchanan-2013"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Chris Feather",
+          "ids": [],
+          "note": "13 apps",
+          "otherClubIds": [
+            "wakefield-hist-chris-feather"
+          ]
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2004/leeds-rhinos/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2004/leeds-rhinos/summary.html",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "Leeds won the 2004 League Leaders' Shield. Regular-season apps (28 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-7 (all matched once play-offs added). Excluded (<10): Gary Connolly 2, Botham 1, Scruton 1, Carl Ablett 1."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2003,
+      "club": "Bradford Bulls",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Rob Parker",
+          "ids": [
+            "bradford-hist-rob-parker"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Paul Deacon",
+          "ids": [
+            "bradford-hist-paul-deacon-2003"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Scott Naylor",
+          "ids": [
+            "bradford-hist-scott-naylor",
+            "bradford-hist-scott-naylor-1999"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Lee Gilmour",
+          "ids": [],
+          "note": "27 apps",
+          "otherClubIds": [
+            "st-helens-hist-lee-gilmour",
+            "st-helens-hist-lee-gilmour-2006",
+            "st-helens-hist-lee-gilmour-2009"
+          ]
+        },
+        {
+          "name": "Shontayne Hape",
+          "ids": [
+            "bradford-hist-shontayne-hape-2003"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Paul Anderson",
+          "ids": [
+            "bradford-hist-paul-anderson-2003"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Lee Radford",
+          "ids": [
+            "bradford-hist-lee-radford-2003"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Joe Vagana",
+          "ids": [
+            "bradford-hist-joe-vagana"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Mike Forshaw",
+          "ids": [
+            "bradford-hist-mike-forshaw-2003"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "James Lowes",
+          "ids": [
+            "bradford-hist-james-lowes-2003"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Lesley Vainikolo",
+          "ids": [
+            "bradford-hist-lesley-vainikolo-2003"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Tevita Vaikona",
+          "ids": [
+            "bradford-hist-tevita-vaikona-2003"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Leon Pryce",
+          "ids": [
+            "bradford-hist-leon-pryce-2003"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Daniel Gartner",
+          "ids": [
+            "bradford-hist-daniel-gartner-2003"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Jamie Peacock",
+          "ids": [
+            "bradford-leg-jamie-peacock-2003",
+            "jamie-peacock"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Karl Pratt",
+          "ids": [
+            "bradford-hist-karl-pratt-2003"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Stuart Reardon",
+          "ids": [],
+          "note": "18 apps",
+          "otherClubIds": [
+            "crusaders-hist-stuart-reardon"
+          ]
+        },
+        {
+          "name": "Jamie Langley",
+          "ids": [
+            "bradford-hist-jamie-langley",
+            "bradford-hist-jamie-langley-2013",
+            "bradford-hist-jamie-langley-2004",
+            "bradford-hist-jamie-langley-2005",
+            "bradford-hist-jamie-langley-2011",
+            "bradford-hist-jamie-langley-2009"
+          ],
+          "note": "15 apps"
+        },
+        {
+          "name": "Robbie Paul",
+          "ids": [
+            "bradford-leg-robbie-hunter-paul-2003",
+            "bradford-leg-robbie-hunter-paul"
+          ],
+          "note": "14 apps (RLP: Robbie Hunter-Paul)"
+        },
+        {
+          "name": "Stuart Fielden",
+          "ids": [
+            "bradford-leg-stuart-fielden-2003",
+            "stuart-fielden"
+          ],
+          "note": "13 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2003/bradford-bulls/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2003/bradford-bulls/summary.html",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "Bradford won the inaugural League Leaders' Shield in 2003. Regular-season apps (28 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-14 (all matched once play-offs added). Excluded (<10): Moore 8, Smith 3, Chris Bridge 3, Michael Withers 2, Karl Pryce 1, Myler 1."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2002,
+      "club": "St Helens",
+      "rule": "10+ league apps",
+      "preShield": true,
+      "players": [
+        {
+          "name": "Darren Albert",
+          "ids": [
+            "st-helens-hist-darren-albert"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "John Stankevitch",
+          "ids": [
+            "st-helens-hist-john-stankevitch"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Mick Higham",
+          "ids": [],
+          "note": "26 apps",
+          "otherClubIds": [
+            "wigan-hist-mickey-higham-2006",
+            "warrington-hist-mickey-higham"
+          ]
+        },
+        {
+          "name": "Martin Gleeson",
+          "ids": [
+            "st-helens-hist-martin-gleeson-2002"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Paul Sculthorpe",
+          "ids": [
+            "st-helens-leg-paul-sculthorpe-2002",
+            "paul-sculthorpe"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Tommy Martyn",
+          "ids": [
+            "st-helens-hist-tommy-martyn-2000",
+            "tommy-martyn"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Chris Joynt",
+          "ids": [
+            "st-helens-hist-chris-joynt-2002"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Barry Ward",
+          "ids": [
+            "st-helens-hist-barry-ward-2002"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Paul Wellens",
+          "ids": [
+            "st-helens-hist-paul-wellens-2002"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Sean Hoppe",
+          "ids": [
+            "st-helens-hist-sean-hoppe",
+            "st-helens-hist-sean-hoppe-2000"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Mike Bennett",
+          "ids": [
+            "st-helens-hist-mike-bennett-2002"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Sonny Nickle",
+          "ids": [
+            "st-helens-hist-sonny-nickle"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Anthony Stewart",
+          "ids": [
+            "st-helens-hist-anthony-stewart-2002"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Paul Newlove",
+          "ids": [
+            "st-helens-leg-paul-newlove-2002",
+            "paul-newlove"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Peter Shiels",
+          "ids": [
+            "st-helens-hist-peter-shiels"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Keiron Cunningham",
+          "ids": [
+            "st-helens-hist-keiron-cunningham-2002"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Darren Britt",
+          "ids": [
+            "st-helens-hist-darren-britt-2002"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Mark Edmondson",
+          "ids": [
+            "st-helens-hist-mark-edmondson"
+          ],
+          "note": "15 apps"
+        },
+        {
+          "name": "Sean Long",
+          "ids": [
+            "st-helens-leg-sean-long-2002",
+            "sean-long"
+          ],
+          "note": "14 apps"
+        },
+        {
+          "name": "Tim Jonkers",
+          "ids": [
+            "st-helens-hist-tim-jonkers-2002"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "John Kirkpatrick",
+          "ids": [
+            "st-helens-hist-john-kirkpatrick"
+          ],
+          "note": "10 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2002/summary.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2002/st-helens/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2002/st-helens/summary.html"
+      ],
+      "note": "No League Leaders' Shield before 2003. St Helens finished top of the 2002 regular-season table (P28 W23 L5, 46 pts) ahead of Bradford (also 46 pts) on points difference (+405 v +391). Regular-season apps (28 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-15 (all matched once play-offs added). Excluded (<10): Ade Gardner 7, West 6, Whittle 3, others 1-2."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2001,
+      "club": "Bradford Bulls",
+      "rule": "10+ league apps",
+      "preShield": true,
+      "players": [
+        {
+          "name": "Paul Anderson",
+          "ids": [
+            "bradford-hist-paul-anderson-2001"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Henry Paul",
+          "ids": [
+            "bradford-hist-henry-paul-2001"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "James Lowes",
+          "ids": [
+            "bradford-hist-james-lowes-2001"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Joe Vagana",
+          "ids": [
+            "bradford-hist-joe-vagana"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Robbie Paul",
+          "ids": [
+            "bradford-leg-robbie-hunter-paul-2001",
+            "bradford-leg-robbie-hunter-paul"
+          ],
+          "note": "27 apps (RLP: Robbie Hunter-Paul)"
+        },
+        {
+          "name": "Brian McDermott",
+          "ids": [
+            "bradford-hist-brian-mcdermott",
+            "bradford-hist-brian-mcdermott-1997"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Tevita Vaikona",
+          "ids": [
+            "bradford-hist-tevita-vaikona-2001"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Stuart Fielden",
+          "ids": [
+            "bradford-leg-stuart-fielden-1998",
+            "bradford-leg-stuart-fielden-2006",
+            "bradford-leg-stuart-fielden-1999",
+            "bradford-leg-stuart-fielden-2005",
+            "bradford-leg-stuart-fielden-2002",
+            "bradford-leg-stuart-fielden-2004",
+            "bradford-leg-stuart-fielden-2003",
+            "stuart-fielden"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Daniel Gartner",
+          "ids": [
+            "bradford-hist-daniel-gartner-2001"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Leon Pryce",
+          "ids": [
+            "bradford-hist-leon-pryce-2001"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Michael Withers",
+          "ids": [
+            "bradford-hist-michael-withers",
+            "bradford-hist-michael-withers-2006",
+            "bradford-hist-michael-withers-2000",
+            "bradford-hist-michael-withers-2005"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Jamie Peacock",
+          "ids": [
+            "bradford-leg-jamie-peacock-2001",
+            "jamie-peacock"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Mike Forshaw",
+          "ids": [
+            "bradford-hist-mike-forshaw-2001"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Paul Deacon",
+          "ids": [
+            "bradford-hist-paul-deacon-2001"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Shane Rigon",
+          "ids": [
+            "bradford-hist-shane-rigon"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Lee Gilmour",
+          "ids": [],
+          "note": "23 apps",
+          "otherClubIds": [
+            "st-helens-hist-lee-gilmour",
+            "st-helens-hist-lee-gilmour-2006",
+            "st-helens-hist-lee-gilmour-2009"
+          ]
+        },
+        {
+          "name": "Scott Naylor",
+          "ids": [
+            "bradford-hist-scott-naylor",
+            "bradford-hist-scott-naylor-1999"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Graham Mackay",
+          "ids": [
+            "bradford-hist-graham-mackay-2001"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Lee Radford",
+          "ids": [
+            "bradford-hist-lee-radford-2001"
+          ],
+          "note": "14 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2001/summary.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2001/bradford-bulls/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2001/bradford-bulls/summary.html"
+      ],
+      "note": "No League Leaders' Shield before 2003. Bradford finished top of the 2001 regular-season table (P28 W22 D1 L5, 45 pts) ahead of Wigan (also 45 pts) on points difference. Regular-season apps (28 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-14 (all matched once play-offs added). Excluded (<10): Nathan McAvoy 8, Stuart Spruce 7, Wilkinson 2."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 1997,
+      "club": "Bradford Bulls",
+      "rule": "10+ league apps",
+      "preShield": true,
+      "players": [
+        {
+          "name": "James Lowes",
+          "ids": [
+            "bradford-hist-james-lowes-1997"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Glen Tomlinson",
+          "ids": [],
+          "note": "22 apps",
+          "otherClubIds": [
+            "wakefield-hist-glen-tomlinson"
+          ]
+        },
+        {
+          "name": "Stuart Spruce",
+          "ids": [
+            "bradford-hist-stuart-spruce"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Steve McNamara",
+          "ids": [
+            "bradford-hist-steve-mcnamara-1997"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Paul Loughlin",
+          "ids": [
+            "bradford-hist-paul-loughlin"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Graeme Bradley",
+          "ids": [
+            "bradford-hist-graeme-bradley-1997"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Tahi Reihana",
+          "ids": [
+            "bradford-hist-tahi-reihana"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Danny Peacock",
+          "ids": [
+            "bradford-hist-danny-peacock-1997"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Paul Anderson",
+          "ids": [
+            "bradford-hist-paul-anderson-1997"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Jeff Wittenberg",
+          "ids": [
+            "bradford-hist-jeff-wittenberg-1997"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Brian McDermott",
+          "ids": [
+            "bradford-hist-brian-mcdermott-1997"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Nathan Graham",
+          "ids": [
+            "bradford-hist-nathan-graham"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Matt Calland",
+          "ids": [
+            "bradford-hist-matt-calland-1997"
+          ],
+          "note": "14 apps"
+        },
+        {
+          "name": "Bernard Dwyer",
+          "ids": [
+            "bradford-hist-bernard-dwyer-1997"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Sonny Nickle",
+          "ids": [],
+          "note": "13 apps",
+          "otherClubIds": [
+            "st-helens-hist-sonny-nickle"
+          ]
+        },
+        {
+          "name": "Jon Scales",
+          "ids": [
+            "bradford-hist-jonathan-scales"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Mike Forshaw",
+          "ids": [
+            "bradford-hist-mike-forshaw-1997"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Paul Medley",
+          "ids": [
+            "bradford-hist-paul-medley",
+            "bradford-hist-paul-medley-1998"
+          ],
+          "note": "12 apps"
+        },
+        {
+          "name": "Robbie Paul",
+          "ids": [
+            "bradford-leg-robbie-hunter-paul-1997",
+            "bradford-leg-robbie-hunter-paul"
+          ],
+          "note": "12 apps (listed as Robbie Hunter-Paul by RLP)"
+        },
+        {
+          "name": "Simon Knox",
+          "ids": [
+            "bradford-hist-simon-knox"
+          ],
+          "note": "12 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/bradford-bulls/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/bradford-bulls/summary.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/summary.html",
+        "https://en.wikipedia.org/wiki/1997_Bradford_Bulls_season"
+      ],
+      "note": "No League Leaders' Shield before 2003; in 1997 the side top of the table were also champions (no Grand Final). Same 10+ league-apps list as the 1997 superLeagueChampion entry. Super League II had no Grand Final; Bradford finished top (P22 W20 L2, 40 pts) and were champions. League apps (starts+bench, SL rounds 1-22) counted from Rugby League Project per-match lineups; cross-checked against RLP summary table rows 1-13 (all matched). Excluded (<10): Abi Ekoku 9, Paul Cook 8, Jeremy Donougher 6, Warren Jowitt 5, Andy Hodgson 5, Gary Christie 4, Kevin Crouthers 2."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 1996,
+      "club": "St Helens",
+      "rule": "10+ league apps",
+      "preShield": true,
+      "players": [
+        {
+          "name": "Steve Prescott",
+          "ids": [],
+          "note": "20 apps",
+          "otherClubIds": [
+            "hull-fc-hist-steve-prescott"
+          ]
+        },
+        {
+          "name": "Paul Newlove",
+          "ids": [
+            "st-helens-leg-paul-newlove-2002",
+            "paul-newlove"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Anthony Sullivan",
+          "ids": [
+            "st-helens-hist-anthony-sullivan-2000",
+            "st-helens-hist-anthony-sullivan"
+          ],
+          "note": "15 apps"
+        },
+        {
+          "name": "Karle Hammond",
+          "ids": [
+            "st-helens-hist-karle-hammond"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Bobbie Goulding",
+          "ids": [
+            "st-helens-hist-bobbie-goulding"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Apollo Perelini",
+          "ids": [
+            "st-helens-hist-apollo-perelini-2000",
+            "st-helens-hist-apollo-perelini"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Keiron Cunningham",
+          "ids": [
+            "st-helens-hist-keiron-cunningham-2000",
+            "st-helens-hist-keiron-cunningham-2006",
+            "st-helens-hist-keiron-cunningham-2002",
+            "keiron-cunningham",
+            "st-helens-hist-keiron-cunningham-2009"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Ian Pickavance",
+          "ids": [
+            "st-helens-hist-ian-pickavance"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Chris Joynt",
+          "ids": [
+            "st-helens-hist-chris-joynt-2000",
+            "st-helens-hist-chris-joynt-2002",
+            "chris-joynt"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Simon Booth",
+          "ids": [],
+          "note": "10 apps",
+          "otherClubIds": [
+            "hull-fc-hist-simon-booth"
+          ]
+        },
+        {
+          "name": "Danny Arnold",
+          "ids": [],
+          "note": "19 apps",
+          "otherClubIds": [
+            "huddersfield-hist-danny-arnold"
+          ]
+        },
+        {
+          "name": "Adam Fogerty",
+          "ids": [
+            "st-helens-hist-era-adam-fogerty"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Derek McVey",
+          "ids": [
+            "st-helens-hist-derek-mcvey"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Andy Haigh",
+          "ids": [
+            "st-helens-hist-andy-haigh"
+          ],
+          "note": "11 apps"
+        },
+        {
+          "name": "Alan Hunte",
+          "ids": [],
+          "note": "19 apps",
+          "otherClubIds": [
+            "wakefield-hist-alan-hunte"
+          ]
+        },
+        {
+          "name": "Tommy Martyn",
+          "ids": [
+            "st-helens-hist-tommy-martyn-2000",
+            "tommy-martyn"
+          ],
+          "note": "14 apps"
+        },
+        {
+          "name": "Vila Matautia",
+          "ids": [
+            "st-helens-hist-vila-mata-utia"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Chris Morley",
+          "ids": [
+            "st-helens-hist-chris-morley"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Andy Northey",
+          "ids": [
+            "st-helens-hist-andy-northey"
+          ],
+          "note": "10 apps (borderline)"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-1996/st-helens/summary.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-1996/st-helens/players.html",
+        "https://en.wikipedia.org/wiki/1996_St_Helens_R.F.C._season"
+      ],
+      "note": "No League Leaders' Shield before 2003; in 1996 the side top of the table were also champions (no Grand Final). Same 10+ league-apps list as the 1996 superLeagueChampion entry. Super League I had no Grand Final; St Helens finished top (P22 W20 L2, 40 pts) and were champions. League apps (starts+bench, SL rounds 1-22 only) counted from Rugby League Project per-match lineups; first 19 rows cross-checked against RLP summary table (all matched). Excluded with 9 league apps: Joey Hayes, Scott Gibbs, Andy Leathem; also John McAtee 3, Dean Busby 2, Phil Veivers 1, Paul Anderson 1, Jon Neill 1."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2020,
+      "club": "Wigan Warriors",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Liam Farrell",
+          "ids": [
+            "wigan-hist-liam-farrell-2020",
+            "wigan-cur-liam-farrell"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Jackson Hastings",
+          "ids": [
+            "wigan-hist-jackson-hastings-2020"
+          ],
+          "note": "17 apps",
+          "otherClubIds": [
+            "st-helens-cur-jackson-hastings"
+          ]
+        },
+        {
+          "name": "Willie Isa",
+          "ids": [
+            "wigan-hist-willie-isa-2020"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Bevan French",
+          "ids": [
+            "wigan-hist-bevan-french-2020",
+            "wigan-cur-bevan-french"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Jake Bibby",
+          "ids": [
+            "wigan-hist-jake-bibby-2020"
+          ],
+          "note": "16 apps",
+          "otherClubIds": [
+            "oldham-cur-jake-bibby"
+          ]
+        },
+        {
+          "name": "Zak Hardaker",
+          "ids": [
+            "wigan-hist-zak-hardaker-2020"
+          ],
+          "note": "16 apps",
+          "otherClubIds": [
+            "hull-fc-cur-zak-hardaker"
+          ]
+        },
+        {
+          "name": "Thomas Leuluai",
+          "ids": [
+            "wigan-hist-thomas-leuluai-2020"
+          ],
+          "note": "15 apps"
+        },
+        {
+          "name": "Sam Powell",
+          "ids": [
+            "wigan-hist-sam-powell-2020"
+          ],
+          "note": "15 apps",
+          "otherClubIds": [
+            "warrington-cur-sam-powell"
+          ]
+        },
+        {
+          "name": "Morgan Smithies",
+          "ids": [
+            "wigan-hist-morgan-smithies-2020"
+          ],
+          "note": "14 apps"
+        },
+        {
+          "name": "Harry Smith",
+          "ids": [
+            "wigan-hist-harry-smith-2020",
+            "wigan-cur-harry-smith"
+          ],
+          "note": "14 apps"
+        },
+        {
+          "name": "Oliver Partington",
+          "ids": [
+            "wigan-hist-oliver-partington-2020",
+            "wigan-cur-oliver-partington"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Joe Bullock",
+          "ids": [
+            "wigan-hist-joe-bullock-2020"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Liam Byrne",
+          "ids": [
+            "wigan-hist-era-liam-byrne"
+          ],
+          "note": "11 apps",
+          "otherClubIds": [
+            "warrington-cur-liam-byrne"
+          ]
+        },
+        {
+          "name": "Liam Marshall",
+          "ids": [
+            "wigan-cur-liam-marshall",
+            "wigan-hist-liam-marshall-2021",
+            "wigan-hist-liam-marshall-2022",
+            "wigan-hist-liam-marshall-2023",
+            "wigan-hist-liam-marshall-2024",
+            "wigan-hist-liam-marshall-2025"
+          ],
+          "note": "10 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2020/wigan-warriors/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2020/wigan-warriors/summary.html",
+        "https://en.wikipedia.org/wiki/2020_Wigan_Warriors_season",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "Wigan won the 2020 League Leaders' Shield (table decided on win percentage in the COVID-shortened season). Regular-season apps (starts+bench, excludes play-offs/Challenge Cup) counted from RLP per-match lineups (18 regular-season matches incl. the round 3 Toronto game later expunged); counts cross-checked against RLP summary (league+play-off) totals. Near misses (9): Joe Burgess, Ethan Havard, Dom Manfredi; Sean O'Loughlin 4."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2018,
+      "club": "St Helens",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Danny Richardson",
+          "ids": [
+            "st-helens-hist-danny-richardson-2018"
+          ],
+          "note": "30 apps",
+          "otherClubIds": [
+            "york-cur-danny-richardson"
+          ]
+        },
+        {
+          "name": "Regan Grace",
+          "ids": [
+            "st-helens-hist-regan-grace",
+            "st-helens-hist-regan-grace-2019",
+            "st-helens-hist-regan-grace-2021",
+            "st-helens-hist-regan-grace-2020"
+          ],
+          "note": "29 apps"
+        },
+        {
+          "name": "Luke Thompson",
+          "ids": [
+            "st-helens-hist-luke-thompson-2015",
+            "st-helens-cur-luke-thompson-2019"
+          ],
+          "note": "28 apps",
+          "otherClubIds": [
+            "wigan-cur-luke-thompson"
+          ]
+        },
+        {
+          "name": "Tommy Makinson",
+          "ids": [
+            "st-helens-hist-thomas-makinson-2015",
+            "st-helens-hist-thomas-makinson-2019",
+            "st-helens-hist-thomas-makinson-2021",
+            "st-helens-cur-tommy-makinson-2014",
+            "st-helens-cur-tommy-makinson-2020",
+            "st-helens-hist-thomas-makinson"
+          ],
+          "note": "28 apps",
+          "otherClubIds": [
+            "catalans-cur-tommy-makinson"
+          ]
+        },
+        {
+          "name": "Louie McCarthy-Scarsbrook",
+          "ids": [
+            "louie-mccarthy-scarsbrook",
+            "st-helens-hist-louie-mccarthy-scarsbrook-2014",
+            "st-helens-hist-louie-mccarthy-scarsbrook-2020",
+            "st-helens-hist-louie-mccarthy-scarsbrook-2015",
+            "st-helens-hist-louie-mccarthy-scarsbrook-2016"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Theo Fages",
+          "ids": [
+            "st-helens-hist-theo-fages",
+            "st-helens-hist-theo-fages-2020",
+            "st-helens-hist-theo-fages-2019"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Luke Douglas",
+          "ids": [
+            "st-helens-hist-luke-douglas"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Zeb Taia",
+          "ids": [
+            "st-helens-hist-zeb-taia-2020",
+            "st-helens-hist-zeb-taia-2019",
+            "st-helens-hist-zeb-taia"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Mark Percival",
+          "ids": [
+            "st-helens-cur-mark-percival",
+            "st-helens-hist-mark-percival-2015",
+            "st-helens-cur-mark-percival-2014",
+            "st-helens-cur-mark-percival-2019",
+            "st-helens-cur-mark-percival-2021",
+            "st-helens-cur-mark-percival-2020",
+            "st-helens-hist-mark-percival-2016"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Jonny Lomax",
+          "ids": [
+            "st-helens-cur-jonny-lomax",
+            "st-helens-cur-jonny-lomax-2014",
+            "st-helens-cur-jonny-lomax-2019",
+            "st-helens-cur-jonny-lomax-2021",
+            "st-helens-cur-jonny-lomax-2020",
+            "st-helens-hist-jonny-lomax-2016"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Jon Wilkin",
+          "ids": [
+            "st-helens-hist-jon-wilkin-2006",
+            "st-helens-hist-jon-wilkin-2014",
+            "st-helens-hist-jon-wilkin",
+            "st-helens-hist-jon-wilkin-2009",
+            "st-helens-hist-jon-wilkin-2016"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Morgan Knowles",
+          "ids": [
+            "st-helens-cur-morgan-knowles",
+            "st-helens-hist-morgan-knowles-2019",
+            "st-helens-hist-morgan-knowles-2021",
+            "st-helens-hist-morgan-knowles"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Dominique Peyroux",
+          "ids": [
+            "st-helens-hist-dom-peyroux",
+            "st-helens-hist-dominique-peyroux",
+            "st-helens-hist-dominique-peyroux-2019",
+            "st-helens-hist-dominique-peyroux-2016"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Ben Barba",
+          "ids": [
+            "st-helens-hist-ben-barba"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Kyle Amor",
+          "ids": [
+            "st-helens-hist-kyle-amor",
+            "st-helens-hist-kyle-amor-2016"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "James Roby",
+          "ids": [
+            "st-helens-hist-james-roby-2021",
+            "st-helens-hist-james-roby-2014",
+            "st-helens-hist-james-roby-2015",
+            "st-helens-hist-james-roby-2020",
+            "st-helens-hist-james-roby-2019",
+            "james-roby",
+            "st-helens-hist-james-roby-2016",
+            "st-helens-leg-james-roby-2007"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Ryan Morgan",
+          "ids": [
+            "st-helens-hist-ryan-morgan"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Matty Lees",
+          "ids": [
+            "st-helens-cur-matty-lees",
+            "st-helens-cur-matty-lees-2021",
+            "st-helens-cur-matty-lees-2020"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Adam Swift",
+          "ids": [
+            "st-helens-hist-adam-swift-2015",
+            "st-helens-hist-adam-swift-2016"
+          ],
+          "note": "11 apps",
+          "otherClubIds": [
+            "huddersfield-cur-adam-swift"
+          ]
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2018/st-helens/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2018/st-helens/summary.html",
+        "https://en.wikipedia.org/wiki/2018_Super_League_season",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "St Helens won the 2018 League Leaders' Shield. Regular-season apps (23 rounds + 7 Super 8s rounds, starts+bench; excludes play-off semi-final and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary (all 15 visible rows matched). Excluded: Matty Smith 7, Jack Ashworth 7, Matty Costello 7, Alex Walmsley 5, James Bentley 3."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2016,
+      "club": "Warrington Wolves",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Chris Hill",
+          "ids": [
+            "warrington-hist-chris-hill-2016"
+          ],
+          "note": "30 apps"
+        },
+        {
+          "name": "Ben Currie",
+          "ids": [
+            "warrington-cur-ben-currie-2016",
+            "warrington-cur-ben-currie"
+          ],
+          "note": "29 apps"
+        },
+        {
+          "name": "George King",
+          "ids": [
+            "warrington-cur-george-king-2016"
+          ],
+          "note": "29 apps",
+          "otherClubIds": [
+            "huddersfield-cur-george-king"
+          ]
+        },
+        {
+          "name": "Rhys Evans",
+          "ids": [],
+          "note": "28 apps",
+          "otherClubIds": [
+            "wakefield-hist-rhys-evans"
+          ]
+        },
+        {
+          "name": "Ashton Sims",
+          "ids": [
+            "warrington-hist-ashton-sims-2016"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Joe Westerman",
+          "ids": [],
+          "note": "28 apps",
+          "otherClubIds": [
+            "castleford-cur-joe-westerman",
+            "hull-fc-hist-joe-westerman-2012",
+            "castleford-cur-joe-westerman-2009"
+          ]
+        },
+        {
+          "name": "Ryan Atkins",
+          "ids": [
+            "warrington-hist-ryan-atkins-2016"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Matty Russell",
+          "ids": [
+            "warrington-hist-matty-russell-2015"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Daryl Clark",
+          "ids": [
+            "warrington-cur-daryl-clark-2016"
+          ],
+          "note": "26 apps",
+          "otherClubIds": [
+            "st-helens-cur-daryl-clark"
+          ]
+        },
+        {
+          "name": "Stefan Ratchford",
+          "ids": [
+            "warrington-hist-stefan-ratchford-2016"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Jack Hughes",
+          "ids": [
+            "warrington-hist-jack-hughes-2020",
+            "warrington-hist-jack-hughes-2021"
+          ],
+          "note": "25 apps",
+          "otherClubIds": [
+            "leigh-cur-jack-hughes"
+          ]
+        },
+        {
+          "name": "Kurt Gidley",
+          "ids": [
+            "warrington-hist-kurt-gidley-2016"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Brad Dwyer",
+          "ids": [],
+          "note": "20 apps",
+          "otherClubIds": [
+            "leeds-hist-brad-dwyer",
+            "leeds-hist-brad-dwyer-2020",
+            "leeds-hist-brad-dwyer-2021",
+            "leeds-hist-brad-dwyer-2022",
+            "hull-fc-hist-brad-dwyer-2023"
+          ]
+        },
+        {
+          "name": "Ben Westwood",
+          "ids": [
+            "warrington-hist-ben-westwood-2016"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Chris Sandow",
+          "ids": [
+            "warrington-hist-chris-sandow-2016"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Tom Lineham",
+          "ids": [
+            "warrington-cur-tom-lineham-2016"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Kevin Penny",
+          "ids": [
+            "warrington-hist-kevin-penny-2016"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Jordan Cox",
+          "ids": [],
+          "note": "16 apps",
+          "otherClubIds": [
+            "hull-kr-hist-jordan-cox"
+          ]
+        },
+        {
+          "name": "Benjamin Jullien",
+          "ids": [],
+          "note": "11 apps",
+          "otherClubIds": [
+            "catalans-hist-benjamin-jullien"
+          ]
+        },
+        {
+          "name": "Ryan Bailey",
+          "ids": [],
+          "note": "11 apps",
+          "otherClubIds": [
+            "leeds-hist-ryan-bailey"
+          ]
+        },
+        {
+          "name": "Toby King",
+          "ids": [
+            "warrington-cur-toby-king-2016",
+            "warrington-cur-toby-king"
+          ],
+          "note": "11 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2016/warrington-wolves/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2016/warrington-wolves/summary.html",
+        "https://en.wikipedia.org/wiki/2016_Warrington_Wolves_season",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "Warrington finished 1st after the Super 8s and won the 2016 League Leaders' Shield. Regular-season apps (23 rounds + 7 Super 8s, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-13 (all matched). RLP lists unqualified 'King' off the bench in early rounds - treated as George King (prop); Toby King counted only where named T. King. Excluded: Sam Wilde 8, Declan Patton 7, Joe Philbin 6, Morgan Smith 5, Gene Ormsby 4, Jack Johnson 3, Mitchell Dodds 2, Gary Wheeler 1."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2015,
+      "club": "Leeds Rhinos",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Carl Ablett",
+          "ids": [
+            "leeds-hist-carl-ablett"
+          ],
+          "note": "30 apps"
+        },
+        {
+          "name": "Adam Cuthbertson",
+          "ids": [
+            "leeds-hist-adam-cuthbertson"
+          ],
+          "note": "29 apps"
+        },
+        {
+          "name": "Brad Singleton",
+          "ids": [
+            "leeds-hist-brad-singleton-2016",
+            "leeds-hist-era-brad-singleton"
+          ],
+          "note": "29 apps",
+          "otherClubIds": [
+            "castleford-cur-brad-singleton"
+          ]
+        },
+        {
+          "name": "Danny McGuire",
+          "ids": [
+            "leeds-hist-danny-mcguire-2015",
+            "danny-mcguire"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Jamie Peacock",
+          "ids": [
+            "leeds-leg-jamie-peacock-2015",
+            "jamie-peacock"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Kallum Watkins",
+          "ids": [
+            "leeds-cur-kallum-watkins-2015",
+            "leeds-cur-kallum-watkins"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Joel Moon",
+          "ids": [
+            "leeds-hist-joel-moon-2015"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Zak Hardaker",
+          "ids": [
+            "leeds-cur-zak-hardaker-2015"
+          ],
+          "note": "25 apps",
+          "otherClubIds": [
+            "hull-fc-cur-zak-hardaker"
+          ]
+        },
+        {
+          "name": "Ryan Hall",
+          "ids": [
+            "leeds-cur-ryan-hall",
+            "leeds-hist-era-ryan-hall",
+            "leeds-hist-ryan-hall-2009",
+            "leeds-hist-ryan-hall-2013",
+            "leeds-hist-ryan-hall-2025"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Stevie Ward",
+          "ids": [
+            "leeds-hist-stevie-ward-2016",
+            "leeds-hist-stevie-ward"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Kevin Sinfield",
+          "ids": [
+            "leeds-leg-kevin-sinfield-2015",
+            "kevin-sinfield"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Rob Burrow",
+          "ids": [
+            "leeds-leg-rob-burrow-2015",
+            "rob-burrow"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Paul Aiton",
+          "ids": [
+            "leeds-hist-paul-aiton-2015"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Brett Delaney",
+          "ids": [
+            "leeds-hist-brett-delaney-2015"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Mitch Achurch",
+          "ids": [
+            "leeds-hist-mitch-achurch"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Ash Handley",
+          "ids": [
+            "leeds-cur-ash-handley-2015",
+            "leeds-cur-ash-handley"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Kylie Leuluai",
+          "ids": [
+            "leeds-hist-kylie-leuluai-2015"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Liam Sutcliffe",
+          "ids": [
+            "leeds-hist-liam-sutcliffe-2020",
+            "leeds-hist-liam-sutcliffe-2021",
+            "leeds-hist-liam-sutcliffe-2022"
+          ],
+          "note": "15 apps",
+          "otherClubIds": [
+            "midlands-cur-liam-sutcliffe"
+          ]
+        },
+        {
+          "name": "Tom Briscoe",
+          "ids": [
+            "leeds-cur-tom-briscoe-2015"
+          ],
+          "note": "13 apps",
+          "otherClubIds": [
+            "hull-fc-cur-tom-briscoe"
+          ]
+        },
+        {
+          "name": "Jimmy Keinhorst",
+          "ids": [
+            "leeds-hist-jimmy-keinhorst-2016",
+            "leeds-hist-jimmy-keinhorst"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Jamie Jones-Buchanan",
+          "ids": [
+            "leeds-leg-jamie-jones-buchanan-2015"
+          ],
+          "note": "10 apps"
+        },
+        {
+          "name": "Mitch Garbutt",
+          "ids": [
+            "leeds-hist-mitch-garbutt-2016",
+            "leeds-hist-mitch-garbutt"
+          ],
+          "note": "10 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2015/leeds-rhinos/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2015/leeds-rhinos/summary.html",
+        "https://en.wikipedia.org/wiki/2015_Leeds_Rhinos_season",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "Leeds won the 2015 League Leaders' Shield (treble season). Regular-season apps (23 rounds + 7 Super 8s, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-11 (all matched). Excluded (<10): Yates 9, Josh Walters 8, Ashton Golding 4, Jordan Lilley 4, Mulhern 2, R. Ward 2."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2013,
+      "club": "Huddersfield Giants",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Leroy Cudjoe",
+          "ids": [
+            "huddersfield-hist-leroy-cudjoe-2013"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Luke Robinson",
+          "ids": [
+            "huddersfield-hist-luke-robinson",
+            "huddersfield-hist-luke-robinson-2009"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Scott Grix",
+          "ids": [
+            "huddersfield-hist-scott-grix-2013"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Eorl Crabtree",
+          "ids": [
+            "huddersfield-hist-eorl-crabtree-2013"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Danny Brough",
+          "ids": [
+            "huddersfield-hist-danny-brough-2013"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Brett Ferres",
+          "ids": [
+            "huddersfield-hist-brett-ferres-2013"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Larne Patrick",
+          "ids": [
+            "huddersfield-hist-larne-patrick",
+            "huddersfield-hist-larne-patrick-2016"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Jermaine McGillvary",
+          "ids": [
+            "huddersfield-hist-jermaine-mcgillvary-2013"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Craig Kopczak",
+          "ids": [],
+          "note": "24 apps",
+          "otherClubIds": [
+            "bradford-hist-craig-kopczak",
+            "bradford-hist-craig-kopczak-2011",
+            "bradford-hist-craig-kopczak-2012",
+            "salford-hist-craig-kopczak-2016"
+          ]
+        },
+        {
+          "name": "David Faiumu",
+          "ids": [
+            "huddersfield-hist-david-faiumu-2013"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Aaron Murphy",
+          "ids": [
+            "huddersfield-hist-aaron-murphy-2013"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Shaun Lunt",
+          "ids": [
+            "huddersfield-hist-shaun-lunt-2013"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Joe Wardle",
+          "ids": [
+            "huddersfield-hist-joe-wardle-2013"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Dale Ferguson",
+          "ids": [
+            "huddersfield-hist-dale-ferguson"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Ukuma Ta'ai",
+          "ids": [
+            "huddersfield-hist-ukuma-ta-ai",
+            "huddersfield-hist-ukuma-ta-ai-2016"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Jamie Cording",
+          "ids": [
+            "huddersfield-hist-jamie-cording-2013"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Michael Lawrence",
+          "ids": [
+            "huddersfield-hist-michael-lawrence",
+            "huddersfield-hist-michael-lawrence-2009",
+            "huddersfield-hist-michael-lawrence-2016",
+            "huddersfield-hist-michael-lawrence-2020",
+            "huddersfield-hist-michael-lawrence-2021"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Jason Chan",
+          "ids": [
+            "huddersfield-hist-jason-chan"
+          ],
+          "note": "12 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2013/huddersfield-giants/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2013/huddersfield-giants/summary.html",
+        "https://en.wikipedia.org/wiki/2013_Huddersfield_Giants_season",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "Huddersfield finished 1st (42 pts) and won the 2013 League Leaders' Shield. Regular-season apps (27 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-15 (all matched). Excluded (<10): Stuart Fielden 9, Anthony Mullally 9, Luke George 7, Kyle Wood 7, Brad Dwyer 6, Jacob Fairbank 5, Matty Dawson 3, others 1-2."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2012,
+      "club": "Wigan Warriors",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Brett Finch",
+          "ids": [
+            "wigan-hist-brett-finch"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Michael McIlorum",
+          "ids": [
+            "wigan-hist-michael-mcilorum-2006",
+            "wigan-hist-michael-mcilorum-2008",
+            "wigan-hist-michael-mcilorum",
+            "wigan-hist-michael-mcilorum-2015",
+            "wigan-hist-michael-mcilorum-2016"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Darrell Goulding",
+          "ids": [
+            "wigan-hist-darrell-goulding"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Josh Charnley",
+          "ids": [
+            "wigan-hist-josh-charnley-2015",
+            "wigan-hist-josh-charnley-2016"
+          ],
+          "note": "26 apps",
+          "otherClubIds": [
+            "leigh-cur-josh-charnley"
+          ]
+        },
+        {
+          "name": "Gareth Hock",
+          "ids": [
+            "wigan-hist-gareth-hock-2006",
+            "wigan-hist-gareth-hock-2008",
+            "wigan-hist-gareth-hock-2009"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Sam Tomkins",
+          "ids": [
+            "wigan-leg-sam-tomkins-2012",
+            "wigan-hist-sam-tomkins"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Jeff Lima",
+          "ids": [
+            "wigan-hist-jeff-lima"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Harrison Hansen",
+          "ids": [
+            "wigan-hist-harrison-hansen",
+            "wigan-hist-harrison-hansen-2009"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Liam Farrell",
+          "ids": [
+            "wigan-cur-liam-farrell",
+            "wigan-hist-liam-farrell-2015",
+            "wigan-hist-liam-farrell-2016",
+            "wigan-hist-liam-farrell-2020",
+            "wigan-hist-liam-farrell-2021",
+            "wigan-hist-liam-farrell-2022",
+            "wigan-hist-liam-farrell-2023",
+            "wigan-hist-liam-farrell-2024",
+            "wigan-hist-liam-farrell-2025"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "George Carmont",
+          "ids": [
+            "wigan-hist-george-carmont",
+            "wigan-hist-george-carmont-2009"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Sean O'Loughlin",
+          "ids": [
+            "wigan-hist-sean-oloughlin-2006",
+            "wigan-hist-sean-oloughlin-2008",
+            "wigan-hist-sean-o-loughlin-2015",
+            "wigan-hist-sean-o-loughlin-2016",
+            "sean-oloughlin",
+            "wigan-hist-sean-o-loughlin-2009",
+            "wigan-hist-sean-o-loughlin-2020",
+            "wigan-leg-sean-o-loughlin-2013"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Epalahame Lauaki",
+          "ids": [],
+          "note": "22 apps",
+          "otherClubIds": [
+            "hull-fc-hist-epalahame-lauaki"
+          ]
+        },
+        {
+          "name": "Lee Mossop",
+          "ids": [
+            "wigan-hist-lee-mossop-2008",
+            "wigan-hist-lee-mossop",
+            "wigan-hist-lee-mossop-2015"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Chris Tuson",
+          "ids": [
+            "wigan-hist-chris-tuson"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Thomas Leuluai",
+          "ids": [
+            "wigan-hist-thomas-leuluai-2008",
+            "wigan-hist-thomas-leuluai",
+            "wigan-hist-thomas-leuluai-2009",
+            "wigan-hist-thomas-leuluai-2020"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Jack Hughes",
+          "ids": [],
+          "note": "16 apps",
+          "otherClubIds": [
+            "leigh-cur-jack-hughes",
+            "leigh-hist-era-jack-hughes",
+            "warrington-hist-jack-hughes-2020",
+            "warrington-hist-jack-hughes-2021",
+            "leigh-hist-jack-hughes-2025"
+          ]
+        },
+        {
+          "name": "Ben Flower",
+          "ids": [
+            "wigan-hist-ben-flower"
+          ],
+          "note": "15 apps"
+        },
+        {
+          "name": "Pat Richards",
+          "ids": [
+            "wigan-hist-pat-richards-2008",
+            "wigan-hist-pat-richards-2006",
+            "pat-richards",
+            "wigan-hist-pat-richards-2009",
+            "wigan-leg-pat-richards-2010"
+          ],
+          "note": "12 apps"
+        },
+        {
+          "name": "Anthony Gelling",
+          "ids": [
+            "wigan-hist-anthony-gelling",
+            "wigan-hist-anthony-gelling-2015"
+          ],
+          "note": "10 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2012/wigan-warriors/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2012/wigan-warriors/summary.html",
+        "https://en.wikipedia.org/wiki/2012_Super_League_season",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "Wigan won the 2012 League Leaders' Shield. Regular-season apps (27 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-14 (all matched once play-offs added; two unqualified 'Tomkins' bench entries in R6/R19 resolved as Logan Tomkins by that check). Excluded (<10): Paul Prescott 8, Gil Dudson 8, Logan Tomkins 8, Crosby 7, Matty Smith 7, Thornley 5, Spencer 4, others."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2011,
+      "club": "Warrington Wolves",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Michael Monaghan",
+          "ids": [
+            "michael-monaghan",
+            "warrington-hist-michael-monaghan-2009"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Garreth Carvell",
+          "ids": [
+            "warrington-hist-garreth-carvell",
+            "warrington-hist-garreth-carvell-2009"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Brett Hodgson",
+          "ids": [
+            "brett-hodgson"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Paul Wood",
+          "ids": [
+            "warrington-hist-paul-wood"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Richard Myler",
+          "ids": [
+            "warrington-hist-richie-myler"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Ben Westwood",
+          "ids": [
+            "warrington-hist-ben-westwood-2015",
+            "warrington-hist-ben-westwood-2016",
+            "ben-westwood",
+            "warrington-hist-ben-westwood-2009"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "David Solomona",
+          "ids": [],
+          "note": "23 apps",
+          "otherClubIds": [
+            "wakefield-hist-david-solomona"
+          ]
+        },
+        {
+          "name": "Ryan Atkins",
+          "ids": [
+            "warrington-hist-ryan-atkins-2015",
+            "warrington-hist-ryan-atkins-2016",
+            "warrington-hist-ryan-atkins"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Chris Bridge",
+          "ids": [
+            "warrington-hist-chris-bridge",
+            "warrington-hist-chris-bridge-2009"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Simon Grix",
+          "ids": [],
+          "note": "22 apps",
+          "otherClubIds": [
+            "wakefield-hist-simon-grix"
+          ]
+        },
+        {
+          "name": "Joel Monaghan",
+          "ids": [
+            "warrington-hist-joel-monaghan-2015",
+            "joel-monaghan"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Lee Briers",
+          "ids": [
+            "warrington-leg-lee-briers-2011"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Ben Harrison",
+          "ids": [
+            "warrington-hist-ben-harrison-2015",
+            "warrington-hist-ben-harrison-2009"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Mickey Higham",
+          "ids": [
+            "warrington-hist-mickey-higham"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Adrian Morley",
+          "ids": [
+            "warrington-hist-adrian-morley-2009",
+            "warrington-leg-adrian-morley-2010",
+            "adrian-morley"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Matty Blythe",
+          "ids": [],
+          "note": "19 apps",
+          "otherClubIds": [
+            "wakefield-hist-matty-blythe"
+          ]
+        },
+        {
+          "name": "Mike Cooper",
+          "ids": [
+            "warrington-hist-mike-cooper",
+            "warrington-hist-mike-cooper-2020",
+            "warrington-hist-mike-cooper-2021",
+            "warrington-hist-mike-cooper-2022"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Louis Anderson",
+          "ids": [
+            "warrington-hist-louis-anderson-2009"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Matt King",
+          "ids": [
+            "warrington-hist-matt-king-2009"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Jon Clarke",
+          "ids": [
+            "warrington-hist-john-clarke-2009"
+          ],
+          "note": "14 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2011/warrington-wolves/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2011/warrington-wolves/summary.html",
+        "https://en.wikipedia.org/wiki/2011_Super_League_season",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "Warrington won the 2011 League Leaders' Shield. Regular-season apps (27 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-13 (all matched once play-offs added). Excluded (<10): Rhys Williams 9, Chris Riley 8, Rhys Evans 8, Mitchell 5, Tyrone McCarthy 3, O'Brien 1."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2009,
+      "club": "Leeds Rhinos",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Carl Ablett",
+          "ids": [
+            "leeds-hist-carl-ablett"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Jamie Peacock",
+          "ids": [
+            "leeds-leg-jamie-peacock-2009",
+            "jamie-peacock"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Kylie Leuluai",
+          "ids": [
+            "leeds-hist-kylie-leuluai-2009"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Ryan Hall",
+          "ids": [
+            "leeds-hist-era-ryan-hall",
+            "leeds-hist-ryan-hall-2009",
+            "leeds-cur-ryan-hall"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Luke Burgess",
+          "ids": [
+            "leeds-hist-luke-burgess"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Jamie Jones-Buchanan",
+          "ids": [
+            "leeds-hist-jamie-jones-buchanan-2009"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Ali Lauitiiti",
+          "ids": [
+            "leeds-hist-ali-lauitiiti-2009"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Scott Donald",
+          "ids": [
+            "leeds-hist-scott-donald-2009"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Kevin Sinfield",
+          "ids": [
+            "leeds-leg-kevin-sinfield-2009",
+            "kevin-sinfield"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Danny McGuire",
+          "ids": [
+            "leeds-leg-danny-mcguire-2009",
+            "danny-mcguire"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Keith Senior",
+          "ids": [
+            "leeds-hist-keith-senior-2009"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Matt Diskin",
+          "ids": [
+            "leeds-hist-matt-diskin-2009"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Lee Smith",
+          "ids": [
+            "leeds-hist-lee-smith"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Rob Burrow",
+          "ids": [
+            "leeds-leg-rob-burrow-2009",
+            "rob-burrow"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Brent Webb",
+          "ids": [
+            "leeds-hist-brent-webb",
+            "leeds-hist-brent-webb-2008"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Danny Buderus",
+          "ids": [
+            "leeds-hist-danny-buderus"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Ryan Bailey",
+          "ids": [
+            "leeds-hist-ryan-bailey"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Ian Kirke",
+          "ids": [
+            "leeds-hist-ian-kirke",
+            "leeds-hist-ian-kirke-2013"
+          ],
+          "note": "15 apps"
+        },
+        {
+          "name": "Kallum Watkins",
+          "ids": [
+            "leeds-hist-kallum-watkins-2009",
+            "leeds-cur-kallum-watkins"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Ashley Gibson",
+          "ids": [],
+          "note": "10 apps",
+          "otherClubIds": [
+            "salford-hist-ashley-gibson"
+          ]
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2009/leeds-rhinos/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2009/leeds-rhinos/summary.html",
+        "https://en.wikipedia.org/wiki/2009_Leeds_Rhinos_season",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "Leeds finished 1st (42 pts) and won the 2009 League Leaders' Shield. Regular-season apps (27 rounds, starts+bench; excludes play-offs, Challenge Cup, World Club Challenge) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-15 (all matched once play-offs added). Excluded (<10): Simon Worrall 8, Danny Allan 5, Michael Ratu 5, Paul McShane 3, Ben Jones-Bishop 2, Manning 1, Pitts 1."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2000,
+      "club": "Wigan Warriors",
+      "rule": "10+ league apps",
+      "preShield": true,
+      "players": [
+        {
+          "name": "Jason Robinson",
+          "ids": [
+            "wigan-leg-jason-robinson-1998",
+            "wigan-hist-jason-robinson-1995",
+            "jason-robinson"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Denis Betts",
+          "ids": [],
+          "note": "28 apps",
+          "otherClubIds": [
+            "psg-hist-denis-betts"
+          ]
+        },
+        {
+          "name": "Neil Cowie",
+          "ids": [
+            "wigan-hist-neil-cowie"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Mick Cassidy",
+          "ids": [
+            "wigan-hist-mick-cassidy"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Terry O'Connor",
+          "ids": [
+            "wigan-hist-terry-o-connor"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Kris Radlinski",
+          "ids": [
+            "wigan-hist-kris-radlinski-2006",
+            "kris-radlinski",
+            "wigan-leg-kris-radlinski-2002"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Andy Farrell",
+          "ids": [
+            "wigan-leg-andy-farrell-1996",
+            "andy-farrell"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Willie Peters",
+          "ids": [
+            "wigan-hist-willie-peters"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Lee Gilmour",
+          "ids": [],
+          "note": "26 apps",
+          "otherClubIds": [
+            "st-helens-hist-lee-gilmour",
+            "st-helens-hist-lee-gilmour-2006",
+            "st-helens-hist-lee-gilmour-2009"
+          ]
+        },
+        {
+          "name": "Steve Renouf",
+          "ids": [
+            "steve-renouf"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Terry Newton",
+          "ids": [
+            "wigan-hist-terry-newton"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Gary Connolly",
+          "ids": [
+            "wigan-hist-garry-connolly"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Tony Mestrov",
+          "ids": [
+            "wigan-hist-tony-mestrov"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Brady Malam",
+          "ids": [
+            "wigan-hist-brady-malam"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Brett Dallas",
+          "ids": [
+            "wigan-hist-brett-dallas-2006",
+            "wigan-hist-brett-dallas"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Wes Davies",
+          "ids": [
+            "wigan-hist-wes-davies"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Chris Chester",
+          "ids": [],
+          "note": "17 apps",
+          "otherClubIds": [
+            "hull-fc-hist-chris-chester"
+          ]
+        },
+        {
+          "name": "Simon Haughton",
+          "ids": [
+            "wigan-hist-simon-haughton"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "David Hodgson",
+          "ids": [],
+          "note": "13 apps",
+          "otherClubIds": [
+            "oldham-hist-david-hodgson",
+            "huddersfield-hist-david-hodgson-2009"
+          ]
+        },
+        {
+          "name": "Tony Smith",
+          "ids": [
+            "wigan-hist-tony-smith"
+          ],
+          "note": "10-11 apps (see entry note) - borderline"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2000/summary.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2000/wigan-warriors/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2000/wigan-warriors/summary.html"
+      ],
+      "note": "No League Leaders' Shield before 2003. Wigan finished top of the 2000 regular-season table (P28 W24 D1 L3, 49 pts). Regular-season apps (28 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-7 (all matched once play-offs added). Two different players appear as 'Smith' in RLP lineups; Tony Smith's figure is derived from his RLP summary total (13 league incl. play-offs) minus 2-3 play-off games. Excluded (<10): the other Smith (hooker) 8-9, Johnson 5, Reber 3, Jones 2, Ball 1."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 1999,
+      "club": "Bradford Bulls",
+      "rule": "10+ league apps",
+      "preShield": true,
+      "players": [
+        {
+          "name": "Brian McDermott",
+          "ids": [
+            "bradford-hist-brian-mcdermott",
+            "bradford-hist-brian-mcdermott-1997"
+          ],
+          "note": "29 apps"
+        },
+        {
+          "name": "James Lowes",
+          "ids": [
+            "bradford-hist-james-lowes-1999"
+          ],
+          "note": "28 apps"
+        },
+        {
+          "name": "Henry Paul",
+          "ids": [
+            "bradford-hist-henry-paul-1999"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Stuart Fielden",
+          "ids": [
+            "bradford-leg-stuart-fielden-1999",
+            "stuart-fielden"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Paul Deacon",
+          "ids": [
+            "bradford-hist-paul-deacon-1999"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Steve McNamara",
+          "ids": [
+            "bradford-hist-steve-mcnamara-1999"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "Warren Jowitt",
+          "ids": [
+            "bradford-hist-warren-jowitt"
+          ],
+          "note": "26 apps"
+        },
+        {
+          "name": "David Boyle",
+          "ids": [
+            "bradford-hist-david-boyle"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Scott Naylor",
+          "ids": [
+            "bradford-hist-scott-naylor-1999"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Leon Pryce",
+          "ids": [
+            "bradford-hist-leon-pryce-1999"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Paul Anderson",
+          "ids": [
+            "bradford-hist-paul-anderson-1999"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Nathan McAvoy",
+          "ids": [
+            "bradford-hist-nathan-mcavoy"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Michael Withers",
+          "ids": [
+            "bradford-hist-michael-withers",
+            "bradford-hist-michael-withers-2006",
+            "bradford-hist-michael-withers-2000",
+            "bradford-hist-michael-withers-2005"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Mike Forshaw",
+          "ids": [
+            "bradford-hist-mike-forshaw-1999"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Stuart Spruce",
+          "ids": [
+            "bradford-hist-stuart-spruce"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Robbie Paul",
+          "ids": [
+            "bradford-leg-robbie-hunter-paul-1999",
+            "bradford-leg-robbie-hunter-paul"
+          ],
+          "note": "19 apps (RLP: Robbie Hunter-Paul)"
+        },
+        {
+          "name": "Bernard Dwyer",
+          "ids": [
+            "bradford-hist-bernard-dwyer",
+            "bradford-hist-bernard-dwyer-1997"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Neil Harmon",
+          "ids": [
+            "bradford-hist-neil-harmon"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Jamie Peacock",
+          "ids": [
+            "bradford-leg-jamie-peacock-1999",
+            "jamie-peacock"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Tevita Vaikona",
+          "ids": [
+            "bradford-hist-tevita-vaikona-2004",
+            "bradford-hist-tevita-vaikona-1998",
+            "bradford-hist-tevita-vaikona-2003",
+            "bradford-hist-tevita-vaikona-2000",
+            "bradford-hist-tevita-vaikona-2002",
+            "bradford-hist-tevita-vaikona-2001",
+            "tevita-vaikona"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Jeremy Donougher",
+          "ids": [
+            "bradford-hist-jeremy-donougher",
+            "bradford-hist-jeremy-donougher-1998"
+          ],
+          "note": "14 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-1999/summary.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-1999/bradford-bulls/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-1999/bradford-bulls/summary.html"
+      ],
+      "note": "No League Leaders' Shield before 2003. Bradford finished top of the 1999 regular-season table (P30 W25 D1 L4, 51 pts). Regular-season apps (30 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-7 (all matched once play-offs added). Excluded (<10): Danny Peacock 8, Zisti 7, Howlett 6, Lee Radford 4, Sykes 4."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 1998,
+      "club": "Wigan Warriors",
+      "rule": "10+ league apps",
+      "preShield": true,
+      "players": [
+        {
+          "name": "Kris Radlinski",
+          "ids": [
+            "wigan-hist-kris-radlinski-2006",
+            "kris-radlinski",
+            "wigan-leg-kris-radlinski-2002"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Lee Gilmour",
+          "ids": [],
+          "note": "23 apps",
+          "otherClubIds": [
+            "st-helens-hist-lee-gilmour",
+            "st-helens-hist-lee-gilmour-2006",
+            "st-helens-hist-lee-gilmour-2009"
+          ]
+        },
+        {
+          "name": "Jason Robinson",
+          "ids": [
+            "wigan-leg-jason-robinson-1998",
+            "jason-robinson"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Andy Farrell",
+          "ids": [
+            "andy-farrell"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Tony Mestrov",
+          "ids": [
+            "wigan-hist-tony-mestrov"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Gary Connolly",
+          "ids": [
+            "wigan-hist-garry-connolly"
+          ],
+          "note": "23 apps"
+        },
+        {
+          "name": "Robbie McCormack",
+          "ids": [
+            "wigan-hist-era-robbie-mccormack"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Henry Paul",
+          "ids": [],
+          "note": "22 apps",
+          "otherClubIds": [
+            "bradford-hist-henry-paul-1999",
+            "bradford-hist-henry-paul-2001",
+            "bradford-hist-henry-paul-2000",
+            "henry-paul"
+          ]
+        },
+        {
+          "name": "Simon Haughton",
+          "ids": [
+            "wigan-hist-simon-haughton"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Danny Moore",
+          "ids": [
+            "wigan-hist-danny-moore"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Mark Bell",
+          "ids": [
+            "wigan-hist-era-mark-bell"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Tony Smith",
+          "ids": [
+            "wigan-hist-tony-smith"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Mick Cassidy",
+          "ids": [
+            "wigan-hist-mick-cassidy"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Terry O'Connor",
+          "ids": [
+            "wigan-hist-terry-o-connor"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Denis Betts",
+          "ids": [],
+          "note": "17 apps",
+          "otherClubIds": [
+            "psg-hist-denis-betts"
+          ]
+        },
+        {
+          "name": "Neil Cowie",
+          "ids": [
+            "wigan-hist-neil-cowie"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Stephen Holgate",
+          "ids": [
+            "wigan-hist-stephen-holgate"
+          ],
+          "note": "15 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-1998/summary.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-1998/wigan-warriors/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-1998/wigan-warriors/summary.html",
+        "https://en.wikipedia.org/wiki/1998_Wigan_Warriors_season"
+      ],
+      "note": "No League Leaders' Shield before 2003 (1998 was the first Grand Final season, which Wigan also won). Wigan finished top of the 1998 regular-season table (P23 W21 L2, 42 pts). Regular-season apps (23 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-8 (all matched once play-offs added). Excluded (<10): Clarke 7, Cardiss 6, Baynes 5, Isherwood 3, others 1. A player listed only as 'Johnson' (21 league apps) is omitted - see unverified."
+    }
+  ],
+  "unverified": [
+    {
+      "honour": "leagueLeaders",
+      "year": 1998,
+      "reason": "Wigan 1998: RLP lineups list a 'Johnson' with 21 regular-season apps (bench forward early, centre later) but the squad had both Andy Johnson (No. 21) and Paul Johnson (No. 25); could not confirm which one, so he was not credited. Candidate id if it is Paul: wigan-hist-paul-johnson.",
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-1998/wigan-warriors/players.html",
+        "https://en.wikipedia.org/wiki/1998_Wigan_Warriors_season"
+      ]
+    }
+  ]
+}

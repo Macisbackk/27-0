@@ -483,6 +483,7 @@
     ],
     "2008": [
       "catalans-hist-adam-mogg-2008",
+      "catalans-hist-casey-mcguire",
       "catalans-hist-clint-greenshields-2008",
       "catalans-hist-david-ferriol-2008",
       "catalans-hist-dimitri-pelo-2008",
@@ -493,7 +494,6 @@
       "catalans-hist-kane-bentley-2008",
       "catalans-hist-remi-casty-2008",
       "catalans-hist-sebastien-raguin-2008",
-      "catalans-hist-stacey-jones-2008",
       "catalans-hist-thomas-bosc-2008"
     ],
     "2009": [
@@ -1418,55 +1418,6 @@
       "hull-kr-cur-zach-fishwick"
     ]
   },
-  "Toulouse Olympique": {
-    "2022": [
-      "toulouse-hist-benjamin-laguerre-2022",
-      "toulouse-hist-calum-gahan-2022",
-      "toulouse-hist-henry-o-kane-2022",
-      "toulouse-hist-jake-shorrocks-2022",
-      "toulouse-hist-joe-bretherton-2022",
-      "toulouse-hist-joe-cator-2022",
-      "toulouse-hist-luke-polselli-2022",
-      "toulouse-hist-mathieu-jussaume-2022",
-      "toulouse-hist-maxime-stefani-2022",
-      "toulouse-hist-olly-ashall-bott-2022",
-      "toulouse-hist-paul-ulberg-2022",
-      "toulouse-hist-reubenn-rennie-2022",
-      "toulouse-hist-tiaki-chan-2022"
-    ],
-    "2026": [
-      "toulouse-cur-aj-wallace",
-      "toulouse-cur-anthony-marion",
-      "toulouse-cur-baptiste-rodriguez",
-      "toulouse-cur-benjamin-laguerre",
-      "toulouse-cur-brendan-hands",
-      "toulouse-cur-calum-gahan",
-      "toulouse-cur-ellis-gillam",
-      "toulouse-cur-eloi-pelissier",
-      "toulouse-cur-henry-okane",
-      "toulouse-cur-hugo-garrigues",
-      "toulouse-cur-jake-shorrocks",
-      "toulouse-cur-james-roumanos",
-      "toulouse-cur-joe-bretherton",
-      "toulouse-cur-joe-cator",
-      "toulouse-cur-john-toleafoa",
-      "toulouse-cur-justin-sangare",
-      "toulouse-cur-lambert-belmas",
-      "toulouse-cur-luke-polselli",
-      "toulouse-cur-mathieu-jussaume",
-      "toulouse-cur-mathieu-pons",
-      "toulouse-cur-maxime-stefani",
-      "toulouse-cur-olly-ashall-bott",
-      "toulouse-cur-paul-marcon",
-      "toulouse-cur-paul-ulberg",
-      "toulouse-cur-pierrejean-lima",
-      "toulouse-cur-reubenn-rennie",
-      "toulouse-cur-rob-butler",
-      "toulouse-cur-romeo-tropis",
-      "toulouse-cur-thomas-lacans",
-      "toulouse-cur-trevor-chiffolleau"
-    ]
-  },
   "Leigh Leopards": {
     "2026": [
       "leigh-cur-aaron-pene",
@@ -1502,6 +1453,40 @@
       "leigh-cur-umyla-hanley",
       "leigh-cur-will-brough",
       "leigh-hist-ricky-leutele"
+    ]
+  },
+  "Toulouse Olympique": {
+    "2026": [
+      "toulouse-cur-aj-wallace",
+      "toulouse-cur-anthony-marion",
+      "toulouse-cur-baptiste-rodriguez",
+      "toulouse-cur-benjamin-laguerre",
+      "toulouse-cur-brendan-hands",
+      "toulouse-cur-calum-gahan",
+      "toulouse-cur-ellis-gillam",
+      "toulouse-cur-eloi-pelissier",
+      "toulouse-cur-henry-okane",
+      "toulouse-cur-hugo-garrigues",
+      "toulouse-cur-jake-shorrocks",
+      "toulouse-cur-james-roumanos",
+      "toulouse-cur-joe-bretherton",
+      "toulouse-cur-joe-cator",
+      "toulouse-cur-john-toleafoa",
+      "toulouse-cur-justin-sangare",
+      "toulouse-cur-lambert-belmas",
+      "toulouse-cur-luke-polselli",
+      "toulouse-cur-mathieu-jussaume",
+      "toulouse-cur-mathieu-pons",
+      "toulouse-cur-maxime-stefani",
+      "toulouse-cur-olly-ashall-bott",
+      "toulouse-cur-paul-marcon",
+      "toulouse-cur-paul-ulberg",
+      "toulouse-cur-pierrejean-lima",
+      "toulouse-cur-reubenn-rennie",
+      "toulouse-cur-rob-butler",
+      "toulouse-cur-romeo-tropis",
+      "toulouse-cur-thomas-lacans",
+      "toulouse-cur-trevor-chiffolleau"
     ]
   },
   "York Knights": {

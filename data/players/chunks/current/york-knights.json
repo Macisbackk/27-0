@@ -4,14 +4,14 @@
     "name": "Ata Hingano",
     "position": "STAND_OFF",
     "club": "York Knights",
-    "nationality": "New Zealand",
+    "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 168000,
-    "appearances": 10,
-    "tries": 1,
+    "appearances": 28,
+    "tries": 2,
     "dateOfBirth": "1997-03-11",
     "birthYear": 1997,
     "currentClub": "York Knights",
@@ -28,14 +28,15 @@
     "basePlayerId": "york-cur-ata-hingano",
     "primaryPosition": "SO",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "york-cur-ben-jones-bishop",
     "name": "Ben Jones-Bishop",
     "position": "WING",
     "club": "York Knights",
-    "nationality": "England",
+    "nationality": "Jamaica",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -61,14 +62,15 @@
     "basePlayerId": "york-cur-ben-jones-bishop",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "york-cur-denive-balmforth",
     "name": "Denive Balmforth",
     "position": "HOOKER",
     "club": "York Knights",
-    "nationality": "England",
+    "nationality": "Wales",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -92,7 +94,8 @@
     "basePlayerId": "york-cur-denive-balmforth",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "york-cur-jack-martin",
@@ -105,7 +108,7 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 12,
+    "appearances": 27,
     "dateOfBirth": "2001-06-13",
     "birthYear": 2001,
     "clubsPlayedFor": [
@@ -125,7 +128,8 @@
     "basePlayerId": "york-cur-jack-martin",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 0
   },
   {
     "id": "york-cur-jesse-dee",
@@ -176,8 +180,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 79,
+    "tries": 35,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -193,7 +197,7 @@
     "name": "Jordan Lipp",
     "position": "CENTRE",
     "club": "York Knights",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -214,7 +218,10 @@
     "primaryPosition": "CE",
     "birthYear": 2001,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2001-01-10",
+    "appearances": 0,
+    "tries": 0
   },
   {
     "id": "york-cur-jordan-thompson",
@@ -291,8 +298,8 @@
     "category": "current",
     "peakRating": 83,
     "value": 158000,
-    "appearances": 175,
-    "tries": 32,
+    "appearances": 95,
+    "tries": 6,
     "dateOfBirth": "1998-03-07",
     "birthYear": 1998,
     "currentClub": "York Knights",
@@ -310,7 +317,8 @@
     "basePlayerId": "york-cur-justin-sangare",
     "primaryPosition": "PF/SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 9
   },
   {
     "id": "york-cur-kieran-buchanan",
@@ -330,8 +338,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 116000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 23,
+    "tries": 4,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -339,7 +347,9 @@
     "basePlayerId": "york-cur-kieran-buchanan",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-01-26",
+    "intlCaps": 4
   },
   {
     "id": "york-cur-kieran-hudson",
@@ -359,7 +369,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 3,
     "tries": 0,
     "teamYearId": "york-knights-2026",
     "year": 2026,
@@ -420,8 +430,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 143000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 16,
+    "tries": 6,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -429,7 +439,8 @@
     "basePlayerId": "york-cur-nikau-williams",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-11-11"
   },
   {
     "id": "york-cur-oliver-field",
@@ -457,7 +468,10 @@
     "primaryPosition": "SR",
     "birthYear": 2002,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2002-09-03",
+    "appearances": 25,
+    "tries": 5
   },
   {
     "id": "york-cur-paul-mcshane",
@@ -488,7 +502,8 @@
     "basePlayerId": "york-cur-paul-mcshane",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "york-cur-paul-vaughan",
@@ -519,7 +534,8 @@
     "basePlayerId": "york-cur-paul-vaughan",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "york-cur-sam-wood",
@@ -550,7 +566,8 @@
     "basePlayerId": "york-cur-sam-wood",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "york-cur-scott-galeano",
@@ -563,8 +580,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 138000,
-    "appearances": 8,
-    "tries": 8,
+    "appearances": 22,
+    "tries": 13,
     "dateOfBirth": "1998-04-13",
     "birthYear": 1998,
     "currentClub": "York Knights",
@@ -632,8 +649,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 118000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 67,
+    "tries": 4,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -641,7 +658,8 @@
     "basePlayerId": "york-cur-will-dagger",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-02-21"
   },
   {
     "id": "york-cur-xavier-vaa",
@@ -705,7 +723,10 @@
     "clubsPlayedFor": [
       "Hull KR",
       "York Knights"
-    ]
+    ],
+    "dateOfBirth": "1996-09-02",
+    "appearances": 112,
+    "tries": 14
   },
   {
     "id": "york-cur-john-sagaga",
@@ -794,8 +815,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 33,
+    "tries": 1,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -932,8 +953,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 40,
+    "tries": 5,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -968,8 +989,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 23,
+    "tries": 15,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -983,7 +1004,8 @@
       "Wests Tigers",
       "Halifax Panthers",
       "York Knights"
-    ]
+    ],
+    "intlCaps": 2
   },
   {
     "id": "york-cur-king-vuniyayawa",
@@ -1003,8 +1025,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 76,
+    "tries": 6,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -1018,7 +1040,8 @@
       "Featherstone Rovers",
       "Newcastle Thunder",
       "York Knights"
-    ]
+    ],
+    "intlCaps": 9
   },
   {
     "id": "york-cur-cody-hunter",
@@ -1038,8 +1061,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 95000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 20,
+    "tries": 5,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -1051,7 +1074,9 @@
       "Sunshine Coast Falcons",
       "Newcastle Thunder",
       "York Knights"
-    ]
+    ],
+    "dateOfBirth": "2001-10-03",
+    "birthYear": 2001
   },
   {
     "id": "york-cur-tom-inman",
@@ -1071,8 +1096,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 13,
+    "tries": 2,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -1084,7 +1109,9 @@
       "Warrington Wolves",
       "Halifax Panthers",
       "York Knights"
-    ]
+    ],
+    "dateOfBirth": "2002-12-24",
+    "birthYear": 2002
   },
   {
     "id": "york-cur-tommy-doyle",
@@ -1104,7 +1131,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
+    "appearances": 9,
     "tries": 0,
     "teamYearId": "york-knights-2026",
     "year": 2026,

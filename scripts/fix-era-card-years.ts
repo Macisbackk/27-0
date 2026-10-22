@@ -14,7 +14,7 @@
  * Skips: cards whose id carries a year (those were placed deliberately), ids listed in
  * --skip-file (researched fixes win), and moves that would make the age implausible.
  *
- * Run: bun scripts/fix-era-card-years.ts [--apply] [--skip-file=path.json]
+ * Run: bun scripts/fix-era-card-years.ts [--apply] [--skip-file=path.json ...]
  */
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
@@ -28,11 +28,10 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z]/g, "");
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
 const apply = process.argv.includes("--apply");
-const skipArg = process.argv.find((a) => a.startsWith("--skip-file="));
 const skipIds = new Set<string>();
-if (skipArg) {
-  const skip = JSON.parse(readFileSync(skipArg.split("=")[1]!, "utf8")) as { cardFixes?: { id: string }[]; births?: { ids: string[] }[] };
-  for (const f of skip.cardFixes ?? []) skipIds.add(f.id);
+for (const arg of process.argv.filter((a) => a.startsWith("--skip-file="))) {
+  const skip = JSON.parse(readFileSync(arg.split("=")[1]!, "utf8")) as { cardFixes?: { id: string }[]; fixes?: { id: string }[] };
+  for (const f of [...(skip.cardFixes ?? []), ...(skip.fixes ?? [])]) skipIds.add(f.id);
 }
 
 const historic = read<Row[]>("historic-players.json");

@@ -96,7 +96,8 @@
     "basePlayerId": "wigan-cur-brad-o-neill",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "wigan-cur-dayon-sambou",
@@ -116,15 +117,17 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 6,
+    "tries": 2,
     "teamYearId": "wigan-warriors-2026",
     "year": 2026,
     "cardYear": 2026,
     "status": "Current",
     "basePlayerId": "wigan-cur-dayon-sambou",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2005-04-14",
+    "birthYear": 2005
   },
   {
     "id": "wigan-cur-ethan-havard",
@@ -157,7 +160,8 @@
     "basePlayerId": "wigan-cur-ethan-havard",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 5
   },
   {
     "id": "wigan-cur-george-hirst",
@@ -177,8 +181,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 135000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 14,
+    "tries": 1,
     "teamYearId": "wigan-warriors-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -200,7 +204,7 @@
     "category": "current",
     "peakRating": 86,
     "value": 192000,
-    "intlCaps": 4,
+    "intlCaps": 10,
     "appearances": 144,
     "tries": 22,
     "superLeagueWinner": true,
@@ -252,7 +256,10 @@
     "challengeCupWinner": true,
     "availableInGame": true,
     "superLeagueEligible": true,
-    "superLeagueWinner": false
+    "superLeagueWinner": false,
+    "dateOfBirth": "2005-10-26",
+    "appearances": 30,
+    "tries": 17
   },
   {
     "id": "wigan-cur-jai-field",
@@ -318,7 +325,8 @@
     "basePlayerId": "wigan-cur-jake-wardle",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "wigan-cur-junior-nsemba",
@@ -351,7 +359,8 @@
     "basePlayerId": "wigan-cur-junior-nsemba",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "wigan-cur-kaide-ellis",
@@ -404,15 +413,17 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 15,
+    "tries": 2,
     "teamYearId": "wigan-warriors-2026",
     "year": 2026,
     "cardYear": 2026,
     "status": "Current",
     "basePlayerId": "wigan-cur-kian-mcdermott",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2006-02-14",
+    "birthYear": 2006
   },
   {
     "id": "wigan-cur-liam-farrell",
@@ -445,7 +456,8 @@
     "basePlayerId": "wigan-cur-liam-farrell",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 12
   },
   {
     "id": "wigan-cur-liam-marshall",
@@ -478,7 +490,8 @@
     "basePlayerId": "wigan-cur-liam-marshall",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "wigan-cur-luke-thompson",
@@ -511,7 +524,8 @@
     "basePlayerId": "wigan-cur-luke-thompson",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 10
   },
   {
     "id": "wigan-cur-nathan-lowe",
@@ -633,14 +647,15 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "challengeCupWinner": true,
-    "superLeagueWinner": false
+    "superLeagueWinner": false,
+    "intlCaps": 1
   },
   {
     "id": "wigan-cur-patrick-mago",
     "name": "Patrick Mago",
     "position": "PROP",
     "club": "Wigan Warriors",
-    "nationality": "Australia",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -733,7 +748,8 @@
     "primaryPosition": "SR/PF",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "intlCaps": 1
   },
   {
     "id": "wigan-cur-taylor-kerr",
@@ -777,7 +793,7 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "Australia",
+    "nationality": "France",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–2022",
     "category": "current",
@@ -793,7 +809,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2000-06-15",
-    "birthYear": 2000
+    "birthYear": 2000,
+    "intlCaps": 5
   },
   {
     "id": "wigan-cur-tom-forber",
@@ -857,7 +874,8 @@
     "basePlayerId": "wigan-cur-zach-eckersley",
     "primaryPosition": "WG/CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "wigan-cur-abbas-miski",
@@ -887,7 +905,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1995-07-25",
-    "birthYear": 1995
+    "birthYear": 1995,
+    "intlCaps": 14
   },
   {
     "id": "wigan-cur-harvey-makin",
@@ -1001,7 +1020,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 4,
     "tries": 0,
     "teamYearId": "wigan-warriors-2026",
     "year": 2026,
@@ -1009,7 +1028,9 @@
     "status": "Current",
     "basePlayerId": "wigan-cur-george-oloughlin",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2006-08-17",
+    "birthYear": 2006
   },
   {
     "id": "wigan-cur-finlay-yeomans",
@@ -1029,7 +1050,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
+    "appearances": 1,
     "tries": 0,
     "teamYearId": "wigan-warriors-2026",
     "year": 2026,
@@ -1037,7 +1058,9 @@
     "status": "Current",
     "basePlayerId": "wigan-cur-finlay-yeomans",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2007-06-14",
+    "birthYear": 2007
   },
   {
     "id": "wigan-cur-finn-mcmillan",
@@ -1057,7 +1080,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 1,
     "tries": 0,
     "teamYearId": "wigan-warriors-2026",
     "year": 2026,
@@ -1069,6 +1092,8 @@
     "clubsPlayedFor": [
       "Barrow Raiders",
       "Wigan Warriors"
-    ]
+    ],
+    "dateOfBirth": "2005-12-09",
+    "birthYear": 2005
   }
 ]

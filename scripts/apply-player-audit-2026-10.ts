@@ -154,12 +154,38 @@ if (existsSync(path("historic-age-fill-2026-10.json"))) {
 
 // ── 2. Real seasons for birthYear+18 placeholder cards with no verified squad data ─────
 if (existsSync(path("estimated-season-fixes-2026-10.json"))) {
-  const fx = readJson<{ fixes: (Sourced & { id: string; suggestedYear?: number | null; neverAtClubSince1996?: boolean })[] }>(
-    "estimated-season-fixes-2026-10.json"
-  );
+  const fx = readJson<{
+    fixes: (Sourced & {
+      id: string;
+      suggestedYear?: number | null;
+      neverAtClubSince1996?: boolean;
+      likelyIntendedClub?: { club: string; seasons: string; year: number };
+    })[];
+  }>("estimated-season-fixes-2026-10.json");
   for (const f of fx.fixes) {
     const p = byId.get(f.id);
     if (!p) continue;
+    const intended = f.likelyIntendedClub;
+    if ((f.neverAtClubSince1996 || !f.suggestedYear) && intended?.club && intended.year) {
+      // Imported under the wrong club (e.g. a block of Warrington players filed as Wakefield):
+      // move the card to the club he actually played for, unless that season already has his card.
+      const taken = all.some(
+        (o) => o !== p && o.club === intended.club && norm(o.name) === norm(p.name) && o.cardYear === intended.year && o.availableInGame !== false
+      );
+      if (taken) {
+        hideCard(p, `never at ${p.club}; his ${intended.club} ${intended.year} card already exists`);
+        continue;
+      }
+      log.cardMoves.push({ id: p.id, name: p.name, club: p.club, toClub: intended.club, from: p.cardYear, to: intended.year, why: `wrong club on import; ${intended.club} ${intended.seasons} (researched)` });
+      p.club = intended.club;
+      p.team = intended.club;
+      p.displayClub = intended.club;
+      p.year = intended.year;
+      p.cardYear = intended.year;
+      p.yearsActive = `${intended.year}–${intended.year}`;
+      p.teamYearId = `${slug(intended.club)}-${intended.year}`;
+      continue;
+    }
     if (f.neverAtClubSince1996 || !f.suggestedYear) hideCard(p, "no Super League-era season at this club (researched)");
     else moveCard(p, f.suggestedYear, `researched season at ${p.club}`);
   }

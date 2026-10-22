@@ -11,14 +11,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 52,
+    "tries": 17,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -26,7 +26,8 @@
     "basePlayerId": "wakefield-cur-caius-faatili",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-11-09"
   },
   {
     "id": "wakefield-cur-caleb-hamlin-uele",
@@ -55,7 +56,9 @@
     "basePlayerId": "wakefield-cur-caleb-hamlin-uele",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 52,
+    "tries": 13
   },
   {
     "id": "wakefield-cur-cameron-scott",
@@ -84,7 +87,9 @@
     "dateOfBirth": "1999-10-07",
     "birthYear": 1999,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 111,
+    "tries": 31
   },
   {
     "id": "wakefield-cur-corey-hall",
@@ -136,8 +141,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 114000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 46,
+    "tries": 5,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -145,7 +150,8 @@
     "basePlayerId": "wakefield-cur-harvey-smith",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2006
+    "birthYear": 2006,
+    "dateOfBirth": "2006-01-16"
   },
   {
     "id": "wakefield-cur-isaiah-vagana",
@@ -159,14 +165,14 @@
       "SECOND_ROW"
     ],
     "primaryPosition": "SECOND_ROW",
-    "nationality": "England",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 38,
+    "tries": 5,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -174,7 +180,8 @@
     "basePlayerId": "wakefield-cur-isaiah-vagana",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-06-14"
   },
   {
     "id": "wakefield-cur-jack-sinfield",
@@ -194,8 +201,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 143000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 41,
+    "tries": 7,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -203,7 +210,8 @@
     "basePlayerId": "wakefield-cur-jack-sinfield",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2004
+    "birthYear": 2004,
+    "dateOfBirth": "2004-09-21"
   },
   {
     "id": "wakefield-cur-jake-trueman",
@@ -286,8 +294,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 19,
+    "tries": 9,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -295,7 +303,8 @@
     "basePlayerId": "wakefield-cur-jayden-myers",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2003
+    "birthYear": 2003,
+    "dateOfBirth": "2003-04-13"
   },
   {
     "id": "wakefield-cur-jazz-tevaga",
@@ -326,7 +335,8 @@
     "basePlayerId": "wakefield-cur-jazz-tevaga",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 11
   },
   {
     "id": "wakefield-cur-josh-rourke",
@@ -340,14 +350,14 @@
       "FULLBACK"
     ],
     "primaryPosition": "FULLBACK",
-    "nationality": "Australia",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 81,
     "value": 118000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 44,
+    "tries": 21,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -355,7 +365,8 @@
     "basePlayerId": "wakefield-cur-josh-rourke",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-10-27"
   },
   {
     "id": "wakefield-cur-ky-rodwell",
@@ -400,14 +411,14 @@
       "WING"
     ],
     "primaryPosition": "WING",
-    "nationality": "England",
+    "nationality": "Scotland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 21,
+    "tries": 15,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -415,7 +426,9 @@
     "basePlayerId": "wakefield-cur-lachlan-walmsley",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-06-12",
+    "intlCaps": 4
   },
   {
     "id": "wakefield-cur-liam-hood",
@@ -444,14 +457,17 @@
     "dateOfBirth": "1992-01-06",
     "birthYear": 1992,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 10,
+    "appearances": 132,
+    "tries": 26
   },
   {
     "id": "wakefield-cur-mason-lino",
     "name": "Mason Lino",
     "position": "SCRUM_HALF",
     "club": "Wakefield Trinity",
-    "nationality": "New Zealand",
+    "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -475,7 +491,8 @@
     "basePlayerId": "wakefield-cur-mason-lino",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "wakefield-cur-matty-storton",
@@ -568,7 +585,8 @@
     "basePlayerId": "wakefield-cur-mike-mcmeeken",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 14
   },
   {
     "id": "wakefield-cur-myles-lawford",
@@ -658,14 +676,16 @@
     "dateOfBirth": "1995-06-25",
     "birthYear": 1995,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 60,
+    "tries": 5
   },
   {
     "id": "wakefield-cur-seth-nikotemo",
     "name": "Seth Nikotemo",
     "position": "SECOND_ROW",
     "club": "Wakefield Trinity",
-    "nationality": "Australia",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -720,7 +740,8 @@
     "basePlayerId": "wakefield-cur-tom-johnstone",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "wakefield-cur-tray-lolesio",
@@ -734,14 +755,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "Australia",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 81,
     "value": 113000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 14,
+    "tries": 1,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -749,7 +770,8 @@
     "basePlayerId": "wakefield-cur-tray-lolesio",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2002
+    "birthYear": 2002,
+    "dateOfBirth": "2002-09-06"
   },
   {
     "id": "wakefield-cur-tyson-smoothy",
@@ -809,7 +831,8 @@
     "basePlayerId": "wakefield-cur-will-tate",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-12-20"
   },
   {
     "id": "wakefield-cur-jordan-williams",
@@ -829,8 +852,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 14,
+    "tries": 1,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -876,7 +899,9 @@
     "clubsPlayedFor": [
       "Warrington Wolves",
       "Wakefield Trinity"
-    ]
+    ],
+    "dateOfBirth": "2005-02-08",
+    "birthYear": 2005
   },
   {
     "id": "wakefield-cur-ellis-lingard",
@@ -960,7 +985,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 94000,
-    "appearances": 0,
+    "appearances": 1,
     "tries": 0,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
@@ -972,6 +997,8 @@
     "clubsPlayedFor": [
       "St Helens",
       "Wakefield Trinity"
-    ]
+    ],
+    "dateOfBirth": "2006-12-04",
+    "birthYear": 2006
   }
 ]

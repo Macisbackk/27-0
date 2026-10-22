@@ -240,6 +240,7 @@
     2018
   ],
   "chris-joynt": [
+    1996,
     1999,
     2000,
     2002
@@ -416,6 +417,7 @@
     2012
   ],
   "keiron-cunningham": [
+    1996,
     1999,
     2000,
     2002,
@@ -959,26 +961,32 @@
     2002
   ],
   "st-helens-hist-anthony-sullivan": [
+    1996,
     1999,
     2000
   ],
   "st-helens-hist-anthony-sullivan-2000": [
+    1996,
     2000
   ],
   "st-helens-hist-apollo-perelini": [
+    1996,
     1999,
     2000
   ],
   "st-helens-hist-apollo-perelini-2000": [
+    1996,
     2000
   ],
   "st-helens-hist-barry-ward-2002": [
     2002
   ],
   "st-helens-hist-chris-joynt-2000": [
+    1996,
     2000
   ],
   "st-helens-hist-chris-joynt-2002": [
+    1996,
     2002
   ],
   "st-helens-hist-chris-smith": [
@@ -1073,12 +1081,15 @@
     2000
   ],
   "st-helens-hist-keiron-cunningham-2000": [
+    1996,
     2000
   ],
   "st-helens-hist-keiron-cunningham-2002": [
+    1996,
     2002
   ],
   "st-helens-hist-keiron-cunningham-2006": [
+    1996,
     2006
   ],
   "st-helens-hist-kevin-iro": [
@@ -1215,6 +1226,7 @@
     2021
   ],
   "st-helens-hist-sonny-nickle": [
+    1997,
     1999,
     2000,
     2002
@@ -1261,6 +1273,7 @@
     2006
   ],
   "st-helens-hist-tommy-martyn-2000": [
+    1996,
     1999,
     2000,
     2002
@@ -1283,6 +1296,7 @@
     2020
   ],
   "st-helens-leg-paul-newlove-2002": [
+    1996,
     1999,
     2000,
     2002
@@ -1838,6 +1852,7 @@
     2005
   ],
   "tommy-martyn": [
+    1996,
     1999,
     2000,
     2002
@@ -1868,11 +1883,13 @@
     2001
   ],
   "bradford-leg-robbie-hunter-paul": [
+    1997,
     2001,
     2003,
     2005
   ],
   "paul-newlove": [
+    1996,
     1999,
     2000,
     2002
@@ -1886,5 +1903,158 @@
   ],
   "jason-robinson": [
     1998
+  ],
+  "wakefield-cur-max-jowitt": [
+    2026
+  ],
+  "wakefield-cur-lachlan-walmsley": [
+    2026
+  ],
+  "wakefield-cur-cameron-scott": [
+    2026
+  ],
+  "wakefield-cur-corey-hall": [
+    2026
+  ],
+  "wakefield-cur-tom-johnstone": [
+    2026
+  ],
+  "wakefield-cur-jake-trueman": [
+    2026
+  ],
+  "wakefield-cur-jack-sinfield": [
+    2026
+  ],
+  "wakefield-cur-mike-mcmeeken": [
+    2026
+  ],
+  "wakefield-cur-tyson-smoothy": [
+    2026
+  ],
+  "wakefield-cur-ky-rodwell": [
+    2026
+  ],
+  "wakefield-cur-isaiah-vagana": [
+    2026
+  ],
+  "catalans-cur-zac-lipowicz": [
+    2026
+  ],
+  "wakefield-cur-jazz-tevaga": [
+    2026
+  ],
+  "wakefield-cur-mason-lino": [
+    2026
+  ],
+  "wakefield-cur-jay-pitts": [
+    2026
+  ],
+  "wakefield-cur-caleb-hamlin-uele": [
+    2026
+  ],
+  "wakefield-cur-caius-faatili": [
+    2026
+  ],
+  "hull-fc-hist-steve-prescott": [
+    1996
+  ],
+  "st-helens-hist-karle-hammond": [
+    1996
+  ],
+  "st-helens-hist-bobbie-goulding": [
+    1996
+  ],
+  "st-helens-hist-keiron-cunningham-2009": [
+    1996
+  ],
+  "st-helens-hist-ian-pickavance": [
+    1996
+  ],
+  "hull-fc-hist-simon-booth": [
+    1996
+  ],
+  "huddersfield-hist-danny-arnold": [
+    1996
+  ],
+  "st-helens-hist-era-adam-fogerty": [
+    1996
+  ],
+  "st-helens-hist-derek-mcvey": [
+    1996
+  ],
+  "st-helens-hist-andy-haigh": [
+    1996
+  ],
+  "wakefield-hist-alan-hunte": [
+    1996
+  ],
+  "st-helens-hist-vila-mata-utia": [
+    1996
+  ],
+  "st-helens-hist-chris-morley": [
+    1996
+  ],
+  "st-helens-hist-andy-northey": [
+    1996
+  ],
+  "bradford-hist-james-lowes-1997": [
+    1997
+  ],
+  "wakefield-hist-glen-tomlinson": [
+    1997
+  ],
+  "bradford-hist-stuart-spruce": [
+    1997
+  ],
+  "bradford-hist-steve-mcnamara-1997": [
+    1997
+  ],
+  "bradford-hist-paul-loughlin": [
+    1997
+  ],
+  "bradford-hist-graeme-bradley-1997": [
+    1997
+  ],
+  "bradford-hist-tahi-reihana": [
+    1997
+  ],
+  "bradford-hist-danny-peacock-1997": [
+    1997
+  ],
+  "bradford-hist-paul-anderson-1997": [
+    1997
+  ],
+  "bradford-hist-jeff-wittenberg-1997": [
+    1997
+  ],
+  "bradford-hist-brian-mcdermott-1997": [
+    1997
+  ],
+  "bradford-hist-nathan-graham": [
+    1997
+  ],
+  "bradford-hist-matt-calland-1997": [
+    1997
+  ],
+  "bradford-hist-bernard-dwyer-1997": [
+    1997
+  ],
+  "bradford-hist-jonathan-scales": [
+    1997
+  ],
+  "bradford-hist-mike-forshaw-1997": [
+    1997
+  ],
+  "bradford-hist-paul-medley": [
+    1997
+  ],
+  "bradford-hist-paul-medley-1998": [
+    1997
+  ],
+  "bradford-leg-robbie-hunter-paul-1997": [
+    1997
+  ],
+  "bradford-hist-simon-knox": [
+    1997
   ]
 }

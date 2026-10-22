@@ -27,7 +27,7 @@
     "name": "Jack Campagnolo",
     "position": "SCRUM_HALF",
     "club": "London Broncos",
-    "nationality": "Australia",
+    "nationality": "Italy",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -58,7 +58,8 @@
     "status": "Current",
     "primaryPosition": "SCRUM_HALF",
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "intlCaps": 6
   },
   {
     "id": "london-cur-jacob-jones",
@@ -143,7 +144,8 @@
     "basePlayerId": "london-cur-jeremiah-simbiken",
     "primaryPosition": "SR",
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "intlCaps": 5
   },
   {
     "id": "london-cur-jimmy-meadows",
@@ -195,7 +197,8 @@
     "status": "Current",
     "primaryPosition": "PROP",
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "intlCaps": 3
   },
   {
     "id": "london-cur-robbie-storey",

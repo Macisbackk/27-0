@@ -30,7 +30,8 @@
     "basePlayerId": "hull-kr-cur-arthur-mourgue",
     "primaryPosition": "FB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 9
   },
   {
     "id": "hull-kr-cur-bill-leyland",
@@ -50,8 +51,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 114000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 25,
+    "tries": 5,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -59,7 +60,8 @@
     "basePlayerId": "hull-kr-cur-bill-leyland",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2003
+    "birthYear": 2003,
+    "dateOfBirth": "2003-02-03"
   },
   {
     "id": "hull-kr-cur-dean-hadley",
@@ -125,7 +127,8 @@
     "basePlayerId": "hull-kr-cur-elliot-minchella",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "hull-kr-cur-harvey-horne",
@@ -175,8 +178,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 121,
+    "tries": 45,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -347,7 +350,8 @@
     "basePlayerId": "hull-kr-cur-jez-litten",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 5
   },
   {
     "id": "hull-kr-cur-joe-burgess",
@@ -380,7 +384,8 @@
     "basePlayerId": "hull-kr-cur-joe-burgess",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 4
   },
   {
     "id": "hull-kr-cur-kelepi-tanginoa",
@@ -412,7 +417,9 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "appearances": 157,
+    "tries": 38
   },
   {
     "id": "hull-kr-cur-lee-kershaw",
@@ -432,8 +439,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 138000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 83,
+    "tries": 24,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -441,7 +448,8 @@
     "basePlayerId": "hull-kr-cur-lee-kershaw",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-02-05"
   },
   {
     "id": "hull-kr-cur-louix-gorman",
@@ -504,7 +512,8 @@
     "basePlayerId": "hull-kr-cur-mikey-lewis",
     "primaryPosition": "SO",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "hull-kr-cur-noah-booth",
@@ -524,8 +533,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 13,
+    "tries": 9,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -533,7 +542,8 @@
     "basePlayerId": "hull-kr-cur-noah-booth",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2004
+    "birthYear": 2004,
+    "dateOfBirth": "2004-10-21"
   },
   {
     "id": "hull-kr-cur-oliver-gildart",
@@ -566,7 +576,8 @@
     "basePlayerId": "hull-kr-cur-oliver-gildart",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "hull-kr-cur-peta-hiku",
@@ -599,7 +610,8 @@
     "basePlayerId": "hull-kr-cur-peta-hiku",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 17
   },
   {
     "id": "hull-kr-cur-rhyse-martin",
@@ -613,14 +625,14 @@
       "SECOND_ROW"
     ],
     "primaryPosition": "SECOND_ROW",
-    "nationality": "England",
+    "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–2021",
     "category": "current",
     "peakRating": 86,
     "value": 183000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 161,
+    "tries": 46,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -628,7 +640,9 @@
     "basePlayerId": "hull-kr-cur-rhyse-martin",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1993
+    "birthYear": 1993,
+    "dateOfBirth": "1993-03-01",
+    "intlCaps": 22
   },
   {
     "id": "hull-kr-cur-sam-luckley",
@@ -642,14 +656,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Scotland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–2022",
     "category": "current",
     "peakRating": 83,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 128,
+    "tries": 7,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -657,7 +671,9 @@
     "basePlayerId": "hull-kr-cur-sam-luckley",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1995
+    "birthYear": 1995,
+    "dateOfBirth": "1995-11-29",
+    "intlCaps": 7
   },
   {
     "id": "hull-kr-cur-sauaso-sue",
@@ -690,14 +706,15 @@
     "basePlayerId": "hull-kr-cur-sauaso-sue",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 10
   },
   {
     "id": "hull-kr-cur-tom-amone",
     "name": "Tom Amone",
     "position": "PROP",
     "club": "Hull KR",
-    "nationality": "Tonga",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -756,7 +773,8 @@
     "basePlayerId": "hull-kr-cur-tom-davies",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "hull-kr-cur-tyrone-may",
@@ -789,7 +807,8 @@
     "basePlayerId": "hull-kr-cur-tyrone-may",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "hull-kr-cur-zach-fishwick",
@@ -873,8 +892,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 17,
+    "tries": 1,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -886,7 +905,8 @@
     "clubsPlayedFor": [
       "Warrington Wolves",
       "Hull KR"
-    ]
+    ],
+    "dateOfBirth": "2002-11-07"
   },
   {
     "id": "hull-kr-cur-cobie-wainhouse",
@@ -906,7 +926,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 1,
     "tries": 0,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
@@ -918,7 +938,9 @@
     "clubsPlayedFor": [
       "Hull FC",
       "Hull KR"
-    ]
+    ],
+    "dateOfBirth": "2006-02-08",
+    "birthYear": 2006
   },
   {
     "id": "hull-kr-cur-declan-murphy",
@@ -972,8 +994,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 1,
+    "tries": 1,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,

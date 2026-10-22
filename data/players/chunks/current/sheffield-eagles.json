@@ -21,7 +21,9 @@
     "status": "Current",
     "primaryPosition": "FULLBACK",
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "appearances": 0,
+    "tries": 0
   },
   {
     "id": "sheffield-cur-jordan-lilley",
@@ -96,7 +98,8 @@
     "primaryPosition": "SCRUM_HALF",
     "currentClub": "Sheffield Eagles",
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "tries": 0
   },
   {
     "id": "sheffield-cur-matty-marsh",

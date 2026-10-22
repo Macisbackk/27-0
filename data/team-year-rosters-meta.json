@@ -686,14 +686,6 @@
     }
   },
   "Toulouse Olympique": {
-    "2022": {
-      "source": "verified",
-      "isSuperLeagueSeason": true,
-      "playableInNormalSpin": false,
-      "playableInEra": true,
-      "playerCount": 13,
-      "verifiedSource": "https://en.wikipedia.org/wiki/Toulouse_Olympique"
-    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,

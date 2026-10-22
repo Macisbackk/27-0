@@ -105,7 +105,7 @@
       "SECOND_ROW"
     ],
     "primaryPosition": "SECOND_ROW",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
@@ -134,14 +134,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "Tonga",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 82,
     "value": 135000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 19,
+    "tries": 2,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -149,7 +149,8 @@
     "basePlayerId": "huddersfield-cur-chris-patolo",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-07-23"
   },
   {
     "id": "huddersfield-cur-connor-carr",
@@ -239,14 +240,16 @@
     "basePlayerId": "huddersfield-cur-george-flanagan-jr",
     "primaryPosition": "FB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 39,
+    "tries": 18
   },
   {
     "id": "huddersfield-cur-george-king",
     "name": "George King",
     "position": "PROP",
     "club": "Huddersfield Giants",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -270,14 +273,15 @@
     "basePlayerId": "huddersfield-cur-george-king",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 14
   },
   {
     "id": "huddersfield-cur-harry-rushton",
     "name": "Harry Rushton",
     "position": "LOOSE_FORWARD",
     "club": "Huddersfield Giants",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -302,7 +306,8 @@
     "basePlayerId": "huddersfield-cur-harry-rushton",
     "primaryPosition": "LF/SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "huddersfield-cur-jack-billington",
@@ -396,7 +401,8 @@
     "basePlayerId": "huddersfield-cur-joe-greenwood",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "huddersfield-cur-kieran-rush",
@@ -410,14 +416,14 @@
       "SCRUM_HALF"
     ],
     "primaryPosition": "SCRUM_HALF",
-    "nationality": "England",
+    "nationality": "Jamaica",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 80,
     "value": 95000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 37,
+    "tries": 1,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -425,7 +431,9 @@
     "basePlayerId": "huddersfield-cur-kieran-rush",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2002
+    "birthYear": 2002,
+    "dateOfBirth": "2002-09-03",
+    "intlCaps": 5
   },
   {
     "id": "huddersfield-cur-mathieu-cozza",
@@ -445,7 +453,7 @@
     "category": "current",
     "peakRating": 82,
     "value": 138000,
-    "appearances": 0,
+    "appearances": 48,
     "tries": 0,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
@@ -454,7 +462,9 @@
     "basePlayerId": "huddersfield-cur-mathieu-cozza",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-04-12",
+    "intlCaps": 3
   },
   {
     "id": "huddersfield-cur-matty-english",
@@ -516,7 +526,8 @@
     "basePlayerId": "huddersfield-cur-niall-evalds",
     "primaryPosition": "FB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "huddersfield-cur-oliver-russell",
@@ -536,8 +547,8 @@
     "category": "current",
     "peakRating": 85,
     "value": 180000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 124,
+    "tries": 9,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -545,7 +556,8 @@
     "basePlayerId": "huddersfield-cur-oliver-russell",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-09-21"
   },
   {
     "id": "huddersfield-cur-oliver-wilson",
@@ -575,7 +587,10 @@
     "dateOfBirth": "2000-03-22",
     "birthYear": 2000,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1,
+    "appearances": 104,
+    "tries": 2
   },
   {
     "id": "huddersfield-cur-sam-halsall",
@@ -645,7 +660,7 @@
     "name": "Taane Milne",
     "position": "CENTRE",
     "club": "Huddersfield Giants",
-    "nationality": "Samoa",
+    "nationality": "Fiji",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -669,7 +684,8 @@
     "basePlayerId": "huddersfield-cur-taane-milne",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 18
   },
   {
     "id": "huddersfield-cur-thomas-burgess",
@@ -689,8 +705,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 75,
+    "tries": 5,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -698,7 +714,9 @@
     "basePlayerId": "huddersfield-cur-thomas-burgess",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1992
+    "birthYear": 1992,
+    "dateOfBirth": "1992-04-21",
+    "intlCaps": 34
   },
   {
     "id": "huddersfield-cur-tristan-powell",
@@ -712,14 +730,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 83,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 40,
+    "tries": 2,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -727,7 +745,8 @@
     "basePlayerId": "huddersfield-cur-tristan-powell",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-02-09"
   },
   {
     "id": "huddersfield-cur-tui-lolohea",
@@ -758,7 +777,8 @@
     "basePlayerId": "huddersfield-cur-tui-lolohea",
     "primaryPosition": "SO",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 21
   },
   {
     "id": "huddersfield-cur-zac-woolford",
@@ -809,7 +829,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 1,
     "tries": 0,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
@@ -817,7 +837,9 @@
     "status": "Current",
     "basePlayerId": "huddersfield-cur-jacob-algar",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2006-11-07",
+    "birthYear": 2006
   },
   {
     "id": "huddersfield-cur-marshall-land",
@@ -837,7 +859,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 95000,
-    "appearances": 0,
+    "appearances": 2,
     "tries": 0,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
@@ -845,7 +867,9 @@
     "status": "Current",
     "basePlayerId": "huddersfield-cur-marshall-land",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2007-05-30",
+    "birthYear": 2007
   },
   {
     "id": "huddersfield-cur-logan-blacker",
@@ -873,6 +897,8 @@
     "status": "Current",
     "basePlayerId": "huddersfield-cur-logan-blacker",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2007-02-26",
+    "birthYear": 2007
   }
 ]

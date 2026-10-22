@@ -1,14 +1,24 @@
 {
-  "generatedAt": "2026-10-22T16:24:38.421Z",
+  "generatedAt": "2026-10-22T17:11:24.195Z",
   "sources": [
     "Verified Wikipedia/manual XIII only (era-wikipedia-squads.json, sl-era-verified-squads.json)",
     "Current squad for 2026 only (current-squads.json)",
     "Super League season gate (super-league-club-years.json)"
   ],
   "minPlayers": 13,
-  "verifiedSquadsMerged": 83,
-  "verifiedPlayersRejected": 190,
+  "verifiedSquadsMerged": 82,
+  "verifiedPlayersRejected": 198,
   "unresolvedSquads": [
+    {
+      "team": "Toulouse Olympique",
+      "year": "2022",
+      "names": [
+        "Reubenn Rennie",
+        "Luke Polselli",
+        "Henry O'Kane",
+        "Joe Cator"
+      ]
+    },
     {
       "team": "Toulouse Olympique",
       "year": "2026",
@@ -18,7 +28,7 @@
     }
   ],
   "currentYearSquadsBuilt": 14,
-  "playableCount": 83,
+  "playableCount": 82,
   "hiddenCount": 2,
   "playable": [
     {
@@ -350,11 +360,6 @@
       "team": "St Helens",
       "year": "2026",
       "count": 32
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2022",
-      "count": 13
     },
     {
       "team": "Toulouse Olympique",

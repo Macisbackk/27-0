@@ -58,7 +58,8 @@
     "basePlayerId": "bradford-cur-andy-ackers",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "bradford-cur-brandon-douglas",
@@ -87,14 +88,15 @@
     "basePlayerId": "bradford-cur-brandon-douglas",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1997
+    "birthYear": 1997,
+    "dateOfBirth": "1997-08-17"
   },
   {
     "id": "bradford-cur-caleb-aekins",
     "name": "Caleb Aekins",
     "position": "FULLBACK",
     "club": "Bradford Bulls",
-    "nationality": "New Zealand",
+    "nationality": "Wales",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -118,7 +120,8 @@
     "basePlayerId": "bradford-cur-caleb-aekins",
     "primaryPosition": "FB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "bradford-cur-connor-wynne",
@@ -147,14 +150,15 @@
     "basePlayerId": "bradford-cur-connor-wynne",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-01-15"
   },
   {
     "id": "bradford-cur-dan-russell",
     "name": "Dan Russell",
     "position": "SECOND_ROW",
     "club": "Bradford Bulls",
-    "nationality": "New Zealand",
+    "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -175,7 +179,11 @@
     "primaryPosition": "SR",
     "birthYear": 1995,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "1995-12-05",
+    "intlCaps": 12,
+    "appearances": 33,
+    "tries": 2
   },
   {
     "id": "bradford-cur-ebon-scurr",
@@ -188,7 +196,7 @@
     "category": "current",
     "peakRating": 81,
     "value": 113000,
-    "appearances": 3,
+    "appearances": 16,
     "dateOfBirth": "2000-05-11",
     "birthYear": 2000,
     "clubsPlayedFor": [
@@ -208,14 +216,15 @@
     "basePlayerId": "bradford-cur-ebon-scurr",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 1
   },
   {
     "id": "bradford-cur-ed-chamberlain",
     "name": "Ed Chamberlain",
     "position": "CENTRE",
     "club": "Bradford Bulls",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -242,7 +251,8 @@
     "basePlayerId": "bradford-cur-ed-chamberlain",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "bradford-cur-eliot-peposhi",
@@ -256,7 +266,7 @@
       "LOOSE_FORWARD"
     ],
     "primaryPosition": "LOOSE_FORWARD",
-    "nationality": "England",
+    "nationality": "Albania",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
@@ -271,7 +281,9 @@
     "basePlayerId": "bradford-cur-eliot-peposhi",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2004
+    "birthYear": 2004,
+    "dateOfBirth": "2004-08-05",
+    "intlCaps": 1
   },
   {
     "id": "bradford-cur-eribe-doro",
@@ -311,7 +323,7 @@
     "name": "Esan Marsters",
     "position": "CENTRE",
     "club": "Bradford Bulls",
-    "nationality": "New Zealand",
+    "nationality": "Cook Islands",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -335,14 +347,15 @@
     "basePlayerId": "bradford-cur-esan-marsters",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 14
   },
   {
     "id": "bradford-cur-ethan-ryan",
     "name": "Ethan Ryan",
     "position": "WING",
     "club": "Bradford Bulls",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -366,7 +379,8 @@
     "basePlayerId": "bradford-cur-ethan-ryan",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 5
   },
   {
     "id": "bradford-cur-guy-armitage",
@@ -395,7 +409,8 @@
     "basePlayerId": "bradford-cur-guy-armitage",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1991
+    "birthYear": 1991,
+    "dateOfBirth": "1991-11-29"
   },
   {
     "id": "bradford-cur-jamie-gill",
@@ -515,7 +530,9 @@
     "basePlayerId": "bradford-cur-joe-keyes",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1995
+    "birthYear": 1995,
+    "dateOfBirth": "1995-09-17",
+    "intlCaps": 11
   },
   {
     "id": "bradford-cur-joe-mellor",
@@ -591,7 +608,7 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 11,
+    "appearances": 33,
     "dateOfBirth": "2002-11-23",
     "birthYear": 2002,
     "clubsPlayedFor": [
@@ -612,7 +629,8 @@
     "basePlayerId": "bradford-cur-loghan-lewis",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 0
   },
   {
     "id": "bradford-cur-luke-hooley",
@@ -641,14 +659,15 @@
     "basePlayerId": "bradford-cur-luke-hooley",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-08-01"
   },
   {
     "id": "bradford-cur-mitch-souter",
     "name": "Mitch Souter",
     "position": "HOOKER",
     "club": "Bradford Bulls",
-    "nationality": "Scotland",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -753,7 +772,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
+    "appearances": 11,
     "tries": 0,
     "teamYearId": "bradford-bulls-2026",
     "year": 2026,
@@ -794,7 +813,8 @@
     "basePlayerId": "bradford-cur-waqa-blake",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "bradford-cur-will-gardiner",
@@ -823,7 +843,8 @@
     "basePlayerId": "bradford-cur-will-gardiner",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-05-21"
   },
   {
     "id": "bradford-cur-zac-fulton",

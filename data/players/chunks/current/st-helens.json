@@ -11,14 +11,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–2022",
     "category": "current",
     "peakRating": 83,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 99,
+    "tries": 9,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -26,7 +26,9 @@
     "basePlayerId": "st-helens-cur-agnatius-paasi",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1991
+    "birthYear": 1991,
+    "dateOfBirth": "1991-11-30",
+    "intlCaps": 1
   },
   {
     "id": "st-helens-cur-alex-walmsley",
@@ -59,7 +61,8 @@
     "basePlayerId": "st-helens-cur-alex-walmsley",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 9
   },
   {
     "id": "st-helens-cur-curtis-sironen",
@@ -123,7 +126,8 @@
     "basePlayerId": "st-helens-cur-daryl-clark",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 14
   },
   {
     "id": "st-helens-cur-david-klemmer",
@@ -154,7 +158,8 @@
     "basePlayerId": "st-helens-cur-david-klemmer",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 19
   },
   {
     "id": "st-helens-cur-deon-cross",
@@ -313,7 +318,8 @@
     "basePlayerId": "st-helens-cur-jack-welsby",
     "primaryPosition": "FB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 13
   },
   {
     "id": "st-helens-cur-jackson-hastings",
@@ -343,7 +349,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1996-01-04",
-    "birthYear": 1996
+    "birthYear": 1996,
+    "intlCaps": 4
   },
   {
     "id": "st-helens-cur-jacob-douglas",
@@ -393,8 +400,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 113000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 16,
+    "tries": 2,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -402,7 +409,8 @@
     "basePlayerId": "st-helens-cur-jacob-host",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1996
+    "birthYear": 1996,
+    "dateOfBirth": "1996-09-30"
   },
   {
     "id": "st-helens-cur-jake-burns",
@@ -422,8 +430,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 22,
+    "tries": 5,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -431,7 +439,8 @@
     "basePlayerId": "st-helens-cur-jake-burns",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-06-23"
   },
   {
     "id": "st-helens-cur-jake-davies",
@@ -558,7 +567,8 @@
     "basePlayerId": "st-helens-cur-jonny-lomax",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 11
   },
   {
     "id": "st-helens-cur-kyle-feldt",
@@ -572,14 +582,14 @@
       "WING"
     ],
     "primaryPosition": "WING",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 86,
     "value": 187000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 25,
+    "tries": 28,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -587,7 +597,8 @@
     "basePlayerId": "st-helens-cur-kyle-feldt",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1992
+    "birthYear": 1992,
+    "dateOfBirth": "1992-02-09"
   },
   {
     "id": "st-helens-cur-lewis-murphy",
@@ -651,7 +662,8 @@
     "basePlayerId": "st-helens-cur-mark-percival",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "st-helens-cur-matt-whitley",
@@ -715,7 +727,8 @@
     "basePlayerId": "st-helens-cur-matty-lees",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 12
   },
   {
     "id": "st-helens-cur-morgan-knowles",
@@ -746,7 +759,10 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "intlCaps": 11,
+    "appearances": 222,
+    "tries": 36
   },
   {
     "id": "st-helens-cur-nene-macdonald",
@@ -760,14 +776,14 @@
       "CENTRE"
     ],
     "primaryPosition": "CENTRE",
-    "nationality": "England",
+    "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–2024",
     "category": "current",
     "peakRating": 87,
     "value": 221000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 63,
+    "tries": 20,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -775,7 +791,9 @@
     "basePlayerId": "st-helens-cur-nene-macdonald",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1994
+    "birthYear": 1994,
+    "dateOfBirth": "1994-05-11",
+    "intlCaps": 22
   },
   {
     "id": "st-helens-cur-noah-stephens",
@@ -789,14 +807,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "Wales",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 31,
+    "tries": 2,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -804,7 +822,8 @@
     "basePlayerId": "st-helens-cur-noah-stephens",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2004
+    "birthYear": 2004,
+    "dateOfBirth": "2004-10-03"
   },
   {
     "id": "st-helens-cur-owen-dagnall",
@@ -824,8 +843,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 116000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 25,
+    "tries": 13,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -833,7 +852,8 @@
     "basePlayerId": "st-helens-cur-owen-dagnall",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2005
+    "birthYear": 2005,
+    "dateOfBirth": "2005-09-21"
   },
   {
     "id": "st-helens-cur-shane-wright",
@@ -853,8 +873,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 83,
+    "tries": 14,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -862,7 +882,8 @@
     "basePlayerId": "st-helens-cur-shane-wright",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1996
+    "birthYear": 1996,
+    "dateOfBirth": "1996-03-13"
   },
   {
     "id": "st-helens-cur-tristan-sailor",
@@ -913,7 +934,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
+    "appearances": 2,
     "tries": 0,
     "teamYearId": "st-helens-2026",
     "year": 2026,
@@ -921,7 +942,9 @@
     "status": "Current",
     "basePlayerId": "st-helens-cur-leon-cowen",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2004-10-31",
+    "birthYear": 2004
   },
   {
     "id": "st-helens-cur-alfie-sinclair",
@@ -941,7 +964,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 4,
     "tries": 0,
     "teamYearId": "st-helens-2026",
     "year": 2026,
@@ -949,6 +972,8 @@
     "status": "Current",
     "basePlayerId": "st-helens-cur-alfie-sinclair",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2004-10-29",
+    "birthYear": 2004
   }
 ]

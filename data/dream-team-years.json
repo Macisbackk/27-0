@@ -586,7 +586,8 @@
     2016
   ],
   "warrington-cur-ben-currie": [
-    2016
+    2016,
+    2026
   ],
   "hull-fc-hist-mark-minichiello": [
     2016
@@ -660,7 +661,8 @@
   ],
   "leeds-cur-ash-handley": [
     2019,
-    2020
+    2020,
+    2026
   ],
   "wakefield-hist-blake-austin": [
     2019
@@ -737,7 +739,8 @@
     2022
   ],
   "leeds-cur-brodie-croft": [
-    2022
+    2022,
+    2026
   ],
   "leeds-cur-mikolaj-oledzki": [
     2022
@@ -800,10 +803,12 @@
     2025
   ],
   "leigh-cur-umyla-hanley": [
-    2025
+    2025,
+    2026
   ],
   "leeds-cur-jake-connor": [
-    2025
+    2025,
+    2026
   ],
   "hull-kr-cur-jez-litten": [
     2025
@@ -815,7 +820,8 @@
     2025
   ],
   "leeds-cur-james-mcdonnell": [
-    2025
+    2025,
+    2026
   ],
   "leeds-hist-kruise-leeming-2021": [
     2021
@@ -1203,5 +1209,26 @@
   ],
   "st-helens-cur-morgan-knowles": [
     2025
+  ],
+  "leeds-cur-lachie-miller": [
+    2026
+  ],
+  "leeds-cur-maika-sivo": [
+    2026
+  ],
+  "wigan-cur-zach-eckersley": [
+    2026
+  ],
+  "leigh-cur-joe-ofahengaue": [
+    2026
+  ],
+  "wigan-cur-brad-o-neill": [
+    2026
+  ],
+  "wakefield-cur-caleb-hamlin-uele": [
+    2026
+  ],
+  "toulouse-cur-mathieu-jussaume": [
+    2026
   ]
 }

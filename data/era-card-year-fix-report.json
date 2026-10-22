@@ -1,33 +1,11 @@
 {
-  "generatedAt": "2026-10-22T16:33:21.510Z",
+  "generatedAt": "2026-10-22T17:09:49.627Z",
   "script": "scripts/fix-era-card-years.ts",
-  "applied": false,
-  "moved": 830,
-  "hiddenDuplicates": 73,
-  "skippedCount": 5,
+  "applied": true,
+  "moved": 807,
+  "hiddenDuplicates": 69,
+  "skippedCount": 10,
   "moves": [
-    {
-      "id": "leigh-hist-era-matt-davis",
-      "name": "Matt Davis",
-      "club": "Leigh Leopards",
-      "from": 2021,
-      "to": 2023,
-      "verifiedSeasons": [
-        2023,
-        2024,
-        2025
-      ]
-    },
-    {
-      "id": "salford-hist-era-chris-hankinson",
-      "name": "Chris Hankinson",
-      "club": "Salford Red Devils",
-      "from": 2022,
-      "to": 2024,
-      "verifiedSeasons": [
-        2024
-      ]
-    },
     {
       "id": "catalans-hist-david-berthezene",
       "name": "David Berthezene",
@@ -41,29 +19,6 @@
       "ageNow": 25
     },
     {
-      "id": "leigh-hist-era-josh-charnley",
-      "name": "Josh Charnley",
-      "club": "Leigh Leopards",
-      "from": 2011,
-      "to": 2023,
-      "verifiedSeasons": [
-        2023,
-        2024,
-        2025
-      ]
-    },
-    {
-      "id": "leigh-hist-era-jack-hughes",
-      "name": "Jack Hughes",
-      "club": "Leigh Leopards",
-      "from": 2012,
-      "to": 2024,
-      "verifiedSeasons": [
-        2024,
-        2025
-      ]
-    },
-    {
       "id": "bradford-hist-billy-jowitt",
       "name": "Billy Jowitt",
       "club": "Bradford Bulls",
@@ -71,7 +26,9 @@
       "to": 2022,
       "verifiedSeasons": [
         2022
-      ]
+      ],
+      "ageThen": 19,
+      "ageNow": 21
     },
     {
       "id": "huddersfield-hist-mark-moxon",
@@ -208,18 +165,6 @@
       ],
       "ageThen": 18,
       "ageNow": 31
-    },
-    {
-      "id": "hull-fc-hist-matt-schultz",
-      "name": "Matt Schultz",
-      "club": "Hull FC",
-      "from": 1993,
-      "to": 1998,
-      "verifiedSeasons": [
-        1998
-      ],
-      "ageThen": 21,
-      "ageNow": 26
     },
     {
       "id": "huddersfield-hist-jon-neill",
@@ -1965,7 +1910,9 @@
       "to": 2021,
       "verifiedSeasons": [
         2021
-      ]
+      ],
+      "ageThen": 21,
+      "ageNow": 25
     },
     {
       "id": "london-hist-jamie-o-callaghan",
@@ -5269,20 +5216,6 @@
       "ageNow": 28
     },
     {
-      "id": "salford-hist-danny-williams",
-      "name": "Danny Williams",
-      "club": "Salford Red Devils",
-      "from": 2004,
-      "to": 2012,
-      "verifiedSeasons": [
-        2012,
-        2013,
-        2014
-      ],
-      "ageThen": 31,
-      "ageNow": 39
-    },
-    {
       "id": "wakefield-hist-tim-smith",
       "name": "Tim Smith",
       "club": "Wakefield Trinity",
@@ -5324,25 +5257,6 @@
       ],
       "ageThen": 18,
       "ageNow": 29
-    },
-    {
-      "id": "huddersfield-hist-luke-robinson",
-      "name": "Luke Robinson",
-      "club": "Huddersfield Giants",
-      "from": 2000,
-      "to": 2008,
-      "verifiedSeasons": [
-        2008,
-        2009,
-        2010,
-        2011,
-        2012,
-        2013,
-        2014,
-        2015
-      ],
-      "ageThen": 16,
-      "ageNow": 24
     },
     {
       "id": "catalans-hist-dane-carlaw",
@@ -6069,22 +5983,6 @@
       "ageNow": 24
     },
     {
-      "id": "wakefield-hist-kevin-henderson",
-      "name": "Kevin Henderson",
-      "club": "Wakefield Trinity",
-      "from": 2001,
-      "to": 2007,
-      "verifiedSeasons": [
-        2007,
-        2008,
-        2009,
-        2010,
-        2011
-      ],
-      "ageThen": 27,
-      "ageNow": 33
-    },
-    {
       "id": "leeds-hist-anthony-farrell",
       "name": "Anthony Farrell",
       "club": "Leeds Rhinos",
@@ -6236,19 +6134,6 @@
       ],
       "ageThen": 18,
       "ageNow": 27
-    },
-    {
-      "id": "london-hist-richie-barnett",
-      "name": "Richie Barnett",
-      "club": "London Broncos",
-      "from": 1989,
-      "to": 2001,
-      "verifiedSeasons": [
-        2001,
-        2002
-      ],
-      "ageThen": 8,
-      "ageNow": 20
     },
     {
       "id": "london-hist-greg-fleming",
@@ -6912,19 +6797,6 @@
       "ageNow": 26
     },
     {
-      "id": "huddersfield-hist-aaron-murphy",
-      "name": "Aaron Murphy",
-      "club": "Huddersfield Giants",
-      "from": 2006,
-      "to": 2015,
-      "verifiedSeasons": [
-        2013,
-        2015,
-        2016,
-        2019
-      ]
-    },
-    {
       "id": "wigan-hist-taulima-tautai",
       "name": "Taulima Tautai",
       "club": "Wigan Warriors",
@@ -7093,21 +6965,6 @@
       ],
       "ageThen": 18,
       "ageNow": 22
-    },
-    {
-      "id": "catalans-hist-olivier-elima",
-      "name": "Olivier Elima",
-      "club": "Catalans Dragons",
-      "from": 2005,
-      "to": 2014,
-      "verifiedSeasons": [
-        2009,
-        2010,
-        2014,
-        2015
-      ],
-      "ageThen": 22,
-      "ageNow": 31
     },
     {
       "id": "wakefield-hist-justin-horo",
@@ -7397,21 +7254,6 @@
       ],
       "ageThen": 18,
       "ageNow": 24
-    },
-    {
-      "id": "wakefield-hist-ben-jeffries",
-      "name": "Ben Jeffries",
-      "club": "Wakefield Trinity",
-      "from": 1998,
-      "to": 2003,
-      "verifiedSeasons": [
-        2003,
-        2004,
-        2005,
-        2006,
-        2007,
-        2010
-      ]
     },
     {
       "id": "widnes-hist-patrick-ah-van",
@@ -8604,7 +8446,9 @@
         2009,
         2010,
         2011
-      ]
+      ],
+      "ageThen": 18,
+      "ageNow": 27
     },
     {
       "id": "salford-hist-greg-burke",
@@ -9145,20 +8989,6 @@
       "ageNow": 26
     },
     {
-      "id": "huddersfield-hist-paul-whatuira",
-      "name": "Paul Whatuira",
-      "club": "Huddersfield Giants",
-      "from": 1997,
-      "to": 2008,
-      "verifiedSeasons": [
-        2008,
-        2009,
-        2010
-      ],
-      "ageThen": 16,
-      "ageNow": 27
-    },
-    {
       "id": "hull-fc-hist-willie-manu",
       "name": "Willie Manu",
       "club": "Hull FC",
@@ -9273,26 +9103,6 @@
       ],
       "ageThen": 18,
       "ageNow": 20
-    },
-    {
-      "id": "catalans-hist-gregory-mounis",
-      "name": "Grégory Mounis",
-      "club": "Catalans Dragons",
-      "from": 2003,
-      "to": 2009,
-      "verifiedSeasons": [
-        2006,
-        2007,
-        2008,
-        2009,
-        2010,
-        2011,
-        2012,
-        2013,
-        2016
-      ],
-      "ageThen": 18,
-      "ageNow": 24
     },
     {
       "id": "huddersfield-hist-chris-nero",
@@ -9448,23 +9258,6 @@
       ],
       "ageThen": 18,
       "ageNow": 27
-    },
-    {
-      "id": "paul-clough",
-      "name": "Paul Clough",
-      "club": "St Helens",
-      "from": 2001,
-      "to": 2007,
-      "verifiedSeasons": [
-        2007,
-        2008,
-        2009,
-        2010,
-        2012,
-        2013
-      ],
-      "ageThen": 14,
-      "ageNow": 20
     },
     {
       "id": "hull-fc-hist-liam-watts",
@@ -9808,32 +9601,6 @@
       "ageNow": 31
     },
     {
-      "id": "catalans-hist-stacey-jones",
-      "name": "Stacey Jones",
-      "club": "Catalans Dragons",
-      "from": 1994,
-      "to": 2006,
-      "verifiedSeasons": [
-        2006,
-        2007,
-        2008
-      ],
-      "ageThen": 18,
-      "ageNow": 30
-    },
-    {
-      "id": "wakefield-hist-paul-sykes",
-      "name": "Paul Sykes",
-      "club": "London Broncos",
-      "from": 1999,
-      "to": 2004,
-      "verifiedSeasons": [
-        2004,
-        2005,
-        2007
-      ]
-    },
-    {
       "id": "hull-fc-hist-paul-cooke",
       "name": "Paul Cooke",
       "club": "Hull FC",
@@ -10137,19 +9904,6 @@
       "ageNow": 22
     },
     {
-      "id": "castleford-hist-brett-ferres",
-      "name": "Brett Ferres",
-      "club": "Castleford Tigers",
-      "from": 2004,
-      "to": 2010,
-      "verifiedSeasons": [
-        2009,
-        2010,
-        2011,
-        2012
-      ]
-    },
-    {
       "id": "catalans-hist-tony-gigot",
       "name": "Tony Gigot",
       "club": "Catalans Dragons",
@@ -10164,24 +9918,6 @@
         2019
       ],
       "ageThen": 18,
-      "ageNow": 26
-    },
-    {
-      "id": "andy-lynch",
-      "name": "Andy Lynch",
-      "club": "Bradford Bulls",
-      "from": 1998,
-      "to": 2005,
-      "verifiedSeasons": [
-        2005,
-        2006,
-        2007,
-        2008,
-        2009,
-        2010,
-        2011
-      ],
-      "ageThen": 19,
       "ageNow": 26
     },
     {
@@ -10504,25 +10240,6 @@
       "ageNow": 31
     },
     {
-      "id": "leeds-hist-carl-ablett",
-      "name": "Carl Ablett",
-      "club": "Leeds Rhinos",
-      "from": 2000,
-      "to": 2008,
-      "verifiedSeasons": [
-        2008,
-        2009,
-        2011,
-        2012,
-        2014,
-        2016,
-        2017,
-        2018
-      ],
-      "ageThen": 15,
-      "ageNow": 23
-    },
-    {
       "id": "hull-fc-hist-albert-kelly",
       "name": "Albert Kelly",
       "club": "Hull FC",
@@ -10817,20 +10534,6 @@
       "ageNow": 20
     },
     {
-      "id": "paul-anderson",
-      "name": "Paul Anderson",
-      "club": "St Helens",
-      "from": 1991,
-      "to": 1998,
-      "verifiedSeasons": [
-        1998,
-        2005,
-        2006
-      ],
-      "ageThen": 14,
-      "ageNow": 21
-    },
-    {
       "id": "leeds-hist-joel-moon",
       "name": "Joel Moon",
       "club": "Leeds Rhinos",
@@ -10903,7 +10606,9 @@
         2015,
         2016,
         2017
-      ]
+      ],
+      "ageThen": 18,
+      "ageNow": 22
     },
     {
       "id": "huddersfield-hist-jermaine-mcgillvary",
@@ -11057,30 +10762,6 @@
       ],
       "ageThen": 18,
       "ageNow": 21
-    },
-    {
-      "id": "huddersfield-hist-leroy-cudjoe",
-      "name": "Leroy Cudjoe",
-      "club": "Huddersfield Giants",
-      "from": 2006,
-      "to": 2008,
-      "verifiedSeasons": [
-        2008,
-        2009,
-        2010,
-        2011,
-        2012,
-        2013,
-        2014,
-        2015,
-        2016,
-        2017,
-        2020,
-        2022,
-        2023,
-        2024,
-        2025
-      ]
     },
     {
       "id": "nick-fozzard",
@@ -11586,21 +11267,6 @@
       "ageNow": 27
     },
     {
-      "id": "luke-gale",
-      "name": "Luke Gale",
-      "club": "Castleford Tigers",
-      "from": 2010,
-      "to": 2015,
-      "verifiedSeasons": [
-        2015,
-        2016,
-        2017,
-        2018
-      ],
-      "ageThen": 22,
-      "ageNow": 27
-    },
-    {
       "id": "james-graham",
       "name": "James Graham",
       "club": "St Helens",
@@ -11820,25 +11486,6 @@
     }
   ],
   "hidden": [
-    {
-      "id": "hull-fc-hist-era-liam-sutcliffe",
-      "name": "Liam Sutcliffe",
-      "club": "Hull FC",
-      "year": 2014,
-      "verifiedSeasons": [
-        2023,
-        2024
-      ]
-    },
-    {
-      "id": "sheffield-hist-dave-watson",
-      "name": "Dave Watson",
-      "club": "Sheffield Eagles",
-      "year": 1984,
-      "verifiedSeasons": [
-        1998
-      ]
-    },
     {
       "id": "huddersfield-hist-tom-holmes",
       "name": "Tom Holmes",
@@ -12131,16 +11778,6 @@
       ]
     },
     {
-      "id": "catalans-hist-jerome-guisset",
-      "name": "Jerome Guisset",
-      "club": "Catalans Dragons",
-      "year": 1992,
-      "verifiedSeasons": [
-        2009,
-        2010
-      ]
-    },
-    {
       "id": "leeds-hist-luke-briscoe",
       "name": "Luke Briscoe",
       "club": "Leeds Rhinos",
@@ -12418,17 +12055,6 @@
       ]
     },
     {
-      "id": "catalans-hist-steve-menzies",
-      "name": "Steve Menzies",
-      "club": "Catalans Dragons",
-      "year": 1991,
-      "verifiedSeasons": [
-        2011,
-        2012,
-        2013
-      ]
-    },
-    {
       "id": "sheffield-hist-mark-aston",
       "name": "Mark Aston",
       "club": "Sheffield Eagles",
@@ -12549,16 +12175,36 @@
   ],
   "skipped": [
     {
+      "id": "hull-fc-hist-era-liam-sutcliffe",
+      "reason": "researched fix supplied"
+    },
+    {
+      "id": "leigh-hist-era-jack-hughes",
+      "reason": "researched fix supplied"
+    },
+    {
       "id": "widnes-hist-ben-davies",
-      "reason": "age at 2012 would be 12 (same-name player?)"
+      "reason": "researched fix supplied"
     },
     {
-      "id": "hull-kr-hist-adam-walker",
-      "reason": "age at 2013 would be 44 (same-name player?)"
+      "id": "catalans-hist-jerome-guisset",
+      "reason": "researched fix supplied"
     },
     {
-      "id": "catalans-hist-steve-bell",
-      "reason": "age at 2009 would be 49 (same-name player?)"
+      "id": "catalans-hist-olivier-elima",
+      "reason": "researched fix supplied"
+    },
+    {
+      "id": "catalans-hist-stacey-jones",
+      "reason": "researched fix supplied"
+    },
+    {
+      "id": "wigan-hist-michael-mcilorum",
+      "reason": "researched fix supplied"
+    },
+    {
+      "id": "catalans-hist-steve-menzies",
+      "reason": "researched fix supplied"
     },
     {
       "id": "st-helens-cur-tommy-makinson-2014",
