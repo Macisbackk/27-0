@@ -10,7 +10,7 @@
       "club": "Bradford Bulls",
       "slug": "bradford-bulls",
       "file": "bradford-bulls.json",
-      "count": 28
+      "count": 29
     },
     {
       "club": "Castleford Tigers",
@@ -28,13 +28,13 @@
       "club": "Huddersfield Giants",
       "slug": "huddersfield-giants",
       "file": "huddersfield-giants.json",
-      "count": 28
+      "count": 29
     },
     {
       "club": "Hull FC",
       "slug": "hull-fc",
       "file": "hull-fc.json",
-      "count": 34
+      "count": 35
     },
     {
       "club": "Hull KR",
@@ -52,7 +52,7 @@
       "club": "Leigh Leopards",
       "slug": "leigh-leopards",
       "file": "leigh-leopards.json",
-      "count": 32
+      "count": 33
     },
     {
       "club": "London Broncos",
@@ -100,7 +100,7 @@
       "club": "Warrington Wolves",
       "slug": "warrington-wolves",
       "file": "warrington-wolves.json",
-      "count": 30
+      "count": 31
     },
     {
       "club": "Widnes Vikings",

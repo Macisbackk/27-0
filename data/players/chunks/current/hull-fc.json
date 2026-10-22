@@ -1045,5 +1045,33 @@
     "superLeagueEligible": true,
     "dateOfBirth": "2006-04-24",
     "birthYear": 2006
+  },
+  {
+    "id": "hull-fc-cur-roman-dawson",
+    "name": "Roman Dawson",
+    "club": "Hull FC",
+    "currentClub": "Hull FC",
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "position": "CENTRE",
+    "positions": [
+      "CENTRE"
+    ],
+    "primaryPosition": "CENTRE",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 93000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "hull-fc-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "hull-fc-cur-roman-dawson",
+    "availableInGame": true,
+    "superLeagueEligible": true
   }
 ]

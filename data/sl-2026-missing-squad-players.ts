@@ -9,6 +9,8 @@ import type { Position } from "../src/lib/types";
 
 const LRL_ALL_CLUBS =
   "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club";
+/** Official Super League Fantasy player list (positions); snapshot in data/imports/fantasy-super-league-players-2026.md. */
+const SL_FANTASY = "https://fantasy.superleague.co.uk/";
 
 export type Addition = {
   club: string;
@@ -1022,6 +1024,91 @@ export const ADDITIONS: Addition[] = [
     ],
   },
 
+  // ── Academy players positioned from the official Super League Fantasy list ─
+  {
+    club: "Huddersfield Giants",
+    name: "Logan Blacker",
+    squadNumber: 28,
+    position: "FULLBACK",
+    nationality: "England",
+    nationalityBasis: "inferred: Huddersfield Giants academy product (club academy report); no other nationality recorded",
+    rating: 80,
+    status: "squad-number list (academy)",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.alloutrugbyleague.co.uk/news/huddersfield-giants-2026-squad-numbers-1520629",
+      SL_FANTASY,
+      "https://giantsrl.com/article/8787/academy-match-report-giants-34---10-hull-kr",
+    ],
+    notes: "Super League Fantasy: Full Back; listed first (No. 1 slot) in the Giants academy line-up, March 2024.",
+  },
+  {
+    club: "Hull FC",
+    name: "Roman Dawson",
+    squadNumber: 33,
+    position: "CENTRE",
+    nationality: "England",
+    nationalityBasis: "inferred: Hull FC academy product (club academy report); no other nationality recorded",
+    rating: 80,
+    status: "squad-number list (academy)",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+      SL_FANTASY,
+      "https://www.hullfc.com/blog/?p=17247",
+    ],
+    notes: "Super League Fantasy: Centre; club academy profile page is empty.",
+  },
+  {
+    club: "Warrington Wolves",
+    name: "Tommy Rhodes",
+    squadNumber: 33,
+    position: "SCRUM_HALF",
+    nationality: "England",
+    nationalityBasis: "inferred: Warrington Wolves academy player (U18 academy team list); no other nationality recorded",
+    rating: 80,
+    status: "squad-number list (academy)",
+    sources: [
+      LRL_ALL_CLUBS,
+      SL_FANTASY,
+      "https://therhinos.co.uk/match-report/1236",
+    ],
+    notes: "Super League Fantasy: Scrum Half; wore 6 for Warrington Academy, August 2026.",
+  },
+  {
+    club: "Leigh Leopards",
+    name: "Kavan Rothwell",
+    squadNumber: 27,
+    position: "SECOND_ROW",
+    nationality: "England",
+    nationalityBasis: "inferred: Wigan St Patricks junior and Wigan academy (Wigan Today); no other nationality recorded",
+    previousClubs: ["Wigan Warriors", "Barrow Raiders"],
+    rating: 80,
+    status: "squad-number list",
+    sources: [
+      LRL_ALL_CLUBS,
+      SL_FANTASY,
+      "https://www.wigantoday.net/sport/rugby-league/limited-opportunities-sees-wigan-warriors-youngster-make-move-to-leigh-leopards-4373377",
+    ],
+    notes: "Super League Fantasy: Second Row (described himself as a back-rower turned middle in 2023).",
+  },
+  {
+    club: "Bradford Bulls",
+    name: "Cameron Bate",
+    squadNumber: 29,
+    position: "LOOSE_FORWARD",
+    nationality: "England",
+    nationalityBasis: "inferred: Bradford Bulls Elite Academy product (club); no other nationality recorded",
+    rating: 80,
+    status: "squad-number list (academy graduate)",
+    sources: [
+      LRL_ALL_CLUBS,
+      SL_FANTASY,
+      "https://www.bradfordbulls.co.uk/article/3028/bulls-sign-youngster-bate-on-first-team-contract",
+    ],
+    notes: "Super League Fantasy: Loose Forward; club calls him a young forward, aged 18 in April 2025.",
+  },
+
   // ── York Knights (mid-season) ─────────────────────────────────────────────
   {
     club: "York Knights",
@@ -1154,13 +1241,6 @@ export const NOT_APPLIED_MOVES: MoveNotApplied[] = [
 export const UNVERIFIED: Unverified[] = [
   {
     club: "Huddersfield Giants",
-    name: "Logan Blacker",
-    squadNumber: 28,
-    reason: "On the 2026 squad-number list, but no source found for his position or background.",
-    sources: [LRL_ALL_CLUBS, "https://www.alloutrugbyleague.co.uk/news/huddersfield-giants-2026-squad-numbers-1520629"],
-  },
-  {
-    club: "Huddersfield Giants",
     name: "Liam Sutcliffe",
     squadNumber: 19,
     reason:
@@ -1175,15 +1255,13 @@ export const UNVERIFIED: Unverified[] = [
     club: "Warrington Wolves",
     name: "Ewan Smith",
     squadNumber: 32,
-    reason: "On the 2026 squad-number list, but no source found for his position or background.",
-    sources: [LRL_ALL_CLUBS, "https://www.alloutrugbyleague.co.uk/news/warrington-wolves-squad-unpicked-new-1508041"],
-  },
-  {
-    club: "Warrington Wolves",
-    name: "Tommy Rhodes",
-    squadNumber: 33,
-    reason: "On the 2026 squad-number list, but no source found for his position or background.",
-    sources: [LRL_ALL_CLUBS, "https://www.alloutrugbyleague.co.uk/news/warrington-wolves-squad-unpicked-new-1508041"],
+    reason:
+      "On the 2026 squad-number list and listed as a second-rower in Super League Fantasy, but no source for his background or nationality was found.",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.alloutrugbyleague.co.uk/news/warrington-wolves-squad-unpicked-new-1508041",
+      SL_FANTASY,
+    ],
   },
   {
     club: "Warrington Wolves",
@@ -1197,35 +1275,11 @@ export const UNVERIFIED: Unverified[] = [
     ],
   },
   {
-    club: "Hull FC",
-    name: "Roman Dawson",
-    squadNumber: 33,
-    reason: "On the 2026 squad-number list, but his club profile is empty and no source gives his position.",
-    sources: [LRL_ALL_CLUBS, "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/"],
-  },
-  {
     club: "York Knights",
     name: "Myles Harrison",
     reason:
       "Listed as a loan from Newcastle Thunder on the York 2026 season page, but no York appearance, squad number or position found.",
     sources: ["https://en.wikipedia.org/wiki/2026_York_Knights_season"],
-  },
-  {
-    club: "Leigh Leopards",
-    name: "Kavan Rothwell",
-    squadNumber: 27,
-    reason: "On the 2026 squad-number list; the only position source describes him as a 'middle' (prop or loose forward), so the playing slot could not be confirmed.",
-    sources: [
-      LRL_ALL_CLUBS,
-      "https://www.wigantoday.net/sport/rugby-league/limited-opportunities-sees-wigan-warriors-youngster-make-move-to-leigh-leopards-4373377",
-    ],
-  },
-  {
-    club: "Bradford Bulls",
-    name: "Cameron Bate",
-    squadNumber: 29,
-    reason: "On the 2026 squad-number list; sources only call him a 'young forward', so the position could not be confirmed.",
-    sources: [LRL_ALL_CLUBS, "https://www.bradfordbulls.co.uk/article/3028/bulls-sign-youngster-bate-on-first-team-contract"],
   },
   {
     club: "Bradford Bulls",

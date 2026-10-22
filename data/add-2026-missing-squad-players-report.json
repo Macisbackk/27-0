@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T08:51:27.908Z",
+  "generatedAt": "2026-10-22T08:52:56.400Z",
   "script": "scripts/add-2026-missing-squad-players.ts",
   "method": [
     "Squad lists: Love Rugby League club-by-club 2026 squad numbers (28 Jan 2026), cross-checked per club.",
@@ -9,9 +9,9 @@
     "Classic Current spins draw from the fixed 17-man 2026 pools (current-team-year-squads-2026.json), so depth rows appear in Manager Mode, Wordle/Grid and the global recruitment pools, not in the 17-man Classic spin pools."
   ],
   "totals": {
-    "added": 54,
+    "added": 59,
     "moved": 3,
-    "unverified": 13,
+    "unverified": 8,
     "movesNotApplied": 4
   },
   "clubs": {
@@ -20,21 +20,29 @@
         "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
         "https://www.loverugbyleague.com/post/bradford-bulls-2026-squad-numbers"
       ],
-      "added": [],
+      "added": [
+        {
+          "name": "Cameron Bate",
+          "id": "bradford-cur-cameron-bate",
+          "squadNumber": 29,
+          "position": "LOOSE_FORWARD",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: Bradford Bulls Elite Academy product (club); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list (academy graduate)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://fantasy.superleague.co.uk/",
+            "https://www.bradfordbulls.co.uk/article/3028/bulls-sign-youngster-bate-on-first-team-contract"
+          ],
+          "notes": "Super League Fantasy: Loose Forward; club calls him a young forward, aged 18 in April 2025."
+        }
+      ],
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
       "unverified": [
-        {
-          "club": "Bradford Bulls",
-          "name": "Cameron Bate",
-          "squadNumber": 29,
-          "reason": "On the 2026 squad-number list; sources only call him a 'young forward', so the position could not be confirmed.",
-          "sources": [
-            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
-            "https://www.bradfordbulls.co.uk/article/3028/bulls-sign-youngster-bate-on-first-team-contract"
-          ]
-        },
         {
           "club": "Bradford Bulls",
           "name": "Ronan Michael",
@@ -46,7 +54,7 @@
           ]
         }
       ],
-      "playableCurrentPlayers": 28
+      "playableCurrentPlayers": 29
     },
     "Castleford Tigers": {
       "squadListSources": [
@@ -200,6 +208,24 @@
             "https://giantsrl.com/article/9934/promising-half-back-signs-extension"
           ],
           "notes": "Club: half-back, two-year extension June 2026."
+        },
+        {
+          "name": "Logan Blacker",
+          "id": "huddersfield-cur-logan-blacker",
+          "squadNumber": 28,
+          "position": "FULLBACK",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: Huddersfield Giants academy product (club academy report); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list (academy)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.alloutrugbyleague.co.uk/news/huddersfield-giants-2026-squad-numbers-1520629",
+            "https://fantasy.superleague.co.uk/",
+            "https://giantsrl.com/article/8787/academy-match-report-giants-34---10-hull-kr"
+          ],
+          "notes": "Super League Fantasy: Full Back; listed first (No. 1 slot) in the Giants academy line-up, March 2024."
         }
       ],
       "moved": [],
@@ -219,16 +245,6 @@
       "unverified": [
         {
           "club": "Huddersfield Giants",
-          "name": "Logan Blacker",
-          "squadNumber": 28,
-          "reason": "On the 2026 squad-number list, but no source found for his position or background.",
-          "sources": [
-            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
-            "https://www.alloutrugbyleague.co.uk/news/huddersfield-giants-2026-squad-numbers-1520629"
-          ]
-        },
-        {
-          "club": "Huddersfield Giants",
           "name": "Liam Sutcliffe",
           "squadNumber": 19,
           "reason": "Huddersfield squad number 19, but released on 23 July 2026 and joined Midlands Hurricanes (Championship) until the end of 2026 — not added as a Huddersfield Current card (see Championship section).",
@@ -239,7 +255,7 @@
           ]
         }
       ],
-      "playableCurrentPlayers": 28
+      "playableCurrentPlayers": 29
     },
     "Hull FC": {
       "squadListSources": [
@@ -367,6 +383,24 @@
             "https://www.loverugbyleague.com/post/hull-fc-loan-19-06-2026"
           ],
           "notes": null
+        },
+        {
+          "name": "Roman Dawson",
+          "id": "hull-fc-cur-roman-dawson",
+          "squadNumber": 33,
+          "position": "CENTRE",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: Hull FC academy product (club academy report); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list (academy)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+            "https://fantasy.superleague.co.uk/",
+            "https://www.hullfc.com/blog/?p=17247"
+          ],
+          "notes": "Super League Fantasy: Centre; club academy profile page is empty."
         }
       ],
       "moved": [
@@ -386,19 +420,8 @@
       ],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
-      "unverified": [
-        {
-          "club": "Hull FC",
-          "name": "Roman Dawson",
-          "squadNumber": 33,
-          "reason": "On the 2026 squad-number list, but his club profile is empty and no source gives his position.",
-          "sources": [
-            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
-            "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/"
-          ]
-        }
-      ],
-      "playableCurrentPlayers": 34
+      "unverified": [],
+      "playableCurrentPlayers": 35
     },
     "Hull KR": {
       "squadListSources": [
@@ -627,24 +650,30 @@
             "https://www.loverugbyleague.com/post/oliver-polec-whitehaven-loan-25-03-2026"
           ],
           "notes": "Front-row forward aged 19 (March 2026); Woolston Rovers junior, ex-St Helens academy."
+        },
+        {
+          "name": "Kavan Rothwell",
+          "id": "leigh-cur-kavan-rothwell",
+          "squadNumber": 27,
+          "position": "SECOND_ROW",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: Wigan St Patricks junior and Wigan academy (Wigan Today); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://fantasy.superleague.co.uk/",
+            "https://www.wigantoday.net/sport/rugby-league/limited-opportunities-sees-wigan-warriors-youngster-make-move-to-leigh-leopards-4373377"
+          ],
+          "notes": "Super League Fantasy: Second Row (described himself as a back-rower turned middle in 2023)."
         }
       ],
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
-      "unverified": [
-        {
-          "club": "Leigh Leopards",
-          "name": "Kavan Rothwell",
-          "squadNumber": 27,
-          "reason": "On the 2026 squad-number list; the only position source describes him as a 'middle' (prop or loose forward), so the playing slot could not be confirmed.",
-          "sources": [
-            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
-            "https://www.wigantoday.net/sport/rugby-league/limited-opportunities-sees-wigan-warriors-youngster-make-move-to-leigh-leopards-4373377"
-          ]
-        }
-      ],
-      "playableCurrentPlayers": 31
+      "unverified": [],
+      "playableCurrentPlayers": 32
     },
     "St Helens": {
       "squadListSources": [
@@ -746,7 +775,7 @@
             "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
             "https://www.loverugbyleague.com/post/toulouse-olympique-2026-squad-numbers"
           ],
-          "status": "applied"
+          "status": "already applied"
         }
       ],
       "unverified": [],
@@ -906,27 +935,37 @@
             "https://www.loverugbyleague.com/post/sam-powell-hip-drop-ban-reaction-07-07-2026"
           ],
           "notes": "Young Warrington-produced hooker; turns 21 in August 2026 (born August 2005)."
+        },
+        {
+          "name": "Tommy Rhodes",
+          "id": "warrington-cur-tommy-rhodes",
+          "squadNumber": 33,
+          "position": "SCRUM_HALF",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: Warrington Wolves academy player (U18 academy team list); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list (academy)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://fantasy.superleague.co.uk/",
+            "https://therhinos.co.uk/match-report/1236"
+          ],
+          "notes": "Super League Fantasy: Scrum Half; wore 6 for Warrington Academy, August 2026."
         }
       ],
       "moved": [
         {
           "name": "Oliver Leyland",
-          "fromClub": "London Broncos",
-          "toClub": "Warrington Wolves",
           "fromId": "london-cur-oliver-leyland",
-          "toId": "warrington-cur-oliver-leyland",
+          "toClub": "Warrington Wolves",
           "reason": "Warrington squad number 28 for 2026 (at Warrington since 2025); the Current card was still on his old London Broncos club (hidden Championship card). Moved and made playable; rating untouched.",
           "sources": [
             "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
             "https://en.wikipedia.org/wiki/Oliver_Leyland"
           ],
-          "removedFromFromClub2026Pool": false,
-          "removedFromSl2026Squads": false,
-          "idRetargetedIn": [
-            "birth-years.json",
-            "player-goal-kicking-overrides.ts"
-          ],
-          "status": "applied"
+          "toId": "warrington-cur-oliver-leyland",
+          "status": "already applied"
         }
       ],
       "movesNotApplied": [
@@ -956,20 +995,11 @@
           "club": "Warrington Wolves",
           "name": "Ewan Smith",
           "squadNumber": 32,
-          "reason": "On the 2026 squad-number list, but no source found for his position or background.",
+          "reason": "On the 2026 squad-number list and listed as a second-rower in Super League Fantasy, but no source for his background or nationality was found.",
           "sources": [
             "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
-            "https://www.alloutrugbyleague.co.uk/news/warrington-wolves-squad-unpicked-new-1508041"
-          ]
-        },
-        {
-          "club": "Warrington Wolves",
-          "name": "Tommy Rhodes",
-          "squadNumber": 33,
-          "reason": "On the 2026 squad-number list, but no source found for his position or background.",
-          "sources": [
-            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
-            "https://www.alloutrugbyleague.co.uk/news/warrington-wolves-squad-unpicked-new-1508041"
+            "https://www.alloutrugbyleague.co.uk/news/warrington-wolves-squad-unpicked-new-1508041",
+            "https://fantasy.superleague.co.uk/"
           ]
         },
         {
@@ -983,7 +1013,7 @@
           ]
         }
       ],
-      "playableCurrentPlayers": 30
+      "playableCurrentPlayers": 31
     },
     "Wigan Warriors": {
       "squadListSources": [

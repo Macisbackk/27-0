@@ -914,5 +914,33 @@
       "London Broncos",
       "Warrington Wolves"
     ]
+  },
+  {
+    "id": "warrington-cur-tommy-rhodes",
+    "name": "Tommy Rhodes",
+    "club": "Warrington Wolves",
+    "currentClub": "Warrington Wolves",
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "position": "SCRUM_HALF",
+    "positions": [
+      "SCRUM_HALF"
+    ],
+    "primaryPosition": "SCRUM_HALF",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 95000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "warrington-wolves-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "warrington-cur-tommy-rhodes",
+    "availableInGame": true,
+    "superLeagueEligible": true
   }
 ]

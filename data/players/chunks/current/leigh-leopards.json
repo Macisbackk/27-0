@@ -994,5 +994,38 @@
       "St Helens",
       "Leigh Leopards"
     ]
+  },
+  {
+    "id": "leigh-cur-kavan-rothwell",
+    "name": "Kavan Rothwell",
+    "club": "Leigh Leopards",
+    "currentClub": "Leigh Leopards",
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "position": "SECOND_ROW",
+    "positions": [
+      "SECOND_ROW"
+    ],
+    "primaryPosition": "SECOND_ROW",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 90000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "leigh-leopards-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "leigh-cur-kavan-rothwell",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "clubsPlayedFor": [
+      "Wigan Warriors",
+      "Barrow Raiders",
+      "Leigh Leopards"
+    ]
   }
 ]

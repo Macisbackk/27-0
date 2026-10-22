@@ -888,6 +888,34 @@
     "superLeagueEligible": true
   },
   {
+    "id": "bradford-cur-cameron-bate",
+    "name": "Cameron Bate",
+    "club": "Bradford Bulls",
+    "currentClub": "Bradford Bulls",
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "position": "LOOSE_FORWARD",
+    "positions": [
+      "LOOSE_FORWARD"
+    ],
+    "primaryPosition": "LOOSE_FORWARD",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 92000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "bradford-bulls-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "bradford-cur-cameron-bate",
+    "availableInGame": true,
+    "superLeagueEligible": true
+  },
+  {
     "id": "castleford-cur-alex-mellor",
     "name": "Alex Mellor",
     "position": "SECOND_ROW",
@@ -3617,6 +3645,34 @@
     "superLeagueEligible": true
   },
   {
+    "id": "huddersfield-cur-logan-blacker",
+    "name": "Logan Blacker",
+    "club": "Huddersfield Giants",
+    "currentClub": "Huddersfield Giants",
+    "team": "Huddersfield Giants",
+    "displayClub": "Huddersfield Giants",
+    "position": "FULLBACK",
+    "positions": [
+      "FULLBACK"
+    ],
+    "primaryPosition": "FULLBACK",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 94000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "huddersfield-giants-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "huddersfield-cur-logan-blacker",
+    "availableInGame": true,
+    "superLeagueEligible": true
+  },
+  {
     "id": "hull-fc-cur-aidan-sezer",
     "name": "Aidan Sezer",
     "position": "SCRUM_HALF",
@@ -4662,6 +4718,34 @@
     "superLeagueEligible": true,
     "dateOfBirth": "2006-04-24",
     "birthYear": 2006
+  },
+  {
+    "id": "hull-fc-cur-roman-dawson",
+    "name": "Roman Dawson",
+    "club": "Hull FC",
+    "currentClub": "Hull FC",
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "position": "CENTRE",
+    "positions": [
+      "CENTRE"
+    ],
+    "primaryPosition": "CENTRE",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 93000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "hull-fc-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "hull-fc-cur-roman-dawson",
+    "availableInGame": true,
+    "superLeagueEligible": true
   },
   {
     "id": "hull-kr-cur-arthur-mourgue",
@@ -7526,6 +7610,39 @@
     "superLeagueEligible": true,
     "clubsPlayedFor": [
       "St Helens",
+      "Leigh Leopards"
+    ]
+  },
+  {
+    "id": "leigh-cur-kavan-rothwell",
+    "name": "Kavan Rothwell",
+    "club": "Leigh Leopards",
+    "currentClub": "Leigh Leopards",
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "position": "SECOND_ROW",
+    "positions": [
+      "SECOND_ROW"
+    ],
+    "primaryPosition": "SECOND_ROW",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 90000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "leigh-leopards-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "leigh-cur-kavan-rothwell",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "clubsPlayedFor": [
+      "Wigan Warriors",
+      "Barrow Raiders",
       "Leigh Leopards"
     ]
   },
@@ -11791,6 +11908,34 @@
       "London Broncos",
       "Warrington Wolves"
     ]
+  },
+  {
+    "id": "warrington-cur-tommy-rhodes",
+    "name": "Tommy Rhodes",
+    "club": "Warrington Wolves",
+    "currentClub": "Warrington Wolves",
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "position": "SCRUM_HALF",
+    "positions": [
+      "SCRUM_HALF"
+    ],
+    "primaryPosition": "SCRUM_HALF",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 95000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "warrington-wolves-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "warrington-cur-tommy-rhodes",
+    "availableInGame": true,
+    "superLeagueEligible": true
   },
   {
     "id": "widnes-cur-nathan-connell",
