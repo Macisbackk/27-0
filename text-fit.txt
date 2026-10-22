@@ -1,0 +1,33 @@
+16 text-fit finding(s)
+
+## / @320 — 2
+- [tiny-9px] "JM"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+- [tiny-9px] "SH"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+
+## menu @320 — 2
+- [tiny-9px] "JM"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+- [tiny-9px] "SH"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+
+## / @375 — 2
+- [tiny-9px] "JM"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+- [tiny-9px] "SH"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+
+## menu @375 — 2
+- [tiny-9px] "JM"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+- [tiny-9px] "SH"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+
+## / @768 — 2
+- [tiny-9px] "JM"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+- [tiny-9px] "SH"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+
+## menu @768 — 2
+- [tiny-9px] "JM"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+- [tiny-9px] "SH"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+
+## / @1280 — 2
+- [tiny-9px] "JM"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+- [tiny-9px] "SH"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+
+## menu @1280 — 2
+- [tiny-9px] "JM"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
+- [tiny-9px] "SH"  (div.group.flex>a.flex.h-5>span.font-black.tracking-tighter)
