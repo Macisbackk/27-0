@@ -12,12 +12,12 @@ const config: Config = {
     extend: {
       colors: {
         pitch: {
-          // Matchnight palette: ground, surface, raised, line, strong line (league-blue night).
-          950: "#06182a",
-          900: "#0c2339",
-          800: "#12304d",
-          700: "#193b5c",
-          600: "#23496f",
+          // Matchnight palette: ground, surface, raised, line, strong line (charcoal).
+          950: "#0e0f10",
+          900: "#191a1c",
+          800: "#232527",
+          700: "#2c2e31",
+          600: "#383b3f",
         },
         "theme-primary": "rgb(var(--theme-primary-rgb) / <alpha-value>)",
         "theme-secondary": "rgb(var(--theme-secondary-rgb) / <alpha-value>)",
@@ -36,14 +36,6 @@ const config: Config = {
         "mode-era": "rgb(var(--mode-era-rgb) / <alpha-value>)",
       },
       borderRadius: {
-        // Matchnight: squared kit-tag corners everywhere.
-        sm: "2px",
-        DEFAULT: "3px",
-        md: "4px",
-        lg: "4px",
-        xl: "6px",
-        "2xl": "6px",
-        "3xl": "8px",
         card: "var(--fl-radius-card)",
         tile: "var(--fl-radius-tile)",
         control: "var(--fl-radius-control)",

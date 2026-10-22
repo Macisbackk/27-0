@@ -10,30 +10,29 @@
  */
 
 :root {
-  /* Matchnight (v1.05): league-blue night, blue actions, red scoreboard mark, squared kit-tag shapes. */
-  --fl-ground: #06182a;
-  --fl-surface: #0c2339;
-  --fl-raised: #12304d;
-  --fl-raised-hover: #193b5c;
-  --fl-line: rgba(120, 170, 230, 0.12);
-  --fl-line-strong: rgba(120, 170, 230, 0.22);
-  --fl-text: #f2f6fb;
-  --fl-muted: #9db2c9;
-  --fl-radius-card: 6px;
-  --fl-radius-tile: 4px;
-  --fl-radius-control: 4px;
-  --fl-chamfer: 9px;
+  /* Matchnight (v1.05): "Floodlit lime" on neutral black. */
+  --fl-ground: #0e0f10;
+  --fl-surface: #191a1c;
+  --fl-raised: #232527;
+  --fl-raised-hover: #2c2e31;
+  --fl-line: rgba(255, 255, 255, 0.07);
+  --fl-line-strong: rgba(255, 255, 255, 0.15);
+  --fl-text: #ffffff;
+  --fl-muted: #a6a9ad;
+  --fl-radius-card: 20px;
+  --fl-radius-tile: 16px;
+  --fl-radius-control: 14px;
 
   /* Default (no Store theme) accent; a chosen theme overrides these inline on <html>. */
-  --theme-primary: #2085d6;
-  --theme-secondary: #5aa9ec;
-  --theme-tertiary: #00609a;
-  --theme-primary-rgb: 32 133 214;
-  --theme-secondary-rgb: 90 169 236;
-  --theme-tertiary-rgb: 0 96 154;
-  --theme-primary-soft: rgba(32, 133, 214, 0.12);
-  --theme-text-on-primary: #ffffff;
-  --header-bg: rgba(6, 24, 42, 0.94);
+  --theme-primary: #b6f23d;
+  --theme-secondary: #c6f56a;
+  --theme-tertiary: #9ad61e;
+  --theme-primary-rgb: 182 242 61;
+  --theme-secondary-rgb: 198 245 106;
+  --theme-tertiary-rgb: 154 214 30;
+  --theme-primary-soft: rgba(182, 242, 61, 0.12);
+  --theme-text-on-primary: #0e1400;
+  --header-bg: rgba(14, 15, 16, 0.94);
   --sidebar-bg: var(--fl-ground);
   --arena-bg: var(--fl-ground);
 
@@ -50,7 +49,7 @@
   --mobile-surface-primary: var(--fl-ground);
   --mobile-surface-secondary: var(--fl-surface);
   --mobile-surface-raised: var(--fl-raised);
-  --mobile-text-secondary: #cddbe9;
+  --mobile-text-secondary: #d4d6d9;
   --mobile-text-muted: var(--fl-muted);
 }
 
@@ -651,7 +650,7 @@ button.game-button--era,
 @media (max-width: 639px) {
   .bracket-sticky-actions {
     border-top: 1px solid var(--fl-line);
-    background: rgba(6, 24, 42, 0.96);
+    background: rgba(14, 15, 16, 0.96);
     box-shadow: none;
   }
 }
@@ -716,7 +715,7 @@ button.game-button--era,
 }
 .lb-nameplate--programme {
   border: 1.5px solid #e8dcc0;
-  background: #1d1a14;
+  background: #0e1400;
   color: #f3ead2;
   font-family: Georgia, "Times New Roman", serif;
   font-style: italic;
@@ -731,7 +730,7 @@ button.game-button--era,
 /* ── Classic player picker (after the spin) ───────────────────────────────── */
 /* Opaque: the page underneath (footer text etc.) must never show through. */
 .recruitment-choice-overlay {
-  background: var(--fl-ground, #06182a) !important;
+  background: var(--fl-ground, #0e0f10) !important;
 }
 .recruitment-choice-panel {
   max-height: none !important;

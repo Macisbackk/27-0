@@ -201,7 +201,7 @@ export function StorePanel() {
               style={{ width: `${Math.min(100, (balance / UI_THEME_PURCHASE_PRICE) * 100)}%` }}
             />
           </div>
-          <p className={`mt-1 ${TYPO.bodySm} ${balance >= UI_THEME_PURCHASE_PRICE ? "text-sky-300" : "text-gray-500"}`}>
+          <p className={`mt-1 ${TYPO.bodySm} ${balance >= UI_THEME_PURCHASE_PRICE ? "text-lime-300" : "text-gray-500"}`}>
             {balance >= UI_THEME_PURCHASE_PRICE
               ? "You can afford a theme"
               : `${formatClubFunds(UI_THEME_PURCHASE_PRICE - balance)} to your next theme`}
@@ -236,7 +236,7 @@ export function StorePanel() {
                   <p className="min-h-[2.5em] font-display text-sm font-bold leading-tight text-white">
                     {theme.label}
                   </p>
-                  <p className={`text-xs ${isSelected ? "text-sky-300" : "text-gray-500"}`}>
+                  <p className={`text-xs ${isSelected ? "text-lime-300" : "text-gray-500"}`}>
                     {isUnlocked ? (isSelected ? "✓ In use" : "Owned") : "Locked"}
                   </p>
                 </div>

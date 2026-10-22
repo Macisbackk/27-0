@@ -58,17 +58,17 @@
   --ui-accent-text: var(--theme-text-on-primary);
   --ui-accent-glow: var(--theme-glow);
 
-  --mode-current: #5cc8ff;
-  --mode-current-2: #8fdcff;
-  --mode-current-rgb: 92 200 255;
-  --mode-current-border: rgba(92, 200, 255, 0.75);
-  --mode-current-glow: rgba(92, 200, 255, 0.35);
-  --mode-current-text: #03131f;
-  --mode-era: #ead9b0;
-  --mode-era-rgb: 234 217 176;
-  --mode-era-border: rgba(234, 217, 176, 0.75);
-  --mode-era-glow: rgba(234, 217, 176, 0.35);
-  --mode-era-text: #1d1a14;
+  --mode-current: #f4f4f6;
+  --mode-current-2: #ffffff;
+  --mode-current-rgb: 244 244 246;
+  --mode-current-border: rgba(244, 244, 246, 0.75);
+  --mode-current-glow: rgba(244, 244, 246, 0.35);
+  --mode-current-text: #0e0f10;
+  --mode-era: #e7d9a8;
+  --mode-era-rgb: 231 217 168;
+  --mode-era-border: rgba(231, 217, 168, 0.75);
+  --mode-era-glow: rgba(231, 217, 168, 0.35);
+  --mode-era-text: #0e1400;
 
   --success: #22c55e;
   --success-2: #34d399;
@@ -274,7 +274,7 @@ html[data-ui-overlay="1"] {
   grid-template-columns: 1fr 1fr;
   gap: 4px;
   padding: 4px;
-  border-radius: 4px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
   width: min(100%, 28rem);
@@ -321,7 +321,7 @@ html[data-ui-overlay="1"] {
 .mode-switch--home button,
 .mode-toggle button {
   min-height: 34px;
-  border-radius: 4px;
+  border-radius: 9px;
   font-size: 0.86rem;
   font-weight: 750;
   line-height: 1.15;
@@ -375,9 +375,9 @@ html[data-ui-overlay="1"] {
 .achievement-popup-card {
   width: min(92vw, 420px);
   max-width: 100%;
-  border-radius: 6px;
+  border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(9, 30, 50, 0.98);
+  background: rgba(20, 21, 23, 0.98);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
   padding: 1.25rem;
   text-align: center;
@@ -426,7 +426,7 @@ html[data-ui-overlay="1"] {
 .achievement-popup-reward {
   margin: 0 auto 1rem;
   padding: 0.65rem 0.8rem;
-  border-radius: 4px;
+  border-radius: 12px;
   background: color-mix(in srgb, var(--theme-primary) 14%, transparent);
   border: 1px solid color-mix(in srgb, var(--theme-primary) 32%, transparent);
   font-size: 0.85rem;
@@ -1518,7 +1518,7 @@ html[data-ui-overlay="1"] {
     width: auto;
     max-width: 100%;
     min-height: 40px;
-    border-radius: 4px;
+    border-radius: 12px;
     font-weight: 800;
     letter-spacing: 0.01em;
     text-transform: none;
@@ -1556,7 +1556,7 @@ html[data-ui-overlay="1"] {
     min-height: 40px;
     padding: 0.55rem 0.9rem;
     font-size: 0.8125rem;
-    border-radius: 4px;
+    border-radius: 10px;
   }
 
   .game-button--md {
@@ -1568,7 +1568,7 @@ html[data-ui-overlay="1"] {
   .game-button--lg {
     min-height: 52px;
     padding: 0.9rem 1.35rem;
-    border-radius: 4px;
+    border-radius: 12px;
     font-family: var(--font-display), "Arial Black", Impact, sans-serif;
     font-size: 1rem;
     font-weight: 800;
@@ -1617,7 +1617,7 @@ html[data-ui-overlay="1"] {
 
   .game-button--secondary {
     border: 1px solid color-mix(in srgb, var(--theme-tertiary) 40%, transparent);
-    background: rgba(9, 30, 50, 0.94);
+    background: rgba(20, 21, 23, 0.94);
     color: #e5e7eb;
     box-shadow: none;
   }
@@ -1625,7 +1625,7 @@ html[data-ui-overlay="1"] {
   .game-button--secondary:hover:not(:disabled) {
     border-color: color-mix(in srgb, var(--theme-tertiary) 55%, transparent);
     color: #fff;
-    background: color-mix(in srgb, var(--theme-primary) 10%, rgba(9, 30, 50, 0.94));
+    background: color-mix(in srgb, var(--theme-primary) 10%, rgba(20, 21, 23, 0.94));
     transform: translateY(-1px);
   }
 
@@ -2064,7 +2064,7 @@ html[data-ui-overlay="1"] {
     height: calc(var(--slot-reel-item-h, 52px) - 4px);
     transform: translateY(-50%);
     pointer-events: none;
-    border-radius: 4px;
+    border-radius: 10px;
     border: 1.5px solid rgba(255, 255, 255, 0.42);
     background: rgba(255, 255, 255, 0.04);
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
@@ -2465,7 +2465,7 @@ button.game-button,
   gap: 0.45rem;
   max-width: 100%;
   min-height: 40px;
-  border-radius: 4px !important;
+  border-radius: 12px !important;
   font-weight: 800 !important;
   letter-spacing: 0.01em;
   text-transform: none;
@@ -2509,7 +2509,7 @@ button.game-button,
   min-height: 40px;
   padding: 0.55rem 0.9rem;
   font-size: 0.8125rem;
-  border-radius: 4px !important;
+  border-radius: 10px !important;
 }
 
 .game-button--md {
@@ -2521,7 +2521,7 @@ button.game-button,
 .game-button--lg {
   min-height: 48px;
   padding: 0.85rem 1.25rem;
-  border-radius: 4px !important;
+  border-radius: 12px !important;
   font-family: var(--font-display), "Arial Black", Impact, sans-serif;
   font-size: 1rem;
   font-weight: 800;
@@ -2548,7 +2548,7 @@ button.game-button--theme:hover:not(:disabled),
 a.game-button--secondary,
 button.game-button--secondary,
 .game-button--secondary {
-  background-color: var(--theme-button-secondary-bg, rgba(9, 30, 50, 0.94)) !important;
+  background-color: var(--theme-button-secondary-bg, rgba(20, 21, 23, 0.94)) !important;
   background-image: none !important;
   border: 1px solid var(--theme-button-secondary-border, color-mix(in srgb, var(--theme-tertiary) 40%, transparent)) !important;
   color: var(--theme-button-secondary-text, #e5e7eb) !important;
@@ -2559,7 +2559,7 @@ a.game-button--secondary:hover:not(:disabled),
 button.game-button--secondary:hover:not(:disabled),
 .game-button--secondary:hover:not(:disabled) {
   color: #fff !important;
-  background-color: var(--theme-button-secondary-hover-bg, color-mix(in srgb, var(--theme-primary) 10%, rgba(9, 30, 50, 0.94))) !important;
+  background-color: var(--theme-button-secondary-hover-bg, color-mix(in srgb, var(--theme-primary) 10%, rgba(20, 21, 23, 0.94))) !important;
   border-color: color-mix(in srgb, var(--theme-tertiary) 55%, transparent) !important;
 }
 

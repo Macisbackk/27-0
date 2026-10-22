@@ -1,6 +1,6 @@
 /**
  * 27-0 wordmark: two lit scoreboard panels (27 and 0) with a dash between,
- * the way the score hangs over the terrace on a Friday night. Digits are scoreboard red.
+ * the way the score hangs over the terrace on a Friday night. "27" is lime, "0" is white, no glow.
  */
 export function LogoMark({
   className = "",

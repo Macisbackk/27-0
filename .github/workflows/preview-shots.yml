@@ -1,0 +1,47 @@
+name: Preview screenshots
+
+# Quick look at a branch without a Vercel deploy: build, start, screenshot the main screens.
+# Push to any branch named preview/<something>; shots land on branch preview-shots/<something>.
+on:
+  push:
+    branches: ["preview/**"]
+
+jobs:
+  shots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: npm run build
+      - name: Screenshots
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
+        run: |
+          npm install --no-save playwright@1.49.1 && npx playwright install --with-deps chromium
+          npx next start -p 3000 > /tmp/next.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
+          node scripts/preview-shots.mjs
+      - name: Publish
+        run: |
+          name="${GITHUB_REF_NAME#preview/}"
+          branch="preview-shots/$name"
+          cd preview-shots
+          echo '{"git":{"deploymentEnabled":false}}' > vercel.json
+          git init -q -b "$branch"
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add . && git commit -q -m "preview screenshots for ${{ github.sha }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$branch"

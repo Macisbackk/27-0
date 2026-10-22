@@ -1,5 +1,6 @@
 "use client";
 
+import { BallGlyph, BoardGlyph, FixtureGlyph, LadderGlyph, ShopGlyph, TilesGlyph, WhistleGlyph } from "@/components/icons/rugby-icons";
 import Link from "next/link";
 import { CountUp } from "@/components/ui/CountUp";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -384,44 +385,37 @@ function Icon({ children }: { children: ReactNode }) {
 }
 const CalendarIcon = () => (
   <Icon>
-    <rect x="3" y="5" width="18" height="16" rx="3" />
-    <path d="M3 10h18M8 3v4M16 3v4" />
+    <FixtureGlyph />
   </Icon>
 );
 const ShirtIcon = () => (
   <Icon>
-    <path d="M8 3 4 5 2 10l3 2 1-1v10h12V11l1 1 3-2-2-5-4-2c-1 2-7 2-8 0z" />
+    <BallGlyph />
   </Icon>
 );
 const TrophyIcon = () => (
   <Icon>
-    <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z" />
-    <path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3" />
+    <BoardGlyph />
   </Icon>
 );
 const PuzzleIcon = () => (
   <Icon>
-    <rect x="3" y="3" width="7" height="7" rx="1.5" />
-    <rect x="14" y="3" width="7" height="7" rx="1.5" />
-    <rect x="3" y="14" width="7" height="7" rx="1.5" />
-    <rect x="14" y="14" width="7" height="7" rx="1.5" />
+    <TilesGlyph />
   </Icon>
 );
 const BagIcon = () => (
   <Icon>
-    <path d="M5 8h14l-1 13H6z" />
-    <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+    <ShopGlyph />
   </Icon>
 );
 const TableIcon = () => (
   <Icon>
-    <path d="M4 6h16M4 12h16M4 18h16" />
+    <LadderGlyph />
   </Icon>
 );
 const PersonIcon = () => (
   <Icon>
-    <circle cx="12" cy="8" r="4" />
-    <path d="M4 21a8 8 0 0 1 16 0" />
+    <WhistleGlyph />
   </Icon>
 );
 const CogIcon = () => (

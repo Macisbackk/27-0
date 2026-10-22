@@ -7,7 +7,7 @@ import { TYPO } from "@/lib/ui/typography";
 const AUTH_SLOT_CLASS = "flex h-11 items-center justify-center";
 
 const AUTH_BUTTON_CLASS =
-  "flex h-11 items-center justify-center whitespace-nowrap rounded-control bg-pitch-900 px-3.5 font-cond text-[15px] font-bold text-white shadow-[inset_0_0_0_1px_var(--fl-line-strong)] transition hover:bg-pitch-800";
+  "flex h-11 items-center justify-center whitespace-nowrap rounded-full bg-pitch-900 px-3.5 text-sm font-semibold text-white transition hover:bg-pitch-800";
 
 export function HeaderAuthControls() {
   const { loading, isLoggedIn } = useAuth();
