@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-22T16:28:37Z",
+ "generatedAt": "2026-10-22T16:34:15Z",
  "asOf": "2026-10-22",
  "notes": "Researched via WebSearch/WebFetch. Caps are senior international rugby league test caps as of the cited source date.",
  "players": [
@@ -44,11 +44,16 @@
    "nationality": "Papua New Guinea",
    "intlNation": "Papua New Guinea",
    "sources": [
-    "https://en.wikipedia.org/wiki/Daniel_Russell_(rugby_league)"
+    "https://en.wikipedia.org/wiki/Daniel_Russell_(rugby_league)",
+    "https://www.rugbyleagueproject.org/players/daniel-russell--nq-/summary.html"
    ],
-   "note": "Born Longreach, Queensland; PNG Test debut 9 Nov 2019 v Fiji, played all 4 matches at 2021 RLWC. Cap total not stated in source.",
+   "note": "Born Longreach, Queensland; PNG Test debut 9 Nov 2019 v Fiji, played all 4 matches at 2021 RLWC. Cap total not stated in source. RLP: 12 Tests for PNG (2019, 2022-24).",
    "name": "Dan Russell",
-   "nationalityWas": "New Zealand"
+   "nationalityWas": "New Zealand",
+   "intlCaps": 12,
+   "appearances": 33,
+   "tries": 2,
+   "statsScope": "Super League (Warrington, Salford, Bradford 2025-26)"
   },
   {
    "id": "bradford-cur-eliot-peposhi",
@@ -60,7 +65,9 @@
     "https://en.wikipedia.org/wiki/Eliot_Peposhi"
    ],
    "note": "Born Wigan, England; Albania international (1 cap, 2023). Nationality left as England (birthplace) - change to Albania if card nationality should follow representative nation.",
-   "name": "Eliot Peposhi"
+   "name": "Eliot Peposhi",
+   "nationality": "Albania",
+   "nationalityWas": "England"
   },
   {
    "id": "bradford-cur-guy-armitage",
@@ -136,6 +143,147 @@
    ],
    "note": "Caps = pre-tournament 'Games' figure on 2026 RLWC squad list.",
    "name": "Waqa Blake"
+  },
+  {
+   "id": "castleford-cur-aiden-doolan",
+   "dateOfBirth": "2003-09-05",
+   "birthYear": 2003,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/aiden-doolan/summary.html",
+    "https://castlefordtigers.com/article/85/tigers-sign-aiden-doolan-on-a-two-year-deal"
+   ],
+   "note": "Born Widnes; hooker, ex-Barrow/Souths. Super League: 3 apps 0 tries (RLP). On loan at Widnes from Aug 2026.",
+   "name": "Aiden Doolan"
+  },
+  {
+   "id": "castleford-cur-alfie-lindsey",
+   "dateOfBirth": "2006-11-25",
+   "birthYear": 2006,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/alfie-lindsey/summary.html",
+    "https://widnesvikings.co.uk/?p=38298"
+   ],
+   "note": "Outside back; aged 19 in Aug 2026 (consistent). SL: 2 apps 1 try.",
+   "name": "Alfie Lindsey"
+  },
+  {
+   "id": "castleford-cur-brad-singleton",
+   "dateOfBirth": "1992-10-29",
+   "birthYear": 1992,
+   "intlCaps": 3,
+   "intlNation": "Ireland",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brad_Singleton"
+   ],
+   "note": "Born Barrow-in-Furness; Ireland 3 caps (2017). Left Castleford for Barrow Raiders May/June 2026. Nationality left England (birthplace); Ireland is his representative nation.",
+   "name": "Brad Singleton"
+  },
+  {
+   "id": "castleford-cur-brock-greacen",
+   "dateOfBirth": "2002-06-18",
+   "birthYear": 2002,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brock_Greacen"
+   ],
+   "note": "Born Denman, NSW; ex-Newcastle Knights.",
+   "name": "Brock Greacen"
+  },
+  {
+   "id": "castleford-cur-chris-atkin",
+   "dateOfBirth": "1993-02-07",
+   "birthYear": 1993,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chris_Atkin"
+   ],
+   "note": "Born Widnes. Joined Bradford Bulls 18 Mar 2026. England Knights only (not senior caps).",
+   "name": "Chris Atkin"
+  },
+  {
+   "id": "castleford-cur-fletcher-rooney",
+   "dateOfBirth": "2006-01-12",
+   "birthYear": 2006,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Fletcher_Rooney"
+   ],
+   "note": "West Yorkshire-born; Castleford academy.",
+   "name": "Fletcher Rooney"
+  },
+  {
+   "id": "castleford-cur-jack-ashworth",
+   "dateOfBirth": "1995-07-03",
+   "birthYear": 1995,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jack_Ashworth"
+   ],
+   "note": "Born Rochdale. Joined Leigh Leopards 18 Aug 2026 per 2026 Castleford season page.",
+   "name": "Jack Ashworth"
+  },
+  {
+   "id": "castleford-cur-jenson-windley",
+   "dateOfBirth": "2006-08-18",
+   "birthYear": 2006,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jenson_Windley"
+   ],
+   "note": "Born Hull.",
+   "name": "Jenson Windley"
+  },
+  {
+   "id": "castleford-cur-blake-taaffe",
+   "appearances": 1,
+   "tries": 0,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/blake-taaffe/summary.html"
+   ],
+   "note": "Injured in 2026 SL opener; his 2026 try came in the Challenge Cup.",
+   "name": "Blake Taaffe"
+  },
+  {
+   "id": "castleford-cur-cain-robb",
+   "appearances": 58,
+   "tries": 0,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/cain-robb/summary.html"
+   ],
+   "note": "RLP lists no tries in any competition.",
+   "name": "Cain Robb"
+  },
+  {
+   "id": "castleford-cur-joe-stimson",
+   "appearances": 32,
+   "tries": 1,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/joe-stimson/summary.html"
+   ],
+   "name": "Joe Stimson",
+   "note": ""
+  },
+  {
+   "id": "castleford-cur-tom-weaver",
+   "appearances": 24,
+   "tries": 5,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/thomas-weaver/summary.html",
+    "https://en.wikipedia.org/wiki/Tom_Weaver_(rugby_league)"
+   ],
+   "name": "Tom Weaver",
+   "note": ""
+  },
+  {
+   "id": "castleford-cur-semi-valemei",
+   "intlCaps": 9,
+   "intlNation": "Fiji",
+   "nationality": "Fiji",
+   "sources": [
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "In Fiji's 2026 RLWC squad; caps = pre-tournament figure.",
+   "name": "Semi Valemei",
+   "nationalityWas": "Tonga"
   }
  ],
  "unverified": [
@@ -148,11 +296,6 @@
    "id": "bradford-cur-mitch-souter",
    "field": "dateOfBirth",
    "reason": "No DOB found; age 22 (Oct 2023) / 24 (Oct 2025) only."
-  },
-  {
-   "id": "bradford-cur-dan-russell",
-   "field": "intlCaps",
-   "reason": "PNG international confirmed (debut 2019, 4 games at 2021 RLWC) but no authoritative cap total found."
   },
   {
    "id": "bradford-cur-jamie-gill",

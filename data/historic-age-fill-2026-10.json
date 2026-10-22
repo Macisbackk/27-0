@@ -1,9 +1,9 @@
 {
- "generatedAt": "2026-10-22T16:33:00Z",
+ "generatedAt": "2026-10-22T16:34:15Z",
  "summary": {
-  "birthsPeople": 44,
-  "birthsCards": 146,
-  "cardFixes": 38,
+  "birthsPeople": 69,
+  "birthsCards": 204,
+  "cardFixes": 42,
   "sampleChecked": 0,
   "sampleErrors": 0,
   "unverifiedPeople": 0
@@ -682,6 +682,364 @@
     "https://en.wikipedia.org/wiki/Alan_Prescott"
    ],
    "note": "St Helens 1949–60"
+  },
+  {
+   "ids": [
+    "bradford-hist-ernest-ward-1949"
+   ],
+   "name": "Ernest Ward",
+   "dateOfBirth": "1920-07-30",
+   "birthYear": 1920,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ernest_Ward"
+   ],
+   "note": "Bradford Northern 1936–53"
+  },
+  {
+   "ids": [
+    "sheffield-hist-mark-aston-1998"
+   ],
+   "name": "Mark Aston",
+   "dateOfBirth": "1967-09-27",
+   "birthYear": 1967,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Mark_Aston"
+   ],
+   "note": "Sheffield 1986–94 and 1995–2003"
+  },
+  {
+   "ids": [
+    "st-helens-hist-dick-huddart-1961"
+   ],
+   "name": "Dick Huddart",
+   "dateOfBirth": "1936-06-22",
+   "birthYear": 1936,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Dick_Huddart"
+   ],
+   "note": "St Helens 1958–64"
+  },
+  {
+   "ids": [
+    "wigan-hist-bradley-o-neill-2024",
+    "wigan-hist-era-bradley-o-neill",
+    "wigan-hist-bradley-o-neill-2025"
+   ],
+   "name": "Bradley O'Neill",
+   "dateOfBirth": "2002-07-22",
+   "birthYear": 2002,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brad_O%27Neill"
+   ],
+   "note": "Brad O'Neill, Wigan 2021–"
+  },
+  {
+   "ids": [
+    "leeds-hist-era-brad-singleton",
+    "leeds-hist-brad-singleton-2016",
+    "wigan-hist-brad-singleton-2021",
+    "wigan-hist-brad-singleton-2022"
+   ],
+   "name": "Brad Singleton",
+   "dateOfBirth": "1992-10-29",
+   "birthYear": 1992,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brad_Singleton"
+   ],
+   "note": "Leeds 2011–19, Wigan 2020–23"
+  },
+  {
+   "ids": [
+    "huddersfield-hist-oliver-russell-2024",
+    "huddersfield-hist-era-oliver-russell",
+    "huddersfield-hist-oliver-russell-2022"
+   ],
+   "name": "Oliver Russell",
+   "dateOfBirth": "1998-09-21",
+   "birthYear": 1998,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Oliver_Russell"
+   ],
+   "note": "Huddersfield 2018–24"
+  },
+  {
+   "ids": [
+    "wigan-hist-era-liam-byrne",
+    "wigan-hist-liam-byrne-2022",
+    "wigan-hist-liam-byrne-2021",
+    "wigan-hist-liam-byrne-2025",
+    "wigan-hist-liam-byrne-2023",
+    "wigan-hist-liam-byrne-2024"
+   ],
+   "name": "Liam Byrne",
+   "dateOfBirth": "1999-08-18",
+   "birthYear": 1999,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Liam_Byrne_(rugby_league)"
+   ],
+   "note": "Wigan 2017–2025"
+  },
+  {
+   "ids": [
+    "warrington-hist-robbie-mulhern-2021",
+    "leigh-hist-robbie-mulhern-2025",
+    "hull-kr-hist-robbie-mulhern-2020",
+    "warrington-hist-robbie-mulhern-2022"
+   ],
+   "name": "Robbie Mulhern",
+   "dateOfBirth": "1994-10-18",
+   "birthYear": 1994,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Robbie_Mulhern"
+   ],
+   "note": "Hull KR 2016–20, Warrington 2021–22, Leigh 2023–"
+  },
+  {
+   "ids": [
+    "leeds-hist-jeff-stevenson-1957"
+   ],
+   "name": "Jeff Stevenson",
+   "dateOfBirth": "1932-05-15",
+   "birthYear": 1932,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jeff_Stevenson_(rugby_league)"
+   ],
+   "note": "Leeds 1952–59"
+  },
+  {
+   "ids": [
+    "warrington-hist-jack-hughes-2020",
+    "leigh-hist-jack-hughes-2025",
+    "warrington-hist-jack-hughes-2021",
+    "leigh-hist-era-jack-hughes"
+   ],
+   "name": "Jack Hughes",
+   "dateOfBirth": "1992-01-04",
+   "birthYear": 1992,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jack_Hughes_(rugby_league)"
+   ],
+   "note": "Wigan 2011–15, Warrington 2016–22, Leigh 2023–. The Leigh 2012 card is wrong (see cardFixes)."
+  },
+  {
+   "ids": [
+    "st-helens-hist-geoff-pimblett-1976"
+   ],
+   "name": "Geoff Pimblett",
+   "dateOfBirth": "1944-05-11",
+   "birthYear": 1944,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Geoff_Pimblett"
+   ],
+   "note": "St Helens 1971–79"
+  },
+  {
+   "ids": [
+    "warrington-hist-stefan-ratchford-2021",
+    "warrington-hist-stefan-ratchford-2023",
+    "warrington-hist-stefan-ratchford-2020",
+    "warrington-hist-stefan-ratchford-2022",
+    "warrington-hist-stefan-ratchford-2015"
+   ],
+   "name": "Stefan Ratchford",
+   "dateOfBirth": "1988-07-19",
+   "birthYear": 1988,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Stefan_Ratchford"
+   ],
+   "note": "Warrington 2012–2025"
+  },
+  {
+   "ids": [
+    "wigan-hist-kruise-leeming-2025",
+    "leeds-hist-kruise-leeming-2022",
+    "wigan-hist-kruise-leeming-2024",
+    "leeds-hist-kruise-leeming-2021",
+    "leeds-hist-era-kruise-leeming"
+   ],
+   "name": "Kruise Leeming",
+   "dateOfBirth": "1995-09-07",
+   "birthYear": 1995,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Kruise_Leeming"
+   ],
+   "note": "Leeds 2020–23, Wigan 2024–"
+  },
+  {
+   "ids": [
+    "wigan-hist-zak-hardaker-2020",
+    "leeds-hist-zak-hardaker-2016",
+    "wigan-hist-zak-hardaker-2021",
+    "leeds-hist-zak-hardaker-2013",
+    "leeds-hist-zak-hardaker-2022"
+   ],
+   "name": "Zak Hardaker",
+   "dateOfBirth": "1991-10-17",
+   "birthYear": 1991,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Zak_Hardaker"
+   ],
+   "note": "Leeds 2011–16 and 2022, Wigan 2019–22"
+  },
+  {
+   "ids": [
+    "hull-kr-hist-brian-lockwood-1980"
+   ],
+   "name": "Brian Lockwood",
+   "dateOfBirth": "1946-10-08",
+   "birthYear": 1946,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brian_Lockwood"
+   ],
+   "note": "Hull KR 1978–80"
+  },
+  {
+   "ids": [
+    "wigan-hist-joe-burgess-2015",
+    "wigan-hist-joe-burgess-2020"
+   ],
+   "name": "Joe Burgess",
+   "dateOfBirth": "1994-10-14",
+   "birthYear": 1994,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Joe_Burgess"
+   ],
+   "note": "Wigan 2013–15 and 2017–20"
+  },
+  {
+   "ids": [
+    "st-helens-hist-len-killeen-1966"
+   ],
+   "name": "Len Killeen",
+   "dateOfBirth": "1938-11-19",
+   "birthYear": 1938,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Len_Killeen"
+   ],
+   "note": "St Helens 1962–67"
+  },
+  {
+   "ids": [
+    "wigan-hist-era-abbas-miski",
+    "wigan-hist-abbas-miski-2024"
+   ],
+   "name": "Abbas Miski",
+   "dateOfBirth": "1995-07-25",
+   "birthYear": 1995,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Abbas_Miski"
+   ],
+   "note": "Wigan 2022–"
+  },
+  {
+   "ids": [
+    "wakefield-hist-harold-poynton-1963"
+   ],
+   "name": "Harold Poynton",
+   "dateOfBirth": "1936-03-01",
+   "birthYear": 1936,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Harold_Poynton"
+   ],
+   "note": "Wakefield 1957–69"
+  },
+  {
+   "ids": [
+    "hull-fc-hist-tommy-harris-1960"
+   ],
+   "name": "Tommy Harris",
+   "dateOfBirth": "1927-06-05",
+   "birthYear": 1927,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Tommy_Harris_(rugby_league)"
+   ],
+   "note": "Hull FC 1950–62"
+  },
+  {
+   "ids": [
+    "bradford-hist-frank-whitcombe-1948"
+   ],
+   "name": "Frank Whitcombe",
+   "dateOfBirth": "1913-05-29",
+   "birthYear": 1913,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Frank_Whitcombe"
+   ],
+   "note": "Bradford Northern 1938–49"
+  },
+  {
+   "ids": [
+    "catalans-hist-greg-mounis"
+   ],
+   "name": "Greg Mounis",
+   "dateOfBirth": "1985-01-18",
+   "birthYear": 1985,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Gr%C3%A9gory_Mounis"
+   ],
+   "note": "Grégory Mounis, Catalans 2006–2016. The 2004 card is before Catalans entered Super League (see cardFixes); it duplicates catalans-hist-gregory-mounis (2003)."
+  },
+  {
+   "ids": [
+    "bradford-hist-marc-herbert",
+    "bradford-hist-marc-herbert-2011"
+   ],
+   "name": "Marc Herbert",
+   "dateOfBirth": "1987-01-07",
+   "birthYear": 1987,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Marc_Herbert"
+   ],
+   "note": "Bradford 2011 only. The 2010 card is wrong (he was at Canberra then, see cardFixes)."
+  },
+  {
+   "ids": [
+    "castleford-hist-era-jacques-o-neill"
+   ],
+   "name": "Jacques O'Neill",
+   "dateOfBirth": "1999-05-08",
+   "birthYear": 1999,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jacques_O%27Neill"
+   ],
+   "note": "Castleford 2019–23"
+  },
+  {
+   "ids": [
+    "london-hist-api-pewhairangi-2018"
+   ],
+   "name": "Api Pewhairangi",
+   "dateOfBirth": "1992-03-19",
+   "birthYear": 1992,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Api_Pewhairangi"
+   ],
+   "note": "London Broncos 2016–18"
   }
  ],
  "cardFixes": [
@@ -1149,6 +1507,50 @@
    "suggestedAction": "hide",
    "sources": [
     "https://en.wikipedia.org/wiki/Joe_Cator"
+   ]
+  },
+  {
+   "id": "leigh-hist-era-jack-hughes",
+   "name": "Jack Hughes",
+   "problem": "Card Leigh 2012. Jack Hughes (b.1992-01-04) was a Wigan player in 2012; his first Leigh link was a loan in 2013, then permanent from 2023. Unless this card is a different Leigh player of the same name (not found), the season is wrong. I applied his DOB to it in births; drop it there if you treat it as another person.",
+   "actualSeasonsAtClub": "2013 (loan); 2023–",
+   "suggestedYear": 2013,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jack_Hughes_(rugby_league)"
+   ]
+  },
+  {
+   "id": "catalans-hist-greg-mounis",
+   "name": "Grégory Mounis",
+   "problem": "Card Catalans 2004 (no birth data). Catalans' first Super League season was 2006, and Mounis played for them 2006–2016. It duplicates the catalans-hist-gregory-mounis family of cards (2003, 2006, 2007, 2008, 2010, 2011).",
+   "actualSeasonsAtClub": "2006–2016",
+   "suggestedYear": 2009,
+   "suggestedAction": "hide as a duplicate, or move to 2009 (the only one of 2006–2011 without a card)",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Gr%C3%A9gory_Mounis"
+   ]
+  },
+  {
+   "id": "catalans-hist-gregory-mounis",
+   "name": "Grégory Mounis",
+   "problem": "Card Catalans 2003, before Catalans' first Super League season (2006). Mounis (DOB 1985-01-18, which is correct) was at Catalans 2006–2016. Cards for 2006, 2007, 2008, 2010 and 2011 already exist.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "2006–2016",
+   "suggestedYear": 2012,
+   "suggestedAction": "move to a season without a card (2009 or 2012–2016) or hide",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Gr%C3%A9gory_Mounis"
+   ]
+  },
+  {
+   "id": "bradford-hist-marc-herbert",
+   "name": "Marc Herbert",
+   "problem": "Card Bradford 2010, but he was at Canberra 2008–2010 and Bradford in 2011 only. A 2011 card already exists.",
+   "actualSeasonsAtClub": "2011",
+   "suggestedYear": null,
+   "suggestedAction": "hide",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Marc_Herbert"
    ]
   }
  ],
