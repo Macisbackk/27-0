@@ -1085,5 +1085,41 @@
       "Halifax Panthers",
       "York Knights"
     ]
+  },
+  {
+    "id": "york-cur-tommy-doyle",
+    "name": "Tommy Doyle",
+    "club": "York Knights",
+    "currentClub": "York Knights",
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "position": "HOOKER",
+    "positions": [
+      "HOOKER"
+    ],
+    "primaryPosition": "HOOKER",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2019–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 91000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "york-knights-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "york-cur-tommy-doyle",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "dateOfBirth": "1999-06-29",
+    "birthYear": 1999,
+    "clubsPlayedFor": [
+      "Bradford Bulls",
+      "Keighley Cougars",
+      "Wakefield Trinity",
+      "York Knights"
+    ]
   }
 ]

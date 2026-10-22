@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T08:45:52.279Z",
+  "generatedAt": "2026-10-22T08:48:12.097Z",
   "script": "scripts/add-2026-missing-squad-players.ts",
   "method": [
     "Squad lists: Love Rugby League club-by-club 2026 squad numbers (28 Jan 2026), cross-checked per club.",
@@ -9,7 +9,7 @@
     "Classic Current spins draw from the fixed 17-man 2026 pools (current-team-year-squads-2026.json), so depth rows appear in Manager Mode, Wordle/Grid and the global recruitment pools, not in the 17-man Classic spin pools."
   ],
   "totals": {
-    "added": 36,
+    "added": 45,
     "moved": 2,
     "unverified": 9,
     "movesNotApplied": 4
@@ -24,12 +24,81 @@
       "playableCurrentPlayers": 28
     },
     "Castleford Tigers": {
-      "squadListSources": [],
-      "added": [],
+      "squadListSources": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.alloutrugbyleague.co.uk/news/castleford-tigers-confirm-full-squad-1584671",
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season"
+      ],
+      "added": [
+        {
+          "name": "Aiden Doolan",
+          "id": "castleford-cur-aiden-doolan",
+          "squadNumber": 20,
+          "position": "HOOKER",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (club: 'Englishman')",
+          "birthYear": null,
+          "status": "squad-number list; Championship loans (Barrow, Hunslet, Widnes) in 2026",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.alloutrugbyleague.co.uk/news/castleford-tigers-confirm-full-squad-1584671",
+            "https://castlefordtigers.com/article/85/tigers-sign-aiden-doolan-on-a-two-year-deal",
+            "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season"
+          ],
+          "notes": "Aged 22 at signing (November 2025); no published DOB."
+        },
+        {
+          "name": "Alfie Lindsey",
+          "id": "castleford-cur-alfie-lindsey",
+          "squadNumber": 26,
+          "position": "WING",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list; Championship loans (Halifax, Widnes) in 2026",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.alloutrugbyleague.co.uk/news/castleford-tigers-confirm-full-squad-1584671",
+            "https://widnesvikings.co.uk/?p=38298",
+            "https://castlefordtigers.com/article/46/dragons-38---tigers-4"
+          ],
+          "notes": "Outside-back aged 19 (Widnes, Aug 2026); debuted on the wing (No. 2 slot) v Catalans, August 2025."
+        },
+        {
+          "name": "George Hill",
+          "id": "castleford-cur-george-hill",
+          "squadNumber": 28,
+          "position": "LOOSE_FORWARD",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (born Sheffield, England — Wikipedia)",
+          "birthYear": 2004,
+          "status": "squad-number list; season-long loan at Keighley (Jan–May 2026)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.alloutrugbyleague.co.uk/news/castleford-tigers-confirm-full-squad-1584671",
+            "https://en.wikipedia.org/wiki/George_Hill_(rugby_league)"
+          ],
+          "notes": "Wikipedia: loose forward or hooker."
+        }
+      ],
       "moved": [],
       "movesNotApplied": [],
-      "unverified": [],
-      "playableCurrentPlayers": 27
+      "unverified": [
+        {
+          "club": "Castleford Tigers",
+          "name": "Ramon Silva",
+          "squadNumber": 29,
+          "reason": "On the January 2026 squad-number list, but released by Castleford in December 2025 — not a 2026 Castleford player, not added.",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.rugbyleaguehub.com/?p=311910"
+          ]
+        }
+      ],
+      "playableCurrentPlayers": 30
     },
     "Catalans Dragons": {
       "squadListSources": [],
@@ -435,12 +504,102 @@
       "playableCurrentPlayers": 28
     },
     "Wakefield Trinity": {
-      "squadListSources": [],
-      "added": [],
+      "squadListSources": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/wakefield-trinity-2026-super-league-squad-numbers"
+      ],
+      "added": [
+        {
+          "name": "Jordan Williams",
+          "id": "wakefield-cur-jordan-williams",
+          "squadNumber": 25,
+          "position": "PROP",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (born Stevenage, England — Wikipedia)",
+          "birthYear": 1997,
+          "status": "squad-number list; loan to Batley in July 2026",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.loverugbyleague.com/post/wakefield-trinity-2026-super-league-squad-numbers",
+            "https://en.wikipedia.org/wiki/Jordan_Williams_(rugby_league)"
+          ],
+          "notes": "Wikipedia: prop or second-row."
+        },
+        {
+          "name": "Noah High",
+          "id": "wakefield-cur-noah-high",
+          "squadNumber": 28,
+          "position": "LOOSE_FORWARD",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.loverugbyleague.com/post/wakefield-trinity-2026-super-league-squad-numbers",
+            "https://wakefieldtrinity.com/noah-high-joins-trinity/",
+            "https://totalrl.com/wakefield-trinity-snap-up-warrington-wolves-forward"
+          ],
+          "notes": "Described as a 'middle/back-row forward' (filed as loose forward, the slot covering both); aged 20 in Feb 2025; ex-Warrington academy."
+        },
+        {
+          "name": "Ellis Lingard",
+          "id": "wakefield-cur-ellis-lingard",
+          "squadNumber": 29,
+          "position": "PROP",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (Wikipedia: English)",
+          "birthYear": 2006,
+          "status": "squad-number list; loan to Dewsbury in 2026",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.loverugbyleague.com/post/wakefield-trinity-2026-super-league-squad-numbers",
+            "https://en.wikipedia.org/wiki/Ellis_Lingard"
+          ],
+          "notes": "Wikipedia: prop, second-row and loose forward."
+        },
+        {
+          "name": "Neil Tchamambe",
+          "id": "wakefield-cur-neil-tchamambe",
+          "squadNumber": 30,
+          "position": "WING",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (born Leeds; England Academy international — Wikipedia)",
+          "birthYear": 2005,
+          "status": "squad-number list; season-long loan to London Broncos in 2026",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.loverugbyleague.com/post/wakefield-trinity-2026-super-league-squad-numbers",
+            "https://en.wikipedia.org/wiki/Neil_Tchamambe"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Kian McGann",
+          "id": "wakefield-cur-kian-mcgann",
+          "squadNumber": 31,
+          "position": "FULLBACK",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.loverugbyleague.com/post/wakefield-trinity-2026-super-league-squad-numbers",
+            "https://wakefieldtrinity.com/mcgann-joins-the-trin/"
+          ],
+          "notes": "Club: 'a talented fullback or halfback', aged 18 when signed from St Helens' academy (Sept 2025)."
+        }
+      ],
       "moved": [],
       "movesNotApplied": [],
       "unverified": [],
-      "playableCurrentPlayers": 27
+      "playableCurrentPlayers": 32
     },
     "Warrington Wolves": {
       "squadListSources": [
@@ -872,6 +1031,24 @@
             "https://www.yorkrlfc.com/post/inman-signs-permanent-deal-to-end-of-season"
           ],
           "notes": "No published date of birth found."
+        },
+        {
+          "name": "Tommy Doyle",
+          "id": "york-cur-tommy-doyle",
+          "squadNumber": null,
+          "position": "HOOKER",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (Wikipedia: English)",
+          "birthYear": 1999,
+          "status": "mid-season signing: Wakefield squad number 22, released 13 August 2026 and signed by York the next day (deal to end of 2027)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://en.wikipedia.org/wiki/Thomas_Doyle_(rugby_league)",
+            "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/forward-released-by-wakefield-trinity-finds-new-club-thomas-doyle-could-make-debut-v-leeds-rhinos-8925808",
+            "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+          ],
+          "notes": null
         }
       ],
       "moved": [
@@ -901,14 +1078,6 @@
         },
         {
           "club": "York Knights",
-          "name": "Thomas Doyle",
-          "reason": "York 2026 season page lists a Thomas Doyle signing from Castleford (August, two-year deal); could not confirm identity/position or whether this is Wakefield's Tommy Doyle.",
-          "sources": [
-            "https://en.wikipedia.org/wiki/2026_York_Knights_season"
-          ]
-        },
-        {
-          "club": "York Knights",
           "name": "Harvey Reynolds",
           "reason": "Mentioned as injured in a York squad article; no squad number, position or contract source found.",
           "sources": [
@@ -916,7 +1085,7 @@
           ]
         }
       ],
-      "playableCurrentPlayers": 34
+      "playableCurrentPlayers": 35
     }
   },
   "skippedAlreadyPresent": [

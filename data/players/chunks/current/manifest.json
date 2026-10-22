@@ -16,7 +16,7 @@
       "club": "Castleford Tigers",
       "slug": "castleford-tigers",
       "file": "castleford-tigers.json",
-      "count": 27
+      "count": 30
     },
     {
       "club": "Catalans Dragons",
@@ -94,7 +94,7 @@
       "club": "Wakefield Trinity",
       "slug": "wakefield-trinity",
       "file": "wakefield-trinity.json",
-      "count": 27
+      "count": 32
     },
     {
       "club": "Warrington Wolves",
@@ -124,7 +124,7 @@
       "club": "York Knights",
       "slug": "york-knights",
       "file": "york-knights.json",
-      "count": 34
+      "count": 35
     }
   ]
 }
