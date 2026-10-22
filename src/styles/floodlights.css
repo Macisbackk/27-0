@@ -10,30 +10,30 @@
  */
 
 :root {
-  /* Matchnight (v1.05): a floodlit Friday night. Navy ink, scoreboard amber, squared kit-tag shapes. */
-  --fl-ground: #0b1322;
-  --fl-surface: #131e33;
-  --fl-raised: #1b2842;
-  --fl-raised-hover: #233352;
-  --fl-line: rgba(150, 175, 225, 0.12);
-  --fl-line-strong: rgba(150, 175, 225, 0.22);
-  --fl-text: #f1f4fa;
-  --fl-muted: #9aa7c0;
+  /* Matchnight (v1.05): league-blue night, blue actions, red scoreboard mark, squared kit-tag shapes. */
+  --fl-ground: #06182a;
+  --fl-surface: #0c2339;
+  --fl-raised: #12304d;
+  --fl-raised-hover: #193b5c;
+  --fl-line: rgba(120, 170, 230, 0.12);
+  --fl-line-strong: rgba(120, 170, 230, 0.22);
+  --fl-text: #f2f6fb;
+  --fl-muted: #9db2c9;
   --fl-radius-card: 6px;
   --fl-radius-tile: 4px;
   --fl-radius-control: 4px;
   --fl-chamfer: 9px;
 
   /* Default (no Store theme) accent; a chosen theme overrides these inline on <html>. */
-  --theme-primary: #ffb21e;
-  --theme-secondary: #ffc95a;
-  --theme-tertiary: #f09a00;
-  --theme-primary-rgb: 255 178 30;
-  --theme-secondary-rgb: 255 201 90;
-  --theme-tertiary-rgb: 240 154 0;
-  --theme-primary-soft: rgba(255, 178, 30, 0.12);
-  --theme-text-on-primary: #1c1300;
-  --header-bg: rgba(11, 19, 34, 0.94);
+  --theme-primary: #2085d6;
+  --theme-secondary: #5aa9ec;
+  --theme-tertiary: #00609a;
+  --theme-primary-rgb: 32 133 214;
+  --theme-secondary-rgb: 90 169 236;
+  --theme-tertiary-rgb: 0 96 154;
+  --theme-primary-soft: rgba(32, 133, 214, 0.12);
+  --theme-text-on-primary: #ffffff;
+  --header-bg: rgba(6, 24, 42, 0.94);
   --sidebar-bg: var(--fl-ground);
   --arena-bg: var(--fl-ground);
 
@@ -50,7 +50,7 @@
   --mobile-surface-primary: var(--fl-ground);
   --mobile-surface-secondary: var(--fl-surface);
   --mobile-surface-raised: var(--fl-raised);
-  --mobile-text-secondary: #ccd5e6;
+  --mobile-text-secondary: #cddbe9;
   --mobile-text-muted: var(--fl-muted);
 }
 
@@ -474,7 +474,7 @@ button.game-button--era,
 
 .playoff-bracket-progress__node--final.playoff-bracket-progress__node--live {
   background: #fbbf24;
-  color: #1c1300;
+  color: #ffffff;
   box-shadow: none;
 }
 
@@ -589,7 +589,7 @@ button.game-button--era,
 
 .playoff-bracket-match--final .playoff-bracket-match__ribbon {
   background: #fbbf24;
-  color: #1c1300;
+  color: #ffffff;
 }
 
 .playoff-bracket-match:has(> .playoff-bracket-match__ribbon) {
@@ -651,7 +651,7 @@ button.game-button--era,
 @media (max-width: 639px) {
   .bracket-sticky-actions {
     border-top: 1px solid var(--fl-line);
-    background: rgba(11, 19, 34, 0.96);
+    background: rgba(6, 24, 42, 0.96);
     box-shadow: none;
   }
 }
@@ -731,7 +731,7 @@ button.game-button--era,
 /* ── Classic player picker (after the spin) ───────────────────────────────── */
 /* Opaque: the page underneath (footer text etc.) must never show through. */
 .recruitment-choice-overlay {
-  background: var(--fl-ground, #0b1322) !important;
+  background: var(--fl-ground, #06182a) !important;
 }
 .recruitment-choice-panel {
   max-height: none !important;

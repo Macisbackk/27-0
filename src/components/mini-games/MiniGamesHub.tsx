@@ -39,7 +39,7 @@ const GAMES: {
     blurb: "Guess the player from club, position, age and more.",
     reward: `${formatClubFunds(WORDLE_WIN_REWARD)} a day`,
     glyph: "W",
-    accent: "from-emerald-400/25 to-emerald-500/5 text-emerald-300 border-emerald-400/40",
+    accent: "from-sky-400/25 to-sky-500/5 text-sky-300 border-sky-400/40",
   },
   {
     id: "grid",
@@ -104,7 +104,7 @@ export function MiniGamesHub() {
                         {game.reward}
                       </span>
                       {done ? (
-                        <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[11px] font-bold text-emerald-300">
+                        <span className="rounded-full bg-sky-500/15 px-2 py-0.5 text-[11px] font-bold text-sky-300">
                           ✓ Banked today
                         </span>
                       ) : null}

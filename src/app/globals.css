@@ -377,7 +377,7 @@ html[data-ui-overlay="1"] {
   max-width: 100%;
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(14, 22, 38, 0.98);
+  background: rgba(9, 30, 50, 0.98);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
   padding: 1.25rem;
   text-align: center;
@@ -1617,7 +1617,7 @@ html[data-ui-overlay="1"] {
 
   .game-button--secondary {
     border: 1px solid color-mix(in srgb, var(--theme-tertiary) 40%, transparent);
-    background: rgba(14, 22, 38, 0.94);
+    background: rgba(9, 30, 50, 0.94);
     color: #e5e7eb;
     box-shadow: none;
   }
@@ -1625,7 +1625,7 @@ html[data-ui-overlay="1"] {
   .game-button--secondary:hover:not(:disabled) {
     border-color: color-mix(in srgb, var(--theme-tertiary) 55%, transparent);
     color: #fff;
-    background: color-mix(in srgb, var(--theme-primary) 10%, rgba(14, 22, 38, 0.94));
+    background: color-mix(in srgb, var(--theme-primary) 10%, rgba(9, 30, 50, 0.94));
     transform: translateY(-1px);
   }
 
@@ -2548,7 +2548,7 @@ button.game-button--theme:hover:not(:disabled),
 a.game-button--secondary,
 button.game-button--secondary,
 .game-button--secondary {
-  background-color: var(--theme-button-secondary-bg, rgba(14, 22, 38, 0.94)) !important;
+  background-color: var(--theme-button-secondary-bg, rgba(9, 30, 50, 0.94)) !important;
   background-image: none !important;
   border: 1px solid var(--theme-button-secondary-border, color-mix(in srgb, var(--theme-tertiary) 40%, transparent)) !important;
   color: var(--theme-button-secondary-text, #e5e7eb) !important;
@@ -2559,7 +2559,7 @@ a.game-button--secondary:hover:not(:disabled),
 button.game-button--secondary:hover:not(:disabled),
 .game-button--secondary:hover:not(:disabled) {
   color: #fff !important;
-  background-color: var(--theme-button-secondary-hover-bg, color-mix(in srgb, var(--theme-primary) 10%, rgba(14, 22, 38, 0.94))) !important;
+  background-color: var(--theme-button-secondary-hover-bg, color-mix(in srgb, var(--theme-primary) 10%, rgba(9, 30, 50, 0.94))) !important;
   border-color: color-mix(in srgb, var(--theme-tertiary) 55%, transparent) !important;
 }
 

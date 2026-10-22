@@ -61,17 +61,17 @@ function fromTeamColors(team: TeamUiThemeColors): UiThemeDefinition {
 export const DEFAULT_UI_THEME: UiThemeDefinition = {
   id: DEFAULT_UI_THEME_ID,
   label: "Default",
-  // Matchnight scoreboard amber.
-  primary: "#ffb21e",
-  secondary: "#ffc95a",
-  tertiary: "#f09a00",
-  textOnPrimary: "#1c1300",
-  textOnSecondary: "#1c1300",
-  accent: "#ffb21e",
-  accent2: "#ffc95a",
-  accent3: "#f09a00",
-  accentText: "#1c1300",
-  glow: "rgba(255, 178, 30, 0.35)",
+  // Matchnight: Super League blue (brightened to read on the dark ground).
+  primary: "#2085d6",
+  secondary: "#5aa9ec",
+  tertiary: "#00609a",
+  textOnPrimary: "#ffffff",
+  textOnSecondary: "#ffffff",
+  accent: "#2085d6",
+  accent2: "#5aa9ec",
+  accent3: "#00609a",
+  accentText: "#ffffff",
+  glow: "rgba(32, 133, 214, 0.35)",
 };
 
 const CLUB_THEME_NAMES = [

@@ -1,13 +1,19 @@
 /*
  * Matchnight — the 27-0 identity (v1.05).
  *
- * A floodlit Friday night at a rugby league ground: navy night sky, scoreboard amber,
- * squared kit-tag corners and condensed team-sheet type. Loaded last, so it wins.
- *   ground #0b1322 · surface #131e33 · raised #1b2842 · line rgba(150,175,225,.12)
- *   amber  #ffb21e (Store themes swap it) · Current mode sky #5cc8ff · Era mode parchment #ead9b0
+ * A floodlit Friday night at a rugby league ground, in the competition's blue, red and white:
+ * deep league-blue night, squared kit-tag corners and condensed team-sheet type. Loaded last, so it wins.
+ *   ground #06182a · surface #0c2339 · raised #12304d · line rgba(120,170,230,.12)
+ *   blue   #2085d6 actions (Store themes swap it) · red #e8193f the scoreboard mark and "you are here"
+ *   white  text · Current mode sky #5cc8ff · Era mode parchment #ead9b0
  *   type   Barlow (reading) · Barlow Condensed (headings, buttons, tags) · Anton (scores, the mark)
  *   shape  cards 6px · tiles and controls 4px · primary buttons have chamfered corners
  */
+
+:root {
+  --mn-red: #e8193f;
+  --mn-red-rgb: 232 25 63;
+}
 
 /* ── Ground: a faint floodlight wash from the top of the screen ──────────── */
 html,
@@ -16,7 +22,7 @@ body,
   background-color: var(--fl-ground);
 }
 .app-shell {
-  background-image: radial-gradient(120% 420px at 50% -120px, rgba(255, 220, 150, 0.07), transparent 70%);
+  background-image: radial-gradient(120% 420px at 50% -120px, rgba(190, 220, 255, 0.07), transparent 70%);
   background-repeat: no-repeat;
 }
 
@@ -45,12 +51,12 @@ body,
   display: inline-block;
   padding: 0.12em 0.2em 0.08em;
   border-radius: 3px;
-  background: #050a14;
+  background: #03101e;
   box-shadow:
     inset 0 0 0 1px var(--fl-line-strong),
     inset 0 -0.5em 0.6em rgba(255, 255, 255, 0.03);
-  color: var(--theme-primary);
-  text-shadow: 0 0 0.35em rgb(var(--theme-primary-rgb) / 0.45);
+  color: var(--mn-red);
+  text-shadow: 0 0 0.35em rgb(var(--mn-red-rgb) / 0.5);
 }
 /* The split line across a flip panel. */
 .logo-mark__cell::after {
@@ -134,7 +140,7 @@ button.game-button--era,
 .game-button--era:focus-visible,
 .mn-chamfer:focus-visible {
   outline: none !important;
-  box-shadow: inset 0 0 0 3px rgba(11, 19, 34, 0.85) !important;
+  box-shadow: inset 0 0 0 3px rgba(6, 24, 42, 0.85) !important;
 }
 
 a.game-button--secondary,
@@ -173,7 +179,7 @@ button.game-button--secondary,
   border-radius: 3px;
 }
 
-/* ── Phone tab bar: docked to the bottom, a floodlight bar marks the tab you're on ── */
+/* ── Phone tab bar: docked to the bottom, a red bar marks the tab you're on ── */
 .fl-bottom-nav {
   left: 0;
   right: 0;
@@ -182,7 +188,7 @@ button.game-button--secondary,
   padding: 0 6px env(safe-area-inset-bottom);
   border-radius: 0;
   border-top: 1px solid var(--fl-line);
-  background: rgba(11, 19, 34, 0.97);
+  background: rgba(6, 24, 42, 0.97);
   box-shadow: none;
 }
 .fl-bottom-nav a {
@@ -203,13 +209,13 @@ button.game-button--secondary,
   height: 3px;
   z-index: 0;
   border-radius: 0 0 2px 2px;
-  background: var(--theme-primary);
-  box-shadow: 0 0 12px rgb(var(--theme-primary-rgb) / 0.55);
+  background: var(--mn-red);
+  box-shadow: 0 0 12px rgb(var(--mn-red-rgb) / 0.55);
 }
 
 /* ── Header ────────────────────────────────────────────────────────────── */
 .app-header {
-  background: rgba(11, 19, 34, 0.97) !important;
+  background: rgba(6, 24, 42, 0.97) !important;
 }
 
 /* ── Inputs ───────────────────────────────────────────────────────────── */
@@ -218,7 +224,7 @@ button.game-button--secondary,
 }
 
 /* ── Home: mode plates ─────────────────────────────────────────────────── */
-/* A coloured top edge says which game a plate belongs to (amber Manager, sky Classic, parchment Era). */
+/* A coloured top edge says which game a plate belongs to (blue Manager, sky Classic, parchment Era). */
 .mn-edge {
   position: relative;
   overflow: hidden;
@@ -242,7 +248,7 @@ button.game-button--secondary,
   --mn-edge: var(--fl-line-strong);
 }
 
-/* Today's fixture: the Daily card has an amber touchline down its left side. */
+/* Today's fixture: the Daily card has a red touchline down its left side. */
 .mn-fixture {
   position: relative;
   overflow: hidden;
@@ -254,5 +260,5 @@ button.game-button--secondary,
   top: 0;
   bottom: 0;
   width: 4px;
-  background: var(--theme-primary);
+  background: var(--mn-red);
 }

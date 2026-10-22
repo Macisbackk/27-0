@@ -1,6 +1,6 @@
 /**
  * Generate the 27-0 app icons, PWA icons and splash, matching the Matchnight LogoMark:
- * two lit scoreboard panels ("27" and "0") on navy night, digits in scoreboard amber.
+ * two lit scoreboard panels ("27" and "0") on league-blue night, digits in red.
  * Digits are drawn as seven-segment bars, so no font is needed to render them.
  */
 import fs from "fs";
@@ -11,11 +11,11 @@ const ROOT = path.join(__dirname, "..");
 const RESOURCES = path.join(ROOT, "resources");
 const PUBLIC_ICONS = path.join(ROOT, "public", "icons");
 
-const BG = "#0b1322";
-const PANEL = "#050a14";
-const PANEL_EDGE = "#2b3a57";
-const AMBER = "#ffb21e";
-const DASH = "#f1f4fa";
+const BG = "#06182a";
+const PANEL = "#03101e";
+const PANEL_EDGE = "#23496f";
+const RED = "#e8193f";
+const DASH = "#f2f6fb";
 
 //           a  b  c  d  e  f  g
 const SEGMENTS: Record<string, number[]> = {
@@ -45,7 +45,7 @@ function digit(ch: string, x: number, y: number, u: number): string {
   ];
   return bars
     .map(([bx, by, bw, bh], i) =>
-      on[i] ? `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${r}" fill="${AMBER}"/>` : ""
+      on[i] ? `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${r}" fill="${RED}"/>` : ""
     )
     .join("");
 }
@@ -80,7 +80,7 @@ function mark(cx: number, cy: number, width: number): string {
 
 const DEFS = `<defs>
   <radialGradient id="flood" cx="50%" cy="-10%" r="85%">
-    <stop offset="0%" stop-color="#ffdc96" stop-opacity="0.16"/>
+    <stop offset="0%" stop-color="#bedcff" stop-opacity="0.16"/>
     <stop offset="100%" stop-color="${BG}" stop-opacity="0"/>
   </radialGradient>
 </defs>`;
