@@ -96,7 +96,7 @@ export function SeasonReview() {
 
       <div className="mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
         <div className="mobile-action-bar__inner">
-          <GameButton size="lg" onClick={goToOffseason}>Go to transfers</GameButton>
+          <GameButton size="lg" onClick={goToOffseason}>Next: retirements and contracts</GameButton>
         </div>
       </div>
     </div>

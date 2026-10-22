@@ -27,6 +27,15 @@ import {
   playFriendlies,
   preseasonOpen,
   sheetFor,
+  finishDepartures,
+  renewContract,
+  releaseExpiring,
+  renewalFee,
+  contractOf,
+  currentStage,
+  markStageSeen,
+  promotionPicture,
+  leagueOverPicture,
   type CareerState,
 } from "../src/lib/career";
 
@@ -166,7 +175,31 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
     check(legacy.legacyPoints >= 0, `${label}: legacy points non-negative`);
 
     s = beginOffseason(s);
-    check(s.phase === "transfers", `${label}: off-season → transfer window`);
+    check(s.phase === "departures", `${label}: off-season → departures`);
+    check(!!s.departures, `${label}: departures recorded`);
+    // Contracts: renew the first expiring player if affordable, let the next one go.
+    const exp = s.departures?.expiring ?? [];
+    for (const id of exp) check(s.clubs[s.userClubId]!.squad.includes(id), `${label}: expiring player still at the club until decided`);
+    if (exp[0]) {
+      const fee = renewalFee(s.players[exp[0]]!);
+      const r = renewContract(s, exp[0]);
+      if (s.budget >= fee) {
+        check(!r.error && r.state.budget === s.budget - fee, `${label}: renewing costs the signing-on fee`);
+        check(contractOf(r.state.players[exp[0]]!) >= 1 && !(r.state.departures?.expiring ?? []).includes(exp[0]), `${label}: renewed player has a new deal`);
+        s = r.state;
+      } else check(r.error === "budget", `${label}: can't renew without the budget`);
+    }
+    if (exp[1]) {
+      const before = s.clubs[s.userClubId]!.squad.length;
+      s = releaseExpiring(s, exp[1]);
+      check(!s.clubs[s.userClubId]!.squad.includes(exp[1]) && s.freeAgents.includes(exp[1]), `${label}: released player leaves for free agency`);
+      check(s.clubs[s.userClubId]!.squad.length === before - 1, `${label}: release shrinks the squad by one`);
+    }
+    const undecided = [...(s.departures?.expiring ?? [])];
+    s = finishDepartures(s);
+    check(s.phase === "transfers", `${label}: departures → transfer window`);
+    for (const id of undecided) check(!s.clubs[s.userClubId]!.squad.includes(id), `${label}: undecided expiring players leave`);
+    check(s.clubs[s.userClubId]!.squad.every((id) => contractOf(s.players[id]!) >= 1), `${label}: everyone left is under contract`);
     invariants(s, `${label} window`);
 
     // Try a sell and a buy each window.
@@ -198,6 +231,41 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
       .map((h) => `${h.year}:${h.division === "super-league" ? "SL" : "CH"}#${h.position}${h.trophies.length ? "[" + h.trophies.join(",") + "]" : ""}`)
       .join(" ")}  legacy ${legacy.lifetimeLegacyPoints}  legends ${legacy.unlockedLegends.length}`
   );
+}
+
+// Season stages: one thing at a time.
+{
+  let s = createCareer({ clubId: "leeds-rhinos", managerName: "Stages", seed: "stages" });
+  check(currentStage(s) === "preseason", "stages: a new season opens on pre-season");
+  s = playFriendlies(s, friendlyOptions(s).slice(0, 1));
+  check(currentStage(s) === "preseason-done", "stages: friendly results get their own stage");
+  s = markStageSeen(s, "preseason");
+  check(currentStage(s) === "fixture", "stages: then Round 1");
+  let guard = 0;
+  let sawDeadline = false;
+  while (currentStage(s) !== "league-over" && s.phase === "season" && guard++ < 80) {
+    if (currentStage(s) === "deadline") {
+      sawDeadline = true;
+      s = closeDeadlineDay(s);
+      continue;
+    }
+    s = playMatchday(s);
+  }
+  check(sawDeadline, "stages: Deadline Day is its own stage");
+  check(currentStage(s) === "league-over", "stages: the end of the league gets its own stage");
+  const lo = leagueOverPicture(s);
+  check(lo.position >= 1 && lo.verdict.length > 0, "stages: league-over picture has a position and verdict");
+  s = markStageSeen(s, "league-over");
+  check(currentStage(s) === "fixture", "stages: then the play-offs / Million Pound Game");
+  s = playMatchday(s);
+  check(currentStage(s) === "promotion", "stages: promotion and relegation before the Grand Final");
+  const pic = promotionPicture(s);
+  check(pic.up.length >= 1 && pic.down.length >= 1 && pic.up.length === pic.down.length, "stages: as many go up as down");
+  s = markStageSeen(s, "promotion");
+  s = playMatchday(s);
+  check(s.phase === "review", "stages: Grand Final ends the season");
+  for (const id of pic.up) check(s.clubs[id]!.division === "super-league", "stages: promotion picture matches the real outcome (up)");
+  for (const id of pic.down) check(s.clubs[id]!.division === "championship", "stages: promotion picture matches the real outcome (down)");
 }
 
 const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / xs.length;

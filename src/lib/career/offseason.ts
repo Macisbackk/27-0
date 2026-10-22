@@ -10,6 +10,7 @@ import {
   playerValue,
 } from "./players";
 import { pick, randInt, rngFor, shuffle } from "./rng";
+import { contractOf, newDealLength, runDownContracts } from "./contracts";
 import { clubsIn, repairLineup, squadOf, startSeason, userClub } from "./season";
 import type { CareerPlayer, CareerState, Pos } from "./types";
 
@@ -84,14 +85,14 @@ function topUpSquad(state: CareerState, clubId: string, target = 24) {
 }
 
 /**
- * Season review → off-season: ageing, development, retirements, academy intake,
- * AI squads topped up, and a fresh transfer market.
+ * Season review → the summer: ageing, development, retirements, contracts running down and
+ * academy intake. Lands on the "departures" screen; the transfer window opens after it.
  */
 export function beginOffseason(state: CareerState): CareerState {
   if (state.phase !== "review") return state;
   const s: CareerState = structuredClone(state);
   const rng = rngFor(s.seed, s.year, "offseason");
-  const retired: string[] = [];
+  const retired: NonNullable<CareerState["departures"]>["retired"] = [];
 
   for (const club of Object.values(s.clubs)) {
     club.squad = club.squad.filter((id) => {
@@ -99,7 +100,7 @@ export function beginOffseason(state: CareerState): CareerState {
       if (!p) return false;
       developPlayer(rng, p);
       if (retires(rng, p)) {
-        if (club.id === s.userClubId) retired.push(p.name);
+        if (club.id === s.userClubId) retired.push({ name: p.name, pos: p.pos, age: p.age, rating: p.rating });
         delete s.players[id];
         return false;
       }
@@ -112,9 +113,13 @@ export function beginOffseason(state: CareerState): CareerState {
   }
   s.freeAgents = s.freeAgents.filter((id) => s.players[id] && s.players[id]!.age < 34);
 
+  // Contracts count down; the user decides on anyone whose deal has run out.
+  const expiring = runDownContracts(s);
+
   // Academy: two prospects for the user every summer. Better clubs attract better kids.
   const club = userClub(s);
   const intake: string[] = [];
+  const intakeIds: string[] = [];
   for (let i = 0; i < 2 && club.squad.length < SQUAD_MAX; i++) {
     const pos = pick(rng, LINEUP_SLOTS);
     const p = generatePlayer(rng, {
@@ -126,22 +131,63 @@ export function beginOffseason(state: CareerState): CareerState {
       idPrefix: `ac${s.year}`,
     });
     p.potential = Math.min(94, 76 + Math.round(s.prestige * 2) + randInt(rng, 0, 8));
+    p.contract = 3;
     s.players[p.id] = p;
     club.squad.push(p.id);
     intake.push(`${p.name} (${p.pos})`);
+    intakeIds.push(p.id);
   }
 
   for (const id of Object.keys(s.clubs)) if (id !== s.userClubId) topUpSquad(s, id);
-  if (club.squad.length < SQUAD_MIN) topUpSquad(s, club.id, SQUAD_MIN);
 
+  s.departures = { year: s.year, retired, expiring, academy: intakeIds };
   s.year += 1;
   s.seasonNumber += 1;
   s.lineup = repairLineup(s, s.lineup);
+  s.phase = "departures";
+  s.news = [
+    intake.length ? `Academy graduates: ${intake.join(", ")}.` : "No room in the squad for academy graduates this year.",
+    ...(retired.length ? [`Retired: ${retired.map((r) => r.name).join(", ")}.`] : []),
+    ...(expiring.length ? [`Out of contract: ${expiring.map((id) => s.players[id]?.name).join(", ")}.`] : []),
+    ...s.news,
+  ].slice(0, 30);
+  s.updatedAt = Date.now();
+  return s;
+}
+
+/**
+ * Departures → transfer window. Anyone still undecided leaves on a free; the squad is topped
+ * up to the minimum if the summer left it short.
+ */
+export function finishDepartures(state: CareerState): CareerState {
+  if (state.phase !== "departures") return state;
+  const s: CareerState = structuredClone(state);
+  const me = userClub(s);
+  const leaving = s.departures?.expiring ?? [];
+  const leavingNames = leaving.map((id) => s.players[id]?.name ?? id);
+  for (const id of leaving) {
+    me.squad = me.squad.filter((x) => x !== id);
+    const p = s.players[id];
+    if (p?.legend) delete s.players[id];
+    else if (p) {
+      p.contract = undefined;
+      if (!s.freeAgents.includes(id)) s.freeAgents.push(id);
+    }
+  }
+  if (s.departures) {
+    s.departures.released = [...(s.departures.released ?? []), ...leavingNames];
+    s.departures.expiring = [];
+  }
+  if (me.squad.length < SQUAD_MIN) topUpSquad(s, me.id, SQUAD_MIN);
+  for (const id of me.squad) {
+    const p = s.players[id];
+    if (p && !(typeof p.contract === "number" && p.contract > 0)) p.contract = contractOf(p);
+  }
+  s.lineup = repairLineup(s, s.lineup.filter((id) => me.squad.includes(id)));
   s.phase = "transfers";
   s.news = [
     `Transfer window open. Budget ${formatMoney(s.budget)}.`,
-    intake.length ? `Academy graduates: ${intake.join(", ")}.` : "No room in the squad for academy graduates this year.",
-    ...(retired.length ? [`Retired: ${retired.join(", ")}.`] : []),
+    ...(leaving.length ? [`Left on a free: ${leavingNames.join(", ")}.`] : []),
     ...s.news,
   ].slice(0, 30);
   s.updatedAt = Date.now();
@@ -208,6 +254,7 @@ export function buyPlayer(
     // Already at a club (double tap / stale listing)? Then he isn't available.
     if (Object.values(s.clubs).some((c) => c.squad.includes(`legend-${card.id}`))) return { state, error: "not-available" };
     s.players[`legend-${card.id}`] = legendAsPlayer(card);
+    s.freeAgents = s.freeAgents.filter((id) => id !== `legend-${card.id}`);
   } else {
     const p = s.players[listing.playerId];
     if (!p) return { state, error: "not-available" };
@@ -223,6 +270,8 @@ export function buyPlayer(
   s.budget -= listing.price;
   s.players[listing.playerId]!.signedYear = s.year;
   s.players[listing.playerId]!.fee = listing.price;
+  // New signings come on a fresh deal (legends for two seasons).
+  s.players[listing.playerId]!.contract = listing.legend ? 2 : Math.max(2, newDealLength(s.players[listing.playerId]!.age));
   s.news = [`Signed ${s.players[listing.playerId]!.name} for ${formatMoney(listing.price)}.`, ...s.news].slice(0, 30);
   s.updatedAt = Date.now();
   return { state: s };

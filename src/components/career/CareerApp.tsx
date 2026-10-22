@@ -6,6 +6,7 @@ import { DIVISION_LABEL, formatMoney, isWindowOpen, ordinal, sortTable } from "@
 import { CareerProvider, useCareer } from "@/lib/career/context";
 import { CareerErrorBoundary } from "./CareerErrorBoundary";
 import { CareerStart } from "./CareerStart";
+import { Departures } from "./Departures";
 import { ClubTab } from "./ClubTab";
 import { ClubSheetProvider } from "./ClubSheet";
 import { LegendVaultSheet, RecordsSheet } from "./LegacySheets";
@@ -72,6 +73,7 @@ function CareerRouter() {
     );
   }
   if (state.phase === "review") return <ClubSheetProvider><SeasonReview /></ClubSheetProvider>;
+  if (state.phase === "departures") return <ClubSheetProvider><Departures /></ClubSheetProvider>;
   if (state.phase === "transfers") return <TransferWindow />;
   if (marketOpen && isWindowOpen(state)) {
     return (

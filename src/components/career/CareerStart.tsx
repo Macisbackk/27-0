@@ -60,8 +60,8 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
 
       <GameSegmentedControl<Division>
         options={[
-          { id: "championship", label: "Championship · the climb", shortLabel: "Championship" },
-          { id: "super-league", label: "Super League · win now", shortLabel: "Super League" },
+          { id: "championship", label: "Championship", shortLabel: "Championship" },
+          { id: "super-league", label: "Super League", shortLabel: "Super League" },
         ]}
         value={division}
         onChange={(d) => {

@@ -5,11 +5,17 @@
  * C) exploit probes (buy→sell arbitrage, stale listings, double unlock)
  */
 import {
-  createCareer, playMatchday, simToNextBigGame, simRestOfSeason, beginOffseason, finishTransfers,
+  createCareer, playMatchday, simToNextBigGame, simRestOfSeason as simRestRaw, closeDeadlineDay, beginOffseason, finishDepartures, finishTransfers,
   buildMarket, buyPlayer, sellPlayer, sellPrice, bankSeason, emptyLegacy, unlockLegend, legendCatalog,
   autoPickLineup, squadOf, clubsIn, clubRating, repairLineup, SQUAD_MIN, SQUAD_MAX, LINEUP_SLOTS,
   buildWorld, type CareerState, type CareerLegacy, type Tactic,
 } from "../src/lib/career";
+
+/** Sims stop on Deadline Day (v1.04+); shut the window and carry on. */
+function simRestOfSeason(s: CareerState): CareerState {
+  for (let g = 0; s.phase === "season" && g < 5; g++) s = simRestRaw(closeDeadlineDay(s));
+  return s;
+}
 import seedrandom from "seedrandom";
 
 const problems: string[] = [];
@@ -63,8 +69,8 @@ for (let run = 0; run < 40; run++) {
       const r = rng();
       const where = `run ${run} S${season} md${s.matchdayIndex}`;
       try {
-        if (r < 0.45) s = playMatchday(s);
-        else if (r < 0.55) s = simToNextBigGame(s);
+        if (r < 0.45) s = playMatchday(closeDeadlineDay(s));
+        else if (r < 0.55) s = simToNextBigGame(closeDeadlineDay(s));
         else if (r < 0.58) s = simRestOfSeason(s);
         else if (r < 0.7) s = { ...s, tactic: pick<Tactic>(["attack", "balanced", "defend"]) };
         else if (r < 0.9) {
@@ -83,7 +89,7 @@ for (let run = 0; run < 40; run++) {
     if (s.phase !== "review") { fail(`run ${run} S${season}: season did not end (phase ${s.phase})`); break; }
     const banked = bankSeason(legacy, s, s.lastOutcome!);
     legacy = banked.legacy;
-    try { s = beginOffseason(s); } catch (e) { fail(`run ${run}: beginOffseason threw ${e}`); break; }
+    try { s = finishDepartures(beginOffseason(s)); } catch (e) { fail(`run ${run}: beginOffseason threw ${e}`); break; }
     invariants(s, `run ${run} window ${season}`);
     // random transfers
     for (let t = 0; t < 12; t++) {
@@ -124,7 +130,7 @@ for (const club of ["wigan-warriors", "cornwall-rlfc"]) {
     s = simRestOfSeason(s);
     const tSeason = performance.now() - t0;
     const o = s.lastOutcome!;
-    s = beginOffseason(s);
+    s = finishDepartures(beginOffseason(s));
     s = finishTransfers(s);
     invariants(s, `soak ${club} S${season}`);
     if (season % 5 === 0 || season === 1)
@@ -136,7 +142,7 @@ for (const club of ["wigan-warriors", "cornwall-rlfc"]) {
 console.log("\nC) exploits");
 {
   let s = createCareer({ clubId: "leeds-rhinos", managerName: "X", seed: "exploit" });
-  s = simRestOfSeason(s); s = beginOffseason(s);
+  s = simRestOfSeason(s); s = finishDepartures(beginOffseason(s));
   s = { ...s, budget: 10_000_000 };
   const legacy = { ...emptyLegacy(), unlockedLegends: legendCatalog().map((l) => l.id) };
   const market = buildMarket(s, legacy.unlockedLegends);

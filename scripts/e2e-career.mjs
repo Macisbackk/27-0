@@ -104,8 +104,10 @@ try {
   }
   if (await tutorial.isVisible().catch(() => false)) throw new Error("Walkthrough did not close");
   step("First-save walkthrough");
-  await page.getByRole("button", { name: "Play match" }).waitFor({ timeout });
   step(`Career started (${clubCount} Championship clubs listed)`);
+  if (await page.getByRole("button", { name: "Play match" }).isVisible().catch(() => false)) {
+    throw new Error("Round 1 showing during pre-season");
+  }
   // Pre-season friendlies: pick two and play them.
   const pre = page.getByRole("region", { name: "Pre-season friendlies" });
   await pre.waitFor({ timeout });
@@ -115,7 +117,13 @@ try {
   await friendlyButtons.nth(0).click();
   await pre.getByRole("button", { name: /^Play 2/ }).click();
   await page.getByRole("region", { name: "Pre-season results" }).waitFor({ timeout });
-  step("Pre-season: played two friendlies");
+  if (await page.getByRole("button", { name: "Play match" }).isVisible().catch(() => false)) {
+    throw new Error("Round 1 showing under the pre-season results");
+  }
+  await shot("preseason-results");
+  await clickButton("Start the season");
+  await page.getByRole("button", { name: "Play match" }).waitFor({ timeout });
+  step("Pre-season: played two friendlies, then Round 1 on its own");
   await shot("hub-match");
 
   await clickButton("Play match");
@@ -170,6 +178,8 @@ try {
 
   await page.getByRole("tab", { name: "Match" }).click();
   let shotDeadline = false;
+  let shotLeagueOver = false;
+  let shotPromotion = false;
   let shotBid = false;
   let shotWindow = false;
   for (let i = 0; i < 80; i++) {
@@ -209,7 +219,21 @@ try {
       await page.getByText(/Window shut/).first().waitFor({ timeout });
       step("Deadline Day paused the season, late market, club team sheet, transfer round-up, window shut");
     }
-    const next = page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window)$/ }).first();
+    if (!shotLeagueOver && (await page.getByRole("region", { name: "League over" }).isVisible().catch(() => false))) {
+      shotLeagueOver = true;
+      await shot("league-over");
+      step("League over: its own stage before the play-offs");
+    }
+    if (!shotPromotion && (await page.getByRole("region", { name: "Promotion and relegation" }).isVisible().catch(() => false))) {
+      shotPromotion = true;
+      await shot("promotion");
+      step("Promotion and relegation: its own stage before the Grand Final");
+    }
+    const next = page
+      .getByRole("button", {
+        name: /^(Quick sim|Continue|Shut the window|On to the play-offs|On to the Million Pound Game|Watch the play-offs|On to the Grand Final|Watch the Grand Final)$/,
+      })
+      .first();
     if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
     await page.waitForTimeout(120);
   }
@@ -217,7 +241,19 @@ try {
   step("Quick-simmed the season → review screen");
   await shot("review");
 
-  await clickButton("Go to transfers");
+  if (!shotLeagueOver || !shotPromotion) throw new Error("League-over / promotion stages were not shown");
+  await clickButton("Next: retirements and contracts");
+  await page.getByRole("heading", { name: "Comings and goings" }).waitFor({ timeout });
+  await shot("departures");
+  const renewBtn = page.getByRole("button", { name: /^Renew / }).first();
+  if (await renewBtn.isVisible().catch(() => false)) {
+    if (await renewBtn.isEnabled()) {
+      await renewBtn.click();
+      await page.getByText(/Renewed:/).first().waitFor({ timeout });
+    }
+  }
+  await clickButton(/^(Open the transfer window|Let the rest go · open the window)$/);
+  step("Departures: retirements, contracts and academy before the window");
   await page.getByRole("heading", { name: "Build your squad" }).waitFor({ timeout });
   await shot("transfers");
   await page.getByRole("tab", { name: "Sell" }).click();
@@ -228,13 +264,13 @@ try {
   step("Transfer window: sold a player");
 
   await clickButton(/Start (the )?\d{4} season/);
-  await page.getByRole("button", { name: "Play match" }).waitFor({ timeout });
+  await page.getByRole("region", { name: "Pre-season friendlies" }).waitFor({ timeout });
   const headerText = await page.locator("header").filter({ hasText: /2027/ }).count();
   if (!headerText) throw new Error("Second season header did not show 2027");
   step("Second season (2027) started");
 
   await page.reload({ waitUntil: "networkidle" });
-  await page.getByRole("button", { name: "Play match" }).waitFor({ timeout });
+  await page.getByRole("region", { name: "Pre-season friendlies" }).waitFor({ timeout });
   if (!(await page.locator("header").filter({ hasText: /2027/ }).count())) throw new Error("Career not restored after reload");
   step("Career persists across reload");
 

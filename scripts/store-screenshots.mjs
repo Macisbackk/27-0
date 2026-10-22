@@ -56,6 +56,7 @@ try {
   await page.getByPlaceholder("Your name").fill("Coach").catch(() => {});
   await tap(/Take charge of/);
   await page.getByRole("dialog", { name: "Manager Mode walkthrough" }).getByRole("button", { name: "Skip" }).click({ timeout: 8000 }).catch(() => {});
+  await page.getByRole("button", { name: "Skip pre-season" }).click({ timeout: 8000 }).catch(() => {});
   await page.getByRole("button", { name: "Play match" }).waitFor({ timeout: 15000 }).catch(() => {});
   await tap(/^Play match$/);
   const call = page.getByRole("region", { name: /Penalty|team talk|Closing|Last tackle|Chasing|Big hole|Kick-off|Space in behind|Captain|down to 12|Injury|Fresh legs|Golden point/ });

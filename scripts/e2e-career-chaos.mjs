@@ -49,6 +49,7 @@ async function startCareer(page, division, index = 0) {
   await page.getByRole("button", { name: /Take charge of/ }).click();
   // Chaos runs skip the first-save walkthrough.
   await page.getByRole("dialog", { name: "Manager Mode walkthrough" }).getByRole("button", { name: "Skip" }).click({ timeout }).catch(() => {});
+  await page.getByRole("button", { name: "Skip pre-season" }).click({ timeout });
   await page.getByRole("button", { name: /Play match|Continue/ }).first().waitFor({ timeout });
 }
 
@@ -109,7 +110,7 @@ try {
   let guard = 0;
   while (guard++ < 80) {
     if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
-    const next = page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window)$/ }).first();
+    const next = page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window|On to the play-offs|On to the Million Pound Game|Watch the play-offs|On to the Grand Final|Watch the Grand Final)$/ }).first();
     if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
     await page.waitForTimeout(120);
   }
@@ -127,7 +128,11 @@ try {
   if (lpAfter !== lpBefore) errors.push(`reloading the review re-banked Legacy (${lpBefore} → ${lpAfter})`);
   step("Reloading the review screen doesn't re-award Legacy");
 
-  await page.getByRole("button", { name: "Go to transfers" }).click();
+  await page.getByRole("button", { name: "Next: retirements and contracts" }).click();
+  await page.getByRole("heading", { name: "Comings and goings" }).waitFor({ timeout });
+  await noSidewaysScroll(page, "departures @320");
+  // Double-tap the exit: must land on the window once, not skip past it.
+  await page.getByRole("button", { name: /^(Open the transfer window|Let the rest go · open the window)$/ }).dblclick();
   await page.getByRole("heading", { name: "Build your squad" }).waitFor({ timeout });
   await noSidewaysScroll(page, "transfers @320");
   // Try to sell the whole squad: must stop at the minimum without errors.
@@ -144,7 +149,7 @@ try {
   if (squadSize !== 20) errors.push(`selling everything left the squad at ${squadSize} (expected 20)`);
   step("Can't sell below the 20-man minimum");
   await page.getByRole("button", { name: /Start (the )?\d{4} season/ }).click();
-  await page.getByRole("button", { name: /Play match|Continue/ }).first().waitFor({ timeout });
+  await page.getByRole("region", { name: "Pre-season friendlies" }).waitFor({ timeout });
   step("Next season starts after a fire sale");
 
   await context.close();
