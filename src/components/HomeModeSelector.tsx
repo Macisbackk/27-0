@@ -87,7 +87,7 @@ function Tile({
         playUiClick();
         onClick?.();
       }}
-      className={`btn-press fl-pressable fl-lift flex flex-col items-start rounded-card bg-pitch-900 p-4 text-left text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 ${className}`}
+      className={`btn-press fl-pressable fl-lift flex flex-col items-center rounded-card bg-pitch-900 p-4 text-center text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 ${className}`}
     >
       {children}
     </Link>
@@ -137,28 +137,27 @@ export function HomeModeSelector() {
   const dailyStatus = !daily ? null : daily.done ? "Done today" : daily.used ? "Attempt used · practice only" : "1 attempt left today";
 
   return (
-    <section className="fl-stagger mx-auto flex w-full max-w-xl flex-col gap-3 text-left" aria-labelledby="play-heading">
-      <h2 id="play-heading" className="!text-left font-cond text-[30px] font-bold leading-none text-white">
+    <section className="fl-stagger mx-auto flex w-full max-w-xl flex-col gap-3 text-center" aria-labelledby="play-heading">
+      <h2 id="play-heading" className="font-cond text-[30px] font-bold leading-none text-white">
         {hub?.greeting ?? "Welcome, coach"}
       </h2>
 
       {SHOW_DAILY_CHALLENGE_UI ? (
-        <section className="relative overflow-hidden rounded-card bg-pitch-900 p-[18px]" aria-label="Daily Challenge">
+        <section className="relative overflow-hidden rounded-card bg-pitch-900 p-[18px] text-center" aria-label="Daily Challenge">
           <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full bg-theme-primary/[0.06]" />
-          <div className="flex items-baseline justify-between gap-3">
-            <p className="font-cond text-[16px] font-bold text-theme-primary">
-              Daily Challenge{daily?.scenario.eraMode ? " · Era" : ""}
-            </p>
-            {dailyStatus ? <p className="shrink-0 text-xs text-[color:var(--fl-muted)]">{dailyStatus}</p> : null}
-          </div>
+          <p className="flex items-center justify-center gap-2 font-cond text-[16px] font-bold text-theme-primary">
+            <span aria-hidden className="h-2 w-2 rounded-full bg-theme-primary" />
+            Daily Challenge{daily?.scenario.eraMode ? " · Era" : ""}
+          </p>
+          {dailyStatus ? <p className="mt-1 text-xs text-[color:var(--fl-muted)]">{dailyStatus}</p> : null}
           <p className="mt-2 font-cond text-[32px] font-bold leading-[1.05]">
             {daily?.scenario.ruleTitle ?? "Today's rule"}
           </p>
-          <p className="mt-1 max-w-sm text-[15px] text-[color:var(--fl-muted)]">
+          <p className="mx-auto mt-1 max-w-sm text-[15px] text-[color:var(--fl-muted)]">
             {daily?.scenario.ruleSummary ?? "A new twist every day."}
           </p>
           {daily ? (
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
               <span className="fl-pill">
                 Top the table <span className="text-theme-primary">+{formatClubFunds(daily.scenario.leagueLeadersBonus)}</span>
               </span>
