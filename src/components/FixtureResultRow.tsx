@@ -4,7 +4,6 @@ import type { MatchFixture } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { getClubColors } from "@/lib/clubs";
 import { DREAM_TEAM_COLORS } from "@/lib/clubs/dream-team";
-import { CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubColorChip } from "./ClubColorChip";
 
@@ -57,21 +56,21 @@ export function FixtureResultRow({
     <Wrapper
       type={onClick ? "button" : undefined}
       onClick={onClick}
-      className={`fixture-result-row min-w-0 w-full max-w-full text-left transition ${
+      className={`fixture-result-row block min-w-0 w-full max-w-full rounded-[14px] text-left transition ${
         selected
-          ? "fixture-result-row--selected border border-white/20 bg-white/[0.06]"
+          ? "fixture-result-row--selected bg-pitch-700 ring-1 ring-inset ring-white/15"
           : cupHighlight
-            ? `${CARD.base} game-panel--flush border border-accent-gold/40 bg-accent-gold/10`
-            : `${CARD.base} game-panel--flush border-white/10 bg-pitch-900/40`
-      } ${onClick ? "btn-press cursor-pointer transition hover:border-white/20 hover:bg-pitch-900/55" : ""} ${
-        compact ? "px-1.5 py-1 sm:px-2 sm:py-1.5" : "px-2.5 py-2 sm:px-3 sm:py-2.5"
+            ? "bg-accent-gold/10 ring-1 ring-inset ring-accent-gold/40"
+            : "bg-pitch-800"
+      } ${onClick ? "btn-press min-h-[44px] cursor-pointer hover:bg-pitch-700" : ""} ${
+        compact ? "px-2 py-2 sm:px-2.5" : "px-2.5 py-2 sm:px-3 sm:py-2.5"
       }`}
     >
       {compact ? (
         <div className="grid min-w-0 grid-cols-[1.5rem_minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1 sm:gap-1.5">
           {showRound ? (
             <span
-              className="text-center text-[9px] font-semibold tabular-nums leading-none text-pitch-500"
+              className="text-center text-[10px] font-semibold tabular-nums leading-none text-[color:var(--fl-muted)]"
               title={roundLabel ?? `Round ${fixture.round}`}
             >
               {roundLabel ? roundLabel.replace(/^Round\s+/i, "R") : fixture.round}
@@ -95,11 +94,11 @@ export function FixtureResultRow({
           />
           <div className="flex shrink-0 items-center gap-1 px-0.5">
             <span
-              className={`inline-flex h-4 min-w-[1rem] items-center justify-center rounded px-0.5 text-[8px] font-black ${resultTone}`}
+              className={`inline-flex h-4 min-w-[1rem] items-center justify-center rounded-full px-1 text-[9px] font-bold ${resultTone}`}
             >
               {fixture.result}
             </span>
-            <p className="fixture-score whitespace-nowrap font-display text-[11px] font-black leading-none text-white sm:text-xs">
+            <p className="fixture-score whitespace-nowrap text-xs font-bold tabular-nums leading-none text-white">
               {homeScore}-{awayScore}
             </p>
           </div>
@@ -122,11 +121,11 @@ export function FixtureResultRow({
         <>
           {showRound && (
             <p
-              className={`mb-1 line-clamp-2 px-0.5 text-center text-[10px] leading-snug sm:text-inherit ${TYPO.statLabel}`}
+              className={`mb-1 line-clamp-2 px-0.5 text-center ${TYPO.label}`}
             >
               {roundLabel ?? `Round ${fixture.round}`}
               {!roundLabel && (
-                <span className="ml-1.5 text-gray-600 sm:ml-2">
+                <span className="ml-1.5 sm:ml-2">
                   · {fixture.isHome ? "Home" : "Away"}
                 </span>
               )}
@@ -148,11 +147,11 @@ export function FixtureResultRow({
             />
             <div className="flex min-w-[3.25rem] flex-col items-center justify-center gap-0.5 px-0.5 sm:min-w-[4.75rem] sm:px-1">
               <span
-                className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-black sm:h-7 sm:w-7 sm:text-xs ${resultTone}`}
+                className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold sm:h-7 sm:w-7 sm:text-xs ${resultTone}`}
               >
                 {fixture.result}
               </span>
-              <p className="fixture-score whitespace-nowrap font-display text-xs font-black leading-none text-white sm:text-sm">
+              <p className="fixture-score whitespace-nowrap text-xs font-bold tabular-nums leading-none text-white sm:text-sm">
                 {homeScore} - {awayScore}
               </p>
             </div>

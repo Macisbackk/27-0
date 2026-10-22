@@ -33,8 +33,8 @@ export function ReviewSubmissionNotice({
 
   return (
     <p
-      className={`mx-auto mt-3 max-w-md text-center text-xs font-medium ${
-        positive ? "text-theme-primary/90" : "text-gray-500"
+      className={`mx-auto mt-3 max-w-md text-center text-xs font-semibold ${
+        positive ? "text-theme-primary" : "text-[color:var(--fl-muted)]"
       }`}
     >
       {message}

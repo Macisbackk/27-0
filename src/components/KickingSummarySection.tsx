@@ -25,7 +25,7 @@ export function KickingSummarySection({
 
     return (
       <div className="space-y-1.5 text-center">
-        <p className={TYPO.statLabel}>Goals</p>
+        <p className={TYPO.label}>Goals</p>
         <p className={`${TYPO.bodySm} font-semibold text-white`}>
           {kicking.name}
         </p>
@@ -45,7 +45,7 @@ export function KickingSummarySection({
 
   const content = (
     <>
-      <p className={TYPO.sectionTitle}>Goals</p>
+      <p className={TYPO.cardHeading}>Goals</p>
       <ul className={`mt-2 space-y-1.5 ${TYPO.bodySm}`}>
         {lines.map((line, i) => (
           <li
@@ -53,7 +53,7 @@ export function KickingSummarySection({
             className="break-words text-gray-300"
           >
             <span className="font-semibold text-white">{line.name}</span>
-            <span className="text-gray-500"> — </span>
+            <span className="text-[color:var(--fl-muted)]"> — </span>
             {line.label}
           </li>
         ))}

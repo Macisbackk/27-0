@@ -2,7 +2,6 @@
 
 import { GameButton } from "@/components/ui/GameButton";
 import { CARD, SPACING } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
 
 interface GuestSaveNudgeProps {
   context: "manager-season" | "quick-season" | "daily-challenge";
@@ -31,9 +30,9 @@ export function GuestSaveNudge({ context }: GuestSaveNudgeProps) {
 
   return (
     <div
-      className={`${CARD.base} ${SPACING.cardPaddingSm} border border-amber-400/30 bg-amber-500/5 text-center`}
+      className={`${CARD.base} ${SPACING.cardPaddingSm} text-center`}
     >
-      <p className={`${TYPO.bodySm} text-amber-100`}>{copy.body}</p>
+      <p className="text-sm font-semibold text-amber-300">{copy.body}</p>
       <GameButton
         variant="secondary"
         size="sm"

@@ -18,7 +18,6 @@ import {
   SEASON_GAMES,
   formatFixtureScore,
 } from "@/lib/game/season-simulation";
-import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 
 interface SeasonSimulationProps {
@@ -87,9 +86,9 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
   };
 
   return (
-    <div className="flex w-full flex-col items-center justify-center px-3 py-4 sm:px-4 sm:py-6">
+    <div className="flex w-full min-w-0 flex-col items-center justify-center py-1 sm:py-2">
       <motion.p
-        className="font-display text-xs font-bold uppercase tracking-[0.35em] text-theme-primary"
+        className={`${TYPO.eyebrow} text-[color:var(--fl-muted)]`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
@@ -97,20 +96,20 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
       </motion.p>
 
       <motion.h2
-        className="mt-2 font-display text-2xl font-black sm:text-3xl"
+        className="mt-1 text-center text-[22px] font-bold leading-tight tracking-tight text-white sm:text-[26px]"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
         {phase === "complete" ? "Full time on the season" : "Your season"}
       </motion.h2>
 
-      <div className="mt-4 w-full max-w-lg">
-        <ScoreboardPanel className="p-3.5 text-center sm:p-5">
-          <p className={`text-sm ${TYPO.bodySm}`}>
+      <div className="mt-4 w-full min-w-0 max-w-lg">
+        <div className="rounded-[16px] bg-pitch-800 p-4 text-center sm:p-5">
+          <p className={TYPO.label}>
             Round {currentRound} of {SEASON_GAMES}
           </p>
           <div
-            className="mx-auto mt-2 h-1.5 w-full max-w-xs overflow-hidden rounded-full bg-pitch-800"
+            className="mx-auto mt-2 h-1.5 w-full max-w-xs overflow-hidden rounded-full bg-pitch-950"
             role="progressbar"
             aria-valuemin={0}
             aria-valuemax={SEASON_GAMES}
@@ -125,26 +124,26 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
 
           <div className="mt-3 flex items-center justify-center gap-5 sm:gap-8">
             <div>
-              <p className={TYPO.statLabel}>
+              <p className={TYPO.label}>
                 Wins
               </p>
               <motion.p
                 key={wins}
-                className="font-display text-3xl font-black text-theme-primary sm:text-4xl"
+                className="fl-number mt-1 text-[40px] text-theme-primary sm:text-[48px]"
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
               >
                 {wins}
               </motion.p>
             </div>
-            <div className="text-xl text-gray-600">—</div>
+            <div className="text-xl text-white/20">—</div>
             <div>
-              <p className={TYPO.statLabel}>
+              <p className={TYPO.label}>
                 Losses
               </p>
               <motion.p
                 key={losses}
-                className="font-display text-3xl font-black text-red-400 sm:text-4xl"
+                className="fl-number mt-1 text-[40px] text-red-400 sm:text-[48px]"
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
               >
@@ -162,14 +161,14 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}
               >
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-[color:var(--fl-muted)]">
                   Round {currentFixture.round}
                 </p>
-                <p className="mt-1 font-display text-sm font-bold text-white sm:text-base">
+                <p className="mt-1 text-sm font-bold text-white sm:text-base">
                   {formatFixtureScore(currentFixture)}
                 </p>
                 <p
-                  className={`mt-1 text-xs font-bold uppercase tracking-wider ${
+                  className={`mt-1 text-xs font-bold ${
                     currentFixture.result === "W"
                       ? "text-theme-primary"
                       : currentFixture.result === "D"
@@ -193,13 +192,14 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               animate={{ opacity: 1, scale: 1 }}
               className="mt-5"
             >
-              <p className="font-display text-2xl font-black">
-                Final Record: {result.wins}-{result.losses}
+              <p className={TYPO.label}>Final Record</p>
+              <p className="fl-number mt-1 text-[34px] text-white">
+                {result.wins}-{result.losses}
               </p>
-              <p className="mt-2 text-sm text-gray-400">
+              <p className="mt-2 text-sm text-[color:var(--fl-text)]">
                 League Position: #{result.leaguePosition}
               </p>
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
                 Points Difference:{" "}
                 {result.pointsDifference > 0 ? "+" : ""}
                 {result.pointsDifference}
@@ -209,7 +209,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
                   {result.insights.slice(0, 3).map((insight) => (
                     <p
                       key={insight}
-                      className="rounded-lg bg-pitch-900/50 px-3 py-2 text-xs text-gray-400"
+                      className="rounded-[12px] bg-pitch-950 px-3 py-2 text-xs text-[color:var(--fl-muted)]"
                     >
                       {insight}
                     </p>
@@ -218,14 +218,14 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               )}
             </motion.div>
           )}
-        </ScoreboardPanel>
+        </div>
 
         {phase === "simulating" ? (
           <div className="mt-3 flex justify-center">
             <button
               type="button"
               onClick={skipToEnd}
-              className="btn-press rounded-full border border-white/15 px-4 py-2 text-xs font-bold uppercase tracking-wider text-gray-300 hover:border-theme-primary/50 hover:text-white"
+              className="btn-press inline-flex min-h-[44px] items-center justify-center rounded-full bg-pitch-800 px-5 text-sm font-semibold text-[color:var(--fl-text)] transition hover:bg-pitch-700"
             >
               Skip to full time
             </button>
@@ -240,11 +240,11 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               <span
                 key={f.round}
                 title={played ? `R${f.round}: ${formatFixtureScore(f)}` : `Round ${f.round}`}
-                className={`flex aspect-square items-center justify-center rounded-full text-[10px] font-black ${
+                className={`flex aspect-square items-center justify-center rounded-full text-[10px] font-bold ${
                   !played
-                    ? "bg-pitch-900 text-pitch-600"
+                    ? "bg-pitch-950 text-[color:var(--fl-muted)]"
                     : f.result === "W"
-                      ? "bg-theme-primary/85 text-black"
+                      ? "bg-theme-primary text-[color:var(--theme-text-on-primary)]"
                       : f.result === "D"
                         ? "bg-gray-500 text-black"
                         : "bg-red-500/85 text-white"
@@ -256,17 +256,17 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
           })}
         </div>
 
-        <details className="mt-3 rounded-xl border border-pitch-700/50 bg-pitch-950/50 p-2.5 sm:p-3">
-          <summary className={`cursor-pointer select-none ${TYPO.statLabel}`}>
+        <details className="mt-3 rounded-[16px] bg-pitch-800 px-3 sm:px-4">
+          <summary className={`flex min-h-[44px] cursor-pointer select-none items-center ${TYPO.label}`}>
             Results ({Math.min(gameIndex, SEASON_GAMES)})
           </summary>
-          <div className="mt-2 space-y-0.5">
+          <div className="space-y-0.5 pb-3">
             {result.fixtures.slice(0, gameIndex).map((f) => (
               <div
                 key={f.round}
-                className="flex items-center justify-between gap-2 text-[10px] sm:text-[11px]"
+                className="flex items-center justify-between gap-2 text-[11px] sm:text-xs"
               >
-                <span className="truncate text-gray-400">
+                <span className="truncate text-[color:var(--fl-muted)]">
                   R{f.round}: {formatFixtureScore(f)}
                 </span>
                 <span

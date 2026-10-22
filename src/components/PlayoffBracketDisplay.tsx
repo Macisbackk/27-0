@@ -21,6 +21,7 @@ import {
   PlayoffMatchCard,
   PlayoffRoundTitle,
 } from "./PlayoffBracketVisuals";
+import { TYPO } from "@/lib/ui/typography";
 
 const ROUNDS = [1, 2, 3] as const;
 
@@ -95,13 +96,13 @@ export function PlayoffBracketDisplay({
 
       <div className="playoff-bracket-panel p-3 sm:p-4 lg:p-5">
         {embedded && (
-          <div className="mb-4 border-b border-pitch-700/40 pb-4">
+          <div className="mb-4 border-b border-white/[0.06] pb-4">
             <PlayoffBracketProgressStrip
               activeRound={activeRound}
               tournamentComplete={tournamentComplete}
               compact
             />
-            <p className="mt-3 text-center text-xs text-pitch-400">
+            <p className={`mt-3 text-center ${TYPO.label}`}>
               {tournamentComplete
                 ? "Select a completed tie for details"
                 : `${getPlayoffRoundLabel(activeRound)} in progress — select finished ties for details`}
@@ -118,7 +119,6 @@ export function PlayoffBracketDisplay({
           getShortLabel={(round) =>
             PLAYOFF_ROUND_SHORT[round] ?? getPlayoffRoundLabel(round)
           }
-          activeClassName="border-theme-primary/55 bg-theme-primary/12 text-theme-primary"
         />
 
         <div className="mt-4 sm:hidden">
@@ -129,7 +129,7 @@ export function PlayoffBracketDisplay({
             )}
           </div>
           {viewRound < activeRound && (
-            <p className="mt-3 text-center text-xs text-pitch-500">
+            <p className={`mt-3 text-center ${TYPO.label}`}>
               Round complete — use the tabs above to review earlier ties
             </p>
           )}
