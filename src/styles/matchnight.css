@@ -1,18 +1,24 @@
 /*
  * Matchnight — the 27-0 identity (v1.05).
  *
- * A floodlit Friday night at a rugby league ground, in the competition's blue, red and white:
- * deep league-blue night, squared kit-tag corners and condensed team-sheet type. Loaded last, so it wins.
- *   ground #06182a · surface #0c2339 · raised #12304d · line rgba(120,170,230,.12)
- *   blue   #2085d6 actions (Store themes swap it) · red #e8193f the scoreboard mark and "you are here"
- *   white  text · Current mode sky #5cc8ff · Era mode parchment #ead9b0
+ * "Neon night": a floodlit match night in Super League's neon accents (cyan, violet, lime) on ink-indigo,
+ * with squared kit-tag corners and condensed team-sheet type. Loaded last, so it wins.
+ *   ground #121228 · surface #1c1b3d · raised #29275a · line rgba(190,170,255,.12)
+ *   violet #9346ff actions (Store themes swap it) · cyan #3cffff the scoreboard mark and "you are here"
+ *   white  text · Current mode cyan #3cffff · Era mode lime #cafa75
  *   type   Barlow (reading) · Barlow Condensed (headings, buttons, tags) · Anton (scores, the mark)
  *   shape  cards 6px · tiles and controls 4px · primary buttons have chamfered corners
  */
 
 :root {
-  --mn-red: #e8193f;
-  --mn-red-rgb: 232 25 63;
+  --mn-signal: #3cffff;
+  --mn-signal-rgb: 60 255 255;
+}
+
+/* With the default theme, violet text is lifted a step so it reads on the dark cards. */
+:root:not([data-ui-theme]) .text-theme-primary,
+[data-ui-theme="default"] .text-theme-primary {
+  color: #b48cff;
 }
 
 /* ── Ground: a faint floodlight wash from the top of the screen ──────────── */
@@ -22,7 +28,7 @@ body,
   background-color: var(--fl-ground);
 }
 .app-shell {
-  background-image: radial-gradient(120% 420px at 50% -120px, rgba(190, 220, 255, 0.07), transparent 70%);
+  background-image: radial-gradient(120% 420px at 50% -120px, rgba(147, 70, 255, 0.10), transparent 70%);
   background-repeat: no-repeat;
 }
 
@@ -51,12 +57,12 @@ body,
   display: inline-block;
   padding: 0.12em 0.2em 0.08em;
   border-radius: 3px;
-  background: #03101e;
+  background: #09081a;
   box-shadow:
     inset 0 0 0 1px var(--fl-line-strong),
     inset 0 -0.5em 0.6em rgba(255, 255, 255, 0.03);
-  color: var(--mn-red);
-  text-shadow: 0 0 0.35em rgb(var(--mn-red-rgb) / 0.5);
+  color: var(--mn-signal);
+  text-shadow: 0 0 0.35em rgb(var(--mn-signal-rgb) / 0.5);
 }
 /* The split line across a flip panel. */
 .logo-mark__cell::after {
@@ -140,7 +146,7 @@ button.game-button--era,
 .game-button--era:focus-visible,
 .mn-chamfer:focus-visible {
   outline: none !important;
-  box-shadow: inset 0 0 0 3px rgba(6, 24, 42, 0.85) !important;
+  box-shadow: inset 0 0 0 3px rgba(18, 18, 40, 0.85) !important;
 }
 
 a.game-button--secondary,
@@ -179,7 +185,7 @@ button.game-button--secondary,
   border-radius: 3px;
 }
 
-/* ── Phone tab bar: docked to the bottom, a red bar marks the tab you're on ── */
+/* ── Phone tab bar: docked to the bottom, a cyan bar marks the tab you're on ── */
 .fl-bottom-nav {
   left: 0;
   right: 0;
@@ -188,7 +194,7 @@ button.game-button--secondary,
   padding: 0 6px env(safe-area-inset-bottom);
   border-radius: 0;
   border-top: 1px solid var(--fl-line);
-  background: rgba(6, 24, 42, 0.97);
+  background: rgba(18, 18, 40, 0.97);
   box-shadow: none;
 }
 .fl-bottom-nav a {
@@ -209,13 +215,13 @@ button.game-button--secondary,
   height: 3px;
   z-index: 0;
   border-radius: 0 0 2px 2px;
-  background: var(--mn-red);
-  box-shadow: 0 0 12px rgb(var(--mn-red-rgb) / 0.55);
+  background: var(--mn-signal);
+  box-shadow: 0 0 12px rgb(var(--mn-signal-rgb) / 0.55);
 }
 
 /* ── Header ────────────────────────────────────────────────────────────── */
 .app-header {
-  background: rgba(6, 24, 42, 0.97) !important;
+  background: rgba(18, 18, 40, 0.97) !important;
 }
 
 /* ── Inputs ───────────────────────────────────────────────────────────── */
@@ -224,7 +230,7 @@ button.game-button--secondary,
 }
 
 /* ── Home: mode plates ─────────────────────────────────────────────────── */
-/* A coloured top edge says which game a plate belongs to (blue Manager, sky Classic, parchment Era). */
+/* A coloured top edge says which game a plate belongs to (violet Manager, cyan Classic, lime Era). */
 .mn-edge {
   position: relative;
   overflow: hidden;
@@ -248,7 +254,7 @@ button.game-button--secondary,
   --mn-edge: var(--fl-line-strong);
 }
 
-/* Today's fixture: the Daily card has a red touchline down its left side. */
+/* Today's fixture: the Daily card has a cyan touchline down its left side. */
 .mn-fixture {
   position: relative;
   overflow: hidden;
@@ -260,5 +266,5 @@ button.game-button--secondary,
   top: 0;
   bottom: 0;
   width: 4px;
-  background: var(--mn-red);
+  background: var(--mn-signal);
 }
