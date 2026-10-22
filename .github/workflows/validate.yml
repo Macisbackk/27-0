@@ -95,14 +95,16 @@ jobs:
       - name: UI audit screenshots (phone + desktop)
         if: (success() || failure()) && github.event_name == 'pull_request'
         continue-on-error: true
+        # Report-only: a hang here must never take the whole job past its limit.
+        timeout-minutes: 25
         run: |
           curl -sf http://localhost:3000/ > /dev/null || (npx next start -p 3000 > /tmp/next3.log 2>&1 &)
           for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
-          node scripts/ui-audit.mjs
-          node scripts/text-fit-audit.mjs
-          node scripts/store-screenshots.mjs || true
-          npx playwright install --with-deps webkit > /dev/null 2>&1 || true
-          node scripts/menu-flicker-probe.mjs || true
+          timeout 900 node scripts/ui-audit.mjs
+          timeout 300 node scripts/text-fit-audit.mjs || true
+          timeout 300 node scripts/store-screenshots.mjs || true
+          timeout 240 npx playwright install --with-deps webkit > /dev/null 2>&1 || true
+          timeout 180 node scripts/menu-flicker-probe.mjs || true
       - name: Publish e2e screenshots (same-repo PRs only)
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && hashFiles('e2e-shots/*.png') != ''
         run: |
