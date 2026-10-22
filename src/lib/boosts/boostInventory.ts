@@ -276,3 +276,27 @@ export function cancelArmedBoost(usageId: string): void {
   );
   saveBoostInventory(state);
 }
+
+/** Marks every remaining boost as spent (used by the one-time refund when boosts were retired). */
+export function recordRetiredBoostRefund(): void {
+  const state = loadBoostInventory();
+  let changed = false;
+  for (const [boostId, qty] of Object.entries(state.quantities)) {
+    if (!(qty > 0)) continue;
+    for (let n = 0; n < qty; n++) {
+      const id = `retired-refund-${boostId}-${n}`;
+      if (state.usageHistory.some((u) => u.id === id)) continue;
+      state.usageHistory.push({
+        id,
+        boostId: boostId as GameBoostId,
+        gameSaveId: "retired",
+        mode: "retired",
+        status: "consumed",
+        timestamp: new Date().toISOString(),
+      });
+    }
+    state.quantities[boostId] = 0;
+    changed = true;
+  }
+  if (changed) saveBoostInventory(state);
+}

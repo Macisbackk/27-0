@@ -42,8 +42,6 @@ interface SidebarNavProps {
 
 const MAIN_NAV_ITEMS = [
   { href: "/store", label: "Store" },
-  { href: "/showcase", label: "Player Showcase" },
-  { href: "/stats", label: "Career Stats" },
   { href: "/leaderboard", label: "Leaderboard" },
   { href: "/settings", label: "Settings" },
 ] as const;
@@ -287,7 +285,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       }}
                       className={`${navLinkClass(inMiniGames)} w-full`}
                     >
-                      Mini Games
+                      Puzzles
                       <span className="ml-auto text-[11px] text-pitch-400" aria-hidden>
                         {miniGamesOpen ? "▾" : "▸"}
                       </span>
@@ -310,18 +308,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                               href: "/mini-games/wordle",
                               label: "Rugby League Wordle",
                               active: pathname.startsWith("/mini-games/wordle"),
-                            },
-                            {
-                              href: "/mini-games/hangman",
-                              label: "Rugby League Hangman",
-                              active: pathname.startsWith("/mini-games/hangman"),
-                            },
-                            {
-                              href: "/mini-games/higher-lower",
-                              label: "Higher or Lower",
-                              active: pathname.startsWith(
-                                "/mini-games/higher-lower"
-                              ),
                             },
                           ].map((item) => (
                             <li key={item.href}>
@@ -350,7 +336,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 </p>
                 <ul className={NAV.list}>
                   {MAIN_NAV_ITEMS.filter((item) =>
-                    ["/store", "/showcase", "/stats", "/leaderboard", "/settings"].includes(
+                    ["/store", "/leaderboard", "/settings"].includes(
                       item.href
                     )
                   ).map((item) => {
@@ -371,25 +357,19 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                     );
                   })}
                   <li>
-                    {loading ? (
-                      <div
-                        className={`${NAV.item} text-gray-500`}
-                        aria-busy="true"
-                      >
-                        <span className={TYPO.bodySm}>Loading…</span>
-                      </div>
-                    ) : isLoggedIn ? (
-                      <Link
-                        href="/profile#achievements"
-                        onClick={handleNavClick}
-                        className={navLinkClass(pathname.startsWith("/profile"))}
-                      >
-                        Coach Profile
-                        {pathname.startsWith("/profile") && (
-                          <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
-                        )}
-                      </Link>
-                    ) : (
+                    <Link
+                      href="/profile"
+                      onClick={handleNavClick}
+                      className={navLinkClass(pathname.startsWith("/profile"))}
+                    >
+                      Coach Profile
+                      {pathname.startsWith("/profile") && (
+                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
+                      )}
+                    </Link>
+                  </li>
+                  {!loading && !isLoggedIn ? (
+                    <li>
                       <Link
                         href="/login"
                         onClick={handleNavClick}
@@ -400,8 +380,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                           <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
                         )}
                       </Link>
-                    )}
-                  </li>
+                    </li>
+                  ) : null}
                 </ul>
               </section>
             </nav>

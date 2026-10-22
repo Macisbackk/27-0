@@ -174,7 +174,11 @@ import {
   type QuickModePreGameBoostState,
 } from "@/lib/game/quick-mode-pregame-boost";
 
+const BOOSTS_RETIRED = true;
+
 function ownsEligiblePreGameBoost(eraMode: boolean): boolean {
+  // Store boosts are retired: never offer the pre-game chooser. Owned boosts were refunded.
+  if (BOOSTS_RETIRED) return false;
   return getQuickModeBoosts().some(
     (b) =>
       isQmSelectionBoostId(b.id) &&

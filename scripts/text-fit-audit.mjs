@@ -9,7 +9,7 @@ import { chromium } from "playwright";
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 const ROUTES = [
   "/", "/play", "/play?era=1", "/play?daily=1", "/manager", "/mini-games", "/mini-games/quiz", "/mini-games/wordle",
-  "/mini-games/hangman", "/mini-games/higher-lower", "/leaderboard", "/stats", "/profile", "/store", "/showcase", "/settings", "/login",
+  "/leaderboard", "/profile", "/store", "/showcase", "/settings", "/login",
   "/auth/reset-password",
 ];
 const VIEWPORTS = [

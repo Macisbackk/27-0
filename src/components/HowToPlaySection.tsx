@@ -21,20 +21,12 @@ const GUIDE_ITEMS = [
       ]
     : []),
   {
-    title: "Mini Games",
-    body: "Super League Millionaire, Wordle, Hangman and Higher or Lower, all paying Club Funds.",
+    title: "Puzzles",
+    body: "Super League Millionaire and Rugby League Wordle. Play daily for Club Funds.",
   },
   {
     title: "Club Funds",
-    body: "Earn from seasons, play-offs, mini games and achievements — spend in the Store.",
-  },
-  {
-    title: "Coach Profile",
-    body: "Records, achievements and long-term progress.",
-  },
-  {
-    title: "Store",
-    body: "Unlock UI themes and Classic boosts with Club Funds.",
+    body: "Earn them from seasons, play-offs, puzzles and achievements. Spend them on themes in the Store.",
   },
 ];
 

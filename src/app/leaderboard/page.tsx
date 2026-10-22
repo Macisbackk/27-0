@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { LeaderboardGuestNotice } from "@/components/LeaderboardGuestNotice";
-import { LeaderboardTable } from "@/components/LeaderboardTable";
-import { CareerLeaderboard } from "@/components/career/CareerLeaderboard";
+import { LeaderboardBoards } from "@/components/LeaderboardBoards";
 import { PageShellBody } from "@/components/ui/PageShell";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
 import { PAGE } from "@/lib/ui/design-system";
@@ -9,7 +8,7 @@ import { TYPO } from "@/lib/ui/typography";
 
 export const metadata: Metadata = {
   title: "Leaderboard — 27-0",
-  description: "Classic, Manager Mode, Daily Challenge and Mini Games rankings.",
+  description: "Classic, Daily Challenge and Manager Mode rankings.",
 };
 
 export default async function LeaderboardPage() {
@@ -21,12 +20,11 @@ export default async function LeaderboardPage() {
             <p className={TYPO.sectionLabel}>Rankings</p>
             <h1 className={`mt-1 ${TYPO.pageTitle}`}>Leaderboard</h1>
             <p className={`mt-2 ${TYPO.bodySm}`}>
-              Classic, Daily Challenge, Mini Games and Manager Mode.
+              Classic, Daily Challenge and Manager Mode.
             </p>
           </header>
           <LeaderboardGuestNotice />
-          <LeaderboardTable />
-          <CareerLeaderboard />
+          <LeaderboardBoards />
         </div>
       </PageShellBody>
     </StandardPageShell>

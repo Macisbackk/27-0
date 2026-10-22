@@ -12,7 +12,7 @@ import { chromium } from "playwright";
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 const ROUTES = [
   "/", "/play", "/play?era=1", "/play?daily=1", "/manager", "/mini-games", "/mini-games/quiz", "/mini-games/wordle",
-  "/mini-games/hangman", "/mini-games/higher-lower", "/quiz", "/leaderboard", "/stats", "/profile", "/store",
+  "/quiz", "/leaderboard", "/stats", "/profile", "/store",
   "/showcase", "/settings", "/login", "/auth/callback", "/auth/reset-password",
 ];
 const EXPECT_404 = ["/dev/mobile-ui", "/this-route-does-not-exist"];
@@ -192,24 +192,6 @@ await miniGame("/mini-games/wordle", "Wordle", async () => {
     await page.waitForTimeout(250);
   }
   for (let i = 0; i < 4; i++) await tapFirst(page, [/Reveal clue/i]);
-});
-
-await miniGame("/mini-games/hangman", "Hangman", async () => {
-  const letters = "etaoinsrhldcumfpgwybvkxjqz'-".split("");
-  for (const ch of letters) {
-    const btn = page.getByRole("button", { name: new RegExp(`^${ch.replace(/[-']/g, "\\$&")}$`, "i") }).first();
-    if (await btn.isVisible().catch(() => false)) await btn.click({ timeout: 1500 }).catch(() => {});
-    else await page.keyboard.press(ch).catch(() => {});
-    await page.waitForTimeout(60);
-  }
-});
-
-await miniGame("/mini-games/higher-lower", "Higher or Lower", async () => {
-  for (let i = 0; i < 25; i++) {
-    const t = await tapFirst(page, [i % 2 ? /^Higher$/i : /^Lower$/i, /Next pick/i, /Play again|New game|Try again|Restart/i]);
-    if (!t) break;
-    await page.waitForTimeout(250);
-  }
 });
 
 await miniGame("/mini-games/quiz", "Quiz", async () => {

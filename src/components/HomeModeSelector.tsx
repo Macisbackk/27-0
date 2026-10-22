@@ -89,15 +89,15 @@ export function HomeModeSelector() {
           className="btn-press flex flex-col items-center justify-between gap-2 rounded-2xl border border-white/10 bg-pitch-900/70 p-4 text-center transition hover:border-theme-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60"
         >
           <span className={`${TYPO.eyebrow} text-theme-primary`}>Quick games</span>
-          <span className="font-display text-lg font-black leading-tight text-white">Mini Games</span>
+          <span className="font-display text-lg font-black leading-tight text-white">Puzzles</span>
           <span aria-hidden className="flex gap-1">
-            {["?", "W", "A_", "↕"].map((g) => (
+            {["?", "W"].map((g) => (
               <span key={g} className="flex h-7 w-7 items-center justify-center rounded-md border border-white/10 bg-pitch-950 text-xs font-black text-gray-300">
                 {g}
               </span>
             ))}
           </span>
-          <span className="text-xs text-gray-400">Millionaire · Wordle · Hangman · Higher/Lower</span>
+          <span className="text-xs text-gray-400">Millionaire · Wordle</span>
         </Link>
       </div>
     </section>

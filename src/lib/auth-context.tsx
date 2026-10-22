@@ -35,6 +35,15 @@ import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
 import { refreshBoostInventoryFromCloud } from "./boosts/boostInventory";
 import { refreshAchievementsFromCloud } from "./achievements/achievementStorage";
 import { claimDeviceForAccount } from "./storage/account-owner";
+import { refundRetiredBoosts } from "./boosts/retired-boost-refund";
+
+function safeRefundRetiredBoosts(): void {
+  try {
+    refundRetiredBoosts();
+  } catch (err) {
+    console.error("[boosts] refund failed:", err);
+  }
+}
 
 interface AuthContextValue {
   user: User | null;
@@ -120,6 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setProfile(null);
         }
         applySession(null, null);
+        safeRefundRetiredBoosts();
         if (wasLoggedIn) {
           window.dispatchEvent(new Event("auth-state-changed"));
         }
@@ -164,6 +174,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       for (const r of results) {
         if (r.status === "rejected") console.error("[auth] cloud hydrate step failed:", r.reason);
       }
+      // After funds + boosts are merged, so a boost bought on another device is refunded once.
+      safeRefundRetiredBoosts();
       if (generation !== syncGenerationRef.current) return;
 
       hydratedSessionKey = sessionKey;

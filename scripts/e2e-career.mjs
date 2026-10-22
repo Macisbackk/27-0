@@ -159,7 +159,8 @@ try {
   step("Career persists across reload");
 
   await page.goto(`${BASE}/leaderboard`, { waitUntil: "networkidle" });
-  await page.getByRole("heading", { name: "Career records" }).waitFor({ timeout });
+  await page.getByRole("tab", { name: "Manager" }).first().click();
+  await page.getByRole("region", { name: "Manager Mode records" }).or(page.getByLabel("Manager Mode records").first()).first().waitFor({ timeout });
   step("Leaderboard shows Manager Mode records");
 
   await page.goto(`${BASE}/`, { waitUntil: "networkidle" });

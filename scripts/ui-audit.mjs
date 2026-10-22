@@ -52,7 +52,6 @@ for (const [route, name] of [
   ["/", "home"],
   ["/mini-games", "mini-games"],
   ["/leaderboard", "leaderboard"],
-  ["/stats", "stats"],
   ["/profile", "profile"],
   ["/store", "store"],
   ["/showcase", "showcase"],
@@ -134,8 +133,8 @@ await shot(page, "era-pitch", { full: false });
 await go(page, "/play?daily=1", 1500);
 await shot(page, "daily-pitch", { full: false });
 
-await go(page, "/stats");
-await shot(page, "stats-after-a-run");
+await go(page, "/profile");
+await shot(page, "profile-stats-after-a-run");
 
 // Quiz.
 await go(page, "/mini-games/quiz", 1200);
@@ -153,8 +152,6 @@ await shot(page, "quiz-answered");
 // Wordle / Hangman / Higher-Lower.
 for (const [route, name] of [
   ["/mini-games/wordle", "wordle"],
-  ["/mini-games/hangman", "hangman"],
-  ["/mini-games/higher-lower", "higher-lower"],
 ]) {
   await go(page, route, 1200);
   await shot(page, `${name}-start`);

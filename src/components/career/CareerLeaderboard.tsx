@@ -32,12 +32,7 @@ export function CareerLeaderboard() {
   const meta = CAREER_BOARDS.find((b) => b.id === board)!;
 
   return (
-    <section className="mt-8 space-y-3" aria-labelledby="career-lb-title">
-      <header>
-        <p className={TYPO.sectionLabel}>Manager Mode</p>
-        <h2 id="career-lb-title" className={`mt-1 ${TYPO.sectionTitle}`}>Career records</h2>
-        <p className={`mt-1 ${TYPO.bodySm}`}>{meta.blurb}.</p>
-      </header>
+    <section className="space-y-3" aria-label="Manager Mode records">
       <LeaderboardTabBar<CareerBoard>
         tier="category"
         tabs={CAREER_BOARDS.map((b) => ({ id: b.id, label: b.label, accent: "gold" as const }))}
@@ -45,6 +40,7 @@ export function CareerLeaderboard() {
         onChange={setBoard}
         ariaLabel="Manager Mode records"
       />
+      <p className={`text-center ${TYPO.bodySm}`}>{meta.blurb}.</p>
       <GamePanel variant="elevated" className="overflow-hidden p-0">
         {entries === null ? (
           <p className="px-4 py-6 text-center text-sm text-gray-400" role="status">Loading…</p>

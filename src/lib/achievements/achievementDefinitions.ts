@@ -353,6 +353,8 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     id: "quiz-club-expert",
     name: "Club Expert",
     description: "Complete a Team Challenge quiz.",
+    // Retired game — kept so existing unlocks still show; hidden while locked.
+    hidden: true,
     category: "quiz",
     points: 25,
     rewardClubFunds: 15_000,
@@ -361,6 +363,8 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     id: "quiz-club-millionaire",
     name: "Club Millionaire",
     description: "Reach £1,000,000 in Team Challenge.",
+    // Retired game — kept so existing unlocks still show; hidden while locked.
+    hidden: true,
     category: "quiz",
     points: 80,
     rewardClubFunds: 75_000,
@@ -395,6 +399,8 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     id: "hangman-win",
     name: "Hangman Win",
     description: "Solve a Rugby League Hangman puzzle.",
+    // Retired game — kept so existing unlocks still show; hidden while locked.
+    hidden: true,
     category: "quiz",
     points: 25,
     rewardClubFunds: 10_000,
@@ -404,6 +410,8 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     id: "higher-lower-streak-10",
     name: "Five from Five",
     description: "Complete a Higher or Lower five-pick run.",
+    // Retired game — kept so existing unlocks still show; hidden while locked.
+    hidden: true,
     category: "quiz",
     points: 40,
     rewardClubFunds: 15_000,
