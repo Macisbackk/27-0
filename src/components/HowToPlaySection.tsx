@@ -13,7 +13,7 @@ const GUIDE_ITEMS = [
     ? [
         {
           title: "Daily Challenge",
-          body: "Every opponent is the same club. One counted attempt per UK day. Top the table and win the Grand Final to extend your streak.",
+          body: "A new rule every day: one club, one era, underdogs, no respins and more. One counted attempt per UK day.",
         },
       ]
     : []),

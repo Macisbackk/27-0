@@ -126,9 +126,11 @@ export function HomeModeSelector() {
             Daily Challenge{daily?.scenario.eraMode ? " · Era" : ""}
           </p>
           {dailyStatus ? <p className="mt-1 text-xs text-[color:var(--fl-muted)]">{dailyStatus}</p> : null}
-          <p className="mt-3 text-sm text-[color:var(--fl-muted)]">Every opponent is</p>
-          <p className="mt-0.5 text-[30px] font-bold leading-tight tracking-tight">
-            {daily?.scenario.forceOpponentClub ?? "Today's club"}
+          <p className="mt-3 text-[28px] font-bold leading-tight tracking-tight">
+            {daily?.scenario.ruleTitle ?? "Today's rule"}
+          </p>
+          <p className="mx-auto mt-1 max-w-xs text-sm text-[color:var(--fl-muted)]">
+            {daily?.scenario.ruleSummary ?? "A new twist every day."}
           </p>
           {daily ? (
             <div className="mt-3 flex flex-wrap justify-center gap-2">

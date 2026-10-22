@@ -49,6 +49,9 @@ jobs:
       - name: Grid
         if: success() || failure()
         run: scripts/ci-run.sh "Grid" npm run test:grid
+      - name: Daily Challenge rules
+        if: success() || failure()
+        run: scripts/ci-run.sh "Daily Challenge rules" npm run test:daily-rules
 
   build:
     runs-on: ubuntu-latest

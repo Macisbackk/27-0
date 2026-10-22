@@ -4,7 +4,7 @@ import { ACHIEVEMENT_DEFINITIONS } from "./achievements/achievementDefinitions";
 import { getDailyChallengeMinimumBonuses } from "./daily-challenge";
 import { SHOW_DAILY_CHALLENGE_UI } from "./feature-flags";
 import { GRID_REWARD_PER_CELL, WORDLE_WIN_REWARD } from "./mini-games/reward-amounts";
-import { QUIZ_PRIZE_LADDER } from "./quiz/prizes";
+import { QUIZ_TOP_PRIZE } from "./quiz/prizes";
 
 export const CLUB_FUNDS_REWARDS = {
   leagueLeaders: 30_000,
@@ -215,7 +215,6 @@ export interface ClubFundsInfoLine {
   valueText?: string;
 }
 
-const QUIZ_TOP_PRIZE = QUIZ_PRIZE_LADDER[QUIZ_PRIZE_LADDER.length - 1] ?? 0;
 const DAILY_MIN_BONUSES = getDailyChallengeMinimumBonuses();
 const ACHIEVEMENT_REWARDS = ACHIEVEMENT_DEFINITIONS.map((a) => a.rewardClubFunds ?? 0).filter(
   (amount) => amount > 0
@@ -251,7 +250,11 @@ const CLUB_FUNDS_INFO_LINES_SOURCE: ClubFundsInfoLine[] = [
         },
       ]
     : []),
-  { label: "Super League Millionaire (15/15)", amount: QUIZ_TOP_PRIZE },
+  {
+    label: "Super League Millionaire (best run each day)",
+    amount: QUIZ_TOP_PRIZE,
+    valueText: `up to ${formatClubFundsExact(QUIZ_TOP_PRIZE)}`,
+  },
   { label: "Wordle (once a day)", amount: WORDLE_WIN_REWARD },
   {
     label: "Rugby League Grid (once a day)",

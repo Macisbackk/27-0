@@ -65,6 +65,11 @@ import {
   type TeamYearPool,
   warnTeamYearPoolLeak,
 } from "./team-year-pools";
+import {
+  applyPlayerRuleWithFallback,
+  poolPassesRule,
+  type SpinRuleFilter,
+} from "./daily-rule-filter";
 
 function filterSpinPools(
   pools: TeamYearPool[],
@@ -97,6 +102,11 @@ function pickPoolFromCandidates(
 export interface SlotSpinPickOptions {
   requireLegendPlayer?: boolean;
   spinVariant?: SpinPoolVariant;
+  /**
+   * Daily Challenge rule: spins land only on team-years with an eligible player who passes it.
+   * Falls back to unrestricted pools if the rule can't fill the slot (never soft-locks).
+   */
+  ruleFilter?: SpinRuleFilter | null;
 }
 
 export interface SlotPlayerPrepareOptions {
@@ -109,6 +119,8 @@ export interface SlotPlayerPrepareOptions {
   guaranteedPlayerId?: string;
   /** When set, rebuild choices from these ids (BoostedSpinPlan) instead of shuffling. */
   forcedPlayerIds?: readonly string[];
+  /** Daily Challenge rule: only offer players who pass it (unless none in this team-year do). */
+  ruleFilter?: SpinRuleFilter | null;
 }
 
 export const MAX_SLOT_RECRUIT_CHOICES = 3;
@@ -230,11 +242,12 @@ export function prepareSlotTeamYearPlayers(
       !(player.basePlayerId && signed.has(`base:${player.basePlayerId}`)) &&
       canPlayerFillTeamYearSlot(target.team, target.year, player, slot.position)
   );
+  const ruled = applyPlayerRuleWithFallback(available, options.ruleFilter);
   const legends = options.legendOnly
-    ? available.filter((player) => player.category === "legend")
-    : available;
+    ? ruled.filter((player) => player.category === "legend")
+    : ruled;
   // Safety net: never leave the legend slot with an empty choice list (soft-lock).
-  const entries = (legends.length > 0 ? legends : available)
+  const entries = (legends.length > 0 ? legends : ruled)
     .map((player) => {
       const prepared = preparePlayerForTeamYear(player, target);
       warnTeamYearPoolLeak(prepared, target);
@@ -391,11 +404,14 @@ export function eligiblePlayersForSlot(
   pool: TeamYearPool,
   usedIds: Set<string>,
   squad: SquadSlot[],
-  slotIndex: number
+  slotIndex: number,
+  ruleFilter?: SpinRuleFilter | null
 ): Player[] {
   const slot = squad.find((s) => s.slotIndex === slotIndex);
   if (!slot || slot.player) return [];
+  if (!poolPassesRule(pool, ruleFilter)) return [];
   const signed = signedPersonKeys(squad);
+  const playerFilter = ruleFilter?.playerFilter;
 
   return getRawPlayersForTeamYearPool(pool).filter(
     (player) =>
@@ -403,6 +419,7 @@ export function eligiblePlayersForSlot(
       !usedIds.has(player.id) &&
       !signed.has(normalizePlayerNameKey(player.name)) &&
       !(player.basePlayerId && signed.has(`base:${player.basePlayerId}`)) &&
+      (!playerFilter || playerFilter(player)) &&
       canPlayerFillTeamYearSlot(pool.team, pool.year, player, slot.position)
   );
 }
@@ -411,9 +428,10 @@ function eligibleLegendPlayersForSlot(
   pool: TeamYearPool,
   usedIds: Set<string>,
   squad: SquadSlot[],
-  slotIndex: number
+  slotIndex: number,
+  ruleFilter?: SpinRuleFilter | null
 ): Player[] {
-  return eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).filter(
+  return eligiblePlayersForSlot(pool, usedIds, squad, slotIndex, ruleFilter).filter(
     (player) => player.category === "legend"
   );
 }
@@ -436,7 +454,8 @@ export function generateSlotTeamYearTargetForSlot(
       squad,
       slotIndex,
       usedTeamYearKeys,
-      options.spinVariant ?? "current"
+      options.spinVariant ?? "current",
+      options.ruleFilter
     );
     if (legendPick) return buildSlotRevealTarget(legendPick.team, legendPick.year);
     // Every eligible legend is already in the squad (e.g. signed on another club's card):
@@ -465,12 +484,48 @@ function pickTeamYearForSlot(
   usedTeamYearKeys: ReadonlySet<string> = new Set(),
   options: SlotSpinPickOptions = {}
 ): { target: SlotRevealTarget; nextSpinIndex: number } | null {
+  if (options.ruleFilter) {
+    const ruled = pickTeamYearForSlotWithRule(
+      seed,
+      spinIndex,
+      usedIds,
+      squad,
+      slotIndex,
+      usedTeamYearKeys,
+      options,
+      options.ruleFilter
+    );
+    if (ruled) return ruled;
+    // The Daily rule can't fill this slot any more: spin the normal pools rather than lock it.
+  }
+  return pickTeamYearForSlotWithRule(
+    seed,
+    spinIndex,
+    usedIds,
+    squad,
+    slotIndex,
+    usedTeamYearKeys,
+    options,
+    null
+  );
+}
+
+function pickTeamYearForSlotWithRule(
+  seed: string,
+  spinIndex: number,
+  usedIds: Set<string>,
+  squad: SquadSlot[],
+  slotIndex: number,
+  usedTeamYearKeys: ReadonlySet<string>,
+  options: SlotSpinPickOptions,
+  ruleFilter: SpinRuleFilter | null
+): { target: SlotRevealTarget; nextSpinIndex: number } | null {
   const variant = options.spinVariant ?? "current";
   const t0 = spinTimingMark("pick-team-year-start");
   const validatePool = (pool: TeamYearPool) =>
     options.requireLegendPlayer
-      ? eligibleLegendPlayersForSlot(pool, usedIds, squad, slotIndex).length > 0
-      : eligiblePlayersForSlot(pool, usedIds, squad, slotIndex).length > 0;
+      ? eligibleLegendPlayersForSlot(pool, usedIds, squad, slotIndex, ruleFilter).length > 0
+      : eligiblePlayersForSlot(pool, usedIds, squad, slotIndex, ruleFilter).length > 0;
 
   const rng = seedrandom(`${seed}-slot-autofill-${slotIndex}-${spinIndex}`);
   const eligible = filterSpinPools(
@@ -512,7 +567,8 @@ export function autofillSlotRecruitSquad(
   startSpinIndex: number,
   squad: SquadSlot[],
   usedTeamYearKeys: ReadonlySet<string> = new Set(),
-  spinVariant: SpinPoolVariant = "current"
+  spinVariant: SpinPoolVariant = "current",
+  ruleFilter: SpinRuleFilter | null = null
 ): SlotAutofillResult | null {
   let newSquad = squad;
   let usedIds = new Set(
@@ -534,7 +590,7 @@ export function autofillSlotRecruitSquad(
       newSquad,
       slotIndex,
       teamYearsUsed,
-      { spinVariant }
+      { spinVariant, ruleFilter }
     );
     if (!picked) return null;
 
@@ -544,11 +600,9 @@ export function autofillSlotRecruitSquad(
     const pool = getTeamYearPoolFromTarget(target);
     if (!pool) return null;
 
-    const candidates = eligiblePlayersForSlot(
-      pool,
-      usedIds,
-      newSquad,
-      slotIndex
+    const candidates = applyPlayerRuleWithFallback(
+      eligiblePlayersForSlot(pool, usedIds, newSquad, slotIndex),
+      ruleFilter
     );
     if (candidates.length === 0) return null;
 
