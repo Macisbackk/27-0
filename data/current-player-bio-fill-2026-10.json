@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-22T16:34:15Z",
+ "generatedAt": "2026-10-22T16:36:28Z",
  "asOf": "2026-10-22",
  "notes": "Researched via WebSearch/WebFetch. Caps are senior international rugby league test caps as of the cited source date.",
  "players": [
@@ -176,7 +176,9 @@
     "https://en.wikipedia.org/wiki/Brad_Singleton"
    ],
    "note": "Born Barrow-in-Furness; Ireland 3 caps (2017). Left Castleford for Barrow Raiders May/June 2026. Nationality left England (birthplace); Ireland is his representative nation.",
-   "name": "Brad Singleton"
+   "name": "Brad Singleton",
+   "nationality": "Ireland",
+   "nationalityWas": "England"
   },
   {
    "id": "castleford-cur-brock-greacen",
@@ -284,6 +286,100 @@
    "note": "In Fiji's 2026 RLWC squad; caps = pre-tournament figure.",
    "name": "Semi Valemei",
    "nationalityWas": "Tonga"
+  },
+  {
+   "id": "castleford-cur-liam-hood",
+   "intlCaps": 10,
+   "intlNation": "Scotland",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/liam-hood/summary.html"
+   ],
+   "note": "Born Bradford; Scotland Tests 2012-22 (10).",
+   "name": "Liam Hood"
+  },
+  {
+   "id": "wakefield-cur-liam-hood",
+   "intlCaps": 10,
+   "intlNation": "Scotland",
+   "appearances": 132,
+   "tries": 26,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/liam-hood/summary.html"
+   ],
+   "note": "Duplicate Liam Hood entry; he moved Wakefield->Castleford for 2026.",
+   "name": "Liam Hood"
+  },
+  {
+   "id": "castleford-cur-jason-qareqare",
+   "intlCaps": 2,
+   "intlNation": "Fiji",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jason-qareqare/summary.html"
+   ],
+   "note": "Born Lautoka, Fiji; 2 Tests 2023.",
+   "name": "Jason Qareqare"
+  },
+  {
+   "id": "castleford-cur-mikaele-ravalawa",
+   "intlCaps": 5,
+   "intlNation": "Fiji",
+   "appearances": 13,
+   "tries": 5,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/mikaele-ravalawa/summary.html"
+   ],
+   "note": "Born Galoa Island, Fiji; Fiji Tests 2019, 2022-23. Stored SL apps were 0.",
+   "name": "Mikaele Ravalawa"
+  },
+  {
+   "id": "castleford-cur-daejarn-asi",
+   "intlCaps": 2,
+   "intlNation": "Samoa",
+   "nationality": "Samoa",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/daejarn-asi/summary.html"
+   ],
+   "note": "Born Christchurch NZ; Samoa Tests 2023 (2).",
+   "name": "Daejarn Asi",
+   "nationalityWas": "Australia"
+  },
+  {
+   "id": "castleford-cur-louis-senior",
+   "intlCaps": 3,
+   "intlNation": "Ireland",
+   "appearances": 89,
+   "tries": 41,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/Louis-Senior/summary.html"
+   ],
+   "note": "Born Huddersfield; Ireland 3 Tests at 2021 RLWC (played 2022). Stored SL apps were 0.",
+   "name": "Louis Senior"
+  },
+  {
+   "id": "leigh-cur-innes-senior",
+   "intlCaps": 3,
+   "intlNation": "Ireland",
+   "appearances": 153,
+   "tries": 72,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/innes-senior/summary.html"
+   ],
+   "note": "Born Huddersfield; Ireland 3 Tests (2021 RLWC). Stored SL apps were 0.",
+   "name": "Innes Senior"
+  },
+  {
+   "id": "castleford-cur-joe-westerman",
+   "intlCaps": 1,
+   "intlNation": "England",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/joe-westerman/summary.html"
+   ],
+   "note": "1 England Test (2014 Four Nations). RLP SL total now 402 apps/88 tries.",
+   "name": "Joe Westerman"
   }
  ],
  "unverified": [
