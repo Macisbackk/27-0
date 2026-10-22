@@ -66,7 +66,7 @@ export function CareerTutorial({ onTab }: { onTab: (tab: "match" | "team" | "tab
           role="dialog"
           aria-modal="true"
           aria-label="Manager Mode walkthrough"
-          className="mobile-bottom-sheet w-full max-w-md rounded-[22px] bg-pitch-900 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl"
+          className="mobile-bottom-sheet w-full max-w-md rounded-card bg-pitch-900 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl"
           style={{ height: "auto" }}
         >
           <div className="flex items-center gap-3">

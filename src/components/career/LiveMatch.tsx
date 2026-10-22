@@ -135,7 +135,7 @@ export function LiveMatch({
 
   return (
     <div className="flex flex-col gap-3">
-      <section aria-label="Scoreboard" className="rounded-[20px] bg-pitch-900 p-4">
+      <section aria-label="Scoreboard" className="rounded-card bg-pitch-900 p-4">
         <div className="flex items-center justify-between text-xs text-[color:var(--fl-muted)]">
           <span>{fixture.label}</span>
           <span className={`rounded-full px-2.5 py-1 font-bold tabular-nums ${m.finished ? "bg-pitch-950 text-white" : "bg-theme-primary/15 text-theme-primary"}`}>
@@ -180,7 +180,7 @@ export function LiveMatch({
       </section>
 
       {m.pending ? (
-        <section aria-label={m.pending.title} className="rounded-[20px] bg-pitch-900 p-4 ring-2 ring-theme-primary/60">
+        <section aria-label={m.pending.title} className="rounded-card bg-pitch-900 p-4 ring-2 ring-theme-primary/60">
           <p className="text-[13px] font-semibold text-theme-primary">{m.pending.title}</p>
           <p className="mt-1 text-[15px] font-semibold text-white">{m.pending.prompt}</p>
           <div className="mt-3 flex flex-col gap-2">
@@ -189,7 +189,7 @@ export function LiveMatch({
                 key={o.id}
                 type="button"
                 onClick={() => choose(o.id)}
-                className="btn-press flex min-h-[52px] w-full flex-col items-start justify-center rounded-[14px] bg-pitch-800 px-4 py-2.5 text-left transition hover:bg-pitch-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60"
+                className="btn-press flex min-h-[52px] w-full flex-col items-start justify-center rounded-control bg-pitch-800 px-4 py-2.5 text-left transition hover:bg-pitch-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60"
               >
                 <span className="text-[15px] font-bold text-white">{o.label}</span>
                 <span className="text-xs text-[color:var(--fl-muted)]">{o.hint}</span>
@@ -200,7 +200,7 @@ export function LiveMatch({
       ) : null}
 
       {m.finished ? (
-        <section aria-label="Full time" className="rounded-[20px] bg-pitch-900 p-4 text-center">
+        <section aria-label="Full time" className="rounded-card bg-pitch-900 p-4 text-center">
           <p className={`text-[22px] font-bold ${us > them ? "text-success" : us < them ? "text-danger" : "text-white"}`}>
             {us > them ? "Win!" : us < them ? "Defeat" : "Draw"}
             {m.goldenPoint ? " · golden point" : ""}
@@ -211,7 +211,7 @@ export function LiveMatch({
         </section>
       ) : null}
 
-      <section aria-label="Match feed" className="rounded-[20px] bg-pitch-900 p-2">
+      <section aria-label="Match feed" className="rounded-card bg-pitch-900 p-2">
         <ul className="flex flex-col">
           {feed.map((e, i) => (
             <FeedRow key={`${m.events.length - i}`} event={e} homeColor={homeColor} awayColor={awayColor} fresh={i === 0} />
@@ -261,7 +261,7 @@ function FeedRow({ event, homeColor, awayColor, fresh }: { event: LiveEvent; hom
             ? "font-semibold text-amber-300"
           : "text-[color:var(--fl-muted)]";
   return (
-    <li className={`flex items-start gap-2.5 rounded-[12px] px-2.5 py-2 text-left text-[13px] leading-snug ${fresh ? "bg-pitch-800" : ""}`}>
+    <li className={`flex items-start gap-2.5 rounded-control px-2.5 py-2 text-left text-[13px] leading-snug ${fresh ? "bg-pitch-800" : ""}`}>
       <span className="w-7 shrink-0 text-right font-semibold tabular-nums text-[color:var(--fl-muted)]">{event.minute}&rsquo;</span>
       <span aria-hidden className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: dot }} />
       <span className={`min-w-0 flex-1 ${tone}`}>{event.text}</span>

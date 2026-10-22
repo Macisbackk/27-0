@@ -183,7 +183,7 @@ export function TeamSheetPlayerPopup({
                 </dl>
 
                 {seasonStats?.contributionSummary && (
-                  <p className="mt-4 rounded-[14px] bg-pitch-950 px-3 py-2.5 text-sm leading-relaxed text-[color:var(--fl-muted)]">
+                  <p className="mt-4 rounded-control bg-pitch-950 px-3 py-2.5 text-sm leading-relaxed text-[color:var(--fl-muted)]">
                     {seasonStats.contributionSummary}
                   </p>
                 )}

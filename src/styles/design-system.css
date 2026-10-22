@@ -107,7 +107,7 @@
   }
 
   .game-badge {
-    border-radius: 7px;
+    border-radius: 4px;
   }
 }
 
@@ -234,7 +234,7 @@
   .clipboard-panel,
   .card-glass,
   .matchday-panel {
-    border-radius: 12px;
+    border-radius: 4px;
   }
 }
 
@@ -783,7 +783,7 @@
   min-width: 0;
   height: 100%;
   padding: 0.75rem 0.9rem;
-  border-radius: 12px;
+  border-radius: 4px;
   border: 1px solid color-mix(in srgb, var(--theme-tertiary) 18%, transparent);
   background: rgba(5, 10, 9, 0.72);
   box-shadow: none;
@@ -1317,7 +1317,7 @@
 .programme-panel--inset,
 .scoreboard-panel--inset,
 .clipboard-panel--inset {
-  border-radius: 12px;
+  border-radius: 4px;
   background: #050a09;
   box-shadow: none;
   border-color: rgba(255, 255, 255, 0.06);
@@ -1364,7 +1364,7 @@
 @media (min-width: 640px) {
   .scoreboard-panel,
   .matchday-scoreboard {
-    border-radius: 12px;
+    border-radius: 4px;
   }
 }
 
@@ -1439,7 +1439,7 @@
 .scoreboard-value-panel {
   background: rgba(0, 0, 0, 0.28);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
+  border-radius: 4px;
 }
 
 /* ── Headers ─────────────────────────────────────────────────────────────── */
@@ -1631,7 +1631,7 @@
   padding: 0.2rem 0.55rem;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--theme-tertiary) 32%, transparent);
-  background: color-mix(in srgb, var(--theme-primary) 10%, rgba(7, 12, 11, 0.9));
+  background: color-mix(in srgb, var(--theme-primary) 10%, rgba(14, 22, 38, 0.9));
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -1642,19 +1642,19 @@
 
 .game-badge--win {
   border-color: color-mix(in srgb, var(--success) 40%, transparent);
-  background: color-mix(in srgb, var(--success) 12%, rgba(7, 12, 11, 0.9));
+  background: color-mix(in srgb, var(--success) 12%, rgba(14, 22, 38, 0.9));
   color: var(--success);
 }
 
 .game-badge--loss {
   border-color: color-mix(in srgb, var(--danger) 40%, transparent);
-  background: color-mix(in srgb, var(--danger) 12%, rgba(7, 12, 11, 0.9));
+  background: color-mix(in srgb, var(--danger) 12%, rgba(14, 22, 38, 0.9));
   color: #fca5a5;
 }
 
 .game-badge--gold {
   border-color: color-mix(in srgb, var(--mode-era) 40%, transparent);
-  background: color-mix(in srgb, var(--mode-era) 12%, rgba(7, 12, 11, 0.9));
+  background: color-mix(in srgb, var(--mode-era) 12%, rgba(14, 22, 38, 0.9));
   color: var(--mode-era);
 }
 
@@ -1668,7 +1668,7 @@
 .game-stat-card {
   position: relative;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(5, 10, 9, 0.9);
   padding: 0.75rem 0.85rem;
@@ -1778,7 +1778,7 @@
 .game-stat-strip__cell {
   background: rgba(5, 10, 9, 0.9);
   border: 1px solid color-mix(in srgb, var(--theme-tertiary) 18%, transparent);
-  border-radius: 12px;
+  border-radius: 4px;
   padding: 0.65rem 0.7rem;
   text-align: center;
 }
@@ -1807,7 +1807,7 @@
   gap: 0.75rem;
   width: 100%;
   padding: 0.75rem 0.9rem;
-  border-radius: 12px;
+  border-radius: 4px;
   border: 1px solid color-mix(in srgb, var(--theme-tertiary) 18%, transparent);
   background: rgba(5, 10, 9, 0.72);
   box-shadow: none;
@@ -1867,13 +1867,13 @@
   padding: 1rem 1.1rem;
   border-radius: var(--mobile-radius-medium, 10px);
   border: 1px solid color-mix(in srgb, var(--theme-tertiary) 24%, transparent);
-  background: rgba(7, 12, 11, 0.94);
+  background: rgba(14, 22, 38, 0.94);
   box-shadow: none;
 }
 
 @media (min-width: 640px) {
   .match-ticket {
-    border-radius: 12px;
+    border-radius: 4px;
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
   }
 }
@@ -1919,14 +1919,14 @@
 }
 
 .fixture-results-list .fixture-result-row--selected {
-  border-radius: 8px;
+  border-radius: 4px;
   border-color: rgba(255, 255, 255, 0.2);
 }
 
 .game-input {
   width: 100%;
   min-height: 44px;
-  border-radius: 12px;
+  border-radius: 4px;
   border: 1px solid color-mix(in srgb, var(--theme-tertiary) 28%, rgba(255, 255, 255, 0.1));
   background: rgba(5, 10, 9, 0.92);
   padding: 0.625rem 0.875rem;
@@ -2043,7 +2043,7 @@
   overflow-y: auto;
   border-radius: var(--mobile-radius-medium, 10px);
   border: 1px solid color-mix(in srgb, var(--theme-tertiary) 28%, transparent);
-  background: rgba(7, 12, 11, 0.98);
+  background: rgba(14, 22, 38, 0.98);
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.4);
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -2057,7 +2057,7 @@
 
 @media (min-width: 640px) {
   .game-modal-panel {
-    border-radius: 12px;
+    border-radius: 4px;
   }
 }
 
@@ -2188,9 +2188,9 @@
 }
 
 .sidebar-nav-item-active {
-  border-radius: 12px !important;
+  border-radius: 4px !important;
   border-color: color-mix(in srgb, var(--theme-tertiary) 35%, transparent) !important;
-  background: color-mix(in srgb, var(--theme-primary) 12%, rgba(7, 12, 11, 0.9)) !important;
+  background: color-mix(in srgb, var(--theme-primary) 12%, rgba(14, 22, 38, 0.9)) !important;
   color: var(--theme-primary) !important;
   box-shadow: inset 3px 0 0 var(--theme-primary);
 }
@@ -2256,7 +2256,7 @@
   overflow: hidden;
   border-radius: var(--mobile-radius-medium, 10px);
   border: 1px solid rgba(148, 163, 184, 0.22);
-  background: rgba(8, 12, 13, 0.96);
+  background: rgba(14, 22, 38, 0.96);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
   text-align: center;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
@@ -2267,7 +2267,7 @@
     --quick-card-name-min: 2.5rem;
     --quick-card-rating-size: 3.25rem;
     max-height: none;
-    border-radius: 12px;
+    border-radius: 4px;
   }
 }
 
@@ -2794,7 +2794,7 @@
   a.game-button,
   button.game-button,
   .game-button {
-    border-radius: 8px !important;
+    border-radius: 4px !important;
     font-weight: 700 !important;
     letter-spacing: 0;
   }

@@ -95,7 +95,7 @@ const LeagueStandingRow = memo(function LeagueStandingRow({
 
   return (
     <li
-      className={`list-none rounded-[14px] px-2.5 py-2 text-center sm:px-3 ${
+      className={`list-none rounded-control px-2.5 py-2 text-center sm:px-3 ${
         highlight
           ? "bg-theme-primary/10 ring-1 ring-inset ring-theme-primary/40"
           : inPlayoffZone

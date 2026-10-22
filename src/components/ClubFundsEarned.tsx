@@ -44,7 +44,7 @@ export function ClubFundsEarned({
           {payout.lines.map((line) => (
             <li
               key={line.id}
-              className="flex items-baseline justify-between gap-3 rounded-[14px] bg-pitch-800 px-3 py-2.5 text-sm text-[color:var(--fl-text)]"
+              className="flex items-baseline justify-between gap-3 rounded-control bg-pitch-800 px-3 py-2.5 text-sm text-[color:var(--fl-text)]"
             >
               <span className="min-w-0">{line.label}</span>
               <span className="shrink-0 font-bold tabular-nums text-theme-primary">

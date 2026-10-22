@@ -122,7 +122,7 @@ export function SlotTeamYearPicker({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.28, ease: "easeOut" }}
     >
-      <div className="slot-picker__card overflow-hidden rounded-[20px] bg-pitch-900">
+      <div className="slot-picker__card overflow-hidden rounded-card bg-pitch-900">
         <TeamColourStrip club={target.team} />
         <header
           className="flex items-center gap-3 px-4 pb-3 pt-3.5"
@@ -174,7 +174,7 @@ export function SlotTeamYearPicker({
                           onSelect(player);
                         }}
                         aria-label={`Sign ${player.name}${hardMode ? "" : `, rated ${player.peakRating}`}`}
-                        className={`slot-picker__row fl-pressable group flex w-full items-center gap-3 rounded-[16px] bg-pitch-950 p-2.5 pr-3 text-left transition hover:bg-pitch-800 disabled:opacity-50 ${
+                        className={`slot-picker__row fl-pressable group flex w-full items-center gap-3 rounded-tile bg-pitch-950 p-2.5 pr-3 text-left transition hover:bg-pitch-800 disabled:opacity-50 ${
                           isTopPick ? "slot-picker__row--top" : ""
                         }`}
                       >

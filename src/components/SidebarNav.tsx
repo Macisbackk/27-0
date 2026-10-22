@@ -199,7 +199,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
               className={`sidebar-nav-scroll flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden overscroll-contain px-3 pb-4 ${open ? "fl-stagger" : ""}`}
               data-scroll-lock-allow="true"
             >
-              <section aria-label="Club Funds" className="rounded-[20px] bg-pitch-900 p-4">
+              <section aria-label="Club Funds" className="rounded-card bg-pitch-900 p-4">
                 <div className="flex items-end justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-[13px] font-semibold text-[color:var(--fl-muted)]">Club Funds</p>
@@ -210,7 +210,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   <Link
                     href="/store"
                     onClick={handleNavClick}
-                    className="btn-press flex h-11 shrink-0 items-center rounded-[14px] bg-pitch-800 px-3.5 text-sm font-bold text-white transition hover:bg-pitch-700"
+                    className="btn-press flex h-11 shrink-0 items-center rounded-control bg-pitch-800 px-3.5 text-sm font-bold text-white transition hover:bg-pitch-700"
                   >
                     Spend
                   </Link>
@@ -219,7 +219,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   Lifetime earned {fundsReady ? formatClubFunds(totalEarned) : "—"}
                 </p>
                 <details className="group mt-3">
-                  <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between rounded-[14px] bg-pitch-950 px-3 text-sm font-semibold text-white [&::-webkit-details-marker]:hidden">
+                  <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between rounded-control bg-pitch-950 px-3 text-sm font-semibold text-white [&::-webkit-details-marker]:hidden">
                     How to earn
                     <span aria-hidden className="text-[color:var(--fl-muted)] transition group-open:rotate-90">›</span>
                   </summary>
@@ -246,7 +246,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       </MenuLink>
                     </li>
                   ) : null}
-                  <li className="rounded-[16px] bg-pitch-900/60">
+                  <li className="rounded-tile bg-pitch-900/60">
                     <button
                       type="button"
                       onClick={handleNormalNavigate}
@@ -314,7 +314,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   type="button"
                   onClick={handleToggleSound}
                   aria-label={muted ? "Sound off — tap to enable" : "Sound on — tap to mute"}
-                  className="btn-press flex h-11 min-w-0 flex-1 items-center gap-2.5 rounded-[14px] bg-pitch-900 px-3 text-sm font-semibold text-white transition hover:bg-pitch-800"
+                  className="btn-press flex h-11 min-w-0 flex-1 items-center gap-2.5 rounded-control bg-pitch-900 px-3 text-sm font-semibold text-white transition hover:bg-pitch-800"
                 >
                   <span className={muted ? "text-[color:var(--fl-muted)]" : "text-theme-primary"} aria-hidden>
                     {muted ? <SoundOffIcon /> : <SoundOnIcon />}
@@ -339,12 +339,12 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 }
 
 const MENU_ROW =
-  "btn-press fl-pressable flex min-h-[48px] w-full items-center gap-3 rounded-[16px] px-3 text-[15px] font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50";
+  "btn-press fl-pressable flex min-h-[48px] w-full items-center gap-3 rounded-tile px-3 text-[15px] font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50";
 const MENU_ROW_IDLE = "text-white hover:bg-pitch-900";
 const MENU_ROW_ACTIVE = "bg-pitch-900 text-white";
-const MENU_ICON = "flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-pitch-950 text-theme-primary";
+const MENU_ICON = "flex h-8 w-8 shrink-0 items-center justify-center rounded-control bg-pitch-950 text-theme-primary";
 const FOOT_LINK =
-  "btn-press flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-pitch-900 text-[color:var(--fl-muted)] transition hover:bg-pitch-800 hover:text-white";
+  "btn-press flex h-11 w-11 shrink-0 items-center justify-center rounded-control bg-pitch-900 text-[color:var(--fl-muted)] transition hover:bg-pitch-800 hover:text-white";
 
 function MenuLink({
   href,

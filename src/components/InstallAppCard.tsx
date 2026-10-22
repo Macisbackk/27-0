@@ -23,7 +23,7 @@ export function InstallAppCard({ dismissible = false }: { dismissible?: boolean 
   if (mode === "none" || dismissed) return null;
 
   return (
-    <section aria-label="Get the app" className="rounded-[20px] bg-pitch-900 p-4 text-center">
+    <section aria-label="Get the app" className="rounded-card bg-pitch-900 p-4 text-center">
       <p className="text-[15px] font-bold text-white">Get the 27-0 app</p>
       <p className="mx-auto mt-1 max-w-xs text-[13px] text-[color:var(--fl-muted)]">
         Add it to your home screen: opens full screen and works offline.
@@ -35,7 +35,7 @@ export function InstallAppCard({ dismissible = false }: { dismissible?: boolean 
             playUiClick();
             void install();
           }}
-          className="btn-press mx-auto mt-3 flex h-11 w-full max-w-[240px] items-center justify-center rounded-[14px] bg-theme-primary text-sm font-bold text-[color:var(--theme-text-on-primary)]"
+          className="btn-press mx-auto mt-3 flex h-11 w-full max-w-[240px] items-center justify-center rounded-control bg-theme-primary text-sm font-bold text-[color:var(--theme-text-on-primary)]"
         >
           Install app
         </button>
@@ -62,7 +62,7 @@ export function InstallAppCard({ dismissible = false }: { dismissible?: boolean 
             playUiClick();
             setShowSteps(true);
           }}
-          className="btn-press mx-auto mt-3 flex h-11 w-full max-w-[240px] items-center justify-center rounded-[14px] bg-theme-primary text-sm font-bold text-[color:var(--theme-text-on-primary)]"
+          className="btn-press mx-auto mt-3 flex h-11 w-full max-w-[240px] items-center justify-center rounded-control bg-theme-primary text-sm font-bold text-[color:var(--theme-text-on-primary)]"
         >
           Show me how
         </button>

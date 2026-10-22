@@ -88,7 +88,7 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
                   setClubId(c.id);
                 }}
                 aria-pressed={active}
-                className={`flex w-full items-center gap-3 rounded-[16px] px-3 py-3 text-left transition-colors ${
+                className={`flex w-full items-center gap-3 rounded-tile px-3 py-3 text-left transition-colors ${
                   active ? "bg-pitch-800 ring-2 ring-theme-primary" : "bg-pitch-900 hover:bg-pitch-800"
                 }`}
               >

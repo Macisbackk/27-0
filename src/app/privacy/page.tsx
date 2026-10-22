@@ -12,7 +12,7 @@ const UPDATED = "22 October 2026";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-[20px] bg-pitch-900 p-4 text-left">
+    <section className="rounded-card bg-pitch-900 p-4 text-left">
       <h2 className="text-[17px] font-bold text-white">{title}</h2>
       <div className="mt-2 space-y-2 text-sm leading-relaxed text-[color:var(--fl-muted)] [&_strong]:text-white">{children}</div>
     </section>

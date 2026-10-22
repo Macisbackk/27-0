@@ -56,7 +56,7 @@ export function FixtureResultRow({
     <Wrapper
       type={onClick ? "button" : undefined}
       onClick={onClick}
-      className={`fixture-result-row block min-w-0 w-full max-w-full rounded-[14px] text-left transition ${
+      className={`fixture-result-row block min-w-0 w-full max-w-full rounded-control text-left transition ${
         selected
           ? "fixture-result-row--selected bg-pitch-700 ring-1 ring-inset ring-white/15"
           : cupHighlight

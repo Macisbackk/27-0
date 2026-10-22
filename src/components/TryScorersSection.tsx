@@ -39,7 +39,7 @@ function ScorerCard({
     : "text-[color:var(--fl-muted)]";
 
   return (
-    <div className="rounded-[16px] bg-pitch-800 px-3 py-3 text-center">
+    <div className="rounded-tile bg-pitch-800 px-3 py-3 text-center">
       <p
         className={`leading-none ${
           featured ? "fl-number text-2xl" : "text-[13px] font-semibold"
@@ -145,7 +145,7 @@ export function TryScorersSection({
 
       {!compact && (
         <div
-          className={`mt-3 rounded-[16px] bg-pitch-800 px-3 py-2 text-center ${TYPO.label}`}
+          className={`mt-3 rounded-tile bg-pitch-800 px-3 py-2 text-center ${TYPO.label}`}
         >
           <span>Total tries</span>
           <span className="ml-2 fl-number text-base text-white">

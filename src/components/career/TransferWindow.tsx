@@ -113,7 +113,7 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
             const from = l.fromClubId ? s.clubs[l.fromClubId] : null;
             const affordable = s.budget >= l.price;
             return (
-              <li key={l.playerId} className={`flex items-center gap-3 rounded-[16px] px-3 py-2.5 text-left ${l.legend ? "bg-pitch-900 ring-1 ring-accent-gold/60" : "bg-pitch-900"}`}>
+              <li key={l.playerId} className={`flex items-center gap-3 rounded-tile px-3 py-2.5 text-left ${l.legend ? "bg-pitch-900 ring-1 ring-accent-gold/60" : "bg-pitch-900"}`}>
                 {from ? <ClubBadge club={from} size="sm" /> : <span title={l.legend ? "Legend" : "Free agent"} aria-label={l.legend ? "Legend" : "Free agent"} className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-pitch-700 text-[10px] font-bold text-gray-300">{l.legend ? "★" : "FA"}</span>}
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-semibold text-white">
@@ -138,7 +138,7 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
       ) : (
         <ul className="grid grid-cols-[minmax(0,1fr)] gap-2">
           {squad.map((p) => (
-            <li key={p.id} className="flex items-center gap-3 rounded-[16px] bg-pitch-900 px-3 py-2.5 text-left">
+            <li key={p.id} className="flex items-center gap-3 rounded-tile bg-pitch-900 px-3 py-2.5 text-left">
               <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-white">

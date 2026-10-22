@@ -1,6 +1,7 @@
 /**
- * Generate Capacitor / Android launcher + splash assets matching the 27-0 LogoMark.
- * Wordmark: green 27, soft dash, light 0 — on dark pitch with a soft oval badge.
+ * Generate the 27-0 app icons, PWA icons and splash, matching the Matchnight LogoMark:
+ * two lit scoreboard panels ("27" and "0") on navy night, digits in scoreboard amber.
+ * Digits are drawn as seven-segment bars, so no font is needed to render them.
  */
 import fs from "fs";
 import path from "path";
@@ -10,102 +11,106 @@ const ROOT = path.join(__dirname, "..");
 const RESOURCES = path.join(ROOT, "resources");
 const PUBLIC_ICONS = path.join(ROOT, "public", "icons");
 
-const BG = "#0a0f0d";
-const GREEN = "#22c55e";
-const GREEN_SOFT = "#4ade80";
-const WHITE = "#f3f4f6";
-const PITCH_LINE = "#1a2e24";
+const BG = "#0b1322";
+const PANEL = "#050a14";
+const PANEL_EDGE = "#2b3a57";
+const AMBER = "#ffb21e";
+const DASH = "#f1f4fa";
 
-/**
- * Full square app icon (legacy launchers / PWA).
- * `safePad` keeps the mark inside Android adaptive safe zone (~66% centre).
- */
-function iconSvg(size: number, opts: { transparent?: boolean; safePad?: number } = {}): string {
+//           a  b  c  d  e  f  g
+const SEGMENTS: Record<string, number[]> = {
+  "0": [1, 1, 1, 1, 1, 1, 0],
+  "2": [1, 1, 0, 1, 1, 0, 1],
+  "7": [1, 1, 1, 0, 0, 0, 0],
+};
+
+/** One seven-segment digit at (x, y), u wide and 1.8u tall. */
+function digit(ch: string, x: number, y: number, u: number): string {
+  const on = SEGMENTS[ch]!;
+  const h = u * 1.8;
+  const t = u * 0.3;
+  const r = t * 0.35;
+  const s = t * 0.14; // the small gap between neighbouring segments
+  const half = h / 2;
+  const hw = u - t - 2 * s; // horizontal bar length
+  const vh = half - t / 2 - 2 * s; // vertical bar length
+  const bars = [
+    [x + t / 2 + s, y, hw, t], // a
+    [x + u - t, y + t / 2 + s, t, vh], // b
+    [x + u - t, y + half + s, t, vh], // c
+    [x + t / 2 + s, y + h - t, hw, t], // d
+    [x, y + half + s, t, vh], // e
+    [x, y + t / 2 + s, t, vh], // f
+    [x + t / 2 + s, y + half - t / 2, hw, t], // g
+  ];
+  return bars
+    .map(([bx, by, bw, bh], i) =>
+      on[i] ? `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${r}" fill="${AMBER}"/>` : ""
+    )
+    .join("");
+}
+
+/** The two-panel mark, centred at (cx, cy), `width` wide. */
+function mark(cx: number, cy: number, width: number): string {
+  const u = width / 5.28;
+  const pad = u * 0.32;
+  const gap = u * 0.3;
+  const dh = u * 1.8;
+  const ph = dh + pad * 2;
+  const p1w = u * 2 + gap + pad * 2;
+  const p2w = u + pad * 2;
+  const dashW = u * 0.7;
+  const left = cx - width / 2;
+  const top = cy - ph / 2;
+  const radius = u * 0.12;
+  const edge = Math.max(1, u * 0.04);
+  const p2x = left + p1w + dashW;
+  const panel = (x: number, w: number) =>
+    `<rect x="${x}" y="${top}" width="${w}" height="${ph}" rx="${radius}" fill="${PANEL}" stroke="${PANEL_EDGE}" stroke-width="${edge}"/>` +
+    `<rect x="${x}" y="${cy - edge / 2}" width="${w}" height="${edge}" fill="#000" fill-opacity="0.55"/>`;
+  return [
+    panel(left, p1w),
+    panel(p2x, p2w),
+    digit("2", left + pad, top + pad, u),
+    digit("7", left + pad + u + gap, top + pad, u),
+    digit("0", p2x + pad, top + pad, u),
+    `<rect x="${left + p1w + dashW * 0.22}" y="${cy - u * 0.08}" width="${dashW * 0.56}" height="${u * 0.16}" rx="${u * 0.04}" fill="${DASH}"/>`,
+  ].join("");
+}
+
+const DEFS = `<defs>
+  <radialGradient id="flood" cx="50%" cy="-10%" r="85%">
+    <stop offset="0%" stop-color="#ffdc96" stop-opacity="0.16"/>
+    <stop offset="100%" stop-color="${BG}" stop-opacity="0"/>
+  </radialGradient>
+</defs>`;
+
+/** Square icon. `contentWidth` is the fraction of the square the mark spans (smaller for maskable). */
+function iconSvg(size: number, opts: { transparent?: boolean; contentWidth?: number } = {}): string {
   const transparent = opts.transparent ?? false;
-  const safePad = opts.safePad ?? 0.18;
-  const cx = size / 2;
-  const cy = size / 2;
-  const outerR = size * (0.5 - safePad * 0.35);
-  const innerR = outerR * 0.82;
-  const fontSize = Math.round(size * 0.28);
-  const underlineY = cy + fontSize * 0.42;
-  const underlineW = size * (1 - safePad * 2) * 0.72;
-  const underlineH = Math.max(4, Math.round(size * 0.012));
-
+  const contentWidth = opts.contentWidth ?? 0.8;
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-  <defs>
-    <radialGradient id="glow" cx="50%" cy="42%" r="55%">
-      <stop offset="0%" stop-color="${GREEN}" stop-opacity="0.22"/>
-      <stop offset="55%" stop-color="${GREEN}" stop-opacity="0.06"/>
-      <stop offset="100%" stop-color="${BG}" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="underline" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="${GREEN}"/>
-      <stop offset="55%" stop-color="${GREEN_SOFT}" stop-opacity="0.75"/>
-      <stop offset="100%" stop-color="${GREEN}" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="${GREEN}" stop-opacity="0.55"/>
-      <stop offset="50%" stop-color="${GREEN_SOFT}" stop-opacity="0.25"/>
-      <stop offset="100%" stop-color="${GREEN}" stop-opacity="0.45"/>
-    </linearGradient>
-  </defs>
-  ${
-    transparent
-      ? ""
-      : `<rect width="${size}" height="${size}" fill="${BG}"/>
-  <circle cx="${cx}" cy="${cy}" r="${size * 0.48}" fill="url(#glow)"/>
-  <ellipse cx="${cx}" cy="${cy}" rx="${outerR * 0.92}" ry="${outerR * 0.72}" fill="none" stroke="${PITCH_LINE}" stroke-width="${Math.max(2, size * 0.012)}"/>
-  <ellipse cx="${cx}" cy="${cy}" rx="${innerR * 0.92}" ry="${innerR * 0.72}" fill="none" stroke="url(#ring)" stroke-width="${Math.max(3, size * 0.018)}"/>`
-  }
-  ${
-    transparent
-      ? `<ellipse cx="${cx}" cy="${cy}" rx="${outerR * 0.9}" ry="${outerR * 0.7}" fill="${BG}" fill-opacity="0.92"/>
-  <ellipse cx="${cx}" cy="${cy}" rx="${outerR * 0.9}" ry="${outerR * 0.7}" fill="none" stroke="url(#ring)" stroke-width="${Math.max(3, size * 0.02)}"/>`
-      : ""
-  }
-  <text x="${cx}" y="${cy + fontSize * 0.08}" text-anchor="middle" dominant-baseline="middle"
-    font-family="Arial Black, Impact, Haettenschweiler, sans-serif" font-size="${fontSize}"
-    font-weight="900" letter-spacing="-0.06em">
-    <tspan fill="${GREEN}">27</tspan><tspan fill="${GREEN_SOFT}" dx="-0.02em">-</tspan><tspan fill="${WHITE}">0</tspan>
-  </text>
-  <rect x="${cx - underlineW / 2}" y="${underlineY}" width="${underlineW}" height="${underlineH}" rx="${underlineH / 2}" fill="url(#underline)"/>
+  ${DEFS}
+  ${transparent ? "" : `<rect width="${size}" height="${size}" fill="${BG}"/><rect width="${size}" height="${size}" fill="url(#flood)"/>`}
+  ${mark(size / 2, size / 2, size * contentWidth)}
 </svg>`;
 }
 
 function splashSvg(width: number, height: number): string {
-  const cx = width / 2;
-  const cy = height / 2;
-  const mark = Math.min(width, height) * 0.22;
-  const fontSize = Math.round(mark * 0.9);
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-  <defs>
-    <radialGradient id="splashGlow" cx="50%" cy="46%" r="40%">
-      <stop offset="0%" stop-color="${GREEN}" stop-opacity="0.18"/>
-      <stop offset="100%" stop-color="${BG}" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="splashLine" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="${GREEN}" stop-opacity="0"/>
-      <stop offset="35%" stop-color="${GREEN}"/>
-      <stop offset="65%" stop-color="${GREEN_SOFT}"/>
-      <stop offset="100%" stop-color="${GREEN}" stop-opacity="0"/>
-    </linearGradient>
-  </defs>
+  ${DEFS}
   <rect width="${width}" height="${height}" fill="${BG}"/>
-  <circle cx="${cx}" cy="${cy}" r="${Math.min(width, height) * 0.35}" fill="url(#splashGlow)"/>
-  <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle"
-    font-family="Arial Black, Impact, Haettenschweiler, sans-serif" font-size="${fontSize}"
-    font-weight="900" letter-spacing="-0.06em">
-    <tspan fill="${GREEN}">27</tspan><tspan fill="${GREEN_SOFT}">-</tspan><tspan fill="${WHITE}">0</tspan>
-  </text>
-  <rect x="${cx - mark * 1.1}" y="${cy + fontSize * 0.45}" width="${mark * 2.2}" height="${Math.max(4, height * 0.004)}" rx="2" fill="url(#splashLine)"/>
+  <rect width="${width}" height="${height}" fill="url(#flood)"/>
+  ${mark(width / 2, height / 2, Math.min(width, height) * 0.36)}
 </svg>`;
 }
 
-async function writePngFromSvg(filePath: string, svg: string) {
-  await sharp(Buffer.from(svg)).png().toFile(filePath);
+async function writePngFromSvg(filePath: string, svg: string, flatten = false) {
+  let img = sharp(Buffer.from(svg));
+  if (flatten) img = img.flatten({ background: BG });
+  await img.png().toFile(filePath);
   console.log("wrote", path.relative(ROOT, filePath));
 }
 
@@ -113,17 +118,21 @@ async function main() {
   fs.mkdirSync(RESOURCES, { recursive: true });
   fs.mkdirSync(PUBLIC_ICONS, { recursive: true });
 
-  // Legacy / PWA full icons
+  // App store / PWA full icons
   await writePngFromSvg(path.join(RESOURCES, "icon.png"), iconSvg(1024));
   await writePngFromSvg(path.join(PUBLIC_ICONS, "icon-192.png"), iconSvg(192));
   await writePngFromSvg(path.join(PUBLIC_ICONS, "icon-512.png"), iconSvg(512));
+  await writePngFromSvg(path.join(PUBLIC_ICONS, "apple-touch-icon.png"), iconSvg(180, { contentWidth: 0.74 }), true);
 
-  // Adaptive foreground: more padding so the mark survives circular masks
+  // Maskable: the mark stays inside the central safe circle.
+  await writePngFromSvg(path.join(PUBLIC_ICONS, "icon-maskable-192.png"), iconSvg(192, { contentWidth: 0.6 }), true);
+  await writePngFromSvg(path.join(PUBLIC_ICONS, "icon-maskable-512.png"), iconSvg(512, { contentWidth: 0.6 }), true);
+
+  // Android adaptive foreground (transparent) + background
   await writePngFromSvg(
     path.join(RESOURCES, "icon-foreground.png"),
-    iconSvg(1024, { transparent: true, safePad: 0.22 })
+    iconSvg(1024, { transparent: true, contentWidth: 0.56 })
   );
-
   await writePngFromSvg(path.join(RESOURCES, "splash.png"), splashSvg(2732, 2732));
 
   const bgSvg = Buffer.from(

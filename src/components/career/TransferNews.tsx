@@ -73,7 +73,7 @@ export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void 
   if (deadline) {
     const dd = deals.filter((d) => d.deadlineDay && !d.user);
     return (
-      <section aria-label="Deadline Day" className="rounded-[20px] bg-amber-400/10 p-4 ring-2 ring-amber-300/60">
+      <section aria-label="Deadline Day" className="rounded-card bg-amber-400/10 p-4 ring-2 ring-amber-300/60">
         <p className="fl-number text-[30px] leading-none text-amber-300">DEADLINE DAY</p>
         <p className="mt-1 text-sm text-white">Last chance to do business. The window shuts when Round {WINDOW_CLOSES_BEFORE_ROUND} kicks off.</p>
         <DeadlineTicker deals={dd} />
@@ -112,7 +112,7 @@ export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void 
   }
 
   return (
-    <section aria-label="Transfer window" className="rounded-[20px] bg-pitch-900 p-4">
+    <section aria-label="Transfer window" className="rounded-card bg-pitch-900 p-4">
       <div className="flex items-center justify-between gap-2">
         <p className="text-[15px] font-bold text-white">Transfer window open</p>
         <span className="rounded-full bg-theme-primary/15 px-2.5 py-1 text-xs font-bold text-theme-primary">
@@ -152,7 +152,7 @@ export function IncomingBidCard() {
   const p = s.players[bid.playerId];
   if (!club || !p) return null;
   return (
-    <section aria-label="Transfer bid" className="rounded-[20px] bg-pitch-900 p-4 ring-2 ring-theme-primary/50">
+    <section aria-label="Transfer bid" className="rounded-card bg-pitch-900 p-4 ring-2 ring-theme-primary/50">
       <p className="text-[13px] font-semibold text-theme-primary">Bid received</p>
       <p className="mt-1 text-[15px] text-white">
         <ClubLink clubId={club.id} className="font-bold">{club.name}</ClubLink> want <span className="font-bold">{p.name}</span> ({p.pos}, {p.rating}) and offer{" "}
@@ -177,7 +177,7 @@ export function TransferRoundUp() {
   const s = state!;
   const deals = seasonDeals(s);
   return (
-    <section aria-label="Transfer round-up" className="rounded-[20px] bg-pitch-900 p-4 text-left">
+    <section aria-label="Transfer round-up" className="rounded-card bg-pitch-900 p-4 text-left">
       <p className="text-[15px] font-bold text-white">Transfer round-up</p>
       {deals.length === 0 ? (
         <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
