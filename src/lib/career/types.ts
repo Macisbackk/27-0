@@ -206,6 +206,8 @@ export interface CareerState {
   preseason?: Preseason;
   /** Year in which the user shut the mid-season window on Deadline Day. */
   deadlineClosedYear?: number;
+  /** Deadline Day's 12-hour clock: offers and deals land as it counts down. */
+  deadline?: DeadlineClock;
   /** The first-save walkthrough has been seen. */
   tutorialDone?: boolean;
   /** Season stages the user has moved past, as `${year}:${stage}` (pre-season, league over, promotion). */
@@ -265,6 +267,40 @@ export interface IncomingBid {
   fee: number;
   /** Matchday index the bid was made at; it lapses once that matchday is played. */
   at: number;
+}
+
+/** An offer for one of your players on Deadline Day. */
+export interface DeadlineOffer {
+  id: string;
+  clubId: string;
+  playerId: string;
+  fee: number;
+  /** Minutes left on the clock when the offer was made / when it lapses. */
+  madeAt: number;
+  expiresAt: number;
+  /** Plain-English reason they want him ("short of props"). */
+  reason?: string;
+  /** Beats an earlier offer for the same player. */
+  raised?: boolean;
+}
+
+export interface DeadlineEvent {
+  /** Minutes left on the clock when it happened. */
+  at: number;
+  kind: "deal" | "offer" | "you" | "market" | "info";
+  text: string;
+}
+
+export interface DeadlineClock {
+  year: number;
+  /** 720 = 12 hours to go; the window shuts at 0. */
+  minutesLeft: number;
+  /** Half-hour slots whose events have already happened (0..24). */
+  slotsDone: number;
+  offers: DeadlineOffer[];
+  /** What's happened today, newest first. */
+  feed: DeadlineEvent[];
+  paused?: boolean;
 }
 
 export interface LastLineup {

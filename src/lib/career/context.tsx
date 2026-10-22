@@ -16,7 +16,20 @@ import {
   type TransferError,
 } from "./offseason";
 import { playMatchday, repairLineup, simRestOfSeason, simToNextBigGame, squadOf, type PlayedResult } from "./season";
-import { acceptBid as acceptBidPure, closeDeadlineDay, isWindowOpen, recordUserDeal, rejectBid as rejectBidPure } from "./midseason";
+import {
+  acceptBid as acceptBidPure,
+  acceptOffer as acceptOfferPure,
+  closeDeadlineDay,
+  deadlineMarketBatch,
+  isDeadlineDay,
+  isWindowOpen,
+  pauseDeadline as pauseDeadlinePure,
+  recordUserDeal,
+  rejectBid as rejectBidPure,
+  rejectOffer as rejectOfferPure,
+  tickDeadline as tickDeadlinePure,
+  type OfferError,
+} from "./midseason";
 import { playFriendlies as playFriendliesPure, type FriendlyOption } from "./preseason";
 import { releaseExpiring, renewContract, type ContractError } from "./contracts";
 import { markStageSeen, type StageKey } from "./stages";
@@ -52,7 +65,8 @@ interface CareerContextValue {
   autoPick: () => void;
   goToOffseason: () => void;
   buy: (listing: MarketListing) => TransferError | undefined;
-  sell: (playerId: string) => TransferError | undefined;
+  /** Sell a player: says where he went (a club that needs his position) and why. */
+  sell: (playerId: string) => { error?: TransferError; soldTo?: string | null; reason?: string; fee?: number };
   finishTransfers: () => void;
   /** Answer a rival's bid for one of your players (mid-season window). */
   acceptBid: () => void;
@@ -60,6 +74,11 @@ interface CareerContextValue {
   unlockLegend: (legendId: string) => "points" | "unknown" | "owned" | undefined;
   /** Shut the mid-season window on Deadline Day so the season can carry on. */
   closeDeadline: () => void;
+  /** Deadline Day: run the clock forward, pause it, answer offers. */
+  tickDeadline: (minutes: number) => void;
+  pauseDeadline: (paused: boolean) => void;
+  acceptOffer: (offerId: string) => OfferError | undefined;
+  rejectOffer: (offerId: string) => void;
   /** Play the chosen pre-season friendlies (empty = skip pre-season). */
   playFriendlies: (picks: FriendlyOption[]) => void;
   /** Mark the first-save walkthrough as seen. */
@@ -194,7 +213,11 @@ export function CareerProvider({ children }: { children: ReactNode }) {
   const market = useMemo(() => {
     if (!state) return [];
     if (state.phase === "transfers") return buildMarket(state, legacy.unlockedLegends);
-    if (isWindowOpen(state)) return buildMarket(state, legacy.unlockedLegends, `mid-${state.matchdayIndex}`);
+    if (isWindowOpen(state)) {
+      // Deadline Day: fresh names every three hours of the clock.
+      const salt = isDeadlineDay(state) ? `mid-${state.matchdayIndex}-dd${deadlineMarketBatch(state)}` : `mid-${state.matchdayIndex}`;
+      return buildMarket(state, legacy.unlockedLegends, salt);
+    }
     return [];
   }, [state, legacy.unlockedLegends]);
 
@@ -222,6 +245,29 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     },
     closeDeadline: () => {
       if (stateRef.current) commit(closeDeadlineDay(stateRef.current));
+    },
+    tickDeadline: (minutes) => {
+      const s = stateRef.current;
+      if (!s) return;
+      const next = tickDeadlinePure(s, minutes);
+      if (next !== s) commit(next);
+    },
+    pauseDeadline: (paused) => {
+      const s = stateRef.current;
+      if (!s) return;
+      const next = pauseDeadlinePure(s, paused);
+      if (next !== s) commit(next);
+    },
+    acceptOffer: (offerId) => {
+      const s = stateRef.current;
+      if (!s) return "gone";
+      const r = acceptOfferPure(s, offerId);
+      if (!r.error) commit({ ...r.state, lineup: repairLineup(r.state, r.state.lineup) });
+      return r.error;
+    },
+    rejectOffer: (offerId) => {
+      const s = stateRef.current;
+      if (s) commit(rejectOfferPure(s, offerId));
     },
     playFriendlies: (picks) => {
       if (stateRef.current) commit(playFriendliesPure(stateRef.current, picks));
@@ -292,17 +338,24 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     },
     sell: (playerId) => {
       const s = stateRef.current;
-      if (!s) return "not-available";
+      if (!s) return { error: "not-available" };
+      const before = s.players[playerId];
       const r = sellPure(s, playerId);
       if (!r.error) {
-        if (isWindowOpen(r.state)) {
-          const p = r.state.players[playerId];
-          const to = Object.values(r.state.clubs).find((c) => c.squad.includes(playerId))?.id ?? null;
-          if (p) recordUserDeal(r.state, { playerId, playerName: p.name, pos: p.pos, rating: p.rating, from: r.state.userClubId, to, fee: Math.max(0, r.state.budget - s.budget) });
+        if (isWindowOpen(r.state) && before) {
+          recordUserDeal(r.state, {
+            playerId,
+            playerName: before.name,
+            pos: before.pos,
+            rating: before.rating,
+            from: r.state.userClubId,
+            to: r.soldTo ?? null,
+            fee: r.fee ?? Math.max(0, r.state.budget - s.budget),
+          });
         }
         commit(r.state);
       }
-      return r.error;
+      return { error: r.error, soldTo: r.soldTo, reason: r.reason, fee: r.fee };
     },
     acceptBid: () => {
       const s = stateRef.current;

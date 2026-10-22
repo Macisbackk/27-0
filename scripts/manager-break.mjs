@@ -52,6 +52,69 @@ async function reloadAndCheck(label, expectRegion) {
   if (expectRegion && !(await visible(page.getByRole("region", { name: expectRegion })))) fail(`${label}: after a reload "${expectRegion}" is gone`);
 }
 
+/** Deadline Day's 12-hour clock: it counts down, pauses, skips, offers can be taken, sales name the buyer. */
+async function deadlineChecks() {
+  const clock = async () => (await save())?.deadline?.minutesLeft;
+  const m0 = await clock();
+  await page.waitForTimeout(4500);
+  const m1 = await clock();
+  if (!(m1 < m0)) fail(`Deadline Day clock didn't count down (${m0} → ${m1})`);
+  await btn("Pause the clock").click();
+  const m2 = await clock();
+  await page.waitForTimeout(4500);
+  if ((await clock()) !== m2) fail("pausing didn't stop the Deadline Day clock");
+  await reloadAndCheck("Deadline Day (paused)", "Deadline Day");
+  if ((await clock()) !== m2) fail("a reload moved the paused clock");
+  await btn("Skip an hour").click();
+  await page.waitForTimeout(300);
+  if ((await clock()) !== m2 - 60) fail(`Skip an hour went ${m2} → ${await clock()}`);
+  // Let it run until an offer lands (up to ~40s of real time), then pause and take it.
+  await btn("Restart the clock").click();
+  const accept = page.getByRole("region", { name: "Offers for your players" }).getByRole("button", { name: "Accept" }).first();
+  for (let i = 0; i < 40 && !(await visible(accept)); i++) await page.waitForTimeout(1000);
+  if (await visible(accept)) {
+    await shot("deadline-offer");
+    await btn("Pause the clock").click().catch(() => {});
+    const s0 = await save();
+    const c = s0.deadline;
+    const mine = new Set(s0.clubs[s0.userClubId].squad);
+    const offer = c.offers.find((o) => o.expiresAt < c.minutesLeft && mine.has(o.playerId));
+    await accept.click();
+    await page.waitForTimeout(400);
+    const s1 = await save();
+    if (offer) {
+      if (!s1.clubs[offer.clubId].squad.includes(offer.playerId)) fail("accepted Deadline Day offer: the player didn't join the bidding club");
+      if (s1.clubs[s1.userClubId].squad.includes(offer.playerId)) fail("accepted Deadline Day offer: the player is still yours");
+      if (s1.budget !== s0.budget + offer.fee) fail("accepted Deadline Day offer: fee not paid");
+    }
+    step("Deadline Day: clock counts down, pauses (and stays paused after a reload), skips an hour, an offer was accepted");
+    await btn("Restart the clock").click().catch(() => {});
+  } else step("Deadline Day: clock counts down, pauses, skips an hour (no offer landed in 40s)");
+  // A sale in the market says where the player went, and he's really there.
+  await btn("Late signing").click();
+  await page.getByRole("region", { name: "Deadline Day clock" }).waitFor({ timeout }).catch(() => fail("no Deadline Day clock in the market"));
+  await noSideways("Deadline Day market");
+  await page.getByRole("tab", { name: "Sell" }).click();
+  const sell = page.getByRole("button", { name: /^Sell / }).first();
+  if (await sell.isEnabled().catch(() => false)) {
+    const before = await save();
+    await sell.click();
+    const msg = await page.getByRole("status").filter({ hasText: /joins|Sold|free agent/ }).first().innerText({ timeout: 5000 }).catch(() => "");
+    const after = await save();
+    const goneId = before.clubs[before.userClubId].squad.find((id) => !after.clubs[after.userClubId].squad.includes(id));
+    const m = /^(.+) joins (.+) for .+\. They were (.+)\.$/.exec(msg);
+    if (!m) fail(`sale message doesn't say where he went: "${msg}"`);
+    else {
+      const club = Object.values(after.clubs).find((c) => c.name === m[2]);
+      if (!club || !club.squad.includes(goneId)) fail(`sale said ${m[1]} joined ${m[2]}, but he isn't there`);
+    }
+    await shot("deadline-sale");
+    step(`Market sale: "${msg}"`);
+  }
+  await btn("Back to the season").click().catch(() => {});
+  await page.waitForTimeout(300);
+}
+
 try {
   await page.goto(`${BASE}/manager`, { waitUntil: "networkidle" });
   await page.getByRole("heading", { name: "Pick your club" }).waitFor({ timeout });
@@ -116,6 +179,7 @@ try {
         await reloadAndCheck("Deadline Day", "Deadline Day");
         await noSideways("Deadline Day");
         await shot("deadline");
+        await deadlineChecks();
       }
       const shut = btn("Shut the window");
       if (await visible(shut)) {

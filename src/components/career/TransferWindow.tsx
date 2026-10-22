@@ -14,6 +14,7 @@ import {
   prestigeRatingCap,
   WINDOW_CLOSES_BEFORE_ROUND,
   isDeadlineDay,
+  deadlineDecisionPending,
   roundsLeftInWindow,
   sellPrice,
   squadOf,
@@ -24,6 +25,7 @@ import { useCareer } from "@/lib/career/context";
 import { playLegendAppears, playSeasonStart, playTransferComplete, playWarning } from "@/lib/sound";
 import { Card, ClubBadge, Eyebrow, RatingPill, Stars } from "./bits";
 import { ClubLink } from "./ClubSheet";
+import { DeadlineClockFace, DeadlineOffers } from "./TransferNews";
 
 const ERROR_TEXT: Record<TransferError, string> = {
   budget: "Not enough budget for that deal.",
@@ -73,6 +75,13 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
           </>
         )}
       </header>
+
+      {midseason && deadlineDecisionPending(s) ? (
+        <section aria-label="Deadline Day clock" className="flex flex-col gap-3 rounded-card bg-amber-400/10 p-3 ring-2 ring-amber-300/60">
+          <DeadlineClockFace compact />
+          <DeadlineOffers />
+        </section>
+      ) : null}
 
       <Card className="grid grid-cols-3 gap-2 text-center">
         <div>
@@ -157,13 +166,21 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
                 fullWidth={false}
                 disabled={me.squad.length <= SQUAD_MIN}
                 onClick={() => {
-                  const err = sell(p.id);
-                  if (err) {
+                  const r = sell(p.id);
+                  if (r.error) {
                     playWarning();
-                    setMessage(ERROR_TEXT[err]);
+                    setMessage(ERROR_TEXT[r.error]);
                   } else {
                     playTransferComplete();
-                    setMessage(`Sold ${p.name}.`);
+                    const fee = r.fee != null ? ` for ${formatMoney(r.fee)}` : "";
+                    const to = r.soldTo ? s.clubs[r.soldTo]?.name : null;
+                    setMessage(
+                      p.legend
+                        ? `Sold ${p.name}${fee}. He goes back to the Legend Vault.`
+                        : to
+                          ? `${p.name} joins ${to}${fee}. They were ${r.reason ?? "after him"}.`
+                          : `Sold ${p.name}${fee}. No club had room, so he's a free agent.`
+                    );
                   }
                 }}
               >
