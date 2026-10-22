@@ -98,6 +98,8 @@ jobs:
           node scripts/ui-audit.mjs
           node scripts/text-fit-audit.mjs
           node scripts/store-screenshots.mjs || true
+          npx playwright install --with-deps webkit > /dev/null 2>&1 || true
+          node scripts/menu-flicker-probe.mjs || true
       - name: Publish e2e screenshots (same-repo PRs only)
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && hashFiles('e2e-shots/*.png') != ''
         run: |
