@@ -213,7 +213,12 @@ if (existsSync(path("current-player-bio-fill-2026-10.json"))) {
 // ── 4. Honours ───────────────────────────────────────────────────────────────
 if (existsSync(path("honours-fill-2026-10.json"))) {
   const hon = readJson<{
-    entries: (Sourced & { honour: string; year: number; club: string; players: { name: string; ids: string[] }[] })[];
+    entries: (Sourced & {
+      honour: string;
+      year: number;
+      club: string;
+      players: { name: string; ids: string[]; otherClubIds?: string[] }[];
+    })[];
   }>("honours-fill-2026-10.json");
   const FILES: Record<string, string> = {
     superLeagueChampion: "super-league-champion-years.json",
@@ -230,7 +235,26 @@ if (existsSync(path("honours-fill-2026-10.json"))) {
       continue;
     }
     for (const pl of e.players) {
-      const ids = pl.ids.filter((id) => byId.has(id));
+      const matched = pl.ids.filter((id) => byId.has(id));
+      // Honours are career honours (cards only show years up to their own season), so also
+      // credit the same person's cards at other clubs — but only when the birth years agree,
+      // which keeps same-name different players out.
+      const birthOf = (id: string) => {
+        const r = byId.get(id)!;
+        if (typeof r.birthYear === "number") return r.birthYear;
+        const m = typeof r.dateOfBirth === "string" ? r.dateOfBirth.match(/^(\d{4})/) : null;
+        return m ? Number(m[1]) : undefined;
+      };
+      const anchor = matched.map(birthOf).find((y) => y !== undefined);
+      const others = (pl.otherClubIds ?? []).filter((id) => byId.has(id));
+      const otherYears = new Set(others.map(birthOf).filter((y): y is number => y !== undefined));
+      const othersOk = others.filter((id) => {
+        const y = birthOf(id);
+        if (y === undefined) return false;
+        if (anchor !== undefined) return y === anchor;
+        return otherYears.size === 1 && e.year - y >= 16 && e.year - y <= 40;
+      });
+      const ids = [...new Set([...matched, ...othersOk])];
       if (ids.length === 0) {
         log.skipped.push({ honour: e.honour, year: e.year, name: pl.name, reason: "no matching card id" });
         continue;
