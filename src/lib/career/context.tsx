@@ -14,7 +14,7 @@ import {
   type MarketListing,
   type TransferError,
 } from "./offseason";
-import { playMatchday, repairLineup, simRestOfSeason, simToNextBigGame, squadOf } from "./season";
+import { playMatchday, repairLineup, simRestOfSeason, simToNextBigGame, squadOf, type PlayedResult } from "./season";
 import {
   LEGACY_KEY,
   SAVE_KEY,
@@ -40,6 +40,8 @@ interface CareerContextValue {
   play: () => void;
   simToBigGame: () => void;
   simSeason: () => void;
+  /** Finish the matchday with the result of a match the user played live. */
+  playLive: (played: PlayedResult) => void;
   setTactic: (t: Tactic) => void;
   setLineupSlot: (slot: number, playerId: string) => void;
   autoPick: () => void;
@@ -190,6 +192,9 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     },
     play: () => {
       if (stateRef.current) settle(playMatchday(stateRef.current));
+    },
+    playLive: (played) => {
+      if (stateRef.current) settle(playMatchday(stateRef.current, played));
     },
     simToBigGame: () => {
       if (stateRef.current) settle(simToNextBigGame(stateRef.current));

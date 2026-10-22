@@ -17,7 +17,7 @@
     "android:ldplayer": "npm run android:apk && node scripts/android-install-ldplayer.mjs",
     "android:install-ldplayer": "node scripts/android-install-ldplayer.mjs",
     "icons:mobile": "tsx scripts/generate-mobile-icons.ts && tsx scripts/apply-android-icons.ts",
-    "test:career": "tsx scripts/test-career.ts",
+    "test:career": "tsx scripts/test-career.ts && tsx scripts/test-live-match.ts",
     "import:historic-ratings": "node scripts/import-historic-season-ratings.js",
     "validate:players": "tsx scripts/validate-players.ts",
     "validate:player-database": "tsx scripts/validate-player-database.ts",

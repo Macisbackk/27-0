@@ -99,8 +99,25 @@ try {
   await shot("hub-match");
 
   await clickButton("Play match");
+  await page.getByRole("region", { name: "Scoreboard" }).waitFor({ timeout });
+  await page.waitForTimeout(1500);
+  await shot("live-match");
+  // Answer the first big call if it shows up, then skip to the end.
+  for (let i = 0; i < 40; i++) {
+    const call = page.getByRole("region", { name: /Penalty|team talk|Closing|Last tackle|Chasing|Big hole/ });
+    if (await call.isVisible().catch(() => false)) {
+      await shot("live-call");
+      await call.getByRole("button").first().click();
+      break;
+    }
+    await page.waitForTimeout(250);
+  }
+  await clickButton("Skip to full time");
+  await page.getByRole("region", { name: "Full time" }).waitFor({ timeout });
+  await shot("live-full-time");
+  await clickButton("Continue");
   await page.getByText(/Last result/).first().waitFor({ timeout });
-  step("Played a match and saw the result");
+  step("Played a live match (call + skip) and saw the result");
   await page.getByText(/Last result/).first().scrollIntoViewIfNeeded();
   await shot("result");
   await page.evaluate(() => window.scrollTo(0, 0));
@@ -132,9 +149,14 @@ try {
   step("Club tab + Legend Vault");
 
   await page.getByRole("tab", { name: "Match" }).click();
-  await clickButton("Simulate season");
+  for (let i = 0; i < 80; i++) {
+    if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
+    const next = page.getByRole("button", { name: /^(Quick sim|Continue)$/ }).first();
+    if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
+    await page.waitForTimeout(120);
+  }
   await page.getByText(/season review/i).first().waitFor({ timeout: 60_000 });
-  step("Simulated the season → review screen");
+  step("Quick-simmed the season → review screen");
   await shot("review");
 
   await clickButton("Go to transfers");

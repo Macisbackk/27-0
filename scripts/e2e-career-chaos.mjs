@@ -2,7 +2,7 @@
  * Adversarial e2e for Manager Mode: tries to break it like an impatient player would.
  * - garbage / half-valid saves in localStorage
  * - rapid repeated taps on Play
- * - a Championship season driven only by "Skip to big game" / "Continue"
+ * - a Championship season driven only by "Quick sim" / "Continue"
  * - two tabs open on the same career
  * - 320px-wide screens: no sideways scrolling on any screen
  * Fails on any page error or unexpected HTTP / console error.
@@ -72,11 +72,11 @@ try {
   // 2) Rapid taps on Play.
   await startCareer(page, "super-league", 13);
   await noSidewaysScroll(page, "hub @320");
-  const play = page.getByRole("button", { name: /Play match|Continue/ }).first();
+  const play = page.getByRole("button", { name: /^(Quick sim|Continue)$/ }).first();
   for (let i = 0; i < 5; i++) await play.click({ force: true, noWaitAfter: true }).catch(() => {});
   await page.waitForTimeout(800);
   await page.getByText(/Last result/).first().waitFor({ timeout });
-  step("Five rapid taps on Play handled");
+  step("Five rapid taps on Quick sim handled");
 
   for (const tab of ["Team", "Table", "Club"]) {
     await page.getByRole("tab", { name: tab }).click();
@@ -91,7 +91,7 @@ try {
   await pageB.goto(`${BASE}/manager`, { waitUntil: "networkidle" });
   await pageB.getByRole("button", { name: /Play match|Continue/ }).first().waitFor({ timeout });
   const headerB1 = await pageB.locator("header", { hasText: /Super League|Championship/ }).first().innerText();
-  await page.getByRole("button", { name: /Play match|Continue/ }).first().click();
+  await page.getByRole("button", { name: /^(Quick sim|Continue)$/ }).first().click();
   await page.waitForTimeout(600);
   await pageB.waitForTimeout(600);
   const headerB2 = await pageB.locator("header", { hasText: /Super League|Championship/ }).first().innerText();
@@ -105,15 +105,15 @@ try {
   await page.getByRole("button", { name: "End career" }).click();
   await startCareer(page, "championship", 21);
   let guard = 0;
-  while (guard++ < 40) {
+  while (guard++ < 80) {
     if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
-    const simBig = page.getByRole("button", { name: "Skip to big game" });
-    if (await simBig.isVisible().catch(() => false)) await simBig.click();
-    await page.waitForTimeout(200);
+    const next = page.getByRole("button", { name: /^(Quick sim|Continue)$/ }).first();
+    if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
+    await page.waitForTimeout(120);
   }
   await page.getByText(/season review/i).first().waitFor({ timeout: 30_000 });
   await noSidewaysScroll(page, "review @320");
-  step(`Championship season via Skip to big game (${guard} taps)`);
+  step(`Championship season via Quick sim (${guard} taps)`);
 
   // Reload on the review screen must not re-bank Legacy.
   const lpBefore = await page.evaluate(() => JSON.parse(localStorage.getItem("27-0-career-v2-legacy") || "{}").lifetimeLegacyPoints ?? 0);
