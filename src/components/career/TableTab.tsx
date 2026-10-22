@@ -5,6 +5,7 @@ import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import { DIVISION_LABEL, sortTable, winnerOf, type Division } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { Card, ClubBadge, Eyebrow, FormDots } from "./bits";
+import { ClubLink } from "./ClubSheet";
 
 function zone(division: Division, pos: number, size: number): { tone: string; label: string } | null {
   if (division === "super-league") {
@@ -82,10 +83,10 @@ export function TableTab() {
                   <td className="py-1.5 pl-2">
                     <span className="flex min-w-0 items-center gap-2">
                       <ClubBadge club={club} size="sm" />
-                      <span className={`truncate ${me ? "font-bold text-white" : "text-gray-200"}`}>
+                      <ClubLink clubId={club.id} className={`truncate ${me ? "font-bold text-white" : "text-gray-200"}`}>
                         <span className="sm:hidden">{club.short}</span>
                         <span className="hidden sm:inline">{club.name}</span>
-                      </span>
+                      </ClubLink>
                       <span className="hidden sm:inline-flex"><FormDots form={r.form} /></span>
                     </span>
                   </td>
@@ -99,7 +100,8 @@ export function TableTab() {
             })}
           </tbody>
         </table>
-        <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 px-2 text-[11px] text-gray-400">
+        <p className="mt-2 px-2 text-[11px] text-gray-400">Tap a club to see their last team sheet and transfers.</p>
+        <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 px-2 text-[11px] text-gray-400">
           {division === "super-league" ? (
             <>
               <span><span className="mr-1 inline-block h-2 w-2 rounded-sm bg-theme-primary" />Play-offs</span>

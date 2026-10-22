@@ -193,6 +193,48 @@ export interface CareerState {
   news: string[];
   /** Season ids of the first Super League Grand Final win (for the fastest-climb record). */
   firstGrandFinalSeason?: number;
+  /** Every deal in the world this save (newest first, capped), incl. AI-to-AI and Deadline Day. */
+  transfers?: TransferDeal[];
+  /** A rival's offer for one of your players, open until the next round is played. */
+  incomingBid?: IncomingBid;
+  /** Each club's most recent team sheet (for tapping a club name). */
+  lastLineups?: Record<string, LastLineup>;
+}
+
+export interface TransferDeal {
+  year: number;
+  /** Matchday index the deal happened before. */
+  at: number;
+  playerId: string;
+  playerName: string;
+  pos: Pos;
+  rating: number;
+  /** null = free agent / released. */
+  from: string | null;
+  to: string | null;
+  fee: number;
+  deadlineDay?: boolean;
+  /** Involves the user's club. */
+  user?: boolean;
+}
+
+export interface IncomingBid {
+  clubId: string;
+  playerId: string;
+  fee: number;
+  /** Matchday index the bid was made at; it lapses once that matchday is played. */
+  at: number;
+}
+
+export interface LastLineup {
+  fixtureId: string;
+  label: string;
+  opponentId: string;
+  home: boolean;
+  us: number;
+  them: number;
+  lineup: string[];
+  at: number;
 }
 
 /** Persists across every career on this device / account. */

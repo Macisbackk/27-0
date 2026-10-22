@@ -1,6 +1,6 @@
 /**
  * Public game version shown in the site footer.
- * Starts at v0.01 and increments by 0.01 with each shipped commit/push.
- * Keep in sync via the project rule: bump after every commit and push.
+ * Reset to v1.0 on 22 Oct 2026 (app launch). Goes up by 0.1 for each release that ships to the
+ * live site (v1.1, v1.2, …); keep in sync with the release, not every commit.
  */
-export const GAME_VERSION = "v1.99";
+export const GAME_VERSION = "v1.0";

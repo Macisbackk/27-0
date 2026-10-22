@@ -149,8 +149,9 @@ export function beginOffseason(state: CareerState): CareerState {
 }
 
 /** Players the user can buy this window (deterministic per year so refreshes don't re-roll). */
-export function buildMarket(state: CareerState, unlockedLegends: string[]): MarketListing[] {
-  const rng = rngFor(state.seed, state.year, "market");
+export function buildMarket(state: CareerState, unlockedLegends: string[], salt = ""): MarketListing[] {
+  // No salt = the summer list (same seed as before, so saves mid-window keep their list).
+  const rng = salt ? rngFor(state.seed, state.year, "market", salt) : rngFor(state.seed, state.year, "market");
   const cap = prestigeRatingCap(state.prestige);
   const userSquad = new Set(userClub(state).squad);
   const listings: MarketListing[] = [];

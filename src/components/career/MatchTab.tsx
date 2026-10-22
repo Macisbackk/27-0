@@ -16,6 +16,8 @@ import {
 import { useCareer } from "@/lib/career/context";
 import { playCupProgress, playFullTime, playSimulateRound, playTryScored, playUiClick } from "@/lib/sound";
 import { LiveMatch } from "./LiveMatch";
+import { ClubLink } from "./ClubSheet";
+import { IncomingBidCard, TransferWindowCard } from "./TransferNews";
 import { Card, ClubBadge, Eyebrow, FormDots } from "./bits";
 
 const TACTICS: Array<{ id: Tactic; label: string; hint: string }> = [
@@ -56,14 +58,14 @@ export function ResultCard({ state, fixture, title }: { state: CareerState; fixt
       <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
         <div className="flex min-w-0 flex-col items-center gap-1 text-center">
           <ClubBadge club={home} />
-          <span className="truncate text-xs text-gray-300">{home.name}</span>
+          <ClubLink clubId={home.id} className="w-full truncate text-center text-xs text-gray-300">{home.name}</ClubLink>
         </div>
         <div className="font-display text-4xl font-bold tabular-nums text-white">
           {r.homeScore}<span className="mx-1 text-gray-500">–</span>{r.awayScore}
         </div>
         <div className="flex min-w-0 flex-col items-center gap-1 text-center">
           <ClubBadge club={away} />
-          <span className="truncate text-xs text-gray-300">{away.name}</span>
+          <ClubLink clubId={away.id} className="w-full truncate text-center text-xs text-gray-300">{away.name}</ClubLink>
         </div>
       </div>
       <dl className="mt-3 space-y-1 text-xs text-gray-400">
@@ -81,7 +83,7 @@ export function ResultCard({ state, fixture, title }: { state: CareerState; fixt
   );
 }
 
-export function MatchTab() {
+export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
   const { state, play, playLive, setTactic } = useCareer();
   const [busy, setBusy] = useState(false);
   const [live, setLive] = useState(false);
@@ -152,6 +154,8 @@ export function MatchTab() {
 
   return (
     <div className="flex flex-col gap-4">
+      <IncomingBidCard />
+      <TransferWindowCard onOpenMarket={onOpenMarket} />
       <Card className={big ? "border-accent-gold/60" : ""}>
         <div className="flex items-center justify-between gap-2">
           <Eyebrow>{md ? md.label : "Season complete"}</Eyebrow>
@@ -163,7 +167,7 @@ export function MatchTab() {
               <ClubBadge club={opponent} size="lg" />
               <div className="min-w-0 flex-1">
                 <p className="text-xs uppercase tracking-wide text-gray-400">{fixture.home === s.userClubId ? "Home vs" : "Away at"}</p>
-                <p className="font-display text-xl font-bold leading-tight text-white sm:text-2xl">{opponent.name}</p>
+                <p className="font-display text-xl font-bold leading-tight text-white sm:text-2xl"><ClubLink clubId={opponent.id}>{opponent.name}</ClubLink></p>
                 {theirRow && fixture.kind === "league" ? (
                   <p className="mt-0.5 flex items-center gap-2 text-xs text-gray-400">
                     {ordinal(theirPos)} · {theirRow.w}W {theirRow.l}L <FormDots form={theirRow.form} />
