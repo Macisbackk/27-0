@@ -128,6 +128,17 @@ export function Departures() {
         </Card>
       ) : null}
 
+      {(() => {
+        const squadNow = s.clubs[s.userClubId]!.squad.length;
+        const after = squadNow - expiring.length;
+        return after < 20 ? (
+          <p className="text-center text-xs text-amber-300" role="note">
+            {expiring.length ? `Letting the rest go leaves ${after} players.` : `Squad: ${squadNow} players.`} The minimum is 20, so the board will
+            fill the gaps with fringe players. Renew or sign to keep your quality.
+          </p>
+        ) : null;
+      })()}
+
       <div className="mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
         <div className="mobile-action-bar__inner">
           <GameButton

@@ -7,6 +7,7 @@
  */
 import { formatMoney, playerValue } from "./players";
 import { rngFor } from "./rng";
+import { repairLineup } from "./season";
 import type { CareerPlayer, CareerState } from "./types";
 
 /** Seasons left on a deal, including the current one. Older saves had none: derive a stable 1–3. */
@@ -61,6 +62,7 @@ export function renewContract(state: CareerState, playerId: string): { state: Ca
   const d = state.departures;
   const p = state.players[playerId];
   if (state.phase !== "departures" || !d || !d.expiring.includes(playerId) || !p) return { state, error: "not-expiring" };
+  if (!state.clubs[state.userClubId]!.squad.includes(playerId)) return { state, error: "not-expiring" };
   const fee = renewalFee(p);
   if (state.budget < fee) return { state, error: "budget" };
   const s: CareerState = structuredClone(state);
@@ -78,11 +80,12 @@ export function renewContract(state: CareerState, playerId: string): { state: Ca
 export function releaseExpiring(state: CareerState, playerId: string): CareerState {
   const d = state.departures;
   if (state.phase !== "departures" || !d || !d.expiring.includes(playerId)) return state;
+  if (!state.clubs[state.userClubId]!.squad.includes(playerId)) return state;
   const s: CareerState = structuredClone(state);
   const me = s.clubs[s.userClubId]!;
   const p = s.players[playerId];
   me.squad = me.squad.filter((id) => id !== playerId);
-  s.lineup = s.lineup.filter((id) => id !== playerId);
+  s.lineup = repairLineup(s, s.lineup.filter((id) => id !== playerId));
   if (p?.legend) {
     // Legends are a reward, not a market asset: when his deal ends he's gone (sign him again from the vault).
     delete s.players[playerId];

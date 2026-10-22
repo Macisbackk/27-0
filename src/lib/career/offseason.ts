@@ -163,7 +163,8 @@ export function finishDepartures(state: CareerState): CareerState {
   if (state.phase !== "departures") return state;
   const s: CareerState = structuredClone(state);
   const me = userClub(s);
-  const leaving = s.departures?.expiring ?? [];
+  // Only players still at the club can leave on a free.
+  const leaving = (s.departures?.expiring ?? []).filter((id) => me.squad.includes(id));
   const leavingNames = leaving.map((id) => s.players[id]?.name ?? id);
   for (const id of leaving) {
     me.squad = me.squad.filter((x) => x !== id);
@@ -290,6 +291,8 @@ export function sellPrice(state: CareerState, playerId: string): number {
 
 export function sellPlayer(state: CareerState, playerId: string): { state: CareerState; error?: TransferError } {
   const club = userClub(state);
+  // Selling happens in a window, never while the season review or contract decisions are open.
+  if (state.phase === "review" || state.phase === "departures") return { state, error: "not-available" };
   if (!club.squad.includes(playerId)) return { state, error: "not-available" };
   if (club.squad.length <= SQUAD_MIN) return { state, error: "squad-min" };
   const s: CareerState = structuredClone(state);
