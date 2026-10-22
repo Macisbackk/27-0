@@ -1,13 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Anton } from "next/font/google";
+import { Anton, Inter } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
+import "../styles/floodlights.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { CoachbeardMergeRunner } from "@/components/CoachbeardMergeRunner";
 import { ManagerDataPurgeRunner } from "@/components/ManagerDataPurgeRunner";
 import { Header } from "@/components/Header";
 import { SiteFooter } from "@/components/SiteFooter";
+import { BottomNav } from "@/components/BottomNav";
 import { SoundUnlock } from "@/components/SoundUnlock";
 import { PwaInstallPrompt } from "@/components/PwaInstallPrompt";
 import { UiThemeProvider } from "@/components/UiThemeProvider";
@@ -15,6 +17,12 @@ import { AchievementProvider } from "@/components/achievements/AchievementProvid
 import { CapacitorAppShell } from "@/components/CapacitorAppShell";
 import { ExternalLinkGuard } from "@/components/ExternalLinkGuard";
 import { UI_THEME_BOOTSTRAP_SCRIPT } from "@/lib/ui/theme-bootstrap-script";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 const anton = Anton({
   weight: "400",
@@ -42,7 +50,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0a0f0d", // match manifest theme_color
+  themeColor: "#0a110e", // match manifest theme_color
 };
 
 export default function RootLayout({
@@ -51,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={anton.variable} suppressHydrationWarning>
+    <html lang="en" className={`${anton.variable} ${inter.variable}`} suppressHydrationWarning>
       <head>
         <Script
           id="ui-theme-bootstrap"
@@ -74,6 +82,7 @@ export default function RootLayout({
               {children}
             </main>
             <SiteFooter />
+            <BottomNav />
           </AchievementProvider>
         </AuthProvider>
         <div id="game-portal-root" />

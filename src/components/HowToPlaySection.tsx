@@ -1,7 +1,4 @@
-import { GameSectionTitle } from "@/components/ui/GameSectionTitle";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
-import { SPACING } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
 
 const GUIDE_ITEMS = [
   {
@@ -32,28 +29,13 @@ const GUIDE_ITEMS = [
 
 export function HowToPlaySection() {
   return (
-    <section id="how-to-play" className="mx-auto max-w-2xl scroll-mt-16 border-t border-[var(--mobile-divider)] pt-[var(--mobile-section-gap)] text-center">
-      <div className="flex flex-col items-center text-center">
-        <GameSectionTitle
-          label="Guide"
-          heading="How to play"
-          className="items-center text-center"
-        />
-      </div>
-
-      <ul className={`mt-3 ${SPACING.stackSm}`}>
-        {GUIDE_ITEMS.map((item) => (
-          <li
-            key={item.title}
-            className="min-w-0 border-b border-[var(--mobile-divider)] py-2.5 text-center last:border-b-0"
-          >
-            <p className={`text-center ${TYPO.cardTitle}`}>{item.title}</p>
-            <p className={`mx-auto mt-1 max-w-md text-center ${TYPO.bodySm}`}>
-              {item.body}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </section>
+    <ul id="how-to-play" className="scroll-mt-16 divide-y divide-[var(--fl-line)]">
+      {GUIDE_ITEMS.map((item) => (
+        <li key={item.title} className="py-2.5">
+          <p className="text-sm font-bold text-white">{item.title}</p>
+          <p className="mt-0.5 text-[13px] leading-snug text-[color:var(--fl-muted)]">{item.body}</p>
+        </li>
+      ))}
+    </ul>
   );
 }

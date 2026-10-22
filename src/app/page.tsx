@@ -5,64 +5,46 @@ import { EmailConfirmedBanner } from "@/components/EmailConfirmedBanner";
 import { HomeModeSelector } from "@/components/HomeModeSelector";
 import { HowToPlaySection } from "@/components/HowToPlaySection";
 import { JoeMellorEasterEgg } from "@/components/JoeMellorEasterEgg";
-import { LogoMark } from "@/components/LogoMark";
 import { PageShell } from "@/components/ui/PageShell";
-import { LINK, PAGE, SPACING } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
-import { GAME_VERSION } from "../../data/version";
 
 export default function HomePage() {
   return (
-    <PageShell withLights compact className="matchday-arena--flat">
-      <section className={`${PAGE.sectionHero} text-center`}>
-        <div className="mx-auto flex max-w-xl flex-col items-center gap-2">
-          <LogoMark size="lg" className="items-center justify-center" />
-          <p className={`${TYPO.meta} uppercase tracking-[0.18em]`}>
-            {GAME_VERSION}
-          </p>
-        </div>
-
-        <h1 className="sr-only">27-0</h1>
-        <p className={`mx-auto mt-3 max-w-lg sm:mt-4 ${TYPO.pageSubtitle}`}>
-          Run a real club or build a dream 13. Chase the perfect season.
-        </p>
-      </section>
+    <PageShell compact className="matchday-arena--flat">
+      <h1 className="sr-only">27-0 — rugby league manager and squad builder</h1>
 
       <Suspense fallback={null}>
         <EmailConfirmedBanner />
       </Suspense>
 
-      <div className={SPACING.sectionGap}>
-        <HomeAuthBar />
-      </div>
-
-      <div id="play-modes" className={`scroll-mt-8 ${SPACING.sectionGap}`}>
+      <div className="mx-auto mt-2 flex w-full max-w-xl flex-col gap-4">
         <HomeModeSelector />
-      </div>
+        <HomeAuthBar />
 
-      <div className={SPACING.sectionGap}>
-        <HowToPlaySection />
-      </div>
+        <details className="group rounded-[20px] bg-pitch-900 px-4 py-3">
+          <summary className="flex cursor-pointer list-none items-center justify-between py-1 text-[15px] font-bold text-white">
+            How to play
+            <span aria-hidden className="text-[color:var(--fl-muted)] transition group-open:rotate-90">›</span>
+          </summary>
+          <div className="pt-2">
+            <HowToPlaySection />
+          </div>
+        </details>
 
-      <nav
-        className={`mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-x-5 gap-y-3 border-t border-[var(--mobile-divider)] pt-4 text-center sm:pt-5 ${SPACING.sectionGap}`}
-        aria-label="More"
-      >
-        <Link href="/leaderboard" className={LINK.subtle}>
-          Leaderboard
-        </Link>
-        <Link href="/profile#achievements" className={LINK.subtle}>
-          Achievements
-        </Link>
-        <Link href="/store" className={LINK.subtle}>
-          Store
-        </Link>
-        <Link href="/showcase" className={LINK.subtle}>
-          Players
-        </Link>
-      </nav>
-      <div className="mt-4 text-center">
-        <JoeMellorEasterEgg />
+        <nav className="flex flex-wrap justify-center gap-2 pt-1" aria-label="More">
+          {[
+            ["/store", "Store"],
+            ["/profile#achievements", "Achievements"],
+            ["/showcase", "Players"],
+            ["/settings", "Settings"],
+          ].map(([href, label]) => (
+            <Link key={href} href={href} className="fl-pill bg-pitch-900 text-[color:var(--fl-muted)] hover:text-white">
+              {label}
+            </Link>
+          ))}
+        </nav>
+        <div className="text-center">
+          <JoeMellorEasterEgg />
+        </div>
       </div>
     </PageShell>
   );

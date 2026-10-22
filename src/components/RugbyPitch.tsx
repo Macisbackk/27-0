@@ -392,6 +392,39 @@ const SquadMarker = memo(function SquadMarker({
       }
     }
 
+    if (fullPlayerNames) {
+      // Floodlights team sheet: a dashed circle with the position underneath.
+      const round = (
+        <>
+          <span
+            className={`flex h-11 w-11 items-center justify-center rounded-full border-2 text-xl font-bold ${stateClass} ${
+              interactive ? "text-theme-primary" : "text-white/40"
+            }`}
+          >
+            +
+          </span>
+          <span className={`mt-1 line-clamp-2 w-full text-center text-[10px] font-semibold leading-[1.1] ${interactive ? "text-white/85" : "text-white/40"}`}>
+            {positionLabel}
+          </span>
+        </>
+      );
+      return interactive && onClick ? (
+        <button
+          type="button"
+          onClick={onClick}
+          title={tooltip}
+          aria-label={`${slot.label}: empty — tap to spin`}
+          className="btn-press flex w-[68px] flex-col items-center rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50"
+        >
+          {round}
+        </button>
+      ) : (
+        <div className="flex w-[68px] flex-col items-center" title={tooltip}>
+          {round}
+        </div>
+      );
+    }
+
     const inner = (
       <>
         {shirtNumber !== undefined && (

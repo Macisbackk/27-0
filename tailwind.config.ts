@@ -12,11 +12,12 @@ const config: Config = {
     extend: {
       colors: {
         pitch: {
-          950: "#0a0f0d",
-          900: "#0f1814",
-          800: "#162420",
-          700: "#1e3029",
-          600: "#2a4539",
+          // Floodlights palette: ground, surface, raised, line, strong line.
+          950: "#0a110e",
+          900: "#16211c",
+          800: "#1d2a24",
+          700: "#26352e",
+          600: "#34473e",
         },
         "theme-primary": "rgb(var(--theme-primary-rgb) / <alpha-value>)",
         "theme-secondary": "rgb(var(--theme-secondary-rgb) / <alpha-value>)",
