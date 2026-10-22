@@ -58,7 +58,7 @@ export function PlayerAutocomplete({
         <ul
           id={listId}
           role="listbox"
-          className="absolute z-20 mt-1 max-h-64 w-full overflow-y-auto border border-white/10 bg-[#0c1210]"
+          className="absolute z-20 mt-1 max-h-64 w-full overflow-y-auto border border-white/10 bg-pitch-900"
         >
           {suggestions.map((player) => (
             <li key={player.id}>

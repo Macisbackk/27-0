@@ -49,11 +49,11 @@ export function Stars({ value, max = 5, label }: { value: number; max?: number; 
 }
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <section className={`rounded-2xl border border-pitch-700 bg-pitch-900/90 p-4 text-left ${className}`}>{children}</section>;
+  return <section className={`rounded-[20px] bg-pitch-900 p-4 text-left ${className}`}>{children}</section>;
 }
 
 export function Eyebrow({ children }: { children: ReactNode }) {
-  return <p className="font-display text-[10px] font-bold uppercase tracking-[0.22em] text-theme-primary">{children}</p>;
+  return <p className="text-xs font-semibold text-theme-primary">{children}</p>;
 }
 
 export function ProgressBar({ value, max, tone = "theme" }: { value: number; max: number; tone?: "theme" | "gold" }) {
@@ -68,7 +68,7 @@ export function ProgressBar({ value, max, tone = "theme" }: { value: number; max
 export function RatingPill({ rating, delta }: { rating: number; delta?: number }) {
   const tone = rating >= 88 ? "text-accent-gold" : rating >= 83 ? "text-theme-primary" : rating >= 78 ? "text-white" : "text-gray-400";
   return (
-    <span className={`inline-flex min-w-[2.25rem] justify-center rounded-md bg-pitch-800 px-1.5 py-0.5 font-display text-sm font-bold tabular-nums ${tone}`}>
+    <span className={`inline-flex min-w-[2.25rem] justify-center rounded-full bg-pitch-950 px-2 py-0.5 fl-number text-sm tabular-nums ${tone}`}>
       {Math.round(rating)}
       {delta ? <span className="ml-0.5 text-[10px] text-danger">−{delta}</span> : null}
     </span>

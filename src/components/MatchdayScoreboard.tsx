@@ -21,7 +21,7 @@ export function MatchdayScoreboard({
 
   return (
     <div
-      className={`matchday-scoreboard relative overflow-hidden border border-white/10 bg-[#080c0d] shadow-[0_14px_34px_rgba(0,0,0,0.28)] ${MATCHDAY.cardPadding}`}
+      className={`matchday-scoreboard relative overflow-hidden rounded-[20px] bg-pitch-900 ${MATCHDAY.cardPadding}`}
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_42%)]" />
       <div className="relative flex flex-col items-center gap-3">

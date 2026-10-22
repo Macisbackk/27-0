@@ -101,7 +101,7 @@ export function HomeModeSelector() {
 
       {SHOW_DAILY_CHALLENGE_UI ? (
         <section className="relative overflow-hidden rounded-[20px] bg-pitch-900 p-[18px]" aria-label="Daily Challenge">
-          <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full bg-theme-primary/10" />
+          <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full bg-theme-primary/[0.06]" />
           <p className="flex items-center gap-2 text-[13px] font-semibold text-amber-300">
             <span aria-hidden className="h-2 w-2 rounded-full bg-amber-400" />
             Daily Challenge{daily?.scenario.eraMode ? " · Era" : ""}{dailyStatus ? ` · ${dailyStatus}` : ""}

@@ -9,7 +9,7 @@ import { TYPO } from "@/lib/ui/typography";
 
 export function MiniGameShell({
   title,
-  eyebrow = "Mini Games",
+  eyebrow = "Puzzles",
   children,
   actions,
   compact = false,
@@ -37,7 +37,7 @@ export function MiniGameShell({
             href="/mini-games"
             fullWidth={false}
           >
-            Mini Games
+            Puzzles
           </GameButton>
           {actions}
         </div>
