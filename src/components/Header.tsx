@@ -11,8 +11,7 @@ import { playMenuOpen } from "@/lib/sound";
 import { useMountDiagnostic } from "@/lib/ui/use-mount-diagnostic";
 
 /**
- * Site header: true three-column grid so the logo stays viewport-centred.
- * Mobile hides Club Funds in the header (lives in the side menu).
+ * Site header (Floodlights): logo left; Club Funds, account and the menu button right.
  * Manager Mode hides Quick Mode club funds (Manager has its own balance).
  */
 export function Header() {
@@ -24,41 +23,27 @@ export function Header() {
   return (
     <>
       <header className="app-header sticky top-0 z-50 overflow-x-clip border-b">
-        <div className="app-chrome relative grid h-12 min-w-0 grid-cols-[1fr_auto_1fr] items-center gap-x-2 overflow-hidden sm:h-[3.25rem] sm:gap-2">
-          <div className="mobile-header__left flex min-h-[44px] min-w-0 items-center justify-start">
+        <div className="app-chrome relative flex h-14 min-w-0 items-center justify-between gap-2 px-4">
+          <Link href="/" className="flex shrink-0 items-center" aria-label="27-0 home">
+            <LogoMark />
+          </Link>
+
+          <div className="flex min-w-0 items-center justify-end gap-2">
+            {!hidePlayFunds && <ClubFundsDisplay />}
+            <HeaderAuthControls />
             <button
               type="button"
               onClick={() => {
                 playMenuOpen();
                 setMenuOpen(true);
               }}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--mobile-radius-medium)] border-0 bg-transparent text-base text-pitch-300 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 sm:h-11 sm:w-auto sm:gap-2 sm:px-3 sm:text-sm sm:font-medium"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pitch-900 text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
               aria-label="Open menu"
             >
-              <span aria-hidden className="leading-none">
-                ☰
-              </span>
-              <span className="hidden sm:inline">Menu</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                <path d="M5 8h14M5 12h14M5 16h14" />
+              </svg>
             </button>
-          </div>
-
-          <div className="flex shrink-0 items-center justify-center">
-            <Link
-              href="/"
-              className="flex items-center justify-center px-1"
-              aria-label="27-0 home"
-            >
-              <LogoMark />
-            </Link>
-          </div>
-
-          <div className="mobile-header__right flex min-h-[44px] min-w-0 items-center justify-end gap-1 sm:gap-2">
-            {!hidePlayFunds && (
-              <div className="hidden sm:block">
-                <ClubFundsDisplay />
-              </div>
-            )}
-            <HeaderAuthControls />
           </div>
         </div>
       </header>

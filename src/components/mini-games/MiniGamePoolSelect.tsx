@@ -41,7 +41,7 @@ export function MiniGamePoolSelect({
               playUiClick();
               onSelect(mode);
             }}
-            className={`w-full border bg-[#0c1210] text-center ${SPACING.cardPaddingSm} ${MODE_CARD_CLASS[mode]}`}
+            className={`w-full border bg-pitch-900 text-center ${SPACING.cardPaddingSm} ${MODE_CARD_CLASS[mode]}`}
           >
             <p
               className={`${TYPO.modeCardTitle} ${MODE_TITLE_CLASS[mode]}`}

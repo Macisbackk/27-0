@@ -4,8 +4,8 @@
   "description": "Rugby league Manager Mode, Classic squad builder, Daily Challenge and Mini Games.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0f0d",
-  "theme_color": "#0a0f0d",
+  "background_color": "#0a110e",
+  "theme_color": "#0a110e",
   "orientation": "any",
   "icons": [
     {

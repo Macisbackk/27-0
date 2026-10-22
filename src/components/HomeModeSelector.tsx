@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   getDailyChallengeAttemptUsed,
   getDailyChallengeHref,
@@ -10,179 +10,179 @@ import {
   type DailyChallengeScenario,
 } from "@/lib/daily-challenge";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
-import { GameButton } from "@/components/ui/GameButton";
-import { MobileSection } from "@/components/ui/MobileLayout";
 import { buildPlayHref } from "@/lib/play-links";
 import { setNormalEraVariant } from "@/lib/storage/preferences";
 import { playModeClassicStart, playUiClick } from "@/lib/sound";
-import { TYPO } from "@/lib/ui/typography";
-import { SPACING } from "@/lib/ui/design-system";
+import { formatClubFunds } from "@/lib/club-funds";
+import { loadLocalCareer } from "@/lib/career/storage";
+import { DIVISION_LABEL } from "@/lib/career/clubs";
+import { getAllStats } from "@/lib/storage/stats";
+import { getPaidRunIds } from "@/lib/storage/club-funds";
+import { getLocalDateKey } from "@/lib/mini-games/date";
 
-export function HomeModeSelector() {
-  return (
-    <section className="mx-auto w-full max-w-4xl text-center" aria-labelledby="play-heading">
-      <p id="play-heading" className={TYPO.keyLabel}>
-        Play
-      </p>
-
-      {/* Featured: Manager Mode */}
-      <div className="mt-3 sm:mt-4">
-        <MobileSection className="home-play-card flex min-h-0 flex-col items-center overflow-hidden text-center border-emerald-500/40 bg-gradient-to-b from-emerald-950/40 via-pitch-900/60 to-pitch-950 p-5 sm:p-6 shadow-xl">
-          <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-[11px] font-black uppercase tracking-widest text-emerald-400 border border-emerald-500/30">
-            New · Super League &amp; Championship
-          </span>
-          <h2 className="mt-2 text-2xl sm:text-3xl font-black text-white tracking-tight">
-            Rugby League Manager Mode
-          </h2>
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-gray-300">
-            Take charge of a real club. Play each round in a tap, chase promotion or the Grand Final, and unlock legends.
-          </p>
-
-          <div className="mt-4 flex flex-wrap justify-center gap-3 w-full max-w-sm">
-            <GameButton
-              variant="current"
-              href="/manager"
-              onClick={() => playUiClick()}
-              size="md"
-              className="w-full sm:w-auto px-8 py-2.5 font-black bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 shadow-lg hover:brightness-110"
-            >
-              Play Manager Mode →
-            </GameButton>
-          </div>
-        </MobileSection>
-      </div>
-
-      <div className="mt-3 grid gap-3 sm:mt-4 sm:gap-4 lg:grid-cols-2">
-        <HomePlayChoice
-          eyebrow="Current squads · 2026"
-          title="Classic"
-          blurb="Spin real 2026 squads, build a 13 and chase 27-0."
-          href={buildPlayHref("classic", false)}
-          variant="current"
-          cta="Play Current"
-          onClick={() => {
-            setNormalEraVariant(false);
-            playUiClick();
-            playModeClassicStart("NORMAL");
-          }}
-        />
-        <HomePlayChoice
-          eyebrow="Historic squads"
-          title="Era Classic"
-          blurb="Every Super League era, legends included."
-          href={buildPlayHref("classic", true)}
-          variant="era"
-          cta="Play Era"
-          onClick={() => {
-            setNormalEraVariant(true);
-            playUiClick();
-            playModeClassicStart("NORMAL");
-          }}
-        />
-      </div>
-
-      <div className={`mt-3 grid gap-3 sm:mt-4 sm:gap-4 ${SHOW_DAILY_CHALLENGE_UI ? "grid-cols-2" : ""}`}>
-        {SHOW_DAILY_CHALLENGE_UI ? <HomeDailyCard /> : null}
-        <Link
-          href="/mini-games"
-          onClick={() => playUiClick()}
-          className="btn-press flex flex-col items-center justify-between gap-2 rounded-2xl border border-white/10 bg-pitch-900/70 p-4 text-center transition hover:border-theme-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60"
-        >
-          <span className={`${TYPO.eyebrow} text-theme-primary`}>Quick games</span>
-          <span className="font-display text-lg font-black leading-tight text-white">Puzzles</span>
-          <span aria-hidden className="flex gap-1">
-            {["?", "W"].map((g) => (
-              <span key={g} className="flex h-7 w-7 items-center justify-center rounded-md border border-white/10 bg-pitch-950 text-xs font-black text-gray-300">
-                {g}
-              </span>
-            ))}
-          </span>
-          <span className="text-xs text-gray-400">Millionaire · Wordle</span>
-        </Link>
-      </div>
-    </section>
-  );
+/** Everything on the home hub that depends on this device (filled in after mount). */
+interface HubState {
+  greeting: string;
+  daily: { scenario: DailyChallengeScenario; done: boolean; used: boolean } | null;
+  career: { club: string; detail: string } | null;
+  classicBest: string | null;
+  eraBest: string | null;
+  wordleDone: boolean;
 }
 
-/** Today's Daily Challenge, filled in after mount (the date is the player's, not the server's). */
-function HomeDailyCard() {
-  const [today, setToday] = useState<{ scenario: DailyChallengeScenario; done: boolean; attemptUsed: boolean } | null>(null);
-  useEffect(() => {
-    const progress = getDailyChallengeProgress();
-    setToday({
-      scenario: getDailyChallengeScenario(),
-      done: Boolean(progress.leagueLeaders && progress.playoffTitle),
-      attemptUsed: getDailyChallengeAttemptUsed(),
-    });
-  }, []);
-  const scenario = today?.scenario;
+function greeting(hour: number): string {
+  if (hour < 5) return "Late one, coach";
+  if (hour < 12) return "Morning, coach";
+  if (hour < 18) return "Afternoon, coach";
+  return "Evening, coach";
+}
+
+function readHub(): HubState {
+  let career: HubState["career"] = null;
+  try {
+    const s = loadLocalCareer();
+    const club = s ? s.clubs[s.userClubId] : null;
+    if (s && club) career = { club: club.name, detail: `${s.year} · ${DIVISION_LABEL[club.division]}` };
+  } catch {
+    career = null;
+  }
+  const stats = getAllStats();
+  const rec = (w: number, l: number) => (w + l > 0 ? `Best: ${w}-${l}` : null);
+  const progress = getDailyChallengeProgress();
+  return {
+    greeting: greeting(new Date().getHours()),
+    daily: SHOW_DAILY_CHALLENGE_UI
+      ? {
+          scenario: getDailyChallengeScenario(),
+          done: Boolean(progress.leagueLeaders && progress.playoffTitle),
+          used: getDailyChallengeAttemptUsed(),
+        }
+      : null,
+    career,
+    classicBest: rec(stats.normal.bestRecordWins, stats.normal.bestRecordLosses),
+    eraBest: rec(stats.eraNormal.bestRecordWins, stats.eraNormal.bestRecordLosses),
+    wordleDone: getPaidRunIds().includes(`wordle_win:${getLocalDateKey()}`),
+  };
+}
+
+function Tile({ href, onClick, children, className = "" }: { href: string; onClick?: () => void; children: ReactNode; className?: string }) {
   return (
     <Link
-      href={getDailyChallengeHref()}
-      onClick={() => playUiClick()}
-      className="btn-press flex flex-col items-center justify-between gap-2 rounded-2xl border border-accent-gold/30 bg-gradient-to-b from-accent-gold/10 to-pitch-950 p-4 text-center transition hover:border-accent-gold/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold/60"
+      href={href}
+      onClick={() => {
+        playUiClick();
+        onClick?.();
+      }}
+      className={`btn-press block rounded-[20px] bg-pitch-900 p-4 text-left text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 ${className}`}
     >
-      <span className={`${TYPO.eyebrow} text-accent-gold`}>
-        Daily{scenario?.eraMode ? " · Era" : ""}
-      </span>
-      <span className="font-display text-lg font-black leading-tight text-white">Daily Challenge</span>
-      <span className="min-h-[2.5rem] text-xs leading-snug text-gray-300">
-        {scenario ? `Every opponent is ${scenario.forceOpponentClub}` : "A new challenge every day"}
-      </span>
-      <span
-        className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${
-          today?.done
-            ? "bg-emerald-500/15 text-emerald-300"
-            : today?.attemptUsed
-              ? "bg-white/10 text-gray-300"
-              : "bg-accent-gold/15 text-accent-gold"
-        }`}
-      >
-        {today?.done ? "✓ Done today" : today?.attemptUsed ? "Attempt used · practice only" : "1 attempt today"}
-      </span>
+      {children}
     </Link>
   );
 }
 
-function HomePlayChoice({
-  eyebrow,
-  title,
-  blurb,
-  href,
-  variant,
-  cta,
-  onClick,
-}: {
-  eyebrow: string;
-  title: string;
-  blurb: string;
-  href: string;
-  variant: "current" | "era";
-  cta: string;
-  onClick: () => void;
-}) {
-  const accentClass =
-    variant === "era" ? "home-play-card--era" : "home-play-card--current";
+export function HomeModeSelector() {
+  const [hub, setHub] = useState<HubState | null>(null);
+  useEffect(() => {
+    try {
+      setHub(readHub());
+    } catch {
+      setHub(null);
+    }
+  }, []);
+
+  const daily = hub?.daily ?? null;
+  const dailyStatus = !daily ? null : daily.done ? "Done today" : daily.used ? "Attempt used · practice only" : "1 attempt left today";
 
   return (
-    <MobileSection
-      className={`home-play-card flex min-h-0 flex-col items-center overflow-hidden text-center ${SPACING.cardPaddingMobile} ${accentClass}`}
-    >
-      <p
-        className={`${TYPO.eyebrow} ${
-          variant === "era" ? "text-accent-gold" : "text-theme-primary"
-        }`}
-      >
-        {eyebrow}
-      </p>
-      <h2 className={`mt-1.5 ${TYPO.homeModeTitle}`}>{title}</h2>
-      <p className="mt-1 text-sm text-gray-400">{blurb}</p>
+    <section className="mx-auto flex w-full max-w-xl flex-col gap-3 text-left" aria-labelledby="play-heading">
+      <h2 id="play-heading" className="px-0.5 text-[22px] font-bold tracking-tight text-white">
+        {hub?.greeting ?? "Welcome, coach"}
+      </h2>
 
-      <div className="mt-4 w-full max-w-xs">
-        <GameButton variant={variant} href={href} onClick={onClick} size="sm">
-          {cta}
-        </GameButton>
+      {SHOW_DAILY_CHALLENGE_UI ? (
+        <section className="relative overflow-hidden rounded-[20px] bg-pitch-900 p-[18px]" aria-label="Daily Challenge">
+          <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full bg-theme-primary/[0.06]" />
+          <p className="flex items-center gap-2 text-[13px] font-semibold text-amber-300">
+            <span aria-hidden className="h-2 w-2 rounded-full bg-amber-400" />
+            Daily Challenge{daily?.scenario.eraMode ? " · Era" : ""}{dailyStatus ? ` · ${dailyStatus}` : ""}
+          </p>
+          <p className="mt-3 text-sm text-[color:var(--fl-muted)]">Every opponent is</p>
+          <p className="mt-0.5 text-[30px] font-bold leading-tight tracking-tight">
+            {daily?.scenario.forceOpponentClub ?? "Today's club"}
+          </p>
+          {daily ? (
+            <div className="mt-3 flex flex-wrap gap-2">
+              <span className="fl-pill">
+                Top the table <span className="text-theme-primary">+{formatClubFunds(daily.scenario.leagueLeadersBonus)}</span>
+              </span>
+              <span className="fl-pill">
+                Grand Final <span className="text-theme-primary">+{formatClubFunds(daily.scenario.playoffTitleBonus)}</span>
+              </span>
+            </div>
+          ) : null}
+          <Link
+            href={getDailyChallengeHref()}
+            onClick={() => playUiClick()}
+            className="btn-press mt-4 flex h-[50px] items-center justify-center rounded-[14px] bg-theme-primary text-base font-bold text-[color:var(--theme-text-on-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          >
+            {daily?.done ? "Play again for practice" : daily?.used ? "Practice today's Daily" : "Play today's Daily"}
+          </Link>
+        </section>
+      ) : null}
+
+      <Tile href="/manager" className="flex items-center gap-3.5">
+        <span aria-hidden className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] bg-pitch-950 text-theme-primary">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z" />
+            <path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3" />
+          </svg>
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-[17px] font-bold">Manager Mode</span>
+          <span className="mt-0.5 block text-[13px] text-[color:var(--fl-muted)]">
+            {hub?.career ? `${hub.career.club} · ${hub.career.detail}` : "Run a real club. Go up, win the Grand Final."}
+          </span>
+        </span>
+        <span className="text-[13px] font-bold text-theme-primary">{hub?.career ? "Resume" : "Start"}</span>
+      </Tile>
+
+      <div className="grid grid-cols-2 gap-3">
+        <Tile
+          href={buildPlayHref("classic", false)}
+          onClick={() => {
+            setNormalEraVariant(false);
+            playModeClassicStart("NORMAL");
+          }}
+        >
+          <span className="fl-number block text-[30px] text-theme-primary">13</span>
+          <span className="mt-2 block text-base font-bold">Classic</span>
+          <span className="mt-0.5 block text-[13px] text-[color:var(--fl-muted)]">{hub?.classicBest ?? "2026 squads"}</span>
+        </Tile>
+        <Tile
+          href={buildPlayHref("classic", true)}
+          onClick={() => {
+            setNormalEraVariant(true);
+            playModeClassicStart("NORMAL");
+          }}
+        >
+          <span className="fl-number block text-[30px] text-amber-300">&rsquo;96</span>
+          <span className="mt-2 block text-base font-bold">Era Classic</span>
+          <span className="mt-0.5 block text-[13px] text-[color:var(--fl-muted)]">{hub?.eraBest ?? "Every era, legends too"}</span>
+        </Tile>
       </div>
-    </MobileSection>
+
+      <Tile href="/mini-games" className="flex items-center gap-3.5">
+        <span aria-hidden className="fl-number flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] bg-pitch-950 text-2xl text-amber-300">
+          ?
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-[17px] font-bold">Puzzles</span>
+          <span className="mt-0.5 block text-[13px] text-[color:var(--fl-muted)]">
+            Millionaire · Wordle{hub ? (hub.wordleDone ? " · Wordle done today" : " · Wordle not played") : ""}
+          </span>
+        </span>
+        <span aria-hidden className="text-xl text-[color:var(--fl-muted)]">›</span>
+      </Tile>
+    </section>
   );
 }

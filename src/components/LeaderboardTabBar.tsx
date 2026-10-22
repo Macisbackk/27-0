@@ -25,28 +25,28 @@ interface LeaderboardTabBarProps<T extends string> {
 
 const ACCENT_ACTIVE: Record<LeaderboardTabAccent, string> = {
   theme:
-    "border-theme-primary/60 bg-theme-primary/14 text-theme-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]",
+    "border-transparent bg-theme-primary/15 text-theme-primary",
   gold:
-    "border-accent-gold/60 bg-accent-gold/14 text-accent-gold shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]",
+    "border-transparent bg-accent-gold/15 text-accent-gold",
   green:
-    "border-mode-current/60 bg-mode-current/14 text-mode-current shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]",
+    "border-transparent bg-mode-current/15 text-mode-current",
   sky:
-    "border-sky-400/55 bg-sky-500/12 text-sky-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]",
+    "border-transparent bg-sky-500/15 text-sky-300",
   amber:
-    "border-amber-400/55 bg-amber-500/12 text-amber-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]",
+    "border-transparent bg-amber-500/15 text-amber-300",
 };
 
 const ACCENT_IDLE: Record<LeaderboardTabAccent, string> = {
   theme:
-    "border-pitch-600/55 bg-pitch-900/45 text-pitch-400 hover:border-theme-primary/40 hover:text-pitch-200",
+    "border-transparent bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white",
   gold:
-    "border-pitch-600/55 bg-pitch-900/45 text-pitch-400 hover:border-accent-gold/40 hover:text-pitch-200",
+    "border-transparent bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white",
   green:
-    "border-pitch-600/55 bg-pitch-900/45 text-pitch-400 hover:border-mode-current/40 hover:text-pitch-200",
+    "border-transparent bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white",
   sky:
-    "border-pitch-600/55 bg-pitch-900/45 text-pitch-400 hover:border-sky-400/40 hover:text-pitch-200",
+    "border-transparent bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white",
   amber:
-    "border-pitch-600/55 bg-pitch-900/45 text-pitch-400 hover:border-amber-400/40 hover:text-pitch-200",
+    "border-transparent bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white",
 };
 
 const PLAY_STYLE_DEFAULT_ACCENT: Record<string, LeaderboardTabAccent> = {
@@ -55,10 +55,10 @@ const PLAY_STYLE_DEFAULT_ACCENT: Record<string, LeaderboardTabAccent> = {
 };
 
 const MODE_BUTTON_BASE =
-  "btn-press box-border flex min-h-[48px] w-full items-center justify-center rounded-xl border-2 px-3 py-2.5 text-center transition";
+  "btn-press box-border flex min-h-[48px] w-full items-center justify-center rounded-[14px] border-2 px-3 py-2.5 text-center transition";
 
 const CHIP_BUTTON_BASE =
-  "btn-press shrink-0 rounded-xl border px-4 py-2.5 text-sm font-semibold transition min-h-[44px]";
+  "btn-press shrink-0 rounded-full border px-4 py-2.5 text-sm font-semibold transition min-h-[44px]";
 
 function resolveAccent<T extends string>(
   tab: LeaderboardTabOption<T>,
@@ -85,10 +85,10 @@ function categoryChipClass(active: boolean, accent: LeaderboardTabAccent): strin
 
 function periodButtonClass(active: boolean): string {
   const base =
-    "btn-press rounded-lg px-3.5 py-2 font-display text-[10px] font-bold uppercase tracking-[0.14em] transition min-h-[40px]";
+    "btn-press rounded-full px-3.5 py-2 text-xs font-semibold transition min-h-[40px]";
   return active
-    ? `${base} bg-pitch-800/90 text-white ring-1 ring-theme-tertiary/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]`
-    : `${base} text-pitch-500 hover:bg-pitch-800/50 hover:text-pitch-300`;
+    ? `${base} bg-pitch-950 text-white`
+    : `${base} text-[color:var(--fl-muted)] hover:text-white`;
 }
 
 function playStyleButtonClass(
@@ -209,7 +209,7 @@ export function LeaderboardTabBar<T extends string>({
 
   return (
     <div
-      className="flex justify-center rounded-xl border border-pitch-700/55 bg-pitch-950/55 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
+      className="flex justify-center rounded-full bg-pitch-900 p-1"
       role="tablist"
       aria-label={ariaLabel}
     >

@@ -88,8 +88,8 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
                   setClubId(c.id);
                 }}
                 aria-pressed={active}
-                className={`flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors ${
-                  active ? "border-theme-primary bg-pitch-800" : "border-pitch-700 bg-pitch-900/80 hover:border-pitch-600"
+                className={`flex w-full items-center gap-3 rounded-[16px] px-3 py-3 text-left transition-colors ${
+                  active ? "bg-pitch-800 ring-2 ring-theme-primary" : "bg-pitch-900 hover:bg-pitch-800"
                 }`}
               >
                 <ClubBadge club={c} />

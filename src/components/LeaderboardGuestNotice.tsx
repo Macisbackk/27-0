@@ -17,8 +17,8 @@ export function LeaderboardGuestNotice() {
       <p className={TYPO.body}>
         Log in to submit. Guests can browse.
       </p>
-      <Link href="/" className={`mt-2 inline-block ${LINK.accent}`}>
-        Go to Home →
+      <Link href="/login?redirect=/leaderboard" className={`mt-2 inline-block ${LINK.accent}`}>
+        Log in →
       </Link>
     </div>
   );

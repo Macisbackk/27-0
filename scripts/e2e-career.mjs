@@ -164,7 +164,7 @@ try {
   step("Leaderboard shows Manager Mode records");
 
   await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
-  await page.getByRole("link", { name: /Play Manager Mode/ }).first().waitFor({ timeout });
+  await page.getByRole("link", { name: /Manager Mode/ }).first().waitFor({ timeout });
   step("Home page Manager Mode card");
 } catch (err) {
   errors.push(`step failed after [${steps.at(-1) ?? "start"}]: ${err instanceof Error ? err.message : String(err)}`);

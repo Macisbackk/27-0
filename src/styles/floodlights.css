@@ -1,0 +1,350 @@
+/*
+ * Floodlights — the 27-0 look (v1.94+).
+ *
+ * Loaded after globals.css, so these rules win. One small kit, used everywhere:
+ *   ground   #0a110e   surface #16211c   raised #1d2a24   line rgba(255,255,255,.06)
+ *   radius   cards 20px · tiles 16px · controls 14px · pills 999px
+ *   type     Inter for everything; Anton only for big numbers and the logo
+ *   accent   the Store theme colour (default green), used sparingly
+ * Cards stay as cards on phones too (the old mobile "flatten everything" rule is undone here).
+ */
+
+:root {
+  --fl-ground: #0a110e;
+  --fl-surface: #16211c;
+  --fl-raised: #1d2a24;
+  --fl-line: rgba(255, 255, 255, 0.06);
+  --fl-text: #eef5f0;
+  --fl-muted: #a7b8ae;
+  --fl-radius-card: 20px;
+  --fl-radius-tile: 16px;
+  --fl-radius-control: 14px;
+
+  /* Default (no Store theme) accent; a chosen theme overrides these inline on <html>. */
+  --theme-primary: #4ade80;
+  --theme-secondary: #86efac;
+  --theme-tertiary: #22c55e;
+  --theme-primary-rgb: 74 222 128;
+  --theme-secondary-rgb: 134 239 172;
+  --theme-tertiary-rgb: 34 197 94;
+  --theme-primary-soft: rgba(74, 222, 128, 0.12);
+  --theme-text-on-primary: #052e14;
+  --header-bg: rgba(10, 17, 14, 0.92);
+  --sidebar-bg: var(--fl-ground);
+  --arena-bg: var(--fl-ground);
+
+  --bg-primary: var(--fl-ground);
+  --bg-secondary: var(--fl-surface);
+  --bg-elevated: var(--fl-raised);
+  --bg-panel: var(--fl-surface);
+  --font-body: var(--font-inter), "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --mobile-radius-medium: var(--fl-radius-tile);
+  --mobile-divider: var(--fl-line);
+  --mobile-hairline: var(--fl-line);
+  --mobile-surface-primary: var(--fl-ground);
+  --mobile-surface-secondary: var(--fl-surface);
+  --mobile-surface-raised: var(--fl-raised);
+  --mobile-text-secondary: #cfdcd4;
+  --mobile-text-muted: var(--fl-muted);
+}
+
+@media (max-width: 639px) {
+  :root {
+    --mobile-surface-secondary: var(--fl-surface);
+    --mobile-divider: var(--fl-line);
+  }
+}
+
+html,
+body,
+.app-shell {
+  background: var(--fl-ground);
+  color: var(--fl-text);
+  font-family: var(--font-body);
+}
+
+/* ── Cards ─────────────────────────────────────────────────────────────── */
+.game-panel,
+.programme-panel,
+.scoreboard-panel,
+.clipboard-panel,
+.card-glass,
+.matchday-panel,
+.mobile-section,
+.home-play-card,
+.home-play-card.mobile-section {
+  border: 0 !important;
+  border-radius: var(--fl-radius-card) !important;
+  background: var(--fl-surface) !important;
+  box-shadow: none !important;
+}
+
+.game-panel--inset,
+.programme-panel--inset,
+.scoreboard-panel--inset,
+.clipboard-panel--inset {
+  border-radius: var(--fl-radius-tile) !important;
+  background: var(--fl-ground) !important;
+}
+
+/* No coloured strip across the top of every card: the accent is for actions, not chrome. */
+.game-panel::before,
+.programme-panel::before,
+.scoreboard-panel::before,
+.clipboard-panel::before,
+.card-glass::before,
+.matchday-panel::before,
+.game-stat-card::after {
+  display: none !important;
+}
+
+/* Nested cards read as plain groups inside their parent card. */
+.game-panel .game-panel,
+.mobile-section .game-panel,
+.game-panel .mobile-section {
+  background: var(--fl-raised) !important;
+  border-radius: var(--fl-radius-tile) !important;
+}
+
+.mobile-section--flush {
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+.game-stat-card {
+  border: 0 !important;
+  border-radius: var(--fl-radius-tile) !important;
+  background: var(--fl-raised) !important;
+}
+
+@media (max-width: 639px) {
+  .game-panel,
+  .programme-panel,
+  .scoreboard-panel,
+  .clipboard-panel,
+  .card-glass,
+  .matchday-panel,
+  .mobile-section,
+  .mobile-fixture-card,
+  .compact-info-card,
+  .game-stat-card {
+    background: var(--fl-surface) !important;
+    border-radius: var(--fl-radius-tile) !important;
+  }
+  .game-stat-card {
+    background: var(--fl-raised) !important;
+  }
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+a.game-button,
+button.game-button,
+.game-button {
+  border-radius: var(--fl-radius-control) !important;
+  font-family: var(--font-body) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.game-button--sm {
+  min-height: 44px;
+  font-size: 0.875rem;
+  border-radius: 12px !important;
+}
+
+.game-button--md {
+  min-height: 50px;
+  font-size: 0.95rem;
+}
+
+.game-button--lg {
+  min-height: 54px;
+  font-size: 1rem;
+}
+
+a.game-button--theme,
+button.game-button--theme,
+.game-button--theme {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+a.game-button--secondary,
+button.game-button--secondary,
+.game-button--secondary {
+  background-color: var(--fl-raised) !important;
+  border: 0 !important;
+  color: var(--fl-text) !important;
+}
+
+a.game-button--secondary:hover:not(:disabled),
+button.game-button--secondary:hover:not(:disabled),
+.game-button--secondary:hover:not(:disabled) {
+  background-color: #26352e !important;
+}
+
+a .game-button--current,
+button.game-button--current,
+.game-button--current,
+a .game-button--era,
+button.game-button--era,
+.game-button--era {
+  border: 0 !important;
+}
+
+/* ── Toggles and tabs ──────────────────────────────────────────────────── */
+.mode-switch--sidebar,
+.mode-switch--home,
+.mode-toggle {
+  border: 0;
+  border-radius: 999px;
+  background: var(--fl-surface);
+  padding: 4px;
+}
+
+.mode-switch--sidebar button,
+.mode-switch--home button,
+.mode-toggle button {
+  border-radius: 999px;
+  font-weight: 700;
+  color: var(--fl-muted);
+}
+
+.mode-switch--sidebar button:hover:not(.active),
+.mode-switch--home button:hover:not(.active),
+.mode-toggle button:hover:not(.active) {
+  color: var(--fl-text);
+}
+
+/* ── Inputs ───────────────────────────────────────────────────────────── */
+.game-input {
+  border-radius: var(--fl-radius-control) !important;
+  background: var(--fl-ground) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  min-height: 50px;
+}
+
+.game-input:focus {
+  border-color: rgb(var(--theme-primary-rgb) / 0.7) !important;
+}
+
+/* ── Header, menu and bottom bar ───────────────────────────────────────── */
+.app-header {
+  background: rgba(10, 17, 14, 0.92) !important;
+  border-bottom: 1px solid var(--fl-line) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.sidebar-panel {
+  background: var(--fl-ground) !important;
+  border-right: 1px solid var(--fl-line) !important;
+}
+
+.fl-bottom-nav {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  z-index: 45;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  padding: 6px;
+  border-radius: 20px;
+  background: rgba(22, 33, 28, 0.96);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.fl-bottom-nav a {
+  display: flex;
+  min-height: 48px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 14px;
+  color: var(--fl-muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.fl-bottom-nav a[aria-current="page"] {
+  background: var(--fl-ground);
+  color: var(--theme-primary);
+}
+
+@media (min-width: 640px) {
+  .fl-bottom-nav {
+    display: none;
+  }
+}
+
+/* ── Small shared pieces ──────────────────────────────────────────────── */
+.fl-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  background: var(--fl-ground);
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.fl-number {
+  font-family: var(--font-display), "Arial Black", Impact, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+/* The wordmark keeps its condensed scoreboard face. */
+.logo-mark {
+  font-family: var(--font-pitch), "Arial Black", Impact, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.matchday-scoreboard {
+  border: 0 !important;
+  border-radius: var(--fl-radius-card) !important;
+  background: var(--fl-surface) !important;
+  box-shadow: none !important;
+}
+
+/* Quiz answers: soft rows; colour only for selected / right / wrong. */
+.quiz-arena .quiz-answer {
+  border: 2px solid transparent;
+  border-radius: var(--fl-radius-control);
+  background: var(--fl-surface);
+  min-height: 52px;
+}
+.quiz-arena .quiz-answer--selected {
+  border-color: var(--theme-primary);
+  background: color-mix(in srgb, var(--theme-primary) 14%, var(--fl-surface));
+}
+.quiz-arena .quiz-answer--correct {
+  border-color: #4ade80;
+  background: color-mix(in srgb, #22c55e 18%, var(--fl-surface));
+}
+.quiz-arena .quiz-answer--wrong {
+  border-color: #f87171;
+  background: color-mix(in srgb, #ef4444 16%, var(--fl-surface));
+}
+.quiz-arena .quiz-ladder {
+  border: 0;
+  border-radius: var(--fl-radius-tile);
+  background: var(--fl-surface);
+}
+
+.achievement-popup-card {
+  border: 0;
+  border-radius: var(--fl-radius-card);
+  background: var(--fl-surface);
+}

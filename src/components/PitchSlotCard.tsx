@@ -56,6 +56,23 @@ export function PitchSlotCard({
     ? player.name
     : formatPitchSlotPlayerName(player.name, compact);
 
+  if (fullPlayerNames) {
+    // Floodlights team sheet: rating in a club-coloured ring, name underneath.
+    return (
+      <div className={`pitch-slot-card flex w-[68px] flex-col items-center ${className}`} title={`${positionLabel}: ${player.name}`}>
+        <span
+          className="fl-number flex h-11 w-11 items-center justify-center rounded-full bg-pitch-950 text-[17px] text-white"
+          style={{ boxShadow: `0 0 0 2.5px ${colors.primary}, 0 0 0 4px ${colors.secondary}55` }}
+        >
+          {ratingLabel}
+        </span>
+        <span className="mt-1 w-full text-center text-[10px] font-semibold leading-[1.1] text-white">
+          <TwoLineName name={player.name} />
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`pitch-slot-card flex shrink-0 flex-col overflow-hidden rounded-lg border border-white/10 bg-[rgba(8,12,13,0.96)] shadow-[0_8px_22px_rgba(0,0,0,0.28)] ${sizeClass} ${className}`}
@@ -135,9 +152,9 @@ function TwoLineName({ name }: { name: string }) {
   const surname = parts[parts.length - 1]!;
   const firstFull = parts.slice(0, -1).join(" ");
   // Long first names collapse to an initial: the surname is what players recognise.
-  const first = firstFull.length > 6 ? `${firstFull[0]}.` : firstFull;
+  const first = firstFull.length > 8 ? `${firstFull[0]}.` : firstFull;
   const surnameSize =
-    surname.length <= 6 ? "" : surname.length <= 8 ? "text-[7px] sm:text-[8px]" : "text-[6px] sm:text-[7px]";
+    surname.length <= 8 ? "" : surname.length <= 10 ? "text-[9px]" : "text-[8px]";
   return (
     <>
       <span className="block truncate">{first}</span>

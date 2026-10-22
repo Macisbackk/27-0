@@ -240,7 +240,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               <span
                 key={f.round}
                 title={played ? `R${f.round}: ${formatFixtureScore(f)}` : `Round ${f.round}`}
-                className={`flex aspect-square items-center justify-center rounded-md text-[10px] font-black ${
+                className={`flex aspect-square items-center justify-center rounded-full text-[10px] font-black ${
                   !played
                     ? "bg-pitch-900 text-pitch-600"
                     : f.result === "W"

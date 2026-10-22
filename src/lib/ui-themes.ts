@@ -61,16 +61,17 @@ function fromTeamColors(team: TeamUiThemeColors): UiThemeDefinition {
 export const DEFAULT_UI_THEME: UiThemeDefinition = {
   id: DEFAULT_UI_THEME_ID,
   label: "Default",
-  primary: "#22c55e",
-  secondary: "#34d399",
-  tertiary: "#16a34a",
-  textOnPrimary: "#0a0f0d",
-  textOnSecondary: "#0a0f0d",
-  accent: "#22c55e",
-  accent2: "#34d399",
-  accent3: "#16a34a",
-  accentText: "#0a0f0d",
-  glow: "rgba(34, 197, 94, 0.35)",
+  // Floodlights green.
+  primary: "#4ade80",
+  secondary: "#86efac",
+  tertiary: "#22c55e",
+  textOnPrimary: "#052e14",
+  textOnSecondary: "#052e14",
+  accent: "#4ade80",
+  accent2: "#86efac",
+  accent3: "#22c55e",
+  accentText: "#052e14",
+  glow: "rgba(74, 222, 128, 0.35)",
 };
 
 const CLUB_THEME_NAMES = [

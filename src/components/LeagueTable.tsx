@@ -99,7 +99,7 @@ const LeagueStandingRow = memo(function LeagueStandingRow({
           ? "border-theme-primary/45 bg-theme-primary/10 shadow-[inset_3px_0_0_var(--theme-primary)]"
           : inPlayoffZone
             ? "border-theme-primary/20 bg-theme-primary/[0.06]"
-            : "border-white/10 bg-[#0c1210]"
+            : "border-white/10 bg-pitch-900"
       }`}
     >
       <div className="grid grid-cols-[2rem_minmax(0,1fr)_2.5rem] items-center gap-2 sm:gap-3">
