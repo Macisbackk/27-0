@@ -27,7 +27,7 @@ function HubHeader() {
   const pos = table.findIndex((r) => r.clubId === club.id) + 1;
   const row = table[pos - 1];
   return (
-    <header className="flex items-center gap-3 rounded-[20px] bg-pitch-900 p-3">
+    <header className="flex items-center gap-3 rounded-card bg-pitch-900 p-3">
       <ClubBadge club={club} size="lg" />
       <div className="min-w-0 flex-1">
         <p className="truncate font-display text-xl font-bold leading-tight text-white">{club.name}</p>

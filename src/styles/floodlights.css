@@ -1,5 +1,5 @@
 /*
- * Floodlights — the 27-0 look (v1.94+).
+ * Floodlights — base kit. Tokens below are the Matchnight identity (v1.05); see matchnight.css.
  *
  * Loaded after globals.css, so these rules win. One small kit, used everywhere:
  *   ground   #0a110e   surface #16211c   raised #1d2a24   line rgba(255,255,255,.06)
@@ -10,26 +10,30 @@
  */
 
 :root {
-  --fl-ground: #0a110e;
-  --fl-surface: #16211c;
-  --fl-raised: #1d2a24;
-  --fl-line: rgba(255, 255, 255, 0.06);
-  --fl-text: #eef5f0;
-  --fl-muted: #a7b8ae;
-  --fl-radius-card: 20px;
-  --fl-radius-tile: 16px;
-  --fl-radius-control: 14px;
+  /* Matchnight (v1.05): league-blue night, blue actions, red scoreboard mark, squared kit-tag shapes. */
+  --fl-ground: #06182a;
+  --fl-surface: #0c2339;
+  --fl-raised: #12304d;
+  --fl-raised-hover: #193b5c;
+  --fl-line: rgba(120, 170, 230, 0.12);
+  --fl-line-strong: rgba(120, 170, 230, 0.22);
+  --fl-text: #f2f6fb;
+  --fl-muted: #9db2c9;
+  --fl-radius-card: 6px;
+  --fl-radius-tile: 4px;
+  --fl-radius-control: 4px;
+  --fl-chamfer: 9px;
 
   /* Default (no Store theme) accent; a chosen theme overrides these inline on <html>. */
-  --theme-primary: #4ade80;
-  --theme-secondary: #86efac;
-  --theme-tertiary: #22c55e;
-  --theme-primary-rgb: 74 222 128;
-  --theme-secondary-rgb: 134 239 172;
-  --theme-tertiary-rgb: 34 197 94;
-  --theme-primary-soft: rgba(74, 222, 128, 0.12);
-  --theme-text-on-primary: #052e14;
-  --header-bg: rgba(10, 17, 14, 0.92);
+  --theme-primary: #2085d6;
+  --theme-secondary: #5aa9ec;
+  --theme-tertiary: #00609a;
+  --theme-primary-rgb: 32 133 214;
+  --theme-secondary-rgb: 90 169 236;
+  --theme-tertiary-rgb: 0 96 154;
+  --theme-primary-soft: rgba(32, 133, 214, 0.12);
+  --theme-text-on-primary: #ffffff;
+  --header-bg: rgba(6, 24, 42, 0.94);
   --sidebar-bg: var(--fl-ground);
   --arena-bg: var(--fl-ground);
 
@@ -37,7 +41,8 @@
   --bg-secondary: var(--fl-surface);
   --bg-elevated: var(--fl-raised);
   --bg-panel: var(--fl-surface);
-  --font-body: var(--font-inter), "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: var(--font-sans), "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-cond: var(--font-condensed), "Barlow Condensed", "Arial Narrow", sans-serif;
 
   --mobile-radius-medium: var(--fl-radius-tile);
   --mobile-divider: var(--fl-line);
@@ -45,7 +50,7 @@
   --mobile-surface-primary: var(--fl-ground);
   --mobile-surface-secondary: var(--fl-surface);
   --mobile-surface-raised: var(--fl-raised);
-  --mobile-text-secondary: #cfdcd4;
+  --mobile-text-secondary: #cddbe9;
   --mobile-text-muted: var(--fl-muted);
 }
 
@@ -182,7 +187,7 @@ button.game-button--secondary,
 a.game-button--secondary:hover:not(:disabled),
 button.game-button--secondary:hover:not(:disabled),
 .game-button--secondary:hover:not(:disabled) {
-  background-color: #26352e !important;
+  background-color: var(--fl-raised-hover) !important;
 }
 
 a .game-button--current,
@@ -469,7 +474,7 @@ button.game-button--era,
 
 .playoff-bracket-progress__node--final.playoff-bracket-progress__node--live {
   background: #fbbf24;
-  color: #1c1300;
+  color: #ffffff;
   box-shadow: none;
 }
 
@@ -584,7 +589,7 @@ button.game-button--era,
 
 .playoff-bracket-match--final .playoff-bracket-match__ribbon {
   background: #fbbf24;
-  color: #1c1300;
+  color: #ffffff;
 }
 
 .playoff-bracket-match:has(> .playoff-bracket-match__ribbon) {
@@ -646,7 +651,7 @@ button.game-button--era,
 @media (max-width: 639px) {
   .bracket-sticky-actions {
     border-top: 1px solid var(--fl-line);
-    background: rgba(10, 17, 14, 0.96);
+    background: rgba(6, 24, 42, 0.96);
     box-shadow: none;
   }
 }
@@ -726,7 +731,7 @@ button.game-button--era,
 /* ── Classic player picker (after the spin) ───────────────────────────────── */
 /* Opaque: the page underneath (footer text etc.) must never show through. */
 .recruitment-choice-overlay {
-  background: var(--fl-ground, #0a110e) !important;
+  background: var(--fl-ground, #06182a) !important;
 }
 .recruitment-choice-panel {
   max-height: none !important;

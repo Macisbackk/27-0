@@ -55,7 +55,7 @@ const PLAY_STYLE_DEFAULT_ACCENT: Record<string, LeaderboardTabAccent> = {
 };
 
 const MODE_BUTTON_BASE =
-  "btn-press box-border flex min-h-[48px] w-full items-center justify-center rounded-[14px] border-2 px-3 py-2.5 text-center transition";
+  "btn-press box-border flex min-h-[48px] w-full items-center justify-center rounded-control border-2 px-3 py-2.5 text-center transition";
 
 const CHIP_BUTTON_BASE =
   "btn-press shrink-0 rounded-full border px-4 py-2.5 text-sm font-semibold transition min-h-[44px]";
@@ -119,7 +119,7 @@ export function LeaderboardTabBar<T extends string>({
   if (tier === "playStyle") {
     return (
       <div
-        className="rounded-[14px] border border-pitch-600/55 bg-pitch-950/95 p-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.28)]"
+        className="rounded-control border border-pitch-600/55 bg-pitch-950/95 p-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.28)]"
         role="tablist"
         aria-label={ariaLabel}
       >

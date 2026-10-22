@@ -50,7 +50,7 @@ function BuyButton({ item, balance, onBuy }: { item: CosmeticItem; balance: numb
 
 function Section({ title, intro, children }: { title: string; intro: string; children: ReactNode }) {
   return (
-    <section className="rounded-[20px] bg-pitch-900 p-4 text-left">
+    <section className="rounded-card bg-pitch-900 p-4 text-left">
       <h2 className="text-[17px] font-bold text-white">{title}</h2>
       <p className="mt-1 text-sm text-[color:var(--fl-muted)]">{intro}</p>
       <div className="mt-3">{children}</div>
@@ -84,7 +84,7 @@ export function KitAndPitchStore({ balance }: { balance: number }) {
       {message ? <p className="text-center text-sm text-theme-primary" role="status">{message}</p> : null}
       <Section title="Kit designer" intro="Design your own shirt. Turn it on and your whole Classic team sheet wears it instead of club kits.">
         <div className="flex items-center gap-4">
-          <span className="flex h-28 w-28 shrink-0 items-center justify-center rounded-[16px] bg-pitch-950">
+          <span className="flex h-28 w-28 shrink-0 items-center justify-center rounded-tile bg-pitch-950">
             <ClubShirt kit={kit} label="27" size={92} />
           </span>
           {ownsKit ? (
@@ -162,7 +162,7 @@ export function KitAndPitchStore({ balance }: { balance: number }) {
             const owned = !item || c.owned.includes(item.id);
             const active = activePitch === styleId;
             return (
-              <li key={id} className="overflow-hidden rounded-[16px] bg-pitch-950">
+              <li key={id} className="overflow-hidden rounded-tile bg-pitch-950">
                 <div className="relative h-20" style={{ background: look.background }}>
                   <div className="absolute left-0 right-0 top-1/2 h-[2px]" style={{ background: look.line }} />
                 </div>
@@ -245,7 +245,7 @@ export function FramesStore({ balance }: { balance: number }) {
           const active = c.equipped.frame === item.id;
           return (
             <li key={item.id} className="flex flex-col items-center gap-2 text-center">
-              <div className="flex h-24 w-full flex-col items-center justify-center gap-1.5 rounded-[12px] bg-pitch-800 px-1.5">
+              <div className="flex h-24 w-full flex-col items-center justify-center gap-1.5 rounded-control bg-pitch-800 px-1.5">
                 <span className="text-[10px] font-semibold text-[color:var(--fl-muted)]">1st</span>
                 <CoachNameplate name="You" frame={item.id} className="text-xs font-bold text-white" />
               </div>
@@ -282,10 +282,10 @@ export function ModesStore({ balance }: { balance: number }) {
       {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
       {owned ? (
         <div className="grid grid-cols-2 gap-2">
-          <Link href="/play?bk=1" className="btn-press flex h-11 items-center justify-center rounded-[14px] bg-theme-primary text-sm font-bold text-[color:var(--theme-text-on-primary)]">
+          <Link href="/play?bk=1" className="btn-press flex h-11 items-center justify-center rounded-control bg-theme-primary text-sm font-bold text-[color:var(--theme-text-on-primary)]">
             Play Current
           </Link>
-          <Link href="/play?bk=1&era=1" className="btn-press flex h-11 items-center justify-center rounded-[14px] bg-pitch-800 text-sm font-bold text-white">
+          <Link href="/play?bk=1&era=1" className="btn-press flex h-11 items-center justify-center rounded-control bg-pitch-800 text-sm font-bold text-white">
             Play Era
           </Link>
         </div>

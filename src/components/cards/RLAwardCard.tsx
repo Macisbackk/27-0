@@ -54,7 +54,7 @@ export function RLAwardCard({
 
   return (
     <div
-      className={`rounded-[16px] p-3.5 ${styles.bg} ${className}`}
+      className={`rounded-tile p-3.5 ${styles.bg} ${className}`}
     >
       <p
         className={`text-[13px] font-semibold leading-snug ${styles.title}`}

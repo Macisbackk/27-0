@@ -21,7 +21,7 @@ export function MatchdayScoreboard({
 
   // One compact strip so the whole team sheet fits on a phone screen above the action bar.
   return (
-    <div className="matchday-scoreboard flex items-center gap-4 rounded-[20px] bg-pitch-900 px-4 py-3">
+    <div className="matchday-scoreboard flex items-center gap-4 rounded-card bg-pitch-900 px-4 py-3">
       <div className="min-w-0 flex-1 text-left">
         <p className="flex items-baseline gap-2">
           <span className="text-[15px] font-bold text-white">Squad Builder</span>

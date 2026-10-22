@@ -36,14 +36,14 @@ export function DeleteAccountPanel() {
         </p>
       </header>
 
-      <section className="rounded-[20px] bg-pitch-900 p-4">
+      <section className="rounded-card bg-pitch-900 p-4">
         {loading ? (
           <p className="text-sm text-[color:var(--fl-muted)]">Checking your account…</p>
         ) : step === "done" ? (
           <>
             <p className="text-[17px] font-bold text-white">Your account has been deleted.</p>
             <p className="mt-1 text-sm text-[color:var(--fl-muted)]">Thanks for playing 27-0.</p>
-            <Link href="/" className="btn-press mx-auto mt-4 flex h-11 max-w-[240px] items-center justify-center rounded-[14px] bg-pitch-800 text-sm font-bold text-white">
+            <Link href="/" className="btn-press mx-auto mt-4 flex h-11 max-w-[240px] items-center justify-center rounded-control bg-pitch-800 text-sm font-bold text-white">
               Back to home
             </Link>
           </>
@@ -61,7 +61,7 @@ export function DeleteAccountPanel() {
               Playing as a guest? There&rsquo;s no account: your progress lives only on your device and is removed when
               you clear the app&rsquo;s data.
             </p>
-            <Link href="/login?redirect=/delete-account" className="btn-press mx-auto mt-4 flex h-11 max-w-[240px] items-center justify-center rounded-[14px] bg-pitch-800 text-sm font-bold text-white">
+            <Link href="/login?redirect=/delete-account" className="btn-press mx-auto mt-4 flex h-11 max-w-[240px] items-center justify-center rounded-control bg-pitch-800 text-sm font-bold text-white">
               Log in
             </Link>
           </>

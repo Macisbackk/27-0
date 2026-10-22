@@ -91,7 +91,7 @@ function ClubSheet({ clubId, onClose }: { clubId: string | null; onClose: () => 
         {tablePosition(s, club.id) ? ` · ${tablePosition(s, club.id)}` : ""} · {club.squad.length} players
       </p>
 
-      <section aria-label="Team sheet" className="mt-3 rounded-[16px] bg-pitch-950 p-3">
+      <section aria-label="Team sheet" className="mt-3 rounded-tile bg-pitch-950 p-3">
         <p className="text-[13px] font-semibold text-white">
           {last && opponent ? (
             <>

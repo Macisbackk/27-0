@@ -366,7 +366,7 @@ export function GridGame() {
         </div>
 
         {playing ? (
-          <div className="mt-4 w-full rounded-[20px] bg-pitch-900 p-3 text-center">
+          <div className="mt-4 w-full rounded-card bg-pitch-900 p-3 text-center">
             {selectedHeaders ? (
               <>
                 <p className="text-sm font-semibold leading-snug text-white">
@@ -431,7 +431,7 @@ export function GridGame() {
             ) : null}
           </div>
         ) : (
-          <div className="mt-4 w-full rounded-[20px] bg-pitch-900 p-4 text-center">
+          <div className="mt-4 w-full rounded-card bg-pitch-900 p-4 text-center">
             <p className={`text-xs font-semibold uppercase tracking-wide ${MUTED}`}>
               {run.mode === "daily" ? "Today's grid" : "Practice grid"}
             </p>
@@ -465,7 +465,7 @@ export function GridGame() {
                       .map((player) => player.displayName);
                     if (!headers) return null;
                     return (
-                      <li key={cell} className="rounded-[14px] bg-pitch-800 px-3 py-2">
+                      <li key={cell} className="rounded-control bg-pitch-800 px-3 py-2">
                         <p className={`text-xs leading-snug ${MUTED}`}>
                           {headers[0].name} + {headers[1].name}
                         </p>
@@ -477,7 +477,7 @@ export function GridGame() {
               </div>
             ) : null}
 
-            <pre className="mx-auto mt-4 w-fit max-w-full whitespace-pre-wrap rounded-[14px] [overflow-wrap:anywhere] bg-pitch-950 px-4 py-3 text-left font-sans text-sm leading-relaxed text-white">
+            <pre className="mx-auto mt-4 w-fit max-w-full whitespace-pre-wrap rounded-control [overflow-wrap:anywhere] bg-pitch-950 px-4 py-3 text-left font-sans text-sm leading-relaxed text-white">
               {buildGridShareText(run)}
             </pre>
             <div className="mx-auto mt-3 grid w-full max-w-xs gap-2">
@@ -559,7 +559,7 @@ function RowCells({
             aria-pressed={isSelected}
             disabled={!playing || Boolean(entry)}
             onClick={() => onSelect(index)}
-            className={`flex aspect-square min-h-[44px] min-w-0 items-center justify-center rounded-[16px] p-1 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/70 disabled:cursor-default ${tone} ${
+            className={`flex aspect-square min-h-[44px] min-w-0 items-center justify-center rounded-tile p-1 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/70 disabled:cursor-default ${tone} ${
               shakeCell === index ? "mini-game-shake ring-2 ring-red-400/60" : ""
             }`}
           >

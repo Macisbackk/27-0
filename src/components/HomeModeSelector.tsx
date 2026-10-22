@@ -67,7 +67,28 @@ function readHub(): HubState {
   };
 }
 
-function Tile({ href, onClick, children, className = "" }: { href: string; onClick?: () => void; children: ReactNode; className?: string }) {
+type Edge = "manager" | "current" | "era" | "quiet";
+const EDGE_CLASS: Record<Edge, string> = {
+  manager: "mn-edge",
+  current: "mn-edge mn-edge--current",
+  era: "mn-edge mn-edge--era",
+  quiet: "mn-edge mn-edge--quiet",
+};
+
+/** A mode plate: left-aligned, with a coloured top edge for the game it opens. */
+function Tile({
+  href,
+  onClick,
+  children,
+  edge,
+  className = "",
+}: {
+  href: string;
+  onClick?: () => void;
+  children: ReactNode;
+  edge: Edge;
+  className?: string;
+}) {
   return (
     <Link
       href={href}
@@ -75,7 +96,7 @@ function Tile({ href, onClick, children, className = "" }: { href: string; onCli
         playUiClick();
         onClick?.();
       }}
-      className={`btn-press fl-pressable fl-lift flex flex-col items-center rounded-[20px] bg-pitch-900 p-4 text-center text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 ${className}`}
+      className={`btn-press fl-pressable mn-plate ${EDGE_CLASS[edge]} flex flex-col items-start rounded-card bg-pitch-900 p-4 pt-[18px] text-left text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 ${className}`}
     >
       {children}
     </Link>
@@ -84,21 +105,29 @@ function Tile({ href, onClick, children, className = "" }: { href: string; onCli
 
 function TileIcon({ children, tone = "text-theme-primary" }: { children: ReactNode; tone?: string }) {
   return (
-    <span aria-hidden className={`flex h-12 w-12 items-center justify-center rounded-[14px] bg-pitch-950 ${tone}`}>
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <span aria-hidden className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-pitch-950 ${tone}`}>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         {children}
       </svg>
     </span>
   );
 }
 
-/** Small pill under a tile: best record, or what the mode is when there isn't one yet. */
+/** Small tag under a plate: best record, or what the mode is when there isn't one yet. */
 function TilePill({ children, accent = false }: { children: ReactNode; accent?: boolean }) {
   return (
-    <span className={`mt-2.5 inline-flex rounded-full bg-pitch-950 px-3 py-1 text-xs font-bold ${accent ? "text-theme-primary" : "text-[color:var(--fl-muted)]"}`}>
+    <span className={`fl-pill mt-3 !px-2.5 !py-1 ${accent ? "text-theme-primary" : "text-[color:var(--fl-muted)]"}`}>
       {children}
     </span>
   );
+}
+
+function TileTitle({ children }: { children: ReactNode }) {
+  return <span className="mt-3 block font-cond text-[21px] font-bold leading-tight">{children}</span>;
+}
+
+function TileSub({ children }: { children: ReactNode }) {
+  return <span className="mt-0.5 block text-[14px] leading-snug text-[color:var(--fl-muted)]">{children}</span>;
 }
 
 export function HomeModeSelector() {
@@ -117,27 +146,27 @@ export function HomeModeSelector() {
   const dailyStatus = !daily ? null : daily.done ? "Done today" : daily.used ? "Attempt used · practice only" : "1 attempt left today";
 
   return (
-    <section className="fl-stagger mx-auto flex w-full max-w-xl flex-col gap-3 text-center" aria-labelledby="play-heading">
-      <h2 id="play-heading" className="text-[22px] font-bold tracking-tight text-white">
+    <section className="fl-stagger mx-auto flex w-full max-w-xl flex-col gap-3 text-left" aria-labelledby="play-heading">
+      <h2 id="play-heading" className="font-cond text-[30px] font-bold leading-none text-white">
         {hub?.greeting ?? "Welcome, coach"}
       </h2>
 
       {SHOW_DAILY_CHALLENGE_UI ? (
-        <section className="relative overflow-hidden rounded-[20px] bg-pitch-900 p-[18px] text-center" aria-label="Daily Challenge">
-          <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full bg-theme-primary/[0.06]" />
-          <p className="flex items-center justify-center gap-2 text-[13px] font-semibold text-amber-300">
-            <span aria-hidden className="h-2 w-2 rounded-full bg-amber-400" />
-            Daily Challenge{daily?.scenario.eraMode ? " · Era" : ""}
-          </p>
-          {dailyStatus ? <p className="mt-1 text-xs text-[color:var(--fl-muted)]">{dailyStatus}</p> : null}
-          <p className="mt-3 text-[28px] font-bold leading-tight tracking-tight">
+        <section className="mn-fixture mn-plate rounded-card bg-pitch-900 p-4 pl-5" aria-label="Daily Challenge">
+          <div className="flex items-baseline justify-between gap-3">
+            <p className="font-cond text-[16px] font-bold text-theme-primary">
+              Daily Challenge{daily?.scenario.eraMode ? " · Era" : ""}
+            </p>
+            {dailyStatus ? <p className="shrink-0 text-xs text-[color:var(--fl-muted)]">{dailyStatus}</p> : null}
+          </div>
+          <p className="mt-2 font-cond text-[32px] font-bold leading-[1.05]">
             {daily?.scenario.ruleTitle ?? "Today's rule"}
           </p>
-          <p className="mx-auto mt-1 max-w-xs text-sm text-[color:var(--fl-muted)]">
+          <p className="mt-1 max-w-sm text-[15px] text-[color:var(--fl-muted)]">
             {daily?.scenario.ruleSummary ?? "A new twist every day."}
           </p>
           {daily ? (
-            <div className="mt-3 flex flex-wrap justify-center gap-2">
+            <div className="mt-3 flex flex-wrap gap-2">
               <span className="fl-pill">
                 Top the table <span className="text-theme-primary">+{formatClubFunds(daily.scenario.leagueLeadersBonus)}</span>
               </span>
@@ -149,78 +178,78 @@ export function HomeModeSelector() {
           <Link
             href={getDailyChallengeHref()}
             onClick={() => playUiClick()}
-            className="btn-press fl-pressable mt-4 flex h-[50px] items-center justify-center rounded-[14px] bg-theme-primary text-base font-bold text-[color:var(--theme-text-on-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            className="btn-press fl-pressable mn-chamfer mt-4 flex h-[52px] items-center justify-center bg-theme-primary font-cond text-[18px] font-bold text-[color:var(--theme-text-on-primary)]"
           >
             {daily?.done ? "Play again for practice" : daily?.used ? "Practice today's Daily" : "Play today's Daily"}
           </Link>
         </section>
       ) : null}
 
-      <Tile href="/manager">
+      <Tile href="/manager" edge="manager">
         <TileIcon>
           <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z" />
           <path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3" />
         </TileIcon>
-        <span className="mt-2.5 block text-[17px] font-bold">Manager Mode</span>
-        <span className="mt-0.5 block text-[13px] text-[color:var(--fl-muted)]">
-          {hub?.career ? `${hub.career.club} · ${hub.career.detail}` : "Run a real club. Go up, win the Grand Final."}
-        </span>
+        <TileTitle>Manager Mode</TileTitle>
+        <TileSub>{hub?.career ? `${hub.career.club} · ${hub.career.detail}` : "Run a real club. Go up, win the Grand Final."}</TileSub>
         <TilePill accent>{hub?.career ? "Resume career" : "Start a career"}</TilePill>
       </Tile>
 
       <div className="grid grid-cols-2 gap-3">
         <Tile
           href={buildPlayHref("classic", false)}
+          edge="current"
           onClick={() => {
             setNormalEraVariant(false);
             playModeClassicStart("NORMAL");
           }}
         >
-          <TileIcon>
+          <TileIcon tone="text-mode-current">
             <path d="M8 3 4 5 2 10l3 2 1-1v10h12V11l1 1 3-2-2-5-4-2c-1 2-7 2-8 0z" />
           </TileIcon>
-          <span className="mt-2.5 block text-base font-bold">Classic</span>
-          <span className="mt-0.5 block text-[13px] text-[color:var(--fl-muted)]">This season&rsquo;s squads</span>
+          <TileTitle>Classic</TileTitle>
+          <TileSub>This season&rsquo;s squads</TileSub>
           <TilePill accent={Boolean(hub?.classicBest)}>{hub?.classicBest ?? "Chase 27-0"}</TilePill>
         </Tile>
         <Tile
           href={buildPlayHref("classic", true)}
+          edge="era"
           onClick={() => {
             setNormalEraVariant(true);
             playModeClassicStart("NORMAL");
           }}
         >
-          <TileIcon tone="text-amber-300">
+          <TileIcon tone="text-mode-era">
             <circle cx="12" cy="12" r="9" />
             <path d="M12 7v5l3 2" />
           </TileIcon>
-          <span className="mt-2.5 block text-base font-bold">Era Classic</span>
-          <span className="mt-0.5 block text-[13px] text-[color:var(--fl-muted)]">Every era, legends too</span>
+          <TileTitle>Era Classic</TileTitle>
+          <TileSub>Every era, legends too</TileSub>
           <TilePill accent={Boolean(hub?.eraBest)}>{hub?.eraBest ?? "Chase 27-0"}</TilePill>
         </Tile>
       </div>
 
       {ownsBallKnower ? (
-        <Tile href="/play?bk=1">
-          <TileIcon tone="text-amber-300">
+        <Tile href="/play?bk=1" edge="manager">
+          <TileIcon>
             <circle cx="12" cy="12" r="9" />
             <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01" />
           </TileIcon>
-          <span className="mt-2.5 block text-[17px] font-bold">Ball Knower</span>
-          <span className="mt-0.5 block text-[13px] text-[color:var(--fl-muted)]">Classic with every rating hidden.</span>
+          <TileTitle>Ball Knower</TileTitle>
+          <TileSub>Classic with every rating hidden.</TileSub>
           <TilePill accent>Prove it</TilePill>
         </Tile>
       ) : null}
 
-      <Tile href="/mini-games">
-        <TileIcon tone="text-amber-300">
+      <Tile href="/mini-games" edge="quiet">
+        <TileIcon tone="text-[color:var(--fl-text)]">
           <rect x="3" y="3" width="7" height="7" rx="1.5" />
           <rect x="14" y="3" width="7" height="7" rx="1.5" />
           <rect x="3" y="14" width="7" height="7" rx="1.5" />
           <rect x="14" y="14" width="7" height="7" rx="1.5" />
         </TileIcon>
-        <span className="mt-2.5 block text-[17px] font-bold">Puzzles</span>
-        <span className="mt-0.5 block text-[13px] text-[color:var(--fl-muted)]">Millionaire · Wordle · Grid</span>
+        <TileTitle>Puzzles</TileTitle>
+        <TileSub>Millionaire, Wordle and the Grid</TileSub>
         {hub ? <TilePill accent={!hub.wordleDone}>{hub.wordleDone ? "Wordle done today" : "Today's Wordle is waiting"}</TilePill> : null}
       </Tile>
     </section>

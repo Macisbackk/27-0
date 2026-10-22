@@ -24,7 +24,7 @@ export function BracketMobileRoundNav({
   if (useSnapScroll) {
     return (
       <div
-        className="bracket-round-nav flex snap-x snap-mandatory gap-1 overflow-x-auto rounded-[14px] bg-pitch-950 p-1 scroll-pl-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:hidden [&::-webkit-scrollbar]:hidden"
+        className="bracket-round-nav flex snap-x snap-mandatory gap-1 overflow-x-auto rounded-control bg-pitch-950 p-1 scroll-pl-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:hidden [&::-webkit-scrollbar]:hidden"
         role="tablist"
         aria-label="Bracket rounds"
       >
@@ -41,7 +41,7 @@ export function BracketMobileRoundNav({
               role="tab"
               aria-selected={isViewing}
               onClick={() => onViewRoundChange(round)}
-              className={`min-h-[44px] min-w-[4.25rem] flex-none snap-start rounded-[10px] px-2.5 py-1.5 text-center transition ${
+              className={`min-h-[44px] min-w-[4.25rem] flex-none snap-start rounded-control px-2.5 py-1.5 text-center transition ${
                 isViewing
                   ? activeClassName
                   : "text-[color:var(--fl-muted)] hover:text-white"
@@ -77,7 +77,7 @@ export function BracketMobileRoundNav({
 
   return (
     <div
-      className={`bracket-round-nav grid gap-1 rounded-[14px] bg-pitch-950 p-1 sm:hidden ${columnClass}`}
+      className={`bracket-round-nav grid gap-1 rounded-control bg-pitch-950 p-1 sm:hidden ${columnClass}`}
       role="tablist"
       aria-label="Bracket rounds"
     >
@@ -94,7 +94,7 @@ export function BracketMobileRoundNav({
             role="tab"
             aria-selected={isViewing}
             onClick={() => onViewRoundChange(round)}
-            className={`min-h-[44px] min-w-0 rounded-[10px] px-2 py-1.5 text-center transition ${
+            className={`min-h-[44px] min-w-0 rounded-control px-2 py-1.5 text-center transition ${
               isViewing
                 ? activeClassName
                 : "text-[color:var(--fl-muted)] hover:text-white"

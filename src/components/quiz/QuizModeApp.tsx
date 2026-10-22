@@ -347,7 +347,7 @@ function QuizPlayScreen({
             </p>
           </div>
         ) : (
-          <div className="mt-4 rounded-[16px] bg-pitch-900 px-3 py-3">
+          <div className="mt-4 rounded-tile bg-pitch-900 px-3 py-3">
             <p className={`text-center ${TYPO.keyLabel}`}>
               Question {questionNumber} of 15
             </p>

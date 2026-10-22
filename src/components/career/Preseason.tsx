@@ -38,7 +38,7 @@ export function PreseasonCard() {
   const cash = chosen.reduce((t, o) => t + o.money, 0);
 
   return (
-    <section aria-label="Pre-season friendlies" className="fl-rise rounded-[20px] bg-pitch-900 p-4">
+    <section aria-label="Pre-season friendlies" className="fl-rise rounded-card bg-pitch-900 p-4">
       <p className="text-[13px] font-semibold text-theme-primary">Pre-season</p>
       <h2 className="mt-0.5 text-[18px] font-bold text-white">Pick your friendlies</h2>
       <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
@@ -55,7 +55,7 @@ export function PreseasonCard() {
                 type="button"
                 onClick={() => toggle(o.opponentId)}
                 aria-pressed={on}
-                className={`fl-pressable flex w-full items-center gap-3 rounded-[14px] p-2.5 text-left transition ${
+                className={`fl-pressable flex w-full items-center gap-3 rounded-control p-2.5 text-left transition ${
                   on ? "bg-theme-primary/15 ring-2 ring-theme-primary" : "bg-pitch-950 hover:bg-pitch-800"
                 }`}
               >
@@ -106,7 +106,7 @@ export function PreseasonResults() {
   const pre = s.preseason;
   if (!pre || pre.year !== s.year || !pre.results.length || s.matchdayIndex > 0) return null;
   return (
-    <section aria-label="Pre-season results" className="fl-rise rounded-[20px] bg-pitch-900 p-4">
+    <section aria-label="Pre-season results" className="fl-rise rounded-card bg-pitch-900 p-4">
       <p className="text-[13px] font-semibold text-theme-primary">Pre-season done</p>
       <ul className="mt-2 space-y-1.5">
         {pre.results.map((r) => {

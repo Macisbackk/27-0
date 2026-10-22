@@ -104,7 +104,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
       </motion.h2>
 
       <div className="mt-4 w-full min-w-0 max-w-lg">
-        <div className="rounded-[16px] bg-pitch-800 p-4 text-center sm:p-5">
+        <div className="rounded-tile bg-pitch-800 p-4 text-center sm:p-5">
           <p className={TYPO.label}>
             Round {currentRound} of {SEASON_GAMES}
           </p>
@@ -207,7 +207,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
                   {result.insights.slice(0, 3).map((insight) => (
                     <p
                       key={insight}
-                      className="rounded-[12px] bg-pitch-950 px-3 py-2 text-xs text-[color:var(--fl-muted)]"
+                      className="rounded-control bg-pitch-950 px-3 py-2 text-xs text-[color:var(--fl-muted)]"
                     >
                       {insight}
                     </p>
@@ -254,7 +254,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
           })}
         </div>
 
-        <details className="mt-3 rounded-[16px] bg-pitch-800 px-3 sm:px-4">
+        <details className="mt-3 rounded-tile bg-pitch-800 px-3 sm:px-4">
           <summary className={`flex min-h-[44px] cursor-pointer select-none items-center ${TYPO.label}`}>
             Results ({Math.min(gameIndex, SEASON_GAMES)})
           </summary>

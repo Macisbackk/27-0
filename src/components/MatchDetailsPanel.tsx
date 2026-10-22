@@ -125,7 +125,7 @@ export function MatchDetailsPanel({
 
   return (
     <motion.div
-      className="match-details-expand rounded-[16px] bg-pitch-950"
+      className="match-details-expand rounded-tile bg-pitch-950"
       initial={{ opacity: 0, y: -6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -4 }}

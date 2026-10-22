@@ -12,12 +12,12 @@ const config: Config = {
     extend: {
       colors: {
         pitch: {
-          // Floodlights palette: ground, surface, raised, line, strong line.
-          950: "#0a110e",
-          900: "#16211c",
-          800: "#1d2a24",
-          700: "#26352e",
-          600: "#34473e",
+          // Matchnight palette: ground, surface, raised, line, strong line (league-blue night).
+          950: "#06182a",
+          900: "#0c2339",
+          800: "#12304d",
+          700: "#193b5c",
+          600: "#23496f",
         },
         "theme-primary": "rgb(var(--theme-primary-rgb) / <alpha-value>)",
         "theme-secondary": "rgb(var(--theme-secondary-rgb) / <alpha-value>)",
@@ -35,7 +35,21 @@ const config: Config = {
         "mode-current": "rgb(var(--mode-current-rgb) / <alpha-value>)",
         "mode-era": "rgb(var(--mode-era-rgb) / <alpha-value>)",
       },
+      borderRadius: {
+        // Matchnight: squared kit-tag corners everywhere.
+        sm: "2px",
+        DEFAULT: "3px",
+        md: "4px",
+        lg: "4px",
+        xl: "6px",
+        "2xl": "6px",
+        "3xl": "8px",
+        card: "var(--fl-radius-card)",
+        tile: "var(--fl-radius-tile)",
+        control: "var(--fl-radius-control)",
+      },
       fontFamily: {
+        cond: ["var(--font-cond)", "Arial Narrow", "sans-serif"],
         /* Anton via --font-display; Arial Black only as paint fallback. */
         display: ["var(--font-display)", "Arial Black", "Impact", "sans-serif"],
         body: ["var(--font-body)", "system-ui", "sans-serif"],

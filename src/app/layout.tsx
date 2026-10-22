@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Inter } from "next/font/google";
+import { Anton, Barlow, Barlow_Condensed } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import "../styles/floodlights.css";
 import "../styles/motion.css";
+import "../styles/matchnight.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { CoachbeardMergeRunner } from "@/components/CoachbeardMergeRunner";
 import { ManagerDataPurgeRunner } from "@/components/ManagerDataPurgeRunner";
@@ -20,9 +21,20 @@ import { PwaSetup } from "@/components/PwaSetup";
 import { MotionProvider } from "@/components/MotionProvider";
 import { UI_THEME_BOOTSTRAP_SCRIPT } from "@/lib/ui/theme-bootstrap-script";
 
-const inter = Inter({
+// Matchnight type: Barlow for reading (road-sign grotesque, northern-England plain speaking),
+// Barlow Condensed for headings and kit-tag labels, Anton kept for scores and the scoreboard mark.
+const barlow = Barlow({
+  weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const barlowCondensed = Barlow_Condensed({
+  weight: ["600", "700", "800"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-condensed",
   display: "swap",
 });
 
@@ -61,7 +73,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0a110e", // match manifest theme_color
+  themeColor: "#06182a", // match manifest theme_color
 };
 
 export default function RootLayout({
@@ -70,7 +82,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${anton.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${anton.variable} ${barlow.variable} ${barlowCondensed.variable}`} suppressHydrationWarning>
       <head>
         <Script
           id="ui-theme-bootstrap"
