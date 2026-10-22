@@ -1,5 +1,35 @@
 [
   {
+    "id": "castleford-cur-jack-ashworth",
+    "name": "Jack Ashworth",
+    "club": "Leigh Leopards",
+    "currentClub": "Leigh Leopards",
+    "team": "Leigh Leopards",
+    "displayClub": "Leigh Leopards",
+    "position": "PROP",
+    "positions": [
+      "PROP"
+    ],
+    "primaryPosition": "PROP",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2015–2015",
+    "category": "current",
+    "peakRating": 81,
+    "value": 113000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "leigh-leopards-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "castleford-cur-jack-ashworth",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "birthYear": 1995,
+    "dateOfBirth": "1995-07-03"
+  },
+  {
     "id": "leigh-cur-aaron-pene",
     "name": "Aaron Pene",
     "position": "PROP",
@@ -27,8 +57,8 @@
     "displayClub": "Leigh Leopards",
     "basePlayerId": "leigh-cur-aaron-pene",
     "primaryPosition": "PF",
-    "availableInGame": true,
-    "superLeagueEligible": true
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "leigh-cur-adam-cook",
@@ -151,38 +181,6 @@
     "dateOfBirth": "2002-09-05"
   },
   {
-    "id": "leigh-cur-ben-mcnamara",
-    "name": "Ben McNamara",
-    "position": "STAND_OFF",
-    "club": "Leigh Leopards",
-    "nationality": "England",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2026–Present",
-    "category": "current",
-    "peakRating": 80,
-    "value": 95000,
-    "appearances": 67,
-    "tries": 6,
-    "dateOfBirth": "2001-12-08",
-    "birthYear": 2001,
-    "currentClub": "Leigh Leopards",
-    "teamYearId": "leigh-leopards-2026",
-    "year": 2026,
-    "status": "Current",
-    "positions": [
-      "STAND_OFF",
-      "SCRUM_HALF"
-    ],
-    "positionAbbrev": "HB",
-    "cardYear": 2026,
-    "team": "Leigh Leopards",
-    "displayClub": "Leigh Leopards",
-    "basePlayerId": "leigh-cur-ben-mcnamara",
-    "primaryPosition": "HB",
-    "availableInGame": true,
-    "superLeagueEligible": true
-  },
-  {
     "id": "leigh-cur-darnell-mcintosh",
     "name": "Darnell McIntosh",
     "club": "Leigh Leopards",
@@ -277,37 +275,6 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "intlCaps": 12
-  },
-  {
-    "id": "leigh-cur-ethan-o-neill",
-    "name": "Ethan O'Neill",
-    "club": "Leigh Leopards",
-    "currentClub": "Leigh Leopards",
-    "teamYearId": "leigh-leopards-2026",
-    "year": 2026,
-    "status": "Current",
-    "position": "SECOND_ROW",
-    "positions": [
-      "SECOND_ROW"
-    ],
-    "positionAbbrev": "SR",
-    "nationality": "Australia",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2026–Present",
-    "category": "current",
-    "peakRating": 81,
-    "value": 113000,
-    "cardYear": 2026,
-    "team": "Leigh Leopards",
-    "displayClub": "Leigh Leopards",
-    "basePlayerId": "leigh-cur-ethan-o-neill",
-    "primaryPosition": "SR",
-    "dateOfBirth": "1999-06-01",
-    "birthYear": 1999,
-    "availableInGame": true,
-    "superLeagueEligible": true,
-    "appearances": 36,
-    "tries": 10
   },
   {
     "id": "leigh-cur-frankie-halton",
@@ -599,39 +566,6 @@
     "primaryPosition": "SR/LF",
     "availableInGame": true,
     "superLeagueEligible": true
-  },
-  {
-    "id": "leigh-cur-keanan-brand",
-    "name": "Keanan Brand",
-    "position": "WING",
-    "club": "Leigh Leopards",
-    "nationality": "Ireland",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2026–Present",
-    "category": "current",
-    "peakRating": 81,
-    "value": 115000,
-    "appearances": 109,
-    "tries": 45,
-    "dateOfBirth": "1999-01-08",
-    "birthYear": 1999,
-    "currentClub": "Leigh Leopards",
-    "teamYearId": "leigh-leopards-2026",
-    "year": 2026,
-    "status": "Current",
-    "positions": [
-      "WING",
-      "CENTRE"
-    ],
-    "positionAbbrev": "WG/CE",
-    "cardYear": 2026,
-    "team": "Leigh Leopards",
-    "displayClub": "Leigh Leopards",
-    "basePlayerId": "leigh-cur-keanan-brand",
-    "primaryPosition": "WG/CE",
-    "availableInGame": true,
-    "superLeagueEligible": true,
-    "intlCaps": 1
   },
   {
     "id": "leigh-cur-lachlan-lam",

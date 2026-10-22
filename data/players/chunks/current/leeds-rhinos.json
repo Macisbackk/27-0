@@ -776,7 +776,7 @@
     "primaryPosition": "PF",
     "dateOfBirth": "1994-02-19",
     "birthYear": 1994,
-    "availableInGame": true,
+    "availableInGame": false,
     "superLeagueEligible": true,
     "intlCaps": 4
   },
@@ -871,5 +871,33 @@
     "superLeagueEligible": true,
     "dateOfBirth": "2004-07-24",
     "birthYear": 2004
+  },
+  {
+    "id": "leeds-cur-matt-lodge",
+    "name": "Matt Lodge",
+    "position": "PROP",
+    "club": "Leeds Rhinos",
+    "nationality": "Australia",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 94000,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "leeds-rhinos-2026",
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "basePlayerId": "leeds-cur-matt-lodge",
+    "status": "Current",
+    "primaryPosition": "PROP",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "currentClub": "Leeds Rhinos",
+    "positions": [
+      "PROP"
+    ],
+    "dateOfBirth": "1995-05-31",
+    "birthYear": 1995
   }
 ]

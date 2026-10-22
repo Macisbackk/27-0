@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-22T17:11:24.195Z",
+  "generatedAt": "2026-10-22T18:54:08.049Z",
   "sources": [
     "Verified Wikipedia/manual XIII only (era-wikipedia-squads.json, sl-era-verified-squads.json)",
     "Current squad for 2026 only (current-squads.json)",
     "Super League season gate (super-league-club-years.json)"
   ],
   "minPlayers": 13,
-  "verifiedSquadsMerged": 82,
-  "verifiedPlayersRejected": 198,
+  "verifiedSquadsMerged": 83,
+  "verifiedPlayersRejected": 196,
   "unresolvedSquads": [
     {
       "team": "Toulouse Olympique",
@@ -17,13 +17,6 @@
         "Luke Polselli",
         "Henry O'Kane",
         "Joe Cator"
-      ]
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2026",
-      "names": [
-        "Tiaki Chan"
       ]
     }
   ],
@@ -109,7 +102,7 @@
     {
       "team": "Bradford Bulls",
       "year": "2026",
-      "count": 29
+      "count": 30
     },
     {
       "team": "Castleford Tigers",
@@ -184,7 +177,7 @@
     {
       "team": "Catalans Dragons",
       "year": "2026",
-      "count": 32
+      "count": 29
     },
     {
       "team": "Huddersfield Giants",
@@ -204,7 +197,7 @@
     {
       "team": "Huddersfield Giants",
       "year": "2026",
-      "count": 29
+      "count": 28
     },
     {
       "team": "Hull FC",
@@ -229,7 +222,7 @@
     {
       "team": "Hull FC",
       "year": "2026",
-      "count": 36
+      "count": 35
     },
     {
       "team": "Hull KR",
@@ -244,7 +237,7 @@
     {
       "team": "Hull KR",
       "year": "2026",
-      "count": 32
+      "count": 31
     },
     {
       "team": "Leeds Rhinos",
@@ -274,12 +267,12 @@
     {
       "team": "Leeds Rhinos",
       "year": "2026",
-      "count": 29
+      "count": 28
     },
     {
       "team": "Leigh Leopards",
       "year": "2026",
-      "count": 33
+      "count": 30
     },
     {
       "team": "London Broncos",
@@ -364,7 +357,7 @@
     {
       "team": "Toulouse Olympique",
       "year": "2026",
-      "count": 30
+      "count": 31
     },
     {
       "team": "Wakefield Trinity",
@@ -384,7 +377,7 @@
     {
       "team": "Wakefield Trinity",
       "year": "2026",
-      "count": 37
+      "count": 35
     },
     {
       "team": "Warrington Wolves",
@@ -404,7 +397,7 @@
     {
       "team": "Warrington Wolves",
       "year": "2026",
-      "count": 31
+      "count": 29
     },
     {
       "team": "Wigan Warriors",
@@ -434,7 +427,7 @@
     {
       "team": "Wigan Warriors",
       "year": "2026",
-      "count": 34
+      "count": 32
     },
     {
       "team": "York Knights",

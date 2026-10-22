@@ -85,16 +85,88 @@ const setClub = (p: Row, club: string) => {
   p.teamYearId = `${slug(club)}-2026`;
 };
 
+// New cards first, so a joiner who then went out on a season-long loan is handled below.
+for (const j of input.joinersWithNoCard ?? []) {
+  if (!SL_CLUBS.has(j.to)) continue;
+  if (cardsOf(j.name).some((p) => p.club === j.to)) continue;
+  const position = (j.position ?? "").toUpperCase();
+  if (!POSITIONS.has(position) || !j.nationality) {
+    log.skipped.push({ name: j.name, reason: "joiner missing position or nationality" });
+    continue;
+  }
+  const prefix = idPrefixFor.get(j.to) ?? slug(j.to);
+  const id = `${prefix}-cur-${slug(j.name)}`;
+  if (current.some((p) => p.id === id)) {
+    log.skipped.push({ name: j.name, reason: `id ${id} exists` });
+    continue;
+  }
+  const template = current.find((p) => p.club === j.to && p.category === "current")!;
+  const row: Row = {
+    id,
+    name: j.name,
+    position,
+    club: j.to,
+    nationality: j.nationality,
+    era: template.era,
+    yearsActive: "2026–Present",
+    category: "current",
+    // Squad-depth scale used for the 2026 additions: experienced 81, otherwise 80.
+    peakRating: typeof j.appearances === "number" && j.appearances >= 50 ? 81 : 80,
+    value: template.value,
+    year: 2026,
+    cardYear: 2026,
+    teamYearId: `${slug(j.to)}-2026`,
+    team: j.to,
+    displayClub: j.to,
+    basePlayerId: id,
+    status: template.status,
+    primaryPosition: position,
+    availableInGame: true,
+    superLeagueEligible: true,
+    currentClub: j.to,
+    positions: [position],
+  };
+  if (j.dateOfBirth) {
+    row.dateOfBirth = j.dateOfBirth;
+    row.birthYear = Number(j.dateOfBirth.slice(0, 4));
+  }
+  if (typeof j.appearances === "number") row.appearances = j.appearances;
+  if (typeof j.tries === "number") row.tries = j.tries;
+  current.push(row);
+  log.added.push({ id, name: j.name, club: j.to, from: j.from, date: j.date, source: j.sources?.[0] });
+}
+
 for (const mv of input.moves) {
   if (/2027/.test(mv.date ?? "") || mv.type === "2027") continue;
   const cards = cardsOf(mv.name);
-  const old = cards.find((p) => p.club === mv.from && p.availableInGame !== false) ?? cards.find((p) => p.club === mv.from);
   const atNew = cards.find((p) => p.club === mv.to);
+  // His card may still sit at an earlier club (e.g. Ethan O'Neill's 2025 Leigh card): use it
+  // when it's his only other live card.
+  const others = cards.filter((p) => p.club !== mv.to && p.availableInGame !== false);
+  const old =
+    cards.find((p) => p.club === mv.from && p.availableInGame !== false) ??
+    cards.find((p) => p.club === mv.from) ??
+    (SL_CLUBS.has(mv.to) && others.length === 1 ? others[0] : undefined);
+  if (!old && atNew && SL_CLUBS.has(mv.to)) {
+    // Already carded at the new club: retire any other live 2026 card he still has.
+    for (const o of others) {
+      o.availableInGame = false;
+      removeFrom17(o.id);
+      log.retiredDuplicates.push({ keep: atNew.id, retired: o.id, from: o.club, to: mv.to, source: mv.sources?.[0] });
+    }
+    if (others.length === 0) log.skipped.push({ name: mv.name, reason: `already carded at ${mv.to}` });
+    continue;
+  }
   if (!old) {
     log.skipped.push({ name: mv.name, reason: `no card at ${mv.from}` });
     continue;
   }
   const toSuperLeague = SL_CLUBS.has(mv.to);
+  // A season-long loan down to the Championship: he's still that club's registered player.
+  if (!toSuperLeague && /loan/i.test(mv.type ?? "")) {
+    log.skipped.push({ name: mv.name, reason: `loan to ${mv.to} — stays with ${mv.from}` });
+    continue;
+  }
   if (toSuperLeague) {
     if (atNew) {
       atNew.availableInGame = true;
@@ -122,55 +194,6 @@ for (const mv of input.moves) {
   }
   removeFrom17(old.id);
   log.leftSuperLeague.push({ id: old.id, name: old.name, from: mv.from, to: mv.to, league: mv.toLeague, date: mv.date, source: mv.sources?.[0] });
-}
-
-for (const j of input.joinersWithNoCard ?? []) {
-  if (!SL_CLUBS.has(j.to)) continue;
-  if (cardsOf(j.name).some((p) => p.club === j.to)) continue;
-  const position = (j.position ?? "").toUpperCase();
-  if (!POSITIONS.has(position) || !j.nationality) {
-    log.skipped.push({ name: j.name, reason: "joiner missing position or nationality" });
-    continue;
-  }
-  const prefix = idPrefixFor.get(j.to) ?? slug(j.to);
-  const id = `${prefix}-cur-${slug(j.name)}`;
-  if (current.some((p) => p.id === id)) {
-    log.skipped.push({ name: j.name, reason: `id ${id} exists` });
-    continue;
-  }
-  const template = current.find((p) => p.club === j.to && p.category === "current")!;
-  const row: Row = {
-    id,
-    name: j.name,
-    position,
-    club: j.to,
-    nationality: j.nationality,
-    era: template.era,
-    yearsActive: "2026–Present",
-    category: "current",
-    peakRating: 80,
-    value: template.value,
-    year: 2026,
-    cardYear: 2026,
-    teamYearId: `${slug(j.to)}-2026`,
-    team: j.to,
-    displayClub: j.to,
-    basePlayerId: id,
-    status: template.status,
-    primaryPosition: position,
-    availableInGame: true,
-    superLeagueEligible: true,
-    currentClub: j.to,
-    positions: [position],
-  };
-  if (j.dateOfBirth) {
-    row.dateOfBirth = j.dateOfBirth;
-    row.birthYear = Number(j.dateOfBirth.slice(0, 4));
-  }
-  if (typeof j.appearances === "number") row.appearances = j.appearances;
-  if (typeof j.tries === "number") row.tries = j.tries;
-  current.push(row);
-  log.added.push({ id, name: j.name, club: j.to, from: j.from, date: j.date, source: j.sources?.[0] });
 }
 
 writeJson("current-squads.json", current);

@@ -4,19 +4,19 @@
       "club": "Barrow Raiders",
       "slug": "barrow-raiders",
       "file": "barrow-raiders.json",
-      "count": 1
+      "count": 2
     },
     {
       "club": "Bradford Bulls",
       "slug": "bradford-bulls",
       "file": "bradford-bulls.json",
-      "count": 29
+      "count": 33
     },
     {
       "club": "Castleford Tigers",
       "slug": "castleford-tigers",
       "file": "castleford-tigers.json",
-      "count": 30
+      "count": 33
     },
     {
       "club": "Catalans Dragons",
@@ -28,7 +28,7 @@
       "club": "Huddersfield Giants",
       "slug": "huddersfield-giants",
       "file": "huddersfield-giants.json",
-      "count": 29
+      "count": 31
     },
     {
       "club": "Hull FC",
@@ -40,19 +40,19 @@
       "club": "Hull KR",
       "slug": "hull-kr",
       "file": "hull-kr.json",
-      "count": 32
+      "count": 34
     },
     {
       "club": "Leeds Rhinos",
       "slug": "leeds-rhinos",
       "file": "leeds-rhinos.json",
-      "count": 28
+      "count": 29
     },
     {
       "club": "Leigh Leopards",
       "slug": "leigh-leopards",
       "file": "leigh-leopards.json",
-      "count": 33
+      "count": 31
     },
     {
       "club": "London Broncos",
@@ -82,25 +82,25 @@
       "club": "St Helens",
       "slug": "st-helens",
       "file": "st-helens.json",
-      "count": 31
+      "count": 32
     },
     {
       "club": "Toulouse Olympique",
       "slug": "toulouse-olympique",
       "file": "toulouse-olympique.json",
-      "count": 30
+      "count": 32
     },
     {
       "club": "Wakefield Trinity",
       "slug": "wakefield-trinity",
       "file": "wakefield-trinity.json",
-      "count": 32
+      "count": 34
     },
     {
       "club": "Warrington Wolves",
       "slug": "warrington-wolves",
       "file": "warrington-wolves.json",
-      "count": 31
+      "count": 30
     },
     {
       "club": "Widnes Vikings",
@@ -112,7 +112,7 @@
       "club": "Wigan Warriors",
       "slug": "wigan-warriors",
       "file": "wigan-warriors.json",
-      "count": 34
+      "count": 32
     },
     {
       "club": "Wynnum Manly Seagulls",
@@ -124,7 +124,7 @@
       "club": "York Knights",
       "slug": "york-knights",
       "file": "york-knights.json",
-      "count": 35
+      "count": 36
     }
   ]
 }

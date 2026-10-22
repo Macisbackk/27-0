@@ -378,37 +378,6 @@
     "intlCaps": 9
   },
   {
-    "id": "hull-fc-cur-jed-cartwright",
-    "name": "Jed Cartwright",
-    "position": "SECOND_ROW",
-    "club": "Hull FC",
-    "nationality": "Australia",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2026–Present",
-    "category": "current",
-    "peakRating": 82,
-    "value": 135000,
-    "dateOfBirth": "1996-10-24",
-    "birthYear": 1996,
-    "appearances": 17,
-    "tries": 6,
-    "currentClub": "Hull FC",
-    "teamYearId": "hull-fc-2026",
-    "year": 2026,
-    "status": "Current",
-    "positions": [
-      "SECOND_ROW"
-    ],
-    "positionAbbrev": "SR",
-    "cardYear": 2026,
-    "team": "Hull FC",
-    "displayClub": "Hull FC",
-    "basePlayerId": "hull-fc-cur-jed-cartwright",
-    "primaryPosition": "SR",
-    "availableInGame": true,
-    "superLeagueEligible": true
-  },
-  {
     "id": "hull-fc-cur-joe-batchelor",
     "name": "Joe Batchelor",
     "position": "SECOND_ROW",
@@ -562,8 +531,8 @@
     "cardYear": 2026,
     "status": "Current",
     "basePlayerId": "hull-fc-cur-liam-knight",
-    "availableInGame": true,
-    "superLeagueEligible": true,
+    "availableInGame": false,
+    "superLeagueEligible": false,
     "dateOfBirth": "1995-01-15",
     "birthYear": 1995
   },
@@ -1097,5 +1066,36 @@
     "superLeagueEligible": true,
     "dateOfBirth": "2006-01-23",
     "birthYear": 2006
+  },
+  {
+    "id": "leigh-cur-ethan-o-neill",
+    "name": "Ethan O'Neill",
+    "club": "Hull FC",
+    "currentClub": "Hull FC",
+    "teamYearId": "hull-fc-2026",
+    "year": 2026,
+    "status": "Current",
+    "position": "SECOND_ROW",
+    "positions": [
+      "SECOND_ROW"
+    ],
+    "positionAbbrev": "SR",
+    "nationality": "Australia",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 81,
+    "value": 113000,
+    "cardYear": 2026,
+    "team": "Hull FC",
+    "displayClub": "Hull FC",
+    "basePlayerId": "leigh-cur-ethan-o-neill",
+    "primaryPosition": "SR",
+    "dateOfBirth": "1999-06-01",
+    "birthYear": 1999,
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "appearances": 36,
+    "tries": 10
   }
 ]

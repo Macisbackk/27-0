@@ -1,5 +1,36 @@
 [
   {
+    "id": "huddersfield-cur-matty-english",
+    "name": "Matty English",
+    "position": "PROP",
+    "club": "York Knights",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 85,
+    "value": 180000,
+    "appearances": 143,
+    "tries": 9,
+    "dateOfBirth": "1997-11-14",
+    "birthYear": 1997,
+    "currentClub": "York Knights",
+    "teamYearId": "york-knights-2026",
+    "year": 2026,
+    "status": "Current",
+    "positions": [
+      "PROP"
+    ],
+    "positionAbbrev": "PF",
+    "cardYear": 2026,
+    "team": "York Knights",
+    "displayClub": "York Knights",
+    "basePlayerId": "huddersfield-cur-matty-english",
+    "primaryPosition": "PF",
+    "availableInGame": true,
+    "superLeagueEligible": true
+  },
+  {
     "id": "york-cur-ata-hingano",
     "name": "Ata Hingano",
     "position": "STAND_OFF",
@@ -284,8 +315,8 @@
     "displayClub": "York Knights",
     "basePlayerId": "york-cur-josh-griffin",
     "primaryPosition": "SR/CE",
-    "availableInGame": true,
-    "superLeagueEligible": true
+    "availableInGame": false,
+    "superLeagueEligible": false
   },
   {
     "id": "york-cur-justin-sangare",

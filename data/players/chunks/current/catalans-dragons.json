@@ -88,8 +88,8 @@
     "primaryPosition": "SR",
     "dateOfBirth": "1996-12-23",
     "birthYear": 1996,
-    "availableInGame": true,
-    "superLeagueEligible": true,
+    "availableInGame": false,
+    "superLeagueEligible": false,
     "clubsPlayedFor": [
       "Catalans Dragons",
       "Wynnum Manly Seagulls"
@@ -161,54 +161,6 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "intlCaps": 18
-  },
-  {
-    "id": "catalans-cur-cesar-rouge",
-    "name": "César Rougé",
-    "position": "STAND_OFF",
-    "club": "Catalans Dragons",
-    "nationality": "France",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2026–Present",
-    "category": "current",
-    "peakRating": 83,
-    "value": 168000,
-    "appearances": 55,
-    "tries": 6,
-    "dateOfBirth": "2002-10-03",
-    "birthYear": 2002,
-    "clubsPlayedFor": [
-      "Catalans",
-      "Whitehaven",
-      "Hull KR",
-      "Toulouse"
-    ],
-    "representativeTeams": [
-      "Senior International Matches (Tests)",
-      "World Cup",
-      "Super League",
-      "Challenge Cup",
-      "UK Top Division",
-      "UK Second Division",
-      "First Class"
-    ],
-    "currentClub": "Catalans Dragons",
-    "teamYearId": "catalans-dragons-2026",
-    "year": 2026,
-    "status": "Current",
-    "positions": [
-      "STAND_OFF",
-      "SCRUM_HALF"
-    ],
-    "positionAbbrev": "HB",
-    "cardYear": 2026,
-    "team": "Catalans Dragons",
-    "displayClub": "Catalans Dragons",
-    "basePlayerId": "catalans-cur-cesar-rouge",
-    "primaryPosition": "HB",
-    "availableInGame": true,
-    "superLeagueEligible": true,
-    "intlCaps": 8
   },
   {
     "id": "catalans-cur-charlie-staines",
@@ -963,34 +915,55 @@
     "intlCaps": 4
   },
   {
-    "id": "catalans-cur-zac-lipowicz",
-    "name": "Zac Lipowicz",
-    "club": "Catalans Dragons",
-    "currentClub": "Catalans Dragons",
-    "team": "Catalans Dragons",
-    "displayClub": "Catalans Dragons",
+    "id": "catalans-cur-edenn-rogers-smith",
+    "name": "Edenn Rogers-Smith",
     "position": "SECOND_ROW",
-    "positions": [
-      "SECOND_ROW"
-    ],
-    "primaryPosition": "SECOND_ROW",
-    "nationality": "Poland",
+    "club": "Catalans Dragons",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2020–Present",
+    "yearsActive": "2026–Present",
     "category": "current",
-    "peakRating": 84,
-    "value": 158000,
-    "appearances": 29,
-    "tries": 6,
-    "teamYearId": "catalans-dragons-2026",
+    "peakRating": 80,
+    "value": 90000,
     "year": 2026,
     "cardYear": 2026,
+    "teamYearId": "catalans-dragons-2026",
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-edenn-rogers-smith",
     "status": "Current",
-    "basePlayerId": "catalans-cur-zac-lipowicz",
+    "primaryPosition": "SECOND_ROW",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2002,
-    "dateOfBirth": "2002-05-31",
-    "intlCaps": 1
+    "currentClub": "Catalans Dragons",
+    "positions": [
+      "SECOND_ROW"
+    ]
+  },
+  {
+    "id": "catalans-cur-adrian-delarose",
+    "name": "Adrian Delarose",
+    "position": "SECOND_ROW",
+    "club": "Catalans Dragons",
+    "nationality": "France",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 90000,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "catalans-dragons-2026",
+    "team": "Catalans Dragons",
+    "displayClub": "Catalans Dragons",
+    "basePlayerId": "catalans-cur-adrian-delarose",
+    "status": "Current",
+    "primaryPosition": "SECOND_ROW",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "currentClub": "Catalans Dragons",
+    "positions": [
+      "SECOND_ROW"
+    ]
   }
 ]
