@@ -9,6 +9,7 @@ import type {
   Division,
   Fixture,
   FixtureKind,
+  FixtureResult,
   Matchday,
   SeasonChallenge,
   SeasonOutcome,
@@ -289,7 +290,7 @@ function drawPending(state: CareerState, md: Matchday) {
 
 /* --------------------------------------------------------------- play matchday */
 
-function sheetFor(state: CareerState, clubId: string): TeamSheet {
+export function sheetFor(state: CareerState, clubId: string): TeamSheet {
   if (clubId === state.userClubId) return { clubId, lineup: state.lineup, tactic: state.tactic };
   return { clubId, lineup: aiLineup(state, clubId), tactic: "balanced" };
 }
@@ -397,15 +398,21 @@ export function userFixture(md: Matchday | undefined, userClubId: string): Fixtu
  * Play the current matchday (all competitions). Returns the new state.
  * If the season finishes, the state moves to the "review" phase with `lastOutcome` set.
  */
-export function playMatchday(state: CareerState): CareerState {
+/** A result the user played out live; used instead of the instant sim for their fixture. */
+export interface PlayedResult {
+  fixtureId: string;
+  result: FixtureResult;
+}
+
+export function playMatchday(state: CareerState, played?: PlayedResult): CareerState {
   if (state.phase !== "season") return state;
   const next: CareerState = structuredClone(state);
-  playMatchdayInPlace(next);
+  playMatchdayInPlace(next, played);
   return next;
 }
 
 /** Plays one matchday by mutating `next` (callers clone first). */
-function playMatchdayInPlace(next: CareerState): void {
+function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
   if (next.phase !== "season") return;
   const md = next.calendar[next.matchdayIndex];
   if (!md) {
@@ -419,7 +426,10 @@ function playMatchdayInPlace(next: CareerState): void {
     const rng = rngFor(next.seed, next.year, f.id);
     const home = sheetFor(next, f.home);
     const away = sheetFor(next, f.away);
-    f.result = simulateMatch(rng, home, away, next.players, { knockout: isKnockout(f.kind) });
+    f.result =
+      played && played.fixtureId === f.id
+        ? structuredClone(played.result)
+        : simulateMatch(rng, home, away, next.players, { knockout: isKnockout(f.kind) });
     applyLeagueResult(next, f);
     creditPlayers(next, home, f.result.homeTries);
     creditPlayers(next, away, f.result.awayTries);

@@ -231,11 +231,12 @@ button.game-button--era,
 }
 
 /* ── Header, menu and bottom bar ───────────────────────────────────────── */
+/* Solid, no backdrop blur: blur under a sliding menu/overlay flickers on phones (iOS Safari especially). */
 .app-header {
-  background: rgba(10, 17, 14, 0.92) !important;
+  background: var(--fl-ground) !important;
   border-bottom: 1px solid var(--fl-line) !important;
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
 }
 
 .sidebar-panel {
@@ -255,10 +256,8 @@ button.game-button--era,
   gap: 4px;
   padding: 6px;
   border-radius: 20px;
-  background: rgba(22, 33, 28, 0.96);
+  background: var(--fl-surface);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
 }
 
 .fl-bottom-nav a {
@@ -656,4 +655,10 @@ button.game-button--era,
 .matchday-arena {
   background-color: var(--fl-ground) !important;
   background-image: none !important;
+}
+
+/* The menu panel is its own compositor layer so it slides without repainting the page under it. */
+.sidebar-panel {
+  transform: translateZ(0);
+  contain: layout paint;
 }

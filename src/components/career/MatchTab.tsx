@@ -15,6 +15,7 @@ import {
 } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playCupProgress, playFullTime, playSimulateRound, playTryScored, playUiClick } from "@/lib/sound";
+import { LiveMatch } from "./LiveMatch";
 import { Card, ClubBadge, Eyebrow, FormDots } from "./bits";
 
 const TACTICS: Array<{ id: Tactic; label: string; hint: string }> = [
@@ -81,8 +82,9 @@ export function ResultCard({ state, fixture, title }: { state: CareerState; fixt
 }
 
 export function MatchTab() {
-  const { state, play, simToBigGame, simSeason, setTactic } = useCareer();
+  const { state, play, playLive, setTactic } = useCareer();
   const [busy, setBusy] = useState(false);
+  const [live, setLive] = useState(false);
   const lastPlayedIndex = useRef<number | null>(null);
   const s = state!;
   const md = s.calendar[s.matchdayIndex];
@@ -133,6 +135,20 @@ export function MatchTab() {
   const edge = myRating - theirRating + (fixture?.home === s.userClubId ? 0.9 : -0.9);
   const outlook = edge > 2 ? "Favourites" : edge > 0.5 ? "Slight favourites" : edge > -0.5 ? "Coin flip" : edge > -2 ? "Underdogs" : "Big underdogs";
   const big = isBigMatchday(s, md);
+
+  if (live && fixture) {
+    return (
+      <LiveMatch
+        key={fixture.id}
+        state={s}
+        fixture={fixture}
+        onDone={(played) => {
+          playLive(played);
+          setLive(false);
+        }}
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -187,17 +203,27 @@ export function MatchTab() {
 
       <div className="mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
         <div className="mobile-action-bar__inner flex flex-col gap-2">
-          <GameButton size="lg" disabled={busy || !md} onClick={() => run(play)}>
-            {fixture ? (busy ? "Playing…" : "Play match") : "Continue"}
-          </GameButton>
-          <div className="grid grid-cols-2 gap-2">
-            <GameButton size="sm" variant="secondary" disabled={busy || !md} onClick={() => { playUiClick(); run(simToBigGame); }}>
-              Skip to big game
+          {fixture ? (
+            <>
+              <GameButton
+                size="lg"
+                disabled={busy}
+                onClick={() => {
+                  playUiClick();
+                  setLive(true);
+                }}
+              >
+                Play match
+              </GameButton>
+              <GameButton size="sm" variant="secondary" disabled={busy} onClick={() => run(play)}>
+                {busy ? "Simulating…" : "Quick sim"}
+              </GameButton>
+            </>
+          ) : (
+            <GameButton size="lg" disabled={busy || !md} onClick={() => run(play)}>
+              Continue
             </GameButton>
-            <GameButton size="sm" variant="ghost" disabled={busy || !md} onClick={() => { playUiClick(); run(simSeason); }}>
-              Simulate season
-            </GameButton>
-          </div>
+          )}
         </div>
       </div>
 

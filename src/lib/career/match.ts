@@ -18,7 +18,7 @@ const BASE_TRIES = 3.6;
 const RATING_SCALE = 3.4;
 const HOME_EDGE = 0.9;
 
-function sheetStrength(sheet: TeamSheet, players: Record<string, CareerPlayer>) {
+export function sheetStrength(sheet: TeamSheet, players: Record<string, CareerPlayer>) {
   let total = 0;
   let count = 0;
   LINEUP_SLOTS.forEach((slot, i) => {
@@ -32,7 +32,7 @@ function sheetStrength(sheet: TeamSheet, players: Record<string, CareerPlayer>) 
   return { rating, attack: rating + attackMod, defence: rating + defenceMod };
 }
 
-function pickScorer(rng: Rng, sheet: TeamSheet, players: Record<string, CareerPlayer>): string {
+export function pickScorer(rng: Rng, sheet: TeamSheet, players: Record<string, CareerPlayer>): string {
   const slots = LINEUP_SLOTS.map((slot, i) => ({ slot, id: sheet.lineup[i] ?? "" })).filter((s) => players[s.id]);
   if (slots.length === 0) return "";
   return weightedPick(rng, slots, (s) => TRY_WEIGHT[s.slot] * Math.pow((players[s.id]!.rating) / 80, 3)).id;
@@ -87,16 +87,28 @@ export function simulateMatch(
   const homeTries = Array.from({ length: homeTryCount }, () => pickScorer(rng, home, players)).filter(Boolean);
   const awayTries = Array.from({ length: awayTryCount }, () => pickScorer(rng, away, players)).filter(Boolean);
 
-  // Man of the match: from the winning side, favouring try scorers and high ratings.
+  const motm = pickMotm(rng, home, away, homeScore, awayScore, homeTries, awayTries, players);
+  return { homeScore, awayScore, homeTries, awayTries, goldenPoint: goldenPoint || undefined, motm };
+}
+
+/** Man of the match: from the winning side, favouring try scorers and high ratings. */
+export function pickMotm(
+  rng: Rng,
+  home: TeamSheet,
+  away: TeamSheet,
+  homeScore: number,
+  awayScore: number,
+  homeTries: string[],
+  awayTries: string[],
+  players: Record<string, CareerPlayer>
+): string | undefined {
   const winner = homeScore >= awayScore ? home : away;
   const winnerTries = homeScore >= awayScore ? homeTries : awayTries;
   const candidates = winner.lineup.filter((id) => players[id]);
-  const motm = candidates.length
+  return candidates.length
     ? weightedPick(rng, candidates, (id) => {
         const tries = winnerTries.filter((t) => t === id).length;
         return Math.pow(players[id]!.rating / 80, 4) * (1 + tries * 2.5);
       })
     : undefined;
-
-  return { homeScore, awayScore, homeTries, awayTries, goldenPoint: goldenPoint || undefined, motm };
 }

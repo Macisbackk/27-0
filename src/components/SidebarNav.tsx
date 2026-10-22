@@ -160,13 +160,15 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
       {open && (
         <>
           <motion.button
+            key="menu-backdrop"
             type="button"
             aria-label="Close menu"
-            className="fixed inset-0 z-[60] bg-black/60 max-sm:transition-none"
-            initial={false}
+            className="fixed inset-0 z-[60] bg-black/60"
+            style={{ willChange: "opacity" }}
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.12 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
             onClick={closeMenu}
           />
           <motion.aside
@@ -175,11 +177,14 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
             role="dialog"
             aria-modal="true"
             aria-label="Site menu"
-            className="sidebar-panel fixed inset-y-0 right-0 z-[70] flex w-[min(320px,90vw)] max-h-[100dvh] flex-col shadow-2xl outline-none"
+            key="menu-panel"
+            className="sidebar-panel fixed inset-y-0 right-0 z-[70] flex h-[100dvh] w-[min(320px,90vw)] flex-col shadow-2xl outline-none"
+            style={{ willChange: "transform", backfaceVisibility: "hidden" }}
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 30, stiffness: 320 }}
+            // A tween, not a spring: a spring overshoots and flashes the page behind the right edge.
+            transition={{ type: "tween", duration: 0.22, ease: [0.32, 0.72, 0, 1] }}
           >
             <div className="flex h-14 shrink-0 items-center justify-between gap-3 px-4 pt-[env(safe-area-inset-top)]">
               <p className="text-[17px] font-bold text-white">Menu</p>
