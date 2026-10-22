@@ -300,7 +300,7 @@ export function SeasonReview({
                 transition={{ delay: 0.1 }}
               >
                 <p
-                  className="fl-number text-[44px] sm:text-[56px]"
+                  className="fl-number fl-stamp text-[44px] sm:text-[56px]"
                   style={{
                     color: gradeInfo.color,
                   }}

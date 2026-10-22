@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { playUiClick } from "@/lib/sound";
 
@@ -46,6 +47,14 @@ export function BottomNav() {
           const active = item.match(pathname);
           return (
             <Link key={item.href} href={item.href} aria-current={active ? "page" : undefined} onClick={() => playUiClick()}>
+              {active ? (
+                <motion.span
+                  layoutId="bottom-nav-pill"
+                  className="fl-bottom-nav__pill"
+                  transition={{ type: "spring", stiffness: 520, damping: 42, mass: 0.8 }}
+                  aria-hidden
+                />
+              ) : null}
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 {item.icon}
               </svg>

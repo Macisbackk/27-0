@@ -42,8 +42,6 @@ export type QuickModePlayerChoiceCardProps = {
   onSelect: () => void;
   onViewDetails?: () => void;
   className?: string;
-  /** Rating this player would have in the slot being filled (out-of-position penalty applied). */
-  slotRating?: number;
   /** Team rating after signing him, and the change. Hidden when ratings are hidden. */
   impact?: { after: number; delta: number } | null;
   /** e.g. "Age 24" — appended to the metadata line. */
@@ -96,7 +94,6 @@ export function QuickModePlayerChoiceCard({
   onSelect,
   onViewDetails,
   className = "",
-  slotRating,
   impact = null,
   ageLabel,
 }: QuickModePlayerChoiceCardProps) {
@@ -120,11 +117,7 @@ export function QuickModePlayerChoiceCard({
   const metaLine = [metadata.positionLabel, metadata.nationalityAbbrev, ageLabel, metadata.club]
     .filter(Boolean)
     .join(" · ");
-  const penalty =
-    !rating.hidden && slotRating !== undefined && slotRating < rating.value
-      ? rating.value - slotRating
-      : 0;
-  const shownRating = penalty > 0 ? slotRating! : rating.value;
+  const shownRating = rating.value;
 
   useEffect(() => {
     warnMissingPlayerChoiceData(player);
@@ -161,7 +154,7 @@ export function QuickModePlayerChoiceCard({
             aria-label={
               rating.hidden
                 ? rating.hiddenLabel
-                : `Overall rating ${shownRating}${penalty > 0 ? ` in this position (${rating.value} normally)` : ""}`
+                : `Overall rating ${shownRating}`
             }
           >
             <span className="quick-player-card__rating-value">
@@ -179,13 +172,8 @@ export function QuickModePlayerChoiceCard({
           </p>
         </div>
 
-        {!rating.hidden && (impact || penalty > 0) ? (
+        {!rating.hidden && impact ? (
           <p className="quick-player-card__impact">
-            {penalty > 0 ? (
-              <span className="quick-player-card__impact-penalty">
-                Out of position −{penalty}
-              </span>
-            ) : null}
             {impact ? (
               <span>
                 Team {impact.after.toFixed(1)}{" "}

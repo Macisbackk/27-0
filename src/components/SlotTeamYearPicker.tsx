@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { ClubLogoBox } from "@/components/ClubBadge";
 import type { Player, SquadSlot } from "@/lib/types";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
-import { getPlayerRatingForPosition } from "@/lib/players/player-positions";
 import { getAgeAtYear, getPlayerAge } from "@/lib/players/player-age";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { getClubColors } from "@/lib/clubs";
@@ -76,19 +75,12 @@ export function SlotTeamYearPicker({
   );
   const shortYear = formatShortYear(target.year);
 
-  const slotRatingOf = (player: Player) =>
-    slot ? getPlayerRatingForPosition(player, slot.position) : player.peakRating;
-
   const sortedEntries = useMemo(
     () =>
-      [...entries].sort(
-        (a, b) =>
-          (slot ? getPlayerRatingForPosition(b.player, slot.position) : b.player.peakRating) -
-          (slot ? getPlayerRatingForPosition(a.player, slot.position) : a.player.peakRating)
-      ),
-    [entries, slot]
+      [...entries].sort((a, b) => b.player.peakRating - a.player.peakRating),
+    [entries]
   );
-  const topRating = sortedEntries[0] ? slotRatingOf(sortedEntries[0].player) : 0;
+  const topRating = sortedEntries[0]?.player.peakRating ?? 0;
 
   // Team rating if you sign each player (only once someone is already in the side).
   const impactFor = useMemo(() => {
@@ -198,10 +190,9 @@ export function SlotTeamYearPicker({
               )}
               <div className={quickPlayerChoiceGridClass(choiceCount)}>
                 {sortedEntries.map(({ player }, index) => {
-                  const slotRating = slotRatingOf(player);
                   const isTopPick =
                     !hardMode &&
-                    slotRating === topRating &&
+                    player.peakRating === topRating &&
                     sortedEntries.length > 1;
                   const age = ageFor(player, target.year);
 
@@ -224,7 +215,6 @@ export function SlotTeamYearPicker({
                         boosted={boosted}
                         disabled={disabled}
                         selectLabel="Select"
-                        slotRating={slotRating}
                         impact={impactFor(player)}
                         ageLabel={age !== undefined ? `Age ${age}` : undefined}
                         onSelect={() => {

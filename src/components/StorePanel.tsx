@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { CountUp } from "@/components/ui/CountUp";
 import {
   formatClubFunds,
   formatClubFundsExact,
@@ -149,7 +150,7 @@ export function StorePanel() {
     <div>
       {tab !== "themes" ? (
         <p className="mb-3 text-center text-sm text-[color:var(--fl-muted)]">
-          Club Funds <span className="font-bold text-theme-primary">{formatClubFunds(balance)}</span>
+          Club Funds <span className="font-bold text-theme-primary"><CountUp value={balance} format={formatClubFunds} durationMs={700} /></span>
         </p>
       ) : null}
       <div role="tablist" aria-label="Store sections" className="mb-4 flex flex-wrap justify-center gap-2">
@@ -171,6 +172,7 @@ export function StorePanel() {
           </button>
         ))}
       </div>
+      <div key={tab} className="fl-rise">
       {tab === "kit" ? <KitAndPitchStore balance={balance} /> : null}
       {tab === "titles" ? <TitlesStore balance={balance} /> : null}
       {tab === "frames" ? <FramesStore balance={balance} /> : null}
@@ -183,7 +185,7 @@ export function StorePanel() {
         <div>
           <p className={TYPO.statLabel}>Club Funds</p>
           <p className="mt-1 font-display text-2xl font-black text-white">
-            {formatClubFunds(balance)}
+            <CountUp value={balance} format={formatClubFunds} durationMs={700} />
           </p>
           <p className={`mt-0.5 ${TYPO.bodySm} text-gray-500`}>
             {formatClubFundsExact(balance)}
@@ -195,7 +197,7 @@ export function StorePanel() {
           </p>
           <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-pitch-800" aria-hidden>
             <div
-              className="h-full rounded-full bg-accent-gold"
+              className="h-full rounded-full bg-accent-gold transition-[width] duration-500 ease-out motion-reduce:transition-none"
               style={{ width: `${Math.min(100, (balance / UI_THEME_PURCHASE_PRICE) * 100)}%` }}
             />
           </div>
@@ -213,7 +215,7 @@ export function StorePanel() {
         </p>
       )}
 
-      <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <ul className="fl-stagger mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
         {displayThemes.map((theme) => {
           const isUnlocked = unlocked.includes(theme.id);
           const isSelected = selectedId === theme.id;
@@ -267,6 +269,7 @@ export function StorePanel() {
       </ul>
         </>
       )}
+      </div>
     </div>
   );
 }

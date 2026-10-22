@@ -1,0 +1,329 @@
+/*
+ * Floodlights motion — small, quick, consistent.
+ *
+ * Everything here animates opacity/transform only (compositor-friendly, no layout or
+ * filter work), uses `backwards` fill so nothing keeps a transform after it finishes
+ * (a lingering transform would break position: fixed children), and switches off for
+ * prefers-reduced-motion.
+ */
+:root {
+  --fl-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fl-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --fl-fast: 140ms;
+  --fl-base: 240ms;
+  --fl-slow: 360ms;
+}
+
+@keyframes fl-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fl-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fl-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fl-bump {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fl-glow-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgb(var(--theme-primary-rgb, 74 222 128) / 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 14px rgb(var(--theme-primary-rgb, 74 222 128) / 0);
+  }
+}
+
+/* Route change: a quick fade (opacity only — see note above). */
+.fl-page {
+  animation: fl-fade-in var(--fl-base) var(--fl-ease) backwards;
+}
+
+/* One block easing up into place. */
+.fl-rise {
+  animation: fl-rise var(--fl-slow) var(--fl-ease) backwards;
+}
+
+/* Children cascade in one after another. */
+.fl-stagger > * {
+  animation: fl-rise var(--fl-slow) var(--fl-ease) backwards;
+}
+.fl-stagger > *:nth-child(2) { animation-delay: 40ms; }
+.fl-stagger > *:nth-child(3) { animation-delay: 80ms; }
+.fl-stagger > *:nth-child(4) { animation-delay: 120ms; }
+.fl-stagger > *:nth-child(5) { animation-delay: 160ms; }
+.fl-stagger > *:nth-child(6) { animation-delay: 200ms; }
+.fl-stagger > *:nth-child(7) { animation-delay: 240ms; }
+.fl-stagger > *:nth-child(8) { animation-delay: 280ms; }
+.fl-stagger > *:nth-child(9) { animation-delay: 310ms; }
+.fl-stagger > *:nth-child(10) { animation-delay: 340ms; }
+.fl-stagger > *:nth-child(11) { animation-delay: 370ms; }
+.fl-stagger > *:nth-child(n + 12) { animation-delay: 400ms; }
+
+/* Something new arriving (a signed shirt, an unlocked item). */
+.fl-pop {
+  animation: fl-pop 420ms var(--fl-spring) backwards;
+}
+
+/* A value just changed. */
+.fl-bump {
+  animation: fl-bump 360ms var(--fl-ease);
+}
+
+.fl-glow-ring {
+  animation: fl-glow-ring 700ms var(--fl-ease);
+}
+
+/* Press feedback: every shared button and anything marked pressable gives a little. */
+button.game-button,
+a.game-button,
+.fl-pressable {
+  transition:
+    transform var(--fl-fast) var(--fl-ease),
+    opacity 0.1s ease-out,
+    background-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+button.game-button:active:not(:disabled),
+a.game-button:active,
+.fl-pressable:active:not(:disabled):not([aria-disabled="true"]) {
+  transform: scale(0.97);
+}
+
+/* Desktop hover lift for cards and tiles. */
+@media (hover: hover) and (pointer: fine) {
+  .fl-lift {
+    transition: transform var(--fl-base) var(--fl-ease), box-shadow var(--fl-base) var(--fl-ease);
+  }
+  .fl-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+  }
+}
+
+/* Tabs fade between states instead of snapping. */
+[role="tablist"] > button,
+[role="tablist"] > a {
+  transition:
+    background-color var(--fl-base) var(--fl-ease),
+    color var(--fl-base) var(--fl-ease),
+    box-shadow var(--fl-base) var(--fl-ease),
+    border-color var(--fl-base) var(--fl-ease),
+    transform var(--fl-fast) var(--fl-ease);
+}
+[role="tablist"] > button:active {
+  transform: scale(0.97);
+}
+
+/* Sliding selection pill for segmented controls (GameSegmentedControl). */
+.mode-toggle[data-sliding] button {
+  position: relative;
+  isolation: isolate;
+}
+.mode-toggle[data-sliding] button.active {
+  background: transparent !important;
+}
+.mode-toggle__pill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--theme-primary);
+}
+.mode-toggle__pill--current {
+  background: var(--mode-current, #22c55e);
+}
+.mode-toggle__pill--era {
+  background: var(--mode-era, #eab308);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fl-page,
+  .fl-rise,
+  .fl-stagger > *,
+  .fl-pop,
+  .fl-bump,
+  .fl-glow-ring {
+    animation: none !important;
+  }
+  button.game-button:active:not(:disabled),
+  a.game-button:active,
+  .fl-pressable:active,
+  [role="tablist"] > button:active {
+    transform: none;
+  }
+  .fl-lift:hover {
+    transform: none;
+  }
+}
+
+/* Sheets and modals: a smoother rise, backdrop fades in. */
+.mobile-bottom-sheet,
+.mobile-modal-panel {
+  animation: fl-sheet-in 280ms var(--fl-ease) backwards !important;
+}
+.game-modal-panel {
+  animation: fl-modal-in 240ms var(--fl-ease) backwards;
+}
+.game-modal-overlay,
+.fl-backdrop {
+  animation: fl-fade-in 200ms var(--fl-ease) backwards;
+}
+
+@keyframes fl-sheet-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fl-modal-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-bottom-sheet,
+  .mobile-modal-panel,
+  .game-modal-panel,
+  .game-modal-overlay,
+  .fl-backdrop {
+    animation: none !important;
+  }
+}
+
+/* A big result landing (season grade). */
+@keyframes fl-stamp {
+  0% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(0.97);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.fl-stamp {
+  display: inline-block;
+  animation: fl-stamp 520ms var(--fl-ease) 120ms backwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fl-stamp {
+    animation: none !important;
+  }
+}
+
+/* Bottom nav: the active highlight slides between tabs; icons give a little on press. */
+.fl-bottom-nav a {
+  position: relative;
+  isolation: isolate;
+  transition: color var(--fl-base) var(--fl-ease), transform var(--fl-fast) var(--fl-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.fl-bottom-nav a[aria-current="page"] {
+  background: transparent;
+}
+.fl-bottom-nav a:active {
+  transform: scale(0.94);
+}
+.fl-bottom-nav a svg {
+  transition: transform var(--fl-base) var(--fl-spring);
+}
+.fl-bottom-nav a[aria-current="page"] svg {
+  transform: translateY(-1px) scale(1.08);
+}
+.fl-bottom-nav__pill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--fl-ground);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fl-bottom-nav a:active,
+  .fl-bottom-nav a[aria-current="page"] svg {
+    transform: none;
+  }
+}
+
+/* Navigation progress bar (NavProgress). */
+.fl-nav-progress {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  z-index: 2;
+  height: 2px;
+  width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: var(--theme-primary);
+  box-shadow: 0 0 8px rgb(var(--theme-primary-rgb, 74 222 128) / 0.6);
+  opacity: 0;
+  pointer-events: none;
+}
+.fl-nav-progress--loading {
+  opacity: 1;
+  transform: scaleX(0.82);
+  transition: transform 2.4s cubic-bezier(0.1, 0.7, 0.2, 1), opacity 0.1s linear;
+}
+.fl-nav-progress--done {
+  opacity: 0;
+  transform: scaleX(1);
+  transition: transform 0.2s var(--fl-ease), opacity 0.3s ease 0.15s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fl-nav-progress--loading,
+  .fl-nav-progress--done {
+    transition: opacity 0.2s linear;
+  }
+}

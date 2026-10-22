@@ -2493,10 +2493,6 @@
   color: #9ca3af;
 }
 
-.quick-player-card__impact-penalty {
-  color: #fbbf24;
-}
-
 .quick-player-card__tags {
   display: flex;
   flex-wrap: wrap;
