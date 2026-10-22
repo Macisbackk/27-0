@@ -110,7 +110,7 @@ export function DeadlineOffers() {
         if (!club || !p) return null;
         const lapses = clock.minutesLeft - o.expiresAt;
         return (
-          <div key={o.id} className="fl-rise rounded-tile bg-pitch-900 p-3 ring-2 ring-theme-primary/50">
+          <div key={o.id} className="fl-rise rounded-tile bg-pitch-900 p-3 text-left ring-2 ring-theme-primary/50">
             <div className="flex items-center gap-2.5">
               <ClubBadge club={club} size="sm" />
               <p className="min-w-0 flex-1 text-sm text-white">
