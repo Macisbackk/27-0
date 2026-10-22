@@ -466,7 +466,7 @@ export function PlayerShowcase() {
       </div>
 
       {filtersOpen ? (
-        <section aria-label="Filters" className="fl-rise rounded-[20px] bg-[color:var(--fl-surface)] p-4 sm:p-5">
+        <section aria-label="Filters" className="fl-rise rounded-[20px] bg-[color:var(--fl-surface)] p-4 text-left sm:p-5">
           <div className="mb-3 flex items-center justify-between">
             <p className={TYPO.sectionTitle}>Filters</p>
             <GameButton variant="ghost" size="sm" fullWidth={false} onClick={resetFilters}>

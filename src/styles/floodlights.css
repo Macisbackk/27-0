@@ -864,3 +864,33 @@ button.game-button--era,
   background: var(--theme-primary);
   color: var(--theme-text-on-primary, #0e1400);
 }
+
+/* Player card popup (Showcase): same type, tiles and accent as the rest of the site. */
+.player-detail-sheet .player-detail-modal__title {
+  font-family: var(--font-cond);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.005em;
+}
+.player-detail-sheet .player-detail-sheet__intro {
+  text-align: left;
+}
+.player-detail-sheet .player-tier-badge-row {
+  justify-content: flex-start;
+}
+.player-detail-sheet__rating-main,
+.player-detail-sheet__rating-side {
+  border: 0 !important;
+  border-radius: 16px !important;
+  background: var(--fl-raised) !important;
+}
+.player-detail-sheet__rating-value {
+  font-family: var(--font-cond);
+  font-size: 2.5rem !important;
+  font-weight: 800 !important;
+  color: var(--ui-accent, #b6f23d) !important;
+}
+.player-detail-sheet__strip {
+  height: 3px !important;
+  border-radius: 3px;
+}
