@@ -117,6 +117,8 @@ jobs:
           branch="ci-shots/pr-${{ github.event.pull_request.number }}"
           mkdir -p /tmp/shots && cp e2e-shots/*.png /tmp/shots/ && cp e2e-shots/*.txt /tmp/shots/ 2>/dev/null || true
           cd /tmp/shots
+          # Screenshot branches are not sites: stop Vercel building them (each one used up a daily deploy).
+          echo '{"git":{"deploymentEnabled":false}}' > vercel.json
           git init -q -b "$branch"
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
