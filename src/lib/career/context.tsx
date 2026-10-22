@@ -15,6 +15,7 @@ import {
   type TransferError,
 } from "./offseason";
 import { playMatchday, repairLineup, simRestOfSeason, simToNextBigGame, squadOf, type PlayedResult } from "./season";
+import { acceptBid as acceptBidPure, isWindowOpen, recordUserDeal, rejectBid as rejectBidPure } from "./midseason";
 import {
   LEGACY_KEY,
   SAVE_KEY,
@@ -49,6 +50,9 @@ interface CareerContextValue {
   buy: (listing: MarketListing) => TransferError | undefined;
   sell: (playerId: string) => TransferError | undefined;
   finishTransfers: () => void;
+  /** Answer a rival's bid for one of your players (mid-season window). */
+  acceptBid: () => void;
+  rejectBid: () => void;
   unlockLegend: (legendId: string) => "points" | "unknown" | "owned" | undefined;
 }
 
@@ -169,10 +173,13 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const market = useMemo(
-    () => (state?.phase === "transfers" ? buildMarket(state, legacy.unlockedLegends) : []),
-    [state, legacy.unlockedLegends]
-  );
+  // Summer window, or the mid-season window (a fresh list every round it's open).
+  const market = useMemo(() => {
+    if (!state) return [];
+    if (state.phase === "transfers") return buildMarket(state, legacy.unlockedLegends);
+    if (isWindowOpen(state)) return buildMarket(state, legacy.unlockedLegends, `mid-${state.matchdayIndex}`);
+    return [];
+  }, [state, legacy.unlockedLegends]);
 
   const value: CareerContextValue = {
     ready,
@@ -228,15 +235,38 @@ export function CareerProvider({ children }: { children: ReactNode }) {
       const s = stateRef.current;
       if (!s) return "not-available";
       const r = buyPure(s, listing);
-      if (!r.error) commit(r.state);
+      if (!r.error) {
+        if (isWindowOpen(r.state)) {
+          const p = r.state.players[listing.playerId];
+          if (p) recordUserDeal(r.state, { playerId: p.id, playerName: p.name, pos: p.pos, rating: p.rating, from: listing.fromClubId, to: r.state.userClubId, fee: listing.price });
+        }
+        commit(r.state);
+      }
       return r.error;
     },
     sell: (playerId) => {
       const s = stateRef.current;
       if (!s) return "not-available";
       const r = sellPure(s, playerId);
-      if (!r.error) commit(r.state);
+      if (!r.error) {
+        if (isWindowOpen(r.state)) {
+          const p = r.state.players[playerId];
+          const to = Object.values(r.state.clubs).find((c) => c.squad.includes(playerId))?.id ?? null;
+          if (p) recordUserDeal(r.state, { playerId, playerName: p.name, pos: p.pos, rating: p.rating, from: r.state.userClubId, to, fee: Math.max(0, r.state.budget - s.budget) });
+        }
+        commit(r.state);
+      }
       return r.error;
+    },
+    acceptBid: () => {
+      const s = stateRef.current;
+      if (!s) return;
+      const next = acceptBidPure(s);
+      commit({ ...next, lineup: repairLineup(next, next.lineup) });
+    },
+    rejectBid: () => {
+      const s = stateRef.current;
+      if (s) commit(rejectBidPure(s));
     },
     finishTransfers: () => {
       if (stateRef.current) commit(finishTransfersPure(stateRef.current));

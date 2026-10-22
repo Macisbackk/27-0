@@ -1,4 +1,5 @@
 import { simulateMatch, type TeamSheet } from "./match";
+import { onMatchdayReached } from "./midseason";
 import { autoPickLineup, lineupRating, formatMoney, wageBill } from "./players";
 import { rngFor, shuffle } from "./rng";
 import { CUP_ROUND_LABELS, buildCalendar } from "./schedule";
@@ -430,6 +431,7 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
       played && played.fixtureId === f.id
         ? structuredClone(played.result)
         : simulateMatch(rng, home, away, next.players, { knockout: isKnockout(f.kind) });
+    recordLineups(next, f, home, away);
     applyLeagueResult(next, f);
     creditPlayers(next, home, f.result.homeTries);
     creditPlayers(next, away, f.result.awayTries);
@@ -452,6 +454,17 @@ function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
   if (upcoming?.pendingDraw) drawPending(next, upcoming);
   next.updatedAt = Date.now();
   if (next.matchdayIndex >= next.calendar.length) finishSeason(next);
+  // Mid-season window: AI deals, Deadline Day and rival bids for the round now coming up.
+  else onMatchdayReached(next);
+}
+
+/** Keep each club's latest team sheet so tapping a club name shows who actually played. */
+function recordLineups(state: CareerState, f: Fixture, home: TeamSheet, away: TeamSheet) {
+  if (!f.result) return;
+  const at = state.matchdayIndex;
+  const book = (state.lastLineups ??= {});
+  book[f.home] = { fixtureId: f.id, label: f.label, opponentId: f.away, home: true, us: f.result.homeScore, them: f.result.awayScore, lineup: [...home.lineup], at };
+  book[f.away] = { fixtureId: f.id, label: f.label, opponentId: f.home, home: false, us: f.result.awayScore, them: f.result.homeScore, lineup: [...away.lineup], at };
 }
 
 /** True when the matchday involves the user or is a showpiece worth stopping for. */

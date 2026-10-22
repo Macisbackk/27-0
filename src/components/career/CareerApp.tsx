@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
-import { DIVISION_LABEL, formatMoney, ordinal, sortTable } from "@/lib/career";
+import { DIVISION_LABEL, formatMoney, isWindowOpen, ordinal, sortTable } from "@/lib/career";
 import { CareerProvider, useCareer } from "@/lib/career/context";
 import { CareerErrorBoundary } from "./CareerErrorBoundary";
 import { CareerStart } from "./CareerStart";
 import { ClubTab } from "./ClubTab";
+import { ClubSheetProvider } from "./ClubSheet";
 import { LegendVaultSheet, RecordsSheet } from "./LegacySheets";
 import { MatchTab } from "./MatchTab";
 import { SeasonReview } from "./SeasonReview";
@@ -46,6 +47,7 @@ function CareerRouter() {
   const [tab, setTab] = useState<Tab>("match");
   const [vault, setVault] = useState(false);
   const [records, setRecords] = useState(false);
+  const [marketOpen, setMarketOpen] = useState(false);
   // A new career always opens on the Match tab.
   const seed = state?.seed;
   useEffect(() => setTab("match"), [seed]);
@@ -68,10 +70,18 @@ function CareerRouter() {
       </>
     );
   }
-  if (state.phase === "review") return <SeasonReview />;
+  if (state.phase === "review") return <ClubSheetProvider><SeasonReview /></ClubSheetProvider>;
   if (state.phase === "transfers") return <TransferWindow />;
+  if (marketOpen && isWindowOpen(state)) {
+    return (
+      <ClubSheetProvider>
+        <TransferWindow midseason onClose={() => setMarketOpen(false)} />
+      </ClubSheetProvider>
+    );
+  }
 
   return (
+    <ClubSheetProvider>
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 pb-40 sm:pb-10">
       <HubHeader />
       <GameSegmentedControl<Tab>
@@ -86,12 +96,13 @@ function CareerRouter() {
         fullWidth
         ariaLabel="Manager sections"
       />
-      {tab === "match" ? <MatchTab /> : null}
+      {tab === "match" ? <MatchTab onOpenMarket={() => setMarketOpen(true)} /> : null}
       {tab === "team" ? <TeamTab /> : null}
       {tab === "table" ? <TableTab /> : null}
       {tab === "club" ? <ClubTab onOpenVault={() => setVault(true)} onOpenRecords={() => setRecords(true)} /> : null}
       {sheets}
     </div>
+    </ClubSheetProvider>
   );
 }
 

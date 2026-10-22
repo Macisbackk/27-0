@@ -11,6 +11,9 @@ import {
   legendById,
   potentialStars,
   prestigeRatingCap,
+  WINDOW_CLOSES_BEFORE_ROUND,
+  isDeadlineDay,
+  roundsLeftInWindow,
   sellPrice,
   squadOf,
   type MarketListing,
@@ -19,6 +22,7 @@ import {
 import { useCareer } from "@/lib/career/context";
 import { playLegendAppears, playSeasonStart, playTransferComplete, playWarning } from "@/lib/sound";
 import { Card, ClubBadge, Eyebrow, RatingPill, Stars } from "./bits";
+import { ClubLink } from "./ClubSheet";
 
 const ERROR_TEXT: Record<TransferError, string> = {
   budget: "Not enough budget for that deal.",
@@ -28,7 +32,7 @@ const ERROR_TEXT: Record<TransferError, string> = {
   lineup: "Couldn't update the team.",
 };
 
-export function TransferWindow() {
+export function TransferWindow({ midseason = false, onClose }: { midseason?: boolean; onClose?: () => void } = {}) {
   const { state, market, buy, sell, finishTransfers } = useCareer();
   const [tab, setTab] = useState<"buy" | "sell">("buy");
   const [message, setMessage] = useState<string | null>(null);
@@ -51,8 +55,21 @@ export function TransferWindow() {
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 pb-28">
       <header className="text-center">
-        <Eyebrow>Transfer window · before {s.year}</Eyebrow>
-        <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-white">Build your squad</h1>
+        {midseason ? (
+          <>
+            <Eyebrow>
+              {isDeadlineDay(s)
+                ? `Deadline Day · window shuts before Round ${WINDOW_CLOSES_BEFORE_ROUND}`
+                : `Mid-season window · ${roundsLeftInWindow(s)} round${roundsLeftInWindow(s) === 1 ? "" : "s"} left`}
+            </Eyebrow>
+            <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-white">{isDeadlineDay(s) ? "Last chance" : "Strengthen the squad"}</h1>
+          </>
+        ) : (
+          <>
+            <Eyebrow>Transfer window · before {s.year}</Eyebrow>
+            <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-white">Build your squad</h1>
+          </>
+        )}
       </header>
 
       <Card className="grid grid-cols-3 gap-2 text-center">
@@ -107,7 +124,7 @@ export function TransferWindow() {
                     {p ? `${p.pos} · Age ${p.age}` : ""}
                     {card ? ` · ${card.club} great` : ""}
                     {p && p.age <= 21 ? <> · <Stars value={potentialStars(p.potential)} /></> : null}
-                    {from ? ` · ${from.short}` : l.legend ? "" : " · Free agent"}
+                    {from ? <> · <ClubLink clubId={from.id}>{from.short}</ClubLink></> : l.legend ? "" : " · Free agent"}
                   </span>
                 </span>
                 {p ? <RatingPill rating={p.rating} /> : null}
@@ -157,15 +174,21 @@ export function TransferWindow() {
 
       <div className="mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
         <div className="mobile-action-bar__inner">
-          <GameButton
-            size="lg"
-            onClick={() => {
-              playSeasonStart();
-              finishTransfers();
-            }}
-          >
-            Start {s.year} season
-          </GameButton>
+          {midseason ? (
+            <GameButton size="lg" onClick={() => onClose?.()}>
+              Back to the season
+            </GameButton>
+          ) : (
+            <GameButton
+              size="lg"
+              onClick={() => {
+                playSeasonStart();
+                finishTransfers();
+              }}
+            >
+              Start {s.year} season
+            </GameButton>
+          )}
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { MobileModal } from "@/components/ui/MobileOverlay";
 import { formatMoney, prestigeRatingCap } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { Card, Eyebrow, ProgressBar, Stars } from "./bits";
+import { TransferRoundUp } from "./TransferNews";
 
 export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => void; onOpenRecords: () => void }) {
   const { state, legacy, abandonCareer } = useCareer();
@@ -89,6 +90,8 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
           <GameButton size="sm" variant="secondary" fullWidth={false} onClick={onOpenRecords}>Records</GameButton>
         </div>
       </Card>
+
+      <TransferRoundUp />
 
       <Card>
         <Eyebrow>News</Eyebrow>
