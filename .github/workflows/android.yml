@@ -3,11 +3,8 @@ name: Android app
 # Builds the 27-0 Android app from the same code as the website (static export inside Capacitor).
 # - Every run: a debug APK you can install on an Android phone to try (download from the run's Artifacts).
 # - With signing secrets set (see MOBILE_APP.md → "Play Store release"): a signed .aab ready for Google Play.
+# Paused on push/PR until the app store work starts again — run it by hand from the Actions tab.
 on:
-  push:
-    branches: [main]
-  pull_request:
-    paths-ignore: ["**.md", "docs/**", "supabase/**"]
   workflow_dispatch:
 
 jobs:

@@ -3,10 +3,9 @@ name: iPhone app (build check)
 # Proves the 27-0 iPhone app builds. Creates the Capacitor iOS project on a Mac runner and builds it
 # for the simulator (no Apple account needed). The generated ios/ folder is uploaded as an artifact
 # so it can be committed once you're ready for the App Store.
+# Paused on PRs until the app store work starts again — run it by hand from the Actions tab.
 on:
   workflow_dispatch:
-  pull_request:
-    paths: [".github/workflows/ios.yml", "capacitor.config.ts"]
 
 jobs:
   ios:
