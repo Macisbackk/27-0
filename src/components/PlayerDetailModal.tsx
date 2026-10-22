@@ -78,12 +78,12 @@ export function PlayerDetailModal({
     <MobileBottomSheet
       open
       onClose={onClose}
-      title={displayName || `Name missing (${player.id})`}
+      title={(displayName && view.title) || displayName || `Name missing (${player.id})`}
       className="player-detail-sheet sm:max-w-lg"
       headerExtra={
         <div className="player-detail-sheet__intro mt-2">
           <p className="player-detail-modal__meta">
-            {view.clubYearLabel}
+            {view.clubLabel}
             {view.nationality ? ` · ${view.nationality}` : ""}
             {positionLabel ? ` · ${positionLabel}` : ""}
           </p>

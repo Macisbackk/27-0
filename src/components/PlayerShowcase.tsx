@@ -14,7 +14,6 @@ import {
 import { useSearchParams } from "next/navigation";
 import {
   getShowcasePlayers,
-  formatValue,
   getPlayerDisplayName,
   toPlayerShowcaseViewModel,
 } from "@/lib/players";
@@ -42,12 +41,8 @@ import {
   getShowcasePageSize,
 } from "./ShowcasePagination";
 import { GameButton } from "@/components/ui/GameButton";
-import { GameHeader } from "@/components/ui/GameHeader";
-import { GamePanel } from "@/components/ui/GamePanel";
-import { GameStatCard } from "@/components/ui/GameStatCard";
-import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { playUiClick } from "@/lib/sound";
-import { FILTER, SPACING } from "@/lib/ui/design-system";
+import { FILTER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { EraRatingExplanation } from "./EraRatingExplanation";
 
@@ -276,7 +271,7 @@ export function PlayerShowcase() {
   };
 
   const filterPanel = (
-    <div className="space-y-4">
+    <div className="grid gap-4 sm:grid-cols-2">
       <FilterField label="Team">
         <select
           value={filters.club}
@@ -337,24 +332,6 @@ export function PlayerShowcase() {
         </select>
       </FilterField>
 
-      <FilterField label="Player Type">
-        <select
-          value={filters.status}
-          onChange={(e) =>
-            updateFilters((f) => ({
-              ...f,
-              status: e.target.value as PlayerCategory | "all",
-            }))
-          }
-          className={FILTER.input}
-        >
-          <option value="current">Current ('26)</option>
-          <option value="historic">Historic</option>
-          <option value="legend">Legend</option>
-          <option value="all">All</option>
-        </select>
-      </FilterField>
-
       <FilterField label="Rating">
         <select
           value={filters.ratingMin}
@@ -376,7 +353,7 @@ export function PlayerShowcase() {
         </select>
       </FilterField>
 
-      <FilterField label="Tier">
+      <FilterField label="Tier" wide>
         <div className="flex flex-wrap gap-1.5">
           <TierChip
             active={filters.tier === "all"}
@@ -396,7 +373,7 @@ export function PlayerShowcase() {
         </div>
       </FilterField>
 
-      <FilterField label="Sort By">
+      <FilterField label="Sort by" wide>
         <div className="flex flex-wrap gap-2">
           {(
             [
@@ -415,9 +392,8 @@ export function PlayerShowcase() {
                 setSortKey(key);
                 setSortDir(key === "name" ? "asc" : "desc");
               }}
-              className={`rounded-lg border px-2.5 py-1.5 text-[11px] font-medium transition ${
-                sortKey === key ? FILTER.chipActive : FILTER.chipIdle
-              }`}
+              className="showcase-pill !min-h-[34px] !px-3 !text-xs"
+              aria-pressed={sortKey === key}
             >
               {label}
             </button>
@@ -427,225 +403,130 @@ export function PlayerShowcase() {
     </div>
   );
 
+  const typeOptions: { id: PlayerCategory | "all"; label: string }[] = [
+    { id: "all", label: "All" },
+    { id: "current", label: "Current" },
+    { id: "historic", label: "Historic" },
+    { id: "legend", label: "Legends" },
+  ];
+  // The type pills already show the player type, so the Filters count leaves it out.
+  const panelFilterCount = activeFilters.filter((c) => c.key !== "status" && c.key !== "search").length;
+
   return (
-    <div className="space-y-6 sm:space-y-8">
-      <GameHeader
-        eyebrow="Player Database"
-        title="Player Showcase"
-        subtitle="Browse every player in the 27-0 database"
-        className="[&_.game-header__eyebrow]:text-gray-400"
-      />
-
-      <GamePanel
-        padded
-        variant="elevated"
-        flush
-        className="hidden sm:block"
-      >
-        <p className={`mb-4 ${TYPO.sectionTitle}`}>Database Overview</p>
-        <div className={`grid ${SPACING.cardGridGap} sm:grid-cols-2 lg:grid-cols-3`}>
-          <GameStatCard
-            neutral
-            label="Total Players"
-            value={String(dbStats.total)}
-          />
-          <GameStatCard
-            neutral
-            label="Current ('26)"
-            value={String(dbStats.current)}
-          />
-          <GameStatCard
-            neutral
-            label="Historic Players"
-            value={String(dbStats.historic)}
-          />
-          <GameStatCard
-            neutral
-            label="Legends"
-            value={<span className="text-accent-gold">{dbStats.legends}</span>}
-          />
-          <GameStatCard
-            neutral
-            label="Highest Rated Player"
-            value={
-              dbStats.highestRated ? (
-                <span className="text-accent-gold">
-                  {getPlayerDisplayName(dbStats.highestRated)} ({dbStats.highestRated.peakRating})
-                </span>
-              ) : (
-                "—"
-              )
-            }
-          />
-          <GameStatCard
-            neutral
-            label="Highest Transfer Value"
-            value={
-              dbStats.highestValue ? (
-                <span className="text-accent-gold">
-                  {getPlayerDisplayName(dbStats.highestValue)} (
-                  {formatValue(dbStats.highestValue.value)})
-                </span>
-              ) : (
-                "—"
-              )
-            }
-          />
-        </div>
-      </GamePanel>
-
-      <div className="grid gap-4 lg:grid-cols-[280px_1fr] lg:gap-6">
-        {/* Desktop sticky filter column */}
-        <GamePanel
-          variant="elevated"
-          flush
-          className="hidden lg:sticky lg:top-20 lg:block"
-        >
-          <div className="flex max-h-[calc(100vh-6rem)] flex-col">
-            <div
-              className={`flex shrink-0 items-center justify-between ${SPACING.buttonGap} border-b border-pitch-600/30 px-4 py-3 sm:px-5`}
-            >
-              <h2 className={TYPO.sectionTitle}>Filters</h2>
-              <GameButton
-                variant="ghost"
-                size="sm"
-                fullWidth={false}
-                onClick={resetFilters}
-              >
-                Reset
-              </GameButton>
-            </div>
-            <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overflow-x-hidden p-4 sm:p-5">
-              <FilterField label="Search">
-                <input
-                  type="search"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  placeholder="Name, club, position…"
-                  className={FILTER.input}
-                />
-              </FilterField>
-              {filterPanel}
-            </div>
-          </div>
-        </GamePanel>
-
-        <div className="min-w-0 space-y-3 sm:space-y-4">
-          {/* Mobile compact toolbar — search always visible */}
-          <ScoreboardPanel
-            flush
-            className="space-y-2.5 px-3 py-2.5 sm:px-4 sm:py-3 lg:hidden"
-          >
-            <div className="flex items-center gap-2">
-              <input
-                type="search"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="Search players…"
-                className={`${FILTER.input} min-w-0 flex-1`}
-                aria-label="Search players"
-              />
-              <GameButton
-                variant={filtersOpen ? "theme" : "secondary"}
-                size="sm"
-                fullWidth={false}
-                onClick={() => {
-                  playUiClick();
-                  setFiltersOpen((open) => !open);
-                }}
-              >
-                Filters
-                {activeFilters.length > 0 ? ` (${activeFilters.length})` : ""}
-              </GameButton>
-            </div>
-            {filtersOpen && (
-              <div className="border-t border-pitch-600/30 pt-3">
-                <div className="mb-3 flex items-center justify-between">
-                  <p className={TYPO.sectionTitle}>More filters</p>
-                  <GameButton
-                    variant="ghost"
-                    size="sm"
-                    fullWidth={false}
-                    onClick={resetFilters}
-                  >
-                    Reset
-                  </GameButton>
-                </div>
-                {filterPanel}
-              </div>
-            )}
-          </ScoreboardPanel>
-
-          <ScoreboardPanel
-            flush
-            className="flex flex-wrap items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3"
-          >
-            <span className="text-sm font-medium text-white">
-              {filtered.length} player{filtered.length !== 1 ? "s" : ""}
-            </span>
-            {activeFilters.length > 0 && (
-              <>
-                <span className="text-gray-600">·</span>
-                {activeFilters.map((chip) => (
-                  <button
-                    key={chip.key}
-                    type="button"
-                    onClick={chip.clear}
-                    className={`inline-flex max-w-full items-center gap-1 rounded-lg border px-2.5 py-0.5 text-[11px] font-medium transition ${FILTER.chipActive}`}
-                  >
-                    <span className="truncate">{chip.label}</span>
-                    <span aria-hidden>×</span>
-                  </button>
-                ))}
-              </>
-            )}
-          </ScoreboardPanel>
-          {filters.year !== "all" && (
-            <EraRatingExplanation compact className="px-2" />
-          )}
-
-          {filtered.length === 0 ? (
-            <GamePanel
-              variant="elevated"
-              flush
-              className="px-4 py-10 text-center text-gray-500 sm:p-12"
-            >
-              No players match your filters. Try adjusting or reset.
-            </GamePanel>
-          ) : (
+    <div className="mx-auto w-full max-w-[60rem] space-y-4">
+      <header className="text-center">
+        <p className={TYPO.sectionLabel}>Player database</p>
+        <h1 className={`mt-2 ${TYPO.pageTitle}`}>Player Showcase</h1>
+        <p className="mx-auto mt-3 max-w-md text-sm text-gray-500">
+          {dbStats.total.toLocaleString("en-GB")} players: {dbStats.current} in this season&rsquo;s squads,{" "}
+          {dbStats.historic.toLocaleString("en-GB")} era cards and {dbStats.legends} legends.
+          {dbStats.highestRated ? (
             <>
-              <ShowcasePagination
-                currentPage={effectivePage}
-                totalPages={totalPages}
-                totalItems={filtered.length}
-                pageSize={pageSize}
-                onPageChange={handlePageChange}
-              />
-
-              <div className="showcase-player-grid grid items-start gap-2 sm:grid-cols-2 sm:gap-2.5 xl:grid-cols-3">
-                {pagePlayers.map((player) => (
-                  <div key={player.id} className="min-w-0 self-start">
-                    <ShowcasePlayerCard
-                      player={player}
-                      onOpenDetail={handleOpenDetail}
-                    />
-                  </div>
-                ))}
-              </div>
-
-              {totalPages > 1 && (
-                <ShowcasePagination
-                  currentPage={effectivePage}
-                  totalPages={totalPages}
-                  totalItems={filtered.length}
-                  pageSize={pageSize}
-                  onPageChange={handlePageChange}
-                />
-              )}
+              {" "}Top rated: <span className="font-semibold text-white">{getPlayerDisplayName(dbStats.highestRated)}</span> ({dbStats.highestRated.peakRating}).
             </>
-          )}
-        </div>
+          ) : null}
+        </p>
+      </header>
+
+      <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Player type">
+        {typeOptions.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            className="showcase-pill"
+            aria-pressed={filters.status === t.id}
+            onClick={() => updateFilters((f) => ({ ...f, status: t.id }))}
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
+
+      <div className="flex items-center gap-2">
+        <input
+          type="search"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          placeholder="Search name, club or position"
+          className={`${FILTER.input} min-w-0 flex-1 !rounded-full`}
+          aria-label="Search players"
+        />
+        <button
+          type="button"
+          className="showcase-pill shrink-0"
+          aria-expanded={filtersOpen}
+          aria-pressed={filtersOpen || panelFilterCount > 0}
+          onClick={() => {
+            playUiClick();
+            setFiltersOpen((open) => !open);
+          }}
+        >
+          Filters{panelFilterCount > 0 ? ` (${panelFilterCount})` : ""}
+        </button>
+      </div>
+
+      {filtersOpen ? (
+        <section aria-label="Filters" className="fl-rise rounded-[20px] bg-[color:var(--fl-surface)] p-4 sm:p-5">
+          <div className="mb-3 flex items-center justify-between">
+            <p className={TYPO.sectionTitle}>Filters</p>
+            <GameButton variant="ghost" size="sm" fullWidth={false} onClick={resetFilters}>
+              Reset
+            </GameButton>
+          </div>
+          {filterPanel}
+        </section>
+      ) : null}
+
+      <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <span className="font-semibold text-white">
+          {filtered.length.toLocaleString("en-GB")} player{filtered.length !== 1 ? "s" : ""}
+        </span>
+        {activeFilters
+          .filter((chip) => chip.key !== "status")
+          .map((chip) => (
+            <button
+              key={chip.key}
+              type="button"
+              onClick={chip.clear}
+              className="inline-flex max-w-full items-center gap-1 rounded-full bg-[color:var(--fl-raised)] px-3 py-1 text-xs font-semibold text-white"
+              aria-label={`Clear ${chip.label}`}
+            >
+              <span className="truncate">{chip.label}</span>
+              <span aria-hidden className="text-[color:var(--fl-muted)]">×</span>
+            </button>
+          ))}
+      </div>
+      {filters.year !== "all" && <EraRatingExplanation compact className="px-2" />}
+
+      {filtered.length === 0 ? (
+        <p className="rounded-[20px] bg-[color:var(--fl-surface)] px-4 py-10 text-center text-sm text-gray-400">
+          No players match. Try another search or reset the filters.
+        </p>
+      ) : (
+        <>
+          <ShowcasePagination
+            currentPage={effectivePage}
+            totalPages={totalPages}
+            totalItems={filtered.length}
+            pageSize={pageSize}
+            onPageChange={handlePageChange}
+          />
+          <div className="grid gap-2 sm:grid-cols-2">
+            {pagePlayers.map((player) => (
+              <ShowcasePlayerCard key={player.id} player={player} onOpenDetail={handleOpenDetail} />
+            ))}
+          </div>
+          {totalPages > 1 && (
+            <ShowcasePagination
+              currentPage={effectivePage}
+              totalPages={totalPages}
+              totalItems={filtered.length}
+              pageSize={pageSize}
+              onPageChange={handlePageChange}
+            />
+          )}
+        </>
+      )}
 
       {detailPlayer && (
         <PlayerDetailModal
@@ -661,15 +542,17 @@ export function PlayerShowcase() {
 function FilterField({
   label,
   children,
+  wide = false,
 }: {
   label: string;
   children: ReactNode;
+  wide?: boolean;
 }) {
   const fieldId = `showcase-filter-${label.toLowerCase().replace(/\s+/g, "-")}`;
 
   if (isValidElement(children) && children.type === "select") {
     return (
-      <div>
+      <div className={wide ? "sm:col-span-2" : ""}>
         <label
           htmlFor={fieldId}
           className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-gray-500"
@@ -682,7 +565,7 @@ function FilterField({
   }
 
   return (
-    <div>
+    <div className={wide ? "sm:col-span-2" : ""}>
       <p
         id={fieldId}
         className="mb-1.5 text-xs font-medium uppercase tracking-wider text-gray-500"
@@ -709,9 +592,8 @@ function TierChip({
     <button
       type="button"
       onClick={onClick}
-      className={`whitespace-nowrap rounded-md border px-2.5 py-1 text-[10px] font-medium transition ${
-        active ? FILTER.chipActive : FILTER.chipIdle
-      }`}
+      className="showcase-pill !min-h-[34px] !px-3 !text-xs"
+      aria-pressed={active}
     >
       {children}
     </button>

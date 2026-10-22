@@ -124,6 +124,15 @@ check("format path never appends season year", () => {
   assert.ok(view.clubYearLabel.includes("2009") || view.year === 2009);
 });
 
+check("era cards are titled with their season, current players aren't", () => {
+  const era = basePlayer({ id: "sam-burgess-2009", name: "Sam Burgess", category: "historic", year: 2009, primeYear: 2009, cardYear: 2009 });
+  const view = toPlayerShowcaseViewModel(era);
+  assert.ok(view.title.startsWith("Sam Burgess ("), view.title);
+  assert.ok(!view.clubLabel.includes(view.titleYear ?? "§"), view.clubLabel);
+  const current = basePlayer({ id: "leeds-cur-x", name: "Current Player", category: "current", year: 2026 });
+  assert.equal(toPlayerShowcaseViewModel(current).title, "Current Player");
+});
+
 check("card and popup names match via shared resolver", () => {
   const player = basePlayer({
     id: "legend-kevin-sinfield",
