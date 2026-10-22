@@ -19,10 +19,9 @@
   --fl-line-strong: rgba(255, 255, 255, 0.15);
   --fl-text: #ffffff;
   --fl-muted: #a9abb2;
-  --fl-radius-card: 6px;
-  --fl-radius-tile: 4px;
-  --fl-radius-control: 4px;
-  --fl-chamfer: 9px;
+  --fl-radius-card: 20px;
+  --fl-radius-tile: 16px;
+  --fl-radius-control: 14px;
 
   /* Default (no Store theme) accent; a chosen theme overrides these inline on <html>. */
   --theme-primary: #ffb300;

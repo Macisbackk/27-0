@@ -36,14 +36,6 @@ const config: Config = {
         "mode-era": "rgb(var(--mode-era-rgb) / <alpha-value>)",
       },
       borderRadius: {
-        // Matchnight: squared kit-tag corners everywhere.
-        sm: "2px",
-        DEFAULT: "3px",
-        md: "4px",
-        lg: "4px",
-        xl: "6px",
-        "2xl": "6px",
-        "3xl": "8px",
         card: "var(--fl-radius-card)",
         tile: "var(--fl-radius-tile)",
         control: "var(--fl-radius-control)",

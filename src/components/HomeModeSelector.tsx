@@ -68,26 +68,16 @@ function readHub(): HubState {
   };
 }
 
-type Edge = "manager" | "current" | "era" | "quiet";
-const EDGE_CLASS: Record<Edge, string> = {
-  manager: "mn-edge",
-  current: "mn-edge mn-edge--current",
-  era: "mn-edge mn-edge--era",
-  quiet: "mn-edge mn-edge--quiet",
-};
-
-/** A mode plate: left-aligned, with a coloured top edge for the game it opens. */
+/** A mode plate: a rounded card for the game it opens. */
 function Tile({
   href,
   onClick,
   children,
-  edge,
   className = "",
 }: {
   href: string;
   onClick?: () => void;
   children: ReactNode;
-  edge: Edge;
   className?: string;
 }) {
   return (
@@ -97,7 +87,7 @@ function Tile({
         playUiClick();
         onClick?.();
       }}
-      className={`btn-press fl-pressable mn-plate ${EDGE_CLASS[edge]} flex flex-col items-start rounded-card bg-pitch-900 p-4 pt-[18px] text-left text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 ${className}`}
+      className={`btn-press fl-pressable fl-lift flex flex-col items-start rounded-card bg-pitch-900 p-4 text-left text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 ${className}`}
     >
       {children}
     </Link>
@@ -106,7 +96,7 @@ function Tile({
 
 function TileIcon({ children, tone = "text-theme-primary" }: { children: ReactNode; tone?: string }) {
   return (
-    <span aria-hidden className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-pitch-950 ${tone}`}>
+    <span aria-hidden className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-control bg-pitch-950 ${tone}`}>
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         {children}
       </svg>
@@ -117,7 +107,7 @@ function TileIcon({ children, tone = "text-theme-primary" }: { children: ReactNo
 /** Small tag under a plate: best record, or what the mode is when there isn't one yet. */
 function TilePill({ children, accent = false }: { children: ReactNode; accent?: boolean }) {
   return (
-    <span className={`fl-pill mt-3 !px-2.5 !py-1 ${accent ? "text-theme-primary" : "text-[color:var(--fl-muted)]"}`}>
+    <span className={`mt-3 inline-flex rounded-full bg-pitch-950 px-3 py-1 text-xs font-bold ${accent ? "text-theme-primary" : "text-[color:var(--fl-muted)]"}`}>
       {children}
     </span>
   );
@@ -153,7 +143,8 @@ export function HomeModeSelector() {
       </h2>
 
       {SHOW_DAILY_CHALLENGE_UI ? (
-        <section className="mn-fixture mn-plate rounded-card bg-pitch-900 p-4 pl-5" aria-label="Daily Challenge">
+        <section className="relative overflow-hidden rounded-card bg-pitch-900 p-[18px]" aria-label="Daily Challenge">
+          <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full bg-theme-primary/[0.06]" />
           <div className="flex items-baseline justify-between gap-3">
             <p className="font-cond text-[16px] font-bold text-theme-primary">
               Daily Challenge{daily?.scenario.eraMode ? " · Era" : ""}
@@ -179,14 +170,14 @@ export function HomeModeSelector() {
           <Link
             href={getDailyChallengeHref()}
             onClick={() => playUiClick()}
-            className="btn-press fl-pressable mn-chamfer mt-4 flex h-[52px] items-center justify-center bg-theme-primary font-cond text-[18px] font-bold text-[color:var(--theme-text-on-primary)]"
+            className="btn-press fl-pressable relative mt-4 flex h-[52px] items-center justify-center rounded-control bg-theme-primary font-cond text-[18px] font-bold text-[color:var(--theme-text-on-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
             {daily?.done ? "Play again for practice" : daily?.used ? "Practice today's Daily" : "Play today's Daily"}
           </Link>
         </section>
       ) : null}
 
-      <Tile href="/manager" edge="manager">
+      <Tile href="/manager">
         <TileIcon>
           <BoardGlyph />
         </TileIcon>
@@ -198,7 +189,7 @@ export function HomeModeSelector() {
       <div className="grid grid-cols-2 gap-3">
         <Tile
           href={buildPlayHref("classic", false)}
-          edge="current"
+         
           onClick={() => {
             setNormalEraVariant(false);
             playModeClassicStart("NORMAL");
@@ -213,7 +204,7 @@ export function HomeModeSelector() {
         </Tile>
         <Tile
           href={buildPlayHref("classic", true)}
-          edge="era"
+         
           onClick={() => {
             setNormalEraVariant(true);
             playModeClassicStart("NORMAL");
@@ -229,7 +220,7 @@ export function HomeModeSelector() {
       </div>
 
       {ownsBallKnower ? (
-        <Tile href="/play?bk=1" edge="manager">
+        <Tile href="/play?bk=1">
           <TileIcon>
             <circle cx="12" cy="12" r="9" />
             <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01" />
@@ -240,7 +231,7 @@ export function HomeModeSelector() {
         </Tile>
       ) : null}
 
-      <Tile href="/mini-games" edge="quiet">
+      <Tile href="/mini-games">
         <TileIcon tone="text-[color:var(--fl-text)]">
           <TilesGlyph />
         </TileIcon>
