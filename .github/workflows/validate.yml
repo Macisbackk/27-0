@@ -21,6 +21,8 @@ jobs:
         run: npx tsc --noEmit
       - name: Validate player database
         run: npm run validate:player-database
+      - name: Slim runtime player data is up to date
+        run: npm run check:runtime-player-data
       - name: Validate quiz bank
         run: npm run validate:quiz
 

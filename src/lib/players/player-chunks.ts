@@ -8,12 +8,12 @@ type RawPlayer = Record<string, unknown>;
 
 /** Dynamic imports — separate webpack chunks per pool. */
 export async function loadHistoricPlayersRaw(): Promise<RawPlayer[]> {
-  const mod = await import("../../../data/historic-players.json");
+  const mod = await import("./generated/historic.runtime.json");
   return mod.default as RawPlayer[];
 }
 
 export async function loadLegendsRaw(): Promise<RawPlayer[]> {
-  const mod = await import("../../../data/legends.json");
+  const mod = await import("./generated/legends.runtime.json");
   return mod.default as RawPlayer[];
 }
 
@@ -24,7 +24,7 @@ export async function loadCurrentSquadsRaw(): Promise<RawPlayer[]> {
     );
     return loadAllCurrentClubChunks();
   } catch {
-    const mod = await import("../../../data/current-squads.json");
+    const mod = await import("./generated/current.runtime.json");
     return mod.default as RawPlayer[];
   }
 }

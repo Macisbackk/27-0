@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "tsx scripts/build-runtime-player-data.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -21,6 +22,8 @@
     "import:historic-ratings": "node scripts/import-historic-season-ratings.js",
     "validate:players": "tsx scripts/validate-players.ts",
     "validate:player-database": "tsx scripts/validate-player-database.ts",
+    "build:runtime-player-data": "tsx scripts/build-runtime-player-data.ts",
+    "check:runtime-player-data": "tsx scripts/build-runtime-player-data.ts --check",
     "build:player-chunks": "tsx scripts/split-current-squads-chunks.ts",
     "sync:player-values": "tsx scripts/sync-player-values.ts",
     "apply:era-regression-fixes": "tsx scripts/apply-era-regression-fixes.ts",

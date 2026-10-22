@@ -11,7 +11,8 @@
  * name does not match a player already in data/current-squads.json.
  */
 
-import currentSquads from "../../../data/current-squads.json";
+// Slim copy of data/current-squads.json (npm run build:runtime-player-data).
+import currentSquads from "../players/generated/career-squads.runtime.json";
 
 export interface GeneratedPlayerName {
   firstName: string;

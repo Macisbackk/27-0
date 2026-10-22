@@ -1,4 +1,5 @@
-import currentSquads from "../../../data/current-squads.json";
+// Slim copy of data/current-squads.json (npm run build:runtime-player-data).
+import currentSquads from "../players/generated/career-squads.runtime.json";
 import { buildClubSeeds, type ClubSeed } from "./clubs";
 import { registerOccupiedPlayerNames } from "./names";
 import { SQUAD_MAX, SQUAD_TEMPLATE, autoPickLineup, generatePlayer, lineupRating, posFromData } from "./players";
