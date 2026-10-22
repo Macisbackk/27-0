@@ -106,6 +106,24 @@ for (const rows of groups.values()) {
   }
 }
 
+// This season's current cards: the 2026 awards (checked against the official announcements) set
+// a floor. The Man of Steel is among the very best in the league, his shortlist close behind,
+// and a Dream Team player is one of the top 13. Raises only.
+const SEASON = 2026;
+const MOS_SHORTLIST = new Set(["wigan-cur-adam-keighran", "leeds-cur-lachie-miller"]);
+for (const { p, rating } of all) {
+  if (p.category !== "current") continue;
+  let floor = 0;
+  let why = "";
+  if ((MAN_OF_STEEL[p.id] ?? []).includes(SEASON)) [floor, why] = [93, `${SEASON} Man of Steel`];
+  else if (MOS_SHORTLIST.has(p.id)) [floor, why] = [90, `${SEASON} Man of Steel shortlist`];
+  else if ((p.dreamTeamYears ?? []).includes(SEASON)) [floor, why] = [88, `${SEASON} Dream Team`];
+  if (rating < floor) {
+    out[p.id] = floor;
+    changes.push({ id: p.id, name: p.name, year: SEASON, club: p.club, age: p.birthYear ? SEASON - p.birthYear : null, from: rating, to: floor, why });
+  }
+}
+
 changes.sort((a, b) => Math.abs(b.to - b.from) - Math.abs(a.to - a.from) || a.name.localeCompare(b.name));
 const up = changes.filter((c) => c.to > c.from).length;
 const down = changes.length - up;

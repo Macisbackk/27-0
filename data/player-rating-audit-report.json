@@ -1,6 +1,6 @@
 {
   "generated": "2026-10",
-  "up": 74,
+  "up": 82,
   "down": 510,
   "changes": [
     {
@@ -92,6 +92,16 @@
       "from": 82,
       "to": 92,
       "why": "elite season (2013); peak 93"
+    },
+    {
+      "id": "wigan-cur-brad-o-neill",
+      "name": "Brad O'Neill",
+      "year": 2026,
+      "club": "Wigan Warriors",
+      "age": 24,
+      "from": 84,
+      "to": 93,
+      "why": "2026 Man of Steel"
     },
     {
       "id": "leeds-hist-jake-connor-2025",
@@ -574,6 +584,16 @@
       "why": "elite season (1996, 2000, 2001, 2002, 2005, 2006, 2008); peak 98"
     },
     {
+      "id": "leeds-cur-lachie-miller",
+      "name": "Lachie Miller",
+      "year": 2026,
+      "club": "Leeds Rhinos",
+      "age": 32,
+      "from": 84,
+      "to": 90,
+      "why": "2026 Man of Steel shortlist"
+    },
+    {
       "id": "wigan-hist-lee-mossop-2008",
       "name": "Lee Mossop",
       "year": 2008,
@@ -782,6 +802,16 @@
       "from": 96,
       "to": 91,
       "why": "age 21, 1 yr from his best seasons; peak 96"
+    },
+    {
+      "id": "leigh-cur-joe-ofahengaue",
+      "name": "Joe Ofahengaue",
+      "year": 2026,
+      "club": "Leigh Leopards",
+      "age": 31,
+      "from": 83,
+      "to": 88,
+      "why": "2026 Dream Team"
     },
     {
       "id": "castleford-cur-joe-westerman-2009",
@@ -1722,6 +1752,16 @@
       "from": 88,
       "to": 84,
       "why": "age 21; peak 88"
+    },
+    {
+      "id": "wigan-cur-adam-keighran",
+      "name": "Adam Keighran",
+      "year": 2026,
+      "club": "Wigan Warriors",
+      "age": 29,
+      "from": 87,
+      "to": 90,
+      "why": "2026 Man of Steel shortlist"
     },
     {
       "id": "salford-leg-adrian-morley-2014",
@@ -2712,6 +2752,16 @@
       "from": 88,
       "to": 90,
       "why": "elite season (2019, 2020, 2026); peak 91"
+    },
+    {
+      "id": "leeds-cur-ash-handley",
+      "name": "Ash Handley",
+      "year": 2026,
+      "club": "Leeds Rhinos",
+      "age": 30,
+      "from": 86,
+      "to": 88,
+      "why": "2026 Dream Team"
     },
     {
       "id": "salford-hist-ben-hellewell-2026",
@@ -4034,6 +4084,16 @@
       "why": "age 29, 2 yrs from his best seasons; peak 92"
     },
     {
+      "id": "leigh-cur-umyla-hanley",
+      "name": "Umyla Hanley",
+      "year": 2026,
+      "club": "Leigh Leopards",
+      "age": 24,
+      "from": 86,
+      "to": 88,
+      "why": "2026 Dream Team"
+    },
+    {
       "id": "london-hist-will-sharp",
       "name": "Will Sharp",
       "year": 2008,
@@ -5224,6 +5284,16 @@
       "why": "age 23; peak 87"
     },
     {
+      "id": "leeds-cur-maika-sivo",
+      "name": "Maika Sivo",
+      "year": 2026,
+      "club": "Leeds Rhinos",
+      "age": 33,
+      "from": 87,
+      "to": 88,
+      "why": "2026 Dream Team"
+    },
+    {
       "id": "hull-fc-hist-manu-ma-u-2021",
       "name": "Manu Ma'U",
       "year": 2021,
@@ -5272,6 +5342,16 @@
       "from": 86,
       "to": 85,
       "why": "age 25, 2 yrs from his best seasons; peak 87"
+    },
+    {
+      "id": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "year": 2026,
+      "club": "Toulouse Olympique",
+      "age": 27,
+      "from": 87,
+      "to": 88,
+      "why": "2026 Dream Team"
     },
     {
       "id": "warrington-hist-matt-king-2009",
