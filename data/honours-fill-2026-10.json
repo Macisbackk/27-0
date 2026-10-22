@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T16:29:22+00:00",
+  "generatedAt": "2026-10-22T16:40:07+00:00",
   "entries": [
     {
       "honour": "superLeagueChampion",
@@ -382,7 +382,7 @@
         {
           "name": "Alan Hunte",
           "ids": [],
-          "note": "~19 apps (grid count); 23 apps all comps per Wikipedia",
+          "note": "19 apps",
           "otherClubIds": [
             "wakefield-hist-alan-hunte"
           ]
@@ -393,28 +393,28 @@
             "st-helens-hist-tommy-martyn-2000",
             "tommy-martyn"
           ],
-          "note": "~15 apps (grid count); 17 all comps"
+          "note": "14 apps"
         },
         {
           "name": "Vila Matautia",
           "ids": [
             "st-helens-hist-vila-mata-utia"
           ],
-          "note": "~16 apps (grid count); 21 all comps"
+          "note": "16 apps"
         },
         {
           "name": "Chris Morley",
           "ids": [
             "st-helens-hist-chris-morley"
           ],
-          "note": "~20 apps (grid count); 22 all comps"
+          "note": "20 apps"
         },
         {
           "name": "Andy Northey",
           "ids": [
             "st-helens-hist-andy-northey"
           ],
-          "note": "10 apps (grid count); 15 all comps - borderline"
+          "note": "10 apps (borderline)"
         }
       ],
       "sources": [
@@ -422,7 +422,304 @@
         "https://www.rugbyleagueproject.org/seasons/super-league-1996/st-helens/players.html",
         "https://en.wikipedia.org/wiki/1996_St_Helens_R.F.C._season"
       ],
-      "note": "Super League I had no Grand Final; St Helens finished top (P22 W20 L2, 40 pts) and were champions. League apps (starts+bench, SL rounds only) from Rugby League Project summary; Hunte/Martyn/Mata'utia/Morley/Northey counts derived from RLP per-match grid (approx.: Hunte ~19, Martyn ~15, Mata'utia ~16, Morley ~20, Northey 10). Excluded with 9 league apps: Joey Hayes, Scott Gibbs, Andy Leathem; also Dean Busby (2), Paul Anderson, John McAtee, Jon Neill, Phil Veivers (cup only)."
+      "note": "Super League I had no Grand Final; St Helens finished top (P22 W20 L2, 40 pts) and were champions. League apps (starts+bench, SL rounds 1-22 only) counted from Rugby League Project per-match lineups; first 19 rows cross-checked against RLP summary table (all matched). Excluded with 9 league apps: Joey Hayes, Scott Gibbs, Andy Leathem; also John McAtee 3, Dean Busby 2, Phil Veivers 1, Paul Anderson 1, Jon Neill 1."
+    },
+    {
+      "honour": "superLeagueChampion",
+      "year": 1997,
+      "club": "Bradford Bulls",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "James Lowes",
+          "ids": [
+            "bradford-hist-james-lowes-1997"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Glen Tomlinson",
+          "ids": [],
+          "note": "22 apps",
+          "otherClubIds": [
+            "wakefield-hist-glen-tomlinson"
+          ]
+        },
+        {
+          "name": "Stuart Spruce",
+          "ids": [
+            "bradford-hist-stuart-spruce"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Steve McNamara",
+          "ids": [
+            "bradford-hist-steve-mcnamara-1997"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Paul Loughlin",
+          "ids": [
+            "bradford-hist-paul-loughlin"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Graeme Bradley",
+          "ids": [
+            "bradford-hist-graeme-bradley-1997"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Tahi Reihana",
+          "ids": [
+            "bradford-hist-tahi-reihana"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Danny Peacock",
+          "ids": [
+            "bradford-hist-danny-peacock-1997"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Paul Anderson",
+          "ids": [
+            "bradford-hist-paul-anderson-1997"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Jeff Wittenberg",
+          "ids": [
+            "bradford-hist-jeff-wittenberg-1997"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Brian McDermott",
+          "ids": [
+            "bradford-hist-brian-mcdermott-1997"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Nathan Graham",
+          "ids": [
+            "bradford-hist-nathan-graham"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Matt Calland",
+          "ids": [
+            "bradford-hist-matt-calland-1997"
+          ],
+          "note": "14 apps"
+        },
+        {
+          "name": "Bernard Dwyer",
+          "ids": [
+            "bradford-hist-bernard-dwyer-1997"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Sonny Nickle",
+          "ids": [],
+          "note": "13 apps",
+          "otherClubIds": [
+            "st-helens-hist-sonny-nickle"
+          ]
+        },
+        {
+          "name": "Jon Scales",
+          "ids": [
+            "bradford-hist-jonathan-scales"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Mike Forshaw",
+          "ids": [
+            "bradford-hist-mike-forshaw-1997"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Paul Medley",
+          "ids": [
+            "bradford-hist-paul-medley",
+            "bradford-hist-paul-medley-1998"
+          ],
+          "note": "12 apps"
+        },
+        {
+          "name": "Robbie Paul",
+          "ids": [
+            "bradford-leg-robbie-hunter-paul-1997",
+            "bradford-leg-robbie-hunter-paul"
+          ],
+          "note": "12 apps (listed as Robbie Hunter-Paul by RLP)"
+        },
+        {
+          "name": "Simon Knox",
+          "ids": [
+            "bradford-hist-simon-knox"
+          ],
+          "note": "12 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/bradford-bulls/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/bradford-bulls/summary.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/summary.html",
+        "https://en.wikipedia.org/wiki/1997_Bradford_Bulls_season"
+      ],
+      "note": "Super League II had no Grand Final; Bradford finished top (P22 W20 L2, 40 pts) and were champions. League apps (starts+bench, SL rounds 1-22) counted from Rugby League Project per-match lineups; cross-checked against RLP summary table rows 1-13 (all matched). Excluded (<10): Abi Ekoku 9, Paul Cook 8, Jeremy Donougher 6, Warren Jowitt 5, Andy Hodgson 5, Gary Christie 4, Kevin Crouthers 2."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2020,
+      "club": "Wigan Warriors",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Liam Farrell",
+          "ids": [
+            "wigan-hist-liam-farrell-2020",
+            "wigan-cur-liam-farrell"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Jackson Hastings",
+          "ids": [
+            "wigan-hist-jackson-hastings-2020"
+          ],
+          "note": "17 apps",
+          "otherClubIds": [
+            "st-helens-cur-jackson-hastings"
+          ]
+        },
+        {
+          "name": "Willie Isa",
+          "ids": [
+            "wigan-hist-willie-isa-2020"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Bevan French",
+          "ids": [
+            "wigan-hist-bevan-french-2020",
+            "wigan-cur-bevan-french"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Jake Bibby",
+          "ids": [
+            "wigan-hist-jake-bibby-2020"
+          ],
+          "note": "16 apps",
+          "otherClubIds": [
+            "oldham-cur-jake-bibby"
+          ]
+        },
+        {
+          "name": "Zak Hardaker",
+          "ids": [
+            "wigan-hist-zak-hardaker-2020"
+          ],
+          "note": "16 apps",
+          "otherClubIds": [
+            "hull-fc-cur-zak-hardaker"
+          ]
+        },
+        {
+          "name": "Thomas Leuluai",
+          "ids": [
+            "wigan-hist-thomas-leuluai-2020"
+          ],
+          "note": "15 apps"
+        },
+        {
+          "name": "Sam Powell",
+          "ids": [
+            "wigan-hist-sam-powell-2020"
+          ],
+          "note": "15 apps",
+          "otherClubIds": [
+            "warrington-cur-sam-powell"
+          ]
+        },
+        {
+          "name": "Morgan Smithies",
+          "ids": [
+            "wigan-hist-morgan-smithies-2020"
+          ],
+          "note": "14 apps"
+        },
+        {
+          "name": "Harry Smith",
+          "ids": [
+            "wigan-hist-harry-smith-2020",
+            "wigan-cur-harry-smith"
+          ],
+          "note": "14 apps"
+        },
+        {
+          "name": "Oliver Partington",
+          "ids": [
+            "wigan-hist-oliver-partington-2020",
+            "wigan-cur-oliver-partington"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Joe Bullock",
+          "ids": [
+            "wigan-hist-joe-bullock-2020"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Liam Byrne",
+          "ids": [
+            "wigan-hist-era-liam-byrne"
+          ],
+          "note": "11 apps",
+          "otherClubIds": [
+            "warrington-cur-liam-byrne"
+          ]
+        },
+        {
+          "name": "Liam Marshall",
+          "ids": [
+            "wigan-cur-liam-marshall",
+            "wigan-hist-liam-marshall-2021",
+            "wigan-hist-liam-marshall-2022",
+            "wigan-hist-liam-marshall-2023",
+            "wigan-hist-liam-marshall-2024",
+            "wigan-hist-liam-marshall-2025"
+          ],
+          "note": "10 apps"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2020/wigan-warriors/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2020/wigan-warriors/summary.html",
+        "https://en.wikipedia.org/wiki/2020_Wigan_Warriors_season"
+      ],
+      "note": "Wigan won the 2020 League Leaders' Shield (table decided on win percentage in the COVID-shortened season). Regular-season apps (starts+bench, excludes play-offs/Challenge Cup) counted from RLP per-match lineups (18 regular-season matches incl. the round 3 Toronto game later expunged); counts cross-checked against RLP summary (league+play-off) totals. Near misses (9): Joe Burgess, Ethan Havard, Dom Manfredi; Sean O'Loughlin 4."
     }
   ],
   "unverified": []

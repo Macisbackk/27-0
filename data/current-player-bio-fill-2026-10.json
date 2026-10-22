@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-22T16:36:28Z",
+ "generatedAt": "2026-10-22T16:40:56Z",
  "asOf": "2026-10-22",
  "notes": "Researched via WebSearch/WebFetch. Caps are senior international rugby league test caps as of the cited source date.",
  "players": [
@@ -380,6 +380,1160 @@
    ],
    "note": "1 England Test (2014 Four Nations). RLP SL total now 402 apps/88 tries.",
    "name": "Joe Westerman"
+  },
+  {
+   "id": "catalans-cur-franck-maria",
+   "dateOfBirth": "1997-07-31",
+   "intlCaps": 2,
+   "intlNation": "France",
+   "appearances": 36,
+   "tries": 1,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/franck-maria/summary.html"
+   ],
+   "note": "France Tests 2023-24.",
+   "name": "Franck Maria",
+   "birthYear": 1997,
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-guillermo-aispuro-bichet",
+   "dateOfBirth": "2005-07-12",
+   "intlCaps": 4,
+   "intlNation": "France",
+   "nationality": "France",
+   "appearances": 39,
+   "tries": 8,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/guillermo-aispuro-bichet/summary.html",
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "France Tests 2023-25 (4); in France 2026 RLWC squad.",
+   "name": "Guillermo Aispuro-Bichet",
+   "birthYear": 2005,
+   "nationalityWas": "England",
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-harvey-wilson",
+   "dateOfBirth": "2004-01-31",
+   "appearances": 41,
+   "tries": 4,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/harvey-wilson/summary.html"
+   ],
+   "name": "Harvey Wilson",
+   "birthYear": 2004,
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "note": ""
+  },
+  {
+   "id": "catalans-cur-iszac-faasuamaleaui",
+   "dateOfBirth": "2001-12-01",
+   "appearances": 8,
+   "tries": 0,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/iszac-fa-asuamaleaui/summary.html"
+   ],
+   "note": "Born Brisbane.",
+   "name": "Iszac Fa'asuamaleaui",
+   "birthYear": 2001,
+   "appearancesWas": 0
+  },
+  {
+   "id": "catalans-cur-lenny-marc",
+   "dateOfBirth": "2006-04-14",
+   "appearances": 6,
+   "tries": 2,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/lenny-marc/summary.html"
+   ],
+   "name": "Lenny Marc",
+   "birthYear": 2006,
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "note": ""
+  },
+  {
+   "id": "catalans-cur-manase-kaho",
+   "dateOfBirth": "2001-01-29",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/manase-kaho/summary.html"
+   ],
+   "note": "Born Brisbane. RLP lists only Norths Devils (QLD Cup) 2023-25 and no Super League games.",
+   "name": "Manase Kaho",
+   "birthYear": 2001
+  },
+  {
+   "id": "catalans-cur-matthieu-laguerre",
+   "dateOfBirth": "1999-02-03",
+   "nationality": "France",
+   "intlCaps": 9,
+   "intlNation": "France",
+   "appearances": 78,
+   "tries": 26,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/matthieu-laguerre/summary.html"
+   ],
+   "note": "Born Marseille; France Tests 2021-24 (9). Stored nationality England was wrong.",
+   "name": "Matthieu Laguerre",
+   "birthYear": 1999,
+   "nationalityWas": "England",
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-ugo-tison",
+   "dateOfBirth": "2001-07-07",
+   "intlCaps": 4,
+   "intlNation": "France",
+   "appearances": 37,
+   "tries": 5,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/ugo-tison/summary.html"
+   ],
+   "name": "Ugo Tison",
+   "birthYear": 2001,
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null,
+   "note": ""
+  },
+  {
+   "id": "catalans-cur-zac-lipowicz",
+   "dateOfBirth": "2002-05-31",
+   "nationality": "Poland",
+   "intlCaps": 1,
+   "intlNation": "Poland",
+   "appearances": 29,
+   "tries": 6,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/zac-lipowicz/summary.html"
+   ],
+   "note": "Born Baulkham Hills, NSW, Australia; Poland 1 Test (2023). Stored nationality England not supported by any source.",
+   "name": "Zac Lipowicz",
+   "birthYear": 2002,
+   "nationalityWas": "England",
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-bayley-sironen",
+   "appearances": 41,
+   "tries": 5,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/bayley-sironen/summary.html"
+   ],
+   "note": "Left Catalans after 2025; playing for Wynnum-Manly (QLD Cup) in 2026.",
+   "name": "Bayley Sironen",
+   "appearancesWas": null,
+   "triesWas": null
+  },
+  {
+   "id": "wynnum-manly-cur-bayley-sironen",
+   "appearances": 41,
+   "tries": 5,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/bayley-sironen/summary.html"
+   ],
+   "name": "Bayley Sironen",
+   "appearancesWas": null,
+   "triesWas": null,
+   "note": ""
+  },
+  {
+   "id": "catalans-cur-ben-condon",
+   "appearances": 23,
+   "tries": 4,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/ben-condon/summary.html"
+   ],
+   "name": "Ben Condon",
+   "appearancesWas": null,
+   "triesWas": null,
+   "note": ""
+  },
+  {
+   "id": "catalans-cur-jordan-dezaria",
+   "intlCaps": 6,
+   "intlNation": "France",
+   "appearances": 99,
+   "tries": 4,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jordan-dezaria/summary.html",
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "Played for Hull KR in 2026 (also 1 game St Helens); in France 2026 RLWC squad listed at Hull KR.",
+   "name": "Jordan Dezaria",
+   "appearancesWas": null,
+   "triesWas": null,
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-paul-seguier",
+   "intlCaps": 7,
+   "intlNation": "France",
+   "appearances": 107,
+   "tries": 7,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/paul-seguier/summary.html"
+   ],
+   "note": "Born Albi; RLP lists no 2026 games.",
+   "name": "Paul Séguier",
+   "appearancesWas": null,
+   "triesWas": null,
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-tommy-makinson",
+   "intlCaps": 19,
+   "intlNation": "England",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Tommy_Makinson"
+   ],
+   "note": "England 2018-, 19 caps (Wikipedia as of 13 Oct 2026). Named Coffs Harbour Comets player/coach for 2027.",
+   "name": "Tommy Makinson",
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-chris-satae",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/chris-satae/summary.html"
+   ],
+   "note": "No Test caps (only Combined Nations All Stars 2021-22). Born Auckland.",
+   "name": "Chris Satae"
+  },
+  {
+   "id": "catalans-cur-nick-cotric",
+   "intlCaps": 2,
+   "intlNation": "Serbia",
+   "intlCapsAll": 4,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Nick_Cotric"
+   ],
+   "note": "Serbia 2 caps (2024); also 2 Australia caps (2019) - 4 senior caps in total. Born Cooma NSW. Signed for Leeds from 2027.",
+   "name": "Nick Čotrić",
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-kruise-leeming",
+   "intlCaps": 1,
+   "intlNation": "England",
+   "appearances": 250,
+   "tries": 43,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/kruise-leeming/summary.html"
+   ],
+   "note": "1 England Test (2021). Born Lobamba, Eswatini.",
+   "name": "Kruise Leeming",
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-alrix-da-costa",
+   "intlCaps": 12,
+   "intlNation": "France",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/alrix-da-costa/summary.html",
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "RLP: 12 France Tests (2016-25); 2026 RLWC squad page lists 10 pre-tournament games.",
+   "name": "Alrix Da Costa",
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-julian-bousquet",
+   "intlCaps": 17,
+   "intlNation": "France",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/julian-bousquet/summary.html",
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "17 France Tests (RLP and RLWC squad page agree; pre-2026 RLWC).",
+   "name": "Julian Bousquet",
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-benjamin-garcia",
+   "intlCaps": 17,
+   "intlNation": "France",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/benjamin-garcia/summary.html",
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "17 France Tests (pre-2026 RLWC).",
+   "name": "Benjamin Garcia",
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-romain-navarette",
+   "intlCaps": 11,
+   "intlNation": "France",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/romain-navarrete/summary.html",
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "RLP: 11 France Tests; RLWC squad page lists 8 pre-tournament games.",
+   "name": "Romain Navarrete",
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-leo-darrelatour",
+   "intlCaps": 1,
+   "intlNation": "France",
+   "sources": [
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "Pre-tournament figure from France 2026 RLWC squad.",
+   "name": "Leo Darrelatour",
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-cesar-rouge",
+   "intlCaps": 7,
+   "intlNation": "France",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/cesar-rouge/summary.html"
+   ],
+   "note": "France Tests 2022-25 (7). Played for Toulouse in 2026.",
+   "name": "César Rougé",
+   "intlCapsWas": null
+  },
+  {
+   "id": "catalans-cur-clement-martin",
+   "intlCaps": 1,
+   "intlNation": "France",
+   "appearances": 10,
+   "tries": 1,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/clement-martin/summary.html"
+   ],
+   "name": "Clement Martin",
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null,
+   "note": ""
+  },
+  {
+   "id": "catalans-cur-alexis-lis",
+   "intlCaps": 1,
+   "intlNation": "France",
+   "appearances": 13,
+   "tries": 1,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/alexis-lis/summary.html"
+   ],
+   "name": "Alexis Lis",
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null,
+   "note": ""
+  },
+  {
+   "id": "catalans-cur-giovanni-descalzi",
+   "appearances": 4,
+   "tries": 0,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/giovanni-descalzi/summary.html"
+   ],
+   "name": "Giovanni Descalzi",
+   "appearancesWas": 0,
+   "note": ""
+  },
+  {
+   "id": "catalans-cur-josh-allen",
+   "nationality": "Australia",
+   "appearances": 25,
+   "tries": 1,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/josh-allen/summary.html"
+   ],
+   "note": "Born Brisbane; ex-Redcliffe/Northern Pride.",
+   "name": "Josh Allen",
+   "nationalityWas": "England",
+   "appearancesWas": 0,
+   "triesWas": 0
+  },
+  {
+   "id": "catalans-cur-lewis-dodd",
+   "appearances": 104,
+   "tries": 33,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/lewis-dodd/summary.html"
+   ],
+   "note": "Stored 9/4 looks like a partial figure; RLP career SL total 104/33.",
+   "name": "Lewis Dodd",
+   "appearancesWas": 9,
+   "triesWas": 4
+  },
+  {
+   "id": "catalans-cur-toby-sexton",
+   "appearances": 26,
+   "tries": 10,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/toby-sexton/summary.html"
+   ],
+   "name": "Toby Sexton",
+   "appearancesWas": 12,
+   "triesWas": 5,
+   "note": ""
+  },
+  {
+   "id": "catalans-cur-solomona-faataape",
+   "appearances": 20,
+   "tries": 8,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/solomona-faataape/summary.html"
+   ],
+   "name": "Solomona Faataape",
+   "appearancesWas": 34,
+   "triesWas": 12,
+   "note": ""
+  },
+  {
+   "id": "castleford-cur-renouf-atoni",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/renouf-to--omaga/summary.html"
+   ],
+   "note": "RLP lists no Test caps; born Porirua NZ (stored nationality Tonga unverified - see Wakefield duplicate).",
+   "name": "Renouf Atoni"
+  },
+  {
+   "id": "wakefield-cur-renouf-atoni",
+   "appearances": 60,
+   "tries": 5,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/renouf-to--omaga/summary.html"
+   ],
+   "note": "Duplicate of Castleford entry; born Porirua NZ, moved to Castleford for 2026.",
+   "name": "Renouf Atoni",
+   "appearancesWas": null,
+   "triesWas": null
+  },
+  {
+   "id": "huddersfield-cur-asher-odonnell",
+   "nationality": "Australia",
+   "sources": [
+    "https://www.giantsrl.com/article/9583/brimful-of-asher-odonnell---giants-sign-back-row-star"
+   ],
+   "note": "Australian back-rower from Brisbane Tigers (brother of Kai O'Donnell); aged 22 in Oct 2025.",
+   "name": "Asher O'Donnell",
+   "nationalityWas": "England"
+  },
+  {
+   "id": "huddersfield-cur-chris-patolo",
+   "dateOfBirth": "2001-07-23",
+   "nationality": "Australia",
+   "appearances": 19,
+   "tries": 2,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/chris-patolo/summary.html"
+   ],
+   "note": "Born Sydney; no Test caps on RLP (stored nationality Tonga unsupported).",
+   "name": "Chris Patolo",
+   "birthYear": 2001,
+   "nationalityWas": "Tonga",
+   "appearancesWas": 0,
+   "triesWas": 0
+  },
+  {
+   "id": "huddersfield-cur-jacob-algar",
+   "dateOfBirth": "2006-11-07",
+   "appearances": 1,
+   "tries": 0,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jacob-algar/summary.html"
+   ],
+   "note": "Born Huddersfield.",
+   "name": "Jacob Algar",
+   "birthYear": 2006,
+   "appearancesWas": 0
+  },
+  {
+   "id": "huddersfield-cur-kieran-rush",
+   "dateOfBirth": "2002-09-03",
+   "nationality": "Jamaica",
+   "intlCaps": 5,
+   "intlNation": "Jamaica",
+   "appearances": 37,
+   "tries": 1,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/kieran-rush/summary.html"
+   ],
+   "note": "Born Dewsbury; Jamaica Tests 2022, 2024-25 (5) incl. 3 at 2021 RLWC.",
+   "name": "Kieran Rush",
+   "birthYear": 2002,
+   "nationalityWas": "England",
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null
+  },
+  {
+   "id": "huddersfield-cur-logan-blacker",
+   "dateOfBirth": "2007-02-26",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/logan-blacker/summary.html"
+   ],
+   "note": "Born Huddersfield; no SL games on RLP (loans to Dewsbury/Workington 2026).",
+   "name": "Logan Blacker",
+   "birthYear": 2007
+  },
+  {
+   "id": "huddersfield-cur-marshall-land",
+   "dateOfBirth": "2007-05-30",
+   "appearances": 2,
+   "tries": 0,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/marshall-land/summary.html"
+   ],
+   "note": "Born Dewsbury.",
+   "name": "Marshall Land",
+   "birthYear": 2007,
+   "appearancesWas": 0
+  },
+  {
+   "id": "huddersfield-cur-mathieu-cozza",
+   "dateOfBirth": "2000-04-12",
+   "intlCaps": 2,
+   "intlNation": "France",
+   "appearances": 48,
+   "tries": 0,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/mathieu-cozza/summary.html"
+   ],
+   "name": "Mathieu Cozza",
+   "birthYear": 2000,
+   "appearancesWas": 0,
+   "intlCapsWas": null,
+   "note": ""
+  },
+  {
+   "id": "huddersfield-cur-oliver-russell",
+   "dateOfBirth": "1998-09-21",
+   "appearances": 124,
+   "tries": 9,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/oliver-russell/summary.html"
+   ],
+   "note": "No senior Test caps on RLP.",
+   "name": "Oliver Russell",
+   "birthYear": 1998,
+   "appearancesWas": 0,
+   "triesWas": 0
+  },
+  {
+   "id": "huddersfield-cur-thomas-burgess",
+   "dateOfBirth": "1992-04-21",
+   "intlCaps": 34,
+   "intlNation": "England",
+   "intlCapsAll": 38,
+   "appearances": 75,
+   "tries": 5,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/thomas-burgess/summary.html"
+   ],
+   "note": "Born Dewsbury; England 34 Tests (2013-18, 2022-24) plus Great Britain 4 (2019).",
+   "name": "Thomas Burgess",
+   "birthYear": 1992,
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null
+  },
+  {
+   "id": "huddersfield-cur-tristan-powell",
+   "dateOfBirth": "2001-02-09",
+   "nationality": "Australia",
+   "appearances": 40,
+   "tries": 2,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tristan-powell/summary.html"
+   ],
+   "note": "Born Hervey Bay, Queensland.",
+   "name": "Tristan Powell",
+   "birthYear": 2001,
+   "nationalityWas": "England",
+   "appearancesWas": 0,
+   "triesWas": 0
+  },
+  {
+   "id": "huddersfield-cur-george-flanagan-jr",
+   "appearances": 39,
+   "tries": 18,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/george-flanagan-jr/summary.html",
+    "https://en.wikipedia.org/wiki/George_Flanagan_Jr"
+   ],
+   "note": "DOB conflict: Wikipedia 4 Dec 2004 (matches stored), RLP 24 Dec 2004.",
+   "name": "George Flanagan Jr",
+   "appearancesWas": null,
+   "triesWas": null
+  },
+  {
+   "id": "huddersfield-cur-oliver-wilson",
+   "intlCaps": 1,
+   "intlNation": "England",
+   "appearances": 104,
+   "tries": 2,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/oliver-wilson/summary.html"
+   ],
+   "note": "1 England Test (2024). Moved to Wigan for 2026 (duplicate entry).",
+   "name": "Oliver Wilson",
+   "appearancesWas": null,
+   "triesWas": null,
+   "intlCapsWas": null
+  },
+  {
+   "id": "wigan-cur-oliver-wilson",
+   "intlCaps": 1,
+   "intlNation": "England",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/oliver-wilson/summary.html"
+   ],
+   "name": "Oliver Wilson",
+   "intlCapsWas": null,
+   "note": ""
+  },
+  {
+   "id": "huddersfield-cur-taane-milne",
+   "nationality": "Fiji",
+   "intlCaps": 17,
+   "intlNation": "Fiji",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/taane-milne/summary.html",
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "Born Auckland; Fiji Tests 2017-25 (17); in Fiji 2026 RLWC squad.",
+   "name": "Taane Milne",
+   "nationalityWas": "Samoa",
+   "intlCapsWas": null
+  },
+  {
+   "id": "huddersfield-cur-niall-evalds",
+   "intlCaps": 1,
+   "intlNation": "England",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/niall-evalds/summary.html"
+   ],
+   "note": "1 England Test (2021).",
+   "name": "Niall Evalds",
+   "intlCapsWas": null
+  },
+  {
+   "id": "huddersfield-cur-tui-lolohea",
+   "intlCaps": 20,
+   "intlNation": "Tonga",
+   "intlCapsAll": 21,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tui-lolohea/summary.html",
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "RLP: Tonga 20 Tests + NZ 1 (2015) + 2 Tonga Invitational; RLWC squad page lists 22 pre-tournament games for Tonga.",
+   "name": "Tui Lolohea",
+   "intlCapsWas": null
+  },
+  {
+   "id": "huddersfield-cur-jacob-gagai",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jacob-gagai/summary.html"
+   ],
+   "note": "No Test caps; born Mackay QLD.",
+   "name": "Jacob Gagai"
+  },
+  {
+   "id": "hull-fc-cur-arthur-romano",
+   "dateOfBirth": "1997-08-17",
+   "intlCaps": 7,
+   "intlNation": "France",
+   "appearances": 99,
+   "tries": 20,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/arthur-romano/summary.html",
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "Born Carpentras; RLP 7 France Tests (2022-25) + 2 tour matches; RLWC squad page lists 10 pre-tournament games.",
+   "name": "Arthur Romano",
+   "birthYear": 1997,
+   "appearancesWas": null,
+   "triesWas": null,
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-fc-cur-brad-fash",
+   "dateOfBirth": "1996-01-24",
+   "appearances": 187,
+   "tries": 6,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/brad-fash/summary.html"
+   ],
+   "note": "Born Hull.",
+   "name": "Brad Fash",
+   "birthYear": 1996,
+   "appearancesWas": 0,
+   "triesWas": 0
+  },
+  {
+   "id": "hull-fc-cur-connor-bailey",
+   "dateOfBirth": "2000-10-10",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Connor_Bailey"
+   ],
+   "note": "Born Wakefield; ex-Wakefield/Newcastle Thunder/York; Hull FC 2026-.",
+   "name": "Connor Bailey",
+   "birthYear": 2000
+  },
+  {
+   "id": "hull-fc-cur-hugo-salabio",
+   "dateOfBirth": "2000-07-27",
+   "intlCaps": 1,
+   "intlNation": "France",
+   "nationality": "France",
+   "appearances": 35,
+   "tries": 0,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/hugo-salabio/summary.html"
+   ],
+   "note": "Born Marseille; 1 France Test (2024).",
+   "name": "Hugo Salabio",
+   "birthYear": 2000,
+   "appearancesWas": 0,
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-fc-cur-roman-dawson",
+   "dateOfBirth": "2006-01-23",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/roman-dawson/summary.html"
+   ],
+   "note": "Born Hull.",
+   "name": "Roman Dawson",
+   "birthYear": 2006
+  },
+  {
+   "id": "hull-fc-cur-tom-briscoe",
+   "dateOfBirth": "1990-03-19",
+   "intlCaps": 15,
+   "intlNation": "England",
+   "appearances": 400,
+   "tries": 182,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tom-briscoe/summary.html"
+   ],
+   "note": "Born Featherstone; England Tests 2009-13 (15).",
+   "name": "Tom Briscoe",
+   "birthYear": 1990,
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-fc-cur-yusuf-aydin",
+   "dateOfBirth": "2000-09-13",
+   "nationality": "Turkey",
+   "intlCaps": 1,
+   "intlNation": "Turkey",
+   "appearances": 86,
+   "tries": 4,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/yusuf-aydin/summary.html"
+   ],
+   "note": "Born Wakefield, England; 1 Test for Turkiye (2019). Keep England if birthplace preferred.",
+   "name": "Yusuf Aydin",
+   "birthYear": 2000,
+   "nationalityWas": "England",
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-fc-cur-jake-arthur",
+   "appearances": 23,
+   "tries": 5,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jakob-arthur/summary.html"
+   ],
+   "note": "Listed by RLP as Jakob Arthur, born Cairns 27 Sep 2002 (matches stored DOB).",
+   "name": "Jake Arthur",
+   "appearancesWas": null,
+   "triesWas": null
+  },
+  {
+   "id": "hull-fc-cur-zak-hardaker",
+   "intlCaps": 7,
+   "intlNation": "England",
+   "intlCapsAll": 9,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/zak-hardaker/summary.html"
+   ],
+   "note": "England 7 Tests (2012-21) + Great Britain 2 (2019).",
+   "name": "Zak Hardaker",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-fc-cur-ligi-sao",
+   "intlCaps": 6,
+   "intlNation": "Samoa",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/ligi-sao/summary.html"
+   ],
+   "note": "Born Auckland; Samoa Tests 2018, 2022 (6).",
+   "name": "Ligi Sao",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-fc-cur-john-asiata",
+   "nationality": "Samoa",
+   "intlCaps": 3,
+   "intlNation": "Samoa",
+   "intlCapsAll": 4,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/john-asiata/summary.html"
+   ],
+   "note": "Born Penrith NSW; Samoa 3 Tests (2016-17, 2024) and Tonga 1 Test (2019). Most recent nation Samoa.",
+   "name": "John Asiata",
+   "nationalityWas": "Tonga",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-fc-cur-aidan-sezer",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/aidan-sezer/summary.html"
+   ],
+   "note": "No Test caps (PM XIII only).",
+   "name": "Aidan Sezer"
+  },
+  {
+   "id": "hull-fc-cur-james-bell",
+   "intlCaps": 9,
+   "intlNation": "Scotland",
+   "sources": [
+    "https://en.wikipedia.org/wiki/James_Bell_(rugby_league)"
+   ],
+   "note": "Born Auckland NZ; Scotland 2017-, 9 caps.",
+   "name": "James Bell",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-fc-cur-herman-eseese",
+   "intlCaps": 6,
+   "intlNation": "Samoa",
+   "intlCapsAll": 7,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Herman_Ese%27ese"
+   ],
+   "note": "Samoa 2017-19 (6 caps) and New Zealand 2018 (1 cap).",
+   "name": "Herman Ese'ese",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-fc-cur-sam-lisone",
+   "intlCaps": 4,
+   "intlNation": "Samoa",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sam_Lisone"
+   ],
+   "note": "Samoa 2015-17, 4 caps. Joined Hull FC from Leeds for 2026.",
+   "name": "Sam Lisone",
+   "intlCapsWas": null
+  },
+  {
+   "id": "leeds-cur-sam-lisone",
+   "intlCaps": 4,
+   "intlNation": "Samoa",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sam_Lisone"
+   ],
+   "note": "Duplicate of Hull FC entry (moved to Hull FC for 2026). Wikipedia SL figures inconsistent (infobox 78/15 Leeds vs table 63/12), so stats not filled.",
+   "name": "Sam Lisone",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-kr-cur-bill-leyland",
+   "dateOfBirth": "2003-02-03",
+   "appearances": 25,
+   "tries": 5,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/bill-leyland/summary.html"
+   ],
+   "note": "Born Maidstone, Kent.",
+   "name": "Bill Leyland",
+   "birthYear": 2003,
+   "appearancesWas": 0,
+   "triesWas": 0
+  },
+  {
+   "id": "hull-kr-cur-cobie-wainhouse",
+   "dateOfBirth": "2006-02-08",
+   "appearances": 1,
+   "tries": 0,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/cobie-wainhouse/summary.html"
+   ],
+   "note": "Born Leeds.",
+   "name": "Cobie Wainhouse",
+   "birthYear": 2006,
+   "appearancesWas": 0
+  },
+  {
+   "id": "hull-kr-cur-lee-kershaw",
+   "dateOfBirth": "1999-02-05",
+   "appearances": 83,
+   "tries": 24,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/lee-kershaw/summary.html"
+   ],
+   "note": "Born Bradford; also played for Huddersfield in 2026.",
+   "name": "Lee Kershaw",
+   "birthYear": 1999,
+   "appearancesWas": 0,
+   "triesWas": 0
+  },
+  {
+   "id": "hull-kr-cur-noah-booth",
+   "dateOfBirth": "2004-10-21",
+   "appearances": 13,
+   "tries": 9,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/noah-booth/summary.html"
+   ],
+   "note": "Born Castleford.",
+   "name": "Noah Booth",
+   "birthYear": 2004,
+   "appearancesWas": 0,
+   "triesWas": 0
+  },
+  {
+   "id": "hull-kr-cur-rhyse-martin",
+   "dateOfBirth": "1993-03-01",
+   "nationality": "Papua New Guinea",
+   "intlCaps": 21,
+   "intlNation": "Papua New Guinea",
+   "appearances": 161,
+   "tries": 46,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/rhyse-martin/summary.html",
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "Born Cairns; PNG Tests 2014-25 (21); in PNG 2026 RLWC squad.",
+   "name": "Rhyse Martin",
+   "birthYear": 1993,
+   "nationalityWas": "England",
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-kr-cur-sam-luckley",
+   "dateOfBirth": "1995-11-29",
+   "nationality": "Scotland",
+   "intlCaps": 7,
+   "intlNation": "Scotland",
+   "appearances": 128,
+   "tries": 7,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/sam-luckley/summary.html"
+   ],
+   "note": "Born Kirkcaldy, Fife; Scotland Tests 2018-22 (7).",
+   "name": "Sam Luckley",
+   "birthYear": 1995,
+   "nationalityWas": "England",
+   "appearancesWas": 0,
+   "triesWas": 0,
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-kr-cur-tom-whitehead",
+   "dateOfBirth": "2002-11-07",
+   "appearances": 17,
+   "tries": 1,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tom-whitehead/summary.html"
+   ],
+   "note": "Born Oldham.",
+   "name": "Tom Whitehead",
+   "birthYear": 2002,
+   "appearancesWas": 0,
+   "triesWas": 0
+  },
+  {
+   "id": "hull-kr-cur-kelepi-tanginoa",
+   "appearances": 157,
+   "tries": 38,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/kelepi-tanginoa/summary.html"
+   ],
+   "note": "Born Auburn NSW; no Test caps (Combined Nations only). RLP shows him at Warrington in 2026.",
+   "name": "Kelepi Tanginoa",
+   "appearancesWas": null,
+   "triesWas": null
+  },
+  {
+   "id": "hull-kr-cur-peta-hiku",
+   "intlCaps": 17,
+   "intlNation": "New Zealand",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Peta_Hiku"
+   ],
+   "note": "Born Gisborne; New Zealand 2014-, 17 caps.",
+   "name": "Peta Hiku",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-kr-cur-sauaso-sue",
+   "intlCaps": 10,
+   "intlNation": "Samoa",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/sauaso-sue/summary.html"
+   ],
+   "note": "Born Otahuhu NZ; Samoa Tests 2013-17 (10).",
+   "name": "Sauaso Sue",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-kr-cur-tom-amone",
+   "nationality": "Australia",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tom-amone/summary.html"
+   ],
+   "note": "Born Westmead NSW; no Test caps (stored nationality Tonga unsupported).",
+   "name": "Tom Amone",
+   "nationalityWas": "Tonga"
+  },
+  {
+   "id": "hull-kr-cur-tyrone-may",
+   "intlCaps": 2,
+   "intlNation": "Samoa",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/tyrone-may/summary.html"
+   ],
+   "note": "Born Blacktown NSW; Samoa Tests 2018, 2022 (2).",
+   "name": "Tyrone May",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-kr-cur-joe-burgess",
+   "intlCaps": 4,
+   "intlNation": "England",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/joe-burgess/summary.html"
+   ],
+   "note": "England Tests 2015 and 2025 (4).",
+   "name": "Joe Burgess",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-kr-cur-oliver-gildart",
+   "intlCaps": 3,
+   "intlNation": "England",
+   "intlCapsAll": 4,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/oliver-gildart/summary.html"
+   ],
+   "note": "England 3 Tests (2018) + Great Britain 1 (2019).",
+   "name": "Oliver Gildart",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-kr-cur-arthur-mourgue",
+   "intlCaps": 8,
+   "intlNation": "France",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/arthur-mourgue/summary.html",
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "Born Saint-Etienne; France 8 Tests (RLP and RLWC squad page agree; RLP lists World Cup apps through 2026).",
+   "name": "Arthur Mourgue",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-kr-cur-jack-broadbent",
+   "appearances": 121,
+   "tries": 45,
+   "statsScope": "Super League",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/jack-broadbent/summary.html"
+   ],
+   "note": "No Test caps.",
+   "name": "Jack Broadbent",
+   "appearancesWas": 0,
+   "triesWas": 0
+  },
+  {
+   "id": "hull-kr-cur-mikey-lewis",
+   "intlCaps": 8,
+   "intlNation": "England",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/mikey-lewis/summary.html",
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "England Tests 2023-25 (8); in England 2026 RLWC squad.",
+   "name": "Mikey Lewis",
+   "intlCapsWas": null
+  },
+  {
+   "id": "hull-kr-cur-jez-litten",
+   "intlCaps": 4,
+   "intlNation": "England",
+   "sources": [
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "Pre-tournament figure from England 2026 RLWC squad.",
+   "name": "Jez Litten",
+   "intlCapsWas": null
   }
  ],
  "unverified": [
@@ -397,6 +1551,21 @@
    "id": "bradford-cur-jamie-gill",
    "field": "dateOfBirth",
    "reason": "Academy player; no Wikipedia page or published DOB found."
+  },
+  {
+   "id": "huddersfield-cur-asher-odonnell",
+   "field": "dateOfBirth",
+   "reason": "No DOB found; club says aged 22 (Oct 2025) => born Oct 2002-Oct 2003; stored 2003 plausible."
+  },
+  {
+   "id": "hull-fc-cur-joe-phillips",
+   "field": "dateOfBirth",
+   "reason": "No DOB found; YEP 1 Oct 2025 says 19-year-old ex-Leeds academy forward (born c. Oct 2005-Oct 2006)."
+  },
+  {
+   "id": "leeds-cur-sam-lisone",
+   "field": "appearances",
+   "reason": "Sources conflict (Wikipedia infobox 78 apps/15 tries for Leeds vs season table 63/12); RLP page could not be read."
   }
  ]
 }

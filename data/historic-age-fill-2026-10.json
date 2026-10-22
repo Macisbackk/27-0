@@ -1,12 +1,12 @@
 {
- "generatedAt": "2026-10-22T16:36:09Z",
+ "generatedAt": "2026-10-22T16:40:51Z",
  "summary": {
-  "birthsPeople": 104,
-  "birthsCards": 270,
-  "cardFixes": 46,
+  "birthsPeople": 202,
+  "birthsCards": 399,
+  "cardFixes": 54,
   "sampleChecked": 0,
   "sampleErrors": 0,
-  "unverifiedPeople": 2
+  "unverifiedPeople": 3
  },
  "births": [
   {
@@ -1526,6 +1526,1312 @@
     "https://en.wikipedia.org/wiki/Luis_Johnson"
    ],
    "note": "Hull KR 2019 (loan), 2021–23"
+  },
+  {
+   "ids": [
+    "huddersfield-hist-era-elliot-wallis"
+   ],
+   "name": "Elliot Wallis",
+   "dateOfBirth": "2000-05-10",
+   "birthYear": 2000,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Elliot_Wallis"
+   ],
+   "note": "Huddersfield 2024–25"
+  },
+  {
+   "ids": [
+    "catalans-hist-shane-perry",
+    "catalans-hist-shane-perry-2009"
+   ],
+   "name": "Shane Perry",
+   "dateOfBirth": "1976-11-09",
+   "birthYear": 1976,
+   "birthYearWas": null,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/1332",
+    "https://en.wikipedia.org/wiki/Shane_Perry"
+   ],
+   "note": "Catalans 2009 only (Brisbane 2006–08). The Catalans 2008 card is wrong (see cardFixes). The Wikipedia text says 1977 but the infobox and RLP say 1976-11-09."
+  },
+  {
+   "ids": [
+    "catalans-hist-renaud-guigue"
+   ],
+   "name": "Renaud Guigue",
+   "dateOfBirth": "1979-08-14",
+   "birthYear": 1979,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Renaud_Guigue"
+   ],
+   "note": "Catalans 2006"
+  },
+  {
+   "ids": [
+    "catalans-hist-era-luke-keary"
+   ],
+   "name": "Luke Keary",
+   "dateOfBirth": "1992-02-03",
+   "birthYear": 1992,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Luke_Keary"
+   ],
+   "note": "Catalans 2025"
+  },
+  {
+   "ids": [
+    "huddersfield-hist-era-jack-cogger"
+   ],
+   "name": "Jack Cogger",
+   "dateOfBirth": "1997-08-05",
+   "birthYear": 1997,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jack_Cogger"
+   ],
+   "note": "Huddersfield 2021–22"
+  },
+  {
+   "ids": [
+    "hull-fc-hist-brad-fash-2021",
+    "hull-fc-hist-brad-fash-2024",
+    "hull-fc-hist-brad-fash-2022",
+    "hull-fc-hist-era-brad-fash",
+    "hull-fc-hist-brad-fash-2020",
+    "hull-fc-hist-brad-fash-2025",
+    "hull-fc-hist-brad-fash-2023"
+   ],
+   "name": "Brad Fash",
+   "dateOfBirth": "1996-01-24",
+   "birthYear": 1996,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brad_Fash"
+   ],
+   "note": "Hull FC 2015–"
+  },
+  {
+   "ids": [
+    "catalans-hist-era-tevita-pangai-junior"
+   ],
+   "name": "Tevita Pangai Junior",
+   "dateOfBirth": "1996-02-04",
+   "birthYear": 1996,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Tevita_Pangai_Junior"
+   ],
+   "note": "Catalans 2025"
+  },
+  {
+   "ids": [
+    "hunslet-hist-brian-gabbitas-1965"
+   ],
+   "name": "Brian Gabbitas",
+   "dateOfBirth": "1935-04-24",
+   "birthYear": 1935,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brian_Gabbitas"
+   ],
+   "note": "Hunslet 1952–65"
+  },
+  {
+   "ids": [
+    "hull-fc-hist-josh-reynolds-2022",
+    "hull-fc-hist-era-josh-reynolds"
+   ],
+   "name": "Josh Reynolds",
+   "dateOfBirth": "1989-04-13",
+   "birthYear": 1989,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Josh_Reynolds_(rugby_league)"
+   ],
+   "note": "Hull FC 2021–22"
+  },
+  {
+   "ids": [
+    "huddersfield-hist-james-gavet-2021",
+    "huddersfield-hist-era-james-gavet"
+   ],
+   "name": "James Gavet",
+   "dateOfBirth": "1989-10-19",
+   "birthYear": 1989,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/James_Gavet"
+   ],
+   "note": "Huddersfield 2020–21"
+  },
+  {
+   "ids": [
+    "featherstone-hist-carl-dooler-1967"
+   ],
+   "name": "Carl Dooler",
+   "dateOfBirth": "1943-03-30",
+   "birthYear": 1943,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Carl_Dooler"
+   ],
+   "note": "Featherstone 1960–69"
+  },
+  {
+   "ids": [
+    "hull-kr-hist-era-sam-luckley"
+   ],
+   "name": "Sam Luckley",
+   "dateOfBirth": "1995-11-29",
+   "birthYear": 1995,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sam_Luckley"
+   ],
+   "note": "Hull KR 2023–. The Hull KR 2022 card is wrong (he was at Salford, see cardFixes)."
+  },
+  {
+   "ids": [
+    "st-helens-hist-era-agnatius-paasi"
+   ],
+   "name": "Agnatius Paasi",
+   "dateOfBirth": "1991-11-30",
+   "birthYear": 1991,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Agnatius_Paasi"
+   ],
+   "note": "St Helens 2021–"
+  },
+  {
+   "ids": [
+    "bradford-hist-sam-burgess-2006"
+   ],
+   "name": "Sam Burgess",
+   "dateOfBirth": "1988-12-14",
+   "birthYear": 1988,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sam_Burgess"
+   ],
+   "note": "Bradford 2006–09"
+  },
+  {
+   "ids": [
+    "sheffield-hist-whetu-taewa-1998"
+   ],
+   "name": "Whetu Taewa",
+   "dateOfBirth": "1970-10-19",
+   "birthYear": 1970,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Whetu_Taewa"
+   ],
+   "note": "Sheffield 1997–98"
+  },
+  {
+   "ids": [
+    "hull-fc-hist-era-connor-wynne"
+   ],
+   "name": "Connor Wynne",
+   "dateOfBirth": "2001-01-15",
+   "birthYear": 2001,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Connor_Wynne"
+   ],
+   "note": "Hull FC 2019–23"
+  },
+  {
+   "ids": [
+    "sheffield-hist-dale-laughton-1998"
+   ],
+   "name": "Dale Laughton",
+   "dateOfBirth": null,
+   "birthYear": 1970,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Dale_Laughton"
+   ],
+   "note": "Birth year 1970 is certain, but the Wikipedia infobox says 10 Jan 1970 and the text says 10 Oct 1970. Sheffield 1992–99."
+  },
+  {
+   "ids": [
+    "hull-fc-hist-joe-westerman-2012"
+   ],
+   "name": "Joe Westerman",
+   "dateOfBirth": "1989-11-15",
+   "birthYear": 1989,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Joe_Westerman"
+   ],
+   "note": "Hull FC 2011–15"
+  },
+  {
+   "ids": [
+    "huddersfield-hist-era-louis-senior"
+   ],
+   "name": "Louis Senior",
+   "dateOfBirth": "2000-05-30",
+   "birthYear": 2000,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Louis_Senior"
+   ],
+   "note": "Huddersfield 2018–22 (twin of Innes Senior)"
+  },
+  {
+   "ids": [
+    "hull-fc-hist-era-logan-moy"
+   ],
+   "name": "Logan Moy",
+   "dateOfBirth": "2005-08-10",
+   "birthYear": 2005,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Logan_Moy"
+   ],
+   "note": "Hull FC 2024–"
+  },
+  {
+   "ids": [
+    "castleford-hist-bill-kirkbride-1970"
+   ],
+   "name": "Bill Kirkbride",
+   "dateOfBirth": "1944-01-28",
+   "birthYear": 1944,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Bill_Kirkbride"
+   ],
+   "note": "Castleford 1969–71"
+  },
+  {
+   "ids": [
+    "bradford-hist-iestyn-harris-2006"
+   ],
+   "name": "Iestyn Harris",
+   "dateOfBirth": "1976-06-25",
+   "birthYear": 1976,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Iestyn_Harris"
+   ],
+   "note": "Bradford 2004–08"
+  },
+  {
+   "ids": [
+    "leeds-hist-era-paul-momirovski"
+   ],
+   "name": "Paul Momirovski",
+   "dateOfBirth": "1996-07-19",
+   "birthYear": 1996,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Paul_Momirovski"
+   ],
+   "note": "Leeds 2024"
+  },
+  {
+   "ids": [
+    "hull-kr-hist-dean-hadley-2020"
+   ],
+   "name": "Dean Hadley",
+   "dateOfBirth": "1992-08-05",
+   "birthYear": 1992,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Dean_Hadley"
+   ],
+   "note": "Hull KR 2019–"
+  },
+  {
+   "ids": [
+    "castleford-hist-era-riley-dean"
+   ],
+   "name": "Riley Dean",
+   "dateOfBirth": "2001-08-10",
+   "birthYear": 2001,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Riley_Dean"
+   ],
+   "note": "Castleford 2023 (loan)"
+  },
+  {
+   "ids": [
+    "salford-hist-reni-maitua",
+    "salford-hist-reni-maitua-2015"
+   ],
+   "name": "Reni Maitua",
+   "dateOfBirth": "1982-06-11",
+   "birthYear": 1982,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Reni_Maitua"
+   ],
+   "note": "Salford 2015. Two Salford 2015 cards exist (duplicate)."
+  },
+  {
+   "ids": [
+    "toulouse-hist-luke-polselli-2025",
+    "toulouse-hist-luke-polselli-2023",
+    "toulouse-hist-luke-polselli-2022",
+    "toulouse-hist-luke-polselli-2024"
+   ],
+   "name": "Luke Polselli",
+   "dateOfBirth": "1998-08-06",
+   "birthYear": 1998,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Luke_Polselli"
+   ],
+   "note": "London Broncos 2025, Toulouse 2026–. All four Toulouse 2022–2025 cards are outside his Toulouse spell (see cardFixes)."
+  },
+  {
+   "ids": [
+    "sheffield-hist-matt-crowther-1998"
+   ],
+   "name": "Matt Crowther",
+   "dateOfBirth": "1974-05-06",
+   "birthYear": 1974,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Matt_Crowther"
+   ],
+   "note": "Sheffield 1994–99"
+  },
+  {
+   "ids": [
+    "wakefield-hist-era-anthony-tupou"
+   ],
+   "name": "Anthony Tupou",
+   "dateOfBirth": "1983-03-01",
+   "birthYear": 1983,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Anthony_Tupou"
+   ],
+   "note": "Wakefield 2016"
+  },
+  {
+   "ids": [
+    "hull-fc-hist-andy-lynch-2012",
+    "hull-fc-hist-andy-lynch-2013"
+   ],
+   "name": "Andy Lynch",
+   "dateOfBirth": "1979-10-20",
+   "birthYear": 1979,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Andy_Lynch_(rugby_league)"
+   ],
+   "note": "Hull FC 2012–13"
+  },
+  {
+   "ids": [
+    "sheffield-hist-waisale-sovatabua-1998"
+   ],
+   "name": "Waisale Sovatabua",
+   "dateOfBirth": "1973-06-26",
+   "birthYear": 1973,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Waisale_Sovatabua"
+   ],
+   "note": "Sheffield 1995–99"
+  },
+  {
+   "ids": [
+    "hull-fc-hist-era-jack-ashworth",
+    "hull-fc-hist-jack-ashworth-2025",
+    "st-helens-hist-jack-ashworth-2015"
+   ],
+   "name": "Jack Ashworth",
+   "dateOfBirth": "1995-07-03",
+   "birthYear": 1995,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jack_Ashworth"
+   ],
+   "note": "St Helens 2015–20, Hull FC 2024–25"
+  },
+  {
+   "ids": [
+    "st-helens-hist-mark-percival-2016",
+    "st-helens-hist-mark-percival-2015"
+   ],
+   "name": "Mark Percival",
+   "dateOfBirth": "1994-04-29",
+   "birthYear": 1994,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Mark_Percival"
+   ],
+   "note": "St Helens 2013–"
+  },
+  {
+   "ids": [
+    "wigan-hist-era-tyler-dupree",
+    "wigan-hist-tyler-dupree-2025"
+   ],
+   "name": "Tyler Dupree",
+   "dateOfBirth": "2000-02-08",
+   "birthYear": 2000,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Tyler_Dupree"
+   ],
+   "note": "Wigan 2023–26"
+  },
+  {
+   "ids": [
+    "wakefield-hist-era-steve-southern"
+   ],
+   "name": "Steve Southern",
+   "dateOfBirth": "1982-04-29",
+   "birthYear": 1982,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Steve_Southern"
+   ],
+   "note": "Wakefield 2012"
+  },
+  {
+   "ids": [
+    "st-helens-hist-alex-walmsley-2015",
+    "st-helens-hist-alex-walmsley-2016"
+   ],
+   "name": "Alex Walmsley",
+   "dateOfBirth": "1990-04-10",
+   "birthYear": 1990,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Alex_Walmsley"
+   ],
+   "note": "St Helens 2013–"
+  },
+  {
+   "ids": [
+    "leeds-hist-ben-jones-bishop-2009",
+    "leeds-hist-ben-jones-bishop-2013",
+    "wakefield-hist-ben-jones-bishop-2016"
+   ],
+   "name": "Ben Jones-Bishop",
+   "dateOfBirth": "1988-08-24",
+   "birthYear": 1988,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ben_Jones-Bishop"
+   ],
+   "note": "Leeds 2008–14, Wakefield 2016–20"
+  },
+  {
+   "ids": [
+    "bradford-hist-terry-newton-2006",
+    "bradford-hist-terry-newton-2009"
+   ],
+   "name": "Terry Newton",
+   "dateOfBirth": "1978-11-07",
+   "birthYear": 1978,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Terry_Newton"
+   ],
+   "note": "Bradford 2006–09"
+  },
+  {
+   "ids": [
+    "hull-kr-hist-era-jared-waerea-hargreaves"
+   ],
+   "name": "Jared Waerea-Hargreaves",
+   "dateOfBirth": "1989-01-20",
+   "birthYear": 1989,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jared_Waerea-Hargreaves"
+   ],
+   "note": "Hull KR 2025"
+  },
+  {
+   "ids": [
+    "bradford-hist-chris-nero-2009"
+   ],
+   "name": "Chris Nero",
+   "dateOfBirth": "1981-02-14",
+   "birthYear": 1981,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chris_Nero"
+   ],
+   "note": "Bradford 2008–10"
+  },
+  {
+   "ids": [
+    "hull-fc-hist-richard-horne-2012",
+    "hull-fc-hist-richard-horne-2013"
+   ],
+   "name": "Richard Horne",
+   "dateOfBirth": "1982-07-16",
+   "birthYear": 1982,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Richard_Horne"
+   ],
+   "note": "Hull FC 1998–2014"
+  },
+  {
+   "ids": [
+    "wakefield-hist-era-lee-kershaw"
+   ],
+   "name": "Lee Kershaw",
+   "dateOfBirth": "1999-05-02",
+   "birthYear": 1999,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Lee_Kershaw"
+   ],
+   "note": "Wakefield 2018–23"
+  },
+  {
+   "ids": [
+    "castleford-hist-era-sam-hall"
+   ],
+   "name": "Sam Hall",
+   "dateOfBirth": "2002-05-08",
+   "birthYear": 2002,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sam_Hall_(rugby_league)"
+   ],
+   "note": "Castleford 2020–26"
+  },
+  {
+   "ids": [
+    "wakefield-hist-era-richard-newlove"
+   ],
+   "name": "Richard Newlove",
+   "dateOfBirth": "1978-07-18",
+   "birthYear": 1978,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Richard_Newlove"
+   ],
+   "note": "Wakefield 2003"
+  },
+  {
+   "ids": [
+    "wakefield-hist-era-ben-rauter"
+   ],
+   "name": "Ben Rauter",
+   "dateOfBirth": "1979-01-06",
+   "birthYear": 1979,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ben_Rauter"
+   ],
+   "note": "Wakefield 2001"
+  },
+  {
+   "ids": [
+    "hull-kr-hist-greg-minikin-2020"
+   ],
+   "name": "Greg Minikin",
+   "dateOfBirth": "1995-03-29",
+   "birthYear": 1995,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Greg_Minikin"
+   ],
+   "note": "Hull KR 2020–21"
+  },
+  {
+   "ids": [
+    "bradford-hist-ryan-atkins-2006"
+   ],
+   "name": "Ryan Atkins",
+   "dateOfBirth": "1985-10-07",
+   "birthYear": 1985,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ryan_Atkins"
+   ],
+   "note": "Bradford 2005–06"
+  },
+  {
+   "ids": [
+    "hull-kr-hist-weller-hauraki-2020"
+   ],
+   "name": "Weller Hauraki",
+   "dateOfBirth": "1985-02-18",
+   "birthYear": 1985,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Weller_Hauraki"
+   ],
+   "note": "Hull KR 2019–20"
+  },
+  {
+   "ids": [
+    "wigan-hist-joe-bretherton-2016",
+    "toulouse-hist-joe-bretherton-2025",
+    "toulouse-hist-joe-bretherton-2023",
+    "toulouse-hist-joe-bretherton-2024",
+    "toulouse-hist-joe-bretherton-2022"
+   ],
+   "name": "Joe Bretherton",
+   "dateOfBirth": "1995-10-05",
+   "birthYear": 1995,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Joe_Bretherton"
+   ],
+   "note": "Wigan 2016–18, Toulouse 2018–"
+  },
+  {
+   "ids": [
+    "hull-kr-hist-mikey-lewis-2020"
+   ],
+   "name": "Mikey Lewis",
+   "dateOfBirth": "2001-07-04",
+   "birthYear": 2001,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Mikey_Lewis"
+   ],
+   "note": "Hull KR 2019–"
+  },
+  {
+   "ids": [
+    "sheffield-hist-johnny-lawless-1998"
+   ],
+   "name": "Johnny Lawless",
+   "dateOfBirth": "1974-11-03",
+   "birthYear": 1974,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Johnny_Lawless"
+   ],
+   "note": "Sheffield 1995–99"
+  },
+  {
+   "ids": [
+    "salford-hist-era-steve-rapira"
+   ],
+   "name": "Steve Rapira",
+   "dateOfBirth": "1988-12-17",
+   "birthYear": 1988,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Steve_Rapira"
+   ],
+   "note": "Salford 2014"
+  },
+  {
+   "ids": [
+    "salford-hist-era-nene-macdonald"
+   ],
+   "name": "Nene Macdonald",
+   "dateOfBirth": "1994-05-11",
+   "birthYear": 1994,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Nene_Macdonald"
+   ],
+   "note": "Salford 2024–25"
+  },
+  {
+   "ids": [
+    "sheffield-hist-dave-watson-1998"
+   ],
+   "name": "Dave Watson",
+   "dateOfBirth": "1966-05-24",
+   "birthYear": 1966,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Dave_Watson_(rugby_league)"
+   ],
+   "note": "Sheffield 1998–99"
+  },
+  {
+   "ids": [
+    "catalans-hist-era-thibaut-margalet"
+   ],
+   "name": "Thibaut Margalet",
+   "dateOfBirth": "1993-01-03",
+   "birthYear": 1993,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Thibaut_Margalet"
+   ],
+   "note": "Catalans 2013–19"
+  },
+  {
+   "ids": [
+    "huddersfield-hist-era-luke-o-donnell"
+   ],
+   "name": "Luke O'Donnell",
+   "dateOfBirth": "1980-10-22",
+   "birthYear": 1980,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Luke_O%27Donnell"
+   ],
+   "note": "Huddersfield 2011–12"
+  },
+  {
+   "ids": [
+    "salford-hist-era-kristian-brining"
+   ],
+   "name": "Kristian Brining",
+   "dateOfBirth": "1993-11-16",
+   "birthYear": 1993,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Kristian_Brining"
+   ],
+   "note": "Salford 2017–; DOB is from the article body"
+  },
+  {
+   "ids": [
+    "catalans-hist-era-matthieu-laguerre"
+   ],
+   "name": "Matthieu Laguerre",
+   "dateOfBirth": "1999-02-03",
+   "birthYear": 1999,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Matthieu_Laguerre"
+   ],
+   "note": "Catalans 2021–"
+  },
+  {
+   "ids": [
+    "salford-hist-era-chris-hankinson"
+   ],
+   "name": "Chris Hankinson",
+   "dateOfBirth": "1993-11-30",
+   "birthYear": 1993,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chris_Hankinson"
+   ],
+   "note": "Salford 2024–25. The Salford 2022 card is wrong (he was at Toulouse in 2022, see cardFixes)."
+  },
+  {
+   "ids": [
+    "wigan-hist-ryan-sutton-2016",
+    "wigan-hist-ryan-sutton-2015"
+   ],
+   "name": "Ryan Sutton",
+   "dateOfBirth": "1995-08-02",
+   "birthYear": 1995,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ryan_Sutton"
+   ],
+   "note": "Wigan 2014–18"
+  },
+  {
+   "ids": [
+    "catalans-hist-era-guillermo-aispuro-bichet"
+   ],
+   "name": "Guillermo Aispuro-Bichet",
+   "dateOfBirth": "2005-07-12",
+   "birthYear": 2005,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Guillermo_Aispuro-Bichet"
+   ],
+   "note": "Catalans 2024–"
+  },
+  {
+   "ids": [
+    "bradford-hist-tom-burgess-2012"
+   ],
+   "name": "Tom Burgess",
+   "dateOfBirth": "1992-04-21",
+   "birthYear": 1992,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Tom_Burgess_(rugby_league)"
+   ],
+   "note": "Bradford 2011–12"
+  },
+  {
+   "ids": [
+    "huddersfield-hist-era-thomas-burgess"
+   ],
+   "name": "Thomas Burgess",
+   "dateOfBirth": "1992-04-21",
+   "birthYear": 1992,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Tom_Burgess_(rugby_league)"
+   ],
+   "note": "Same person as Tom Burgess; Huddersfield 2025–"
+  },
+  {
+   "ids": [
+    "catalans-hist-era-laurent-frayssinous"
+   ],
+   "name": "Laurent Frayssinous",
+   "dateOfBirth": "1977-05-07",
+   "birthYear": 1977,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Laurent_Frayssinous"
+   ],
+   "note": "Catalans 2006"
+  },
+  {
+   "ids": [
+    "wigan-hist-era-kelvin-skerrett"
+   ],
+   "name": "Kelvin Skerrett",
+   "dateOfBirth": "1966-05-22",
+   "birthYear": 1966,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Kelvin_Skerrett"
+   ],
+   "note": "Wigan 1990–96"
+  },
+  {
+   "ids": [
+    "toulouse-hist-era-corey-norman"
+   ],
+   "name": "Corey Norman",
+   "dateOfBirth": "1991-02-03",
+   "birthYear": 1991,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Corey_Norman"
+   ],
+   "note": "Toulouse 2022"
+  },
+  {
+   "ids": [
+    "castleford-hist-era-josh-simm"
+   ],
+   "name": "Josh Simm",
+   "dateOfBirth": "2001-02-27",
+   "birthYear": 2001,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Josh_Simm"
+   ],
+   "note": "Castleford 2024–25"
+  },
+  {
+   "ids": [
+    "toulouse-hist-henry-o-kane-2023",
+    "toulouse-hist-henry-o-kane-2022",
+    "toulouse-hist-henry-o-kane-2025",
+    "toulouse-hist-henry-o-kane-2024"
+   ],
+   "name": "Henry O'Kane",
+   "dateOfBirth": "2002-04-05",
+   "birthYear": 2002,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Henry_O%27Kane"
+   ],
+   "note": "Wikipedia lists Toulouse 2026– only; the Toulouse 2022–2025 cards look back-filled (see cardFixes)."
+  },
+  {
+   "ids": [
+    "st-helens-hist-era-jon-bennison"
+   ],
+   "name": "Jon Bennison",
+   "dateOfBirth": "2002-12-01",
+   "birthYear": 2002,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jon_Bennison"
+   ],
+   "note": "St Helens 2021–25"
+  },
+  {
+   "ids": [
+    "toulouse-hist-era-guy-armitage"
+   ],
+   "name": "Guy Armitage",
+   "dateOfBirth": "1991-11-29",
+   "birthYear": 1991,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Guy_Armitage"
+   ],
+   "note": "Toulouse 2021–24"
+  },
+  {
+   "ids": [
+    "wakefield-hist-era-kieran-hyde"
+   ],
+   "name": "Kieran Hyde",
+   "dateOfBirth": "1989-10-10",
+   "birthYear": 1989,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Kieran_Hyde"
+   ],
+   "note": "Wakefield 2010–12"
+  },
+  {
+   "ids": [
+    "bradford-hist-olivier-elima-2012"
+   ],
+   "name": "Olivier Elima",
+   "dateOfBirth": "1983-05-19",
+   "birthYear": 1983,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Olivier_Elima"
+   ],
+   "note": "Bradford 2011–12. The Catalans 2005 card (catalans-hist-olivier-elima, which has birth data) is before Catalans' first Super League season; his Catalans spells were 2008–10 and 2013–16."
+  },
+  {
+   "ids": [
+    "wigan-hist-ryan-hampshire-2015"
+   ],
+   "name": "Ryan Hampshire",
+   "dateOfBirth": "1994-12-29",
+   "birthYear": 1994,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ryan_Hampshire"
+   ],
+   "note": "Wigan 2013–16"
+  },
+  {
+   "ids": [
+    "huddersfield-hist-era-andrew-tangata-toa"
+   ],
+   "name": "Andrew Tangata-Toa",
+   "dateOfBirth": "1974-02-15",
+   "birthYear": 1974,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Andrew_Tangata-Toa"
+   ],
+   "note": "Huddersfield 1999"
+  },
+  {
+   "ids": [
+    "bradford-hist-semi-tadulala-2009"
+   ],
+   "name": "Semi Tadulala",
+   "dateOfBirth": "1978-03-03",
+   "birthYear": 1978,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Semi_Tadulala"
+   ],
+   "note": "Bradford 2008–09"
+  },
+  {
+   "ids": [
+    "london-hist-era-matty-fozard"
+   ],
+   "name": "Matty Fozard",
+   "dateOfBirth": "1995-03-03",
+   "birthYear": 1995,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Matty_Fozard"
+   ],
+   "note": "London Broncos 2019–21"
+  },
+  {
+   "ids": [
+    "hull-kr-hist-era-chris-atkin"
+   ],
+   "name": "Chris Atkin",
+   "dateOfBirth": "1993-02-07",
+   "birthYear": 1993,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chris_Atkin"
+   ],
+   "note": "Hull KR 2017–19"
+  },
+  {
+   "ids": [
+    "sheffield-hist-darren-shaw-1998"
+   ],
+   "name": "Darren Shaw",
+   "dateOfBirth": "1971-10-05",
+   "birthYear": 1971,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Darren_Shaw"
+   ],
+   "note": "Sheffield 1998–99"
+  },
+  {
+   "ids": [
+    "sheffield-hist-paul-carr-1998"
+   ],
+   "name": "Paul Carr",
+   "dateOfBirth": "1967-05-13",
+   "birthYear": 1967,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Paul_Carr_(rugby_league)"
+   ],
+   "note": "Sheffield 1992–98"
+  },
+  {
+   "ids": [
+    "widnes-hist-era-kurt-haggerty"
+   ],
+   "name": "Kurt Haggerty",
+   "dateOfBirth": "1989-01-08",
+   "birthYear": 1989,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Kurt_Haggerty"
+   ],
+   "note": "Widnes 2010–12"
+  },
+  {
+   "ids": [
+    "widnes-hist-era-sala-fa-alogo"
+   ],
+   "name": "Sala Fa'Alogo",
+   "dateOfBirth": "1977-09-20",
+   "birthYear": 1977,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sala_Fa%27alogo"
+   ],
+   "note": "Widnes 2004–05"
+  },
+  {
+   "ids": [
+    "sheffield-hist-nick-pinkney-1998"
+   ],
+   "name": "Nick Pinkney",
+   "dateOfBirth": "1970-12-06",
+   "birthYear": 1970,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Nick_Pinkney"
+   ],
+   "note": "Sheffield 1997–98"
+  },
+  {
+   "ids": [
+    "castleford-hist-era-ian-smales"
+   ],
+   "name": "Ian Smales",
+   "dateOfBirth": "1968-09-26",
+   "birthYear": 1968,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ian_Smales"
+   ],
+   "note": "Castleford 1993–97"
+  },
+  {
+   "ids": [
+    "hull-kr-hist-jez-litten-2020"
+   ],
+   "name": "Jez Litten",
+   "dateOfBirth": "1998-03-10",
+   "birthYear": 1998,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jez_Litten"
+   ],
+   "note": "Hull KR 2019–"
+  },
+  {
+   "ids": [
+    "hull-kr-hist-harvey-livett-2020"
+   ],
+   "name": "Harvey Livett",
+   "dateOfBirth": "1997-01-04",
+   "birthYear": 1997,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Harvey_Livett"
+   ],
+   "note": "Hull KR 2019–20 (loan)"
+  },
+  {
+   "ids": [
+    "wakefield-hist-era-harvey-smith"
+   ],
+   "name": "Harvey Smith",
+   "dateOfBirth": "2006-01-16",
+   "birthYear": 2006,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Harvey_Smith_(rugby_league)"
+   ],
+   "note": "Wakefield 2023–"
+  },
+  {
+   "ids": [
+    "st-helens-hist-era-dom-fe-aunati"
+   ],
+   "name": "Dom Fe'Aunati",
+   "dateOfBirth": "1978-06-14",
+   "birthYear": 1978,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Dom_Feaunati"
+   ],
+   "note": "Dom Feaunati (St Helens RL 2004, then rugby union). The infobox team names didn't render, but the name is unique."
+  },
+  {
+   "ids": [
+    "st-helens-hist-era-kyle-feldt"
+   ],
+   "name": "Kyle Feldt",
+   "dateOfBirth": "1992-02-09",
+   "birthYear": 1992,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Kyle_Feldt"
+   ],
+   "note": "St Helens 2025–26"
+  },
+  {
+   "ids": [
+    "salford-hist-john-wilshire"
+   ],
+   "name": "John Wilshire",
+   "dateOfBirth": "1978-05-05",
+   "birthYear": 1978,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/John_Wilshire"
+   ],
+   "note": "Warrington, Leigh, Salford in Super League (years not in infobox)"
+  },
+  {
+   "ids": [
+    "castleford-hist-era-jack-broadbent"
+   ],
+   "name": "Jack Broadbent",
+   "dateOfBirth": "2000-11-01",
+   "birthYear": 2000,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jack_Broadbent_(rugby_league)"
+   ],
+   "note": "Castleford 2023–24"
+  },
+  {
+   "ids": [
+    "leeds-hist-era-keenan-palasia"
+   ],
+   "name": "Keenan Palasia",
+   "dateOfBirth": "1997-01-24",
+   "birthYear": 1997,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Keenan_Palasia"
+   ],
+   "note": "Leeds 2025–"
+  },
+  {
+   "ids": [
+    "hull-kr-hist-era-will-dagger"
+   ],
+   "name": "Will Dagger",
+   "dateOfBirth": "1999-02-21",
+   "birthYear": 1999,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Will_Dagger"
+   ],
+   "note": "Hull KR 2018–23"
+  },
+  {
+   "ids": [
+    "wakefield-hist-era-paul-sampson"
+   ],
+   "name": "Paul Sampson",
+   "dateOfBirth": "1977-07-12",
+   "birthYear": 1977,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Paul_Sampson"
+   ],
+   "note": "Wakefield 2000"
+  },
+  {
+   "ids": [
+    "castleford-hist-era-richard-goddard"
+   ],
+   "name": "Richard Goddard",
+   "dateOfBirth": "1974-04-28",
+   "birthYear": 1974,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Richard_Goddard_(rugby_league)"
+   ],
+   "note": "Castleford 1994–97"
+  },
+  {
+   "ids": [
+    "salford-hist-era-garen-casey"
+   ],
+   "name": "Garen Casey",
+   "dateOfBirth": "1974-06-25",
+   "birthYear": 1974,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Garen_Casey"
+   ],
+   "note": "Salford 1999"
+  },
+  {
+   "ids": [
+    "warrington-hist-era-connor-wrench"
+   ],
+   "name": "Connor Wrench",
+   "dateOfBirth": "2001-10-04",
+   "birthYear": 2001,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Connor_Wrench"
+   ],
+   "note": "Warrington 2020–25"
+  },
+  {
+   "ids": [
+    "leeds-hist-era-corey-johnson"
+   ],
+   "name": "Corey Johnson",
+   "dateOfBirth": "2000-11-16",
+   "birthYear": 2000,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Corey_Johnson_(rugby_league)"
+   ],
+   "note": "Leeds 2019–24"
+  },
+  {
+   "ids": [
+    "castleford-hist-era-elie-el-zakhem"
+   ],
+   "name": "Elie El-Zakhem",
+   "dateOfBirth": "1998-04-17",
+   "birthYear": 1998,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Elie_El-Zakhem"
+   ],
+   "note": "Castleford 2024"
   }
  ],
  "cardFixes": [
@@ -2079,6 +3385,102 @@
    "sources": [
     "https://en.wikipedia.org/wiki/Matt_Davis_(rugby_league)"
    ]
+  },
+  {
+   "id": "catalans-hist-shane-perry",
+   "name": "Shane Perry",
+   "problem": "Card Catalans 2008, but he was at Brisbane 2006–2008 (7 apps in 2008). His only Catalans season was 2009 (16 apps).",
+   "actualSeasonsAtClub": "2009",
+   "suggestedYear": null,
+   "suggestedAction": "hide (a 2009 card exists)",
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/1332"
+   ]
+  },
+  {
+   "id": "hull-kr-hist-era-sam-luckley",
+   "name": "Sam Luckley",
+   "problem": "Card Hull KR 2022, but he was at Salford 2021–2022 and joined Hull KR in 2023.",
+   "actualSeasonsAtClub": "2023–",
+   "suggestedYear": 2023,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sam_Luckley"
+   ]
+  },
+  {
+   "id": "toulouse-hist-luke-polselli-2022",
+   "name": "Luke Polselli",
+   "problem": "Card Toulouse 2022, but Wikipedia lists his career as London Broncos 2025 and Toulouse 2026–. All four Toulouse cards (2022–2025) are outside that spell, and he was at London in 2025.",
+   "actualSeasonsAtClub": "2026–",
+   "suggestedYear": null,
+   "suggestedAction": "hide the Toulouse 2022, 2023, 2024 and 2025 cards (or move one to 2026 if the game covers it)",
+   "alsoAffects": [
+    "toulouse-hist-luke-polselli-2023",
+    "toulouse-hist-luke-polselli-2024",
+    "toulouse-hist-luke-polselli-2025"
+   ],
+   "sources": [
+    "https://en.wikipedia.org/wiki/Luke_Polselli",
+    "https://www.alloutrugbyleague.co.uk/news/toulouse-make-new-signing-australian-1468941"
+   ]
+  },
+  {
+   "id": "andy-lynch",
+   "name": "Andy Lynch",
+   "problem": "Card Bradford 1998, but he was at Castleford 1999–2004 and Bradford 2005–2011. Bradford cards for 2006, 2009 and 2011 already exist.",
+   "actualSeasonsAtClub": "2005–2011",
+   "suggestedYear": 2005,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Andy_Lynch_(rugby_league)"
+   ]
+  },
+  {
+   "id": "salford-hist-era-chris-hankinson",
+   "name": "Chris Hankinson",
+   "problem": "Card Salford 2022, but he was at Toulouse in 2022 and Featherstone in 2023. His Salford spell was 2024–2025.",
+   "actualSeasonsAtClub": "2024–2025",
+   "suggestedYear": 2024,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chris_Hankinson"
+   ]
+  },
+  {
+   "id": "sheffield-hist-dave-watson",
+   "name": "Dave Watson",
+   "problem": "Card Sheffield 1984 (the age-18 placeholder season; the stored DOB 1966 is right). Watson's Sheffield spell was 1998–99; in 1984 he was in New Zealand amateur rugby league. A 1998 card already exists.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "1998–1999",
+   "suggestedYear": 1999,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Dave_Watson_(rugby_league)"
+   ]
+  },
+  {
+   "id": "toulouse-hist-henry-o-kane-2022",
+   "name": "Henry O'Kane",
+   "problem": "Toulouse cards for 2022–2025, but Wikipedia lists his Toulouse career as 2026– (3 apps). This matches a wider pattern: 14 Toulouse players have identical 2022/2023/2024/2025 card blocks, apparently back-filled from a later squad. For example, Joe Cator joined in 2024 and Luke Polselli in 2026.",
+   "actualSeasonsAtClub": "2026–",
+   "suggestedYear": null,
+   "suggestedAction": "hide the 2022–2025 Toulouse cards for O'Kane, and audit the other Toulouse 2022–2025 block cards (Benjamin Laguerre, Calum Gahan, Jake Shorrocks, Joe Bretherton, Mathieu Jussaume, Maxime Stefani, Olly Ashall-Bott, Paul Ulberg, Reubenn Rennie, Tiaki Chan)",
+   "alsoAffects": [
+    "toulouse-hist-henry-o-kane-2023",
+    "toulouse-hist-henry-o-kane-2024",
+    "toulouse-hist-henry-o-kane-2025"
+   ],
+   "sources": [
+    "https://en.wikipedia.org/wiki/Henry_O%27Kane"
+   ]
+  },
+  {
+   "id": "catalans-hist-olivier-elima",
+   "name": "Olivier Elima",
+   "problem": "Card Catalans 2005, before Catalans' first Super League season (2006). In 2005 Elima was at Wakefield (2003–07). His Catalans spells were 2008–2010 and 2013–2016. The stored DOB 1983 is right.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "2008–2010; 2013–2016",
+   "suggestedYear": 2009,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Olivier_Elima"
+   ]
   }
  ],
  "sampleCheck": {
@@ -2105,6 +3507,16 @@
    ],
    "ids": [
     "wigan-hist-ray-ashby-1965"
+   ]
+  },
+  {
+   "name": "Chris Molyneux",
+   "reason": "The Wikipedia page confirms the identity (Sheffield 1999, Huddersfield 2000–02) but gives no date of birth.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chris_Molyneux"
+   ],
+   "ids": [
+    "huddersfield-hist-era-chris-molyneux"
    ]
   }
  ]
