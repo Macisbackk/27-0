@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T16:47:23+00:00",
+  "generatedAt": "2026-10-22T16:48:35+00:00",
   "entries": [
     {
       "honour": "superLeagueChampion",
@@ -1829,6 +1829,225 @@
         "https://en.wikipedia.org/wiki/2011_Super_League_season"
       ],
       "note": "Warrington won the 2011 League Leaders' Shield. Regular-season apps (27 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-13 (all matched once play-offs added). Excluded (<10): Rhys Williams 9, Chris Riley 8, Rhys Evans 8, Mitchell 5, Tyrone McCarthy 3, O'Brien 1."
+    },
+    {
+      "honour": "leagueLeaders",
+      "year": 2010,
+      "club": "Wigan Warriors",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Sam Tomkins",
+          "ids": [
+            "wigan-hist-sam-tomkins-2008",
+            "wigan-leg-sam-tomkins-2016",
+            "wigan-hist-sam-tomkins-2009",
+            "wigan-leg-sam-tomkins-2012",
+            "wigan-hist-sam-tomkins"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Joel Tomkins",
+          "ids": [
+            "wigan-hist-joel-tomkins-2016",
+            "wigan-hist-joel-tomkins-2008",
+            "wigan-hist-joel-tomkins-2015",
+            "wigan-hist-joel-tomkins"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Pat Richards",
+          "ids": [
+            "wigan-leg-pat-richards-2010"
+          ],
+          "note": "27 apps"
+        },
+        {
+          "name": "Thomas Leuluai",
+          "ids": [
+            "wigan-hist-thomas-leuluai-2008",
+            "wigan-hist-thomas-leuluai",
+            "wigan-hist-thomas-leuluai-2009",
+            "wigan-hist-thomas-leuluai-2020"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Stuart Fielden",
+          "ids": [
+            "wigan-hist-stuart-fielden-2006",
+            "wigan-hist-stuart-fielden-2008",
+            "stuart-fielden"
+          ],
+          "note": "25 apps"
+        },
+        {
+          "name": "Sean O'Loughlin",
+          "ids": [
+            "wigan-hist-sean-oloughlin-2006",
+            "wigan-hist-sean-oloughlin-2008",
+            "wigan-hist-sean-o-loughlin-2015",
+            "wigan-hist-sean-o-loughlin-2016",
+            "sean-oloughlin",
+            "wigan-hist-sean-o-loughlin-2009",
+            "wigan-hist-sean-o-loughlin-2020",
+            "wigan-leg-sean-o-loughlin-2013"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Mark Riddell",
+          "ids": [
+            "wigan-hist-mark-riddell",
+            "wigan-hist-mark-riddell-2009"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "George Carmont",
+          "ids": [
+            "wigan-hist-george-carmont",
+            "wigan-hist-george-carmont-2009"
+          ],
+          "note": "24 apps"
+        },
+        {
+          "name": "Martin Gleeson",
+          "ids": [
+            "wigan-hist-martin-gleeson-2009"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Andy Coley",
+          "ids": [
+            "wigan-hist-andy-coley",
+            "wigan-hist-andy-coley-2009"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Paul Prescott",
+          "ids": [
+            "wigan-hist-paul-prescott",
+            "wigan-hist-paul-prescott-2009"
+          ],
+          "note": "21 apps"
+        },
+        {
+          "name": "Darrell Goulding",
+          "ids": [
+            "wigan-hist-darrell-goulding"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Paul Deacon",
+          "ids": [],
+          "note": "17 apps",
+          "otherClubIds": [
+            "paul-deacon",
+            "bradford-hist-paul-deacon-2009",
+            "bradford-hist-paul-deacon-1999",
+            "bradford-hist-paul-deacon-2005",
+            "bradford-hist-paul-deacon-2006",
+            "bradford-hist-paul-deacon-2000",
+            "bradford-hist-paul-deacon-2001",
+            "bradford-hist-paul-deacon-2002",
+            "bradford-hist-paul-deacon-2004",
+            "bradford-hist-paul-deacon-2003"
+          ]
+        },
+        {
+          "name": "Iafeta Palea'aesina",
+          "ids": [
+            "wigan-hist-iafeta-paleaaesina"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Phil Bailey",
+          "ids": [
+            "wigan-hist-phil-bailey"
+          ],
+          "note": "17 apps"
+        },
+        {
+          "name": "Lee Mossop",
+          "ids": [
+            "wigan-hist-lee-mossop-2008",
+            "wigan-hist-lee-mossop",
+            "wigan-hist-lee-mossop-2015"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Liam Farrell",
+          "ids": [
+            "wigan-cur-liam-farrell",
+            "wigan-hist-liam-farrell-2015",
+            "wigan-hist-liam-farrell-2016",
+            "wigan-hist-liam-farrell-2020",
+            "wigan-hist-liam-farrell-2021",
+            "wigan-hist-liam-farrell-2022",
+            "wigan-hist-liam-farrell-2023",
+            "wigan-hist-liam-farrell-2024",
+            "wigan-hist-liam-farrell-2025"
+          ],
+          "note": "16 apps"
+        },
+        {
+          "name": "Amos Roberts",
+          "ids": [
+            "wigan-hist-amos-roberts",
+            "wigan-hist-amos-roberts-2009"
+          ],
+          "note": "15 apps"
+        },
+        {
+          "name": "Michael McIlorum",
+          "ids": [
+            "wigan-hist-michael-mcilorum-2006",
+            "wigan-hist-michael-mcilorum-2008",
+            "wigan-hist-michael-mcilorum",
+            "wigan-hist-michael-mcilorum-2015",
+            "wigan-hist-michael-mcilorum-2016"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Harrison Hansen",
+          "ids": [
+            "wigan-hist-harrison-hansen",
+            "wigan-hist-harrison-hansen-2009"
+          ],
+          "note": "12 apps"
+        },
+        {
+          "name": "Chris Tuson",
+          "ids": [
+            "wigan-hist-chris-tuson"
+          ],
+          "note": "12 apps"
+        },
+        {
+          "name": "Eamon O'Carroll",
+          "ids": [],
+          "note": "11 apps",
+          "otherClubIds": [
+            "widnes-hist-eamon-ocarroll"
+          ]
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-2010/wigan-warriors/players.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-2010/wigan-warriors/summary.html",
+        "https://en.wikipedia.org/wiki/League_Leaders%27_Shield"
+      ],
+      "note": "Wigan won the 2010 League Leaders' Shield. Regular-season apps (27 rounds, starts+bench; excludes play-offs and Challenge Cup) counted from RLP per-match lineups; cross-checked against RLP summary rows 1-14 (all matched once 4 play-off games added). Excluded (<10): Karl Pryce 7, Cameron Phelps 6, Stefan Marsh 5, Davies 5, others 1."
     }
   ],
   "unverified": []
