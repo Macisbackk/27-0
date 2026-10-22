@@ -81,6 +81,17 @@ async function main(): Promise<void> {
   const paymentIdCount = (state.paidRunIds ?? []).filter(
     (id) => id === paymentId
   ).length;
+
+  // Millionaire pays the day's best run: lower runs bank nothing, higher runs bank the difference.
+  const { getMillionaireBankedToday } = await import("../src/lib/quiz/rewards");
+  const bestAfterFirst = getMillionaireBankedToday();
+  const lower = claimQuizReward({ ...run, id: "reward-lower-run", rewardAmount: 500 });
+  const afterLower = getClubFundsBalance();
+  const higher = claimQuizReward({ ...run, id: "reward-higher-run", rewardAmount: 4_000 });
+  const afterHigher = getClubFundsBalance();
+  const higherAgain = claimQuizReward({ ...run, id: "reward-higher-run", rewardAmount: 4_000 });
+  const afterHigherAgain = getClubFundsBalance();
+  const bestAfterHigher = getMillionaireBankedToday();
   localStorage.setItem(
     STORAGE_KEYS.quizRun,
     JSON.stringify({
@@ -99,6 +110,14 @@ async function main(): Promise<void> {
   [afterSecond === afterFirst, "second claim does not change balance"],
   [second.run.rewardClaimed === true, "reopened run is marked claimed"],
   [paymentIdCount === 1, "wallet stores one quiz_reward transaction id"],
+  [bestAfterFirst === 1_000, "first run records today's best"],
+  [lower.payout.awarded === false && afterLower === afterSecond, "a lower run the same day banks nothing"],
+  [lower.run.rewardPaid === 0 && lower.run.rewardAmount === 500, "lower run keeps its prize for stats, pays 0"],
+  [afterHigher === afterLower + 3_000, "a better run banks only the difference"],
+  [higher.run.rewardPaid === 3_000, "better run records what it paid"],
+  [afterHigherAgain === afterHigher, "re-claiming the better run pays nothing"],
+  [higherAgain.run.rewardClaimed === true, "re-claimed run is marked claimed"],
+  [bestAfterHigher === 4_000, "today's best moves up"],
     [loadQuizRun() === null, "corrupt persisted quiz state is rejected"],
   ];
 

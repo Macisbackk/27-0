@@ -173,7 +173,7 @@ export function PlayoffReview({
     return (
       <ShareSeasonButton
         data={{
-          title: `Daily: ${dailyScenario.forceOpponentClub}`,
+          title: `Daily: ${dailyScenario.ruleTitle}`,
           subtitle: dailyScenario.eraMode
             ? "Era Daily Challenge"
             : "Daily Challenge",

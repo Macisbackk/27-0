@@ -219,7 +219,7 @@ export function SeasonReview({
       ].filter((line): line is string => Boolean(line));
 
       return {
-        title: `Daily: ${dailyScenario.forceOpponentClub}`,
+        title: `Daily: ${dailyScenario.ruleTitle}`,
         subtitle: dailyScenario.eraMode ? "Era Daily Challenge" : "Daily Challenge",
         recordLine: formatRecordWithPercentage(
           seasonResult.wins,

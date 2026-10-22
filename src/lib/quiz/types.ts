@@ -130,6 +130,12 @@ export interface QuizRun {
    * memorise, so unlimited £1M payouts were farmable.
    */
   rewardPractice?: boolean;
+  /**
+   * Club Funds actually banked by a Super League Millionaire run. Only the day's best run pays:
+   * later runs bank just what they add on top (0 if they don't beat it). `rewardAmount` stays
+   * the prize reached, for stats and leaderboards. Undefined on runs from before the change.
+   */
+  rewardPaid?: number;
   createdAt: string;
   updatedAt: string;
 }

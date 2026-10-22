@@ -64,6 +64,7 @@ import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { formatClubFunds, mergeClubFundsPayouts } from "@/lib/club-funds";
 import {
   claimDailyChallengeAttempt,
+  dailyRuleDisablesRespins,
   getDailyChallengeDateKey,
   getDailyChallengeLeagueRunId,
   getDailyChallengePlayoffRunId,
@@ -140,6 +141,8 @@ import {
   type QuickModeBoostedFirstPickPlan,
 } from "@/lib/game/boosted-spin-plan";
 import { pickLegendSpinSlotIndex } from "@/lib/game/legend-spin";
+import { getSpinRuleFilter } from "@/lib/game/daily-rule-filter";
+import { DailyRuleBanner } from "./DailyRuleBanner";
 import { getPlayerTeamYearIds } from "@/lib/game/team-year-pools";
 import type { SpinPoolVariant } from "@/lib/game/player-pool-eligibility";
 import { EraRatingExplanation } from "./EraRatingExplanation";
@@ -394,6 +397,13 @@ export function GameBoard({
     () => (dailyChallengeMode ? getDailyChallengeScenario(dailyDate) : null),
     [dailyChallengeMode, dailyDate]
   );
+  /** Today's Daily rule as a spin filter (null outside the Daily / for rules that don't filter). */
+  const dailyRuleFilter = useMemo(
+    () => getSpinRuleFilter(dailyScenario?.rule ?? null),
+    [dailyScenario]
+  );
+  /** "No respins" Daily rule: the respin button shows as spent for the whole run. */
+  const respinsAllowed = !dailyRuleDisablesRespins(dailyScenario?.rule);
   const lockedSlotTargetsRef = useRef(
     new Map<number, { target: SlotRevealTarget; boosted: boolean }>()
   );
@@ -731,7 +741,13 @@ export function GameBoard({
       return;
     }
     setLegendSpinSlotIndex(
-      pickLegendSpinSlotIndex(seed, createEmptySquad(), new Set(), spinVariant)
+      pickLegendSpinSlotIndex(
+        seed,
+        createEmptySquad(),
+        new Set(),
+        spinVariant,
+        dailyRuleFilter
+      )
     );
     setLegendSpinUsed(false);
   }, [
@@ -741,6 +757,7 @@ export function GameBoard({
     joeMellorMode,
     superSamHallasMode,
     spinVariant,
+    dailyRuleFilter,
   ]);
 
   useEffect(() => {
@@ -937,6 +954,7 @@ export function GameBoard({
           !legendSpinUsed &&
           legendSpinSlotIndex === selectedSlotIndex,
         selectionBoostId: slotBoostGuaranteeId ?? undefined,
+        ruleFilter: dailyRuleFilter,
       }
     );
   }, [
@@ -950,6 +968,7 @@ export function GameBoard({
     legendSpinSlotIndex,
     slotBoostGuaranteeId,
     boostedSpinPlan,
+    dailyRuleFilter,
   ]);
 
   useEffect(() => {
@@ -1080,7 +1099,7 @@ export function GameBoard({
       const result = simulateSeason(finalSquad, seed, {
         draftMode: isDraftMode,
         currentSeasonOnly: !normalEraMode,
-        forceOpponentClub: dailyScenario?.forceOpponentClub,
+        forceOpponentClub: dailyScenario?.forceOpponentClub ?? undefined,
         forceUndefeated: superSamHallasMode,
         joeMellorMode,
       });
@@ -1624,6 +1643,7 @@ export function GameBoard({
         prepareSlotTeamYearPlayers(locked.target, signedPlayerIds, squad, slotIndex, {
           seed,
           legendOnly: requireLegendPlayer,
+          ruleFilter: dailyRuleFilter,
         }).length > 0
           ? locked.target
           : null;
@@ -1675,7 +1695,7 @@ export function GameBoard({
           squad,
           slotIndex,
           usedTeamYearKeys,
-          { requireLegendPlayer, spinVariant }
+          { requireLegendPlayer, spinVariant, ruleFilter: dailyRuleFilter }
         );
       }
 
@@ -1720,12 +1740,14 @@ export function GameBoard({
       preGameBoost,
       slotBoostGuaranteeId,
       selectionBoostsUsedThisRun,
+      dailyRuleFilter,
     ]
   );
 
   const handleSlotRespin = useCallback((): boolean => {
     if (
       !isSlotRecruitMode ||
+      !respinsAllowed ||
       respinsRemaining <= 0 ||
       phase !== "choice" ||
       selectedSlotIndex === null ||
@@ -1793,7 +1815,7 @@ export function GameBoard({
         squad,
         selectedSlotIndex,
         respinUsedTeamYearKeys,
-        { requireLegendPlayer, spinVariant }
+        { requireLegendPlayer, spinVariant, ruleFilter: dailyRuleFilter }
       );
     }
 
@@ -1826,6 +1848,7 @@ export function GameBoard({
     return true;
   }, [
     isSlotRecruitMode,
+    respinsAllowed,
     respinsRemaining,
     phase,
     selectedSlotIndex,
@@ -1843,6 +1866,7 @@ export function GameBoard({
     preGameBoost,
     slotBoostGuaranteeId,
     selectionBoostsUsedThisRun,
+    dailyRuleFilter,
   ]);
 
   const handleSelectSlot = useCallback(
@@ -2349,7 +2373,8 @@ export function GameBoard({
         spinPickIndex,
         squad,
         usedTeamYearKeys,
-        spinVariant
+        spinVariant,
+        dailyRuleFilter
       );
       if (!result) {
         setRecruitNotice(
@@ -2392,6 +2417,7 @@ export function GameBoard({
     usedTeamYearKeys,
     slotOffers,
     squad,
+    dailyRuleFilter,
   ]);
 
   const handleSimulationComplete = useCallback(() => {
@@ -2474,20 +2500,27 @@ export function GameBoard({
             </p>
           ) : null}
           <div className="flex flex-wrap items-center justify-center gap-3">
-            {title && (
+            {dailyScenario ? (
               <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>
-                {dailyScenario
-                  ? `Daily: ${dailyScenario.forceOpponentClub}`
-                  : title}
+                {dailyScenario.ruleTitle}
               </h1>
-            )}
+            ) : title ? (
+              <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>
+                {title}
+              </h1>
+            ) : null}
           </div>
           {dailyScenario ? (
-            <p className="mt-1 text-sm text-gray-400">
-              {dailyAttemptCounts
-                ? `Top the table +${formatClubFunds(dailyScenario.leagueLeadersBonus)} · Win the Grand Final +${formatClubFunds(dailyScenario.playoffTitleBonus)}`
-                : "Practice run — today's Daily attempt is used"}
-            </p>
+            <>
+              <p className="mt-1 text-sm text-gray-200">
+                {dailyScenario.ruleSummary}
+              </p>
+              <p className="mt-0.5 text-xs text-gray-400">
+                {dailyAttemptCounts
+                  ? `Top the table +${formatClubFunds(dailyScenario.leagueLeadersBonus)} · Win the Grand Final +${formatClubFunds(dailyScenario.playoffTitleBonus)}`
+                  : "Practice run — today's Daily attempt is used"}
+              </p>
+            </>
           ) : subtitle ? (
             <p className="mt-1 text-sm text-gray-400">{subtitle}</p>
           ) : null}
@@ -2742,8 +2775,8 @@ export function GameBoard({
                       onSelect={handleSlotTeamYearPick}
                       onBack={handleBackToPitch}
                       onRespin={handleSlotRespin}
-                      respinsRemaining={respinsRemaining}
-                      maxRespins={MAX_RESPINS_PER_RUN}
+                      respinsRemaining={respinsAllowed ? respinsRemaining : 0}
+                      maxRespins={respinsAllowed ? MAX_RESPINS_PER_RUN : 0}
                       disabled={choosing}
                       hardMode={difficulty === "HARD"}
                       boosted={Boolean(boostNotice)}
@@ -2867,6 +2900,9 @@ export function GameBoard({
             currentIndex={quickModeStepIndex}
           />
         </div>
+        {dailyScenario ? (
+          <DailyRuleBanner scenario={dailyScenario} className="mx-1 mb-3 sm:mb-4" />
+        ) : null}
         <SeasonReview
           squad={squad}
           mode={mode}
@@ -2912,6 +2948,10 @@ export function GameBoard({
         seasonResult &&
         seasonResult.playoffResult &&
         reviewStage === "playoffFinal" && (
+        <>
+        {dailyScenario ? (
+          <DailyRuleBanner scenario={dailyScenario} className="mx-1 mb-1 mt-2 sm:mt-4" />
+        ) : null}
         <PlayoffReview
           squad={squad}
           seasonResult={seasonResult}
@@ -2925,6 +2965,7 @@ export function GameBoard({
           onClose={() => setPhase("pitch")}
           onReturnHome={resetRun}
         />
+        </>
       )}
       </div>
     </div>
