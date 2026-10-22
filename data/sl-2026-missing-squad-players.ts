@@ -71,6 +71,14 @@ export const SQUAD_LIST_SOURCES: Record<string, string[]> = {
     LRL_ALL_CLUBS,
     "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
   ],
+  "Hull KR": [
+    LRL_ALL_CLUBS,
+    "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
+  ],
+  "Warrington Wolves": [
+    LRL_ALL_CLUBS,
+    "https://www.alloutrugbyleague.co.uk/news/warrington-wolves-squad-unpicked-new-1508041",
+  ],
 };
 
 const ENGLISH_ACADEMY =
@@ -429,6 +437,161 @@ export const ADDITIONS: Addition[] = [
       "https://www.rugby-league.com/article/62879/england-academy-call-up-for-hull-fc-centre--",
     ],
   },
+  {
+    club: "Hull KR",
+    name: "Tom Whitehead",
+    squadNumber: 29,
+    position: "SECOND_ROW",
+    nationality: "England",
+    nationalityBasis: "source (born Oldham, England — LRL)",
+    birthYear: 2002,
+    previousClubs: ["Warrington Wolves"],
+    rating: 80,
+    status: "squad-number list",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
+      "https://www.loverugbyleague.com/post/hull-kr-sign-tom-whitehead-ahead-of-2026",
+    ],
+    notes: "Back-rower; turned 23 in early November 2025 (born November 2002).",
+  },
+  {
+    club: "Hull KR",
+    name: "Cobie Wainhouse",
+    squadNumber: 30,
+    position: "PROP",
+    nationality: "England",
+    nationalityBasis: ENGLISH_ACADEMY,
+    previousClubs: ["Hull FC"],
+    rating: 80,
+    status: "squad-number list",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
+      "https://hullkr.co.uk/news/cobie-wainhouse-signs-with-the-robins",
+    ],
+    notes: "'Young front-rower' from the Bradford Bulls academy and Hull FC; no published DOB.",
+  },
+  {
+    club: "Hull KR",
+    name: "Declan Murphy",
+    squadNumber: 31,
+    position: "FULLBACK",
+    nationality: "England",
+    nationalityBasis: "source (club bio: born Wigan, England)",
+    dateOfBirth: "2004-10-15",
+    yearsActive: "2025–Present",
+    previousClubs: ["Salford Red Devils"],
+    rating: 80,
+    status: "squad-number list",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
+      "https://hullkr.co.uk/news/declan-murphy-signs-three-year-deal-with-hull-kr",
+    ],
+  },
+  {
+    club: "Hull KR",
+    name: "Jumah Sambou",
+    squadNumber: 32,
+    position: "WING",
+    nationality: "England",
+    nationalityBasis: "source (born Warrington, England — Wikipedia)",
+    dateOfBirth: "2001-11-21",
+    yearsActive: "2022–Present",
+    previousClubs: ["St Helens", "Oldham RLFC"],
+    rating: 80,
+    status: "squad-number list; season-long loan to Widnes Vikings in 2026",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
+      "https://en.wikipedia.org/wiki/Jumah_Sambou",
+    ],
+  },
+  {
+    club: "Hull KR",
+    name: "Frankie Dearlove",
+    squadNumber: 33,
+    position: "SECOND_ROW",
+    nationality: "England",
+    nationalityBasis: "source (club bio: born Kingston upon Hull)",
+    dateOfBirth: "2007-04-20",
+    rating: 80,
+    status: "squad-number list (academy graduate)",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
+      "https://hullkr.co.uk/news/academy-product-frankie-dearlove-signs-a-two-year-deal-at-hull-kr",
+    ],
+  },
+
+  // ── Warrington Wolves ─────────────────────────────────────────────────────
+  {
+    club: "Warrington Wolves",
+    name: "Oli Leyland",
+    aliases: ["Oliver Leyland"],
+    squadNumber: 28,
+    position: "STAND_OFF",
+    nationality: "England",
+    nationalityBasis: "source (born Maidstone, England — Wikipedia)",
+    dateOfBirth: "2001-05-17",
+    yearsActive: "2021–Present",
+    previousClubs: ["London Broncos"],
+    rating: 80,
+    status: "squad-number list",
+    sources: [LRL_ALL_CLUBS, "https://en.wikipedia.org/wiki/Oliver_Leyland"],
+  },
+  {
+    club: "Warrington Wolves",
+    name: "Zack Gardner",
+    squadNumber: 29,
+    position: "CENTRE",
+    nationality: "England",
+    nationalityBasis: ENGLISH_ACADEMY,
+    birthYear: 2006,
+    yearsActive: "2025–Present",
+    rating: 80,
+    status: "squad-number list",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://en.wikipedia.org/wiki/List_of_Warrington_Wolves_players",
+      "https://www.loverugbyleague.com/post/zack-gardner-injury-15-06-2026",
+    ],
+    notes: "Centre (heritage no. 1216, debut May 2025); turned 20 in April 2026; out for the season after shoulder surgery (June 2026).",
+  },
+  {
+    club: "Warrington Wolves",
+    name: "Tom McKinney",
+    squadNumber: 30,
+    position: "PROP",
+    nationality: "England",
+    nationalityBasis: "inferred: Cumbrian, Hensingham junior (club profile)",
+    dateOfBirth: "2006-08-14",
+    yearsActive: "2025–Present",
+    rating: 80,
+    status: "squad-number list",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://warringtonwolves.com/players/70550",
+      "https://www.loverugbyleague.com/post/tom-mckinney-oldham-loan-19-03-2026",
+    ],
+  },
+  {
+    club: "Warrington Wolves",
+    name: "Ben Hartill",
+    squadNumber: 31,
+    position: "HOOKER",
+    nationality: "England",
+    nationalityBasis: ENGLISH_ACADEMY,
+    birthYear: 2005,
+    rating: 80,
+    status: "squad-number list",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/sam-powell-hip-drop-ban-reaction-07-07-2026",
+    ],
+    notes: "Young Warrington-produced hooker; turns 21 in August 2026 (born August 2005).",
+  },
 ];
 
 export const MOVES: Move[] = [
@@ -458,6 +621,33 @@ export const MOVES: Move[] = [
 ];
 
 export const NOT_APPLIED_MOVES: MoveNotApplied[] = [
+  {
+    club: "Warrington Wolves",
+    name: "James Bentley",
+    existingId: "leeds-cur-james-bentley",
+    reason:
+      "Warrington squad number 20 for 2026 (joined from Leeds), but his Current card is in Leeds Rhinos' 16-man 2026 Classic pool, which cannot drop below 16 — left at Leeds pending a pool replacement.",
+    sources: [LRL_ALL_CLUBS, "https://www.alloutrugbyleague.co.uk/news/warrington-wolves-squad-unpicked-new-1508041"],
+  },
+  {
+    club: "Warrington Wolves",
+    name: "Kelepi Tanginoa",
+    existingId: "hull-kr-cur-kelepi-tanginoa",
+    reason:
+      "Warrington squad number 34 for 2026, but his Current card is in Hull KR's 16-man 2026 Classic pool — left at Hull KR pending a pool replacement.",
+    sources: [LRL_ALL_CLUBS],
+  },
+  {
+    club: "Hull KR",
+    name: "Jordan Dezaria",
+    existingId: "catalans-cur-jordan-dezaria",
+    reason:
+      "Hull KR squad number 20 for 2026, but his Current card is in Catalans Dragons' 2026 Classic pool (16 after Arthur Romano's move) — left at Catalans pending a pool replacement.",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
+    ],
+  },
   {
     club: "Huddersfield Giants",
     name: "Matty English",
@@ -489,6 +679,31 @@ export const UNVERIFIED: Unverified[] = [
       LRL_ALL_CLUBS,
       "https://giantsrl.com/article/10009/sutcliffe-to-depart-giants",
       "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/ex-leeds-rhinos-grand-final-winner-finds-new-club-after-sudden-super-league-departure-8819827",
+    ],
+  },
+  {
+    club: "Warrington Wolves",
+    name: "Ewan Smith",
+    squadNumber: 32,
+    reason: "On the 2026 squad-number list, but no source found for his position or background.",
+    sources: [LRL_ALL_CLUBS, "https://www.alloutrugbyleague.co.uk/news/warrington-wolves-squad-unpicked-new-1508041"],
+  },
+  {
+    club: "Warrington Wolves",
+    name: "Tommy Rhodes",
+    squadNumber: 33,
+    reason: "On the 2026 squad-number list, but no source found for his position or background.",
+    sources: [LRL_ALL_CLUBS, "https://www.alloutrugbyleague.co.uk/news/warrington-wolves-squad-unpicked-new-1508041"],
+  },
+  {
+    club: "Warrington Wolves",
+    name: "Matt Dufty",
+    squadNumber: 24,
+    reason:
+      "Given squad number 24 but released in January 2026 before playing (joined South Sydney on a NSW Cup deal) — not a 2026 Warrington player, not added.",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/matt-dufty-handed-nrl-lifeline-after-warrington-wolves-release",
     ],
   },
   {
