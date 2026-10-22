@@ -1,28 +1,34 @@
 {
-  "generatedAt": "2026-08-10T13:05:25.287Z",
+  "generatedAt": "2026-10-22T17:11:24.195Z",
   "sources": [
     "Verified Wikipedia/manual XIII only (era-wikipedia-squads.json, sl-era-verified-squads.json)",
     "Current squad for 2026 only (current-squads.json)",
     "Super League season gate (super-league-club-years.json)"
   ],
   "minPlayers": 13,
-  "verifiedSquadsMerged": 83,
-  "verifiedPlayersRejected": 196,
+  "verifiedSquadsMerged": 82,
+  "verifiedPlayersRejected": 198,
   "unresolvedSquads": [
+    {
+      "team": "Toulouse Olympique",
+      "year": "2022",
+      "names": [
+        "Reubenn Rennie",
+        "Luke Polselli",
+        "Henry O'Kane",
+        "Joe Cator"
+      ]
+    },
     {
       "team": "Toulouse Olympique",
       "year": "2026",
       "names": [
-        "Luke Polselli",
-        "Joe Bretherton",
-        "Tiaki Chan",
-        "Henry OKane",
-        "Joe Cator"
+        "Tiaki Chan"
       ]
     }
   ],
   "currentYearSquadsBuilt": 14,
-  "playableCount": 83,
+  "playableCount": 82,
   "hiddenCount": 2,
   "playable": [
     {
@@ -103,7 +109,7 @@
     {
       "team": "Bradford Bulls",
       "year": "2026",
-      "count": 17
+      "count": 29
     },
     {
       "team": "Castleford Tigers",
@@ -123,7 +129,7 @@
     {
       "team": "Castleford Tigers",
       "year": "2026",
-      "count": 16
+      "count": 30
     },
     {
       "team": "Catalans Dragons",
@@ -178,7 +184,7 @@
     {
       "team": "Catalans Dragons",
       "year": "2026",
-      "count": 17
+      "count": 32
     },
     {
       "team": "Huddersfield Giants",
@@ -198,7 +204,7 @@
     {
       "team": "Huddersfield Giants",
       "year": "2026",
-      "count": 16
+      "count": 29
     },
     {
       "team": "Hull FC",
@@ -223,7 +229,7 @@
     {
       "team": "Hull FC",
       "year": "2026",
-      "count": 17
+      "count": 36
     },
     {
       "team": "Hull KR",
@@ -238,7 +244,7 @@
     {
       "team": "Hull KR",
       "year": "2026",
-      "count": 17
+      "count": 32
     },
     {
       "team": "Leeds Rhinos",
@@ -268,12 +274,12 @@
     {
       "team": "Leeds Rhinos",
       "year": "2026",
-      "count": 16
+      "count": 29
     },
     {
       "team": "Leigh Leopards",
       "year": "2026",
-      "count": 17
+      "count": 33
     },
     {
       "team": "London Broncos",
@@ -353,17 +359,12 @@
     {
       "team": "St Helens",
       "year": "2026",
-      "count": 17
-    },
-    {
-      "team": "Toulouse Olympique",
-      "year": "2022",
-      "count": 13
+      "count": 32
     },
     {
       "team": "Toulouse Olympique",
       "year": "2026",
-      "count": 17
+      "count": 30
     },
     {
       "team": "Wakefield Trinity",
@@ -383,7 +384,7 @@
     {
       "team": "Wakefield Trinity",
       "year": "2026",
-      "count": 17
+      "count": 37
     },
     {
       "team": "Warrington Wolves",
@@ -403,7 +404,7 @@
     {
       "team": "Warrington Wolves",
       "year": "2026",
-      "count": 17
+      "count": 31
     },
     {
       "team": "Wigan Warriors",
@@ -433,12 +434,12 @@
     {
       "team": "Wigan Warriors",
       "year": "2026",
-      "count": 17
+      "count": 34
     },
     {
       "team": "York Knights",
       "year": "2026",
-      "count": 17
+      "count": 35
     }
   ],
   "hidden": [

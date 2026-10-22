@@ -5,6 +5,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { GameModal } from "@/components/ui/GameModal";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { formatClubFunds } from "@/lib/club-funds";
+import { CountUp } from "@/components/ui/CountUp";
 import { playUiClick } from "@/lib/sound";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -39,7 +40,7 @@ export function ClubFundsEarned({
         <p id="club-funds-earned-title" className={TYPO.cardHeading}>
           {title}
         </p>
-        <ul className="space-y-1.5 text-left">
+        <ul className="fl-stagger space-y-1.5 text-left">
           {payout.lines.map((line) => (
             <li
               key={line.id}
@@ -56,7 +57,7 @@ export function ClubFundsEarned({
           <div>
             <p className={TYPO.label}>Total</p>
             <p className="fl-number mt-1 text-[34px] text-theme-primary">
-              +{formatClubFunds(payout.total)}
+              +<CountUp value={payout.total} from={0} format={formatClubFunds} durationMs={900} />
             </p>
           </div>
         )}

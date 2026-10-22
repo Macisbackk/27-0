@@ -61,7 +61,8 @@
     2021
   ],
   "catalans-cur-tommy-makinson": [
-    2014
+    2014,
+    2018
   ],
   "catalans-hist-dean-whare": [
     2021
@@ -85,7 +86,8 @@
     2021
   ],
   "huddersfield-cur-adam-swift": [
-    2014
+    2014,
+    2018
   ],
   "huddersfield-cur-oliver-wilson": [
     2026
@@ -94,13 +96,16 @@
     2022
   ],
   "hull-fc-cur-zak-hardaker": [
-    2017
+    2015,
+    2017,
+    2020
   ],
   "hull-kr-cur-arthur-mourgue": [
     2021,
     2025
   ],
   "york-cur-danny-richardson": [
+    2018,
     2025
   ],
   "hull-kr-cur-dean-hadley": [
@@ -168,22 +173,28 @@
     2007
   ],
   "james-graham": [
+    2005,
     2007,
     2008
   ],
   "james-roby": [
+    2005,
     2007,
     2008,
     2014,
+    2018,
     2019,
     2022
   ],
   "keiron-cunningham": [
+    1996,
+    2005,
     2006,
     2007,
     2008
   ],
   "leeds-cur-zak-hardaker-2015": [
+    2015,
     2017
   ],
   "leon-pryce": [
@@ -194,6 +205,7 @@
   "louie-mccarthy-scarsbrook": [
     2006,
     2014,
+    2018,
     2019,
     2022
   ],
@@ -202,6 +214,7 @@
     2008
   ],
   "paul-wellens": [
+    2005,
     2006,
     2007,
     2008,
@@ -214,6 +227,8 @@
     2014
   ],
   "sean-long": [
+    2002,
+    2005,
     2006,
     2007,
     2008
@@ -245,73 +260,89 @@
   ],
   "st-helens-cur-jonny-lomax": [
     2014,
+    2018,
     2019,
     2022
   ],
   "st-helens-cur-jonny-lomax-2014": [
     2014,
+    2018,
     2022
   ],
   "st-helens-cur-jonny-lomax-2019": [
+    2018,
     2019
   ],
   "st-helens-cur-jordan-turner-2014": [
     2014
   ],
   "st-helens-cur-luke-thompson-2019": [
+    2018,
     2019
   ],
   "st-helens-cur-mark-percival": [
     2014,
+    2018,
     2019,
     2022
   ],
   "st-helens-cur-mark-percival-2014": [
     2014,
+    2018,
     2022
   ],
   "st-helens-cur-mark-percival-2019": [
+    2018,
     2019
   ],
   "st-helens-cur-matt-whitley": [
     2021
   ],
   "st-helens-cur-matty-lees": [
+    2018,
     2022
   ],
   "st-helens-cur-matty-lees-2020": [
+    2018,
     2022
   ],
   "st-helens-cur-morgan-knowles": [
+    2018,
     2019,
     2022
   ],
   "st-helens-cur-tommy-makinson-2014": [
-    2014
+    2014,
+    2018
   ],
   "st-helens-hist-aaron-smith": [
     2014
   ],
   "st-helens-hist-adam-swift-2015": [
-    2014
+    2014,
+    2018
   ],
   "st-helens-hist-ade-gardner": [
+    2005,
     2006,
     2007,
     2008,
     2014
   ],
   "st-helens-hist-ade-gardner-2006": [
+    2005,
     2006
   ],
   "st-helens-hist-ade-gardner-2014": [
+    2005,
     2014
   ],
   "st-helens-hist-andrew-dixon": [
     2008
   ],
   "st-helens-hist-ben-barba": [
-    2007
+    2007,
+    2018
   ],
   "st-helens-hist-bryn-hargreaves": [
     2008
@@ -324,9 +355,11 @@
   ],
   "st-helens-hist-dominique-peyroux": [
     2007,
+    2018,
     2019
   ],
   "st-helens-hist-dominique-peyroux-2019": [
+    2018,
     2019
   ],
   "st-helens-hist-era-agnatius-paasi": [
@@ -353,9 +386,13 @@
     2019
   ],
   "st-helens-hist-james-roby-2014": [
-    2014
+    2005,
+    2014,
+    2018
   ],
   "st-helens-hist-james-roby-2019": [
+    2005,
+    2018,
     2019
   ],
   "st-helens-hist-jamie-lyon-2006": [
@@ -370,25 +407,34 @@
     2006
   ],
   "st-helens-hist-jason-hooper-2006": [
+    2005,
     2006
   ],
   "st-helens-hist-jon-wilkin": [
+    2005,
     2006,
     2007,
     2008,
-    2014
+    2014,
+    2018
   ],
   "st-helens-hist-jon-wilkin-2006": [
-    2006
+    2005,
+    2006,
+    2018
   ],
   "st-helens-hist-jon-wilkin-2014": [
-    2014
+    2005,
+    2014,
+    2018
   ],
   "st-helens-hist-joseph-paulo": [
     2006,
     2019
   ],
   "st-helens-hist-keiron-cunningham-2006": [
+    1996,
+    2005,
     2006
   ],
   "st-helens-hist-kevin-naiqama": [
@@ -403,6 +449,7 @@
   ],
   "st-helens-hist-kyle-amor": [
     2014,
+    2018,
     2019
   ],
   "st-helens-hist-kyle-eastmond": [
@@ -419,18 +466,29 @@
     2014
   ],
   "st-helens-hist-lee-gilmour": [
+    1998,
+    2000,
+    2001,
+    2003,
+    2005,
     2006,
     2007,
     2008
   ],
   "st-helens-hist-lee-gilmour-2006": [
+    1998,
+    2000,
+    2001,
+    2003,
+    2005,
     2006
   ],
   "st-helens-hist-leon-pryce-2006": [
     2006
   ],
   "st-helens-hist-louie-mccarthy-scarsbrook-2014": [
-    2014
+    2014,
+    2018
   ],
   "st-helens-hist-luke-walsh-2014": [
     2014
@@ -446,17 +504,21 @@
     2014
   ],
   "st-helens-hist-maurie-fa-asavalu": [
+    2005,
     2007,
     2008
   ],
   "st-helens-hist-mike-bennett": [
+    2005,
     2007
   ],
   "st-helens-hist-morgan-knowles": [
+    2018,
     2019,
     2022
   ],
   "st-helens-hist-morgan-knowles-2019": [
+    2018,
     2019
   ],
   "st-helens-hist-mose-masoe": [
@@ -467,20 +529,25 @@
     2014
   ],
   "st-helens-hist-paul-anderson-2006": [
+    2005,
     2006
   ],
   "st-helens-hist-paul-wellens-2006": [
+    2005,
     2006
   ],
   "st-helens-hist-regan-grace": [
     2014,
+    2018,
     2019
   ],
   "st-helens-hist-regan-grace-2019": [
+    2018,
     2019
   ],
   "st-helens-hist-ryan-morgan": [
-    2008
+    2008,
+    2018
   ],
   "st-helens-hist-scott-moore": [
     2006
@@ -495,14 +562,17 @@
     2014
   ],
   "st-helens-hist-theo-fages-2019": [
+    2018,
     2019
   ],
   "st-helens-hist-thomas-makinson": [
     2014,
+    2018,
     2019,
     2022
   ],
   "st-helens-hist-thomas-makinson-2019": [
+    2018,
     2019
   ],
   "st-helens-hist-tom-armstrong": [
@@ -512,23 +582,30 @@
     2014
   ],
   "st-helens-hist-willie-talau": [
+    2005,
     2006,
     2007,
     2008
   ],
   "st-helens-hist-willie-talau-2006": [
+    2005,
     2006
   ],
   "st-helens-hist-zeb-taia-2019": [
+    2018,
     2019
   ],
   "st-helens-leg-james-graham-2008": [
+    2005,
     2008
   ],
   "st-helens-leg-james-roby-2007": [
-    2007
+    2005,
+    2007,
+    2018
   ],
   "st-helens-leg-sean-long-2006": [
+    2005,
     2006
   ],
   "wakefield-cur-mike-mcmeeken": [
@@ -536,9 +613,11 @@
     2021
   ],
   "warrington-cur-sam-powell": [
+    2020,
     2023
   ],
   "warrington-cur-toby-king": [
+    2016,
     2023
   ],
   "widnes-hist-ben-davies": [
@@ -553,6 +632,7 @@
     2026
   ],
   "wigan-cur-bevan-french": [
+    2020,
     2023,
     2024,
     2026
@@ -568,6 +648,7 @@
     2026
   ],
   "wigan-cur-harry-smith": [
+    2020,
     2023,
     2024,
     2026
@@ -596,16 +677,21 @@
     2026
   ],
   "wigan-cur-liam-farrell": [
+    2010,
+    2012,
+    2020,
     2023,
     2024,
     2026
   ],
   "wigan-cur-liam-marshall": [
+    2020,
     2023,
     2024,
     2026
   ],
   "wigan-cur-luke-thompson": [
+    2018,
     2019,
     2023,
     2024,
@@ -682,6 +768,7 @@
     2023
   ],
   "wigan-hist-joel-tomkins": [
+    2010,
     2021
   ],
   "wigan-hist-junior-nsemba-2024": [
@@ -706,21 +793,29 @@
     2024
   ],
   "wigan-hist-liam-farrell-2023": [
+    2010,
+    2012,
     2023
   ],
   "wigan-hist-liam-farrell-2024": [
+    2010,
+    2012,
     2024
   ],
   "wigan-hist-liam-marshall-2023": [
+    2020,
     2023
   ],
   "wigan-hist-liam-marshall-2024": [
+    2020,
     2024
   ],
   "wigan-hist-luke-thompson-2024": [
     2024
   ],
   "wigan-hist-michael-mcilorum": [
+    2010,
+    2012,
     2021
   ],
   "wigan-hist-morgan-smithies-2023": [
@@ -736,6 +831,8 @@
     2023
   ],
   "wigan-hist-sam-tomkins": [
+    2010,
+    2012,
     2021
   ],
   "wigan-hist-toby-king-2023": [
@@ -745,6 +842,7 @@
     2017
   ],
   "wigan-hist-era-liam-byrne": [
+    2020,
     2023,
     2024
   ],
@@ -773,6 +871,7 @@
     2017
   ],
   "st-helens-hist-zeb-taia": [
+    2018,
     2019
   ],
   "wigan-hist-jacob-wardle": [
@@ -780,21 +879,25 @@
     2024
   ],
   "st-helens-hist-theo-fages": [
+    2018,
     2019
   ],
   "hull-fc-hist-willie-manu": [
     2014
   ],
   "st-helens-hist-jason-hooper": [
+    2005,
     2006
   ],
   "paul-anderson": [
+    2005,
     2006
   ],
   "st-helens-hist-jordan-turner": [
     2014
   ],
   "nick-fozzard": [
+    2005,
     2007
   ],
   "luke-gale": [
@@ -802,5 +905,1630 @@
   ],
   "jamie-lyon": [
     2006
+  ],
+  "wigan-hist-sam-tomkins-2008": [
+    2010
+  ],
+  "wigan-leg-sam-tomkins-2016": [
+    2010
+  ],
+  "wigan-hist-sam-tomkins-2009": [
+    2010
+  ],
+  "wigan-leg-sam-tomkins-2012": [
+    2010,
+    2012
+  ],
+  "wigan-hist-joel-tomkins-2016": [
+    2010
+  ],
+  "wigan-hist-joel-tomkins-2008": [
+    2010
+  ],
+  "wigan-hist-joel-tomkins-2015": [
+    2010
+  ],
+  "wigan-leg-pat-richards-2010": [
+    2010,
+    2012
+  ],
+  "wigan-hist-thomas-leuluai-2008": [
+    2010,
+    2012
+  ],
+  "wigan-hist-thomas-leuluai": [
+    2010,
+    2012
+  ],
+  "wigan-hist-thomas-leuluai-2009": [
+    2010,
+    2012
+  ],
+  "wigan-hist-thomas-leuluai-2020": [
+    2010,
+    2012,
+    2020
+  ],
+  "wigan-hist-stuart-fielden-2006": [
+    2010
+  ],
+  "wigan-hist-stuart-fielden-2008": [
+    2010
+  ],
+  "stuart-fielden": [
+    1999,
+    2001,
+    2003,
+    2010
+  ],
+  "wigan-hist-sean-oloughlin-2006": [
+    2010,
+    2012
+  ],
+  "wigan-hist-sean-oloughlin-2008": [
+    2010,
+    2012
+  ],
+  "wigan-hist-sean-o-loughlin-2015": [
+    2010,
+    2012
+  ],
+  "wigan-hist-sean-o-loughlin-2016": [
+    2010,
+    2012
+  ],
+  "sean-oloughlin": [
+    2010,
+    2012
+  ],
+  "wigan-hist-sean-o-loughlin-2009": [
+    2010,
+    2012
+  ],
+  "wigan-hist-sean-o-loughlin-2020": [
+    2010,
+    2012
+  ],
+  "wigan-leg-sean-o-loughlin-2013": [
+    2010,
+    2012
+  ],
+  "wigan-hist-mark-riddell": [
+    2010
+  ],
+  "wigan-hist-mark-riddell-2009": [
+    2010
+  ],
+  "wigan-hist-george-carmont": [
+    2010,
+    2012
+  ],
+  "wigan-hist-george-carmont-2009": [
+    2010,
+    2012
+  ],
+  "wigan-hist-martin-gleeson-2009": [
+    2010
+  ],
+  "wigan-hist-andy-coley": [
+    2010
+  ],
+  "wigan-hist-andy-coley-2009": [
+    2010
+  ],
+  "wigan-hist-paul-prescott": [
+    2010
+  ],
+  "wigan-hist-paul-prescott-2009": [
+    2010
+  ],
+  "wigan-hist-darrell-goulding": [
+    2010,
+    2012
+  ],
+  "paul-deacon": [
+    2010
+  ],
+  "bradford-hist-paul-deacon-2009": [
+    2010
+  ],
+  "bradford-hist-paul-deacon-1999": [
+    1999,
+    2010
+  ],
+  "bradford-hist-paul-deacon-2005": [
+    2010
+  ],
+  "bradford-hist-paul-deacon-2006": [
+    2010
+  ],
+  "bradford-hist-paul-deacon-2000": [
+    2010
+  ],
+  "bradford-hist-paul-deacon-2001": [
+    2001,
+    2010
+  ],
+  "bradford-hist-paul-deacon-2002": [
+    2010
+  ],
+  "bradford-hist-paul-deacon-2004": [
+    2010
+  ],
+  "bradford-hist-paul-deacon-2003": [
+    2003,
+    2010
+  ],
+  "wigan-hist-iafeta-paleaaesina": [
+    2010
+  ],
+  "wigan-hist-phil-bailey": [
+    2010
+  ],
+  "wigan-hist-lee-mossop-2008": [
+    2010,
+    2012
+  ],
+  "wigan-hist-lee-mossop": [
+    2010,
+    2012
+  ],
+  "wigan-hist-lee-mossop-2015": [
+    2010,
+    2012
+  ],
+  "wigan-hist-liam-farrell-2015": [
+    2010,
+    2012
+  ],
+  "wigan-hist-liam-farrell-2016": [
+    2010,
+    2012
+  ],
+  "wigan-hist-liam-farrell-2020": [
+    2010,
+    2012,
+    2020
+  ],
+  "wigan-hist-liam-farrell-2021": [
+    2010,
+    2012
+  ],
+  "wigan-hist-liam-farrell-2022": [
+    2010,
+    2012
+  ],
+  "wigan-hist-liam-farrell-2025": [
+    2010,
+    2012
+  ],
+  "wigan-hist-amos-roberts": [
+    2010
+  ],
+  "wigan-hist-amos-roberts-2009": [
+    2010
+  ],
+  "wigan-hist-michael-mcilorum-2006": [
+    2010,
+    2012
+  ],
+  "wigan-hist-michael-mcilorum-2008": [
+    2010,
+    2012
+  ],
+  "wigan-hist-michael-mcilorum-2015": [
+    2010,
+    2012
+  ],
+  "wigan-hist-michael-mcilorum-2016": [
+    2010,
+    2012
+  ],
+  "wigan-hist-harrison-hansen": [
+    2010,
+    2012
+  ],
+  "wigan-hist-harrison-hansen-2009": [
+    2010,
+    2012
+  ],
+  "wigan-hist-chris-tuson": [
+    2010,
+    2012
+  ],
+  "widnes-hist-eamon-ocarroll": [
+    2010
+  ],
+  "st-helens-hist-keiron-cunningham-2000": [
+    1996,
+    2005
+  ],
+  "st-helens-hist-keiron-cunningham-2002": [
+    1996,
+    2002,
+    2005
+  ],
+  "st-helens-hist-keiron-cunningham-2009": [
+    1996,
+    2005
+  ],
+  "st-helens-hist-ade-gardner-2009": [
+    2005
+  ],
+  "st-helens-leg-jamie-lyon-2005": [
+    2005
+  ],
+  "st-helens-hist-mike-bennett-2002": [
+    2002,
+    2005
+  ],
+  "st-helens-hist-paul-wellens-2015": [
+    2005
+  ],
+  "st-helens-hist-paul-wellens-2000": [
+    2005
+  ],
+  "st-helens-hist-paul-wellens-2002": [
+    2002,
+    2005
+  ],
+  "st-helens-hist-paul-wellens-2009": [
+    2005
+  ],
+  "st-helens-hist-darren-albert": [
+    2002,
+    2005
+  ],
+  "st-helens-hist-james-roby-2021": [
+    2005,
+    2018
+  ],
+  "st-helens-hist-james-roby-2015": [
+    2005,
+    2018
+  ],
+  "st-helens-hist-james-roby-2020": [
+    2005,
+    2018
+  ],
+  "st-helens-hist-james-roby-2016": [
+    2005,
+    2018
+  ],
+  "st-helens-hist-jon-wilkin-2009": [
+    2005,
+    2018
+  ],
+  "st-helens-hist-jon-wilkin-2016": [
+    2005,
+    2018
+  ],
+  "st-helens-hist-lee-gilmour-2009": [
+    1998,
+    2000,
+    2001,
+    2003,
+    2005
+  ],
+  "st-helens-hist-james-graham-2009": [
+    2005
+  ],
+  "st-helens-leg-sean-long-2000": [
+    2005
+  ],
+  "st-helens-leg-sean-long-2002": [
+    2002,
+    2005
+  ],
+  "st-helens-hist-sean-long-2009": [
+    2005
+  ],
+  "st-helens-hist-mark-edmondson": [
+    2002,
+    2005
+  ],
+  "wakefield-hist-vinnie-anderson": [
+    2005
+  ],
+  "wigan-hist-mickey-higham-2006": [
+    2002,
+    2005
+  ],
+  "warrington-hist-mickey-higham": [
+    2002,
+    2005,
+    2011
+  ],
+  "huddersfield-hist-keith-mason": [
+    2005
+  ],
+  "huddersfield-hist-keith-mason-2009": [
+    2005
+  ],
+  "st-helens-leg-paul-sculthorpe-2000": [
+    2005
+  ],
+  "st-helens-leg-paul-sculthorpe-2002": [
+    2002,
+    2005
+  ],
+  "paul-sculthorpe": [
+    2002,
+    2005
+  ],
+  "st-helens-hist-ian-hardman": [
+    2005
+  ],
+  "leeds-leg-rob-burrow-2009": [
+    2004,
+    2009
+  ],
+  "leeds-leg-rob-burrow-2013": [
+    2004
+  ],
+  "leeds-leg-rob-burrow-2016": [
+    2004
+  ],
+  "leeds-leg-rob-burrow-2015": [
+    2004,
+    2015
+  ],
+  "leeds-leg-rob-burrow-2007": [
+    2004
+  ],
+  "rob-burrow": [
+    2004,
+    2009,
+    2015
+  ],
+  "leeds-leg-kevin-sinfield-2008": [
+    2004
+  ],
+  "leeds-leg-kevin-sinfield-2009": [
+    2004,
+    2009
+  ],
+  "leeds-leg-kevin-sinfield-2013": [
+    2004
+  ],
+  "leeds-leg-kevin-sinfield-2015": [
+    2004,
+    2015
+  ],
+  "leeds-leg-kevin-sinfield-2012": [
+    2004
+  ],
+  "kevin-sinfield": [
+    2004,
+    2009,
+    2015
+  ],
+  "leeds-hist-keith-senior-2008": [
+    2004
+  ],
+  "leeds-hist-keith-senior-2009": [
+    2004,
+    2009
+  ],
+  "keith-senior": [
+    2004
+  ],
+  "leeds-hist-matt-diskin-2008": [
+    2004
+  ],
+  "leeds-hist-matt-diskin-2009": [
+    2004,
+    2009
+  ],
+  "leeds-hist-matt-diskin": [
+    2004
+  ],
+  "leeds-hist-marcus-bai": [
+    2004
+  ],
+  "barrie-mcdermott": [
+    2004
+  ],
+  "leeds-leg-danny-mcguire-2008": [
+    2004
+  ],
+  "leeds-leg-danny-mcguire-2009": [
+    2004,
+    2009
+  ],
+  "leeds-leg-danny-mcguire-2016": [
+    2004
+  ],
+  "leeds-leg-danny-mcguire-2013": [
+    2004
+  ],
+  "leeds-hist-danny-mcguire-2015": [
+    2004,
+    2015
+  ],
+  "danny-mcguire": [
+    2004,
+    2009,
+    2015
+  ],
+  "leeds-hist-richard-mathers": [
+    2004
+  ],
+  "leeds-hist-ryan-bailey": [
+    2004,
+    2009,
+    2016
+  ],
+  "leeds-hist-willie-poching": [
+    2004
+  ],
+  "leeds-hist-wayne-mcdonald": [
+    2004
+  ],
+  "gateshead-hist-andrew-dunemann": [
+    2004
+  ],
+  "leeds-hist-chev-walker": [
+    2004
+  ],
+  "leeds-hist-danny-ward": [
+    2004
+  ],
+  "leeds-hist-francis-cummins": [
+    2004
+  ],
+  "leeds-hist-chris-mckenna": [
+    2004
+  ],
+  "leeds-hist-matt-adamson": [
+    2004
+  ],
+  "leeds-hist-ali-lauitiiti-2008": [
+    2004
+  ],
+  "leeds-hist-ali-lauitiiti-2009": [
+    2004,
+    2009
+  ],
+  "ali-lauitiiti": [
+    2004
+  ],
+  "wigan-hist-david-furner": [
+    2004
+  ],
+  "leeds-hist-mark-calderwood": [
+    2004
+  ],
+  "leeds-leg-jamie-jones-buchanan-2015": [
+    2004,
+    2015
+  ],
+  "jamie-jones-buchanan": [
+    2004
+  ],
+  "leeds-hist-jamie-jones-buchanan-2009": [
+    2004,
+    2009
+  ],
+  "leeds-leg-jamie-jones-buchanan-2016": [
+    2004
+  ],
+  "leeds-hist-jamie-jones-buchanan-2013": [
+    2004
+  ],
+  "wakefield-hist-chris-feather": [
+    2004
+  ],
+  "bradford-hist-rob-parker": [
+    2003
+  ],
+  "bradford-hist-scott-naylor": [
+    2001,
+    2003
+  ],
+  "bradford-hist-scott-naylor-1999": [
+    1999,
+    2001,
+    2003
+  ],
+  "bradford-hist-shontayne-hape-2003": [
+    2003
+  ],
+  "bradford-hist-paul-anderson-2003": [
+    2003
+  ],
+  "bradford-hist-lee-radford-2003": [
+    2003
+  ],
+  "bradford-hist-joe-vagana": [
+    2001,
+    2003
+  ],
+  "bradford-hist-mike-forshaw-2003": [
+    2003
+  ],
+  "bradford-hist-james-lowes-2003": [
+    2003
+  ],
+  "bradford-hist-lesley-vainikolo-2003": [
+    2003
+  ],
+  "bradford-hist-tevita-vaikona-2003": [
+    1999,
+    2003
+  ],
+  "bradford-hist-leon-pryce-2003": [
+    2003
+  ],
+  "bradford-hist-daniel-gartner-2003": [
+    2003
+  ],
+  "bradford-leg-jamie-peacock-2003": [
+    2003
+  ],
+  "jamie-peacock": [
+    1999,
+    2001,
+    2003,
+    2009,
+    2015
+  ],
+  "bradford-hist-karl-pratt-2003": [
+    2003
+  ],
+  "crusaders-hist-stuart-reardon": [
+    2003
+  ],
+  "bradford-hist-jamie-langley": [
+    2003
+  ],
+  "bradford-hist-jamie-langley-2013": [
+    2003
+  ],
+  "bradford-hist-jamie-langley-2004": [
+    2003
+  ],
+  "bradford-hist-jamie-langley-2005": [
+    2003
+  ],
+  "bradford-hist-jamie-langley-2011": [
+    2003
+  ],
+  "bradford-hist-jamie-langley-2009": [
+    2003
+  ],
+  "bradford-leg-robbie-hunter-paul-2003": [
+    2003
+  ],
+  "bradford-leg-robbie-hunter-paul": [
+    1997,
+    1999,
+    2001,
+    2003
+  ],
+  "bradford-leg-stuart-fielden-2003": [
+    2001,
+    2003
+  ],
+  "st-helens-hist-john-stankevitch": [
+    2002
+  ],
+  "st-helens-hist-martin-gleeson-2002": [
+    2002
+  ],
+  "st-helens-hist-tommy-martyn-2000": [
+    1996,
+    2002
+  ],
+  "tommy-martyn": [
+    1996,
+    2002
+  ],
+  "st-helens-hist-chris-joynt-2002": [
+    1996,
+    2002
+  ],
+  "st-helens-hist-barry-ward-2002": [
+    2002
+  ],
+  "st-helens-hist-sean-hoppe": [
+    2002
+  ],
+  "st-helens-hist-sean-hoppe-2000": [
+    2002
+  ],
+  "st-helens-hist-sonny-nickle": [
+    1997,
+    2002
+  ],
+  "st-helens-hist-anthony-stewart-2002": [
+    2002
+  ],
+  "st-helens-leg-paul-newlove-2002": [
+    1996,
+    2002
+  ],
+  "paul-newlove": [
+    1996,
+    2002
+  ],
+  "st-helens-hist-peter-shiels": [
+    2002
+  ],
+  "st-helens-hist-darren-britt-2002": [
+    2002
+  ],
+  "st-helens-hist-tim-jonkers-2002": [
+    2002
+  ],
+  "st-helens-hist-john-kirkpatrick": [
+    2002
+  ],
+  "bradford-hist-paul-anderson-2001": [
+    2001
+  ],
+  "bradford-hist-henry-paul-2001": [
+    1998,
+    2001
+  ],
+  "bradford-hist-james-lowes-2001": [
+    2001
+  ],
+  "bradford-leg-robbie-hunter-paul-2001": [
+    2001
+  ],
+  "bradford-hist-brian-mcdermott": [
+    1999,
+    2001
+  ],
+  "bradford-hist-brian-mcdermott-1997": [
+    1997,
+    1999,
+    2001
+  ],
+  "bradford-hist-tevita-vaikona-2001": [
+    1999,
+    2001
+  ],
+  "bradford-leg-stuart-fielden-1998": [
+    2001
+  ],
+  "bradford-leg-stuart-fielden-2006": [
+    2001
+  ],
+  "bradford-leg-stuart-fielden-1999": [
+    1999,
+    2001
+  ],
+  "bradford-leg-stuart-fielden-2005": [
+    2001
+  ],
+  "bradford-leg-stuart-fielden-2002": [
+    2001
+  ],
+  "bradford-leg-stuart-fielden-2004": [
+    2001
+  ],
+  "bradford-hist-daniel-gartner-2001": [
+    2001
+  ],
+  "bradford-hist-leon-pryce-2001": [
+    2001
+  ],
+  "bradford-hist-michael-withers": [
+    1999,
+    2001
+  ],
+  "bradford-hist-michael-withers-2006": [
+    1999,
+    2001
+  ],
+  "bradford-hist-michael-withers-2000": [
+    1999,
+    2001
+  ],
+  "bradford-hist-michael-withers-2005": [
+    1999,
+    2001
+  ],
+  "bradford-leg-jamie-peacock-2001": [
+    2001
+  ],
+  "bradford-hist-mike-forshaw-2001": [
+    2001
+  ],
+  "bradford-hist-shane-rigon": [
+    2001
+  ],
+  "bradford-hist-graham-mackay-2001": [
+    2001
+  ],
+  "bradford-hist-lee-radford-2001": [
+    2001
+  ],
+  "bradford-hist-james-lowes-1997": [
+    1997
+  ],
+  "wakefield-hist-glen-tomlinson": [
+    1997
+  ],
+  "bradford-hist-stuart-spruce": [
+    1997,
+    1999
+  ],
+  "bradford-hist-steve-mcnamara-1997": [
+    1997
+  ],
+  "bradford-hist-paul-loughlin": [
+    1997
+  ],
+  "bradford-hist-graeme-bradley-1997": [
+    1997
+  ],
+  "bradford-hist-tahi-reihana": [
+    1997
+  ],
+  "bradford-hist-danny-peacock-1997": [
+    1997
+  ],
+  "bradford-hist-paul-anderson-1997": [
+    1997
+  ],
+  "bradford-hist-jeff-wittenberg-1997": [
+    1997
+  ],
+  "bradford-hist-nathan-graham": [
+    1997
+  ],
+  "bradford-hist-matt-calland-1997": [
+    1997
+  ],
+  "bradford-hist-bernard-dwyer-1997": [
+    1997,
+    1999
+  ],
+  "bradford-hist-jonathan-scales": [
+    1997
+  ],
+  "bradford-hist-mike-forshaw-1997": [
+    1997
+  ],
+  "bradford-hist-paul-medley": [
+    1997
+  ],
+  "bradford-hist-paul-medley-1998": [
+    1997
+  ],
+  "bradford-leg-robbie-hunter-paul-1997": [
+    1997
+  ],
+  "bradford-hist-simon-knox": [
+    1997
+  ],
+  "hull-fc-hist-steve-prescott": [
+    1996
+  ],
+  "st-helens-hist-anthony-sullivan-2000": [
+    1996
+  ],
+  "st-helens-hist-anthony-sullivan": [
+    1996
+  ],
+  "st-helens-hist-karle-hammond": [
+    1996
+  ],
+  "st-helens-hist-bobbie-goulding": [
+    1996
+  ],
+  "st-helens-hist-apollo-perelini-2000": [
+    1996
+  ],
+  "st-helens-hist-apollo-perelini": [
+    1996
+  ],
+  "st-helens-hist-ian-pickavance": [
+    1996
+  ],
+  "st-helens-hist-chris-joynt-2000": [
+    1996
+  ],
+  "chris-joynt": [
+    1996
+  ],
+  "hull-fc-hist-simon-booth": [
+    1996
+  ],
+  "huddersfield-hist-danny-arnold": [
+    1996
+  ],
+  "st-helens-hist-era-adam-fogerty": [
+    1996
+  ],
+  "st-helens-hist-derek-mcvey": [
+    1996
+  ],
+  "st-helens-hist-andy-haigh": [
+    1996
+  ],
+  "wakefield-hist-alan-hunte": [
+    1996
+  ],
+  "st-helens-hist-vila-mata-utia": [
+    1996
+  ],
+  "st-helens-hist-chris-morley": [
+    1996
+  ],
+  "st-helens-hist-andy-northey": [
+    1996
+  ],
+  "wigan-hist-jackson-hastings-2020": [
+    2020
+  ],
+  "st-helens-cur-jackson-hastings": [
+    2020
+  ],
+  "wigan-hist-willie-isa-2020": [
+    2020
+  ],
+  "wigan-hist-bevan-french-2020": [
+    2020
+  ],
+  "wigan-hist-jake-bibby-2020": [
+    2020
+  ],
+  "oldham-cur-jake-bibby": [
+    2020
+  ],
+  "wigan-hist-zak-hardaker-2020": [
+    2020
+  ],
+  "wigan-hist-sam-powell-2020": [
+    2020
+  ],
+  "wigan-hist-morgan-smithies-2020": [
+    2020
+  ],
+  "wigan-hist-harry-smith-2020": [
+    2020
+  ],
+  "wigan-hist-oliver-partington-2020": [
+    2020
+  ],
+  "wigan-cur-oliver-partington": [
+    2020
+  ],
+  "wigan-hist-joe-bullock-2020": [
+    2020
+  ],
+  "warrington-cur-liam-byrne": [
+    2020
+  ],
+  "wigan-hist-liam-marshall-2021": [
+    2020
+  ],
+  "wigan-hist-liam-marshall-2022": [
+    2020
+  ],
+  "wigan-hist-liam-marshall-2025": [
+    2020
+  ],
+  "st-helens-hist-danny-richardson-2018": [
+    2018
+  ],
+  "st-helens-hist-regan-grace-2021": [
+    2018
+  ],
+  "st-helens-hist-regan-grace-2020": [
+    2018
+  ],
+  "st-helens-hist-luke-thompson-2015": [
+    2018
+  ],
+  "st-helens-hist-thomas-makinson-2015": [
+    2018
+  ],
+  "st-helens-hist-thomas-makinson-2021": [
+    2018
+  ],
+  "st-helens-cur-tommy-makinson-2020": [
+    2018
+  ],
+  "st-helens-hist-louie-mccarthy-scarsbrook-2020": [
+    2018
+  ],
+  "st-helens-hist-louie-mccarthy-scarsbrook-2015": [
+    2018
+  ],
+  "st-helens-hist-louie-mccarthy-scarsbrook-2016": [
+    2018
+  ],
+  "st-helens-hist-theo-fages-2020": [
+    2018
+  ],
+  "st-helens-hist-luke-douglas": [
+    2018
+  ],
+  "st-helens-hist-zeb-taia-2020": [
+    2018
+  ],
+  "st-helens-hist-mark-percival-2015": [
+    2018
+  ],
+  "st-helens-cur-mark-percival-2021": [
+    2018
+  ],
+  "st-helens-cur-mark-percival-2020": [
+    2018
+  ],
+  "st-helens-hist-mark-percival-2016": [
+    2018
+  ],
+  "st-helens-cur-jonny-lomax-2021": [
+    2018
+  ],
+  "st-helens-cur-jonny-lomax-2020": [
+    2018
+  ],
+  "st-helens-hist-jonny-lomax-2016": [
+    2018
+  ],
+  "st-helens-hist-morgan-knowles-2021": [
+    2018
+  ],
+  "st-helens-hist-dom-peyroux": [
+    2018
+  ],
+  "st-helens-hist-dominique-peyroux-2016": [
+    2018
+  ],
+  "st-helens-hist-kyle-amor-2016": [
+    2018
+  ],
+  "st-helens-cur-matty-lees-2021": [
+    2018
+  ],
+  "st-helens-hist-adam-swift-2016": [
+    2018
+  ],
+  "warrington-hist-chris-hill-2016": [
+    2016
+  ],
+  "warrington-cur-ben-currie-2016": [
+    2016
+  ],
+  "warrington-cur-ben-currie": [
+    2016
+  ],
+  "warrington-cur-george-king-2016": [
+    2016
+  ],
+  "huddersfield-cur-george-king": [
+    2016
+  ],
+  "wakefield-hist-rhys-evans": [
+    2016
+  ],
+  "warrington-hist-ashton-sims-2016": [
+    2016
+  ],
+  "castleford-cur-joe-westerman": [
+    2016
+  ],
+  "hull-fc-hist-joe-westerman-2012": [
+    2016
+  ],
+  "castleford-cur-joe-westerman-2009": [
+    2016
+  ],
+  "warrington-hist-ryan-atkins-2016": [
+    2011,
+    2016
+  ],
+  "warrington-hist-matty-russell-2015": [
+    2016
+  ],
+  "warrington-cur-daryl-clark-2016": [
+    2016
+  ],
+  "st-helens-cur-daryl-clark": [
+    2016
+  ],
+  "warrington-hist-stefan-ratchford-2016": [
+    2016
+  ],
+  "warrington-hist-jack-hughes-2020": [
+    2012,
+    2016
+  ],
+  "warrington-hist-jack-hughes-2021": [
+    2012,
+    2016
+  ],
+  "leigh-cur-jack-hughes": [
+    2012,
+    2016
+  ],
+  "warrington-hist-kurt-gidley-2016": [
+    2016
+  ],
+  "leeds-hist-brad-dwyer": [
+    2016
+  ],
+  "leeds-hist-brad-dwyer-2020": [
+    2016
+  ],
+  "leeds-hist-brad-dwyer-2021": [
+    2016
+  ],
+  "leeds-hist-brad-dwyer-2022": [
+    2016
+  ],
+  "hull-fc-hist-brad-dwyer-2023": [
+    2016
+  ],
+  "warrington-hist-ben-westwood-2016": [
+    2011,
+    2016
+  ],
+  "warrington-hist-chris-sandow-2016": [
+    2016
+  ],
+  "warrington-cur-tom-lineham-2016": [
+    2016
+  ],
+  "warrington-hist-kevin-penny-2016": [
+    2016
+  ],
+  "hull-kr-hist-jordan-cox": [
+    2016
+  ],
+  "catalans-hist-benjamin-jullien": [
+    2016
+  ],
+  "warrington-cur-toby-king-2016": [
+    2016
+  ],
+  "leeds-hist-carl-ablett": [
+    2009,
+    2015
+  ],
+  "leeds-hist-adam-cuthbertson": [
+    2015
+  ],
+  "leeds-hist-brad-singleton-2016": [
+    2015
+  ],
+  "leeds-hist-era-brad-singleton": [
+    2015
+  ],
+  "castleford-cur-brad-singleton": [
+    2015
+  ],
+  "leeds-leg-jamie-peacock-2015": [
+    2015
+  ],
+  "leeds-cur-kallum-watkins-2015": [
+    2015
+  ],
+  "leeds-cur-kallum-watkins": [
+    2009,
+    2015
+  ],
+  "leeds-hist-joel-moon-2015": [
+    2015
+  ],
+  "leeds-cur-ryan-hall": [
+    2009,
+    2015
+  ],
+  "leeds-hist-era-ryan-hall": [
+    2009,
+    2015
+  ],
+  "leeds-hist-ryan-hall-2009": [
+    2009,
+    2015
+  ],
+  "leeds-hist-ryan-hall-2013": [
+    2015
+  ],
+  "leeds-hist-ryan-hall-2025": [
+    2015
+  ],
+  "leeds-hist-stevie-ward-2016": [
+    2015
+  ],
+  "leeds-hist-stevie-ward": [
+    2015
+  ],
+  "leeds-hist-paul-aiton-2015": [
+    2015
+  ],
+  "leeds-hist-brett-delaney-2015": [
+    2015
+  ],
+  "leeds-hist-mitch-achurch": [
+    2015
+  ],
+  "leeds-cur-ash-handley-2015": [
+    2015
+  ],
+  "leeds-cur-ash-handley": [
+    2015
+  ],
+  "leeds-hist-kylie-leuluai-2015": [
+    2015
+  ],
+  "leeds-hist-liam-sutcliffe-2020": [
+    2015
+  ],
+  "leeds-hist-liam-sutcliffe-2021": [
+    2015
+  ],
+  "leeds-hist-liam-sutcliffe-2022": [
+    2015
+  ],
+  "midlands-cur-liam-sutcliffe": [
+    2015
+  ],
+  "leeds-cur-tom-briscoe-2015": [
+    2015
+  ],
+  "hull-fc-cur-tom-briscoe": [
+    2015
+  ],
+  "leeds-hist-jimmy-keinhorst-2016": [
+    2015
+  ],
+  "leeds-hist-jimmy-keinhorst": [
+    2015
+  ],
+  "leeds-hist-mitch-garbutt-2016": [
+    2015
+  ],
+  "leeds-hist-mitch-garbutt": [
+    2015
+  ],
+  "huddersfield-hist-leroy-cudjoe-2013": [
+    2013
+  ],
+  "huddersfield-hist-luke-robinson": [
+    2013
+  ],
+  "huddersfield-hist-luke-robinson-2009": [
+    2013
+  ],
+  "huddersfield-hist-scott-grix-2013": [
+    2013
+  ],
+  "huddersfield-hist-eorl-crabtree-2013": [
+    2013
+  ],
+  "huddersfield-hist-danny-brough-2013": [
+    2013
+  ],
+  "huddersfield-hist-brett-ferres-2013": [
+    2013
+  ],
+  "huddersfield-hist-larne-patrick": [
+    2013
+  ],
+  "huddersfield-hist-larne-patrick-2016": [
+    2013
+  ],
+  "huddersfield-hist-jermaine-mcgillvary-2013": [
+    2013
+  ],
+  "bradford-hist-craig-kopczak": [
+    2013
+  ],
+  "bradford-hist-craig-kopczak-2011": [
+    2013
+  ],
+  "bradford-hist-craig-kopczak-2012": [
+    2013
+  ],
+  "salford-hist-craig-kopczak-2016": [
+    2013
+  ],
+  "huddersfield-hist-david-faiumu-2013": [
+    2013
+  ],
+  "huddersfield-hist-aaron-murphy-2013": [
+    2013
+  ],
+  "huddersfield-hist-shaun-lunt-2013": [
+    2013
+  ],
+  "huddersfield-hist-joe-wardle-2013": [
+    2013
+  ],
+  "huddersfield-hist-dale-ferguson": [
+    2013
+  ],
+  "huddersfield-hist-ukuma-ta-ai": [
+    2013
+  ],
+  "huddersfield-hist-ukuma-ta-ai-2016": [
+    2013
+  ],
+  "huddersfield-hist-jamie-cording-2013": [
+    2013
+  ],
+  "huddersfield-hist-michael-lawrence": [
+    2013
+  ],
+  "huddersfield-hist-michael-lawrence-2009": [
+    2013
+  ],
+  "huddersfield-hist-michael-lawrence-2016": [
+    2013
+  ],
+  "huddersfield-hist-michael-lawrence-2020": [
+    2013
+  ],
+  "huddersfield-hist-michael-lawrence-2021": [
+    2013
+  ],
+  "huddersfield-hist-jason-chan": [
+    2013
+  ],
+  "wigan-hist-brett-finch": [
+    2012
+  ],
+  "wigan-hist-josh-charnley-2015": [
+    2012
+  ],
+  "wigan-hist-josh-charnley-2016": [
+    2012
+  ],
+  "leigh-cur-josh-charnley": [
+    2012
+  ],
+  "wigan-hist-gareth-hock-2006": [
+    2012
+  ],
+  "wigan-hist-gareth-hock-2008": [
+    2012
+  ],
+  "wigan-hist-gareth-hock-2009": [
+    2012
+  ],
+  "wigan-hist-jeff-lima": [
+    2012
+  ],
+  "hull-fc-hist-epalahame-lauaki": [
+    2012
+  ],
+  "leigh-hist-era-jack-hughes": [
+    2012
+  ],
+  "leigh-hist-jack-hughes-2025": [
+    2012
+  ],
+  "wigan-hist-ben-flower": [
+    2012
+  ],
+  "wigan-hist-pat-richards-2008": [
+    2012
+  ],
+  "wigan-hist-pat-richards-2006": [
+    2012
+  ],
+  "pat-richards": [
+    2012
+  ],
+  "wigan-hist-pat-richards-2009": [
+    2012
+  ],
+  "wigan-hist-anthony-gelling": [
+    2012
+  ],
+  "wigan-hist-anthony-gelling-2015": [
+    2012
+  ],
+  "michael-monaghan": [
+    2011
+  ],
+  "warrington-hist-michael-monaghan-2009": [
+    2011
+  ],
+  "warrington-hist-garreth-carvell": [
+    2011
+  ],
+  "warrington-hist-garreth-carvell-2009": [
+    2011
+  ],
+  "brett-hodgson": [
+    2011
+  ],
+  "warrington-hist-paul-wood": [
+    2011
+  ],
+  "warrington-hist-richie-myler": [
+    2011
+  ],
+  "warrington-hist-ben-westwood-2015": [
+    2011
+  ],
+  "ben-westwood": [
+    2011
+  ],
+  "warrington-hist-ben-westwood-2009": [
+    2011
+  ],
+  "wakefield-hist-david-solomona": [
+    2011
+  ],
+  "warrington-hist-ryan-atkins-2015": [
+    2011
+  ],
+  "warrington-hist-ryan-atkins": [
+    2011
+  ],
+  "warrington-hist-chris-bridge": [
+    2011
+  ],
+  "warrington-hist-chris-bridge-2009": [
+    2011
+  ],
+  "wakefield-hist-simon-grix": [
+    2011
+  ],
+  "warrington-hist-joel-monaghan-2015": [
+    2011
+  ],
+  "joel-monaghan": [
+    2011
+  ],
+  "warrington-leg-lee-briers-2011": [
+    2011
+  ],
+  "warrington-hist-ben-harrison-2015": [
+    2011
+  ],
+  "warrington-hist-ben-harrison-2009": [
+    2011
+  ],
+  "warrington-hist-adrian-morley-2009": [
+    2011
+  ],
+  "warrington-leg-adrian-morley-2010": [
+    2011
+  ],
+  "adrian-morley": [
+    2011
+  ],
+  "wakefield-hist-matty-blythe": [
+    2011
+  ],
+  "warrington-hist-mike-cooper": [
+    2011
+  ],
+  "warrington-hist-mike-cooper-2020": [
+    2011
+  ],
+  "warrington-hist-mike-cooper-2021": [
+    2011
+  ],
+  "warrington-hist-mike-cooper-2022": [
+    2011
+  ],
+  "warrington-hist-louis-anderson-2009": [
+    2011
+  ],
+  "warrington-hist-matt-king-2009": [
+    2011
+  ],
+  "warrington-hist-john-clarke-2009": [
+    2011
+  ],
+  "leeds-leg-jamie-peacock-2009": [
+    2009
+  ],
+  "leeds-hist-kylie-leuluai-2009": [
+    2009
+  ],
+  "leeds-hist-luke-burgess": [
+    2009
+  ],
+  "leeds-hist-scott-donald-2009": [
+    2009
+  ],
+  "leeds-hist-lee-smith": [
+    2009
+  ],
+  "leeds-hist-brent-webb": [
+    2009
+  ],
+  "leeds-hist-brent-webb-2008": [
+    2009
+  ],
+  "leeds-hist-danny-buderus": [
+    2009
+  ],
+  "leeds-hist-ian-kirke": [
+    2009
+  ],
+  "leeds-hist-ian-kirke-2013": [
+    2009
+  ],
+  "leeds-hist-kallum-watkins-2009": [
+    2009
+  ],
+  "salford-hist-ashley-gibson": [
+    2009
+  ],
+  "wigan-leg-jason-robinson-1998": [
+    1998,
+    2000
+  ],
+  "wigan-hist-jason-robinson-1995": [
+    2000
+  ],
+  "jason-robinson": [
+    1998,
+    2000
+  ],
+  "psg-hist-denis-betts": [
+    1998,
+    2000
+  ],
+  "wigan-hist-neil-cowie": [
+    1998,
+    2000
+  ],
+  "wigan-hist-mick-cassidy": [
+    1998,
+    2000
+  ],
+  "wigan-hist-terry-o-connor": [
+    1998,
+    2000
+  ],
+  "wigan-hist-kris-radlinski-2006": [
+    1998,
+    2000
+  ],
+  "kris-radlinski": [
+    1998,
+    2000
+  ],
+  "wigan-leg-kris-radlinski-2002": [
+    1998,
+    2000
+  ],
+  "wigan-leg-andy-farrell-1996": [
+    2000
+  ],
+  "andy-farrell": [
+    1998,
+    2000
+  ],
+  "wigan-hist-willie-peters": [
+    2000
+  ],
+  "steve-renouf": [
+    2000
+  ],
+  "wigan-hist-terry-newton": [
+    2000
+  ],
+  "wigan-hist-garry-connolly": [
+    1998,
+    2000
+  ],
+  "wigan-hist-tony-mestrov": [
+    1998,
+    2000
+  ],
+  "wigan-hist-brady-malam": [
+    2000
+  ],
+  "wigan-hist-brett-dallas-2006": [
+    2000
+  ],
+  "wigan-hist-brett-dallas": [
+    2000
+  ],
+  "wigan-hist-wes-davies": [
+    2000
+  ],
+  "hull-fc-hist-chris-chester": [
+    2000
+  ],
+  "wigan-hist-simon-haughton": [
+    1998,
+    2000
+  ],
+  "oldham-hist-david-hodgson": [
+    2000
+  ],
+  "huddersfield-hist-david-hodgson-2009": [
+    2000
+  ],
+  "wigan-hist-tony-smith": [
+    1998,
+    2000
+  ],
+  "bradford-hist-james-lowes-1999": [
+    1999
+  ],
+  "bradford-hist-henry-paul-1999": [
+    1998,
+    1999
+  ],
+  "bradford-hist-steve-mcnamara-1999": [
+    1999
+  ],
+  "bradford-hist-warren-jowitt": [
+    1999
+  ],
+  "bradford-hist-david-boyle": [
+    1999
+  ],
+  "bradford-hist-leon-pryce-1999": [
+    1999
+  ],
+  "bradford-hist-paul-anderson-1999": [
+    1999
+  ],
+  "bradford-hist-nathan-mcavoy": [
+    1999
+  ],
+  "bradford-hist-mike-forshaw-1999": [
+    1999
+  ],
+  "bradford-leg-robbie-hunter-paul-1999": [
+    1999
+  ],
+  "bradford-hist-bernard-dwyer": [
+    1999
+  ],
+  "bradford-hist-neil-harmon": [
+    1999
+  ],
+  "bradford-leg-jamie-peacock-1999": [
+    1999
+  ],
+  "bradford-hist-tevita-vaikona-2004": [
+    1999
+  ],
+  "bradford-hist-tevita-vaikona-1998": [
+    1999
+  ],
+  "bradford-hist-tevita-vaikona-2000": [
+    1999
+  ],
+  "bradford-hist-tevita-vaikona-2002": [
+    1999
+  ],
+  "tevita-vaikona": [
+    1999
+  ],
+  "bradford-hist-jeremy-donougher": [
+    1999
+  ],
+  "bradford-hist-jeremy-donougher-1998": [
+    1999
+  ],
+  "wigan-hist-era-robbie-mccormack": [
+    1998
+  ],
+  "bradford-hist-henry-paul-2000": [
+    1998
+  ],
+  "henry-paul": [
+    1998
+  ],
+  "wigan-hist-danny-moore": [
+    1998
+  ],
+  "wigan-hist-era-mark-bell": [
+    1998
+  ],
+  "wigan-hist-stephen-holgate": [
+    1998
   ]
 }

@@ -2466,6 +2466,33 @@
   max-width: 100%;
 }
 
+.quick-player-card__impact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem 0.6rem;
+  margin: 0.3rem 0 0;
+  width: 100%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #d1d5db;
+  font-variant-numeric: tabular-nums;
+}
+
+.quick-player-card__impact-up {
+  color: #4ade80;
+}
+
+.quick-player-card__impact-down {
+  color: #f87171;
+}
+
+.quick-player-card__impact-flat {
+  color: #9ca3af;
+}
+
 .quick-player-card__tags {
   display: flex;
   flex-wrap: wrap;

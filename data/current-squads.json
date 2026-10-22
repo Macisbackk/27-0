@@ -89,7 +89,8 @@
     "basePlayerId": "bradford-cur-andy-ackers",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "bradford-cur-brandon-douglas",
@@ -118,14 +119,15 @@
     "basePlayerId": "bradford-cur-brandon-douglas",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1997
+    "birthYear": 1997,
+    "dateOfBirth": "1997-08-17"
   },
   {
     "id": "bradford-cur-caleb-aekins",
     "name": "Caleb Aekins",
     "position": "FULLBACK",
     "club": "Bradford Bulls",
-    "nationality": "New Zealand",
+    "nationality": "Wales",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -149,7 +151,8 @@
     "basePlayerId": "bradford-cur-caleb-aekins",
     "primaryPosition": "FB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "bradford-cur-connor-wynne",
@@ -178,14 +181,15 @@
     "basePlayerId": "bradford-cur-connor-wynne",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-01-15"
   },
   {
     "id": "bradford-cur-dan-russell",
     "name": "Dan Russell",
     "position": "SECOND_ROW",
     "club": "Bradford Bulls",
-    "nationality": "New Zealand",
+    "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -206,7 +210,11 @@
     "primaryPosition": "SR",
     "birthYear": 1995,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "1995-12-05",
+    "intlCaps": 12,
+    "appearances": 33,
+    "tries": 2
   },
   {
     "id": "bradford-cur-ebon-scurr",
@@ -219,7 +227,7 @@
     "category": "current",
     "peakRating": 81,
     "value": 113000,
-    "appearances": 3,
+    "appearances": 16,
     "dateOfBirth": "2000-05-11",
     "birthYear": 2000,
     "clubsPlayedFor": [
@@ -239,14 +247,15 @@
     "basePlayerId": "bradford-cur-ebon-scurr",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 1
   },
   {
     "id": "bradford-cur-ed-chamberlain",
     "name": "Ed Chamberlain",
     "position": "CENTRE",
     "club": "Bradford Bulls",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -273,7 +282,8 @@
     "basePlayerId": "bradford-cur-ed-chamberlain",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "bradford-cur-eliot-peposhi",
@@ -287,7 +297,7 @@
       "LOOSE_FORWARD"
     ],
     "primaryPosition": "LOOSE_FORWARD",
-    "nationality": "England",
+    "nationality": "Albania",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
@@ -302,7 +312,9 @@
     "basePlayerId": "bradford-cur-eliot-peposhi",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2004
+    "birthYear": 2004,
+    "dateOfBirth": "2004-08-05",
+    "intlCaps": 1
   },
   {
     "id": "bradford-cur-eribe-doro",
@@ -342,7 +354,7 @@
     "name": "Esan Marsters",
     "position": "CENTRE",
     "club": "Bradford Bulls",
-    "nationality": "New Zealand",
+    "nationality": "Cook Islands",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -366,14 +378,15 @@
     "basePlayerId": "bradford-cur-esan-marsters",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 14
   },
   {
     "id": "bradford-cur-ethan-ryan",
     "name": "Ethan Ryan",
     "position": "WING",
     "club": "Bradford Bulls",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -397,7 +410,8 @@
     "basePlayerId": "bradford-cur-ethan-ryan",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 5
   },
   {
     "id": "bradford-cur-guy-armitage",
@@ -426,7 +440,8 @@
     "basePlayerId": "bradford-cur-guy-armitage",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1991
+    "birthYear": 1991,
+    "dateOfBirth": "1991-11-29"
   },
   {
     "id": "bradford-cur-jamie-gill",
@@ -546,7 +561,9 @@
     "basePlayerId": "bradford-cur-joe-keyes",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1995
+    "birthYear": 1995,
+    "dateOfBirth": "1995-09-17",
+    "intlCaps": 11
   },
   {
     "id": "bradford-cur-joe-mellor",
@@ -622,7 +639,7 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 11,
+    "appearances": 33,
     "dateOfBirth": "2002-11-23",
     "birthYear": 2002,
     "clubsPlayedFor": [
@@ -643,7 +660,8 @@
     "basePlayerId": "bradford-cur-loghan-lewis",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 0
   },
   {
     "id": "bradford-cur-luke-hooley",
@@ -672,14 +690,15 @@
     "basePlayerId": "bradford-cur-luke-hooley",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-08-01"
   },
   {
     "id": "bradford-cur-mitch-souter",
     "name": "Mitch Souter",
     "position": "HOOKER",
     "club": "Bradford Bulls",
-    "nationality": "Scotland",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -784,7 +803,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
+    "appearances": 11,
     "tries": 0,
     "teamYearId": "bradford-bulls-2026",
     "year": 2026,
@@ -825,7 +844,8 @@
     "basePlayerId": "bradford-cur-waqa-blake",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "bradford-cur-will-gardiner",
@@ -854,7 +874,8 @@
     "basePlayerId": "bradford-cur-will-gardiner",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-05-21"
   },
   {
     "id": "bradford-cur-zac-fulton",
@@ -979,7 +1000,8 @@
     "basePlayerId": "castleford-cur-blake-taaffe",
     "primaryPosition": "FB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 0
   },
   {
     "id": "castleford-cur-brad-singleton",
@@ -993,7 +1015,7 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–2016",
     "category": "current",
@@ -1008,7 +1030,9 @@
     "basePlayerId": "castleford-cur-brad-singleton",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1992
+    "birthYear": 1992,
+    "dateOfBirth": "1992-10-29",
+    "intlCaps": 3
   },
   {
     "id": "castleford-cur-brock-greacen",
@@ -1037,7 +1061,8 @@
     "basePlayerId": "castleford-cur-brock-greacen",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2002
+    "birthYear": 2002,
+    "dateOfBirth": "2002-06-18"
   },
   {
     "id": "castleford-cur-cain-robb",
@@ -1050,7 +1075,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 60,
+    "appearances": 58,
     "dateOfBirth": "2003-01-05",
     "birthYear": 2003,
     "clubsPlayedFor": [
@@ -1074,7 +1099,8 @@
     "basePlayerId": "castleford-cur-cain-robb",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 0
   },
   {
     "id": "castleford-cur-chris-atkin",
@@ -1103,14 +1129,15 @@
     "basePlayerId": "castleford-cur-chris-atkin",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1993
+    "birthYear": 1993,
+    "dateOfBirth": "1993-02-07"
   },
   {
     "id": "castleford-cur-daejarn-asi",
     "name": "Daejarn Asi",
     "position": "STAND_OFF",
     "club": "Castleford Tigers",
-    "nationality": "Australia",
+    "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -1134,7 +1161,8 @@
     "basePlayerId": "castleford-cur-daejarn-asi",
     "primaryPosition": "SO",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "castleford-cur-darnell-mcintosh",
@@ -1195,7 +1223,8 @@
     "basePlayerId": "castleford-cur-fletcher-rooney",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2006
+    "birthYear": 2006,
+    "dateOfBirth": "2006-01-12"
   },
   {
     "id": "castleford-cur-george-lawler",
@@ -1255,7 +1284,8 @@
     "basePlayerId": "castleford-cur-jack-ashworth",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1995
+    "birthYear": 1995,
+    "dateOfBirth": "1995-07-03"
   },
   {
     "id": "castleford-cur-jason-qareqare",
@@ -1286,7 +1316,8 @@
     "basePlayerId": "castleford-cur-jason-qareqare",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "castleford-cur-jenson-windley",
@@ -1314,7 +1345,9 @@
     "status": "Current",
     "basePlayerId": "castleford-cur-jenson-windley",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2006-08-18",
+    "birthYear": 2006
   },
   {
     "id": "castleford-cur-joe-stimson",
@@ -1329,7 +1362,7 @@
     "value": 92000,
     "dateOfBirth": "1995-12-02",
     "birthYear": 1995,
-    "appearances": 21,
+    "appearances": 32,
     "clubsPlayedFor": [
       "Castleford"
     ],
@@ -1347,7 +1380,8 @@
     "basePlayerId": "castleford-cur-joe-stimson",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 1
   },
   {
     "id": "castleford-cur-joe-westerman",
@@ -1378,7 +1412,8 @@
     "basePlayerId": "castleford-cur-joe-westerman",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "castleford-cur-jordan-lane",
@@ -1475,7 +1510,8 @@
     "basePlayerId": "castleford-cur-liam-hood",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 10
   },
   {
     "id": "castleford-cur-louis-senior",
@@ -1495,8 +1531,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 138000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 89,
+    "tries": 41,
     "teamYearId": "castleford-tigers-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -1505,7 +1541,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2000-05-30",
-    "birthYear": 2000
+    "birthYear": 2000,
+    "intlCaps": 3
   },
   {
     "id": "castleford-cur-mikaele-ravalawa",
@@ -1525,8 +1562,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 13,
+    "tries": 5,
     "teamYearId": "castleford-tigers-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -1535,7 +1572,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1997-11-09",
-    "birthYear": 1997
+    "birthYear": 1997,
+    "intlCaps": 5
   },
   {
     "id": "castleford-cur-phoenix-laulu-togagae",
@@ -1616,8 +1654,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 135000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 63,
+    "tries": 2,
     "teamYearId": "castleford-tigers-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -1625,14 +1663,15 @@
     "basePlayerId": "castleford-cur-sam-hall",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1988
+    "birthYear": 2002,
+    "dateOfBirth": "2002-05-08"
   },
   {
     "id": "castleford-cur-semi-valemei",
     "name": "Semi Valemei",
     "position": "WING",
     "club": "Castleford Tigers",
-    "nationality": "Tonga",
+    "nationality": "Fiji",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -1656,7 +1695,8 @@
     "basePlayerId": "castleford-cur-semi-valemei",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 10
   },
   {
     "id": "castleford-cur-tom-weaver",
@@ -1685,7 +1725,9 @@
     "basePlayerId": "castleford-cur-tom-weaver",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 24,
+    "tries": 5
   },
   {
     "id": "castleford-cur-tyler-dupree",
@@ -1705,8 +1747,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 108,
+    "tries": 9,
     "teamYearId": "castleford-tigers-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -1715,7 +1757,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2000-02-08",
-    "birthYear": 2000
+    "birthYear": 2000,
+    "intlCaps": 3
   },
   {
     "id": "castleford-cur-zac-cini",
@@ -1779,7 +1822,9 @@
       "South Sydney Rabbitohs",
       "Barrow Raiders",
       "Castleford Tigers"
-    ]
+    ],
+    "dateOfBirth": "2003-09-05",
+    "birthYear": 2003
   },
   {
     "id": "castleford-cur-alfie-lindsey",
@@ -1807,7 +1852,9 @@
     "status": "Current",
     "basePlayerId": "castleford-cur-alfie-lindsey",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2006-11-25",
+    "birthYear": 2006
   },
   {
     "id": "castleford-cur-george-hill",
@@ -1827,7 +1874,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
+    "appearances": 26,
     "tries": 0,
     "teamYearId": "castleford-tigers-2026",
     "year": 2026,
@@ -1837,7 +1884,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2004-07-29",
-    "birthYear": 2004
+    "birthYear": 2004,
+    "intlCaps": 1
   },
   {
     "id": "catalans-cur-alexis-lis",
@@ -1857,8 +1905,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 13,
+    "tries": 1,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -1867,7 +1915,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2005-10-05",
-    "birthYear": 2005
+    "birthYear": 2005,
+    "intlCaps": 1
   },
   {
     "id": "catalans-cur-alrix-da-costa",
@@ -1898,7 +1947,8 @@
     "basePlayerId": "catalans-cur-alrix-da-costa",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 12
   },
   {
     "id": "catalans-cur-bayley-sironen",
@@ -1931,7 +1981,9 @@
     "clubsPlayedFor": [
       "Catalans Dragons",
       "Wynnum Manly Seagulls"
-    ]
+    ],
+    "appearances": 41,
+    "tries": 5
   },
   {
     "id": "catalans-cur-ben-condon",
@@ -1960,7 +2012,9 @@
     "basePlayerId": "catalans-cur-ben-condon",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 23,
+    "tries": 4
   },
   {
     "id": "catalans-cur-benjamin-garcia",
@@ -1993,7 +2047,8 @@
     "basePlayerId": "catalans-cur-benjamin-garcia",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 18
   },
   {
     "id": "catalans-cur-cesar-rouge",
@@ -2040,7 +2095,8 @@
     "basePlayerId": "catalans-cur-cesar-rouge",
     "primaryPosition": "HB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "catalans-cur-charlie-staines",
@@ -2122,8 +2178,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 10,
+    "tries": 1,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -2132,7 +2188,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2005-01-14",
-    "birthYear": 2005
+    "birthYear": 2005,
+    "intlCaps": 1
   },
   {
     "id": "catalans-cur-franck-maria",
@@ -2152,8 +2209,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 113000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 36,
+    "tries": 1,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -2161,7 +2218,9 @@
     "basePlayerId": "catalans-cur-franck-maria",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1997
+    "birthYear": 1997,
+    "dateOfBirth": "1997-07-31",
+    "intlCaps": 2
   },
   {
     "id": "catalans-cur-giovanni-descalzi",
@@ -2181,7 +2240,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 4,
     "tries": 0,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
@@ -2205,14 +2264,14 @@
       "FULLBACK"
     ],
     "primaryPosition": "FULLBACK",
-    "nationality": "England",
+    "nationality": "France",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 81,
     "value": 118000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 39,
+    "tries": 8,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -2220,7 +2279,9 @@
     "basePlayerId": "catalans-cur-guillermo-aispuro-bichet",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2005
+    "birthYear": 2005,
+    "dateOfBirth": "2005-07-12",
+    "intlCaps": 5
   },
   {
     "id": "catalans-cur-harvey-wilson",
@@ -2240,8 +2301,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 41,
+    "tries": 4,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -2249,7 +2310,8 @@
     "basePlayerId": "catalans-cur-harvey-wilson",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2004
+    "birthYear": 2004,
+    "dateOfBirth": "2004-01-31"
   },
   {
     "id": "catalans-cur-iszac-faasuamaleaui",
@@ -2269,7 +2331,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 8,
     "tries": 0,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
@@ -2278,7 +2340,8 @@
     "basePlayerId": "catalans-cur-iszac-faasuamaleaui",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-12-01"
   },
   {
     "id": "catalans-cur-jordan-dezaria",
@@ -2307,7 +2370,10 @@
     "dateOfBirth": "1996-11-06",
     "birthYear": 1996,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 7,
+    "appearances": 99,
+    "tries": 4
   },
   {
     "id": "catalans-cur-josh-allen",
@@ -2321,14 +2387,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 25,
+    "tries": 1,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -2370,7 +2436,8 @@
     "basePlayerId": "catalans-cur-julian-bousquet",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 17
   },
   {
     "id": "catalans-cur-kruise-leeming",
@@ -2390,8 +2457,8 @@
     "category": "current",
     "peakRating": 85,
     "value": 180000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 250,
+    "tries": 43,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -2400,7 +2467,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1995-09-07",
-    "birthYear": 1995
+    "birthYear": 1995,
+    "intlCaps": 1
   },
   {
     "id": "catalans-cur-lenny-marc",
@@ -2420,8 +2488,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 6,
+    "tries": 2,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -2429,7 +2497,8 @@
     "basePlayerId": "catalans-cur-lenny-marc",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2006
+    "birthYear": 2006,
+    "dateOfBirth": "2006-04-14"
   },
   {
     "id": "catalans-cur-leo-darrelatour",
@@ -2459,7 +2528,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2000-09-08",
-    "birthYear": 2000
+    "birthYear": 2000,
+    "intlCaps": 2
   },
   {
     "id": "catalans-cur-lewis-dodd",
@@ -2472,8 +2542,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 9,
-    "tries": 4,
+    "appearances": 104,
+    "tries": 33,
     "superLeagueWinner": true,
     "challengeCupWinner": false,
     "dateOfBirth": "2002-01-27",
@@ -2520,7 +2590,10 @@
     "primaryPosition": "WG",
     "birthYear": 2001,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2001-01-29",
+    "appearances": 0,
+    "tries": 0
   },
   {
     "id": "catalans-cur-matthieu-laguerre",
@@ -2534,14 +2607,14 @@
       "CENTRE"
     ],
     "primaryPosition": "CENTRE",
-    "nationality": "England",
+    "nationality": "France",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 81,
     "value": 116000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 78,
+    "tries": 26,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -2549,7 +2622,9 @@
     "basePlayerId": "catalans-cur-matthieu-laguerre",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-02-03",
+    "intlCaps": 9
   },
   {
     "id": "catalans-cur-nick-cotric",
@@ -2581,7 +2656,8 @@
     "basePlayerId": "catalans-cur-nick-cotric",
     "primaryPosition": "CE/WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "catalans-cur-paul-seguier",
@@ -2611,7 +2687,10 @@
     "dateOfBirth": "1997-09-08",
     "birthYear": 1997,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 7,
+    "appearances": 107,
+    "tries": 7
   },
   {
     "id": "catalans-cur-romain-navarette",
@@ -2641,7 +2720,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1994-06-30",
-    "birthYear": 1994
+    "birthYear": 1994,
+    "intlCaps": 12
   },
   {
     "id": "catalans-cur-solomona-faataape",
@@ -2654,8 +2734,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 139000,
-    "appearances": 34,
-    "tries": 12,
+    "appearances": 20,
+    "tries": 8,
     "dateOfBirth": "2000-12-25",
     "birthYear": 2000,
     "currentClub": "Catalans Dragons",
@@ -2687,8 +2767,8 @@
     "value": 228000,
     "dateOfBirth": "2001-03-01",
     "birthYear": 2001,
-    "appearances": 12,
-    "tries": 5,
+    "appearances": 26,
+    "tries": 10,
     "currentClub": "Catalans Dragons",
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
@@ -2736,7 +2816,8 @@
     "basePlayerId": "catalans-cur-tommy-makinson",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 19
   },
   {
     "id": "catalans-cur-ugo-tison",
@@ -2756,8 +2837,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 37,
+    "tries": 5,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -2765,7 +2846,9 @@
     "basePlayerId": "catalans-cur-ugo-tison",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-07-07",
+    "intlCaps": 4
   },
   {
     "id": "catalans-cur-zac-lipowicz",
@@ -2779,14 +2862,14 @@
       "SECOND_ROW"
     ],
     "primaryPosition": "SECOND_ROW",
-    "nationality": "England",
+    "nationality": "Poland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 29,
+    "tries": 6,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -2794,7 +2877,9 @@
     "basePlayerId": "catalans-cur-zac-lipowicz",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2002
+    "birthYear": 2002,
+    "dateOfBirth": "2002-05-31",
+    "intlCaps": 1
   },
   {
     "id": "huddersfield-cur-adam-clune",
@@ -2902,7 +2987,7 @@
       "SECOND_ROW"
     ],
     "primaryPosition": "SECOND_ROW",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
@@ -2931,14 +3016,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "Tonga",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 82,
     "value": 135000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 19,
+    "tries": 2,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -2946,7 +3031,8 @@
     "basePlayerId": "huddersfield-cur-chris-patolo",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-07-23"
   },
   {
     "id": "huddersfield-cur-connor-carr",
@@ -3036,14 +3122,16 @@
     "basePlayerId": "huddersfield-cur-george-flanagan-jr",
     "primaryPosition": "FB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 39,
+    "tries": 18
   },
   {
     "id": "huddersfield-cur-george-king",
     "name": "George King",
     "position": "PROP",
     "club": "Huddersfield Giants",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -3067,14 +3155,15 @@
     "basePlayerId": "huddersfield-cur-george-king",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 14
   },
   {
     "id": "huddersfield-cur-harry-rushton",
     "name": "Harry Rushton",
     "position": "LOOSE_FORWARD",
     "club": "Huddersfield Giants",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -3099,7 +3188,8 @@
     "basePlayerId": "huddersfield-cur-harry-rushton",
     "primaryPosition": "LF/SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "huddersfield-cur-jack-billington",
@@ -3193,7 +3283,8 @@
     "basePlayerId": "huddersfield-cur-joe-greenwood",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "huddersfield-cur-kieran-rush",
@@ -3207,14 +3298,14 @@
       "SCRUM_HALF"
     ],
     "primaryPosition": "SCRUM_HALF",
-    "nationality": "England",
+    "nationality": "Jamaica",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 80,
     "value": 95000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 37,
+    "tries": 1,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -3222,7 +3313,9 @@
     "basePlayerId": "huddersfield-cur-kieran-rush",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2002
+    "birthYear": 2002,
+    "dateOfBirth": "2002-09-03",
+    "intlCaps": 5
   },
   {
     "id": "huddersfield-cur-mathieu-cozza",
@@ -3242,7 +3335,7 @@
     "category": "current",
     "peakRating": 82,
     "value": 138000,
-    "appearances": 0,
+    "appearances": 48,
     "tries": 0,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
@@ -3251,7 +3344,9 @@
     "basePlayerId": "huddersfield-cur-mathieu-cozza",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-04-12",
+    "intlCaps": 3
   },
   {
     "id": "huddersfield-cur-matty-english",
@@ -3313,7 +3408,8 @@
     "basePlayerId": "huddersfield-cur-niall-evalds",
     "primaryPosition": "FB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "huddersfield-cur-oliver-russell",
@@ -3333,8 +3429,8 @@
     "category": "current",
     "peakRating": 85,
     "value": 180000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 124,
+    "tries": 9,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -3342,7 +3438,8 @@
     "basePlayerId": "huddersfield-cur-oliver-russell",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-09-21"
   },
   {
     "id": "huddersfield-cur-oliver-wilson",
@@ -3372,7 +3469,10 @@
     "dateOfBirth": "2000-03-22",
     "birthYear": 2000,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1,
+    "appearances": 104,
+    "tries": 2
   },
   {
     "id": "huddersfield-cur-sam-halsall",
@@ -3442,7 +3542,7 @@
     "name": "Taane Milne",
     "position": "CENTRE",
     "club": "Huddersfield Giants",
-    "nationality": "Samoa",
+    "nationality": "Fiji",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -3466,7 +3566,8 @@
     "basePlayerId": "huddersfield-cur-taane-milne",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 18
   },
   {
     "id": "huddersfield-cur-thomas-burgess",
@@ -3486,8 +3587,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 75,
+    "tries": 5,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -3495,7 +3596,9 @@
     "basePlayerId": "huddersfield-cur-thomas-burgess",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1992
+    "birthYear": 1992,
+    "dateOfBirth": "1992-04-21",
+    "intlCaps": 34
   },
   {
     "id": "huddersfield-cur-tristan-powell",
@@ -3509,14 +3612,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 83,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 40,
+    "tries": 2,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -3524,7 +3627,8 @@
     "basePlayerId": "huddersfield-cur-tristan-powell",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-02-09"
   },
   {
     "id": "huddersfield-cur-tui-lolohea",
@@ -3555,7 +3659,8 @@
     "basePlayerId": "huddersfield-cur-tui-lolohea",
     "primaryPosition": "SO",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 21
   },
   {
     "id": "huddersfield-cur-zac-woolford",
@@ -3606,7 +3711,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 1,
     "tries": 0,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
@@ -3614,7 +3719,9 @@
     "status": "Current",
     "basePlayerId": "huddersfield-cur-jacob-algar",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2006-11-07",
+    "birthYear": 2006
   },
   {
     "id": "huddersfield-cur-marshall-land",
@@ -3634,7 +3741,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 95000,
-    "appearances": 0,
+    "appearances": 2,
     "tries": 0,
     "teamYearId": "huddersfield-giants-2026",
     "year": 2026,
@@ -3642,7 +3749,9 @@
     "status": "Current",
     "basePlayerId": "huddersfield-cur-marshall-land",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2007-05-30",
+    "birthYear": 2007
   },
   {
     "id": "huddersfield-cur-logan-blacker",
@@ -3670,7 +3779,9 @@
     "status": "Current",
     "basePlayerId": "huddersfield-cur-logan-blacker",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2007-02-26",
+    "birthYear": 2007
   },
   {
     "id": "hull-fc-cur-aidan-sezer",
@@ -3708,14 +3819,14 @@
     "name": "Amir Bourouh",
     "position": "HOOKER",
     "club": "Hull FC",
-    "nationality": "England",
+    "nationality": "France",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 81,
     "value": 114000,
-    "appearances": 83,
-    "tries": 7,
+    "appearances": 88,
+    "tries": 4,
     "dateOfBirth": "2001-01-05",
     "birthYear": 2001,
     "currentClub": "Hull FC",
@@ -3732,7 +3843,8 @@
     "basePlayerId": "hull-fc-cur-amir-bourouh",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "hull-fc-cur-brad-fash",
@@ -3752,8 +3864,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 135000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 187,
+    "tries": 6,
     "teamYearId": "hull-fc-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -3761,7 +3873,8 @@
     "basePlayerId": "hull-fc-cur-brad-fash",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1996
+    "birthYear": 1996,
+    "dateOfBirth": "1996-01-24"
   },
   {
     "id": "hull-fc-cur-cade-cust",
@@ -3825,7 +3938,8 @@
     "basePlayerId": "hull-fc-cur-connor-bailey",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-10-10"
   },
   {
     "id": "hull-fc-cur-davy-litten",
@@ -3949,7 +4063,8 @@
     "basePlayerId": "hull-fc-cur-herman-eseese",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "hull-fc-cur-hugo-salabio",
@@ -3969,7 +4084,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 35,
     "tries": 0,
     "teamYearId": "hull-fc-2026",
     "year": 2026,
@@ -3978,7 +4093,9 @@
     "basePlayerId": "hull-fc-cur-hugo-salabio",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-07-27",
+    "intlCaps": 1
   },
   {
     "id": "hull-fc-cur-jake-arthur",
@@ -4007,7 +4124,9 @@
     "basePlayerId": "hull-fc-cur-jake-arthur",
     "primaryPosition": "SO",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 23,
+    "tries": 5
   },
   {
     "id": "hull-fc-cur-james-bell",
@@ -4039,7 +4158,8 @@
     "basePlayerId": "hull-fc-cur-james-bell",
     "primaryPosition": "SR/LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 9
   },
   {
     "id": "hull-fc-cur-jed-cartwright",
@@ -4103,14 +4223,15 @@
     "basePlayerId": "hull-fc-cur-joe-batchelor",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "hull-fc-cur-john-asiata",
     "name": "John Asiata",
     "position": "LOOSE_FORWARD",
     "club": "Hull FC",
-    "nationality": "Tonga",
+    "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -4136,7 +4257,8 @@
     "basePlayerId": "hull-fc-cur-john-asiata",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "hull-fc-cur-lennon-clark",
@@ -4211,13 +4333,13 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
+    "appearances": 20,
     "tries": 0,
     "teamYearId": "hull-fc-2026",
     "year": 2026,
@@ -4258,7 +4380,8 @@
     "basePlayerId": "hull-fc-cur-ligi-sao",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "hull-fc-cur-logan-moy",
@@ -4349,7 +4472,8 @@
     "basePlayerId": "hull-fc-cur-sam-lisone",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 4
   },
   {
     "id": "hull-fc-cur-tom-briscoe",
@@ -4369,8 +4493,8 @@
     "category": "current",
     "peakRating": 83,
     "value": 161000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 400,
+    "tries": 182,
     "teamYearId": "hull-fc-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -4378,7 +4502,9 @@
     "basePlayerId": "hull-fc-cur-tom-briscoe",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1990
+    "birthYear": 1990,
+    "dateOfBirth": "1990-03-19",
+    "intlCaps": 15
   },
   {
     "id": "hull-fc-cur-will-pryce",
@@ -4423,14 +4549,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Turkey",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 86,
+    "tries": 4,
     "teamYearId": "hull-fc-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -4438,7 +4564,9 @@
     "basePlayerId": "hull-fc-cur-yusuf-aydin",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-09-13",
+    "intlCaps": 1
   },
   {
     "id": "hull-fc-cur-zak-hardaker",
@@ -4471,7 +4599,8 @@
     "basePlayerId": "hull-fc-cur-zak-hardaker",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 7
   },
   {
     "id": "hull-fc-cur-arthur-romano",
@@ -4504,7 +4633,11 @@
     "clubsPlayedFor": [
       "Catalans Dragons",
       "Hull FC"
-    ]
+    ],
+    "dateOfBirth": "1997-08-17",
+    "intlCaps": 8,
+    "appearances": 99,
+    "tries": 20
   },
   {
     "id": "hull-fc-cur-callum-kemp",
@@ -4745,7 +4878,9 @@
     "status": "Current",
     "basePlayerId": "hull-fc-cur-roman-dawson",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2006-01-23",
+    "birthYear": 2006
   },
   {
     "id": "hull-kr-cur-arthur-mourgue",
@@ -4778,7 +4913,8 @@
     "basePlayerId": "hull-kr-cur-arthur-mourgue",
     "primaryPosition": "FB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 9
   },
   {
     "id": "hull-kr-cur-bill-leyland",
@@ -4798,8 +4934,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 114000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 25,
+    "tries": 5,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -4807,7 +4943,8 @@
     "basePlayerId": "hull-kr-cur-bill-leyland",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2003
+    "birthYear": 2003,
+    "dateOfBirth": "2003-02-03"
   },
   {
     "id": "hull-kr-cur-dean-hadley",
@@ -4873,7 +5010,8 @@
     "basePlayerId": "hull-kr-cur-elliot-minchella",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "hull-kr-cur-harvey-horne",
@@ -4923,8 +5061,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 121,
+    "tries": 45,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -5095,7 +5233,8 @@
     "basePlayerId": "hull-kr-cur-jez-litten",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 5
   },
   {
     "id": "hull-kr-cur-joe-burgess",
@@ -5128,7 +5267,8 @@
     "basePlayerId": "hull-kr-cur-joe-burgess",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 4
   },
   {
     "id": "hull-kr-cur-kelepi-tanginoa",
@@ -5160,7 +5300,9 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "appearances": 157,
+    "tries": 38
   },
   {
     "id": "hull-kr-cur-lee-kershaw",
@@ -5180,8 +5322,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 138000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 83,
+    "tries": 24,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -5189,7 +5331,8 @@
     "basePlayerId": "hull-kr-cur-lee-kershaw",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-02-05"
   },
   {
     "id": "hull-kr-cur-louix-gorman",
@@ -5252,7 +5395,8 @@
     "basePlayerId": "hull-kr-cur-mikey-lewis",
     "primaryPosition": "SO",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "hull-kr-cur-noah-booth",
@@ -5272,8 +5416,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 13,
+    "tries": 9,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -5281,7 +5425,8 @@
     "basePlayerId": "hull-kr-cur-noah-booth",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2004
+    "birthYear": 2004,
+    "dateOfBirth": "2004-10-21"
   },
   {
     "id": "hull-kr-cur-oliver-gildart",
@@ -5314,7 +5459,8 @@
     "basePlayerId": "hull-kr-cur-oliver-gildart",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "hull-kr-cur-peta-hiku",
@@ -5347,7 +5493,8 @@
     "basePlayerId": "hull-kr-cur-peta-hiku",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 17
   },
   {
     "id": "hull-kr-cur-rhyse-martin",
@@ -5361,14 +5508,14 @@
       "SECOND_ROW"
     ],
     "primaryPosition": "SECOND_ROW",
-    "nationality": "England",
+    "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–2021",
     "category": "current",
     "peakRating": 86,
     "value": 183000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 161,
+    "tries": 46,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -5376,7 +5523,9 @@
     "basePlayerId": "hull-kr-cur-rhyse-martin",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1993
+    "birthYear": 1993,
+    "dateOfBirth": "1993-03-01",
+    "intlCaps": 22
   },
   {
     "id": "hull-kr-cur-sam-luckley",
@@ -5390,14 +5539,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Scotland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–2022",
     "category": "current",
     "peakRating": 83,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 128,
+    "tries": 7,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -5405,7 +5554,9 @@
     "basePlayerId": "hull-kr-cur-sam-luckley",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1995
+    "birthYear": 1995,
+    "dateOfBirth": "1995-11-29",
+    "intlCaps": 7
   },
   {
     "id": "hull-kr-cur-sauaso-sue",
@@ -5438,14 +5589,15 @@
     "basePlayerId": "hull-kr-cur-sauaso-sue",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 10
   },
   {
     "id": "hull-kr-cur-tom-amone",
     "name": "Tom Amone",
     "position": "PROP",
     "club": "Hull KR",
-    "nationality": "Tonga",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -5504,7 +5656,8 @@
     "basePlayerId": "hull-kr-cur-tom-davies",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "hull-kr-cur-tyrone-may",
@@ -5537,7 +5690,8 @@
     "basePlayerId": "hull-kr-cur-tyrone-may",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "hull-kr-cur-zach-fishwick",
@@ -5621,8 +5775,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 17,
+    "tries": 1,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -5634,7 +5788,8 @@
     "clubsPlayedFor": [
       "Warrington Wolves",
       "Hull KR"
-    ]
+    ],
+    "dateOfBirth": "2002-11-07"
   },
   {
     "id": "hull-kr-cur-cobie-wainhouse",
@@ -5654,7 +5809,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 1,
     "tries": 0,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
@@ -5666,7 +5821,9 @@
     "clubsPlayedFor": [
       "Hull FC",
       "Hull KR"
-    ]
+    ],
+    "dateOfBirth": "2006-02-08",
+    "birthYear": 2006
   },
   {
     "id": "hull-kr-cur-declan-murphy",
@@ -5720,8 +5877,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 1,
+    "tries": 1,
     "teamYearId": "hull-kr-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -5785,8 +5942,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 94000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 27,
+    "tries": 10,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -5794,7 +5951,8 @@
     "basePlayerId": "leeds-cur-alfie-edgell",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2004
+    "birthYear": 2004,
+    "dateOfBirth": "2004-07-25"
   },
   {
     "id": "leeds-cur-ash-handley",
@@ -5828,7 +5986,8 @@
     "basePlayerId": "leeds-cur-ash-handley",
     "primaryPosition": "CE/WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "leeds-cur-ben-littlewood",
@@ -5940,8 +6099,8 @@
     "category": "current",
     "peakRating": 83,
     "value": 163000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 110,
+    "tries": 28,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -5949,7 +6108,8 @@
     "basePlayerId": "leeds-cur-chris-hankinson",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1993
+    "birthYear": 1993,
+    "dateOfBirth": "1993-11-30"
   },
   {
     "id": "leeds-cur-cooper-jenkins",
@@ -6009,7 +6169,9 @@
     "basePlayerId": "leeds-cur-danny-levi",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1995
+    "birthYear": 1995,
+    "dateOfBirth": "1995-12-05",
+    "intlCaps": 4
   },
   {
     "id": "leeds-cur-harry-newman",
@@ -6040,7 +6202,8 @@
     "basePlayerId": "leeds-cur-harry-newman",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 7
   },
   {
     "id": "leeds-cur-jake-connor",
@@ -6072,7 +6235,8 @@
     "basePlayerId": "leeds-cur-jake-connor",
     "primaryPosition": "HB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 5
   },
   {
     "id": "leeds-cur-james-bentley",
@@ -6098,17 +6262,21 @@
     "displayClub": "Leeds Rhinos",
     "basePlayerId": "leeds-cur-james-bentley",
     "primaryPosition": "SR",
-    "birthYear": 1992,
+    "birthYear": 1997,
     "availableInGame": true,
     "superLeagueEligible": true,
-    "superLeagueWinner": true
+    "superLeagueWinner": true,
+    "dateOfBirth": "1997-10-19",
+    "intlCaps": 8,
+    "appearances": 137,
+    "tries": 26
   },
   {
     "id": "leeds-cur-james-mcdonnell",
     "name": "James McDonnell",
     "position": "SECOND_ROW",
     "club": "Leeds Rhinos",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -6132,7 +6300,8 @@
     "basePlayerId": "leeds-cur-james-mcdonnell",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "leeds-cur-jarrod-o-connor",
@@ -6178,13 +6347,13 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "Samoa",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 10,
     "tries": 0,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
@@ -6214,8 +6383,8 @@
     "category": "current",
     "peakRating": 86,
     "value": 183000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 357,
+    "tries": 143,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -6223,7 +6392,9 @@
     "basePlayerId": "leeds-cur-kallum-watkins",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1991
+    "birthYear": 1991,
+    "dateOfBirth": "1991-03-12",
+    "intlCaps": 31
   },
   {
     "id": "leeds-cur-keenan-palasia",
@@ -6237,14 +6408,14 @@
       "LOOSE_FORWARD"
     ],
     "primaryPosition": "LOOSE_FORWARD",
-    "nationality": "England",
+    "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 85,
     "value": 180000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 43,
+    "tries": 2,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -6252,7 +6423,9 @@
     "basePlayerId": "leeds-cur-keenan-palasia",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1997
+    "birthYear": 1997,
+    "dateOfBirth": "1997-01-24",
+    "intlCaps": 4
   },
   {
     "id": "leeds-cur-lachie-miller",
@@ -6296,8 +6469,8 @@
     "category": "current",
     "peakRating": 87,
     "value": 219000,
-    "appearances": 13,
-    "tries": 22,
+    "appearances": 20,
+    "tries": 29,
     "dateOfBirth": "1993-10-03",
     "birthYear": 1993,
     "currentClub": "Leeds Rhinos",
@@ -6314,7 +6487,8 @@
     "basePlayerId": "leeds-cur-maika-sivo",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 12
   },
   {
     "id": "leeds-cur-mikolaj-oledzki",
@@ -6345,7 +6519,8 @@
     "basePlayerId": "leeds-cur-mikolaj-oledzki",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 4
   },
   {
     "id": "leeds-cur-morgan-gannon",
@@ -6396,8 +6571,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 7,
+    "tries": 1,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -6405,7 +6580,8 @@
     "basePlayerId": "leeds-cur-ned-mccormack",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2005
+    "birthYear": 2005,
+    "dateOfBirth": "2005-02-08"
   },
   {
     "id": "leeds-cur-presley-cassell",
@@ -6425,8 +6601,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 23,
+    "tries": 2,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -6434,7 +6610,8 @@
     "basePlayerId": "leeds-cur-presley-cassell",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2006
+    "birthYear": 2004,
+    "dateOfBirth": "2004-10-06"
   },
   {
     "id": "leeds-cur-riley-lumb",
@@ -6485,8 +6662,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 425,
+    "tries": 274,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -6495,7 +6672,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1987-11-27",
-    "birthYear": 1987
+    "birthYear": 1987,
+    "intlCaps": 40
   },
   {
     "id": "leeds-cur-sam-lisone",
@@ -6524,7 +6702,8 @@
     "dateOfBirth": "1994-02-19",
     "birthYear": 1994,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 4
   },
   {
     "id": "leeds-cur-tom-holroyd",
@@ -6555,7 +6734,8 @@
     "basePlayerId": "leeds-cur-tom-holroyd",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "leeds-cur-tom-nicholson-watton",
@@ -6622,7 +6802,7 @@
     "name": "Aaron Pene",
     "position": "PROP",
     "club": "Leigh Leopards",
-    "nationality": "New Zealand",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -6666,8 +6846,8 @@
     "category": "current",
     "peakRating": 86,
     "value": 192000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 28,
+    "tries": 6,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -6696,8 +6876,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 8,
+    "tries": 6,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -6705,7 +6885,8 @@
     "basePlayerId": "leigh-cur-aj-towse",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2003
+    "birthYear": 2003,
+    "dateOfBirth": "2003-08-19"
   },
   {
     "id": "leigh-cur-andrew-badrock",
@@ -6725,8 +6906,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 20,
+    "tries": 4,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -6734,7 +6915,8 @@
     "basePlayerId": "leigh-cur-andrew-badrock",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-10-25"
   },
   {
     "id": "leigh-cur-bailey-hodgson",
@@ -6754,8 +6936,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 36,
+    "tries": 8,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -6763,7 +6945,8 @@
     "basePlayerId": "leigh-cur-bailey-hodgson",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2002
+    "birthYear": 2002,
+    "dateOfBirth": "2002-09-05"
   },
   {
     "id": "leigh-cur-ben-mcnamara",
@@ -6824,7 +7007,9 @@
     "dateOfBirth": "1997-07-05",
     "birthYear": 1997,
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "appearances": 181,
+    "tries": 77
   },
   {
     "id": "leigh-cur-david-armstrong",
@@ -6888,7 +7073,8 @@
     "basePlayerId": "leigh-cur-edwin-ipape",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 12
   },
   {
     "id": "leigh-cur-ethan-o-neill",
@@ -6917,14 +7103,16 @@
     "dateOfBirth": "1999-06-01",
     "birthYear": 1999,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 36,
+    "tries": 10
   },
   {
     "id": "leigh-cur-frankie-halton",
     "name": "Frankie Halton",
     "position": "SECOND_ROW",
     "club": "Leigh Leopards",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -6948,14 +7136,15 @@
     "basePlayerId": "leigh-cur-frankie-halton",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 5
   },
   {
     "id": "leigh-cur-gareth-o-brien",
     "name": "Gareth O'Brien",
     "position": "STAND_OFF",
     "club": "Leigh Leopards",
-    "nationality": "Ireland",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -7001,8 +7190,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 153,
+    "tries": 72,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -7011,7 +7200,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2000-05-30",
-    "birthYear": 2000
+    "birthYear": 2000,
+    "intlCaps": 3
   },
   {
     "id": "leigh-cur-isaac-liu",
@@ -7042,7 +7232,8 @@
     "basePlayerId": "leigh-cur-isaac-liu",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 12
   },
   {
     "id": "leigh-cur-jack-hughes",
@@ -7062,8 +7253,8 @@
     "category": "current",
     "peakRating": 85,
     "value": 180000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 330,
+    "tries": 41,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -7071,7 +7262,9 @@
     "basePlayerId": "leigh-cur-jack-hughes",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1992
+    "birthYear": 1992,
+    "dateOfBirth": "1992-01-04",
+    "intlCaps": 2
   },
   {
     "id": "leigh-cur-jacob-alick-wiencke",
@@ -7091,8 +7284,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 24,
+    "tries": 7,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -7101,7 +7294,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1999-11-03",
-    "birthYear": 1999
+    "birthYear": 1999,
+    "intlCaps": 11
   },
   {
     "id": "leigh-cur-joe-ofahengaue",
@@ -7132,7 +7326,8 @@
     "basePlayerId": "leigh-cur-joe-ofahengaue",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 7
   },
   {
     "id": "leigh-cur-josh-charnley",
@@ -7152,8 +7347,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 347,
+    "tries": 281,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -7163,7 +7358,8 @@
     "superLeagueEligible": true,
     "dateOfBirth": "1991-06-26",
     "birthYear": 1991,
-    "positionAbbrev": "WG"
+    "positionAbbrev": "WG",
+    "intlCaps": 8
   },
   {
     "id": "leigh-cur-kai-o-donnell",
@@ -7207,7 +7403,7 @@
     "name": "Keanan Brand",
     "position": "WING",
     "club": "Leigh Leopards",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -7232,7 +7428,8 @@
     "basePlayerId": "leigh-cur-keanan-brand",
     "primaryPosition": "WG/CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "leigh-cur-lachlan-lam",
@@ -7265,7 +7462,8 @@
     "basePlayerId": "leigh-cur-lachlan-lam",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 15
   },
   {
     "id": "leigh-cur-liam-horne",
@@ -7279,14 +7477,14 @@
       "HOOKER"
     ],
     "primaryPosition": "HOOKER",
-    "nationality": "England",
+    "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–2024",
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 76,
+    "tries": 9,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -7294,7 +7492,9 @@
     "basePlayerId": "leigh-cur-liam-horne",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-02-03",
+    "intlCaps": 8
   },
   {
     "id": "leigh-cur-louis-brogan",
@@ -7314,8 +7514,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 135000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 34,
+    "tries": 2,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -7344,8 +7544,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 150,
+    "tries": 13,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -7385,7 +7585,8 @@
     "basePlayerId": "leigh-cur-owen-trout",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "leigh-cur-robbie-mulhern",
@@ -7418,7 +7619,8 @@
     "basePlayerId": "leigh-cur-robbie-mulhern",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "leigh-cur-tesi-niu",
@@ -7449,7 +7651,8 @@
     "basePlayerId": "leigh-cur-tesi-niu",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "leigh-cur-umyla-hanley",
@@ -7501,7 +7704,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 11,
     "tries": 0,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
@@ -7514,7 +7717,8 @@
     "clubsPlayedFor": [
       "Wigan Warriors",
       "Leigh Leopards"
-    ]
+    ],
+    "dateOfBirth": "1999-12-29"
   },
   {
     "id": "leigh-cur-ryan-brown",
@@ -7566,7 +7770,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
+    "appearances": 1,
     "tries": 0,
     "teamYearId": "leigh-leopards-2026",
     "year": 2026,
@@ -7579,7 +7783,8 @@
     "clubsPlayedFor": [
       "Wakefield Trinity",
       "Leigh Leopards"
-    ]
+    ],
+    "dateOfBirth": "2006-07-13"
   },
   {
     "id": "leigh-cur-oliver-polec",
@@ -7611,7 +7816,9 @@
     "clubsPlayedFor": [
       "St Helens",
       "Leigh Leopards"
-    ]
+    ],
+    "dateOfBirth": "2006-10-13",
+    "birthYear": 2006
   },
   {
     "id": "leigh-cur-kavan-rothwell",
@@ -7644,7 +7851,9 @@
       "Wigan Warriors",
       "Barrow Raiders",
       "Leigh Leopards"
-    ]
+    ],
+    "dateOfBirth": "2003-02-01",
+    "birthYear": 2003
   },
   {
     "id": "london-cur-harry-aldous",
@@ -7674,7 +7883,7 @@
     "name": "Jack Campagnolo",
     "position": "SCRUM_HALF",
     "club": "London Broncos",
-    "nationality": "Australia",
+    "nationality": "Italy",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -7705,7 +7914,8 @@
     "status": "Current",
     "primaryPosition": "SCRUM_HALF",
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "intlCaps": 6
   },
   {
     "id": "london-cur-jacob-jones",
@@ -7790,7 +8000,8 @@
     "basePlayerId": "london-cur-jeremiah-simbiken",
     "primaryPosition": "SR",
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "intlCaps": 5
   },
   {
     "id": "london-cur-jimmy-meadows",
@@ -7842,7 +8053,8 @@
     "status": "Current",
     "primaryPosition": "PROP",
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "intlCaps": 3
   },
   {
     "id": "london-cur-robbie-storey",
@@ -7935,7 +8147,8 @@
     "primaryPosition": "CENTRE",
     "currentClub": "Midlands Hurricanes",
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "tries": 0
   },
   {
     "id": "midlands-cur-zach-jebson",
@@ -7986,8 +8199,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 236,
+    "tries": 74,
     "teamYearId": "midlands-hurricanes-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -8002,7 +8215,8 @@
       "Hull FC",
       "Huddersfield Giants",
       "Midlands Hurricanes"
-    ]
+    ],
+    "intlCaps": 1
   },
   {
     "id": "oldham-cur-jake-bibby",
@@ -8083,8 +8297,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 53,
+    "tries": 20,
     "teamYearId": "oldham-rlfc-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -8123,7 +8337,9 @@
     "status": "Current",
     "primaryPosition": "FULLBACK",
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "appearances": 0,
+    "tries": 0
   },
   {
     "id": "sheffield-cur-jordan-lilley",
@@ -8198,7 +8414,8 @@
     "primaryPosition": "SCRUM_HALF",
     "currentClub": "Sheffield Eagles",
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "tries": 0
   },
   {
     "id": "sheffield-cur-matty-marsh",
@@ -8238,14 +8455,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–2022",
     "category": "current",
     "peakRating": 83,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 99,
+    "tries": 9,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -8253,7 +8470,9 @@
     "basePlayerId": "st-helens-cur-agnatius-paasi",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1991
+    "birthYear": 1991,
+    "dateOfBirth": "1991-11-30",
+    "intlCaps": 1
   },
   {
     "id": "st-helens-cur-alex-walmsley",
@@ -8286,7 +8505,8 @@
     "basePlayerId": "st-helens-cur-alex-walmsley",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 9
   },
   {
     "id": "st-helens-cur-curtis-sironen",
@@ -8350,7 +8570,8 @@
     "basePlayerId": "st-helens-cur-daryl-clark",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 14
   },
   {
     "id": "st-helens-cur-david-klemmer",
@@ -8381,7 +8602,8 @@
     "basePlayerId": "st-helens-cur-david-klemmer",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 19
   },
   {
     "id": "st-helens-cur-deon-cross",
@@ -8540,7 +8762,8 @@
     "basePlayerId": "st-helens-cur-jack-welsby",
     "primaryPosition": "FB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 13
   },
   {
     "id": "st-helens-cur-jackson-hastings",
@@ -8570,7 +8793,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1996-01-04",
-    "birthYear": 1996
+    "birthYear": 1996,
+    "intlCaps": 4
   },
   {
     "id": "st-helens-cur-jacob-douglas",
@@ -8620,8 +8844,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 113000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 16,
+    "tries": 2,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -8629,7 +8853,8 @@
     "basePlayerId": "st-helens-cur-jacob-host",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1996
+    "birthYear": 1996,
+    "dateOfBirth": "1996-09-30"
   },
   {
     "id": "st-helens-cur-jake-burns",
@@ -8649,8 +8874,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 22,
+    "tries": 5,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -8658,7 +8883,8 @@
     "basePlayerId": "st-helens-cur-jake-burns",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-06-23"
   },
   {
     "id": "st-helens-cur-jake-davies",
@@ -8785,7 +9011,8 @@
     "basePlayerId": "st-helens-cur-jonny-lomax",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 11
   },
   {
     "id": "st-helens-cur-kyle-feldt",
@@ -8799,14 +9026,14 @@
       "WING"
     ],
     "primaryPosition": "WING",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 86,
     "value": 187000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 25,
+    "tries": 28,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -8814,7 +9041,8 @@
     "basePlayerId": "st-helens-cur-kyle-feldt",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1992
+    "birthYear": 1992,
+    "dateOfBirth": "1992-02-09"
   },
   {
     "id": "st-helens-cur-lewis-murphy",
@@ -8878,7 +9106,8 @@
     "basePlayerId": "st-helens-cur-mark-percival",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "st-helens-cur-matt-whitley",
@@ -8942,7 +9171,8 @@
     "basePlayerId": "st-helens-cur-matty-lees",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 12
   },
   {
     "id": "st-helens-cur-morgan-knowles",
@@ -8973,7 +9203,10 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "superLeagueWinner": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "intlCaps": 11,
+    "appearances": 222,
+    "tries": 36
   },
   {
     "id": "st-helens-cur-nene-macdonald",
@@ -8987,14 +9220,14 @@
       "CENTRE"
     ],
     "primaryPosition": "CENTRE",
-    "nationality": "England",
+    "nationality": "Papua New Guinea",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2024–2024",
     "category": "current",
     "peakRating": 87,
     "value": 221000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 63,
+    "tries": 20,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -9002,7 +9235,9 @@
     "basePlayerId": "st-helens-cur-nene-macdonald",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1994
+    "birthYear": 1994,
+    "dateOfBirth": "1994-05-11",
+    "intlCaps": 22
   },
   {
     "id": "st-helens-cur-noah-stephens",
@@ -9016,14 +9251,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "Wales",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 31,
+    "tries": 2,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -9031,7 +9266,8 @@
     "basePlayerId": "st-helens-cur-noah-stephens",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2004
+    "birthYear": 2004,
+    "dateOfBirth": "2004-10-03"
   },
   {
     "id": "st-helens-cur-owen-dagnall",
@@ -9051,8 +9287,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 116000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 25,
+    "tries": 13,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -9060,7 +9296,8 @@
     "basePlayerId": "st-helens-cur-owen-dagnall",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2005
+    "birthYear": 2005,
+    "dateOfBirth": "2005-09-21"
   },
   {
     "id": "st-helens-cur-shane-wright",
@@ -9080,8 +9317,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 83,
+    "tries": 14,
     "teamYearId": "st-helens-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -9089,7 +9326,8 @@
     "basePlayerId": "st-helens-cur-shane-wright",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1996
+    "birthYear": 1996,
+    "dateOfBirth": "1996-03-13"
   },
   {
     "id": "st-helens-cur-tristan-sailor",
@@ -9140,7 +9378,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
+    "appearances": 2,
     "tries": 0,
     "teamYearId": "st-helens-2026",
     "year": 2026,
@@ -9148,7 +9386,9 @@
     "status": "Current",
     "basePlayerId": "st-helens-cur-leon-cowen",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2004-10-31",
+    "birthYear": 2004
   },
   {
     "id": "st-helens-cur-alfie-sinclair",
@@ -9168,7 +9408,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 4,
     "tries": 0,
     "teamYearId": "st-helens-2026",
     "year": 2026,
@@ -9176,7 +9416,9 @@
     "status": "Current",
     "basePlayerId": "st-helens-cur-alfie-sinclair",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2004-10-29",
+    "birthYear": 2004
   },
   {
     "id": "toulouse-cur-aj-wallace",
@@ -9206,7 +9448,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2003-03-31",
-    "birthYear": 2003
+    "birthYear": 2003,
+    "intlCaps": 4
   },
   {
     "id": "toulouse-cur-anthony-marion",
@@ -9237,7 +9480,8 @@
     "basePlayerId": "toulouse-cur-anthony-marion",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 7
   },
   {
     "id": "toulouse-cur-baptiste-rodriguez",
@@ -9298,7 +9542,8 @@
     "basePlayerId": "toulouse-cur-benjamin-laguerre",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "toulouse-cur-brendan-hands",
@@ -9313,7 +9558,7 @@
     "value": 180000,
     "dateOfBirth": "1999-02-12",
     "birthYear": 1999,
-    "appearances": 12,
+    "appearances": 24,
     "clubsPlayedFor": [
       "Toulouse"
     ],
@@ -9331,7 +9576,8 @@
     "basePlayerId": "toulouse-cur-brendan-hands",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 3
   },
   {
     "id": "toulouse-cur-calum-gahan",
@@ -9362,7 +9608,8 @@
     "basePlayerId": "toulouse-cur-calum-gahan",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "toulouse-cur-ellis-gillam",
@@ -9382,7 +9629,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
+    "appearances": 5,
     "tries": 0,
     "teamYearId": "toulouse-olympique-2026",
     "year": 2026,
@@ -9421,7 +9668,10 @@
     "dateOfBirth": "1991-06-18",
     "birthYear": 1991,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 23,
+    "appearances": 194,
+    "tries": 27
   },
   {
     "id": "toulouse-cur-henry-okane",
@@ -9519,7 +9769,7 @@
     "name": "James Roumanos",
     "position": "PROP",
     "club": "Toulouse Olympique",
-    "nationality": "Australia",
+    "nationality": "Lebanon",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -9543,7 +9793,8 @@
     "basePlayerId": "toulouse-cur-james-roumanos",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "toulouse-cur-joe-bretherton",
@@ -9563,8 +9814,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 39,
+    "tries": 4,
     "teamYearId": "toulouse-olympique-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -9572,7 +9823,8 @@
     "basePlayerId": "toulouse-cur-joe-bretherton",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1995
+    "birthYear": 1995,
+    "dateOfBirth": "1995-10-05"
   },
   {
     "id": "toulouse-cur-joe-cator",
@@ -9592,8 +9844,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 138000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 85,
+    "tries": 3,
     "teamYearId": "toulouse-olympique-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -9601,7 +9853,8 @@
     "basePlayerId": "toulouse-cur-joe-cator",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-06-15"
   },
   {
     "id": "toulouse-cur-john-toleafoa",
@@ -9629,7 +9882,10 @@
     "primaryPosition": "PF",
     "birthYear": 1999,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "1999-04-09",
+    "appearances": 13,
+    "tries": 1
   },
   {
     "id": "toulouse-cur-justin-sangare",
@@ -9658,7 +9914,10 @@
     "dateOfBirth": "1998-03-07",
     "birthYear": 1998,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 9,
+    "appearances": 95,
+    "tries": 6
   },
   {
     "id": "toulouse-cur-lambert-belmas",
@@ -9689,7 +9948,8 @@
     "basePlayerId": "toulouse-cur-lambert-belmas",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "toulouse-cur-luke-polselli",
@@ -9703,14 +9963,14 @@
       "STAND_OFF"
     ],
     "primaryPosition": "STAND_OFF",
-    "nationality": "Australia",
+    "nationality": "Italy",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–2022",
     "category": "current",
     "peakRating": 81,
     "value": 120000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 22,
+    "tries": 9,
     "teamYearId": "toulouse-olympique-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -9718,7 +9978,9 @@
     "basePlayerId": "toulouse-cur-luke-polselli",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-08-06",
+    "intlCaps": 3
   },
   {
     "id": "toulouse-cur-mathieu-jussaume",
@@ -9749,7 +10011,8 @@
     "basePlayerId": "toulouse-cur-mathieu-jussaume",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "toulouse-cur-maxime-stefani",
@@ -9780,7 +10043,8 @@
     "basePlayerId": "toulouse-cur-maxime-stefani",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "toulouse-cur-olly-ashall-bott",
@@ -9842,7 +10106,8 @@
     "basePlayerId": "toulouse-cur-paul-marcon",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "toulouse-cur-paul-ulberg",
@@ -9873,7 +10138,8 @@
     "basePlayerId": "toulouse-cur-paul-ulberg",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 9
   },
   {
     "id": "toulouse-cur-pierrejean-lima",
@@ -9934,7 +10200,8 @@
     "basePlayerId": "toulouse-cur-reubenn-rennie",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 13
   },
   {
     "id": "toulouse-cur-rob-butler",
@@ -9954,8 +10221,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 113000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 89,
+    "tries": 3,
     "teamYearId": "toulouse-olympique-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -9963,7 +10230,8 @@
     "basePlayerId": "toulouse-cur-rob-butler",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-05-15"
   },
   {
     "id": "toulouse-cur-romeo-tropis",
@@ -9992,7 +10260,9 @@
     "basePlayerId": "toulouse-cur-romeo-tropis",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2005
+    "birthYear": 2005,
+    "dateOfBirth": "2005-05-08",
+    "intlCaps": 1
   },
   {
     "id": "toulouse-cur-thomas-lacans",
@@ -10023,7 +10293,8 @@
     "basePlayerId": "toulouse-cur-thomas-lacans",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "toulouse-cur-trevor-chiffolleau",
@@ -10102,14 +10373,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 52,
+    "tries": 17,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -10117,7 +10388,8 @@
     "basePlayerId": "wakefield-cur-caius-faatili",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-11-09"
   },
   {
     "id": "wakefield-cur-caleb-hamlin-uele",
@@ -10146,7 +10418,9 @@
     "basePlayerId": "wakefield-cur-caleb-hamlin-uele",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 52,
+    "tries": 13
   },
   {
     "id": "wakefield-cur-cameron-scott",
@@ -10175,7 +10449,9 @@
     "dateOfBirth": "1999-10-07",
     "birthYear": 1999,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 111,
+    "tries": 31
   },
   {
     "id": "wakefield-cur-corey-hall",
@@ -10227,8 +10503,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 114000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 46,
+    "tries": 5,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -10236,7 +10512,8 @@
     "basePlayerId": "wakefield-cur-harvey-smith",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2006
+    "birthYear": 2006,
+    "dateOfBirth": "2006-01-16"
   },
   {
     "id": "wakefield-cur-isaiah-vagana",
@@ -10250,14 +10527,14 @@
       "SECOND_ROW"
     ],
     "primaryPosition": "SECOND_ROW",
-    "nationality": "England",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 38,
+    "tries": 5,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -10265,7 +10542,8 @@
     "basePlayerId": "wakefield-cur-isaiah-vagana",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-06-14"
   },
   {
     "id": "wakefield-cur-jack-sinfield",
@@ -10285,8 +10563,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 143000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 41,
+    "tries": 7,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -10294,7 +10572,8 @@
     "basePlayerId": "wakefield-cur-jack-sinfield",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2004
+    "birthYear": 2004,
+    "dateOfBirth": "2004-09-21"
   },
   {
     "id": "wakefield-cur-jake-trueman",
@@ -10377,8 +10656,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 19,
+    "tries": 9,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -10386,7 +10665,8 @@
     "basePlayerId": "wakefield-cur-jayden-myers",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2003
+    "birthYear": 2003,
+    "dateOfBirth": "2003-04-13"
   },
   {
     "id": "wakefield-cur-jazz-tevaga",
@@ -10417,7 +10697,8 @@
     "basePlayerId": "wakefield-cur-jazz-tevaga",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 11
   },
   {
     "id": "wakefield-cur-josh-rourke",
@@ -10431,14 +10712,14 @@
       "FULLBACK"
     ],
     "primaryPosition": "FULLBACK",
-    "nationality": "Australia",
+    "nationality": "England",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 81,
     "value": 118000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 44,
+    "tries": 21,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -10446,7 +10727,8 @@
     "basePlayerId": "wakefield-cur-josh-rourke",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-10-27"
   },
   {
     "id": "wakefield-cur-ky-rodwell",
@@ -10491,14 +10773,14 @@
       "WING"
     ],
     "primaryPosition": "WING",
-    "nationality": "England",
+    "nationality": "Scotland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 21,
+    "tries": 15,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -10506,7 +10788,9 @@
     "basePlayerId": "wakefield-cur-lachlan-walmsley",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-06-12",
+    "intlCaps": 4
   },
   {
     "id": "wakefield-cur-liam-hood",
@@ -10535,14 +10819,17 @@
     "dateOfBirth": "1992-01-06",
     "birthYear": 1992,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 10,
+    "appearances": 132,
+    "tries": 26
   },
   {
     "id": "wakefield-cur-mason-lino",
     "name": "Mason Lino",
     "position": "SCRUM_HALF",
     "club": "Wakefield Trinity",
-    "nationality": "New Zealand",
+    "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -10566,7 +10853,8 @@
     "basePlayerId": "wakefield-cur-mason-lino",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "wakefield-cur-matty-storton",
@@ -10659,7 +10947,8 @@
     "basePlayerId": "wakefield-cur-mike-mcmeeken",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 14
   },
   {
     "id": "wakefield-cur-myles-lawford",
@@ -10749,14 +11038,16 @@
     "dateOfBirth": "1995-06-25",
     "birthYear": 1995,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 60,
+    "tries": 5
   },
   {
     "id": "wakefield-cur-seth-nikotemo",
     "name": "Seth Nikotemo",
     "position": "SECOND_ROW",
     "club": "Wakefield Trinity",
-    "nationality": "Australia",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -10811,7 +11102,8 @@
     "basePlayerId": "wakefield-cur-tom-johnstone",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "wakefield-cur-tray-lolesio",
@@ -10825,14 +11117,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "Australia",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 81,
     "value": 113000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 14,
+    "tries": 1,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -10840,7 +11132,8 @@
     "basePlayerId": "wakefield-cur-tray-lolesio",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2002
+    "birthYear": 2002,
+    "dateOfBirth": "2002-09-06"
   },
   {
     "id": "wakefield-cur-tyson-smoothy",
@@ -10900,7 +11193,8 @@
     "basePlayerId": "wakefield-cur-will-tate",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-12-20"
   },
   {
     "id": "wakefield-cur-jordan-williams",
@@ -10920,8 +11214,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 14,
+    "tries": 1,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -10967,7 +11261,9 @@
     "clubsPlayedFor": [
       "Warrington Wolves",
       "Wakefield Trinity"
-    ]
+    ],
+    "dateOfBirth": "2005-02-08",
+    "birthYear": 2005
   },
   {
     "id": "wakefield-cur-ellis-lingard",
@@ -11051,7 +11347,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 94000,
-    "appearances": 0,
+    "appearances": 1,
     "tries": 0,
     "teamYearId": "wakefield-trinity-2026",
     "year": 2026,
@@ -11063,7 +11359,9 @@
     "clubsPlayedFor": [
       "St Helens",
       "Wakefield Trinity"
-    ]
+    ],
+    "dateOfBirth": "2006-12-04",
+    "birthYear": 2006
   },
   {
     "id": "warrington-cur-adam-holroyd",
@@ -11101,7 +11399,7 @@
     "name": "Albert Hopoate",
     "position": "CENTRE",
     "club": "Warrington Wolves",
-    "nationality": "Tonga",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -11145,8 +11443,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 21,
+    "tries": 12,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -11154,7 +11452,8 @@
     "basePlayerId": "warrington-cur-arron-lindop",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2006
+    "birthYear": 2006,
+    "dateOfBirth": "2006-03-17"
   },
   {
     "id": "warrington-cur-ben-currie",
@@ -11185,7 +11484,8 @@
     "basePlayerId": "warrington-cur-ben-currie",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 11
   },
   {
     "id": "warrington-cur-cai-taylor-wray",
@@ -11229,8 +11529,8 @@
     "category": "current",
     "peakRating": 87,
     "value": 217000,
-    "appearances": 30,
-    "tries": 3,
+    "appearances": 182,
+    "tries": 20,
     "dateOfBirth": "1999-06-29",
     "birthYear": 1999,
     "currentClub": "Warrington Wolves",
@@ -11247,7 +11547,8 @@
     "basePlayerId": "warrington-cur-danny-walker",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 4
   },
   {
     "id": "warrington-cur-ewan-irwin",
@@ -11267,8 +11568,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 142000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 22,
+    "tries": 5,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -11276,7 +11577,8 @@
     "basePlayerId": "warrington-cur-ewan-irwin",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2008
+    "birthYear": 2008,
+    "dateOfBirth": "2008-02-07"
   },
   {
     "id": "warrington-cur-george-williams",
@@ -11309,7 +11611,8 @@
     "basePlayerId": "warrington-cur-george-williams",
     "primaryPosition": "SO",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 24
   },
   {
     "id": "warrington-cur-jake-thewlis",
@@ -11370,7 +11673,8 @@
     "basePlayerId": "warrington-cur-james-harrison",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "warrington-cur-joe-philbin",
@@ -11401,7 +11705,8 @@
     "basePlayerId": "warrington-cur-joe-philbin",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "warrington-cur-jordy-crowther",
@@ -11445,14 +11750,14 @@
       "CENTRE"
     ],
     "primaryPosition": "CENTRE",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 81,
     "value": 116000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 20,
+    "tries": 11,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -11460,7 +11765,8 @@
     "basePlayerId": "warrington-cur-josh-smith",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-04-18"
   },
   {
     "id": "warrington-cur-josh-thewlis",
@@ -11535,14 +11841,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–2021",
     "category": "current",
     "peakRating": 83,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 166,
+    "tries": 3,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -11550,7 +11856,9 @@
     "basePlayerId": "warrington-cur-liam-byrne",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-08-18",
+    "intlCaps": 7
   },
   {
     "id": "warrington-cur-luke-thomas",
@@ -11564,14 +11872,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Wales",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 28,
+    "tries": 2,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -11579,7 +11887,9 @@
     "basePlayerId": "warrington-cur-luke-thomas",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1993
+    "birthYear": 2002,
+    "dateOfBirth": "2002-10-19",
+    "intlCaps": 1
   },
   {
     "id": "warrington-cur-luke-yates",
@@ -11641,7 +11951,8 @@
     "basePlayerId": "warrington-cur-marc-sneyd",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "warrington-cur-matty-ashton",
@@ -11672,7 +11983,8 @@
     "basePlayerId": "warrington-cur-matty-ashton",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 5
   },
   {
     "id": "warrington-cur-matty-nicholson",
@@ -11701,7 +12013,10 @@
     "dateOfBirth": "2003-07-18",
     "birthYear": 2003,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2,
+    "appearances": 47,
+    "tries": 18
   },
   {
     "id": "warrington-cur-max-wood",
@@ -11774,7 +12089,7 @@
     "name": "Sam Stone",
     "position": "SECOND_ROW",
     "club": "Warrington Wolves",
-    "nationality": "Australia",
+    "nationality": "Malta",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -11798,7 +12113,8 @@
     "basePlayerId": "warrington-cur-sam-stone",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "warrington-cur-toafofoa-sipley",
@@ -11818,8 +12134,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 135000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 17,
+    "tries": 4,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -11827,7 +12143,8 @@
     "basePlayerId": "warrington-cur-toafofoa-sipley",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1995
+    "birthYear": 1995,
+    "dateOfBirth": "1995-01-05"
   },
   {
     "id": "warrington-cur-toby-king",
@@ -11860,7 +12177,8 @@
     "basePlayerId": "warrington-cur-toby-king",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "warrington-cur-zack-gardner",
@@ -11880,8 +12198,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 5,
+    "tries": 2,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -11889,7 +12207,8 @@
     "basePlayerId": "warrington-cur-zack-gardner",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2006
+    "birthYear": 2006,
+    "dateOfBirth": "2006-04-18"
   },
   {
     "id": "warrington-cur-tom-mckinney",
@@ -11939,7 +12258,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
+    "appearances": 5,
     "tries": 0,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
@@ -11948,7 +12267,8 @@
     "basePlayerId": "warrington-cur-ben-hartill",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2005
+    "birthYear": 2005,
+    "dateOfBirth": "2005-08-25"
   },
   {
     "id": "warrington-cur-oliver-leyland",
@@ -12007,7 +12327,9 @@
     "status": "Current",
     "basePlayerId": "warrington-cur-tommy-rhodes",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2009-05-01",
+    "birthYear": 2009
   },
   {
     "id": "widnes-cur-nathan-connell",
@@ -12137,7 +12459,8 @@
     "basePlayerId": "wigan-cur-brad-o-neill",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "wigan-cur-dayon-sambou",
@@ -12157,15 +12480,17 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 6,
+    "tries": 2,
     "teamYearId": "wigan-warriors-2026",
     "year": 2026,
     "cardYear": 2026,
     "status": "Current",
     "basePlayerId": "wigan-cur-dayon-sambou",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2005-04-14",
+    "birthYear": 2005
   },
   {
     "id": "wigan-cur-ethan-havard",
@@ -12198,7 +12523,8 @@
     "basePlayerId": "wigan-cur-ethan-havard",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 5
   },
   {
     "id": "wigan-cur-george-hirst",
@@ -12218,8 +12544,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 135000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 14,
+    "tries": 1,
     "teamYearId": "wigan-warriors-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -12241,7 +12567,7 @@
     "category": "current",
     "peakRating": 86,
     "value": 192000,
-    "intlCaps": 4,
+    "intlCaps": 10,
     "appearances": 144,
     "tries": 22,
     "superLeagueWinner": true,
@@ -12293,7 +12619,10 @@
     "challengeCupWinner": true,
     "availableInGame": true,
     "superLeagueEligible": true,
-    "superLeagueWinner": false
+    "superLeagueWinner": false,
+    "dateOfBirth": "2005-10-26",
+    "appearances": 30,
+    "tries": 17
   },
   {
     "id": "wigan-cur-jai-field",
@@ -12359,7 +12688,8 @@
     "basePlayerId": "wigan-cur-jake-wardle",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "wigan-cur-junior-nsemba",
@@ -12392,7 +12722,8 @@
     "basePlayerId": "wigan-cur-junior-nsemba",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "wigan-cur-kaide-ellis",
@@ -12445,15 +12776,17 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 15,
+    "tries": 2,
     "teamYearId": "wigan-warriors-2026",
     "year": 2026,
     "cardYear": 2026,
     "status": "Current",
     "basePlayerId": "wigan-cur-kian-mcdermott",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2006-02-14",
+    "birthYear": 2006
   },
   {
     "id": "wigan-cur-liam-farrell",
@@ -12486,7 +12819,8 @@
     "basePlayerId": "wigan-cur-liam-farrell",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 12
   },
   {
     "id": "wigan-cur-liam-marshall",
@@ -12519,7 +12853,8 @@
     "basePlayerId": "wigan-cur-liam-marshall",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "wigan-cur-luke-thompson",
@@ -12552,7 +12887,8 @@
     "basePlayerId": "wigan-cur-luke-thompson",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 10
   },
   {
     "id": "wigan-cur-nathan-lowe",
@@ -12674,14 +13010,15 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "challengeCupWinner": true,
-    "superLeagueWinner": false
+    "superLeagueWinner": false,
+    "intlCaps": 1
   },
   {
     "id": "wigan-cur-patrick-mago",
     "name": "Patrick Mago",
     "position": "PROP",
     "club": "Wigan Warriors",
-    "nationality": "Australia",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -12774,7 +13111,8 @@
     "primaryPosition": "SR/PF",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "challengeCupWinner": true
+    "challengeCupWinner": true,
+    "intlCaps": 1
   },
   {
     "id": "wigan-cur-taylor-kerr",
@@ -12818,7 +13156,7 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "Australia",
+    "nationality": "France",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–2022",
     "category": "current",
@@ -12834,7 +13172,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2000-06-15",
-    "birthYear": 2000
+    "birthYear": 2000,
+    "intlCaps": 5
   },
   {
     "id": "wigan-cur-tom-forber",
@@ -12898,7 +13237,8 @@
     "basePlayerId": "wigan-cur-zach-eckersley",
     "primaryPosition": "WG/CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "wigan-cur-abbas-miski",
@@ -12928,7 +13268,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1995-07-25",
-    "birthYear": 1995
+    "birthYear": 1995,
+    "intlCaps": 14
   },
   {
     "id": "wigan-cur-harvey-makin",
@@ -13042,7 +13383,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 4,
     "tries": 0,
     "teamYearId": "wigan-warriors-2026",
     "year": 2026,
@@ -13050,7 +13391,9 @@
     "status": "Current",
     "basePlayerId": "wigan-cur-george-oloughlin",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2006-08-17",
+    "birthYear": 2006
   },
   {
     "id": "wigan-cur-finlay-yeomans",
@@ -13070,7 +13413,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
+    "appearances": 1,
     "tries": 0,
     "teamYearId": "wigan-warriors-2026",
     "year": 2026,
@@ -13078,7 +13421,9 @@
     "status": "Current",
     "basePlayerId": "wigan-cur-finlay-yeomans",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2007-06-14",
+    "birthYear": 2007
   },
   {
     "id": "wigan-cur-finn-mcmillan",
@@ -13098,7 +13443,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 1,
     "tries": 0,
     "teamYearId": "wigan-warriors-2026",
     "year": 2026,
@@ -13110,7 +13455,9 @@
     "clubsPlayedFor": [
       "Barrow Raiders",
       "Wigan Warriors"
-    ]
+    ],
+    "dateOfBirth": "2005-12-09",
+    "birthYear": 2005
   },
   {
     "id": "wynnum-manly-cur-bayley-sironen",
@@ -13143,21 +13490,23 @@
     "clubsPlayedFor": [
       "Catalans Dragons",
       "Wynnum Manly Seagulls"
-    ]
+    ],
+    "appearances": 41,
+    "tries": 5
   },
   {
     "id": "york-cur-ata-hingano",
     "name": "Ata Hingano",
     "position": "STAND_OFF",
     "club": "York Knights",
-    "nationality": "New Zealand",
+    "nationality": "Tonga",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 83,
     "value": 168000,
-    "appearances": 10,
-    "tries": 1,
+    "appearances": 28,
+    "tries": 2,
     "dateOfBirth": "1997-03-11",
     "birthYear": 1997,
     "currentClub": "York Knights",
@@ -13174,14 +13523,15 @@
     "basePlayerId": "york-cur-ata-hingano",
     "primaryPosition": "SO",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "york-cur-ben-jones-bishop",
     "name": "Ben Jones-Bishop",
     "position": "WING",
     "club": "York Knights",
-    "nationality": "England",
+    "nationality": "Jamaica",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -13207,14 +13557,15 @@
     "basePlayerId": "york-cur-ben-jones-bishop",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "york-cur-denive-balmforth",
     "name": "Denive Balmforth",
     "position": "HOOKER",
     "club": "York Knights",
-    "nationality": "England",
+    "nationality": "Wales",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -13238,7 +13589,8 @@
     "basePlayerId": "york-cur-denive-balmforth",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "york-cur-jack-martin",
@@ -13251,7 +13603,7 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 12,
+    "appearances": 27,
     "dateOfBirth": "2001-06-13",
     "birthYear": 2001,
     "clubsPlayedFor": [
@@ -13271,7 +13623,8 @@
     "basePlayerId": "york-cur-jack-martin",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 0
   },
   {
     "id": "york-cur-jesse-dee",
@@ -13322,8 +13675,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 79,
+    "tries": 35,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -13339,7 +13692,7 @@
     "name": "Jordan Lipp",
     "position": "CENTRE",
     "club": "York Knights",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -13360,7 +13713,10 @@
     "primaryPosition": "CE",
     "birthYear": 2001,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2001-01-10",
+    "appearances": 0,
+    "tries": 0
   },
   {
     "id": "york-cur-jordan-thompson",
@@ -13437,8 +13793,8 @@
     "category": "current",
     "peakRating": 83,
     "value": 158000,
-    "appearances": 175,
-    "tries": 32,
+    "appearances": 95,
+    "tries": 6,
     "dateOfBirth": "1998-03-07",
     "birthYear": 1998,
     "currentClub": "York Knights",
@@ -13456,7 +13812,8 @@
     "basePlayerId": "york-cur-justin-sangare",
     "primaryPosition": "PF/SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 9
   },
   {
     "id": "york-cur-kieran-buchanan",
@@ -13476,8 +13833,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 116000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 23,
+    "tries": 4,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -13485,7 +13842,9 @@
     "basePlayerId": "york-cur-kieran-buchanan",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-01-26",
+    "intlCaps": 4
   },
   {
     "id": "york-cur-kieran-hudson",
@@ -13505,7 +13864,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 3,
     "tries": 0,
     "teamYearId": "york-knights-2026",
     "year": 2026,
@@ -13566,8 +13925,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 143000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 16,
+    "tries": 6,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -13575,7 +13934,8 @@
     "basePlayerId": "york-cur-nikau-williams",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-11-11"
   },
   {
     "id": "york-cur-oliver-field",
@@ -13603,7 +13963,10 @@
     "primaryPosition": "SR",
     "birthYear": 2002,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2002-09-03",
+    "appearances": 25,
+    "tries": 5
   },
   {
     "id": "york-cur-paul-mcshane",
@@ -13634,7 +13997,8 @@
     "basePlayerId": "york-cur-paul-mcshane",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "york-cur-paul-vaughan",
@@ -13665,7 +14029,8 @@
     "basePlayerId": "york-cur-paul-vaughan",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "york-cur-sam-wood",
@@ -13696,7 +14061,8 @@
     "basePlayerId": "york-cur-sam-wood",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "york-cur-scott-galeano",
@@ -13709,8 +14075,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 138000,
-    "appearances": 8,
-    "tries": 8,
+    "appearances": 22,
+    "tries": 13,
     "dateOfBirth": "1998-04-13",
     "birthYear": 1998,
     "currentClub": "York Knights",
@@ -13778,8 +14144,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 118000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 67,
+    "tries": 4,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -13787,7 +14153,8 @@
     "basePlayerId": "york-cur-will-dagger",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-02-21"
   },
   {
     "id": "york-cur-xavier-vaa",
@@ -13851,7 +14218,10 @@
     "clubsPlayedFor": [
       "Hull KR",
       "York Knights"
-    ]
+    ],
+    "dateOfBirth": "1996-09-02",
+    "appearances": 112,
+    "tries": 14
   },
   {
     "id": "york-cur-john-sagaga",
@@ -13940,8 +14310,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 33,
+    "tries": 1,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -14078,8 +14448,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 40,
+    "tries": 5,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -14114,8 +14484,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 23,
+    "tries": 15,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -14129,7 +14499,8 @@
       "Wests Tigers",
       "Halifax Panthers",
       "York Knights"
-    ]
+    ],
+    "intlCaps": 2
   },
   {
     "id": "york-cur-king-vuniyayawa",
@@ -14149,8 +14520,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 76,
+    "tries": 6,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -14164,7 +14535,8 @@
       "Featherstone Rovers",
       "Newcastle Thunder",
       "York Knights"
-    ]
+    ],
+    "intlCaps": 9
   },
   {
     "id": "york-cur-cody-hunter",
@@ -14184,8 +14556,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 95000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 20,
+    "tries": 5,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -14197,7 +14569,9 @@
       "Sunshine Coast Falcons",
       "Newcastle Thunder",
       "York Knights"
-    ]
+    ],
+    "dateOfBirth": "2001-10-03",
+    "birthYear": 2001
   },
   {
     "id": "york-cur-tom-inman",
@@ -14217,8 +14591,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 13,
+    "tries": 2,
     "teamYearId": "york-knights-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -14230,7 +14604,9 @@
       "Warrington Wolves",
       "Halifax Panthers",
       "York Knights"
-    ]
+    ],
+    "dateOfBirth": "2002-12-24",
+    "birthYear": 2002
   },
   {
     "id": "york-cur-tommy-doyle",
@@ -14250,7 +14626,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
+    "appearances": 9,
     "tries": 0,
     "teamYearId": "york-knights-2026",
     "year": 2026,

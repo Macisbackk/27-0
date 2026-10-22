@@ -96,10 +96,12 @@ function CareerRouter() {
         fullWidth
         ariaLabel="Manager sections"
       />
+      <div key={tab} className="fl-rise">
       {tab === "match" ? <MatchTab onOpenMarket={() => setMarketOpen(true)} /> : null}
       {tab === "team" ? <TeamTab /> : null}
       {tab === "table" ? <TableTab /> : null}
       {tab === "club" ? <ClubTab onOpenVault={() => setVault(true)} onOpenRecords={() => setRecords(true)} /> : null}
+      </div>
       {sheets}
     </div>
     </ClubSheetProvider>

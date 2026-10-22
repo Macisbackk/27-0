@@ -292,6 +292,24 @@ type CurrentTeamYearSquads = Record<
   >
 >;
 
+/** Every current-season card registered to this club (the full squad list). */
+function fullSquadIds(
+  club: string,
+  year: string,
+  playerById: Map<string, Player>
+): string[] {
+  const ids: string[] = [];
+  for (const player of playerById.values()) {
+    if (player.category !== "current") continue;
+    if (player.availableInGame === false) continue;
+    if (player.club !== club) continue;
+    if (player.cardYear !== undefined && String(player.cardYear) !== year) continue;
+    if (!playerBelongsToTeamYear(player, club, year)) continue;
+    ids.push(player.id);
+  }
+  return ids;
+}
+
 function buildCurrentYearSquads(
   rosters: TeamYearRosters,
   meta: TeamYearRostersMetaFile,
@@ -306,14 +324,14 @@ function buildCurrentYearSquads(
     if (!entry?.playerIds?.length) continue;
     if (!isSuperLeagueSeason(club, year)) continue;
 
-    const knownIds = entry.playerIds.filter((id) => {
+    const matchdayIds = entry.playerIds.filter((id) => {
       const player = playerById.get(id);
       return !!player && player.category === "current";
     });
 
     if (
-      knownIds.length < CURRENT_YEAR_SQUAD_MIN ||
-      knownIds.length > CURRENT_YEAR_SQUAD_MAX
+      matchdayIds.length < CURRENT_YEAR_SQUAD_MIN ||
+      matchdayIds.length > CURRENT_YEAR_SQUAD_MAX
     ) {
       if (process.env.NODE_ENV !== "production") {
         console.warn(
@@ -322,6 +340,12 @@ function buildCurrentYearSquads(
       }
       continue;
     }
+
+    // Classic Current spins use the whole registered squad, not just the matchday 17,
+    // so academy and depth players (e.g. the 2026 squad-number additions) can be signed too.
+    const knownIds = [
+      ...new Set([...matchdayIds, ...fullSquadIds(club, year, playerById)]),
+    ];
 
     if (!rosters[club]) rosters[club] = {};
     rosters[club][year] = [...knownIds].sort((a, b) => a.localeCompare(b));

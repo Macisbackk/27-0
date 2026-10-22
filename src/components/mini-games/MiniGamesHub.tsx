@@ -80,7 +80,7 @@ export function MiniGamesHub() {
         <h1 className={`mt-1.5 ${TYPO.pageTitle}`}>Puzzles</h1>
         <p className="mt-2 text-sm text-gray-400">Quick rugby league puzzles that pay Club Funds. Rewards reset at midnight UK time.</p>
 
-        <ul className="mt-5 grid w-full gap-3 sm:grid-cols-2">
+        <ul className="fl-stagger mt-5 grid w-full gap-3 sm:grid-cols-2">
           {GAMES.map((game) => {
             const done = banked[game.id];
             return (
@@ -88,7 +88,7 @@ export function MiniGamesHub() {
                 <Link
                   href={game.href}
                   onClick={() => playUiClick()}
-                  className="btn-press group flex h-full items-center gap-3 rounded-2xl border border-white/10 bg-pitch-900/80 p-3 text-left transition hover:border-theme-primary/50 hover:bg-pitch-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 sm:flex-col sm:items-start sm:p-4"
+                  className="btn-press fl-pressable fl-lift group flex h-full items-center gap-3 rounded-2xl border border-white/10 bg-pitch-900/80 p-3 text-left transition hover:border-theme-primary/50 hover:bg-pitch-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 sm:flex-col sm:items-start sm:p-4"
                 >
                   <span
                     aria-hidden

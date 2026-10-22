@@ -484,7 +484,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
           }`}
         >
           <ul
-            className="divide-y divide-pitch-700/30 sm:hidden"
+            className="fl-stagger divide-y divide-pitch-700/30 sm:hidden"
             aria-label={`${trackerLabel} rankings`}
           >
             {entries.map((entry) => (
@@ -524,7 +524,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
                 )}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="fl-stagger">
               {entries.map((entry) => (
                 <tr
                   key={`${entry.rank}-${entry.username}-${entry.achievedAt}`}

@@ -68,7 +68,8 @@ export function PitchSlotCard({
       surname.length <= 8 ? "text-[11px]" : surname.length <= 10 ? "text-[10px]" : surname.length <= 12 ? "text-[9px]" : "text-[8px]";
     return (
       <div
-        className={`pitch-slot-card flex w-[76px] flex-col items-center ${className}`}
+        key={player.id}
+        className={`pitch-slot-card fl-pop flex w-[76px] flex-col items-center ${className}`}
         title={`${positionLabel}: ${player.name}`}
         aria-label={`${positionLabel}: ${player.name}${hardMode ? "" : `, rated ${ratingLabel}`}`}
       >

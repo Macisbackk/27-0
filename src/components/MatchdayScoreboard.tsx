@@ -1,6 +1,7 @@
 "use client";
 
 import { TYPO } from "@/lib/ui/typography";
+import { CountUp } from "@/components/ui/CountUp";
 
 interface MatchdayScoreboardProps {
   filledCount: number;
@@ -47,7 +48,11 @@ export function MatchdayScoreboard({
       <div className="shrink-0 text-right">
         <p className={TYPO.label}>Your Rating</p>
         <p className="fl-number mt-0.5 text-[26px] leading-none text-theme-primary">
-          {showRating ? averageSquadRating.toFixed(1) : "—"}
+          {showRating ? (
+            <CountUp value={averageSquadRating} format={(n) => n.toFixed(1)} durationMs={450} />
+          ) : (
+            "—"
+          )}
         </p>
       </div>
     </div>

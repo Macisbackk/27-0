@@ -17,8 +17,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 94000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 27,
+    "tries": 10,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -26,7 +26,8 @@
     "basePlayerId": "leeds-cur-alfie-edgell",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2004
+    "birthYear": 2004,
+    "dateOfBirth": "2004-07-25"
   },
   {
     "id": "leeds-cur-ash-handley",
@@ -60,7 +61,8 @@
     "basePlayerId": "leeds-cur-ash-handley",
     "primaryPosition": "CE/WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "leeds-cur-ben-littlewood",
@@ -172,8 +174,8 @@
     "category": "current",
     "peakRating": 83,
     "value": 163000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 110,
+    "tries": 28,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -181,7 +183,8 @@
     "basePlayerId": "leeds-cur-chris-hankinson",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1993
+    "birthYear": 1993,
+    "dateOfBirth": "1993-11-30"
   },
   {
     "id": "leeds-cur-cooper-jenkins",
@@ -241,7 +244,9 @@
     "basePlayerId": "leeds-cur-danny-levi",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1995
+    "birthYear": 1995,
+    "dateOfBirth": "1995-12-05",
+    "intlCaps": 4
   },
   {
     "id": "leeds-cur-harry-newman",
@@ -272,7 +277,8 @@
     "basePlayerId": "leeds-cur-harry-newman",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 7
   },
   {
     "id": "leeds-cur-jake-connor",
@@ -304,7 +310,8 @@
     "basePlayerId": "leeds-cur-jake-connor",
     "primaryPosition": "HB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 5
   },
   {
     "id": "leeds-cur-james-bentley",
@@ -330,17 +337,21 @@
     "displayClub": "Leeds Rhinos",
     "basePlayerId": "leeds-cur-james-bentley",
     "primaryPosition": "SR",
-    "birthYear": 1992,
+    "birthYear": 1997,
     "availableInGame": true,
     "superLeagueEligible": true,
-    "superLeagueWinner": true
+    "superLeagueWinner": true,
+    "dateOfBirth": "1997-10-19",
+    "intlCaps": 8,
+    "appearances": 137,
+    "tries": 26
   },
   {
     "id": "leeds-cur-james-mcdonnell",
     "name": "James McDonnell",
     "position": "SECOND_ROW",
     "club": "Leeds Rhinos",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -364,7 +375,8 @@
     "basePlayerId": "leeds-cur-james-mcdonnell",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "leeds-cur-jarrod-o-connor",
@@ -410,13 +422,13 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "Samoa",
+    "nationality": "New Zealand",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 10,
     "tries": 0,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
@@ -446,8 +458,8 @@
     "category": "current",
     "peakRating": 86,
     "value": 183000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 357,
+    "tries": 143,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -455,7 +467,9 @@
     "basePlayerId": "leeds-cur-kallum-watkins",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1991
+    "birthYear": 1991,
+    "dateOfBirth": "1991-03-12",
+    "intlCaps": 31
   },
   {
     "id": "leeds-cur-keenan-palasia",
@@ -469,14 +483,14 @@
       "LOOSE_FORWARD"
     ],
     "primaryPosition": "LOOSE_FORWARD",
-    "nationality": "England",
+    "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 85,
     "value": 180000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 43,
+    "tries": 2,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -484,7 +498,9 @@
     "basePlayerId": "leeds-cur-keenan-palasia",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1997
+    "birthYear": 1997,
+    "dateOfBirth": "1997-01-24",
+    "intlCaps": 4
   },
   {
     "id": "leeds-cur-lachie-miller",
@@ -528,8 +544,8 @@
     "category": "current",
     "peakRating": 87,
     "value": 219000,
-    "appearances": 13,
-    "tries": 22,
+    "appearances": 20,
+    "tries": 29,
     "dateOfBirth": "1993-10-03",
     "birthYear": 1993,
     "currentClub": "Leeds Rhinos",
@@ -546,7 +562,8 @@
     "basePlayerId": "leeds-cur-maika-sivo",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 12
   },
   {
     "id": "leeds-cur-mikolaj-oledzki",
@@ -577,7 +594,8 @@
     "basePlayerId": "leeds-cur-mikolaj-oledzki",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 4
   },
   {
     "id": "leeds-cur-morgan-gannon",
@@ -628,8 +646,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 7,
+    "tries": 1,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -637,7 +655,8 @@
     "basePlayerId": "leeds-cur-ned-mccormack",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2005
+    "birthYear": 2005,
+    "dateOfBirth": "2005-02-08"
   },
   {
     "id": "leeds-cur-presley-cassell",
@@ -657,8 +676,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 23,
+    "tries": 2,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -666,7 +685,8 @@
     "basePlayerId": "leeds-cur-presley-cassell",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2006
+    "birthYear": 2004,
+    "dateOfBirth": "2004-10-06"
   },
   {
     "id": "leeds-cur-riley-lumb",
@@ -717,8 +737,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 425,
+    "tries": 274,
     "teamYearId": "leeds-rhinos-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -727,7 +747,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1987-11-27",
-    "birthYear": 1987
+    "birthYear": 1987,
+    "intlCaps": 40
   },
   {
     "id": "leeds-cur-sam-lisone",
@@ -756,7 +777,8 @@
     "dateOfBirth": "1994-02-19",
     "birthYear": 1994,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 4
   },
   {
     "id": "leeds-cur-tom-holroyd",
@@ -787,7 +809,8 @@
     "basePlayerId": "leeds-cur-tom-holroyd",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "leeds-cur-tom-nicholson-watton",

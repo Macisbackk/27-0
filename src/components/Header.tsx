@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { NavProgress } from "@/components/NavProgress";
 import { Suspense, useState } from "react";
 import { HeaderAuthControls } from "./HeaderAuthControls";
 import { LogoMark } from "./LogoMark";
@@ -19,6 +20,7 @@ export function Header() {
   return (
     <>
       <header className="app-header sticky top-0 z-50 overflow-x-clip border-b">
+        <NavProgress />
         <div className="app-chrome relative grid h-14 min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 px-4">
           <div className="flex min-w-0 items-center justify-start">
             <HeaderAuthControls />
@@ -35,7 +37,7 @@ export function Header() {
                 playMenuOpen();
                 setMenuOpen(true);
               }}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pitch-900 text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+              className="fl-pressable flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pitch-900 text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
               aria-label="Open menu"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">

@@ -49,7 +49,7 @@ function MobileOverlayShell({
   return (
     <BodyPortal>
       <div
-        className={`fixed inset-0 ${uiLayerClass("modalBackdrop")} flex justify-center bg-black/75 ${SPACING.modalBackdrop} ${alignClass}`}
+        className={`fl-backdrop fixed inset-0 ${uiLayerClass("modalBackdrop")} flex justify-center bg-black/75 ${SPACING.modalBackdrop} ${alignClass}`}
         role="presentation"
         onClick={handleClose}
       >

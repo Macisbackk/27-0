@@ -35,7 +35,7 @@
     "name": "Albert Hopoate",
     "position": "CENTRE",
     "club": "Warrington Wolves",
-    "nationality": "Tonga",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -79,8 +79,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 21,
+    "tries": 12,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -88,7 +88,8 @@
     "basePlayerId": "warrington-cur-arron-lindop",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2006
+    "birthYear": 2006,
+    "dateOfBirth": "2006-03-17"
   },
   {
     "id": "warrington-cur-ben-currie",
@@ -119,7 +120,8 @@
     "basePlayerId": "warrington-cur-ben-currie",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 11
   },
   {
     "id": "warrington-cur-cai-taylor-wray",
@@ -163,8 +165,8 @@
     "category": "current",
     "peakRating": 87,
     "value": 217000,
-    "appearances": 30,
-    "tries": 3,
+    "appearances": 182,
+    "tries": 20,
     "dateOfBirth": "1999-06-29",
     "birthYear": 1999,
     "currentClub": "Warrington Wolves",
@@ -181,7 +183,8 @@
     "basePlayerId": "warrington-cur-danny-walker",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 4
   },
   {
     "id": "warrington-cur-ewan-irwin",
@@ -201,8 +204,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 142000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 22,
+    "tries": 5,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -210,7 +213,8 @@
     "basePlayerId": "warrington-cur-ewan-irwin",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2008
+    "birthYear": 2008,
+    "dateOfBirth": "2008-02-07"
   },
   {
     "id": "warrington-cur-george-williams",
@@ -243,7 +247,8 @@
     "basePlayerId": "warrington-cur-george-williams",
     "primaryPosition": "SO",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 24
   },
   {
     "id": "warrington-cur-jake-thewlis",
@@ -304,7 +309,8 @@
     "basePlayerId": "warrington-cur-james-harrison",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "warrington-cur-joe-philbin",
@@ -335,7 +341,8 @@
     "basePlayerId": "warrington-cur-joe-philbin",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "warrington-cur-jordy-crowther",
@@ -379,14 +386,14 @@
       "CENTRE"
     ],
     "primaryPosition": "CENTRE",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 81,
     "value": 116000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 20,
+    "tries": 11,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -394,7 +401,8 @@
     "basePlayerId": "warrington-cur-josh-smith",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-04-18"
   },
   {
     "id": "warrington-cur-josh-thewlis",
@@ -469,14 +477,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2021–2021",
     "category": "current",
     "peakRating": 83,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 166,
+    "tries": 3,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -484,7 +492,9 @@
     "basePlayerId": "warrington-cur-liam-byrne",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-08-18",
+    "intlCaps": 7
   },
   {
     "id": "warrington-cur-luke-thomas",
@@ -498,14 +508,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Wales",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 28,
+    "tries": 2,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -513,7 +523,9 @@
     "basePlayerId": "warrington-cur-luke-thomas",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1993
+    "birthYear": 2002,
+    "dateOfBirth": "2002-10-19",
+    "intlCaps": 1
   },
   {
     "id": "warrington-cur-luke-yates",
@@ -575,7 +587,8 @@
     "basePlayerId": "warrington-cur-marc-sneyd",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "warrington-cur-matty-ashton",
@@ -606,7 +619,8 @@
     "basePlayerId": "warrington-cur-matty-ashton",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 5
   },
   {
     "id": "warrington-cur-matty-nicholson",
@@ -635,7 +649,10 @@
     "dateOfBirth": "2003-07-18",
     "birthYear": 2003,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2,
+    "appearances": 47,
+    "tries": 18
   },
   {
     "id": "warrington-cur-max-wood",
@@ -708,7 +725,7 @@
     "name": "Sam Stone",
     "position": "SECOND_ROW",
     "club": "Warrington Wolves",
-    "nationality": "Australia",
+    "nationality": "Malta",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -732,7 +749,8 @@
     "basePlayerId": "warrington-cur-sam-stone",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "warrington-cur-toafofoa-sipley",
@@ -752,8 +770,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 135000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 17,
+    "tries": 4,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -761,7 +779,8 @@
     "basePlayerId": "warrington-cur-toafofoa-sipley",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1995
+    "birthYear": 1995,
+    "dateOfBirth": "1995-01-05"
   },
   {
     "id": "warrington-cur-toby-king",
@@ -794,7 +813,8 @@
     "basePlayerId": "warrington-cur-toby-king",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "warrington-cur-zack-gardner",
@@ -814,8 +834,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 5,
+    "tries": 2,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -823,7 +843,8 @@
     "basePlayerId": "warrington-cur-zack-gardner",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2006
+    "birthYear": 2006,
+    "dateOfBirth": "2006-04-18"
   },
   {
     "id": "warrington-cur-tom-mckinney",
@@ -873,7 +894,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
+    "appearances": 5,
     "tries": 0,
     "teamYearId": "warrington-wolves-2026",
     "year": 2026,
@@ -882,7 +903,8 @@
     "basePlayerId": "warrington-cur-ben-hartill",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2005
+    "birthYear": 2005,
+    "dateOfBirth": "2005-08-25"
   },
   {
     "id": "warrington-cur-oliver-leyland",
@@ -941,6 +963,8 @@
     "status": "Current",
     "basePlayerId": "warrington-cur-tommy-rhodes",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2009-05-01",
+    "birthYear": 2009
   }
 ]

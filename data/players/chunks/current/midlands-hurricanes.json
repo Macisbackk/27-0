@@ -32,7 +32,8 @@
     "primaryPosition": "CENTRE",
     "currentClub": "Midlands Hurricanes",
     "availableInGame": false,
-    "superLeagueEligible": false
+    "superLeagueEligible": false,
+    "tries": 0
   },
   {
     "id": "midlands-cur-zach-jebson",
@@ -83,8 +84,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 236,
+    "tries": 74,
     "teamYearId": "midlands-hurricanes-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -99,6 +100,7 @@
       "Hull FC",
       "Huddersfield Giants",
       "Midlands Hurricanes"
-    ]
+    ],
+    "intlCaps": 1
   }
 ]

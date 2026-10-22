@@ -4,6 +4,7 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import "../styles/floodlights.css";
+import "../styles/motion.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { CoachbeardMergeRunner } from "@/components/CoachbeardMergeRunner";
 import { ManagerDataPurgeRunner } from "@/components/ManagerDataPurgeRunner";
@@ -17,6 +18,7 @@ import { CapacitorAppShell } from "@/components/CapacitorAppShell";
 import { ExternalLinkGuard } from "@/components/ExternalLinkGuard";
 import { PwaSetup } from "@/components/PwaSetup";
 import { CosmeticsBoot } from "@/components/CosmeticsBoot";
+import { MotionProvider } from "@/components/MotionProvider";
 import { UI_THEME_BOOTSTRAP_SCRIPT } from "@/lib/ui/theme-bootstrap-script";
 
 const inter = Inter({
@@ -87,6 +89,7 @@ export default function RootLayout({
           <ManagerDataPurgeRunner />
           <UiThemeProvider />
           <AchievementProvider>
+            <MotionProvider>
             <SoundUnlock />
             <Header />
             <main className="app-main flex min-w-0 max-w-full flex-1 flex-col overflow-x-clip">
@@ -94,6 +97,7 @@ export default function RootLayout({
             </main>
             <SiteFooter />
             <BottomNav />
+            </MotionProvider>
           </AchievementProvider>
         </AuthProvider>
         <div id="game-portal-root" />

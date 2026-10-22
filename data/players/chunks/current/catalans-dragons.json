@@ -17,8 +17,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 13,
+    "tries": 1,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -27,7 +27,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2005-10-05",
-    "birthYear": 2005
+    "birthYear": 2005,
+    "intlCaps": 1
   },
   {
     "id": "catalans-cur-alrix-da-costa",
@@ -58,7 +59,8 @@
     "basePlayerId": "catalans-cur-alrix-da-costa",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 12
   },
   {
     "id": "catalans-cur-bayley-sironen",
@@ -91,7 +93,9 @@
     "clubsPlayedFor": [
       "Catalans Dragons",
       "Wynnum Manly Seagulls"
-    ]
+    ],
+    "appearances": 41,
+    "tries": 5
   },
   {
     "id": "catalans-cur-ben-condon",
@@ -120,7 +124,9 @@
     "basePlayerId": "catalans-cur-ben-condon",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 23,
+    "tries": 4
   },
   {
     "id": "catalans-cur-benjamin-garcia",
@@ -153,7 +159,8 @@
     "basePlayerId": "catalans-cur-benjamin-garcia",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 18
   },
   {
     "id": "catalans-cur-cesar-rouge",
@@ -200,7 +207,8 @@
     "basePlayerId": "catalans-cur-cesar-rouge",
     "primaryPosition": "HB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "catalans-cur-charlie-staines",
@@ -282,8 +290,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 10,
+    "tries": 1,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -292,7 +300,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2005-01-14",
-    "birthYear": 2005
+    "birthYear": 2005,
+    "intlCaps": 1
   },
   {
     "id": "catalans-cur-franck-maria",
@@ -312,8 +321,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 113000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 36,
+    "tries": 1,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -321,7 +330,9 @@
     "basePlayerId": "catalans-cur-franck-maria",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1997
+    "birthYear": 1997,
+    "dateOfBirth": "1997-07-31",
+    "intlCaps": 2
   },
   {
     "id": "catalans-cur-giovanni-descalzi",
@@ -341,7 +352,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 4,
     "tries": 0,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
@@ -365,14 +376,14 @@
       "FULLBACK"
     ],
     "primaryPosition": "FULLBACK",
-    "nationality": "England",
+    "nationality": "France",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 81,
     "value": 118000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 39,
+    "tries": 8,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -380,7 +391,9 @@
     "basePlayerId": "catalans-cur-guillermo-aispuro-bichet",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2005
+    "birthYear": 2005,
+    "dateOfBirth": "2005-07-12",
+    "intlCaps": 5
   },
   {
     "id": "catalans-cur-harvey-wilson",
@@ -400,8 +413,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 41,
+    "tries": 4,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -409,7 +422,8 @@
     "basePlayerId": "catalans-cur-harvey-wilson",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2004
+    "birthYear": 2004,
+    "dateOfBirth": "2004-01-31"
   },
   {
     "id": "catalans-cur-iszac-faasuamaleaui",
@@ -429,7 +443,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 8,
     "tries": 0,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
@@ -438,7 +452,8 @@
     "basePlayerId": "catalans-cur-iszac-faasuamaleaui",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-12-01"
   },
   {
     "id": "catalans-cur-jordan-dezaria",
@@ -467,7 +482,10 @@
     "dateOfBirth": "1996-11-06",
     "birthYear": 1996,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 7,
+    "appearances": 99,
+    "tries": 4
   },
   {
     "id": "catalans-cur-josh-allen",
@@ -481,14 +499,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 25,
+    "tries": 1,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -530,7 +548,8 @@
     "basePlayerId": "catalans-cur-julian-bousquet",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 17
   },
   {
     "id": "catalans-cur-kruise-leeming",
@@ -550,8 +569,8 @@
     "category": "current",
     "peakRating": 85,
     "value": 180000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 250,
+    "tries": 43,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -560,7 +579,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1995-09-07",
-    "birthYear": 1995
+    "birthYear": 1995,
+    "intlCaps": 1
   },
   {
     "id": "catalans-cur-lenny-marc",
@@ -580,8 +600,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 93000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 6,
+    "tries": 2,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -589,7 +609,8 @@
     "basePlayerId": "catalans-cur-lenny-marc",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2006
+    "birthYear": 2006,
+    "dateOfBirth": "2006-04-14"
   },
   {
     "id": "catalans-cur-leo-darrelatour",
@@ -619,7 +640,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2000-09-08",
-    "birthYear": 2000
+    "birthYear": 2000,
+    "intlCaps": 2
   },
   {
     "id": "catalans-cur-lewis-dodd",
@@ -632,8 +654,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 9,
-    "tries": 4,
+    "appearances": 104,
+    "tries": 33,
     "superLeagueWinner": true,
     "challengeCupWinner": false,
     "dateOfBirth": "2002-01-27",
@@ -680,7 +702,10 @@
     "primaryPosition": "WG",
     "birthYear": 2001,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2001-01-29",
+    "appearances": 0,
+    "tries": 0
   },
   {
     "id": "catalans-cur-matthieu-laguerre",
@@ -694,14 +719,14 @@
       "CENTRE"
     ],
     "primaryPosition": "CENTRE",
-    "nationality": "England",
+    "nationality": "France",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 81,
     "value": 116000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 78,
+    "tries": 26,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -709,7 +734,9 @@
     "basePlayerId": "catalans-cur-matthieu-laguerre",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1999
+    "birthYear": 1999,
+    "dateOfBirth": "1999-02-03",
+    "intlCaps": 9
   },
   {
     "id": "catalans-cur-nick-cotric",
@@ -741,7 +768,8 @@
     "basePlayerId": "catalans-cur-nick-cotric",
     "primaryPosition": "CE/WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "catalans-cur-paul-seguier",
@@ -771,7 +799,10 @@
     "dateOfBirth": "1997-09-08",
     "birthYear": 1997,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 7,
+    "appearances": 107,
+    "tries": 7
   },
   {
     "id": "catalans-cur-romain-navarette",
@@ -801,7 +832,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1994-06-30",
-    "birthYear": 1994
+    "birthYear": 1994,
+    "intlCaps": 12
   },
   {
     "id": "catalans-cur-solomona-faataape",
@@ -814,8 +846,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 139000,
-    "appearances": 34,
-    "tries": 12,
+    "appearances": 20,
+    "tries": 8,
     "dateOfBirth": "2000-12-25",
     "birthYear": 2000,
     "currentClub": "Catalans Dragons",
@@ -847,8 +879,8 @@
     "value": 228000,
     "dateOfBirth": "2001-03-01",
     "birthYear": 2001,
-    "appearances": 12,
-    "tries": 5,
+    "appearances": 26,
+    "tries": 10,
     "currentClub": "Catalans Dragons",
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
@@ -896,7 +928,8 @@
     "basePlayerId": "catalans-cur-tommy-makinson",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 19
   },
   {
     "id": "catalans-cur-ugo-tison",
@@ -916,8 +949,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 37,
+    "tries": 5,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -925,7 +958,9 @@
     "basePlayerId": "catalans-cur-ugo-tison",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2001
+    "birthYear": 2001,
+    "dateOfBirth": "2001-07-07",
+    "intlCaps": 4
   },
   {
     "id": "catalans-cur-zac-lipowicz",
@@ -939,14 +974,14 @@
       "SECOND_ROW"
     ],
     "primaryPosition": "SECOND_ROW",
-    "nationality": "England",
+    "nationality": "Poland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2020–Present",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 29,
+    "tries": 6,
     "teamYearId": "catalans-dragons-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -954,6 +989,8 @@
     "basePlayerId": "catalans-cur-zac-lipowicz",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2002
+    "birthYear": 2002,
+    "dateOfBirth": "2002-05-31",
+    "intlCaps": 1
   }
 ]

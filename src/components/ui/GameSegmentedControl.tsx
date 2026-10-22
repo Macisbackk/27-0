@@ -1,6 +1,7 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
+import { motion } from "framer-motion";
 import { playTabChange, playUiClick } from "@/lib/sound";
 import { TYPO } from "@/lib/ui/typography";
 
@@ -38,6 +39,7 @@ export function GameSegmentedControl<T extends string>({
   compact = false,
   fullWidth = false,
 }: GameSegmentedControlProps<T>) {
+  const pillId = useId();
   return (
     <div
       className={`mode-toggle-wrap ${className}`.trim()}
@@ -50,6 +52,7 @@ export function GameSegmentedControl<T extends string>({
         className={`mode-toggle${fullWidth ? " mode-toggle--full" : ""}${compact ? " mode-toggle--compact" : ""}`}
         role="tablist"
         aria-label={ariaLabel ?? label}
+        data-sliding=""
       >
         {options.map((opt) => {
           const active = value === opt.id;
@@ -76,6 +79,14 @@ export function GameSegmentedControl<T extends string>({
                 onChange(opt.id);
               }}
             >
+              {active ? (
+                <motion.span
+                  layoutId={`seg-pill-${pillId}`}
+                  className={`mode-toggle__pill${tone === "era" ? " mode-toggle__pill--era" : tone === "current" ? " mode-toggle__pill--current" : ""}`}
+                  transition={{ type: "spring", stiffness: 520, damping: 40, mass: 0.8 }}
+                  aria-hidden
+                />
+              ) : null}
               {opt.shortLabel ? (
                 <>
                   <span className="whitespace-normal text-center leading-tight sm:hidden">

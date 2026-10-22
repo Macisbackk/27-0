@@ -532,7 +532,7 @@ function StatsSection({
         {headerExtra}
       </div>
       {/* Two tiles per row on phones: the old single column made this page ~3,000px tall. */}
-      <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-3">{children}</div>
+      <div className="fl-stagger grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-3">{children}</div>
     </section>
   );
 }

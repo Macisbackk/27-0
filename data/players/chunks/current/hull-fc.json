@@ -35,14 +35,14 @@
     "name": "Amir Bourouh",
     "position": "HOOKER",
     "club": "Hull FC",
-    "nationality": "England",
+    "nationality": "France",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
     "peakRating": 81,
     "value": 114000,
-    "appearances": 83,
-    "tries": 7,
+    "appearances": 88,
+    "tries": 4,
     "dateOfBirth": "2001-01-05",
     "birthYear": 2001,
     "currentClub": "Hull FC",
@@ -59,7 +59,8 @@
     "basePlayerId": "hull-fc-cur-amir-bourouh",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "hull-fc-cur-brad-fash",
@@ -79,8 +80,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 135000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 187,
+    "tries": 6,
     "teamYearId": "hull-fc-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -88,7 +89,8 @@
     "basePlayerId": "hull-fc-cur-brad-fash",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1996
+    "birthYear": 1996,
+    "dateOfBirth": "1996-01-24"
   },
   {
     "id": "hull-fc-cur-cade-cust",
@@ -152,7 +154,8 @@
     "basePlayerId": "hull-fc-cur-connor-bailey",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-10-10"
   },
   {
     "id": "hull-fc-cur-davy-litten",
@@ -276,7 +279,8 @@
     "basePlayerId": "hull-fc-cur-herman-eseese",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "hull-fc-cur-hugo-salabio",
@@ -296,7 +300,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
+    "appearances": 35,
     "tries": 0,
     "teamYearId": "hull-fc-2026",
     "year": 2026,
@@ -305,7 +309,9 @@
     "basePlayerId": "hull-fc-cur-hugo-salabio",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-07-27",
+    "intlCaps": 1
   },
   {
     "id": "hull-fc-cur-jake-arthur",
@@ -334,7 +340,9 @@
     "basePlayerId": "hull-fc-cur-jake-arthur",
     "primaryPosition": "SO",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 23,
+    "tries": 5
   },
   {
     "id": "hull-fc-cur-james-bell",
@@ -366,7 +374,8 @@
     "basePlayerId": "hull-fc-cur-james-bell",
     "primaryPosition": "SR/LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 9
   },
   {
     "id": "hull-fc-cur-jed-cartwright",
@@ -430,14 +439,15 @@
     "basePlayerId": "hull-fc-cur-joe-batchelor",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "hull-fc-cur-john-asiata",
     "name": "John Asiata",
     "position": "LOOSE_FORWARD",
     "club": "Hull FC",
-    "nationality": "Tonga",
+    "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -463,7 +473,8 @@
     "basePlayerId": "hull-fc-cur-john-asiata",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "hull-fc-cur-lennon-clark",
@@ -538,13 +549,13 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Australia",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
+    "appearances": 20,
     "tries": 0,
     "teamYearId": "hull-fc-2026",
     "year": 2026,
@@ -585,7 +596,8 @@
     "basePlayerId": "hull-fc-cur-ligi-sao",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "hull-fc-cur-logan-moy",
@@ -676,7 +688,8 @@
     "basePlayerId": "hull-fc-cur-sam-lisone",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 4
   },
   {
     "id": "hull-fc-cur-tom-briscoe",
@@ -696,8 +709,8 @@
     "category": "current",
     "peakRating": 83,
     "value": 161000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 400,
+    "tries": 182,
     "teamYearId": "hull-fc-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -705,7 +718,9 @@
     "basePlayerId": "hull-fc-cur-tom-briscoe",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1990
+    "birthYear": 1990,
+    "dateOfBirth": "1990-03-19",
+    "intlCaps": 15
   },
   {
     "id": "hull-fc-cur-will-pryce",
@@ -750,14 +765,14 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Turkey",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2025–2025",
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 86,
+    "tries": 4,
     "teamYearId": "hull-fc-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -765,7 +780,9 @@
     "basePlayerId": "hull-fc-cur-yusuf-aydin",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2000
+    "birthYear": 2000,
+    "dateOfBirth": "2000-09-13",
+    "intlCaps": 1
   },
   {
     "id": "hull-fc-cur-zak-hardaker",
@@ -798,7 +815,8 @@
     "basePlayerId": "hull-fc-cur-zak-hardaker",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 7
   },
   {
     "id": "hull-fc-cur-arthur-romano",
@@ -831,7 +849,11 @@
     "clubsPlayedFor": [
       "Catalans Dragons",
       "Hull FC"
-    ]
+    ],
+    "dateOfBirth": "1997-08-17",
+    "intlCaps": 8,
+    "appearances": 99,
+    "tries": 20
   },
   {
     "id": "hull-fc-cur-callum-kemp",
@@ -1072,6 +1094,8 @@
     "status": "Current",
     "basePlayerId": "hull-fc-cur-roman-dawson",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2006-01-23",
+    "birthYear": 2006
   }
 ]

@@ -75,7 +75,7 @@ function Tile({ href, onClick, children, className = "" }: { href: string; onCli
         playUiClick();
         onClick?.();
       }}
-      className={`btn-press flex flex-col items-center rounded-[20px] bg-pitch-900 p-4 text-center text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 ${className}`}
+      className={`btn-press fl-pressable fl-lift flex flex-col items-center rounded-[20px] bg-pitch-900 p-4 text-center text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/60 ${className}`}
     >
       {children}
     </Link>
@@ -117,7 +117,7 @@ export function HomeModeSelector() {
   const dailyStatus = !daily ? null : daily.done ? "Done today" : daily.used ? "Attempt used · practice only" : "1 attempt left today";
 
   return (
-    <section className="mx-auto flex w-full max-w-xl flex-col gap-3 text-center" aria-labelledby="play-heading">
+    <section className="fl-stagger mx-auto flex w-full max-w-xl flex-col gap-3 text-center" aria-labelledby="play-heading">
       <h2 id="play-heading" className="text-[22px] font-bold tracking-tight text-white">
         {hub?.greeting ?? "Welcome, coach"}
       </h2>
@@ -149,7 +149,7 @@ export function HomeModeSelector() {
           <Link
             href={getDailyChallengeHref()}
             onClick={() => playUiClick()}
-            className="btn-press mt-4 flex h-[50px] items-center justify-center rounded-[14px] bg-theme-primary text-base font-bold text-[color:var(--theme-text-on-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            className="btn-press fl-pressable mt-4 flex h-[50px] items-center justify-center rounded-[14px] bg-theme-primary text-base font-bold text-[color:var(--theme-text-on-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
             {daily?.done ? "Play again for practice" : daily?.used ? "Practice today's Daily" : "Play today's Daily"}
           </Link>

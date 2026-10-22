@@ -63,7 +63,8 @@
     "basePlayerId": "castleford-cur-blake-taaffe",
     "primaryPosition": "FB",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 0
   },
   {
     "id": "castleford-cur-brad-singleton",
@@ -77,7 +78,7 @@
       "PROP"
     ],
     "primaryPosition": "PROP",
-    "nationality": "England",
+    "nationality": "Ireland",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2016–2016",
     "category": "current",
@@ -92,7 +93,9 @@
     "basePlayerId": "castleford-cur-brad-singleton",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1992
+    "birthYear": 1992,
+    "dateOfBirth": "1992-10-29",
+    "intlCaps": 3
   },
   {
     "id": "castleford-cur-brock-greacen",
@@ -121,7 +124,8 @@
     "basePlayerId": "castleford-cur-brock-greacen",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2002
+    "birthYear": 2002,
+    "dateOfBirth": "2002-06-18"
   },
   {
     "id": "castleford-cur-cain-robb",
@@ -134,7 +138,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 91000,
-    "appearances": 60,
+    "appearances": 58,
     "dateOfBirth": "2003-01-05",
     "birthYear": 2003,
     "clubsPlayedFor": [
@@ -158,7 +162,8 @@
     "basePlayerId": "castleford-cur-cain-robb",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 0
   },
   {
     "id": "castleford-cur-chris-atkin",
@@ -187,14 +192,15 @@
     "basePlayerId": "castleford-cur-chris-atkin",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1993
+    "birthYear": 1993,
+    "dateOfBirth": "1993-02-07"
   },
   {
     "id": "castleford-cur-daejarn-asi",
     "name": "Daejarn Asi",
     "position": "STAND_OFF",
     "club": "Castleford Tigers",
-    "nationality": "Australia",
+    "nationality": "Samoa",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -218,7 +224,8 @@
     "basePlayerId": "castleford-cur-daejarn-asi",
     "primaryPosition": "SO",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "castleford-cur-darnell-mcintosh",
@@ -279,7 +286,8 @@
     "basePlayerId": "castleford-cur-fletcher-rooney",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2006
+    "birthYear": 2006,
+    "dateOfBirth": "2006-01-12"
   },
   {
     "id": "castleford-cur-george-lawler",
@@ -339,7 +347,8 @@
     "basePlayerId": "castleford-cur-jack-ashworth",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1995
+    "birthYear": 1995,
+    "dateOfBirth": "1995-07-03"
   },
   {
     "id": "castleford-cur-jason-qareqare",
@@ -370,7 +379,8 @@
     "basePlayerId": "castleford-cur-jason-qareqare",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "castleford-cur-jenson-windley",
@@ -398,7 +408,9 @@
     "status": "Current",
     "basePlayerId": "castleford-cur-jenson-windley",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2006-08-18",
+    "birthYear": 2006
   },
   {
     "id": "castleford-cur-joe-stimson",
@@ -413,7 +425,7 @@
     "value": 92000,
     "dateOfBirth": "1995-12-02",
     "birthYear": 1995,
-    "appearances": 21,
+    "appearances": 32,
     "clubsPlayedFor": [
       "Castleford"
     ],
@@ -431,7 +443,8 @@
     "basePlayerId": "castleford-cur-joe-stimson",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 1
   },
   {
     "id": "castleford-cur-joe-westerman",
@@ -462,7 +475,8 @@
     "basePlayerId": "castleford-cur-joe-westerman",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "castleford-cur-jordan-lane",
@@ -559,7 +573,8 @@
     "basePlayerId": "castleford-cur-liam-hood",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 10
   },
   {
     "id": "castleford-cur-louis-senior",
@@ -579,8 +594,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 138000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 89,
+    "tries": 41,
     "teamYearId": "castleford-tigers-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -589,7 +604,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2000-05-30",
-    "birthYear": 2000
+    "birthYear": 2000,
+    "intlCaps": 3
   },
   {
     "id": "castleford-cur-mikaele-ravalawa",
@@ -609,8 +625,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 115000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 13,
+    "tries": 5,
     "teamYearId": "castleford-tigers-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -619,7 +635,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "1997-11-09",
-    "birthYear": 1997
+    "birthYear": 1997,
+    "intlCaps": 5
   },
   {
     "id": "castleford-cur-phoenix-laulu-togagae",
@@ -700,8 +717,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 135000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 63,
+    "tries": 2,
     "teamYearId": "castleford-tigers-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -709,14 +726,15 @@
     "basePlayerId": "castleford-cur-sam-hall",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1988
+    "birthYear": 2002,
+    "dateOfBirth": "2002-05-08"
   },
   {
     "id": "castleford-cur-semi-valemei",
     "name": "Semi Valemei",
     "position": "WING",
     "club": "Castleford Tigers",
-    "nationality": "Tonga",
+    "nationality": "Fiji",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -740,7 +758,8 @@
     "basePlayerId": "castleford-cur-semi-valemei",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 10
   },
   {
     "id": "castleford-cur-tom-weaver",
@@ -769,7 +788,9 @@
     "basePlayerId": "castleford-cur-tom-weaver",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "appearances": 24,
+    "tries": 5
   },
   {
     "id": "castleford-cur-tyler-dupree",
@@ -789,8 +810,8 @@
     "category": "current",
     "peakRating": 84,
     "value": 158000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 108,
+    "tries": 9,
     "teamYearId": "castleford-tigers-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -799,7 +820,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2000-02-08",
-    "birthYear": 2000
+    "birthYear": 2000,
+    "intlCaps": 3
   },
   {
     "id": "castleford-cur-zac-cini",
@@ -863,7 +885,9 @@
       "South Sydney Rabbitohs",
       "Barrow Raiders",
       "Castleford Tigers"
-    ]
+    ],
+    "dateOfBirth": "2003-09-05",
+    "birthYear": 2003
   },
   {
     "id": "castleford-cur-alfie-lindsey",
@@ -891,7 +915,9 @@
     "status": "Current",
     "basePlayerId": "castleford-cur-alfie-lindsey",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "2006-11-25",
+    "birthYear": 2006
   },
   {
     "id": "castleford-cur-george-hill",
@@ -911,7 +937,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
+    "appearances": 26,
     "tries": 0,
     "teamYearId": "castleford-tigers-2026",
     "year": 2026,
@@ -921,6 +947,7 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2004-07-29",
-    "birthYear": 2004
+    "birthYear": 2004,
+    "intlCaps": 1
   }
 ]

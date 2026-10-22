@@ -27,7 +27,8 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "dateOfBirth": "2003-03-31",
-    "birthYear": 2003
+    "birthYear": 2003,
+    "intlCaps": 4
   },
   {
     "id": "toulouse-cur-anthony-marion",
@@ -58,7 +59,8 @@
     "basePlayerId": "toulouse-cur-anthony-marion",
     "primaryPosition": "LF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 7
   },
   {
     "id": "toulouse-cur-baptiste-rodriguez",
@@ -119,7 +121,8 @@
     "basePlayerId": "toulouse-cur-benjamin-laguerre",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "toulouse-cur-brendan-hands",
@@ -134,7 +137,7 @@
     "value": 180000,
     "dateOfBirth": "1999-02-12",
     "birthYear": 1999,
-    "appearances": 12,
+    "appearances": 24,
     "clubsPlayedFor": [
       "Toulouse"
     ],
@@ -152,7 +155,8 @@
     "basePlayerId": "toulouse-cur-brendan-hands",
     "primaryPosition": "HK",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "tries": 3
   },
   {
     "id": "toulouse-cur-calum-gahan",
@@ -183,7 +187,8 @@
     "basePlayerId": "toulouse-cur-calum-gahan",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 3
   },
   {
     "id": "toulouse-cur-ellis-gillam",
@@ -203,7 +208,7 @@
     "category": "current",
     "peakRating": 80,
     "value": 92000,
-    "appearances": 0,
+    "appearances": 5,
     "tries": 0,
     "teamYearId": "toulouse-olympique-2026",
     "year": 2026,
@@ -242,7 +247,10 @@
     "dateOfBirth": "1991-06-18",
     "birthYear": 1991,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 23,
+    "appearances": 194,
+    "tries": 27
   },
   {
     "id": "toulouse-cur-henry-okane",
@@ -340,7 +348,7 @@
     "name": "James Roumanos",
     "position": "PROP",
     "club": "Toulouse Olympique",
-    "nationality": "Australia",
+    "nationality": "Lebanon",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2026–Present",
     "category": "current",
@@ -364,7 +372,8 @@
     "basePlayerId": "toulouse-cur-james-roumanos",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "toulouse-cur-joe-bretherton",
@@ -384,8 +393,8 @@
     "category": "current",
     "peakRating": 80,
     "value": 90000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 39,
+    "tries": 4,
     "teamYearId": "toulouse-olympique-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -393,7 +402,8 @@
     "basePlayerId": "toulouse-cur-joe-bretherton",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1995
+    "birthYear": 1995,
+    "dateOfBirth": "1995-10-05"
   },
   {
     "id": "toulouse-cur-joe-cator",
@@ -413,8 +423,8 @@
     "category": "current",
     "peakRating": 82,
     "value": 138000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 85,
+    "tries": 3,
     "teamYearId": "toulouse-olympique-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -422,7 +432,8 @@
     "basePlayerId": "toulouse-cur-joe-cator",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-06-15"
   },
   {
     "id": "toulouse-cur-john-toleafoa",
@@ -450,7 +461,10 @@
     "primaryPosition": "PF",
     "birthYear": 1999,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "dateOfBirth": "1999-04-09",
+    "appearances": 13,
+    "tries": 1
   },
   {
     "id": "toulouse-cur-justin-sangare",
@@ -479,7 +493,10 @@
     "dateOfBirth": "1998-03-07",
     "birthYear": 1998,
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 9,
+    "appearances": 95,
+    "tries": 6
   },
   {
     "id": "toulouse-cur-lambert-belmas",
@@ -510,7 +527,8 @@
     "basePlayerId": "toulouse-cur-lambert-belmas",
     "primaryPosition": "PF",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 8
   },
   {
     "id": "toulouse-cur-luke-polselli",
@@ -524,14 +542,14 @@
       "STAND_OFF"
     ],
     "primaryPosition": "STAND_OFF",
-    "nationality": "Australia",
+    "nationality": "Italy",
     "era": "CONTEMPORARY_ERA",
     "yearsActive": "2022–2022",
     "category": "current",
     "peakRating": 81,
     "value": 120000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 22,
+    "tries": 9,
     "teamYearId": "toulouse-olympique-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -539,7 +557,9 @@
     "basePlayerId": "toulouse-cur-luke-polselli",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-08-06",
+    "intlCaps": 3
   },
   {
     "id": "toulouse-cur-mathieu-jussaume",
@@ -570,7 +590,8 @@
     "basePlayerId": "toulouse-cur-mathieu-jussaume",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 2
   },
   {
     "id": "toulouse-cur-maxime-stefani",
@@ -601,7 +622,8 @@
     "basePlayerId": "toulouse-cur-maxime-stefani",
     "primaryPosition": "SR",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "toulouse-cur-olly-ashall-bott",
@@ -663,7 +685,8 @@
     "basePlayerId": "toulouse-cur-paul-marcon",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 6
   },
   {
     "id": "toulouse-cur-paul-ulberg",
@@ -694,7 +717,8 @@
     "basePlayerId": "toulouse-cur-paul-ulberg",
     "primaryPosition": "WG",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 9
   },
   {
     "id": "toulouse-cur-pierrejean-lima",
@@ -755,7 +779,8 @@
     "basePlayerId": "toulouse-cur-reubenn-rennie",
     "primaryPosition": "CE",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 13
   },
   {
     "id": "toulouse-cur-rob-butler",
@@ -775,8 +800,8 @@
     "category": "current",
     "peakRating": 81,
     "value": 113000,
-    "appearances": 0,
-    "tries": 0,
+    "appearances": 89,
+    "tries": 3,
     "teamYearId": "toulouse-olympique-2026",
     "year": 2026,
     "cardYear": 2026,
@@ -784,7 +809,8 @@
     "basePlayerId": "toulouse-cur-rob-butler",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 1998
+    "birthYear": 1998,
+    "dateOfBirth": "1998-05-15"
   },
   {
     "id": "toulouse-cur-romeo-tropis",
@@ -813,7 +839,9 @@
     "basePlayerId": "toulouse-cur-romeo-tropis",
     "availableInGame": true,
     "superLeagueEligible": true,
-    "birthYear": 2005
+    "birthYear": 2005,
+    "dateOfBirth": "2005-05-08",
+    "intlCaps": 1
   },
   {
     "id": "toulouse-cur-thomas-lacans",
@@ -844,7 +872,8 @@
     "basePlayerId": "toulouse-cur-thomas-lacans",
     "primaryPosition": "SH",
     "availableInGame": true,
-    "superLeagueEligible": true
+    "superLeagueEligible": true,
+    "intlCaps": 1
   },
   {
     "id": "toulouse-cur-trevor-chiffolleau",

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { CountUp } from "@/components/ui/CountUp";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { useAuth } from "@/lib/auth-context";
@@ -195,7 +196,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
             </div>
 
             <nav
-              className="sidebar-nav-scroll flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden overscroll-contain px-3 pb-4"
+              className={`sidebar-nav-scroll flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden overscroll-contain px-3 pb-4 ${open ? "fl-stagger" : ""}`}
               data-scroll-lock-allow="true"
             >
               <section aria-label="Club Funds" className="rounded-[20px] bg-pitch-900 p-4">
@@ -203,7 +204,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   <div className="min-w-0">
                     <p className="text-[13px] font-semibold text-[color:var(--fl-muted)]">Club Funds</p>
                     <p className="fl-number mt-1 text-[30px] leading-none text-theme-primary tabular-nums">
-                      {fundsReady ? formatClubFunds(balance) : "—"}
+                      {fundsReady ? <CountUp value={balance} format={formatClubFunds} durationMs={700} /> : "—"}
                     </p>
                   </div>
                   <Link
@@ -338,7 +339,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 }
 
 const MENU_ROW =
-  "btn-press flex min-h-[48px] w-full items-center gap-3 rounded-[16px] px-3 text-[15px] font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50";
+  "btn-press fl-pressable flex min-h-[48px] w-full items-center gap-3 rounded-[16px] px-3 text-[15px] font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50";
 const MENU_ROW_IDLE = "text-white hover:bg-pitch-900";
 const MENU_ROW_ACTIVE = "bg-pitch-900 text-white";
 const MENU_ICON = "flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-pitch-950 text-theme-primary";
