@@ -233,6 +233,12 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
   );
 }
 
+// No new career starts in debt.
+for (const clubId of ["london-broncos", "leeds-rhinos", "north-wales-crusaders"]) {
+  const c = createCareer({ clubId, managerName: "T", seed: `budget-${clubId}` });
+  check(c.budget >= 100_000, `${clubId}: new career starts with at least £100k (got ${c.budget})`);
+}
+
 // Season stages: one thing at a time.
 {
   let s = createCareer({ clubId: "leeds-rhinos", managerName: "Stages", seed: "stages" });

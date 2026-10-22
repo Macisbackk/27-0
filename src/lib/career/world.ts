@@ -167,5 +167,12 @@ export function createCareer(opts: { clubId: string; managerName: string; seed?:
     history: [],
     news: [`${opts.managerName.trim() || "Coach"} takes charge of ${choice.name}.`],
   };
-  return startSeason(state);
+  const started = startSeason(state);
+  // Big squads in small leagues (e.g. London in the Championship) cost more than the board pays.
+  // A new manager never starts in debt: the board covers the gap plus a little to spend.
+  if (started.budget < STARTING_BUDGET_FLOOR) started.budget = STARTING_BUDGET_FLOOR;
+  return started;
 }
+
+/** Minimum budget on day one of a new career. */
+export const STARTING_BUDGET_FLOOR = 100_000;

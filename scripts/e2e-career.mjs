@@ -259,9 +259,18 @@ try {
   await page.getByRole("tab", { name: "Sell" }).click();
   const sellButtons = page.getByRole("button", { name: /^Sell £/ });
   await sellButtons.first().waitFor({ timeout });
-  await sellButtons.first().click();
-  await page.getByRole("status").filter({ hasText: /Sold/ }).waitFor({ timeout });
-  step("Transfer window: sold a player");
+  if (await sellButtons.first().isEnabled()) {
+    await sellButtons.first().click();
+    await page.getByRole("status").filter({ hasText: /Sold/ }).waitFor({ timeout });
+    step("Transfer window: sold a player");
+  } else {
+    // Letting contracts run out can leave the squad at the 20-man minimum: selling is then (rightly) blocked.
+    await page.getByRole("tab", { name: "Buy" }).click();
+    const buy = page.getByRole("button", { name: /£/ }).and(page.locator("button:not([disabled])")).first();
+    await buy.click();
+    await page.getByRole("status").filter({ hasText: /Signed/ }).waitFor({ timeout });
+    step("Transfer window: squad at the minimum, so signed a player instead");
+  }
 
   await clickButton(/Start (the )?\d{4} season/);
   await page.getByRole("region", { name: "Pre-season friendlies" }).waitFor({ timeout });
