@@ -152,6 +152,15 @@ try {
       if ((await save()).matchdayIndex !== md) fail("passing the promotion stage also played the Grand Final");
       continue;
     }
+    // A double tap that slipped into a live match: finish it and carry on (and flag it).
+    if (await visible(btn("Skip to full time"))) {
+      fail("a double tap started a live match");
+      await btn("Skip to full time").click().catch(() => {});
+      await page.waitForTimeout(400);
+      await btn("Continue").click().catch(() => {});
+      await page.waitForTimeout(300);
+      continue;
+    }
     const next = btn(/^(Quick sim|Continue)$/);
     if (await visible(next)) {
       // Triple tap: must never skip a stage.
