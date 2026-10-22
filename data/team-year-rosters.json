@@ -254,7 +254,8 @@
       "bradford-cur-sam-hallas",
       "bradford-cur-waqa-blake",
       "bradford-cur-will-gardiner",
-      "bradford-cur-zac-fulton"
+      "bradford-cur-zac-fulton",
+      "castleford-cur-chris-atkin"
     ]
   },
   "Wigan Warriors": {
@@ -342,7 +343,6 @@
       "wigan-cur-ethan-havard",
       "wigan-cur-finlay-yeomans",
       "wigan-cur-finn-mcmillan",
-      "wigan-cur-george-hirst",
       "wigan-cur-george-oloughlin",
       "wigan-cur-harry-smith",
       "wigan-cur-harvey-makin",
@@ -365,7 +365,6 @@
       "wigan-cur-sam-eseh",
       "wigan-cur-sam-walters",
       "wigan-cur-taylor-kerr",
-      "wigan-cur-tiaki-chan",
       "wigan-cur-tom-forber",
       "wigan-cur-zach-eckersley"
     ]
@@ -438,9 +437,7 @@
       "warrington-cur-luke-yates",
       "warrington-cur-marc-sneyd",
       "warrington-cur-matty-ashton",
-      "warrington-cur-matty-nicholson",
       "warrington-cur-max-wood",
-      "warrington-cur-oliver-leyland",
       "warrington-cur-sam-powell",
       "warrington-cur-sam-stone",
       "warrington-cur-toafofoa-sipley",
@@ -604,10 +601,8 @@
     "2026": [
       "catalans-cur-alexis-lis",
       "catalans-cur-alrix-da-costa",
-      "catalans-cur-bayley-sironen",
       "catalans-cur-ben-condon",
       "catalans-cur-benjamin-garcia",
-      "catalans-cur-cesar-rouge",
       "catalans-cur-charlie-staines",
       "catalans-cur-chris-satae",
       "catalans-cur-clement-martin",
@@ -632,7 +627,6 @@
       "catalans-cur-toby-sexton",
       "catalans-cur-tommy-makinson",
       "catalans-cur-ugo-tison",
-      "catalans-cur-zac-lipowicz",
       "catalans-hist-eloi-pelissier"
     ]
   },
@@ -701,17 +695,16 @@
       "huddersfield-cur-logan-blacker",
       "huddersfield-cur-marshall-land",
       "huddersfield-cur-mathieu-cozza",
-      "huddersfield-cur-matty-english",
       "huddersfield-cur-niall-evalds",
       "huddersfield-cur-oliver-russell",
-      "huddersfield-cur-oliver-wilson",
       "huddersfield-cur-sam-halsall",
       "huddersfield-cur-sam-hewitt",
       "huddersfield-cur-taane-milne",
       "huddersfield-cur-thomas-burgess",
       "huddersfield-cur-tristan-powell",
       "huddersfield-cur-tui-lolohea",
-      "huddersfield-cur-zac-woolford"
+      "huddersfield-cur-zac-woolford",
+      "warrington-cur-oliver-leyland"
     ]
   },
   "Castleford Tigers": {
@@ -765,16 +758,13 @@
       "castleford-cur-alex-mellor",
       "castleford-cur-alfie-lindsey",
       "castleford-cur-blake-taaffe",
-      "castleford-cur-brad-singleton",
       "castleford-cur-brock-greacen",
       "castleford-cur-cain-robb",
-      "castleford-cur-chris-atkin",
       "castleford-cur-daejarn-asi",
       "castleford-cur-darnell-mcintosh",
       "castleford-cur-fletcher-rooney",
       "castleford-cur-george-hill",
       "castleford-cur-george-lawler",
-      "castleford-cur-jack-ashworth",
       "castleford-cur-jason-qareqare",
       "castleford-cur-jenson-windley",
       "castleford-cur-joe-stimson",
@@ -790,7 +780,10 @@
       "castleford-cur-semi-valemei",
       "castleford-cur-tom-weaver",
       "castleford-cur-tyler-dupree",
-      "castleford-cur-zac-cini"
+      "hull-kr-cur-jack-brown",
+      "leigh-cur-ben-mcnamara",
+      "leigh-cur-keanan-brand",
+      "wigan-cur-george-hirst"
     ]
   },
   "Wakefield Trinity": {
@@ -840,6 +833,7 @@
       "wakefield-hist-tom-johnstone-2016"
     ],
     "2026": [
+      "catalans-cur-zac-lipowicz",
       "wakefield-cur-caius-faatili",
       "wakefield-cur-caleb-hamlin-uele",
       "wakefield-cur-cameron-scott",
@@ -857,7 +851,6 @@
       "wakefield-cur-kian-mcgann",
       "wakefield-cur-ky-rodwell",
       "wakefield-cur-lachlan-walmsley",
-      "wakefield-cur-liam-hood",
       "wakefield-cur-mason-lino",
       "wakefield-cur-matty-storton",
       "wakefield-cur-max-jowitt",
@@ -866,8 +859,6 @@
       "wakefield-cur-neil-tchamambe",
       "wakefield-cur-noah-high",
       "wakefield-cur-oliver-pratt",
-      "wakefield-cur-renouf-atoni",
-      "wakefield-cur-seth-nikotemo",
       "wakefield-cur-tom-johnstone",
       "wakefield-cur-tray-lolesio",
       "wakefield-cur-tyson-smoothy",
@@ -981,7 +972,6 @@
       "leeds-cur-presley-cassell",
       "leeds-cur-riley-lumb",
       "leeds-cur-ryan-hall",
-      "leeds-cur-sam-lisone",
       "leeds-cur-tom-holroyd",
       "leeds-cur-tom-nicholson-watton",
       "leeds-hist-james-donaldson"
@@ -1064,14 +1054,12 @@
       "hull-fc-cur-hugo-salabio",
       "hull-fc-cur-jake-arthur",
       "hull-fc-cur-james-bell",
-      "hull-fc-cur-jed-cartwright",
       "hull-fc-cur-joe-batchelor",
       "hull-fc-cur-joe-phillips",
       "hull-fc-cur-joe-ward",
       "hull-fc-cur-john-asiata",
       "hull-fc-cur-lennon-clark",
       "hull-fc-cur-lewis-martin",
-      "hull-fc-cur-liam-knight",
       "hull-fc-cur-ligi-sao",
       "hull-fc-cur-lloyd-kemp",
       "hull-fc-cur-logan-moy",
@@ -1084,7 +1072,8 @@
       "hull-fc-cur-will-pryce",
       "hull-fc-cur-yusuf-aydin",
       "hull-fc-cur-zak-hardaker",
-      "hull-fc-hist-masi-matongo"
+      "hull-fc-hist-masi-matongo",
+      "leigh-cur-ethan-o-neill"
     ]
   },
   "Salford Red Devils": {
@@ -1318,6 +1307,7 @@
       "st-helens-hist-thomas-makinson-2021"
     ],
     "2026": [
+      "hull-fc-cur-jed-cartwright",
       "st-helens-cur-agnatius-paasi",
       "st-helens-cur-alex-walmsley",
       "st-helens-cur-alfie-sinclair",
@@ -1343,7 +1333,6 @@
       "st-helens-cur-mark-percival",
       "st-helens-cur-matt-whitley",
       "st-helens-cur-matty-lees",
-      "st-helens-cur-morgan-knowles",
       "st-helens-cur-nene-macdonald",
       "st-helens-cur-noah-stephens",
       "st-helens-cur-owen-dagnall",
@@ -1393,7 +1382,6 @@
       "hull-kr-cur-frankie-dearlove",
       "hull-kr-cur-harvey-horne",
       "hull-kr-cur-jack-broadbent",
-      "hull-kr-cur-jack-brown",
       "hull-kr-cur-jack-charles",
       "hull-kr-cur-jai-whitbread",
       "hull-kr-cur-james-batchelor",
@@ -1418,45 +1406,9 @@
       "hull-kr-cur-zach-fishwick"
     ]
   },
-  "Leigh Leopards": {
-    "2026": [
-      "leigh-cur-aaron-pene",
-      "leigh-cur-adam-cook",
-      "leigh-cur-aj-towse",
-      "leigh-cur-andrew-badrock",
-      "leigh-cur-bailey-hodgson",
-      "leigh-cur-ben-mcnamara",
-      "leigh-cur-david-armstrong",
-      "leigh-cur-edwin-ipape",
-      "leigh-cur-ethan-o-neill",
-      "leigh-cur-frankie-halton",
-      "leigh-cur-gareth-o-brien",
-      "leigh-cur-innes-senior",
-      "leigh-cur-isaac-liu",
-      "leigh-cur-jack-hughes",
-      "leigh-cur-jacob-alick-wiencke",
-      "leigh-cur-joe-ofahengaue",
-      "leigh-cur-josh-charnley",
-      "leigh-cur-kai-o-donnell",
-      "leigh-cur-kavan-rothwell",
-      "leigh-cur-keanan-brand",
-      "leigh-cur-lachlan-lam",
-      "leigh-cur-liam-horne",
-      "leigh-cur-louis-brogan",
-      "leigh-cur-matt-davis",
-      "leigh-cur-nathan-wilde",
-      "leigh-cur-oliver-polec",
-      "leigh-cur-owen-trout",
-      "leigh-cur-robbie-mulhern",
-      "leigh-cur-ryan-brown",
-      "leigh-cur-tesi-niu",
-      "leigh-cur-umyla-hanley",
-      "leigh-cur-will-brough",
-      "leigh-hist-ricky-leutele"
-    ]
-  },
   "Toulouse Olympique": {
     "2026": [
+      "catalans-cur-cesar-rouge",
       "toulouse-cur-aj-wallace",
       "toulouse-cur-anthony-marion",
       "toulouse-cur-baptiste-rodriguez",
@@ -1472,7 +1424,6 @@
       "toulouse-cur-joe-bretherton",
       "toulouse-cur-joe-cator",
       "toulouse-cur-john-toleafoa",
-      "toulouse-cur-justin-sangare",
       "toulouse-cur-lambert-belmas",
       "toulouse-cur-luke-polselli",
       "toulouse-cur-mathieu-jussaume",
@@ -1486,11 +1437,47 @@
       "toulouse-cur-rob-butler",
       "toulouse-cur-romeo-tropis",
       "toulouse-cur-thomas-lacans",
-      "toulouse-cur-trevor-chiffolleau"
+      "toulouse-cur-trevor-chiffolleau",
+      "wigan-cur-tiaki-chan"
+    ]
+  },
+  "Leigh Leopards": {
+    "2026": [
+      "castleford-cur-jack-ashworth",
+      "leigh-cur-adam-cook",
+      "leigh-cur-aj-towse",
+      "leigh-cur-andrew-badrock",
+      "leigh-cur-bailey-hodgson",
+      "leigh-cur-david-armstrong",
+      "leigh-cur-edwin-ipape",
+      "leigh-cur-frankie-halton",
+      "leigh-cur-gareth-o-brien",
+      "leigh-cur-innes-senior",
+      "leigh-cur-isaac-liu",
+      "leigh-cur-jack-hughes",
+      "leigh-cur-jacob-alick-wiencke",
+      "leigh-cur-joe-ofahengaue",
+      "leigh-cur-josh-charnley",
+      "leigh-cur-kai-o-donnell",
+      "leigh-cur-kavan-rothwell",
+      "leigh-cur-lachlan-lam",
+      "leigh-cur-liam-horne",
+      "leigh-cur-louis-brogan",
+      "leigh-cur-matt-davis",
+      "leigh-cur-nathan-wilde",
+      "leigh-cur-oliver-polec",
+      "leigh-cur-owen-trout",
+      "leigh-cur-robbie-mulhern",
+      "leigh-cur-ryan-brown",
+      "leigh-cur-tesi-niu",
+      "leigh-cur-umyla-hanley",
+      "leigh-cur-will-brough",
+      "leigh-hist-ricky-leutele"
     ]
   },
   "York Knights": {
     "2026": [
+      "huddersfield-cur-matty-english",
       "york-cur-ata-hingano",
       "york-cur-ben-jones-bishop",
       "york-cur-cody-hunter",
@@ -1504,7 +1491,6 @@
       "york-cur-jonathan-bennison",
       "york-cur-jordan-lipp",
       "york-cur-jordan-thompson",
-      "york-cur-josh-griffin",
       "york-cur-justin-sangare",
       "york-cur-kieran-buchanan",
       "york-cur-kieran-hudson",

@@ -324,28 +324,29 @@ function buildCurrentYearSquads(
     if (!entry?.playerIds?.length) continue;
     if (!isSuperLeagueSeason(club, year)) continue;
 
+    // Matchday 17 ids still at this club (players can move mid-season) plus the whole
+    // registered squad: Classic Current spins use the full squad.
     const matchdayIds = entry.playerIds.filter((id) => {
       const player = playerById.get(id);
-      return !!player && player.category === "current";
+      return (
+        !!player &&
+        player.category === "current" &&
+        player.club === club &&
+        playerBelongsToTeamYear(player, club, year)
+      );
     });
+    const knownIds = [
+      ...new Set([...matchdayIds, ...fullSquadIds(club, year, playerById)]),
+    ];
 
-    if (
-      matchdayIds.length < CURRENT_YEAR_SQUAD_MIN ||
-      matchdayIds.length > CURRENT_YEAR_SQUAD_MAX
-    ) {
+    if (knownIds.length < CURRENT_YEAR_SQUAD_MIN) {
       if (process.env.NODE_ENV !== "production") {
         console.warn(
-          `${club} ${year}: expected ${CURRENT_YEAR_SQUAD_MIN}–${CURRENT_YEAR_SQUAD_MAX} players, got ${knownIds.length}`
+          `${club} ${year}: expected at least ${CURRENT_YEAR_SQUAD_MIN} players, got ${knownIds.length}`
         );
       }
       continue;
     }
-
-    // Classic Current spins use the whole registered squad, not just the matchday 17,
-    // so academy and depth players (e.g. the 2026 squad-number additions) can be signed too.
-    const knownIds = [
-      ...new Set([...matchdayIds, ...fullSquadIds(club, year, playerById)]),
-    ];
 
     if (!rosters[club]) rosters[club] = {};
     rosters[club][year] = [...knownIds].sort((a, b) => a.localeCompare(b));

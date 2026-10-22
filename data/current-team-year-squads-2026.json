@@ -52,7 +52,6 @@
       "playerIds": [
         "castleford-cur-blake-taaffe",
         "castleford-cur-jason-qareqare",
-        "castleford-cur-zac-cini",
         "castleford-cur-darnell-mcintosh",
         "castleford-cur-semi-valemei",
         "castleford-cur-daejarn-asi",
@@ -106,12 +105,10 @@
         "catalans-cur-chris-satae",
         "catalans-cur-alrix-da-costa",
         "catalans-cur-julian-bousquet",
-        "catalans-cur-bayley-sironen",
         "catalans-cur-ben-condon",
         "catalans-cur-benjamin-garcia",
         "catalans-cur-paul-seguier",
         "catalans-cur-jordan-dezaria",
-        "catalans-cur-cesar-rouge",
         "catalans-cur-matthieu-laguerre"
       ],
       "positions": [
@@ -151,10 +148,8 @@
         "huddersfield-cur-sam-halsall",
         "huddersfield-cur-tui-lolohea",
         "huddersfield-cur-adam-clune",
-        "huddersfield-cur-matty-english",
         "huddersfield-cur-zac-woolford",
         "huddersfield-cur-fenton-rogers",
-        "huddersfield-cur-oliver-wilson",
         "huddersfield-cur-joe-greenwood",
         "huddersfield-cur-harry-rushton",
         "huddersfield-cur-george-flanagan-jr",
@@ -201,7 +196,6 @@
         "hull-fc-cur-amir-bourouh",
         "hull-fc-cur-harvie-hill",
         "hull-fc-cur-joe-batchelor",
-        "hull-fc-cur-jed-cartwright",
         "hull-fc-cur-john-asiata",
         "hull-fc-cur-cade-cust",
         "hull-fc-cur-sam-lisone",
@@ -253,7 +247,6 @@
         "hull-kr-cur-elliot-minchella",
         "hull-kr-cur-kelepi-tanginoa",
         "hull-kr-cur-jai-whitbread",
-        "hull-kr-cur-jack-brown",
         "hull-kr-cur-jack-charles"
       ],
       "positions": [
@@ -299,7 +292,6 @@
         "leeds-cur-james-mcdonnell",
         "leeds-cur-morgan-gannon",
         "leeds-cur-cameron-smith",
-        "leeds-cur-sam-lisone",
         "leeds-cur-cooper-jenkins",
         "leeds-cur-james-bentley"
       ],
@@ -336,17 +328,13 @@
         "leigh-cur-josh-charnley",
         "leigh-cur-tesi-niu",
         "leigh-cur-umyla-hanley",
-        "leigh-cur-keanan-brand",
         "leigh-cur-gareth-o-brien",
         "leigh-cur-lachlan-lam",
         "leigh-cur-robbie-mulhern",
         "leigh-cur-edwin-ipape",
         "leigh-cur-owen-trout",
         "leigh-cur-frankie-halton",
-        "leigh-cur-ethan-o-neill",
         "leigh-cur-isaac-liu",
-        "leigh-cur-ben-mcnamara",
-        "leigh-cur-aaron-pene",
         "leigh-cur-joe-ofahengaue",
         "leigh-cur-kai-o-donnell"
       ],
@@ -392,7 +380,6 @@
         "st-helens-cur-matty-lees",
         "st-helens-cur-curtis-sironen",
         "st-helens-cur-matt-whitley",
-        "st-helens-cur-morgan-knowles",
         "st-helens-cur-george-whitby",
         "st-helens-cur-david-klemmer",
         "st-helens-cur-george-delaney",
@@ -442,7 +429,6 @@
         "toulouse-cur-calum-gahan",
         "toulouse-cur-anthony-marion",
         "toulouse-cur-paul-marcon",
-        "toulouse-cur-justin-sangare",
         "toulouse-cur-john-toleafoa",
         "toulouse-cur-eloi-pelissier"
       ],
@@ -486,11 +472,8 @@
         "wakefield-cur-mike-mcmeeken",
         "wakefield-cur-tyson-smoothy",
         "wakefield-cur-ky-rodwell",
-        "wakefield-cur-seth-nikotemo",
         "wakefield-cur-matty-storton",
         "wakefield-cur-jazz-tevaga",
-        "wakefield-cur-liam-hood",
-        "wakefield-cur-renouf-atoni",
         "wakefield-cur-caleb-hamlin-uele",
         "wakefield-cur-jay-pitts"
       ],
@@ -539,8 +522,7 @@
         "warrington-cur-ben-currie",
         "warrington-cur-sam-powell",
         "warrington-cur-joe-philbin",
-        "warrington-cur-max-wood",
-        "warrington-cur-matty-nicholson"
+        "warrington-cur-max-wood"
       ],
       "positions": [
         "FULLBACK",
@@ -630,7 +612,6 @@
         "york-cur-jack-martin",
         "york-cur-paul-mcshane",
         "york-cur-paul-vaughan",
-        "york-cur-josh-griffin",
         "york-cur-jesse-dee",
         "york-cur-jordan-thompson",
         "york-cur-denive-balmforth",

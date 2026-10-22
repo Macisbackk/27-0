@@ -1,0 +1,1248 @@
+{
+  "generatedAt": "2026-10-22T18:53:05Z",
+  "moves": [
+    {
+      "name": "Chris Atkin",
+      "from": "Castleford Tigers",
+      "to": "Bradford Bulls",
+      "toLeague": "Super League",
+      "date": "2026-03-18",
+      "type": "permanent",
+      "existingIds": [
+        "castleford-cur-chris-atkin"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season",
+        "https://en.wikipedia.org/wiki/2026_Bradford_Bulls_season"
+      ]
+    },
+    {
+      "name": "Brad Singleton",
+      "from": "Castleford Tigers",
+      "to": "Barrow Raiders",
+      "toLeague": "Championship",
+      "date": "2026-05-26",
+      "type": "permanent",
+      "existingIds": [
+        "castleford-cur-brad-singleton"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season"
+      ]
+    },
+    {
+      "name": "Zac Cini",
+      "from": "Castleford Tigers",
+      "to": "released",
+      "toLeague": "other",
+      "date": "2026-07-05",
+      "type": "released",
+      "existingIds": [
+        "castleford-cur-zac-cini"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season"
+      ]
+    },
+    {
+      "name": "Jack Ashworth",
+      "from": "Castleford Tigers",
+      "to": "Leigh Leopards",
+      "toLeague": "Super League",
+      "date": "2026-08-18",
+      "type": "permanent",
+      "existingIds": [
+        "castleford-cur-jack-ashworth"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season"
+      ]
+    },
+    {
+      "name": "George Hirst",
+      "from": "Wigan Warriors",
+      "to": "Castleford Tigers",
+      "toLeague": "Super League",
+      "date": "2026-03-10",
+      "type": "permanent",
+      "existingIds": [
+        "wigan-cur-george-hirst"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season",
+        "https://en.wikipedia.org/wiki/2026_Wigan_Warriors_season"
+      ],
+      "note": "On loan from 16 Feb 2026, made permanent 10 Mar"
+    },
+    {
+      "name": "Tyler Dupree",
+      "from": "Wigan Warriors",
+      "to": "Castleford Tigers",
+      "toLeague": "Super League",
+      "date": "2026-04-27",
+      "type": "permanent",
+      "existingIds": [
+        "castleford-cur-tyler-dupree"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season",
+        "https://en.wikipedia.org/wiki/2026_Wigan_Warriors_season"
+      ],
+      "note": "Was on season loan at Toulouse from Wigan before Castleford deal; already has Castleford card"
+    },
+    {
+      "name": "Phoenix Laulu-Togaga'e",
+      "from": "Catalans Dragons",
+      "to": "Castleford Tigers",
+      "toLeague": "Super League",
+      "date": "2026-04-27",
+      "type": "permanent",
+      "existingIds": [
+        "castleford-cur-phoenix-laulu-togagae"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season"
+      ],
+      "note": "Already has Castleford card only"
+    },
+    {
+      "name": "Jack Brown",
+      "from": "Hull KR",
+      "to": "Castleford Tigers",
+      "toLeague": "Super League",
+      "date": "2026-06-02",
+      "type": "permanent",
+      "existingIds": [
+        "hull-kr-cur-jack-brown"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season",
+        "https://en.wikipedia.org/wiki/2026_Hull_Kingston_Rovers_season"
+      ]
+    },
+    {
+      "name": "Keanan Brand",
+      "from": "Leigh Leopards",
+      "to": "Castleford Tigers",
+      "toLeague": "Super League",
+      "date": "2026-08-19",
+      "type": "season-loan",
+      "existingIds": [
+        "leigh-cur-keanan-brand"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season"
+      ]
+    },
+    {
+      "name": "Ben McNamara",
+      "from": "Leigh Leopards",
+      "to": "Castleford Tigers",
+      "toLeague": "Super League",
+      "date": "2026-08-19",
+      "type": "season-loan",
+      "existingIds": [
+        "leigh-cur-ben-mcnamara"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season"
+      ]
+    },
+    {
+      "name": "Flynn Holden",
+      "from": "Warrington Wolves",
+      "to": "Hull KR",
+      "toLeague": "Super League",
+      "date": "2026-06",
+      "type": "permanent",
+      "existingIds": [],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Warrington_Wolves_season",
+        "https://en.wikipedia.org/wiki/2026_Hull_Kingston_Rovers_season",
+        "https://www.loverugbyleague.com/post/hull-kr-quartet-loans-18-06-2026"
+      ],
+      "note": "19-year-old fullback/wing, deal to end of 2028; no card at either club; immediately loaned to Goole"
+    },
+    {
+      "name": "Oliver Leyland",
+      "from": "Warrington Wolves",
+      "to": "Huddersfield Giants",
+      "toLeague": "Super League",
+      "date": "2026-07-18",
+      "type": "permanent",
+      "existingIds": [
+        "warrington-cur-oliver-leyland"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Warrington_Wolves_season",
+        "https://www.loverugbyleague.com/post/warrington-half-back-makes-super-league-move-after-early-release",
+        "https://giantsrl.com/article/10044/leyland-pens-giants-contract"
+      ],
+      "note": "Early release from Warrington, trial then contract to end of 2026"
+    },
+    {
+      "name": "Zac Lipowicz",
+      "from": "Catalans Dragons",
+      "to": "Wakefield Trinity",
+      "toLeague": "Super League",
+      "date": "2026-08-19",
+      "type": "permanent",
+      "existingIds": [
+        "catalans-cur-zac-lipowicz"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Wakefield_Trinity_season",
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/wakefield-trinity-news-overseas-duo-signed-with-immediate-effect-to-boost-injury-hit-squad-8928765"
+      ],
+      "note": "Signed with immediate effect to end of 2026 after 26 Catalans apps; played for Wakefield in run-in"
+    },
+    {
+      "name": "Seth Nikotemo",
+      "from": "Wakefield Trinity",
+      "to": "released",
+      "toLeague": "other",
+      "date": "2026-08-13",
+      "type": "released",
+      "existingIds": [
+        "wakefield-cur-seth-nikotemo"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Wakefield_Trinity_season",
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/well-miss-him-coach-daryl-powells-tribute-after-wakefield-trinity-release-seth-nikotemo-8921292"
+      ],
+      "note": "Released for personal reasons (returned home); no new club stated"
+    },
+    {
+      "name": "Jamie Gill",
+      "from": "Bradford Bulls",
+      "to": "Dewsbury Rams",
+      "toLeague": "Championship",
+      "date": "2026-02",
+      "type": "season-loan",
+      "existingIds": [
+        "bradford-cur-jamie-gill"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Bradford_Bulls_season"
+      ]
+    },
+    {
+      "name": "Cameron Bate",
+      "from": "Bradford Bulls",
+      "to": "Swinton Lions",
+      "toLeague": "Championship",
+      "date": "2026-02",
+      "type": "season-loan",
+      "existingIds": [
+        "bradford-cur-cameron-bate"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Bradford_Bulls_season"
+      ]
+    },
+    {
+      "name": "Danny Richardson",
+      "from": "York Knights",
+      "to": "Widnes Vikings",
+      "toLeague": "Championship",
+      "date": "2026-06",
+      "type": "season-loan",
+      "existingIds": [
+        "york-cur-danny-richardson"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+      ]
+    },
+    {
+      "name": "Josh Griffin",
+      "from": "York Knights",
+      "to": "retired",
+      "toLeague": "retired",
+      "date": "2026-06",
+      "type": "retired",
+      "existingIds": [
+        "york-cur-josh-griffin"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+      ]
+    },
+    {
+      "name": "Matty English",
+      "from": "Huddersfield Giants",
+      "to": "York Knights",
+      "toLeague": "Super League",
+      "date": "2026-07",
+      "type": "season-loan",
+      "existingIds": [
+        "huddersfield-cur-matty-english"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+      ]
+    },
+    {
+      "name": "Tom Inman",
+      "from": "Halifax Panthers",
+      "to": "York Knights",
+      "toLeague": "Super League",
+      "date": "2026-02",
+      "type": "permanent",
+      "existingIds": [
+        "york-cur-tom-inman"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+      ],
+      "note": "Already has York card"
+    },
+    {
+      "name": "David Nofoaluma",
+      "from": "Newcastle Thunder",
+      "to": "York Knights",
+      "toLeague": "Super League",
+      "date": "2026-02",
+      "type": "season-loan",
+      "existingIds": [
+        "york-cur-david-nofoaluma"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+      ],
+      "note": "Already has York card"
+    },
+    {
+      "name": "Liam Knight",
+      "from": "Hull FC",
+      "to": "unknown (left club)",
+      "toLeague": "other",
+      "date": "2026-02",
+      "type": "released",
+      "existingIds": [
+        "hull-fc-cur-liam-knight"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Hull_FC_season"
+      ]
+    },
+    {
+      "name": "Ryan Westerman",
+      "from": "Hull FC",
+      "to": "Hull KR",
+      "toLeague": "Super League",
+      "date": "2026-06",
+      "type": "permanent",
+      "existingIds": [
+        "hull-kr-cur-ryan-westerman"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Hull_FC_season",
+        "https://en.wikipedia.org/wiki/2026_Hull_Kingston_Rovers_season"
+      ],
+      "note": "Already has Hull KR card"
+    },
+    {
+      "name": "Tom Whitehead",
+      "from": "Hull KR",
+      "to": "Doncaster RLFC",
+      "toLeague": "Championship",
+      "date": "2026-06",
+      "type": "season-loan",
+      "existingIds": [
+        "hull-kr-cur-tom-whitehead"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Hull_Kingston_Rovers_season"
+      ]
+    },
+    {
+      "name": "Ethan O'Neill",
+      "from": "Leeds Rhinos",
+      "to": "Hull FC",
+      "toLeague": "Super League",
+      "date": "2026-07-09",
+      "type": "permanent",
+      "existingIds": [
+        "leigh-cur-ethan-o-neill"
+      ],
+      "sources": [
+        "https://www.yorkshirepost.co.uk/sport/rugby-league/hull-fc-announce-signing-and-departure-ahead-of-york-knights-clash-8787937",
+        "https://www.therhinos.co.uk/article/23633/oneill-moves-to-hull-fc"
+      ],
+      "note": "On loan at Hull FC from May 2026, then permanent 2.5-year deal. Existing card is at Leigh (his 2025 club) - no Leeds card"
+    },
+    {
+      "name": "Jed Cartwright",
+      "from": "Hull FC",
+      "to": "St Helens",
+      "toLeague": "Super League",
+      "date": "2026-07-09",
+      "type": "season-loan",
+      "existingIds": [
+        "hull-fc-cur-jed-cartwright"
+      ],
+      "sources": [
+        "https://www.saintsrlfc.com/2026/07/09/jed-cartwright-joins-the-saints/",
+        "https://www.loverugbyleague.com/post/jed-cartwrights-st-helens-deal-clarified-as-injured-stars-near-return"
+      ],
+      "note": "Initial one-month loan with view to permanent; St Helens interim coach confirmed he stays to end of 2026 season"
+    },
+    {
+      "name": "Morgan Knowles",
+      "from": "St Helens",
+      "to": "Dolphins",
+      "toLeague": "NRL",
+      "date": "2025-11",
+      "type": "permanent",
+      "existingIds": [
+        "st-helens-cur-morgan-knowles"
+      ],
+      "sources": [
+        "https://aapnews.aap.com.au/news/dolphins-sign-st-helens-star-in-woolf-reunion",
+        "https://rugbyleaguehub.com/knowles-and-woolf-set-for-dolphins-reunion-in-2026/"
+      ],
+      "note": "NOT mid-season: signed (Feb 2025) for Dolphins from 2026 NRL season, so he never played for St Helens in 2026 - St Helens 2026 card is stale"
+    },
+    {
+      "name": "Matty Nicholson",
+      "from": "Warrington Wolves",
+      "to": "Canberra Raiders",
+      "toLeague": "NRL",
+      "date": "2024-10",
+      "type": "permanent",
+      "existingIds": [
+        "warrington-cur-matty-nicholson"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Matty_Nicholson",
+        "https://canberratimes.com.au/story/8693465/nrl-canberra-raiders-sign-matty-nicholson-on-three-year-deal"
+      ],
+      "note": "NOT mid-season: signed 3-year Canberra deal July 2024, at Canberra since 2025 (5 NRL apps in 2026). Warrington 2026 card is stale"
+    },
+    {
+      "name": "Bayley Sironen",
+      "from": "Catalans Dragons",
+      "to": "Wynnum Manly Seagulls",
+      "toLeague": "QLD Cup",
+      "date": "2026-02-18",
+      "type": "permanent",
+      "existingIds": [
+        "catalans-cur-bayley-sironen",
+        "wynnum-manly-cur-bayley-sironen"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Bayley_Sironen"
+      ],
+      "note": "Catalans deal (2024-25) ended; did not play for Catalans in 2026; signed Wynnum Manly 18 Feb 2026. Catalans card is stale; Wynnum card correct"
+    },
+    {
+      "name": "Lazarus Vaalepu",
+      "from": "Leigh Leopards",
+      "to": "Castleford Tigers",
+      "toLeague": "Super League",
+      "date": "2026-08-18",
+      "type": "season-loan",
+      "existingIds": [],
+      "sources": [
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/castleford-tigers-bring-in-forward-from-super-league-rivals-leigh-leopards-as-ex-hull-fc-star-moves-other-way-8926908",
+        "https://www.castlefordtigers.com/article/478/vaalepu-joins-castleford-tigers-on-loan",
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season"
+      ],
+      "note": "No card anywhere; joined Leigh from Melbourne Storm July 2026"
+    },
+    {
+      "name": "Aaron Pene",
+      "from": "Leigh Leopards",
+      "to": "released",
+      "toLeague": "other",
+      "date": "2026-08-03",
+      "type": "released",
+      "existingIds": [
+        "leigh-cur-aaron-pene"
+      ],
+      "sources": [
+        "https://www.loverugbyleague.com/post/leigh-leopards-create-transfer-opening-after-releasing-overseas-star"
+      ],
+      "note": "Released from contract; next club not stated"
+    },
+    {
+      "name": "Tiaki Chan",
+      "from": "Wigan Warriors",
+      "to": "Toulouse Olympique",
+      "toLeague": "Super League",
+      "date": "2026-03-27",
+      "type": "season-loan",
+      "existingIds": [
+        "wigan-cur-tiaki-chan"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Tiaki_Chan",
+        "https://www.wigantoday.net/sport/rugby-league/wigan-warriors/tiaki-chan-wigan-warriors-toulouse-olympique-8786692",
+        "https://www.to13.com/actualites/tiaki-chan-is-now-a-full-time-olympien/"
+      ],
+      "note": "One-month loan at Catalans from 19 Feb 2026 (5 apps), then season-long loan to Toulouse from 27 Mar 2026; agreed permanent Toulouse deal to 2028 (July 2026)"
+    },
+    {
+      "name": "Cesar Rouge",
+      "from": "Catalans Dragons",
+      "to": "Toulouse Olympique",
+      "toLeague": "Super League",
+      "date": "2026-01-17",
+      "type": "permanent",
+      "existingIds": [
+        "catalans-cur-cesar-rouge"
+      ],
+      "sources": [
+        "https://www.loverugbyleague.com/post/toulouse-olympique-bolster-ranks-as-french-international-makes-cross-super-league-switch",
+        "https://www.alloutrugbyleague.co.uk/news/catalans-dragons-release-player-super-1623793"
+      ],
+      "note": "Released by Catalans with immediate effect and signed for Toulouse to end of 2026 on 17 Jan 2026 (just before/around squad-number announcements)"
+    },
+    {
+      "name": "Ashton Golding",
+      "from": "Huddersfield Giants",
+      "to": "Castleford Tigers",
+      "toLeague": "Super League",
+      "date": "2026-02-18",
+      "type": "permanent",
+      "existingIds": [],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season",
+        "https://www.loverugbyleague.com/post/huddersfield-giants-star-ash-golding-transfer-super-league-clubs-recruitment"
+      ],
+      "note": "6-month deal; no card at either club"
+    },
+    {
+      "name": "Liam Hood",
+      "from": "Wakefield Trinity",
+      "to": "Castleford Tigers",
+      "toLeague": "Super League",
+      "date": "2025-10-02",
+      "type": "permanent",
+      "existingIds": [
+        "castleford-cur-liam-hood",
+        "wakefield-cur-liam-hood"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season",
+        "https://en.wikipedia.org/wiki/2026_Wakefield_Trinity_season"
+      ],
+      "note": "Pre-season move (Oct 2025). Played 2026 for CASTLEFORD; Wakefield card is stale"
+    },
+    {
+      "name": "Renouf Atoni",
+      "from": "Wakefield Trinity",
+      "to": "Castleford Tigers",
+      "toLeague": "Super League",
+      "date": "2025-09-29",
+      "type": "permanent",
+      "existingIds": [
+        "castleford-cur-renouf-atoni",
+        "wakefield-cur-renouf-atoni"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season",
+        "https://en.wikipedia.org/wiki/2026_Wakefield_Trinity_season"
+      ],
+      "note": "Pre-season move (Sep 2025). Played 2026 for CASTLEFORD; Wakefield card is stale"
+    },
+    {
+      "name": "Oliver Wilson",
+      "from": "Huddersfield Giants",
+      "to": "Wigan Warriors",
+      "toLeague": "Super League",
+      "date": "2025-11-10",
+      "type": "permanent",
+      "existingIds": [
+        "wigan-cur-oliver-wilson",
+        "huddersfield-cur-oliver-wilson"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Oliver_Wilson_(rugby_league)",
+        "https://www.loverugbyleague.com/post/wigan-warriors-sign-oliver-wilson"
+      ],
+      "note": "Pre-season move (4-year deal, Nov 2025). 2026 club is WIGAN (injury-hit, few/no apps); Huddersfield card is stale. Note Wigan card has position PROP, Huddersfield card SECOND_ROW - Wikipedia lists him as prop"
+    },
+    {
+      "name": "Sam Lisone",
+      "from": "Leeds Rhinos",
+      "to": "Hull FC",
+      "toLeague": "Super League",
+      "date": "2025-07",
+      "type": "permanent",
+      "existingIds": [
+        "hull-fc-cur-sam-lisone",
+        "leeds-cur-sam-lisone"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Hull_FC_season"
+      ],
+      "note": "Pre-season move (2-year deal signed July 2025). Played 2026 for HULL FC (try v Catalans R6); Leeds card is stale"
+    },
+    {
+      "name": "Justin Sangaré",
+      "from": "Salford Red Devils",
+      "to": "York Knights",
+      "toLeague": "Super League",
+      "date": "2025-10-14",
+      "type": "permanent",
+      "existingIds": [
+        "york-cur-justin-sangare",
+        "toulouse-cur-justin-sangare"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Justin_Sangar%C3%A9",
+        "https://www.yorkrlfc.com/post/sangaré-signs-for-york",
+        "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+      ],
+      "note": "Pre-season move. 2026 club is YORK; Toulouse card is stale (last at Toulouse 2022)"
+    },
+    {
+      "name": "Emre Guler",
+      "from": "St George Illawarra Dragons",
+      "to": "Wakefield Trinity",
+      "toLeague": "Super League",
+      "date": "2026-08-19",
+      "type": "permanent",
+      "existingIds": [],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Wakefield_Trinity_season",
+        "https://en.wikipedia.org/wiki/Emre_Guler",
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/wakefield-trinity-news-overseas-duo-signed-with-immediate-effect-to-boost-injury-hit-squad-8928765"
+      ],
+      "note": "3-year deal originally from 2027, brought forward after release by St George"
+    },
+    {
+      "name": "Tommy Doyle",
+      "from": "Wakefield Trinity",
+      "to": "York Knights",
+      "toLeague": "Super League",
+      "date": "2026-08-14",
+      "type": "permanent",
+      "existingIds": [
+        "york-cur-tommy-doyle"
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Wakefield_Trinity_season",
+        "https://en.wikipedia.org/wiki/2026_York_Knights_season",
+        "https://en.wikipedia.org/wiki/Thomas_Doyle_(rugby_league)",
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/forward-released-by-wakefield-trinity-finds-new-club-thomas-doyle-could-make-debut-v-leeds-rhinos-8925808"
+      ],
+      "note": "Hooker (aka Thomas Doyle). Short loan at Bradford late July, released by Wakefield 13 Aug, signed York to end of 2027. Already has York card (no Wakefield card)"
+    },
+    {
+      "name": "John Toleafoa",
+      "from": "Albi (Super XIII)",
+      "to": "Toulouse Olympique",
+      "toLeague": "Super League",
+      "date": "2026-05-29",
+      "type": "permanent",
+      "existingIds": [
+        "toulouse-cur-john-toleafoa"
+      ],
+      "sources": [
+        "https://www.loverugbyleague.com/post/toulouse-sign-john-toleafoa-may-2026"
+      ],
+      "note": "Australian front-rower, contract to end of 2027; already has Toulouse card"
+    }
+  ],
+  "joinersWithNoCard": [
+    {
+      "name": "Matt Lodge",
+      "to": "Leeds Rhinos",
+      "from": "North Queensland Cowboys",
+      "position": "PROP",
+      "nationality": "Australia",
+      "dateOfBirth": "1995-05-31",
+      "date": "2026-08-13",
+      "sources": [
+        "https://www.therhinos.co.uk/article/23821/rhinos-bolster-squad-with-lodge-capture",
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/leeds-rhinos-target-replacement-after-matt-lodge-departure-9274114"
+      ],
+      "slApps2026": 5,
+      "note": "Short-term deal to end of 2026; played 5 games then returned to Australia (left Oct 2026)"
+    },
+    {
+      "name": "Lazarus Vaalepu",
+      "to": "Leigh Leopards",
+      "from": "Melbourne Storm",
+      "position": "PROP",
+      "nationality": "Samoa",
+      "dateOfBirth": "1999-03-19",
+      "date": "2026-06-30",
+      "sources": [
+        "https://www.loverugbyleague.com/post/adrian-lam-on-leigh-recruitment-03-07-2026",
+        "https://en.wikipedia.org/wiki/Lazarus_Vaalepu"
+      ],
+      "slApps2026": 4,
+      "note": "Signed by Leigh with immediate effect early July 2026 (4 SL apps, 2 on loan at Oldham); then season-long loan to Castleford from 18 Aug 2026 - see moves"
+    },
+    {
+      "name": "Cole Geyer",
+      "to": "Huddersfield Giants",
+      "from": "Oldham RLFC",
+      "position": "HOOKER",
+      "nationality": "Australia",
+      "dateOfBirth": null,
+      "date": "2026-05-06",
+      "sources": [
+        "https://www.giantsrl.com/article/9872/giants-sign-yeds-hooker"
+      ],
+      "note": "Season-long loan from Oldham (Championship)"
+    },
+    {
+      "name": "Matty Hanley",
+      "to": "Huddersfield Giants",
+      "from": "Midlands Hurricanes",
+      "position": "CENTRE",
+      "nationality": "England",
+      "dateOfBirth": null,
+      "date": "2026-07-28",
+      "sources": [
+        "https://www.loverugbyleague.com/post/huddersfield-giants-next-recruit-confirmed-as-familiar-face-returns"
+      ],
+      "note": "Former Giants academy player, 20, centre/wing; re-signed to end of 2026"
+    },
+    {
+      "name": "Emre Guler",
+      "to": "Wakefield Trinity",
+      "from": "St George Illawarra Dragons (NRL)",
+      "position": "PROP",
+      "nationality": "Turkey",
+      "dateOfBirth": "1998-01-19",
+      "date": "2026-08-19",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Emre_Guler"
+      ],
+      "slApps2026": 4,
+      "slTries2026": 0
+    },
+    {
+      "name": "Phoenix Steinwede",
+      "to": "Bradford Bulls",
+      "from": "Tweed Heads Seagulls (QLD Cup)",
+      "position": "SECOND_ROW",
+      "nationality": "Australia",
+      "dateOfBirth": null,
+      "date": "2026-03-23",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Bradford_Bulls_season",
+        "https://www.aol.com/articles/bradford-bulls-bring-forward-steinwede-155338145.html"
+      ],
+      "note": "Forward, 23; ex-Roosters/Titans juniors; deal to end of 2026; listed as Bradford out for 2027 (position approximate - \"forward\")"
+    },
+    {
+      "name": "Riley Dean",
+      "to": "Bradford Bulls",
+      "from": "Oldham RLFC",
+      "position": "STAND_OFF",
+      "nationality": "Ireland",
+      "dateOfBirth": "2001-08-10",
+      "date": "2026-05-20",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Bradford_Bulls_season",
+        "https://en.wikipedia.org/wiki/Riley_Dean"
+      ],
+      "slApps2026": 1,
+      "slTries2026": 1,
+      "note": "Deal to end of 2026; joining Halifax for 2027"
+    },
+    {
+      "name": "Jack Ormondroyd",
+      "to": "Bradford Bulls",
+      "from": "Oldham RLFC",
+      "position": "PROP",
+      "nationality": "England",
+      "dateOfBirth": "1991-11-07",
+      "date": "2026-03-19",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Bradford_Bulls_season",
+        "https://en.wikipedia.org/wiki/Jack_Ormondroyd"
+      ],
+      "slApps2026": 3,
+      "slTries2026": 0,
+      "note": "Season-long loan from Oldham; signing permanently for 2027"
+    },
+    {
+      "name": "Flynn Holden",
+      "to": "Hull KR",
+      "from": "Warrington Wolves",
+      "position": "FULLBACK",
+      "nationality": "England",
+      "dateOfBirth": null,
+      "date": "2026-06",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Hull_Kingston_Rovers_season",
+        "https://www.loverugbyleague.com/post/hull-kr-quartet-loans-18-06-2026"
+      ],
+      "note": "19-year-old fullback/wing, contract to end of 2028; 0 SL apps known (loaned to Goole)"
+    },
+    {
+      "name": "Ryan Hampshire",
+      "to": "Hull KR",
+      "from": "Featherstone Rovers",
+      "position": "FULLBACK",
+      "nationality": "England",
+      "dateOfBirth": "1994-12-29",
+      "date": "2026-04-02",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Hull_Kingston_Rovers_season",
+        "https://en.wikipedia.org/wiki/Ryan_Hampshire"
+      ],
+      "slApps2026": 7,
+      "slTries2026": 0,
+      "note": "Signed after trial; deal to end of 2026; listed as leaving HKR (TBC) for 2027"
+    },
+    {
+      "name": "Tevita Pangai Junior",
+      "to": "Hull KR",
+      "from": "SC Leucate (France)",
+      "position": "PROP",
+      "nationality": "Tonga",
+      "dateOfBirth": "1996-02-04",
+      "date": "2026-05-17",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Hull_Kingston_Rovers_season",
+        "https://en.wikipedia.org/wiki/Tevita_Pangai_Junior",
+        "https://www.loverugbyleague.com/post/hull-krs-payment-to-warrington-for-tevita-pangai-jr-explained"
+      ],
+      "slApps2026": 3,
+      "slTries2026": 0,
+      "note": "Deal to end of 2026; reported Leigh signing for 2027"
+    },
+    {
+      "name": "Ashton Golding",
+      "to": "Castleford Tigers",
+      "from": "Huddersfield Giants",
+      "position": "LOOSE_FORWARD",
+      "nationality": "Jamaica",
+      "dateOfBirth": "1996-09-04",
+      "date": "2026-02-18",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season",
+        "https://en.wikipedia.org/wiki/Ashton_Golding"
+      ],
+      "slApps2026": 5,
+      "slTries2026": 3,
+      "note": "Utility (loose forward/hooker/fullback); left Huddersfield by mutual consent Nov 2025, signed Castleford to end of 2026"
+    },
+    {
+      "name": "Edenn Rogers-Smith",
+      "to": "Catalans Dragons",
+      "from": "Carcassonne (Super XIII)",
+      "position": "SECOND_ROW",
+      "nationality": "Australia",
+      "dateOfBirth": null,
+      "date": "2026-06-15",
+      "sources": [
+        "https://www.loverugbyleague.com/post/catalans-signing-15-06-2026"
+      ],
+      "note": "Sydney-born back-rower, 26; short-term deal to end of 2026; joins Leeds for 2027"
+    },
+    {
+      "name": "Adrian Delarose",
+      "to": "Catalans Dragons",
+      "from": "Limoux (developed)",
+      "position": "SECOND_ROW",
+      "nationality": "France",
+      "dateOfBirth": null,
+      "date": "2026-05-07",
+      "sources": [
+        "https://www.seriousaboutrl.com/rugby-league-news-catalans-dragons-confirm-mid-season-signing-days-after-coach-comments-on-resilience-114997"
+      ],
+      "note": "18-year-old versatile forward, 6-month deal to end of 2026 (may be academy promotion); position approximate"
+    }
+  ],
+  "for2027": [
+    {
+      "name": "Dylan Walker",
+      "from": "Parramatta Eels",
+      "to": "Leeds Rhinos",
+      "sources": [
+        "https://therhinos.co.uk/article/23615/leeds-rhinos-sign-australian-international-walker"
+      ]
+    },
+    {
+      "name": "Morgan Gannon",
+      "from": "New Zealand Warriors",
+      "to": "Leeds Rhinos",
+      "sources": [
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/leeds-rhinos-get-signing-over-the-line-as-bid-to-beat-transfer-deadline-considered-8843644"
+      ]
+    },
+    {
+      "name": "Nick Cotric",
+      "from": "Catalans Dragons",
+      "to": "Leeds Rhinos",
+      "sources": [
+        "https://www.yorkshirepost.co.uk/sport/rugby-league/leeds-rhinos-ramp-up-2027-recruitment-as-nick-cotric-follows-edenn-rogers-smith-from-catalans-dragons-8958824"
+      ]
+    },
+    {
+      "name": "Edenn Rogers-Smith",
+      "from": "Catalans Dragons",
+      "to": "Leeds Rhinos",
+      "sources": [
+        "https://www.yorkshirepost.co.uk/sport/rugby-league/leeds-rhinos-ramp-up-2027-recruitment-as-nick-cotric-follows-edenn-rogers-smith-from-catalans-dragons-8958824"
+      ]
+    },
+    {
+      "name": "Mikolaj Oledzki",
+      "from": "Leeds Rhinos",
+      "to": "Perth Bears",
+      "sources": [
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/leeds-rhinos-target-replacement-after-matt-lodge-departure-9274114",
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Harry Newman",
+      "from": "Leeds Rhinos",
+      "to": "Perth Bears",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "James McDonnell",
+      "from": "Leeds Rhinos",
+      "to": "Perth Bears",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Brodie Croft",
+      "from": "Leeds Rhinos",
+      "to": "Warrington Wolves",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Cameron Smith",
+      "from": "Leeds Rhinos",
+      "to": "Wakefield Trinity",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Marc Sneyd",
+      "from": "Warrington Wolves",
+      "to": "Salford RLFC (reported); late-Oct 2026 reports link Castleford",
+      "sources": [
+        "https://www.salfordnow.co.uk/2026/07/19/salford-rlfc-land-former-star-marc-sneyd-on-two-year-deal/"
+      ]
+    },
+    {
+      "name": "George Williams",
+      "from": "Warrington Wolves",
+      "to": "Dolphins",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Toby King",
+      "from": "Warrington Wolves",
+      "to": "London Broncos",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Joe Philbin",
+      "from": "Warrington Wolves",
+      "to": "London Broncos",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Jaimin Jolliffe",
+      "from": "Gold Coast Titans",
+      "to": "Huddersfield Giants",
+      "sources": [
+        "https://www.loverugbyleague.com/post/huddersfield-giants-next-recruit-confirmed-as-familiar-face-returns",
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Kruise Leeming",
+      "from": "Wigan Warriors (on loan at Catalans)",
+      "to": "Huddersfield Giants",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Sam Eseh",
+      "from": "Wigan Warriors",
+      "to": "Bradford Bulls",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "John Bateman",
+      "from": "North Queensland Cowboys",
+      "to": "Bradford Bulls",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Tiaki Chan",
+      "from": "Wigan Warriors (loan)",
+      "to": "Toulouse Olympique (permanent to 2028)",
+      "sources": [
+        "https://www.wigantoday.net/sport/rugby-league/wigan-warriors/tiaki-chan-wigan-warriors-toulouse-olympique-8786692"
+      ]
+    },
+    {
+      "name": "Tevita Pangai Junior",
+      "from": "Hull KR",
+      "to": "Leigh Leopards",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Jack Purtill",
+      "from": "Wigan Warriors",
+      "to": "Leigh Leopards",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Kai O'Donnell",
+      "from": "North Queensland Cowboys",
+      "to": "Leigh Leopards (expected)",
+      "sources": [
+        "https://www.zerotackle.com/cowboys-forward-to-see-out-season-before-club-switch-237151/"
+      ]
+    },
+    {
+      "name": "Riley Dean",
+      "from": "Bradford Bulls",
+      "to": "Halifax Panthers",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Jack Ormondroyd",
+      "from": "Oldham (loan at Bradford)",
+      "to": "Bradford Bulls",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Sam Hall",
+      "from": "Castleford Tigers",
+      "to": "Toulouse Olympique",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Alex Mellor",
+      "from": "Castleford Tigers",
+      "to": "Catalans Dragons",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Toby Sexton",
+      "from": "Catalans Dragons",
+      "to": "Perth Bears",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Tyson Smoothy",
+      "from": "Wakefield Trinity",
+      "to": "Perth Bears",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Max Jowitt",
+      "from": "Wakefield Trinity",
+      "to": "York Knights",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Zak Hardaker",
+      "from": "Hull FC",
+      "to": "York Knights",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Liam Farrell",
+      "from": "Wigan Warriors",
+      "to": "retired (end of 2026)",
+      "sources": [
+        "https://en.wikipedia.org/wiki/2026_Wigan_Warriors_season",
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Ryan Hall",
+      "from": "Leeds Rhinos",
+      "to": "retired (end of 2026)",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Mark Percival",
+      "from": "St Helens",
+      "to": "retired (end of 2026)",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Jonny Lomax",
+      "from": "St Helens",
+      "to": "retired (end of 2026)",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Jay Pitts",
+      "from": "Wakefield Trinity",
+      "to": "retired (end of 2026)",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Sam Powell",
+      "from": "Warrington Wolves",
+      "to": "retired (end of 2026)",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Paul Vaughan",
+      "from": "York Knights",
+      "to": "retired (end of 2026)",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Joe Westerman",
+      "from": "Castleford Tigers",
+      "to": "retired (end of 2026)",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Rhyse Martin",
+      "from": "Hull KR",
+      "to": "retired (end of 2026)",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Tom Briscoe",
+      "from": "Hull FC",
+      "to": "retired (end of 2026)",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Ben Garcia",
+      "from": "Catalans Dragons",
+      "to": "retired (end of 2026)",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Tommy Makinson",
+      "from": "Catalans Dragons",
+      "to": "retired / Coffs Harbour player-coach",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Jack Hughes",
+      "from": "Leigh Leopards",
+      "to": "retired (end of 2026)",
+      "sources": [
+        "https://www.loverugbyleague.com/post/super-league-ins-and-outs-2027"
+      ]
+    },
+    {
+      "name": "Jeremiah Mata'utia",
+      "from": "Leeds Rhinos",
+      "to": "TBC (option not taken up)",
+      "sources": [
+        "https://www.yorkshirepost.co.uk/sport/rugby-league/leeds-rhinos-forward-set-to-depart-as-brad-arthur-provides-ryan-hall-latest-8784305"
+      ]
+    },
+    {
+      "name": "Matt Lodge",
+      "from": "Leeds Rhinos",
+      "to": "returned to Australia (left Oct 2026)",
+      "sources": [
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/leeds-rhinos-target-replacement-after-matt-lodge-departure-9274114"
+      ]
+    }
+  ],
+  "unverified": [
+    {
+      "name": "Marc Sneyd",
+      "reason": "Warrington 2026 Wikipedia lists an August 2026 departure (destination N/A), but Salford Now (19 Jul 2026) says he joins Salford for 2027 and a 22 Oct 2026 LRL headline says Castleford \"secure Marc Sneyd\". Unclear if he left Warrington before season end; listed under 2027."
+    },
+    {
+      "name": "Kai O'Donnell",
+      "reason": "Has a Leigh 2026 card but spent 2026 at North Queensland Cowboys (NRL); Leigh pursuit reportedly pushed to 2027. Leigh card likely stale."
+    },
+    {
+      "name": "Morgan Knowles / Matty Nicholson / Bayley Sironen",
+      "reason": "Listed as moves but these were pre-2026 departures (cards stale), not mid-season moves."
+    },
+    {
+      "name": "Liam Knight",
+      "reason": "Hull FC Wikipedia lists him leaving in February 2026 to \"TBC\"; destination not found."
+    },
+    {
+      "name": "Myles Harrison",
+      "reason": "York Wikipedia lists a Feb 2026 loan in from Newcastle Thunder with no length; no card; not verified as season-long."
+    },
+    {
+      "name": "Jeremiah Mata'utia / Harry Newman / Max Wood",
+      "reason": "Short loans to Hull FC (Mata'utia Apr-Jul 2026, 9 apps; Newman 3 weeks; Wood one month from Warrington). All returned; not recorded as moves."
+    },
+    {
+      "name": "St Helens",
+      "reason": "No 2026 St Helens season Wikipedia page found; only in-season move located is Jed Cartwright (loan from Hull FC). Other Saints moves may be missing."
+    },
+    {
+      "name": "Leeds Rhinos / Catalans / Leigh / Huddersfield / Toulouse",
+      "reason": "No 2026 season Wikipedia pages exist; moves compiled from club sites and news articles, so coverage may be incomplete."
+    }
+  ]
+}

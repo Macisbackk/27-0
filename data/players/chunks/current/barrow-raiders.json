@@ -29,5 +29,36 @@
     ],
     "availableInGame": false,
     "superLeagueEligible": false
+  },
+  {
+    "id": "castleford-cur-brad-singleton",
+    "name": "Brad Singleton",
+    "club": "Barrow Raiders",
+    "currentClub": "Barrow Raiders",
+    "team": "Barrow Raiders",
+    "displayClub": "Barrow Raiders",
+    "position": "PROP",
+    "positions": [
+      "PROP"
+    ],
+    "primaryPosition": "PROP",
+    "nationality": "Ireland",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2016–2016",
+    "category": "current",
+    "peakRating": 81,
+    "value": 113000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "barrow-raiders-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "castleford-cur-brad-singleton",
+    "availableInGame": false,
+    "superLeagueEligible": false,
+    "birthYear": 1992,
+    "dateOfBirth": "1992-10-29",
+    "intlCaps": 3
   }
 ]

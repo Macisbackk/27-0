@@ -1,5 +1,53 @@
 [
   {
+    "id": "catalans-cur-cesar-rouge",
+    "name": "César Rougé",
+    "position": "STAND_OFF",
+    "club": "Toulouse Olympique",
+    "nationality": "France",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 83,
+    "value": 168000,
+    "appearances": 55,
+    "tries": 6,
+    "dateOfBirth": "2002-10-03",
+    "birthYear": 2002,
+    "clubsPlayedFor": [
+      "Catalans",
+      "Whitehaven",
+      "Hull KR",
+      "Toulouse"
+    ],
+    "representativeTeams": [
+      "Senior International Matches (Tests)",
+      "World Cup",
+      "Super League",
+      "Challenge Cup",
+      "UK Top Division",
+      "UK Second Division",
+      "First Class"
+    ],
+    "currentClub": "Toulouse Olympique",
+    "teamYearId": "toulouse-olympique-2026",
+    "year": 2026,
+    "status": "Current",
+    "positions": [
+      "STAND_OFF",
+      "SCRUM_HALF"
+    ],
+    "positionAbbrev": "HB",
+    "cardYear": 2026,
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "basePlayerId": "catalans-cur-cesar-rouge",
+    "primaryPosition": "HB",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "intlCaps": 8
+  },
+  {
     "id": "toulouse-cur-aj-wallace",
     "name": "AJ Wallace",
     "club": "Toulouse Olympique",
@@ -492,7 +540,7 @@
     "primaryPosition": "PF",
     "dateOfBirth": "1998-03-07",
     "birthYear": 1998,
-    "availableInGame": true,
+    "availableInGame": false,
     "superLeagueEligible": true,
     "intlCaps": 9,
     "appearances": 95,
@@ -939,5 +987,36 @@
       "Oldham RLFC",
       "Toulouse Olympique"
     ]
+  },
+  {
+    "id": "wigan-cur-tiaki-chan",
+    "name": "Tiaki Chan",
+    "club": "Toulouse Olympique",
+    "currentClub": "Toulouse Olympique",
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "position": "PROP",
+    "positions": [
+      "PROP"
+    ],
+    "primaryPosition": "PROP",
+    "nationality": "France",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2022–2022",
+    "category": "current",
+    "peakRating": 85,
+    "value": 180000,
+    "appearances": 57,
+    "tries": 4,
+    "teamYearId": "toulouse-olympique-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "wigan-cur-tiaki-chan",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "dateOfBirth": "2000-06-15",
+    "birthYear": 2000,
+    "intlCaps": 5
   }
 ]
