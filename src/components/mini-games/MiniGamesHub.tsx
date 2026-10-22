@@ -30,7 +30,7 @@ const GAMES: {
     blurb: "15 questions, four lifelines, one million.",
     reward: `Up to ${formatClubFunds(QUIZ_TOP_PRIZE)} a day`,
     glyph: "?",
-    accent: "from-amber-400/25 to-amber-500/5 text-amber-300 border-amber-400/40",
+    accent: "from-lime-400/25 to-lime-500/5 text-lime-300 border-lime-400/40",
   },
   {
     id: "wordle",
@@ -39,7 +39,7 @@ const GAMES: {
     blurb: "Guess the player from club, position, age and more.",
     reward: `${formatClubFunds(WORDLE_WIN_REWARD)} a day`,
     glyph: "W",
-    accent: "from-amber-400/25 to-amber-500/5 text-amber-300 border-amber-400/40",
+    accent: "from-lime-400/25 to-lime-500/5 text-lime-300 border-lime-400/40",
   },
   {
     id: "grid",
@@ -48,7 +48,7 @@ const GAMES: {
     blurb: "Fill a 3×3 grid with players who fit each club, nation and position.",
     reward: `Up to ${formatClubFunds(GRID_REWARD_PER_CELL * 9)} a day`,
     glyph: "#",
-    accent: "from-amber-400/25 to-amber-500/5 text-amber-300 border-amber-400/40",
+    accent: "from-lime-400/25 to-lime-500/5 text-lime-300 border-lime-400/40",
   },
 ];
 
@@ -104,7 +104,7 @@ export function MiniGamesHub() {
                         {game.reward}
                       </span>
                       {done ? (
-                        <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[11px] font-bold text-amber-300">
+                        <span className="rounded-full bg-lime-500/15 px-2 py-0.5 text-[11px] font-bold text-lime-300">
                           ✓ Banked today
                         </span>
                       ) : null}

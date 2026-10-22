@@ -13,11 +13,11 @@ const config: Config = {
       colors: {
         pitch: {
           // Matchnight palette: ground, surface, raised, line, strong line (charcoal).
-          950: "#111214",
-          900: "#1b1c1f",
-          800: "#26282c",
-          700: "#2f3237",
-          600: "#3a3d43",
+          950: "#0e0f10",
+          900: "#191a1c",
+          800: "#232527",
+          700: "#2c2e31",
+          600: "#383b3f",
         },
         "theme-primary": "rgb(var(--theme-primary-rgb) / <alpha-value>)",
         "theme-secondary": "rgb(var(--theme-secondary-rgb) / <alpha-value>)",

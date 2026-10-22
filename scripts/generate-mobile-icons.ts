@@ -1,6 +1,6 @@
 /**
  * Generate the 27-0 app icons, PWA icons and splash, matching the Matchnight LogoMark:
- * two lit scoreboard panels ("27" and "0") on charcoal, digits in scoreboard amber.
+ * two lit scoreboard panels ("27" and "0") on neutral black, digits in floodlit lime.
  * Digits are drawn as seven-segment bars, so no font is needed to render them.
  */
 import fs from "fs";
@@ -11,10 +11,10 @@ const ROOT = path.join(__dirname, "..");
 const RESOURCES = path.join(ROOT, "resources");
 const PUBLIC_ICONS = path.join(ROOT, "public", "icons");
 
-const BG = "#111214";
-const PANEL = "#080809";
-const PANEL_EDGE = "#3a3d43";
-const DIGIT = "#ffb300";
+const BG = "#0e0f10";
+const PANEL = "#060707";
+const PANEL_EDGE = "#383b3f";
+const DIGIT = "#b6f23d";
 const DASH = "#ffffff";
 
 //           a  b  c  d  e  f  g
@@ -80,7 +80,7 @@ function mark(cx: number, cy: number, width: number): string {
 
 const DEFS = `<defs>
   <radialGradient id="flood" cx="50%" cy="-10%" r="85%">
-    <stop offset="0%" stop-color="#ffb300" stop-opacity="0.16"/>
+    <stop offset="0%" stop-color="#b6f23d" stop-opacity="0.16"/>
     <stop offset="100%" stop-color="${BG}" stop-opacity="0"/>
   </radialGradient>
 </defs>`;

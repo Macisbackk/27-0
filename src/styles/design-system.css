@@ -1631,7 +1631,7 @@
   padding: 0.2rem 0.55rem;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--theme-tertiary) 32%, transparent);
-  background: color-mix(in srgb, var(--theme-primary) 10%, rgba(22, 23, 26, 0.9));
+  background: color-mix(in srgb, var(--theme-primary) 10%, rgba(20, 21, 23, 0.9));
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -1642,19 +1642,19 @@
 
 .game-badge--win {
   border-color: color-mix(in srgb, var(--success) 40%, transparent);
-  background: color-mix(in srgb, var(--success) 12%, rgba(22, 23, 26, 0.9));
+  background: color-mix(in srgb, var(--success) 12%, rgba(20, 21, 23, 0.9));
   color: var(--success);
 }
 
 .game-badge--loss {
   border-color: color-mix(in srgb, var(--danger) 40%, transparent);
-  background: color-mix(in srgb, var(--danger) 12%, rgba(22, 23, 26, 0.9));
+  background: color-mix(in srgb, var(--danger) 12%, rgba(20, 21, 23, 0.9));
   color: #fca5a5;
 }
 
 .game-badge--gold {
   border-color: color-mix(in srgb, var(--mode-era) 40%, transparent);
-  background: color-mix(in srgb, var(--mode-era) 12%, rgba(22, 23, 26, 0.9));
+  background: color-mix(in srgb, var(--mode-era) 12%, rgba(20, 21, 23, 0.9));
   color: var(--mode-era);
 }
 
@@ -1867,7 +1867,7 @@
   padding: 1rem 1.1rem;
   border-radius: var(--mobile-radius-medium, 10px);
   border: 1px solid color-mix(in srgb, var(--theme-tertiary) 24%, transparent);
-  background: rgba(22, 23, 26, 0.94);
+  background: rgba(20, 21, 23, 0.94);
   box-shadow: none;
 }
 
@@ -2043,7 +2043,7 @@
   overflow-y: auto;
   border-radius: var(--mobile-radius-medium, 10px);
   border: 1px solid color-mix(in srgb, var(--theme-tertiary) 28%, transparent);
-  background: rgba(22, 23, 26, 0.98);
+  background: rgba(20, 21, 23, 0.98);
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.4);
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -2190,7 +2190,7 @@
 .sidebar-nav-item-active {
   border-radius: 12px !important;
   border-color: color-mix(in srgb, var(--theme-tertiary) 35%, transparent) !important;
-  background: color-mix(in srgb, var(--theme-primary) 12%, rgba(22, 23, 26, 0.9)) !important;
+  background: color-mix(in srgb, var(--theme-primary) 12%, rgba(20, 21, 23, 0.9)) !important;
   color: var(--theme-primary) !important;
   box-shadow: inset 3px 0 0 var(--theme-primary);
 }
@@ -2256,7 +2256,7 @@
   overflow: hidden;
   border-radius: var(--mobile-radius-medium, 10px);
   border: 1px solid rgba(148, 163, 184, 0.22);
-  background: rgba(22, 23, 26, 0.96);
+  background: rgba(20, 21, 23, 0.96);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
   text-align: center;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
