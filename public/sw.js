@@ -1,9 +1,9 @@
 /* 27-0 service worker: installable app + offline play.
  * - Hashed Next.js assets, icons and fonts: cache first (their names change on every deploy).
- * - Pages: network first, so a new deploy shows straight away; the cached copy is used offline.
+ * - Pages: always from the network; a copy saved after load (via postMessage) is used offline.
  * - Anything else (Supabase, analytics, other sites): not touched.
  */
-const VERSION = "v1";
+const VERSION = "v2";
 const STATIC_CACHE = `27-0-static-${VERSION}`;
 const PAGE_CACHE = `27-0-pages-${VERSION}`;
 const OFFLINE_URL = "/offline.html";
@@ -28,6 +28,28 @@ async function trimPages() {
   const keys = await cache.keys();
   for (const req of keys.slice(0, Math.max(0, keys.length - MAX_PAGES))) await cache.delete(req);
 }
+
+// The page asks us to save an offline copy of itself once it has loaded (a separate request).
+self.addEventListener("message", (event) => {
+  const data = event.data || {};
+  if (data.type !== "cache-page" || typeof data.url !== "string") return;
+  const url = new URL(data.url, self.location.origin);
+  if (url.origin !== self.location.origin) return;
+  event.waitUntil(
+    (async () => {
+      try {
+        const res = await fetch(url.pathname + url.search, { credentials: "same-origin" });
+        if (res.ok && res.type === "basic") {
+          const cache = await caches.open(PAGE_CACHE);
+          await cache.put(url.pathname + url.search, res);
+          await trimPages();
+        }
+      } catch {
+        /* offline: nothing to save */
+      }
+    })()
+  );
+});
 
 self.addEventListener("fetch", (event) => {
   const req = event.request;
@@ -54,25 +76,16 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (req.mode === "navigate") {
+    // Pass the live page straight through (never tee its stream); fall back to a saved copy offline.
     event.respondWith(
-      (async () => {
-        try {
-          const res = await fetch(req);
-          if (res.ok && res.type === "basic") {
-            const cache = await caches.open(PAGE_CACHE);
-            await cache.put(req, res.clone());
-            trimPages();
-          }
-          return res;
-        } catch {
-          const cache = await caches.open(PAGE_CACHE);
-          return (
-            (await cache.match(req, { ignoreSearch: true })) ||
-            (await cache.match("/", { ignoreSearch: true })) ||
-            (await caches.match(OFFLINE_URL))
-          );
-        }
-      })()
+      fetch(req).catch(async () => {
+        const cache = await caches.open(PAGE_CACHE);
+        return (
+          (await cache.match(req, { ignoreSearch: true })) ||
+          (await cache.match("/", { ignoreSearch: true })) ||
+          (await caches.match(OFFLINE_URL))
+        );
+      })
     );
   }
 });
