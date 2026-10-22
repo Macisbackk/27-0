@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { HomeAuthBar } from "@/components/HomeAuthBar";
+import { InstallAppCard } from "@/components/InstallAppCard";
 import { EmailConfirmedBanner } from "@/components/EmailConfirmedBanner";
 import { HomeModeSelector } from "@/components/HomeModeSelector";
 import { HowToPlaySection } from "@/components/HowToPlaySection";
@@ -19,6 +20,7 @@ export default function HomePage() {
       <div className="mx-auto mt-2 flex w-full max-w-xl flex-col gap-4">
         <HomeModeSelector />
         <HomeAuthBar />
+        <InstallAppCard dismissible />
 
         <details className="group rounded-[20px] bg-pitch-900 px-4 py-3">
           <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-center gap-2 py-1 text-[15px] font-bold text-white [&::-webkit-details-marker]:hidden">

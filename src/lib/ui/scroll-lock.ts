@@ -78,7 +78,9 @@ function detachTouchBlocker(): void {
 function applyLockStyles(): void {
   if (!isBrowser() || !snapshot) return;
   const gap = snapshot.scrollbarGap;
-  document.body.style.overflow = "hidden";
+  // Only <html>: its overflow passes to the viewport, so the page keeps its scroll position.
+  // Also hiding <body> made <body> its own (unscrolled) scroll box, which yanked the sticky
+  // header 300px off screen while a popup was open and snapped it back on close (the flicker).
   document.documentElement.style.overflow = "hidden";
   // Clear any legacy position:fixed lock from older sessions / hot reload.
   document.body.style.position = "";

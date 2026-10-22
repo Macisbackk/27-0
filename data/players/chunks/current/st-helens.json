@@ -894,5 +894,61 @@
     "primaryPosition": "SO",
     "availableInGame": true,
     "superLeagueEligible": true
+  },
+  {
+    "id": "st-helens-cur-leon-cowen",
+    "name": "Leon Cowen",
+    "club": "St Helens",
+    "currentClub": "St Helens",
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "position": "LOOSE_FORWARD",
+    "positions": [
+      "LOOSE_FORWARD"
+    ],
+    "primaryPosition": "LOOSE_FORWARD",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 92000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "st-helens-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "st-helens-cur-leon-cowen",
+    "availableInGame": true,
+    "superLeagueEligible": true
+  },
+  {
+    "id": "st-helens-cur-alfie-sinclair",
+    "name": "Alfie Sinclair",
+    "club": "St Helens",
+    "currentClub": "St Helens",
+    "team": "St Helens",
+    "displayClub": "St Helens",
+    "position": "PROP",
+    "positions": [
+      "PROP"
+    ],
+    "primaryPosition": "PROP",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 90000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "st-helens-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "st-helens-cur-alfie-sinclair",
+    "availableInGame": true,
+    "superLeagueEligible": true
   }
 ]

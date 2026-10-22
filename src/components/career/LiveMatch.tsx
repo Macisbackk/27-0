@@ -117,7 +117,13 @@ export function LiveMatch({
   const away = state.clubs[fixture.away]!;
   const us = m.userSide === "home" ? m.homeScore : m.awayScore;
   const them = m.userSide === "home" ? m.awayScore : m.homeScore;
-  const clock = m.finished ? "FT" : m.minute === 40 && m.pending?.id === "team-talk" ? "HT" : `${m.minute}'`;
+  const clock = m.finished
+    ? "FT"
+    : m.pending?.id === "golden-point"
+      ? "GP"
+      : m.minute === 40 && m.pending?.id === "team-talk"
+        ? "HT"
+        : `${m.minute}'`;
   // Momentum from the home side's point of view: + fills left (home), − fills right (away).
   const homeMomentum = m.userSide === "home" ? m.momentum : -m.momentum;
   const feed = [...m.events].reverse().slice(0, 7);
@@ -251,6 +257,8 @@ function FeedRow({ event, homeColor, awayColor, fresh }: { event: LiveEvent; hom
         ? "text-theme-primary"
         : event.kind === "whistle"
           ? "font-semibold text-white"
+          : event.kind === "card"
+            ? "font-semibold text-amber-300"
           : "text-[color:var(--fl-muted)]";
   return (
     <li className={`flex items-start gap-2.5 rounded-[12px] px-2.5 py-2 text-left text-[13px] leading-snug ${fresh ? "bg-pitch-800" : ""}`}>

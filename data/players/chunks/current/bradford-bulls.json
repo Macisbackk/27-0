@@ -855,5 +855,33 @@
     "primaryPosition": "SR",
     "availableInGame": true,
     "superLeagueEligible": true
+  },
+  {
+    "id": "bradford-cur-cameron-bate",
+    "name": "Cameron Bate",
+    "club": "Bradford Bulls",
+    "currentClub": "Bradford Bulls",
+    "team": "Bradford Bulls",
+    "displayClub": "Bradford Bulls",
+    "position": "LOOSE_FORWARD",
+    "positions": [
+      "LOOSE_FORWARD"
+    ],
+    "primaryPosition": "LOOSE_FORWARD",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 92000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "bradford-bulls-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "bradford-cur-cameron-bate",
+    "availableInGame": true,
+    "superLeagueEligible": true
   }
 ]

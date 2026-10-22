@@ -1,24 +1,27 @@
 {
-  "name": "27-0 — Rugby League Squad Builder",
+  "id": "/",
+  "name": "27-0 — Rugby League Manager & Squad Builder",
   "short_name": "27-0",
-  "description": "Rugby league Manager Mode, Classic squad builder, Daily Challenge and Mini Games.",
-  "start_url": "/",
+  "description": "Rugby league Manager Mode, Classic squad builder, a new Daily Challenge every day and puzzles.",
+  "lang": "en-GB",
+  "start_url": "/?source=app",
+  "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
   "background_color": "#0a110e",
   "theme_color": "#0a110e",
-  "orientation": "any",
+  "categories": ["games", "sports"],
   "icons": [
-    {
-      "src": "/icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Daily Challenge", "short_name": "Daily", "url": "/play?daily=1", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Classic", "url": "/play", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Manager Mode", "short_name": "Manager", "url": "/manager", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Puzzles", "url": "/mini-games", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

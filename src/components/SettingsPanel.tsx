@@ -12,6 +12,7 @@ import {
 } from "@/lib/storage/preferences";
 import { getActiveTheme, UI_THEME_CHANGED_EVENT } from "@/lib/storage/ui-theme-store";
 import { resetCareerStats } from "@/lib/storage/stats";
+import { InstallAppCard } from "@/components/InstallAppCard";
 import { GameButton } from "@/components/ui/GameButton";
 import { TYPO } from "@/lib/ui/typography";
 import { GAME_VERSION } from "../../data/version";
@@ -171,6 +172,8 @@ export function SettingsPanel() {
         <h1 className={`mt-1 ${TYPO.pageTitle}`}>Settings</h1>
       </header>
 
+      <InstallAppCard />
+
       <Group title="Game">
         <Row label="Sound" hint="Match sounds, spins and menus.">
           {ready ? (
@@ -237,6 +240,7 @@ export function SettingsPanel() {
                 Log out
               </GameButton>
             </Row>
+            <LinkRow href="/delete-account" label="Delete account" hint="Permanently remove your account and online data." />
           </>
         ) : (
           <>
@@ -286,6 +290,7 @@ export function SettingsPanel() {
         <LinkRow href={SUGGESTIONS_MAIL} label="Send a suggestion" hint="Ideas and bug reports welcome." external />
         <LinkRow href={COFFEE_URL} label="Buy Me a Coffee" hint="Support 27-0." external />
         <LinkRow href={X_URL} label="Follow @27and0 on X" external />
+        <LinkRow href="/privacy" label="Privacy policy" />
       </Group>
 
       <p className="px-2 text-center text-xs text-gray-500">27-0 {GAME_VERSION}</p>

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/lib/auth-context";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { buildPlayHref, isPlayModeActive } from "@/lib/play-links";
@@ -51,7 +50,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     playMenuClose();
     onClose();
   }, [onClose]);
-  const panelRef = useModalA11y(open, closeMenu);
+  const panelRef = useModalA11y(open, closeMenu, { lockScroll: false });
 
   useEffect(() => {
     setNormalEraVariantState(getNormalEraVariant());
@@ -155,37 +154,32 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     ...(!loading && !isLoggedIn ? [{ href: "/login", label: "Log in", icon: <KeyIcon /> }] : []),
   ];
 
+  // Always mounted: the menu slides with a CSS transform and never locks/unlocks the page, because
+  // toggling scroll lock (and mounting the panel) is what made iPhone Safari flash on open and close.
   return (
-    <AnimatePresence>
-      {open && (
-        <>
-          <motion.button
-            key="menu-backdrop"
-            type="button"
-            aria-label="Close menu"
-            className="fixed inset-0 z-[60] bg-black/60"
-            style={{ willChange: "opacity" }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
-            onClick={closeMenu}
-          />
-          <motion.aside
-            ref={panelRef}
-            tabIndex={-1}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Site menu"
-            key="menu-panel"
-            className="sidebar-panel fixed inset-y-0 right-0 z-[70] flex h-[100dvh] w-[min(320px,90vw)] flex-col shadow-2xl outline-none"
-            style={{ willChange: "transform", backfaceVisibility: "hidden" }}
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            // A tween, not a spring: a spring overshoots and flashes the page behind the right edge.
-            transition={{ type: "tween", duration: 0.22, ease: [0.32, 0.72, 0, 1] }}
-          >
+    <>
+      <button
+        type="button"
+        aria-label="Close menu"
+        tabIndex={-1}
+        aria-hidden={!open}
+        onClick={closeMenu}
+        className={`fixed inset-0 z-[60] bg-black/60 [touch-action:none] transition-opacity duration-200 ease-out ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
+      <aside
+        ref={panelRef}
+        tabIndex={-1}
+        role="dialog"
+        aria-modal={open ? "true" : undefined}
+        aria-label="Site menu"
+        aria-hidden={!open}
+        inert={!open}
+        className={`sidebar-panel fixed inset-y-0 right-0 z-[70] flex w-[min(320px,90vw)] flex-col shadow-2xl outline-none ${
+          open ? "sidebar-panel--open" : ""
+        }`}
+      >
             <div className="flex h-14 shrink-0 items-center justify-between gap-3 px-4 pt-[env(safe-area-inset-top)]">
               <p className="text-[17px] font-bold text-white">Menu</p>
               <button
@@ -338,10 +332,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 </a>
               </div>
             </div>
-          </motion.aside>
-        </>
-      )}
-    </AnimatePresence>
+      </aside>
+    </>
   );
 }
 

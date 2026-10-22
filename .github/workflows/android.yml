@@ -1,0 +1,86 @@
+name: Android app
+
+# Builds the 27-0 Android app from the same code as the website (static export inside Capacitor).
+# - Every run: a debug APK you can install on an Android phone to try (download from the run's Artifacts).
+# - With signing secrets set (see MOBILE_APP.md → "Play Store release"): a signed .aab ready for Google Play.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths-ignore: ["**.md", "docs/**", "supabase/**"]
+  workflow_dispatch:
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # Public values (already in the website's JavaScript) so the app can log in and use the leaderboards.
+      NEXT_PUBLIC_SUPABASE_URL: https://wpkwcaxzrmutacizenzg.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa3djYXh6cm11dGFjaXplbnpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMDM4ODAsImV4cCI6MjA5NjU3OTg4MH0.ulOvyz0GEO5VRZN7AvngP_Ju96XjVwHhoSQ4gDbL7FY
+      NEXT_PUBLIC_SITE_URL: https://27-0.co.uk
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Static export for the app
+        run: npm run build:mobile
+      - name: Copy into the Android project
+        run: npx cap sync android
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Version
+        id: version
+        run: |
+          name=$(sed -n 's/.*GAME_VERSION = "v\{0,1\}\([^"]*\)".*/\1/p' data/version.ts)
+          echo "ANDROID_VERSION_NAME=${name:-1.0}" >> "$GITHUB_ENV"
+          echo "ANDROID_VERSION_CODE=$((1000 + ${{ github.run_number }}))" >> "$GITHUB_ENV"
+          echo "App version ${name} (code $((1000 + ${{ github.run_number }})))" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload key (only when the signing secrets exist)
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+            {
+              echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/upload.jks"
+              echo "ANDROID_KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD"
+              echo "ANDROID_KEY_ALIAS=$KEY_ALIAS"
+              echo "ANDROID_KEY_PASSWORD=${KEY_PASSWORD:-$KEYSTORE_PASSWORD}"
+            } >> "$GITHUB_ENV"
+            echo "Signing with the upload key." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No signing secrets yet: building the debug APK only." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Build debug APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+      - name: Build signed release (.aab for Google Play)
+        if: env.ANDROID_KEYSTORE_PATH != ''
+        working-directory: android
+        run: ./gradlew --no-daemon bundleRelease assembleRelease
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 27-0-debug-apk
+          path: android/app/build/outputs/apk/debug/*.apk
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: env.ANDROID_KEYSTORE_PATH != ''
+        with:
+          name: 27-0-play-store-release
+          path: |
+            android/app/build/outputs/bundle/release/*.aab
+            android/app/build/outputs/apk/release/*.apk
+          retention-days: 90

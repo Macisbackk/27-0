@@ -12,8 +12,10 @@ const FOCUSABLE_SELECTOR =
 /** Focus trap, scroll lock, and Escape for modal overlays. */
 export function useModalA11y(
   open: boolean,
-  onClose: () => void
+  onClose: () => void,
+  options: { lockScroll?: boolean } = {}
 ): RefObject<HTMLDivElement | null> {
+  const lockScroll = options.lockScroll !== false;
   const panelRef = useRef<HTMLDivElement | null>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const scrollLockIdRef = useRef<ScrollLockId | null>(null);
@@ -27,7 +29,9 @@ export function useModalA11y(
     if (!open) return;
 
     previousFocusRef.current = document.activeElement as HTMLElement | null;
-    scrollLockIdRef.current = acquireScrollLock("modal");
+    // iOS Safari repaints the whole page when <html> overflow toggles, which reads as a flicker on
+    // slide-in panels; those opt out and block scrolling with touch-action instead.
+    scrollLockIdRef.current = lockScroll ? acquireScrollLock("modal") : null;
 
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -76,7 +80,7 @@ export function useModalA11y(
       releaseScrollLock(scrollLockIdRef.current);
       scrollLockIdRef.current = null;
     };
-  }, [open]);
+  }, [open, lockScroll]);
 
   return panelRef;
 }

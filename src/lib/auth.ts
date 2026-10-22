@@ -228,3 +228,18 @@ export async function sendPasswordResetEmail(
     return mapAuthError(message, "signup");
   }
 }
+
+/**
+ * Permanently delete the signed-in account and its online data (leaderboard entries, stats,
+ * profile) via the `delete_my_account` database function, then sign out.
+ */
+export async function deleteMyAccount(): Promise<AuthActionResult> {
+  try {
+    const { error } = await supabase.rpc("delete_my_account");
+    if (error) return { ok: false, error: "We couldn't delete your account automatically." };
+    await supabase.auth.signOut().catch(() => {});
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "We couldn't delete your account automatically." };
+  }
+}

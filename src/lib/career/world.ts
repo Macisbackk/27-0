@@ -1,7 +1,7 @@
 import currentSquads from "../../../data/current-squads.json";
 import { buildClubSeeds, type ClubSeed } from "./clubs";
 import { registerOccupiedPlayerNames } from "./names";
-import { SQUAD_TEMPLATE, autoPickLineup, generatePlayer, lineupRating, posFromData } from "./players";
+import { SQUAD_MAX, SQUAD_TEMPLATE, autoPickLineup, generatePlayer, lineupRating, posFromData } from "./players";
 import { newCareerSeed, randInt, rngFor } from "./rng";
 import { startSeason } from "./season";
 import type { CareerClub, CareerPlayer, CareerState, Pos } from "./types";
@@ -96,6 +96,19 @@ export function buildWorld(seed: string): { clubs: Record<string, CareerClub>; p
         club.squad.push(p.id);
         counts[pos]++;
       }
+    }
+    // Real 2026 squads with academy players can run past SQUAD_MAX. Start the club at the
+    // limit by leaving out its lowest-rated (then youngest) real players in over-stocked positions.
+    while (club.squad.length > SQUAD_MAX) {
+      const spare = club.squad
+        .map((id) => players[id]!)
+        .filter((p) => p.real && counts[p.pos] > SQUAD_TEMPLATE[p.pos])
+        .sort((a, b) => a.rating - b.rating || a.age - b.age || a.id.localeCompare(b.id))[0];
+      if (!spare) break;
+      club.squad = club.squad.filter((id) => id !== spare.id);
+      delete players[spare.id];
+      counts[spare.pos]--;
+      realCounts[s.id] = (realCounts[s.id] ?? 1) - 1;
     }
   }
 

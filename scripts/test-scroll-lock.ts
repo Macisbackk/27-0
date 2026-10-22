@@ -63,9 +63,9 @@ const second = acquireScrollLock("calendar-sim");
 assert(hasActiveScrollLocks(), "two locks keep scroll locked");
 assert(listActiveScrollLocks().length === 2, "lists both active locks");
 assert(
-  (globalThis as { document: { body: { style: { overflow: string } } } })
-    .document.body.style.overflow === "hidden",
-  "body overflow is hidden while locked"
+  (globalThis as { document: { documentElement: { style: { overflow: string } } } })
+    .document.documentElement.style.overflow === "hidden",
+  "page (html) overflow is hidden while locked"
 );
 
 releaseScrollLock(first);
@@ -76,9 +76,9 @@ assert(
   "remaining lock is calendar-sim"
 );
 assert(
-  (globalThis as { document: { body: { style: { overflow: string } } } })
-    .document.body.style.overflow === "hidden",
-  "body still overflow-hidden after partial release"
+  (globalThis as { document: { documentElement: { style: { overflow: string } } } })
+    .document.documentElement.style.overflow === "hidden",
+  "page (html) still overflow-hidden after partial release"
 );
 
 releaseScrollLock(second);

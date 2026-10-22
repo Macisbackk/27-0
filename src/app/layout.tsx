@@ -11,11 +11,11 @@ import { Header } from "@/components/Header";
 import { SiteFooter } from "@/components/SiteFooter";
 import { BottomNav } from "@/components/BottomNav";
 import { SoundUnlock } from "@/components/SoundUnlock";
-import { PwaInstallPrompt } from "@/components/PwaInstallPrompt";
 import { UiThemeProvider } from "@/components/UiThemeProvider";
 import { AchievementProvider } from "@/components/achievements/AchievementProvider";
 import { CapacitorAppShell } from "@/components/CapacitorAppShell";
 import { ExternalLinkGuard } from "@/components/ExternalLinkGuard";
+import { PwaSetup } from "@/components/PwaSetup";
 import { UI_THEME_BOOTSTRAP_SCRIPT } from "@/lib/ui/theme-bootstrap-script";
 
 const inter = Inter({
@@ -39,7 +39,16 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: "27-0",
+    statusBarStyle: "black",
   },
+  icons: {
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
+  },
+  applicationName: "27-0",
   openGraph: {
     title: "27-0 — Rugby League Squad Builder",
     description: "Build a 13. Go 27-0.",
@@ -71,12 +80,12 @@ export default function RootLayout({
         <AuthProvider>
           <CapacitorAppShell />
           <ExternalLinkGuard />
+          <PwaSetup />
           <CoachbeardMergeRunner />
           <ManagerDataPurgeRunner />
           <UiThemeProvider />
           <AchievementProvider>
             <SoundUnlock />
-            <PwaInstallPrompt />
             <Header />
             <main className="app-main flex min-w-0 max-w-full flex-1 flex-col overflow-x-clip">
               {children}

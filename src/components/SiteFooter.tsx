@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FooterSupportLinks } from "./FooterSupportLinks";
 import { GAME_VERSION } from "../../data/version";
@@ -39,8 +40,12 @@ export function SiteFooter() {
       <div className="game-page game-page--flush">
         <FooterSupportLinks />
         <p className={`mt-4 text-center break-words ${TYPO.bodySm}`}>{DISCLAIMER}</p>
-        <p className="mt-3 text-center text-[11px] font-medium tabular-nums tracking-wide text-pitch-500">
-          {GAME_VERSION}
+        <p className="mt-3 flex items-center justify-center gap-3 text-[11px] font-medium tabular-nums tracking-wide text-pitch-500">
+          <span>{GAME_VERSION}</span>
+          <span aria-hidden>·</span>
+          <Link href="/privacy" className="inline-flex min-h-[24px] items-center hover:text-white">
+            Privacy
+          </Link>
         </p>
       </div>
     </footer>

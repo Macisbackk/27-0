@@ -657,8 +657,32 @@ button.game-button--era,
   background-image: none !important;
 }
 
-/* The menu panel is its own compositor layer so it slides without repainting the page under it. */
+/* Menu panel: always mounted, slides on its own compositor layer. Hidden (and untabbable via inert)
+   once the slide-out finishes, so it never covers the page. */
 .sidebar-panel {
-  transform: translateZ(0);
+  transform: translate3d(100%, 0, 0);
+  visibility: hidden;
+  transition:
+    transform 240ms cubic-bezier(0.32, 0.72, 0, 1),
+    visibility 0s linear 240ms;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   contain: layout paint;
+  overscroll-behavior: contain;
+  /* top/bottom 0 sizes it to the screen; a dvh height resized it as Safari's toolbar moved. */
+  max-height: none !important;
+}
+.sidebar-panel--open {
+  transform: translate3d(0, 0, 0);
+  visibility: visible;
+  transition:
+    transform 240ms cubic-bezier(0.32, 0.72, 0, 1),
+    visibility 0s linear 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-panel,
+  .sidebar-panel--open {
+    transition: none;
+  }
 }

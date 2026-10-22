@@ -19,6 +19,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/mini-games/quiz",
     "/mini-games/wordle",
     "/mini-games/grid",
+    "/privacy",
+    "/delete-account",
   ];
 
   return routes.map((path) => ({
