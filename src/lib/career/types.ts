@@ -199,6 +199,27 @@ export interface CareerState {
   incomingBid?: IncomingBid;
   /** Each club's most recent team sheet (for tapping a club name). */
   lastLineups?: Record<string, LastLineup>;
+  /** This season's pre-season friendlies (picked before Round 1). */
+  preseason?: Preseason;
+  /** Year in which the user shut the mid-season window on Deadline Day. */
+  deadlineClosedYear?: number;
+  /** The first-save walkthrough has been seen. */
+  tutorialDone?: boolean;
+}
+
+export interface FriendlyResult {
+  opponentId: string;
+  home: boolean;
+  us: number;
+  them: number;
+  /** Gate money (home) or appearance fee (away) banked. */
+  money: number;
+}
+
+export interface Preseason {
+  year: number;
+  done: boolean;
+  results: FriendlyResult[];
 }
 
 export interface TransferDeal {

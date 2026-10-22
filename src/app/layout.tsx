@@ -17,7 +17,6 @@ import { AchievementProvider } from "@/components/achievements/AchievementProvid
 import { CapacitorAppShell } from "@/components/CapacitorAppShell";
 import { ExternalLinkGuard } from "@/components/ExternalLinkGuard";
 import { PwaSetup } from "@/components/PwaSetup";
-import { CosmeticsBoot } from "@/components/CosmeticsBoot";
 import { MotionProvider } from "@/components/MotionProvider";
 import { UI_THEME_BOOTSTRAP_SCRIPT } from "@/lib/ui/theme-bootstrap-script";
 
@@ -84,7 +83,6 @@ export default function RootLayout({
           <CapacitorAppShell />
           <ExternalLinkGuard />
           <PwaSetup />
-          <CosmeticsBoot />
           <CoachbeardMergeRunner />
           <ManagerDataPurgeRunner />
           <UiThemeProvider />

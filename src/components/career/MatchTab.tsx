@@ -5,6 +5,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import {
   clubRating,
+  deadlineDecisionPending,
   isBigMatchday,
   ordinal,
   sortTable,
@@ -18,6 +19,7 @@ import { playCupProgress, playFullTime, playSimulateRound, playTryScored, playUi
 import { LiveMatch } from "./LiveMatch";
 import { ClubLink } from "./ClubSheet";
 import { IncomingBidCard, TransferWindowCard } from "./TransferNews";
+import { PreseasonCard, PreseasonResults } from "./Preseason";
 import { Card, ClubBadge, Eyebrow, FormDots } from "./bits";
 
 const TACTICS: Array<{ id: Tactic; label: string; hint: string }> = [
@@ -84,7 +86,7 @@ export function ResultCard({ state, fixture, title }: { state: CareerState; fixt
 }
 
 export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
-  const { state, play, playLive, setTactic } = useCareer();
+  const { state, play, playLive, setTactic, closeDeadline } = useCareer();
   const [busy, setBusy] = useState(false);
   const [live, setLive] = useState(false);
   const lastPlayedIndex = useRef<number | null>(null);
@@ -137,6 +139,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
   const edge = myRating - theirRating + (fixture?.home === s.userClubId ? 0.9 : -0.9);
   const outlook = edge > 2 ? "Favourites" : edge > 0.5 ? "Slight favourites" : edge > -0.5 ? "Coin flip" : edge > -2 ? "Underdogs" : "Big underdogs";
   const big = isBigMatchday(s, md);
+  const deadlinePending = deadlineDecisionPending(s);
 
   if (live && fixture) {
     return (
@@ -154,6 +157,8 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
 
   return (
     <div className="flex flex-col gap-4">
+      <PreseasonCard />
+      <PreseasonResults />
       <IncomingBidCard />
       <TransferWindowCard onOpenMarket={onOpenMarket} />
       <Card className={big ? "border-accent-gold/60" : ""}>
@@ -207,7 +212,17 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
 
       <div className="mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
         <div className="mobile-action-bar__inner flex flex-col gap-2">
-          {fixture ? (
+          {deadlinePending ? (
+            <GameButton
+              size="lg"
+              onClick={() => {
+                playUiClick();
+                closeDeadline();
+              }}
+            >
+              Shut the window
+            </GameButton>
+          ) : fixture ? (
             <>
               <GameButton
                 size="lg"

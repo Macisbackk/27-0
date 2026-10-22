@@ -42,7 +42,9 @@ import { GameButton } from "@/components/ui/GameButton";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 import { useAuth } from "@/lib/auth-context";
-import { FlairBadge, useCoachFlairs } from "@/lib/coach-flair";
+import { CoachNameplate, useCoachFlairs } from "@/lib/coach-flair";
+import { useCosmetics } from "@/lib/storage/cosmetics-store";
+import { titleName } from "@/lib/cosmetics";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
 
@@ -318,6 +320,12 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
     !isDailyMode && !isTrophyCabinetMode && !isMiniGamesMode;
 
   const flairs = useCoachFlairs(entries.map((e) => e.username));
+  const myCosmetics = useCosmetics();
+  // Your own row shows what you have equipped right now, even before it syncs.
+  const flairFor = (entry: { username: string; isCurrentUser?: boolean }) =>
+    entry.isCurrentUser
+      ? { title: titleName(myCosmetics.equipped.title) ?? undefined, frame: myCosmetics.equipped.frame ?? undefined }
+      : flairs[entry.username] ?? {};
   return (
     <div>
       {mode ? null : (
@@ -502,7 +510,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
                   >
                     {entry.rank}
                   </span>
-                  <span className={`truncate ${TYPO.identityLine}`}>{entry.username}<FlairBadge title={flairs[entry.username]} /></span>
+                  <CoachNameplate className={TYPO.identityLine} name={entry.username} title={flairFor(entry).title} frame={flairFor(entry).frame} />
                 </div>
                 <div className="shrink-0 text-right font-semibold text-accent-gold">
                   {renderLeaderboardStat(entry, effectiveTracker)}
@@ -542,7 +550,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className={TYPO.identityLine}>{entry.username}<FlairBadge title={flairs[entry.username]} /></span>
+                    <CoachNameplate className={TYPO.identityLine} name={entry.username} title={flairFor(entry).title} frame={flairFor(entry).frame} />
                   </td>
                   <td className="px-4 py-3 font-semibold text-accent-gold">
                     {renderLeaderboardStat(entry, effectiveTracker)}

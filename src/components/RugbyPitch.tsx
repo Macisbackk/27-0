@@ -448,11 +448,11 @@ const SquadMarker = memo(function SquadMarker({
             <ClubShirt kit={null} label="+" size={46} />
           </span>
           <span
-            className={`mt-0.5 max-w-full whitespace-nowrap rounded-md bg-pitch-950/80 px-1.5 py-[3px] text-[10px] font-semibold leading-none ${
-              interactive ? "text-white/85" : "text-white/45"
-            }`}
+            className={`mt-0.5 max-w-full whitespace-nowrap rounded-md bg-pitch-950/80 px-1 py-[3px] font-semibold leading-none ${
+              positionLabel.length > 11 ? "text-[9px]" : "text-[10px]"
+            } ${interactive ? "text-white/85" : "text-white/45"}`}
           >
-            {positionLabel}
+            {positionLabel.replace("Loose Forward", "Loose Fwd")}
           </span>
         </>
       );

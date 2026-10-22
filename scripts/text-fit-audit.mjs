@@ -115,6 +115,7 @@ for (const vp of VIEWPORTS) {
   await page.waitForTimeout(1200);
   await page.getByRole("list", { name: "Clubs" }).getByRole("button").first().click().catch(() => {});
   await page.getByRole("button", { name: /Take charge of/ }).click().catch(() => {});
+  await page.getByRole("dialog", { name: "Manager Mode walkthrough" }).getByRole("button", { name: "Skip" }).click({ timeout: 8000 }).catch(() => {});
   await page.waitForTimeout(1200);
   for (const tab of ["Match", "Team", "Table", "Club"]) {
     await page.getByRole("tab", { name: tab }).click().catch(() => {});

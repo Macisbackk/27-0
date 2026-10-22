@@ -93,7 +93,8 @@ export function purchaseCosmetic(id: string): CosmeticPurchaseResult {
   if (item.kind === "pitch" || item.kind === "title" || item.kind === "frame") state.equipped[item.kind] = id;
   if (item.kind === "kit") state.kit.enabled = true;
   save(state);
-  if (item.kind === "title") void publishTitle(id);
+  if (item.kind === "title") void publishFlair({ flair: id });
+  if (item.kind === "frame") void publishFlair({ frame: id });
   return { success: true, newBalance: getClubFundsBalance() };
 }
 
@@ -102,7 +103,8 @@ export function equipCosmetic(kind: "pitch" | "title" | "frame", id: string | nu
   if (id && (!state.owned.includes(id) || cosmeticById(id)?.kind !== kind)) return;
   state.equipped[kind] = id;
   save(state);
-  if (kind === "title") void publishTitle(id);
+  if (kind === "title") void publishFlair({ flair: id });
+  if (kind === "frame") void publishFlair({ frame: id });
 }
 
 export function setKitDesign(patch: Partial<KitDesign & { enabled: boolean }>) {
@@ -151,11 +153,16 @@ async function saveCloud(state: CosmeticsState) {
 }
 
 /** Show the equipped title to other players (profiles.flair; silently skipped until that column exists). */
-async function publishTitle(id: string | null) {
+/** Title and frame are public on the coach's profile so leaderboards can show them. */
+async function publishFlair(patch: { flair?: string | null; frame?: string | null }) {
   const userId = getAuthUserId();
   if (!userId || !isSupabaseConfigured) return;
   try {
-    await supabase.from("profiles").update({ flair: id }).eq("id", userId);
+    const { error } = await supabase.from("profiles").update(patch).eq("id", userId);
+    // Database without the frame column yet: still save the title.
+    if (error && patch.frame !== undefined && patch.flair !== undefined) {
+      await supabase.from("profiles").update({ flair: patch.flair }).eq("id", userId);
+    }
   } catch {
     /* column not added yet */
   }
@@ -186,7 +193,9 @@ export async function mergeCosmeticsFromCloud(): Promise<void> {
       kit: cloud.owned.includes("kit-designer") ? cloud.kit : local.kit,
     });
     save(merged);
-    if (merged.equipped.title) void publishTitle(merged.equipped.title);
+    if (merged.equipped.title || merged.equipped.frame) {
+      void publishFlair({ flair: merged.equipped.title ?? null, frame: merged.equipped.frame ?? null });
+    }
   } catch {
     /* keep local */
   }

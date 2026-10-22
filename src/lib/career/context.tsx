@@ -15,7 +15,8 @@ import {
   type TransferError,
 } from "./offseason";
 import { playMatchday, repairLineup, simRestOfSeason, simToNextBigGame, squadOf, type PlayedResult } from "./season";
-import { acceptBid as acceptBidPure, isWindowOpen, recordUserDeal, rejectBid as rejectBidPure } from "./midseason";
+import { acceptBid as acceptBidPure, closeDeadlineDay, isWindowOpen, recordUserDeal, rejectBid as rejectBidPure } from "./midseason";
+import { playFriendlies as playFriendliesPure, type FriendlyOption } from "./preseason";
 import {
   LEGACY_KEY,
   SAVE_KEY,
@@ -54,6 +55,12 @@ interface CareerContextValue {
   acceptBid: () => void;
   rejectBid: () => void;
   unlockLegend: (legendId: string) => "points" | "unknown" | "owned" | undefined;
+  /** Shut the mid-season window on Deadline Day so the season can carry on. */
+  closeDeadline: () => void;
+  /** Play the chosen pre-season friendlies (empty = skip pre-season). */
+  playFriendlies: (picks: FriendlyOption[]) => void;
+  /** Mark the first-save walkthrough as seen. */
+  finishTutorial: () => void;
 }
 
 const CareerContext = createContext<CareerContextValue | null>(null);
@@ -202,6 +209,16 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     },
     playLive: (played) => {
       if (stateRef.current) settle(playMatchday(stateRef.current, played));
+    },
+    closeDeadline: () => {
+      if (stateRef.current) commit(closeDeadlineDay(stateRef.current));
+    },
+    playFriendlies: (picks) => {
+      if (stateRef.current) commit(playFriendliesPure(stateRef.current, picks));
+    },
+    finishTutorial: () => {
+      const s = stateRef.current;
+      if (s && !s.tutorialDone) commit({ ...s, tutorialDone: true, updatedAt: Date.now() });
     },
     simToBigGame: () => {
       if (stateRef.current) settle(simToNextBigGame(stateRef.current));

@@ -11,12 +11,12 @@ import { getClubColors } from "@/lib/clubs";
 import type { SlotTeamYearPlayer } from "@/lib/game/slot-team-year-pick";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import { playPlayerSelect, playUiClick } from "@/lib/sound";
-import { CARD, LINK } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
 import {
-  QuickModePlayerChoiceCard,
-  quickPlayerChoiceGridClass,
-} from "./QuickModePlayerChoiceCard";
+  formatPlayerChoiceMetadata,
+  getPrimaryPlayerChoiceTags,
+} from "@/lib/game/quick-mode-player-choice";
+import { getClubKit } from "@/lib/club-kits";
+import { ClubShirt } from "./ClubShirt";
 import { GameButton } from "@/components/ui/GameButton";
 import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
 import { EraRatingExplanation } from "./EraRatingExplanation";
@@ -95,7 +95,6 @@ export function SlotTeamYearPicker({
       return { after, delta: Math.round((after - before) * 10) / 10 };
     };
   }, [slot, squad, hardMode]);
-  const choiceCount = sortedEntries.length;
 
   const canRespin =
     !!onRespin && !disabled && respinsRemaining > 0 && !respinLocked;
@@ -118,128 +117,150 @@ export function SlotTeamYearPicker({
 
   return (
     <motion.div
-      className="w-full min-w-0"
+      className="slot-picker w-full min-w-0"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.32, ease: "easeOut" }}
+      transition={{ duration: 0.28, ease: "easeOut" }}
     >
-      <div className={`${CARD.elevated} game-panel--flush overflow-hidden`}>
+      <div className="slot-picker__card overflow-hidden rounded-[20px] bg-pitch-900">
         <TeamColourStrip club={target.team} />
-        <div
-          className="border-b border-pitch-700/40 px-3 py-2.5 sm:px-6 sm:py-4"
+        <header
+          className="flex items-center gap-3 px-4 pb-3 pt-3.5"
           style={{
-            background: `linear-gradient(180deg, ${clubColors.primary}14 0%, transparent 70%)`,
+            background: `linear-gradient(180deg, ${clubColors.primary}1f 0%, transparent 85%)`,
           }}
         >
-          {onBack && (
-            <div className="mb-2 flex justify-center">
-              <button
-                type="button"
-                onClick={onBack}
-                disabled={disabled}
-                className={`${LINK.subtle} disabled:opacity-40`}
-              >
-                ← Back to team sheet
-              </button>
-            </div>
-          )}
-
-          <div className="flex flex-col items-center text-center">
-            <ClubLogoBox
-              club={target.team}
-              size="md"
-              showAbbrev={false}
-              className="hidden sm:flex"
-            />
-            <ClubLogoBox
-              club={target.team}
-              size="sm"
-              showAbbrev={false}
-              className="sm:hidden"
-            />
-            <div className="mt-2 min-w-0 w-full">
-              <p className={TYPO.sectionLabel}>
-                {slot ? `Pick your ${slot.label}` : "Pick your signing"}
-              </p>
-              <h2 className="mt-0.5 font-display text-lg font-bold leading-tight text-white sm:text-2xl">
-                {target.team}
-              </h2>
-              <div className="mt-1.5 flex flex-wrap items-center justify-center gap-2">
-                <span className="rounded-md border border-white/10 bg-pitch-950/70 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-theme-primary">
-                  {shortYear}
-                </span>
-                <span className="rounded-md border border-white/10 bg-pitch-950/70 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-gray-300">
-                  {entries.length} available
-                </span>
-              </div>
-            </div>
+          <ClubLogoBox club={target.team} size="sm" showAbbrev={false} />
+          <div className="min-w-0 flex-1 text-left">
+            <p className="text-[13px] font-semibold text-theme-primary">
+              {slot ? `Pick your ${slot.label}` : "Pick your signing"}
+            </p>
+            <h2 className="truncate font-display text-xl font-bold leading-tight text-white">
+              {target.team} <span className="text-theme-primary">{shortYear}</span>
+            </h2>
           </div>
-        </div>
+          <span className="shrink-0 rounded-full bg-pitch-950 px-2.5 py-1 text-xs font-bold text-[color:var(--fl-muted)]">
+            {entries.length} {entries.length === 1 ? "option" : "options"}
+          </span>
+        </header>
 
-        <div className="px-3 pt-2 pb-3 sm:px-6 sm:pt-4 sm:pb-4">
+        <div className="px-3 pb-3">
           {entries.length === 0 ? (
             <p className="py-10 text-center text-gray-500">
               No players available from this squad.
             </p>
           ) : (
             <>
-              {hideRatingNote ? null : eraMode ? (
-                <EraRatingExplanation compact className="mb-1.5 px-1" />
-              ) : (
-                <CurrentRatingExplanation compact className="mb-1.5 px-1" />
-              )}
-              <div className={quickPlayerChoiceGridClass(choiceCount)}>
-                {sortedEntries.map(({ player }, index) => {
+              <ul className="fl-stagger flex flex-col gap-2" aria-label="Players you can sign">
+                {sortedEntries.map(({ player }) => {
                   const isTopPick =
-                    !hardMode &&
-                    player.peakRating === topRating &&
-                    sortedEntries.length > 1;
+                    !hardMode && player.peakRating === topRating && sortedEntries.length > 1;
                   const age = ageFor(player, target.year);
-
+                  const meta = formatPlayerChoiceMetadata(player, { clubOverride: target.team, hardMode });
+                  const tags = hardMode
+                    ? []
+                    : getPrimaryPlayerChoiceTags(player, { boosted, topPick: false, allowEasterEggTags: true });
+                  const impact = impactFor(player);
+                  const metaLine = [meta.positionLabel, meta.nationalityAbbrev, age !== undefined ? `Age ${age}` : null]
+                    .filter(Boolean)
+                    .join(" · ");
                   return (
-                    <motion.div
-                      key={player.id}
-                      className="h-full min-w-0 w-full"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.24, delay: index * 0.06 }}
-                    >
-                      <QuickModePlayerChoiceCard
-                        player={player}
-                        choiceLabel={isTopPick ? "Top rating" : undefined}
-                        hardMode={hardMode}
-                        ratingVisible={!hardMode}
-                        clubOverride={target.team}
-                        clubColorOverride={target.team}
-                        topPick={isTopPick}
-                        boosted={boosted}
+                    <li key={player.id}>
+                      <button
+                        type="button"
                         disabled={disabled}
-                        selectLabel="Select"
-                        impact={impactFor(player)}
-                        ageLabel={age !== undefined ? `Age ${age}` : undefined}
-                        onSelect={() => {
+                        onClick={() => {
                           playPlayerSelect();
                           onSelect(player);
                         }}
-                      />
-                    </motion.div>
+                        aria-label={`Sign ${player.name}${hardMode ? "" : `, rated ${player.peakRating}`}`}
+                        className={`slot-picker__row fl-pressable group flex w-full items-center gap-3 rounded-[16px] bg-pitch-950 p-2.5 pr-3 text-left transition hover:bg-pitch-800 disabled:opacity-50 ${
+                          isTopPick ? "slot-picker__row--top" : ""
+                        }`}
+                      >
+                        <ClubShirt
+                          kit={getClubKit(target.team)}
+                          label={hardMode ? "?" : String(player.peakRating)}
+                          size={50}
+                          className="shrink-0 drop-shadow-[0_3px_6px_rgba(0,0,0,0.45)]"
+                        />
+                        <span className="min-w-0 flex-1">
+                          <span className="flex min-w-0 items-center gap-1.5">
+                            <span className="truncate text-[16px] font-bold leading-tight text-white">
+                              {player.name}
+                            </span>
+                            {isTopPick ? (
+                              <span className="shrink-0 rounded-full bg-theme-primary/15 px-1.5 py-0.5 text-[10px] font-bold text-theme-primary">
+                                Top
+                              </span>
+                            ) : null}
+                          </span>
+                          <span className="mt-0.5 block truncate text-[13px] text-[color:var(--fl-muted)]">
+                            {metaLine}
+                          </span>
+                          {impact || tags.length > 0 ? (
+                            <span className="mt-1 flex min-w-0 flex-wrap items-center gap-1.5 text-[12px] font-semibold">
+                              {impact ? (
+                                <span className="tabular-nums text-gray-300">
+                                  Team {impact.after.toFixed(1)}{" "}
+                                  <span
+                                    className={
+                                      impact.delta > 0.05
+                                        ? "text-theme-primary"
+                                        : impact.delta < -0.05
+                                          ? "text-red-400"
+                                          : "text-[color:var(--fl-muted)]"
+                                    }
+                                  >
+                                    {impact.delta > 0.05 ? "▲" : impact.delta < -0.05 ? "▼" : "•"}
+                                    {Math.abs(impact.delta).toFixed(1)}
+                                  </span>
+                                </span>
+                              ) : null}
+                              {tags.map((tag) => (
+                                <span
+                                  key={tag.id}
+                                  className={`quick-player-card__tag quick-player-card__tag--${tag.tone}`}
+                                >
+                                  {tag.label}
+                                </span>
+                              ))}
+                            </span>
+                          ) : null}
+                        </span>
+                        <span className="shrink-0 rounded-full bg-theme-primary px-3.5 py-2 text-sm font-bold text-[color:var(--theme-text-on-primary)]">
+                          Sign
+                        </span>
+                      </button>
+                    </li>
                   );
                 })}
-              </div>
-              {showRespin ? (
-                <div className="mt-3 flex justify-center">
+              </ul>
+
+              {hideRatingNote ? null : (
+                <div className="mt-2 px-1 text-center">
+                  {eraMode ? <EraRatingExplanation compact /> : <CurrentRatingExplanation compact />}
+                </div>
+              )}
+
+              <div className="mt-3 flex items-center gap-2">
+                {onBack ? (
+                  <GameButton variant="secondary" size="md" fullWidth onClick={onBack} disabled={disabled}>
+                    Back
+                  </GameButton>
+                ) : null}
+                {showRespin ? (
                   <GameButton
                     variant="secondary"
-                    size="sm"
-                    fullWidth={false}
+                    size="md"
+                    fullWidth
                     disabled={!canRespin}
                     onClick={handleRespin}
-                    className="min-w-[8.5rem]"
                   >
                     {respinLabel}
                   </GameButton>
-                </div>
-              ) : null}
+                ) : null}
+              </div>
             </>
           )}
         </div>

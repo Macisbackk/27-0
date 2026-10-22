@@ -1,31 +1,45 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { isSupabaseConfigured, supabase } from "./supabase";
 import { titleName } from "./cosmetics";
 
+export type CoachFlair = { title?: string; frame?: string };
+
 /**
- * Store titles for leaderboard names: coach name → title. Reads profiles.flair (public column);
- * returns nothing until that column exists, so leaderboards simply show no titles.
+ * Store flair for leaderboard names: coach name → { title, frame }. Reads the public
+ * profiles.flair / profiles.frame columns; anything missing just shows nothing.
  */
-export function useCoachFlairs(names: string[]): Record<string, string> {
+export function useCoachFlairs(names: string[]): Record<string, CoachFlair> {
   const key = [...new Set(names)].sort().join("|");
-  const [flairs, setFlairs] = useState<Record<string, string>>({});
+  const [flairs, setFlairs] = useState<Record<string, CoachFlair>>({});
   useEffect(() => {
     if (!isSupabaseConfigured || !key) return;
     let cancelled = false;
     void (async () => {
       try {
-        const { data, error } = await supabase.from("profiles").select("coach_name, flair").in("coach_name", key.split("|")).not("flair", "is", null);
+        const coaches = key.split("|");
+        type Row = { coach_name: string | null; flair: string | null; frame?: string | null };
+        const withFrame = await supabase.from("profiles").select("coach_name, flair, frame").in("coach_name", coaches);
+        let data = withFrame.data as Row[] | null;
+        let error = withFrame.error;
+        if (error) {
+          // Older database without the frame column.
+          const titlesOnly = await supabase.from("profiles").select("coach_name, flair").in("coach_name", coaches);
+          data = titlesOnly.data as Row[] | null;
+          error = titlesOnly.error;
+        }
         if (error || !data || cancelled) return;
-        const out: Record<string, string> = {};
-        for (const row of data as { coach_name: string | null; flair: string | null }[]) {
-          const t = titleName(row.flair);
-          if (row.coach_name && t) out[row.coach_name] = t;
+        const out: Record<string, CoachFlair> = {};
+        for (const row of data) {
+          if (!row.coach_name) continue;
+          const title = titleName(row.flair) ?? undefined;
+          const frame = row.frame ?? undefined;
+          if (title || frame) out[row.coach_name] = { title, frame };
         }
         setFlairs(out);
       } catch {
-        /* no flair column yet */
+        /* columns not there yet */
       }
     })();
     return () => {
@@ -38,4 +52,25 @@ export function useCoachFlairs(names: string[]): Record<string, string> {
 export function FlairBadge({ title }: { title?: string | null }) {
   if (!title) return null;
   return <span className="ml-1.5 inline-flex shrink-0 items-center rounded-full bg-amber-400/15 px-2 py-0.5 align-middle text-[10px] font-bold text-amber-300">{title}</span>;
+}
+
+/** The coach's name on a leaderboard, in their Store frame when they have one. */
+export function CoachNameplate({
+  name,
+  frame,
+  title,
+  className = "",
+}: {
+  name: ReactNode;
+  frame?: string | null;
+  title?: string | null;
+  className?: string;
+}) {
+  const kind = frame?.replace(/^frame-/, "");
+  return (
+    <span className={`inline-flex min-w-0 max-w-full items-center ${className}`}>
+      <span className={`min-w-0 truncate ${kind ? `lb-nameplate lb-nameplate--${kind}` : ""}`}>{name}</span>
+      <FlairBadge title={title} />
+    </span>
+  );
 }

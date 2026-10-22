@@ -94,8 +94,28 @@ try {
   await clubs.first().click();
   await page.getByPlaceholder("Your name").fill("E2E Coach");
   await clickButton(/Take charge of/);
+  // First-save walkthrough: step through it.
+  const tutorial = page.getByRole("dialog", { name: "Manager Mode walkthrough" });
+  await tutorial.waitFor({ timeout });
+  await shot("tutorial");
+  for (let i = 0; i < 8 && (await tutorial.isVisible().catch(() => false)); i++) {
+    await tutorial.getByRole("button", { name: /^(Next|Let's go)$/ }).click();
+    await page.waitForTimeout(250);
+  }
+  if (await tutorial.isVisible().catch(() => false)) throw new Error("Walkthrough did not close");
+  step("First-save walkthrough");
   await page.getByRole("button", { name: "Play match" }).waitFor({ timeout });
   step(`Career started (${clubCount} Championship clubs listed)`);
+  // Pre-season friendlies: pick two and play them.
+  const pre = page.getByRole("region", { name: "Pre-season friendlies" });
+  await pre.waitFor({ timeout });
+  await shot("preseason");
+  const friendlyButtons = pre.getByRole("button", { pressed: false });
+  await friendlyButtons.nth(0).click();
+  await friendlyButtons.nth(0).click();
+  await pre.getByRole("button", { name: /^Play 2/ }).click();
+  await page.getByRole("region", { name: "Pre-season results" }).waitFor({ timeout });
+  step("Pre-season: played two friendlies");
   await shot("hub-match");
 
   await clickButton("Play match");
@@ -166,7 +186,10 @@ try {
       shotDeadline = true;
       await page.waitForTimeout(6000); // let the ticker land
       await shot("deadline-day");
-      await page.getByRole("button", { name: /Make a late signing/ }).click().catch(() => {});
+      if (await page.getByRole("button", { name: "Quick sim" }).isVisible().catch(() => false)) {
+        throw new Error("Quick sim still offered while Deadline Day is open");
+      }
+      await page.getByRole("button", { name: /^Late signing$/ }).click().catch(() => {});
       await page.waitForTimeout(800);
       await shot("deadline-market");
       await page.getByRole("button", { name: /Back to the season/ }).click().catch(() => {});
@@ -182,9 +205,11 @@ try {
       await shot("transfer-round-up");
       await page.getByRole("tab", { name: "Match" }).click();
       await page.waitForTimeout(300);
-      step("Deadline Day, late market, club team sheet and transfer round-up");
+      await page.getByRole("button", { name: "Shut the window" }).first().click();
+      await page.getByText(/Window shut/).first().waitFor({ timeout });
+      step("Deadline Day paused the season, late market, club team sheet, transfer round-up, window shut");
     }
-    const next = page.getByRole("button", { name: /^(Quick sim|Continue)$/ }).first();
+    const next = page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window)$/ }).first();
     if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
     await page.waitForTimeout(120);
   }

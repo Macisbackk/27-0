@@ -41,7 +41,7 @@ const STORE_TABS: { id: StoreTab; label: string }[] = [
   { id: "themes", label: "Themes" },
   { id: "kit", label: "Kit & pitch" },
   { id: "titles", label: "Titles" },
-  { id: "frames", label: "Card frames" },
+  { id: "frames", label: "Frames" },
   { id: "modes", label: "Modes" },
 ];
 

@@ -15,6 +15,7 @@ import { TableTab } from "./TableTab";
 import { TeamTab } from "./TeamTab";
 import { TransferWindow } from "./TransferWindow";
 import { ClubBadge, Stars } from "./bits";
+import { CareerTutorial } from "./CareerTutorial";
 
 type Tab = "match" | "team" | "table" | "club";
 
@@ -103,6 +104,7 @@ function CareerRouter() {
       {tab === "club" ? <ClubTab onOpenVault={() => setVault(true)} onOpenRecords={() => setRecords(true)} /> : null}
       </div>
       {sheets}
+      <CareerTutorial onTab={setTab} />
     </div>
     </ClubSheetProvider>
   );

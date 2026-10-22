@@ -1,9 +1,11 @@
 /* 27-0 service worker: installable app + offline play.
  * - Hashed Next.js assets, icons and fonts: cache first (their names change on every deploy).
- * - Pages: always from the network; a copy saved after load (via postMessage) is used offline.
+ * - Pages: left entirely to the browser while online (the worker never sits in a live page load,
+ *   so a fast navigation can't hand React a half-delivered page); a copy saved after load
+ *   (via postMessage) is served only when the device is offline.
  * - Anything else (Supabase, analytics, other sites): not touched.
  */
-const VERSION = "v2";
+const VERSION = "v3";
 const STATIC_CACHE = `27-0-static-${VERSION}`;
 const PAGE_CACHE = `27-0-pages-${VERSION}`;
 const OFFLINE_URL = "/offline.html";
@@ -76,16 +78,17 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (req.mode === "navigate") {
-    // Pass the live page straight through (never tee its stream); fall back to a saved copy offline.
+    // Online: don't touch it. Offline: a saved copy of the page, the home page, or the offline page.
+    if (self.navigator.onLine !== false) return;
     event.respondWith(
-      fetch(req).catch(async () => {
+      (async () => {
         const cache = await caches.open(PAGE_CACHE);
         return (
           (await cache.match(req, { ignoreSearch: true })) ||
           (await cache.match("/", { ignoreSearch: true })) ||
           (await caches.match(OFFLINE_URL))
         );
-      })
+      })()
     );
   }
 });

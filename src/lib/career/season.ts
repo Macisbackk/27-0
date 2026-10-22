@@ -1,5 +1,5 @@
 import { simulateMatch, type TeamSheet } from "./match";
-import { onMatchdayReached } from "./midseason";
+import { deadlineDecisionPending, onMatchdayReached } from "./midseason";
 import { autoPickLineup, lineupRating, formatMoney, wageBill } from "./players";
 import { rngFor, shuffle } from "./rng";
 import { CUP_ROUND_LABELS, buildCalendar } from "./schedule";
@@ -292,7 +292,12 @@ function drawPending(state: CareerState, md: Matchday) {
 /* --------------------------------------------------------------- play matchday */
 
 export function sheetFor(state: CareerState, clubId: string): TeamSheet {
-  if (clubId === state.userClubId) return { clubId, lineup: state.lineup, tactic: state.tactic };
+  if (clubId === state.userClubId) {
+    const pre = state.preseason;
+    // Pre-season friendlies: a little match sharpness for the opening three matchdays.
+    const boost = pre && pre.year === state.year && state.matchdayIndex < 3 ? pre.results.length * 0.5 : 0;
+    return { clubId, lineup: state.lineup, tactic: state.tactic, boost };
+  }
   return { clubId, lineup: aiLineup(state, clubId), tactic: "balanced" };
 }
 
@@ -415,6 +420,12 @@ export function playMatchday(state: CareerState, played?: PlayedResult): CareerS
 /** Plays one matchday by mutating `next` (callers clone first). */
 function playMatchdayInPlace(next: CareerState, played?: PlayedResult): void {
   if (next.phase !== "season") return;
+  // Deadline Day waits for the manager: nothing kicks off until they shut the window.
+  if (deadlineDecisionPending(next)) return;
+  // Kicking off Round 1 ends pre-season (friendlies skipped if none were picked).
+  if (next.matchdayIndex === 0 && !(next.preseason?.year === next.year && next.preseason.done)) {
+    next.preseason = { year: next.year, done: true, results: next.preseason?.year === next.year ? next.preseason.results : [] };
+  }
   const md = next.calendar[next.matchdayIndex];
   if (!md) {
     finishSeason(next);
@@ -483,6 +494,7 @@ export function simToNextBigGame(state: CareerState): CareerState {
   let guard = 0;
   while (s.phase === "season" && guard++ < 60) {
     if (isBigMatchday(s, s.calendar[s.matchdayIndex])) break;
+    if (deadlineDecisionPending(s)) break;
     playMatchdayInPlace(s);
   }
   return s;
@@ -492,7 +504,10 @@ export function simRestOfSeason(state: CareerState): CareerState {
   if (state.phase !== "season") return state;
   const s: CareerState = structuredClone(state);
   let guard = 0;
-  while (s.phase === "season" && guard++ < 60) playMatchdayInPlace(s);
+  while (s.phase === "season" && guard++ < 60) {
+    if (deadlineDecisionPending(s)) break;
+    playMatchdayInPlace(s);
+  }
   return s;
 }
 
