@@ -19,17 +19,19 @@ export function useCoachFlairs(names: string[]): Record<string, CoachFlair> {
     void (async () => {
       try {
         const coaches = key.split("|");
-        let { data, error } = await supabase
-          .from("profiles")
-          .select("coach_name, flair, frame")
-          .in("coach_name", coaches);
+        type Row = { coach_name: string | null; flair: string | null; frame?: string | null };
+        const withFrame = await supabase.from("profiles").select("coach_name, flair, frame").in("coach_name", coaches);
+        let data = withFrame.data as Row[] | null;
+        let error = withFrame.error;
         if (error) {
           // Older database without the frame column.
-          ({ data, error } = await supabase.from("profiles").select("coach_name, flair").in("coach_name", coaches));
+          const titlesOnly = await supabase.from("profiles").select("coach_name, flair").in("coach_name", coaches);
+          data = titlesOnly.data as Row[] | null;
+          error = titlesOnly.error;
         }
         if (error || !data || cancelled) return;
         const out: Record<string, CoachFlair> = {};
-        for (const row of data as { coach_name: string | null; flair: string | null; frame?: string | null }[]) {
+        for (const row of data) {
           if (!row.coach_name) continue;
           const title = titleName(row.flair) ?? undefined;
           const frame = row.frame ?? undefined;
