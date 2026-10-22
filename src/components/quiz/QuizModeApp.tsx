@@ -218,13 +218,7 @@ export function QuizModeApp() {
         ) : view === "result" && run ? (
           <QuizResultScreen run={run} bank={bank} onAgain={playAgain} onBack={backToQuiz} />
         ) : (
-          <QuizLanding
-            onMillionaire={startMillionaire}
-            onTeam={() => {
-              router.replace("/mini-games/quiz?mode=team");
-              setView("team");
-            }}
-          />
+          <QuizLanding onMillionaire={startMillionaire} />
         )}
       </div>
 
