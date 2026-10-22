@@ -1,8 +1,41 @@
-# 27-0 Android app (Capacitor)
+# 27-0 apps (website install, Android, iPhone)
 
-This repository still ships the **web / Vercel** game. Android is a Capacitor shell that packages a **static export** of the same frontend (`out/`). It does **not** load the live website as its main UI.
+This repository ships the **web / Vercel** game. The apps are Capacitor shells that package a **static export** of the same frontend (`out/`). They do **not** load the live website as their main UI.
 
-There is **no iOS** project in this repo.
+## No-PC route (everything builds on GitHub)
+
+| What | Where |
+|------|-------|
+| Install from the website | The site is a PWA: Settings → "Get the 27-0 app" (Android/desktop Chrome: one tap; iPhone: Share → Add to Home Screen). Offline play via `public/sw.js`. |
+| Android test APK | Actions → **Android app** → latest run → Artifacts → `27-0-debug-apk`. Unzip, open the `.apk` on an Android phone (allow "install unknown apps"). |
+| Google Play upload (.aab) | Same workflow, artifact `27-0-play-store-release` — appears once the signing secrets below exist. |
+| iPhone build check | Actions → **iPhone app (build check)** → Run workflow. Builds for the simulator; the generated `ios/` project is in the artifacts. |
+
+### Play Store release (signing)
+
+Google Play needs every upload signed with the same **upload key**. Create it once (any machine with Java, or ask Claude to generate it), then add four repository secrets in GitHub → Settings → Secrets and variables → Actions:
+
+| Secret | Value |
+|--------|-------|
+| `ANDROID_KEYSTORE_BASE64` | the `.jks` file, base64-encoded |
+| `ANDROID_KEYSTORE_PASSWORD` | keystore password |
+| `ANDROID_KEY_ALIAS` | key alias (e.g. `upload`) |
+| `ANDROID_KEY_PASSWORD` | key password (can match the keystore password) |
+
+```bash
+keytool -genkeypair -v -keystore upload.jks -alias upload -keyalg RSA -keysize 2048 -validity 10000
+base64 -w0 upload.jks   # paste into ANDROID_KEYSTORE_BASE64
+```
+
+Keep `upload.jks` and the passwords somewhere safe (a password manager). With Play App Signing, a lost upload key can be reset through Play support, but it takes days.
+
+`versionCode` is `1000 + the workflow run number`, so each build is higher than the last; `versionName` comes from `data/version.ts`.
+
+### Store requirements already in the app
+
+- Privacy policy: `/privacy` (https://27-0.co.uk/privacy)
+- Account deletion in the app and on the web: `/delete-account` (also Settings → Account). Needs the `delete_my_account` database function from `supabase/2026-10-22-delete-my-account.sql`; until it's applied the page falls back to "email us".
+- Email links from the app (confirm account, password reset) open the live site, not `https://localhost`.
 
 ---
 

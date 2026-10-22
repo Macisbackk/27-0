@@ -27,7 +27,7 @@ export function CapacitorAppShell() {
       try {
         // Light icons on 27-0's dark chrome (Capacitor: Light = light content).
         await StatusBar.setStyle({ style: Style.Light });
-        await StatusBar.setBackgroundColor({ color: "#0a0f0d" });
+        await StatusBar.setBackgroundColor({ color: "#0a110e" });
         if (Capacitor.getPlatform() === "android") {
           await StatusBar.setOverlaysWebView({ overlay: false });
         }

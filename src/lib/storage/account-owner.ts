@@ -58,3 +58,14 @@ export function claimDeviceForAccount(userId: string): boolean {
     return false;
   }
 }
+
+/** After an account is deleted: remove that account's progress from this device too. */
+export function clearDeviceAccountData(): void {
+  if (typeof window === "undefined") return;
+  try {
+    for (const key of ACCOUNT_KEYS) localStorage.removeItem(key);
+    localStorage.removeItem(OWNER_KEY);
+  } catch {
+    /* storage unavailable */
+  }
+}
