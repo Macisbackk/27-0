@@ -148,6 +148,17 @@ export async function signUp(
     });
     if (error) throw error;
 
+    // Supabase answers a sign-up for an email that already has an account with a
+    // placeholder user (no identities) and sends no email, to avoid revealing accounts.
+    // Tell the person to log in instead of waiting for an email that will never come.
+    if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+      return {
+        ok: false,
+        error:
+          "There's already an account with this email. Log in instead, or use Forgot password if you can't remember it.",
+      };
+    }
+
     if (data.user) {
       await createProfile(data.user.id, nameCheck.value!);
     }

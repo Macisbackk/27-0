@@ -8,7 +8,7 @@ import {
   COACH_NAME_MAX_LENGTH,
   COACH_NAME_MIN_LENGTH,
 } from "@/lib/storage/user";
-import { MIN_PASSWORD_LENGTH } from "@/lib/auth";
+import { MIN_PASSWORD_LENGTH, sendPasswordResetEmail } from "@/lib/auth";
 import { BTN, CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { SubTabBar } from "@/components/ui/SubTabBar";
@@ -82,6 +82,12 @@ export function LoginForm() {
         );
         if (!result.ok) {
           setError(result.error ?? "Sign up failed.");
+          // Email already has an account: flip to Log in with the email kept.
+          if (result.error?.startsWith("There's already an account")) {
+            setMode("login");
+            setPassword("");
+            setConfirmPassword("");
+          }
           if (result.cooldownSeconds) {
             setCooldownUntil(Date.now() + result.cooldownSeconds * 1000);
           }
@@ -101,6 +107,23 @@ export function LoginForm() {
           router.replace(redirectTo);
         }
       }
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    setError(null);
+    setSuccess(null);
+    if (!emailInput.trim()) {
+      setError("Enter your email above, then tap Forgot password.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const result = await sendPasswordResetEmail(emailInput);
+      if (!result.ok) setError(result.error ?? "Could not send reset email.");
+      else setSuccess("If there's an account for that email, a reset link is on its way. Check your inbox and spam.");
     } finally {
       setBusy(false);
     }
@@ -179,6 +202,18 @@ export function LoginForm() {
           aria-describedby={error ? errorId : success ? successId : undefined}
           className={FILTER.input}
         />
+        {mode === "login" && (
+          <div className="flex justify-end">
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void handleForgotPassword()}
+              className="fl-pressable text-sm font-semibold text-theme-primary hover:underline disabled:opacity-50"
+            >
+              Forgot password?
+            </button>
+          </div>
+        )}
         {mode === "signup" && (
           <>
             <label htmlFor={confirmPasswordId} className="sr-only">
