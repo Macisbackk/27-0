@@ -6,7 +6,7 @@
  *  4. Corrupt every localStorage key the site wrote, then revisit every route: nothing may crash.
  * CI: screenshots of each route (375px) go to e2e-shots/site-*.png.
  */
-import { mkdirSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { chromium } from "playwright";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
@@ -30,8 +30,31 @@ const timeout = 15_000;
 
 const browser = await chromium.launch();
 
+let hydrationDumps = 0;
+/** On a hydration mismatch, save server HTML, the client DOM and storage so the cause can be diffed. */
+async function dumpHydration(page, where) {
+  if (!process.env.CI || hydrationDumps >= 3) return;
+  hydrationDumps += 1;
+  try {
+    mkdirSync("e2e-shots", { recursive: true });
+    const url = page.url();
+    const server = await page.request.get(url).then((r) => r.text()).catch((e) => `fetch failed: ${e.message}`);
+    const client = await page.content().catch(() => "");
+    const storage = await page.evaluate(() => JSON.stringify(Object.fromEntries(Object.entries(localStorage)), null, 1)).catch(() => "");
+    const n = hydrationDumps;
+    writeFileSync(`e2e-shots/hydration-${n}-info.txt`, `${where}\n${url}\n${new Date().toISOString()}\n\nlocalStorage:\n${storage.slice(0, 20000)}\n`);
+    writeFileSync(`e2e-shots/hydration-${n}-server.txt`, server);
+    writeFileSync(`e2e-shots/hydration-${n}-client.txt`, client);
+  } catch {
+    /* diagnostics only */
+  }
+}
+
 function wire(page) {
-  page.on("pageerror", (err) => problems.push(`[${currentWhere}] page error: ${err.message}`));
+  page.on("pageerror", (err) => {
+    problems.push(`[${currentWhere}] page error: ${err.message}`);
+    if (/#418|#423|#425|Hydration/i.test(err.message)) void dumpHydration(page, currentWhere);
+  });
   page.on("console", (msg) => {
     if (msg.type() === "error" && !IGNORED.some((re) => re.test(msg.text()))) problems.push(`[${currentWhere}] console error: ${msg.text().slice(0, 300)}`);
   });
