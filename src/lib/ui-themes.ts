@@ -65,12 +65,12 @@ export const DEFAULT_UI_THEME: UiThemeDefinition = {
   primary: "#ffb300",
   secondary: "#ffc23d",
   tertiary: "#e09a00",
-  textOnPrimary: "#ffffff",
-  textOnSecondary: "#ffffff",
+  textOnPrimary: "#1a1200",
+  textOnSecondary: "#1a1200",
   accent: "#ffb300",
   accent2: "#ffc23d",
   accent3: "#e09a00",
-  accentText: "#ffffff",
+  accentText: "#1a1200",
   glow: "rgba(255, 179, 0, 0.35)",
 };
 

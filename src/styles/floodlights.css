@@ -32,7 +32,7 @@
   --theme-secondary-rgb: 255 194 61;
   --theme-tertiary-rgb: 224 154 0;
   --theme-primary-soft: rgba(255, 179, 0, 0.12);
-  --theme-text-on-primary: #ffffff;
+  --theme-text-on-primary: #1a1200;
   --header-bg: rgba(17, 18, 20, 0.94);
   --sidebar-bg: var(--fl-ground);
   --arena-bg: var(--fl-ground);
