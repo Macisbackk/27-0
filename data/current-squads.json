@@ -7969,6 +7969,42 @@
     "superLeagueEligible": false
   },
   {
+    "id": "midlands-cur-liam-sutcliffe",
+    "name": "Liam Sutcliffe",
+    "club": "Midlands Hurricanes",
+    "currentClub": "Midlands Hurricanes",
+    "team": "Midlands Hurricanes",
+    "displayClub": "Midlands Hurricanes",
+    "position": "CENTRE",
+    "positions": [
+      "CENTRE"
+    ],
+    "primaryPosition": "CENTRE",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2013–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 93000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "midlands-hurricanes-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "midlands-cur-liam-sutcliffe",
+    "availableInGame": false,
+    "superLeagueEligible": false,
+    "dateOfBirth": "1994-11-25",
+    "birthYear": 1994,
+    "clubsPlayedFor": [
+      "Leeds Rhinos",
+      "Hull FC",
+      "Huddersfield Giants",
+      "Midlands Hurricanes"
+    ]
+  },
+  {
     "id": "oldham-cur-jake-bibby",
     "name": "Jake Bibby",
     "position": "CENTRE",
@@ -8028,6 +8064,42 @@
     "birthYear": 2004,
     "availableInGame": false,
     "superLeagueEligible": false
+  },
+  {
+    "id": "oldham-cur-josh-simm",
+    "name": "Josh Simm",
+    "club": "Oldham RLFC",
+    "currentClub": "Oldham RLFC",
+    "team": "Oldham RLFC",
+    "displayClub": "Oldham RLFC",
+    "position": "WING",
+    "positions": [
+      "WING"
+    ],
+    "primaryPosition": "WING",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2019–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 92000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "oldham-rlfc-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "oldham-cur-josh-simm",
+    "availableInGame": false,
+    "superLeagueEligible": false,
+    "dateOfBirth": "2001-02-27",
+    "birthYear": 2001,
+    "clubsPlayedFor": [
+      "St Helens",
+      "Castleford Tigers",
+      "Catalans Dragons",
+      "Oldham RLFC"
+    ]
   },
   {
     "id": "sheffield-cur-joe-brown",

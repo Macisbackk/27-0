@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T08:52:56.400Z",
+  "generatedAt": "2026-10-22T08:55:15.171Z",
   "script": "scripts/add-2026-missing-squad-players.ts",
   "method": [
     "Squad lists: Love Rugby League club-by-club 2026 squad numbers (28 Jan 2026), cross-checked per club.",
@@ -9,9 +9,9 @@
     "Classic Current spins draw from the fixed 17-man 2026 pools (current-team-year-squads-2026.json), so depth rows appear in Manager Mode, Wordle/Grid and the global recruitment pools, not in the 17-man Classic spin pools."
   ],
   "totals": {
-    "added": 59,
+    "added": 61,
     "moved": 3,
-    "unverified": 8,
+    "notAddedOrUnverified": 8,
     "movesNotApplied": 4
   },
   "clubs": {
@@ -42,7 +42,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
-      "unverified": [
+      "notAddedOrUnverified": [
         {
           "club": "Bradford Bulls",
           "name": "Ronan Michael",
@@ -120,7 +120,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
-      "unverified": [
+      "notAddedOrUnverified": [
         {
           "club": "Castleford Tigers",
           "name": "Ramon Silva",
@@ -154,12 +154,12 @@
           "status": "already applied"
         }
       ],
-      "unverified": [
+      "notAddedOrUnverified": [
         {
           "club": "Catalans Dragons",
           "name": "Josh Simm",
           "squadNumber": 22,
-          "reason": "Catalans squad number 22, but released on 1 August 2026 and joined Oldham (Championship) for the rest of 2026 — not added as a Catalans Current card (see Championship section).",
+          "reason": "Catalans squad number 22, but released on 1 August 2026 and joined Oldham (Championship) for the rest of 2026 — added at Oldham instead (see championship section), not as a Catalans card.",
           "sources": [
             "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
             "https://www.loverugbyleague.com/post/catalans-dragons-winger-joins-championship-club-after-immediate-release"
@@ -242,12 +242,12 @@
         }
       ],
       "duplicatesRemoved": [],
-      "unverified": [
+      "notAddedOrUnverified": [
         {
           "club": "Huddersfield Giants",
           "name": "Liam Sutcliffe",
           "squadNumber": 19,
-          "reason": "Huddersfield squad number 19, but released on 23 July 2026 and joined Midlands Hurricanes (Championship) until the end of 2026 — not added as a Huddersfield Current card (see Championship section).",
+          "reason": "Huddersfield squad number 19, but released on 23 July 2026 and joined Midlands Hurricanes (Championship) until the end of 2026 — added at Midlands Hurricanes instead (see championship section), not as a Huddersfield card.",
           "sources": [
             "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
             "https://giantsrl.com/article/10009/sutcliffe-to-depart-giants",
@@ -420,7 +420,7 @@
       ],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
-      "unverified": [],
+      "notAddedOrUnverified": [],
       "playableCurrentPlayers": 35
     },
     "Hull KR": {
@@ -546,7 +546,7 @@
         }
       ],
       "duplicatesRemoved": [],
-      "unverified": [],
+      "notAddedOrUnverified": [],
       "playableCurrentPlayers": 32
     },
     "Leeds Rhinos": {
@@ -574,7 +574,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
-      "unverified": [],
+      "notAddedOrUnverified": [],
       "playableCurrentPlayers": 28
     },
     "Leigh Leopards": {
@@ -672,7 +672,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
-      "unverified": [],
+      "notAddedOrUnverified": [],
       "playableCurrentPlayers": 32
     },
     "St Helens": {
@@ -719,7 +719,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
-      "unverified": [],
+      "notAddedOrUnverified": [],
       "playableCurrentPlayers": 31
     },
     "Toulouse Olympique": {
@@ -778,7 +778,7 @@
           "status": "already applied"
         }
       ],
-      "unverified": [],
+      "notAddedOrUnverified": [],
       "playableCurrentPlayers": 30
     },
     "Wakefield Trinity": {
@@ -877,7 +877,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
-      "unverified": [],
+      "notAddedOrUnverified": [],
       "playableCurrentPlayers": 32
     },
     "Warrington Wolves": {
@@ -990,7 +990,7 @@
         }
       ],
       "duplicatesRemoved": [],
-      "unverified": [
+      "notAddedOrUnverified": [
         {
           "club": "Warrington Wolves",
           "name": "Ewan Smith",
@@ -1142,7 +1142,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
-      "unverified": [],
+      "notAddedOrUnverified": [],
       "playableCurrentPlayers": 34
     },
     "York Knights": {
@@ -1370,7 +1370,7 @@
       ],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
-      "unverified": [
+      "notAddedOrUnverified": [
         {
           "club": "York Knights",
           "name": "Myles Harrison",
@@ -1391,5 +1391,100 @@
       "playableCurrentPlayers": 35
     }
   },
+  "championship": {
+    "note": [
+      "Manager Mode builds Championship squads from the real rows for that club (availableInGame:false is ignored for the Championship) and tops each club up to the 24-man SQUAD_TEMPLATE with generated players at the club's strength (about 70–79). Adding a real player simply replaces one generated depth player, so nothing in the generated-squad logic breaks.",
+      "Only the two players already researched for this task who moved to Championship clubs mid-2026 were added (Liam Sutcliffe → Midlands Hurricanes, Josh Simm → Oldham), rated 80 like the existing real Championship cards. One stale London Broncos card was moved (Oliver Leyland → Warrington) and one duplicate removed (Robert Butler = Toulouse's Rob Butler).",
+      "Full Championship squads (London Broncos, Sheffield, Oldham, Midlands, Widnes, Barrow) were not researched. Before doing that the owner should choose a Championship rating scale: the existing real Championship cards are stored on the Super League 80+ scale (validate-players also rejects Current cards below 75), while generated Championship players top out at 78, so a whole real squad at 80+ would make that club far stronger than the rest of the Championship in Manager Mode."
+    ],
+    "clubs": {
+      "London Broncos": {
+        "added": [],
+        "moved": [],
+        "duplicatesRemoved": [],
+        "realPlayers": 8
+      },
+      "Sheffield Eagles": {
+        "added": [],
+        "moved": [],
+        "duplicatesRemoved": [],
+        "realPlayers": 4
+      },
+      "Oldham RLFC": {
+        "added": [
+          {
+            "name": "Josh Simm",
+            "id": "oldham-cur-josh-simm",
+            "squadNumber": null,
+            "position": "WING",
+            "rating": 80,
+            "nationality": "England",
+            "nationalityBasis": "source (born St Helens, England — Wikipedia)",
+            "birthYear": 2001,
+            "status": "mid-season move: Catalans squad number 22, released and joined Oldham for the rest of 2026 (1 August 2026)",
+            "sources": [
+              "https://www.loverugbyleague.com/post/catalans-dragons-winger-joins-championship-club-after-immediate-release",
+              "https://en.wikipedia.org/wiki/Josh_Simm",
+              "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+              "https://fantasy.superleague.co.uk/"
+            ],
+            "notes": "Wikipedia: centre or winger; Super League Fantasy and LRL: winger."
+          }
+        ],
+        "moved": [],
+        "duplicatesRemoved": [],
+        "realPlayers": 3
+      },
+      "Midlands Hurricanes": {
+        "added": [
+          {
+            "name": "Liam Sutcliffe",
+            "id": "midlands-cur-liam-sutcliffe",
+            "squadNumber": null,
+            "position": "CENTRE",
+            "rating": 80,
+            "nationality": "England",
+            "nationalityBasis": "source (England international — Wikipedia)",
+            "birthYear": 1994,
+            "status": "mid-season move: Huddersfield squad number 19, released 23 July 2026 and joined Midlands Hurricanes until the end of 2026",
+            "sources": [
+              "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/ex-leeds-rhinos-grand-final-winner-finds-new-club-after-sudden-super-league-departure-8819827",
+              "https://en.wikipedia.org/wiki/Liam_Sutcliffe",
+              "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+              "https://fantasy.superleague.co.uk/"
+            ],
+            "notes": "Utility; Wikipedia: stand-off and centre, Super League Fantasy: Centre. Rated 80 like the other real Championship cards."
+          }
+        ],
+        "moved": [],
+        "duplicatesRemoved": [],
+        "realPlayers": 3
+      },
+      "Widnes Vikings": {
+        "added": [],
+        "moved": [],
+        "duplicatesRemoved": [],
+        "realPlayers": 1
+      },
+      "Barrow Raiders": {
+        "added": [],
+        "moved": [],
+        "duplicatesRemoved": [],
+        "realPlayers": 1
+      }
+    }
+  },
+  "managerMode": [
+    "Manager Mode (src/lib/career/world.ts) puts every real Current row into its club's starting squad, and SQUAD_MAX is 34 (scripts/test-career.ts checks it). With academy players added, York and Hull FC have 35 real players and Wigan's real players plus template depth also run past 34.",
+    "world.ts now starts such clubs at SQUAD_MAX by leaving out their lowest-rated, then youngest, real players in over-stocked positions (currently 1–2 academy players at Hull FC, Wigan and York; run bun scripts/check-career-squad-sizes.ts to see who). The players stay in the database and in every other mode. Raising SQUAD_MAX instead would keep them all in Manager Mode but changes the transfer-window rules, so it was left for the owner to decide."
+  ],
+  "preExistingIssuesNotChanged": [
+    "Same person with two playable Current cards, left in place because the stale card sits in a 16/17-man 2026 Classic pool that cannot lose a player without a replacement: Liam Hood and Renouf Atoni (stale Wakefield cards; both Castleford for 2026), Oliver Wilson (stale Huddersfield card; Wigan No. 21), Sam Lisone (stale Leeds card; Hull FC No. 16), Justin Sangaré (stale Toulouse card; York No. 16), Bayley Sironen (Catalans card; left for Wynnum Manly). Darnell McIntosh also has a hidden stale Leigh card (Castleford for 2026).",
+    "Current cards not on any 2026 squad-number list (possibly left before 2026; not removed): Morgan Knowles (St Helens), Morgan Gannon (Leeds), Kai O'Donnell (Leigh), Matty Nicholson (Warrington), Eloi Pelissier and John Toleafoa (Toulouse), Paul Séguier (Catalans). César Rougé is Toulouse No. 29 but his card is at Catalans; Ethan O'Neill is Leeds No. 16 (now listed on Hull FC's site) but his card is at Leigh; Leon Ruan appears on both the Bradford (No. 30) and Hull KR (No. 27) lists and his card is at Bradford.",
+    "Warrington's Josh Smith is stored as England, but the club profile says he was born in Echuca, Victoria (Australia). Not changed.",
+    "data/team-year-rosters.json Leigh 2026 still lists Darnell McIntosh where current-team-year-squads-2026.json has Josh Charnley (regenerate with generate-team-year-rosters.ts; pre-existing).",
+    "scripts/audit-duplicate-players.ts is not a read-only audit: it rewrites current-squads.json, historic-players.json and legends.json, deleting every same-name card except one (it removed 202 current and 1,374 historic rows when run). It was run once for this task and the changes were reverted.",
+    "scripts/merge-player-additions.ts would re-add ids from data/player-additions.json that have since been moved or removed (including london-cur-robert-butler and london-cur-oliver-leyland)."
+  ],
   "skippedAlreadyPresent": []
 }

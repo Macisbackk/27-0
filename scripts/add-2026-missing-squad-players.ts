@@ -8,7 +8,7 @@
  * second source (club website, Rugby League Zone or Wikipedia). Every added row
  * carries at least one source URL in the report. Nothing is invented: players
  * whose position or 2026 club could not be confirmed stay out and are listed
- * under `unverified` in the report.
+ * under `notAddedOrUnverified` in the report.
  *
  * Idempotent — re-running skips players already present (normalised name) and
  * moves already applied.
@@ -31,6 +31,9 @@ import {
   NOT_APPLIED_MOVES,
   DUPLICATE_ROWS,
   SQUAD_LIST_SOURCES,
+  CHAMPIONSHIP_NOTE,
+  MANAGER_MODE_NOTE,
+  PRE_EXISTING_ISSUES,
   type Addition,
 } from "../data/sl-2026-missing-squad-players";
 
@@ -62,6 +65,16 @@ export const CLUB_SLUGS: Record<string, string> = {
   "Warrington Wolves": "warrington",
   "Wigan Warriors": "wigan",
   "York Knights": "york",
+};
+
+/** Championship clubs that already hold real Current cards (id prefixes as in current-squads.json). */
+const CHAMPIONSHIP_SLUGS: Record<string, string> = {
+  "London Broncos": "london",
+  "Sheffield Eagles": "sheffield",
+  "Oldham RLFC": "oldham",
+  "Midlands Hurricanes": "midlands",
+  "Widnes Vikings": "widnes",
+  "Barrow Raiders": "barrow",
 };
 
 /**
@@ -107,7 +120,7 @@ function slugifyName(name: string): string {
 }
 
 function buildId(club: string, name: string): string {
-  const slug = CLUB_SLUGS[club];
+  const slug = CLUB_SLUGS[club] ?? CHAMPIONSHIP_SLUGS[club];
   if (!slug) throw new Error(`No id slug for ${club}`);
   return `${slug}-cur-${slugifyName(name)}`;
 }
@@ -255,6 +268,7 @@ function buildRow(add: Addition, historic: Raw[]): Raw {
   const keys = nameKeys(add.name, add.aliases);
   const hist = findHistoric(historic, keys);
   const position = add.position as Position;
+  const isSuperLeague = Boolean(CLUB_SLUGS[add.club]);
   const rating = clampCurrentSuperLeagueRating(add.rating);
   const id = buildId(add.club, add.name);
   const nationality =
@@ -290,8 +304,10 @@ function buildRow(add: Addition, historic: Raw[]): Raw {
     cardYear: CURRENT_YEAR,
     status: "Current",
     basePlayerId: id,
-    availableInGame: true,
-    superLeagueEligible: true,
+    // Championship cards stay out of Classic / mini-game pools (Manager Mode only),
+    // matching the existing London / Oldham / Midlands rows.
+    availableInGame: isSuperLeague,
+    superLeagueEligible: isSuperLeague,
   };
   if (dateOfBirth) row.dateOfBirth = dateOfBirth;
   if (birthYear) row.birthYear = birthYear;
@@ -434,8 +450,17 @@ function main(): void {
       moved: movedReport.filter((m) => m.toClub === club || m.fromClub === club),
       movesNotApplied: NOT_APPLIED_MOVES.filter((m) => m.club === club),
       duplicatesRemoved: dedupedReport.filter((d) => d.club === club),
-      unverified: UNVERIFIED.filter((u) => u.club === club),
+      notAddedOrUnverified: UNVERIFIED.filter((u) => u.club === club),
       playableCurrentPlayers: counts[club],
+    };
+  }
+  const championshipClubs: Record<string, unknown> = {};
+  for (const club of Object.keys(CHAMPIONSHIP_SLUGS)) {
+    championshipClubs[club] = {
+      added: addedByClub[club] ?? [],
+      moved: movedReport.filter((m) => m.toClub === club || m.fromClub === club),
+      duplicatesRemoved: dedupedReport.filter((d) => d.club === club),
+      realPlayers: players.filter((p) => p.club === club).length,
     };
   }
 
@@ -452,16 +477,19 @@ function main(): void {
     totals: {
       added: Object.values(addedByClub).reduce((n, l) => n + l.length, 0),
       moved: movedReport.length,
-      unverified: UNVERIFIED.length,
+      notAddedOrUnverified: UNVERIFIED.length,
       movesNotApplied: NOT_APPLIED_MOVES.length,
     },
     clubs,
+    championship: { note: CHAMPIONSHIP_NOTE, clubs: championshipClubs },
+    managerMode: MANAGER_MODE_NOTE,
+    preExistingIssuesNotChanged: PRE_EXISTING_ISSUES,
     skippedAlreadyPresent: skipped,
   };
   writeFileSync(REPORT_PATH, JSON.stringify(report, null, 2) + "\n");
 
   console.log(
-    `Added ${report.totals.added}, moved ${report.totals.moved}, unverified ${report.totals.unverified}.`
+    `Added ${report.totals.added}, moved ${report.totals.moved}, not added or unverified ${report.totals.notAddedOrUnverified}.`
   );
   for (const [club, n] of Object.entries(counts)) console.log(`  ${club}: ${n}`);
 }

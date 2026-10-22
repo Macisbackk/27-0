@@ -98,12 +98,12 @@ export function buildWorld(seed: string): { clubs: Record<string, CareerClub>; p
       }
     }
     // Real 2026 squads with academy players can run past SQUAD_MAX. Start the club at the
-    // limit by leaving out its lowest-rated real players in over-stocked positions.
+    // limit by leaving out its lowest-rated (then youngest) real players in over-stocked positions.
     while (club.squad.length > SQUAD_MAX) {
       const spare = club.squad
         .map((id) => players[id]!)
         .filter((p) => p.real && counts[p.pos] > SQUAD_TEMPLATE[p.pos])
-        .sort((a, b) => a.rating - b.rating || b.age - a.age || a.id.localeCompare(b.id))[0];
+        .sort((a, b) => a.rating - b.rating || a.age - b.age || a.id.localeCompare(b.id))[0];
       if (!spare) break;
       club.squad = club.squad.filter((id) => id !== spare.id);
       delete players[spare.id];
