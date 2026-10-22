@@ -25,15 +25,15 @@ interface LeaderboardTabBarProps<T extends string> {
 
 const ACCENT_ACTIVE: Record<LeaderboardTabAccent, string> = {
   theme:
-    "border-transparent bg-theme-primary/14 text-theme-primary",
+    "border-transparent bg-theme-primary/15 text-theme-primary",
   gold:
-    "border-transparent bg-accent-gold/14 text-accent-gold",
+    "border-transparent bg-accent-gold/15 text-accent-gold",
   green:
-    "border-transparent bg-mode-current/14 text-mode-current",
+    "border-transparent bg-mode-current/15 text-mode-current",
   sky:
-    "border-transparent bg-sky-500/14 text-sky-300",
+    "border-transparent bg-sky-500/15 text-sky-300",
   amber:
-    "border-transparent bg-amber-500/14 text-amber-300",
+    "border-transparent bg-amber-500/15 text-amber-300",
 };
 
 const ACCENT_IDLE: Record<LeaderboardTabAccent, string> = {
