@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import "@/app/quiz/quiz.css";
 import { Confetti } from "@/components/Confetti";
 import { GameButton } from "@/components/ui/GameButton";
@@ -14,8 +14,7 @@ import { formatClubFundsExact } from "@/lib/club-funds";
 import { triggerQuizAchievements } from "@/lib/achievements/achievementTriggers";
 import { playUiClick } from "@/lib/sound";
 import { getQuizQuestionBank } from "@/lib/quiz/bank";
-import { QUIZ_CLUBS, getQuizClub, getQuizClubColors } from "@/lib/quiz/clubs";
-import { isEligibleMiniGameQuizTeamId } from "@/lib/mini-games/eligibility";
+import { getQuizClub } from "@/lib/quiz/clubs";
 import {
   playMiniCorrect,
   playMiniIncorrect,
@@ -24,7 +23,6 @@ import {
   playMiniWin,
 } from "@/lib/mini-games/sound";
 import { settleCompletedQuizRun } from "@/lib/quiz/complete";
-import { isTeamChallengeRewardBankedToday } from "@/lib/quiz/rewards";
 import {
   continueAfterReveal,
   countCorrectAnswers,
@@ -52,7 +50,7 @@ import {
   loadQuizStats,
   saveQuizRun,
 } from "@/lib/quiz/storage";
-import type { QuizRun, QuizTeamId } from "@/lib/quiz/types";
+import type { QuizRun } from "@/lib/quiz/types";
 
 type QuizView = "landing" | "team" | "play" | "result";
 
@@ -70,13 +68,9 @@ function persist(run: QuizRun | null): QuizRun | null {
 export function QuizModeApp() {
   const bank = useMemo(() => getQuizQuestionBank(), []);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [view, setView] = useState<QuizView>(
-    searchParams.get("mode") === "team" ? "team" : "landing"
-  );
+  // Team Challenge is retired: old ?mode=team links land on Super League Millionaire.
+  const [view, setView] = useState<QuizView>("landing");
   const [run, setRun] = useState<QuizRun | null>(null);
-  const [teamId, setTeamId] = useState<QuizTeamId | null>(null);
-  const [teamQuery, setTeamQuery] = useState("");
   const [walkOpen, setWalkOpen] = useState(false);
   const [ready, setReady] = useState(false);
   const lockTimer = useRef<number | null>(null);
@@ -84,7 +78,7 @@ export function QuizModeApp() {
   useEffect(() => {
     clearQuizRun();
     setRun(null);
-    setView(searchParams.get("mode") === "team" ? "team" : "landing");
+    setView("landing");
     setReady(true);
     return () => {
       if (lockTimer.current) window.clearTimeout(lockTimer.current);
@@ -107,22 +101,6 @@ export function QuizModeApp() {
       recentTopicIds: stats.recentTopicIds,
     });
     router.replace("/mini-games/quiz");
-    updateRun(next);
-    setView("play");
-  };
-
-  const startTeam = () => {
-    if (!teamId) return;
-    playUiClick();
-    const stats = loadQuizStats();
-    const next = createQuizRun({
-      bank,
-      mode: "team",
-      teamId,
-      recentIds: stats.recentQuestionIds,
-      recentTopicIds: stats.recentTopicIds,
-    });
-    router.replace("/mini-games/quiz?mode=team");
     updateRun(next);
     setView("play");
   };
@@ -196,19 +174,6 @@ export function QuizModeApp() {
 
   const playAgain = () => {
     playUiClick();
-    const stats = loadQuizStats();
-    if (run?.mode === "team" && run.teamId) {
-      const next = createQuizRun({
-        bank,
-        mode: "team",
-        teamId: run.teamId,
-        recentIds: stats.recentQuestionIds,
-        recentTopicIds: stats.recentTopicIds,
-      });
-      updateRun(next);
-      setView("play");
-      return;
-    }
     startMillionaire();
   };
 
@@ -217,7 +182,6 @@ export function QuizModeApp() {
     persist(null);
     setRun(null);
     setView("landing");
-    setTeamId(null);
     router.replace("/mini-games/quiz");
   };
 
@@ -227,26 +191,7 @@ export function QuizModeApp() {
         {!ready ? (
           <p className={`text-center ${TYPO.meta}`}>Loading Super League Millionaire…</p>
         ) : view === "landing" ? (
-          <QuizLanding
-            onMillionaire={startMillionaire}
-            onTeam={() => {
-              playUiClick();
-              router.replace("/mini-games/quiz?mode=team");
-              setView("team");
-            }}
-          />
-        ) : view === "team" ? (
-          <QuizTeamSelect
-            teamId={teamId}
-            query={teamQuery}
-            onQuery={setTeamQuery}
-            onSelect={setTeamId}
-            onBack={() => {
-              router.replace("/mini-games/quiz");
-              setView("landing");
-            }}
-            onStart={startTeam}
-          />
+          <QuizLanding onMillionaire={startMillionaire} />
         ) : view === "play" && run ? (
           <QuizPlayScreen
             run={run}
@@ -316,132 +261,22 @@ export function QuizModeApp() {
   );
 }
 
-function QuizLanding({
-  onMillionaire,
-  onTeam,
-}: {
-  onMillionaire: () => void;
-  onTeam: () => void;
-}) {
+function QuizLanding({ onMillionaire }: { onMillionaire: () => void }) {
   return (
     <div className="mx-auto w-full max-w-xl text-center">
-      <p className={TYPO.sectionLabel}>Mini Games</p>
-      <h1 className={`mt-2 ${TYPO.pageTitle}`}>Choose your quiz</h1>
-
-      <div className={`${SPACING.sectionGap} grid gap-3`}>
-        <button
-          type="button"
-          onClick={onMillionaire}
-          className={`w-full border border-theme-primary/40 bg-[#0c1210] text-center ${SPACING.cardPaddingSm}`}
-        >
-          <p className={`${TYPO.modeCardTitle} text-theme-primary`}>
-            Super League Millionaire
-          </p>
-          <p className={`mt-1 ${TYPO.bodySm}`}>
-            15 questions, four lifelines, £1,000,000 top prize.
-          </p>
-        </button>
-        <button
-          type="button"
-          onClick={onTeam}
-          className={`w-full border border-accent-gold/40 bg-[#0c1210] text-center ${SPACING.cardPaddingSm}`}
-        >
-          <p className={`${TYPO.modeCardTitle} text-accent-gold`}>
-            Team Challenge
-          </p>
-          <p className={`mt-1 ${TYPO.bodySm}`}>
-            Every question is about one club.
-          </p>
-        </button>
-      </div>
-      <div className="mx-auto mt-6 max-w-sm">
-        <GameButton variant="secondary" href="/mini-games">
-          Mini Games
-        </GameButton>
-      </div>
-    </div>
-  );
-}
-
-function QuizTeamSelect({
-  teamId,
-  query,
-  onQuery,
-  onSelect,
-  onBack,
-  onStart,
-}: {
-  teamId: QuizTeamId | null;
-  query: string;
-  onQuery: (value: string) => void;
-  onSelect: (id: QuizTeamId) => void;
-  onBack: () => void;
-  onStart: () => void;
-}) {
-  const filtered = QUIZ_CLUBS.filter(
-    (club) =>
-      isEligibleMiniGameQuizTeamId(club.id) &&
-      club.name.toLowerCase().includes(query.trim().toLowerCase())
-  );
-  const selected = teamId ? getQuizClub(teamId) : null;
-
-  return (
-    <div className="mx-auto w-full max-w-xl text-center">
-      <p className={TYPO.sectionLabel}>Team Challenge</p>
-      <h1 className={`mt-2 ${TYPO.pageTitle}`}>Choose your club</h1>
-      <label className="mt-5 block">
-        <span className="sr-only">Search teams</span>
-        <input
-          value={query}
-          onChange={(event) => onQuery(event.target.value)}
-          placeholder="Search teams…"
-          className="game-input w-full text-center"
-        />
-      </label>
-      <ul className="mt-4 max-h-[50dvh] space-y-2 overflow-y-auto overscroll-contain pb-3">
-        {filtered.map((club) => {
-          const colors = getQuizClubColors(club.id);
-          const active = club.id === teamId;
-          return (
-            <li key={club.id}>
-              <button
-                type="button"
-                onClick={() => {
-                  playUiClick();
-                  onSelect(club.id);
-                }}
-                className={`flex min-h-[56px] w-full flex-col items-center justify-center gap-2 rounded-lg border px-3 py-3 text-center sm:flex-row sm:gap-3 ${
-                  active
-                    ? "border-accent-gold/50 bg-accent-gold/10"
-                    : "border-white/10 bg-[#0c1210]"
-                }`}
-              >
-                <span
-                  className="h-8 w-8 shrink-0 rounded-full"
-                  style={{
-                    background: colors.primary,
-                    boxShadow: `inset 0 0 0 2px ${colors.secondary}`,
-                  }}
-                />
-                <span className={TYPO.cardTitle}>{club.name}</span>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-      <div className="mt-5 grid gap-2 sm:grid-cols-2">
-        <GameButton variant="secondary" onClick={onBack}>
-          Back
-        </GameButton>
-        <GameButton variant="theme" disabled={!teamId} onClick={onStart}>
+      <p className={TYPO.sectionLabel}>Puzzles</p>
+      <h1 className={`mt-2 ${TYPO.pageTitle}`}>Super League Millionaire</h1>
+      <p className={`mt-2 ${TYPO.bodySm}`}>
+        15 questions, four lifelines, £1,000,000 top prize. Bank at Q5 and Q10.
+      </p>
+      <div className="mx-auto mt-6 grid max-w-sm gap-2">
+        <GameButton variant="theme" onClick={onMillionaire}>
           Start quiz
         </GameButton>
+        <GameButton variant="secondary" href="/mini-games">
+          All puzzles
+        </GameButton>
       </div>
-      <p className={`mt-3 ${TYPO.body} text-gray-400`}>
-        {selected && isTeamChallengeRewardBankedToday(selected.id)
-          ? `${selected.name}'s reward is banked for today — this run is practice.`
-          : "Each club pays Club Funds once a day."}
-      </p>
     </div>
   );
 }

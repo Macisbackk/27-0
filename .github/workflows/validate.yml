@@ -46,12 +46,6 @@ jobs:
       - name: Wordle
         if: success() || failure()
         run: scripts/ci-run.sh "Wordle" npm run test:wordle
-      - name: Hangman
-        if: success() || failure()
-        run: scripts/ci-run.sh "Hangman" npm run test:hangman
-      - name: Higher / Lower
-        if: success() || failure()
-        run: scripts/ci-run.sh "Higher / Lower" npm run test:higher-lower
 
   build:
     runs-on: ubuntu-latest

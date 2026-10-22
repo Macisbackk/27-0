@@ -7,15 +7,11 @@ import { PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playUiClick } from "@/lib/sound";
 import { getLocalDateKey } from "@/lib/mini-games/date";
-import {
-  HANGMAN_WIN_REWARD,
-  HIGHER_LOWER_FIVE_REWARD,
-  WORDLE_WIN_REWARD,
-} from "@/lib/mini-games/rewards";
+import { WORDLE_WIN_REWARD } from "@/lib/mini-games/rewards";
 import { CLUB_FUNDS_CHANGED_EVENT, getPaidRunIds } from "@/lib/storage/club-funds";
-import { formatClubFunds, formatClubFundsExact } from "@/lib/club-funds";
+import { formatClubFunds } from "@/lib/club-funds";
 
-type GameId = "quiz" | "wordle" | "hangman" | "higher-lower";
+type GameId = "quiz" | "wordle";
 
 const GAMES: {
   id: GameId;
@@ -44,24 +40,6 @@ const GAMES: {
     glyph: "W",
     accent: "from-emerald-400/25 to-emerald-500/5 text-emerald-300 border-emerald-400/40",
   },
-  {
-    id: "hangman",
-    href: "/mini-games/hangman",
-    title: "Rugby League Hangman",
-    blurb: "A daily player name. Eight lives.",
-    reward: `${formatClubFunds(HANGMAN_WIN_REWARD)} per daily puzzle`,
-    glyph: "A_",
-    accent: "from-sky-400/25 to-sky-500/5 text-sky-300 border-sky-400/40",
-  },
-  {
-    id: "higher-lower",
-    href: "/mini-games/higher-lower",
-    title: "Higher or Lower",
-    blurb: "Call five player ratings in a row.",
-    reward: `${formatClubFundsExact(HIGHER_LOWER_FIVE_REWARD)} a day`,
-    glyph: "↕",
-    accent: "from-rose-400/25 to-rose-500/5 text-rose-300 border-rose-400/40",
-  },
 ];
 
 /** Which daily rewards are already banked today (client only). */
@@ -73,8 +51,6 @@ function useBankedToday(): Partial<Record<GameId, boolean>> {
       const ids = getPaidRunIds();
       setBanked({
         wordle: ids.includes(`wordle_win:${today}`),
-        "higher-lower": ids.includes(`hol_five:${today}`),
-        hangman: ids.some((id) => id.startsWith(`hangman_win:${today}`)),
       });
     };
     read();
@@ -90,8 +66,8 @@ export function MiniGamesHub() {
     <StandardPageShell>
       <div className={`${PAGE.section} mini-game-arena mx-auto flex w-full max-w-xl flex-col text-center`}>
         <p className={TYPO.sectionLabel}>Play</p>
-        <h1 className={`mt-1.5 ${TYPO.pageTitle}`}>Mini Games</h1>
-        <p className="mt-2 text-sm text-gray-400">Quick games that pay Club Funds. Rewards reset at midnight UK time.</p>
+        <h1 className={`mt-1.5 ${TYPO.pageTitle}`}>Puzzles</h1>
+        <p className="mt-2 text-sm text-gray-400">Quick rugby league puzzles that pay Club Funds. Rewards reset at midnight UK time.</p>
 
         <ul className="mt-5 grid w-full gap-3 sm:grid-cols-2">
           {GAMES.map((game) => {

@@ -88,10 +88,14 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
 
 type QuickLeaderboardMode = "super-league" | "trophy-cabinet" | "daily" | "quiz";
 
-export function LeaderboardTable() {
+/**
+ * `mode` makes the board controlled by the page's top-level tabs (Classic / Daily / Manager);
+ * its own mode tabs are then hidden.
+ */
+export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } = {}) {
   const { isLoggedIn, loading: authLoading } = useAuth();
   const [leaderboardMode, setLeaderboardMode] =
-    useState<QuickLeaderboardMode>("super-league");
+    useState<QuickLeaderboardMode>(mode ?? "super-league");
   const [tracker, setTracker] = useState<LeaderboardTrackerType>("best_record");
   const [miniGamesCategory, setMiniGamesCategory] =
     useState<MiniGameWinsKind>("wordle");
@@ -158,6 +162,11 @@ export function LeaderboardTable() {
       setTracker(getDefaultTrackerForDbMode(mode));
     }
   };
+
+  useEffect(() => {
+    if (mode && mode !== leaderboardMode) handleQuickModeChange(mode);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
 
   const isSuperLeagueMode = leaderboardMode === "super-league";
   const showCupVariantToggle = isSuperLeagueMode || isTrophyCabinetMode;
@@ -309,6 +318,7 @@ export function LeaderboardTable() {
 
   return (
     <div>
+      {mode ? null : (
       <nav className="mb-5" aria-label="Leaderboard modes">
         <LeaderboardTabBar
           tier="mode"
@@ -322,6 +332,7 @@ export function LeaderboardTable() {
           ariaLabel="Leaderboard modes"
         />
       </nav>
+      )}
 
       {showCupVariantToggle && (
         <div className="mb-5">

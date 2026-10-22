@@ -278,7 +278,7 @@ export function SettingsPanel() {
             </GameButton>
           </div>
         </Row>
-        <LinkRow href="/stats" label="Career stats" hint="Everything you've done in Classic." />
+        <LinkRow href="/profile" label="Career stats" hint="Your Classic record, in Coach Profile." />
       </Group>
 
       <Group title="Help & feedback">

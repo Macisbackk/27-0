@@ -18,6 +18,14 @@ const nextConfig: NextConfig = {
         trailingSlash: true,
       }
     : {
+        // Retired / merged pages keep working for old links and bookmarks.
+        async redirects() {
+          return [
+            { source: "/mini-games/hangman", destination: "/mini-games", permanent: false },
+            { source: "/mini-games/higher-lower", destination: "/mini-games", permanent: false },
+            { source: "/stats", destination: "/profile", permanent: false },
+          ];
+        },
         // Baseline security headers (not supported by static export, so web only).
         async headers() {
           return [

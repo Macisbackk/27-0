@@ -3,11 +3,7 @@ import type { GameMode } from "./types";
 import { ACHIEVEMENT_DEFINITIONS } from "./achievements/achievementDefinitions";
 import { getDailyChallengeMinimumBonuses } from "./daily-challenge";
 import { SHOW_DAILY_CHALLENGE_UI } from "./feature-flags";
-import {
-  HANGMAN_WIN_REWARD,
-  HIGHER_LOWER_FIVE_REWARD,
-  WORDLE_WIN_REWARD,
-} from "./mini-games/reward-amounts";
+import { WORDLE_WIN_REWARD } from "./mini-games/reward-amounts";
 import { QUIZ_PRIZE_LADDER } from "./quiz/prizes";
 
 export const CLUB_FUNDS_REWARDS = {
@@ -256,14 +252,7 @@ const CLUB_FUNDS_INFO_LINES_SOURCE: ClubFundsInfoLine[] = [
       ]
     : []),
   { label: "Super League Millionaire (15/15)", amount: QUIZ_TOP_PRIZE },
-  {
-    label: "Team Challenge: once per club per day",
-    amount: QUIZ_TOP_PRIZE,
-    valueText: `up to ${formatClubFundsExact(QUIZ_TOP_PRIZE)}`,
-  },
-  { label: "Wordle Win", amount: WORDLE_WIN_REWARD },
-  { label: "Hangman Win (per daily puzzle)", amount: HANGMAN_WIN_REWARD },
-  { label: "Higher or Lower (5 in a row)", amount: HIGHER_LOWER_FIVE_REWARD },
+  { label: "Wordle (once a day)", amount: WORDLE_WIN_REWARD },
   {
     label: "Achievements",
     amount: ACHIEVEMENT_REWARD_MAX,

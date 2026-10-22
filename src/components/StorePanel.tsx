@@ -33,14 +33,9 @@ import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
 import { GameTabs } from "./ui/GameTabs";
-import { StoreBoostsPanel } from "./StoreBoostsPanel";
 
 type StoreTab = "themes" | "boosts";
 
-const STORE_TABS = [
-  { id: "themes" as const, label: "Themes" },
-  { id: "boosts" as const, label: "Boosts" },
-];
 
 /** Mini app preview in the theme's colours: header bar, accent text and a primary button. */
 function ThemePalette({ theme }: { theme: UiThemeDefinition }) {
@@ -74,7 +69,7 @@ function ThemePalette({ theme }: { theme: UiThemeDefinition }) {
 }
 
 export function StorePanel() {
-  const [tab, setTab] = useState<StoreTab>("themes");
+  const tab: StoreTab = "themes";
   const [balance, setBalance] = useState(0);
   const [selectedId, setSelectedId] = useState("default");
   const [unlocked, setUnlocked] = useState<string[]>(["default"]);
@@ -144,21 +139,8 @@ export function StorePanel() {
 
   return (
     <div>
-      <GameTabs
-        tabs={STORE_TABS}
-        active={tab}
-        onChange={(next) => {
-          playUiClick();
-          setTab(next);
-          setPurchaseError(null);
-        }}
-        ariaLabel="Store sections"
-        className="mb-6"
-      />
-
-      {tab === "boosts" ? (
-        <StoreBoostsPanel />
-      ) : (
+      {/* Boosts were retired (they undermined fair leaderboards); themes are the Store now. */}
+      {tab !== "themes" ? null : (
         <>
       <div
         className={`${CARD.inset} flex flex-wrap items-center justify-between gap-3 ${SPACING.cardPaddingSm}`}
