@@ -36,7 +36,7 @@ export function trimPaidRunIds(ids: string[], now: Date = new Date()): string[] 
   const keep: string[] = [];
   const oneOff: string[] = [];
   for (const id of new Set(ids)) {
-    if (id === CLUB_FUNDS_STARTER_RUN_ID || id.startsWith("achievement-") || id.startsWith("theme-")) {
+    if (id === CLUB_FUNDS_STARTER_RUN_ID || id.startsWith("achievement-") || id.startsWith("theme-") || id.startsWith("cosmetic-")) {
       keep.push(id);
       continue;
     }
@@ -186,7 +186,7 @@ export function mergeClubFundsFromCloud(cloud: ClubFundsState | null): void {
   );
 
   const isStorePurchaseId = (id: string) =>
-    id.startsWith("theme-") || id.startsWith("boost-");
+    id.startsWith("theme-") || id.startsWith("boost-") || id.startsWith("cosmetic-");
   const localHasUnsyncedStoreSpend = localExclusiveIds.some(isStorePurchaseId);
   const cloudHasStoreSpend = cloudExclusiveIds.some(isStorePurchaseId);
 

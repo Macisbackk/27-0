@@ -2698,6 +2698,7 @@ export function GameBoard({
                 filledCount={filledCount}
                 totalSlots={TOTAL_SLOTS}
                 {...TEAM_SHEET_RUGBY_PITCH_PROPS}
+                hardMode={difficulty === "HARD"}
                 selectedSlot={
                   phase === "pitch" && !isDraftMode
                     ? selectedSlotIndex ?? undefined

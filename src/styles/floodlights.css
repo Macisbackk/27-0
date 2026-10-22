@@ -686,3 +686,46 @@ button.game-button--era,
     transition: none;
   }
 }
+
+/* ── Store: player-card frames (Players page) ─────────────────────────── */
+html[data-card-frame="gold"] .showcase-player-card {
+  border: 2px solid #f5c542 !important;
+  box-shadow: 0 0 0 1px #8a6a12 inset, 0 8px 22px rgba(245, 197, 66, 0.18) !important;
+}
+html[data-card-frame="foil"] .showcase-player-card {
+  position: relative;
+  border: 2px solid transparent !important;
+  background:
+    linear-gradient(var(--fl-surface), var(--fl-surface)) padding-box,
+    linear-gradient(120deg, #7dd3fc, #c4b5fd, #f9a8d4, #fde68a, #86efac, #7dd3fc) border-box !important;
+  background-size: 100% 100%, 300% 300% !important;
+  animation: fl-foil 6s linear infinite;
+}
+html[data-card-frame="foil"] .showcase-player-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.09) 45%, transparent 60%);
+  background-size: 250% 100%;
+  animation: fl-foil-sheen 5s ease-in-out infinite;
+}
+@keyframes fl-foil {
+  to { background-position: 0 0, 300% 0; }
+}
+@keyframes fl-foil-sheen {
+  0% { background-position: 150% 0; }
+  100% { background-position: -100% 0; }
+}
+html[data-card-frame="programme"] .showcase-player-card {
+  border: 2px solid #e8dcc0 !important;
+  background: #1d1a14 !important;
+  box-shadow: 0 0 0 3px #1d1a14, 0 0 0 4px #b8a77f !important;
+}
+html[data-card-frame="programme"] .showcase-player-card * {
+  font-family: Georgia, "Times New Roman", serif;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-card-frame="foil"] .showcase-player-card,
+  html[data-card-frame="foil"] .showcase-player-card::after { animation: none; }
+}

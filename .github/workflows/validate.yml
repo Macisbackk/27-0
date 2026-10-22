@@ -55,7 +55,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # The UI audit alone takes ~13 min; slow runners pushed the whole job past 30.
+    timeout-minutes: 50
     permissions:
       contents: write
     steps:

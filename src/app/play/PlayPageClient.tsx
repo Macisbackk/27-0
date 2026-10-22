@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { BALL_KNOWER_ID } from "@/lib/cosmetics";
+import { ownsCosmetic } from "@/lib/storage/cosmetics-store";
 import { useRouter, useSearchParams } from "next/navigation";
 import { GameStarter } from "@/components/GameStarter";
 import {
@@ -26,6 +28,18 @@ export function PlayPageClient() {
   const draft = searchParams.get("draft");
   const fantasy = searchParams.get("fantasy");
   const daily = searchParams.get("daily");
+  // Ball Knower (Store): Classic with every rating hidden. null = still checking ownership.
+  const wantsBallKnower = searchParams.get("bk") === "1" && daily !== "1";
+  const [ballKnower, setBallKnower] = useState<boolean | null>(wantsBallKnower ? null : false);
+  useEffect(() => {
+    if (!wantsBallKnower) {
+      setBallKnower(false);
+      return;
+    }
+    const owned = ownsCosmetic(BALL_KNOWER_ID);
+    setBallKnower(owned);
+    if (!owned) router.replace("/store");
+  }, [wantsBallKnower, router]);
 
   const wantsSuperSamHallas = superSamHallas === "1";
   const wantsJoeMellor = joeMellor === "1" && !wantsSuperSamHallas;
@@ -75,10 +89,14 @@ export function PlayPageClient() {
   const wantsNormalEra = dailyScenario
     ? dailyScenario.eraMode
     : isNormalEraMode({ era, cup });
-  const difficulty: GameDifficulty = "NORMAL";
+  const difficulty: GameDifficulty = ballKnower ? "HARD" : "NORMAL";
   const mode: GameMode = "CLASSIC";
 
-  const title = wantsSuperSamHallas
+  if (ballKnower === null) return <p className="p-6 text-center text-pitch-400">Loading…</p>;
+
+  const title = ballKnower
+    ? `Ball Knower · ${wantsNormalEra ? "Era" : "Current"}`
+    : wantsSuperSamHallas
     ? "Super Sam Hallas Mode"
     : wantsJoeMellor
       ? "Joe Mellor GOAT Mode"
@@ -88,6 +106,7 @@ export function PlayPageClient() {
 
   return (
     <GameStarter
+      key={ballKnower ? "bk" : "normal"}
       mode={mode}
       title={title}
       difficulty={difficulty}

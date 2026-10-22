@@ -5,7 +5,7 @@ import { getClubColors } from "@/lib/clubs";
 import { formatPitchSlotPlayerName } from "@/lib/players/display-name";
 import { getPlayerColorClub } from "@/lib/players/run-club";
 import { getEffectivePeakRating } from "@/lib/squad-analysis";
-import { getClubKit } from "@/lib/club-kits";
+import { getClubKit, type ClubKit } from "@/lib/club-kits";
 import { ClubShirt } from "./ClubShirt";
 
 /** Shared footprint for empty and filled pitch slots — scales with pitch width. */
@@ -27,6 +27,8 @@ interface PitchSlotCardProps {
   compact?: boolean;
   /** Show full player name (season review / team sheet). */
   fullPlayerNames?: boolean;
+  /** Store kit designer: every shirt in your own kit instead of club kits. */
+  kitOverride?: ClubKit | null;
 }
 
 /** Compact tactical-board marker — matches empty position box footprint. */
@@ -37,6 +39,7 @@ export function PitchSlotCard({
   className = "",
   compact = false,
   fullPlayerNames = false,
+  kitOverride = null,
 }: PitchSlotCardProps) {
   const player = slot.player!;
   const colorClub = getPlayerColorClub(player, clubColorOverride);
@@ -69,7 +72,7 @@ export function PitchSlotCard({
         title={`${positionLabel}: ${player.name}`}
         aria-label={`${positionLabel}: ${player.name}${hardMode ? "" : `, rated ${ratingLabel}`}`}
       >
-        <ClubShirt kit={getClubKit(colorClub)} label={ratingLabel} size={46} className="drop-shadow-[0_3px_6px_rgba(0,0,0,0.45)]" />
+        <ClubShirt kit={kitOverride ?? getClubKit(colorClub)} label={hardMode ? "?" : ratingLabel} size={46} className="drop-shadow-[0_3px_6px_rgba(0,0,0,0.45)]" />
         <span
           className={`mt-0.5 max-w-full whitespace-nowrap rounded-md bg-pitch-950/95 px-1.5 py-[3px] font-bold leading-none text-white ${nameSize}`}
         >

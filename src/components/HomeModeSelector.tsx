@@ -19,6 +19,8 @@ import { DIVISION_LABEL } from "@/lib/career/clubs";
 import { getAllStats } from "@/lib/storage/stats";
 import { getPaidRunIds } from "@/lib/storage/club-funds";
 import { getLocalDateKey } from "@/lib/mini-games/date";
+import { BALL_KNOWER_ID } from "@/lib/cosmetics";
+import { useCosmetics } from "@/lib/storage/cosmetics-store";
 
 /** Everything on the home hub that depends on this device (filled in after mount). */
 interface HubState {
@@ -109,6 +111,8 @@ export function HomeModeSelector() {
     }
   }, []);
 
+  const cosmetics = useCosmetics();
+  const ownsBallKnower = cosmetics.owned.includes(BALL_KNOWER_ID);
   const daily = hub?.daily ?? null;
   const dailyStatus = !daily ? null : daily.done ? "Done today" : daily.used ? "Attempt used · practice only" : "1 attempt left today";
 
@@ -195,6 +199,18 @@ export function HomeModeSelector() {
           <TilePill accent={Boolean(hub?.eraBest)}>{hub?.eraBest ?? "Chase 27-0"}</TilePill>
         </Tile>
       </div>
+
+      {ownsBallKnower ? (
+        <Tile href="/play?bk=1">
+          <TileIcon tone="text-amber-300">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01" />
+          </TileIcon>
+          <span className="mt-2.5 block text-[17px] font-bold">Ball Knower</span>
+          <span className="mt-0.5 block text-[13px] text-[color:var(--fl-muted)]">Classic with every rating hidden.</span>
+          <TilePill accent>Prove it</TilePill>
+        </Tile>
+      ) : null}
 
       <Tile href="/mini-games">
         <TileIcon tone="text-amber-300">

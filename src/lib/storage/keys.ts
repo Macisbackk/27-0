@@ -20,6 +20,7 @@ export const STORAGE_KEYS = {
   /** One-time local reset marker for squad value leaderboard wipe. */
   squadValueLeaderboardReset: "27-0-squad-value-lb-reset-v1",
   uiThemeStore: "27-0-ui-theme-store",
+  cosmeticsStore: "27-0-cosmetics-store",
   /** Cached CSS vars for pre-hydration theme bootstrap */
   uiThemeCssCache: "27-0-ui-theme-css-cache",
   /** Account Store boost inventory */

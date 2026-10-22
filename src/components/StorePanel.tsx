@@ -32,9 +32,17 @@ import {
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
-import { GameTabs } from "./ui/GameTabs";
+import { FramesStore, KitAndPitchStore, ModesStore, TitlesStore } from "./StoreCosmetics";
 
-type StoreTab = "themes" | "boosts";
+type StoreTab = "themes" | "kit" | "titles" | "frames" | "modes";
+
+const STORE_TABS: { id: StoreTab; label: string }[] = [
+  { id: "themes", label: "Themes" },
+  { id: "kit", label: "Kit & pitch" },
+  { id: "titles", label: "Titles" },
+  { id: "frames", label: "Card frames" },
+  { id: "modes", label: "Modes" },
+];
 
 
 /** Mini app preview in the theme's colours: header bar, accent text and a primary button. */
@@ -69,7 +77,7 @@ function ThemePalette({ theme }: { theme: UiThemeDefinition }) {
 }
 
 export function StorePanel() {
-  const tab: StoreTab = "themes";
+  const [tab, setTab] = useState<StoreTab>("themes");
   const [balance, setBalance] = useState(0);
   const [selectedId, setSelectedId] = useState("default");
   const [unlocked, setUnlocked] = useState<string[]>(["default"]);
@@ -139,7 +147,34 @@ export function StorePanel() {
 
   return (
     <div>
-      {/* Boosts were retired (they undermined fair leaderboards); themes are the Store now. */}
+      {tab !== "themes" ? (
+        <p className="mb-3 text-center text-sm text-[color:var(--fl-muted)]">
+          Club Funds <span className="font-bold text-theme-primary">{formatClubFunds(balance)}</span>
+        </p>
+      ) : null}
+      <div role="tablist" aria-label="Store sections" className="mb-4 flex flex-wrap justify-center gap-2">
+        {STORE_TABS.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            role="tab"
+            aria-selected={tab === t.id}
+            onClick={() => {
+              playUiClick();
+              setTab(t.id);
+            }}
+            className={`min-h-[44px] rounded-full px-4 text-sm font-bold transition ${
+              tab === t.id ? "bg-theme-primary text-[color:var(--theme-text-on-primary)]" : "bg-pitch-900 text-white hover:bg-pitch-800"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      {tab === "kit" ? <KitAndPitchStore balance={balance} /> : null}
+      {tab === "titles" ? <TitlesStore balance={balance} /> : null}
+      {tab === "frames" ? <FramesStore balance={balance} /> : null}
+      {tab === "modes" ? <ModesStore balance={balance} /> : null}
       {tab !== "themes" ? null : (
         <>
       <div

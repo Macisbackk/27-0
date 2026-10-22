@@ -32,6 +32,7 @@ import { loadCloudClubFunds } from "./storage/club-funds-cloud";
 import { mergeClubFundsFromCloud, syncClubFundsLeaderboardOnLoad } from "./storage/club-funds";
 import { syncTrophyCabinetLeaderboardOnLoad } from "./storage/trophy-cabinet-leaderboard";
 import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
+import { mergeCosmeticsFromCloud } from "./storage/cosmetics-store";
 import { refreshBoostInventoryFromCloud } from "./boosts/boostInventory";
 import { refreshAchievementsFromCloud } from "./achievements/achievementStorage";
 import { claimDeviceForAccount } from "./storage/account-owner";
@@ -80,6 +81,7 @@ async function hydrateClubFundsFromCloud(): Promise<void> {
 
 async function hydrateUiThemeFromCloud(): Promise<void> {
   await mergeUiThemeStoreFromCloud();
+  await mergeCosmeticsFromCloud();
 }
 
 async function hydrateBoostInventoryFromCloud(): Promise<void> {
