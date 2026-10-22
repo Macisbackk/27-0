@@ -47,6 +47,8 @@ async function startCareer(page, division, index = 0) {
   const clubs = page.getByRole("list", { name: "Clubs" }).getByRole("button");
   await clubs.nth(index).click();
   await page.getByRole("button", { name: /Take charge of/ }).click();
+  // Chaos runs skip the first-save walkthrough.
+  await page.getByRole("dialog", { name: "Manager Mode walkthrough" }).getByRole("button", { name: "Skip" }).click({ timeout }).catch(() => {});
   await page.getByRole("button", { name: /Play match|Continue/ }).first().waitFor({ timeout });
 }
 
@@ -72,7 +74,7 @@ try {
   // 2) Rapid taps on Play.
   await startCareer(page, "super-league", 13);
   await noSidewaysScroll(page, "hub @320");
-  const play = page.getByRole("button", { name: /^(Quick sim|Continue)$/ }).first();
+  const play = page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window)$/ }).first();
   for (let i = 0; i < 5; i++) await play.click({ force: true, noWaitAfter: true }).catch(() => {});
   await page.waitForTimeout(800);
   await page.getByText(/Last result/).first().waitFor({ timeout });
@@ -91,7 +93,7 @@ try {
   await pageB.goto(`${BASE}/manager`, { waitUntil: "networkidle" });
   await pageB.getByRole("button", { name: /Play match|Continue/ }).first().waitFor({ timeout });
   const headerB1 = await pageB.locator("header", { hasText: /Super League|Championship/ }).first().innerText();
-  await page.getByRole("button", { name: /^(Quick sim|Continue)$/ }).first().click();
+  await page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window)$/ }).first().click();
   await page.waitForTimeout(600);
   await pageB.waitForTimeout(600);
   const headerB2 = await pageB.locator("header", { hasText: /Super League|Championship/ }).first().innerText();
@@ -107,7 +109,7 @@ try {
   let guard = 0;
   while (guard++ < 80) {
     if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
-    const next = page.getByRole("button", { name: /^(Quick sim|Continue)$/ }).first();
+    const next = page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window)$/ }).first();
     if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
     await page.waitForTimeout(120);
   }

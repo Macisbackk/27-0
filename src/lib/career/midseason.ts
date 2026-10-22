@@ -39,6 +39,22 @@ export function isDeadlineDay(state: CareerState): boolean {
   return !!b && state.matchdayIndex === b.deadline;
 }
 
+/** Deadline Day stops the clock until the manager says they're done. */
+export function deadlineDecisionPending(state: CareerState): boolean {
+  return isDeadlineDay(state) && state.deadlineClosedYear !== state.year;
+}
+
+/** The manager shuts the window: their business is done and Round 16 can kick off. */
+export function closeDeadlineDay(state: CareerState): CareerState {
+  if (!deadlineDecisionPending(state)) return state;
+  const s: CareerState = structuredClone(state);
+  s.deadlineClosedYear = s.year;
+  const mine = seasonDeals(s).filter((d) => d.user && d.deadlineDay).length;
+  addNews(s, mine ? `Deadline Day done: ${mine} deal${mine === 1 ? "" : "s"} for you. The window is shut.` : "You stood firm on Deadline Day. The window is shut.");
+  s.updatedAt = Date.now();
+  return s;
+}
+
 /** League rounds left before the window shuts (0 on Deadline Day). */
 export function roundsLeftInWindow(state: CareerState): number {
   const b = windowBounds(state);

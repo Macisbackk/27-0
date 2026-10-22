@@ -5,6 +5,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import {
   WINDOW_CLOSES_BEFORE_ROUND,
   formatMoney,
+  deadlineDecisionPending,
   isDeadlineDay,
   isWindowOpen,
   roundsLeftInWindow,
@@ -61,10 +62,11 @@ function DeadlineTicker({ deals }: { deals: TransferDeal[] }) {
 }
 
 export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void }) {
-  const { state } = useCareer();
+  const { state, closeDeadline } = useCareer();
   const s = state!;
   if (!isWindowOpen(s)) return null;
   const deadline = isDeadlineDay(s);
+  const pending = deadlineDecisionPending(s);
   const deals = seasonDeals(s);
   const left = roundsLeftInWindow(s);
 
@@ -75,16 +77,36 @@ export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void 
         <p className="fl-number text-[30px] leading-none text-amber-300">DEADLINE DAY</p>
         <p className="mt-1 text-sm text-white">Last chance to do business. The window shuts when Round {WINDOW_CLOSES_BEFORE_ROUND} kicks off.</p>
         <DeadlineTicker deals={dd} />
-        <GameButton
-          size="md"
-          className="mt-3"
-          onClick={() => {
-            playUiClick();
-            onOpenMarket();
-          }}
-        >
-          Make a late signing
-        </GameButton>
+        {pending ? (
+          <>
+            <p className="mt-3 text-sm font-semibold text-amber-200">
+              The season is paused until you&rsquo;re done. Sign, sell or answer bids, then shut the window.
+            </p>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <GameButton
+                size="md"
+                variant="secondary"
+                onClick={() => {
+                  playUiClick();
+                  onOpenMarket();
+                }}
+              >
+                Late signing
+              </GameButton>
+              <GameButton
+                size="md"
+                onClick={() => {
+                  playUiClick();
+                  closeDeadline();
+                }}
+              >
+                Shut the window
+              </GameButton>
+            </div>
+          </>
+        ) : (
+          <p className="mt-3 text-sm font-semibold text-amber-200">Window shut. Round {WINDOW_CLOSES_BEFORE_ROUND} is next.</p>
+        )}
       </section>
     );
   }

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { CoachNameplate } from "@/lib/coach-flair";
+import { useState, type ReactNode } from "react";
 import { ClubShirt } from "@/components/ClubShirt";
 import { GameButton } from "@/components/ui/GameButton";
 import { formatClubFunds } from "@/lib/club-funds";
@@ -232,17 +233,11 @@ export function TitlesStore({ balance }: { balance: number }) {
   );
 }
 
-const FRAME_PREVIEW: Record<string, CSSProperties> = {
-  "frame-gold": { border: "2px solid #f5c542", boxShadow: "0 0 0 1px #8a6a12 inset" },
-  "frame-foil": { border: "2px solid transparent", background: "linear-gradient(#16211c,#16211c) padding-box, linear-gradient(120deg,#7dd3fc,#c4b5fd,#f9a8d4,#fde68a,#86efac) border-box" },
-  "frame-programme": { border: "2px solid #e8dcc0", background: "#1d1a14", fontFamily: "Georgia, serif" },
-};
-
 export function FramesStore({ balance }: { balance: number }) {
   const c = useCosmetics();
   const { message, buy } = useBuy(balance);
   return (
-    <Section title="Card frames" intro="A frame on every player card on the Players page.">
+    <Section title="Leaderboard frames" intro="Frame your coach name on every leaderboard. Everyone sees it.">
       {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
       <ul className="grid grid-cols-3 gap-2.5">
         {items("frame").map((item) => {
@@ -250,9 +245,9 @@ export function FramesStore({ balance }: { balance: number }) {
           const active = c.equipped.frame === item.id;
           return (
             <li key={item.id} className="flex flex-col items-center gap-2 text-center">
-              <div className="flex h-24 w-full flex-col items-center justify-center rounded-[12px] bg-pitch-800" style={FRAME_PREVIEW[item.id]}>
-                <span className="fl-number text-2xl text-white">88</span>
-                <span className="text-[11px] font-semibold text-[color:var(--fl-muted)]">Player</span>
+              <div className="flex h-24 w-full flex-col items-center justify-center gap-1.5 rounded-[12px] bg-pitch-800 px-1.5">
+                <span className="text-[10px] font-semibold text-[color:var(--fl-muted)]">1st</span>
+                <CoachNameplate name="You" frame={item.id} className="text-xs font-bold text-white" />
               </div>
               <p className="text-xs font-bold text-white">{item.name}</p>
               {owned ? (

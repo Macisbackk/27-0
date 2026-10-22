@@ -7,6 +7,8 @@ export interface TeamSheet {
   /** 13 player ids in shirt order. */
   lineup: string[];
   tactic: Tactic;
+  /** Small temporary rating bonus (pre-season match sharpness). */
+  boost?: number;
 }
 
 const TRY_WEIGHT: Record<Pos, number> = {
@@ -26,7 +28,7 @@ export function sheetStrength(sheet: TeamSheet, players: Record<string, CareerPl
     total += p ? effectiveRating(p, slot) : 55;
     count++;
   });
-  const rating = total / count;
+  const rating = total / count + (sheet.boost ?? 0);
   const attackMod = sheet.tactic === "attack" ? 1.0 : sheet.tactic === "defend" ? -0.8 : 0;
   const defenceMod = sheet.tactic === "defend" ? 1.0 : sheet.tactic === "attack" ? -0.8 : 0;
   return { rating, attack: rating + attackMod, defence: rating + defenceMod };

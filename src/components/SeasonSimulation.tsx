@@ -11,7 +11,7 @@ import {
   playSeasonComplete,
   playWinlessSeason,
 } from "@/lib/sound";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import type { SeasonResult } from "@/lib/game/season-simulation";
 import {
   DREAM_TEAM_NAME,
@@ -152,39 +152,37 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
             </div>
           </div>
 
-          <AnimatePresence>
-            {currentFixture && phase === "simulating" && (
-              <motion.div
-                key={gameIndex}
-                className="mt-4"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-              >
-                <p className="text-xs text-[color:var(--fl-muted)]">
-                  Round {currentFixture.round}
-                </p>
-                <p className="mt-1 text-sm font-bold text-white sm:text-base">
-                  {formatFixtureScore(currentFixture)}
-                </p>
-                <p
-                  className={`mt-1 text-xs font-bold ${
-                    currentFixture.result === "W"
-                      ? "text-theme-primary"
+          {/* One live result line (no exit animations: those stacked up as invisible blocks
+              and made the card keep growing). Fixed height so nothing below jumps. */}
+          {phase === "simulating" ? (
+            <div className="mt-4 min-h-[4.25rem]" aria-live="polite">
+              {currentFixture ? (
+                <div key={gameIndex} className="fl-rise">
+                  <p className="text-xs text-[color:var(--fl-muted)]">
+                    Round {currentFixture.round}
+                  </p>
+                  <p className="mt-1 text-sm font-bold text-white sm:text-base">
+                    {formatFixtureScore(currentFixture)}
+                  </p>
+                  <p
+                    className={`mt-1 text-xs font-bold ${
+                      currentFixture.result === "W"
+                        ? "text-theme-primary"
+                        : currentFixture.result === "D"
+                          ? "text-gray-300"
+                          : "text-red-400"
+                    }`}
+                  >
+                    {currentFixture.result === "W"
+                      ? "Win"
                       : currentFixture.result === "D"
-                        ? "text-gray-300"
-                        : "text-red-400"
-                  }`}
-                >
-                  {currentFixture.result === "W"
-                    ? "Win"
-                    : currentFixture.result === "D"
-                      ? "Draw"
-                      : "Loss"}
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                        ? "Draw"
+                        : "Loss"}
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
 
           {phase === "complete" && (
             <motion.div

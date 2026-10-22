@@ -20,6 +20,13 @@ import {
   clubsIn,
   SQUAD_MIN,
   SQUAD_MAX,
+  closeDeadlineDay,
+  deadlineDecisionPending,
+  windowBounds,
+  friendlyOptions,
+  playFriendlies,
+  preseasonOpen,
+  sheetFor,
   type CareerState,
 } from "../src/lib/career";
 
@@ -51,11 +58,54 @@ function invariants(s: CareerState, label: string) {
   check(s.lineup.length === 13 && new Set(s.lineup).size === 13 && s.lineup.every((id) => me.squad.includes(id)), `${label}: user lineup valid`);
 }
 
+// Deadline Day waits for the manager; the tests always shut the window and carry on.
+const simAll = (start: CareerState): CareerState => {
+  let s = start;
+  for (let g = 0; s.phase === "season" && g < 5; g++) s = simRestOfSeason(closeDeadlineDay(s));
+  return s;
+};
+
 // --- Determinism: same seed, same season.
 {
-  const a = simRestOfSeason(createCareer({ clubId: "leeds-rhinos", managerName: "T", seed: "fixed-seed" }));
-  const b = simRestOfSeason(createCareer({ clubId: "leeds-rhinos", managerName: "T", seed: "fixed-seed" }));
+  const a = simAll(createCareer({ clubId: "leeds-rhinos", managerName: "T", seed: "fixed-seed" }));
+  const b = simAll(createCareer({ clubId: "leeds-rhinos", managerName: "T", seed: "fixed-seed" }));
   check(JSON.stringify(a.tables) === JSON.stringify(b.tables), "same seed → identical season");
+}
+
+// --- Deadline Day stops the clock until the manager shuts the window.
+{
+  let s = createCareer({ clubId: "wigan-warriors", managerName: "T", seed: "deadline" });
+  s = simRestOfSeason(s);
+  const b = windowBounds(s)!;
+  check(s.phase === "season" && s.matchdayIndex === b.deadline, "a full-season sim stops on Deadline Day");
+  check(deadlineDecisionPending(s), "Deadline Day is waiting for the manager");
+  check(playMatchday(s).matchdayIndex === s.matchdayIndex, "nothing kicks off while Deadline Day is open");
+  check(simToNextBigGame(s).matchdayIndex === s.matchdayIndex, "big-game sim also waits on Deadline Day");
+  s = closeDeadlineDay(s);
+  check(!deadlineDecisionPending(s), "shutting the window clears Deadline Day");
+  s = simRestOfSeason(s);
+  check(s.phase === "review", "after the window shuts the season plays out");
+}
+
+// --- Pre-season friendlies.
+{
+  const s0 = createCareer({ clubId: "leeds-rhinos", managerName: "T", seed: "friendlies" });
+  check(preseasonOpen(s0), "pre-season is open before Round 1");
+  const opts = friendlyOptions(s0);
+  check(opts.length >= 4 && opts.length <= 6, `friendly options offered (${opts.length})`);
+  check(new Set(opts.map((o) => o.opponentId)).size === opts.length && !opts.some((o) => o.opponentId === s0.userClubId), "friendly opponents are distinct and not you");
+  check(JSON.stringify(friendlyOptions(s0)) === JSON.stringify(opts), "friendly options are stable for a save");
+  const s1 = playFriendlies(s0, opts.slice(0, 3));
+  check(s1.preseason?.results.length === 2, "at most two friendlies are played");
+  check(s1.budget === s0.budget + opts[0]!.money + opts[1]!.money, "friendlies bank gate money / fees");
+  check(!preseasonOpen(s1), "pre-season closes after the friendlies");
+  check(sheetFor(s1, s1.userClubId).boost === 1, "two friendlies = +1 sharpness in the opening rounds");
+  check(sheetFor(s0, s0.userClubId).boost === 0, "no friendlies = no sharpness");
+  const skipped = playMatchday(s0);
+  check(skipped.preseason?.done === true && !preseasonOpen(skipped), "kicking off Round 1 skips pre-season");
+  let later = s1;
+  for (let i = 0; i < 3; i++) later = playMatchday(later);
+  check(sheetFor(later, later.userClubId).boost === 0, "sharpness wears off after three matchdays");
 }
 
 // --- Calibration over many seasons.
@@ -78,12 +128,12 @@ for (const [i, clubId] of ["salford-rlfc", "wigan-warriors", "north-wales-crusad
     // Mix of play styles: step-by-step, big-game sims, and full sims.
     if (season % 3 === 1) {
       let guard = 0;
-      while (s.phase === "season" && guard++ < 50) s = playMatchday(s);
+      while (s.phase === "season" && guard++ < 50) s = playMatchday(closeDeadlineDay(s));
     } else if (season % 3 === 2) {
       let guard = 0;
-      while (s.phase === "season" && guard++ < 50) s = simToNextBigGame(s);
+      while (s.phase === "season" && guard++ < 50) s = simToNextBigGame(closeDeadlineDay(s));
     } else {
-      s = simRestOfSeason(s);
+      s = simAll(s);
     }
     check(s.phase === "review", `${label}: season ends in review`);
     const all = s.calendar.flatMap((m) => m.fixtures);

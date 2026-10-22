@@ -2,7 +2,7 @@
 import { buildWorld, createCareer } from "../src/lib/career/world";
 import { playMatchday, repairLineup } from "../src/lib/career/season";
 import { SQUAD_MAX, SQUAD_MIN } from "../src/lib/career/players";
-import { acceptBid, isDeadlineDay, isWindowOpen, rejectBid, seasonDeals, windowBounds } from "../src/lib/career/midseason";
+import { acceptBid, closeDeadlineDay, deadlineDecisionPending, isDeadlineDay, isWindowOpen, rejectBid, seasonDeals, windowBounds } from "../src/lib/career/midseason";
 import type { CareerState } from "../src/lib/career/types";
 
 let passed = 0;
@@ -55,7 +55,7 @@ for (const [n, choice] of choices.filter((_, i) => i % 4 === 0).slice(0, 8).entr
       }
       if (s.incomingBid) fail("bid still open after answering");
     }
-    s = playMatchday(s);
+    s = playMatchday(closeDeadlineDay(s));
     checkWorld(s, `${choice.id} md${s.matchdayIndex}`);
     if (s.lineup.length !== 13 && s.phase === "season") fail(`user lineup has ${s.lineup.length}`);
   }
@@ -83,7 +83,7 @@ ok("every club has a 13-man last team sheet at season end");
 const start = createCareer({ clubId: choices[0]!.id, managerName: "T", seed: "det" });
 const playOut = () => {
   let s = structuredClone(start);
-  for (let i = 0; i < 20; i++) s = playMatchday(s);
+  for (let i = 0; i < 20; i++) s = playMatchday(closeDeadlineDay(s));
   return JSON.stringify(seasonDeals(s));
 };
 const a = playOut();
