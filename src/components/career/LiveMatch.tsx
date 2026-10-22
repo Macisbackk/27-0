@@ -121,6 +121,11 @@ export function LiveMatch({
   // Momentum from the home side's point of view: + fills left (home), − fills right (away).
   const homeMomentum = m.userSide === "home" ? m.momentum : -m.momentum;
   const feed = [...m.events].reverse().slice(0, 7);
+  // Club colours can be near-black on this background, so the feed and momentum use you = accent, them = coral.
+  const USER = "var(--theme-primary)";
+  const OPP = "#f87171";
+  const homeColor = m.userSide === "home" ? USER : OPP;
+  const awayColor = m.userSide === "away" ? USER : OPP;
 
   return (
     <div className="flex flex-col gap-3">
@@ -155,12 +160,12 @@ export function LiveMatch({
             {homeMomentum > 0 ? (
               <div
                 className="absolute inset-y-0 right-1/2 rounded-l-full transition-[width] duration-300"
-                style={{ width: `${Math.min(50, homeMomentum * 50)}%`, background: home.primary }}
+                style={{ width: `${Math.min(50, homeMomentum * 50)}%`, background: homeColor }}
               />
             ) : (
               <div
                 className="absolute inset-y-0 left-1/2 rounded-r-full transition-[width] duration-300"
-                style={{ width: `${Math.min(50, -homeMomentum * 50)}%`, background: away.primary }}
+                style={{ width: `${Math.min(50, -homeMomentum * 50)}%`, background: awayColor }}
               />
             )}
           </div>
@@ -203,7 +208,7 @@ export function LiveMatch({
       <section aria-label="Match feed" className="rounded-[20px] bg-pitch-900 p-2">
         <ul className="flex flex-col">
           {feed.map((e, i) => (
-            <FeedRow key={`${m.events.length - i}`} event={e} homeColor={home.primary} awayColor={away.primary} fresh={i === 0} />
+            <FeedRow key={`${m.events.length - i}`} event={e} homeColor={homeColor} awayColor={awayColor} fresh={i === 0} />
           ))}
         </ul>
       </section>
@@ -248,7 +253,7 @@ function FeedRow({ event, homeColor, awayColor, fresh }: { event: LiveEvent; hom
           ? "font-semibold text-white"
           : "text-[color:var(--fl-muted)]";
   return (
-    <li className={`flex items-start gap-2.5 rounded-[12px] px-2.5 py-2 text-[13px] leading-snug ${fresh ? "bg-pitch-800" : ""}`}>
+    <li className={`flex items-start gap-2.5 rounded-[12px] px-2.5 py-2 text-left text-[13px] leading-snug ${fresh ? "bg-pitch-800" : ""}`}>
       <span className="w-7 shrink-0 text-right font-semibold tabular-nums text-[color:var(--fl-muted)]">{event.minute}&rsquo;</span>
       <span aria-hidden className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: dot }} />
       <span className={`min-w-0 flex-1 ${tone}`}>{event.text}</span>
