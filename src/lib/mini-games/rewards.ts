@@ -5,6 +5,7 @@ export {
   WORDLE_WIN_REWARD,
   HANGMAN_WIN_REWARD,
   HIGHER_LOWER_FIVE_REWARD,
+  GRID_REWARD_PER_CELL,
 } from "./reward-amounts";
 
 export function claimMiniGameReward(

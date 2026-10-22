@@ -46,6 +46,9 @@ jobs:
       - name: Wordle
         if: success() || failure()
         run: scripts/ci-run.sh "Wordle" npm run test:wordle
+      - name: Grid
+        if: success() || failure()
+        run: scripts/ci-run.sh "Grid" npm run test:grid
 
   build:
     runs-on: ubuntu-latest

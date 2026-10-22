@@ -174,6 +174,21 @@ for (const [route, name] of [
   await shot(page, `${name}-playing`);
 }
 
+// Rugby League Grid: today's grid, a selected square with suggestions, then one guess in.
+await go(page, "/mini-games/grid", 1500);
+await shot(page, "grid-start");
+await tap(page, [/: empty$/i]);
+await page.waitForTimeout(500);
+{
+  const input = page.getByRole("combobox").or(page.locator("input[type='text'], input:not([type])")).first();
+  await input.fill("Sam").catch(() => {});
+  await page.waitForTimeout(500);
+  await shot(page, "grid-autocomplete", { full: false });
+  await page.getByRole("option").first().click({ timeout: 3000 }).catch(() => {});
+  await page.waitForTimeout(800);
+}
+await shot(page, "grid-playing");
+
 // Manager Mode picker.
 await go(page, "/manager", 1200);
 await shot(page, "manager-picker");

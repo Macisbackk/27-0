@@ -243,17 +243,24 @@ export function findMiniGamePlayerById(
   return pool.find((player) => player.id === id);
 }
 
-export function resolvePlayerGuess(
+/** Minimum shape the guess resolver and autocomplete need (Wordle + Grid pools). */
+export type GuessablePlayer = {
+  id: string;
+  identityId: string;
+  displayName: string;
+};
+
+export function resolvePlayerGuess<T extends GuessablePlayer>(
   query: string,
-  pool: readonly MiniGamePlayer[]
-): MiniGamePlayer | null {
+  pool: readonly T[]
+): T | null {
   const trimmed = query.trim();
   if (!trimmed) return null;
   const byId = pool.find((player) => player.id === trimmed);
   if (byId) return byId;
 
   const guessKeys = new Set(expandNameLookupKeys(trimmed));
-  const matches: MiniGamePlayer[] = [];
+  const matches: T[] = [];
   for (const player of pool) {
     const nameKeys = expandNameLookupKeys(player.displayName);
     if (nameKeys.some((key) => guessKeys.has(key))) {
@@ -272,16 +279,16 @@ export function resolvePlayerGuess(
 
 const AUTOCOMPLETE_LIMIT = 8;
 
-export function suggestPlayers(
+export function suggestPlayers<T extends GuessablePlayer>(
   query: string,
-  pool: readonly MiniGamePlayer[],
+  pool: readonly T[],
   limit = AUTOCOMPLETE_LIMIT
-): MiniGamePlayer[] {
+): T[] {
   const trimmed = query.trim().toLowerCase();
   if (trimmed.length < 2) return [];
   const seen = new Set<string>();
-  const starts: MiniGamePlayer[] = [];
-  const contains: MiniGamePlayer[] = [];
+  const starts: T[] = [];
+  const contains: T[] = [];
   for (const player of pool) {
     const name = player.displayName.toLowerCase();
     const key = player.identityId;
