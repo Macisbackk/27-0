@@ -37,6 +37,15 @@ import {
   SQUAD_MIN,
   SQUAD_MAX,
   repairLineup,
+  tickDeadline,
+  pauseDeadline,
+  acceptOffer,
+  rejectOffer,
+  liveOffers,
+  deadlineClock,
+  isDeadlineDay,
+  clubNeed,
+  DEADLINE_MINUTES,
   type CareerState,
 } from "../src/lib/career";
 import { isCareer } from "../src/lib/career/storage";
@@ -87,8 +96,42 @@ function invariants(s: CareerState, where: string) {
     const st = currentStage(s);
     if (!["preseason", "preseason-done", "deadline", "league-over", "promotion", "fixture"].includes(st)) fail(`${where}: odd stage ${st}`);
   }
+  // Deadline Day clock: sane numbers, offers only for your players from real clubs.
+  if (s.phase === "season" && isDeadlineDay(s)) {
+    const c = deadlineClock(s);
+    if (!(c.minutesLeft >= 0 && c.minutesLeft <= DEADLINE_MINUTES)) fail(`${where}: deadline clock at ${c.minutesLeft}`);
+    if (c.slotsDone < 0 || c.slotsDone > 24) fail(`${where}: deadline slots ${c.slotsDone}`);
+    if (deadlineDecisionPending(s) && c.minutesLeft === 0) fail(`${where}: clock at 0:00 but the window is still open`);
+    for (const o of liveOffers(s)) {
+      if (!s.clubs[o.clubId] || o.clubId === s.userClubId) fail(`${where}: offer from ${o.clubId}`);
+      if (!me.squad.includes(o.playerId)) fail(`${where}: live offer for a player you don't have`);
+      if (!(o.fee > 0)) fail(`${where}: offer fee ${o.fee}`);
+    }
+    if (!deadlineDecisionPending(s) && isWindowOpen(s)) fail(`${where}: window still open after Deadline Day shut`);
+  }
   if ((s.stagesSeen?.length ?? 0) > 12) fail(`${where}: stagesSeen grew to ${s.stagesSeen!.length}`);
   if (!isCareer(JSON.parse(JSON.stringify(s)))) fail(`${where}: save no longer passes its own validation (phase ${s.phase})`);
+}
+
+/** Sell, and check he really went where we said, to a club that wanted him. */
+function checkedSell(s: CareerState, id: string): CareerState {
+  const p = s.players[id];
+  const r = sellPlayer(s, id);
+  if (r.error || !p) return r.state;
+  if (p.legend) {
+    if (r.state.players[id]) fail("sell: legend still exists after the sale");
+    return r.state;
+  }
+  if (r.soldTo) {
+    const holders = Object.values(r.state.clubs).filter((c) => c.squad.includes(id)).map((c) => c.id);
+    if (holders.length !== 1 || holders[0] !== r.soldTo) fail(`sell: ${p.name} said to join ${r.soldTo}, is at ${holders.join(",") || "nowhere"}`);
+    if (r.soldTo === s.userClubId) fail("sell: sold to yourself");
+    if (!r.reason) fail("sell: no reason given");
+    const need = clubNeed(s, r.soldTo, p);
+    if (!need && !/^cover/.test(r.reason ?? "")) fail(`sell: ${s.clubs[r.soldTo]!.name} didn't need a ${p.pos}`);
+    if (!r.state.news[0]?.includes(r.state.clubs[r.soldTo]!.name)) fail("sell: news line doesn't name the buyer");
+  } else if (!r.state.freeAgents.includes(id)) fail(`sell: ${p.name} vanished`);
+  return r.state;
 }
 
 /** Every UI action that the current state allows, as closures. */
@@ -106,7 +149,21 @@ function actionsFor(s: CareerState, rng: () => number, legends: string[]): Array
     if (st === "preseason-done") out.push(["start-season", () => markStageSeen(s, "preseason")]);
     if (st === "league-over") out.push(["pass-league-over", () => markStageSeen(s, "league-over")]);
     if (st === "promotion") out.push(["pass-promotion", () => markStageSeen(s, "promotion")]);
-    if (st === "deadline") out.push(["shut-window", () => closeDeadlineDay(s)]);
+    if (st === "deadline") {
+      out.push(["shut-window", () => closeDeadlineDay(s)]);
+      out.push(["tick-10", () => tickDeadline(s, 10)]);
+      out.push(["tick-10b", () => tickDeadline(s, 10)]);
+      out.push(["tick-60", () => tickDeadline(s, 60)]);
+      out.push(["tick-huge", () => tickDeadline(s, 5000)]);
+      out.push(["tick-bad", () => tickDeadline(s, Number.NaN)]);
+      out.push(["pause", () => pauseDeadline(s, rng() < 0.5)]);
+      const offers = liveOffers(s);
+      if (offers.length) {
+        out.push(["accept-offer", () => { const n = acceptOffer(s, pick(offers).id).state; return { ...n, lineup: repairLineup(n, n.lineup) }; }]);
+        out.push(["reject-offer", () => rejectOffer(s, pick(offers).id)]);
+      }
+      out.push(["accept-stale-offer", () => acceptOffer(s, "nope").state]);
+    }
     // The engine shouldn't care what the UI shows: play anyway.
     out.push(["play", () => playMatchday(s)]);
     out.push(["sim-big", () => simToNextBigGame(s)]);
@@ -119,7 +176,7 @@ function actionsFor(s: CareerState, rng: () => number, legends: string[]): Array
       const m = buildMarket(s, legends, `mid-${s.matchdayIndex}`);
       if (m.length) out.push(["mid-buy", () => buyPlayer(s, pick(m)).state]);
       const me = s.clubs[s.userClubId]!;
-      out.push(["mid-sell", () => sellPlayer(s, pick(me.squad)).state]);
+      out.push(["mid-sell", () => checkedSell(s, pick(me.squad))]);
     }
     // Out-of-order calls that must be no-ops.
     out.push(["finishDepartures-in-season", () => finishDepartures(s)]);
@@ -145,7 +202,7 @@ function actionsFor(s: CareerState, rng: () => number, legends: string[]): Array
     const m = buildMarket(s, legends);
     if (m.length) out.push(["buy", () => buyPlayer(s, pick(m)).state]);
     const me = s.clubs[s.userClubId]!;
-    out.push(["sell", () => sellPlayer(s, pick(me.squad)).state]);
+    out.push(["sell", () => checkedSell(s, pick(me.squad))]);
     out.push(["finish-transfers", () => finishTransfers(s)]);
     out.push(["renew-in-transfers", () => renewContract(s, pick(me.squad)).state]);
   }
@@ -338,6 +395,104 @@ notes.push(`A) random walks: ${steps} actions in ${((Date.now() - t0) / 1000).to
     const again = renewContract(rich.state, exp[0]!);
     if (!again.error) fail("B8: renewed the same player twice");
   } else notes.push("B8: no expiring contracts for this seed (skipped)");
+}
+
+{
+  // B9: every sale goes to a real club that needs the position, and says so.
+  let sold = 0;
+  let needy = 0;
+  for (let i = 0; i < 6; i++) {
+    let s = createCareer({ clubId: clubs[i * 5]!, managerName: "Seller", seed: `sell-${i}` });
+    for (let g = 0; s.phase === "season" && g < 6; g++) s = simRestOfSeason(closeDeadlineDay(s));
+    s = { ...finishDepartures(beginOffseason(s)), budget: 20_000_000 };
+    // Fill the squad up first so there's someone to sell.
+    for (const l of buildMarket(s, []).slice(0, 10)) s = buyPlayer(s, l).state;
+    for (let k = 0; k < 6; k++) {
+      const me = s.clubs[s.userClubId]!;
+      if (me.squad.length <= SQUAD_MIN) break;
+      const id = me.squad[(k * 7) % me.squad.length]!;
+      const p = s.players[id]!;
+      const before = s;
+      s = checkedSell(s, id);
+      if (s === before) continue;
+      sold++;
+      const to = Object.values(s.clubs).find((c) => c.squad.includes(id));
+      if (to && clubNeed(before, to.id, p)) needy++;
+    }
+    invariants(s, `B9 seed ${i}`);
+  }
+  if (sold < 20) fail(`B9: only ${sold} sales tested`);
+  if (needy < sold * 0.9) fail(`B9: only ${needy}/${sold} sales went to a club that needed the player`);
+  notes.push(`B9) ${sold} sales: ${needy} to a club short in that position or upgrading there`);
+}
+{
+  // B10: Deadline Day clock. Counts down from 12:00, offers land and lapse, deals land, shuts at 0:00,
+  // and the same save gives the same day whether you tick in 10s or skip hours.
+  let offersSeen = 0;
+  let accepted = 0;
+  let wars = 0;
+  for (let i = 0; i < 8; i++) {
+    let s = createCareer({ clubId: clubs[i * 4 + 1]!, managerName: "DD", seed: `clock-${i}` });
+    s = playFriendlies(s, []);
+    for (let g = 0; g < 80 && !deadlineDecisionPending(s); g++) s = playMatchday(s);
+    if (!deadlineDecisionPending(s)) { fail(`B10 seed ${i}: never reached Deadline Day`); continue; }
+    if (deadlineClock(s).minutesLeft !== DEADLINE_MINUTES) fail(`B10 seed ${i}: clock starts at ${deadlineClock(s).minutesLeft}`);
+    const start = s;
+    const ids = new Set<string>();
+    let last = DEADLINE_MINUTES;
+    for (let t = 0; t < 100 && deadlineDecisionPending(s); t++) {
+      for (const o of liveOffers(s)) {
+        if (!ids.has(o.id)) {
+          ids.add(o.id);
+          offersSeen++;
+          if (o.raised) wars++;
+        }
+      }
+      const offers = liveOffers(s);
+      if (offers.length && t % 5 === 0) {
+        const o = offers[0]!;
+        const buyerBefore = s.clubs[o.clubId]!.squad.length;
+        const budget = s.budget;
+        const r = acceptOffer(s, o.id);
+        if (!r.error) {
+          accepted++;
+          s = { ...r.state, lineup: repairLineup(r.state, r.state.lineup) };
+          if (!s.clubs[o.clubId]!.squad.includes(o.playerId)) fail("B10: accepted player didn't join the bidder");
+          if (s.clubs[o.clubId]!.squad.length !== buyerBefore + 1) fail("B10: bidder squad size wrong");
+          if (s.budget !== budget + o.fee) fail("B10: fee not paid");
+          if (liveOffers(s).some((x) => x.playerId === o.playerId)) fail("B10: other offers for a sold player still live");
+          if (!acceptOffer(s, o.id).error) fail("B10: accepted the same offer twice");
+        }
+      }
+      s = tickDeadline(s, 10);
+      const c = deadlineClock(s);
+      if (deadlineDecisionPending(s) && c.minutesLeft !== last - 10) fail(`B10: clock went ${last} → ${c.minutesLeft}`);
+      last = c.minutesLeft;
+      invariants(s, `B10 seed ${i} t${t}`);
+    }
+    if (deadlineDecisionPending(s)) fail(`B10 seed ${i}: window still open after 12 hours`);
+    if (isWindowOpen(s)) fail(`B10 seed ${i}: market still open after 0:00`);
+    // Same day, two ways (no user actions): ten-minute ticks vs hour skips vs shutting at once.
+    const a = (() => { let x = start; while (deadlineDecisionPending(x)) x = tickDeadline(x, 10); return x; })();
+    const b = (() => { let x = start; while (deadlineDecisionPending(x)) x = tickDeadline(x, 60); return x; })();
+    const shut = closeDeadlineDay(start);
+    const aiDeals = (x: CareerState) => JSON.stringify((x.transfers ?? []).filter((d) => d.year === x.year && d.deadlineDay && !d.user));
+    if (aiDeals(a) !== aiDeals(b)) fail(`B10 seed ${i}: ticking speed changed the day's deals`);
+    if (aiDeals(a) !== aiDeals(shut)) fail(`B10 seed ${i}: shutting early changed the league's deals`);
+    if (liveOffers(shut).length) fail(`B10 seed ${i}: offers left after shutting`);
+    const dd = JSON.parse(aiDeals(a)) as unknown[];
+    if (dd.length < 3) fail(`B10 seed ${i}: Deadline Day too quiet (${dd.length} deals)`);
+    // Pausing doesn't change anything on its own; old saves without a clock still work.
+    const paused = pauseDeadline(start, true);
+    if (!deadlineClock(paused).paused || pauseDeadline(paused, true) !== paused) fail("B10: pause not idempotent");
+    const old = JSON.parse(JSON.stringify(start)) as CareerState;
+    delete old.deadline;
+    const oldShut = closeDeadlineDay(old);
+    if (deadlineDecisionPending(oldShut)) fail("B10: old save can't shut Deadline Day");
+    if (deadlineClock(tickDeadline(old, 30)).minutesLeft !== DEADLINE_MINUTES - 30) fail("B10: old save clock doesn't start");
+  }
+  if (offersSeen < 8) fail(`B10: only ${offersSeen} offers in 8 Deadline Days`);
+  notes.push(`B10) 8 Deadline Days: ${offersSeen} offers (${wars} bidding wars, ${accepted} accepted); same day at any tick speed`);
 }
 
 console.log(notes.join("\n"));

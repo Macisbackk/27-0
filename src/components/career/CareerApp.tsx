@@ -15,6 +15,7 @@ import { SeasonReview } from "./SeasonReview";
 import { TableTab } from "./TableTab";
 import { TeamTab } from "./TeamTab";
 import { TransferWindow } from "./TransferWindow";
+import { useDeadlineDriver } from "./TransferNews";
 import { ClubBadge, Stars } from "./bits";
 import { CareerTutorial } from "./CareerTutorial";
 
@@ -50,6 +51,14 @@ function CareerRouter() {
   const [vault, setVault] = useState(false);
   const [records, setRecords] = useState(false);
   const [marketOpen, setMarketOpen] = useState(false);
+  // Deadline Day's clock keeps running on the hub and in the market.
+  useDeadlineDriver();
+  // The window shut (clock hit 0:00) while the market was open: back to the hub, and don't
+  // pop the market open again when the next window opens.
+  const windowOpen = !!state && isWindowOpen(state);
+  useEffect(() => {
+    if (!windowOpen) setMarketOpen(false);
+  }, [windowOpen]);
   // A new career always opens on the Match tab.
   const seed = state?.seed;
   useEffect(() => setTab("match"), [seed]);

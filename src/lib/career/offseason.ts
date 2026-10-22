@@ -11,7 +11,8 @@ import {
 } from "./players";
 import { pick, randInt, rngFor, shuffle } from "./rng";
 import { contractOf, newDealLength, runDownContracts } from "./contracts";
-import { clubsIn, repairLineup, squadOf, startSeason, userClub } from "./season";
+import { pickBuyer } from "./buyers";
+import { repairLineup, squadOf, startSeason, userClub } from "./season";
 import type { CareerPlayer, CareerState, Pos } from "./types";
 
 export interface MarketListing {
@@ -289,7 +290,17 @@ export function sellPrice(state: CareerState, playerId: string): number {
   return price;
 }
 
-export function sellPlayer(state: CareerState, playerId: string): { state: CareerState; error?: TransferError } {
+export interface SaleResult {
+  state: CareerState;
+  error?: TransferError;
+  /** Club the player joined (null = nobody had room, so he's a free agent; legends go back to the vault). */
+  soldTo?: string | null;
+  /** Why they wanted him, e.g. "short of props". */
+  reason?: string;
+  fee?: number;
+}
+
+export function sellPlayer(state: CareerState, playerId: string): SaleResult {
   const club = userClub(state);
   // Selling happens in a window, never while the season review or contract decisions are open.
   if (state.phase === "review" || state.phase === "departures") return { state, error: "not-available" };
@@ -302,20 +313,32 @@ export function sellPlayer(state: CareerState, playerId: string): { state: Caree
   me.squad = me.squad.filter((id) => id !== playerId);
   s.budget += price;
 
+  let soldTo: string | null = null;
+  let reason: string | undefined;
+  let line: string;
   if (p.legend) {
     delete s.players[playerId];
+    line = `Sold ${p.name} for ${formatMoney(price)}. He goes back to the Legend Vault.`;
   } else {
-    // Joins the strongest club that can afford him, else becomes a free agent.
-    const rng = rngFor(s.seed, s.year, "sell", playerId);
-    const buyers = clubsIn(s, me.division).filter((id) => id !== me.id && s.clubs[id]!.squad.length < SQUAD_MAX);
-    const buyer = buyers.length ? pick(rng, buyers) : null;
-    if (buyer) s.clubs[buyer]!.squad.push(playerId);
-    else s.freeAgents.push(playerId);
+    // He joins a club that actually needs a player in his position (and has room for him).
+    const buyer = pickBuyer(s, p, rngFor(s.seed, s.year, "sell", playerId, s.matchdayIndex));
+    if (buyer) {
+      soldTo = buyer.clubId;
+      reason = buyer.reason;
+      s.clubs[buyer.clubId]!.squad.push(playerId);
+      p.signedYear = s.year;
+      p.fee = price;
+      p.contract = Math.max(2, newDealLength(p.age));
+      line = `Sold ${p.name} to ${s.clubs[buyer.clubId]!.name} for ${formatMoney(price)}. They were ${buyer.reason}.`;
+    } else {
+      s.freeAgents.push(playerId);
+      line = `Sold ${p.name} for ${formatMoney(price)}. No club had room, so he's a free agent.`;
+    }
   }
   s.lineup = repairLineup(s, s.lineup.filter((id) => id !== playerId));
-  s.news = [`Sold ${p.name} for ${formatMoney(price)}.`, ...s.news].slice(0, 30);
+  s.news = [line, ...s.news].slice(0, 30);
   s.updatedAt = Date.now();
-  return { state: s };
+  return { state: s, soldTo, reason, fee: price };
 }
 
 /** Close the window and kick off the new season. */
