@@ -348,3 +348,305 @@ button.game-button--era,
   border-radius: var(--fl-radius-card);
   background: var(--fl-surface);
 }
+
+/* ── Season review, simulation and play-offs ──────────────────────────────
+ * One family for every screen after a Classic / Era / Daily season:
+ * surface cards, raised tiles inside them, sentence-case muted labels,
+ * Anton only on numbers. `.fl-review` is set on the review / bracket page
+ * roots so these rules stay off other pages.
+ * (Older bracket rules in globals.css used color-mix() on --theme-primary-rgb
+ * and undefined --pitch-* / --accent-gold vars, so most of them never applied.)
+ */
+.fl-review .game-stat-card {
+  padding: 0.75rem 0.85rem;
+}
+
+.fl-review .game-stat-card__label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--fl-muted);
+}
+
+.fl-review .game-stat-card__value {
+  margin-top: 0.3rem;
+}
+
+/* Match results: rows are raised tiles with a small gap, not hairline-split panels. */
+.fixture-results-list {
+  gap: 6px;
+}
+
+.fixture-results-list > * + * {
+  border-top: 0;
+}
+
+.fixture-results-list .fixture-result-row--selected {
+  border-radius: var(--fl-radius-control);
+}
+
+/* Try / goal chips in match expands. */
+.match-score-chip {
+  border: 0;
+  border-radius: 999px;
+  background: var(--fl-raised);
+  padding: 0.3rem 0.65rem;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fl-text);
+}
+
+/* A details card nested in a review card is itself raised, so its chips drop to ground. */
+.game-panel .game-panel.match-details-expand .match-score-chip {
+  background: var(--fl-ground);
+}
+
+/* Club Funds payout popup (and any other modal opting in with .fl-modal). */
+.game-modal-panel.fl-modal {
+  border: 0;
+  border-radius: var(--fl-radius-card);
+  background: var(--fl-surface);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+}
+
+.game-modal-panel.fl-modal::before {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .game-modal-panel.fl-modal {
+    border: 0;
+    border-radius: var(--fl-radius-card);
+  }
+}
+
+/* Play-off bracket */
+.playoff-bracket-panel {
+  border: 0;
+  border-radius: var(--fl-radius-card);
+  background: var(--fl-surface);
+  box-shadow: none;
+}
+
+/* Embedded in a review card: the card is the surface, no second frame. */
+.game-panel .playoff-bracket-panel {
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.playoff-bracket-progress__line {
+  background: var(--fl-raised);
+}
+
+.playoff-bracket-progress__line--done {
+  background: rgb(var(--theme-primary-rgb) / 0.5);
+}
+
+.playoff-bracket-progress__node {
+  border: 0;
+  background: var(--fl-raised);
+  color: var(--fl-muted);
+}
+
+.playoff-bracket-progress__node--done {
+  background: rgb(var(--theme-primary-rgb) / 0.15);
+  color: var(--theme-primary);
+}
+
+.playoff-bracket-progress__node--live {
+  background: var(--theme-primary);
+  color: var(--theme-text-on-primary);
+  box-shadow: none;
+}
+
+.playoff-bracket-progress__node--final.playoff-bracket-progress__node--done {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+  box-shadow: none;
+}
+
+.playoff-bracket-progress__node--final.playoff-bracket-progress__node--live {
+  background: #fbbf24;
+  color: #1c1300;
+  box-shadow: none;
+}
+
+.playoff-bracket-tag {
+  border: 0;
+  border-radius: 999px;
+  background: var(--fl-raised);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fl-text);
+}
+
+.playoff-bracket-tag--muted {
+  color: var(--fl-muted);
+}
+
+.playoff-bracket-bye-badge {
+  border: 0;
+  background: rgba(251, 191, 36, 0.12);
+  padding: 0.05rem 0.45rem;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #fbbf24;
+}
+
+.playoff-champion-banner {
+  border: 0;
+  border-radius: var(--fl-radius-tile);
+  background: rgba(251, 191, 36, 0.1);
+  box-shadow: none;
+}
+
+.playoff-bracket-round-title__short {
+  border: 0;
+  border-radius: 8px;
+  background: var(--fl-raised);
+  padding: 0.2rem 0.5rem;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--fl-muted);
+}
+
+.playoff-bracket-round-title__label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--fl-muted);
+}
+
+.playoff-bracket-round-title--live .playoff-bracket-round-title__short {
+  background: rgb(var(--theme-primary-rgb) / 0.15);
+  color: var(--theme-primary);
+}
+
+.playoff-bracket-round-title--live .playoff-bracket-round-title__label {
+  color: var(--fl-text);
+}
+
+.playoff-bracket-round-title--final.playoff-bracket-round-title--live .playoff-bracket-round-title__short {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+}
+
+.playoff-bracket-round-title--final.playoff-bracket-round-title--live .playoff-bracket-round-title__label {
+  color: #fbbf24;
+}
+
+.cup-bracket-column.playoff-bracket-column:not(:last-child)::after,
+.playoff-bracket-column--live.cup-bracket-column:not(:last-child)::after,
+.playoff-bracket-column--final.cup-bracket-column:not(:last-child)::after {
+  background: var(--fl-line);
+}
+
+.playoff-bracket-match {
+  border: 0;
+  border-radius: var(--fl-radius-tile);
+  background: var(--fl-raised);
+  box-shadow: none;
+}
+
+.playoff-bracket-match--final {
+  box-shadow: inset 0 0 0 1px rgba(251, 191, 36, 0.3);
+}
+
+.playoff-bracket-match--ready {
+  box-shadow: inset 0 0 0 2px rgb(var(--theme-primary-rgb) / 0.55);
+  animation: none;
+}
+
+.playoff-bracket-match--selected {
+  box-shadow: inset 0 0 0 2px var(--theme-primary);
+}
+
+.playoff-bracket-match__ribbon {
+  border-bottom-left-radius: 10px;
+  background: var(--theme-primary);
+  padding: 0.2rem 0.55rem;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--theme-text-on-primary);
+}
+
+.playoff-bracket-match--final .playoff-bracket-match__ribbon {
+  background: #fbbf24;
+  color: #1c1300;
+}
+
+.playoff-bracket-match:has(> .playoff-bracket-match__ribbon) {
+  padding-top: 1.35rem;
+}
+
+.playoff-bracket-team--winner {
+  background: rgb(var(--theme-primary-rgb) / 0.1);
+  box-shadow: inset 3px 0 0 var(--theme-primary);
+}
+
+.playoff-bracket-match--final .playoff-bracket-team--winner {
+  background: rgba(251, 191, 36, 0.1);
+  box-shadow: inset 3px 0 0 #fbbf24;
+}
+
+.playoff-bracket-divider {
+  background: var(--fl-line);
+}
+
+.playoff-bracket-score {
+  border: 0;
+  border-radius: 8px;
+  background: var(--fl-ground);
+  padding: 0.15rem 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--fl-muted);
+}
+
+.playoff-bracket-score--winner {
+  background: rgb(var(--theme-primary-rgb) / 0.15);
+  color: var(--theme-primary);
+}
+
+.playoff-bracket-match--final .playoff-bracket-score--winner {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+}
+
+.playoff-bracket-match__footer {
+  border-top: 1px solid var(--fl-line);
+  padding: 0.4rem 0.5rem;
+}
+
+.playoff-bracket-match__badge {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.playoff-bracket-match__badge--muted {
+  color: var(--fl-muted);
+}
+
+/* Phone action bar under the bracket / review: same glass as the header. */
+@media (max-width: 639px) {
+  .bracket-sticky-actions {
+    border-top: 1px solid var(--fl-line);
+    background: rgba(10, 17, 14, 0.96);
+    box-shadow: none;
+  }
+}

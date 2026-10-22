@@ -7,7 +7,6 @@ import { getPlayoffRoundLabel, getPlayoffTeamDisplayInfo } from "@/lib/game/play
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { ClubDualSwatch } from "./ClubDualSwatch";
 import { UI_COPY } from "@/lib/ui/copy";
-import { SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 export const PLAYOFF_ROUND_SHORT: Record<number, string> = {
@@ -56,12 +55,12 @@ export function PlayoffBracketProgressStrip({
                   isLive ? "playoff-bracket-progress__node--live" : ""
                 }`}
               >
-                <span className="font-display text-[10px] font-black uppercase tracking-wider">
+                <span className="text-[11px] font-bold">
                   {short}
                 </span>
               </div>
               <p
-                className={`mt-1.5 text-[9px] font-semibold uppercase tracking-wider ${
+                className={`mt-1.5 text-xs font-semibold ${
                   compact ? "hidden sm:block" : "hidden sm:block"
                 } ${
                   isLive
@@ -69,8 +68,8 @@ export function PlayoffBracketProgressStrip({
                       ? "text-accent-gold"
                       : "text-theme-primary"
                     : isComplete
-                      ? "text-gray-400"
-                      : "text-gray-600"
+                      ? "text-[color:var(--fl-text)]"
+                      : "text-[color:var(--fl-muted)]"
                 }`}
               >
                 {getPlayoffRoundLabel(round)}
@@ -115,18 +114,17 @@ export function PlayoffBracketHeader({
       : "Simulate matches to advance");
 
   return (
-    <div className={`playoff-bracket-header scoreboard-panel overflow-hidden text-center ${SPACING.cardPadding}`}>
-      <div className="playoff-bracket-header__shine pointer-events-none" aria-hidden />
-      <p className={TYPO.eyebrow}>
+    <div className="playoff-bracket-header game-panel overflow-hidden p-4 text-center sm:p-5">
+      <p className={`${TYPO.eyebrow} text-[color:var(--fl-muted)]`}>
         {eyebrow}
       </p>
-      <h2 className={`mt-0.5 sm:mt-2 ${TYPO.sectionTitle} text-lg sm:text-3xl`}>
+      <h2 className="mt-1 text-[22px] font-bold leading-tight tracking-tight text-white sm:text-[26px]">
         {tournamentComplete
           ? "Knockout Bracket"
           : getPlayoffRoundLabel(activeRound)}
       </h2>
       {resolvedSubtitle ? (
-        <p className={`mt-1 hidden sm:mt-2 sm:block ${TYPO.bodySm}`}>
+        <p className={`mt-1 hidden sm:block ${TYPO.muted}`}>
           {resolvedSubtitle}
         </p>
       ) : null}
@@ -146,12 +144,12 @@ export function PlayoffChampionBanner({ champion }: { champion: string }) {
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="playoff-champion-banner mb-5 px-4 py-4 text-center sm:px-5 sm:py-5"
+      className="playoff-champion-banner mb-3 px-4 py-4 text-center"
     >
-      <p className={`${TYPO.eyebrow} text-accent-gold/80`}>
+      <p className={`${TYPO.eyebrow} text-accent-gold`}>
         Super League Champions
       </p>
-      <p className={`mt-1 ${TYPO.sectionTitle} text-lg text-accent-gold sm:text-xl`}>
+      <p className="mt-1 text-[20px] font-bold leading-tight tracking-tight text-white">
         {champion}
       </p>
     </motion.div>

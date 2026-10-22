@@ -36,34 +36,38 @@ function ScorerCard({
 }) {
   const rankStyle = featured
     ? (RANK_STYLES[index] ?? "text-gray-400")
-    : "text-pitch-500";
+    : "text-[color:var(--fl-muted)]";
 
   return (
-    <div className={`${CARD.inset} px-3 py-3 text-center`}>
+    <div className="rounded-[16px] bg-pitch-800 px-3 py-3 text-center">
       <p
-        className={`font-display font-black leading-none ${
-          featured ? "text-xl sm:text-2xl" : `text-sm ${TYPO.statLabel}`
+        className={`leading-none ${
+          featured ? "fl-number text-2xl" : "text-[13px] font-semibold"
         } ${rankStyle}`}
       >
         {featured ? index + 1 : `#${index + 1}`}
       </p>
       <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
         <TryScorerClubBadge club={scorer.club} />
-        <p className={`break-words ${featured ? TYPO.playerNameSm : TYPO.statValue}`}>
+        <p
+          className={`break-words font-bold leading-snug text-white ${
+            featured ? "text-[15px]" : "text-sm"
+          }`}
+        >
           {scorer.name}
         </p>
       </div>
-      <p className={`mt-1.5 ${TYPO.bodySm}`}>
+      <p className={`mt-1 ${TYPO.label}`}>
         {formatTryScorerPosition(scorer, squad)}
       </p>
       <p
-        className={`mt-2 font-display font-black text-accent-gold ${
-          featured ? "text-xl sm:text-2xl" : "text-lg"
+        className={`fl-number mt-2 text-accent-gold ${
+          featured ? "text-2xl" : "text-lg"
         }`}
       >
         {scorer.tries}
       </p>
-      <p className={TYPO.statLabel}>
+      <p className={`mt-0.5 ${TYPO.label}`}>
         {scorer.tries === 1 ? "Try" : "Tries"}
       </p>
     </div>
@@ -108,7 +112,7 @@ export function TryScorersSection({
                 return !v;
               });
             }}
-            className={`mt-3 w-full ${BTN.base} ${BTN.accentOutline} !min-h-[40px] text-[10px]`}
+            className={`mt-3 w-full ${BTN.secondary}`}
             aria-expanded={expanded}
           >
             {expanded ? "Collapse all" : "All try scorers"}
@@ -141,10 +145,10 @@ export function TryScorersSection({
 
       {!compact && (
         <div
-          className={`mt-3 ${CARD.inset} px-3 py-2 text-center ${TYPO.statLabel}`}
+          className={`mt-3 rounded-[16px] bg-pitch-800 px-3 py-2 text-center ${TYPO.label}`}
         >
           <span>Total tries</span>
-          <span className={`ml-2 ${TYPO.statValue} font-display`}>
+          <span className="ml-2 fl-number text-base text-white">
             {listedTotal}
             {listedTotal !== expectedTotalTries && (
               <span className="ml-1 text-red-400">/ {expectedTotalTries}</span>

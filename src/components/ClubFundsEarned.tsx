@@ -33,30 +33,35 @@ export function ClubFundsEarned({
       open={open}
       onClose={() => setOpen(false)}
       labelledBy="club-funds-earned-title"
+      className="fl-modal"
     >
       <div className="space-y-4 text-center">
-        <p id="club-funds-earned-title" className={TYPO.sectionLabel}>
+        <p id="club-funds-earned-title" className={TYPO.cardHeading}>
           {title}
         </p>
-        <ul className={`space-y-1.5 ${TYPO.bodySm}`}>
+        <ul className="space-y-1.5 text-left">
           {payout.lines.map((line) => (
-            <li key={line.id} className="text-gray-300">
-              <span className="font-semibold text-theme-primary">
+            <li
+              key={line.id}
+              className="flex items-baseline justify-between gap-3 rounded-[14px] bg-pitch-800 px-3 py-2.5 text-sm text-[color:var(--fl-text)]"
+            >
+              <span className="min-w-0">{line.label}</span>
+              <span className="shrink-0 font-bold tabular-nums text-theme-primary">
                 +{formatClubFunds(line.amount)}
-              </span>{" "}
-              {line.label}
+              </span>
             </li>
           ))}
         </ul>
         {payout.awarded && payout.total > 0 && (
-          <p className="font-display text-lg font-bold text-white">
-            Total +{formatClubFunds(payout.total)}
-          </p>
+          <div>
+            <p className={TYPO.label}>Total</p>
+            <p className="fl-number mt-1 text-[34px] text-theme-primary">
+              +{formatClubFunds(payout.total)}
+            </p>
+          </div>
         )}
         {!payout.awarded && payout.total > 0 && (
-          <p className={`${TYPO.bodySm} text-gray-500`}>
-            Already awarded for this run.
-          </p>
+          <p className={TYPO.label}>Already awarded for this run.</p>
         )}
         <div className="mx-auto max-w-xs">
           <GameButton

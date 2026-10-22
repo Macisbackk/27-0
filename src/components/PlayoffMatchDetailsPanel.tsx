@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import type { PlayoffBracketMatch } from "@/lib/game/playoff-bracket";
 import { getPlayoffRoundLabel } from "@/lib/game/playoff-bracket";
-import { CARD, BTN } from "@/lib/ui/design-system";
+import { CARD, CLOSE_BUTTON } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import { TeamScoringBreakdown } from "./TeamScoringBreakdown";
@@ -35,7 +35,7 @@ export function PlayoffMatchDetailsPanel({
   const motm = match.userFixture?.manOfTheMatch;
 
   const scoringBlock = scoring ? (
-    <div className="divide-y divide-white/10">
+    <div className="divide-y divide-white/[0.06]">
       <div className="pb-2.5">
         <TeamScoringBreakdown
           teamName={match.homeTeam}
@@ -63,26 +63,26 @@ export function PlayoffMatchDetailsPanel({
       </div>
     </div>
   ) : (
-    <p className={`text-center ${TYPO.bodySm}`}>Scoring data unavailable.</p>
+    <p className={`text-center ${TYPO.label}`}>Scoring data unavailable.</p>
   );
 
   return (
     <motion.div
-      className={`match-details-expand mt-3 ${CARD.base} border-white/10 ${className}`}
+      className={`match-details-expand mt-3 ${CARD.base} ${className}`}
       initial={{ opacity: 0, y: -6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -4 }}
       transition={{ duration: 0.18, ease: "easeOut" }}
     >
       <div className="space-y-2.5 p-2.5 sm:p-3">
-        <div className="relative flex items-center justify-center pr-14">
-          <p className={`min-w-0 text-center ${TYPO.keyLabel}`}>
+        <div className="relative flex min-h-[44px] items-center justify-center px-16">
+          <p className={`min-w-0 text-center ${TYPO.label}`}>
             {getPlayoffRoundLabel(match.round)}
           </p>
           <button
             type="button"
             onClick={onClose}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 ${BTN.closeSm}`}
+            className={`absolute right-0 top-1/2 -translate-y-1/2 ${CLOSE_BUTTON}`}
           >
             Close
           </button>
@@ -91,11 +91,11 @@ export function PlayoffMatchDetailsPanel({
         {scoringBlock}
 
         {motm ? (
-          <p className={`text-center ${TYPO.bodySm}`}>
-            <span className="text-pitch-500">POTM </span>
+          <p className="text-center text-xs leading-snug">
+            <span className="text-[color:var(--fl-muted)]">POTM </span>
             <span className="font-semibold text-accent-gold">{motm.playerName}</span>
             {motm.performanceSummary ? (
-              <span className="text-pitch-400"> · {motm.performanceSummary}</span>
+              <span className="text-[color:var(--fl-muted)]"> · {motm.performanceSummary}</span>
             ) : null}
           </p>
         ) : null}

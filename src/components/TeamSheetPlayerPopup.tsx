@@ -10,7 +10,7 @@ import { getClubColors } from "@/lib/clubs";
 import { getPlayerColorClub } from "@/lib/players/run-club";
 import { getFormationSlotDisplayLabel } from "@/lib/positions";
 import { formatPlayerPositionLabel } from "@/lib/players/player-positions";
-import { CARD } from "@/lib/ui/design-system";
+import { BTN, CARD } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import {
   acquireScrollLock,
@@ -113,10 +113,10 @@ export function TeamSheetPlayerPopup({
                 <div className="flex items-start gap-3">
                   {club && <ClubDualSwatch club={club} size="sm" />}
                   <div className="min-w-0 flex-1">
-                    <h3 className={`${TYPO.cardTitle} break-words text-white`}>
+                    <h3 className={`${TYPO.cardHeading} break-words`}>
                       {player.name}
                     </h3>
-                    <p className={`mt-1 ${TYPO.bodySm} text-gray-400`}>
+                    <p className={`mt-1 ${TYPO.label}`}>
                       {formatPlayerPositionLabel(player, { short: false })} ·{" "}
                       {getFormationSlotDisplayLabel(slot.slotIndex)}
                     </p>
@@ -126,21 +126,21 @@ export function TeamSheetPlayerPopup({
                 <dl className="mt-4 space-y-2 text-sm">
                   {club && (
                     <div className="flex justify-between gap-3">
-                      <dt className="shrink-0 text-gray-500">Club</dt>
+                      <dt className="shrink-0 text-[color:var(--fl-muted)]">Club</dt>
                       <dd className="min-w-0 text-right font-medium text-gray-200 break-words">
                         {club}
                       </dd>
                     </div>
                   )}
                   <div className="flex justify-between gap-3">
-                    <dt className="shrink-0 text-gray-500">Played as</dt>
+                    <dt className="shrink-0 text-[color:var(--fl-muted)]">Played as</dt>
                     <dd className="min-w-0 text-right font-medium text-gray-200 break-words">
                       {getFormationSlotDisplayLabel(slot.slotIndex)}
                     </dd>
                   </div>
                   {!hardMode && seasonStats?.rating !== undefined && (
                     <div className="flex justify-between gap-3">
-                      <dt className="text-gray-500">Rating</dt>
+                      <dt className="text-[color:var(--fl-muted)]">Rating</dt>
                       <dd className="font-semibold text-[color:var(--rating)]">
                         {seasonStats.rating}
                       </dd>
@@ -148,7 +148,7 @@ export function TeamSheetPlayerPopup({
                   )}
                   {!hardMode && seasonStats?.valueLabel && (
                     <div className="flex justify-between gap-3">
-                      <dt className="text-gray-500">Value</dt>
+                      <dt className="text-[color:var(--fl-muted)]">Value</dt>
                       <dd className="font-semibold text-accent-gold">
                         {seasonStats.valueLabel}
                       </dd>
@@ -156,7 +156,7 @@ export function TeamSheetPlayerPopup({
                   )}
                   {seasonStats?.matchesPlayed !== undefined && (
                     <div className="flex justify-between gap-3">
-                      <dt className="text-gray-500">Matches</dt>
+                      <dt className="text-[color:var(--fl-muted)]">Matches</dt>
                       <dd className="font-medium text-gray-200">
                         {seasonStats.matchesPlayed}
                       </dd>
@@ -164,7 +164,7 @@ export function TeamSheetPlayerPopup({
                   )}
                   {seasonStats?.tries !== undefined && (
                     <div className="flex justify-between gap-3">
-                      <dt className="text-gray-500">
+                      <dt className="text-[color:var(--fl-muted)]">
                         {statsScope === "playoff" ? "Play-off tries" : "Season tries"}
                       </dt>
                       <dd className="font-semibold text-accent-gold">
@@ -174,7 +174,7 @@ export function TeamSheetPlayerPopup({
                   )}
                   {seasonStats?.awardWon && (
                     <div className="flex justify-between gap-3">
-                      <dt className="shrink-0 text-gray-500">Award</dt>
+                      <dt className="shrink-0 text-[color:var(--fl-muted)]">Award</dt>
                       <dd className="min-w-0 text-right font-medium text-accent-gold break-words">
                         {seasonStats.awardWon}
                       </dd>
@@ -183,7 +183,7 @@ export function TeamSheetPlayerPopup({
                 </dl>
 
                 {seasonStats?.contributionSummary && (
-                  <p className="mt-4 rounded-lg border border-pitch-700/40 bg-pitch-950/50 px-3 py-2 text-sm leading-relaxed text-gray-400">
+                  <p className="mt-4 rounded-[14px] bg-pitch-950 px-3 py-2.5 text-sm leading-relaxed text-[color:var(--fl-muted)]">
                     {seasonStats.contributionSummary}
                   </p>
                 )}
@@ -191,7 +191,7 @@ export function TeamSheetPlayerPopup({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="mt-5 w-full min-h-[44px] rounded-lg border border-pitch-600/60 bg-pitch-900/60 px-4 py-2.5 text-sm font-semibold text-gray-200 transition hover:border-pitch-500/60 hover:bg-pitch-800/60"
+                  className={`mt-5 w-full ${BTN.secondary}`}
                 >
                   Close
                 </button>

@@ -194,6 +194,15 @@ export const MANAGER = {
   actionRow: "mt-3 flex flex-wrap justify-center gap-2",
 } as const;
 
+/** Floodlights small "Close" control inside cards — 44px tap target, no border. */
+export const CLOSE_BUTTON =
+  "btn-press inline-flex min-h-[44px] shrink-0 items-center justify-center rounded-[12px] bg-white/[0.06] px-3 text-[13px] font-semibold text-[color:var(--fl-muted)] transition hover:bg-white/10 hover:text-white";
+
+/** Season / play-off review stat tiles: 2-up on phones (an odd last tile
+ *  spans both columns), 3-up from sm. */
+export const REVIEW_STAT_GRID =
+  "grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 [&>*:nth-child(3):last-child]:col-span-2 sm:[&>*:nth-child(3):last-child]:col-span-1";
+
 /** Form & filter inputs. */
 export const FILTER = {
   input:

@@ -7,6 +7,10 @@ import type { SquadSlot } from "@/lib/types";
 import { TeamSheet } from "./TeamSheet";
 import { RLAwardCard } from "./cards/RLAwardCard";
 import { TryScorersSection } from "./TryScorersSection";
+import { TYPO } from "@/lib/ui/typography";
+
+/** Sub-group label inside a review card (sentence-case Floodlights label). */
+const SUB_LABEL = `mb-2 text-center ${TYPO.label}`;
 
 interface SquadReviewSectionProps {
   squad: SquadSlot[];
@@ -43,13 +47,13 @@ export function SquadReviewSection({
   return (
     <div>
       {sectionTitle && (
-        <p className="mb-3 text-center font-display text-xs font-semibold uppercase tracking-wider text-gray-500">
+        <p className={`mb-3 text-center ${TYPO.label}`}>
           {sectionTitle}
         </p>
       )}
       <div className="grid gap-4 lg:grid-cols-2 lg:items-start">
         <div className="min-w-0">
-          <p className="mb-2 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+          <p className={SUB_LABEL}>
             Team Sheet
           </p>
           <TeamSheet
@@ -68,10 +72,10 @@ export function SquadReviewSection({
           <div className="min-w-0 space-y-4">
             {hasAwards && (
               <div>
-                <p className="mb-2 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                <p className={SUB_LABEL}>
                   Player Awards
                 </p>
-                <div className="grid gap-3 text-center sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                <div className="grid gap-2.5 text-center sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                   {awards.map((award) => (
                     <RLAwardCard
                       key={award.title}
@@ -91,7 +95,7 @@ export function SquadReviewSection({
 
             {hasPerformance && (
               <div>
-                <p className="mb-2 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                <p className={SUB_LABEL}>
                   {performanceTitle}
                 </p>
                 {performance}
@@ -100,7 +104,7 @@ export function SquadReviewSection({
 
             {hasTryScorers && (
               <div>
-                <p className="mb-2 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+                <p className={SUB_LABEL}>
                   Try Scorers
                 </p>
                 <TryScorersSection

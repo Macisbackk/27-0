@@ -29,7 +29,7 @@ import { BracketMobileRoundNav } from "./BracketMobileRoundNav";
 import { GameButton } from "./ui/GameButton";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
-import { MOBILE, SPACING } from "@/lib/ui/design-system";
+import { MOBILE } from "@/lib/ui/design-system";
 import {
   PLAYOFF_ROUND_SHORT,
   PlayoffBracketDesktop,
@@ -198,14 +198,14 @@ export function PlayoffBracket({
   const userClub = state.userClub ?? DREAM_TEAM_NAME;
 
   return (
-    <DocumentPageShell diagnoseLabel="QuickModePlayoffBracket" className={`${MOBILE.actionBarPad} md:pb-8`}>
-      <div className="relative w-full py-3 sm:py-8">
+    <DocumentPageShell diagnoseLabel="QuickModePlayoffBracket" className={`fl-review ${MOBILE.actionBarPad} md:pb-8`}>
+      <div className="relative mx-auto w-full min-w-0 max-w-[var(--layout-page-compact)] py-2 sm:py-4">
         <PlayoffBracketHeader
           activeRound={activeRound}
           tournamentComplete={state.tournamentComplete}
         />
 
-        <div className={`playoff-bracket-panel mx-auto mt-2 w-full max-w-[var(--layout-page-compact)] sm:mt-5 md:mt-6 ${SPACING.cardPaddingSm}`}>
+        <div className="playoff-bracket-panel mx-auto mt-3 w-full p-3 sm:mt-4 sm:p-5">
         <div className="mx-auto w-full">
           <BracketMobileRoundNav
             rounds={ROUNDS}
@@ -216,11 +216,10 @@ export function PlayoffBracket({
             getShortLabel={(round) =>
               PLAYOFF_ROUND_SHORT[round] ?? getPlayoffRoundLabel(round)
             }
-            activeClassName="border-theme-primary/55 bg-theme-primary/12 text-theme-primary"
           />
         </div>
 
-        <div className="mx-auto mt-2 w-full space-y-2.5 sm:hidden">
+        <div className="mx-auto mt-3 w-full space-y-2.5 sm:hidden">
           {getMatchesForRound(state, mobileViewRound).map((match) => (
             <PlayoffMatchCard
               key={match.id}

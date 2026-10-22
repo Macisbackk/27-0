@@ -47,7 +47,7 @@ export function ShareSeasonButton({
         {busy ? "Preparing…" : "Share season"}
       </ActionButton>
       {status ? (
-        <p className="mt-2 text-center text-xs text-pitch-400">{status}</p>
+        <p className="mt-2 text-center text-xs text-[color:var(--fl-muted)]">{status}</p>
       ) : null}
     </div>
   );

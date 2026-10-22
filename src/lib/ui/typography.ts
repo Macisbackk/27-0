@@ -1,5 +1,7 @@
 /** Shared typography tokens — clean sports hierarchy (matches --text-* vars).
- *  Display = Anton (playoff bracket chrome). Body = UI sans for readable copy.
+ *  Display = Anton (`font-display`). Floodlights (v1.94+) keeps Anton for big
+ *  numbers only (`fl-number`); new screens should prefer `cardHeading` /
+ *  `label` / `muted`, which are Inter.
  */
 
 export const TYPO = {
@@ -13,9 +15,16 @@ export const TYPO = {
     "font-display text-[clamp(1.28rem,3vw,1.85rem)] font-bold tracking-tight text-white leading-[1.2]",
   homeModeBody:
     "mt-2 max-w-xl text-[length:var(--text-body)] leading-relaxed text-gray-300",
-  /** Playoff / review eyebrow — uppercase micro label above a display title. */
-  eyebrow:
-    "font-display text-[10px] font-bold uppercase tracking-[0.16em] text-theme-primary sm:text-xs sm:tracking-[0.3em]",
+  /** Small label above a title (review / play-off screens, Daily header).
+   *  Floodlights: 13px semibold Inter, sentence case. No colour — callers pick
+   *  one (e.g. `text-[color:var(--fl-muted)]`, `text-accent-gold`). */
+  eyebrow: "text-[13px] font-semibold leading-snug",
+  /** Floodlights card / section heading — ~17px bold Inter. */
+  cardHeading: "text-[17px] font-bold leading-tight tracking-tight text-white",
+  /** Floodlights small label — 12–13px semibold, muted, sentence case. */
+  label: "text-[13px] font-semibold leading-snug text-[color:var(--fl-muted)]",
+  /** Floodlights secondary copy — muted body text. */
+  muted: "text-sm leading-relaxed text-[color:var(--fl-muted)]",
   /** Quiz / mini-game mode picker card titles. */
   modeCardTitle:
     "font-display text-base font-bold uppercase tracking-wide sm:text-lg",

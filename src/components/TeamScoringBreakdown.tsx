@@ -51,7 +51,7 @@ export function TeamScoringBreakdown({
 
   const tryBlock = hasTries ? (
     <div className={`space-y-1.5 ${flat ? "text-center" : ""}`}>
-      <p className={TYPO.statLabel}>Tries</p>
+      <p className={TYPO.label}>Tries</p>
       <TryScorerChips
         compact
         scorers={scoring.tryScorers.map((s) => {
@@ -96,7 +96,7 @@ export function TeamScoringBreakdown({
         <div className="space-y-2.5">
           {tryBlock}
           {hasTries && hasKicking && (
-            <div className="border-t border-white/10" aria-hidden />
+            <div className="border-t border-white/[0.06]" aria-hidden />
           )}
           {kickBlock}
         </div>
