@@ -1380,3 +1380,30 @@ export const PRE_EXISTING_ISSUES = [
   "scripts/audit-duplicate-players.ts is not a read-only audit: it rewrites current-squads.json, historic-players.json and legends.json, deleting every same-name card except one (it removed 202 current and 1,374 historic rows when run). It was run once for this task and the changes were reverted.",
   "scripts/merge-player-additions.ts would re-add ids from data/player-additions.json that have since been moved or removed (including london-cur-robert-butler and london-cur-oliver-leyland).",
 ];
+
+export type PoolAddition = {
+  club: string;
+  playerId: string;
+  /** Abbreviation for data/sl-2026-squads.json (FB, WG, CE, SO, SH, HB, PF, HK, SR, LF). */
+  positionAbbrev: string;
+  reason: string;
+};
+
+/**
+ * Moving a player out of a club's 17-man 2026 Classic pool left Catalans and Hull KR on 16,
+ * which validate-team-years rejects. Each gets a real 2026 squad player at the same position.
+ */
+export const POOL_ADDITIONS: PoolAddition[] = [
+  {
+    club: "Catalans Dragons",
+    playerId: "catalans-cur-matthieu-laguerre",
+    positionAbbrev: "CE",
+    reason: "Replaces centre Arthur Romano (moved to Hull FC) in the Catalans 2026 Classic pool; Catalans squad number 21.",
+  },
+  {
+    club: "Hull KR",
+    playerId: "hull-kr-cur-jack-charles",
+    positionAbbrev: "SH",
+    reason: "Replaces half-back Danny Richardson (moved to York) in the Hull KR 2026 Classic pool; Hull KR squad number 24.",
+  },
+];

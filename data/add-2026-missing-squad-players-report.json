@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T08:55:15.171Z",
+  "generatedAt": "2026-10-22T08:57:45.445Z",
   "script": "scripts/add-2026-missing-squad-players.ts",
   "method": [
     "Squad lists: Love Rugby League club-by-club 2026 squad numbers (28 Jan 2026), cross-checked per club.",
@@ -42,6 +42,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
+      "classicPoolAdditions": [],
       "notAddedOrUnverified": [
         {
           "club": "Bradford Bulls",
@@ -120,6 +121,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
+      "classicPoolAdditions": [],
       "notAddedOrUnverified": [
         {
           "club": "Castleford Tigers",
@@ -151,6 +153,15 @@
           "sources": [
             "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club"
           ],
+          "status": "already applied"
+        }
+      ],
+      "classicPoolAdditions": [
+        {
+          "club": "Catalans Dragons",
+          "playerId": "catalans-cur-matthieu-laguerre",
+          "positionAbbrev": "CE",
+          "reason": "Replaces centre Arthur Romano (moved to Hull FC) in the Catalans 2026 Classic pool; Catalans squad number 21.",
           "status": "already applied"
         }
       ],
@@ -242,6 +253,7 @@
         }
       ],
       "duplicatesRemoved": [],
+      "classicPoolAdditions": [],
       "notAddedOrUnverified": [
         {
           "club": "Huddersfield Giants",
@@ -420,6 +432,7 @@
       ],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
+      "classicPoolAdditions": [],
       "notAddedOrUnverified": [],
       "playableCurrentPlayers": 35
     },
@@ -546,6 +559,15 @@
         }
       ],
       "duplicatesRemoved": [],
+      "classicPoolAdditions": [
+        {
+          "club": "Hull KR",
+          "playerId": "hull-kr-cur-jack-charles",
+          "positionAbbrev": "SH",
+          "reason": "Replaces half-back Danny Richardson (moved to York) in the Hull KR 2026 Classic pool; Hull KR squad number 24.",
+          "status": "already applied"
+        }
+      ],
       "notAddedOrUnverified": [],
       "playableCurrentPlayers": 32
     },
@@ -574,6 +596,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
+      "classicPoolAdditions": [],
       "notAddedOrUnverified": [],
       "playableCurrentPlayers": 28
     },
@@ -672,6 +695,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
+      "classicPoolAdditions": [],
       "notAddedOrUnverified": [],
       "playableCurrentPlayers": 32
     },
@@ -719,6 +743,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
+      "classicPoolAdditions": [],
       "notAddedOrUnverified": [],
       "playableCurrentPlayers": 31
     },
@@ -778,6 +803,7 @@
           "status": "already applied"
         }
       ],
+      "classicPoolAdditions": [],
       "notAddedOrUnverified": [],
       "playableCurrentPlayers": 30
     },
@@ -877,6 +903,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
+      "classicPoolAdditions": [],
       "notAddedOrUnverified": [],
       "playableCurrentPlayers": 32
     },
@@ -990,6 +1017,7 @@
         }
       ],
       "duplicatesRemoved": [],
+      "classicPoolAdditions": [],
       "notAddedOrUnverified": [
         {
           "club": "Warrington Wolves",
@@ -1142,6 +1170,7 @@
       "moved": [],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
+      "classicPoolAdditions": [],
       "notAddedOrUnverified": [],
       "playableCurrentPlayers": 34
     },
@@ -1370,6 +1399,7 @@
       ],
       "movesNotApplied": [],
       "duplicatesRemoved": [],
+      "classicPoolAdditions": [],
       "notAddedOrUnverified": [
         {
           "club": "York Knights",

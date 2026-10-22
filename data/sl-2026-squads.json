@@ -248,6 +248,11 @@
       "name": "Cesar Rouge",
       "positions": "HB",
       "rating": 80
+    },
+    {
+      "name": "Matthieu Laguerre",
+      "positions": "CE",
+      "rating": 81
     }
   ],
   "Huddersfield Giants": [
@@ -499,6 +504,11 @@
       "name": "Jack Brown",
       "positions": "PF",
       "rating": 79
+    },
+    {
+      "name": "Jack Charles",
+      "positions": "SH",
+      "rating": 83
     }
   ],
   "Leeds Rhinos": [

@@ -111,7 +111,8 @@
         "catalans-cur-benjamin-garcia",
         "catalans-cur-paul-seguier",
         "catalans-cur-jordan-dezaria",
-        "catalans-cur-cesar-rouge"
+        "catalans-cur-cesar-rouge",
+        "catalans-cur-matthieu-laguerre"
       ],
       "positions": [
         "FULLBACK",
@@ -129,7 +130,8 @@
         "LOOSE_FORWARD",
         "SECOND_ROW",
         "PROP",
-        "STAND_OFF"
+        "STAND_OFF",
+        "CENTRE"
       ],
       "source": "sl-2026-squads.json",
       "isCurrentSeason": true,
@@ -251,7 +253,8 @@
         "hull-kr-cur-elliot-minchella",
         "hull-kr-cur-kelepi-tanginoa",
         "hull-kr-cur-jai-whitbread",
-        "hull-kr-cur-jack-brown"
+        "hull-kr-cur-jack-brown",
+        "hull-kr-cur-jack-charles"
       ],
       "positions": [
         "FULLBACK",
@@ -269,7 +272,8 @@
         "LOOSE_FORWARD",
         "SECOND_ROW",
         "PROP",
-        "PROP"
+        "PROP",
+        "SCRUM_HALF"
       ],
       "source": "sl-2026-squads.json",
       "isCurrentSeason": true,
