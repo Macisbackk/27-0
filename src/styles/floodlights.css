@@ -651,3 +651,9 @@ button.game-button--era,
     box-shadow: none;
   }
 }
+
+/* Game and review screens sit on the same ground as every other page (no glow or grid). */
+.matchday-arena {
+  background-color: var(--fl-ground) !important;
+  background-image: none !important;
+}
