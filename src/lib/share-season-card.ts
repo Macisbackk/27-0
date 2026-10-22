@@ -8,7 +8,7 @@ export async function captureAndShareSeasonCard(
     const dataUrl = await toPng(node, {
       cacheBust: true,
       pixelRatio: 1,
-      backgroundColor: "#121228",
+      backgroundColor: "#111214",
     });
 
     const blob = await (await fetch(dataUrl)).blob();

@@ -12,12 +12,12 @@ const config: Config = {
     extend: {
       colors: {
         pitch: {
-          // Matchnight palette: ground, surface, raised, line, strong line (ink-indigo night).
-          950: "#121228",
-          900: "#1c1b3d",
-          800: "#29275a",
-          700: "#322f6b",
-          600: "#3d3a7a",
+          // Matchnight palette: ground, surface, raised, line, strong line (charcoal).
+          950: "#111214",
+          900: "#1b1c1f",
+          800: "#26282c",
+          700: "#2f3237",
+          600: "#3a3d43",
         },
         "theme-primary": "rgb(var(--theme-primary-rgb) / <alpha-value>)",
         "theme-secondary": "rgb(var(--theme-secondary-rgb) / <alpha-value>)",

@@ -61,17 +61,17 @@ function fromTeamColors(team: TeamUiThemeColors): UiThemeDefinition {
 export const DEFAULT_UI_THEME: UiThemeDefinition = {
   id: DEFAULT_UI_THEME_ID,
   label: "Default",
-  // Neon night violet (white text reads at 4.6:1).
-  primary: "#9346ff",
-  secondary: "#b48cff",
-  tertiary: "#7a22f0",
+  // Scoreboard amber with near-black text.
+  primary: "#ffb300",
+  secondary: "#ffc23d",
+  tertiary: "#e09a00",
   textOnPrimary: "#ffffff",
   textOnSecondary: "#ffffff",
-  accent: "#9346ff",
-  accent2: "#b48cff",
-  accent3: "#7a22f0",
+  accent: "#ffb300",
+  accent2: "#ffc23d",
+  accent3: "#e09a00",
   accentText: "#ffffff",
-  glow: "rgba(147, 70, 255, 0.35)",
+  glow: "rgba(255, 179, 0, 0.35)",
 };
 
 const CLUB_THEME_NAMES = [

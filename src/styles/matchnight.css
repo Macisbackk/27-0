@@ -1,24 +1,18 @@
 /*
  * Matchnight — the 27-0 identity (v1.05).
  *
- * "Neon night": a floodlit match night in Super League's neon accents (cyan, violet, lime) on ink-indigo,
- * with squared kit-tag corners and condensed team-sheet type. Loaded last, so it wins.
- *   ground #121228 · surface #1c1b3d · raised #29275a · line rgba(190,170,255,.12)
- *   violet #9346ff actions (Store themes swap it) · cyan #3cffff the scoreboard mark and "you are here"
- *   white  text · Current mode cyan #3cffff · Era mode lime #cafa75
+ * "Scoreboard amber": a plain charcoal ground with one strong colour, the amber of the bulbs on an
+ * old ground scoreboard; squared kit-tag corners and condensed team-sheet type. Loaded last, so it wins.
+ *   ground #111214 · surface #1b1c1f · raised #26282c · line rgba(255,255,255,.07)
+ *   amber  #ffb300 actions, the scoreboard mark and "you are here" (Store themes swap the actions)
+ *   white  text · Current mode white · Era mode old gold #c9a66b
  *   type   Barlow (reading) · Barlow Condensed (headings, buttons, tags) · Anton (scores, the mark)
  *   shape  cards 6px · tiles and controls 4px · primary buttons have chamfered corners
  */
 
 :root {
-  --mn-signal: #3cffff;
-  --mn-signal-rgb: 60 255 255;
-}
-
-/* With the default theme, violet text is lifted a step so it reads on the dark cards. */
-:root:not([data-ui-theme]) .text-theme-primary,
-[data-ui-theme="default"] .text-theme-primary {
-  color: #b48cff;
+  --mn-signal: #ffb300;
+  --mn-signal-rgb: 255 179 0;
 }
 
 /* ── Ground: a faint floodlight wash from the top of the screen ──────────── */
@@ -28,7 +22,7 @@ body,
   background-color: var(--fl-ground);
 }
 .app-shell {
-  background-image: radial-gradient(120% 420px at 50% -120px, rgba(147, 70, 255, 0.10), transparent 70%);
+  background-image: radial-gradient(120% 420px at 50% -120px, rgba(255, 179, 0, 0.06), transparent 70%);
   background-repeat: no-repeat;
 }
 
@@ -57,7 +51,7 @@ body,
   display: inline-block;
   padding: 0.12em 0.2em 0.08em;
   border-radius: 3px;
-  background: #09081a;
+  background: #080809;
   box-shadow:
     inset 0 0 0 1px var(--fl-line-strong),
     inset 0 -0.5em 0.6em rgba(255, 255, 255, 0.03);
@@ -146,7 +140,7 @@ button.game-button--era,
 .game-button--era:focus-visible,
 .mn-chamfer:focus-visible {
   outline: none !important;
-  box-shadow: inset 0 0 0 3px rgba(18, 18, 40, 0.85) !important;
+  box-shadow: inset 0 0 0 3px rgba(17, 18, 20, 0.85) !important;
 }
 
 a.game-button--secondary,
@@ -185,7 +179,7 @@ button.game-button--secondary,
   border-radius: 3px;
 }
 
-/* ── Phone tab bar: docked to the bottom, a cyan bar marks the tab you're on ── */
+/* ── Phone tab bar: docked to the bottom, an amber bar marks the tab you're on ── */
 .fl-bottom-nav {
   left: 0;
   right: 0;
@@ -194,7 +188,7 @@ button.game-button--secondary,
   padding: 0 6px env(safe-area-inset-bottom);
   border-radius: 0;
   border-top: 1px solid var(--fl-line);
-  background: rgba(18, 18, 40, 0.97);
+  background: rgba(17, 18, 20, 0.97);
   box-shadow: none;
 }
 .fl-bottom-nav a {
@@ -221,7 +215,7 @@ button.game-button--secondary,
 
 /* ── Header ────────────────────────────────────────────────────────────── */
 .app-header {
-  background: rgba(18, 18, 40, 0.97) !important;
+  background: rgba(17, 18, 20, 0.97) !important;
 }
 
 /* ── Inputs ───────────────────────────────────────────────────────────── */
@@ -230,7 +224,7 @@ button.game-button--secondary,
 }
 
 /* ── Home: mode plates ─────────────────────────────────────────────────── */
-/* A coloured top edge says which game a plate belongs to (violet Manager, cyan Classic, lime Era). */
+/* A coloured top edge says which game a plate belongs to (amber Manager, white Classic, old-gold Era). */
 .mn-edge {
   position: relative;
   overflow: hidden;
@@ -254,7 +248,7 @@ button.game-button--secondary,
   --mn-edge: var(--fl-line-strong);
 }
 
-/* Today's fixture: the Daily card has a cyan touchline down its left side. */
+/* Today's fixture: the Daily card has an amber touchline down its left side. */
 .mn-fixture {
   position: relative;
   overflow: hidden;
