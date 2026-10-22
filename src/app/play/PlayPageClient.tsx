@@ -31,6 +31,8 @@ export function PlayPageClient() {
   // Ball Knower (Store): Classic with every rating hidden. null = still checking ownership.
   const wantsBallKnower = searchParams.get("bk") === "1" && daily !== "1";
   const [ballKnower, setBallKnower] = useState<boolean | null>(wantsBallKnower ? null : false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   useEffect(() => {
     if (!wantsBallKnower) {
       setBallKnower(false);
@@ -92,7 +94,9 @@ export function PlayPageClient() {
   const difficulty: GameDifficulty = ballKnower ? "HARD" : "NORMAL";
   const mode: GameMode = "CLASSIC";
 
-  if (ballKnower === null) return <p className="p-6 text-center text-pitch-400">Loading…</p>;
+  // The board reads saved runs and Store boosts from this device on its first render; the server
+  // can't, so render it only once mounted (otherwise React hydration error #418 on /play).
+  if (!mounted || ballKnower === null) return <p className="p-6 text-center text-pitch-400">Loading…</p>;
 
   const title = ballKnower
     ? `Ball Knower · ${wantsNormalEra ? "Era" : "Current"}`

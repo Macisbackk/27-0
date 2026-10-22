@@ -8,6 +8,7 @@ import { GameBadge } from "@/components/ui/GameBadge";
 import type { AchievementUnlockResult } from "@/lib/achievements/achievementEngine";
 import { formatClubFunds } from "@/lib/club-funds";
 import { playAchievementUnlock } from "@/lib/sound";
+import { useModalA11y } from "@/hooks/useModalA11y";
 
 /** Prevents the opening pointer event from instantly dismissing the overlay. */
 const OVERLAY_ARM_MS = 650;
@@ -39,6 +40,9 @@ export function AchievementUnlockedPopup({
     return () => window.clearTimeout(timer);
   }, [result]);
 
+  // Escape dismisses, focus moves to the button (Tab stays inside).
+  const panelRef = useModalA11y(Boolean(result), onDismiss);
+
   const titleId = result
     ? `achievement-popup-title-${result.unlockEventId || result.id}`
     : "achievement-popup-title";
@@ -63,7 +67,9 @@ export function AchievementUnlockedPopup({
             }}
           >
             <motion.div
-              className="achievement-popup-card"
+              ref={panelRef}
+              tabIndex={-1}
+              className="achievement-popup-card outline-none"
               initial={{ y: 16, scale: 0.98 }}
               animate={{ y: 0, scale: 1 }}
               exit={{ y: 10, scale: 0.99 }}

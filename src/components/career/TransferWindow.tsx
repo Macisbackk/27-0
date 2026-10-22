@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { useArmed } from "@/hooks/useArmed";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import {
   SQUAD_MAX,
@@ -34,6 +35,7 @@ const ERROR_TEXT: Record<TransferError, string> = {
 
 export function TransferWindow({ midseason = false, onClose }: { midseason?: boolean; onClose?: () => void } = {}) {
   const { state, market, buy, sell, finishTransfers } = useCareer();
+  const armed = useArmed();
   const [tab, setTab] = useState<"buy" | "sell">("buy");
   const [message, setMessage] = useState<string | null>(null);
   const s = state!;
@@ -181,6 +183,7 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
           ) : (
             <GameButton
               size="lg"
+              disabled={!armed}
               onClick={() => {
                 playSeasonStart();
                 finishTransfers();

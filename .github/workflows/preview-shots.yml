@@ -36,6 +36,8 @@ jobs:
           node scripts/preview-shots.mjs
           # Manager Mode break run (report only: preview-shots/manager-break.txt).
           [ -f scripts/manager-break.mjs ] && (timeout 600 node scripts/manager-break.mjs || true)
+          # Popup audit (report only: preview-shots/popup-audit.txt).
+          [ -f scripts/popup-audit.mjs ] && (timeout 400 node scripts/popup-audit.mjs || true)
       - name: Publish
         run: |
           name="${GITHUB_REF_NAME#preview/}"

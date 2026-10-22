@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { BodyPortal } from "@/components/ui/BodyPortal";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import { DIVISION_LABEL, formatMoney, type CareerState } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playUiClick } from "@/lib/sound";
@@ -48,7 +49,10 @@ export function CareerTutorial({ onTab }: { onTab: (tab: "match" | "team" | "tab
   const { state, finishTutorial } = useCareer();
   const [i, setI] = useState(0);
   const s = state;
-  if (!s || s.tutorialDone || s.seasonNumber !== 1 || s.matchdayIndex !== 0 || s.phase !== "season") return null;
+  const open = !!s && !s.tutorialDone && s.seasonNumber === 1 && s.matchdayIndex === 0 && s.phase === "season";
+  // Escape skips the walkthrough; focus moves into it so keyboard users land on its buttons.
+  const panelRef = useModalA11y(open, finishTutorial);
+  if (!open || !s) return null;
   const list = steps(s);
   const step = list[i]!;
   const last = i === list.length - 1;
@@ -66,7 +70,9 @@ export function CareerTutorial({ onTab }: { onTab: (tab: "match" | "team" | "tab
           role="dialog"
           aria-modal="true"
           aria-label="Manager Mode walkthrough"
-          className="mobile-bottom-sheet w-full max-w-md rounded-card bg-pitch-900 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl"
+          ref={panelRef}
+          tabIndex={-1}
+          className="mobile-bottom-sheet outline-none w-full max-w-md rounded-card bg-pitch-900 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl"
           style={{ height: "auto" }}
         >
           <div className="flex items-center gap-3">

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { useArmed } from "@/hooks/useArmed";
 import { contractLabel, formatMoney, newDealLength, renewalFee } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playUiClick, playWarning } from "@/lib/sound";
@@ -14,6 +15,7 @@ import { Card, Eyebrow, RatingPill } from "./bits";
 export function Departures() {
   const { state, renew, release, finishDepartures } = useCareer();
   const [error, setError] = useState<string | null>(null);
+  const armed = useArmed();
   const s = state!;
   const d = s.departures;
   const expiring = (d?.expiring ?? []).map((id) => s.players[id]).filter((p): p is NonNullable<typeof p> => !!p);
@@ -143,6 +145,7 @@ export function Departures() {
         <div className="mobile-action-bar__inner">
           <GameButton
             size="lg"
+            disabled={!armed}
             onClick={() => {
               playUiClick();
               finishDepartures();

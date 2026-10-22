@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { useArmed } from "@/hooks/useArmed";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
 import {
   clubRating,
@@ -86,6 +87,27 @@ export function ResultCard({ state, fixture, title }: { state: CareerState; fixt
   );
 }
 
+/** The one button that moves past a stage. Arms after mount so a double tap can't fall through. */
+function StageBar({ label, onClick }: { label: string; onClick: () => void }) {
+  const armed = useArmed();
+  return (
+    <div className="mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
+      <div className="mobile-action-bar__inner flex flex-col gap-2">
+        <GameButton
+          size="lg"
+          disabled={!armed}
+          onClick={() => {
+            playUiClick();
+            onClick();
+          }}
+        >
+          {label}
+        </GameButton>
+      </div>
+    </div>
+  );
+}
+
 export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
   const { state, play, playLive, setTactic, passStage } = useCareer();
   const [busy, setBusy] = useState(false);
@@ -157,21 +179,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
   }
 
   // One stage at a time: nothing from the next stage shows until this one is done.
-  const stageBar = (label: string, onClick: () => void) => (
-    <div className="mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
-      <div className="mobile-action-bar__inner flex flex-col gap-2">
-        <GameButton
-          size="lg"
-          onClick={() => {
-            playUiClick();
-            onClick();
-          }}
-        >
-          {label}
-        </GameButton>
-      </div>
-    </div>
-  );
+  const stageBar = (label: string, onClick: () => void) => <StageBar key={`${stage}-${label}`} label={label} onClick={onClick} />;
 
   if (stage === "preseason") {
     return (
