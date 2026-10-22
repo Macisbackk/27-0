@@ -12,7 +12,7 @@ fs.mkdirSync(OUT, { recursive: true });
 const lines = [];
 const browser = await chromium.launch();
 for (const base of targets) {
-  for (const width of [375, 320, 375]) {
+  for (const width of (process.env.PROBE_WIDTHS || "375,320,375").split(",").map(Number)) {
     const context = await browser.newContext({ viewport: { width, height: 812 }, isMobile: true, hasTouch: true });
     const page = await context.newPage();
     let where = "";
@@ -20,7 +20,7 @@ for (const base of targets) {
     page.on("console", (m) => {
       if (m.type() === "error" || /hydrat/i.test(m.text())) lines.push(`[${base} @${width} ${where}] console.${m.type()}: ${m.text().slice(0, 4000)}`);
     });
-    for (const route of ["/", "/play", "/play?era=1", "/play?daily=1", "/manager"]) {
+    for (const route of ["/", "/play", "/play?era=1", "/play?daily=1", "/manager", "/play"]) {
       where = route;
       await page.goto(base + route, { waitUntil: "domcontentloaded", timeout: 120000 }).catch((e) => lines.push(`nav ${route}: ${e}`));
       await page.waitForLoadState("networkidle").catch(() => {});

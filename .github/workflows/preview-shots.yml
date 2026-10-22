@@ -38,11 +38,17 @@ jobs:
           [ -f scripts/manager-break.mjs ] && (timeout 600 node scripts/manager-break.mjs || true)
           # Popup audit (report only: preview-shots/popup-audit.txt).
           [ -f scripts/popup-audit.mjs ] && (timeout 400 node scripts/popup-audit.mjs || true)
-          # Hydration probe against prod and a dev server (full React messages).
+          # Hydration probe: prod first, then a dev server (full React messages) from a copy of the
+          # repo so its .next folder doesn't clobber the prod build.
           if [ -f scripts/hydration-probe.mjs ]; then
-            (npx next dev -p 3100 > /tmp/next-dev.log 2>&1 &)
-            for i in $(seq 1 90); do curl -sf http://localhost:3100/ > /dev/null && break; sleep 2; done
-            PROBE_TARGETS=http://localhost:3000,http://localhost:3100 timeout 500 node scripts/hydration-probe.mjs || true
+            PROBE_TARGETS=http://localhost:3000 timeout 300 node scripts/hydration-probe.mjs || true
+            mv preview-shots/hydration-probe.txt preview-shots/hydration-probe-prod.txt || true
+            mkdir -p /tmp/devcopy && rsync -a --exclude .next --exclude node_modules --exclude preview-shots ./ /tmp/devcopy/ && ln -s "$PWD/node_modules" /tmp/devcopy/node_modules
+            (cd /tmp/devcopy && npx next dev -p 3100 > /tmp/next-dev.log 2>&1 &)
+            for i in $(seq 1 120); do curl -sf http://localhost:3100/ > /dev/null && break; sleep 2; done
+            PROBE_TARGETS=http://localhost:3100 PROBE_WIDTHS=375 timeout 600 node scripts/hydration-probe.mjs || true
+            mv preview-shots/hydration-probe.txt preview-shots/hydration-probe-dev.txt || true
+            tail -50 /tmp/next-dev.log > preview-shots/next-dev-tail.txt || true
           fi
       - name: Publish
         run: |
