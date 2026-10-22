@@ -62,35 +62,6 @@
     "birthYear": 2003
   },
   {
-    "id": "hull-kr-cur-danny-richardson",
-    "name": "Danny Richardson",
-    "club": "Hull KR",
-    "currentClub": "Hull KR",
-    "teamYearId": "hull-kr-2026",
-    "year": 2026,
-    "status": "Current",
-    "position": "STAND_OFF",
-    "positions": [
-      "STAND_OFF",
-      "SCRUM_HALF"
-    ],
-    "positionAbbrev": "HB",
-    "nationality": "England",
-    "era": "CONTEMPORARY_ERA",
-    "yearsActive": "2026–Present",
-    "category": "current",
-    "peakRating": 80,
-    "value": 95000,
-    "cardYear": 2026,
-    "team": "Hull KR",
-    "displayClub": "Hull KR",
-    "basePlayerId": "hull-kr-cur-danny-richardson",
-    "primaryPosition": "HB",
-    "birthYear": 1996,
-    "availableInGame": true,
-    "superLeagueEligible": true
-  },
-  {
     "id": "hull-kr-cur-dean-hadley",
     "name": "Dean Hadley",
     "position": "SECOND_ROW",

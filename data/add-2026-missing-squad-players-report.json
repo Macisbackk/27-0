@@ -1,0 +1,369 @@
+{
+  "generatedAt": "2026-10-22T08:32:41.954Z",
+  "script": "scripts/add-2026-missing-squad-players.ts",
+  "method": [
+    "Squad lists: Love Rugby League club-by-club 2026 squad numbers (28 Jan 2026), cross-checked per club.",
+    "Missing = on a 2026 squad list but no Current card with the same normalised name (normalizePlayerNameKey).",
+    "Position, nationality and date of birth from the cited source; nationalityBasis says when nationality is inferred from an English junior/academy pathway.",
+    "Ratings on the 2026 Current scale (80 floor): academy/fringe 80, experienced depth 81, never above an established starter at the same club. Existing ratings untouched.",
+    "Classic Current spins draw from the fixed 17-man 2026 pools (current-team-year-squads-2026.json), so depth rows appear in Manager Mode, Wordle/Grid and the global recruitment pools, not in the 17-man Classic spin pools."
+  ],
+  "totals": {
+    "added": 11,
+    "moved": 1,
+    "unverified": 3,
+    "movesNotApplied": 1
+  },
+  "clubs": {
+    "Bradford Bulls": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [],
+      "unverified": [],
+      "playableCurrentPlayers": 28
+    },
+    "Castleford Tigers": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [],
+      "unverified": [],
+      "playableCurrentPlayers": 27
+    },
+    "Catalans Dragons": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [],
+      "unverified": [],
+      "playableCurrentPlayers": 33
+    },
+    "Huddersfield Giants": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [
+        {
+          "club": "Huddersfield Giants",
+          "name": "Matty English",
+          "existingId": "huddersfield-cur-matty-english",
+          "reason": "Left Huddersfield for York on 29 July 2026 for the rest of the season. Kept at Huddersfield (his club for most of 2026 and part of their 16-man 2026 Classic pool, which cannot drop below 16).",
+          "sources": [
+            "https://www.giantsrl.com/article/10027/english-departs",
+            "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+          ]
+        }
+      ],
+      "unverified": [],
+      "playableCurrentPlayers": 26
+    },
+    "Hull FC": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [],
+      "unverified": [],
+      "playableCurrentPlayers": 26
+    },
+    "Hull KR": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [],
+      "unverified": [],
+      "playableCurrentPlayers": 26
+    },
+    "Leeds Rhinos": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [],
+      "unverified": [],
+      "playableCurrentPlayers": 27
+    },
+    "Leigh Leopards": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [],
+      "unverified": [],
+      "playableCurrentPlayers": 27
+    },
+    "St Helens": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [],
+      "unverified": [],
+      "playableCurrentPlayers": 29
+    },
+    "Toulouse Olympique": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [],
+      "unverified": [],
+      "playableCurrentPlayers": 28
+    },
+    "Wakefield Trinity": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [],
+      "unverified": [],
+      "playableCurrentPlayers": 27
+    },
+    "Warrington Wolves": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [],
+      "unverified": [],
+      "playableCurrentPlayers": 26
+    },
+    "Wigan Warriors": {
+      "squadListSources": [],
+      "added": [],
+      "moved": [],
+      "movesNotApplied": [],
+      "unverified": [],
+      "playableCurrentPlayers": 27
+    },
+    "York Knights": {
+      "squadListSources": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/york-knights-unveil-squad-numbers-with-seven-new-signings-in-starting-17",
+        "https://rugbyleaguezone.com/york-knights-2026-squad-numbers-424266/",
+        "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+      ],
+      "added": [
+        {
+          "name": "John Sagaga",
+          "id": "york-cur-john-sagaga",
+          "squadNumber": 22,
+          "position": "PROP",
+          "rating": 80,
+          "nationality": "Australia",
+          "nationalityBasis": "source",
+          "birthYear": 2003,
+          "status": "squad-number list",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.yorkrlfc.com/knights-squad-1/22",
+            "https://www.loverugbyleague.com/post/york-sign-john-sagaga-ahead-of-2026"
+          ],
+          "notes": "Club profile DOB 10/06/03; LRL (Nov 2025) called him a 21-year-old Australian prop."
+        },
+        {
+          "name": "Jack Smith",
+          "id": "york-cur-jack-smith",
+          "squadNumber": 25,
+          "position": "WING",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": 2005,
+          "status": "squad-number list",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.yorkrlfc.com/knights-squad-1/25"
+          ],
+          "notes": "Ex-Featherstone Lions junior and Leeds Rhinos academy."
+        },
+        {
+          "name": "Matty Foster",
+          "id": "york-cur-matty-foster",
+          "squadNumber": 27,
+          "position": "SECOND_ROW",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (born St Helens, England — Wikipedia)",
+          "birthYear": 2001,
+          "status": "squad-number list",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.yorkrlfc.com/knights-squad-1/27",
+            "https://en.wikipedia.org/wiki/Matty_Foster"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Ryan Jackson",
+          "id": "york-cur-ryan-jackson",
+          "squadNumber": 28,
+          "position": "PROP",
+          "rating": 80,
+          "nationality": "Australia",
+          "nationalityBasis": "source (club profile: 'Australian forward')",
+          "birthYear": 2004,
+          "status": "squad-number list",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.yorkrlfc.com/knights-squad-1/28"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Will Roberts",
+          "id": "york-cur-will-roberts",
+          "squadNumber": 38,
+          "position": "SCRUM_HALF",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": 2005,
+          "status": "squad-number list",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.yorkrlfc.com/knights-squad-1/38"
+          ],
+          "notes": "Club profile: half-back, at St Helens from age 14."
+        },
+        {
+          "name": "Taylor Pemberton",
+          "id": "york-cur-taylor-pemberton",
+          "squadNumber": 40,
+          "position": "HOOKER",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": 2003,
+          "status": "squad-number list",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.yorkrlfc.com/knights-squad-1/40"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Mitch Clark",
+          "id": "york-cur-mitch-clark",
+          "squadNumber": 41,
+          "position": "PROP",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (born Pontefract, England — Wikipedia)",
+          "birthYear": 1993,
+          "status": "squad-number list",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://en.wikipedia.org/wiki/Mitch_Clark_(rugby_league)",
+            "https://www.yorkrlfc.com/post/mitch-clark-becomes-a-knight"
+          ],
+          "notes": "Spent part of 2026 on loan at Newcastle Thunder (Wikipedia)."
+        },
+        {
+          "name": "David Nofoaluma",
+          "id": "york-cur-david-nofoaluma",
+          "squadNumber": 46,
+          "position": "WING",
+          "rating": 81,
+          "nationality": "Serbia",
+          "nationalityBasis": "source (Serbia international since 2024; York 2026 season page lists SRB)",
+          "birthYear": 1993,
+          "status": "loan (Newcastle Thunder) — joined Feb 2026 after Halifax were liquidated",
+          "sources": [
+            "https://en.wikipedia.org/wiki/David_Nofoaluma",
+            "https://en.wikipedia.org/wiki/2026_York_Knights_season",
+            "https://news.ssbcrack.com/york-knights-announce-21-player-squad-for-magic-weekend-clash-against-huddersfield-giants/"
+          ],
+          "notes": null
+        },
+        {
+          "name": "King Vuniyayawa",
+          "id": "york-cur-king-vuniyayawa",
+          "squadNumber": null,
+          "position": "PROP",
+          "rating": 80,
+          "nationality": "Fiji",
+          "nationalityBasis": "source (Fiji international)",
+          "birthYear": 1995,
+          "status": "loan (Newcastle Thunder) — 5 York appearances in 2026",
+          "sources": [
+            "https://en.wikipedia.org/wiki/King_Vuniyayawa",
+            "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Cody Hunter",
+          "id": "york-cur-cody-hunter",
+          "squadNumber": 37,
+          "position": "SCRUM_HALF",
+          "rating": 80,
+          "nationality": "Australia",
+          "nationalityBasis": "source (LRL: Australian half-back)",
+          "birthYear": null,
+          "status": "loan (Newcastle Thunder)",
+          "sources": [
+            "https://news.ssbcrack.com/york-knights-announce-21-player-squad-for-magic-weekend-clash-against-huddersfield-giants/",
+            "https://www.loverugbyleague.com/post/queensland-cup-star-cody-hunter-makes-championship-move-for-2026"
+          ],
+          "notes": "No published date of birth found."
+        },
+        {
+          "name": "Tom Inman",
+          "id": "york-cur-tom-inman",
+          "squadNumber": 48,
+          "position": "HOOKER",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (York 2026 season page lists ENG)",
+          "birthYear": null,
+          "status": "loan (Newcastle Thunder) after Halifax were liquidated",
+          "sources": [
+            "https://news.ssbcrack.com/york-knights-announce-21-player-squad-for-magic-weekend-clash-against-huddersfield-giants/",
+            "https://en.wikipedia.org/wiki/2026_York_Knights_season",
+            "https://www.yorkrlfc.com/post/inman-signs-permanent-deal-to-end-of-season"
+          ],
+          "notes": "No published date of birth found."
+        }
+      ],
+      "moved": [
+        {
+          "name": "Danny Richardson",
+          "fromId": "hull-kr-cur-danny-richardson",
+          "toClub": "York Knights",
+          "reason": "Permanent move from Hull KR to York for 2026 (York squad number 19); loaned to Widnes from June 2026.",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.loverugbyleague.com/post/danny-richardsons-first-words-as-permanent-york-move-confirmed",
+            "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+          ],
+          "toId": "york-cur-danny-richardson",
+          "status": "already applied"
+        }
+      ],
+      "movesNotApplied": [],
+      "unverified": [
+        {
+          "club": "York Knights",
+          "name": "Myles Harrison",
+          "reason": "Listed as a loan from Newcastle Thunder on the York 2026 season page, but no York appearance, squad number or position found.",
+          "sources": [
+            "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+          ]
+        },
+        {
+          "club": "York Knights",
+          "name": "Thomas Doyle",
+          "reason": "York 2026 season page lists a Thomas Doyle signing from Castleford (August, two-year deal); could not confirm identity/position or whether this is Wakefield's Tommy Doyle.",
+          "sources": [
+            "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+          ]
+        },
+        {
+          "club": "York Knights",
+          "name": "Harvey Reynolds",
+          "reason": "Mentioned as injured in a York squad article; no squad number, position or contract source found.",
+          "sources": [
+            "https://news.ssbcrack.com/york-knights-announce-21-player-squad-for-magic-weekend-clash-against-huddersfield-giants/"
+          ]
+        }
+      ],
+      "playableCurrentPlayers": 34
+    }
+  },
+  "skippedAlreadyPresent": []
+}

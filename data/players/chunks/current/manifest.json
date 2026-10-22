@@ -40,7 +40,7 @@
       "club": "Hull KR",
       "slug": "hull-kr",
       "file": "hull-kr.json",
-      "count": 27
+      "count": 26
     },
     {
       "club": "Leeds Rhinos",
@@ -124,7 +124,7 @@
       "club": "York Knights",
       "slug": "york-knights",
       "file": "york-knights.json",
-      "count": 22
+      "count": 34
     }
   ]
 }

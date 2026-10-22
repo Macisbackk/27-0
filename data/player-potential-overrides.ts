@@ -93,7 +93,7 @@ export const PLAYER_POTENTIAL_OVERRIDES: Record<string, number> = {
   "leigh-cur-owen-trout": 83,
   "warrington-cur-joe-philbin": 80,
   "bradford-cur-jayden-nikorima": 86,
-  "hull-kr-cur-danny-richardson": 80,
+  "york-cur-danny-richardson": 80,
   "york-cur-ata-hingano": 83,
   "leeds-cur-james-bentley": 80,
   "bradford-cur-ed-chamberlain": 82,

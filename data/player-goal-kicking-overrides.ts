@@ -26,7 +26,7 @@ export const PLAYER_GOAL_KICKING_OVERRIDES: Record<string, number> = {
 
   // ─── Hull KR ─────────────────────────────────────────────────────────
   "hull-kr-cur-rhyse-martin": 94, // primary 2026 tee (second-row specialist)
-  "hull-kr-cur-danny-richardson": 90,
+  "york-cur-danny-richardson": 90,
   "hull-kr-cur-mikey-lewis": 82,
   "hull-kr-cur-tyrone-may": 70,
   "hull-kr-cur-jack-charles": 62,

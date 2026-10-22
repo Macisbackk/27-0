@@ -90,7 +90,7 @@ export const PLAYER_RATING_OVERRIDES: Record<string, number> = {
   "leigh-cur-owen-trout": 83,
   "warrington-cur-joe-philbin": 80,
   "bradford-cur-jayden-nikorima": 84,
-  "hull-kr-cur-danny-richardson": 80,
+  "york-cur-danny-richardson": 80,
   "york-cur-ata-hingano": 83,
   "leeds-cur-james-bentley": 80,
   "hull-kr-cur-jack-brown": 80,
