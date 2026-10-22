@@ -83,7 +83,7 @@ export function PlayPageClient() {
     : wantsJoeMellor
       ? "Joe Mellor GOAT Mode"
       : isDaily && dailyScenario
-        ? `Daily${dailyScenario.eraMode ? " Era" : ""} · All ${dailyScenario.forceOpponentClub}`
+        ? `Daily: ${dailyScenario.forceOpponentClub}`
         : getPlayPageTitle(mode, difficulty, wantsNormalEra);
 
   return (

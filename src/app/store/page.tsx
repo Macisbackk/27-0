@@ -10,7 +10,7 @@ export default function StorePage() {
     <StandardPageShell>
       <div className={PAGE.section}>
         <header className="text-center">
-          <p className={TYPO.sectionLabel}>Club Shop</p>
+          <p className={TYPO.sectionLabel}>Club Funds</p>
           <h1 className={`mt-2 ${TYPO.pageTitle}`}>Store</h1>
           <p className="mx-auto mt-3 max-w-md text-sm text-gray-500">
             Themes and boosts.

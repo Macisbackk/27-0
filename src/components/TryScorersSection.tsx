@@ -111,7 +111,7 @@ export function TryScorersSection({
             className={`mt-3 w-full ${BTN.base} ${BTN.accentOutline} !min-h-[40px] text-[10px]`}
             aria-expanded={expanded}
           >
-            {expanded ? "Collapse All" : "View All Try Scorers"}
+            {expanded ? "Collapse all" : "All try scorers"}
           </button>
 
           <AnimatePresence initial={false}>

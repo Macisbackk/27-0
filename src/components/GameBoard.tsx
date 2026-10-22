@@ -61,7 +61,7 @@ import {
 } from "@/lib/positions";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
-import { mergeClubFundsPayouts } from "@/lib/club-funds";
+import { formatClubFunds, mergeClubFundsPayouts } from "@/lib/club-funds";
 import {
   claimDailyChallengeAttempt,
   getDailyChallengeDateKey,
@@ -508,7 +508,7 @@ export function GameBoard({
         !isQmSelectionBoostAllowedInMode(resolvedBoostId, normalEraMode)
       ) {
         setBoostNotice(
-          "Legend Player boost can only be used in Era Mode."
+          "Legend Player boost can only be used in Era Classic."
         );
         resolvedBoostId = null;
       }
@@ -2349,7 +2349,7 @@ export function GameBoard({
       );
       if (!result) {
         setRecruitNotice(
-          "Autofill failed — not enough players."
+          "Auto-fill failed: not enough players."
         );
         return;
       }
@@ -2464,11 +2464,16 @@ export function GameBoard({
       >
       {!isReviewPhase && (title || subtitle || dailyScenario) && (
         <div className="mb-4 pt-1 text-center sm:mb-5 lg:pt-0">
+          {dailyScenario ? (
+            <p className={`mb-1 ${TYPO.eyebrow} text-accent-gold`}>
+              Daily Challenge{dailyScenario.eraMode ? " · Era" : ""}
+            </p>
+          ) : null}
           <div className="flex flex-wrap items-center justify-center gap-3">
             {title && (
               <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>
                 {dailyScenario
-                  ? `Daily${dailyScenario.eraMode ? " Era" : ""} · All ${dailyScenario.forceOpponentClub}`
+                  ? `Daily: ${dailyScenario.forceOpponentClub}`
                   : title}
               </h1>
             )}
@@ -2476,7 +2481,7 @@ export function GameBoard({
           {dailyScenario ? (
             <p className="mt-1 text-sm text-gray-400">
               {dailyAttemptCounts
-                ? "League Leaders + Grand Final bonuses · one attempt per day"
+                ? `Top the table +${formatClubFunds(dailyScenario.leagueLeadersBonus)} · Win the Grand Final +${formatClubFunds(dailyScenario.playoffTitleBonus)}`
                 : "Practice run — today's Daily attempt is used"}
             </p>
           ) : subtitle ? (
@@ -2570,7 +2575,7 @@ export function GameBoard({
                 fullWidth={false}
                 onClick={continueWithoutArmedBoost}
               >
-                Continue without boost
+                Skip boost
               </GameButton>
               <GameButton
                 variant="theme"
@@ -2592,7 +2597,7 @@ export function GameBoard({
             transition={{ duration: 0.35 }}
           >
             <p className={`${TYPO.sectionLabel} text-accent-gold`}>
-              SUPER SAM HALLAS MODE ACTIVATED
+              Super Sam Hallas Mode activated
             </p>
           </motion.div>
         )}
@@ -2605,7 +2610,7 @@ export function GameBoard({
             transition={{ duration: 0.35 }}
           >
             <p className={`${TYPO.sectionLabel} text-accent-gold`}>
-              GOAT MODE ACTIVATED
+              GOAT Mode activated
             </p>
           </motion.div>
         )}
@@ -2830,7 +2835,7 @@ export function GameBoard({
                 disabled={choosing || hideActionBar}
                 className="min-h-[var(--mobile-tap-target)] flex-1 px-3 text-xs"
               >
-                Auto Fill Squad
+                Auto-fill squad
               </GameButton>
             )}
             {phase === "pitch" && filledCount >= TOTAL_SLOTS && (
@@ -2842,7 +2847,7 @@ export function GameBoard({
                 disabled={hideActionBar}
                 className="min-h-[var(--mobile-tap-target)] flex-1 px-3 text-xs"
               >
-                Simulate Season
+                Simulate season
               </GameButton>
             )}
         </StickyActionBar>

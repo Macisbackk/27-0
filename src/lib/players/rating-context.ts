@@ -8,7 +8,7 @@ export type PlayerRatingContext =
   | "historic-peak"
   | "legend";
 
-export const ERA_RATING_EXPLANATION = "Era ratings = that season.";
+export const ERA_RATING_EXPLANATION = "Ratings based on that season's form.";
 
 export const ERA_RATING_COMPACT_EXPLANATION = UI_COPY.eraRatingNote;
 
@@ -18,7 +18,7 @@ export function getCurrentSeasonYearNumber(): number {
 }
 
 export function getCurrentRatingExplanation(): string {
-  return "Current ratings = this season.";
+  return `Ratings based on ${getCurrentSeasonYearNumber()} form.`;
 }
 
 export function getCurrentRatingCompactExplanation(): string {
@@ -28,7 +28,7 @@ export function getCurrentRatingCompactExplanation(): string {
 export function getCurrentRatingSupportText(
   year: number = getCurrentSeasonYearNumber()
 ): string {
-  return `Based on the player’s performances and ability during the ${year} season.`;
+  return `Based on the player's performances and ability during the ${year} season.`;
 }
 
 const RATING_LABELS: Record<PlayerRatingContext, string> = {
@@ -68,5 +68,5 @@ export function getPlayerRatingContext(
 }
 
 export function getSeasonRatingSupportText(year: number): string {
-  return `Based on this player’s ability and performances during ${year}.`;
+  return `Based on this player's ability and performances during ${year}.`;
 }

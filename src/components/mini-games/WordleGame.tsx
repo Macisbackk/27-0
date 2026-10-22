@@ -287,7 +287,7 @@ export function WordleGame() {
       <MiniGameRewardPopup
         open={rewardOpen}
         amount={WORDLE_WIN_REWARD}
-        detail="Today's Wordle reward — one per day."
+        detail="One reward per day. Resets at midnight UK time."
         onClose={() => setRewardOpen(false)}
       />
       <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">

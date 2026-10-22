@@ -132,12 +132,12 @@ try {
   step("Club tab + Legend Vault");
 
   await page.getByRole("tab", { name: "Match" }).click();
-  await clickButton("Sim season");
+  await clickButton("Simulate season");
   await page.getByText(/season review/i).first().waitFor({ timeout: 60_000 });
   step("Simulated the season → review screen");
   await shot("review");
 
-  await clickButton("Open the transfer window");
+  await clickButton("Go to transfers");
   await page.getByRole("heading", { name: "Build your squad" }).waitFor({ timeout });
   await shot("transfers");
   await page.getByRole("tab", { name: "Sell" }).click();
@@ -147,7 +147,7 @@ try {
   await page.getByRole("status").filter({ hasText: /Sold/ }).waitFor({ timeout });
   step("Transfer window: sold a player");
 
-  await clickButton(/Start the \d{4} season/);
+  await clickButton(/Start (the )?\d{4} season/);
   await page.getByRole("button", { name: "Play match" }).waitFor({ timeout });
   const headerText = await page.locator("header").filter({ hasText: /2027/ }).count();
   if (!headerText) throw new Error("Second season header did not show 2027");

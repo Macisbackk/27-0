@@ -13,7 +13,7 @@ import {
   WORDLE_WIN_REWARD,
 } from "@/lib/mini-games/rewards";
 import { CLUB_FUNDS_CHANGED_EVENT, getPaidRunIds } from "@/lib/storage/club-funds";
-import { formatClubFunds } from "@/lib/club-funds";
+import { formatClubFunds, formatClubFundsExact } from "@/lib/club-funds";
 
 type GameId = "quiz" | "wordle" | "hangman" | "higher-lower";
 
@@ -49,7 +49,7 @@ const GAMES: {
     href: "/mini-games/hangman",
     title: "Rugby League Hangman",
     blurb: "A daily player name. Eight lives.",
-    reward: `${formatClubFunds(HANGMAN_WIN_REWARD)} a day`,
+    reward: `${formatClubFunds(HANGMAN_WIN_REWARD)} per daily puzzle`,
     glyph: "A_",
     accent: "from-sky-400/25 to-sky-500/5 text-sky-300 border-sky-400/40",
   },
@@ -57,8 +57,8 @@ const GAMES: {
     id: "higher-lower",
     href: "/mini-games/higher-lower",
     title: "Higher or Lower",
-    blurb: "Five ratings calls in a row.",
-    reward: `${formatClubFunds(HIGHER_LOWER_FIVE_REWARD)} a day`,
+    blurb: "Call five player ratings in a row.",
+    reward: `${formatClubFundsExact(HIGHER_LOWER_FIVE_REWARD)} a day`,
     glyph: "↕",
     accent: "from-rose-400/25 to-rose-500/5 text-rose-300 border-rose-400/40",
   },

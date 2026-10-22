@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PlayPageClient } from "./PlayPageClient";
+
+export const metadata: Metadata = {
+  title: "Classic — 27-0",
+  description: "Spin real 2026 or historic Super League squads, build a 13 and chase 27-0.",
+};
 
 /**
  * Play entry — query-param gating runs client-side so static export

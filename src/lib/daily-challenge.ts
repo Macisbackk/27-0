@@ -329,6 +329,22 @@ export function claimDailyChallengeAttempt(runId: string, date = new Date()): bo
   }
 }
 
+/**
+ * True when today's counted Daily attempt has already been started (read-only — never claims).
+ * Later runs today are practice and can't earn the Daily bonuses.
+ */
+export function getDailyChallengeAttemptUsed(date = new Date()): boolean {
+  if (typeof window === "undefined") return false;
+  const key = todayKey(date);
+  try {
+    const raw = localStorage.getItem(DAILY_ATTEMPT_KEY);
+    const stored = raw ? (JSON.parse(raw) as { date?: unknown; runId?: unknown }) : null;
+    return Boolean(stored && stored.date === key && typeof stored.runId === "string");
+  } catch {
+    return false;
+  }
+}
+
 export function getDailyChallengeProgress(date = new Date()): DailyProgress {
   return loadProgressMap()[todayKey(date)] ?? {};
 }
@@ -366,4 +382,16 @@ export function getDailyChallengeTotalBonus(
   scenario: DailyChallengeScenario
 ): number {
   return scenario.leagueLeadersBonus + scenario.playoffTitleBonus;
+}
+
+/** Smallest Daily bonuses across every scenario (Current and Era) — for "from £Xk" copy. */
+export function getDailyChallengeMinimumBonuses(): {
+  leagueLeadersBonus: number;
+  playoffTitleBonus: number;
+} {
+  const all = [...CURRENT_SCENARIOS, ...ERA_SCENARIOS];
+  return {
+    leagueLeadersBonus: Math.min(...all.map((s) => s.leagueLeadersBonus)),
+    playoffTitleBonus: Math.min(...all.map((s) => s.playoffTitleBonus)),
+  };
 }

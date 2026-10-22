@@ -96,6 +96,7 @@ jobs:
           curl -sf http://localhost:3000/ > /dev/null || (npx next start -p 3000 > /tmp/next3.log 2>&1 &)
           for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
           node scripts/ui-audit.mjs
+          node scripts/text-fit-audit.mjs
       - name: Publish e2e screenshots (same-repo PRs only)
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && hashFiles('e2e-shots/*.png') != ''
         run: |

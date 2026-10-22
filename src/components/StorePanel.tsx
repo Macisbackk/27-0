@@ -214,7 +214,7 @@ export function StorePanel() {
               <ThemePalette theme={theme} />
               <div className="p-2.5">
                 <div className="min-w-0">
-                  <p className="truncate font-display text-sm font-bold text-white">
+                  <p className="min-h-[2.5em] font-display text-sm font-bold leading-tight text-white">
                     {theme.label}
                   </p>
                   <p className={`text-xs ${isSelected ? "text-emerald-300" : "text-gray-500"}`}>

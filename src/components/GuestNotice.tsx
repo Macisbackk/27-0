@@ -58,8 +58,8 @@ export function GuestNotice({
           className="inline-block text-sm font-semibold text-theme-primary hover:underline"
         >
           {isDaily
-            ? "Sign in to sync your Daily streak →"
-            : "Sign in to save your run →"}
+            ? "Log in to sync your Daily streak →"
+            : "Log in to save your run →"}
         </Link>
       </div>
     );
@@ -72,7 +72,7 @@ export function GuestNotice({
         href={loginHref(pathname, isDaily)}
         className="font-semibold text-theme-primary hover:underline"
       >
-        Sign in
+        Log in
       </Link>
     </p>
   );

@@ -8,6 +8,7 @@ import {
   COACH_NAME_MAX_LENGTH,
   COACH_NAME_MIN_LENGTH,
 } from "@/lib/storage/user";
+import { MIN_PASSWORD_LENGTH } from "@/lib/auth";
 import { BTN, CARD, FILTER, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { SubTabBar } from "@/components/ui/SubTabBar";
@@ -127,7 +128,7 @@ export function LoginForm() {
         href="/#play-modes"
         className={`mt-4 block w-full text-center ${BTN.base} ${BTN.accentOutline}`}
       >
-        Continue as Guest
+        Continue as guest
       </Link>
       <p className={`mt-2 text-center ${TYPO.bodySm}`}>
         Play as guest — stats stay here.
@@ -136,8 +137,8 @@ export function LoginForm() {
       <div className="mt-6">
         <SubTabBar
           tabs={[
-            { id: "login", label: "Log In" },
-            { id: "signup", label: "Create Account" },
+            { id: "login", label: "Log in" },
+            { id: "signup", label: "Create account" },
           ]}
           active={mode}
           onChange={(next) => {
@@ -173,7 +174,7 @@ export function LoginForm() {
           autoComplete={mode === "signup" ? "new-password" : "current-password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          placeholder={mode === "signup" ? `Password (${MIN_PASSWORD_LENGTH}+ characters)` : "Password"}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? errorId : success ? successId : undefined}
           className={FILTER.input}
@@ -189,7 +190,7 @@ export function LoginForm() {
               autoComplete="new-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm Password"
+              placeholder="Confirm password"
               aria-invalid={error ? true : undefined}
               aria-describedby={error ? errorId : success ? successId : undefined}
               className={FILTER.input}
@@ -203,7 +204,7 @@ export function LoginForm() {
               autoComplete="nickname"
               value={coachInput}
               onChange={(e) => setCoachInput(e.target.value)}
-              placeholder="Coach Name"
+              placeholder="Coach name"
               maxLength={COACH_NAME_MAX_LENGTH}
               aria-invalid={error ? true : undefined}
               aria-describedby={error ? errorId : success ? successId : undefined}
@@ -252,8 +253,8 @@ export function LoginForm() {
         {mode === "signup"
           ? signupBlocked
             ? `Wait ${cooldownSeconds}s`
-            : "Create Account"
-          : "Log In"}
+            : "Create account"
+          : "Log in"}
       </button>
     </section>
   );

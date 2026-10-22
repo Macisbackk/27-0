@@ -155,7 +155,7 @@ export function getPlayoffRoundLabel(round: number): string {
     case 1:
       return "Eliminator";
     case 2:
-      return "Semi Final";
+      return "Semi-final";
     case 3:
       return "Grand Final";
     default:
@@ -166,8 +166,8 @@ export function getPlayoffRoundLabel(round: number): string {
 const PLAYOFF_FEEDER_LABELS: Record<string, string> = {
   "elim-low": "3rd vs 6th winner",
   "elim-high": "4th vs 5th winner",
-  "semi-low": "1st-route SF winner",
-  "semi-high": "2nd-route SF winner",
+  "semi-low": "Semi-final 1 winner",
+  "semi-high": "Semi-final 2 winner",
 };
 
 export interface PlayoffTeamDisplayInfo {

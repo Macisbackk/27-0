@@ -24,7 +24,7 @@ export default function HomePage() {
 
         <h1 className="sr-only">27-0</h1>
         <p className={`mx-auto mt-3 max-w-lg sm:mt-4 ${TYPO.pageSubtitle}`}>
-          Build a Super League side and chase the perfect season.
+          Run a real club or build a dream 13. Chase the perfect season.
         </p>
       </section>
 

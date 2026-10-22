@@ -253,7 +253,7 @@ function ClubFundsPanelContent({
           >
             <span className="min-w-0 flex-1">{line.label}</span>
             <span className="shrink-0 font-semibold tabular-nums text-theme-primary">
-              {formatClubFundsExact(line.amount)}
+              {line.valueText ?? formatClubFundsExact(line.amount)}
             </span>
           </li>
         ))}

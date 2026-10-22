@@ -79,10 +79,10 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
   perfect_runs: "27-0 Seasons",
   wcc_wins: "WCC Wins",
   best_record: "Total Record",
-  league_titles: "League Titles",
-  super_league_champions: "SL Champions",
-  era_league_title: "League Titles",
-  era_league_champions: "SL Champions",
+  league_titles: "League Leaders",
+  super_league_champions: "SL Titles",
+  era_league_title: "League Leaders",
+  era_league_champions: "SL Titles",
   daily_streak: "Best Streak",
 };
 
@@ -266,7 +266,7 @@ export function LeaderboardTable() {
     leaderboardMode === "daily"
       ? "Daily"
       : leaderboardMode === "trophy-cabinet"
-        ? "Trophy Cabinet"
+        ? "Trophies"
         : isMiniGamesMode
           ? "Mini Games"
           : "Classic";
@@ -288,7 +288,7 @@ export function LeaderboardTable() {
     label: string;
   }[] = [
     { id: "super-league" as const, label: "Classic" },
-    { id: "trophy-cabinet" as const, label: "Trophy Cabinet" },
+    { id: "trophy-cabinet" as const, label: "Trophies" },
     ...(SHOW_DAILY_CHALLENGE_UI
       ? [{ id: "daily" as const, label: "Daily" }]
       : []),
@@ -299,7 +299,7 @@ export function LeaderboardTable() {
     ? "No streaks yet. Finish a Daily Challenge."
     : isMiniGamesMode
       ? `No ${activeMiniGamesCategory.label.toLowerCase()} yet. Win a game to climb the board.`
-      : `No ${trackerLabel.toLowerCase()} entries yet. Finish a run.`;
+      : "Finish a Classic season to get on the board.";
 
   const showUpdatedColumn =
     !isDailyMode && !isTrophyCabinetMode && !isMiniGamesMode;
@@ -326,7 +326,7 @@ export function LeaderboardTable() {
       {showCupVariantToggle && (
         <div className="mb-5">
           <ChallengeCupVariantToggle
-            sectionLabel={isTrophyCabinetMode ? "Trophy Mode" : "Mode"}
+            sectionLabel={isTrophyCabinetMode ? "Squads" : "Mode"}
             useShortLabels
             eraMode={normalEraMode}
             onEraModeChange={(era) => {
@@ -551,8 +551,8 @@ export function LeaderboardTable() {
 
       <p className="mt-4 text-center text-xs text-gray-600">
         {usingFallback
-          ? "Showing local fallback · online sync unavailable"
-          : "Updated online across all players"}
+          ? "Offline: showing scores saved on this device"
+          : "Live rankings for all players"}
         {" · "}
         {modeLabel}
         {" · "}

@@ -364,7 +364,7 @@ export const NAV = {
     "px-1 font-display text-[9px] font-bold uppercase tracking-wider text-gray-500",
   soundToggle: `btn-press flex ${NAV_SIZE.control} w-full min-w-0 items-center gap-2 overflow-hidden rounded-lg border border-pitch-600/60 bg-pitch-900/40 px-2.5 text-left text-sm transition hover:border-theme-primary/40 hover:bg-pitch-800/60`,
   soundStatus:
-    "shrink-0 rounded border border-pitch-600/80 bg-pitch-900/60 px-1.5 py-0.5 font-display text-[9px] font-bold uppercase tracking-wider",
+    "shrink-0 rounded border border-pitch-600/80 bg-pitch-900/60 px-1.5 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider",
   footer: "shrink-0 border-t border-pitch-700/50 px-2.5 py-2",
   footerLinks: "mt-1.5 flex items-center justify-center gap-2",
   supportRow: "flex items-center justify-center gap-2",

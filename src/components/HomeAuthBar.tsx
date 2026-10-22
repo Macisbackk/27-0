@@ -14,7 +14,7 @@ export function HomeAuthBar() {
   return (
     <section className="mx-auto max-w-md text-center">
       <Link href="/login" className={`${BTN.base} ${BTN.accentOutline} inline-flex`}>
-        Log in / Create account
+        Log in or sign up
       </Link>
     </section>
   );

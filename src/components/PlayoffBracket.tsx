@@ -307,7 +307,7 @@ export function PlayoffBracket({
                 onClick={handleProceedToNextRound}
                 className="w-full min-w-[12rem] sm:hidden"
               >
-                Proceed to {getPlayoffRoundLabel(activeRound)}
+                Next: {getPlayoffRoundLabel(activeRound)}
               </GameButton>
             )}
             <GameButton
@@ -320,7 +320,7 @@ export function PlayoffBracket({
                 showProceedToNextRound ? "hidden sm:inline-flex" : ""
               }`}
             >
-              Simulate Round
+              Simulate round
             </GameButton>
           </div>
         </div>

@@ -25,7 +25,7 @@ interface TryScorersPanelProps {
 export function TryScorersPanel({
   tryScorers,
   expectedTotalTries,
-  title = "View All Try Scorers",
+  title = "All try scorers",
   inline = false,
 }: TryScorersPanelProps) {
   const [open, setOpen] = useState(inline);

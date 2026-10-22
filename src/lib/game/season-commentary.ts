@@ -70,7 +70,7 @@ const RUNNER_UP = [
 const PLAYOFF = [
   "Finals secured.",
   "Top six. Title shot.",
-  "Playoffs with belief.",
+  "Play-offs with belief.",
   "Earned a shot.",
   "Among the contenders.",
 ];

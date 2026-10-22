@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import type { SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
-import type { PlayoffResult } from "@/lib/game/playoff-simulation";
+import { getPlayoffFinishLabel, type PlayoffResult } from "@/lib/game/playoff-simulation";
 import type { PlayoffBracketState } from "@/lib/game/playoff-bracket";
 import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
 import { getPlayoffReviewBio } from "@/lib/playoff-review-bio";
@@ -35,8 +35,8 @@ import {
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 
 const PLAYOFF_AWARD_TITLES: Record<string, string> = {
-  "Player of the Season": "Best Player of the Play-Offs",
-  "Worst Player of the Season": "Worst Player of the Play-Offs",
+  "Player of the Season": "Player of the Play-offs",
+  "Worst Player of the Season": "Worst Player of the Play-offs",
 };
 
 interface PlayoffReviewProps {
@@ -166,14 +166,14 @@ export function PlayoffReview({
       progress.leagueLeaders ? "League Leaders" : undefined,
       playoffResult.isChampion || progress.playoffTitle
         ? "Champions"
-        : playoffResult.finish,
+        : getPlayoffFinishLabel(playoffResult.finish),
       streak > 0 ? `Streak ${streak}` : undefined,
     ].filter((line): line is string => Boolean(line));
 
     return (
       <ShareSeasonButton
         data={{
-          title: `Daily · All ${dailyScenario.forceOpponentClub}`,
+          title: `Daily: ${dailyScenario.forceOpponentClub}`,
           subtitle: dailyScenario.eraMode
             ? "Era Daily Challenge"
             : "Daily Challenge",
@@ -213,12 +213,12 @@ export function PlayoffReview({
           >
             {dailyChallengeMode && SHOW_DAILY_CHALLENGE_UI
               ? dailyScenario?.eraMode
-                ? "Era Daily Play-Off Review"
-                : "Daily Play-Off Review"
-              : "Super League Play-Off Review"}
+                ? "Era Daily Play-off Review"
+                : "Daily Play-off Review"
+              : "Super League Play-off Review"}
           </p>
           <h1 className={`mt-4 ${TYPO.sectionTitle} text-2xl text-accent-gold sm:text-3xl`}>
-            {playoffResult.finish}
+            {getPlayoffFinishLabel(playoffResult.finish)}
           </h1>
           <p className={`mx-auto mt-3 max-w-md ${TYPO.bodySm}`}>
             {titleBio}
@@ -250,10 +250,10 @@ export function PlayoffReview({
 
         <ClubFundsEarned payout={playoffFundsToShow} />
 
-        <CollapsibleReviewSection title="Play-Off Summary" delay={0.2}>
+        <CollapsibleReviewSection title="Play-off Summary" delay={0.2}>
           <div className={`${MANAGER.statGrid2} mx-auto max-w-lg`}>
             <GameStatCard
-              label="Play-Off Record"
+              label="Play-off Record"
               value={formatRecordWithPercentage(
                 playoffResult.wins,
                 playoffResult.losses
@@ -292,7 +292,7 @@ export function PlayoffReview({
           </div>
         </CollapsibleReviewSection>
 
-        <CollapsibleReviewSection title="Playoff Squad Review" delay={0.24}>
+        <CollapsibleReviewSection title="Play-off Squad Review" delay={0.24}>
           <SquadReviewSection
             squad={squad}
             awards={playerAwards}
@@ -310,7 +310,7 @@ export function PlayoffReview({
 
         {playoffBracketState && (
           <CollapsibleReviewSection
-            title="Play-Off Bracket"
+            title="Play-off Bracket"
             delay={0.28}
           >
             <PlayoffBracketDisplay
@@ -318,7 +318,7 @@ export function PlayoffReview({
               embedded
               championLabel={
                 bracketChampion ??
-                (playoffResult.isChampion ? "Dream Team" : playoffResult.finish)
+                (playoffResult.isChampion ? "Dream Team" : getPlayoffFinishLabel(playoffResult.finish))
               }
             />
           </CollapsibleReviewSection>

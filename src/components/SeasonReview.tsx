@@ -133,9 +133,9 @@ export function SeasonReview({
   const isSuperSquad = gradeInfo.grade === "S" || gradeInfo.grade === "S+";
   const isSpecialMode = joeMellorMode || superSamHallasMode;
   const reviewLabel = superSamHallasMode
-    ? "Super Sam Hallas Mode Season Review"
+    ? "Super Sam Season Review"
     : joeMellorMode
-      ? "Joe Mellor GOAT Mode Season Review"
+      ? "GOAT Mode Season Review"
       : getSeasonReviewLabel(
           mode,
           "NORMAL",
@@ -219,7 +219,7 @@ export function SeasonReview({
       ].filter((line): line is string => Boolean(line));
 
       return {
-        title: `Daily · All ${dailyScenario.forceOpponentClub}`,
+        title: `Daily: ${dailyScenario.forceOpponentClub}`,
         subtitle: dailyScenario.eraMode ? "Era Daily Challenge" : "Daily Challenge",
         recordLine: formatRecordWithPercentage(
           seasonResult.wins,
@@ -345,7 +345,7 @@ export function SeasonReview({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
                 >
-                  27-0 ACHIEVED
+                  27-0 achieved
                 </motion.h1>
               )}
             </motion.header>
@@ -393,7 +393,7 @@ export function SeasonReview({
               </div>
               {missedPlayoffs ? (
                 <p className="mt-3.5 text-center text-sm font-semibold text-gray-500 sm:mt-4">
-                  Missed Play-Offs
+                  Missed the play-offs
                 </p>
               ) : null}
             </CollapsibleReviewSection>
@@ -511,8 +511,8 @@ export function SeasonReview({
                   onContinuePlayoffs?.();
                 }}
               >
-                <span className="sm:hidden">Playoffs</span>
-                <span className="hidden sm:inline">Continue to Play-Offs →</span>
+                <span className="sm:hidden">Play-offs</span>
+                <span className="hidden sm:inline">Continue to play-offs →</span>
               </GameButton>
             </div>
           </div>

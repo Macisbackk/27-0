@@ -54,9 +54,9 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   },
   {
     id: "29-0",
-    name: "29–0",
+    name: "29-0",
     description:
-      "Go unbeaten through the league and playoffs — 27–0 regular season and 2–0 in the playoffs.",
+      "Go unbeaten through the league and play-offs: 27-0 in the regular season and 2-0 in the play-offs.",
     category: "normal",
     points: 150,
     rewardClubFunds: 500_000,
@@ -79,7 +79,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "underdog-run",
     name: "Underdog Run",
-    description: "Reach the playoffs with a low-rated squad.",
+    description: "Reach the play-offs with a low-rated squad.",
     category: "normal",
     points: 45,
   },
@@ -193,7 +193,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "regular-coach",
     name: "Regular Coach",
-    description: "Complete 10 total seasons/runs.",
+    description: "Complete 10 seasons.",
     category: "profile",
     points: 25,
     target: 10,
@@ -201,7 +201,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "veteran-coach",
     name: "Veteran Coach",
-    description: "Complete 50 total seasons/runs.",
+    description: "Complete 50 seasons.",
     category: "profile",
     points: 75,
     target: 50,
@@ -303,7 +303,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-first-question",
     name: "First Question",
-    description: "Answer your first Quiz Mode question.",
+    description: "Answer your first Super League Millionaire question.",
     category: "quiz",
     points: 10,
     rewardClubFunds: 5_000,
@@ -311,8 +311,8 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   },
   {
     id: "quiz-safe-1000",
-    name: "Getting Started",
-    description: "Reach the £1,000 safe haven in Quiz Mode.",
+    name: "Safe Haven",
+    description: "Reach the £1,000 safe haven in Super League Millionaire.",
     category: "quiz",
     points: 20,
     rewardClubFunds: 10_000,
@@ -320,7 +320,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-safe-32000",
     name: "Halfway There",
-    description: "Reach the £32,000 safe haven in Quiz Mode.",
+    description: "Reach the £32,000 safe haven in Super League Millionaire.",
     category: "quiz",
     points: 35,
     rewardClubFunds: 25_000,
@@ -328,7 +328,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-big-money",
     name: "Big Money",
-    description: "Reach £250,000 in a Quiz Mode run.",
+    description: "Reach £250,000 in a Super League Millionaire run.",
     category: "quiz",
     points: 50,
     rewardClubFunds: 40_000,
@@ -368,7 +368,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-super-league-expert",
     name: "Super League Expert",
-    description: "Answer 250 Quiz Mode questions correctly.",
+    description: "Answer 250 Super League Millionaire questions correctly.",
     category: "quiz",
     points: 60,
     target: 250,

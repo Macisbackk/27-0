@@ -1,7 +1,7 @@
 {
   "name": "27-0 — Rugby League Squad Builder",
   "short_name": "27-0",
-  "description": "Build your Super League dream team. Manager Mode and Quick Mode.",
+  "description": "Rugby league Manager Mode, Classic squad builder, Daily Challenge and Mini Games.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0f0d",

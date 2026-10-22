@@ -27,7 +27,7 @@ export function HeaderAuthControls() {
     return (
       <div className={AUTH_SLOT_CLASS}>
         <Link href="/login" className={AUTH_BUTTON_CLASS}>
-          Login
+          Log in
         </Link>
       </div>
     );

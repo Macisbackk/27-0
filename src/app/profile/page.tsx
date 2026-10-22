@@ -259,7 +259,7 @@ export default function ProfilePage() {
                       neutral
                     />
                     <GameStatCard
-                      label="Minor Premierships"
+                      label="League Leaders"
                       value={
                         <span
                           className={
@@ -327,7 +327,7 @@ export default function ProfilePage() {
                           disabled={statsResetBusy}
                           onClick={() => void handleResetCareerStats()}
                         >
-                          Yes, reset career stats
+                          Yes, reset
                         </GameButton>
                         <GameButton
                           variant="secondary"
@@ -387,7 +387,7 @@ export default function ProfilePage() {
                   disabled={resetBusy || !email}
                   onClick={() => void handlePasswordReset()}
                 >
-                  Send Password Reset Email
+                  Email reset link
                 </GameButton>
               </div>
               {resetMsg ? (
@@ -408,7 +408,7 @@ export default function ProfilePage() {
               fullWidth={false}
               onClick={() => void signOut()}
             >
-              Log Out
+              Log out
             </GameButton>
             <GameButton
               variant="secondary"

@@ -79,7 +79,7 @@ export function PwaInstallPrompt() {
           Install 27-0
         </p>
         <p id="pwa-install-body" className={`mt-2 ${TYPO.bodySm} text-pitch-300`}>
-          Install for quick offline access.
+          Add 27-0 to your home screen for one-tap access.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <GameButton

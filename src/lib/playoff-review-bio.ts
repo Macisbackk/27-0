@@ -2,9 +2,9 @@ import type { PlayoffResult } from "./game/playoff-simulation";
 
 const CHAMPION_BIOS = [
   "Champions when it mattered.",
-  "Playoffs sealed. Champions.",
+  "Play-offs sealed. Champions.",
   "Finished the job.",
-  "Playoff glory.",
+  "Play-off glory.",
 ] as const;
 
 const GRAND_FINAL_LOSS_BIOS = [
@@ -16,15 +16,15 @@ const GRAND_FINAL_LOSS_BIOS = [
 
 const SEMI_FINAL_LOSS_BIOS = [
   "Out in the semi-final.",
-  "Faded under playoff pressure.",
+  "Faded under play-off pressure.",
   "Quality there — final step missing.",
   "Semi-final exit.",
 ] as const;
 
 const EARLY_EXIT_BIOS = [
-  "Playoff run never caught fire.",
+  "Play-off run never caught fire.",
   "Quick exit. Unfinished business.",
-  "League form. Playoff fade.",
+  "League form. Play-off fade.",
   "One bad night ended it.",
 ] as const;
 

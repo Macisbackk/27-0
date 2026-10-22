@@ -94,7 +94,7 @@ export function MiniGameLink({
 export function MiniGameEndActions({
   onPlayAgain,
   playAgainLabel = "Play again",
-  hubLabel = "Play another mini game",
+  hubLabel = "More mini games",
   className = "",
 }: {
   onPlayAgain?: () => void;

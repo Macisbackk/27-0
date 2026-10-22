@@ -225,7 +225,7 @@ export function QuizModeApp() {
     <StandardPageShell>
       <div className={`${PAGE.section} quiz-arena mx-auto flex w-full max-w-5xl flex-col items-center`}>
         {!ready ? (
-          <p className={`text-center ${TYPO.meta}`}>Loading Quiz Mode…</p>
+          <p className={`text-center ${TYPO.meta}`}>Loading Super League Millionaire…</p>
         ) : view === "landing" ? (
           <QuizLanding
             onMillionaire={startMillionaire}
@@ -304,10 +304,10 @@ export function QuizModeApp() {
                 setWalkOpen(false);
               }}
             >
-              Keep Playing
+              Keep playing
             </GameButton>
             <GameButton variant="theme" onClick={confirmWalkAway}>
-              Walk Away
+              Walk away
             </GameButton>
           </div>
         </div>
@@ -325,7 +325,7 @@ function QuizLanding({
 }) {
   return (
     <div className="mx-auto w-full max-w-xl text-center">
-      <p className={TYPO.sectionLabel}>Quiz</p>
+      <p className={TYPO.sectionLabel}>Mini Games</p>
       <h1 className={`mt-2 ${TYPO.pageTitle}`}>Choose your quiz</h1>
 
       <div className={`${SPACING.sectionGap} grid gap-3`}>
@@ -335,10 +335,10 @@ function QuizLanding({
           className={`w-full border border-theme-primary/40 bg-[#0c1210] text-center ${SPACING.cardPaddingSm}`}
         >
           <p className={`${TYPO.modeCardTitle} text-theme-primary`}>
-            Normal Quiz
+            Super League Millionaire
           </p>
           <p className={`mt-1 ${TYPO.bodySm}`}>
-            Super League Millionaire — 15 questions to £1,000,000.
+            15 questions, four lifelines, £1,000,000 top prize.
           </p>
         </button>
         <button
@@ -394,7 +394,7 @@ function QuizTeamSelect({
         <input
           value={query}
           onChange={(event) => onQuery(event.target.value)}
-          placeholder="Search teams..."
+          placeholder="Search teams…"
           className="game-input w-full text-center"
         />
       </label>
@@ -434,7 +434,7 @@ function QuizTeamSelect({
           Back
         </GameButton>
         <GameButton variant="theme" disabled={!teamId} onClick={onStart}>
-          {selected ? `Start — ${selected.name}` : "Start Challenge"}
+          Start quiz
         </GameButton>
       </div>
       <p className={`mt-3 ${TYPO.body} text-gray-400`}>
@@ -641,7 +641,7 @@ function QuizPlayScreen({
         {run.phase === "question_active" && (
           <div className="mx-auto mt-3 w-full max-w-xs">
             <GameButton variant="secondary" onClick={onWalkAway}>
-              Walk Away
+              Walk away
             </GameButton>
           </div>
         )}
@@ -714,7 +714,7 @@ function QuizResultScreen({
       <MiniGameEndActions onPlayAgain={onAgain} playAgainLabel="Play again" />
       <div className="mx-auto mt-2 w-full max-w-xs">
         <GameButton variant="secondary" onClick={onBack}>
-          Back to Quiz
+          Back to quizzes
         </GameButton>
       </div>
     </div>

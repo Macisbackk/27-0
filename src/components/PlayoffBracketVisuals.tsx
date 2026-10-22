@@ -89,7 +89,7 @@ export function PlayoffBracketProgressStrip({
           1st & 2nd receive a semi-final bye
         </span>
         <span className="playoff-bracket-tag playoff-bracket-tag--muted">
-          3v6 · 4v5 eliminators → semis → final
+          3rd v 6th and 4th v 5th; winners reach the semis
         </span>
       </div>
     </div>
@@ -99,7 +99,7 @@ export function PlayoffBracketProgressStrip({
 export function PlayoffBracketHeader({
   activeRound,
   tournamentComplete,
-  eyebrow = "Super League Play-Offs",
+  eyebrow = "Super League Play-offs",
   subtitle,
 }: {
   activeRound: number;

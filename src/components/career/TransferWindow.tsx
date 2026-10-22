@@ -88,7 +88,7 @@ export function TransferWindow() {
       {message ? <p className="text-center text-sm text-theme-primary" role="status">{message}</p> : null}
 
       {tab === "buy" ? (
-        <ul className="grid gap-2">
+        <ul className="grid grid-cols-[minmax(0,1fr)] gap-2">
           {market.length === 0 ? <li className="text-center text-sm text-gray-400">No players available right now.</li> : null}
           {market.map((l) => {
             const card = l.legend ? legendById(l.playerId.replace(/^legend-/, "")) : undefined;
@@ -97,7 +97,7 @@ export function TransferWindow() {
             const affordable = s.budget >= l.price;
             return (
               <li key={l.playerId} className={`flex items-center gap-3 rounded-xl border px-3 py-2.5 text-left ${l.legend ? "border-accent-gold/60 bg-accent-gold/5" : "border-pitch-700 bg-pitch-900/80"}`}>
-                {from ? <ClubBadge club={from} size="sm" /> : <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-pitch-700 text-[10px] font-bold text-gray-300">{l.legend ? "★" : "FA"}</span>}
+                {from ? <ClubBadge club={from} size="sm" /> : <span title={l.legend ? "Legend" : "Free agent"} aria-label={l.legend ? "Legend" : "Free agent"} className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-pitch-700 text-[10px] font-bold text-gray-300">{l.legend ? "★" : "FA"}</span>}
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-semibold text-white">
                     {p?.name ?? "Unknown"}
@@ -119,7 +119,7 @@ export function TransferWindow() {
           })}
         </ul>
       ) : (
-        <ul className="grid gap-2">
+        <ul className="grid grid-cols-[minmax(0,1fr)] gap-2">
           {squad.map((p) => (
             <li key={p.id} className="flex items-center gap-3 rounded-xl border border-pitch-700 bg-pitch-900/80 px-3 py-2.5 text-left">
               <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
@@ -164,7 +164,7 @@ export function TransferWindow() {
               finishTransfers();
             }}
           >
-            Start the {s.year} season
+            Start {s.year} season
           </GameButton>
         </div>
       </div>

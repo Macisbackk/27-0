@@ -57,6 +57,7 @@ for (const [route, name] of [
   ["/store", "store"],
   ["/showcase", "showcase"],
   ["/login", "login"],
+  ["/settings", "settings"],
 ]) {
   await go(page, route);
   await shot(page, name);
@@ -83,7 +84,7 @@ for (const tab of await page.getByRole("tab").all().catch(() => [])) {
 // Classic: chooser → pitch → spin → choices → sign → autofill → sim → review → play-offs.
 await go(page, "/play", 1500);
 await shot(page, "classic-start", { full: false });
-await tap(page, [/Continue without boost/i]);
+await tap(page, [/Skip boost|Continue without boost/i]);
 await page.waitForTimeout(800);
 await shot(page, "classic-pitch");
 const slot = page.locator("div.absolute.z-10 > button").first();
@@ -101,7 +102,7 @@ if (await slot.isVisible().catch(() => false)) {
   await page.waitForTimeout(900);
   await shot(page, "classic-after-sign");
 }
-await tap(page, [/Auto Fill Squad/i]);
+await tap(page, [/Auto.?fill squad/i]);
 await page.waitForTimeout(1200);
 await shot(page, "classic-full-squad");
 await tap(page, [/Simulate Season/i]);
@@ -127,7 +128,7 @@ if (await tap(page, [/play-?offs/i, /Continue to/i])) {
 }
 
 await go(page, "/play?era=1", 1500);
-await tap(page, [/Continue without boost/i]);
+await tap(page, [/Skip boost|Continue without boost/i]);
 await page.waitForTimeout(800);
 await shot(page, "era-pitch", { full: false });
 await go(page, "/play?daily=1", 1500);
@@ -193,7 +194,7 @@ for (const [route, name] of [
   ["/manager", "desktop-manager"],
 ]) {
   await go(dp, route);
-  if (name === "desktop-play") await tap(dp, [/Continue without boost/i]);
+  if (name === "desktop-play") await tap(dp, [/Skip boost|Continue without boost/i]);
   await dp.waitForTimeout(600);
   await shot(dp, name, { full: false });
 }

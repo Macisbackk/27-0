@@ -18,7 +18,7 @@ export function EraRatingExplanation({
           ? `${TYPO.meta} text-center text-pitch-500 leading-snug`
           : `${TYPO.bodySm} text-center text-gray-300`
       } ${className}`.trim()}
-      aria-label="How Era Mode player ratings work"
+      aria-label="How Era Classic player ratings work"
     >
       {compact ? null : (
         <span className="font-semibold text-accent-gold" aria-hidden>

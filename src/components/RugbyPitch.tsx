@@ -14,7 +14,7 @@ import {
 } from "@/lib/positions";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
-import { PitchSlotCard, PITCH_SLOT_COMPACT_CLASS, PITCH_SLOT_REVIEW_CLASS, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
+import { PitchSlotCard, pitchSlotLabel, PITCH_SLOT_COMPACT_CLASS, PITCH_SLOT_REVIEW_CLASS, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
 
 interface RugbyPitchProps {
   squad: SquadSlot[];
@@ -89,7 +89,7 @@ function RugbyPitchInner({
   const headerTitle = formationOnly
     ? "Team Sheet"
     : interactive
-      ? "Squad Selection — Click to Recruit"
+      ? "Tap a position to sign"
       : compact
         ? "Team Sheet"
         : "Matchday Squad";
@@ -358,7 +358,7 @@ const SquadMarker = memo(function SquadMarker({
   if (!player) {
     const positionLabel =
       _compact || fullPlayerNames
-        ? slot.label
+        ? pitchSlotLabel(slot.label)
         : POSITION_TILE_LABEL[slot.position];
     const shirtNumber = FORMATION_SLOT_NUMBER[slot.slotIndex];
 

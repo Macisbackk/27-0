@@ -32,7 +32,7 @@ export default function ResetPasswordPage() {
 
           <p className={`mt-6 text-center ${TYPO.bodySm}`}>
             <Link href="/login" className={LINK.accent}>
-              ← Back to Log In
+              ← Back to log in
             </Link>
           </p>
         </div>

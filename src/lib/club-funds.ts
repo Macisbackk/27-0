@@ -1,5 +1,14 @@
 import type { SeasonResult } from "./game/season-simulation";
 import type { GameMode } from "./types";
+import { ACHIEVEMENT_DEFINITIONS } from "./achievements/achievementDefinitions";
+import { getDailyChallengeMinimumBonuses } from "./daily-challenge";
+import { SHOW_DAILY_CHALLENGE_UI } from "./feature-flags";
+import {
+  HANGMAN_WIN_REWARD,
+  HIGHER_LOWER_FIVE_REWARD,
+  WORDLE_WIN_REWARD,
+} from "./mini-games/reward-amounts";
+import { QUIZ_PRIZE_LADDER } from "./quiz/prizes";
 
 export const CLUB_FUNDS_REWARDS = {
   leagueLeaders: 30_000,
@@ -55,14 +64,14 @@ function appendPlayoffFundsLines(
       if (round.round === "Eliminator") {
         lines.push({
           id: "playoff-eliminator",
-          label: "Play-Off Eliminator Win",
+          label: "Play-off Eliminator Win",
           amount: CLUB_FUNDS_REWARDS.playoffEliminatorWin,
         });
       }
       if (round.round === "Semi Final") {
         lines.push({
           id: "playoff-semi",
-          label: "Play-Off Semi-Final Win",
+          label: "Play-off Semi-final Win",
           amount: CLUB_FUNDS_REWARDS.playoffSemiFinalWin,
         });
       }
@@ -202,21 +211,65 @@ export function computeClubFundsLines(
   return lines;
 }
 
-const CLUB_FUNDS_INFO_LINES_SOURCE = [
+export interface ClubFundsInfoLine {
+  label: string;
+  /** Used for sorting and, without `valueText`, shown as an exact amount. */
+  amount: number;
+  /** Replaces the exact amount when the payout varies (e.g. "from £70,000"). */
+  valueText?: string;
+}
+
+const QUIZ_TOP_PRIZE = QUIZ_PRIZE_LADDER[QUIZ_PRIZE_LADDER.length - 1] ?? 0;
+const DAILY_MIN_BONUSES = getDailyChallengeMinimumBonuses();
+const ACHIEVEMENT_REWARDS = ACHIEVEMENT_DEFINITIONS.map((a) => a.rewardClubFunds ?? 0).filter(
+  (amount) => amount > 0
+);
+const ACHIEVEMENT_REWARD_MIN = ACHIEVEMENT_REWARDS.length ? Math.min(...ACHIEVEMENT_REWARDS) : 0;
+const ACHIEVEMENT_REWARD_MAX = ACHIEVEMENT_REWARDS.length ? Math.max(...ACHIEVEMENT_REWARDS) : 0;
+
+const CLUB_FUNDS_INFO_LINES_SOURCE: ClubFundsInfoLine[] = [
   { label: "Super League Title", amount: CLUB_FUNDS_REWARDS.superLeagueTitle },
   { label: "Grand Final Runner-Up", amount: CLUB_FUNDS_REWARDS.playoffFinalRunnerUp },
   { label: "League Leaders", amount: CLUB_FUNDS_REWARDS.leagueLeaders },
   { label: "Top-Six Finish", amount: CLUB_FUNDS_REWARDS.topSixFinish },
-  { label: "Play-Off Semi-Final Win", amount: CLUB_FUNDS_REWARDS.playoffSemiFinalWin },
-  { label: "Play-Off Eliminator Win", amount: CLUB_FUNDS_REWARDS.playoffEliminatorWin },
+  { label: "Play-off Semi-final Win", amount: CLUB_FUNDS_REWARDS.playoffSemiFinalWin },
+  { label: "Play-off Eliminator Win", amount: CLUB_FUNDS_REWARDS.playoffEliminatorWin },
   { label: "27-0 Perfect Season", amount: CLUB_FUNDS_REWARDS.perfectSeason },
   { label: "Season Completed", amount: CLUB_FUNDS_REWARDS.seasonComplete },
   { label: "20+ Wins in a Season", amount: CLUB_FUNDS_REWARDS.twentyWins },
-  { label: "Quiz Millionaire (15/15)", amount: 1_000_000 },
-  { label: "Wordle Win", amount: 8_000 },
-  { label: "Hangman Win", amount: 5_000 },
-  { label: "Higher-Lower Clear", amount: 2_500 },
-] as const;
+  {
+    label: "Each Regular Season Win (Classic)",
+    amount: CLUB_FUNDS_REWARDS.regularSeasonWin,
+  },
+  ...(SHOW_DAILY_CHALLENGE_UI
+    ? [
+        {
+          label: "Daily Challenge: Top the Table",
+          amount: DAILY_MIN_BONUSES.leagueLeadersBonus,
+          valueText: `from ${formatClubFundsExact(DAILY_MIN_BONUSES.leagueLeadersBonus)}`,
+        },
+        {
+          label: "Daily Challenge: Win the Grand Final",
+          amount: DAILY_MIN_BONUSES.playoffTitleBonus,
+          valueText: `from ${formatClubFundsExact(DAILY_MIN_BONUSES.playoffTitleBonus)}`,
+        },
+      ]
+    : []),
+  { label: "Super League Millionaire (15/15)", amount: QUIZ_TOP_PRIZE },
+  {
+    label: "Team Challenge: once per club per day",
+    amount: QUIZ_TOP_PRIZE,
+    valueText: `up to ${formatClubFundsExact(QUIZ_TOP_PRIZE)}`,
+  },
+  { label: "Wordle Win", amount: WORDLE_WIN_REWARD },
+  { label: "Hangman Win (per daily puzzle)", amount: HANGMAN_WIN_REWARD },
+  { label: "Higher or Lower (5 in a row)", amount: HIGHER_LOWER_FIVE_REWARD },
+  {
+    label: "Achievements",
+    amount: ACHIEVEMENT_REWARD_MAX,
+    valueText: `${formatClubFundsExact(ACHIEVEMENT_REWARD_MIN)}–${formatClubFundsExact(ACHIEVEMENT_REWARD_MAX)}`,
+  },
+];
 
 /** Earn Club Funds panel — highest payouts first. */
 export const CLUB_FUNDS_INFO_LINES = [...CLUB_FUNDS_INFO_LINES_SOURCE].sort(

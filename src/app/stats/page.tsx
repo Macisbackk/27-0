@@ -20,7 +20,7 @@ export default function StatsPage() {
     setImportMsg(null);
   }, [isLoggedIn]);
 
-  const title = coachName ? `${coachName}'s Stats` : "Your Stats";
+  const eyebrow = coachName ? `Coach ${coachName}` : "Career";
 
   const handleImport = async () => {
     setImporting(true);
@@ -28,7 +28,7 @@ export default function StatsPage() {
     const result = await importLocalStatsToCloud(getAllStats());
     setImportMsg(
       result.ok
-        ? "Synced. No double-counting."
+        ? "Stats imported to your account."
         : (result.error ?? "Import failed.")
     );
     setImporting(false);
@@ -39,8 +39,8 @@ export default function StatsPage() {
       <PageShellBody>
       <div className={PAGE.section}>
         <header>
-          <p className={TYPO.sectionLabel}>Career</p>
-          <h1 className={`mt-1 ${TYPO.pageTitle}`}>{title}</h1>
+          <p className={TYPO.sectionLabel}>{eyebrow}</p>
+          <h1 className={`mt-1 ${TYPO.pageTitle}`}>Career Stats</h1>
         </header>
 
         {!loading && !isLoggedIn && (
@@ -60,7 +60,7 @@ export default function StatsPage() {
               onClick={() => void handleImport()}
               className={`${BTN.base} ${BTN.secondary} text-xs`}
             >
-              Import local stats to account
+              Import device stats
             </button>
             {importMsg && <p className={TYPO.body}>{importMsg}</p>}
           </div>

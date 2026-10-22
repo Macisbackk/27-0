@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { updatePassword } from "@/lib/auth";
+import { MIN_PASSWORD_LENGTH, updatePassword } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { cleanAuthRedirectFromUrl } from "@/lib/auth-callback";
 import { BTN, CARD, FILTER, LINK, SPACING } from "@/lib/ui/design-system";
@@ -110,7 +110,7 @@ export function ResetPasswordForm() {
         <p className={`${TYPO.cardTitle} text-red-400`}>Password reset failed</p>
         <p className={`mt-2 ${TYPO.body}`}>{error}</p>
         <Link href="/profile" className={`mt-4 inline-block ${LINK.accent}`}>
-          Back to Coach Profile →
+          Back to profile →
         </Link>
       </div>
     );
@@ -151,6 +151,7 @@ export function ResetPasswordForm() {
           autoComplete="new-password"
           className={FILTER.input}
         />
+        <p className={TYPO.bodySm}>At least {MIN_PASSWORD_LENGTH} characters.</p>
       </div>
 
       {error && <p className={`mt-3 ${TYPO.body} text-red-400`}>{error}</p>}
@@ -161,7 +162,7 @@ export function ResetPasswordForm() {
         onClick={() => void handleSubmit()}
         className={`mt-4 w-full ${BTN.theme}`}
       >
-        Save New Password
+        Save new password
       </button>
     </section>
   );
