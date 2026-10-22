@@ -149,8 +149,41 @@ try {
   step("Club tab + Legend Vault");
 
   await page.getByRole("tab", { name: "Match" }).click();
+  let shotDeadline = false;
+  let shotBid = false;
+  let shotWindow = false;
   for (let i = 0; i < 80; i++) {
     if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
+    if (!shotWindow && (await page.getByRole("region", { name: "Transfer window" }).isVisible().catch(() => false))) {
+      shotWindow = true;
+      await shot("window-open");
+    }
+    if (!shotBid && (await page.getByRole("region", { name: "Transfer bid" }).isVisible().catch(() => false))) {
+      shotBid = true;
+      await shot("rival-bid");
+    }
+    if (!shotDeadline && (await page.getByRole("region", { name: "Deadline Day" }).isVisible().catch(() => false))) {
+      shotDeadline = true;
+      await page.waitForTimeout(6000); // let the ticker land
+      await shot("deadline-day");
+      await page.getByRole("button", { name: /Make a late signing/ }).click().catch(() => {});
+      await page.waitForTimeout(800);
+      await shot("deadline-market");
+      await page.getByRole("button", { name: /Back to the season/ }).click().catch(() => {});
+      await page.waitForTimeout(500);
+      await page.getByRole("tab", { name: "Table" }).click();
+      await page.waitForTimeout(300);
+      await page.locator("table tbody tr").nth(2).getByRole("button").first().click().catch(() => {});
+      await page.waitForTimeout(800);
+      await shot("club-team-sheet");
+      await page.keyboard.press("Escape");
+      await page.getByRole("tab", { name: "Club" }).click();
+      await page.waitForTimeout(300);
+      await shot("transfer-round-up");
+      await page.getByRole("tab", { name: "Match" }).click();
+      await page.waitForTimeout(300);
+      step("Deadline Day, late market, club team sheet and transfer round-up");
+    }
     const next = page.getByRole("button", { name: /^(Quick sim|Continue)$/ }).first();
     if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
     await page.waitForTimeout(120);
