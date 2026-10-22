@@ -72,7 +72,7 @@ export function PitchSlotCard({
         title={`${positionLabel}: ${player.name}`}
         aria-label={`${positionLabel}: ${player.name}${hardMode ? "" : `, rated ${ratingLabel}`}`}
       >
-        <ClubShirt kit={kitOverride ?? getClubKit(colorClub)} label={ratingLabel} size={46} className="drop-shadow-[0_3px_6px_rgba(0,0,0,0.45)]" />
+        <ClubShirt kit={kitOverride ?? getClubKit(colorClub)} label={hardMode ? "?" : ratingLabel} size={46} className="drop-shadow-[0_3px_6px_rgba(0,0,0,0.45)]" />
         <span
           className={`mt-0.5 max-w-full whitespace-nowrap rounded-md bg-pitch-950/95 px-1.5 py-[3px] font-bold leading-none text-white ${nameSize}`}
         >
