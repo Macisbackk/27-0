@@ -456,13 +456,13 @@ function buildFinalsExtraQuestions(): QuizQuestion[] {
     );
   }
 
-  // First Grand Final win (Wigan and Hull KR already have equivalent questions).
+  // First Grand Final win (Wigan, Hull KR and Wakefield already have equivalent questions).
   const firstGf = new Map<string, FinalRecord>();
   for (const record of GRAND_FINALS) {
     if (!firstGf.has(record.winnerId)) firstGf.set(record.winnerId, record);
   }
   for (const [id, record] of firstGf) {
-    if (id === "wigan" || id === "hull-kr" || !isTeamId(id)) continue;
+    if (id === "wigan" || id === "hull-kr" || id === "wakefield" || !isTeamId(id)) continue;
     const years = GRAND_FINALS.map((row) => String(row.year)).filter(
       (year) => year !== String(record.year)
     );
@@ -1023,9 +1023,15 @@ function buildStadiumQuestions(): QuizQuestion[] {
     questions.push(
       makeQuestion(
         `stad-${row.id}`,
-        `What is ${possessive(clubName)} Super League home stadium?`,
+        row.asOfSeason
+          ? `What was ${possessive(clubName)} home stadium called in the ${row.asOfSeason} Super League season?`
+          : `What is ${possessive(clubName)} home stadium?`,
         row.stadium,
-        pickDistractors(row.stadium, stadiumNames, 6),
+        pickDistractors(
+          row.stadium,
+          stadiumNames.filter((name) => !row.alsoKnownAs?.includes(name)),
+          6
+        ),
         {
           topicId: `stadium:${row.id}:home`,
           difficulty: "easy",

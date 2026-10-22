@@ -45,8 +45,8 @@
     "options": [
       "St Helens",
       "Hull KR",
-      "Wigan Warriors",
-      "Bradford Bulls"
+      "Wakefield Trinity",
+      "Wigan Warriors"
     ],
     "correctAnswer": "St Helens",
     "topicId": "final:gf:2000",
@@ -166,7 +166,7 @@
       "St Helens",
       "Bradford Bulls",
       "Wigan Warriors",
-      "Leeds Rhinos"
+      "Wakefield Trinity"
     ],
     "correctAnswer": "St Helens",
     "topicId": "final:gf:2006",
@@ -186,7 +186,7 @@
       "Leeds Rhinos",
       "St Helens",
       "Hull KR",
-      "Bradford Bulls"
+      "Wakefield Trinity"
     ],
     "correctAnswer": "Leeds Rhinos",
     "topicId": "final:gf:2007",
@@ -205,8 +205,8 @@
     "options": [
       "Leeds Rhinos",
       "St Helens",
-      "Bradford Bulls",
-      "Wigan Warriors"
+      "Wakefield Trinity",
+      "Bradford Bulls"
     ],
     "correctAnswer": "Leeds Rhinos",
     "topicId": "final:gf:2008",
@@ -226,7 +226,7 @@
       "Leeds Rhinos",
       "Wigan Warriors",
       "Bradford Bulls",
-      "St Helens"
+      "Wakefield Trinity"
     ],
     "correctAnswer": "Leeds Rhinos",
     "topicId": "final:gf:2009",
@@ -245,8 +245,8 @@
     "options": [
       "Wigan Warriors",
       "Leeds Rhinos",
-      "Bradford Bulls",
-      "Hull KR"
+      "Wakefield Trinity",
+      "Bradford Bulls"
     ],
     "correctAnswer": "Wigan Warriors",
     "topicId": "final:gf:2010",
@@ -266,7 +266,7 @@
       "Leeds Rhinos",
       "St Helens",
       "Hull KR",
-      "Bradford Bulls"
+      "Wakefield Trinity"
     ],
     "correctAnswer": "Leeds Rhinos",
     "topicId": "final:gf:2011",
@@ -285,8 +285,8 @@
     "options": [
       "Leeds Rhinos",
       "St Helens",
-      "Hull KR",
-      "Bradford Bulls"
+      "Wakefield Trinity",
+      "Hull KR"
     ],
     "correctAnswer": "Leeds Rhinos",
     "topicId": "final:gf:2012",
@@ -306,7 +306,7 @@
       "Wigan Warriors",
       "Bradford Bulls",
       "Leeds Rhinos",
-      "Hull KR"
+      "Wakefield Trinity"
     ],
     "correctAnswer": "Wigan Warriors",
     "topicId": "final:gf:2013",
@@ -365,8 +365,8 @@
     "options": [
       "Wigan Warriors",
       "Leeds Rhinos",
-      "St Helens",
-      "Bradford Bulls"
+      "Wakefield Trinity",
+      "St Helens"
     ],
     "correctAnswer": "Wigan Warriors",
     "topicId": "final:gf:2016",
@@ -386,7 +386,7 @@
       "Leeds Rhinos",
       "Hull KR",
       "Wigan Warriors",
-      "Bradford Bulls"
+      "Wakefield Trinity"
     ],
     "correctAnswer": "Leeds Rhinos",
     "topicId": "final:gf:2017",
@@ -425,8 +425,8 @@
     "options": [
       "St Helens",
       "Wigan Warriors",
-      "Hull KR",
-      "Leeds Rhinos"
+      "Wakefield Trinity",
+      "Hull KR"
     ],
     "correctAnswer": "St Helens",
     "topicId": "final:gf:2019",
@@ -485,8 +485,8 @@
     "options": [
       "St Helens",
       "Wigan Warriors",
-      "Leeds Rhinos",
-      "Bradford Bulls"
+      "Wakefield Trinity",
+      "Leeds Rhinos"
     ],
     "correctAnswer": "St Helens",
     "topicId": "final:gf:2022",
@@ -505,8 +505,8 @@
     "options": [
       "Wigan Warriors",
       "Leeds Rhinos",
-      "St Helens",
-      "Hull KR"
+      "Wakefield Trinity",
+      "St Helens"
     ],
     "correctAnswer": "Wigan Warriors",
     "topicId": "final:gf:2023",
@@ -554,6 +554,26 @@
     "category": "grand-finals",
     "teams": [
       "hull-kr"
+    ],
+    "era": "2020s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-winner-2026",
+    "question": "Which club won the 2026 Super League Grand Final?",
+    "options": [
+      "Wakefield Trinity",
+      "Wigan Warriors",
+      "Hull KR",
+      "St Helens"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "final:gf:2026",
+    "difficulty": "easy",
+    "category": "grand-finals",
+    "teams": [
+      "wakefield"
     ],
     "era": "2020s",
     "sourceType": "finals",
@@ -1766,6 +1786,27 @@
     "answerType": "objective"
   },
   {
+    "id": "gf-score-2026",
+    "question": "What was the score in the 2026 Super League Grand Final?",
+    "options": [
+      "23-10",
+      "37-6",
+      "10-4",
+      "29-16"
+    ],
+    "correctAnswer": "23-10",
+    "topicId": "final:gf:2026:score",
+    "difficulty": "medium",
+    "category": "grand-finals",
+    "teams": [
+      "wakefield",
+      "warrington"
+    ],
+    "era": "2020s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
     "id": "lls-winner-2003",
     "question": "Which club won the Super League League Leaders' Shield in 2003?",
     "options": [
@@ -2672,8 +2713,8 @@
     "options": [
       "Wigan Warriors",
       "Catalans Dragons",
-      "St Helens",
-      "Leeds Rhinos"
+      "Warrington Wolves",
+      "Wakefield Trinity"
     ],
     "correctAnswer": "Wigan Warriors",
     "topicId": "final:gf:2025:runner-up",
@@ -2682,6 +2723,27 @@
     "teams": [
       "hull-kr",
       "wigan"
+    ],
+    "era": "2020s",
+    "sourceType": "finals",
+    "answerType": "objective"
+  },
+  {
+    "id": "gf-runner-up-2026",
+    "question": "Who did Wakefield Trinity beat in the 2026 Super League Grand Final?",
+    "options": [
+      "Warrington Wolves",
+      "Hull KR",
+      "Wigan Warriors",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Warrington Wolves",
+    "topicId": "final:gf:2026:runner-up",
+    "difficulty": "medium",
+    "category": "grand-finals",
+    "teams": [
+      "wakefield",
+      "warrington"
     ],
     "era": "2020s",
     "sourceType": "finals",
@@ -6590,6 +6652,26 @@
     "answerType": "objective"
   },
   {
+    "id": "gf-motm-2026",
+    "question": "Who won the Rob Burrow Award as man of the match in the 2026 Super League Grand Final?",
+    "options": [
+      "Tom Johnstone",
+      "Jake Wardle",
+      "Mikey Lewis",
+      "Bevan French"
+    ],
+    "correctAnswer": "Tom Johnstone",
+    "topicId": "honour:harry-sunderland:2026",
+    "difficulty": "medium",
+    "category": "grand-finals",
+    "teams": [
+      "wakefield"
+    ],
+    "era": "2020s",
+    "sourceType": "honours",
+    "answerType": "objective"
+  },
+  {
     "id": "wcc-winner-1976",
     "question": "Which club won the 1976 World Club Challenge?",
     "options": [
@@ -7971,7 +8053,7 @@
   },
   {
     "id": "stad-leeds",
-    "question": "What is Leeds Rhinos' Super League home stadium?",
+    "question": "What is Leeds Rhinos' home stadium?",
     "options": [
       "Headingley",
       "The Jungle",
@@ -7990,14 +8072,14 @@
   },
   {
     "id": "stad-wigan",
-    "question": "What is Wigan Warriors' Super League home stadium?",
+    "question": "What was Wigan Warriors' home stadium called in the 2026 Super League season?",
     "options": [
-      "DW Stadium",
+      "Brick Community Stadium",
       "MKM Stadium",
       "Halliwell Jones Stadium",
-      "Totally Wicked Stadium"
+      "Headingley"
     ],
-    "correctAnswer": "DW Stadium",
+    "correctAnswer": "Brick Community Stadium",
     "topicId": "stadium:wigan:home",
     "difficulty": "easy",
     "category": "stadiums",
@@ -8009,14 +8091,14 @@
   },
   {
     "id": "stad-st-helens",
-    "question": "What is St Helens' Super League home stadium?",
+    "question": "What was St Helens' home stadium called in the 2026 Super League season?",
     "options": [
-      "Totally Wicked Stadium",
+      "BrewDog Stadium",
       "The Jungle",
       "Halliwell Jones Stadium",
-      "MKM Stadium"
+      "Brick Community Stadium"
     ],
-    "correctAnswer": "Totally Wicked Stadium",
+    "correctAnswer": "BrewDog Stadium",
     "topicId": "stadium:st-helens:home",
     "difficulty": "easy",
     "category": "stadiums",
@@ -8028,12 +8110,12 @@
   },
   {
     "id": "stad-warrington",
-    "question": "What is Warrington Wolves' Super League home stadium?",
+    "question": "What is Warrington Wolves' home stadium?",
     "options": [
       "Halliwell Jones Stadium",
-      "Totally Wicked Stadium",
-      "MKM Stadium",
-      "Craven Park"
+      "Brick Community Stadium",
+      "BrewDog Stadium",
+      "MKM Stadium"
     ],
     "correctAnswer": "Halliwell Jones Stadium",
     "topicId": "stadium:warrington:home",
@@ -8047,12 +8129,12 @@
   },
   {
     "id": "stad-hull-fc",
-    "question": "What is Hull FC's Super League home stadium?",
+    "question": "What is Hull FC's home stadium?",
     "options": [
       "MKM Stadium",
+      "BrewDog Stadium",
       "Craven Park",
-      "Headingley",
-      "Totally Wicked Stadium"
+      "Headingley"
     ],
     "correctAnswer": "MKM Stadium",
     "topicId": "stadium:hull-fc:home",
@@ -8066,7 +8148,7 @@
   },
   {
     "id": "stad-hull-kr",
-    "question": "What is Hull KR's Super League home stadium?",
+    "question": "What is Hull KR's home stadium?",
     "options": [
       "Craven Park",
       "The Jungle",
@@ -8085,11 +8167,11 @@
   },
   {
     "id": "stad-castleford",
-    "question": "What is Castleford Tigers' Super League home stadium?",
+    "question": "What is Castleford Tigers' home stadium?",
     "options": [
       "The Jungle",
       "Headingley",
-      "DW Stadium",
+      "BrewDog Stadium",
       "MKM Stadium"
     ],
     "correctAnswer": "The Jungle",
@@ -8104,12 +8186,12 @@
   },
   {
     "id": "stad-wakefield",
-    "question": "What is Wakefield Trinity's Super League home stadium?",
+    "question": "What is Wakefield Trinity's home stadium?",
     "options": [
       "Belle Vue",
-      "Totally Wicked Stadium",
       "Headingley",
-      "MKM Stadium"
+      "MKM Stadium",
+      "BrewDog Stadium"
     ],
     "correctAnswer": "Belle Vue",
     "topicId": "stadium:wakefield:home",
@@ -8123,14 +8205,14 @@
   },
   {
     "id": "stad-huddersfield",
-    "question": "What is Huddersfield Giants' Super League home stadium?",
+    "question": "What was Huddersfield Giants' home stadium called in the 2026 Super League season?",
     "options": [
-      "John Smith's Stadium",
+      "Accu Stadium",
       "Halliwell Jones Stadium",
-      "Totally Wicked Stadium",
-      "DW Stadium"
+      "BrewDog Stadium",
+      "Headingley"
     ],
-    "correctAnswer": "John Smith's Stadium",
+    "correctAnswer": "Accu Stadium",
     "topicId": "stadium:huddersfield:home",
     "difficulty": "easy",
     "category": "stadiums",
@@ -8142,12 +8224,12 @@
   },
   {
     "id": "stad-catalans",
-    "question": "What is Catalans Dragons' Super League home stadium?",
+    "question": "What is Catalans Dragons' home stadium?",
     "options": [
       "Stade Gilbert Brutus",
       "Halliwell Jones Stadium",
-      "Totally Wicked Stadium",
-      "MKM Stadium"
+      "MKM Stadium",
+      "Brick Community Stadium"
     ],
     "correctAnswer": "Stade Gilbert Brutus",
     "topicId": "stadium:catalans:home",
@@ -8161,12 +8243,12 @@
   },
   {
     "id": "stad-leigh",
-    "question": "What is Leigh Leopards' Super League home stadium?",
+    "question": "What is Leigh Leopards' home stadium?",
     "options": [
       "Leigh Sports Village",
-      "Totally Wicked Stadium",
-      "DW Stadium",
-      "Craven Park"
+      "BrewDog Stadium",
+      "Craven Park",
+      "Halliwell Jones Stadium"
     ],
     "correctAnswer": "Leigh Sports Village",
     "topicId": "stadium:leigh:home",
@@ -8180,12 +8262,12 @@
   },
   {
     "id": "stad-salford",
-    "question": "What is Salford Red Devils' Super League home stadium?",
+    "question": "What is Salford Red Devils' home stadium?",
     "options": [
       "Salford Community Stadium",
       "Headingley",
-      "DW Stadium",
-      "Totally Wicked Stadium"
+      "BrewDog Stadium",
+      "MKM Stadium"
     ],
     "correctAnswer": "Salford Community Stadium",
     "topicId": "stadium:salford:home",
@@ -8199,12 +8281,12 @@
   },
   {
     "id": "stad-bradford",
-    "question": "What is Bradford Bulls' Super League home stadium?",
+    "question": "What is Bradford Bulls' home stadium?",
     "options": [
       "Odsal",
       "Headingley",
-      "Halliwell Jones Stadium",
-      "Craven Park"
+      "BrewDog Stadium",
+      "Halliwell Jones Stadium"
     ],
     "correctAnswer": "Odsal",
     "topicId": "stadium:bradford:home",
@@ -8218,12 +8300,12 @@
   },
   {
     "id": "stad-london",
-    "question": "What is London Broncos' Super League home stadium?",
+    "question": "What is London Broncos' home stadium?",
     "options": [
       "The Stoop",
+      "BrewDog Stadium",
       "Craven Park",
-      "Totally Wicked Stadium",
-      "DW Stadium"
+      "Brick Community Stadium"
     ],
     "correctAnswer": "The Stoop",
     "topicId": "stadium:london:home",
@@ -8237,11 +8319,11 @@
   },
   {
     "id": "stad-toulouse",
-    "question": "What is Toulouse Olympique's Super League home stadium?",
+    "question": "What is Toulouse Olympique's home stadium?",
     "options": [
       "Stade Ernest-Wallon",
-      "DW Stadium",
       "Halliwell Jones Stadium",
+      "Brick Community Stadium",
       "Craven Park"
     ],
     "correctAnswer": "Stade Ernest-Wallon",
@@ -8256,12 +8338,12 @@
   },
   {
     "id": "stad-york",
-    "question": "What is York Knights' Super League home stadium?",
+    "question": "What is York Knights' home stadium?",
     "options": [
       "York Community Stadium",
       "MKM Stadium",
-      "Halliwell Jones Stadium",
-      "Craven Park"
+      "BrewDog Stadium",
+      "Halliwell Jones Stadium"
     ],
     "correctAnswer": "York Community Stadium",
     "topicId": "stadium:york:home",
@@ -8275,12 +8357,12 @@
   },
   {
     "id": "stad-widnes",
-    "question": "What is Widnes Vikings' Super League home stadium?",
+    "question": "What is Widnes Vikings' home stadium?",
     "options": [
       "Halton Stadium",
       "Headingley",
       "MKM Stadium",
-      "DW Stadium"
+      "Brick Community Stadium"
     ],
     "correctAnswer": "Halton Stadium",
     "topicId": "stadium:widnes:home",

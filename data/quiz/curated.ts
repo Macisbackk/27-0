@@ -67,6 +67,55 @@ const TOPIC_OVERRIDES: Record<string, string> = {
   "cur-briers": "honour:lance-todd:2010",
   "cur-gigot": "honour:lance-todd:2018",
   "cur-cudjoe": "honour:dream-team:2013:leroy-cudjoe",
+  // Verified additions (sources next to each question below).
+  "cur-nu-founded-year": "history:rugby-league:founding-year",
+  "cur-nu-george-hotel": "history:rugby-league:founding-venue",
+  "cur-rfl-renamed": "history:rugby-league:rfl-name",
+  "cur-thirteen-a-side": "history:rugby-league:thirteen-a-side",
+  "cur-try-three-points": "history:rugby-league:try-value",
+  "cur-sin-bin-year": "history:rugby-league:sin-bin",
+  "cur-interchange-cut": "history:rugby-league:interchanges",
+  "cur-golden-point-year": "history:rugby-league:golden-point",
+  "cur-bevan-world-record": "record:rugby-league:career-tries",
+  "cur-bevan-wire-tries": "record:warrington:tries",
+  "cur-boston-wigan-tries": "record:wigan:tries",
+  "cur-neil-fox-points": "record:rugby-league:career-points",
+  "cur-watersplash": "honour:lance-todd:1968:watersplash",
+  "cur-first-wembley-final": "final:cc:1929",
+  "cur-murphy-three-clubs": "record:challenge-cup:captain-three-clubs",
+  "cur-odsal-replay-crowd": "final:cc:1954:attendance",
+  "cur-wigan-eight-cups": "record:wigan:consecutive-challenge-cups",
+  "cur-wigan-cup-count": "record:wigan:challenge-cups",
+  "cur-wigan-wcc-count": "record:wigan:world-club-challenges",
+  "cur-wigan-central-park-crowd": "record:wigan:attendance",
+  "cur-magic-first": "history:magic-weekend:first-venue",
+  "cur-magic-murrayfield": "history:magic-weekend:scotland",
+  "cur-magic-st-james": "history:magic-weekend:most-used",
+  "cur-magic-2026": "history:magic-weekend:2026",
+  "cur-toronto-withdrew": "history:toronto-wolfpack:2020",
+  "cur-toronto-mpg": "history:toronto-wolfpack:promotion",
+  "cur-toronto-sbw": "history:toronto-wolfpack:sonny-bill",
+  "cur-licensing": "history:super-league:licensing",
+  "cur-licensing-2009": "history:super-league:licences-2009",
+  "cur-crusaders-wrexham": "history:super-league:crusaders",
+  "cur-ashes-last-gb": "history:ashes:last-gb-win",
+  "cur-ashes-first": "history:ashes:first-series",
+  "cur-ashes-2025": "history:ashes:2025",
+  "cur-lance-todd-born": "honour:lance-todd:namesake-country",
+  "cur-lance-todd-salford": "honour:lance-todd:namesake-club",
+  "cur-prescott-mos": "honour:man-of-steel:prescott",
+  "cur-rob-burrow-award": "honour:harry-sunderland:rob-burrow",
+  "cur-mos-2026": "honour:man-of-steel:2026",
+  "cur-lam-golden-point": "honour:lance-todd:2023:drop-goal",
+  "cur-sl-points-record": "record:super-league:points",
+  "cur-sl-captain-titles": "record:super-league:captain-titles",
+  "cur-gf-record-crowd": "record:super-league:gf-attendance",
+  "cur-treble-leeds": "record:leeds:treble",
+  "cur-treble-bradford": "record:bradford:treble",
+  "cur-treble-saints": "record:st-helens:treble",
+  "cur-treble-wigan": "record:wigan:treble",
+  "cur-treble-kr": "final:gf:2025:treble",
+  "cur-wakefield-champs-60s": "history:wakefield:championships-1960s",
 };
 
 function q(
@@ -199,7 +248,8 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
   q("cur-psg", "Which Paris club was a founding Super League member in 1996?", "Paris Saint-Germain", ["Toulouse Olympique", "Catalans Dragons", "Villeneuve"], "medium", "history"),
   q("cur-gateshead", "Which north-east club played in Super League in 1999?", "Gateshead Thunder", ["Newcastle Knights", "Hull KR", "York Knights"], "hard", "history"),
   q("cur-man-of-steel", "What is Super League's main individual season award called?", "Man of Steel", ["Harry Sunderland Trophy", "Lance Todd Trophy", "Albert Goldthorpe Medal"], "easy", "records"),
-  q("cur-harry-sunderland", "Which award is given to the man of the match in the Super League Grand Final?", "Harry Sunderland Trophy", ["Lance Todd Trophy", "Man of Steel", "Albert Goldthorpe Medal"], "medium", "grand-finals"),
+  // Renamed the Rob Burrow Award from 2024: https://en.wikipedia.org/wiki/2024_Super_League_Grand_Final
+  q("cur-harry-sunderland", "Until 2023, which award went to the man of the match in the Super League Grand Final?", "Harry Sunderland Trophy", ["Lance Todd Trophy", "Man of Steel", "Albert Goldthorpe Medal"], "medium", "grand-finals"),
   q("cur-lance-todd", "Which award is given to the man of the match in the Challenge Cup final?", "Lance Todd Trophy", ["Harry Sunderland Trophy", "Man of Steel", "Golden Boot"], "medium", "challenge-cup"),
   q("cur-lance-todd-what", "What is the Lance Todd Trophy?", "Man of the match in the Challenge Cup final", ["Man of the match in the Super League Grand Final", "Super League's player of the season", "The world's best rugby league player"], "easy", "challenge-cup"),
   q("cur-golden-boot", "The Golden Boot is awarded for what?", "The world's best rugby league player", ["Super League's top try-scorer", "The Grand Final winner's captain", "The League Leaders' coach"], "medium", "records"),
@@ -400,11 +450,95 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
     "stadiums",
     ["castleford"]
   ),
-  q("cur-sl-try-record", "Who is Super League's all-time leading try-scorer?", "Danny McGuire", ["Ryan Hall", "Tommy Makinson", "Josh Charnley"], "hard", "records", ["leeds"]),
+  // Charnley passed Ryan Hall's 271 on 14 June 2026: https://www.wigantoday.net/sport/rugby-league/wigan-warriors/wigan-warriors-leigh-leopards-josh-charnley-super-league-try-scoring-record-8723080
+  q("cur-sl-try-record", "In June 2026, which winger broke Ryan Hall's record to become Super League's all-time leading try-scorer?", "Josh Charnley", ["Tommy Makinson", "Jermaine McGillvary", "Tom Johnstone"], "hard", "records", ["leigh"], "2020s"),
   q("cur-sl-apps-record", "Who holds Super League's all-time appearance record?", "James Roby", ["Paul Wellens", "Kevin Sinfield", "Sean O'Loughlin"], "hard", "records", ["st-helens"]),
   q("cur-leeds-points-record", "Who is Leeds Rhinos' Super League-era record points scorer?", "Kevin Sinfield", ["Danny McGuire", "Rob Burrow", "Kallum Watkins"], "hard", "records", ["leeds"]),
   q("cur-hull-fc-apps-record", "Which Hull FC hooker holds the club's Super League appearance record?", "Danny Houghton", ["Richard Horne", "Kirk Yeaman", "Gareth Raynor"], "hard", "records", ["hull-fc"]),
   q("cur-wigan-points-record", "Which Wigan Warriors winger became the club's Super League record points scorer?", "Pat Richards", ["Andy Farrell", "Frano Botica", "Harry Smith"], "hard", "records", ["wigan"]),
   q("cur-wigan-apps-record", "Which Wigan Warriors forward made the most Super League appearances for the club?", "Sean O'Loughlin", ["Andy Farrell", "Kris Radlinski", "Liam Farrell"], "hard", "records", ["wigan"]),
   q("cur-giants-points-record", "Which Huddersfield Giants half-back is the club's Super League-era record points scorer?", "Danny Brough", ["Luke Robinson", "Leroy Cudjoe", "Eorl Crabtree"], "hard", "records", ["huddersfield"]),
+
+  // ── Verified additions ──────────────────────────────────────────────────────────────
+  // https://en.wikipedia.org/wiki/Rugby_Football_League (George Hotel 1895, renamed 1922, 13-a-side 1906)
+  q("cur-nu-founded-year", "In which year did clubs break away from the RFU to form the Northern Union, the forerunner of rugby league?", "1895", ["1871", "1908", "1922"], "medium", "history", [], "pre-1996"),
+  q("cur-nu-george-hotel", "In which Huddersfield hotel was the Northern Union formed on 29 August 1895?", "The George Hotel", ["The Queen's Hotel", "The Midland Hotel", "The Royal Hotel"], "hard", "history", ["huddersfield"], "pre-1996"),
+  q("cur-rfl-renamed", "In which year did the Northern Union change its name to the Rugby Football League?", "1922", ["1906", "1946", "1895"], "very-hard", "history", [], "pre-1996"),
+  q("cur-thirteen-a-side", "In which year did the Northern Union cut teams from 15 players to 13?", "1906", ["1895", "1922", "1897"], "very-hard", "history", [], "pre-1996"),
+  // https://en.wikipedia.org/wiki/Laws_of_rugby_league
+  q("cur-try-three-points", "Before its value was increased, how many points was a try worth in rugby league?", "3", ["2", "5", "6"], "medium", "general"),
+  q("cur-sin-bin-year", "According to the history of the laws, in which year was the sin bin introduced to rugby league?", "1981", ["1966", "1972", "1996"], "expert", "general", [], "pre-1996"),
+  q("cur-interchange-cut", "In 2019 the RFL reduced the number of interchanges allowed per match from 10 to how many?", "8", ["6", "7", "9"], "hard", "general", [], "2010s"),
+  q("cur-golden-point-year", "In which year was golden-point extra time introduced for drawn Super League matches?", "2019", ["2014", "2017", "2021"], "very-hard", "general", [], "2010s"),
+
+  // https://en.wikipedia.org/wiki/Brian_Bevan
+  q("cur-bevan-world-record", "Which Australian winger scored a world-record 796 career tries, most of them for Warrington?", "Brian Bevan", ["Billy Boston", "Martin Offiah", "Tom van Vollenhoven"], "hard", "records", ["warrington"], "pre-1996"),
+  q("cur-bevan-wire-tries", "Brian Bevan holds Warrington's club try-scoring record. How many tries did he score for the club?", "740", ["478", "612", "853"], "expert", "records", ["warrington"], "pre-1996"),
+  // https://en.wikipedia.org/wiki/Billy_Boston
+  q("cur-boston-wigan-tries", "Which Cardiff-born winger scored a club-record 478 tries for Wigan?", "Billy Boston", ["Martin Offiah", "Brian Bevan", "Jason Robinson"], "hard", "records", ["wigan"], "pre-1996"),
+  // https://en.wikipedia.org/wiki/Neil_Fox_(rugby_league)
+  q("cur-neil-fox-points", "Which Wakefield Trinity great holds rugby league's all-time career points record of 6,220?", "Neil Fox", ["Jim Sullivan", "Kevin Sinfield", "Lewis Jones"], "very-hard", "records", ["wakefield"], "pre-1996"),
+  // https://en.wikipedia.org/wiki/1968_Challenge_Cup_Final
+  q("cur-watersplash", "In the 1968 'Watersplash' Challenge Cup final, which Wakefield Trinity player missed a last-minute conversion in front of the posts?", "Don Fox", ["Neil Fox", "Harold Poynton", "Gary Cooper"], "very-hard", "famous-matches", ["wakefield", "leeds"], "pre-1996"),
+  // https://en.wikipedia.org/wiki/1929_Challenge_Cup
+  q("cur-first-wembley-final", "Which club won the first Challenge Cup final held at Wembley, in 1929?", "Wigan", ["Dewsbury", "Widnes", "Hunslet"], "very-hard", "challenge-cup", ["wigan"], "pre-1996"),
+  // https://en.wikipedia.org/wiki/Alex_Murphy_(rugby_league)
+  q("cur-murphy-three-clubs", "Who was the first player to captain three different clubs to Challenge Cup final wins?", "Alex Murphy", ["Ellery Hanley", "Shaun Edwards", "Kevin Sinfield"], "very-hard", "challenge-cup", ["st-helens", "leigh", "warrington"], "pre-1996"),
+  // https://en.wikipedia.org/wiki/Challenge_Cup
+  q("cur-odsal-replay-crowd", "The 1954 Challenge Cup final replay between Warrington and Halifax set a rugby league attendance record at which ground?", "Odsal", ["Wembley Stadium", "Headingley", "Central Park"], "hard", "challenge-cup", ["warrington"], "pre-1996"),
+  // https://en.wikipedia.org/wiki/List_of_Challenge_Cup_finals
+  q("cur-wigan-eight-cups", "How many Challenge Cup finals in a row did Wigan win from 1988 to 1995?", "8", ["5", "6", "7"], "medium", "challenge-cup", ["wigan"], "pre-1996"),
+  // https://en.wikipedia.org/wiki/Wigan_Warriors (22 Challenge Cups, 5 World Club Challenges, Central Park record crowd)
+  q("cur-wigan-cup-count", "After winning the 2026 final, how many Challenge Cups had Wigan Warriors won in total?", "22", ["19", "20", "24"], "hard", "records", ["wigan"], "2020s"),
+  q("cur-wigan-wcc-count", "Up to the end of 2026, how many World Club Challenges had Wigan Warriors won?", "5", ["3", "4", "6"], "very-hard", "records", ["wigan"], "2020s"),
+  q("cur-wigan-central-park-crowd", "Wigan's record home attendance of 47,747 at Central Park in 1959 was for a match against which club?", "St Helens", ["Warrington", "Leeds", "Widnes"], "very-hard", "records", ["wigan"], "pre-1996"),
+
+  // https://en.wikipedia.org/wiki/Magic_Weekend
+  q("cur-magic-first", "Which stadium hosted the first Magic Weekend in 2007?", "Millennium Stadium", ["Murrayfield", "St James' Park", "Etihad Stadium"], "hard", "history", [], "2000s"),
+  q("cur-magic-murrayfield", "Which Edinburgh stadium hosted Magic Weekend in 2009 and 2010?", "Murrayfield", ["Easter Road", "Tynecastle", "Meadowbank"], "hard", "stadiums", [], "2000s"),
+  q("cur-magic-st-james", "Which ground has hosted Magic Weekend more often than any other?", "St James' Park", ["Millennium Stadium", "Etihad Stadium", "Elland Road"], "medium", "stadiums", [], "2020s"),
+  q("cur-magic-2026", "In which city was the 2026 Magic Weekend held, at the Hill Dickinson Stadium?", "Liverpool", ["Newcastle", "Leeds", "Manchester"], "medium", "history", [], "2020s"),
+
+  // https://en.wikipedia.org/wiki/Toronto_Wolfpack
+  q("cur-toronto-withdrew", "Which club withdrew from Super League during the 2020 season, citing financial problems?", "Toronto Wolfpack", ["London Broncos", "Widnes Vikings", "Toulouse Olympique"], "medium", "history", [], "2020s"),
+  q("cur-toronto-mpg", "Toronto Wolfpack won promotion to Super League by beating which club in the 2019 Million Pound Game?", "Featherstone Rovers", ["Toulouse Olympique", "Leigh Centurions", "York City Knights"], "very-hard", "history", [], "2010s"),
+  q("cur-toronto-sbw", "Which dual-code New Zealand international signed for Toronto Wolfpack ahead of their 2020 Super League season?", "Sonny Bill Williams", ["Benji Marshall", "Israel Folau", "Jarryd Hayne"], "medium", "transfers", [], "2020s"),
+  // https://en.wikipedia.org/wiki/Super_League_licensing
+  q("cur-licensing", "From 2009 to 2014, how were places in Super League decided instead of promotion and relegation?", "A licensing system", ["IMG club gradings", "A Super 8s play-off", "A franchise auction"], "medium", "history", [], "2010s"),
+  q("cur-licensing-2009", "Which two clubs were given licences to join Super League for the 2009 season?", "Salford City Reds and Celtic Crusaders", ["Widnes Vikings and Halifax", "Leigh Centurions and Featherstone Rovers", "Toulouse Olympique and Widnes Vikings"], "very-hard", "history", ["salford"], "2000s"),
+  // https://en.wikipedia.org/wiki/Crusaders_Rugby_League
+  q("cur-crusaders-wrexham", "In 2010 and 2011, the Crusaders played their Super League home games in which town?", "Wrexham", ["Bridgend", "Newport", "Swansea"], "very-hard", "stadiums", [], "2010s"),
+
+  // https://en.wikipedia.org/wiki/The_Ashes_(rugby_league)
+  q("cur-ashes-last-gb", "In which year did Great Britain last win the rugby league Ashes?", "1970", ["1959", "1988", "1992"], "hard", "history", [], "pre-1996"),
+  q("cur-ashes-first", "In which year did Great Britain and Australia contest the first rugby league Ashes series?", "1908", ["1895", "1921", "1932"], "very-hard", "history", [], "pre-1996"),
+  q("cur-ashes-2025", "What was the result of the 2025 Ashes series between England and Australia?", "Australia won 3-0", ["Australia won 2-1", "England won 2-1", "The series was drawn"], "medium", "history", [], "2020s"),
+
+  // https://en.wikipedia.org/wiki/Lance_Todd
+  q("cur-lance-todd-born", "Lance Todd, after whom the Challenge Cup final man of the match award is named, was born in which country?", "New Zealand", ["Australia", "Wales", "England"], "hard", "challenge-cup", [], "pre-1996"),
+  q("cur-lance-todd-salford", "Which club did Lance Todd manage from 1928 until 1940?", "Salford", ["Warrington", "Swinton", "Oldham"], "expert", "challenge-cup", ["salford"], "pre-1996"),
+  // https://en.wikipedia.org/wiki/Steve_Prescott
+  q("cur-prescott-mos", "In 2014 the Man of Steel award was renamed in honour of which former St Helens and Hull FC full-back?", "Steve Prescott", ["Paul Wellens", "Kris Radlinski", "Shaun Briscoe"], "medium", "records", ["st-helens", "hull-fc"], "2010s"),
+  // https://en.wikipedia.org/wiki/2024_Super_League_Grand_Final
+  q("cur-rob-burrow-award", "Since 2024, the Super League Grand Final man of the match award has been named after which former player?", "Rob Burrow", ["Steve Prescott", "Kevin Sinfield", "Danny McGuire"], "easy", "grand-finals", ["leeds"], "2020s"),
+  // https://www.yorkshirepost.co.uk/sport/rugby-league/super-league-2026-awards-the-shocks-stars-and-moments-that-defined-the-season-9276985
+  q("cur-mos-2026", "Who won the 2026 Man of Steel award?", "Brad O'Neill", ["Adam Keighran", "Lachie Miller", "Jez Litten"], "medium", "players", ["wigan"], "2020s"),
+  // https://en.wikipedia.org/wiki/2023_Challenge_Cup_final
+  q("cur-lam-golden-point", "Who kicked the golden-point drop goal that won the 2023 Challenge Cup final for Leigh Leopards?", "Lachlan Lam", ["Ben Reynolds", "Tom Briscoe", "Josh Charnley"], "medium", "famous-matches", ["leigh"], "2020s"),
+
+  // https://en.wikipedia.org/wiki/Super_League (records: most points 3,443; most titles as captain 7)
+  q("cur-sl-points-record", "Who has scored the most points in Super League history, with 3,443?", "Kevin Sinfield", ["Marc Sneyd", "Pat Richards", "Danny Brough"], "hard", "records", ["leeds"]),
+  q("cur-sl-captain-titles", "Which player captained the most Super League Grand Final-winning sides, with seven?", "Kevin Sinfield", ["James Roby", "Sean O'Loughlin", "Jamie Peacock"], "hard", "captains", ["leeds"]),
+  // https://en.wikipedia.org/wiki/Super_League_Grand_Final (highest attendance 73,512 in 2015)
+  q("cur-gf-record-crowd", "The Super League Grand Final's record crowd of 73,512 watched which final?", "Leeds Rhinos v Wigan Warriors, 2015", ["St Helens v Hull FC, 2006", "Leeds Rhinos v Castleford Tigers, 2017", "St Helens v Wigan Warriors, 2014"], "very-hard", "grand-finals", ["leeds", "wigan"], "2010s"),
+
+  // Trebles (League Leaders' Shield, Challenge Cup and Grand Final in one season), from the verified
+  // tables in data/quiz/facts.ts. Hull KR 2025: https://www.blackcountryradio.co.uk/news/national-sport/super-league-grand-final-2025-hull-kr-complete-historic-treble-in-24-6-dethroning-of-wigan-warriors-at-old-trafford
+  q("cur-treble-leeds", "In which year did Leeds Rhinos win the League Leaders' Shield, Challenge Cup and Grand Final treble?", "2015", ["2004", "2009", "2017"], "medium", "records", ["leeds"], "2010s"),
+  q("cur-treble-bradford", "In which year did Bradford Bulls win the League Leaders' Shield, Challenge Cup and Grand Final treble?", "2003", ["2001", "2005", "2000"], "very-hard", "records", ["bradford"], "2000s"),
+  q("cur-treble-saints", "In which year did St Helens win the League Leaders' Shield, Challenge Cup and Grand Final treble?", "2006", ["2007", "2008", "2022"], "hard", "records", ["st-helens"], "2000s"),
+  q("cur-treble-wigan", "In which year did Wigan Warriors win the League Leaders' Shield, Challenge Cup and Grand Final treble?", "2024", ["2010", "2013", "2023"], "medium", "records", ["wigan"], "2020s"),
+  q("cur-treble-kr", "Which club completed the treble of League Leaders' Shield, Challenge Cup and Grand Final in 2025?", "Hull KR", ["Wigan Warriors", "Leeds Rhinos", "Warrington Wolves"], "easy", "records", ["hull-kr"], "2020s"),
+  // https://www.yorkshireeveningpost.co.uk/sport/rugby-league/wakefield-trinity-v-warrington-wolves-super-league-grand-final-facts-and-figures-9232957
+  q("cur-wakefield-champs-60s", "Before their 2026 Grand Final win, Wakefield Trinity's only championship titles came in which two seasons?", "1967 and 1968", ["1946 and 1960", "1962 and 1963", "1979 and 1980"], "very-hard", "history", ["wakefield"], "pre-1996"),
 ];

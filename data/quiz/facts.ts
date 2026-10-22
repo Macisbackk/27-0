@@ -41,6 +41,9 @@ export const GRAND_FINALS: FinalRecord[] = [
   { year: 2023, winnerId: "wigan", runnerUpId: "catalans", winnerName: "Wigan Warriors", runnerUpName: "Catalans Dragons", score: "10-2" },
   { year: 2024, winnerId: "wigan", runnerUpId: "hull-kr", winnerName: "Wigan Warriors", runnerUpName: "Hull KR", score: "9-2" },
   { year: 2025, winnerId: "hull-kr", runnerUpId: "wigan", winnerName: "Hull KR", runnerUpName: "Wigan Warriors", score: "24-6" },
+  // 3 October 2026: https://skysports.com/rugby-league/warrington-vs-wakefield/report/63349 and
+  // https://www.yorkshireeveningpost.co.uk/sport/rugby-league/wakefield-trinity-full-results-from-super-league-winning-2026-season-5419487
+  { year: 2026, winnerId: "wakefield", runnerUpId: "warrington", winnerName: "Wakefield Trinity", runnerUpName: "Warrington Wolves", score: "23-10" },
 ];
 
 /** Challenge Cup finals in the Super League era with a clear winner. */
@@ -113,16 +116,21 @@ export const STADIUMS: {
   stadium: string;
   alsoKnownAs?: string[];
   city: string;
+  /** Sponsored names change, so ask about this season's name explicitly. */
+  asOfSeason?: number;
 }[] = [
   { id: "leeds", stadium: "Headingley", city: "Leeds" },
-  { id: "wigan", stadium: "DW Stadium", alsoKnownAs: ["JJB Stadium", "Brick Community Stadium"], city: "Wigan" },
-  { id: "st-helens", stadium: "Totally Wicked Stadium", alsoKnownAs: ["Langtree Park"], city: "St Helens" },
+  // Renamed in 2024: https://en.wikipedia.org/wiki/Wigan_Warriors
+  { id: "wigan", stadium: "Brick Community Stadium", alsoKnownAs: ["JJB Stadium", "DW Stadium"], city: "Wigan", asOfSeason: 2026 },
+  // BrewDog Stadium from October 2025: https://www.saintsrlfc.com/2025/10/20/st-helens-r-f-c-announces-landmark-partnership-with-brewdog-welcome-to-the-brewdog-stadium/
+  { id: "st-helens", stadium: "BrewDog Stadium", alsoKnownAs: ["Langtree Park", "Totally Wicked Stadium"], city: "St Helens", asOfSeason: 2026 },
   { id: "warrington", stadium: "Halliwell Jones Stadium", city: "Warrington" },
   { id: "hull-fc", stadium: "MKM Stadium", alsoKnownAs: ["KC Stadium"], city: "Hull" },
   { id: "hull-kr", stadium: "Craven Park", alsoKnownAs: ["Sewell Group Craven Park"], city: "Hull" },
   { id: "castleford", stadium: "The Jungle", alsoKnownAs: ["Wheldon Road"], city: "Castleford" },
   { id: "wakefield", stadium: "Belle Vue", city: "Wakefield" },
-  { id: "huddersfield", stadium: "John Smith's Stadium", alsoKnownAs: ["Kirklees Stadium"], city: "Huddersfield" },
+  // Accu Stadium since 2025; the Giants plan to move after 2026: https://en.wikipedia.org/wiki/Kirklees_Stadium
+  { id: "huddersfield", stadium: "Accu Stadium", alsoKnownAs: ["Kirklees Stadium", "John Smith's Stadium"], city: "Huddersfield", asOfSeason: 2026 },
   { id: "catalans", stadium: "Stade Gilbert Brutus", city: "Perpignan" },
   { id: "leigh", stadium: "Leigh Sports Village", city: "Leigh" },
   { id: "salford", stadium: "Salford Community Stadium", alsoKnownAs: ["AJ Bell Stadium"], city: "Salford" },
@@ -618,6 +626,8 @@ export const GRAND_FINAL_MAN_OF_MATCH: {
   { year: 2023, player: "Jake Wardle", clubId: "wigan" },
   { year: 2024, player: "Bevan French", clubId: "wigan" },
   { year: 2025, player: "Mikey Lewis", clubId: "hull-kr" },
+  // https://skysports.com/rugby-league/warrington-vs-wakefield/report/63349
+  { year: 2026, player: "Tom Johnstone", clubId: "wakefield" },
 ];
 
 /**
