@@ -495,7 +495,8 @@ function buildFinalsExtraQuestions(): QuizQuestion[] {
   for (const record of CHALLENGE_CUPS) {
     if (!firstCc.has(record.winnerId)) firstCc.set(record.winnerId, record);
   }
-  const ccFirstAllowed = new Set(["st-helens", "leeds", "bradford", "wigan", "hull-fc", "hull-kr"]);
+  // St Helens left out: their answer (1996) is the first season of the era, so it would be a giveaway.
+  const ccFirstAllowed = new Set(["leeds", "bradford", "wigan", "hull-fc", "hull-kr"]);
   for (const [id, record] of firstCc) {
     if (!ccFirstAllowed.has(id) || !isTeamId(id)) continue;
     const rows = CHALLENGE_CUPS.map((row) => ({ year: row.year, names: [String(row.year)] }));
@@ -507,7 +508,7 @@ function buildFinalsExtraQuestions(): QuizQuestion[] {
         nearestByYear(record.year, rows, [String(record.year)], 3),
         {
           topicId: `record:${id}:first-sl-era-challenge-cup`,
-          difficulty: id === "st-helens" ? "hard" : "very-hard",
+          difficulty: "very-hard",
           category: "challenge-cup",
           teams: [id],
           era: eraForYear(record.year),

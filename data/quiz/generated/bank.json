@@ -4258,26 +4258,6 @@
     "answerType": "objective"
   },
   {
-    "id": "cc-first-sl-era-st-helens",
-    "question": "In which year did St Helens win their first Challenge Cup of the Super League era (since 1996)?",
-    "options": [
-      "1996",
-      "1998",
-      "1999",
-      "1997"
-    ],
-    "correctAnswer": "1996",
-    "topicId": "record:st-helens:first-sl-era-challenge-cup",
-    "difficulty": "hard",
-    "category": "challenge-cup",
-    "teams": [
-      "st-helens"
-    ],
-    "era": "1990s",
-    "sourceType": "finals",
-    "answerType": "objective"
-  },
-  {
     "id": "cc-first-sl-era-leeds",
     "question": "In which year did Leeds Rhinos win their first Challenge Cup of the Super League era (since 1996)?",
     "options": [
