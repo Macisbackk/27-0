@@ -15,6 +15,9 @@ import {
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 import { ClubShirt } from "./ClubShirt";
+import { useCosmetics } from "@/lib/storage/cosmetics-store";
+import { PITCH_STYLES, kitFromDesign, pitchStyleForItem } from "@/lib/cosmetics";
+import type { ClubKit } from "@/lib/club-kits";
 import { PitchSlotCard, pitchSlotLabel, PITCH_SLOT_COMPACT_CLASS, PITCH_SLOT_REVIEW_CLASS, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
 
 interface RugbyPitchProps {
@@ -87,6 +90,13 @@ function RugbyPitchInner({
   animateSlotEntrance = true,
 }: RugbyPitchProps) {
   const lockedSet = useMemo(() => new Set(lockedSlots ?? []), [lockedSlots]);
+  // Store cosmetics: your own kit on every shirt, and the pitch style you've equipped.
+  const cosmetics = useCosmetics();
+  const kitOverride = useMemo<ClubKit | null>(
+    () => (cosmetics.kit.enabled ? kitFromDesign(cosmetics.kit) : null),
+    [cosmetics.kit]
+  );
+  const pitchStyle = pitchStyleForItem(cosmetics.equipped.pitch);
   const headerTitle = formationOnly
     ? "Team Sheet"
     : interactive
@@ -163,7 +173,7 @@ function RugbyPitchInner({
                   : "min-h-[400px] sm:min-h-[580px] md:min-h-[580px] lg:aspect-[5/8] lg:min-h-0"
             }`}
           >
-            {formationOnly ? <TeamSheetMarkings /> : <PitchMarkings />}
+            {formationOnly ? <TeamSheetMarkings style={pitchStyle} /> : <PitchMarkings />}
 
             <div className="absolute inset-0 z-10">
               {FORMATION_SLOT_INDICES.map((slotIndex) => {
@@ -206,6 +216,7 @@ function RugbyPitchInner({
                       clubColorOverride={clubColorOverride}
                       slotSizeClass={slotSizeClass}
                       animateEntrance={animateSlotEntrance}
+                      kitOverride={kitOverride}
                       onClick={
                         canClick ? () => onSlotClick!(slotIndex) : undefined
                       }
@@ -252,17 +263,15 @@ function teamSheetCoords(coords: { left: number; top: number }) {
   };
 }
 
-/** Quiet pitch for the team sheet: mown bands, try lines and halfway only. */
-function TeamSheetMarkings() {
+/** Quiet pitch for the team sheet: mown bands, try lines and halfway only (style from the Store). */
+function TeamSheetMarkings({ style = "classic" }: { style?: keyof typeof PITCH_STYLES }) {
+  const look = PITCH_STYLES[style] ?? PITCH_STYLES.classic;
   return (
     <>
-      <div
-        className="absolute inset-0"
-        style={{ background: "repeating-linear-gradient(180deg, #15391f 0 10%, #123219 10% 20%)" }}
-      />
-      <div className="absolute left-0 right-0 top-1/2 h-[2px] -translate-y-1/2 bg-white/[0.13]" aria-hidden />
-      <div className="absolute left-0 right-0 top-[3%] h-px bg-white/[0.08]" aria-hidden />
-      <div className="absolute bottom-[3%] left-0 right-0 h-px bg-white/[0.08]" aria-hidden />
+      <div className="absolute inset-0" style={{ background: look.background }} />
+      <div className="absolute left-0 right-0 top-1/2 h-[2px] -translate-y-1/2" style={{ background: look.line }} aria-hidden />
+      <div className="absolute left-0 right-0 top-[3%] h-px opacity-60" style={{ background: look.line }} aria-hidden />
+      <div className="absolute bottom-[3%] left-0 right-0 h-px opacity-60" style={{ background: look.line }} aria-hidden />
     </>
   );
 }
@@ -365,6 +374,7 @@ const SquadMarker = memo(function SquadMarker({
   clubColorOverride,
   slotSizeClass = PITCH_SLOT_SIZE_CLASS,
   animateEntrance = true,
+  kitOverride = null,
   onClick,
   onDoubleClick,
 }: {
@@ -380,6 +390,7 @@ const SquadMarker = memo(function SquadMarker({
   clubColorOverride?: string;
   slotSizeClass?: string;
   animateEntrance?: boolean;
+  kitOverride?: ClubKit | null;
   onClick?: () => void;
   onDoubleClick?: (e: MouseEvent) => void;
 }) {
@@ -535,6 +546,7 @@ const SquadMarker = memo(function SquadMarker({
         clubColorOverride={clubColorOverride}
         compact={_compact}
         fullPlayerNames={fullPlayerNames}
+        kitOverride={kitOverride}
       />
     </button>
   ) : (
@@ -544,6 +556,7 @@ const SquadMarker = memo(function SquadMarker({
       clubColorOverride={clubColorOverride}
       compact={_compact}
       fullPlayerNames={fullPlayerNames}
+      kitOverride={kitOverride}
     />
   );
 

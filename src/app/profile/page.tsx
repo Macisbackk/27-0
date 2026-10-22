@@ -15,6 +15,9 @@ import { AchievementsSection } from "@/components/achievements/AchievementsSecti
 import { useAchievements } from "@/components/achievements/AchievementProvider";
 import { LINK, MANAGER, PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
+import { FlairBadge } from "@/lib/coach-flair";
+import { titleName } from "@/lib/cosmetics";
+import { useCosmetics } from "@/lib/storage/cosmetics-store";
 
 /**
  * Coach Profile — one page for everything about you: Career Stats, Achievements and Account.
@@ -45,6 +48,7 @@ function tabFromHash(): ProfileTab {
 
 export default function ProfilePage() {
   const { loading, isLoggedIn, coachName, email, profile, signOut } = useAuth();
+  const equippedTitle = titleName(useCosmetics().equipped.title);
   const [tab, setTab] = useState<ProfileTab>("stats");
   const [resetBusy, setResetBusy] = useState(false);
   const [resetMsg, setResetMsg] = useState<string | null>(null);
@@ -123,6 +127,11 @@ export default function ProfilePage() {
             {loading ? "Coach" : isLoggedIn ? (coachName ?? "Coach") : "Guest coach"}
           </p>
           <h1 className={`mt-1 ${TYPO.pageTitle}`}>Coach Profile</h1>
+          {equippedTitle ? (
+            <p className="mt-2">
+              <FlairBadge title={equippedTitle} />
+            </p>
+          ) : null}
           {!loading && !isLoggedIn ? (
             <p className={`mt-2 ${TYPO.bodySm}`}>
               Saved on this device.{" "}

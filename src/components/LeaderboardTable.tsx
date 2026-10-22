@@ -42,6 +42,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 import { useAuth } from "@/lib/auth-context";
+import { FlairBadge, useCoachFlairs } from "@/lib/coach-flair";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
 
@@ -316,6 +317,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
   const showPeriodFilters =
     !isDailyMode && !isTrophyCabinetMode && !isMiniGamesMode;
 
+  const flairs = useCoachFlairs(entries.map((e) => e.username));
   return (
     <div>
       {mode ? null : (
@@ -500,7 +502,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
                   >
                     {entry.rank}
                   </span>
-                  <span className={`truncate ${TYPO.identityLine}`}>{entry.username}</span>
+                  <span className={`truncate ${TYPO.identityLine}`}>{entry.username}<FlairBadge title={flairs[entry.username]} /></span>
                 </div>
                 <div className="shrink-0 text-right font-semibold text-accent-gold">
                   {renderLeaderboardStat(entry, effectiveTracker)}
@@ -540,7 +542,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className={TYPO.identityLine}>{entry.username}</span>
+                    <span className={TYPO.identityLine}>{entry.username}<FlairBadge title={flairs[entry.username]} /></span>
                   </td>
                   <td className="px-4 py-3 font-semibold text-accent-gold">
                     {renderLeaderboardStat(entry, effectiveTracker)}

@@ -23,7 +23,7 @@ const GUIDE_ITEMS = [
   },
   {
     title: "Club Funds",
-    body: "Earn them from seasons, play-offs, puzzles and achievements. Spend them on themes in the Store.",
+    body: "Earn them from seasons, play-offs, puzzles and achievements. Spend them in the Store on themes, your own kit, pitch styles, titles, card frames and Ball Knower mode.",
   },
 ];
 

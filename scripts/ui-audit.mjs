@@ -189,6 +189,34 @@ await page.waitForTimeout(500);
 }
 await shot(page, "grid-playing");
 
+// Store cosmetics in use (seeded straight into storage).
+await page.evaluate(() => {
+  localStorage.setItem(
+    "27-0-cosmetics-store",
+    JSON.stringify({
+      owned: ["kit-designer", "pitch-floodlit", "title-deadline-dealer", "frame-foil", "mode-ball-knower"],
+      purchaseIds: [],
+      equipped: { pitch: "pitch-floodlit", title: "title-deadline-dealer", frame: "frame-foil" },
+      kit: { pattern: "v", body: "#0A2540", trim: "#FDB913", enabled: true },
+    })
+  );
+});
+await go(page, "/store", 1000);
+await page.getByRole("tab", { name: "Kit & pitch" }).click().catch(() => {});
+await page.waitForTimeout(600);
+await shot(page, "store-kit-and-pitch");
+await go(page, "/play?bk=1", 1500);
+await tap(page, [/Skip boost|Continue without boost/i]);
+await page.waitForTimeout(600);
+await tap(page, [/Auto.?fill squad/i]);
+await page.waitForTimeout(1500);
+await shot(page, "cosmetics-ball-knower-kit-floodlit", { full: false });
+await go(page, "/showcase", 1500);
+await shot(page, "cosmetics-foil-frames", { full: false });
+await go(page, "/profile", 1000);
+await shot(page, "cosmetics-title", { full: false });
+await page.evaluate(() => localStorage.removeItem("27-0-cosmetics-store"));
+
 // Manager Mode picker.
 await go(page, "/manager", 1200);
 await shot(page, "manager-picker");

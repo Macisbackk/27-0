@@ -16,6 +16,7 @@ const ACCOUNT_KEYS: readonly string[] = [
   STORAGE_KEYS.dailyChallengeClaims,
   STORAGE_KEYS.dailyChallengeMeta,
   STORAGE_KEYS.uiThemeStore,
+  STORAGE_KEYS.cosmeticsStore,
   STORAGE_KEYS.uiThemeCssCache,
   STORAGE_KEYS.boostInventory,
   STORAGE_KEYS.achievements,
