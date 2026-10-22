@@ -18,6 +18,8 @@ export function Departures() {
   const armed = useArmed();
   const s = state!;
   const d = s.departures;
+  // Each decision removes a row, so the next player's buttons slide under the finger: re-arm briefly.
+  const decisionsArmed = useArmed(400, (d?.renewed?.length ?? 0) + (d?.released?.length ?? 0), { armedOnMount: true });
   const expiring = (d?.expiring ?? []).map((id) => s.players[id]).filter((p): p is NonNullable<typeof p> => !!p);
   const renewed = (d?.renewed ?? []).map((id) => s.players[id]).filter((p): p is NonNullable<typeof p> => !!p);
   const academy = (d?.academy ?? []).map((id) => s.players[id]).filter((p): p is NonNullable<typeof p> => !!p);
@@ -57,6 +59,7 @@ export function Departures() {
                       <GameButton
                         size="sm"
                         variant="secondary"
+                        disabled={!decisionsArmed}
                         onClick={() => {
                           playUiClick();
                           setError(null);
@@ -67,7 +70,7 @@ export function Departures() {
                       </GameButton>
                       <GameButton
                         size="sm"
-                        disabled={s.budget < fee}
+                        disabled={s.budget < fee || !decisionsArmed}
                         onClick={() => {
                           playUiClick();
                           const err = renew(p.id);

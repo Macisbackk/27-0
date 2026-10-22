@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { useArmed } from "@/hooks/useArmed";
 import { GameSegmentedControl } from "@/components/ui/GameSegmentedControl";
@@ -163,18 +163,10 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
   const outlook = edge > 2 ? "Favourites" : edge > 0.5 ? "Slight favourites" : edge > -0.5 ? "Coin flip" : edge > -2 ? "Underdogs" : "Big underdogs";
   const big = isBigMatchday(s, md);
   const stage = currentStage(s);
-  // Coming into a round from another stage (pre-season results, Deadline Day, league over…), the
-  // Play / Quick sim buttons arm after a moment so the second tap of a double tap can't start a match.
-  const [fixtureArmed, setFixtureArmed] = useState(true);
-  const prevStage = useRef(stage);
-  useLayoutEffect(() => {
-    if (prevStage.current === stage) return;
-    prevStage.current = stage;
-    if (stage !== "fixture") return;
-    setFixtureArmed(false);
-    const t = window.setTimeout(() => setFixtureArmed(true), 450);
-    return () => window.clearTimeout(t);
-  }, [stage]);
+  // Coming into a round from another stage (pre-season results, Deadline Day, league over…) or
+  // from another week (Continue / Quick sim), the buttons arm after a moment so the second tap of a
+  // double tap can't start a match that's just appeared under the finger.
+  const fixtureArmed = useArmed(450, `${stage}:${s.matchdayIndex}`, { armedOnMount: true });
 
   if (live && fixture) {
     return (

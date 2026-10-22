@@ -106,7 +106,7 @@ try {
 
   // Season: walk every stage, reloading and double-tapping at each one.
   const seen = new Set();
-  for (let i = 0; i < 160; i++) {
+  for (let i = 0; i < 500; i++) {
     if (await visible(page.getByText(/season review/i).first())) break;
     if (await visible(page.getByRole("region", { name: "Deadline Day" }))) {
       if (!seen.has("deadline")) {

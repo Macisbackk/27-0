@@ -76,6 +76,8 @@ try {
   await startCareer(page, "super-league", 13);
   await noSidewaysScroll(page, "hub @320");
   const play = page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window)$/ }).first();
+  // Round buttons arm a moment after a stage change (double-tap guard); wait for that, then hammer.
+  for (let i = 0; i < 40 && !(await play.isEnabled().catch(() => false)); i++) await page.waitForTimeout(100);
   for (let i = 0; i < 5; i++) await play.click({ force: true, noWaitAfter: true }).catch(() => {});
   await page.waitForTimeout(800);
   await page.getByText(/Last result/).first().waitFor({ timeout });
