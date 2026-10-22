@@ -1,24 +1,26 @@
 /**
  * Builds the Supabase Auth email templates (supabase/email-templates/*.html) from one layout,
- * in the 27-0 Floodlights look. Run: node scripts/build-email-templates.mjs
+ * in the 27-0 "Floodlit lime" look (neutral black, lime actions, scoreboard logo). Run: node scripts/build-email-templates.mjs
  * Email-safe: tables + inline styles, no external CSS, works in Gmail, Outlook, Apple Mail and on phones.
  */
 import { writeFileSync } from "node:fs";
 
 const C = {
-  ground: "#0a110e",
-  surface: "#16211c",
-  raised: "#1d2a24",
-  line: "#22312a",
-  text: "#eef5f0",
-  muted: "#a7b8ae",
-  faint: "#6f8178",
-  accent: "#4ade80",
-  onAccent: "#052e14",
+  ground: "#0e0f10",
+  surface: "#191a1c",
+  raised: "#232527",
+  line: "#2a2c2f",
+  panel: "#060707",
+  text: "#ffffff",
+  muted: "#a6a9ad",
+  faint: "#74777c",
+  accent: "#b6f23d",
+  onAccent: "#0e1400",
   gold: "#fcd34d",
 };
 const SITE = "https://27-0.co.uk";
-const FONT = "Inter,'Segoe UI',Helvetica,Arial,sans-serif";
+const FONT = "Barlow,'Segoe UI',Helvetica,Arial,sans-serif";
+const COND = "'Barlow Condensed','Arial Narrow',Arial,sans-serif";
 const DISPLAY = "Anton,Impact,'Arial Black',sans-serif";
 
 const button = (label) => `
@@ -26,7 +28,7 @@ const button = (label) => `
   <tr><td align="center">
     <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="{{ .ConfirmationURL }}" style="height:52px;v-text-anchor:middle;width:300px;" arcsize="28%" fillcolor="${C.accent}" stroke="f"><center style="color:${C.onAccent};font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">${label}</center></v:roundrect><![endif]-->
     <!--[if !mso]><!-->
-    <a href="{{ .ConfirmationURL }}" target="_blank" style="display:block;max-width:320px;margin:0 auto;background-color:${C.accent};color:${C.onAccent};font-family:${FONT};font-size:16px;font-weight:800;line-height:52px;text-align:center;text-decoration:none;border-radius:14px;">${label}</a>
+    <a href="{{ .ConfirmationURL }}" target="_blank" style="display:block;max-width:320px;margin:0 auto;background-color:${C.accent};color:${C.onAccent};font-family:${COND};font-size:18px;font-weight:700;line-height:52px;text-align:center;text-decoration:none;border-radius:14px;">${label}</a>
     <!--<![endif]-->
   </td></tr>
 </table>`;
@@ -39,7 +41,7 @@ const featureRows = (rows) => `
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
       <td width="40" valign="top" style="font-family:${DISPLAY};font-size:20px;line-height:24px;color:${C.accent};">${icon}</td>
       <td valign="top" style="font-family:${FONT};">
-        <p style="margin:0;font-size:14px;font-weight:700;line-height:20px;color:${C.text};">${title}</p>
+        <p style="margin:0;font-family:${COND};font-size:17px;font-weight:700;line-height:21px;color:${C.text};">${title}</p>
         <p style="margin:2px 0 0 0;font-size:13px;line-height:19px;color:${C.muted};">${body}</p>
       </td>
     </tr></table>
@@ -58,7 +60,7 @@ function layout({ title, preheader, eyebrow, heading, intro, cta, extra = "", no
   <meta name="color-scheme" content="dark light" />
   <meta name="supported-color-schemes" content="dark light" />
   <title>${title}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet" />
   <style>
     body { margin:0; padding:0; background-color:${C.ground}; }
     a { color:${C.accent}; }
@@ -72,26 +74,25 @@ function layout({ title, preheader, eyebrow, heading, intro, cta, extra = "", no
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;">
         <!-- Logo -->
         <tr><td align="center" style="padding:0 0 18px 0;">
-          <a href="${SITE}" target="_blank" style="text-decoration:none;font-family:${DISPLAY};font-size:40px;line-height:44px;letter-spacing:1px;">
-            <span style="color:${C.accent};">27-</span><span style="color:${C.text};">0</span>
+          <!-- Scoreboard mark: "27" lime and "0" white on two dark panels -->
+          <a href="${SITE}" target="_blank" style="text-decoration:none;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
+              <td style="background-color:${C.panel};border:1px solid #2f3134;border-radius:4px;padding:4px 8px 2px 8px;font-family:${DISPLAY};font-size:36px;line-height:40px;letter-spacing:1px;color:${C.accent};">27</td>
+              <td style="padding:0 7px;font-family:${DISPLAY};font-size:30px;line-height:40px;color:${C.text};">-</td>
+              <td style="background-color:${C.panel};border:1px solid #2f3134;border-radius:4px;padding:4px 8px 2px 8px;font-family:${DISPLAY};font-size:36px;line-height:40px;letter-spacing:1px;color:${C.text};">0</td>
+            </tr></table>
           </a>
         </td></tr>
         <!-- Card -->
         <tr><td style="background-color:${C.surface};border-radius:20px;overflow:hidden;">
-          <!-- Pitch stripe header -->
+          <!-- Lime touchline across the top of the card -->
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td height="8" style="height:8px;line-height:8px;font-size:0;background-color:#15391f;">&nbsp;</td>
-              <td height="8" style="height:8px;line-height:8px;font-size:0;background-color:#123219;">&nbsp;</td>
-              <td height="8" style="height:8px;line-height:8px;font-size:0;background-color:#15391f;">&nbsp;</td>
-              <td height="8" style="height:8px;line-height:8px;font-size:0;background-color:#123219;">&nbsp;</td>
-              <td height="8" style="height:8px;line-height:8px;font-size:0;background-color:${C.accent};">&nbsp;</td>
-            </tr>
+            <tr><td height="4" style="height:4px;line-height:4px;font-size:0;background-color:${C.accent};">&nbsp;</td></tr>
           </table>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr><td class="card-pad" style="padding:30px 32px 30px 32px;font-family:${FONT};">
-              <p style="margin:0 0 10px 0;font-size:13px;font-weight:700;line-height:18px;color:${C.accent};">${eyebrow}</p>
-              <h1 class="h1" style="margin:0;font-size:28px;font-weight:800;line-height:34px;letter-spacing:-0.3px;color:${C.text};">${heading}</h1>
+              <p style="margin:0 0 10px 0;font-family:${COND};font-size:16px;font-weight:700;line-height:20px;color:${C.accent};">${eyebrow}</p>
+              <h1 class="h1" style="margin:0;font-family:${COND};font-size:32px;font-weight:700;line-height:36px;color:${C.text};">${heading}</h1>
               <p style="margin:14px 0 0 0;font-size:15px;line-height:23px;color:${C.muted};">${intro}</p>
               ${button(cta)}
               ${extra}

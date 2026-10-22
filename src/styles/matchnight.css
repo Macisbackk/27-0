@@ -56,7 +56,9 @@ body,
     inset 0 0 0 1px var(--fl-line-strong),
     inset 0 -0.5em 0.6em rgba(255, 255, 255, 0.03);
   color: var(--mn-signal);
-  text-shadow: 0 0 0.35em rgb(var(--mn-signal-rgb) / 0.5);
+}
+.logo-mark__cell:last-child {
+  color: #ffffff;
 }
 /* The split line across a flip panel. */
 .logo-mark__cell::after {

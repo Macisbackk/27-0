@@ -1,6 +1,6 @@
 /**
  * Generate the 27-0 app icons, PWA icons and splash, matching the Matchnight LogoMark:
- * two lit scoreboard panels ("27" and "0") on neutral black, digits in floodlit lime.
+ * two lit scoreboard panels ("27" and "0") on neutral black: "27" in floodlit lime, "0" in white.
  * Digits are drawn as seven-segment bars, so no font is needed to render them.
  */
 import fs from "fs";
@@ -25,7 +25,7 @@ const SEGMENTS: Record<string, number[]> = {
 };
 
 /** One seven-segment digit at (x, y), u wide and 1.8u tall. */
-function digit(ch: string, x: number, y: number, u: number): string {
+function digit(ch: string, x: number, y: number, u: number, fill = DIGIT): string {
   const on = SEGMENTS[ch]!;
   const h = u * 1.8;
   const t = u * 0.3;
@@ -45,7 +45,7 @@ function digit(ch: string, x: number, y: number, u: number): string {
   ];
   return bars
     .map(([bx, by, bw, bh], i) =>
-      on[i] ? `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${r}" fill="${DIGIT}"/>` : ""
+      on[i] ? `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${r}" fill="${fill}"/>` : ""
     )
     .join("");
 }
@@ -73,7 +73,7 @@ function mark(cx: number, cy: number, width: number): string {
     panel(p2x, p2w),
     digit("2", left + pad, top + pad, u),
     digit("7", left + pad + u + gap, top + pad, u),
-    digit("0", p2x + pad, top + pad, u),
+    digit("0", p2x + pad, top + pad, u, "#ffffff"),
     `<rect x="${left + p1w + dashW * 0.22}" y="${cy - u * 0.08}" width="${dashW * 0.56}" height="${u * 0.16}" rx="${u * 0.04}" fill="${DASH}"/>`,
   ].join("");
 }
