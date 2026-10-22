@@ -3,7 +3,7 @@ import type { GameMode } from "./types";
 import { ACHIEVEMENT_DEFINITIONS } from "./achievements/achievementDefinitions";
 import { getDailyChallengeMinimumBonuses } from "./daily-challenge";
 import { SHOW_DAILY_CHALLENGE_UI } from "./feature-flags";
-import { WORDLE_WIN_REWARD } from "./mini-games/reward-amounts";
+import { GRID_REWARD_PER_CELL, WORDLE_WIN_REWARD } from "./mini-games/reward-amounts";
 import { QUIZ_PRIZE_LADDER } from "./quiz/prizes";
 
 export const CLUB_FUNDS_REWARDS = {
@@ -253,6 +253,11 @@ const CLUB_FUNDS_INFO_LINES_SOURCE: ClubFundsInfoLine[] = [
     : []),
   { label: "Super League Millionaire (15/15)", amount: QUIZ_TOP_PRIZE },
   { label: "Wordle (once a day)", amount: WORDLE_WIN_REWARD },
+  {
+    label: "Rugby League Grid (once a day)",
+    amount: GRID_REWARD_PER_CELL * 9,
+    valueText: `up to ${formatClubFundsExact(GRID_REWARD_PER_CELL * 9)}`,
+  },
   {
     label: "Achievements",
     amount: ACHIEVEMENT_REWARD_MAX,
