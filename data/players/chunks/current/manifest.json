@@ -22,25 +22,25 @@
       "club": "Catalans Dragons",
       "slug": "catalans-dragons",
       "file": "catalans-dragons.json",
-      "count": 33
+      "count": 32
     },
     {
       "club": "Huddersfield Giants",
       "slug": "huddersfield-giants",
       "file": "huddersfield-giants.json",
-      "count": 26
+      "count": 28
     },
     {
       "club": "Hull FC",
       "slug": "hull-fc",
       "file": "hull-fc.json",
-      "count": 26
+      "count": 34
     },
     {
       "club": "Hull KR",
       "slug": "hull-kr",
       "file": "hull-kr.json",
-      "count": 26
+      "count": 27
     },
     {
       "club": "Leeds Rhinos",

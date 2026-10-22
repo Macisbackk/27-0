@@ -35,7 +35,7 @@ export const PLAYER_POTENTIAL_OVERRIDES: Record<string, number> = {
   "huddersfield-cur-joe-greenwood": 82,
   "huddersfield-cur-fenton-rogers": 87,
   "toulouse-cur-calum-gahan": 83,
-  "catalans-cur-arthur-romano": 84,
+  "hull-fc-cur-arthur-romano": 84,
   "catalans-cur-alrix-da-costa": 83,
   "bradford-cur-ebon-scurr": 85,
   "york-cur-xavier-vaa": 86,

@@ -36,7 +36,7 @@ export const PLAYER_RATING_OVERRIDES: Record<string, number> = {
   "huddersfield-cur-fenton-rogers": 82,
   "bradford-cur-eribe-doro": 81,
   "toulouse-cur-calum-gahan": 81,
-  "catalans-cur-arthur-romano": 82,
+  "hull-fc-cur-arthur-romano": 82,
   "catalans-cur-alrix-da-costa": 82,
   "bradford-cur-ebon-scurr": 81,
   "york-cur-xavier-vaa": 81,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T08:32:41.954Z",
+  "generatedAt": "2026-10-22T08:41:46.253Z",
   "script": "scripts/add-2026-missing-squad-players.ts",
   "method": [
     "Squad lists: Love Rugby League club-by-club 2026 squad numbers (28 Jan 2026), cross-checked per club.",
@@ -9,9 +9,9 @@
     "Classic Current spins draw from the fixed 17-man 2026 pools (current-team-year-squads-2026.json), so depth rows appear in Manager Mode, Wordle/Grid and the global recruitment pools, not in the 17-man Classic spin pools."
   ],
   "totals": {
-    "added": 11,
-    "moved": 1,
-    "unverified": 3,
+    "added": 21,
+    "moved": 2,
+    "unverified": 6,
     "movesNotApplied": 1
   },
   "clubs": {
@@ -34,14 +34,76 @@
     "Catalans Dragons": {
       "squadListSources": [],
       "added": [],
-      "moved": [],
+      "moved": [
+        {
+          "name": "Arthur Romano",
+          "fromClub": "Catalans Dragons",
+          "toClub": "Hull FC",
+          "fromId": "catalans-cur-arthur-romano",
+          "toId": "hull-fc-cur-arthur-romano",
+          "reason": "Signed a two-year deal with Hull FC from Catalans for 2026 (Hull FC squad number 21).",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+            "https://holderness-gazette.co.uk/new-signings-bolster-airlie-birds-squad/"
+          ],
+          "removedFromFromClub2026Pool": true,
+          "removedFromSl2026Squads": true,
+          "idRetargetedIn": [
+            "birth-years.json",
+            "player-rating-overrides.json",
+            "player-rating-overrides.ts",
+            "player-potential-overrides.ts"
+          ],
+          "status": "applied"
+        }
+      ],
       "movesNotApplied": [],
       "unverified": [],
-      "playableCurrentPlayers": 33
+      "playableCurrentPlayers": 32
     },
     "Huddersfield Giants": {
-      "squadListSources": [],
-      "added": [],
+      "squadListSources": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.alloutrugbyleague.co.uk/news/huddersfield-giants-2026-squad-numbers-1520629",
+        "https://rugbyleaguezone.com/2026-super-league-new-faces-new-roles-as-huddersfield-reveal-squad-numbers-423156/"
+      ],
+      "added": [
+        {
+          "name": "Jacob Algar",
+          "id": "huddersfield-cur-jacob-algar",
+          "squadNumber": 25,
+          "position": "PROP",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list (academy graduate)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.alloutrugbyleague.co.uk/news/huddersfield-giants-2026-squad-numbers-1520629",
+            "https://giantsrl.com/article/9909/promising-youngster-signs-new-deal"
+          ],
+          "notes": "Club: 'primarily a prop or back-rower', came through the Giants pathway; new three-year deal June 2026."
+        },
+        {
+          "name": "Marshall Land",
+          "id": "huddersfield-cur-marshall-land",
+          "squadNumber": 27,
+          "position": "SCRUM_HALF",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list (academy)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.alloutrugbyleague.co.uk/news/huddersfield-giants-2026-squad-numbers-1520629",
+            "https://giantsrl.com/article/9934/promising-half-back-signs-extension"
+          ],
+          "notes": "Club: half-back, two-year extension June 2026."
+        }
+      ],
       "moved": [],
       "movesNotApplied": [
         {
@@ -55,24 +117,223 @@
           ]
         }
       ],
-      "unverified": [],
-      "playableCurrentPlayers": 26
+      "unverified": [
+        {
+          "club": "Huddersfield Giants",
+          "name": "Logan Blacker",
+          "squadNumber": 28,
+          "reason": "On the 2026 squad-number list, but no source found for his position or background.",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.alloutrugbyleague.co.uk/news/huddersfield-giants-2026-squad-numbers-1520629"
+          ]
+        },
+        {
+          "club": "Huddersfield Giants",
+          "name": "Liam Sutcliffe",
+          "squadNumber": 19,
+          "reason": "Huddersfield squad number 19, but released on 23 July 2026 and joined Midlands Hurricanes (Championship) until the end of 2026 — not added as a Huddersfield Current card (see Championship section).",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://giantsrl.com/article/10009/sutcliffe-to-depart-giants",
+            "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/ex-leeds-rhinos-grand-final-winner-finds-new-club-after-sudden-super-league-departure-8819827"
+          ]
+        }
+      ],
+      "playableCurrentPlayers": 28
     },
     "Hull FC": {
-      "squadListSources": [],
-      "added": [],
-      "moved": [],
+      "squadListSources": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/"
+      ],
+      "added": [
+        {
+          "name": "Callum Kemp",
+          "id": "hull-fc-cur-callum-kemp",
+          "squadNumber": 27,
+          "position": "SCRUM_HALF",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (club profile: born Hull, England)",
+          "birthYear": 2006,
+          "status": "squad-number list (academy)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+            "https://www.hullfc.com/team/first-team/callum-kemp"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Joe Phillips",
+          "id": "hull-fc-cur-joe-phillips",
+          "squadNumber": 28,
+          "position": "PROP",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+            "https://www.alloutrugbyleague.co.uk/news/who-joe-phillips-meet-hull-1379871",
+            "https://holderness-gazette.co.uk/new-signings-bolster-airlie-birds-squad/"
+          ],
+          "notes": "Front-row forward; Siddal junior, Leeds Rhinos academy, Goole Vikings 2025. No published DOB."
+        },
+        {
+          "name": "Will Hutchinson",
+          "id": "hull-fc-cur-will-hutchinson",
+          "squadNumber": 29,
+          "position": "HOOKER",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (club profile: born Hull, England)",
+          "birthYear": 2006,
+          "status": "squad-number list (academy)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+            "https://www.hullfc.com/team/first-team/will-hutchinson"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Will Kirby",
+          "id": "hull-fc-cur-will-kirby",
+          "squadNumber": 30,
+          "position": "SECOND_ROW",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": 2006,
+          "status": "squad-number list (academy)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+            "https://www.loverugbyleague.com/post/nextgen-hull-fc-will-kirby-super-league"
+          ],
+          "notes": "Back-rower, Hull Wyke junior; Super League debut July 2024."
+        },
+        {
+          "name": "Lloyd Kemp",
+          "id": "hull-fc-cur-lloyd-kemp",
+          "squadNumber": 32,
+          "position": "FULLBACK",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (club profile: born Hull, England)",
+          "birthYear": 2006,
+          "status": "squad-number list (academy)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+            "https://www.hullfc.com/team/first-team/lloyd-kemp"
+          ],
+          "notes": "Club profile: fullback (Wikipedia list of Hull FC players: stand-off)."
+        },
+        {
+          "name": "Joe Ward",
+          "id": "hull-fc-cur-joe-ward",
+          "squadNumber": 34,
+          "position": "WING",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (club profile: born Leeds, England)",
+          "birthYear": 2005,
+          "status": "squad-number list (academy)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+            "https://www.hullfc.com/team/first-team/joe-ward"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Ben Johnson",
+          "id": "hull-fc-cur-ben-johnson",
+          "squadNumber": 35,
+          "position": "CENTRE",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (club profile: born Hull, England)",
+          "birthYear": 2006,
+          "status": "squad-number list (academy); Super League debut May 2026",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+            "https://www.hullfc.com/team/first-team/ben-johnson",
+            "https://www.loverugbyleague.com/post/hull-fc-loan-19-06-2026"
+          ],
+          "notes": null
+        }
+      ],
+      "moved": [
+        {
+          "name": "Arthur Romano",
+          "fromClub": "Catalans Dragons",
+          "toClub": "Hull FC",
+          "fromId": "catalans-cur-arthur-romano",
+          "toId": "hull-fc-cur-arthur-romano",
+          "reason": "Signed a two-year deal with Hull FC from Catalans for 2026 (Hull FC squad number 21).",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+            "https://holderness-gazette.co.uk/new-signings-bolster-airlie-birds-squad/"
+          ],
+          "removedFromFromClub2026Pool": true,
+          "removedFromSl2026Squads": true,
+          "idRetargetedIn": [
+            "birth-years.json",
+            "player-rating-overrides.json",
+            "player-rating-overrides.ts",
+            "player-potential-overrides.ts"
+          ],
+          "status": "applied"
+        }
+      ],
       "movesNotApplied": [],
-      "unverified": [],
-      "playableCurrentPlayers": 26
+      "unverified": [
+        {
+          "club": "Hull FC",
+          "name": "Roman Dawson",
+          "squadNumber": 33,
+          "reason": "On the 2026 squad-number list, but his club profile is empty and no source gives his position.",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/"
+          ]
+        }
+      ],
+      "playableCurrentPlayers": 34
     },
     "Hull KR": {
       "squadListSources": [],
-      "added": [],
+      "added": [
+        {
+          "name": "Ryan Westerman",
+          "id": "hull-kr-cur-ryan-westerman",
+          "squadNumber": null,
+          "position": "CENTRE",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (England Academy international)",
+          "birthYear": 2006,
+          "status": "mid-season signing from Hull FC (2 June 2026); Hull FC squad number 31 at the start of 2026",
+          "sources": [
+            "https://hullkr.co.uk/news/hull-kr-sign-young-outside-back-westerman",
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.rugby-league.com/article/62879/england-academy-call-up-for-hull-fc-centre--"
+          ],
+          "notes": null
+        }
+      ],
       "moved": [],
       "movesNotApplied": [],
       "unverified": [],
-      "playableCurrentPlayers": 26
+      "playableCurrentPlayers": 27
     },
     "Leeds Rhinos": {
       "squadListSources": [],
@@ -162,7 +423,7 @@
           "position": "WING",
           "rating": 80,
           "nationality": "England",
-          "nationalityBasis": "inferred: came through English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
           "birthYear": 2005,
           "status": "squad-number list",
           "sources": [
@@ -211,7 +472,7 @@
           "position": "SCRUM_HALF",
           "rating": 80,
           "nationality": "England",
-          "nationalityBasis": "inferred: came through English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
           "birthYear": 2005,
           "status": "squad-number list",
           "sources": [
@@ -227,7 +488,7 @@
           "position": "HOOKER",
           "rating": 80,
           "nationality": "England",
-          "nationalityBasis": "inferred: came through English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
           "birthYear": 2003,
           "status": "squad-number list",
           "sources": [

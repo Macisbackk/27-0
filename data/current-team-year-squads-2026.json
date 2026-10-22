@@ -111,7 +111,6 @@
         "catalans-cur-benjamin-garcia",
         "catalans-cur-paul-seguier",
         "catalans-cur-jordan-dezaria",
-        "catalans-cur-arthur-romano",
         "catalans-cur-cesar-rouge"
       ],
       "positions": [
@@ -130,7 +129,6 @@
         "LOOSE_FORWARD",
         "SECOND_ROW",
         "PROP",
-        "CENTRE",
         "STAND_OFF"
       ],
       "source": "sl-2026-squads.json",
