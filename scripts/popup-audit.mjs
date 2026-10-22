@@ -99,13 +99,14 @@ async function run(viewport, tag) {
   await tryStep("classic-picker", async () => {
     await go("/play");
     await page.getByRole("button", { name: /let.?s play/i }).click({ timeout: 4000 }).catch(() => {});
-    await page.locator(".team-sheet-pitch button, [aria-label*='Fullback']").first().click({ timeout: 6000 });
+    await page.getByRole("button", { name: /empty — tap to spin/ }).first().click({ timeout: 6000 });
     await page.getByRole("button", { name: /^Sign / }).first().waitFor({ timeout: 15000 });
   }, { escape: false });
   await tryStep("team-sheet-player", async () => {
     await page.getByRole("button", { name: /^Sign / }).first().click();
-    await page.waitForTimeout(1200);
-    await page.locator(".team-sheet-pitch button").first().click({ timeout: 6000 });
+    await page.waitForTimeout(1500);
+    // A filled slot reads "Position: Name, rated N".
+    await page.getByRole("button", { name: /^[A-Za-z ]+: (?!empty).+/ }).first().click({ timeout: 6000 });
   });
   await tryStep("showcase-player", async () => {
     await go("/showcase");

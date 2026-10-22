@@ -20,6 +20,7 @@ import { playSlotLand, playSlotSpinStart, playSlotSpinTick } from "@/lib/sound";
 import { triggerHaptic } from "@/lib/haptics";
 import { SPACING } from "@/lib/ui/design-system";
 import { BodyPortal } from "@/components/ui/BodyPortal";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
 import { uiLayerClass } from "@/lib/ui/layers";
 import { useScrollLock } from "@/hooks/useScrollLock";
@@ -61,6 +62,8 @@ export function RecruitmentSlotReveal({
   const [isSpinning, setIsSpinning] = useState(true);
   const [landed, setLanded] = useState(false);
   const skipRef = useRef<(() => void) | null>(null);
+  // Focus moves to the spin so keyboard users can skip it: Escape skips, like a tap.
+  const spinDialogRef = useModalA11y(true, () => skipRef.current?.(), { lockScroll: false });
   const openedAtRef = useRef(0);
 
   // Lock while spinning; release once the result has settled.
@@ -234,7 +237,9 @@ export function RecruitmentSlotReveal({
   return (
     <BodyPortal>
       <div
-        className={`recruitment-spin-backdrop fixed inset-0 flex items-center justify-center bg-black/90 ${uiLayerClass("criticalAnimation")} ${SPACING.modalBackdrop}`}
+        ref={spinDialogRef}
+        tabIndex={-1}
+        className={`recruitment-spin-backdrop outline-none fixed inset-0 flex items-center justify-center bg-black/90 ${uiLayerClass("criticalAnimation")} ${SPACING.modalBackdrop}`}
         role="dialog"
         aria-modal="true"
         aria-label="Recruitment spin"

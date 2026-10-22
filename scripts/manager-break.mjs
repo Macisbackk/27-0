@@ -8,7 +8,7 @@ import fs from "node:fs";
 
 const BASE = process.env.BASE_URL || "http://localhost:3000";
 const OUT = "preview-shots";
-const SAVE_KEY = "27-0-career-v2";
+const SAVE_KEY = "27-0-career-v2-save";
 fs.mkdirSync(OUT, { recursive: true });
 const timeout = 15000;
 const problems = [];
