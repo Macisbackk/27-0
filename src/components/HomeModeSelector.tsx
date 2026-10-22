@@ -1,5 +1,6 @@
 "use client";
 
+import { BallGlyph, BoardGlyph, ProgrammeGlyph, TilesGlyph } from "@/components/icons/rugby-icons";
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import {
@@ -187,8 +188,7 @@ export function HomeModeSelector() {
 
       <Tile href="/manager" edge="manager">
         <TileIcon>
-          <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z" />
-          <path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3" />
+          <BoardGlyph />
         </TileIcon>
         <TileTitle>Manager Mode</TileTitle>
         <TileSub>{hub?.career ? `${hub.career.club} · ${hub.career.detail}` : "Run a real club. Go up, win the Grand Final."}</TileSub>
@@ -205,7 +205,7 @@ export function HomeModeSelector() {
           }}
         >
           <TileIcon tone="text-mode-current">
-            <path d="M8 3 4 5 2 10l3 2 1-1v10h12V11l1 1 3-2-2-5-4-2c-1 2-7 2-8 0z" />
+            <BallGlyph />
           </TileIcon>
           <TileTitle>Classic</TileTitle>
           <TileSub>This season&rsquo;s squads</TileSub>
@@ -220,8 +220,7 @@ export function HomeModeSelector() {
           }}
         >
           <TileIcon tone="text-mode-era">
-            <circle cx="12" cy="12" r="9" />
-            <path d="M12 7v5l3 2" />
+            <ProgrammeGlyph />
           </TileIcon>
           <TileTitle>Era Classic</TileTitle>
           <TileSub>Every era, legends too</TileSub>
@@ -243,10 +242,7 @@ export function HomeModeSelector() {
 
       <Tile href="/mini-games" edge="quiet">
         <TileIcon tone="text-[color:var(--fl-text)]">
-          <rect x="3" y="3" width="7" height="7" rx="1.5" />
-          <rect x="14" y="3" width="7" height="7" rx="1.5" />
-          <rect x="3" y="14" width="7" height="7" rx="1.5" />
-          <rect x="14" y="14" width="7" height="7" rx="1.5" />
+          <TilesGlyph />
         </TileIcon>
         <TileTitle>Puzzles</TileTitle>
         <TileSub>Millionaire, Wordle and the Grid</TileSub>
