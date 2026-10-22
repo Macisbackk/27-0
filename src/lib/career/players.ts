@@ -25,7 +25,8 @@ export const SQUAD_TEMPLATE: Record<Pos, number> = {
 };
 
 export const SQUAD_MIN = 20;
-export const SQUAD_MAX = 34;
+/** Room for every real 2026 registered squad (the biggest is 35) plus a few signings. */
+export const SQUAD_MAX = 38;
 
 const DATA_POS: Record<string, Pos> = {
   FULLBACK: "FB",

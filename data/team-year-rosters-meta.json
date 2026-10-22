@@ -127,7 +127,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 29
     }
   },
   "Wigan Warriors": {
@@ -178,7 +178,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 34
     }
   },
   "Warrington Wolves": {
@@ -213,7 +213,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 31
     }
   },
   "Catalans Dragons": {
@@ -304,7 +304,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 32
     }
   },
   "Huddersfield Giants": {
@@ -339,7 +339,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 16
+      "playerCount": 29
     }
   },
   "Castleford Tigers": {
@@ -374,7 +374,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 16
+      "playerCount": 30
     }
   },
   "Wakefield Trinity": {
@@ -409,7 +409,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 37
     }
   },
   "Widnes Vikings": {},
@@ -461,7 +461,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 16
+      "playerCount": 29
     }
   },
   "Hull FC": {
@@ -504,7 +504,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 36
     }
   },
   "Salford Red Devils": {
@@ -655,7 +655,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 32
     }
   },
   "Hull KR": {
@@ -682,7 +682,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 32
     }
   },
   "Toulouse Olympique": {
@@ -701,7 +701,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 30
     }
   },
   "Leigh Leopards": {
@@ -712,7 +712,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 33
     }
   },
   "York Knights": {
@@ -723,7 +723,7 @@
       "playableInNormalSpin": true,
       "playableInEra": true,
       "playableInEraChallengeCup": true,
-      "playerCount": 17
+      "playerCount": 35
     }
   }
 }
