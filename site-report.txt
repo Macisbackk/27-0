@@ -1,0 +1,18 @@
+0 problem(s)
+
+
+Checks:
+Crawled 19 routes @320
+Crawled 19 routes @375
+Crawled 19 routes @desktop
+Checked 22 internal links
+Classic Current: full run to review (3 taps)
+Classic Era: full run to review (3 taps)
+Daily Challenge: full run to review (3 taps)
+Classic: rapid Auto Fill / Simulate taps
+Classic: reload mid-run
+Wordle: played
+Grid: played
+Quiz: played
+Corrupted all 15 saved keys and revisited every route
+Wrong-shaped JSON in every key, revisited every route
