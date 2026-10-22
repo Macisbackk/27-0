@@ -11,7 +11,6 @@ import { Header } from "@/components/Header";
 import { SiteFooter } from "@/components/SiteFooter";
 import { BottomNav } from "@/components/BottomNav";
 import { SoundUnlock } from "@/components/SoundUnlock";
-import { PwaInstallPrompt } from "@/components/PwaInstallPrompt";
 import { UiThemeProvider } from "@/components/UiThemeProvider";
 import { AchievementProvider } from "@/components/achievements/AchievementProvider";
 import { CapacitorAppShell } from "@/components/CapacitorAppShell";
@@ -87,7 +86,6 @@ export default function RootLayout({
           <UiThemeProvider />
           <AchievementProvider>
             <SoundUnlock />
-            <PwaInstallPrompt />
             <Header />
             <main className="app-main flex min-w-0 max-w-full flex-1 flex-col overflow-x-clip">
               {children}
