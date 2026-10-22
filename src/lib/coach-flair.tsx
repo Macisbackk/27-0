@@ -54,22 +54,27 @@ export function FlairBadge({ title }: { title?: string | null }) {
   return <span className="ml-1.5 inline-flex shrink-0 items-center rounded-full bg-amber-400/15 px-2 py-0.5 align-middle text-[10px] font-bold text-amber-300">{title}</span>;
 }
 
-/** The coach's name on a leaderboard, in their Store frame when they have one. */
+/** Row classes for a leaderboard frame bought in the Store: the frame wraps the coach's whole row. */
+export function frameRowClass(frame?: string | null): string {
+  const kind = frame?.replace(/^frame-/, "");
+  return kind && ["gold", "foil", "programme"].includes(kind) ? `lb-row lb-row--${kind}` : "";
+}
+
+/** A coach's name with their title. Frames now wrap the whole leaderboard row (see frameRowClass). */
 export function CoachNameplate({
   name,
-  frame,
   title,
   className = "",
 }: {
   name: ReactNode;
+  /** Ignored: kept so older call sites still compile. */
   frame?: string | null;
   title?: string | null;
   className?: string;
 }) {
-  const kind = frame?.replace(/^frame-/, "");
   return (
     <span className={`inline-flex min-w-0 max-w-full items-center ${className}`}>
-      <span className={`min-w-0 truncate ${kind ? `lb-nameplate lb-nameplate--${kind}` : ""}`}>{name}</span>
+      <span className="min-w-0 truncate">{name}</span>
       <FlairBadge title={title} />
     </span>
   );

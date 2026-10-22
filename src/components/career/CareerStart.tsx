@@ -29,7 +29,7 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
   const hasLegacy = legacy.lifetimeLegacyPoints > 0 || legacy.careersStarted > 0;
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 pb-28">
+    <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-28">
       <header className="text-center">
         <Eyebrow>Rugby League Manager</Eyebrow>
         <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">Pick your club</h1>

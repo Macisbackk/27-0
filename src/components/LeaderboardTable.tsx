@@ -42,7 +42,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
 import { useAuth } from "@/lib/auth-context";
-import { CoachNameplate, useCoachFlairs } from "@/lib/coach-flair";
+import { CoachNameplate, frameRowClass, useCoachFlairs } from "@/lib/coach-flair";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
 import { titleName } from "@/lib/cosmetics";
 
@@ -491,82 +491,42 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
             loading ? "opacity-60" : "opacity-100"
           }`}
         >
-          <ul
-            className="fl-stagger divide-y divide-pitch-700/30 sm:hidden"
-            aria-label={`${trackerLabel} rankings`}
-          >
-            {entries.map((entry) => (
-              <li
-                key={`mobile-${entry.rank}-${entry.username}-${entry.achievedAt}`}
-                className={`flex items-center justify-between gap-3 px-4 py-3 ${
-                  entry.isCurrentUser ? "bg-theme-primary/5" : ""
-                }`}
-              >
-                <div className="flex min-w-0 items-center gap-3">
+          {/* One list on every screen size. A frame bought in the Store wraps the coach's whole row. */}
+          <ul className="fl-stagger flex flex-col gap-1.5 p-2" aria-label={`${trackerLabel} rankings`}>
+            <li aria-hidden className="hidden grid-cols-[2.5rem_minmax(0,1fr)_auto_7rem] gap-3 px-3 pb-1 pt-1 text-xs font-semibold text-gray-500 sm:grid">
+              <span>#</span>
+              <span>Coach</span>
+              <span className="text-right">{statColumnLabel}</span>
+              <span className="text-right">{showUpdatedColumn ? "Updated" : ""}</span>
+            </li>
+            {entries.map((entry) => {
+              const flair = flairFor(entry);
+              const framed = frameRowClass(flair.frame);
+              return (
+                <li
+                  key={`${entry.rank}-${entry.username}-${entry.achievedAt}`}
+                  className={`grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-3 rounded-tile px-3 py-2.5 sm:grid-cols-[2.5rem_minmax(0,1fr)_auto_7rem] ${
+                    framed || (entry.isCurrentUser ? "bg-theme-primary/5" : "")
+                  }`}
+                >
                   <span
-                    className={`shrink-0 font-display font-bold tabular-nums ${
+                    className={`font-display font-bold tabular-nums ${
                       entry.rank <= 3 ? "text-accent-gold" : "text-gray-400"
                     }`}
                   >
                     {entry.rank}
                   </span>
-                  <CoachNameplate className={TYPO.identityLine} name={entry.username} title={flairFor(entry).title} frame={flairFor(entry).frame} />
-                </div>
-                <div className="shrink-0 text-right font-semibold text-accent-gold">
-                  {renderLeaderboardStat(entry, effectiveTracker)}
-                </div>
-              </li>
-            ))}
-          </ul>
-          <div className="hidden overflow-x-auto sm:block">
-          <table className="w-full min-w-[480px]">
-            <thead>
-              <tr className="border-b border-pitch-600/50 text-left text-xs uppercase tracking-wider text-gray-500">
-                <th className="px-4 py-3">#</th>
-                <th className="px-4 py-3">Coach</th>
-                <th className="px-4 py-3">
-                  {statColumnLabel}
-                </th>
-                {showUpdatedColumn && (
-                  <th className="hidden px-4 py-3 sm:table-cell">Updated</th>
-                )}
-              </tr>
-            </thead>
-            <tbody className="fl-stagger">
-              {entries.map((entry) => (
-                <tr
-                  key={`${entry.rank}-${entry.username}-${entry.achievedAt}`}
-                  className={`border-b border-pitch-700/30 transition hover:bg-pitch-800/30 ${
-                    entry.isCurrentUser ? "bg-theme-primary/5" : ""
-                  }`}
-                >
-                  <td className="px-4 py-3">
-                    <span
-                      className={`font-display font-bold tabular-nums ${
-                        entry.rank <= 3 ? "text-accent-gold" : "text-gray-400"
-                      }`}
-                    >
-                      {entry.rank}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <CoachNameplate className={TYPO.identityLine} name={entry.username} title={flairFor(entry).title} frame={flairFor(entry).frame} />
-                  </td>
-                  <td className="px-4 py-3 font-semibold text-accent-gold">
+                  <CoachNameplate className={TYPO.identityLine} name={entry.username} title={flair.title} />
+                  <span className="text-right font-semibold text-accent-gold">
                     {renderLeaderboardStat(entry, effectiveTracker)}
-                  </td>
-                  {showUpdatedColumn && (
-                    <td className="hidden px-4 py-3 text-sm text-gray-500 sm:table-cell">
-                      {entry.achievedAt
-                        ? new Date(entry.achievedAt).toLocaleDateString()
-                        : "—"}
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          </div>
+                  </span>
+                  <span className="hidden text-right text-sm text-gray-500 sm:block">
+                    {showUpdatedColumn ? (entry.achievedAt ? new Date(entry.achievedAt).toLocaleDateString() : "—") : ""}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
         </ScoreboardPanel>
       )}
 

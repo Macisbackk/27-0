@@ -17,7 +17,7 @@ export default function HomePage() {
         <EmailConfirmedBanner />
       </Suspense>
 
-      <div className="mx-auto mt-2 flex w-full max-w-xl flex-col gap-4">
+      <div className="mx-auto mt-2 flex w-full max-w-[44rem] flex-col gap-4">
         <HomeModeSelector />
         <HomeAuthBar />
         <InstallAppCard dismissible />

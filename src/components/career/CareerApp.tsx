@@ -85,7 +85,7 @@ function CareerRouter() {
 
   return (
     <ClubSheetProvider>
-    <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 pb-40 sm:pb-10">
+    <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-40 sm:pb-10">
       <HubHeader />
       <GameSegmentedControl<Tab>
         options={[

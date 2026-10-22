@@ -116,3 +116,10 @@ button.game-button,
 .app-header {
   background: rgba(14, 15, 16, 0.97) !important;
 }
+
+/* ── One content width on every hub page (desktop) ─────────────────────── */
+/* Home, Puzzles, Leaderboard, Store, Profile, Settings and Manager Mode all sit in the same
+   column, so moving between pages doesn't jump between narrow and full-width layouts. */
+.manager-section {
+  max-width: 44rem;
+}

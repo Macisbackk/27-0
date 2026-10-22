@@ -21,7 +21,7 @@ export function Departures() {
   const academy = (d?.academy ?? []).map((id) => s.players[id]).filter((p): p is NonNullable<typeof p> => !!p);
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 pb-40 sm:pb-10">
+    <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-40 sm:pb-10">
       <header className="text-center">
         <p className="text-[13px] font-semibold text-theme-primary">Summer {s.year}</p>
         <h1 className="mt-1 text-[30px] font-bold leading-none text-white">Comings and goings</h1>

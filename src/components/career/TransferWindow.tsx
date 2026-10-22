@@ -53,7 +53,7 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 pb-28">
+    <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-28">
       <header className="text-center">
         {midseason ? (
           <>

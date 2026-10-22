@@ -44,6 +44,20 @@ await shot(phone, "08-leaderboard", "/leaderboard");
 await shot(phone, "09-puzzles", "/mini-games");
 await shot(phone, "10-profile", "/profile");
 await shot(desktop, "11-desktop-home", "/");
-await shot(desktop, "12-desktop-classic", "/play", tap(/let.?s play/i));
+await shot(desktop, "12-desktop-leaderboard", "/leaderboard");
+await shot(desktop, "13-desktop-store", "/store");
+await shot(desktop, "14-desktop-puzzles", "/mini-games");
+await shot(desktop, "15-desktop-profile", "/profile");
+await shot(phone, "16-store-frames", "/store", async (page) => {
+  await page.getByRole("tab", { name: "Frames" }).click({ timeout: 5000 });
+  await page.waitForTimeout(600);
+});
+await shot(phone, "17-manager-preseason", "/manager", async (page) => {
+  await page.getByRole("list", { name: "Clubs" }).getByRole("button").first().click({ timeout: 5000 });
+  await page.getByRole("button", { name: /Take charge of/ }).click({ timeout: 5000 });
+  await page.getByRole("dialog", { name: "Manager Mode walkthrough" }).getByRole("button", { name: "Skip" }).click({ timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(800);
+});
+await shot(desktop, "18-desktop-manager", "/manager");
 
 await browser.close();

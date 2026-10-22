@@ -35,7 +35,7 @@ export function SeasonReview() {
           : `${ordinal(o.position)} in the ${DIVISION_LABEL[o.division]}`;
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-col gap-4 pb-28">
+    <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-28">
       <header className="flex flex-col items-center text-center">
         <ClubBadge club={club} size="lg" />
         <p className="mt-3 font-display text-[10px] font-bold uppercase tracking-[0.25em] text-theme-primary">{o.year} season review</p>

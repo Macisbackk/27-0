@@ -15,7 +15,7 @@ import { AchievementsSection } from "@/components/achievements/AchievementsSecti
 import { useAchievements } from "@/components/achievements/AchievementProvider";
 import { LINK, MANAGER, PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { CoachNameplate } from "@/lib/coach-flair";
+import { CoachCard } from "@/components/CoachCard";
 import { titleName } from "@/lib/cosmetics";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
 
@@ -124,30 +124,26 @@ export default function ProfilePage() {
     <StandardPageShell withLights compact>
       <div className={`${PAGE.section} text-center`}>
         <header className="w-full text-center">
-          <p className={TYPO.sectionLabel}>
-            {loading ? "Coach" : isLoggedIn ? (coachName ?? "Coach") : "Guest coach"}
-          </p>
-          <h1 className={`mt-1 ${TYPO.pageTitle}`}>Coach Profile</h1>
-          {equippedTitle || cosmetics.equipped.frame ? (
-            <p className="mt-2 flex justify-center">
-              <CoachNameplate
-                name={isLoggedIn ? (coachName ?? "Coach") : "Guest coach"}
-                title={equippedTitle}
-                frame={cosmetics.equipped.frame}
-                className="text-sm font-bold text-white"
-              />
-            </p>
-          ) : null}
+          <h1 className={TYPO.pageTitle}>Coach Profile</h1>
+        </header>
+        <div className="mt-4 w-full">
+          <CoachCard
+            name={loading ? "Coach" : isLoggedIn ? (coachName ?? "Coach") : "Guest coach"}
+            title={equippedTitle}
+            frame={cosmetics.equipped.frame}
+            subline={
+              loading ? null : isLoggedIn ? (memberSince ? `Coach since ${memberSince}` : "Signed in") : "Playing as a guest · saved on this device"
+            }
+          />
           {!loading && !isLoggedIn ? (
-            <p className={`mt-2 ${TYPO.bodySm}`}>
-              Saved on this device.{" "}
+            <p className={`mt-3 text-center ${TYPO.bodySm}`}>
               <Link href="/login?redirect=/profile" className={LINK.accent}>
                 Log in
               </Link>{" "}
               to save it online and join the leaderboards.
             </p>
           ) : null}
-        </header>
+        </div>
 
         <div className="mt-4 flex justify-center">
           <GameTabs tabs={PROFILE_TABS} active={tab} onChange={selectTab} ariaLabel="Coach profile sections" />

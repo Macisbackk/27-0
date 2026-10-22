@@ -163,7 +163,7 @@ try {
   await page.goto(`${BASE}/leaderboard`, { waitUntil: "networkidle" });
   await noSideways(page, "leaderboard @320");
   await page.goto(`${BASE}/profile`, { waitUntil: "networkidle" });
-  if (!(await page.locator(".lb-nameplate--foil").count())) fail("equipped foil frame not shown on the profile");
+  if (!(await page.locator(".lb-row--foil").count())) fail("equipped foil frame not shown on the profile card");
   await shot(page, "profile-frame");
   step("Frames: leaderboard and profile render with a frame equipped");
 

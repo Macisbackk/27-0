@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CoachNameplate } from "@/lib/coach-flair";
+import { frameRowClass } from "@/lib/coach-flair";
 import { useState, type ReactNode } from "react";
 import { ClubShirt } from "@/components/ClubShirt";
 import { GameButton } from "@/components/ui/GameButton";
@@ -237,22 +237,25 @@ export function FramesStore({ balance }: { balance: number }) {
   const c = useCosmetics();
   const { message, buy } = useBuy(balance);
   return (
-    <Section title="Leaderboard frames" intro="Frame your coach name on every leaderboard. Everyone sees it.">
+    <Section title="Leaderboard frames" intro="Frame your whole row on every leaderboard. Everyone sees it.">
       {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
-      <ul className="grid grid-cols-3 gap-2.5">
+      <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
         {items("frame").map((item) => {
           const owned = c.owned.includes(item.id);
           const active = c.equipped.frame === item.id;
           return (
-            <li key={item.id} className="flex flex-col items-center gap-2 text-center">
-              <div className="flex h-24 w-full flex-col items-center justify-center gap-1.5 rounded-control bg-pitch-800 px-1.5">
-                <span className="text-[10px] font-semibold text-[color:var(--fl-muted)]">1st</span>
-                <CoachNameplate name="You" frame={item.id} className="text-xs font-bold text-white" />
+            <li key={item.id} className="flex flex-col gap-2 rounded-control bg-pitch-800 p-2.5">
+              <div className={`grid grid-cols-[1.5rem_minmax(0,1fr)_auto] items-center gap-2 rounded-tile px-3 py-2.5 ${frameRowClass(item.id)}`}>
+                <span className="font-display text-sm text-accent-gold">1</span>
+                <span className="truncate text-sm font-bold text-white">You</span>
+                <span className="text-sm font-semibold text-accent-gold">27-0</span>
               </div>
-              <p className="text-xs font-bold text-white">{item.name}</p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-sm font-bold text-white">{item.name}</p>
               {owned ? (
                 <GameButton
                   size="sm"
+                  fullWidth={false}
                   variant={active ? "theme" : "secondary"}
                   onClick={() => {
                     playThemeSelect();
@@ -264,6 +267,7 @@ export function FramesStore({ balance }: { balance: number }) {
               ) : (
                 <BuyButton item={item} balance={balance} onBuy={buy} />
               )}
+              </div>
             </li>
           );
         })}
