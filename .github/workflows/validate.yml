@@ -103,8 +103,8 @@ jobs:
           timeout 900 node scripts/ui-audit.mjs
           timeout 300 node scripts/text-fit-audit.mjs || true
           timeout 300 node scripts/store-screenshots.mjs || true
-          timeout 240 npx playwright install --with-deps webkit > /dev/null 2>&1 || true
-          timeout 180 node scripts/menu-flicker-probe.mjs || true
+          # iPhone (WebKit) menu-flicker probe paused until the app work resumes:
+          # npx playwright install --with-deps webkit && node scripts/menu-flicker-probe.mjs
       - name: Publish e2e screenshots (same-repo PRs only)
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && hashFiles('e2e-shots/*.png') != ''
         run: |
