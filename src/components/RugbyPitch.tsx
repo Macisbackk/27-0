@@ -153,7 +153,7 @@ function RugbyPitchInner({
           <div
             className={`relative w-full overflow-hidden ${
               formationOnly
-                ? "team-sheet-pitch aspect-[5/7.2] min-h-[440px] max-h-[520px] rounded-[20px]"
+                ? "team-sheet-pitch aspect-[5/7.2] min-h-[400px] max-h-[min(520px,calc(100dvh-330px))] rounded-[20px]"
                 : "rugby-pitch-pro rounded-[14px] border border-white/10 shadow-[0_14px_34px_rgba(0,0,0,0.28)]"
             } ${
               formationOnly
