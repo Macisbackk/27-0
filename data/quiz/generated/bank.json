@@ -17380,5 +17380,4698 @@
     "era": "2020s",
     "sourceType": "honours",
     "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-andy-lynch",
+    "question": "Which of these clubs did Andy Lynch play for?",
+    "options": [
+      "Hull FC",
+      "Warrington",
+      "Salford",
+      "London Broncos"
+    ],
+    "correctAnswer": "Hull FC",
+    "topicId": "player:andy-lynch:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "castleford",
+      "bradford",
+      "hull-fc"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-james-roby",
+    "question": "Which of these clubs did James Roby play for?",
+    "options": [
+      "St Helens",
+      "London Broncos",
+      "Toulouse Olympique",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "St Helens",
+    "topicId": "player:james-roby:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-danny-houghton",
+    "question": "Which of these clubs did Danny Houghton play for?",
+    "options": [
+      "Hull FC",
+      "St Helens",
+      "Huddersfield",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Hull FC",
+    "topicId": "player:danny-houghton:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-sean-o-loughlin",
+    "question": "Which of these clubs did Sean O'Loughlin play for?",
+    "options": [
+      "Wigan",
+      "Leigh",
+      "Huddersfield",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Wigan",
+    "topicId": "player:sean-o-loughlin:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-lee-briers",
+    "question": "Which of these clubs did Lee Briers play for?",
+    "options": [
+      "Warrington",
+      "Hull KR",
+      "Huddersfield",
+      "Hull FC"
+    ],
+    "correctAnswer": "Warrington",
+    "topicId": "player:lee-briers:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "warrington"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-ben-westwood",
+    "question": "Which of these clubs did Ben Westwood play for?",
+    "options": [
+      "Wakefield Trinity",
+      "Bradford",
+      "Castleford",
+      "St Helens"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "player:ben-westwood:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "wakefield",
+      "warrington"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-liam-farrell",
+    "question": "Which of these clubs did Liam Farrell play for?",
+    "options": [
+      "Wigan",
+      "Castleford",
+      "Salford",
+      "Bradford"
+    ],
+    "correctAnswer": "Wigan",
+    "topicId": "player:liam-farrell:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-jamie-peacock",
+    "question": "Which of these clubs did Jamie Peacock play for?",
+    "options": [
+      "Bradford",
+      "Widnes",
+      "Salford",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Bradford",
+    "topicId": "player:jamie-peacock:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "bradford",
+      "leeds"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-rob-burrow",
+    "question": "Which of these clubs did Rob Burrow play for?",
+    "options": [
+      "Leeds",
+      "Salford",
+      "Catalans Dragons",
+      "Widnes"
+    ],
+    "correctAnswer": "Leeds",
+    "topicId": "player:rob-burrow:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-paul-wellens",
+    "question": "Which of these clubs did Paul Wellens play for?",
+    "options": [
+      "St Helens",
+      "Widnes",
+      "London Broncos",
+      "Castleford"
+    ],
+    "correctAnswer": "St Helens",
+    "topicId": "player:paul-wellens:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-leroy-cudjoe",
+    "question": "Which of these clubs did Leroy Cudjoe play for?",
+    "options": [
+      "Huddersfield",
+      "Toulouse Olympique",
+      "Bradford",
+      "Widnes"
+    ],
+    "correctAnswer": "Huddersfield",
+    "topicId": "player:leroy-cudjoe:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "huddersfield"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-danny-orr",
+    "question": "Which of these clubs did Danny Orr play for?",
+    "options": [
+      "Wigan",
+      "Widnes",
+      "Warrington",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Wigan",
+    "topicId": "player:danny-orr:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "castleford",
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-leon-pryce",
+    "question": "Which of these clubs did Leon Pryce play for?",
+    "options": [
+      "Hull FC",
+      "Warrington",
+      "Salford",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Hull FC",
+    "topicId": "player:leon-pryce:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "bradford",
+      "st-helens",
+      "catalans",
+      "hull-fc"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-danny-brough",
+    "question": "Which of these clubs did Danny Brough play for?",
+    "options": [
+      "Bradford",
+      "St Helens",
+      "Wigan",
+      "Salford"
+    ],
+    "correctAnswer": "Bradford",
+    "topicId": "player:danny-brough:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "hull-fc",
+      "castleford",
+      "wakefield",
+      "huddersfield",
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-daryl-clark",
+    "question": "Which of these clubs did Daryl Clark play for?",
+    "options": [
+      "St Helens",
+      "Toulouse Olympique",
+      "Huddersfield",
+      "Widnes"
+    ],
+    "correctAnswer": "St Helens",
+    "topicId": "player:daryl-clark:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "castleford",
+      "warrington",
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-josh-charnley",
+    "question": "Which of these clubs did Josh Charnley play for?",
+    "options": [
+      "Leigh",
+      "Wakefield Trinity",
+      "Toulouse Olympique",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Leigh",
+    "topicId": "player:josh-charnley:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "warrington",
+      "leigh"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-terry-newton",
+    "question": "Which of these clubs did Terry Newton play for?",
+    "options": [
+      "Leeds",
+      "Catalans Dragons",
+      "Huddersfield",
+      "Castleford"
+    ],
+    "correctAnswer": "Leeds",
+    "topicId": "player:terry-newton:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "leeds",
+      "wigan",
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-keiron-cunningham",
+    "question": "Which of these clubs did Keiron Cunningham play for?",
+    "options": [
+      "St Helens",
+      "Castleford",
+      "Catalans Dragons",
+      "London Broncos"
+    ],
+    "correctAnswer": "St Helens",
+    "topicId": "player:keiron-cunningham:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-paul-deacon",
+    "question": "Which of these clubs did Paul Deacon play for?",
+    "options": [
+      "Wigan",
+      "Castleford",
+      "Hull KR",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Wigan",
+    "topicId": "player:paul-deacon:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "bradford",
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-kirk-yeaman",
+    "question": "Which of these clubs did Kirk Yeaman play for?",
+    "options": [
+      "Hull FC",
+      "Wakefield Trinity",
+      "Huddersfield",
+      "Bradford"
+    ],
+    "correctAnswer": "Hull FC",
+    "topicId": "player:kirk-yeaman:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-martin-gleeson",
+    "question": "Which of these clubs did Martin Gleeson play for?",
+    "options": [
+      "Salford",
+      "Catalans Dragons",
+      "Leeds",
+      "Castleford"
+    ],
+    "correctAnswer": "Salford",
+    "topicId": "player:martin-gleeson:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "huddersfield",
+      "st-helens",
+      "warrington",
+      "wigan",
+      "salford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-stefan-ratchford",
+    "question": "Which of these clubs did Stefan Ratchford play for?",
+    "options": [
+      "Salford",
+      "Widnes",
+      "Leigh",
+      "Castleford"
+    ],
+    "correctAnswer": "Salford",
+    "topicId": "player:stefan-ratchford:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "salford",
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-chris-hill",
+    "question": "Which of these clubs did Chris Hill play for?",
+    "options": [
+      "Salford",
+      "Toulouse Olympique",
+      "Wakefield Trinity",
+      "Widnes"
+    ],
+    "correctAnswer": "Salford",
+    "topicId": "player:chris-hill:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "leigh",
+      "warrington",
+      "huddersfield",
+      "salford"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-michael-shenton",
+    "question": "Which of these clubs did Michael Shenton play for?",
+    "options": [
+      "St Helens",
+      "Huddersfield",
+      "Catalans Dragons",
+      "Toulouse Olympique"
+    ],
+    "correctAnswer": "St Helens",
+    "topicId": "player:michael-shenton:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "castleford",
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-liam-watts",
+    "question": "Which of these clubs did Liam Watts play for?",
+    "options": [
+      "Hull KR",
+      "Widnes",
+      "London Broncos",
+      "Toulouse Olympique"
+    ],
+    "correctAnswer": "Hull KR",
+    "topicId": "player:liam-watts:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "castleford",
+      "hull-kr",
+      "hull-fc"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-eorl-crabtree",
+    "question": "Which of these clubs did Eorl Crabtree play for?",
+    "options": [
+      "Huddersfield",
+      "Wigan",
+      "Hull FC",
+      "Widnes"
+    ],
+    "correctAnswer": "Huddersfield",
+    "topicId": "player:eorl-crabtree:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "huddersfield"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-marc-sneyd",
+    "question": "Which of these clubs did Marc Sneyd play for?",
+    "options": [
+      "Warrington",
+      "Leigh",
+      "Huddersfield",
+      "Widnes"
+    ],
+    "correctAnswer": "Warrington",
+    "topicId": "player:marc-sneyd:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "salford",
+      "hull-fc",
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-gareth-ellis",
+    "question": "Which of these clubs did Gareth Ellis play for?",
+    "options": [
+      "Wakefield Trinity",
+      "London Broncos",
+      "Leigh",
+      "Salford"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "player:gareth-ellis:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "wakefield",
+      "leeds",
+      "hull-fc"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-sean-long",
+    "question": "Which of these clubs did Sean Long play for?",
+    "options": [
+      "Wigan",
+      "Castleford",
+      "Wakefield Trinity",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Wigan",
+    "topicId": "player:sean-long:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "st-helens",
+      "hull-fc"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-luke-gale",
+    "question": "Which of these clubs did Luke Gale play for?",
+    "options": [
+      "Hull FC",
+      "Catalans Dragons",
+      "Toulouse Olympique",
+      "Warrington"
+    ],
+    "correctAnswer": "Hull FC",
+    "topicId": "player:luke-gale:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "bradford",
+      "castleford",
+      "leeds",
+      "hull-fc",
+      "wakefield"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-adrian-morley",
+    "question": "Which of these clubs did Adrian Morley play for?",
+    "options": [
+      "Salford",
+      "Castleford",
+      "Catalans Dragons",
+      "St Helens"
+    ],
+    "correctAnswer": "Salford",
+    "topicId": "player:adrian-morley:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "leeds",
+      "warrington",
+      "salford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-david-hodgson",
+    "question": "Which of these clubs did David Hodgson play for?",
+    "options": [
+      "Hull KR",
+      "Widnes",
+      "Leeds",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Hull KR",
+    "topicId": "player:david-hodgson:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "salford",
+      "huddersfield",
+      "hull-kr"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-jon-wilkin",
+    "question": "Which of these clubs did Jon Wilkin play for?",
+    "options": [
+      "Hull KR",
+      "Huddersfield",
+      "London Broncos",
+      "Leigh"
+    ],
+    "correctAnswer": "Hull KR",
+    "topicId": "player:jon-wilkin:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "hull-kr",
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-alex-walmsley",
+    "question": "Which of these clubs did Alex Walmsley play for?",
+    "options": [
+      "St Helens",
+      "Bradford",
+      "Wakefield Trinity",
+      "Widnes"
+    ],
+    "correctAnswer": "St Helens",
+    "topicId": "player:alex-walmsley:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-stuart-fielden",
+    "question": "Which of these clubs did Stuart Fielden play for?",
+    "options": [
+      "Wigan",
+      "Hull FC",
+      "Hull KR",
+      "Salford"
+    ],
+    "correctAnswer": "Wigan",
+    "topicId": "player:stuart-fielden:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "bradford",
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-keith-senior",
+    "question": "Which of these clubs did Keith Senior play for?",
+    "options": [
+      "Leeds",
+      "Catalans Dragons",
+      "Widnes",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Leeds",
+    "topicId": "player:keith-senior:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-mark-percival",
+    "question": "Which of these clubs did Mark Percival play for?",
+    "options": [
+      "St Helens",
+      "Toulouse Olympique",
+      "London Broncos",
+      "Huddersfield"
+    ],
+    "correctAnswer": "St Helens",
+    "topicId": "player:mark-percival:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-ryan-atkins",
+    "question": "Which of these clubs did Ryan Atkins play for?",
+    "options": [
+      "Wakefield Trinity",
+      "London Broncos",
+      "Huddersfield",
+      "Castleford"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "player:ryan-atkins:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "wakefield",
+      "warrington"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-ben-currie",
+    "question": "Which of these clubs did Ben Currie play for?",
+    "options": [
+      "Warrington",
+      "Catalans Dragons",
+      "Leeds",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Warrington",
+    "topicId": "player:ben-currie:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-richard-horne",
+    "question": "Which of these clubs did Richard Horne play for?",
+    "options": [
+      "Hull FC",
+      "Warrington",
+      "Widnes",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Hull FC",
+    "topicId": "player:richard-horne:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-robbie-hunter-paul",
+    "question": "Which of these clubs did Robbie Hunter-Paul play for?",
+    "options": [
+      "Leigh",
+      "Catalans Dragons",
+      "Warrington",
+      "Widnes"
+    ],
+    "correctAnswer": "Leigh",
+    "topicId": "player:robbie-hunter-paul:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "bradford",
+      "huddersfield",
+      "salford",
+      "leigh"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-scott-taylor",
+    "question": "Which of these clubs did Scott Taylor play for?",
+    "options": [
+      "Hull KR",
+      "Castleford",
+      "London Broncos",
+      "Bradford"
+    ],
+    "correctAnswer": "Hull KR",
+    "topicId": "player:scott-taylor:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "hull-kr",
+      "wigan",
+      "hull-fc"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-jake-connor",
+    "question": "Which of these clubs did Jake Connor play for?",
+    "options": [
+      "Leeds",
+      "Catalans Dragons",
+      "London Broncos",
+      "Toulouse Olympique"
+    ],
+    "correctAnswer": "Leeds",
+    "topicId": "player:jake-connor:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "huddersfield",
+      "hull-fc",
+      "leeds"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-tom-briscoe",
+    "question": "Which of these clubs did Tom Briscoe play for?",
+    "options": [
+      "Leigh",
+      "London Broncos",
+      "Toulouse Olympique",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Leigh",
+    "topicId": "player:tom-briscoe:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "hull-fc",
+      "leeds",
+      "leigh"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-tom-lineham",
+    "question": "Which of these clubs did Tom Lineham play for?",
+    "options": [
+      "Wakefield Trinity",
+      "Toulouse Olympique",
+      "Bradford",
+      "Widnes"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "player:tom-lineham:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "hull-fc",
+      "warrington",
+      "wakefield"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-josh-jones",
+    "question": "Which of these clubs did Josh Jones play for?",
+    "options": [
+      "Huddersfield",
+      "Wakefield Trinity",
+      "Warrington",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Huddersfield",
+    "topicId": "player:josh-jones:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "st-helens",
+      "salford",
+      "huddersfield"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-grant-millington",
+    "question": "Which of these clubs did Grant Millington play for?",
+    "options": [
+      "Castleford",
+      "Wigan",
+      "Leigh",
+      "Hull FC"
+    ],
+    "correctAnswer": "Castleford",
+    "topicId": "player:grant-millington:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "castleford"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-morgan-knowles",
+    "question": "Which of these clubs did Morgan Knowles play for?",
+    "options": [
+      "St Helens",
+      "London Broncos",
+      "Wakefield Trinity",
+      "Huddersfield"
+    ],
+    "correctAnswer": "St Helens",
+    "topicId": "player:morgan-knowles:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-terry-o-connor",
+    "question": "Which of these clubs did Terry O'Connor play for?",
+    "options": [
+      "Salford",
+      "Castleford",
+      "Wakefield Trinity",
+      "London Broncos"
+    ],
+    "correctAnswer": "Salford",
+    "topicId": "player:terry-o-connor:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "salford",
+      "wigan",
+      "widnes"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-kris-radlinski",
+    "question": "Which of these clubs did Kris Radlinski play for?",
+    "options": [
+      "Wigan",
+      "Widnes",
+      "Catalans Dragons",
+      "Salford"
+    ],
+    "correctAnswer": "Wigan",
+    "topicId": "player:kris-radlinski:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-brett-ferres",
+    "question": "Which of these clubs did Brett Ferres play for?",
+    "options": [
+      "Bradford",
+      "Leigh",
+      "Hull FC",
+      "Warrington"
+    ],
+    "correctAnswer": "Bradford",
+    "topicId": "player:brett-ferres:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "bradford",
+      "wakefield",
+      "castleford",
+      "huddersfield",
+      "leeds"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-iestyn-harris",
+    "question": "Which of these clubs did Iestyn Harris play for?",
+    "options": [
+      "Warrington",
+      "Widnes",
+      "Castleford",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Warrington",
+    "topicId": "player:iestyn-harris:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "warrington",
+      "leeds",
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-paul-cooke",
+    "question": "Which of these clubs did Paul Cooke play for?",
+    "options": [
+      "Wakefield Trinity",
+      "Wigan",
+      "Widnes",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "player:paul-cooke:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "hull-fc",
+      "hull-kr",
+      "wakefield"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-garreth-carvell",
+    "question": "Which of these clubs did Garreth Carvell play for?",
+    "options": [
+      "Warrington",
+      "Wakefield Trinity",
+      "Widnes",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Warrington",
+    "topicId": "player:garreth-carvell:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "hull-fc",
+      "warrington"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-zak-hardaker",
+    "question": "Which of these clubs did Zak Hardaker play for?",
+    "options": [
+      "Castleford",
+      "Widnes",
+      "London Broncos",
+      "Bradford"
+    ],
+    "correctAnswer": "Castleford",
+    "topicId": "player:zak-hardaker:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "leeds",
+      "castleford",
+      "wigan",
+      "leigh",
+      "hull-fc"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-paul-king",
+    "question": "Which of these clubs did Paul King play for?",
+    "options": [
+      "Wakefield Trinity",
+      "London Broncos",
+      "Huddersfield",
+      "Bradford"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "player:paul-king:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "hull-fc",
+      "wakefield"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-nick-fozzard",
+    "question": "Which of these clubs did Nick Fozzard play for?",
+    "options": [
+      "Castleford",
+      "Widnes",
+      "Salford",
+      "Bradford"
+    ],
+    "correctAnswer": "Castleford",
+    "topicId": "player:nick-fozzard:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "leeds",
+      "huddersfield",
+      "warrington",
+      "st-helens",
+      "hull-kr",
+      "castleford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-paul-sculthorpe",
+    "question": "Which of these clubs did Paul Sculthorpe play for?",
+    "options": [
+      "Warrington",
+      "Hull KR",
+      "Hull FC",
+      "Widnes"
+    ],
+    "correctAnswer": "Warrington",
+    "topicId": "player:paul-sculthorpe:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "warrington",
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-mark-calderwood",
+    "question": "Which of these clubs did Mark Calderwood play for?",
+    "options": [
+      "Hull FC",
+      "Widnes",
+      "Warrington",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Hull FC",
+    "topicId": "player:mark-calderwood:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "leeds",
+      "wigan",
+      "hull-fc"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-ade-gardner",
+    "question": "Which of these clubs did Ade Gardner play for?",
+    "options": [
+      "St Helens",
+      "Wakefield Trinity",
+      "Warrington",
+      "Wigan"
+    ],
+    "correctAnswer": "St Helens",
+    "topicId": "player:ade-gardner:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-michael-dobson",
+    "question": "Which of these clubs did Michael Dobson play for?",
+    "options": [
+      "Catalans Dragons",
+      "Leeds",
+      "Bradford",
+      "Widnes"
+    ],
+    "correctAnswer": "Catalans Dragons",
+    "topicId": "player:michael-dobson:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "catalans",
+      "wigan",
+      "hull-kr",
+      "salford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-ash-handley",
+    "question": "Which of these clubs did Ash Handley play for?",
+    "options": [
+      "Leeds",
+      "Widnes",
+      "Warrington",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Leeds",
+    "topicId": "player:ash-handley:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-tom-johnstone",
+    "question": "Which of these clubs did Tom Johnstone play for?",
+    "options": [
+      "Catalans Dragons",
+      "Widnes",
+      "Huddersfield",
+      "Salford"
+    ],
+    "correctAnswer": "Catalans Dragons",
+    "topicId": "player:tom-johnstone:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "wakefield",
+      "catalans"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-matty-smith",
+    "question": "Which of these clubs did Matty Smith play for?",
+    "options": [
+      "Catalans Dragons",
+      "Wakefield Trinity",
+      "Leigh",
+      "Bradford"
+    ],
+    "correctAnswer": "Catalans Dragons",
+    "topicId": "player:matty-smith:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "st-helens",
+      "salford",
+      "wigan",
+      "catalans",
+      "widnes"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-joe-burgess",
+    "question": "Which of these clubs did Joe Burgess play for?",
+    "options": [
+      "Salford",
+      "Bradford",
+      "Toulouse Olympique",
+      "London Broncos"
+    ],
+    "correctAnswer": "Salford",
+    "topicId": "player:joe-burgess:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "salford",
+      "hull-kr"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-henry-paul",
+    "question": "Which of these clubs did Henry Paul play for?",
+    "options": [
+      "Wakefield Trinity",
+      "Castleford",
+      "Hull KR",
+      "Hull FC"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "player:henry-paul:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "wakefield",
+      "wigan",
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-kruise-leeming",
+    "question": "Which of these clubs did Kruise Leeming play for?",
+    "options": [
+      "Wigan",
+      "Wakefield Trinity",
+      "London Broncos",
+      "Toulouse Olympique"
+    ],
+    "correctAnswer": "Wigan",
+    "topicId": "player:kruise-leeming:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "huddersfield",
+      "leeds",
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-niall-evalds",
+    "question": "Which of these clubs did Niall Evalds play for?",
+    "options": [
+      "Hull KR",
+      "Leigh",
+      "Widnes",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Hull KR",
+    "topicId": "player:niall-evalds:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "salford",
+      "castleford",
+      "hull-kr"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-paul-newlove",
+    "question": "Which of these clubs did Paul Newlove play for?",
+    "options": [
+      "Bradford",
+      "Warrington",
+      "Wakefield Trinity",
+      "Hull FC"
+    ],
+    "correctAnswer": "Bradford",
+    "topicId": "player:paul-newlove:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "bradford",
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-barrie-mcdermott",
+    "question": "Which of these clubs did Barrie McDermott play for?",
+    "options": [
+      "Wigan",
+      "Huddersfield",
+      "Castleford",
+      "Salford"
+    ],
+    "correctAnswer": "Wigan",
+    "topicId": "player:barrie-mcdermott:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "leeds",
+      "widnes"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-carl-ablett",
+    "question": "Which of these clubs did Carl Ablett play for?",
+    "options": [
+      "Leeds",
+      "Catalans Dragons",
+      "Bradford",
+      "Salford"
+    ],
+    "correctAnswer": "Leeds",
+    "topicId": "player:carl-ablett:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-james-lowes",
+    "question": "Which of these clubs did James Lowes play for?",
+    "options": [
+      "Leeds",
+      "Hull KR",
+      "Castleford",
+      "Widnes"
+    ],
+    "correctAnswer": "Leeds",
+    "topicId": "player:james-lowes:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "leeds",
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-shaun-briscoe",
+    "question": "Which of these clubs did Shaun Briscoe play for?",
+    "options": [
+      "Widnes",
+      "London Broncos",
+      "Catalans Dragons",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Widnes",
+    "topicId": "player:shaun-briscoe:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "hull-fc",
+      "hull-kr",
+      "widnes"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-tom-davies",
+    "question": "Which of these clubs did Tom Davies play for?",
+    "options": [
+      "Hull KR",
+      "London Broncos",
+      "Toulouse Olympique",
+      "Bradford"
+    ],
+    "correctAnswer": "Hull KR",
+    "topicId": "player:tom-davies:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "catalans",
+      "hull-kr"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-andy-farrell",
+    "question": "Which of these clubs did Andy Farrell play for?",
+    "options": [
+      "Wigan",
+      "Wakefield Trinity",
+      "Salford",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Wigan",
+    "topicId": "player:andy-farrell:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-jason-demetriou",
+    "question": "Which of these clubs did Jason Demetriou play for?",
+    "options": [
+      "Widnes",
+      "Bradford",
+      "Huddersfield",
+      "Leeds"
+    ],
+    "correctAnswer": "Widnes",
+    "topicId": "player:jason-demetriou:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "widnes",
+      "wakefield"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-liam-marshall",
+    "question": "Which of these clubs did Liam Marshall play for?",
+    "options": [
+      "Wigan",
+      "London Broncos",
+      "Bradford",
+      "Toulouse Olympique"
+    ],
+    "correctAnswer": "Wigan",
+    "topicId": "player:liam-marshall:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-stephen-wild",
+    "question": "Which of these clubs did Stephen Wild play for?",
+    "options": [
+      "Salford",
+      "Bradford",
+      "Hull FC",
+      "Hull KR"
+    ],
+    "correctAnswer": "Salford",
+    "topicId": "player:stephen-wild:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "huddersfield",
+      "salford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-mike-forshaw",
+    "question": "Which of these clubs did Mike Forshaw play for?",
+    "options": [
+      "Warrington",
+      "Huddersfield",
+      "Hull KR",
+      "Hull FC"
+    ],
+    "correctAnswer": "Warrington",
+    "topicId": "player:mike-forshaw:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "wakefield",
+      "leeds",
+      "bradford",
+      "warrington"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-chris-joynt",
+    "question": "Which of these clubs did Chris Joynt play for?",
+    "options": [
+      "St Helens",
+      "London Broncos",
+      "Hull KR",
+      "Salford"
+    ],
+    "correctAnswer": "St Helens",
+    "topicId": "player:chris-joynt:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-ben-crooks",
+    "question": "Which of these clubs did Ben Crooks play for?",
+    "options": [
+      "Leigh",
+      "Wakefield Trinity",
+      "Bradford",
+      "St Helens"
+    ],
+    "correctAnswer": "Leigh",
+    "topicId": "player:ben-crooks:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "hull-fc",
+      "castleford",
+      "leigh",
+      "hull-kr"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-toby-king",
+    "question": "Which of these clubs did Toby King play for?",
+    "options": [
+      "Warrington",
+      "Leigh",
+      "Leeds",
+      "Toulouse Olympique"
+    ],
+    "correctAnswer": "Warrington",
+    "topicId": "player:toby-king:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-gareth-hock",
+    "question": "Which of these clubs did Gareth Hock play for?",
+    "options": [
+      "Salford",
+      "Warrington",
+      "Hull KR",
+      "Leeds"
+    ],
+    "correctAnswer": "Salford",
+    "topicId": "player:gareth-hock:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "salford",
+      "leigh"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-luke-thompson",
+    "question": "Which of these clubs did Luke Thompson play for?",
+    "options": [
+      "Wigan",
+      "Bradford",
+      "Huddersfield",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Wigan",
+    "topicId": "player:luke-thompson:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "st-helens",
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-matt-parcell",
+    "question": "Which of these clubs did Matt Parcell play for?",
+    "options": [
+      "Leeds",
+      "St Helens",
+      "Salford",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Leeds",
+    "topicId": "player:matt-parcell:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "leeds",
+      "hull-kr"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-michael-withers",
+    "question": "Which of these clubs did Michael Withers play for?",
+    "options": [
+      "Bradford",
+      "Hull KR",
+      "Huddersfield",
+      "Castleford"
+    ],
+    "correctAnswer": "Bradford",
+    "topicId": "player:michael-withers:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-david-solomona",
+    "question": "Which of these clubs did David Solomona play for?",
+    "options": [
+      "Bradford",
+      "Catalans Dragons",
+      "Hull KR",
+      "Wigan"
+    ],
+    "correctAnswer": "Bradford",
+    "topicId": "player:david-solomona:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "wakefield",
+      "bradford",
+      "warrington"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-danny-walker",
+    "question": "Which of these clubs did Danny Walker play for?",
+    "options": [
+      "Widnes",
+      "Bradford",
+      "Toulouse Olympique",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Widnes",
+    "topicId": "player:danny-walker:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "widnes",
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-sebastine-ikahihifo",
+    "question": "Which of these clubs did Sebastine Ikahihifo play for?",
+    "options": [
+      "Huddersfield",
+      "Hull FC",
+      "Widnes",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Huddersfield",
+    "topicId": "player:sebastine-ikahihifo:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "huddersfield"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-pat-richards",
+    "question": "Which of these clubs did Pat Richards play for?",
+    "options": [
+      "Catalans Dragons",
+      "Salford",
+      "Castleford",
+      "Widnes"
+    ],
+    "correctAnswer": "Catalans Dragons",
+    "topicId": "player:pat-richards:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "catalans"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-stuart-spruce",
+    "question": "Which of these clubs did Stuart Spruce play for?",
+    "options": [
+      "Bradford",
+      "London Broncos",
+      "Wigan",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Bradford",
+    "topicId": "player:stuart-spruce:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "widnes",
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-joe-westerman",
+    "question": "Which of these clubs did Joe Westerman play for?",
+    "options": [
+      "Wakefield Trinity",
+      "Widnes",
+      "Toulouse Olympique",
+      "London Broncos"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "player:joe-westerman:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "castleford",
+      "hull-fc",
+      "warrington",
+      "wakefield"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-alan-hunte",
+    "question": "Which of these clubs did Alan Hunte play for?",
+    "options": [
+      "Hull FC",
+      "Castleford",
+      "Leeds",
+      "Widnes"
+    ],
+    "correctAnswer": "Hull FC",
+    "topicId": "player:alan-hunte:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "st-helens",
+      "hull-fc",
+      "warrington",
+      "salford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-danny-kirmond",
+    "question": "Which of these clubs did Danny Kirmond play for?",
+    "options": [
+      "Huddersfield",
+      "Leeds",
+      "Hull KR",
+      "Wigan"
+    ],
+    "correctAnswer": "Huddersfield",
+    "topicId": "player:danny-kirmond:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "huddersfield",
+      "wakefield"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-zeb-taia",
+    "question": "Which of these clubs did Zeb Taia play for?",
+    "options": [
+      "Catalans Dragons",
+      "Huddersfield",
+      "Widnes",
+      "Leigh"
+    ],
+    "correctAnswer": "Catalans Dragons",
+    "topicId": "player:zeb-taia:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "catalans",
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-michael-eagar",
+    "question": "Which of these clubs did Michael Eagar play for?",
+    "options": [
+      "Hull FC",
+      "Huddersfield",
+      "Bradford",
+      "Salford"
+    ],
+    "correctAnswer": "Hull FC",
+    "topicId": "player:michael-eagar:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "warrington",
+      "castleford",
+      "hull-fc"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-anthony-sullivan",
+    "question": "Which of these clubs did Anthony Sullivan play for?",
+    "options": [
+      "Hull KR",
+      "Salford",
+      "Leeds",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Hull KR",
+    "topicId": "player:anthony-sullivan:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "hull-kr",
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-tony-mestrov",
+    "question": "Which of these clubs did Tony Mestrov play for?",
+    "options": [
+      "London Broncos",
+      "Bradford",
+      "Widnes",
+      "Hull FC"
+    ],
+    "correctAnswer": "London Broncos",
+    "topicId": "player:tony-mestrov:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "london",
+      "wigan"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-dean-hadley",
+    "question": "Which of these clubs did Dean Hadley play for?",
+    "options": [
+      "Hull FC",
+      "Leeds",
+      "Castleford",
+      "Toulouse Olympique"
+    ],
+    "correctAnswer": "Hull FC",
+    "topicId": "player:dean-hadley:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "hull-fc",
+      "hull-kr"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-jamie-shaul",
+    "question": "Which of these clubs did Jamie Shaul play for?",
+    "options": [
+      "Hull FC",
+      "Leeds",
+      "Widnes",
+      "St Helens"
+    ],
+    "correctAnswer": "Hull FC",
+    "topicId": "player:jamie-shaul:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-dean-sampson",
+    "question": "Which of these clubs did Dean Sampson play for?",
+    "options": [
+      "Castleford",
+      "St Helens",
+      "Salford",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Castleford",
+    "topicId": "player:dean-sampson:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "castleford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-tevita-vaikona",
+    "question": "Which of these clubs did Tevita Vaikona play for?",
+    "options": [
+      "Hull FC",
+      "Widnes",
+      "Castleford",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Hull FC",
+    "topicId": "player:tevita-vaikona:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "hull-fc",
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-adrian-vowles",
+    "question": "Which of these clubs did Adrian Vowles play for?",
+    "options": [
+      "Leeds",
+      "Hull KR",
+      "Hull FC",
+      "Salford"
+    ],
+    "correctAnswer": "Leeds",
+    "topicId": "player:adrian-vowles:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "castleford",
+      "leeds",
+      "wakefield"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-stuart-reardon",
+    "question": "Which of these clubs did Stuart Reardon play for?",
+    "options": [
+      "Warrington",
+      "London Broncos",
+      "Wakefield Trinity",
+      "Castleford"
+    ],
+    "correctAnswer": "Warrington",
+    "topicId": "player:stuart-reardon:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "bradford",
+      "warrington"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-james-graham",
+    "question": "Which of these clubs did James Graham play for?",
+    "options": [
+      "St Helens",
+      "Wakefield Trinity",
+      "Warrington",
+      "London Broncos"
+    ],
+    "correctAnswer": "St Helens",
+    "topicId": "player:james-graham:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-matty-lees",
+    "question": "Which of these clubs did Matty Lees play for?",
+    "options": [
+      "St Helens",
+      "Leigh",
+      "Salford",
+      "Huddersfield"
+    ],
+    "correctAnswer": "St Helens",
+    "topicId": "player:matty-lees:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-michael-monaghan",
+    "question": "Which of these clubs did Michael Monaghan play for?",
+    "options": [
+      "Warrington",
+      "Hull KR",
+      "Widnes",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Warrington",
+    "topicId": "player:michael-monaghan:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-lesley-vainikolo",
+    "question": "Which of these clubs did Lesley Vainikolo play for?",
+    "options": [
+      "Bradford",
+      "Warrington",
+      "Salford",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Bradford",
+    "topicId": "player:lesley-vainikolo:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-danny-nutley",
+    "question": "Which of these clubs did Danny Nutley play for?",
+    "options": [
+      "Castleford",
+      "Wakefield Trinity",
+      "Bradford",
+      "Hull FC"
+    ],
+    "correctAnswer": "Castleford",
+    "topicId": "player:danny-nutley:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "warrington",
+      "castleford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-tommy-martyn",
+    "question": "Which of these clubs did Tommy Martyn play for?",
+    "options": [
+      "Leigh",
+      "Wakefield Trinity",
+      "Salford",
+      "Leeds"
+    ],
+    "correctAnswer": "Leigh",
+    "topicId": "player:tommy-martyn:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "st-helens",
+      "leigh"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-mikey-lewis",
+    "question": "Which of these clubs did Mikey Lewis play for?",
+    "options": [
+      "Hull KR",
+      "Salford",
+      "Leeds",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Hull KR",
+    "topicId": "player:mikey-lewis:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "hull-kr"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-scott-donald",
+    "question": "Which of these clubs did Scott Donald play for?",
+    "options": [
+      "Leeds",
+      "Wigan",
+      "Widnes",
+      "Warrington"
+    ],
+    "correctAnswer": "Leeds",
+    "topicId": "player:scott-donald:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "leeds"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-scott-moore",
+    "question": "Which of these clubs did Scott Moore play for?",
+    "options": [
+      "Huddersfield",
+      "Warrington",
+      "Leigh",
+      "Wigan"
+    ],
+    "correctAnswer": "Huddersfield",
+    "topicId": "player:scott-moore:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "st-helens",
+      "huddersfield",
+      "london",
+      "castleford",
+      "wakefield",
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-tony-gigot",
+    "question": "Which of these clubs did Tony Gigot play for?",
+    "options": [
+      "Toulouse Olympique",
+      "Bradford",
+      "Hull KR",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Toulouse Olympique",
+    "topicId": "player:tony-gigot:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "catalans",
+      "toulouse"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-mahe-fonua",
+    "question": "Which of these clubs did Mahe Fonua play for?",
+    "options": [
+      "Castleford",
+      "St Helens",
+      "London Broncos",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Castleford",
+    "topicId": "player:mahe-fonua:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "hull-fc",
+      "castleford"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-kevin-naiqama",
+    "question": "Which of these clubs did Kevin Naiqama play for?",
+    "options": [
+      "Huddersfield",
+      "Leeds",
+      "Leigh",
+      "Widnes"
+    ],
+    "correctAnswer": "Huddersfield",
+    "topicId": "player:kevin-naiqama:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "st-helens",
+      "huddersfield"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-elliot-minchella",
+    "question": "Which of these clubs did Elliot Minchella play for?",
+    "options": [
+      "Bradford",
+      "St Helens",
+      "Wakefield Trinity",
+      "Castleford"
+    ],
+    "correctAnswer": "Bradford",
+    "topicId": "player:elliot-minchella:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "bradford",
+      "hull-kr"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-sid-domic",
+    "question": "Which of these clubs did Sid Domic play for?",
+    "options": [
+      "London Broncos",
+      "Castleford",
+      "Huddersfield",
+      "Widnes"
+    ],
+    "correctAnswer": "London Broncos",
+    "topicId": "player:sid-domic:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "london",
+      "warrington",
+      "wakefield",
+      "hull-fc"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-ben-murdoch-masila",
+    "question": "Which of these clubs did Ben Murdoch-Masila play for?",
+    "options": [
+      "Salford",
+      "Leigh",
+      "Leeds",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Salford",
+    "topicId": "player:ben-murdoch-masila:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "salford",
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-steve-menzies",
+    "question": "Which of these clubs did Steve Menzies play for?",
+    "options": [
+      "Bradford",
+      "Castleford",
+      "Wakefield Trinity",
+      "London Broncos"
+    ],
+    "correctAnswer": "Bradford",
+    "topicId": "player:steve-menzies:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "bradford",
+      "catalans"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-lachlan-coote",
+    "question": "Which of these clubs did Lachlan Coote play for?",
+    "options": [
+      "Hull KR",
+      "Huddersfield",
+      "Widnes",
+      "Toulouse Olympique"
+    ],
+    "correctAnswer": "Hull KR",
+    "topicId": "player:lachlan-coote:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "st-helens",
+      "hull-kr"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-sam-kasiano",
+    "question": "Which of these clubs did Sam Kasiano play for?",
+    "options": [
+      "Warrington",
+      "Salford",
+      "Leeds",
+      "Wigan"
+    ],
+    "correctAnswer": "Warrington",
+    "topicId": "player:sam-kasiano:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "catalans",
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-brett-hodgson",
+    "question": "Which of these clubs did Brett Hodgson play for?",
+    "options": [
+      "Huddersfield",
+      "St Helens",
+      "Castleford",
+      "London Broncos"
+    ],
+    "correctAnswer": "Huddersfield",
+    "topicId": "player:brett-hodgson:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "huddersfield",
+      "warrington"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-kelepi-tanginoa",
+    "question": "Which of these clubs did Kelepi Tanginoa play for?",
+    "options": [
+      "Warrington",
+      "Huddersfield",
+      "Castleford",
+      "Salford"
+    ],
+    "correctAnswer": "Warrington",
+    "topicId": "player:kelepi-tanginoa:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "wakefield",
+      "hull-kr",
+      "warrington"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-rhyse-martin",
+    "question": "Which of these clubs did Rhyse Martin play for?",
+    "options": [
+      "Hull KR",
+      "Bradford",
+      "Leigh",
+      "Toulouse Olympique"
+    ],
+    "correctAnswer": "Hull KR",
+    "topicId": "player:rhyse-martin:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "leeds",
+      "hull-kr"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-joel-monaghan",
+    "question": "Which of these clubs did Joel Monaghan play for?",
+    "options": [
+      "Castleford",
+      "Bradford",
+      "St Helens",
+      "Leigh"
+    ],
+    "correctAnswer": "Castleford",
+    "topicId": "player:joel-monaghan:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "warrington",
+      "castleford"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-konrad-hurrell",
+    "question": "Which of these clubs did Konrad Hurrell play for?",
+    "options": [
+      "Leeds",
+      "Leigh",
+      "Castleford",
+      "Toulouse Olympique"
+    ],
+    "correctAnswer": "Leeds",
+    "topicId": "player:konrad-hurrell:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "leeds",
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-blake-austin",
+    "question": "Which of these clubs did Blake Austin play for?",
+    "options": [
+      "Leeds",
+      "Catalans Dragons",
+      "Huddersfield",
+      "Salford"
+    ],
+    "correctAnswer": "Leeds",
+    "topicId": "player:blake-austin:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "warrington",
+      "leeds"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-bobbie-goulding",
+    "question": "Which of these clubs did Bobbie Goulding play for?",
+    "options": [
+      "Wakefield Trinity",
+      "Hull FC",
+      "Hull KR",
+      "Warrington"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "player:bobbie-goulding:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "leeds",
+      "widnes",
+      "st-helens",
+      "huddersfield",
+      "wakefield",
+      "salford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-kane-linnett",
+    "question": "Which of these clubs did Kane Linnett play for?",
+    "options": [
+      "Hull KR",
+      "St Helens",
+      "Castleford",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Hull KR",
+    "topicId": "player:kane-linnett:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "hull-kr"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-jermaine-mcgillvary",
+    "question": "Which of these clubs did Jermaine McGillvary play for?",
+    "options": [
+      "Wakefield Trinity",
+      "Catalans Dragons",
+      "Leeds",
+      "St Helens"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "player:jermaine-mcgillvary:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "huddersfield",
+      "wakefield"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-jordan-turner",
+    "question": "Which of these clubs did Jordan Turner play for?",
+    "options": [
+      "Castleford",
+      "Bradford",
+      "London Broncos",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Castleford",
+    "topicId": "player:jordan-turner:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "salford",
+      "hull-fc",
+      "st-helens",
+      "huddersfield",
+      "castleford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-martin-offiah",
+    "question": "Which of these clubs did Martin Offiah play for?",
+    "options": [
+      "Salford",
+      "Wakefield Trinity",
+      "Hull KR",
+      "Hull FC"
+    ],
+    "correctAnswer": "Salford",
+    "topicId": "player:martin-offiah:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "widnes",
+      "wigan",
+      "salford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-blake-green",
+    "question": "Which of these clubs did Blake Green play for?",
+    "options": [
+      "Hull KR",
+      "Wakefield Trinity",
+      "Catalans Dragons",
+      "London Broncos"
+    ],
+    "correctAnswer": "Hull KR",
+    "topicId": "player:blake-green:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "hull-kr",
+      "wigan"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-jeff-lima",
+    "question": "Which of these clubs did Jeff Lima play for?",
+    "options": [
+      "Catalans Dragons",
+      "Bradford",
+      "Wakefield Trinity",
+      "Salford"
+    ],
+    "correctAnswer": "Catalans Dragons",
+    "topicId": "player:jeff-lima:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "catalans"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-glenn-morrison",
+    "question": "Which of these clubs did Glenn Morrison play for?",
+    "options": [
+      "Wakefield Trinity",
+      "London Broncos",
+      "St Helens",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "player:glenn-morrison:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "bradford",
+      "wakefield"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-lee-smith",
+    "question": "Which of these clubs did Lee Smith play for?",
+    "options": [
+      "Bradford",
+      "Widnes",
+      "Catalans Dragons",
+      "Salford"
+    ],
+    "correctAnswer": "Bradford",
+    "topicId": "player:lee-smith:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "leeds",
+      "wakefield",
+      "leigh",
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-bill-tupou",
+    "question": "Which of these clubs did Bill Tupou play for?",
+    "options": [
+      "Wakefield Trinity",
+      "Catalans Dragons",
+      "Widnes",
+      "Leeds"
+    ],
+    "correctAnswer": "Wakefield Trinity",
+    "topicId": "player:bill-tupou:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "wakefield"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-aidan-sezer",
+    "question": "Which of these clubs did Aidan Sezer play for?",
+    "options": [
+      "Huddersfield",
+      "London Broncos",
+      "Wakefield Trinity",
+      "Castleford"
+    ],
+    "correctAnswer": "Huddersfield",
+    "topicId": "player:aidan-sezer:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "huddersfield",
+      "leeds",
+      "hull-fc"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-krisnan-inu",
+    "question": "Which of these clubs did Krisnan Inu play for?",
+    "options": [
+      "Widnes",
+      "Castleford",
+      "Hull KR",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Widnes",
+    "topicId": "player:krisnan-inu:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "catalans",
+      "widnes",
+      "salford",
+      "leigh"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-brodie-croft",
+    "question": "Which of these clubs did Brodie Croft play for?",
+    "options": [
+      "Salford",
+      "Hull KR",
+      "Leigh",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Salford",
+    "topicId": "player:brodie-croft:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "salford",
+      "leeds"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-jamie-thackray",
+    "question": "Which of these clubs did Jamie Thackray play for?",
+    "options": [
+      "Castleford",
+      "Wakefield Trinity",
+      "St Helens",
+      "Widnes"
+    ],
+    "correctAnswer": "Castleford",
+    "topicId": "player:jamie-thackray:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "castleford",
+      "hull-fc",
+      "leeds",
+      "london"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-clint-greenshields",
+    "question": "Which of these clubs did Clint Greenshields play for?",
+    "options": [
+      "Catalans Dragons",
+      "Wakefield Trinity",
+      "Huddersfield",
+      "Castleford"
+    ],
+    "correctAnswer": "Catalans Dragons",
+    "topicId": "player:clint-greenshields:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "catalans"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-adam-milner",
+    "question": "Which of these clubs did Adam Milner play for?",
+    "options": [
+      "Huddersfield",
+      "Bradford",
+      "Catalans Dragons",
+      "Widnes"
+    ],
+    "correctAnswer": "Huddersfield",
+    "topicId": "player:adam-milner:clubs",
+    "difficulty": "expert",
+    "category": "transfers",
+    "teams": [
+      "castleford",
+      "huddersfield"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-graeme-bradley",
+    "question": "Which of these clubs did Graeme Bradley play for?",
+    "options": [
+      "Castleford",
+      "Wakefield Trinity",
+      "Salford",
+      "Hull KR"
+    ],
+    "correctAnswer": "Castleford",
+    "topicId": "player:graeme-bradley:clubs",
+    "difficulty": "hard",
+    "category": "transfers",
+    "teams": [
+      "castleford",
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-tom-amone",
+    "question": "Which of these clubs did Tom Amone play for?",
+    "options": [
+      "Castleford",
+      "Toulouse Olympique",
+      "Wigan",
+      "Wakefield Trinity"
+    ],
+    "correctAnswer": "Castleford",
+    "topicId": "player:tom-amone:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "leigh",
+      "castleford",
+      "hull-kr"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-edwin-ipape",
+    "question": "Which of these clubs did Edwin Ipape play for?",
+    "options": [
+      "Leigh",
+      "Castleford",
+      "Warrington",
+      "Toulouse Olympique"
+    ],
+    "correctAnswer": "Leigh",
+    "topicId": "player:edwin-ipape:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "leigh"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-tim-lafai",
+    "question": "Which of these clubs did Tim Lafai play for?",
+    "options": [
+      "Salford",
+      "Wakefield Trinity",
+      "Castleford",
+      "Huddersfield"
+    ],
+    "correctAnswer": "Salford",
+    "topicId": "player:tim-lafai:clubs",
+    "difficulty": "easy",
+    "category": "players",
+    "teams": [
+      "salford"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-marcus-bai",
+    "question": "Which of these clubs did Marcus Bai play for?",
+    "options": [
+      "Bradford",
+      "Wigan",
+      "Catalans Dragons",
+      "Salford"
+    ],
+    "correctAnswer": "Bradford",
+    "topicId": "player:marcus-bai:clubs",
+    "difficulty": "very-hard",
+    "category": "transfers",
+    "teams": [
+      "leeds",
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-club-lee-gilmour",
+    "question": "Which of these clubs did Lee Gilmour play for?",
+    "options": [
+      "Castleford",
+      "Warrington",
+      "Widnes",
+      "Catalans Dragons"
+    ],
+    "correctAnswer": "Castleford",
+    "topicId": "player:lee-gilmour:clubs",
+    "difficulty": "expert",
+    "category": "transfers",
+    "teams": [
+      "wigan",
+      "bradford",
+      "st-helens",
+      "huddersfield",
+      "castleford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-lee-briers",
+    "question": "Which nation did Lee Briers represent in international rugby league?",
+    "options": [
+      "Wales",
+      "Ireland",
+      "Italy",
+      "Scotland"
+    ],
+    "correctAnswer": "Wales",
+    "topicId": "player:lee-briers:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "warrington"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-danny-brough",
+    "question": "Which nation did Danny Brough represent in international rugby league?",
+    "options": [
+      "Scotland",
+      "Italy",
+      "Ireland",
+      "France"
+    ],
+    "correctAnswer": "Scotland",
+    "topicId": "player:danny-brough:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "hull-fc",
+      "castleford",
+      "wakefield",
+      "huddersfield",
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-keiron-cunningham",
+    "question": "Which nation did Keiron Cunningham represent in international rugby league?",
+    "options": [
+      "Wales",
+      "France",
+      "Italy",
+      "Ireland"
+    ],
+    "correctAnswer": "Wales",
+    "topicId": "player:keiron-cunningham:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-ben-currie",
+    "question": "Which nation did Ben Currie represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "Italy",
+      "Scotland",
+      "France"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:ben-currie:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-richard-horne",
+    "question": "Which nation did Richard Horne represent in international rugby league?",
+    "options": [
+      "Scotland",
+      "Wales",
+      "Ireland",
+      "France"
+    ],
+    "correctAnswer": "Scotland",
+    "topicId": "player:richard-horne:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-morgan-knowles",
+    "question": "Which nation did Morgan Knowles represent in international rugby league?",
+    "options": [
+      "Wales",
+      "Scotland",
+      "Ireland",
+      "France"
+    ],
+    "correctAnswer": "Wales",
+    "topicId": "player:morgan-knowles:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-terry-o-connor",
+    "question": "Which nation did Terry O'Connor represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "France",
+      "Wales",
+      "Italy"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:terry-o-connor:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "salford",
+      "wigan",
+      "widnes"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-iestyn-harris",
+    "question": "Which nation did Iestyn Harris represent in international rugby league?",
+    "options": [
+      "Wales",
+      "Fiji",
+      "Ireland",
+      "France"
+    ],
+    "correctAnswer": "Wales",
+    "topicId": "player:iestyn-harris:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "warrington",
+      "leeds",
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-garreth-carvell",
+    "question": "Which nation did Garreth Carvell represent in international rugby league?",
+    "options": [
+      "Wales",
+      "Italy",
+      "Ireland",
+      "Scotland"
+    ],
+    "correctAnswer": "Wales",
+    "topicId": "player:garreth-carvell:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "hull-fc",
+      "warrington"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-barrie-mcdermott",
+    "question": "Which nation did Barrie McDermott represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "Italy",
+      "Tonga",
+      "Scotland"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:barrie-mcdermott:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "wigan",
+      "leeds",
+      "widnes"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-james-lowes",
+    "question": "Which nation did James Lowes represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "Scotland",
+      "France",
+      "Italy"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:james-lowes:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "leeds",
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-chris-joynt",
+    "question": "Which nation did Chris Joynt represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "Scotland",
+      "France",
+      "Italy"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:chris-joynt:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-michael-withers",
+    "question": "Which nation did Michael Withers represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "France",
+      "Scotland",
+      "Italy"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:michael-withers:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-david-solomona",
+    "question": "Which nation did David Solomona represent in international rugby league?",
+    "options": [
+      "Samoa",
+      "Cook Islands",
+      "Papua New Guinea",
+      "France"
+    ],
+    "correctAnswer": "Samoa",
+    "topicId": "player:david-solomona:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "wakefield",
+      "bradford",
+      "warrington"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-pat-richards",
+    "question": "Which nation did Pat Richards represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "Italy",
+      "France",
+      "Scotland"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:pat-richards:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "wigan",
+      "catalans"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-zeb-taia",
+    "question": "Which nation did Zeb Taia represent in international rugby league?",
+    "options": [
+      "Cook Islands",
+      "Samoa",
+      "Papua New Guinea",
+      "Fiji"
+    ],
+    "correctAnswer": "Cook Islands",
+    "topicId": "player:zeb-taia:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "catalans",
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-michael-eagar",
+    "question": "Which nation did Michael Eagar represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "France",
+      "Scotland",
+      "Italy"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:michael-eagar:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "warrington",
+      "castleford",
+      "hull-fc"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-anthony-sullivan",
+    "question": "Which nation did Anthony Sullivan represent in international rugby league?",
+    "options": [
+      "Wales",
+      "France",
+      "Scotland",
+      "Ireland"
+    ],
+    "correctAnswer": "Wales",
+    "topicId": "player:anthony-sullivan:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "hull-kr",
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-tevita-vaikona",
+    "question": "Which nation did Tevita Vaikona represent in international rugby league?",
+    "options": [
+      "Tonga",
+      "Fiji",
+      "Cook Islands",
+      "Papua New Guinea"
+    ],
+    "correctAnswer": "Tonga",
+    "topicId": "player:tevita-vaikona:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "hull-fc",
+      "bradford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-adrian-vowles",
+    "question": "Which nation did Adrian Vowles represent in international rugby league?",
+    "options": [
+      "Scotland",
+      "Jamaica",
+      "Ireland",
+      "Italy"
+    ],
+    "correctAnswer": "Scotland",
+    "topicId": "player:adrian-vowles:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "castleford",
+      "leeds",
+      "wakefield"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-tommy-martyn",
+    "question": "Which nation did Tommy Martyn represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "France",
+      "Italy",
+      "Wales"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:tommy-martyn:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "st-helens",
+      "leigh"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-tony-gigot",
+    "question": "Which nation did Tony Gigot represent in international rugby league?",
+    "options": [
+      "France",
+      "Scotland",
+      "Wales",
+      "Italy"
+    ],
+    "correctAnswer": "France",
+    "topicId": "player:tony-gigot:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "catalans",
+      "toulouse"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-mahe-fonua",
+    "question": "Which nation did Mahe Fonua represent in international rugby league?",
+    "options": [
+      "Tonga",
+      "Papua New Guinea",
+      "Italy",
+      "Fiji"
+    ],
+    "correctAnswer": "Tonga",
+    "topicId": "player:mahe-fonua:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "hull-fc",
+      "castleford"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-kevin-naiqama",
+    "question": "Which nation did Kevin Naiqama represent in international rugby league?",
+    "options": [
+      "Fiji",
+      "Cook Islands",
+      "France",
+      "Ireland"
+    ],
+    "correctAnswer": "Fiji",
+    "topicId": "player:kevin-naiqama:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "st-helens",
+      "huddersfield"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-ben-murdoch-masila",
+    "question": "Which nation did Ben Murdoch-Masila represent in international rugby league?",
+    "options": [
+      "Tonga",
+      "Fiji",
+      "Papua New Guinea",
+      "Wales"
+    ],
+    "correctAnswer": "Tonga",
+    "topicId": "player:ben-murdoch-masila:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "salford",
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-george-carmont",
+    "question": "Which nation did George Carmont represent in international rugby league?",
+    "options": [
+      "Samoa",
+      "Wales",
+      "Cook Islands",
+      "Papua New Guinea"
+    ],
+    "correctAnswer": "Samoa",
+    "topicId": "player:george-carmont:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-lachlan-coote",
+    "question": "Which nation did Lachlan Coote represent in international rugby league?",
+    "options": [
+      "Scotland",
+      "Ireland",
+      "France",
+      "Italy"
+    ],
+    "correctAnswer": "Scotland",
+    "topicId": "player:lachlan-coote:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "st-helens",
+      "hull-kr"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-sam-kasiano",
+    "question": "Which nation did Sam Kasiano represent in international rugby league?",
+    "options": [
+      "Samoa",
+      "Cook Islands",
+      "Ireland",
+      "Papua New Guinea"
+    ],
+    "correctAnswer": "Samoa",
+    "topicId": "player:sam-kasiano:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "catalans",
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-mark-minichiello",
+    "question": "Which nation did Mark Minichiello represent in international rugby league?",
+    "options": [
+      "Italy",
+      "France",
+      "Scotland",
+      "Ireland"
+    ],
+    "correctAnswer": "Italy",
+    "topicId": "player:mark-minichiello:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "hull-fc"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-rhyse-martin",
+    "question": "Which nation did Rhyse Martin represent in international rugby league?",
+    "options": [
+      "Papua New Guinea",
+      "Jamaica",
+      "Scotland",
+      "Samoa"
+    ],
+    "correctAnswer": "Papua New Guinea",
+    "topicId": "player:rhyse-martin:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "leeds",
+      "hull-kr"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-apollo-perelini",
+    "question": "Which nation did Apollo Perelini represent in international rugby league?",
+    "options": [
+      "Samoa",
+      "Cook Islands",
+      "Tonga",
+      "Fiji"
+    ],
+    "correctAnswer": "Samoa",
+    "topicId": "player:apollo-perelini:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "st-helens"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-konrad-hurrell",
+    "question": "Which nation did Konrad Hurrell represent in international rugby league?",
+    "options": [
+      "Tonga",
+      "Italy",
+      "Jamaica",
+      "Fiji"
+    ],
+    "correctAnswer": "Tonga",
+    "topicId": "player:konrad-hurrell:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "leeds",
+      "st-helens"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-kane-linnett",
+    "question": "Which nation did Kane Linnett represent in international rugby league?",
+    "options": [
+      "Scotland",
+      "Ireland",
+      "France",
+      "Italy"
+    ],
+    "correctAnswer": "Scotland",
+    "topicId": "player:kane-linnett:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "hull-kr"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-jordan-turner",
+    "question": "Which nation did Jordan Turner represent in international rugby league?",
+    "options": [
+      "Jamaica",
+      "Malta",
+      "Greece",
+      "Lebanon"
+    ],
+    "correctAnswer": "Jamaica",
+    "topicId": "player:jordan-turner:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "salford",
+      "hull-fc",
+      "st-helens",
+      "huddersfield",
+      "castleford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-jeff-lima",
+    "question": "Which nation did Jeff Lima represent in international rugby league?",
+    "options": [
+      "Samoa",
+      "Fiji",
+      "Cook Islands",
+      "Papua New Guinea"
+    ],
+    "correctAnswer": "Samoa",
+    "topicId": "player:jeff-lima:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "wigan",
+      "catalans"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-bill-tupou",
+    "question": "Which nation did Bill Tupou represent in international rugby league?",
+    "options": [
+      "Tonga",
+      "Fiji",
+      "Cook Islands",
+      "Samoa"
+    ],
+    "correctAnswer": "Tonga",
+    "topicId": "player:bill-tupou:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "wakefield"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-dale-laughton",
+    "question": "Which nation did Dale Laughton represent in international rugby league?",
+    "options": [
+      "Scotland",
+      "Italy",
+      "Wales",
+      "France"
+    ],
+    "correctAnswer": "Scotland",
+    "topicId": "player:dale-laughton:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "huddersfield",
+      "warrington"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-krisnan-inu",
+    "question": "Which nation did Krisnan Inu represent in international rugby league?",
+    "options": [
+      "Samoa",
+      "Tonga",
+      "Fiji",
+      "Cook Islands"
+    ],
+    "correctAnswer": "Samoa",
+    "topicId": "player:krisnan-inu:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "catalans",
+      "widnes",
+      "salford",
+      "leigh"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-adrian-lam",
+    "question": "Which nation did Adrian Lam represent in international rugby league?",
+    "options": [
+      "Papua New Guinea",
+      "Samoa",
+      "Tonga",
+      "Cook Islands"
+    ],
+    "correctAnswer": "Papua New Guinea",
+    "topicId": "player:adrian-lam:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "wigan"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-clint-greenshields",
+    "question": "Which nation did Clint Greenshields represent in international rugby league?",
+    "options": [
+      "France",
+      "Ireland",
+      "Italy",
+      "Scotland"
+    ],
+    "correctAnswer": "France",
+    "topicId": "player:clint-greenshields:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "catalans"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-john-asiata",
+    "question": "Which nation did John Asiata represent in international rugby league?",
+    "options": [
+      "Samoa",
+      "Cook Islands",
+      "Papua New Guinea",
+      "Fiji"
+    ],
+    "correctAnswer": "Samoa",
+    "topicId": "player:john-asiata:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "leigh",
+      "hull-fc"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-edwin-ipape",
+    "question": "Which nation did Edwin Ipape represent in international rugby league?",
+    "options": [
+      "Papua New Guinea",
+      "Tonga",
+      "Fiji",
+      "New Zealand"
+    ],
+    "correctAnswer": "Papua New Guinea",
+    "topicId": "player:edwin-ipape:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "leigh"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-tim-lafai",
+    "question": "Which nation did Tim Lafai represent in international rugby league?",
+    "options": [
+      "Samoa",
+      "Cook Islands",
+      "Tonga",
+      "Scotland"
+    ],
+    "correctAnswer": "Samoa",
+    "topicId": "player:tim-lafai:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "salford"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-marcus-bai",
+    "question": "Which nation did Marcus Bai represent in international rugby league?",
+    "options": [
+      "Papua New Guinea",
+      "Fiji",
+      "Tonga",
+      "New Zealand"
+    ],
+    "correctAnswer": "Papua New Guinea",
+    "topicId": "player:marcus-bai:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "leeds",
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-lee-gilmour",
+    "question": "Which nation did Lee Gilmour represent in international rugby league?",
+    "options": [
+      "Scotland",
+      "Ireland",
+      "Italy",
+      "France"
+    ],
+    "correctAnswer": "Scotland",
+    "topicId": "player:lee-gilmour:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wigan",
+      "bradford",
+      "st-helens",
+      "huddersfield",
+      "castleford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-paul-vaughan",
+    "question": "Which nation did Paul Vaughan represent in international rugby league?",
+    "options": [
+      "Italy",
+      "Ireland",
+      "Scotland",
+      "France"
+    ],
+    "correctAnswer": "Italy",
+    "topicId": "player:paul-vaughan:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2020s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-michael-lawrence",
+    "question": "Which nation did Michael Lawrence represent in international rugby league?",
+    "options": [
+      "Jamaica",
+      "Greece",
+      "Malta",
+      "Lebanon"
+    ],
+    "correctAnswer": "Jamaica",
+    "topicId": "player:michael-lawrence:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "huddersfield",
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-benjamin-garcia",
+    "question": "Which nation did Benjamin Garcia represent in international rugby league?",
+    "options": [
+      "France",
+      "Scotland",
+      "Italy",
+      "Wales"
+    ],
+    "correctAnswer": "France",
+    "topicId": "player:benjamin-garcia:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "catalans"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-gavin-clinch",
+    "question": "Which nation did Gavin Clinch represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "England",
+      "Scotland",
+      "France"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:gavin-clinch:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "wigan",
+      "salford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-graham-mackay",
+    "question": "Which nation did Graham Mackay represent in international rugby league?",
+    "options": [
+      "Scotland",
+      "Ireland",
+      "Italy",
+      "France"
+    ],
+    "correctAnswer": "Scotland",
+    "topicId": "player:graham-mackay:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "leeds",
+      "bradford",
+      "hull-fc"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-denny-solomona",
+    "question": "Which nation did Denny Solomona represent in international rugby league?",
+    "options": [
+      "Samoa",
+      "Papua New Guinea",
+      "Cook Islands",
+      "Tonga"
+    ],
+    "correctAnswer": "Samoa",
+    "topicId": "player:denny-solomona:nation",
+    "difficulty": "medium",
+    "category": "players",
+    "teams": [
+      "london",
+      "castleford"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-craig-kopczak",
+    "question": "Which nation did Craig Kopczak represent in international rugby league?",
+    "options": [
+      "Wales",
+      "Scotland",
+      "France",
+      "Italy"
+    ],
+    "correctAnswer": "Wales",
+    "topicId": "player:craig-kopczak:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "bradford",
+      "huddersfield",
+      "salford",
+      "wakefield"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-harrison-hansen",
+    "question": "Which nation did Harrison Hansen represent in international rugby league?",
+    "options": [
+      "Samoa",
+      "Ireland",
+      "Cook Islands",
+      "Papua New Guinea"
+    ],
+    "correctAnswer": "Samoa",
+    "topicId": "player:harrison-hansen:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wigan",
+      "salford",
+      "leigh",
+      "widnes",
+      "toulouse"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-kyle-amor",
+    "question": "Which nation did Kyle Amor represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "Tonga",
+      "France",
+      "New Zealand"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:kyle-amor:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wakefield",
+      "st-helens",
+      "widnes"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-th-o-fages",
+    "question": "Which nation did Théo Fages represent in international rugby league?",
+    "options": [
+      "France",
+      "England",
+      "Italy",
+      "Scotland"
+    ],
+    "correctAnswer": "France",
+    "topicId": "player:th-o-fages:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "salford",
+      "st-helens",
+      "huddersfield",
+      "catalans"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-mike-wainwright",
+    "question": "Which nation did Mike Wainwright represent in international rugby league?",
+    "options": [
+      "Scotland",
+      "Ireland",
+      "France",
+      "Wales"
+    ],
+    "correctAnswer": "Scotland",
+    "topicId": "player:mike-wainwright:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "warrington",
+      "salford",
+      "leigh"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-paul-jackson",
+    "question": "Which nation did Paul Jackson represent in international rugby league?",
+    "options": [
+      "Scotland",
+      "Ireland",
+      "France",
+      "Wales"
+    ],
+    "correctAnswer": "Scotland",
+    "topicId": "player:paul-jackson:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "huddersfield",
+      "wakefield",
+      "castleford"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-ben-jones-bishop",
+    "question": "Which nation did Ben Jones-Bishop represent in international rugby league?",
+    "options": [
+      "Jamaica",
+      "Greece",
+      "Malta",
+      "Serbia"
+    ],
+    "correctAnswer": "Jamaica",
+    "topicId": "player:ben-jones-bishop:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "leeds",
+      "salford",
+      "wakefield"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-stuart-littler",
+    "question": "Which nation did Stuart Littler represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "Scotland",
+      "France",
+      "Italy"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:stuart-littler:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "salford",
+      "leigh"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-brad-singleton",
+    "question": "Which nation did Brad Singleton represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "Fiji",
+      "Scotland",
+      "New Zealand"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:brad-singleton:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "leeds",
+      "wigan",
+      "salford",
+      "castleford"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-chris-bridge",
+    "question": "Which nation did Chris Bridge represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "Italy",
+      "Scotland",
+      "Wales"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:chris-bridge:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "bradford",
+      "warrington",
+      "widnes"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-julian-bousquet",
+    "question": "Which nation did Julian Bousquet represent in international rugby league?",
+    "options": [
+      "France",
+      "Wales",
+      "Italy",
+      "Ireland"
+    ],
+    "correctAnswer": "France",
+    "topicId": "player:julian-bousquet:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "catalans"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-olivier-elima",
+    "question": "Which nation did Olivier Elima represent in international rugby league?",
+    "options": [
+      "France",
+      "Italy",
+      "Wales",
+      "Ireland"
+    ],
+    "correctAnswer": "France",
+    "topicId": "player:olivier-elima:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wakefield",
+      "catalans",
+      "bradford"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-mick-cassidy",
+    "question": "Which nation did Mick Cassidy represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "Wales",
+      "Italy",
+      "Scotland"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:mick-cassidy:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wigan",
+      "widnes"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-scott-grix",
+    "question": "Which nation did Scott Grix represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "France",
+      "Wales",
+      "Italy"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:scott-grix:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "leigh",
+      "widnes",
+      "wakefield",
+      "huddersfield"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-willie-manu",
+    "question": "Which nation did Willie Manu represent in international rugby league?",
+    "options": [
+      "Tonga",
+      "Italy",
+      "Papua New Guinea",
+      "Cook Islands"
+    ],
+    "correctAnswer": "Tonga",
+    "topicId": "player:willie-manu:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "castleford",
+      "hull-fc",
+      "st-helens"
+    ],
+    "era": "2000s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-joe-philbin",
+    "question": "Which nation did Joe Philbin represent in international rugby league?",
+    "options": [
+      "Ireland",
+      "Italy",
+      "Scotland",
+      "France"
+    ],
+    "correctAnswer": "Ireland",
+    "topicId": "player:joe-philbin:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "warrington"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-jason-baitieri",
+    "question": "Which nation did Jason Baitieri represent in international rugby league?",
+    "options": [
+      "France",
+      "Ireland",
+      "Jamaica",
+      "Scotland"
+    ],
+    "correctAnswer": "France",
+    "topicId": "player:jason-baitieri:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "catalans",
+      "bradford"
+    ],
+    "era": "2010s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-lee-penny",
+    "question": "Which nation did Lee Penny represent in international rugby league?",
+    "options": [
+      "Scotland",
+      "Wales",
+      "Ireland",
+      "Italy"
+    ],
+    "correctAnswer": "Scotland",
+    "topicId": "player:lee-penny:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "warrington"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
+  },
+  {
+    "id": "wiki-nation-willie-poching",
+    "question": "Which nation did Willie Poching represent in international rugby league?",
+    "options": [
+      "Samoa",
+      "Papua New Guinea",
+      "Fiji",
+      "Tonga"
+    ],
+    "correctAnswer": "Samoa",
+    "topicId": "player:willie-poching:nation",
+    "difficulty": "hard",
+    "category": "players",
+    "teams": [
+      "wakefield",
+      "leeds"
+    ],
+    "era": "1990s",
+    "sourceType": "records",
+    "answerType": "objective"
   }
 ]

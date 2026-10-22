@@ -26,6 +26,12 @@ import type {
   QuizTeamId,
 } from "../src/lib/quiz/types";
 import { QUIZ_TEAM_IDS } from "../src/lib/quiz/types";
+import {
+  loadWikiPlayers,
+  WIKI_NATIONS,
+  WIKI_SL_CLUBS,
+  type WikiPlayer,
+} from "./lib/quiz-wiki-infobox";
 
 const ROOT = join(__dirname, "..");
 const OUT = join(ROOT, "data/quiz/generated/bank.json");
@@ -805,6 +811,208 @@ function buildWorldCupQuestions(): QuizQuestion[] {
   return questions;
 }
 
+/**
+ * Player career questions from the cached Wikipedia articles. The right answer comes from the
+ * infobox; wrong answers are only clubs / nations the whole article never mentions, so a short
+ * spell missing from the infobox can't turn a wrong answer into a right one.
+ */
+function buildWikiPlayerQuestions(): QuizQuestion[] {
+  const squads = JSON.parse(
+    readFileSync(join(ROOT, "data/era-starting-17s.json"), "utf8")
+  ) as StartingRow[];
+  const seasons = new Map<string, number>();
+  const firstYear = new Map<string, number>();
+  const lastYear = new Map<string, number>();
+  const squadTeams = new Map<string, Set<QuizTeamId>>();
+  for (const row of squads) {
+    const teamId = NAME_TO_ID[row.club];
+    for (const player of row.squad) {
+      seasons.set(player.name, (seasons.get(player.name) ?? 0) + 1);
+      firstYear.set(player.name, Math.min(firstYear.get(player.name) ?? 9999, row.year));
+      lastYear.set(player.name, Math.max(lastYear.get(player.name) ?? 0, row.year));
+      if (teamId) {
+        const set = squadTeams.get(player.name) ?? new Set<QuizTeamId>();
+        set.add(teamId);
+        squadTeams.set(player.name, set);
+      }
+    }
+  }
+
+  const byId = loadHonourPlayers();
+  const famous = new Set<string>();
+  const addFamous = (name: string | undefined) => name && famous.add(name.toLowerCase());
+  for (const row of LANCE_TODD_WINNERS) addFamous(row.winnerName);
+  for (const row of GRAND_FINAL_MAN_OF_MATCH) addFamous(row.player);
+  for (const file of ["data/man-of-steel-winners.json", "data/dream-team-years.json"]) {
+    const map = JSON.parse(readFileSync(join(ROOT, file), "utf8")) as Record<string, number[]>;
+    for (const id of Object.keys(map)) addFamous(byId.get(id)?.name);
+  }
+
+  // Index articles by display name; drop names shared by two articles.
+  const byName = new Map<string, WikiPlayer[]>();
+  for (const player of loadWikiPlayers(ROOT)) {
+    const name = player.title.replace(/\s*\(.*\)\s*$/, "").trim();
+    const list = byName.get(name) ?? [];
+    list.push(player);
+    byName.set(name, list);
+  }
+
+  type Candidate = {
+    name: string;
+    player: WikiPlayer;
+    clubs: { club: string; teamId: QuizTeamId; appearances: number }[];
+    famous: boolean;
+    seasons: number;
+    score: number;
+  };
+  const candidates: Candidate[] = [];
+  for (const [name, list] of byName) {
+    if (list.length !== 1) continue;
+    const player = list[0]!;
+    const count = seasons.get(name) ?? 0;
+    if (count < 2) continue;
+    const totals = new Map<string, { club: string; teamId: QuizTeamId; appearances: number }>();
+    for (const spell of player.spells) {
+      if (spell.loan) continue;
+      const entry = totals.get(spell.club) ?? { club: spell.club, teamId: spell.teamId, appearances: 0 };
+      entry.appearances += spell.appearances;
+      totals.set(spell.club, entry);
+    }
+    const clubs = [...totals.values()].filter((entry) => entry.appearances >= 10);
+    if (clubs.length === 0) continue;
+    // Same person check: the article's clubs must include a club from our squad data.
+    const known = squadTeams.get(name) ?? new Set<QuizTeamId>();
+    if (!clubs.some((entry) => known.has(entry.teamId))) continue;
+    const isFamous = famous.has(name.toLowerCase());
+    candidates.push({
+      name,
+      player,
+      clubs,
+      famous: isFamous,
+      seasons: count,
+      score: count + (isFamous ? 10 : 0),
+    });
+  }
+  candidates.sort(
+    (a, b) =>
+      b.score - a.score ||
+      stableHash(`wiki:${a.name}`) - stableHash(`wiki:${b.name}`)
+  );
+
+  // Wrong-answer clubs must have been in Super League during the player's career.
+  const slYears = JSON.parse(
+    readFileSync(join(ROOT, "data/super-league-club-years.json"), "utf8")
+  ) as Record<string, { ranges: [number, number][] }>;
+  const slRanges = new Map<QuizTeamId, [number, number][]>();
+  for (const [club, value] of Object.entries(slYears)) {
+    const id = NAME_TO_ID[club];
+    if (id) slRanges.set(id, value.ranges);
+  }
+  const inSuperLeagueDuring = (teamId: QuizTeamId, from: number, to: number) =>
+    (slRanges.get(teamId) ?? []).some(([start, end]) => start <= to && end >= from);
+
+  const questions: QuizQuestion[] = [];
+
+  // "Which of these clubs did X play for?" — max 150, at most 12 per answer club.
+  const perClub = new Map<string, number>();
+  let clubQuestions = 0;
+  for (const candidate of candidates) {
+    if (clubQuestions >= 150) break;
+    if (candidate.seasons < 3) continue;
+    const { player, clubs, name } = candidate;
+    const multi = clubs.length > 1;
+    const answer = [...clubs].sort((a, b) => a.appearances - b.appearances)[0]!;
+    if ((perClub.get(answer.club) ?? 0) >= 12) continue;
+    const from = (firstYear.get(name) ?? 1996) - 1;
+    const to = (lastYear.get(name) ?? 2026) + 1;
+    const free = WIKI_SL_CLUBS.filter(
+      (club) =>
+        !club.mention.test(player.wikitext) && inSuperLeagueDuring(club.teamId, from, to)
+    )
+      .map((club) => club.name)
+      .sort((a, b) => stableHash(`wclub:${name}:${a}`) - stableHash(`wclub:${name}:${b}`));
+    if (free.length < 3) continue;
+    const difficulty: QuizDifficulty = !multi
+      ? candidate.famous
+        ? "easy"
+        : candidate.seasons >= 6
+          ? "medium"
+          : "hard"
+      : candidate.famous
+        ? answer.appearances >= 30
+          ? "hard"
+          : "very-hard"
+        : answer.appearances >= 30
+          ? "very-hard"
+          : "expert";
+    const q = makeQuestion(
+      `wiki-club-${slug(name)}`,
+      `Which of these clubs did ${name} play for?`,
+      answer.club,
+      free.slice(0, 3),
+      {
+        topicId: `player:${slug(name)}:clubs`,
+        difficulty,
+        category: multi ? "transfers" : "players",
+        teams: unique(clubs.map((entry) => entry.teamId)),
+        era: eraForYear(firstYear.get(name) ?? 2000),
+        sourceType: "records",
+        answerType: "objective",
+      }
+    );
+    if (!q) continue;
+    questions.push(q);
+    perClub.set(answer.club, (perClub.get(answer.club) ?? 0) + 1);
+    clubQuestions += 1;
+  }
+
+  // "Which nation did X represent?" — only the less obvious nations; max 70.
+  const obvious = new Set(["England", "Australia", "New Zealand", "Great Britain"]);
+  let nationQuestions = 0;
+  for (const candidate of candidates) {
+    if (nationQuestions >= 70) break;
+    const { player, name } = candidate;
+    const answer = player.nations.find(
+      (nation) => !obvious.has(nation) && WIKI_NATIONS.some((row) => row.name === nation)
+    );
+    if (!answer) continue;
+    const group = WIKI_NATIONS.find((row) => row.name === answer)!.group;
+    const free = WIKI_NATIONS.filter(
+      (row) =>
+        row.name !== answer &&
+        row.name !== "Australia" &&
+        // Minor nations only make sense as wrong answers next to another minor nation.
+        (group === "other" || !["Malta", "Greece", "Serbia", "Lebanon"].includes(row.name)) &&
+        !row.mention.test(player.wikitext)
+    ).sort(
+      (a, b) =>
+        Number(b.group === group) - Number(a.group === group) ||
+        stableHash(`wnat:${name}:${a.name}`) - stableHash(`wnat:${name}:${b.name}`)
+    );
+    if (free.length < 3) continue;
+    const q = makeQuestion(
+      `wiki-nation-${slug(name)}`,
+      `Which nation did ${name} represent in international rugby league?`,
+      answer,
+      free.slice(0, 3).map((row) => row.name),
+      {
+        topicId: `player:${slug(name)}:nation`,
+        difficulty: candidate.famous ? "medium" : candidate.seasons >= 5 ? "hard" : "very-hard",
+        category: "players",
+        teams: unique(candidate.clubs.map((entry) => entry.teamId)),
+        era: eraForYear(firstYear.get(name) ?? 2000),
+        sourceType: "records",
+        answerType: "objective",
+      }
+    );
+    if (!q) continue;
+    questions.push(q);
+    nationQuestions += 1;
+  }
+
+  return questions;
+}
+
 function buildStadiumQuestions(): QuizQuestion[] {
   const questions: QuizQuestion[] = [];
   const stadiumNames = STADIUMS.map((row) => row.stadium);
@@ -1325,6 +1533,7 @@ function main(): void {
     ...buildStarting17Questions(),
     ...buildRosterQuestions(),
     ...buildHonourQuestions(),
+    ...buildWikiPlayerQuestions(),
   ].filter(Boolean);
 
   const seenIds = new Set<string>();
