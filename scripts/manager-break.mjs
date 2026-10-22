@@ -28,7 +28,7 @@ const page = await context.newPage();
 const consoleErrors = [];
 page.on("pageerror", (e) => consoleErrors.push(`pageerror: ${String(e).slice(0, 200)}`));
 page.on("console", (m) => {
-  if (m.type() === "error" && !/Failed to load resource|favicon|supabase|net::ERR/i.test(m.text())) consoleErrors.push(m.text().slice(0, 200));
+  if (m.type() === "error" && !/Failed to load resource|favicon|supabase|net::ERR|_vercel\/insights/i.test(m.text())) consoleErrors.push(m.text().slice(0, 200));
 });
 
 let shotN = 0;
