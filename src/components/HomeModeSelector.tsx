@@ -148,7 +148,7 @@ export function HomeModeSelector() {
 
   return (
     <section className="fl-stagger mx-auto flex w-full max-w-xl flex-col gap-3 text-left" aria-labelledby="play-heading">
-      <h2 id="play-heading" className="text-left font-cond text-[30px] font-bold leading-none text-white">
+      <h2 id="play-heading" className="!text-left font-cond text-[30px] font-bold leading-none text-white">
         {hub?.greeting ?? "Welcome, coach"}
       </h2>
 
