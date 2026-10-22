@@ -2743,6 +2743,11 @@ export function GameBoard({
               spinVariant={spinVariant}
               boostStatus={spinBoostStatus}
               boostDetail={spinBoostDetail}
+              slotLabel={
+                selectedSlotIndex !== null
+                  ? squad.find((s) => s.slotIndex === selectedSlotIndex)?.label
+                  : undefined
+              }
               onComplete={handleRevealComplete}
             />
           )}
@@ -2783,6 +2788,12 @@ export function GameBoard({
                       boosted={Boolean(boostNotice)}
                       eraMode={normalEraMode}
                       hideRatingNote={dailyChallengeMode}
+                      slot={
+                        selectedSlotIndex !== null
+                          ? squad.find((s) => s.slotIndex === selectedSlotIndex) ?? null
+                          : null
+                      }
+                      squad={squad}
                     />
                   </motion.div>
                 </motion.div>

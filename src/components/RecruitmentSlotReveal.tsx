@@ -17,6 +17,7 @@ import { getClubColors } from "@/lib/clubs";
 import { formatSpinReelTeamName } from "@/lib/clubs/spin-reel-team-name";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { playSlotLand, playSlotSpinStart, playSlotSpinTick } from "@/lib/sound";
+import { triggerHaptic } from "@/lib/haptics";
 import { SPACING } from "@/lib/ui/design-system";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
@@ -27,6 +28,8 @@ import { SlotReel, type SlotReelHandle } from "./SlotReel";
 
 const LAND_HOLD_MS = 380;
 const TICK_SOUND_EVERY_ITEMS = 3;
+/** Ignore taps this soon after opening (the tap on the position that started the spin). */
+const SKIP_GUARD_MS = 250;
 
 interface RecruitmentSlotRevealProps {
   target: SlotRevealTarget;
@@ -36,6 +39,8 @@ interface RecruitmentSlotRevealProps {
   boostStatus?: string | null;
   /** Secondary line, e.g. "Random valid position: Full Back". */
   boostDetail?: string | null;
+  /** Position being filled, e.g. "Left Centre". */
+  slotLabel?: string;
   onComplete: () => void;
 }
 
@@ -44,6 +49,7 @@ export function RecruitmentSlotReveal({
   spinVariant,
   boostStatus = null,
   boostDetail = null,
+  slotLabel,
   onComplete,
 }: RecruitmentSlotRevealProps) {
   const isEraSpin = spinVariant === "era";
@@ -54,6 +60,8 @@ export function RecruitmentSlotReveal({
   const clubPrimaryRef = useRef(getClubColors(target.team).primary);
   const [isSpinning, setIsSpinning] = useState(true);
   const [landed, setLanded] = useState(false);
+  const skipRef = useRef<(() => void) | null>(null);
+  const openedAtRef = useRef(0);
 
   // Lock while spinning; release once the result has settled.
   useScrollLock(!landed, "quick-mode-spin");
@@ -127,6 +135,7 @@ export function RecruitmentSlotReveal({
     }
 
     let cancelled = false;
+    let finished = false;
     let rafId = 0;
     let holdTimeout: number | null = null;
     const tAnimStart = spinTimingMark("animation-start");
@@ -157,12 +166,16 @@ export function RecruitmentSlotReveal({
     };
 
     const finish = () => {
-      if (cancelled) return;
+      if (cancelled || finished) return;
+      finished = true;
+      skipRef.current = null;
+      window.cancelAnimationFrame(rafId);
       teamReelRef.current?.setScrollY(teamEndY);
       if (isEraSpin && yearPlan) {
         yearReelRef.current?.setScrollY(yearEndY);
       }
       playSlotLand();
+      triggerHaptic(18);
       lockReels();
       spinTimingMark("animation-end", tAnimStart);
       holdTimeout = window.setTimeout(() => {
@@ -206,9 +219,13 @@ export function RecruitmentSlotReveal({
     };
 
     rafId = window.requestAnimationFrame(frame);
+    openedAtRef.current = startTime;
+    // Tap to skip straight to the result.
+    skipRef.current = finish;
 
     return () => {
       cancelled = true;
+      skipRef.current = null;
       window.cancelAnimationFrame(rafId);
       if (holdTimeout) window.clearTimeout(holdTimeout);
     };
@@ -221,6 +238,11 @@ export function RecruitmentSlotReveal({
         role="dialog"
         aria-modal="true"
         aria-label="Recruitment spin"
+        onPointerUp={() => {
+          if (!skipRef.current) return;
+          if (performance.now() - openedAtRef.current < SKIP_GUARD_MS) return;
+          skipRef.current();
+        }}
       >
         <div
           className="recruitment-spin-panel w-full max-w-[min(22rem,92vw)] overflow-hidden rounded-[var(--mobile-radius-medium,10px)] border border-white/12 bg-[var(--mobile-surface-secondary,#080c0d)] shadow-[0_14px_34px_rgba(0,0,0,0.4)]"
@@ -232,7 +254,13 @@ export function RecruitmentSlotReveal({
           <TeamColourStrip club={target.team} />
           <div className="border-b border-white/10 px-4 py-2.5 text-center">
             <p className={`${TYPO.sectionLabel} text-pitch-400`}>
-              {isSpinning ? "Spinning…" : "Landed"}
+              {isSpinning
+                ? slotLabel
+                  ? `Spinning for your ${slotLabel}…`
+                  : "Spinning…"
+                : slotLabel
+                  ? `Your ${slotLabel} comes from…`
+                  : "Landed"}
             </p>
             {boostStatus ? (
               <p className={`mt-1 ${TYPO.meta} text-theme-primary/90`}>
@@ -281,8 +309,13 @@ export function RecruitmentSlotReveal({
               )}
             </div>
 
+            {isSpinning ? (
+              <p className={`mt-3 flex min-h-[2.5rem] items-center justify-center ${TYPO.meta} text-pitch-400`} aria-hidden>
+                Tap to skip
+              </p>
+            ) : null}
             <div
-              className={`mt-3 min-h-[2.5rem] text-center transition-opacity duration-300 ${
+              className={`${isSpinning ? "hidden" : "mt-3"} min-h-[2.5rem] text-center transition-opacity duration-300 ${
                 landed ? "opacity-100" : "opacity-0"
               }`}
               aria-hidden={!landed}

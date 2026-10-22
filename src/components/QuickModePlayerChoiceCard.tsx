@@ -42,6 +42,12 @@ export type QuickModePlayerChoiceCardProps = {
   onSelect: () => void;
   onViewDetails?: () => void;
   className?: string;
+  /** Rating this player would have in the slot being filled (out-of-position penalty applied). */
+  slotRating?: number;
+  /** Team rating after signing him, and the change. Hidden when ratings are hidden. */
+  impact?: { after: number; delta: number } | null;
+  /** e.g. "Age 24" — appended to the metadata line. */
+  ageLabel?: string;
 };
 
 function ratingBadgeModifier(
@@ -90,6 +96,9 @@ export function QuickModePlayerChoiceCard({
   onSelect,
   onViewDetails,
   className = "",
+  slotRating,
+  impact = null,
+  ageLabel,
 }: QuickModePlayerChoiceCardProps) {
   const name = formatPlayerChoiceName(player);
   const metadata = formatPlayerChoiceMetadata(player, {
@@ -108,9 +117,14 @@ export function QuickModePlayerChoiceCard({
         allowEasterEggTags,
       });
   const colorClub = getPlayerChoiceColorClub(player, clubColorOverride);
-  const metaLine = [metadata.positionLabel, metadata.nationalityAbbrev, metadata.club]
+  const metaLine = [metadata.positionLabel, metadata.nationalityAbbrev, ageLabel, metadata.club]
     .filter(Boolean)
     .join(" · ");
+  const penalty =
+    !rating.hidden && slotRating !== undefined && slotRating < rating.value
+      ? rating.value - slotRating
+      : 0;
+  const shownRating = penalty > 0 ? slotRating! : rating.value;
 
   useEffect(() => {
     warnMissingPlayerChoiceData(player);
@@ -141,17 +155,17 @@ export function QuickModePlayerChoiceCard({
           </h3>
           <div
             className={`quick-player-card__rating-badge ${ratingBadgeModifier(
-              rating.value,
+              shownRating,
               rating.hidden
             )}`.trim()}
             aria-label={
               rating.hidden
                 ? rating.hiddenLabel
-                : `Overall rating ${rating.value}`
+                : `Overall rating ${shownRating}${penalty > 0 ? ` in this position (${rating.value} normally)` : ""}`
             }
           >
             <span className="quick-player-card__rating-value">
-              {rating.hidden ? "?" : rating.display}
+              {rating.hidden ? "?" : String(shownRating)}
             </span>
             <span className="quick-player-card__rating-caption">
               {rating.hidden ? "Hidden" : "OVR"}
@@ -164,6 +178,33 @@ export function QuickModePlayerChoiceCard({
             {metaLine}
           </p>
         </div>
+
+        {!rating.hidden && (impact || penalty > 0) ? (
+          <p className="quick-player-card__impact">
+            {penalty > 0 ? (
+              <span className="quick-player-card__impact-penalty">
+                Out of position −{penalty}
+              </span>
+            ) : null}
+            {impact ? (
+              <span>
+                Team {impact.after.toFixed(1)}{" "}
+                <span
+                  className={
+                    impact.delta > 0.05
+                      ? "quick-player-card__impact-up"
+                      : impact.delta < -0.05
+                        ? "quick-player-card__impact-down"
+                        : "quick-player-card__impact-flat"
+                  }
+                >
+                  {impact.delta > 0.05 ? "▲" : impact.delta < -0.05 ? "▼" : "•"}
+                  {Math.abs(impact.delta).toFixed(1)}
+                </span>
+              </span>
+            ) : null}
+          </p>
+        ) : null}
 
         <div className="quick-player-card__tags" aria-label="Player tags">
           {tags.map((tag) => (

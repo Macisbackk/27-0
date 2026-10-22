@@ -3,7 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ClubLogoBox } from "@/components/ClubBadge";
-import type { Player } from "@/lib/types";
+import type { Player, SquadSlot } from "@/lib/types";
+import { getAverageSquadRating } from "@/lib/squad-analysis";
+import { getPlayerRatingForPosition } from "@/lib/players/player-positions";
+import { getAgeAtYear, getPlayerAge } from "@/lib/players/player-age";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { getClubColors } from "@/lib/clubs";
 import type { SlotTeamYearPlayer } from "@/lib/game/slot-team-year-pick";
@@ -35,6 +38,15 @@ interface SlotTeamYearPickerProps {
   eraMode?: boolean;
   /** Hide Current/Era “season’s form” rating note (e.g. Daily Challenge). */
   hideRatingNote?: boolean;
+  /** The position being filled and the squad so far — for the header and team-rating preview. */
+  slot?: SquadSlot | null;
+  squad?: SquadSlot[];
+}
+
+function ageFor(player: Player, year: string): number | undefined {
+  if (player.category === "current") return getPlayerAge(player);
+  const y = Number.parseInt(year, 10);
+  return Number.isFinite(y) ? getAgeAtYear(player, y) : undefined;
 }
 
 export function SlotTeamYearPicker({
@@ -49,6 +61,8 @@ export function SlotTeamYearPicker({
   boosted = false,
   eraMode = false,
   hideRatingNote = false,
+  slot = null,
+  squad,
 }: SlotTeamYearPickerProps) {
   const [respinLocked, setRespinLocked] = useState(false);
 
@@ -62,12 +76,33 @@ export function SlotTeamYearPicker({
   );
   const shortYear = formatShortYear(target.year);
 
+  const slotRatingOf = (player: Player) =>
+    slot ? getPlayerRatingForPosition(player, slot.position) : player.peakRating;
+
   const sortedEntries = useMemo(
     () =>
-      [...entries].sort((a, b) => b.player.peakRating - a.player.peakRating),
-    [entries]
+      [...entries].sort(
+        (a, b) =>
+          (slot ? getPlayerRatingForPosition(b.player, slot.position) : b.player.peakRating) -
+          (slot ? getPlayerRatingForPosition(a.player, slot.position) : a.player.peakRating)
+      ),
+    [entries, slot]
   );
-  const topRating = sortedEntries[0]?.player.peakRating ?? 0;
+  const topRating = sortedEntries[0] ? slotRatingOf(sortedEntries[0].player) : 0;
+
+  // Team rating if you sign each player (only once someone is already in the side).
+  const impactFor = useMemo(() => {
+    if (!slot || !squad || hardMode) return () => null;
+    const filled = squad.filter((s) => s.player).length;
+    if (filled === 0) return () => null;
+    const before = getAverageSquadRating(squad);
+    return (player: Player) => {
+      const after = getAverageSquadRating(
+        squad.map((s) => (s.slotIndex === slot.slotIndex ? { ...s, player } : s))
+      );
+      return { after, delta: Math.round((after - before) * 10) / 10 };
+    };
+  }, [slot, squad, hardMode]);
   const choiceCount = sortedEntries.length;
 
   const canRespin =
@@ -131,7 +166,9 @@ export function SlotTeamYearPicker({
               className="sm:hidden"
             />
             <div className="mt-2 min-w-0 w-full">
-              <p className={TYPO.sectionLabel}>Pick your signing</p>
+              <p className={TYPO.sectionLabel}>
+                {slot ? `Pick your ${slot.label}` : "Pick your signing"}
+              </p>
               <h2 className="mt-0.5 font-display text-lg font-bold leading-tight text-white sm:text-2xl">
                 {target.team}
               </h2>
@@ -161,10 +198,12 @@ export function SlotTeamYearPicker({
               )}
               <div className={quickPlayerChoiceGridClass(choiceCount)}>
                 {sortedEntries.map(({ player }, index) => {
+                  const slotRating = slotRatingOf(player);
                   const isTopPick =
                     !hardMode &&
-                    player.peakRating === topRating &&
+                    slotRating === topRating &&
                     sortedEntries.length > 1;
+                  const age = ageFor(player, target.year);
 
                   return (
                     <motion.div
@@ -185,6 +224,9 @@ export function SlotTeamYearPicker({
                         boosted={boosted}
                         disabled={disabled}
                         selectLabel="Select"
+                        slotRating={slotRating}
+                        impact={impactFor(player)}
+                        ageLabel={age !== undefined ? `Age ${age}` : undefined}
                         onSelect={() => {
                           playPlayerSelect();
                           onSelect(player);
