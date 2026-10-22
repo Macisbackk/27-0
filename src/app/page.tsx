@@ -21,7 +21,7 @@ export default function HomePage() {
         <HomeAuthBar />
 
         <details className="group rounded-[20px] bg-pitch-900 px-4 py-3">
-          <summary className="flex cursor-pointer list-none items-center justify-between py-1 text-[15px] font-bold text-white">
+          <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-center gap-2 py-1 text-[15px] font-bold text-white [&::-webkit-details-marker]:hidden">
             How to play
             <span aria-hidden className="text-[color:var(--fl-muted)] transition group-open:rotate-90">›</span>
           </summary>

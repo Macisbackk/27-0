@@ -19,7 +19,7 @@ const GUIDE_ITEMS = [
     : []),
   {
     title: "Puzzles",
-    body: "Super League Millionaire and Rugby League Wordle. Play daily for Club Funds.",
+    body: "Super League Millionaire, Rugby League Wordle and the 3×3 Grid. Play daily for Club Funds.",
   },
   {
     title: "Club Funds",
@@ -31,7 +31,7 @@ export function HowToPlaySection() {
   return (
     <ul id="how-to-play" className="scroll-mt-16 divide-y divide-[var(--fl-line)]">
       {GUIDE_ITEMS.map((item) => (
-        <li key={item.title} className="py-2.5">
+        <li key={item.title} className="py-2.5 text-center">
           <p className="text-sm font-bold text-white">{item.title}</p>
           <p className="mt-0.5 text-[13px] leading-snug text-[color:var(--fl-muted)]">{item.body}</p>
         </li>

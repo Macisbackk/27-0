@@ -240,7 +240,8 @@ button.game-button--era,
 
 .sidebar-panel {
   background: var(--fl-ground) !important;
-  border-right: 1px solid var(--fl-line) !important;
+  border-right: 0 !important;
+  border-left: 1px solid var(--fl-line) !important;
 }
 
 .fl-bottom-nav {

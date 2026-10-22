@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogoMark } from "@/components/LogoMark";
 import { useAuth } from "@/lib/auth-context";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { buildPlayHref, isPlayModeActive } from "@/lib/play-links";
@@ -20,11 +19,6 @@ import {
   playUiClick,
   toggleSoundMuted,
 } from "@/lib/sound";
-import {
-  BTN,
-  NAV,
-} from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import {
@@ -33,18 +27,12 @@ import {
   XIcon,
 } from "./SupportLinkIcons";
 import { useClubFunds } from "@/hooks/useClubFunds";
-import { formatClubFunds } from "@/lib/club-funds";
+import { CLUB_FUNDS_INFO_LINES, formatClubFunds } from "@/lib/club-funds";
 
 interface SidebarNavProps {
   open: boolean;
   onClose: () => void;
 }
-
-const MAIN_NAV_ITEMS = [
-  { href: "/store", label: "Store" },
-  { href: "/leaderboard", label: "Leaderboard" },
-  { href: "/settings", label: "Settings" },
-] as const;
 
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
 const SUGGESTIONS_MAIL =
@@ -56,12 +44,9 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { loading, isLoggedIn } = useAuth();
-  const { balance, ready: fundsReady } = useClubFunds();
+  const { balance, totalEarned, ready: fundsReady } = useClubFunds();
   const [normalEraVariant, setNormalEraVariantState] = useState(false);
   const [muted, setMuted] = useState(false);
-  const inMiniGames =
-    pathname.startsWith("/mini-games") || pathname.startsWith("/quiz");
-  const [miniGamesOpen, setMiniGamesOpen] = useState(false);
   const closeMenu = useCallback(() => {
     playMenuClose();
     onClose();
@@ -147,19 +132,28 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     setMuted(toggleSoundMuted());
   };
 
-  const navLinkClass = (active: boolean, eraAccent = false) =>
-    `${NAV.item} ${
-      active
-        ? eraAccent
-          ? "border-accent-gold/40 bg-accent-gold/10 text-accent-gold"
-          : NAV.itemActive
-        : NAV.itemIdle
-    }`;
-
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
   };
+
+  const puzzles = [
+    {
+      href: "/mini-games/quiz",
+      label: "Super League Millionaire",
+      active: pathname.startsWith("/mini-games/quiz") || pathname.startsWith("/quiz"),
+    },
+    { href: "/mini-games/wordle", label: "Rugby League Wordle", active: pathname.startsWith("/mini-games/wordle") },
+    { href: "/mini-games/grid", label: "Rugby League Grid", active: pathname.startsWith("/mini-games/grid") },
+  ];
+
+  const club = [
+    { href: "/store", label: "Store", icon: <BagIcon /> },
+    { href: "/leaderboard", label: "Leaderboard", icon: <TableIcon /> },
+    { href: "/profile", label: "Coach Profile", icon: <PersonIcon /> },
+    { href: "/settings", label: "Settings", icon: <CogIcon /> },
+    ...(!loading && !isLoggedIn ? [{ href: "/login", label: "Log in", icon: <KeyIcon /> }] : []),
+  ];
 
   return (
     <AnimatePresence>
@@ -181,60 +175,90 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
             role="dialog"
             aria-modal="true"
             aria-label="Site menu"
-            className="sidebar-panel fixed inset-y-0 left-0 z-[70] flex w-[min(280px,88vw)] max-h-[100dvh] flex-col shadow-2xl outline-none"
-            initial={{ x: "-100%" }}
+            className="sidebar-panel fixed inset-y-0 right-0 z-[70] flex w-[min(320px,90vw)] max-h-[100dvh] flex-col shadow-2xl outline-none"
+            initial={{ x: "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
-            transition={{ type: "spring", damping: 28, stiffness: 320 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 30, stiffness: 320 }}
           >
-            <div className="sidebar-header flex shrink-0 items-center justify-between border-b px-3 py-2">
-              <div>
-                <LogoMark />
-              </div>
+            <div className="flex h-14 shrink-0 items-center justify-between gap-3 px-4 pt-[env(safe-area-inset-top)]">
+              <p className="text-[17px] font-bold text-white">Menu</p>
               <button
                 type="button"
                 onClick={closeMenu}
-                className={`${BTN.close} px-2 py-1 text-xs`}
+                aria-label="Close"
+                className="btn-press flex h-11 w-11 items-center justify-center rounded-full bg-pitch-900 text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
               >
-                Close
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+                  <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
               </button>
             </div>
 
             <nav
-              className="sidebar-nav-scroll flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overflow-x-hidden overscroll-contain px-2.5 py-2"
+              className="sidebar-nav-scroll flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden overscroll-contain px-3 pb-4"
               data-scroll-lock-allow="true"
             >
-              <div className="shrink-0 rounded-md border border-white/10 bg-black/25 px-2.5 py-1.5 sm:hidden">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-pitch-500">
-                  Club Funds
+              <section aria-label="Club Funds" className="rounded-[20px] bg-pitch-900 p-4">
+                <div className="flex items-end justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-[13px] font-semibold text-[color:var(--fl-muted)]">Club Funds</p>
+                    <p className="fl-number mt-1 text-[30px] leading-none text-theme-primary tabular-nums">
+                      {fundsReady ? formatClubFunds(balance) : "—"}
+                    </p>
+                  </div>
+                  <Link
+                    href="/store"
+                    onClick={handleNavClick}
+                    className="btn-press flex h-11 shrink-0 items-center rounded-[14px] bg-pitch-800 px-3.5 text-sm font-bold text-white transition hover:bg-pitch-700"
+                  >
+                    Spend
+                  </Link>
+                </div>
+                <p className="mt-2 text-xs text-[color:var(--fl-muted)]">
+                  Lifetime earned {fundsReady ? formatClubFunds(totalEarned) : "—"}
                 </p>
-                <p className="mt-0.5 text-sm font-semibold tabular-nums leading-tight text-theme-primary">
-                  {fundsReady ? formatClubFunds(balance) : "—"}
-                </p>
-              </div>
+                <details className="group mt-3">
+                  <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between rounded-[14px] bg-pitch-950 px-3 text-sm font-semibold text-white [&::-webkit-details-marker]:hidden">
+                    How to earn
+                    <span aria-hidden className="text-[color:var(--fl-muted)] transition group-open:rotate-90">›</span>
+                  </summary>
+                  <ul className="mt-2 space-y-1.5 px-1">
+                    {CLUB_FUNDS_INFO_LINES.map((line) => (
+                      <li key={line.label} className="flex items-start justify-between gap-3 text-[13px] text-[color:var(--fl-muted)]">
+                        <span className="min-w-0">{line.label}</span>
+                        <span className="shrink-0 font-semibold tabular-nums text-white">
+                          {line.valueText ?? formatClubFunds(line.amount)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              </section>
 
-              <section>
-                <p className={`${NAV.sectionLabel} sidebar-section-label !mx-0 !mt-0`}>
-                  Play
-                </p>
-                <ul className={NAV.playModeList}>
-                  <li className={NAV.playModeGroup}>
+              <section aria-labelledby="menu-play">
+                <p id="menu-play" className="mb-1.5 px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">Play</p>
+                <ul className="space-y-1">
+                  {SHOW_DAILY_CHALLENGE_UI ? (
+                    <li>
+                      <MenuLink href={getDailyChallengeHref()} active={isDailyActive} icon={<CalendarIcon />} onClick={handleNavClick} dot="bg-amber-400">
+                        Daily Challenge
+                      </MenuLink>
+                    </li>
+                  ) : null}
+                  <li className="rounded-[16px] bg-pitch-900/60">
                     <button
                       type="button"
                       onClick={handleNormalNavigate}
-                      className={`${navLinkClass(isNormalActive, isNormalEra)} w-full`}
+                      className={`${MENU_ROW} ${isNormalActive ? MENU_ROW_ACTIVE : MENU_ROW_IDLE}`}
+                      aria-current={isNormalActive ? "page" : undefined}
                     >
-                      Classic
-                      {isNormalActive && (
-                        <span
-                          className={`ml-auto h-1.5 w-1.5 shrink-0 rounded-full ${
-                            isNormalEra ? "bg-accent-gold" : "bg-theme-primary"
-                          }`}
-                        />
-                      )}
+                      <span className={MENU_ICON}><ShirtIcon /></span>
+                      <span className="min-w-0 flex-1 text-left">Classic</span>
+                      {isNormalActive ? <span className={`h-2 w-2 rounded-full ${isNormalEra ? "bg-accent-gold" : "bg-theme-primary"}`} /> : null}
                     </button>
-                    <div className={NAV.nestedBlock}>
-                      {!isDailyActive ? (
+                    {!isDailyActive ? (
+                      <div className="px-2 pb-2">
                         <ChallengeCupVariantToggle
                           compact
                           hideLabel
@@ -242,211 +266,69 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                           eraMode={normalEraVariant}
                           onEraModeChange={handleNormalVariantChange}
                         />
-                      ) : null}
-                    </div>
+                      </div>
+                    ) : null}
                   </li>
                   <li>
-                    <Link
-                      href="/manager"
-                      onClick={handleNavClick}
-                      className={navLinkClass(pathname.startsWith("/manager"))}
-                    >
+                    <MenuLink href="/manager" active={pathname.startsWith("/manager")} icon={<TrophyIcon />} onClick={handleNavClick}>
                       Manager Mode
-                      <span className="ml-2 rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-bold text-emerald-400 border border-emerald-500/30 uppercase">
-                        New
-                      </span>
-                      {pathname.startsWith("/manager") && (
-                        <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-theme-primary" />
-                      )}
-                    </Link>
-                  </li>
-                  {SHOW_DAILY_CHALLENGE_UI ? (
-                    <li>
-                      <Link
-                        href={getDailyChallengeHref()}
-                        onClick={handleNavClick}
-                        className={navLinkClass(isDailyActive)}
-                      >
-                        Daily Challenge
-                        {isDailyActive && (
-                            <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
-                          )}
-                      </Link>
-                    </li>
-                  ) : null}
-                  <li className={NAV.playModeGroup}>
-                    <button
-                      type="button"
-                      aria-expanded={miniGamesOpen}
-                      aria-controls="sidebar-mini-games"
-                      onClick={() => {
-                        playUiClick();
-                        setMiniGamesOpen((open) => !open);
-                      }}
-                      className={`${navLinkClass(inMiniGames)} w-full`}
-                    >
-                      Puzzles
-                      <span className="ml-auto text-[11px] text-pitch-400" aria-hidden>
-                        {miniGamesOpen ? "▾" : "▸"}
-                      </span>
-                    </button>
-                    {miniGamesOpen && (
-                      <div
-                        id="sidebar-mini-games"
-                        className={`${NAV.nestedBlock} pl-2`}
-                      >
-                        <ul className={NAV.list}>
-                          {[
-                            {
-                              href: "/mini-games/quiz",
-                              label: "Super League Millionaire",
-                              active:
-                                pathname.startsWith("/mini-games/quiz") ||
-                                pathname.startsWith("/quiz"),
-                            },
-                            {
-                              href: "/mini-games/wordle",
-                              label: "Rugby League Wordle",
-                              active: pathname.startsWith("/mini-games/wordle"),
-                            },
-                          ].map((item) => (
-                            <li key={item.href}>
-                              <Link
-                                href={item.href}
-                                onClick={handleNavClick}
-                                className={navLinkClass(item.active)}
-                              >
-                                {item.label}
-                                {item.active && (
-                                  <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-theme-primary" />
-                                )}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    </MenuLink>
                   </li>
                 </ul>
               </section>
 
-              <section className={NAV.sectionGap}>
-                <p className={`${NAV.sectionLabel} sidebar-section-label !mx-0 !mt-0`}>
-                  Club
+              <section aria-labelledby="menu-puzzles">
+                <p id="menu-puzzles" className="mb-1.5 px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">
+                  <Link href="/mini-games" onClick={handleNavClick} className="hover:text-white">
+                    Puzzles
+                  </Link>
                 </p>
-                <ul className={NAV.list}>
-                  {MAIN_NAV_ITEMS.filter((item) =>
-                    ["/store", "/leaderboard", "/settings"].includes(
-                      item.href
-                    )
-                  ).map((item) => {
-                    const active = isActive(item.href);
-                    return (
-                      <li key={item.href}>
-                        <Link
-                          href={item.href}
-                          onClick={handleNavClick}
-                          className={navLinkClass(active)}
-                        >
-                          {item.label}
-                          {active && (
-                            <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
-                          )}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                  <li>
-                    <Link
-                      href="/profile"
-                      onClick={handleNavClick}
-                      className={navLinkClass(pathname.startsWith("/profile"))}
-                    >
-                      Coach Profile
-                      {pathname.startsWith("/profile") && (
-                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
-                      )}
-                    </Link>
-                  </li>
-                  {!loading && !isLoggedIn ? (
-                    <li>
-                      <Link
-                        href="/login"
-                        onClick={handleNavClick}
-                        className={navLinkClass(pathname.startsWith("/login"))}
-                      >
-                        Log in
-                        {pathname.startsWith("/login") && (
-                          <span className="ml-auto h-1.5 w-1.5 rounded-full bg-theme-primary" />
-                        )}
-                      </Link>
+                <ul className="space-y-1">
+                  {puzzles.map((item) => (
+                    <li key={item.href}>
+                      <MenuLink href={item.href} active={item.active} icon={<PuzzleIcon />} onClick={handleNavClick}>
+                        {item.label}
+                      </MenuLink>
                     </li>
-                  ) : null}
+                  ))}
+                </ul>
+              </section>
+
+              <section aria-labelledby="menu-club">
+                <p id="menu-club" className="mb-1.5 px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">Club</p>
+                <ul className="space-y-1">
+                  {club.map((item) => (
+                    <li key={item.href}>
+                      <MenuLink href={item.href} active={isActive(item.href)} icon={item.icon} onClick={handleNavClick}>
+                        {item.label}
+                      </MenuLink>
+                    </li>
+                  ))}
                 </ul>
               </section>
             </nav>
 
-            <div className={NAV.footer}>
-              <p className={NAV.sectionLabel}>Quick settings</p>
-              <button
-                type="button"
-                onClick={handleToggleSound}
-                aria-label={
-                  muted
-                    ? "Sound off — tap to enable"
-                    : "Sound on — tap to mute"
-                }
-                className={`${NAV.soundToggle} btn-press`}
-              >
-                <span
-                  className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-md border ${
-                    muted
-                      ? "border-pitch-600 bg-pitch-900/80 text-gray-500"
-                      : "border-theme-primary/30 bg-theme-primary/10 text-theme-primary"
-                  }`}
-                  aria-hidden
+            <div className="shrink-0 border-t border-[color:var(--fl-line)] px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleToggleSound}
+                  aria-label={muted ? "Sound off — tap to enable" : "Sound on — tap to mute"}
+                  className="btn-press flex h-11 min-w-0 flex-1 items-center gap-2.5 rounded-[14px] bg-pitch-900 px-3 text-sm font-semibold text-white transition hover:bg-pitch-800"
                 >
-                  {muted ? <SoundOffIcon /> : <SoundOnIcon />}
-                </span>
-                <span className={`min-w-0 flex-1 truncate ${TYPO.nav}`}>
-                  Sound
-                </span>
-                <span
-                  className={`${NAV.soundStatus} ${
-                    muted ? "text-gray-500" : "text-theme-primary"
-                  }`}
-                >
-                  {muted ? "OFF" : "ON"}
-                </span>
-              </button>
-              <p className={`${NAV.sectionLabel} mt-2`}>Links</p>
-              <div className={NAV.footerLinks}>
-                <a
-                  href={SUGGESTIONS_MAIL}
-                  aria-label="Send a suggestion"
-                  title="Suggestions"
-                  className={NAV.supportLink}
-                >
+                  <span className={muted ? "text-[color:var(--fl-muted)]" : "text-theme-primary"} aria-hidden>
+                    {muted ? <SoundOffIcon /> : <SoundOnIcon />}
+                  </span>
+                  <span className="flex-1 text-left">Sound</span>
+                  <span className={`text-xs font-bold ${muted ? "text-[color:var(--fl-muted)]" : "text-theme-primary"}`}>{muted ? "Off" : "On"}</span>
+                </button>
+                <a href={SUGGESTIONS_MAIL} aria-label="Send a suggestion" title="Suggestions" className={FOOT_LINK}>
                   <SuggestionsIcon />
                 </a>
-                <a
-                  href={COFFEE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Buy Me a Coffee — support 27-0"
-                  title="Buy Me a Coffee"
-                  className={NAV.supportLink}
-                >
+                <a href={COFFEE_URL} target="_blank" rel="noopener noreferrer" aria-label="Buy Me a Coffee — support 27-0" title="Buy Me a Coffee" className={FOOT_LINK}>
                   <CoffeeIcon />
                 </a>
-                <a
-                  href={X_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Follow 27-0 on X"
-                  title="Follow on X"
-                  className={NAV.supportLink}
-                >
+                <a href={X_URL} target="_blank" rel="noopener noreferrer" aria-label="Follow 27-0 on X" title="Follow on X" className={FOOT_LINK}>
                   <XIcon />
                 </a>
               </div>
@@ -457,6 +339,105 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     </AnimatePresence>
   );
 }
+
+const MENU_ROW =
+  "btn-press flex min-h-[48px] w-full items-center gap-3 rounded-[16px] px-3 text-[15px] font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50";
+const MENU_ROW_IDLE = "text-white hover:bg-pitch-900";
+const MENU_ROW_ACTIVE = "bg-pitch-900 text-white";
+const MENU_ICON = "flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-pitch-950 text-theme-primary";
+const FOOT_LINK =
+  "btn-press flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-pitch-900 text-[color:var(--fl-muted)] transition hover:bg-pitch-800 hover:text-white";
+
+function MenuLink({
+  href,
+  active,
+  icon,
+  onClick,
+  dot = "bg-theme-primary",
+  children,
+}: {
+  href: string;
+  active: boolean;
+  icon: ReactNode;
+  onClick: () => void;
+  dot?: string;
+  children: ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      aria-current={active ? "page" : undefined}
+      className={`${MENU_ROW} ${active ? MENU_ROW_ACTIVE : MENU_ROW_IDLE}`}
+    >
+      <span className={MENU_ICON}>{icon}</span>
+      <span className="min-w-0 flex-1">{children}</span>
+      {active ? <span className={`h-2 w-2 shrink-0 rounded-full ${dot}`} /> : null}
+    </Link>
+  );
+}
+
+function Icon({ children }: { children: ReactNode }) {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      {children}
+    </svg>
+  );
+}
+const CalendarIcon = () => (
+  <Icon>
+    <rect x="3" y="5" width="18" height="16" rx="3" />
+    <path d="M3 10h18M8 3v4M16 3v4" />
+  </Icon>
+);
+const ShirtIcon = () => (
+  <Icon>
+    <path d="M8 3 4 5 2 10l3 2 1-1v10h12V11l1 1 3-2-2-5-4-2c-1 2-7 2-8 0z" />
+  </Icon>
+);
+const TrophyIcon = () => (
+  <Icon>
+    <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z" />
+    <path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3" />
+  </Icon>
+);
+const PuzzleIcon = () => (
+  <Icon>
+    <rect x="3" y="3" width="7" height="7" rx="1.5" />
+    <rect x="14" y="3" width="7" height="7" rx="1.5" />
+    <rect x="3" y="14" width="7" height="7" rx="1.5" />
+    <rect x="14" y="14" width="7" height="7" rx="1.5" />
+  </Icon>
+);
+const BagIcon = () => (
+  <Icon>
+    <path d="M5 8h14l-1 13H6z" />
+    <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+  </Icon>
+);
+const TableIcon = () => (
+  <Icon>
+    <path d="M4 6h16M4 12h16M4 18h16" />
+  </Icon>
+);
+const PersonIcon = () => (
+  <Icon>
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4 21a8 8 0 0 1 16 0" />
+  </Icon>
+);
+const CogIcon = () => (
+  <Icon>
+    <circle cx="12" cy="12" r="3" />
+    <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" />
+  </Icon>
+);
+const KeyIcon = () => (
+  <Icon>
+    <circle cx="8" cy="15" r="4" />
+    <path d="m10.8 12.2 9.2-9.2M17 6l3 3" />
+  </Icon>
+);
 
 function SoundOnIcon() {
   return (

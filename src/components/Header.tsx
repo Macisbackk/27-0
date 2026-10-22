@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import { Suspense, useState } from "react";
-import { usePathname } from "next/navigation";
-import { ClubFundsDisplay } from "./ClubFundsDisplay";
 import { HeaderAuthControls } from "./HeaderAuthControls";
 import { LogoMark } from "./LogoMark";
 import { SidebarNav } from "./SidebarNav";
@@ -11,26 +9,26 @@ import { playMenuOpen } from "@/lib/sound";
 import { useMountDiagnostic } from "@/lib/ui/use-mount-diagnostic";
 
 /**
- * Site header (Floodlights): logo left; Club Funds, account and the menu button right.
- * Manager Mode hides Quick Mode club funds (Manager has its own balance).
+ * Site header: 27-0 logo in the centre, account on the left, menu button on the right
+ * (the menu slides in from the right). Club Funds live in the menu and the Store.
  */
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname();
-  const hidePlayFunds = pathname?.startsWith("/manager");
   useMountDiagnostic("app-header");
 
   return (
     <>
       <header className="app-header sticky top-0 z-50 overflow-x-clip border-b">
-        <div className="app-chrome relative flex h-14 min-w-0 items-center justify-between gap-2 px-4">
-          <Link href="/" className="flex shrink-0 items-center" aria-label="27-0 home">
+        <div className="app-chrome relative grid h-14 min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 px-4">
+          <div className="flex min-w-0 items-center justify-start">
+            <HeaderAuthControls />
+          </div>
+
+          <Link href="/" className="flex shrink-0 items-center justify-center" aria-label="27-0 home">
             <LogoMark />
           </Link>
 
-          <div className="flex min-w-0 items-center justify-end gap-2">
-            {!hidePlayFunds && <ClubFundsDisplay />}
-            <HeaderAuthControls />
+          <div className="flex min-w-0 items-center justify-end">
             <button
               type="button"
               onClick={() => {
