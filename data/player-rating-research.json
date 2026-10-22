@@ -380,38 +380,11 @@
       "evidenceScore": 14
     },
     {
-      "playerId": "london-cur-robert-butler",
-      "playerName": "Robert Butler",
-      "playerType": "current",
-      "position": "PROP",
-      "clubId": "London Broncos",
-      "previousRating": 75,
-      "newRating": 81,
-      "ratingTier": "development",
-      "evidenceSummary": "PROP · 82 apps · 0.02 tpg · limited honours data",
-      "peakOrCurrentBasis": "current-2026",
-      "sourceNames": [
-        "In-game player database"
-      ],
-      "sourceUrls": [],
-      "statsUsed": {
-        "appearances": 82,
-        "tries": 2,
-        "triesPerGame": 0.024,
-        "nationality": "Unknown",
-        "previousRating": 75
-      },
-      "honoursUsed": [],
-      "representativeEvidence": [],
-      "confidence": "medium",
-      "evidenceScore": 14.06
-    },
-    {
-      "playerId": "catalans-cur-arthur-romano",
+      "playerId": "hull-fc-cur-arthur-romano",
       "playerName": "Arthur Romano",
       "playerType": "current",
       "position": "CENTRE",
-      "clubId": "Catalans Dragons",
+      "clubId": "Hull FC",
       "previousRating": 83,
       "newRating": 80,
       "ratingTier": "development",
@@ -795,11 +768,11 @@
       "evidenceScore": 16.67
     },
     {
-      "playerId": "hull-kr-cur-danny-richardson",
+      "playerId": "york-cur-danny-richardson",
       "playerName": "Danny Richardson",
       "playerType": "current",
       "position": "STAND_OFF",
-      "clubId": "Hull KR",
+      "clubId": "York Knights",
       "previousRating": 83,
       "newRating": 81,
       "ratingTier": "development",
@@ -1742,11 +1715,11 @@
       "evidenceScore": 20.73
     },
     {
-      "playerId": "london-cur-oliver-leyland",
+      "playerId": "warrington-cur-oliver-leyland",
       "playerName": "Oliver Leyland",
       "playerType": "current",
       "position": "STAND_OFF",
-      "clubId": "London Broncos",
+      "clubId": "Warrington Wolves",
       "previousRating": 75,
       "newRating": 83,
       "ratingTier": "fringe-squad",
@@ -75945,6 +75918,1958 @@
       ],
       "confidence": "high",
       "evidenceScore": 105.58
+    },
+    {
+      "playerId": "york-cur-john-sagaga",
+      "playerName": "John Sagaga",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "York Knights",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 22 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.yorkrlfc.com/knights-squad-1/22",
+        "https://www.loverugbyleague.com/post/york-sign-john-sagaga-ahead-of-2026"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "Australia",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "york-cur-jack-smith",
+      "playerName": "Jack Smith",
+      "playerType": "current",
+      "position": "WING",
+      "clubId": "York Knights",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "WING · 2026 squad no. 25 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.yorkrlfc.com/knights-squad-1/25"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "york-cur-matty-foster",
+      "playerName": "Matty Foster",
+      "playerType": "current",
+      "position": "SECOND_ROW",
+      "clubId": "York Knights",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SECOND_ROW · 2026 squad no. 27 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.yorkrlfc.com/knights-squad-1/27",
+        "https://en.wikipedia.org/wiki/Matty_Foster"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "york-cur-ryan-jackson",
+      "playerName": "Ryan Jackson",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "York Knights",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 28 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.yorkrlfc.com/knights-squad-1/28"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "Australia",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "york-cur-will-roberts",
+      "playerName": "Will Roberts",
+      "playerType": "current",
+      "position": "SCRUM_HALF",
+      "clubId": "York Knights",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SCRUM_HALF · 2026 squad no. 38 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.yorkrlfc.com/knights-squad-1/38"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "york-cur-taylor-pemberton",
+      "playerName": "Taylor Pemberton",
+      "playerType": "current",
+      "position": "HOOKER",
+      "clubId": "York Knights",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "HOOKER · 2026 squad no. 40 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.yorkrlfc.com/knights-squad-1/40"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "york-cur-mitch-clark",
+      "playerName": "Mitch Clark",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "York Knights",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 41 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://en.wikipedia.org/wiki/Mitch_Clark_(rugby_league)",
+        "https://www.yorkrlfc.com/post/mitch-clark-becomes-a-knight"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "york-cur-david-nofoaluma",
+      "playerName": "David Nofoaluma",
+      "playerType": "current",
+      "position": "WING",
+      "clubId": "York Knights",
+      "previousRating": 81,
+      "newRating": 81,
+      "ratingTier": "development",
+      "evidenceSummary": "WING · 2026 squad no. 46 · loan (Newcastle Thunder) — joined Feb 2026 after Halifax were liquidated",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://en.wikipedia.org/wiki/David_Nofoaluma",
+        "https://en.wikipedia.org/wiki/2026_York_Knights_season",
+        "https://news.ssbcrack.com/york-knights-announce-21-player-squad-for-magic-weekend-clash-against-huddersfield-giants/"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "Serbia",
+        "previousRating": 81
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "york-cur-king-vuniyayawa",
+      "playerName": "King Vuniyayawa",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "York Knights",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad · loan (Newcastle Thunder) — 5 York appearances in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://en.wikipedia.org/wiki/King_Vuniyayawa",
+        "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "Fiji",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "york-cur-cody-hunter",
+      "playerName": "Cody Hunter",
+      "playerType": "current",
+      "position": "SCRUM_HALF",
+      "clubId": "York Knights",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SCRUM_HALF · 2026 squad no. 37 · loan (Newcastle Thunder)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://news.ssbcrack.com/york-knights-announce-21-player-squad-for-magic-weekend-clash-against-huddersfield-giants/",
+        "https://www.loverugbyleague.com/post/queensland-cup-star-cody-hunter-makes-championship-move-for-2026"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "Australia",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "york-cur-tom-inman",
+      "playerName": "Tom Inman",
+      "playerType": "current",
+      "position": "HOOKER",
+      "clubId": "York Knights",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "HOOKER · 2026 squad no. 48 · loan (Newcastle Thunder) after Halifax were liquidated",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://news.ssbcrack.com/york-knights-announce-21-player-squad-for-magic-weekend-clash-against-huddersfield-giants/",
+        "https://en.wikipedia.org/wiki/2026_York_Knights_season",
+        "https://www.yorkrlfc.com/post/inman-signs-permanent-deal-to-end-of-season"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "huddersfield-cur-jacob-algar",
+      "playerName": "Jacob Algar",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "Huddersfield Giants",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 25 · squad-number list (academy graduate)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.alloutrugbyleague.co.uk/news/huddersfield-giants-2026-squad-numbers-1520629",
+        "https://giantsrl.com/article/9909/promising-youngster-signs-new-deal"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "huddersfield-cur-marshall-land",
+      "playerName": "Marshall Land",
+      "playerType": "current",
+      "position": "SCRUM_HALF",
+      "clubId": "Huddersfield Giants",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SCRUM_HALF · 2026 squad no. 27 · squad-number list (academy)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.alloutrugbyleague.co.uk/news/huddersfield-giants-2026-squad-numbers-1520629",
+        "https://giantsrl.com/article/9934/promising-half-back-signs-extension"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-fc-cur-callum-kemp",
+      "playerName": "Callum Kemp",
+      "playerType": "current",
+      "position": "SCRUM_HALF",
+      "clubId": "Hull FC",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SCRUM_HALF · 2026 squad no. 27 · squad-number list (academy)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+        "https://www.hullfc.com/team/first-team/callum-kemp"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-fc-cur-joe-phillips",
+      "playerName": "Joe Phillips",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "Hull FC",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 28 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+        "https://www.alloutrugbyleague.co.uk/news/who-joe-phillips-meet-hull-1379871",
+        "https://holderness-gazette.co.uk/new-signings-bolster-airlie-birds-squad/"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-fc-cur-will-hutchinson",
+      "playerName": "Will Hutchinson",
+      "playerType": "current",
+      "position": "HOOKER",
+      "clubId": "Hull FC",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "HOOKER · 2026 squad no. 29 · squad-number list (academy)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+        "https://www.hullfc.com/team/first-team/will-hutchinson"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-fc-cur-will-kirby",
+      "playerName": "Will Kirby",
+      "playerType": "current",
+      "position": "SECOND_ROW",
+      "clubId": "Hull FC",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SECOND_ROW · 2026 squad no. 30 · squad-number list (academy)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+        "https://www.loverugbyleague.com/post/nextgen-hull-fc-will-kirby-super-league"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-fc-cur-lloyd-kemp",
+      "playerName": "Lloyd Kemp",
+      "playerType": "current",
+      "position": "FULLBACK",
+      "clubId": "Hull FC",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "FULLBACK · 2026 squad no. 32 · squad-number list (academy)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+        "https://www.hullfc.com/team/first-team/lloyd-kemp"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-fc-cur-joe-ward",
+      "playerName": "Joe Ward",
+      "playerType": "current",
+      "position": "WING",
+      "clubId": "Hull FC",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "WING · 2026 squad no. 34 · squad-number list (academy)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+        "https://www.hullfc.com/team/first-team/joe-ward"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-fc-cur-ben-johnson",
+      "playerName": "Ben Johnson",
+      "playerType": "current",
+      "position": "CENTRE",
+      "clubId": "Hull FC",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "CENTRE · 2026 squad no. 35 · squad-number list (academy); Super League debut May 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+        "https://www.hullfc.com/team/first-team/ben-johnson",
+        "https://www.loverugbyleague.com/post/hull-fc-loan-19-06-2026"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-kr-cur-ryan-westerman",
+      "playerName": "Ryan Westerman",
+      "playerType": "current",
+      "position": "CENTRE",
+      "clubId": "Hull KR",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "CENTRE · 2026 squad · mid-season signing from Hull FC (2 June 2026); Hull FC squad number 31 at the start of 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://hullkr.co.uk/news/hull-kr-sign-young-outside-back-westerman",
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.rugby-league.com/article/62879/england-academy-call-up-for-hull-fc-centre--"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-kr-cur-tom-whitehead",
+      "playerName": "Tom Whitehead",
+      "playerType": "current",
+      "position": "SECOND_ROW",
+      "clubId": "Hull KR",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SECOND_ROW · 2026 squad no. 29 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
+        "https://www.loverugbyleague.com/post/hull-kr-sign-tom-whitehead-ahead-of-2026"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-kr-cur-cobie-wainhouse",
+      "playerName": "Cobie Wainhouse",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "Hull KR",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 30 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
+        "https://hullkr.co.uk/news/cobie-wainhouse-signs-with-the-robins"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-kr-cur-declan-murphy",
+      "playerName": "Declan Murphy",
+      "playerType": "current",
+      "position": "FULLBACK",
+      "clubId": "Hull KR",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "FULLBACK · 2026 squad no. 31 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
+        "https://hullkr.co.uk/news/declan-murphy-signs-three-year-deal-with-hull-kr"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-kr-cur-jumah-sambou",
+      "playerName": "Jumah Sambou",
+      "playerType": "current",
+      "position": "WING",
+      "clubId": "Hull KR",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "WING · 2026 squad no. 32 · squad-number list; season-long loan to Widnes Vikings in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
+        "https://en.wikipedia.org/wiki/Jumah_Sambou"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-kr-cur-frankie-dearlove",
+      "playerName": "Frankie Dearlove",
+      "playerType": "current",
+      "position": "SECOND_ROW",
+      "clubId": "Hull KR",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SECOND_ROW · 2026 squad no. 33 · squad-number list (academy graduate)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
+        "https://hullkr.co.uk/news/academy-product-frankie-dearlove-signs-a-two-year-deal-at-hull-kr"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "warrington-cur-zack-gardner",
+      "playerName": "Zack Gardner",
+      "playerType": "current",
+      "position": "CENTRE",
+      "clubId": "Warrington Wolves",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "CENTRE · 2026 squad no. 29 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://en.wikipedia.org/wiki/List_of_Warrington_Wolves_players",
+        "https://www.loverugbyleague.com/post/zack-gardner-injury-15-06-2026"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "warrington-cur-tom-mckinney",
+      "playerName": "Tom McKinney",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "Warrington Wolves",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 30 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://warringtonwolves.com/players/70550",
+        "https://www.loverugbyleague.com/post/tom-mckinney-oldham-loan-19-03-2026"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "warrington-cur-ben-hartill",
+      "playerName": "Ben Hartill",
+      "playerType": "current",
+      "position": "HOOKER",
+      "clubId": "Warrington Wolves",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "HOOKER · 2026 squad no. 31 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/sam-powell-hip-drop-ban-reaction-07-07-2026"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "wigan-cur-abbas-miski",
+      "playerName": "Abbas Miski",
+      "playerType": "current",
+      "position": "WING",
+      "clubId": "Wigan Warriors",
+      "previousRating": 81,
+      "newRating": 81,
+      "ratingTier": "development",
+      "evidenceSummary": "WING · 2026 squad no. 16 · squad-number list; injured at the start of 2026 and taken out of first-team contention in May 2026 for salary-cap reasons",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.wigantoday.net/sport/rugby-league/wigan-warriors-confirm-2026-squad-numbers-as-homegrown-talent-earns-starting-shirt-5462728",
+        "https://en.wikipedia.org/wiki/Abbas_Miski",
+        "https://www.loverugbyleague.com/post/abbas-miskis-next-possible-club-after-shock-wigan-exit-confirmed"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "Lebanon",
+        "previousRating": 81
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "wigan-cur-harvey-makin",
+      "playerName": "Harvey Makin",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "Wigan Warriors",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 24 · squad-number list; loans at Oldham and Barrow in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.wigantoday.net/sport/rugby-league/wigan-warriors-confirm-2026-squad-numbers-as-homegrown-talent-earns-starting-shirt-5462728",
+        "https://en.wikipedia.org/wiki/Harvey_Makin"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "wigan-cur-lukas-mason",
+      "playerName": "Lukas Mason",
+      "playerType": "current",
+      "position": "SECOND_ROW",
+      "clubId": "Wigan Warriors",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SECOND_ROW · 2026 squad no. 27 · squad-number list; Championship loans in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.wigantoday.net/sport/rugby-league/wigan-warriors-confirm-2026-squad-numbers-as-homegrown-talent-earns-starting-shirt-5462728",
+        "https://en.wikipedia.org/wiki/Lukas_Mason"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "wigan-cur-jonny-vaughan",
+      "playerName": "Jonny Vaughan",
+      "playerType": "current",
+      "position": "SECOND_ROW",
+      "clubId": "Wigan Warriors",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SECOND_ROW · 2026 squad no. 31 · squad-number list; Championship loans in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.wigantoday.net/sport/rugby-league/wigan-warriors-confirm-2026-squad-numbers-as-homegrown-talent-earns-starting-shirt-5462728",
+        "https://en.wikipedia.org/wiki/Jonny_Vaughan"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "wigan-cur-george-oloughlin",
+      "playerName": "George O'Loughlin",
+      "playerType": "current",
+      "position": "SECOND_ROW",
+      "clubId": "Wigan Warriors",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SECOND_ROW · 2026 squad no. 33 · squad-number list (academy graduate)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.wigantoday.net/sport/rugby-league/matt-peet-offers-insight-into-wigan-warriors-homegrown-duo-after-first-team-promotion-5500871"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "wigan-cur-finlay-yeomans",
+      "playerName": "Finlay Yeomans",
+      "playerType": "current",
+      "position": "CENTRE",
+      "clubId": "Wigan Warriors",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "CENTRE · 2026 squad no. 34 · squad-number list (academy graduate)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.wigantoday.net/sport/rugby-league/matt-peet-offers-insight-into-wigan-warriors-homegrown-duo-after-first-team-promotion-5500871"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "wigan-cur-finn-mcmillan",
+      "playerName": "Finn McMillan",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "Wigan Warriors",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 35 · squad-number list; stays at Barrow Raiders while training full-time with Wigan",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/wigan-warriors-land-surprises-transfer-deal-for-barrow-raiders-prop"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "castleford-cur-aiden-doolan",
+      "playerName": "Aiden Doolan",
+      "playerType": "current",
+      "position": "HOOKER",
+      "clubId": "Castleford Tigers",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "HOOKER · 2026 squad no. 20 · squad-number list; Championship loans (Barrow, Hunslet, Widnes) in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.alloutrugbyleague.co.uk/news/castleford-tigers-confirm-full-squad-1584671",
+        "https://castlefordtigers.com/article/85/tigers-sign-aiden-doolan-on-a-two-year-deal",
+        "https://en.wikipedia.org/wiki/2026_Castleford_Tigers_season"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "castleford-cur-alfie-lindsey",
+      "playerName": "Alfie Lindsey",
+      "playerType": "current",
+      "position": "WING",
+      "clubId": "Castleford Tigers",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "WING · 2026 squad no. 26 · squad-number list; Championship loans (Halifax, Widnes) in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.alloutrugbyleague.co.uk/news/castleford-tigers-confirm-full-squad-1584671",
+        "https://widnesvikings.co.uk/?p=38298",
+        "https://castlefordtigers.com/article/46/dragons-38---tigers-4"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "castleford-cur-george-hill",
+      "playerName": "George Hill",
+      "playerType": "current",
+      "position": "LOOSE_FORWARD",
+      "clubId": "Castleford Tigers",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "LOOSE_FORWARD · 2026 squad no. 28 · squad-number list; season-long loan at Keighley (Jan–May 2026)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.alloutrugbyleague.co.uk/news/castleford-tigers-confirm-full-squad-1584671",
+        "https://en.wikipedia.org/wiki/George_Hill_(rugby_league)"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "wakefield-cur-jordan-williams",
+      "playerName": "Jordan Williams",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "Wakefield Trinity",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 25 · squad-number list; loan to Batley in July 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/wakefield-trinity-2026-super-league-squad-numbers",
+        "https://en.wikipedia.org/wiki/Jordan_Williams_(rugby_league)"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "wakefield-cur-noah-high",
+      "playerName": "Noah High",
+      "playerType": "current",
+      "position": "LOOSE_FORWARD",
+      "clubId": "Wakefield Trinity",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "LOOSE_FORWARD · 2026 squad no. 28 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/wakefield-trinity-2026-super-league-squad-numbers",
+        "https://wakefieldtrinity.com/noah-high-joins-trinity/",
+        "https://totalrl.com/wakefield-trinity-snap-up-warrington-wolves-forward"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "wakefield-cur-ellis-lingard",
+      "playerName": "Ellis Lingard",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "Wakefield Trinity",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 29 · squad-number list; loan to Dewsbury in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/wakefield-trinity-2026-super-league-squad-numbers",
+        "https://en.wikipedia.org/wiki/Ellis_Lingard"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "wakefield-cur-neil-tchamambe",
+      "playerName": "Neil Tchamambe",
+      "playerType": "current",
+      "position": "WING",
+      "clubId": "Wakefield Trinity",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "WING · 2026 squad no. 30 · squad-number list; season-long loan to London Broncos in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/wakefield-trinity-2026-super-league-squad-numbers",
+        "https://en.wikipedia.org/wiki/Neil_Tchamambe"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "wakefield-cur-kian-mcgann",
+      "playerName": "Kian McGann",
+      "playerType": "current",
+      "position": "FULLBACK",
+      "clubId": "Wakefield Trinity",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "FULLBACK · 2026 squad no. 31 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/wakefield-trinity-2026-super-league-squad-numbers",
+        "https://wakefieldtrinity.com/mcgann-joins-the-trin/"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "leeds-cur-max-simpson",
+      "playerName": "Max Simpson",
+      "playerType": "current",
+      "position": "CENTRE",
+      "clubId": "Leeds Rhinos",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "CENTRE · 2026 squad no. 18 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.therhinos.co.uk/teams/profile/389/max-simpson"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "leigh-cur-nathan-wilde",
+      "playerName": "Nathan Wilde",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "Leigh Leopards",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 26 · squad-number list; loan to Salford RLFC in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://leighleopards.co.uk/26-nathan-wilde/",
+        "https://www.loverugbyleague.com/post/leigh-leopards-quartet-make-salford-loan-moves"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "leigh-cur-ryan-brown",
+      "playerName": "Ryan Brown",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "Leigh Leopards",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 28 · squad-number list; loan to Salford RLFC in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/leigh-leopards-sign-england-academy-ryan-brown-from-wigan-warriors",
+        "https://www.loverugbyleague.com/post/leigh-leopards-quartet-make-salford-loan-moves"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "leigh-cur-will-brough",
+      "playerName": "Will Brough",
+      "playerType": "current",
+      "position": "CENTRE",
+      "clubId": "Leigh Leopards",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "CENTRE · 2026 squad no. 29 · squad-number list; Super League debut April 2026, later loaned out",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/will-brough-set-for-super-league-debut",
+        "https://leighleopards.co.uk/?p=74449"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "leigh-cur-oliver-polec",
+      "playerName": "Oliver Polec",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "Leigh Leopards",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 30 · squad-number list; loans to Salford RLFC and Whitehaven in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://leighleopards.co.uk/2026-squad-numbers-revealed/",
+        "https://www.loverugbyleague.com/post/oliver-polec-whitehaven-loan-25-03-2026"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "st-helens-cur-leon-cowen",
+      "playerName": "Leon Cowen",
+      "playerType": "current",
+      "position": "LOOSE_FORWARD",
+      "clubId": "St Helens",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "LOOSE_FORWARD · 2026 squad no. 27 · squad-number list; loan to Swinton in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.saintsrlfc.com/teams/first-team/leon-cowen/",
+        "https://www.loverugbyleague.com/post/leon-cowen-alfie-sinclair-join-swinton-on-loan-27-02-2026"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "st-helens-cur-alfie-sinclair",
+      "playerName": "Alfie Sinclair",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "St Helens",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 29 · squad-number list; loan to Swinton in 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.saintsrlfc.com/teams/first-team/alfie-sinclair/",
+        "https://www.loverugbyleague.com/post/leon-cowen-alfie-sinclair-join-swinton-on-loan-27-02-2026"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "toulouse-cur-trevor-chiffolleau",
+      "playerName": "Trevor Chiffolleau",
+      "playerType": "current",
+      "position": "PROP",
+      "clubId": "Toulouse Olympique",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "PROP · 2026 squad no. 26 · squad-number list; contract extended to end of 2027 (August 2026)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/toulouse-olympique-2026-squad-numbers",
+        "https://www.to13.com/non-classe/toulouse-olympique-extend-trevor-chiffolleaus-contract/"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "France",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "toulouse-cur-mathieu-pons",
+      "playerName": "Mathieu Pons",
+      "playerType": "current",
+      "position": "WING",
+      "clubId": "Toulouse Olympique",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "WING · 2026 squad no. 28 · squad-number list; contract extended to end of 2027 (July 2026)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.loverugbyleague.com/post/toulouse-olympique-2026-squad-numbers",
+        "https://www.to13.com/actualites/mathieu-pons-to-remain-with-toulouse-olympique-until-2027/"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "France",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "huddersfield-cur-logan-blacker",
+      "playerName": "Logan Blacker",
+      "playerType": "current",
+      "position": "FULLBACK",
+      "clubId": "Huddersfield Giants",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "FULLBACK · 2026 squad no. 28 · squad-number list (academy)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.alloutrugbyleague.co.uk/news/huddersfield-giants-2026-squad-numbers-1520629",
+        "https://fantasy.superleague.co.uk/",
+        "https://giantsrl.com/article/8787/academy-match-report-giants-34---10-hull-kr"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "hull-fc-cur-roman-dawson",
+      "playerName": "Roman Dawson",
+      "playerType": "current",
+      "position": "CENTRE",
+      "clubId": "Hull FC",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "CENTRE · 2026 squad no. 33 · squad-number list (academy)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.hullfc.com/blog/2025/11/29/hull-fc-confirm-2026-squad-numbers/",
+        "https://fantasy.superleague.co.uk/",
+        "https://www.hullfc.com/blog/?p=17247"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "warrington-cur-tommy-rhodes",
+      "playerName": "Tommy Rhodes",
+      "playerType": "current",
+      "position": "SCRUM_HALF",
+      "clubId": "Warrington Wolves",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SCRUM_HALF · 2026 squad no. 33 · squad-number list (academy)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://fantasy.superleague.co.uk/",
+        "https://therhinos.co.uk/match-report/1236"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "leigh-cur-kavan-rothwell",
+      "playerName": "Kavan Rothwell",
+      "playerType": "current",
+      "position": "SECOND_ROW",
+      "clubId": "Leigh Leopards",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "SECOND_ROW · 2026 squad no. 27 · squad-number list",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://fantasy.superleague.co.uk/",
+        "https://www.wigantoday.net/sport/rugby-league/limited-opportunities-sees-wigan-warriors-youngster-make-move-to-leigh-leopards-4373377"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "bradford-cur-cameron-bate",
+      "playerName": "Cameron Bate",
+      "playerType": "current",
+      "position": "LOOSE_FORWARD",
+      "clubId": "Bradford Bulls",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "LOOSE_FORWARD · 2026 squad no. 29 · squad-number list (academy graduate)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://fantasy.superleague.co.uk/",
+        "https://www.bradfordbulls.co.uk/article/3028/bulls-sign-youngster-bate-on-first-team-contract"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "midlands-cur-liam-sutcliffe",
+      "playerName": "Liam Sutcliffe",
+      "playerType": "current",
+      "position": "CENTRE",
+      "clubId": "Midlands Hurricanes",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "CENTRE · 2026 squad · mid-season move: Huddersfield squad number 19, released 23 July 2026 and joined Midlands Hurricanes until the end of 2026",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/ex-leeds-rhinos-grand-final-winner-finds-new-club-after-sudden-super-league-departure-8819827",
+        "https://en.wikipedia.org/wiki/Liam_Sutcliffe",
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://fantasy.superleague.co.uk/"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "oldham-cur-josh-simm",
+      "playerName": "Josh Simm",
+      "playerType": "current",
+      "position": "WING",
+      "clubId": "Oldham RLFC",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "WING · 2026 squad · mid-season move: Catalans squad number 22, released and joined Oldham for the rest of 2026 (1 August 2026)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/catalans-dragons-winger-joins-championship-club-after-immediate-release",
+        "https://en.wikipedia.org/wiki/Josh_Simm",
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://fantasy.superleague.co.uk/"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
+    },
+    {
+      "playerId": "york-cur-tommy-doyle",
+      "playerName": "Tommy Doyle",
+      "playerType": "current",
+      "position": "HOOKER",
+      "clubId": "York Knights",
+      "previousRating": 80,
+      "newRating": 80,
+      "ratingTier": "development",
+      "evidenceSummary": "HOOKER · 2026 squad · mid-season signing: Wakefield squad number 22, released 13 August 2026 and signed by York the next day (deal to end of 2027)",
+      "peakOrCurrentBasis": "current-2026",
+      "sourceNames": [
+        "2026 squad lists (Love Rugby League, club sites)",
+        "scripts/add-2026-missing-squad-players.ts"
+      ],
+      "sourceUrls": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://en.wikipedia.org/wiki/Thomas_Doyle_(rugby_league)",
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/forward-released-by-wakefield-trinity-finds-new-club-thomas-doyle-could-make-debut-v-leeds-rhinos-8925808",
+        "https://en.wikipedia.org/wiki/2026_York_Knights_season"
+      ],
+      "statsUsed": {
+        "appearances": 0,
+        "tries": null,
+        "triesPerGame": null,
+        "nationality": "England",
+        "previousRating": 80
+      },
+      "honoursUsed": [],
+      "representativeEvidence": [],
+      "confidence": "medium",
+      "evidenceScore": 10
     }
   ]
 }

@@ -59,5 +59,41 @@
     "birthYear": 2004,
     "availableInGame": false,
     "superLeagueEligible": false
+  },
+  {
+    "id": "oldham-cur-josh-simm",
+    "name": "Josh Simm",
+    "club": "Oldham RLFC",
+    "currentClub": "Oldham RLFC",
+    "team": "Oldham RLFC",
+    "displayClub": "Oldham RLFC",
+    "position": "WING",
+    "positions": [
+      "WING"
+    ],
+    "primaryPosition": "WING",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2019–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 92000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "oldham-rlfc-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "oldham-cur-josh-simm",
+    "availableInGame": false,
+    "superLeagueEligible": false,
+    "dateOfBirth": "2001-02-27",
+    "birthYear": 2001,
+    "clubsPlayedFor": [
+      "St Helens",
+      "Castleford Tigers",
+      "Catalans Dragons",
+      "Oldham RLFC"
+    ]
   }
 ]

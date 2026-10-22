@@ -818,5 +818,35 @@
     "superLeagueEligible": true,
     "dateOfBirth": "2002-12-13",
     "birthYear": 2002
+  },
+  {
+    "id": "leeds-cur-max-simpson",
+    "name": "Max Simpson",
+    "club": "Leeds Rhinos",
+    "currentClub": "Leeds Rhinos",
+    "team": "Leeds Rhinos",
+    "displayClub": "Leeds Rhinos",
+    "position": "CENTRE",
+    "positions": [
+      "CENTRE"
+    ],
+    "primaryPosition": "CENTRE",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 93000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "leeds-rhinos-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "leeds-cur-max-simpson",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "dateOfBirth": "2004-07-24",
+    "birthYear": 2004
   }
 ]
