@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T08:44:05.495Z",
+  "generatedAt": "2026-10-22T08:45:52.279Z",
   "script": "scripts/add-2026-missing-squad-players.ts",
   "method": [
     "Squad lists: Love Rugby League club-by-club 2026 squad numbers (28 Jan 2026), cross-checked per club.",
@@ -9,7 +9,7 @@
     "Classic Current spins draw from the fixed 17-man 2026 pools (current-team-year-squads-2026.json), so depth rows appear in Manager Mode, Wordle/Grid and the global recruitment pools, not in the 17-man Classic spin pools."
   ],
   "totals": {
-    "added": 29,
+    "added": 36,
     "moved": 2,
     "unverified": 9,
     "movesNotApplied": 4
@@ -556,12 +556,133 @@
       "playableCurrentPlayers": 29
     },
     "Wigan Warriors": {
-      "squadListSources": [],
-      "added": [],
+      "squadListSources": [
+        "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+        "https://www.wigantoday.net/sport/rugby-league/wigan-warriors-confirm-2026-squad-numbers-as-homegrown-talent-earns-starting-shirt-5462728"
+      ],
+      "added": [
+        {
+          "name": "Abbas Miski",
+          "id": "wigan-cur-abbas-miski",
+          "squadNumber": 16,
+          "position": "WING",
+          "rating": 81,
+          "nationality": "Lebanon",
+          "nationalityBasis": "source (Lebanon international — Wikipedia; born Penrith, Australia)",
+          "birthYear": 1995,
+          "status": "squad-number list; injured at the start of 2026 and taken out of first-team contention in May 2026 for salary-cap reasons",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.wigantoday.net/sport/rugby-league/wigan-warriors-confirm-2026-squad-numbers-as-homegrown-talent-earns-starting-shirt-5462728",
+            "https://en.wikipedia.org/wiki/Abbas_Miski",
+            "https://www.loverugbyleague.com/post/abbas-miskis-next-possible-club-after-shock-wigan-exit-confirmed"
+          ],
+          "notes": "Historic Wigan cards keep their own data; this Current card uses the sourced Lebanon nationality."
+        },
+        {
+          "name": "Harvey Makin",
+          "id": "wigan-cur-harvey-makin",
+          "squadNumber": 24,
+          "position": "PROP",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (born Wigan, England — Wikipedia)",
+          "birthYear": 2003,
+          "status": "squad-number list; loans at Oldham and Barrow in 2026",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.wigantoday.net/sport/rugby-league/wigan-warriors-confirm-2026-squad-numbers-as-homegrown-talent-earns-starting-shirt-5462728",
+            "https://en.wikipedia.org/wiki/Harvey_Makin"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Lukas Mason",
+          "id": "wigan-cur-lukas-mason",
+          "squadNumber": 27,
+          "position": "SECOND_ROW",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (born St Helens, England — Wikipedia)",
+          "birthYear": 2005,
+          "status": "squad-number list; Championship loans in 2026",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.wigantoday.net/sport/rugby-league/wigan-warriors-confirm-2026-squad-numbers-as-homegrown-talent-earns-starting-shirt-5462728",
+            "https://en.wikipedia.org/wiki/Lukas_Mason"
+          ],
+          "notes": null
+        },
+        {
+          "name": "Jonny Vaughan",
+          "id": "wigan-cur-jonny-vaughan",
+          "squadNumber": 31,
+          "position": "SECOND_ROW",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "source (born St Helens, England — Wikipedia)",
+          "birthYear": 2005,
+          "status": "squad-number list; Championship loans in 2026",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.wigantoday.net/sport/rugby-league/wigan-warriors-confirm-2026-squad-numbers-as-homegrown-talent-earns-starting-shirt-5462728",
+            "https://en.wikipedia.org/wiki/Jonny_Vaughan"
+          ],
+          "notes": "Back-rower (Wigan Today). data/player-rating-overrides.ts already held an override for this id (75), which applies at runtime."
+        },
+        {
+          "name": "George O'Loughlin",
+          "id": "wigan-cur-george-oloughlin",
+          "squadNumber": 33,
+          "position": "SECOND_ROW",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list (academy graduate)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.wigantoday.net/sport/rugby-league/matt-peet-offers-insight-into-wigan-warriors-homegrown-duo-after-first-team-promotion-5500871"
+          ],
+          "notes": "Back-row or centre, aged 19 in February 2026; Orrell St James and Wigan St Judes junior; son of Sean O'Loughlin."
+        },
+        {
+          "name": "Finlay Yeomans",
+          "id": "wigan-cur-finlay-yeomans",
+          "squadNumber": 34,
+          "position": "CENTRE",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list (academy graduate)",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.wigantoday.net/sport/rugby-league/matt-peet-offers-insight-into-wigan-warriors-homegrown-duo-after-first-team-promotion-5500871"
+          ],
+          "notes": "Natural centre, aged 18 in February 2026; Woolston Rovers junior."
+        },
+        {
+          "name": "Finn McMillan",
+          "id": "wigan-cur-finn-mcmillan",
+          "squadNumber": 35,
+          "position": "PROP",
+          "rating": 80,
+          "nationality": "England",
+          "nationalityBasis": "inferred: came through an English junior/academy pathway (source names English amateur/academy clubs); no other nationality recorded",
+          "birthYear": null,
+          "status": "squad-number list; stays at Barrow Raiders while training full-time with Wigan",
+          "sources": [
+            "https://www.loverugbyleague.com/post/2026-super-league-squad-numbers-by-club",
+            "https://www.loverugbyleague.com/post/wigan-warriors-land-surprises-transfer-deal-for-barrow-raiders-prop"
+          ],
+          "notes": "Furness Raiders junior; no published DOB."
+        }
+      ],
       "moved": [],
       "movesNotApplied": [],
       "unverified": [],
-      "playableCurrentPlayers": 27
+      "playableCurrentPlayers": 34
     },
     "York Knights": {
       "squadListSources": [
