@@ -22,7 +22,7 @@
       "club": "Catalans Dragons",
       "slug": "catalans-dragons",
       "file": "catalans-dragons.json",
-      "count": 32
+      "count": 31
     },
     {
       "club": "Huddersfield Giants",
@@ -46,19 +46,19 @@
       "club": "Leeds Rhinos",
       "slug": "leeds-rhinos",
       "file": "leeds-rhinos.json",
-      "count": 27
+      "count": 28
     },
     {
       "club": "Leigh Leopards",
       "slug": "leigh-leopards",
       "file": "leigh-leopards.json",
-      "count": 28
+      "count": 32
     },
     {
       "club": "London Broncos",
       "slug": "london-broncos",
       "file": "london-broncos.json",
-      "count": 10
+      "count": 8
     },
     {
       "club": "Midlands Hurricanes",
@@ -82,13 +82,13 @@
       "club": "St Helens",
       "slug": "st-helens",
       "file": "st-helens.json",
-      "count": 29
+      "count": 31
     },
     {
       "club": "Toulouse Olympique",
       "slug": "toulouse-olympique",
       "file": "toulouse-olympique.json",
-      "count": 28
+      "count": 30
     },
     {
       "club": "Wakefield Trinity",
@@ -100,7 +100,7 @@
       "club": "Warrington Wolves",
       "slug": "warrington-wolves",
       "file": "warrington-wolves.json",
-      "count": 29
+      "count": 30
     },
     {
       "club": "Widnes Vikings",

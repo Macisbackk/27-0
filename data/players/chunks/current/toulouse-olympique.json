@@ -845,5 +845,70 @@
     "primaryPosition": "SH",
     "availableInGame": true,
     "superLeagueEligible": true
+  },
+  {
+    "id": "toulouse-cur-trevor-chiffolleau",
+    "name": "Trevor Chiffolleau",
+    "club": "Toulouse Olympique",
+    "currentClub": "Toulouse Olympique",
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "position": "PROP",
+    "positions": [
+      "PROP"
+    ],
+    "primaryPosition": "PROP",
+    "nationality": "France",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 90000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "toulouse-olympique-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "toulouse-cur-trevor-chiffolleau",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "dateOfBirth": "2005-07-28",
+    "birthYear": 2005
+  },
+  {
+    "id": "toulouse-cur-mathieu-pons",
+    "name": "Mathieu Pons",
+    "club": "Toulouse Olympique",
+    "currentClub": "Toulouse Olympique",
+    "team": "Toulouse Olympique",
+    "displayClub": "Toulouse Olympique",
+    "position": "WING",
+    "positions": [
+      "WING"
+    ],
+    "primaryPosition": "WING",
+    "nationality": "France",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 80,
+    "value": 92000,
+    "appearances": 0,
+    "tries": 0,
+    "teamYearId": "toulouse-olympique-2026",
+    "year": 2026,
+    "cardYear": 2026,
+    "status": "Current",
+    "basePlayerId": "toulouse-cur-mathieu-pons",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "dateOfBirth": "2002-03-29",
+    "birthYear": 2002,
+    "clubsPlayedFor": [
+      "Saint-Gaudens",
+      "Oldham RLFC",
+      "Toulouse Olympique"
+    ]
   }
 ]

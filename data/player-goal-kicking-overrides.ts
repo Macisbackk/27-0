@@ -94,7 +94,7 @@ export const PLAYER_GOAL_KICKING_OVERRIDES: Record<string, number> = {
   "york-cur-nikau-williams": 72,
 
   // ─── London Broncos ──────────────────────────────────────────────────
-  "london-cur-oliver-leyland": 80,
+  "warrington-cur-oliver-leyland": 80,
   "london-cur-jack-campagnolo": 76,
   "london-cur-jimmy-meadows": 64,
 

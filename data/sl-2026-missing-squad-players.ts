@@ -75,6 +75,12 @@ export const SQUAD_LIST_SOURCES: Record<string, string[]> = {
     LRL_ALL_CLUBS,
     "https://www.loverugbyleague.com/post/hull-kr-confirm-2026-squad-numbers-as-new-recruit-handed-key-jersey",
   ],
+  "Bradford Bulls": [LRL_ALL_CLUBS, "https://www.loverugbyleague.com/post/bradford-bulls-2026-squad-numbers"],
+  "Catalans Dragons": [LRL_ALL_CLUBS],
+  "Leeds Rhinos": [LRL_ALL_CLUBS],
+  "Leigh Leopards": [LRL_ALL_CLUBS, "https://leighleopards.co.uk/2026-squad-numbers-revealed/"],
+  "St Helens": [LRL_ALL_CLUBS, "https://www.saintsrlfc.com/?p=98971"],
+  "Toulouse Olympique": [LRL_ALL_CLUBS, "https://www.loverugbyleague.com/post/toulouse-olympique-2026-squad-numbers"],
   "Castleford Tigers": [
     LRL_ALL_CLUBS,
     "https://www.alloutrugbyleague.co.uk/news/castleford-tigers-confirm-full-squad-1584671",
@@ -541,21 +547,6 @@ export const ADDITIONS: Addition[] = [
   // ── Warrington Wolves ─────────────────────────────────────────────────────
   {
     club: "Warrington Wolves",
-    name: "Oli Leyland",
-    aliases: ["Oliver Leyland"],
-    squadNumber: 28,
-    position: "STAND_OFF",
-    nationality: "England",
-    nationalityBasis: "source (born Maidstone, England — Wikipedia)",
-    dateOfBirth: "2001-05-17",
-    yearsActive: "2021–Present",
-    previousClubs: ["London Broncos"],
-    rating: 80,
-    status: "squad-number list",
-    sources: [LRL_ALL_CLUBS, "https://en.wikipedia.org/wiki/Oliver_Leyland"],
-  },
-  {
-    club: "Warrington Wolves",
     name: "Zack Gardner",
     squadNumber: 29,
     position: "CENTRE",
@@ -875,6 +866,162 @@ export const ADDITIONS: Addition[] = [
     notes: "Club: 'a talented fullback or halfback', aged 18 when signed from St Helens' academy (Sept 2025).",
   },
 
+  // ── Leeds Rhinos ──────────────────────────────────────────────────────────
+  {
+    club: "Leeds Rhinos",
+    name: "Max Simpson",
+    squadNumber: 18,
+    position: "CENTRE",
+    nationality: "England",
+    nationalityBasis: "inferred: Kippax junior and Leeds academy (club profile); no other nationality recorded",
+    dateOfBirth: "2004-07-24",
+    rating: 80,
+    status: "squad-number list",
+    sources: [LRL_ALL_CLUBS, "https://www.therhinos.co.uk/teams/profile/389/max-simpson"],
+  },
+
+  // ── Leigh Leopards ────────────────────────────────────────────────────────
+  {
+    club: "Leigh Leopards",
+    name: "Nathan Wilde",
+    squadNumber: 26,
+    position: "PROP",
+    nationality: "England",
+    nationalityBasis: "source (club profile: born Wigan)",
+    birthYear: 1999,
+    previousClubs: ["Wigan Warriors"],
+    rating: 80,
+    status: "squad-number list; loan to Salford RLFC in 2026",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://leighleopards.co.uk/26-nathan-wilde/",
+      "https://www.loverugbyleague.com/post/leigh-leopards-quartet-make-salford-loan-moves",
+    ],
+    notes: "Club profile: middle forward, 'former Wigan Warriors prop', born Wigan 1999.",
+  },
+  {
+    club: "Leigh Leopards",
+    name: "Ryan Brown",
+    squadNumber: 28,
+    position: "PROP",
+    nationality: "England",
+    nationalityBasis: "source (England Academy international, born Warrington — LRL)",
+    previousClubs: ["Wigan Warriors"],
+    rating: 80,
+    status: "squad-number list; loan to Salford RLFC in 2026",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/leigh-leopards-sign-england-academy-ryan-brown-from-wigan-warriors",
+      "https://www.loverugbyleague.com/post/leigh-leopards-quartet-make-salford-loan-moves",
+    ],
+    notes: "Aged 19 when signed (October 2024); no published DOB.",
+  },
+  {
+    club: "Leigh Leopards",
+    name: "Will Brough",
+    squadNumber: 29,
+    position: "CENTRE",
+    nationality: "England",
+    nationalityBasis: ENGLISH_ACADEMY,
+    birthYear: 2006,
+    previousClubs: ["Wakefield Trinity"],
+    rating: 80,
+    status: "squad-number list; Super League debut April 2026, later loaned out",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/will-brough-set-for-super-league-debut",
+      "https://leighleopards.co.uk/?p=74449",
+    ],
+    notes: "Centre; 19 and turning 20 in July 2026 (born July 2006); Newsome Panthers/Emley Moor junior; son of Danny Brough.",
+  },
+  {
+    club: "Leigh Leopards",
+    name: "Oliver Polec",
+    squadNumber: 30,
+    position: "PROP",
+    nationality: "England",
+    nationalityBasis: ENGLISH_ACADEMY,
+    previousClubs: ["St Helens"],
+    rating: 80,
+    status: "squad-number list; loans to Salford RLFC and Whitehaven in 2026",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://leighleopards.co.uk/2026-squad-numbers-revealed/",
+      "https://www.loverugbyleague.com/post/oliver-polec-whitehaven-loan-25-03-2026",
+    ],
+    notes: "Front-row forward aged 19 (March 2026); Woolston Rovers junior, ex-St Helens academy.",
+  },
+
+  // ── St Helens ─────────────────────────────────────────────────────────────
+  {
+    club: "St Helens",
+    name: "Leon Cowen",
+    squadNumber: 27,
+    position: "LOOSE_FORWARD",
+    nationality: "England",
+    nationalityBasis: ENGLISH_ACADEMY,
+    rating: 80,
+    status: "squad-number list; loan to Swinton in 2026",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.saintsrlfc.com/teams/first-team/leon-cowen/",
+      "https://www.loverugbyleague.com/post/leon-cowen-alfie-sinclair-join-swinton-on-loan-27-02-2026",
+    ],
+    notes: "Club profile: young forward who started at loose forward in the 2024 Reserves Grand Final; heritage no. 1,299.",
+  },
+  {
+    club: "St Helens",
+    name: "Alfie Sinclair",
+    squadNumber: 29,
+    position: "PROP",
+    nationality: "England",
+    nationalityBasis: ENGLISH_ACADEMY,
+    rating: 80,
+    status: "squad-number list; loan to Swinton in 2026",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.saintsrlfc.com/teams/first-team/alfie-sinclair/",
+      "https://www.loverugbyleague.com/post/leon-cowen-alfie-sinclair-join-swinton-on-loan-27-02-2026",
+    ],
+    notes: "Club profile: prop forward from the Saints youth ranks, Ryland Sharks junior.",
+  },
+
+  // ── Toulouse Olympique ────────────────────────────────────────────────────
+  {
+    club: "Toulouse Olympique",
+    name: "Trevor Chiffolleau",
+    aliases: ["Trevor Chiffoleau"],
+    squadNumber: 26,
+    position: "PROP",
+    nationality: "France",
+    nationalityBasis: "inferred: grew up at Toulouse Olympique, French Junior Cup winner (club article)",
+    dateOfBirth: "2005-07-28",
+    rating: 80,
+    status: "squad-number list; contract extended to end of 2027 (August 2026)",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/toulouse-olympique-2026-squad-numbers",
+      "https://www.to13.com/non-classe/toulouse-olympique-extend-trevor-chiffolleaus-contract/",
+    ],
+  },
+  {
+    club: "Toulouse Olympique",
+    name: "Mathieu Pons",
+    squadNumber: 28,
+    position: "WING",
+    nationality: "France",
+    nationalityBasis: "source (French international)",
+    dateOfBirth: "2002-03-29",
+    previousClubs: ["Saint-Gaudens", "Oldham RLFC"],
+    rating: 80,
+    status: "squad-number list; contract extended to end of 2027 (July 2026)",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/toulouse-olympique-2026-squad-numbers",
+      "https://www.to13.com/actualites/mathieu-pons-to-remain-with-toulouse-olympique-until-2027/",
+    ],
+  },
+
   // ── York Knights (mid-season) ─────────────────────────────────────────────
   {
     club: "York Knights",
@@ -900,6 +1047,14 @@ export const ADDITIONS: Addition[] = [
 
 export const MOVES: Move[] = [
   {
+    name: "Oliver Leyland",
+    fromId: "london-cur-oliver-leyland",
+    toClub: "Warrington Wolves",
+    reason:
+      "Warrington squad number 28 for 2026 (at Warrington since 2025); the Current card was still on his old London Broncos club (hidden Championship card). Moved and made playable; rating untouched.",
+    sources: [LRL_ALL_CLUBS, "https://en.wikipedia.org/wiki/Oliver_Leyland"],
+  },
+  {
     name: "Arthur Romano",
     fromId: "catalans-cur-arthur-romano",
     toClub: "Hull FC",
@@ -921,6 +1076,37 @@ export const MOVES: Move[] = [
       "https://www.loverugbyleague.com/post/danny-richardsons-first-words-as-permanent-york-move-confirmed",
       "https://en.wikipedia.org/wiki/2026_York_Knights_season",
     ],
+  },
+];
+
+export type DuplicateRow = {
+  club: string;
+  removeId: string;
+  keepId: string;
+  /** Correct display name for the kept row, when the spelling was wrong. */
+  keepName?: string;
+  reason: string;
+  sources: string[];
+};
+
+/** Same person stored twice under different spellings — keep one card. */
+export const DUPLICATE_ROWS: DuplicateRow[] = [
+  {
+    club: "Catalans Dragons",
+    removeId: "catalans-cur-romain-navarrete",
+    keepId: "catalans-cur-romain-navarette",
+    keepName: "Romain Navarrete",
+    reason:
+      "Romain Navarrete was stored twice (\"Navarette\" from the 2026 ratings import and \"Navarrete\" added later by sync-2026-sl-player-pool). Kept the ratings-import card (id unchanged, rating untouched) and corrected its name spelling; removed the later duplicate, which was in no pool and had no overrides.",
+    sources: [LRL_ALL_CLUBS],
+  },
+  {
+    club: "Toulouse Olympique",
+    removeId: "london-cur-robert-butler",
+    keepId: "toulouse-cur-rob-butler",
+    reason:
+      "Rob Butler (prop, born 1998) had a playable Toulouse card and a hidden London Broncos card (\"Robert Butler\", whose own club history lists Toulouse). Toulouse squad number 17 for 2026, so the stale London card was removed; Manager Mode no longer puts him in two squads.",
+    sources: [LRL_ALL_CLUBS, "https://www.loverugbyleague.com/post/toulouse-olympique-2026-squad-numbers"],
   },
 ];
 
@@ -1023,6 +1209,42 @@ export const UNVERIFIED: Unverified[] = [
     reason:
       "Listed as a loan from Newcastle Thunder on the York 2026 season page, but no York appearance, squad number or position found.",
     sources: ["https://en.wikipedia.org/wiki/2026_York_Knights_season"],
+  },
+  {
+    club: "Leigh Leopards",
+    name: "Kavan Rothwell",
+    squadNumber: 27,
+    reason: "On the 2026 squad-number list; the only position source describes him as a 'middle' (prop or loose forward), so the playing slot could not be confirmed.",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.wigantoday.net/sport/rugby-league/limited-opportunities-sees-wigan-warriors-youngster-make-move-to-leigh-leopards-4373377",
+    ],
+  },
+  {
+    club: "Bradford Bulls",
+    name: "Cameron Bate",
+    squadNumber: 29,
+    reason: "On the 2026 squad-number list; sources only call him a 'young forward', so the position could not be confirmed.",
+    sources: [LRL_ALL_CLUBS, "https://www.bradfordbulls.co.uk/article/3028/bulls-sign-youngster-bate-on-first-team-contract"],
+  },
+  {
+    club: "Bradford Bulls",
+    name: "Ronan Michael",
+    squadNumber: 26,
+    reason:
+      "Bradford squad number 26, but released in April 2026 (Keighley loan, then Northern Pride in Queensland) — not a Bradford player for most of 2026, not added. A historic Bradford card already exists.",
+    sources: [LRL_ALL_CLUBS, "https://en.wikipedia.org/wiki/Ronan_Michael"],
+  },
+  {
+    club: "Catalans Dragons",
+    name: "Josh Simm",
+    squadNumber: 22,
+    reason:
+      "Catalans squad number 22, but released on 1 August 2026 and joined Oldham (Championship) for the rest of 2026 — not added as a Catalans Current card (see Championship section).",
+    sources: [
+      LRL_ALL_CLUBS,
+      "https://www.loverugbyleague.com/post/catalans-dragons-winger-joins-championship-club-after-immediate-release",
+    ],
   },
   {
     club: "Castleford Tigers",

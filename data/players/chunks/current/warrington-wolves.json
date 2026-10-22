@@ -883,5 +883,36 @@
     "availableInGame": true,
     "superLeagueEligible": true,
     "birthYear": 2005
+  },
+  {
+    "id": "warrington-cur-oliver-leyland",
+    "name": "Oliver Leyland",
+    "position": "STAND_OFF",
+    "club": "Warrington Wolves",
+    "nationality": "England",
+    "era": "CONTEMPORARY_ERA",
+    "yearsActive": "2026–Present",
+    "category": "current",
+    "peakRating": 83,
+    "value": 168000,
+    "appearances": 32,
+    "tries": 3,
+    "dateOfBirth": "2001-05-17",
+    "birthYear": 2001,
+    "year": 2026,
+    "cardYear": 2026,
+    "teamYearId": "warrington-wolves-2026",
+    "team": "Warrington Wolves",
+    "displayClub": "Warrington Wolves",
+    "basePlayerId": "warrington-cur-oliver-leyland",
+    "status": "Current",
+    "primaryPosition": "STAND_OFF",
+    "availableInGame": true,
+    "superLeagueEligible": true,
+    "currentClub": "Warrington Wolves",
+    "clubsPlayedFor": [
+      "London Broncos",
+      "Warrington Wolves"
+    ]
   }
 ]

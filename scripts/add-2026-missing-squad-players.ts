@@ -29,6 +29,7 @@ import {
   MOVES,
   UNVERIFIED,
   NOT_APPLIED_MOVES,
+  DUPLICATE_ROWS,
   SQUAD_LIST_SOURCES,
   type Addition,
 } from "../data/sl-2026-missing-squad-players";
@@ -327,6 +328,11 @@ function main(): void {
     player.team = move.toClub;
     player.displayClub = move.toClub;
     player.teamYearId = buildTeamYearId(move.toClub, String(CURRENT_YEAR));
+    if (CLUB_SLUGS[move.toClub]) {
+      // Hidden Championship card moving to a Super League club becomes playable.
+      player.availableInGame = true;
+      player.superLeagueEligible = true;
+    }
     const played = Array.isArray(player.clubsPlayedFor) ? (player.clubsPlayedFor as string[]) : [];
     for (const c of [fromClub, move.toClub]) if (!played.includes(c)) played.push(c);
     player.clubsPlayedFor = played;
@@ -350,6 +356,25 @@ function main(): void {
       idRetargetedIn: retargeted,
       status: "applied",
     });
+  }
+
+  // ── Same-person duplicates (spelling variants) ────────────────────────────
+  const dedupedReport: Record<string, unknown>[] = [];
+  for (const dup of DUPLICATE_ROWS) {
+    const keep = players.find((p) => p.id === dup.keepId);
+    if (!keep) throw new Error(`Duplicate keep row ${dup.keepId} not found`);
+    const idx = players.findIndex((p) => p.id === dup.removeId);
+    let status = "already applied";
+    if (idx >= 0) {
+      if (readFileSync(TEAM_YEAR_SQUADS_PATH, "utf8").includes(`"${dup.removeId}"`)) {
+        throw new Error(`${dup.removeId} is in a 2026 pool; pick a replacement before removing it`);
+      }
+      players.splice(idx, 1);
+      for (const f of ID_REFERENCE_FILES) retargetFile(f, dup.removeId, dup.keepId);
+      status = "applied";
+    }
+    if (dup.keepName) keep.name = dup.keepName;
+    dedupedReport.push({ ...dup, status });
   }
 
   // ── Additions ─────────────────────────────────────────────────────────────
@@ -408,6 +433,7 @@ function main(): void {
       added: addedByClub[club] ?? [],
       moved: movedReport.filter((m) => m.toClub === club || m.fromClub === club),
       movesNotApplied: NOT_APPLIED_MOVES.filter((m) => m.club === club),
+      duplicatesRemoved: dedupedReport.filter((d) => d.club === club),
       unverified: UNVERIFIED.filter((u) => u.club === club),
       playableCurrentPlayers: counts[club],
     };
