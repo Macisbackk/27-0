@@ -38,6 +38,12 @@ jobs:
           [ -f scripts/manager-break.mjs ] && (timeout 600 node scripts/manager-break.mjs || true)
           # Popup audit (report only: preview-shots/popup-audit.txt).
           [ -f scripts/popup-audit.mjs ] && (timeout 400 node scripts/popup-audit.mjs || true)
+          # Hydration probe against prod and a dev server (full React messages).
+          if [ -f scripts/hydration-probe.mjs ]; then
+            (npx next dev -p 3100 > /tmp/next-dev.log 2>&1 &)
+            for i in $(seq 1 90); do curl -sf http://localhost:3100/ > /dev/null && break; sleep 2; done
+            PROBE_TARGETS=http://localhost:3000,http://localhost:3100 timeout 500 node scripts/hydration-probe.mjs || true
+          fi
       - name: Publish
         run: |
           name="${GITHUB_REF_NAME#preview/}"
