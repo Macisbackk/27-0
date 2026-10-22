@@ -251,7 +251,12 @@ export function RecruitmentSlotReveal({
             transition: landed ? "border-color 0.35s ease-out" : undefined,
           }}
         >
-          <TeamColourStrip club={target.team} />
+          {/* The club's colours only appear once the reels land: showing them during the spin gave the result away. */}
+          {landed ? (
+            <TeamColourStrip club={target.team} className="fl-rise" />
+          ) : (
+            <div aria-hidden className="h-0.5 w-full bg-white/10" />
+          )}
           <div className="border-b border-white/10 px-4 py-2.5 text-center">
             <p className={`${TYPO.sectionLabel} text-pitch-400`}>
               {isSpinning
