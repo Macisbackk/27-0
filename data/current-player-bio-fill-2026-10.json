@@ -1,0 +1,163 @@
+{
+ "generatedAt": "2026-10-22T16:28:37Z",
+ "asOf": "2026-10-22",
+ "notes": "Researched via WebSearch/WebFetch. Caps are senior international rugby league test caps as of the cited source date.",
+ "players": [
+  {
+   "id": "castleford-cur-sam-hall",
+   "dateOfBirth": "2002-05-08",
+   "birthYear": 2002,
+   "appearances": 63,
+   "tries": 2,
+   "statsScope": "Super League (Wikipedia appearances table; infobox shows Castleford 67 apps/3 tries all comps)",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sam_Hall_(rugby_league)"
+   ],
+   "note": "Born Leeds; Castleford prop/loose forward 2020-26 (Toulouse from 2027). Stored 1988 belonged to a different Sam Hall.",
+   "name": "Sam Hall",
+   "birthYearWas": 1988
+  },
+  {
+   "id": "bradford-cur-brandon-douglas",
+   "dateOfBirth": "1997-08-17",
+   "birthYear": 1997,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brandon_Douglas_(rugby_league)"
+   ],
+   "note": "Ex-Castleford/Sheffield/Halifax; Bradford 2026.",
+   "name": "Brandon Douglas"
+  },
+  {
+   "id": "bradford-cur-connor-wynne",
+   "dateOfBirth": "2001-01-15",
+   "birthYear": 2001,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Connor_Wynne"
+   ],
+   "note": "Born Hull; ex-Hull FC/Featherstone.",
+   "name": "Connor Wynne"
+  },
+  {
+   "id": "bradford-cur-dan-russell",
+   "dateOfBirth": "1995-12-05",
+   "birthYear": 1995,
+   "nationality": "Papua New Guinea",
+   "intlNation": "Papua New Guinea",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Daniel_Russell_(rugby_league)"
+   ],
+   "note": "Born Longreach, Queensland; PNG Test debut 9 Nov 2019 v Fiji, played all 4 matches at 2021 RLWC. Cap total not stated in source.",
+   "name": "Dan Russell",
+   "nationalityWas": "New Zealand"
+  },
+  {
+   "id": "bradford-cur-eliot-peposhi",
+   "dateOfBirth": "2004-08-05",
+   "birthYear": 2004,
+   "intlCaps": 1,
+   "intlNation": "Albania",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Eliot_Peposhi"
+   ],
+   "note": "Born Wigan, England; Albania international (1 cap, 2023). Nationality left as England (birthplace) - change to Albania if card nationality should follow representative nation.",
+   "name": "Eliot Peposhi"
+  },
+  {
+   "id": "bradford-cur-guy-armitage",
+   "dateOfBirth": "1991-11-29",
+   "birthYear": 1991,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Guy_Armitage"
+   ],
+   "note": "Born Westminster, London; ex-London Broncos/Toulouse.",
+   "name": "Guy Armitage"
+  },
+  {
+   "id": "bradford-cur-joe-keyes",
+   "dateOfBirth": "1995-09-17",
+   "birthYear": 1995,
+   "intlCaps": 11,
+   "intlNation": "Ireland",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Joe_Keyes_(rugby_league)"
+   ],
+   "note": "Born Enfield, London; Ireland 2015-, 11 caps per infobox.",
+   "name": "Joe Keyes"
+  },
+  {
+   "id": "bradford-cur-luke-hooley",
+   "dateOfBirth": "1998-08-01",
+   "birthYear": 1998,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Luke_Hooley"
+   ],
+   "note": "Born Dewsbury.",
+   "name": "Luke Hooley"
+  },
+  {
+   "id": "bradford-cur-will-gardiner",
+   "dateOfBirth": "2001-05-21",
+   "birthYear": 2001,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Will_Gardiner"
+   ],
+   "note": "Born Hull; ex-Hull FC.",
+   "name": "Will Gardiner"
+  },
+  {
+   "id": "bradford-cur-mitch-souter",
+   "nationality": "Australia",
+   "sources": [
+    "https://www.loverugbyleague.com/?p=836800",
+    "https://bradfordbulls.co.uk/?p=734"
+   ],
+   "note": "Australian hooker from Canberra Raiders (lived in Canberra since birth); aged 22 in Oct 2023 and 24 in Oct 2025, so born c. late 2000/2001 (stored 2001 consistent but not exact).",
+   "name": "Mitch Souter",
+   "nationalityWas": "Scotland"
+  },
+  {
+   "id": "bradford-cur-esan-marsters",
+   "intlCaps": 13,
+   "intlNation": "Cook Islands",
+   "nationality": "Cook Islands",
+   "sources": [
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "Caps = 'Games' figure on 2026 RLWC squad list (pre-tournament, as of 15 Oct 2026); excludes any 2026 RLWC matches.",
+   "name": "Esan Marsters",
+   "nationalityWas": "New Zealand"
+  },
+  {
+   "id": "bradford-cur-waqa-blake",
+   "intlCaps": 7,
+   "intlNation": "Fiji",
+   "sources": [
+    "https://en.wikipedia.org/wiki/2026_Men%27s_Rugby_League_World_Cup_squads"
+   ],
+   "note": "Caps = pre-tournament 'Games' figure on 2026 RLWC squad list.",
+   "name": "Waqa Blake"
+  }
+ ],
+ "unverified": [
+  {
+   "id": "bradford-cur-cameron-bate",
+   "field": "dateOfBirth",
+   "reason": "No DOB published; club article of 16 Apr 2025 says he is 18 (born between 17 Apr 2006 and 16 Apr 2007). https://bradfordbulls.co.uk/?p=1256"
+  },
+  {
+   "id": "bradford-cur-mitch-souter",
+   "field": "dateOfBirth",
+   "reason": "No DOB found; age 22 (Oct 2023) / 24 (Oct 2025) only."
+  },
+  {
+   "id": "bradford-cur-dan-russell",
+   "field": "intlCaps",
+   "reason": "PNG international confirmed (debut 2019, 4 games at 2021 RLWC) but no authoritative cap total found."
+  },
+  {
+   "id": "bradford-cur-jamie-gill",
+   "field": "dateOfBirth",
+   "reason": "Academy player; no Wikipedia page or published DOB found."
+  }
+ ]
+}

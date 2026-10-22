@@ -1,0 +1,1161 @@
+{
+ "generatedAt": "2026-10-22T16:33:00Z",
+ "summary": {
+  "birthsPeople": 44,
+  "birthsCards": 146,
+  "cardFixes": 38,
+  "sampleChecked": 0,
+  "sampleErrors": 0,
+  "unverifiedPeople": 0
+ },
+ "births": [
+  {
+   "ids": [
+    "alex-murphy"
+   ],
+   "name": "Alex Murphy",
+   "dateOfBirth": "1939-04-22",
+   "birthYear": 1939,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Alex_Murphy_(rugby_league)"
+   ],
+   "note": "St Helens 1956–1966; card 1958 is fine"
+  },
+  {
+   "ids": [
+    "wigan-hist-garry-connolly"
+   ],
+   "name": "Garry Connolly",
+   "dateOfBirth": "1971-06-22",
+   "birthYear": 1971,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Gary_Connolly"
+   ],
+   "note": "Spelt Gary Connolly. Wigan 1993–2002 and 2004; card 1989 is wrong (he was at St Helens 1989–93). Suggest 1994+."
+  },
+  {
+   "ids": [
+    "leeds-leg-gareth-ellis-2007",
+    "hull-fc-hist-gareth-ellis-2013",
+    "leeds-hist-gareth-ellis-2008",
+    "hull-fc-hist-gareth-ellis-2016"
+   ],
+   "name": "Gareth Ellis",
+   "dateOfBirth": "1981-05-03",
+   "birthYear": 1981,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Gareth_Ellis"
+   ],
+   "note": "Leeds 2005–08, Hull FC 2013–17 and 2019–20; all cards in range"
+  },
+  {
+   "ids": [
+    "wigan-hist-jason-robinson-1995"
+   ],
+   "name": "Jason Robinson",
+   "dateOfBirth": "1974-07-30",
+   "birthYear": 1974,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jason_Robinson_(rugby)"
+   ],
+   "note": "Wigan 1991–2000"
+  },
+  {
+   "ids": [
+    "wigan-hist-liam-farrell-2025",
+    "wigan-hist-liam-farrell-2016",
+    "wigan-hist-liam-farrell-2023",
+    "wigan-hist-liam-farrell-2020",
+    "wigan-hist-liam-farrell-2022",
+    "wigan-hist-liam-farrell-2021",
+    "wigan-hist-liam-farrell-2015",
+    "wigan-hist-liam-farrell-2024"
+   ],
+   "name": "Liam Farrell",
+   "dateOfBirth": "1990-07-02",
+   "birthYear": 1990,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Liam_Farrell"
+   ],
+   "note": "Wigan 2010–"
+  },
+  {
+   "ids": [
+    "huddersfield-hist-leroy-cudjoe-2022",
+    "huddersfield-hist-leroy-cudjoe-2023",
+    "huddersfield-hist-leroy-cudjoe-2016",
+    "huddersfield-hist-leroy-cudjoe-2020",
+    "huddersfield-hist-leroy-cudjoe-2025",
+    "huddersfield-hist-leroy-cudjoe",
+    "huddersfield-hist-leroy-cudjoe-2013",
+    "huddersfield-hist-leroy-cudjoe-2009",
+    "huddersfield-hist-leroy-cudjoe-2024"
+   ],
+   "name": "Leroy Cudjoe",
+   "dateOfBirth": "1988-04-07",
+   "birthYear": 1988,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Leroy_Cudjoe"
+   ],
+   "note": "Huddersfield 2008–2025. The 2006 card is before his debut (see cardFixes)."
+  },
+  {
+   "ids": [
+    "wigan-hist-joel-tomkins-2008",
+    "wigan-hist-joel-tomkins",
+    "wigan-hist-joel-tomkins-2016",
+    "wigan-hist-joel-tomkins-2015"
+   ],
+   "name": "Joel Tomkins",
+   "dateOfBirth": "1987-03-21",
+   "birthYear": 1987,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Joel_Tomkins"
+   ],
+   "note": "Wigan 2005–11 and 2014–18; all cards in range"
+  },
+  {
+   "ids": [
+    "wigan-hist-martin-offiah-1994"
+   ],
+   "name": "Martin Offiah",
+   "dateOfBirth": "1965-12-29",
+   "birthYear": 1965,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Martin_Offiah"
+   ],
+   "note": "Wigan 1992–95"
+  },
+  {
+   "ids": [
+    "wakefield-hist-neil-fox-1962"
+   ],
+   "name": "Neil Fox",
+   "dateOfBirth": "1939-05-04",
+   "birthYear": 1939,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Neil_Fox_(rugby_league)"
+   ],
+   "note": "Wakefield 1956–69 and 1970–74"
+  },
+  {
+   "ids": [
+    "bradford-hist-brett-ferres-2006",
+    "huddersfield-hist-brett-ferres-2013",
+    "castleford-hist-brett-ferres",
+    "leeds-hist-brett-ferres-2016",
+    "castleford-hist-brett-ferres-2012",
+    "castleford-hist-brett-ferres-2009"
+   ],
+   "name": "Brett Ferres",
+   "dateOfBirth": "1986-04-17",
+   "birthYear": 1986,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brett_Ferres"
+   ],
+   "note": "Bradford 2005–06, Castleford 2009–12, Huddersfield 2013–16, Leeds 2016–19. The Castleford 2004 card is wrong (see cardFixes)."
+  },
+  {
+   "ids": [
+    "warrington-hist-daryl-clark-2021",
+    "warrington-hist-daryl-clark-2022",
+    "warrington-hist-daryl-clark-2015",
+    "warrington-hist-daryl-clark-2020",
+    "warrington-hist-daryl-clark-2023"
+   ],
+   "name": "Daryl Clark",
+   "dateOfBirth": "1993-02-10",
+   "birthYear": 1993,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Daryl_Clark"
+   ],
+   "note": "Warrington 2015–2023"
+  },
+  {
+   "ids": [
+    "wigan-hist-brett-kenny-1985"
+   ],
+   "name": "Brett Kenny",
+   "dateOfBirth": "1961-03-16",
+   "birthYear": 1961,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brett_Kenny"
+   ],
+   "note": "Wigan 1984–85"
+  },
+  {
+   "ids": [
+    "bradford-hist-paul-sykes-2011",
+    "bradford-hist-paul-sykes-2012",
+    "bradford-hist-paul-sykes-1999",
+    "bradford-hist-paul-sykes-2002",
+    "bradford-hist-paul-sykes-2009",
+    "bradford-hist-paul-sykes-2000",
+    "wakefield-hist-paul-sykes",
+    "bradford-hist-paul-sykes-2001"
+   ],
+   "name": "Paul Sykes",
+   "dateOfBirth": "1981-08-11",
+   "birthYear": 1981,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Paul_Sykes_(rugby_league)"
+   ],
+   "note": "Bradford 1999–2002 and 2008–12, London 2001 (loan) and 2002–07. The London 1999 card is outside his London spell."
+  },
+  {
+   "ids": [
+    "bradford-hist-chev-walker-2011",
+    "bradford-hist-chev-walker-2013",
+    "bradford-hist-chev-walker-2012",
+    "bradford-hist-chev-walker-2014",
+    "leeds-hist-chev-walker"
+   ],
+   "name": "Chev Walker",
+   "dateOfBirth": "1982-10-09",
+   "birthYear": 1982,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chev_Walker"
+   ],
+   "note": "Leeds 1999–2006, Bradford 2011–15"
+  },
+  {
+   "ids": [
+    "warrington-hist-george-williams-2025",
+    "wigan-hist-george-williams-2016",
+    "wigan-hist-george-williams-2015",
+    "warrington-hist-george-williams-2023",
+    "warrington-hist-george-williams-2024",
+    "warrington-hist-george-williams-2022"
+   ],
+   "name": "George Williams",
+   "dateOfBirth": "1994-10-31",
+   "birthYear": 1994,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/George_Williams_(rugby_league,_born_1994)"
+   ],
+   "note": "Wigan 2013–19, Warrington 2021–"
+  },
+  {
+   "ids": [
+    "castleford-hist-malcolm-reilly-1969"
+   ],
+   "name": "Malcolm Reilly",
+   "dateOfBirth": "1948-01-19",
+   "birthYear": 1948,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Malcolm_Reilly"
+   ],
+   "note": "Castleford 1967–71"
+  },
+  {
+   "ids": [
+    "wigan-hist-andy-gregory-1988",
+    "wigan-hist-andy-gregory-1990"
+   ],
+   "name": "Andy Gregory",
+   "dateOfBirth": "1961-08-10",
+   "birthYear": 1961,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Andy_Gregory"
+   ],
+   "note": "Wigan 1986–92"
+  },
+  {
+   "ids": [
+    "bradford-hist-lee-radford-2001",
+    "bradford-hist-lee-radford-1999",
+    "bradford-hist-lee-radford-2004",
+    "hull-fc-hist-lee-radford",
+    "bradford-hist-lee-radford-2000",
+    "bradford-hist-lee-radford-2003",
+    "bradford-hist-lee-radford-2002"
+   ],
+   "name": "Lee Radford",
+   "dateOfBirth": "1979-03-26",
+   "birthYear": 1979,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Lee_Radford"
+   ],
+   "note": "Hull 1996–98, Bradford 1998–2005"
+  },
+  {
+   "ids": [
+    "york-hist-graeme-steadman"
+   ],
+   "name": "Graeme Steadman",
+   "dateOfBirth": "1961-12-08",
+   "birthYear": 1961,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Graham_Steadman"
+   ],
+   "note": "Spelt Graham Steadman. York 1982–86; the York 1989 card is wrong (he was at Featherstone then, see cardFixes)."
+  },
+  {
+   "ids": [
+    "leeds-hist-kallum-watkins-2025",
+    "leeds-hist-kallum-watkins-2009",
+    "leeds-hist-kallum-watkins-2016",
+    "leeds-hist-kallum-watkins-2013",
+    "leeds-hist-kallum-watkins-2008"
+   ],
+   "name": "Kallum Watkins",
+   "dateOfBirth": "1991-03-12",
+   "birthYear": 1991,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Kallum_Watkins"
+   ],
+   "note": "Leeds 2007–19 and 2025–"
+  },
+  {
+   "ids": [
+    "warrington-hist-ben-currie-2025",
+    "warrington-hist-ben-currie-2020",
+    "warrington-hist-ben-currie-2022",
+    "warrington-hist-ben-currie-2021",
+    "warrington-hist-ben-currie-2023",
+    "warrington-hist-ben-currie-2024",
+    "warrington-hist-ben-currie-2015"
+   ],
+   "name": "Ben Currie",
+   "dateOfBirth": "1994-07-15",
+   "birthYear": 1994,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ben_Currie"
+   ],
+   "note": "Warrington 2012–"
+  },
+  {
+   "ids": [
+    "leeds-hist-rhyse-martin-2023",
+    "leeds-hist-rhyse-martin-2024",
+    "leeds-hist-rhyse-martin-2022",
+    "leeds-hist-rhyse-martin-2021",
+    "leeds-hist-era-rhyse-martin"
+   ],
+   "name": "Rhyse Martin",
+   "dateOfBirth": "1993-03-01",
+   "birthYear": 1993,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Rhyse_Martin"
+   ],
+   "note": "Leeds 2019–24"
+  },
+  {
+   "ids": [
+    "leeds-hist-ash-handley-2023",
+    "leeds-hist-ash-handley-2024",
+    "leeds-hist-ash-handley-2025",
+    "leeds-hist-ash-handley-2020",
+    "leeds-hist-ash-handley-2021",
+    "leeds-hist-ash-handley-2022",
+    "leeds-hist-ash-handley-2016"
+   ],
+   "name": "Ash Handley",
+   "dateOfBirth": "1996-02-16",
+   "birthYear": 1996,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ash_Handley"
+   ],
+   "note": "Leeds 2014–"
+  },
+  {
+   "ids": [
+    "warrington-hist-toby-king-2024",
+    "wigan-hist-toby-king-2023",
+    "warrington-hist-toby-king-2025",
+    "warrington-hist-toby-king-2021",
+    "warrington-hist-toby-king-2015",
+    "warrington-hist-toby-king-2022",
+    "warrington-hist-toby-king-2020"
+   ],
+   "name": "Toby King",
+   "dateOfBirth": "1996-07-09",
+   "birthYear": 1996,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Toby_King_(rugby_league)"
+   ],
+   "note": "Warrington 2014–, Wigan 2023 (loan)"
+  },
+  {
+   "ids": [
+    "halifax-hist-graham-eadie-1987"
+   ],
+   "name": "Graham Eadie",
+   "dateOfBirth": "1953-11-25",
+   "birthYear": 1953,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Graham_Eadie"
+   ],
+   "note": "Halifax 1986–89"
+  },
+  {
+   "ids": [
+    "warrington-hist-gerry-helme-1950",
+    "warrington-hist-gerry-helme-1954"
+   ],
+   "name": "Gerry Helme",
+   "dateOfBirth": "1923-04-04",
+   "birthYear": 1923,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Gerry_Helme"
+   ],
+   "note": "Warrington 1945–57"
+  },
+  {
+   "ids": [
+    "widnes-hist-joe-lydon-1984"
+   ],
+   "name": "Joe Lydon",
+   "dateOfBirth": "1963-11-26",
+   "birthYear": 1963,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Joe_Lydon_(rugby)"
+   ],
+   "note": "Widnes 1982–86"
+  },
+  {
+   "ids": [
+    "sheffield-hist-keith-senior-1998"
+   ],
+   "name": "Keith Senior",
+   "dateOfBirth": "1976-04-24",
+   "birthYear": 1976,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Keith_Senior"
+   ],
+   "note": "Sheffield 1994–99"
+  },
+  {
+   "ids": [
+    "wigan-hist-dean-bell-1993"
+   ],
+   "name": "Dean Bell",
+   "dateOfBirth": "1962-04-29",
+   "birthYear": 1962,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Dean_Bell"
+   ],
+   "note": "Wigan 1986–94"
+  },
+  {
+   "ids": [
+    "bradford-hist-ben-jeffries-2011",
+    "bradford-hist-ben-jeffries-2009",
+    "wakefield-hist-ben-jeffries",
+    "wakefield-hist-ben-jeffries-2010",
+    "bradford-hist-ben-jeffries-2012"
+   ],
+   "name": "Ben Jeffries",
+   "dateOfBirth": "1980-09-04",
+   "birthYear": 1980,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ben_Jeffries"
+   ],
+   "note": "Wakefield 2002–07 and 2010–11, Bradford 2008–09 and 2011–12. The Wakefield 1998 card is wrong (see cardFixes)."
+  },
+  {
+   "ids": [
+    "catalans-hist-stacy-jones"
+   ],
+   "name": "Stacy Jones",
+   "dateOfBirth": "1976-05-07",
+   "birthYear": 1976,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Stacey_Jones"
+   ],
+   "note": "Spelt Stacey Jones. Catalans 2006–07. A duplicate card catalans-hist-stacey-jones (1994, with birth data) has the wrong season: Catalans did not exist in 1994."
+  },
+  {
+   "ids": [
+    "wigan-hist-cec-mountford-1951"
+   ],
+   "name": "Cec Mountford",
+   "dateOfBirth": "1919-06-16",
+   "birthYear": 1919,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Cec_Mountford"
+   ],
+   "note": "Wigan 1946–51"
+  },
+  {
+   "ids": [
+    "wigan-hist-brian-mctigue-1959"
+   ],
+   "name": "Brian McTigue",
+   "dateOfBirth": "1930-08-03",
+   "birthYear": 1930,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brian_McTigue"
+   ],
+   "note": "Wigan 1951–67"
+  },
+  {
+   "ids": [
+    "st-helens-hist-george-nicholls-1978"
+   ],
+   "name": "George Nicholls",
+   "dateOfBirth": "1944-05-14",
+   "birthYear": 1944,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/George_Nicholls_(rugby_league)"
+   ],
+   "note": "St Helens 1973–81"
+  },
+  {
+   "ids": [
+    "wakefield-hist-aaron-murphy-2009",
+    "huddersfield-hist-aaron-murphy",
+    "huddersfield-hist-aaron-murphy-2013",
+    "wakefield-hist-aaron-murphy-2010",
+    "huddersfield-hist-aaron-murphy-2016"
+   ],
+   "name": "Aaron Murphy",
+   "dateOfBirth": "1988-11-26",
+   "birthYear": 1988,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Aaron_Murphy"
+   ],
+   "note": "Wakefield 2008–11, Huddersfield 2012–20. The Huddersfield 2006 card is wrong (see cardFixes)."
+  },
+  {
+   "ids": [
+    "wigan-hist-mark-calderwood-2006",
+    "hull-fc-hist-mark-calderwood-2009"
+   ],
+   "name": "Mark Calderwood",
+   "dateOfBirth": "1981-10-25",
+   "birthYear": 1981,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Mark_Calderwood"
+   ],
+   "note": "Wigan 2006–08, Hull 2009–10"
+  },
+  {
+   "ids": [
+    "st-helens-hist-kel-coslett-1972"
+   ],
+   "name": "Kel Coslett",
+   "dateOfBirth": "1942-01-14",
+   "birthYear": 1942,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Kel_Coslett"
+   ],
+   "note": "St Helens 1962–76"
+  },
+  {
+   "ids": [
+    "st-helens-hist-luke-thompson-2015",
+    "wigan-hist-luke-thompson-2025",
+    "wigan-hist-luke-thompson-2024"
+   ],
+   "name": "Luke Thompson",
+   "dateOfBirth": "1995-04-27",
+   "birthYear": 1995,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Luke_Thompson_(rugby_league)"
+   ],
+   "note": "St Helens 2013–20, Wigan 2024–"
+  },
+  {
+   "ids": [
+    "catalans-hist-mark-hughes"
+   ],
+   "name": "Mark Hughes",
+   "dateOfBirth": "1976-12-15",
+   "birthYear": 1976,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Mark_Hughes_(rugby_league,_born_1976)"
+   ],
+   "note": "Catalans 2006"
+  },
+  {
+   "ids": [
+    "st-helens-hist-adam-swift-2015",
+    "st-helens-hist-adam-swift-2016",
+    "huddersfield-hist-adam-swift-2024",
+    "hull-fc-hist-adam-swift-2023",
+    "hull-fc-hist-adam-swift-2022",
+    "hull-fc-hist-adam-swift-2021",
+    "huddersfield-hist-adam-swift-2025"
+   ],
+   "name": "Adam Swift",
+   "dateOfBirth": "1993-02-20",
+   "birthYear": 1993,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Adam_Swift_(rugby_league)"
+   ],
+   "note": "St Helens 2012–19, Hull FC 2020–23, Huddersfield 2024–"
+  },
+  {
+   "ids": [
+    "toulouse-hist-joe-cator-2024",
+    "hull-fc-hist-joe-cator-2023",
+    "hull-fc-hist-era-joe-cator",
+    "toulouse-hist-joe-cator-2023",
+    "toulouse-hist-joe-cator-2025",
+    "toulouse-hist-joe-cator-2022"
+   ],
+   "name": "Joe Cator",
+   "dateOfBirth": "1998-06-15",
+   "birthYear": 1998,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Joe_Cator"
+   ],
+   "note": "Hull FC 2020–24, Toulouse 2024–. The Toulouse 2022/2023 cards are wrong (see cardFixes)."
+  },
+  {
+   "ids": [
+    "wakefield-hist-david-topliss-1979"
+   ],
+   "name": "David Topliss",
+   "dateOfBirth": "1949-12-29",
+   "birthYear": 1949,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/David_Topliss"
+   ],
+   "note": "Wakefield 1968–81"
+  },
+  {
+   "ids": [
+    "widnes-hist-mick-burke-1981"
+   ],
+   "name": "Mick Burke",
+   "dateOfBirth": "1958-09-25",
+   "birthYear": 1958,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Mick_Burke_(rugby_league)"
+   ],
+   "note": "Widnes 1978–86"
+  },
+  {
+   "ids": [
+    "st-helens-hist-alan-prescott-1956"
+   ],
+   "name": "Alan Prescott",
+   "dateOfBirth": "1927-06-17",
+   "birthYear": 1927,
+   "birthYearWas": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Alan_Prescott"
+   ],
+   "note": "St Helens 1949–60"
+  }
+ ],
+ "cardFixes": [
+  {
+   "id": "st-helens-hist-george-flanagan-sr",
+   "name": "George Flanagan Sr",
+   "problem": "Card St Helens 1996 but this George Flanagan was born 1986-10-08 (age 10 in 1996). DOB correct. He never played for St Helens: Bradford Bulls academy/first team (Wikipedia infobox shows 2009–11), Hunslet (to 2018), Bradford Bulls again 2018–2024, Keighley 2024. No Flanagan in the 1996 St Helens squad.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "none (never at St Helens)",
+   "suggestedYear": null,
+   "suggestedAction": "hide, or move to Bradford Bulls (2009–2011 or 2018–2023)",
+   "sources": [
+    "https://en.wikipedia.org/wiki/George_Flanagan",
+    "https://en.wikipedia.org/wiki/1996_St_Helens_R.F.C._season"
+   ]
+  },
+  {
+   "id": "widnes-hist-ben-davies",
+   "name": "Ben Davies",
+   "problem": "Card Widnes 2007 with DOB 2000-04-21 (age 7). That DOB is the Ben Davies born 2000 (Widnes 2019–20, St Helens 2020–25). The other Ben Davies (born 1989-11-02) was at Widnes 2010 (loan) and 2012–13. Neither was at Widnes in 2007.",
+   "birthDateCorrect": "depends on which player is intended",
+   "actualSeasonsAtClub": "Ben Davies (b.2000-04-21): Widnes 2019–2020. Ben Davies (b.1989-11-02): Widnes 2010 (loan), 2012–2013",
+   "suggestedYear": 2019,
+   "suggestedAction": "if keeping DOB 2000-04-21 (prop) move to 2019; if the card is meant to be the 1989 player, set DOB 1989-11-02 and year 2012",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ben_Davies_(rugby_league,_born_2000)",
+    "https://en.wikipedia.org/wiki/Ben_Davies_(rugby_league,_born_1989)"
+   ]
+  },
+  {
+   "id": "bradford-hist-aaron-smith-2004",
+   "name": "Aaron Smith",
+   "problem": "Wrong person's birth date. Card Bradford 2004 has DOB 1996-10-12 (the St Helens hooker born 1996). The Aaron Smith at Bradford Bulls 2003–04 is a different player born 1982-09-10. basePlayerId wrongly links this card to st-helens-hist-aaron-smith.",
+   "birthDateCorrect": false,
+   "correctDateOfBirth": "1982-09-10",
+   "correctBirthYear": 1982,
+   "actualSeasonsAtClub": "2003–2004 (Aaron Smith b.1982)",
+   "suggestedYear": 2004,
+   "suggestedAction": "keep 2004, set DOB 1982-09-10 and break the basePlayerId link to the St Helens Aaron Smith",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Aaron_Smith_(rugby_league,_born_1982)",
+    "https://en.wikipedia.org/wiki/Aaron_Smith_(rugby_league)"
+   ]
+  },
+  {
+   "id": "wakefield-hist-andy-bracek",
+   "name": "Andy Bracek",
+   "problem": "Card Wakefield 2002 (age 15). DOB 1987-03-21 is correct but he never played for Wakefield: St Helens 2004, Warrington 2005–08, Barrow 2009–10, Crusaders 2011, Barrow 2012, Halifax 2013–16, Swinton 2016–18, Leigh 2019–.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "none (never at Wakefield)",
+   "suggestedYear": null,
+   "suggestedAction": "hide, or move to Warrington Wolves 2005–2008",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Andy_Bracek"
+   ]
+  },
+  {
+   "id": "hull-kr-hist-adam-walker",
+   "name": "Adam Walker",
+   "problem": "birthYear 1969 is wrong (dateOfBirth 1991-02-20 is right) and card year 2009 is wrong: he was at Huddersfield 2010–12 and Hull KR 2013–2016.",
+   "birthDateCorrect": false,
+   "correctDateOfBirth": "1991-02-20",
+   "correctBirthYear": 1991,
+   "actualSeasonsAtClub": "2013–2016",
+   "suggestedYear": 2014,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Adam_Walker_(rugby_league)"
+   ]
+  },
+  {
+   "id": "catalans-hist-jerome-guisset",
+   "name": "Jerome Guisset",
+   "problem": "Card year 1992, but Catalans first played in 2006 and Guisset was 13–14 then. Birth year 1978 is right. (Wikipedia gives 19 Aug 1978 in the infobox and 29 Oct 1978 in the text; the stored 1978-10-29 matches the text.) Cards for 2009 and 2010 already exist.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "2006–2010",
+   "suggestedYear": 2006,
+   "sources": [
+    "https://en.wikipedia.org/wiki/J%C3%A9r%C3%B4me_Guisset"
+   ]
+  },
+  {
+   "id": "york-hist-jason-golden",
+   "name": "Jason Golden",
+   "problem": "Card York 1995 (age 10). DOB 1985-11-06 is correct. He was at York City Knights in 2006 and 2013–14.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "2006; 2013–2014",
+   "suggestedYear": 2006,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jason_Golden"
+   ]
+  },
+  {
+   "id": "bradford-hist-danny-williams-2014",
+   "name": "Danny Williams",
+   "problem": "Wrong person's birth date. DOB 1973-09-04 is the Australian Danny Williams (North Sydney, Melbourne, London Broncos 2005–06). The Salford/Bradford winger is Danny Williams born 1986-09-26 (Leeds 2006–08, Hull FC 2008, Salford 2011–14, Bradford 2014–16). Season 2014 at Bradford is correct.",
+   "birthDateCorrect": false,
+   "correctDateOfBirth": "1986-09-26",
+   "correctBirthYear": 1986,
+   "actualSeasonsAtClub": "2014–2016",
+   "suggestedYear": 2014,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Danny_Williams_(rugby)",
+    "https://en.wikipedia.org/wiki/Danny_Williams_(rugby_league,_born_1973)"
+   ]
+  },
+  {
+   "id": "salford-hist-danny-williams-2014",
+   "name": "Danny Williams",
+   "problem": "Wrong person's birth date (same as the Bradford 2014 card). Correct DOB is 1986-09-26. Salford 2014 is correct. The sibling card salford-hist-danny-williams (Salford 2004, stored birth year 1973) is also wrong: 2004 is before his Salford spell, so move it to 2011–2013 and set the DOB to 1986.",
+   "birthDateCorrect": false,
+   "correctDateOfBirth": "1986-09-26",
+   "correctBirthYear": 1986,
+   "actualSeasonsAtClub": "2011–2014",
+   "suggestedYear": 2014,
+   "alsoAffects": [
+    "salford-hist-danny-williams"
+   ],
+   "sources": [
+    "https://en.wikipedia.org/wiki/Danny_Williams_(rugby)"
+   ]
+  },
+  {
+   "id": "salford-hist-danny-williams",
+   "name": "Danny Williams",
+   "problem": "Same person as the 2014 cards. Birth year 1973 belongs to the Australian Danny Williams. The Salford winger was born 1986-09-26 and was at Salford 2011–2014, so 2004 is the wrong season too.",
+   "birthDateCorrect": false,
+   "correctDateOfBirth": "1986-09-26",
+   "correctBirthYear": 1986,
+   "actualSeasonsAtClub": "2011–2014",
+   "suggestedYear": 2012,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Danny_Williams_(rugby)"
+   ]
+  },
+  {
+   "id": "huddersfield-hist-luke-robinson",
+   "name": "Luke Robinson",
+   "problem": "Card Huddersfield 2000 (age 16). DOB 1984-07-25 is correct. He joined Huddersfield for 2008 (signed Sept 2007) and stayed to 2015. A 2009 card already exists.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "2008–2015",
+   "suggestedYear": 2008,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Luke_Robinson_(rugby_league)"
+   ]
+  },
+  {
+   "id": "wakefield-hist-matthew-russell",
+   "name": "Matthew Russell",
+   "problem": "birthYear 1972 is wrong (dateOfBirth 1993-06-06 is right) and card year 2011 is wrong. Matty Russell was at Wigan in 2011. His only Wakefield season was 2025.",
+   "birthDateCorrect": false,
+   "correctDateOfBirth": "1993-06-06",
+   "correctBirthYear": 1993,
+   "actualSeasonsAtClub": "2025",
+   "suggestedYear": 2025,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Matty_Russell"
+   ]
+  },
+  {
+   "id": "london-hist-richie-barnett",
+   "name": "Richie Barnett",
+   "problem": "Card London Broncos 1989 (age 8) has DOB 1981-04-26, the English Richie Barnett (Hull FC 2004–05, Widnes, Warrington, Salford, Sheffield, Hunslet, Keighley, Doncaster), who never played for London. The London Broncos Richie Barnett is the New Zealand fullback/wing born 1972-04-21, at London 2001–2002. London Broncos was not the club's name in 1989 either.",
+   "birthDateCorrect": false,
+   "correctDateOfBirth": "1972-04-21",
+   "correctBirthYear": 1972,
+   "actualSeasonsAtClub": "2001–2002 (NZ Richie Barnett, b.1972)",
+   "suggestedYear": 2001,
+   "suggestedAction": "if keeping a London card, set year 2001 and DOB 1972-04-21 (nationality New Zealand); the English 1981 Barnett has no London spell",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Richie_Barnett",
+    "https://en.wikipedia.org/wiki/Richie_Barnett_(rugby_league,_born_1981)"
+   ]
+  },
+  {
+   "id": "toulouse-hist-sylvain-houles",
+   "name": "Sylvain Houles",
+   "problem": "Card Toulouse 1992 (age 11). DOB 1981-08-03 is correct. He played for Toulouse Olympique 2007–2012.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "2007–2012",
+   "suggestedYear": 2008,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Sylvain_Houles"
+   ]
+  },
+  {
+   "id": "catalans-hist-steve-menzies-2013",
+   "name": "Steve Menzies",
+   "problem": "None: this card is correct. DOB 1973-12-04 is right and he was at Catalans 2011–2013, so he was 39 during the 2013 season (shown as 40).",
+   "birthDateCorrect": true,
+   "cardCorrect": true,
+   "actualSeasonsAtClub": "2011–2013",
+   "suggestedYear": 2013,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Steve_Menzies"
+   ]
+  },
+  {
+   "id": "catalans-hist-steve-menzies-2012",
+   "name": "Steve Menzies",
+   "problem": "None: this card is correct. He was at Catalans 2011–2013 and 38 during the 2012 season (shown as 39).",
+   "birthDateCorrect": true,
+   "cardCorrect": true,
+   "actualSeasonsAtClub": "2011–2013",
+   "suggestedYear": 2012,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Steve_Menzies"
+   ]
+  },
+  {
+   "id": "catalans-hist-steve-menzies",
+   "name": "Steve Menzies",
+   "problem": "Not flagged by the scan (age 18) but wrong: Catalans 1991. Catalans did not exist; he was at Manly 1993–99. His Catalans seasons were 2011–2013, and cards for 2011, 2012 and 2013 already exist.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "2011–2013",
+   "suggestedYear": null,
+   "suggestedAction": "hide (duplicate of existing 2011–2013 cards) or move to 2011",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Steve_Menzies"
+   ]
+  },
+  {
+   "id": "huddersfield-hist-paul-whatuira",
+   "name": "Paul Whatuira",
+   "problem": "Card Huddersfield 1997 (age 16). DOB 1981-07-31 is correct. He was at Huddersfield 2008–2010. A 2009 card already exists.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "2008–2010",
+   "suggestedYear": 2008,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Paul_Whatuira"
+   ]
+  },
+  {
+   "id": "paul-clough",
+   "name": "Paul Clough",
+   "problem": "Card St Helens 2001 (age 14). DOB 1987-09-27 is correct. He was at St Helens 2004–2014. A 2009 card already exists.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "2004–2014",
+   "suggestedYear": 2006,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Paul_Clough"
+   ]
+  },
+  {
+   "id": "halifax-hist-steve-tyrer",
+   "name": "Steve Tyrer",
+   "problem": "Card Halifax 2003 (age 14). DOB 1989-03-16 is correct. He was at Halifax 2012–2020.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "2012–2020",
+   "suggestedYear": 2015,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Steve_Tyrer"
+   ]
+  },
+  {
+   "id": "oldham-hist-david-hodgson",
+   "name": "David Hodgson",
+   "problem": "Card Oldham 1993 (age 12). DOB 1981-08-08 is correct but he never played for Oldham: Halifax 1999, Wigan 2000–04, Salford 2005–07, Huddersfield 2008–11, Hull KR 2012–14 and 2017.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "none (never at Oldham)",
+   "suggestedYear": null,
+   "suggestedAction": "hide, or move to Wigan 2000–2004 / Salford 2005–2007 (a Huddersfield 2009 card already exists)",
+   "sources": [
+    "https://en.wikipedia.org/wiki/David_Hodgson_(rugby_league)"
+   ]
+  },
+  {
+   "id": "leeds-hist-carl-ablett",
+   "name": "Carl Ablett",
+   "problem": "Card Leeds 2000 (age 15). DOB 1985-12-19 is correct. He was at Leeds 2004–2019.",
+   "birthDateCorrect": true,
+   "actualSeasonsAtClub": "2004–2019",
+   "suggestedYear": 2008,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Carl_Ablett"
+   ]
+  },
+  {
+   "id": "paul-anderson",
+   "name": "Paul Anderson",
+   "problem": "Two players are mixed up. The stored DOB 1977-04-02 is Paul Anderson (b.1977: St Helens 1995–98, Sheffield 1999, Leigh 1999–2002, Oldham, Rochdale, Blackpool; 289 apps). This card's 361 apps, and the sibling Bradford 1997–2004 and St Helens 2006 cards, are Paul 'Baloo' Anderson, born 1971-10-25 (Leeds 1990–93, Bradford to 2004, St Helens 2005–06). Neither player was at St Helens in 1991.",
+   "birthDateCorrect": false,
+   "correctDateOfBirth": "1971-10-25",
+   "correctBirthYear": 1971,
+   "actualSeasonsAtClub": "St Helens 2005–2006 (b.1971 player); St Helens 1995–1998 (b.1977 player)",
+   "suggestedYear": 2005,
+   "alsoAffects": [
+    "st-helens-hist-paul-anderson-2006",
+    "bradford-hist-paul-anderson-1997",
+    "bradford-hist-paul-anderson-1998",
+    "bradford-hist-paul-anderson-1999",
+    "bradford-hist-paul-anderson-2000",
+    "bradford-hist-paul-anderson-2001",
+    "bradford-hist-paul-anderson-2002",
+    "bradford-hist-paul-anderson-2003",
+    "bradford-hist-paul-anderson-2004"
+   ],
+   "suggestedAction": "set DOB 1971-10-25 on all ten Paul Anderson cards; move this card to 2005",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Paul_Anderson_(rugby_league)",
+    "https://en.wikipedia.org/wiki/Paul_Anderson_(rugby_league,_born_1977)"
+   ]
+  },
+  {
+   "id": "hull-fc-hist-matt-schultz",
+   "name": "Matt Schultz",
+   "problem": "DOB mismatch. dateOfBirth 1975-08-09 is right, birthYear 1972 is wrong. The card year is also wrong: in 1993 he was at Leeds. His Hull seasons were 1997–1999 (and Hull KR 2001–02).",
+   "birthDateCorrect": false,
+   "correctDateOfBirth": "1975-08-09",
+   "correctBirthYear": 1975,
+   "actualSeasonsAtClub": "1997–1999",
+   "suggestedYear": 1997,
+   "sources": [
+    "https://www.rugbyleagueproject.org/players/2043"
+   ]
+  },
+  {
+   "id": "catalans-hist-steve-bell",
+   "name": "Steve Bell",
+   "problem": "DOB mismatch. dateOfBirth 1976-05-28 is right (Steven Bell, Melbourne/Manly/Catalans), birthYear 1960 is wrong. Card year 1994 is also wrong: Catalans did not exist, and his Catalans seasons were 2009–2010.",
+   "birthDateCorrect": false,
+   "correctDateOfBirth": "1976-05-28",
+   "correctBirthYear": 1976,
+   "actualSeasonsAtClub": "2009–2010",
+   "suggestedYear": 2009,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Steven_Bell"
+   ]
+  },
+  {
+   "id": "wakefield-hist-kevin-henderson",
+   "name": "Kevin Henderson",
+   "problem": "DOB mismatch. dateOfBirth 1981-01-10 is right, birthYear 1974 is wrong. Card year 2001 is also wrong: he was at Wakefield 2005–2011.",
+   "birthDateCorrect": false,
+   "correctDateOfBirth": "1981-01-10",
+   "correctBirthYear": 1981,
+   "actualSeasonsAtClub": "2005–2011",
+   "suggestedYear": 2006,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Kevin_Henderson_(rugby_league)"
+   ]
+  },
+  {
+   "id": "ellery-hanley",
+   "name": "Ellery Hanley",
+   "problem": "Legend card (legends.json) has no birth data: DOB 1961-03-27 (birthYear 1961). Card is Leeds Rhinos 1987, but in 1987 he was at Wigan (1985–1991). His Leeds spell was 1991–1995.",
+   "birthDateCorrect": null,
+   "correctDateOfBirth": "1961-03-27",
+   "correctBirthYear": 1961,
+   "file": "data/legends.json",
+   "actualSeasonsAtClub": "Leeds 1991–1995 (Wigan 1985–1991, Bradford Northern 1978–1985)",
+   "suggestedYear": 1992,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ellery_Hanley"
+   ]
+  },
+  {
+   "id": "wigan-hist-garry-connolly",
+   "name": "Gary Connolly",
+   "problem": "Card Wigan 1989, but he was at St Helens 1989–1993. His Wigan spells were 1993–2002 and 2004. The name is spelt Gary Connolly.",
+   "actualSeasonsAtClub": "1993–2002; 2004",
+   "suggestedYear": 1994,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Gary_Connolly"
+   ]
+  },
+  {
+   "id": "huddersfield-hist-leroy-cudjoe",
+   "name": "Leroy Cudjoe",
+   "problem": "Card Huddersfield 2006, but he played for them 2008–2025, so 2006 is before his first-team career (age 18 placeholder).",
+   "actualSeasonsAtClub": "2008–2025",
+   "suggestedYear": 2008,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Leroy_Cudjoe"
+   ]
+  },
+  {
+   "id": "castleford-hist-brett-ferres",
+   "name": "Brett Ferres",
+   "problem": "Card Castleford 2004, but his career began at Bradford in 2005. His Castleford seasons were 2009–2012, and cards for 2009 and 2012 already exist.",
+   "actualSeasonsAtClub": "2009–2012",
+   "suggestedYear": 2010,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Brett_Ferres"
+   ]
+  },
+  {
+   "id": "wakefield-hist-paul-sykes",
+   "name": "Paul Sykes",
+   "problem": "Card London Broncos 1999, but in 1999 he was at Bradford. His London spells were 2001 (loan) and 2002–2007.",
+   "actualSeasonsAtClub": "2001 (loan); 2002–2007",
+   "suggestedYear": 2003,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Paul_Sykes_(rugby_league)"
+   ]
+  },
+  {
+   "id": "york-hist-graeme-steadman",
+   "name": "Graham Steadman",
+   "problem": "Card York 1989, but he was at York 1982–86, then Featherstone 1986–89 and Castleford 1989–97.",
+   "actualSeasonsAtClub": "1982–1986",
+   "suggestedYear": 1985,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Graham_Steadman"
+   ]
+  },
+  {
+   "id": "wakefield-hist-ben-jeffries",
+   "name": "Ben Jeffries",
+   "problem": "Card Wakefield 1998, but in 1998 he was 17–18 and not yet professional. He debuted with St George Illawarra in 2001 and was at Wakefield 2002–07 and 2010–11. A 2010 card already exists.",
+   "actualSeasonsAtClub": "2002–2007; 2010–2011",
+   "suggestedYear": 2004,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ben_Jeffries"
+   ]
+  },
+  {
+   "id": "huddersfield-hist-aaron-murphy",
+   "name": "Aaron Murphy",
+   "problem": "Card Huddersfield 2006, but he was at Wakefield 2008–11 and Huddersfield 2012–20, so 2006 is before his first-team career.",
+   "actualSeasonsAtClub": "2012–2020",
+   "suggestedYear": 2014,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Aaron_Murphy"
+   ]
+  },
+  {
+   "id": "catalans-hist-stacey-jones",
+   "name": "Stacey Jones",
+   "problem": "Card Catalans 1994. Catalans did not exist; Jones was at Auckland 1995–2005 and Catalans 2006–2007.",
+   "actualSeasonsAtClub": "2006–2007",
+   "suggestedYear": null,
+   "suggestedAction": "hide (catalans-hist-stacy-jones 2006 and catalans-hist-stacey-jones-2007 already cover his Catalans seasons)",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Stacey_Jones"
+   ]
+  },
+  {
+   "id": "catalans-hist-stacey-jones-2008",
+   "name": "Stacey Jones",
+   "problem": "Card Catalans 2008, but his Catalans infobox spell is 2006–2007 (45 matches) and he next played for NZ Warriors in 2009.",
+   "actualSeasonsAtClub": "2006–2007",
+   "suggestedYear": null,
+   "suggestedAction": "hide or move to 2006",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Stacey_Jones"
+   ]
+  },
+  {
+   "id": "toulouse-hist-joe-cator-2022",
+   "name": "Joe Cator",
+   "problem": "Card Toulouse 2022, but he was at Hull FC 2020–2024 and joined Toulouse in 2024.",
+   "actualSeasonsAtClub": "2024–",
+   "suggestedYear": null,
+   "suggestedAction": "hide (2024 and 2025 Toulouse cards exist)",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Joe_Cator"
+   ]
+  },
+  {
+   "id": "toulouse-hist-joe-cator-2023",
+   "name": "Joe Cator",
+   "problem": "Card Toulouse 2023, but he was at Hull FC 2020–2024 (a Hull FC 2023 card exists) and joined Toulouse in 2024.",
+   "actualSeasonsAtClub": "2024–",
+   "suggestedYear": null,
+   "suggestedAction": "hide",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Joe_Cator"
+   ]
+  }
+ ],
+ "sampleCheck": {
+  "checked": 0,
+  "errors": [],
+  "confirmed": []
+ },
+ "unverified": []
+}

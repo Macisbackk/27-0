@@ -1,0 +1,429 @@
+{
+  "generatedAt": "2026-10-22T16:29:22+00:00",
+  "entries": [
+    {
+      "honour": "superLeagueChampion",
+      "year": 2026,
+      "club": "Wakefield Trinity",
+      "rule": "Grand Final 17",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Max Jowitt",
+          "ids": [
+            "wakefield-cur-max-jowitt"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Lachlan Walmsley",
+          "ids": [
+            "wakefield-cur-lachlan-walmsley"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Cameron Scott",
+          "ids": [
+            "wakefield-cur-cameron-scott"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Corey Hall",
+          "ids": [
+            "wakefield-cur-corey-hall"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Tom Johnstone",
+          "ids": [
+            "wakefield-cur-tom-johnstone"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Jake Trueman",
+          "ids": [
+            "wakefield-cur-jake-trueman"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Jack Sinfield",
+          "ids": [
+            "wakefield-cur-jack-sinfield"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Mike McMeeken",
+          "ids": [
+            "wakefield-cur-mike-mcmeeken"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Tyson Smoothy",
+          "ids": [
+            "wakefield-cur-tyson-smoothy"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Ky Rodwell",
+          "ids": [
+            "wakefield-cur-ky-rodwell"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Isaiah Vagana",
+          "ids": [
+            "wakefield-cur-isaiah-vagana"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Zac Lipowicz",
+          "ids": [
+            "catalans-cur-zac-lipowicz"
+          ],
+          "note": "Only row in data is a Catalans Dragons current-squad row (2026); same person played the GF for Wakefield - check his club in current-squads.json"
+        },
+        {
+          "name": "Jazz Tevaga",
+          "ids": [
+            "wakefield-cur-jazz-tevaga"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Mason Lino",
+          "ids": [
+            "wakefield-cur-mason-lino"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Jay Pitts",
+          "ids": [
+            "wakefield-cur-jay-pitts"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Caleb Hamlin-Uele",
+          "ids": [
+            "wakefield-cur-caleb-hamlin-uele"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Caius Faatili",
+          "ids": [
+            "wakefield-cur-caius-faatili"
+          ],
+          "note": ""
+        }
+      ],
+      "sources": [
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/how-super-league-grand-final-was-won-wakefield-trinity-23-warrington-wolves-10-match-report-9263085",
+        "https://www.yorkshireeveningpost.co.uk/sport/rugby-league/super-league-grand-final-wakefield-trinity-and-warrington-wolves-name-21-man-squads-for-old-trafford-9246296",
+        "https://skysports.com/rugby-league/warrington-vs-wakefield/report/63349"
+      ],
+      "note": "Wakefield Trinity 23-10 Warrington Wolves, Super League Grand Final, Old Trafford, 3 October 2026 (att. 71,728). Wakefield's first Super League title."
+    },
+    {
+      "honour": "manOfSteel",
+      "year": 2026,
+      "club": "Wigan Warriors",
+      "rule": "award",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Brad O'Neill",
+          "ids": [
+            "wigan-cur-brad-o-neill"
+          ],
+          "note": ""
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Man_of_Steel_Awards",
+        "https://www.yorkshirepost.co.uk/sport/rugby-league/super-league-2026-awards-the-shocks-stars-and-moments-that-defined-the-season-9276985",
+        "https://www.skysports.com/share/13590959"
+      ],
+      "note": "Announced 29 Sept 2026; beat Adam Keighran and Lachie Miller on the shortlist."
+    },
+    {
+      "honour": "dreamTeam",
+      "year": 2026,
+      "club": "various",
+      "rule": "award",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Lachlan Miller",
+          "ids": [
+            "leeds-cur-lachie-miller"
+          ],
+          "note": "FB"
+        },
+        {
+          "name": "Maika Sivo",
+          "ids": [
+            "leeds-cur-maika-sivo"
+          ],
+          "note": "WG"
+        },
+        {
+          "name": "Ash Handley",
+          "ids": [
+            "leeds-cur-ash-handley"
+          ],
+          "note": "CE"
+        },
+        {
+          "name": "Umyla Hanley",
+          "ids": [
+            "leigh-cur-umyla-hanley"
+          ],
+          "note": "CE"
+        },
+        {
+          "name": "Zach Eckersley",
+          "ids": [
+            "wigan-cur-zach-eckersley"
+          ],
+          "note": "WG"
+        },
+        {
+          "name": "Brodie Croft",
+          "ids": [
+            "leeds-cur-brodie-croft"
+          ],
+          "note": "SO"
+        },
+        {
+          "name": "Jake Connor",
+          "ids": [
+            "leeds-cur-jake-connor"
+          ],
+          "note": "SH"
+        },
+        {
+          "name": "Joe Ofahengaue",
+          "ids": [
+            "leigh-cur-joe-ofahengaue"
+          ],
+          "note": "PR"
+        },
+        {
+          "name": "Brad O'Neill",
+          "ids": [
+            "wigan-cur-brad-o-neill"
+          ],
+          "note": "HK"
+        },
+        {
+          "name": "Caleb Hamlin-Uele",
+          "ids": [
+            "wakefield-cur-caleb-hamlin-uele"
+          ],
+          "note": "PR"
+        },
+        {
+          "name": "Mathieu Jussaume",
+          "ids": [
+            "toulouse-cur-mathieu-jussaume"
+          ],
+          "note": "SR"
+        },
+        {
+          "name": "James McDonnell",
+          "ids": [
+            "leeds-cur-james-mcdonnell"
+          ],
+          "note": "SR"
+        },
+        {
+          "name": "Ben Currie",
+          "ids": [
+            "warrington-cur-ben-currie"
+          ],
+          "note": "LF"
+        }
+      ],
+      "sources": [
+        "https://www.zerotackle.com/ex-nrl-players-light-up-super-league-dream-team-as-bears-signing-makes-cut-238112/",
+        "https://www.yorkshirepost.co.uk/sport/rugby-league/super-league-2026-awards-the-shocks-stars-and-moments-that-defined-the-season-9276985"
+      ],
+      "note": "Full XIII from ZeroTackle (15 Sep 2026); Yorkshire Post confirms Hamlin-Uele was Wakefield's only Dream Team pick. No second source for the full list found."
+    },
+    {
+      "honour": "superLeagueChampion",
+      "year": 1996,
+      "club": "St Helens",
+      "rule": "10+ league apps",
+      "preShield": false,
+      "players": [
+        {
+          "name": "Steve Prescott",
+          "ids": [],
+          "note": "20 apps",
+          "otherClubIds": [
+            "hull-fc-hist-steve-prescott"
+          ]
+        },
+        {
+          "name": "Paul Newlove",
+          "ids": [
+            "st-helens-leg-paul-newlove-2002",
+            "paul-newlove"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Anthony Sullivan",
+          "ids": [
+            "st-helens-hist-anthony-sullivan-2000",
+            "st-helens-hist-anthony-sullivan"
+          ],
+          "note": "15 apps"
+        },
+        {
+          "name": "Karle Hammond",
+          "ids": [
+            "st-helens-hist-karle-hammond"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Bobbie Goulding",
+          "ids": [
+            "st-helens-hist-bobbie-goulding"
+          ],
+          "note": "19 apps"
+        },
+        {
+          "name": "Apollo Perelini",
+          "ids": [
+            "st-helens-hist-apollo-perelini-2000",
+            "st-helens-hist-apollo-perelini"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Keiron Cunningham",
+          "ids": [
+            "st-helens-hist-keiron-cunningham-2000",
+            "st-helens-hist-keiron-cunningham-2006",
+            "st-helens-hist-keiron-cunningham-2002",
+            "keiron-cunningham",
+            "st-helens-hist-keiron-cunningham-2009"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Ian Pickavance",
+          "ids": [
+            "st-helens-hist-ian-pickavance"
+          ],
+          "note": "22 apps"
+        },
+        {
+          "name": "Chris Joynt",
+          "ids": [
+            "st-helens-hist-chris-joynt-2000",
+            "st-helens-hist-chris-joynt-2002",
+            "chris-joynt"
+          ],
+          "note": "18 apps"
+        },
+        {
+          "name": "Simon Booth",
+          "ids": [],
+          "note": "10 apps",
+          "otherClubIds": [
+            "hull-fc-hist-simon-booth"
+          ]
+        },
+        {
+          "name": "Danny Arnold",
+          "ids": [],
+          "note": "19 apps",
+          "otherClubIds": [
+            "huddersfield-hist-danny-arnold"
+          ]
+        },
+        {
+          "name": "Adam Fogerty",
+          "ids": [
+            "st-helens-hist-era-adam-fogerty"
+          ],
+          "note": "13 apps"
+        },
+        {
+          "name": "Derek McVey",
+          "ids": [
+            "st-helens-hist-derek-mcvey"
+          ],
+          "note": "20 apps"
+        },
+        {
+          "name": "Andy Haigh",
+          "ids": [
+            "st-helens-hist-andy-haigh"
+          ],
+          "note": "11 apps"
+        },
+        {
+          "name": "Alan Hunte",
+          "ids": [],
+          "note": "~19 apps (grid count); 23 apps all comps per Wikipedia",
+          "otherClubIds": [
+            "wakefield-hist-alan-hunte"
+          ]
+        },
+        {
+          "name": "Tommy Martyn",
+          "ids": [
+            "st-helens-hist-tommy-martyn-2000",
+            "tommy-martyn"
+          ],
+          "note": "~15 apps (grid count); 17 all comps"
+        },
+        {
+          "name": "Vila Matautia",
+          "ids": [
+            "st-helens-hist-vila-mata-utia"
+          ],
+          "note": "~16 apps (grid count); 21 all comps"
+        },
+        {
+          "name": "Chris Morley",
+          "ids": [
+            "st-helens-hist-chris-morley"
+          ],
+          "note": "~20 apps (grid count); 22 all comps"
+        },
+        {
+          "name": "Andy Northey",
+          "ids": [
+            "st-helens-hist-andy-northey"
+          ],
+          "note": "10 apps (grid count); 15 all comps - borderline"
+        }
+      ],
+      "sources": [
+        "https://www.rugbyleagueproject.org/seasons/super-league-1996/st-helens/summary.html",
+        "https://www.rugbyleagueproject.org/seasons/super-league-1996/st-helens/players.html",
+        "https://en.wikipedia.org/wiki/1996_St_Helens_R.F.C._season"
+      ],
+      "note": "Super League I had no Grand Final; St Helens finished top (P22 W20 L2, 40 pts) and were champions. League apps (starts+bench, SL rounds only) from Rugby League Project summary; Hunte/Martyn/Mata'utia/Morley/Northey counts derived from RLP per-match grid (approx.: Hunte ~19, Martyn ~15, Mata'utia ~16, Morley ~20, Northey 10). Excluded with 9 league apps: Joey Hayes, Scott Gibbs, Andy Leathem; also Dean Busby (2), Paul Anderson, John McAtee, Jon Neill, Phil Veivers (cup only)."
+    }
+  ],
+  "unverified": []
+}
