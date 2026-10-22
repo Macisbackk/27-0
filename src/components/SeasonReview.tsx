@@ -33,7 +33,7 @@ import { formatRecordWithPercentage } from "@/lib/lifetime-stats";
 import { LeagueTable } from "./LeagueTable";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { runSeasonReviewValidation } from "@/lib/validation/season-review-validation";
-import { NORMAL, MANAGER } from "@/lib/ui/design-system";
+import { REVIEW_STAT_GRID } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GuestSaveNudge } from "@/components/EconomyExplainer";
 import { useAuth } from "@/lib/auth-context";
@@ -219,7 +219,7 @@ export function SeasonReview({
       ].filter((line): line is string => Boolean(line));
 
       return {
-        title: `Daily: ${dailyScenario.forceOpponentClub}`,
+        title: `Daily: ${dailyScenario.ruleTitle}`,
         subtitle: dailyScenario.eraMode ? "Era Daily Challenge" : "Daily Challenge",
         recordLine: formatRecordWithPercentage(
           seasonResult.wins,
@@ -276,53 +276,44 @@ export function SeasonReview({
       diagnoseLabel="QuickModeSeasonReview"
       className={
         showPlayoffPrompt
-          ? "pb-[max(1rem,env(safe-area-inset-bottom))] max-sm:pb-[calc(var(--mobile-button-height)+1.25rem+env(safe-area-inset-bottom))]"
-          : "pb-[max(1rem,env(safe-area-inset-bottom))]"
+          ? "fl-review pb-[max(1rem,env(safe-area-inset-bottom))] max-sm:pb-[calc(var(--mobile-button-height)+1.25rem+env(safe-area-inset-bottom))]"
+          : "fl-review pb-[max(1rem,env(safe-area-inset-bottom))]"
       }
     >
         {showCelebration && <Confetti />}
 
           <div className="relative flex w-full min-w-0 flex-col items-center py-2 sm:py-4">
-            <div className="manager-section w-full items-center px-0">
+            <div className="mx-auto flex w-full min-w-0 max-w-[var(--layout-page-compact)] flex-col gap-3 sm:gap-4">
             <motion.header
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="w-full min-w-0 text-center"
+              className="w-full min-w-0 px-1 pt-1 text-center"
             >
-              <p
-                className={`${TYPO.eyebrow} ${NORMAL.reviewAccent}`}
-              >
+              <p className={`${TYPO.eyebrow} text-[color:var(--fl-muted)]`}>
                 {reviewLabel}
               </p>
 
-              <ReviewSubmissionNotice
-                submittedOnline={submittedOnline}
-                specialRun={isSpecialMode}
-                boostedRun={boostedRun}
-                dailyChallenge={showDailyPresentation}
-              />
-
               <motion.div
-                className="mt-3 sm:mt-4"
+                className="mt-2"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
               >
                 <p
-                  className="font-display text-2xl font-black uppercase tracking-tight sm:text-5xl"
+                  className="fl-number text-[44px] sm:text-[56px]"
                   style={{
                     color: gradeInfo.color,
                   }}
                 >
                   {gradeInfo.grade} Grade
                 </p>
-                <p className={`mt-1 sm:mt-2 ${TYPO.eyebrow} text-accent-gold`}>
+                <p className={`mt-3 ${TYPO.eyebrow} text-accent-gold`}>
                   {getSeasonStoryHeading(mode)}
                 </p>
-                <p className={`mt-1 ${TYPO.body} font-semibold text-gray-300`}>
+                <p className="mt-0.5 text-[17px] font-bold leading-snug text-white">
                   {gradeInfo.label}
                 </p>
-                <p className="mx-auto mt-2 hidden max-w-md text-sm leading-relaxed text-gray-500 sm:mt-3 sm:block">
+                <p className={`mx-auto mt-2 hidden max-w-md sm:block ${TYPO.muted}`}>
                   {getSeasonReviewStoryBio(
                     mode,
                     gradeInfo.grade,
@@ -340,7 +331,7 @@ export function SeasonReview({
 
               {isPerfect && (
                 <motion.h1
-                  className="mt-3 font-display text-xl font-black text-accent-gold sm:mt-4 sm:text-4xl"
+                  className="fl-number mt-3 text-[32px] text-accent-gold sm:text-[40px]"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
@@ -348,16 +339,23 @@ export function SeasonReview({
                   27-0 achieved
                 </motion.h1>
               )}
+
+              <ReviewSubmissionNotice
+                submittedOnline={submittedOnline}
+                specialRun={isSpecialMode}
+                boostedRun={boostedRun}
+                dailyChallenge={showDailyPresentation}
+              />
             </motion.header>
 
             {showPlayoffPrompt ? (
               <motion.div
-                className="mt-4 w-full text-center"
+                className="w-full px-1 text-center"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25 }}
               >
-                <p className={TYPO.bodySm}>
+                <p className={TYPO.muted}>
                   Play-offs unlocked — finish the knockout stage to earn more
                   Club Funds
                 </p>
@@ -367,7 +365,7 @@ export function SeasonReview({
             <ClubFundsEarned payout={clubFundsPayout} />
 
             <CollapsibleReviewSection title="Season Summary" delay={0.32}>
-              <div className={`${MANAGER.statGrid2} mx-auto max-w-lg`}>
+              <div className={`${REVIEW_STAT_GRID} mx-auto max-w-lg`}>
                 <GameStatCard
                   label="Regular Season Record"
                   value={`${Math.round(seasonResult.wins)}-${Math.round(seasonResult.losses)}`}
@@ -392,7 +390,7 @@ export function SeasonReview({
                 />
               </div>
               {missedPlayoffs ? (
-                <p className="mt-3.5 text-center text-sm font-semibold text-gray-500 sm:mt-4">
+                <p className={`mt-3 text-center ${TYPO.label}`}>
                   Missed the play-offs
                 </p>
               ) : null}
@@ -464,7 +462,7 @@ export function SeasonReview({
             </CollapsibleReviewSection>
 
             <motion.footer
-              className="mt-6 w-full space-y-3"
+              className="mt-1 w-full space-y-3"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.65 }}
@@ -501,7 +499,7 @@ export function SeasonReview({
           </div>
 
         {showPlayoffPrompt && (
-          <div className="sticky bottom-0 z-[1] mt-4 border-t border-theme-tertiary/25 bg-[rgba(5,10,9,0.98)] px-[var(--layout-page-pad-inline)] py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_32px_rgba(0,0,0,0.45)]">
+          <div className="sticky bottom-0 z-[1] mt-4 border-t border-white/[0.06] bg-[rgba(10,17,14,0.96)] px-[var(--layout-page-pad-inline)] py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
             <div className="mx-auto w-full max-w-[var(--layout-page-compact)]">
               <GameButton
                 variant="theme"

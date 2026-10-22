@@ -54,6 +54,8 @@ export const STORAGE_KEYS = {
   miniGamesLeaderboard: "27-0-mini-games-leaderboard",
   wordleRun: "27-0-wordle-run",
   wordleStats: "27-0-wordle-stats",
+  gridRun: "27-0-grid-run",
+  gridStats: "27-0-grid-stats",
   hangmanRun: "27-0-hangman-run",
   hangmanStats: "27-0-hangman-stats",
   higherLowerRun: "27-0-higher-lower-run",

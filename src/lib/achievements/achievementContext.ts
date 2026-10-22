@@ -4,6 +4,7 @@ import { getUiThemeStoreState } from "../storage/ui-theme-store";
 import { UI_THEMES } from "../ui-themes";
 import { loadQuizStats } from "../quiz/storage";
 import { loadWordleStats } from "../mini-games/wordle/storage";
+import { loadGridStats } from "../mini-games/grid/storage";
 import { loadHangmanStats } from "../mini-games/hangman/storage";
 import { loadHigherLowerStats } from "../mini-games/higher-lower/storage";
 
@@ -172,6 +173,7 @@ export function buildAchievementProgress(
   const quickModeWins = sumStatWins();
   const quizStats = loadQuizStats();
   const wordleStats = loadWordleStats();
+  const gridStats = loadGridStats();
   const hangmanStats = loadHangmanStats();
   const higherLowerStats = loadHigherLowerStats();
 
@@ -199,6 +201,7 @@ export function buildAchievementProgress(
     miniGamesPlayed:
       quizStats.quizzesPlayed +
       wordleStats.played +
+      gridStats.played +
       hangmanStats.played +
       higherLowerStats.plays,
   };

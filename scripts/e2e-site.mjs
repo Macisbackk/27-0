@@ -11,7 +11,7 @@ import { chromium } from "playwright";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 const ROUTES = [
-  "/", "/play", "/play?era=1", "/play?daily=1", "/manager", "/mini-games", "/mini-games/quiz", "/mini-games/wordle",
+  "/", "/play", "/play?era=1", "/play?daily=1", "/manager", "/mini-games", "/mini-games/quiz", "/mini-games/wordle", "/mini-games/grid",
   "/quiz", "/leaderboard", "/stats", "/profile", "/store",
   "/showcase", "/settings", "/login", "/auth/callback", "/auth/reset-password",
 ];
@@ -192,6 +192,27 @@ await miniGame("/mini-games/wordle", "Wordle", async () => {
     await page.waitForTimeout(250);
   }
   for (let i = 0; i < 4; i++) await tapFirst(page, [/Reveal clue/i]);
+});
+
+await miniGame("/mini-games/grid", "Grid", async () => {
+  for (const guess of ["a", "Smith", "😀", "x".repeat(80), "Sam Tomkins", "Kevin Sinfield", "James Roby", "Jamie Peacock", "Rob Burrow", "Paul Wellens", "Danny McGuire"]) {
+    const cell = page.getByRole("button", { name: /: empty$/i }).first();
+    if (!(await cell.isVisible().catch(() => false))) break;
+    await cell.click({ timeout: 2000 }).catch(() => {});
+    const input = page.getByRole("combobox").or(page.locator("input[type='text'], input:not([type])")).first();
+    if (!(await input.isVisible().catch(() => false))) break;
+    await input.fill(guess);
+    await page.keyboard.press("Enter");
+    await page.waitForTimeout(200);
+  }
+  await tapFirst(page, [/Finish now/i]);
+  await tapFirst(page, [/Tap again to finish/i]);
+  await page.waitForTimeout(400);
+  await tapFirst(page, [/^Nice$/i]);
+  await tapFirst(page, [/Copy result/i]);
+  await tapFirst(page, [/Practice grid/i]);
+  await page.waitForTimeout(400);
+  await tapFirst(page, [/Back to today/i]);
 });
 
 await miniGame("/mini-games/quiz", "Quiz", async () => {

@@ -17,14 +17,14 @@ export function BracketMobileRoundNav({
   onViewRoundChange,
   getLabel,
   getShortLabel,
-  activeClassName = "border-theme-primary/60 bg-theme-primary/15 text-theme-primary",
+  activeClassName = "bg-pitch-800 text-white",
 }: BracketMobileRoundNavProps) {
   const useSnapScroll = rounds.length >= 5;
 
   if (useSnapScroll) {
     return (
       <div
-        className="bracket-round-nav flex snap-x snap-mandatory gap-1.5 overflow-x-auto pb-0.5 scroll-pl-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:hidden [&::-webkit-scrollbar]:hidden"
+        className="bracket-round-nav flex snap-x snap-mandatory gap-1 overflow-x-auto rounded-[14px] bg-pitch-950 p-1 scroll-pl-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:hidden [&::-webkit-scrollbar]:hidden"
         role="tablist"
         aria-label="Bracket rounds"
       >
@@ -41,22 +41,22 @@ export function BracketMobileRoundNav({
               role="tab"
               aria-selected={isViewing}
               onClick={() => onViewRoundChange(round)}
-              className={`min-w-[4.25rem] flex-none snap-start rounded-lg border px-2.5 py-2.5 text-center transition ${
+              className={`min-h-[44px] min-w-[4.25rem] flex-none snap-start rounded-[10px] px-2.5 py-1.5 text-center transition ${
                 isViewing
                   ? activeClassName
-                  : "border-pitch-600/50 bg-pitch-900/50 text-gray-400 hover:border-pitch-500/60 hover:text-gray-200"
-              } ${isFinal && isLive ? "border-accent-gold/40" : ""}`}
+                  : "text-[color:var(--fl-muted)] hover:text-white"
+              }`}
             >
-              <span className="block font-display text-xs font-black uppercase tracking-wide">
+              <span className="block text-[13px] font-bold">
                 {shortLabel}
               </span>
               <span
-                className={`mt-0.5 block truncate text-[9px] font-medium uppercase tracking-wider ${
+                className={`mt-0.5 block truncate text-[11px] font-semibold ${
                   isLive
                     ? isFinal
                       ? "text-accent-gold"
-                      : "text-mode-current"
-                    : "text-gray-500"
+                      : "text-theme-primary"
+                    : "text-[color:var(--fl-muted)]"
                 }`}
               >
                 {isLive ? "Live" : getLabel(round)}
@@ -77,7 +77,7 @@ export function BracketMobileRoundNav({
 
   return (
     <div
-      className={`bracket-round-nav grid gap-2 sm:hidden ${columnClass}`}
+      className={`bracket-round-nav grid gap-1 rounded-[14px] bg-pitch-950 p-1 sm:hidden ${columnClass}`}
       role="tablist"
       aria-label="Bracket rounds"
     >
@@ -94,22 +94,22 @@ export function BracketMobileRoundNav({
             role="tab"
             aria-selected={isViewing}
             onClick={() => onViewRoundChange(round)}
-            className={`min-w-0 rounded-lg border px-2 py-2.5 text-center transition ${
+            className={`min-h-[44px] min-w-0 rounded-[10px] px-2 py-1.5 text-center transition ${
               isViewing
                 ? activeClassName
-                : "border-pitch-600/50 bg-pitch-900/50 text-gray-400 hover:border-pitch-500/60 hover:text-gray-200"
-            } ${isFinal && isLive ? "border-accent-gold/40" : ""}`}
+                : "text-[color:var(--fl-muted)] hover:text-white"
+            }`}
           >
-            <span className="block font-display text-xs font-black uppercase tracking-wide">
+            <span className="block text-[13px] font-bold">
               {shortLabel}
             </span>
             <span
-              className={`mt-0.5 block truncate text-[9px] font-medium uppercase tracking-wider ${
+              className={`mt-0.5 block truncate text-[11px] font-semibold ${
                 isLive
                   ? isFinal
                     ? "text-accent-gold"
-                    : "text-mode-current"
-                  : "text-gray-500"
+                    : "text-theme-primary"
+                  : "text-[color:var(--fl-muted)]"
               }`}
             >
               {isLive ? "Live" : getLabel(round)}

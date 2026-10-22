@@ -1,4 +1,3 @@
-import { ERA_PLAYABLE_CLUBS } from "./clubs/super-league-display";
 import { STORAGE_KEYS } from "./storage/keys";
 
 export const DAILY_CHALLENGE_MODE = "CLASSIC" as const;
@@ -15,73 +14,129 @@ const DEFAULT_META: DailyChallengeMeta = {
   lastCompletedDateKey: null,
 };
 
+/**
+ * Daily rule types. Each day plays one, rotated so the same type never runs two days in a
+ * row (see getDailyRuleType). Spin enforcement lives in lib/game/daily-rule-filter.ts.
+ */
+export const DAILY_RULE_TYPES = [
+  "giant-killers",
+  "one-club",
+  "era-night",
+  "underdogs",
+  "no-respins",
+  "homegrown",
+  "overseas",
+] as const;
+export type DailyRuleType = (typeof DAILY_RULE_TYPES)[number];
+
+export type DailyChallengeRule =
+  /** Every league opponent is one of the strongest clubs. */
+  | { type: "giant-killers"; club: string }
+  /** Every spin lands on one club's history (Era pools, any year). */
+  | { type: "one-club"; club: string }
+  /** Every spin lands on a team-year inside the window. */
+  | { type: "era-night"; fromYear: number; toYear: number; label: string }
+  /** Only players rated `maxRating` or lower are offered. */
+  | { type: "underdogs"; maxRating: number }
+  /** Respins are disabled for the run. */
+  | { type: "no-respins" }
+  /** English, Welsh, Scottish and Irish players only. */
+  | { type: "homegrown" }
+  /** Players from outside Britain and Ireland only. */
+  | { type: "overseas" };
+
 export type DailyChallengeKind = string;
 
 export interface DailyChallengeScenario {
   id: DailyChallengeKind;
+  /** Same as ruleTitle — kept for Club Funds labels and older callers. */
   title: string;
+  /** Same as ruleSummary. */
   blurb: string;
-  /** Force every league opponent to this club name. */
-  forceOpponentClub: string;
+  rule: DailyChallengeRule;
+  ruleType: DailyRuleType;
+  /** Short rule name for cards and banners (≤ 18 chars), e.g. "One club: Wigan". */
+  ruleTitle: string;
+  /** One-line explanation (≤ 60 chars). */
+  ruleSummary: string;
+  /** Force every league opponent to this club (Giant killers days only). */
+  forceOpponentClub: string | null;
   /** Historic spin pool + Era sim when true. */
   eraMode: boolean;
   leagueLeadersBonus: number;
   playoffTitleBonus: number;
 }
 
-/** Current Super League clubs for Current-style dailies. */
-const DAILY_CURRENT_OPPONENT_CLUBS = [
+/** Nationalities that count as "Homegrown" (everything else known is "Overseas"). */
+export const DAILY_HOMEGROWN_NATIONALITIES = [
+  "England",
+  "Wales",
+  "Scotland",
+  "Ireland",
+] as const;
+
+/**
+ * Giant killers opponents: the four strongest current clubs by base strength
+ * (lib/game/club-strength.ts). Listed here rather than computed so this module — imported by
+ * the nav on every page — doesn't pull in the club catalogue; scripts/test-daily-rules.ts
+ * fails if it drifts from the strength table.
+ */
+export const GIANT_KILLER_CLUBS: readonly string[] = [
   "Wigan Warriors",
   "St Helens",
   "Leeds Rhinos",
-  "Catalans Dragons",
-  "Hull KR",
   "Warrington Wolves",
-  "Huddersfield Giants",
-  "Hull FC",
-  "Leigh Leopards",
-  "Castleford Tigers",
-  "Wakefield Trinity",
-  "Bradford Bulls",
-  "Toulouse Olympique",
-  "York Knights",
-] as const;
+];
 
-/** Era-style dailies — Current clubs plus historic-only Super League sides. */
-const DAILY_ERA_OPPONENT_CLUBS = [...ERA_PLAYABLE_CLUBS] as const;
+/**
+ * One club days — Era clubs with enough team-years that all 13 slots fill under the rule
+ * (checked for every day by scripts/test-daily-rules.ts). Short names keep titles ≤ 18 chars.
+ */
+const ONE_CLUB_OPTIONS: readonly { club: string; short: string }[] = [
+  { club: "Bradford Bulls", short: "Bradford" },
+  { club: "St Helens", short: "Saints" },
+  { club: "Catalans Dragons", short: "Catalans" },
+  { club: "Leeds Rhinos", short: "Leeds" },
+  { club: "Wigan Warriors", short: "Wigan" },
+  { club: "Hull FC", short: "Hull FC" },
+  { club: "Salford Red Devils", short: "Salford" },
+];
 
-function scenarioForClub(
-  club: string,
-  eraMode: boolean
-): DailyChallengeScenario {
-  const short = club
-    .replace(
-      /\s+(Warriors|Rhinos|Dragons|Wolves|Giants|Leopards|Tigers|Red Devils|Trinity|Broncos|Vikings|Bulls)$/i,
-      ""
-    )
-    .trim();
-  const eliteHome = short === "Wigan" || short === "St Helens";
-  return {
-    id: `${eraMode ? "era" : "current"}-all-${club
-      .toLowerCase()
-      .replace(/\s+/g, "-")}`,
-    title: club,
-    blurb: eraMode
-      ? `Era — all ${club}.`
-      : `Current — all ${club}.`,
-    forceOpponentClub: club,
-    eraMode,
-    leagueLeadersBonus: eliteHome ? 75_000 : 70_000,
-    playoffTitleBonus: eliteHome ? 150_000 : 140_000,
-  };
+const ERA_NIGHT_OPTIONS: readonly { fromYear: number; toYear: number; label: string }[] = [
+  { fromYear: 2000, toYear: 2009, label: "2000s" },
+  { fromYear: 2010, toYear: 2019, label: "2010s" },
+];
+
+/**
+ * Underdogs rating cap per spin pool. Tuned by simulation (best-of-3 picks, 25 seasons): these
+ * caps give roughly a 45–50% chance to top the table and 20–35% to win the Grand Final, vs
+ * ~90% / 50–80% in plain Classic. Lower caps (82 / 85) made the Daily near-unwinnable (≤ 12%).
+ */
+const UNDERDOG_MAX_RATING = { current: 85, era: 87 } as const;
+
+/**
+ * Daily bonuses per rule (paid on top of normal Classic Club Funds, first counted attempt only).
+ * The two rules that make the season clearly harder (Giant killers, Underdogs) pay a little more.
+ */
+export const DAILY_RULE_BONUSES: Record<
+  DailyRuleType,
+  { leagueLeadersBonus: number; playoffTitleBonus: number }
+> = {
+  "giant-killers": { leagueLeadersBonus: 80_000, playoffTitleBonus: 160_000 },
+  "one-club": { leagueLeadersBonus: 70_000, playoffTitleBonus: 140_000 },
+  "era-night": { leagueLeadersBonus: 70_000, playoffTitleBonus: 140_000 },
+  underdogs: { leagueLeadersBonus: 80_000, playoffTitleBonus: 160_000 },
+  "no-respins": { leagueLeadersBonus: 70_000, playoffTitleBonus: 140_000 },
+  homegrown: { leagueLeadersBonus: 70_000, playoffTitleBonus: 140_000 },
+  overseas: { leagueLeadersBonus: 70_000, playoffTitleBonus: 140_000 },
+};
+
+/** Whether this rule turns respins off for the run. */
+export function dailyRuleDisablesRespins(
+  rule: DailyChallengeRule | null | undefined
+): boolean {
+  return rule?.type === "no-respins";
 }
-
-const CURRENT_SCENARIOS: DailyChallengeScenario[] =
-  DAILY_CURRENT_OPPONENT_CLUBS.map((club) => scenarioForClub(club, false));
-
-const ERA_SCENARIOS: DailyChallengeScenario[] = DAILY_ERA_OPPONENT_CLUBS.map(
-  (club) => scenarioForClub(club, true)
-);
 
 /** UK calendar day — matches Super League fixture day and avoids SSR/client TZ skew. */
 function todayKey(date = new Date()): string {
@@ -182,11 +237,11 @@ function maybeRecordCompletionFromProgress(
   }
 }
 
-/** Style + club rotation — one daily challenge per calendar day. */
-const ROTATION_SALT = "27-0-daily-v3";
+/** Rule rotation — one daily challenge per UK calendar day. */
+const ROTATION_SALT = "27-0-daily-v4";
 
-function hashDateKey(key: string): number {
-  const seeded = `${ROTATION_SALT}:${key}`;
+function hashString(value: string): number {
+  const seeded = `${ROTATION_SALT}:${value}`;
   let h = 2166136261;
   for (let i = 0; i < seeded.length; i++) {
     h ^= seeded.charCodeAt(i);
@@ -195,48 +250,159 @@ function hashDateKey(key: string): number {
   return h >>> 0;
 }
 
-function pickRawScenario(date: Date): {
-  scenario: DailyChallengeScenario;
-  pool: DailyChallengeScenario[];
-  idx: number;
-} {
-  const key = todayKey(date);
-  const hash = hashDateKey(key);
-  const eraMode = hash % 2 === 1;
-  const pool = eraMode ? ERA_SCENARIOS : CURRENT_SCENARIOS;
-  const idx = Math.floor(hash / 2) % pool.length;
-  return { scenario: pool[idx]!, pool, idx };
+/** Whole days since 1970-01-01 for a YYYY-MM-DD key (calendar maths, no time zone). */
+function dayIndexForKey(key: string): number {
+  const [y, m, d] = key.split("-").map(Number);
+  return Math.floor(Date.UTC(y!, m! - 1, d!) / 86_400_000);
+}
+
+/** Deterministic shuffle of the rule types for one 7-day block (before the seam fix). */
+function rawRuleBlock(block: number): DailyRuleType[] {
+  const order = [...DAILY_RULE_TYPES];
+  let state = hashString(`block:${block}`) || 1;
+  const next = () => {
+    // xorshift32 — tiny, deterministic, good enough for a shuffle.
+    state ^= state << 13;
+    state ^= state >>> 17;
+    state ^= state << 5;
+    return (state >>> 0) / 4_294_967_296;
+  };
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(next() * (i + 1));
+    [order[i], order[j]] = [order[j]!, order[i]!];
+  }
+  return order;
 }
 
 /**
- * Pick today's single challenge: Current- or Era-style, then a club from that
- * pool. Avoids repeating yesterday's resolved club when possible.
+ * Every rule type plays once per 7-day block, in a shuffled order. If a block would open with
+ * the type that closed the previous block, its first two days swap. Only days 0 and 1 ever
+ * move, so a block's last day never changes and the check needs no recursion.
+ */
+function ruleBlock(block: number): DailyRuleType[] {
+  const order = rawRuleBlock(block);
+  const previousLast = rawRuleBlock(block - 1)[order.length - 1];
+  if (order[0] === previousLast) {
+    [order[0], order[1]] = [order[1]!, order[0]!];
+  }
+  return order;
+}
+
+function ruleTypeForKey(key: string): { type: DailyRuleType; block: number } {
+  const dayIndex = dayIndexForKey(key);
+  const n = DAILY_RULE_TYPES.length;
+  const block = Math.floor(dayIndex / n);
+  return { type: ruleBlock(block)[dayIndex - block * n]!, block };
+}
+
+/** Today's rule type (exported for tests and previews). */
+export function getDailyRuleType(date = new Date()): DailyRuleType {
+  return ruleTypeForKey(todayKey(date)).type;
+}
+
+function buildScenario(
+  rule: DailyChallengeRule,
+  eraMode: boolean,
+  ruleTitle: string,
+  ruleSummary: string,
+  forceOpponentClub: string | null = null
+): DailyChallengeScenario {
+  const ruleKey =
+    rule.type === "giant-killers" || rule.type === "one-club"
+      ? `${rule.type}-${rule.club.toLowerCase().replace(/\s+/g, "-")}`
+      : rule.type === "era-night"
+        ? `era-night-${rule.fromYear}`
+        : rule.type === "underdogs"
+          ? `underdogs-${rule.maxRating}`
+          : rule.type;
+  return {
+    id: `${eraMode ? "era" : "current"}-${ruleKey}`,
+    title: ruleTitle,
+    blurb: ruleSummary,
+    rule,
+    ruleType: rule.type,
+    ruleTitle,
+    ruleSummary,
+    forceOpponentClub,
+    eraMode,
+    ...DAILY_RULE_BONUSES[rule.type],
+  };
+}
+
+/**
+ * Pick today's challenge: the rule type comes from the 7-day rotation; its parameter (club,
+ * decade, Current vs Era) steps through its options once per block so it varies week to week.
  */
 export function getDailyChallengeScenario(
   date = new Date()
 ): DailyChallengeScenario {
-  const today = pickRawScenario(date);
+  const { type, block } = ruleTypeForKey(todayKey(date));
+  const typeIndex = DAILY_RULE_TYPES.indexOf(type);
+  // Current/Era alternates by week, offset per type so a week mixes both.
+  const eraWeek = (block + typeIndex) % 2 === 1;
 
-  const yesterday = new Date(date);
-  yesterday.setDate(yesterday.getDate() - 1);
-  const y = pickRawScenario(yesterday);
-  const dayBefore = new Date(yesterday);
-  dayBefore.setDate(dayBefore.getDate() - 1);
-  const before = pickRawScenario(dayBefore);
-  // Yesterday's displayed club (one-level bump vs day-before raw).
-  const yesterdayClub =
-    before.scenario.forceOpponentClub === y.scenario.forceOpponentClub &&
-    y.pool.length > 1
-      ? y.pool[(y.idx + 1) % y.pool.length]!.forceOpponentClub
-      : y.scenario.forceOpponentClub;
-
-  if (
-    yesterdayClub === today.scenario.forceOpponentClub &&
-    today.pool.length > 1
-  ) {
-    return today.pool[(today.idx + 1) % today.pool.length]!;
+  switch (type) {
+    case "giant-killers": {
+      const club = GIANT_KILLER_CLUBS[block % GIANT_KILLER_CLUBS.length]!;
+      return buildScenario(
+        { type, club },
+        eraWeek,
+        "Giant killers",
+        `Every opponent is ${club}. Beat the best.`,
+        club
+      );
+    }
+    case "one-club": {
+      const option = ONE_CLUB_OPTIONS[block % ONE_CLUB_OPTIONS.length]!;
+      return buildScenario(
+        { type, club: option.club },
+        true,
+        `One club: ${option.short}`,
+        `Every spin is a ${option.club} side, any era.`
+      );
+    }
+    case "era-night": {
+      const option = ERA_NIGHT_OPTIONS[block % ERA_NIGHT_OPTIONS.length]!;
+      return buildScenario(
+        { type, ...option },
+        true,
+        `Era night: ${option.label}`,
+        `Every spin is a ${option.fromYear}–${option.toYear} Super League side.`
+      );
+    }
+    case "underdogs": {
+      const maxRating = eraWeek
+        ? UNDERDOG_MAX_RATING.era
+        : UNDERDOG_MAX_RATING.current;
+      return buildScenario(
+        { type, maxRating },
+        eraWeek,
+        `Underdogs: max ${maxRating}`,
+        `No player rated above ${maxRating}. Win it with grafters.`
+      );
+    }
+    case "no-respins":
+      return buildScenario(
+        { type },
+        eraWeek,
+        "No respins",
+        "Respins are off. Every spin is final."
+      );
+    case "homegrown":
+      return buildScenario(
+        { type },
+        eraWeek,
+        "Homegrown",
+        "English, Welsh, Scottish and Irish players only."
+      );
+    case "overseas":
+      return buildScenario(
+        { type },
+        eraWeek,
+        "Overseas stars",
+        "Only players from outside Britain and Ireland."
+      );
   }
-  return today.scenario;
 }
 
 export function getDailyChallengeHref(date = new Date()): string {
@@ -384,12 +550,12 @@ export function getDailyChallengeTotalBonus(
   return scenario.leagueLeadersBonus + scenario.playoffTitleBonus;
 }
 
-/** Smallest Daily bonuses across every scenario (Current and Era) — for "from £Xk" copy. */
+/** Smallest Daily bonuses across every rule — for "from £Xk" copy. */
 export function getDailyChallengeMinimumBonuses(): {
   leagueLeadersBonus: number;
   playoffTitleBonus: number;
 } {
-  const all = [...CURRENT_SCENARIOS, ...ERA_SCENARIOS];
+  const all = Object.values(DAILY_RULE_BONUSES);
   return {
     leagueLeadersBonus: Math.min(...all.map((s) => s.leagueLeadersBonus)),
     playoffTitleBonus: Math.min(...all.map((s) => s.playoffTitleBonus)),

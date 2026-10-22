@@ -1,25 +1,23 @@
 import type { ReactNode } from "react";
 type AwardVariant = "positive" | "negative" | "neutral";
 
+/** Floodlights tile: raised group, no border; colour lives in the title only. */
 const VARIANT_STYLES: Record<
   AwardVariant,
-  { border: string; bg: string; title: string; rating: string }
+  { bg: string; title: string; rating: string }
 > = {
   positive: {
-    border: "border-theme-primary/30",
-    bg: "bg-theme-primary/8",
+    bg: "bg-pitch-800",
     title: "text-theme-primary",
     rating: "text-theme-primary",
   },
   negative: {
-    border: "border-red-500/30",
-    bg: "bg-red-500/5",
+    bg: "bg-pitch-800",
     title: "text-red-400",
     rating: "text-red-400",
   },
   neutral: {
-    border: "border-pitch-600/40",
-    bg: "bg-pitch-900/50",
+    bg: "bg-pitch-800",
     title: "text-accent-gold",
     rating: "text-theme-primary",
   },
@@ -56,10 +54,10 @@ export function RLAwardCard({
 
   return (
     <div
-      className={`rounded-lg border p-3 ${styles.border} ${styles.bg} ${className}`}
+      className={`rounded-[16px] p-3.5 ${styles.bg} ${className}`}
     >
       <p
-        className={`text-[10px] font-bold uppercase tracking-wider ${styles.title}`}
+        className={`text-[13px] font-semibold leading-snug ${styles.title}`}
       >
         {title}
       </p>
@@ -69,7 +67,7 @@ export function RLAwardCard({
           {rankedLines.map((line) => (
             <li
               key={line}
-              className="font-display text-sm font-bold text-white"
+              className="text-[15px] font-bold text-white"
             >
               {line}
             </li>
@@ -78,7 +76,7 @@ export function RLAwardCard({
       ) : (
         <>
           {playerName && (
-            <p className="mt-1 font-display text-sm font-bold text-white">
+            <p className="mt-1 text-[15px] font-bold leading-snug text-white">
               {playerName}
             </p>
           )}
@@ -87,18 +85,20 @@ export function RLAwardCard({
           )}
           {ratingNote && (
             <p
-              className={`mt-0.5 font-display text-xs font-bold ${styles.rating}`}
+              className={`mt-0.5 text-xs font-bold ${styles.rating}`}
             >
               {ratingNote}
             </p>
           )}
           {(club || detail) && (
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-[color:var(--fl-muted)]">
               {[club, detail].filter(Boolean).join(" · ")}
             </p>
           )}
           {narrative && (
-            <p className="mt-2 text-xs italic text-gray-400">{narrative}</p>
+            <p className="mt-2 text-xs leading-relaxed text-[color:var(--fl-muted)]">
+              {narrative}
+            </p>
           )}
         </>
       )}

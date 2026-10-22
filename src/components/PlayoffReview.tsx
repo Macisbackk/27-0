@@ -20,7 +20,7 @@ import { SquadReviewSection } from "./SquadReviewSection";
 import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { PlayoffBracketDisplay } from "./PlayoffBracketDisplay";
 import { Confetti } from "./Confetti";
-import { MANAGER, NORMAL } from "@/lib/ui/design-system";
+import { MANAGER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
 import { GameStatCard } from "@/components/ui/GameStatCard";
@@ -173,7 +173,7 @@ export function PlayoffReview({
     return (
       <ShareSeasonButton
         data={{
-          title: `Daily: ${dailyScenario.forceOpponentClub}`,
+          title: `Daily: ${dailyScenario.ruleTitle}`,
           subtitle: dailyScenario.eraMode
             ? "Era Daily Challenge"
             : "Daily Challenge",
@@ -197,41 +197,39 @@ export function PlayoffReview({
   return (
     <DocumentPageShell
       diagnoseLabel="QuickModePlayoffReview"
-      className="pb-[max(1rem,env(safe-area-inset-bottom))]"
+      className="fl-review pb-[max(1rem,env(safe-area-inset-bottom))]"
     >
       {isChampion && <Confetti />}
 
-      <div className="relative flex w-full flex-col items-center py-3 sm:py-5">
-        <div className="manager-section w-full items-center px-0">
+      <div className="relative flex w-full min-w-0 flex-col items-center py-2 sm:py-4">
+        <div className="mx-auto flex w-full min-w-0 max-w-[var(--layout-page-compact)] flex-col gap-3 sm:gap-4">
         <motion.header
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full text-center"
+          className="w-full min-w-0 px-1 pt-1 text-center"
         >
-          <p
-            className={`${TYPO.eyebrow} ${NORMAL.reviewAccent}`}
-          >
+          <p className={`${TYPO.eyebrow} text-[color:var(--fl-muted)]`}>
             {dailyChallengeMode && SHOW_DAILY_CHALLENGE_UI
               ? dailyScenario?.eraMode
                 ? "Era Daily Play-off Review"
                 : "Daily Play-off Review"
               : "Super League Play-off Review"}
           </p>
-          <h1 className={`mt-4 ${TYPO.sectionTitle} text-2xl text-accent-gold sm:text-3xl`}>
+          <h1 className="mt-2 text-[28px] font-bold leading-tight tracking-tight text-accent-gold sm:text-[34px]">
             {getPlayoffFinishLabel(playoffResult.finish)}
           </h1>
-          <p className={`mx-auto mt-3 max-w-md ${TYPO.bodySm}`}>
+          <p className={`mx-auto mt-2 max-w-md ${TYPO.muted}`}>
             {titleBio}
           </p>
           {isChampion && (
-            <p className={`mt-2 ${TYPO.body} font-semibold text-theme-primary`}>
+            <p className="mt-2 text-[15px] font-bold text-theme-primary">
               Super League Champions.
             </p>
           )}
         </motion.header>
 
         <motion.div
-          className="mt-4 w-full"
+          className="w-full"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -325,7 +323,7 @@ export function PlayoffReview({
         )}
 
         <motion.footer
-          className="mt-6 w-full"
+          className="mt-1 w-full"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}

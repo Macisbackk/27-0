@@ -14,6 +14,7 @@ import {
 } from "@/lib/positions";
 import { ScoreboardPanel } from "@/components/ui/ScoreboardPanel";
 import { TYPO } from "@/lib/ui/typography";
+import { ClubShirt } from "./ClubShirt";
 import { PitchSlotCard, pitchSlotLabel, PITCH_SLOT_COMPACT_CLASS, PITCH_SLOT_REVIEW_CLASS, PITCH_SLOT_SIZE_CLASS } from "./PitchSlotCard";
 
 interface RugbyPitchProps {
@@ -150,21 +151,26 @@ function RugbyPitchInner({
           }
         >
           <div
-            className={`relative w-full overflow-hidden rounded-[14px] border border-white/10 shadow-[0_14px_34px_rgba(0,0,0,0.28)] rugby-pitch-pro ${
+            className={`relative w-full overflow-hidden ${
               formationOnly
-                ? "aspect-[5/7.6] min-h-0 max-h-[min(68vh,480px)]"
+                ? "team-sheet-pitch aspect-[5/7.2] min-h-[400px] max-h-[min(520px,calc(100dvh-330px))] rounded-[20px]"
+                : "rugby-pitch-pro rounded-[14px] border border-white/10 shadow-[0_14px_34px_rgba(0,0,0,0.28)]"
+            } ${
+              formationOnly
+                ? ""
                 : compact
                   ? "min-h-[360px] sm:min-h-[540px]"
                   : "min-h-[400px] sm:min-h-[580px] md:min-h-[580px] lg:aspect-[5/8] lg:min-h-0"
             }`}
           >
-            <PitchMarkings />
+            {formationOnly ? <TeamSheetMarkings /> : <PitchMarkings />}
 
             <div className="absolute inset-0 z-10">
               {FORMATION_SLOT_INDICES.map((slotIndex) => {
                 const slot = slotByIndex.get(slotIndex);
-                const coords = FORMATION_COORDS[slotIndex];
-                if (!slot || !coords) return null;
+                const baseCoords = FORMATION_COORDS[slotIndex];
+                if (!slot || !baseCoords) return null;
+                const coords = formationOnly ? teamSheetCoords(baseCoords) : baseCoords;
 
                 const isSelected = selectedSlot === slotIndex;
                 const isHighlight = highlightSlot === slotIndex;
@@ -235,6 +241,31 @@ function RugbyPitchInner({
 }
 
 export const RugbyPitch = memo(RugbyPitchInner);
+
+/** Team sheet rows spread over the whole pitch so shirts and name tags have room. */
+const TEAM_SHEET_TOP: Record<number, number> = { 8: 10, 24: 29, 40: 48, 58: 67, 76: 87 };
+const TEAM_SHEET_LEFT: Record<number, number> = { 14: 13, 34: 37.5, 66: 62.5, 86: 87 };
+function teamSheetCoords(coords: { left: number; top: number }) {
+  return {
+    left: TEAM_SHEET_LEFT[coords.left] ?? coords.left,
+    top: TEAM_SHEET_TOP[coords.top] ?? coords.top,
+  };
+}
+
+/** Quiet pitch for the team sheet: mown bands, try lines and halfway only. */
+function TeamSheetMarkings() {
+  return (
+    <>
+      <div
+        className="absolute inset-0"
+        style={{ background: "repeating-linear-gradient(180deg, #15391f 0 10%, #123219 10% 20%)" }}
+      />
+      <div className="absolute left-0 right-0 top-1/2 h-[2px] -translate-y-1/2 bg-white/[0.13]" aria-hidden />
+      <div className="absolute left-0 right-0 top-[3%] h-px bg-white/[0.08]" aria-hidden />
+      <div className="absolute bottom-[3%] left-0 right-0 h-px bg-white/[0.08]" aria-hidden />
+    </>
+  );
+}
 
 function PitchMarkings() {
   const touchLeft = "6%";
@@ -393,17 +424,23 @@ const SquadMarker = memo(function SquadMarker({
     }
 
     if (fullPlayerNames) {
-      // Floodlights team sheet: a dashed circle with the position underneath.
-      const round = (
+      // Team sheet: a dashed shirt outline with the position on a tag underneath.
+      const ring =
+        accent === "source"
+          ? "ring-2 ring-theme-primary/70"
+          : accent === "target" || selected || highlighted
+            ? "ring-2 ring-accent-gold/60"
+            : "";
+      const shirt = (
         <>
+          <span className={`rounded-xl ${ring} ${interactive ? "text-theme-primary" : "text-white/40"}`}>
+            <ClubShirt kit={null} label="+" size={46} />
+          </span>
           <span
-            className={`flex h-11 w-11 items-center justify-center rounded-full border-2 text-xl font-bold ${stateClass} ${
-              interactive ? "text-theme-primary" : "text-white/40"
+            className={`mt-0.5 max-w-full whitespace-nowrap rounded-md bg-pitch-950/80 px-1.5 py-[3px] text-[10px] font-semibold leading-none ${
+              interactive ? "text-white/85" : "text-white/45"
             }`}
           >
-            +
-          </span>
-          <span className={`mt-1 line-clamp-2 w-full text-center text-[10px] font-semibold leading-[1.1] ${interactive ? "text-white/85" : "text-white/40"}`}>
             {positionLabel}
           </span>
         </>
@@ -414,13 +451,13 @@ const SquadMarker = memo(function SquadMarker({
           onClick={onClick}
           title={tooltip}
           aria-label={`${slot.label}: empty — tap to spin`}
-          className="btn-press flex w-[68px] flex-col items-center rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50"
+          className="btn-press flex w-[76px] flex-col items-center rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50"
         >
-          {round}
+          {shirt}
         </button>
       ) : (
-        <div className="flex w-[68px] flex-col items-center" title={tooltip}>
-          {round}
+        <div className="flex w-[76px] flex-col items-center" title={tooltip}>
+          {shirt}
         </div>
       );
     }

@@ -5,6 +5,8 @@ import { getClubColors } from "@/lib/clubs";
 import { formatPitchSlotPlayerName } from "@/lib/players/display-name";
 import { getPlayerColorClub } from "@/lib/players/run-club";
 import { getEffectivePeakRating } from "@/lib/squad-analysis";
+import { getClubKit } from "@/lib/club-kits";
+import { ClubShirt } from "./ClubShirt";
 
 /** Shared footprint for empty and filled pitch slots — scales with pitch width. */
 export const PITCH_SLOT_SIZE_CLASS =
@@ -57,17 +59,21 @@ export function PitchSlotCard({
     : formatPitchSlotPlayerName(player.name, compact);
 
   if (fullPlayerNames) {
-    // Floodlights team sheet: rating in a club-coloured ring, name underneath.
+    // Team sheet: a two-colour club shirt with the rating on the chest, surname on a tag underneath.
+    const surname = shirtSurname(player.name);
+    const nameSize =
+      surname.length <= 8 ? "text-[11px]" : surname.length <= 10 ? "text-[10px]" : surname.length <= 12 ? "text-[9px]" : "text-[8px]";
     return (
-      <div className={`pitch-slot-card flex w-[68px] flex-col items-center ${className}`} title={`${positionLabel}: ${player.name}`}>
+      <div
+        className={`pitch-slot-card flex w-[76px] flex-col items-center ${className}`}
+        title={`${positionLabel}: ${player.name}`}
+        aria-label={`${positionLabel}: ${player.name}${hardMode ? "" : `, rated ${ratingLabel}`}`}
+      >
+        <ClubShirt kit={getClubKit(colorClub)} label={ratingLabel} size={46} className="drop-shadow-[0_3px_6px_rgba(0,0,0,0.45)]" />
         <span
-          className="fl-number flex h-11 w-11 items-center justify-center rounded-full bg-pitch-950 text-[17px] text-white"
-          style={{ boxShadow: `0 0 0 2.5px ${colors.primary}, 0 0 0 4px ${colors.secondary}55` }}
+          className={`mt-0.5 max-w-full whitespace-nowrap rounded-md bg-pitch-950/95 px-1.5 py-[3px] font-bold leading-none text-white ${nameSize}`}
         >
-          {ratingLabel}
-        </span>
-        <span className="mt-1 w-full text-center text-[10px] font-semibold leading-[1.1] text-white">
-          <TwoLineName name={player.name} />
+          {surname}
         </span>
       </div>
     );
@@ -161,6 +167,12 @@ function TwoLineName({ name }: { name: string }) {
       <span className={`block whitespace-nowrap ${surnameSize}`}>{surname}</span>
     </>
   );
+}
+
+/** Everything after the first name ("Jack de Belin" → "de Belin"); single names stay as they are. */
+export function shirtSurname(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  return parts.length < 2 ? name.trim() : parts.slice(1).join(" ");
 }
 
 /** Pitch tiles are ~56px wide: "Left Second Row" can't fit in two lines, "Left 2nd Row" can. */

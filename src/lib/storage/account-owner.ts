@@ -24,6 +24,9 @@ const ACCOUNT_KEYS: readonly string[] = [
   // Device-only, but submitted to the mini-game leaderboards under whoever is signed in.
   STORAGE_KEYS.quizStats,
   STORAGE_KEYS.wordleStats,
+  STORAGE_KEYS.gridStats,
+  // Today's grid (and whether its reward is banked) belongs to whoever played it.
+  STORAGE_KEYS.gridRun,
   STORAGE_KEYS.hangmanStats,
   STORAGE_KEYS.higherLowerStats,
 ];

@@ -2,22 +2,26 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { FILTER } from "@/lib/ui/design-system";
-import { suggestPlayers, type MiniGamePlayer } from "@/lib/mini-games/players";
+import { suggestPlayers, type GuessablePlayer } from "@/lib/mini-games/players";
 
-export function PlayerAutocomplete({
+export function PlayerAutocomplete<T extends GuessablePlayer>({
   value,
   onChange,
   onPick,
   pool,
   disabled,
   placeholder,
+  autoFocus,
+  label = "Player name",
 }: {
   value: string;
   onChange: (value: string) => void;
-  onPick: (player: MiniGamePlayer) => void;
-  pool: readonly MiniGamePlayer[];
+  onPick: (player: T) => void;
+  pool: readonly T[];
   disabled?: boolean;
   placeholder?: string;
+  autoFocus?: boolean;
+  label?: string;
 }) {
   const listId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
@@ -37,10 +41,11 @@ export function PlayerAutocomplete({
   return (
     <div ref={rootRef} className="relative">
       <label>
-        <span className="sr-only">Player name</span>
+        <span className="sr-only">{label}</span>
         <input
           value={value}
           disabled={disabled}
+          autoFocus={autoFocus}
           placeholder={placeholder ?? "Type a player name"}
           autoComplete="off"
           aria-autocomplete="list"

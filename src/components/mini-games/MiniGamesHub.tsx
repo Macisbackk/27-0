@@ -7,11 +7,12 @@ import { PAGE } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { playUiClick } from "@/lib/sound";
 import { getLocalDateKey } from "@/lib/mini-games/date";
-import { WORDLE_WIN_REWARD } from "@/lib/mini-games/rewards";
+import { GRID_REWARD_PER_CELL, WORDLE_WIN_REWARD } from "@/lib/mini-games/rewards";
+import { QUIZ_TOP_PRIZE } from "@/lib/quiz/prizes";
 import { CLUB_FUNDS_CHANGED_EVENT, getPaidRunIds } from "@/lib/storage/club-funds";
 import { formatClubFunds } from "@/lib/club-funds";
 
-type GameId = "quiz" | "wordle";
+type GameId = "quiz" | "wordle" | "grid";
 
 const GAMES: {
   id: GameId;
@@ -27,7 +28,7 @@ const GAMES: {
     href: "/mini-games/quiz",
     title: "Super League Millionaire",
     blurb: "15 questions, four lifelines, one million.",
-    reward: "Up to £1m",
+    reward: `Up to ${formatClubFunds(QUIZ_TOP_PRIZE)} a day`,
     glyph: "?",
     accent: "from-amber-400/25 to-amber-500/5 text-amber-300 border-amber-400/40",
   },
@@ -40,6 +41,15 @@ const GAMES: {
     glyph: "W",
     accent: "from-emerald-400/25 to-emerald-500/5 text-emerald-300 border-emerald-400/40",
   },
+  {
+    id: "grid",
+    href: "/mini-games/grid",
+    title: "Rugby League Grid",
+    blurb: "Fill a 3×3 grid with players who fit each club, nation and position.",
+    reward: `Up to ${formatClubFunds(GRID_REWARD_PER_CELL * 9)} a day`,
+    glyph: "#",
+    accent: "from-sky-400/25 to-sky-500/5 text-sky-300 border-sky-400/40",
+  },
 ];
 
 /** Which daily rewards are already banked today (client only). */
@@ -51,6 +61,7 @@ function useBankedToday(): Partial<Record<GameId, boolean>> {
       const ids = getPaidRunIds();
       setBanked({
         wordle: ids.includes(`wordle_win:${today}`),
+        grid: ids.includes(`grid_win:${today}`),
       });
     };
     read();

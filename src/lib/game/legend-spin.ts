@@ -15,15 +15,22 @@ import {
   type TeamYearPool,
 } from "./team-year-pools";
 import { canPlayerFillTeamYearSlot } from "../players/team-year-roster-playable";
+import {
+  playerPassesRule,
+  poolPassesRule,
+  type SpinRuleFilter,
+} from "./daily-rule-filter";
 
 function eligibleLegendPlayersForSlot(
   pool: TeamYearPool,
   usedIds: Set<string>,
   squad: SquadSlot[],
-  slotIndex: number
+  slotIndex: number,
+  ruleFilter?: SpinRuleFilter | null
 ): boolean {
   const slot = squad.find((s) => s.slotIndex === slotIndex);
   if (!slot || slot.player) return false;
+  if (!poolPassesRule(pool, ruleFilter)) return false;
   const signedNames = new Set(
     squad.flatMap((s) => (s.player ? [normalizePlayerNameKey(s.player.name)] : []))
   );
@@ -34,20 +41,22 @@ function eligibleLegendPlayersForSlot(
       isPlayerInTeamYearPool(player.id, pool) &&
       !usedIds.has(player.id) &&
       !signedNames.has(normalizePlayerNameKey(player.name)) &&
+      playerPassesRule(player, ruleFilter) &&
       canPlayerFillTeamYearSlot(pool.team, pool.year, player, slot.position)
   );
 }
 
-/** Whether any legend can be recruited for this slot in Normal Mode. */
+/** Whether any legend can be recruited for this slot in Normal Mode (within a Daily rule). */
 export function slotHasLegendSpinOption(
   squad: SquadSlot[],
   slotIndex: number,
   usedIds: Set<string> = new Set(),
-  variant: SpinPoolVariant = "current"
+  variant: SpinPoolVariant = "current",
+  ruleFilter?: SpinRuleFilter | null
 ): boolean {
   const pools = getSpinTeamYearPoolsCached(variant);
   return pools.some((pool) =>
-    eligibleLegendPlayersForSlot(pool, usedIds, squad, slotIndex)
+    eligibleLegendPlayersForSlot(pool, usedIds, squad, slotIndex, ruleFilter)
   );
 }
 
@@ -56,7 +65,8 @@ export function pickLegendSpinSlotIndex(
   seed: string,
   squad: SquadSlot[],
   usedIds: Set<string> = new Set(),
-  variant: SpinPoolVariant = "current"
+  variant: SpinPoolVariant = "current",
+  ruleFilter?: SpinRuleFilter | null
 ): number | null {
   const rng = seedrandom(`${seed}-legend-spin-slot`);
   const candidates = RECRUIT_SLOT_ORDER.filter((slotIndex) => {
@@ -64,7 +74,7 @@ export function pickLegendSpinSlotIndex(
     return (
       slot &&
       !slot.player &&
-      slotHasLegendSpinOption(squad, slotIndex, usedIds, variant)
+      slotHasLegendSpinOption(squad, slotIndex, usedIds, variant, ruleFilter)
     );
   });
   if (candidates.length === 0) return null;
@@ -79,11 +89,12 @@ export function pickLegendTeamYearForSlot(
   squad: SquadSlot[],
   slotIndex: number,
   usedTeamYearKeys: ReadonlySet<string>,
-  variant: SpinPoolVariant = "current"
+  variant: SpinPoolVariant = "current",
+  ruleFilter?: SpinRuleFilter | null
 ): { team: string; year: string; teamYearKey: string; teamYearId: string } | null {
   const rng = seedrandom(`${seed}-legend-spin-${slotIndex}-${spinIndex}`);
   let pools = getSpinTeamYearPoolsCached(variant).filter((pool) =>
-    eligibleLegendPlayersForSlot(pool, usedIds, squad, slotIndex)
+    eligibleLegendPlayersForSlot(pool, usedIds, squad, slotIndex, ruleFilter)
   );
   if (usedTeamYearKeys.size > 0) {
     const unused = pools.filter(
@@ -94,7 +105,7 @@ export function pickLegendTeamYearForSlot(
   if (pools.length === 0) return null;
 
   const { pool } = pickClubUniformTeamYearPool(pools, rng, (p) =>
-    eligibleLegendPlayersForSlot(p, usedIds, squad, slotIndex),
+    eligibleLegendPlayersForSlot(p, usedIds, squad, slotIndex, ruleFilter),
     variant
   );
   if (!pool) return null;

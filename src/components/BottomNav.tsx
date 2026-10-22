@@ -32,7 +32,7 @@ const ITEMS = [
 ];
 
 /** Screens that run their own sticky action bar keep the bottom of the screen to themselves. */
-const HIDE_ON = ["/play", "/manager", "/mini-games/quiz", "/mini-games/wordle", "/login", "/auth"];
+const HIDE_ON = ["/play", "/manager", "/mini-games/quiz", "/mini-games/wordle", "/mini-games/grid", "/login", "/auth"];
 
 /** Phone-only tab bar for the hub pages. */
 export function BottomNav() {

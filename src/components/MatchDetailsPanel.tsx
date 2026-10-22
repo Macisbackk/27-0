@@ -6,7 +6,7 @@ import type { MatchFixture } from "@/lib/game/season-simulation";
 import { DREAM_TEAM_NAME } from "@/lib/game/season-simulation";
 import type { SquadSlot } from "@/lib/types";
 import { resolveEraTeamClubName } from "@/lib/players/era-teams";
-import { CARD, BTN } from "@/lib/ui/design-system";
+import { CARD, CLOSE_BUTTON } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { TeamScoringBreakdown } from "./TeamScoringBreakdown";
 import {
@@ -82,7 +82,7 @@ export function MatchDetailsPanel({
   }, [hideMatchStory, fixture, seed, canonicalEvents, userTeamName]);
 
   const scoringBlock = detail ? (
-    <div className="divide-y divide-white/10">
+    <div className="divide-y divide-white/[0.06]">
       <div className="pb-2.5">
         <TeamScoringBreakdown
           teamName={userTeamName}
@@ -107,14 +107,14 @@ export function MatchDetailsPanel({
       </div>
     </div>
   ) : (
-    <p className={`text-center ${TYPO.bodySm}`}>Scoring data unavailable.</p>
+    <p className={`text-center ${TYPO.label}`}>Scoring data unavailable.</p>
   );
 
   if (scoringOnly) {
     return (
       <div className={CARD.base}>
         <div className="p-3 sm:p-4">
-          <p className={`text-center ${TYPO.sectionLabel}`}>Scoring</p>
+          <p className={`text-center ${TYPO.label}`}>Scoring</p>
           <div className="mt-2.5">{scoringBlock}</div>
         </div>
       </div>
@@ -125,15 +125,15 @@ export function MatchDetailsPanel({
 
   return (
     <motion.div
-      className={`match-details-expand ${CARD.base} border-white/10`}
+      className="match-details-expand rounded-[16px] bg-pitch-950"
       initial={{ opacity: 0, y: -6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -4 }}
       transition={{ duration: 0.18, ease: "easeOut" }}
     >
       <div className="space-y-2.5 p-2.5 sm:p-3">
-        <div className="relative flex items-center justify-center pr-14">
-          <p className={`min-w-0 text-center ${TYPO.keyLabel}`}>
+        <div className="relative flex min-h-[44px] items-center justify-center px-16">
+          <p className={`min-w-0 text-center ${TYPO.label}`}>
             {roundLabel ?? `Round ${fixture.round}`}
             {!fixture.isNeutral ? (
               <> · {fixture.isHome ? "Home" : "Away"}</>
@@ -142,7 +142,7 @@ export function MatchDetailsPanel({
           <button
             type="button"
             onClick={onClose}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 ${BTN.closeSm}`}
+            className={`absolute right-0 top-1/2 -translate-y-1/2 ${CLOSE_BUTTON}`}
           >
             Close
           </button>
@@ -151,17 +151,17 @@ export function MatchDetailsPanel({
         {scoringBlock}
 
         {motm && !hideMotm ? (
-          <p className={`text-center ${TYPO.bodySm}`}>
-            <span className="text-pitch-500">POTM </span>
+          <p className="text-center text-xs leading-snug">
+            <span className="text-[color:var(--fl-muted)]">POTM </span>
             <span className="font-semibold text-accent-gold">{motm.playerName}</span>
             {motm.performanceSummary ? (
-              <span className="text-pitch-400"> · {motm.performanceSummary}</span>
+              <span className="text-[color:var(--fl-muted)]"> · {motm.performanceSummary}</span>
             ) : null}
           </p>
         ) : null}
 
         {matchStory ? (
-          <p className={`whitespace-pre-line text-center ${TYPO.meta}`}>
+          <p className="whitespace-pre-line text-center text-xs leading-relaxed text-[color:var(--fl-muted)]">
             {matchStory}
           </p>
         ) : null}

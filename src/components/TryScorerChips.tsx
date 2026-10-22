@@ -66,5 +66,5 @@ export function TryScorerChips({ scorers, compact = false }: TryScorerChipsProps
 }
 
 export function TryScorersEmptyNote() {
-  return <p className={TYPO.bodySm}>No scoring breakdown recorded.</p>;
+  return <p className={TYPO.label}>No scoring breakdown recorded.</p>;
 }

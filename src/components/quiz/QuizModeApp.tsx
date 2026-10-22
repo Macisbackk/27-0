@@ -43,6 +43,7 @@ import {
   getCurrentPrize,
   getGuaranteedPrize,
   getPrizeForQuestionNumber,
+  QUIZ_TOP_PRIZE,
 } from "@/lib/quiz/prizes";
 import { QuizPrizeLadder } from "@/components/quiz/QuizPrizeLadder";
 import {
@@ -261,7 +262,10 @@ function QuizLanding({ onMillionaire }: { onMillionaire: () => void }) {
       <p className={TYPO.sectionLabel}>Puzzles</p>
       <h1 className={`mt-2 ${TYPO.pageTitle}`}>Super League Millionaire</h1>
       <p className={`mt-2 ${TYPO.bodySm}`}>
-        15 questions, four lifelines, £1,000,000 top prize. Bank at Q5 and Q10.
+        15 questions, four lifelines, {formatClubFundsExact(QUIZ_TOP_PRIZE)} top prize. Bank at Q5 and Q10.
+      </p>
+      <p className={`mt-1 ${TYPO.bodySm}`}>
+        Your best run each day pays Club Funds — beat it to bank the difference.
       </p>
       <div className="mx-auto mt-6 grid max-w-sm gap-2">
         <GameButton variant="theme" onClick={onMillionaire}>
@@ -335,9 +339,11 @@ function QuizPlayScreen({
         {isFinal ? (
           <div className="quiz-final-banner mt-4">
             <p className={TYPO.keyLabel}>Final question</p>
-            <p className={`quiz-prize mt-1 text-3xl ${TYPO.prizeDisplay}`}>£1,000,000</p>
+            <p className={`quiz-prize mt-1 text-3xl ${TYPO.prizeDisplay}`}>
+              {formatClubFundsExact(QUIZ_TOP_PRIZE)}
+            </p>
             <p className={`mt-1 ${TYPO.meta}`}>
-              15 of 15 — one question from £1,000,000
+              15 of 15 — one question from {formatClubFundsExact(QUIZ_TOP_PRIZE)}
             </p>
           </div>
         ) : (
@@ -503,6 +509,11 @@ function QuizResultScreen({
       : run.phase === "quiz_walked_away"
         ? "You banked it"
         : "Quiz over";
+  /** Millionaire pays the day's best run: this run banked less than its prize (maybe nothing). */
+  const partiallyPaid =
+    run.rewardAmount > 0 &&
+    typeof run.rewardPaid === "number" &&
+    run.rewardPaid < run.rewardAmount;
 
   return (
     <div className="mx-auto w-full max-w-xl text-center">
@@ -524,7 +535,7 @@ function QuizResultScreen({
         {run.rewardPractice
           ? "Practice run"
           : run.phase === "quiz_complete"
-            ? "£1,000,000"
+            ? formatClubFundsExact(QUIZ_TOP_PRIZE)
             : formatClubFundsExact(run.rewardAmount)}
       </p>
       {run.rewardPractice && (
@@ -532,7 +543,14 @@ function QuizResultScreen({
           You&apos;ve already banked today&apos;s {club ? club.name : "Team Challenge"} reward. Try another club, or come back tomorrow.
         </p>
       )}
-      {run.phase === "quiz_walked_away" && !run.rewardPractice && (
+      {!run.rewardPractice && partiallyPaid && (
+        <p className={`mt-2 ${TYPO.body}`}>
+          {run.rewardPaid! > 0
+            ? `You banked ${formatClubFundsExact(run.rewardPaid!)} on top of today's best run.`
+            : "You've already banked this much today. Beat today's best run to bank more."}
+        </p>
+      )}
+      {run.phase === "quiz_walked_away" && !run.rewardPractice && !partiallyPaid && (
         <p className={`mt-2 ${TYPO.body}`}>You banked {formatClubFundsExact(run.rewardAmount)}.</p>
       )}
       {lastQuestion && lastSlot?.correct === false && (

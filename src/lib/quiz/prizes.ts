@@ -6,6 +6,9 @@ export const QUIZ_PRIZE_LADDER = [
   125_000, 250_000, 500_000, 1_000_000,
 ] as const;
 
+/** Top of the ladder (all 15 correct). */
+export const QUIZ_TOP_PRIZE: number = QUIZ_PRIZE_LADDER[QUIZ_PRIZE_LADDER.length - 1];
+
 export const QUIZ_SAFE_QUESTION_NUMBERS = [5, 10] as const;
 
 export function getPrizeForQuestionNumber(questionNumber: number): number {

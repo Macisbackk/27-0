@@ -293,10 +293,15 @@ export function awardClubFundsForRun(
   };
 }
 
-/** Award explicit Club Funds lines (e.g. Manager Mode season rewards). */
+/**
+ * Award explicit Club Funds lines (e.g. Daily bonuses, puzzle rewards). `markerIds` are extra
+ * ledger ids saved in the same write as the payout (e.g. the Millionaire day-best marker) so
+ * they sync across devices with it.
+ */
 export function awardClubFundsLines(
   runId: string,
-  lines: ClubFundsEarnedLine[]
+  lines: ClubFundsEarnedLine[],
+  markerIds: readonly string[] = []
 ): ClubFundsPayoutResult {
   const state = loadState();
   const total = lines.reduce((sum, line) => sum + line.amount, 0);
@@ -314,6 +319,9 @@ export function awardClubFundsLines(
   state.balance += total;
   state.totalEarned += total;
   state.paidRunIds.push(runId);
+  for (const markerId of markerIds) {
+    if (!state.paidRunIds.includes(markerId)) state.paidRunIds.push(markerId);
+  }
   saveState(state);
   syncClubFundsLeaderboard(state.totalEarned);
   dispatchAchievementCheck({ trigger: "club-funds-updated" });

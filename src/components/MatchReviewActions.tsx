@@ -46,10 +46,10 @@ export function MatchReviewActions({
       className={`flex w-full justify-center ${compact ? "" : "mt-2"} ${className}`}
     >
       <div
-        className={`flex w-full max-w-xl flex-col items-stretch ${SPACING.stackMd}`}
+        className={`flex w-full max-w-xl flex-col items-stretch ${SPACING.stackSm}`}
       >
         {notice ? (
-          <div className="w-full text-center text-sm text-pitch-400">{notice}</div>
+          <div className="w-full text-center text-sm text-[color:var(--fl-muted)]">{notice}</div>
         ) : null}
 
         {primaryAction ? (
@@ -65,15 +65,18 @@ export function MatchReviewActions({
             </ActionButton>
             {shareAction}
             <div
-              className={`grid grid-cols-1 sm:grid-cols-2 ${SPACING.buttonGap}`}
+              className={`grid grid-cols-1 gap-2 sm:grid-cols-2`}
             >
-              <ActionButton variant="theme" href={leaderboardHref}>
+              <ActionButton variant="secondary" href={leaderboardHref}>
                 Leaderboard
               </ActionButton>
               {onReturnHome ? (
-                <ReturnHomeButton onBeforeNavigate={onReturnHome} />
+                <ReturnHomeButton
+                  variant="secondary"
+                  onBeforeNavigate={onReturnHome}
+                />
               ) : (
-                <ActionButton variant="theme" href="/">
+                <ActionButton variant="secondary" href="/">
                   Return home
                 </ActionButton>
               )}
