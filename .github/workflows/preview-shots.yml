@@ -34,11 +34,8 @@ jobs:
           npm install --no-save playwright@1.49.1 && npx playwright install --with-deps chromium
           npx next start -p 3000 > /tmp/next.log 2>&1 &
           for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
-          node scripts/preview-shots.mjs
-          # Manager Mode break run (report only: preview-shots/manager-break.txt).
-          [ -f scripts/manager-break.mjs ] && (timeout 600 node scripts/manager-break.mjs || true)
-          # Popup audit (report only: preview-shots/popup-audit.txt).
-          [ -f scripts/popup-audit.mjs ] && (timeout 400 node scripts/popup-audit.mjs || true)
+          # Trailer branch: record gameplay clips only.
+          timeout 900 node scripts/trailer-capture.mjs || true
       - name: Publish
         run: |
           name="${GITHUB_REF_NAME#preview/}"
