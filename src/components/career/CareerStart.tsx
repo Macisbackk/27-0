@@ -73,7 +73,7 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
       <p className="-mt-2 text-center text-xs text-gray-400">
         {division === "championship"
           ? "Win the league to go up. Finish 2nd and you get the Million Pound Game."
-          : "Top 4 make the play-offs. Finish bottom and you go down."}
+          : "Top 4 make the play-offs. Finish 13th and you play the Million Pound Game; finish bottom and you go down."}
       </p>
 
       <ul className="fl-stagger grid grid-cols-[minmax(0,1fr)] gap-2" aria-label="Clubs">

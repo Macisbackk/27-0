@@ -38,7 +38,7 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-semibold text-white">{l.name}</span>
                 <span className="text-[11px] text-gray-400">
-                  {POS_LABEL[l.pos]} · {l.club} · plays at {legendAsPlayer(l).rating} · {formatMoney(l.signingFee)}
+                  {POS_LABEL[l.pos]} · {l.club} · plays at {legendAsPlayer(l).rating} · signing fee {formatMoney(l.signingFee)}
                 </span>
               </span>
               {owned ? (

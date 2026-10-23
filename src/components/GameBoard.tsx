@@ -1838,6 +1838,8 @@ export function GameBoard({
 
     playReroll();
     setRespinsRemaining((n) => n - 1);
+    // Counted for the Stats page (Total Respins Used / Most in a Run / Average per Run).
+    rerollsThisRunRef.current += 1;
     setSpinPickIndex(nextSpinIndex);
     setPendingPlayer(null);
     lastScrolledPlayerIdRef.current = null;
@@ -2594,7 +2596,7 @@ export function GameBoard({
                 "No valid boosted route for this position."}
             </p>
             <p className={`${TYPO.bodySm} text-amber-100/80`}>
-              Try another position, skip the boost, or go back. Boost unused.
+              Try another position, skip the boost or change it. Boost unused.
             </p>
             <div className="flex flex-wrap gap-2">
               <GameButton
@@ -2667,7 +2669,7 @@ export function GameBoard({
                 ? "Tap any position to spin for a player"
                 : `Tap an empty position · ${TOTAL_SLOTS - filledCount} to go`}
             </p>
-            {!dailyChallengeMode &&
+            {!dailyChallengeMode && difficulty !== "HARD" &&
               (normalEraMode ? (
                 <EraRatingExplanation compact className="w-full" />
               ) : (
@@ -2802,7 +2804,7 @@ export function GameBoard({
                       hardMode={difficulty === "HARD"}
                       boosted={Boolean(boostNotice)}
                       eraMode={normalEraMode}
-                      hideRatingNote={dailyChallengeMode}
+                      hideRatingNote={dailyChallengeMode || difficulty === "HARD"}
                       slot={
                         selectedSlotIndex !== null
                           ? squad.find((s) => s.slotIndex === selectedSlotIndex) ?? null
@@ -2944,6 +2946,7 @@ export function GameBoard({
           superSamHallasMode={superSamHallasMode}
           normalEraMode={normalEraMode}
           dailyChallengeMode={dailyChallengeMode}
+          dailyAttemptCounts={dailyAttemptCounts}
           dailyScenario={dailyScenario}
           seasonResult={seasonResult}
           runRank={runRank}

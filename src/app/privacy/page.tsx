@@ -54,8 +54,9 @@ export default function PrivacyPage() {
               <strong>Your coach name</strong>, which is shown on the public leaderboards.
             </li>
             <li>
-              <strong>Your game progress</strong>: stats, records, leaderboard entries, Club Funds and your Manager
-              Mode save, so they follow you between devices.
+              <strong>Your game progress</strong>: stats, records, leaderboard entries, Club Funds, Store items and
+              your Manager Mode save, so they follow you between devices. The coach title and frame you wear are shown
+              publicly on the leaderboards.
             </li>
           </ul>
           <p>

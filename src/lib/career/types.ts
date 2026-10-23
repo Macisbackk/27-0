@@ -45,6 +45,8 @@ export interface CareerClub {
   short: string;
   primary: string;
   secondary: string;
+  /** Third kit colour (trim). */
+  accent?: string;
   division: Division;
   /** Player ids. */
   squad: string[];

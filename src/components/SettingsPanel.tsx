@@ -255,7 +255,7 @@ export function SettingsPanel() {
           label="Reset career stats"
           hint={
             resetState === "confirm"
-              ? "This clears every Classic record and can't be undone."
+              ? "This clears your Classic stats and can't be undone. Leaderboard entries stay."
               : resetState === "done"
                 ? isLoggedIn
                   ? "Classic stats reset everywhere."

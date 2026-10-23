@@ -1,8 +1,8 @@
-/** Mid-season window: AI deals happen, Deadline Day is busy, bids work, squads stay legal, last line-ups recorded. */
+/** In-season transfers: Deadline Day only. AI deals land, offers work, squads stay legal, last line-ups recorded. */
 import { buildWorld, createCareer } from "../src/lib/career/world";
 import { playMatchday, repairLineup } from "../src/lib/career/season";
 import { SQUAD_MAX, SQUAD_MIN } from "../src/lib/career/players";
-import { acceptBid, closeDeadlineDay, deadlineDecisionPending, isDeadlineDay, isWindowOpen, rejectBid, seasonDeals, windowBounds } from "../src/lib/career/midseason";
+import { acceptOffer, closeDeadlineDay, deadlineDecisionPending, isDeadlineDay, isWindowOpen, liveOffers, rejectOffer, seasonDeals, tickDeadline, windowBounds } from "../src/lib/career/midseason";
 import type { CareerState } from "../src/lib/career/types";
 
 let passed = 0;
@@ -41,20 +41,30 @@ for (const [n, choice] of choices.filter((_, i) => i % 4 === 0).slice(0, 8).entr
   let sawDeadline = false;
   while (s.phase === "season" && guard++ < 80) {
     if (isDeadlineDay(s)) sawDeadline = true;
-    if (s.incomingBid) {
-      bidsSeen++;
-      if (!isWindowOpen(s)) fail("bid outside the window");
-      const before = s.budget;
-      if (bidsSeen % 2 === 0) {
-        s = acceptBid(s);
-        s = { ...s, lineup: repairLineup(s, s.lineup) };
-        if (s.budget <= before) fail("accepting a bid didn't pay");
-        accepted++;
-      } else {
-        s = rejectBid(s);
+    if (!isDeadlineDay(s) && isWindowOpen(s)) fail(`window open away from Deadline Day (md ${s.matchdayIndex})`);
+    // Deadline Day: run the clock, answering every offer (accept every other one).
+    const seenOffers = new Set<string>();
+    for (let t = 0; t < 80 && deadlineDecisionPending(s); t++) {
+      for (const o of liveOffers(s)) {
+        if (seenOffers.has(o.id)) continue;
+        seenOffers.add(o.id);
+        bidsSeen++;
+        const before = s.budget;
+        if (bidsSeen % 2 === 0) {
+          const r = acceptOffer(s, o.id);
+          if (!r.error) {
+            s = { ...r.state, lineup: repairLineup(r.state, r.state.lineup) };
+            if (s.budget <= before) fail("accepting an offer didn't pay");
+            accepted++;
+          }
+        } else {
+          s = rejectOffer(s, o.id);
+        }
+        if (liveOffers(s).some((x) => x.id === o.id)) fail("offer still open after answering");
       }
-      if (s.incomingBid) fail("bid still open after answering");
+      s = tickDeadline(s, 10);
     }
+    if (isDeadlineDay(s) && isWindowOpen(s)) fail("window still open after Deadline Day's clock ran out");
     s = playMatchday(closeDeadlineDay(s));
     checkWorld(s, `${choice.id} md${s.matchdayIndex}`);
     if (s.lineup.length !== 13 && s.phase === "season") fail(`user lineup has ${s.lineup.length}`);
@@ -64,19 +74,20 @@ for (const [n, choice] of choices.filter((_, i) => i % 4 === 0).slice(0, 8).entr
   totalDeals += deals.length;
   deadlineDeals += deals.filter((d) => d.deadlineDay).length;
   for (const d of deals) {
-    if (d.at < b!.open || d.at > b!.deadline) fail(`deal outside window at ${d.at}`);
+    if (d.at !== b!.deadline) fail(`deal away from Deadline Day at ${d.at}`);
     if (d.to && d.to !== s.userClubId && !s.clubs[d.to]) fail("deal to unknown club");
   }
   const ll = s.lastLineups ?? {};
   for (const id of Object.keys(s.clubs)) if (!ll[id] || ll[id]!.lineup.length !== 13) fail(`${id}: no last line-up`);
 }
 ok(`8 seasons: ${totalDeals} AI/user deals, ${deadlineDeals} on Deadline Day, squads always legal, no player at two clubs`);
-if (totalDeals < 8 * 8) fail(`too few deals (${totalDeals})`);
+if (totalDeals < 8 * 4) fail(`too few deals (${totalDeals})`);
 ok(`about ${Math.round(totalDeals / 8)} deals a season`);
+if (deadlineDeals !== totalDeals) fail("a deal happened away from Deadline Day");
 if (deadlineDeals < 8 * 3) fail(`Deadline Day too quiet (${deadlineDeals})`);
 ok(`Deadline Day averages ${(deadlineDeals / 8).toFixed(1)} deals`);
-if (bidsSeen < 4) fail(`only ${bidsSeen} bids in 8 seasons`);
-ok(`${bidsSeen} rival bids (${accepted} accepted) handled`);
+if (bidsSeen < 4) fail(`only ${bidsSeen} offers in 8 Deadline Days`);
+ok(`${bidsSeen} Deadline Day offers (${accepted} accepted) handled`);
 ok("every club has a 13-man last team sheet at season end");
 
 // Determinism: same save, same deals (both runs start from one saved state).

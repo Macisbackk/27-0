@@ -49,7 +49,7 @@ async function reloadAndCheck(label, expectRegion) {
   await page.waitForTimeout(500);
   const after = await save();
   if (before?.matchdayIndex !== after?.matchdayIndex || before?.phase !== after?.phase) fail(`${label}: reload changed the save (${before?.phase}/${before?.matchdayIndex} → ${after?.phase}/${after?.matchdayIndex})`);
-  if (expectRegion && !(await visible(page.getByRole("region", { name: expectRegion })))) fail(`${label}: after a reload "${expectRegion}" is gone`);
+  if (expectRegion && !(await visible(page.getByRole("region", { name: expectRegion, exact: true })))) fail(`${label}: after a reload "${expectRegion}" is gone`);
 }
 
 /** Deadline Day's 12-hour clock: it counts down, pauses, skips, offers can be taken, sales name the buyer. */
@@ -69,7 +69,7 @@ async function deadlineChecks() {
   await page.waitForTimeout(300);
   if ((await clock()) !== m2 - 60) fail(`Skip an hour went ${m2} → ${await clock()}`);
   // Let it run until an offer lands (up to ~40s of real time), then pause and take it.
-  await btn("Restart the clock").click();
+  await btn("Resume the clock").click();
   const accept = page.getByRole("region", { name: "Offers for your players" }).getByRole("button", { name: "Accept" }).first();
   for (let i = 0; i < 40 && !(await visible(accept)); i++) await page.waitForTimeout(1000);
   if (await visible(accept)) {
@@ -88,10 +88,10 @@ async function deadlineChecks() {
       if (s1.budget !== s0.budget + offer.fee) fail("accepted Deadline Day offer: fee not paid");
     }
     step("Deadline Day: clock counts down, pauses (and stays paused after a reload), skips an hour, an offer was accepted");
-    await btn("Restart the clock").click().catch(() => {});
+    await btn("Resume the clock").click().catch(() => {});
   } else step("Deadline Day: clock counts down, pauses, skips an hour (no offer landed in 40s)");
   // A sale in the market says where the player went, and he's really there.
-  await btn("Late signing").click();
+  await btn("Buy and sell").click();
   await page.getByRole("region", { name: "Deadline Day clock" }).waitFor({ timeout }).catch(() => fail("no Deadline Day clock in the market"));
   await noSideways("Deadline Day market");
   await page.getByRole("tab", { name: "Sell" }).click();
@@ -111,7 +111,7 @@ async function deadlineChecks() {
     await shot("deadline-sale");
     step(`Market sale: "${msg}"`);
   }
-  await btn("Back to the season").click().catch(() => {});
+  await btn("Back to Deadline Day").click().catch(() => {});
   await page.waitForTimeout(300);
 }
 
@@ -171,7 +171,7 @@ try {
   const seen = new Set();
   for (let i = 0; i < 500; i++) {
     if (await visible(page.getByText(/season review/i).first())) break;
-    if (await visible(page.getByRole("region", { name: "Deadline Day" }))) {
+    if (await visible(page.getByRole("region", { name: "Deadline Day", exact: true }))) {
       if (!seen.has("deadline")) {
         seen.add("deadline");
         if (await visible(btn("Quick sim"))) fail("Quick sim offered on Deadline Day");

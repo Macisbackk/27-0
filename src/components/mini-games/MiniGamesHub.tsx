@@ -45,7 +45,7 @@ const GAMES: {
     id: "grid",
     href: "/mini-games/grid",
     title: "Rugby League Grid",
-    blurb: "Fill a 3×3 grid with players who fit each club, nation and position.",
+    blurb: "Fill a 3×3 grid with players who fit each club, nation, position, era or honour.",
     reward: `Up to ${formatClubFunds(GRID_REWARD_PER_CELL * 9)} a day`,
     glyph: "#",
     accent: "from-lime-400/25 to-lime-500/5 text-lime-300 border-lime-400/40",

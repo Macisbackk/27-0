@@ -52,6 +52,7 @@ export interface ClubChoice {
   short: string;
   primary: string;
   secondary: string;
+  accent?: string;
   division: ClubSeed["division"];
   rating: number;
   prestige: number;
@@ -69,7 +70,7 @@ export function buildWorld(seed: string): { clubs: Record<string, CareerClub>; p
   registerOccupiedPlayerNames((currentSquads as SquadRow[]).map((r) => r.name));
 
   for (const s of seeds) {
-    clubs[s.id] = { id: s.id, name: s.name, short: s.short, primary: s.primary, secondary: s.secondary, division: s.division, squad: [] };
+    clubs[s.id] = { id: s.id, name: s.name, short: s.short, primary: s.primary, secondary: s.secondary, accent: s.accent, division: s.division, squad: [] };
   }
   const realCounts: Record<string, number> = {};
   for (const row of currentSquads as SquadRow[]) {
@@ -126,6 +127,7 @@ export function buildWorld(seed: string): { clubs: Record<string, CareerClub>; p
         short: s.short,
         primary: s.primary,
         secondary: s.secondary,
+        accent: s.accent,
         division,
         rating: Math.round(rating * 10) / 10,
         prestige: startingPrestige(s, i, inDiv.length),

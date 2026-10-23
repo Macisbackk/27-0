@@ -162,7 +162,7 @@ function buildChallenges(state: CareerState): SeasonChallenge[] {
         return { ...base, title: "Give 2 academy players a game", target: 2, rewardCash: 35_000, rewardLegacy: 20 };
       case "points-scored": {
         const target = Math.round((rounds * (11 + share * 14)) / 25) * 25;
-        return { ...base, title: `Score ${target} league points`, target, rewardCash: 45_000, rewardLegacy: 15 };
+        return { ...base, title: `Score ${target} points in league games`, target, rewardCash: 45_000, rewardLegacy: 15 };
       }
     }
   });

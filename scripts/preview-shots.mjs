@@ -48,6 +48,26 @@ await shot(desktop, "12-desktop-leaderboard", "/leaderboard");
 await shot(desktop, "13-desktop-store", "/store");
 await shot(desktop, "14-desktop-puzzles", "/mini-games");
 await shot(desktop, "15-desktop-profile", "/profile");
+await shot(phone, "20-showcase", "/showcase");
+await shot(phone, "21-showcase-historic", "/showcase", async (page) => {
+  await page.getByRole("button", { name: "Historic", exact: true }).click({ timeout: 5000 });
+  await page.waitForTimeout(500);
+});
+await shot(phone, "22-showcase-filters", "/showcase", async (page) => {
+  await page.getByRole("button", { name: /^Filters/ }).click({ timeout: 5000 });
+  await page.waitForTimeout(500);
+});
+await shot(phone, "23-showcase-player", "/showcase", async (page) => {
+  await page.getByRole("button", { name: "Historic", exact: true }).click({ timeout: 5000 });
+  await page.locator(".showcase-row__button").first().click({ timeout: 5000 });
+  await page.waitForTimeout(700);
+});
+await shot(desktop, "24-desktop-showcase", "/showcase");
+// The logo follows the Store theme: fake a blue theme accent and look at the header.
+await shot(phone, "25-logo-blue-theme", "/", async (page) => {
+  await page.evaluate(() => document.documentElement.style.setProperty("--ui-accent", "#38bdf8"));
+  await page.waitForTimeout(300);
+});
 await shot(phone, "16-store-frames", "/store", async (page) => {
   await page.getByRole("tab", { name: "Frames" }).click({ timeout: 5000 });
   await page.waitForTimeout(600);

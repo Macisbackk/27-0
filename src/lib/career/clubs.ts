@@ -8,6 +8,8 @@ export interface ClubSeed {
   short: string;
   primary: string;
   secondary: string;
+  /** Third kit colour (trim), so clubs sharing two colours still look different. */
+  accent?: string;
   division: Division;
   /** Rough first-team level (≈ average rating of a generated XIII). */
   strength: number;
@@ -15,7 +17,7 @@ export interface ClubSeed {
   dataName: string;
 }
 
-type ClubJson = { id: string; name: string; shortName?: string; primaryColor?: string; secondaryColor?: string };
+type ClubJson = { id: string; name: string; shortName?: string; primaryColor?: string; secondaryColor?: string; accentColor?: string };
 type ChampJson = ClubJson & { baseStrength?: number };
 
 const COLOURS = new Map<string, ClubJson>();
@@ -26,6 +28,7 @@ function colours(name: string, fallbackPrimary = "#1f2937", fallbackSecondary = 
   return {
     primary: c?.primaryColor ?? fallbackPrimary,
     secondary: c?.secondaryColor ?? fallbackSecondary,
+    accent: c?.accentColor,
   };
 }
 
@@ -88,6 +91,7 @@ export function buildClubSeeds(): ClubSeed[] {
       short: c.shortName ?? c.name.slice(0, 3).toUpperCase(),
       primary: c.primaryColor ?? colours(c.name).primary,
       secondary: c.secondaryColor ?? colours(c.name).secondary,
+      accent: c.accentColor ?? colours(c.name).accent,
       division: "championship",
       strength: champRatingFromBase(c.baseStrength ?? 60),
       dataName: c.name,

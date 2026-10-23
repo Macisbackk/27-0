@@ -44,7 +44,6 @@ import { resolveSquadClubColorOverride } from "@/lib/players/squad-club-accent";
 import type { DailyChallengeScenario } from "@/lib/daily-challenge";
 import {
   getDailyChallengeDateKey,
-  getDailyChallengeProgress,
   getDailyChallengeStreak,
 } from "@/lib/daily-challenge";
 
@@ -58,6 +57,8 @@ interface SeasonReviewProps {
   superSamHallasMode?: boolean;
   normalEraMode?: boolean;
   dailyChallengeMode?: boolean;
+  /** Daily Challenge: false for a practice run after today's counted attempt. */
+  dailyAttemptCounts?: boolean;
   dailyScenario?: DailyChallengeScenario | null;
   runRank?: number;
   submittedOnline?: boolean;
@@ -76,6 +77,7 @@ export function SeasonReview({
   seasonResult,
   seed,
   difficulty = "NORMAL",
+  dailyAttemptCounts = true,
   joeMellorMode = false,
   superSamHallasMode = false,
   normalEraMode = false,
@@ -208,13 +210,12 @@ export function SeasonReview({
     SHOW_DAILY_CHALLENGE_UI && dailyChallengeMode;
   const shareCardData = useMemo(() => {
     if (showDailyPresentation && dailyScenario) {
-      const progress = getDailyChallengeProgress();
       const streak = getDailyChallengeStreak();
+      // This run's result (not the day's best, which may come from an earlier attempt).
       const detailLines = [
         `${dailyScenario.eraMode ? "Era" : "Current"} · ${getDailyChallengeDateKey()}`,
         formatRecordWithPercentage(seasonResult.wins, seasonResult.losses),
-        progress.leagueLeaders ? "League Leaders" : `League position ${leaguePositionLabel}`,
-        progress.playoffTitle ? "Champions" : undefined,
+        dreamTeamTablePosition === 1 ? "League Leaders" : `League position ${leaguePositionLabel}`,
         streak > 0 ? `Streak ${streak}` : undefined,
       ].filter((line): line is string => Boolean(line));
 
@@ -249,6 +250,7 @@ export function SeasonReview({
     seasonResult.wins,
     seasonResult.losses,
     leaguePositionLabel,
+    dreamTeamTablePosition,
     averageTeamRating,
   ]);
 
@@ -345,6 +347,8 @@ export function SeasonReview({
                 specialRun={isSpecialMode}
                 boostedRun={boostedRun}
                 dailyChallenge={showDailyPresentation}
+                dailyPractice={showDailyPresentation && dailyAttemptCounts === false}
+                ballKnower={difficulty === "HARD" && !showDailyPresentation}
               />
             </motion.header>
 

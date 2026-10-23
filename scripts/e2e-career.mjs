@@ -184,7 +184,7 @@ try {
   let shotWindow = false;
   for (let i = 0; i < 80; i++) {
     if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
-    if (!shotWindow && (await page.getByRole("region", { name: "Transfer window" }).isVisible().catch(() => false))) {
+    if (!shotWindow && (await page.getByRole("region", { name: "Deadline Day coming" }).isVisible().catch(() => false))) {
       shotWindow = true;
       await shot("window-open");
     }
@@ -192,17 +192,17 @@ try {
       shotBid = true;
       await shot("rival-bid");
     }
-    if (!shotDeadline && (await page.getByRole("region", { name: "Deadline Day" }).isVisible().catch(() => false))) {
+    if (!shotDeadline && (await page.getByRole("region", { name: "Deadline Day", exact: true }).isVisible().catch(() => false))) {
       shotDeadline = true;
       await page.waitForTimeout(6000); // let the ticker land
       await shot("deadline-day");
       if (await page.getByRole("button", { name: "Quick sim" }).isVisible().catch(() => false)) {
         throw new Error("Quick sim still offered while Deadline Day is open");
       }
-      await page.getByRole("button", { name: /^Late signing$/ }).click().catch(() => {});
+      await page.getByRole("button", { name: /^Buy and sell$/ }).click().catch(() => {});
       await page.waitForTimeout(800);
       await shot("deadline-market");
-      await page.getByRole("button", { name: /Back to the season/ }).click().catch(() => {});
+      await page.getByRole("button", { name: /Back to Deadline Day/ }).click().catch(() => {});
       await page.waitForTimeout(500);
       await page.getByRole("tab", { name: "Table" }).click();
       await page.waitForTimeout(300);

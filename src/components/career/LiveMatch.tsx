@@ -206,7 +206,7 @@ export function LiveMatch({
             {m.goldenPoint ? " · golden point" : ""}
           </p>
           <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
-            Your calls paid off {m.callsWon} of {m.callsDone.length}.
+            {m.callsWon} of your {m.callsDone.length} calls came off.
           </p>
         </section>
       ) : null}

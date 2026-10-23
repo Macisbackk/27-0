@@ -199,7 +199,7 @@ export function TitlesStore({ balance }: { balance: number }) {
   const c = useCosmetics();
   const { message, buy } = useBuy(balance);
   return (
-    <Section title="Coach titles" intro="Shown on your Coach Profile and next to your name on the leaderboards. Wear one at a time.">
+    <Section title="Coach titles" intro="Shown on your Coach Profile and next to your name on the Classic and Daily leaderboards. Wear one at a time.">
       {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
       <ul className="divide-y divide-[color:var(--fl-line)]">
         {items("title").map((item) => {
@@ -237,7 +237,7 @@ export function FramesStore({ balance }: { balance: number }) {
   const c = useCosmetics();
   const { message, buy } = useBuy(balance);
   return (
-    <Section title="Leaderboard frames" intro="Frame your whole row on every leaderboard. Everyone sees it.">
+    <Section title="Leaderboard frames" intro="Frame your whole row on the Classic and Daily leaderboards. Everyone sees it.">
       {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
       <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
         {items("frame").map((item) => {
@@ -282,7 +282,7 @@ export function ModesStore({ balance }: { balance: number }) {
   const item = COSMETICS.find((i) => i.id === BALL_KNOWER_ID)!;
   const owned = c.owned.includes(item.id);
   return (
-    <Section title="Ball Knower mode" intro="Classic with every rating hidden, on the spins, the choices and the team sheet. Pick on what you know. Ball Knower runs keep their own records.">
+    <Section title="Ball Knower mode" intro="Classic with every rating hidden, on the spins, the choices and the team sheet, and no respins. Pick on what you know. Ball Knower runs aren't ranked on the leaderboard.">
       {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
       {owned ? (
         <div className="grid grid-cols-2 gap-2">

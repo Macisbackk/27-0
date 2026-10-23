@@ -223,17 +223,17 @@ const ACHIEVEMENT_REWARD_MIN = ACHIEVEMENT_REWARDS.length ? Math.min(...ACHIEVEM
 const ACHIEVEMENT_REWARD_MAX = ACHIEVEMENT_REWARDS.length ? Math.max(...ACHIEVEMENT_REWARDS) : 0;
 
 const CLUB_FUNDS_INFO_LINES_SOURCE: ClubFundsInfoLine[] = [
-  { label: "Super League Title", amount: CLUB_FUNDS_REWARDS.superLeagueTitle },
-  { label: "Grand Final Runner-Up", amount: CLUB_FUNDS_REWARDS.playoffFinalRunnerUp },
-  { label: "League Leaders", amount: CLUB_FUNDS_REWARDS.leagueLeaders },
-  { label: "Top-Six Finish", amount: CLUB_FUNDS_REWARDS.topSixFinish },
-  { label: "Play-off Semi-final Win", amount: CLUB_FUNDS_REWARDS.playoffSemiFinalWin },
-  { label: "Play-off Eliminator Win", amount: CLUB_FUNDS_REWARDS.playoffEliminatorWin },
-  { label: "27-0 Perfect Season", amount: CLUB_FUNDS_REWARDS.perfectSeason },
-  { label: "Season Completed", amount: CLUB_FUNDS_REWARDS.seasonComplete },
-  { label: "20+ Wins in a Season", amount: CLUB_FUNDS_REWARDS.twentyWins },
+  { label: "Classic: Super League Title", amount: CLUB_FUNDS_REWARDS.superLeagueTitle },
+  { label: "Classic: Grand Final Runner-Up", amount: CLUB_FUNDS_REWARDS.playoffFinalRunnerUp },
+  { label: "Classic: League Leaders", amount: CLUB_FUNDS_REWARDS.leagueLeaders },
+  { label: "Classic: Top-Six Finish", amount: CLUB_FUNDS_REWARDS.topSixFinish },
+  { label: "Classic: Play-off Semi-final Win", amount: CLUB_FUNDS_REWARDS.playoffSemiFinalWin },
+  { label: "Classic: Play-off Eliminator Win", amount: CLUB_FUNDS_REWARDS.playoffEliminatorWin },
+  { label: "Classic: 27-0 Perfect Season", amount: CLUB_FUNDS_REWARDS.perfectSeason },
+  { label: "Classic: Season Completed", amount: CLUB_FUNDS_REWARDS.seasonComplete },
+  { label: "Classic: 20+ Wins in a Season", amount: CLUB_FUNDS_REWARDS.twentyWins },
   {
-    label: "Each Regular Season Win (Classic)",
+    label: "Classic: Each Regular Season Win",
     amount: CLUB_FUNDS_REWARDS.regularSeasonWin,
   },
   ...(SHOW_DAILY_CHALLENGE_UI
@@ -241,30 +241,30 @@ const CLUB_FUNDS_INFO_LINES_SOURCE: ClubFundsInfoLine[] = [
         {
           label: "Daily Challenge: Top the Table",
           amount: DAILY_MIN_BONUSES.leagueLeadersBonus,
-          valueText: `from ${formatClubFundsExact(DAILY_MIN_BONUSES.leagueLeadersBonus)}`,
+          valueText: `from ${formatClubFunds(DAILY_MIN_BONUSES.leagueLeadersBonus)}`,
         },
         {
           label: "Daily Challenge: Win the Grand Final",
           amount: DAILY_MIN_BONUSES.playoffTitleBonus,
-          valueText: `from ${formatClubFundsExact(DAILY_MIN_BONUSES.playoffTitleBonus)}`,
+          valueText: `from ${formatClubFunds(DAILY_MIN_BONUSES.playoffTitleBonus)}`,
         },
       ]
     : []),
   {
     label: "Super League Millionaire (best run each day)",
     amount: QUIZ_TOP_PRIZE,
-    valueText: `up to ${formatClubFundsExact(QUIZ_TOP_PRIZE)}`,
+    valueText: `up to ${formatClubFunds(QUIZ_TOP_PRIZE)}`,
   },
   { label: "Wordle (once a day)", amount: WORDLE_WIN_REWARD },
   {
     label: "Rugby League Grid (once a day)",
     amount: GRID_REWARD_PER_CELL * 9,
-    valueText: `up to ${formatClubFundsExact(GRID_REWARD_PER_CELL * 9)}`,
+    valueText: `up to ${formatClubFunds(GRID_REWARD_PER_CELL * 9)}`,
   },
   {
     label: "Achievements",
     amount: ACHIEVEMENT_REWARD_MAX,
-    valueText: `${formatClubFundsExact(ACHIEVEMENT_REWARD_MIN)}–${formatClubFundsExact(ACHIEVEMENT_REWARD_MAX)}`,
+    valueText: `${formatClubFunds(ACHIEVEMENT_REWARD_MIN)}–${formatClubFunds(ACHIEVEMENT_REWARD_MAX)}`,
   },
 ];
 

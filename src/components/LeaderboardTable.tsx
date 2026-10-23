@@ -280,7 +280,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
       : leaderboardMode === "trophy-cabinet"
         ? "Trophies"
         : isMiniGamesMode
-          ? "Mini Games"
+          ? "Puzzles"
           : "Classic";
 
   const trackerLabel = isMiniGamesMode
@@ -304,7 +304,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
     ...(SHOW_DAILY_CHALLENGE_UI
       ? [{ id: "daily" as const, label: "Daily" }]
       : []),
-    { id: "quiz" as const, label: "Mini Games" },
+    { id: "quiz" as const, label: "Puzzles" },
   ];
 
   const emptyStateMessage = isDailyMode
@@ -517,7 +517,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
                     {entry.rank}
                   </span>
                   <CoachNameplate className={TYPO.identityLine} name={entry.username} title={flair.title} />
-                  <span className="text-right font-semibold text-accent-gold">
+                  <span className="whitespace-nowrap text-right font-semibold leading-tight text-accent-gold">
                     {renderLeaderboardStat(entry, effectiveTracker)}
                   </span>
                   <span className="hidden text-right text-sm text-gray-500 sm:block">
@@ -551,7 +551,7 @@ function renderLeaderboardStat(
     const parsed = parseRecordWithPercentage(entry.statDisplay);
     if (parsed) {
       return (
-        <RecordWithPercentage wins={parsed.wins} losses={parsed.losses} />
+        <RecordWithPercentage wins={parsed.wins} losses={parsed.losses} stacked />
       );
     }
     return entry.statDisplay;

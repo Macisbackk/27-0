@@ -12,7 +12,7 @@ import {
   isDeadlineDay,
   isWindowOpen,
   liveOffers,
-  roundsLeftInWindow,
+  roundsUntilDeadline,
   seasonDeals,
   type DeadlineEvent,
   type TransferDeal,
@@ -52,7 +52,8 @@ export function DealRow({ d }: { d: TransferDeal }) {
       <span className="min-w-0 flex-1">
         <span className="block truncate font-semibold text-white">{d.playerName}</span>
         <span className="block truncate text-xs text-[color:var(--fl-muted)]">
-          {from ? <ClubLink clubId={from.id}>{from.short}</ClubLink> : "Free agent"} → {to ? <ClubLink clubId={to.id}>{to.name}</ClubLink> : "released"}
+          {from ? <ClubLink clubId={from.id}>{from.short}</ClubLink> : "Free agent"} →{" "}
+          {to ? <ClubLink clubId={to.id}>{to.name}</ClubLink> : d.playerId.startsWith("legend-") ? "Legend Vault" : d.fee > 0 ? "free agency" : "released"}
         </span>
       </span>
       <span className="shrink-0 text-xs font-semibold text-white">{d.fee > 0 ? formatMoney(d.fee) : "Free"}</span>
@@ -211,7 +212,7 @@ export function DeadlineDayCard({ onOpenMarket }: { onOpenMarket: () => void }) 
         <>
           <div className="mt-3 grid grid-cols-2 gap-2">
             <GameButton size="sm" variant="secondary" onClick={() => { playUiClick(); pauseDeadline(!clock.paused); }}>
-              {clock.paused ? "Restart the clock" : "Pause the clock"}
+              {clock.paused ? "Resume the clock" : "Pause the clock"}
             </GameButton>
             <GameButton size="sm" variant="secondary" disabled={clock.minutesLeft <= 60} onClick={() => { playUiClick(); tickDeadline(60); }}>
               Skip an hour
@@ -226,7 +227,7 @@ export function DeadlineDayCard({ onOpenMarket }: { onOpenMarket: () => void }) 
           </p>
           <div className="mt-2 grid grid-cols-2 gap-2">
             <GameButton size="md" variant="secondary" onClick={() => { playUiClick(); onOpenMarket(); }}>
-              Late signing
+              Buy and sell
             </GameButton>
             <GameButton size="md" onClick={() => { playUiClick(); closeDeadline(); }}>
               Shut the window
@@ -248,38 +249,16 @@ export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void 
   const s = state!;
   // Deadline Day keeps its card after the window shuts, as a round-up of the day.
   if (isDeadlineDay(s)) return <DeadlineDayCard onOpenMarket={onOpenMarket} />;
-  if (!isWindowOpen(s)) return null;
-  const deals = seasonDeals(s);
-  const left = roundsLeftInWindow(s);
-
+  // In-season transfers happen on Deadline Day only: a heads-up in the run-up to it.
+  const until = roundsUntilDeadline(s);
+  if (until === null || until > 5) return null;
   return (
-    <section aria-label="Transfer window" className="rounded-card bg-pitch-900 p-4">
-      <div className="flex items-center justify-between gap-2">
-        <p className="text-[15px] font-bold text-white">Transfer window open</p>
-        <span className="rounded-full bg-theme-primary/15 px-2.5 py-1 text-xs font-bold text-theme-primary">
-          {left <= 1 ? "Deadline Day next" : `${left} rounds left`}
-        </span>
-      </div>
-      {deals.length ? (
-        <ul className="mt-1 divide-y divide-[color:var(--fl-line)]">
-          {deals.slice(0, 3).map((d) => (
-            <DealRow key={`${d.playerId}-${d.at}`} d={d} />
-          ))}
-        </ul>
-      ) : (
-        <p className="mt-1 text-sm text-[color:var(--fl-muted)]">Clubs are circling. Deals land after every round.</p>
-      )}
-      <GameButton
-        size="sm"
-        variant="secondary"
-        className="mt-3"
-        onClick={() => {
-          playUiClick();
-          onOpenMarket();
-        }}
-      >
-        Transfer market
-      </GameButton>
+    <section aria-label="Deadline Day coming" className="flex items-center gap-3 rounded-card bg-pitch-900 p-4">
+      <span className="fl-number shrink-0 text-[26px] leading-none text-amber-300">{until}</span>
+      <p className="min-w-0 text-left text-sm text-[color:var(--fl-muted)]">
+        <span className="font-semibold text-white">{until === 1 ? "Round" : "Rounds"} until Deadline Day.</span> It&rsquo;s the only day in the
+        season to buy and sell, before Round {WINDOW_CLOSES_BEFORE_ROUND}.
+      </p>
     </section>
   );
 }
@@ -299,7 +278,7 @@ export function IncomingBidCard() {
         <ClubLink clubId={club.id} className="font-bold">{club.name}</ClubLink> want <span className="font-bold">{p.name}</span> ({p.pos}, {p.rating}) and offer{" "}
         <span className="font-bold text-theme-primary">{formatMoney(bid.fee)}</span>.
       </p>
-      <p className="mt-1 text-xs text-[color:var(--fl-muted)]">The offer lapses once you play the next game.</p>
+      <p className="mt-1 text-xs text-[color:var(--fl-muted)]">The offer lapses when the window shuts.</p>
       <div className="mt-3 grid grid-cols-2 gap-2">
         <GameButton size="sm" variant="secondary" onClick={() => { playUiClick(); rejectBid(); }}>
           Turn it down
@@ -322,7 +301,9 @@ export function TransferRoundUp() {
       <p className="text-[15px] font-bold text-white">Transfer round-up</p>
       {deals.length === 0 ? (
         <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
-          No deals yet. The mid-season window opens after Round 10 and closes on Deadline Day, before Round {WINDOW_CLOSES_BEFORE_ROUND}.
+          {roundsUntilDeadline(s) === null && !isDeadlineDay(s)
+            ? "No deals this season."
+            : `No deals yet. In-season transfers all happen on Deadline Day, before Round ${WINDOW_CLOSES_BEFORE_ROUND}.`}
         </p>
       ) : (
         <ul className="mt-1 divide-y divide-[color:var(--fl-line)]">

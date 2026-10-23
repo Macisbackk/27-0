@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LeaderboardTable } from "./LeaderboardTable";
 import { LeaderboardTabBar } from "./LeaderboardTabBar";
 import { CareerLeaderboard } from "./career/CareerLeaderboard";
@@ -11,6 +11,12 @@ type Board = "classic" | "daily" | "manager";
 /** The three boards: Classic, Daily and Manager Mode. */
 export function LeaderboardBoards() {
   const [board, setBoard] = useState<Board>("classic");
+  // Links like /leaderboard?tracker=daily_streak open on the Daily tab (read after mount, so the
+  // server-rendered page and the first client render match).
+  useEffect(() => {
+    const tracker = new URLSearchParams(window.location.search).get("tracker");
+    if (SHOW_DAILY_CHALLENGE_UI && tracker === "daily_streak") setBoard("daily");
+  }, []);
   const tabs = [
     { id: "classic" as const, label: "Classic", accent: "green" as const },
     ...(SHOW_DAILY_CHALLENGE_UI ? [{ id: "daily" as const, label: "Daily", accent: "amber" as const }] : []),

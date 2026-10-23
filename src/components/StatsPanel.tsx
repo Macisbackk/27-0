@@ -177,7 +177,7 @@ export function StatsPanel() {
             highlight
           />
           <StatCard
-            label="Total winnings"
+            label="Total prize money"
             value={formatClubFundsExact(quizStats.totalWinnings)}
           />
           <StatCard

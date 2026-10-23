@@ -40,11 +40,15 @@ const STATUS_TABS: { id: StatusFilter; label: string }[] = [
   { id: "locked", label: "Locked" },
 ];
 
-const VISIBLE_ACHIEVEMENTS = (
-  SHOW_DAILY_CHALLENGE_UI
-    ? ACHIEVEMENT_DEFINITIONS
-    : ACHIEVEMENT_DEFINITIONS.filter((def) => !def.id.startsWith("daily-"))
-).filter((def) => def.category !== "challenge-cup");
+/** Achievements from retired games: only listed (and counted) if you already have them. */
+const RETIRED_ACHIEVEMENT_IDS = new Set(["quiz-club-expert", "quiz-club-millionaire", "hangman-win", "higher-lower-streak-10"]);
+
+/** The achievements a player can see and count: the same list on the Profile and the coach card. */
+export function visibleAchievements(unlockedIds: Set<string>) {
+  return (SHOW_DAILY_CHALLENGE_UI ? ACHIEVEMENT_DEFINITIONS : ACHIEVEMENT_DEFINITIONS.filter((def) => !def.id.startsWith("daily-")))
+    .filter((def) => def.category !== "challenge-cup")
+    .filter((def) => !RETIRED_ACHIEVEMENT_IDS.has(def.id) || unlockedIds.has(def.id));
+}
 
 function formatUnlockDate(iso: string): string {
   const date = new Date(iso);
@@ -140,6 +144,7 @@ export function AchievementsSection() {
     return map;
   }, [refreshKey]);
 
+  const VISIBLE_ACHIEVEMENTS = visibleAchievements(new Set(unlockedMap.keys()));
   const visible = VISIBLE_ACHIEVEMENTS.filter((def) => {
     const isUnlocked = unlockedMap.has(def.id);
     if (category !== "all" && def.category !== category) return false;

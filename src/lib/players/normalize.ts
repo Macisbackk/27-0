@@ -1,5 +1,6 @@
 import type { Player, PlayerCategory, Position } from "../types";
 import { PLAYER_RATING_OVERRIDES } from "../../../data/player-rating-overrides";
+import { PLAYER_RATING_AUDIT } from "../../../data/player-rating-audit";
 import birthYearsData from "../../../data/birth-years.json";
 import { compressPeakRating, computePlayerValue } from "./ratings";
 import { parsePlayerId, resolvePrimeYear } from "./prime-year";
@@ -95,6 +96,10 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
 
   if (RATING_OVERRIDES[id] !== undefined) {
     peakRating = RATING_OVERRIDES[id];
+  }
+  // Oct 2026 ratings audit: year cards follow the player's career arc (scripts/audit-ratings.ts).
+  if (PLAYER_RATING_AUDIT[id] !== undefined) {
+    peakRating = PLAYER_RATING_AUDIT[id];
   }
 
   const rawClub = raw.club as string;

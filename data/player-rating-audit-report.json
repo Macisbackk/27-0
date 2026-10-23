@@ -1,0 +1,5927 @@
+{
+  "generated": "2026-10",
+  "up": 82,
+  "down": 510,
+  "changes": [
+    {
+      "id": "leeds-hist-gareth-ellis-2008",
+      "name": "Gareth Ellis",
+      "year": 2008,
+      "club": "Leeds Rhinos",
+      "age": 27,
+      "from": 82,
+      "to": 96,
+      "why": "elite season (2003, 2006, 2007, 2008, 2016); peak 97"
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2015",
+      "name": "Liam Farrell",
+      "year": 2015,
+      "club": "Wigan Warriors",
+      "age": 25,
+      "from": 82,
+      "to": 94,
+      "why": "elite season (2015, 2019, 2020, 2021, 2022, 2023); peak 95"
+    },
+    {
+      "id": "hull-fc-hist-gareth-ellis-2016",
+      "name": "Gareth Ellis",
+      "year": 2016,
+      "club": "Hull FC",
+      "age": 35,
+      "from": 82,
+      "to": 93,
+      "why": "elite season (2003, 2006, 2007, 2008, 2016); peak 97"
+    },
+    {
+      "id": "st-helens-hist-ade-gardner",
+      "name": "Ade Gardner",
+      "year": 2002,
+      "club": "St Helens",
+      "age": 19,
+      "from": 93,
+      "to": 83,
+      "why": "age 19, 3 yrs from his best seasons; peak 93"
+    },
+    {
+      "id": "leeds-cur-ash-handley-2015",
+      "name": "Ash Handley",
+      "year": 2015,
+      "club": "Leeds Rhinos",
+      "age": 19,
+      "from": 91,
+      "to": 81,
+      "why": "age 19, 3 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "danny-houghton",
+      "name": "Danny Houghton",
+      "year": 2007,
+      "club": "Hull FC",
+      "age": 19,
+      "from": 96,
+      "to": 86,
+      "why": "age 19, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "paul-wellens",
+      "name": "Paul Wellens",
+      "year": 1999,
+      "club": "St Helens",
+      "age": 19,
+      "from": 97,
+      "to": 87,
+      "why": "age 19, 3 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "richard-horne",
+      "name": "Richard Horne",
+      "year": 1999,
+      "club": "Hull FC",
+      "age": 17,
+      "from": 92,
+      "to": 82,
+      "why": "age 17, 3 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "hull-fc-hist-tom-lineham-2013",
+      "name": "Tom Lineham",
+      "year": 2013,
+      "club": "Hull FC",
+      "age": 22,
+      "from": 82,
+      "to": 92,
+      "why": "elite season (2013); peak 93"
+    },
+    {
+      "id": "wigan-cur-brad-o-neill",
+      "name": "Brad O'Neill",
+      "year": 2026,
+      "club": "Wigan Warriors",
+      "age": 24,
+      "from": 84,
+      "to": 93,
+      "why": "2026 Man of Steel"
+    },
+    {
+      "id": "leeds-hist-jake-connor-2025",
+      "name": "Jake Connor",
+      "year": 2025,
+      "club": "Leeds Rhinos",
+      "age": 31,
+      "from": 86,
+      "to": 95,
+      "why": "elite season (2025, 2026); peak 96"
+    },
+    {
+      "id": "hull-fc-hist-jamie-shaul-2016",
+      "name": "Jamie Shaul",
+      "year": 2016,
+      "club": "Hull FC",
+      "age": 24,
+      "from": 81,
+      "to": 90,
+      "why": "elite season (2016); peak 91"
+    },
+    {
+      "id": "leeds-hist-konrad-hurrell-2020",
+      "name": "Konrad Hurrell",
+      "year": 2020,
+      "club": "Leeds Rhinos",
+      "age": 29,
+      "from": 84,
+      "to": 93,
+      "why": "elite season (2019, 2020); peak 94"
+    },
+    {
+      "id": "hull-fc-hist-ben-crooks-2013",
+      "name": "Ben Crooks",
+      "year": 2013,
+      "club": "Hull FC",
+      "age": 20,
+      "from": 82,
+      "to": 90,
+      "why": "elite season (2013); peak 93"
+    },
+    {
+      "id": "st-helens-cur-jack-welsby-2020",
+      "name": "Jack Welsby",
+      "year": 2020,
+      "club": "St Helens",
+      "age": 19,
+      "from": 91,
+      "to": 83,
+      "why": "age 19, 1 yr from his best seasons; peak 91"
+    },
+    {
+      "id": "james-graham",
+      "name": "James Graham",
+      "year": 2005,
+      "club": "St Helens",
+      "age": 20,
+      "from": 97,
+      "to": 89,
+      "why": "age 20, 3 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "st-helens-hist-josh-jones",
+      "name": "Josh Jones",
+      "year": 2013,
+      "club": "St Helens",
+      "age": 20,
+      "from": 93,
+      "to": 85,
+      "why": "age 20, 3 yrs from his best seasons; peak 93"
+    },
+    {
+      "id": "hull-fc-hist-kirk-yeaman",
+      "name": "Kirk Yeaman",
+      "year": 2003,
+      "club": "Hull FC",
+      "age": 20,
+      "from": 92,
+      "to": 84,
+      "why": "age 20, 3 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "huddersfield-hist-leroy-cudjoe",
+      "name": "Leroy Cudjoe",
+      "year": 2008,
+      "club": "Huddersfield Giants",
+      "age": 20,
+      "from": 94,
+      "to": 86,
+      "why": "age 20, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "leeds-hist-mark-calderwood",
+      "name": "Mark Calderwood",
+      "year": 2001,
+      "club": "Leeds Rhinos",
+      "age": 20,
+      "from": 95,
+      "to": 87,
+      "why": "age 20, 3 yrs from his best seasons; peak 95"
+    },
+    {
+      "id": "st-helens-cur-mark-percival-2014",
+      "name": "Mark Percival",
+      "year": 2014,
+      "club": "St Helens",
+      "age": 20,
+      "from": 92,
+      "to": 84,
+      "why": "age 20, 3 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "castleford-hist-michael-shenton",
+      "name": "Michael Shenton",
+      "year": 2006,
+      "club": "Castleford Tigers",
+      "age": 20,
+      "from": 95,
+      "to": 87,
+      "why": "age 20, 3 yrs from his best seasons; peak 95"
+    },
+    {
+      "id": "st-helens-hist-morgan-knowles",
+      "name": "Morgan Knowles",
+      "year": 2016,
+      "club": "St Helens",
+      "age": 20,
+      "from": 94,
+      "to": 86,
+      "why": "age 20, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "hull-fc-hist-paul-cooke",
+      "name": "Paul Cooke",
+      "year": 2001,
+      "club": "Hull FC",
+      "age": 20,
+      "from": 90,
+      "to": 82,
+      "why": "age 20, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "hull-fc-hist-paul-king",
+      "name": "Paul King",
+      "year": 1999,
+      "club": "Hull FC",
+      "age": 20,
+      "from": 89,
+      "to": 81,
+      "why": "age 20, 3 yrs from his best seasons; peak 89"
+    },
+    {
+      "id": "paul-newlove",
+      "name": "Paul Newlove",
+      "year": 1990,
+      "club": "Bradford Bulls",
+      "age": 19,
+      "from": 92,
+      "to": 84,
+      "why": "age 19, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "sean-oloughlin",
+      "name": "Sean O'Loughlin",
+      "year": 2002,
+      "club": "Wigan Warriors",
+      "age": 20,
+      "from": 97,
+      "to": 89,
+      "why": "age 20, 3 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "st-helens-hist-thomas-makinson",
+      "name": "Thomas Makinson",
+      "year": 2011,
+      "club": "St Helens",
+      "age": 20,
+      "from": 94,
+      "to": 86,
+      "why": "age 20, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "warrington-cur-toby-king-2016",
+      "name": "Toby King",
+      "year": 2016,
+      "club": "Warrington Wolves",
+      "age": 20,
+      "from": 90,
+      "to": 82,
+      "why": "age 20, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "st-helens-hist-alex-walmsley-2015",
+      "name": "Alex Walmsley",
+      "year": 2015,
+      "club": "St Helens",
+      "age": 25,
+      "from": 82,
+      "to": 89,
+      "why": "elite season (2015, 2020, 2021, 2022); peak 90"
+    },
+    {
+      "id": "ben-westwood",
+      "name": "Ben Westwood",
+      "year": 2002,
+      "club": "Warrington Wolves",
+      "age": 21,
+      "from": 96,
+      "to": 89,
+      "why": "age 21, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "leeds-hist-chev-walker",
+      "name": "Chev Walker",
+      "year": 2000,
+      "club": "Leeds Rhinos",
+      "age": 18,
+      "from": 90,
+      "to": 83,
+      "why": "age 18; peak 90"
+    },
+    {
+      "id": "bradford-hist-elliott-whitehead",
+      "name": "Elliott Whitehead",
+      "year": 2010,
+      "club": "Bradford Bulls",
+      "age": 21,
+      "from": 91,
+      "to": 84,
+      "why": "age 21, 3 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "catalans-hist-fouad-yaha-2015",
+      "name": "Fouad Yaha",
+      "year": 2015,
+      "club": "Catalans Dragons",
+      "age": 19,
+      "from": 90,
+      "to": 83,
+      "why": "age 19; peak 90"
+    },
+    {
+      "id": "salford-hist-jake-bibby-2015",
+      "name": "Jake Bibby",
+      "year": 2015,
+      "club": "Salford Red Devils",
+      "age": 19,
+      "from": 89,
+      "to": 82,
+      "why": "age 19; peak 89"
+    },
+    {
+      "id": "salford-cur-jake-bibby-2015",
+      "name": "Jake Bibby",
+      "year": 2015,
+      "club": "Salford Red Devils",
+      "age": 19,
+      "from": 89,
+      "to": 82,
+      "why": "age 19; peak 89"
+    },
+    {
+      "id": "bradford-hist-james-lowes-1997",
+      "name": "James Lowes",
+      "year": 1997,
+      "club": "Bradford Bulls",
+      "age": 28,
+      "from": 87,
+      "to": 94,
+      "why": "elite season (1997, 1999); peak 95"
+    },
+    {
+      "id": "bradford-hist-james-lowes-1999",
+      "name": "James Lowes",
+      "year": 1999,
+      "club": "Bradford Bulls",
+      "age": 30,
+      "from": 87,
+      "to": 94,
+      "why": "elite season (1997, 1999); peak 95"
+    },
+    {
+      "id": "bradford-hist-john-bateman-2011",
+      "name": "John Bateman",
+      "year": 2011,
+      "club": "Bradford Bulls",
+      "age": 18,
+      "from": 91,
+      "to": 84,
+      "why": "age 18, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "wigan-hist-john-bateman",
+      "name": "John Bateman",
+      "year": 2014,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 94,
+      "to": 87,
+      "why": "age 21, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "castleford-cur-jordan-thompson-2009",
+      "name": "Jordan Thompson",
+      "year": 2009,
+      "club": "Castleford Tigers",
+      "age": 18,
+      "from": 88,
+      "to": 81,
+      "why": "age 18; peak 88"
+    },
+    {
+      "id": "bradford-hist-karl-pryce-2005",
+      "name": "Karl Pryce",
+      "year": 2005,
+      "club": "Bradford Bulls",
+      "age": 19,
+      "from": 89,
+      "to": 82,
+      "why": "age 19; peak 89"
+    },
+    {
+      "id": "kris-radlinski",
+      "name": "Kris Radlinski",
+      "year": 1996,
+      "club": "Wigan Warriors",
+      "age": 20,
+      "from": 97,
+      "to": 90,
+      "why": "age 20, 2 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "leeds-hist-matt-diskin",
+      "name": "Matt Diskin",
+      "year": 2002,
+      "club": "Leeds Rhinos",
+      "age": 20,
+      "from": 90,
+      "to": 83,
+      "why": "age 20, 2 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "wakefield-hist-max-jowitt-2016",
+      "name": "Max Jowitt",
+      "year": 2016,
+      "club": "Wakefield Trinity",
+      "age": 19,
+      "from": 87,
+      "to": 80,
+      "why": "age 19; peak 87"
+    },
+    {
+      "id": "salford-hist-oliver-gildart-2015",
+      "name": "Oliver Gildart",
+      "year": 2015,
+      "club": "Salford Red Devils",
+      "age": 19,
+      "from": 89,
+      "to": 82,
+      "why": "age 19; peak 89"
+    },
+    {
+      "id": "salford-cur-oliver-gildart-2015",
+      "name": "Oliver Gildart",
+      "year": 2015,
+      "club": "Salford Red Devils",
+      "age": 19,
+      "from": 89,
+      "to": 82,
+      "why": "age 19; peak 89"
+    },
+    {
+      "id": "paul-clough",
+      "name": "Paul Clough",
+      "year": 2006,
+      "club": "St Helens",
+      "age": 19,
+      "from": 90,
+      "to": 83,
+      "why": "age 19; peak 90"
+    },
+    {
+      "id": "paul-deacon",
+      "name": "Paul Deacon",
+      "year": 1998,
+      "club": "Bradford Bulls",
+      "age": 19,
+      "from": 90,
+      "to": 83,
+      "why": "age 19; peak 90"
+    },
+    {
+      "id": "bradford-hist-paul-sykes-2000",
+      "name": "Paul Sykes",
+      "year": 2000,
+      "club": "Bradford Bulls",
+      "age": 19,
+      "from": 90,
+      "to": 83,
+      "why": "age 19; peak 90"
+    },
+    {
+      "id": "remi-casty",
+      "name": "Remi Casty",
+      "year": 2006,
+      "club": "Catalans Dragons",
+      "age": 21,
+      "from": 94,
+      "to": 87,
+      "why": "age 21, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "st-helens-hist-sia-soliola",
+      "name": "Sia Soliola",
+      "year": 2005,
+      "club": "St Helens",
+      "age": 19,
+      "from": 87,
+      "to": 80,
+      "why": "age 19; peak 87"
+    },
+    {
+      "id": "castleford-cur-daryl-clark-2012",
+      "name": "Daryl Clark",
+      "year": 2012,
+      "club": "Castleford Tigers",
+      "age": 19,
+      "from": 88,
+      "to": 82,
+      "why": "age 19, 2 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "castleford-hist-denny-solomona",
+      "name": "Denny Solomona",
+      "year": 2014,
+      "club": "Castleford Tigers",
+      "age": 21,
+      "from": 94,
+      "to": 88,
+      "why": "age 21, 2 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "st-helens-hist-jon-wilkin",
+      "name": "Jon Wilkin",
+      "year": 2004,
+      "club": "St Helens",
+      "age": 21,
+      "from": 94,
+      "to": 88,
+      "why": "age 21, 2 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "hull-fc-hist-jordan-abdull",
+      "name": "Jordan Abdull",
+      "year": 2015,
+      "club": "Hull FC",
+      "age": 19,
+      "from": 86,
+      "to": 80,
+      "why": "age 19; peak 86"
+    },
+    {
+      "id": "st-helens-hist-keiron-cunningham-2006",
+      "name": "Keiron Cunningham",
+      "year": 2006,
+      "club": "St Helens",
+      "age": 30,
+      "from": 91,
+      "to": 97,
+      "why": "elite season (1996, 2000, 2001, 2002, 2005, 2006, 2008); peak 98"
+    },
+    {
+      "id": "st-helens-hist-keiron-cunningham-2002",
+      "name": "Keiron Cunningham",
+      "year": 2002,
+      "club": "St Helens",
+      "age": 26,
+      "from": 91,
+      "to": 97,
+      "why": "elite season (1996, 2000, 2001, 2002, 2005, 2006, 2008); peak 98"
+    },
+    {
+      "id": "leeds-cur-lachie-miller",
+      "name": "Lachie Miller",
+      "year": 2026,
+      "club": "Leeds Rhinos",
+      "age": 32,
+      "from": 84,
+      "to": 90,
+      "why": "2026 Man of Steel shortlist"
+    },
+    {
+      "id": "wigan-hist-lee-mossop-2008",
+      "name": "Lee Mossop",
+      "year": 2008,
+      "club": "Wigan Warriors",
+      "age": 19,
+      "from": 88,
+      "to": 82,
+      "why": "age 19; peak 89"
+    },
+    {
+      "id": "bradford-hist-leon-pryce-1999",
+      "name": "Leon Pryce",
+      "year": 1999,
+      "club": "Bradford Bulls",
+      "age": 18,
+      "from": 92,
+      "to": 86,
+      "why": "age 18, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "st-helens-cur-lewis-dodd-2021",
+      "name": "Lewis Dodd",
+      "year": 2021,
+      "club": "St Helens",
+      "age": 19,
+      "from": 86,
+      "to": 80,
+      "why": "age 19; peak 86"
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2022",
+      "name": "Liam Farrell",
+      "year": 2022,
+      "club": "Wigan Warriors",
+      "age": 32,
+      "from": 88,
+      "to": 94,
+      "why": "elite season (2015, 2019, 2020, 2021, 2022, 2023); peak 95"
+    },
+    {
+      "id": "bradford-hist-paul-sykes-1999",
+      "name": "Paul Sykes",
+      "year": 1999,
+      "club": "Bradford Bulls",
+      "age": 18,
+      "from": 89,
+      "to": 83,
+      "why": "age 18; peak 90"
+    },
+    {
+      "id": "castleford-hist-richard-owen",
+      "name": "Richard Owen",
+      "year": 2009,
+      "club": "Castleford Tigers",
+      "age": 19,
+      "from": 86,
+      "to": 80,
+      "why": "age 19; peak 86"
+    },
+    {
+      "id": "wigan-hist-sean-gleeson-2006",
+      "name": "Sean Gleeson",
+      "year": 2006,
+      "club": "Wigan Warriors",
+      "age": 19,
+      "from": 86,
+      "to": 80,
+      "why": "age 19; peak 86"
+    },
+    {
+      "id": "wigan-hist-stuart-fielden-2006",
+      "name": "Stuart Fielden",
+      "year": 2006,
+      "club": "Wigan Warriors",
+      "age": 27,
+      "from": 89,
+      "to": 95,
+      "why": "elite season (2000, 2002, 2006); peak 96"
+    },
+    {
+      "id": "wakefield-hist-tom-johnstone-2016",
+      "name": "Tom Johnstone",
+      "year": 2016,
+      "club": "Wakefield Trinity",
+      "age": 21,
+      "from": 91,
+      "to": 85,
+      "why": "age 21, 2 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "warrington-hist-adrian-morley-2009",
+      "name": "Adrian Morley",
+      "year": 2009,
+      "club": "Warrington Wolves",
+      "age": 32,
+      "from": 90,
+      "to": 95,
+      "why": "elite season (1998, 1999, 2009, 2010); peak 96"
+    },
+    {
+      "id": "bradford-cur-alex-mellor-2014",
+      "name": "Alex Mellor",
+      "year": 2014,
+      "club": "Bradford Bulls",
+      "age": 20,
+      "from": 88,
+      "to": 83,
+      "why": "age 20; peak 88"
+    },
+    {
+      "id": "castleford-hist-craig-huby",
+      "name": "Craig Huby",
+      "year": 2006,
+      "club": "Castleford Tigers",
+      "age": 20,
+      "from": 87,
+      "to": 82,
+      "why": "age 20; peak 87"
+    },
+    {
+      "id": "hull-fc-hist-danny-houghton-2009",
+      "name": "Danny Houghton",
+      "year": 2009,
+      "club": "Hull FC",
+      "age": 21,
+      "from": 94,
+      "to": 89,
+      "why": "age 21, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "hull-fc-hist-danny-washbrook",
+      "name": "Danny Washbrook",
+      "year": 2005,
+      "club": "Hull FC",
+      "age": 20,
+      "from": 87,
+      "to": 82,
+      "why": "age 20; peak 87"
+    },
+    {
+      "id": "catalans-cur-eloi-pelissier-2011",
+      "name": "Éloi Pélissier",
+      "year": 2011,
+      "club": "Catalans Dragons",
+      "age": 20,
+      "from": 85,
+      "to": 80,
+      "why": "age 20; peak 85"
+    },
+    {
+      "id": "eorl-crabtree",
+      "name": "Eorl Crabtree",
+      "year": 2004,
+      "club": "Huddersfield Giants",
+      "age": 22,
+      "from": 93,
+      "to": 88,
+      "why": "age 22, 3 yrs from his best seasons; peak 93"
+    },
+    {
+      "id": "wigan-hist-harrison-hansen",
+      "name": "Harrison Hansen",
+      "year": 2005,
+      "club": "Wigan Warriors",
+      "age": 20,
+      "from": 90,
+      "to": 85,
+      "why": "age 20; peak 90"
+    },
+    {
+      "id": "iestyn-harris",
+      "name": "Iestyn Harris",
+      "year": 1997,
+      "club": "Leeds Rhinos",
+      "age": 21,
+      "from": 97,
+      "to": 92,
+      "why": "age 21, 1 yr from his best seasons; peak 97"
+    },
+    {
+      "id": "huddersfield-hist-jake-connor-2016",
+      "name": "Jake Connor",
+      "year": 2016,
+      "club": "Huddersfield Giants",
+      "age": 22,
+      "from": 96,
+      "to": 91,
+      "why": "age 22, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "st-helens-hist-jamie-foster",
+      "name": "Jamie Foster",
+      "year": 2010,
+      "club": "St Helens",
+      "age": 20,
+      "from": 88,
+      "to": 83,
+      "why": "age 20; peak 88"
+    },
+    {
+      "id": "wigan-hist-jason-robinson-1995",
+      "name": "Jason Robinson",
+      "year": 1995,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 96,
+      "to": 91,
+      "why": "age 21, 1 yr from his best seasons; peak 96"
+    },
+    {
+      "id": "leigh-cur-joe-ofahengaue",
+      "name": "Joe Ofahengaue",
+      "year": 2026,
+      "club": "Leigh Leopards",
+      "age": 31,
+      "from": 83,
+      "to": 88,
+      "why": "2026 Dream Team"
+    },
+    {
+      "id": "castleford-cur-joe-westerman-2009",
+      "name": "Joe Westerman",
+      "year": 2009,
+      "club": "Castleford Tigers",
+      "age": 20,
+      "from": 89,
+      "to": 84,
+      "why": "age 20; peak 89"
+    },
+    {
+      "id": "castleford-hist-jon-wells",
+      "name": "Jon Wells",
+      "year": 1998,
+      "club": "Castleford Tigers",
+      "age": 20,
+      "from": 89,
+      "to": 84,
+      "why": "age 20; peak 89"
+    },
+    {
+      "id": "salford-cur-jordan-turner-2009",
+      "name": "Jordan Turner",
+      "year": 2009,
+      "club": "Salford Red Devils",
+      "age": 20,
+      "from": 90,
+      "to": 85,
+      "why": "age 20; peak 90"
+    },
+    {
+      "id": "bradford-hist-karl-pryce-2006",
+      "name": "Karl Pryce",
+      "year": 2006,
+      "club": "Bradford Bulls",
+      "age": 20,
+      "from": 89,
+      "to": 84,
+      "why": "age 20; peak 89"
+    },
+    {
+      "id": "london-hist-kieran-dixon",
+      "name": "Kieran Dixon",
+      "year": 2012,
+      "club": "London Broncos",
+      "age": 20,
+      "from": 89,
+      "to": 84,
+      "why": "age 20; peak 89"
+    },
+    {
+      "id": "lee-briers",
+      "name": "Lee Briers",
+      "year": 1997,
+      "club": "Warrington Wolves",
+      "age": 19,
+      "from": 93,
+      "to": 88,
+      "why": "age 19; peak 95"
+    },
+    {
+      "id": "bradford-hist-leon-pryce-1998",
+      "name": "Leon Pryce",
+      "year": 1998,
+      "club": "Bradford Bulls",
+      "age": 17,
+      "from": 91,
+      "to": 86,
+      "why": "age 17, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "bradford-hist-leon-pryce-2000",
+      "name": "Leon Pryce",
+      "year": 2000,
+      "club": "Bradford Bulls",
+      "age": 19,
+      "from": 91,
+      "to": 86,
+      "why": "age 19, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "salford-hist-luke-adamson",
+      "name": "Luke Adamson",
+      "year": 2007,
+      "club": "Salford Red Devils",
+      "age": 20,
+      "from": 85,
+      "to": 80,
+      "why": "age 20; peak 85"
+    },
+    {
+      "id": "salford-hist-martin-gleeson-2014",
+      "name": "Martin Gleeson",
+      "year": 2014,
+      "club": "Salford Red Devils",
+      "age": 34,
+      "from": 90,
+      "to": 85,
+      "why": "age 34, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "st-helens-cur-matty-lees-2020",
+      "name": "Matty Lees",
+      "year": 2020,
+      "club": "St Helens",
+      "age": 22,
+      "from": 88,
+      "to": 83,
+      "why": "age 22, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "catalans-hist-michael-dobson-2006",
+      "name": "Michael Dobson",
+      "year": 2006,
+      "club": "Catalans Dragons",
+      "age": 20,
+      "from": 87,
+      "to": 82,
+      "why": "age 20, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "wigan-hist-michael-mcilorum-2006",
+      "name": "Michael McIlorum",
+      "year": 2006,
+      "club": "Wigan Warriors",
+      "age": 18,
+      "from": 89,
+      "to": 84,
+      "why": "age 18; peak 91"
+    },
+    {
+      "id": "wigan-hist-morgan-smithies-2020",
+      "name": "Morgan Smithies",
+      "year": 2020,
+      "club": "Wigan Warriors",
+      "age": 20,
+      "from": 88,
+      "to": 83,
+      "why": "age 20; peak 88"
+    },
+    {
+      "id": "salford-hist-era-nene-macdonald",
+      "name": "Nene Macdonald",
+      "year": 2024,
+      "club": "Salford Red Devils",
+      "age": 30,
+      "from": 81,
+      "to": 86,
+      "why": "elite season (2024); peak 87"
+    },
+    {
+      "id": "castleford-hist-oliver-holmes-2012",
+      "name": "Oliver Holmes",
+      "year": 2012,
+      "club": "Castleford Tigers",
+      "age": 20,
+      "from": 87,
+      "to": 82,
+      "why": "age 20; peak 87"
+    },
+    {
+      "id": "bradford-hist-paul-deacon-1999",
+      "name": "Paul Deacon",
+      "year": 1999,
+      "club": "Bradford Bulls",
+      "age": 20,
+      "from": 90,
+      "to": 85,
+      "why": "age 20; peak 90"
+    },
+    {
+      "id": "bradford-hist-paul-sykes-2001",
+      "name": "Paul Sykes",
+      "year": 2001,
+      "club": "Bradford Bulls",
+      "age": 20,
+      "from": 90,
+      "to": 85,
+      "why": "age 20; peak 90"
+    },
+    {
+      "id": "st-helens-hist-paul-wellens-2000",
+      "name": "Paul Wellens",
+      "year": 2000,
+      "club": "St Helens",
+      "age": 20,
+      "from": 94,
+      "to": 89,
+      "why": "age 20, 3 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "bradford-leg-robbie-hunter-paul",
+      "name": "Robbie Hunter-Paul",
+      "year": 1996,
+      "club": "Bradford Bulls",
+      "age": 20,
+      "from": 95,
+      "to": 90,
+      "why": "age 20; peak 95"
+    },
+    {
+      "id": "catalans-hist-steve-menzies-2013",
+      "name": "Steve Menzies",
+      "year": 2013,
+      "club": "Catalans Dragons",
+      "age": 40,
+      "from": 88,
+      "to": 83,
+      "why": "age 40, 2 yrs from his best seasons; peak 89"
+    },
+    {
+      "id": "catalans-hist-steve-menzies-2012",
+      "name": "Steve Menzies",
+      "year": 2012,
+      "club": "Catalans Dragons",
+      "age": 39,
+      "from": 89,
+      "to": 84,
+      "why": "age 39, 1 yr from his best seasons; peak 89"
+    },
+    {
+      "id": "wakefield-hist-steve-snitch",
+      "name": "Steve Snitch",
+      "year": 2003,
+      "club": "Wakefield Trinity",
+      "age": 20,
+      "from": 86,
+      "to": 81,
+      "why": "age 20; peak 86"
+    },
+    {
+      "id": "wigan-hist-terry-newton",
+      "name": "Terry Newton",
+      "year": 2000,
+      "club": "Wigan Warriors",
+      "age": 22,
+      "from": 93,
+      "to": 88,
+      "why": "age 22, 3 yrs from his best seasons; peak 93"
+    },
+    {
+      "id": "salford-hist-theo-fages-2014",
+      "name": "Théo Fages",
+      "year": 2014,
+      "club": "Salford Red Devils",
+      "age": 20,
+      "from": 88,
+      "to": 83,
+      "why": "age 20; peak 88"
+    },
+    {
+      "id": "st-helens-hist-tim-jonkers",
+      "name": "Tim Jonkers",
+      "year": 2001,
+      "club": "St Helens",
+      "age": 20,
+      "from": 85,
+      "to": 80,
+      "why": "age 20; peak 85"
+    },
+    {
+      "id": "st-helens-hist-tim-jonkers-2000",
+      "name": "Tim Jonkers",
+      "year": 2000,
+      "club": "St Helens",
+      "age": 19,
+      "from": 85,
+      "to": 80,
+      "why": "age 19; peak 85"
+    },
+    {
+      "id": "hull-fc-hist-tommy-lee",
+      "name": "Tommy Lee",
+      "year": 2008,
+      "club": "Hull FC",
+      "age": 20,
+      "from": 86,
+      "to": 81,
+      "why": "age 20; peak 86"
+    },
+    {
+      "id": "st-helens-hist-tommy-martyn-2000",
+      "name": "Tommy Martyn",
+      "year": 2000,
+      "club": "St Helens",
+      "age": 29,
+      "from": 90,
+      "to": 95,
+      "why": "elite season (2000); peak 96"
+    },
+    {
+      "id": "warrington-hist-adam-holroyd-2025",
+      "name": "Adam Holroyd",
+      "year": 2025,
+      "club": "Warrington Wolves",
+      "age": 21,
+      "from": 84,
+      "to": 80,
+      "why": "age 21; peak 84"
+    },
+    {
+      "id": "castleford-hist-adam-milner",
+      "name": "Adam Milner",
+      "year": 2011,
+      "club": "Castleford Tigers",
+      "age": 20,
+      "from": 87,
+      "to": 83,
+      "why": "age 20; peak 88"
+    },
+    {
+      "id": "st-helens-hist-anthony-stewart",
+      "name": "Anthony Stewart",
+      "year": 1999,
+      "club": "St Helens",
+      "age": 20,
+      "from": 84,
+      "to": 80,
+      "why": "age 20; peak 84"
+    },
+    {
+      "id": "toulouse-hist-benjamin-laguerre-2022",
+      "name": "Benjamin Laguerre",
+      "year": 2022,
+      "club": "Toulouse Olympique",
+      "age": 21,
+      "from": 87,
+      "to": 83,
+      "why": "age 21; peak 87"
+    },
+    {
+      "id": "warrington-hist-chris-bridge",
+      "name": "Chris Bridge",
+      "year": 2005,
+      "club": "Warrington Wolves",
+      "age": 21,
+      "from": 90,
+      "to": 86,
+      "why": "age 21; peak 90"
+    },
+    {
+      "id": "huddersfield-hist-chris-mcqueen-2023",
+      "name": "Chris McQueen",
+      "year": 2023,
+      "club": "Huddersfield Giants",
+      "age": 36,
+      "from": 86,
+      "to": 82,
+      "why": "age 36, 1 yr from his best seasons; peak 87"
+    },
+    {
+      "id": "warrington-hist-chris-riley-2009",
+      "name": "Chris Riley",
+      "year": 2009,
+      "club": "Warrington Wolves",
+      "age": 21,
+      "from": 91,
+      "to": 87,
+      "why": "age 21; peak 91"
+    },
+    {
+      "id": "wigan-hist-dan-sarginson",
+      "name": "Dan Sarginson",
+      "year": 2014,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 89,
+      "to": 85,
+      "why": "age 21; peak 89"
+    },
+    {
+      "id": "leeds-hist-danny-mcguire-2015",
+      "name": "Danny McGuire",
+      "year": 2015,
+      "club": "Leeds Rhinos",
+      "age": 33,
+      "from": 97,
+      "to": 93,
+      "why": "age 33, 3 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "castleford-hist-danny-orr",
+      "name": "Danny Orr",
+      "year": 2000,
+      "club": "Castleford Tigers",
+      "age": 22,
+      "from": 89,
+      "to": 85,
+      "why": "age 22, 2 yrs from his best seasons; peak 89"
+    },
+    {
+      "id": "catalans-cur-eloi-pelissier-2012",
+      "name": "Éloi Pélissier",
+      "year": 2012,
+      "club": "Catalans Dragons",
+      "age": 21,
+      "from": 85,
+      "to": 81,
+      "why": "age 21; peak 85"
+    },
+    {
+      "id": "wigan-hist-gareth-hock-2006",
+      "name": "Gareth Hock",
+      "year": 2006,
+      "club": "Wigan Warriors",
+      "age": 23,
+      "from": 88,
+      "to": 84,
+      "why": "age 23, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "warrington-cur-george-king-2016",
+      "name": "George King",
+      "year": 2016,
+      "club": "Warrington Wolves",
+      "age": 21,
+      "from": 86,
+      "to": 82,
+      "why": "age 21; peak 86"
+    },
+    {
+      "id": "hull-fc-hist-graham-mackay",
+      "name": "Graham Mackay",
+      "year": 2002,
+      "club": "Hull FC",
+      "age": 34,
+      "from": 95,
+      "to": 91,
+      "why": "age 34, 2 yrs from his best seasons; peak 95"
+    },
+    {
+      "id": "castleford-hist-greg-minikin-2016",
+      "name": "Greg Minikin",
+      "year": 2016,
+      "club": "Castleford Tigers",
+      "age": 21,
+      "from": 87,
+      "to": 83,
+      "why": "age 21; peak 87"
+    },
+    {
+      "id": "widnes-hist-jack-owens",
+      "name": "Jack Owens",
+      "year": 2015,
+      "club": "Widnes Vikings",
+      "age": 21,
+      "from": 86,
+      "to": 82,
+      "why": "age 21; peak 86"
+    },
+    {
+      "id": "leeds-hist-jack-walker-2020",
+      "name": "Jack Walker",
+      "year": 2020,
+      "club": "Leeds Rhinos",
+      "age": 21,
+      "from": 84,
+      "to": 80,
+      "why": "age 21; peak 84"
+    },
+    {
+      "id": "bradford-hist-jamie-langley-2004",
+      "name": "Jamie Langley",
+      "year": 2004,
+      "club": "Bradford Bulls",
+      "age": 21,
+      "from": 90,
+      "to": 86,
+      "why": "age 21; peak 90"
+    },
+    {
+      "id": "hull-fc-hist-jamie-shaul",
+      "name": "Jamie Shaul",
+      "year": 2014,
+      "club": "Hull FC",
+      "age": 22,
+      "from": 91,
+      "to": 87,
+      "why": "age 22, 2 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "wakefield-hist-jay-pitts-2025",
+      "name": "Jay Pitts",
+      "year": 2025,
+      "club": "Wakefield Trinity",
+      "age": 36,
+      "from": 87,
+      "to": 83,
+      "why": "age 36; peak 87"
+    },
+    {
+      "id": "huddersfield-hist-jermaine-mcgillvary",
+      "name": "Jermaine McGillvary",
+      "year": 2011,
+      "club": "Huddersfield Giants",
+      "age": 23,
+      "from": 93,
+      "to": 89,
+      "why": "age 23, 3 yrs from his best seasons; peak 93"
+    },
+    {
+      "id": "castleford-cur-joe-arundel-2012",
+      "name": "Joe Arundel",
+      "year": 2012,
+      "club": "Castleford Tigers",
+      "age": 21,
+      "from": 87,
+      "to": 83,
+      "why": "age 21; peak 87"
+    },
+    {
+      "id": "huddersfield-hist-joe-wardle",
+      "name": "Joe Wardle",
+      "year": 2012,
+      "club": "Huddersfield Giants",
+      "age": 21,
+      "from": 87,
+      "to": 83,
+      "why": "age 21; peak 87"
+    },
+    {
+      "id": "leigh-hist-josh-charnley-2025",
+      "name": "Josh Charnley",
+      "year": 2025,
+      "club": "Leigh Leopards",
+      "age": 34,
+      "from": 84,
+      "to": 80,
+      "why": "age 34, 2 yrs from his best seasons; peak 84"
+    },
+    {
+      "id": "warrington-hist-josh-thewlis-2023",
+      "name": "Josh Thewlis",
+      "year": 2023,
+      "club": "Warrington Wolves",
+      "age": 21,
+      "from": 84,
+      "to": 80,
+      "why": "age 21; peak 84"
+    },
+    {
+      "id": "wigan-hist-junior-nsemba-2025",
+      "name": "Junior Nsemba",
+      "year": 2025,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 88,
+      "to": 84,
+      "why": "age 21, 1 yr from his best seasons; peak 89"
+    },
+    {
+      "id": "wigan-hist-era-kai-pearce-paul",
+      "name": "Kai Pearce-Paul",
+      "year": 2022,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 85,
+      "to": 81,
+      "why": "age 21; peak 85"
+    },
+    {
+      "id": "catalans-hist-kane-bentley-2008",
+      "name": "Kane Bentley",
+      "year": 2008,
+      "club": "Catalans Dragons",
+      "age": 21,
+      "from": 84,
+      "to": 80,
+      "why": "age 21; peak 84"
+    },
+    {
+      "id": "catalans-hist-kane-bentley-2007",
+      "name": "Kane Bentley",
+      "year": 2007,
+      "club": "Catalans Dragons",
+      "age": 20,
+      "from": 84,
+      "to": 80,
+      "why": "age 20; peak 84"
+    },
+    {
+      "id": "leeds-leg-kevin-sinfield-2008",
+      "name": "Kevin Sinfield",
+      "year": 2008,
+      "club": "Leeds Rhinos",
+      "age": 28,
+      "from": 93,
+      "to": 97,
+      "why": "elite season (2005, 2006, 2008, 2009, 2012); peak 98"
+    },
+    {
+      "id": "leeds-leg-kevin-sinfield-2009",
+      "name": "Kevin Sinfield",
+      "year": 2009,
+      "club": "Leeds Rhinos",
+      "age": 29,
+      "from": 93,
+      "to": 97,
+      "why": "elite season (2005, 2006, 2008, 2009, 2012); peak 98"
+    },
+    {
+      "id": "bradford-hist-lee-radford-1999",
+      "name": "Lee Radford",
+      "year": 1999,
+      "club": "Bradford Bulls",
+      "age": 20,
+      "from": 88,
+      "to": 84,
+      "why": "age 20; peak 89"
+    },
+    {
+      "id": "bradford-hist-lee-radford-2000",
+      "name": "Lee Radford",
+      "year": 2000,
+      "club": "Bradford Bulls",
+      "age": 21,
+      "from": 89,
+      "to": 85,
+      "why": "age 21; peak 89"
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2021",
+      "name": "Liam Farrell",
+      "year": 2021,
+      "club": "Wigan Warriors",
+      "age": 31,
+      "from": 90,
+      "to": 94,
+      "why": "elite season (2015, 2019, 2020, 2021, 2022, 2023); peak 95"
+    },
+    {
+      "id": "wigan-hist-liam-farrell-2023",
+      "name": "Liam Farrell",
+      "year": 2023,
+      "club": "Wigan Warriors",
+      "age": 33,
+      "from": 89,
+      "to": 93,
+      "why": "elite season (2015, 2019, 2020, 2021, 2022, 2023); peak 95"
+    },
+    {
+      "id": "hull-fc-hist-liam-watts",
+      "name": "Liam Watts",
+      "year": 2013,
+      "club": "Hull FC",
+      "age": 23,
+      "from": 90,
+      "to": 86,
+      "why": "age 23, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "st-helens-cur-matty-lees-2021",
+      "name": "Matty Lees",
+      "year": 2021,
+      "club": "St Helens",
+      "age": 23,
+      "from": 88,
+      "to": 84,
+      "why": "age 23, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "warrington-hist-matty-nicholson-2023",
+      "name": "Matty Nicholson",
+      "year": 2023,
+      "club": "Warrington Wolves",
+      "age": 20,
+      "from": 84,
+      "to": 80,
+      "why": "age 20; peak 84"
+    },
+    {
+      "id": "warrington-hist-matty-nicholson-2024",
+      "name": "Matty Nicholson",
+      "year": 2024,
+      "club": "Warrington Wolves",
+      "age": 21,
+      "from": 84,
+      "to": 80,
+      "why": "age 21; peak 84"
+    },
+    {
+      "id": "huddersfield-hist-michael-lawrence-2009",
+      "name": "Michael Lawrence",
+      "year": 2009,
+      "club": "Huddersfield Giants",
+      "age": 19,
+      "from": 86,
+      "to": 82,
+      "why": "age 19; peak 89"
+    },
+    {
+      "id": "warrington-hist-mickey-higham",
+      "name": "Mickey Higham",
+      "year": 2001,
+      "club": "Warrington Wolves",
+      "age": 21,
+      "from": 90,
+      "to": 86,
+      "why": "age 21; peak 90"
+    },
+    {
+      "id": "warrington-hist-mike-cooper",
+      "name": "Mike Cooper",
+      "year": 2011,
+      "club": "Warrington Wolves",
+      "age": 23,
+      "from": 90,
+      "to": 86,
+      "why": "age 23, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "leeds-hist-mikolaj-oledzki-2020",
+      "name": "Mikolaj Oledzki",
+      "year": 2020,
+      "club": "Leeds Rhinos",
+      "age": 22,
+      "from": 87,
+      "to": 83,
+      "why": "age 22, 2 yrs from his best seasons; peak 87"
+    },
+    {
+      "id": "wakefield-hist-oliver-pratt-2025",
+      "name": "Oliver Pratt",
+      "year": 2025,
+      "club": "Wakefield Trinity",
+      "age": 21,
+      "from": 84,
+      "to": 80,
+      "why": "age 21; peak 84"
+    },
+    {
+      "id": "bradford-hist-paul-cook",
+      "name": "Paul Cook",
+      "year": 1996,
+      "club": "Bradford Bulls",
+      "age": 20,
+      "from": 84,
+      "to": 80,
+      "why": "age 20; peak 84"
+    },
+    {
+      "id": "bradford-hist-paul-cook-1997",
+      "name": "Paul Cook",
+      "year": 1997,
+      "club": "Bradford Bulls",
+      "age": 21,
+      "from": 84,
+      "to": 80,
+      "why": "age 21; peak 84"
+    },
+    {
+      "id": "bradford-hist-paul-deacon-2000",
+      "name": "Paul Deacon",
+      "year": 2000,
+      "club": "Bradford Bulls",
+      "age": 21,
+      "from": 90,
+      "to": 86,
+      "why": "age 21; peak 90"
+    },
+    {
+      "id": "wigan-hist-paul-johnson",
+      "name": "Paul Johnson",
+      "year": 1998,
+      "club": "Wigan Warriors",
+      "age": 20,
+      "from": 87,
+      "to": 83,
+      "why": "age 20; peak 88"
+    },
+    {
+      "id": "wigan-hist-paul-prescott",
+      "name": "Paul Prescott",
+      "year": 2007,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 88,
+      "to": 84,
+      "why": "age 21; peak 88"
+    },
+    {
+      "id": "bradford-hist-paul-sykes-2002",
+      "name": "Paul Sykes",
+      "year": 2002,
+      "club": "Bradford Bulls",
+      "age": 21,
+      "from": 90,
+      "to": 86,
+      "why": "age 21; peak 90"
+    },
+    {
+      "id": "wakefield-hist-reece-lyne",
+      "name": "Reece Lyne",
+      "year": 2013,
+      "club": "Wakefield Trinity",
+      "age": 21,
+      "from": 87,
+      "to": 83,
+      "why": "age 21; peak 87"
+    },
+    {
+      "id": "wakefield-hist-richard-myler",
+      "name": "Richard Myler",
+      "year": 2011,
+      "club": "Warrington Wolves",
+      "age": 21,
+      "from": 88,
+      "to": 84,
+      "why": "age 21; peak 88"
+    },
+    {
+      "id": "leeds-hist-riley-lumb-2025",
+      "name": "Riley Lumb",
+      "year": 2025,
+      "club": "Leeds Rhinos",
+      "age": 21,
+      "from": 84,
+      "to": 80,
+      "why": "age 21; peak 84"
+    },
+    {
+      "id": "leeds-hist-ryan-hall-2025",
+      "name": "Ryan Hall",
+      "year": 2025,
+      "club": "Leeds Rhinos",
+      "age": 38,
+      "from": 84,
+      "to": 80,
+      "why": "age 38, 3 yrs from his best seasons; peak 84"
+    },
+    {
+      "id": "wigan-hist-sam-tomkins-2008",
+      "name": "Sam Tomkins",
+      "year": 2008,
+      "club": "Wigan Warriors",
+      "age": 19,
+      "from": 94,
+      "to": 90,
+      "why": "age 19, 1 yr from his best seasons; peak 98"
+    },
+    {
+      "id": "wigan-hist-sam-tomkins",
+      "name": "Sam Tomkins",
+      "year": 2008,
+      "club": "Wigan Warriors",
+      "age": 19,
+      "from": 94,
+      "to": 90,
+      "why": "age 19, 1 yr from his best seasons; peak 98"
+    },
+    {
+      "id": "wakefield-hist-sean-gleeson",
+      "name": "Sean Gleeson",
+      "year": 2008,
+      "club": "Wakefield Trinity",
+      "age": 21,
+      "from": 86,
+      "to": 82,
+      "why": "age 21; peak 86"
+    },
+    {
+      "id": "salford-hist-stefan-ratchford-2009",
+      "name": "Stefan Ratchford",
+      "year": 2009,
+      "club": "Salford Red Devils",
+      "age": 21,
+      "from": 91,
+      "to": 87,
+      "why": "age 21; peak 91"
+    },
+    {
+      "id": "leeds-hist-stevie-ward",
+      "name": "Stevie Ward",
+      "year": 2014,
+      "club": "Leeds Rhinos",
+      "age": 21,
+      "from": 89,
+      "to": 85,
+      "why": "age 21; peak 89"
+    },
+    {
+      "id": "bradford-leg-stuart-fielden-1998",
+      "name": "Stuart Fielden",
+      "year": 1998,
+      "club": "Bradford Bulls",
+      "age": 19,
+      "from": 91,
+      "to": 87,
+      "why": "age 19, 2 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "bradford-leg-stuart-fielden-2006",
+      "name": "Stuart Fielden",
+      "year": 2006,
+      "club": "Bradford Bulls",
+      "age": 27,
+      "from": 91,
+      "to": 95,
+      "why": "elite season (2000, 2002, 2006); peak 96"
+    },
+    {
+      "id": "bradford-leg-stuart-fielden-2002",
+      "name": "Stuart Fielden",
+      "year": 2002,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 91,
+      "to": 95,
+      "why": "elite season (2000, 2002, 2006); peak 96"
+    },
+    {
+      "id": "st-helens-hist-tim-jonkers-2002",
+      "name": "Tim Jonkers",
+      "year": 2002,
+      "club": "St Helens",
+      "age": 21,
+      "from": 85,
+      "to": 81,
+      "why": "age 21; peak 85"
+    },
+    {
+      "id": "hull-fc-hist-tommy-lee-2009",
+      "name": "Tommy Lee",
+      "year": 2009,
+      "club": "Hull FC",
+      "age": 21,
+      "from": 86,
+      "to": 82,
+      "why": "age 21; peak 86"
+    },
+    {
+      "id": "london-hist-tony-clubb",
+      "name": "Tony Clubb",
+      "year": 2008,
+      "club": "London Broncos",
+      "age": 21,
+      "from": 88,
+      "to": 84,
+      "why": "age 21; peak 88"
+    },
+    {
+      "id": "wigan-cur-adam-keighran",
+      "name": "Adam Keighran",
+      "year": 2026,
+      "club": "Wigan Warriors",
+      "age": 29,
+      "from": 87,
+      "to": 90,
+      "why": "2026 Man of Steel shortlist"
+    },
+    {
+      "id": "salford-leg-adrian-morley-2014",
+      "name": "Adrian Morley",
+      "year": 2014,
+      "club": "Salford Red Devils",
+      "age": 37,
+      "from": 92,
+      "to": 89,
+      "why": "age 37, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "andy-farrell",
+      "name": "Andy Farrell",
+      "year": 1998,
+      "club": "Wigan Warriors",
+      "age": 23,
+      "from": 95,
+      "to": 98,
+      "why": "elite season (1996, 1997, 1998, 2000, 2001, 2003, 2004); peak 99"
+    },
+    {
+      "id": "castleford-hist-andy-lynch-2016",
+      "name": "Andy Lynch",
+      "year": 2016,
+      "club": "Castleford Tigers",
+      "age": 37,
+      "from": 88,
+      "to": 85,
+      "why": "age 37, 3 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "hull-kr-hist-ben-crooks",
+      "name": "Ben Crooks",
+      "year": 2019,
+      "club": "Hull KR",
+      "age": 26,
+      "from": 93,
+      "to": 90,
+      "why": "age 26, 3 yrs from his best seasons; peak 93"
+    },
+    {
+      "id": "warrington-hist-ben-westwood-2016",
+      "name": "Ben Westwood",
+      "year": 2016,
+      "club": "Warrington Wolves",
+      "age": 35,
+      "from": 93,
+      "to": 90,
+      "why": "age 35, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "wigan-hist-era-bradley-o-neill",
+      "name": "Bradley O'Neill",
+      "year": 2023,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 84,
+      "to": 81,
+      "why": "age 21; peak 85"
+    },
+    {
+      "id": "castleford-hist-brett-ferres",
+      "name": "Brett Ferres",
+      "year": 2010,
+      "club": "Castleford Tigers",
+      "age": 24,
+      "from": 91,
+      "to": 88,
+      "why": "age 24, 3 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "brett-hodgson",
+      "name": "Brett Hodgson",
+      "year": 2011,
+      "club": "Warrington Wolves",
+      "age": 33,
+      "from": 96,
+      "to": 93,
+      "why": "age 33, 2 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "huddersfield-hist-chris-hill-2022",
+      "name": "Chris Hill",
+      "year": 2022,
+      "club": "Huddersfield Giants",
+      "age": 35,
+      "from": 85,
+      "to": 82,
+      "why": "age 35, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "huddersfield-hist-chris-hill-2023",
+      "name": "Chris Hill",
+      "year": 2023,
+      "club": "Huddersfield Giants",
+      "age": 36,
+      "from": 84,
+      "to": 81,
+      "why": "age 36, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "huddersfield-hist-chris-hill-2024",
+      "name": "Chris Hill",
+      "year": 2024,
+      "club": "Huddersfield Giants",
+      "age": 37,
+      "from": 84,
+      "to": 81,
+      "why": "age 37, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "chris-joynt",
+      "name": "Chris Joynt",
+      "year": 1996,
+      "club": "St Helens",
+      "age": 25,
+      "from": 95,
+      "to": 92,
+      "why": "age 25, 3 yrs from his best seasons; peak 95"
+    },
+    {
+      "id": "hull-fc-hist-era-connor-wynne",
+      "name": "Connor Wynne",
+      "year": 2022,
+      "club": "Hull FC",
+      "age": 21,
+      "from": 83,
+      "to": 80,
+      "why": "age 21; peak 83"
+    },
+    {
+      "id": "danny-brough",
+      "name": "Danny Brough",
+      "year": 2010,
+      "club": "Huddersfield Giants",
+      "age": 27,
+      "from": 96,
+      "to": 93,
+      "why": "age 27, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "castleford-hist-danny-orr-2012",
+      "name": "Danny Orr",
+      "year": 2012,
+      "club": "Castleford Tigers",
+      "age": 34,
+      "from": 87,
+      "to": 84,
+      "why": "age 34, 3 yrs from his best seasons; peak 89"
+    },
+    {
+      "id": "leeds-hist-danny-ward",
+      "name": "Danny Ward",
+      "year": 2001,
+      "club": "Leeds Rhinos",
+      "age": 21,
+      "from": 83,
+      "to": 80,
+      "why": "age 21; peak 83"
+    },
+    {
+      "id": "huddersfield-hist-eorl-crabtree-2013",
+      "name": "Eorl Crabtree",
+      "year": 2013,
+      "club": "Huddersfield Giants",
+      "age": 31,
+      "from": 89,
+      "to": 92,
+      "why": "elite season (2013); peak 93"
+    },
+    {
+      "id": "wigan-hist-ethan-havard-2020",
+      "name": "Ethan Havard",
+      "year": 2020,
+      "club": "Wigan Warriors",
+      "age": 20,
+      "from": 83,
+      "to": 80,
+      "why": "age 20; peak 85"
+    },
+    {
+      "id": "salford-hist-francis-meli-2014",
+      "name": "Francis Meli",
+      "year": 2014,
+      "club": "Salford Red Devils",
+      "age": 35,
+      "from": 91,
+      "to": 88,
+      "why": "age 35; peak 91"
+    },
+    {
+      "id": "gareth-ellis",
+      "name": "Gareth Ellis",
+      "year": 2014,
+      "club": "Hull FC",
+      "age": 33,
+      "from": 97,
+      "to": 94,
+      "why": "age 33, 2 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "wigan-hist-gareth-hock-2008",
+      "name": "Gareth Hock",
+      "year": 2008,
+      "club": "Wigan Warriors",
+      "age": 25,
+      "from": 88,
+      "to": 85,
+      "why": "age 25, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "wigan-hist-gareth-hock-2009",
+      "name": "Gareth Hock",
+      "year": 2009,
+      "club": "Wigan Warriors",
+      "age": 26,
+      "from": 88,
+      "to": 85,
+      "why": "age 26, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "huddersfield-hist-george-flanagan-jr-2025",
+      "name": "George Flanagan Jr",
+      "year": 2025,
+      "club": "Huddersfield Giants",
+      "age": 21,
+      "from": 83,
+      "to": 80,
+      "why": "age 21; peak 83"
+    },
+    {
+      "id": "st-helens-hist-greg-richards",
+      "name": "Greg Richards",
+      "year": 2016,
+      "club": "St Helens",
+      "age": 21,
+      "from": 83,
+      "to": 80,
+      "why": "age 21; peak 84"
+    },
+    {
+      "id": "bradford-hist-henry-paul-1999",
+      "name": "Henry Paul",
+      "year": 1999,
+      "club": "Bradford Bulls",
+      "age": 25,
+      "from": 91,
+      "to": 88,
+      "why": "age 25, 3 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "bradford-hist-henry-paul-2001",
+      "name": "Henry Paul",
+      "year": 2001,
+      "club": "Bradford Bulls",
+      "age": 27,
+      "from": 91,
+      "to": 88,
+      "why": "age 27, 3 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "bradford-hist-henry-paul-2000",
+      "name": "Henry Paul",
+      "year": 2000,
+      "club": "Bradford Bulls",
+      "age": 26,
+      "from": 91,
+      "to": 88,
+      "why": "age 26, 3 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "hull-fc-hist-era-jack-charles",
+      "name": "Jack Charles",
+      "year": 2024,
+      "club": "Hull FC",
+      "age": 18,
+      "from": 83,
+      "to": 80,
+      "why": "age 18; peak 83"
+    },
+    {
+      "id": "leeds-hist-era-jack-walker",
+      "name": "Jack Walker",
+      "year": 2018,
+      "club": "Leeds Rhinos",
+      "age": 19,
+      "from": 83,
+      "to": 80,
+      "why": "age 19; peak 84"
+    },
+    {
+      "id": "warrington-hist-era-jake-thewlis",
+      "name": "Jake Thewlis",
+      "year": 2025,
+      "club": "Warrington Wolves",
+      "age": 20,
+      "from": 83,
+      "to": 80,
+      "why": "age 20; peak 83"
+    },
+    {
+      "id": "st-helens-hist-james-roby-2020",
+      "name": "James Roby",
+      "year": 2020,
+      "club": "St Helens",
+      "age": 35,
+      "from": 96,
+      "to": 93,
+      "why": "age 35, 2 yrs from his best seasons; peak 98"
+    },
+    {
+      "id": "bradford-leg-jamie-peacock-2000",
+      "name": "Jamie Peacock",
+      "year": 2000,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 95,
+      "to": 98,
+      "why": "elite season (2000, 2001, 2002, 2003, 2005, 2007, 2008, 2009, 2013, 2014, 2015); peak 99"
+    },
+    {
+      "id": "bradford-leg-jamie-peacock-2001",
+      "name": "Jamie Peacock",
+      "year": 2001,
+      "club": "Bradford Bulls",
+      "age": 24,
+      "from": 95,
+      "to": 98,
+      "why": "elite season (2000, 2001, 2002, 2003, 2005, 2007, 2008, 2009, 2013, 2014, 2015); peak 99"
+    },
+    {
+      "id": "catalans-hist-jason-croker-2008",
+      "name": "Jason Croker",
+      "year": 2008,
+      "club": "Catalans Dragons",
+      "age": 35,
+      "from": 84,
+      "to": 81,
+      "why": "age 35; peak 84"
+    },
+    {
+      "id": "wakefield-hist-jason-demetriou",
+      "name": "Jason Demetriou",
+      "year": 2004,
+      "club": "Wakefield Trinity",
+      "age": 28,
+      "from": 90,
+      "to": 87,
+      "why": "age 28, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "wigan-hist-joe-burgess-2020",
+      "name": "Joe Burgess",
+      "year": 2020,
+      "club": "Wigan Warriors",
+      "age": 26,
+      "from": 85,
+      "to": 82,
+      "why": "age 26, 3 yrs from his best seasons; peak 85"
+    },
+    {
+      "id": "castleford-hist-joel-monaghan-2016",
+      "name": "Joel Monaghan",
+      "year": 2016,
+      "club": "Castleford Tigers",
+      "age": 34,
+      "from": 94,
+      "to": 91,
+      "why": "age 34, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "wigan-hist-joel-tomkins-2008",
+      "name": "Joel Tomkins",
+      "year": 2008,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 91,
+      "to": 88,
+      "why": "age 21, 2 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "wigan-hist-joel-tomkins",
+      "name": "Joel Tomkins",
+      "year": 2009,
+      "club": "Wigan Warriors",
+      "age": 22,
+      "from": 94,
+      "to": 91,
+      "why": "age 22, 1 yr from his best seasons; peak 94"
+    },
+    {
+      "id": "st-helens-cur-jonny-lomax-2014",
+      "name": "Jonny Lomax",
+      "year": 2014,
+      "club": "St Helens",
+      "age": 24,
+      "from": 89,
+      "to": 86,
+      "why": "age 24, 3 yrs from his best seasons; peak 89"
+    },
+    {
+      "id": "warrington-hist-josh-charnley-2020",
+      "name": "Josh Charnley",
+      "year": 2020,
+      "club": "Warrington Wolves",
+      "age": 29,
+      "from": 84,
+      "to": 81,
+      "why": "age 29, 3 yrs from his best seasons; peak 84"
+    },
+    {
+      "id": "warrington-hist-josh-thewlis-2022",
+      "name": "Josh Thewlis",
+      "year": 2022,
+      "club": "Warrington Wolves",
+      "age": 20,
+      "from": 83,
+      "to": 80,
+      "why": "age 20; peak 84"
+    },
+    {
+      "id": "salford-hist-josh-wood-2015",
+      "name": "Josh Wood",
+      "year": 2015,
+      "club": "Salford Red Devils",
+      "age": 20,
+      "from": 83,
+      "to": 80,
+      "why": "age 20; peak 83"
+    },
+    {
+      "id": "catalans-cur-julian-bousquet-2012",
+      "name": "Julian Bousquet",
+      "year": 2012,
+      "club": "Catalans Dragons",
+      "age": 21,
+      "from": 87,
+      "to": 84,
+      "why": "age 21; peak 88"
+    },
+    {
+      "id": "wakefield-hist-kevin-penny",
+      "name": "Kevin Penny",
+      "year": 2011,
+      "club": "Wakefield Trinity",
+      "age": 24,
+      "from": 92,
+      "to": 89,
+      "why": "age 24, 3 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "leeds-hist-kylie-leuluai-2013",
+      "name": "Kylie Leuluai",
+      "year": 2013,
+      "club": "Leeds Rhinos",
+      "age": 35,
+      "from": 92,
+      "to": 89,
+      "why": "age 35; peak 92"
+    },
+    {
+      "id": "bradford-hist-leon-pryce-2001",
+      "name": "Leon Pryce",
+      "year": 2001,
+      "club": "Bradford Bulls",
+      "age": 20,
+      "from": 91,
+      "to": 88,
+      "why": "age 20, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "bradford-hist-leon-pryce-2002",
+      "name": "Leon Pryce",
+      "year": 2002,
+      "club": "Bradford Bulls",
+      "age": 21,
+      "from": 92,
+      "to": 89,
+      "why": "age 21, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "huddersfield-hist-leroy-cudjoe-2013",
+      "name": "Leroy Cudjoe",
+      "year": 2013,
+      "club": "Huddersfield Giants",
+      "age": 25,
+      "from": 90,
+      "to": 93,
+      "why": "elite season (2013); peak 94"
+    },
+    {
+      "id": "huddersfield-hist-leroy-cudjoe-2009",
+      "name": "Leroy Cudjoe",
+      "year": 2009,
+      "club": "Huddersfield Giants",
+      "age": 21,
+      "from": 90,
+      "to": 87,
+      "why": "age 21, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "lesley-vainikolo",
+      "name": "Lesley Vainikolo",
+      "year": 2007,
+      "club": "Bradford Bulls",
+      "age": 28,
+      "from": 96,
+      "to": 93,
+      "why": "age 28, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "hull-fc-hist-era-logan-moy",
+      "name": "Logan Moy",
+      "year": 2024,
+      "club": "Hull FC",
+      "age": 19,
+      "from": 83,
+      "to": 80,
+      "why": "age 19; peak 83"
+    },
+    {
+      "id": "huddersfield-hist-era-louis-senior",
+      "name": "Louis Senior",
+      "year": 2021,
+      "club": "Huddersfield Giants",
+      "age": 21,
+      "from": 83,
+      "to": 80,
+      "why": "age 21; peak 83"
+    },
+    {
+      "id": "castleford-hist-luke-gale-2016",
+      "name": "Luke Gale",
+      "year": 2016,
+      "club": "Castleford Tigers",
+      "age": 28,
+      "from": 93,
+      "to": 96,
+      "why": "elite season (2015, 2016, 2017); peak 97"
+    },
+    {
+      "id": "wigan-hist-luke-thompson-2024",
+      "name": "Luke Thompson",
+      "year": 2024,
+      "club": "Wigan Warriors",
+      "age": 29,
+      "from": 86,
+      "to": 89,
+      "why": "elite season (2018, 2019, 2024); peak 90"
+    },
+    {
+      "id": "hull-fc-hist-marc-sneyd-2016",
+      "name": "Marc Sneyd",
+      "year": 2016,
+      "club": "Hull FC",
+      "age": 25,
+      "from": 91,
+      "to": 88,
+      "why": "age 25, 3 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "wigan-hist-martin-gleeson-2009",
+      "name": "Martin Gleeson",
+      "year": 2009,
+      "club": "Wigan Warriors",
+      "age": 29,
+      "from": 90,
+      "to": 87,
+      "why": "age 29, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "wigan-hist-martin-offiah-1994",
+      "name": "Martin Offiah",
+      "year": 1994,
+      "club": "Wigan Warriors",
+      "age": 29,
+      "from": 94,
+      "to": 91,
+      "why": "age 29, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "martin-offiah",
+      "name": "Martin Offiah",
+      "year": 1992,
+      "club": "Wigan Warriors",
+      "age": 27,
+      "from": 94,
+      "to": 91,
+      "why": "age 27, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "leeds-hist-matt-prior-2022",
+      "name": "Matt Prior",
+      "year": 2022,
+      "club": "Leeds Rhinos",
+      "age": 35,
+      "from": 84,
+      "to": 81,
+      "why": "age 35; peak 84"
+    },
+    {
+      "id": "hull-kr-hist-michael-dobson",
+      "name": "Michael Dobson",
+      "year": 2008,
+      "club": "Hull KR",
+      "age": 22,
+      "from": 90,
+      "to": 87,
+      "why": "age 22, 1 yr from his best seasons; peak 90"
+    },
+    {
+      "id": "wigan-hist-michael-mcilorum-2008",
+      "name": "Michael McIlorum",
+      "year": 2008,
+      "club": "Wigan Warriors",
+      "age": 20,
+      "from": 89,
+      "to": 86,
+      "why": "age 20; peak 91"
+    },
+    {
+      "id": "wigan-hist-era-morgan-smithies",
+      "name": "Morgan Smithies",
+      "year": 2019,
+      "club": "Wigan Warriors",
+      "age": 19,
+      "from": 84,
+      "to": 81,
+      "why": "age 19; peak 88"
+    },
+    {
+      "id": "nick-fozzard",
+      "name": "Nick Fozzard",
+      "year": 2004,
+      "club": "St Helens",
+      "age": 27,
+      "from": 94,
+      "to": 91,
+      "why": "age 27, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "wigan-hist-oliver-partington",
+      "name": "Oliver Partington",
+      "year": 2019,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 84,
+      "to": 81,
+      "why": "age 21; peak 85"
+    },
+    {
+      "id": "london-hist-olsi-krasniqi",
+      "name": "Olsi Krasniqi",
+      "year": 2013,
+      "club": "London Broncos",
+      "age": 21,
+      "from": 83,
+      "to": 80,
+      "why": "age 21; peak 83"
+    },
+    {
+      "id": "pat-richards",
+      "name": "Pat Richards",
+      "year": 2007,
+      "club": "Wigan Warriors",
+      "age": 25,
+      "from": 97,
+      "to": 94,
+      "why": "age 25, 3 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "st-helens-leg-paul-newlove-2002",
+      "name": "Paul Newlove",
+      "year": 2002,
+      "club": "St Helens",
+      "age": 31,
+      "from": 94,
+      "to": 91,
+      "why": "age 31, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "st-helens-hist-paul-wellens-2015",
+      "name": "Paul Wellens",
+      "year": 2015,
+      "club": "St Helens",
+      "age": 35,
+      "from": 94,
+      "to": 91,
+      "why": "age 35, 3 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "st-helens-hist-paul-wellens-2002",
+      "name": "Paul Wellens",
+      "year": 2002,
+      "club": "St Helens",
+      "age": 22,
+      "from": 95,
+      "to": 92,
+      "why": "age 22, 3 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "rangi-chase",
+      "name": "Rangi Chase",
+      "year": 2009,
+      "club": "Castleford Tigers",
+      "age": 23,
+      "from": 96,
+      "to": 93,
+      "why": "age 23, 2 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "st-helens-hist-regan-grace",
+      "name": "Regan Grace",
+      "year": 2017,
+      "club": "St Helens",
+      "age": 21,
+      "from": 90,
+      "to": 87,
+      "why": "age 21; peak 91"
+    },
+    {
+      "id": "catalans-hist-remi-casty-2012",
+      "name": "Remi Casty",
+      "year": 2012,
+      "club": "Catalans Dragons",
+      "age": 27,
+      "from": 90,
+      "to": 93,
+      "why": "elite season (2012, 2018); peak 94"
+    },
+    {
+      "id": "leeds-hist-era-rhyse-martin",
+      "name": "Rhyse Martin",
+      "year": 2020,
+      "club": "Leeds Rhinos",
+      "age": 27,
+      "from": 88,
+      "to": 85,
+      "why": "age 27, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "leeds-hist-rhyse-martin-2024",
+      "name": "Rhyse Martin",
+      "year": 2024,
+      "club": "Leeds Rhinos",
+      "age": 31,
+      "from": 84,
+      "to": 87,
+      "why": "elite season (2024); peak 88"
+    },
+    {
+      "id": "rob-burrow",
+      "name": "Rob Burrow",
+      "year": 2008,
+      "club": "Leeds Rhinos",
+      "age": 26,
+      "from": 92,
+      "to": 95,
+      "why": "elite season (2005, 2007, 2008); peak 96"
+    },
+    {
+      "id": "warrington-hist-ryan-atkins-2016",
+      "name": "Ryan Atkins",
+      "year": 2016,
+      "club": "Warrington Wolves",
+      "age": 31,
+      "from": 91,
+      "to": 94,
+      "why": "elite season (2012, 2016); peak 95"
+    },
+    {
+      "id": "london-hist-sadiq-adebiyi-2018",
+      "name": "Sadiq Adebiyi",
+      "year": 2018,
+      "club": "London Broncos",
+      "age": 21,
+      "from": 83,
+      "to": 80,
+      "why": "age 21; peak 83"
+    },
+    {
+      "id": "london-cur-sadiq-adebiyi-2018",
+      "name": "Sadiq Adebiyi",
+      "year": 2018,
+      "club": "London Broncos",
+      "age": 21,
+      "from": 83,
+      "to": 80,
+      "why": "age 21; peak 83"
+    },
+    {
+      "id": "catalans-hist-scott-dureau-2015",
+      "name": "Scott Dureau",
+      "year": 2015,
+      "club": "Catalans Dragons",
+      "age": 29,
+      "from": 88,
+      "to": 85,
+      "why": "age 29, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "st-helens-hist-scott-moore",
+      "name": "Scott Moore",
+      "year": 2010,
+      "club": "St Helens",
+      "age": 22,
+      "from": 90,
+      "to": 87,
+      "why": "age 22, 1 yr from his best seasons; peak 90"
+    },
+    {
+      "id": "wakefield-hist-scott-moore-2016",
+      "name": "Scott Moore",
+      "year": 2016,
+      "club": "Wakefield Trinity",
+      "age": 28,
+      "from": 90,
+      "to": 87,
+      "why": "age 28, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "hull-kr-hist-shaun-briscoe",
+      "name": "Shaun Briscoe",
+      "year": 2008,
+      "club": "Hull KR",
+      "age": 25,
+      "from": 91,
+      "to": 88,
+      "why": "age 25, 3 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "hull-kr-hist-shaun-briscoe-2009",
+      "name": "Shaun Briscoe",
+      "year": 2009,
+      "club": "Hull KR",
+      "age": 26,
+      "from": 91,
+      "to": 88,
+      "why": "age 26, 3 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "huddersfield-hist-shaun-lunt",
+      "name": "Shaun Lunt",
+      "year": 2010,
+      "club": "Huddersfield Giants",
+      "age": 24,
+      "from": 92,
+      "to": 89,
+      "why": "age 24, 3 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "st-helens-hist-steve-hall-2000",
+      "name": "Steve Hall",
+      "year": 2000,
+      "club": "St Helens",
+      "age": 21,
+      "from": 83,
+      "to": 80,
+      "why": "age 21; peak 83"
+    },
+    {
+      "id": "stuart-fielden",
+      "name": "Stuart Fielden",
+      "year": 1998,
+      "club": "Bradford Bulls",
+      "age": 19,
+      "from": 90,
+      "to": 87,
+      "why": "age 19, 2 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "st-helens-hist-thomas-makinson-2019",
+      "name": "Thomas Makinson",
+      "year": 2019,
+      "club": "St Helens",
+      "age": 28,
+      "from": 90,
+      "to": 93,
+      "why": "elite season (2018, 2019); peak 94"
+    },
+    {
+      "id": "tommy-martyn",
+      "name": "Tommy Martyn",
+      "year": 1997,
+      "club": "St Helens",
+      "age": 26,
+      "from": 96,
+      "to": 93,
+      "why": "age 26, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "salford-hist-tony-puletua-2014",
+      "name": "Tony Puletua",
+      "year": 2014,
+      "club": "Salford Red Devils",
+      "age": 35,
+      "from": 87,
+      "to": 84,
+      "why": "age 35; peak 87"
+    },
+    {
+      "id": "catalans-hist-vincent-duport",
+      "name": "Vincent Duport",
+      "year": 2008,
+      "club": "Catalans Dragons",
+      "age": 21,
+      "from": 86,
+      "to": 83,
+      "why": "age 21; peak 87"
+    },
+    {
+      "id": "st-helens-hist-zeb-taia-2020",
+      "name": "Zeb Taia",
+      "year": 2020,
+      "club": "St Helens",
+      "age": 36,
+      "from": 88,
+      "to": 85,
+      "why": "age 36, 3 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "st-helens-hist-zeb-taia",
+      "name": "Zeb Taia",
+      "year": 2017,
+      "club": "St Helens",
+      "age": 33,
+      "from": 92,
+      "to": 89,
+      "why": "age 33, 2 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "wakefield-hist-aaron-murphy-2010",
+      "name": "Aaron Murphy",
+      "year": 2010,
+      "club": "Wakefield Trinity",
+      "age": 22,
+      "from": 86,
+      "to": 84,
+      "why": "age 22; peak 86"
+    },
+    {
+      "id": "catalans-hist-adam-mogg-2009",
+      "name": "Adam Mogg",
+      "year": 2009,
+      "club": "Catalans Dragons",
+      "age": 32,
+      "from": 86,
+      "to": 84,
+      "why": "age 32, 2 yrs from his best seasons; peak 86"
+    },
+    {
+      "id": "salford-hist-adam-sidlow-2009",
+      "name": "Adam Sidlow",
+      "year": 2009,
+      "club": "Salford Red Devils",
+      "age": 22,
+      "from": 86,
+      "to": 84,
+      "why": "age 22; peak 86"
+    },
+    {
+      "id": "st-helens-hist-andrew-dixon",
+      "name": "Andrew Dixon",
+      "year": 2012,
+      "club": "St Helens",
+      "age": 22,
+      "from": 83,
+      "to": 81,
+      "why": "age 22; peak 83"
+    },
+    {
+      "id": "andy-lynch",
+      "name": "Andy Lynch",
+      "year": 2005,
+      "club": "Bradford Bulls",
+      "age": 26,
+      "from": 92,
+      "to": 90,
+      "why": "age 26, 2 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "leeds-hist-ash-handley-2020",
+      "name": "Ash Handley",
+      "year": 2020,
+      "club": "Leeds Rhinos",
+      "age": 24,
+      "from": 88,
+      "to": 90,
+      "why": "elite season (2019, 2020, 2026); peak 91"
+    },
+    {
+      "id": "leeds-cur-ash-handley",
+      "name": "Ash Handley",
+      "year": 2026,
+      "club": "Leeds Rhinos",
+      "age": 30,
+      "from": 86,
+      "to": 88,
+      "why": "2026 Dream Team"
+    },
+    {
+      "id": "salford-hist-ben-hellewell-2026",
+      "name": "Ben Hellewell",
+      "year": 2026,
+      "club": "Salford Red Devils",
+      "age": 34,
+      "from": 83,
+      "to": 81,
+      "why": "age 34; peak 83"
+    },
+    {
+      "id": "wakefield-hist-ben-murdoch-masila",
+      "name": "Ben Murdoch-Masila",
+      "year": 2019,
+      "club": "Warrington Wolves",
+      "age": 28,
+      "from": 90,
+      "to": 88,
+      "why": "age 28, 2 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "catalans-cur-benjamin-garcia-2015",
+      "name": "Benjamin Garcia",
+      "year": 2015,
+      "club": "Catalans Dragons",
+      "age": 22,
+      "from": 89,
+      "to": 87,
+      "why": "age 22; peak 89"
+    },
+    {
+      "id": "toulouse-hist-benjamin-laguerre-2023",
+      "name": "Benjamin Laguerre",
+      "year": 2023,
+      "club": "Toulouse Olympique",
+      "age": 22,
+      "from": 87,
+      "to": 85,
+      "why": "age 22; peak 87"
+    },
+    {
+      "id": "wigan-hist-bevan-french-2020",
+      "name": "Bevan French",
+      "year": 2020,
+      "club": "Wigan Warriors",
+      "age": 24,
+      "from": 90,
+      "to": 92,
+      "why": "elite season (2020, 2022, 2023); peak 93"
+    },
+    {
+      "id": "wigan-hist-bradley-o-neill-2024",
+      "name": "Bradley O'Neill",
+      "year": 2024,
+      "club": "Wigan Warriors",
+      "age": 22,
+      "from": 85,
+      "to": 83,
+      "why": "age 22; peak 85"
+    },
+    {
+      "id": "huddersfield-hist-brett-ferres-2013",
+      "name": "Brett Ferres",
+      "year": 2013,
+      "club": "Huddersfield Giants",
+      "age": 27,
+      "from": 88,
+      "to": 90,
+      "why": "elite season (2013); peak 91"
+    },
+    {
+      "id": "leeds-hist-cameron-smith-2020",
+      "name": "Cameron Smith",
+      "year": 2020,
+      "club": "Leeds Rhinos",
+      "age": 22,
+      "from": 90,
+      "to": 88,
+      "why": "age 22; peak 90"
+    },
+    {
+      "id": "warrington-hist-chris-hill-2021",
+      "name": "Chris Hill",
+      "year": 2021,
+      "club": "Warrington Wolves",
+      "age": 34,
+      "from": 85,
+      "to": 83,
+      "why": "age 34, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "huddersfield-hist-chris-mcqueen-2021",
+      "name": "Chris McQueen",
+      "year": 2021,
+      "club": "Huddersfield Giants",
+      "age": 34,
+      "from": 86,
+      "to": 84,
+      "why": "age 34, 1 yr from his best seasons; peak 87"
+    },
+    {
+      "id": "catalans-hist-clint-greenshields-2012",
+      "name": "Clint Greenshields",
+      "year": 2012,
+      "club": "Catalans Dragons",
+      "age": 30,
+      "from": 89,
+      "to": 87,
+      "why": "age 30, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "catalans-hist-clint-greenshields-2011",
+      "name": "Clint Greenshields",
+      "year": 2011,
+      "club": "Catalans Dragons",
+      "age": 29,
+      "from": 89,
+      "to": 87,
+      "why": "age 29, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "catalans-hist-clint-greenshields-2010",
+      "name": "Clint Greenshields",
+      "year": 2010,
+      "club": "Catalans Dragons",
+      "age": 28,
+      "from": 90,
+      "to": 88,
+      "why": "age 28, 2 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "wakefield-hist-corey-hall-2022",
+      "name": "Corey Hall",
+      "year": 2022,
+      "club": "Wakefield Trinity",
+      "age": 20,
+      "from": 82,
+      "to": 80,
+      "why": "age 20; peak 84"
+    },
+    {
+      "id": "bradford-hist-danny-addy",
+      "name": "Danny Addy",
+      "year": 2013,
+      "club": "Bradford Bulls",
+      "age": 22,
+      "from": 83,
+      "to": 81,
+      "why": "age 22; peak 83"
+    },
+    {
+      "id": "warrington-hist-danny-walker-2020",
+      "name": "Danny Walker",
+      "year": 2020,
+      "club": "Warrington Wolves",
+      "age": 21,
+      "from": 82,
+      "to": 80,
+      "why": "age 21, 3 yrs from his best seasons; peak 87"
+    },
+    {
+      "id": "st-helens-hist-darren-britt",
+      "name": "Darren Britt",
+      "year": 2003,
+      "club": "St Helens",
+      "age": 34,
+      "from": 84,
+      "to": 82,
+      "why": "age 34; peak 84"
+    },
+    {
+      "id": "hull-fc-hist-davy-litten-2025",
+      "name": "Davy Litten",
+      "year": 2025,
+      "club": "Hull FC",
+      "age": 22,
+      "from": 83,
+      "to": 81,
+      "why": "age 22; peak 83"
+    },
+    {
+      "id": "castleford-hist-denny-solomona-2016",
+      "name": "Denny Solomona",
+      "year": 2016,
+      "club": "Castleford Tigers",
+      "age": 23,
+      "from": 91,
+      "to": 93,
+      "why": "elite season (2016); peak 94"
+    },
+    {
+      "id": "catalans-hist-dimitri-pelo-2007",
+      "name": "Dimitri Pelo",
+      "year": 2007,
+      "club": "Catalans Dragons",
+      "age": 22,
+      "from": 87,
+      "to": 85,
+      "why": "age 22; peak 87"
+    },
+    {
+      "id": "bradford-hist-elliott-whitehead-2011",
+      "name": "Elliott Whitehead",
+      "year": 2011,
+      "club": "Bradford Bulls",
+      "age": 22,
+      "from": 88,
+      "to": 86,
+      "why": "age 22, 3 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "catalans-cur-eloi-pelissier-2013",
+      "name": "Éloi Pélissier",
+      "year": 2013,
+      "club": "Catalans Dragons",
+      "age": 22,
+      "from": 85,
+      "to": 83,
+      "why": "age 22; peak 85"
+    },
+    {
+      "id": "salford-hist-gareth-hock-2014",
+      "name": "Gareth Hock",
+      "year": 2014,
+      "club": "Salford Red Devils",
+      "age": 31,
+      "from": 88,
+      "to": 86,
+      "why": "age 31, 2 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "leigh-hist-gareth-o-brien-2025",
+      "name": "Gareth O'Brien",
+      "year": 2025,
+      "club": "Leigh Leopards",
+      "age": 34,
+      "from": 84,
+      "to": 82,
+      "why": "age 34; peak 84"
+    },
+    {
+      "id": "warrington-hist-garreth-carvell-2009",
+      "name": "Garreth Carvell",
+      "year": 2009,
+      "club": "Warrington Wolves",
+      "age": 29,
+      "from": 91,
+      "to": 89,
+      "why": "age 29, 2 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "castleford-hist-greg-minikin",
+      "name": "Greg Minikin",
+      "year": 2017,
+      "club": "Castleford Tigers",
+      "age": 22,
+      "from": 87,
+      "to": 85,
+      "why": "age 22; peak 87"
+    },
+    {
+      "id": "hull-fc-hist-harvey-barron-2024",
+      "name": "Harvey Barron",
+      "year": 2024,
+      "club": "Hull FC",
+      "age": 21,
+      "from": 82,
+      "to": 80,
+      "why": "age 21; peak 83"
+    },
+    {
+      "id": "hull-fc-hist-harvey-barron-2025",
+      "name": "Harvey Barron",
+      "year": 2025,
+      "club": "Hull FC",
+      "age": 22,
+      "from": 83,
+      "to": 81,
+      "why": "age 22; peak 83"
+    },
+    {
+      "id": "wigan-hist-iain-thornley",
+      "name": "Iain Thornley",
+      "year": 2013,
+      "club": "Wigan Warriors",
+      "age": 22,
+      "from": 91,
+      "to": 89,
+      "why": "age 22; peak 91"
+    },
+    {
+      "id": "bradford-hist-ian-henderson-2005",
+      "name": "Ian Henderson",
+      "year": 2005,
+      "club": "Bradford Bulls",
+      "age": 22,
+      "from": 88,
+      "to": 86,
+      "why": "age 22; peak 88"
+    },
+    {
+      "id": "huddersfield-hist-era-innes-senior",
+      "name": "Innes Senior",
+      "year": 2022,
+      "club": "Huddersfield Giants",
+      "age": 22,
+      "from": 84,
+      "to": 82,
+      "why": "age 22; peak 84"
+    },
+    {
+      "id": "leigh-hist-isaac-liu-2025",
+      "name": "Isaac Liu",
+      "year": 2025,
+      "club": "Leigh Leopards",
+      "age": 34,
+      "from": 85,
+      "to": 83,
+      "why": "age 34; peak 85"
+    },
+    {
+      "id": "st-helens-hist-jack-owens-2016",
+      "name": "Jack Owens",
+      "year": 2016,
+      "club": "St Helens",
+      "age": 22,
+      "from": 86,
+      "to": 84,
+      "why": "age 22; peak 86"
+    },
+    {
+      "id": "wigan-hist-jai-field-2025",
+      "name": "Jai Field",
+      "year": 2025,
+      "club": "Wigan Warriors",
+      "age": 28,
+      "from": 87,
+      "to": 89,
+      "why": "elite season (2022, 2025); peak 90"
+    },
+    {
+      "id": "st-helens-hist-james-roby-2021",
+      "name": "James Roby",
+      "year": 2021,
+      "club": "St Helens",
+      "age": 36,
+      "from": 95,
+      "to": 93,
+      "why": "age 36, 1 yr from his best seasons; peak 98"
+    },
+    {
+      "id": "st-helens-hist-james-roby-2015",
+      "name": "James Roby",
+      "year": 2015,
+      "club": "St Helens",
+      "age": 30,
+      "from": 95,
+      "to": 97,
+      "why": "elite season (2007, 2010, 2011, 2012, 2015, 2018, 2022); peak 98"
+    },
+    {
+      "id": "leeds-leg-jamie-jones-buchanan-2016",
+      "name": "Jamie Jones-Buchanan",
+      "year": 2016,
+      "club": "Leeds Rhinos",
+      "age": 35,
+      "from": 93,
+      "to": 91,
+      "why": "age 35; peak 94"
+    },
+    {
+      "id": "bradford-hist-jamie-langley-2005",
+      "name": "Jamie Langley",
+      "year": 2005,
+      "club": "Bradford Bulls",
+      "age": 22,
+      "from": 90,
+      "to": 88,
+      "why": "age 22; peak 90"
+    },
+    {
+      "id": "bradford-leg-jamie-peacock-2002",
+      "name": "Jamie Peacock",
+      "year": 2002,
+      "club": "Bradford Bulls",
+      "age": 25,
+      "from": 96,
+      "to": 98,
+      "why": "elite season (2000, 2001, 2002, 2003, 2005, 2007, 2008, 2009, 2013, 2014, 2015); peak 99"
+    },
+    {
+      "id": "leeds-leg-jamie-peacock-2008",
+      "name": "Jamie Peacock",
+      "year": 2008,
+      "club": "Leeds Rhinos",
+      "age": 31,
+      "from": 96,
+      "to": 98,
+      "why": "elite season (2000, 2001, 2002, 2003, 2005, 2007, 2008, 2009, 2013, 2014, 2015); peak 99"
+    },
+    {
+      "id": "leeds-leg-jamie-peacock-2009",
+      "name": "Jamie Peacock",
+      "year": 2009,
+      "club": "Leeds Rhinos",
+      "age": 32,
+      "from": 96,
+      "to": 98,
+      "why": "elite season (2000, 2001, 2002, 2003, 2005, 2007, 2008, 2009, 2013, 2014, 2015); peak 99"
+    },
+    {
+      "id": "bradford-leg-jamie-peacock-2005",
+      "name": "Jamie Peacock",
+      "year": 2005,
+      "club": "Bradford Bulls",
+      "age": 28,
+      "from": 96,
+      "to": 98,
+      "why": "elite season (2000, 2001, 2002, 2003, 2005, 2007, 2008, 2009, 2013, 2014, 2015); peak 99"
+    },
+    {
+      "id": "leeds-hist-jarrod-o-connor-2023",
+      "name": "Jarrod O'Connor",
+      "year": 2023,
+      "club": "Leeds Rhinos",
+      "age": 22,
+      "from": 87,
+      "to": 85,
+      "why": "age 22; peak 87"
+    },
+    {
+      "id": "catalans-hist-jason-croker-2007",
+      "name": "Jason Croker",
+      "year": 2007,
+      "club": "Catalans Dragons",
+      "age": 34,
+      "from": 84,
+      "to": 82,
+      "why": "age 34; peak 84"
+    },
+    {
+      "id": "wakefield-hist-jason-demetriou-2010",
+      "name": "Jason Demetriou",
+      "year": 2010,
+      "club": "Wakefield Trinity",
+      "age": 34,
+      "from": 87,
+      "to": 85,
+      "why": "age 34, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "catalans-hist-jean-philippe-baile-2009",
+      "name": "Jean-Philippe Baile",
+      "year": 2009,
+      "club": "Catalans Dragons",
+      "age": 22,
+      "from": 85,
+      "to": 83,
+      "why": "age 22; peak 85"
+    },
+    {
+      "id": "salford-hist-jodie-broughton",
+      "name": "Jodie Broughton",
+      "year": 2010,
+      "club": "Salford Red Devils",
+      "age": 22,
+      "from": 90,
+      "to": 88,
+      "why": "age 22; peak 90"
+    },
+    {
+      "id": "hull-fc-hist-era-joe-cator",
+      "name": "Joe Cator",
+      "year": 2020,
+      "club": "Hull FC",
+      "age": 22,
+      "from": 86,
+      "to": 84,
+      "why": "age 22; peak 86"
+    },
+    {
+      "id": "huddersfield-hist-joe-wardle-2013",
+      "name": "Joe Wardle",
+      "year": 2013,
+      "club": "Huddersfield Giants",
+      "age": 22,
+      "from": 87,
+      "to": 85,
+      "why": "age 22; peak 87"
+    },
+    {
+      "id": "st-helens-hist-jon-wilkin-2006",
+      "name": "Jon Wilkin",
+      "year": 2006,
+      "club": "St Helens",
+      "age": 23,
+      "from": 91,
+      "to": 93,
+      "why": "elite season (2006); peak 94"
+    },
+    {
+      "id": "st-helens-hist-jonny-lomax-2016",
+      "name": "Jonny Lomax",
+      "year": 2016,
+      "club": "St Helens",
+      "age": 26,
+      "from": 89,
+      "to": 87,
+      "why": "age 26, 2 yrs from his best seasons; peak 89"
+    },
+    {
+      "id": "wakefield-hist-jordan-crowther",
+      "name": "Jordan Crowther",
+      "year": 2019,
+      "club": "Wakefield Trinity",
+      "age": 22,
+      "from": 85,
+      "to": 83,
+      "why": "age 22; peak 85"
+    },
+    {
+      "id": "hull-fc-hist-josh-bowden",
+      "name": "Josh Bowden",
+      "year": 2014,
+      "club": "Hull FC",
+      "age": 22,
+      "from": 86,
+      "to": 84,
+      "why": "age 22; peak 86"
+    },
+    {
+      "id": "leigh-hist-era-josh-charnley",
+      "name": "Josh Charnley",
+      "year": 2023,
+      "club": "Leigh Leopards",
+      "age": 32,
+      "from": 81,
+      "to": 83,
+      "why": "elite season (2012, 2013, 2023); peak 84"
+    },
+    {
+      "id": "warrington-hist-josh-charnley-2021",
+      "name": "Josh Charnley",
+      "year": 2021,
+      "club": "Warrington Wolves",
+      "age": 30,
+      "from": 84,
+      "to": 82,
+      "why": "age 30, 2 yrs from his best seasons; peak 84"
+    },
+    {
+      "id": "warrington-hist-josh-thewlis-2024",
+      "name": "Josh Thewlis",
+      "year": 2024,
+      "club": "Warrington Wolves",
+      "age": 22,
+      "from": 84,
+      "to": 82,
+      "why": "age 22; peak 84"
+    },
+    {
+      "id": "wigan-hist-kai-pearce-paul-2023",
+      "name": "Kai Pearce-Paul",
+      "year": 2023,
+      "club": "Wigan Warriors",
+      "age": 22,
+      "from": 85,
+      "to": 83,
+      "why": "age 22; peak 85"
+    },
+    {
+      "id": "hull-kr-hist-kane-linnett",
+      "name": "Kane Linnett",
+      "year": 2019,
+      "club": "Hull KR",
+      "age": 30,
+      "from": 90,
+      "to": 88,
+      "why": "age 30, 2 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "wigan-hist-karl-pryce-2008",
+      "name": "Karl Pryce",
+      "year": 2008,
+      "club": "Wigan Warriors",
+      "age": 22,
+      "from": 89,
+      "to": 87,
+      "why": "age 22; peak 89"
+    },
+    {
+      "id": "keith-senior",
+      "name": "Keith Senior",
+      "year": 2000,
+      "club": "Leeds Rhinos",
+      "age": 24,
+      "from": 96,
+      "to": 94,
+      "why": "age 24, 2 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "st-helens-hist-kevin-naiqama-2021",
+      "name": "Kevin Naiqama",
+      "year": 2021,
+      "club": "St Helens",
+      "age": 32,
+      "from": 91,
+      "to": 89,
+      "why": "age 32, 2 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "leeds-leg-kevin-sinfield-2015",
+      "name": "Kevin Sinfield",
+      "year": 2015,
+      "club": "Leeds Rhinos",
+      "age": 35,
+      "from": 94,
+      "to": 92,
+      "why": "age 35, 3 yrs from his best seasons; peak 98"
+    },
+    {
+      "id": "kevin-sinfield",
+      "name": "Kevin Sinfield",
+      "year": 2005,
+      "club": "Leeds Rhinos",
+      "age": 25,
+      "from": 95,
+      "to": 97,
+      "why": "elite season (2005, 2006, 2008, 2009, 2012); peak 98"
+    },
+    {
+      "id": "st-helens-hist-konrad-hurrell",
+      "name": "Konrad Hurrell",
+      "year": 2022,
+      "club": "St Helens",
+      "age": 31,
+      "from": 94,
+      "to": 92,
+      "why": "age 31, 2 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "hull-kr-hist-kris-welham-2009",
+      "name": "Kris Welham",
+      "year": 2009,
+      "club": "Hull KR",
+      "age": 22,
+      "from": 91,
+      "to": 89,
+      "why": "age 22; peak 91"
+    },
+    {
+      "id": "leeds-hist-kylie-leuluai-2015",
+      "name": "Kylie Leuluai",
+      "year": 2015,
+      "club": "Leeds Rhinos",
+      "age": 37,
+      "from": 90,
+      "to": 88,
+      "why": "age 37; peak 92"
+    },
+    {
+      "id": "st-helens-hist-lachlan-coote-2019",
+      "name": "Lachlan Coote",
+      "year": 2019,
+      "club": "St Helens",
+      "age": 29,
+      "from": 90,
+      "to": 92,
+      "why": "elite season (2019); peak 93"
+    },
+    {
+      "id": "huddersfield-hist-larne-patrick",
+      "name": "Larne Patrick",
+      "year": 2010,
+      "club": "Huddersfield Giants",
+      "age": 22,
+      "from": 85,
+      "to": 83,
+      "why": "age 22; peak 85"
+    },
+    {
+      "id": "wigan-hist-lee-mossop",
+      "name": "Lee Mossop",
+      "year": 2011,
+      "club": "Wigan Warriors",
+      "age": 22,
+      "from": 89,
+      "to": 87,
+      "why": "age 22; peak 89"
+    },
+    {
+      "id": "bradford-hist-lee-radford-2001",
+      "name": "Lee Radford",
+      "year": 2001,
+      "club": "Bradford Bulls",
+      "age": 22,
+      "from": 89,
+      "to": 87,
+      "why": "age 22; peak 89"
+    },
+    {
+      "id": "st-helens-hist-leon-pryce-2006",
+      "name": "Leon Pryce",
+      "year": 2006,
+      "club": "St Helens",
+      "age": 25,
+      "from": 96,
+      "to": 94,
+      "why": "age 25, 2 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "hull-fc-hist-lewis-martin-2024",
+      "name": "Lewis Martin",
+      "year": 2024,
+      "club": "Hull FC",
+      "age": 20,
+      "from": 82,
+      "to": 80,
+      "why": "age 20, 1 yr from his best seasons; peak 83"
+    },
+    {
+      "id": "wakefield-hist-lewis-murphy-2022",
+      "name": "Lewis Murphy",
+      "year": 2022,
+      "club": "Wakefield Trinity",
+      "age": 20,
+      "from": 82,
+      "to": 80,
+      "why": "age 20; peak 82"
+    },
+    {
+      "id": "wigan-hist-era-liam-byrne",
+      "name": "Liam Byrne",
+      "year": 2020,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 83,
+      "to": 81,
+      "why": "age 21; peak 85"
+    },
+    {
+      "id": "wakefield-hist-liam-finn",
+      "name": "Liam Finn",
+      "year": 2017,
+      "club": "Wakefield Trinity",
+      "age": 34,
+      "from": 84,
+      "to": 82,
+      "why": "age 34; peak 84"
+    },
+    {
+      "id": "hull-fc-hist-liam-watts-2012",
+      "name": "Liam Watts",
+      "year": 2012,
+      "club": "Hull FC",
+      "age": 22,
+      "from": 87,
+      "to": 85,
+      "why": "age 22, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "salford-hist-luke-adamson-2009",
+      "name": "Luke Adamson",
+      "year": 2009,
+      "club": "Salford Red Devils",
+      "age": 22,
+      "from": 85,
+      "to": 83,
+      "why": "age 22; peak 85"
+    },
+    {
+      "id": "wakefield-hist-luke-george-2009",
+      "name": "Luke George",
+      "year": 2009,
+      "club": "Wakefield Trinity",
+      "age": 22,
+      "from": 87,
+      "to": 85,
+      "why": "age 22; peak 87"
+    },
+    {
+      "id": "hull-fc-hist-manu-ma-u-2022",
+      "name": "Manu Ma'U",
+      "year": 2022,
+      "club": "Hull FC",
+      "age": 34,
+      "from": 84,
+      "to": 82,
+      "why": "age 34; peak 84"
+    },
+    {
+      "id": "hull-fc-hist-mark-minichiello",
+      "name": "Mark Minichiello",
+      "year": 2015,
+      "club": "Hull FC",
+      "age": 33,
+      "from": 93,
+      "to": 91,
+      "why": "age 33, 1 yr from his best seasons; peak 93"
+    },
+    {
+      "id": "wakefield-hist-mat-ashurst-2016",
+      "name": "Mat Ashurst",
+      "year": 2016,
+      "club": "Wakefield Trinity",
+      "age": 27,
+      "from": 91,
+      "to": 89,
+      "why": "age 27, 2 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "toulouse-hist-mathieu-jussaume-2022",
+      "name": "Mathieu Jussaume",
+      "year": 2022,
+      "club": "Toulouse Olympique",
+      "age": 23,
+      "from": 85,
+      "to": 83,
+      "why": "age 23, 3 yrs from his best seasons; peak 87"
+    },
+    {
+      "id": "leeds-hist-matt-prior-2021",
+      "name": "Matt Prior",
+      "year": 2021,
+      "club": "Leeds Rhinos",
+      "age": 34,
+      "from": 84,
+      "to": 82,
+      "why": "age 34; peak 84"
+    },
+    {
+      "id": "hull-fc-hist-matty-russell-2012",
+      "name": "Matty Russell",
+      "year": 2012,
+      "club": "Hull FC",
+      "age": 19,
+      "from": 82,
+      "to": 80,
+      "why": "age 19; peak 82"
+    },
+    {
+      "id": "warrington-hist-matty-russell-2015",
+      "name": "Matty Russell",
+      "year": 2015,
+      "club": "Warrington Wolves",
+      "age": 22,
+      "from": 82,
+      "to": 80,
+      "why": "age 22; peak 82"
+    },
+    {
+      "id": "wakefield-hist-michael-korkidas",
+      "name": "Michael Korkidas",
+      "year": 2003,
+      "club": "Wakefield Trinity",
+      "age": 22,
+      "from": 85,
+      "to": 83,
+      "why": "age 22; peak 85"
+    },
+    {
+      "id": "huddersfield-hist-michael-lawrence",
+      "name": "Michael Lawrence",
+      "year": 2010,
+      "club": "Huddersfield Giants",
+      "age": 20,
+      "from": 86,
+      "to": 84,
+      "why": "age 20; peak 89"
+    },
+    {
+      "id": "st-helens-hist-mike-bennett-2002",
+      "name": "Mike Bennett",
+      "year": 2002,
+      "club": "St Helens",
+      "age": 22,
+      "from": 85,
+      "to": 83,
+      "why": "age 22; peak 85"
+    },
+    {
+      "id": "bradford-hist-mike-forshaw-1997",
+      "name": "Mike Forshaw",
+      "year": 1997,
+      "club": "Bradford Bulls",
+      "age": 27,
+      "from": 88,
+      "to": 90,
+      "why": "elite season (1997); peak 91"
+    },
+    {
+      "id": "castleford-cur-mike-mcmeeken-2016",
+      "name": "Mike McMeeken",
+      "year": 2016,
+      "club": "Castleford Tigers",
+      "age": 22,
+      "from": 87,
+      "to": 85,
+      "why": "age 22, 1 yr from his best seasons; peak 88"
+    },
+    {
+      "id": "catalans-hist-morgan-escare-2013",
+      "name": "Morgan Escaré",
+      "year": 2013,
+      "club": "Catalans Dragons",
+      "age": 22,
+      "from": 89,
+      "to": 87,
+      "why": "age 22; peak 89"
+    },
+    {
+      "id": "leeds-hist-morgan-gannon-2025",
+      "name": "Morgan Gannon",
+      "year": 2025,
+      "club": "Leeds Rhinos",
+      "age": 22,
+      "from": 84,
+      "to": 82,
+      "why": "age 22; peak 84"
+    },
+    {
+      "id": "st-helens-hist-morgan-knowles-2019",
+      "name": "Morgan Knowles",
+      "year": 2019,
+      "club": "St Helens",
+      "age": 23,
+      "from": 91,
+      "to": 93,
+      "why": "elite season (2019, 2020, 2021, 2022, 2025); peak 94"
+    },
+    {
+      "id": "st-helens-hist-morgan-knowles-2021",
+      "name": "Morgan Knowles",
+      "year": 2021,
+      "club": "St Helens",
+      "age": 25,
+      "from": 91,
+      "to": 93,
+      "why": "elite season (2019, 2020, 2021, 2022, 2025); peak 94"
+    },
+    {
+      "id": "salford-hist-niall-evalds-2015",
+      "name": "Niall Evalds",
+      "year": 2015,
+      "club": "Salford Red Devils",
+      "age": 22,
+      "from": 88,
+      "to": 86,
+      "why": "age 22; peak 88"
+    },
+    {
+      "id": "salford-cur-niall-evalds-2015",
+      "name": "Niall Evalds",
+      "year": 2015,
+      "club": "Salford Red Devils",
+      "age": 22,
+      "from": 88,
+      "to": 86,
+      "why": "age 22; peak 88"
+    },
+    {
+      "id": "hull-kr-hist-nick-fozzard-2009",
+      "name": "Nick Fozzard",
+      "year": 2009,
+      "club": "Hull KR",
+      "age": 32,
+      "from": 94,
+      "to": 92,
+      "why": "age 32, 2 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "castleford-hist-oliver-holmes",
+      "name": "Oliver Holmes",
+      "year": 2014,
+      "club": "Castleford Tigers",
+      "age": 22,
+      "from": 87,
+      "to": 85,
+      "why": "age 22; peak 87"
+    },
+    {
+      "id": "wigan-hist-oliver-partington-2020",
+      "name": "Oliver Partington",
+      "year": 2020,
+      "club": "Wigan Warriors",
+      "age": 22,
+      "from": 85,
+      "to": 83,
+      "why": "age 22; peak 85"
+    },
+    {
+      "id": "catalans-hist-pat-richards-2016",
+      "name": "Pat Richards",
+      "year": 2016,
+      "club": "Catalans Dragons",
+      "age": 34,
+      "from": 94,
+      "to": 92,
+      "why": "age 34, 3 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "st-helens-hist-paul-clough-2009",
+      "name": "Paul Clough",
+      "year": 2009,
+      "club": "St Helens",
+      "age": 22,
+      "from": 90,
+      "to": 88,
+      "why": "age 22; peak 90"
+    },
+    {
+      "id": "bradford-hist-paul-deacon-2001",
+      "name": "Paul Deacon",
+      "year": 2001,
+      "club": "Bradford Bulls",
+      "age": 22,
+      "from": 90,
+      "to": 88,
+      "why": "age 22; peak 90"
+    },
+    {
+      "id": "paul-sculthorpe",
+      "name": "Paul Sculthorpe",
+      "year": 2001,
+      "club": "St Helens",
+      "age": 24,
+      "from": 96,
+      "to": 98,
+      "why": "elite season (1996, 2001, 2002, 2004); peak 99"
+    },
+    {
+      "id": "castleford-hist-richard-owen-2012",
+      "name": "Richard Owen",
+      "year": 2012,
+      "club": "Castleford Tigers",
+      "age": 22,
+      "from": 86,
+      "to": 84,
+      "why": "age 22; peak 86"
+    },
+    {
+      "id": "leeds-hist-richard-mathers",
+      "name": "Richie Mathers",
+      "year": 2005,
+      "club": "Leeds Rhinos",
+      "age": 22,
+      "from": 86,
+      "to": 84,
+      "why": "age 22; peak 86"
+    },
+    {
+      "id": "castleford-hist-era-riley-dean",
+      "name": "Riley Dean",
+      "year": 2023,
+      "club": "Castleford Tigers",
+      "age": 22,
+      "from": 82,
+      "to": 80,
+      "why": "age 22; peak 82"
+    },
+    {
+      "id": "leeds-leg-rob-burrow-2015",
+      "name": "Rob Burrow",
+      "year": 2015,
+      "club": "Leeds Rhinos",
+      "age": 33,
+      "from": 94,
+      "to": 92,
+      "why": "age 33, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "bradford-hist-rob-parker",
+      "name": "Rob Parker",
+      "year": 2003,
+      "club": "Bradford Bulls",
+      "age": 22,
+      "from": 86,
+      "to": 84,
+      "why": "age 22; peak 86"
+    },
+    {
+      "id": "warrington-hist-ryan-atkins",
+      "name": "Ryan Atkins",
+      "year": 2010,
+      "club": "Warrington Wolves",
+      "age": 25,
+      "from": 95,
+      "to": 93,
+      "why": "age 25, 2 yrs from his best seasons; peak 95"
+    },
+    {
+      "id": "castleford-hist-ryan-clayton",
+      "name": "Ryan Clayton",
+      "year": 2004,
+      "club": "Castleford Tigers",
+      "age": 22,
+      "from": 83,
+      "to": 81,
+      "why": "age 22; peak 83"
+    },
+    {
+      "id": "leeds-hist-era-ryan-hall",
+      "name": "Ryan Hall",
+      "year": 2009,
+      "club": "Leeds Rhinos",
+      "age": 22,
+      "from": 81,
+      "to": 83,
+      "why": "elite season (2009, 2010, 2012, 2014); peak 84"
+    },
+    {
+      "id": "castleford-hist-ryan-hampshire-2016",
+      "name": "Ryan Hampshire",
+      "year": 2016,
+      "club": "Castleford Tigers",
+      "age": 22,
+      "from": 87,
+      "to": 85,
+      "why": "age 22; peak 87"
+    },
+    {
+      "id": "castleford-hist-era-sam-hall",
+      "name": "Sam Hall",
+      "year": 2023,
+      "club": "Castleford Tigers",
+      "age": 21,
+      "from": 82,
+      "to": 80,
+      "why": "age 21; peak 82"
+    },
+    {
+      "id": "huddersfield-hist-sam-halsall-2023",
+      "name": "Sam Halsall",
+      "year": 2023,
+      "club": "Huddersfield Giants",
+      "age": 22,
+      "from": 83,
+      "to": 81,
+      "why": "age 22; peak 83"
+    },
+    {
+      "id": "catalans-hist-sam-kasiano",
+      "name": "Sam Kasiano",
+      "year": 2019,
+      "club": "Catalans Dragons",
+      "age": 29,
+      "from": 89,
+      "to": 87,
+      "why": "age 29, 2 yrs from his best seasons; peak 89"
+    },
+    {
+      "id": "leeds-hist-scott-donald-2008",
+      "name": "Scott Donald",
+      "year": 2008,
+      "club": "Leeds Rhinos",
+      "age": 28,
+      "from": 91,
+      "to": 93,
+      "why": "elite season (2007, 2008); peak 94"
+    },
+    {
+      "id": "hull-kr-hist-scott-murrell",
+      "name": "Scott Murrell",
+      "year": 2007,
+      "club": "Hull KR",
+      "age": 22,
+      "from": 87,
+      "to": 85,
+      "why": "age 22; peak 87"
+    },
+    {
+      "id": "wigan-hist-sean-o-loughlin-2016",
+      "name": "Sean O'Loughlin",
+      "year": 2016,
+      "club": "Wigan Warriors",
+      "age": 34,
+      "from": 96,
+      "to": 94,
+      "why": "age 34, 1 yr from his best seasons; peak 97"
+    },
+    {
+      "id": "bradford-hist-shaun-ainscough-2011",
+      "name": "Shaun Ainscough",
+      "year": 2011,
+      "club": "Bradford Bulls",
+      "age": 22,
+      "from": 89,
+      "to": 87,
+      "why": "age 22; peak 89"
+    },
+    {
+      "id": "hull-kr-hist-shaun-kenny-dowall",
+      "name": "Shaun Kenny-Dowall",
+      "year": 2021,
+      "club": "Hull KR",
+      "age": 33,
+      "from": 90,
+      "to": 88,
+      "why": "age 33, 1 yr from his best seasons; peak 90"
+    },
+    {
+      "id": "huddersfield-hist-shaun-lunt-2013",
+      "name": "Shaun Lunt",
+      "year": 2013,
+      "club": "Huddersfield Giants",
+      "age": 27,
+      "from": 89,
+      "to": 91,
+      "why": "elite season (2013); peak 92"
+    },
+    {
+      "id": "bradford-hist-shontayne-hape-2003",
+      "name": "Shontayne Hape",
+      "year": 2003,
+      "club": "Bradford Bulls",
+      "age": 22,
+      "from": 92,
+      "to": 90,
+      "why": "age 22; peak 92"
+    },
+    {
+      "id": "huddersfield-hist-stephen-wild-2009",
+      "name": "Stephen Wild",
+      "year": 2009,
+      "club": "Huddersfield Giants",
+      "age": 28,
+      "from": 92,
+      "to": 90,
+      "why": "age 28, 2 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "st-helens-hist-steve-hall",
+      "name": "Steve Hall",
+      "year": 2001,
+      "club": "St Helens",
+      "age": 22,
+      "from": 83,
+      "to": 81,
+      "why": "age 22; peak 83"
+    },
+    {
+      "id": "bradford-hist-tevita-vaikona-2002",
+      "name": "Tevita Vaikona",
+      "year": 2002,
+      "club": "Bradford Bulls",
+      "age": 28,
+      "from": 92,
+      "to": 94,
+      "why": "elite season (2001, 2002); peak 95"
+    },
+    {
+      "id": "bradford-hist-tevita-vaikona-2001",
+      "name": "Tevita Vaikona",
+      "year": 2001,
+      "club": "Bradford Bulls",
+      "age": 27,
+      "from": 92,
+      "to": 94,
+      "why": "elite season (2001, 2002); peak 95"
+    },
+    {
+      "id": "tevita-vaikona",
+      "name": "Tevita Vaikona",
+      "year": 1999,
+      "club": "Bradford Bulls",
+      "age": 25,
+      "from": 95,
+      "to": 93,
+      "why": "age 25, 2 yrs from his best seasons; peak 95"
+    },
+    {
+      "id": "wigan-hist-thomas-leuluai",
+      "name": "Thomas Leuluai",
+      "year": 2007,
+      "club": "Wigan Warriors",
+      "age": 22,
+      "from": 92,
+      "to": 90,
+      "why": "age 22; peak 92"
+    },
+    {
+      "id": "toulouse-hist-tiaki-chan-2022",
+      "name": "Tiaki Chan",
+      "year": 2022,
+      "club": "Toulouse Olympique",
+      "age": 22,
+      "from": 85,
+      "to": 83,
+      "why": "age 22; peak 85"
+    },
+    {
+      "id": "warrington-hist-toby-king-2015",
+      "name": "Toby King",
+      "year": 2015,
+      "club": "Warrington Wolves",
+      "age": 19,
+      "from": 82,
+      "to": 80,
+      "why": "age 19, 3 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "leeds-hist-tom-holroyd-2023",
+      "name": "Tom Holroyd",
+      "year": 2023,
+      "club": "Leeds Rhinos",
+      "age": 22,
+      "from": 84,
+      "to": 82,
+      "why": "age 22; peak 84"
+    },
+    {
+      "id": "st-helens-cur-tommy-makinson-2020",
+      "name": "Tommy Makinson",
+      "year": 2020,
+      "club": "St Helens",
+      "age": 29,
+      "from": 92,
+      "to": 90,
+      "why": "age 29, 2 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "leigh-cur-umyla-hanley",
+      "name": "Umyla Hanley",
+      "year": 2026,
+      "club": "Leigh Leopards",
+      "age": 24,
+      "from": 86,
+      "to": 88,
+      "why": "2026 Dream Team"
+    },
+    {
+      "id": "london-hist-will-sharp",
+      "name": "Will Sharp",
+      "year": 2008,
+      "club": "London Broncos",
+      "age": 22,
+      "from": 83,
+      "to": 81,
+      "why": "age 22; peak 83"
+    },
+    {
+      "id": "st-helens-hist-zeb-taia-2019",
+      "name": "Zeb Taia",
+      "year": 2019,
+      "club": "St Helens",
+      "age": 35,
+      "from": 88,
+      "to": 86,
+      "why": "age 35, 3 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "catalans-hist-zeb-taia-2015",
+      "name": "Zeb Taia",
+      "year": 2015,
+      "club": "Catalans Dragons",
+      "age": 31,
+      "from": 89,
+      "to": 91,
+      "why": "elite season (2015); peak 92"
+    },
+    {
+      "id": "catalans-hist-adam-mogg-2008",
+      "name": "Adam Mogg",
+      "year": 2008,
+      "club": "Catalans Dragons",
+      "age": 31,
+      "from": 86,
+      "to": 85,
+      "why": "age 31, 1 yr from his best seasons; peak 86"
+    },
+    {
+      "id": "salford-hist-adam-sidlow",
+      "name": "Adam Sidlow",
+      "year": 2010,
+      "club": "Salford Red Devils",
+      "age": 23,
+      "from": 86,
+      "to": 85,
+      "why": "age 23; peak 86"
+    },
+    {
+      "id": "st-helens-hist-ade-gardner-2014",
+      "name": "Ade Gardner",
+      "year": 2014,
+      "club": "St Helens",
+      "age": 31,
+      "from": 91,
+      "to": 90,
+      "why": "age 31, 3 yrs from his best seasons; peak 93"
+    },
+    {
+      "id": "salford-hist-adrian-morley-2015",
+      "name": "Adrian Morley",
+      "year": 2015,
+      "club": "Salford Red Devils",
+      "age": 38,
+      "from": 90,
+      "to": 89,
+      "why": "age 38, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "hull-fc-hist-aidan-sezer-2025",
+      "name": "Aidan Sezer",
+      "year": 2025,
+      "club": "Hull FC",
+      "age": 34,
+      "from": 84,
+      "to": 83,
+      "why": "age 34, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "catalans-hist-alex-chan-2007",
+      "name": "Alex Chan",
+      "year": 2007,
+      "club": "Catalans Dragons",
+      "age": 33,
+      "from": 86,
+      "to": 85,
+      "why": "age 33; peak 86"
+    },
+    {
+      "id": "london-cur-alex-walker-2018",
+      "name": "Alex Walker",
+      "year": 2018,
+      "club": "London Broncos",
+      "age": 23,
+      "from": 84,
+      "to": 83,
+      "why": "age 23; peak 84"
+    },
+    {
+      "id": "st-helens-cur-alex-walmsley-2019",
+      "name": "Alex Walmsley",
+      "year": 2019,
+      "club": "St Helens",
+      "age": 29,
+      "from": 90,
+      "to": 89,
+      "why": "age 29, 1 yr from his best seasons; peak 90"
+    },
+    {
+      "id": "st-helens-hist-anthony-stewart-2002",
+      "name": "Anthony Stewart",
+      "year": 2002,
+      "club": "St Helens",
+      "age": 23,
+      "from": 84,
+      "to": 83,
+      "why": "age 23; peak 84"
+    },
+    {
+      "id": "leigh-hist-era-bailey-hodgson",
+      "name": "Bailey Hodgson",
+      "year": 2025,
+      "club": "Leigh Leopards",
+      "age": 23,
+      "from": 84,
+      "to": 83,
+      "why": "age 23; peak 84"
+    },
+    {
+      "id": "warrington-cur-ben-currie-2016",
+      "name": "Ben Currie",
+      "year": 2016,
+      "club": "Warrington Wolves",
+      "age": 22,
+      "from": 89,
+      "to": 90,
+      "why": "elite season (2016, 2026); peak 91"
+    },
+    {
+      "id": "hull-kr-hist-ben-galea",
+      "name": "Ben Galea",
+      "year": 2010,
+      "club": "Hull KR",
+      "age": 32,
+      "from": 90,
+      "to": 89,
+      "why": "age 32, 1 yr from his best seasons; peak 90"
+    },
+    {
+      "id": "salford-hist-ben-murdoch-masila-2016",
+      "name": "Ben Murdoch-Masila",
+      "year": 2016,
+      "club": "Salford Red Devils",
+      "age": 25,
+      "from": 90,
+      "to": 89,
+      "why": "age 25, 1 yr from his best seasons; peak 90"
+    },
+    {
+      "id": "warrington-hist-ben-westwood-2015",
+      "name": "Ben Westwood",
+      "year": 2015,
+      "club": "Warrington Wolves",
+      "age": 34,
+      "from": 92,
+      "to": 91,
+      "why": "age 34, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "toulouse-hist-benjamin-laguerre-2024",
+      "name": "Benjamin Laguerre",
+      "year": 2024,
+      "club": "Toulouse Olympique",
+      "age": 23,
+      "from": 87,
+      "to": 86,
+      "why": "age 23; peak 87"
+    },
+    {
+      "id": "wigan-hist-bevan-french-2022",
+      "name": "Bevan French",
+      "year": 2022,
+      "club": "Wigan Warriors",
+      "age": 26,
+      "from": 91,
+      "to": 92,
+      "why": "elite season (2020, 2022, 2023); peak 93"
+    },
+    {
+      "id": "wigan-hist-bevan-french-2023",
+      "name": "Bevan French",
+      "year": 2023,
+      "club": "Wigan Warriors",
+      "age": 27,
+      "from": 91,
+      "to": 92,
+      "why": "elite season (2020, 2022, 2023); peak 93"
+    },
+    {
+      "id": "wigan-hist-bradley-o-neill-2025",
+      "name": "Bradley O'Neill",
+      "year": 2025,
+      "club": "Wigan Warriors",
+      "age": 23,
+      "from": 85,
+      "to": 84,
+      "why": "age 23; peak 85"
+    },
+    {
+      "id": "wigan-hist-brett-dallas",
+      "name": "Brett Dallas",
+      "year": 2000,
+      "club": "Wigan Warriors",
+      "age": 26,
+      "from": 93,
+      "to": 92,
+      "why": "age 26, 1 yr from his best seasons; peak 93"
+    },
+    {
+      "id": "castleford-hist-brett-ferres-2009",
+      "name": "Brett Ferres",
+      "year": 2009,
+      "club": "Castleford Tigers",
+      "age": 23,
+      "from": 88,
+      "to": 87,
+      "why": "age 23, 3 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "st-helens-hist-bryn-hargreaves",
+      "name": "Bryn Hargreaves",
+      "year": 2008,
+      "club": "St Helens",
+      "age": 23,
+      "from": 86,
+      "to": 85,
+      "why": "age 23; peak 86"
+    },
+    {
+      "id": "wigan-hist-cameron-phelps-2008",
+      "name": "Cameron Phelps",
+      "year": 2008,
+      "club": "Wigan Warriors",
+      "age": 23,
+      "from": 87,
+      "to": 86,
+      "why": "age 23; peak 87"
+    },
+    {
+      "id": "warrington-hist-chris-hill-2020",
+      "name": "Chris Hill",
+      "year": 2020,
+      "club": "Warrington Wolves",
+      "age": 33,
+      "from": 85,
+      "to": 84,
+      "why": "age 33, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "london-hist-chris-melling",
+      "name": "Chris Melling",
+      "year": 2007,
+      "club": "London Broncos",
+      "age": 23,
+      "from": 85,
+      "to": 84,
+      "why": "age 23; peak 85"
+    },
+    {
+      "id": "huddersfield-hist-chris-nero",
+      "name": "Chris Nero",
+      "year": 2004,
+      "club": "Huddersfield Giants",
+      "age": 23,
+      "from": 88,
+      "to": 87,
+      "why": "age 23; peak 88"
+    },
+    {
+      "id": "catalans-hist-clint-greenshields-2009",
+      "name": "Clint Greenshields",
+      "year": 2009,
+      "club": "Catalans Dragons",
+      "age": 27,
+      "from": 90,
+      "to": 89,
+      "why": "age 27, 1 yr from his best seasons; peak 90"
+    },
+    {
+      "id": "hull-kr-hist-clint-newton",
+      "name": "Clint Newton",
+      "year": 2008,
+      "club": "Hull KR",
+      "age": 27,
+      "from": 92,
+      "to": 91,
+      "why": "age 27, 1 yr from his best seasons; peak 92"
+    },
+    {
+      "id": "wakefield-hist-corey-hall-2025",
+      "name": "Corey Hall",
+      "year": 2025,
+      "club": "Wakefield Trinity",
+      "age": 23,
+      "from": 84,
+      "to": 83,
+      "why": "age 23; peak 84"
+    },
+    {
+      "id": "castleford-hist-craig-huby-2009",
+      "name": "Craig Huby",
+      "year": 2009,
+      "club": "Castleford Tigers",
+      "age": 23,
+      "from": 87,
+      "to": 86,
+      "why": "age 23; peak 87"
+    },
+    {
+      "id": "bradford-hist-craig-kopczak",
+      "name": "Craig Kopczak",
+      "year": 2009,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 86,
+      "to": 85,
+      "why": "age 23; peak 86"
+    },
+    {
+      "id": "bradford-hist-danny-addy-2014",
+      "name": "Danny Addy",
+      "year": 2014,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 83,
+      "to": 82,
+      "why": "age 23; peak 83"
+    },
+    {
+      "id": "hull-fc-hist-danny-houghton-2013",
+      "name": "Danny Houghton",
+      "year": 2013,
+      "club": "Hull FC",
+      "age": 25,
+      "from": 94,
+      "to": 93,
+      "why": "age 25, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "hull-fc-hist-danny-houghton-2012",
+      "name": "Danny Houghton",
+      "year": 2012,
+      "club": "Hull FC",
+      "age": 24,
+      "from": 94,
+      "to": 93,
+      "why": "age 24, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "hull-fc-hist-danny-houghton-2016",
+      "name": "Danny Houghton",
+      "year": 2016,
+      "club": "Hull FC",
+      "age": 28,
+      "from": 94,
+      "to": 95,
+      "why": "elite season (2016); peak 96"
+    },
+    {
+      "id": "leeds-leg-danny-mcguire-2016",
+      "name": "Danny McGuire",
+      "year": 2016,
+      "club": "Leeds Rhinos",
+      "age": 34,
+      "from": 93,
+      "to": 92,
+      "why": "age 34, 3 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "london-hist-danny-orr-2009",
+      "name": "Danny Orr",
+      "year": 2009,
+      "club": "London Broncos",
+      "age": 31,
+      "from": 87,
+      "to": 86,
+      "why": "age 31, 3 yrs from his best seasons; peak 89"
+    },
+    {
+      "id": "bradford-hist-danny-peacock-1998",
+      "name": "Danny Peacock",
+      "year": 1998,
+      "club": "Bradford Bulls",
+      "age": 30,
+      "from": 87,
+      "to": 86,
+      "why": "age 30, 1 yr from his best seasons; peak 87"
+    },
+    {
+      "id": "warrington-hist-danny-walker-2024",
+      "name": "Danny Walker",
+      "year": 2024,
+      "club": "Warrington Wolves",
+      "age": 25,
+      "from": 85,
+      "to": 86,
+      "why": "elite season (2024); peak 87"
+    },
+    {
+      "id": "huddersfield-hist-darnell-mcintosh-2020",
+      "name": "Darnell McIntosh",
+      "year": 2020,
+      "club": "Huddersfield Giants",
+      "age": 23,
+      "from": 83,
+      "to": 82,
+      "why": "age 23; peak 83"
+    },
+    {
+      "id": "salford-hist-darrell-griffin-2014",
+      "name": "Darrell Griffin",
+      "year": 2014,
+      "club": "Salford Red Devils",
+      "age": 33,
+      "from": 88,
+      "to": 87,
+      "why": "age 33; peak 88"
+    },
+    {
+      "id": "st-helens-hist-darren-britt-2002",
+      "name": "Darren Britt",
+      "year": 2002,
+      "club": "St Helens",
+      "age": 33,
+      "from": 84,
+      "to": 83,
+      "why": "age 33; peak 84"
+    },
+    {
+      "id": "warrington-hist-daryl-clark-2020",
+      "name": "Daryl Clark",
+      "year": 2020,
+      "club": "Warrington Wolves",
+      "age": 27,
+      "from": 91,
+      "to": 90,
+      "why": "age 27, 1 yr from his best seasons; peak 91"
+    },
+    {
+      "id": "warrington-hist-daryl-clark-2021",
+      "name": "Daryl Clark",
+      "year": 2021,
+      "club": "Warrington Wolves",
+      "age": 28,
+      "from": 90,
+      "to": 89,
+      "why": "age 28, 2 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "hull-kr-hist-dean-hadley-2020",
+      "name": "Dean Hadley",
+      "year": 2020,
+      "club": "Hull KR",
+      "age": 28,
+      "from": 83,
+      "to": 82,
+      "why": "age 28, 3 yrs from his best seasons; peak 85"
+    },
+    {
+      "id": "catalans-hist-dimitri-pelo-2008",
+      "name": "Dimitri Pelo",
+      "year": 2008,
+      "club": "Catalans Dragons",
+      "age": 23,
+      "from": 87,
+      "to": 86,
+      "why": "age 23; peak 87"
+    },
+    {
+      "id": "leigh-hist-edwin-ipape-2025",
+      "name": "Edwin Ipape",
+      "year": 2025,
+      "club": "Leigh Leopards",
+      "age": 26,
+      "from": 86,
+      "to": 85,
+      "why": "age 26, 2 yrs from his best seasons; peak 87"
+    },
+    {
+      "id": "wigan-hist-ethan-havard-2021",
+      "name": "Ethan Havard",
+      "year": 2021,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 82,
+      "to": 81,
+      "why": "age 21; peak 85"
+    },
+    {
+      "id": "hull-fc-hist-gareth-raynor",
+      "name": "Gareth Raynor",
+      "year": 2001,
+      "club": "Hull FC",
+      "age": 23,
+      "from": 88,
+      "to": 87,
+      "why": "age 23; peak 88"
+    },
+    {
+      "id": "warrington-hist-garreth-carvell",
+      "name": "Garreth Carvell",
+      "year": 2010,
+      "club": "Warrington Wolves",
+      "age": 30,
+      "from": 91,
+      "to": 90,
+      "why": "age 30, 1 yr from his best seasons; peak 91"
+    },
+    {
+      "id": "wigan-hist-george-carmont-2009",
+      "name": "George Carmont",
+      "year": 2009,
+      "club": "Wigan Warriors",
+      "age": 31,
+      "from": 95,
+      "to": 94,
+      "why": "age 31, 1 yr from his best seasons; peak 95"
+    },
+    {
+      "id": "wakefield-hist-glenn-morrison-2010",
+      "name": "Glenn Morrison",
+      "year": 2010,
+      "club": "Wakefield Trinity",
+      "age": 34,
+      "from": 88,
+      "to": 87,
+      "why": "age 34, 3 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "bradford-hist-graeme-bradley-1997",
+      "name": "Graeme Bradley",
+      "year": 1997,
+      "club": "Bradford Bulls",
+      "age": 33,
+      "from": 86,
+      "to": 87,
+      "why": "elite season (1997); peak 89"
+    },
+    {
+      "id": "bradford-hist-graeme-bradley",
+      "name": "Graeme Bradley",
+      "year": 1996,
+      "club": "Bradford Bulls",
+      "age": 32,
+      "from": 89,
+      "to": 88,
+      "why": "age 32, 1 yr from his best seasons; peak 89"
+    },
+    {
+      "id": "greg-bird",
+      "name": "Greg Bird",
+      "year": 2017,
+      "club": "Catalans Dragons",
+      "age": 33,
+      "from": 91,
+      "to": 90,
+      "why": "age 33; peak 91"
+    },
+    {
+      "id": "catalans-hist-era-guillermo-aispuro-bichet",
+      "name": "Guillermo Aispuro-Bichet",
+      "year": 2025,
+      "club": "Catalans Dragons",
+      "age": 20,
+      "from": 81,
+      "to": 80,
+      "why": "age 20; peak 81"
+    },
+    {
+      "id": "huddersfield-hist-harry-rushton-2024",
+      "name": "Harry Rushton",
+      "year": 2024,
+      "club": "Huddersfield Giants",
+      "age": 23,
+      "from": 84,
+      "to": 83,
+      "why": "age 23; peak 84"
+    },
+    {
+      "id": "wigan-hist-harry-smith-2023",
+      "name": "Harry Smith",
+      "year": 2023,
+      "club": "Wigan Warriors",
+      "age": 23,
+      "from": 89,
+      "to": 88,
+      "why": "age 23; peak 89"
+    },
+    {
+      "id": "wakefield-hist-era-harvey-smith",
+      "name": "Harvey Smith",
+      "year": 2025,
+      "club": "Wakefield Trinity",
+      "age": 19,
+      "from": 81,
+      "to": 80,
+      "why": "age 19; peak 81"
+    },
+    {
+      "id": "hull-fc-hist-herman-ese-ese-2024",
+      "name": "Herman Ese'Ese",
+      "year": 2024,
+      "club": "Hull FC",
+      "age": 30,
+      "from": 90,
+      "to": 89,
+      "why": "age 30, 1 yr from his best seasons; peak 90"
+    },
+    {
+      "id": "bradford-hist-iestyn-harris-2004",
+      "name": "Iestyn Harris",
+      "year": 2004,
+      "club": "Bradford Bulls",
+      "age": 28,
+      "from": 95,
+      "to": 94,
+      "why": "age 28, 3 yrs from his best seasons; peak 97"
+    },
+    {
+      "id": "st-helens-hist-jack-ashworth-2015",
+      "name": "Jack Ashworth",
+      "year": 2015,
+      "club": "St Helens",
+      "age": 20,
+      "from": 81,
+      "to": 80,
+      "why": "age 20; peak 82"
+    },
+    {
+      "id": "wakefield-hist-jacob-miller",
+      "name": "Jacob Miller",
+      "year": 2015,
+      "club": "Wakefield Trinity",
+      "age": 23,
+      "from": 86,
+      "to": 85,
+      "why": "age 23; peak 86"
+    },
+    {
+      "id": "st-helens-hist-james-graham-2009",
+      "name": "James Graham",
+      "year": 2009,
+      "club": "St Helens",
+      "age": 24,
+      "from": 97,
+      "to": 96,
+      "why": "age 24, 1 yr from his best seasons; peak 97"
+    },
+    {
+      "id": "bradford-hist-james-lowes",
+      "name": "James Lowes",
+      "year": 1996,
+      "club": "Bradford Bulls",
+      "age": 27,
+      "from": 95,
+      "to": 94,
+      "why": "age 27, 1 yr from his best seasons; peak 95"
+    },
+    {
+      "id": "leeds-hist-james-mcdonnell-2025",
+      "name": "James McDonnell",
+      "year": 2025,
+      "club": "Leeds Rhinos",
+      "age": 25,
+      "from": 87,
+      "to": 88,
+      "why": "elite season (2025, 2026); peak 89"
+    },
+    {
+      "id": "st-helens-hist-james-roby-2019",
+      "name": "James Roby",
+      "year": 2019,
+      "club": "St Helens",
+      "age": 34,
+      "from": 96,
+      "to": 95,
+      "why": "age 34, 1 yr from his best seasons; peak 98"
+    },
+    {
+      "id": "bradford-hist-jamie-foster-2013",
+      "name": "Jamie Foster",
+      "year": 2013,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 88,
+      "to": 87,
+      "why": "age 23; peak 88"
+    },
+    {
+      "id": "bradford-hist-jamie-langley",
+      "name": "Jamie Langley",
+      "year": 2006,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 90,
+      "to": 89,
+      "why": "age 23; peak 90"
+    },
+    {
+      "id": "leeds-hist-jarrod-o-connor-2022",
+      "name": "Jarrod O'Connor",
+      "year": 2022,
+      "club": "Leeds Rhinos",
+      "age": 21,
+      "from": 84,
+      "to": 83,
+      "why": "age 21; peak 87"
+    },
+    {
+      "id": "catalans-hist-jason-baitieri",
+      "name": "Jason Baitieri",
+      "year": 2011,
+      "club": "Catalans Dragons",
+      "age": 22,
+      "from": 87,
+      "to": 86,
+      "why": "age 22; peak 88"
+    },
+    {
+      "id": "bradford-cur-joe-arundel-2014",
+      "name": "Joe Arundel",
+      "year": 2014,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 87,
+      "to": 86,
+      "why": "age 23; peak 87"
+    },
+    {
+      "id": "wigan-hist-joe-bretherton-2016",
+      "name": "Joe Bretherton",
+      "year": 2016,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 81,
+      "to": 80,
+      "why": "age 21; peak 81"
+    },
+    {
+      "id": "wigan-hist-joe-shorrocks-2021",
+      "name": "Joe Shorrocks",
+      "year": 2021,
+      "club": "Wigan Warriors",
+      "age": 22,
+      "from": 81,
+      "to": 80,
+      "why": "age 22; peak 82"
+    },
+    {
+      "id": "warrington-hist-joel-monaghan-2015",
+      "name": "Joel Monaghan",
+      "year": 2015,
+      "club": "Warrington Wolves",
+      "age": 33,
+      "from": 93,
+      "to": 92,
+      "why": "age 33, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "st-helens-hist-era-jon-bennison",
+      "name": "Jon Bennison",
+      "year": 2022,
+      "club": "St Helens",
+      "age": 20,
+      "from": 81,
+      "to": 80,
+      "why": "age 20; peak 81"
+    },
+    {
+      "id": "st-helens-hist-jon-wilkin-2016",
+      "name": "Jon Wilkin",
+      "year": 2016,
+      "club": "St Helens",
+      "age": 33,
+      "from": 91,
+      "to": 90,
+      "why": "age 33, 3 yrs from his best seasons; peak 94"
+    },
+    {
+      "id": "st-helens-cur-jonny-lomax-2019",
+      "name": "Jonny Lomax",
+      "year": 2019,
+      "club": "St Helens",
+      "age": 29,
+      "from": 89,
+      "to": 88,
+      "why": "age 29, 1 yr from his best seasons; peak 89"
+    },
+    {
+      "id": "london-hist-jordan-abdull-2019",
+      "name": "Jordan Abdull",
+      "year": 2019,
+      "club": "London Broncos",
+      "age": 23,
+      "from": 86,
+      "to": 85,
+      "why": "age 23; peak 86"
+    },
+    {
+      "id": "hull-fc-hist-jordan-johnstone-2020",
+      "name": "Jordan Johnstone",
+      "year": 2020,
+      "club": "Hull FC",
+      "age": 23,
+      "from": 83,
+      "to": 82,
+      "why": "age 23; peak 83"
+    },
+    {
+      "id": "hull-fc-hist-jordan-lane-2020",
+      "name": "Jordan Lane",
+      "year": 2020,
+      "club": "Hull FC",
+      "age": 23,
+      "from": 85,
+      "to": 84,
+      "why": "age 23; peak 85"
+    },
+    {
+      "id": "wigan-hist-josh-charnley-2016",
+      "name": "Josh Charnley",
+      "year": 2016,
+      "club": "Wigan Warriors",
+      "age": 25,
+      "from": 82,
+      "to": 81,
+      "why": "age 25, 3 yrs from his best seasons; peak 84"
+    },
+    {
+      "id": "hull-fc-hist-josh-reynolds-2022",
+      "name": "Josh Reynolds",
+      "year": 2022,
+      "club": "Hull FC",
+      "age": 33,
+      "from": 83,
+      "to": 82,
+      "why": "age 33; peak 83"
+    },
+    {
+      "id": "warrington-hist-josh-thewlis-2025",
+      "name": "Josh Thewlis",
+      "year": 2025,
+      "club": "Warrington Wolves",
+      "age": 23,
+      "from": 84,
+      "to": 83,
+      "why": "age 23; peak 84"
+    },
+    {
+      "id": "salford-hist-josh-wood",
+      "name": "Josh Wood",
+      "year": 2018,
+      "club": "Salford Red Devils",
+      "age": 23,
+      "from": 83,
+      "to": 82,
+      "why": "age 23; peak 83"
+    },
+    {
+      "id": "catalans-cur-julian-bousquet-2013",
+      "name": "Julian Bousquet",
+      "year": 2013,
+      "club": "Catalans Dragons",
+      "age": 22,
+      "from": 87,
+      "to": 86,
+      "why": "age 22; peak 88"
+    },
+    {
+      "id": "catalans-hist-justin-murphy-2008",
+      "name": "Justin Murphy",
+      "year": 2008,
+      "club": "Catalans Dragons",
+      "age": 29,
+      "from": 89,
+      "to": 88,
+      "why": "age 29, 2 yrs from his best seasons; peak 90"
+    },
+    {
+      "id": "catalans-hist-justin-murphy-2007",
+      "name": "Justin Murphy",
+      "year": 2007,
+      "club": "Catalans Dragons",
+      "age": 28,
+      "from": 90,
+      "to": 89,
+      "why": "age 28, 1 yr from his best seasons; peak 90"
+    },
+    {
+      "id": "leeds-hist-kallum-watkins-2025",
+      "name": "Kallum Watkins",
+      "year": 2025,
+      "club": "Leeds Rhinos",
+      "age": 34,
+      "from": 88,
+      "to": 87,
+      "why": "age 34, 2 yrs from his best seasons; peak 91"
+    },
+    {
+      "id": "bradford-hist-karl-pratt-2003",
+      "name": "Karl Pratt",
+      "year": 2003,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 86,
+      "to": 85,
+      "why": "age 23; peak 86"
+    },
+    {
+      "id": "keiron-cunningham",
+      "name": "Keiron Cunningham",
+      "year": 1996,
+      "club": "St Helens",
+      "age": 20,
+      "from": 94,
+      "to": 95,
+      "why": "elite season (1996, 2000, 2001, 2002, 2005, 2006, 2008); peak 98"
+    },
+    {
+      "id": "leeds-hist-keith-senior-2009",
+      "name": "Keith Senior",
+      "year": 2009,
+      "club": "Leeds Rhinos",
+      "age": 33,
+      "from": 93,
+      "to": 94,
+      "why": "elite season (2002, 2003, 2004, 2009, 2010); peak 96"
+    },
+    {
+      "id": "castleford-hist-kenny-edwards",
+      "name": "Kenny Edwards",
+      "year": 2022,
+      "club": "Castleford Tigers",
+      "age": 33,
+      "from": 86,
+      "to": 85,
+      "why": "age 33; peak 86"
+    },
+    {
+      "id": "kevin-brown",
+      "name": "Kevin Brown",
+      "year": 2013,
+      "club": "Widnes Vikings",
+      "age": 29,
+      "from": 91,
+      "to": 90,
+      "why": "age 29, 1 yr from his best seasons; peak 91"
+    },
+    {
+      "id": "st-helens-hist-kevin-naiqama-2020",
+      "name": "Kevin Naiqama",
+      "year": 2020,
+      "club": "St Helens",
+      "age": 31,
+      "from": 91,
+      "to": 90,
+      "why": "age 31, 1 yr from his best seasons; peak 91"
+    },
+    {
+      "id": "hull-kr-hist-kris-welham",
+      "name": "Kris Welham",
+      "year": 2010,
+      "club": "Hull KR",
+      "age": 23,
+      "from": 91,
+      "to": 90,
+      "why": "age 23; peak 91"
+    },
+    {
+      "id": "salford-hist-krisnan-inu",
+      "name": "Krisnan Inu",
+      "year": 2019,
+      "club": "Salford Red Devils",
+      "age": 32,
+      "from": 91,
+      "to": 90,
+      "why": "age 32, 1 yr from his best seasons; peak 91"
+    },
+    {
+      "id": "leeds-hist-era-kruise-leeming",
+      "name": "Kruise Leeming",
+      "year": 2020,
+      "club": "Leeds Rhinos",
+      "age": 25,
+      "from": 85,
+      "to": 84,
+      "why": "age 25, 1 yr from his best seasons; peak 85"
+    },
+    {
+      "id": "leeds-hist-kruise-leeming-2022",
+      "name": "Kruise Leeming",
+      "year": 2022,
+      "club": "Leeds Rhinos",
+      "age": 27,
+      "from": 85,
+      "to": 84,
+      "why": "age 27, 1 yr from his best seasons; peak 85"
+    },
+    {
+      "id": "wigan-hist-kruise-leeming-2024",
+      "name": "Kruise Leeming",
+      "year": 2024,
+      "club": "Wigan Warriors",
+      "age": 29,
+      "from": 83,
+      "to": 82,
+      "why": "age 29, 3 yrs from his best seasons; peak 85"
+    },
+    {
+      "id": "wigan-hist-kruise-leeming-2025",
+      "name": "Kruise Leeming",
+      "year": 2025,
+      "club": "Wigan Warriors",
+      "age": 30,
+      "from": 83,
+      "to": 82,
+      "why": "age 30, 3 yrs from his best seasons; peak 85"
+    },
+    {
+      "id": "wakefield-hist-kyle-wood",
+      "name": "Kyle Wood",
+      "year": 2012,
+      "club": "Wakefield Trinity",
+      "age": 23,
+      "from": 87,
+      "to": 86,
+      "why": "age 23; peak 87"
+    },
+    {
+      "id": "st-helens-hist-lachlan-coote",
+      "name": "Lachlan Coote",
+      "year": 2020,
+      "club": "St Helens",
+      "age": 30,
+      "from": 93,
+      "to": 92,
+      "why": "age 30, 1 yr from his best seasons; peak 93"
+    },
+    {
+      "id": "warrington-leg-lee-briers-2011",
+      "name": "Lee Briers",
+      "year": 2011,
+      "club": "Warrington Wolves",
+      "age": 33,
+      "from": 95,
+      "to": 94,
+      "why": "age 33; peak 95"
+    },
+    {
+      "id": "bradford-hist-lee-radford-2002",
+      "name": "Lee Radford",
+      "year": 2002,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 89,
+      "to": 88,
+      "why": "age 23; peak 89"
+    },
+    {
+      "id": "bradford-hist-leon-pryce-2003",
+      "name": "Leon Pryce",
+      "year": 2003,
+      "club": "Bradford Bulls",
+      "age": 22,
+      "from": 92,
+      "to": 91,
+      "why": "age 22, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "wigan-hist-liam-byrne-2022",
+      "name": "Liam Byrne",
+      "year": 2022,
+      "club": "Wigan Warriors",
+      "age": 23,
+      "from": 85,
+      "to": 84,
+      "why": "age 23; peak 85"
+    },
+    {
+      "id": "wakefield-hist-liam-finn-2016",
+      "name": "Liam Finn",
+      "year": 2016,
+      "club": "Wakefield Trinity",
+      "age": 33,
+      "from": 84,
+      "to": 83,
+      "why": "age 33; peak 84"
+    },
+    {
+      "id": "leeds-hist-liam-hood-2013",
+      "name": "Liam Hood",
+      "year": 2013,
+      "club": "Leeds Rhinos",
+      "age": 21,
+      "from": 81,
+      "to": 80,
+      "why": "age 21; peak 84"
+    },
+    {
+      "id": "wakefield-hist-liam-hood-2025",
+      "name": "Liam Hood",
+      "year": 2025,
+      "club": "Wakefield Trinity",
+      "age": 33,
+      "from": 84,
+      "to": 83,
+      "why": "age 33; peak 84"
+    },
+    {
+      "id": "wigan-hist-liam-marshall-2021",
+      "name": "Liam Marshall",
+      "year": 2021,
+      "club": "Wigan Warriors",
+      "age": 25,
+      "from": 84,
+      "to": 83,
+      "why": "age 25, 3 yrs from his best seasons; peak 86"
+    },
+    {
+      "id": "wigan-hist-liam-marshall-2022",
+      "name": "Liam Marshall",
+      "year": 2022,
+      "club": "Wigan Warriors",
+      "age": 26,
+      "from": 85,
+      "to": 84,
+      "why": "age 26, 2 yrs from his best seasons; peak 86"
+    },
+    {
+      "id": "wigan-hist-liam-marshall-2023",
+      "name": "Liam Marshall",
+      "year": 2023,
+      "club": "Wigan Warriors",
+      "age": 27,
+      "from": 86,
+      "to": 85,
+      "why": "age 27, 1 yr from his best seasons; peak 86"
+    },
+    {
+      "id": "salford-hist-logan-tomkins",
+      "name": "Logan Tomkins",
+      "year": 2015,
+      "club": "Salford Red Devils",
+      "age": 23,
+      "from": 86,
+      "to": 85,
+      "why": "age 23; peak 86"
+    },
+    {
+      "id": "st-helens-hist-louie-mccarthy-scarsbrook-2020",
+      "name": "Louie McCarthy-Scarsbrook",
+      "year": 2020,
+      "club": "St Helens",
+      "age": 34,
+      "from": 92,
+      "to": 91,
+      "why": "age 34; peak 93"
+    },
+    {
+      "id": "london-hist-luke-dorn",
+      "name": "Luke Dorn",
+      "year": 2005,
+      "club": "London Broncos",
+      "age": 23,
+      "from": 89,
+      "to": 88,
+      "why": "age 23; peak 89"
+    },
+    {
+      "id": "wakefield-hist-luke-george-2010",
+      "name": "Luke George",
+      "year": 2010,
+      "club": "Wakefield Trinity",
+      "age": 23,
+      "from": 87,
+      "to": 86,
+      "why": "age 23; peak 87"
+    },
+    {
+      "id": "leeds-cur-maika-sivo",
+      "name": "Maika Sivo",
+      "year": 2026,
+      "club": "Leeds Rhinos",
+      "age": 33,
+      "from": 87,
+      "to": 88,
+      "why": "2026 Dream Team"
+    },
+    {
+      "id": "hull-fc-hist-manu-ma-u-2021",
+      "name": "Manu Ma'U",
+      "year": 2021,
+      "club": "Hull FC",
+      "age": 33,
+      "from": 84,
+      "to": 83,
+      "why": "age 33; peak 84"
+    },
+    {
+      "id": "st-helens-cur-mark-percival-2019",
+      "name": "Mark Percival",
+      "year": 2019,
+      "club": "St Helens",
+      "age": 25,
+      "from": 92,
+      "to": 91,
+      "why": "age 25, 1 yr from his best seasons; peak 92"
+    },
+    {
+      "id": "st-helens-cur-mark-percival-2020",
+      "name": "Mark Percival",
+      "year": 2020,
+      "club": "St Helens",
+      "age": 26,
+      "from": 92,
+      "to": 91,
+      "why": "age 26, 1 yr from his best seasons; peak 92"
+    },
+    {
+      "id": "toulouse-hist-mathieu-jussaume-2023",
+      "name": "Mathieu Jussaume",
+      "year": 2023,
+      "club": "Toulouse Olympique",
+      "age": 24,
+      "from": 85,
+      "to": 84,
+      "why": "age 24, 3 yrs from his best seasons; peak 87"
+    },
+    {
+      "id": "toulouse-hist-mathieu-jussaume-2024",
+      "name": "Mathieu Jussaume",
+      "year": 2024,
+      "club": "Toulouse Olympique",
+      "age": 25,
+      "from": 86,
+      "to": 85,
+      "why": "age 25, 2 yrs from his best seasons; peak 87"
+    },
+    {
+      "id": "toulouse-cur-mathieu-jussaume",
+      "name": "Mathieu Jussaume",
+      "year": 2026,
+      "club": "Toulouse Olympique",
+      "age": 27,
+      "from": 87,
+      "to": 88,
+      "why": "2026 Dream Team"
+    },
+    {
+      "id": "warrington-hist-matt-king-2009",
+      "name": "Matt King",
+      "year": 2009,
+      "club": "Warrington Wolves",
+      "age": 29,
+      "from": 93,
+      "to": 92,
+      "why": "age 29, 1 yr from his best seasons; peak 93"
+    },
+    {
+      "id": "leeds-hist-matt-prior-2020",
+      "name": "Matt Prior",
+      "year": 2020,
+      "club": "Leeds Rhinos",
+      "age": 33,
+      "from": 84,
+      "to": 83,
+      "why": "age 33; peak 84"
+    },
+    {
+      "id": "bradford-hist-michael-withers",
+      "name": "Michael Withers",
+      "year": 1999,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 88,
+      "to": 87,
+      "why": "age 23; peak 88"
+    },
+    {
+      "id": "st-helens-hist-mike-bennett",
+      "name": "Mike Bennett",
+      "year": 2003,
+      "club": "St Helens",
+      "age": 23,
+      "from": 85,
+      "to": 84,
+      "why": "age 23; peak 85"
+    },
+    {
+      "id": "bradford-hist-mike-forshaw",
+      "name": "Mike Forshaw",
+      "year": 1998,
+      "club": "Bradford Bulls",
+      "age": 28,
+      "from": 91,
+      "to": 90,
+      "why": "age 28, 1 yr from his best seasons; peak 91"
+    },
+    {
+      "id": "leeds-hist-mikolaj-oledzki-2021",
+      "name": "Mikolaj Oledzki",
+      "year": 2021,
+      "club": "Leeds Rhinos",
+      "age": 23,
+      "from": 86,
+      "to": 85,
+      "why": "age 23, 1 yr from his best seasons; peak 87"
+    },
+    {
+      "id": "leeds-hist-mikolaj-oledzki-2022",
+      "name": "Mikolaj Oledzki",
+      "year": 2022,
+      "club": "Leeds Rhinos",
+      "age": 24,
+      "from": 85,
+      "to": 86,
+      "why": "elite season (2022); peak 87"
+    },
+    {
+      "id": "leeds-hist-mikolaj-oledzki-2025",
+      "name": "Mikolaj Oledzki",
+      "year": 2025,
+      "club": "Leeds Rhinos",
+      "age": 27,
+      "from": 85,
+      "to": 84,
+      "why": "age 27, 3 yrs from his best seasons; peak 87"
+    },
+    {
+      "id": "leeds-hist-morgan-gannon-2022",
+      "name": "Morgan Gannon",
+      "year": 2022,
+      "club": "Leeds Rhinos",
+      "age": 19,
+      "from": 81,
+      "to": 80,
+      "why": "age 19; peak 84"
+    },
+    {
+      "id": "london-hist-morgan-smith-2019",
+      "name": "Morgan Smith",
+      "year": 2019,
+      "club": "London Broncos",
+      "age": 21,
+      "from": 81,
+      "to": 80,
+      "why": "age 21; peak 83"
+    },
+    {
+      "id": "castleford-hist-nathan-massey",
+      "name": "Nathan Massey",
+      "year": 2012,
+      "club": "Castleford Tigers",
+      "age": 23,
+      "from": 84,
+      "to": 83,
+      "why": "age 23; peak 84"
+    },
+    {
+      "id": "huddersfield-hist-nathan-peats-2023",
+      "name": "Nathan Peats",
+      "year": 2023,
+      "club": "Huddersfield Giants",
+      "age": 33,
+      "from": 84,
+      "to": 83,
+      "why": "age 33; peak 84"
+    },
+    {
+      "id": "bradford-hist-patrick-ah-van-2011",
+      "name": "Patrick Ah Van",
+      "year": 2011,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 87,
+      "to": 86,
+      "why": "age 23; peak 87"
+    },
+    {
+      "id": "bradford-hist-paul-deacon-2002",
+      "name": "Paul Deacon",
+      "year": 2002,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 90,
+      "to": 89,
+      "why": "age 23; peak 90"
+    },
+    {
+      "id": "wakefield-hist-paul-king-2010",
+      "name": "Paul King",
+      "year": 2010,
+      "club": "Wakefield Trinity",
+      "age": 31,
+      "from": 87,
+      "to": 86,
+      "why": "age 31, 3 yrs from his best seasons; peak 89"
+    },
+    {
+      "id": "hull-fc-hist-paul-king-2009",
+      "name": "Paul King",
+      "year": 2009,
+      "club": "Hull FC",
+      "age": 30,
+      "from": 87,
+      "to": 86,
+      "why": "age 30, 3 yrs from his best seasons; peak 89"
+    },
+    {
+      "id": "wigan-hist-paul-prescott-2009",
+      "name": "Paul Prescott",
+      "year": 2009,
+      "club": "Wigan Warriors",
+      "age": 23,
+      "from": 88,
+      "to": 87,
+      "why": "age 23; peak 88"
+    },
+    {
+      "id": "wakefield-hist-paul-sykes",
+      "name": "Paul Sykes",
+      "year": 2003,
+      "club": "London Broncos",
+      "age": 22,
+      "from": 89,
+      "to": 88,
+      "why": "age 22; peak 90"
+    },
+    {
+      "id": "huddersfield-hist-paul-white",
+      "name": "Paul White",
+      "year": 2005,
+      "club": "Huddersfield Giants",
+      "age": 23,
+      "from": 84,
+      "to": 83,
+      "why": "age 23; peak 84"
+    },
+    {
+      "id": "hull-kr-hist-peter-fox",
+      "name": "Peter Fox",
+      "year": 2008,
+      "club": "Hull KR",
+      "age": 25,
+      "from": 95,
+      "to": 94,
+      "why": "age 25, 1 yr from his best seasons; peak 95"
+    },
+    {
+      "id": "salford-hist-rangi-chase-2014",
+      "name": "Rangi Chase",
+      "year": 2014,
+      "club": "Salford Red Devils",
+      "age": 28,
+      "from": 94,
+      "to": 93,
+      "why": "age 28, 3 yrs from his best seasons; peak 96"
+    },
+    {
+      "id": "salford-hist-reni-maitua",
+      "name": "Reni Maitua",
+      "year": 2015,
+      "club": "Salford Red Devils",
+      "age": 33,
+      "from": 82,
+      "to": 81,
+      "why": "age 33; peak 82"
+    },
+    {
+      "id": "salford-hist-reni-maitua-2015",
+      "name": "Reni Maitua",
+      "year": 2015,
+      "club": "Salford Red Devils",
+      "age": 33,
+      "from": 82,
+      "to": 81,
+      "why": "age 33; peak 82"
+    },
+    {
+      "id": "leeds-hist-rhyse-martin-2021",
+      "name": "Rhyse Martin",
+      "year": 2021,
+      "club": "Leeds Rhinos",
+      "age": 28,
+      "from": 86,
+      "to": 85,
+      "why": "age 28, 3 yrs from his best seasons; peak 88"
+    },
+    {
+      "id": "hull-fc-hist-richard-horne-2009",
+      "name": "Richard Horne",
+      "year": 2009,
+      "club": "Hull FC",
+      "age": 27,
+      "from": 90,
+      "to": 89,
+      "why": "age 27, 3 yrs from his best seasons; peak 92"
+    },
+    {
+      "id": "london-hist-robert-purdham",
+      "name": "Robert Purdham",
+      "year": 2003,
+      "club": "London Broncos",
+      "age": 23,
+      "from": 87,
+      "to": 86,
+      "why": "age 23; peak 87"
+    },
+    {
+      "id": "leeds-hist-ryan-hall-2009",
+      "name": "Ryan Hall",
+      "year": 2009,
+      "club": "Leeds Rhinos",
+      "age": 22,
+      "from": 82,
+      "to": 83,
+      "why": "elite season (2009, 2010, 2012, 2014); peak 84"
+    },
+    {
+      "id": "huddersfield-hist-ryan-hinchcliffe",
+      "name": "Ryan Hinchcliffe",
+      "year": 2017,
+      "club": "Huddersfield Giants",
+      "age": 33,
+      "from": 87,
+      "to": 86,
+      "why": "age 33; peak 87"
+    },
+    {
+      "id": "wigan-hist-ryan-sutton-2015",
+      "name": "Ryan Sutton",
+      "year": 2015,
+      "club": "Wigan Warriors",
+      "age": 20,
+      "from": 81,
+      "to": 80,
+      "why": "age 20; peak 84"
+    },
+    {
+      "id": "wigan-hist-ryan-sutton-2016",
+      "name": "Ryan Sutton",
+      "year": 2016,
+      "club": "Wigan Warriors",
+      "age": 21,
+      "from": 81,
+      "to": 80,
+      "why": "age 21; peak 84"
+    },
+    {
+      "id": "wigan-hist-sam-tomkins-2009",
+      "name": "Sam Tomkins",
+      "year": 2009,
+      "club": "Wigan Warriors",
+      "age": 20,
+      "from": 94,
+      "to": 95,
+      "why": "elite season (2009, 2010, 2011, 2012, 2013, 2021); peak 98"
+    },
+    {
+      "id": "leeds-hist-scott-donald",
+      "name": "Scott Donald",
+      "year": 2006,
+      "club": "Leeds Rhinos",
+      "age": 26,
+      "from": 94,
+      "to": 93,
+      "why": "age 26, 1 yr from his best seasons; peak 94"
+    },
+    {
+      "id": "catalans-hist-scott-dureau-2013",
+      "name": "Scott Dureau",
+      "year": 2013,
+      "club": "Catalans Dragons",
+      "age": 27,
+      "from": 88,
+      "to": 87,
+      "why": "age 27, 1 yr from his best seasons; peak 88"
+    },
+    {
+      "id": "hull-fc-hist-scott-taylor",
+      "name": "Scott Taylor",
+      "year": 2017,
+      "club": "Hull FC",
+      "age": 26,
+      "from": 93,
+      "to": 92,
+      "why": "age 26, 1 yr from his best seasons; peak 93"
+    },
+    {
+      "id": "hull-kr-hist-scott-wheeldon-2009",
+      "name": "Scott Wheeldon",
+      "year": 2009,
+      "club": "Hull KR",
+      "age": 23,
+      "from": 86,
+      "to": 85,
+      "why": "age 23; peak 86"
+    },
+    {
+      "id": "st-helens-leg-sean-long-2006",
+      "name": "Sean Long",
+      "year": 2006,
+      "club": "St Helens",
+      "age": 30,
+      "from": 96,
+      "to": 97,
+      "why": "elite season (2000, 2006); peak 98"
+    },
+    {
+      "id": "st-helens-hist-sean-long-2009",
+      "name": "Sean Long",
+      "year": 2009,
+      "club": "St Helens",
+      "age": 33,
+      "from": 95,
+      "to": 94,
+      "why": "age 33, 3 yrs from his best seasons; peak 98"
+    },
+    {
+      "id": "wigan-hist-sean-o-loughlin-2015",
+      "name": "Sean O'Loughlin",
+      "year": 2015,
+      "club": "Wigan Warriors",
+      "age": 33,
+      "from": 96,
+      "to": 95,
+      "why": "age 33, 1 yr from his best seasons; peak 97"
+    },
+    {
+      "id": "catalans-hist-setaimata-sa-2010",
+      "name": "Setaimata Sa",
+      "year": 2010,
+      "club": "Catalans Dragons",
+      "age": 23,
+      "from": 86,
+      "to": 85,
+      "why": "age 23; peak 86"
+    },
+    {
+      "id": "bradford-hist-shaun-ainscough-2012",
+      "name": "Shaun Ainscough",
+      "year": 2012,
+      "club": "Bradford Bulls",
+      "age": 23,
+      "from": 89,
+      "to": 88,
+      "why": "age 23; peak 89"
+    },
+    {
+      "id": "widnes-hist-simon-finnigan",
+      "name": "Simon Finnigan",
+      "year": 2004,
+      "club": "Widnes Vikings",
+      "age": 23,
+      "from": 89,
+      "to": 88,
+      "why": "age 23; peak 89"
+    },
+    {
+      "id": "huddersfield-hist-stephen-wild",
+      "name": "Stephen Wild",
+      "year": 2006,
+      "club": "Huddersfield Giants",
+      "age": 25,
+      "from": 92,
+      "to": 91,
+      "why": "age 25, 1 yr from his best seasons; peak 92"
+    },
+    {
+      "id": "bradford-leg-stuart-fielden-1999",
+      "name": "Stuart Fielden",
+      "year": 1999,
+      "club": "Bradford Bulls",
+      "age": 20,
+      "from": 91,
+      "to": 90,
+      "why": "age 20, 1 yr from his best seasons; peak 96"
+    },
+    {
+      "id": "bradford-leg-stuart-fielden-2003",
+      "name": "Stuart Fielden",
+      "year": 2003,
+      "club": "Bradford Bulls",
+      "age": 24,
+      "from": 96,
+      "to": 95,
+      "why": "age 24, 1 yr from his best seasons; peak 96"
+    },
+    {
+      "id": "huddersfield-hist-stuart-jones",
+      "name": "Stuart Jones",
+      "year": 2004,
+      "club": "Huddersfield Giants",
+      "age": 23,
+      "from": 87,
+      "to": 86,
+      "why": "age 23; peak 87"
+    },
+    {
+      "id": "st-helens-hist-theo-fages",
+      "name": "Théo Fages",
+      "year": 2017,
+      "club": "St Helens",
+      "age": 23,
+      "from": 88,
+      "to": 87,
+      "why": "age 23; peak 88"
+    },
+    {
+      "id": "thomas-bosc",
+      "name": "Thomas Bosc",
+      "year": 2006,
+      "club": "Catalans Dragons",
+      "age": 23,
+      "from": 88,
+      "to": 87,
+      "why": "age 23; peak 88"
+    },
+    {
+      "id": "catalans-hist-thomas-bosc-2016",
+      "name": "Thomas Bosc",
+      "year": 2016,
+      "club": "Catalans Dragons",
+      "age": 33,
+      "from": 88,
+      "to": 87,
+      "why": "age 33; peak 88"
+    },
+    {
+      "id": "toulouse-hist-tiaki-chan-2023",
+      "name": "Tiaki Chan",
+      "year": 2023,
+      "club": "Toulouse Olympique",
+      "age": 23,
+      "from": 85,
+      "to": 84,
+      "why": "age 23; peak 85"
+    },
+    {
+      "id": "warrington-hist-toby-king-2020",
+      "name": "Toby King",
+      "year": 2020,
+      "club": "Warrington Wolves",
+      "age": 24,
+      "from": 88,
+      "to": 89,
+      "why": "elite season (2020); peak 90"
+    },
+    {
+      "id": "catalans-hist-tony-gigot-2010",
+      "name": "Tony Gigot",
+      "year": 2010,
+      "club": "Catalans Dragons",
+      "age": 20,
+      "from": 87,
+      "to": 86,
+      "why": "age 20; peak 91"
+    },
+    {
+      "id": "catalans-hist-vincent-duport-2009",
+      "name": "Vincent Duport",
+      "year": 2009,
+      "club": "Catalans Dragons",
+      "age": 22,
+      "from": 86,
+      "to": 85,
+      "why": "age 22; peak 87"
+    },
+    {
+      "id": "hull-kr-hist-era-will-dagger",
+      "name": "Will Dagger",
+      "year": 2020,
+      "club": "Hull KR",
+      "age": 21,
+      "from": 81,
+      "to": 80,
+      "why": "age 21; peak 81"
+    },
+    {
+      "id": "hull-fc-hist-will-pryce-2025",
+      "name": "Will Pryce",
+      "year": 2025,
+      "club": "Hull FC",
+      "age": 23,
+      "from": 87,
+      "to": 86,
+      "why": "age 23; peak 87"
+    },
+    {
+      "id": "london-hist-will-sharp-2009",
+      "name": "Will Sharp",
+      "year": 2009,
+      "club": "London Broncos",
+      "age": 23,
+      "from": 83,
+      "to": 82,
+      "why": "age 23; peak 83"
+    },
+    {
+      "id": "st-helens-hist-willie-manu-2014",
+      "name": "Willie Manu",
+      "year": 2014,
+      "club": "St Helens",
+      "age": 34,
+      "from": 89,
+      "to": 88,
+      "why": "age 34; peak 90"
+    },
+    {
+      "id": "salford-hist-willie-talau-2009",
+      "name": "Willie Talau",
+      "year": 2009,
+      "club": "Salford Red Devils",
+      "age": 33,
+      "from": 90,
+      "to": 89,
+      "why": "age 33; peak 90"
+    }
+  ]
+}

@@ -1,19 +1,14 @@
 /**
- * In-season transfer window + Deadline Day.
- *
- * The window opens after Round 10 and shuts when Round 16 kicks off. While it's open:
- * - AI clubs do deals with each other (and with free agents) after every round, so the league
- *   genuinely changes shape mid-season;
- * - rival clubs sometimes bid for your players (accept or turn them down);
- * - you can buy and sell from a market that refreshes every round.
- * The last stop before Round 16 is Deadline Day: a 12-hour clock counts down, and deals, offers for
+ * In-season transfers happen on one day only: Deadline Day, the stop before Round 16.
+ * (Kept simple on purpose: no deals between rounds, just one big day.)
+ * On Deadline Day: a 12-hour clock counts down, and deals, offers for
  * your players and fresh names on the market land as it runs. The window shuts at 0:00.
  * Everything is deterministic per save + round (+ half-hour slot), so reloading never re-rolls a deal.
  */
 import { LINEUP_SLOTS, SQUAD_MAX, SQUAD_MIN, effectiveRating, formatMoney, playerValue } from "./players";
 import { buyersFor } from "./buyers";
 import { pick, rngFor, shuffle, type Rng } from "./rng";
-import type { CareerPlayer, CareerState, DeadlineClock, DeadlineOffer, IncomingBid, Pos, TransferDeal } from "./types";
+import type { CareerPlayer, CareerState, DeadlineClock, DeadlineOffer, Pos, TransferDeal } from "./types";
 
 export const WINDOW_OPENS_AFTER_ROUND = 10;
 export const WINDOW_CLOSES_BEFORE_ROUND = 16;
@@ -29,12 +24,17 @@ export function windowBounds(state: CareerState): { open: number; deadline: numb
   return { open, deadline };
 }
 
+/** In-season transfers: Deadline Day only, until its clock hits 0:00 (or you shut it). */
 export function isWindowOpen(state: CareerState): boolean {
-  if (state.phase !== "season") return false;
+  return deadlineDecisionPending(state);
+}
+
+/** League rounds until Deadline Day (null once it's been). */
+export function roundsUntilDeadline(state: CareerState): number | null {
+  if (state.phase !== "season") return null;
   const b = windowBounds(state);
-  if (!b || state.matchdayIndex < b.open || state.matchdayIndex > b.deadline) return false;
-  // Once Deadline Day's clock hits 0:00 (or you shut it), the window is shut.
-  return !(state.matchdayIndex === b.deadline && state.deadlineClosedYear === state.year);
+  if (!b || state.matchdayIndex >= b.deadline) return null;
+  return state.calendar.slice(state.matchdayIndex, b.deadline).filter((m) => m.label.startsWith("Round ")).length;
 }
 
 export function isDeadlineDay(state: CareerState): boolean {
@@ -388,25 +388,6 @@ function aiDeal(state: CareerState, rng: Rng, buyerId: string, deadlineDay: bool
   };
 }
 
-/** A rival that needs his position bids for one of your better players (not legends, not new signings). */
-function maybeBid(state: CareerState, rng: Rng): IncomingBid | null {
-  const me = state.clubs[state.userClubId]!;
-  if (me.squad.length <= SQUAD_MIN) return null;
-  const mine = squad(state, me.id)
-    .filter((p) => !p.legend && p.signedYear !== state.year)
-    .sort((a, b) => b.rating - a.rating)
-    .slice(0, 8);
-  if (mine.length === 0) return null;
-  const target = pick(rng, mine);
-  const bidders = buyersFor(state, target).filter(
-    (n) => state.clubs[n.clubId]!.division === "super-league" || me.division === "championship"
-  );
-  if (bidders.length === 0) return null;
-  const club = pick(rng, bidders.slice(0, 4));
-  const fee = roundFee(playerValue(target) * (1.15 + rng() * 0.35));
-  return { clubId: club.clubId, playerId: target.id, fee, at: state.matchdayIndex };
-}
-
 /**
  * Called once each time a new matchday becomes current (after a round is played).
  * Runs the window's AI deals, Deadline Day's late flurry, and rival bids.
@@ -415,46 +396,13 @@ export function onMatchdayReached(state: CareerState): void {
   if (state.phase !== "season") return;
   const b = windowBounds(state);
   if (!b) return;
-  // A bid lapses once the round it was made before is played.
-  if (state.incomingBid && state.incomingBid.at < state.matchdayIndex) {
-    const lapsed = state.incomingBid;
-    addNews(state, `${state.clubs[lapsed.clubId]?.name ?? "A club"} withdraw their bid for ${state.players[lapsed.playerId]?.name ?? "your player"}.`);
-    state.incomingBid = undefined;
-  }
-  if (state.matchdayIndex < b.open || state.matchdayIndex > b.deadline) return;
-  // Only league rounds move the clock (cup weeks inside the window don't double up deals).
-  if (!state.calendar[state.matchdayIndex]?.label.startsWith("Round ")) return;
-
-  const deadline = state.matchdayIndex === b.deadline;
-  if (deadline) {
-    // Deadline Day runs on its own 12-hour clock (tickDeadline); nothing lands until it starts.
-    if (state.deadlineClosedYear !== state.year && state.deadline?.year !== state.year) {
-      state.deadline = freshClock(state);
-      addNews(state, "Deadline Day! 12 hours until the window shuts.");
-    }
-    return;
-  }
-  const rng = rngFor(state.seed, state.year, "midseason", state.matchdayIndex);
-  if (state.matchdayIndex === b.open) addNews(state, `Transfer window open until Round ${WINDOW_CLOSES_BEFORE_ROUND} kicks off.`);
-
-  const aiClubs = shuffle(rng, Object.keys(state.clubs).filter((id) => id !== state.userClubId));
-  const wanted = 1 + Math.floor(rng() * 3);
-  let done = 0;
-  for (const clubId of aiClubs) {
-    if (done >= wanted) break;
-    const deal = aiDeal(state, rng, clubId, false);
-    if (!deal) continue;
-    recordDeal(state, deal);
-    addNews(state, dealLine(state, deal));
-    done++;
-  }
-
-  if (!state.incomingBid && rng() < 0.3) {
-    const bid = maybeBid(state, rng);
-    if (bid) {
-      state.incomingBid = bid;
-      addNews(state, `${state.clubs[bid.clubId]!.name} bid ${formatMoney(bid.fee)} for ${state.players[bid.playerId]!.name}.`);
-    }
+  // Older saves could have a between-rounds bid open: it lapses.
+  if (state.incomingBid && state.incomingBid.at < state.matchdayIndex) state.incomingBid = undefined;
+  if (state.matchdayIndex !== b.deadline) return;
+  // Deadline Day runs on its own 12-hour clock (tickDeadline); nothing lands until it starts.
+  if (state.deadlineClosedYear !== state.year && state.deadline?.year !== state.year) {
+    state.deadline = freshClock(state);
+    addNews(state, "Deadline Day! 12 hours until the window shuts.");
   }
 }
 

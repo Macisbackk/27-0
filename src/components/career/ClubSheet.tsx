@@ -139,8 +139,8 @@ function ClubSheet({ clubId, onClose }: { clubId: string | null; onClose: () => 
                     {d.playerName} <span className="text-[color:var(--fl-muted)]">({d.pos}, {d.rating})</span>
                   </span>
                   <span className="shrink-0 text-xs text-[color:var(--fl-muted)]">
-                    {other ? `${incoming ? "from" : "to"} ${s.clubs[other]?.short ?? "?"}` : "free"} · {d.fee > 0 ? formatMoney(d.fee) : "free"}
-                    {d.deadlineDay ? " · DD" : ""}
+                    {other ? `${incoming ? "from" : "to"} ${s.clubs[other]?.short ?? "?"}` : incoming ? "free agent" : "released"} · {d.fee > 0 ? formatMoney(d.fee) : "free"}
+                    {d.deadlineDay ? " · Deadline Day" : ""}
                   </span>
                 </li>
               );

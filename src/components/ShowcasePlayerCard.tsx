@@ -8,138 +8,73 @@ import {
 } from "@/lib/players/showcase-view-model";
 import { resolvePlayerCardColourContext } from "@/lib/players/player-card-colours";
 import { POSITION_LABELS } from "@/lib/positions";
-import { TeamColourStrip } from "@/components/ui/TeamColourStrip";
+import { ClubLogoBox } from "@/components/ClubBadge";
 import { PlayerTierBadge } from "@/components/cards/PlayerTierBadge";
 import { playUiClick } from "@/lib/sound";
-import { TYPO } from "@/lib/ui/typography";
 
 interface ShowcasePlayerCardProps {
   player: Player;
   onOpenDetail: (playerId: string) => void;
 }
 
-function showcaseCardPropsEqual(
-  prev: ShowcasePlayerCardProps,
-  next: ShowcasePlayerCardProps
-): boolean {
-  return (
-    prev.player.id === next.player.id &&
-    prev.onOpenDetail === next.onOpenDetail
-  );
+function showcaseCardPropsEqual(prev: ShowcasePlayerCardProps, next: ShowcasePlayerCardProps): boolean {
+  return prev.player.id === next.player.id && prev.player.peakRating === next.player.peakRating && prev.onOpenDetail === next.onOpenDetail;
+}
+
+/** Rating colour: gold for the very best, the theme accent for elite, white otherwise. */
+export function showcaseRatingTone(rating: number): string {
+  if (rating >= 95) return "showcase-rating--gold";
+  if (rating >= 90) return "showcase-rating--accent";
+  return "";
 }
 
 /**
- * Shared Player Showcase card — club kit owns thin strip; tier is badge-only.
- * Name geometry is identical for Current / Historic / Legend / Hall of Fame.
+ * Player Showcase row: rating tile, name (and season for era cards), club crest, club, position,
+ * nationality, and a small tier tag. Same rounded tiles as the rest of the site.
  */
-export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({
-  player,
-  onOpenDetail,
-}: ShowcasePlayerCardProps) {
+export const ShowcasePlayerCard = memo(function ShowcasePlayerCard({ player, onOpenDetail }: ShowcasePlayerCardProps) {
   const view = useMemo(() => toPlayerShowcaseViewModel(player), [player]);
-  const colourCtx = useMemo(
-    () => resolvePlayerCardColourContext(player, { maxTiers: 1 }),
-    [player]
-  );
-
-  const cardStyle = useMemo(
-    () =>
-      ({
-        ...colourCtx.cardStyle,
-        ["--player-card-border" as string]: colourCtx.clubBorder,
-        ["--player-card-border-hover" as string]: colourCtx.clubBorder,
-      }) as React.CSSProperties,
-    [colourCtx]
-  );
-
-  const positionLabel =
-    POSITION_LABELS[view.position as Position] ?? view.position;
+  const colourCtx = useMemo(() => resolvePlayerCardColourContext(player, { maxTiers: 1 }), [player]);
+  const positionLabel = POSITION_LABELS[view.position as Position] ?? view.position;
 
   const handleOpen = useCallback(() => {
     playUiClick();
-    assertShowcaseCardPopupNameMatch(
-      view.playerId,
-      view.displayName,
-      toPlayerShowcaseViewModel(player).displayName
-    );
+    assertShowcaseCardPopupNameMatch(view.playerId, view.displayName, toPlayerShowcaseViewModel(player).displayName);
     onOpenDetail(view.playerId);
   }, [player, onOpenDetail, view.displayName, view.playerId]);
 
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        handleOpen();
-      }
-    },
-    [handleOpen]
-  );
-
   const ariaLabel = view.displayName
-    ? `${view.displayName}, ${view.clubYearLabel}, rating ${view.rating}`
+    ? `${view.title}, ${view.clubLabel}, ${positionLabel}, rating ${view.rating}`
     : `Player ${view.playerId}, ${view.clubYearLabel}`;
 
   return (
-    <article
-      className="showcase-player-card game-panel game-panel--flush game-panel--player h-auto w-full min-w-0 self-start overflow-hidden border"
-      style={cardStyle}
-      data-player-id={view.playerId}
-    >
-      <TeamColourStrip
-        club={colourCtx.clubName}
-        className="showcase-player-card__strip"
-      />
-
-      <button
-        type="button"
-        className="showcase-player-card__body"
-        onClick={handleOpen}
-        onKeyDown={handleKeyDown}
-        aria-haspopup="dialog"
-        aria-label={ariaLabel}
-      >
-        <div className="showcase-player-card__header">
-          <h3
-            className={`showcase-player-card__name ${TYPO.cardTitle}`}
-            title={view.displayName || undefined}
-          >
-            {view.displayName || (
-              <span className="showcase-player-card__name-missing">
-                Name missing ({view.playerId})
-              </span>
-            )}
-          </h3>
-          <PlayerTierBadge
-            tiers={colourCtx.primaryTier}
-            compact
-            className="showcase-player-card__badge"
-          />
-        </div>
-
-        <p className="showcase-player-card__meta" title={view.clubYearLabel}>
-          {view.clubYearLabel}
-        </p>
-
-        <p className="showcase-player-card__facts" aria-label="Player facts">
-          <span className="showcase-player-card__fact">
-            <span className="showcase-player-card__fact-label">OVR</span>{" "}
-            <span className="showcase-player-card__fact-value showcase-player-card__fact-value--rating">
-              {view.rating}
+    <article className="showcase-row" data-player-id={view.playerId} style={{ ["--club" as string]: colourCtx.clubBorder }}>
+      <button type="button" className="showcase-row__button" onClick={handleOpen} aria-haspopup="dialog" aria-label={ariaLabel}>
+        <span className={`showcase-rating ${showcaseRatingTone(view.rating)}`} aria-hidden>
+          <span className="showcase-rating__value">{view.rating}</span>
+          <span className="showcase-rating__label">OVR</span>
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="showcase-row__name" title={view.title || undefined}>
+            {view.displayName || <span className="text-danger">Name missing ({view.playerId})</span>}
+            {view.titleYear ? <span className="showcase-row__year"> ({view.titleYear})</span> : null}
+          </span>
+          <span className="showcase-row__meta">
+            <ClubLogoBox club={colourCtx.clubName} size="xs" className="showcase-row__crest" />
+            <span className="min-w-0 truncate">
+              {view.clubLabel}
+              <span className="showcase-row__dot"> · </span>
+              {positionLabel}
+              {view.nationality ? (
+                <>
+                  <span className="showcase-row__dot"> · </span>
+                  {view.nationality}
+                </>
+              ) : null}
             </span>
           </span>
-          <span className="showcase-player-card__fact-sep" aria-hidden>
-            ·
-          </span>
-          <span className="showcase-player-card__fact">{positionLabel}</span>
-          {view.nationality ? (
-            <>
-              <span className="showcase-player-card__fact-sep" aria-hidden>
-                ·
-              </span>
-              <span className="showcase-player-card__fact">{view.nationality}</span>
-            </>
-          ) : null}
-        </p>
+        </span>
+        <PlayerTierBadge tiers={colourCtx.primaryTier} compact className="showcase-row__tier" />
       </button>
     </article>
   );

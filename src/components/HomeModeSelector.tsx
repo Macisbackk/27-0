@@ -225,7 +225,7 @@ export function HomeModeSelector() {
             <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01" />
           </TileIcon>
           <TileTitle>Ball Knower</TileTitle>
-          <TileSub>Classic with every rating hidden.</TileSub>
+          <TileSub>Classic with every rating hidden. No respins.</TileSub>
           <TilePill accent>Prove it</TilePill>
         </Tile>
       ) : null}
@@ -236,7 +236,7 @@ export function HomeModeSelector() {
         </TileIcon>
         <TileTitle>Puzzles</TileTitle>
         <TileSub>Millionaire, Wordle and the Grid</TileSub>
-        {hub ? <TilePill accent={!hub.wordleDone}>{hub.wordleDone ? "Wordle done today" : "Today's Wordle is waiting"}</TilePill> : null}
+        {hub ? <TilePill accent={!hub.wordleDone}>{hub.wordleDone ? "Wordle reward claimed" : "Wordle reward waiting"}</TilePill> : null}
       </Tile>
     </section>
   );
