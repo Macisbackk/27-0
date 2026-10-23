@@ -34,8 +34,8 @@ export const COSMETICS: CosmeticItem[] = [
   { id: "title-invincible", kind: "title", name: "The Invincible", blurb: "Shown next to your name.", price: 5_000_000 },
   { id: "title-27-0-legend", kind: "title", name: "27-0 Legend", blurb: "The rarest title in the game.", price: 10_000_000 },
 
-  { id: "frame-gold", kind: "frame", name: "Gold frame", blurb: "A gold border round your whole row on the Classic and Daily leaderboards.", price: 1_000_000 },
-  { id: "frame-foil", kind: "frame", name: "Foil frame", blurb: "A shimmering foil border round your whole row on the Classic and Daily leaderboards.", price: 1_500_000 },
+  { id: "frame-gold", kind: "frame", name: "Gold frame", blurb: "A gold border round your whole row on every leaderboard.", price: 1_000_000 },
+  { id: "frame-foil", kind: "frame", name: "Foil frame", blurb: "A shimmering foil border round your whole row on every leaderboard.", price: 1_500_000 },
   { id: "frame-programme", kind: "frame", name: "Matchday programme", blurb: "Your whole row in cream and ink, like an old matchday programme.", price: 1_000_000 },
 
   { id: BALL_KNOWER_ID, kind: "mode", name: "Ball Knower mode", blurb: "Classic with every rating hidden and no respins. Pick on knowledge alone.", price: 2_000_000 },
