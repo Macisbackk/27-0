@@ -5,16 +5,11 @@ import { isGuestLeaderboardName } from "./leaderboard";
 import { STORAGE_KEYS } from "./keys";
 import type { LeaderboardTrackerRow } from "../leaderboard-trackers";
 import { loadWordleStats } from "@/lib/mini-games/wordle/storage";
-import { loadHangmanStats } from "@/lib/mini-games/hangman/storage";
-import { loadHigherLowerStats } from "@/lib/mini-games/higher-lower/storage";
+import { loadGridStats } from "@/lib/mini-games/grid/storage";
 import { loadQuizStats } from "@/lib/quiz/storage";
 
-/** Mini-game win boards (score = total wins). */
-export type MiniGameWinsKind =
-  | "wordle"
-  | "hangman"
-  | "higher-lower"
-  | "quiz-wins";
+/** Mini-game win boards (score = total wins; Grid = perfect 3×3 grids). */
+export type MiniGameWinsKind = "wordle" | "grid" | "quiz-wins";
 
 export const MINI_GAME_WINS_CATEGORIES: Array<{
   id: MiniGameWinsKind;
@@ -29,16 +24,10 @@ export const MINI_GAME_WINS_CATEGORIES: Array<{
     href: "/mini-games/wordle",
   },
   {
-    id: "hangman",
-    label: "Hangman Wins",
-    shortLabel: "Hangman",
-    href: "/mini-games/hangman",
-  },
-  {
-    id: "higher-lower",
-    label: "Higher or Lower Wins",
-    shortLabel: "Higher/Lower",
-    href: "/mini-games/higher-lower",
+    id: "grid",
+    label: "Perfect Grids",
+    shortLabel: "Grid",
+    href: "/mini-games/grid",
   },
   {
     id: "quiz-wins",
@@ -50,8 +39,7 @@ export const MINI_GAME_WINS_CATEGORIES: Array<{
 
 const DB_MODE: Record<MiniGameWinsKind, string> = {
   wordle: "wordle",
-  hangman: "hangman",
-  "higher-lower": "higher-lower",
+  grid: "grid",
   "quiz-wins": "quiz-wins",
 };
 
@@ -252,10 +240,8 @@ function readDeviceWins(kind: MiniGameWinsKind): number {
   switch (kind) {
     case "wordle":
       return loadWordleStats().wins;
-    case "hangman":
-      return loadHangmanStats().wins;
-    case "higher-lower":
-      return loadHigherLowerStats().fivePickWins;
+    case "grid":
+      return loadGridStats().perfect;
     case "quiz-wins":
       return loadQuizStats().perfectRuns;
   }

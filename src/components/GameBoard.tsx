@@ -2995,6 +2995,11 @@ export function GameBoard({
           playoffFundsPayout={playoffFundsPayout}
           dailyChallengeMode={dailyChallengeMode}
           dailyScenario={dailyScenario}
+          dailyAttemptCounts={dailyAttemptCounts}
+          normalEraMode={normalEraMode}
+          difficulty={difficulty}
+          submittedOnline={submittedOnline}
+          runRank={runRank}
           onFinalizeRun={handleFinalizePlayoffRun}
           onPlayAgain={handlePlayoffReviewDone}
           onClose={() => setPhase("pitch")}

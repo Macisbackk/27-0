@@ -396,6 +396,15 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     target: 1,
   },
   {
+    id: "grid-perfect",
+    name: "Full House",
+    description: "Fill a perfect 3×3 Grid.",
+    category: "quiz",
+    points: 25,
+    rewardClubFunds: 10_000,
+    target: 1,
+  },
+  {
     id: "hangman-win",
     name: "Hangman Win",
     description: "Solve a Rugby League Hangman puzzle.",

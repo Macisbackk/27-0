@@ -36,6 +36,22 @@ function boardScore(board: CareerBoard, legacy: CareerLegacy): { score: number; 
   }
 }
 
+/** This device's legacy as a board row for the current coach (null when there's nothing to show). */
+export function localCareerBoardEntry(board: CareerBoard, legacy: CareerLegacy): CareerBoardEntry | null {
+  const coachName = getUsername();
+  if (!coachName || isGuestLeaderboardName(coachName)) return null;
+  const value = boardScore(board, legacy);
+  if (!value) return null;
+  return {
+    userId: getAuthUserId() ?? undefined,
+    username: coachName,
+    score: value.score,
+    wins: value.wins,
+    losses: value.losses,
+    updatedAt: legacy.updatedAt ? new Date(legacy.updatedAt).toISOString() : "",
+  };
+}
+
 function isBetter(board: CareerBoard, next: number, current: number | null): boolean {
   if (current == null) return true;
   return board === "career-glory" ? next < current : next > current;

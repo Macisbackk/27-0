@@ -41,6 +41,7 @@ import {
   playMiniSelect,
   playMiniWin,
 } from "@/lib/mini-games/sound";
+import { syncMiniGameWins } from "@/lib/storage/mini-games-leaderboard";
 import { TYPO } from "@/lib/ui/typography";
 import { MiniGameEndActions, MiniGameShell, MiniGameStatLine } from "./MiniGameShell";
 import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
@@ -53,9 +54,12 @@ const MUTED = "text-[color:var(--fl-muted)]";
 /** Stats, achievements and (daily only, once per UK day) the Club Funds reward. */
 function settleGrid(run: GridRun): GridRunView {
   if (run.status !== "finished" || run.rewardClaimed) return run;
-  triggerMiniGameAchievements({ played: true });
+  const perfect = gridScore(run) === GRID_CELL_COUNT;
+  triggerMiniGameAchievements({ played: true, gridPerfect: perfect });
   if (run.mode !== "daily") return { ...run, rewardClaimed: true };
-  saveGridStats(recordGridResult(loadGridStats(), run));
+  const stats = recordGridResult(loadGridStats(), run);
+  saveGridStats(stats);
+  syncMiniGameWins("grid", stats.perfect);
   const amount = gridRewardAmount(run);
   if (amount <= 0) return { ...run, rewardClaimed: true };
   const payout = claimMiniGameReward(
