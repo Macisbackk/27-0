@@ -184,6 +184,20 @@ function loadMeta(): DailyChallengeMeta {
 function saveMeta(meta: DailyChallengeMeta): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(STORAGE_KEYS.dailyChallengeMeta, JSON.stringify(meta));
+  scheduleCloudSave();
+}
+
+/**
+ * Queue a cloud backup of the Daily state (signed-in players only; guests are a no-op inside
+ * saveDailyCloud). Lazy import keeps this nav-wide module free of the Supabase client.
+ */
+function scheduleCloudSave(): void {
+  if (typeof window === "undefined") return;
+  void import("./storage/daily-challenge-cloud")
+    .then(({ saveDailyCloud }) => saveDailyCloud())
+    .catch(() => {
+      /* offline / not configured: next change retries */
+    });
 }
 
 export function getDailyChallengeMeta(): DailyChallengeMeta {
@@ -433,9 +447,21 @@ export function getDailyChallengeRunId(date = new Date()): string {
   return getDailyChallengeLeagueRunId(date);
 }
 
-interface DailyProgress {
+export interface DailyProgress {
   leagueLeaders?: boolean;
   playoffTitle?: boolean;
+}
+
+export interface DailyChallengeAttempt {
+  date: string;
+  runId: string;
+}
+
+/** Everything the cloud row backs up (see storage/daily-challenge-cloud.ts). */
+export interface DailyChallengeSnapshot {
+  meta: DailyChallengeMeta;
+  progress: Record<string, DailyProgress>;
+  attempt: DailyChallengeAttempt | null;
 }
 
 function loadProgressMap(): Record<string, DailyProgress> {
@@ -470,9 +496,51 @@ function saveProgressMap(map: Record<string, DailyProgress>): void {
     trimmed[key] = map[key]!;
   }
   localStorage.setItem(STORAGE_KEYS.dailyChallengeClaims, JSON.stringify(trimmed));
+  scheduleCloudSave();
 }
 
-const DAILY_ATTEMPT_KEY = "27-0-daily-attempt";
+export const DAILY_ATTEMPT_KEY = "27-0-daily-attempt";
+
+function loadAttempt(): DailyChallengeAttempt | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(DAILY_ATTEMPT_KEY);
+    const stored = raw ? (JSON.parse(raw) as { date?: unknown; runId?: unknown }) : null;
+    if (stored && typeof stored.date === "string" && typeof stored.runId === "string") {
+      return { date: stored.date, runId: stored.runId };
+    }
+  } catch {
+    // ignore
+  }
+  return null;
+}
+
+/** Current local Daily state, as backed up to the cloud. */
+export function loadDailyChallengeSnapshot(): DailyChallengeSnapshot {
+  return { meta: loadMeta(), progress: loadProgressMap(), attempt: loadAttempt() };
+}
+
+/**
+ * Overwrite local Daily state with a merged snapshot (login hydrate). Writes directly so the
+ * merge itself doesn't queue another cloud save; the caller uploads the merged result.
+ */
+export function applyDailyChallengeSnapshot(snapshot: DailyChallengeSnapshot): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(STORAGE_KEYS.dailyChallengeMeta, JSON.stringify(snapshot.meta));
+    const keys = Object.keys(snapshot.progress).sort();
+    const trimmed: Record<string, DailyProgress> = {};
+    for (const key of keys.slice(-60)) trimmed[key] = snapshot.progress[key]!;
+    localStorage.setItem(STORAGE_KEYS.dailyChallengeClaims, JSON.stringify(trimmed));
+    if (snapshot.attempt) {
+      localStorage.setItem(DAILY_ATTEMPT_KEY, JSON.stringify(snapshot.attempt));
+    } else {
+      localStorage.removeItem(DAILY_ATTEMPT_KEY);
+    }
+  } catch {
+    // storage unavailable
+  }
+}
 
 /**
  * One counted Daily attempt per UK day. The first run started today claims it; later runs
@@ -489,6 +557,7 @@ export function claimDailyChallengeAttempt(runId: string, date = new Date()): bo
       return stored.runId === runId;
     }
     localStorage.setItem(DAILY_ATTEMPT_KEY, JSON.stringify({ date: key, runId }));
+    scheduleCloudSave();
     return true;
   } catch {
     return true;

@@ -174,6 +174,8 @@ export function CareerProvider({ children }: { children: ReactNode }) {
         saveLocalLegacy(result.legacy);
         stateRef.current = result.state;
         legacyRef.current = result.legacy;
+        // Records banked as a guest (or on another device) reach the board after login.
+        void submitCareerLeaderboards(result.legacy);
       } else if (stateRef.current || legacyRef.current.lifetimeLegacyPoints > 0) {
         void pushCareerToCloud(stateRef.current, legacyRef.current);
       }

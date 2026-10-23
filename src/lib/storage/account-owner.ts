@@ -15,6 +15,9 @@ const ACCOUNT_KEYS: readonly string[] = [
   STORAGE_KEYS.clubFunds,
   STORAGE_KEYS.dailyChallengeClaims,
   STORAGE_KEYS.dailyChallengeMeta,
+  // Today's counted Daily attempt (lib/daily-challenge.ts DAILY_ATTEMPT_KEY) — backed up with
+  // the streak so a second device doesn't get a fresh counted attempt.
+  "27-0-daily-attempt",
   STORAGE_KEYS.uiThemeStore,
   STORAGE_KEYS.cosmeticsStore,
   STORAGE_KEYS.uiThemeCssCache,
