@@ -12,7 +12,7 @@ import {
   isDeadlineDay,
   isWindowOpen,
   liveOffers,
-  roundsLeftInWindow,
+  roundsUntilDeadline,
   seasonDeals,
   type DeadlineEvent,
   type TransferDeal,
@@ -248,38 +248,16 @@ export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void 
   const s = state!;
   // Deadline Day keeps its card after the window shuts, as a round-up of the day.
   if (isDeadlineDay(s)) return <DeadlineDayCard onOpenMarket={onOpenMarket} />;
-  if (!isWindowOpen(s)) return null;
-  const deals = seasonDeals(s);
-  const left = roundsLeftInWindow(s);
-
+  // In-season transfers happen on Deadline Day only: a heads-up in the run-up to it.
+  const until = roundsUntilDeadline(s);
+  if (until === null || until > 5) return null;
   return (
-    <section aria-label="Transfer window" className="rounded-card bg-pitch-900 p-4">
-      <div className="flex items-center justify-between gap-2">
-        <p className="text-[15px] font-bold text-white">Transfer window open</p>
-        <span className="rounded-full bg-theme-primary/15 px-2.5 py-1 text-xs font-bold text-theme-primary">
-          {left <= 1 ? "Deadline Day next" : `${left} rounds left`}
-        </span>
-      </div>
-      {deals.length ? (
-        <ul className="mt-1 divide-y divide-[color:var(--fl-line)]">
-          {deals.slice(0, 3).map((d) => (
-            <DealRow key={`${d.playerId}-${d.at}`} d={d} />
-          ))}
-        </ul>
-      ) : (
-        <p className="mt-1 text-sm text-[color:var(--fl-muted)]">Clubs are circling. Deals land after every round.</p>
-      )}
-      <GameButton
-        size="sm"
-        variant="secondary"
-        className="mt-3"
-        onClick={() => {
-          playUiClick();
-          onOpenMarket();
-        }}
-      >
-        Transfer market
-      </GameButton>
+    <section aria-label="Deadline Day coming" className="flex items-center gap-3 rounded-card bg-pitch-900 p-4">
+      <span className="fl-number shrink-0 text-[26px] leading-none text-amber-300">{until}</span>
+      <p className="min-w-0 text-left text-sm text-[color:var(--fl-muted)]">
+        <span className="font-semibold text-white">{until === 1 ? "Round" : "Rounds"} until Deadline Day.</span> It&rsquo;s the only day in the
+        season to buy and sell, before Round {WINDOW_CLOSES_BEFORE_ROUND}.
+      </p>
     </section>
   );
 }
@@ -322,7 +300,7 @@ export function TransferRoundUp() {
       <p className="text-[15px] font-bold text-white">Transfer round-up</p>
       {deals.length === 0 ? (
         <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
-          No deals yet. The mid-season window opens after Round 10 and closes on Deadline Day, before Round {WINDOW_CLOSES_BEFORE_ROUND}.
+          No deals yet. In-season transfers all happen on Deadline Day, before Round {WINDOW_CLOSES_BEFORE_ROUND}.
         </p>
       ) : (
         <ul className="mt-1 divide-y divide-[color:var(--fl-line)]">

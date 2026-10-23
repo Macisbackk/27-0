@@ -13,9 +13,7 @@ import {
   potentialStars,
   prestigeRatingCap,
   WINDOW_CLOSES_BEFORE_ROUND,
-  isDeadlineDay,
   deadlineDecisionPending,
-  roundsLeftInWindow,
   sellPrice,
   squadOf,
   type MarketListing,
@@ -62,11 +60,9 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
         {midseason ? (
           <>
             <Eyebrow>
-              {isDeadlineDay(s)
-                ? `Deadline Day · window shuts before Round ${WINDOW_CLOSES_BEFORE_ROUND}`
-                : `Mid-season window · ${roundsLeftInWindow(s)} round${roundsLeftInWindow(s) === 1 ? "" : "s"} left`}
+              {`Deadline Day · window shuts before Round ${WINDOW_CLOSES_BEFORE_ROUND}`}
             </Eyebrow>
-            <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-white">{isDeadlineDay(s) ? "Last chance" : "Strengthen the squad"}</h1>
+            <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-white">Last chance</h1>
           </>
         ) : (
           <>

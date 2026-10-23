@@ -184,7 +184,7 @@ try {
   let shotWindow = false;
   for (let i = 0; i < 80; i++) {
     if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
-    if (!shotWindow && (await page.getByRole("region", { name: "Transfer window" }).isVisible().catch(() => false))) {
+    if (!shotWindow && (await page.getByRole("region", { name: "Deadline Day coming" }).isVisible().catch(() => false))) {
       shotWindow = true;
       await shot("window-open");
     }

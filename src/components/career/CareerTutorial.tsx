@@ -33,7 +33,7 @@ function steps(s: CareerState): Step[] {
     },
     {
       title: "Pre-season and transfers",
-      body: "Before Round 1 you can arrange two friendlies for match sharpness and gate money. The transfer window opens after Round 10, and on Deadline Day the season waits until you shut it.",
+      body: "Before Round 1 you can arrange two friendlies for match sharpness and gate money. In the season, transfers happen on one day only: Deadline Day, before Round 16. The season waits until it\u2019s over.",
       tab: "match",
     },
     {
