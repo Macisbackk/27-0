@@ -4,6 +4,7 @@ import {
   getClubColors,
   getClubHeaderBarStyle,
   getClubIdentityStripStyle,
+  getClubKitColors,
   getClubTheme,
 } from "@/lib/clubs";
 import { getClubLogoTextColor } from "@/lib/ui/contrast";
@@ -22,7 +23,8 @@ const MARK_SHELL =
   "shrink-0 overflow-hidden rounded-lg shadow-sm ring-1 ring-white/10";
 
 function resolveClubColors(club: string, colorsProp?: ClubColorSet): ClubColorSet {
-  return colorsProp ?? getClubTheme(club).colors;
+  // Crests show the real kit (black included); the theme's UI-safe colours are for accents.
+  return colorsProp ?? getClubKitColors(club);
 }
 
 interface ClubMarkProps {
@@ -48,8 +50,9 @@ export function ClubMark({
       title={club}
       aria-hidden
     >
-      <span className="h-full w-1/2" style={{ backgroundColor: colors.primary }} />
-      <span className="h-full w-1/2" style={{ backgroundColor: colors.secondary }} />
+      <span className="h-full flex-[3]" style={{ backgroundColor: colors.primary }} />
+      <span className="h-full flex-[2]" style={{ backgroundColor: colors.secondary }} />
+      {colors.accent ? <span className="h-full flex-[2]" style={{ backgroundColor: colors.accent }} /> : null}
     </div>
   );
 }
@@ -107,8 +110,8 @@ export function ClubLogoBox({
           style={{ backgroundColor: colors.secondary }}
         />
         {colors.accent ? (
-          /* Third kit colour: tells apart clubs that share the same two main colours. */
-          <span className="h-full flex-[1]" style={{ backgroundColor: colors.accent }} />
+          /* Third kit colour, a full band: tells apart clubs that share the same two main colours. */
+          <span className="h-full flex-[2]" style={{ backgroundColor: colors.accent }} />
         ) : null}
       </div>
       <span
@@ -127,7 +130,7 @@ export function ClubLogoBox({
 
 /** Two-tone colour bar without abbreviation — recruitment cards. */
 export function ClubColourBar({ club }: { club: string }) {
-  const colors = getClubColors(club);
+  const colors = getClubKitColors(club);
   return (
     <div className="flex h-0.5 w-full shrink-0 overflow-hidden">
       <span className="h-full flex-1" style={{ backgroundColor: colors.primary }} />

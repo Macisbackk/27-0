@@ -184,6 +184,19 @@ export function resolveClubUiColors(
   return { primary: uiPrimary, secondary: uiSecondary };
 }
 
+/**
+ * The club's real kit colours for crests and badges (black allowed: Bradford and Hull FC are black
+ * and that's how you tell them apart). For UI accents, which must never be black, use getClubColors.
+ */
+export function getClubKitColors(clubName: string): ClubColorSet {
+  const club = getClubByName(clubName);
+  if (!club) return { primary: "#374151", secondary: "#9CA3AF", shortName: "???" };
+  const primary = isBlackLike(club.primaryColor) ? UI_BLACK_TRIM : club.primaryColor;
+  const secondary = isBlackLike(club.secondaryColor) ? UI_BLACK_TRIM : club.secondaryColor;
+  const accent = club.accentColor && isBlackLike(club.accentColor) ? UI_BLACK_TRIM : club.accentColor;
+  return { primary, secondary, accent, shortName: club.shortName };
+}
+
 export function getClubColors(clubName: string): ClubColorSet {
   const club = getClubByName(clubName);
 
