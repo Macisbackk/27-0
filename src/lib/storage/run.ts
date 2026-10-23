@@ -57,9 +57,12 @@ export async function recordCompletedRun(
   const isHiddenRun =
     options?.joeMellorMode === true || options?.superSamHallasMode === true;
   const isDailyChallenge = options?.dailyChallengeMode === true;
+  // Ball Knower (HARD) still counts towards lifetime stats but, like the Daily, is never
+  // ranked: no leaderboard row and no trophy-cabinet sync.
+  const isBallKnower = difficulty === "HARD";
   // Boosts remain tracked via usedBoosts metadata but no longer exclude competitive entry.
   // Daily Challenge stays off Classic LB and must not pollute Normal/Era lifetime stats.
-  const excludeFromLeaderboard = isHiddenRun || isDailyChallenge;
+  const excludeFromLeaderboard = isHiddenRun || isDailyChallenge || isBallKnower;
   const modeVariant = resolveClassicModeVariant({
     modeVariant: run.modeVariant,
     normalEraMode: options?.normalEraMode,
@@ -153,13 +156,16 @@ export async function recordPlayoffCompletion(
   const loggedIn = isLoggedIn();
   const modeVariant = resolveClassicModeVariant({ modeVariant: run.modeVariant });
   const statsBucket = resolveStatsBucket(run.mode, difficulty, modeVariant);
-  const excludeFromLeaderboard = options.dailyChallengeMode === true;
+  const isDailyChallenge = options.dailyChallengeMode === true;
+  // Ball Knower (HARD): lifetime stats yes, leaderboard / trophy board no (mirrors the Daily).
+  const isBallKnower = difficulty === "HARD";
+  const excludeFromLeaderboard = isDailyChallenge || isBallKnower;
 
   const superLeagueTitle =
     options.superLeagueTitle ??
     options.playoffFinish === "Super League Champions";
 
-  if (!excludeFromLeaderboard) {
+  if (!isDailyChallenge) {
     updatePlayoffLifetimeStats(
       {
         regularWins: options.regularWins,

@@ -104,7 +104,7 @@ try {
 
   // ── 3. Classic: tap-to-skip spin, picker double-tap signs once, respin spam, auto-fill, season sim card stays put.
   where = "classic";
-  await page.goto(`${BASE}/play`, { waitUntil: "networkidle" });
+  await page.goto(`${BASE}/play?e2e=1`, { waitUntil: "networkidle" });
   await page.getByRole("button", { name: /Skip boost|Continue without boost/i }).first().click({ timeout: 4000 }).catch(() => {});
   for (let round = 0; round < 3; round++) {
     const slot = page.getByRole("button", { name: /: empty — tap to spin$/ }).first();

@@ -74,6 +74,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
           NEXT_TELEMETRY_DISABLED: "1"
+          NEXT_PUBLIC_E2E: "1"
         run: scripts/ci-run.sh "Production build" npm run build
       - name: Install Playwright (not in package.json)
         run: npm install --no-save playwright@1.49.1 && npx playwright install --with-deps chromium

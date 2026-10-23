@@ -316,13 +316,21 @@ export function resolveStatsBucket(
 
   }
 
+  // Ball Knower (HARD) shares one bucket whether Current or Era, so Era BK runs never land in
+  // the Era Normal lifetime stats (or the Era trophy board, which reads eraNormal only).
+  if (difficulty === "HARD") {
+
+    return "hard";
+
+  }
+
   if (mode === "CLASSIC" && normalizeModeVariant(modeVariant) === "era") {
 
     return "eraNormal";
 
   }
 
-  return difficulty === "HARD" ? "hard" : "normal";
+  return "normal";
 
 }
 

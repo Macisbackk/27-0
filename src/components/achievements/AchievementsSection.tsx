@@ -29,6 +29,7 @@ type StatusFilter = "all" | "locked" | "unlocked";
 const CATEGORY_TABS: { id: CategoryFilter; label: string }[] = [
   { id: "all", label: "All" },
   { id: "normal", label: "Classic" },
+  { id: "manager", label: "Manager" },
   { id: "store", label: "Store" },
   { id: "quiz", label: "Puzzles" },
   { id: "easter-egg", label: "Easter Eggs" },

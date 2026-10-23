@@ -81,7 +81,7 @@ for (const tab of await page.getByRole("tab").all().catch(() => [])) {
 }
 
 // Classic: chooser → pitch → spin → choices → sign → autofill → sim → review → play-offs.
-await go(page, "/play", 1500);
+await go(page, "/play?e2e=1", 1500);
 await shot(page, "classic-start", { full: false });
 await tap(page, [/Skip boost|Continue without boost/i]);
 await page.waitForTimeout(800);
@@ -125,7 +125,7 @@ if (await tap(page, [/play-?offs/i, /Continue to/i])) {
   await shot(page, "classic-playoffs-end");
 }
 
-await go(page, "/play?era=1", 1500);
+await go(page, "/play?era=1&e2e=1", 1500);
 await tap(page, [/Skip boost|Continue without boost/i]);
 await page.waitForTimeout(800);
 await shot(page, "era-pitch", { full: false });
@@ -204,7 +204,7 @@ await go(page, "/store", 1000);
 await page.getByRole("tab", { name: "Kit & pitch" }).click().catch(() => {});
 await page.waitForTimeout(600);
 await shot(page, "store-kit-and-pitch");
-await go(page, "/play?bk=1", 1500);
+await go(page, "/play?bk=1&e2e=1", 1500);
 await tap(page, [/Skip boost|Continue without boost/i]);
 await page.waitForTimeout(600);
 await tap(page, [/Auto.?fill squad/i]);

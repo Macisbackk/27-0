@@ -63,9 +63,31 @@ export type AchievementCheckContext = {
   quizTeamMillionaire?: boolean;
   miniGamePlayed?: boolean;
   wordleWon?: boolean;
+  gridPerfect?: boolean;
   hangmanWon?: boolean;
   higherLowerBestStreak?: number;
   higherLowerFivePickWins?: number;
+  // Manager Mode (career) — set when a season is banked.
+  /** True when a Manager Mode season has just been completed. */
+  careerSeasonCompleted?: boolean;
+  /** Trophies won in the season just banked (TrophyId strings). */
+  careerSeasonTrophies?: string[];
+  careerPromoted?: boolean;
+  careerRelegated?: boolean;
+  /** Won every league game this season. */
+  careerPerfectSeason?: boolean;
+  /** Won the Super League Grand Final this season. */
+  careerGrandFinalWon?: boolean;
+  /** Won the Challenge Cup this season. */
+  careerChallengeCupWon?: boolean;
+  /** The user bought or sold a player on Deadline Day this season. */
+  careerDeadlineDeal?: boolean;
+  /** Lifetime trophies across careers (from CareerLegacy). */
+  careerTotalTrophies?: number;
+  /** Careers started across the account (from CareerLegacy). */
+  careerCareersStarted?: number;
+  /** Seasons completed across careers (history length incl. this one). */
+  careerSeasonsCompleted?: number;
 };
 
 export type AchievementProgressSnapshot = {
@@ -86,6 +108,7 @@ export type AchievementProgressSnapshot = {
   quizQuestionsAnswered: number;
   quizQuestionsCorrect: number;
   wordleWins: number;
+  gridPerfects: number;
   hangmanWins: number;
   higherLowerBestStreak: number;
   higherLowerFivePickWins: number;
@@ -195,6 +218,7 @@ export function buildAchievementProgress(
       quizStats.questionsCorrect + quizStats.questionsIncorrect,
     quizQuestionsCorrect: quizStats.questionsCorrect,
     wordleWins: wordleStats.wins,
+    gridPerfects: gridStats.perfect,
     hangmanWins: hangmanStats.wins,
     higherLowerBestStreak: higherLowerStats.bestStreak,
     higherLowerFivePickWins: higherLowerStats.fivePickWins,

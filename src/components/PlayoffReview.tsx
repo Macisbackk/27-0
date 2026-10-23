@@ -32,6 +32,9 @@ import {
   getDailyChallengeStreak,
 } from "@/lib/daily-challenge";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
+import { getQuickModeLabel } from "@/lib/mode-labels";
+import type { GameDifficulty } from "@/lib/types";
+import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 
 const PLAYOFF_AWARD_TITLES: Record<string, string> = {
   "Player of the Season": "Player of the Play-offs",
@@ -46,6 +49,14 @@ interface PlayoffReviewProps {
   playoffFundsPayout?: ClubFundsPayoutResult | null;
   dailyChallengeMode?: boolean;
   dailyScenario?: DailyChallengeScenario | null;
+  /** Daily: false when today's counted attempt was already used (practice run). */
+  dailyAttemptCounts?: boolean;
+  /** Era squads (Classic) — picks the share-card subtitle. */
+  normalEraMode?: boolean;
+  difficulty?: GameDifficulty;
+  /** From recordPlayoffCompletion: whether the run reached the online board, and its rank there. */
+  submittedOnline?: boolean;
+  runRank?: number;
   onFinalizeRun?: () => void;
   onPlayAgain: () => void;
   onClose: () => void;
@@ -60,6 +71,11 @@ export function PlayoffReview({
   playoffFundsPayout = null,
   dailyChallengeMode = false,
   dailyScenario = null,
+  dailyAttemptCounts = true,
+  normalEraMode = false,
+  difficulty = "NORMAL",
+  submittedOnline = false,
+  runRank,
   onFinalizeRun,
   onPlayAgain,
   onReturnHome,
@@ -147,17 +163,34 @@ export function PlayoffReview({
     return final?.status === "complete" ? final.winner : null;
   }, [playoffBracketState]);
 
+  const showDailyPresentation =
+    SHOW_DAILY_CHALLENGE_UI && dailyChallengeMode && Boolean(dailyScenario);
+
   const shareAction = useMemo(() => {
-    if (
-      !SHOW_DAILY_CHALLENGE_UI ||
-      !dailyChallengeMode ||
-      !dailyScenario
-    ) {
-      return null;
-    }
-    const streak = getDailyChallengeStreak();
     const overallWins = seasonResult.wins + playoffResult.wins;
     const overallLosses = seasonResult.losses + playoffResult.losses;
+    const recordLine = formatRecordWithPercentage(overallWins, overallLosses);
+    const finishLabel = playoffResult.isChampion
+      ? "Super League Champions"
+      : getPlayoffFinishLabel(playoffResult.finish);
+
+    if (!SHOW_DAILY_CHALLENGE_UI || !dailyChallengeMode || !dailyScenario) {
+      return (
+        <ShareSeasonButton
+          data={{
+            title: finishLabel,
+            subtitle: getQuickModeLabel(normalEraMode),
+            recordLine,
+            detailLines: [
+              `League position ${formatLeaguePosition(playoffResult.leaguePosition)}`,
+              finishLabel,
+            ],
+          }}
+          filename="27-0-play-offs.png"
+        />
+      );
+    }
+    const streak = getDailyChallengeStreak();
     const detailLines = [
       `${dailyScenario.eraMode ? "Era" : "Current"} · ${getDailyChallengeDateKey()}`,
       formatRecordWithPercentage(overallWins, overallLosses),
@@ -175,7 +208,7 @@ export function PlayoffReview({
           subtitle: dailyScenario.eraMode
             ? "Era Daily Challenge"
             : "Daily Challenge",
-          recordLine: formatRecordWithPercentage(overallWins, overallLosses),
+          recordLine,
           detailLines,
         }}
         filename="27-0-daily.png"
@@ -184,6 +217,7 @@ export function PlayoffReview({
   }, [
     dailyChallengeMode,
     dailyScenario,
+    normalEraMode,
     seasonResult.wins,
     seasonResult.losses,
     playoffResult.wins,
@@ -225,6 +259,17 @@ export function PlayoffReview({
               Super League Champions.
             </p>
           )}
+          <ReviewSubmissionNotice
+            submittedOnline={submittedOnline}
+            dailyChallenge={showDailyPresentation}
+            dailyPractice={showDailyPresentation && dailyAttemptCounts === false}
+            ballKnower={difficulty === "HARD" && !showDailyPresentation}
+          />
+          {submittedOnline && !showDailyPresentation && runRank ? (
+            <p className="mt-1 text-center text-xs font-semibold text-accent-gold">
+              Ranked #{runRank} nationally
+            </p>
+          ) : null}
         </motion.header>
 
         <motion.div

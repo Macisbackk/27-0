@@ -174,6 +174,8 @@ function evaluateUnlock(
       );
     case "wordle-win":
       return ctx.wordleWon === true || progress.wordleWins >= 1;
+    case "grid-perfect":
+      return ctx.gridPerfect === true || progress.gridPerfects >= 1;
     case "hangman-win":
       return ctx.hangmanWon === true || progress.hangmanWins >= 1;
     case "higher-lower-streak-10":
@@ -191,6 +193,25 @@ function evaluateUnlock(
       return (ctx.dailyCurrentStreak ?? ctx.dailyBestStreak ?? 0) >= 3;
     case "daily-streak-7":
       return (ctx.dailyCurrentStreak ?? ctx.dailyBestStreak ?? 0) >= 7;
+    case "manager-gaffer":
+      return ctx.careerSeasonCompleted === true;
+    case "manager-silverware":
+      return (
+        (ctx.careerSeasonTrophies?.length ?? 0) >= 1 ||
+        (ctx.careerTotalTrophies ?? 0) >= 1
+      );
+    case "manager-going-up":
+      return ctx.careerPromoted === true;
+    case "manager-old-trafford":
+      return ctx.careerGrandFinalWon === true;
+    case "manager-cup-run":
+      return ctx.careerChallengeCupWon === true;
+    case "manager-invincibles":
+      return ctx.careerPerfectSeason === true;
+    case "manager-deadline-dealer":
+      return ctx.careerDeadlineDeal === true;
+    case "manager-legacy":
+      return (ctx.careerCareersStarted ?? 0) >= 3;
     default:
       return false;
   }
@@ -287,6 +308,16 @@ export function getAchievementProgress(
         ),
         target: def.target,
       };
+    case "grid-perfect":
+      return {
+        current: Math.min(
+          ctx.gridPerfect === true
+            ? Math.max(progress.gridPerfects, 1)
+            : progress.gridPerfects,
+          def.target
+        ),
+        target: def.target,
+      };
     case "hangman-win":
       return {
         current: Math.min(
@@ -317,6 +348,21 @@ export function getAchievementProgress(
         target: def.target,
       };
     }
+    case "manager-gaffer":
+      return {
+        current: Math.min(
+          ctx.careerSeasonCompleted === true
+            ? 1
+            : ctx.careerSeasonsCompleted ?? 0,
+          def.target
+        ),
+        target: def.target,
+      };
+    case "manager-legacy":
+      return {
+        current: Math.min(ctx.careerCareersStarted ?? 0, def.target),
+        target: def.target,
+      };
     default:
       return { current: 0, target: def.target };
   }

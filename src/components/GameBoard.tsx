@@ -168,6 +168,7 @@ import {
   selectionHasBoostedPlayer,
 } from "@/lib/boosts/applyQuickModeBoost";
 import { validateQuickModeSelectionBoost } from "@/lib/boosts/validateBoost";
+import { E2E_BUILD } from "@/lib/feature-flags";
 import {
   armPreGameBoost,
   createUnselectedPreGameBoost,
@@ -2367,6 +2368,13 @@ export function GameBoard({
     fulfillBoostedFirstPick,
   ]);
 
+  // Ranked Classic has no Auto-fill (see E2E_BUILD in feature-flags); the Daily and the hidden
+  // modes keep it. Test builds can turn it back on with ?e2e=1.
+  const autofillAllowed =
+    dailyChallengeMode ||
+    joeMellorMode ||
+    superSamHallasMode ||
+    (E2E_BUILD && typeof window !== "undefined" && new URLSearchParams(window.location.search).get("e2e") === "1");
   const handleAutofill = useCallback(() => {
     if (phase !== "pitch" || filledCount >= TOTAL_SLOTS || isDraftMode) return;
 
@@ -2897,7 +2905,7 @@ export function GameBoard({
             >
               Leave run
             </Link>
-            {phase === "pitch" && filledCount < TOTAL_SLOTS && (
+            {phase === "pitch" && filledCount < TOTAL_SLOTS && autofillAllowed && (
               <GameButton
                 variant="theme"
                 size="sm"
@@ -2995,6 +3003,11 @@ export function GameBoard({
           playoffFundsPayout={playoffFundsPayout}
           dailyChallengeMode={dailyChallengeMode}
           dailyScenario={dailyScenario}
+          dailyAttemptCounts={dailyAttemptCounts}
+          normalEraMode={normalEraMode}
+          difficulty={difficulty}
+          submittedOnline={submittedOnline}
+          runRank={runRank}
           onFinalizeRun={handleFinalizePlayoffRun}
           onPlayAgain={handlePlayoffReviewDone}
           onClose={() => setPhase("pitch")}

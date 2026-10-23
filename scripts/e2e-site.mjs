@@ -167,13 +167,13 @@ async function playClassic(route, label) {
   await shot(page, `${label.replace(/\W+/g, "-").toLowerCase()}-end`);
 }
 
-await playClassic("/play", "Classic Current");
-await playClassic("/play?era=1", "Classic Era");
+await playClassic("/play?e2e=1", "Classic Current");
+await playClassic("/play?era=1&e2e=1", "Classic Era");
 await playClassic("/play?daily=1", "Daily Challenge");
 
 // Rapid taps on Auto Fill / Simulate at the start of a fresh run.
 currentWhere = "Classic rapid taps";
-await page.goto(`${BASE}/play`, { waitUntil: "domcontentloaded" });
+await page.goto(`${BASE}/play?e2e=1`, { waitUntil: "domcontentloaded" });
 await settle(page);
 await tapFirst(page, [/Skip boost|Continue without boost/i]);
 for (let i = 0; i < 6; i++) await page.getByRole("button", { name: /Auto.?fill squad/i }).first().click({ force: true, noWaitAfter: true, timeout: 2000 }).catch(() => {});
