@@ -882,7 +882,15 @@ button.game-button--era,
 .player-detail-sheet__rating-side {
   border: 0 !important;
   border-radius: 16px !important;
-  background: var(--fl-raised) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+.player-detail-sheet .rl-achievement-list,
+.player-detail-sheet [class*="achievement"] {
+  justify-content: flex-start;
+}
+.player-detail-sheet h3,
+.player-detail-sheet .game-section-title {
+  font-family: var(--font-cond);
 }
 .player-detail-sheet__rating-value {
   font-family: var(--font-cond);
