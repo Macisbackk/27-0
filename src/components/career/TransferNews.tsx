@@ -1,21 +1,45 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import {
+  DEADLINE_MINUTES,
   WINDOW_CLOSES_BEFORE_ROUND,
+  clockLabel,
   formatMoney,
+  deadlineClock,
   deadlineDecisionPending,
   isDeadlineDay,
   isWindowOpen,
+  liveOffers,
   roundsLeftInWindow,
   seasonDeals,
+  type DeadlineEvent,
   type TransferDeal,
 } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
-import { playTransferComplete, playTransferOffer, playUiClick } from "@/lib/sound";
+import { playTransferComplete, playTransferOffer, playUiClick, playWarning } from "@/lib/sound";
 import { ClubLink } from "./ClubSheet";
-import { RatingPill } from "./bits";
+import { ClubBadge, RatingPill } from "./bits";
+
+/** Deadline Day clock speed: 10 minutes of the day every 2 seconds (12 hours ≈ 2½ minutes). */
+const TICK_MS = 2000;
+const TICK_MINUTES = 10;
+
+/** Runs Deadline Day's clock while it's live (only in the visible tab, so two tabs don't double it). */
+export function useDeadlineDriver() {
+  const { state, tickDeadline } = useCareer();
+  const running = !!state && deadlineDecisionPending(state) && !deadlineClock(state).paused;
+  const tick = useRef(tickDeadline);
+  tick.current = tickDeadline;
+  useEffect(() => {
+    if (!running) return;
+    const t = window.setInterval(() => {
+      if (document.visibilityState === "visible") tick.current(TICK_MINUTES);
+    }, TICK_MS);
+    return () => window.clearInterval(t);
+  }, [running]);
+}
 
 export function DealRow({ d }: { d: TransferDeal }) {
   const { state } = useCareer();
@@ -36,80 +60,197 @@ export function DealRow({ d }: { d: TransferDeal }) {
   );
 }
 
-/** Deadline Day: late deals land one by one, like the TV ticker. */
-function DeadlineTicker({ deals }: { deals: TransferDeal[] }) {
-  const [shown, setShown] = useState(0);
-  useEffect(() => {
-    setShown(0);
-    if (deals.length === 0) return;
-    let i = 0;
-    const t = window.setInterval(() => {
-      i += 1;
-      setShown(i);
-      playTransferOffer();
-      if (i >= deals.length) window.clearInterval(t);
-    }, 650);
-    return () => window.clearInterval(t);
-  }, [deals.length]);
+const FEED_TONE: Record<DeadlineEvent["kind"], string> = {
+  deal: "text-white",
+  offer: "text-theme-primary",
+  you: "text-amber-200 font-semibold",
+  market: "text-sky-200",
+  info: "text-[color:var(--fl-muted)]",
+};
+
+/** The big countdown: hours and minutes until the window shuts. */
+export function DeadlineClockFace({ compact = false }: { compact?: boolean }) {
+  const { state } = useCareer();
+  const s = state!;
+  const clock = deadlineClock(s);
+  const left = clock.minutesLeft;
+  const late = left <= 60;
+  const pct = Math.max(0, Math.min(100, (left / DEADLINE_MINUTES) * 100));
   return (
-    <ul className="mt-2 divide-y divide-white/10">
-      {deals.slice(0, shown).map((d) => (
-        <DealRow key={`${d.playerId}-${d.at}`} d={d} />
+    <div className={compact ? "flex items-center gap-3" : ""}>
+      <p className={`fl-number tabular-nums leading-none ${compact ? "text-[28px]" : "text-[52px]"} ${late ? "text-danger" : "text-amber-300"}`} aria-live="off">
+        {clockLabel(left)}
+      </p>
+      <div className={compact ? "min-w-0 flex-1" : "mt-1"}>
+        <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--fl-muted)]">
+          {left === 0 ? "Window shut" : clock.paused ? "Clock paused" : late ? "Final hour" : "to go until the window shuts"}
+        </p>
+        <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/10" aria-hidden>
+          <div className={`h-full rounded-full transition-[width] duration-1000 ease-linear ${late ? "bg-danger" : "bg-amber-300"}`} style={{ width: `${pct}%` }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Live offers for your players, each with its own lapse time. */
+export function DeadlineOffers() {
+  const { state, acceptOffer, rejectOffer } = useCareer();
+  const s = state!;
+  const offers = liveOffers(s);
+  const clock = deadlineClock(s);
+  const [note, setNote] = useState<string | null>(null);
+  if (offers.length === 0) return note ? <p className="text-center text-sm text-theme-primary" role="status">{note}</p> : null;
+  return (
+    <section aria-label="Offers for your players" className="flex flex-col gap-2">
+      {note ? <p className="text-center text-sm text-theme-primary" role="status">{note}</p> : null}
+      {offers.map((o) => {
+        const club = s.clubs[o.clubId];
+        const p = s.players[o.playerId];
+        if (!club || !p) return null;
+        const lapses = clock.minutesLeft - o.expiresAt;
+        return (
+          <div key={o.id} className="fl-rise rounded-tile bg-pitch-900 p-3 text-left ring-2 ring-theme-primary/50">
+            <div className="flex items-center gap-2.5">
+              <ClubBadge club={club} size="sm" />
+              <p className="min-w-0 flex-1 text-sm text-white">
+                <ClubLink clubId={club.id} className="font-bold">{club.name}</ClubLink>
+                {o.raised ? <span className="ml-1.5 rounded-full bg-amber-300/15 px-1.5 py-0.5 text-[10px] font-bold uppercase text-amber-200">Bidding war</span> : null}
+                <span className="block text-[13px] text-[color:var(--fl-muted)]">
+                  want <span className="font-semibold text-white">{p.name}</span> ({p.pos}, {p.rating}){o.reason ? ` · ${o.reason}` : ""}
+                </span>
+              </p>
+              <span className="shrink-0 text-right">
+                <span className="block font-display text-lg font-bold text-theme-primary">{formatMoney(o.fee)}</span>
+                <span className={`block text-[11px] tabular-nums ${lapses <= 30 ? "text-danger" : "text-[color:var(--fl-muted)]"}`}>lapses in {clockLabel(lapses)}</span>
+              </span>
+            </div>
+            <div className="mt-2.5 grid grid-cols-2 gap-2">
+              <GameButton size="sm" variant="secondary" onClick={() => { playUiClick(); rejectOffer(o.id); setNote(null); }}>
+                Turn it down
+              </GameButton>
+              <GameButton
+                size="sm"
+                onClick={() => {
+                  const err = acceptOffer(o.id);
+                  if (err) {
+                    playWarning();
+                    setNote(err === "squad-min" ? "You can't go below 20 players." : err === "no-room" ? `${club.name} have no room now.` : "That offer has gone.");
+                  } else {
+                    playTransferComplete();
+                    setNote(`${p.name} joins ${club.name} for ${formatMoney(o.fee)}.`);
+                  }
+                }}
+              >
+                Accept
+              </GameButton>
+            </div>
+          </div>
+        );
+      })}
+    </section>
+  );
+}
+
+/** What's happened today, newest first. */
+function DeadlineFeed({ max = 8 }: { max?: number }) {
+  const { state } = useCareer();
+  const clock = deadlineClock(state!);
+  const items = clock.feed.slice(0, max);
+  return (
+    <ul aria-label="Deadline Day feed" className="mt-3 divide-y divide-white/10 text-left">
+      {items.map((e, i) => (
+        <li key={`${e.at}-${i}-${e.text}`} className={`flex gap-2.5 py-1.5 text-[13px] ${i === 0 ? "fl-rise" : ""}`}>
+          <span className="w-10 shrink-0 tabular-nums text-[11px] leading-5 text-[color:var(--fl-muted)]">{clockLabel(e.at)}</span>
+          <span className={`min-w-0 flex-1 ${FEED_TONE[e.kind]}`}>{e.text}</span>
+        </li>
       ))}
-      {shown < deals.length ? <li className="py-1.5 text-xs font-semibold text-amber-200">Breaking…</li> : null}
     </ul>
   );
 }
 
-export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void }) {
-  const { state, closeDeadline } = useCareer();
+/** Deadline Day: a 12-hour clock with deals, offers and new names landing as it counts down. */
+export function DeadlineDayCard({ onOpenMarket }: { onOpenMarket: () => void }) {
+  const { state, closeDeadline, pauseDeadline, tickDeadline } = useCareer();
   const s = state!;
-  if (!isWindowOpen(s)) return null;
-  const deadline = isDeadlineDay(s);
   const pending = deadlineDecisionPending(s);
+  const clock = deadlineClock(s);
+  // A ping when a new offer lands, and a warning at the final hour.
+  const lastTop = useRef<string | null>(null);
+  const top = clock.feed[0];
+  const topKey = top ? `${top.at}-${top.text}` : null;
+  const topKind = top?.kind;
+  useEffect(() => {
+    if (lastTop.current && topKey && topKey !== lastTop.current && topKind === "offer") playTransferOffer();
+    lastTop.current = topKey;
+  }, [topKey, topKind]);
+  const finalHour = clock.minutesLeft <= 60 && clock.minutesLeft > 0;
+  const warned = useRef(false);
+  useEffect(() => {
+    if (finalHour && !warned.current) {
+      warned.current = true;
+      playWarning();
+    }
+  }, [finalHour]);
+
+  return (
+    <section aria-label="Deadline Day" className="rounded-card bg-amber-400/10 p-4 ring-2 ring-amber-300/60">
+      <div className="flex items-start justify-between gap-3">
+        <p className="fl-number text-[26px] leading-none text-amber-300">DEADLINE DAY</p>
+        {pending ? (
+          <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-bold uppercase ${clock.paused ? "bg-white/10 text-[color:var(--fl-muted)]" : "bg-danger/20 text-red-200"}`}>
+            {clock.paused ? null : <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-400" aria-hidden />}
+            {clock.paused ? "Paused" : "Live"}
+          </span>
+        ) : null}
+      </div>
+      <div className="mt-3">
+        <DeadlineClockFace />
+      </div>
+      {pending ? (
+        <>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <GameButton size="sm" variant="secondary" onClick={() => { playUiClick(); pauseDeadline(!clock.paused); }}>
+              {clock.paused ? "Restart the clock" : "Pause the clock"}
+            </GameButton>
+            <GameButton size="sm" variant="secondary" disabled={clock.minutesLeft <= 60} onClick={() => { playUiClick(); tickDeadline(60); }}>
+              Skip an hour
+            </GameButton>
+          </div>
+          <div className="mt-3">
+            <DeadlineOffers />
+          </div>
+          <DeadlineFeed />
+          <p className="mt-3 text-sm text-amber-200">
+            The season waits until the clock hits 0:00. Sign, sell, answer offers, or shut the window early.
+          </p>
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            <GameButton size="md" variant="secondary" onClick={() => { playUiClick(); onOpenMarket(); }}>
+              Late signing
+            </GameButton>
+            <GameButton size="md" onClick={() => { playUiClick(); closeDeadline(); }}>
+              Shut the window
+            </GameButton>
+          </div>
+        </>
+      ) : (
+        <>
+          <DeadlineFeed max={6} />
+          <p className="mt-3 text-sm font-semibold text-amber-200">Window shut. Round {WINDOW_CLOSES_BEFORE_ROUND} is next.</p>
+        </>
+      )}
+    </section>
+  );
+}
+
+export function TransferWindowCard({ onOpenMarket }: { onOpenMarket: () => void }) {
+  const { state } = useCareer();
+  const s = state!;
+  // Deadline Day keeps its card after the window shuts, as a round-up of the day.
+  if (isDeadlineDay(s)) return <DeadlineDayCard onOpenMarket={onOpenMarket} />;
+  if (!isWindowOpen(s)) return null;
   const deals = seasonDeals(s);
   const left = roundsLeftInWindow(s);
-
-  if (deadline) {
-    const dd = deals.filter((d) => d.deadlineDay && !d.user);
-    return (
-      <section aria-label="Deadline Day" className="rounded-card bg-amber-400/10 p-4 ring-2 ring-amber-300/60">
-        <p className="fl-number text-[30px] leading-none text-amber-300">DEADLINE DAY</p>
-        <p className="mt-1 text-sm text-white">Last chance to do business. The window shuts when Round {WINDOW_CLOSES_BEFORE_ROUND} kicks off.</p>
-        <DeadlineTicker deals={dd} />
-        {pending ? (
-          <>
-            <p className="mt-3 text-sm font-semibold text-amber-200">
-              The season is paused until you&rsquo;re done. Sign, sell or answer bids, then shut the window.
-            </p>
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <GameButton
-                size="md"
-                variant="secondary"
-                onClick={() => {
-                  playUiClick();
-                  onOpenMarket();
-                }}
-              >
-                Late signing
-              </GameButton>
-              <GameButton
-                size="md"
-                onClick={() => {
-                  playUiClick();
-                  closeDeadline();
-                }}
-              >
-                Shut the window
-              </GameButton>
-            </div>
-          </>
-        ) : (
-          <p className="mt-3 text-sm font-semibold text-amber-200">Window shut. Round {WINDOW_CLOSES_BEFORE_ROUND} is next.</p>
-        )}
-      </section>
-    );
-  }
 
   return (
     <section aria-label="Transfer window" className="rounded-card bg-pitch-900 p-4">
