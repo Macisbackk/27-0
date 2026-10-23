@@ -46,7 +46,7 @@ export function PreseasonCard() {
       <h2 className="mt-0.5 text-[18px] font-bold text-white">Pick your friendlies</h2>
       <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
         Up to {MAX_FRIENDLIES}. Each one gives your XIII +{SHARPNESS_PER_FRIENDLY} rating of match sharpness for the
-        first three rounds, and brings in gate money at home.
+        first three rounds, and brings in gate money at home or an appearance fee away.
       </p>
       <ul className="fl-stagger mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
         {options.map((o) => {

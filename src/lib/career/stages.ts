@@ -87,7 +87,7 @@ export function leagueOverPicture(state: CareerState): LeagueOverPicture {
         ? "Champions. Promoted to Super League."
         : position === 2
           ? "Runners-up. The Million Pound Game is next, for a place in Super League."
-          : "Not enough to go up this time. The play-offs go on without you.";
+          : "Not enough to go up this time. Your season is over.";
   } else {
     verdict =
       position <= 4

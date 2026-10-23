@@ -52,7 +52,8 @@ export function DealRow({ d }: { d: TransferDeal }) {
       <span className="min-w-0 flex-1">
         <span className="block truncate font-semibold text-white">{d.playerName}</span>
         <span className="block truncate text-xs text-[color:var(--fl-muted)]">
-          {from ? <ClubLink clubId={from.id}>{from.short}</ClubLink> : "Free agent"} → {to ? <ClubLink clubId={to.id}>{to.name}</ClubLink> : "released"}
+          {from ? <ClubLink clubId={from.id}>{from.short}</ClubLink> : "Free agent"} →{" "}
+          {to ? <ClubLink clubId={to.id}>{to.name}</ClubLink> : d.playerId.startsWith("legend-") ? "Legend Vault" : d.fee > 0 ? "free agency" : "released"}
         </span>
       </span>
       <span className="shrink-0 text-xs font-semibold text-white">{d.fee > 0 ? formatMoney(d.fee) : "Free"}</span>
@@ -211,7 +212,7 @@ export function DeadlineDayCard({ onOpenMarket }: { onOpenMarket: () => void }) 
         <>
           <div className="mt-3 grid grid-cols-2 gap-2">
             <GameButton size="sm" variant="secondary" onClick={() => { playUiClick(); pauseDeadline(!clock.paused); }}>
-              {clock.paused ? "Restart the clock" : "Pause the clock"}
+              {clock.paused ? "Resume the clock" : "Pause the clock"}
             </GameButton>
             <GameButton size="sm" variant="secondary" disabled={clock.minutesLeft <= 60} onClick={() => { playUiClick(); tickDeadline(60); }}>
               Skip an hour
@@ -226,7 +227,7 @@ export function DeadlineDayCard({ onOpenMarket }: { onOpenMarket: () => void }) 
           </p>
           <div className="mt-2 grid grid-cols-2 gap-2">
             <GameButton size="md" variant="secondary" onClick={() => { playUiClick(); onOpenMarket(); }}>
-              Late signing
+              Buy and sell
             </GameButton>
             <GameButton size="md" onClick={() => { playUiClick(); closeDeadline(); }}>
               Shut the window
@@ -277,7 +278,7 @@ export function IncomingBidCard() {
         <ClubLink clubId={club.id} className="font-bold">{club.name}</ClubLink> want <span className="font-bold">{p.name}</span> ({p.pos}, {p.rating}) and offer{" "}
         <span className="font-bold text-theme-primary">{formatMoney(bid.fee)}</span>.
       </p>
-      <p className="mt-1 text-xs text-[color:var(--fl-muted)]">The offer lapses once you play the next game.</p>
+      <p className="mt-1 text-xs text-[color:var(--fl-muted)]">The offer lapses when the window shuts.</p>
       <div className="mt-3 grid grid-cols-2 gap-2">
         <GameButton size="sm" variant="secondary" onClick={() => { playUiClick(); rejectBid(); }}>
           Turn it down
@@ -300,7 +301,9 @@ export function TransferRoundUp() {
       <p className="text-[15px] font-bold text-white">Transfer round-up</p>
       {deals.length === 0 ? (
         <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
-          No deals yet. In-season transfers all happen on Deadline Day, before Round {WINDOW_CLOSES_BEFORE_ROUND}.
+          {roundsUntilDeadline(s) === null && !isDeadlineDay(s)
+            ? "No deals this season."
+            : `No deals yet. In-season transfers all happen on Deadline Day, before Round ${WINDOW_CLOSES_BEFORE_ROUND}.`}
         </p>
       ) : (
         <ul className="mt-1 divide-y divide-[color:var(--fl-line)]">

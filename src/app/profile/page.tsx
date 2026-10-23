@@ -103,7 +103,7 @@ export default function ProfilePage() {
     const result = await resetCareerStats();
     if (result.ok) {
       setStatsResetConfirm(false);
-      setStatsResetMsg(isLoggedIn ? "Career stats reset everywhere." : "Career stats reset on this device.");
+      setStatsResetMsg(isLoggedIn ? "Classic stats reset everywhere." : "Classic stats reset on this device.");
     } else {
       setStatsResetError(result.error ?? "Could not reset career stats.");
     }

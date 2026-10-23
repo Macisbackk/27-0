@@ -379,8 +379,8 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   },
   {
     id: "mini-game-starter",
-    name: "Mini Game Starter",
-    description: "Play a Mini Game.",
+    name: "Puzzle Starter",
+    description: "Play a puzzle.",
     category: "quiz",
     points: 10,
     rewardClubFunds: 5_000,
@@ -389,7 +389,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "wordle-win",
     name: "Wordle Win",
-    description: "Guess today's rugby league player in Wordle.",
+    description: "Win a game of Rugby League Wordle.",
     category: "quiz",
     points: 25,
     rewardClubFunds: 10_000,

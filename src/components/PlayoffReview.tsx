@@ -29,7 +29,6 @@ import { ShareSeasonButton } from "./ShareSeasonButton";
 import type { DailyChallengeScenario } from "@/lib/daily-challenge";
 import {
   getDailyChallengeDateKey,
-  getDailyChallengeProgress,
   getDailyChallengeStreak,
 } from "@/lib/daily-challenge";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
@@ -156,15 +155,14 @@ export function PlayoffReview({
     ) {
       return null;
     }
-    const progress = getDailyChallengeProgress();
     const streak = getDailyChallengeStreak();
     const overallWins = seasonResult.wins + playoffResult.wins;
     const overallLosses = seasonResult.losses + playoffResult.losses;
     const detailLines = [
       `${dailyScenario.eraMode ? "Era" : "Current"} · ${getDailyChallengeDateKey()}`,
       formatRecordWithPercentage(overallWins, overallLosses),
-      progress.leagueLeaders ? "League Leaders" : undefined,
-      playoffResult.isChampion || progress.playoffTitle
+      playoffResult.leaguePosition === 1 ? "League Leaders" : undefined,
+      playoffResult.isChampion
         ? "Champions"
         : getPlayoffFinishLabel(playoffResult.finish),
       streak > 0 ? `Streak ${streak}` : undefined,
@@ -192,6 +190,7 @@ export function PlayoffReview({
     playoffResult.losses,
     playoffResult.isChampion,
     playoffResult.finish,
+    playoffResult.leaguePosition,
   ]);
 
   return (

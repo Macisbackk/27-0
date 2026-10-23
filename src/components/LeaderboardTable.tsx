@@ -280,7 +280,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
       : leaderboardMode === "trophy-cabinet"
         ? "Trophies"
         : isMiniGamesMode
-          ? "Mini Games"
+          ? "Puzzles"
           : "Classic";
 
   const trackerLabel = isMiniGamesMode
@@ -304,7 +304,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
     ...(SHOW_DAILY_CHALLENGE_UI
       ? [{ id: "daily" as const, label: "Daily" }]
       : []),
-    { id: "quiz" as const, label: "Mini Games" },
+    { id: "quiz" as const, label: "Puzzles" },
   ];
 
   const emptyStateMessage = isDailyMode

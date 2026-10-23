@@ -234,7 +234,7 @@ export function QuizModeApp() {
           </h2>
           <p className={TYPO.body}>
             Walk away with{" "}
-            {formatClubFundsExact(getCurrentPrize(run ? countCorrectAnswers(run) : 0))}?
+            {formatClubFundsExact(getCurrentPrize(run ? countCorrectAnswers(run) : 0))}? You only bank what beats today&rsquo;s best run.
           </p>
           <div className="grid gap-2 sm:grid-cols-2">
             <GameButton
@@ -561,7 +561,7 @@ function QuizResultScreen({
       <MiniGameEndActions onPlayAgain={onAgain} playAgainLabel="Play again" />
       <div className="mx-auto mt-2 w-full max-w-xs">
         <GameButton variant="secondary" onClick={onBack}>
-          Back to quizzes
+          Quiz home
         </GameButton>
       </div>
     </div>

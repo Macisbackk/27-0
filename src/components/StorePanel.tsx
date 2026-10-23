@@ -258,7 +258,7 @@ export function StorePanel() {
                       disabled={!canAfford || purchasingId === theme.id}
                       onClick={() => handlePurchase(theme)}
                     >
-                      {canAfford ? "Buy" : "Locked"}
+                      {canAfford ? "Buy" : formatClubFunds(UI_THEME_PURCHASE_PRICE)}
                     </GameButton>
                   )}
                 </div>

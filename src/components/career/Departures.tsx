@@ -27,7 +27,7 @@ export function Departures() {
   return (
     <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-40 sm:pb-10">
       <header className="text-center">
-        <p className="text-[13px] font-semibold text-theme-primary">Summer {s.year}</p>
+        <p className="text-[13px] font-semibold text-theme-primary">Before the {s.year} season</p>
         <h1 className="mt-1 text-[30px] font-bold leading-none text-white">Comings and goings</h1>
         <p className="mx-auto mt-2 max-w-md text-sm text-[color:var(--fl-muted)]">
           Sort out contracts before the transfer window opens. Budget {formatMoney(s.budget)}.
@@ -38,7 +38,7 @@ export function Departures() {
         <Eyebrow>Contracts up · {expiring.length}</Eyebrow>
         {expiring.length ? (
           <>
-            <p className="mt-1 text-xs text-gray-400">Renew for a one-off signing-on fee, or let him leave on a free.</p>
+            <p className="mt-1 text-xs text-gray-400">Renew for a one-off signing-on fee, or let him go (legends go back to the Legend Vault).</p>
             <ul className="mt-3 space-y-2">
               {expiring.map((p) => {
                 const fee = renewalFee(p);
@@ -139,7 +139,7 @@ export function Departures() {
         return after < 20 ? (
           <p className="text-center text-xs text-amber-300" role="note">
             {expiring.length ? `Letting the rest go leaves ${after} players.` : `Squad: ${squadNow} players.`} The minimum is 20, so the board will
-            fill the gaps with fringe players. Renew or sign to keep your quality.
+            fill the gaps with fringe players when the window opens. Renew now to keep your quality.
           </p>
         ) : null;
       })()}

@@ -128,7 +128,7 @@ function checkedSell(s: CareerState, id: string): CareerState {
     if (r.soldTo === s.userClubId) fail("sell: sold to yourself");
     if (!r.reason) fail("sell: no reason given");
     const need = clubNeed(s, r.soldTo, p);
-    if (!need && !/^cover/.test(r.reason ?? "")) fail(`sell: ${s.clubs[r.soldTo]!.name} didn't need a ${p.pos}`);
+    if (!need && !/^after cover/.test(r.reason ?? "")) fail(`sell: ${s.clubs[r.soldTo]!.name} didn't need a ${p.pos}`);
     if (!r.state.news[0]?.includes(r.state.clubs[r.soldTo]!.name)) fail("sell: news line doesn't name the buyer");
   } else if (!r.state.freeAgents.includes(id)) fail(`sell: ${p.name} vanished`);
   return r.state;

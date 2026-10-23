@@ -267,7 +267,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
           </>
         ) : md ? (
           <p className="mt-3 text-sm text-gray-300">
-            No game for you this week. {md.fixtures.length || md.pendingDraw ? "The rest of the league plays on." : ""}
+            No game for you this week. {md.fixtures.length || md.pendingDraw ? "The other fixtures are played." : ""}
           </p>
         ) : null}
       </Card>

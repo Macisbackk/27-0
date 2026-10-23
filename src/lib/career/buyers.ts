@@ -11,7 +11,7 @@ export interface BuyerNeed {
   clubId: string;
   /** Higher = needs him more. */
   score: number;
-  /** Plain-English reason, e.g. "short of props" or "an upgrade at hooker". */
+  /** Plain-English reason, e.g. "short of props" or "after an upgrade at hooker". */
   reason: string;
 }
 
@@ -42,7 +42,7 @@ export function clubNeed(state: CareerState, clubId: string, p: CareerPlayer): B
   // A big upgrade beats depth; a club already well stocked and better there doesn't need him.
   const score = Math.max(0, gain) + short * 4;
   if (score <= 0) return null;
-  const reason = gain >= 2 && gain * 1 >= short * 4 ? `an upgrade at ${label.toLowerCase()}` : `short of ${plural[label] ?? `${label.toLowerCase()}s`}`;
+  const reason = gain >= 2 && gain * 1 >= short * 4 ? `after an upgrade at ${label.toLowerCase()}` : `short of ${plural[label] ?? `${label.toLowerCase()}s`}`;
   return { clubId, score, reason };
 }
 
@@ -71,5 +71,5 @@ export function pickBuyer(state: CareerState, p: CareerPlayer, rng: Rng): BuyerN
     .map((c) => ({ c, n: c.squad.filter((id) => state.players[id]?.pos === p.pos).length }))
     .sort((a, b) => a.n - b.n || a.c.squad.length - b.c.squad.length);
   const c = roomy[0]?.c;
-  return c ? { clubId: c.id, score: 0, reason: `cover at ${POS_LABEL[p.pos].toLowerCase()}` } : null;
+  return c ? { clubId: c.id, score: 0, reason: `after cover at ${POS_LABEL[p.pos].toLowerCase()}` } : null;
 }

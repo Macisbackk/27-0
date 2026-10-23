@@ -199,10 +199,10 @@ try {
       if (await page.getByRole("button", { name: "Quick sim" }).isVisible().catch(() => false)) {
         throw new Error("Quick sim still offered while Deadline Day is open");
       }
-      await page.getByRole("button", { name: /^Late signing$/ }).click().catch(() => {});
+      await page.getByRole("button", { name: /^Buy and sell$/ }).click().catch(() => {});
       await page.waitForTimeout(800);
       await shot("deadline-market");
-      await page.getByRole("button", { name: /Back to the season/ }).click().catch(() => {});
+      await page.getByRole("button", { name: /Back to Deadline Day/ }).click().catch(() => {});
       await page.waitForTimeout(500);
       await page.getByRole("tab", { name: "Table" }).click();
       await page.waitForTimeout(300);

@@ -59,7 +59,7 @@ export function GuestNotice({
         >
           {isDaily
             ? "Log in to sync your Daily streak →"
-            : "Log in to save your run →"}
+            : "Log in to put your run on the leaderboard →"}
         </Link>
       </div>
     );

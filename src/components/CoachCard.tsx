@@ -8,7 +8,7 @@ import { getClubFundsBalance } from "@/lib/storage/club-funds";
 import { getAllStats } from "@/lib/storage/stats";
 import { loadLocalLegacy } from "@/lib/career/storage";
 import { getUnlockedAchievements } from "@/lib/achievements/achievementEngine";
-import { ACHIEVEMENT_DEFINITIONS } from "@/lib/achievements/achievementDefinitions";
+import { visibleAchievements } from "@/components/achievements/AchievementsSection";
 
 interface Snapshot {
   funds: number;
@@ -16,6 +16,7 @@ interface Snapshot {
   eraBest: string;
   managerTrophies: number;
   achievements: number;
+  achievementsTotal: number;
 }
 
 function readSnapshot(): Snapshot {
@@ -23,8 +24,12 @@ function readSnapshot(): Snapshot {
   const rec = (w: number, l: number) => (w + l > 0 ? `${w}-${l}` : "—");
   const legacy = loadLocalLegacy();
   let unlocked = 0;
+  let total = 0;
   try {
-    unlocked = getUnlockedAchievements().length;
+    const ids = new Set(getUnlockedAchievements().map((a) => a.id));
+    const shown = visibleAchievements(ids);
+    unlocked = shown.filter((d) => ids.has(d.id)).length;
+    total = shown.length;
   } catch {
     unlocked = 0;
   }
@@ -34,6 +39,7 @@ function readSnapshot(): Snapshot {
     eraBest: rec(stats.eraNormal.bestRecordWins, stats.eraNormal.bestRecordLosses),
     managerTrophies: Object.values(legacy.trophies ?? {}).reduce((t, n) => t + (n || 0), 0),
     achievements: unlocked,
+    achievementsTotal: total,
   };
 }
 
@@ -101,7 +107,7 @@ export function CoachCard({
       </dl>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-[color:var(--fl-muted)]">
         <span>
-          {snap ? `${snap.achievements} of ${ACHIEVEMENT_DEFINITIONS.length} achievements` : ""}
+          {snap ? `${snap.achievements} of ${snap.achievementsTotal} achievements` : ""}
         </span>
         <Link href="/store" className="font-semibold text-theme-primary hover:underline">
           Change frame or title

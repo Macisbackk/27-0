@@ -73,8 +73,8 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
           ) : null}
         </div>
         <p className="mt-3 text-xs leading-relaxed text-gray-400">
-          Prestige grows with trophies and promotion. It brings more income and better signings: players rated up to{" "}
-          <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will join you now. The transfer window opens after the season.
+          Prestige rises with trophies, promotion and top-four finishes, and falls with relegation or a bottom-three finish. It brings more income and better signings: players rated up to{" "}
+          <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> from other clubs will join you now. In the season you can only buy and sell on Deadline Day, before Round 16; the summer window opens after the season.
         </p>
       </Card>
 

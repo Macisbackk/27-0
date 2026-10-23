@@ -50,7 +50,7 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
     } else {
       if (l.legend) playLegendAppears();
       else playTransferComplete();
-      setMessage(`Signed ${s.players[l.playerId]?.name ?? "a legend"}!`);
+      setMessage(`Signed ${s.players[l.playerId]?.name ?? legendById(l.playerId.replace(/^legend-/, ""))?.name ?? "a legend"}!`);
     }
   };
 
@@ -93,7 +93,7 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
           <p className="mt-1"><Stars value={s.prestige} /></p>
         </div>
         <p className="col-span-3 text-xs text-gray-400">
-          Players rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will join a club of your prestige. Unlocked legends always will.
+          Players at other clubs rated up to <span className="font-semibold text-white">{prestigeRatingCap(s.prestige)}</span> will leave their clubs for one of your prestige. Free agents and unlocked legends always will.
         </p>
       </Card>
 
@@ -191,7 +191,7 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
         <div className="mobile-action-bar__inner">
           {midseason ? (
             <GameButton size="lg" onClick={() => onClose?.()}>
-              Back to the season
+              Back to Deadline Day
             </GameButton>
           ) : (
             <GameButton

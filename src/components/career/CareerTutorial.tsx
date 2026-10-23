@@ -18,8 +18,8 @@ function steps(s: CareerState): Step[] {
     {
       title: `Welcome to ${club.name}, gaffer`,
       body: sl
-        ? `You're in ${DIVISION_LABEL[club.division]} with ${formatMoney(s.budget)} to spend. Win games, win trophies, and build a legacy that unlocks legends for future saves.`
-        : `You're in the ${DIVISION_LABEL[club.division]} with ${formatMoney(s.budget)} to spend. Finish top and win the Million Pound Game to go up to Super League.`,
+        ? `You're in ${DIVISION_LABEL[club.division]} with ${formatMoney(s.budget)} to spend. Win games, win trophies, and build a legacy that unlocks legends for this and every future career.`
+        : `You're in the ${DIVISION_LABEL[club.division]} with ${formatMoney(s.budget)} to spend. Finish top to go straight up, or finish 2nd and win the Million Pound Game to reach Super League.`,
     },
     {
       title: "Match day",
@@ -33,7 +33,7 @@ function steps(s: CareerState): Step[] {
     },
     {
       title: "Pre-season and transfers",
-      body: "Before Round 1 you can arrange two friendlies for match sharpness and gate money. In the season, transfers happen on one day only: Deadline Day, before Round 16. The season waits until it\u2019s over.",
+      body: "Before Round 1 you can arrange up to two friendlies for match sharpness and gate money. In the season, transfers happen on one day only: Deadline Day, before Round 16. The season waits until it\u2019s over.",
       tab: "match",
     },
     {
