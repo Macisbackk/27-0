@@ -66,6 +66,27 @@ export type AchievementCheckContext = {
   hangmanWon?: boolean;
   higherLowerBestStreak?: number;
   higherLowerFivePickWins?: number;
+  // Manager Mode (career) — set when a season is banked.
+  /** True when a Manager Mode season has just been completed. */
+  careerSeasonCompleted?: boolean;
+  /** Trophies won in the season just banked (TrophyId strings). */
+  careerSeasonTrophies?: string[];
+  careerPromoted?: boolean;
+  careerRelegated?: boolean;
+  /** Won every league game this season. */
+  careerPerfectSeason?: boolean;
+  /** Won the Super League Grand Final this season. */
+  careerGrandFinalWon?: boolean;
+  /** Won the Challenge Cup this season. */
+  careerChallengeCupWon?: boolean;
+  /** The user bought or sold a player on Deadline Day this season. */
+  careerDeadlineDeal?: boolean;
+  /** Lifetime trophies across careers (from CareerLegacy). */
+  careerTotalTrophies?: number;
+  /** Careers started across the account (from CareerLegacy). */
+  careerCareersStarted?: number;
+  /** Seasons completed across careers (history length incl. this one). */
+  careerSeasonsCompleted?: number;
 };
 
 export type AchievementProgressSnapshot = {

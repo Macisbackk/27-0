@@ -4,7 +4,8 @@ export type AchievementCategory =
   | "profile"
   | "store"
   | "easter-egg"
-  | "quiz";
+  | "quiz"
+  | "manager";
 
 export type AchievementDefinition = {
   id: string;
@@ -416,6 +417,73 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     points: 40,
     rewardClubFunds: 15_000,
     target: 1,
+  },
+
+  // Manager Mode
+  {
+    id: "manager-gaffer",
+    name: "Gaffer",
+    description: "Finish your first Manager Mode season.",
+    category: "manager",
+    points: 15,
+    rewardClubFunds: 25_000,
+    target: 1,
+  },
+  {
+    id: "manager-silverware",
+    name: "Silverware",
+    description: "Win your first trophy of any kind in Manager Mode.",
+    category: "manager",
+    points: 30,
+    rewardClubFunds: 50_000,
+  },
+  {
+    id: "manager-going-up",
+    name: "Going Up",
+    description: "Win promotion to the Super League.",
+    category: "manager",
+    points: 40,
+    rewardClubFunds: 75_000,
+  },
+  {
+    id: "manager-old-trafford",
+    name: "Old Trafford",
+    description: "Win the Super League Grand Final.",
+    category: "manager",
+    points: 75,
+    rewardClubFunds: 150_000,
+  },
+  {
+    id: "manager-cup-run",
+    name: "Cup Run",
+    description: "Win the Challenge Cup in Manager Mode.",
+    category: "manager",
+    points: 50,
+    rewardClubFunds: 100_000,
+  },
+  {
+    id: "manager-invincibles",
+    name: "Invincibles",
+    description: "Win every league game in a Manager Mode season.",
+    category: "manager",
+    points: 100,
+    rewardClubFunds: 250_000,
+  },
+  {
+    id: "manager-deadline-dealer",
+    name: "Deadline Dealer",
+    description: "Sign or sell a player on Deadline Day.",
+    category: "manager",
+    points: 20,
+    rewardClubFunds: 10_000,
+  },
+  {
+    id: "manager-legacy",
+    name: "Legacy",
+    description: "Start 3 Manager Mode careers.",
+    category: "manager",
+    points: 35,
+    target: 3,
   },
 ];
 

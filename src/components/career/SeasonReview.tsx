@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Confetti } from "@/components/Confetti";
+import { GuestSaveNudge } from "@/components/EconomyExplainer";
+import { ShareSeasonButton } from "@/components/ShareSeasonButton";
 import { GameButton } from "@/components/ui/GameButton";
 import { useArmed } from "@/hooks/useArmed";
+import { isLoggedIn } from "@/lib/auth-session";
 import { DIVISION_LABEL, TROPHY_LABEL, formatMoney, ordinal } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playPerfectSeason, playPromotion, playSeasonComplete, playSeasonReviewMajor, playWarning } from "@/lib/sound";
@@ -15,6 +19,27 @@ export function SeasonReview() {
   const o = s.lastOutcome!;
   const club = s.clubs[s.userClubId]!;
   const played = useRef(false);
+  // Read the auth cache after mount so server and client markup match.
+  const [loggedIn, setLoggedIn] = useState(true);
+  useEffect(() => {
+    setLoggedIn(isLoggedIn());
+  }, []);
+
+  const celebrate = o.trophies.length > 0 || o.promoted;
+
+  const shareCardData = useMemo(
+    () => ({
+      title: `${club.name} ${o.year}`,
+      subtitle: "Manager Mode",
+      recordLine: `${o.won}–${o.lost}`,
+      detailLines: [
+        `${DIVISION_LABEL[o.division]} · ${ordinal(o.position)}`,
+        o.trophies.length ? o.trophies.map((t) => TROPHY_LABEL[t]).join(" · ") : undefined,
+        o.promoted ? "Promoted" : o.relegated ? "Relegated" : undefined,
+      ].filter((line): line is string => Boolean(line)),
+    }),
+    [club.name, o]
+  );
 
   useEffect(() => {
     if (played.current) return;
@@ -38,6 +63,7 @@ export function SeasonReview() {
 
   return (
     <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-28">
+      {celebrate ? <Confetti /> : null}
       <header className="flex flex-col items-center text-center">
         <ClubBadge club={club} size="lg" />
         <p className="mt-3 font-display text-[10px] font-bold uppercase tracking-[0.25em] text-theme-primary">{o.year} season review</p>
@@ -95,6 +121,10 @@ export function SeasonReview() {
           </ul>
         </Card>
       ) : null}
+
+      <ShareSeasonButton data={shareCardData} filename="27-0-manager-season.png" />
+
+      {!loggedIn ? <GuestSaveNudge context="manager-season" /> : null}
 
       <div className="mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
         <div className="mobile-action-bar__inner">
