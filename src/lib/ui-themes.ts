@@ -1,14 +1,4 @@
-import {
-  CURRENT_PLAYABLE_CLUBS,
-  ERA_HISTORIC_ONLY_CLUBS,
-} from "./clubs/super-league-display";
 import { isBlackLike } from "./ui/theme-accent-colors";
-import {
-  getTeamUiThemeByClubName,
-  listTeamUiThemes,
-  slugifyTeamThemeId,
-  type TeamUiThemeColors,
-} from "./ui/team-ui-themes";
 
 export const DEFAULT_UI_THEME_ID = "default";
 export const UI_THEME_PURCHASE_PRICE = 2_500_000;
@@ -16,6 +6,9 @@ export const UI_THEME_PURCHASE_PRICE = 2_500_000;
 export interface UiThemeDefinition {
   id: string;
   label: string;
+  /** One line on the look. */
+  blurb?: string;
+  /** Legacy club themes (removed in v1.11) carried the club name; kept optional for old saves. */
   clubName?: string;
   primary: string;
   secondary: string;
@@ -40,27 +33,10 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-function fromTeamColors(team: TeamUiThemeColors): UiThemeDefinition {
-  return {
-    id: team.id,
-    label: team.name,
-    clubName: team.name,
-    primary: team.primary,
-    secondary: team.secondary,
-    tertiary: team.tertiary,
-    textOnPrimary: team.textOnPrimary,
-    textOnSecondary: team.textOnSecondary,
-    accent: team.primary,
-    accent2: team.secondary,
-    accent3: team.tertiary,
-    accentText: team.textOnPrimary,
-    glow: hexToRgba(team.primary, 0.35),
-  };
-}
-
 export const DEFAULT_UI_THEME: UiThemeDefinition = {
   id: DEFAULT_UI_THEME_ID,
-  label: "Default",
+  label: "Floodlit",
+  blurb: "Lime under the lights. The 27-0 look.",
   // Floodlit lime with near-black text (a yellow-green, not 38-0's mint).
   primary: "#b6f23d",
   secondary: "#c6f56a",
@@ -74,46 +50,73 @@ export const DEFAULT_UI_THEME: UiThemeDefinition = {
   glow: "rgba(182, 242, 61, 0.35)",
 };
 
-const CLUB_THEME_NAMES = [
-  ...CURRENT_PLAYABLE_CLUBS,
-  ...ERA_HISTORIC_ONLY_CLUBS,
-] as const;
-
-function clubTheme(clubName: string): UiThemeDefinition {
-  const team = getTeamUiThemeByClubName(clubName);
-  if (!team) {
-    throw new Error(`Missing Store UI theme config for club: ${clubName}`);
-  }
-  return fromTeamColors(team);
+/** A style theme: a three-colour accent set, named after something from the game. */
+function style(
+  id: string,
+  label: string,
+  blurb: string,
+  primary: string,
+  secondary: string,
+  tertiary: string,
+  textOnPrimary: string,
+  textOnSecondary = textOnPrimary
+): UiThemeDefinition {
+  return {
+    id,
+    label,
+    blurb,
+    primary,
+    secondary,
+    tertiary,
+    textOnPrimary,
+    textOnSecondary,
+    accent: primary,
+    accent2: secondary,
+    accent3: tertiary,
+    accentText: textOnPrimary,
+    glow: hexToRgba(primary, 0.35),
+  };
 }
 
-export const UI_THEMES: UiThemeDefinition[] = [
-  DEFAULT_UI_THEME,
-  ...CLUB_THEME_NAMES.map(clubTheme),
+/**
+ * The Store's nine style themes (club-colour themes were retired in v1.11: too many looked alike).
+ * Each is named for something you'd see on a matchday, with its own three-colour accent set.
+ */
+export const STYLE_UI_THEMES: UiThemeDefinition[] = [
+  style("turf", "Turf", "Fresh-cut pitch green with a chalk-white line.", "#2fbf6b", "#5ad48c", "#f3f3ee", "#06130b"),
+  style("chalk", "Chalk", "Touchline white on the dark. Clean and sharp.", "#f3f3ee", "#d9d9d1", "#9aa0a6", "#0e0f10"),
+  style("amber", "Scoreboard amber", "Old-school amber bulbs on the big screen.", "#f5b82e", "#ffd166", "#c98a00", "#1a1200"),
+  style("matchball", "Matchball", "Steeden gold and leather tan.", "#e0a84a", "#f0c87a", "#8a5a1e", "#1a1000"),
+  style("cherry", "Cherry", "Deep cherry with a cream trim.", "#c8102e", "#e4455c", "#f2e6c9", "#ffffff"),
+  style("sky", "Sky", "Sky blue with a bright white edge.", "#38bdf8", "#7dd3fc", "#0369a1", "#06202c"),
+  style("neon", "Neon", "Electric magenta. Loud as a Magic Weekend.", "#ff2d95", "#ff6fb5", "#8a1356", "#ffffff"),
+  style("frost", "Frost", "Icy teal for the winter fixtures.", "#5eead4", "#99f6e4", "#0f766e", "#042f2e"),
+  style("ember", "Ember", "Burnt orange, like the floodlights at dusk.", "#f97316", "#fb923c", "#9a3412", "#1c0a00"),
 ];
 
+export const UI_THEMES: UiThemeDefinition[] = [DEFAULT_UI_THEME, ...STYLE_UI_THEMES];
+
+const THEME_BY_ID = new Map(UI_THEMES.map((t) => [t.id, t]));
+
 export function getUiThemeById(id: string): UiThemeDefinition {
-  if (id === DEFAULT_UI_THEME_ID) return DEFAULT_UI_THEME;
-  const team = listTeamUiThemes().find((t) => t.id === id);
-  if (team) return fromTeamColors(team);
-  return DEFAULT_UI_THEME;
+  return THEME_BY_ID.get(id) ?? DEFAULT_UI_THEME;
 }
 
 /** True only for ids that resolve to a real theme (getUiThemeById falls back to the default). */
 export function isKnownUiThemeId(id: string): boolean {
-  return id === DEFAULT_UI_THEME_ID || listTeamUiThemes().some((t) => t.id === id);
+  return THEME_BY_ID.has(id);
 }
 
-export function getUiThemeByClubName(clubName: string): UiThemeDefinition | null {
-  const team = getTeamUiThemeByClubName(clubName);
-  return team ? fromTeamColors(team) : null;
+/** Club themes were retired in v1.11; nothing maps to a club any more. */
+export function getUiThemeByClubName(_clubName: string): UiThemeDefinition | null {
+  return null;
 }
 
 export function isDefaultUiTheme(id: string): boolean {
   return id === DEFAULT_UI_THEME_ID;
 }
 
-/** Default first, then unlocked club themes, then locked (original order within each group). */
+/** Floodlit first, then owned themes, then the rest (original order within each group). */
 export function sortUiThemesForStore(
   themes: UiThemeDefinition[],
   unlockedThemeIds: string[]
@@ -142,4 +145,3 @@ if (process.env.NODE_ENV !== "production") {
   assertNoBlackPrimaryUiThemes();
 }
 
-export { slugifyTeamThemeId };

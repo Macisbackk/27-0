@@ -7,7 +7,7 @@ import {
   type UiThemeDefinition,
 } from "../ui-themes";
 import { STORAGE_KEYS } from "./keys";
-import { getClubFundsBalance, spendClubFunds } from "./club-funds";
+import { awardClubFundsLines, getClubFundsBalance, spendClubFunds } from "./club-funds";
 import { dispatchAchievementCheck } from "../achievements/achievementNotify";
 import { loadCloudUiThemeStore, saveCloudUiThemeStore } from "./ui-theme-store-cloud";
 import { applyUiThemeById } from "../ui/apply-ui-theme";
@@ -97,6 +97,25 @@ export function getSelectedUiThemeId(): string {
 /** Resolved Store theme definition for the current selection. */
 export function getActiveTheme(): UiThemeDefinition {
   return getUiThemeById(getSelectedUiThemeId());
+}
+
+/**
+ * Club-colour themes were retired in v1.11 (replaced by nine style themes). Anyone who bought one
+ * gets the price back as Club Funds, once per account, and the dead purchase ids are cleared so it
+ * can't pay twice. Returns the amount refunded this call.
+ */
+export function refundRetiredClubThemes(): number {
+  if (typeof window === "undefined") return 0;
+  const state = loadState();
+  const retired = state.purchaseIds.filter((id) => id.startsWith("theme-") && !isKnownUiThemeId(id.slice("theme-".length)));
+  if (!retired.length) return 0;
+  const payout = awardClubFundsLines(
+    "theme-refund-v1",
+    retired.map((id) => ({ id: `refund-${id}`, label: `Refund: ${id.slice("theme-".length).replace(/-/g, " ")} theme`, amount: UI_THEME_PURCHASE_PRICE }))
+  );
+  state.purchaseIds = state.purchaseIds.filter((id) => !retired.includes(id));
+  saveState(state);
+  return payout.awarded ? payout.total : 0;
 }
 
 export function isUiThemeUnlocked(themeId: string): boolean {
