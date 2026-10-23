@@ -6,6 +6,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { GamePanel } from "@/components/ui/GamePanel";
 import { CAREER_BOARDS, fetchCareerBoard, type CareerBoard, type CareerBoardEntry } from "@/lib/storage/career-leaderboard";
 import { TYPO } from "@/lib/ui/typography";
+import { CoachNameplate, frameRowClass, useCoachFlairs } from "@/lib/coach-flair";
 
 function formatScore(board: CareerBoard, e: CareerBoardEntry): string {
   if (board === "career-glory") return `${e.score} season${e.score === 1 ? "" : "s"}`;
@@ -30,6 +31,8 @@ export function CareerLeaderboard() {
   }, [board]);
 
   const meta = CAREER_BOARDS.find((b) => b.id === board)!;
+  // Store titles and frames, same as the Classic and Daily boards.
+  const flairs = useCoachFlairs((entries ?? []).map((e) => e.username));
 
   return (
     <section className="space-y-3" aria-label="Manager Mode records">
@@ -50,16 +53,19 @@ export function CareerLeaderboard() {
             <GameButton size="sm" fullWidth={false} href="/manager">Play Manager Mode</GameButton>
           </div>
         ) : (
-          <ol className="divide-y divide-pitch-700/30">
-            {entries.map((e, i) => (
-              <li key={e.userId ?? e.username} className="flex items-center justify-between gap-3 px-4 py-3">
+          <ol className="flex flex-col gap-1.5 p-2">
+            {entries.map((e, i) => {
+              const flair = flairs[e.username] ?? {};
+              return (
+              <li key={e.userId ?? e.username} className={`flex items-center justify-between gap-3 rounded-tile px-3 py-2.5 ${frameRowClass(flair.frame)}`}>
                 <span className="flex min-w-0 items-center gap-3">
                   <span className={`w-6 text-right font-display font-bold tabular-nums ${i < 3 ? "text-accent-gold" : "text-gray-500"}`}>{i + 1}</span>
-                  <span className="truncate text-white">{e.username}</span>
+                  <CoachNameplate className="text-white" name={e.username} title={flair.title} />
                 </span>
-                <span className="font-display font-bold tabular-nums text-white">{formatScore(board, e)}</span>
+                <span className="shrink-0 font-display font-bold tabular-nums text-white">{formatScore(board, e)}</span>
               </li>
-            ))}
+              );
+            })}
           </ol>
         )}
       </GamePanel>

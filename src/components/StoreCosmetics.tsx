@@ -199,7 +199,7 @@ export function TitlesStore({ balance }: { balance: number }) {
   const c = useCosmetics();
   const { message, buy } = useBuy(balance);
   return (
-    <Section title="Coach titles" intro="Shown on your Coach Profile and next to your name on the Classic and Daily leaderboards. Wear one at a time.">
+    <Section title="Coach titles" intro="Shown on your Coach Profile and next to your name on every leaderboard. Wear one at a time.">
       {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
       <ul className="divide-y divide-[color:var(--fl-line)]">
         {items("title").map((item) => {
@@ -237,7 +237,7 @@ export function FramesStore({ balance }: { balance: number }) {
   const c = useCosmetics();
   const { message, buy } = useBuy(balance);
   return (
-    <Section title="Leaderboard frames" intro="Frame your whole row on the Classic and Daily leaderboards. Everyone sees it.">
+    <Section title="Leaderboard frames" intro="Frame your whole row on every leaderboard. Everyone sees it.">
       {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
       <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
         {items("frame").map((item) => {
