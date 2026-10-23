@@ -1,0 +1,71 @@
+[http://localhost:3000 @375 /] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @375 /] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @375 /play] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @375 /play] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @375 /play?era=1] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @375 /play?era=1] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @375 /play?daily=1] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @375 /play?daily=1] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @375 /manager] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @375 /manager] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @375 /play] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @375 /play] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @320 /] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @320 /] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @320 /play] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @320 /play] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @320 /play?era=1] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @320 /play?era=1] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @320 /play?daily=1] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @320 /play?daily=1] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @320 /manager] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @320 /manager] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @320 /play] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @320 /play] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @375 /] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @375 /] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @375 /play] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @375 /play] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @375 /play?era=1] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @375 /play?era=1] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @375 /play?daily=1] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @375 /play?daily=1] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @375 /manager] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @375 /manager] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+
+[http://localhost:3000 @375 /play] console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
+
+[http://localhost:3000 @375 /play] console.error: Refused to execute script from 'http://localhost:3000/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.

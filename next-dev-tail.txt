@@ -1,0 +1,27 @@
+   ▲ Next.js 15.5.19
+   - Local:        http://localhost:3100
+   - Network:      http://10.1.0.158:3100
+
+ ✓ Starting...
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+ ✓ Ready in 1455ms
+ ○ Compiling / ...
+ ✓ Compiled / in 9.3s (2054 modules)
+ GET / 200 in 10716ms
+ ✓ Compiled in 1840ms (918 modules)
+ GET / 200 in 251ms
+ ○ Compiling /play ...
+ ✓ Compiled /play in 3.4s (2246 modules)
+ GET /play 200 in 4353ms
+ GET /play?era=1 200 in 108ms
+ GET /play?daily=1 200 in 109ms
+ GET /play?daily=1&era=1 200 in 40ms
+ GET /play?daily=1&era=1 200 in 28ms
+ ○ Compiling /manager ...
+ ✓ Compiled /manager in 1333ms (2328 modules)
+ GET /manager 200 in 1700ms
+ GET /play 200 in 619ms
