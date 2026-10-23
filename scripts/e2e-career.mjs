@@ -192,7 +192,7 @@ try {
       shotBid = true;
       await shot("rival-bid");
     }
-    if (!shotDeadline && (await page.getByRole("region", { name: "Deadline Day" }).isVisible().catch(() => false))) {
+    if (!shotDeadline && (await page.getByRole("region", { name: "Deadline Day", exact: true }).isVisible().catch(() => false))) {
       shotDeadline = true;
       await page.waitForTimeout(6000); // let the ticker land
       await shot("deadline-day");

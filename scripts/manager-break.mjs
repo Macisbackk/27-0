@@ -49,7 +49,7 @@ async function reloadAndCheck(label, expectRegion) {
   await page.waitForTimeout(500);
   const after = await save();
   if (before?.matchdayIndex !== after?.matchdayIndex || before?.phase !== after?.phase) fail(`${label}: reload changed the save (${before?.phase}/${before?.matchdayIndex} → ${after?.phase}/${after?.matchdayIndex})`);
-  if (expectRegion && !(await visible(page.getByRole("region", { name: expectRegion })))) fail(`${label}: after a reload "${expectRegion}" is gone`);
+  if (expectRegion && !(await visible(page.getByRole("region", { name: expectRegion, exact: true })))) fail(`${label}: after a reload "${expectRegion}" is gone`);
 }
 
 /** Deadline Day's 12-hour clock: it counts down, pauses, skips, offers can be taken, sales name the buyer. */
@@ -171,7 +171,7 @@ try {
   const seen = new Set();
   for (let i = 0; i < 500; i++) {
     if (await visible(page.getByText(/season review/i).first())) break;
-    if (await visible(page.getByRole("region", { name: "Deadline Day" }))) {
+    if (await visible(page.getByRole("region", { name: "Deadline Day", exact: true }))) {
       if (!seen.has("deadline")) {
         seen.add("deadline");
         if (await visible(btn("Quick sim"))) fail("Quick sim offered on Deadline Day");
