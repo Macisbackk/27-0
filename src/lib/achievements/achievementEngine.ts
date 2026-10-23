@@ -174,6 +174,8 @@ function evaluateUnlock(
       );
     case "wordle-win":
       return ctx.wordleWon === true || progress.wordleWins >= 1;
+    case "grid-perfect":
+      return ctx.gridPerfect === true || progress.gridPerfects >= 1;
     case "hangman-win":
       return ctx.hangmanWon === true || progress.hangmanWins >= 1;
     case "higher-lower-streak-10":
@@ -302,6 +304,16 @@ export function getAchievementProgress(
       return {
         current: Math.min(
           ctx.wordleWon === true ? Math.max(progress.wordleWins, 1) : progress.wordleWins,
+          def.target
+        ),
+        target: def.target,
+      };
+    case "grid-perfect":
+      return {
+        current: Math.min(
+          ctx.gridPerfect === true
+            ? Math.max(progress.gridPerfects, 1)
+            : progress.gridPerfects,
           def.target
         ),
         target: def.target,

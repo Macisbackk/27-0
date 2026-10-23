@@ -4,7 +4,7 @@ import { getUsername } from "./user";
 import { isGuestLeaderboardName } from "./leaderboard";
 import { STORAGE_KEYS } from "./keys";
 import type { LeaderboardTrackerRow } from "../leaderboard-trackers";
-import { formatClubFundsExact } from "../club-funds";
+import { formatClubFunds } from "../club-funds";
 
 const LEADERBOARD_MODE = "quiz";
 
@@ -179,7 +179,7 @@ function mapEntriesToRows(
   return entries.slice(0, limit).map((entry, index) => ({
     rank: index + 1,
     username: entry.username,
-    statDisplay: formatClubFundsExact(entry.highestPrize),
+    statDisplay: formatClubFunds(entry.highestPrize),
     achievedAt: entry.updatedAt,
     difficulty: "NORMAL",
     mode: "CLASSIC",

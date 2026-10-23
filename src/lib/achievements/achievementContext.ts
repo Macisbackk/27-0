@@ -63,6 +63,7 @@ export type AchievementCheckContext = {
   quizTeamMillionaire?: boolean;
   miniGamePlayed?: boolean;
   wordleWon?: boolean;
+  gridPerfect?: boolean;
   hangmanWon?: boolean;
   higherLowerBestStreak?: number;
   higherLowerFivePickWins?: number;
@@ -107,6 +108,7 @@ export type AchievementProgressSnapshot = {
   quizQuestionsAnswered: number;
   quizQuestionsCorrect: number;
   wordleWins: number;
+  gridPerfects: number;
   hangmanWins: number;
   higherLowerBestStreak: number;
   higherLowerFivePickWins: number;
@@ -216,6 +218,7 @@ export function buildAchievementProgress(
       quizStats.questionsCorrect + quizStats.questionsIncorrect,
     quizQuestionsCorrect: quizStats.questionsCorrect,
     wordleWins: wordleStats.wins,
+    gridPerfects: gridStats.perfect,
     hangmanWins: hangmanStats.wins,
     higherLowerBestStreak: higherLowerStats.bestStreak,
     higherLowerFivePickWins: higherLowerStats.fivePickWins,

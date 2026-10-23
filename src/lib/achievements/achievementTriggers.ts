@@ -148,6 +148,8 @@ export function triggerQuizAchievements(input: {
 export function triggerMiniGameAchievements(input: {
   played?: boolean;
   wordleWon?: boolean;
+  /** All 9 cells of a Rugby League Grid filled. */
+  gridPerfect?: boolean;
   hangmanWon?: boolean;
   higherLowerBestStreak?: number;
   higherLowerFivePickWins?: number;
@@ -156,6 +158,7 @@ export function triggerMiniGameAchievements(input: {
     trigger: "mini-game",
     miniGamePlayed: input.played,
     wordleWon: input.wordleWon,
+    gridPerfect: input.gridPerfect,
     hangmanWon: input.hangmanWon,
     higherLowerBestStreak: input.higherLowerBestStreak,
     higherLowerFivePickWins: input.higherLowerFivePickWins,
