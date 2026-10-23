@@ -9,6 +9,7 @@ import {
   beginOffseason,
   buildMarket,
   buyPlayer as buyPure,
+  finishDepartures as finishDeparturesPure,
   finishTransfers as finishTransfersPure,
   sellPlayer as sellPure,
   type MarketListing,
@@ -17,6 +18,8 @@ import {
 import { playMatchday, repairLineup, simRestOfSeason, simToNextBigGame, squadOf, type PlayedResult } from "./season";
 import { acceptBid as acceptBidPure, closeDeadlineDay, isWindowOpen, recordUserDeal, rejectBid as rejectBidPure } from "./midseason";
 import { playFriendlies as playFriendliesPure, type FriendlyOption } from "./preseason";
+import { releaseExpiring, renewContract, type ContractError } from "./contracts";
+import { markStageSeen, type StageKey } from "./stages";
 import {
   LEGACY_KEY,
   SAVE_KEY,
@@ -61,6 +64,13 @@ interface CareerContextValue {
   playFriendlies: (picks: FriendlyOption[]) => void;
   /** Mark the first-save walkthrough as seen. */
   finishTutorial: () => void;
+  /** Move past a stage with nothing to play (pre-season results, league over, promotion). */
+  passStage: (key: StageKey) => void;
+  /** Summer: renew an out-of-contract player, or let him go. */
+  renew: (playerId: string) => ContractError | undefined;
+  release: (playerId: string) => void;
+  /** Summer: done with departures, open the transfer window. */
+  finishDepartures: () => void;
 }
 
 const CareerContext = createContext<CareerContextValue | null>(null);
@@ -215,6 +225,25 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     },
     playFriendlies: (picks) => {
       if (stateRef.current) commit(playFriendliesPure(stateRef.current, picks));
+    },
+    passStage: (key) => {
+      const s = stateRef.current;
+      if (s) commit(markStageSeen(s, key));
+    },
+    renew: (playerId) => {
+      const s = stateRef.current;
+      if (!s) return "not-expiring";
+      const r = renewContract(s, playerId);
+      if (!r.error) commit(r.state);
+      return r.error;
+    },
+    release: (playerId) => {
+      const s = stateRef.current;
+      if (s) commit(releaseExpiring(s, playerId));
+    },
+    finishDepartures: () => {
+      const s = stateRef.current;
+      if (s) commit(finishDeparturesPure(s));
     },
     finishTutorial: () => {
       const s = stateRef.current;

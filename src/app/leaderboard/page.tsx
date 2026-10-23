@@ -16,7 +16,7 @@ export default async function LeaderboardPage() {
     <StandardPageShell desktopFit>
       <PageShellBody>
         <div className={PAGE.section}>
-          <header>
+          <header className="text-center">
             <p className={TYPO.sectionLabel}>Rankings</p>
             <h1 className={`mt-1 ${TYPO.pageTitle}`}>Leaderboard</h1>
             <p className={`mt-2 ${TYPO.bodySm}`}>

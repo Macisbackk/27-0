@@ -41,7 +41,7 @@ export function isCareer(value: unknown): value is CareerState {
   if (!v.players || typeof v.players !== "object") return false;
   if (!Array.isArray(v.calendar) || !v.calendar.every((m) => m && Array.isArray(m.fixtures))) return false;
   if (!Number.isInteger(v.matchdayIndex) || v.matchdayIndex < 0 || v.matchdayIndex > v.calendar.length) return false;
-  if (!["season", "review", "transfers"].includes(v.phase)) return false;
+  if (!["season", "review", "departures", "transfers"].includes(v.phase)) return false;
   if (!v.tables || !Array.isArray(v.tables["super-league"]) || !Array.isArray(v.tables.championship)) return false;
   if (!Array.isArray(v.lineup) || !Array.isArray(v.challenges) || !Array.isArray(v.news) || !Array.isArray(v.history)) return false;
   if (!v.seasonTrack || typeof v.seasonTrack !== "object") return false;

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { useArmed } from "@/hooks/useArmed";
 import { DIVISION_LABEL, TROPHY_LABEL, formatMoney, ordinal } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playPerfectSeason, playPromotion, playSeasonComplete, playSeasonReviewMajor, playWarning } from "@/lib/sound";
@@ -9,6 +10,7 @@ import { Card, ClubBadge, Eyebrow } from "./bits";
 
 export function SeasonReview() {
   const { state, legacy, recordBreaks, goToOffseason } = useCareer();
+  const armed = useArmed();
   const s = state!;
   const o = s.lastOutcome!;
   const club = s.clubs[s.userClubId]!;
@@ -35,7 +37,7 @@ export function SeasonReview() {
           : `${ordinal(o.position)} in the ${DIVISION_LABEL[o.division]}`;
 
   return (
-    <div className="mx-auto flex w-full max-w-xl flex-col gap-4 pb-28">
+    <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-28">
       <header className="flex flex-col items-center text-center">
         <ClubBadge club={club} size="lg" />
         <p className="mt-3 font-display text-[10px] font-bold uppercase tracking-[0.25em] text-theme-primary">{o.year} season review</p>
@@ -96,7 +98,7 @@ export function SeasonReview() {
 
       <div className="mobile-action-bar sm:static sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
         <div className="mobile-action-bar__inner">
-          <GameButton size="lg" onClick={goToOffseason}>Go to transfers</GameButton>
+          <GameButton size="lg" disabled={!armed} onClick={goToOffseason}>Next: retirements and contracts</GameButton>
         </div>
       </div>
     </div>

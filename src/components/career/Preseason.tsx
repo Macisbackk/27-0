@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { useArmed } from "@/hooks/useArmed";
 import {
   DIVISION_LABEL,
   MAX_FRIENDLIES,
@@ -28,6 +29,8 @@ export function PreseasonCard() {
   const s = state!;
   const options = useMemo(() => friendlyOptions(s), [s.seed, s.year, s.userClubId]); // eslint-disable-line react-hooks/exhaustive-deps
   const [picked, setPicked] = useState<string[]>([]);
+  // Arms after a moment: a double tap on "Take charge" used to land on "Skip pre-season".
+  const armed = useArmed(600);
   if (!preseasonOpen(s)) return null;
 
   const toggle = (id: string) => {
@@ -77,6 +80,7 @@ export function PreseasonCard() {
         <GameButton
           variant="secondary"
           size="md"
+          disabled={!armed}
           onClick={() => {
             playUiClick();
             playFriendlies([]);
@@ -86,7 +90,7 @@ export function PreseasonCard() {
         </GameButton>
         <GameButton
           size="md"
-          disabled={chosen.length === 0}
+          disabled={!armed || chosen.length === 0}
           onClick={() => {
             playUiClick();
             playFriendlies(chosen);

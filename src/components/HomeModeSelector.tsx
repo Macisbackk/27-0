@@ -137,7 +137,7 @@ export function HomeModeSelector() {
   const dailyStatus = !daily ? null : daily.done ? "Done today" : daily.used ? "Attempt used · practice only" : "1 attempt left today";
 
   return (
-    <section className="fl-stagger mx-auto flex w-full max-w-xl flex-col gap-3 text-center" aria-labelledby="play-heading">
+    <section className="fl-stagger mx-auto flex w-full max-w-[44rem] flex-col gap-3 text-center" aria-labelledby="play-heading">
       <h2 id="play-heading" className="font-cond text-[30px] font-bold leading-none text-white">
         {hub?.greeting ?? "Welcome, coach"}
       </h2>

@@ -75,12 +75,12 @@ export function MiniGamesHub() {
   const banked = useBankedToday();
   return (
     <StandardPageShell>
-      <div className={`${PAGE.section} mini-game-arena mx-auto flex w-full max-w-xl flex-col text-center`}>
+      <div className={`${PAGE.section} mini-game-arena mx-auto flex w-full max-w-[44rem] flex-col text-center`}>
         <p className={TYPO.sectionLabel}>Play</p>
         <h1 className={`mt-1.5 ${TYPO.pageTitle}`}>Puzzles</h1>
         <p className="mt-2 text-sm text-gray-400">Quick rugby league puzzles that pay Club Funds. Rewards reset at midnight UK time.</p>
 
-        <ul className="fl-stagger mt-5 grid w-full gap-3 sm:grid-cols-2">
+        <ul className="fl-stagger mt-5 grid w-full gap-3 sm:grid-cols-3">
           {GAMES.map((game) => {
             const done = banked[game.id];
             return (

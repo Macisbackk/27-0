@@ -33,6 +33,7 @@ import {
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
+import { ClubLogoBox } from "./ClubBadge";
 import { FramesStore, KitAndPitchStore, ModesStore, TitlesStore } from "./StoreCosmetics";
 
 type StoreTab = "themes" | "kit" | "titles" | "frames" | "modes";
@@ -47,29 +48,29 @@ const STORE_TABS: { id: StoreTab; label: string }[] = [
 
 
 /** Mini app preview in the theme's colours: header bar, accent text and a primary button. */
-function ThemePalette({ theme }: { theme: UiThemeDefinition }) {
+/**
+ * The same little screen for every theme (the site's own dark cards), so the only thing that
+ * changes between previews is the accent: the score, the progress bar and the button.
+ */
+function ThemePreview({ theme }: { theme: UiThemeDefinition }) {
   return (
-    <div
-      className="relative overflow-hidden border-b border-pitch-700/40 bg-pitch-950 p-2"
-      aria-label={`${theme.label} colour preview`}
-    >
-      <div
-        className="flex items-center justify-between rounded-md px-2 py-1"
-        style={{ backgroundColor: theme.secondary, borderBottom: `2px solid ${theme.tertiary}` }}
-      >
-        <span className="h-1.5 w-6 rounded-full bg-white/60" />
-        <span className="text-[10px] font-black" style={{ color: theme.primary }}>
-          27-0
+    <div className="bg-pitch-950 p-3" aria-label={`${theme.label} preview`} role="img">
+      <div className="flex items-center justify-between">
+        <span className="font-display text-[15px] leading-none" style={{ color: theme.primary }}>
+          27<span className="text-white">-0</span>
         </span>
-        <span className="h-1.5 w-4 rounded-full bg-white/40" />
+        <span className="h-2 w-8 rounded-full bg-white/10" />
       </div>
-      <div className="mt-2 flex items-center gap-1.5">
-        <span className="h-6 w-6 shrink-0 rounded-full" style={{ background: theme.primary, boxShadow: `inset 0 0 0 2px ${theme.tertiary}` }} />
-        <span className="h-1.5 flex-1 rounded-full bg-white/15" />
+      <div className="mt-2.5 rounded-[10px] bg-pitch-900 p-2">
+        <span className="block h-1.5 w-3/4 rounded-full bg-white/20" />
+        <span className="mt-1.5 block h-1.5 w-1/2 rounded-full bg-white/10" />
+        <span className="mt-2 block h-1 overflow-hidden rounded-full bg-white/10">
+          <span className="block h-full w-2/3 rounded-full" style={{ backgroundColor: theme.primary }} />
+        </span>
       </div>
       <span
-        className="mt-2 block rounded-md py-1 text-center text-[10px] font-black uppercase tracking-wide"
-        style={{ backgroundColor: theme.primary, color: theme.textOnPrimary, border: `1px solid ${theme.tertiary}` }}
+        className="mt-2.5 block rounded-[10px] py-1.5 text-center font-cond text-[12px] font-bold"
+        style={{ backgroundColor: theme.primary, color: theme.textOnPrimary }}
       >
         Play
       </span>
@@ -215,7 +216,7 @@ export function StorePanel() {
         </p>
       )}
 
-      <ul className="fl-stagger mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <ul className="fl-stagger mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         {displayThemes.map((theme) => {
           const isUnlocked = unlocked.includes(theme.id);
           const isSelected = selectedId === theme.id;
@@ -224,24 +225,23 @@ export function StorePanel() {
           return (
             <li
               key={theme.id}
-              className={`${CARD.panel} overflow-hidden rounded-xl transition ${
-                isSelected
-                  ? "border-[var(--theme-tertiary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
-                  : "border-pitch-700/50"
+              className={`flex flex-col overflow-hidden rounded-card bg-pitch-900 transition ${
+                isSelected ? "ring-2 ring-theme-primary" : ""
               }`}
             >
-              <ThemePalette theme={theme} />
-              <div className="p-2.5">
-                <div className="min-w-0">
-                  <p className="min-h-[2.5em] font-display text-sm font-bold leading-tight text-white">
-                    {theme.label}
-                  </p>
-                  <p className={`text-xs ${isSelected ? "text-lime-300" : "text-gray-500"}`}>
-                    {isUnlocked ? (isSelected ? "✓ In use" : "Owned") : "Locked"}
-                  </p>
+              <ThemePreview theme={theme} />
+              <div className="flex flex-1 flex-col p-3">
+                <div className="flex min-w-0 items-center gap-2">
+                  {theme.clubName ? (
+                    <ClubLogoBox club={theme.clubName} size="sm" showAbbrev={false} />
+                  ) : null}
+                  <p className="min-w-0 flex-1 font-cond text-[15px] font-bold leading-tight text-white">{theme.label}</p>
                 </div>
+                <p className={`mt-1 text-xs ${isSelected ? "text-theme-primary" : "text-[color:var(--fl-muted)]"}`}>
+                  {isUnlocked ? (isSelected ? "In use" : "Owned") : formatClubFunds(UI_THEME_PURCHASE_PRICE)}
+                </p>
 
-                <div className="mt-2.5">
+                <div className="mt-auto pt-3">
                   {isUnlocked ? (
                     <GameButton
                       variant={isSelected ? "theme" : "secondary"}
@@ -249,16 +249,16 @@ export function StorePanel() {
                       onClick={() => handleSelect(theme.id)}
                       disabled={isSelected}
                     >
-                      {isSelected ? "Selected" : "Select"}
+                      {isSelected ? "Selected" : "Use"}
                     </GameButton>
                   ) : (
                     <GameButton
-                      variant="theme"
+                      variant="secondary"
                       size="sm"
                       disabled={!canAfford || purchasingId === theme.id}
                       onClick={() => handlePurchase(theme)}
                     >
-                      {canAfford ? `Buy · ${formatClubFunds(UI_THEME_PURCHASE_PRICE)}` : `🔒 ${formatClubFunds(UI_THEME_PURCHASE_PRICE)}`}
+                      {canAfford ? "Buy" : "Locked"}
                     </GameButton>
                   )}
                 </div>

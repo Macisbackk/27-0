@@ -54,7 +54,9 @@ export function playFriendlies(state: CareerState, picks: FriendlyOption[]): Car
   if (!preseasonOpen(state)) return state;
   const s: CareerState = structuredClone(state);
   const results: FriendlyResult[] = [];
-  for (const [i, opt] of picks.slice(0, MAX_FRIENDLIES).entries()) {
+  // Each opponent once, at most two games, whatever the caller sends.
+  const unique = picks.filter((p, i) => picks.findIndex((q) => q.opponentId === p.opponentId) === i);
+  for (const [i, opt] of unique.slice(0, MAX_FRIENDLIES).entries()) {
     const rng = rngFor(s.seed, s.year, "friendly", i, opt.opponentId);
     const mine = { ...sheetFor(s, s.userClubId), boost: 0 };
     const theirs = sheetFor(s, opt.opponentId);

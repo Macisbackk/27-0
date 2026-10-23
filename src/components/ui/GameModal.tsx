@@ -4,6 +4,7 @@ import { useEffect, useRef, type ReactNode, type RefObject } from "react";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { uiLayerClass } from "@/lib/ui/layers";
 import { playPopupClose, playPopupOpen } from "@/lib/sound";
+import { useModalA11y } from "@/hooks/useModalA11y";
 
 interface GameModalProps {
   open: boolean;
@@ -30,6 +31,9 @@ export function GameModal({
   panelRef,
 }: GameModalProps) {
   const wasOpen = useRef(false);
+  // Escape closes, focus moves in (and back out), Tab stays inside, page behind doesn't scroll.
+  // Callers that run their own useModalA11y pass panelRef and keep that one instead.
+  const ownRef = useModalA11y(open && !panelRef, () => onClose?.());
 
   useEffect(() => {
     if (open && !wasOpen.current) {
@@ -45,17 +49,17 @@ export function GameModal({
   return (
     <BodyPortal>
       <div
-        className={`game-modal-overlay ${zClass}`}
+        className={`game-modal-overlay fl-backdrop ${zClass}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby={labelledBy}
         onClick={onClose}
       >
         <div
-          ref={panelRef}
-          tabIndex={panelRef ? -1 : undefined}
+          ref={panelRef ?? ownRef}
+          tabIndex={-1}
           data-scroll-lock-allow="true"
-          className={`game-modal-panel game-modal-card contract-modal-card p-3 sm:p-6 my-4 w-[min(92vw,520px)] max-w-[520px] max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden ${wide ? "w-[min(96vw,40rem)] max-w-4xl" : ""} ${className}`.trim()}
+          className={`game-modal-panel game-modal-card contract-modal-card fl-pop outline-none p-3 sm:p-6 my-4 w-[min(92vw,520px)] max-w-[520px] max-h-[min(78dvh,720px)] overflow-y-auto overflow-x-hidden ${wide ? "w-[min(96vw,40rem)] max-w-4xl" : ""} ${className}`.trim()}
           onClick={(e) => e.stopPropagation()}
         >
           {children}

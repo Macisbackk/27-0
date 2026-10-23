@@ -6,6 +6,8 @@ import { MobileBottomSheet } from "@/components/ui/MobileOverlay";
 import {
   LINEUP_SLOTS,
   POS_LABEL,
+  contractLabel,
+  contractOf,
   effectiveRating,
   lineupRating,
   positionPenalty,
@@ -72,6 +74,7 @@ export function TeamTab() {
                     {p?.legend ? <span className="ml-1.5 text-[10px] font-bold uppercase text-accent-gold">Legend</span> : null}
                     {p?.academy ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
                     {penalty ? <span className="ml-1.5 text-[10px] text-danger">plays {p!.pos}</span> : null}
+                    {p && contractOf(p) <= 1 ? <span className="ml-1.5 text-[10px] font-bold text-amber-300">Final year</span> : null}
                   </span>
                   {p ? <RatingPill rating={p.rating - penalty} delta={penalty || undefined} /> : null}
                 </button>
@@ -94,7 +97,7 @@ export function TeamTab() {
                   {p.academy ? <span className="ml-1.5 text-[10px] font-bold uppercase text-sky-300">Academy</span> : null}
                 </span>
                 <span className="text-[11px] text-gray-500">
-                  Age {p.age}
+                  Age {p.age} · <span className={contractOf(p) <= 1 ? "text-amber-300" : ""}>{contractLabel(contractOf(p))}</span>
                   {p.apps ? ` · ${p.apps} apps, ${p.tries} tries` : ""}
                   {p.age <= 21 ? (
                     <span className="ml-2 inline-flex items-center gap-1">

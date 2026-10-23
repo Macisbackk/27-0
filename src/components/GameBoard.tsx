@@ -1,5 +1,6 @@
 "use client";
 
+import { useModalA11y } from "@/hooks/useModalA11y";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
 import { recordShellMount } from "@/lib/ui/mount-diagnostics";
@@ -2459,6 +2460,11 @@ export function GameBoard({
   const slotChoiceKey = `choice-${choiceKey}`;
 
   const isReviewPhase = phase === "review";
+  // The player pickers are dialogs: focus moves in, Tab stays inside, Escape goes back to the team sheet.
+  const slotPickerRef = useModalA11y(phase === "choice" && isSlotRecruitMode, handleBackToPitch, { lockScroll: false });
+  const pairPickerRef = useModalA11y(phase === "choice" && !isSlotRecruitMode && !isDraftMode, handleBackToPitch, {
+    lockScroll: false,
+  });
   const preGameReady = isPreGameBoostReady(preGameBoost);
   const quickModeStepIndex = getQuickModeStepIndex(phase, preGameReady);
   const hideChromeForOverlay = phase === "reveal";
@@ -2764,7 +2770,16 @@ export function GameBoard({
                   exit={{ opacity: 1 }}
                 >
                   <motion.div
-                    className="recruitment-choice-panel"
+                    ref={slotPickerRef}
+                    tabIndex={-1}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={`Pick your ${
+                      selectedSlotIndex !== null
+                        ? squad.find((x) => x.slotIndex === selectedSlotIndex)?.label ?? "player"
+                        : "player"
+                    }`}
+                    className="recruitment-choice-panel outline-none"
                     initial={{ y: 16 }}
                     animate={{ y: 0 }}
                     exit={{ y: 8 }}
@@ -2811,7 +2826,12 @@ export function GameBoard({
                 exit={{ opacity: 1 }}
               >
                 <motion.div
-                  className={`${CARD.panel} recruitment-choice-panel ${MODAL.panelPadding}`}
+                  ref={pairPickerRef}
+                  tabIndex={-1}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Pick a player"
+                  className={`${CARD.panel} recruitment-choice-panel outline-none ${MODAL.panelPadding}`}
                   initial={{ y: 16 }}
                   animate={{ y: 0 }}
                   exit={{ y: 8 }}

@@ -35,6 +35,8 @@ export interface CareerPlayer {
   /** Season (year) the user signed this player, and the fee paid — stops buy→sell arbitrage. */
   signedYear?: number;
   fee?: number;
+  /** Seasons left on his deal, including this one (see contracts.ts; older saves derive it). */
+  contract?: number;
 }
 
 export interface CareerClub {
@@ -185,7 +187,8 @@ export interface CareerState {
     pointsScored: number;
     cupRoundReached: number;
   };
-  phase: "season" | "review" | "transfers";
+  /** season → review (end of season) → departures (retirements, contracts) → transfers → season. */
+  phase: "season" | "review" | "departures" | "transfers";
   /** Filled at season end; shown on the review screen. */
   lastOutcome?: SeasonOutcome;
   history: SeasonOutcome[];
@@ -205,6 +208,23 @@ export interface CareerState {
   deadlineClosedYear?: number;
   /** The first-save walkthrough has been seen. */
   tutorialDone?: boolean;
+  /** Season stages the user has moved past, as `${year}:${stage}` (pre-season, league over, promotion). */
+  stagesSeen?: string[];
+  /** The summer's comings and goings, shown before the transfer window opens. */
+  departures?: Departures;
+}
+
+export interface Departures {
+  /** The season just finished. */
+  year: number;
+  retired: Array<{ name: string; pos: Pos; age: number; rating: number }>;
+  /** User players whose deals have run out and still need a decision. */
+  expiring: string[];
+  renewed?: string[];
+  /** Names of players let go at the end of their contract. */
+  released?: string[];
+  /** Academy graduates who joined this summer. */
+  academy: string[];
 }
 
 export interface FriendlyResult {

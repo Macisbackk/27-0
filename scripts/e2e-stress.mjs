@@ -163,7 +163,7 @@ try {
   await page.goto(`${BASE}/leaderboard`, { waitUntil: "networkidle" });
   await noSideways(page, "leaderboard @320");
   await page.goto(`${BASE}/profile`, { waitUntil: "networkidle" });
-  if (!(await page.locator(".lb-nameplate--foil").count())) fail("equipped foil frame not shown on the profile");
+  if (!(await page.locator(".lb-row--foil").count())) fail("equipped foil frame not shown on the profile card");
   await shot(page, "profile-frame");
   step("Frames: leaderboard and profile render with a frame equipped");
 
@@ -198,6 +198,10 @@ try {
   if (gained > 90_000) fail(`friendlies paid ${gained} (double-tap paid twice?)`);
   await noSideways(page, "manager preseason @320");
   step("Friendlies: max two, double-tap plays once, paid once");
+  if (await page.getByRole("button", { name: "Play match" }).isVisible().catch(() => false)) fail("Round 1 showing under the friendly results");
+  await page.getByRole("button", { name: "Start the season" }).dblclick();
+  await page.getByRole("button", { name: "Play match" }).waitFor({ timeout });
+  step("Friendly results, then Round 1 on its own (double-tap safe)");
 
   // Drive to Deadline Day with Quick sim; nothing should get past it until the window is shut.
   let reached = false;

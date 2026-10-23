@@ -18,6 +18,7 @@ import {
   type ScrollLockId,
 } from "@/lib/ui/scroll-lock";
 import { ClubDualSwatch } from "./ClubDualSwatch";
+import { useModalA11y } from "@/hooks/useModalA11y";
 import { BodyPortal } from "./ui/BodyPortal";
 
 interface TeamSheetPlayerPopupProps {
@@ -43,14 +44,8 @@ export function TeamSheetPlayerPopup({
 }: TeamSheetPlayerPopupProps) {
   const player = slot?.player ?? null;
 
-  useEffect(() => {
-    if (!player) return;
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [player, onClose]);
+  // Escape, focus in/out and Tab trapping (this popup keeps its own scroll lock below).
+  const panelRef = useModalA11y(Boolean(player), onClose, { lockScroll: false });
 
   useEffect(() => {
     if (!player) return;
@@ -86,6 +81,8 @@ export function TeamSheetPlayerPopup({
             onClick={onClose}
           >
             <motion.div
+              ref={panelRef}
+              tabIndex={-1}
               role="dialog"
               aria-modal="true"
               aria-label={`${player.name} details`}
