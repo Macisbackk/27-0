@@ -37,6 +37,7 @@ import { refreshBoostInventoryFromCloud } from "./boosts/boostInventory";
 import { refreshAchievementsFromCloud } from "./achievements/achievementStorage";
 import { claimDeviceForAccount } from "./storage/account-owner";
 import { refundRetiredBoosts } from "./boosts/retired-boost-refund";
+import { refundRetiredClubThemes } from "./storage/ui-theme-store";
 import { mergeDailyFromCloud } from "./storage/daily-challenge-cloud";
 import {
   loadLocalCareer,
@@ -50,6 +51,7 @@ import { submitCareerLeaderboards } from "./storage/career-leaderboard";
 function safeRefundRetiredBoosts(): void {
   try {
     refundRetiredBoosts();
+    refundRetiredClubThemes();
   } catch (err) {
     console.error("[boosts] refund failed:", err);
   }

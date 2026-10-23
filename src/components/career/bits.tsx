@@ -12,8 +12,9 @@ export function ClubBadge({
   size?: "sm" | "md" | "lg";
 }) {
   const dims = size === "lg" ? "h-14 w-14 text-sm" : size === "sm" ? "h-7 w-7 text-[9px]" : "h-10 w-10 text-[11px]";
-  // Third kit colour as a thin inner ring, so clubs sharing two colours still look different.
-  const ring = club.accent && club.accent.toLowerCase() !== club.primary.toLowerCase() ? `inset 0 0 0 2px ${club.accent}` : undefined;
+  // Third kit colour as a bold inner ring, so clubs sharing two colours still look different.
+  const ringW = size === "lg" ? 4 : size === "sm" ? 2 : 3;
+  const ring = club.accent && club.accent.toLowerCase() !== club.primary.toLowerCase() ? `inset 0 0 0 ${ringW}px ${club.accent}` : undefined;
   return (
     <span
       aria-hidden

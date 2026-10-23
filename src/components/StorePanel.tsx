@@ -33,7 +33,6 @@ import {
 import { CARD, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "./ui/GameButton";
-import { ClubLogoBox } from "./ClubBadge";
 import { FramesStore, KitAndPitchStore, ModesStore, TitlesStore } from "./StoreCosmetics";
 
 type StoreTab = "themes" | "kit" | "titles" | "frames" | "modes";
@@ -236,12 +235,8 @@ export function StorePanel() {
             >
               <ThemePreview theme={theme} />
               <div className="flex flex-1 flex-col p-3">
-                <div className="flex min-w-0 items-center gap-2">
-                  {theme.clubName ? (
-                    <ClubLogoBox club={theme.clubName} size="sm" showAbbrev={false} />
-                  ) : null}
-                  <p className="min-w-0 flex-1 font-cond text-[15px] font-bold leading-tight text-white">{theme.label}</p>
-                </div>
+                <p className="min-w-0 font-cond text-[15px] font-bold leading-tight text-white">{theme.label}</p>
+                {theme.blurb ? <p className="mt-0.5 text-xs text-[color:var(--fl-muted)]">{theme.blurb}</p> : null}
                 <p className={`mt-1 text-xs ${isSelected ? "text-theme-primary" : "text-[color:var(--fl-muted)]"}`}>
                   {isUnlocked ? (isSelected ? "In use" : "Owned") : formatClubFunds(UI_THEME_PURCHASE_PRICE)}
                 </p>

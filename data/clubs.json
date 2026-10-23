@@ -144,7 +144,7 @@
       "Salford",
       "Salford City Reds"
     ],
-    "accentColor": "#FFFFFF"
+    "accentColor": "#111111"
   },
   {
     "id": "london",
@@ -172,7 +172,7 @@
     "shortName": "WID",
     "primaryColor": "#111111",
     "secondaryColor": "#FFFFFF",
-    "accentColor": "#9CA3AF",
+    "accentColor": "#1E4D9B",
     "active": true,
     "isCurrentSuperLeague": false,
     "playable": false,
@@ -192,7 +192,7 @@
     "shortName": "HAL",
     "primaryColor": "#1E4D9B",
     "secondaryColor": "#FFFFFF",
-    "accentColor": "#FFFFFF",
+    "accentColor": "#C8102E",
     "active": true,
     "isCurrentSuperLeague": false,
     "playable": false,
@@ -212,7 +212,7 @@
     "shortName": "SHE",
     "primaryColor": "#C8102E",
     "secondaryColor": "#C9A227",
-    "accentColor": "#111111",
+    "accentColor": "#FDB913",
     "active": true,
     "isCurrentSuperLeague": false,
     "playable": false,
@@ -232,7 +232,7 @@
     "shortName": "OLD",
     "primaryColor": "#C8102E",
     "secondaryColor": "#FFFFFF",
-    "accentColor": "#FDB913",
+    "accentColor": "#111111",
     "active": true,
     "isCurrentSuperLeague": false,
     "playable": false,
@@ -255,7 +255,7 @@
     "active": true,
     "isCurrentSuperLeague": true,
     "playable": true,
-    "accentColor": "#C1272D"
+    "accentColor": "#FDB913"
   },
   {
     "id": "york",
@@ -299,7 +299,7 @@
     "active": false,
     "isCurrentSuperLeague": false,
     "playable": false,
-    "accentColor": "#FDB913"
+    "accentColor": "#111111"
   },
   {
     "id": "exiles",
