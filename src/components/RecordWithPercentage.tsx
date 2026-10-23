@@ -15,7 +15,8 @@ export function RecordWithPercentage({
   className = "",
   recordClassName = "",
   percentageClassName = "text-theme-primary",
-}: RecordWithPercentageProps) {
+  stacked = false,
+}: RecordWithPercentageProps & { stacked?: boolean }) {
   const w = Math.round(wins);
   const l = Math.round(losses);
   const games = w + l;
@@ -28,7 +29,7 @@ export function RecordWithPercentage({
       <span className={recordClassName}>
         {w}-{l}
       </span>
-      <span className={`ml-3 sm:ml-4 ${percentageClassName}`}>({pct}%)</span>
+      <span className={`${stacked ? "block sm:ml-4 sm:inline" : "ml-3 sm:ml-4"} ${percentageClassName}`}>({pct}%)</span>
     </span>
   );
 }
