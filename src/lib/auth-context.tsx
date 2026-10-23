@@ -37,6 +37,15 @@ import { refreshBoostInventoryFromCloud } from "./boosts/boostInventory";
 import { refreshAchievementsFromCloud } from "./achievements/achievementStorage";
 import { claimDeviceForAccount } from "./storage/account-owner";
 import { refundRetiredBoosts } from "./boosts/retired-boost-refund";
+import { mergeDailyFromCloud } from "./storage/daily-challenge-cloud";
+import {
+  loadLocalCareer,
+  loadLocalLegacy,
+  saveLocalCareer,
+  saveLocalLegacy,
+  syncCareerFromCloud,
+} from "./career/storage";
+import { submitCareerLeaderboards } from "./storage/career-leaderboard";
 
 function safeRefundRetiredBoosts(): void {
   try {
@@ -90,6 +99,24 @@ async function hydrateBoostInventoryFromCloud(): Promise<void> {
 
 async function hydrateAchievementsFromCloud(): Promise<void> {
   await refreshAchievementsFromCloud();
+}
+
+async function hydrateDailyChallengeFromCloud(): Promise<void> {
+  await mergeDailyFromCloud();
+}
+
+/**
+ * Manager career + legacy: CareerProvider only syncs on the Manager pages, but the profile
+ * (CoachCard) reads loadLocalLegacy() everywhere, so pull the cloud copy on login too and
+ * submit legacy records banked as a guest to the Manager boards.
+ */
+async function hydrateCareerFromCloud(): Promise<void> {
+  const result = await syncCareerFromCloud(loadLocalCareer(), loadLocalLegacy());
+  if (result.changed) {
+    saveLocalCareer(result.state);
+    saveLocalLegacy(result.legacy);
+  }
+  void submitCareerLeaderboards(result.legacy);
 }
 
 function applySession(session: Session | null, profile: UserProfile | null) {
@@ -172,6 +199,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         hydrateUiThemeFromCloud(),
         hydrateBoostInventoryFromCloud(),
         hydrateAchievementsFromCloud(),
+        hydrateDailyChallengeFromCloud(),
+        hydrateCareerFromCloud(),
       ]);
       for (const r of results) {
         if (r.status === "rejected") console.error("[auth] cloud hydrate step failed:", r.reason);
