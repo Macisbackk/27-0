@@ -8,16 +8,18 @@ export function ClubBadge({
   club,
   size = "md",
 }: {
-  club: Pick<CareerClub, "short" | "primary" | "secondary" | "name">;
+  club: Pick<CareerClub, "short" | "primary" | "secondary" | "name"> & { accent?: string };
   size?: "sm" | "md" | "lg";
 }) {
   const dims = size === "lg" ? "h-14 w-14 text-sm" : size === "sm" ? "h-7 w-7 text-[9px]" : "h-10 w-10 text-[11px]";
+  // Third kit colour as a thin inner ring, so clubs sharing two colours still look different.
+  const ring = club.accent && club.accent.toLowerCase() !== club.primary.toLowerCase() ? `inset 0 0 0 2px ${club.accent}` : undefined;
   return (
     <span
       aria-hidden
       title={club.name}
       className={`inline-flex shrink-0 items-center justify-center rounded-full border-2 font-display font-bold tracking-wide ${dims}`}
-      style={{ background: club.primary, borderColor: club.secondary, color: readableOn(club.primary) }}
+      style={{ background: club.primary, borderColor: club.secondary, color: readableOn(club.primary), boxShadow: ring }}
     >
       {club.short}
     </span>

@@ -59,18 +59,23 @@ function ThemePreview({ theme }: { theme: UiThemeDefinition }) {
         <span className="font-display text-[15px] leading-none" style={{ color: theme.primary }}>
           27<span className="text-white">-0</span>
         </span>
-        <span className="h-2 w-8 rounded-full bg-white/10" />
+        {/* The theme's three kit colours. */}
+        <span className="flex gap-1" aria-hidden>
+          <span className="h-2.5 w-2.5 rounded-full ring-1 ring-white/15" style={{ backgroundColor: theme.primary }} />
+          <span className="h-2.5 w-2.5 rounded-full ring-1 ring-white/15" style={{ backgroundColor: theme.secondary }} />
+          <span className="h-2.5 w-2.5 rounded-full ring-1 ring-white/15" style={{ backgroundColor: theme.tertiary }} />
+        </span>
       </div>
       <div className="mt-2.5 rounded-[10px] bg-pitch-900 p-2">
         <span className="block h-1.5 w-3/4 rounded-full bg-white/20" />
-        <span className="mt-1.5 block h-1.5 w-1/2 rounded-full bg-white/10" />
+        <span className="mt-1.5 block h-1.5 w-1/2 rounded-full" style={{ backgroundColor: theme.secondary, opacity: 0.8 }} />
         <span className="mt-2 block h-1 overflow-hidden rounded-full bg-white/10">
           <span className="block h-full w-2/3 rounded-full" style={{ backgroundColor: theme.primary }} />
         </span>
       </div>
       <span
         className="mt-2.5 block rounded-[10px] py-1.5 text-center font-cond text-[12px] font-bold"
-        style={{ backgroundColor: theme.primary, color: theme.textOnPrimary }}
+        style={{ backgroundColor: theme.primary, color: theme.textOnPrimary, boxShadow: `inset 0 0 0 1.5px ${theme.tertiary}` }}
       >
         Play
       </span>

@@ -7,7 +7,8 @@
     "secondaryColor": "#FFFFFF",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#F2E6C9"
   },
   {
     "id": "st-helens",
@@ -17,7 +18,8 @@
     "secondaryColor": "#FFFFFF",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#1F2A44"
   },
   {
     "id": "warrington",
@@ -27,7 +29,8 @@
     "secondaryColor": "#0066B3",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#FFFFFF"
   },
   {
     "id": "leeds",
@@ -37,7 +40,8 @@
     "secondaryColor": "#FDB913",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#FFFFFF"
   },
   {
     "id": "bradford",
@@ -47,7 +51,8 @@
     "secondaryColor": "#E30613",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#FFFFFF"
   },
   {
     "id": "catalans",
@@ -57,7 +62,8 @@
     "secondaryColor": "#FFFFFF",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#B5121B"
   },
   {
     "id": "hull-fc",
@@ -67,7 +73,8 @@
     "secondaryColor": "#FFFFFF",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#9CA3AF"
   },
   {
     "id": "hull-kr",
@@ -77,7 +84,8 @@
     "secondaryColor": "#FFFFFF",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#C9A227"
   },
   {
     "id": "leigh",
@@ -85,7 +93,7 @@
     "shortName": "LEI",
     "primaryColor": "#FFFFFF",
     "secondaryColor": "#E30613",
-    "accentColor": "#000000",
+    "accentColor": "#FDB913",
     "active": true,
     "isCurrentSuperLeague": true,
     "playable": true
@@ -98,7 +106,8 @@
     "secondaryColor": "#FFFFFF",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#D71920"
   },
   {
     "id": "castleford",
@@ -108,7 +117,8 @@
     "secondaryColor": "#000000",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#FFFFFF"
   },
   {
     "id": "huddersfield",
@@ -118,7 +128,8 @@
     "secondaryColor": "#FDB913",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#FFFFFF"
   },
   {
     "id": "salford",
@@ -132,7 +143,8 @@
     "aliases": [
       "Salford",
       "Salford City Reds"
-    ]
+    ],
+    "accentColor": "#FFFFFF"
   },
   {
     "id": "london",
@@ -180,7 +192,7 @@
     "shortName": "HAL",
     "primaryColor": "#1E4D9B",
     "secondaryColor": "#FFFFFF",
-    "accentColor": "#111111",
+    "accentColor": "#FFFFFF",
     "active": true,
     "isCurrentSuperLeague": false,
     "playable": false,
@@ -220,7 +232,7 @@
     "shortName": "OLD",
     "primaryColor": "#C8102E",
     "secondaryColor": "#FFFFFF",
-    "accentColor": "#0A2540",
+    "accentColor": "#FDB913",
     "active": true,
     "isCurrentSuperLeague": false,
     "playable": false,
@@ -242,7 +254,8 @@
     "secondaryColor": "#FFFFFF",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#C1272D"
   },
   {
     "id": "york",
@@ -252,7 +265,8 @@
     "secondaryColor": "#FFFFFF",
     "active": true,
     "isCurrentSuperLeague": true,
-    "playable": true
+    "playable": true,
+    "accentColor": "#1E4D9B"
   },
   {
     "id": "crusaders",
@@ -262,7 +276,8 @@
     "secondaryColor": "#000000",
     "active": false,
     "isCurrentSuperLeague": false,
-    "playable": false
+    "playable": false,
+    "accentColor": "#FDB913"
   },
   {
     "id": "psg",
@@ -272,7 +287,8 @@
     "secondaryColor": "#DA291C",
     "active": false,
     "isCurrentSuperLeague": false,
-    "playable": false
+    "playable": false,
+    "accentColor": "#FFFFFF"
   },
   {
     "id": "gateshead",
@@ -282,7 +298,8 @@
     "secondaryColor": "#FFFFFF",
     "active": false,
     "isCurrentSuperLeague": false,
-    "playable": false
+    "playable": false,
+    "accentColor": "#FDB913"
   },
   {
     "id": "exiles",
@@ -292,6 +309,7 @@
     "secondaryColor": "#FFFFFF",
     "active": false,
     "isCurrentSuperLeague": false,
-    "playable": false
+    "playable": false,
+    "accentColor": "#C9A227"
   }
 ]

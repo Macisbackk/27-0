@@ -99,13 +99,17 @@ export function ClubLogoBox({
     >
       <div className="absolute inset-0 flex">
         <span
-          className="h-full w-1/2"
+          className="h-full flex-[3]"
           style={{ backgroundColor: colors.primary }}
         />
         <span
-          className="h-full w-1/2"
+          className="h-full flex-[2]"
           style={{ backgroundColor: colors.secondary }}
         />
+        {colors.accent ? (
+          /* Third kit colour: tells apart clubs that share the same two main colours. */
+          <span className="h-full flex-[1]" style={{ backgroundColor: colors.accent }} />
+        ) : null}
       </div>
       <span
         className={`relative z-10 m-auto font-display font-bold leading-none tracking-[0.14em] ${dim.text}`}
