@@ -99,7 +99,9 @@ jobs:
           for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
           scripts/ci-run.sh "Site e2e" node scripts/e2e-site.mjs
       - name: UI audit screenshots (phone + desktop)
-        if: (success() || failure()) && github.event_name == 'pull_request'
+        # Off by default (it took ~13 min of every PR run). Push to a preview/* branch for screenshots,
+        # or add the "ui-audit" label to a PR to run it.
+        if: (success() || failure()) && github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'ui-audit')
         continue-on-error: true
         # Report-only: a hang here must never take the whole job past its limit.
         timeout-minutes: 25
