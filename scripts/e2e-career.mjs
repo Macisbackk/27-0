@@ -261,7 +261,7 @@ try {
   await sellButtons.first().waitFor({ timeout });
   if (await sellButtons.first().isEnabled()) {
     await sellButtons.first().click();
-    await page.getByRole("status").filter({ hasText: /Sold/ }).waitFor({ timeout });
+    await page.getByRole("status").filter({ hasText: / joins |Sold / }).waitFor({ timeout });
     step("Transfer window: sold a player");
   } else {
     // Letting contracts run out can leave the squad at the 20-man minimum: selling is then (rightly) blocked.
