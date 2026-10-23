@@ -105,19 +105,9 @@ for (const vp of [
   const page = wire(await context.newPage());
   for (const route of ROUTES) {
     currentWhere = `${route} @${vp.name}`;
-    const before = problems.length;
     const res = await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" }).catch((e) => (problems.push(`[${currentWhere}] navigation failed: ${e.message}`), null));
     if (res && res.status() >= 400) problems.push(`[${currentWhere}] status ${res.status()}`);
     await settle(page);
-    // A rare, unreproducible hydration race (#418) on CI runners: load the route once more. Only a
-    // repeat counts as a problem; a one-off is noted so it stays visible.
-    const fresh = problems.slice(before);
-    if (fresh.length && fresh.every((p) => /error #418/.test(p))) {
-      problems.splice(before);
-      await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" }).catch(() => {});
-      await settle(page);
-      if (problems.length === before) note(`one-off hydration race on ${currentWhere} (clean on reload)`);
-    }
     const title = await page.title();
     if (!title) problems.push(`[${currentWhere}] empty <title>`);
     if (vp.mobile) await sideways(page, currentWhere);
