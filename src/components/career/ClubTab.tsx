@@ -5,6 +5,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { MobileModal } from "@/components/ui/MobileOverlay";
 import { formatMoney, prestigeRatingCap } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
+import { playUiClick, playWarning } from "@/lib/sound";
 import { Card, Eyebrow, ProgressBar, Stars } from "./bits";
 import { TransferRoundUp } from "./TransferNews";
 
@@ -86,8 +87,8 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
           </p>
         </div>
         <div className="flex gap-2">
-          <GameButton size="sm" variant="secondary" fullWidth={false} onClick={onOpenVault}>Legend Vault</GameButton>
-          <GameButton size="sm" variant="secondary" fullWidth={false} onClick={onOpenRecords}>Records</GameButton>
+          <GameButton size="sm" variant="secondary" fullWidth={false} onClick={() => { playUiClick(); onOpenVault(); }}>Legend Vault</GameButton>
+          <GameButton size="sm" variant="secondary" fullWidth={false} onClick={() => { playUiClick(); onOpenRecords(); }}>Records</GameButton>
         </div>
       </Card>
 
@@ -103,7 +104,7 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
       </Card>
 
       <div className="text-center">
-        <button type="button" onClick={() => setConfirm(true)} className="text-xs text-gray-500 underline-offset-2 hover:text-danger hover:underline">
+        <button type="button" onClick={() => { playWarning(); setConfirm(true); }} className="text-xs text-gray-500 underline-offset-2 hover:text-danger hover:underline">
           Start a new career
         </button>
       </div>

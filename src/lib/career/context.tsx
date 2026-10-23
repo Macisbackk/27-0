@@ -3,6 +3,10 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { isLoggedIn } from "../auth-session";
 import { submitCareerLeaderboards } from "../storage/career-leaderboard";
+import {
+  triggerCareerSeasonAchievements,
+  triggerCareerStartedAchievements,
+} from "../achievements/achievementTriggers";
 import { bankSeason, emptyLegacy, unlockLegend as unlockLegendPure, type RecordBreaks } from "./legacy";
 import { autoPickLineup } from "./players";
 import {
@@ -43,7 +47,7 @@ import {
   saveLocalLegacy,
   syncCareerFromCloud,
 } from "./storage";
-import type { CareerLegacy, CareerState, Tactic } from "./types";
+import type { CareerLegacy, CareerState, SeasonOutcome, Tactic } from "./types";
 import { createCareer } from "./world";
 
 interface CareerContextValue {
@@ -142,11 +146,14 @@ export function CareerProvider({ children }: { children: ReactNode }) {
     (next: CareerState) => {
       if (next.phase === "review" && next.lastOutcome && !next.lastOutcome.banked) {
         const { legacy: banked, breaks } = bankSeason(legacyRef.current, next, next.lastOutcome);
-        const marked: CareerState = { ...next, lastOutcome: { ...next.lastOutcome, banked: true } };
+        const outcome: SeasonOutcome = { ...next.lastOutcome, banked: true };
+        const marked: CareerState = { ...next, lastOutcome: outcome };
         marked.history = marked.history.map((h, i) => (i === marked.history.length - 1 ? { ...h, banked: true } : h));
         setRecordBreaks(breaks);
         commit(marked, banked, true);
         void submitCareerLeaderboards(banked);
+        // Manager Mode achievements (Gaffer, Silverware, Deadline Dealer, ...) — once per banked season.
+        triggerCareerSeasonAchievements(outcome, banked, marked);
         return;
       }
       commit(next);
@@ -232,6 +239,7 @@ export function CareerProvider({ children }: { children: ReactNode }) {
       const nextLegacy = { ...legacyRef.current, careersStarted: legacyRef.current.careersStarted + 1, updatedAt: Date.now() };
       setRecordBreaks(null);
       commit(next, nextLegacy);
+      triggerCareerStartedAchievements(nextLegacy);
     },
     abandonCareer: () => {
       setRecordBreaks(null);

@@ -1,4 +1,5 @@
 import type { MatchFixture } from "../game/season-simulation";
+import type { CareerLegacy, CareerState, SeasonOutcome } from "../career/types";
 import { getSeasonGradeFromSquad } from "../grades";
 import { getSquadValue } from "../positions";
 import type { SquadSlot } from "../types";
@@ -158,6 +159,52 @@ export function triggerMiniGameAchievements(input: {
     hangmanWon: input.hangmanWon,
     higherLowerBestStreak: input.higherLowerBestStreak,
     higherLowerFivePickWins: input.higherLowerFivePickWins,
+  });
+}
+
+function sumCareerTrophies(legacy: CareerLegacy): number {
+  return Object.values(legacy.trophies ?? {}).reduce(
+    (sum, n) => sum + (typeof n === "number" ? n : 0),
+    0
+  );
+}
+
+/**
+ * Manager Mode: fired once per banked season from the career provider's settle().
+ * `legacy` is the legacy *after* banking this season, so trophy totals include it.
+ */
+export function triggerCareerSeasonAchievements(
+  outcome: SeasonOutcome,
+  legacy: CareerLegacy,
+  state: CareerState
+): void {
+  const trophies = outcome.trophies ?? [];
+  const deadlineDeal = (state.transfers ?? []).some(
+    (d) => d.year === outcome.year && d.user === true && d.deadlineDay === true
+  );
+  triggerAchievementCheck({
+    trigger: "career-season-completed",
+    careerSeasonCompleted: true,
+    careerSeasonTrophies: [...trophies],
+    careerPromoted: outcome.promoted === true,
+    careerRelegated: outcome.relegated === true,
+    careerPerfectSeason:
+      trophies.includes("perfect-season") ||
+      (outcome.played > 0 && outcome.won === outcome.played),
+    careerGrandFinalWon: trophies.includes("grand-final"),
+    careerChallengeCupWon: trophies.includes("challenge-cup"),
+    careerDeadlineDeal: deadlineDeal,
+    careerTotalTrophies: sumCareerTrophies(legacy),
+    careerCareersStarted: legacy.careersStarted,
+    careerSeasonsCompleted: Math.max(state.history?.length ?? 0, 1),
+  });
+}
+
+/** Manager Mode: fired when a new career is started (for the Legacy achievement). */
+export function triggerCareerStartedAchievements(legacy: CareerLegacy): void {
+  triggerAchievementCheck({
+    trigger: "career-started",
+    careerCareersStarted: legacy.careersStarted,
   });
 }
 

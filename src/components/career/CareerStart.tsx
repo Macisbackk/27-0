@@ -48,10 +48,10 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
             </p>
           </div>
           <div className="flex gap-2">
-            <GameButton size="sm" variant="secondary" fullWidth={false} onClick={onOpenVault}>
+            <GameButton size="sm" variant="secondary" fullWidth={false} onClick={() => { playUiClick(); onOpenVault(); }}>
               Legend Vault
             </GameButton>
-            <GameButton size="sm" variant="secondary" fullWidth={false} onClick={onOpenRecords}>
+            <GameButton size="sm" variant="secondary" fullWidth={false} onClick={() => { playUiClick(); onOpenRecords(); }}>
               Records
             </GameButton>
           </div>

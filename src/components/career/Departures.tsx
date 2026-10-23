@@ -5,7 +5,7 @@ import { GameButton } from "@/components/ui/GameButton";
 import { useArmed } from "@/hooks/useArmed";
 import { contractLabel, formatMoney, newDealLength, renewalFee } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
-import { playUiClick, playWarning } from "@/lib/sound";
+import { playContractSigned, playUiClick, playWarning } from "@/lib/sound";
 import { Card, Eyebrow, RatingPill } from "./bits";
 
 /**
@@ -72,12 +72,14 @@ export function Departures() {
                         size="sm"
                         disabled={s.budget < fee || !decisionsArmed}
                         onClick={() => {
-                          playUiClick();
                           const err = renew(p.id);
                           if (err === "budget") {
                             playWarning();
                             setError(`Not enough budget to renew ${p.name}.`);
-                          } else setError(null);
+                          } else {
+                            playContractSigned();
+                            setError(null);
+                          }
                         }}
                       >
                         {`Renew ${years} yr${years > 1 ? "s" : ""} · ${formatMoney(fee)}`}

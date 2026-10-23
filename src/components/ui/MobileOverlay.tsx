@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useId, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useRef, type ReactNode } from "react";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { BTN, MOBILE, SPACING, uiLayerClass } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
-import { playPanelClose } from "@/lib/sound";
+import { playPanelClose, playPopupOpen } from "@/lib/sound";
 
 interface MobileOverlayBaseProps {
   open: boolean;
@@ -38,6 +38,13 @@ function MobileOverlayShell({
     onClose();
   }, [onClose]);
   const panelRef = useModalA11y(open, handleClose);
+
+  // Sheet-open cue (the close cue plays from handleClose, so only the open edge is tracked here).
+  const wasOpen = useRef(false);
+  useEffect(() => {
+    if (open && !wasOpen.current) playPopupOpen();
+    wasOpen.current = open;
+  }, [open]);
 
   if (!open) return null;
 
