@@ -58,8 +58,8 @@ export function GuestNotice({
           className="inline-block text-sm font-semibold text-theme-primary hover:underline"
         >
           {isDaily
-            ? "Log in to sync your Daily streak →"
-            : "Log in to put your run on the leaderboard →"}
+            ? "Log in to sync your Daily streak and bank a £100k welcome bonus →"
+            : "Log in to put your run on the leaderboard and bank a £100k welcome bonus →"}
         </Link>
       </div>
     );
@@ -73,7 +73,8 @@ export function GuestNotice({
         className="font-semibold text-theme-primary hover:underline"
       >
         Log in
-      </Link>
+      </Link>{" "}
+      for a £100k welcome bonus.
     </p>
   );
 }

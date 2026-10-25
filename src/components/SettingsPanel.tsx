@@ -245,7 +245,7 @@ export function SettingsPanel() {
         ) : (
           <>
             <Row label="Playing as a guest" hint="Progress is saved on this device only." />
-            <LinkRow href="/login" label="Log in or create an account" hint="Save progress online and join the leaderboards." />
+            <LinkRow href="/login" label="Log in or create an account" hint="Save progress online, join the leaderboards and bank a £100k welcome bonus." />
           </>
         )}
       </Group>

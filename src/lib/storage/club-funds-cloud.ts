@@ -10,9 +10,19 @@ interface ClubFundsState {
   paidRunIds: string[];
 }
 
-export async function loadCloudClubFunds(): Promise<ClubFundsState | null> {
+export interface CloudClubFundsLoad {
+  /** True when the cloud answered (a missing row is still ok); false when offline / errored. */
+  ok: boolean;
+  state: ClubFundsState | null;
+}
+
+/**
+ * Like loadCloudClubFunds but says whether the cloud actually answered, so one-off account
+ * grants (the login welcome) can tell "new account, no row yet" from "request failed".
+ */
+export async function loadCloudClubFundsResult(): Promise<CloudClubFundsLoad> {
   const userId = getAuthUserId();
-  if (!userId || !isSupabaseConfigured) return null;
+  if (!userId || !isSupabaseConfigured) return { ok: false, state: null };
 
   try {
     const { data, error } = await supabase
@@ -24,26 +34,33 @@ export async function loadCloudClubFunds(): Promise<ClubFundsState | null> {
       .maybeSingle();
 
     if (error) throw error;
-    if (!data?.stat_json) return null;
+    if (!data?.stat_json) return { ok: true, state: null };
 
     const json = data.stat_json as Partial<ClubFundsState>;
     return {
-      balance:
-        typeof json.balance === "number" && json.balance >= 0 ? json.balance : 0,
-      totalEarned:
-        typeof json.totalEarned === "number" && json.totalEarned >= 0
-          ? json.totalEarned
-          : typeof json.balance === "number"
-            ? json.balance
-            : 0,
-      paidRunIds: Array.isArray(json.paidRunIds)
-        ? json.paidRunIds.filter((id) => typeof id === "string")
-        : [],
+      ok: true,
+      state: {
+        balance:
+          typeof json.balance === "number" && json.balance >= 0 ? json.balance : 0,
+        totalEarned:
+          typeof json.totalEarned === "number" && json.totalEarned >= 0
+            ? json.totalEarned
+            : typeof json.balance === "number"
+              ? json.balance
+              : 0,
+        paidRunIds: Array.isArray(json.paidRunIds)
+          ? json.paidRunIds.filter((id) => typeof id === "string")
+          : [],
+      },
     };
   } catch (err) {
     console.error("[club-funds-cloud] load failed:", err);
-    return null;
+    return { ok: false, state: null };
   }
+}
+
+export async function loadCloudClubFunds(): Promise<ClubFundsState | null> {
+  return (await loadCloudClubFundsResult()).state;
 }
 
 export async function saveCloudClubFunds(state: ClubFundsState): Promise<void> {

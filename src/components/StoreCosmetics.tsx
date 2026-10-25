@@ -13,15 +13,26 @@ import {
   KIT_DESIGNER_ID,
   KIT_PATTERNS,
   PITCH_STYLES,
+  cosmeticsOfKind,
   kitFromDesign,
   pitchStyleForItem,
   type CosmeticItem,
-  type CosmeticKind,
 } from "@/lib/cosmetics";
 import { equipCosmetic, purchaseCosmetic, setKitDesign, useCosmetics } from "@/lib/storage/cosmetics-store";
 import { playThemePurchaseFail, playThemePurchaseSuccess, playThemeSelect, playUiClick } from "@/lib/sound";
 
-const items = (kind: CosmeticKind) => COSMETICS.filter((c) => c.kind === kind);
+/** Starter rung first, then the rest of the catalogue. */
+const items = cosmeticsOfKind;
+
+/** Small tag on the cheap first-rung items so a new player spots what they can reach. */
+function StarterTag({ item, className = "" }: { item: CosmeticItem | null | undefined; className?: string }) {
+  if (item?.tier !== "starter") return null;
+  return (
+    <span className={`inline-flex shrink-0 items-center rounded-full bg-lime-300/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-lime-300 ${className}`}>
+      Starter
+    </span>
+  );
+}
 
 function useBuy(balance: number) {
   const [message, setMessage] = useState<string | null>(null);
@@ -167,7 +178,10 @@ export function KitAndPitchStore({ balance }: { balance: number }) {
                   <div className="absolute left-0 right-0 top-1/2 h-[2px]" style={{ background: look.line }} />
                 </div>
                 <div className="p-2.5">
-                  <p className="text-sm font-bold text-white">{look.label}</p>
+                  <p className="flex flex-wrap items-center gap-1.5 text-sm font-bold text-white">
+                    <span>{look.label}</span>
+                    <StarterTag item={item} />
+                  </p>
                   <div className="mt-2">
                     {owned ? (
                       <GameButton
@@ -207,8 +221,9 @@ export function TitlesStore({ balance }: { balance: number }) {
           const active = c.equipped.title === item.id;
           return (
             <li key={item.id} className="flex items-center gap-3 py-2.5">
-              <span className="min-w-0 flex-1">
+              <span className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
                 <span className="inline-flex rounded-full bg-amber-400/15 px-2.5 py-1 text-xs font-bold text-amber-300">{item.name}</span>
+                <StarterTag item={item} />
               </span>
               {owned ? (
                 <GameButton
@@ -239,7 +254,7 @@ export function FramesStore({ balance }: { balance: number }) {
   return (
     <Section title="Leaderboard frames" intro="Frame your whole row on every leaderboard. Everyone sees it.">
       {message ? <p className="mb-2 text-sm text-theme-primary" role="status">{message}</p> : null}
-      <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
         {items("frame").map((item) => {
           const owned = c.owned.includes(item.id);
           const active = c.equipped.frame === item.id;
@@ -251,7 +266,10 @@ export function FramesStore({ balance }: { balance: number }) {
                 <span className="text-sm font-semibold text-accent-gold">27-0</span>
               </div>
               <div className="flex items-center justify-between gap-2">
-                <p className="text-sm font-bold text-white">{item.name}</p>
+                <p className="flex min-w-0 flex-wrap items-center gap-1.5 text-sm font-bold text-white">
+                  <span>{item.name}</span>
+                  <StarterTag item={item} />
+                </p>
               {owned ? (
                 <GameButton
                   size="sm"
