@@ -2,12 +2,16 @@
 
 import { TYPO } from "@/lib/ui/typography";
 import { CountUp } from "@/components/ui/CountUp";
+import { formatChemistryBonus } from "@/lib/game/chemistry";
 
 interface MatchdayScoreboardProps {
   filledCount: number;
   totalSlots: number;
   /** Average peak rating of drafted players (1 decimal). Hidden in hard mode. */
   averageSquadRating: number;
+  /** Squad chemistry bonus (+0.5 per linked pair, capped at +3.0). */
+  chemistryBonus?: number;
+  chemistryLinks?: number;
   hardMode?: boolean;
 }
 
@@ -15,9 +19,12 @@ export function MatchdayScoreboard({
   filledCount,
   totalSlots,
   averageSquadRating,
+  chemistryBonus = 0,
+  chemistryLinks = 0,
   hardMode = false,
 }: MatchdayScoreboardProps) {
   const showRating = !hardMode && filledCount > 0;
+  const showChemistry = showRating && chemistryBonus > 0;
 
   // One compact strip so the whole team sheet fits on a phone screen above the action bar.
   return (
@@ -54,6 +61,17 @@ export function MatchdayScoreboard({
             "—"
           )}
         </p>
+        {showChemistry ? (
+          <p className="mt-1 flex justify-end">
+            <span
+              className="inline-flex items-center rounded-full bg-lime-400/15 px-2 py-0.5 text-[11px] font-bold leading-none text-lime-300"
+              title={`${chemistryLinks} linked ${chemistryLinks === 1 ? "pair" : "pairs"} — same club or era year, side by side`}
+              aria-label={`Chemistry ${formatChemistryBonus(chemistryBonus)} from ${chemistryLinks} linked ${chemistryLinks === 1 ? "pair" : "pairs"}`}
+            >
+              Chemistry {formatChemistryBonus(chemistryBonus)}
+            </span>
+          </p>
+        ) : null}
       </div>
     </div>
   );

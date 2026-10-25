@@ -143,6 +143,8 @@ import {
 } from "@/lib/game/boosted-spin-plan";
 import { pickLegendSpinSlotIndex } from "@/lib/game/legend-spin";
 import { getSpinRuleFilter } from "@/lib/game/daily-rule-filter";
+import { computeChemistry } from "@/lib/game/chemistry";
+import type { HalfwayCallId } from "@/lib/game/halfway-call";
 import { DailyRuleBanner } from "./DailyRuleBanner";
 import { getPlayerTeamYearIds } from "@/lib/game/team-year-pools";
 import type { SpinPoolVariant } from "@/lib/game/player-pool-eligibility";
@@ -311,6 +313,8 @@ export function GameBoard({
   const [rerollsThisRun, setRerollsThisRun] = useState(0);
   const rerollsThisRunRef = useRef(0);
   const [seasonResult, setSeasonResult] = useState<SeasonResult | null>(null);
+  /** Mid-season fork — null until the player picks at round 14. */
+  const [halfwayCall, setHalfwayCall] = useState<HalfwayCallId | null>(null);
   const [runRank, setRunRank] = useState<number | undefined>();
   const [submittedOnline, setSubmittedOnline] = useState(false);
   const [clubFundsPayout, setClubFundsPayout] =
@@ -899,6 +903,7 @@ export function GameBoard({
   const filledCount = getFilledCount(squad);
   const totalValue = getSquadValue(squad);
   const averageSquadRating = getAverageSquadRating(squad);
+  const chemistry = useMemo(() => computeChemistry(squad), [squad]);
 
   // Refresh the boost-ownership snapshot only while the run hasn't started.
   const runNotStarted = filledCount === 0 && phase === "pitch";
@@ -1054,6 +1059,7 @@ export function GameBoard({
 
   const resetRun = useCallback(() => {
     clearBoostedFirstPickPlan();
+    setHalfwayCall(null);
     setBoostedFirstPick(null);
     setRunKey((k) => k + 1);
     setPhase("pitch");
@@ -1105,6 +1111,8 @@ export function GameBoard({
         forceUndefeated: superSamHallasMode,
         joeMellorMode,
       });
+      // Fresh season: the round-14 fork is open again.
+      setHalfwayCall(null);
       setSeasonResult(result);
       setPhase("simulation");
       setReviewStage("regular");
@@ -1122,6 +1130,38 @@ export function GameBoard({
       normalEraMode,
       dailyChallengeMode,
       dailyScenario?.forceOpponentClub,
+    ]
+  );
+
+  /**
+   * Round-14 fork. Rounds 1–14 are already decided (per-match RNG streams), so
+   * re-simulating with the same seed + choice only reshapes rounds 15–27 —
+   * deterministic, so a Daily Challenge season is fair for everyone on the seed.
+   */
+  const handleHalfwayCall = useCallback(
+    (choice: HalfwayCallId) => {
+      if (phase !== "simulation" || halfwayCall !== null) return;
+      setHalfwayCall(choice);
+      const result = simulateSeason(squad, seed, {
+        draftMode: isDraftMode,
+        currentSeasonOnly: !normalEraMode,
+        forceOpponentClub: dailyScenario?.forceOpponentClub ?? undefined,
+        forceUndefeated: superSamHallasMode,
+        joeMellorMode,
+        halfwayCall: choice,
+      });
+      setSeasonResult(result);
+    },
+    [
+      phase,
+      halfwayCall,
+      squad,
+      seed,
+      isDraftMode,
+      normalEraMode,
+      dailyScenario?.forceOpponentClub,
+      superSamHallasMode,
+      joeMellorMode,
     ]
   );
 
@@ -2577,6 +2617,8 @@ export function GameBoard({
             filledCount={filledCount}
             totalSlots={TOTAL_SLOTS}
             averageSquadRating={averageSquadRating}
+            chemistryBonus={chemistry.bonus}
+            chemistryLinks={chemistry.links.length}
             hardMode={difficulty === "HARD"}
           />
 
@@ -2743,6 +2785,8 @@ export function GameBoard({
               <SeasonSimulation
                 result={seasonResult}
                 onComplete={handleSimulationComplete}
+                halfwayCall={halfwayCall}
+                onHalfwayCall={handleHalfwayCall}
               />
             </div>
           )}

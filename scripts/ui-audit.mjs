@@ -109,7 +109,7 @@ await shot(page, "classic-simulating", { full: false });
 for (let i = 0; i < 20; i++) {
   const text = await page.locator("main").innerText().catch(() => "");
   if (/Regular Season Record/i.test(text)) break;
-  await tap(page, [/Skip to full time/i, /^Continue$/i, /View (season )?review/i]);
+  await tap(page, [/Push for the top two/i, /Rest the stars/i, /Chase the points difference/i, /Skip to full time/i, /^Continue$/i, /View (season )?review/i]);
   await page.waitForTimeout(800);
 }
 await settle(page, 800);
