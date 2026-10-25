@@ -31,6 +31,12 @@ import {
   getSeasonLeagueClubs,
 } from "./league-replacement";
 import { getDreamTeamTablePosition } from "./league-table";
+import { computeChemistry } from "./chemistry";
+import {
+  applyHalfwayScoreEffect,
+  getHalfwayRatingDelta,
+  type HalfwayCallChoice,
+} from "./halfway-call";
 
 export const SEASON_GAMES = 27;
 export const DREAM_TEAM_NAME = "Dream Team";
@@ -173,6 +179,10 @@ export interface SeasonResult {
   forceOpponentClub?: string;
   /** Super League play-offs after regular season (top six). */
   playoffResult?: import("./playoff-simulation").PlayoffResult;
+  /** Squad chemistry bonus applied to the effective team rating (0 … +3.0). */
+  chemistryBonus?: number;
+  /** Mid-season fork chosen at round 14 ("none" when skipped without choosing). */
+  halfwayCall?: HalfwayCallChoice;
 }
 
 const FORWARD_POSITIONS = new Set([
@@ -605,6 +615,11 @@ export interface SimulateFixtureOptions {
   allowDraw?: boolean;
   /** Force a user win (e.g. Super Sam Hallas Mode). */
   forceUserWin?: boolean;
+  /**
+   * Added to the user's effective average rating before the gap is resolved
+   * (squad chemistry + mid-season fork). Never shown as the squad's OVR.
+   */
+  ratingAdjustment?: number;
 }
 
 export interface SimulateSeasonOptions {
@@ -618,6 +633,10 @@ export interface SimulateSeasonOptions {
   forceUndefeated?: boolean;
   /** Joe Mellor GOAT Mode — all user tries go to Joe. */
   joeMellorMode?: boolean;
+  /** Squad chemistry links add to the effective rating (default true). */
+  applyChemistry?: boolean;
+  /** Mid-season fork — reshapes rounds 15–27 only. Omit / "none" for no change. */
+  halfwayCall?: HalfwayCallChoice;
 }
 
 export interface ScheduledFixture {
@@ -742,7 +761,8 @@ function resolveOutcome(
   options: SimulateFixtureOptions = {}
 ): { won: boolean; isUpset: boolean; ratingGap: number } {
   const avgRating =
-    options.userRatingOverride ?? getAverageSquadRating(squad);
+    (options.userRatingOverride ?? getAverageSquadRating(squad)) +
+    (options.ratingAdjustment ?? 0);
   const totalValue = getSquadValue(squad);
   const ratingGap = avgRating - opponentStrength;
   const draftMode = options.draftMode ?? false;
@@ -1076,7 +1096,8 @@ export function simulateOneFixture(
         won: true,
         isUpset: false,
         ratingGap:
-          (options.userRatingOverride ?? getAverageSquadRating(squad)) -
+          (options.userRatingOverride ?? getAverageSquadRating(squad)) +
+          (options.ratingAdjustment ?? 0) -
           opponentStrength,
       }
     : resolveOutcome(
@@ -1189,6 +1210,9 @@ export function simulateSeason(
     ...(allowDraw ? { allowDraw: true } : {}),
     ...(forceUndefeated ? { forceUserWin: true } : {}),
   };
+  const chemistryBonus =
+    options.applyChemistry === false ? 0 : computeChemistry(squad).bonus;
+  const halfwayCall: HalfwayCallChoice = options.halfwayCall ?? "none";
 
   let wins = 0;
   let losses = 0;
@@ -1202,19 +1226,24 @@ export function simulateSeason(
   for (let i = 0; i < SEASON_GAMES; i++) {
     const { opponent, isHome } = opponents[i];
     const round = i + 1;
-    const simOptions: SimulateFixtureOptions = draftMode
-      ? {
-          ...fixtureOptions,
-          opponentRatingOverride: getOpponentMatchRating(
-            opponent,
-            seed,
-            round,
-            { draftMode: true, currentSeasonOnly }
-          ),
-        }
-      : fixtureOptions;
+    const ratingAdjustment =
+      chemistryBonus + getHalfwayRatingDelta(halfwayCall, round);
+    const simOptions: SimulateFixtureOptions = {
+      ...fixtureOptions,
+      ...(ratingAdjustment !== 0 ? { ratingAdjustment } : {}),
+      ...(draftMode
+        ? {
+            opponentRatingOverride: getOpponentMatchRating(
+              opponent,
+              seed,
+              round,
+              { draftMode: true, currentSeasonOnly }
+            ),
+          }
+        : {}),
+    };
 
-    const { fixture, state: nextState } = simulateOneFixture(
+    const { fixture: rawFixture, state: nextState } = simulateOneFixture(
       squad,
       opponent,
       isHome,
@@ -1223,6 +1252,7 @@ export function simulateSeason(
       state,
       simOptions
     );
+    const fixture = applyHalfwayScoreEffect(rawFixture, halfwayCall);
     state = nextState;
 
     if (fixture.result === "W") {
@@ -1270,6 +1300,8 @@ export function simulateSeason(
     insights: [],
     replacedTeam,
     ...(forcedClub ? { forceOpponentClub: forcedClub } : {}),
+    chemistryBonus,
+    halfwayCall,
   };
 
   partialResult.insights = generateSeasonInsights(partialResult);

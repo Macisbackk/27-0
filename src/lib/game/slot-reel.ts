@@ -11,7 +11,7 @@ export const SLOT_REEL_VISIBLE_ROWS = 3;
 export const SLOT_REEL_STRIP_COPIES = 5;
 
 /** Total continuous spin duration (ms). */
-export const DEFAULT_SPIN_DURATION_MS = 2800;
+export const DEFAULT_SPIN_DURATION_MS = 2300;
 
 /** Minimum pool-lengths the strip must travel during a spin. */
 export const MIN_SPIN_POOL_LOOPS = 3;

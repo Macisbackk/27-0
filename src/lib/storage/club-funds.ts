@@ -27,7 +27,7 @@ const DATED_ID_KEEP_DAYS = 45;
 /**
  * Trim the paid-id ledger without re-opening old rewards. A plain `slice(-200)` let 200 cheap
  * wins push out today's daily / achievement ids, which then paid out again.
- * - permanent ids (achievements, themes, starter grant): kept forever (bounded by catalogue size)
+ * - permanent ids (achievements, themes, starter grant, login welcome): kept forever (bounded by catalogue size)
  * - dated ids (daily-YYYY-MM-DD-…, hangman_win:YYYY-MM-DD…, wordle_win:…, hol_five:…): kept 45 days
  * - one-off run / boost ids: newest MAX_PAID_RUN_IDS
  */
@@ -36,7 +36,13 @@ export function trimPaidRunIds(ids: string[], now: Date = new Date()): string[] 
   const keep: string[] = [];
   const oneOff: string[] = [];
   for (const id of new Set(ids)) {
-    if (id === CLUB_FUNDS_STARTER_RUN_ID || id.startsWith("achievement-") || id.startsWith("theme-") || id.startsWith("cosmetic-")) {
+    if (
+      id === CLUB_FUNDS_STARTER_RUN_ID ||
+      id.startsWith("achievement-") ||
+      id.startsWith("theme-") ||
+      id.startsWith("cosmetic-") ||
+      id.startsWith("login-welcome")
+    ) {
       keep.push(id);
       continue;
     }

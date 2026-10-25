@@ -44,6 +44,8 @@ export async function recordCompletedRun(
     topSixFinish?: boolean;
     /** Daily Challenge runs stay off the Classic Quick leaderboard. */
     dailyChallengeMode?: boolean;
+    /** Weekly Challenge runs: own board (storage/weekly-leaderboard.ts), treated like the Daily here. */
+    weeklyChallengeMode?: boolean;
   }
 ): Promise<CompletedRunResult> {
   const totalValue = run.totalValue || getSquadValue(run.squad);
@@ -56,7 +58,8 @@ export async function recordCompletedRun(
   const loggedIn = isLoggedIn();
   const isHiddenRun =
     options?.joeMellorMode === true || options?.superSamHallasMode === true;
-  const isDailyChallenge = options?.dailyChallengeMode === true;
+  const isDailyChallenge =
+    options?.dailyChallengeMode === true || options?.weeklyChallengeMode === true;
   // Ball Knower (HARD) still counts towards lifetime stats but, like the Daily, is never
   // ranked: no leaderboard row and no trophy-cabinet sync.
   const isBallKnower = difficulty === "HARD";
@@ -150,13 +153,16 @@ export async function recordPlayoffCompletion(
     usedBoosts?: boolean;
     /** Daily Challenge runs stay off the Classic Quick leaderboard. */
     dailyChallengeMode?: boolean;
+    /** Weekly Challenge runs: own board (storage/weekly-leaderboard.ts), treated like the Daily here. */
+    weeklyChallengeMode?: boolean;
   }
 ): Promise<CompletedRunResult> {
   const totalValue = run.totalValue || getSquadValue(run.squad);
   const loggedIn = isLoggedIn();
   const modeVariant = resolveClassicModeVariant({ modeVariant: run.modeVariant });
   const statsBucket = resolveStatsBucket(run.mode, difficulty, modeVariant);
-  const isDailyChallenge = options.dailyChallengeMode === true;
+  const isDailyChallenge =
+    options.dailyChallengeMode === true || options.weeklyChallengeMode === true;
   // Ball Knower (HARD): lifetime stats yes, leaderboard / trophy board no (mirrors the Daily).
   const isBallKnower = difficulty === "HARD";
   const excludeFromLeaderboard = isDailyChallenge || isBallKnower;

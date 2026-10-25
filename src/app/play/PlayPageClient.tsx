@@ -10,6 +10,11 @@ import {
   getDailyChallengeScenario,
   isDailyChallengeActive,
 } from "@/lib/daily-challenge";
+import {
+  getWeeklyChallengeHref,
+  getWeeklyChallengeScenario,
+  isWeeklyChallengeActive,
+} from "@/lib/weekly-challenge";
 import { getPlayPageTitle } from "@/lib/mode-labels";
 import { isNormalEraMode } from "@/lib/play-links";
 import type { GameDifficulty, GameMode } from "@/lib/types";
@@ -28,8 +33,9 @@ export function PlayPageClient() {
   const draft = searchParams.get("draft");
   const fantasy = searchParams.get("fantasy");
   const daily = searchParams.get("daily");
+  const weekly = searchParams.get("weekly");
   // Ball Knower (Store): Classic with every rating hidden. null = still checking ownership.
-  const wantsBallKnower = searchParams.get("bk") === "1" && daily !== "1";
+  const wantsBallKnower = searchParams.get("bk") === "1" && daily !== "1" && weekly !== "1";
   const [ballKnower, setBallKnower] = useState<boolean | null>(wantsBallKnower ? null : false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -49,9 +55,12 @@ export function PlayPageClient() {
   const isDaily =
     SHOW_DAILY_CHALLENGE_UI && isDailyChallengeActive({ daily });
   const dailyScenario = isDaily ? getDailyChallengeScenario() : null;
+  // The Daily wins if both flags are set (GameStarter does the same).
+  const isWeekly = SHOW_DAILY_CHALLENGE_UI && !isDaily && isWeeklyChallengeActive({ weekly });
+  const weeklyScenario = isWeekly ? getWeeklyChallengeScenario() : null;
 
   useEffect(() => {
-    if (!SHOW_DAILY_CHALLENGE_UI && daily === "1") {
+    if (!SHOW_DAILY_CHALLENGE_UI && (daily === "1" || weekly === "1")) {
       router.replace("/play");
       return;
     }
@@ -74,6 +83,14 @@ export function PlayPageClient() {
         router.replace(getDailyChallengeHref());
       }
     }
+    // Same for the Weekly: Current/Era comes from the week's rule, not the URL.
+    if (isWeekly && weeklyScenario) {
+      const expectedEra = getWeeklyChallengeHref().includes("era=1");
+      const currentEra = searchParams.get("era") === "1";
+      if (expectedEra !== currentEra) {
+        router.replace(getWeeklyChallengeHref());
+      }
+    }
   }, [
     isHiddenMode,
     cup,
@@ -85,12 +102,17 @@ export function PlayPageClient() {
     router,
     isDaily,
     dailyScenario,
+    weekly,
+    isWeekly,
+    weeklyScenario,
     searchParams,
   ]);
 
   const wantsNormalEra = dailyScenario
     ? dailyScenario.eraMode
-    : isNormalEraMode({ era, cup });
+    : weeklyScenario
+      ? weeklyScenario.eraMode
+      : isNormalEraMode({ era, cup });
   const difficulty: GameDifficulty = ballKnower ? "HARD" : "NORMAL";
   const mode: GameMode = "CLASSIC";
 
@@ -106,7 +128,9 @@ export function PlayPageClient() {
       ? "Joe Mellor GOAT Mode"
       : isDaily && dailyScenario
         ? `Daily: ${dailyScenario.ruleTitle}`
-        : getPlayPageTitle(mode, difficulty, wantsNormalEra);
+        : isWeekly && weeklyScenario
+          ? `Weekly: ${weeklyScenario.ruleTitle}`
+          : getPlayPageTitle(mode, difficulty, wantsNormalEra);
 
   return (
     <GameStarter

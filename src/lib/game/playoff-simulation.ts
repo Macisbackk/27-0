@@ -13,6 +13,7 @@ import {
   pickDecisiveScorePair,
 } from "./rl-scores";
 import { distributeSeasonTries, type PlayerTryTotal } from "./season-tries";
+import { computeChemistry } from "./chemistry";
 import type { SquadSlot } from "../types";
 
 export const PLAYOFF_QUALIFIERS = 6;
@@ -126,6 +127,9 @@ function simulateUserKnockout(
   const opponentStrength =
     getGeneratedClubSquadStrength(opponent, seed, "season") + (isHome ? 0 : 3);
 
+  // Squad chemistry carries into the knockouts — same links, same bonus as the league.
+  const chemistryBonus = computeChemistry(squad).bonus;
+
   const { fixture } = simulateOneFixture(
     squad,
     opponent,
@@ -137,6 +141,7 @@ function simulateUserKnockout(
       cupMode: true,
       opponentRatingOverride: opponentStrength,
       draftMode: false,
+      ...(chemistryBonus > 0 ? { ratingAdjustment: chemistryBonus } : {}),
     }
   );
 

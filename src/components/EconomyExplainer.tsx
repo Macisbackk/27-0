@@ -12,18 +12,18 @@ export function GuestSaveNudge({ context }: GuestSaveNudgeProps) {
   const copy =
     context === "manager-season"
       ? {
-          body: "Log in to sync. Export for backup.",
+          body: "Log in to sync and bank a £100k welcome bonus. Export for backup.",
           href: "/login?redirect=/leaderboard",
           cta: "Log in to submit",
         }
       : context === "daily-challenge"
         ? {
-            body: "Log in to sync your Daily Challenge streak.",
+            body: "Log in to sync your Daily Challenge streak and bank a £100k welcome bonus.",
             href: "/login?redirect=/leaderboard?tracker=daily_streak",
             cta: "Save my streak",
           }
         : {
-            body: "Log in to submit this season to the leaderboard.",
+            body: "Log in to submit this season to the leaderboard and bank a £100k welcome bonus.",
             href: "/login?redirect=/leaderboard",
             cta: "Log in to submit",
           };

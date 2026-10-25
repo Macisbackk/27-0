@@ -156,7 +156,10 @@ async function playClassic(route, label) {
       break;
     }
     const tapped = await tapFirst(page, [
-      /Skip boost|Continue without boost/i, /Auto.?fill squad/i, /Simulate season/i, /Skip/i, /Sim(ulate)? (to )?(end|all|rest)/i,
+      /Skip boost|Continue without boost/i, /Auto.?fill squad/i, /Simulate season/i,
+      // Round-14 fork ("Halfway. What's the plan?") — take a plan when it is up.
+      /Push for the top two/i, /Rest the stars/i, /Chase the points difference/i,
+      /Skip/i, /Sim(ulate)? (to )?(end|all|rest)/i,
       /^Continue$/i, /Next/i, /View (season )?review/i, /See (your )?review/i, /Finish/i,
     ]);
     if (tapped) seen.push(tapped.replace(/\\|\^|\$|\/i/g, ""));

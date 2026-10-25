@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ClubLogoBox } from "@/components/ClubBadge";
 import type { Player, SquadSlot } from "@/lib/types";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
+import { getChemistryGain, getNewChemistryLinks } from "@/lib/game/chemistry";
 import { getAgeAtYear, getPlayerAge } from "@/lib/players/player-age";
 import { formatShortYear } from "@/lib/players/prime-year";
 import { getClubColors } from "@/lib/clubs";
@@ -80,7 +81,28 @@ export function SlotTeamYearPicker({
       [...entries].sort((a, b) => b.player.peakRating - a.player.peakRating),
     [entries]
   );
-  const topRating = sortedEntries[0]?.player.peakRating ?? 0;
+
+  // Chemistry gained by signing each option into this slot (adjacent club / era-year links).
+  const chemistryFor = useMemo(() => {
+    if (!slot || !squad || hardMode) {
+      return () => ({ gain: 0, links: [] as ReturnType<typeof getNewChemistryLinks> });
+    }
+    return (player: Player) => ({
+      gain: getChemistryGain(squad, slot.slotIndex, player),
+      links: getNewChemistryLinks(squad, slot.slotIndex, player),
+    });
+  }, [slot, squad, hardMode]);
+
+  // "Top" = best rating plus chemistry gain, not the raw OVR.
+  const topScore = useMemo(
+    () =>
+      sortedEntries.reduce(
+        (best, { player }) =>
+          Math.max(best, player.peakRating + chemistryFor(player).gain),
+        -Infinity
+      ),
+    [sortedEntries, chemistryFor]
+  );
 
   // Team rating if you sign each player (only once someone is already in the side).
   const impactFor = useMemo(() => {
@@ -153,8 +175,11 @@ export function SlotTeamYearPicker({
             <>
               <ul className="fl-stagger flex flex-col gap-2" aria-label="Players you can sign">
                 {sortedEntries.map(({ player }) => {
+                  const chemistry = chemistryFor(player);
                   const isTopPick =
-                    !hardMode && player.peakRating === topRating && sortedEntries.length > 1;
+                    !hardMode &&
+                    sortedEntries.length > 1 &&
+                    Math.abs(player.peakRating + chemistry.gain - topScore) < 0.001;
                   const age = ageFor(player, target.year);
                   const meta = formatPlayerChoiceMetadata(player, { clubOverride: target.team, hardMode });
                   const tags = hardMode
@@ -198,7 +223,7 @@ export function SlotTeamYearPicker({
                           <span className="mt-0.5 block truncate text-[13px] text-[color:var(--fl-muted)]">
                             {metaLine}
                           </span>
-                          {impact || tags.length > 0 ? (
+                          {impact || chemistry.gain > 0 || tags.length > 0 ? (
                             <span className="mt-1 flex min-w-0 flex-wrap items-center gap-1.5 text-[12px] font-semibold">
                               {impact ? (
                                 <span className="tabular-nums text-gray-300">
@@ -215,6 +240,16 @@ export function SlotTeamYearPicker({
                                     {impact.delta > 0.05 ? "▲" : impact.delta < -0.05 ? "▼" : "•"}
                                     {Math.abs(impact.delta).toFixed(1)}
                                   </span>
+                                </span>
+                              ) : null}
+                              {chemistry.gain > 0 ? (
+                                <span
+                                  className="rounded-full bg-lime-400/15 px-1.5 py-0.5 text-[11px] font-bold leading-none text-lime-300"
+                                  title={chemistry.links
+                                    .map((l) => (l.reason === "club" ? `Same club (${l.label})` : `Same era year (${l.label})`))
+                                    .join(" · ")}
+                                >
+                                  +{chemistry.gain.toFixed(1)} link
                                 </span>
                               ) : null}
                               {tags.map((tag) => (

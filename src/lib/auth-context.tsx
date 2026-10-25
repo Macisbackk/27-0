@@ -28,8 +28,9 @@ import {
   markEmailConfirmPending,
 } from "./auth-callback";
 import { refreshCareerStatsFromCloud } from "./storage/stats";
-import { loadCloudClubFunds } from "./storage/club-funds-cloud";
+import { loadCloudClubFundsResult } from "./storage/club-funds-cloud";
 import { mergeClubFundsFromCloud, syncClubFundsLeaderboardOnLoad } from "./storage/club-funds";
+import { grantLoginWelcome } from "./storage/login-welcome";
 import { syncTrophyCabinetLeaderboardOnLoad } from "./storage/trophy-cabinet-leaderboard";
 import { mergeUiThemeStoreFromCloud } from "./storage/ui-theme-store";
 import { mergeCosmeticsFromCloud } from "./storage/cosmetics-store";
@@ -83,11 +84,31 @@ async function hydrateStatsFromCloud(): Promise<void> {
   await refreshCareerStatsFromCloud();
 }
 
-async function hydrateClubFundsFromCloud(): Promise<void> {
-  const cloud = await loadCloudClubFunds();
-  mergeClubFundsFromCloud(cloud);
+/** Resolves true when the cloud answered (so the account's paid ledger is merged locally). */
+async function hydrateClubFundsFromCloud(): Promise<boolean> {
+  const cloud = await loadCloudClubFundsResult();
+  mergeClubFundsFromCloud(cloud.state);
   syncClubFundsLeaderboardOnLoad();
   syncTrophyCabinetLeaderboardOnLoad();
+  return cloud.ok;
+}
+
+/**
+ * First sign-in on an account: £100k + Chalk frame, once per account. Only after the cloud funds
+ * and cosmetics merged successfully, so a returning coach's marker is here before we check it —
+ * if the cloud didn't answer we try again on the next hydrate rather than risk paying twice.
+ */
+function safeGrantLoginWelcome(
+  fundsHydrate: PromiseSettledResult<boolean>,
+  cosmeticsHydrate: PromiseSettledResult<void>
+): void {
+  if (fundsHydrate.status !== "fulfilled" || !fundsHydrate.value) return;
+  if (cosmeticsHydrate.status !== "fulfilled") return;
+  try {
+    grantLoginWelcome();
+  } catch (err) {
+    console.error("[auth] login welcome failed:", err);
+  }
 }
 
 async function hydrateUiThemeFromCloud(): Promise<void> {
@@ -195,7 +216,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // isn't merged into (and uploaded to) this account.
       claimDeviceForAccount(nextUser.id);
       // allSettled: one bad cloud row must not stop the rest from loading.
-      const results = await Promise.allSettled([
+      const [statsHydrate, fundsHydrate, themeHydrate, ...otherHydrates] = await Promise.allSettled([
         hydrateStatsFromCloud(),
         hydrateClubFundsFromCloud(),
         hydrateUiThemeFromCloud(),
@@ -204,12 +225,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         hydrateDailyChallengeFromCloud(),
         hydrateCareerFromCloud(),
       ]);
-      for (const r of results) {
+      for (const r of [statsHydrate, fundsHydrate, themeHydrate, ...otherHydrates]) {
         if (r.status === "rejected") console.error("[auth] cloud hydrate step failed:", r.reason);
       }
       // After funds + boosts are merged, so a boost bought on another device is refunded once.
       safeRefundRetiredBoosts();
       if (generation !== syncGenerationRef.current) return;
+      // After the account's funds + cosmetics merged, so it pays once per account, not per device.
+      safeGrantLoginWelcome(fundsHydrate, themeHydrate);
 
       hydratedSessionKey = sessionKey;
       window.dispatchEvent(new Event("auth-state-changed"));

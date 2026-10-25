@@ -14,10 +14,13 @@ import {
 import { getSeasonReviewLabel } from "@/lib/mode-labels";
 import { getSquadValue } from "@/lib/positions";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
+import { formatChemistryBonus } from "@/lib/game/chemistry";
+import { getHalfwayCallLabel } from "@/lib/game/halfway-call";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { playGradeSound, playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { MatchReviewActions } from "./MatchReviewActions";
 import { ShareSeasonButton } from "./ShareSeasonButton";
+import { formatCountdown, msUntilUkMidnight } from "@/lib/daily-bonus";
 import { GameButton } from "./ui/GameButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
 import { FixtureResultRow } from "./FixtureResultRow";
@@ -60,6 +63,12 @@ interface SeasonReviewProps {
   /** Daily Challenge: false for a practice run after today's counted attempt. */
   dailyAttemptCounts?: boolean;
   dailyScenario?: DailyChallengeScenario | null;
+  /** Weekly Challenge run: scored for the Weekly board (see lib/weekly-challenge.ts). */
+  weeklyChallengeMode?: boolean;
+  /** Weekly Challenge: this run's score so far (regular season), null until worked out. */
+  weeklyScore?: number | null;
+  /** Weekly Challenge: false for a practice run after this week's ranked attempt. */
+  weeklyAttemptCounts?: boolean;
   runRank?: number;
   submittedOnline?: boolean;
   boostedRun?: boolean;
@@ -83,6 +92,9 @@ export function SeasonReview({
   normalEraMode = false,
   dailyChallengeMode = false,
   dailyScenario = null,
+  weeklyChallengeMode = false,
+  weeklyScore = null,
+  weeklyAttemptCounts = true,
   runRank: _runRank,
   submittedOnline = false,
   boostedRun = false,
@@ -164,6 +176,7 @@ export function SeasonReview({
     [squad]
   );
 
+
   const handlePlayAgain = () => {
     onFinalizeSeason?.();
     onClose();
@@ -190,6 +203,8 @@ export function SeasonReview({
 
   const leaguePositionLabel = formatLeaguePosition(dreamTeamTablePosition);
   const averageTeamRating = getAverageSquadRating(squad);
+  const chemistryBonus = seasonResult.chemistryBonus ?? 0;
+  const halfwayCallLabel = getHalfwayCallLabel(seasonResult.halfwayCall);
   const expectedTries = getSeasonTryTotal(seasonResult.fixtures);
 
   const qualifiedForPlayoffs = userQualifiedForPlayoffs(dreamTeamTablePosition);
@@ -208,6 +223,15 @@ export function SeasonReview({
 
   const showDailyPresentation =
     SHOW_DAILY_CHALLENGE_UI && dailyChallengeMode;
+  const dailyStreakNow = showDailyPresentation ? getDailyChallengeStreak() : 0;
+  const [nextDailyIn, setNextDailyIn] = useState<string | null>(null);
+  useEffect(() => {
+    if (!showDailyPresentation) return;
+    const tick = () => setNextDailyIn(formatCountdown(msUntilUkMidnight()));
+    tick();
+    const t = window.setInterval(tick, 30_000);
+    return () => window.clearInterval(t);
+  }, [showDailyPresentation]);
   const shareCardData = useMemo(() => {
     if (showDailyPresentation && dailyScenario) {
       const streak = getDailyChallengeStreak();
@@ -348,7 +372,10 @@ export function SeasonReview({
                 boostedRun={boostedRun}
                 dailyChallenge={showDailyPresentation}
                 dailyPractice={showDailyPresentation && dailyAttemptCounts === false}
-                ballKnower={difficulty === "HARD" && !showDailyPresentation}
+                ballKnower={difficulty === "HARD" && !showDailyPresentation && !weeklyChallengeMode}
+                weeklyChallenge={weeklyChallengeMode && !showDailyPresentation}
+                weeklyScore={showPlayoffPrompt ? null : weeklyScore}
+                weeklyPractice={weeklyAttemptCounts === false}
               />
             </motion.header>
 
@@ -367,6 +394,24 @@ export function SeasonReview({
             ) : null}
 
             <ClubFundsEarned payout={clubFundsPayout} />
+
+            {!showPlayoffPrompt ? (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+                {showDailyPresentation ? (
+                  <p className="mb-2 text-center text-sm text-[color:var(--fl-muted)]">
+                    {dailyStreakNow > 0 ? `🔥 ${dailyStreakNow}-day streak` : "No streak yet"}
+                    {nextDailyIn ? ` · Next Daily in ${nextDailyIn}` : ""}
+                  </p>
+                ) : null}
+                <MatchReviewActions
+                  compact
+                  onPlayAgain={handlePlayAgain}
+                  onReturnHome={onReturnHome}
+                  leaderboardHref={showDailyPresentation ? "/leaderboard?tracker=daily_streak" : weeklyChallengeMode ? "/leaderboard?tracker=weekly" : "/leaderboard"}
+                  shareAction={shareAction}
+                />
+              </motion.div>
+            ) : null}
 
             <CollapsibleReviewSection title="Season Summary" delay={0.32}>
               <div className={`${REVIEW_STAT_GRID} mx-auto max-w-lg`}>
@@ -393,6 +438,18 @@ export function SeasonReview({
                   className="text-center"
                 />
               </div>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+                <p className={TYPO.label}>
+                  Halfway call:{" "}
+                  <span className="text-white">{halfwayCallLabel}</span>
+                </p>
+                {chemistryBonus > 0 ? (
+                  <p className={TYPO.label}>
+                    Chemistry{" "}
+                    <span className="text-lime-300">{formatChemistryBonus(chemistryBonus)}</span>
+                  </p>
+                ) : null}
+              </div>
               {missedPlayoffs ? (
                 <p className={`mt-3 text-center ${TYPO.label}`}>
                   Missed the play-offs
@@ -400,7 +457,7 @@ export function SeasonReview({
               ) : null}
             </CollapsibleReviewSection>
 
-            <CollapsibleReviewSection title="Squad Review" delay={0.34}>
+            <CollapsibleReviewSection title="Squad Review" delay={0.34} collapsed>
               <SquadReviewSection
                 squad={squad}
                 awards={playerAwards}
@@ -410,13 +467,14 @@ export function SeasonReview({
               />
             </CollapsibleReviewSection>
 
-            <CollapsibleReviewSection title="League Table" delay={0.36}>
+            <CollapsibleReviewSection title="League Table" delay={0.36} collapsed>
               <LeagueTable rows={leagueTable} />
             </CollapsibleReviewSection>
 
             <CollapsibleReviewSection
               title="Match Results"
               delay={0.38}
+              collapsed
             >
               <div
                 className="fixture-results-list max-h-[min(48vh,22rem)] min-w-0 overflow-y-auto overscroll-contain text-left pr-0.5"
@@ -486,16 +544,7 @@ export function SeasonReview({
                   <GuestSaveNudge context="daily-challenge" />
                 ) : null}
                 {!showPlayoffPrompt ? (
-                  <MatchReviewActions
-                    onPlayAgain={handlePlayAgain}
-                    onReturnHome={onReturnHome}
-                    leaderboardHref={
-                      showDailyPresentation
-                        ? "/leaderboard?tracker=daily_streak"
-                        : "/leaderboard"
-                    }
-                    shareAction={shareAction}
-                  />
+                  <MatchReviewActions compact onPlayAgain={handlePlayAgain} onReturnHome={onReturnHome} hideEndOfRunNav />
                 ) : null}
               </div>
             </motion.footer>

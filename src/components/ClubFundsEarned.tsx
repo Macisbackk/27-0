@@ -47,8 +47,9 @@ export function ClubFundsEarned({
               className="flex items-baseline justify-between gap-3 rounded-control bg-pitch-800 px-3 py-2.5 text-sm text-[color:var(--fl-text)]"
             >
               <span className="min-w-0">{line.label}</span>
+              {/* Non-cash lines (an item unlocked with the payout) carry amount 0. */}
               <span className="shrink-0 font-bold tabular-nums text-theme-primary">
-                +{formatClubFunds(line.amount)}
+                {line.amount > 0 ? `+${formatClubFunds(line.amount)}` : "Unlocked"}
               </span>
             </li>
           ))}
