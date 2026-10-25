@@ -98,6 +98,28 @@ export function purchaseCosmetic(id: string): CosmeticPurchaseResult {
   return { success: true, newBalance: getClubFundsBalance() };
 }
 
+/**
+ * Give an item without charging (login welcome gift, promotions). Saves and syncs to the cloud
+ * like a purchase, and puts a pitch / title / frame on when that slot is empty. Returns true when
+ * the item was newly added.
+ */
+export function grantCosmetic(id: string): boolean {
+  const item = cosmeticById(id);
+  if (!item) return false;
+  const state = getCosmetics();
+  if (state.owned.includes(id)) return false;
+  state.owned.push(id);
+  if ((item.kind === "pitch" || item.kind === "title" || item.kind === "frame") && !state.equipped[item.kind]) {
+    state.equipped[item.kind] = id;
+    save(state);
+    if (item.kind === "title") void publishFlair({ flair: id });
+    if (item.kind === "frame") void publishFlair({ frame: id });
+    return true;
+  }
+  save(state);
+  return true;
+}
+
 export function equipCosmetic(kind: "pitch" | "title" | "frame", id: string | null) {
   const state = getCosmetics();
   if (id && (!state.owned.includes(id) || cosmeticById(id)?.kind !== kind)) return;

@@ -57,7 +57,7 @@ export function FlairBadge({ title, className = "ml-1.5" }: { title?: string | n
 /** Row classes for a leaderboard frame bought in the Store: the frame wraps the coach's whole row. */
 export function frameRowClass(frame?: string | null): string {
   const kind = frame?.replace(/^frame-/, "");
-  return kind && ["gold", "foil", "programme"].includes(kind) ? `lb-row lb-row--${kind}` : "";
+  return kind && ["chalk", "gold", "foil", "programme"].includes(kind) ? `lb-row lb-row--${kind}` : "";
 }
 
 /** A coach's name with their title. Frames now wrap the whole leaderboard row (see frameRowClass). */

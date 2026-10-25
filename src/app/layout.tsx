@@ -9,6 +9,7 @@ import "../styles/matchnight.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { CoachbeardMergeRunner } from "@/components/CoachbeardMergeRunner";
 import { ManagerDataPurgeRunner } from "@/components/ManagerDataPurgeRunner";
+import { LoginWelcomePopup } from "@/components/LoginWelcomePopup";
 import { Header } from "@/components/Header";
 import { SiteFooter } from "@/components/SiteFooter";
 import { BottomNav } from "@/components/BottomNav";
@@ -101,6 +102,7 @@ export default function RootLayout({
           <AchievementProvider>
             <MotionProvider>
             <SoundUnlock />
+            <LoginWelcomePopup />
             <Header />
             <main className="app-main flex min-w-0 max-w-full flex-1 flex-col overflow-x-clip">
               {children}
