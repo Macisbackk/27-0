@@ -351,6 +351,18 @@ export function getDailyChallengeScenario(
   date = new Date()
 ): DailyChallengeScenario {
   const { type, block } = ruleTypeForKey(todayKey(date));
+  return buildDailyRuleScenario(type, block);
+}
+
+/**
+ * Build the scenario for one rule type at one rotation step. `block` picks the rule's parameter
+ * (club, decade, rating cap, Current vs Era) so the same type varies from block to block. Shared
+ * with the Weekly Challenge (lib/weekly-challenge.ts), which seeds it with a week index.
+ */
+export function buildDailyRuleScenario(
+  type: DailyRuleType,
+  block: number
+): DailyChallengeScenario {
   const typeIndex = DAILY_RULE_TYPES.indexOf(type);
   // Current/Era alternates by week, offset per type so a week mixes both.
   const eraWeek = (block + typeIndex) % 2 === 1;

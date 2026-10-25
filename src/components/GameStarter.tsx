@@ -8,6 +8,10 @@ import {
   getDailyChallengeScenario,
   isDailyChallengeActive,
 } from "@/lib/daily-challenge";
+import {
+  getWeeklyChallengeScenario,
+  isWeeklyChallengeActive,
+} from "@/lib/weekly-challenge";
 
 interface GameStarterProps {
   mode: GameMode;
@@ -36,13 +40,24 @@ export function GameStarter({
     !superSamHallasMode &&
     isDailyChallengeActive({ daily: searchParams.get("daily") });
 
-  // Daily locks Current/Era from today's scenario (URL era=1 is set by href).
+  // Weekly Challenge (/play?weekly=1): same shape as the Daily; the Daily wins if both are set.
+  const weeklyChallengeMode =
+    mode === "CLASSIC" &&
+    !joeMellorMode &&
+    !superSamHallasMode &&
+    !dailyChallengeMode &&
+    isWeeklyChallengeActive({ weekly: searchParams.get("weekly") });
+
+  // Daily / Weekly lock Current/Era from their scenario (URL era=1 is set by href).
   const dailyScenario = dailyChallengeMode
     ? getDailyChallengeScenario()
     : null;
+  const weeklyScenario = weeklyChallengeMode ? getWeeklyChallengeScenario() : null;
   const isNormalEra = dailyScenario
     ? dailyScenario.eraMode
-    : mode === "CLASSIC" &&
+    : weeklyScenario
+      ? weeklyScenario.eraMode
+      : mode === "CLASSIC" &&
       (normalEraMode ||
         isNormalEraMode({
           era: searchParams.get("era"),
@@ -59,6 +74,7 @@ export function GameStarter({
       superSamHallasMode={superSamHallasMode}
       normalEraMode={isNormalEra}
       dailyChallengeMode={dailyChallengeMode}
+      weeklyChallengeMode={weeklyChallengeMode}
     />
   );
 }

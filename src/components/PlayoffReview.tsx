@@ -51,6 +51,12 @@ interface PlayoffReviewProps {
   dailyScenario?: DailyChallengeScenario | null;
   /** Daily: false when today's counted attempt was already used (practice run). */
   dailyAttemptCounts?: boolean;
+  /** Weekly Challenge run: scored for the Weekly board (see lib/weekly-challenge.ts). */
+  weeklyChallengeMode?: boolean;
+  /** Weekly Challenge: this run's final score, null until worked out. */
+  weeklyScore?: number | null;
+  /** Weekly Challenge: false for a practice run after this week's ranked attempt. */
+  weeklyAttemptCounts?: boolean;
   /** Era squads (Classic) — picks the share-card subtitle. */
   normalEraMode?: boolean;
   difficulty?: GameDifficulty;
@@ -72,6 +78,9 @@ export function PlayoffReview({
   dailyChallengeMode = false,
   dailyScenario = null,
   dailyAttemptCounts = true,
+  weeklyChallengeMode = false,
+  weeklyScore = null,
+  weeklyAttemptCounts = true,
   normalEraMode = false,
   difficulty = "NORMAL",
   submittedOnline = false,
@@ -246,7 +255,9 @@ export function PlayoffReview({
               ? dailyScenario?.eraMode
                 ? "Era Daily Play-off Review"
                 : "Daily Play-off Review"
-              : "Super League Play-off Review"}
+              : weeklyChallengeMode
+                ? "Weekly Challenge Play-off Review"
+                : "Super League Play-off Review"}
           </p>
           <h1 className="mt-2 text-[28px] font-bold leading-tight tracking-tight text-accent-gold sm:text-[34px]">
             {getPlayoffFinishLabel(playoffResult.finish)}
@@ -263,9 +274,12 @@ export function PlayoffReview({
             submittedOnline={submittedOnline}
             dailyChallenge={showDailyPresentation}
             dailyPractice={showDailyPresentation && dailyAttemptCounts === false}
-            ballKnower={difficulty === "HARD" && !showDailyPresentation}
+            ballKnower={difficulty === "HARD" && !showDailyPresentation && !weeklyChallengeMode}
+            weeklyChallenge={weeklyChallengeMode && !showDailyPresentation}
+            weeklyScore={weeklyScore}
+            weeklyPractice={weeklyAttemptCounts === false}
           />
-          {submittedOnline && !showDailyPresentation && runRank ? (
+          {submittedOnline && !showDailyPresentation && !weeklyChallengeMode && runRank ? (
             <p className="mt-1 text-center text-xs font-semibold text-accent-gold">
               Ranked #{runRank} nationally
             </p>
@@ -284,7 +298,9 @@ export function PlayoffReview({
             leaderboardHref={
               dailyChallengeMode && SHOW_DAILY_CHALLENGE_UI
                 ? "/leaderboard?tracker=daily_streak"
-                : "/leaderboard"
+                : weeklyChallengeMode
+                  ? "/leaderboard?tracker=weekly"
+                  : "/leaderboard"
             }
             shareAction={shareAction}
           />

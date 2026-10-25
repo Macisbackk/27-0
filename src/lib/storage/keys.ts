@@ -16,6 +16,8 @@ export const STORAGE_KEYS = {
   dailyChallengeClaims: "27-0-daily-challenge-claims",
   dailyChallengeMeta: "27-0-daily-challenge-meta",
   dailyLeaderboard: "27-0-daily-leaderboard",
+  /** Weekly Challenge: this week's ranked attempt + score, last week's finish (lib/weekly-challenge.ts). */
+  weeklyChallenge: "27-0-weekly",
   trophyCabinetLeaderboard: "27-0-trophy-cabinet-leaderboard",
   /** One-time local reset marker for squad value leaderboard wipe. */
   squadValueLeaderboardReset: "27-0-squad-value-lb-reset-v1",

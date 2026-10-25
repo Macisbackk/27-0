@@ -75,6 +75,14 @@ import {
   markDailyChallengePlayoffTitle,
 } from "@/lib/daily-challenge";
 import {
+  claimWeeklyChallengeAttempt,
+  getWeeklyChallengeRunIdPrefix,
+  getWeeklyChallengeScenario,
+  getWeeklyChallengeSeed,
+  submitWeeklyChallengeRun,
+  WEEKLY_SCORE,
+} from "@/lib/weekly-challenge";
+import {
   awardClubFundsForRun,
   awardClubFundsLines,
 } from "@/lib/storage/club-funds";
@@ -205,6 +213,11 @@ interface GameBoardProps {
   normalEraMode?: boolean;
   /** Unique daily scenario (forced opponent league). */
   dailyChallengeMode?: boolean;
+  /**
+   * Weekly Challenge: the week's rule and shared seed, applied like the Daily's. One ranked
+   * attempt per UK week (later runs are practice), scored for the Weekly board. No Auto-fill.
+   */
+  weeklyChallengeMode?: boolean;
 }
 
 const QUICK_MODE_STEPS = [
@@ -275,7 +288,10 @@ export function GameBoard({
   superSamHallasMode = false,
   normalEraMode = false,
   dailyChallengeMode = false,
+  weeklyChallengeMode: weeklyChallengeModeProp = false,
 }: GameBoardProps) {
+  // The Daily wins if both flags are set.
+  const weeklyChallengeMode = weeklyChallengeModeProp && !dailyChallengeMode;
   const spinVariant: SpinPoolVariant = normalEraMode ? "era" : "current";
   const isDraftMode = mode === "DRAFT";
   /**
@@ -290,6 +306,7 @@ export function GameBoard({
    * Also skip the chooser when the player owns no eligible boosts — avoids a blank screen. */
   const skipPreGameBoosts =
     dailyChallengeMode ||
+    weeklyChallengeMode ||
     joeMellorMode ||
     superSamHallasMode ||
     !ownsBoostAtRunStart;
@@ -390,6 +407,14 @@ export function GameBoard({
         dailyDate: startedAt,
       };
     }
+    if (weeklyChallengeMode) {
+      // Shared weekly seed: everyone (and every practice run) gets the same spins this week.
+      return {
+        seed: getWeeklyChallengeSeed(startedAt),
+        runId: `${getWeeklyChallengeRunIdPrefix(startedAt)}-${createRunSeed(runKey)}`,
+        dailyDate: startedAt,
+      };
+    }
     const s = createRunSeed(runKey);
     return {
       seed: s,
@@ -397,19 +422,40 @@ export function GameBoard({
       runId: `run-${s}`,
       dailyDate: startedAt,
     };
-  }, [runKey, dailyChallengeMode]);
+  }, [runKey, dailyChallengeMode, weeklyChallengeMode]);
   /** Frozen at run start so a run that crosses UK midnight keeps its club and bonus day. */
   const dailyScenario = useMemo(
     () => (dailyChallengeMode ? getDailyChallengeScenario(dailyDate) : null),
     [dailyChallengeMode, dailyDate]
   );
-  /** Today's Daily rule as a spin filter (null outside the Daily / for rules that don't filter). */
-  const dailyRuleFilter = useMemo(
-    () => getSpinRuleFilter(dailyScenario?.rule ?? null),
-    [dailyScenario]
+  /** Frozen at run start so a run that crosses the Monday rollover keeps its rule and week. */
+  const weeklyScenario = useMemo(
+    () => (weeklyChallengeMode ? getWeeklyChallengeScenario(dailyDate) : null),
+    [weeklyChallengeMode, dailyDate]
   );
-  /** "No respins" Daily rule: the respin button shows as spent for the whole run. */
-  const respinsAllowed = !dailyRuleDisablesRespins(dailyScenario?.rule);
+  /** Whichever challenge rule applies to this run (Daily or Weekly), for filters and the sim. */
+  const challengeScenario = dailyScenario ?? weeklyScenario;
+  /** The run's rule as a spin filter (null outside the Daily/Weekly / for rules that don't filter). */
+  const dailyRuleFilter = useMemo(
+    () => getSpinRuleFilter(challengeScenario?.rule ?? null),
+    [challengeScenario]
+  );
+  /** "No respins" rule: the respin button shows as spent for the whole run. */
+  const respinsAllowed = !dailyRuleDisablesRespins(challengeScenario?.rule);
+  /** Weekly: false when this week's ranked attempt was already used (practice run). */
+  const [weeklyAttemptCounts, setWeeklyAttemptCounts] = useState(true);
+  useEffect(() => {
+    if (weeklyChallengeMode) setWeeklyAttemptCounts(claimWeeklyChallengeAttempt(runId, dailyDate));
+  }, [weeklyChallengeMode, runId, dailyDate]);
+  /** Weekly: this run's score so far (review copy), null until the regular season ends. */
+  const [weeklyRunScore, setWeeklyRunScore] = useState<number | null>(null);
+  const weeklyRegularSubmittedRef = useRef(false);
+  const weeklyPlayoffSubmittedRef = useRef(false);
+  useEffect(() => {
+    weeklyRegularSubmittedRef.current = false;
+    weeklyPlayoffSubmittedRef.current = false;
+    setWeeklyRunScore(null);
+  }, [runId]);
   const lockedSlotTargetsRef = useRef(
     new Map<number, { target: SlotRevealTarget; boosted: boolean }>()
   );
@@ -1107,7 +1153,7 @@ export function GameBoard({
       const result = simulateSeason(finalSquad, seed, {
         draftMode: isDraftMode,
         currentSeasonOnly: !normalEraMode,
-        forceOpponentClub: dailyScenario?.forceOpponentClub ?? undefined,
+        forceOpponentClub: challengeScenario?.forceOpponentClub ?? undefined,
         forceUndefeated: superSamHallasMode,
         joeMellorMode,
       });
@@ -1129,7 +1175,7 @@ export function GameBoard({
       isDraftMode,
       normalEraMode,
       dailyChallengeMode,
-      dailyScenario?.forceOpponentClub,
+      challengeScenario?.forceOpponentClub,
     ]
   );
 
@@ -1145,7 +1191,7 @@ export function GameBoard({
       const result = simulateSeason(squad, seed, {
         draftMode: isDraftMode,
         currentSeasonOnly: !normalEraMode,
-        forceOpponentClub: dailyScenario?.forceOpponentClub ?? undefined,
+        forceOpponentClub: challengeScenario?.forceOpponentClub ?? undefined,
         forceUndefeated: superSamHallasMode,
         joeMellorMode,
         halfwayCall: choice,
@@ -1159,10 +1205,39 @@ export function GameBoard({
       seed,
       isDraftMode,
       normalEraMode,
-      dailyScenario?.forceOpponentClub,
+      challengeScenario?.forceOpponentClub,
       superSamHallasMode,
       joeMellorMode,
     ]
+  );
+
+  /**
+   * Weekly Challenge score for this run. The ranked attempt goes to the board after the
+   * regular season (so a run that misses the play-offs, or is left mid-bracket, still counts)
+   * and, if it made the play-offs, once more with the play-off result. Practice runs are
+   * scored for the review only.
+   */
+  const submitWeeklyScore = useCallback(
+    (result: SeasonResult, tablePosition: number, playoff: PlayoffResult | null) => {
+      if (!weeklyChallengeMode || mode !== "CLASSIC" || joeMellorMode || superSamHallasMode) {
+        return;
+      }
+      const submitted = submitWeeklyChallengeRun(
+        runId,
+        {
+          regularWins: result.wins,
+          playoffWins: playoff?.wins ?? 0,
+          grandFinalWon:
+            playoff?.isChampion === true || playoff?.finish === "Super League Champions",
+          leagueLeaders: tablePosition === 1,
+        },
+        // Final now unless the play-offs are still to come.
+        playoff !== null || tablePosition > 6,
+        dailyDate
+      );
+      setWeeklyRunScore(submitted.score);
+    },
+    [weeklyChallengeMode, mode, joeMellorMode, superSamHallasMode, runId, dailyDate]
   );
 
   const finalizeRegularSeason = useCallback(
@@ -1213,6 +1288,7 @@ export function GameBoard({
           topSixFinish: tablePosition <= 6,
           normalEraMode,
           dailyChallengeMode,
+          weeklyChallengeMode,
         }
       )
         .then((completed) => {
@@ -1224,6 +1300,11 @@ export function GameBoard({
           console.error("[run] Failed to record completed run online:", error);
           setSubmittedOnline(false);
         });
+
+      if (weeklyChallengeMode && !weeklyRegularSubmittedRef.current) {
+        weeklyRegularSubmittedRef.current = true;
+        submitWeeklyScore(result, tablePosition, null);
+      }
 
       if (!fundsAwardedRef.current) {
         fundsAwardedRef.current = true;
@@ -1279,7 +1360,8 @@ export function GameBoard({
           joeMellorMode,
           superSamHallasMode,
           normalEraMode,
-          dailyChallengeMode,
+          // Weekly runs are rule-restricted too: no Normal Mode achievement credit.
+          dailyChallengeMode: dailyChallengeMode || weeklyChallengeMode,
           madePlayoffs: tablePosition <= 6,
         }
       );
@@ -1295,6 +1377,8 @@ export function GameBoard({
       usedBoostThisRun,
       dailyScenario,
       dailyChallengeMode,
+      weeklyChallengeMode,
+      submitWeeklyScore,
       dailyAttemptCounts,
       dailyDate,
     ]
@@ -1345,6 +1429,7 @@ export function GameBoard({
             playoff.finish === "Super League Champions",
           usedBoosts: usedBoostThisRun,
           dailyChallengeMode,
+          weeklyChallengeMode,
         }
       )
         .then((completed) => {
@@ -1356,6 +1441,11 @@ export function GameBoard({
           console.error("[run] Failed to record completed run online:", error);
           setSubmittedOnline(false);
         });
+
+      if (weeklyChallengeMode && !weeklyPlayoffSubmittedRef.current) {
+        weeklyPlayoffSubmittedRef.current = true;
+        submitWeeklyScore(result, tablePosition, playoff);
+      }
 
       triggerQuickSeasonAchievements(
         finalSquad,
@@ -1373,7 +1463,7 @@ export function GameBoard({
           joeMellorMode,
           superSamHallasMode,
           normalEraMode,
-          dailyChallengeMode,
+          dailyChallengeMode: dailyChallengeMode || weeklyChallengeMode,
           madePlayoffs: true,
           playoffWins: playoff.wins,
           playoffLosses: playoff.losses,
@@ -1393,6 +1483,8 @@ export function GameBoard({
       normalEraMode,
       usedBoostThisRun,
       dailyChallengeMode,
+      weeklyChallengeMode,
+      submitWeeklyScore,
     ]
   );
 
@@ -2548,17 +2640,18 @@ export function GameBoard({
               }`
         }`}
       >
-      {!isReviewPhase && (title || subtitle || dailyScenario) && (
+      {!isReviewPhase && (title || subtitle || challengeScenario) && (
         <div className="mb-4 pt-1 text-center sm:mb-5 lg:pt-0">
-          {dailyScenario ? (
+          {challengeScenario ? (
             <p className={`mb-1 ${TYPO.eyebrow} text-accent-gold`}>
-              Daily Challenge{dailyScenario.eraMode ? " · Era" : ""}
+              {weeklyScenario ? "Weekly Challenge" : "Daily Challenge"}
+              {challengeScenario.eraMode ? " · Era" : ""}
             </p>
           ) : null}
           <div className="flex flex-wrap items-center justify-center gap-3">
-            {dailyScenario ? (
+            {challengeScenario ? (
               <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>
-                {dailyScenario.ruleTitle}
+                {challengeScenario.ruleTitle}
               </h1>
             ) : title ? (
               <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>
@@ -2575,6 +2668,17 @@ export function GameBoard({
                 {dailyAttemptCounts
                   ? `Top the table +${formatClubFunds(dailyScenario.leagueLeadersBonus)} · Win the Grand Final +${formatClubFunds(dailyScenario.playoffTitleBonus)}`
                   : "Practice run — today's Daily attempt is used"}
+              </p>
+            </>
+          ) : weeklyScenario ? (
+            <>
+              <p className="mt-1 text-sm text-gray-200">
+                {weeklyScenario.ruleSummary}
+              </p>
+              <p className="mt-0.5 text-xs text-gray-400">
+                {weeklyAttemptCounts
+                  ? `Ranked attempt · Win ${WEEKLY_SCORE.regularWin} · Play-off win ${WEEKLY_SCORE.playoffWin} · Grand Final +${WEEKLY_SCORE.grandFinal} · League Leaders +${WEEKLY_SCORE.leagueLeaders}`
+                  : "Practice run — this week's ranked attempt is used"}
               </p>
             </>
           ) : subtitle ? (
@@ -2988,6 +3092,8 @@ export function GameBoard({
         </div>
         {dailyScenario ? (
           <DailyRuleBanner scenario={dailyScenario} className="mx-1 mb-3 sm:mb-4" />
+        ) : weeklyScenario ? (
+          <DailyRuleBanner scenario={weeklyScenario} label="Weekly rule" className="mx-1 mb-3 sm:mb-4" />
         ) : null}
         <SeasonReview
           squad={squad}
@@ -3000,6 +3106,9 @@ export function GameBoard({
           dailyChallengeMode={dailyChallengeMode}
           dailyAttemptCounts={dailyAttemptCounts}
           dailyScenario={dailyScenario}
+          weeklyChallengeMode={weeklyChallengeMode}
+          weeklyScore={weeklyRunScore}
+          weeklyAttemptCounts={weeklyAttemptCounts}
           seasonResult={seasonResult}
           runRank={runRank}
           submittedOnline={submittedOnline}
@@ -3038,6 +3147,8 @@ export function GameBoard({
         <>
         {dailyScenario ? (
           <DailyRuleBanner scenario={dailyScenario} className="mx-1 mb-1 mt-2 sm:mt-4" />
+        ) : weeklyScenario ? (
+          <DailyRuleBanner scenario={weeklyScenario} label="Weekly rule" className="mx-1 mb-1 mt-2 sm:mt-4" />
         ) : null}
         <PlayoffReview
           squad={squad}
@@ -3048,6 +3159,9 @@ export function GameBoard({
           dailyChallengeMode={dailyChallengeMode}
           dailyScenario={dailyScenario}
           dailyAttemptCounts={dailyAttemptCounts}
+          weeklyChallengeMode={weeklyChallengeMode}
+          weeklyScore={weeklyRunScore}
+          weeklyAttemptCounts={weeklyAttemptCounts}
           normalEraMode={normalEraMode}
           difficulty={difficulty}
           submittedOnline={submittedOnline}
