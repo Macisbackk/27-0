@@ -18,6 +18,7 @@ import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { playGradeSound, playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { MatchReviewActions } from "./MatchReviewActions";
 import { ShareSeasonButton } from "./ShareSeasonButton";
+import { formatCountdown, msUntilUkMidnight } from "@/lib/daily-bonus";
 import { GameButton } from "./ui/GameButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
 import { FixtureResultRow } from "./FixtureResultRow";
@@ -163,6 +164,16 @@ export function SeasonReview({
     () => resolveSquadClubColorOverride(squad),
     [squad]
   );
+
+  const dailyStreakNow = showDailyPresentation ? getDailyChallengeStreak() : 0;
+  const [nextDailyIn, setNextDailyIn] = useState<string | null>(null);
+  useEffect(() => {
+    if (!showDailyPresentation) return;
+    const tick = () => setNextDailyIn(formatCountdown(msUntilUkMidnight()));
+    tick();
+    const t = window.setInterval(tick, 30_000);
+    return () => window.clearInterval(t);
+  }, [showDailyPresentation]);
 
   const handlePlayAgain = () => {
     onFinalizeSeason?.();
@@ -368,6 +379,24 @@ export function SeasonReview({
 
             <ClubFundsEarned payout={clubFundsPayout} />
 
+            {!showPlayoffPrompt ? (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+                {showDailyPresentation ? (
+                  <p className="mb-2 text-center text-sm text-[color:var(--fl-muted)]">
+                    {dailyStreakNow > 0 ? `🔥 ${dailyStreakNow}-day streak` : "No streak yet"}
+                    {nextDailyIn ? ` · Next Daily in ${nextDailyIn}` : ""}
+                  </p>
+                ) : null}
+                <MatchReviewActions
+                  compact
+                  onPlayAgain={handlePlayAgain}
+                  onReturnHome={onReturnHome}
+                  leaderboardHref={showDailyPresentation ? "/leaderboard?tracker=daily_streak" : "/leaderboard"}
+                  shareAction={shareAction}
+                />
+              </motion.div>
+            ) : null}
+
             <CollapsibleReviewSection title="Season Summary" delay={0.32}>
               <div className={`${REVIEW_STAT_GRID} mx-auto max-w-lg`}>
                 <GameStatCard
@@ -400,7 +429,7 @@ export function SeasonReview({
               ) : null}
             </CollapsibleReviewSection>
 
-            <CollapsibleReviewSection title="Squad Review" delay={0.34}>
+            <CollapsibleReviewSection title="Squad Review" delay={0.34} collapsed>
               <SquadReviewSection
                 squad={squad}
                 awards={playerAwards}
@@ -410,13 +439,14 @@ export function SeasonReview({
               />
             </CollapsibleReviewSection>
 
-            <CollapsibleReviewSection title="League Table" delay={0.36}>
+            <CollapsibleReviewSection title="League Table" delay={0.36} collapsed>
               <LeagueTable rows={leagueTable} />
             </CollapsibleReviewSection>
 
             <CollapsibleReviewSection
               title="Match Results"
               delay={0.38}
+              collapsed
             >
               <div
                 className="fixture-results-list max-h-[min(48vh,22rem)] min-w-0 overflow-y-auto overscroll-contain text-left pr-0.5"
@@ -486,16 +516,7 @@ export function SeasonReview({
                   <GuestSaveNudge context="daily-challenge" />
                 ) : null}
                 {!showPlayoffPrompt ? (
-                  <MatchReviewActions
-                    onPlayAgain={handlePlayAgain}
-                    onReturnHome={onReturnHome}
-                    leaderboardHref={
-                      showDailyPresentation
-                        ? "/leaderboard?tracker=daily_streak"
-                        : "/leaderboard"
-                    }
-                    shareAction={shareAction}
-                  />
+                  <MatchReviewActions compact onPlayAgain={handlePlayAgain} onReturnHome={onReturnHome} hideEndOfRunNav />
                 ) : null}
               </div>
             </motion.footer>

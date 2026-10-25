@@ -5,11 +5,17 @@ import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import {
   getDailyChallengeAttemptUsed,
+  getDailyChallengeBestStreak,
   getDailyChallengeHref,
   getDailyChallengeProgress,
   getDailyChallengeScenario,
+  getDailyChallengeStreak,
   type DailyChallengeScenario,
 } from "@/lib/daily-challenge";
+import { claimDailyBonus, formatCountdown, msUntilUkMidnight } from "@/lib/daily-bonus";
+import { ClubFundsEarned } from "@/components/ClubFundsEarned";
+import type { ClubFundsPayoutResult } from "@/lib/club-funds";
+import { getClubFundsBalance } from "@/lib/storage/club-funds";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { buildPlayHref } from "@/lib/play-links";
 import { setNormalEraVariant } from "@/lib/storage/preferences";
@@ -26,7 +32,8 @@ import { useCosmetics } from "@/lib/storage/cosmetics-store";
 /** Everything on the home hub that depends on this device (filled in after mount). */
 interface HubState {
   greeting: string;
-  daily: { scenario: DailyChallengeScenario; done: boolean; used: boolean } | null;
+  daily: { scenario: DailyChallengeScenario; done: boolean; used: boolean; streak: number; best: number } | null;
+  funds: number;
   career: { club: string; detail: string } | null;
   classicBest: string | null;
   eraBest: string | null;
@@ -59,8 +66,11 @@ function readHub(): HubState {
           scenario: getDailyChallengeScenario(),
           done: Boolean(progress.leagueLeaders && progress.playoffTitle),
           used: getDailyChallengeAttemptUsed(),
+          streak: getDailyChallengeStreak(),
+          best: getDailyChallengeBestStreak(),
         }
       : null,
+    funds: getClubFundsBalance(),
     career,
     classicBest: rec(stats.normal.bestRecordWins, stats.normal.bestRecordLosses),
     eraBest: rec(stats.eraNormal.bestRecordWins, stats.eraNormal.bestRecordLosses),
@@ -123,24 +133,35 @@ function TileSub({ children }: { children: ReactNode }) {
 
 export function HomeModeSelector() {
   const [hub, setHub] = useState<HubState | null>(null);
+  const [bonus, setBonus] = useState<{ payout: ClubFundsPayoutResult; day: number } | null>(null);
+  const [untilReset, setUntilReset] = useState<string | null>(null);
   useEffect(() => {
     try {
+      // Daily welcome bonus: once per UK day, grows with consecutive days.
+      const claimed = claimDailyBonus();
+      if (claimed) setBonus(claimed);
       setHub(readHub());
     } catch {
       setHub(null);
     }
+    const tick = () => setUntilReset(formatCountdown(msUntilUkMidnight()));
+    tick();
+    const t = window.setInterval(tick, 30_000);
+    return () => window.clearInterval(t);
   }, []);
 
   const cosmetics = useCosmetics();
   const ownsBallKnower = cosmetics.owned.includes(BALL_KNOWER_ID);
   const daily = hub?.daily ?? null;
   const dailyStatus = !daily ? null : daily.done ? "Done today" : daily.used ? "Attempt used · practice only" : "1 attempt left today";
+  const resetLine = untilReset ? (daily?.used || daily?.done ? `Next Daily in ${untilReset}` : `Resets in ${untilReset}`) : null;
 
   return (
     <section className="fl-stagger mx-auto flex w-full max-w-[44rem] flex-col gap-3 text-center" aria-labelledby="play-heading">
       <h2 id="play-heading" className="font-cond text-[30px] font-bold leading-none text-white">
         {hub?.greeting ?? "Welcome, coach"}
       </h2>
+      <ClubFundsEarned payout={bonus?.payout ?? null} title={bonus ? `Welcome back · day ${bonus.day}` : "Welcome back"} />
 
       {SHOW_DAILY_CHALLENGE_UI ? (
         <section className="relative overflow-hidden rounded-card bg-pitch-900 p-[18px] text-center" aria-label="Daily Challenge">
@@ -149,7 +170,20 @@ export function HomeModeSelector() {
             <span aria-hidden className="h-2 w-2 rounded-full bg-theme-primary" />
             Daily Challenge{daily?.scenario.eraMode ? " · Era" : ""}
           </p>
-          {dailyStatus ? <p className="mt-1 text-xs text-[color:var(--fl-muted)]">{dailyStatus}</p> : null}
+          {dailyStatus ? (
+            <p className="mt-1 text-xs text-[color:var(--fl-muted)]">
+              {dailyStatus}
+              {resetLine ? <> · {resetLine}</> : null}
+            </p>
+          ) : null}
+          {daily ? (
+            <p className="mt-2 flex items-center justify-center gap-2 text-xs font-bold">
+              <span className={`fl-pill ${daily.streak > 0 ? "text-theme-primary" : ""}`}>
+                {daily.streak > 0 ? `🔥 ${daily.streak}-day streak` : "Start a streak"}
+              </span>
+              {daily.best > 0 ? <span className="fl-pill">Best {daily.best}</span> : null}
+            </p>
+          ) : null}
           <p className="mt-2 font-cond text-[32px] font-bold leading-[1.05]">
             {daily?.scenario.ruleTitle ?? "Today's rule"}
           </p>

@@ -85,8 +85,17 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
     setGameIndex(SEASON_GAMES);
   };
 
+  // The sim sits under the pitch: bring it into view when it starts so the first result isn't missed.
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const t = window.setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+    return () => window.clearTimeout(t);
+  }, []);
+
   return (
-    <div className="flex w-full min-w-0 flex-col items-center justify-center py-1 sm:py-2">
+    <div ref={rootRef} className="flex w-full min-w-0 scroll-mt-20 flex-col items-center justify-center py-1 sm:py-2">
       <motion.p
         className={`${TYPO.eyebrow} text-[color:var(--fl-muted)]`}
         initial={{ opacity: 0 }}
