@@ -26,7 +26,7 @@ import { DIVISION_LABEL } from "@/lib/career/clubs";
 import { getAllStats } from "@/lib/storage/stats";
 import { getPaidRunIds } from "@/lib/storage/club-funds";
 import { getLocalDateKey } from "@/lib/mini-games/date";
-import { BALL_KNOWER_ID } from "@/lib/cosmetics";
+import { BALL_KNOWER_ID, nextStoreUnlock } from "@/lib/cosmetics";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
 
 /** Everything on the home hub that depends on this device (filled in after mount). */
@@ -152,6 +152,7 @@ export function HomeModeSelector() {
 
   const cosmetics = useCosmetics();
   const ownsBallKnower = cosmetics.owned.includes(BALL_KNOWER_ID);
+  const nextUnlock = hub ? nextStoreUnlock(hub.funds, cosmetics.owned) : null;
   const daily = hub?.daily ?? null;
   const dailyStatus = !daily ? null : daily.done ? "Done today" : daily.used ? "Attempt used · practice only" : "1 attempt left today";
   const resetLine = untilReset ? (daily?.used || daily?.done ? `Next Daily in ${untilReset}` : `Resets in ${untilReset}`) : null;
@@ -162,6 +163,17 @@ export function HomeModeSelector() {
         {hub?.greeting ?? "Welcome, coach"}
       </h2>
       <ClubFundsEarned payout={bonus?.payout ?? null} title={bonus ? `Welcome back · day ${bonus.day}` : "Welcome back"} />
+      {hub && nextUnlock ? (
+        <Link href="/store" onClick={() => playUiClick()} className="mx-auto inline-flex items-center gap-2 rounded-full bg-pitch-900 px-3 py-1.5 text-xs font-bold text-white">
+          <span className="text-theme-primary">{formatClubFunds(hub.funds)}</span>
+          <span className="text-[color:var(--fl-muted)]">·</span>
+          {nextUnlock.remaining > 0 ? (
+            <span>{formatClubFunds(nextUnlock.remaining)} to {nextUnlock.name}</span>
+          ) : (
+            <span>{nextUnlock.name} is yours to buy</span>
+          )}
+        </Link>
+      ) : null}
 
       {SHOW_DAILY_CHALLENGE_UI ? (
         <section className="relative overflow-hidden rounded-card bg-pitch-900 p-[18px] text-center" aria-label="Daily Challenge">
