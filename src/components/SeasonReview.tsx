@@ -176,15 +176,6 @@ export function SeasonReview({
     [squad]
   );
 
-  const dailyStreakNow = showDailyPresentation ? getDailyChallengeStreak() : 0;
-  const [nextDailyIn, setNextDailyIn] = useState<string | null>(null);
-  useEffect(() => {
-    if (!showDailyPresentation) return;
-    const tick = () => setNextDailyIn(formatCountdown(msUntilUkMidnight()));
-    tick();
-    const t = window.setInterval(tick, 30_000);
-    return () => window.clearInterval(t);
-  }, [showDailyPresentation]);
 
   const handlePlayAgain = () => {
     onFinalizeSeason?.();
@@ -232,6 +223,15 @@ export function SeasonReview({
 
   const showDailyPresentation =
     SHOW_DAILY_CHALLENGE_UI && dailyChallengeMode;
+  const dailyStreakNow = showDailyPresentation ? getDailyChallengeStreak() : 0;
+  const [nextDailyIn, setNextDailyIn] = useState<string | null>(null);
+  useEffect(() => {
+    if (!showDailyPresentation) return;
+    const tick = () => setNextDailyIn(formatCountdown(msUntilUkMidnight()));
+    tick();
+    const t = window.setInterval(tick, 30_000);
+    return () => window.clearInterval(t);
+  }, [showDailyPresentation]);
   const shareCardData = useMemo(() => {
     if (showDailyPresentation && dailyScenario) {
       const streak = getDailyChallengeStreak();
