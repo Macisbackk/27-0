@@ -11,6 +11,12 @@ interface ReviewSubmissionNoticeProps {
   dailyPractice?: boolean;
   /** Ball Knower runs aren't on any leaderboard. */
   ballKnower?: boolean;
+  /** Weekly Challenge — the ranked attempt goes on the Weekly board, not Classic rankings. */
+  weeklyChallenge?: boolean;
+  /** Weekly Challenge: this run's score once it has been worked out. */
+  weeklyScore?: number | null;
+  /** Weekly Challenge: practice run after this week's ranked attempt. */
+  weeklyPractice?: boolean;
 }
 
 export function ReviewSubmissionNotice({
@@ -19,6 +25,9 @@ export function ReviewSubmissionNotice({
   dailyChallenge = false,
   dailyPractice = false,
   ballKnower = false,
+  weeklyChallenge = false,
+  weeklyScore = null,
+  weeklyPractice = false,
 }: ReviewSubmissionNoticeProps) {
   let message: string;
   let positive = false;
@@ -26,6 +35,12 @@ export function ReviewSubmissionNotice({
   if (specialRun) {
     message =
       "Bonus mode result — this run is kept separate from public records.";
+  } else if (weeklyChallenge && weeklyPractice) {
+    message = `${weeklyScore !== null ? `Weekly score ${weeklyScore}. ` : ""}Practice run: this week's ranked attempt is already used.`;
+  } else if (weeklyChallenge) {
+    const scoreText = weeklyScore !== null ? `Weekly score ${weeklyScore}. ` : "";
+    message = `${scoreText}This week's ranked attempt: it goes on the Weekly board when you're logged in. Top 10 when the week ends earn Club Funds.`;
+    positive = true;
   } else if (dailyChallenge && dailyPractice) {
     message = "Practice run: it doesn't count toward your Daily streak.";
   } else if (dailyChallenge) {

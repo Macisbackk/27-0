@@ -60,6 +60,12 @@ interface SeasonReviewProps {
   /** Daily Challenge: false for a practice run after today's counted attempt. */
   dailyAttemptCounts?: boolean;
   dailyScenario?: DailyChallengeScenario | null;
+  /** Weekly Challenge run: scored for the Weekly board (see lib/weekly-challenge.ts). */
+  weeklyChallengeMode?: boolean;
+  /** Weekly Challenge: this run's score so far (regular season), null until worked out. */
+  weeklyScore?: number | null;
+  /** Weekly Challenge: false for a practice run after this week's ranked attempt. */
+  weeklyAttemptCounts?: boolean;
   runRank?: number;
   submittedOnline?: boolean;
   boostedRun?: boolean;
@@ -83,6 +89,9 @@ export function SeasonReview({
   normalEraMode = false,
   dailyChallengeMode = false,
   dailyScenario = null,
+  weeklyChallengeMode = false,
+  weeklyScore = null,
+  weeklyAttemptCounts = true,
   runRank: _runRank,
   submittedOnline = false,
   boostedRun = false,
@@ -348,7 +357,10 @@ export function SeasonReview({
                 boostedRun={boostedRun}
                 dailyChallenge={showDailyPresentation}
                 dailyPractice={showDailyPresentation && dailyAttemptCounts === false}
-                ballKnower={difficulty === "HARD" && !showDailyPresentation}
+                ballKnower={difficulty === "HARD" && !showDailyPresentation && !weeklyChallengeMode}
+                weeklyChallenge={weeklyChallengeMode && !showDailyPresentation}
+                weeklyScore={showPlayoffPrompt ? null : weeklyScore}
+                weeklyPractice={weeklyAttemptCounts === false}
               />
             </motion.header>
 
@@ -492,7 +504,9 @@ export function SeasonReview({
                     leaderboardHref={
                       showDailyPresentation
                         ? "/leaderboard?tracker=daily_streak"
-                        : "/leaderboard"
+                        : weeklyChallengeMode
+                          ? "/leaderboard?tracker=weekly"
+                          : "/leaderboard"
                     }
                     shareAction={shareAction}
                   />

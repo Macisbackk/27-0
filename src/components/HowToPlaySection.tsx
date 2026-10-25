@@ -15,6 +15,10 @@ const GUIDE_ITEMS = [
           title: "Daily Challenge",
           body: "A new rule every day: one club, one era, underdogs, no respins and more. One counted attempt per UK day.",
         },
+        {
+          title: "Weekly Challenge",
+          body: "One rule and the same spins for everyone, all week (Monday to Sunday UK). One ranked attempt a week; later runs are practice. Score 10 a win, 15 a play-off win, +100 for the Grand Final and +50 for League Leaders. The top 10 when the week ends earn £150k.",
+        },
       ]
     : []),
   {
@@ -23,7 +27,7 @@ const GUIDE_ITEMS = [
   },
   {
     title: "Club Funds",
-    body: "Earn them from Classic seasons and play-offs, the Daily Challenge, puzzles and achievements. Spend them in the Store on themes, your own kit, pitch styles, titles, leaderboard frames and Ball Knower mode.",
+    body: "Earn them from Classic seasons and play-offs, the Daily and Weekly Challenges, puzzles and achievements. Spend them in the Store on themes, your own kit, pitch styles, titles, leaderboard frames and Ball Knower mode.",
   },
 ];
 

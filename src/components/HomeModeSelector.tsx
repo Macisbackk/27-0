@@ -10,6 +10,22 @@ import {
   getDailyChallengeScenario,
   type DailyChallengeScenario,
 } from "@/lib/daily-challenge";
+import {
+  formatOrdinal,
+  formatWeeklyResetCountdown,
+  getWeeklyChallengeAttemptUsed,
+  getWeeklyChallengeEntry,
+  getWeeklyChallengeHref,
+  getWeeklyChallengeScenario,
+  WEEKLY_TOP10_REWARD,
+  type WeeklyChallengeScenario,
+} from "@/lib/weekly-challenge";
+import {
+  checkWeeklyLastWeekFinish,
+  flushWeeklyChallengeEntry,
+  type WeeklyLastWeekResult,
+} from "@/lib/storage/weekly-leaderboard";
+import { useAuth } from "@/lib/auth-context";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { buildPlayHref } from "@/lib/play-links";
 import { setNormalEraVariant } from "@/lib/storage/preferences";
@@ -27,6 +43,12 @@ import { useCosmetics } from "@/lib/storage/cosmetics-store";
 interface HubState {
   greeting: string;
   daily: { scenario: DailyChallengeScenario; done: boolean; used: boolean } | null;
+  weekly: {
+    scenario: WeeklyChallengeScenario;
+    used: boolean;
+    score: number | null;
+    resetsIn: string;
+  } | null;
   career: { club: string; detail: string } | null;
   classicBest: string | null;
   eraBest: string | null;
@@ -59,6 +81,14 @@ function readHub(): HubState {
           scenario: getDailyChallengeScenario(),
           done: Boolean(progress.leagueLeaders && progress.playoffTitle),
           used: getDailyChallengeAttemptUsed(),
+        }
+      : null,
+    weekly: SHOW_DAILY_CHALLENGE_UI
+      ? {
+          scenario: getWeeklyChallengeScenario(),
+          used: getWeeklyChallengeAttemptUsed(),
+          score: getWeeklyChallengeEntry()?.score ?? null,
+          resetsIn: formatWeeklyResetCountdown(),
         }
       : null,
     career,
@@ -131,9 +161,37 @@ export function HomeModeSelector() {
     }
   }, []);
 
+  // Last week's Weekly finish (top 10 pays once; see storage/weekly-leaderboard.ts). Also
+  // retries sending this week's ranked entry if an earlier send didn't land.
+  const { isLoggedIn, loading: authLoading } = useAuth();
+  const [lastWeek, setLastWeek] = useState<WeeklyLastWeekResult | null>(null);
+  useEffect(() => {
+    if (!SHOW_DAILY_CHALLENGE_UI || authLoading || !isLoggedIn) return;
+    let alive = true;
+    void flushWeeklyChallengeEntry();
+    void checkWeeklyLastWeekFinish()
+      .then((result) => {
+        if (alive) setLastWeek(result);
+      })
+      .catch(() => {
+        /* board unreachable: try again next visit */
+      });
+    return () => {
+      alive = false;
+    };
+  }, [authLoading, isLoggedIn]);
+
   const cosmetics = useCosmetics();
   const ownsBallKnower = cosmetics.owned.includes(BALL_KNOWER_ID);
   const daily = hub?.daily ?? null;
+  const weekly = hub?.weekly ?? null;
+  const weeklyStatus = !weekly
+    ? "One rule and one ranked attempt all week."
+    : weekly.score !== null
+      ? `Your score: ${weekly.score} · Resets in ${weekly.resetsIn}`
+      : weekly.used
+        ? `Attempt used · practice only · Resets in ${weekly.resetsIn}`
+        : `1 ranked attempt this week · Resets in ${weekly.resetsIn}`;
   const dailyStatus = !daily ? null : daily.done ? "Done today" : daily.used ? "Attempt used · practice only" : "1 attempt left today";
 
   return (
@@ -172,6 +230,57 @@ export function HomeModeSelector() {
             className="btn-press fl-pressable relative mt-4 flex h-[52px] items-center justify-center rounded-control bg-theme-primary font-cond text-[18px] font-bold text-[color:var(--theme-text-on-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
             {daily?.done ? "Play again for practice" : daily?.used ? "Practice today's Daily" : "Play today's Daily"}
+          </Link>
+        </section>
+      ) : null}
+
+      {SHOW_DAILY_CHALLENGE_UI ? (
+        <section className="relative overflow-hidden rounded-card bg-pitch-900 p-[18px] text-center" aria-label="Weekly Challenge">
+          <div aria-hidden className="pointer-events-none absolute -left-10 -top-10 h-44 w-44 rounded-full bg-accent-gold/[0.06]" />
+          <p className="flex items-center justify-center gap-2 font-cond text-[16px] font-bold text-accent-gold">
+            <span aria-hidden className="h-2 w-2 rounded-full bg-accent-gold" />
+            Weekly Challenge{weekly?.scenario.eraMode ? " · Era" : ""}
+          </p>
+          <p className="mt-1 text-xs text-[color:var(--fl-muted)]">{weeklyStatus}</p>
+          <p className="mt-2 font-cond text-[26px] font-bold leading-[1.05]">
+            {weekly?.scenario.ruleTitle ?? "This week's rule"}
+          </p>
+          <p className="mx-auto mt-1 max-w-sm text-[15px] text-[color:var(--fl-muted)]">
+            {weekly?.scenario.ruleSummary ?? "Same spins for everyone. Top 10 get paid."}
+          </p>
+          {lastWeek ? (
+            <p className="mt-2 text-sm font-bold text-accent-gold" role="status">
+              You finished {formatOrdinal(lastWeek.rank)} last week
+              {lastWeek.awardedNow > 0 ? ` · +${formatClubFunds(lastWeek.awardedNow)} Club Funds` : ""}
+            </p>
+          ) : null}
+          <div className="mt-3 flex flex-wrap justify-center gap-2">
+            <span className="fl-pill">
+              Top 10 <span className="text-accent-gold">+{formatClubFunds(WEEKLY_TOP10_REWARD)}</span>
+            </span>
+            <span className="fl-pill">Resets Monday</span>
+          </div>
+          {!authLoading && !isLoggedIn && !weekly?.used ? (
+            <p className="mt-2 text-xs text-[color:var(--fl-muted)]">
+              <Link href="/login?redirect=/" className="font-semibold text-accent-gold underline-offset-2 hover:underline">
+                Log in
+              </Link>{" "}
+              first so your score reaches the board.
+            </p>
+          ) : null}
+          <Link
+            href={weekly ? getWeeklyChallengeHref() : "/play?weekly=1"}
+            onClick={() => playUiClick()}
+            className="btn-press fl-pressable relative mt-4 flex h-[52px] items-center justify-center rounded-control bg-accent-gold font-cond text-[18px] font-bold text-pitch-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          >
+            {weekly?.used ? "Practice the Weekly" : "Play the Weekly"}
+          </Link>
+          <Link
+            href="/leaderboard?tracker=weekly"
+            onClick={() => playUiClick()}
+            className="mt-2 inline-block text-sm font-semibold text-accent-gold underline-offset-2 hover:underline"
+          >
+            View the Weekly board
           </Link>
         </section>
       ) : null}

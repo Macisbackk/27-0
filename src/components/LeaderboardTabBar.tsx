@@ -149,9 +149,11 @@ export function LeaderboardTabBar<T extends string>({
     const cols =
       tabs.length === 3
         ? "grid-cols-3"
-        : tabs.length > 2
-          ? "grid-cols-2 sm:grid-cols-3"
-          : "grid-cols-2";
+        : tabs.length === 4
+          ? "grid-cols-2 sm:grid-cols-4"
+          : tabs.length > 2
+            ? "grid-cols-2 sm:grid-cols-3"
+            : "grid-cols-2";
     return (
       <div
         className={`grid gap-2 ${cols}`}
