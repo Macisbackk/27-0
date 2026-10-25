@@ -1,6 +1,9 @@
 import type { Player, PlayerCategory, Position } from "../types";
 import { PLAYER_RATING_OVERRIDES } from "../../../data/player-rating-overrides";
 import { PLAYER_RATING_AUDIT } from "../../../data/player-rating-audit";
+import SEASON_2026_RATINGS from "../../../data/season-2026-ratings.json";
+
+const SEASON_RATINGS = SEASON_2026_RATINGS as Record<string, { to: number }>;
 import birthYearsData from "../../../data/birth-years.json";
 import { compressPeakRating, computePlayerValue } from "./ratings";
 import { parsePlayerId, resolvePrimeYear } from "./prime-year";
@@ -101,6 +104,10 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
   if (PLAYER_RATING_AUDIT[id] !== undefined) {
     peakRating = PLAYER_RATING_AUDIT[id];
   }
+  // 2026 season re-rate from researched performances (scripts/build-season-ratings.ts). Last word
+  // for this season's cards.
+  const season = SEASON_RATINGS[id];
+  if (season && typeof season.to === "number") peakRating = season.to;
 
   const rawClub = raw.club as string;
   const name = raw.name as string;
