@@ -14,6 +14,8 @@ import {
 import { getSeasonReviewLabel } from "@/lib/mode-labels";
 import { getSquadValue } from "@/lib/positions";
 import { getAverageSquadRating } from "@/lib/squad-analysis";
+import { formatChemistryBonus } from "@/lib/game/chemistry";
+import { getHalfwayCallLabel } from "@/lib/game/halfway-call";
 import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { playGradeSound, playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { MatchReviewActions } from "./MatchReviewActions";
@@ -190,6 +192,8 @@ export function SeasonReview({
 
   const leaguePositionLabel = formatLeaguePosition(dreamTeamTablePosition);
   const averageTeamRating = getAverageSquadRating(squad);
+  const chemistryBonus = seasonResult.chemistryBonus ?? 0;
+  const halfwayCallLabel = getHalfwayCallLabel(seasonResult.halfwayCall);
   const expectedTries = getSeasonTryTotal(seasonResult.fixtures);
 
   const qualifiedForPlayoffs = userQualifiedForPlayoffs(dreamTeamTablePosition);
@@ -392,6 +396,18 @@ export function SeasonReview({
                   neutral
                   className="text-center"
                 />
+              </div>
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+                <p className={TYPO.label}>
+                  Halfway call:{" "}
+                  <span className="text-white">{halfwayCallLabel}</span>
+                </p>
+                {chemistryBonus > 0 ? (
+                  <p className={TYPO.label}>
+                    Chemistry{" "}
+                    <span className="text-lime-300">{formatChemistryBonus(chemistryBonus)}</span>
+                  </p>
+                ) : null}
               </div>
               {missedPlayoffs ? (
                 <p className={`mt-3 text-center ${TYPO.label}`}>

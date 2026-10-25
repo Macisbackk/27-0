@@ -9,6 +9,7 @@ import {
   playMatchUpsetVictory,
   playPerfectSeason,
   playSeasonComplete,
+  playUiClick,
   playWinlessSeason,
 } from "@/lib/sound";
 import { motion } from "framer-motion";
@@ -19,22 +20,50 @@ import {
   formatFixtureScore,
 } from "@/lib/game/season-simulation";
 import { TYPO } from "@/lib/ui/typography";
+import {
+  HALFWAY_CALL_OPTIONS,
+  HALFWAY_CALL_ROUND,
+  getHalfwayCallLabel,
+  type HalfwayCallChoice,
+  type HalfwayCallId,
+} from "@/lib/game/halfway-call";
 
 interface SeasonSimulationProps {
   result: SeasonResult;
   onComplete: () => void;
+  /**
+   * Mid-season fork. When provided, the sim pauses after round 14 until the player
+   * picks a plan (or skips to full time, which keeps "no change"). The parent
+   * re-simulates rounds 15–27 with the choice and passes the new `result`.
+   */
+  halfwayCall?: HalfwayCallChoice | null;
+  onHalfwayCall?: (choice: HalfwayCallId) => void;
 }
 
-export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) {
+export function SeasonSimulation({
+  result,
+  onComplete,
+  halfwayCall = null,
+  onHalfwayCall,
+}: SeasonSimulationProps) {
   const [gameIndex, setGameIndex] = useState(0);
   const [wins, setWins] = useState(0);
   const [losses, setLosses] = useState(0);
   const [phase, setPhase] = useState<"simulating" | "complete">("simulating");
+  const [forkDismissed, setForkDismissed] = useState(false);
   const seasonCompleteSoundPlayed = useRef(false);
   const matchStartedSoundPlayed = useRef(false);
 
   const currentFixture =
     gameIndex > 0 ? result.fixtures[gameIndex - 1] : null;
+
+  // Pause at the fork: 14 rounds played, no plan picked yet, and the parent can take one.
+  const forkOpen =
+    !!onHalfwayCall &&
+    !forkDismissed &&
+    halfwayCall === null &&
+    phase === "simulating" &&
+    gameIndex === HALFWAY_CALL_ROUND;
 
   useEffect(() => {
     if (matchStartedSoundPlayed.current) return;
@@ -43,6 +72,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
   }, []);
 
   useEffect(() => {
+    if (forkOpen) return;
     if (gameIndex >= SEASON_GAMES) {
       setPhase("complete");
       if (!seasonCompleteSoundPlayed.current) {
@@ -75,15 +105,24 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
     }, 180);
 
     return () => clearTimeout(timer);
-  }, [gameIndex, result.fixtures, onComplete]);
+  }, [gameIndex, result.fixtures, onComplete, forkOpen]);
 
   const currentRound = Math.min(gameIndex + 1, SEASON_GAMES);
   const skipToEnd = () => {
     if (phase !== "simulating") return;
+    // Skipping past the fork without choosing keeps the season as simulated (no change).
+    setForkDismissed(true);
     setWins(result.fixtures.filter((f) => f.result === "W").length);
     setLosses(result.fixtures.filter((f) => f.result !== "W").length);
     setGameIndex(SEASON_GAMES);
   };
+  const chooseHalfwayCall = (choice: HalfwayCallId) => {
+    if (!forkOpen || !onHalfwayCall) return;
+    playUiClick();
+    onHalfwayCall(choice);
+  };
+  const halfwayCallLabel =
+    halfwayCall && halfwayCall !== "none" ? getHalfwayCallLabel(halfwayCall) : null;
 
   return (
     <div className="flex w-full min-w-0 flex-col items-center justify-center py-1 sm:py-2">
@@ -152,9 +191,42 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
             </div>
           </div>
 
+          {forkOpen ? (
+            <motion.div
+              className="mt-4 rounded-tile bg-pitch-950 p-3 text-left sm:p-4"
+              role="group"
+              aria-label="Halfway. What's the plan?"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <p className={`${TYPO.eyebrow} text-theme-primary`}>Round {HALFWAY_CALL_ROUND} · {wins}-{losses}</p>
+              <p className="mt-1 text-[17px] font-bold leading-tight text-white">
+                Halfway. What&apos;s the plan?
+              </p>
+              <p className="mt-1 text-xs text-[color:var(--fl-muted)]">
+                One call for the run-in. It can&apos;t be changed once made.
+              </p>
+              <div className="mt-3 flex flex-col gap-2">
+                {HALFWAY_CALL_OPTIONS.map((option) => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    onClick={() => chooseHalfwayCall(option.id)}
+                    className="btn-press flex min-h-[44px] w-full flex-col items-start rounded-control bg-pitch-800 px-3 py-2 text-left transition hover:bg-pitch-700"
+                  >
+                    <span className="text-sm font-bold text-white">{option.label}</span>
+                    <span className="mt-0.5 text-xs text-[color:var(--fl-muted)]">
+                      {option.detail}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          ) : null}
+
           {/* One live result line (no exit animations: those stacked up as invisible blocks
               and made the card keep growing). Fixed height so nothing below jumps. */}
-          {phase === "simulating" ? (
+          {phase === "simulating" && !forkOpen ? (
             <div className="mt-4 min-h-[4.25rem]" aria-live="polite">
               {currentFixture ? (
                 <div key={gameIndex} className="fl-rise">
@@ -202,6 +274,11 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
                 {result.pointsDifference > 0 ? "+" : ""}
                 {result.pointsDifference}
               </p>
+              {halfwayCallLabel ? (
+                <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
+                  Halfway call: <span className="text-white">{halfwayCallLabel}</span>
+                </p>
+              ) : null}
               {result.insights.length > 0 && (
                 <div className="mt-4 space-y-1.5 text-left">
                   {result.insights.slice(0, 3).map((insight) => (
@@ -225,7 +302,7 @@ export function SeasonSimulation({ result, onComplete }: SeasonSimulationProps) 
               onClick={skipToEnd}
               className="btn-press inline-flex min-h-[44px] items-center justify-center rounded-full bg-pitch-800 px-5 text-sm font-semibold text-[color:var(--fl-text)] transition hover:bg-pitch-700"
             >
-              Skip to full time
+              {forkOpen ? "Skip to full time (no change)" : "Skip to full time"}
             </button>
           </div>
         ) : null}

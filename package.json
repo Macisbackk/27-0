@@ -93,7 +93,8 @@
     "test:quiz": "tsx scripts/test-quiz-engine.ts && tsx scripts/test-quiz-reward.ts",
     "test:wordle": "tsx scripts/test-wordle-engine.ts",
     "test:grid": "tsx scripts/test-grid-engine.ts",
-    "test:daily-rules": "tsx scripts/test-daily-rules.ts"
+    "test:daily-rules": "tsx scripts/test-daily-rules.ts",
+    "test:chemistry": "tsx scripts/test-chemistry.ts"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.0",

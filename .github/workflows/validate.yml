@@ -54,6 +54,9 @@ jobs:
       - name: Daily Challenge rules
         if: success() || failure()
         run: scripts/ci-run.sh "Daily Challenge rules" npm run test:daily-rules
+      - name: Squad chemistry + halfway call
+        if: success() || failure()
+        run: scripts/ci-run.sh "Squad chemistry + halfway call" npm run test:chemistry
 
   build:
     runs-on: ubuntu-latest
