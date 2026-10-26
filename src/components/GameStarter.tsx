@@ -4,6 +4,8 @@ import { useSearchParams } from "next/navigation";
 import type { GameMode } from "@/lib/types";
 import { isNormalEraMode } from "@/lib/play-links";
 import { GameBoard } from "./GameBoard";
+import type { ChallengePayload } from "@/lib/challenge-link";
+import type { SideMode } from "@/lib/play-side-modes";
 import {
   getDailyChallengeScenario,
   isDailyChallengeActive,
@@ -21,6 +23,10 @@ interface GameStarterProps {
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
   normalEraMode?: boolean;
+  /** "Challenge a mate" link: replaces any Daily / Weekly flag in the URL. */
+  challenge?: ChallengePayload | null;
+  /** One-Club XI / Gauntlet / past Daily (resolved by PlayPageClient). */
+  sideMode?: SideMode | null;
 }
 
 export function GameStarter({
@@ -31,10 +37,13 @@ export function GameStarter({
   joeMellorMode = false,
   superSamHallasMode = false,
   normalEraMode = false,
+  challenge = null,
+  sideMode = null,
 }: GameStarterProps) {
   const searchParams = useSearchParams();
 
   const dailyChallengeMode =
+    !challenge &&
     mode === "CLASSIC" &&
     !joeMellorMode &&
     !superSamHallasMode &&
@@ -42,6 +51,7 @@ export function GameStarter({
 
   // Weekly Challenge (/play?weekly=1): same shape as the Daily; the Daily wins if both are set.
   const weeklyChallengeMode =
+    !challenge &&
     mode === "CLASSIC" &&
     !joeMellorMode &&
     !superSamHallasMode &&
@@ -57,7 +67,9 @@ export function GameStarter({
     ? dailyScenario.eraMode
     : weeklyScenario
       ? weeklyScenario.eraMode
-      : mode === "CLASSIC" &&
+      : challenge || (sideMode && sideMode.kind !== "gauntlet")
+        ? normalEraMode
+        : mode === "CLASSIC" &&
       (normalEraMode ||
         isNormalEraMode({
           era: searchParams.get("era"),
@@ -75,6 +87,8 @@ export function GameStarter({
       normalEraMode={isNormalEra}
       dailyChallengeMode={dailyChallengeMode}
       weeklyChallengeMode={weeklyChallengeMode}
+      challenge={challenge}
+      sideMode={sideMode}
     />
   );
 }

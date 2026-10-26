@@ -13,6 +13,8 @@ import { updateStats } from "./stats-update";
 import { gameModeToDbMode } from "./leaderboard";
 import { syncTrophyCabinetLeaderboard } from "./trophy-cabinet-leaderboard";
 import { recordDailyChallengeRunResult } from "../daily-challenge";
+import { recordRunHistoryPlayoffs, recordRunHistorySeason } from "./run-history";
+import { recordDailyPicks } from "./daily-pick-rarity";
 
 export interface CompletedRunResult {
   nationalRank?: number;
@@ -52,11 +54,47 @@ export async function recordCompletedRun(
   const totalValue = run.totalValue || getSquadValue(run.squad);
   if (options?.dailyChallengeMode && options.seasonLeaguePosition !== undefined) {
     // Daily streak + Daily score: only the day's counted attempt counts (checked inside).
-    recordDailyChallengeRunResult({
+    const counted = recordDailyChallengeRunResult({
       runId: run.id,
       phase: "regular",
       regularWins: options.seasonWins ?? 0,
       leaguePosition: options.seasonLeaguePosition,
+    });
+    // Pick rarity: the counted attempt's picks (signed-in only; no-op when the RPC is missing).
+    if (counted) {
+      void recordDailyPicks(
+        counted.dayKey,
+        run.id,
+        run.squad.filter((s) => s.player).map((s) => ({ slot: s.slotIndex, cardId: s.player!.id }))
+      );
+    }
+  }
+  if (
+    run.mode === "CLASSIC" &&
+    !options?.joeMellorMode &&
+    !options?.superSamHallasMode &&
+    options?.seasonWins !== undefined &&
+    options.seasonLosses !== undefined &&
+    options.seasonLeaguePosition !== undefined
+  ) {
+    // Records page: local history of finished seasons (squad + result).
+    recordRunHistorySeason({
+      runId: run.id,
+      variant: options.dailyChallengeMode
+        ? "daily"
+        : options.weeklyChallengeMode
+          ? "weekly"
+          : difficulty === "HARD"
+            ? "ballKnower"
+            : resolveClassicModeVariant({ modeVariant: run.modeVariant, normalEraMode: options.normalEraMode }) === "era"
+              ? "era"
+              : "classic",
+      squad: run.squad,
+      wins: options.seasonWins,
+      losses: options.seasonLosses,
+      position: options.seasonLeaguePosition,
+      perfect: options.isPerfectSeason === true,
+      winStreak: options.longestWinStreak ?? 0,
     });
   }
   const regularWins = options?.seasonWins ?? 0;
@@ -179,6 +217,12 @@ export async function recordPlayoffCompletion(
         options.superLeagueTitle === true || options.playoffFinish === "Super League Champions",
     });
   }
+  recordRunHistoryPlayoffs({
+    runId: run.id,
+    playoffWins: options.playoffWins,
+    playoffLosses: options.playoffLosses,
+    finish: options.playoffFinish,
+  });
   const loggedIn = isLoggedIn();
   const modeVariant = resolveClassicModeVariant({ modeVariant: run.modeVariant });
   const statsBucket = resolveStatsBucket(run.mode, difficulty, modeVariant);

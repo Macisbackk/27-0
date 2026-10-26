@@ -26,7 +26,11 @@ import { getEraClubsWithTeams } from "../players/era-teams";
 import type { Player } from "../types";
 import { CURRENT_SEASON_YEAR } from "../play-links";
 
-export type SpinPoolVariant = "current" | "era";
+/**
+ * Spin pools: "current" = 2026 squads, "era" = historic team-years, "all" = both (One-Club XI:
+ * a club's whole history, this season included).
+ */
+export type SpinPoolVariant = "current" | "era" | "all";
 
 /** Current Super League clubs in Normal / Hard / Cup / Fantasy / Draft pools. */
 export const CURRENT_PLAYABLE_CLUBS = getCurrentPlayableClubNames() as unknown as readonly [
@@ -132,6 +136,7 @@ export function getEraModeTeamYearPools(): TeamYearPool[] {
 export function getTeamYearPoolsForSpinVariant(
   variant: SpinPoolVariant
 ): TeamYearPool[] {
+  if (variant === "all") return [...getEraModeTeamYearPools(), ...getCurrentModeTeamYearPools()];
   return variant === "current"
     ? getCurrentModeTeamYearPools()
     : getEraModeTeamYearPools();

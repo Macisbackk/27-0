@@ -22,6 +22,8 @@ const ACCOUNT_KEYS: readonly string[] = [
   STORAGE_KEYS.cosmeticsStore,
   STORAGE_KEYS.hiddenCoaches,
   STORAGE_KEYS.squadBook,
+  // One-Club XI / Gauntlet personal bests (device-only, but they are this account's records).
+  STORAGE_KEYS.modeRecords,
   STORAGE_KEYS.uiThemeCssCache,
   STORAGE_KEYS.boostInventory,
   STORAGE_KEYS.achievements,

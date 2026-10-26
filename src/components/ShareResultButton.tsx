@@ -11,6 +11,13 @@ interface ShareResultButtonProps {
   /** Secondary share control (e.g. the image card), shown small under the main button. */
   secondary?: ReactNode;
   className?: string;
+  /** Button text (default "Share result" with the 🟩🟥 mark). */
+  label?: ReactNode;
+  ariaLabel?: string;
+  variant?: "theme" | "secondary";
+  /** Runs before sharing (e.g. to save the name used in a challenge link). */
+  onBeforeShare?: () => void;
+  disabled?: boolean;
 }
 
 async function copyText(text: string): Promise<boolean> {
@@ -39,7 +46,16 @@ async function copyText(text: string): Promise<boolean> {
 }
 
 /** Wordle-style "Share result": the native share sheet when there is one, else copy + toast. */
-export function ShareResultButton({ text, secondary, className = "" }: ShareResultButtonProps) {
+export function ShareResultButton({
+  text,
+  secondary,
+  className = "",
+  label,
+  ariaLabel = "Share result (spoiler-free)",
+  variant = "theme",
+  onBeforeShare,
+  disabled = false,
+}: ShareResultButtonProps) {
   const [toast, setToast] = useState<string | null>(null);
   const timer = useRef<number | null>(null);
 
@@ -58,6 +74,7 @@ export function ShareResultButton({ text, secondary, className = "" }: ShareResu
 
   const handleShare = useCallback(async () => {
     playUiClick();
+    onBeforeShare?.();
     if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
       try {
         await navigator.share({ text });
@@ -69,17 +86,22 @@ export function ShareResultButton({ text, secondary, className = "" }: ShareResu
     }
     const ok = await copyText(text);
     showToast(ok ? "Copied — paste it anywhere" : "Couldn't copy");
-  }, [text, showToast]);
+  }, [text, showToast, onBeforeShare]);
 
   return (
     <div className={`flex w-full flex-col items-stretch gap-1.5 ${className}`}>
       <ActionButton
-        variant="theme"
+        variant={variant}
         onClick={() => void handleShare()}
-        aria-label="Share result (spoiler-free)"
+        aria-label={ariaLabel}
+        disabled={disabled}
       >
-        <span aria-hidden className="mr-1.5 tracking-[-0.15em]">🟩🟥</span>
-        Share result
+        {label ?? (
+          <>
+            <span aria-hidden className="mr-1.5 tracking-[-0.15em]">🟩🟥</span>
+            Share result
+          </>
+        )}
       </ActionButton>
       {secondary ? <div className="flex justify-center">{secondary}</div> : null}
       <AnimatePresence>

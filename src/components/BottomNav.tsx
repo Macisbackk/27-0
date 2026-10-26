@@ -27,7 +27,7 @@ const ITEMS = [
     label: "Profile",
     // The leaderboard, Squad Book and Settings are reached from Profile, so it stays lit there.
     match: (p: string) =>
-      p.startsWith("/profile") || p.startsWith("/settings") || p.startsWith("/leaderboard") || p.startsWith("/squad-book"),
+      p.startsWith("/profile") || p.startsWith("/settings") || p.startsWith("/leaderboard") || p.startsWith("/squad-book") || p.startsWith("/records"),
     icon: <WhistleGlyph />,
   },
 ];

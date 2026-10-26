@@ -58,7 +58,7 @@ export function RecruitmentSlotReveal({
 }: RecruitmentSlotRevealProps) {
   const spinDurationMs = getSpinDurationMs(quickSpin);
   const landHoldMs = getLandHoldMs(quickSpin);
-  const isEraSpin = spinVariant === "era";
+  const isEraSpin = spinVariant !== "current";
   const teamReelRef = useRef<SlotReelHandle>(null);
   const yearReelRef = useRef<SlotReelHandle>(null);
   const shellRef = useRef<HTMLDivElement>(null);

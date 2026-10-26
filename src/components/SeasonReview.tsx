@@ -59,6 +59,8 @@ import {
   getDailyChallengeHref,
   getDailyChallengeStreak,
 } from "@/lib/daily-challenge";
+import type { ChallengePayload } from "@/lib/challenge-link";
+import { RunSocialPanel, useDailyPickRarity, type RunOutcome } from "./RunSocial";
 
 interface SeasonReviewProps {
   squad: SquadSlot[];
@@ -90,6 +92,8 @@ interface SeasonReviewProps {
   onClose: () => void;
   onFinalizeSeason?: () => void;
   onReturnHome?: () => void;
+  /** Set when this run came from a "Challenge a mate" link: shows the head-to-head. */
+  challenge?: ChallengePayload | null;
 }
 
 export function SeasonReview({
@@ -117,6 +121,7 @@ export function SeasonReview({
   onClose,
   onFinalizeSeason,
   onReturnHome,
+  challenge = null,
 }: SeasonReviewProps) {
   const { isLoggedIn, loading: authLoading } = useAuth();
   const totalValue = getSquadValue(squad);
@@ -250,6 +255,17 @@ export function SeasonReview({
 
   const hideEndOfRunNav = showPlayoffPrompt;
 
+  // Social: Daily pick rarity, "Challenge a mate" and the head-to-head (play-off review when qualified).
+  const pickRarity = useDailyPickRarity(seed, squad, !showPlayoffPrompt && !joeMellorMode && !superSamHallasMode);
+  const socialOutcome = useMemo<RunOutcome>(
+    () => ({
+      results: seasonResult.fixtures.map((fixture) => fixture.result),
+      position: dreamTeamTablePosition,
+      finish: missedPlayoffs ? "Missed Play-Offs" : null,
+    }),
+    [seasonResult.fixtures, dreamTeamTablePosition, missedPlayoffs]
+  );
+
   const showDailyPresentation =
     SHOW_DAILY_CHALLENGE_UI && dailyChallengeMode;
   const dailyStreakNow = showDailyPresentation ? getDailyChallengeStreak() : 0;
@@ -332,6 +348,7 @@ export function SeasonReview({
         practice: dailyAttemptCounts === false,
         streak: getDailyChallengeStreak(),
         href: getDailyChallengeHref(),
+        rarestPick: pickRarity.rarest,
       });
     }
     if (weeklyChallengeMode) {
@@ -367,6 +384,7 @@ export function SeasonReview({
     weeklyAttemptCounts,
     weeklyScore,
     normalEraMode,
+    pickRarity.rarest,
   ]);
 
   const shareAction = (
@@ -508,6 +526,18 @@ export function SeasonReview({
                   shareAction={shareAction}
                 />
               </motion.div>
+            ) : null}
+
+            {!showPlayoffPrompt ? (
+              <RunSocialPanel
+                seed={seed}
+                era={normalEraMode}
+                squad={squad}
+                outcome={socialOutcome}
+                challenge={challenge}
+                rarity={pickRarity.rarity}
+                canChallenge={mode === "CLASSIC" && !isSpecialMode && difficulty !== "HARD"}
+              />
             ) : null}
 
             {newSquadBookCards > 0 ? (

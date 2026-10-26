@@ -27,6 +27,8 @@ export const STORAGE_KEYS = {
   hiddenCoaches: "27-0-hidden-coaches",
   /** Squad Book: every card fielded in a finished season (lib/squad-book.ts). */
   squadBook: "27-0-squad-book",
+  /** One-Club XI per-club bests + Gauntlet bests (storage/mode-records.ts). */
+  modeRecords: "27-0-mode-records",
   /** Cached CSS vars for pre-hydration theme bootstrap */
   uiThemeCssCache: "27-0-ui-theme-css-cache",
   /** Account Store boost inventory */

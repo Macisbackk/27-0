@@ -69,8 +69,12 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 
   // The Weekly is its own play surface too: don't light up Classic for it.
   const isWeekly = searchParams.get("weekly") === "1";
-  const isNormalEra = !isWeekly && isPlayModeActive(pathname, playSearch, "classic", true);
-  const isNormalCurrent = !isWeekly && isPlayModeActive(pathname, playSearch, "classic", false);
+  // Side modes (One-Club XI, Gauntlet, past Dailies) light up "More modes", not Classic.
+  const isSideMode =
+    pathname.startsWith("/play") &&
+    (searchParams.get("oneclub") !== null || searchParams.get("gauntlet") === "1" || searchParams.get("archive") !== null);
+  const isNormalEra = !isWeekly && !isSideMode && isPlayModeActive(pathname, playSearch, "classic", true);
+  const isNormalCurrent = !isWeekly && !isSideMode && isPlayModeActive(pathname, playSearch, "classic", false);
 
   const handleNavClick = () => {
     playUiClick();
@@ -227,6 +231,11 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       Manager Mode
                     </MenuLink>
                   </li>
+                  <li>
+                    <MenuLink href="/modes" active={pathname.startsWith("/modes") || isSideMode} icon={<EraIcon />} onClick={handleNavClick}>
+                      More modes
+                    </MenuLink>
+                  </li>
                 </ul>
               </section>
 
@@ -242,6 +251,22 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 <span className="min-w-0 flex-1">
                   <span className="block text-[15px] font-semibold">Squad Book</span>
                   <span className="block text-[13px] text-[color:var(--fl-muted)]">Collect every player you sign</span>
+                </span>
+                <span aria-hidden className="text-[color:var(--fl-muted)]">›</span>
+              </Link>
+
+              <Link
+                href="/records"
+                onClick={handleNavClick}
+                aria-current={isActive("/records") ? "page" : undefined}
+                className="btn-press fl-pressable flex min-h-[56px] items-center gap-3 rounded-card bg-pitch-900 px-3 py-2.5 text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50"
+              >
+                <span className={MENU_ICON}>
+                  <TableIcon />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[15px] font-semibold">Records</span>
+                  <span className="block text-[13px] text-[color:var(--fl-muted)]">Best squad, all-time record, 27-0s</span>
                 </span>
                 <span aria-hidden className="text-[color:var(--fl-muted)]">›</span>
               </Link>

@@ -2,6 +2,7 @@ import type { DailyChallengeRule } from "../daily-challenge";
 import { DAILY_HOMEGROWN_NATIONALITIES } from "../daily-challenge";
 import type { Player } from "../types";
 import type { TeamYearPool } from "./team-year-pools";
+import { CHALLENGE_CUPS, GRAND_FINALS, type FinalRecord } from "../../../data/quiz/facts";
 
 /**
  * Daily Challenge spin restriction. `poolFilter` narrows which team-years a spin can land on;
@@ -27,6 +28,14 @@ function isOverseas(player: Player): boolean {
   const nationality = player.nationality?.trim() ?? "";
   return nationality !== "" && nationality.toLowerCase() !== "unknown" && !HOMEGROWN.has(nationality);
 }
+
+/** `${club}|${year}` for both sides of every final in the list (club names as the pools spell them). */
+function finalistSeasons(finals: readonly FinalRecord[]): Set<string> {
+  return new Set(finals.flatMap((f) => [`${f.winnerName}|${f.year}`, `${f.runnerUpName}|${f.year}`]));
+}
+
+let cupFinalists: Set<string> | null = null;
+let grandFinalists: Set<string> | null = null;
 
 /** Spin filter for a Daily rule, or null when the rule doesn't restrict the spin pools. */
 export function getSpinRuleFilter(
@@ -56,6 +65,27 @@ export function getSpinRuleFilter(
       return { id: "homegrown", playerFilter: isHomegrown };
     case "overseas":
       return { id: "overseas", playerFilter: isOverseas };
+    case "cup-finalists": {
+      cupFinalists ??= finalistSeasons(CHALLENGE_CUPS);
+      const seasons = cupFinalists;
+      return { id: "cup-finalists", poolFilter: (pool) => seasons.has(`${pool.team}|${pool.year}`) };
+    }
+    case "grand-finalists": {
+      grandFinalists ??= finalistSeasons(GRAND_FINALS);
+      const seasons = grandFinalists;
+      return { id: "grand-finalists", poolFilter: (pool) => seasons.has(`${pool.team}|${pool.year}`) };
+    }
+    case "nation":
+      return {
+        id: `nation:${rule.nation}`,
+        playerFilter: (player) => player.nationality?.trim() === rule.nation,
+      };
+    case "internationals":
+      return { id: "internationals", playerFilter: (player) => (player.intlCaps ?? 0) > 0 };
+    case "clubs": {
+      const clubs = new Set(rule.clubs);
+      return { id: `clubs:${rule.clubs.join("+")}`, poolFilter: (pool) => clubs.has(pool.team) };
+    }
     case "giant-killers":
     case "no-respins":
       return null;

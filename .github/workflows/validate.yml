@@ -63,6 +63,24 @@ jobs:
       - name: Share result text
         if: success() || failure()
         run: scripts/ci-run.sh "Share result text" npm run test:share
+      - name: Challenge links, pick rarity, records
+        if: success() || failure()
+        run: scripts/ci-run.sh "Challenge links, pick rarity, records" npm run test:social
+      - name: Weekly Challenge
+        if: success() || failure()
+        run: scripts/ci-run.sh "Weekly Challenge" npm run test:weekly
+      - name: Weekly calendar themes
+        if: success() || failure()
+        run: scripts/ci-run.sh "Weekly calendar themes" npm run test:weekly-themes
+      - name: One-Club XI
+        if: success() || failure()
+        run: scripts/ci-run.sh "One-Club XI" npm run test:one-club
+      - name: Gauntlet
+        if: success() || failure()
+        run: scripts/ci-run.sh "Gauntlet" npm run test:gauntlet
+      - name: Daily archive
+        if: success() || failure()
+        run: scripts/ci-run.sh "Daily archive" npm run test:daily-archive
       - uses: oven-sh/setup-bun@v2
         if: success() || failure()
       - name: Squad Book

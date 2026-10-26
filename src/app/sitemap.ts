@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/manager",
     "/play",
+    "/modes",
     "/leaderboard",
     "/showcase",
     "/store",

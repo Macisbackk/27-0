@@ -11,8 +11,9 @@ import { chromium } from "playwright";
 
 const BASE = process.env.E2E_BASE_URL || "http://localhost:3000";
 const ROUTES = [
-  "/", "/play", "/play?era=1", "/play?daily=1", "/manager", "/mini-games", "/mini-games/quiz", "/mini-games/wordle", "/mini-games/grid",
-  "/quiz", "/leaderboard", "/stats", "/profile", "/store", "/squad-book",
+  "/", "/play", "/play?era=1", "/play?daily=1", "/play?challenge=broken-link.x", "/manager", "/mini-games", "/mini-games/quiz", "/mini-games/wordle", "/mini-games/grid",
+  "/quiz", "/leaderboard", "/stats", "/profile", "/store", "/squad-book", "/records",
+  "/modes", "/modes/past-dailies", "/play?oneclub=wigan-warriors", "/play?gauntlet=1",
   "/showcase", "/settings", "/login", "/auth/callback", "/auth/reset-password",
 ];
 const EXPECT_404 = ["/dev/mobile-ui", "/this-route-does-not-exist"];
