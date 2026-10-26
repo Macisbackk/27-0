@@ -79,5 +79,13 @@ await shot(phone, "17-manager-preseason", "/manager", async (page) => {
   await page.waitForTimeout(800);
 });
 await shot(desktop, "18-desktop-manager", "/manager");
+// v1.18 shell: bottom nav (Home · Classic · Manager · Puzzles · Profile) stays up on Manager and
+// the puzzles; the Store opens on "For you"; login leads with the form.
+await shot(phone, "26-home-first-run", "/");
+await shot(phone, "27-manager-with-nav", "/manager");
+await shot(phone, "28-wordle-with-nav", "/mini-games/wordle");
+await shot(phone, "29-store-for-you", "/store");
+await shot(phone, "30-login", "/login");
+await shot(phone, "31-menu-full", "/", tap(/open menu/i), true);
 
 await browser.close();

@@ -60,6 +60,8 @@ interface HubState {
   classicBest: string | null;
   eraBest: string | null;
   wordleDone: boolean;
+  /** No Classic / Era Classic run and no Manager career on this device yet. */
+  firstRun: boolean;
 }
 
 function greeting(hour: number): string {
@@ -79,7 +81,11 @@ function readHub(): HubState {
     career = null;
   }
   const stats = getAllStats();
-  const rec = (w: number, l: number) => (w + l > 0 ? `Best: ${w}-${l}` : null);
+  // Same rule as the Coach Profile: a best record only once a season in that mode is finished.
+  const rec = (b: { totalSeasonsSimulated: number; bestRecordWins: number; bestRecordLosses: number }) =>
+    b.totalSeasonsSimulated > 0 && b.bestRecordWins + b.bestRecordLosses > 0
+      ? `Best: ${b.bestRecordWins}-${b.bestRecordLosses}`
+      : null;
   const progress = getDailyChallengeProgress();
   return {
     greeting: greeting(new Date().getHours()),
@@ -102,9 +108,12 @@ function readHub(): HubState {
         }
       : null,
     career,
-    classicBest: rec(stats.normal.bestRecordWins, stats.normal.bestRecordLosses),
-    eraBest: rec(stats.eraNormal.bestRecordWins, stats.eraNormal.bestRecordLosses),
+    classicBest: rec(stats.normal),
+    eraBest: rec(stats.eraNormal),
     wordleDone: getPaidRunIds().includes(`wordle_win:${getLocalDateKey()}`),
+    firstRun:
+      !career &&
+      stats.normal.totalRuns + stats.normal.totalSeasonsSimulated + stats.eraNormal.totalRuns + stats.eraNormal.totalSeasonsSimulated === 0,
   };
 }
 
@@ -228,6 +237,7 @@ export function HomeModeSelector() {
   const nextUnlock = hub ? nextStoreUnlock(hub.funds, cosmetics.owned) : null;
   const daily = hub?.daily ?? null;
   const weekly = hub?.weekly ?? null;
+  const firstRun = hub?.firstRun === true;
   const weeklyStatus = !weekly
     ? "One ranked attempt all week"
     : weekly.score !== null
@@ -238,7 +248,7 @@ export function HomeModeSelector() {
   const dailyStatus = !daily
     ? null
     : [
-        daily.streak > 0 ? `🔥 ${daily.streak}-day streak` : null,
+        daily.streak > 0 ? `${daily.streak}-day streak` : null,
         daily.done ? "Done today" : daily.used ? "Practice only" : null,
         untilReset ? (daily.used || daily.done ? `next in ${untilReset}` : `resets in ${untilReset}`) : null,
       ]
@@ -275,12 +285,42 @@ export function HomeModeSelector() {
         </Link>
       ) : null}
 
+      {firstRun ? (
+        <section className="rounded-card bg-pitch-900 p-[18px] text-center" aria-label="New here? Start with Classic">
+          <p className="mx-auto max-w-sm text-[16px] leading-snug text-white">
+            Spin a club, pick a player for each spot, then see if your side can go 27-0 — unbeaten over a 27-game season.
+          </p>
+          <Link
+            href={buildPlayHref("classic", false)}
+            onClick={() => {
+              playUiClick();
+              setNormalEraVariant(false);
+              playModeClassicStart("NORMAL");
+            }}
+            className="btn-press fl-pressable mt-4 flex h-[56px] items-center justify-center rounded-control bg-theme-primary font-cond text-[20px] font-bold text-[color:var(--theme-text-on-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+          >
+            Start Classic
+          </Link>
+          <Link
+            href={buildPlayHref("classic", true)}
+            onClick={() => {
+              playUiClick();
+              setNormalEraVariant(true);
+              playModeClassicStart("NORMAL");
+            }}
+            className="mt-2 inline-flex min-h-[44px] items-center justify-center px-3 text-[14px] font-semibold text-[color:var(--fl-muted)] hover:text-white"
+          >
+            Or Era Classic: every era, legends too ›
+          </Link>
+        </section>
+      ) : null}
+
       {SHOW_DAILY_CHALLENGE_UI ? (
         <section className="relative overflow-hidden rounded-card bg-pitch-900 p-[18px] text-center" aria-label="Daily Challenge">
           <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full bg-theme-primary/[0.06]" />
           <p className="flex items-center justify-center gap-2 font-cond text-[16px] font-bold text-theme-primary">
             <span aria-hidden className="h-2 w-2 rounded-full bg-theme-primary" />
-            Daily Challenge{daily?.scenario.eraMode ? " · Era" : ""}
+            Daily Challenge{daily?.scenario.eraMode ? " · Era Classic" : ""}
           </p>
           <p className="mt-1 font-cond text-[30px] font-bold leading-[1.05]">
             {daily?.scenario.ruleTitle ?? "Today's rule"}
@@ -288,7 +328,12 @@ export function HomeModeSelector() {
           <p className="mx-auto mt-1 max-w-sm text-[15px] text-[color:var(--fl-muted)]">
             {daily?.scenario.ruleSummary ?? "A new twist every day."}
           </p>
-          {dailyStatus ? <p className="mt-2 text-xs font-bold text-[color:var(--fl-muted)]">{dailyStatus}</p> : null}
+          {dailyStatus ? (
+            <p className="mt-2 text-xs font-bold text-[color:var(--fl-muted)]">
+              {daily && daily.streak > 0 ? <span aria-hidden>🔥 </span> : null}
+              {dailyStatus}
+            </p>
+          ) : null}
           <Link
             href={getDailyChallengeHref()}
             onClick={() => playUiClick()}
@@ -307,7 +352,7 @@ export function HomeModeSelector() {
             className="min-w-0 flex-1"
           >
             <span className="block font-cond text-[14px] font-bold text-accent-gold">
-              Weekly{weekly?.scenario.eraMode ? " · Era" : ""} · Top 10 +{formatClubFunds(WEEKLY_TOP10_REWARD)}
+              Weekly{weekly?.scenario.eraMode ? " · Era Classic" : ""} · Top 10 +{formatClubFunds(WEEKLY_TOP10_REWARD)}
             </span>
             <span className="block truncate font-cond text-[19px] font-bold leading-tight text-white">
               {weekly?.scenario.ruleTitle ?? "This week's rule"}
@@ -350,7 +395,8 @@ export function HomeModeSelector() {
         <span className="shrink-0 text-xs font-bold text-theme-primary">{hub?.career ? "Resume ›" : "Start ›"}</span>
       </Tile>
 
-      <div className="grid grid-cols-2 gap-3">
+      {/* New players get Classic as the hero above; the pair returns once they've played. */}
+      <div className={`grid grid-cols-2 gap-3 ${firstRun ? "hidden" : ""}`}>
         <Tile
           href={buildPlayHref("classic", false)}
          

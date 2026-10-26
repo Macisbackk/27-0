@@ -147,17 +147,7 @@ export function LoginForm() {
         </p>
       )}
 
-      <Link
-        href="/#play-modes"
-        className={`mt-4 block w-full text-center ${BTN.base} ${BTN.accentOutline}`}
-      >
-        Continue as guest
-      </Link>
-      <p className={`mt-2 text-center ${TYPO.bodySm}`}>
-        Play as guest — stats stay here.
-      </p>
-
-      <div className="mt-6">
+      <div className="mt-4">
         <SubTabBar
           tabs={[
             { id: "login", label: "Log in" },
@@ -172,6 +162,11 @@ export function LoginForm() {
           ariaLabel="Account mode"
         />
       </div>
+
+      <p className={`mt-3 text-center ${TYPO.bodySm}`}>
+        Played as a guest? Your Club Funds, Store items, stats, Daily streak, Squad Book and Manager
+        career on this device move into your account when you {mode === "signup" ? "sign up" : "log in"}.
+      </p>
 
       <div className={`mt-5 ${SPACING.stackMd}`}>
         <label htmlFor={emailId} className="sr-only">
@@ -291,6 +286,14 @@ export function LoginForm() {
             : "Create account"
           : "Log in"}
       </button>
+
+      <p className={`mt-5 text-center ${TYPO.bodySm}`}>
+        Not now?{" "}
+        <Link href="/" className="font-semibold text-theme-primary hover:underline">
+          Keep playing as a guest
+        </Link>
+        <span className="block">Progress stays on this device until you log in.</span>
+      </p>
     </section>
   );
 }

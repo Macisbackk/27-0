@@ -1,6 +1,7 @@
 import {
   formatRecord,
   formatRecordWithPercentage,
+  isBetterRecord,
   isWorseRecord,
 } from "./lifetime-stats";
 import {
@@ -106,6 +107,27 @@ export function getOverallView(
     }
     return worst;
   }, null);
+  // Same source as the worst record (each mode's regular-season best), so the two always agree.
+  const bestRecord = [
+    normal,
+    hard,
+    era,
+    draftN,
+    draftH,
+  ].reduce<{ wins: number; losses: number } | null>((best, bucket) => {
+    if (bucket.totalSeasonsSimulated <= 0) return best;
+    const candidate = {
+      wins: bucket.bestRecordWins,
+      losses: bucket.bestRecordLosses,
+    };
+    if (
+      !best ||
+      isBetterRecord(candidate.wins, candidate.losses, best.wins, best.losses)
+    ) {
+      return candidate;
+    }
+    return best;
+  }, null);
   const mergedDrafts = mergeDraftCounts(
     mergeDraftCounts(
       mergeDraftCounts(normal.draftCounts, hard.draftCounts),
@@ -136,10 +158,22 @@ export function getOverallView(
     draftH.lowestSquadValue,
   ].filter((v): v is number => v !== null);
 
+  const mostSuccessful = getMostSuccessfulPlayer(mergedSeasonWins);
+  // A player can't be both your most successful and your worst performer: skip the top one.
+  const worstPerforming = getWorstPerformingPlayer(
+    mostSuccessful
+      ? Object.fromEntries(
+          Object.entries(mergedSeasonLosses).filter(([id]) => id !== mostSuccessful.id)
+        )
+      : mergedSeasonLosses
+  );
+
   return {
+    // One source for every record on the page: finished seasons. (Squad-recorded run counts
+    // drifted from season counts in older saves, so "2 runs" could sit next to a third record.)
     totalRuns:
-      normal.totalRuns +
-      hard.totalRuns +
+      normal.totalSeasonsSimulated +
+      hard.totalSeasonsSimulated +
       era.totalSeasonsSimulated +
       draftN.totalSeasonsSimulated +
       draftH.totalSeasonsSimulated,
@@ -162,6 +196,7 @@ export function getOverallView(
       draftN.totalSeasonsSimulated +
       draftH.totalSeasonsSimulated,
     totalRecord,
+    bestRecord,
     worstRecord,
     longestUnbeatenRun: Math.max(
       normal.longestUnbeatenRun,
@@ -214,8 +249,8 @@ export function getOverallView(
       pickBestRanking(draftN.bestNationalRanking, draftH.bestNationalRanking)
     ),
     mostSelected: getMostSelectedPlayer(mergedDrafts),
-    mostSuccessful: getMostSuccessfulPlayer(mergedSeasonWins),
-    worstPerforming: getWorstPerformingPlayer(mergedSeasonLosses),
+    mostSuccessful,
+    worstPerforming,
     mostValuablePlayer: pickBestMvp(normal, hard),
     totalRerollsUsed: normal.totalRerollsUsed,
     mostRerollsInRun: normal.mostRerollsInRun,

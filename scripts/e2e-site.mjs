@@ -123,6 +123,43 @@ for (const vp of [
   note(`Crawled ${ROUTES.length} routes @${vp.name}`);
 }
 
+/* ------------------------------------------------------------ 1b) bottom nav */
+// Phone tab bar: Home · Classic · Manager · Puzzles · Profile. It stays up on Manager and the
+// puzzles (hidden only during a Classic run and on sign-in) and must never cover a sticky bar.
+{
+  const context = await browser.newContext({ viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true });
+  const page = wire(await context.newPage());
+  const EXPECTED = ["Home", "Classic", "Manager", "Puzzles", "Profile"];
+  for (const route of ["/", "/manager", "/mini-games", "/mini-games/wordle", "/profile", "/play", "/login"]) {
+    currentWhere = `bottom nav ${route}`;
+    await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" });
+    await settle(page, 900);
+    const nav = page.getByRole("navigation", { name: "Main" });
+    const visible = await nav.isVisible().catch(() => false);
+    const shouldShow = !route.startsWith("/play") && !route.startsWith("/login");
+    if (visible !== shouldShow) {
+      problems.push(`[${currentWhere}] bottom nav ${visible ? "showing" : "missing"} (expected ${shouldShow ? "shown" : "hidden"})`);
+      continue;
+    }
+    if (!visible) continue;
+    const labels = (await nav.getByRole("link").allInnerTexts()).map((t) => t.trim());
+    if (labels.join("|") !== EXPECTED.join("|")) problems.push(`[${currentWhere}] bottom nav items ${labels.join(", ")}`);
+    // A sticky action bar (Manager) must sit above the nav, not under it.
+    const overlap = await page.evaluate(() => {
+      const navBox = document.querySelector(".fl-bottom-nav")?.getBoundingClientRect();
+      if (!navBox) return null;
+      for (const bar of document.querySelectorAll(".mobile-action-bar")) {
+        const r = bar.getBoundingClientRect();
+        if (r.height > 0 && getComputedStyle(bar).position === "fixed" && r.bottom > navBox.top + 1) return Math.round(r.bottom - navBox.top);
+      }
+      return null;
+    });
+    if (overlap !== null) problems.push(`[${currentWhere}] sticky action bar overlaps the bottom nav by ${overlap}px`);
+  }
+  await context.close();
+  note("Bottom nav: items, visibility and no overlap");
+}
+
 /* ------------------------------------------------------------ 2) links */
 {
   const context = await browser.newContext();

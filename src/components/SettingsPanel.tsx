@@ -58,7 +58,7 @@ function LinkRow({ href, label, hint, external = false }: { href: string; label:
         <span className="block text-sm font-semibold text-white">{label}</span>
         {hint ? <span className="mt-0.5 block text-xs leading-snug text-gray-400">{hint}</span> : null}
       </span>
-      <span aria-hidden className="text-lg text-gray-500">
+      <span aria-hidden className="text-lg text-[color:var(--fl-muted)]">
         {external ? "↗" : "›"}
       </span>
     </>
@@ -209,14 +209,14 @@ export function SettingsPanel() {
             />
           ) : null}
         </Row>
-        <Row label="Classic squads" hint="Which squads Classic opens with from the menu.">
+        <Row label="Show first" hint="Which mode your stats and leaderboards open on.">
           {ready ? (
             <Segmented
-              label="Classic squads"
+              label="Show first"
               value={era ? "era" : "current"}
               options={[
-                { id: "current", label: "Current" },
-                { id: "era", label: "Era" },
+                { id: "current", label: "Classic" },
+                { id: "era", label: "Era Classic" },
               ]}
               onChange={(id) => {
                 playUiClick();
@@ -277,7 +277,7 @@ export function SettingsPanel() {
             {hiddenCoaches.length === 0 ? (
               <Row
                 label="No hidden coaches"
-                hint="Tap ⋯ next to a coach on any leaderboard to hide them from your boards or report them."
+                hint="Tap the three-dot (⋯) button next to a coach on any leaderboard to hide them from your boards or report them."
               />
             ) : (
               hiddenCoaches.map((c) => (
@@ -341,7 +341,7 @@ export function SettingsPanel() {
         <LinkRow
           href={REPORT_MAIL}
           label="Report a player or content"
-          hint={`Offensive names, cheating or anything else: ${CONTACT_EMAIL}. Or tap ⋯ next to a coach on a leaderboard.`}
+          hint={`Offensive names, cheating or anything else: ${CONTACT_EMAIL}. Or tap the three-dot (⋯) button next to a coach on a leaderboard.`}
           external
         />
         {SHOW_TIP_LINKS ? <LinkRow href={COFFEE_URL} label="Buy Me a Coffee" hint="Support 27-0." external /> : null}
@@ -349,7 +349,7 @@ export function SettingsPanel() {
         <LinkRow href="/privacy" label="Privacy policy" />
       </Group>
 
-      <p className="px-2 text-center text-xs text-gray-500">27-0 {GAME_VERSION}</p>
+      <p className="px-2 text-center text-xs text-[color:var(--fl-muted)]">27-0 {GAME_VERSION}</p>
     </div>
   );
 }

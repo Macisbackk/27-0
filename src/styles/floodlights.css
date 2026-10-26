@@ -256,8 +256,8 @@ button.game-button--era,
   bottom: calc(10px + env(safe-area-inset-bottom));
   z-index: 45;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 4px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 2px;
   padding: 6px;
   border-radius: 20px;
   background: var(--fl-surface);
@@ -283,8 +283,14 @@ button.game-button--era,
   color: var(--theme-primary);
 }
 
+/* Page-end reserve: nav (60px) + its 10px lift + breathing room + the home-indicator inset. */
+.fl-bottom-nav-spacer {
+  height: calc(88px + env(safe-area-inset-bottom, 0px));
+}
+
 @media (min-width: 640px) {
-  .fl-bottom-nav {
+  .fl-bottom-nav,
+  .fl-bottom-nav-spacer {
     display: none;
   }
 }

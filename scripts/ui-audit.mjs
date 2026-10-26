@@ -50,7 +50,9 @@ const page = await phone.newPage();
 
 for (const [route, name] of [
   ["/", "home"],
+  ["/manager", "manager"],
   ["/mini-games", "mini-games"],
+  ["/squad-book", "squad-book"],
   ["/leaderboard", "leaderboard"],
   ["/profile", "profile"],
   ["/store", "store"],

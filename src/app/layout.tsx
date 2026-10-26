@@ -23,6 +23,7 @@ import { MotionProvider } from "@/components/MotionProvider";
 import { UI_THEME_BOOTSTRAP_SCRIPT } from "@/lib/ui/theme-bootstrap-script";
 import { IS_APP_BUILD, NATIVE_CLASS_BOOTSTRAP_SCRIPT } from "@/lib/native/platform";
 import { OfflineBanner } from "@/components/OfflineBanner";
+import { ToastHost } from "@/components/ui/ToastHost";
 
 // Matchnight type: Barlow for reading (road-sign grotesque, northern-England plain speaking),
 // Barlow Condensed for headings and kit-tag labels, Anton kept for scores and the scoreboard mark.
@@ -119,6 +120,7 @@ export default function RootLayout({
             </main>
             <SiteFooter />
             <BottomNav />
+            <ToastHost />
             </MotionProvider>
           </AchievementProvider>
         </AuthProvider>

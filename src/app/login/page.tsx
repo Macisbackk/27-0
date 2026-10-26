@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
 import { LoginForm } from "@/components/LoginForm";
 import { PageShell } from "@/components/ui/PageShell";
-import { CARD, LINK, PAGE, SPACING } from "@/lib/ui/design-system";
+import { CARD, PAGE, SPACING } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 
 export const metadata: Metadata = {
@@ -20,7 +19,7 @@ export default function LoginPage() {
             <p className={TYPO.sectionLabel}>Account</p>
             <h1 className={`mt-2 ${TYPO.pageTitle}`}>Log in</h1>
             <p className={`mt-2 ${TYPO.bodySm}`}>
-              Log in or create a coach profile for online leaderboards.
+              Log in or create a free account to save your progress online and join the leaderboards.
             </p>
           </div>
 
@@ -36,11 +35,6 @@ export default function LoginPage() {
             <LoginForm />
           </Suspense>
 
-          <p className={`mt-6 text-center ${TYPO.bodySm}`}>
-            <Link href="/" className={LINK.accent}>
-              ← Back to Home
-            </Link>
-          </p>
         </div>
       </div>
     </PageShell>

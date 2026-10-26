@@ -22,7 +22,7 @@ export function getMostSelectedPlayer(
 
 export function getMostSuccessfulPlayer(
   playerSeasonWins: Record<string, number>
-): { name: string; wins: number } | null {
+): { id: string; name: string; wins: number } | null {
   let bestId: string | null = null;
   let bestWins = 0;
 
@@ -35,7 +35,7 @@ export function getMostSuccessfulPlayer(
   }
 
   if (!bestId || bestWins === 0) return null;
-  return { name: getPlayerById(bestId)?.name ?? bestId, wins: bestWins };
+  return { id: bestId, name: getPlayerById(bestId)?.name ?? bestId, wins: bestWins };
 }
 
 export function getWorstPerformingPlayer(
