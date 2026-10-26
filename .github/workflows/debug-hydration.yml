@@ -12,13 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [prod, dev, site]
-        width: ["320", "375", "desktop"]
-        exclude:
-          - mode: site
-            width: "320"
-          - mode: site
-            width: "desktop"
+        mode: [site]
+        width: ["375", "desktop"]
     env:
       NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
@@ -53,7 +48,7 @@ jobs:
           if [ "${{ matrix.mode }}" = site ]; then
             mkdir -p hyd-out; n=0
             end=$(( $(date +%s) + 38*60 ))
-            while [ $(date +%s) -lt $end ]; do n=$((n+1)); rm -rf e2e-shots; timeout 1200 node scripts/e2e-site.mjs > /tmp/site.txt 2>&1; c=$(grep -c "#418\|#423\|#425" /tmp/site.txt); echo "run $n: $c hydration lines" >> hyd-out/site-summary.md; grep "#418\|#423\|#425" /tmp/site.txt | head -5 >> hyd-out/site-summary.md; mkdir -p hyd-out/run$n; cp e2e-shots/hydration-* e2e-shots/site-report.txt hyd-out/run$n/ 2>/dev/null || true; done
+            while [ $(date +%s) -lt $end ]; do n=$((n+1)); rm -rf e2e-shots; timeout 1200 node scripts/e2e-site.mjs > /tmp/site.txt 2>&1 || true; c=$(grep -c "#418\|#423\|#425" /tmp/site.txt || true); echo "run $n: $c hydration lines" >> hyd-out/site-summary.md; (grep "#418\|#423\|#425" /tmp/site.txt | head -5 >> hyd-out/site-summary.md || true); mkdir -p hyd-out/run$n; cp e2e-shots/hydration-* e2e-shots/site-report.txt hyd-out/run$n/ 2>/dev/null || true; done
           else
             timeout 2700 node scripts/debug-hydration.mjs || true
           fi
