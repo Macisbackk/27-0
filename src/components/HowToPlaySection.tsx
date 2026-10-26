@@ -9,6 +9,10 @@ const GUIDE_ITEMS = [
     title: "Classic",
     body: "Spin and sign a 13 from Current or Era squads, chase 27-0, then fight for the play-offs.",
   },
+  {
+    title: "How results are decided",
+    body: "Every game is decided by how much stronger your 13 is than the opposition, judged against what's possible in Current or Era. The stronger your squad, the better your 27-0 chance. It's never guaranteed and never impossible.",
+  },
   ...(SHOW_DAILY_CHALLENGE_UI
     ? [
         {
