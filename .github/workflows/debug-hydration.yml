@@ -1,0 +1,52 @@
+name: Debug hydration 418 (temporary)
+on:
+  workflow_dispatch:
+  push:
+    branches: [debug/hydration-418]
+jobs:
+  hunt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [prod, dev]
+        width: ["320", "375", "desktop"]
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
+      NEXT_TELEMETRY_DISABLED: "1"
+      NEXT_PUBLIC_E2E: "1"
+      CI: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Build (prod)
+        if: matrix.mode == 'prod'
+        run: npm run build
+      - name: Install Playwright
+        run: npm install --no-save playwright@1.49.1 && npx playwright install --with-deps chromium
+      - name: Start server
+        run: |
+          if [ "${{ matrix.mode }}" = prod ]; then npx next start -p 3000 > /tmp/next.log 2>&1 & else npx next dev -p 3000 > /tmp/next.log 2>&1 & fi
+          for i in $(seq 1 120); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
+          # warm up dev compiles
+          for r in / /play "/play?era=1" "/play?daily=1" /manager /mini-games /store /profile /modes; do curl -s -o /dev/null "http://localhost:3000$r"; done
+      - name: Hunt
+        env:
+          LABEL: ${{ matrix.mode }}-${{ matrix.width }}
+          WIDTH: ${{ matrix.width }}
+          LOADS: ${{ matrix.mode == 'prod' && '30' || '8' }}
+        run: timeout 2700 node scripts/debug-hydration.mjs || true
+      - name: Server log tail
+        if: always()
+        run: tail -30 /tmp/next.log >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hyd-${{ matrix.mode }}-${{ matrix.width }}
+          path: hyd-out
