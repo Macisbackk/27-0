@@ -8,6 +8,8 @@ import { contractLabel, formatMoney, newDealLength, renewalFee } from "@/lib/car
 import { useCareer } from "@/lib/career/context";
 import { playContractSigned, playUiClick, playWarning } from "@/lib/sound";
 import { Card, Eyebrow, RatingPill, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
+import { ShirtGlyph } from "@/components/icons/rugby-icons";
+import { PitchHero } from "@/components/ui/PitchHero";
 
 /**
  * The summer, before the transfer window: who retired, whose contracts are up (renew or let go),
@@ -29,13 +31,12 @@ export function Departures() {
   return (
     <div className={CAREER_PAGE_CLASS}>
       <CareerBackLink label="Home (progress saved)" />
-      <header className="text-center">
-        <p className="text-[13px] font-semibold text-theme-primary">Before the {s.year} season</p>
-        <h1 className="mt-1 text-[30px] font-bold leading-none text-white">Comings and goings</h1>
-        <p className="mx-auto mt-2 max-w-md text-sm text-[color:var(--fl-muted)]">
-          Sort out contracts before the transfer window opens. Budget {formatMoney(s.budget)}.
-        </p>
-      </header>
+      <PitchHero
+        icon={<ShirtGlyph />}
+        eyebrow={<>Before the {s.year} season</>}
+        title="Comings and goings"
+        description={<>Sort out contracts before the transfer window opens. Budget {formatMoney(s.budget)}.</>}
+      />
 
       <Card>
         <Eyebrow>Contracts up · {expiring.length}</Eyebrow>

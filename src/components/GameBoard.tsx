@@ -127,6 +127,8 @@ import { BodyPortal } from "@/components/ui/BodyPortal";
 import { uiLayerClass } from "@/lib/ui/layers";
 import { TYPO } from "@/lib/ui/typography";
 import { GameButton } from "@/components/ui/GameButton";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { BallGlyph, FixtureGlyph, ProgrammeGlyph } from "@/components/icons/rugby-icons";
 import { StickyActionBar } from "@/components/ui/MobileLayout";
 import type { SlotRevealTarget } from "@/lib/game/recruitment-slot-reveal";
 import {
@@ -2949,75 +2951,66 @@ export function GameBoard({
         }`}
       >
       {!isReviewPhase && (title || subtitle || challengeScenario) && (
-        <div className="mb-4 pt-1 text-center sm:mb-5 lg:pt-0">
-          {challengeScenario ? (
-            <p className={`mb-1 ${TYPO.eyebrow} text-accent-gold`}>
-              {challenge
-                ? "Challenge"
-                : weeklyScenario
-                ? weeklyScenario.theme
-                  ? `Weekly Challenge · ${weeklyScenario.theme.event}`
-                  : "Weekly Challenge"
-                : archiveScenario && archiveDateKey
-                  ? `Past Daily · ${formatDailyArchiveDate(archiveDateKey)}`
-                  : "Daily Challenge"}
-              {challengeScenario.eraMode ? " · Era" : ""}
-            </p>
-          ) : null}
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {challengeScenario ? (
-              <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>
-                {challengeScenario.ruleTitle}
-              </h1>
-            ) : title ? (
-              <h1 className={`${TYPO.viewTitle} text-lg sm:text-xl`}>
-                {title}
-              </h1>
-            ) : null}
-          </div>
-          {dailyScenario ? (
-            <>
-              <p className="mt-1 text-sm text-gray-200">
+        <PitchHero
+          size="slim"
+          className="mb-4 sm:mb-5"
+          icon={challengeScenario ? <FixtureGlyph /> : normalEraMode ? <ProgrammeGlyph /> : <BallGlyph />}
+          eyebrow={
+            challengeScenario ? (
+              <>
+                {challenge
+                  ? "Challenge"
+                  : weeklyScenario
+                  ? weeklyScenario.theme
+                    ? `Weekly Challenge · ${weeklyScenario.theme.event}`
+                    : "Weekly Challenge"
+                  : archiveScenario && archiveDateKey
+                    ? `Past Daily · ${formatDailyArchiveDate(archiveDateKey)}`
+                    : "Daily Challenge"}
+                {challengeScenario.eraMode ? " · Era" : ""}
+              </>
+            ) : undefined
+          }
+          title={challengeScenario ? challengeScenario.ruleTitle : title}
+          description={
+            dailyScenario ? (
+              <>
                 {dailyScenario.ruleSummary}
-              </p>
-              <p className="mt-0.5 text-xs text-gray-400">
-                {dailyAttemptCounts
-                  ? `Top the table +${formatClubFunds(dailyScenario.leagueLeadersBonus)} · Win the Grand Final +${formatClubFunds(dailyScenario.playoffTitleBonus)}`
-                  : "Practice run — today's Daily attempt is used"}
-              </p>
-            </>
-          ) : weeklyScenario ? (
-            <>
-              <p className="mt-1 text-sm text-gray-200">
+                <span className="pitch-sub__meta">
+                  {dailyAttemptCounts
+                    ? `Top the table +${formatClubFunds(dailyScenario.leagueLeadersBonus)} · Win the Grand Final +${formatClubFunds(dailyScenario.playoffTitleBonus)}`
+                    : "Practice run — today's Daily attempt is used"}
+                </span>
+              </>
+            ) : weeklyScenario ? (
+              <>
                 {weeklyScenario.ruleSummary}
-              </p>
-              <p className="mt-0.5 text-xs text-gray-400">
-                {weeklyAttemptCounts
-                  ? `Ranked attempt · Win ${WEEKLY_SCORE.regularWin} · Play-off win ${WEEKLY_SCORE.playoffWin} · Grand Final +${WEEKLY_SCORE.grandFinal} · League Leaders +${WEEKLY_SCORE.leagueLeaders}`
-                  : "Practice run — this week's ranked attempt is used"}
-              </p>
-            </>
-          ) : challenge ? (
-            <>
-              {challengeLinkScenario ? (
-                <p className="mt-1 text-sm text-gray-200">{challengeLinkScenario.ruleSummary}</p>
-              ) : null}
-              <p className="mt-1 font-display text-base font-bold text-accent-gold" role="status">
-                {challengeBannerText(challenge)}
-              </p>
-              <p className="mt-0.5 text-xs text-gray-400">Same spins · unranked</p>
-            </>
-          ) : archiveScenario ? (
-            <>
-              <p className="mt-1 text-sm text-gray-200">{archiveScenario.ruleSummary}</p>
-              <p className="mt-0.5 text-xs text-gray-400">
-                Practice: same spins as on the day. No streak, board, missions or Club Funds.
-              </p>
-            </>
-          ) : subtitle ? (
-            <p className="mt-1 text-sm text-gray-400">{subtitle}</p>
-          ) : null}
-        </div>
+                <span className="pitch-sub__meta">
+                  {weeklyAttemptCounts
+                    ? `Ranked attempt · Win ${WEEKLY_SCORE.regularWin} · Play-off win ${WEEKLY_SCORE.playoffWin} · Grand Final +${WEEKLY_SCORE.grandFinal} · League Leaders +${WEEKLY_SCORE.leagueLeaders}`
+                    : "Practice run — this week's ranked attempt is used"}
+                </span>
+              </>
+            ) : challenge ? (
+              <>
+                {challengeLinkScenario ? <>{challengeLinkScenario.ruleSummary} </> : null}
+                <span className="pitch-sub__meta font-cond text-[16px] font-bold" role="status">
+                  {challengeBannerText(challenge)}
+                </span>
+                <span className="pitch-sub__meta">Same spins · unranked</span>
+              </>
+            ) : archiveScenario ? (
+              <>
+                {archiveScenario.ruleSummary}
+                <span className="pitch-sub__meta">
+                  Practice: same spins as on the day. No streak, board, missions or Club Funds.
+                </span>
+              </>
+            ) : subtitle ? (
+              subtitle
+            ) : undefined
+          }
+        />
       )}
 
       {!isReviewPhase && (

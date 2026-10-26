@@ -1,6 +1,5 @@
 "use client";
 
-import { TYPO } from "@/lib/ui/typography";
 import { playTabChange } from "@/lib/sound";
 
 export type LeaderboardTabAccent = "theme" | "gold" | "green" | "sky" | "amber";
@@ -23,31 +22,31 @@ interface LeaderboardTabBarProps<T extends string> {
   scrollable?: boolean;
 }
 
+/* The pitch look (see src/styles/pitch.css): a dark track, the active tab white; Manager / gold
+   tabs take the Era parchment so the mode still reads at a glance. */
+const ACTIVE_WHITE = "border-transparent bg-white text-pitch-950";
 const ACCENT_ACTIVE: Record<LeaderboardTabAccent, string> = {
-  theme:
-    "border-transparent bg-theme-primary/15 text-theme-primary",
-  gold:
-    "border-transparent bg-accent-gold/15 text-accent-gold",
-  green:
-    "border-transparent bg-mode-current/15 text-mode-current",
-  sky:
-    "border-transparent bg-sky-500/15 text-sky-300",
-  amber:
-    "border-transparent bg-amber-500/15 text-amber-300",
+  theme: ACTIVE_WHITE,
+  gold: "border-transparent bg-mode-era text-pitch-950",
+  green: ACTIVE_WHITE,
+  sky: ACTIVE_WHITE,
+  amber: ACTIVE_WHITE,
 };
 
+const IDLE_IN_TRACK = "border-transparent bg-transparent text-white/70 hover:text-white";
 const ACCENT_IDLE: Record<LeaderboardTabAccent, string> = {
-  theme:
-    "border-transparent bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white",
-  gold:
-    "border-transparent bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white",
-  green:
-    "border-transparent bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white",
-  sky:
-    "border-transparent bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white",
-  amber:
-    "border-transparent bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white",
+  theme: IDLE_IN_TRACK,
+  gold: IDLE_IN_TRACK,
+  green: IDLE_IN_TRACK,
+  sky: IDLE_IN_TRACK,
+  amber: IDLE_IN_TRACK,
 };
+
+/** Category chips sit on the page, not in a track: idle chips are raised tiles. */
+const CHIP_IDLE = "border-transparent bg-pitch-900 text-white hover:bg-pitch-800";
+
+/** The dark well tab groups sit in. */
+const TRACK = "rounded-control bg-black/40 p-1 shadow-[inset_0_0_0_1px_var(--fl-line)]";
 
 const PLAY_STYLE_DEFAULT_ACCENT: Record<string, LeaderboardTabAccent> = {
   manager: "gold",
@@ -55,7 +54,7 @@ const PLAY_STYLE_DEFAULT_ACCENT: Record<string, LeaderboardTabAccent> = {
 };
 
 const MODE_BUTTON_BASE =
-  "btn-press box-border flex min-h-[48px] w-full items-center justify-center rounded-control border-2 px-3 py-2.5 text-center transition";
+  "btn-press box-border flex min-h-[44px] w-full items-center justify-center rounded-[10px] border-2 px-3 py-2 text-center font-cond text-[16px] font-bold transition";
 
 const CHIP_BUTTON_BASE =
   "btn-press shrink-0 rounded-full border px-4 py-2.5 text-sm font-semibold transition min-h-[44px]";
@@ -73,15 +72,13 @@ function resolveAccent<T extends string>(
 
 function modeButtonClass(active: boolean, accent: LeaderboardTabAccent): string {
   // One row on a 375px phone: tighter padding and a smaller label below `sm`.
-  return `${MODE_BUTTON_BASE} max-sm:px-1 max-sm:text-sm ${TYPO.button} ${
+  return `${MODE_BUTTON_BASE} max-sm:px-1 max-sm:text-[15px] ${
     active ? ACCENT_ACTIVE[accent] : ACCENT_IDLE[accent]
   }`;
 }
 
 function categoryChipClass(active: boolean, accent: LeaderboardTabAccent): string {
-  return `${CHIP_BUTTON_BASE} ${
-    active ? ACCENT_ACTIVE[accent] : ACCENT_IDLE[accent]
-  }`;
+  return `${CHIP_BUTTON_BASE} ${active ? ACCENT_ACTIVE[accent] : CHIP_IDLE}`;
 }
 
 function periodButtonClass(active: boolean): string {
@@ -96,9 +93,9 @@ function playStyleButtonClass(
   active: boolean,
   accent: LeaderboardTabAccent
 ): string {
-  const base = `${MODE_BUTTON_BASE} text-sm sm:text-base ${TYPO.button}`;
+  const base = MODE_BUTTON_BASE;
   if (!active) {
-    return `${base} border-transparent bg-transparent text-pitch-500 hover:bg-pitch-800/40 hover:text-pitch-300`;
+    return `${base} ${IDLE_IN_TRACK}`;
   }
   return `${base} ${ACCENT_ACTIVE[accent]}`;
 }
@@ -120,11 +117,11 @@ export function LeaderboardTabBar<T extends string>({
   if (tier === "playStyle") {
     return (
       <div
-        className="rounded-control border border-pitch-600/55 bg-pitch-950/95 p-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.28)]"
+        className={TRACK}
         role="tablist"
         aria-label={ariaLabel}
       >
-        <div className="grid grid-cols-2 gap-1.5">
+        <div className="grid grid-cols-2 gap-1">
           {tabs.map((tab) => {
             const isActive = active === tab.id;
             const accent = resolveAccent(tab, tier);
@@ -157,7 +154,7 @@ export function LeaderboardTabBar<T extends string>({
             : "grid-cols-2";
     return (
       <div
-        className={`grid gap-2 ${cols}`}
+        className={`grid gap-1 ${cols} ${TRACK}`}
         role="tablist"
         aria-label={ariaLabel}
       >

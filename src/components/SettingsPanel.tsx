@@ -20,6 +20,7 @@ import { TYPO } from "@/lib/ui/typography";
 import { GAME_VERSION } from "../../data/version";
 import { CONTACT_EMAIL, contactMailto } from "@/lib/contact";
 import { unhideCoach, useHiddenCoachesList } from "@/lib/storage/hidden-coaches";
+import { PitchHero } from "@/components/ui/PitchHero";
 
 const SUGGESTIONS_MAIL = contactMailto("27-0 Suggestion");
 const REPORT_MAIL = contactMailto("27-0 Report a player or content");
@@ -175,10 +176,16 @@ export function SettingsPanel() {
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-col gap-6">
-      <header className="text-center">
-        <p className={TYPO.sectionLabel}>Your game</p>
-        <h1 className={`mt-1 ${TYPO.pageTitle}`}>Settings</h1>
-      </header>
+      <PitchHero
+        eyebrow="Your game"
+        title="Settings"
+        icon={
+          <>
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 2.5v3M12 18.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2.5 12h3M18.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" />
+          </>
+        }
+      />
 
       <InstallAppCard />
 

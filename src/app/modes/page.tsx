@@ -22,6 +22,7 @@ import { BALL_KNOWER_ID } from "@/lib/cosmetics";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
 import { setNormalEraVariant } from "@/lib/storage/preferences";
 import { playUiClick } from "@/lib/sound";
+import { PitchHero } from "@/components/ui/PitchHero";
 
 function Section({ id, title, kicker, children }: { id: string; title: string; kicker: string; children: React.ReactNode }) {
   return (
@@ -74,9 +75,20 @@ export default function ModesPage() {
   return (
     <StandardPageShell>
       <div className={`${PAGE.section} mx-auto w-full max-w-[44rem]`}>
-        <header className="text-center">
-          <h1 className="font-cond text-[30px] font-bold leading-none text-white">More modes</h1>
-          <p className="mt-1 text-[14px] text-[color:var(--fl-muted)]">
+        <header className="space-y-3">
+          <PitchHero
+            eyebrow="Unranked"
+            title="More modes"
+            icon={
+              <>
+                <rect x="4" y="4" width="6.5" height="6.5" rx="1.5" />
+                <rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5" />
+                <rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5" />
+                <path d="M16.75 13.5v6.5M13.5 16.75H20" />
+              </>
+            }
+          />
+          <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
             Side modes for when today&apos;s Daily is done. Unranked: no leaderboards or Club Funds.
           </p>
         </header>

@@ -3,16 +3,16 @@
 import { StorePanel } from "@/components/StorePanel";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
 import { PAGE } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { ShopGlyph } from "@/components/icons/rugby-icons";
 
 export default function StorePage() {
   return (
     <StandardPageShell>
       <div className={PAGE.section}>
-        <header className="text-center">
-          <p className={TYPO.sectionLabel}>Club Funds</p>
-          <h1 className={`mt-2 ${TYPO.pageTitle}`}>Store</h1>
-          <p className="mx-auto mt-3 max-w-md text-sm text-[color:var(--fl-muted)]">
+        <header className="space-y-3">
+          <PitchHero eyebrow="Club Funds" title="Store" icon={<ShopGlyph />} />
+          <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
             Starter titles, pitches and a frame from £50k, then themes, your own kit, more pitch styles, coach titles, leaderboard frames and Ball Knower mode.
           </p>
         </header>

@@ -173,8 +173,8 @@ export function StorePanel() {
               playUiClick();
               setTab(t.id);
             }}
-            className={`min-h-[44px] rounded-full px-4 text-sm font-bold transition ${
-              tab === t.id ? "bg-theme-primary text-[color:var(--theme-text-on-primary)]" : "bg-pitch-900 text-white hover:bg-pitch-800"
+            className={`min-h-[44px] rounded-full px-4 font-cond text-[16px] font-bold transition ${
+              tab === t.id ? "bg-white text-pitch-950" : "bg-pitch-900 text-white hover:bg-pitch-800"
             }`}
           >
             {t.label}

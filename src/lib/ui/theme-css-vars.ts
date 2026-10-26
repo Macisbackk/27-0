@@ -30,6 +30,60 @@ export function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+
+/** WCAG relative luminance of a #rrggbb colour. */
+function luminance(hex: string): number {
+  const n = hex.replace("#", "");
+  const ch = (i: number) => {
+    const c = Number.parseInt(n.slice(i, i + 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * ch(0) + 0.7152 * ch(2) + 0.0722 * ch(4);
+}
+
+function contrast(a: string, b: string): number {
+  const la = luminance(a);
+  const lb = luminance(b);
+  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+}
+
+/** The near-black the pitch buttons, tracks and pills use. */
+export const PITCH_DARK = "#0e0f10";
+
+function mixWithWhite(hex: string, t: number): string {
+  const n = hex.replace("#", "");
+  const out = [0, 2, 4].map((i) => {
+    const c = Number.parseInt(n.slice(i, i + 2), 16);
+    return Math.round(c + (255 - c) * t)
+      .toString(16)
+      .padStart(2, "0");
+  });
+  return `#${out.join("")}`;
+}
+
+/**
+ * Tokens for the "pitch" surface (the theme-primary hero with mown stripes): the text colour on it
+ * (the theme's own text-on-primary when that is AA, else whichever of near-black / white reads
+ * better), whether the stripes are dark or light, and the accent as it reads on near-black
+ * (lightened until it clears 4.5:1, for small pill text and the button arrow).
+ */
+export function buildPitchTokens(theme: Pick<UiThemeDefinition, "primary" | "textOnPrimary">): {
+  ink: string;
+  markRgb: string;
+  primaryOnDark: string;
+} {
+  let ink = theme.textOnPrimary;
+  if (contrast(ink, theme.primary) < 4.5) {
+    ink = contrast(PITCH_DARK, theme.primary) >= contrast("#ffffff", theme.primary) ? PITCH_DARK : "#ffffff";
+  }
+  const markRgb = luminance(ink) < 0.4 ? "0 0 0" : "255 255 255";
+  let primaryOnDark = theme.primary;
+  for (let t = 0.1; contrast(primaryOnDark, PITCH_DARK) < 4.5 && t <= 1; t += 0.1) {
+    primaryOnDark = mixWithWhite(theme.primary, t);
+  }
+  return { ink, markRgb, primaryOnDark };
+}
+
 /** All CSS custom properties for a Store UI theme + fixed mode/semantic tokens. */
 export function buildThemeCssVars(theme: UiThemeDefinition): Record<string, string> {
   const gradient = resolveThemeGradientColors({
@@ -37,6 +91,8 @@ export function buildThemeCssVars(theme: UiThemeDefinition): Record<string, stri
     secondary: theme.secondary,
     tertiary: theme.tertiary,
   });
+
+  const pitch = buildPitchTokens(theme);
 
   return {
     "--theme-primary": theme.primary,
@@ -59,7 +115,11 @@ export function buildThemeCssVars(theme: UiThemeDefinition): Record<string, stri
     "--theme-text-on-secondary": theme.textOnSecondary,
     /* Generic UI button tokens — Store themes must drive these. */
     "--theme-button-primary-bg": theme.primary,
-    "--theme-button-primary-text": theme.textOnPrimary,
+    "--theme-button-primary-text": pitch.ink,
+    /* Pitch surface (the home Classic card's look, shared site-wide: see src/styles/pitch.css). */
+    "--pitch-ink": pitch.ink,
+    "--pitch-mark-rgb": pitch.markRgb,
+    "--theme-primary-on-dark": pitch.primaryOnDark,
     "--theme-button-primary-border": hexToRgba(theme.tertiary, 0.55),
     "--theme-button-primary-hover-bg": theme.secondary,
     "--theme-button-primary-active-bg": theme.tertiary,

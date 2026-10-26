@@ -21,7 +21,6 @@ import { CollapsibleReviewSection } from "./CollapsibleReviewSection";
 import { PlayoffBracketDisplay } from "./PlayoffBracketDisplay";
 import { Confetti } from "./Confetti";
 import { MANAGER } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
 import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
 import { GameStatCard } from "@/components/ui/GameStatCard";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
@@ -45,6 +44,8 @@ import type { GameDifficulty } from "@/lib/types";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
 import type { ChallengePayload } from "@/lib/challenge-link";
 import { RunSocialPanel, useDailyPickRarity, type RunOutcome } from "./RunSocial";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { CupGlyph } from "@/components/icons/rugby-icons";
 
 const PLAYOFF_AWARD_TITLES: Record<string, string> = {
   "Player of the Season": "Player of the Play-offs",
@@ -337,28 +338,25 @@ export function PlayoffReview({
         <motion.header
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full min-w-0 px-1 pt-1 text-center"
+          className="w-full min-w-0 text-center"
         >
-          <p className={`${TYPO.eyebrow} text-[color:var(--fl-muted)]`}>
-            {dailyChallengeMode && SHOW_DAILY_CHALLENGE_UI
-              ? dailyScenario?.eraMode
-                ? "Era Daily Play-off Review"
-                : "Daily Play-off Review"
-              : weeklyChallengeMode
-                ? "Weekly Challenge Play-off Review"
-                : "Super League Play-off Review"}
-          </p>
-          <h1 className="mt-2 text-[28px] font-bold leading-tight tracking-tight text-accent-gold sm:text-[34px]">
-            {getPlayoffFinishLabel(playoffResult.finish)}
-          </h1>
-          <p className={`mx-auto mt-2 max-w-md ${TYPO.muted}`}>
-            {titleBio}
-          </p>
-          {isChampion && (
-            <p className="mt-2 text-[15px] font-bold text-theme-primary">
-              Super League Champions.
-            </p>
-          )}
+          <PitchHero
+            size="feature"
+            titleAs="h1"
+            icon={<CupGlyph />}
+            eyebrow={
+              dailyChallengeMode && SHOW_DAILY_CHALLENGE_UI
+                ? dailyScenario?.eraMode
+                  ? "Era Daily Play-off Review"
+                  : "Daily Play-off Review"
+                : weeklyChallengeMode
+                  ? "Weekly Challenge Play-off Review"
+                  : "Super League Play-off Review"
+            }
+            badge={isChampion ? "Super League Champions." : undefined}
+            title={getPlayoffFinishLabel(playoffResult.finish)}
+            description={titleBio}
+          />
           <ReviewSubmissionNotice
             submittedOnline={submittedOnline}
             dailyChallenge={showDailyPresentation}

@@ -12,6 +12,8 @@ import { getAllStats, refreshCareerStatsFromCloud } from "@/lib/storage/stats";
 import { loadRunHistory, RUN_HISTORY_CHANGED_EVENT } from "@/lib/storage/run-history";
 import { deriveRecords, formatWinPct, type RecordLine, type RecordsSummary, type RunHistoryEntry } from "@/lib/records";
 import { formatSharePosition } from "@/lib/share-result";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { CupGlyph } from "@/components/icons/rugby-icons";
 
 const VARIANT_LABEL: Record<RunHistoryEntry["variant"], string> = {
   classic: "Classic",
@@ -138,10 +140,9 @@ export default function RecordsPage() {
   return (
     <StandardPageShell>
       <div className={PAGE.section}>
-        <header className="text-center">
-          <p className={TYPO.sectionLabel}>Your history</p>
-          <h1 className={`mt-2 ${TYPO.pageTitle}`}>Records</h1>
-          <p className="mx-auto mt-3 max-w-md text-sm text-[color:var(--fl-muted)]">
+        <header className="space-y-3">
+          <PitchHero eyebrow="Your history" title="Records" icon={<CupGlyph />} />
+          <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
             Classic, Era Classic and Ball Knower seasons. Squads are kept on this device from v1.19 on.
           </p>
         </header>

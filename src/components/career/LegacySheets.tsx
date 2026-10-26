@@ -21,7 +21,8 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
         onClose();
       }}
       title="Legend Vault"
-      headerExtra={<span className="font-display text-lg font-bold text-accent-gold">{legacy.legacyPoints} Legacy pts</span>}
+      pitchHeader
+      headerExtra={<span className="pitch-pill mt-1.5 !text-[14px] !text-accent-gold">{legacy.legacyPoints} Legacy pts</span>}
     >
       <p className="text-sm text-gray-300">
         Spend Legacy points (earned from trophies and challenges in any career). Unlocked legends turn up in your transfer window in

@@ -360,7 +360,7 @@ export function WordleGame() {
       />
       <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">
         <div
-          className="mb-3 inline-flex rounded-full bg-pitch-900 p-1"
+          className="pitch-seg pitch-seg--on-dark mb-3 w-full max-w-[16rem]"
           role="group"
           aria-label="Player pool"
         >
@@ -370,9 +370,7 @@ export function WordleGame() {
               type="button"
               aria-pressed={poolMode === mode}
               onClick={() => switchMode(mode)}
-              className={`min-h-[36px] rounded-full px-3 text-xs font-semibold transition ${
-                poolMode === mode ? "bg-pitch-950 text-white" : "text-[color:var(--fl-muted)] hover:text-white"
-              }`}
+              data-tone={mode === "era" ? "era" : undefined}
             >
               {MINI_GAME_POOL_MODE_LABEL[mode]}
             </button>

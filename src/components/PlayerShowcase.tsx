@@ -45,6 +45,8 @@ import { playUiClick } from "@/lib/sound";
 import { FILTER } from "@/lib/ui/design-system";
 import { TYPO } from "@/lib/ui/typography";
 import { EraRatingExplanation } from "./EraRatingExplanation";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { ShirtGlyph } from "@/components/icons/rugby-icons";
 
 const DEFAULT_FILTERS: ShowcaseFilters = {
   search: "",
@@ -427,10 +429,9 @@ export function PlayerShowcase() {
 
   return (
     <div className="mx-auto w-full max-w-[60rem] space-y-4">
-      <header className="text-center">
-        <p className={TYPO.sectionLabel}>Player database</p>
-        <h1 className={`mt-2 ${TYPO.pageTitle}`}>Player Showcase</h1>
-        <p className="mx-auto mt-3 max-w-md text-sm text-[color:var(--fl-muted)]">
+      <header className="space-y-3">
+        <PitchHero eyebrow="Player database" title="Player Showcase" icon={<ShirtGlyph />} />
+        <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
           {dbStats.total.toLocaleString("en-GB")} players: {dbStats.current} in this season&rsquo;s squads,{" "}
           {dbStats.historic.toLocaleString("en-GB")} era cards and {dbStats.legends} legends.
           {topRated ? (

@@ -4,7 +4,8 @@ import { LeaderboardBoards } from "@/components/LeaderboardBoards";
 import { PageShellBody } from "@/components/ui/PageShell";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
 import { PAGE } from "@/lib/ui/design-system";
-import { TYPO } from "@/lib/ui/typography";
+import { PitchHero } from "@/components/ui/PitchHero";
+import { LadderGlyph } from "@/components/icons/rugby-icons";
 
 export const metadata: Metadata = {
   title: "Leaderboard — 27-0",
@@ -16,13 +17,12 @@ export default async function LeaderboardPage() {
     <StandardPageShell desktopFit>
       <PageShellBody>
         <div className={PAGE.section}>
-          <header className="text-center">
-            <p className={TYPO.sectionLabel}>Rankings</p>
-            <h1 className={`mt-1 ${TYPO.pageTitle}`}>Leaderboard</h1>
-            <p className={`mt-2 ${TYPO.bodySm}`}>
-              Classic, Daily, Weekly and Manager Mode.
-            </p>
-          </header>
+          <PitchHero
+            eyebrow="Rankings"
+            title="Leaderboard"
+            description="Classic, Daily, Weekly and Manager Mode."
+            icon={<LadderGlyph />}
+          />
           <LeaderboardGuestNotice />
           <LeaderboardBoards />
         </div>
