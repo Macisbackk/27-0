@@ -10,7 +10,8 @@ import type { SpinPoolVariant } from "@/lib/game/player-pool-eligibility";
 import {
   buildSpinReelPlan,
   computeSlotReelScrollY,
-  DEFAULT_SPIN_DURATION_MS,
+  getLandHoldMs,
+  getSpinDurationMs,
 } from "@/lib/game/slot-reel";
 import { spinTimingMark } from "@/lib/game/spin-timing";
 import { getClubColors } from "@/lib/clubs";
@@ -27,7 +28,6 @@ import { useScrollLock } from "@/hooks/useScrollLock";
 import { TYPO } from "@/lib/ui/typography";
 import { SlotReel, type SlotReelHandle } from "./SlotReel";
 
-const LAND_HOLD_MS = 380;
 const TICK_SOUND_EVERY_ITEMS = 3;
 /** Ignore taps this soon after opening (the tap on the position that started the spin). */
 const SKIP_GUARD_MS = 250;
@@ -42,6 +42,8 @@ interface RecruitmentSlotRevealProps {
   boostDetail?: string | null;
   /** Position being filled, e.g. "Left Centre". */
   slotLabel?: string;
+  /** "Quick spins" setting: ~0.9s reel and a shorter hold on the result. */
+  quickSpin?: boolean;
   onComplete: () => void;
 }
 
@@ -51,8 +53,11 @@ export function RecruitmentSlotReveal({
   boostStatus = null,
   boostDetail = null,
   slotLabel,
+  quickSpin = false,
   onComplete,
 }: RecruitmentSlotRevealProps) {
+  const spinDurationMs = getSpinDurationMs(quickSpin);
+  const landHoldMs = getLandHoldMs(quickSpin);
   const isEraSpin = spinVariant === "era";
   const teamReelRef = useRef<SlotReelHandle>(null);
   const yearReelRef = useRef<SlotReelHandle>(null);
@@ -84,19 +89,19 @@ export function RecruitmentSlotReveal({
       teams,
       target.team,
       undefined,
-      DEFAULT_SPIN_DURATION_MS
+      spinDurationMs
     );
     const yearPlan = isEraSpin
       ? buildSpinReelPlan(
           getSpinYearsForVariant(spinVariant),
           target.year,
           undefined,
-          DEFAULT_SPIN_DURATION_MS
+          spinDurationMs
         )
       : null;
     spinTimingMark("reel-plan-ready", t0);
     return { teamPlan, yearPlan };
-  }, [target.team, target.year, target.teamYearId, spinVariant, isEraSpin]);
+  }, [target.team, target.year, target.teamYearId, spinVariant, isEraSpin, spinDurationMs]);
 
   useEffect(() => {
     const prefersReducedMotion =
@@ -183,7 +188,7 @@ export function RecruitmentSlotReveal({
       spinTimingMark("animation-end", tAnimStart);
       holdTimeout = window.setTimeout(() => {
         if (!cancelled) completeAndRelease();
-      }, LAND_HOLD_MS);
+      }, landHoldMs);
     };
 
     const frame = (now: number) => {
@@ -232,7 +237,7 @@ export function RecruitmentSlotReveal({
       window.cancelAnimationFrame(rafId);
       if (holdTimeout) window.clearTimeout(holdTimeout);
     };
-  }, [teamPlan, yearPlan, isEraSpin]);
+  }, [teamPlan, yearPlan, isEraSpin, landHoldMs]);
 
   return (
     <BodyPortal>

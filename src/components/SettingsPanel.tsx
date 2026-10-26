@@ -12,6 +12,7 @@ import {
 } from "@/lib/storage/preferences";
 import { getActiveTheme, UI_THEME_CHANGED_EVENT } from "@/lib/storage/ui-theme-store";
 import { resetCareerStats } from "@/lib/storage/stats";
+import { getQuickSpins, setQuickSpins } from "@/lib/storage/spin-settings";
 import { InstallAppCard } from "@/components/InstallAppCard";
 import { SHOW_TIP_LINKS } from "@/lib/native/platform";
 import { GameButton } from "@/components/ui/GameButton";
@@ -130,6 +131,7 @@ export function SettingsPanel() {
   const [ready, setReady] = useState(false);
   const [muted, setMuted] = useState(false);
   const [era, setEra] = useState(false);
+  const [quickSpins, setQuickSpinsOn] = useState(false);
   const [themeName, setThemeName] = useState("Default");
   const [resetState, setResetState] = useState<"idle" | "confirm" | "busy" | "done" | "error">("idle");
   const [mailState, setMailState] = useState<"idle" | "busy" | "sent" | "error">("idle");
@@ -138,6 +140,7 @@ export function SettingsPanel() {
   useEffect(() => {
     setMuted(isSoundMuted());
     setEra(getNormalEraVariant());
+    setQuickSpinsOn(getQuickSpins());
     setThemeName(getActiveTheme().label);
     setReady(true);
     const onTheme = () => setThemeName(getActiveTheme().label);
@@ -189,6 +192,19 @@ export function SettingsPanel() {
                 const nowMuted = toggleSoundMuted();
                 setMuted(nowMuted);
                 if (!nowMuted) playUiClick();
+              }}
+            />
+          ) : null}
+        </Row>
+        <Row label="Quick spins" hint="Shorter reel (about 1s). Reduced motion skips it.">
+          {ready ? (
+            <Switch
+              on={quickSpins}
+              label="Quick spins"
+              onToggle={() => {
+                playUiClick();
+                setQuickSpins(!quickSpins);
+                setQuickSpinsOn(!quickSpins);
               }}
             />
           ) : null}

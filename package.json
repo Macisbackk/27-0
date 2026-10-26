@@ -104,7 +104,8 @@
     "test:squadbook": "bun scripts/test-squad-book.ts",
     "test:missions": "tsx scripts/test-missions.ts",
     "test:moderation": "tsx scripts/test-name-filter.ts",
-    "test:sim": "tsx scripts/test-sim-formula.ts"
+    "test:sim": "tsx scripts/test-sim-formula.ts",
+    "test:draft": "bun scripts/test-draft-flow.ts"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.0",

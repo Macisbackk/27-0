@@ -3,6 +3,7 @@
 import { recordSquadBookRun } from "@/lib/squad-book";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
 import { recordShellMount } from "@/lib/ui/mount-diagnostics";
 import Link from "next/link";
@@ -154,7 +155,7 @@ import {
 } from "@/lib/game/boosted-spin-plan";
 import { pickLegendSpinSlotIndex } from "@/lib/game/legend-spin";
 import { getSpinRuleFilter } from "@/lib/game/daily-rule-filter";
-import { computeChemistry } from "@/lib/game/chemistry";
+import { computeChemistry, formatChemistryBonus } from "@/lib/game/chemistry";
 import type { HalfwayCallId } from "@/lib/game/halfway-call";
 import { DailyRuleBanner } from "./DailyRuleBanner";
 import { getPlayerTeamYearIds } from "@/lib/game/team-year-pools";
@@ -162,7 +163,26 @@ import type { SpinPoolVariant } from "@/lib/game/player-pool-eligibility";
 import { EraRatingExplanation } from "./EraRatingExplanation";
 import { CurrentRatingExplanation } from "./CurrentRatingExplanation";
 import { QuickModePreGameBoostSetup } from "./QuickModePreGameBoostSetup";
-import { MobileStepIndicator } from "@/components/ui/MobileStepIndicator";
+import { RunProgress } from "./RunProgress";
+import {
+  getNextEmptySlotIndex,
+  resolveSpinRequest,
+  type RunProgressStage,
+} from "@/lib/game/draft-flow";
+import {
+  clearRunResume,
+  getResumeModeKey,
+  loadRunResume,
+  saveRunResume,
+  RUN_RESUME_VERSION,
+  type RunResumeSnapshot,
+} from "@/lib/game/run-resume";
+import {
+  getQuickSpins,
+  markFirstRunFinished,
+  QUICK_SPINS_CHANGED_EVENT,
+  setQuickSpins,
+} from "@/lib/storage/spin-settings";
 import {
   armBoostForGame,
   cancelArmedBoost,
@@ -221,37 +241,6 @@ interface GameBoardProps {
    * attempt per UK week (later runs are practice), scored for the Weekly board. No Auto-fill.
    */
   weeklyChallengeMode?: boolean;
-}
-
-const QUICK_MODE_STEPS = [
-  "Mode",
-  "Spin",
-  "Choose",
-  "Squad",
-  "Match",
-  "Result",
-] as const;
-
-function getQuickModeStepIndex(
-  phase: GamePhase,
-  preGameReady: boolean
-): number {
-  if (!preGameReady) return 0;
-  switch (phase) {
-    case "reveal":
-      return 1;
-    case "choice":
-      return 2;
-    case "pitch":
-    case "placement":
-      return 3;
-    case "simulation":
-      return 4;
-    case "review":
-      return 5;
-    default:
-      return 3;
-  }
 }
 
 function createRunSeed(runKey: number): string {
@@ -314,14 +303,63 @@ export function GameBoard({
     superSamHallasMode ||
     !ownsBoostAtRunStart;
   const isSlotRecruitMode = mode === "CLASSIC";
+  const router = useRouter();
+  /** Save / resume slot for this mode (null for the hidden modes and Draft). */
+  const resumeModeKey = isSlotRecruitMode
+    ? getResumeModeKey({
+        dailyChallengeMode,
+        weeklyChallengeMode,
+        normalEraMode,
+        ballKnower: difficulty === "HARD",
+        hiddenMode: joeMellorMode || superSamHallasMode,
+      })
+    : null;
+  /**
+   * A half-built run saved on this device for this mode, read once on mount. The Daily / Weekly
+   * only resume the same day's / week's attempt (the seed must still match).
+   */
+  const [initialResume] = useState<RunResumeSnapshot | null>(() => {
+    if (!resumeModeKey) return null;
+    const now = new Date();
+    const expectedSeed =
+      resumeModeKey === "daily"
+        ? `daily-${getDailyChallengeDateKey(now)}`
+        : resumeModeKey === "weekly"
+          ? getWeeklyChallengeSeed(now)
+          : undefined;
+    return loadRunResume(resumeModeKey, expectedSeed);
+  });
   const [runKey, setRunKey] = useState(0);
+  /** Set once the saved run has been restored (or there was none) — saving waits for it. */
+  const [resumeReady, setResumeReady] = useState(false);
+  const [resumedFromSave, setResumedFromSave] = useState(false);
   const [phase, setPhase] = useState<GamePhase>("pitch");
   const [selectedSlotIndex, setSelectedSlotIndex] = useState<number | null>(
     null
   );
   const [squad, setSquad] = useState<SquadSlot[]>(() =>
-    createStartingSquad({ joeMellorMode, superSamHallasMode })
+    initialResume
+      ? initialResume.squad
+      : createStartingSquad({ joeMellorMode, superSamHallasMode })
   );
+  /** The slot holding a landed spin that hasn't been signed yet (the spin lock). */
+  const [pendingSpin, setPendingSpin] = useState<{
+    slotIndex: number;
+    target: SlotRevealTarget;
+  } | null>(null);
+  /** Last slot signed — the next empty slot after it is suggested (auto-advance). */
+  const [lastSignedSlot, setLastSignedSlot] = useState<number | null>(null);
+  /** Shown on the picker when a tap on another slot reopened the locked spin. */
+  const [pickerNotice, setPickerNotice] = useState<string | null>(null);
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
+  const [quickSpins, setQuickSpinsState] = useState(() => getQuickSpins());
+  useEffect(() => {
+    const sync = () => setQuickSpinsState(getQuickSpins());
+    window.addEventListener(QUICK_SPINS_CHANGED_EVENT, sync);
+    return () => window.removeEventListener(QUICK_SPINS_CHANGED_EVENT, sync);
+  }, []);
+  /** Cards this run added to the Squad Book for the first time (review line). */
+  const [squadBookNewCards, setSquadBookNewCards] = useState(0);
   const [slotOffers, setSlotOffers] = useState<
     Map<number, RecruitmentRound>
   >(new Map());
@@ -400,6 +438,14 @@ export function GameBoard({
   );
 
   const { seed, runId, dailyDate } = useMemo(() => {
+    // A resumed run keeps its seed, id (so a Daily / Weekly attempt still counts) and start time.
+    if (runKey === 0 && initialResume) {
+      return {
+        seed: initialResume.seed,
+        runId: initialResume.runId,
+        dailyDate: new Date(initialResume.startedAt),
+      };
+    }
     const startedAt = new Date();
     if (dailyChallengeMode) {
       // Shared daily seed: everyone (and every retry) gets the same spins today.
@@ -425,7 +471,7 @@ export function GameBoard({
       runId: `run-${s}`,
       dailyDate: startedAt,
     };
-  }, [runKey, dailyChallengeMode, weeklyChallengeMode]);
+  }, [runKey, dailyChallengeMode, weeklyChallengeMode, initialResume]);
   /** Frozen at run start so a run that crosses UK midnight keeps its club and bonus day. */
   const dailyScenario = useMemo(
     () => (dailyChallengeMode ? getDailyChallengeScenario(dailyDate) : null),
@@ -856,6 +902,30 @@ export function GameBoard({
     isSlotRecruitMode,
   ]);
 
+  // Restore a saved half-built run. Declared after the per-seed resets above so its state wins
+  // (idempotent, so a Strict Mode re-run of the effects restores it again).
+  useEffect(() => {
+    const snap = initialResume;
+    if (snap) {
+      setSpinPickIndex(snap.spinPickIndex);
+      setRespinsRemaining(Math.min(MAX_RESPINS_PER_RUN, snap.respinsRemaining));
+      rerollsThisRunRef.current = Math.max(0, MAX_RESPINS_PER_RUN - snap.respinsRemaining);
+      setUsedTeamYearKeys(new Set(snap.usedTeamYearKeys));
+      setLegendSpinSlotIndex(snap.legendSpinSlotIndex);
+      setLegendSpinUsed(snap.legendSpinUsed);
+      if (snap.pendingSpin) {
+        lockedSlotTargetsRef.current.set(snap.pendingSpin.slotIndex, {
+          target: snap.pendingSpin.target,
+          boosted: false,
+        });
+        setPendingSpin(snap.pendingSpin);
+      }
+      setResumedFromSave(true);
+    }
+    setResumeReady(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (modeSoundPlayed.current) return;
     modeSoundPlayed.current = true;
@@ -1106,6 +1176,46 @@ export function GameBoard({
     rerollsRemaining > 0 &&
     phase === "choice";
 
+  // Keep the half-built run saved so leaving (or a reload / crash) never loses it.
+  useEffect(() => {
+    if (!resumeModeKey || !resumeReady) return;
+    if (phase === "simulation" || phase === "review") {
+      // The season is decided and recorded from here on: nothing to resume.
+      clearRunResume(resumeModeKey);
+      return;
+    }
+    if (phase !== "pitch" && phase !== "reveal" && phase !== "choice") return;
+    saveRunResume({
+      v: RUN_RESUME_VERSION,
+      modeKey: resumeModeKey,
+      seed,
+      runId,
+      startedAt: dailyDate.toISOString(),
+      squad,
+      spinPickIndex,
+      respinsRemaining,
+      usedTeamYearKeys: [...usedTeamYearKeys],
+      legendSpinSlotIndex,
+      legendSpinUsed,
+      pendingSpin,
+      savedAt: new Date().toISOString(),
+    });
+  }, [
+    resumeModeKey,
+    resumeReady,
+    phase,
+    seed,
+    runId,
+    dailyDate,
+    squad,
+    spinPickIndex,
+    respinsRemaining,
+    usedTeamYearKeys,
+    legendSpinSlotIndex,
+    legendSpinUsed,
+    pendingSpin,
+  ]);
+
   const resetRun = useCallback(() => {
     clearBoostedFirstPickPlan();
     setHalfwayCall(null);
@@ -1129,6 +1239,13 @@ export function GameBoard({
     setRespinsRemaining(MAX_RESPINS_PER_RUN);
     setUsedTeamYearKeys(new Set());
     setPendingPlayer(null);
+    setPendingSpin(null);
+    lockedSlotTargetsRef.current = new Map();
+    setLastSignedSlot(null);
+    setPickerNotice(null);
+    setResumedFromSave(false);
+    setLeaveConfirmOpen(false);
+    setSquadBookNewCards(0);
     lastScrolledPlayerIdRef.current = null;
     recordedRef.current = false;
     playoffRecordedRef.current = false;
@@ -1247,7 +1364,10 @@ export function GameBoard({
     (result: SeasonResult, finalSquad: SquadSlot[]) => {
       if (recordedRef.current) return;
       recordedRef.current = true;
-      recordSquadBookRun({ runId, mode, squad: finalSquad, hidden: joeMellorMode || superSamHallasMode, era: normalEraMode, daily: dailyChallengeMode, weekly: weeklyChallengeMode });
+      const squadBook = recordSquadBookRun({ runId, mode, squad: finalSquad, hidden: joeMellorMode || superSamHallasMode, era: normalEraMode, daily: dailyChallengeMode, weekly: weeklyChallengeMode });
+      setSquadBookNewCards(squadBook.newIds.length);
+      // Quick spins default on from the next run (unless the player has chosen).
+      markFirstRunFinished();
 
       const signedIds = finalSquad
         .filter((s) => s.player)
@@ -1675,6 +1795,7 @@ export function GameBoard({
           // The boost is gone (e.g. spent in another tab): don't hand over the guaranteed
           // player. Back to the team sheet; this slot re-spins without the boost.
           lockedSlotTargetsRef.current.delete(selectedSlotIndex);
+          setPendingSpin(null);
           setSlotBoostGuaranteeId(null);
           setBoostedSpinPlan(null);
           setPendingPlayer(null);
@@ -1691,6 +1812,9 @@ export function GameBoard({
       }
 
       lockedSlotTargetsRef.current.delete(selectedSlotIndex);
+      setPendingSpin(null);
+      setPickerNotice(null);
+      setLastSignedSlot(selectedSlotIndex);
       setSquad(newSquad);
       setPendingPlayer(null);
       setSelectedSlotIndex(null);
@@ -1720,13 +1844,9 @@ export function GameBoard({
         setLegendSpinUsed(true);
       }
 
-      const filled = getFilledCount(newSquad);
-      if (filled >= TOTAL_SLOTS) {
-        startTournamentSimulation(newSquad);
-      } else {
-        setSpinPickIndex((i) => i + 1);
-        setPhase("pitch");
-      }
+      // The 13th signing stays on the team sheet ("Squad complete") — the player kicks off.
+      setSpinPickIndex((i) => i + 1);
+      setPhase("pitch");
     },
     [
       choosing,
@@ -1735,7 +1855,6 @@ export function GameBoard({
       activeSpinTarget,
       selectedSlotIndex,
       squad,
-      startTournamentSimulation,
       slotBoostGuaranteeId,
       preGameBoost,
       boostedFirstPick,
@@ -1747,7 +1866,7 @@ export function GameBoard({
   );
 
   const startSlotRecruitSpin = useCallback(
-    (slotIndex: number) => {
+    (requestedSlotIndex: number) => {
       if (
         phase !== "pitch" ||
         !isSlotRecruitMode ||
@@ -1756,6 +1875,16 @@ export function GameBoard({
       ) {
         return;
       }
+
+      // Spin lock: once a spin lands it belongs to its slot until someone is signed there.
+      // Backing out and tapping another slot reopens that spin — it never re-rolls, and the
+      // other slots stay unspun (no peeking at every slot's result on the seeded Daily/Weekly).
+      const lockedSlot =
+        pendingSpin && lockedSlotTargetsRef.current.has(pendingSpin.slotIndex)
+          ? pendingSpin.slotIndex
+          : null;
+      const request = resolveSpinRequest(lockedSlot, requestedSlotIndex);
+      const slotIndex = request.slotIndex;
 
       const slot = squad.find((s) => s.slotIndex === slotIndex);
       if (!slot || slot.player) return;
@@ -1770,27 +1899,39 @@ export function GameBoard({
           ? slotBoostGuaranteeId
           : null;
 
-      let target: SlotRevealTarget | null = null;
-      // A slot that was already spun keeps its offer: backing out to the team sheet and
-      // spinning other slots used to let you peek at every slot and take the best.
-      const locked = lockedSlotTargetsRef.current.get(slotIndex);
-      // Boosted spins carry their own plan state, so only plain spins are locked.
-      const lockedTarget =
-        locked &&
-        !armedBoost &&
-        !locked.boosted &&
-        !usedTeamYearKeys.has(locked.target.teamYearKey) &&
-        prepareSlotTeamYearPlayers(locked.target, signedPlayerIds, squad, slotIndex, {
-          seed,
-          legendOnly: requireLegendPlayer,
-          ruleFilter: dailyRuleFilter,
-        }).length > 0
-          ? locked.target
-          : null;
+      if (request.reopenLocked) {
+        const locked = lockedSlotTargetsRef.current.get(slotIndex)!;
+        const stillValid =
+          !usedTeamYearKeys.has(locked.target.teamYearKey) &&
+          prepareSlotTeamYearPlayers(locked.target, signedPlayerIds, squad, slotIndex, {
+            seed,
+            legendOnly: requireLegendPlayer,
+            ruleFilter: dailyRuleFilter,
+          }).length > 0;
+        if (stillValid) {
+          setRecruitNotice(null);
+          setPickerNotice(
+            request.redirected
+              ? `Your ${slot.label} spin is locked in — sign one of these first.`
+              : null
+          );
+          setPendingPlayer(null);
+          lastScrolledPlayerIdRef.current = null;
+          setSelectedSlotIndex(slotIndex);
+          setActiveSpinTarget(locked.target);
+          setSlotRecruitTarget(locked.target);
+          setSpinSessionId((id) => id + 1);
+          // Straight back to the picker: the reel already landed.
+          setPhase("choice");
+          return;
+        }
+        // Can't happen in normal play (nothing else is signed while a spin is locked).
+        lockedSlotTargetsRef.current.delete(slotIndex);
+        setPendingSpin(null);
+      }
 
-      if (lockedTarget) {
-        target = lockedTarget;
-      } else if (armedBoost) {
+      let target: SlotRevealTarget | null = null;
+      if (armedBoost) {
         const plan = buildBoostedSpinPlan({
           runId,
           seed,
@@ -1853,7 +1994,9 @@ export function GameBoard({
       }
 
       setRecruitNotice(null);
+      setPickerNotice(null);
       lockedSlotTargetsRef.current.set(slotIndex, { target, boosted: Boolean(armedBoost) });
+      setPendingSpin({ slotIndex, target });
 
       setPendingPlayer(null);
       lastScrolledPlayerIdRef.current = null;
@@ -1872,6 +2015,7 @@ export function GameBoard({
       seed,
       runId,
       spinPickIndex,
+      pendingSpin,
       signedPlayerIds,
       usedTeamYearKeys,
       legendSpinUsed,
@@ -1973,7 +2117,9 @@ export function GameBoard({
     }
 
     setRecruitNotice(null);
+    setPickerNotice(null);
     lockedSlotTargetsRef.current.set(selectedSlotIndex, { target, boosted: Boolean(armedBoost) });
+    setPendingSpin({ slotIndex: selectedSlotIndex, target });
 
     playReroll();
     setRespinsRemaining((n) => n - 1);
@@ -2075,20 +2221,15 @@ export function GameBoard({
       setPendingPlayer(null);
       playDraftPlacement();
 
-      const filled = getFilledCount(newSquad);
-      if (filled >= TOTAL_SLOTS) {
-        startTournamentSimulation(newSquad);
-      } else {
-        setDraftPickIndex((i) => i + 1);
-        setPhase("pitch");
-      }
+      // Squad complete stays on the team sheet; the player kicks off the season.
+      setDraftPickIndex((i) => i + 1);
+      setPhase("pitch");
     },
     [
       phase,
       pendingPlayer,
       choosing,
       squad,
-      startTournamentSimulation,
     ]
   );
 
@@ -2118,14 +2259,8 @@ export function GameBoard({
         setChoosing(false);
         setSelectedSlotIndex(null);
 
-        const filled = getFilledCount(newSquad);
-        if (filled >= TOTAL_SLOTS) {
-          playPositionComplete();
-          startTournamentSimulation(newSquad);
-        } else {
-          playPositionComplete();
-          setPhase("pitch");
-        }
+        playPositionComplete();
+        setPhase("pitch");
       }, 400);
     },
     [
@@ -2133,7 +2268,6 @@ export function GameBoard({
       choosing,
       phase,
       squad,
-      startTournamentSimulation,
       isDraftMode,
     ]
   );
@@ -2497,6 +2631,7 @@ export function GameBoard({
     }
     lastScrolledPlayerIdRef.current = null;
     revealSoundKey.current = null;
+    setPickerNotice(null);
     setPhase("pitch");
   }, [
     isDraftMode,
@@ -2521,6 +2656,8 @@ export function GameBoard({
     e2eAutofill;
   const handleAutofill = useCallback(() => {
     if (phase !== "pitch" || filledCount >= TOTAL_SLOTS || isDraftMode) return;
+    // A landed spin is locked to its slot: Auto-fill can't be used to dodge it.
+    if (pendingSpin) return;
 
     if (isSlotRecruitMode) {
       const result = autofillSlotRecruitSquad(
@@ -2565,6 +2702,7 @@ export function GameBoard({
     filledCount,
     isDraftMode,
     isSlotRecruitMode,
+    pendingSpin,
     joeMellorMode,
     seed,
     spinPickIndex,
@@ -2619,8 +2757,43 @@ export function GameBoard({
   const pairPickerRef = useModalA11y(phase === "choice" && !isSlotRecruitMode && !isDraftMode, handleBackToPitch, {
     lockScroll: false,
   });
+  const leaveDialogRef = useModalA11y(leaveConfirmOpen, () => setLeaveConfirmOpen(false));
   const preGameReady = isPreGameBoostReady(preGameBoost);
-  const quickModeStepIndex = getQuickModeStepIndex(phase, preGameReady);
+  const runProgressStage: RunProgressStage =
+    phase === "simulation" || (phase === "review" && reviewStage === "regular")
+      ? "season"
+      : phase === "review"
+        ? "playoffs"
+        : "squad";
+  const squadComplete = filledCount >= TOTAL_SLOTS;
+  /** Auto-advance: the next empty slot after the last signing (team-sheet order). */
+  const suggestedSlotIndex =
+    isSlotRecruitMode && phase === "pitch" && !squadComplete && !superSamHallasMode
+      ? pendingSpin?.slotIndex ??
+        getNextEmptySlotIndex(
+          squad,
+          lastSignedSlot,
+          joeMellorMode ? [LOOSE_FORWARD_SLOT_INDEX] : []
+        )
+      : null;
+  const suggestedSlotLabel =
+    suggestedSlotIndex !== null
+      ? squad.find((s) => s.slotIndex === suggestedSlotIndex)?.label ?? null
+      : null;
+  const runInProgress =
+    !isReviewPhase && phase !== "simulation" && (filledCount > 0 || pendingSpin !== null) &&
+    !superSamHallasMode;
+  const kickOffSeason = () => {
+    if (!squadComplete || phase !== "pitch") return;
+    if (resumeModeKey) clearRunResume(resumeModeKey);
+    startTournamentSimulation(squad);
+  };
+  const toggleQuickSpins = () => {
+    playUiClick();
+    const next = !quickSpins;
+    setQuickSpins(next);
+    setQuickSpinsState(next);
+  };
   const hideChromeForOverlay = phase === "reveal";
   const hideActionBar =
     phase === "reveal" || phase === "choice" || phase === "simulation";
@@ -2712,11 +2885,37 @@ export function GameBoard({
           <GuestNotice variant="play" dailyChallenge={dailyChallengeMode} />
 
         <div className="mb-3 sm:mb-4">
-          <MobileStepIndicator
-            steps={[...QUICK_MODE_STEPS]}
-            currentIndex={quickModeStepIndex}
+          <RunProgress
+            stage={runProgressStage}
+            filledCount={filledCount}
+            totalSlots={TOTAL_SLOTS}
           />
         </div>
+
+        {resumedFromSave && phase === "pitch" && runInProgress ? (
+          <div
+            className="mb-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-lg border border-theme-primary/30 bg-theme-primary/10 px-3 py-2 text-center text-sm text-white"
+            role="status"
+          >
+            <span>
+              Welcome back — your run is restored ({filledCount}/{TOTAL_SLOTS} signed
+              {pendingSpin ? `, ${squad.find((x) => x.slotIndex === pendingSpin.slotIndex)?.label ?? "a"} spin waiting` : ""}).
+            </span>
+            {!dailyChallengeMode && !weeklyChallengeMode ? (
+              <button
+                type="button"
+                className={`${LINK.subtle} text-xs`}
+                onClick={() => {
+                  playUiClick();
+                  if (resumeModeKey) clearRunResume(resumeModeKey);
+                  resetRun();
+                }}
+              >
+                Start over
+              </button>
+            ) : null}
+          </div>
+        ) : null}
 
         {!preGameReady ? (
           <div className="flex flex-1 flex-col justify-center">
@@ -2826,15 +3025,81 @@ export function GameBoard({
           </motion.div>
         )}
 
+        {phase === "pitch" && squadComplete && (
+          <motion.section
+            className={`mt-4 ${CARD.base} border-theme-primary/40 bg-pitch-900 px-4 py-4 text-center`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25 }}
+            aria-labelledby="squad-complete-title"
+          >
+            <p id="squad-complete-title" className={`${TYPO.eyebrow} text-theme-primary`}>
+              Squad complete
+            </p>
+            <p className="mt-1 text-[15px] font-bold text-white">
+              Your 13 is set.
+              {difficulty !== "HARD" ? (
+                <>
+                  {" "}Rating{" "}
+                  <span className="tabular-nums text-theme-primary">{averageSquadRating.toFixed(1)}</span>
+                  {" · "}Chemistry{" "}
+                  <span className="tabular-nums text-lime-300">{formatChemistryBonus(chemistry.bonus)}</span>
+                  <span className="text-[color:var(--fl-muted)]">
+                    {" "}({chemistry.links.length} {chemistry.links.length === 1 ? "link" : "links"})
+                  </span>
+                </>
+              ) : null}
+            </p>
+            <GameButton
+              variant="theme"
+              size="lg"
+              className="mt-3 w-full"
+              onClick={kickOffSeason}
+            >
+              Kick off the season
+            </GameButton>
+          </motion.section>
+        )}
+
         {phase === "pitch" &&
           isSlotRecruitMode &&
           filledCount < TOTAL_SLOTS && (
           <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
             <p className={`w-full text-center ${TYPO.bodySm} font-semibold text-white`}>
-              {filledCount === 0
-                ? "Tap any position to spin for a player"
-                : `Tap an empty position · ${TOTAL_SLOTS - filledCount} to go`}
+              {pendingSpin
+                ? `Your ${suggestedSlotLabel ?? "last"} spin is locked in — tap it to sign`
+                : filledCount === 0
+                  ? "Tap any position to spin for a player"
+                  : `Tap an empty position · ${TOTAL_SLOTS - filledCount} to go${
+                      suggestedSlotLabel ? ` · next up: ${suggestedSlotLabel}` : ""
+                    }`}
             </p>
+            {difficulty !== "HARD" && filledCount > 0 && chemistry.links.length > 0 ? (
+              <p className="w-full text-center text-xs text-lime-300">
+                Chemistry {formatChemistryBonus(chemistry.bonus)}:{" "}
+                {chemistry.links
+                  .map((l) => {
+                    const a = squad.find((x) => x.slotIndex === l.slotA)?.label ?? "";
+                    const b = squad.find((x) => x.slotIndex === l.slotB)?.label ?? "";
+                    return `${a}–${b} (${l.label})`;
+                  })
+                  .join(" · ")}
+              </p>
+            ) : null}
+            {dailyChallengeMode && autofillAllowed && dailyAttemptCounts ? (
+              <p className="w-full text-center text-xs text-gray-400">
+                Auto-fill counts as today&apos;s attempt.
+              </p>
+            ) : null}
+            <button
+              type="button"
+              role="switch"
+              aria-checked={quickSpins}
+              onClick={toggleQuickSpins}
+              className="mt-1 rounded-full border border-white/10 bg-pitch-950 px-2.5 py-1 text-[11px] font-bold text-gray-300 transition hover:text-white"
+            >
+              Quick spins: {quickSpins ? "On" : "Off"}
+            </button>
             {!dailyChallengeMode && difficulty !== "HARD" &&
               (normalEraMode ? (
                 <EraRatingExplanation compact className="w-full" />
@@ -2878,6 +3143,7 @@ export function GameBoard({
                     ? selectedSlotIndex ?? undefined
                     : undefined
                 }
+                highlightSlot={suggestedSlotIndex ?? undefined}
                 interactive={
                   !superSamHallasMode &&
                   phase === "pitch" &&
@@ -2924,6 +3190,7 @@ export function GameBoard({
                   ? squad.find((s) => s.slotIndex === selectedSlotIndex)?.label
                   : undefined
               }
+              quickSpin={quickSpins}
               onComplete={handleRevealComplete}
             />
           )}
@@ -2960,6 +3227,11 @@ export function GameBoard({
                         {boostNotice}
                       </p>
                     )}
+                    {pickerNotice && (
+                      <p className="mb-2 rounded-lg bg-amber-500/15 px-3 py-1.5 text-center text-xs font-semibold text-amber-100" role="status">
+                        {pickerNotice}
+                      </p>
+                    )}
                     <SlotTeamYearPicker
                       target={activeSpinTarget}
                       entries={slotRecruitEntries}
@@ -2979,6 +3251,11 @@ export function GameBoard({
                           : null
                       }
                       squad={squad}
+                      autoSignSingle={
+                        difficulty === "HARD" ||
+                        !respinsAllowed ||
+                        respinsRemaining <= 0
+                      }
                     />
                   </motion.div>
                 </motion.div>
@@ -3060,33 +3337,53 @@ export function GameBoard({
         >
             <Link
               href="/"
-              onClick={() => playUiClick()}
+              onClick={(e) => {
+                playUiClick();
+                // Confirm before walking away from a half-built run (it is saved either way).
+                if (runInProgress) {
+                  e.preventDefault();
+                  setLeaveConfirmOpen(true);
+                }
+              }}
               className={`${BTN.base} ${BTN.secondary} min-h-[var(--mobile-tap-target)] shrink-0 px-3 text-xs`}
             >
               Leave run
             </Link>
-            {phase === "pitch" && filledCount < TOTAL_SLOTS && autofillAllowed && (
+            {/* Ranked Daily: Auto-fill is a quiet secondary option, never the main call to action. */}
+            {phase === "pitch" && filledCount < TOTAL_SLOTS && autofillAllowed && !pendingSpin && (
               <GameButton
-                variant="theme"
+                variant={dailyChallengeMode || weeklyChallengeMode ? "ghost" : "secondary"}
                 size="sm"
                 fullWidth={false}
                 onClick={handleAutofill}
                 disabled={choosing || hideActionBar}
-                className="min-h-[var(--mobile-tap-target)] flex-1 px-3 text-xs"
+                className="min-h-[var(--mobile-tap-target)] shrink-0 px-3 text-xs"
               >
                 Auto-fill squad
               </GameButton>
             )}
-            {phase === "pitch" && filledCount >= TOTAL_SLOTS && (
+            {phase === "pitch" && !squadComplete && suggestedSlotIndex !== null && (
               <GameButton
                 variant="theme"
                 size="sm"
                 fullWidth={false}
-                onClick={() => startTournamentSimulation(squad)}
+                onClick={() => startSlotRecruitSpin(suggestedSlotIndex)}
+                disabled={choosing || hideActionBar}
+                className="min-h-[var(--mobile-tap-target)] flex-1 px-3 text-xs"
+              >
+                {pendingSpin ? `Back to ${suggestedSlotLabel ?? "spin"}` : `Spin ${suggestedSlotLabel ?? "next"}`}
+              </GameButton>
+            )}
+            {phase === "pitch" && squadComplete && (
+              <GameButton
+                variant="theme"
+                size="sm"
+                fullWidth={false}
+                onClick={kickOffSeason}
                 disabled={hideActionBar}
                 className="min-h-[var(--mobile-tap-target)] flex-1 px-3 text-xs"
               >
-                Simulate season
+                Kick off the season
               </GameButton>
             )}
         </StickyActionBar>
@@ -3097,10 +3394,7 @@ export function GameBoard({
         reviewStage === "regular" && (
         <>
         <div className="mb-3 px-1 sm:mb-4">
-          <MobileStepIndicator
-            steps={[...QUICK_MODE_STEPS]}
-            currentIndex={quickModeStepIndex}
-          />
+          <RunProgress stage="season" filledCount={filledCount} totalSlots={TOTAL_SLOTS} />
         </div>
         {dailyScenario ? (
           <DailyRuleBanner scenario={dailyScenario} className="mx-1 mb-3 sm:mb-4" />
@@ -3126,6 +3420,7 @@ export function GameBoard({
           submittedOnline={submittedOnline}
           boostedRun={usedBoostThisRun}
           clubFundsPayout={clubFundsPayout}
+          newSquadBookCards={squadBookNewCards}
           onContinuePlayoffs={handleContinuePlayoffs}
           onFinalizeSeason={handleFinalizeSeason}
           onPlayAgain={resetRun}
@@ -3139,6 +3434,10 @@ export function GameBoard({
         reviewStage === "playoffs" &&
         playoffBracketState &&
         seasonResult && (
+        <>
+        <div className="mb-3 mt-2 px-1 sm:mb-4">
+          <RunProgress stage="playoffs" filledCount={filledCount} totalSlots={TOTAL_SLOTS} />
+        </div>
         <PlayoffBracket
           squad={squad}
           seed={seed}
@@ -3150,6 +3449,7 @@ export function GameBoard({
           initialState={playoffBracketState}
           onComplete={handlePlayoffBracketComplete}
         />
+        </>
       )}
 
       {isReviewPhase &&
@@ -3157,6 +3457,9 @@ export function GameBoard({
         seasonResult.playoffResult &&
         reviewStage === "playoffFinal" && (
         <>
+        <div className="mt-2 px-1">
+          <RunProgress stage="playoffs" filledCount={filledCount} totalSlots={TOTAL_SLOTS} />
+        </div>
         {dailyScenario ? (
           <DailyRuleBanner scenario={dailyScenario} className="mx-1 mb-1 mt-2 sm:mt-4" />
         ) : weeklyScenario ? (
@@ -3186,6 +3489,61 @@ export function GameBoard({
         </>
       )}
       </div>
+      {leaveConfirmOpen && (
+        <BodyPortal>
+          <div
+            className={`recruitment-choice-backdrop fixed inset-0 flex items-center justify-center bg-black/80 px-4 ${uiLayerClass("modalBackdrop")}`}
+            onClick={() => setLeaveConfirmOpen(false)}
+          >
+            <div
+              ref={leaveDialogRef}
+              tabIndex={-1}
+              role="alertdialog"
+              aria-modal="true"
+              aria-labelledby="leave-run-title"
+              aria-describedby="leave-run-body"
+              className={`${CARD.panel} w-full max-w-sm p-5 text-center outline-none`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 id="leave-run-title" className="text-lg font-bold text-white">
+                Leave this run?
+              </h2>
+              <p id="leave-run-body" className={`mt-2 ${TYPO.bodySm} text-gray-300`}>
+                {resumeModeKey
+                  ? `${filledCount}/${TOTAL_SLOTS} signed. Your squad is saved on this device — open ${
+                      dailyChallengeMode ? "today's Daily" : weeklyChallengeMode ? "this week's Weekly" : normalEraMode ? "Era Classic" : "Classic"
+                    } again to pick up where you left off.`
+                  : `${filledCount}/${TOTAL_SLOTS} signed. This run won't be saved.`}
+              </p>
+              <div className="mt-4 flex gap-2">
+                <GameButton
+                  variant="secondary"
+                  size="md"
+                  fullWidth
+                  onClick={() => {
+                    playUiClick();
+                    setLeaveConfirmOpen(false);
+                  }}
+                >
+                  Keep playing
+                </GameButton>
+                <GameButton
+                  variant="theme"
+                  size="md"
+                  fullWidth
+                  onClick={() => {
+                    playUiClick();
+                    setLeaveConfirmOpen(false);
+                    router.push("/");
+                  }}
+                >
+                  Leave run
+                </GameButton>
+              </div>
+            </div>
+          </div>
+        </BodyPortal>
+      )}
     </div>
   );
 }

@@ -13,6 +13,21 @@ export const SLOT_REEL_STRIP_COPIES = 5;
 /** Total continuous spin duration (ms). */
 export const DEFAULT_SPIN_DURATION_MS = 2300;
 
+/** "Quick spins" setting: same reel, about 0.9s from tap to land. */
+export const QUICK_SPIN_DURATION_MS = 900;
+
+/** Pause on the landed result before the picker opens. */
+export const LAND_HOLD_MS = 380;
+export const QUICK_LAND_HOLD_MS = 180;
+
+export function getSpinDurationMs(quick: boolean): number {
+  return quick ? QUICK_SPIN_DURATION_MS : DEFAULT_SPIN_DURATION_MS;
+}
+
+export function getLandHoldMs(quick: boolean): number {
+  return quick ? QUICK_LAND_HOLD_MS : LAND_HOLD_MS;
+}
+
 /** Minimum pool-lengths the strip must travel during a spin. */
 export const MIN_SPIN_POOL_LOOPS = 3;
 

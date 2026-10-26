@@ -103,7 +103,7 @@ if (await slot.isVisible().catch(() => false)) {
 await tap(page, [/Auto.?fill squad/i]);
 await page.waitForTimeout(1200);
 await shot(page, "classic-full-squad");
-await tap(page, [/Simulate Season/i]);
+await tap(page, [/Kick off the season|Simulate Season/i]);
 await page.waitForTimeout(2500);
 await shot(page, "classic-simulating", { full: false });
 for (let i = 0; i < 20; i++) {
