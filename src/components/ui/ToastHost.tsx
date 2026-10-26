@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { formatClubFunds } from "@/lib/club-funds";
@@ -26,6 +26,10 @@ export function ToastHost() {
   const sheetUp = useAnySheetActive();
   const current = sheetUp ? null : (queue[0] ?? null);
   const shownRef = useRef<string | null>(null);
+  // Mounted in the root layout on every page: render nothing until hydrated, because BodyPortal
+  // portals straight away on the client while the server renders nothing (React error #418).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!current) return;
@@ -42,6 +46,7 @@ export function ToastHost() {
     return () => window.clearTimeout(t);
   }, [current]);
 
+  if (!mounted) return null;
   return (
     <BodyPortal>
       <div
