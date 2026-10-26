@@ -2502,11 +2502,17 @@ export function GameBoard({
 
   // Ranked Classic has no Auto-fill (see E2E_BUILD in feature-flags); the Daily and the hidden
   // modes keep it. Test builds can turn it back on with ?e2e=1.
+  // Read after mount: the server render has no URL query, so reading it during render made the
+  // button differ between server and client (React hydration error #418).
+  const [e2eAutofill, setE2eAutofill] = useState(false);
+  useEffect(() => {
+    if (E2E_BUILD && new URLSearchParams(window.location.search).get("e2e") === "1") setE2eAutofill(true);
+  }, []);
   const autofillAllowed =
     dailyChallengeMode ||
     joeMellorMode ||
     superSamHallasMode ||
-    (E2E_BUILD && typeof window !== "undefined" && new URLSearchParams(window.location.search).get("e2e") === "1");
+    e2eAutofill;
   const handleAutofill = useCallback(() => {
     if (phase !== "pitch" || filledCount >= TOTAL_SLOTS || isDraftMode) return;
 
