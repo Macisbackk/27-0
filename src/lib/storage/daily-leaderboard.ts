@@ -158,6 +158,7 @@ function mapEntriesToRows(
     .map((entry, index) => ({
       rank: index + 1,
       username: entry.username,
+      userId: entry.userId,
       statDisplay: String(entry.bestStreak),
       achievedAt: "",
       difficulty: "NORMAL",

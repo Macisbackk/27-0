@@ -1,5 +1,6 @@
 "use client";
 
+import { contactMailto } from "@/lib/contact";
 import { BallGlyph, BoardGlyph, FixtureGlyph, LadderGlyph, ShopGlyph, TilesGlyph, WhistleGlyph } from "@/components/icons/rugby-icons";
 import Link from "next/link";
 import { CountUp } from "@/components/ui/CountUp";
@@ -37,8 +38,7 @@ interface SidebarNavProps {
 }
 
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
-const SUGGESTIONS_MAIL =
-  "mailto:twentysevenzero@yahoo.com?subject=27-0%20Suggestion";
+const SUGGESTIONS_MAIL = contactMailto("27-0 Suggestion");
 const X_URL = "https://x.com/27and0";
 
 export function SidebarNav({ open, onClose }: SidebarNavProps) {

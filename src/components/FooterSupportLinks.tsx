@@ -1,10 +1,10 @@
+import { contactMailto } from "@/lib/contact";
 import { NAV } from "@/lib/ui/design-system";
 import { CoffeeIcon, SuggestionsIcon, XIcon } from "./SupportLinkIcons";
 import { SHOW_TIP_LINKS } from "@/lib/native/platform";
 
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
-const SUGGESTIONS_MAIL =
-  "mailto:twentysevenzero@yahoo.com?subject=27-0%20Suggestion";
+const SUGGESTIONS_MAIL = contactMailto("27-0 Suggestion");
 const X_URL = "https://x.com/27and0";
 
 export function FooterSupportLinks() {

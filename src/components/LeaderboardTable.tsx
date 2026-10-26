@@ -46,6 +46,11 @@ import { useAuth } from "@/lib/auth-context";
 import { CoachNameplate, frameRowClass, useCoachFlairs } from "@/lib/coach-flair";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
 import { titleName } from "@/lib/cosmetics";
+import { CoachRowActions } from "./CoachRowActions";
+import { HiddenCoachesNote } from "./HiddenCoachesNote";
+import { displayCoachName } from "@/lib/moderation/name-filter";
+import { useHiddenCoachIds } from "@/lib/storage/hidden-coaches";
+import type { ReportBoard } from "@/lib/moderation/reports";
 
 const PERIODS: LeaderboardPeriod[] = ["WEEKLY", "MONTHLY", "ALL_TIME"];
 
@@ -347,6 +352,17 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
   const showPeriodFilters =
     !isDailyMode && !isTrophyCabinetMode && !isMiniGamesMode;
 
+  const hiddenIds = useHiddenCoachIds();
+  // Coaches you hid don't show on your boards (their rank numbers stay as they are).
+  const visibleEntries = entries.filter((e) => e.isCurrentUser || !e.userId || !hiddenIds.has(e.userId));
+  const hiddenCount = entries.length - visibleEntries.length;
+  const reportBoard: ReportBoard = isDailyMode
+    ? "daily"
+    : isTrophyCabinetMode
+      ? "trophies"
+      : isMiniGamesMode
+        ? "puzzles"
+        : "classic";
   const flairs = useCoachFlairs(entries.map((e) => e.username));
   const myCosmetics = useCosmetics();
   // Your own row shows what you have equipped right now, even before it syncs.
@@ -528,8 +544,9 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
               <span className="text-right">{statColumnLabel}</span>
               <span className="text-right">{showUpdatedColumn ? "Updated" : ""}</span>
             </li>
-            {entries.map((entry) => {
+            {visibleEntries.map((entry) => {
               const flair = flairFor(entry);
+              const shownName = displayCoachName(entry.username, entry.userId);
               const framed = frameRowClass(flair.frame);
               return (
                 <li
@@ -545,7 +562,19 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
                   >
                     {entry.rank}
                   </span>
-                  <CoachNameplate className={TYPO.identityLine} name={entry.username} title={flair.title} />
+                  <span className="flex min-w-0 items-center gap-1">
+                    <CoachNameplate className={TYPO.identityLine} name={shownName} title={flair.title} />
+                    {!entry.isCurrentUser && !usingFallback ? (
+                      <span className="ml-auto">
+                        <CoachRowActions
+                          userId={entry.userId}
+                          coachName={entry.username}
+                          displayName={shownName}
+                          board={reportBoard}
+                        />
+                      </span>
+                    ) : null}
+                  </span>
                   <span className="whitespace-nowrap text-right font-semibold leading-tight text-accent-gold">
                     {renderLeaderboardStat(entry, effectiveTracker)}
                   </span>
@@ -559,6 +588,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
         </ScoreboardPanel>
       )}
 
+      <HiddenCoachesNote count={hiddenCount} />
       <p className="mt-4 text-center text-xs text-gray-600">
         {usingFallback
           ? "Offline: showing scores saved on this device"

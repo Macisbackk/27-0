@@ -215,9 +215,12 @@ These match `ios-config/PrivacyInfo.xcprivacy`, which is bundled in the app.
 
 - **4.2 Minimum functionality**: mitigated (bundled offline game, native splash/haptics/status bar,
   no browser UI, in-app browser for outside links). Don't switch the app to loading the live website.
-- **1.2 User-generated content**: coach names are public on leaderboards and there is no profanity
-  filter or "report a name" button yet. Apple can ask for filtering + a way to report/block. Cheap
-  fix if they do: a blocklist in `validateCoachName` and a "Report" mailto on leaderboard rows.
+- **1.2 User-generated content**: coach names are public on leaderboards. Covered (see
+  [MODERATION.md](MODERATION.md)): a name filter at sign-up enforced in the database too, a ⋯ menu on
+  every leaderboard row to report (offensive name / cheating / other) or hide a coach, auto-hide after
+  3 reporters, a Hidden coaches list in Settings, and the contact email in Settings and the Privacy
+  policy. Needs the moderation migration applied. In App Review notes, say: "Tap ⋯ next to any coach
+  on the Leaderboard to report or hide them; reports are reviewed within 24 hours."
 - **5.2 Intellectual property**: real club and player names. The disclaimer is in the footer; Apple
   may still ask for proof of rights for club names/crests. Crests are drawn by the game (no official
   logos) which helps.

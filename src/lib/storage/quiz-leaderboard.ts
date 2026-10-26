@@ -179,6 +179,7 @@ function mapEntriesToRows(
   return entries.slice(0, limit).map((entry, index) => ({
     rank: index + 1,
     username: entry.username,
+    userId: entry.userId,
     statDisplay: formatClubFunds(entry.highestPrize),
     achievedAt: entry.updatedAt,
     difficulty: "NORMAL",

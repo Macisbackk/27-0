@@ -68,6 +68,9 @@ jobs:
       - name: Daily missions
         if: success() || failure()
         run: scripts/ci-run.sh "Daily missions" npm run test:missions
+      - name: Coach-name moderation
+        if: success() || failure()
+        run: scripts/ci-run.sh "Coach-name moderation" npm run test:moderation
 
   build:
     runs-on: ubuntu-latest
