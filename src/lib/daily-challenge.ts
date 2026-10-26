@@ -1,18 +1,25 @@
 import { STORAGE_KEYS } from "./storage/keys";
+import {
+  applyDailyFinish,
+  applyPerfectDay,
+  computeDailyScore,
+  DAILY_FREEZE_PRICE,
+  DAILY_MAX_FREEZES,
+  DEFAULT_DAILY_META,
+  migrateDailyState,
+  normalizeDailyMeta,
+  normalizeDailyProgressMap,
+  settleMissedDays,
+  type DailyChallengeMeta,
+  type DailyDayResult,
+  type DailyProgress,
+} from "./daily-streak";
+
+export type { DailyChallengeMeta, DailyDayResult, DailyProgress } from "./daily-streak";
 
 export const DAILY_CHALLENGE_MODE = "CLASSIC" as const;
 
-export interface DailyChallengeMeta {
-  currentStreak: number;
-  bestStreak: number;
-  lastCompletedDateKey: string | null;
-}
-
-const DEFAULT_META: DailyChallengeMeta = {
-  currentStreak: 0,
-  bestStreak: 0,
-  lastCompletedDateKey: null,
-};
+const DEFAULT_META: DailyChallengeMeta = DEFAULT_DAILY_META;
 
 /**
  * Daily rule types. Each day plays one, rotated so the same type never runs two days in a
@@ -148,43 +155,52 @@ function todayKey(date = new Date()): string {
   }).format(date);
 }
 
-/** Previous UK calendar day relative to `date`'s London date key. */
-function yesterdayKey(date = new Date()): string {
-  const [y, m, d] = todayKey(date).split("-").map(Number);
-  const utc = new Date(Date.UTC(y!, m! - 1, d!));
-  utc.setUTCDate(utc.getUTCDate() - 1);
-  return utc.toISOString().slice(0, 10);
-}
-
-function loadMeta(): DailyChallengeMeta {
+function loadRawMeta(): DailyChallengeMeta {
   if (typeof window === "undefined") return { ...DEFAULT_META };
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.dailyChallengeMeta);
     if (!raw) return { ...DEFAULT_META };
-    const parsed = JSON.parse(raw) as Partial<DailyChallengeMeta>;
-    return {
-      currentStreak:
-        typeof parsed.currentStreak === "number" && parsed.currentStreak >= 0
-          ? Math.floor(parsed.currentStreak)
-          : 0,
-      bestStreak:
-        typeof parsed.bestStreak === "number" && parsed.bestStreak >= 0
-          ? Math.floor(parsed.bestStreak)
-          : 0,
-      lastCompletedDateKey:
-        typeof parsed.lastCompletedDateKey === "string"
-          ? parsed.lastCompletedDateKey
-          : null,
-    };
+    return normalizeDailyMeta(JSON.parse(raw));
   } catch {
     return { ...DEFAULT_META };
   }
 }
 
-function saveMeta(meta: DailyChallengeMeta): void {
+function writeState(meta: DailyChallengeMeta, progress?: Record<string, DailyProgress>): void {
   if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEYS.dailyChallengeMeta, JSON.stringify(meta));
+  try {
+    localStorage.setItem(STORAGE_KEYS.dailyChallengeMeta, JSON.stringify(meta));
+    if (progress) writeProgressMap(progress);
+  } catch {
+    // storage unavailable
+  }
   scheduleCloudSave();
+}
+
+/**
+ * Meta with the v1.18 migration and any missed days applied (a missed day uses a freeze). The
+ * settled state is written back so every screen agrees.
+ */
+function loadMeta(date = new Date()): DailyChallengeMeta {
+  if (typeof window === "undefined") return { ...DEFAULT_META };
+  const raw = loadRawMeta();
+  let progress = loadProgressMap();
+  let meta = raw;
+  let changed = false;
+  const migrated = migrateDailyState(meta, progress);
+  if (migrated.changed) {
+    meta = migrated.meta;
+    progress = migrated.progress;
+    changed = true;
+  }
+  const settled = settleMissedDays(meta, progress, todayKey(date));
+  if (settled.consumed > 0 || settled.broken) {
+    meta = settled.meta;
+    progress = settled.progress;
+    changed = true;
+  }
+  if (changed) writeState(meta, progress);
+  return meta;
 }
 
 /**
@@ -200,6 +216,17 @@ function scheduleCloudSave(): void {
     });
 }
 
+export const DAILY_STREAK_CHANGED_EVENT = "27-0-daily-streak-changed";
+
+function notifyStreakChanged(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.dispatchEvent(new CustomEvent(DAILY_STREAK_CHANGED_EVENT));
+  } catch {
+    // ignore
+  }
+}
+
 export function getDailyChallengeMeta(): DailyChallengeMeta {
   return loadMeta();
 }
@@ -212,25 +239,54 @@ export function getDailyChallengeBestStreak(): number {
   return loadMeta().bestStreak;
 }
 
+export function getDailyPerfectDays(): number {
+  return loadMeta().perfectDays ?? 0;
+}
+
+export function getDailyStreakFreezes(): number {
+  return loadMeta().freezes ?? 0;
+}
+
+export { DAILY_FREEZE_PRICE, DAILY_MAX_FREEZES };
+
 /**
- * Record a fully completed daily (League Leaders + Grand Final claimed).
- * Updates streak, best streak, leaderboard sync, and daily achievements.
+ * Add one held streak freeze (capped at DAILY_MAX_FREEZES). Returns the new count, or null when
+ * already at the cap. Payment lives in lib/streak-freeze.ts (buyStreakFreeze).
+ */
+export function addDailyStreakFreeze(date = new Date()): number | null {
+  const meta = loadMeta(date);
+  const held = meta.freezes ?? 0;
+  if (held >= DAILY_MAX_FREEZES) return null;
+  writeState({ ...meta, freezes: held + 1 });
+  notifyStreakChanged();
+  return held + 1;
+}
+
+/** Mark a streak milestone (3/7/30/100) as celebrated so it shows once. */
+export function markDailyMilestoneCelebrated(milestone: number): void {
+  const meta = loadMeta();
+  if ((meta.celebratedMilestone ?? 0) >= milestone) return;
+  writeState({ ...meta, celebratedMilestone: milestone });
+  notifyStreakChanged();
+}
+
+/**
+ * Count `date`'s Daily as finished (v1.18 rule: finishing the counted attempt's season, win or
+ * lose). Updates streak, best streak, freezes, leaderboard sync and daily achievements.
  */
 export function recordDailyChallengeCompletion(date = new Date()): void {
-  const today = todayKey(date);
-  const meta = loadMeta();
-  if (meta.lastCompletedDateKey === today) return;
+  recordDailyFinishForKey(todayKey(date));
+}
 
-  const yesterday = yesterdayKey(date);
-  const currentStreak =
-    meta.lastCompletedDateKey === yesterday ? meta.currentStreak + 1 : 1;
-  const bestStreak = Math.max(meta.bestStreak, currentStreak);
-  const next: DailyChallengeMeta = {
-    currentStreak,
-    bestStreak,
-    lastCompletedDateKey: today,
-  };
-  saveMeta(next);
+function recordDailyFinishForKey(key: string): void {
+  if (typeof window === "undefined") return;
+  const meta = loadMeta(new Date());
+  const progress = loadProgressMap();
+  const result = applyDailyFinish(meta, progress, key);
+  writeState(result.meta, result.progress);
+  if (!result.counted) return;
+  notifyStreakChanged();
+  const { currentStreak, bestStreak } = result.meta;
   // Lazy imports avoid circular module init with leaderboard / achievements.
   void import("./storage/daily-leaderboard").then(({ syncDailyChallengeLeaderboard }) => {
     syncDailyChallengeLeaderboard(bestStreak);
@@ -242,13 +298,88 @@ export function recordDailyChallengeCompletion(date = new Date()): void {
   );
 }
 
+function maybeRecordPerfectDay(key: string): void {
+  const meta = loadMeta(new Date());
+  const progress = loadProgressMap();
+  const perfect = applyPerfectDay(meta, progress, key);
+  if (perfect.counted) {
+    writeState(perfect.meta, perfect.progress);
+    notifyStreakChanged();
+  }
+}
+
 function maybeRecordCompletionFromProgress(
   progress: DailyProgress,
   date: Date
 ): void {
-  if (progress.leagueLeaders && progress.playoffTitle) {
+  // Either bonus means the counted attempt finished its regular season.
+  if (progress.leagueLeaders || progress.playoffTitle) {
     recordDailyChallengeCompletion(date);
   }
+  if (progress.leagueLeaders && progress.playoffTitle) {
+    maybeRecordPerfectDay(todayKey(date));
+  }
+}
+
+/**
+ * Called when a Daily run finishes a phase (storage/run.ts). Only the day's counted attempt
+ * (DAILY_ATTEMPT_KEY runId) counts: it finishes the day for the streak, stores the day's
+ * result and score, and queues the score for the Daily board. Practice runs are ignored.
+ */
+export function recordDailyChallengeRunResult(input: {
+  runId: string;
+  phase: "regular" | "playoff";
+  regularWins: number;
+  leaguePosition: number;
+  playoffWins?: number;
+  grandFinal?: boolean;
+}): { dayKey: string; score: number } | null {
+  if (typeof window === "undefined") return null;
+  const attempt = loadAttempt();
+  if (!attempt || attempt.runId !== input.runId) return null;
+  const key = attempt.date;
+  const progress = loadProgressMap();
+  const existing = progress[key]?.result;
+  if (existing && existing.runId === input.runId && existing.final) {
+    return { dayKey: key, score: computeDailyScore(existing) };
+  }
+  const reachedPlayoffs = input.leaguePosition <= 6;
+  const result: DailyDayResult = {
+    runId: input.runId,
+    regularWins: input.regularWins,
+    leaguePosition: input.leaguePosition,
+    playoffWins: input.phase === "playoff" ? input.playoffWins ?? 0 : 0,
+    grandFinal: input.phase === "playoff" ? input.grandFinal === true : false,
+    final: input.phase === "playoff" || !reachedPlayoffs,
+  };
+  progress[key] = { ...progress[key], result };
+  writeProgressMap(progress);
+  recordDailyFinishForKey(key);
+  maybeRecordPerfectDay(key);
+  const score = computeDailyScore(result);
+  void import("./storage/daily-leaderboard")
+    .then(({ flushDailyScoreEntry }) => flushDailyScoreEntry())
+    .catch(() => {
+      /* offline: the board read retries */
+    });
+  return { dayKey: key, score };
+}
+
+/** The counted attempt's result for a day, with its Daily score (null if not played). */
+export function getDailyChallengeDayResult(
+  date = new Date()
+): (DailyDayResult & { dayKey: string; score: number }) | null {
+  const key = todayKey(date);
+  const result = loadProgressMap()[key]?.result;
+  return result ? { ...result, dayKey: key, score: computeDailyScore(result) } : null;
+}
+
+/** A day's stored result by key (used by the board flush). */
+export function getDailyChallengeResultForKey(
+  key: string
+): (DailyDayResult & { dayKey: string; score: number }) | null {
+  const result = loadProgressMap()[key]?.result;
+  return result ? { ...result, dayKey: key, score: computeDailyScore(result) } : null;
 }
 
 /** Rule rotation — one daily challenge per UK calendar day. */
@@ -459,11 +590,6 @@ export function getDailyChallengeRunId(date = new Date()): string {
   return getDailyChallengeLeagueRunId(date);
 }
 
-export interface DailyProgress {
-  leagueLeaders?: boolean;
-  playoffTitle?: boolean;
-}
-
 export interface DailyChallengeAttempt {
   date: string;
   runId: string;
@@ -481,33 +607,28 @@ function loadProgressMap(): Record<string, DailyProgress> {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.dailyChallengeClaims);
     if (!raw) return {};
-    const parsed = JSON.parse(raw) as unknown;
-    if (Array.isArray(parsed)) {
-      const map: Record<string, DailyProgress> = {};
-      for (const key of parsed) {
-        if (typeof key === "string") {
-          map[key] = { leagueLeaders: true, playoffTitle: true };
-        }
-      }
-      return map;
-    }
-    if (parsed && typeof parsed === "object") {
-      return parsed as Record<string, DailyProgress>;
-    }
+    return normalizeDailyProgressMap(JSON.parse(raw) as unknown);
   } catch {
-    // ignore
+    return {};
   }
-  return {};
 }
 
-function saveProgressMap(map: Record<string, DailyProgress>): void {
+function writeProgressMap(map: Record<string, DailyProgress>): void {
   if (typeof window === "undefined") return;
   const keys = Object.keys(map).sort();
   const trimmed: Record<string, DailyProgress> = {};
   for (const key of keys.slice(-60)) {
     trimmed[key] = map[key]!;
   }
-  localStorage.setItem(STORAGE_KEYS.dailyChallengeClaims, JSON.stringify(trimmed));
+  try {
+    localStorage.setItem(STORAGE_KEYS.dailyChallengeClaims, JSON.stringify(trimmed));
+  } catch {
+    // storage unavailable
+  }
+}
+
+function saveProgressMap(map: Record<string, DailyProgress>): void {
+  writeProgressMap(map);
   scheduleCloudSave();
 }
 
@@ -529,7 +650,8 @@ function loadAttempt(): DailyChallengeAttempt | null {
 
 /** Current local Daily state, as backed up to the cloud. */
 export function loadDailyChallengeSnapshot(): DailyChallengeSnapshot {
-  return { meta: loadMeta(), progress: loadProgressMap(), attempt: loadAttempt() };
+  const meta = loadMeta();
+  return { meta, progress: loadProgressMap(), attempt: loadAttempt() };
 }
 
 /**
@@ -599,6 +721,12 @@ export function getDailyChallengeProgress(date = new Date()): DailyProgress {
 export function hasClaimedDailyChallengeBonus(date = new Date()): boolean {
   const p = getDailyChallengeProgress(date);
   return Boolean(p.leagueLeaders && p.playoffTitle);
+}
+
+/** Today's Daily has been finished (counts for the streak). */
+export function hasFinishedDailyChallengeToday(date = new Date()): boolean {
+  const p = getDailyChallengeProgress(date);
+  return Boolean(p.finished || p.leagueLeaders || p.playoffTitle || p.result);
 }
 
 export function markDailyChallengeLeagueLeaders(date = new Date()): void {

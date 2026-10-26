@@ -193,7 +193,10 @@ export function mergeClubFundsFromCloud(cloud: ClubFundsState | null): void {
   );
 
   const isStorePurchaseId = (id: string) =>
-    id.startsWith("theme-") || id.startsWith("boost-") || id.startsWith("cosmetic-");
+    id.startsWith("theme-") ||
+    id.startsWith("boost-") ||
+    id.startsWith("cosmetic-") ||
+    id.startsWith("streak-freeze:");
   const localHasUnsyncedStoreSpend = localExclusiveIds.some(isStorePurchaseId);
   const cloudHasStoreSpend = cloudExclusiveIds.some(isStorePurchaseId);
 
@@ -301,8 +304,24 @@ export function awardClubFundsForRun(
 }
 
 /**
+ * Record ledger markers without paying anything (e.g. a Golden Point Quiz run that banked £0
+ * still counts as the day's first run). Markers sync across devices with the wallet.
+ */
+export function addClubFundsMarkers(markerIds: readonly string[]): void {
+  const state = loadState();
+  let changed = false;
+  for (const markerId of markerIds) {
+    if (!state.paidRunIds.includes(markerId)) {
+      state.paidRunIds.push(markerId);
+      changed = true;
+    }
+  }
+  if (changed) saveState(state);
+}
+
+/**
  * Award explicit Club Funds lines (e.g. Daily bonuses, puzzle rewards). `markerIds` are extra
- * ledger ids saved in the same write as the payout (e.g. the Millionaire day-best marker) so
+ * ledger ids saved in the same write as the payout (e.g. the quiz day marker) so
  * they sync across devices with it.
  */
 export function awardClubFundsLines(

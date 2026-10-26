@@ -222,17 +222,17 @@ console.log("\nPrize ladder");
 {
   assert(getCurrentPrize(0) === 0, "no prize before a correct answer");
   assert(getCurrentPrize(1) === 100, "Q1 prize is 100");
-  assert(getCurrentPrize(5) === 1_000, "Q5 prize is 1000");
-  assert(getCurrentPrize(10) === 32_000, "Q10 prize is 32000");
-  assert(getCurrentPrize(15) === 1_000_000, "Q15 prize is 1m");
+  assert(getCurrentPrize(5) === 2_000, "Q5 prize is 2000");
+  assert(getCurrentPrize(10) === 15_000, "Q10 prize is 15000");
+  assert(getCurrentPrize(15) === 100_000, "Q15 prize is 100k (v1.18 economy)");
   assert(getGuaranteedPrize(4) === 0, "no safe haven before Q5");
-  assert(getGuaranteedPrize(5) === 1_000, "Q5 is a safe haven");
-  assert(getGuaranteedPrize(10) === 32_000, "Q10 is a safe haven");
-  assert(getWrongAnswerPayout(7) === 1_000, "wrong answer after Q5 drops to 1000");
-  assert(getWalkAwayPayout(7) === 4_000, "walk away takes current prize, not next");
-  assert(getEndPayout("complete", 15) === 1_000_000, "completion pays 1m");
-  assert(getEndPayout("walked_away", 9) === 16_000, "walk away after Q9 is 16000");
-  assert(getEndPayout("failed", 9) === 1_000, "fail after Q9 is guaranteed 1000");
+  assert(getGuaranteedPrize(5) === 2_000, "Q5 is a safe haven");
+  assert(getGuaranteedPrize(10) === 15_000, "Q10 is a safe haven");
+  assert(getWrongAnswerPayout(7) === 2_000, "wrong answer after Q5 drops to 2000");
+  assert(getWalkAwayPayout(7) === 5_000, "walk away takes current prize, not next");
+  assert(getEndPayout("complete", 15) === 100_000, "completion pays 100k");
+  assert(getEndPayout("walked_away", 9) === 10_000, "walk away after Q9 is 10000");
+  assert(getEndPayout("failed", 9) === 2_000, "fail after Q9 is guaranteed 2000");
 }
 
 console.log("\nPhone lifeline wording");
@@ -352,7 +352,7 @@ console.log("\nWrong answer payout");
   const wrong = [0, 1, 2, 3].find((index) => index !== correct)!;
   run = continueAfterReveal(revealAnswer(lockAnswer(run, wrong), bank));
   assert(run.phase === "quiz_failed", "wrong answer ends the run");
-  assert(run.rewardAmount === 1_000, "fail after the first safe haven pays 1000");
+  assert(run.rewardAmount === 2_000, "fail after the first safe haven pays 2000");
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

@@ -1,6 +1,16 @@
 import { isSupabaseConfigured, supabase } from "../supabase";
 import { getAuthUserId } from "../auth-session";
 import {
+  computeDailyScore,
+  countStreakFromProgress,
+  DAILY_MAX_FREEZES,
+  DAILY_STREAK_RULES_VERSION,
+  isFinishedDay,
+  migrateDailyState,
+  normalizeDailyMeta,
+  normalizeDailyProgressMap,
+} from "../daily-streak";
+import {
   getDailyChallengeDateKey,
   loadDailyChallengeSnapshot,
   applyDailyChallengeSnapshot,
@@ -20,31 +30,11 @@ const SAVE_DEBOUNCE_MS = 1_500;
 let saveTimer: ReturnType<typeof setTimeout> | null = null;
 
 function normalizeMeta(raw: unknown): DailyChallengeMeta {
-  const m = (raw && typeof raw === "object" ? raw : {}) as Partial<DailyChallengeMeta>;
-  return {
-    currentStreak:
-      typeof m.currentStreak === "number" && m.currentStreak >= 0
-        ? Math.floor(m.currentStreak)
-        : 0,
-    bestStreak:
-      typeof m.bestStreak === "number" && m.bestStreak >= 0 ? Math.floor(m.bestStreak) : 0,
-    lastCompletedDateKey:
-      typeof m.lastCompletedDateKey === "string" ? m.lastCompletedDateKey : null,
-  };
+  return normalizeDailyMeta(raw);
 }
 
 function normalizeProgress(raw: unknown): Record<string, DailyProgress> {
-  const out: Record<string, DailyProgress> = {};
-  if (!raw || typeof raw !== "object") return out;
-  for (const [key, value] of Object.entries(raw as Record<string, unknown>)) {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(key)) continue;
-    const p = (value && typeof value === "object" ? value : {}) as DailyProgress;
-    const entry: DailyProgress = {};
-    if (p.leagueLeaders) entry.leagueLeaders = true;
-    if (p.playoffTitle) entry.playoffTitle = true;
-    out[key] = entry;
-  }
-  return out;
+  return normalizeDailyProgressMap(raw);
 }
 
 function normalizeAttempt(raw: unknown): DailyChallengeSnapshot["attempt"] {
@@ -66,33 +56,41 @@ function normalizeSnapshot(raw: unknown): DailyChallengeSnapshot {
   };
 }
 
-function isComplete(p: DailyProgress | undefined): boolean {
-  return Boolean(p?.leagueLeaders && p?.playoffTitle);
-}
-
-/** Previous calendar day for a YYYY-MM-DD key. */
-function previousDayKey(key: string): string {
-  const [y, m, d] = key.split("-").map(Number);
-  const utc = new Date(Date.UTC(y!, m! - 1, d!));
-  utc.setUTCDate(utc.getUTCDate() - 1);
-  return utc.toISOString().slice(0, 10);
+function mergeResult(
+  a: DailyProgress["result"],
+  b: DailyProgress["result"]
+): DailyProgress["result"] {
+  if (!a) return b;
+  if (!b) return a;
+  // Same counted attempt on both: the final (play-offs included) copy wins.
+  if (a.runId === b.runId) return a.final || !b.final ? a : b;
+  return computeDailyScore(a) >= computeDailyScore(b) ? a : b;
 }
 
 /**
  * Pure merge of a local and a cloud snapshot (exported for tests):
- * - progress maps are unioned per day
- * - bestStreak takes the higher
- * - currentStreak / lastCompletedDateKey follow whichever lastCompletedDateKey is later, then
- *   the streak is recomputed by walking back through the unioned claims from that day so days
- *   completed on either device count once
+ * - progress maps are unioned per day (finished / frozen / perfect / bonus flags OR-ed; the
+ *   day's result keeps the final or higher-scoring copy)
+ * - bestStreak and perfectDays take the higher
+ * - currentStreak / lastCompletedDateKey / freezes follow whichever lastCompletedDateKey is
+ *   later (ties keep the higher streak and the higher freeze count), then the streak is
+ *   recomputed by walking back through the unioned days so days finished on either device
+ *   count once (frozen days bridge gaps)
+ * - pre-v1.18 snapshots are migrated first (a claim of either bonus = a finished day), so an
+ *   older device never wipes a streak
  * - today's counted attempt: the cloud's wins when present (so a second device doesn't get a
  *   fresh counted attempt); otherwise the local one is kept
  */
 export function mergeDailySnapshots(
-  local: DailyChallengeSnapshot,
-  cloud: DailyChallengeSnapshot,
+  localIn: DailyChallengeSnapshot,
+  cloudIn: DailyChallengeSnapshot,
   todayKey: string
 ): DailyChallengeSnapshot {
+  const lm = migrateDailyState(normalizeDailyMeta(localIn.meta), normalizeDailyProgressMap(localIn.progress));
+  const cm = migrateDailyState(normalizeDailyMeta(cloudIn.meta), normalizeDailyProgressMap(cloudIn.progress));
+  const local = { meta: lm.meta, progress: lm.progress };
+  const cloud = { meta: cm.meta, progress: cm.progress };
+
   const progress: Record<string, DailyProgress> = {};
   for (const key of new Set([...Object.keys(local.progress), ...Object.keys(cloud.progress)])) {
     const a = local.progress[key] ?? {};
@@ -100,59 +98,72 @@ export function mergeDailySnapshots(
     const entry: DailyProgress = {};
     if (a.leagueLeaders || b.leagueLeaders) entry.leagueLeaders = true;
     if (a.playoffTitle || b.playoffTitle) entry.playoffTitle = true;
+    if (isFinishedDay(a) || isFinishedDay(b)) entry.finished = true;
+    if (a.frozen || b.frozen) entry.frozen = true;
+    if (a.perfect || b.perfect) entry.perfect = true;
+    const result = mergeResult(a.result, b.result);
+    if (result) entry.result = result;
     progress[key] = entry;
   }
 
   const localLast = local.meta.lastCompletedDateKey;
   const cloudLast = cloud.meta.lastCompletedDateKey;
-  let lastCompletedDateKey: string | null;
-  let baseStreak: number;
+  let winner: DailyChallengeMeta;
   if (localLast && cloudLast) {
-    if (cloudLast > localLast) {
-      lastCompletedDateKey = cloudLast;
-      baseStreak = cloud.meta.currentStreak;
-    } else if (localLast > cloudLast) {
-      lastCompletedDateKey = localLast;
-      baseStreak = local.meta.currentStreak;
-    } else {
-      lastCompletedDateKey = localLast;
-      baseStreak = Math.max(local.meta.currentStreak, cloud.meta.currentStreak);
+    if (cloudLast > localLast) winner = cloud.meta;
+    else if (localLast > cloudLast) winner = local.meta;
+    else {
+      winner = {
+        ...local.meta,
+        currentStreak: Math.max(local.meta.currentStreak, cloud.meta.currentStreak),
+        freezes: Math.max(local.meta.freezes ?? 0, cloud.meta.freezes ?? 0),
+        celebratedMilestone: Math.max(local.meta.celebratedMilestone ?? 0, cloud.meta.celebratedMilestone ?? 0),
+        freezeEarnedAt: Math.max(local.meta.freezeEarnedAt ?? 0, cloud.meta.freezeEarnedAt ?? 0),
+      };
     }
   } else if (cloudLast) {
-    lastCompletedDateKey = cloudLast;
-    baseStreak = cloud.meta.currentStreak;
+    winner = cloud.meta;
   } else {
-    lastCompletedDateKey = localLast;
-    baseStreak = local.meta.currentStreak;
+    winner = local.meta;
   }
+  const lastCompletedDateKey = winner.lastCompletedDateKey;
+  const baseStreak = winner.currentStreak;
 
-  // Recompute continuity: consecutive completed days (from the unioned claims) ending on the
-  // latest completion day. Claims are trimmed to the last 60 days, so never go below the
-  // streak the winning device already recorded.
+  // Recompute continuity: finished days (from the unioned claims) ending on the latest covered
+  // day. Claims are trimmed to the last 60 days, so never go below the streak the winning
+  // device already recorded. A streak the winner had already broken (0) stays broken.
   let currentStreak = baseStreak;
-  if (lastCompletedDateKey) {
-    let walked = 0;
-    let key: string = lastCompletedDateKey;
-    while (isComplete(progress[key]) && walked < 400) {
-      walked += 1;
-      key = previousDayKey(key);
-    }
+  if (lastCompletedDateKey && baseStreak > 0) {
+    let walked = countStreakFromProgress(progress, lastCompletedDateKey);
     if (walked === 0) walked = 1; // meta says it was completed even if the claim was trimmed
     currentStreak = Math.max(baseStreak, walked);
-  } else {
+  } else if (!lastCompletedDateKey) {
     currentStreak = 0;
   }
 
   const bestStreak = Math.max(local.meta.bestStreak, cloud.meta.bestStreak, currentStreak);
+  const perfectDays = Math.max(
+    local.meta.perfectDays ?? 0,
+    cloud.meta.perfectDays ?? 0,
+    Object.values(progress).filter((p) => p.perfect).length
+  );
 
   const cloudAttemptToday =
-    cloud.attempt && cloud.attempt.date === todayKey ? cloud.attempt : null;
+    cloudIn.attempt && cloudIn.attempt.date === todayKey ? cloudIn.attempt : null;
   const localAttemptToday =
-    local.attempt && local.attempt.date === todayKey ? local.attempt : null;
+    localIn.attempt && localIn.attempt.date === todayKey ? localIn.attempt : null;
   const attempt = cloudAttemptToday ?? localAttemptToday ?? null;
 
   return {
-    meta: { currentStreak, bestStreak, lastCompletedDateKey },
+    meta: {
+      ...winner,
+      currentStreak,
+      bestStreak,
+      lastCompletedDateKey,
+      perfectDays,
+      freezes: Math.min(DAILY_MAX_FREEZES, winner.freezes ?? 0),
+      rulesVersion: DAILY_STREAK_RULES_VERSION,
+    },
     progress,
     attempt,
   };

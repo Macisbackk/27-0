@@ -16,11 +16,13 @@ interface GuestNoticeProps {
 
 const GUEST_NOTICE_TEXT = "Guest — saved on this device only.";
 
-function loginHref(pathname: string, dailyChallenge: boolean): string {
+function loginHref(pathname: string, dailyChallenge: boolean, weekly = false): string {
   const redirect = encodeURIComponent(
-    dailyChallenge
-      ? "/leaderboard?tracker=daily_streak"
-      : pathname || "/"
+    weekly
+      ? "/leaderboard?tracker=weekly"
+      : dailyChallenge
+        ? "/leaderboard?tracker=daily_streak"
+        : pathname || "/"
   );
   return `/login?redirect=${redirect}`;
 }
@@ -35,6 +37,7 @@ export function GuestNotice({
   const isDaily =
     dailyChallenge ??
     (SHOW_DAILY_CHALLENGE_UI && searchParams.get("daily") === "1");
+  const isWeekly = SHOW_DAILY_CHALLENGE_UI && searchParams.get("weekly") === "1";
 
   if (loading || isLoggedIn) return null;
 
@@ -44,6 +47,24 @@ export function GuestNotice({
         className={`mx-auto mt-4 flex max-w-md flex-col items-center text-center ${SPACING.stackSm}`}
       >
         <p className={`w-full text-center ${TYPO.meta}`}>{GUEST_NOTICE_TEXT}</p>
+      </div>
+    );
+  }
+
+  if (variant === "play" && isWeekly) {
+    // One clear rule for guests: the run counts now, posting needs an account before the week ends.
+    return (
+      <div className={`mb-3 text-center ${SPACING.stackSm}`}>
+        <p className={TYPO.meta}>
+          Your first finished run this week counts. Log in any time before Sunday midnight to post it on the board.
+        </p>
+        <Link
+          href={loginHref(pathname, false, true)}
+          onClick={() => playUiClick()}
+          className="inline-block text-sm font-semibold text-theme-primary hover:underline"
+        >
+          Log in to post your Weekly score →
+        </Link>
       </div>
     );
   }

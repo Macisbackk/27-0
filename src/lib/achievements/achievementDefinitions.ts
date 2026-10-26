@@ -170,7 +170,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   },
   {
     id: "millionaire-coach",
-    name: "Millionaire Coach",
+    name: "Seven-Figure Coach",
     description: "Hold £1m Club Funds.",
     category: "store",
     points: 40,
@@ -294,7 +294,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   },
   {
     id: "daily-streak-7",
-    name: "Week of Wins",
+    name: "Full Week",
     description: "Complete the Daily Challenge seven days in a row.",
     category: "normal",
     points: 60,
@@ -304,7 +304,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-first-question",
     name: "First Question",
-    description: "Answer your first Super League Millionaire question.",
+    description: "Answer your first Golden Point Quiz question.",
     category: "quiz",
     points: 10,
     rewardClubFunds: 5_000,
@@ -313,7 +313,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-safe-1000",
     name: "Safe Haven",
-    description: "Reach the £1,000 safe haven in Super League Millionaire.",
+    description: "Reach the £2,000 safe haven (Q5) in the Golden Point Quiz.",
     category: "quiz",
     points: 20,
     rewardClubFunds: 10_000,
@@ -321,7 +321,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-safe-32000",
     name: "Halfway There",
-    description: "Reach the £32,000 safe haven in Super League Millionaire.",
+    description: "Reach the £15,000 safe haven (Q10) in the Golden Point Quiz.",
     category: "quiz",
     points: 35,
     rewardClubFunds: 25_000,
@@ -329,16 +329,16 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-big-money",
     name: "Big Money",
-    description: "Reach £250,000 in a Super League Millionaire run.",
+    description: "Reach £50,000 (Q13) in a Golden Point Quiz run.",
     category: "quiz",
     points: 50,
     rewardClubFunds: 40_000,
   },
   {
     id: "quiz-millionaire",
-    name: "Millionaire",
+    name: "Golden Point",
     description:
-      "Answer all 15 Super League Millionaire questions correctly and bank £1,000,000.",
+      "Answer all 15 Golden Point Quiz questions correctly and bank the £100,000 top prize.",
     category: "quiz",
     points: 100,
     rewardClubFunds: 100_000,
@@ -362,8 +362,8 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   },
   {
     id: "quiz-club-millionaire",
-    name: "Club Millionaire",
-    description: "Reach £1,000,000 in Team Challenge.",
+    name: "Club Perfect",
+    description: "Answer every question in a Team Challenge.",
     // Retired game — kept so existing unlocks still show; hidden while locked.
     hidden: true,
     category: "quiz",
@@ -373,7 +373,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "quiz-super-league-expert",
     name: "Super League Expert",
-    description: "Answer 250 Super League Millionaire questions correctly.",
+    description: "Answer 250 Golden Point Quiz questions correctly.",
     category: "quiz",
     points: 60,
     target: 250,
@@ -381,7 +381,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
   {
     id: "mini-game-starter",
     name: "Puzzle Starter",
-    description: "Play a puzzle.",
+    description: "Make your first guess in a puzzle.",
     category: "quiz",
     points: 10,
     rewardClubFunds: 5_000,

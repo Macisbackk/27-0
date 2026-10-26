@@ -28,7 +28,14 @@ export function PreseasonCard() {
   const { state, playFriendlies } = useCareer();
   const s = state!;
   const options = useMemo(() => friendlyOptions(s), [s.seed, s.year, s.userClubId]); // eslint-disable-line react-hooks/exhaustive-deps
-  const [picked, setPicked] = useState<string[]>([]);
+  // Pre-pick the two best-paying games so the common case is one tap ("Play 2"); the full list
+  // sits behind "Change".
+  const recommended = useMemo(
+    () => [...options].sort((a, b) => b.money - a.money).slice(0, MAX_FRIENDLIES).map((o) => o.opponentId),
+    [options]
+  );
+  const [picked, setPicked] = useState<string[]>(recommended);
+  const [changing, setChanging] = useState(false);
   // Arms after a moment: a double tap on "Take charge" used to land on "Skip pre-season".
   const armed = useArmed(600);
   if (!preseasonOpen(s)) return null;
@@ -44,10 +51,50 @@ export function PreseasonCard() {
     <section aria-label="Pre-season friendlies" className="fl-rise rounded-card bg-pitch-900 p-4">
       <p className="text-[13px] font-semibold text-theme-primary">Pre-season</p>
       <h2 className="mt-0.5 text-[18px] font-bold text-white">Pick your friendlies</h2>
-      <p className="mt-1 text-sm text-[color:var(--fl-muted)]">
-        Up to {MAX_FRIENDLIES}. Each one gives your XIII +{SHARPNESS_PER_FRIENDLY} rating of match sharpness for the
-        first three rounds, and brings in gate money at home or an appearance fee away.
-      </p>
+      <div className="mt-1 text-sm text-[color:var(--fl-muted)]">
+        Up to {MAX_FRIENDLIES} warm-ups: sharpness for the first three rounds, plus gate money.{" "}
+        <details className="inline">
+          <summary className="inline cursor-pointer font-semibold text-gray-300 underline-offset-2 hover:underline">More</summary>
+          <span className="mt-1 block">
+            Each friendly gives your XIII +{SHARPNESS_PER_FRIENDLY} rating of match sharpness for the first three
+            rounds, and brings in gate money at home or an appearance fee away. A big test is tougher but pays more.
+          </span>
+        </details>
+      </div>
+      {!changing ? (
+        <div className="mt-3">
+          <ul className="space-y-1.5" aria-label="Your friendlies">
+            {chosen.length ? (
+              chosen.map((o) => {
+                const club = s.clubs[o.opponentId]!;
+                return (
+                  <li key={o.opponentId} className="flex items-center gap-2 rounded-control bg-pitch-950 p-2 text-sm">
+                    <ClubBadge club={club} size="sm" />
+                    <span className="min-w-0 flex-1 truncate text-white">
+                      {o.home ? "v" : "at"} {club.name}{" "}
+                      <span className={`text-xs font-semibold ${TONE[o.label]}`}>· {o.label}</span>
+                    </span>
+                    <span className="shrink-0 text-xs font-bold tabular-nums text-theme-primary">+{formatMoney(o.money)}</span>
+                  </li>
+                );
+              })
+            ) : (
+              <li className="text-sm text-gray-400">No friendlies picked.</li>
+            )}
+          </ul>
+          <button
+            type="button"
+            onClick={() => {
+              playUiClick();
+              setChanging(true);
+            }}
+            aria-expanded={false}
+            className="mt-2 text-sm font-semibold text-theme-primary underline-offset-2 hover:underline"
+          >
+            Change
+          </button>
+        </div>
+      ) : (
       <ul className="fl-stagger mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
         {options.map((o) => {
           const club = s.clubs[o.opponentId]!;
@@ -76,6 +123,7 @@ export function PreseasonCard() {
           );
         })}
       </ul>
+      )}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <GameButton
           variant="secondary"

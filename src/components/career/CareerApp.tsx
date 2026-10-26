@@ -16,7 +16,7 @@ import { TableTab } from "./TableTab";
 import { TeamTab } from "./TeamTab";
 import { TransferWindow } from "./TransferWindow";
 import { useDeadlineDriver } from "./TransferNews";
-import { ClubBadge, Stars } from "./bits";
+import { ClubBadge, Stars, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 import { CareerTutorial } from "./CareerTutorial";
 
 type Tab = "match" | "team" | "table" | "club";
@@ -94,7 +94,8 @@ function CareerRouter() {
 
   return (
     <ClubSheetProvider>
-    <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-40 sm:pb-10">
+    <div className={CAREER_PAGE_CLASS}>
+      <CareerBackLink />
       <HubHeader />
       <GameSegmentedControl<Tab>
         options={[

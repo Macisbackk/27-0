@@ -12,6 +12,7 @@ import {
 import { updateStats } from "./stats-update";
 import { gameModeToDbMode } from "./leaderboard";
 import { syncTrophyCabinetLeaderboard } from "./trophy-cabinet-leaderboard";
+import { recordDailyChallengeRunResult } from "../daily-challenge";
 
 export interface CompletedRunResult {
   nationalRank?: number;
@@ -49,6 +50,15 @@ export async function recordCompletedRun(
   }
 ): Promise<CompletedRunResult> {
   const totalValue = run.totalValue || getSquadValue(run.squad);
+  if (options?.dailyChallengeMode && options.seasonLeaguePosition !== undefined) {
+    // Daily streak + Daily score: only the day's counted attempt counts (checked inside).
+    recordDailyChallengeRunResult({
+      runId: run.id,
+      phase: "regular",
+      regularWins: options.seasonWins ?? 0,
+      leaguePosition: options.seasonLeaguePosition,
+    });
+  }
   const regularWins = options?.seasonWins ?? 0;
   const regularLosses = options?.seasonLosses ?? 0;
   const playoffWins = options?.playoffWins ?? 0;
@@ -158,6 +168,17 @@ export async function recordPlayoffCompletion(
   }
 ): Promise<CompletedRunResult> {
   const totalValue = run.totalValue || getSquadValue(run.squad);
+  if (options.dailyChallengeMode) {
+    recordDailyChallengeRunResult({
+      runId: run.id,
+      phase: "playoff",
+      regularWins: options.regularWins,
+      leaguePosition: options.seasonLeaguePosition,
+      playoffWins: options.playoffWins,
+      grandFinal:
+        options.superLeagueTitle === true || options.playoffFinish === "Super League Champions",
+    });
+  }
   const loggedIn = isLoggedIn();
   const modeVariant = resolveClassicModeVariant({ modeVariant: run.modeVariant });
   const statsBucket = resolveStatsBucket(run.mode, difficulty, modeVariant);

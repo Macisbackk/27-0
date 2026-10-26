@@ -4,7 +4,6 @@ import { getLocalDateKey } from "@/lib/mini-games/date";
 import { useEffect, useMemo, useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
-import { MiniGamePoolSelect } from "./MiniGamePoolSelect";
 import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
 import { DailyMissionToast } from "@/components/DailyMissionToast";
 import { reportMissionEvent } from "@/lib/daily-missions";
@@ -24,6 +23,7 @@ import {
   recordWordleResult,
   remainingWordleGuesses,
   submitWordleGuess,
+  buildWordleShareText,
   useWordleHint,
   WORDLE_ATTRIBUTE_COUNT,
   WORDLE_MAX_GUESSES,
@@ -44,6 +44,8 @@ import {
   WORDLE_WIN_REWARD,
 } from "@/lib/mini-games/rewards";
 import { triggerMiniGameAchievements } from "@/lib/achievements/achievementTriggers";
+import { getPaidRunIds } from "@/lib/storage/club-funds";
+import { formatClubFunds } from "@/lib/club-funds";
 import { Confetti } from "@/components/Confetti";
 import {
   playMiniClue,
@@ -53,45 +55,63 @@ import {
 } from "@/lib/mini-games/sound";
 
 type WordleRunView = WordleRun & { payoutAwarded?: boolean };
-type View = "select" | "play";
+const WORDLE_MODES: MiniGamePoolMode[] = ["current", "era"];
 
-function trendText(trend: "higher" | "lower" | "match"): string {
-  if (trend === "match") return "=";
-  return trend === "higher" ? "↑" : "↓";
+type TileState = "match" | "close" | "miss" | "higher" | "lower";
+
+const TILE_SYMBOL: Record<TileState, string> = {
+  match: "✓",
+  close: "~",
+  miss: "✗",
+  higher: "↑",
+  lower: "↓",
+};
+
+/** Screen-reader / legend wording for each tile state. */
+function tileStateText(state: TileState, label: string): string {
+  switch (state) {
+    case "match":
+      return "correct";
+    case "close":
+      return "close (same unit)";
+    case "miss":
+      return "wrong";
+    case "higher":
+      return label === "Era" ? "answer is from a later decade" : `answer is higher`;
+    case "lower":
+      return label === "Era" ? "answer is from an earlier decade" : `answer is lower`;
+  }
 }
 
-function GuessRow({ guess, shake }: { guess: WordleGuess; shake?: boolean }) {
-  const tiles: {
-    label: string;
-    value: string;
-    match: boolean;
-  }[] = [
-    {
-      label: "Nation",
-      value: guess.nationality,
-      match: guess.clues.nationality === "match",
-    },
-    {
-      label: "Pos",
-      value: guess.positionLabel,
-      match: guess.clues.position === "match",
-    },
-    {
-      label: "Club",
-      value: guess.club,
-      match: guess.clues.club === "match",
-    },
+function tileClass(state: TileState): string {
+  if (state === "match") return "mini-game-attr-tile--match";
+  if (state === "close") return "mini-game-attr-tile--miss ring-2 ring-inset ring-amber-400/70";
+  return "mini-game-attr-tile--miss";
+}
+
+function GuessRow({ guess, shake, showEra }: { guess: WordleGuess; shake?: boolean; showEra: boolean }) {
+  const tiles: { label: string; value: string; state: TileState }[] = [
+    { label: "Club", value: guess.club, state: guess.clues.club as TileState },
+    { label: "Pos", value: guess.positionLabel, state: guess.clues.position as TileState },
+    { label: "Nation", value: guess.nationality, state: guess.clues.nationality as TileState },
     {
       label: "Age",
-      value: `${guess.age} ${trendText(guess.clues.age)}`,
-      match: guess.clues.age === "match",
+      value: String(guess.age),
+      state: guess.clues.age === "match" ? "match" : guess.clues.age,
     },
     {
       label: "Rating",
-      value: `${guess.rating} ${trendText(guess.clues.rating)}`,
-      match: guess.clues.rating === "match",
+      value: String(guess.rating),
+      state: guess.clues.rating === "match" ? "match" : guess.clues.rating,
     },
   ];
+  if (showEra && guess.clues.era && guess.eraLabel) {
+    tiles.push({
+      label: "Era",
+      value: guess.eraLabel,
+      state: guess.clues.era === "match" ? "match" : guess.clues.era,
+    });
+  }
 
   return (
     <li
@@ -100,21 +120,54 @@ function GuessRow({ guess, shake }: { guess: WordleGuess; shake?: boolean }) {
       }`}
     >
       <p className={TYPO.playerNameSm}>{guess.name}</p>
-      <div className="mini-game-attr-grid">
+      <ul className="mini-game-attr-grid" aria-label={`Feedback for ${guess.name}`}>
         {tiles.map((tile) => (
-          <div
+          <li
             key={tile.label}
-            className={`mini-game-attr-tile ${
-              tile.match ? "mini-game-attr-tile--match" : "mini-game-attr-tile--miss"
-            }`}
+            className={`mini-game-attr-tile ${tileClass(tile.state)}`}
+            data-state={tile.state}
           >
             <span className="mini-game-attr-tile__label">{tile.label}</span>
-            <span className="mini-game-attr-tile__value">{tile.value}</span>
-          </div>
+            <span className="mini-game-attr-tile__value">
+              {tile.value}{" "}
+              <span aria-hidden="true" className="font-bold">
+                {TILE_SYMBOL[tile.state]}
+              </span>
+              <span className="sr-only">
+                {`, ${tileStateText(tile.state, tile.label)}`}
+              </span>
+            </span>
+          </li>
         ))}
-      </div>
+      </ul>
     </li>
   );
+}
+
+/** One-line legend: shapes as well as colours. */
+function WordleLegend({ showEra }: { showEra: boolean }) {
+  return (
+    <p className={`mt-3 text-center ${TYPO.meta}`} aria-label="How to read the tiles">
+      <span className="whitespace-nowrap">✓ green = match</span>
+      {" · "}
+      <span className="whitespace-nowrap">~ amber edge = same unit</span>
+      {" · "}
+      <span className="whitespace-nowrap">✗ = no match</span>
+      {" · "}
+      <span className="whitespace-nowrap">↑ ↓ = answer is higher / lower</span>
+      {showEra ? (
+        <>
+          {" · "}
+          <span className="whitespace-nowrap">Era = decade</span>
+        </>
+      ) : null}
+    </p>
+  );
+}
+
+/** Club Funds ledger id for today's Wordle win (one paid win per UK day, any mode). */
+function wordleRewardId(): string {
+  return `wordle_win:${getLocalDateKey()}`;
 }
 
 function settleWordle(run: WordleRun): WordleRunView {
@@ -132,7 +185,7 @@ function settleWordle(run: WordleRun): WordleRunView {
   }
   const payout = claimMiniGameReward(
     // Once per UK day: run.date is a fresh id on every "Play again", so keying on it paid every win.
-    `wordle_win:${getLocalDateKey()}`,
+    wordleRewardId(),
     "Rugby League Wordle",
     WORDLE_WIN_REWARD
   );
@@ -140,8 +193,10 @@ function settleWordle(run: WordleRun): WordleRunView {
 }
 
 export function WordleGame() {
-  const [view, setView] = useState<View>("select");
-  const [poolMode, setPoolMode] = useState<MiniGamePoolMode | null>(null);
+  // v1.18: no mode step. Current is the default; Era is a toggle in the header.
+  const [poolMode, setPoolMode] = useState<MiniGamePoolMode>("current");
+  const [rewardBankedToday, setRewardBankedToday] = useState(false);
+  const [shareNote, setShareNote] = useState<string | null>(null);
   const [run, setRun] = useState<WordleRunView | null>(null);
   const [query, setQuery] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -155,14 +210,15 @@ export function WordleGame() {
     wins: 0,
   }));
 
-  const pool = useMemo(
-    () => getWordlePlayerPool(poolMode ?? undefined),
-    [poolMode]
-  );
+  const pool = useMemo(() => getWordlePlayerPool(poolMode), [poolMode]);
 
   useEffect(() => {
     clearWordleRun();
     setStats(loadWordleStats());
+    setRewardBankedToday(getPaidRunIds().includes(wordleRewardId()));
+    const first = createWordleRun(getWordlePlayerPool("current"), undefined, "current");
+    saveWordleRun(first);
+    setRun(first);
     setReady(true);
   }, []);
 
@@ -179,8 +235,7 @@ export function WordleGame() {
     setShakeId(null);
     setCelebrate(false);
     setRewardOpen(false);
-    setView("play");
-    triggerMiniGameAchievements({ played: true });
+    setShareNote(null);
   };
 
   const submit = (text: string) => {
@@ -194,6 +249,8 @@ export function WordleGame() {
     }
     setError(null);
     setQuery("");
+    // "Puzzle Starter" fires on the first submitted guess, not on opening the page.
+    if (run.guesses.length === 0) triggerMiniGameAchievements({ played: true });
     if (result.newlyFound && result.newlyFound.length > 0) {
       playMiniClue();
     }
@@ -209,10 +266,11 @@ export function WordleGame() {
       playMiniWin();
       setCelebrate(true);
       if (next.payoutAwarded) setRewardOpen(true);
+      setRewardBankedToday(getPaidRunIds().includes(wordleRewardId()));
     } else if (last) {
       const anyMatch =
         last.clues.nationality === "match" ||
-        last.clues.position === "match" ||
+        last.clues.position !== "miss" ||
         last.clues.club === "match" ||
         last.clues.age === "match" ||
         last.clues.rating === "match";
@@ -239,13 +297,22 @@ export function WordleGame() {
     setRun(result.run);
   };
 
-  const restart = () => {
-    if (!poolMode) {
-      clearWordleRun();
-      setRun(null);
-      setView("select");
-      return;
+  const share = async () => {
+    if (!run) return;
+    const text = buildWordleShareText(run, MINI_GAME_POOL_MODE_LABEL[poolMode]);
+    try {
+      if (typeof navigator !== "undefined" && navigator.share) {
+        await navigator.share({ text });
+        return;
+      }
+      await navigator.clipboard.writeText(text);
+      setShareNote("Result copied.");
+    } catch {
+      setShareNote("Couldn't share right now.");
     }
+  };
+
+  const restart = () => {
     playMiniSelect();
     clearWordleRun();
     const next = createWordleRun(pool, undefined, poolMode);
@@ -256,6 +323,7 @@ export function WordleGame() {
     setShakeId(null);
     setCelebrate(false);
     setRewardOpen(false);
+    setShareNote(null);
     setStats(loadWordleStats());
   };
 
@@ -273,16 +341,12 @@ export function WordleGame() {
     );
   }
 
-  if (view === "select") {
-    return (
-      <MiniGameShell
-        eyebrow="Rugby League Wordle"
-        title="Choose Current or Era"
-      >
-        <MiniGamePoolSelect onSelect={startMode} />
-      </MiniGameShell>
-    );
-  }
+  const showEra = poolMode === "era";
+  const switchMode = (mode: MiniGamePoolMode) => {
+    if (mode === poolMode) return;
+    playMiniSelect();
+    startMode(mode);
+  };
 
   return (
     <MiniGameShell title="Rugby League Wordle">
@@ -295,6 +359,30 @@ export function WordleGame() {
         onClose={() => setRewardOpen(false)}
       />
       <div className="mini-game-play mx-auto flex w-full max-w-lg flex-col items-center">
+        <div
+          className="mb-3 inline-flex rounded-full bg-pitch-900 p-1"
+          role="group"
+          aria-label="Player pool"
+        >
+          {WORDLE_MODES.map((mode) => (
+            <button
+              key={mode}
+              type="button"
+              aria-pressed={poolMode === mode}
+              onClick={() => switchMode(mode)}
+              className={`min-h-[36px] rounded-full px-3 text-xs font-semibold transition ${
+                poolMode === mode ? "bg-pitch-950 text-white" : "text-[color:var(--fl-muted)] hover:text-white"
+              }`}
+            >
+              {MINI_GAME_POOL_MODE_LABEL[mode]}
+            </button>
+          ))}
+        </div>
+        <p className={`mb-2 text-center ${TYPO.meta}`} data-testid="wordle-reward-line">
+          {rewardBankedToday
+            ? `Today's ${formatClubFunds(WORDLE_WIN_REWARD)} is banked. Play on for fun and your streak.`
+            : `${formatClubFunds(WORDLE_WIN_REWARD)} today for your first win (Current or Era).`}
+        </p>
         <div className="text-center">
           <MiniGameStatLine
             items={[
@@ -346,8 +434,9 @@ export function WordleGame() {
                       setError(null);
                     }}
                     onPick={(player) => {
-                      setQuery(player.displayName);
+                      // One tap per guess: picking a suggestion submits it.
                       setError(null);
+                      submit(player.id);
                     }}
                     pool={pool}
                   />
@@ -372,10 +461,12 @@ export function WordleGame() {
                   className="!min-h-0 !px-2 !py-1 text-[11px] font-medium text-pitch-400 hover:text-pitch-200"
                   onClick={revealClue}
                 >
-                  Reveal clue
+                  Reveal a clue (free, marked on your share)
                 </GameButton>
               </div>
             ) : null}
+
+            <WordleLegend showEra={showEra} />
 
             {error && (
               <p className="mt-2 text-center text-sm text-red-400" role="alert">
@@ -389,6 +480,7 @@ export function WordleGame() {
                   key={guess.playerId}
                   guess={guess}
                   shake={shakeId === guess.playerId}
+                  showEra={showEra}
                 />
               ))}
             </ul>
@@ -404,7 +496,7 @@ export function WordleGame() {
                 </p>
                 <p className={`mt-2 ${TYPO.body}`}>
                   {formatMiniGamePlayerLabel(answer)}
-                  {poolMode ? ` · ${MINI_GAME_POOL_MODE_LABEL[poolMode]}` : ""}
+                  {` · ${MINI_GAME_POOL_MODE_LABEL[poolMode]}`}
                   {" · "}
                   {answer.club}
                   {" · "}
@@ -414,6 +506,12 @@ export function WordleGame() {
                   {" · "}
                   {answer.rating}
                 </p>
+                <div className="mt-3 flex flex-col items-center gap-1">
+                  <GameButton variant="secondary" size="sm" fullWidth={false} onClick={() => void share()}>
+                    Share result{run.hintUsed ? " (hint used)" : ""}
+                  </GameButton>
+                  {shareNote ? <p className={TYPO.meta} role="status">{shareNote}</p> : null}
+                </div>
                 <MiniGameEndActions onPlayAgain={restart} />
               </div>
             )}

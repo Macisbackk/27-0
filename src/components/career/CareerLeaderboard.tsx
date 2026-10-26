@@ -90,7 +90,8 @@ export function CareerLeaderboard() {
           <p className="px-4 py-6 text-center text-sm text-gray-400" role="status">Loading…</p>
         ) : entries.length === 0 ? (
           <div className="flex flex-col items-center gap-3 px-4 py-8 text-center">
-            <p className="text-sm text-gray-300">No records yet. Be the first on the board.</p>
+            <p className="font-display text-base font-bold text-white">Be the first on this board</p>
+            <p className="text-sm text-gray-300">Finish a Manager Mode season and log in to post your record.</p>
             <GameButton size="sm" fullWidth={false} href="/manager">Play Manager Mode</GameButton>
           </div>
         ) : (

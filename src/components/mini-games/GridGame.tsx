@@ -257,6 +257,8 @@ export function GridGame() {
       return;
     }
     setQuery("");
+    // "Puzzle Starter" fires on the first answer, not on opening a grid.
+    triggerMiniGameAchievements({ played: true });
     if (result.correct) {
       playMiniCorrect();
       setMessage({ tone: "ok", text: `${result.player?.displayName ?? "That player"} fits.` });
@@ -296,7 +298,6 @@ export function GridGame() {
     setCelebrate(false);
     setRewardOpen(false);
     setCopied(false);
-    triggerMiniGameAchievements({ played: true });
   };
 
   const backToDaily = () => {
