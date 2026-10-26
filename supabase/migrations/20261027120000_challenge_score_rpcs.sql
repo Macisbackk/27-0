@@ -1,5 +1,5 @@
 -- 2026-10-27 — Weekly / Daily challenge scores through validating RPCs (v1.18)
--- NOT YET APPLIED. Apply AFTER the v1.18 client is live: the client calls these RPCs and falls
+-- APPLIED 2026-10-26 (split into challenge_rpcs_1_shared / 2_weekly / 3_daily; ledger cleanup line removed).
 -- back to the old direct Weekly insert while they are missing; once this runs, direct writes to
 -- weekly_challenge_entries are revoked, so a pre-v1.18 client can no longer post Weekly scores.
 --
@@ -67,9 +67,6 @@ begin
     return false;
   end if;
   insert into public.challenge_submission_log (user_id, kind) values (p_user_id, p_kind);
-  -- Keep the ledger small: anything older than a day is no longer needed.
-  delete from public.challenge_submission_log
-  where user_id = p_user_id and created_at < now() - interval '1 day';
   return true;
 end;
 $$;
