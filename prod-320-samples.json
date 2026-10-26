@@ -1,0 +1,212 @@
+[
+ {
+  "variant": "home-play",
+  "where": "/play",
+  "href": "http://localhost:3000/play",
+  "ready": "interactive sw",
+  "at": "246ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "72ms DOMContentLoaded",
+   "77ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "77ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "246ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "home-play",
+  "where": "/play",
+  "href": "http://localhost:3000/play",
+  "ready": "interactive sw",
+  "at": "107ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "28ms DOMContentLoaded",
+   "56ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "56ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "107ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "home-play",
+  "where": "/play",
+  "href": "http://localhost:3000/play",
+  "ready": "interactive sw",
+  "at": "108ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "46ms DOMContentLoaded",
+   "52ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "52ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "108ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "play-direct",
+  "where": "/play?era=1",
+  "href": "http://localhost:3000/play?era=1",
+  "ready": "interactive sw",
+  "at": "109ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "45ms DOMContentLoaded",
+   "52ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "52ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "109ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "home-play",
+  "where": "/play",
+  "href": "http://localhost:3000/play",
+  "ready": "interactive sw",
+  "at": "108ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "44ms DOMContentLoaded",
+   "55ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "55ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "108ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "play-direct",
+  "where": "/play?era=1",
+  "href": "http://localhost:3000/play?era=1",
+  "ready": "interactive sw",
+  "at": "112ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "43ms DOMContentLoaded",
+   "51ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "51ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "112ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "home-play",
+  "where": "/play",
+  "href": "http://localhost:3000/play",
+  "ready": "interactive sw",
+  "at": "110ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "42ms DOMContentLoaded",
+   "52ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "52ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "110ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "home-play",
+  "where": "/play",
+  "href": "http://localhost:3000/play",
+  "ready": "interactive sw",
+  "at": "120ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "74ms DOMContentLoaded",
+   "78ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "78ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "120ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "play-direct",
+  "where": "/play?era=1",
+  "href": "http://localhost:3000/play?era=1",
+  "ready": "interactive sw",
+  "at": "107ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "45ms DOMContentLoaded",
+   "55ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "55ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "107ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "home-play",
+  "where": "/play",
+  "href": "http://localhost:3000/play",
+  "ready": "interactive sw",
+  "at": "248ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "75ms DOMContentLoaded",
+   "78ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "78ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "248ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "home-play",
+  "where": "/play",
+  "href": "http://localhost:3000/play",
+  "ready": "interactive sw",
+  "at": "114ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "73ms DOMContentLoaded",
+   "79ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "79ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "114ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "play-direct",
+  "where": "/play?era=1",
+  "href": "http://localhost:3000/play?era=1",
+  "ready": "interactive sw",
+  "at": "108ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "40ms DOMContentLoaded",
+   "49ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "49ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "108ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "play-direct",
+  "where": "/play?era=1",
+  "href": "http://localhost:3000/play?era=1",
+  "ready": "interactive sw",
+  "at": "112ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "46ms DOMContentLoaded",
+   "50ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "50ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "111ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "home-play",
+  "where": "/play",
+  "href": "http://localhost:3000/play",
+  "ready": "interactive sw",
+  "at": "120ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "71ms DOMContentLoaded",
+   "77ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "77ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "120ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ },
+ {
+  "variant": "play-direct",
+  "where": "/play?era=1",
+  "href": "http://localhost:3000/play?era=1",
+  "ready": "interactive sw",
+  "at": "109ms",
+  "msg": "Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings. STACK Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at rD (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:35062)\n    at oq (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:84566)\n    at iw (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:114961)\n    at http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110322\n    at iu (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:110831)\n    at iX (http://localhost:3000/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js:1:132934)\n    at MessagePort.w (http://localhost:3000/_next/static/chunks/1255-b8cf77ab14370e57.js:1:65046)",
+  "log": [
+   "46ms DOMContentLoaded",
+   "56ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-ui-theme +[] -[]",
+   "56ms attributes html.__variable_c8e612.__variable_ba43c0.__variable_bd776b @data-theme-logo-glow +[] -[]",
+   "109ms ERROR Uncaught Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+  ]
+ }
+]
