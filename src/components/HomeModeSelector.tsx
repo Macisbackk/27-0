@@ -13,7 +13,6 @@ import {
   type DailyChallengeScenario,
 } from "@/lib/daily-challenge";
 import { claimDailyBonus, formatCountdown, msUntilUkMidnight } from "@/lib/daily-bonus";
-import { ClubFundsEarned } from "@/components/ClubFundsEarned";
 import type { ClubFundsPayoutResult } from "@/lib/club-funds";
 import { getClubFundsBalance } from "@/lib/storage/club-funds";
 import {
@@ -206,30 +205,49 @@ export function HomeModeSelector() {
   const daily = hub?.daily ?? null;
   const weekly = hub?.weekly ?? null;
   const weeklyStatus = !weekly
-    ? "One rule and one ranked attempt all week."
+    ? "One ranked attempt all week"
     : weekly.score !== null
-      ? `Your score: ${weekly.score} · Resets in ${weekly.resetsIn}`
+      ? `Your score ${weekly.score}`
       : weekly.used
-        ? `Attempt used · practice only · Resets in ${weekly.resetsIn}`
-        : `1 ranked attempt this week · Resets in ${weekly.resetsIn}`;
-  const dailyStatus = !daily ? null : daily.done ? "Done today" : daily.used ? "Attempt used · practice only" : "1 attempt left today";
-  const resetLine = untilReset ? (daily?.used || daily?.done ? `Next Daily in ${untilReset}` : `Resets in ${untilReset}`) : null;
+        ? "Practice only"
+        : "1 ranked attempt";
+  const dailyStatus = !daily
+    ? null
+    : [
+        daily.streak > 0 ? `🔥 ${daily.streak}-day streak` : null,
+        daily.done ? "Done today" : daily.used ? "Practice only" : null,
+        untilReset ? (daily.used || daily.done ? `next in ${untilReset}` : `resets in ${untilReset}`) : null,
+      ]
+        .filter(Boolean)
+        .join(" · ");
 
   return (
     <section className="fl-stagger mx-auto flex w-full max-w-[44rem] flex-col gap-3 text-center" aria-labelledby="play-heading">
       <h2 id="play-heading" className="font-cond text-[30px] font-bold leading-none text-white">
         {hub?.greeting ?? "Welcome, coach"}
       </h2>
-      <ClubFundsEarned payout={bonus?.payout ?? null} title={bonus ? `Welcome back · day ${bonus.day}` : "Welcome back"} />
-      {hub && nextUnlock ? (
-        <Link href="/store" onClick={() => playUiClick()} className="mx-auto inline-flex items-center gap-2 rounded-full bg-pitch-900 px-3 py-1.5 text-xs font-bold text-white">
+      {hub ? (
+        <Link
+          href="/store"
+          onClick={() => playUiClick()}
+          className="mx-auto inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 rounded-full bg-pitch-900 px-3 py-1.5 text-xs font-bold text-white"
+        >
           <span className="text-theme-primary">{formatClubFunds(hub.funds)}</span>
-          <span className="text-[color:var(--fl-muted)]">·</span>
-          {nextUnlock.remaining > 0 ? (
-            <span>{formatClubFunds(nextUnlock.remaining)} to {nextUnlock.name}</span>
-          ) : (
-            <span>{nextUnlock.name} is yours to buy</span>
-          )}
+          {bonus ? (
+            <span className="text-theme-primary" role="status">
+              +{formatClubFunds(bonus.payout.total)} day {bonus.day} bonus
+            </span>
+          ) : null}
+          {nextUnlock ? (
+            <>
+              <span className="text-[color:var(--fl-muted)]">·</span>
+              <span>
+                {nextUnlock.remaining > 0
+                  ? `${formatClubFunds(nextUnlock.remaining)} to ${nextUnlock.name}`
+                  : `${nextUnlock.name} is yours to buy`}
+              </span>
+            </>
+          ) : null}
         </Link>
       ) : null}
 
@@ -240,40 +258,17 @@ export function HomeModeSelector() {
             <span aria-hidden className="h-2 w-2 rounded-full bg-theme-primary" />
             Daily Challenge{daily?.scenario.eraMode ? " · Era" : ""}
           </p>
-          {dailyStatus ? (
-            <p className="mt-1 text-xs text-[color:var(--fl-muted)]">
-              {dailyStatus}
-              {resetLine ? <> · {resetLine}</> : null}
-            </p>
-          ) : null}
-          {daily ? (
-            <p className="mt-2 flex items-center justify-center gap-2 text-xs font-bold">
-              <span className={`fl-pill ${daily.streak > 0 ? "text-theme-primary" : ""}`}>
-                {daily.streak > 0 ? `🔥 ${daily.streak}-day streak` : "Start a streak"}
-              </span>
-              {daily.best > 0 ? <span className="fl-pill">Best {daily.best}</span> : null}
-            </p>
-          ) : null}
-          <p className="mt-2 font-cond text-[32px] font-bold leading-[1.05]">
+          <p className="mt-1 font-cond text-[30px] font-bold leading-[1.05]">
             {daily?.scenario.ruleTitle ?? "Today's rule"}
           </p>
           <p className="mx-auto mt-1 max-w-sm text-[15px] text-[color:var(--fl-muted)]">
             {daily?.scenario.ruleSummary ?? "A new twist every day."}
           </p>
-          {daily ? (
-            <div className="mt-3 flex flex-wrap justify-center gap-2">
-              <span className="fl-pill">
-                Top the table <span className="text-theme-primary">+{formatClubFunds(daily.scenario.leagueLeadersBonus)}</span>
-              </span>
-              <span className="fl-pill">
-                Grand Final <span className="text-theme-primary">+{formatClubFunds(daily.scenario.playoffTitleBonus)}</span>
-              </span>
-            </div>
-          ) : null}
+          {dailyStatus ? <p className="mt-2 text-xs font-bold text-[color:var(--fl-muted)]">{dailyStatus}</p> : null}
           <Link
             href={getDailyChallengeHref()}
             onClick={() => playUiClick()}
-            className="btn-press fl-pressable relative mt-4 flex h-[52px] items-center justify-center rounded-control bg-theme-primary font-cond text-[18px] font-bold text-[color:var(--theme-text-on-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            className="btn-press fl-pressable relative mt-3 flex h-[52px] items-center justify-center rounded-control bg-theme-primary font-cond text-[18px] font-bold text-[color:var(--theme-text-on-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
             {daily?.done ? "Play again for practice" : daily?.used ? "Practice today's Daily" : "Play today's Daily"}
           </Link>
@@ -281,53 +276,38 @@ export function HomeModeSelector() {
       ) : null}
 
       {SHOW_DAILY_CHALLENGE_UI ? (
-        <section className="relative overflow-hidden rounded-card bg-pitch-900 p-[18px] text-center" aria-label="Weekly Challenge">
-          <div aria-hidden className="pointer-events-none absolute -left-10 -top-10 h-44 w-44 rounded-full bg-accent-gold/[0.06]" />
-          <p className="flex items-center justify-center gap-2 font-cond text-[16px] font-bold text-accent-gold">
-            <span aria-hidden className="h-2 w-2 rounded-full bg-accent-gold" />
-            Weekly Challenge{weekly?.scenario.eraMode ? " · Era" : ""}
-          </p>
-          <p className="mt-1 text-xs text-[color:var(--fl-muted)]">{weeklyStatus}</p>
-          <p className="mt-2 font-cond text-[26px] font-bold leading-[1.05]">
-            {weekly?.scenario.ruleTitle ?? "This week's rule"}
-          </p>
-          <p className="mx-auto mt-1 max-w-sm text-[15px] text-[color:var(--fl-muted)]">
-            {weekly?.scenario.ruleSummary ?? "Same spins for everyone. Top 10 get paid."}
-          </p>
-          {lastWeek ? (
-            <p className="mt-2 text-sm font-bold text-accent-gold" role="status">
-              You finished {formatOrdinal(lastWeek.rank)} last week
-              {lastWeek.awardedNow > 0 ? ` · +${formatClubFunds(lastWeek.awardedNow)} Club Funds` : ""}
-            </p>
-          ) : null}
-          <div className="mt-3 flex flex-wrap justify-center gap-2">
-            <span className="fl-pill">
-              Top 10 <span className="text-accent-gold">+{formatClubFunds(WEEKLY_TOP10_REWARD)}</span>
-            </span>
-            <span className="fl-pill">Resets Monday</span>
-          </div>
-          {!authLoading && !isLoggedIn && !weekly?.used ? (
-            <p className="mt-2 text-xs text-[color:var(--fl-muted)]">
-              <Link href="/login?redirect=/" className="font-semibold text-accent-gold underline-offset-2 hover:underline">
-                Log in
-              </Link>{" "}
-              first so your score reaches the board.
-            </p>
-          ) : null}
+        <section className="flex items-center gap-3 rounded-card bg-pitch-900 p-3.5 text-left" aria-label="Weekly Challenge">
           <Link
             href={weekly ? getWeeklyChallengeHref() : "/play?weekly=1"}
             onClick={() => playUiClick()}
-            className="btn-press fl-pressable relative mt-4 flex h-[52px] items-center justify-center rounded-control bg-accent-gold font-cond text-[18px] font-bold text-pitch-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            className="min-w-0 flex-1"
           >
-            {weekly?.used ? "Practice the Weekly" : "Play the Weekly"}
+            <span className="block font-cond text-[14px] font-bold text-accent-gold">
+              Weekly{weekly?.scenario.eraMode ? " · Era" : ""} · Top 10 +{formatClubFunds(WEEKLY_TOP10_REWARD)}
+            </span>
+            <span className="block truncate font-cond text-[19px] font-bold leading-tight text-white">
+              {weekly?.scenario.ruleTitle ?? "This week's rule"}
+            </span>
+            <span className="block text-xs text-[color:var(--fl-muted)]">
+              {lastWeek
+                ? `${formatOrdinal(lastWeek.rank)} last week${lastWeek.awardedNow > 0 ? ` · +${formatClubFunds(lastWeek.awardedNow)}` : ""}`
+                : weeklyStatus}
+              {weekly ? ` · ${weekly.resetsIn} left` : ""}
+              {!authLoading && !isLoggedIn && !weekly?.used ? " · log in to rank" : ""}
+            </span>
           </Link>
-          <Link
-            href="/leaderboard?tracker=weekly"
-            onClick={() => playUiClick()}
-            className="mt-2 inline-block text-sm font-semibold text-accent-gold underline-offset-2 hover:underline"
-          >
-            View the Weekly board
-          </Link>
+          <div className="flex shrink-0 flex-col items-end gap-1">
+            <Link
+              href={weekly ? getWeeklyChallengeHref() : "/play?weekly=1"}
+              onClick={() => playUiClick()}
+              className="btn-press fl-pressable rounded-control bg-accent-gold px-4 py-2 font-cond text-[16px] font-bold text-pitch-950"
+            >
+              {weekly?.used ? "Practice" : "Play"}
+            </Link>
+            <Link href="/leaderboard?tracker=weekly" onClick={() => playUiClick()} className="text-xs font-semibold text-accent-gold">
+              Board
+            </Link>
+          </div>
         </section>
       ) : null}
 
@@ -373,26 +353,25 @@ export function HomeModeSelector() {
         </Tile>
       </div>
 
-      {ownsBallKnower ? (
-        <Tile href="/play?bk=1">
-          <TileIcon>
-            <circle cx="12" cy="12" r="9" />
-            <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01" />
+      <div className={`grid gap-3 ${ownsBallKnower ? "grid-cols-2" : "grid-cols-1"}`}>
+        {ownsBallKnower ? (
+          <Tile href="/play?bk=1">
+            <TileIcon>
+              <circle cx="12" cy="12" r="9" />
+              <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01" />
+            </TileIcon>
+            <TileTitle>Ball Knower</TileTitle>
+            <TileSub>Ratings hidden</TileSub>
+          </Tile>
+        ) : null}
+        <Tile href="/mini-games">
+          <TileIcon tone="text-[color:var(--fl-text)]">
+            <TilesGlyph />
           </TileIcon>
-          <TileTitle>Ball Knower</TileTitle>
-          <TileSub>Classic with every rating hidden. No respins.</TileSub>
-          <TilePill accent>Prove it</TilePill>
+          <TileTitle>Puzzles</TileTitle>
+          <TileSub>{hub && !hub.wordleDone ? "Wordle reward waiting" : "Millionaire, Wordle, Grid"}</TileSub>
         </Tile>
-      ) : null}
-
-      <Tile href="/mini-games">
-        <TileIcon tone="text-[color:var(--fl-text)]">
-          <TilesGlyph />
-        </TileIcon>
-        <TileTitle>Puzzles</TileTitle>
-        <TileSub>Millionaire, Wordle and the Grid</TileSub>
-        {hub ? <TilePill accent={!hub.wordleDone}>{hub.wordleDone ? "Wordle reward claimed" : "Wordle reward waiting"}</TilePill> : null}
-      </Tile>
+      </div>
     </section>
   );
 }
