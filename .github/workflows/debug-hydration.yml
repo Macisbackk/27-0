@@ -12,8 +12,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [prod, dev]
+        mode: [prod, dev, site]
         width: ["320", "375", "desktop"]
+        exclude:
+          - mode: site
+            width: "320"
+          - mode: site
+            width: "desktop"
     env:
       NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
@@ -28,22 +33,30 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Build (prod)
-        if: matrix.mode == 'prod'
+        if: matrix.mode != 'dev'
         run: npm run build
       - name: Install Playwright
         run: npm install --no-save playwright@1.49.1 && npx playwright install --with-deps chromium
       - name: Start server
         run: |
-          if [ "${{ matrix.mode }}" = prod ]; then npx next start -p 3000 > /tmp/next.log 2>&1 & else npx next dev -p 3000 > /tmp/next.log 2>&1 & fi
+          if [ "${{ matrix.mode }}" != dev ]; then npx next start -p 3000 > /tmp/next.log 2>&1 & else npx next dev -p 3000 > /tmp/next.log 2>&1 & fi
           for i in $(seq 1 120); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
           # warm up dev compiles
-          for r in / /play "/play?era=1" "/play?daily=1" /manager /mini-games /store /profile /modes; do curl -s -o /dev/null "http://localhost:3000$r"; done
+          for r in / /play /manager /mini-games /mini-games/quiz /mini-games/wordle /mini-games/grid /quiz /leaderboard /profile /store /squad-book /records /modes /modes/past-dailies /showcase /settings /login /auth/callback /auth/reset-password; do curl -s -o /dev/null "http://localhost:3000$r"; done
       - name: Hunt
         env:
           LABEL: ${{ matrix.mode }}-${{ matrix.width }}
           WIDTH: ${{ matrix.width }}
-          LOADS: ${{ matrix.mode == 'prod' && '30' || '8' }}
-        run: timeout 2700 node scripts/debug-hydration.mjs || true
+          BUDGET_MIN: "38"
+          HOME_PLAY_ITERS: ${{ matrix.mode == 'prod' && '60' || '25' }}
+        run: |
+          if [ "${{ matrix.mode }}" = site ]; then
+            mkdir -p hyd-out; n=0
+            end=$(( $(date +%s) + 38*60 ))
+            while [ $(date +%s) -lt $end ]; do n=$((n+1)); rm -rf e2e-shots; timeout 1200 node scripts/e2e-site.mjs > /tmp/site.txt 2>&1; c=$(grep -c "#418\|#423\|#425" /tmp/site.txt); echo "run $n: $c hydration lines" >> hyd-out/site-summary.md; grep "#418\|#423\|#425" /tmp/site.txt | head -5 >> hyd-out/site-summary.md; mkdir -p hyd-out/run$n; cp e2e-shots/hydration-* e2e-shots/site-report.txt hyd-out/run$n/ 2>/dev/null || true; done
+          else
+            timeout 2700 node scripts/debug-hydration.mjs || true
+          fi
       - name: Server log tail
         if: always()
         run: tail -30 /tmp/next.log >> "$GITHUB_STEP_SUMMARY" || true
