@@ -95,10 +95,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    # The UI audit alone takes ~13 min; slow runners pushed the whole job past 30.
-    timeout-minutes: 50
-    permissions:
-      contents: write
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -114,57 +111,6 @@ jobs:
           NEXT_TELEMETRY_DISABLED: "1"
           NEXT_PUBLIC_E2E: "1"
         run: scripts/ci-run.sh "Production build" npm run build
-      - name: Install Playwright (not in package.json)
-        run: npm install --no-save playwright@1.49.1 && npx playwright install --with-deps chromium
-      - name: Manager Mode end-to-end (mobile)
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
-        run: |
-          npx next start -p 3000 > /tmp/next.log 2>&1 &
-          for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
-          scripts/ci-run.sh "Manager Mode e2e" node scripts/e2e-career.mjs
-          scripts/ci-run.sh "Manager Mode chaos e2e" node scripts/e2e-career-chaos.mjs
-      - name: Stress test (new features)
-        if: success() || failure()
-        run: |
-          curl -sf http://localhost:3000/ > /dev/null || (npx next start -p 3000 > /tmp/next4.log 2>&1 &)
-          for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
-          scripts/ci-run.sh "Stress test" node scripts/e2e-stress.mjs
-      - name: Whole-site break test (mobile + desktop)
-        if: success() || failure()
-        run: |
-          curl -sf http://localhost:3000/ > /dev/null || (npx next start -p 3000 > /tmp/next2.log 2>&1 &)
-          for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
-          scripts/ci-run.sh "Site e2e" node scripts/e2e-site.mjs
-      - name: UI audit screenshots (phone + desktop)
-        # Off by default (it took ~13 min of every PR run). Push to a preview/* branch for screenshots,
-        # or add the "ui-audit" label to a PR to run it.
-        if: (success() || failure()) && github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'ui-audit')
-        continue-on-error: true
-        # Report-only: a hang here must never take the whole job past its limit.
-        timeout-minutes: 25
-        run: |
-          curl -sf http://localhost:3000/ > /dev/null || (npx next start -p 3000 > /tmp/next3.log 2>&1 &)
-          for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
-          timeout 900 node scripts/ui-audit.mjs
-          timeout 300 node scripts/text-fit-audit.mjs || true
-          timeout 300 node scripts/store-screenshots.mjs || true
-          # iPhone (WebKit) menu-flicker probe paused until the app work resumes:
-          # npx playwright install --with-deps webkit && node scripts/menu-flicker-probe.mjs
-      - name: Publish e2e screenshots (same-repo PRs only)
-        if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && hashFiles('e2e-shots/*.png') != ''
-        run: |
-          branch="ci-shots/pr-${{ github.event.pull_request.number }}"
-          mkdir -p /tmp/shots && cp e2e-shots/*.png /tmp/shots/ && cp e2e-shots/*.txt /tmp/shots/ 2>/dev/null || true
-          cd /tmp/shots
-          # Screenshot branches are not sites: stop Vercel building them (each one used up a daily deploy).
-          echo '{"git":{"deploymentEnabled":false}}' > vercel.json
-          git init -q -b "$branch"
-          git config user.name "github-actions"
-          git config user.email "github-actions@users.noreply.github.com"
-          git add . && git commit -q -m "e2e screenshots for ${{ github.sha }}"
-          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$branch"
       - name: Bundle size report
         continue-on-error: true
         run: |
@@ -179,3 +125,82 @@ jobs:
             const top=rows.map(([r,s])=>`${r}: ${(s/1024).toFixed(0)} KB`).join("%0A");
             console.log(`::notice title=First-load JS per route::${top}`);
           '
+      # The browser suites below run in parallel from this one build (was ~25 min in series).
+      - name: Pack the build
+        run: tar --exclude=.next/cache -czf next-build.tgz .next
+      - uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: next-build.tgz
+          retention-days: 1
+
+  e2e:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [site, manager, stress]
+    name: e2e (${{ matrix.suite }})
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: next-build
+      - run: tar -xzf next-build.tgz && rm next-build.tgz
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-1.49.1-chromium
+      - name: Install Playwright (not in package.json)
+        run: npm install --no-save playwright@1.49.1 && npx playwright install --with-deps chromium
+      - name: Start the site
+        run: |
+          npx next start -p 3000 > /tmp/next.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
+      - name: Whole-site break test (mobile + desktop)
+        if: matrix.suite == 'site'
+        run: scripts/ci-run.sh "Site e2e" node scripts/e2e-site.mjs
+      - name: Manager Mode end-to-end (mobile)
+        if: matrix.suite == 'manager'
+        run: |
+          scripts/ci-run.sh "Manager Mode e2e" node scripts/e2e-career.mjs
+          scripts/ci-run.sh "Manager Mode chaos e2e" node scripts/e2e-career-chaos.mjs
+      - name: Stress test (new features)
+        if: matrix.suite == 'stress'
+        run: scripts/ci-run.sh "Stress test" node scripts/e2e-stress.mjs
+      - name: UI audit screenshots (phone + desktop)
+        # Off by default. Add the "ui-audit" label to a PR to run it (site suite only).
+        if: (success() || failure()) && matrix.suite == 'site' && github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'ui-audit')
+        continue-on-error: true
+        timeout-minutes: 25
+        run: |
+          timeout 900 node scripts/ui-audit.mjs
+          timeout 300 node scripts/text-fit-audit.mjs || true
+          timeout 300 node scripts/store-screenshots.mjs || true
+      - name: Publish e2e screenshots (same-repo PRs only)
+        if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && hashFiles('e2e-shots/*.png') != ''
+        run: |
+          branch="ci-shots/pr-${{ github.event.pull_request.number }}-${{ matrix.suite }}"
+          mkdir -p /tmp/shots && cp e2e-shots/*.png /tmp/shots/ && cp e2e-shots/*.txt /tmp/shots/ 2>/dev/null || true
+          cd /tmp/shots
+          # Screenshot branches are not sites: stop Vercel building them (each one used up a daily deploy).
+          echo '{"git":{"deploymentEnabled":false}}' > vercel.json
+          git init -q -b "$branch"
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add . && git commit -q -m "e2e screenshots for ${{ github.sha }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$branch"
