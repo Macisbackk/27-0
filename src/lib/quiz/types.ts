@@ -22,6 +22,9 @@ export const QUIZ_CATEGORIES = [
   "transfers",
   "captains",
   "general",
+  "internationals",
+  "laws",
+  "nrl",
 ] as const;
 export type QuizCategory = (typeof QUIZ_CATEGORIES)[number];
 
@@ -85,6 +88,11 @@ export interface QuizQuestion {
   sourceType: QuizSourceType;
   /** Team Challenge should use objective facts only. */
   answerType?: "objective" | "subjective";
+  /**
+   * Where the fact was verified (URL). Never shown to players; kept for audits.
+   * Required for every question added from the October 2026 audit onwards.
+   */
+  source?: string;
 }
 
 export interface QuizLifelineState {
@@ -178,4 +186,8 @@ export interface QuizStats {
 export const QUIZ_SCHEMA_VERSION = 1;
 export const QUIZ_STATS_SCHEMA_VERSION = 2;
 export const QUIZ_QUESTION_COUNT = 15;
-export const QUIZ_RECENT_QUESTION_LIMIT = 80;
+/**
+ * Question/topic ids remembered across runs (most recent first). 150 is ten full
+ * runs, so a question is not asked again for at least ten runs while the pool allows.
+ */
+export const QUIZ_RECENT_QUESTION_LIMIT = 150;
