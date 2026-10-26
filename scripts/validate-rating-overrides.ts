@@ -5,6 +5,17 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 import { PLAYER_RATING_OVERRIDES } from "../data/player-rating-overrides";
+import { PLAYER_RATING_AUDIT } from "../data/player-rating-audit";
+import ERA_SEASON_RATINGS from "../data/era-season-ratings.json";
+import SEASON_2026_RATINGS from "../data/season-2026-ratings.json";
+
+// Later, documented layers in normalize.ts replace a manual override on purpose: the career-arc
+// audit, the era card audit and the 2026 season re-rate. Those count as superseded, not errors.
+const LATER_LAYERS: Array<[string, Record<string, unknown>]> = [
+  ["career-arc audit", PLAYER_RATING_AUDIT],
+  ["era card audit", ERA_SEASON_RATINGS],
+  ["2026 season ratings", SEASON_2026_RATINGS],
+];
 import { normalizePlayer } from "../src/lib/players/normalize";
 
 const ROOT = join(__dirname, "..");
@@ -40,6 +51,7 @@ function main() {
   let warnings = 0;
   const missing: string[] = [];
   const drift: string[] = [];
+  const superseded: Record<string, number> = {};
 
   for (const [id, overrideRating] of Object.entries(PLAYER_RATING_OVERRIDES)) {
     const raw = byId.get(id);
@@ -50,6 +62,11 @@ function main() {
     }
 
     const normalized = normalizePlayer(raw);
+    const layer = LATER_LAYERS.filter(([, ids]) => id in ids).pop();
+    if (layer && normalized.peakRating !== overrideRating) {
+      superseded[layer[0]] = (superseded[layer[0]] ?? 0) + 1;
+      continue;
+    }
     if (normalized.peakRating !== overrideRating) {
       console.error(
         `✗ Override not applied: ${id} (${raw.name}) expected ${overrideRating}, got ${normalized.peakRating}`
@@ -67,6 +84,9 @@ function main() {
 
   console.log(`\nManual rating overrides: ${Object.keys(PLAYER_RATING_OVERRIDES).length}`);
   console.log(`Missing player records: ${missing.length}`);
+  for (const [layer, n] of Object.entries(superseded)) {
+    console.log(`Superseded by the ${layer}: ${n}`);
+  }
   console.log(`Database drift (JSON ≠ override): ${warnings}`);
 
   if (missing.length > 0) {

@@ -2,6 +2,7 @@ import { normalizePlayerNameKey } from "../player-name-normalize";
 import { PLAYER_NAME_ALIASES } from "./player-name-aliases";
 import { playerBelongsToTeamYear } from "./team-year-membership";
 import { getAllDatabasePlayers } from "./index";
+import { CURRENT_SEASON_YEAR } from "./current-season";
 import type { Player } from "../types";
 
 const WIKI_NAME_ALIASES = PLAYER_NAME_ALIASES;
@@ -173,6 +174,40 @@ export function findPlayerByName(name: string): Player | null {
 /** Era squad resolution — includes players marked unavailable elsewhere. */
 export function findEraPlayerByName(name: string): Player | null {
   return findPlayerByNameInternal(name, true);
+}
+
+/**
+ * Era squad fallback when there is no card for that exact club-season: the same player's
+ * nearest season (his club that year preferred), not his best card. A 2014 side shouldn't
+ * field a 36-year-old at his 2003 peak rating. Never a Current card for a historic season.
+ */
+export function findEraPlayerByNameNearYear(
+  name: string,
+  club: string,
+  year: number,
+  excludeIds?: Set<string>
+): Player | null {
+  const index = getEraPlayerNameIndex();
+  const distance = (p: Player) => {
+    const y = p.year ?? p.cardYear;
+    return (y === undefined ? 50 : Math.abs(y - year)) + (p.club === club ? 0 : 3);
+  };
+  for (const key of expandNameLookupKeys(name)) {
+    const candidates = (index.get(key) ?? []).filter(
+      (p) => !(p.category === "current" && year < CURRENT_SEASON_YEAR)
+    );
+    if (candidates.length === 0) continue;
+    candidates.sort((a, b) => {
+      const availA = a.availableInGame !== false ? 1 : 0;
+      const availB = b.availableInGame !== false ? 1 : 0;
+      if (availA !== availB) return availB - availA;
+      return distance(a) - distance(b) || (b.peakRating ?? 0) - (a.peakRating ?? 0);
+    });
+    const pick = candidates[0] ?? null;
+    // Already in this squad (two listed names resolving to one player): no second copy of him.
+    return pick && excludeIds?.has(pick.id) ? null : pick;
+  }
+  return null;
 }
 
 /** Resolve a Wikipedia squad name to a player belonging to an exact team-year. */
