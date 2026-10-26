@@ -291,7 +291,7 @@ export function HomeModeSelector() {
     <section className="mx-auto flex w-full max-w-[44rem] flex-col gap-3" aria-labelledby="play-heading">
       {/* Top strip: greeting, then the streak and Club Funds as chips on the same line. */}
       <div className="flex min-h-11 items-center gap-2">
-        <h2 id="play-heading" className="min-w-0 flex-1 truncate text-left font-cond text-[24px] font-bold leading-none text-white">
+        <h2 id="play-heading" className="min-w-0 flex-1 truncate !text-left font-cond text-[24px] font-bold leading-none text-white">
           {hub?.greeting ?? "Welcome, coach"}
         </h2>
         {streak > 0 ? (
@@ -455,11 +455,13 @@ export function HomeModeSelector() {
                 onClick={() => playUiClick()}
                 aria-label="Weekly board"
                 title="Weekly board"
-                className={`absolute right-1 top-1 flex h-11 w-11 items-center justify-center rounded-control text-accent-gold hover:bg-pitch-800 ${FOCUS}`}
+                className={`group/board absolute right-1 top-1 flex h-11 w-11 items-center justify-center rounded-full text-accent-gold ${FOCUS}`}
               >
-                <Glyph size={18}>
+                <span aria-hidden className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-gold/10 transition group-hover/board:bg-accent-gold/20">
+                <Glyph size={17}>
                   <path d="M3.5 20.5h17M5 20.5V14h4.5v6.5M9.5 20.5V9.5h5v11M14.5 20.5v-8.5H19v8.5" />
                 </Glyph>
+                </span>
               </Link>
             </div>
           ) : null}
