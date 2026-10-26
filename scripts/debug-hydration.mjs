@@ -48,8 +48,9 @@ const INIT = () => {
   };
   new MutationObserver((recs) => {
     const t = Date.now() - t0;
+    if (document.readyState === "loading") return;
     for (const r of recs) {
-      if (log.length > 400) return;
+      if (log.length > 600) return;
       if (r.target.nodeName === "HEAD" || (r.target.closest && r.target.closest("head"))) continue;
       if (r.type === "attributes" && r.target === document.documentElement && r.attributeName === "style") continue;
       log.push(
@@ -59,9 +60,13 @@ const INIT = () => {
   }).observe(document, { subtree: true, childList: true, attributes: true, characterData: true });
   window.addEventListener("error", (e) => {
     log.push(`${Date.now() - t0}ms ERROR ${e.message}`);
-    console.log(`HYDERR|${location.href}|${document.readyState}|${Date.now() - t0}ms|${e.message}|${JSON.stringify(log.slice(0, 120))}`);
+    const ctl = navigator.serviceWorker && navigator.serviceWorker.controller ? "sw" : "nosw";
+    const stack = ((e.error && e.error.stack) || "").replace(/\|/g, "/").slice(0, 1500);
+    console.log(`HYDERR|${location.href}|${document.readyState} ${ctl}|${Date.now() - t0}ms|${e.message} STACK ${stack}|${JSON.stringify(log.slice(-150))}`);
   });
   document.addEventListener("visibilitychange", () => log.push(`${Date.now() - t0}ms visibility ${document.visibilityState}`));
+  document.addEventListener("DOMContentLoaded", () => log.push(`${Date.now() - t0}ms DOMContentLoaded`));
+  window.addEventListener("load", () => log.push(`${Date.now() - t0}ms load`));
   window.addEventListener("pagehide", () => log.push(`${Date.now() - t0}ms pagehide`));
 };
 
@@ -75,8 +80,8 @@ async function settle(page, ms) {
   await page.waitForTimeout(ms);
 }
 
-async function run(variant, routes, settleMs) {
-  const context = await browser.newContext({ viewport: { width: VP.width, height: VP.height }, isMobile: VP.mobile, hasTouch: VP.mobile });
+async function run(variant, routes, settleMs, extra = {}) {
+  const context = await browser.newContext({ viewport: { width: VP.width, height: VP.height }, isMobile: VP.mobile, hasTouch: VP.mobile, ...extra });
   await context.addInitScript(INIT);
   const page = await context.newPage();
   let where = "";
@@ -109,9 +114,12 @@ async function run(variant, routes, settleMs) {
   await context.close();
 }
 
-for (let i = 0; i < HOME_PLAY_ITERS && Date.now() < DEADLINE; i++) await run("home-play", ["/", "/play", "/play?era=1", "/play?daily=1"], 1200);
 let crawls = 0;
-for (let i = 0; i < CRAWL_ITERS && Date.now() < DEADLINE; i++, crawls++) await run("crawl", ROUTES, 1200);
+for (let i = 0; i < HOME_PLAY_ITERS && Date.now() < DEADLINE; i++) {
+  await run("home-play", ["/", "/play", "/play?era=1", "/play?daily=1"], 1200);
+  await run("home-play-noSW", ["/", "/play", "/play?era=1", "/play?daily=1"], 1200, { serviceWorkers: "block" });
+  await run("play-direct", ["/play", "/play?era=1", "/play", "/play?daily=1"], 1200);
+}
 await browser.close();
 
 const pageErrors = Object.entries(counts)
@@ -123,10 +131,10 @@ console.log(`::notice title=hyd ${LABEL}::loads ${loads}, pageerrors ${pageError
 out("");
 for (const [k, v] of Object.entries(counts)) out(`- \`${k}\`: ${v}`);
 out("");
-for (const s of samples.slice(0, 6)) {
+for (const s of samples.slice(0, 8)) {
   out(`### in ${s.href} (labelled ${s.where}, ${s.variant}) readyState=${s.ready} at ${s.at}`);
   out("```");
-  out(s.msg);
+  out(s.msg.replace(" STACK ", "\nSTACK "));
   for (const l of s.log) out(l);
   out("```");
 }

@@ -12,8 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [site]
-        width: ["375", "desktop"]
+        mode: [prod]
+        width: ["320", "375", "desktop"]
     env:
       NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
@@ -43,7 +43,7 @@ jobs:
           LABEL: ${{ matrix.mode }}-${{ matrix.width }}
           WIDTH: ${{ matrix.width }}
           BUDGET_MIN: "38"
-          HOME_PLAY_ITERS: ${{ matrix.mode == 'prod' && '60' || '25' }}
+          HOME_PLAY_ITERS: "200"
         run: |
           if [ "${{ matrix.mode }}" = site ]; then
             mkdir -p hyd-out; n=0
