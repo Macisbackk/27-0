@@ -19,6 +19,7 @@ const summary = process.env.GITHUB_STEP_SUMMARY;
 const out = (s) => {
   console.log(s);
   if (summary) appendFileSync(summary, s + "\n");
+  appendFileSync(`hyd-out/${LABEL}-summary.md`, s + "\n");
 };
 
 // Records every DOM mutation from the very first byte, and when the first error event fires.
@@ -150,6 +151,7 @@ await browser.close();
 
 out(`## Hydration hunt: ${LABEL}`);
 out(`Loads: ${loadsDone}, with a hydration error: ${samples.length}`);
+console.log(`::notice title=hyd ${LABEL}::loads ${loadsDone}, errors ${samples.length}`);
 out("");
 out("| scenario | loads | hydration errors |");
 out("|---|---|---|");
