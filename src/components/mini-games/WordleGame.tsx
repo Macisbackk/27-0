@@ -6,6 +6,8 @@ import { GameButton } from "@/components/ui/GameButton";
 import { MiniGameShell, MiniGameStatLine, MiniGameEndActions } from "./MiniGameShell";
 import { MiniGamePoolSelect } from "./MiniGamePoolSelect";
 import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
+import { DailyMissionToast } from "@/components/DailyMissionToast";
+import { reportMissionEvent } from "@/lib/daily-missions";
 import { PlayerAutocomplete } from "./PlayerAutocomplete";
 import { TYPO } from "@/lib/ui/typography";
 import {
@@ -124,6 +126,7 @@ function settleWordle(run: WordleRun): WordleRunView {
     played: true,
     wordleWon: run.status === "won",
   });
+  reportMissionEvent({ kind: "wordle", won: run.status === "won" });
   if (run.status !== "won") {
     return { ...run, rewardClaimed: true };
   }
@@ -284,6 +287,7 @@ export function WordleGame() {
   return (
     <MiniGameShell title="Rugby League Wordle">
       {celebrate && <Confetti />}
+      <DailyMissionToast />
       <MiniGameRewardPopup
         open={rewardOpen}
         amount={WORDLE_WIN_REWARD}

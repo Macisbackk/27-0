@@ -57,6 +57,9 @@ jobs:
       - name: Squad chemistry + halfway call
         if: success() || failure()
         run: scripts/ci-run.sh "Squad chemistry + halfway call" npm run test:chemistry
+      - name: Daily missions
+        if: success() || failure()
+        run: scripts/ci-run.sh "Daily missions" npm run test:missions
 
   build:
     runs-on: ubuntu-latest

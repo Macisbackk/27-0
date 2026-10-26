@@ -45,6 +45,8 @@ import { syncMiniGameWins } from "@/lib/storage/mini-games-leaderboard";
 import { TYPO } from "@/lib/ui/typography";
 import { MiniGameEndActions, MiniGameShell, MiniGameStatLine } from "./MiniGameShell";
 import { MiniGameRewardPopup } from "./MiniGameRewardPopup";
+import { DailyMissionToast } from "@/components/DailyMissionToast";
+import { reportMissionEvent } from "@/lib/daily-missions";
 import { PlayerAutocomplete } from "./PlayerAutocomplete";
 
 type GridRunView = GridRun & { payoutAwarded?: boolean; payoutAmount?: number };
@@ -56,6 +58,7 @@ function settleGrid(run: GridRun): GridRunView {
   if (run.status !== "finished" || run.rewardClaimed) return run;
   const perfect = gridScore(run) === GRID_CELL_COUNT;
   triggerMiniGameAchievements({ played: true, gridPerfect: perfect });
+  reportMissionEvent({ kind: "grid", daily: run.mode === "daily", score: gridScore(run) });
   if (run.mode !== "daily") return { ...run, rewardClaimed: true };
   const stats = recordGridResult(loadGridStats(), run);
   saveGridStats(stats);
@@ -322,6 +325,7 @@ export function GridGame() {
       eyebrow={run.mode === "daily" ? `Puzzles · ${formatGridDate(run.dateKey)}` : "Practice grid"}
     >
       {celebrate && <Confetti />}
+      <DailyMissionToast />
       <MiniGameRewardPopup
         open={rewardOpen}
         amount={run.payoutAmount ?? 0}
