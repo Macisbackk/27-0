@@ -22,6 +22,13 @@ import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { challengeBannerText, decodeChallenge } from "@/lib/challenge-link";
 import { getChallengeEraMode, getChallengeGate } from "@/lib/challenge-run";
 import { ChallengeLinkNotice } from "@/components/ChallengeLinkNotice";
+import { getOneClubBySlug } from "@/lib/game/one-club";
+import {
+  DAILY_ARCHIVE_PAGE,
+  getDailyArchiveScenario,
+  isDailyArchiveDateKey,
+} from "@/lib/daily-archive";
+import { MODES_PAGE, sideModeKey, type SideMode } from "@/lib/play-side-modes";
 
 export function PlayPageClient() {
   const router = useRouter();
@@ -68,7 +75,39 @@ export function PlayPageClient() {
     SHOW_DAILY_CHALLENGE_UI && !isDaily && !hasChallengeParam && isWeeklyChallengeActive({ weekly });
   const weeklyScenario = isWeekly ? getWeeklyChallengeScenario() : null;
 
+  // v1.19 side modes (entries on /modes). Never combined with the Daily / Weekly / hidden modes.
+  const oneClubParam = searchParams.get("oneclub");
+  const gauntletParam = searchParams.get("gauntlet");
+  const archiveParam = searchParams.get("archive");
+  const sideModeAllowed = !hasChallengeParam && !isDaily && !isWeekly && !isHiddenMode && !wantsBallKnower;
+  const oneClubOption = sideModeAllowed && oneClubParam ? getOneClubBySlug(oneClubParam) : null;
+  const archiveKey =
+    sideModeAllowed && SHOW_DAILY_CHALLENGE_UI && isDailyArchiveDateKey(archiveParam) ? archiveParam : null;
+  const archiveScenario = archiveKey ? getDailyArchiveScenario(archiveKey) : null;
+  const archiveEra = archiveScenario ? archiveScenario.eraMode : null;
+  const sideMode: SideMode | null = oneClubOption
+    ? { kind: "one-club", club: oneClubOption.club }
+    : archiveKey
+      ? { kind: "daily-archive", dateKey: archiveKey }
+      : sideModeAllowed && gauntletParam === "1"
+        ? { kind: "gauntlet" }
+        : null;
+  const badSideModeLink =
+    sideModeAllowed && ((oneClubParam !== null && !oneClubOption) || (archiveParam !== null && !archiveKey));
+
   useEffect(() => {
+    // Unknown club / a Daily outside the archive window: back to the list to pick again.
+    if (badSideModeLink) {
+      router.replace(oneClubParam !== null && !oneClubOption ? MODES_PAGE : DAILY_ARCHIVE_PAGE);
+      return;
+    }
+    if (archiveKey && archiveEra !== null) {
+      const currentEra = searchParams.get("era") === "1";
+      if (archiveEra !== currentEra) {
+        router.replace(`/play?archive=${archiveKey}${archiveEra ? "&era=1" : ""}`);
+        return;
+      }
+    }
     if (!SHOW_DAILY_CHALLENGE_UI && (daily === "1" || weekly === "1")) {
       router.replace("/play");
       return;
@@ -115,13 +154,22 @@ export function PlayPageClient() {
     isWeekly,
     weeklyScenario,
     searchParams,
+    badSideModeLink,
+    oneClubParam,
+    oneClubOption,
+    archiveKey,
+    archiveEra,
   ]);
 
   const wantsNormalEra = dailyScenario
     ? dailyScenario.eraMode
     : weeklyScenario
       ? weeklyScenario.eraMode
-      : isNormalEraMode({ era, cup });
+      : archiveScenario
+        ? archiveScenario.eraMode
+        : oneClubOption
+          ? true // One-Club XI plays on the Era ladder (its own club ladder mapped onto it)
+          : isNormalEraMode({ era, cup });
   const difficulty: GameDifficulty = ballKnower ? "HARD" : "NORMAL";
   const mode: GameMode = "CLASSIC";
 
@@ -135,7 +183,18 @@ export function PlayPageClient() {
         ? `Daily: ${dailyScenario.ruleTitle}`
         : isWeekly && weeklyScenario
           ? `Weekly: ${weeklyScenario.ruleTitle}`
-          : getPlayPageTitle(mode, difficulty, wantsNormalEra);
+          : oneClubOption
+            ? `One-Club XI: ${oneClubOption.club}`
+            : archiveScenario
+              ? `Past Daily: ${archiveScenario.ruleTitle}`
+              : sideMode?.kind === "gauntlet"
+                ? `Gauntlet · ${wantsNormalEra ? "Era Classic" : "Classic"}`
+                : getPlayPageTitle(mode, difficulty, wantsNormalEra);
+  const subtitle = oneClubOption
+    ? `Every spin is a ${oneClubOption.club} side, ${oneClubOption.firstYear}–${oneClubOption.lastYear}. Build their all-time 13.`
+    : sideMode?.kind === "gauntlet"
+      ? "Draft your 13, then beat ten of the greatest sides in a row. One defeat ends it."
+      : undefined;
 
   // The static metadata says "Classic"; name the tab after the variant actually being played.
   useEffect(() => {
@@ -145,7 +204,9 @@ export function PlayPageClient() {
 
   // The board reads saved runs and Store boosts from this device on its first render; the server
   // can't, so render it only once mounted (otherwise React hydration error #418 on /play).
-  if (!mounted || ballKnower === null) return <p className="p-6 text-center text-pitch-400">Loading…</p>;
+  if (!mounted || ballKnower === null || badSideModeLink) {
+    return <p className="p-6 text-center text-pitch-400">Loading…</p>;
+  }
 
   if (hasChallengeParam) {
     if (!challenge) return <ChallengeLinkNotice reason="invalid" />;
@@ -165,9 +226,11 @@ export function PlayPageClient() {
 
   return (
     <GameStarter
-      key={ballKnower ? "bk" : "normal"}
+      key={`${ballKnower ? "bk" : "normal"}-${sideModeKey(sideMode)}-${wantsNormalEra ? "era" : "cur"}`}
       mode={mode}
       title={title}
+      subtitle={subtitle}
+      sideMode={sideMode}
       difficulty={difficulty}
       joeMellorMode={wantsJoeMellor}
       superSamHallasMode={wantsSuperSamHallas}

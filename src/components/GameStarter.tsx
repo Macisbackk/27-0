@@ -5,6 +5,7 @@ import type { GameMode } from "@/lib/types";
 import { isNormalEraMode } from "@/lib/play-links";
 import { GameBoard } from "./GameBoard";
 import type { ChallengePayload } from "@/lib/challenge-link";
+import type { SideMode } from "@/lib/play-side-modes";
 import {
   getDailyChallengeScenario,
   isDailyChallengeActive,
@@ -24,6 +25,8 @@ interface GameStarterProps {
   normalEraMode?: boolean;
   /** "Challenge a mate" link: replaces any Daily / Weekly flag in the URL. */
   challenge?: ChallengePayload | null;
+  /** One-Club XI / Gauntlet / past Daily (resolved by PlayPageClient). */
+  sideMode?: SideMode | null;
 }
 
 export function GameStarter({
@@ -35,6 +38,7 @@ export function GameStarter({
   superSamHallasMode = false,
   normalEraMode = false,
   challenge = null,
+  sideMode = null,
 }: GameStarterProps) {
   const searchParams = useSearchParams();
 
@@ -63,7 +67,7 @@ export function GameStarter({
     ? dailyScenario.eraMode
     : weeklyScenario
       ? weeklyScenario.eraMode
-      : challenge
+      : challenge || (sideMode && sideMode.kind !== "gauntlet")
         ? normalEraMode
         : mode === "CLASSIC" &&
       (normalEraMode ||
@@ -84,6 +88,7 @@ export function GameStarter({
       dailyChallengeMode={dailyChallengeMode}
       weeklyChallengeMode={weeklyChallengeMode}
       challenge={challenge}
+      sideMode={sideMode}
     />
   );
 }

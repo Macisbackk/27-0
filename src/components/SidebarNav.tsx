@@ -69,8 +69,12 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 
   // The Weekly is its own play surface too: don't light up Classic for it.
   const isWeekly = searchParams.get("weekly") === "1";
-  const isNormalEra = !isWeekly && isPlayModeActive(pathname, playSearch, "classic", true);
-  const isNormalCurrent = !isWeekly && isPlayModeActive(pathname, playSearch, "classic", false);
+  // Side modes (One-Club XI, Gauntlet, past Dailies) light up "More modes", not Classic.
+  const isSideMode =
+    pathname.startsWith("/play") &&
+    (searchParams.get("oneclub") !== null || searchParams.get("gauntlet") === "1" || searchParams.get("archive") !== null);
+  const isNormalEra = !isWeekly && !isSideMode && isPlayModeActive(pathname, playSearch, "classic", true);
+  const isNormalCurrent = !isWeekly && !isSideMode && isPlayModeActive(pathname, playSearch, "classic", false);
 
   const handleNavClick = () => {
     playUiClick();
@@ -225,6 +229,11 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   <li>
                     <MenuLink href="/manager" active={pathname.startsWith("/manager")} icon={<TrophyIcon />} onClick={handleNavClick}>
                       Manager Mode
+                    </MenuLink>
+                  </li>
+                  <li>
+                    <MenuLink href="/modes" active={pathname.startsWith("/modes") || isSideMode} icon={<EraIcon />} onClick={handleNavClick}>
+                      More modes
                     </MenuLink>
                   </li>
                 </ul>
