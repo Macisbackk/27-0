@@ -42,7 +42,7 @@ jobs:
         env:
           LABEL: ${{ matrix.mode }}-${{ matrix.width }}
           WIDTH: ${{ matrix.width }}
-          BUDGET_MIN: "25"
+          BUDGET_MIN: "15"
           HOME_PLAY_ITERS: "200"
         run: |
           if [ "${{ matrix.mode }}" = site ]; then

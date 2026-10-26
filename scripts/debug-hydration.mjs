@@ -88,6 +88,21 @@ const INIT = () => {
     const sibs = [];
     for (let s = fiber.return && fiber.return.child; s && sibs.length < 12; s = s.sibling) sibs.push((s === fiber ? "*" : "") + name(s));
     lines.push(`siblings: ${sibs.join(" | ")}`);
+    const dump = (f, depth, acc) => {
+      for (let c = f; c && acc.length < 120; c = c.sibling) {
+        const st = c.stateNode && c.stateNode.nodeType ? (c.stateNode.nodeType === 1 ? " dom" : " dom" + c.stateNode.nodeType) : "";
+        acc.push(`${"  ".repeat(depth)}${name(c)} flags=${c.flags} lanes=${c.lanes}${st}${c.memoizedState && c.tag === 13 ? " ms=" + JSON.stringify(Object.keys(c.memoizedState)) + (c.memoizedState.dehydrated ? " DEHYDRATED" : "") : ""}`);
+        if (depth < 9 && c.child) dump(c.child, depth + 1, acc);
+        if (c === fiber) break;
+      }
+      return acc;
+    };
+    lines.push("subtree of parent up to mismatch:\n" + dump(fiber.return.child, 0, []).join("\n"));
+    try {
+      let r = fiber;
+      while (r.return) r = r.return;
+      lines.push(`root tag ${r.tag}; alternate? ${!!fiber.alternate}; React version ${(window.__REACT_DEVTOOLS_GLOBAL_HOOK__ && "hook") || "nohook"}`);
+    } catch (_) {}
     let h = fiber.return;
     while (h && !(h.stateNode && h.stateNode.nodeType === 1)) h = h.return;
     if (h) {
