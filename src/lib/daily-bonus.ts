@@ -58,6 +58,26 @@ export function dailyBonusClaimedToday(date = new Date()): boolean {
 }
 
 /**
+ * What the streak becomes if `today` is claimed. The paid ledger (which syncs with the account)
+ * is the source of truth: count the unbroken run of paid days ending yesterday. The on-device
+ * state only extends that count past the ledger's 45-day memory, and only when it agrees that
+ * yesterday was claimed. Without the ledger count a second device (or cleared site data) reset
+ * the streak to day 1 even though yesterday's bonus was paid on the account.
+ */
+export function nextDailyBonusDay(
+  today: string,
+  paidRunIds: readonly string[],
+  state: DailyBonusState = { day: 0, lastClaimedDateKey: null }
+): number {
+  const paid = new Set(paidRunIds);
+  let ledgerRun = 0;
+  while (ledgerRun < 400 && paid.has(dailyBonusRunId(dayKeyMinus(today, ledgerRun + 1)))) ledgerRun++;
+  if (ledgerRun === 0) return 1;
+  const localRun = state.lastClaimedDateKey === dayKeyMinus(today, 1) ? state.day : 0;
+  return Math.max(ledgerRun, localRun) + 1;
+}
+
+/**
  * Claim today's bonus if it hasn't been paid. Returns the payout (null when nothing was due).
  * `day` is what the streak becomes: yesterday claimed → +1, otherwise back to 1.
  */
@@ -66,8 +86,7 @@ export function claimDailyBonus(date = new Date()): { payout: ClubFundsPayoutRes
   const today = getLocalDateKey(date);
   const runId = dailyBonusRunId(today);
   if (getPaidRunIds().includes(runId)) return null;
-  const state = loadDailyBonus();
-  const day = state.lastClaimedDateKey === dayKeyMinus(today, 1) ? state.day + 1 : 1;
+  const day = nextDailyBonusDay(today, getPaidRunIds(), loadDailyBonus());
   const amount = dailyBonusAmount(day);
   const payout = awardClubFundsLines(runId, [
     { id: "daily-bonus", label: day >= 7 ? `Day ${day} in a row · max bonus` : `Day ${day} in a row`, amount },

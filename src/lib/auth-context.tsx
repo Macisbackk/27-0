@@ -80,6 +80,11 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 /** Prevents duplicate cloud hydrates when getSession and INITIAL_SESSION both fire. */
 let hydratedSessionKey: string | null = null;
 
+/** True once this session's cloud data (funds ledger, cosmetics, …) has been merged locally. */
+export function isCloudHydrated(): boolean {
+  return hydratedSessionKey != null;
+}
+
 async function hydrateStatsFromCloud(): Promise<void> {
   await refreshCareerStatsFromCloud();
 }

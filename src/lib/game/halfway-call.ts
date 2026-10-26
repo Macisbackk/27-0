@@ -8,7 +8,7 @@ import type { MatchFixture } from "./season-simulation";
  * and choice: rounds 1–14 are untouched (each match has its own RNG stream), and
  * the chosen plan reshapes rounds 15–27 only.
  *
- *   rest  — Rest the stars: −1.0 rating rounds 15–18, +1.5 rounds 19–27.
+ *   rest  — Rest the stars: −1.5 rating rounds 15–18, +1.0 rounds 19–27 (net +3, same as push).
  *   push  — Push for the top two: +1.0 rating rounds 15–22, −1.0 rounds 23–27.
  *   chase — Chase the points difference: no rating change; wins score +4,
  *           losses concede +2 (points difference only — results never flip).
@@ -29,7 +29,7 @@ export const HALFWAY_CALL_OPTIONS: readonly HalfwayCallOption[] = [
   {
     id: "rest",
     label: "Rest the stars",
-    detail: "−1.0 rating for rounds 15–18, then +1.5 for the run-in.",
+    detail: "−1.5 rating for rounds 15–18, then +1.0 for the run-in.",
   },
   {
     id: "push",
@@ -64,7 +64,7 @@ export function getHalfwayRatingDelta(
   round: number
 ): number {
   if (!choice || choice === "none" || round <= HALFWAY_CALL_ROUND) return 0;
-  if (choice === "rest") return round <= 18 ? -1.0 : 1.5;
+  if (choice === "rest") return round <= 18 ? -1.5 : 1.0;
   if (choice === "push") return round <= 22 ? 1.0 : -1.0;
   return 0;
 }

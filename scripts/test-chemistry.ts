@@ -207,8 +207,8 @@ assert(getHalfwayCallLabel("rest") === "Rest the stars", "label lookup");
 assert(getHalfwayCallLabel(undefined) === "No change", "undefined call reads as no change");
 
 assert(getHalfwayRatingDelta("rest", 14) === 0, "rest: round 14 unaffected");
-assert(getHalfwayRatingDelta("rest", 15) === -1 && getHalfwayRatingDelta("rest", 18) === -1, "rest: −1.0 rounds 15–18");
-assert(getHalfwayRatingDelta("rest", 19) === 1.5 && getHalfwayRatingDelta("rest", 27) === 1.5, "rest: +1.5 rounds 19–27");
+assert(getHalfwayRatingDelta("rest", 15) === -1.5 && getHalfwayRatingDelta("rest", 18) === -1.5, "rest: −1.5 rounds 15–18");
+assert(getHalfwayRatingDelta("rest", 19) === 1 && getHalfwayRatingDelta("rest", 27) === 1, "rest: +1.0 rounds 19–27");
 assert(getHalfwayRatingDelta("push", 15) === 1 && getHalfwayRatingDelta("push", 22) === 1, "push: +1.0 rounds 15–22");
 assert(getHalfwayRatingDelta("push", 23) === -1 && getHalfwayRatingDelta("push", 27) === -1, "push: −1.0 rounds 23–27");
 assert(
