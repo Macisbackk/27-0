@@ -238,6 +238,17 @@ export function getWeeklyChallengeScenario(date = new Date()): WeeklyChallengeSc
   return candidate!;
 }
 
+/**
+ * The scenario of a given week ("2026-W43"). Use this for last week's board rather than
+ * "now minus seven days": in the first hour after the spring clock change that instant falls
+ * two weeks back (Monday 00:30 BST − 168h is Sunday 23:30 GMT).
+ */
+export function getWeeklyChallengeScenarioForWeek(weekKey: string): WeeklyChallengeScenario {
+  const [y, m, d] = getWeekMondayDateKey(weekKey).split("-").map(Number);
+  // Monday noon UTC is always inside that UK Monday.
+  return getWeeklyChallengeScenario(new Date(Date.UTC(y!, m! - 1, d!, 12)));
+}
+
 export function getWeeklyChallengeHref(date = new Date()): string {
   const scenario = getWeeklyChallengeScenario(date);
   return scenario.eraMode ? "/play?weekly=1&era=1" : "/play?weekly=1";

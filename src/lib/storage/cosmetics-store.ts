@@ -190,30 +190,47 @@ async function publishFlair(patch: { flair?: string | null; frame?: string | nul
   }
 }
 
-/** On login: union of owned items, cloud's equipped choices win when owned. */
+/**
+ * Union of local and cloud cosmetics (cloud's equipped choices win when owned). Pure, for tests.
+ */
+export function mergeCosmeticsStates(localRaw: unknown, cloudRaw: unknown): CosmeticsState {
+  const local = normalize(localRaw);
+  const cloud = normalize(cloudRaw);
+  return normalize({
+    owned: [...new Set([...local.owned, ...cloud.owned])],
+    purchaseIds: [...new Set([...local.purchaseIds, ...cloud.purchaseIds])],
+    equipped: {
+      pitch: cloud.equipped.pitch ?? local.equipped.pitch,
+      title: cloud.equipped.title ?? local.equipped.title,
+      frame: cloud.equipped.frame ?? local.equipped.frame,
+    },
+    kit: cloud.owned.includes("kit-designer") ? cloud.kit : local.kit,
+  });
+}
+
+/**
+ * On login: union of owned items, cloud's equipped choices win when owned.
+ *
+ * Rejects (and leaves both copies alone) when the cloud read fails. It used to ignore the
+ * Supabase `error`, treat the row as empty and save + upload the local copy, so one failed read
+ * on a new device overwrote the account's cloud cosmetics with an empty store — and the login
+ * welcome (which waits for this to succeed) went ahead on a bad read.
+ */
 export async function mergeCosmeticsFromCloud(): Promise<void> {
   const userId = getAuthUserId();
   if (!userId || !isSupabaseConfigured) return;
+  const { data, error } = await supabase
+    .from("user_stats")
+    .select("stat_json")
+    .eq("user_id", userId)
+    .eq("mode", STAT_MODE)
+    .eq("stat_key", STAT_KEY)
+    .maybeSingle();
+  if (error) throw error;
   try {
-    const { data } = await supabase
-      .from("user_stats")
-      .select("stat_json")
-      .eq("user_id", userId)
-      .eq("mode", STAT_MODE)
-      .eq("stat_key", STAT_KEY)
-      .maybeSingle();
     const cloud = normalize(data?.stat_json ?? null);
     const local = getCosmetics();
-    const merged = normalize({
-      owned: [...new Set([...local.owned, ...cloud.owned])],
-      purchaseIds: [...new Set([...local.purchaseIds, ...cloud.purchaseIds])],
-      equipped: {
-        pitch: cloud.equipped.pitch ?? local.equipped.pitch,
-        title: cloud.equipped.title ?? local.equipped.title,
-        frame: cloud.equipped.frame ?? local.equipped.frame,
-      },
-      kit: cloud.owned.includes("kit-designer") ? cloud.kit : local.kit,
-    });
+    const merged = mergeCosmeticsStates(local, cloud);
     save(merged);
     if (merged.equipped.title || merged.equipped.frame) {
       void publishFlair({ flair: merged.equipped.title ?? null, frame: merged.equipped.frame ?? null });

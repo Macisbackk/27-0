@@ -33,7 +33,16 @@ const ACCOUNT_KEYS: readonly string[] = [
   STORAGE_KEYS.gridRun,
   STORAGE_KEYS.hangmanStats,
   STORAGE_KEYS.higherLowerStats,
+  // Weekly Challenge: this week's ranked attempt / unsent entry and last week's cached finish.
+  // Left behind, account B inherited A's attempt (and its unsent score was sent as B's), and
+  // A's cached "not top 10" stopped B's own top-10 payout being looked up.
+  STORAGE_KEYS.weeklyChallenge,
+  // Daily welcome bonus streak cache (lib/daily-bonus.ts); the streak itself comes from the ledger.
+  "27-0-daily-bonus",
 ];
+
+/** Exported for scripts: the per-account keys cleared when another account signs in. */
+export const ACCOUNT_STORAGE_KEYS = ACCOUNT_KEYS;
 
 export function getDeviceAccountOwner(): string | null {
   try {

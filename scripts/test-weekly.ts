@@ -311,6 +311,28 @@ async function main(): Promise<void> {
   eq(settleWeeklyLastWeek("2026-W43", 11, afterWeek), null, "rank 11 gets nothing");
   eq(getClubFundsBalance(), before + wc.WEEKLY_TOP10_REWARD, "balance unchanged by refused settles");
 
+  // Last week's scenario by week key, including the hour after the spring clock change.
+  for (const iso of ["2026-03-29T23:30:00Z", "2026-10-26T00:30:00Z", "2027-01-04T00:10:00Z"]) {
+    const now = new Date(iso);
+    const prevKey = wc.getPreviousWeeklyChallengeWeekKey(now);
+    const prevMonday = wc.getWeekMondayDateKey(prevKey);
+    const [py, pm, pd] = prevMonday.split("-").map(Number);
+    const expected = wc.getWeeklyChallengeScenario(new Date(Date.UTC(py!, pm! - 1, pd! + 3, 12)));
+    eq(JSON.stringify(wc.getWeeklyChallengeScenarioForWeek(prevKey).rule), JSON.stringify(expected.rule), `last week's rule at ${iso}`);
+  }
+
+  // Another account signing in on this device must not inherit the Weekly attempt / cache.
+  const owner = await import("../src/lib/storage/account-owner");
+  const { STORAGE_KEYS } = await import("../src/lib/storage/keys");
+  check(owner.ACCOUNT_STORAGE_KEYS.includes(STORAGE_KEYS.weeklyChallenge), "weekly state is per account");
+  check(owner.ACCOUNT_STORAGE_KEYS.includes("27-0-daily-bonus"), "daily bonus cache is per account");
+  owner.claimDeviceForAccount("user-a");
+  wc.claimWeeklyChallengeAttempt("run-weekly-a", new Date());
+  check(wc.getWeeklyChallengeAttemptUsed(new Date()), "account A has used its attempt");
+  owner.claimDeviceForAccount("user-b");
+  check(!wc.getWeeklyChallengeAttemptUsed(new Date()), "account B starts with its own attempt");
+  check(wc.loadWeeklyChallengeState().lastWeek === null, "account B doesn't see A's last-week cache");
+
   if (failures > 0) {
     console.error(`\n${failures} of ${checks} checks failed.`);
     process.exit(1);
