@@ -1,7 +1,7 @@
 "use client";
 
 import { contactMailto } from "@/lib/contact";
-import { BallGlyph, BoardGlyph, FixtureGlyph, LadderGlyph, ProgrammeGlyph, ShopGlyph, TilesGlyph, WhistleGlyph } from "@/components/icons/rugby-icons";
+import { BallGlyph, BoardGlyph, FixtureGlyph, LadderGlyph, ProgrammeGlyph, ShirtGlyph, ShopGlyph, TilesGlyph, WhistleGlyph } from "@/components/icons/rugby-icons";
 import Link from "next/link";
 import { CountUp } from "@/components/ui/CountUp";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -103,6 +103,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const club = [
     { href: "/store", label: "Store", icon: <BagIcon /> },
     { href: "/leaderboard", label: "Leaderboard", icon: <TableIcon /> },
+    { href: "/showcase", label: "Players", icon: <PlayersIcon /> },
     { href: "/profile", label: "Coach Profile", icon: <PersonIcon /> },
     { href: "/settings", label: "Settings", icon: <CogIcon /> },
     ...(!loading && !isLoggedIn ? [{ href: "/login", label: "Log in", icon: <KeyIcon /> }] : []),
@@ -422,6 +423,11 @@ const TableIcon = () => (
 const PersonIcon = () => (
   <Icon>
     <WhistleGlyph />
+  </Icon>
+);
+const PlayersIcon = () => (
+  <Icon>
+    <ShirtGlyph />
   </Icon>
 );
 const CogIcon = () => (
