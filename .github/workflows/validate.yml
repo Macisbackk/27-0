@@ -63,6 +63,9 @@ jobs:
       - name: Share result text
         if: success() || failure()
         run: scripts/ci-run.sh "Share result text" npm run test:share
+      - name: Challenge links, pick rarity, records
+        if: success() || failure()
+        run: scripts/ci-run.sh "Challenge links, pick rarity, records" npm run test:social
       - uses: oven-sh/setup-bun@v2
         if: success() || failure()
       - name: Squad Book

@@ -43,6 +43,8 @@ import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { getQuickModeLabel } from "@/lib/mode-labels";
 import type { GameDifficulty } from "@/lib/types";
 import { ReviewSubmissionNotice } from "./ReviewSubmissionNotice";
+import type { ChallengePayload } from "@/lib/challenge-link";
+import { RunSocialPanel, useDailyPickRarity, type RunOutcome } from "./RunSocial";
 
 const PLAYOFF_AWARD_TITLES: Record<string, string> = {
   "Player of the Season": "Player of the Play-offs",
@@ -75,6 +77,10 @@ interface PlayoffReviewProps {
   onPlayAgain: () => void;
   onClose: () => void;
   onReturnHome?: () => void;
+  /** The run's spin seed (challenge links, Daily pick rarity). */
+  seed?: string;
+  /** Set when this run came from a "Challenge a mate" link: shows the head-to-head. */
+  challenge?: ChallengePayload | null;
 }
 
 export function PlayoffReview({
@@ -96,6 +102,8 @@ export function PlayoffReview({
   onFinalizeRun,
   onPlayAgain,
   onReturnHome,
+  seed = "",
+  challenge = null,
 }: PlayoffReviewProps) {
   const playoffFinalizedRef = useRef(false);
   useEffect(() => {
@@ -252,6 +260,17 @@ export function PlayoffReview({
     playoffResult.leaguePosition,
   ]);
 
+  const pickRarity = useDailyPickRarity(seed, squad, Boolean(seed));
+  const socialOutcome = useMemo<RunOutcome>(
+    () => ({
+      results: seasonResult.fixtures.map((fixture) => fixture.result),
+      position: playoffResult.leaguePosition,
+      finish: playoffResult.finish,
+      playoffResults: playoffResult.userFixtures.map((fixture) => fixture.result),
+    }),
+    [seasonResult.fixtures, playoffResult.leaguePosition, playoffResult.finish, playoffResult.userFixtures]
+  );
+
   // Wordle-style spoiler-free text: the main share. The image card stays as a smaller extra.
   const shareResultText = useMemo(() => {
     const base = {
@@ -270,6 +289,7 @@ export function PlayoffReview({
         practice: dailyAttemptCounts === false,
         streak: getDailyChallengeStreak(),
         href: getDailyChallengeHref(),
+        rarestPick: pickRarity.rarest,
       });
     }
     if (weeklyChallengeMode) {
@@ -298,6 +318,7 @@ export function PlayoffReview({
     weeklyAttemptCounts,
     weeklyScore,
     normalEraMode,
+    pickRarity.rarest,
   ]);
 
   const shareAction = (
@@ -373,6 +394,18 @@ export function PlayoffReview({
             shareAction={shareAction}
           />
         </motion.div>
+
+        {seed ? (
+          <RunSocialPanel
+            seed={seed}
+            era={normalEraMode}
+            squad={squad}
+            outcome={socialOutcome}
+            challenge={challenge}
+            rarity={pickRarity.rarity}
+            canChallenge={difficulty !== "HARD"}
+          />
+        ) : null}
 
         <ClubFundsEarned payout={playoffFundsToShow} />
 

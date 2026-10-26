@@ -50,6 +50,13 @@ export interface ShareResultInput {
   streak?: number;
   /** Site-relative link that opens the same challenge ("/play?daily=1"); omitted = the site. */
   href?: string | null;
+  /**
+   * "Challenge a mate": a site-relative `/play?challenge=<code>` link. When set it replaces the
+   * usual link (for every kind, Classic included) under a "Beat my 24-3" line.
+   */
+  challengeHref?: string | null;
+  /** Daily pick rarity: the run's least-picked card ("Rarest pick: Name 0.4%"). */
+  rarestPick?: { name: string; percentLabel: string } | null;
 }
 
 export const SHARE_SITE = "www.27-0.co.uk";
@@ -174,7 +181,14 @@ export function buildShareResultText(input: ShareResultInput): string {
     lines.push(`🔥 ${input.streak}-day streak`);
   }
 
-  const href = input.kind === "classic" ? "" : (input.href ?? "");
+  if (input.rarestPick && input.rarestPick.name && input.rarestPick.percentLabel) {
+    lines.push(`💎 Rarest pick: ${input.rarestPick.name} ${input.rarestPick.percentLabel}`);
+  }
+
+  if (input.challengeHref) {
+    lines.push(`⚔️ Beat my ${formatShareRecord(input.results)}:`);
+  }
+  const href = input.challengeHref ?? (input.kind === "classic" ? "" : (input.href ?? ""));
   lines.push(`${SHARE_SITE}${href.startsWith("/") ? href : href ? `/${href}` : ""}`);
   return lines.join("\n");
 }

@@ -53,6 +53,7 @@ for (const [route, name] of [
   ["/manager", "manager"],
   ["/mini-games", "mini-games"],
   ["/squad-book", "squad-book"],
+  ["/records", "records"],
   ["/leaderboard", "leaderboard"],
   ["/profile", "profile"],
   ["/store", "store"],

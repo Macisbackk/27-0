@@ -246,6 +246,22 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 <span aria-hidden className="text-[color:var(--fl-muted)]">›</span>
               </Link>
 
+              <Link
+                href="/records"
+                onClick={handleNavClick}
+                aria-current={isActive("/records") ? "page" : undefined}
+                className="btn-press fl-pressable flex min-h-[56px] items-center gap-3 rounded-card bg-pitch-900 px-3 py-2.5 text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50"
+              >
+                <span className={MENU_ICON}>
+                  <TableIcon />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[15px] font-semibold">Records</span>
+                  <span className="block text-[13px] text-[color:var(--fl-muted)]">Best squad, all-time record, 27-0s</span>
+                </span>
+                <span aria-hidden className="text-[color:var(--fl-muted)]">›</span>
+              </Link>
+
               <section aria-labelledby="menu-puzzles">
                 <p id="menu-puzzles" className="mb-1.5 px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">
                   <Link href="/mini-games" onClick={handleNavClick} className="hover:text-white">
