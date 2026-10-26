@@ -160,6 +160,15 @@ function TileSub({ children }: { children: ReactNode }) {
   return <span className="mt-0.5 block text-[14px] leading-snug text-[color:var(--fl-muted)]">{children}</span>;
 }
 
+/** Plain words for the next thing the funds can buy (item names alone mean nothing to a new player). */
+const UNLOCK_NOUN: Record<string, string> = {
+  pitch: "a new pitch",
+  title: "a title by your name",
+  frame: "a leaderboard frame",
+  kit: "the kit designer",
+  mode: "a new mode",
+};
+
 export function HomeModeSelector() {
   const [hub, setHub] = useState<HubState | null>(null);
   const [bonus, setBonus] = useState<{ payout: ClubFundsPayoutResult; day: number } | null>(null);
@@ -252,16 +261,16 @@ export function HomeModeSelector() {
               +{formatClubFunds(bonus.payout.total)} day {bonus.day} bonus
             </span>
           ) : null}
-          {nextUnlock ? (
-            <>
-              <span className="text-[color:var(--fl-muted)]">·</span>
-              <span>
-                {nextUnlock.remaining > 0
-                  ? `${formatClubFunds(nextUnlock.remaining)} to ${nextUnlock.name}`
-                  : `${nextUnlock.name} is yours to buy`}
-              </span>
-            </>
-          ) : null}
+          <span className="text-[color:var(--fl-muted)]">Club Funds ·</span>
+          <span>
+            {!nextUnlock
+              ? "Store ›"
+              : nextUnlock.remaining > 0
+                ? hub.funds <= 0
+                  ? "Win games to earn, spend in the Store ›"
+                  : `${formatClubFunds(nextUnlock.remaining)} more for ${UNLOCK_NOUN[nextUnlock.kind] ?? "your first Store item"}`
+                : "Spend it in the Store ›"}
+          </span>
         </Link>
       ) : null}
 

@@ -3,7 +3,7 @@ import type { MatchFixture } from "./season-simulation";
 /**
  * Mid-season fork — Classic / Daily Challenge.
  *
- * The season sim pauses after round {@link HALFWAY_CALL_ROUND} and the player
+ * The season sim pauses after round {@link HALFWAY_CALL_ROUND} — only while the side is still unbeaten — and the player
  * picks a plan for the run-in. Effects are deterministic for the same run seed
  * and choice: rounds 1–14 are untouched (each match has its own RNG stream), and
  * the chosen plan reshapes rounds 15–27 only.

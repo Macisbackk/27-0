@@ -57,9 +57,14 @@ export function SeasonSimulation({
   const currentFixture =
     gameIndex > 0 ? result.fixtures[gameIndex - 1] : null;
 
-  // Pause at the fork: 14 rounds played, no plan picked yet, and the parent can take one.
+  // Pause at the fork: 14 rounds played and still perfect (the call is about chasing 27-0, so
+  // it only shows while 27-0 is alive), no plan picked yet, and the parent can take one.
+  const unbeatenAtHalfway = result.fixtures
+    .slice(0, HALFWAY_CALL_ROUND)
+    .every((f) => f.result === "W");
   const forkOpen =
     !!onHalfwayCall &&
+    unbeatenAtHalfway &&
     !forkDismissed &&
     halfwayCall === null &&
     phase === "simulating" &&
@@ -204,13 +209,13 @@ export function SeasonSimulation({
             <motion.div
               className="mt-4 rounded-tile bg-pitch-950 p-3 text-left sm:p-4"
               role="group"
-              aria-label="Halfway. What's the plan?"
+              aria-label="Unbeaten at halfway. How do you chase 27-0?"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
             >
               <p className={`${TYPO.eyebrow} text-theme-primary`}>Round {HALFWAY_CALL_ROUND} · {wins}-{losses}</p>
               <p className="mt-1 text-[17px] font-bold leading-tight text-white">
-                Halfway. What&apos;s the plan?
+                Unbeaten at halfway. How do you chase 27-0?
               </p>
               <p className="mt-1 text-xs text-[color:var(--fl-muted)]">
                 One call for the run-in. It can&apos;t be changed once made.

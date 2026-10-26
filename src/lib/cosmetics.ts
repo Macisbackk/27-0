@@ -69,6 +69,7 @@ export function cosmeticsOfKind(kind: CosmeticKind): CosmeticItem[] {
 export interface NextStoreUnlock {
   id: string;
   name: string;
+  kind: CosmeticKind;
   price: number;
   /** Club Funds still needed (0 when affordable now). */
   remaining: number;
@@ -86,7 +87,7 @@ export function nextStoreUnlock(balance: number, owned: readonly string[] = []):
     if (!best || item.price < best.price) best = item;
   }
   if (!best) return null;
-  return { id: best.id, name: best.name, price: best.price, remaining: Math.max(0, best.price - Math.max(0, balance)) };
+  return { id: best.id, name: best.name, kind: best.kind, price: best.price, remaining: Math.max(0, best.price - Math.max(0, balance)) };
 }
 
 /* ---------------------------------------------------------------- kit designer */
