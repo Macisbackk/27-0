@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import type { GameMode } from "@/lib/types";
 import { isNormalEraMode } from "@/lib/play-links";
 import { GameBoard } from "./GameBoard";
+import type { SideMode } from "@/lib/play-side-modes";
 import {
   getDailyChallengeScenario,
   isDailyChallengeActive,
@@ -21,6 +22,8 @@ interface GameStarterProps {
   joeMellorMode?: boolean;
   superSamHallasMode?: boolean;
   normalEraMode?: boolean;
+  /** One-Club XI / Gauntlet / past Daily (resolved by PlayPageClient). */
+  sideMode?: SideMode | null;
 }
 
 export function GameStarter({
@@ -31,6 +34,7 @@ export function GameStarter({
   joeMellorMode = false,
   superSamHallasMode = false,
   normalEraMode = false,
+  sideMode = null,
 }: GameStarterProps) {
   const searchParams = useSearchParams();
 
@@ -57,7 +61,9 @@ export function GameStarter({
     ? dailyScenario.eraMode
     : weeklyScenario
       ? weeklyScenario.eraMode
-      : mode === "CLASSIC" &&
+      : sideMode && sideMode.kind !== "gauntlet"
+        ? normalEraMode
+        : mode === "CLASSIC" &&
       (normalEraMode ||
         isNormalEraMode({
           era: searchParams.get("era"),
@@ -75,6 +81,7 @@ export function GameStarter({
       normalEraMode={isNormalEra}
       dailyChallengeMode={dailyChallengeMode}
       weeklyChallengeMode={weeklyChallengeMode}
+      sideMode={sideMode}
     />
   );
 }

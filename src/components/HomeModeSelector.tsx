@@ -44,6 +44,8 @@ import { getPaidRunIds } from "@/lib/storage/club-funds";
 import { getLocalDateKey } from "@/lib/mini-games/date";
 import { BALL_KNOWER_ID, nextStoreUnlock } from "@/lib/cosmetics";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
+import { DAILY_ARCHIVE_PAGE } from "@/lib/daily-archive";
+import { MODES_PAGE } from "@/lib/play-side-modes";
 
 /** Everything on the home hub that depends on this device (filled in after mount). */
 interface HubState {
@@ -341,6 +343,13 @@ export function HomeModeSelector() {
           >
             {daily?.done ? "Play again for practice" : daily?.used ? "Practice today's Daily" : "Play today's Daily"}
           </Link>
+          <Link
+            href={DAILY_ARCHIVE_PAGE}
+            onClick={() => playUiClick()}
+            className="relative mt-1 inline-flex min-h-[44px] items-center justify-center px-3 text-[14px] font-semibold text-[color:var(--fl-muted)] hover:text-white"
+          >
+            Play past Dailies ›
+          </Link>
         </section>
       ) : null}
 
@@ -352,7 +361,7 @@ export function HomeModeSelector() {
             className="min-w-0 flex-1"
           >
             <span className="block font-cond text-[14px] font-bold text-accent-gold">
-              Weekly{weekly?.scenario.eraMode ? " · Era Classic" : ""} · Top 10 +{formatClubFunds(WEEKLY_TOP10_REWARD)}
+              Weekly{weekly?.scenario.theme ? ` · ${weekly.scenario.theme.event} week` : weekly?.scenario.eraMode ? " · Era Classic" : ""} · Top 10 +{formatClubFunds(WEEKLY_TOP10_REWARD)}
             </span>
             <span className="block truncate font-cond text-[19px] font-bold leading-tight text-white">
               {weekly?.scenario.ruleTitle ?? "This week's rule"}
@@ -429,17 +438,16 @@ export function HomeModeSelector() {
         </Tile>
       </div>
 
-      <div className={`grid gap-3 ${ownsBallKnower ? "grid-cols-2" : "grid-cols-1"}`}>
-        {ownsBallKnower ? (
-          <Tile href="/play?bk=1">
-            <TileIcon>
-              <circle cx="12" cy="12" r="9" />
-              <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17h.01" />
-            </TileIcon>
-            <TileTitle>Ball Knower</TileTitle>
-            <TileSub>Ratings hidden</TileSub>
-          </Tile>
-        ) : null}
+      {/* Side modes (One-Club XI, Gauntlet, past Dailies, Ball Knower) live behind one tile so the
+          home screen stays short. */}
+      <div className="grid grid-cols-2 gap-3">
+        <Tile href={MODES_PAGE}>
+          <TileIcon>
+            <path d="M4 6h16M4 12h16M4 18h10" />
+          </TileIcon>
+          <TileTitle>More modes</TileTitle>
+          <TileSub>{ownsBallKnower ? "One-Club, Gauntlet, Ball Knower" : "One-Club XI, Gauntlet"}</TileSub>
+        </Tile>
         <Tile href="/mini-games">
           <TileIcon tone="text-[color:var(--fl-text)]">
             <TilesGlyph />

@@ -105,7 +105,12 @@
     "test:missions": "tsx scripts/test-missions.ts",
     "test:moderation": "tsx scripts/test-name-filter.ts",
     "test:sim": "tsx scripts/test-sim-formula.ts",
-    "test:draft": "bun scripts/test-draft-flow.ts"
+    "test:draft": "bun scripts/test-draft-flow.ts",
+    "test:one-club": "tsx scripts/test-one-club.ts",
+    "test:gauntlet": "tsx scripts/test-gauntlet.ts",
+    "test:daily-archive": "tsx scripts/test-daily-archive.ts",
+    "test:weekly-themes": "tsx scripts/test-weekly-themes.ts",
+    "simulate:side-modes": "tsx scripts/sim-one-club-gauntlet.ts"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.0",

@@ -684,6 +684,18 @@ export interface SimulateSeasonOptions {
   applyChemistry?: boolean;
   /** Mid-season fork — reshapes rounds 15–27 only. Omit / "none" for no change. */
   halfwayCall?: HalfwayCallChoice;
+  /**
+   * Side modes with their own draft ladder (One-Club XI, lib/game/one-club.ts): the squad's
+   * rating and chemistry already mapped onto the formula mode's ladder. Replaces the squad's raw
+   * average and chemistry in the 27-0 formula only (scorelines still read the squad).
+   */
+  formulaOverride?: FormulaQualityOverride;
+}
+
+/** A squad's rating + chemistry expressed on a formula mode's ladder (see SimulateSeasonOptions). */
+export interface FormulaQualityOverride {
+  avgRating: number;
+  chemistry: number;
 }
 
 export interface ScheduledFixture {
@@ -1287,6 +1299,7 @@ export function simulateSeason(
           forceOpponentClub: forcedClub,
           applyChemistry: options.applyChemistry,
           halfwayCall,
+          formulaOverride: options.formulaOverride,
         });
 
   let wins = 0;
@@ -1412,6 +1425,8 @@ export interface SeasonChanceOptions {
   /** Squad chemistry counts (default true). */
   applyChemistry?: boolean;
   halfwayCall?: HalfwayCallChoice;
+  /** Rating + chemistry on the mode's ladder instead of the squad's own (One-Club XI). */
+  formulaOverride?: FormulaQualityOverride;
 }
 
 /** Per-fixture win chances for a seeded league season — exactly what simulateSeason draws against. */
@@ -1424,9 +1439,11 @@ export function getSeasonFixtureChances(
   const { schedule } = buildSeasonSchedule(seed, {
     forceOpponentClub: options.forceOpponentClub?.trim() || undefined,
   });
-  const avgRating = getAverageSquadRating(squad);
+  const avgRating = options.formulaOverride?.avgRating ?? getAverageSquadRating(squad);
   const chemistry =
-    options.applyChemistry === false ? 0 : computeChemistry(squad).bonus;
+    options.applyChemistry === false
+      ? 0
+      : options.formulaOverride?.chemistry ?? computeChemistry(squad).bonus;
   return schedule.map(({ opponent, isHome }, i) => {
     const round = i + 1;
     const teamStrength = getTeamStrength({

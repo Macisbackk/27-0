@@ -16,14 +16,24 @@ import {
 } from "../../src/lib/game/slot-team-year-pick";
 import { getPlayerRatingForPosition } from "../../src/lib/players/player-positions";
 import type { SquadSlot } from "../../src/lib/types";
+import type { SpinRuleFilter } from "../../src/lib/game/daily-rule-filter";
+import type { SpinPoolVariant } from "../../src/lib/game/player-pool-eligibility";
 
 export type DraftStrategy = "best" | "good" | "random" | "weak";
 export type DraftMode = "classic" | "era";
 
+export interface DraftSquadOptions {
+  /** Override the pool variant (One-Club XI uses "all"). */
+  spinVariant?: SpinPoolVariant;
+  /** Spin rule (One-Club XI's club filter, a Weekly theme…). */
+  ruleFilter?: SpinRuleFilter | null;
+}
+
 export function draftSquad(
   seed: string,
   mode: DraftMode,
-  strategy: DraftStrategy
+  strategy: DraftStrategy,
+  options: DraftSquadOptions = {}
 ): SquadSlot[] {
   let squad = createEmptySquad();
   const usedTeamYears = new Set<string>();
@@ -38,12 +48,18 @@ export function draftSquad(
       squad,
       slotIndex,
       usedTeamYears,
-      { spinVariant: mode === "era" ? "era" : "current" }
+      {
+        spinVariant: options.spinVariant ?? (mode === "era" ? "era" : "current"),
+        ruleFilter: options.ruleFilter ?? null,
+      }
     );
     if (!target) continue;
     usedTeamYears.add(target.teamYearKey);
     const slot = squad.find((s) => s.slotIndex === slotIndex)!;
-    const offered = prepareSlotTeamYearPlayers(target, usedIds, squad, slotIndex, { seed })
+    const offered = prepareSlotTeamYearPlayers(target, usedIds, squad, slotIndex, {
+      seed,
+      ruleFilter: options.ruleFilter ?? null,
+    })
       .map((e) => e.player)
       .sort(
         (a, b) =>

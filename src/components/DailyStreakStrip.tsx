@@ -20,6 +20,8 @@ import { CLUB_FUNDS_CHANGED_EVENT } from "@/lib/storage/club-funds";
 import { formatClubFunds } from "@/lib/club-funds";
 import { GameButton } from "@/components/ui/GameButton";
 import { TYPO } from "@/lib/ui/typography";
+import Link from "next/link";
+import { DAILY_ARCHIVE_PAGE } from "@/lib/daily-archive";
 
 const MILESTONE_COPY: Record<number, string> = {
   3: "Three days running. The habit is forming.",
@@ -157,11 +159,16 @@ export function DailyStreakStrip({ className = "", compact = false }: DailyStrea
           A missed day uses a freeze automatically.
         </p>
       ) : null}
-      {!compact && !doneToday ? (
-        <div className="mt-2">
-          <GameButton variant="theme" size="sm" fullWidth={false} href={getDailyChallengeHref()}>
-            Play today&apos;s Daily
-          </GameButton>
+      {!compact ? (
+        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+          {!doneToday ? (
+            <GameButton variant="theme" size="sm" fullWidth={false} href={getDailyChallengeHref()}>
+              Play today&apos;s Daily
+            </GameButton>
+          ) : null}
+          <Link href={DAILY_ARCHIVE_PAGE} className="inline-flex min-h-[44px] items-center text-xs font-semibold text-accent-gold hover:underline">
+            Play past Dailies (practice) ›
+          </Link>
         </div>
       ) : null}
       {message ? (

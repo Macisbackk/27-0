@@ -4,9 +4,13 @@ import {
   getDailyChallengeDateKey,
   getDailyChallengeScenario,
   type DailyChallengeRule,
-  type DailyChallengeScenario,
 } from "./daily-challenge";
 import { STORAGE_KEYS } from "./storage/keys";
+import {
+  buildWeeklyThemeScenario,
+  getWeeklyThemeForDateKeys,
+  type WeeklyThemedScenario,
+} from "./weekly-themes";
 
 /**
  * Weekly Challenge — one seeded challenge for the whole UK week (Monday 00:00 to Sunday 23:59
@@ -19,7 +23,8 @@ import { STORAGE_KEYS } from "./storage/keys";
  * This module stays free of the Supabase client (it's imported by the home card and nav).
  */
 
-export type WeeklyChallengeScenario = DailyChallengeScenario;
+/** A Daily-shaped scenario; `theme` is set on rugby league calendar weeks (lib/weekly-themes.ts). */
+export type WeeklyChallengeScenario = WeeklyThemedScenario;
 
 /** Points per outcome. Score = regular wins ×10 + play-off wins ×15 + Grand Final + League Leaders. */
 export const WEEKLY_SCORE = {
@@ -210,9 +215,11 @@ const MAX_CANDIDATE_STEPS = 64;
 
 /**
  * The week's rule: seeded from the week key so everyone gets the same one, and never the same
- * rule as any Daily that week (today's included). Candidates step through the rule types from a
- * hashed start; each lap bumps the parameter block so the same type comes back with a different
- * club / decade / cap. Deterministic for the whole UK week.
+ * rule as any Daily that week (today's included). On a rugby league calendar week (Challenge
+ * Cup final, Magic Weekend, Origin, Grand Final… see lib/weekly-themes.ts) the themed rule is
+ * used. Otherwise candidates step through the rule types from a hashed start; each lap bumps the
+ * parameter block so the same type comes back with a different club / decade / cap.
+ * Deterministic for the whole UK week.
  */
 export function getWeeklyChallengeScenario(date = new Date()): WeeklyChallengeScenario {
   const dateKeys = getWeeklyChallengeDateKeys(date);
@@ -223,6 +230,12 @@ export function getWeeklyChallengeScenario(date = new Date()): WeeklyChallengeSc
     // Noon UTC is always inside that UK calendar day.
     return getDailyChallengeScenario(new Date(Date.UTC(y!, m! - 1, d!, 12))).rule;
   });
+
+  const theme = getWeeklyThemeForDateKeys(dateKeys);
+  if (theme) {
+    const themed = buildWeeklyThemeScenario(theme);
+    if (!dailyRules.some((daily) => sameRule(daily, themed.rule))) return themed;
+  }
 
   const n = DAILY_RULE_TYPES.length;
   const start = hashString(weekKey) % n;

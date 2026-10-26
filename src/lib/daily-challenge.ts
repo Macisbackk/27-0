@@ -36,6 +36,21 @@ export const DAILY_RULE_TYPES = [
 ] as const;
 export type DailyRuleType = (typeof DAILY_RULE_TYPES)[number];
 
+/**
+ * Rule types only the Weekly's themed calendar weeks use (lib/weekly-themes.ts) — never in the
+ * Daily rotation, so a themed week can't repeat one of that week's Dailies.
+ */
+export const WEEKLY_THEME_RULE_TYPES = [
+  "cup-finalists",
+  "grand-finalists",
+  "nation",
+  "internationals",
+  "clubs",
+] as const;
+export type WeeklyThemeRuleType = (typeof WEEKLY_THEME_RULE_TYPES)[number];
+/** Any rule a Daily or Weekly can play. */
+export type ChallengeRuleType = DailyRuleType | WeeklyThemeRuleType;
+
 export type DailyChallengeRule =
   /** Every league opponent is one of the strongest clubs. */
   | { type: "giant-killers"; club: string }
@@ -50,7 +65,17 @@ export type DailyChallengeRule =
   /** English, Welsh, Scottish and Irish players only. */
   | { type: "homegrown" }
   /** Players from outside Britain and Ireland only. */
-  | { type: "overseas" };
+  | { type: "overseas" }
+  /** Weekly theme: every spin is a Challenge Cup finalist's season (Super League era). */
+  | { type: "cup-finalists" }
+  /** Weekly theme: every spin is a Grand Final side's season. */
+  | { type: "grand-finalists" }
+  /** Weekly theme: only players of one nationality. */
+  | { type: "nation"; nation: string }
+  /** Weekly theme: only capped internationals. */
+  | { type: "internationals" }
+  /** Weekly theme: every spin is one of these clubs' seasons. */
+  | { type: "clubs"; clubs: string[]; label: string };
 
 export type DailyChallengeKind = string;
 
@@ -61,7 +86,7 @@ export interface DailyChallengeScenario {
   /** Same as ruleSummary. */
   blurb: string;
   rule: DailyChallengeRule;
-  ruleType: DailyRuleType;
+  ruleType: ChallengeRuleType;
   /** Short rule name for cards and banners (≤ 18 chars), e.g. "One club: Wigan". */
   ruleTitle: string;
   /** One-line explanation (≤ 60 chars). */
@@ -126,9 +151,15 @@ const UNDERDOG_MAX_RATING = { current: 85, era: 87 } as const;
  * The two rules that make the season clearly harder (Giant killers, Underdogs) pay a little more.
  */
 export const DAILY_RULE_BONUSES: Record<
-  DailyRuleType,
+  ChallengeRuleType,
   { leagueLeadersBonus: number; playoffTitleBonus: number }
 > = {
+  // Weekly themes (the Weekly pays its top-10 reward, not these; kept for the shared shape).
+  "cup-finalists": { leagueLeadersBonus: 70_000, playoffTitleBonus: 140_000 },
+  "grand-finalists": { leagueLeadersBonus: 70_000, playoffTitleBonus: 140_000 },
+  nation: { leagueLeadersBonus: 70_000, playoffTitleBonus: 140_000 },
+  internationals: { leagueLeadersBonus: 70_000, playoffTitleBonus: 140_000 },
+  clubs: { leagueLeadersBonus: 70_000, playoffTitleBonus: 140_000 },
   "giant-killers": { leagueLeadersBonus: 80_000, playoffTitleBonus: 160_000 },
   "one-club": { leagueLeadersBonus: 70_000, playoffTitleBonus: 140_000 },
   "era-night": { leagueLeadersBonus: 70_000, playoffTitleBonus: 140_000 },
@@ -445,21 +476,26 @@ export function getDailyRuleType(date = new Date()): DailyRuleType {
   return ruleTypeForKey(todayKey(date)).type;
 }
 
-function buildScenario(
+export function buildChallengeScenario(
   rule: DailyChallengeRule,
   eraMode: boolean,
   ruleTitle: string,
   ruleSummary: string,
   forceOpponentClub: string | null = null
 ): DailyChallengeScenario {
+  const slug = (v: string) => v.toLowerCase().replace(/\s+/g, "-");
   const ruleKey =
     rule.type === "giant-killers" || rule.type === "one-club"
-      ? `${rule.type}-${rule.club.toLowerCase().replace(/\s+/g, "-")}`
+      ? `${rule.type}-${slug(rule.club)}`
       : rule.type === "era-night"
-        ? `era-night-${rule.fromYear}`
+        ? `era-night-${rule.fromYear}${rule.toYear === 2009 || rule.toYear === 2019 ? "" : `-${rule.toYear}`}`
         : rule.type === "underdogs"
           ? `underdogs-${rule.maxRating}`
-          : rule.type;
+          : rule.type === "nation"
+            ? `nation-${slug(rule.nation)}`
+            : rule.type === "clubs"
+              ? `clubs-${rule.clubs.map(slug).join("-")}`
+              : rule.type;
   return {
     id: `${eraMode ? "era" : "current"}-${ruleKey}`,
     title: ruleTitle,
@@ -501,7 +537,7 @@ export function buildDailyRuleScenario(
   switch (type) {
     case "giant-killers": {
       const club = GIANT_KILLER_CLUBS[block % GIANT_KILLER_CLUBS.length]!;
-      return buildScenario(
+      return buildChallengeScenario(
         { type, club },
         eraWeek,
         "Giant killers",
@@ -511,7 +547,7 @@ export function buildDailyRuleScenario(
     }
     case "one-club": {
       const option = ONE_CLUB_OPTIONS[block % ONE_CLUB_OPTIONS.length]!;
-      return buildScenario(
+      return buildChallengeScenario(
         { type, club: option.club },
         true,
         `One club: ${option.short}`,
@@ -520,7 +556,7 @@ export function buildDailyRuleScenario(
     }
     case "era-night": {
       const option = ERA_NIGHT_OPTIONS[block % ERA_NIGHT_OPTIONS.length]!;
-      return buildScenario(
+      return buildChallengeScenario(
         { type, ...option },
         true,
         `Era night: ${option.label}`,
@@ -531,7 +567,7 @@ export function buildDailyRuleScenario(
       const maxRating = eraWeek
         ? UNDERDOG_MAX_RATING.era
         : UNDERDOG_MAX_RATING.current;
-      return buildScenario(
+      return buildChallengeScenario(
         { type, maxRating },
         eraWeek,
         `Underdogs: max ${maxRating}`,
@@ -539,21 +575,21 @@ export function buildDailyRuleScenario(
       );
     }
     case "no-respins":
-      return buildScenario(
+      return buildChallengeScenario(
         { type },
         eraWeek,
         "No respins",
         "Respins are off. Every spin is final."
       );
     case "homegrown":
-      return buildScenario(
+      return buildChallengeScenario(
         { type },
         eraWeek,
         "Homegrown",
         "English, Welsh, Scottish and Irish players only."
       );
     case "overseas":
-      return buildScenario(
+      return buildChallengeScenario(
         { type },
         eraWeek,
         "Overseas stars",
