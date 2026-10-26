@@ -6,10 +6,12 @@ import { Capacitor } from "@capacitor/core";
 import { App as CapApp } from "@capacitor/app";
 import { StatusBar, Style } from "@capacitor/status-bar";
 import { SplashScreen } from "@capacitor/splash-screen";
+import { handleAppUrl } from "@/lib/native/deep-links";
 
 /**
- * Native Android shell hooks — no-ops in the browser / Vercel build.
- * Handles status bar styling and the system Back button (close overlays first).
+ * Native iPhone / Android shell hooks — no-ops in the browser / Vercel build.
+ * Handles status bar styling, links that open the app (email confirm / password reset)
+ * and the Android system Back button (close overlays first).
  */
 export function CapacitorAppShell() {
   const pathname = usePathname();
@@ -27,8 +29,9 @@ export function CapacitorAppShell() {
       try {
         // Light icons on 27-0's dark chrome (Capacitor: Light = light content).
         await StatusBar.setStyle({ style: Style.Light });
-        await StatusBar.setBackgroundColor({ color: "#0e0f10" });
         if (Capacitor.getPlatform() === "android") {
+          // iOS has no status bar colour: the header paints behind it (safe-area padding in globals.css).
+          await StatusBar.setBackgroundColor({ color: "#0e0f10" });
           await StatusBar.setOverlaysWebView({ overlay: false });
         }
       } catch {
@@ -85,6 +88,28 @@ export function CapacitorAppShell() {
       void sub.then((handle) => handle.remove());
     };
   }, [pathname, router]);
+
+  // Links that open the app: com.twentysevenzero.game://auth/... from Supabase emails.
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    let lastHandled = "";
+    const open = (url: string | undefined) => {
+      if (!url || url === lastHandled) return;
+      lastHandled = url;
+      void handleAppUrl(url).then((result) => {
+        if (result) router.replace(result.route);
+      });
+    };
+    // Cold start: the app was launched by the link.
+    void CapApp.getLaunchUrl()
+      .then((launch) => open(launch?.url))
+      .catch(() => {});
+    const sub = CapApp.addListener("appUrlOpen", ({ url }) => open(url));
+    return () => {
+      void sub.then((handle) => handle.remove());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- register once; router is stable
+  }, []);
 
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;

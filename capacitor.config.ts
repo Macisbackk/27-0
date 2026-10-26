@@ -10,6 +10,9 @@ const config: CapacitorConfig = {
   webDir: "out",
   ios: {
     backgroundColor: "#0a110e",
+    // The page handles notches itself (viewport-fit=cover + safe-area padding on the header).
+    contentInset: "never",
+    preferredContentMode: "mobile",
   },
   android: {
     allowMixedContent: false,

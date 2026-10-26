@@ -2694,9 +2694,15 @@ button.mode-start-btn-hard,
   }
 }
 
-/* Capacitor Android shell — respect display cutouts without huge global padding */
-html.capacitor-native body.app-shell {
+/* Capacitor iPhone / Android shell — respect notches, cutouts and the home indicator.
+   The sticky header carries the top inset (it paints behind the iPhone status bar and stays
+   there while the page scrolls), instead of padding the body, which would scroll away. */
+html.capacitor-native .app-header {
   padding-top: env(safe-area-inset-top, 0px);
+}
+
+html.capacitor-native body.app-shell {
+  padding-top: 0;
   padding-right: env(safe-area-inset-right, 0px);
   padding-left: env(safe-area-inset-left, 0px);
   /* Bottom inset is handled by sticky bars / manager nav tokens already */

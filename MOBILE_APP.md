@@ -6,10 +6,12 @@ This repository ships the **web / Vercel** game. The apps are Capacitor shells t
 
 | What | Where |
 |------|-------|
+| **App Store / Play release guide** | [docs/APP-STORE.md](docs/APP-STORE.md): accounts, secrets, Supabase redirect URLs, listing, privacy answers |
 | Install from the website | The site is a PWA: Settings → "Get the 27-0 app" (Android/desktop Chrome: one tap; iPhone: Share → Add to Home Screen). Offline play via `public/sw.js`. |
-| Android test APK | Actions → **Android app** → latest run → Artifacts → `27-0-debug-apk`. Unzip, open the `.apk` on an Android phone (allow "install unknown apps"). |
-| Google Play upload (.aab) | Same workflow, artifact `27-0-play-store-release` — appears once the signing secrets below exist. |
-| iPhone build check | Actions → **iPhone app (build check)** → Run workflow. Builds for the simulator; the generated `ios/` project is in the artifacts. |
+| Android test APK | Actions → **App builds** → latest run → Artifacts → `27-0-android-debug-…`. Unzip, open the `.apk` on an Android phone (allow "install unknown apps"). |
+| Google Play upload (.aab) | Same workflow, artifact `27-0-android-release-…` — appears once the signing secrets below exist; uploaded to internal testing when `PLAY_SERVICE_ACCOUNT_JSON` exists. |
+| iPhone build | Actions → **App builds** → iPhone job: simulator build + unsigned archive; TestFlight upload once the App Store Connect secrets exist. |
+| (Re)generate the iOS project | Actions → **iPhone project (generate)** → Run workflow. Commits `ios/` back to the branch. |
 
 ### Play Store release (signing)
 
@@ -29,7 +31,7 @@ base64 -w0 upload.jks   # paste into ANDROID_KEYSTORE_BASE64
 
 Keep `upload.jks` and the passwords somewhere safe (a password manager). With Play App Signing, a lost upload key can be reset through Play support, but it takes days.
 
-`versionCode` is `1000 + the workflow run number`, so each build is higher than the last; `versionName` comes from `data/version.ts`.
+`versionCode` is `2000 + the App builds run number`, so each build is higher than the last; `versionName` comes from `data/version.ts`.
 
 ### Store requirements already in the app
 
@@ -313,12 +315,11 @@ Prefer `cap sync` after dependency or plugin changes.
 | Permissions | `INTERNET` only |
 | Storage | Same browser `localStorage` / IndexedDB inside the WebView |
 | Online features | Auth / leaderboard / analytics still need network; offline play of local modes should work from packaged assets |
-| iOS | Not installed / not configured |
+| iOS | `ios/` (generated on a Mac runner by the "iPhone project (generate)" workflow; settings in `scripts/ios-configure.sh`) |
 
 ---
 
 ## Versioning
 
 - Public web footer version: `data/version.ts` → `GAME_VERSION`
-- Android `versionName` / `versionCode`: `android/app/build.gradle`  
-  Keep these aligned when you ship a Play build (e.g. `0.78` / `78` for `v0.78`).
+- App versions are set by CI from `GAME_VERSION` (see docs/APP-STORE.md → "How the website and the apps stay in sync").

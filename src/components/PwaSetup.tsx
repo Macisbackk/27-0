@@ -3,9 +3,10 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { captureInstallPrompt } from "@/lib/pwa/install";
+import { IS_APP_BUILD } from "@/lib/native/platform";
 
 function isAppShell(): boolean {
-  return document.documentElement.classList.contains("capacitor-native") || window.location.origin === "https://localhost";
+  return IS_APP_BUILD || document.documentElement.classList.contains("capacitor-native") || window.location.origin === "https://localhost";
 }
 
 /** Registers the service worker (website only, not the Android/iOS app shell) and keeps the install prompt. */

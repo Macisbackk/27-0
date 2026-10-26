@@ -14,8 +14,14 @@ import {
   type BeforeInstallPromptEvent,
 } from "@/lib/pwa/install-prompt";
 import { playUiClick } from "@/lib/sound";
+import { IS_APP_BUILD } from "@/lib/native/platform";
 
 export function PwaInstallPrompt() {
+  if (IS_APP_BUILD) return null;
+  return <PwaInstallPromptInner />;
+}
+
+function PwaInstallPromptInner() {
   const [deferred, setDeferred] = useState<BeforeInstallPromptEvent | null>(null);
   const [visible, setVisible] = useState(false);
   const [installing, setInstalling] = useState(false);

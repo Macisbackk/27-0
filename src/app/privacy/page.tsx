@@ -71,8 +71,8 @@ export default function PrivacyPage() {
               <strong>Supabase</strong> hosts our database and logins.
             </li>
             <li>
-              <strong>Vercel</strong> hosts the website and records anonymous page-view counts (no cookies, no
-              personal profile).
+              <strong>Vercel</strong> hosts the website and records anonymous page-view counts on the website (no
+              cookies, no personal profile). The iPhone and Android apps don&rsquo;t record page views.
             </li>
           </ul>
           <p>They process data only to run the service for us.</p>

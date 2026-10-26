@@ -21,6 +21,8 @@ import { ExternalLinkGuard } from "@/components/ExternalLinkGuard";
 import { PwaSetup } from "@/components/PwaSetup";
 import { MotionProvider } from "@/components/MotionProvider";
 import { UI_THEME_BOOTSTRAP_SCRIPT } from "@/lib/ui/theme-bootstrap-script";
+import { IS_APP_BUILD, NATIVE_CLASS_BOOTSTRAP_SCRIPT } from "@/lib/native/platform";
+import { OfflineBanner } from "@/components/OfflineBanner";
 
 // Matchnight type: Barlow for reading (road-sign grotesque, northern-England plain speaking),
 // Barlow Condensed for headings and kit-tag labels, Anton kept for scores and the scoreboard mark.
@@ -90,11 +92,19 @@ export default function RootLayout({
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: UI_THEME_BOOTSTRAP_SCRIPT }}
         />
+        {IS_APP_BUILD ? (
+          <Script
+            id="native-shell-bootstrap"
+            strategy="beforeInteractive"
+            dangerouslySetInnerHTML={{ __html: NATIVE_CLASS_BOOTSTRAP_SCRIPT }}
+          />
+        ) : null}
       </head>
       <body className="app-shell flex min-h-dvh min-w-0 max-w-full flex-col overflow-x-clip bg-[var(--bg-primary)]">
         <AuthProvider>
           <CapacitorAppShell />
           <ExternalLinkGuard />
+          {IS_APP_BUILD ? <OfflineBanner /> : null}
           <PwaSetup />
           <CoachbeardMergeRunner />
           <ManagerDataPurgeRunner />
@@ -113,7 +123,8 @@ export default function RootLayout({
           </AchievementProvider>
         </AuthProvider>
         <div id="game-portal-root" />
-        <Analytics />
+        {/* Web analytics are website-only: the store apps don't record page views. */}
+        {IS_APP_BUILD ? null : <Analytics />}
       </body>
     </html>
   );
