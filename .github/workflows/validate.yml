@@ -65,6 +65,9 @@ jobs:
       - name: Squad Book
         if: success() || failure()
         run: scripts/ci-run.sh "Squad Book" npm run test:squadbook
+      - name: Daily missions
+        if: success() || failure()
+        run: scripts/ci-run.sh "Daily missions" npm run test:missions
 
   build:
     runs-on: ubuntu-latest

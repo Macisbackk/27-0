@@ -40,6 +40,9 @@ const ACCOUNT_KEYS: readonly string[] = [
   STORAGE_KEYS.weeklyChallenge,
   // Daily welcome bonus streak cache (lib/daily-bonus.ts); the streak itself comes from the ledger.
   "27-0-daily-bonus",
+  // Today's Daily Missions progress (lib/daily-missions.ts DAILY_MISSIONS_STORAGE_KEY); payouts
+  // themselves are in the Club Funds ledger.
+  "27-0-daily-missions",
 ];
 
 /** Exported for scripts: the per-account keys cleared when another account signs in. */

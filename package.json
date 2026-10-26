@@ -98,7 +98,8 @@
     "test:weekly": "tsx scripts/test-weekly.ts",
     "test:store": "bun scripts/test-store.ts",
     "test:share": "tsx scripts/test-share-result.ts",
-    "test:squadbook": "bun scripts/test-squad-book.ts"
+    "test:squadbook": "bun scripts/test-squad-book.ts",
+    "test:missions": "tsx scripts/test-missions.ts"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.0",
