@@ -22,6 +22,7 @@ import {
 } from "@/lib/sound";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
+import { SHOW_TIP_LINKS } from "@/lib/native/platform";
 import {
   CoffeeIcon,
   SuggestionsIcon,
@@ -326,9 +327,11 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 <a href={SUGGESTIONS_MAIL} aria-label="Send a suggestion" title="Suggestions" className={FOOT_LINK}>
                   <SuggestionsIcon />
                 </a>
-                <a href={COFFEE_URL} target="_blank" rel="noopener noreferrer" aria-label="Buy Me a Coffee — support 27-0" title="Buy Me a Coffee" className={FOOT_LINK}>
-                  <CoffeeIcon />
-                </a>
+                {SHOW_TIP_LINKS ? (
+                  <a href={COFFEE_URL} target="_blank" rel="noopener noreferrer" aria-label="Buy Me a Coffee — support 27-0" title="Buy Me a Coffee" className={FOOT_LINK}>
+                    <CoffeeIcon />
+                  </a>
+                ) : null}
                 <a href={X_URL} target="_blank" rel="noopener noreferrer" aria-label="Follow 27-0 on X" title="Follow on X" className={FOOT_LINK}>
                   <XIcon />
                 </a>

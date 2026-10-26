@@ -1,0 +1,293 @@
+name: App builds
+
+# The iPhone and Android apps are built from the same code as the website (Next.js static export
+# inside Capacitor), so every release of the site also produces app builds:
+#   web      → `npm run build:mobile` (static export in out/)
+#   android  → debug APK + debug AAB (always); signed release AAB when the upload-key secrets exist;
+#              upload to Google Play (internal testing) when PLAY_SERVICE_ACCOUNT_JSON exists
+#   ios      → unsigned simulator build + unsigned archive (always); signed build uploaded to
+#              TestFlight when the App Store Connect API key secrets exist
+# Uploads only happen on pushes to main or a manual run with "upload" ticked, never on PRs.
+# Secrets and the one-off store setup: docs/APP-STORE.md.
+#
+# Versions: data/version.ts GAME_VERSION ("v1.15" → 1.15) is the app version on both stores;
+# the build number is this workflow's run number (Android versionCode = 2000 + run number).
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      upload:
+        description: Upload to TestFlight / Google Play internal testing (needs the store secrets)
+        type: boolean
+        default: false
+
+concurrency:
+  group: app-build-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  # Public values (already in the website's JavaScript) so the app can log in and use the leaderboards.
+  NEXT_PUBLIC_SUPABASE_URL: https://wpkwcaxzrmutacizenzg.supabase.co
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa3djYXh6cm11dGFjaXplbnpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMDM4ODAsImV4cCI6MjA5NjU3OTg4MH0.ulOvyz0GEO5VRZN7AvngP_Ju96XjVwHhoSQ4gDbL7FY
+  NEXT_PUBLIC_SITE_URL: https://27-0.co.uk
+  NEXT_TELEMETRY_DISABLED: "1"
+  UPLOAD: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.upload) }}
+
+jobs:
+  web:
+    name: Static export
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      build: ${{ steps.version.outputs.build }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Static export (CAPACITOR_BUILD=1)
+        run: npm run build:mobile
+      - name: Check the export
+        run: |
+          test -f out/index.html
+          for page in play manager leaderboard settings privacy delete-account login auth/callback auth/reset-password; do
+            test -f "out/$page/index.html" || { echo "::error::missing out/$page/index.html"; exit 1; }
+          done
+          if grep -rl "buymeacoffee" out --include=*.html; then
+            echo "::error::tip link found in the app build"; exit 1
+          fi
+          du -sh out
+      - name: Version
+        id: version
+        run: |
+          v=$(sed -n 's/.*GAME_VERSION = "v\{0,1\}\([^"]*\)".*/\1/p' data/version.ts)
+          echo "version=${v:-1.0}" >> "$GITHUB_OUTPUT"
+          echo "build=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+          echo "### App version ${v} (build ${{ github.run_number }})" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-web-export
+          path: out
+          retention-days: 7
+
+  android:
+    name: Android
+    needs: web
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ANDROID_VERSION_NAME: ${{ needs.web.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Version code
+        run: echo "ANDROID_VERSION_CODE=$((2000 + ${{ needs.web.outputs.build }}))" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: app-web-export
+          path: out
+      - name: Copy into the Android project
+        run: npx cap sync android
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Upload key (only when the signing secrets exist)
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+            {
+              echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/upload.jks"
+              echo "ANDROID_KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD"
+              echo "ANDROID_KEY_ALIAS=$KEY_ALIAS"
+              echo "ANDROID_KEY_PASSWORD=${KEY_PASSWORD:-$KEYSTORE_PASSWORD}"
+            } >> "$GITHUB_ENV"
+            echo "Android: signing with the upload key." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Android: no signing secrets, debug builds only." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Build debug APK + AAB
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug bundleDebug
+      - name: Build signed release AAB
+        if: env.ANDROID_KEYSTORE_PATH != ''
+        working-directory: android
+        run: ./gradlew --no-daemon bundleRelease
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 27-0-android-debug-${{ needs.web.outputs.version }}-${{ needs.web.outputs.build }}
+          path: |
+            android/app/build/outputs/apk/debug/*.apk
+            android/app/build/outputs/bundle/debug/*.aab
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: env.ANDROID_KEYSTORE_PATH != ''
+        with:
+          name: 27-0-android-release-${{ needs.web.outputs.version }}-${{ needs.web.outputs.build }}
+          path: android/app/build/outputs/bundle/release/*.aab
+          retention-days: 90
+      - name: Google Play upload available?
+        id: play
+        env:
+          PLAY_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: echo "ready=$([ -n "$PLAY_JSON" ] && [ -n "${ANDROID_KEYSTORE_PATH:-}" ] && [ "$UPLOAD" = "true" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - name: Upload to Google Play (internal testing)
+        if: steps.play.outputs.ready == 'true'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.twentysevenzero.game
+          releaseFiles: android/app/build/outputs/bundle/release/*.aab
+          track: internal
+          # "draft" until the app has been through its first review; then set the repo variable to "completed".
+          status: ${{ vars.PLAY_RELEASE_STATUS || 'draft' }}
+          releaseName: ${{ needs.web.outputs.version }} (${{ env.ANDROID_VERSION_CODE }})
+
+  ios:
+    name: iPhone
+    needs: web
+    runs-on: macos-latest
+    timeout-minutes: 45
+    env:
+      MARKETING_VERSION: ${{ needs.web.outputs.version }}
+      BUILD_NUMBER: ${{ needs.web.outputs.build }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: iOS project present?
+        id: proj
+        run: |
+          if [ -f ios/App/App.xcodeproj/project.pbxproj ]; then echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::No ios/ project yet: run Actions → 'iPhone project (generate)' once."
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.proj.outputs.ok == 'true'
+        with:
+          node-version: "22"
+          cache: npm
+      - if: steps.proj.outputs.ok == 'true'
+        run: npm ci
+      - uses: actions/download-artifact@v4
+        if: steps.proj.outputs.ok == 'true'
+        with:
+          name: app-web-export
+          path: out
+      - name: Copy into the iOS project
+        if: steps.proj.outputs.ok == 'true'
+        run: |
+          npx cap sync ios
+          cd ios/App
+          if [ -d App.xcworkspace ]; then echo "XC_TARGET=-workspace App.xcworkspace" >> "$GITHUB_ENV"
+          else echo "XC_TARGET=-project App.xcodeproj" >> "$GITHUB_ENV"; fi
+      - name: Simulator build (unsigned)
+        if: steps.proj.outputs.ok == 'true'
+        working-directory: ios/App
+        run: |
+          set -o pipefail
+          xcodebuild $XC_TARGET -scheme App -configuration Debug -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath "$RUNNER_TEMP/sim" \
+            MARKETING_VERSION="$MARKETING_VERSION" CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            CODE_SIGNING_ALLOWED=NO build | tail -25
+          cd "$RUNNER_TEMP/sim/Build/Products/Debug-iphonesimulator" && zip -qry "$RUNNER_TEMP/27-0-simulator.zip" App.app
+      - name: Release archive (unsigned)
+        if: steps.proj.outputs.ok == 'true'
+        working-directory: ios/App
+        run: |
+          set -o pipefail
+          xcodebuild $XC_TARGET -scheme App -configuration Release -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/27-0-unsigned.xcarchive" \
+            MARKETING_VERSION="$MARKETING_VERSION" CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" archive | tail -25
+          cd "$RUNNER_TEMP" && zip -qry 27-0-unsigned-xcarchive.zip 27-0-unsigned.xcarchive
+      - uses: actions/upload-artifact@v4
+        if: steps.proj.outputs.ok == 'true'
+        with:
+          name: 27-0-ios-${{ needs.web.outputs.version }}-${{ needs.web.outputs.build }}
+          path: |
+            ${{ runner.temp }}/27-0-simulator.zip
+            ${{ runner.temp }}/27-0-unsigned-xcarchive.zip
+          retention-days: 30
+
+      # ---- TestFlight (only when the App Store Connect API key secrets exist) ----
+      - name: TestFlight upload available?
+        id: asc
+        if: steps.proj.outputs.ok == 'true'
+        env:
+          KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          KEY_P8: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+          TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          if [ -n "$KEY_ID" ] && [ -n "$ISSUER_ID" ] && [ -n "$KEY_P8" ] && [ -n "$TEAM_ID" ] && [ "$UPLOAD" = "true" ]; then
+            mkdir -p "$RUNNER_TEMP/asc"
+            printf '%s' "$KEY_P8" > "$RUNNER_TEMP/asc/AuthKey_$KEY_ID.p8"
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "iPhone: TestFlight upload skipped (needs the App Store Connect secrets and a push to main / manual upload run)." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Signed archive (Xcode cloud signing via the API key)
+        if: steps.asc.outputs.ready == 'true'
+        working-directory: ios/App
+        env:
+          KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          set -o pipefail
+          xcodebuild $XC_TARGET -scheme App -configuration Release -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/27-0.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/asc/AuthKey_$KEY_ID.p8" \
+            -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER_ID" \
+            DEVELOPMENT_TEAM="$TEAM_ID" CODE_SIGN_STYLE=Automatic \
+            MARKETING_VERSION="$MARKETING_VERSION" CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            archive | tail -40
+      - name: Upload to TestFlight
+        if: steps.asc.outputs.ready == 'true'
+        env:
+          KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>${TEAM_ID}</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+            <key>uploadSymbols</key><true/>
+          </dict></plist>
+          PLIST
+          set -o pipefail
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/27-0.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/asc/AuthKey_$KEY_ID.p8" \
+            -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER_ID" | tail -40
+          echo "iPhone: build $MARKETING_VERSION ($BUILD_NUMBER) uploaded to App Store Connect; it appears in TestFlight after processing (~10-30 min)." >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove the API key
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/asc"

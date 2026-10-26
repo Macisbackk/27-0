@@ -13,6 +13,7 @@ import {
 import { getActiveTheme, UI_THEME_CHANGED_EVENT } from "@/lib/storage/ui-theme-store";
 import { resetCareerStats } from "@/lib/storage/stats";
 import { InstallAppCard } from "@/components/InstallAppCard";
+import { SHOW_TIP_LINKS } from "@/lib/native/platform";
 import { GameButton } from "@/components/ui/GameButton";
 import { TYPO } from "@/lib/ui/typography";
 import { GAME_VERSION } from "../../data/version";
@@ -288,7 +289,7 @@ export function SettingsPanel() {
       <Group title="Help & feedback">
         <LinkRow href="/#how-to-play" label="How to play" />
         <LinkRow href={SUGGESTIONS_MAIL} label="Send a suggestion" hint="Ideas and bug reports welcome." external />
-        <LinkRow href={COFFEE_URL} label="Buy Me a Coffee" hint="Support 27-0." external />
+        {SHOW_TIP_LINKS ? <LinkRow href={COFFEE_URL} label="Buy Me a Coffee" hint="Support 27-0." external /> : null}
         <LinkRow href={X_URL} label="Follow @27and0 on X" external />
         <LinkRow href="/privacy" label="Privacy policy" />
       </Group>

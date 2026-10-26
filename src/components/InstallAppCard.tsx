@@ -3,11 +3,18 @@
 import { useEffect, useState } from "react";
 import { useInstallMode } from "@/lib/pwa/install";
 import { playUiClick } from "@/lib/sound";
+import { IS_APP_BUILD } from "@/lib/native/platform";
 
 const DISMISS_KEY = "27-0-install-card-dismissed";
 
 /** "Get the app" card: one-tap install on Android/desktop Chrome, Share-sheet steps on iPhone. */
-export function InstallAppCard({ dismissible = false }: { dismissible?: boolean }) {
+export function InstallAppCard(props: { dismissible?: boolean }) {
+  // Already an installed app: never ask people to "install" it (App Review flags this).
+  if (IS_APP_BUILD) return null;
+  return <InstallAppCardInner {...props} />;
+}
+
+function InstallAppCardInner({ dismissible = false }: { dismissible?: boolean }) {
   const { mode, install } = useInstallMode();
   const [dismissed, setDismissed] = useState(true);
   const [showSteps, setShowSteps] = useState(false);

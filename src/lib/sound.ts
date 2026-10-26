@@ -5,7 +5,7 @@
  */
 
 import type { GameDifficulty } from "./types";
-import { triggerHaptic } from "./haptics";
+import { nativeHaptic, triggerHaptic } from "./haptics";
 import {
   initSoundUnlock,
   isSoundMuted,
@@ -37,6 +37,7 @@ export function playTabChange(): void {
 
 export function playMenuOpen(): void {
   playSound("menuOpen");
+  nativeHaptic("tap");
 }
 
 export function playMenuClose(): void {
@@ -115,6 +116,7 @@ export function playHalfTime(): void {
 
 export function playTryScored(): void {
   playSound("tryScored");
+  nativeHaptic("impact");
 }
 
 export function playConversion(): void {
@@ -179,6 +181,7 @@ export function playCalendarComplete(): void {
 
 export function playAchievementUnlock(): void {
   playSound("achievementUnlock");
+  nativeHaptic("success");
 }
 
 export function playSeasonReviewMajor(): void {
@@ -215,10 +218,12 @@ export function playSlotSpinTick(progress = 0, stepMs?: number): void {
 
 export function playSlotLand(): void {
   playSound("slotLand");
+  nativeHaptic("tap");
 }
 
 export function playPlayerSelect(): void {
   playSound("select");
+  nativeHaptic("tap");
 }
 
 export function playReroll(): void {

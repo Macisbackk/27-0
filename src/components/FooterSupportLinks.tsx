@@ -1,5 +1,6 @@
 import { NAV } from "@/lib/ui/design-system";
 import { CoffeeIcon, SuggestionsIcon, XIcon } from "./SupportLinkIcons";
+import { SHOW_TIP_LINKS } from "@/lib/native/platform";
 
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
 const SUGGESTIONS_MAIL =
@@ -17,6 +18,7 @@ export function FooterSupportLinks() {
       >
         <SuggestionsIcon />
       </a>
+      {SHOW_TIP_LINKS ? (
       <a
         href={COFFEE_URL}
         target="_blank"
@@ -27,6 +29,7 @@ export function FooterSupportLinks() {
       >
         <CoffeeIcon />
       </a>
+      ) : null}
       <a
         href={X_URL}
         target="_blank"

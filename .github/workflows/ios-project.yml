@@ -1,0 +1,90 @@
+name: iPhone project (generate)
+
+# One-off / maintenance job: creates (or refreshes) the Capacitor iOS project on a Mac runner and
+# commits it back to the branch it ran on, so nobody needs a Mac.
+#   - installs @capacitor/ios + plugins and commits package.json / package-lock.json
+#   - `npx cap add ios` (only if ios/ is missing), `npx cap sync`
+#   - app icon + splash from resources/ (@capacitor/assets), icons flattened (no alpha for App Store)
+#   - scripts/ios-configure.sh: portrait, iPhone only, URL scheme, privacy manifest, usage strings
+# Run it from Actions → "iPhone project (generate)" → Run workflow (pick the branch). It also runs
+# when this file or the configure script changes on a branch.
+on:
+  workflow_dispatch:
+    inputs:
+      regenerate_icons:
+        description: Regenerate the iOS app icon and splash from resources/
+        type: boolean
+        default: true
+  push:
+    branches-ignore: [main]
+    paths:
+      - .github/workflows/ios-project.yml
+      - scripts/ios-configure.sh
+      - ios-config/**
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ios-project-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: macos-latest
+    timeout-minutes: 40
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://wpkwcaxzrmutacizenzg.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indwa3djYXh6cm11dGFjaXplbnpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMDM4ODAsImV4cCI6MjA5NjU3OTg4MH0.ulOvyz0GEO5VRZN7AvngP_Ju96XjVwHhoSQ4gDbL7FY
+      NEXT_PUBLIC_SITE_URL: https://27-0.co.uk
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install (adds the iOS platform + native plugins to package.json)
+        run: |
+          npm ci
+          npm install --save @capacitor/ios@^8.5.0 @capacitor/haptics@^8.0.0
+      - name: Static export for the app
+        run: npm run build:mobile
+      - name: Create the iOS project (first time only) and sync both platforms
+        run: |
+          [ -d ios ] || npx cap add ios
+          npx cap sync
+      - name: App icon + splash from resources/
+        if: github.event_name != 'workflow_dispatch' || inputs.regenerate_icons
+        run: |
+          mkdir -p "$RUNNER_TEMP/assets"
+          cp resources/icon.png "$RUNNER_TEMP/assets/icon-only.png"
+          cp resources/icon-foreground.png resources/icon-background.png resources/splash.png "$RUNNER_TEMP/assets/"
+          cp resources/splash.png "$RUNNER_TEMP/assets/splash-dark.png"
+          npx --yes @capacitor/assets@3.0.5 generate --ios --assetPath "$RUNNER_TEMP/assets" \
+            --iconBackgroundColor '#0e0f10' --iconBackgroundColorDark '#0e0f10' \
+            --splashBackgroundColor '#0e0f10' --splashBackgroundColorDark '#0e0f10'
+          node scripts/ios-flatten-icons.mjs
+      - name: App Store settings (portrait, URL scheme, privacy manifest, usage strings)
+        run: bash scripts/ios-configure.sh
+      - name: Build check (simulator, unsigned)
+        run: |
+          cd ios/App
+          if [ -d App.xcworkspace ]; then target="-workspace App.xcworkspace"; else target="-project App.xcodeproj"; fi
+          set -o pipefail
+          xcodebuild $target -scheme App -configuration Debug -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build | tail -30
+      - name: Commit the iOS project back to ${{ github.ref_name }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json ios android/app/capacitor.build.gradle android/capacitor.settings.gradle
+          if git diff --cached --quiet; then
+            echo "Nothing changed." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git diff --cached --stat | tail -40
+          git commit -m "iOS: generate/refresh the Capacitor iOS project (CI, macOS)"
+          git push origin "HEAD:${{ github.ref_name }}"
+          echo "Committed the iOS project to ${{ github.ref_name }}." >> "$GITHUB_STEP_SUMMARY"
