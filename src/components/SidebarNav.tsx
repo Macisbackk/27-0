@@ -1,27 +1,22 @@
 "use client";
 
 import { contactMailto } from "@/lib/contact";
-import { BallGlyph, BoardGlyph, FixtureGlyph, LadderGlyph, ShopGlyph, TilesGlyph, WhistleGlyph } from "@/components/icons/rugby-icons";
+import { BallGlyph, BoardGlyph, FixtureGlyph, LadderGlyph, ProgrammeGlyph, ShopGlyph, TilesGlyph, WhistleGlyph } from "@/components/icons/rugby-icons";
 import Link from "next/link";
 import { CountUp } from "@/components/ui/CountUp";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { buildPlayHref, isPlayModeActive } from "@/lib/play-links";
 import { getDailyChallengeHref } from "@/lib/daily-challenge";
-import {
-  getNormalEraVariant,
-  setNormalEraVariant,
-  NORMAL_ERA_VARIANT_CHANGED_EVENT,
-} from "@/lib/storage/preferences";
+import { setNormalEraVariant } from "@/lib/storage/preferences";
 import {
   isSoundMuted,
   playMenuClose,
   playUiClick,
   toggleSoundMuted,
 } from "@/lib/sound";
-import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { SHOW_TIP_LINKS } from "@/lib/native/platform";
 import {
@@ -43,11 +38,9 @@ const X_URL = "https://x.com/27and0";
 
 export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { loading, isLoggedIn } = useAuth();
   const { balance, totalEarned, ready: fundsReady } = useClubFunds();
-  const [normalEraVariant, setNormalEraVariantState] = useState(false);
   const [muted, setMuted] = useState(false);
   const closeMenu = useCallback(() => {
     playMenuClose();
@@ -56,13 +49,8 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const panelRef = useModalA11y(open, closeMenu, { lockScroll: false });
 
   useEffect(() => {
-    setNormalEraVariantState(getNormalEraVariant());
-  }, []);
-
-  useEffect(() => {
     if (!open) return;
     setMuted(isSoundMuted());
-    setNormalEraVariantState(getNormalEraVariant());
   }, [open]);
 
   const playSearch = {
@@ -79,51 +67,10 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
     pathname.startsWith("/play") &&
     playSearch.daily === "1";
 
-  const isNormalEra = isPlayModeActive(pathname, playSearch, "classic", true);
-  const isNormalCurrent = isPlayModeActive(pathname, playSearch, "classic", false);
-  const isNormalActive = isNormalEra || isNormalCurrent;
-
-  useEffect(() => {
-    if (isNormalActive) {
-      setNormalEraVariantState(isNormalEra);
-    }
-  }, [isNormalActive, isNormalEra]);
-
-  useEffect(() => {
-    const onNormalVariant = (event: Event) => {
-      const detail = (event as CustomEvent<{ eraMode: boolean }>).detail;
-      if (detail) setNormalEraVariantState(detail.eraMode);
-    };
-    window.addEventListener(NORMAL_ERA_VARIANT_CHANGED_EVENT, onNormalVariant);
-    return () => {
-      window.removeEventListener(
-        NORMAL_ERA_VARIANT_CHANGED_EVENT,
-        onNormalVariant
-      );
-    };
-  }, []);
-
-  const handleNormalVariantChange = (era: boolean) => {
-    // Don't yank Current/Era preference or leave Daily mid-run via this toggle.
-    if (isDailyActive) return;
-    setNormalEraVariant(era);
-    setNormalEraVariantState(era);
-    if (
-      pathname.startsWith("/play") &&
-      playSearch.cup !== "1" &&
-      playSearch.fantasy !== "1" &&
-      playSearch.draft !== "1"
-    ) {
-      router.push(buildPlayHref("classic", era), { scroll: false });
-    }
-  };
-
-  const handleNormalNavigate = () => {
-    playUiClick();
-    setNormalEraVariant(normalEraVariant);
-    router.push(buildPlayHref("classic", normalEraVariant), { scroll: false });
-    onClose();
-  };
+  // The Weekly is its own play surface too: don't light up Classic for it.
+  const isWeekly = searchParams.get("weekly") === "1";
+  const isNormalEra = !isWeekly && isPlayModeActive(pathname, playSearch, "classic", true);
+  const isNormalCurrent = !isWeekly && isPlayModeActive(pathname, playSearch, "classic", false);
 
   const handleNavClick = () => {
     playUiClick();
@@ -151,7 +98,6 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 
   const club = [
     { href: "/store", label: "Store", icon: <BagIcon /> },
-    { href: "/squad-book", label: "Squad Book", icon: <BookIcon /> },
     { href: "/leaderboard", label: "Leaderboard", icon: <TableIcon /> },
     { href: "/profile", label: "Coach Profile", icon: <PersonIcon /> },
     { href: "/settings", label: "Settings", icon: <CogIcon /> },
@@ -249,28 +195,32 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                       </MenuLink>
                     </li>
                   ) : null}
-                  <li className="rounded-tile bg-pitch-900/60">
-                    <button
-                      type="button"
-                      onClick={handleNormalNavigate}
-                      className={`${MENU_ROW} ${isNormalActive ? MENU_ROW_ACTIVE : MENU_ROW_IDLE}`}
-                      aria-current={isNormalActive ? "page" : undefined}
+                  <li>
+                    <MenuLink
+                      href={buildPlayHref("classic", false)}
+                      active={isNormalCurrent}
+                      icon={<ShirtIcon />}
+                      onClick={() => {
+                        setNormalEraVariant(false);
+                        handleNavClick();
+                      }}
                     >
-                      <span className={MENU_ICON}><ShirtIcon /></span>
-                      <span className="min-w-0 flex-1 text-left">Classic</span>
-                      {isNormalActive ? <span className={`h-2 w-2 rounded-full ${isNormalEra ? "bg-accent-gold" : "bg-theme-primary"}`} /> : null}
-                    </button>
-                    {!isDailyActive ? (
-                      <div className="px-2 pb-2">
-                        <ChallengeCupVariantToggle
-                          compact
-                          hideLabel
-                          sectionLabel="Mode"
-                          eraMode={normalEraVariant}
-                          onEraModeChange={handleNormalVariantChange}
-                        />
-                      </div>
-                    ) : null}
+                      Classic
+                    </MenuLink>
+                  </li>
+                  <li>
+                    <MenuLink
+                      href={buildPlayHref("classic", true)}
+                      active={isNormalEra}
+                      icon={<EraIcon />}
+                      onClick={() => {
+                        setNormalEraVariant(true);
+                        handleNavClick();
+                      }}
+                      dot="bg-accent-gold"
+                    >
+                      Era Classic
+                    </MenuLink>
                   </li>
                   <li>
                     <MenuLink href="/manager" active={pathname.startsWith("/manager")} icon={<TrophyIcon />} onClick={handleNavClick}>
@@ -279,6 +229,22 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                   </li>
                 </ul>
               </section>
+
+              <Link
+                href="/squad-book"
+                onClick={handleNavClick}
+                aria-current={isActive("/squad-book") ? "page" : undefined}
+                className="btn-press fl-pressable flex min-h-[56px] items-center gap-3 rounded-card bg-pitch-900 px-3 py-2.5 text-white transition hover:bg-pitch-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-primary/50"
+              >
+                <span className={MENU_ICON}>
+                  <BookIcon />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[15px] font-semibold">Squad Book</span>
+                  <span className="block text-[13px] text-[color:var(--fl-muted)]">Collect every player you sign</span>
+                </span>
+                <span aria-hidden className="text-[color:var(--fl-muted)]">›</span>
+              </Link>
 
               <section aria-labelledby="menu-puzzles">
                 <p id="menu-puzzles" className="mb-1.5 px-1 text-[13px] font-semibold text-[color:var(--fl-muted)]">
@@ -395,6 +361,11 @@ const CalendarIcon = () => (
 const ShirtIcon = () => (
   <Icon>
     <BallGlyph />
+  </Icon>
+);
+const EraIcon = () => (
+  <Icon>
+    <ProgrammeGlyph />
   </Icon>
 );
 const TrophyIcon = () => (

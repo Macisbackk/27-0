@@ -8,13 +8,18 @@ import { formatClubFunds } from "@/lib/club-funds";
 import { CountUp } from "@/components/ui/CountUp";
 import { playUiClick } from "@/lib/sound";
 import { TYPO } from "@/lib/ui/typography";
+import { useSheetSlot } from "@/lib/ui/popup-queue";
 
 interface ClubFundsEarnedProps {
   payout: ClubFundsPayoutResult | null | undefined;
   title?: string;
 }
 
-/** Club Funds breakdown popup for season / playoff review. */
+/**
+ * Club Funds breakdown popup for season / playoff review and the login welcome.
+ * Goes through the global sheet queue: if another reward sheet is already up, this one waits
+ * for it to close instead of stacking on top.
+ */
 export function ClubFundsEarned({
   payout,
   title = "Club Funds Earned",
@@ -27,11 +32,13 @@ export function ClubFundsEarned({
     if (hasLines) setOpen(true);
   }, [hasLines, payout?.runId, payout?.total]);
 
+  const granted = useSheetSlot(Boolean(payout && hasLines && open));
+
   if (!payout || !hasLines) return null;
 
   return (
     <GameModal
-      open={open}
+      open={granted}
       onClose={() => setOpen(false)}
       labelledBy="club-funds-earned-title"
       className="fl-modal"

@@ -23,7 +23,7 @@ export function HiddenModeLink({ href, label, ariaLabel }: HiddenModeLinkProps) 
       aria-label={ariaLabel}
       title={ariaLabel}
     >
-      <span className="text-[9px] font-black tracking-tighter text-gray-600 group-hover:text-accent-gold">
+      <span className="text-[9px] font-black tracking-tighter text-[#4b5563] group-hover:text-accent-gold">
         {label}
       </span>
     </Link>

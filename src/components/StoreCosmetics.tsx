@@ -183,17 +183,18 @@ export function KitAndPitchStore({ balance }: { balance: number }) {
                     <StarterTag item={item} />
                   </p>
                   <div className="mt-2">
-                    {owned ? (
+                    {owned && active ? (
+                      <InUseBadge />
+                    ) : owned ? (
                       <GameButton
                         size="sm"
-                        variant={active ? "theme" : "secondary"}
-                        disabled={active}
+                        variant="secondary"
                         onClick={() => {
                           playThemeSelect();
                           equipCosmetic("pitch", item ? item.id : null);
                         }}
                       >
-                        {active ? "In use" : "Use"}
+                        Use
                       </GameButton>
                     ) : (
                       <BuyButton item={item!} balance={balance} onBuy={buy} />
@@ -305,15 +306,25 @@ export function ModesStore({ balance }: { balance: number }) {
       {owned ? (
         <div className="grid grid-cols-2 gap-2">
           <Link href="/play?bk=1" className="btn-press flex h-11 items-center justify-center rounded-control bg-theme-primary text-sm font-bold text-[color:var(--theme-text-on-primary)]">
-            Play Current
+            Play Classic
           </Link>
           <Link href="/play?bk=1&era=1" className="btn-press flex h-11 items-center justify-center rounded-control bg-pitch-800 text-sm font-bold text-white">
-            Play Era
+            Play Era Classic
           </Link>
         </div>
       ) : (
         <BuyButton item={item} balance={balance} onBuy={buy} />
       )}
     </Section>
+  );
+}
+
+/** "In use" state: a check badge, not a disabled button that looks tappable. */
+export function InUseBadge({ label = "In use" }: { label?: string }) {
+  return (
+    <span className="flex min-h-[36px] items-center justify-center gap-1.5 rounded-control bg-theme-primary/15 px-3 text-sm font-bold text-theme-primary">
+      <span aria-hidden>✓</span>
+      {label}
+    </span>
   );
 }

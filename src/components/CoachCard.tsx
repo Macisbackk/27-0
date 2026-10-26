@@ -21,7 +21,11 @@ interface Snapshot {
 
 function readSnapshot(): Snapshot {
   const stats = getAllStats();
-  const rec = (w: number, l: number) => (w + l > 0 ? `${w}-${l}` : "—");
+  // Same source as the Stats tab's records: only seasons actually finished in that mode count.
+  const rec = (b: { totalSeasonsSimulated: number; bestRecordWins: number; bestRecordLosses: number }) =>
+    b.totalSeasonsSimulated > 0 && b.bestRecordWins + b.bestRecordLosses > 0
+      ? `${b.bestRecordWins}-${b.bestRecordLosses}`
+      : "—";
   const legacy = loadLocalLegacy();
   let unlocked = 0;
   let total = 0;
@@ -35,8 +39,8 @@ function readSnapshot(): Snapshot {
   }
   return {
     funds: getClubFundsBalance(),
-    classicBest: rec(stats.normal.bestRecordWins, stats.normal.bestRecordLosses),
-    eraBest: rec(stats.eraNormal.bestRecordWins, stats.eraNormal.bestRecordLosses),
+    classicBest: rec(stats.normal),
+    eraBest: rec(stats.eraNormal),
     managerTrophies: Object.values(legacy.trophies ?? {}).reduce((t, n) => t + (n || 0), 0),
     achievements: unlocked,
     achievementsTotal: total,
@@ -76,7 +80,7 @@ export function CoachCard({
   const tiles: Array<[string, string]> = [
     ["Club Funds", snap ? formatClubFunds(snap.funds) : "—"],
     ["Best Classic", snap?.classicBest ?? "—"],
-    ["Best Era", snap?.eraBest ?? "—"],
+    ["Best Era Classic", snap?.eraBest ?? "—"],
     ["Manager trophies", snap ? String(snap.managerTrophies) : "—"],
   ];
 

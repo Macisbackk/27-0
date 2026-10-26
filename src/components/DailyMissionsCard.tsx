@@ -14,6 +14,8 @@ import { TYPO } from "@/lib/ui/typography";
 
 function Tick({ done }: { done: boolean }) {
   return (
+    <>
+    <span className="sr-only">{done ? "Done:" : "To do:"}</span>
     <span
       aria-hidden
       className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[13px] font-bold ${
@@ -24,6 +26,7 @@ function Tick({ done }: { done: boolean }) {
     >
       ✓
     </span>
+    </>
   );
 }
 

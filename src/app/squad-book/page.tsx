@@ -66,7 +66,12 @@ function MilestoneChips({ milestones, value, claimed }: { milestones: SquadBookM
               done ? "bg-lime-300/15 text-lime-300" : "bg-pitch-800 text-[color:var(--fl-muted)]"
             }`}
           >
-            {done ? "✓ " : ""}
+            {done ? (
+              <>
+                <span aria-hidden>✓ </span>
+                <span className="sr-only">Done: </span>
+              </>
+            ) : null}
             {m.id.includes("-squad-") ? "Full squad" : m.kind === "set" ? "Complete" : m.target} · {formatClubFunds(m.reward)}
           </span>
         );
@@ -139,8 +144,8 @@ export default function SquadBookPage() {
         <header className="text-center">
           <p className={TYPO.sectionLabel}>Collection</p>
           <h1 className={`mt-2 ${TYPO.pageTitle}`}>Squad Book</h1>
-          <p className="mx-auto mt-3 max-w-md text-sm text-gray-500">
-            Every card you field in a finished Classic, Era, Daily or Weekly season goes in the book. Current and era cards of the same player count separately.
+          <p className="mx-auto mt-3 max-w-md text-sm text-[color:var(--fl-muted)]">
+            Every card you field in a finished Classic, Era Classic, Daily or Weekly season goes in the book. A player's 2026 card and his era cards count separately.
           </p>
         </header>
 
@@ -259,7 +264,13 @@ export default function SquadBookPage() {
                         <Bar have={p.have} of={s.target} />
                       </div>
                       <p className={`mt-1.5 text-xs font-semibold ${done ? "text-lime-300" : "text-[color:var(--fl-muted)]"}`}>
-                        {done ? "✓ " : ""}Reward {formatClubFunds(s.reward)}
+                        {done ? (
+                          <>
+                            <span aria-hidden>✓ </span>
+                            <span className="sr-only">Done: </span>
+                          </>
+                        ) : null}
+                        Reward {formatClubFunds(s.reward)}
                       </p>
                     </li>
                   );
@@ -276,7 +287,7 @@ export default function SquadBookPage() {
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search player, club or year"
                 aria-label="Search cards"
-                className="min-h-[44px] w-full min-w-0 rounded-xl border border-pitch-600/60 bg-pitch-900 px-3 text-sm text-white placeholder:text-gray-500"
+                className="min-h-[44px] w-full min-w-0 rounded-xl border border-pitch-600/60 bg-pitch-900 px-3 text-sm text-white placeholder:text-[color:var(--fl-muted)]"
               />
               <select
                 value={club}
@@ -335,7 +346,7 @@ export default function SquadBookPage() {
                     {entry ? (
                       <ClubLogoBox club={c.club} size="xs" />
                     ) : (
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-pitch-800 text-gray-600" aria-label="Not collected">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-pitch-800 text-[color:var(--fl-muted)]" aria-label="Not collected">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                           <circle cx="12" cy="8" r="4" />
                           <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z" />
@@ -343,7 +354,7 @@ export default function SquadBookPage() {
                       </span>
                     )}
                     <span className="min-w-0 flex-1">
-                      <span className={`block truncate text-sm font-semibold ${entry ? "text-white" : "text-gray-500"}`}>
+                      <span className={`block truncate text-sm font-semibold ${entry ? "text-white" : "text-[color:var(--fl-muted)]"}`}>
                         {c.name}
                         {c.category !== "current" && c.year ? ` (${c.year})` : ""}
                       </span>

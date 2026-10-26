@@ -1,7 +1,5 @@
 import type { MatchFixture } from "../game/season-simulation";
 import type { CareerLegacy, CareerState, SeasonOutcome } from "../career/types";
-import { getSeasonGradeFromSquad } from "../grades";
-import { getSquadValue } from "../positions";
 import type { SquadSlot } from "../types";
 import type { AchievementCheckContext } from "./achievementContext";
 import { dispatchAchievementCheck } from "./achievementNotify";
@@ -80,36 +78,42 @@ export function triggerQuickSeasonAchievements(
     return;
   }
 
-  const totalValue = getSquadValue(squad);
-  const gradeInfo = getSeasonGradeFromSquad(squad, season, totalValue);
-  const bradfordCount = countBradfordPlayers(squad);
+  // Grading needs the player database; load it on demand so Manager Mode and the puzzles (which
+  // import this module for their own triggers) don't ship ~1.5 MB of player JSON up front. On
+  // /play those modules are already loaded, so this resolves straight away.
+  void import("./quick-season-grade")
+    .then(({ gradeQuickSeasonSquad }) => {
+      const gradeInfo = gradeQuickSeasonSquad(squad, season);
+      const bradfordCount = countBradfordPlayers(squad);
 
-  for (const fixture of season.fixtures) {
-    if (fixture.result === "W") {
-      triggerQuickMatchAchievements(fixture);
-    }
-  }
+      for (const fixture of season.fixtures) {
+        if (fixture.result === "W") {
+          triggerQuickMatchAchievements(fixture);
+        }
+      }
 
-  triggerAchievementCheck({
-    trigger: "quick-season-completed",
-    quickModeLeagueSeason: true,
-    seasonWins: season.wins,
-    seasonLosses: season.losses,
-    seasonDraws: season.draws ?? 0,
-    regularSeasonWins: season.wins,
-    regularSeasonLosses: season.losses,
-    playoffWins: options.playoffWins,
-    playoffLosses: options.playoffLosses,
-    leagueChampion: options.leagueChampion === true,
-    isPerfectSeason: season.isPerfect,
-    isUnbeatenSeason: season.losses === 0 && season.wins > 0,
-    madePlayoffs: options.madePlayoffs ?? season.leaguePosition <= 6,
-    lowRatedSquad: season.squadStrength < 72,
-    squadGrade: gradeInfo.grade,
-    bradfordPlayerCount: bradfordCount,
-    winningRecord: season.wins > season.losses,
-    eraCup: options.normalEraMode === true,
-  });
+      triggerAchievementCheck({
+        trigger: "quick-season-completed",
+        quickModeLeagueSeason: true,
+        seasonWins: season.wins,
+        seasonLosses: season.losses,
+        seasonDraws: season.draws ?? 0,
+        regularSeasonWins: season.wins,
+        regularSeasonLosses: season.losses,
+        playoffWins: options.playoffWins,
+        playoffLosses: options.playoffLosses,
+        leagueChampion: options.leagueChampion === true,
+        isPerfectSeason: season.isPerfect,
+        isUnbeatenSeason: season.losses === 0 && season.wins > 0,
+        madePlayoffs: options.madePlayoffs ?? season.leaguePosition <= 6,
+        lowRatedSquad: season.squadStrength < 72,
+        squadGrade: gradeInfo.grade,
+        bradfordPlayerCount: bradfordCount,
+        winningRecord: season.wins > season.losses,
+        eraCup: options.normalEraMode === true,
+      });
+    })
+    .catch((error) => console.error("[achievements] season grade:", error));
 }
 
 export function triggerDailyChallengeAchievements(

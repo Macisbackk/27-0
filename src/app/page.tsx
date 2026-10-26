@@ -32,10 +32,10 @@ export default function HomePage() {
 
         <nav className="flex flex-wrap justify-center gap-2 pt-1" aria-label="More">
           {[
+            ["/leaderboard", "Leaderboard"],
+            ["/squad-book", "Squad Book"],
             ["/store", "Store"],
-            ["/profile#achievements", "Achievements"],
             ["/showcase", "Players"],
-            ["/settings", "Settings"],
           ].map(([href, label]) => (
             <Link key={href} href={href} className="fl-pill bg-pitch-900 text-[color:var(--fl-muted)] hover:text-white">
               {label}

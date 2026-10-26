@@ -17,8 +17,10 @@
   --manager-mobile-playbar-reserve: 5.5rem;
   --manager-mobile-chrome-gap: 0.75rem;
 
-  /* Fallback before next/font Anton (--font-pitch) is on <html>. */
-  --font-display: "Arial Black", "Impact", "Segoe UI", system-ui, sans-serif;
+  /* Anton (--font-pitch, set by next/font as a class on <html>) is the single display stack.
+     It must live on :root: a plain `html {}` rule loses to `:root {}` on specificity, which left
+     every title in Arial Black / Roboto. The var() fallback covers the moment before the class lands. */
+  --font-display: var(--font-pitch, "Arial Black"), "Arial Black", "Impact", sans-serif;
   --font-body: "Segoe UI", system-ui, sans-serif;
   --bg-primary: #0a0f0d;
   --bg-secondary: #0f1814;
@@ -98,6 +100,20 @@
 }
 
 /*
+ * Contrast floor (WCAG AA). Tailwind's gray-500 (#6b7280, ~3.7:1) and gray-600 (#4b5563, ~2.3:1)
+ * fail on every dark ground this site uses (#0e0f10–#1a1c1e). New code uses the muted token
+ * (`text-[color:var(--fl-muted)]`, #a6a9ad, ~8:1); this catches any older class still around.
+ * Declared after @tailwind utilities, so it wins at equal specificity; hover/focus variants still win.
+ */
+.text-gray-500,
+.text-gray-600 {
+  color: var(--fl-muted);
+}
+.placeholder\:text-gray-500::placeholder {
+  color: var(--fl-muted);
+}
+
+/*
  * Layer utilities for uiLayerClass() in src/lib/ui/layers.ts.
  * These must be real CSS: Tailwind cannot compile an arbitrary class built from
  * a template literal, so overlays styled that way resolve to `z-index: auto`.
@@ -139,8 +155,9 @@
 }
 
 html {
-  /* Anton (--font-pitch from next/font) is the single display stack (playoff chrome). */
-  --font-display: var(--font-pitch), "Arial Black", "Impact", sans-serif;
+  /* Anton ships one weight (400). Without this, `font-bold`/`font-black` on display text makes the
+     browser smear a fake bold over it. Barlow and Barlow Condensed have real bold weights. */
+  font-synthesis-weight: none;
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
@@ -201,6 +218,14 @@ html[data-ui-overlay="1"] {
       var(--manager-mobile-playbar-reserve) +
         var(--manager-mobile-chrome-gap, 0.75rem)
     );
+  }
+
+  /* The bottom nav stays up on Manager and the puzzles: their sticky action bars ride on top of
+     it rather than under it (BottomNav sets data-bottom-nav while it is showing). */
+  html[data-bottom-nav="1"] .mobile-action-bar {
+    bottom: var(--manager-mobile-nav-h);
+    padding-bottom: 0.5rem;
+    min-height: var(--manager-mobile-playbar-h);
   }
 
   .manager-mobile-play-bar {
