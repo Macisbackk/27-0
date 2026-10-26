@@ -104,6 +104,10 @@ await shot(phone, "31-menu-full", "/", tap(/open menu/i), true);
     await page.getByRole("button", { name: /Today's missions/ }).click({ timeout: 5000 });
     await page.waitForTimeout(400);
   }, true);
+  await shot(back, "34-home-era", "/", async (page) => {
+    await page.getByRole("button", { name: /Every era/ }).click({ timeout: 5000 });
+    await page.waitForTimeout(400);
+  });
   await back.close();
 }
 

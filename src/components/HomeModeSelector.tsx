@@ -533,7 +533,7 @@ export function HomeModeSelector() {
                 href={weeklyHref}
                 onClick={() => playUiClick()}
                 aria-label={`Weekly Challenge: ${weekly?.scenario.ruleTitle ?? "this week's rule"}. ${weeklyStatus}${weekly ? `, ${weekly.resetsIn} left` : ""}`}
-                className={`btn-press fl-pressable flex h-full min-h-[72px] flex-col justify-between gap-2 rounded-tile p-3 pr-12 text-left hover:bg-pitch-800 ${FOCUS}`}
+                className={`btn-press fl-pressable flex h-full min-h-[72px] flex-col justify-center gap-1 rounded-tile p-3 pr-12 text-left hover:bg-pitch-800 ${FOCUS}`}
               >
                 <span className="flex items-center gap-1.5 font-cond text-[14px] font-bold text-accent-gold">
                   <Glyph size={16}>
