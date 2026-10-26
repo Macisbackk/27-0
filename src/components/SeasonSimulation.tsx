@@ -107,7 +107,7 @@ export function SeasonSimulation({
     return () => clearTimeout(timer);
   }, [gameIndex, result.fixtures, onComplete, forkOpen]);
 
-  const currentRound = Math.min(gameIndex + 1, SEASON_GAMES);
+  const currentRound = forkOpen ? HALFWAY_CALL_ROUND : Math.min(gameIndex + 1, SEASON_GAMES);
   const skipToEnd = () => {
     if (phase !== "simulating") return;
     // Skipping past the fork without choosing keeps the season as simulated (no change).

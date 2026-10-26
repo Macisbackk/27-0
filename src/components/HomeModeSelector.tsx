@@ -30,7 +30,7 @@ import {
   flushWeeklyChallengeEntry,
   type WeeklyLastWeekResult,
 } from "@/lib/storage/weekly-leaderboard";
-import { useAuth } from "@/lib/auth-context";
+import { isCloudHydrated, useAuth } from "@/lib/auth-context";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { buildPlayHref } from "@/lib/play-links";
 import { setNormalEraVariant } from "@/lib/storage/preferences";
@@ -169,6 +169,10 @@ export function HomeModeSelector() {
       // Daily welcome bonus: once per UK day, grows with consecutive days.
       const claimed = claimDailyBonus();
       if (claimed) setBonus(claimed);
+    } catch {
+      /* storage blocked: no bonus today, the hub still shows */
+    }
+    try {
       setHub(readHub());
     } catch {
       setHub(null);
@@ -186,16 +190,26 @@ export function HomeModeSelector() {
   useEffect(() => {
     if (!SHOW_DAILY_CHALLENGE_UI || authLoading || !isLoggedIn) return;
     let alive = true;
-    void flushWeeklyChallengeEntry();
-    void checkWeeklyLastWeekFinish()
-      .then((result) => {
-        if (alive) setLastWeek(result);
-      })
-      .catch(() => {
-        /* board unreachable: try again next visit */
-      });
+    let ran = false;
+    // Wait for the account's cloud ledger to merge first, so a top-10 prize already paid on
+    // another device is seen as paid here.
+    const run = () => {
+      if (ran || !alive || !isCloudHydrated()) return;
+      ran = true;
+      void flushWeeklyChallengeEntry();
+      void checkWeeklyLastWeekFinish()
+        .then((result) => {
+          if (alive) setLastWeek(result);
+        })
+        .catch(() => {
+          /* board unreachable: try again next visit */
+        });
+    };
+    run();
+    window.addEventListener("auth-state-changed", run);
     return () => {
       alive = false;
+      window.removeEventListener("auth-state-changed", run);
     };
   }, [authLoading, isLoggedIn]);
 

@@ -8,8 +8,8 @@ import { isCurrentEraSeasonYear } from "../players/current-season";
  *
  * Adjacent slots in the same line that share a club OR an era card year form a
  * link worth +0.5 effective team rating, capped at +3.0 for the squad. The sim
- * adds the bonus to the average squad rating when resolving each fixture, so two
- * Wigan centres (or a Bradford '03 half pairing) are worth more than their OVRs.
+ * adds the bonus to the average squad rating when resolving each fixture, so a
+ * Wigan wing and centre (or a Bradford '03 half pairing) are worth more than their OVRs.
  *
  * Lines (slot indices from SLOT_DEFINITIONS in positions.ts):
  *   back line  — Left Wing (1) ↔ Left Centre (3), Right Centre (4) ↔ Right Wing (2)
