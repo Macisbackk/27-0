@@ -12,8 +12,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [site]
-        width: ["375", "desktop"]
+        include:
+          - { mode: fix, width: "320" }
+          - { mode: fix, width: "375" }
+          - { mode: fix, width: "desktop" }
+          - { mode: site, width: "375" }
+          - { mode: site, width: "desktop" }
     env:
       NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder
@@ -29,10 +33,10 @@ jobs:
       - run: npm ci
       - name: Apply candidate fix
         if: matrix.mode != 'dev'
-        run: git apply scripts/debug-fix.patch && git diff --stat
+        run: git apply scripts/debug-fix.patch && git diff --stat && npx tsc --noEmit
       - name: Build (prod)
         if: matrix.mode != 'dev'
-        run: npm run build
+        run: npm run build && if [ "${{ matrix.mode }}" = fix ]; then node scripts/debug-patch-react.mjs; fi
       - name: Install Playwright
         run: npm install --no-save playwright@1.49.1 && npx playwright install --with-deps chromium
       - name: Start server

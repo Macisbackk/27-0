@@ -1,19 +1,48 @@
 diff --git a/src/app/layout.tsx b/src/app/layout.tsx
-index fe14286..866f982 100644
+index fe14286..4a9af82 100644
 --- a/src/app/layout.tsx
 +++ b/src/app/layout.tsx
-@@ -1,4 +1,5 @@
- import type { Metadata, Viewport } from "next";
-+import { Suspense } from "react";
- import { Anton, Barlow, Barlow_Condensed } from "next/font/google";
- import Script from "next/script";
- import { Analytics } from "@vercel/analytics/react";
-@@ -116,7 +117,7 @@ export default function RootLayout({
+@@ -24,6 +24,7 @@ import { UI_THEME_BOOTSTRAP_SCRIPT } from "@/lib/ui/theme-bootstrap-script";
+ import { IS_APP_BUILD, NATIVE_CLASS_BOOTSTRAP_SCRIPT } from "@/lib/native/platform";
+ import { OfflineBanner } from "@/components/OfflineBanner";
+ import { ToastHost } from "@/components/ui/ToastHost";
++import { RouteSlot } from "@/components/RouteSlot";
+ 
+ // Matchnight type: Barlow for reading (road-sign grotesque, northern-England plain speaking),
+ // Barlow Condensed for headings and kit-tag labels, Anton kept for scores and the scoreboard mark.
+@@ -116,7 +117,8 @@ export default function RootLayout({
              <LoginWelcomePopup />
              <Header />
              <main className="app-main flex min-w-0 max-w-full flex-1 flex-col overflow-x-clip">
 -              {children}
-+              <Suspense fallback={null}>{children}</Suspense>
++              {/* Never put {children} straight inside <main>: see RouteSlot (React error #418). */}
++              <RouteSlot>{children}</RouteSlot>
              </main>
              <SiteFooter />
              <BottomNav />
+diff --git a/src/components/RouteSlot.tsx b/src/components/RouteSlot.tsx
+new file mode 100644
+index 0000000..22c6269
+--- /dev/null
++++ b/src/components/RouteSlot.tsx
+@@ -0,0 +1,20 @@
++"use client";
++
++import type { ReactNode } from "react";
++
++/**
++ * Holds the current page inside the root layout's <main>. Keep it: it is a hydration fix, not decoration.
++ *
++ * The page reaches the browser as a lazy React Server Components chunk. If its JavaScript is still
++ * loading when hydration reaches <main> (the first page load the service worker serves makes this
++ * likely), and <main>'s direct child is that lazy chunk, React suspends while hydrating <main>
++ * itself. When the chunk arrives React replays <main> from the start and tries to claim the <main>
++ * element a second time, then fails with "Hydration failed" (React error #418) and client-renders
++ * the page. With this component in between, React suspends here, <main> is claimed only once, and
++ * nothing mismatches.
++ *
++ * Not a Suspense boundary: a boundary above the page would send notFound() pages as 200, not 404.
++ */
++export function RouteSlot({ children }: { children: ReactNode }) {
++  return children;
++}
