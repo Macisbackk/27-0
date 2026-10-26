@@ -26,9 +26,17 @@ import { DocumentPageShell } from "@/components/ui/DocumentPageShell";
 import { GameStatCard } from "@/components/ui/GameStatCard";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
 import { ShareSeasonButton } from "./ShareSeasonButton";
+import { ShareResultButton } from "./ShareResultButton";
+import { buildShareResultText } from "@/lib/share-result";
+import {
+  getWeeklyChallengeHref,
+  getWeeklyChallengeScenario,
+  getWeeklyChallengeWeekKey,
+} from "@/lib/weekly-challenge";
 import type { DailyChallengeScenario } from "@/lib/daily-challenge";
 import {
   getDailyChallengeDateKey,
+  getDailyChallengeHref,
   getDailyChallengeStreak,
 } from "@/lib/daily-challenge";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
@@ -175,7 +183,13 @@ export function PlayoffReview({
   const showDailyPresentation =
     SHOW_DAILY_CHALLENGE_UI && dailyChallengeMode && Boolean(dailyScenario);
 
-  const shareAction = useMemo(() => {
+  const imageShareAction = useMemo(() => {
+    const imageButtonProps = {
+      variant: "ghost" as const,
+      size: "sm" as const,
+      fullWidth: false,
+      label: "Share as image",
+    };
     const overallWins = seasonResult.wins + playoffResult.wins;
     const overallLosses = seasonResult.losses + playoffResult.losses;
     const recordLine = formatRecordWithPercentage(overallWins, overallLosses);
@@ -196,6 +210,7 @@ export function PlayoffReview({
             ],
           }}
           filename="27-0-play-offs.png"
+          {...imageButtonProps}
         />
       );
     }
@@ -221,6 +236,7 @@ export function PlayoffReview({
           detailLines,
         }}
         filename="27-0-daily.png"
+        {...imageButtonProps}
       />
     );
   }, [
@@ -235,6 +251,58 @@ export function PlayoffReview({
     playoffResult.finish,
     playoffResult.leaguePosition,
   ]);
+
+  // Wordle-style spoiler-free text: the main share. The image card stays as a smaller extra.
+  const shareResultText = useMemo(() => {
+    const base = {
+      results: seasonResult.fixtures.map((fixture) => fixture.result),
+      leaguePosition: playoffResult.leaguePosition,
+      playoffResults: playoffResult.userFixtures.map((fixture) => fixture.result),
+      playoffFinish: playoffResult.finish,
+    };
+    if (showDailyPresentation && dailyScenario) {
+      return buildShareResultText({
+        ...base,
+        kind: "daily",
+        era: dailyScenario.eraMode,
+        dateKey: getDailyChallengeDateKey(),
+        ruleTitle: dailyScenario.ruleTitle,
+        practice: dailyAttemptCounts === false,
+        streak: getDailyChallengeStreak(),
+        href: getDailyChallengeHref(),
+      });
+    }
+    if (weeklyChallengeMode) {
+      const scenario = getWeeklyChallengeScenario();
+      return buildShareResultText({
+        ...base,
+        kind: "weekly",
+        era: scenario.eraMode,
+        weekKey: getWeeklyChallengeWeekKey(),
+        ruleTitle: scenario.ruleTitle,
+        practice: weeklyAttemptCounts === false,
+        weeklyScore,
+        href: getWeeklyChallengeHref(),
+      });
+    }
+    return buildShareResultText({ ...base, kind: "classic", era: normalEraMode });
+  }, [
+    seasonResult.fixtures,
+    playoffResult.leaguePosition,
+    playoffResult.userFixtures,
+    playoffResult.finish,
+    showDailyPresentation,
+    dailyScenario,
+    dailyAttemptCounts,
+    weeklyChallengeMode,
+    weeklyAttemptCounts,
+    weeklyScore,
+    normalEraMode,
+  ]);
+
+  const shareAction = (
+    <ShareResultButton text={shareResultText} secondary={imageShareAction} />
+  );
 
   return (
     <DocumentPageShell

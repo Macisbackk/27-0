@@ -1,11 +1,13 @@
 import type { NextConfig } from "next";
 import path from "path";
 
-/** Set CAPACITOR_BUILD=1 for the packaged Android (static) export. */
+/** Set CAPACITOR_BUILD=1 for the packaged iPhone / Android (static) export. */
 const isCapacitorBuild = process.env.CAPACITOR_BUILD === "1";
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
+  // Lets the app build hide web-only bits (tip links, "install" prompts, web analytics) at build time.
+  env: { NEXT_PUBLIC_APP_BUILD: isCapacitorBuild ? "1" : "" },
   images: {
     remotePatterns: [],
     // Static export cannot use the Next image optimizer.

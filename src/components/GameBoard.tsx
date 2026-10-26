@@ -1,5 +1,6 @@
 "use client";
 
+import { recordSquadBookRun } from "@/lib/squad-book";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
@@ -87,6 +88,8 @@ import {
   awardClubFundsLines,
 } from "@/lib/storage/club-funds";
 import { recordCompletedRun, recordPlayoffCompletion } from "@/lib/storage/run";
+import { reportMissionEvent } from "@/lib/daily-missions";
+import { seasonMissionEvent } from "@/lib/daily-missions-season";
 import { triggerQuickSeasonAchievements } from "@/lib/achievements/achievementTriggers";
 import {
   playJoeMellorActivate,
@@ -1244,6 +1247,7 @@ export function GameBoard({
     (result: SeasonResult, finalSquad: SquadSlot[]) => {
       if (recordedRef.current) return;
       recordedRef.current = true;
+      recordSquadBookRun({ runId, mode, squad: finalSquad, hidden: joeMellorMode || superSamHallasMode, era: normalEraMode, daily: dailyChallengeMode, weekly: weeklyChallengeMode });
 
       const signedIds = finalSquad
         .filter((s) => s.player)
@@ -1341,6 +1345,7 @@ export function GameBoard({
           }
           combined = mergeClubFundsPayouts(payout, dailyPayout);
         }
+        combined = mergeClubFundsPayouts(combined, reportMissionEvent(seasonMissionEvent({ squad: finalSquad, result, leaguePosition: tablePosition, mode, era: normalEraMode, daily: dailyChallengeMode, hidden: joeMellorMode || superSamHallasMode })).payout);
         setClubFundsPayout(combined);
       }
 
@@ -1588,6 +1593,7 @@ export function GameBoard({
             }
             combined = mergeClubFundsPayouts(payout, dailyPayout);
           }
+          combined = mergeClubFundsPayouts(combined, reportMissionEvent({ kind: "playoffs", mode, hidden: joeMellorMode || superSamHallasMode, champion: wonTitle }).payout);
           setPlayoffFundsPayout(combined);
         }
         finalizePlayoffRun(updated, squad);

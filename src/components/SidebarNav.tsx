@@ -22,6 +22,7 @@ import {
 } from "@/lib/sound";
 import { ChallengeCupVariantToggle } from "./ChallengeCupVariantToggle";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
+import { SHOW_TIP_LINKS } from "@/lib/native/platform";
 import {
   CoffeeIcon,
   SuggestionsIcon,
@@ -150,6 +151,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 
   const club = [
     { href: "/store", label: "Store", icon: <BagIcon /> },
+    { href: "/squad-book", label: "Squad Book", icon: <BookIcon /> },
     { href: "/leaderboard", label: "Leaderboard", icon: <TableIcon /> },
     { href: "/profile", label: "Coach Profile", icon: <PersonIcon /> },
     { href: "/settings", label: "Settings", icon: <CogIcon /> },
@@ -326,9 +328,11 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                 <a href={SUGGESTIONS_MAIL} aria-label="Send a suggestion" title="Suggestions" className={FOOT_LINK}>
                   <SuggestionsIcon />
                 </a>
-                <a href={COFFEE_URL} target="_blank" rel="noopener noreferrer" aria-label="Buy Me a Coffee — support 27-0" title="Buy Me a Coffee" className={FOOT_LINK}>
-                  <CoffeeIcon />
-                </a>
+                {SHOW_TIP_LINKS ? (
+                  <a href={COFFEE_URL} target="_blank" rel="noopener noreferrer" aria-label="Buy Me a Coffee — support 27-0" title="Buy Me a Coffee" className={FOOT_LINK}>
+                    <CoffeeIcon />
+                  </a>
+                ) : null}
                 <a href={X_URL} target="_blank" rel="noopener noreferrer" aria-label="Follow 27-0 on X" title="Follow on X" className={FOOT_LINK}>
                   <XIcon />
                 </a>
@@ -406,6 +410,12 @@ const PuzzleIcon = () => (
 const BagIcon = () => (
   <Icon>
     <ShopGlyph />
+  </Icon>
+);
+const BookIcon = () => (
+  <Icon>
+    <path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6.5A2.5 2.5 0 0 0 4 21.5" />
+    <path d="M20 19v2.5H6.5" />
   </Icon>
 );
 const TableIcon = () => (

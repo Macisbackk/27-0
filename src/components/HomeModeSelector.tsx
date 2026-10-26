@@ -31,6 +31,7 @@ import {
   type WeeklyLastWeekResult,
 } from "@/lib/storage/weekly-leaderboard";
 import { isCloudHydrated, useAuth } from "@/lib/auth-context";
+import { DailyMissionsCard } from "@/components/DailyMissionsCard";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { buildPlayHref } from "@/lib/play-links";
 import { setNormalEraVariant } from "@/lib/storage/preferences";
@@ -333,6 +334,8 @@ export function HomeModeSelector() {
           </div>
         </section>
       ) : null}
+
+      <DailyMissionsCard className="text-left" />
 
       <Tile href="/manager" className="!flex-row gap-3 !p-3.5 !text-left">
         <TileIcon>

@@ -2,7 +2,7 @@ import eraStarting17sData from "../../../data/era-starting-17s.json";
 import type { Position } from "../types";
 import { isSuperLeagueSeason } from "./super-league-club-years";
 import {
-  findEraPlayerByName,
+  findEraPlayerByNameNearYear,
   findPlayerForTeamYearSquad,
 } from "./player-name-resolve";
 import { getPlayerEligiblePositions } from "./player-positions";
@@ -18,17 +18,11 @@ function resolveEraSquadPlayer(
   if (exact) return exact;
 
   // Fallback when a season card is missing — keeps older / non-import club-years playable.
-  // Prefer name+club+year above; never use a Current 2026 card for a historic year.
-  const fallback = findEraPlayerByName(name);
-  if (!fallback) return null;
-  if (excludeIds?.has(fallback.id)) return null;
-
+  // Prefer name+club+year above; otherwise his nearest season (not his best card), and never
+  // a Current 2026 card for a historic year.
   const y = Number.parseInt(year, 10);
-  if (fallback.category === "current" && Number.isFinite(y) && y < 2026) {
-    return null;
-  }
-
-  return fallback;
+  if (!Number.isFinite(y)) return null;
+  return findEraPlayerByNameNearYear(name, club, y, excludeIds);
 }
 
 export const ERA_STARTING_17_SIZE = 17;

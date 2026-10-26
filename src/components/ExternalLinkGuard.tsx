@@ -5,7 +5,8 @@ import { Capacitor } from "@capacitor/core";
 import { Browser } from "@capacitor/browser";
 
 /**
- * In the Android shell, open http(s) links that leave 27-0 in the system browser.
+ * In the iPhone / Android app, open http(s) links that leave 27-0 in the in-app browser
+ * (SFSafariViewController on iPhone, Custom Tabs on Android), so there is never browser chrome in the app itself.
  * Internal routes stay inside the WebView.
  */
 export function ExternalLinkGuard() {
