@@ -1,0 +1,19 @@
+1 problem(s)
+[Classic Era playthrough] page error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+
+Checks:
+Crawled 26 routes @320
+Crawled 26 routes @375
+Crawled 26 routes @desktop
+Bottom nav: items, visibility and no overlap
+Checked 73 internal links
+Classic Current: full run to review (3 taps)
+Classic Era: full run to review (3 taps)
+Daily Challenge: full run to review (3 taps)
+Classic: rapid Auto Fill / Simulate taps
+Classic: reload mid-run
+Wordle: played
+Grid: played
+Quiz: played
+Corrupted all 20 saved keys and revisited every route
+Wrong-shaped JSON in every key, revisited every route
