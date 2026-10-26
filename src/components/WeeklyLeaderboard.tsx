@@ -18,6 +18,7 @@ import {
   getPreviousWeeklyChallengeWeekKey,
   getWeeklyChallengeHref,
   getWeeklyChallengeScenario,
+  getWeeklyChallengeScenarioForWeek,
   getWeeklyChallengeWeekKey,
   WEEKLY_TOP10_REWARD,
 } from "@/lib/weekly-challenge";
@@ -36,10 +37,7 @@ export function WeeklyLeaderboard() {
     let alive = true;
     const now = new Date();
     const key = view === "this" ? getWeeklyChallengeWeekKey(now) : getPreviousWeeklyChallengeWeekKey(now);
-    // Any instant inside last week works for its scenario: seven days ago is.
-    const scenario = getWeeklyChallengeScenario(
-      view === "this" ? now : new Date(now.getTime() - 7 * 86_400_000)
-    );
+    const scenario = view === "this" ? getWeeklyChallengeScenario(now) : getWeeklyChallengeScenarioForWeek(key);
     setRows(null);
     setWeek({ key, title: scenario.ruleTitle, resetsIn: formatWeeklyResetCountdown(now) });
     void getWeeklyLeaderboardAsync(key)

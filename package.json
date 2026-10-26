@@ -95,7 +95,8 @@
     "test:grid": "tsx scripts/test-grid-engine.ts",
     "test:daily-rules": "tsx scripts/test-daily-rules.ts && tsx scripts/test-daily-bonus.ts",
     "test:chemistry": "tsx scripts/test-chemistry.ts",
-    "test:weekly": "tsx scripts/test-weekly.ts"
+    "test:weekly": "tsx scripts/test-weekly.ts",
+    "test:store": "bun scripts/test-store.ts"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.0",
