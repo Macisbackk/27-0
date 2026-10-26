@@ -113,7 +113,7 @@ function AchievementRow({
             </p>
           ) : null}
           {isUnlocked && unlockedAt ? (
-            <p className="mt-1 text-[10px] text-gray-500">
+            <p className="mt-1 text-[10px] text-[color:var(--fl-muted)]">
               Unlocked {formatUnlockDate(unlockedAt)}
             </p>
           ) : null}

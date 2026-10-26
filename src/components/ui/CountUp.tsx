@@ -60,9 +60,11 @@ export function CountUp({
     return () => cancelAnimationFrame(raf);
   }, [value, durationMs, bump]);
 
+  // Screen readers get the final value once, not every frame of the roll (which read out "£0").
   return (
     <span key={bumpKey} className={`inline-block ${bumpKey > 0 ? "fl-bump" : ""} ${className}`.trim()}>
-      {format(shown)}
+      <span aria-hidden="true">{format(shown)}</span>
+      <span className="sr-only">{format(value)}</span>
     </span>
   );
 }

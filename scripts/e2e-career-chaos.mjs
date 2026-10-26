@@ -43,7 +43,8 @@ async function noSidewaysScroll(page, where) {
 async function startCareer(page, division, index = 0) {
   await page.goto(`${BASE}/manager`, { waitUntil: "networkidle" });
   await page.getByRole("heading", { name: "Pick your club" }).waitFor({ timeout });
-  if (division === "super-league") await page.getByRole("tab", { name: /Super League/ }).click();
+  // v1.18: Super League is the default tab; pick the requested one explicitly.
+  await page.getByRole("tab", { name: division === "super-league" ? /Super League/ : /Championship/ }).click();
   const clubs = page.getByRole("list", { name: "Clubs" }).getByRole("button");
   await clubs.nth(index).click();
   await page.getByRole("button", { name: /Take charge of/ }).click();
@@ -134,7 +135,10 @@ try {
   await page.getByRole("heading", { name: "Comings and goings" }).waitFor({ timeout });
   await noSidewaysScroll(page, "departures @320");
   // Double-tap the exit: must land on the window once, not skip past it.
-  await page.getByRole("button", { name: /^(Open the transfer window|Let the rest go · open the window)$/ }).dblclick();
+  await page.getByRole("button", { name: /^(Open the transfer window|Continue to the window)$/ }).dblclick();
+  // v1.18: the release list is confirmed in a sheet; double-tap the confirm too.
+  const confirmRelease = page.getByRole("button", { name: /^Let \d+ go · open the window$/ });
+  if (await confirmRelease.waitFor({ state: "visible", timeout: 2_000 }).then(() => true, () => false)) await confirmRelease.dblclick().catch(() => {});
   await page.getByRole("heading", { name: "Build your squad" }).waitFor({ timeout });
   await noSidewaysScroll(page, "transfers @320");
   // Try to sell the whole squad: must stop at the minimum without errors.

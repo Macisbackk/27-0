@@ -43,8 +43,14 @@ import {
   getCurrentPrize,
   getGuaranteedPrize,
   getPrizeForQuestionNumber,
+  QUIZ_GAME_NAME,
   QUIZ_TOP_PRIZE,
 } from "@/lib/quiz/prizes";
+import {
+  getQuizDayLedger,
+  QUIZ_DAILY_CAP,
+  QUIZ_REPEAT_RUN_SHARE,
+} from "@/lib/quiz/rewards";
 import { QuizPrizeLadder } from "@/components/quiz/QuizPrizeLadder";
 import {
   clearQuizRun,
@@ -69,7 +75,7 @@ function persist(run: QuizRun | null): QuizRun | null {
 export function QuizModeApp() {
   const bank = useMemo(() => getQuizQuestionBank(), []);
   const router = useRouter();
-  // Team Challenge is retired: old ?mode=team links land on Super League Millionaire.
+  // Team Challenge is retired: old ?mode=team links land on the Golden Point Quiz.
   const [view, setView] = useState<QuizView>("landing");
   const [run, setRun] = useState<QuizRun | null>(null);
   const [walkOpen, setWalkOpen] = useState(false);
@@ -92,7 +98,7 @@ export function QuizModeApp() {
     setRun(persist(next));
   }, []);
 
-  const startMillionaire = () => {
+  const startQuiz = () => {
     playUiClick();
     const stats = loadQuizStats();
     const next = createQuizRun({
@@ -175,7 +181,7 @@ export function QuizModeApp() {
 
   const playAgain = () => {
     playUiClick();
-    startMillionaire();
+    startQuiz();
   };
 
   const backToQuiz = () => {
@@ -190,9 +196,9 @@ export function QuizModeApp() {
     <StandardPageShell>
       <div className={`${PAGE.section} quiz-arena mx-auto flex w-full max-w-5xl flex-col items-center`}>
         {!ready ? (
-          <p className={`text-center ${TYPO.meta}`}>Loading Super League Millionaire…</p>
+          <p className={`text-center ${TYPO.meta}`}>Loading {QUIZ_GAME_NAME}…</p>
         ) : view === "landing" ? (
-          <QuizLanding onMillionaire={startMillionaire} />
+          <QuizLanding onStart={startQuiz} />
         ) : view === "play" && run ? (
           <QuizPlayScreen
             run={run}
@@ -219,7 +225,7 @@ export function QuizModeApp() {
         ) : view === "result" && run ? (
           <QuizResultScreen run={run} bank={bank} onAgain={playAgain} onBack={backToQuiz} />
         ) : (
-          <QuizLanding onMillionaire={startMillionaire} />
+          <QuizLanding onStart={startQuiz} />
         )}
       </div>
 
@@ -256,19 +262,31 @@ export function QuizModeApp() {
   );
 }
 
-function QuizLanding({ onMillionaire }: { onMillionaire: () => void }) {
+function QuizLanding({ onStart }: { onStart: () => void }) {
+  const [ledger, setLedger] = useState<{ runs: number; paid: number } | null>(null);
+  useEffect(() => {
+    setLedger(getQuizDayLedger());
+  }, []);
+  const repeatPct = Math.round(QUIZ_REPEAT_RUN_SHARE * 100);
+  const capReached = ledger !== null && ledger.paid >= QUIZ_DAILY_CAP;
   return (
     <div className="mx-auto w-full max-w-xl text-center">
       <p className={TYPO.sectionLabel}>Puzzles</p>
-      <h1 className={`mt-2 ${TYPO.pageTitle}`}>Super League Millionaire</h1>
+      <h1 className={`mt-2 ${TYPO.pageTitle}`}>{QUIZ_GAME_NAME}</h1>
       <p className={`mt-2 ${TYPO.bodySm}`}>
         15 questions, four lifelines, {formatClubFundsExact(QUIZ_TOP_PRIZE)} top prize. Bank at Q5 and Q10.
       </p>
-      <p className={`mt-1 ${TYPO.bodySm}`}>
-        Your best run each day pays Club Funds — beat it to bank the difference.
+      <p className={`mt-1 ${TYPO.bodySm}`} data-testid="quiz-day-reward">
+        {ledger === null || ledger.runs === 0
+          ? `Your first run today pays in full. Later runs pay ${repeatPct}% of their prize.`
+          : capReached
+            ? "You've banked today's quiz maximum. Later runs are practice until tomorrow."
+            : `Today's full-price run is used. Runs now pay ${repeatPct}% of their prize (${formatClubFundsExact(
+                Math.max(0, QUIZ_DAILY_CAP - ledger.paid)
+              )} left today).`}
       </p>
       <div className="mx-auto mt-6 grid max-w-sm gap-2">
-        <GameButton variant="theme" onClick={onMillionaire}>
+        <GameButton variant="theme" onClick={onStart}>
           Start quiz
         </GameButton>
         <GameButton variant="secondary" href="/mini-games">
@@ -322,7 +340,7 @@ function QuizPlayScreen({
       <section className="mx-auto min-w-0 w-full max-w-xl text-center lg:col-start-2">
         <div className="flex flex-col items-center gap-2 sm:flex-row sm:items-start sm:justify-center sm:gap-4">
           <div className="min-w-0">
-            <p className={TYPO.sectionLabel}>Super League Millionaire</p>
+            <p className={TYPO.sectionLabel}>{QUIZ_GAME_NAME}</p>
             {club && (
               <p className={`mt-1 ${TYPO.clubName}`}>{club.name} Team Challenge</p>
             )}
@@ -505,11 +523,11 @@ function QuizResultScreen({
   const club = run.teamId ? getQuizClub(run.teamId) : null;
   const title =
     run.phase === "quiz_complete"
-      ? "Millionaire"
+      ? "Golden point!"
       : run.phase === "quiz_walked_away"
         ? "You banked it"
         : "Quiz over";
-  /** Millionaire pays the day's best run: this run banked less than its prize (maybe nothing). */
+  /** Only the day's first run pays in full: this run banked less than its prize (maybe nothing). */
   const partiallyPaid =
     run.rewardAmount > 0 &&
     typeof run.rewardPaid === "number" &&
@@ -519,12 +537,12 @@ function QuizResultScreen({
     <div className="mx-auto w-full max-w-xl text-center">
       {run.phase === "quiz_complete" && <Confetti />}
       <p className={TYPO.sectionLabel}>
-        {club ? club.name : "Super League Millionaire"}
+        {club ? club.name : QUIZ_GAME_NAME}
       </p>
       <h1 className={`mt-2 ${TYPO.pageTitle}`}>{title}</h1>
       {run.phase === "quiz_complete" ? (
         <p className={`mt-3 ${TYPO.pageSubtitle}`}>
-          You answered all 15 questions correctly — Super League Millionaire payout.
+          You answered all 15 questions correctly — top prize.
         </p>
       ) : (
         <p className={`mt-3 ${TYPO.pageSubtitle}`}>
@@ -546,8 +564,10 @@ function QuizResultScreen({
       {!run.rewardPractice && partiallyPaid && (
         <p className={`mt-2 ${TYPO.body}`}>
           {run.rewardPaid! > 0
-            ? `You banked ${formatClubFundsExact(run.rewardPaid!)} on top of today's best run.`
-            : "You've already banked this much today. Beat today's best run to bank more."}
+            ? `Repeat run: you banked ${formatClubFundsExact(run.rewardPaid!)} (${Math.round(
+                QUIZ_REPEAT_RUN_SHARE * 100
+              )}% of the prize). Your first run each day pays in full.`
+            : "You've banked today's quiz maximum. Come back tomorrow for a full-price run."}
         </p>
       )}
       {run.phase === "quiz_walked_away" && !run.rewardPractice && !partiallyPaid && (

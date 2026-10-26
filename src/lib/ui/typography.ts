@@ -28,7 +28,7 @@ export const TYPO = {
   /** Quiz / mini-game mode picker card titles. */
   modeCardTitle:
     "font-display text-base font-bold uppercase tracking-wide sm:text-lg",
-  /** Millionaire prize amounts and other hero money figures. */
+  /** Quiz prize amounts and other hero money figures. */
   prizeDisplay:
     "font-display font-black tabular-nums tracking-tight text-accent-gold",
   pageSubtitle:

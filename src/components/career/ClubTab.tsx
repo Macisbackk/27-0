@@ -4,10 +4,32 @@ import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { MobileModal } from "@/components/ui/MobileOverlay";
 import { formatMoney, prestigeRatingCap } from "@/lib/career";
+import type { SeasonChallenge } from "@/lib/career/types";
 import { useCareer } from "@/lib/career/context";
 import { playUiClick, playWarning } from "@/lib/sound";
 import { Card, Eyebrow, ProgressBar, Stars } from "./bits";
 import { TransferRoundUp } from "./TransferNews";
+
+/** "Best margin: 12 / 30" rather than a bare "12/30" for goals that track a best, not a count. */
+function challengeProgressLabel(c: SeasonChallenge): string {
+  const value = c.done ? Math.max(c.progress, c.target) : Math.min(c.progress, c.target);
+  switch (c.kind) {
+    case "big-win":
+      return `Best margin: ${value} / ${c.target}`;
+    case "unbeaten-run":
+      return `Best run: ${value} / ${c.target}`;
+    case "win-games":
+      return `${value} / ${c.target} wins`;
+    case "points-scored":
+      return `${value} / ${c.target} pts`;
+    case "academy-debuts":
+      return `${value} / ${c.target} debuts`;
+    case "cup-reach":
+      return `Round ${value} / ${c.target}`;
+    default:
+      return `${value} / ${c.target}`;
+  }
+}
 
 export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => void; onOpenRecords: () => void }) {
   const { state, legacy, abandonCareer } = useCareer();
@@ -33,15 +55,20 @@ export function ClubTab({ onOpenVault, onOpenRecords }: { onOpenVault: () => voi
                     {formatMoney(c.rewardCash)} · <span className="text-accent-gold">+{c.rewardLegacy} Legacy</span>
                   </p>
                 </div>
-                {!lowerBetter ? (
+                {lowerBetter ? (
+                  <p className="mt-1 text-[11px] text-gray-500">Settled at the end of the season.</p>
+                ) : c.target <= 1 || c.kind === "beat-club" ? (
+                  // One-off goal: a tick, not a progress bar.
+                  <p className={`mt-1 text-[11px] ${c.done ? "text-success" : "text-gray-400"}`}>
+                    {c.done ? "Done" : "Not yet"}
+                  </p>
+                ) : (
                   <div className="mt-1.5 flex items-center gap-2">
                     <ProgressBar value={c.done ? c.target : Math.min(c.progress, c.target)} max={c.target} tone={c.done ? "gold" : "theme"} />
-                    <span className="w-14 text-right text-[11px] tabular-nums text-gray-400">
-                      {Math.min(c.progress, c.target)}/{c.target}
+                    <span className="shrink-0 text-right text-[11px] tabular-nums text-gray-400">
+                      {challengeProgressLabel(c)}
                     </span>
                   </div>
-                ) : (
-                  <p className="mt-1 text-[11px] text-gray-500">Settled at the end of the season.</p>
                 )}
               </li>
             );

@@ -54,9 +54,47 @@ async function readMyRow(
   return (data as { run_id: string; is_final: boolean } | null) ?? null;
 }
 
+let weeklyRpcMissing = false;
+
+/**
+ * v1.18: scores go through the `submit_weekly_challenge_entry` RPC, which takes the per-round
+ * results (not a score), recomputes the score, checks the result is structurally possible,
+ * rate-limits and flags suspicious entries (supabase/migrations/20261027120000_challenge_score_rpcs.sql).
+ * Returns false when the RPC isn't deployed yet, so the caller falls back to the direct write.
+ */
+async function pushEntryViaRpc(entry: WeeklyChallengeEntry, coachName: string): Promise<boolean> {
+  if (weeklyRpcMissing) return false;
+  const { error } = await supabase.rpc("submit_weekly_challenge_entry", {
+    p_week_key: entry.weekKey,
+    p_run_id: entry.runId,
+    p_coach_name: coachName,
+    p_regular_wins: entry.input.regularWins,
+    p_league_leaders: entry.input.leagueLeaders,
+    p_playoff_wins: entry.final ? entry.input.playoffWins : 0,
+    p_grand_final: entry.final ? entry.input.grandFinalWon : false,
+    p_is_final: entry.final,
+  });
+  if (error && (error.code === "PGRST202" || error.code === "42883")) {
+    weeklyRpcMissing = true;
+    return false;
+  }
+  if (!error) {
+    markWeeklyChallengeEntrySynced(entry.weekKey, entry.runId, entry.final ? "final" : "regular");
+    return true;
+  }
+  if (error.code === "23514") {
+    // Refused for good (closed week, another run already posted, impossible result).
+    markWeeklyChallengeEntrySynced(entry.weekKey, entry.runId, "final", true);
+    return true;
+  }
+  // Rate-limited (54000) or offline: try again on the next flush.
+  throw error;
+}
+
 async function pushEntry(entry: WeeklyChallengeEntry, userId: string, coachName: string): Promise<void> {
   if (entry.rejected || entry.synced === "final") return;
   if (entry.synced === "regular" && !entry.final) return;
+  if (await pushEntryViaRpc(entry, coachName)) return;
 
   if (entry.synced === "none") {
     const { error } = await supabase.from(TABLE).insert({

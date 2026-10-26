@@ -72,11 +72,11 @@ try {
   await go("/mini-games/grid", 1500);
   await shot("5-grid");
 
-  // 6. Millionaire
+  // 6. Golden Point Quiz
   await go("/mini-games/quiz", 1200);
-  await tap(/Start quiz|Super League Millionaire|^Play/i);
+  await tap(/Start quiz|Golden Point Quiz|^Play/i);
   await page.waitForTimeout(1200);
-  await shot("6-millionaire");
+  await shot("6-quiz");
 } catch (e) {
   log.push(`screenshots stopped: ${e instanceof Error ? e.message : String(e)}`);
 }

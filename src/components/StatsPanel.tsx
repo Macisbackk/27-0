@@ -135,16 +135,16 @@ export function StatsPanel() {
     !eraNormalStats
   ) {
     return (
-      <div className="game-panel game-panel--elevated p-12 text-center text-gray-500">
+      <div className="game-panel game-panel--elevated p-12 text-center text-[color:var(--fl-muted)]">
         <p className={TYPO.body}>Loading stats…</p>
       </div>
     );
   }
 
   const hasAnyRuns =
-    normalStats.totalRuns > 0 ||
-    eraNormalStats.totalRuns > 0 ||
-    hardStats.totalRuns > 0 ||
+    normalStats.totalSeasonsSimulated > 0 ||
+    eraNormalStats.totalSeasonsSimulated > 0 ||
+    hardStats.totalSeasonsSimulated > 0 ||
     (SHOW_DRAFT_MODE && draftNormalStats.totalSeasonsSimulated > 0) ||
     (SHOW_DRAFT_MODE && draftHardStats.totalSeasonsSimulated > 0);
 
@@ -163,13 +163,13 @@ export function StatsPanel() {
       </nav>
 
       {!hasAnyRuns && (
-        <div className="game-panel game-panel--elevated p-6 text-center text-gray-500">
+        <div className="game-panel game-panel--elevated p-6 text-center text-[color:var(--fl-muted)]">
           No runs yet. Play a game to start tracking your stats.
         </div>
       )}
 
       {quizStats && quizStats.quizzesPlayed > 0 && (
-        <StatsSection title="Super League Millionaire">
+        <StatsSection title="Golden Point Quiz">
           <StatCard label="Quizzes played" value={quizStats.quizzesPlayed} />
           <StatCard
             label="Highest prize"
@@ -225,7 +225,7 @@ export function StatsPanel() {
         />
       )}
 
-      <p className="text-center text-xs text-gray-600">
+      <p className="text-center text-xs text-[color:var(--fl-muted)]">
         {isLoggedIn
           ? "Stats sync when logged in."
           : "Saved on this device until you log in."}
@@ -252,12 +252,13 @@ function OverallTab({
   return (
     <div className="space-y-8">
       <StatsSection title="Career">
-        <StatCard label="Total Runs" value={formatCountStat(view.totalRuns)} />
+        <StatCard label="Seasons played" value={formatCountStat(view.totalRuns)} />
         <StatCard label="Total Wins" value={formatCountStat(view.totalWins)} />
         <StatCard label="Total Losses" value={formatCountStat(view.totalLosses)} />
         <StatCard
-          label="Total Seasons Simulated"
-          value={formatCountStat(view.totalSeasons)}
+          label="Best Record"
+          value={formatRecordOrDash(view.bestRecord)}
+          highlight={(view.bestRecord?.wins ?? 0) >= 20}
         />
       </StatsSection>
 
@@ -270,6 +271,7 @@ function OverallTab({
         <StatCard
           label="Worst Record"
           value={formatRecordOrDash(view.worstRecord)}
+          sub="Regular season, like Best Record"
         />
         <StatCard
           label="Longest Unbeaten Run"
@@ -550,7 +552,7 @@ function StatCard({
 }) {
   return (
     <div className={`${RL_INFO_BOX_CLASS} min-w-0 p-3 sm:p-4`}>
-      <p className="text-[10px] font-medium uppercase leading-tight tracking-wider text-gray-500">
+      <p className="text-[10px] font-medium uppercase leading-tight tracking-wider text-[color:var(--fl-muted)]">
         {label}
       </p>
       <p
@@ -560,7 +562,7 @@ function StatCard({
       >
         {value}
       </p>
-      {sub && <p className="mt-0.5 text-sm text-gray-500">{sub}</p>}
+      {sub && <p className="mt-0.5 text-sm text-[color:var(--fl-muted)]">{sub}</p>}
     </div>
   );
 }

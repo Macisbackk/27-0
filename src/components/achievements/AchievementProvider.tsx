@@ -21,7 +21,8 @@ import {
 import type { AchievementCheckContext } from "@/lib/achievements/achievementContext";
 import { ACHIEVEMENT_CHECK_EVENT } from "@/lib/achievements/achievementNotify";
 import { useAuth } from "@/lib/auth-context";
-import { AchievementUnlockedPopup } from "./AchievementUnlockedPopup";
+import { playAchievementUnlock } from "@/lib/sound";
+import { pushToast } from "@/lib/ui/popup-queue";
 
 type AchievementContextValue = {
   notifyAchievements: (ctx?: AchievementCheckContext) => void;
@@ -32,8 +33,6 @@ const AchievementContext = createContext<AchievementContextValue>({
   notifyAchievements: () => {},
   isAchievementHydrated: false,
 });
-
-const POPUP_DURATION_MS = 5500;
 
 function achievementPopupsEnabled(): boolean {
   if (typeof window === "undefined") return true;
@@ -52,23 +51,13 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
   const { loading: authLoading, user } = useAuth();
   const userId = user?.id ?? null;
   const [queue, setQueue] = useState<AchievementUnlockResult[]>([]);
-  const [active, setActive] = useState<AchievementUnlockResult | null>(null);
   const [isAchievementHydrated, setIsAchievementHydrated] = useState(false);
-  const dismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const queuedIdsRef = useRef<Set<string>>(new Set());
-  const activeIdRef = useRef<string | null>(null);
   const hydratedRef = useRef(false);
   /** Ledger IDs that must never requeue (unlocked + acknowledged, or baseline). */
   const acknowledgedIdsRef = useRef<Set<string>>(new Set());
   const pendingCtxRef = useRef<AchievementCheckContext | null>(null);
   const baselineUserKeyRef = useRef<string | null>(null);
-
-  const clearDismissTimer = useCallback(() => {
-    if (dismissTimer.current) {
-      clearTimeout(dismissTimer.current);
-      dismissTimer.current = null;
-    }
-  }, []);
 
   const enqueue = useCallback((items: AchievementUnlockResult[]) => {
     if (items.length === 0) return;
@@ -84,7 +73,6 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     const fresh: AchievementUnlockResult[] = [];
     for (const item of items) {
       if (queuedIdsRef.current.has(item.id)) continue;
-      if (activeIdRef.current === item.id) continue;
       if (acknowledgedIdsRef.current.has(item.id)) continue;
       if (isAchievementPopupAcknowledged(item.id)) {
         acknowledgedIdsRef.current.add(item.id);
@@ -178,76 +166,39 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener(ACHIEVEMENT_CHECK_EVENT, onCheck);
   }, [notifyAchievements]);
 
-  // Advance queue → active. Persist ack *before* the popup is interactive/closed
-  // so remount/hydrate cannot requeue this unlock.
+  // Hand each unlock to the global toast queue (non-blocking; ToastHost shows them one at a
+  // time and holds them while a reward sheet is open). Persist the ack first so a remount or
+  // hydrate can never requeue this unlock.
   useEffect(() => {
-    if (active || queue.length === 0) return;
-    const [next, ...rest] = queue;
-    // Skip if ledger already acknowledged (Strict Mode / remount race).
-    if (
-      acknowledgedIdsRef.current.has(next.id) ||
-      isAchievementPopupAcknowledged(next.id)
-    ) {
-      acknowledgedIdsRef.current.add(next.id);
+    if (queue.length === 0) return;
+    for (const next of queue) {
       queuedIdsRef.current.delete(next.id);
-      setQueue(rest);
-      return;
+      if (
+        acknowledgedIdsRef.current.has(next.id) ||
+        isAchievementPopupAcknowledged(next.id)
+      ) {
+        acknowledgedIdsRef.current.add(next.id);
+        continue;
+      }
+      markAchievementPopupAcknowledged(next.id);
+      acknowledgedIdsRef.current.add(next.id);
+      pushToast({
+        id: `achievement-${next.unlockEventId || next.id}`,
+        kicker: "Achievement unlocked",
+        title: next.definition.name,
+        detail: next.definition.description,
+        amount: next.rewardAmount && next.rewardAmount > 0 ? next.rewardAmount : undefined,
+        onShow: playAchievementUnlock,
+      });
     }
-    activeIdRef.current = next.id;
-    markAchievementPopupAcknowledged(next.id);
-    acknowledgedIdsRef.current.add(next.id);
-    setActive(next);
-    setQueue(rest);
-  }, [active, queue]);
-
-  useEffect(() => {
-    if (!active) return;
-
-    const shownId = active.id;
-    activeIdRef.current = shownId;
-    clearDismissTimer();
-
-    dismissTimer.current = setTimeout(() => {
-      if (activeIdRef.current !== shownId) return;
-      markAchievementPopupAcknowledged(shownId);
-      acknowledgedIdsRef.current.add(shownId);
-      queuedIdsRef.current.delete(shownId);
-      activeIdRef.current = null;
-      setActive(null);
-    }, POPUP_DURATION_MS);
-
-    return () => {
-      clearDismissTimer();
-    };
-  }, [active, clearDismissTimer]);
-
-  useEffect(() => {
-    return () => {
-      clearDismissTimer();
-    };
-  }, [clearDismissTimer]);
-
-  const dismissActive = useCallback(() => {
-    if (!active) return;
-    const id = active.id;
-    clearDismissTimer();
-    // Persist ack before close.
-    markAchievementPopupAcknowledged(id);
-    acknowledgedIdsRef.current.add(id);
-    queuedIdsRef.current.delete(id);
-    activeIdRef.current = null;
-    setActive(null);
-  }, [active, clearDismissTimer]);
+    setQueue([]);
+  }, [queue]);
 
   return (
     <AchievementContext.Provider
       value={{ notifyAchievements, isAchievementHydrated }}
     >
       {children}
-      <AchievementUnlockedPopup
-        result={active}
-        onDismiss={dismissActive}
-      />
     </AchievementContext.Provider>
   );
 }

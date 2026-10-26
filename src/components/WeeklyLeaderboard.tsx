@@ -60,6 +60,21 @@ export function WeeklyLeaderboard() {
     };
   }, [view]);
 
+  // Empty this-week board: show last week's top 3 as scores to beat.
+  const [lastWeekTop, setLastWeekTop] = useState<WeeklyLeaderboardRow[] | null>(null);
+  useEffect(() => {
+    if (view !== "this" || rows === null || rows.length > 0) return;
+    let alive = true;
+    void getWeeklyLeaderboardAsync(getPreviousWeeklyChallengeWeekKey(new Date()), 3)
+      .then((result) => {
+        if (alive) setLastWeekTop(result.rows.slice(0, 3));
+      })
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, [view, rows]);
+
   const hiddenIds = useHiddenCoachIds();
   // Coaches you hid don't show on your boards (rank numbers stay as they are).
   const visibleRows = (rows ?? []).filter((r) => r.isCurrentUser || !r.userId || !hiddenIds.has(r.userId));
@@ -99,9 +114,29 @@ export function WeeklyLeaderboard() {
           <p className="px-4 py-6 text-center text-sm text-gray-400" role="status">Loading…</p>
         ) : rows.length === 0 ? (
           <div className="flex flex-col items-center gap-3 px-4 py-8 text-center">
-            <p className="text-sm text-gray-300">
-              {view === "this" ? "No scores yet this week. Be the first on the board." : "No scores last week."}
+            <p className="font-display text-base font-bold text-white">
+              {view === "this" ? "Be the first on this week's board" : "No scores last week"}
             </p>
+            <p className="text-sm text-gray-300">
+              {view === "this"
+                ? `Play the Weekly: one ranked run, 10 points a win plus play-off and title bonuses. Top 10 on Sunday night earn ${formatClubFunds(WEEKLY_TOP10_REWARD)}.`
+                : "Last week's board closed empty. This week's is open now."}
+            </p>
+            {view === "this" && lastWeekTop && lastWeekTop.length > 0 ? (
+              <div className="w-full max-w-xs rounded-tile bg-pitch-900/70 px-3 py-2 text-left" aria-label="Last week's top 3">
+                <p className="text-xs font-semibold text-gray-400">Scores to beat (last week)</p>
+                <ol className="mt-1 space-y-0.5 text-sm">
+                  {lastWeekTop.map((row) => (
+                    <li key={row.userId ?? row.username} className="flex justify-between gap-3">
+                      <span className="truncate text-gray-200">
+                        {row.rank}. {displayCoachName(row.username, row.userId)}
+                      </span>
+                      <span className="font-semibold tabular-nums text-accent-gold">{row.score}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ) : null}
             {view === "this" ? (
             <div className="flex flex-wrap items-center justify-center gap-3">
               <GameButton variant="theme" size="sm" fullWidth={false} href={getWeeklyChallengeHref()}>

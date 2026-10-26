@@ -12,7 +12,7 @@ interface EraVariantToggleProps {
   onEraModeChange: (eraMode: boolean) => void;
   /** Sidebar: compact nested toggle with shorter labels. */
   compact?: boolean;
-  /** Use short "Current" / "Era" labels. */
+  /** @deprecated Labels are always "Classic" / "Era Classic" now. */
   useShortLabels?: boolean;
   /** Sidebar: omit the section label to save vertical space. */
   hideLabel?: boolean;
@@ -21,7 +21,7 @@ interface EraVariantToggleProps {
 }
 
 /**
- * Compact centred Current / Era control for Classic.
+ * Compact centred Classic / Era Classic control.
  * Era selected = mode gold only; Current selected = mode green; idle = neutral.
  */
 export function EraVariantToggle({
@@ -29,13 +29,13 @@ export function EraVariantToggle({
   className = "",
   onEraModeChange,
   compact = false,
-  useShortLabels = false,
   hideLabel = false,
   sectionLabel = "Mode",
 }: EraVariantToggleProps) {
-  const currentLabel =
-    useShortLabels || compact ? "Current" : "Current Teams";
-  const eraLabel = useShortLabels || compact ? "Era" : "Era Teams";
+  // One vocabulary everywhere (home, menu, page titles, stats, boards): Classic = this
+  // season's squads, Era Classic = every era. The short/compact flags are kept for callers.
+  const currentLabel = "Classic";
+  const eraLabel = "Era Classic";
 
   const handleChange = (id: EraVariantId) => {
     if (id === "era" && !eraMode) {

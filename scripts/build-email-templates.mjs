@@ -137,7 +137,7 @@ const templates = {
     extra: featureRows([
       ["13", "Classic", "Spin real squads, build a 13 and chase the perfect 27-0."],
       ["&#9733;", "Manager Mode", "Run a real club. Play matches live, beat Deadline Day, win the Grand Final."],
-      ["#", "Daily puzzles", "A new Daily Challenge rule, Wordle, the 3&times;3 Grid and Millionaire."],
+      ["#", "Daily puzzles", "A new Daily Challenge rule, Wordle, the 3&times;3 Grid and the Golden Point Quiz."],
     ]),
     note: ignore,
   }),

@@ -133,7 +133,7 @@ try {
 
   await page.getByRole("button", { name: /Auto.?fill squad/i }).click({ timeout });
   await page.waitForTimeout(800);
-  await page.getByRole("button", { name: /Simulate season/i }).click({ timeout });
+  await page.getByRole("button", { name: /Kick off the season|Simulate season/i }).first().click({ timeout });
   await page.getByText("Your season").waitFor({ timeout });
   const heights = [];
   // Sample while the season is still running (the final summary is allowed to grow it).

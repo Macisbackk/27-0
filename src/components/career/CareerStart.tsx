@@ -8,11 +8,12 @@ import { newCareerSeed } from "@/lib/career/rng";
 import { useCareer } from "@/lib/career/context";
 import { getUsername } from "@/lib/storage/user";
 import { playSeasonStart, playUiClick } from "@/lib/sound";
-import { Card, ClubBadge, Eyebrow, Stars } from "./bits";
+import { Card, ClubBadge, Eyebrow, Stars, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 
 export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () => void; onOpenRecords: () => void }) {
   const { newCareer, legacy } = useCareer();
-  const [division, setDivision] = useState<Division>("championship");
+  // Super League first (it's the league most players know); Championship is one tap away.
+  const [division, setDivision] = useState<Division>("super-league");
   const [clubId, setClubId] = useState<string | null>(null);
   const [name, setName] = useState("");
   // The seed is created on the client so the preview squads are exactly the ones you'll manage.
@@ -24,12 +25,16 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
     setName((n) => n || getUsername() || "");
   }, []);
 
-  const list = choices.filter((c) => c.division === division);
+  // Alphabetical within the league, so a club is easy to find.
+  const list = choices
+    .filter((c) => c.division === division)
+    .sort((a, b) => a.name.localeCompare(b.name, "en-GB"));
   const selected = choices.find((c) => c.id === clubId) ?? null;
   const hasLegacy = legacy.lifetimeLegacyPoints > 0 || legacy.careersStarted > 0;
 
   return (
-    <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-28">
+    <div className={CAREER_PAGE_CLASS}>
+      <CareerBackLink />
       <header className="text-center">
         <Eyebrow>Rugby League Manager</Eyebrow>
         <h1 className="mt-1 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">Pick your club</h1>
@@ -58,10 +63,27 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
         </Card>
       ) : null}
 
+      <label className="block rounded-tile bg-pitch-900 px-3 py-2.5">
+        <span className="block text-xs font-semibold text-gray-300">Manager name</span>
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value.slice(0, 24))}
+          placeholder="Your name"
+          maxLength={24}
+          autoComplete="nickname"
+          enterKeyHint="done"
+          spellCheck={false}
+          className="mt-1 w-full rounded-lg border border-pitch-600 bg-pitch-950 px-3 py-2.5 text-white placeholder:text-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-theme-primary"
+        />
+        <span className="mt-1 block text-[11px] text-gray-500">
+          Shown on your Manager records. Leave it blank and you&apos;re &ldquo;Coach&rdquo;.
+        </span>
+      </label>
+
       <GameSegmentedControl<Division>
         options={[
-          { id: "championship", label: "Championship", shortLabel: "Championship" },
           { id: "super-league", label: "Super League", shortLabel: "Super League" },
+          { id: "championship", label: "Championship", shortLabel: "Championship" },
         ]}
         value={division}
         onChange={(d) => {
@@ -111,15 +133,6 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
 
       <div className="mobile-action-bar sm:static sm:mt-2 sm:border-0 sm:bg-transparent sm:p-0" role="toolbar">
         <div className="mobile-action-bar__inner flex flex-col gap-2 sm:flex-row sm:items-end">
-          <label className="flex-1">
-            <span className="mb-1 block text-xs font-semibold text-gray-400">Manager name</span>
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value.slice(0, 24))}
-              placeholder="Your name"
-              className="w-full rounded-lg border border-pitch-600 bg-pitch-950 px-3 py-2.5 text-white placeholder:text-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-theme-primary"
-            />
-          </label>
           <GameButton
             size="lg"
             disabled={!selected}
@@ -128,10 +141,10 @@ export function CareerStart({ onOpenVault, onOpenRecords }: { onOpenVault: () =>
             onClick={() => {
               if (!selected || !seed) return;
               playSeasonStart();
-              newCareer(selected.id, name || "Coach", seed);
+              newCareer(selected.id, name.trim() || "Coach", seed);
             }}
           >
-            {selected ? `Take charge of ${selected.short}` : "Choose a club"}
+            {selected ? `Take charge of ${selected.name}` : "Pick a club to start"}
           </GameButton>
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ClubLogoBox } from "@/components/ClubBadge";
 import type { Player, SquadSlot } from "@/lib/types";
@@ -41,6 +41,18 @@ interface SlotTeamYearPickerProps {
   /** The position being filled and the squad so far — for the header and team-rating preview. */
   slot?: SquadSlot | null;
   squad?: SquadSlot[];
+  /**
+   * One option and no way to respin (spent, "No respins" rule, Ball Knower): sign it after a
+   * short "Only option" note instead of asking for a pointless choice.
+   */
+  autoSignSingle?: boolean;
+}
+
+const AUTO_SIGN_SINGLE_MS = 1200;
+
+function surname(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  return parts[parts.length - 1] ?? name;
 }
 
 function ageFor(player: Player, year: string): number | undefined {
@@ -63,8 +75,25 @@ export function SlotTeamYearPicker({
   hideRatingNote = false,
   slot = null,
   squad,
+  autoSignSingle = false,
 }: SlotTeamYearPickerProps) {
   const [respinLocked, setRespinLocked] = useState(false);
+  const onlyOption = entries.length === 1 ? entries[0].player : null;
+  const willAutoSign = Boolean(onlyOption) && autoSignSingle;
+  const onSelectRef = useRef(onSelect);
+  onSelectRef.current = onSelect;
+  const onlyOptionRef = useRef(onlyOption);
+  onlyOptionRef.current = onlyOption;
+  const onlyOptionId = onlyOption?.id ?? null;
+
+  useEffect(() => {
+    if (!willAutoSign || !onlyOptionId || disabled) return;
+    const t = window.setTimeout(() => {
+      const player = onlyOptionRef.current;
+      if (player && player.id === onlyOptionId) onSelectRef.current(player);
+    }, AUTO_SIGN_SINGLE_MS);
+    return () => window.clearTimeout(t);
+  }, [willAutoSign, onlyOptionId, disabled]);
 
   useEffect(() => {
     setRespinLocked(false);
@@ -85,12 +114,20 @@ export function SlotTeamYearPicker({
   // Chemistry gained by signing each option into this slot (adjacent club / era-year links).
   const chemistryFor = useMemo(() => {
     if (!slot || !squad || hardMode) {
-      return () => ({ gain: 0, links: [] as ReturnType<typeof getNewChemistryLinks> });
+      return () => ({ gain: 0, links: [] as ReturnType<typeof getNewChemistryLinks>, partners: [] as string[] });
     }
-    return (player: Player) => ({
-      gain: getChemistryGain(squad, slot.slotIndex, player),
-      links: getNewChemistryLinks(squad, slot.slotIndex, player),
-    });
+    return (player: Player) => {
+      const links = getNewChemistryLinks(squad, slot.slotIndex, player);
+      const partners = links
+        .map((l) => squad.find((s) => s.slotIndex === (l.slotA === slot.slotIndex ? l.slotB : l.slotA))?.player?.name)
+        .filter((n): n is string => Boolean(n))
+        .map(surname);
+      return {
+        gain: getChemistryGain(squad, slot.slotIndex, player),
+        links,
+        partners,
+      };
+    };
   }, [slot, squad, hardMode]);
 
   // "Top" = best rating plus chemistry gain, not the raw OVR.
@@ -157,13 +194,16 @@ export function SlotTeamYearPicker({
             <p className="text-[13px] font-semibold text-theme-primary">
               {slot ? `Pick your ${slot.label}` : "Pick your signing"}
             </p>
-            <h2 className="truncate font-display text-xl font-bold leading-tight text-white">
-              {target.team} <span className="text-theme-primary">{shortYear}</span>
+            <h2 className="line-clamp-2 break-words font-display text-xl font-bold leading-tight text-white">
+              {target.team} <span className="whitespace-nowrap text-theme-primary">{shortYear}</span>
             </h2>
+            <p className="mt-0.5 text-xs font-semibold text-[color:var(--fl-muted)]">
+              {onlyOption
+                ? `Only option${slot ? ` for ${slot.label}` : ""}`
+                : `${entries.length} options`}
+              {" · spin locked in"}
+            </p>
           </div>
-          <span className="shrink-0 rounded-full bg-pitch-950 px-2.5 py-1 text-xs font-bold text-[color:var(--fl-muted)]">
-            {entries.length} {entries.length === 1 ? "option" : "options"}
-          </span>
         </header>
 
         <div className="px-3 pb-3">
@@ -173,6 +213,13 @@ export function SlotTeamYearPicker({
             </p>
           ) : (
             <>
+              {onlyOption ? (
+                <p className="mb-2 rounded-tile bg-theme-primary/10 px-3 py-2 text-center text-[13px] font-semibold text-theme-primary" role="status">
+                  {willAutoSign
+                    ? `Only option — signing ${onlyOption.name}…`
+                    : `Only one ${slot?.label ?? "player"} on offer — sign or respin.`}
+                </p>
+              ) : null}
               <ul className="fl-stagger flex flex-col gap-2" aria-label="Players you can sign">
                 {sortedEntries.map(({ player }) => {
                   const chemistry = chemistryFor(player);
@@ -186,7 +233,8 @@ export function SlotTeamYearPicker({
                     ? []
                     : getPrimaryPlayerChoiceTags(player, { boosted, topPick: false, allowEasterEggTags: true });
                   const impact = impactFor(player);
-                  const metaLine = [meta.positionLabel, meta.nationalityAbbrev, age !== undefined ? `Age ${age}` : null]
+                  // No nation code: it pushed the age off a phone screen.
+                  const metaLine = [meta.positionLabel, age !== undefined ? `Age ${age}` : null]
                     .filter(Boolean)
                     .join(" · ");
                   return (
@@ -211,7 +259,7 @@ export function SlotTeamYearPicker({
                         />
                         <span className="min-w-0 flex-1">
                           <span className="flex min-w-0 items-center gap-1.5">
-                            <span className="truncate text-[16px] font-bold leading-tight text-white">
+                            <span className="line-clamp-2 break-words text-[16px] font-bold leading-tight text-white">
                               {player.name}
                             </span>
                             {isTopPick ? (
@@ -220,7 +268,7 @@ export function SlotTeamYearPicker({
                               </span>
                             ) : null}
                           </span>
-                          <span className="mt-0.5 block truncate text-[13px] text-[color:var(--fl-muted)]">
+                          <span className="mt-0.5 block break-words text-[13px] leading-snug text-[color:var(--fl-muted)]">
                             {metaLine}
                           </span>
                           {impact || chemistry.gain > 0 || tags.length > 0 ? (
@@ -244,12 +292,14 @@ export function SlotTeamYearPicker({
                               ) : null}
                               {chemistry.gain > 0 ? (
                                 <span
-                                  className="rounded-full bg-lime-400/15 px-1.5 py-0.5 text-[11px] font-bold leading-none text-lime-300"
+                                  className="inline-flex max-w-full items-center rounded-full bg-lime-400/15 px-1.5 py-0.5 text-[11px] font-bold leading-tight text-lime-300"
                                   title={chemistry.links
                                     .map((l) => (l.reason === "club" ? `Same club (${l.label})` : `Same era year (${l.label})`))
                                     .join(" · ")}
+                                  aria-label={`Chemistry +${chemistry.gain.toFixed(1)}${chemistry.partners.length ? ` with ${chemistry.partners.join(" and ")}` : ""}`}
                                 >
                                   +{chemistry.gain.toFixed(1)} link
+                                  {chemistry.partners.length ? ` · ${chemistry.partners.join(", ")}` : ""}
                                 </span>
                               ) : null}
                               {tags.map((tag) => (
@@ -281,7 +331,7 @@ export function SlotTeamYearPicker({
               <div className="mt-3 flex items-center gap-2">
                 {onBack ? (
                   <GameButton variant="secondary" size="md" fullWidth onClick={onBack} disabled={disabled}>
-                    Back
+                    Back to pitch
                   </GameButton>
                 ) : null}
                 {showRespin ? (

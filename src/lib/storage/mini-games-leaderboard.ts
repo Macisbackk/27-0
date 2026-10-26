@@ -31,8 +31,8 @@ export const MINI_GAME_WINS_CATEGORIES: Array<{
   },
   {
     id: "quiz-wins",
-    label: "Millionaire Wins",
-    shortLabel: "Millionaire",
+    label: "Perfect Quizzes",
+    shortLabel: "Quiz",
     href: "/mini-games/quiz",
   },
 ];

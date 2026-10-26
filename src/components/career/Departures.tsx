@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
+import { GameModal } from "@/components/ui/GameModal";
 import { useArmed } from "@/hooks/useArmed";
 import { contractLabel, formatMoney, newDealLength, renewalFee } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playContractSigned, playUiClick, playWarning } from "@/lib/sound";
-import { Card, Eyebrow, RatingPill } from "./bits";
+import { Card, Eyebrow, RatingPill, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 
 /**
  * The summer, before the transfer window: who retired, whose contracts are up (renew or let go),
@@ -15,6 +16,7 @@ import { Card, Eyebrow, RatingPill } from "./bits";
 export function Departures() {
   const { state, renew, release, finishDepartures } = useCareer();
   const [error, setError] = useState<string | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const armed = useArmed();
   const s = state!;
   const d = s.departures;
@@ -25,7 +27,8 @@ export function Departures() {
   const academy = (d?.academy ?? []).map((id) => s.players[id]).filter((p): p is NonNullable<typeof p> => !!p);
 
   return (
-    <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-40 sm:pb-10">
+    <div className={CAREER_PAGE_CLASS}>
+      <CareerBackLink label="Home (progress saved)" />
       <header className="text-center">
         <p className="text-[13px] font-semibold text-theme-primary">Before the {s.year} season</p>
         <h1 className="mt-1 text-[30px] font-bold leading-none text-white">Comings and goings</h1>
@@ -150,16 +153,66 @@ export function Departures() {
         <div className="mobile-action-bar__inner">
           <GameButton
             size="lg"
+            variant={expiring.length ? "secondary" : "theme"}
             disabled={!armed}
             onClick={() => {
               playUiClick();
-              finishDepartures();
+              // Never release a whole list on one tap: confirm who's leaving first.
+              if (expiring.length) setConfirmOpen(true);
+              else finishDepartures();
             }}
           >
-            {expiring.length ? "Let the rest go · open the window" : "Open the transfer window"}
+            {expiring.length ? "Continue to the window" : "Open the transfer window"}
           </GameButton>
         </div>
       </div>
+
+      <GameModal open={confirmOpen} onClose={() => setConfirmOpen(false)} labelledBy="departures-confirm-title">
+        {(() => {
+          const squadNow = s.clubs[s.userClubId]!.squad.length;
+          const after = squadNow - expiring.length;
+          const sorted = [...expiring].sort((a, b) => b.rating - a.rating);
+          return (
+            <div>
+              <h2 id="departures-confirm-title" className="text-center text-xl font-bold text-white">
+                Let {expiring.length} go?
+              </h2>
+              <p className="mt-1 text-center text-sm text-[color:var(--fl-muted)]">
+                These players leave on a free when the window opens.
+              </p>
+              <ul className="mt-3 max-h-64 divide-y divide-pitch-800 overflow-y-auto rounded-tile bg-pitch-950 px-3">
+                {sorted.map((p) => (
+                  <li key={p.id} className="flex items-center gap-3 py-2">
+                    <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
+                    <span className="min-w-0 flex-1 truncate text-white">{p.name}</span>
+                    <span className="text-xs text-gray-500">Age {p.age}</span>
+                    <RatingPill rating={p.rating} />
+                  </li>
+                ))}
+              </ul>
+              {after < 20 ? (
+                <p className="mt-3 text-center text-xs text-amber-300" role="note">
+                  That leaves {after} players. The minimum is 20, so the board fills the gaps with fringe players.
+                </p>
+              ) : null}
+              <div className="mt-4 grid gap-2">
+                <GameButton
+                  onClick={() => {
+                    playUiClick();
+                    setConfirmOpen(false);
+                    finishDepartures();
+                  }}
+                >
+                  {`Let ${expiring.length} go · open the window`}
+                </GameButton>
+                <GameButton variant="secondary" onClick={() => setConfirmOpen(false)}>
+                  Go back and renew
+                </GameButton>
+              </div>
+            </div>
+          );
+        })()}
+      </GameModal>
     </div>
   );
 }

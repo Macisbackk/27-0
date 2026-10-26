@@ -50,7 +50,9 @@ const page = await phone.newPage();
 
 for (const [route, name] of [
   ["/", "home"],
+  ["/manager", "manager"],
   ["/mini-games", "mini-games"],
+  ["/squad-book", "squad-book"],
   ["/leaderboard", "leaderboard"],
   ["/profile", "profile"],
   ["/store", "store"],
@@ -103,7 +105,7 @@ if (await slot.isVisible().catch(() => false)) {
 await tap(page, [/Auto.?fill squad/i]);
 await page.waitForTimeout(1200);
 await shot(page, "classic-full-squad");
-await tap(page, [/Simulate Season/i]);
+await tap(page, [/Kick off the season|Simulate Season/i]);
 await page.waitForTimeout(2500);
 await shot(page, "classic-simulating", { full: false });
 for (let i = 0; i < 20; i++) {
@@ -138,7 +140,7 @@ await shot(page, "profile-stats-after-a-run");
 // Quiz.
 await go(page, "/mini-games/quiz", 1200);
 await shot(page, "quiz-start");
-await tap(page, [/Normal Quiz/i, /Super League Millionaire/i, /^Play/i, /Start/i]);
+await tap(page, [/Normal Quiz/i, /Golden Point Quiz/i, /^Play/i, /Start/i]);
 await page.waitForTimeout(1000);
 await shot(page, "quiz-question");
 const option = page.locator("main button").filter({ hasNotText: /Walk|Keep|Back|Mini Games|Lifeline|50|Ask|Phone|Change/i }).first();

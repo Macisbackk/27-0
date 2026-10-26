@@ -94,6 +94,19 @@ export function PlayerShowcase() {
   const clubs = useMemo(() => getUniqueClubs(allPlayers), [allPlayers]);
   const years = useMemo(() => getUniqueShowcaseYears(allPlayers), [allPlayers]);
   const dbStats = useMemo(() => computeShowcaseDbStats(allPlayers), [allPlayers]);
+  // "Top rated" names come from the same default sort as the list, so they match row 1 (ties
+  // at the top rating are all named, up to three).
+  const topRated = useMemo(() => {
+    const sorted = applyShowcasePipeline(allPlayers, DEFAULT_FILTERS, "rating", "desc");
+    const top = sorted[0];
+    if (!top) return null;
+    const tied = sorted.filter((p) => p.peakRating === top.peakRating);
+    return {
+      rating: top.peakRating,
+      names: tied.slice(0, 3).map((p) => getPlayerDisplayName(p)),
+      more: Math.max(0, tied.length - 3),
+    };
+  }, [allPlayers]);
 
   const activeFiltersState = useMemo(
     (): ShowcaseFilters => ({ ...filters, search: debouncedSearch }),
@@ -417,12 +430,14 @@ export function PlayerShowcase() {
       <header className="text-center">
         <p className={TYPO.sectionLabel}>Player database</p>
         <h1 className={`mt-2 ${TYPO.pageTitle}`}>Player Showcase</h1>
-        <p className="mx-auto mt-3 max-w-md text-sm text-gray-500">
+        <p className="mx-auto mt-3 max-w-md text-sm text-[color:var(--fl-muted)]">
           {dbStats.total.toLocaleString("en-GB")} players: {dbStats.current} in this season&rsquo;s squads,{" "}
           {dbStats.historic.toLocaleString("en-GB")} era cards and {dbStats.legends} legends.
-          {dbStats.highestRated ? (
+          {topRated ? (
             <>
-              {" "}Top rated: <span className="font-semibold text-white">{getPlayerDisplayName(dbStats.highestRated)}</span> ({dbStats.highestRated.peakRating}).
+              {" "}Top rated ({topRated.rating}):{" "}
+              <span className="font-semibold text-white">{topRated.names.join(", ")}</span>
+              {topRated.more > 0 ? ` and ${topRated.more} more` : ""}.
             </>
           ) : null}
         </p>
@@ -555,7 +570,7 @@ function FilterField({
       <div className={wide ? "sm:col-span-2" : ""}>
         <label
           htmlFor={fieldId}
-          className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-gray-500"
+          className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[color:var(--fl-muted)]"
         >
           {label}
         </label>
@@ -568,7 +583,7 @@ function FilterField({
     <div className={wide ? "sm:col-span-2" : ""}>
       <p
         id={fieldId}
-        className="mb-1.5 text-xs font-medium uppercase tracking-wider text-gray-500"
+        className="mb-1.5 text-xs font-medium uppercase tracking-wider text-[color:var(--fl-muted)]"
       >
         {label}
       </p>

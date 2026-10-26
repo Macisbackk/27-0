@@ -7,17 +7,17 @@ const GUIDE_ITEMS = [
   },
   {
     title: "Classic",
-    body: "Spin and sign a 13 from Current or Era squads, chase 27-0, then fight for the play-offs.",
+    body: "Spin and sign a 13 from this season's squads (Classic) or any era (Era Classic), chase 27-0, then fight for the play-offs.",
   },
   {
     title: "How results are decided",
-    body: "Every game is decided by how much stronger your 13 is than the opposition, judged against what's possible in Current or Era. The stronger your squad, the better your 27-0 chance. It's never guaranteed and never impossible.",
+    body: "Every game is decided by how much stronger your 13 is than the opposition, judged against what's possible in Classic or Era Classic. The stronger your squad, the better your 27-0 chance. It's never guaranteed and never impossible.",
   },
   ...(SHOW_DAILY_CHALLENGE_UI
     ? [
         {
           title: "Daily Challenge",
-          body: "A new rule every day: one club, one era, underdogs, no respins and more. One counted attempt per UK day.",
+          body: "A new rule every day: one club, one era, underdogs, no respins and more. One counted attempt per UK day. Finishing it (win or lose) extends your streak; top the table and win the Grand Final for a perfect day. Today's board ranks the day's score (10 a win, +50 League Leaders, 15 a play-off win, +100 Grand Final). Every 7-day streak earns a streak freeze (hold up to 2), which covers a missed day automatically.",
         },
         {
           title: "Weekly Challenge",
@@ -27,7 +27,7 @@ const GUIDE_ITEMS = [
     : []),
   {
     title: "Puzzles",
-    body: "Super League Millionaire, Rugby League Wordle and the 3×3 Grid. Play daily for Club Funds.",
+    body: "Golden Point Quiz, Rugby League Wordle and the 3×3 Grid. Play daily for Club Funds. The quiz pays your first run of the day in full (up to £100k) and 10% after that.",
   },
   {
     title: "Club Funds",

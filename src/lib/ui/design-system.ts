@@ -313,7 +313,7 @@ export const MODE_CURRENT = {
 export const NORMAL = {
   tabGroupRing: MODE_CURRENT.tabGroupRing,
   modeCardHover: MODE_CURRENT.modeCardHover,
-  reviewAccent: "text-gray-500",
+  reviewAccent: "text-[color:var(--fl-muted)]",
 } as const;
 
 /** Era mode visual tokens — gold historic/retro accent. */
@@ -370,7 +370,7 @@ export const NAV = {
   hardToggle: "flex w-[6.25rem] shrink-0 flex-col justify-center",
   nestedBlock: "space-y-1 px-0",
   nestedLabel:
-    "px-1 font-display text-[9px] font-bold uppercase tracking-wider text-gray-500",
+    "px-1 font-display text-[9px] font-bold uppercase tracking-wider text-[color:var(--fl-muted)]",
   soundToggle: `btn-press flex ${NAV_SIZE.control} w-full min-w-0 items-center gap-2 overflow-hidden rounded-lg border border-pitch-600/60 bg-pitch-900/40 px-2.5 text-left text-sm transition hover:border-theme-primary/40 hover:bg-pitch-800/60`,
   soundStatus:
     "shrink-0 rounded border border-pitch-600/80 bg-pitch-900/60 px-1.5 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider",
@@ -381,7 +381,7 @@ export const NAV = {
 } as const;
 
 export const LINK = {
-  subtle: "text-sm text-gray-500 transition hover:text-white",
+  subtle: "text-sm text-[color:var(--fl-muted)] transition hover:text-white",
   accent: "text-sm text-theme-primary transition hover:underline",
   footer: `${TYPO.button} inline-flex min-h-[48px] items-center gap-2.5 rounded-xl border border-pitch-600/60 bg-pitch-900/50 px-4 py-3 text-gray-400 transition hover:border-theme-primary/40 hover:text-white`,
 } as const;

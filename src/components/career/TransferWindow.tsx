@@ -21,7 +21,7 @@ import {
 } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playLegendAppears, playSeasonStart, playTransferComplete, playWarning } from "@/lib/sound";
-import { Card, ClubBadge, Eyebrow, RatingPill, Stars } from "./bits";
+import { Card, ClubBadge, Eyebrow, RatingPill, Stars, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 import { ClubLink } from "./ClubSheet";
 import { DeadlineClockFace, DeadlineOffers } from "./TransferNews";
 
@@ -55,7 +55,20 @@ export function TransferWindow({ midseason = false, onClose }: { midseason?: boo
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-28">
+    <div className={CAREER_PAGE_CLASS}>
+      {midseason && onClose ? (
+        <nav aria-label="Manager navigation" className="-mb-2 flex">
+          <button
+            type="button"
+            onClick={onClose}
+            className="inline-flex min-h-[40px] items-center gap-1 rounded-full px-2 text-sm font-semibold text-gray-300 hover:bg-pitch-800 hover:text-white"
+          >
+            <span aria-hidden>‹</span> Manager hub
+          </button>
+        </nav>
+      ) : (
+        <CareerBackLink label="Home (progress saved)" />
+      )}
       <header className="text-center">
         {midseason ? (
           <>

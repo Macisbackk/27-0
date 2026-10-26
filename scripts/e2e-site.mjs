@@ -123,6 +123,43 @@ for (const vp of [
   note(`Crawled ${ROUTES.length} routes @${vp.name}`);
 }
 
+/* ------------------------------------------------------------ 1b) bottom nav */
+// Phone tab bar: Home · Classic · Manager · Puzzles · Profile. It stays up on Manager and the
+// puzzles (hidden only during a Classic run and on sign-in) and must never cover a sticky bar.
+{
+  const context = await browser.newContext({ viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true });
+  const page = wire(await context.newPage());
+  const EXPECTED = ["Home", "Classic", "Manager", "Puzzles", "Profile"];
+  for (const route of ["/", "/manager", "/mini-games", "/mini-games/wordle", "/profile", "/play", "/login"]) {
+    currentWhere = `bottom nav ${route}`;
+    await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" });
+    await settle(page, 900);
+    const nav = page.getByRole("navigation", { name: "Main" });
+    const visible = await nav.isVisible().catch(() => false);
+    const shouldShow = !route.startsWith("/play") && !route.startsWith("/login");
+    if (visible !== shouldShow) {
+      problems.push(`[${currentWhere}] bottom nav ${visible ? "showing" : "missing"} (expected ${shouldShow ? "shown" : "hidden"})`);
+      continue;
+    }
+    if (!visible) continue;
+    const labels = (await nav.getByRole("link").allInnerTexts()).map((t) => t.trim());
+    if (labels.join("|") !== EXPECTED.join("|")) problems.push(`[${currentWhere}] bottom nav items ${labels.join(", ")}`);
+    // A sticky action bar (Manager) must sit above the nav, not under it.
+    const overlap = await page.evaluate(() => {
+      const navBox = document.querySelector(".fl-bottom-nav")?.getBoundingClientRect();
+      if (!navBox) return null;
+      for (const bar of document.querySelectorAll(".mobile-action-bar")) {
+        const r = bar.getBoundingClientRect();
+        if (r.height > 0 && getComputedStyle(bar).position === "fixed" && r.bottom > navBox.top + 1) return Math.round(r.bottom - navBox.top);
+      }
+      return null;
+    });
+    if (overlap !== null) problems.push(`[${currentWhere}] sticky action bar overlaps the bottom nav by ${overlap}px`);
+  }
+  await context.close();
+  note("Bottom nav: items, visibility and no overlap");
+}
+
 /* ------------------------------------------------------------ 2) links */
 {
   const context = await browser.newContext();
@@ -151,12 +188,12 @@ async function playClassic(route, label) {
   let reviewed = false;
   for (let i = 0; i < 60; i++) {
     const text = await page.locator("main").innerText().catch(() => "");
-    if (/Regular Season Record|League Position|Season review/i.test(text) && !/Simulate season/i.test(text)) {
+    if (/Regular Season Record|League Position|Season review/i.test(text) && !/Kick off the season|Simulate season/i.test(text)) {
       reviewed = true;
       break;
     }
     const tapped = await tapFirst(page, [
-      /Skip boost|Continue without boost/i, /Auto.?fill squad/i, /Simulate season/i,
+      /Skip boost|Continue without boost/i, /Auto.?fill squad/i, /Kick off the season|Simulate season/i,
       // Round-14 fork ("Halfway. What's the plan?") — take a plan when it is up.
       /Push for the top two/i, /Rest the stars/i, /Chase the points difference/i,
       /Skip/i, /Sim(ulate)? (to )?(end|all|rest)/i,
@@ -180,7 +217,7 @@ await page.goto(`${BASE}/play?e2e=1`, { waitUntil: "domcontentloaded" });
 await settle(page);
 await tapFirst(page, [/Skip boost|Continue without boost/i]);
 for (let i = 0; i < 6; i++) await page.getByRole("button", { name: /Auto.?fill squad/i }).first().click({ force: true, noWaitAfter: true, timeout: 2000 }).catch(() => {});
-for (let i = 0; i < 6; i++) await page.getByRole("button", { name: /Simulate season/i }).first().click({ force: true, noWaitAfter: true, timeout: 2000 }).catch(() => {});
+for (let i = 0; i < 6; i++) await page.getByRole("button", { name: /Kick off the season|Simulate season/i }).first().click({ force: true, noWaitAfter: true, timeout: 2000 }).catch(() => {});
 await page.waitForTimeout(2500);
 note("Classic: rapid Auto Fill / Simulate taps");
 
@@ -200,7 +237,7 @@ async function miniGame(route, label, moves) {
   currentWhere = `${label}`;
   await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" });
   await settle(page, 1500);
-  await tapFirst(page, [/^Current/i, /Super League Millionaire|Normal Quiz/i]);
+  await tapFirst(page, [/^Current/i, /Golden Point Quiz|Start quiz|Normal Quiz/i]);
   await page.waitForTimeout(800);
   await moves();
   await shot(page, `${label.toLowerCase().replace(/\W+/g, "-")}-played`);
@@ -217,7 +254,7 @@ await miniGame("/mini-games/wordle", "Wordle", async () => {
     await tapFirst(page, [/^Guess$/i]);
     await page.waitForTimeout(250);
   }
-  for (let i = 0; i < 4; i++) await tapFirst(page, [/Reveal clue/i]);
+  for (let i = 0; i < 4; i++) await tapFirst(page, [/Reveal (a )?clue/i]);
 });
 
 await miniGame("/mini-games/grid", "Grid", async () => {

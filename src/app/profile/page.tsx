@@ -26,6 +26,9 @@ import { useSquadBook } from "@/lib/squad-book";
  */
 type ProfileTab = "stats" | "achievements" | "account";
 
+const PROFILE_PILL =
+  "inline-flex min-h-[44px] items-center gap-2 rounded-full bg-pitch-900 px-4 text-sm font-semibold text-white ring-1 ring-white/10 transition hover:ring-theme-primary/40";
+
 const PROFILE_TABS: { id: ProfileTab; label: string }[] = [
   { id: "stats", label: "Stats" },
   { id: "achievements", label: "Achievements" },
@@ -147,18 +150,24 @@ export default function ProfilePage() {
           ) : null}
         </div>
 
-        <div className="mt-3 flex justify-center">
-          <Link
-            href="/squad-book"
-            className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-pitch-900 px-4 text-sm font-semibold text-white ring-1 ring-white/10 transition hover:ring-theme-primary/40"
-          >
+        {/* Leaderboard moved off the bottom bar: it lives here, one tap from Profile. */}
+        <nav aria-label="Profile shortcuts" className="mt-3 flex flex-wrap justify-center gap-2">
+          <Link href="/leaderboard" className={PROFILE_PILL}>
+            Leaderboard
+            <span aria-hidden>→</span>
+          </Link>
+          <Link href="/squad-book" className={PROFILE_PILL}>
             Squad Book
             <span className="tabular-nums text-[color:var(--fl-muted)]">
               {squadBookCount} card{squadBookCount === 1 ? "" : "s"}
             </span>
             <span aria-hidden>→</span>
           </Link>
-        </div>
+          <Link href="/settings" className={PROFILE_PILL}>
+            Settings
+            <span aria-hidden>→</span>
+          </Link>
+        </nav>
 
         <div className="mt-4 flex justify-center">
           <GameTabs tabs={PROFILE_TABS} active={tab} onChange={selectTab} ariaLabel="Coach profile sections" />

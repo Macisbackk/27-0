@@ -6,6 +6,7 @@ import { WEEKLY_TOP10_REWARD } from "./weekly-challenge";
 import { SHOW_DAILY_CHALLENGE_UI } from "./feature-flags";
 import { GRID_REWARD_PER_CELL, WORDLE_WIN_REWARD } from "./mini-games/reward-amounts";
 import { QUIZ_TOP_PRIZE } from "./quiz/prizes";
+import { formatPounds, formatPoundsExact } from "./format-money";
 
 export const CLUB_FUNDS_REWARDS = {
   leagueLeaders: 30_000,
@@ -92,31 +93,14 @@ function appendPlayoffFundsLines(
   }
 }
 
-/** Display Club Funds in compact header format (£850k, £1.2m, £12m, £100m). */
+/** Display Club Funds in compact format (£850k, £1.2m, £12m). Same formatter as every £ in the game. */
 export function formatClubFunds(amount: number): string {
-  const value = Math.round(amount);
-  if (value >= 1_000_000) {
-    const millions = value / 1_000_000;
-    if (millions >= 100) {
-      return `£${Math.round(millions)}m`;
-    }
-    if (millions >= 10) {
-      return `£${Math.round(millions)}m`;
-    }
-    const rounded = Math.round(millions * 10) / 10;
-    const text =
-      rounded % 1 === 0 ? String(rounded) : rounded.toFixed(1).replace(/\.0$/, "");
-    return `£${text}m`;
-  }
-  if (value >= 1_000) {
-    return `£${Math.round(value / 1_000)}k`;
-  }
-  return `£${value}`;
+  return formatPounds(amount);
 }
 
 /** Full exact value for expanded currency panel (no rounding). */
 export function formatClubFundsExact(amount: number): string {
-  return `£${Math.round(amount).toLocaleString("en-GB")}`;
+  return formatPoundsExact(amount);
 }
 
 export function mergeClubFundsPayouts(
@@ -256,7 +240,7 @@ const CLUB_FUNDS_INFO_LINES_SOURCE: ClubFundsInfoLine[] = [
       ]
     : []),
   {
-    label: "Super League Millionaire (best run each day)",
+    label: "Golden Point Quiz (first run each day; 10% after)",
     amount: QUIZ_TOP_PRIZE,
     valueText: `up to ${formatClubFunds(QUIZ_TOP_PRIZE)}`,
   },

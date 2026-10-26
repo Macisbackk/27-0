@@ -82,16 +82,23 @@ async function main(): Promise<void> {
     (id) => id === paymentId
   ).length;
 
-  // Millionaire pays the day's best run: lower runs bank nothing, higher runs bank the difference.
-  const { getMillionaireBankedToday } = await import("../src/lib/quiz/rewards");
-  const bestAfterFirst = getMillionaireBankedToday();
+  // Golden Point Quiz: the day's first run pays in full, later runs pay 10%, daily cap £100k.
+  const { getQuizDayLedger, QUIZ_DAILY_CAP } = await import("../src/lib/quiz/rewards");
+  const { QUIZ_TOP_PRIZE, QUIZ_PRIZE_LADDER } = await import("../src/lib/quiz/prizes");
+  const ledgerAfterFirst = getQuizDayLedger();
   const lower = claimQuizReward({ ...run, id: "reward-lower-run", rewardAmount: 500 });
   const afterLower = getClubFundsBalance();
   const higher = claimQuizReward({ ...run, id: "reward-higher-run", rewardAmount: 4_000 });
   const afterHigher = getClubFundsBalance();
   const higherAgain = claimQuizReward({ ...run, id: "reward-higher-run", rewardAmount: 4_000 });
   const afterHigherAgain = getClubFundsBalance();
-  const bestAfterHigher = getMillionaireBankedToday();
+  const ledgerAfterHigher = getQuizDayLedger();
+  // Grind perfect runs all day: the quiz must never pay more than the daily cap.
+  for (let i = 0; i < 30; i += 1) {
+    claimQuizReward({ ...run, id: `reward-grind-${i}`, rewardAmount: QUIZ_TOP_PRIZE });
+  }
+  const ledgerAfterGrind = getQuizDayLedger();
+  const afterGrind = getClubFundsBalance();
   localStorage.setItem(
     STORAGE_KEYS.quizRun,
     JSON.stringify({
@@ -110,14 +117,18 @@ async function main(): Promise<void> {
   [afterSecond === afterFirst, "second claim does not change balance"],
   [second.run.rewardClaimed === true, "reopened run is marked claimed"],
   [paymentIdCount === 1, "wallet stores one quiz_reward transaction id"],
-  [bestAfterFirst === 1_000, "first run records today's best"],
-  [lower.payout.awarded === false && afterLower === afterSecond, "a lower run the same day banks nothing"],
-  [lower.run.rewardPaid === 0 && lower.run.rewardAmount === 500, "lower run keeps its prize for stats, pays 0"],
-  [afterHigher === afterLower + 3_000, "a better run banks only the difference"],
-  [higher.run.rewardPaid === 3_000, "better run records what it paid"],
-  [afterHigherAgain === afterHigher, "re-claiming the better run pays nothing"],
+  [ledgerAfterFirst.runs === 1 && ledgerAfterFirst.paid === 1_000, "first run records today's ledger"],
+  [lower.payout.awarded === true && afterLower === afterSecond + 50, "a repeat run pays 10% of its prize"],
+  [lower.run.rewardPaid === 50 && lower.run.rewardAmount === 500, "repeat run keeps its prize for stats, records what it paid"],
+  [afterHigher === afterLower + 400, "a better repeat run also pays 10%"],
+  [higher.run.rewardPaid === 400, "better run records what it paid"],
+  [afterHigherAgain === afterHigher, "re-claiming a run pays nothing"],
   [higherAgain.run.rewardClaimed === true, "re-claimed run is marked claimed"],
-  [bestAfterHigher === 4_000, "today's best moves up"],
+  [ledgerAfterHigher.runs === 3 && ledgerAfterHigher.paid === 1_450, "ledger counts runs and payouts"],
+  [ledgerAfterGrind.paid === QUIZ_DAILY_CAP, "repeat perfect runs stop at the daily cap"],
+  [afterGrind - before === QUIZ_DAILY_CAP, "the quiz pays at most the cap in one day"],
+  [QUIZ_TOP_PRIZE <= 150_000, "top prize is at most £150k (Classic stays the best earner)"],
+  [QUIZ_PRIZE_LADDER.every((v, i, all) => i === 0 || v > all[i - 1]!), "prize ladder strictly increases"],
     [loadQuizRun() === null, "corrupt persisted quiz state is rejected"],
   ];
 

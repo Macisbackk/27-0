@@ -6,6 +6,8 @@ import type { GameDifficulty, GameMode, SquadSlot } from "@/lib/types";
 import type { SeasonResult } from "@/lib/game/season-simulation";
 import { SquadReviewSection } from "./SquadReviewSection";
 import { generateSeasonAwards } from "@/lib/season-awards";
+import Link from "next/link";
+import { buildEndOfSeasonAwards, buildSeasonHeadlines } from "@/lib/game/season-headlines";
 import {
   getSeasonGradeFromSquad,
   getSeasonReviewStoryBio,
@@ -81,6 +83,8 @@ interface SeasonReviewProps {
   submittedOnline?: boolean;
   boostedRun?: boolean;
   clubFundsPayout?: ClubFundsPayoutResult | null;
+  /** Cards this run put in the Squad Book for the first time. */
+  newSquadBookCards?: number;
   onContinuePlayoffs?: () => void;
   onPlayAgain: () => void;
   onClose: () => void;
@@ -107,6 +111,7 @@ export function SeasonReview({
   submittedOnline = false,
   boostedRun = false,
   clubFundsPayout = null,
+  newSquadBookCards = 0,
   onContinuePlayoffs,
   onPlayAgain,
   onClose,
@@ -150,6 +155,18 @@ export function SeasonReview({
           award.title !== "Top Try Scorers"
       ),
     [awards]
+  );
+  const endOfSeasonAwards = useMemo(() => {
+    const poty = awards.find((a) => a.title === "Player of the Season");
+    return buildEndOfSeasonAwards(
+      squad,
+      seasonResult,
+      poty ? { playerName: poty.playerName } : null
+    );
+  }, [awards, squad, seasonResult]);
+  const headlines = useMemo(
+    () => buildSeasonHeadlines(seasonResult, dreamTeamTablePosition),
+    [seasonResult, dreamTeamTablePosition]
   );
   const isPerfect = seasonResult.isPerfect;
   const isSuperSquad = gradeInfo.grade === "S" || gradeInfo.grade === "S+";
@@ -212,7 +229,11 @@ export function SeasonReview({
   const leaguePositionLabel = formatLeaguePosition(dreamTeamTablePosition);
   const averageTeamRating = getAverageSquadRating(squad);
   const chemistryBonus = seasonResult.chemistryBonus ?? 0;
-  const halfwayCallLabel = getHalfwayCallLabel(seasonResult.halfwayCall);
+  // Only when a halfway call was actually made (the fork opens only for an unbeaten side).
+  const halfwayCallLabel =
+    seasonResult.halfwayCall && seasonResult.halfwayCall !== "none"
+      ? getHalfwayCallLabel(seasonResult.halfwayCall)
+      : null;
   const expectedTries = getSeasonTryTotal(seasonResult.fixtures);
 
   const qualifiedForPlayoffs = userQualifiedForPlayoffs(dreamTeamTablePosition);
@@ -379,11 +400,8 @@ export function SeasonReview({
   return (
     <DocumentPageShell
       diagnoseLabel="QuickModeSeasonReview"
-      className={
-        showPlayoffPrompt
-          ? "fl-review pb-[max(1rem,env(safe-area-inset-bottom))] max-sm:pb-[calc(var(--mobile-button-height)+1.25rem+env(safe-area-inset-bottom))]"
-          : "fl-review pb-[max(1rem,env(safe-area-inset-bottom))]"
-      }
+      // Phones always get a sticky main action (Play again / Play-offs) at the bottom.
+      className="fl-review pb-[max(1rem,env(safe-area-inset-bottom))] max-sm:pb-[calc(var(--mobile-button-height)+1.25rem+env(safe-area-inset-bottom))]"
     >
         {showCelebration && <Confetti />}
 
@@ -492,6 +510,56 @@ export function SeasonReview({
               </motion.div>
             ) : null}
 
+            {newSquadBookCards > 0 ? (
+              <p className="text-center text-sm">
+                <Link
+                  href="/squad-book"
+                  onClick={() => playUiClick()}
+                  className="font-semibold text-theme-primary underline-offset-2 hover:underline"
+                >
+                  +{newSquadBookCards} new {newSquadBookCards === 1 ? "card" : "cards"} in your Squad Book →
+                </Link>
+              </p>
+            ) : null}
+
+            {headlines.length > 0 || endOfSeasonAwards.length > 0 ? (
+              <motion.section
+                className="w-full rounded-card bg-pitch-900 px-4 py-3"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.31 }}
+                aria-labelledby="season-awards-title"
+              >
+                <h2 id="season-awards-title" className={`${TYPO.eyebrow} text-accent-gold`}>
+                  End of season
+                </h2>
+                {headlines.length > 0 ? (
+                  <ul className="mt-2 space-y-1.5" aria-label="Headlines">
+                    {headlines.map((h) => (
+                      <li key={h.id} className="font-display text-[15px] font-bold leading-snug text-white">
+                        “{h.text}”
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {endOfSeasonAwards.length > 0 ? (
+                  <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3" aria-label="Awards">
+                    {endOfSeasonAwards.map((a) => (
+                      <li key={a.id} className="rounded-tile bg-pitch-950 px-3 py-2 text-left">
+                        <p className="text-[11px] font-bold uppercase tracking-wide text-[color:var(--fl-muted)]">
+                          {a.title}
+                        </p>
+                        <p className="mt-0.5 break-words text-[15px] font-bold leading-tight text-white">
+                          {a.playerName}
+                        </p>
+                        <p className="mt-0.5 text-xs text-gray-400">{a.detail}</p>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </motion.section>
+            ) : null}
+
             <CollapsibleReviewSection title="Season Summary" delay={0.32}>
               <div className={`${REVIEW_STAT_GRID} mx-auto max-w-lg`}>
                 <GameStatCard
@@ -518,10 +586,12 @@ export function SeasonReview({
                 />
               </div>
               <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-                <p className={TYPO.label}>
-                  Halfway call:{" "}
-                  <span className="text-white">{halfwayCallLabel}</span>
-                </p>
+                {halfwayCallLabel ? (
+                  <p className={TYPO.label}>
+                    Halfway call:{" "}
+                    <span className="text-white">{halfwayCallLabel}</span>
+                  </p>
+                ) : null}
                 {chemistryBonus > 0 ? (
                   <p className={TYPO.label}>
                     Chemistry{" "}
@@ -630,6 +700,23 @@ export function SeasonReview({
             </div>
           </div>
 
+        {!showPlayoffPrompt && (
+          // Phones: keep the main action in reach without scrolling past the review.
+          <div className="sticky bottom-0 z-[1] mt-4 border-t border-white/[0.06] bg-[rgba(10,17,14,0.96)] px-[var(--layout-page-pad-inline)] py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:hidden">
+            <div className="mx-auto w-full max-w-[var(--layout-page-compact)]">
+              <GameButton
+                variant="theme"
+                className="w-full"
+                onClick={() => {
+                  playUiClick();
+                  handlePlayAgain();
+                }}
+              >
+                Play again
+              </GameButton>
+            </div>
+          </div>
+        )}
         {showPlayoffPrompt && (
           <div className="sticky bottom-0 z-[1] mt-4 border-t border-white/[0.06] bg-[rgba(10,17,14,0.96)] px-[var(--layout-page-pad-inline)] py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
             <div className="mx-auto w-full max-w-[var(--layout-page-compact)]">

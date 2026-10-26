@@ -45,7 +45,7 @@ export function ReviewSubmissionNotice({
     message = "Practice run: it doesn't count toward your Daily streak.";
   } else if (dailyChallenge) {
     message =
-      "Today's counted Daily run. Top the table and win the Grand Final to extend your streak. Daily runs aren't on the Classic leaderboard.";
+      "Today's counted Daily run: finishing it extends your streak, and it scores on today's Daily board (top the table and win the Grand Final for a perfect day). Daily runs aren't on the Classic leaderboard.";
     positive = true;
   } else if (ballKnower) {
     message = "Ball Knower runs aren't ranked on the leaderboard.";

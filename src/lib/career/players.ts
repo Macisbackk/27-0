@@ -1,6 +1,7 @@
 import { generateRandomPlayerName } from "./names";
 import { randInt, type Rng } from "./rng";
 import type { CareerPlayer, Pos } from "./types";
+import { formatPounds } from "../format-money";
 
 /** Shirt numbers 1–13. */
 export const LINEUP_SLOTS: readonly Pos[] = [
@@ -79,12 +80,9 @@ export function playerValue(player: Pick<CareerPlayer, "rating" | "age" | "poten
   return Math.max(5_000, Math.round(raw / 5_000) * 5_000);
 }
 
+/** Manager Mode money (budgets, fees, wages): the game's one £ format. */
 export function formatMoney(pounds: number): string {
-  const sign = pounds < 0 ? "-" : "";
-  const v = Math.abs(pounds);
-  if (v >= 1_000_000) return `${sign}£${(v / 1_000_000).toFixed(v >= 10_000_000 ? 0 : 2).replace(/\.?0+$/, "")}M`;
-  if (v >= 1_000) return `${sign}£${Math.round(v / 1_000)}K`;
-  return `${sign}£${v}`;
+  return formatPounds(pounds);
 }
 
 /** A season's wages for a squad: a share of its total value. */
