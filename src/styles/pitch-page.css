@@ -426,3 +426,15 @@ header.pitch-surface:not(.pitch-hero) {
 .fl-bottom-nav a[aria-current="page"] * {
   color: var(--pitch-ink) !important;
 }
+
+/* See-through dark fills (bg-pitch-900/60 …) turned olive on the lime: on the pitch every dark
+   panel is solid, so text inside keeps its contrast. */
+[class*="bg-pitch-950/"]:not([class*="hover:bg-pitch-950/"]) {
+  background-color: #0e0f10 !important;
+}
+[class*="bg-pitch-900/"]:not([class*="hover:bg-pitch-900/"]) {
+  background-color: #191a1c !important;
+}
+[class*="bg-pitch-800/"]:not([class*="hover:bg-pitch-800/"]) {
+  background-color: #232527 !important;
+}
