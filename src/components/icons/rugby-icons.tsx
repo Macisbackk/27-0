@@ -77,3 +77,34 @@ export const ShopGlyph = () => (
     <path d="M8.5 8 4 10l1.5 4 2-.8V21h9v-7.8l2 .8L20 10l-4.5-2c-.6 1.2-2 2-3.5 2s-2.9-.8-3.5-2z" />
   </>
 );
+
+/** Records: the Challenge Cup. */
+export const CupGlyph = () => (
+  <>
+    <path d="M7 4h10v5a5 5 0 0 1-10 0z" />
+    <path d="M7 6H4.5a2.5 2.5 0 0 0 3 3.6M17 6h2.5a2.5 2.5 0 0 1-3 3.6" />
+    <path d="M12 14v3M8.5 21h7M9.5 17h5l.5 4h-6z" />
+  </>
+);
+
+/** Squad Book: the sticker album. */
+export const AlbumGlyph = () => (
+  <>
+    <path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6.5A2.5 2.5 0 0 0 4 21.5" />
+    <path d="M20 19v2.5H6.5" />
+    <rect x="9" y="7" width="7" height="8" rx="1" />
+  </>
+);
+
+/** Players: a squad shirt. */
+export const ShirtGlyph = () => (
+  <path d="M8.5 3 4 5.5 5.6 10l2-.9V21h8.8V9.1l2 .9L20 5.5 15.5 3c-.6 1.3-1.9 2.1-3.5 2.1S9.1 4.3 8.5 3z" />
+);
+
+/** Club Funds: a coin. */
+export const CoinGlyph = () => (
+  <>
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M14.5 8.8a2.6 2.6 0 0 0-4.6 1.7V16M8.5 13h4.5M8.5 16h7" />
+  </>
+);
