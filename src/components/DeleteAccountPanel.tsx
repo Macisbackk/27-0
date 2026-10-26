@@ -6,8 +6,9 @@ import { useAuth } from "@/lib/auth-context";
 import { deleteMyAccount } from "@/lib/auth";
 import { clearDeviceAccountData } from "@/lib/storage/account-owner";
 import { GameButton } from "@/components/ui/GameButton";
+import { CONTACT_EMAIL } from "@/lib/contact";
 
-const CONTACT = "twentysevenzero@yahoo.com";
+const CONTACT = CONTACT_EMAIL;
 
 /** Account deletion (Google Play / App Store requirement): in-app and at a public web address. */
 export function DeleteAccountPanel() {

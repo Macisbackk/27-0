@@ -8,6 +8,10 @@ import { CoachNameplate, frameRowClass, useCoachFlairs } from "@/lib/coach-flair
 import { titleName } from "@/lib/cosmetics";
 import { formatClubFunds } from "@/lib/club-funds";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
+import { useHiddenCoachIds } from "@/lib/storage/hidden-coaches";
+import { displayCoachName } from "@/lib/moderation/name-filter";
+import { CoachRowActions } from "./CoachRowActions";
+import { HiddenCoachesNote } from "./HiddenCoachesNote";
 import {
   getWeeklyLeaderboardAsync,
   type WeeklyLeaderboardRow,
@@ -56,6 +60,10 @@ export function WeeklyLeaderboard() {
     };
   }, [view]);
 
+  const hiddenIds = useHiddenCoachIds();
+  // Coaches you hid don't show on your boards (rank numbers stay as they are).
+  const visibleRows = (rows ?? []).filter((r) => r.isCurrentUser || !r.userId || !hiddenIds.has(r.userId));
+  const hiddenCount = (rows?.length ?? 0) - visibleRows.length;
   const flairs = useCoachFlairs((rows ?? []).map((r) => r.username));
   const myCosmetics = useCosmetics();
   // Your own row shows what you have equipped right now, even before it syncs.
@@ -119,8 +127,9 @@ export function WeeklyLeaderboard() {
               <span>Coach</span>
               <span className="text-right">Score</span>
             </li>
-            {rows.map((row) => {
+            {visibleRows.map((row) => {
               const flair = flairFor(row);
+              const shownName = displayCoachName(row.username, row.userId);
               const framed = frameRowClass(flair.frame);
               return (
                 <li
@@ -138,10 +147,15 @@ export function WeeklyLeaderboard() {
                     {row.rank}
                   </span>
                   <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5">
-                    <CoachNameplate className={TYPO.identityLine} name={row.username} title={flair.title} />
+                    <CoachNameplate className={TYPO.identityLine} name={shownName} title={flair.title} />
                     {row.topTen ? (
                       <span className="inline-flex shrink-0 items-center rounded-full bg-accent-gold/15 px-2 py-0.5 text-[10px] font-bold text-accent-gold">
                         Top 10
+                      </span>
+                    ) : null}
+                    {!row.isCurrentUser && !offline ? (
+                      <span className="ml-auto">
+                        <CoachRowActions userId={row.userId} coachName={row.username} displayName={shownName} board="weekly" />
                       </span>
                     ) : null}
                   </span>
@@ -154,6 +168,7 @@ export function WeeklyLeaderboard() {
           </ol>
         )}
       </GamePanel>
+      <HiddenCoachesNote count={hiddenCount} />
       <p className="text-center text-xs text-gray-600">
         {offline
           ? "Offline: showing your score saved on this device"

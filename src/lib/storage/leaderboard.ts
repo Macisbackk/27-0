@@ -286,7 +286,8 @@ function mapSupabaseToTrackerEntries(
     const userKey = row.user_id ?? username;
     const existing = byUser.get(userKey);
 
-    const candidate = toTrackerEntry(username, {
+    const candidate: LeaderboardTrackerEntry = {
+      ...toTrackerEntry(username, {
       squadValue: row.score,
       achievedAt: row.updated_at ?? row.created_at,
       difficulty: (row.difficulty ?? "NORMAL") as GameDifficulty,
@@ -302,7 +303,9 @@ function mapSupabaseToTrackerEntries(
       bestCupFinishRank: row.best_cup_finish_rank ?? 0,
       bestCupFinishLabel: row.best_cup_finish ?? "",
       cupWinPercentage: row.cup_win_percentage ?? 0,
-    });
+    }),
+      userId: row.user_id ?? undefined,
+    };
 
     if (!existing) {
       byUser.set(userKey, candidate);

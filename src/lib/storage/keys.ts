@@ -23,6 +23,8 @@ export const STORAGE_KEYS = {
   squadValueLeaderboardReset: "27-0-squad-value-lb-reset-v1",
   uiThemeStore: "27-0-ui-theme-store",
   cosmeticsStore: "27-0-cosmetics-store",
+  /** Coaches this player hid from their leaderboards (storage/hidden-coaches.ts). */
+  hiddenCoaches: "27-0-hidden-coaches",
   /** Squad Book: every card fielded in a finished season (lib/squad-book.ts). */
   squadBook: "27-0-squad-book",
   /** Cached CSS vars for pre-hydration theme bootstrap */

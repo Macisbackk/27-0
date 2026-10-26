@@ -311,6 +311,7 @@ function mapEntriesToRows(
   const rows = sorted.slice(0, limit).map((entry, index) => ({
     rank: index + 1,
     username: entry.username,
+    userId: entry.userId,
     statDisplay: String(Math.round(entry.trophyCount)),
     achievedAt: entry.updatedAt,
     difficulty: "NORMAL" as const,
@@ -327,6 +328,7 @@ function mapEntriesToRows(
       rows.push({
         rank: userIndex + 1,
         username: entry.username,
+        userId: entry.userId,
         statDisplay: String(Math.round(entry.trophyCount)),
         achievedAt: entry.updatedAt,
         difficulty: "NORMAL",

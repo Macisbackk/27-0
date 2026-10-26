@@ -10,6 +10,14 @@ import {
   signupSuccessResult,
 } from "./auth-errors";
 import { validateCoachName } from "./storage/user";
+import { OFFENSIVE_NAME_MESSAGE } from "./moderation/name-filter";
+
+/** The database refuses blocked coach names too (moderation migration): show the same message. */
+function profileErrorMessage(err: unknown, fallback: string): string {
+  const message = err instanceof Error ? err.message : (err as { message?: string } | null)?.message;
+  if (message && /coach name not allowed/i.test(message)) return OFFENSIVE_NAME_MESSAGE;
+  return message || fallback;
+}
 
 /** Keep in sync with Supabase → Auth → Email → Minimum password length. */
 export const MIN_PASSWORD_LENGTH = 8;
@@ -87,8 +95,7 @@ export async function createProfile(
     if (error) throw error;
     return { ok: true };
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Could not create profile.";
-    return { ok: false, error: message };
+    return { ok: false, error: profileErrorMessage(err, "Could not create profile.") };
   }
 }
 
@@ -117,8 +124,7 @@ export async function updateProfileCoachName(
     if (error) throw error;
     return { ok: true };
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Could not update coach name.";
-    return { ok: false, error: message };
+    return { ok: false, error: profileErrorMessage(err, "Could not update coach name.") };
   }
 }
 

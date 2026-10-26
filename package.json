@@ -102,7 +102,8 @@
     "test:store": "bun scripts/test-store.ts",
     "test:share": "tsx scripts/test-share-result.ts",
     "test:squadbook": "bun scripts/test-squad-book.ts",
-    "test:missions": "tsx scripts/test-missions.ts"
+    "test:missions": "tsx scripts/test-missions.ts",
+    "test:moderation": "tsx scripts/test-name-filter.ts"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.0",

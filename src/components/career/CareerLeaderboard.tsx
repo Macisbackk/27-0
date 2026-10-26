@@ -17,6 +17,10 @@ import { getAuthUserId } from "@/lib/auth-session";
 import { loadLocalLegacy } from "@/lib/career/storage";
 import { titleName } from "@/lib/cosmetics";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
+import { useHiddenCoachIds } from "@/lib/storage/hidden-coaches";
+import { displayCoachName } from "@/lib/moderation/name-filter";
+import { CoachRowActions } from "@/components/CoachRowActions";
+import { HiddenCoachesNote } from "@/components/HiddenCoachesNote";
 
 function formatScore(board: CareerBoard, e: CareerBoardEntry): string {
   if (board === "career-glory") return `${e.score} season${e.score === 1 ? "" : "s"}`;
@@ -61,6 +65,7 @@ export function CareerLeaderboard() {
   const meta = CAREER_BOARDS.find((b) => b.id === board)!;
   // Store titles and frames, same as the Classic and Daily boards.
   const flairs = useCoachFlairs((entries ?? []).map((e) => e.username));
+  const hiddenIds = useHiddenCoachIds();
   const myCosmetics = useCosmetics();
   const isMe = (e: CareerBoardEntry) =>
     Boolean(myUserId && e.userId && e.userId === myUserId);
@@ -94,6 +99,9 @@ export function CareerLeaderboard() {
               const flair = flairFor(e);
               const framed = frameRowClass(flair.frame);
               const mine = isMe(e);
+              // Coaches you hid don't show on your boards (rank numbers stay as they are).
+              if (!mine && e.userId && hiddenIds.has(e.userId)) return null;
+              const shownName = displayCoachName(e.username, e.userId);
               return (
               <li
                 key={e.userId ?? e.username}
@@ -102,9 +110,14 @@ export function CareerLeaderboard() {
                 }`}
                 aria-current={mine ? "true" : undefined}
               >
-                <span className="flex min-w-0 items-center gap-3">
+                <span className="flex min-w-0 flex-1 items-center gap-3">
                   <span className={`w-6 text-right font-display font-bold tabular-nums ${i < 3 ? "text-accent-gold" : "text-gray-500"}`}>{i + 1}</span>
-                  <CoachNameplate className="text-white" name={e.username} title={flair.title} />
+                  <CoachNameplate className="text-white" name={shownName} title={flair.title} />
+                  {!mine && !offline ? (
+                    <span className="ml-auto">
+                      <CoachRowActions userId={e.userId ?? undefined} coachName={e.username} displayName={shownName} board="manager" />
+                    </span>
+                  ) : null}
                 </span>
                 <span className="shrink-0 font-display font-bold tabular-nums text-white">{formatScore(board, e)}</span>
               </li>
@@ -113,6 +126,9 @@ export function CareerLeaderboard() {
           </ol>
         )}
       </GamePanel>
+      <HiddenCoachesNote
+        count={(entries ?? []).filter((e) => !isMe(e) && e.userId && hiddenIds.has(e.userId)).length}
+      />
       {offline ? (
         <p className="text-center text-xs text-gray-600">Offline: showing records saved on this device</p>
       ) : null}
