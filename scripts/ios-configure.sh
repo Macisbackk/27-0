@@ -28,6 +28,9 @@ set_key ITSAppUsesNonExemptEncryption bool false
 set_key LSRequiresIPhoneOS bool true
 set_key UIRequiresFullScreen bool true
 set_key UIStatusBarStyle string UIStatusBarStyleLightContent
+"$PB" -c "Delete :UIRequiredDeviceCapabilities" "$PLIST" >/dev/null 2>&1 || true
+"$PB" -c "Add :UIRequiredDeviceCapabilities array" "$PLIST"
+"$PB" -c "Add :UIRequiredDeviceCapabilities:0 string arm64" "$PLIST"
 set_key NSPhotoLibraryAddUsageDescription string "27-0 saves your season card to Photos when you choose Save Image."
 
 for key in UISupportedInterfaceOrientations "UISupportedInterfaceOrientations~ipad"; do
