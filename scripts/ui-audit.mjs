@@ -138,7 +138,7 @@ await shot(page, "profile-stats-after-a-run");
 // Quiz.
 await go(page, "/mini-games/quiz", 1200);
 await shot(page, "quiz-start");
-await tap(page, [/Normal Quiz/i, /Super League Millionaire/i, /^Play/i, /Start/i]);
+await tap(page, [/Normal Quiz/i, /Golden Point Quiz/i, /^Play/i, /Start/i]);
 await page.waitForTimeout(1000);
 await shot(page, "quiz-question");
 const option = page.locator("main button").filter({ hasNotText: /Walk|Keep|Back|Mini Games|Lifeline|50|Ask|Phone|Change/i }).first();

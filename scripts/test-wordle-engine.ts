@@ -11,6 +11,7 @@ import {
   pickWordlePlayer,
   recordWordleResult,
   submitWordleGuess,
+  buildWordleShareText,
   useWordleHint,
   WORDLE_MAX_GUESSES,
 } from "../src/lib/mini-games/wordle/engine";
@@ -114,7 +115,11 @@ assert(WORDLE_MAX_GUESSES === 6, "six guesses");
 
 const clues = buildWordleClues(pool[1]!, pool[0]!);
 assert(clues.club === "match", "same club is a match");
-assert(clues.position === "miss", "different position is a miss");
+assert(clues.position === "close", "stand-off vs scrum-half is close (both halves)");
+assert(buildWordleClues(pool[2]!, pool[0]!).position === "miss", "prop vs stand-off is a miss (different unit)");
+assert(buildWordleClues(pool[3]!, pool[0]!).position === "miss", "fullback vs stand-off is a miss (backs vs halves)");
+assert(clues.era === "match", "2007 vs 2009 cards share an era (2000s)");
+assert(buildWordleClues(pool[3]!, pool[0]!).era === "lower", "a 2010s guess for a 2000s answer points earlier");
 assert(clues.nationality === "match", "same nation is a match");
 assert(clues.rating === "higher", "lower guess rating points higher");
 assert(clues.age === "higher", "younger guess age points higher");
@@ -204,6 +209,11 @@ assert(
 assert(hinted.hint?.key !== "status", "hint never reveals Current/Historic status");
 const secondHint = useWordleHint(hinted.run, pool);
 assert(Boolean(secondHint.error), "second hint is blocked");
+const sharedWithHint = buildWordleShareText(hinted.run, "Era");
+const sharedClean = buildWordleShareText(hintRun, "Era");
+assert(sharedWithHint.includes("hint used"), "a used hint is marked on the share");
+assert(!sharedClean.includes("hint used"), "no hint, no mark");
+assert(!/[A-Z][a-z]+ [A-Z][a-z]+\n/.test(sharedClean.split("\n").slice(1).join("\n")), "share has no player names");
 
 console.log("\nWordle current-vs-historic pool");
 {

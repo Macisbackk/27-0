@@ -399,7 +399,7 @@ export function HomeModeSelector() {
             <TilesGlyph />
           </TileIcon>
           <TileTitle>Puzzles</TileTitle>
-          <TileSub>{hub && !hub.wordleDone ? "Wordle reward waiting" : "Millionaire, Wordle, Grid"}</TileSub>
+          <TileSub>{hub && !hub.wordleDone ? "Wordle reward waiting" : "Quiz, Wordle, Grid"}</TileSub>
         </Tile>
       </div>
     </section>

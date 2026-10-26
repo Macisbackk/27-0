@@ -256,7 +256,7 @@ const CLUB_FUNDS_INFO_LINES_SOURCE: ClubFundsInfoLine[] = [
       ]
     : []),
   {
-    label: "Super League Millionaire (best run each day)",
+    label: "Golden Point Quiz (first run each day; 10% after)",
     amount: QUIZ_TOP_PRIZE,
     valueText: `up to ${formatClubFunds(QUIZ_TOP_PRIZE)}`,
   },

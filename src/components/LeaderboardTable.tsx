@@ -27,7 +27,14 @@ import {
   LeaderboardTabBar,
   type LeaderboardTabAccent,
 } from "./LeaderboardTabBar";
-import { getDailyLeaderboardAsync } from "@/lib/storage/daily-leaderboard";
+import {
+  getDailyLeaderboardAsync,
+  getDailyScoreLeaderboardAsync,
+} from "@/lib/storage/daily-leaderboard";
+import { GameModal } from "@/components/ui/GameModal";
+import { DailyStreakStrip } from "./DailyStreakStrip";
+import { DAILY_MAX_SCORE } from "@/lib/daily-streak";
+import type { RecordMetric } from "@/lib/leaderboard-trackers";
 import {
   getMiniGameWinsLeaderboardAsync,
   MINI_GAME_WINS_CATEGORIES,
@@ -61,12 +68,12 @@ const QUICK_MODE_ACCENTS = {
   quiz: "gold",
 } as const satisfies Record<string, LeaderboardTabAccent>;
 
-/** Puzzles tab: the mini-game win boards plus the Millionaire highest-prize board. */
+/** Puzzles tab: the mini-game win boards plus the Golden Point Quiz highest-prize board. */
 type PuzzlesCategory = MiniGameWinsKind | "quiz-prize";
 
 const QUIZ_PRIZE_CATEGORY = {
   id: "quiz-prize" as const,
-  label: "Millionaire Prize",
+  label: "Quiz Top Prize",
   shortLabel: "Prize",
   href: "/mini-games/quiz",
 };
@@ -112,6 +119,19 @@ const STAT_COLUMN: Partial<Record<LeaderboardTrackerType, string>> = {
 type QuickLeaderboardMode = "super-league" | "trophy-cabinet" | "daily" | "quiz";
 
 /**
+ * Classic ranking views (v1.18). "Best season" is the default: the old default ranked by career
+ * wins, which rewarded volume (a 27-0 season sat 21st). Career W–L stays as "Total record".
+ */
+type ClassicView = "best_season" | "total_record" | Exclude<LeaderboardTrackerType, "best_record">;
+
+type DailyView = "today" | "streak";
+
+const DAILY_VIEWS: { id: DailyView; label: string }[] = [
+  { id: "today", label: "Today's score" },
+  { id: "streak", label: "Best streak" },
+];
+
+/**
  * `mode` makes the board controlled by the page's top-level tabs (Classic / Daily / Manager);
  * its own mode tabs are then hidden.
  */
@@ -120,9 +140,13 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
   const [leaderboardMode, setLeaderboardMode] =
     useState<QuickLeaderboardMode>(mode ?? "super-league");
   const [tracker, setTracker] = useState<LeaderboardTrackerType>("best_record");
+  const [classicView, setClassicView] = useState<ClassicView>("best_season");
+  const [dailyView, setDailyView] = useState<DailyView>("today");
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [miniGamesCategory, setMiniGamesCategory] =
     useState<PuzzlesCategory>("wordle");
-  const [period, setPeriod] = useState<LeaderboardPeriod>("ALL_TIME");
+  // New players can place on a weekly board; All time is one tap away in Filters.
+  const [period, setPeriod] = useState<LeaderboardPeriod>("WEEKLY");
   const difficulty: GameDifficulty = "NORMAL";
   const [entries, setEntries] = useState<LeaderboardTrackerRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -134,10 +158,11 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
     const trackerParam = params.get("tracker");
-    if (trackerParam === "daily_streak") {
+    if (trackerParam === "daily_streak" || trackerParam === "daily") {
       if (SHOW_DAILY_CHALLENGE_UI) {
         setLeaderboardMode("daily");
         setTracker("daily_streak");
+        setDailyView(trackerParam === "daily_streak" ? "streak" : "today");
       } else {
         window.history.replaceState(null, "", window.location.pathname);
       }
@@ -168,12 +193,18 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
     ? []
     : getTrackersForDbMode(leaderboardMode);
 
+  const isClassicBoard = leaderboardMode === "super-league";
+  const classicTracker: LeaderboardTrackerType =
+    classicView === "best_season" || classicView === "total_record" ? "best_record" : classicView;
+  const recordMetric: RecordMetric = classicView === "total_record" ? "total" : "best";
   const activeTracker =
     isMiniGamesMode
       ? tracker
-      : isTrackerValidForDbMode(tracker, leaderboardMode)
-        ? tracker
-        : getDefaultTrackerForDbMode(leaderboardMode);
+      : isClassicBoard
+        ? classicTracker
+        : isTrackerValidForDbMode(tracker, leaderboardMode)
+          ? tracker
+          : getDefaultTrackerForDbMode(leaderboardMode);
 
   const isDailyMode =
     SHOW_DAILY_CHALLENGE_UI && leaderboardMode === "daily";
@@ -229,7 +260,9 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
 
       if (isDailyMode || isTrophyCabinetMode) {
         const result = isDailyMode
-          ? await getDailyLeaderboardAsync()
+          ? dailyView === "today"
+            ? await getDailyScoreLeaderboardAsync()
+            : await getDailyLeaderboardAsync()
           : await getTrackerLeaderboardAsync(
               effectiveTracker,
               period,
@@ -249,7 +282,8 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
         difficulty,
         50,
         leaderboardMode,
-        isSuperLeagueMode ? superLeagueModeVariant : "current"
+        isSuperLeagueMode ? superLeagueModeVariant : "current",
+        isSuperLeagueMode ? recordMetric : "total"
       );
 
       if (currentRequest !== requestId.current) return;
@@ -274,6 +308,8 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
     normalEraMode,
     isMiniGamesMode,
     miniGamesCategory,
+    dailyView,
+    recordMetric,
   ]);
 
   useEffect(() => {
@@ -310,7 +346,19 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
           ? "Puzzles"
           : "Classic";
 
-  const trackerLabel = isMiniGamesMode
+  const classicViews: { id: ClassicView; label: string }[] = [
+    { id: "best_season", label: "Best season" },
+    { id: "total_record", label: "Total record" },
+    ...getTrackersForDbMode("super-league")
+      .filter((t) => t.id !== "best_record")
+      .map((t) => ({ id: t.id as ClassicView, label: t.label })),
+  ];
+
+  const trackerLabel = isDailyMode
+    ? DAILY_VIEWS.find((v) => v.id === dailyView)!.label
+    : isClassicBoard
+      ? classicViews.find((v) => v.id === classicView)?.label ?? "Best season"
+      : isMiniGamesMode
     ? activeMiniGamesCategory.label
     : isTrophyCabinetMode
       ? (TROPHY_CABINET_CATEGORIES.find((c) => c.logicalId === trophyLogicalId)
@@ -324,7 +372,15 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
       : miniGamesCategory === "grid"
         ? "Perfect Grids"
         : "Total Wins"
-    : (STAT_COLUMN[effectiveTracker] ?? "Stat");
+    : isDailyMode
+      ? dailyView === "today"
+        ? "Score"
+        : "Best Streak"
+      : isClassicBoard && activeTracker === "best_record"
+        ? recordMetric === "best"
+          ? "Best Season"
+          : "Total Record"
+        : (STAT_COLUMN[effectiveTracker] ?? "Stat");
 
   const quickModeOptions: {
     id: QuickLeaderboardMode;
@@ -338,19 +394,40 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
     { id: "quiz" as const, label: "Puzzles" },
   ];
 
+  const emptyStateTitle = isDailyMode
+    ? dailyView === "today"
+      ? "Be the first on today's board"
+      : "No streaks yet"
+    : isMiniGamesMode
+      ? "No entries yet"
+      : period === "WEEKLY"
+        ? "Be the first on this week's board"
+        : period === "MONTHLY"
+          ? "Be the first on this month's board"
+          : "No entries yet";
   const emptyStateMessage = isDailyMode
-    ? "No streaks yet. Finish a Daily Challenge."
+    ? dailyView === "today"
+      ? `Play today's Daily: every win scores 10, top the table +50, play-off wins 15 and the Grand Final +100 (max ${DAILY_MAX_SCORE}).`
+      : "Finish the Daily on back-to-back days to build a streak."
     : isQuizPrizeBoard
-      ? "No prizes banked yet. Play Super League Millionaire to climb the board."
+      ? "No prizes banked yet. Play the Golden Point Quiz to climb the board."
       : isMiniGamesMode
       ? `No ${activeMiniGamesCategory.label.toLowerCase()} yet. Win a game to climb the board.`
-      : "Finish a Classic season to get on the board.";
+      : period === "ALL_TIME"
+        ? "Finish a Classic season to get on the board."
+        : "Finish a Classic season this week to get on the board.";
 
   const showUpdatedColumn =
     !isDailyMode && !isTrophyCabinetMode && !isMiniGamesMode;
 
   const showPeriodFilters =
     !isDailyMode && !isTrophyCabinetMode && !isMiniGamesMode;
+  const periodLabel = formatPeriodLabel(period);
+  const filterSummary = isDailyMode
+    ? trackerLabel
+    : isClassicBoard
+      ? `${trackerLabel} · ${periodLabel} · ${normalEraMode ? "Era" : "Current"}`
+      : trackerLabel;
 
   const hiddenIds = useHiddenCoachIds();
   // Coaches you hid don't show on your boards (their rank numbers stay as they are).
@@ -388,8 +465,59 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
       </nav>
       )}
 
-      {showCupVariantToggle && (
-        <div className="mb-5">
+      {isDailyMode ? <DailyStreakStrip className="mb-4" /> : null}
+
+      {/* One summary row; every other filter lives in the sheet (was four rows of tabs). */}
+      <div className="mb-4 flex items-center justify-between gap-3 rounded-control bg-pitch-900 px-3 py-2">
+        <p className="min-w-0 truncate text-sm font-semibold text-gray-200" aria-live="polite">
+          {filterSummary}
+        </p>
+        <button
+          type="button"
+          onClick={() => setFiltersOpen(true)}
+          className="btn-press shrink-0 rounded-full border border-pitch-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-pitch-800 min-h-[36px]"
+          aria-haspopup="dialog"
+        >
+          Filters
+        </button>
+      </div>
+
+      <GameModal open={filtersOpen} onClose={() => setFiltersOpen(false)} labelledBy="leaderboard-filters-title">
+        <h2 id="leaderboard-filters-title" className={`text-center ${TYPO.sectionTitle}`}>
+          {modeLabel} filters
+        </h2>
+        <div className="mt-4 space-y-5">
+          {isDailyMode ? (
+            <section aria-label="Daily board">
+              <p className={`mb-2 ${TYPO.meta}`}>Rank by</p>
+              <LeaderboardTabBar
+                tier="category"
+                tabs={DAILY_VIEWS.map((v) => ({ id: v.id, label: v.label, accent: "amber" as const }))}
+                active={dailyView}
+                onChange={(id) => setDailyView(id as DailyView)}
+                ariaLabel="Daily board"
+              />
+            </section>
+          ) : null}
+
+          {isClassicBoard ? (
+            <section aria-label="Ranking">
+              <p className={`mb-2 ${TYPO.meta}`}>Rank by</p>
+              <LeaderboardTabBar
+                tier="category"
+                tabs={classicViews.map((v) => ({
+                  id: v.id,
+                  label: v.label,
+                  accent: v.id === "best_season" || v.id === "total_record" ? "theme" : TRACKER_ACCENTS[v.id as LeaderboardTrackerType],
+                }))}
+                active={classicView}
+                onChange={(id) => setClassicView(id as ClassicView)}
+                ariaLabel="Ranking"
+              />
+            </section>
+          ) : null}
+          {showCupVariantToggle && (
+        <div>
           <ChallengeCupVariantToggle
             sectionLabel={isTrophyCabinetMode ? "Squads" : "Mode"}
             useShortLabels
@@ -402,7 +530,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
         </div>
       )}
 
-      <div className="mb-5">
+      <div>
         {isTrophyCabinetMode ? (
           <LeaderboardTabBar
             tier="category"
@@ -437,7 +565,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
             ariaLabel="Puzzles category"
           />
         ) : (
-          availableTrackers.length > 1 && (
+          !isClassicBoard && !isDailyMode && availableTrackers.length > 1 && (
             <LeaderboardTabBar
               tier="category"
               tabs={availableTrackers.map((t) => ({
@@ -455,7 +583,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
       </div>
 
       {showPeriodFilters && (
-        <nav className="mb-6" aria-label="Leaderboard period">
+        <nav aria-label="Leaderboard period">
           <LeaderboardTabBar
             tier="period"
             tabs={PERIODS.map((p) => ({
@@ -468,6 +596,19 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
           />
         </nav>
       )}
+
+          {showPeriodFilters ? (
+            <p className={`text-center ${TYPO.meta}`}>
+              This week and this month list coaches who played in that period.
+            </p>
+          ) : null}
+        </div>
+        <div className="mt-5">
+          <GameButton variant="theme" onClick={() => setFiltersOpen(false)}>
+            Show results
+          </GameButton>
+        </div>
+      </GameModal>
 
       {loading && entries.length === 0 ? (
         <GamePanel variant="elevated" className="overflow-hidden p-0" aria-busy="true" aria-label="Loading leaderboard">
@@ -489,7 +630,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
       ) : entries.length === 0 ? (
         <GamePanel variant="elevated" className="p-6 sm:p-8">
           <GameEmptyState
-            title="No entries yet"
+            title={emptyStateTitle}
             message={emptyStateMessage}
             action={
               <div className="flex flex-wrap items-center justify-center gap-3">
@@ -506,11 +647,21 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
                   }
                 >
                   {isDailyMode
-                    ? "Play Daily Challenge"
+                    ? "Play today's Daily"
                     : isMiniGamesMode
                       ? `Play ${activeMiniGamesCategory.shortLabel}`
                       : "Play Classic"}
                 </GameButton>
+                {isClassicBoard && period !== "ALL_TIME" ? (
+                  <GameButton
+                    variant="secondary"
+                    size="sm"
+                    fullWidth={false}
+                    onClick={() => setPeriod("ALL_TIME")}
+                  >
+                    See all time
+                  </GameButton>
+                ) : null}
                 {!authLoading && !isLoggedIn ? (
                   <GameButton
                     variant="secondary"
@@ -518,7 +669,7 @@ export function LeaderboardTable({ mode }: { mode?: "super-league" | "daily" } =
                     fullWidth={false}
                     href={
                       isDailyMode
-                        ? "/login?redirect=/leaderboard?tracker=daily_streak"
+                        ? "/login?redirect=/leaderboard?tracker=daily"
                         : "/login?redirect=/leaderboard"
                     }
                   >

@@ -5,11 +5,33 @@
  * For 400 consecutive UK days:
  * - the scenario is deterministic for the whole day and never repeats yesterday's rule type
  * - titles / summaries fit the home card (≤ 18 / ≤ 60 chars)
+ * - streak rules (v1.18): finishing counts, perfect days, freezes, milestones, the Daily score,
+ *   the pre-v1.18 migration and the cloud merge
  * - every one of the 13 slots can be filled while obeying the rule (spin + choices), from an
  *   empty squad and across three full drafts and Auto-fill with the shared daily seed — without
  *   needing the unrestricted fallback.
  */
 import seedrandom from "seedrandom";
+import {
+  addDaysToKey,
+  applyDailyFinish,
+  applyPerfectDay,
+  computeDailyScore,
+  countStreakFromProgress,
+  DAILY_MAX_FREEZES,
+  DAILY_MAX_SCORE,
+  DAILY_STREAK_MILESTONES,
+  isFinishedDay,
+  isPerfectProgress,
+  migrateDailyState,
+  normalizeDailyMeta,
+  normalizeDailyProgressMap,
+  pendingStreakMilestone,
+  settleMissedDays,
+  type DailyProgress,
+} from "../src/lib/daily-streak";
+import { mergeDailySnapshots } from "../src/lib/storage/daily-challenge-cloud";
+import type { DailyChallengeSnapshot } from "../src/lib/daily-challenge";
 import {
   DAILY_RULE_BONUSES,
   DAILY_RULE_TYPES,
@@ -343,6 +365,102 @@ for (const type of DAILY_RULE_TYPES) {
   assert(count >= Math.floor(DAYS / DAILY_RULE_TYPES.length) - 1, `${type} appears regularly (${count} of ${DAYS} days)`);
 }
 assert(giantKillerSimChecked, "Giant killers season simulated at least once");
+
+// --- Streak rules (v1.18) -------------------------------------------------------------------
+{
+  const base = normalizeDailyMeta({});
+  // Finishing counts, win or lose.
+  let st = applyDailyFinish(base, {}, "2026-11-01");
+  assert(st.meta.currentStreak === 1 && st.counted, "streak: finishing day 1 (no win) starts a streak");
+  st = applyDailyFinish(st.meta, st.progress, "2026-11-01");
+  assert(st.meta.currentStreak === 1 && !st.counted, "streak: same day twice counts once");
+  st = applyDailyFinish(st.meta, st.progress, "2026-11-02");
+  assert(st.meta.currentStreak === 2, "streak: consecutive day extends");
+  // Missed day without a freeze breaks it.
+  const broken = applyDailyFinish(st.meta, st.progress, "2026-11-04");
+  assert(broken.meta.currentStreak === 1 && broken.meta.bestStreak === 2, "streak: a missed day with no freeze resets to 1");
+  // Seven days earns a freeze; a missed day then uses it.
+  let run = { meta: base, progress: {} as Record<string, DailyProgress> };
+  for (let d = 1; d <= 7; d += 1) {
+    const r = applyDailyFinish(run.meta, run.progress, `2026-12-${String(d).padStart(2, "0")}`);
+    run = { meta: r.meta, progress: r.progress };
+    if (d === 7) assert(r.freezeEarned, "freeze: earned at the 7-day milestone");
+  }
+  assert(run.meta.freezes === 1, "freeze: one held after 7 days");
+  const viewNextDay = settleMissedDays(run.meta, run.progress, "2026-12-09");
+  assert(viewNextDay.consumed === 1 && viewNextDay.meta.freezes === 0, "freeze: a missed day auto-consumes a freeze");
+  assert(viewNextDay.meta.currentStreak === 7 && viewNextDay.progress["2026-12-08"]?.frozen === true, "freeze: the streak survives and the day is marked frozen");
+  const afterFreeze = applyDailyFinish(viewNextDay.meta, viewNextDay.progress, "2026-12-09");
+  assert(afterFreeze.meta.currentStreak === 8, "freeze: the next finished day extends the streak");
+  assert(countStreakFromProgress(afterFreeze.progress, "2026-12-09") === 8, "freeze: frozen days bridge the progress walk");
+  const twoMissed = settleMissedDays({ ...afterFreeze.meta, freezes: 1 }, afterFreeze.progress, "2026-12-12");
+  assert(twoMissed.broken && twoMissed.meta.currentStreak === 0 && twoMissed.meta.freezes === 1, "freeze: two missed days with one freeze breaks the streak (freeze kept)");
+  // Max two freezes held.
+  let longRun = { meta: base, progress: {} as Record<string, DailyProgress> };
+  for (let d = 0; d < 28; d += 1) {
+    const key = addDaysToKey("2027-01-01", d);
+    const r = applyDailyFinish(longRun.meta, longRun.progress, key);
+    longRun = { meta: r.meta, progress: r.progress };
+  }
+  assert(longRun.meta.freezes === DAILY_MAX_FREEZES, "freeze: never more than the max held");
+  // Milestones.
+  assert(pendingStreakMilestone({ ...base, currentStreak: 3 }) === 3, "milestone: 3 is celebrated");
+  assert(pendingStreakMilestone({ ...base, currentStreak: 3, celebratedMilestone: 3 }) === null, "milestone: only once");
+  assert(pendingStreakMilestone({ ...base, currentStreak: 30, celebratedMilestone: 7 }) === 30, "milestone: 30");
+  assert(pendingStreakMilestone({ ...base, currentStreak: 5 }) === null, "milestone: none between milestones");
+  assert(DAILY_STREAK_MILESTONES.join(",") === "3,7,30,100", "milestones are 3/7/30/100");
+  // Perfect days.
+  const perfect = applyPerfectDay(base, { "2026-11-01": { leagueLeaders: true, playoffTitle: true } }, "2026-11-01");
+  assert(perfect.counted && perfect.meta.perfectDays === 1, "perfect day: League Leaders + Grand Final counts");
+  const again = applyPerfectDay(perfect.meta, perfect.progress, "2026-11-01");
+  assert(!again.counted && again.meta.perfectDays === 1, "perfect day: counted once");
+  const notPerfect = applyPerfectDay(base, { "2026-11-01": { leagueLeaders: true } }, "2026-11-01");
+  assert(!notPerfect.counted, "perfect day: top of the table alone is not perfect");
+  // Score.
+  assert(computeDailyScore({ regularWins: 20, leaguePosition: 1, playoffWins: 2, grandFinal: true }) === 380, "score: 20 wins + leaders + 2 play-off wins + GF = 380");
+  assert(computeDailyScore({ regularWins: 12, leaguePosition: 7, playoffWins: 0, grandFinal: false }) === 120, "score: 12 wins, no bonuses = 120");
+  assert(DAILY_MAX_SCORE === 450 && computeDailyScore({ regularWins: 27, leaguePosition: 1, playoffWins: 2, grandFinal: true }) === DAILY_MAX_SCORE, "score: max 450 is a 27-0 League Leaders Grand Final win");
+  // Migration keeps old streaks and counts finished (non-perfect) days.
+  const legacy = migrateDailyState(
+    normalizeDailyMeta({ currentStreak: 4, bestStreak: 9, lastCompletedDateKey: "2026-10-20" }),
+    normalizeDailyProgressMap({
+      "2026-10-17": { leagueLeaders: true, playoffTitle: true },
+      "2026-10-18": { leagueLeaders: true, playoffTitle: true },
+      "2026-10-19": { leagueLeaders: true, playoffTitle: true },
+      "2026-10-20": { leagueLeaders: true, playoffTitle: true },
+      "2026-10-21": { leagueLeaders: true },
+    })
+  );
+  assert(legacy.meta.currentStreak === 5 && legacy.meta.lastCompletedDateKey === "2026-10-21", "migration: a later finished (non-perfect) day extends the old streak");
+  assert(legacy.meta.bestStreak === 9 && legacy.meta.perfectDays === 4, "migration: best streak kept, perfect days counted");
+  assert(legacy.meta.celebratedMilestone === 3 && legacy.meta.rulesVersion === 2, "migration: past milestones don't pop up again");
+  const legacyLong = migrateDailyState(normalizeDailyMeta({ currentStreak: 40, bestStreak: 40, lastCompletedDateKey: "2026-10-20" }), {});
+  assert(legacyLong.meta.currentStreak === 40, "migration: never wipes a streak longer than the stored claims");
+  const oldArray = normalizeDailyProgressMap(["2026-10-01", "2026-10-02"]);
+  assert(isFinishedDay(oldArray["2026-10-01"]) && isPerfectProgress(oldArray["2026-10-02"]), "migration: oldest array claim format reads as perfect days");
+  // Cloud merge.
+  const local: DailyChallengeSnapshot = {
+    meta: { currentStreak: 2, bestStreak: 2, lastCompletedDateKey: "2026-11-02" },
+    progress: { "2026-11-01": { leagueLeaders: true }, "2026-11-02": { finished: true } },
+    attempt: null,
+  };
+  const cloud: DailyChallengeSnapshot = {
+    meta: { currentStreak: 3, bestStreak: 5, lastCompletedDateKey: "2026-11-03", freezes: 1, perfectDays: 2, rulesVersion: 2 },
+    progress: { "2026-11-03": { finished: true, result: { runId: "r", regularWins: 20, leaguePosition: 1, playoffWins: 2, grandFinal: true, final: true } } },
+    attempt: { date: "2026-11-04", runId: "x" },
+  };
+  const merged = mergeDailySnapshots(local, cloud, "2026-11-04");
+  assert(merged.meta.currentStreak === 3 && merged.meta.lastCompletedDateKey === "2026-11-03", "merge: later device wins, streak walks unioned days");
+  assert(merged.meta.bestStreak === 5 && merged.meta.freezes === 1 && (merged.meta.perfectDays ?? 0) >= 2, "merge: best / freezes / perfect days kept");
+  assert(merged.progress["2026-11-03"]?.result?.regularWins === 20, "merge: day results survive");
+  assert(merged.attempt?.runId === "x", "merge: cloud attempt for today wins");
+  const oldDeviceMerge = mergeDailySnapshots(
+    { meta: { currentStreak: 6, bestStreak: 6, lastCompletedDateKey: "2026-11-03" }, progress: {}, attempt: null },
+    { meta: { currentStreak: 0, bestStreak: 0, lastCompletedDateKey: null }, progress: {}, attempt: null },
+    "2026-11-04"
+  );
+  assert(oldDeviceMerge.meta.currentStreak === 6, "merge: an empty cloud row never wipes a streak");
+}
 
 console.log(
   `  rule mix: ${[...typeCounts].map(([t, n]) => `${t} ${n}`).join(", ")}; ${fillChecks} restricted days fill-checked in ${((Date.now() - t0) / 1000).toFixed(1)}s`

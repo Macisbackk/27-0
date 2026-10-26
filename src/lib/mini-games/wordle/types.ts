@@ -4,7 +4,8 @@ import type { MiniGamePoolMode } from "../pool-mode";
 export const WORDLE_MAX_GUESSES = 6;
 export const WORDLE_STATS_SCHEMA = 3;
 
-export type WordleClueTone = "match" | "miss";
+/** "close" (position only): same unit — back three/centres, halves, or forwards. */
+export type WordleClueTone = "match" | "close" | "miss";
 export type WordleTrend = "higher" | "lower" | "match";
 
 export type WordleAttributeKey =
@@ -23,6 +24,11 @@ export type WordleClues = {
   age: WordleTrend;
   /** Historic vs current pool match. */
   status: WordleClueTone;
+  /**
+   * Decade of the card season (v1.18): match, or which way the answer's decade lies. Only shown
+   * in Era Wordle (every Current card is the same season). Missing on older saved guesses.
+   */
+  era?: WordleTrend;
 };
 
 export type WordleDiscoveredClue = {
@@ -47,6 +53,8 @@ export type WordleGuess = {
   rating: number;
   age: number;
   isHistoric: boolean;
+  /** Decade label of the card season, e.g. "1990s" (Era Wordle feedback). */
+  eraLabel?: string;
   clues: WordleClues;
 };
 

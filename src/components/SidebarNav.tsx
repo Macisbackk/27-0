@@ -142,7 +142,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
   const puzzles = [
     {
       href: "/mini-games/quiz",
-      label: "Super League Millionaire",
+      label: "Golden Point Quiz",
       active: pathname.startsWith("/mini-games/quiz") || pathname.startsWith("/quiz"),
     },
     { href: "/mini-games/wordle", label: "Rugby League Wordle", active: pathname.startsWith("/mini-games/wordle") },

@@ -17,7 +17,7 @@ const GUIDE_ITEMS = [
     ? [
         {
           title: "Daily Challenge",
-          body: "A new rule every day: one club, one era, underdogs, no respins and more. One counted attempt per UK day.",
+          body: "A new rule every day: one club, one era, underdogs, no respins and more. One counted attempt per UK day. Finishing it (win or lose) extends your streak; top the table and win the Grand Final for a perfect day. Today's board ranks the day's score (10 a win, +50 League Leaders, 15 a play-off win, +100 Grand Final). Every 7-day streak earns a streak freeze (hold up to 2), which covers a missed day automatically.",
         },
         {
           title: "Weekly Challenge",
@@ -27,7 +27,7 @@ const GUIDE_ITEMS = [
     : []),
   {
     title: "Puzzles",
-    body: "Super League Millionaire, Rugby League Wordle and the 3×3 Grid. Play daily for Club Funds.",
+    body: "Golden Point Quiz, Rugby League Wordle and the 3×3 Grid. Play daily for Club Funds. The quiz pays your first run of the day in full (up to £100k) and 10% after that.",
   },
   {
     title: "Club Funds",

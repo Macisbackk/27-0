@@ -254,7 +254,7 @@ export function selectQuizQuestions(options: {
     throw new Error(
       options.mode === "team"
         ? `Not enough Team Challenge questions for ${options.teamId}`
-        : "Not enough Super League Millionaire questions"
+        : "Not enough Golden Point Quiz questions"
     );
   }
 

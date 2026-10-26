@@ -134,9 +134,8 @@ try {
   if (await visible(btn("Play match"))) fail("Round 1 visible during pre-season");
   await noSideways("pre-season");
   await reloadAndCheck("pre-season", "Pre-season friendlies");
-  const opts = pre.getByRole("button", { pressed: false });
-  await opts.nth(0).click();
-  await opts.nth(0).click();
+  // v1.18: two friendlies come pre-picked; the full list is behind "Change".
+  await pre.getByRole("button", { name: "Change" }).click();
   await pre.getByRole("button", { name: /^Play 2/ }).dblclick();
   await page.getByRole("region", { name: "Pre-season results" }).waitFor({ timeout });
   await reloadAndCheck("friendly results", "Pre-season results");
@@ -273,7 +272,10 @@ try {
     await pageB.close();
     step(`Departures: ${expiring.length} out of contract; renew double tap, two tabs`);
   } else step("Departures: nobody out of contract this summer");
-  await btn(/^(Open the transfer window|Let the rest go · open the window)$/).dblclick();
+  await btn(/^(Open the transfer window|Continue to the window)$/).dblclick();
+  // v1.18: releasing the out-of-contract list is confirmed in a sheet that lists who leaves.
+  const confirmRelease = btn(/^Let \d+ go · open the window$/);
+  if (await confirmRelease.waitFor({ state: "visible", timeout: 2_000 }).then(() => true, () => false)) await confirmRelease.dblclick().catch(() => {});
   await page.getByRole("heading", { name: "Build your squad" }).waitFor({ timeout });
   const sw = await save();
   if (sw.phase !== "transfers") fail(`double tap on Open the window landed on ${sw.phase}`);

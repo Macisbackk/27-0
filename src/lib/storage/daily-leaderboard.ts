@@ -6,6 +6,8 @@ import { STORAGE_KEYS } from "./keys";
 import type { LeaderboardTrackerRow } from "../leaderboard-trackers";
 import {
   getDailyChallengeBestStreak,
+  getDailyChallengeDateKey,
+  getDailyChallengeDayResult,
 } from "../daily-challenge";
 
 const LEADERBOARD_MODE = "daily";
@@ -267,4 +269,171 @@ export async function getDailyLeaderboardAsync(
     source: "local",
     rows: mapEntriesToRows(local, currentUser, limit),
   };
+}
+
+// ---------------------------------------------------------------------------------------------
+// Daily score board (v1.18): today's counted attempt ranked by its Daily score (wins + bonuses,
+// the Weekly formula). Table `daily_challenge_entries`, written only through the
+// `submit_daily_challenge_entry` RPC, which recomputes the score server-side
+// (supabase/migrations/20261027120000_challenge_score_rpcs.sql). Until that migration is applied
+// the board shows the coach's own score from this device.
+// ---------------------------------------------------------------------------------------------
+
+const DAILY_SCORE_TABLE = "daily_challenge_entries";
+const DAILY_SCORE_SYNC_KEY = "27-0-daily-score-synced";
+
+interface DailyScoreSyncState {
+  dayKey: string;
+  runId: string;
+  final: boolean;
+}
+
+function loadScoreSync(): DailyScoreSyncState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(DAILY_SCORE_SYNC_KEY);
+    const parsed = raw ? (JSON.parse(raw) as Partial<DailyScoreSyncState>) : null;
+    if (parsed && typeof parsed.dayKey === "string" && typeof parsed.runId === "string") {
+      return { dayKey: parsed.dayKey, runId: parsed.runId, final: parsed.final === true };
+    }
+  } catch {
+    // ignore
+  }
+  return null;
+}
+
+function saveScoreSync(state: DailyScoreSyncState): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(DAILY_SCORE_SYNC_KEY, JSON.stringify(state));
+  } catch {
+    // ignore
+  }
+}
+
+let dailyRpcUnavailable = false;
+let dailyFlightInFlight: Promise<void> | null = null;
+
+function isMissingRpc(error: { code?: string; message?: string } | null): boolean {
+  if (!error) return false;
+  return error.code === "PGRST202" || error.code === "42883" || error.code === "42P01" || error.code === "PGRST205";
+}
+
+/**
+ * Send today's counted Daily result to the board (signed-in coaches only). Safe to call often:
+ * one request at a time, and a no-op once the final result is on the board.
+ */
+export function flushDailyScoreEntry(): Promise<void> {
+  if (dailyFlightInFlight) return dailyFlightInFlight;
+  if (dailyRpcUnavailable || !isSupabaseConfigured) return Promise.resolve();
+  const userId = getAuthUserId();
+  const coachName = getUsername();
+  if (!isLoggedIn() || !userId || !coachName || isGuestLeaderboardName(coachName)) {
+    return Promise.resolve();
+  }
+  const result = getDailyChallengeDayResult();
+  if (!result || result.score <= 0) return Promise.resolve();
+  const synced = loadScoreSync();
+  if (
+    synced &&
+    synced.dayKey === result.dayKey &&
+    synced.runId === result.runId &&
+    (synced.final || !result.final)
+  ) {
+    return Promise.resolve();
+  }
+  dailyFlightInFlight = (async () => {
+    const { error } = await supabase.rpc("submit_daily_challenge_entry", {
+      p_day_key: result.dayKey,
+      p_run_id: result.runId,
+      p_coach_name: coachName,
+      p_regular_wins: result.regularWins,
+      p_league_leaders: result.leaguePosition === 1,
+      p_playoff_wins: result.playoffWins,
+      p_grand_final: result.grandFinal,
+      p_is_final: result.final,
+    });
+    if (isMissingRpc(error)) {
+      dailyRpcUnavailable = true;
+      return;
+    }
+    if (error && error.code !== "23514" && error.code !== "P0001") throw error;
+    // Accepted, or refused for good (closed day / another run already posted): stop retrying.
+    saveScoreSync({ dayKey: result.dayKey, runId: result.runId, final: result.final || Boolean(error) });
+  })()
+    .catch((err) => {
+      console.error("[daily-leaderboard] score submit failed:", err);
+    })
+    .finally(() => {
+      dailyFlightInFlight = null;
+    });
+  return dailyFlightInFlight;
+}
+
+/**
+ * A day's Daily board (today by default), ranked by Daily score; ties go to the earlier entry.
+ * The signed-in coach's own result is merged in so it shows straight after a run.
+ */
+export async function getDailyScoreLeaderboardAsync(
+  dayKey = getDailyChallengeDateKey(),
+  limit = 50
+): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
+  const isToday = dayKey === getDailyChallengeDateKey();
+  if (isToday) await flushDailyScoreEntry();
+  const currentUser = getUsername() ?? "";
+  const userId = getAuthUserId() ?? undefined;
+  const mine = isToday ? getDailyChallengeDayResult() : null;
+
+  type Entry = { userId?: string; username: string; score: number; createdAt: string };
+  let remote: Entry[] | null = null;
+  if (isSupabaseConfigured && !dailyRpcUnavailable) {
+    try {
+      const { data, error } = await supabase
+        .from(DAILY_SCORE_TABLE)
+        .select("user_id, coach_name, score, created_at")
+        .eq("day_key", dayKey)
+        .gt("score", 0)
+        .order("score", { ascending: false })
+        .order("created_at", { ascending: true })
+        .limit(limit);
+      if (error) throw error;
+      remote = (data ?? [])
+        .filter((row) => typeof row.coach_name === "string" && typeof row.score === "number")
+        .map((row) => ({
+          userId: (row.user_id as string | null) ?? undefined,
+          username: row.coach_name as string,
+          score: row.score as number,
+          createdAt: (row.created_at as string) ?? "",
+        }));
+    } catch (err) {
+      const code = (err as { code?: string }).code;
+      if (code !== "42P01" && code !== "PGRST205") {
+        console.error("[daily-leaderboard] score board fetch failed:", err);
+      }
+      remote = null;
+    }
+  }
+
+  const entries: Entry[] = [...(remote ?? [])];
+  const loggedIn = isLoggedIn() && currentUser && !isGuestLeaderboardName(currentUser);
+  if (mine && mine.score > 0) {
+    const name = loggedIn ? currentUser : "You (this device)";
+    const already = entries.some((e) => (userId && e.userId === userId) || e.username === name);
+    if (!already) entries.push({ userId: loggedIn ? userId : undefined, username: name, score: mine.score, createdAt: new Date().toISOString() });
+  }
+  entries.sort((a, b) => b.score - a.score || a.createdAt.localeCompare(b.createdAt) || a.username.localeCompare(b.username));
+  const rows: LeaderboardTrackerRow[] = entries.slice(0, limit).map((entry, index) => ({
+    rank: index + 1,
+    username: entry.username,
+    userId: entry.userId,
+    statDisplay: String(entry.score),
+    achievedAt: entry.createdAt,
+    difficulty: "NORMAL",
+    mode: "CLASSIC",
+    isCurrentUser:
+      (Boolean(userId) && entry.userId === userId) ||
+      entry.username === currentUser ||
+      entry.username === "You (this device)",
+  }));
+  return { rows, source: remote ? "remote" : "local" };
 }

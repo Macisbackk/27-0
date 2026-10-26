@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { ReactNode } from "react";
 import type { CareerClub } from "@/lib/career";
 
@@ -89,5 +90,27 @@ export function FormDots({ form }: { form: string[] }) {
         />
       ))}
     </span>
+  );
+}
+
+/**
+ * Page wrapper for every Manager screen. The bottom padding clears the sticky action bar (up to
+ * two stacked buttons), the safe area and a bottom nav if one is shown, so the last card (e.g.
+ * the review's "Log in to submit") is never hidden under the bar.
+ */
+export const CAREER_PAGE_CLASS =
+  "mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-[calc(var(--manager-mobile-playbar-reserve,5.5rem)+6rem+env(safe-area-inset-bottom))] sm:pb-10";
+
+/** In-page way out of Manager Mode (progress saves automatically). */
+export function CareerBackLink({ label = "Home", href = "/" }: { label?: string; href?: string }) {
+  return (
+    <nav aria-label="Manager navigation" className="-mb-2 flex">
+      <Link
+        href={href}
+        className="inline-flex min-h-[40px] items-center gap-1 rounded-full px-2 text-sm font-semibold text-gray-300 hover:bg-pitch-800 hover:text-white"
+      >
+        <span aria-hidden>‹</span> {label}
+      </Link>
+    </nav>
   );
 }

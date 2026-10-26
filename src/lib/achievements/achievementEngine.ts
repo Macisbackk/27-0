@@ -17,6 +17,7 @@ import {
   type UnlockedAchievement,
 } from "./achievementStorage";
 import { awardClubFundsLines } from "../storage/club-funds";
+import { getPrizeForQuestionNumber } from "../quiz/prizes";
 import {
   ACHIEVEMENTS_BASELINE_VERSION,
   STORAGE_KEYS,
@@ -149,11 +150,11 @@ function evaluateUnlock(
         (ctx.quizQuestionsAnswered ?? progress.quizQuestionsAnswered) >= 1
       );
     case "quiz-safe-1000":
-      return (ctx.quizHighestPrize ?? 0) >= 1_000;
+      return (ctx.quizHighestPrize ?? 0) >= getPrizeForQuestionNumber(5);
     case "quiz-safe-32000":
-      return (ctx.quizHighestPrize ?? 0) >= 32_000;
+      return (ctx.quizHighestPrize ?? 0) >= getPrizeForQuestionNumber(10);
     case "quiz-big-money":
-      return (ctx.quizHighestPrize ?? 0) >= 250_000;
+      return (ctx.quizHighestPrize ?? 0) >= getPrizeForQuestionNumber(13);
     case "quiz-millionaire":
       return ctx.quizPerfectRun === true;
     case "quiz-no-help":

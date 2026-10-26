@@ -10,7 +10,7 @@ import { isLoggedIn } from "@/lib/auth-session";
 import { DIVISION_LABEL, TROPHY_LABEL, formatMoney, ordinal } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playPerfectSeason, playPromotion, playSeasonComplete, playSeasonReviewMajor, playWarning } from "@/lib/sound";
-import { Card, ClubBadge, Eyebrow } from "./bits";
+import { Card, ClubBadge, Eyebrow, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 
 export function SeasonReview() {
   const { state, legacy, recordBreaks, goToOffseason } = useCareer();
@@ -62,7 +62,8 @@ export function SeasonReview() {
           : `${ordinal(o.position)} in the ${DIVISION_LABEL[o.division]}`;
 
   return (
-    <div className="mx-auto flex w-full max-w-[44rem] flex-col gap-4 pb-28">
+    <div className={CAREER_PAGE_CLASS}>
+      <CareerBackLink label="Home (progress saved)" />
       {celebrate ? <Confetti /> : null}
       <header className="flex flex-col items-center text-center">
         <ClubBadge club={club} size="lg" />

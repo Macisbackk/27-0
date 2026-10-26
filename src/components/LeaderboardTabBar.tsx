@@ -72,7 +72,8 @@ function resolveAccent<T extends string>(
 }
 
 function modeButtonClass(active: boolean, accent: LeaderboardTabAccent): string {
-  return `${MODE_BUTTON_BASE} ${TYPO.button} ${
+  // One row on a 375px phone: tighter padding and a smaller label below `sm`.
+  return `${MODE_BUTTON_BASE} max-sm:px-1 max-sm:text-sm ${TYPO.button} ${
     active ? ACCENT_ACTIVE[accent] : ACCENT_IDLE[accent]
   }`;
 }
@@ -150,7 +151,7 @@ export function LeaderboardTabBar<T extends string>({
       tabs.length === 3
         ? "grid-cols-3"
         : tabs.length === 4
-          ? "grid-cols-2 sm:grid-cols-4"
+          ? "grid-cols-4"
           : tabs.length > 2
             ? "grid-cols-2 sm:grid-cols-3"
             : "grid-cols-2";

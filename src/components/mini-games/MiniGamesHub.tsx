@@ -8,7 +8,7 @@ import { TYPO } from "@/lib/ui/typography";
 import { playUiClick } from "@/lib/sound";
 import { getLocalDateKey } from "@/lib/mini-games/date";
 import { GRID_REWARD_PER_CELL, WORDLE_WIN_REWARD } from "@/lib/mini-games/rewards";
-import { QUIZ_TOP_PRIZE } from "@/lib/quiz/prizes";
+import { QUIZ_GAME_NAME, QUIZ_TOP_PRIZE } from "@/lib/quiz/prizes";
 import { CLUB_FUNDS_CHANGED_EVENT, getPaidRunIds } from "@/lib/storage/club-funds";
 import { formatClubFunds } from "@/lib/club-funds";
 
@@ -26,8 +26,8 @@ const GAMES: {
   {
     id: "quiz",
     href: "/mini-games/quiz",
-    title: "Super League Millionaire",
-    blurb: "15 questions, four lifelines, one million.",
+    title: QUIZ_GAME_NAME,
+    blurb: "15 questions, four lifelines, climb the ladder to golden point.",
     reward: `Up to ${formatClubFunds(QUIZ_TOP_PRIZE)} a day`,
     glyph: "?",
     accent: "from-lime-400/25 to-lime-500/5 text-lime-300 border-lime-400/40",

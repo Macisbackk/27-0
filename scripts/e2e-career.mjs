@@ -86,7 +86,8 @@ try {
   step("Club picker renders");
   await shot("picker");
 
-  // Championship is the default list; pick the first club.
+  // v1.18: Super League is the default list; switch to the Championship and pick the first club.
+  await page.getByRole("tab", { name: /Championship/ }).click();
   const clubs = page.getByRole("list", { name: "Clubs" }).getByRole("button");
   await clubs.first().waitFor({ timeout });
   const clubCount = await clubs.count();
@@ -112,9 +113,9 @@ try {
   const pre = page.getByRole("region", { name: "Pre-season friendlies" });
   await pre.waitFor({ timeout });
   await shot("preseason");
-  const friendlyButtons = pre.getByRole("button", { pressed: false });
-  await friendlyButtons.nth(0).click();
-  await friendlyButtons.nth(0).click();
+  // v1.18: two recommended friendlies are pre-picked; the full list sits behind "Change".
+  await pre.getByRole("button", { name: "Change" }).click();
+  if ((await pre.getByRole("button", { pressed: true }).count()) !== 2) throw new Error("Expected two pre-picked friendlies");
   await pre.getByRole("button", { name: /^Play 2/ }).click();
   await page.getByRole("region", { name: "Pre-season results" }).waitFor({ timeout });
   if (await page.getByRole("button", { name: "Play match" }).isVisible().catch(() => false)) {
@@ -252,7 +253,10 @@ try {
       await page.getByText(/Renewed:/).first().waitFor({ timeout });
     }
   }
-  await clickButton(/^(Open the transfer window|Let the rest go · open the window)$/);
+  await clickButton(/^(Open the transfer window|Continue to the window)$/);
+  // v1.18: letting the out-of-contract list go asks first (lists who leaves).
+  const confirmRelease = page.getByRole("button", { name: /^Let \d+ go · open the window$/ });
+  if (await confirmRelease.waitFor({ state: "visible", timeout: 2_000 }).then(() => true, () => false)) await confirmRelease.click();
   step("Departures: retirements, contracts and academy before the window");
   await page.getByRole("heading", { name: "Build your squad" }).waitFor({ timeout });
   await shot("transfers");

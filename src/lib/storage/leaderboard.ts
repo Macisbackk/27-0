@@ -5,6 +5,7 @@ import {
   type LeaderboardTrackerEntry,
   type LeaderboardTrackerRow,
   type LeaderboardTrackerType,
+  type RecordMetric,
 } from "../leaderboard-trackers";
 // LeaderboardTrackerRow re-exported for consumers via leaderboard-trackers
 import { isSupabaseConfigured, supabase } from "../supabase";
@@ -367,9 +368,11 @@ async function fetchTrackerEntriesFromSupabase(
       query = query.eq("mode_variant", effectiveVariant);
     }
 
+    // This week / month: coaches who played in the period (rows are per coach, so created_at
+    // only ever showed brand-new accounts).
     const periodStart = getPeriodStart(period);
     if (periodStart) {
-      query = query.gte("created_at", periodStart.toISOString());
+      query = query.gte("updated_at", periodStart.toISOString());
     }
 
     return query;
@@ -831,7 +834,9 @@ export async function getTrackerLeaderboardAsync(
   difficulty: GameDifficulty = "NORMAL",
   limit = 50,
   dbMode: LeaderboardDbMode = "super-league",
-  modeVariant: ModeVariant = "current"
+  modeVariant: ModeVariant = "current",
+  /** `best_record` only: "best" ranks by best single season (v1.18 default), "total" by career W–L. */
+  recordMetric: RecordMetric = "total"
 ): Promise<{ rows: LeaderboardTrackerRow[]; source: "remote" | "local" }> {
   if (dbMode === "trophy-cabinet") {
     return getTrophyCabinetLeaderboardAsync(tracker, limit);
@@ -859,7 +864,7 @@ export async function getTrackerLeaderboardAsync(
 
   return {
     rows: rankByTracker(entries, tracker, limit, currentUser, {
-      recordMetric: "total",
+      recordMetric,
     }),
     source: remote ? "remote" : "local",
   };

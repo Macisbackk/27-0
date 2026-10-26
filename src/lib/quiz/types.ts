@@ -56,6 +56,7 @@ export const QUIZ_TEAM_IDS = [
 ] as const;
 export type QuizTeamId = (typeof QUIZ_TEAM_IDS)[number];
 
+/** "millionaire" is the stored id of the Golden Point Quiz (kept for saved runs). */
 export type QuizMode = "millionaire" | "team";
 
 export type QuizPhase =
@@ -131,9 +132,9 @@ export interface QuizRun {
    */
   rewardPractice?: boolean;
   /**
-   * Club Funds actually banked by a Super League Millionaire run. Only the day's best run pays:
-   * later runs bank just what they add on top (0 if they don't beat it). `rewardAmount` stays
-   * the prize reached, for stats and leaderboards. Undefined on runs from before the change.
+   * Club Funds actually banked by a Golden Point Quiz run. The day's first run pays in full;
+   * later runs pay 10% of their prize, within the daily cap. `rewardAmount` stays the prize
+   * reached, for stats and leaderboards. Undefined on runs from before the change.
    */
   rewardPaid?: number;
   createdAt: string;

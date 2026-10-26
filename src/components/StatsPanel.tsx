@@ -169,7 +169,7 @@ export function StatsPanel() {
       )}
 
       {quizStats && quizStats.quizzesPlayed > 0 && (
-        <StatsSection title="Super League Millionaire">
+        <StatsSection title="Golden Point Quiz">
           <StatCard label="Quizzes played" value={quizStats.quizzesPlayed} />
           <StatCard
             label="Highest prize"

@@ -200,7 +200,7 @@ async function miniGame(route, label, moves) {
   currentWhere = `${label}`;
   await page.goto(`${BASE}${route}`, { waitUntil: "domcontentloaded" });
   await settle(page, 1500);
-  await tapFirst(page, [/^Current/i, /Super League Millionaire|Normal Quiz/i]);
+  await tapFirst(page, [/^Current/i, /Golden Point Quiz|Start quiz|Normal Quiz/i]);
   await page.waitForTimeout(800);
   await moves();
   await shot(page, `${label.toLowerCase().replace(/\W+/g, "-")}-played`);
@@ -217,7 +217,7 @@ await miniGame("/mini-games/wordle", "Wordle", async () => {
     await tapFirst(page, [/^Guess$/i]);
     await page.waitForTimeout(250);
   }
-  for (let i = 0; i < 4; i++) await tapFirst(page, [/Reveal clue/i]);
+  for (let i = 0; i < 4; i++) await tapFirst(page, [/Reveal (a )?clue/i]);
 });
 
 await miniGame("/mini-games/grid", "Grid", async () => {

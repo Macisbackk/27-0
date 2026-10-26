@@ -34,18 +34,51 @@ function trend(guess: number, answer: number): WordleTrend {
   return guess < answer ? "higher" : "lower";
 }
 
+/** Position units for the "close" position clue. */
+const POSITION_UNIT: Record<string, "backs" | "halves" | "forwards"> = {
+  FULLBACK: "backs",
+  WING: "backs",
+  CENTRE: "backs",
+  STAND_OFF: "halves",
+  SCRUM_HALF: "halves",
+  PROP: "forwards",
+  HOOKER: "forwards",
+  SECOND_ROW: "forwards",
+  LOOSE_FORWARD: "forwards",
+};
+
+export function wordlePositionUnit(position: string): "backs" | "halves" | "forwards" | null {
+  return POSITION_UNIT[position] ?? null;
+}
+
+/** Decade of a card season (1990s, 2000s…). */
+export function wordleDecade(year: number): number {
+  return Math.floor(year / 10) * 10;
+}
+
+export function wordleEraLabel(year: number): string {
+  return `${wordleDecade(year)}s`;
+}
+
 export function buildWordleClues(
   guess: MiniGamePlayer,
   answer: MiniGamePlayer
 ): WordleClues {
+  const unit = wordlePositionUnit(guess.position);
   return {
     nationality:
       guess.nationalityKey === answer.nationalityKey ? "match" : "miss",
-    position: guess.position === answer.position ? "match" : "miss",
+    position:
+      guess.position === answer.position
+        ? "match"
+        : unit && unit === wordlePositionUnit(answer.position)
+          ? "close"
+          : "miss",
     club: guess.clubId === answer.clubId ? "match" : "miss",
     rating: trend(guess.rating, answer.rating),
     age: trend(guess.age, answer.age),
     status: guess.isHistoric === answer.isHistoric ? "match" : "miss",
+    era: trend(wordleDecade(guess.year), wordleDecade(answer.year)),
   };
 }
 
@@ -217,6 +250,7 @@ export function submitWordleGuess(
     rating: resolved.rating,
     age: resolved.age,
     isHistoric: resolved.isHistoric,
+    eraLabel: wordleEraLabel(resolved.year),
     clues,
   };
   const guesses = [...run.guesses, guess];
@@ -259,3 +293,19 @@ export function remainingWordleGuesses(run: WordleRun): number {
   return Math.max(0, WORDLE_MAX_GUESSES - run.guesses.length);
 }
 
+
+/**
+ * Spoiler-free share text. Using the optional reveal clue is free but marked on the share
+ * ("hint used"), Wordle-style.
+ */
+export function buildWordleShareText(run: WordleRun, poolModeLabel?: string): string {
+  const score = run.status === "won" ? `${run.guesses.length}/${WORDLE_MAX_GUESSES}` : `X/${WORDLE_MAX_GUESSES}`;
+  const tone = (t: string | undefined) => (t === "match" ? "🟩" : t === "close" ? "🟨" : "⬛");
+  const rows = run.guesses.map((g) =>
+    [g.clues.club, g.clues.position, g.clues.nationality, g.clues.age, g.clues.rating].map(tone).join("")
+  );
+  const header = [`Rugby League Wordle ${score}`, poolModeLabel, run.hintUsed ? "hint used" : null]
+    .filter(Boolean)
+    .join(" · ");
+  return [header, ...rows, "27-0.co.uk/mini-games/wordle"].join("\n");
+}
