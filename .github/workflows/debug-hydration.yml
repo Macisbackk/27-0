@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [prod]
+        mode: [base, fix]
         width: ["320", "375", "desktop"]
     env:
       NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
@@ -27,6 +27,9 @@ jobs:
           node-version: "22"
           cache: npm
       - run: npm ci
+      - name: Apply candidate fix
+        if: matrix.mode == 'fix'
+        run: git apply scripts/debug-fix.patch && git diff --stat
       - name: Build (prod)
         if: matrix.mode != 'dev'
         run: npm run build && node scripts/debug-patch-react.mjs
@@ -42,7 +45,7 @@ jobs:
         env:
           LABEL: ${{ matrix.mode }}-${{ matrix.width }}
           WIDTH: ${{ matrix.width }}
-          BUDGET_MIN: "15"
+          BUDGET_MIN: "30"
           HOME_PLAY_ITERS: "200"
         run: |
           if [ "${{ matrix.mode }}" = site ]; then

@@ -76,7 +76,11 @@ const INIT = () => {
     if (typeof t === "function") lines.push(`fn source: ${t.toString().slice(0, 600)}`);
     const pp = fiber.pendingProps;
     lines.push(`props keys: ${pp && typeof pp === "object" ? Object.keys(pp).join(",") : JSON.stringify(pp)}`);
-    if (pp && typeof pp === "object" && typeof pp.children === "string") lines.push(`children text: ${pp.children.slice(0, 100)}`);
+    if (pp && typeof pp === "object") {
+      const c = pp.children;
+      const d = (x) => x === null || typeof x !== "object" ? typeof x : Array.isArray(x) ? `array(${x.length})[${x.map(d).join(",")}]` : `{$$typeof:${String(x.$$typeof)}, then:${typeof x.then}, status:${x.status}, type:${x.type ? (typeof x.type === "string" ? x.type : String(x.type.$$typeof || x.type.name)) : "-"}, payloadStatus:${x._payload ? x._payload.status : "-"}}`;
+      lines.push(`main children value: ${d(c)}`);
+    }
     let f = fiber.return;
     const chain = [];
     for (let i = 0; f && i < 40; i++, f = f.return) {
