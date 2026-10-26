@@ -1,3 +1,4 @@
+import { placeCorrectAnswer } from "@/lib/quiz/answer-position";
 import type { QuizQuestion, QuizTeamId } from "@/lib/quiz/types";
 
 const TOPIC_OVERRIDES: Record<string, string> = {
@@ -9,7 +10,6 @@ const TOPIC_OVERRIDES: Record<string, string> = {
   "cur-kr-2025": "final:gf:2025",
   "cur-rhinos-bulls": "final:gf:leeds-bradford:2004-2005",
   "cur-cas-2017": "history:castleford:milestone",
-  "cur-cas-lls-year": "record:castleford:lls-year",
   "cur-wire-cc-2009": "history:warrington:cc-2009",
   "cur-tony-smith-wire": "history:warrington:milestone",
   "cur-central-park": "history:wigan:former-name",
@@ -43,11 +43,7 @@ const TOPIC_OVERRIDES: Record<string, string> = {
   "cur-bradford-sl-relegation": "history:bradford:sl-relegation",
   "cur-bradford-sl-return": "history:bradford:sl-return-2026",
   "cur-bradford-league1-seasons": "history:bradford:league1-seasons",
-  "cur-cas-greggs": "history:castleford:greggs-incident",
-  "cur-leigh-leopards-year": "history:leigh:leopards-rebrand",
   "cur-leigh-promo-2022": "history:leigh:championship-gf-2022",
-  "cur-york-sl-year": "history:york:super-league-debut",
-  "cur-york-vaughan-drop": "history:york:vaughan-drop-goal",
   "cur-toulouse-return-2026": "history:toulouse:super-league-return-2026",
   "cur-sl-try-record": "record:super-league:tries",
   "cur-sl-apps-record": "record:super-league:appearances",
@@ -55,7 +51,6 @@ const TOPIC_OVERRIDES: Record<string, string> = {
   "cur-hull-fc-apps-record": "record:hull-fc:appearances",
   "cur-wigan-points-record": "record:wigan:points",
   "cur-wigan-apps-record": "record:wigan:appearances",
-  "cur-giants-points-record": "record:huddersfield:points",
   "cur-radlinski": "honour:man-of-steel:1998",
   "cur-tomkins": "honour:man-of-steel:2012",
   "cur-deacon": "honour:man-of-steel:2004",
@@ -67,6 +62,12 @@ const TOPIC_OVERRIDES: Record<string, string> = {
   "cur-briers": "honour:lance-todd:2010",
   "cur-gigot": "honour:lance-todd:2018",
   "cur-cudjoe": "honour:dream-team:2013:leroy-cudjoe",
+  "cur-crabtree": "honour:dream-team:2013:eorl-crabtree",
+  "cur-horne": "honour:dream-team:2004:richard-horne",
+  "cur-french": "honour:man-of-steel:2023",
+  "cur-yeaman": "honour:dream-team:kirk-yeaman",
+  "cur-hanley": "honour:man-of-steel:ellery-hanley",
+  "cur-sculthorpe": "honour:man-of-steel:paul-sculthorpe",
   // Verified additions (sources next to each question below).
   "cur-nu-founded-year": "history:rugby-league:founding-year",
   "cur-nu-george-hotel": "history:rugby-league:founding-venue",
@@ -126,9 +127,10 @@ function q(
   difficulty: QuizQuestion["difficulty"],
   category: QuizQuestion["category"],
   teams: QuizTeamId[] = [],
-  era?: string
+  era?: string,
+  source?: string
 ): QuizQuestion {
-  return {
+  return placeCorrectAnswer({
     id,
     topicId: TOPIC_OVERRIDES[id] ?? `curated:${id.replace(/^cur-/, "")}`,
     question,
@@ -140,7 +142,8 @@ function q(
     era,
     sourceType: "curated",
     answerType: "objective",
-  };
+    ...(source ? { source } : {}),
+  });
 }
 
 /** Hand-authored Super League facts — verified winners, venues, formats and well-known milestones. */
@@ -174,10 +177,10 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
   q("cur-central-park", "What was Wigan's historic home ground before the DW Stadium?", "Central Park", ["Knowsley Road", "Headingley", "Odsal"], "medium", "stadiums", ["wigan"]),
   q("cur-sinfield", "Which Leeds Rhinos captain lifted Super League titles in the 2000s and 2010s?", "Kevin Sinfield", ["Rob Burrow", "Jamie Jones-Buchanan", "Danny McGuire"], "easy", "captains", ["leeds"]),
   q("cur-burrow", "Which Leeds Rhinos scrum-half wore shirt number 7 in the 2007 Super League Grand Final?", "Rob Burrow", ["Danny McGuire", "Kevin Sinfield", "Matt Diskin"], "easy", "players", ["leeds"], "2000s"),
-  q("cur-mcguire", "Which Leeds Rhinos half-back scored the winning try in the 2011 Super League Grand Final?", "Danny McGuire", ["Kevin Sinfield", "Rob Burrow", "Ryan Hall"], "hard", "famous-matches", ["leeds"], "2010s"),
+  q("cur-mcguire", "Which Leeds Rhinos half-back became the first player to score 200 Super League tries?", "Danny McGuire", ["Kevin Sinfield", "Rob Burrow", "Keith Senior"], "hard", "records", ["leeds"], "2010s", "https://en.wikipedia.org/wiki/Danny_McGuire"),
   q("cur-ryan-hall", "Which Leeds Rhinos winger became England's all-time leading try-scorer?", "Ryan Hall", ["Tom Briscoe", "Kallum Watkins", "Ash Handley"], "medium", "players", ["leeds"]),
   q("cur-oloughlin", "Who captained Wigan Warriors through their 2010s Super League title years?", "Sean O'Loughlin", ["Andy Farrell", "Pat Richards", "Thomas Leuluai"], "easy", "captains", ["wigan"]),
-  q("cur-farrell", "Which Wigan Warriors loose forward later became a senior England rugby union coach?", "Andy Farrell", ["Sean O'Loughlin", "Shaun Wane", "Kris Radlinski"], "medium", "players", ["wigan"]),
+  q("cur-farrell", "Which former Wigan Warriors captain was head coach of the British & Irish Lions on their 2025 rugby union tour of Australia?", "Andy Farrell", ["Shaun Edwards", "Kris Radlinski", "Sean O'Loughlin"], "medium", "players", ["wigan"], "2020s", "https://en.wikipedia.org/wiki/Andy_Farrell"),
   q("cur-radlinski", "Which Leeds Rhinos playmaker won the 1998 Man of Steel award?", "Iestyn Harris", ["Kris Radlinski", "Kevin Sinfield", "Francis Cummins"], "medium", "players", ["leeds"], "1990s"),
   q("cur-tomkins", "Which Wigan Warriors full-back won the 2012 Man of Steel award?", "Sam Tomkins", ["Pat Richards", "Josh Charnley", "George Williams"], "medium", "players", ["wigan"]),
   q("cur-wane", "Which coach led Wigan Warriors to Super League titles in 2013, 2016 and 2018?", "Shaun Wane", ["Michael Maguire", "Adrian Lam", "Ian Millward"], "medium", "coaches", ["wigan"]),
@@ -186,24 +189,23 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
   q("cur-woolf", "Which coach led St Helens to Super League titles in 2020, 2021 and 2022?", "Kristian Woolf", ["Justin Holbrook", "Paul Wellens", "Keiron Cunningham"], "medium", "coaches", ["st-helens"], "2020s"),
   q("cur-holbrook", "Which coach led St Helens to the 2019 Super League title?", "Justin Holbrook", ["Kristian Woolf", "Keiron Cunningham", "Nathan Brown"], "hard", "coaches", ["st-helens"], "2010s"),
   q("cur-roby", "Which St Helens hooker captained the club through their late-2010s and early-2020s title run?", "James Roby", ["James Graham", "Jonny Lomax", "Luke Thompson"], "easy", "captains", ["st-helens"]),
-  q("cur-lomax", "Who became St Helens club captain in 2024 after James Roby's retirement?", "Jonny Lomax", ["Theo Fages", "Lewis Dodd", "Jack Welsby"], "medium", "captains", ["st-helens"], "2020s"),
+  q("cur-lomax", "Who was named St Helens captain for the 2024 season after James Roby retired?", "Jonny Lomax", ["Theo Fages", "Lewis Dodd", "Jack Welsby"], "medium", "captains", ["st-helens"], "2020s", "https://www.loverugbyleague.com/post/st-helens-boss-paul-wellens-appoints-vice-captains-morgan-knowles-jack-welsby-to-assist-skipper-jonny-lomax"),
   q("cur-wellens-player", "Which St Helens full-back later became the club's head coach?", "Paul Wellens", ["Paul Sculthorpe", "Keiron Cunningham", "Sean Long"], "medium", "coaches", ["st-helens"]),
   q("cur-sean-long", "Which St Helens scrum-half won the Lance Todd Trophy in 2006?", "Sean Long", ["Leon Pryce", "Kyle Eastmond", "Jon Wilkin"], "easy", "players", ["st-helens"]),
   q("cur-sculthorpe", "Which St Helens loose forward won multiple Man of Steel awards in the Super League era?", "Paul Sculthorpe", ["James Graham", "Jon Wilkin", "Maurie Fa'asavalu"], "medium", "players", ["st-helens"]),
   q("cur-keiron", "Which St Helens hooker later had a spell as the club's head coach?", "Keiron Cunningham", ["James Roby", "Scott Moore", "James Graham"], "medium", "coaches", ["st-helens"]),
-  q("cur-peacock-bra", "Which Bradford Bulls forward later captained Leeds Rhinos to Super League titles?", "Jamie Peacock", ["Stuart Fielden", "Leon Pryce", "Lesley Vainikolo"], "medium", "players", ["bradford", "leeds"]),
+  q("cur-peacock-bra", "Which Bradford Bulls prop joined Leeds Rhinos in 2006 and won six more Grand Finals there?", "Jamie Peacock", ["Stuart Fielden", "Joe Vagana", "Paul Anderson"], "medium", "transfers", ["bradford", "leeds"], "2000s", "https://en.wikipedia.org/wiki/Jamie_Peacock"),
   q("cur-deacon", "Which Wigan Warriors loose forward won the 2004 Man of Steel award?", "Andy Farrell", ["Paul Deacon", "Jamie Peacock", "Paul Sculthorpe"], "medium", "players", ["wigan"]),
   q("cur-robbie-paul", "Which Wigan Warriors loose forward won the Man of Steel award in 1996?", "Andy Farrell", ["Robbie Paul", "James Lowes", "Paul Deacon"], "medium", "players", ["wigan"], "1990s"),
   q("cur-vainikolo", "Which Bradford Bulls winger was nicknamed 'The Volcano'?", "Lesley Vainikolo", ["Leon Pryce", "Shontayne Hape", "Tevita Vaikona"], "easy", "players", ["bradford"]),
   q("cur-briers", "Which Warrington Wolves stand-off won the Lance Todd Trophy in the 2010 Challenge Cup final?", "Lee Briers", ["Michael Monaghan", "Richie Myler", "Ben Westwood"], "medium", "challenge-cup", ["warrington"], "2010s"),
   q("cur-ratchford", "Which Warrington Wolves full-back later captained the club in Super League?", "Stefan Ratchford", ["Matt King", "Chris Riley", "Richie Myler"], "medium", "captains", ["warrington"]),
-  q("cur-westwood", "Which Warrington Wolves forward was shortlisted for the 2012 Man of Steel award?", "Ben Westwood", ["Ben Harrison", "Paul Wood", "Garreth Carvell"], "hard", "players", ["warrington"], "2010s"),
   q("cur-tony-smith-wire", "Which coach led Warrington Wolves to Challenge Cup wins in 2009, 2010 and 2012?", "Tony Smith", ["Lee Briers", "Steve Price", "Daryl Powell"], "medium", "coaches", ["warrington"]),
   q("cur-wire-cc-2009", "In which year did Warrington Wolves win the Challenge Cup to start their Super League-era three-in-four-years haul?", "2009", ["2007", "2011", "2014"], "easy", "challenge-cup", ["warrington"], "2000s"),
   q("cur-john-kear-hull", "Which coach led Hull FC to the 2005 Challenge Cup?", "John Kear", ["Peter Gentle", "Lee Radford", "Richard Agar"], "hard", "coaches", ["hull-fc"]),
   q("cur-radford-hull", "Which coach led Hull FC to Challenge Cup wins in 2016 and 2017?", "Lee Radford", ["John Kear", "Andy Last", "Brett Hodgson"], "medium", "coaches", ["hull-fc"], "2010s"),
-  q("cur-yeaman", "Which Hull FC centre scored more than 140 Super League tries for the club?", "Kirk Yeaman", ["Gareth Raynor", "Richard Horne", "Danny Washbrook"], "medium", "players", ["hull-fc"]),
-  q("cur-horne", "Which Hull FC half-back was a long-serving Super League figure at the KC Stadium?", "Richard Horne", ["Paul Cooke", "Marc Sneyd", "Danny Houghton"], "medium", "players", ["hull-fc"]),
+  q("cur-yeaman", "Which Hull FC centre was named in both the 2006 and 2011 Super League Dream Teams?", "Kirk Yeaman", ["Richard Whiting", "Tony Martin", "Ben Crooks"], "hard", "players", ["hull-fc"], "2000s", "https://en.wikipedia.org/wiki/Super_League_Dream_Team"),
+  q("cur-horne", "Which Hull FC scrum-half was named in the 2004 Super League Dream Team?", "Richard Horne", ["Paul Cooke", "Marc Sneyd", "Danny Houghton"], "hard", "players", ["hull-fc"], "2000s", "https://en.wikipedia.org/wiki/Super_League_Dream_Team"),
   q("cur-houghton", "Which Hull FC hooker became a long-serving Super League captain?", "Danny Houghton", ["Danny Washbrook", "Josh Griffin", "Marc Sneyd"], "easy", "captains", ["hull-fc"]),
   q("cur-sneyd", "Which Hull FC scrum-half was a regular goal-kicker in their mid-2010s Challenge Cup sides?", "Marc Sneyd", ["Jake Connor", "Albert Kelly", "Jamie Shaul"], "medium", "players", ["hull-fc"]),
   q("cur-gale-cas", "Which Castleford Tigers scrum-half won the 2017 Man of Steel award?", "Luke Gale", ["Michael Shenton", "Zak Hardaker", "Paul McShane"], "medium", "players", ["castleford"], "2010s"),
@@ -212,7 +214,7 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
   q("cur-mcshane", "Which Castleford Tigers hooker became a regular Super League captain after Michael Shenton?", "Paul McShane", ["Adam Milner", "Daryl Clark", "Michael Shenton"], "medium", "captains", ["castleford"]),
   q("cur-daryl-clark", "Which Castleford Tigers hooker later played Super League for Warrington Wolves and St Helens?", "Daryl Clark", ["Paul McShane", "Adam Milner", "Luke Gale"], "medium", "transfers", ["castleford"]),
   q("cur-brough", "Which Huddersfield Giants half-back won the 2013 Man of Steel award?", "Danny Brough", ["Luke Robinson", "Leroy Cudjoe", "Eorl Crabtree"], "medium", "players", ["huddersfield"]),
-  q("cur-crabtree", "Which Huddersfield Giants prop became one of the club's longest-serving Super League forwards?", "Eorl Crabtree", ["David Faiumu", "Shaun Lunt", "Ukuma Ta'ai"], "easy", "players", ["huddersfield"]),
+  q("cur-crabtree", "Which Huddersfield Giants prop was named in the 2013 Super League Dream Team?", "Eorl Crabtree", ["Ukuma Ta'ai", "Craig Kopczak", "Larne Patrick"], "hard", "players", ["huddersfield"], "2010s", "https://en.wikipedia.org/wiki/Super_League_Dream_Team"),
   q("cur-cudjoe", "Which Huddersfield Giants centre was named in the 2013 Super League Dream Team?", "Leroy Cudjoe", ["Jermaine McGillvary", "Aaron Murphy", "Joe Wardle"], "hard", "players", ["huddersfield"], "2010s"),
   q("cur-mcgillvary", "Which Huddersfield Giants winger became a regular England international in the 2010s?", "Jermaine McGillvary", ["Leroy Cudjoe", "Aaron Murphy", "Nathan Mason"], "easy", "players", ["huddersfield"]),
   q("cur-nathan-brown-hud", "Which coach led Huddersfield Giants to the 2013 Super League League Leaders' Shield?", "Paul Anderson", ["Nathan Brown", "Rick Stone", "Ian Watson"], "hard", "coaches", ["huddersfield"]),
@@ -223,7 +225,6 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
   q("cur-minchella", "Which loose forward captained Hull KR during their 2024–2025 Super League peak?", "Elliot Minchella", ["Shaun Kenny-Dowall", "Dean Hadley", "James Batchelor"], "medium", "captains", ["hull-kr"], "2020s"),
   q("cur-peters", "Which coach led Hull KR to the 2024 Super League Grand Final and 2025 title?", "Willie Peters", ["Tony Smith", "Tim Sheens", "Craig Innes"], "medium", "coaches", ["hull-kr"], "2020s"),
   q("cur-skd", "Which New Zealand international captained Hull KR before Elliot Minchella?", "Shaun Kenny-Dowall", ["Ken Sio", "Ryan Hall", "Adam Quinlan"], "medium", "captains", ["hull-kr"]),
-  q("cur-quinlan", "Which Australian full-back joined Hull KR from St George Illawarra ahead of the 2017 season?", "Adam Quinlan", ["Ben Cockayne", "Josh Hodson", "Will Dagger"], "hard", "transfers", ["hull-kr"], "2010s"),
   q("cur-salford-watson", "Which coach led Salford Red Devils to the 2019 Super League Grand Final?", "Ian Watson", ["Richard Marshall", "Paul Rowley", "Steve McNamara"], "medium", "coaches", ["salford"], "2010s"),
   q("cur-inu", "Which former New Zealand international played for Salford Red Devils in their 2019 Grand Final season?", "Krisnan Inu", ["Jackson Hastings", "Niall Evalds", "Josh Jones"], "hard", "players", ["salford"], "2010s"),
   q("cur-evalds", "Which Salford Red Devils full-back later played Super League for Castleford Tigers and Hull KR?", "Niall Evalds", ["Ken Sio", "Jake Bibby", "Joey Lussick"], "medium", "transfers", ["salford"]),
@@ -236,13 +237,13 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
   q("cur-london-stoop", "Which ground did London's Super League club use during the Harlequins RL years?", "The Stoop", ["Twickenham", "Stamford Bridge", "Craven Cottage"], "medium", "stadiums", ["london"]),
   q("cur-widnes-return", "Widnes Vikings returned to Super League in which season?", "2012", ["2008", "2015", "2017"], "hard", "history", ["widnes"]),
   q("cur-widnes-relegate", "After their 2010s Super League spell, Widnes Vikings were relegated at the end of which season?", "2018", ["2016", "2019", "2014"], "hard", "history", ["widnes"]),
-  q("cur-hanley", "Which Wigan great won the Man of Steel award in 1985, 1987 and 1989?", "Ellery Hanley", ["Shaun Wane", "Andy Farrell", "Joe Lydon"], "hard", "records", ["wigan"]),
-  q("cur-offiah", "Which winger is a Wigan Warriors Hall of Fame figure from the club's dominant years around the Super League launch?", "Martin Offiah", ["Jason Robinson", "Va'aiga Tuigamala", "Brett Dallas"], "easy", "players", ["wigan"]),
+  q("cur-hanley", "Who won the Man of Steel award three times, in 1985, 1987 and 1989?", "Ellery Hanley", ["Shaun Edwards", "Garry Schofield", "Andy Gregory"], "hard", "records", ["wigan", "bradford"], "pre-1996", "https://news.bet365.com/en-gb/article/super-league-man-of-steel-previous-winners/2026092311282478007"),
+  q("cur-offiah", "Which Wigan winger scored ten tries in one match against Leeds in the 1992 Premiership semi-final?", "Martin Offiah", ["Jason Robinson", "Shaun Edwards", "Joe Lydon"], "hard", "records", ["wigan"], "pre-1996", "https://en.wikipedia.org/wiki/Martin_Offiah"),
   q("cur-robinson", "Which Wigan Warriors winger later switched to rugby union and played for England?", "Jason Robinson", ["Martin Offiah", "Pat Richards", "Josh Charnley"], "easy", "players", ["wigan"]),
-  q("cur-french", "Which Wigan Warriors utility back played in the 2023 and 2024 Super League Grand Final wins?", "Bevan French", ["Jai Field", "Harry Smith", "Liam Marshall"], "easy", "players", ["wigan"], "2020s"),
+  q("cur-french", "Which Wigan Warriors player won the 2023 Man of Steel and the first Rob Burrow Award in 2024?", "Bevan French", ["Jai Field", "Harry Smith", "Liam Marshall"], "medium", "players", ["wigan"], "2020s", "https://en.wikipedia.org/wiki/Rob_Burrow_Award"),
   q("cur-jai-field", "Which Australian back joined Wigan Warriors from Parramatta Eels ahead of the 2021 season?", "Jai Field", ["Zak Hardaker", "Liam Farrell", "Abbas Miski"], "medium", "transfers", ["wigan"], "2020s"),
   q("cur-hardaker", "Which full-back played Super League for Leeds Rhinos, Castleford Tigers and Wigan Warriors?", "Zak Hardaker", ["Sam Tomkins", "Jonny Lomax", "Jack Welsby"], "medium", "transfers", ["leeds", "castleford", "wigan"]),
-  q("cur-welsby", "Which St Helens back played in the 2020, 2021 and 2022 Super League Grand Final wins?", "Jack Welsby", ["Lewis Dodd", "Jon Bennison", "Konrad Hurrell"], "medium", "players", ["st-helens"], "2020s"),
+  q("cur-welsby", "Who scored the try with the last play of the 2020 Grand Final to give St Helens an 8-4 win over Wigan?", "Jack Welsby", ["Tommy Makinson", "Regan Grace", "Kevin Naiqama"], "medium", "famous-matches", ["st-helens"], "2020s", "https://www.sportsmole.co.uk/rugby-league/st-helens/result/jack-welsby-scores-last-gasp-try-as-st-helens-beat-wigan-in-grand-final_424127.html"),
   q("cur-makinson", "Which St Helens winger became a regular Super League and England try-scorer in the 2010s and 2020s?", "Tommy Makinson", ["Regan Grace", "Ade Gardner", "Francis Meli"], "easy", "players", ["st-helens"]),
   q("cur-grace", "Which St Helens winger played in their late-2010s Super League sides before moving to rugby union?", "Regan Grace", ["Tommy Makinson", "Mark Percival", "Kevin Naiqama"], "medium", "players", ["st-helens"]),
   q("cur-psg", "Which Paris club was a founding Super League member in 1996?", "Paris Saint-Germain", ["Toulouse Olympique", "Catalans Dragons", "Villeneuve"], "medium", "history"),
@@ -273,7 +274,6 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
   q("cur-airlie-birds", "What nickname are Hull FC known by?", "Airlie Birds", ["Robins", "Wire", "Tigers"], "medium", "clubs", ["hull-fc"]),
   q("cur-robins", "What nickname are Hull KR known by?", "Robins", ["Airlie Birds", "Wire", "Knights"], "easy", "clubs", ["hull-kr"]),
   q("cur-cas-jungle", "Castleford Tigers' home ground is widely known as what?", "The Jungle", ["The Den", "The Valley", "The Rec"], "easy", "stadiums", ["castleford"]),
-  q("cur-cas-lls-year", "In which year did Castleford Tigers win the Super League League Leaders' Shield?", "2017", ["2014", "2019", "2021"], "easy", "records", ["castleford"], "2010s"),
   q("cur-odsal", "What is Bradford Bulls' Super League home stadium?", "Odsal", ["Headingley", "Belle Vue", "The Jungle"], "easy", "stadiums", ["bradford"]),
   q("cur-belle-vue", "What is Wakefield Trinity's Super League home stadium?", "Belle Vue", ["Odsal", "The Jungle", "Headingley"], "easy", "stadiums", ["wakefield"]),
   q("cur-13-a-side", "How many players are on the field for each Super League team?", "13", ["11", "15", "17"], "easy", "general"),
@@ -285,13 +285,13 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
   q("cur-golden-point", "If a Super League play-off match is level after 80 minutes, what usually follows?", "Golden-point extra time", ["A replay the following week", "The higher league table team goes through", "A penalty shoot-out only"], "medium", "general"),
 
   // Club history / records — unique topicIds, verified well-known facts only.
-  q("cur-saints-apps", "Which St Helens hooker became the club's Super League appearance record holder?", "James Roby", ["Paul Wellens", "Jonny Lomax", "Louie McCarthy-Scarsbrook"], "hard", "records", ["st-helens"]),
+  q("cur-saints-apps", "Which St Helens full-back made 442 Super League appearances, all for the club?", "Paul Wellens", ["Keiron Cunningham", "Jonny Lomax", "Lachlan Coote"], "very-hard", "records", ["st-helens"], undefined, "https://en.wikipedia.org/wiki/List_of_Super_League_records"),
   q("cur-warrington-points", "Which Warrington Wolves stand-off is the club's record points scorer?", "Lee Briers", ["Stefan Ratchford", "Ben Westwood", "Chris Bridge"], "hard", "records", ["warrington"]),
   q("cur-bradford-tries", "Which Bradford Bulls winger scored 36 Super League tries in the 2004 season?", "Lesley Vainikolo", ["Shontayne Hape", "Leon Pryce", "Robbie Paul"], "hard", "records", ["bradford"]),
   q("cur-giants-tries", "Which Huddersfield Giants winger scored 27 Super League tries in the 2015 season?", "Jermaine McGillvary", ["Leroy Cudjoe", "Brett Hodgson", "Danny Brough"], "hard", "records", ["huddersfield"]),
   q("cur-leigh-captain", "Who captained Leigh Leopards to the 2023 Challenge Cup?", "John Asiata", ["Ben Reynolds", "Tom Amone", "Edwin Ipape"], "medium", "captains", ["leigh"], "2020s"),
   q("cur-york-stadium", "What is York Knights' Super League home stadium?", "York Community Stadium", ["Huntington Stadium", "Odsal", "Headingley"], "easy", "stadiums", ["york"]),
-  q("cur-toulouse-stadium", "Where do Toulouse Olympique play their Super League home matches?", "Stade Ernest-Wallon", ["Stade Gilbert Brutus", "Stade de France", "Stadium Municipal only"], "medium", "stadiums", ["toulouse"]),
+  q("cur-toulouse-stadium", "At which stadium did Toulouse Olympique play their 2026 Super League home matches?", "Stade Ernest-Wallon", ["Stade Gilbert Brutus", "Stade de France", "Stade Ernest-Argeles"], "medium", "stadiums", ["toulouse"], "2020s", "https://en.wikipedia.org/wiki/List_of_British_rugby_league_stadiums_by_capacity"),
   q("cur-wigan-founded", "In which year were Wigan Warriors founded as a rugby club?", "1872", ["1895", "1901", "1922"], "hard", "history", ["wigan"]),
   q("cur-leeds-founded", "In which year were Leeds Rhinos founded?", "1870", ["1890", "1895", "1902"], "hard", "history", ["leeds"]),
   q("cur-hull-fc-founded", "In which year was Hull FC founded?", "1865", ["1879", "1885", "1895"], "hard", "history", ["hull-fc"]),
@@ -362,26 +362,6 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
     "2010s"
   ),
   q(
-    "cur-cas-greggs",
-    "Which Castleford Tigers player was involved in the 2023 Greggs alleyway social media incident?",
-    "Joe Westerman",
-    ["Paul McShane", "Greg Eden", "Kenny Edwards"],
-    "medium",
-    "players",
-    ["castleford"],
-    "2020s"
-  ),
-  q(
-    "cur-leigh-leopards-year",
-    "In which year did Leigh rebrand from Centurions to Leopards?",
-    "2022",
-    ["2020", "2021", "2023"],
-    "medium",
-    "history",
-    ["leigh"],
-    "2020s"
-  ),
-  q(
     "cur-leigh-promo-2022",
     "In which year did Leigh win the Championship Grand Final to return to Super League before the Leopards rebrand?",
     "2022",
@@ -389,26 +369,6 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
     "medium",
     "seasons",
     ["leigh"],
-    "2020s"
-  ),
-  q(
-    "cur-york-sl-year",
-    "In which year did York Knights play their first Super League season?",
-    "2026",
-    ["2024", "2025", "2027"],
-    "easy",
-    "seasons",
-    ["york"],
-    "2020s"
-  ),
-  q(
-    "cur-york-vaughan-drop",
-    "Who was the team Paul Vaughan kicked a drop goal against in his last game of his career?",
-    "Bradford Bulls",
-    ["Hull FC", "Castleford Tigers", "Huddersfield Giants"],
-    "medium",
-    "history",
-    ["york"],
     "2020s"
   ),
   q(
@@ -455,9 +415,8 @@ export const CURATED_QUIZ_QUESTIONS: QuizQuestion[] = [
   q("cur-sl-apps-record", "Who holds Super League's all-time appearance record?", "James Roby", ["Paul Wellens", "Kevin Sinfield", "Sean O'Loughlin"], "hard", "records", ["st-helens"]),
   q("cur-leeds-points-record", "Who is Leeds Rhinos' Super League-era record points scorer?", "Kevin Sinfield", ["Danny McGuire", "Rob Burrow", "Kallum Watkins"], "hard", "records", ["leeds"]),
   q("cur-hull-fc-apps-record", "Which Hull FC hooker holds the club's Super League appearance record?", "Danny Houghton", ["Richard Horne", "Kirk Yeaman", "Gareth Raynor"], "hard", "records", ["hull-fc"]),
-  q("cur-wigan-points-record", "Which Wigan Warriors winger became the club's Super League record points scorer?", "Pat Richards", ["Andy Farrell", "Frano Botica", "Harry Smith"], "hard", "records", ["wigan"]),
+  q("cur-wigan-points-record", "Who has scored the most Super League points for Wigan Warriors?", "Andy Farrell", ["Pat Richards", "Sam Tomkins", "Harry Smith"], "hard", "records", ["wigan"], undefined, "https://en.wikipedia.org/wiki/List_of_players_with_1,000_Super_League_points"),
   q("cur-wigan-apps-record", "Which Wigan Warriors forward made the most Super League appearances for the club?", "Sean O'Loughlin", ["Andy Farrell", "Kris Radlinski", "Liam Farrell"], "hard", "records", ["wigan"]),
-  q("cur-giants-points-record", "Which Huddersfield Giants half-back is the club's Super League-era record points scorer?", "Danny Brough", ["Luke Robinson", "Leroy Cudjoe", "Eorl Crabtree"], "hard", "records", ["huddersfield"]),
 
   // ── Verified additions ──────────────────────────────────────────────────────────────
   // https://en.wikipedia.org/wiki/Rugby_Football_League (George Hotel 1895, renamed 1922, 13-a-side 1906)

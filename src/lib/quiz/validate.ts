@@ -186,3 +186,25 @@ export function assertValidQuestionBank(questions: QuizQuestion[]): void {
     );
   }
 }
+
+/** Share of questions whose stored correct answer sits in each slot (A–D). */
+export function answerPositionShares(questions: readonly QuizQuestion[]): number[] {
+  const counts = [0, 0, 0, 0];
+  for (const question of questions) {
+    const slot = question.options.indexOf(question.correctAnswer);
+    if (slot >= 0 && slot < 4) counts[slot] = (counts[slot] ?? 0) + 1;
+  }
+  const total = questions.length || 1;
+  return counts.map((count) => count / total);
+}
+
+/**
+ * Questions that must say where their fact was verified: everything added from the
+ * October 2026 audit onwards (`var-` ids) and every generated question.
+ */
+export function questionsMissingSource(questions: readonly QuizQuestion[]): QuizQuestion[] {
+  return questions.filter((question) => {
+    const needsSource = question.id.startsWith("var-") || question.sourceType !== "curated";
+    return needsSource && !question.source?.trim();
+  });
+}

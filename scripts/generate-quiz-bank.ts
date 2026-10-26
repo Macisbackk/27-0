@@ -7,6 +7,8 @@ import { dirname, join } from "path";
 import {
   CHALLENGE_CUPS,
   CLUB_HISTORY,
+  DREAM_TEAMS,
+  MAN_OF_STEEL_WINNERS,
   GOLDEN_BOOT_WINNERS,
   GRAND_FINAL_MAN_OF_MATCH,
   GRAND_FINALS,
@@ -26,6 +28,7 @@ import type {
   QuizTeamId,
 } from "../src/lib/quiz/types";
 import { QUIZ_TEAM_IDS } from "../src/lib/quiz/types";
+import { placeCorrectAnswer } from "../src/lib/quiz/answer-position";
 import {
   loadWikiPlayers,
   WIKI_NATIONS,
@@ -101,10 +104,63 @@ function clubQuestionName(id: QuizTeamId, year: number, fallback: string): strin
 }
 
 function eraForYear(year: number): string {
-  if (year >= 2020) return "2020s";
-  if (year >= 2010) return "2010s";
-  if (year >= 2000) return "2000s";
-  return "1990s";
+  return `${Math.floor(year / 10) * 10}s`;
+}
+
+/**
+ * Where each generated family was verified. Stored on every question (never shown to
+ * players) so the audit can trace a fact back to its table.
+ */
+const SOURCES = {
+  grandFinals: "https://en.wikipedia.org/wiki/Super_League_Grand_Final",
+  challengeCup: "https://en.wikipedia.org/wiki/List_of_Challenge_Cup_finals",
+  leagueLeaders: "https://en.wikipedia.org/wiki/League_Leaders%27_Shield",
+  gfManOfMatch: "https://en.wikipedia.org/wiki/Rob_Burrow_Award",
+  worldClub: "https://en.wikipedia.org/wiki/World_Club_Challenge",
+  worldCup: "https://en.wikipedia.org/wiki/List_of_Rugby_League_World_Cup_finals",
+  stadiums: "https://en.wikipedia.org/wiki/List_of_British_rugby_league_stadiums_by_capacity",
+  clubHistory: "https://en.wikipedia.org/wiki/List_of_British_rugby_league_champions",
+  starting17: "data/era-starting-17s.json (Wikipedia season squad lists)",
+  rosters: "data/players/chunks/current (2026 club squad lists)",
+  manOfSteel:
+    "https://news.bet365.com/en-gb/article/super-league-man-of-steel-previous-winners/2026092311282478007",
+  goldenBoot: "https://www.intrl.sport/golden-boot-awards/",
+  lanceTodd: "https://en.wikipedia.org/wiki/Lance_Todd_Trophy",
+  dreamTeam: "https://en.wikipedia.org/wiki/Super_League_Dream_Team",
+  wikiPlayers: "Wikipedia player infoboxes (scripts/lib/quiz-wiki-infobox.ts)",
+} as const;
+
+/** "Jermaine Mcgillvary" -> "Jermaine McGillvary", "Terry O'connor" -> "Terry O'Connor". */
+function tidyName(value: string): string {
+  return value
+    .replace(/\bMc([a-z])/g, (_, c: string) => `Mc${c.toUpperCase()}`)
+    .replace(/\bO'([a-z])/g, (_, c: string) => `O'${c.toUpperCase()}`);
+}
+
+/** Map a club name as it was at the time to a quiz club id, if it is one. */
+function teamIdForClubName(name: string): QuizTeamId | null {
+  const key = name.toLowerCase().replace(/\./g, "").trim();
+  const table: [RegExp, QuizTeamId][] = [
+    [/^bradford( northern| bulls)?$/, "bradford"],
+    [/^castleford( tigers)?$/, "castleford"],
+    [/^catalans( dragons)?$/, "catalans"],
+    [/^huddersfield( giants)?$/, "huddersfield"],
+    [/^hull( fc)?$/, "hull-fc"],
+    [/^hull (kr|kingston rovers)$/, "hull-kr"],
+    [/^leeds( rhinos)?$/, "leeds"],
+    [/^leigh( centurions| leopards)?$/, "leigh"],
+    [/^london broncos$/, "london"],
+    [/^salford( city reds| red devils)?$/, "salford"],
+    [/^st helens$/, "st-helens"],
+    [/^toulouse( olympique)?$/, "toulouse"],
+    [/^wakefield trinity( wildcats)?$/, "wakefield"],
+    [/^warrington( wolves)?$/, "warrington"],
+    [/^widnes( vikings)?$/, "widnes"],
+    [/^wigan( warriors)?$/, "wigan"],
+    [/^york( city)? knights$/, "york"],
+  ];
+  for (const [pattern, id] of table) if (pattern.test(key)) return id;
+  return null;
 }
 
 function difficultyForYear(year: number, base: QuizDifficulty): QuizDifficulty {
@@ -136,25 +192,31 @@ function pickDistractors(
 function makeQuestion(
   id: string,
   question: string,
-  correct: string,
+  correctRaw: string,
   distractors: string[],
-  extra: Omit<QuizQuestion, "id" | "question" | "options" | "correctAnswer">
+  extra: Omit<QuizQuestion, "id" | "question" | "options" | "correctAnswer">,
+  options: { keepDistractorOrder?: boolean } = {}
 ): QuizQuestion | null {
-  const variedDistractors = unique(
-    distractors.filter((value) => value && value !== correct)
-  ).sort((a, b) => stableHash(`${id}:${a}`) - stableHash(`${id}:${b}`));
-  const options = [correct, ...variedDistractors].filter(Boolean);
-  if (options.length < 4 || !correct) return null;
-  const four = options.slice(0, 4) as [string, string, string, string];
+  const correct = tidyName(correctRaw);
+  const cleaned = unique(
+    distractors.map(tidyName).filter((value) => value && value !== correct)
+  );
+  // Callers that pass "nearest first" lists keep that order so the closest three win.
+  const variedDistractors = options.keepDistractorOrder
+    ? cleaned.slice(0, 3)
+    : cleaned.sort((a, b) => stableHash(`${id}:${a}`) - stableHash(`${id}:${b}`));
+  const all = [correct, ...variedDistractors].filter(Boolean);
+  if (all.length < 4 || !correct) return null;
+  const four = all.slice(0, 4) as [string, string, string, string];
   if (!four.includes(correct)) return null;
   if (new Set(four.map((value) => value.toLowerCase())).size !== 4) return null;
-  return {
+  return placeCorrectAnswer({
     id,
     question,
     options: four,
     correctAnswer: correct,
     ...extra,
-  };
+  });
 }
 
 function stableHash(value: string): number {
@@ -179,7 +241,10 @@ function buildFinalsQuestions(): QuizQuestion[] {
     category: QuizCategory,
     prefix: string
   ) => {
-    const winners = unique(records.map((record) => record.winnerName));
+    const finalists = records.map((record) => ({
+      year: record.year,
+      names: [record.winnerName, record.runnerUpName],
+    }));
 
     for (const record of records) {
       const winnerTeams = isTeamId(record.winnerId) ? [record.winnerId] : [];
@@ -193,7 +258,7 @@ function buildFinalsQuestions(): QuizQuestion[] {
           `${prefix}-winner-${record.year}`,
           `Which club won the ${record.year} ${competition}?`,
           record.winnerName,
-          pickDistractors(record.winnerName, winners, 6),
+          nearestByYear(record.year, finalists, [record.winnerName], 3, clubKey),
           {
             topicId: `final:${prefix}:${record.year}`,
             difficulty: yearDiff,
@@ -202,7 +267,9 @@ function buildFinalsQuestions(): QuizQuestion[] {
             era: eraForYear(record.year),
             sourceType: "finals",
             answerType: "objective",
-          }
+            source: prefix === "gf" ? SOURCES.grandFinals : SOURCES.challengeCup,
+          },
+          { keepDistractorOrder: true }
         )!
       );
     }
@@ -237,7 +304,10 @@ function buildFinalsQuestions(): QuizQuestion[] {
     );
   }
 
-  const llsNames = unique(LEAGUE_LEADERS.map((row) => row.name));
+  const llsRows = [
+    ...LEAGUE_LEADERS.map((row) => ({ year: row.year, names: [row.name] })),
+    ...GRAND_FINALS.map((row) => ({ year: row.year, names: [row.winnerName, row.runnerUpName] })),
+  ];
   for (const row of LEAGUE_LEADERS) {
     // 2013 is already asked as "In which year did Huddersfield win the League Leaders' Shield?".
     if (row.year === 2013) continue;
@@ -246,7 +316,7 @@ function buildFinalsQuestions(): QuizQuestion[] {
         `lls-winner-${row.year}`,
         `Which club won the Super League League Leaders' Shield in ${row.year}?`,
         row.name,
-        pickDistractors(row.name, llsNames, 6),
+        nearestByYear(row.year, llsRows, [row.name], 3, clubKey),
         {
           topicId: `league-leaders:${row.year}`,
           difficulty: row.year >= 2021 ? "medium" : "hard",
@@ -255,7 +325,9 @@ function buildFinalsQuestions(): QuizQuestion[] {
           era: eraForYear(row.year),
           sourceType: "records",
           answerType: "objective",
-        }
+          source: SOURCES.leagueLeaders,
+        },
+        { keepDistractorOrder: true }
       )!
     );
   }
@@ -1229,6 +1301,8 @@ function buildRosterQuestions(): QuizQuestion[] {
 
 function slug(value: string): string {
   return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
@@ -1248,7 +1322,8 @@ function buildClubHistoryQuestions(): QuizQuestion[] {
       club.foundedDistractors,
       {
         topicId: `history:${club.id}:founded`,
-        difficulty: "easy",
+        // Founding years are trivia for long-time fans, not an opening-rung question.
+        difficulty: "hard",
         category: "history",
         teams: [club.id],
         sourceType: "records",
@@ -1316,215 +1391,268 @@ function loadHonourPlayers(): Map<string, HonourPlayer> {
   return byId;
 }
 
-function teamsForPlayer(player: HonourPlayer | undefined): QuizTeamId[] {
-  if (!player) return [];
-  const club = String(player.displayClub ?? player.team ?? player.club ?? "");
-  const fromClub = NAME_TO_ID[club];
-  if (fromClub) return [fromClub];
-  for (const id of QUIZ_TEAM_IDS) {
-    if (player.id.startsWith(`${id}-`)) return [id];
-  }
-  return [];
-}
-
-function displayNameForId(
-  id: string,
-  byId: Map<string, HonourPlayer>
-): string | null {
-  return byId.get(id)?.name ?? null;
-}
-
-function preferCanonicalId(ids: string[]): string {
-  const scored = ids.map((id) => {
-    let score = 0;
-    if (!/-\d{4}$/.test(id)) score += 50;
-    if (!id.includes("-hist-") && !id.includes("-cur-") && !id.includes("-leg-")) {
-      score += 20;
-    }
-    return { id, score };
-  });
-  scored.sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
-  return scored[0]!.id;
-}
-
-function invertPlayerYearMap(
-  map: Record<string, number[]>,
-  byId: Map<string, HonourPlayer>
-): Map<number, { id: string; name: string; teams: QuizTeamId[] }> {
-  const byYear = new Map<number, string[]>();
-  for (const [id, years] of Object.entries(map)) {
-    if (!byId.has(id)) continue;
-    for (const year of years) {
-      if (!Number.isFinite(year)) continue;
-      const list = byYear.get(year) ?? [];
-      list.push(id);
-      byYear.set(year, list);
-    }
-  }
-  const out = new Map<number, { id: string; name: string; teams: QuizTeamId[] }>();
-  for (const [year, ids] of byYear) {
-    const id = preferCanonicalId([...new Set(ids)]);
-    const name = displayNameForId(id, byId);
-    if (!name) continue;
-    out.set(year, { id, name, teams: teamsForPlayer(byId.get(id)) });
-  }
-  return out;
-}
-
 function buildHonourQuestions(): QuizQuestion[] {
   const questions: QuizQuestion[] = [];
-  const byId = loadHonourPlayers();
+  const push = (question: QuizQuestion | null) => {
+    if (question) questions.push(question);
+  };
+  const honourDifficulty = (year: number): QuizDifficulty =>
+    year >= 2020 ? "easy" : year >= 2012 ? "medium" : year >= 1996 ? "hard" : year >= 1980 ? "very-hard" : "expert";
 
-  const manOfSteel = invertPlayerYearMap(
-    JSON.parse(
-      readFileSync(join(ROOT, "data/man-of-steel-winners.json"), "utf8")
-    ) as Record<string, number[]>,
-    byId
-  );
-  const dreamTeam = JSON.parse(
-    readFileSync(join(ROOT, "data/dream-team-years.json"), "utf8")
-  ) as Record<string, number[]>;
-
-  const mosNames = unique([...manOfSteel.values()].map((row) => row.name));
-  for (const [year, winner] of [...manOfSteel.entries()].sort(
-    (a, b) => a[0] - b[0]
-  )) {
-    const q = makeQuestion(
-      `mos-winner-${year}`,
-      `Who won the Man of Steel award in ${year}?`,
-      winner.name,
-      pickDistractors(winner.name, mosNames, 8),
-      {
-        topicId: `honour:man-of-steel:${year}`,
-        difficulty: difficultyForYear(
-          year,
-          year >= 2020 ? "easy" : year >= 2012 ? "medium" : "hard"
-        ),
-        category: "players",
-        teams: winner.teams,
-        era: eraForYear(year),
-        sourceType: "honours",
-        answerType: "objective",
-      }
+  // Man of Steel: wrong answers are winners from the nearest other seasons, and the club
+  // tag is the winner's club that season (not wherever he finished his career).
+  const mosRows = MAN_OF_STEEL_WINNERS.map((row) => ({ year: row.year, names: [row.player] }));
+  for (const row of MAN_OF_STEEL_WINNERS) {
+    const team = teamIdForClubName(row.club);
+    push(
+      makeQuestion(
+        `mos-winner-${row.year}`,
+        `Who won the Man of Steel award in ${row.year}?`,
+        row.player,
+        nearestByYear(row.year, mosRows, [row.player], 3),
+        {
+          topicId: `honour:man-of-steel:${row.year}`,
+          difficulty: honourDifficulty(row.year),
+          category: "players",
+          teams: team ? [team] : [],
+          era: eraForYear(row.year),
+          sourceType: "honours",
+          answerType: "objective",
+          source: SOURCES.manOfSteel,
+        },
+        { keepDistractorOrder: true }
+      )
     );
-    if (q) questions.push(q);
   }
 
-  // Golden Boot: verified list in facts.ts (golden-boot-years.json only holds the
-  // winners who are in the player database). Wrong answers are winners from nearby years.
+  // Golden Boot: verified list in facts.ts. Wrong answers are winners from nearby years.
   const gbRows = GOLDEN_BOOT_WINNERS.map((row) => ({ year: row.year, names: [row.player] }));
   for (const row of GOLDEN_BOOT_WINNERS) {
-    const q = makeQuestion(
-      `golden-boot-${row.year}`,
-      `Who won the Golden Boot in ${row.year}?`,
-      row.player,
-      nearestByYear(row.year, gbRows, [row.player], 3),
-      {
-        topicId: `honour:golden-boot:${row.year}`,
-        difficulty:
-          row.teams?.length || row.year >= 2010
-            ? "hard"
-            : row.year >= 1999
-              ? "very-hard"
-              : "expert",
-        category: "records",
-        teams: row.teams ?? [],
-        era: row.year >= 2000 ? eraForYear(row.year) : `${Math.floor(row.year / 10) * 10}s`,
-        sourceType: "honours",
-        answerType: "objective",
-      }
+    push(
+      makeQuestion(
+        `golden-boot-${row.year}`,
+        `Who won the Golden Boot in ${row.year}?`,
+        row.player,
+        nearestByYear(row.year, gbRows, [row.player], 3),
+        {
+          topicId: `honour:golden-boot:${row.year}`,
+          difficulty:
+            row.teams?.length || row.year >= 2010
+              ? "hard"
+              : row.year >= 1999
+                ? "very-hard"
+                : "expert",
+          category: "internationals",
+          teams: row.teams ?? [],
+          era: eraForYear(row.year),
+          sourceType: "honours",
+          answerType: "objective",
+          source: SOURCES.goldenBoot,
+        },
+        { keepDistractorOrder: true }
+      )
     );
-    if (q) questions.push(q);
   }
 
-  const ltNames = unique(
-    LANCE_TODD_WINNERS.flatMap((row) =>
-      [row.winnerName, row.sharedWinnerName].filter(
-        (name): name is string => Boolean(name)
-      )
-    )
-  );
+  // Lance Todd: contemporaries as wrong answers (a 2024 question no longer offers 1950s names).
+  const ltRows = LANCE_TODD_WINNERS.map((row) => ({
+    year: row.year,
+    names: [row.winnerName, row.sharedWinnerName].filter((name): name is string => Boolean(name)),
+  }));
   for (const row of LANCE_TODD_WINNERS) {
     if (row.sharedWinnerName) continue;
-    const winnerName =
-      row.winnerName === "Robbie Hunter-Paul"
-        ? ([...byId.values()].find((p) => p.name === "Robbie Hunter-Paul")
-            ?.name ?? "Robbie Hunter-Paul")
-        : row.winnerName;
-    const player = [...byId.values()].find(
-      (p) => p.name.toLowerCase() === winnerName.toLowerCase()
+    const team = teamIdForClubName(row.club);
+    push(
+      makeQuestion(
+        `lance-todd-${row.year}`,
+        `Who won the Lance Todd Trophy in the ${row.year} Challenge Cup final?`,
+        row.winnerName,
+        nearestByYear(row.year, ltRows, [row.winnerName], 3),
+        {
+          topicId: `honour:lance-todd:${row.year}`,
+          difficulty: honourDifficulty(row.year),
+          category: "challenge-cup",
+          teams: team ? [team] : [],
+          era: eraForYear(row.year),
+          sourceType: "honours",
+          answerType: "objective",
+          source: SOURCES.lanceTodd,
+        },
+        { keepDistractorOrder: true }
+      )
     );
-    const q = makeQuestion(
-      `lance-todd-${row.year}`,
-      `Who won the Lance Todd Trophy in the ${row.year} Challenge Cup final?`,
-      winnerName,
-      pickDistractors(winnerName, ltNames, 8),
-      {
-        topicId: `honour:lance-todd:${row.year}`,
-        difficulty: difficultyForYear(
-          row.year,
-          row.year >= 2020 ? "easy" : row.year >= 2012 ? "medium" : "hard"
-        ),
-        category: "challenge-cup",
-        teams: teamsForPlayer(player),
-        era: eraForYear(row.year),
-        sourceType: "honours",
-        answerType: "objective",
-      }
-    );
-    if (q) questions.push(q);
   }
 
-  const dreamByYear = new Map<
-    number,
-    { id: string; name: string; teams: QuizTeamId[] }[]
-  >();
-  for (const [id, years] of Object.entries(dreamTeam)) {
-    if (/-\d{4}$/.test(id)) continue;
-    const name = displayNameForId(id, byId);
-    if (!name) continue;
-    for (const year of years) {
-      const list = dreamByYear.get(year) ?? [];
-      list.push({ id, name, teams: teamsForPlayer(byId.get(id)) });
-      dreamByYear.set(year, list);
+  // Dream Team. Wrong answers come from Dream Teams of nearby seasons and are never in
+  // that season's team (the old pool mixed 1990s names into 2020s questions and twice
+  // offered a second correct answer).
+  const years = Object.keys(DREAM_TEAMS).map(Number).sort((a, b) => a - b);
+  const dtRows = years.map((year) => ({
+    year,
+    names: DREAM_TEAMS[year]!.map((row) => row.name),
+  }));
+  for (const year of years) {
+    const team = DREAM_TEAMS[year]!;
+    const inTeam = team.map((row) => row.name);
+    const nearbyOutsiders = nearestByYear(
+      year,
+      dtRows.filter((row) => row.year !== year),
+      inTeam,
+      12
+    );
+    const ordered = [...team].sort(
+      (a, b) => stableHash(`dream:${year}:${a.name}`) - stableHash(`dream:${year}:${b.name}`)
+    );
+    const pick = ordered[0]!;
+    const pickTeam = teamIdForClubName(pick.club);
+    push(
+      makeQuestion(
+        `dream-team-${year}-${slug(pick.name)}`,
+        `Which of these players was named in the ${year} Super League Dream Team?`,
+        pick.name,
+        nearbyOutsiders.slice(0, 3),
+        {
+          topicId: `honour:dream-team:${year}:${slug(pick.name)}`,
+          difficulty: year >= 2020 ? "medium" : year >= 2008 ? "hard" : "very-hard",
+          category: "players",
+          teams: pickTeam ? [pickTeam] : [],
+          era: eraForYear(year),
+          sourceType: "honours",
+          answerType: "objective",
+          source: SOURCES.dreamTeam,
+        },
+        { keepDistractorOrder: true }
+      )
+    );
+
+    // Odd one out, every other season: three of that year's team plus one near-miss.
+    if (year % 2 === 1) {
+      const members = ordered.slice(1, 4).map((row) => row.name);
+      const outsider = nearbyOutsiders[3] ?? nearbyOutsiders[0]!;
+      const outsiderClub = DREAM_TEAMS[
+        years.find((y) => DREAM_TEAMS[y]!.some((row) => row.name === outsider)) ?? year
+      ]!.find((row) => row.name === outsider)?.club;
+      const outsiderTeam = outsiderClub ? teamIdForClubName(outsiderClub) : null;
+      push(
+        makeQuestion(
+          `dream-team-${year}-not-${slug(outsider)}`,
+          `Which of these players was NOT named in the ${year} Super League Dream Team?`,
+          outsider,
+          members,
+          {
+            topicId: `honour:dream-team:${year}:odd-one-out`,
+            difficulty: year >= 2020 ? "hard" : "very-hard",
+            category: "players",
+            teams: outsiderTeam ? [outsiderTeam] : [],
+            era: eraForYear(year),
+            sourceType: "honours",
+            answerType: "objective",
+            source: SOURCES.dreamTeam,
+          },
+          { keepDistractorOrder: true }
+        )
+      );
     }
-  }
 
-  const allDreamNames = unique(
-    [...dreamByYear.values()].flatMap((rows) => rows.map((row) => row.name))
-  );
-  for (const [year, rows] of [...dreamByYear.entries()].sort(
-    (a, b) => a[0] - b[0]
-  )) {
-    const uniqueRows = [
-      ...new Map(rows.map((row) => [row.name.toLowerCase(), row])).values(),
-    ];
-    if (uniqueRows.length === 0) continue;
-    uniqueRows.sort(
-      (a, b) =>
-        stableHash(`dream:${year}:${a.id}`) -
-        stableHash(`dream:${year}:${b.id}`)
-    );
-    const pick = uniqueRows[0]!;
-    const q = makeQuestion(
-      `dream-team-${year}-${slug(pick.name)}`,
-      `Which of these players was named in the ${year} Super League Dream Team?`,
-      pick.name,
-      pickDistractors(pick.name, allDreamNames, 8),
-      {
-        topicId: `honour:dream-team:${year}:${slug(pick.name)}`,
-        difficulty: difficultyForYear(year, year >= 2020 ? "medium" : "hard"),
-        category: "players",
-        teams: pick.teams,
-        era: eraForYear(year),
-        sourceType: "honours",
-        answerType: "objective",
-      }
-    );
-    if (q) questions.push(q);
+    // Stat-based: the club with the most players in that season's team (only when unique).
+    const counts = new Map<string, number>();
+    for (const row of team) counts.set(row.club, (counts.get(row.club) ?? 0) + 1);
+    const ranked = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+    const [top, second] = ranked;
+    if (top && (!second || top[1] > second[1]) && top[1] >= 4) {
+      const otherClubs = nearestByYear(
+        year,
+        years.map((y) => ({ year: y, names: DREAM_TEAMS[y]!.map((row) => row.club) })),
+        [top[0]],
+        3,
+        clubKey
+      );
+      const topTeam = teamIdForClubName(top[0]);
+      push(
+        makeQuestion(
+          `dream-team-${year}-most-club`,
+          `Which club had the most players in the ${year} Super League Dream Team, with ${top[1]}?`,
+          top[0],
+          otherClubs,
+          {
+            topicId: `honour:dream-team:${year}:most-club`,
+            difficulty: year >= 2020 ? "medium" : "hard",
+            category: "records",
+            teams: topTeam ? [topTeam] : [],
+            era: eraForYear(year),
+            sourceType: "honours",
+            answerType: "objective",
+            source: SOURCES.dreamTeam,
+          },
+          { keepDistractorOrder: true }
+        )
+      );
+    }
   }
 
   return questions;
+}
+
+/**
+ * Generated questions that repeat a curated fact under a different topic id (October 2026
+ * audit). The curated wording is kept; these are dropped so a run never asks the same fact twice.
+ */
+const SAME_FACT_AS_CURATED: Record<string, string> = {
+  "hist-mile-catalans": "cur-catalans-cc (first French Challenge Cup winners)",
+  "hist-former-castleford": "cur-cas-jungle (The Jungle)",
+  "hist-former-st-helens": "cur-knowsley (Knowsley Road)",
+  "hist-former-warrington": "cur-wire (Wire nickname)",
+  "hist-mile-wakefield": "cur-belle-vue (Belle Vue)",
+  "hist-mile-york": "cur-york-stadium (York Community Stadium)",
+  "hist-former-salford": "cur-salford-reds (Salford City Reds)",
+  "hist-former-leigh": "cur-leigh-centurions (Centurions)",
+  "hist-mile-salford": "cur-salford-2019 (first Grand Final 2019)",
+  "hist-mile-toulouse": "cur-toulouse-stadium (Stade Ernest-Wallon)",
+  "hist-former-bradford": "cur-bradford-northern (Bradford Northern)",
+  "hist-former-london": "hist-founded-london (its question already names Fulham)",
+};
+
+const CLUB_WIKI: Record<QuizTeamId, string> = {
+  bradford: "Bradford_Bulls",
+  castleford: "Castleford_Tigers",
+  catalans: "Catalans_Dragons",
+  huddersfield: "Huddersfield_Giants",
+  "hull-fc": "Hull_F.C.",
+  "hull-kr": "Hull_Kingston_Rovers",
+  leeds: "Leeds_Rhinos",
+  leigh: "Leigh_Leopards",
+  london: "London_Broncos",
+  salford: "Salford_Red_Devils",
+  "st-helens": "St_Helens_R.F.C.",
+  toulouse: "Toulouse_Olympique",
+  wakefield: "Wakefield_Trinity",
+  warrington: "Warrington_Wolves",
+  widnes: "Widnes_Vikings",
+  wigan: "Wigan_Warriors",
+  york: "York_Knights",
+};
+
+/** Source for families whose builders do not set one themselves. */
+function sourceForGeneratedId(id: string): string {
+  if (id.startsWith("gf-motm-")) return SOURCES.gfManOfMatch;
+  if (id.startsWith("gf-")) return SOURCES.grandFinals;
+  if (id.startsWith("cc-")) return SOURCES.challengeCup;
+  if (id.startsWith("lls-")) return SOURCES.leagueLeaders;
+  if (id.startsWith("wcc-")) return SOURCES.worldClub;
+  if (id.startsWith("wc-")) return SOURCES.worldCup;
+  if (id.startsWith("stad-")) return SOURCES.stadiums;
+  if (id.startsWith("hist-")) {
+    const club = QUIZ_TEAM_IDS.find((team) => id.endsWith(`-${team}`));
+    return club ? `https://en.wikipedia.org/wiki/${CLUB_WIKI[club]}` : SOURCES.clubHistory;
+  }
+  if (id.startsWith("s17-")) return SOURCES.starting17;
+  if (id.startsWith("ros-")) return SOURCES.rosters;
+  if (id.startsWith("wiki-")) return SOURCES.wikiPlayers;
+  if (id.startsWith("mos-")) return SOURCES.manOfSteel;
+  if (id.startsWith("lance-todd-")) return SOURCES.lanceTodd;
+  if (id.startsWith("golden-boot-")) return SOURCES.goldenBoot;
+  if (id.startsWith("dream-team-")) return SOURCES.dreamTeam;
+  return "data/quiz/facts.ts";
 }
 
 function main(): void {
@@ -1541,7 +1669,11 @@ function main(): void {
     ...buildRosterQuestions(),
     ...buildHonourQuestions(),
     ...buildWikiPlayerQuestions(),
-  ].filter(Boolean);
+  ]
+    .filter((question) => question && !SAME_FACT_AS_CURATED[question.id])
+    .map((question) =>
+      question.source ? question : { ...question, source: sourceForGeneratedId(question.id) }
+    );
 
   const seenIds = new Set<string>();
   const seenTopics = new Set<string>();

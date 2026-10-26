@@ -1,4 +1,5 @@
 import { CURATED_QUIZ_QUESTIONS } from "../../../data/quiz/curated";
+import { VARIETY_QUESTIONS } from "../../../data/quiz/variety-2026-10";
 import generatedBank from "../../../data/quiz/generated/bank.json";
 import { assertValidQuestionBank } from "./validate";
 import type { QuizQuestion, QuizTeamId } from "./types";
@@ -13,7 +14,7 @@ function asQuestions(value: unknown): QuizQuestion[] {
 export function getQuizQuestionBank(): QuizQuestion[] {
   if (cached) return cached;
   const generated = asQuestions(generatedBank);
-  const merged = [...CURATED_QUIZ_QUESTIONS, ...generated];
+  const merged = [...CURATED_QUIZ_QUESTIONS, ...VARIETY_QUESTIONS, ...generated];
   const seen = new Set<string>();
   const seenTopics = new Set<string>();
   const unique: QuizQuestion[] = [];

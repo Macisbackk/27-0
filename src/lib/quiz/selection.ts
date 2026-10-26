@@ -218,16 +218,131 @@ function pickWeighted(
   return best;
 }
 
+/**
+ * Difficulty mix for the 14 questions before the win question. The order is shuffled
+ * afterwards (the ladder is deliberately not easy-to-hard), but every run gets the same
+ * spread instead of mirroring the bank's skew towards "hard".
+ */
+export const LEADING_DIFFICULTY_QUOTA: Record<QuizDifficulty, number> = {
+  easy: 3,
+  medium: 4,
+  hard: 4,
+  "very-hard": 2,
+  expert: 1,
+};
+
+/** Hard per-run cap on one category; the soft caps above still bite earlier. */
+export const CATEGORY_HARD_CAP = 4;
+/** In the Golden Point Quiz a single club is the subject of at most this many questions. */
+export const TEAM_HARD_CAP = 2;
+
+const DIFFICULTY_FALLBACK: Record<QuizDifficulty, QuizDifficulty[]> = {
+  easy: ["easy", "medium", "hard", "very-hard", "expert"],
+  medium: ["medium", "easy", "hard", "very-hard", "expert"],
+  hard: ["hard", "medium", "very-hard", "expert", "easy"],
+  "very-hard": ["very-hard", "hard", "expert", "medium", "easy"],
+  expert: ["expert", "very-hard", "hard", "medium", "easy"],
+};
+
 function bandCandidates(
   source: readonly QuizQuestion[],
   band: readonly QuizDifficulty[],
   usedIds: ReadonlySet<string>
 ): QuizQuestion[] {
-  const preferred = source.filter(
-    (question) => band.includes(question.difficulty) && !usedIds.has(question.id)
-  );
-  if (preferred.length > 0) return preferred;
-  return source.filter((question) => !usedIds.has(question.id));
+  const unused = source.filter((question) => !usedIds.has(question.id));
+  // Walk outwards from the wanted tier so a thin tier borrows from its neighbour first.
+  const order = band.length === 1 ? DIFFICULTY_FALLBACK[band[0]!] : [band];
+  for (const tier of order) {
+    const tiers = Array.isArray(tier) ? tier : [tier];
+    const preferred = unused.filter((question) => tiers.includes(question.difficulty));
+    if (preferred.length > 0) return preferred;
+  }
+  return unused;
+}
+
+/** Keep only the candidates that pass `keep`, unless that would leave none. */
+function preferWhere(
+  candidates: QuizQuestion[],
+  keep: (question: QuizQuestion) => boolean
+): QuizQuestion[] {
+  const kept = candidates.filter(keep);
+  return kept.length > 0 ? kept : candidates;
+}
+
+function sharesTeam(a: QuizQuestion, b: QuizQuestion): boolean {
+  return a.teams.some((team) => b.teams.includes(team));
+}
+
+/** True when two questions should not be asked back to back. */
+export function questionsClash(
+  a: QuizQuestion,
+  b: QuizQuestion,
+  mode: "millionaire" | "team"
+): boolean {
+  if (a.category === b.category) return true;
+  if (topicFamily(a.topicId) === topicFamily(b.topicId)) return true;
+  // Team Challenge is all one club by design; only the Golden Point Quiz spreads clubs.
+  return mode === "millionaire" && sharesTeam(a, b);
+}
+
+/**
+ * Order the leading questions so neighbours differ in category, topic family and (in the
+ * Golden Point Quiz) club, ending next to the fixed win question. Greedy with a seeded
+ * random pick among the non-clashing questions; falls back to the least-clashing one.
+ */
+export function arrangeForVariety(
+  leading: readonly QuizQuestion[],
+  finalQuestion: QuizQuestion | null,
+  mode: "millionaire" | "team",
+  rng: () => number
+): QuizQuestion[] {
+  const clashScore = (q: QuizQuestion, prev?: QuizQuestion, next?: QuizQuestion) => {
+    let score = 0;
+    for (const other of [prev, next]) {
+      if (!other) continue;
+      if (other.category === q.category) score += 4;
+      if (topicFamily(other.topicId) === topicFamily(q.topicId)) score += 4;
+      if (mode === "millionaire" && sharesTeam(other, q)) score += 2;
+    }
+    return score;
+  };
+
+  let best: QuizQuestion[] = [];
+  let bestScore = Infinity;
+  for (let attempt = 0; attempt < 12 && bestScore > 0; attempt++) {
+    const remaining = shuffledCopy([...leading], rng);
+    const ordered: QuizQuestion[] = [];
+    while (remaining.length > 0) {
+      const prev = ordered[ordered.length - 1];
+      const isLast = remaining.length === 1;
+      let pickIndex = -1;
+      let pickScore = Infinity;
+      for (let i = 0; i < remaining.length; i++) {
+        const candidate = remaining[i]!;
+        const score = clashScore(
+          candidate,
+          prev,
+          isLast && finalQuestion ? finalQuestion : undefined
+        );
+        if (score < pickScore) {
+          pickScore = score;
+          pickIndex = i;
+          if (score === 0) break;
+        }
+      }
+      ordered.push(remaining.splice(pickIndex, 1)[0]!);
+    }
+    const sequence = finalQuestion ? [...ordered, finalQuestion] : ordered;
+    let total = 0;
+    for (let i = 1; i < sequence.length; i++) {
+      total += clashScore(sequence[i]!, sequence[i - 1]);
+    }
+    if (total < bestScore) {
+      bestScore = total;
+      best = ordered;
+    }
+  }
+  return best;
 }
 
 export function selectQuizQuestions(options: {
@@ -265,44 +380,46 @@ export function selectQuizQuestions(options: {
   const usedFamilies = new Set<string>();
   const usedCategories = new Set<QuizCategory>();
   const categoryCounts = new Map<QuizCategory, number>();
+  const teamCounts = new Map<QuizTeamId, number>();
 
   const pickNext = (
     band: readonly QuizDifficulty[],
     previous: readonly QuizQuestion[]
   ): QuizQuestion => {
     let candidates = bandCandidates(source, band, usedIds);
+    // Not asked in the last ten runs, when the pool allows it.
+    candidates = preferWhere(
+      candidates,
+      (question) => !recentIds.has(question.id) && !recentTopics.has(question.topicId)
+    );
+    candidates = preferWhere(candidates, (question) => !usedTopics.has(question.topicId));
+    candidates = preferWhere(
+      candidates,
+      (question) => !usedFamilies.has(topicFamily(question.topicId))
+    );
+    candidates = preferWhere(
+      candidates,
+      (question) => (categoryCounts.get(question.category) ?? 0) < CATEGORY_HARD_CAP
+    );
+    if (options.mode === "millionaire") {
+      candidates = preferWhere(candidates, (question) => {
+        const team = primaryTeam(question);
+        return !team || (teamCounts.get(team) ?? 0) < TEAM_HARD_CAP;
+      });
+    }
     const prior = previous[previous.length - 1];
-    if (
-      prior &&
-      candidates.some((question) => question.category !== prior.category)
-    ) {
-      candidates = candidates.filter(
+    if (prior) {
+      candidates = preferWhere(
+        candidates,
         (question) => question.category !== prior.category
       );
-    }
-    if (
-      prior &&
-      candidates.some(
-        (question) =>
-          topicFamily(question.topicId) !== topicFamily(prior.topicId)
-      )
-    ) {
-      candidates = candidates.filter(
-        (question) =>
-          topicFamily(question.topicId) !== topicFamily(prior.topicId)
+      candidates = preferWhere(
+        candidates,
+        (question) => topicFamily(question.topicId) !== topicFamily(prior.topicId)
       );
-    }
-    if (
-      options.mode === "millionaire" &&
-      prior &&
-      primaryTeam(prior) &&
-      candidates.some(
-        (question) => primaryTeam(question) !== primaryTeam(prior)
-      )
-    ) {
-      candidates = candidates.filter(
-        (question) => primaryTeam(question) !== primaryTeam(prior)
-      );
+      if (options.mode === "millionaire") {
+        candidates = preferWhere(candidates, (question) => !sharesTeam(question, prior));
+      }
     }
     const pool = shuffledCopy(candidates, rng);
     const pick =
@@ -330,17 +447,26 @@ export function selectQuizQuestions(options: {
     usedFamilies.add(topicFamily(pick.topicId));
     usedCategories.add(pick.category);
     categoryCounts.set(pick.category, (categoryCounts.get(pick.category) ?? 0) + 1);
+    const team = primaryTeam(pick);
+    if (team) teamCounts.set(team, (teamCounts.get(team) ?? 0) + 1);
     return pick;
   };
 
-  // Lock the win question as hard-tier first, then fill and shuffle the rest.
+  // Lock the win question as hard-tier first, then fill to the difficulty quota.
   const finalQuestion = pickNext(FINAL_QUESTION_DIFFICULTIES, []);
+  const targets = shuffledCopy(
+    (Object.entries(LEADING_DIFFICULTY_QUOTA) as [QuizDifficulty, number][]).flatMap(
+      ([difficulty, count]) => Array.from({ length: count }, () => difficulty)
+    ),
+    rng
+  );
   const leading: QuizQuestion[] = [];
   for (let index = 0; index < QUIZ_QUESTION_COUNT - 1; index++) {
-    leading.push(pickNext(QUIZ_DIFFICULTIES, leading));
+    const target = targets[index] ?? "medium";
+    leading.push(pickNext([target], leading));
   }
 
-  return [...shuffledCopy(leading, rng), finalQuestion];
+  return [...arrangeForVariety(leading, finalQuestion, options.mode, rng), finalQuestion];
 }
 
 export function selectReplacementQuestion(options: {
