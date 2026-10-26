@@ -5,7 +5,6 @@ import {
   BoardGlyph,
   CoinGlyph,
   FixtureGlyph,
-  LadderGlyph,
   ProgrammeGlyph,
   TilesGlyph,
 } from "@/components/icons/rugby-icons";
@@ -138,9 +137,13 @@ function Glyph({ children, size = 24 }: { children: ReactNode; size?: number }) 
 }
 
 /** Small status tag on a mode tile. `tone` picks the dot colour; no dot for plain info. */
-function Badge({ children, tone }: { children: ReactNode; tone?: "primary" | "gold" }) {
+function Badge({ children, tone, plain = false }: { children: ReactNode; tone?: "primary" | "gold"; plain?: boolean }) {
   return (
-    <span className="inline-flex max-w-full items-center gap-1.5 truncate rounded-full bg-pitch-950 px-2 py-0.5 text-[11px] font-bold leading-[18px] text-[color:var(--fl-muted)]">
+    <span
+      className={`inline-flex max-w-full items-center gap-1.5 truncate font-bold text-[color:var(--fl-muted)] ${
+        plain ? "text-[12px] leading-4" : "rounded-full bg-pitch-950 px-2 py-0.5 text-[11px] leading-[18px]"
+      }`}
+    >
       {tone ? <span aria-hidden className={`h-1.5 w-1.5 shrink-0 rounded-full ${tone === "gold" ? "bg-accent-gold" : "bg-theme-primary"}`} /> : null}
       <span className={`truncate ${tone === "gold" ? "text-accent-gold" : tone === "primary" ? "text-theme-primary" : ""}`}>{children}</span>
     </span>
@@ -176,7 +179,7 @@ function ModeTile({
         onClick?.();
       }}
       className={`btn-press fl-pressable group flex min-w-0 rounded-tile bg-pitch-900 text-white transition hover:bg-pitch-800 ${FOCUS} ${
-        wide ? "col-span-3 items-center gap-3 p-3 text-left" : "col-span-2 flex-col items-center gap-2 px-1.5 pb-3 pt-3.5 text-center"
+        wide ? "col-span-3 items-center gap-2.5 p-2.5 pr-3 text-left" : "col-span-2 flex-col items-center gap-2 px-1.5 pb-3 pt-3.5 text-center"
       }`}
     >
       <span aria-hidden className={`flex shrink-0 items-center justify-center rounded-control ${tint} ${wide ? "h-11 w-11" : "h-[52px] w-[52px]"}`}>
@@ -288,7 +291,7 @@ export function HomeModeSelector() {
     <section className="mx-auto flex w-full max-w-[44rem] flex-col gap-3" aria-labelledby="play-heading">
       {/* Top strip: greeting, then the streak and Club Funds as chips on the same line. */}
       <div className="flex min-h-11 items-center gap-2">
-        <h2 id="play-heading" className="min-w-0 flex-1 truncate font-cond text-[24px] font-bold leading-none text-white">
+        <h2 id="play-heading" className="min-w-0 flex-1 truncate text-left font-cond text-[24px] font-bold leading-none text-white">
           {hub?.greeting ?? "Welcome, coach"}
         </h2>
         {streak > 0 ? (
@@ -337,9 +340,6 @@ export function HomeModeSelector() {
           className="relative overflow-hidden rounded-card bg-theme-primary px-4 pb-4 pt-5 text-[color:var(--theme-text-on-primary)]"
           aria-label="New here? Start with Classic"
         >
-          <span aria-hidden className="pointer-events-none absolute -right-3 -top-6 select-none font-display text-[120px] leading-none opacity-[0.12]">
-            27-0
-          </span>
           <p className="relative font-display text-[30px] leading-[1.02]">
             Sign a 13.
             <br />
@@ -458,7 +458,7 @@ export function HomeModeSelector() {
                 className={`absolute right-1 top-1 flex h-11 w-11 items-center justify-center rounded-control text-accent-gold hover:bg-pitch-800 ${FOCUS}`}
               >
                 <Glyph size={18}>
-                  <LadderGlyph />
+                  <path d="M3.5 20.5h17M5 20.5V14h4.5v6.5M9.5 20.5V9.5h5v11M14.5 20.5v-8.5H19v8.5" />
                 </Glyph>
               </Link>
             </div>
@@ -536,7 +536,7 @@ export function HomeModeSelector() {
           label="Puzzles"
           icon={<TilesGlyph />}
           tint="bg-accent-gold/10 text-accent-gold"
-          badge={hub && !hub.wordleDone ? <Badge tone="gold">Wordle waiting</Badge> : <Badge>Quiz &amp; Grid</Badge>}
+          badge={hub && !hub.wordleDone ? <Badge plain tone="gold">Wordle waiting</Badge> : <Badge plain>Quiz &amp; Grid</Badge>}
         />
         <ModeTile
           wide
@@ -551,7 +551,7 @@ export function HomeModeSelector() {
             </>
           }
           tint="bg-white/[0.06] text-white"
-          badge={<Badge>{ownsBallKnower ? "3 modes" : "One-Club, Gauntlet"}</Badge>}
+          badge={<Badge plain>{ownsBallKnower ? "3 to play" : "Gauntlet & more"}</Badge>}
         />
       </nav>
     </section>
