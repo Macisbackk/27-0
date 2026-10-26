@@ -30,8 +30,13 @@ import {
 import {
   filterTeamChallengeQuestions,
   isObviousTeamChallengeAnswer,
+  LEADING_DIFFICULTY_QUOTA,
   selectQuizQuestions,
+  TEAM_HARD_CAP,
+  topicFamily,
 } from "../src/lib/quiz/selection";
+import { answerPositionShares } from "../src/lib/quiz/validate";
+import { QUIZ_RECENT_QUESTION_LIMIT } from "../src/lib/quiz/types";
 import { quizRewardRunId } from "../src/lib/quiz/rewards";
 import { validateQuestionBank } from "../src/lib/quiz/validate";
 import { getQuizQuestionBank } from "../src/lib/quiz/bank";
@@ -216,6 +221,98 @@ console.log("\nQuestion selection");
     if (new Set(run.map((q) => q.topicId)).size === 15) uniqueTopicRuns += 1;
   }
   assert(uniqueTopicRuns === 8, "repeated millionaire runs keep unique topics");
+}
+
+console.log("\nVariety in play (October 2026 audit)");
+{
+  const realBank = getQuizQuestionBank();
+  let categoryClashes = 0;
+  let familyClashes = 0;
+  let teamClashes = 0;
+  let quotaMisses = 0;
+  let teamCapBreaches = 0;
+  for (let i = 0; i < 40; i++) {
+    const run = selectQuizQuestions({
+      questions: realBank,
+      mode: "millionaire",
+      seed: `variety-${i}`,
+    });
+    for (let q = 1; q < run.length; q++) {
+      const prev = run[q - 1]!;
+      const cur = run[q]!;
+      if (prev.category === cur.category) categoryClashes += 1;
+      if (topicFamily(prev.topicId) === topicFamily(cur.topicId)) familyClashes += 1;
+      if (prev.teams.some((team) => cur.teams.includes(team))) teamClashes += 1;
+    }
+    const leading = run.slice(0, 14);
+    for (const [difficulty, count] of Object.entries(LEADING_DIFFICULTY_QUOTA)) {
+      if (leading.filter((q) => q.difficulty === difficulty).length !== count) quotaMisses += 1;
+    }
+    const perTeam = new Map<string, number>();
+    for (const q of run) {
+      const team = q.teams[0];
+      if (team) perTeam.set(team, (perTeam.get(team) ?? 0) + 1);
+    }
+    if ([...perTeam.values()].some((count) => count > TEAM_HARD_CAP)) teamCapBreaches += 1;
+  }
+  assert(categoryClashes === 0, "no category repeated back to back in 40 Golden Point runs");
+  assert(familyClashes === 0, "no topic family repeated back to back in 40 Golden Point runs");
+  assert(teamClashes === 0, "no club repeated back to back in 40 Golden Point runs");
+  assert(quotaMisses === 0, "every run's first 14 questions follow the difficulty quota");
+  assert(teamCapBreaches === 0, `no club is the subject of more than ${TEAM_HARD_CAP} questions in a run`);
+
+  // Ten runs in a row, remembering what was asked (as the stats store does).
+  let recentIds: string[] = [];
+  let recentTopics: string[] = [];
+  const seen = new Set<string>();
+  let repeats = 0;
+  for (let i = 0; i < 10; i++) {
+    const run = selectQuizQuestions({
+      questions: realBank,
+      mode: "millionaire",
+      seed: `recency-${i}`,
+      recentIds,
+      recentTopicIds: recentTopics,
+    });
+    for (const q of run) {
+      if (seen.has(q.id)) repeats += 1;
+      seen.add(q.id);
+    }
+    recentIds = [...run.map((q) => q.id), ...recentIds].slice(0, QUIZ_RECENT_QUESTION_LIMIT);
+    recentTopics = [...run.map((q) => q.topicId), ...recentTopics].slice(
+      0,
+      QUIZ_RECENT_QUESTION_LIMIT
+    );
+  }
+  assert(repeats === 0, "no question repeats across ten consecutive Golden Point runs");
+
+  const categoriesPerRun: number[] = [];
+  for (let i = 0; i < 20; i++) {
+    const run = selectQuizQuestions({ questions: realBank, mode: "millionaire", seed: `mix-${i}` });
+    categoriesPerRun.push(new Set(run.map((q) => q.category)).size);
+  }
+  assert(
+    Math.min(...categoriesPerRun) >= 8,
+    `every run spans at least 8 categories (min ${Math.min(...categoriesPerRun)})`
+  );
+
+  const shares = answerPositionShares(realBank);
+  assert(
+    shares.every((share) => Math.abs(share - 0.25) <= 0.05),
+    "stored correct answers are spread across A–D (25% ± 5)"
+  );
+
+  const leedsRun = selectQuizQuestions({
+    questions: realBank,
+    mode: "team",
+    teamId: "leeds",
+    seed: "team-variety",
+  });
+  let teamCategoryClashes = 0;
+  for (let q = 1; q < leedsRun.length; q++) {
+    if (leedsRun[q - 1]!.category === leedsRun[q]!.category) teamCategoryClashes += 1;
+  }
+  assert(teamCategoryClashes === 0, "Team Challenge run avoids back-to-back categories when it can");
 }
 
 console.log("\nPrize ladder");
