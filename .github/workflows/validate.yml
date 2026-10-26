@@ -143,7 +143,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [site, manager, stress]
+        suite: [site-crawl, site-play, site-rest, manager, stress]
     name: e2e (${{ matrix.suite }})
     env:
       NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
@@ -172,8 +172,10 @@ jobs:
           npx next start -p 3000 > /tmp/next.log 2>&1 &
           for i in $(seq 1 60); do curl -sf http://localhost:3000/ > /dev/null && break; sleep 1; done
       - name: Whole-site break test (mobile + desktop)
-        if: matrix.suite == 'site'
-        run: scripts/ci-run.sh "Site e2e" node scripts/e2e-site.mjs
+        if: startsWith(matrix.suite, 'site-')
+        env:
+          SITE_SHARD: ${{ matrix.suite == 'site-crawl' && 'crawl' || matrix.suite == 'site-play' && 'play' || 'rest' }}
+        run: scripts/ci-run.sh "Site e2e ($SITE_SHARD)" node scripts/e2e-site.mjs
       - name: Manager Mode end-to-end (mobile)
         if: matrix.suite == 'manager'
         run: |
@@ -184,7 +186,7 @@ jobs:
         run: scripts/ci-run.sh "Stress test" node scripts/e2e-stress.mjs
       - name: UI audit screenshots (phone + desktop)
         # Off by default. Add the "ui-audit" label to a PR to run it (site suite only).
-        if: (success() || failure()) && matrix.suite == 'site' && github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'ui-audit')
+        if: (success() || failure()) && matrix.suite == 'site-crawl' && github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'ui-audit')
         continue-on-error: true
         timeout-minutes: 25
         run: |

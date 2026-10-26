@@ -95,7 +95,12 @@ async function tapFirst(page, patterns) {
   return null;
 }
 
+/* Sharding: SITE_SHARD=crawl|play|rest runs one part (CI runs them side by side); unset = all. */
+const SHARD = process.env.SITE_SHARD || "all";
+const runs = (part) => SHARD === "all" || SHARD === part;
+
 /* ------------------------------------------------------------ 1) crawl */
+if (runs("crawl")) {
 const internalLinks = new Set();
 for (const vp of [
   { name: "320", width: 320, height: 640, mobile: true },
@@ -177,6 +182,8 @@ for (const vp of [
   note(`Checked ${checked} internal links`);
 }
 
+} // end crawl shard
+
 /* ------------------------------------------------------------ 3) play modes */
 const context = await browser.newContext({ viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true });
 const page = wire(await context.newPage());
@@ -208,6 +215,7 @@ async function playClassic(route, label) {
   await shot(page, `${label.replace(/\W+/g, "-").toLowerCase()}-end`);
 }
 
+if (runs("play")) {
 await playClassic("/play?e2e=1", "Classic Current");
 await playClassic("/play?era=1&e2e=1", "Classic Era");
 await playClassic("/play?daily=1", "Daily Challenge");
@@ -233,6 +241,8 @@ await page.reload({ waitUntil: "domcontentloaded" });
 await settle(page);
 note("Classic: reload mid-run");
 
+} // end play shard
+
 // Mini-games: pick a pool, make moves, mash buttons.
 async function miniGame(route, label, moves) {
   currentWhere = `${label}`;
@@ -245,6 +255,7 @@ async function miniGame(route, label, moves) {
   note(`${label}: played`);
 }
 
+if (runs("rest")) {
 await miniGame("/mini-games/wordle", "Wordle", async () => {
   for (const guess of ["a", "Smith", "O'Brien", "Zz-z", "   ", "Sam Tomkins", "😀", "x".repeat(80)]) {
     const input = page.getByRole("combobox").or(page.locator("input[type='text'], input:not([type])")).first();
@@ -318,13 +329,14 @@ for (const route of ROUTES) {
   if (crashed) problems.push(`[${currentWhere}] page shows a crash screen`);
 }
 note("Wrong-shaped JSON in every key, revisited every route");
+} // end rest shard
 
 await browser.close();
 const unique = [...new Set(problems)];
 if (process.env.CI) {
   const { writeFileSync } = await import("node:fs");
   mkdirSync("e2e-shots", { recursive: true });
-  writeFileSync("e2e-shots/site-report.txt", `${unique.length} problem(s)\n${unique.join("\n")}\n\nChecks:\n${notes.join("\n")}\n`);
+  writeFileSync(`e2e-shots/site-report-${SHARD}.txt`, `${unique.length} problem(s)\n${unique.join("\n")}\n\nChecks:\n${notes.join("\n")}\n`);
 }
 if (unique.length) {
   console.error(`\n${unique.length} problem(s):\n- ${unique.join("\n- ")}`);
