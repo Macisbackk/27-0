@@ -2,8 +2,10 @@ import type { Player, PlayerCategory, Position } from "../types";
 import { PLAYER_RATING_OVERRIDES } from "../../../data/player-rating-overrides";
 import { PLAYER_RATING_AUDIT } from "../../../data/player-rating-audit";
 import SEASON_2026_RATINGS from "../../../data/season-2026-ratings.json";
+import ERA_SEASON_RATINGS from "../../../data/era-season-ratings.json";
 
 const SEASON_RATINGS = SEASON_2026_RATINGS as Record<string, { to: number }>;
+const ERA_RATINGS = ERA_SEASON_RATINGS as Record<string, { to: number }>;
 import birthYearsData from "../../../data/birth-years.json";
 import { compressPeakRating, computePlayerValue } from "./ratings";
 import { parsePlayerId, resolvePrimeYear } from "./prime-year";
@@ -104,6 +106,10 @@ export function normalizePlayer(raw: Record<string, unknown>): Player {
   if (PLAYER_RATING_AUDIT[id] !== undefined) {
     peakRating = PLAYER_RATING_AUDIT[id];
   }
+  // Era card audit (scripts/build-era-ratings.ts): honours-anchored peaks and club seasons
+  // checked against real league finishes. Historic and legend season cards only.
+  const era = category === "current" ? undefined : ERA_RATINGS[id];
+  if (era && typeof era.to === "number") peakRating = era.to;
   // 2026 season re-rate from researched performances (scripts/build-season-ratings.ts). Last word
   // for this season's cards.
   const season = SEASON_RATINGS[id];

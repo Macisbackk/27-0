@@ -1,0 +1,5810 @@
+{
+ "generated": "2026-10",
+ "cards": 2835,
+ "up": 280,
+ "down": 359,
+ "clubSeasonsVsFinish": {
+  "before": -0.644,
+  "after": -0.778,
+  "clubSeasons": 122
+ },
+ "clubSeasonShifts": [
+  "Bradford Bulls 2011 (finished 10/14): best-13 86.9 vs 85.4 expected → -1",
+  "Salford Red Devils 2009 (finished 13/14): best-13 85.8 vs 84.3 expected → -1",
+  "Huddersfield Giants 2022 (finished 3/12): best-13 85.0 vs 87.8 expected → +2",
+  "Hull FC 2012 (finished 6/14): best-13 84.4 vs 86.9 expected → +1",
+  "London Broncos 1996 (finished 4/12): best-13 84.2 vs 87.4 expected → +2",
+  "Widnes Vikings 2012 (finished 14/14): best-13 86.2 vs 84.0 expected → -1",
+  "Bradford Bulls 2014 (finished 13/14): best-13 86.7 vs 84.3 expected → -1",
+  "Catalans Dragons 2006 (finished 12/12): best-13 85.8 vs 84.0 expected → -1",
+  "London Broncos 2019 (finished 12/12): best-13 85.5 vs 84.0 expected → -1",
+  "Salford Red Devils 2014 (finished 10/14): best-13 87.1 vs 85.4 expected → -1",
+  "Salford Red Devils 1997 (finished 6/12): best-13 82.7 vs 86.6 expected → +2",
+  "St Helens 1996 (finished 1/12, champions): best-13 87.1 vs 88.7 expected → +1",
+  "Leeds Rhinos 2025 (finished 4/12): best-13 86.4 vs 87.4 expected → +1",
+  "Leeds Rhinos 2020 (finished 5/11): best-13 85.6 vs 86.8 expected → +1",
+  "Leigh Leopards 2025 (finished 3/12): best-13 84.8 vs 87.8 expected → +2",
+  "Wakefield Trinity 2025 (finished 6/12): best-13 84.6 vs 86.6 expected → +1",
+  "Wigan Warriors 2020 (finished 1/11): best-13 87.0 vs 88.7 expected → +1",
+  "Wigan Warriors 2024 (finished 1/12, champions): best-13 87.3 vs 88.7 expected → +1",
+  "Wigan Warriors 2023 (finished 1/12, champions): best-13 87.2 vs 88.7 expected → +1",
+  "Castleford Tigers 2012 (finished 13/14): best-13 86.9 vs 84.3 expected → -2",
+  "Wakefield Trinity 2009 (finished 5/14): best-13 86.2 vs 87.3 expected → +1",
+  "Hull FC 2009 (finished 12/14): best-13 86.1 vs 84.7 expected → -1",
+  "Warrington Wolves 2015 (finished 6/12): best-13 84.7 vs 86.6 expected → +1",
+  "Warrington Wolves 1999 (finished 7/14): best-13 85.3 vs 86.5 expected → +1",
+  "Salford Red Devils 2015 (finished 11/12): best-13 87.5 vs 84.4 expected → -2",
+  "Catalans Dragons 2007 (finished 10/12): best-13 85.9 vs 84.8 expected → -1",
+  "Leeds Rhinos 1998 (finished 2/12): best-13 85.1 vs 88.3 expected → +2",
+  "Wigan Warriors 2006 (finished 8/12): best-13 88.8 vs 85.7 expected → -2",
+  "Wakefield Trinity 2010 (finished 11/14): best-13 86.8 vs 85.1 expected → -1",
+  "Warrington Wolves 2023 (finished 6/12): best-13 84.7 vs 86.6 expected → +1",
+  "Catalans Dragons 2010 (finished 14/14): best-13 86.7 vs 84.0 expected → -2",
+  "Bradford Bulls 2013 (finished 9/14): best-13 87.6 vs 85.8 expected → -1",
+  "Huddersfield Giants 2016 (finished 12/12): best-13 87.8 vs 84.0 expected → -2",
+  "Wigan Warriors 2022 (finished 2/12): best-13 86.7 vs 88.3 expected → +1",
+  "Catalans Dragons 2008 (finished 3/12): best-13 85.8 vs 87.8 expected → +1",
+  "Warrington Wolves 2009 (finished 10/14): best-13 89.3 vs 85.4 expected → -2",
+  "Warrington Wolves 2024 (finished 3/12): best-13 85.3 vs 87.8 expected → +2",
+  "Warrington Wolves 2020 (finished 3/11): best-13 85.9 vs 87.8 expected → +1",
+  "Salford Red Devils 2016 (finished 10/12): best-13 86.0 vs 84.8 expected → -1",
+  "Leeds Rhinos 2021 (finished 5/12): best-13 84.8 vs 87.0 expected → +1",
+  "Warrington Wolves 2021 (finished 3/12): best-13 85.2 vs 87.8 expected → +2",
+  "Wigan Warriors 2021 (finished 4/12): best-13 85.4 vs 87.4 expected → +1",
+  "Leeds Rhinos 2022 (finished 5/12): best-13 84.8 vs 87.0 expected → +1",
+  "Wigan Warriors 2025 (finished 2/12): best-13 86.5 vs 88.3 expected → +1"
+ ],
+ "changes": [
+  {
+   "id": "wigan-hist-liam-farrell-2016",
+   "name": "Liam Farrell",
+   "club": "Wigan Warriors",
+   "year": 2016,
+   "from": 82,
+   "to": 92,
+   "why": "2016 Lance Todd / Harry Sunderland; peak 95"
+  },
+  {
+   "id": "salford-hist-martin-gleeson",
+   "name": "Martin Gleeson",
+   "club": "Wigan Warriors",
+   "year": 1999,
+   "from": 94,
+   "to": 84,
+   "why": "age 19, 3 yr from his award seasons; peak 94"
+  },
+  {
+   "id": "leeds-hist-era-ryan-hall",
+   "name": "Ryan Hall",
+   "club": "Leeds Rhinos",
+   "year": 2009,
+   "from": 83,
+   "to": 93,
+   "why": "honours put his peak at 94 (Dream Team 2009, 2010, 2012, 2014); 2009 Dream Team; peak 94"
+  },
+  {
+   "id": "leeds-hist-ryan-hall-2009",
+   "name": "Ryan Hall",
+   "club": "Leeds Rhinos",
+   "year": 2009,
+   "from": 83,
+   "to": 93,
+   "why": "honours put his peak at 94 (Dream Team 2009, 2010, 2012, 2014); 2009 Dream Team; peak 94"
+  },
+  {
+   "id": "leigh-hist-era-josh-charnley",
+   "name": "Josh Charnley",
+   "club": "Leigh Leopards",
+   "year": 2023,
+   "from": 83,
+   "to": 92,
+   "why": "honours put his peak at 93 (Dream Team 2012, 2013, 2023); 2023 Dream Team; peak 93"
+  },
+  {
+   "id": "st-helens-hist-alex-walmsley-2016",
+   "name": "Alex Walmsley",
+   "club": "St Helens",
+   "year": 2016,
+   "from": 82,
+   "to": 90,
+   "why": "honours put his peak at 94 (Dream Team 2015, 2020, 2021, 2022); prime season 1 yr from a Dream Team year; peak 94"
+  },
+  {
+   "id": "warrington-hist-chris-hill-2015",
+   "name": "Chris Hill",
+   "club": "Warrington Wolves",
+   "year": 2015,
+   "from": 82,
+   "to": 90,
+   "why": "honours put his peak at 93 (Dream Team 2012, 2014, 2016); prime season 1 yr from a Dream Team year; peak 93; Warrington Wolves 2015 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "salford-hist-gareth-hock",
+   "name": "Gareth Hock",
+   "club": "Wigan Warriors",
+   "year": 2003,
+   "from": 92,
+   "to": 84,
+   "why": "age 20, 3 yr from his award seasons; peak 92"
+  },
+  {
+   "id": "leeds-hist-ryan-hall-2013",
+   "name": "Ryan Hall",
+   "club": "Leeds Rhinos",
+   "year": 2013,
+   "from": 82,
+   "to": 90,
+   "why": "honours put his peak at 94 (Dream Team 2009, 2010, 2012, 2014); prime season 1 yr from a Dream Team year; peak 94"
+  },
+  {
+   "id": "st-helens-hist-thomas-makinson-2015",
+   "name": "Thomas Makinson",
+   "club": "St Helens",
+   "year": 2015,
+   "from": 82,
+   "to": 90,
+   "why": "prime season 1 yr from a Dream Team year; peak 94"
+  },
+  {
+   "id": "leeds-hist-zak-hardaker-2016",
+   "name": "Zak Hardaker",
+   "club": "Leeds Rhinos",
+   "year": 2016,
+   "from": 83,
+   "to": 91,
+   "why": "honours put his peak at 95 (Man of Steel 2015; Dream Team 2014, 2015, 2017); prime season 1 yr from a Dream Team year; peak 95"
+  },
+  {
+   "id": "huddersfield-hist-jake-connor-2024",
+   "name": "Jake Connor",
+   "club": "Huddersfield Giants",
+   "year": 2024,
+   "from": 85,
+   "to": 92,
+   "why": "prime season 1 yr from a Dream Team year; peak 96"
+  },
+  {
+   "id": "warrington-hist-josh-charnley-2021",
+   "name": "Josh Charnley",
+   "club": "Warrington Wolves",
+   "year": 2021,
+   "from": 82,
+   "to": 89,
+   "why": "honours put his peak at 93 (Dream Team 2012, 2013, 2023); prime season 2 yr from a Dream Team year; peak 93; Warrington Wolves 2021 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "leeds-hist-kallum-watkins-2016",
+   "name": "Kallum Watkins",
+   "club": "Leeds Rhinos",
+   "year": 2016,
+   "from": 82,
+   "to": 89,
+   "why": "honours put his peak at 93 (Dream Team 2014, 2015, 2023); prime season 1 yr from a Dream Team year; peak 93"
+  },
+  {
+   "id": "wakefield-hist-kelepi-tanginoa-2022",
+   "name": "Kelepi Tanginoa",
+   "club": "Wakefield Trinity",
+   "year": 2022,
+   "from": 80,
+   "to": 87,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; prime season 2 yr from a Dream Team year; peak 93"
+  },
+  {
+   "id": "leeds-hist-brodie-croft-2025",
+   "name": "Brodie Croft",
+   "club": "Leeds Rhinos",
+   "year": 2025,
+   "from": 86,
+   "to": 92,
+   "why": "honours put his peak at 95 (Man of Steel 2022; Dream Team 2022, 2026); prime season 1 yr from a Dream Team year; peak 95; Leeds Rhinos 2025 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "st-helens-hist-danny-richardson-2018",
+   "name": "Danny Richardson",
+   "club": "St Helens",
+   "year": 2018,
+   "from": 82,
+   "to": 88,
+   "why": "honours put his peak at 89 (Dream Team 2018); 2018 Dream Team; peak 89"
+  },
+  {
+   "id": "huddersfield-hist-jake-connor-2023",
+   "name": "Jake Connor",
+   "club": "Huddersfield Giants",
+   "year": 2023,
+   "from": 84,
+   "to": 90,
+   "why": "prime season 2 yr from a Dream Team year; peak 96"
+  },
+  {
+   "id": "leigh-hist-joe-ofahengaue-2025",
+   "name": "Joe Ofahengaue",
+   "club": "Leigh Leopards",
+   "year": 2025,
+   "from": 82,
+   "to": 88,
+   "why": "prime season 1 yr from a Dream Team year; peak 90; Leigh Leopards 2025 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "warrington-hist-josh-charnley-2022",
+   "name": "Josh Charnley",
+   "club": "Warrington Wolves",
+   "year": 2022,
+   "from": 83,
+   "to": 89,
+   "why": "honours put his peak at 93 (Dream Team 2012, 2013, 2023); prime season 1 yr from a Dream Team year; peak 93"
+  },
+  {
+   "id": "wigan-hist-era-robbie-mccormack",
+   "name": "Robbie McCormack",
+   "club": "Wigan Warriors",
+   "year": 1998,
+   "from": 80,
+   "to": 86,
+   "why": "honours put his peak at 89 (Dream Team 1998); 1998 Dream Team; peak 89"
+  },
+  {
+   "id": "leeds-hist-ash-handley-2021",
+   "name": "Ash Handley",
+   "club": "Leeds Rhinos",
+   "year": 2021,
+   "from": 85,
+   "to": 90,
+   "why": "honours put his peak at 93 (Dream Team 2019, 2020, 2026); prime season 1 yr from a Dream Team year; peak 93; Leeds Rhinos 2021 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-brodie-croft-2024",
+   "name": "Brodie Croft",
+   "club": "Leeds Rhinos",
+   "year": 2024,
+   "from": 84,
+   "to": 89,
+   "why": "honours put his peak at 95 (Man of Steel 2022; Dream Team 2022, 2026); prime season 2 yr from a Dream Team year; peak 95"
+  },
+  {
+   "id": "sheffield-hist-dale-laughton-1998",
+   "name": "Dale Laughton",
+   "club": "Leeds Rhinos",
+   "year": 1998,
+   "from": 83,
+   "to": 88,
+   "why": "honours put his peak at 89 (Dream Team 1998); 1998 Dream Team; peak 89"
+  },
+  {
+   "id": "castleford-hist-grant-millington",
+   "name": "Grant Millington",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 91,
+   "to": 86,
+   "why": "age 26, 3 yr from his award seasons; peak 91; Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "wigan-hist-josh-charnley-2015",
+   "name": "Josh Charnley",
+   "club": "Wigan Warriors",
+   "year": 2015,
+   "from": 82,
+   "to": 87,
+   "why": "honours put his peak at 93 (Dream Team 2012, 2013, 2023); prime season 2 yr from a Dream Team year; peak 93"
+  },
+  {
+   "id": "wigan-hist-liam-marshall-2025",
+   "name": "Liam Marshall",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 85,
+   "to": 90,
+   "why": "honours put his peak at 91 (Dream Team 2024, 2025); 2025 Dream Team; peak 91"
+  },
+  {
+   "id": "wigan-hist-luke-thompson-2025",
+   "name": "Luke Thompson",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 85,
+   "to": 90,
+   "why": "honours put his peak at 93 (Dream Team 2018, 2019, 2024); prime season 1 yr from a Dream Team year; peak 93; Wigan Warriors 2025 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "castleford-hist-michael-smith",
+   "name": "Michael Smith",
+   "club": "Castleford Tigers",
+   "year": 1998,
+   "from": 91,
+   "to": 86,
+   "why": "age 22, 3 yr from his award seasons; peak 91"
+  },
+  {
+   "id": "wakefield-hist-tom-johnstone-2022",
+   "name": "Tom Johnstone",
+   "club": "Wakefield Trinity",
+   "year": 2022,
+   "from": 82,
+   "to": 87,
+   "why": "prime season 1 yr from a Dream Team year; peak 91"
+  },
+  {
+   "id": "wigan-hist-willie-peters",
+   "name": "Willie Peters",
+   "club": "Wigan Warriors",
+   "year": 2000,
+   "from": 89,
+   "to": 84,
+   "why": "age 21, 1 yr from his award seasons; peak 89"
+  },
+  {
+   "id": "st-helens-hist-alex-walmsley-2015",
+   "name": "Alex Walmsley",
+   "club": "St Helens",
+   "year": 2015,
+   "from": 89,
+   "to": 93,
+   "why": "honours put his peak at 94 (Dream Team 2015, 2020, 2021, 2022); 2015 Dream Team; peak 94"
+  },
+  {
+   "id": "leeds-hist-ash-handley-2022",
+   "name": "Ash Handley",
+   "club": "Leeds Rhinos",
+   "year": 2022,
+   "from": 84,
+   "to": 88,
+   "why": "honours put his peak at 93 (Dream Team 2019, 2020, 2026); prime season 2 yr from a Dream Team year; peak 93; Leeds Rhinos 2022 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-ash-handley-2025",
+   "name": "Ash Handley",
+   "club": "Leeds Rhinos",
+   "year": 2025,
+   "from": 86,
+   "to": 90,
+   "why": "honours put his peak at 93 (Dream Team 2019, 2020, 2026); prime season 1 yr from a Dream Team year; peak 93; Leeds Rhinos 2025 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "barrie-mcdermott",
+   "name": "Barrie McDermott",
+   "club": "Leeds Rhinos",
+   "year": 1996,
+   "from": 94,
+   "to": 90,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 24, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "leeds-hist-carl-ablett",
+   "name": "Carl Ablett",
+   "club": "Leeds Rhinos",
+   "year": 2008,
+   "from": 93,
+   "to": 89,
+   "why": "age 23, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "warrington-hist-chris-hill-2016",
+   "name": "Chris Hill",
+   "club": "Warrington Wolves",
+   "year": 2016,
+   "from": 88,
+   "to": 92,
+   "why": "honours put his peak at 93 (Dream Team 2012, 2014, 2016); 2016 Dream Team; peak 93"
+  },
+  {
+   "id": "wakefield-hist-danny-kirmond",
+   "name": "Danny Kirmond",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 92,
+   "to": 88,
+   "why": "age 25, 3 yr from his award seasons; peak 92; Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-jackson-hastings-2021",
+   "name": "Jackson Hastings",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 86,
+   "to": 90,
+   "why": "honours put his peak at 95 (Man of Steel 2019; Dream Team 2019); prime season 2 yr from a Dream Team year; peak 95; Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "bradford-hist-james-lowes-1998",
+   "name": "James Lowes",
+   "club": "Bradford Bulls",
+   "year": 1998,
+   "from": 87,
+   "to": 91,
+   "why": "prime season 1 yr from a Dream Team year; peak 95"
+  },
+  {
+   "id": "bradford-hist-james-lowes-2000",
+   "name": "James Lowes",
+   "club": "Bradford Bulls",
+   "year": 2000,
+   "from": 87,
+   "to": 91,
+   "why": "prime season 1 yr from a Dream Team year; peak 95"
+  },
+  {
+   "id": "wigan-hist-joe-burgess-2015",
+   "name": "Joe Burgess",
+   "club": "Wigan Warriors",
+   "year": 2015,
+   "from": 82,
+   "to": 86,
+   "why": "honours put his peak at 89 (Dream Team 2015); 2015 Dream Team; peak 89"
+  },
+  {
+   "id": "hull-kr-hist-kane-linnett-2020",
+   "name": "Kane Linnett",
+   "club": "Hull KR",
+   "year": 2020,
+   "from": 82,
+   "to": 86,
+   "why": "prime season 1 yr from a Dream Team year; peak 90"
+  },
+  {
+   "id": "wigan-hist-liam-marshall-2024",
+   "name": "Liam Marshall",
+   "club": "Wigan Warriors",
+   "year": 2024,
+   "from": 86,
+   "to": 90,
+   "why": "honours put his peak at 91 (Dream Team 2024, 2025); 2024 Dream Team; peak 91"
+  },
+  {
+   "id": "warrington-hist-marc-sneyd-2025",
+   "name": "Marc Sneyd",
+   "club": "Warrington Wolves",
+   "year": 2025,
+   "from": 84,
+   "to": 88,
+   "why": "2025 Lance Todd / Harry Sunderland; peak 91"
+  },
+  {
+   "id": "sam-burgess",
+   "name": "Sam Burgess",
+   "club": "Bradford Bulls",
+   "year": 2009,
+   "from": 95,
+   "to": 91,
+   "why": "age 21; peak 95"
+  },
+  {
+   "id": "leeds-cur-zak-hardaker-2015",
+   "name": "Zak Hardaker",
+   "club": "Leeds Rhinos",
+   "year": 2015,
+   "from": 91,
+   "to": 95,
+   "why": "honours put his peak at 95 (Man of Steel 2015; Dream Team 2014, 2015, 2017); 2015 Man of Steel; peak 95"
+  },
+  {
+   "id": "st-helens-cur-alex-walmsley-2021",
+   "name": "Alex Walmsley",
+   "club": "St Helens",
+   "year": 2021,
+   "from": 90,
+   "to": 93,
+   "why": "honours put his peak at 94 (Dream Team 2015, 2020, 2021, 2022); 2021 Dream Team; peak 94"
+  },
+  {
+   "id": "st-helens-cur-alex-walmsley-2020",
+   "name": "Alex Walmsley",
+   "club": "St Helens",
+   "year": 2020,
+   "from": 90,
+   "to": 93,
+   "why": "honours put his peak at 94 (Dream Team 2015, 2020, 2021, 2022); 2020 Dream Team; peak 94"
+  },
+  {
+   "id": "leeds-hist-ash-handley-2024",
+   "name": "Ash Handley",
+   "club": "Leeds Rhinos",
+   "year": 2024,
+   "from": 84,
+   "to": 87,
+   "why": "honours put his peak at 93 (Dream Team 2019, 2020, 2026); prime season 2 yr from a Dream Team year; peak 93"
+  },
+  {
+   "id": "warrington-hist-ben-currie-2024",
+   "name": "Ben Currie",
+   "club": "Warrington Wolves",
+   "year": 2024,
+   "from": 85,
+   "to": 88,
+   "why": "prime season 2 yr from a Dream Team year; peak 92; Warrington Wolves 2024 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "wigan-hist-bevan-french-2023",
+   "name": "Bevan French",
+   "club": "Wigan Warriors",
+   "year": 2023,
+   "from": 92,
+   "to": 95,
+   "why": "honours put his peak at 95 (Man of Steel 2023; Dream Team 2020, 2022, 2023); 2023 Man of Steel; peak 95"
+  },
+  {
+   "id": "brian-carney",
+   "name": "Brian Carney",
+   "club": "Wigan Warriors",
+   "year": 2000,
+   "from": 93,
+   "to": 90,
+   "why": "age 24, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "wakefield-hist-danny-nutley",
+   "name": "Danny Nutley",
+   "club": "Warrington Wolves",
+   "year": 1999,
+   "from": 89,
+   "to": 86,
+   "why": "age 25, 3 yr from his award seasons; peak 89"
+  },
+  {
+   "id": "huddersfield-hist-david-hodgson-2009",
+   "name": "David Hodgson",
+   "club": "Huddersfield Giants",
+   "year": 2009,
+   "from": 91,
+   "to": 88,
+   "why": "age 28, 3 yr from his award seasons; peak 91"
+  },
+  {
+   "id": "wigan-hist-george-williams-2015",
+   "name": "George Williams",
+   "club": "Wigan Warriors",
+   "year": 2015,
+   "from": 82,
+   "to": 85,
+   "why": "2015 Young Player of the Year; peak 90"
+  },
+  {
+   "id": "leeds-hist-harry-newman-2021",
+   "name": "Harry Newman",
+   "club": "Leeds Rhinos",
+   "year": 2021,
+   "from": 84,
+   "to": 81,
+   "why": "age 21; peak 85"
+  },
+  {
+   "id": "wigan-hist-jackson-hastings-2020",
+   "name": "Jackson Hastings",
+   "club": "Wigan Warriors",
+   "year": 2020,
+   "from": 89,
+   "to": 92,
+   "why": "honours put his peak at 95 (Man of Steel 2019; Dream Team 2019); prime season 1 yr from a Dream Team year; peak 95; Wigan Warriors 2020 finished 1/11: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-leg-jamie-jones-buchanan-2016",
+   "name": "Jamie Jones-Buchanan",
+   "club": "Leeds Rhinos",
+   "year": 2016,
+   "from": 91,
+   "to": 88,
+   "why": "no Dream Team, no Man of Steel: peak 94 → 91; age 35; peak 91"
+  },
+  {
+   "id": "leeds-hist-jamie-jones-buchanan-2013",
+   "name": "Jamie Jones-Buchanan",
+   "club": "Leeds Rhinos",
+   "year": 2013,
+   "from": 94,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 94 → 91; age 32; peak 91"
+  },
+  {
+   "id": "warrington-hist-joel-monaghan-2015",
+   "name": "Joel Monaghan",
+   "club": "Warrington Wolves",
+   "year": 2015,
+   "from": 92,
+   "to": 89,
+   "why": "Dream Team ×1, no Man of Steel: peak 96 → 93; age 33, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "castleford-hist-joel-monaghan-2016",
+   "name": "Joel Monaghan",
+   "club": "Castleford Tigers",
+   "year": 2016,
+   "from": 91,
+   "to": 88,
+   "why": "Dream Team ×1, no Man of Steel: peak 96 → 93; age 34, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "joel-monaghan",
+   "name": "Joel Monaghan",
+   "club": "Warrington Wolves",
+   "year": 2011,
+   "from": 96,
+   "to": 93,
+   "why": "Dream Team ×1, no Man of Steel: peak 96 → 93; above his anchored peak; peak 93"
+  },
+  {
+   "id": "st-helens-cur-jonny-lomax-2021",
+   "name": "Jonny Lomax",
+   "club": "St Helens",
+   "year": 2021,
+   "from": 89,
+   "to": 92,
+   "why": "honours put his peak at 93 (Dream Team 2018, 2020, 2021); 2021 Dream Team; peak 93"
+  },
+  {
+   "id": "st-helens-cur-jonny-lomax-2020",
+   "name": "Jonny Lomax",
+   "club": "St Helens",
+   "year": 2020,
+   "from": 89,
+   "to": 92,
+   "why": "honours put his peak at 93 (Dream Team 2018, 2020, 2021); 2020 Dream Team; peak 93"
+  },
+  {
+   "id": "huddersfield-hist-josh-jones-2021",
+   "name": "Josh Jones",
+   "club": "Huddersfield Giants",
+   "year": 2021,
+   "from": 84,
+   "to": 87,
+   "why": "prime season 2 yr from a Dream Team year; peak 93"
+  },
+  {
+   "id": "leeds-hist-kruise-leeming-2021",
+   "name": "Kruise Leeming",
+   "club": "Leeds Rhinos",
+   "year": 2021,
+   "from": 85,
+   "to": 88,
+   "why": "honours put his peak at 89 (Dream Team 2021); 2021 Dream Team; peak 89"
+  },
+  {
+   "id": "hull-fc-hist-lewis-martin-2025",
+   "name": "Lewis Martin",
+   "club": "Hull FC",
+   "year": 2025,
+   "from": 83,
+   "to": 86,
+   "why": "honours put his peak at 89 (Dream Team 2025); 2025 Dream Team; peak 89"
+  },
+  {
+   "id": "wigan-hist-liam-marshall-2023",
+   "name": "Liam Marshall",
+   "club": "Wigan Warriors",
+   "year": 2023,
+   "from": 85,
+   "to": 88,
+   "why": "honours put his peak at 91 (Dream Team 2024, 2025); prime season 1 yr from a Dream Team year; peak 91; Wigan Warriors 2023 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-luke-thompson-2024",
+   "name": "Luke Thompson",
+   "club": "Wigan Warriors",
+   "year": 2024,
+   "from": 89,
+   "to": 92,
+   "why": "honours put his peak at 93 (Dream Team 2018, 2019, 2024); 2024 Dream Team; peak 93"
+  },
+  {
+   "id": "st-helens-hist-martin-gleeson-2002",
+   "name": "Martin Gleeson",
+   "club": "St Helens",
+   "year": 2002,
+   "from": 90,
+   "to": 93,
+   "why": "2002 Dream Team; peak 94"
+  },
+  {
+   "id": "hull-kr-hist-matt-parcell",
+   "name": "Matt Parcell",
+   "club": "Hull KR",
+   "year": 2020,
+   "from": 92,
+   "to": 89,
+   "why": "age 28, 3 yr from his award seasons; peak 92"
+  },
+  {
+   "id": "wigan-hist-matty-smith-2015",
+   "name": "Matty Smith",
+   "club": "Wigan Warriors",
+   "year": 2015,
+   "from": 88,
+   "to": 91,
+   "why": "prime season 1 yr from a Dream Team year; peak 95"
+  },
+  {
+   "id": "sheffield-hist-paul-broadbent-1998",
+   "name": "Paul Broadbent",
+   "club": "Leeds Rhinos",
+   "year": 1998,
+   "from": 84,
+   "to": 87,
+   "why": "honours put his peak at 89 (Dream Team 1997); prime season 1 yr from a Dream Team year; peak 89; Leeds Rhinos 1998 finished 2/12: side rated below its finish, +2"
+  },
+  {
+   "id": "hull-fc-hist-tom-briscoe-2013",
+   "name": "Tom Briscoe",
+   "club": "Hull FC",
+   "year": 2013,
+   "from": 82,
+   "to": 85,
+   "why": "prime season 2 yr from a Dream Team year; peak 91"
+  },
+  {
+   "id": "leeds-cur-tom-briscoe-2015",
+   "name": "Tom Briscoe",
+   "club": "Leeds Rhinos",
+   "year": 2015,
+   "from": 91,
+   "to": 88,
+   "why": "age 25, 3 yr from his award seasons; peak 91"
+  },
+  {
+   "id": "leigh-hist-umyla-hanley-2025",
+   "name": "Umyla Hanley",
+   "club": "Leigh Leopards",
+   "year": 2025,
+   "from": 87,
+   "to": 90,
+   "why": "honours put his peak at 91 (Dream Team 2025, 2026); 2025 Dream Team; peak 91"
+  },
+  {
+   "id": "huddersfield-hist-aaron-murphy-2016",
+   "name": "Aaron Murphy",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 86,
+   "to": 84,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-adam-mogg-2007",
+   "name": "Adam Mogg",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 86,
+   "to": 88,
+   "why": "honours put his peak at 89 (Dream Team 2007); 2007 Dream Team; peak 89"
+  },
+  {
+   "id": "wigan-hist-adrian-lam",
+   "name": "Adrian Lam",
+   "club": "Wigan Warriors",
+   "year": 2001,
+   "from": 90,
+   "to": 92,
+   "why": "honours put his peak at 93 (Dream Team 2001, 2002, 2003); 2001 Dream Team; peak 93"
+  },
+  {
+   "id": "salford-hist-adrian-morley-2015",
+   "name": "Adrian Morley",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 89,
+   "to": 87,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "adrian-morley",
+   "name": "Adrian Morley",
+   "club": "Warrington Wolves",
+   "year": 2008,
+   "from": 90,
+   "to": 92,
+   "why": "prime season 1 yr from a Dream Team year; peak 96"
+  },
+  {
+   "id": "castleford-hist-adrian-vowles",
+   "name": "Adrian Vowles",
+   "club": "Castleford Tigers",
+   "year": 1997,
+   "from": 96,
+   "to": 94,
+   "why": "age 26, 2 yr from his award seasons; peak 96"
+  },
+  {
+   "id": "wakefield-hist-alan-hunte",
+   "name": "Alan Hunte",
+   "club": "Warrington Wolves",
+   "year": 1999,
+   "from": 94,
+   "to": 92,
+   "why": "age 29, 2 yr from his award seasons; peak 94"
+  },
+  {
+   "id": "leeds-hist-ash-handley-2020",
+   "name": "Ash Handley",
+   "club": "Leeds Rhinos",
+   "year": 2020,
+   "from": 90,
+   "to": 92,
+   "why": "honours put his peak at 93 (Dream Team 2019, 2020, 2026); 2020 Dream Team; peak 93"
+  },
+  {
+   "id": "warrington-hist-ben-currie-2021",
+   "name": "Ben Currie",
+   "club": "Warrington Wolves",
+   "year": 2021,
+   "from": 86,
+   "to": 88,
+   "why": "Warrington Wolves 2021 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "warrington-hist-ben-currie-2025",
+   "name": "Ben Currie",
+   "club": "Warrington Wolves",
+   "year": 2025,
+   "from": 86,
+   "to": 88,
+   "why": "prime season 1 yr from a Dream Team year; peak 92"
+  },
+  {
+   "id": "salford-hist-ben-jones-bishop-2015",
+   "name": "Ben Jones-Bishop",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 91,
+   "to": 89,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "salford-cur-ben-jones-bishop-2015",
+   "name": "Ben Jones-Bishop",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 91,
+   "to": 89,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-ben-westwood-2009",
+   "name": "Ben Westwood",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 92,
+   "to": 90,
+   "why": "Warrington Wolves 2009 finished 10/14: side rated above its finish, -2"
+  },
+  {
+   "id": "wigan-hist-bevan-french-2020",
+   "name": "Bevan French",
+   "club": "Wigan Warriors",
+   "year": 2020,
+   "from": 92,
+   "to": 94,
+   "why": "honours put his peak at 95 (Man of Steel 2023; Dream Team 2020, 2022, 2023); 2020 Dream Team; peak 95"
+  },
+  {
+   "id": "wigan-hist-bevan-french-2022",
+   "name": "Bevan French",
+   "club": "Wigan Warriors",
+   "year": 2022,
+   "from": 92,
+   "to": 94,
+   "why": "honours put his peak at 95 (Man of Steel 2023; Dream Team 2020, 2022, 2023); 2022 Dream Team; peak 95"
+  },
+  {
+   "id": "wigan-hist-bevan-french-2024",
+   "name": "Bevan French",
+   "club": "Wigan Warriors",
+   "year": 2024,
+   "from": 91,
+   "to": 93,
+   "why": "honours put his peak at 95 (Man of Steel 2023; Dream Team 2020, 2022, 2023); 2024 Lance Todd / Harry Sunderland; peak 95; Wigan Warriors 2024 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "st-helens-hist-bobbie-goulding",
+   "name": "Bobbie Goulding",
+   "club": "St Helens",
+   "year": 1996,
+   "from": 86,
+   "to": 88,
+   "why": "honours put his peak at 89 (Dream Team 1996); 1996 Dream Team; peak 89"
+  },
+  {
+   "id": "wigan-hist-brett-dallas-2006",
+   "name": "Brett Dallas",
+   "club": "Wigan Warriors",
+   "year": 2006,
+   "from": 88,
+   "to": 86,
+   "why": "Wigan Warriors 2006 finished 8/12: side rated above its finish, -2"
+  },
+  {
+   "id": "castleford-hist-brett-ferres-2012",
+   "name": "Brett Ferres",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 88,
+   "to": 86,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-casey-mcguire-2010",
+   "name": "Casey Mcguire",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 87,
+   "to": 85,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-chris-bridge-2009",
+   "name": "Chris Bridge",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 90,
+   "to": 88,
+   "why": "Warrington Wolves 2009 finished 10/14: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-chris-hicks-2009",
+   "name": "Chris Hicks",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 91,
+   "to": 89,
+   "why": "Warrington Wolves 2009 finished 10/14: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-chris-hill-2021",
+   "name": "Chris Hill",
+   "club": "Warrington Wolves",
+   "year": 2021,
+   "from": 83,
+   "to": 85,
+   "why": "Warrington Wolves 2021 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "huddersfield-hist-chris-hill-2022",
+   "name": "Chris Hill",
+   "club": "Huddersfield Giants",
+   "year": 2022,
+   "from": 82,
+   "to": 84,
+   "why": "Huddersfield Giants 2022 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "warrington-hist-chris-riley-2009",
+   "name": "Chris Riley",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 87,
+   "to": 85,
+   "why": "Warrington Wolves 2009 finished 10/14: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-clint-greenshields-2010",
+   "name": "Clint Greenshields",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 88,
+   "to": 86,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "castleford-hist-craig-huby-2012",
+   "name": "Craig Huby",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 87,
+   "to": 85,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-craig-huby-2016",
+   "name": "Craig Huby",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 87,
+   "to": 85,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-cyril-stacul-2010",
+   "name": "Cyril Stacul",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 84,
+   "to": 82,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-cyrille-gossard",
+   "name": "Cyrille Gossard",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 83,
+   "to": 81,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-dallas-johnson",
+   "name": "Dallas Johnson",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 85,
+   "to": 83,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-dane-carlaw-2010",
+   "name": "Dane Carlaw",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 87,
+   "to": 85,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-danny-brough-2016",
+   "name": "Danny Brough",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 93,
+   "to": 91,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "castleford-hist-danny-orr-2012",
+   "name": "Danny Orr",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 84,
+   "to": 82,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-danny-walker-2021",
+   "name": "Danny Walker",
+   "club": "Warrington Wolves",
+   "year": 2021,
+   "from": 82,
+   "to": 84,
+   "why": "Warrington Wolves 2021 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "warrington-hist-danny-walker-2023",
+   "name": "Danny Walker",
+   "club": "Warrington Wolves",
+   "year": 2023,
+   "from": 84,
+   "to": 86,
+   "why": "prime season 1 yr from a Dream Team year; peak 89; Warrington Wolves 2023 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-danny-walker-2024",
+   "name": "Danny Walker",
+   "club": "Warrington Wolves",
+   "year": 2024,
+   "from": 86,
+   "to": 88,
+   "why": "2024 Dream Team; peak 89"
+  },
+  {
+   "id": "st-helens-hist-darren-albert",
+   "name": "Darren Albert",
+   "club": "St Helens",
+   "year": 2002,
+   "from": 96,
+   "to": 94,
+   "why": "Dream Team ×2, no Man of Steel: peak 96 → 94; above his anchored peak; peak 94"
+  },
+  {
+   "id": "sheffield-hist-darren-shaw-1998",
+   "name": "Darren Shaw",
+   "club": "Leeds Rhinos",
+   "year": 1998,
+   "from": 81,
+   "to": 83,
+   "why": "Leeds Rhinos 1998 finished 2/12: side rated below its finish, +2"
+  },
+  {
+   "id": "castleford-cur-daryl-clark-2012",
+   "name": "Daryl Clark",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 82,
+   "to": 80,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-daryl-clark-2020",
+   "name": "Daryl Clark",
+   "club": "Warrington Wolves",
+   "year": 2020,
+   "from": 90,
+   "to": 92,
+   "why": "honours put his peak at 95 (Man of Steel 2014; Dream Team 2014, 2019); prime season 1 yr from a Dream Team year; peak 95; Warrington Wolves 2020 finished 3/11: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-daryl-clark-2021",
+   "name": "Daryl Clark",
+   "club": "Warrington Wolves",
+   "year": 2021,
+   "from": 89,
+   "to": 91,
+   "why": "Warrington Wolves 2021 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "wigan-hist-dennis-moran-2006",
+   "name": "Dennis Moran",
+   "club": "Wigan Warriors",
+   "year": 2006,
+   "from": 87,
+   "to": 85,
+   "why": "Wigan Warriors 2006 finished 8/12: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-dimitri-pelo-2010",
+   "name": "Dimitri Pelo",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 87,
+   "to": 85,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "leigh-hist-edwin-ipape-2025",
+   "name": "Edwin Ipape",
+   "club": "Leigh Leopards",
+   "year": 2025,
+   "from": 85,
+   "to": 87,
+   "why": "Leigh Leopards 2025 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "wigan-hist-gareth-hock-2006",
+   "name": "Gareth Hock",
+   "club": "Wigan Warriors",
+   "year": 2006,
+   "from": 84,
+   "to": 82,
+   "why": "Wigan Warriors 2006 finished 8/12: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-garreth-carvell-2009",
+   "name": "Garreth Carvell",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 89,
+   "to": 87,
+   "why": "Warrington Wolves 2009 finished 10/14: side rated above its finish, -2"
+  },
+  {
+   "id": "wakefield-hist-graham-appo",
+   "name": "Graham Appo",
+   "club": "Wakefield Trinity",
+   "year": 2001,
+   "from": 91,
+   "to": 89,
+   "why": "age 27, 2 yr from his award seasons; peak 91"
+  },
+  {
+   "id": "salford-hist-greg-johnson-2015",
+   "name": "Greg Johnson",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 85,
+   "to": 83,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-gregory-mounis-2010",
+   "name": "Grégory Mounis",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 86,
+   "to": 84,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "wigan-hist-iafeta-paleaaesina",
+   "name": "Iafeta Paleaaesina",
+   "club": "Wigan Warriors",
+   "year": 2006,
+   "from": 87,
+   "to": 85,
+   "why": "Wigan Warriors 2006 finished 8/12: side rated above its finish, -2"
+  },
+  {
+   "id": "salford-hist-iain-thornley-2015",
+   "name": "Iain Thornley",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 90,
+   "to": 88,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "leigh-hist-jack-hughes-2025",
+   "name": "Jack Hughes",
+   "club": "Leigh Leopards",
+   "year": 2025,
+   "from": 82,
+   "to": 84,
+   "why": "Leigh Leopards 2025 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "wigan-hist-jai-field-2024",
+   "name": "Jai Field",
+   "club": "Wigan Warriors",
+   "year": 2024,
+   "from": 86,
+   "to": 88,
+   "why": "honours put his peak at 91 (Dream Team 2022, 2025); prime season 1 yr from a Dream Team year; peak 91; Wigan Warriors 2024 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "salford-hist-jake-bibby-2015",
+   "name": "Jake Bibby",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 82,
+   "to": 80,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "salford-cur-jake-bibby-2015",
+   "name": "Jake Bibby",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 82,
+   "to": 80,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-jake-connor-2016",
+   "name": "Jake Connor",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 91,
+   "to": 89,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-jamal-fakir",
+   "name": "Jamal Fakir",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 84,
+   "to": 82,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "castleford-hist-james-clare",
+   "name": "James Clare",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 88,
+   "to": 86,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "salford-hist-james-greenwood-2015",
+   "name": "James Greenwood",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 86,
+   "to": 84,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "leeds-hist-james-mcdonnell-2024",
+   "name": "James McDonnell",
+   "club": "Leeds Rhinos",
+   "year": 2024,
+   "from": 85,
+   "to": 87,
+   "why": "honours put his peak at 91 (Dream Team 2025, 2026); prime season 1 yr from a Dream Team year; peak 91"
+  },
+  {
+   "id": "leeds-hist-james-mcdonnell-2025",
+   "name": "James McDonnell",
+   "club": "Leeds Rhinos",
+   "year": 2025,
+   "from": 88,
+   "to": 90,
+   "why": "honours put his peak at 91 (Dream Team 2025, 2026); 2025 Dream Team; peak 91"
+  },
+  {
+   "id": "huddersfield-hist-jamie-ellis-2016",
+   "name": "Jamie Ellis",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 86,
+   "to": 84,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "leeds-leg-jamie-jones-buchanan-2015",
+   "name": "Jamie Jones-Buchanan",
+   "club": "Leeds Rhinos",
+   "year": 2015,
+   "from": 91,
+   "to": 89,
+   "why": "no Dream Team, no Man of Steel: peak 94 → 91; age 34; peak 91"
+  },
+  {
+   "id": "leeds-hist-jamie-jones-buchanan-2009",
+   "name": "Jamie Jones-Buchanan",
+   "club": "Leeds Rhinos",
+   "year": 2009,
+   "from": 93,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 94 → 91; age 28; peak 91"
+  },
+  {
+   "id": "jamie-peacock",
+   "name": "Jamie Peacock",
+   "club": "Leeds Rhinos",
+   "year": 2006,
+   "from": 93,
+   "to": 95,
+   "why": "prime season 1 yr from a Dream Team year; peak 99"
+  },
+  {
+   "id": "huddersfield-hist-jermaine-mcgillvary-2016",
+   "name": "Jermaine McGillvary",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 90,
+   "to": 88,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-jermaine-mcgillvary-2022",
+   "name": "Jermaine McGillvary",
+   "club": "Huddersfield Giants",
+   "year": 2022,
+   "from": 84,
+   "to": 86,
+   "why": "Huddersfield Giants 2022 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "catalans-hist-jerome-guisset-2010",
+   "name": "Jerome Guisset",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 86,
+   "to": 84,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "castleford-cur-joe-arundel-2012",
+   "name": "Joe Arundel",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 83,
+   "to": 81,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-joe-greenwood-2022",
+   "name": "Joe Greenwood",
+   "club": "Huddersfield Giants",
+   "year": 2022,
+   "from": 82,
+   "to": 84,
+   "why": "Huddersfield Giants 2022 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "leeds-hist-joel-moon",
+   "name": "Joel Moon",
+   "club": "Leeds Rhinos",
+   "year": 2014,
+   "from": 93,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 93 → 91; age 26; peak 91"
+  },
+  {
+   "id": "leeds-hist-joel-moon-2013",
+   "name": "Joel Moon",
+   "club": "Leeds Rhinos",
+   "year": 2013,
+   "from": 93,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 93 → 91; age 25; peak 91"
+  },
+  {
+   "id": "bradford-hist-john-bateman-2011",
+   "name": "John Bateman",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 84,
+   "to": 82,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 18, 3 yr from his award seasons; peak 93; Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "castleford-hist-jonathan-walker",
+   "name": "Jonathan Walker",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 84,
+   "to": 82,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-jordan-crowther-2024",
+   "name": "Jordan Crowther",
+   "club": "Warrington Wolves",
+   "year": 2024,
+   "from": 82,
+   "to": 84,
+   "why": "Warrington Wolves 2024 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "leigh-hist-josh-charnley-2025",
+   "name": "Josh Charnley",
+   "club": "Leigh Leopards",
+   "year": 2025,
+   "from": 80,
+   "to": 82,
+   "why": "Leigh Leopards 2025 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "warrington-hist-josh-drinkwater-2024",
+   "name": "Josh Drinkwater",
+   "club": "Warrington Wolves",
+   "year": 2024,
+   "from": 84,
+   "to": 86,
+   "why": "Warrington Wolves 2024 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "huddersfield-hist-josh-johnson",
+   "name": "Josh Johnson",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 84,
+   "to": 82,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-josh-jones-2022",
+   "name": "Josh Jones",
+   "club": "Huddersfield Giants",
+   "year": 2022,
+   "from": 84,
+   "to": 86,
+   "why": "Huddersfield Giants 2022 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "salford-hist-junior-sa-u",
+   "name": "Junior Sa'u",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 88,
+   "to": 86,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "salford-hist-ken-sio",
+   "name": "Ken Sio",
+   "club": "Salford Red Devils",
+   "year": 2019,
+   "from": 94,
+   "to": 92,
+   "why": "age 29, 2 yr from his award seasons; peak 94"
+  },
+  {
+   "id": "wigan-hist-kevin-brown-2006",
+   "name": "Kevin Brown",
+   "club": "Wigan Warriors",
+   "year": 2006,
+   "from": 86,
+   "to": 84,
+   "why": "Wigan Warriors 2006 finished 8/12: side rated above its finish, -2"
+  },
+  {
+   "id": "castleford-hist-kirk-dixon-2012",
+   "name": "Kirk Dixon",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 88,
+   "to": 86,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "wigan-hist-kris-radlinski-2006",
+   "name": "Kris Radlinski",
+   "club": "Wigan Warriors",
+   "year": 2006,
+   "from": 94,
+   "to": 92,
+   "why": "Wigan Warriors 2006 finished 8/12: side rated above its finish, -2"
+  },
+  {
+   "id": "leeds-hist-era-kruise-leeming",
+   "name": "Kruise Leeming",
+   "club": "Leeds Rhinos",
+   "year": 2020,
+   "from": 84,
+   "to": 86,
+   "why": "honours put his peak at 89 (Dream Team 2021); prime season 1 yr from a Dream Team year; peak 89; Leeds Rhinos 2020 finished 5/11: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-kruise-leeming-2022",
+   "name": "Kruise Leeming",
+   "club": "Leeds Rhinos",
+   "year": 2022,
+   "from": 84,
+   "to": 86,
+   "why": "honours put his peak at 89 (Dream Team 2021); prime season 1 yr from a Dream Team year; peak 89; Leeds Rhinos 2022 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leigh-hist-lachlan-lam-2025",
+   "name": "Lachlan Lam",
+   "club": "Leigh Leopards",
+   "year": 2025,
+   "from": 85,
+   "to": 87,
+   "why": "Leigh Leopards 2025 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "huddersfield-hist-larne-patrick-2016",
+   "name": "Larne Patrick",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 85,
+   "to": 83,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-lee-briers-2009",
+   "name": "Lee Briers",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 93,
+   "to": 91,
+   "why": "Warrington Wolves 2009 finished 10/14: side rated above its finish, -2"
+  },
+  {
+   "id": "wakefield-hist-lee-mitchell",
+   "name": "Lee Mitchell",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 84,
+   "to": 82,
+   "why": "Warrington Wolves 2009 finished 10/14: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-leroy-cudjoe-2016",
+   "name": "Leroy Cudjoe",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 90,
+   "to": 88,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-leroy-cudjoe-2022",
+   "name": "Leroy Cudjoe",
+   "club": "Huddersfield Giants",
+   "year": 2022,
+   "from": 85,
+   "to": 87,
+   "why": "Huddersfield Giants 2022 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "bradford-hist-lesley-vainikolo-2006",
+   "name": "Lesley Vainikolo",
+   "club": "Bradford Bulls",
+   "year": 2006,
+   "from": 94,
+   "to": 92,
+   "why": "Dream Team ×2, no Man of Steel: peak 96 → 94; age 27, 2 yr from his award seasons; peak 94"
+  },
+  {
+   "id": "bradford-hist-lesley-vainikolo-2002",
+   "name": "Lesley Vainikolo",
+   "club": "Bradford Bulls",
+   "year": 2002,
+   "from": 94,
+   "to": 92,
+   "why": "Dream Team ×2, no Man of Steel: peak 96 → 94; age 23, 1 yr from his award seasons; peak 94"
+  },
+  {
+   "id": "lesley-vainikolo",
+   "name": "Lesley Vainikolo",
+   "club": "Bradford Bulls",
+   "year": 2007,
+   "from": 93,
+   "to": 91,
+   "why": "Dream Team ×2, no Man of Steel: peak 96 → 94; age 28, 3 yr from his award seasons; peak 94"
+  },
+  {
+   "id": "salford-hist-liam-hood-2015",
+   "name": "Liam Hood",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 83,
+   "to": 81,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "salford-cur-liam-hood-2015",
+   "name": "Liam Hood",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 83,
+   "to": 81,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "wigan-hist-liam-marshall-2022",
+   "name": "Liam Marshall",
+   "club": "Wigan Warriors",
+   "year": 2022,
+   "from": 84,
+   "to": 86,
+   "why": "honours put his peak at 91 (Dream Team 2024, 2025); prime season 2 yr from a Dream Team year; peak 91; Wigan Warriors 2022 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "salford-hist-logan-tomkins",
+   "name": "Logan Tomkins",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 85,
+   "to": 83,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "st-helens-hist-louie-mccarthy-scarsbrook-2020",
+   "name": "Louie McCarthy-Scarsbrook",
+   "club": "St Helens",
+   "year": 2020,
+   "from": 91,
+   "to": 89,
+   "why": "no Dream Team, no Man of Steel: peak 93 → 91; age 34; peak 91"
+  },
+  {
+   "id": "st-helens-hist-louie-mccarthy-scarsbrook-2015",
+   "name": "Louie McCarthy-Scarsbrook",
+   "club": "St Helens",
+   "year": 2015,
+   "from": 93,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 93 → 91; age 29; peak 91"
+  },
+  {
+   "id": "warrington-hist-louis-anderson-2009",
+   "name": "Louis Anderson",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 90,
+   "to": 88,
+   "why": "Warrington Wolves 2009 finished 10/14: side rated above its finish, -2"
+  },
+  {
+   "id": "st-helens-cur-luke-thompson-2019",
+   "name": "Luke Thompson",
+   "club": "St Helens",
+   "year": 2019,
+   "from": 90,
+   "to": 92,
+   "why": "honours put his peak at 93 (Dream Team 2018, 2019, 2024); 2019 Dream Team; peak 93"
+  },
+  {
+   "id": "huddersfield-hist-luke-yates-2022",
+   "name": "Luke Yates",
+   "club": "Huddersfield Giants",
+   "year": 2022,
+   "from": 86,
+   "to": 88,
+   "why": "Huddersfield Giants 2022 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "leeds-hist-mark-calderwood",
+   "name": "Mark Calderwood",
+   "club": "Leeds Rhinos",
+   "year": 2001,
+   "from": 87,
+   "to": 85,
+   "why": "Dream Team ×1, no Man of Steel: peak 95 → 93; age 20, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "toulouse-hist-mathieu-jussaume-2025",
+   "name": "Mathieu Jussaume",
+   "club": "Toulouse Olympique",
+   "year": 2025,
+   "from": 85,
+   "to": 87,
+   "why": "prime season 1 yr from a Dream Team year; peak 91"
+  },
+  {
+   "id": "leigh-hist-matt-davis-2025",
+   "name": "Matt Davis",
+   "club": "Leigh Leopards",
+   "year": 2025,
+   "from": 82,
+   "to": 84,
+   "why": "Leigh Leopards 2025 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "warrington-hist-matt-king-2009",
+   "name": "Matt King",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 92,
+   "to": 90,
+   "why": "Warrington Wolves 2009 finished 10/14: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-michael-lawrence-2016",
+   "name": "Michael Lawrence",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 86,
+   "to": 84,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "wigan-hist-michael-mcilorum-2006",
+   "name": "Michael McIlorum",
+   "club": "Wigan Warriors",
+   "year": 2006,
+   "from": 84,
+   "to": 82,
+   "why": "Wigan Warriors 2006 finished 8/12: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-michael-monaghan-2009",
+   "name": "Michael Monaghan",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 93,
+   "to": 91,
+   "why": "Warrington Wolves 2009 finished 10/14: side rated above its finish, -2"
+  },
+  {
+   "id": "wigan-hist-mickey-higham-2006",
+   "name": "Mickey Higham",
+   "club": "Wigan Warriors",
+   "year": 2006,
+   "from": 89,
+   "to": 87,
+   "why": "Wigan Warriors 2006 finished 8/12: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-mike-cooper-2021",
+   "name": "Mike Cooper",
+   "club": "Warrington Wolves",
+   "year": 2021,
+   "from": 86,
+   "to": 88,
+   "why": "Warrington Wolves 2021 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "wakefield-hist-mike-mcmeeken-2025",
+   "name": "Mike McMeeken",
+   "club": "Wakefield Trinity",
+   "year": 2025,
+   "from": 88,
+   "to": 90,
+   "why": "honours put his peak at 91 (Dream Team 2017, 2025); 2025 Dream Team; peak 91"
+  },
+  {
+   "id": "leeds-hist-mikolaj-oledzki-2022",
+   "name": "Mikolaj Oledzki",
+   "club": "Leeds Rhinos",
+   "year": 2022,
+   "from": 86,
+   "to": 88,
+   "why": "honours put his peak at 89 (Dream Team 2022); 2022 Dream Team; peak 89"
+  },
+  {
+   "id": "hull-fc-hist-era-morgan-smith",
+   "name": "Morgan Smith",
+   "club": "Hull FC",
+   "year": 2023,
+   "from": 81,
+   "to": 83,
+   "why": "same 2023 season as his other card (83)"
+  },
+  {
+   "id": "huddersfield-hist-nathan-mason",
+   "name": "Nathan Mason",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 85,
+   "to": 83,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "castleford-hist-nathan-massey",
+   "name": "Nathan Massey",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 83,
+   "to": 81,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "salford-hist-era-nene-macdonald",
+   "name": "Nene Macdonald",
+   "club": "Salford Red Devils",
+   "year": 2024,
+   "from": 86,
+   "to": 88,
+   "why": "honours put his peak at 89 (Dream Team 2024); 2024 Dream Team; peak 89"
+  },
+  {
+   "id": "salford-hist-niall-evalds-2015",
+   "name": "Niall Evalds",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 86,
+   "to": 84,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "salford-cur-niall-evalds-2015",
+   "name": "Niall Evalds",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 86,
+   "to": 84,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "castleford-hist-nick-youngquest",
+   "name": "Nick Youngquest",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 89,
+   "to": 87,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "castleford-hist-oliver-holmes-2012",
+   "name": "Oliver Holmes",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 82,
+   "to": 80,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-oliver-roberts",
+   "name": "Oliver Roberts",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 84,
+   "to": 82,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-olivier-elima-2010",
+   "name": "Olivier Elima",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 87,
+   "to": 85,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "salford-hist-olsi-krasniqi-2015",
+   "name": "Olsi Krasniqi",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 82,
+   "to": 80,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "wigan-hist-pat-richards-2006",
+   "name": "Pat Richards",
+   "club": "Wigan Warriors",
+   "year": 2006,
+   "from": 94,
+   "to": 92,
+   "why": "Wigan Warriors 2006 finished 8/12: side rated above its finish, -2"
+  },
+  {
+   "id": "hull-kr-hist-peter-fox",
+   "name": "Peter Fox",
+   "club": "Hull KR",
+   "year": 2008,
+   "from": 94,
+   "to": 92,
+   "why": "Dream Team ×1, no Man of Steel: peak 95 → 93; age 25, 1 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "hull-kr-hist-peter-fox-2009",
+   "name": "Peter Fox",
+   "club": "Hull KR",
+   "year": 2009,
+   "from": 95,
+   "to": 93,
+   "why": "Dream Team ×1, no Man of Steel: peak 95 → 93; above his anchored peak; peak 93"
+  },
+  {
+   "id": "salford-hist-rangi-chase-2015",
+   "name": "Rangi Chase",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 91,
+   "to": 89,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "castleford-hist-rangi-chase-2012",
+   "name": "Rangi Chase",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 94,
+   "to": 92,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-remi-casty-2010",
+   "name": "Remi Casty",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 90,
+   "to": 88,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "castleford-hist-richard-owen-2012",
+   "name": "Richard Owen",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 84,
+   "to": 82,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-richie-mathers-2009",
+   "name": "Richie Mathers",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 84,
+   "to": 82,
+   "why": "Warrington Wolves 2009 finished 10/14: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-ricky-leutele-2022",
+   "name": "Ricky Leutele",
+   "club": "Huddersfield Giants",
+   "year": 2022,
+   "from": 84,
+   "to": 86,
+   "why": "Huddersfield Giants 2022 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "warrington-hist-robbie-mulhern-2021",
+   "name": "Robbie Mulhern",
+   "club": "Warrington Wolves",
+   "year": 2021,
+   "from": 82,
+   "to": 84,
+   "why": "Warrington Wolves 2021 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "huddersfield-hist-ryan-brierley-2016",
+   "name": "Ryan Brierley",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 87,
+   "to": 85,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-ryan-hinchcliffe-2016",
+   "name": "Ryan Hinchcliffe",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 87,
+   "to": 85,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-sam-powell-2024",
+   "name": "Sam Powell",
+   "club": "Warrington Wolves",
+   "year": 2024,
+   "from": 83,
+   "to": 85,
+   "why": "Warrington Wolves 2024 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "huddersfield-hist-sam-rapira-2016",
+   "name": "Sam Rapira",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 84,
+   "to": 82,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-scott-dureau-2011",
+   "name": "Scott Dureau",
+   "club": "Catalans Dragons",
+   "year": 2011,
+   "from": 88,
+   "to": 90,
+   "why": "honours put his peak at 91 (Dream Team 2011, 2012); 2011 Dream Team; peak 91"
+  },
+  {
+   "id": "catalans-hist-scott-dureau-2012",
+   "name": "Scott Dureau",
+   "club": "Catalans Dragons",
+   "year": 2012,
+   "from": 88,
+   "to": 90,
+   "why": "honours put his peak at 91 (Dream Team 2011, 2012); 2012 Dream Team; peak 91"
+  },
+  {
+   "id": "wigan-hist-scott-logan-2006",
+   "name": "Scott Logan",
+   "club": "Wigan Warriors",
+   "year": 2006,
+   "from": 83,
+   "to": 81,
+   "why": "Wigan Warriors 2006 finished 8/12: side rated above its finish, -2"
+  },
+  {
+   "id": "wigan-hist-sean-oloughlin-2006",
+   "name": "Sean O'Loughlin",
+   "club": "Wigan Warriors",
+   "year": 2006,
+   "from": 94,
+   "to": 92,
+   "why": "Wigan Warriors 2006 finished 8/12: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-sebastien-raguin-2010",
+   "name": "Sébastien Raguin",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 85,
+   "to": 83,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-setaimata-sa-2010",
+   "name": "Setaimata Sa",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 85,
+   "to": 83,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-stefan-ratchford-2021",
+   "name": "Stefan Ratchford",
+   "club": "Warrington Wolves",
+   "year": 2021,
+   "from": 84,
+   "to": 86,
+   "why": "Warrington Wolves 2021 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "castleford-hist-steve-snitch-2012",
+   "name": "Steve Snitch",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 86,
+   "to": 84,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "castleford-hist-stuart-jones-2012",
+   "name": "Stuart Jones",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 87,
+   "to": 85,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -2"
+  },
+  {
+   "id": "catalans-hist-thomas-bosc-2010",
+   "name": "Thomas Bosc",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 88,
+   "to": 86,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "warrington-hist-toby-king-2021",
+   "name": "Toby King",
+   "club": "Warrington Wolves",
+   "year": 2021,
+   "from": 86,
+   "to": 88,
+   "why": "Warrington Wolves 2021 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "warrington-hist-tom-lineham-2021",
+   "name": "Tom Lineham",
+   "club": "Warrington Wolves",
+   "year": 2021,
+   "from": 84,
+   "to": 86,
+   "why": "Warrington Wolves 2021 finished 3/12: side rated below its finish, +2"
+  },
+  {
+   "id": "catalans-hist-tony-gigot-2010",
+   "name": "Tony Gigot",
+   "club": "Catalans Dragons",
+   "year": 2010,
+   "from": 86,
+   "to": 84,
+   "why": "Catalans Dragons 2010 finished 14/14: side rated above its finish, -2"
+  },
+  {
+   "id": "huddersfield-hist-ukuma-ta-ai-2016",
+   "name": "Ukuma Ta'ai",
+   "club": "Huddersfield Giants",
+   "year": 2016,
+   "from": 88,
+   "to": 86,
+   "why": "Huddersfield Giants 2016 finished 12/12: side rated above its finish, -2"
+  },
+  {
+   "id": "salford-hist-weller-hauraki",
+   "name": "Weller Hauraki",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 87,
+   "to": 85,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2"
+  },
+  {
+   "id": "wakefield-hist-aaron-murphy-2009",
+   "name": "Aaron Murphy",
+   "club": "Wakefield Trinity",
+   "year": 2009,
+   "from": 81,
+   "to": 82,
+   "why": "Wakefield Trinity 2009 finished 5/14: side rated below its finish, +1"
+  },
+  {
+   "id": "wakefield-hist-aaron-murphy-2010",
+   "name": "Aaron Murphy",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 84,
+   "to": 83,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-adam-cuthbertson",
+   "name": "Adam Cuthbertson",
+   "club": "Leeds Rhinos",
+   "year": 2016,
+   "from": 91,
+   "to": 90,
+   "why": "age 31, 1 yr from his award seasons; peak 91"
+  },
+  {
+   "id": "wigan-hist-adam-keighran-2024",
+   "name": "Adam Keighran",
+   "club": "Wigan Warriors",
+   "year": 2024,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2024 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-adam-keighran-2025",
+   "name": "Adam Keighran",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 84,
+   "to": 85,
+   "why": "Wigan Warriors 2025 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "catalans-hist-adam-mogg-2008",
+   "name": "Adam Mogg",
+   "club": "Catalans Dragons",
+   "year": 2008,
+   "from": 85,
+   "to": 86,
+   "why": "Catalans Dragons 2008 finished 3/12: side rated below its finish, +1"
+  },
+  {
+   "id": "bradford-hist-adam-sidlow-2013",
+   "name": "Adam Sidlow",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 86,
+   "to": 85,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-adam-sidlow-2009",
+   "name": "Adam Sidlow",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 84,
+   "to": 83,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-adel-fellous",
+   "name": "Adel Fellous",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 83,
+   "to": 82,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-leg-adrian-morley-2014",
+   "name": "Adrian Morley",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 89,
+   "to": 88,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-adrian-purtell-2014",
+   "name": "Adrian Purtell",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 85,
+   "to": 84,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-aidan-sezer-2022",
+   "name": "Aidan Sezer",
+   "club": "Leeds Rhinos",
+   "year": 2022,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2022 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "catalans-hist-alex-chan",
+   "name": "Alex Chan",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 86,
+   "to": 85,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-alex-chan-2007",
+   "name": "Alex Chan",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 85,
+   "to": 84,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-cur-alex-mellor-2014",
+   "name": "Alex Mellor",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 83,
+   "to": 82,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-alex-mellor-2020",
+   "name": "Alex Mellor",
+   "club": "Leeds Rhinos",
+   "year": 2020,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2020 finished 5/11: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-alex-mellor-2021",
+   "name": "Alex Mellor",
+   "club": "Leeds Rhinos",
+   "year": 2021,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2021 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "london-hist-alex-walker-2019",
+   "name": "Alex Walker",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 84,
+   "to": 83,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "st-helens-cur-alex-walmsley-2019",
+   "name": "Alex Walmsley",
+   "club": "St Helens",
+   "year": 2019,
+   "from": 89,
+   "to": 90,
+   "why": "honours put his peak at 94 (Dream Team 2015, 2020, 2021, 2022); prime season 1 yr from a Dream Team year; peak 94"
+  },
+  {
+   "id": "leeds-hist-ali-lauitiiti-2008",
+   "name": "Ali Lauitiiti",
+   "club": "Leeds Rhinos",
+   "year": 2008,
+   "from": 92,
+   "to": 91,
+   "why": "Dream Team ×2, no Man of Steel: peak 95 → 94; age 29, 3 yr from his award seasons; peak 94"
+  },
+  {
+   "id": "leeds-hist-ali-lauitiiti-2009",
+   "name": "Ali Lauitiiti",
+   "club": "Leeds Rhinos",
+   "year": 2009,
+   "from": 92,
+   "to": 91,
+   "why": "Dream Team ×2, no Man of Steel: peak 95 → 94; age 30, 3 yr from his award seasons; peak 94"
+  },
+  {
+   "id": "ali-lauitiiti",
+   "name": "Ali Lauitiiti",
+   "club": "Leeds Rhinos",
+   "year": 2004,
+   "from": 95,
+   "to": 94,
+   "why": "Dream Team ×2, no Man of Steel: peak 95 → 94; above his anchored peak; peak 94"
+  },
+  {
+   "id": "salford-hist-andrew-dixon-2014",
+   "name": "Andrew Dixon",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 83,
+   "to": 82,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "hull-fc-hist-andy-lynch-2012",
+   "name": "Andy Lynch",
+   "club": "Hull FC",
+   "year": 2012,
+   "from": 82,
+   "to": 83,
+   "why": "Hull FC 2012 finished 6/14: side rated below its finish, +1"
+  },
+  {
+   "id": "bradford-hist-andy-lynch-2011",
+   "name": "Andy Lynch",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 89,
+   "to": 88,
+   "why": "Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-anthony-england-2015",
+   "name": "Anthony England",
+   "club": "Warrington Wolves",
+   "year": 2015,
+   "from": 81,
+   "to": 82,
+   "why": "Warrington Wolves 2015 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-anthony-gelling-2020",
+   "name": "Anthony Gelling",
+   "club": "Warrington Wolves",
+   "year": 2020,
+   "from": 84,
+   "to": 85,
+   "why": "Warrington Wolves 2020 finished 3/11: side rated below its finish, +1"
+  },
+  {
+   "id": "huddersfield-hist-ashton-golding-2022",
+   "name": "Ashton Golding",
+   "club": "Huddersfield Giants",
+   "year": 2022,
+   "from": 83,
+   "to": 84,
+   "why": "Huddersfield Giants 2022 finished 3/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-ava-seumanufagai-2020",
+   "name": "Ava Seumanufagai",
+   "club": "Leeds Rhinos",
+   "year": 2020,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2020 finished 5/11: side rated below its finish, +1"
+  },
+  {
+   "id": "hull-fc-hist-ben-crooks-2012",
+   "name": "Ben Crooks",
+   "club": "Hull FC",
+   "year": 2012,
+   "from": 81,
+   "to": 82,
+   "why": "Hull FC 2012 finished 6/14: side rated below its finish, +1"
+  },
+  {
+   "id": "widnes-hist-ben-cross",
+   "name": "Ben Cross",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 82,
+   "to": 81,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-ben-currie-2015",
+   "name": "Ben Currie",
+   "club": "Warrington Wolves",
+   "year": 2015,
+   "from": 83,
+   "to": 84,
+   "why": "Warrington Wolves 2015 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-cur-ben-currie-2016",
+   "name": "Ben Currie",
+   "club": "Warrington Wolves",
+   "year": 2016,
+   "from": 90,
+   "to": 91,
+   "why": "2016 Dream Team; peak 92"
+  },
+  {
+   "id": "warrington-hist-ben-currie-2020",
+   "name": "Ben Currie",
+   "club": "Warrington Wolves",
+   "year": 2020,
+   "from": 88,
+   "to": 89,
+   "why": "Warrington Wolves 2020 finished 3/11: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-ben-currie-2023",
+   "name": "Ben Currie",
+   "club": "Warrington Wolves",
+   "year": 2023,
+   "from": 85,
+   "to": 86,
+   "why": "Warrington Wolves 2023 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wakefield-hist-ben-gledhill",
+   "name": "Ben Gledhill",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 83,
+   "to": 82,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-ben-harrison-2015",
+   "name": "Ben Harrison",
+   "club": "Warrington Wolves",
+   "year": 2015,
+   "from": 81,
+   "to": 82,
+   "why": "Warrington Wolves 2015 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-ben-harrison-2009",
+   "name": "Ben Harrison",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 81,
+   "to": 80,
+   "why": "Warrington Wolves 2009 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "london-hist-ben-hellewell-2019",
+   "name": "Ben Hellewell",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 83,
+   "to": 82,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-ben-jeffries-2011",
+   "name": "Ben Jeffries",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 87,
+   "to": 86,
+   "why": "Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-ben-jeffries-2010",
+   "name": "Ben Jeffries",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 87,
+   "to": 86,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-ben-murdoch-masila-2016",
+   "name": "Ben Murdoch-Masila",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 89,
+   "to": 88,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-ben-murdoch-masila-2020",
+   "name": "Ben Murdoch-Masila",
+   "club": "Warrington Wolves",
+   "year": 2020,
+   "from": 82,
+   "to": 83,
+   "why": "Warrington Wolves 2020 finished 3/11: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-bevan-french-2025",
+   "name": "Bevan French",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 89,
+   "to": 90,
+   "why": "Wigan Warriors 2025 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wakefield-hist-bill-tupou",
+   "name": "Bill Tupou",
+   "club": "Wakefield Trinity",
+   "year": 2017,
+   "from": 91,
+   "to": 90,
+   "why": "age 27, 1 yr from his award seasons; peak 91"
+  },
+  {
+   "id": "warrington-hist-blake-austin-2021",
+   "name": "Blake Austin",
+   "club": "Warrington Wolves",
+   "year": 2021,
+   "from": 86,
+   "to": 87,
+   "why": "Warrington Wolves 2021 finished 3/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-blake-austin-2022",
+   "name": "Blake Austin",
+   "club": "Leeds Rhinos",
+   "year": 2022,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2022 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-brad-dwyer-2020",
+   "name": "Brad Dwyer",
+   "club": "Leeds Rhinos",
+   "year": 2020,
+   "from": 81,
+   "to": 82,
+   "why": "Leeds Rhinos 2020 finished 5/11: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-brad-dwyer-2021",
+   "name": "Brad Dwyer",
+   "club": "Leeds Rhinos",
+   "year": 2021,
+   "from": 81,
+   "to": 82,
+   "why": "Leeds Rhinos 2021 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-brad-dwyer-2022",
+   "name": "Brad Dwyer",
+   "club": "Leeds Rhinos",
+   "year": 2022,
+   "from": 81,
+   "to": 82,
+   "why": "Leeds Rhinos 2022 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-brad-singleton-2021",
+   "name": "Brad Singleton",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 84,
+   "to": 85,
+   "why": "Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-brett-finch",
+   "name": "Brett Finch",
+   "club": "Wigan Warriors",
+   "year": 2011,
+   "from": 89,
+   "to": 88,
+   "why": "age 30, 1 yr from his award seasons; peak 89"
+  },
+  {
+   "id": "bradford-hist-brett-kearney-2014",
+   "name": "Brett Kearney",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 88,
+   "to": 87,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-brett-kearney-2013",
+   "name": "Brett Kearney",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 89,
+   "to": 88,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-bruno-verges-2006",
+   "name": "Bruno Verges",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 83,
+   "to": 82,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-era-caius-faatili",
+   "name": "Caius Faatili",
+   "club": "Wakefield Trinity",
+   "year": 2025,
+   "from": 84,
+   "to": 85,
+   "why": "Wakefield Trinity 2025 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "widnes-hist-cameron-phelps",
+   "name": "Cameron Phelps",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 87,
+   "to": 86,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-cameron-scott-2025",
+   "name": "Cameron Scott",
+   "club": "Wakefield Trinity",
+   "year": 2025,
+   "from": 81,
+   "to": 82,
+   "why": "Wakefield Trinity 2025 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-cameron-smith-2021",
+   "name": "Cameron Smith",
+   "club": "Leeds Rhinos",
+   "year": 2021,
+   "from": 86,
+   "to": 87,
+   "why": "Leeds Rhinos 2021 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-cameron-smith-2022",
+   "name": "Cameron Smith",
+   "club": "Leeds Rhinos",
+   "year": 2022,
+   "from": 86,
+   "to": 87,
+   "why": "Leeds Rhinos 2022 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "bradford-hist-chev-walker-2011",
+   "name": "Chev Walker",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 90,
+   "to": 89,
+   "why": "Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-chev-walker-2014",
+   "name": "Chev Walker",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 90,
+   "to": 89,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-chev-walker-2013",
+   "name": "Chev Walker",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 90,
+   "to": 89,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-chris-beattie",
+   "name": "Chris Beattie",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 84,
+   "to": 83,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "widnes-hist-chris-dean",
+   "name": "Chris Dean",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 86,
+   "to": 85,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-chris-hill-2020",
+   "name": "Chris Hill",
+   "club": "Warrington Wolves",
+   "year": 2020,
+   "from": 84,
+   "to": 85,
+   "why": "Warrington Wolves 2020 finished 3/11: side rated below its finish, +1"
+  },
+  {
+   "id": "catalans-hist-clint-greenshields-2007",
+   "name": "Clint Greenshields",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 89,
+   "to": 88,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "hull-fc-hist-craig-hall-2009",
+   "name": "Craig Hall",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 81,
+   "to": 80,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-craig-kopczak-2011",
+   "name": "Craig Kopczak",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 86,
+   "to": 85,
+   "why": "Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-craig-kopczak-2016",
+   "name": "Craig Kopczak",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 86,
+   "to": 85,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-cyrille-gossard-2006",
+   "name": "Cyrille Gossard",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 83,
+   "to": 82,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-cyrille-gossard-2007",
+   "name": "Cyrille Gossard",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 84,
+   "to": 83,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-dale-morton",
+   "name": "Dale Morton",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 84,
+   "to": 83,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-damien-blanch-2009",
+   "name": "Damien Blanch",
+   "club": "Wakefield Trinity",
+   "year": 2009,
+   "from": 87,
+   "to": 88,
+   "why": "Wakefield Trinity 2009 finished 5/14: side rated below its finish, +1"
+  },
+  {
+   "id": "wakefield-hist-damien-blanch-2010",
+   "name": "Damien Blanch",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 88,
+   "to": 87,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-danny-addy",
+   "name": "Danny Addy",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 81,
+   "to": 80,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-danny-addy-2014",
+   "name": "Danny Addy",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 82,
+   "to": 81,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-danny-brough-2009",
+   "name": "Danny Brough",
+   "club": "Wakefield Trinity",
+   "year": 2009,
+   "from": 91,
+   "to": 92,
+   "why": "Wakefield Trinity 2009 finished 5/14: side rated below its finish, +1"
+  },
+  {
+   "id": "widnes-hist-danny-craven",
+   "name": "Danny Craven",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 84,
+   "to": 83,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "hull-fc-hist-danny-houghton-2009",
+   "name": "Danny Houghton",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 89,
+   "to": 88,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "hull-fc-hist-danny-houghton-2016",
+   "name": "Danny Houghton",
+   "club": "Hull FC",
+   "year": 2016,
+   "from": 95,
+   "to": 96,
+   "why": "2016 Man of Steel; peak 96"
+  },
+  {
+   "id": "bradford-hist-danny-peacock-1997",
+   "name": "Danny Peacock",
+   "club": "Bradford Bulls",
+   "year": 1997,
+   "from": 87,
+   "to": 88,
+   "why": "honours put his peak at 89 (Dream Team 1997); 1997 Dream Team; peak 89"
+  },
+  {
+   "id": "wakefield-hist-danny-sculthorpe-2009",
+   "name": "Danny Sculthorpe",
+   "club": "Wakefield Trinity",
+   "year": 2009,
+   "from": 85,
+   "to": 86,
+   "why": "Wakefield Trinity 2009 finished 5/14: side rated below its finish, +1"
+  },
+  {
+   "id": "hull-fc-hist-danny-tickle-2009",
+   "name": "Danny Tickle",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 91,
+   "to": 90,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-danny-walker-2020",
+   "name": "Danny Walker",
+   "club": "Warrington Wolves",
+   "year": 2020,
+   "from": 80,
+   "to": 81,
+   "why": "Warrington Wolves 2020 finished 3/11: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-danny-walker-2022",
+   "name": "Danny Walker",
+   "club": "Warrington Wolves",
+   "year": 2022,
+   "from": 82,
+   "to": 83,
+   "why": "prime season 2 yr from a Dream Team year; peak 89"
+  },
+  {
+   "id": "hull-fc-hist-danny-washbrook-2009",
+   "name": "Danny Washbrook",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 87,
+   "to": 86,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-danny-williams-2014",
+   "name": "Danny Williams",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 85,
+   "to": 84,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-danny-williams-2014",
+   "name": "Danny Williams",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 85,
+   "to": 84,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-darrell-griffin-2014",
+   "name": "Darrell Griffin",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 87,
+   "to": 86,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-daryl-clark-2015",
+   "name": "Daryl Clark",
+   "club": "Warrington Wolves",
+   "year": 2015,
+   "from": 82,
+   "to": 83,
+   "why": "Warrington Wolves 2015 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-cur-daryl-clark-2016",
+   "name": "Daryl Clark",
+   "club": "Warrington Wolves",
+   "year": 2016,
+   "from": 88,
+   "to": 89,
+   "why": "honours put his peak at 95 (Man of Steel 2014; Dream Team 2014, 2019); prime season 2 yr from a Dream Team year; peak 95"
+  },
+  {
+   "id": "warrington-hist-daryl-clark-2023",
+   "name": "Daryl Clark",
+   "club": "Warrington Wolves",
+   "year": 2023,
+   "from": 82,
+   "to": 83,
+   "why": "Warrington Wolves 2023 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wakefield-hist-daryl-millard-2010",
+   "name": "Daryl Millard",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 88,
+   "to": 87,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "widnes-hist-david-allen",
+   "name": "David Allen",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 84,
+   "to": 83,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-david-berthezene",
+   "name": "David Berthezene",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 81,
+   "to": 80,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "st-helens-hist-david-fairleigh",
+   "name": "David Fairleigh",
+   "club": "St Helens",
+   "year": 2001,
+   "from": 87,
+   "to": 88,
+   "why": "honours put his peak at 89 (Dream Team 2001); 2001 Dream Team; peak 89"
+  },
+  {
+   "id": "wakefield-hist-david-solomona",
+   "name": "David Solomona",
+   "club": "Wakefield Trinity",
+   "year": 2004,
+   "from": 94,
+   "to": 93,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; above his anchored peak; peak 93"
+  },
+  {
+   "id": "castleford-hist-dean-sampson",
+   "name": "Dean Sampson",
+   "club": "Castleford Tigers",
+   "year": 1996,
+   "from": 87,
+   "to": 86,
+   "why": "honours put his peak at 89 (Dream Team 1999); age 29, 3 yr from his award seasons; peak 89"
+  },
+  {
+   "id": "castleford-hist-denny-solomona",
+   "name": "Denny Solomona",
+   "club": "Castleford Tigers",
+   "year": 2014,
+   "from": 88,
+   "to": 87,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 21, 2 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "catalans-hist-dimitri-pelo-2007",
+   "name": "Dimitri Pelo",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 85,
+   "to": 84,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-dominic-manfredi-2020",
+   "name": "Dominic Manfredi",
+   "club": "Wigan Warriors",
+   "year": 2020,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2020 finished 1/11: side rated below its finish, +1"
+  },
+  {
+   "id": "london-hist-eddie-battye-2019",
+   "name": "Eddie Battye",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 85,
+   "to": 84,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-elliot-kear",
+   "name": "Elliot Kear",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 84,
+   "to": 83,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-elliot-kear-2013",
+   "name": "Elliot Kear",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 84,
+   "to": 83,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-elliott-whitehead-2011",
+   "name": "Elliott Whitehead",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 86,
+   "to": 85,
+   "why": "Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-elliott-whitehead-2013",
+   "name": "Elliott Whitehead",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 88,
+   "to": 87,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "london-hist-eloi-pelissier-2019",
+   "name": "Éloi Pélissier",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 85,
+   "to": 84,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-francis-meli-2014",
+   "name": "Francis Meli",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 88,
+   "to": 87,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "widnes-hist-frank-winterstein",
+   "name": "Frank Winterstein",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 87,
+   "to": 86,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-gareth-hock-2014",
+   "name": "Gareth Hock",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 86,
+   "to": 85,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-gareth-o-brien-2015",
+   "name": "Gareth O'Brien",
+   "club": "Warrington Wolves",
+   "year": 2015,
+   "from": 81,
+   "to": 82,
+   "why": "Warrington Wolves 2015 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "salford-hist-gareth-o-brien-2016",
+   "name": "Gareth O'Brien",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 81,
+   "to": 80,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "hull-fc-hist-gareth-raynor-2009",
+   "name": "Gareth Raynor",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 88,
+   "to": 87,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-gavin-clinch",
+   "name": "Gavin Clinch",
+   "club": "Salford Red Devils",
+   "year": 2004,
+   "from": 87,
+   "to": 86,
+   "why": "honours put his peak at 89 (Dream Team 1998); age 30, 3 yr from his award seasons; peak 89"
+  },
+  {
+   "id": "salford-hist-george-griffin-2016",
+   "name": "George Griffin",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 84,
+   "to": 83,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-george-williams-2023",
+   "name": "George Williams",
+   "club": "Warrington Wolves",
+   "year": 2023,
+   "from": 89,
+   "to": 90,
+   "why": "Warrington Wolves 2023 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wakefield-hist-glenn-morrison-2010",
+   "name": "Glenn Morrison",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 87,
+   "to": 86,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-greg-eden-2014",
+   "name": "Greg Eden",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 90,
+   "to": 89,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-greg-johnson",
+   "name": "Greg Johnson",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 86,
+   "to": 85,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-greg-johnson-2016",
+   "name": "Greg Johnson",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 85,
+   "to": 84,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "london-hist-greg-richards-2019",
+   "name": "Greg Richards",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 84,
+   "to": 83,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-gregory-mounis-2008",
+   "name": "Grégory Mounis",
+   "club": "Catalans Dragons",
+   "year": 2008,
+   "from": 86,
+   "to": 87,
+   "why": "Catalans Dragons 2008 finished 3/12: side rated below its finish, +1"
+  },
+  {
+   "id": "catalans-hist-gregory-mounis-2006",
+   "name": "Grégory Mounis",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 86,
+   "to": 85,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-gregory-mounis-2007",
+   "name": "Grégory Mounis",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 86,
+   "to": 85,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-harry-newman-2025",
+   "name": "Harry Newman",
+   "club": "Leeds Rhinos",
+   "year": 2025,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2025 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-harry-smith-2020",
+   "name": "Harry Smith",
+   "club": "Wigan Warriors",
+   "year": 2020,
+   "from": 83,
+   "to": 84,
+   "why": "Wigan Warriors 2020 finished 1/11: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-harry-smith-2021",
+   "name": "Harry Smith",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 84,
+   "to": 85,
+   "why": "Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-harry-smith-2022",
+   "name": "Harry Smith",
+   "club": "Wigan Warriors",
+   "year": 2022,
+   "from": 86,
+   "to": 87,
+   "why": "Wigan Warriors 2022 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-harry-smith-2024",
+   "name": "Harry Smith",
+   "club": "Wigan Warriors",
+   "year": 2024,
+   "from": 87,
+   "to": 88,
+   "why": "Wigan Warriors 2024 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-harry-smith-2025",
+   "name": "Harry Smith",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 86,
+   "to": 87,
+   "why": "Wigan Warriors 2025 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "widnes-hist-hep-cahill",
+   "name": "Hep Cahill",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 87,
+   "to": 86,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-ian-hindmarsh-2006",
+   "name": "Ian Hindmarsh",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 84,
+   "to": 83,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-leg-iestyn-harris-1998",
+   "name": "Iestyn Harris",
+   "club": "Leeds Rhinos",
+   "year": 1998,
+   "from": 96,
+   "to": 97,
+   "why": "1998 Man of Steel; peak 97"
+  },
+  {
+   "id": "huddersfield-hist-era-innes-senior",
+   "name": "Innes Senior",
+   "club": "Huddersfield Giants",
+   "year": 2022,
+   "from": 82,
+   "to": 83,
+   "why": "Huddersfield Giants 2022 finished 3/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wakefield-hist-era-isaiah-vagana",
+   "name": "Isaiah Vagana",
+   "club": "Wakefield Trinity",
+   "year": 2025,
+   "from": 84,
+   "to": 85,
+   "why": "Wakefield Trinity 2025 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-jacob-wardle-2025",
+   "name": "Jacob Wardle",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2025 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-jai-field-2023",
+   "name": "Jai Field",
+   "club": "Wigan Warriors",
+   "year": 2023,
+   "from": 87,
+   "to": 88,
+   "why": "Wigan Warriors 2023 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-jai-field-2025",
+   "name": "Jai Field",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 89,
+   "to": 90,
+   "why": "honours put his peak at 91 (Dream Team 2022, 2025); 2025 Dream Team; peak 91"
+  },
+  {
+   "id": "wigan-hist-jake-bibby-2020",
+   "name": "Jake Bibby",
+   "club": "Wigan Warriors",
+   "year": 2020,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2020 finished 1/11: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-jake-bibby-2021",
+   "name": "Jake Bibby",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 84,
+   "to": 85,
+   "why": "Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-jake-bibby-2022",
+   "name": "Jake Bibby",
+   "club": "Wigan Warriors",
+   "year": 2022,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2022 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-jake-connor-2025",
+   "name": "Jake Connor",
+   "club": "Leeds Rhinos",
+   "year": 2025,
+   "from": 95,
+   "to": 96,
+   "why": "2025 Man of Steel; peak 96"
+  },
+  {
+   "id": "catalans-hist-jamal-fakir-2006",
+   "name": "Jamal Fakir",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 84,
+   "to": 83,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-james-bentley-2025",
+   "name": "James Bentley",
+   "club": "Leeds Rhinos",
+   "year": 2025,
+   "from": 81,
+   "to": 82,
+   "why": "Leeds Rhinos 2025 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "london-hist-james-cunningham",
+   "name": "James Cunningham",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 82,
+   "to": 81,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-james-donaldson-2020",
+   "name": "James Donaldson",
+   "club": "Leeds Rhinos",
+   "year": 2020,
+   "from": 81,
+   "to": 82,
+   "why": "Leeds Rhinos 2020 finished 5/11: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-james-donaldson-2021",
+   "name": "James Donaldson",
+   "club": "Leeds Rhinos",
+   "year": 2021,
+   "from": 81,
+   "to": 82,
+   "why": "Leeds Rhinos 2021 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-james-donaldson-2022",
+   "name": "James Donaldson",
+   "club": "Leeds Rhinos",
+   "year": 2022,
+   "from": 81,
+   "to": 82,
+   "why": "Leeds Rhinos 2022 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "castleford-hist-james-grehan",
+   "name": "James Grehan",
+   "club": "Castleford Tigers",
+   "year": 2012,
+   "from": 81,
+   "to": 80,
+   "why": "Castleford Tigers 2012 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-james-harrison-2023",
+   "name": "James Harrison",
+   "club": "Warrington Wolves",
+   "year": 2023,
+   "from": 84,
+   "to": 85,
+   "why": "Warrington Wolves 2023 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-james-harrison-2024",
+   "name": "James Harrison",
+   "club": "Warrington Wolves",
+   "year": 2024,
+   "from": 84,
+   "to": 85,
+   "why": "Warrington Wolves 2024 finished 3/12: side rated below its finish, +1"
+  },
+  {
+   "id": "bradford-hist-james-lowes-1997",
+   "name": "James Lowes",
+   "club": "Bradford Bulls",
+   "year": 1997,
+   "from": 94,
+   "to": 95,
+   "why": "1997 Man of Steel; peak 95"
+  },
+  {
+   "id": "leeds-hist-james-mcdonnell-2023",
+   "name": "James McDonnell",
+   "club": "Leeds Rhinos",
+   "year": 2023,
+   "from": 84,
+   "to": 85,
+   "why": "honours put his peak at 91 (Dream Team 2025, 2026); prime season 2 yr from a Dream Team year; peak 91"
+  },
+  {
+   "id": "bradford-hist-jamie-foster-2013",
+   "name": "Jamie Foster",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 87,
+   "to": 86,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-jamie-foster-2014",
+   "name": "Jamie Foster",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 88,
+   "to": 87,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-jamie-langley-2013",
+   "name": "Jamie Langley",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 90,
+   "to": 89,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-jamie-langley-2011",
+   "name": "Jamie Langley",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 90,
+   "to": 89,
+   "why": "Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-jamie-rooney-2009",
+   "name": "Jamie Rooney",
+   "club": "Wakefield Trinity",
+   "year": 2009,
+   "from": 87,
+   "to": 88,
+   "why": "Wakefield Trinity 2009 finished 5/14: side rated below its finish, +1"
+  },
+  {
+   "id": "hull-fc-hist-jamie-thackray-2009",
+   "name": "Jamie Thackray",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 87,
+   "to": 86,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-jarrod-o-connor-2025",
+   "name": "Jarrod O'Connor",
+   "club": "Leeds Rhinos",
+   "year": 2025,
+   "from": 86,
+   "to": 87,
+   "why": "Leeds Rhinos 2025 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "bradford-hist-jarrod-sammut-2013",
+   "name": "Jarrod Sammut",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 86,
+   "to": 85,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-jason-clark-2021",
+   "name": "Jason Clark",
+   "club": "Warrington Wolves",
+   "year": 2021,
+   "from": 83,
+   "to": 84,
+   "why": "Warrington Wolves 2021 finished 3/12: side rated below its finish, +1"
+  },
+  {
+   "id": "catalans-hist-jason-croker-2007",
+   "name": "Jason Croker",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 82,
+   "to": 81,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-jason-demetriou-2010",
+   "name": "Jason Demetriou",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 85,
+   "to": 84,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-jason-walton",
+   "name": "Jason Walton",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 83,
+   "to": 82,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-cur-jay-pitts-2014",
+   "name": "Jay Pitts",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 86,
+   "to": 85,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "london-hist-jay-pitts-2019",
+   "name": "Jay Pitts",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 86,
+   "to": 85,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-jeremy-smith-2009",
+   "name": "Jeremy Smith",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 84,
+   "to": 83,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-jerome-guisset",
+   "name": "Jerome Guisset",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 86,
+   "to": 85,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-cur-joe-arundel-2014",
+   "name": "Joe Arundel",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 86,
+   "to": 85,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-joe-bullock-2021",
+   "name": "Joe Bullock",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 82,
+   "to": 83,
+   "why": "Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-joe-bullock-2023",
+   "name": "Joe Bullock",
+   "club": "Warrington Wolves",
+   "year": 2023,
+   "from": 81,
+   "to": 82,
+   "why": "Warrington Wolves 2023 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-joe-burgess-2020",
+   "name": "Joe Burgess",
+   "club": "Wigan Warriors",
+   "year": 2020,
+   "from": 82,
+   "to": 83,
+   "why": "Wigan Warriors 2020 finished 1/11: side rated below its finish, +1"
+  },
+  {
+   "id": "hull-fc-hist-joe-westerman-2012",
+   "name": "Joe Westerman",
+   "club": "Hull FC",
+   "year": 2012,
+   "from": 83,
+   "to": 84,
+   "why": "Hull FC 2012 finished 6/14: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-joel-moon-2015",
+   "name": "Joel Moon",
+   "club": "Leeds Rhinos",
+   "year": 2015,
+   "from": 92,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 93 → 91; age 27; peak 91"
+  },
+  {
+   "id": "wigan-hist-joel-tomkins-2008",
+   "name": "Joel Tomkins",
+   "club": "Wigan Warriors",
+   "year": 2008,
+   "from": 88,
+   "to": 87,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 21, 2 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "wigan-hist-joel-tomkins-2015",
+   "name": "Joel Tomkins",
+   "club": "Wigan Warriors",
+   "year": 2015,
+   "from": 91,
+   "to": 90,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 28, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "wigan-hist-joel-tomkins",
+   "name": "Joel Tomkins",
+   "club": "Wigan Warriors",
+   "year": 2009,
+   "from": 91,
+   "to": 90,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 22, 1 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "wigan-hist-john-bateman",
+   "name": "John Bateman",
+   "club": "Wigan Warriors",
+   "year": 2014,
+   "from": 87,
+   "to": 86,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 21, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "wigan-hist-john-bateman-2021",
+   "name": "John Bateman",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 84,
+   "to": 85,
+   "why": "Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-john-bateman-2022",
+   "name": "John Bateman",
+   "club": "Wigan Warriors",
+   "year": 2022,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2022 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "oldham-hist-john-clarke",
+   "name": "John Clarke",
+   "club": "Wigan Warriors",
+   "year": 1997,
+   "from": 81,
+   "to": 80,
+   "why": "age 23; peak 81"
+  },
+  {
+   "id": "warrington-hist-john-clarke-2009",
+   "name": "John Clarke",
+   "club": "Warrington Wolves",
+   "year": 2009,
+   "from": 81,
+   "to": 80,
+   "why": "age 35; peak 81"
+  },
+  {
+   "id": "salford-hist-john-wilshire",
+   "name": "John Wilshire",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 81,
+   "to": 80,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-john-wilson-2006",
+   "name": "John Wilson",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 84,
+   "to": 83,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-john-wilson-2007",
+   "name": "John Wilson",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 84,
+   "to": 83,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "widnes-hist-jon-clarke",
+   "name": "Jon Clarke",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 88,
+   "to": 87,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "st-helens-hist-jon-wilkin-2014",
+   "name": "Jon Wilkin",
+   "club": "St Helens",
+   "year": 2014,
+   "from": 91,
+   "to": 90,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 31, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "st-helens-hist-jon-wilkin",
+   "name": "Jon Wilkin",
+   "club": "St Helens",
+   "year": 2004,
+   "from": 88,
+   "to": 87,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 21, 2 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "st-helens-hist-jon-wilkin-2009",
+   "name": "Jon Wilkin",
+   "club": "St Helens",
+   "year": 2009,
+   "from": 91,
+   "to": 90,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 26, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "st-helens-hist-jon-wilkin-2016",
+   "name": "Jon Wilkin",
+   "club": "St Helens",
+   "year": 2016,
+   "from": 90,
+   "to": 89,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 33, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "st-helens-cur-jonny-lomax-2019",
+   "name": "Jonny Lomax",
+   "club": "St Helens",
+   "year": 2019,
+   "from": 88,
+   "to": 89,
+   "why": "honours put his peak at 93 (Dream Team 2018, 2020, 2021); prime season 1 yr from a Dream Team year; peak 93"
+  },
+  {
+   "id": "london-hist-jordan-abdull-2019",
+   "name": "Jordan Abdull",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 85,
+   "to": 84,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "hull-fc-hist-jordan-turner-2012",
+   "name": "Jordan Turner",
+   "club": "Hull FC",
+   "year": 2012,
+   "from": 82,
+   "to": 83,
+   "why": "Hull FC 2012 finished 6/14: side rated below its finish, +1"
+  },
+  {
+   "id": "salford-cur-jordan-turner-2009",
+   "name": "Jordan Turner",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 85,
+   "to": 84,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-jordan-walne",
+   "name": "Jordan Walne",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 85,
+   "to": 84,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-josh-charnley-2020",
+   "name": "Josh Charnley",
+   "club": "Warrington Wolves",
+   "year": 2020,
+   "from": 81,
+   "to": 82,
+   "why": "Warrington Wolves 2020 finished 3/11: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-josh-drinkwater-2023",
+   "name": "Josh Drinkwater",
+   "club": "Warrington Wolves",
+   "year": 2023,
+   "from": 84,
+   "to": 85,
+   "why": "Warrington Wolves 2023 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "salford-hist-josh-griffin-2016",
+   "name": "Josh Griffin",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 89,
+   "to": 88,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-josh-griffin-2025",
+   "name": "Josh Griffin",
+   "club": "Wakefield Trinity",
+   "year": 2025,
+   "from": 85,
+   "to": 86,
+   "why": "Wakefield Trinity 2025 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "salford-hist-josh-jones-2016",
+   "name": "Josh Jones",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 81,
+   "to": 80,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-julien-rinaldi-2006",
+   "name": "Julien Rinaldi",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 85,
+   "to": 84,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-julien-touxagas",
+   "name": "Julien Touxagas",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 83,
+   "to": 82,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-junior-sa-u-2014",
+   "name": "Junior Sa'u",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 88,
+   "to": 87,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-junior-sa-u-2016",
+   "name": "Junior Sa'u",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 88,
+   "to": 87,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-justin-carney-2016",
+   "name": "Justin Carney",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 88,
+   "to": 87,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-justin-murphy-2007",
+   "name": "Justin Murphy",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 89,
+   "to": 88,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-kaide-ellis-2022",
+   "name": "Kaide Ellis",
+   "club": "Wigan Warriors",
+   "year": 2022,
+   "from": 83,
+   "to": 84,
+   "why": "Wigan Warriors 2022 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-kaide-ellis-2023",
+   "name": "Kaide Ellis",
+   "club": "Wigan Warriors",
+   "year": 2023,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2023 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-kaide-ellis-2024",
+   "name": "Kaide Ellis",
+   "club": "Wigan Warriors",
+   "year": 2024,
+   "from": 86,
+   "to": 87,
+   "why": "Wigan Warriors 2024 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-kaide-ellis-2025",
+   "name": "Kaide Ellis",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 88,
+   "to": 89,
+   "why": "Wigan Warriors 2025 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-cur-kallum-watkins-2015",
+   "name": "Kallum Watkins",
+   "club": "Leeds Rhinos",
+   "year": 2015,
+   "from": 91,
+   "to": 92,
+   "why": "honours put his peak at 93 (Dream Team 2014, 2015, 2023); 2015 Dream Team; peak 93"
+  },
+  {
+   "id": "leeds-hist-kallum-watkins-2025",
+   "name": "Kallum Watkins",
+   "club": "Leeds Rhinos",
+   "year": 2025,
+   "from": 87,
+   "to": 88,
+   "why": "Leeds Rhinos 2025 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "salford-hist-karl-fitzpatrick-2009",
+   "name": "Karl Fitzpatrick",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 86,
+   "to": 85,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-era-keenan-palasia",
+   "name": "Keenan Palasia",
+   "club": "Leeds Rhinos",
+   "year": 2025,
+   "from": 81,
+   "to": 82,
+   "why": "Leeds Rhinos 2025 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "bradford-hist-keith-lulia-2013",
+   "name": "Keith Lulia",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 84,
+   "to": 83,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-kelepi-tanginoa",
+   "name": "Kelepi Tanginoa",
+   "club": "Wakefield Trinity",
+   "year": 2020,
+   "from": 94,
+   "to": 93,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; above his anchored peak; peak 93"
+  },
+  {
+   "id": "warrington-hist-kevin-penny-2015",
+   "name": "Kevin Penny",
+   "club": "Warrington Wolves",
+   "year": 2015,
+   "from": 82,
+   "to": 83,
+   "why": "Warrington Wolves 2015 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "london-hist-kieran-dixon-2019",
+   "name": "Kieran Dixon",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 89,
+   "to": 88,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-kruise-leeming-2024",
+   "name": "Kruise Leeming",
+   "club": "Wigan Warriors",
+   "year": 2024,
+   "from": 82,
+   "to": 83,
+   "why": "Wigan Warriors 2024 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-kruise-leeming-2025",
+   "name": "Kruise Leeming",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 82,
+   "to": 83,
+   "why": "Wigan Warriors 2025 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-kurt-gidley-2016",
+   "name": "Kurt Gidley",
+   "club": "Warrington Wolves",
+   "year": 2016,
+   "from": 85,
+   "to": 86,
+   "why": "honours put his peak at 89 (Dream Team 2016); 2016 Dream Team; peak 89"
+  },
+  {
+   "id": "widnes-hist-era-kurt-haggerty",
+   "name": "Kurt Haggerty",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 81,
+   "to": 80,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-kylie-leuluai-2015",
+   "name": "Kylie Leuluai",
+   "club": "Leeds Rhinos",
+   "year": 2015,
+   "from": 88,
+   "to": 87,
+   "why": "no Dream Team, no Man of Steel: peak 92 → 91; age 37; peak 91"
+  },
+  {
+   "id": "leeds-hist-kylie-leuluai-2008",
+   "name": "Kylie Leuluai",
+   "club": "Leeds Rhinos",
+   "year": 2008,
+   "from": 92,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 92 → 91; age 30; peak 91"
+  },
+  {
+   "id": "leeds-hist-kylie-leuluai-2013",
+   "name": "Kylie Leuluai",
+   "club": "Leeds Rhinos",
+   "year": 2013,
+   "from": 89,
+   "to": 88,
+   "why": "no Dream Team, no Man of Steel: peak 92 → 91; age 35; peak 91"
+  },
+  {
+   "id": "leeds-hist-kylie-leuluai-2009",
+   "name": "Kylie Leuluai",
+   "club": "Leeds Rhinos",
+   "year": 2009,
+   "from": 92,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 92 → 91; age 31; peak 91"
+  },
+  {
+   "id": "salford-hist-lama-tasi",
+   "name": "Lama Tasi",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 84,
+   "to": 83,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-era-laurent-frayssinous",
+   "name": "Laurent Frayssinous",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 81,
+   "to": 80,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-lee-gaskell-2014",
+   "name": "Lee Gaskell",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 87,
+   "to": 86,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "st-helens-hist-leon-pryce-2009",
+   "name": "Leon Pryce",
+   "club": "St Helens",
+   "year": 2009,
+   "from": 91,
+   "to": 92,
+   "why": "prime season 1 yr from a Dream Team year; peak 96"
+  },
+  {
+   "id": "huddersfield-hist-leroy-cudjoe",
+   "name": "Leroy Cudjoe",
+   "club": "Huddersfield Giants",
+   "year": 2008,
+   "from": 86,
+   "to": 85,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 20, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "huddersfield-hist-leroy-cudjoe-2009",
+   "name": "Leroy Cudjoe",
+   "club": "Huddersfield Giants",
+   "year": 2009,
+   "from": 87,
+   "to": 86,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 21, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "bradford-hist-lesley-vainikolo-2005",
+   "name": "Lesley Vainikolo",
+   "club": "Bradford Bulls",
+   "year": 2005,
+   "from": 94,
+   "to": 93,
+   "why": "Dream Team ×2, no Man of Steel: peak 96 → 94; age 26, 1 yr from his award seasons; peak 94"
+  },
+  {
+   "id": "bradford-hist-lesley-vainikolo-2003",
+   "name": "Lesley Vainikolo",
+   "club": "Bradford Bulls",
+   "year": 2003,
+   "from": 95,
+   "to": 94,
+   "why": "Dream Team ×2, no Man of Steel: peak 96 → 94; above his anchored peak; peak 94"
+  },
+  {
+   "id": "bradford-hist-lesley-vainikolo-2004",
+   "name": "Lesley Vainikolo",
+   "club": "Bradford Bulls",
+   "year": 2004,
+   "from": 95,
+   "to": 94,
+   "why": "Dream Team ×2, no Man of Steel: peak 96 → 94; above his anchored peak; peak 94"
+  },
+  {
+   "id": "wigan-hist-liam-byrne-2024",
+   "name": "Liam Byrne",
+   "club": "Wigan Warriors",
+   "year": 2024,
+   "from": 84,
+   "to": 85,
+   "why": "Wigan Warriors 2024 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-liam-farrell-2024",
+   "name": "Liam Farrell",
+   "club": "Wigan Warriors",
+   "year": 2024,
+   "from": 87,
+   "to": 88,
+   "why": "Wigan Warriors 2024 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-liam-farrell-2025",
+   "name": "Liam Farrell",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 87,
+   "to": 88,
+   "why": "Wigan Warriors 2025 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-liam-marshall-2021",
+   "name": "Liam Marshall",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 83,
+   "to": 84,
+   "why": "Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "widnes-hist-lloyd-white",
+   "name": "Lloyd White",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 85,
+   "to": 84,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-logan-tomkins-2016",
+   "name": "Logan Tomkins",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 86,
+   "to": 85,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "louie-mccarthy-scarsbrook",
+   "name": "Louie McCarthy-Scarsbrook",
+   "club": "St Helens",
+   "year": 2011,
+   "from": 92,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 93 → 91; age 25; peak 91"
+  },
+  {
+   "id": "st-helens-hist-louie-mccarthy-scarsbrook-2014",
+   "name": "Louie McCarthy-Scarsbrook",
+   "club": "St Helens",
+   "year": 2014,
+   "from": 92,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 93 → 91; age 28; peak 91"
+  },
+  {
+   "id": "st-helens-hist-louie-mccarthy-scarsbrook-2016",
+   "name": "Louie McCarthy-Scarsbrook",
+   "club": "St Helens",
+   "year": 2016,
+   "from": 92,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 93 → 91; age 30; peak 91"
+  },
+  {
+   "id": "salford-hist-luke-adamson-2009",
+   "name": "Luke Adamson",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 83,
+   "to": 82,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-luke-gale-2013",
+   "name": "Luke Gale",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 93,
+   "to": 92,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-luke-gale-2014",
+   "name": "Luke Gale",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 94,
+   "to": 93,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-luke-gale-2020",
+   "name": "Luke Gale",
+   "club": "Leeds Rhinos",
+   "year": 2020,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2020 finished 5/11: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-luke-gale-2021",
+   "name": "Luke Gale",
+   "club": "Leeds Rhinos",
+   "year": 2021,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2021 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wakefield-hist-luke-george-2010",
+   "name": "Luke George",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 86,
+   "to": 85,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-luke-swain",
+   "name": "Luke Swain",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 85,
+   "to": 84,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "london-hist-luke-yates-2019",
+   "name": "Luke Yates",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 87,
+   "to": 86,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-manase-manuokafoa-2014",
+   "name": "Manase Manuokafoa",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 85,
+   "to": 84,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-marc-herbert-2011",
+   "name": "Marc Herbert",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 84,
+   "to": 83,
+   "why": "Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "hull-fc-hist-mark-calderwood-2009",
+   "name": "Mark Calderwood",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 82,
+   "to": 81,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-mark-calderwood-2006",
+   "name": "Mark Calderwood",
+   "club": "Wigan Warriors",
+   "year": 2006,
+   "from": 86,
+   "to": 87,
+   "why": "Dream Team ×1, no Man of Steel: peak 95 → 93; prime season 1 yr from a Dream Team year; peak 93; Wigan Warriors 2006 finished 8/12: side rated above its finish, -2"
+  },
+  {
+   "id": "salford-hist-mark-flanagan-2016",
+   "name": "Mark Flanagan",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 86,
+   "to": 85,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-mark-henry-2009",
+   "name": "Mark Henry",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 86,
+   "to": 85,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-mark-hughes",
+   "name": "Mark Hughes",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 86,
+   "to": 85,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-martin-gleeson-2014",
+   "name": "Martin Gleeson",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 85,
+   "to": 84,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-mathieu-griffi",
+   "name": "Mathieu Griffi",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 82,
+   "to": 81,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-matt-adamson",
+   "name": "Matt Adamson",
+   "club": "Leeds Rhinos",
+   "year": 2002,
+   "from": 89,
+   "to": 88,
+   "why": "age 30, 1 yr from his award seasons; peak 89"
+  },
+  {
+   "id": "wakefield-hist-matt-blaymire-2010",
+   "name": "Matt Blaymire",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 86,
+   "to": 85,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-matt-diskin-2014",
+   "name": "Matt Diskin",
+   "club": "Bradford Bulls",
+   "year": 2014,
+   "from": 86,
+   "to": 85,
+   "why": "Bradford Bulls 2014 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-matt-diskin-2013",
+   "name": "Matt Diskin",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 87,
+   "to": 86,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-matt-diskin-2011",
+   "name": "Matt Diskin",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 87,
+   "to": 86,
+   "why": "Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-matt-dufty-2023",
+   "name": "Matt Dufty",
+   "club": "Warrington Wolves",
+   "year": 2023,
+   "from": 86,
+   "to": 87,
+   "why": "Warrington Wolves 2023 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-matt-dufty-2024",
+   "name": "Matt Dufty",
+   "club": "Warrington Wolves",
+   "year": 2024,
+   "from": 87,
+   "to": 88,
+   "why": "honours put his peak at 89 (Dream Team 2024); 2024 Dream Team; peak 89"
+  },
+  {
+   "id": "hull-fc-hist-matthew-daylight",
+   "name": "Matthew Daylight",
+   "club": "Hull FC",
+   "year": 2000,
+   "from": 91,
+   "to": 90,
+   "why": "age 26, 1 yr from his award seasons; peak 91"
+  },
+  {
+   "id": "st-helens-hist-matthew-gidley",
+   "name": "Matthew Gidley",
+   "club": "St Helens",
+   "year": 2007,
+   "from": 93,
+   "to": 92,
+   "why": "age 30, 1 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "huddersfield-hist-matty-english-2020",
+   "name": "Matty English",
+   "club": "Huddersfield Giants",
+   "year": 2020,
+   "from": 83,
+   "to": 82,
+   "why": "age 23; peak 83"
+  },
+  {
+   "id": "huddersfield-hist-matty-english-2022",
+   "name": "Matty English",
+   "club": "Huddersfield Giants",
+   "year": 2022,
+   "from": 82,
+   "to": 83,
+   "why": "Huddersfield Giants 2022 finished 3/12: side rated below its finish, +1"
+  },
+  {
+   "id": "london-hist-era-matty-fozard",
+   "name": "Matty Fozard",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 81,
+   "to": 80,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "london-hist-matty-gee",
+   "name": "Matty Gee",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 85,
+   "to": 84,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-matty-smith-2016",
+   "name": "Matty Smith",
+   "club": "Wigan Warriors",
+   "year": 2016,
+   "from": 88,
+   "to": 89,
+   "why": "prime season 2 yr from a Dream Team year; peak 95"
+  },
+  {
+   "id": "wakefield-hist-max-jowitt-2025",
+   "name": "Max Jowitt",
+   "club": "Wakefield Trinity",
+   "year": 2025,
+   "from": 84,
+   "to": 85,
+   "why": "Wakefield Trinity 2025 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "catalans-hist-michael-dobson-2006",
+   "name": "Michael Dobson",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 82,
+   "to": 81,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-michael-dobson-2016",
+   "name": "Michael Dobson",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 87,
+   "to": 86,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "castleford-hist-michael-eagar",
+   "name": "Michael Eagar",
+   "club": "Castleford Tigers",
+   "year": 1999,
+   "from": 91,
+   "to": 90,
+   "why": "age 26, 1 yr from his award seasons; peak 91"
+  },
+  {
+   "id": "wakefield-hist-michael-korkidas-2010",
+   "name": "Michael Korkidas",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 85,
+   "to": 84,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-michael-platt-2013",
+   "name": "Michael Platt",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 86,
+   "to": 85,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-michael-platt-2011",
+   "name": "Michael Platt",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 86,
+   "to": 85,
+   "why": "Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "hull-fc-hist-mike-burnett",
+   "name": "Mike Burnett",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 83,
+   "to": 82,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-mikolaj-oledzki-2020",
+   "name": "Mikolaj Oledzki",
+   "club": "Leeds Rhinos",
+   "year": 2020,
+   "from": 83,
+   "to": 84,
+   "why": "Leeds Rhinos 2020 finished 5/11: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-mikolaj-oledzki-2021",
+   "name": "Mikolaj Oledzki",
+   "club": "Leeds Rhinos",
+   "year": 2021,
+   "from": 85,
+   "to": 86,
+   "why": "Leeds Rhinos 2021 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-mikolaj-oledzki-2023",
+   "name": "Mikolaj Oledzki",
+   "club": "Leeds Rhinos",
+   "year": 2023,
+   "from": 84,
+   "to": 85,
+   "why": "honours put his peak at 89 (Dream Team 2022); prime season 1 yr from a Dream Team year; peak 89"
+  },
+  {
+   "id": "leeds-hist-mikolaj-oledzki-2025",
+   "name": "Mikolaj Oledzki",
+   "club": "Leeds Rhinos",
+   "year": 2025,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2025 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-morgan-smithies-2022",
+   "name": "Morgan Smithies",
+   "club": "Wigan Warriors",
+   "year": 2022,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2022 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-morgan-smithies-2023",
+   "name": "Morgan Smithies",
+   "club": "Wigan Warriors",
+   "year": 2023,
+   "from": 86,
+   "to": 87,
+   "why": "Wigan Warriors 2023 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "hull-fc-hist-motu-tony-2009",
+   "name": "Motu Tony",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 85,
+   "to": 84,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "nick-fozzard",
+   "name": "Nick Fozzard",
+   "club": "St Helens",
+   "year": 2004,
+   "from": 91,
+   "to": 90,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 27, 3 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "hull-kr-hist-nick-fozzard-2009",
+   "name": "Nick Fozzard",
+   "club": "Hull KR",
+   "year": 2009,
+   "from": 92,
+   "to": 91,
+   "why": "Dream Team ×1, no Man of Steel: peak 94 → 93; age 32, 2 yr from his award seasons; peak 93"
+  },
+  {
+   "id": "bradford-hist-nick-scruton-2013",
+   "name": "Nick Scruton",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 88,
+   "to": 87,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-oliver-gildart-2015",
+   "name": "Oliver Gildart",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 82,
+   "to": 81,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2; same 2015 season as his other card (81)"
+  },
+  {
+   "id": "salford-cur-oliver-gildart-2015",
+   "name": "Oliver Gildart",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 82,
+   "to": 81,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -2; same 2015 season as his other card (81)"
+  },
+  {
+   "id": "wigan-hist-oliver-gildart-2021",
+   "name": "Oliver Gildart",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 84,
+   "to": 85,
+   "why": "Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-oliver-partington-2020",
+   "name": "Oliver Partington",
+   "club": "Wigan Warriors",
+   "year": 2020,
+   "from": 83,
+   "to": 84,
+   "why": "Wigan Warriors 2020 finished 1/11: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-oliver-partington-2021",
+   "name": "Oliver Partington",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 84,
+   "to": 85,
+   "why": "Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-oliver-partington-2022",
+   "name": "Oliver Partington",
+   "club": "Wigan Warriors",
+   "year": 2022,
+   "from": 83,
+   "to": 84,
+   "why": "Wigan Warriors 2022 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wakefield-hist-oliver-wilkes-2009",
+   "name": "Oliver Wilkes",
+   "club": "Wakefield Trinity",
+   "year": 2009,
+   "from": 85,
+   "to": 86,
+   "why": "Wakefield Trinity 2009 finished 5/14: side rated below its finish, +1"
+  },
+  {
+   "id": "widnes-hist-paddy-flynn",
+   "name": "Paddy Flynn",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 88,
+   "to": 87,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-pat-richards-2009",
+   "name": "Pat Richards",
+   "club": "Wigan Warriors",
+   "year": 2009,
+   "from": 92,
+   "to": 93,
+   "why": "prime season 1 yr from a Dream Team year; peak 97"
+  },
+  {
+   "id": "wigan-leg-pat-richards-2010",
+   "name": "Pat Richards",
+   "club": "Wigan Warriors",
+   "year": 2010,
+   "from": 96,
+   "to": 97,
+   "why": "2010 Man of Steel; peak 97"
+  },
+  {
+   "id": "widnes-hist-patrick-ah-van",
+   "name": "Patrick Ah Van",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 87,
+   "to": 86,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-patrick-ah-van-2011",
+   "name": "Patrick Ah Van",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 86,
+   "to": 85,
+   "why": "Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-patrick-mago-2022",
+   "name": "Patrick Mago",
+   "club": "Wigan Warriors",
+   "year": 2022,
+   "from": 82,
+   "to": 83,
+   "why": "Wigan Warriors 2022 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-patrick-mago-2025",
+   "name": "Patrick Mago",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 82,
+   "to": 83,
+   "why": "Wigan Warriors 2025 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wakefield-hist-paul-cooke-2010",
+   "name": "Paul Cooke",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 86,
+   "to": 85,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-paul-johnson-2010",
+   "name": "Paul Johnson",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 88,
+   "to": 87,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-paul-king-2010",
+   "name": "Paul King",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 86,
+   "to": 85,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "hull-fc-hist-paul-king-2009",
+   "name": "Paul King",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 86,
+   "to": 85,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "paul-sculthorpe",
+   "name": "Paul Sculthorpe",
+   "club": "St Helens",
+   "year": 2001,
+   "from": 98,
+   "to": 99,
+   "why": "2001 Man of Steel; peak 99"
+  },
+  {
+   "id": "bradford-hist-paul-sykes-2011",
+   "name": "Paul Sykes",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 89,
+   "to": 88,
+   "why": "Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-paul-vaughan-2024",
+   "name": "Paul Vaughan",
+   "club": "Warrington Wolves",
+   "year": 2024,
+   "from": 86,
+   "to": 87,
+   "why": "Warrington Wolves 2024 finished 3/12: side rated below its finish, +1"
+  },
+  {
+   "id": "salford-hist-paul-white-2009",
+   "name": "Paul White",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 84,
+   "to": 83,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "london-hist-peter-gill",
+   "name": "Peter Gill",
+   "club": "London Broncos",
+   "year": 1996,
+   "from": 89,
+   "to": 90,
+   "why": "honours put his peak at 91 (Dream Team 1996, 1997); 1996 Dream Team; peak 91"
+  },
+  {
+   "id": "salford-hist-phillip-leuluai",
+   "name": "Phillip Leuluai",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 84,
+   "to": 83,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-rangi-chase-2014",
+   "name": "Rangi Chase",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 93,
+   "to": 92,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-ray-cashmere-2009",
+   "name": "Ray Cashmere",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 83,
+   "to": 82,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "hull-fc-hist-reece-lyne-2012",
+   "name": "Reece Lyne",
+   "club": "Hull FC",
+   "year": 2012,
+   "from": 81,
+   "to": 82,
+   "why": "Hull FC 2012 finished 6/14: side rated below its finish, +1"
+  },
+  {
+   "id": "catalans-hist-remi-casty-2007",
+   "name": "Remi Casty",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 89,
+   "to": 88,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "remi-casty",
+   "name": "Remi Casty",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 87,
+   "to": 86,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-renaud-guigue",
+   "name": "Renaud Guigue",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 83,
+   "to": 82,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-reni-maitua",
+   "name": "Reni Maitua",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 81,
+   "to": 80,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-reni-maitua-2015",
+   "name": "Reni Maitua",
+   "club": "Salford Red Devils",
+   "year": 2015,
+   "from": 81,
+   "to": 80,
+   "why": "Salford Red Devils 2015 finished 11/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wakefield-hist-renouf-atoni-2025",
+   "name": "Renouf Atoni",
+   "club": "Wakefield Trinity",
+   "year": 2025,
+   "from": 81,
+   "to": 82,
+   "why": "Wakefield Trinity 2025 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "widnes-hist-rhys-hanbury",
+   "name": "Rhys Hanbury",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 86,
+   "to": 85,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "london-hist-rhys-williams-2019",
+   "name": "Rhys Williams",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 86,
+   "to": 85,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-era-rhyse-martin",
+   "name": "Rhyse Martin",
+   "club": "Leeds Rhinos",
+   "year": 2020,
+   "from": 85,
+   "to": 86,
+   "why": "Leeds Rhinos 2020 finished 5/11: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-rhyse-martin-2021",
+   "name": "Rhyse Martin",
+   "club": "Leeds Rhinos",
+   "year": 2021,
+   "from": 85,
+   "to": 86,
+   "why": "Leeds Rhinos 2021 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-rhyse-martin-2022",
+   "name": "Rhyse Martin",
+   "club": "Leeds Rhinos",
+   "year": 2022,
+   "from": 85,
+   "to": 86,
+   "why": "Leeds Rhinos 2022 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-rhyse-martin-2023",
+   "name": "Rhyse Martin",
+   "club": "Leeds Rhinos",
+   "year": 2023,
+   "from": 84,
+   "to": 85,
+   "why": "honours put his peak at 89 (Dream Team 2024); prime season 1 yr from a Dream Team year; peak 89"
+  },
+  {
+   "id": "leeds-hist-rhyse-martin-2024",
+   "name": "Rhyse Martin",
+   "club": "Leeds Rhinos",
+   "year": 2024,
+   "from": 87,
+   "to": 88,
+   "why": "honours put his peak at 89 (Dream Team 2024); 2024 Dream Team; peak 89"
+  },
+  {
+   "id": "hull-fc-hist-richard-horne-2012",
+   "name": "Richard Horne",
+   "club": "Hull FC",
+   "year": 2012,
+   "from": 82,
+   "to": 83,
+   "why": "Hull FC 2012 finished 6/14: side rated below its finish, +1"
+  },
+  {
+   "id": "hull-fc-hist-richard-horne-2009",
+   "name": "Richard Horne",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 89,
+   "to": 88,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-richard-myler-2020",
+   "name": "Richard Myler",
+   "club": "Leeds Rhinos",
+   "year": 2020,
+   "from": 82,
+   "to": 83,
+   "why": "Leeds Rhinos 2020 finished 5/11: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-richard-myler-2021",
+   "name": "Richard Myler",
+   "club": "Leeds Rhinos",
+   "year": 2021,
+   "from": 83,
+   "to": 84,
+   "why": "Leeds Rhinos 2021 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-richard-myler-2022",
+   "name": "Richard Myler",
+   "club": "Leeds Rhinos",
+   "year": 2022,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2022 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-leg-rob-burrow-2009",
+   "name": "Rob Burrow",
+   "club": "Leeds Rhinos",
+   "year": 2009,
+   "from": 91,
+   "to": 92,
+   "why": "prime season 1 yr from a Dream Team year; peak 96"
+  },
+  {
+   "id": "salford-hist-rob-parker-2009",
+   "name": "Rob Parker",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 86,
+   "to": 85,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-leg-robbie-hunter-paul-2009",
+   "name": "Robbie Hunter-Paul",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 92,
+   "to": 91,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-robert-lui-2016",
+   "name": "Robert Lui",
+   "club": "Salford Red Devils",
+   "year": 2016,
+   "from": 88,
+   "to": 87,
+   "why": "Salford Red Devils 2016 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-robert-lui-2020",
+   "name": "Robert Lui",
+   "club": "Leeds Rhinos",
+   "year": 2020,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2020 finished 5/11: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-ryan-atkins-2015",
+   "name": "Ryan Atkins",
+   "club": "Warrington Wolves",
+   "year": 2015,
+   "from": 91,
+   "to": 92,
+   "why": "Warrington Wolves 2015 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-ryan-atkins",
+   "name": "Ryan Atkins",
+   "club": "Warrington Wolves",
+   "year": 2010,
+   "from": 93,
+   "to": 92,
+   "why": "Dream Team ×2, no Man of Steel: peak 95 → 94; age 25, 2 yr from his award seasons; peak 94"
+  },
+  {
+   "id": "leeds-hist-ryan-hall-2025",
+   "name": "Ryan Hall",
+   "club": "Leeds Rhinos",
+   "year": 2025,
+   "from": 80,
+   "to": 81,
+   "why": "Leeds Rhinos 2025 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "london-hist-ryan-morgan-2019",
+   "name": "Ryan Morgan",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 88,
+   "to": 87,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-sam-kasiano-2023",
+   "name": "Sam Kasiano",
+   "club": "Warrington Wolves",
+   "year": 2023,
+   "from": 81,
+   "to": 82,
+   "why": "Warrington Wolves 2023 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wakefield-hist-sam-obst-2010",
+   "name": "Sam Obst",
+   "club": "Wakefield Trinity",
+   "year": 2010,
+   "from": 88,
+   "to": 87,
+   "why": "Wakefield Trinity 2010 finished 11/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-sam-powell-2021",
+   "name": "Sam Powell",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 87,
+   "to": 88,
+   "why": "Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-sam-powell-2022",
+   "name": "Sam Powell",
+   "club": "Wigan Warriors",
+   "year": 2022,
+   "from": 86,
+   "to": 87,
+   "why": "Wigan Warriors 2022 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-sam-powell-2023",
+   "name": "Sam Powell",
+   "club": "Wigan Warriors",
+   "year": 2023,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2023 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-sean-o-loughlin-2020",
+   "name": "Sean O'Loughlin",
+   "club": "Wigan Warriors",
+   "year": 2020,
+   "from": 86,
+   "to": 87,
+   "why": "Wigan Warriors 2020 finished 1/11: side rated below its finish, +1"
+  },
+  {
+   "id": "catalans-hist-sean-rudder",
+   "name": "Sean Rudder",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 84,
+   "to": 83,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-shaun-ainscough-2011",
+   "name": "Shaun Ainscough",
+   "club": "Bradford Bulls",
+   "year": 2011,
+   "from": 87,
+   "to": 86,
+   "why": "Bradford Bulls 2011 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "bradford-hist-shontayne-hape",
+   "name": "Shontayne Hape",
+   "club": "Bradford Bulls",
+   "year": 2004,
+   "from": 91,
+   "to": 90,
+   "why": "no Dream Team, no Man of Steel: peak 92 → 91; age 23; peak 91"
+  },
+  {
+   "id": "bradford-hist-shontayne-hape-2006",
+   "name": "Shontayne Hape",
+   "club": "Bradford Bulls",
+   "year": 2006,
+   "from": 92,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 92 → 91; age 25; peak 91"
+  },
+  {
+   "id": "bradford-hist-shontayne-hape-2003",
+   "name": "Shontayne Hape",
+   "club": "Bradford Bulls",
+   "year": 2003,
+   "from": 90,
+   "to": 89,
+   "why": "no Dream Team, no Man of Steel: peak 92 → 91; age 22; peak 91"
+  },
+  {
+   "id": "bradford-hist-shontayne-hape-2005",
+   "name": "Shontayne Hape",
+   "club": "Bradford Bulls",
+   "year": 2005,
+   "from": 92,
+   "to": 91,
+   "why": "no Dream Team, no Man of Steel: peak 92 → 91; age 24; peak 91"
+  },
+  {
+   "id": "catalans-hist-stacey-jones-2007",
+   "name": "Stacey Jones",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 85,
+   "to": 84,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-stacy-jones",
+   "name": "Stacy Jones",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 87,
+   "to": 86,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "widnes-hist-stefan-marsh",
+   "name": "Stefan Marsh",
+   "club": "Widnes Vikings",
+   "year": 2012,
+   "from": 89,
+   "to": 88,
+   "why": "Widnes Vikings 2012 finished 14/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-stefan-ratchford-2015",
+   "name": "Stefan Ratchford",
+   "club": "Warrington Wolves",
+   "year": 2015,
+   "from": 82,
+   "to": 83,
+   "why": "Warrington Wolves 2015 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "salford-hist-stefan-ratchford-2009",
+   "name": "Stefan Ratchford",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 87,
+   "to": 86,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "warrington-hist-stefan-ratchford-2020",
+   "name": "Stefan Ratchford",
+   "club": "Warrington Wolves",
+   "year": 2020,
+   "from": 85,
+   "to": 86,
+   "why": "Warrington Wolves 2020 finished 3/11: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-stefan-ratchford-2023",
+   "name": "Stefan Ratchford",
+   "club": "Warrington Wolves",
+   "year": 2023,
+   "from": 84,
+   "to": 85,
+   "why": "Warrington Wolves 2023 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "salford-hist-stephen-nash",
+   "name": "Stephen Nash",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 84,
+   "to": 83,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-era-steve-rapira",
+   "name": "Steve Rapira",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 81,
+   "to": 80,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-stuart-fielden-2008",
+   "name": "Stuart Fielden",
+   "club": "Wigan Warriors",
+   "year": 2008,
+   "from": 89,
+   "to": 90,
+   "why": "prime season 2 yr from a Dream Team year; peak 96"
+  },
+  {
+   "id": "bradford-leg-stuart-fielden-2005",
+   "name": "Stuart Fielden",
+   "club": "Bradford Bulls",
+   "year": 2005,
+   "from": 91,
+   "to": 92,
+   "why": "prime season 1 yr from a Dream Team year; peak 96"
+  },
+  {
+   "id": "bradford-hist-stuart-spruce",
+   "name": "Stuart Spruce",
+   "club": "Bradford Bulls",
+   "year": 1996,
+   "from": 91,
+   "to": 90,
+   "why": "age 25, 1 yr from his award seasons; peak 91"
+  },
+  {
+   "id": "catalans-hist-teddy-sadaoui",
+   "name": "Teddy Sadaoui",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 81,
+   "to": 80,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-terry-o-connor",
+   "name": "Terry O'connor",
+   "club": "Wigan Warriors",
+   "year": 1996,
+   "from": 92,
+   "to": 93,
+   "why": "honours put his peak at 94 (Dream Team 1996, 2000, 2001, 2002); 1996 Dream Team; peak 94"
+  },
+  {
+   "id": "tevita-vaikona",
+   "name": "Tevita Vaikona",
+   "club": "Bradford Bulls",
+   "year": 1999,
+   "from": 93,
+   "to": 92,
+   "why": "Dream Team ×2, no Man of Steel: peak 95 → 94; age 25, 2 yr from his award seasons; peak 94"
+  },
+  {
+   "id": "salford-hist-theo-fages-2014",
+   "name": "Théo Fages",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 83,
+   "to": 82,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-thomas-bosc-2008",
+   "name": "Thomas Bosc",
+   "club": "Catalans Dragons",
+   "year": 2008,
+   "from": 86,
+   "to": 87,
+   "why": "Catalans Dragons 2008 finished 3/12: side rated below its finish, +1"
+  },
+  {
+   "id": "thomas-bosc",
+   "name": "Thomas Bosc",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 87,
+   "to": 86,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-thomas-bosc-2007",
+   "name": "Thomas Bosc",
+   "club": "Catalans Dragons",
+   "year": 2007,
+   "from": 88,
+   "to": 87,
+   "why": "Catalans Dragons 2007 finished 10/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-thomas-leuluai-2020",
+   "name": "Thomas Leuluai",
+   "club": "Wigan Warriors",
+   "year": 2020,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2020 finished 1/11: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-toby-king-2024",
+   "name": "Toby King",
+   "club": "Warrington Wolves",
+   "year": 2024,
+   "from": 86,
+   "to": 87,
+   "why": "Warrington Wolves 2024 finished 3/12: side rated below its finish, +1"
+  },
+  {
+   "id": "hull-fc-hist-tom-briscoe-2009",
+   "name": "Tom Briscoe",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 81,
+   "to": 80,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "leeds-hist-tom-briscoe-2021",
+   "name": "Tom Briscoe",
+   "club": "Leeds Rhinos",
+   "year": 2021,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2021 finished 5/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-tom-holroyd-2025",
+   "name": "Tom Holroyd",
+   "club": "Leeds Rhinos",
+   "year": 2025,
+   "from": 81,
+   "to": 82,
+   "why": "Leeds Rhinos 2025 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wakefield-hist-tom-johnstone-2025",
+   "name": "Tom Johnstone",
+   "club": "Wakefield Trinity",
+   "year": 2025,
+   "from": 85,
+   "to": 86,
+   "why": "Wakefield Trinity 2025 finished 6/12: side rated below its finish, +1"
+  },
+  {
+   "id": "hull-fc-hist-tom-lineham-2012",
+   "name": "Tom Lineham",
+   "club": "Hull FC",
+   "year": 2012,
+   "from": 82,
+   "to": 83,
+   "why": "Hull FC 2012 finished 6/14: side rated below its finish, +1"
+  },
+  {
+   "id": "warrington-hist-tom-lineham-2020",
+   "name": "Tom Lineham",
+   "club": "Warrington Wolves",
+   "year": 2020,
+   "from": 84,
+   "to": 85,
+   "why": "Warrington Wolves 2020 finished 3/11: side rated below its finish, +1"
+  },
+  {
+   "id": "bradford-hist-tom-olbison",
+   "name": "Tom Olbison",
+   "club": "Bradford Bulls",
+   "year": 2013,
+   "from": 85,
+   "to": 84,
+   "why": "Bradford Bulls 2013 finished 9/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-tommy-lee-2014",
+   "name": "Tommy Lee",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 86,
+   "to": 85,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "hull-fc-hist-tommy-lee-2009",
+   "name": "Tommy Lee",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 82,
+   "to": 81,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "st-helens-cur-tommy-makinson-2014",
+   "name": "Tommy Makinson",
+   "club": "St Helens",
+   "year": 2014,
+   "from": 92,
+   "to": 93,
+   "why": "2014 Dream Team; peak 94"
+  },
+  {
+   "id": "wigan-hist-tony-clubb-2021",
+   "name": "Tony Clubb",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 84,
+   "to": 85,
+   "why": "Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "salford-hist-tony-puletua-2014",
+   "name": "Tony Puletua",
+   "club": "Salford Red Devils",
+   "year": 2014,
+   "from": 84,
+   "to": 83,
+   "why": "Salford Red Devils 2014 finished 10/14: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-era-tyler-dupree",
+   "name": "Tyler Dupree",
+   "club": "Wigan Warriors",
+   "year": 2024,
+   "from": 82,
+   "to": 83,
+   "why": "Wigan Warriors 2024 finished 1/12 (champions): side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-tyler-dupree-2025",
+   "name": "Tyler Dupree",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 82,
+   "to": 83,
+   "why": "Wigan Warriors 2025 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "london-hist-will-lovell-2019",
+   "name": "Will Lovell",
+   "club": "London Broncos",
+   "year": 2019,
+   "from": 84,
+   "to": 83,
+   "why": "London Broncos 2019 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-willie-isa-2020",
+   "name": "Willie Isa",
+   "club": "Wigan Warriors",
+   "year": 2020,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2020 finished 1/11: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-willie-isa-2021",
+   "name": "Willie Isa",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "hull-fc-hist-willie-manu-2009",
+   "name": "Willie Manu",
+   "club": "Hull FC",
+   "year": 2009,
+   "from": 89,
+   "to": 88,
+   "why": "Hull FC 2009 finished 12/14: side rated above its finish, -1"
+  },
+  {
+   "id": "salford-hist-willie-talau-2009",
+   "name": "Willie Talau",
+   "club": "Salford Red Devils",
+   "year": 2009,
+   "from": 89,
+   "to": 88,
+   "why": "Salford Red Devils 2009 finished 13/14: side rated above its finish, -1"
+  },
+  {
+   "id": "catalans-hist-younes-khattabi",
+   "name": "Younes Khattabi",
+   "club": "Catalans Dragons",
+   "year": 2006,
+   "from": 83,
+   "to": 82,
+   "why": "Catalans Dragons 2006 finished 12/12: side rated above its finish, -1"
+  },
+  {
+   "id": "wigan-hist-zach-eckersley-2025",
+   "name": "Zach Eckersley",
+   "club": "Wigan Warriors",
+   "year": 2025,
+   "from": 83,
+   "to": 84,
+   "why": "Wigan Warriors 2025 finished 2/12: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-zak-hardaker-2020",
+   "name": "Zak Hardaker",
+   "club": "Wigan Warriors",
+   "year": 2020,
+   "from": 85,
+   "to": 86,
+   "why": "Wigan Warriors 2020 finished 1/11: side rated below its finish, +1"
+  },
+  {
+   "id": "wigan-hist-zak-hardaker-2021",
+   "name": "Zak Hardaker",
+   "club": "Wigan Warriors",
+   "year": 2021,
+   "from": 84,
+   "to": 85,
+   "why": "Wigan Warriors 2021 finished 4/12: side rated below its finish, +1"
+  },
+  {
+   "id": "leeds-hist-zak-hardaker-2022",
+   "name": "Zak Hardaker",
+   "club": "Leeds Rhinos",
+   "year": 2022,
+   "from": 84,
+   "to": 85,
+   "why": "Leeds Rhinos 2022 finished 5/12: side rated below its finish, +1"
+  }
+ ]
+}
