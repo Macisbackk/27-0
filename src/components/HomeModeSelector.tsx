@@ -45,6 +45,7 @@ import { setNormalEraVariant } from "@/lib/storage/preferences";
 import { playModeClassicStart, playUiClick } from "@/lib/sound";
 import { formatClubFunds } from "@/lib/club-funds";
 import { loadLocalCareer } from "@/lib/career/storage";
+import { DIVISION_LABEL } from "@/lib/career/clubs";
 import { getAllStats } from "@/lib/storage/stats";
 import { getPaidRunIds } from "@/lib/storage/club-funds";
 import { getLocalDateKey } from "@/lib/mini-games/date";
@@ -64,7 +65,7 @@ interface HubState {
     score: number | null;
     resetsIn: string;
   } | null;
-  career: { club: string } | null;
+  career: { club: string; short: string; primary: string; secondary: string; detail: string } | null;
   classicBest: string | null;
   eraBest: string | null;
   wordleDone: boolean;
@@ -84,7 +85,14 @@ function readHub(): HubState {
   try {
     const s = loadLocalCareer();
     const club = s ? s.clubs[s.userClubId] : null;
-    if (s && club) career = { club: club.name };
+    if (s && club)
+      career = {
+        club: club.name,
+        short: club.short,
+        primary: club.primary,
+        secondary: club.secondary,
+        detail: `${s.year} · ${DIVISION_LABEL[club.division]}`,
+      };
   } catch {
     career = null;
   }
@@ -193,17 +201,95 @@ function ModeTile({
   );
 }
 
-/** Mown stripes and pitch markings behind the Daily card. */
-function PitchMarkings() {
+/** Mown stripes and pitch markings behind the Classic hero. */
+function PitchMarkings({ tone = "white", opacity = 0.07 }: { tone?: string; opacity?: number }) {
   return (
     <svg aria-hidden className="pointer-events-none absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 400 220">
-      {Array.from({ length: 10 }, (_, i) => (i % 2 ? <rect key={i} x={i * 40} y="0" width="40" height="220" fill="white" fillOpacity="0.022" /> : null))}
-      <g stroke="white" strokeOpacity="0.07" strokeWidth="2" fill="none" vectorEffect="non-scaling-stroke">
-        <line x1="280" y1="0" x2="280" y2="220" vectorEffect="non-scaling-stroke" />
-        <line x1="360" y1="0" x2="360" y2="220" strokeDasharray="10 8" vectorEffect="non-scaling-stroke" />
-        <line x1="200" y1="0" x2="200" y2="220" strokeDasharray="10 8" vectorEffect="non-scaling-stroke" />
+      {Array.from({ length: 10 }, (_, i) => (i % 2 ? <rect key={i} x={i * 40} y="0" width="40" height="220" fill={tone} fillOpacity={opacity * 0.5} /> : null))}
+      <g stroke={tone} strokeOpacity={opacity} strokeWidth="2" fill="none">
+        <line x1="200" y1="0" x2="200" y2="220" vectorEffect="non-scaling-stroke" />
+        <line x1="120" y1="0" x2="120" y2="220" strokeDasharray="10 8" vectorEffect="non-scaling-stroke" />
+        <line x1="280" y1="0" x2="280" y2="220" strokeDasharray="10 8" vectorEffect="non-scaling-stroke" />
       </g>
     </svg>
+  );
+}
+
+/** Chalk on the tactics board: Xs, Os and a run, behind the Manager card. */
+function ChalkPlay() {
+  return (
+    <svg aria-hidden className="pointer-events-none absolute -right-2 top-0 h-full w-[46%] max-w-[260px]" viewBox="0 0 200 140" preserveAspectRatio="xMaxYMid meet">
+      <g fill="none" stroke="white" strokeOpacity="0.09" strokeWidth="2.5" strokeLinecap="round">
+        <path d="M28 30l12 12M40 30 28 42M70 96l12 12M82 96l-12 12M150 24l12 12M162 24l-12 12" />
+        <circle cx="120" cy="70" r="8" />
+        <circle cx="176" cy="104" r="8" />
+        <path d="M44 48c24 30 50 34 68 26" strokeDasharray="6 7" />
+        <path d="M128 74c16 8 30 14 40 24" />
+        <path d="M160 92l8 6-10 2" />
+      </g>
+    </svg>
+  );
+}
+
+/** A plain shield in the club's colours with its short name: Manager Mode's crest. */
+function Crest({ primary, secondary, label }: { primary: string; secondary: string; label: string }) {
+  return (
+    <span aria-hidden className="relative flex h-[64px] w-[56px] shrink-0 items-center justify-center">
+      <svg width="56" height="64" viewBox="0 0 56 64" className="absolute inset-0">
+        <path d="M4 6 28 2l24 4v24c0 16-10 26-24 32C14 56 4 46 4 30z" fill={primary} stroke={secondary} strokeWidth="3" />
+        <path d="M4 26h48" stroke={secondary} strokeOpacity="0.55" strokeWidth="3" />
+      </svg>
+      <span className="relative mt-1 font-display text-[15px] leading-none" style={{ color: secondary }}>
+        {label}
+      </span>
+    </span>
+  );
+}
+
+/** One half of the Classic hero: a whole-panel link with its own Play button look. */
+function ClassicPanel({
+  era,
+  best,
+  verb,
+  onClick,
+}: {
+  era: boolean;
+  best: string | null;
+  verb: string;
+  onClick: () => void;
+}) {
+  const name = era ? "Era Classic" : "Classic";
+  return (
+    <Link
+      href={buildPlayHref("classic", era)}
+      onClick={() => {
+        playUiClick();
+        onClick();
+      }}
+      aria-label={`${verb} ${name}${best ? `, best ${best}` : ""}`}
+      className="btn-press fl-pressable group flex min-w-0 flex-col items-center rounded-tile bg-pitch-950/90 px-2 pb-2.5 pt-4 text-center text-white transition hover:bg-pitch-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+    >
+      <span aria-hidden className={`flex h-14 w-14 items-center justify-center rounded-full ${era ? "bg-mode-era/10 text-mode-era" : "bg-theme-primary/10 text-theme-primary"}`}>
+        <Glyph size={30}>{era ? <ProgrammeGlyph /> : <BallGlyph />}</Glyph>
+      </span>
+      <span className="mt-2.5 block max-w-full truncate font-display text-[24px] leading-none">{name}</span>
+      <span className="mt-1.5 block min-h-[18px] text-[12px] font-bold leading-[18px]">
+        {best ? (
+          <span className="text-theme-primary">Best {best}</span>
+        ) : (
+          <span className="text-[color:var(--fl-muted)]">{era ? "Every era, legends" : "2026 squads"}</span>
+        )}
+      </span>
+      <span
+        aria-hidden
+        className="mt-3 flex h-12 w-full items-center justify-center gap-1.5 rounded-control bg-theme-primary font-cond text-[19px] font-bold text-[color:var(--theme-text-on-primary)] transition group-hover:brightness-110"
+      >
+        {verb}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 4.5v15l13-7.5z" />
+        </svg>
+      </span>
+    </Link>
   );
 }
 
@@ -334,107 +420,147 @@ export function HomeModeSelector() {
         </span>
       ) : null}
 
-      {/* New players: one line and one button before anything else. */}
-      {firstRun ? (
-        <section
-          className="relative overflow-hidden rounded-card bg-theme-primary px-4 pb-4 pt-5 text-[color:var(--theme-text-on-primary)]"
-          aria-label="New here? Start with Classic"
-        >
-          <p className="relative font-display text-[30px] leading-[1.02]">
-            Sign a 13.
-            <br />
-            Win all 27.
+      {/* The main event: Classic and Era Classic side by side on the pitch-green hero. */}
+      <section
+        className="relative overflow-hidden rounded-card bg-theme-primary p-3 text-[color:var(--theme-text-on-primary)]"
+        aria-label={firstRun ? "New here? Start with Classic" : "Classic modes"}
+      >
+        <PitchMarkings tone="black" opacity={0.09} />
+        <div className="relative px-1.5 pb-3 pt-1.5 text-left">
+          <p className="font-display text-[32px] leading-[1]">
+            {firstRun ? (
+              <>
+                Sign a 13.
+                <br />
+                Win all 27.
+              </>
+            ) : (
+              "Chase 27-0"
+            )}
           </p>
-          <Link
-            href={buildPlayHref("classic", false)}
-            onClick={() => {
-              playUiClick();
-              startClassic(false)();
-            }}
-            className="btn-press fl-pressable relative mt-4 flex h-[54px] items-center justify-center gap-2 rounded-control bg-pitch-950 font-cond text-[20px] font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-          >
-            <span className="text-theme-primary">
-              <Glyph size={22}>
-                <BallGlyph />
-              </Glyph>
-            </span>
-            Start Classic
-          </Link>
-        </section>
-      ) : null}
+          {!firstRun ? (
+            <p className="mt-1 text-[14px] font-semibold opacity-75">Pick a 13. Go unbeaten over 27 games.</p>
+          ) : null}
+        </div>
+        <div className="relative grid grid-cols-2 gap-2.5">
+          <ClassicPanel era={false} best={hub?.classicBest ?? null} verb={firstRun ? "Start" : "Play"} onClick={startClassic(false)} />
+          <ClassicPanel era best={hub?.eraBest ?? null} verb={firstRun ? "Start" : "Play"} onClick={startClassic(true)} />
+        </div>
+      </section>
 
-      {/* Today: the Daily rule is the headline, one button plays it. */}
-      {SHOW_DAILY_CHALLENGE_UI ? (
-        <section className="relative overflow-hidden rounded-card bg-pitch-900" aria-label="Daily Challenge">
-          <PitchMarkings />
-          <div aria-hidden className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-theme-primary/[0.07] blur-2xl" />
-          <div className="relative p-4">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 font-cond text-[15px] font-bold text-theme-primary">
-                <Glyph size={18}>
-                  <FixtureGlyph />
-                </Glyph>
-                Daily{daily?.scenario.eraMode ? " · Era" : ""}
+      {/* Manager Mode: second headline act, in the manager's club colours on a tactics board. */}
+      <Link
+        href="/manager"
+        onClick={() => playUiClick()}
+        aria-label={hub?.career ? `Manager Mode: resume ${hub.career.club}, ${hub.career.detail}` : "Manager Mode: start a career"}
+        className="btn-press fl-pressable group relative flex min-h-[132px] items-center gap-4 overflow-hidden rounded-card border border-white/10 bg-[#1c2a24] p-4 text-left text-white transition hover:border-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+        style={hub?.career ? { background: `linear-gradient(110deg, #17201c 35%, color-mix(in srgb, ${hub.career.primary} 38%, #17201c))` } : undefined}
+      >
+        <ChalkPlay />
+        {hub?.career ? (
+          <Crest primary={hub.career.primary} secondary={hub.career.secondary} label={hub.career.short.slice(0, 3).toUpperCase()} />
+        ) : (
+          <span aria-hidden className="relative flex h-[64px] w-[56px] shrink-0 items-center justify-center text-white">
+            <svg width="56" height="64" viewBox="0 0 56 64" className="absolute inset-0">
+              <path d="M4 6 28 2l24 4v24c0 16-10 26-24 32C14 56 4 46 4 30z" fill="rgba(255,255,255,0.08)" stroke="white" strokeOpacity="0.5" strokeWidth="2.5" strokeDasharray="5 4" />
+            </svg>
+            <Glyph size={24}>
+              <BoardGlyph />
+            </Glyph>
+          </span>
+        )}
+        <span className="relative flex min-w-0 flex-1 flex-col">
+          <span className="font-cond text-[14px] font-bold text-white/70">Manager Mode</span>
+          <span className="mt-0.5 block truncate font-display text-[26px] leading-[1.05]">
+            {hub?.career ? hub.career.club : "Run a real club"}
+          </span>
+          <span className="mt-1 block truncate text-[13px] font-semibold text-white/70">
+            {hub?.career ? hub.career.detail : "Go up. Win the Grand Final."}
+          </span>
+          <span
+            aria-hidden
+            className="mt-3 inline-flex h-10 w-max items-center gap-1.5 rounded-control bg-white px-4 font-cond text-[16px] font-bold text-pitch-950 transition group-hover:bg-white/90"
+          >
+            {hub?.career ? "Resume" : "Start a career"}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 4.5v15l13-7.5z" />
+            </svg>
+          </span>
+        </span>
+      </Link>
+
+      {/* Today: the Daily, the Weekly and missions, compact and secondary. */}
+      {SHOW_DAILY_CHALLENGE_UI || missions ? (
+        <section aria-labelledby="today-heading" className="mt-2 flex flex-col gap-2">
+          <div className="flex items-baseline justify-between px-1">
+            <h3 id="today-heading" className="!text-left font-cond text-[18px] font-bold text-white">
+              Today
+            </h3>
+            {untilReset ? (
+              <span className="inline-flex items-center gap-1 text-[12px] font-semibold tabular-nums text-[color:var(--fl-muted)]">
+                <span className="sr-only">{daily?.used || daily?.done ? "Next Daily in" : "Resets in"}</span>
+                <svg aria-hidden width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7v5l3 2" />
+                </svg>
+                {untilReset}
               </span>
-              {daily?.done ? (
-                <span className="rounded-full bg-theme-primary/15 px-2 py-0.5 text-[11px] font-bold text-theme-primary">Done ✓</span>
-              ) : daily?.used ? (
-                <span className="rounded-full bg-pitch-800 px-2 py-0.5 text-[11px] font-bold text-[color:var(--fl-muted)]">Played</span>
-              ) : null}
-              {untilReset ? (
-                <span className="ml-auto inline-flex items-center gap-1 text-[12px] font-semibold tabular-nums text-[color:var(--fl-muted)]">
-                  <span className="sr-only">{daily?.used || daily?.done ? "Next Daily in" : "Resets in"}</span>
-                  <svg aria-hidden width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
-                    <circle cx="12" cy="12" r="9" />
-                    <path d="M12 7v5l3 2" />
-                  </svg>
-                  {untilReset}
-                </span>
-              ) : null}
-            </div>
-            <p className="mt-3 font-display text-[38px] leading-[0.98] text-white [overflow-wrap:anywhere]">
-              {daily?.scenario.ruleTitle ?? "Today's rule"}
-            </p>
-            <p className="mt-2 line-clamp-1 text-[14px] text-[color:var(--fl-muted)]">
-              {daily?.scenario.ruleSummary ?? "A new twist every day."}
-            </p>
-            <div className="mt-4 flex gap-2">
+            ) : null}
+          </div>
+
+          {SHOW_DAILY_CHALLENGE_UI ? (
+            <div className="flex items-stretch gap-2" role="group" aria-label="Daily Challenge">
               <Link
                 href={getDailyChallengeHref()}
                 onClick={() => playUiClick()}
-                className={`btn-press fl-pressable flex h-[52px] min-w-0 flex-1 items-center justify-center rounded-control font-cond text-[18px] font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${
-                  firstRun ? "bg-pitch-700 text-white" : "bg-theme-primary text-[color:var(--theme-text-on-primary)]"
-                }`}
+                aria-label={`${daily?.done ? "Play again for practice" : daily?.used ? "Practice today's Daily" : "Play today's Daily"}: ${daily?.scenario.ruleTitle ?? "today's rule"}`}
+                className={`btn-press fl-pressable flex min-h-[64px] min-w-0 flex-1 items-center gap-3 rounded-tile bg-pitch-900 p-2.5 pl-3 text-left hover:bg-pitch-800 ${FOCUS}`}
               >
-                {daily?.done ? "Play again for practice" : daily?.used ? "Practice today's Daily" : "Play today's Daily"}
+                <span aria-hidden className="flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-theme-primary/10 text-theme-primary">
+                  <Glyph size={20}>
+                    <FixtureGlyph />
+                  </Glyph>
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="flex items-center gap-1.5 text-[12px] font-bold text-theme-primary">
+                    Daily{daily?.scenario.eraMode ? " · Era" : ""}
+                    {daily?.done ? <span className="text-[color:var(--fl-muted)]">· Done ✓</span> : daily?.used ? <span className="text-[color:var(--fl-muted)]">· Played</span> : null}
+                  </span>
+                  <span className="block truncate font-cond text-[18px] font-bold leading-tight text-white">
+                    {daily?.scenario.ruleTitle ?? "Today's rule"}
+                  </span>
+                </span>
+                <span
+                  aria-hidden
+                  className="flex h-9 shrink-0 items-center rounded-full border border-theme-primary/40 px-3.5 font-cond text-[15px] font-bold text-theme-primary"
+                >
+                  {daily?.done || daily?.used ? "Practice" : "Play"}
+                </span>
               </Link>
               <Link
                 href={DAILY_ARCHIVE_PAGE}
                 onClick={() => playUiClick()}
                 aria-label="Past Dailies"
                 title="Past Dailies"
-                className={`btn-press fl-pressable flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-control bg-pitch-800 text-white hover:bg-pitch-700 ${FOCUS}`}
+                className={`btn-press fl-pressable flex w-12 shrink-0 items-center justify-center rounded-tile bg-pitch-900 text-[color:var(--fl-muted)] hover:bg-pitch-800 hover:text-white ${FOCUS}`}
               >
-                <Glyph size={22}>
+                <Glyph size={20}>
                   <path d="M3 12a9 9 0 1 0 3-6.7" />
                   <path d="M3 4v4.5h4.5M12 7.5V12l3 2" />
                 </Glyph>
               </Link>
             </div>
-          </div>
-        </section>
-      ) : null}
-
+          ) : null}
       {/* Weekly + missions: two compact tiles side by side; missions open into a list. */}
       {SHOW_DAILY_CHALLENGE_UI || missions ? (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           {SHOW_DAILY_CHALLENGE_UI ? (
             <div className="relative min-w-0 rounded-tile bg-pitch-900">
               <Link
                 href={weeklyHref}
                 onClick={() => playUiClick()}
                 aria-label={`Weekly Challenge: ${weekly?.scenario.ruleTitle ?? "this week's rule"}. ${weeklyStatus}${weekly ? `, ${weekly.resetsIn} left` : ""}`}
-                className={`btn-press fl-pressable flex h-full min-h-[96px] flex-col justify-between gap-2 rounded-tile p-3 pr-12 text-left hover:bg-pitch-800 ${FOCUS}`}
+                className={`btn-press fl-pressable flex h-full min-h-[72px] flex-col justify-between gap-2 rounded-tile p-3 pr-12 text-left hover:bg-pitch-800 ${FOCUS}`}
               >
                 <span className="flex items-center gap-1.5 font-cond text-[14px] font-bold text-accent-gold">
                   <Glyph size={16}>
@@ -475,7 +601,7 @@ export function HomeModeSelector() {
               aria-expanded={missionsOpen}
               aria-controls="home-missions"
               aria-label={`Today's missions: ${missionsDone} of ${missions.missions.length} done${missionsLeft > 0 ? `, ${formatClubFunds(missionsLeft)} to earn` : ""}`}
-              className={`btn-press fl-pressable flex min-h-[96px] min-w-0 items-center gap-3 rounded-tile p-3 text-left transition ${
+              className={`btn-press fl-pressable flex min-h-[72px] min-w-0 items-center gap-3 rounded-tile p-3 text-left transition ${
                 missionsOpen ? "bg-pitch-800" : "bg-pitch-900 hover:bg-pitch-800"
               } ${SHOW_DAILY_CHALLENGE_UI ? "" : "col-span-2"} ${FOCUS}`}
             >
@@ -504,34 +630,12 @@ export function HomeModeSelector() {
           ) : null}
         </div>
       ) : null}
-      {missions && missionsOpen ? <MissionsList view={missions} id="home-missions" resetIn={untilReset} /> : null}
+          {missions && missionsOpen ? <MissionsList view={missions} id="home-missions" resetIn={untilReset} /> : null}
+        </section>
+      ) : null}
 
-      {/* Modes: the three big games on top, puzzles and side modes below. */}
-      <nav aria-label="Game modes" className="grid grid-cols-6 gap-3">
-        <ModeTile
-          href={buildPlayHref("classic", false)}
-          label="Classic"
-          icon={<BallGlyph />}
-          tint="bg-mode-current/10 text-mode-current"
-          onClick={startClassic(false)}
-          badge={hub?.classicBest ? <Badge tone="primary">Best {hub.classicBest}</Badge> : <Badge>2026 squads</Badge>}
-        />
-        <ModeTile
-          href={buildPlayHref("classic", true)}
-          label="Era Classic"
-          icon={<ProgrammeGlyph />}
-          tint="bg-mode-era/10 text-mode-era"
-          onClick={startClassic(true)}
-          badge={hub?.eraBest ? <Badge tone="primary">Best {hub.eraBest}</Badge> : <Badge>Legends</Badge>}
-        />
-        <ModeTile
-          href="/manager"
-          label="Manager"
-          ariaLabel={hub?.career ? `Manager Mode: resume with ${hub.career.club}` : "Manager Mode"}
-          icon={<BoardGlyph />}
-          tint="bg-theme-primary/10 text-theme-primary"
-          badge={hub?.career ? <Badge tone="primary">Resume</Badge> : <Badge>New club</Badge>}
-        />
+      {/* Smaller games. */}
+      <nav aria-label="More games" className="grid grid-cols-6 gap-3">
         <ModeTile
           wide
           href="/mini-games"
