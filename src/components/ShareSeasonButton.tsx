@@ -10,7 +10,10 @@ interface ShareSeasonButtonProps {
   data: SeasonShareCardData;
   filename?: string;
   className?: string;
-  variant?: "theme" | "secondary";
+  variant?: "theme" | "secondary" | "ghost";
+  size?: "sm" | "md";
+  label?: string;
+  fullWidth?: boolean;
 }
 
 export function ShareSeasonButton({
@@ -18,6 +21,9 @@ export function ShareSeasonButton({
   filename = "27-0-season.png",
   className = "",
   variant = "secondary",
+  size = "md",
+  label = "Share season",
+  fullWidth = true,
 }: ShareSeasonButtonProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [busy, setBusy] = useState(false);
@@ -43,8 +49,14 @@ export function ShareSeasonButton({
       >
         <SeasonShareCard ref={cardRef} data={data} />
       </div>
-      <ActionButton variant={variant} onClick={() => void handleShare()} disabled={busy}>
-        {busy ? "Preparing…" : "Share season"}
+      <ActionButton
+        variant={variant}
+        size={size}
+        fullWidth={fullWidth}
+        onClick={() => void handleShare()}
+        disabled={busy}
+      >
+        {busy ? "Preparing…" : label}
       </ActionButton>
       {status ? (
         <p className="mt-2 text-center text-xs text-[color:var(--fl-muted)]">{status}</p>

@@ -20,6 +20,13 @@ import { getSeasonTryTotal } from "@/lib/game/season-tries";
 import { playGradeSound, playPanelClose, playPanelExpand, playUiClick } from "@/lib/sound";
 import { MatchReviewActions } from "./MatchReviewActions";
 import { ShareSeasonButton } from "./ShareSeasonButton";
+import { ShareResultButton } from "./ShareResultButton";
+import { buildShareResultText } from "@/lib/share-result";
+import {
+  getWeeklyChallengeHref,
+  getWeeklyChallengeScenario,
+  getWeeklyChallengeWeekKey,
+} from "@/lib/weekly-challenge";
 import { formatCountdown, msUntilUkMidnight } from "@/lib/daily-bonus";
 import { GameButton } from "./ui/GameButton";
 import { ClubFundsEarned } from "./ClubFundsEarned";
@@ -47,6 +54,7 @@ import { resolveSquadClubColorOverride } from "@/lib/players/squad-club-accent";
 import type { DailyChallengeScenario } from "@/lib/daily-challenge";
 import {
   getDailyChallengeDateKey,
+  getDailyChallengeHref,
   getDailyChallengeStreak,
 } from "@/lib/daily-challenge";
 
@@ -278,11 +286,82 @@ export function SeasonReview({
     averageTeamRating,
   ]);
 
+  // Wordle-style spoiler-free text: the main share. The image card stays as a smaller extra.
+  const shareResultText = useMemo(() => {
+    const results = seasonResult.fixtures.map((fixture) => fixture.result);
+    const modeLabel = superSamHallasMode
+      ? "Super Sam"
+      : joeMellorMode
+        ? "GOAT Mode"
+        : mode === "DRAFT"
+          ? "Draft"
+          : undefined;
+    const base = {
+      results,
+      leaguePosition: dreamTeamTablePosition,
+      playoffFinish: missedPlayoffs ? ("Missed Play-Offs" as const) : null,
+    };
+    if (showDailyPresentation && dailyScenario) {
+      return buildShareResultText({
+        ...base,
+        kind: "daily",
+        era: dailyScenario.eraMode,
+        dateKey: getDailyChallengeDateKey(),
+        ruleTitle: dailyScenario.ruleTitle,
+        practice: dailyAttemptCounts === false,
+        streak: getDailyChallengeStreak(),
+        href: getDailyChallengeHref(),
+      });
+    }
+    if (weeklyChallengeMode) {
+      const scenario = getWeeklyChallengeScenario();
+      return buildShareResultText({
+        ...base,
+        kind: "weekly",
+        era: scenario.eraMode,
+        weekKey: getWeeklyChallengeWeekKey(),
+        ruleTitle: scenario.ruleTitle,
+        practice: weeklyAttemptCounts === false,
+        weeklyScore,
+        href: getWeeklyChallengeHref(),
+      });
+    }
+    return buildShareResultText({
+      ...base,
+      kind: "classic",
+      era: normalEraMode,
+      modeLabel,
+    });
+  }, [
+    seasonResult.fixtures,
+    superSamHallasMode,
+    joeMellorMode,
+    mode,
+    dreamTeamTablePosition,
+    missedPlayoffs,
+    showDailyPresentation,
+    dailyScenario,
+    dailyAttemptCounts,
+    weeklyChallengeMode,
+    weeklyAttemptCounts,
+    weeklyScore,
+    normalEraMode,
+  ]);
+
   const shareAction = (
-    <ShareSeasonButton
-      data={shareCardData}
-      filename={
-        showDailyPresentation ? "daily-challenge.png" : "27-0-quick-season.png"
+    <ShareResultButton
+      text={shareResultText}
+      secondary={
+        <ShareSeasonButton
+          data={shareCardData}
+          variant="ghost"
+          size="sm"
+          fullWidth={false}
+          label="Share as image"
+          filename={
+            showDailyPresentation ? "daily-challenge.png" : "27-0-quick-season.png"
+          }
+        />
       }
     />
   );
