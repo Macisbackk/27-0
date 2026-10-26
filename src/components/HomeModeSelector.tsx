@@ -311,13 +311,17 @@ export function HomeModeSelector() {
         </section>
       ) : null}
 
-      <Tile href="/manager">
+      <Tile href="/manager" className="!flex-row gap-3 !p-3.5 !text-left">
         <TileIcon>
           <BoardGlyph />
         </TileIcon>
-        <TileTitle>Manager Mode</TileTitle>
-        <TileSub>{hub?.career ? `${hub.career.club} · ${hub.career.detail}` : "Run a real club. Go up, win the Grand Final."}</TileSub>
-        <TilePill accent>{hub?.career ? "Resume career" : "Start a career"}</TilePill>
+        <span className="min-w-0 flex-1">
+          <span className="block font-cond text-[19px] font-bold leading-tight">Manager Mode</span>
+          <span className="block truncate text-[13px] text-[color:var(--fl-muted)]">
+            {hub?.career ? `${hub.career.club} · ${hub.career.detail}` : "Run a real club. Go up, win the Grand Final."}
+          </span>
+        </span>
+        <span className="shrink-0 text-xs font-bold text-theme-primary">{hub?.career ? "Resume ›" : "Start ›"}</span>
       </Tile>
 
       <div className="grid grid-cols-2 gap-3">
