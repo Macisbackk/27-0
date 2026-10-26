@@ -1,5 +1,5 @@
 -- 2026-10-28 — Daily pick rarity ("12% picked him") (v1.19)
--- NOT YET APPLIED. Safe to apply before or after the v1.19 client: the client treats a missing
+-- APPLIED 2026-10-26 (with a no-spoiler guard on today's counts). Safe to apply before or after the v1.19 client: the client treats a missing
 -- RPC as "no rarity" and simply hides the feature.
 --
 -- No DROP / DELETE / TRUNCATE: everything is `create ... if not exists` / `create or replace`,
@@ -130,6 +130,12 @@ as $$
   from wanted w
   where p_day_key is not null
     and p_day_key <= (now() at time zone 'Europe/London')::date
+    -- Today's counts only for coaches who have finished today's Daily (no spoilers before playing).
+    and (
+      p_day_key < (now() at time zone 'Europe/London')::date
+      or exists (select 1 from public.daily_pick_rarity_picks me
+                 where me.day_key = p_day_key and me.user_id = (select auth.uid()))
+    )
   order by w.slot;
 $$;
 
