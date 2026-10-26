@@ -34,6 +34,7 @@ export default function HomePage() {
           {[
             ["/leaderboard", "Leaderboard"],
             ["/squad-book", "Squad Book"],
+            ["/records", "Records"],
             ["/store", "Store"],
             ["/showcase", "Players"],
           ].map(([href, label]) => (

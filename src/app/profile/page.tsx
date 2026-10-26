@@ -163,6 +163,10 @@ export default function ProfilePage() {
             </span>
             <span aria-hidden>→</span>
           </Link>
+          <Link href="/records" className={PROFILE_PILL}>
+            Records
+            <span aria-hidden>→</span>
+          </Link>
           <Link href="/settings" className={PROFILE_PILL}>
             Settings
             <span aria-hidden>→</span>

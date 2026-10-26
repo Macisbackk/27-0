@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BALL_KNOWER_ID } from "@/lib/cosmetics";
 import { ownsCosmetic } from "@/lib/storage/cosmetics-store";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -19,6 +19,9 @@ import { getPlayPageTitle } from "@/lib/mode-labels";
 import { isNormalEraMode } from "@/lib/play-links";
 import type { GameDifficulty, GameMode } from "@/lib/types";
 import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
+import { challengeBannerText, decodeChallenge } from "@/lib/challenge-link";
+import { getChallengeEraMode, getChallengeGate } from "@/lib/challenge-run";
+import { ChallengeLinkNotice } from "@/components/ChallengeLinkNotice";
 
 export function PlayPageClient() {
   const router = useRouter();
@@ -34,8 +37,13 @@ export function PlayPageClient() {
   const fantasy = searchParams.get("fantasy");
   const daily = searchParams.get("daily");
   const weekly = searchParams.get("weekly");
+  // "Challenge a mate" link: wins over every other flag in the URL.
+  const challengeParam = searchParams.get("challenge");
+  const challenge = useMemo(() => (challengeParam ? decodeChallenge(challengeParam) : null), [challengeParam]);
+  const hasChallengeParam = challengeParam !== null;
   // Ball Knower (Store): Classic with every rating hidden. null = still checking ownership.
-  const wantsBallKnower = searchParams.get("bk") === "1" && daily !== "1" && weekly !== "1";
+  const wantsBallKnower =
+    searchParams.get("bk") === "1" && daily !== "1" && weekly !== "1" && !hasChallengeParam;
   const [ballKnower, setBallKnower] = useState<boolean | null>(wantsBallKnower ? null : false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -53,10 +61,11 @@ export function PlayPageClient() {
   const wantsJoeMellor = joeMellor === "1" && !wantsSuperSamHallas;
   const isHiddenMode = wantsJoeMellor || wantsSuperSamHallas;
   const isDaily =
-    SHOW_DAILY_CHALLENGE_UI && isDailyChallengeActive({ daily });
+    SHOW_DAILY_CHALLENGE_UI && !hasChallengeParam && isDailyChallengeActive({ daily });
   const dailyScenario = isDaily ? getDailyChallengeScenario() : null;
   // The Daily wins if both flags are set (GameStarter does the same).
-  const isWeekly = SHOW_DAILY_CHALLENGE_UI && !isDaily && isWeeklyChallengeActive({ weekly });
+  const isWeekly =
+    SHOW_DAILY_CHALLENGE_UI && !isDaily && !hasChallengeParam && isWeeklyChallengeActive({ weekly });
   const weeklyScenario = isWeekly ? getWeeklyChallengeScenario() : null;
 
   useEffect(() => {
@@ -131,12 +140,28 @@ export function PlayPageClient() {
   // The static metadata says "Classic"; name the tab after the variant actually being played.
   useEffect(() => {
     if (!mounted || ballKnower === null) return;
-    document.title = `${title} — 27-0`;
-  }, [mounted, ballKnower, title]);
+    document.title = challenge ? `${challengeBannerText(challenge)} — 27-0` : `${title} — 27-0`;
+  }, [mounted, ballKnower, title, challenge]);
 
   // The board reads saved runs and Store boosts from this device on its first render; the server
   // can't, so render it only once mounted (otherwise React hydration error #418 on /play).
   if (!mounted || ballKnower === null) return <p className="p-6 text-center text-pitch-400">Loading…</p>;
+
+  if (hasChallengeParam) {
+    if (!challenge) return <ChallengeLinkNotice reason="invalid" />;
+    const gate = getChallengeGate(challenge);
+    if (gate !== "ok") return <ChallengeLinkNotice reason={gate} challenge={challenge} />;
+    return (
+      <GameStarter
+        key={`challenge-${challengeParam}`}
+        mode="CLASSIC"
+        title="Challenge"
+        difficulty="NORMAL"
+        normalEraMode={getChallengeEraMode(challenge)}
+        challenge={challenge}
+      />
+    );
+  }
 
   return (
     <GameStarter
