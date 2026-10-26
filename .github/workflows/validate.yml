@@ -60,6 +60,11 @@ jobs:
       - name: Share result text
         if: success() || failure()
         run: scripts/ci-run.sh "Share result text" npm run test:share
+      - uses: oven-sh/setup-bun@v2
+        if: success() || failure()
+      - name: Squad Book
+        if: success() || failure()
+        run: scripts/ci-run.sh "Squad Book" npm run test:squadbook
 
   build:
     runs-on: ubuntu-latest

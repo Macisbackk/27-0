@@ -1,5 +1,6 @@
 "use client";
 
+import { recordSquadBookRun } from "@/lib/squad-book";
 import { useModalA11y } from "@/hooks/useModalA11y";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { clearStaleBodyScrollLocks } from "@/lib/ui/document-page-scroll";
@@ -1244,6 +1245,7 @@ export function GameBoard({
     (result: SeasonResult, finalSquad: SquadSlot[]) => {
       if (recordedRef.current) return;
       recordedRef.current = true;
+      recordSquadBookRun({ runId, mode, squad: finalSquad, hidden: joeMellorMode || superSamHallasMode, era: normalEraMode, daily: dailyChallengeMode, weekly: weeklyChallengeMode });
 
       const signedIds = finalSquad
         .filter((s) => s.player)
