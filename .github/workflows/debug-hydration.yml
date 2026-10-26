@@ -29,7 +29,7 @@ jobs:
       - run: npm ci
       - name: Build (prod)
         if: matrix.mode != 'dev'
-        run: npm run build
+        run: npm run build && node scripts/debug-patch-react.mjs
       - name: Install Playwright
         run: npm install --no-save playwright@1.49.1 && npx playwright install --with-deps chromium
       - name: Start server
@@ -42,7 +42,7 @@ jobs:
         env:
           LABEL: ${{ matrix.mode }}-${{ matrix.width }}
           WIDTH: ${{ matrix.width }}
-          BUDGET_MIN: "38"
+          BUDGET_MIN: "25"
           HOME_PLAY_ITERS: "200"
         run: |
           if [ "${{ matrix.mode }}" = site ]; then

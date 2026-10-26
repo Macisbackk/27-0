@@ -58,11 +58,50 @@ const INIT = () => {
       );
     }
   }).observe(document, { subtree: true, childList: true, attributes: true, characterData: true });
+  window.__hydMisLog = [];
+  window.__hydMis = (fiber) => {
+    if (window.__hydMisLog.length >= 2) return;
+    const name = (f) => {
+      if (!f) return "null";
+      const t = f.type;
+      const nm = typeof t === "string" ? t : t ? t.displayName || t.name || (t.$$typeof ? String(t.$$typeof) : typeof t) : `tag${f.tag}`;
+      const pp = f.pendingProps || {};
+      const cls = pp && typeof pp === "object" && typeof pp.className === "string" ? "." + pp.className.split(/\s+/).slice(0, 4).join(".") : "";
+      const extra = pp && typeof pp === "object" ? ["id", "href", "aria-label", "role", "hidden"].filter((k) => pp[k] !== undefined).map((k) => `[${k}=${String(pp[k]).slice(0, 30)}]`).join("") : "";
+      return `${nm}${cls}${extra}(tag${f.tag})`;
+    };
+    const lines = [];
+    const t = fiber.type;
+    lines.push(`MISMATCH FIBER: ${name(fiber)}`);
+    if (typeof t === "function") lines.push(`fn source: ${t.toString().slice(0, 600)}`);
+    const pp = fiber.pendingProps;
+    lines.push(`props keys: ${pp && typeof pp === "object" ? Object.keys(pp).join(",") : JSON.stringify(pp)}`);
+    if (pp && typeof pp === "object" && typeof pp.children === "string") lines.push(`children text: ${pp.children.slice(0, 100)}`);
+    let f = fiber.return;
+    const chain = [];
+    for (let i = 0; f && i < 40; i++, f = f.return) {
+      let nm = name(f);
+      if (typeof f.type === "function" && !/^[A-Z]/.test(f.type.name || "")) nm += ` src{${f.type.toString().slice(0, 140)}}`;
+      chain.push(nm);
+    }
+    lines.push(`return chain: ${chain.join("  <  ")}`);
+    const sibs = [];
+    for (let s = fiber.return && fiber.return.child; s && sibs.length < 12; s = s.sibling) sibs.push((s === fiber ? "*" : "") + name(s));
+    lines.push(`siblings: ${sibs.join(" | ")}`);
+    let h = fiber.return;
+    while (h && !(h.stateNode && h.stateNode.nodeType === 1)) h = h.return;
+    if (h) {
+      const el = h.stateNode;
+      lines.push(`host parent: ${name(h)}; its DOM children now: ${[...el.childNodes].slice(0, 15).map((n) => n.nodeType === 1 ? n.tagName.toLowerCase() + (n.className && typeof n.className === "string" ? "." + n.className.split(" ").slice(0, 3).join(".") : "") + (n.id ? "#" + n.id : "") : n.nodeType === 8 ? "<!--" + n.textContent.slice(0, 12) + "-->" : "#text:" + JSON.stringify(n.textContent.slice(0, 30))).join(" | ")}`);
+    }
+    window.__hydMisLog.push(lines.join("\n"));
+  };
   window.addEventListener("error", (e) => {
     log.push(`${Date.now() - t0}ms ERROR ${e.message}`);
     const ctl = navigator.serviceWorker && navigator.serviceWorker.controller ? "sw" : "nosw";
     const stack = ((e.error && e.error.stack) || "").replace(/\|/g, "/").slice(0, 1500);
-    console.log(`HYDERR|${location.href}|${document.readyState} ${ctl}|${Date.now() - t0}ms|${e.message} STACK ${stack}|${JSON.stringify(log.slice(-150))}`);
+    const mis = (window.__hydMisLog || []).join("\n----\n").replace(/\|/g, "/");
+    console.log(`HYDERR|${location.href}|${document.readyState} ${ctl}|${Date.now() - t0}ms|${e.message} STACK ${mis}|${JSON.stringify(log.slice(-40))}`);
   });
   document.addEventListener("visibilitychange", () => log.push(`${Date.now() - t0}ms visibility ${document.visibilityState}`));
   document.addEventListener("DOMContentLoaded", () => log.push(`${Date.now() - t0}ms DOMContentLoaded`));
@@ -117,7 +156,6 @@ async function run(variant, routes, settleMs, extra = {}) {
 let crawls = 0;
 for (let i = 0; i < HOME_PLAY_ITERS && Date.now() < DEADLINE; i++) {
   await run("home-play", ["/", "/play", "/play?era=1", "/play?daily=1"], 1200);
-  await run("home-play-noSW", ["/", "/play", "/play?era=1", "/play?daily=1"], 1200, { serviceWorkers: "block" });
   await run("play-direct", ["/play", "/play?era=1", "/play", "/play?daily=1"], 1200);
 }
 await browser.close();
