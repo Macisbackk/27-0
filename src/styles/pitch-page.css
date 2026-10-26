@@ -271,6 +271,9 @@ body {
     --btn2-bg: var(--fl-raised);
     --btn2-bg-hover: var(--fl-raised-hover);
     --btn2-fg: #ffffff;
+    /* The bar's buttons are its main actions (Spin, Kick off…): accent even when small. */
+    --btn-sm-bg: var(--theme-primary);
+    --btn-sm-fg: var(--pitch-ink);
     --on-fg: #ffffff;
     --on-fg-muted: var(--fl-muted);
     --on-accent: var(--theme-primary-on-dark);
