@@ -88,4 +88,23 @@ await shot(phone, "29-store-for-you", "/store");
 await shot(phone, "30-login", "/login");
 await shot(phone, "31-menu-full", "/", tap(/open menu/i), true);
 
+// Returning player: a finished Classic season on this device (best record, no first-run hero).
+{
+  const back = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await back.addInitScript(() => {
+    if (localStorage.getItem("27-0-stats")) return;
+    localStorage.setItem("27-0-stats-schema-version", "3");
+    localStorage.setItem(
+      "27-0-stats",
+      JSON.stringify({ normal: { totalRuns: 4, totalSeasonsSimulated: 3, bestRecordWins: 24, bestRecordLosses: 3 } }),
+    );
+  });
+  await shot(back, "32-home-returning", "/", null, true);
+  await shot(back, "33-home-missions-open", "/", async (page) => {
+    await page.getByRole("button", { name: /Today's missions/ }).click({ timeout: 5000 });
+    await page.waitForTimeout(400);
+  }, true);
+  await back.close();
+}
+
 await browser.close();
