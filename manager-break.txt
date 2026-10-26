@@ -1,0 +1,13 @@
+✓ Career started (double tap on Take charge)
+✓ Pre-season → results → Round 1, each on its own; reloads keep the stage; double taps safe
+✓ Back/forward keeps the hub
+✓ Hub tabs fit 320px; contracts on the Team tab
+✓ Deadline Day: clock counts down, pauses (and stays paused after a reload), skips an hour, an offer was accepted
+✓ Market sale: "Archie Sykes joins Rochdale Hornets for £160k. They were after an upgrade at second row."
+✓ Season played through every stage (deadline, league, promo) with reloads and double taps
+✓ Departures: 6 out of contract; renew double tap, two tabs
+✓ Transfer window opens once; squad at least 20
+✓ Season 2 opens on pre-season (double tap safe)
+
+0 problem(s)
+
