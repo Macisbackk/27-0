@@ -7,6 +7,7 @@ import "../styles/floodlights.css";
 import "../styles/motion.css";
 import "../styles/matchnight.css";
 import "../styles/pitch.css";
+import "../styles/pitch-page.css";
 import { AuthProvider } from "@/lib/auth-context";
 import { CoachbeardMergeRunner } from "@/components/CoachbeardMergeRunner";
 import { ManagerDataPurgeRunner } from "@/components/ManagerDataPurgeRunner";

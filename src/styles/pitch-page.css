@@ -1,0 +1,396 @@
+/*
+ * Pitch page (v1.23b): the whole site sits on the pitch.
+ *
+ * The page itself is the Classic card's surface (theme primary, mown stripes, dashed lines), and
+ * everything on it is styled like the pieces inside that card:
+ *   - text straight on the pitch is the ink (near-black on lime; light on dark themes like Cherry);
+ *   - cards, tiles, inputs, header, bottom bar, footer and sheets are near-black rounded panels with
+ *     white text (long content stays readable);
+ *   - primary buttons on the pitch are the big black button with the accent ▸; inside a dark panel
+ *     they keep the accent fill (the inverse), so they never vanish into the panel.
+ *
+ * How text knows where it is: every dark surface re-declares the "on-dark" colour variables, and
+ * the shared text utilities read those variables. So `.text-white` is ink on the pitch and white in
+ * a card, `.text-theme-primary` is ink on the pitch (never lime-on-lime) and the accent in a card.
+ */
+
+:root {
+  --pitch-ink-muted: #405712;
+}
+
+/* ── The ground ───────────────────────────────────────────────────────── */
+html,
+body,
+body.app-shell {
+  background-color: var(--theme-primary) !important;
+}
+body.app-shell {
+  color: var(--pitch-ink);
+  background-image:
+    linear-gradient(rgb(var(--pitch-mark-rgb) / 0.08), rgb(var(--pitch-mark-rgb) / 0.08)),
+    linear-gradient(to bottom, rgb(var(--pitch-mark-rgb) / 0.08) 0 12px, transparent 12px 22px),
+    linear-gradient(to bottom, rgb(var(--pitch-mark-rgb) / 0.08) 0 12px, transparent 12px 22px),
+    repeating-linear-gradient(90deg, transparent 0 10%, rgb(var(--pitch-mark-rgb) / 0.04) 10% 20%) !important;
+  background-size: 2px 100%, 2px 22px, 2px 22px, 100% 100% !important;
+  background-position: 50% 0, 30% 0, 70% 0, 0 0 !important;
+  background-repeat: no-repeat, repeat-y, repeat-y, no-repeat !important;
+}
+/* Page shells painted their own black ground: let the pitch through. */
+.matchday-arena,
+.arena-surface,
+.app-main,
+.game-page,
+.site-page-center {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* ── Colour context ───────────────────────────────────────────────────── */
+body {
+  --on-fg: var(--pitch-ink);
+  --on-fg-muted: var(--pitch-ink-muted);
+  --on-accent: var(--pitch-ink);
+  --on-gold: var(--pitch-ink);
+  --on-danger: color-mix(in srgb, #7f1d1d 70%, var(--pitch-ink));
+  --on-success: var(--pitch-ink);
+  --on-line: rgb(var(--pitch-mark-rgb) / 0.18);
+}
+
+/* Every dark surface: white text, muted grey, the accent, gold and red as designed. */
+.app-header,
+.fl-bottom-nav,
+.site-footer,
+.sidebar-panel,
+.game-panel,
+.programme-panel,
+.scoreboard-panel,
+.clipboard-panel,
+.card-glass,
+.matchday-panel,
+.mobile-section,
+.home-play-card,
+.game-stat-card,
+.game-modal-panel,
+.mobile-bottom-sheet,
+.mobile-modal-panel,
+.achievement-popup-card,
+.matchday-scoreboard,
+.mini-game-board,
+.playoff-bracket-panel,
+.showcase-row__button,
+.quiz-answer,
+.quiz-ladder,
+.game-input,
+.mode-toggle,
+.tab-group,
+.pitch-seg,
+.pitch-cta,
+.pitch-chip,
+.pitch-pill,
+.game-badge,
+.game-button,
+.fl-pill,
+.recruitment-choice-overlay,
+.mobile-action-bar,
+.bracket-sticky-actions,
+.rugby-pitch,
+[class^="bg-pitch-"],
+[class*=" bg-pitch-"],
+[class^="bg-black"],
+[class*=" bg-black"],
+[class*=" bg-[#0"],
+[class*=" bg-[#1"],
+[class*=" bg-[rgba("] {
+  --on-fg: #ffffff;
+  --on-fg-muted: var(--fl-muted);
+  --on-accent: var(--theme-primary-on-dark);
+  --on-gold: #fbbf24;
+  --on-danger: #f87171;
+  --on-success: #4ade80;
+  --on-line: var(--fl-line);
+  color: var(--on-fg);
+}
+
+/* The shared text utilities follow the context. */
+.text-white,
+.text-gray-50,
+.text-gray-100,
+.text-gray-200 {
+  color: var(--on-fg) !important;
+}
+.text-gray-300,
+.text-gray-400,
+.text-gray-500,
+.text-gray-600,
+.text-pitch-300,
+.text-pitch-400,
+.text-pitch-500,
+.text-\[color\:var\(--fl-muted\)\],
+.text-\[color\:var\(--mobile-text-muted\)\] {
+  color: var(--on-fg-muted) !important;
+}
+.text-theme-primary {
+  color: var(--on-accent) !important;
+}
+.text-accent-gold,
+.text-amber-300,
+.text-yellow-400 {
+  color: var(--on-gold) !important;
+}
+.text-danger,
+.text-accent-red,
+.text-red-400 {
+  color: var(--on-danger) !important;
+}
+.text-success {
+  color: var(--on-success) !important;
+}
+/* Muted page copy that used design tokens rather than utilities. */
+:where(main) :where(p, span, li, h1, h2, h3, h4, label, small) {
+  color: inherit;
+}
+.border-white\/10,
+.border-pitch-700\/45,
+.divide-\[var\(--fl-line\)\] > * + * {
+  border-color: var(--on-line) !important;
+}
+
+/* ── Panels: near-black, rounded ──────────────────────────────────────── */
+.game-panel,
+.programme-panel,
+.scoreboard-panel,
+.clipboard-panel,
+.card-glass,
+.matchday-panel,
+.mobile-section,
+.home-play-card,
+.matchday-scoreboard,
+.mini-game-board,
+.playoff-bracket-panel {
+  background: #121314 !important;
+}
+.mobile-section--flush {
+  background: transparent !important;
+  --on-fg: var(--pitch-ink);
+  --on-fg-muted: var(--pitch-ink-muted);
+  --on-accent: var(--pitch-ink);
+  --on-gold: var(--pitch-ink);
+  color: var(--pitch-ink);
+}
+
+/* ── Chrome: dark floating bars on the pitch ─────────────────────────── */
+.app-header {
+  top: 8px !important;
+  margin: 8px 8px 0;
+  width: calc(100% - 16px) !important;
+  border: 0 !important;
+  border-radius: 20px;
+  background: #0e0f10 !important;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.22);
+}
+.app-header .bg-pitch-900 {
+  background: #1d1f21 !important;
+}
+.fl-bottom-nav {
+  background: #0e0f10;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.3);
+}
+.fl-bottom-nav a[aria-current="page"] {
+  background: var(--theme-primary);
+  color: var(--pitch-ink);
+}
+.site-footer {
+  margin: 16px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+  width: calc(100% - 16px) !important;
+  border: 0 !important;
+  border-radius: 20px;
+  background: #0e0f10 !important;
+}
+@media (min-width: 1024px) {
+  .app-header,
+  .site-footer {
+    margin-left: auto;
+    margin-right: auto;
+    width: min(calc(100% - 16px), 1180px) !important;
+  }
+}
+.sidebar-panel {
+  background: #0e0f10 !important;
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+/* On the pitch: the big black button with white text and the accent ▸. */
+a.game-button--theme,
+button.game-button--theme,
+.game-button--theme {
+  background-color: var(--pitch-dark) !important;
+  color: #ffffff !important;
+  gap: 0.5rem;
+}
+a.game-button--theme:hover:not(:disabled),
+button.game-button--theme:hover:not(:disabled) {
+  background-color: var(--pitch-dark-hover) !important;
+  filter: none;
+}
+.game-button--theme.game-button--lg::after,
+.game-button--theme.game-button--md::after {
+  content: "";
+  flex-shrink: 0;
+  width: 8px;
+  height: 10px;
+  background: var(--theme-primary-on-dark);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.game-button--theme:disabled,
+.game-button--theme[aria-disabled="true"] {
+  opacity: 0.45 !important;
+}
+/* Secondary on the pitch: a soft darker patch of the pitch with ink text. */
+a.game-button--secondary,
+button.game-button--secondary,
+.game-button--secondary {
+  background-color: rgb(var(--pitch-mark-rgb) / 0.12) !important;
+  color: var(--pitch-ink) !important;
+  --on-fg: var(--pitch-ink);
+}
+a.game-button--secondary:hover:not(:disabled),
+button.game-button--secondary:hover:not(:disabled) {
+  background-color: rgb(var(--pitch-mark-rgb) / 0.2) !important;
+}
+
+/* Inside a dark panel or bar the roles flip back: accent fill for the main action (the inverse
+   of the black button), raised grey for secondary, white for small row actions. */
+:is(.game-panel, .mobile-section, .game-modal-panel, .mobile-bottom-sheet, .mobile-modal-panel,
+    .mini-game-board, .matchday-scoreboard, .achievement-popup-card, .mobile-action-bar,
+    .bracket-sticky-actions, [class^="bg-pitch-"], [class*=" bg-pitch-"])
+  :is(a, button).game-button--theme:not(.game-button--sm) {
+  background-color: var(--theme-primary) !important;
+  color: var(--pitch-ink) !important;
+}
+:is(.game-panel, .mobile-section, .game-modal-panel, .mobile-bottom-sheet, .mobile-modal-panel,
+    .mini-game-board, .matchday-scoreboard, .achievement-popup-card, .mobile-action-bar,
+    .bracket-sticky-actions, [class^="bg-pitch-"], [class*=" bg-pitch-"])
+  :is(a, button).game-button--theme:not(.game-button--sm):hover:not(:disabled) {
+  background-color: var(--theme-secondary) !important;
+}
+:is(.game-panel, .mobile-section, .game-modal-panel, .mobile-bottom-sheet, .mobile-modal-panel,
+    .mini-game-board, .matchday-scoreboard, .achievement-popup-card, .mobile-action-bar,
+    .bracket-sticky-actions, [class^="bg-pitch-"], [class*=" bg-pitch-"])
+  .game-button--theme::after {
+  background: var(--pitch-ink);
+}
+:is(.game-panel, .mobile-section, .game-modal-panel, .mobile-bottom-sheet, .mobile-modal-panel,
+    .mini-game-board, .matchday-scoreboard, .achievement-popup-card, .mobile-action-bar,
+    .bracket-sticky-actions, [class^="bg-pitch-"], [class*=" bg-pitch-"])
+  :is(a, button).game-button--secondary {
+  background-color: var(--fl-raised) !important;
+  color: #ffffff !important;
+}
+/* Small row actions: white on dark panels, black on the pitch. */
+a.game-button--theme.game-button--sm,
+button.game-button--theme.game-button--sm {
+  background-color: var(--pitch-dark) !important;
+  color: #ffffff !important;
+}
+:is(.game-panel, .mobile-section, .game-modal-panel, .mobile-bottom-sheet, .mobile-modal-panel,
+    .mini-game-board, [class^="bg-pitch-"], [class*=" bg-pitch-"])
+  :is(a, button).game-button--theme.game-button--sm {
+  background-color: #ffffff !important;
+  color: var(--pitch-dark) !important;
+}
+/* Form submit (Guess) inside a board keeps the accent. */
+:is(.mini-game-board, .game-panel) button[type="submit"].game-button--theme.game-button--sm {
+  background-color: var(--theme-primary) !important;
+  color: var(--pitch-ink) !important;
+}
+
+/* Sticky phone action bar: a dark floating bar like the bottom nav. */
+.mobile-action-bar {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.mobile-action-bar__inner {
+  border-radius: 20px;
+  background: #0e0f10;
+  padding: 8px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.3);
+}
+@media (min-width: 640px) {
+  .mobile-action-bar__inner {
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+  }
+}
+
+/* ── Controls on the pitch ────────────────────────────────────────────── */
+.mode-toggle,
+.tab-group,
+.pitch-seg--on-dark {
+  background: rgb(14 15 16 / 0.92) !important;
+  box-shadow: none !important;
+}
+.fl-pill {
+  background: var(--pitch-dark);
+  color: #ffffff;
+}
+.game-input {
+  background: #0e0f10 !important;
+  color: #ffffff;
+}
+
+/* ── Heroes become headings straight on the pitch ─────────────────────── */
+.pitch-surface {
+  background: transparent !important;
+  border-radius: 0;
+  overflow: visible;
+}
+.pitch-hero {
+  padding-left: 0.25rem !important;
+  padding-right: 0.25rem !important;
+}
+.pitch-hero--page,
+.pitch-hero--slim {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+}
+.pitch-surface__mark {
+  color: rgb(var(--pitch-mark-rgb) / 0.1);
+}
+/* The Manager club header keeps a panel feel: it's a card of facts, not a title. */
+header.pitch-surface:not(.pitch-hero) {
+  padding-left: 0.25rem;
+}
+/* Sheets: dark panel with a plain title row (no lime strip inside a dark sheet). */
+.pitch-sheet-header {
+  color: #ffffff !important;
+  --on-fg: #ffffff;
+}
+.pitch-sheet-header .pitch-title {
+  color: #ffffff;
+}
+.pitch-sheet-header .pitch-chip {
+  background: var(--fl-raised);
+}
+.pitch-sheet-header .pitch-surface__mark {
+  display: none;
+}
+
+/* ── Modals: dark panel on a dimmed pitch ────────────────────────────── */
+.fl-backdrop,
+.game-modal-overlay {
+  background-color: rgb(0 0 0 / 0.62) !important;
+}
+.game-modal-panel,
+.mobile-bottom-sheet,
+.mobile-modal-panel,
+.achievement-popup-card {
+  background: #121314 !important;
+  border: 0 !important;
+}
+
+/* Bottom of every page: the bottom-nav spacer and footer sit on the pitch too. */
+.fl-bottom-nav-spacer {
+  background: transparent;
+}

@@ -61,6 +61,20 @@ function mixWithWhite(hex: string, t: number): string {
   return `#${out.join("")}`;
 }
 
+/** `a` of colour `x` over colour `y` (both #rrggbb). */
+function mixHex(x: string, y: string, a: number): string {
+  const px = x.replace("#", "");
+  const py = y.replace("#", "");
+  const out = [0, 2, 4].map((i) => {
+    const cx = Number.parseInt(px.slice(i, i + 2), 16);
+    const cy = Number.parseInt(py.slice(i, i + 2), 16);
+    return Math.round(cx * a + cy * (1 - a))
+      .toString(16)
+      .padStart(2, "0");
+  });
+  return `#${out.join("")}`;
+}
+
 /**
  * Tokens for the "pitch" surface (the theme-primary hero with mown stripes): the text colour on it
  * (the theme's own text-on-primary when that is AA, else whichever of near-black / white reads
@@ -69,6 +83,7 @@ function mixWithWhite(hex: string, t: number): string {
  */
 export function buildPitchTokens(theme: Pick<UiThemeDefinition, "primary" | "textOnPrimary">): {
   ink: string;
+  inkMuted: string;
   markRgb: string;
   primaryOnDark: string;
 } {
@@ -81,7 +96,17 @@ export function buildPitchTokens(theme: Pick<UiThemeDefinition, "primary" | "tex
   for (let t = 0.1; contrast(primaryOnDark, PITCH_DARK) < 4.5 && t <= 1; t += 0.1) {
     primaryOnDark = mixWithWhite(theme.primary, t);
   }
-  return { ink, markRgb, primaryOnDark };
+  // Secondary text straight on the pitch: the ink pulled ~30% toward the pitch colour, but never
+  // below AA (light inks on dark primaries need more of the ink to stay readable).
+  let inkMuted = ink;
+  for (let a = 0.7; a <= 1.0001; a += 0.05) {
+    const mixed = mixHex(ink, theme.primary, a);
+    if (contrast(mixed, theme.primary) >= 4.5) {
+      inkMuted = mixed;
+      break;
+    }
+  }
+  return { ink, inkMuted, markRgb, primaryOnDark };
 }
 
 /** All CSS custom properties for a Store UI theme + fixed mode/semantic tokens. */
@@ -118,6 +143,7 @@ export function buildThemeCssVars(theme: UiThemeDefinition): Record<string, stri
     "--theme-button-primary-text": pitch.ink,
     /* Pitch surface (the home Classic card's look, shared site-wide: see src/styles/pitch.css). */
     "--pitch-ink": pitch.ink,
+    "--pitch-ink-muted": pitch.inkMuted,
     "--pitch-mark-rgb": pitch.markRgb,
     "--theme-primary-on-dark": pitch.primaryOnDark,
     "--theme-button-primary-border": hexToRgba(theme.tertiary, 0.55),
