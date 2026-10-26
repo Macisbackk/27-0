@@ -57,6 +57,9 @@ jobs:
       - name: Squad chemistry + halfway call
         if: success() || failure()
         run: scripts/ci-run.sh "Squad chemistry + halfway call" npm run test:chemistry
+      - name: 27-0 season formula
+        if: success() || failure()
+        run: scripts/ci-run.sh "27-0 season formula" npm run test:sim
       - name: Share result text
         if: success() || failure()
         run: scripts/ci-run.sh "Share result text" npm run test:share
