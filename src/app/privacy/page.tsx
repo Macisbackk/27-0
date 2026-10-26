@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { StandardPageShell } from "@/components/ui/StandardPageShell";
+import { CONTACT_EMAIL } from "@/lib/contact";
 
 export const metadata: Metadata = {
   title: "Privacy policy — 27-0",
   description: "What 27-0 stores, why, and how to delete it.",
 };
 
-const CONTACT = "twentysevenzero@yahoo.com";
-const UPDATED = "22 October 2026";
+const CONTACT = CONTACT_EMAIL;
+const UPDATED = "26 October 2026";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -65,6 +66,28 @@ export default function PrivacyPage() {
           </p>
         </Section>
 
+        <Section title="Coach names, reports and hiding coaches">
+          <p>
+            Coach names are public, so names with swearing, slurs or sexual content are blocked when you choose one,
+            and any that get through are shown as &ldquo;Coach #1234&rdquo;.
+          </p>
+          <p>
+            Tap <strong>⋯</strong> next to a coach on any leaderboard to <strong>report</strong> them (offensive name,
+            cheating or something else) or <strong>hide</strong> them from your own leaderboards. A report stores your
+            account id, the coach reported, the reason and the time; only we can read reports. A name reported by
+            several players is hidden from everyone until we&rsquo;ve reviewed it. We review reports within 24 hours and
+            remove offending names and, where needed, the accounts behind them. Coaches you hide are saved with your
+            account and can be shown again from Settings.
+          </p>
+          <p>
+            To report anything else or something urgent, email{" "}
+            <a href={`mailto:${CONTACT}`} className="font-semibold text-theme-primary underline-offset-2 hover:underline">
+              {CONTACT}
+            </a>
+            .
+          </p>
+        </Section>
+
         <Section title="Who handles the data">
           <ul className="list-disc space-y-1 pl-5">
             <li>
@@ -109,7 +132,7 @@ export default function PrivacyPage() {
 
         <Section title="Contact">
           <p>
-            Questions about privacy:{" "}
+            Questions about privacy, or to report a player or content:{" "}
             <a href={`mailto:${CONTACT}`} className="font-semibold text-theme-primary underline-offset-2 hover:underline">
               {CONTACT}
             </a>

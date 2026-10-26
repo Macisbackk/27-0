@@ -1,3 +1,34 @@
+/**
+ * SEASON ENGINE — the 27-0 formula (Classic and Era Classic league seasons)
+ * ========================================================================
+ * Plain English: every league game is decided by how much stronger your XIII is than the
+ * opposition. The stronger your squad (for the mode you are playing), the better your chance
+ * of each win, and so of 27-0. Nothing else secretly moves the odds.
+ *
+ * The maths (constants and helpers live in ./sim-formula.ts):
+ *
+ *   1. Draft quality   q = (avg squad rating − TYPICAL[mode]) / (ELITE[mode] − TYPICAL[mode])
+ *        Classic: TYPICAL 83.1, ELITE 85.5   Era: TYPICAL 86.6, ELITE 88.5
+ *        (mean ratings of a typical draft and of a best-card-every-spin draft, by simulation).
+ *        Era cards are rated higher, so raw ratings are never compared across modes.
+ *   2. Team strength   S = 80 + 8·q + (chemistry − typical chemistry for the mode: 0 / 0.6)
+ *                         + halfway-call delta for that round (0 in rounds 1–14)
+ *   3. Strength gap    g = S − opponent club rating (Wigan 84 … Wakefield 66) ± 1 home/away
+ *   4. Win chance      p = 1 / (1 + e^(−g/3)), clamped to [1%, 99.5%]
+ *   5. Result          one seeded draw per match: win if draw < p. Same seed + squad + call ⇒
+ *                      same season; the halfway call never touches rounds 1–14.
+ *   27-0 chance = product of p over the 27 fixtures — see perfectSeasonChance().
+ *
+ * Calibration (4,000 seasons per tier, scripts/sim-era-classic-perfect-season.ts), Classic / Era:
+ *   best card every spin   26% / 31% 27-0, ~25 wins     one of the best two  3.8% / 5.7%, 20–22 wins
+ *   typical (random) draft 0.8% / 3.1%, ~18 wins        weakest card every spin  0% / 0%, ~8 wins
+ * (Era's typical rate sits higher because which club-season you spin matters more there than
+ * which card you take — a lucky typical Era draft is as strong as a near-perfect one.)
+ * Upsets, blowouts and scorelines are flavour picked from the same gap. The chance is for
+ * tests/calibration only — players are never shown a percentage.
+ * Super Sam Hallas Mode still forces every win; Joe Mellor Mode still gives Joe every try.
+ * Draft Mode, cup ties and play-offs keep their own knockout tuning below (resolveOutcome).
+ */
 import seedrandom from "seedrandom";
 import { getPlayableClubNames } from "../clubs/super-league-display";
 import type { SquadSlot } from "../types";
@@ -32,6 +63,15 @@ import {
 } from "./league-replacement";
 import { getDreamTeamTablePosition } from "./league-table";
 import { computeChemistry } from "./chemistry";
+import {
+  getOpponentRating,
+  getSimFormulaMode,
+  getStrengthGap,
+  getTeamStrength,
+  perfectChanceFromProbabilities,
+  winProbability,
+  type SimFormulaMode,
+} from "./sim-formula";
 import {
   applyHalfwayScoreEffect,
   getHalfwayRatingDelta,
@@ -620,6 +660,13 @@ export interface SimulateFixtureOptions {
    * (squad chemistry + mid-season fork). Never shown as the squad's OVR.
    */
   ratingAdjustment?: number;
+  /**
+   * League 27-0 formula: the win chance for this fixture (from sim-formula). When set, the
+   * result is one seeded draw against it — no other bonuses, floors or upset flips.
+   */
+  winProbabilityOverride?: number;
+  /** Strength gap behind winProbabilityOverride — drives upset/blowout flavour only. */
+  strengthGapOverride?: number;
 }
 
 export interface SimulateSeasonOptions {
@@ -871,6 +918,20 @@ function resolveOutcome(
   return { won, isUpset, ratingGap };
 }
 
+/**
+ * League formula result: one seeded draw against the fixture's win chance. A result the
+ * formula gave less than a 30% chance is flagged as an upset (for match flavour/insights).
+ */
+function resolveFormulaOutcome(
+  p: number,
+  gap: number,
+  rng: () => number
+): { won: boolean; isUpset: boolean; ratingGap: number } {
+  const won = rng() < p;
+  const isUpset = won ? p < 0.3 : p > 0.7;
+  return { won, isUpset, ratingGap: gap };
+}
+
 function buildFixtureList(
   rng: () => number,
   opponentClubs: string[]
@@ -1091,7 +1152,10 @@ export function simulateOneFixture(
       options.currentSeasonOnly
     );
   const forcedWin = options.forceUserWin === true;
-  const resolved = forcedWin
+  const formulaP = forcedWin ? undefined : options.winProbabilityOverride;
+  const resolved = formulaP !== undefined
+    ? resolveFormulaOutcome(formulaP, options.strengthGapOverride ?? 0, rng)
+    : forcedWin
     ? {
         won: true,
         isUpset: false,
@@ -1111,8 +1175,9 @@ export function simulateOneFixture(
       );
   const { won: initialWon, isUpset: initialUpset, ratingGap } = resolved;
 
+  // Formula fixtures: the margin for blowout/upset flavour is the strength gap itself.
   const matchType = pickMatchType(
-    strength,
+    formulaP !== undefined ? opponentStrength + ratingGap : strength,
     opponentStrength,
     ratingGap,
     initialWon,
@@ -1213,6 +1278,16 @@ export function simulateSeason(
   const chemistryBonus =
     options.applyChemistry === false ? 0 : computeChemistry(squad).bonus;
   const halfwayCall: HalfwayCallChoice = options.halfwayCall ?? "none";
+  // Classic / Era Classic league: the 27-0 formula decides every result (Draft Mode keeps its own).
+  const formulaFixtures =
+    draftMode || forceUndefeated
+      ? null
+      : getSeasonFixtureChances(squad, seed, {
+          mode: getSimFormulaMode(currentSeasonOnly),
+          forceOpponentClub: forcedClub,
+          applyChemistry: options.applyChemistry,
+          halfwayCall,
+        });
 
   let wins = 0;
   let losses = 0;
@@ -1228,9 +1303,17 @@ export function simulateSeason(
     const round = i + 1;
     const ratingAdjustment =
       chemistryBonus + getHalfwayRatingDelta(halfwayCall, round);
+    const formula = formulaFixtures?.[i];
     const simOptions: SimulateFixtureOptions = {
       ...fixtureOptions,
       ...(ratingAdjustment !== 0 ? { ratingAdjustment } : {}),
+      ...(formula
+        ? {
+            winProbabilityOverride: formula.winProbability,
+            strengthGapOverride: formula.gap,
+            opponentRatingOverride: formula.opponentRating,
+          }
+        : {}),
       ...(draftMode
         ? {
             opponentRatingOverride: getOpponentMatchRating(
@@ -1308,6 +1391,133 @@ export function simulateSeason(
   partialResult.leaguePosition = getDreamTeamTablePosition(partialResult, seed);
 
   return partialResult;
+}
+
+export interface FixtureChance {
+  round: number;
+  opponent: string;
+  isHome: boolean;
+  /** Your mode-normalised team strength for this round (incl. chemistry + halfway call). */
+  teamStrength: number;
+  opponentRating: number;
+  /** Strength gap = team strength − opponent rating ± home advantage. */
+  gap: number;
+  winProbability: number;
+}
+
+export interface SeasonChanceOptions {
+  /** Defaults to Era Classic. */
+  mode?: SimFormulaMode;
+  forceOpponentClub?: string;
+  /** Squad chemistry counts (default true). */
+  applyChemistry?: boolean;
+  halfwayCall?: HalfwayCallChoice;
+}
+
+/** Per-fixture win chances for a seeded league season — exactly what simulateSeason draws against. */
+export function getSeasonFixtureChances(
+  squad: SquadSlot[],
+  seed: string,
+  options: SeasonChanceOptions = {}
+): FixtureChance[] {
+  const mode = options.mode ?? "era";
+  const { schedule } = buildSeasonSchedule(seed, {
+    forceOpponentClub: options.forceOpponentClub?.trim() || undefined,
+  });
+  const avgRating = getAverageSquadRating(squad);
+  const chemistry =
+    options.applyChemistry === false ? 0 : computeChemistry(squad).bonus;
+  return schedule.map(({ opponent, isHome }, i) => {
+    const round = i + 1;
+    const teamStrength = getTeamStrength({
+      avgRating,
+      mode,
+      chemistry,
+      ratingDelta: getHalfwayRatingDelta(options.halfwayCall, round),
+    });
+    const opponentRating = getOpponentRating(opponent);
+    const gap = getStrengthGap(teamStrength, opponentRating, isHome);
+    return {
+      round,
+      opponent,
+      isHome,
+      teamStrength,
+      opponentRating,
+      gap,
+      winProbability: winProbability(gap),
+    };
+  });
+}
+
+/**
+ * Chance of going 27-0 in a league season (0…1). With a seed it is exact for that season's
+ * fixture list (what the sim will draw against); without one it averages over every possible
+ * league (each club replaced in turn, each opponent home and away). Tests/calibration only —
+ * players are never shown the number.
+ */
+export function perfectSeasonChance(
+  squad: SquadSlot[],
+  mode: SimFormulaMode,
+  options: Omit<SeasonChanceOptions, "mode"> & { seed?: string } = {}
+): number {
+  if (options.seed) {
+    return perfectChanceFromProbabilities(
+      getSeasonFixtureChances(squad, options.seed, { ...options, mode }).map(
+        (f) => f.winProbability
+      )
+    );
+  }
+  return perfectSeasonChanceForStrength(
+    getTeamStrength({
+      avgRating: getAverageSquadRating(squad),
+      mode,
+      chemistry: options.applyChemistry === false ? 0 : computeChemistry(squad).bonus,
+    }),
+    options.forceOpponentClub
+  );
+}
+
+/**
+ * 27-0 chance for a team strength (the league scale from sim-formula), averaged over every
+ * possible league: each club replaced by Dream Team in turn, 27 games spread evenly over the
+ * opponents, half at home. Mode-free — the mode only matters in getTeamStrength.
+ */
+export function perfectSeasonChanceForStrength(
+  teamStrength: number,
+  forceOpponentClub?: string
+): number {
+  const forced = forceOpponentClub?.trim();
+  const leagues = forced
+    ? [[forced]]
+    : OPPONENT_CLUBS.map((replaced) => OPPONENT_CLUBS.filter((club) => club !== replaced));
+  let total = 0;
+  for (const opponents of leagues) {
+    const share = SEASON_GAMES / (opponents.length * 2);
+    let logChance = 0;
+    for (const club of opponents) {
+      const rating = getOpponentRating(club);
+      logChance +=
+        share *
+        (Math.log(winProbability(getStrengthGap(teamStrength, rating, true))) +
+          Math.log(winProbability(getStrengthGap(teamStrength, rating, false))));
+    }
+    total += Math.exp(logChance);
+  }
+  return total / leagues.length;
+}
+
+/**
+ * Fast W/L record for a league season — the same seeded draws simulateSeason makes, without
+ * scorelines, try scorers or the table. For calibration scripts and tests (thousands of seasons).
+ */
+export function simulateSeasonRecord(
+  squad: SquadSlot[],
+  seed: string,
+  options: SeasonChanceOptions = {}
+): ("W" | "L")[] {
+  return getSeasonFixtureChances(squad, seed, options).map((f) =>
+    seedrandom(`${seed}-match-${f.round}`)() < f.winProbability ? "W" : "L"
+  );
 }
 
 function formatLeaguePositionLabel(position: number): string {

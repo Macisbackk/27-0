@@ -1,53 +1,79 @@
 /**
- * Monte Carlo for Era Classic balance: draft a XIII from the real era spin pools (one random
- * club-season per slot) and play the 27-round season.
- *   random — any eligible player from the spun side; good — one of the two best; best — the best.
- * A strong-but-not-perfect era squad should go 27-0 only rarely.
- * Run: RUNS=300 bun scripts/sim-era-classic-perfect-season.ts
+ * 27-0 formula calibration — Classic (current cards) and Era Classic.
+ *
+ * Drafts squads through the real slot-spin flow (scripts/lib/sim-draft.ts) per tier:
+ *   weak   — lowest offered card every spin
+ *   random — any offered card (typical draft)
+ *   good   — one of the two best offered (strong draft)
+ *   best   — best offered card every spin (near-perfect draft)
+ * then plays SEASONS_PER_SQUAD seeded league seasons per squad with the fast record sim
+ * (identical draws to simulateSeason) and FULL_SEASONS full simulateSeason runs per tier for
+ * league position. Also prints the mean squad ratings that anchor the formula
+ * (SIM_FORMULA_MODE_SCALE in src/lib/game/sim-formula.ts) so they can be re-tuned after a
+ * ratings change.
+ *
+ * Run: RUNS=400 SEASONS_PER_SQUAD=10 FULL_SEASONS=40 bun scripts/sim-era-classic-perfect-season.ts
  */
-import seedrandom from "seedrandom";
+import { draftSquad, type DraftMode, type DraftStrategy } from "./lib/sim-draft";
+import {
+  perfectSeasonChance,
+  simulateSeason,
+  simulateSeasonRecord,
+} from "../src/lib/game/season-simulation";
 import { clearSeasonSquadStrengthCache } from "../src/lib/game/opponent-squad-strength";
-import { simulateSeason } from "../src/lib/game/season-simulation";
-import { createEmptySquad, signPlayerToSlot } from "../src/lib/positions";
-import { getEraModeTeamYearPools } from "../src/lib/game/player-pool-eligibility";
-import { getPlayerById } from "../src/lib/players";
-import { getPlayerEligiblePositions } from "../src/lib/players/player-positions";
+import { computeChemistry } from "../src/lib/game/chemistry";
 import { getAverageSquadRating } from "../src/lib/squad-analysis";
-import type { Player } from "../src/lib/types";
-const RUNS = Number(process.env.RUNS ?? 300);
-const pools = getEraModeTeamYearPools().map(p => p.playerIds.map(id => getPlayerById(id)!).filter(Boolean));
-const all = pools.flat();
-const hist: Record<number, number> = {};
-for (const p of all) hist[p.peakRating] = (hist[p.peakRating] ?? 0) + 1;
-console.log("era pool cards", all.length, "mean", (all.reduce((s,p)=>s+p.peakRating,0)/all.length).toFixed(2), "≥90:", (all.filter(p=>p.peakRating>=90).length/all.length*100).toFixed(1)+"%", "≥95:", (all.filter(p=>p.peakRating>=95).length/all.length*100).toFixed(1)+"%");
-function draft(rng: () => number, mode: "best" | "good" | "random") {
-  let squad = createEmptySquad();
-  const used = new Set<string>();
-  for (const slot of squad) {
-    for (let tries = 0; tries < 30; tries++) {
-      const pool = pools[Math.floor(rng() * pools.length)]!;
-      const eligible = pool.filter(p => !used.has(p.id) && getPlayerEligiblePositions(p).includes(slot.position));
-      if (!eligible.length) continue;
-      eligible.sort((a,b)=>b.peakRating-a.peakRating);
-      const pick = mode === "best" ? eligible[0]! : mode === "good" ? eligible[Math.min(eligible.length-1, Math.floor(rng()*2))]! : eligible[Math.floor(rng()*eligible.length)]!;
-      used.add(pick.id);
-      squad = signPlayerToSlot(squad, pick, slot.slotIndex) ?? squad;
-      break;
+
+const RUNS = Number(process.env.RUNS ?? 400);
+const SEASONS_PER_SQUAD = Number(process.env.SEASONS_PER_SQUAD ?? 10);
+const FULL_SEASONS = Number(process.env.FULL_SEASONS ?? 40);
+const MODES = (process.env.MODES ?? "classic,era").split(",") as DraftMode[];
+const TIERS: DraftStrategy[] = ["weak", "random", "good", "best"];
+
+for (const mode of MODES) {
+  for (const tier of TIERS) {
+    let rating = 0;
+    let chemistry = 0;
+    let analytic = 0;
+    let perfect = 0;
+    let wins = 0;
+    let seasons = 0;
+    let position = 0;
+    let full = 0;
+    for (let i = 0; i < RUNS; i++) {
+      const squad = draftSquad(`cal-${mode}-${tier}-${i}`, mode, tier);
+      rating += getAverageSquadRating(squad);
+      chemistry += computeChemistry(squad).bonus;
+      analytic += perfectSeasonChance(squad, mode);
+      for (let s = 0; s < SEASONS_PER_SQUAD; s++) {
+        const record = simulateSeasonRecord(squad, `season-${mode}-${tier}-${i}-${s}`, { mode });
+        const w = record.filter((r) => r === "W").length;
+        wins += w;
+        seasons++;
+        if (w === 27) perfect++;
+      }
+      if (i < FULL_SEASONS) {
+        clearSeasonSquadStrengthCache();
+        const result = simulateSeason(squad, `season-${mode}-${tier}-${i}-0`, {
+          currentSeasonOnly: mode === "classic",
+        });
+        position += result.leaguePosition;
+        full++;
+      }
     }
+    console.log(
+      JSON.stringify({
+        mode,
+        tier,
+        squads: RUNS,
+        seasons,
+        avgRating: +(rating / RUNS).toFixed(2),
+        avgChemistry: +(chemistry / RUNS).toFixed(2),
+        perfectPct: +((perfect / seasons) * 100).toFixed(2),
+        formulaPerfectPct: +((analytic / RUNS) * 100).toFixed(2),
+        avgWins: +(wins / seasons).toFixed(1),
+        avgLeaguePosition: full ? +(position / full).toFixed(1) : null,
+      })
+    );
   }
-  return squad;
-}
-for (const mode of ["random","good","best"] as const) {
-  const rng = seedrandom(`era-${mode}`);
-  let perfect = 0, wins = 0, games = 0, avg = 0, top = 0;
-  for (let i = 0; i < RUNS; i++) {
-    const squad = draft(rng, mode);
-    avg += getAverageSquadRating(squad);
-    clearSeasonSquadStrengthCache();
-    const r = simulateSeason(squad, `era-${mode}-${i}`, { currentSeasonOnly: false });
-    wins += r.wins; games += r.wins + r.losses + (r.draws ?? 0);
-    if (r.wins === 27) perfect++;
-    if (r.leaguePosition === 1) top++;
-  }
-  console.log(JSON.stringify({ mode, runs: RUNS, avgSquadRating: +(avg/RUNS).toFixed(2), winPct: +(wins/games*100).toFixed(1), perfectPct: +(perfect/RUNS*100).toFixed(1), firstPct: +(top/RUNS*100).toFixed(1) }));
 }

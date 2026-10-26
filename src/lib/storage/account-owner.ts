@@ -20,6 +20,7 @@ const ACCOUNT_KEYS: readonly string[] = [
   "27-0-daily-attempt",
   STORAGE_KEYS.uiThemeStore,
   STORAGE_KEYS.cosmeticsStore,
+  STORAGE_KEYS.hiddenCoaches,
   STORAGE_KEYS.squadBook,
   STORAGE_KEYS.uiThemeCssCache,
   STORAGE_KEYS.boostInventory,

@@ -32,6 +32,8 @@ export const LEADERBOARD_SCHEMA_VERSION = 7;
 
 export interface LeaderboardTrackerEntry {
   username: string;
+  /** Supabase user id when the entry came from the online board (report / hide actions). */
+  userId?: string;
   squadValue: number;
   achievedAt: string;
   difficulty: GameDifficulty;
@@ -62,6 +64,8 @@ export interface LeaderboardTrackerEntry {
 export interface LeaderboardTrackerRow {
   rank: number;
   username: string;
+  /** Supabase user id when known (report / hide actions). */
+  userId?: string;
   statDisplay: string;
   achievedAt: string;
   difficulty: GameDifficulty;
@@ -487,6 +491,7 @@ export function rankByTracker(
   const rows = sorted.slice(0, limit).map((entry, index) => ({
     rank: index + 1,
     username: entry.username,
+    userId: entry.userId,
     achievedAt: entry.achievedAt,
     difficulty: entry.difficulty,
     mode: entry.mode,
@@ -501,6 +506,7 @@ export function rankByTracker(
       rows.push({
         rank: userIndex + 1,
         username: userEntry.username,
+        userId: userEntry.userId,
         achievedAt: userEntry.achievedAt,
         difficulty: userEntry.difficulty,
         mode: userEntry.mode,

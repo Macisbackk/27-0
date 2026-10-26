@@ -1,4 +1,5 @@
 import { getCachedCoachName, isLoggedIn } from "../auth-session";
+import { isNameAllowed, OFFENSIVE_NAME_MESSAGE } from "../moderation/name-filter";
 
 export const COACH_NAME_MIN_LENGTH = 3;
 export const COACH_NAME_MAX_LENGTH = 16;
@@ -38,6 +39,10 @@ export function validateCoachName(raw: string): CoachNameValidation {
       valid: false,
       error: "Use letters, numbers and underscores only.",
     };
+  }
+  // Coach names are public on the leaderboards: no slurs, swearing or sexual terms.
+  if (!isNameAllowed(trimmed)) {
+    return { valid: false, error: OFFENSIVE_NAME_MESSAGE };
   }
 
   return { valid: true, value: trimmed };

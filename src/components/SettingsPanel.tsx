@@ -17,8 +17,11 @@ import { SHOW_TIP_LINKS } from "@/lib/native/platform";
 import { GameButton } from "@/components/ui/GameButton";
 import { TYPO } from "@/lib/ui/typography";
 import { GAME_VERSION } from "../../data/version";
+import { CONTACT_EMAIL, contactMailto } from "@/lib/contact";
+import { unhideCoach, useHiddenCoachesList } from "@/lib/storage/hidden-coaches";
 
-const SUGGESTIONS_MAIL = "mailto:twentysevenzero@yahoo.com?subject=27-0%20Suggestion";
+const SUGGESTIONS_MAIL = contactMailto("27-0 Suggestion");
+const REPORT_MAIL = contactMailto("27-0 Report a player or content");
 const COFFEE_URL = "https://buymeacoffee.com/twentysevenzero";
 const X_URL = "https://x.com/27and0";
 
@@ -130,6 +133,7 @@ export function SettingsPanel() {
   const [themeName, setThemeName] = useState("Default");
   const [resetState, setResetState] = useState<"idle" | "confirm" | "busy" | "done" | "error">("idle");
   const [mailState, setMailState] = useState<"idle" | "busy" | "sent" | "error">("idle");
+  const hiddenCoaches = useHiddenCoachesList();
 
   useEffect(() => {
     setMuted(isSoundMuted());
@@ -251,6 +255,35 @@ export function SettingsPanel() {
         )}
       </Group>
 
+      {isLoggedIn || hiddenCoaches.length > 0 ? (
+        <div id="hidden-coaches" className="scroll-mt-24">
+          <Group title="Hidden coaches">
+            {hiddenCoaches.length === 0 ? (
+              <Row
+                label="No hidden coaches"
+                hint="Tap ⋯ next to a coach on any leaderboard to hide them from your boards or report them."
+              />
+            ) : (
+              hiddenCoaches.map((c) => (
+                <Row key={c.userId} label={c.name} hint="Hidden from your leaderboards.">
+                  <GameButton
+                    variant="secondary"
+                    size="sm"
+                    fullWidth={false}
+                    onClick={() => {
+                      playUiClick();
+                      unhideCoach(c.userId);
+                    }}
+                  >
+                    Show
+                  </GameButton>
+                </Row>
+              ))
+            )}
+          </Group>
+        </div>
+      ) : null}
+
       <Group title="Saved progress">
         <Row
           label="Reset career stats"
@@ -289,6 +322,12 @@ export function SettingsPanel() {
       <Group title="Help & feedback">
         <LinkRow href="/#how-to-play" label="How to play" />
         <LinkRow href={SUGGESTIONS_MAIL} label="Send a suggestion" hint="Ideas and bug reports welcome." external />
+        <LinkRow
+          href={REPORT_MAIL}
+          label="Report a player or content"
+          hint={`Offensive names, cheating or anything else: ${CONTACT_EMAIL}. Or tap ⋯ next to a coach on a leaderboard.`}
+          external
+        />
         {SHOW_TIP_LINKS ? <LinkRow href={COFFEE_URL} label="Buy Me a Coffee" hint="Support 27-0." external /> : null}
         <LinkRow href={X_URL} label="Follow @27and0 on X" external />
         <LinkRow href="/privacy" label="Privacy policy" />
