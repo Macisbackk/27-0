@@ -150,6 +150,7 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
 
   const club = [
     { href: "/store", label: "Store", icon: <BagIcon /> },
+    { href: "/squad-book", label: "Squad Book", icon: <BookIcon /> },
     { href: "/leaderboard", label: "Leaderboard", icon: <TableIcon /> },
     { href: "/profile", label: "Coach Profile", icon: <PersonIcon /> },
     { href: "/settings", label: "Settings", icon: <CogIcon /> },
@@ -406,6 +407,12 @@ const PuzzleIcon = () => (
 const BagIcon = () => (
   <Icon>
     <ShopGlyph />
+  </Icon>
+);
+const BookIcon = () => (
+  <Icon>
+    <path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6.5A2.5 2.5 0 0 0 4 21.5" />
+    <path d="M20 19v2.5H6.5" />
   </Icon>
 );
 const TableIcon = () => (

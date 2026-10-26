@@ -129,6 +129,12 @@ async function hydrateAchievementsFromCloud(): Promise<void> {
   await refreshAchievementsFromCloud();
 }
 
+/** Squad Book (lazy: it pulls in the player registry, which the auth shell shouldn't load up front). */
+async function hydrateSquadBookFromCloud(): Promise<void> {
+  const { mergeSquadBookFromCloud } = await import("./squad-book");
+  await mergeSquadBookFromCloud();
+}
+
 async function hydrateDailyChallengeFromCloud(): Promise<void> {
   await mergeDailyFromCloud();
 }
@@ -229,6 +235,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         hydrateAchievementsFromCloud(),
         hydrateDailyChallengeFromCloud(),
         hydrateCareerFromCloud(),
+        hydrateSquadBookFromCloud(),
       ]);
       for (const r of [statsHydrate, fundsHydrate, themeHydrate, ...otherHydrates]) {
         if (r.status === "rejected") console.error("[auth] cloud hydrate step failed:", r.reason);

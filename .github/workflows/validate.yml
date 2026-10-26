@@ -57,6 +57,11 @@ jobs:
       - name: Squad chemistry + halfway call
         if: success() || failure()
         run: scripts/ci-run.sh "Squad chemistry + halfway call" npm run test:chemistry
+      - uses: oven-sh/setup-bun@v2
+        if: success() || failure()
+      - name: Squad Book
+        if: success() || failure()
+        run: scripts/ci-run.sh "Squad Book" npm run test:squadbook
 
   build:
     runs-on: ubuntu-latest

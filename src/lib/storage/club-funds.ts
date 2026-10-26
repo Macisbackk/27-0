@@ -41,6 +41,7 @@ export function trimPaidRunIds(ids: string[], now: Date = new Date()): string[] 
       id.startsWith("achievement-") ||
       id.startsWith("theme-") ||
       id.startsWith("cosmetic-") ||
+      id.startsWith("squadbook:") ||
       id.startsWith("login-welcome")
     ) {
       keep.push(id);

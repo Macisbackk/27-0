@@ -18,6 +18,7 @@ import { TYPO } from "@/lib/ui/typography";
 import { CoachCard } from "@/components/CoachCard";
 import { titleName } from "@/lib/cosmetics";
 import { useCosmetics } from "@/lib/storage/cosmetics-store";
+import { useSquadBook } from "@/lib/squad-book";
 
 /**
  * Coach Profile — one page for everything about you: Career Stats, Achievements and Account.
@@ -49,6 +50,7 @@ function tabFromHash(): ProfileTab {
 export default function ProfilePage() {
   const { loading, isLoggedIn, coachName, email, profile, signOut } = useAuth();
   const cosmetics = useCosmetics();
+  const squadBookCount = Object.keys(useSquadBook().cards).length;
   const equippedTitle = titleName(cosmetics.equipped.title);
   const [tab, setTab] = useState<ProfileTab>("stats");
   const [resetBusy, setResetBusy] = useState(false);
@@ -143,6 +145,19 @@ export default function ProfilePage() {
               to save it online and join the leaderboards.
             </p>
           ) : null}
+        </div>
+
+        <div className="mt-3 flex justify-center">
+          <Link
+            href="/squad-book"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-pitch-900 px-4 text-sm font-semibold text-white ring-1 ring-white/10 transition hover:ring-theme-primary/40"
+          >
+            Squad Book
+            <span className="tabular-nums text-[color:var(--fl-muted)]">
+              {squadBookCount} card{squadBookCount === 1 ? "" : "s"}
+            </span>
+            <span aria-hidden>→</span>
+          </Link>
         </div>
 
         <div className="mt-4 flex justify-center">
