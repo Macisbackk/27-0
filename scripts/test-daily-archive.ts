@@ -135,9 +135,9 @@ async function main(): Promise<void> {
   check(playoff.indexOf("if (isSideMode)") > 0 && playoff.indexOf("if (isSideMode)") < playoff.indexOf("recordPlayoffCompletion("), "play-off recording skipped for side modes");
   check(/if \(isSideMode\) playoffFundsAwardedRef\.current = true/.test(board), "play-off Club Funds skipped for side modes");
   check(/isSideMode =\s*sideMode != null && !dailyChallengeMode && !weeklyChallengeMode/.test(board), "a side mode is never also the Daily or Weekly");
-  check(/resumeModeKey = isSlotRecruitMode && !isSideMode/.test(board), "archive runs never take over the Daily's saved run");
+  check(/resumeModeKey = isSlotRecruitMode (&& !challenge )?&& !isSideMode/.test(board), "archive runs never take over the Daily's saved run");
   const page = readFileSync(join(__dirname, "..", "src", "app", "play", "PlayPageClient.tsx"), "utf8");
-  check(/sideModeAllowed = !isDaily && !isWeekly/.test(page), "/play?daily=1&archive=… plays the real Daily, never both");
+  check(/sideModeAllowed = (!hasChallengeParam && )?!isDaily && !isWeekly/.test(page), "/play?daily=1&archive=… plays the real Daily, never both");
   // The claim only happens for the real Daily.
   check(/if \(dailyChallengeMode\) setDailyAttemptCounts\(claimDailyChallengeAttempt/.test(board), "only the real Daily claims the day's attempt");
 
