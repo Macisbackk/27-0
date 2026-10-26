@@ -116,6 +116,23 @@ export function PlayPageClient() {
   const difficulty: GameDifficulty = ballKnower ? "HARD" : "NORMAL";
   const mode: GameMode = "CLASSIC";
 
+  // Per-variant browser tab title (the route's static metadata says "Classic" for all of them).
+  const tabTitle = isDaily
+    ? "Daily Challenge · 27-0"
+    : isWeekly
+      ? "Weekly Challenge · 27-0"
+      : ballKnower
+        ? "Ball Knower · 27-0"
+        : wantsSuperSamHallas || wantsJoeMellor
+          ? null
+          : wantsNormalEra
+            ? "Era Classic · 27-0"
+            : "Classic · 27-0";
+  useEffect(() => {
+    if (!mounted || !tabTitle) return;
+    document.title = tabTitle;
+  }, [mounted, tabTitle]);
+
   // The board reads saved runs and Store boosts from this device on its first render; the server
   // can't, so render it only once mounted (otherwise React hydration error #418 on /play).
   if (!mounted || ballKnower === null) return <p className="p-6 text-center text-pitch-400">Loading…</p>;

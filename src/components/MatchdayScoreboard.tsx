@@ -24,7 +24,8 @@ export function MatchdayScoreboard({
   hardMode = false,
 }: MatchdayScoreboardProps) {
   const showRating = !hardMode && filledCount > 0;
-  const showChemistry = showRating && chemistryBonus > 0;
+  // Always shown once someone is signed (not in Ball Knower), so links are visible while drafting.
+  const showChemistry = showRating;
 
   // One compact strip so the whole team sheet fits on a phone screen above the action bar.
   return (
@@ -64,7 +65,9 @@ export function MatchdayScoreboard({
         {showChemistry ? (
           <p className="mt-1 flex justify-end">
             <span
-              className="inline-flex items-center rounded-full bg-lime-400/15 px-2 py-0.5 text-[11px] font-bold leading-none text-lime-300"
+              className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold leading-none ${
+                chemistryBonus > 0 ? "bg-lime-400/15 text-lime-300" : "bg-pitch-950 text-[color:var(--fl-muted)]"
+              }`}
               title={`${chemistryLinks} linked ${chemistryLinks === 1 ? "pair" : "pairs"} — same club or era year, side by side`}
               aria-label={`Chemistry ${formatChemistryBonus(chemistryBonus)} from ${chemistryLinks} linked ${chemistryLinks === 1 ? "pair" : "pairs"}`}
             >

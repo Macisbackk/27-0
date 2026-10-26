@@ -151,12 +151,12 @@ async function playClassic(route, label) {
   let reviewed = false;
   for (let i = 0; i < 60; i++) {
     const text = await page.locator("main").innerText().catch(() => "");
-    if (/Regular Season Record|League Position|Season review/i.test(text) && !/Simulate season/i.test(text)) {
+    if (/Regular Season Record|League Position|Season review/i.test(text) && !/Kick off the season|Simulate season/i.test(text)) {
       reviewed = true;
       break;
     }
     const tapped = await tapFirst(page, [
-      /Skip boost|Continue without boost/i, /Auto.?fill squad/i, /Simulate season/i,
+      /Skip boost|Continue without boost/i, /Auto.?fill squad/i, /Kick off the season|Simulate season/i,
       // Round-14 fork ("Halfway. What's the plan?") — take a plan when it is up.
       /Push for the top two/i, /Rest the stars/i, /Chase the points difference/i,
       /Skip/i, /Sim(ulate)? (to )?(end|all|rest)/i,
@@ -180,7 +180,7 @@ await page.goto(`${BASE}/play?e2e=1`, { waitUntil: "domcontentloaded" });
 await settle(page);
 await tapFirst(page, [/Skip boost|Continue without boost/i]);
 for (let i = 0; i < 6; i++) await page.getByRole("button", { name: /Auto.?fill squad/i }).first().click({ force: true, noWaitAfter: true, timeout: 2000 }).catch(() => {});
-for (let i = 0; i < 6; i++) await page.getByRole("button", { name: /Simulate season/i }).first().click({ force: true, noWaitAfter: true, timeout: 2000 }).catch(() => {});
+for (let i = 0; i < 6; i++) await page.getByRole("button", { name: /Kick off the season|Simulate season/i }).first().click({ force: true, noWaitAfter: true, timeout: 2000 }).catch(() => {});
 await page.waitForTimeout(2500);
 note("Classic: rapid Auto Fill / Simulate taps");
 
