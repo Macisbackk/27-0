@@ -24,8 +24,6 @@ export const QUIZ_CATEGORIES = [
   "general",
   "internationals",
   "laws",
-  "womens",
-  "wheelchair",
   "nrl",
 ] as const;
 export type QuizCategory = (typeof QUIZ_CATEGORIES)[number];

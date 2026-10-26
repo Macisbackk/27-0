@@ -195,3 +195,7 @@ at least 8 categories per run; Team Challenge avoids back-to-back categories.
   no questions ask them. The 2026 men's World Cup is still being played and is not asked about.
 - Squad-number and current-roster questions (259) come from the game's squad data, not a web source; their
   `source` names the data file.
+
+## Update (26 Oct 2026, owner request)
+
+All 42 women's and wheelchair rugby league questions were removed as too niche, and those two categories dropped. Bank now 1,604 questions.
