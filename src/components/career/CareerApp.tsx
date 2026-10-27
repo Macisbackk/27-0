@@ -20,8 +20,9 @@ import { ClubBadge, Stars, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
 import { CareerTutorial } from "./CareerTutorial";
 import { PitchMark } from "@/components/ui/PitchHero";
 import { BoardGlyph } from "@/components/icons/rugby-icons";
+import { setManagerNav, type ManagerTab } from "@/lib/ui/manager-nav";
 
-type Tab = "match" | "team" | "table" | "club";
+type Tab = ManagerTab;
 
 function HubHeader() {
   const { state } = useCareer();
@@ -53,6 +54,7 @@ function HubHeader() {
   );
 }
 
+
 function CareerRouter() {
   const { ready, state } = useCareer();
   const [tab, setTab] = useState<Tab>("match");
@@ -70,6 +72,23 @@ function CareerRouter() {
   // A new career always opens on the Match tab.
   const seed = state?.seed;
   useEffect(() => setTab("match"), [seed]);
+
+  // On phones the bottom bar shows the hub's sections while the hub is on screen.
+  const hubShowing =
+    ready &&
+    !!state &&
+    state.phase !== "review" &&
+    state.phase !== "departures" &&
+    state.phase !== "transfers" &&
+    !(marketOpen && isWindowOpen(state));
+  useEffect(() => {
+    if (!hubShowing) {
+      setManagerNav(null);
+      return;
+    }
+    setManagerNav({ tab, setTab });
+  }, [hubShowing, tab]);
+  useEffect(() => () => setManagerNav(null), []);
 
   const sheets = (
     <>
@@ -105,6 +124,8 @@ function CareerRouter() {
     <div className={CAREER_PAGE_CLASS}>
       <CareerBackLink />
       <HubHeader />
+      {/* Phones use the bottom bar for these (BottomNav reads lib/ui/manager-nav). */}
+      <div className="hidden sm:block">
       <GameSegmentedControl<Tab>
         options={[
           { id: "match", label: "Match" },
@@ -117,6 +138,7 @@ function CareerRouter() {
         fullWidth
         ariaLabel="Manager sections"
       />
+      </div>
       <div key={tab} className="fl-rise">
       {tab === "match" ? <MatchTab onOpenMarket={() => setMarketOpen(true)} /> : null}
       {tab === "team" ? <TeamTab /> : null}
