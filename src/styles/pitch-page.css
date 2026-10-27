@@ -251,7 +251,9 @@ body {
 .app-header,
 .sidebar-panel,
 [class^="bg-pitch-"],
-[class*=" bg-pitch-"] {
+[class*=" bg-pitch-"],
+[class*=" bg-[rgba("],
+[class*=" bg-black"] {
   --btn-bg: var(--theme-primary);
   --btn-bg-hover: var(--theme-secondary);
   --btn-fg: var(--pitch-ink);
@@ -437,4 +439,14 @@ header.pitch-surface:not(.pitch-hero) {
 }
 [class*="bg-pitch-800/"]:not([class*="hover:bg-pitch-800/"]) {
   background-color: #232527 !important;
+}
+
+/* Review screens' sticky phone bar (Play again / Play-offs): a dark floating bar on the pitch. */
+.sticky.bottom-0[class*="bg-[rgba("] {
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  border: 0 !important;
+  border-radius: 20px;
+  background: #0e0f10 !important;
 }
