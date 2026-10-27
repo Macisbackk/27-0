@@ -118,7 +118,7 @@ await shot(phone, "42-modes", "/modes");
 await shot(phone, "43-settings", "/settings");
 await shot(phone, "44-quiz", "/quiz");
 await shot(phone, "45-how-to-play", "/", async (page) => {
-  await page.getByText("How to play", { exact: true }).first().click({ timeout: 5000 });
+  await page.locator("summary", { hasText: "How to play" }).first().click({ timeout: 5000 });
   await page.waitForTimeout(500);
   await page.locator("#how-to-play").scrollIntoViewIfNeeded();
 }, true);
