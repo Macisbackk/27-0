@@ -1,0 +1,9 @@
+0 problem(s)
+
+
+Checks:
+Wordle: played
+Grid: played
+Quiz: played
+Corrupted all 12 saved keys and revisited every route
+Wrong-shaped JSON in every key, revisited every route
