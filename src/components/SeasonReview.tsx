@@ -1,5 +1,7 @@
 "use client";
 
+import { SHOW_SHARE_RESULT_UI } from "@/lib/feature-flags";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { GameDifficulty, GameMode, SquadSlot } from "@/lib/types";
@@ -524,7 +526,7 @@ export function SeasonReview({
                     {nextDailyIn ? ` · Next Daily in ${nextDailyIn}` : ""}
                   </p>
                 ) : null}
-                <div className="mx-auto w-full max-w-xl">{shareAction}</div>
+                {SHOW_SHARE_RESULT_UI ? <div className="mx-auto w-full max-w-xl">{shareAction}</div> : null}
               </motion.div>
             ) : null}
 
