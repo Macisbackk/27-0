@@ -83,7 +83,7 @@ export function Departures() {
                         </span>
                         <span className="block text-[11px] text-gray-500">
                           New deal: {years} yr{years > 1 ? "s" : ""}
-                          {keep.includes(p.id) ? <span className="font-bold text-theme-primary"> · Worth keeping</span> : null}
+                          {keep.includes(p.id) ? <span className="whitespace-nowrap font-bold text-theme-primary"> · Worth keeping</span> : null}
                         </span>
                       </span>
                       <RatingPill rating={p.rating} />

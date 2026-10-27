@@ -80,7 +80,7 @@ export function ResultStrip({ state, fixture, flash }: { state: CareerState; fix
         <ClubBadge club={opp} size="md" />
         <div className="min-w-0 flex-1">
           <Eyebrow>Last result · {fixture.label}</Eyebrow>
-          <p className="mt-0.5 truncate text-[16px] font-bold leading-tight text-white">
+          <p className="mt-0.5 text-[16px] font-bold leading-tight text-white">
             <span className={tone}>{verdict} {us}–{them}</span>{" "}
             <span className="font-semibold text-gray-300">{isHome ? "v" : "at"} <ClubLink clubId={opp.id}>{opp.name}</ClubLink></span>
           </p>
