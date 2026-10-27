@@ -68,7 +68,7 @@ interface HubState {
     score: number | null;
     resetsIn: string;
   } | null;
-  career: { club: string; short: string; primary: string; secondary: string; detail: string } | null;
+  career: { club: string; short: string; primary: string; secondary: string; detail: string; next: string } | null;
   classicBest: string | null;
   eraBest: string | null;
   wordleDone: boolean;
@@ -85,6 +85,25 @@ function greeting(hour: number): string {
   return "Evening, coach";
 }
 
+/**
+ * Where the career is, for the Resume card: "Round 12 · 3rd", "Pre-season", "Summer window".
+ * Kept inline (no engine import) so the home page stays light.
+ */
+function careerNextLine(s: NonNullable<ReturnType<typeof loadLocalCareer>>): string {
+  if (s.phase === "review") return "Season review";
+  if (s.phase === "departures" || s.phase === "transfers") return "Summer window";
+  if (s.matchdayIndex === 0 && !(s.preseason?.year === s.year && s.preseason.done)) return "Pre-season";
+  const md = s.calendar[s.matchdayIndex];
+  const rows = [...(s.tables[s.clubs[s.userClubId]!.division] ?? [])].sort(
+    (a, b) => b.pts - a.pts || b.pf - b.pa - (a.pf - a.pa) || b.pf - a.pf || a.clubId.localeCompare(b.clubId)
+  );
+  const i = rows.findIndex((r) => r.clubId === s.userClubId);
+  const n = i + 1;
+  const suffix = n % 100 >= 11 && n % 100 <= 13 ? "th" : ["th", "st", "nd", "rd"][n % 10] ?? "th";
+  const pos = i >= 0 && (rows[i]?.p ?? 0) > 0 ? ` · ${n}${suffix}` : "";
+  return `${md?.label ?? "Season"}${pos}`;
+}
+
 function readHub(): HubState {
   let career: HubState["career"] = null;
   try {
@@ -97,6 +116,7 @@ function readHub(): HubState {
         primary: club.primary,
         secondary: club.secondary,
         detail: `${s.year} · ${DIVISION_LABEL[club.division]}`,
+        next: careerNextLine(s),
       };
   } catch {
     career = null;
@@ -448,7 +468,7 @@ export function HomeModeSelector() {
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
           <span className="font-cond text-[21px] font-bold leading-tight">Manager Mode</span>
           <span className="truncate text-[13px] text-[color:var(--fl-muted)]">
-            {hub?.career ? `${hub.career.club} · ${hub.career.detail.split(" · ")[0]}` : "Run a real club."}
+            {hub?.career ? `${hub.career.club} · ${hub.career.next}` : "Run a real club."}
           </span>
         </span>
         <span

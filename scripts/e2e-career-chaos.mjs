@@ -96,16 +96,18 @@ try {
   const pageB = await newPage(context);
   await pageB.goto(`${BASE}/manager`, { waitUntil: "networkidle" });
   await pageB.getByRole("button", { name: /Play match|Continue/ }).first().waitFor({ timeout });
-  const headerB1 = await pageB.locator("header", { hasText: /Super League|Championship/ }).first().innerText();
+  // v1.29: the round and position live in the Season progress strip under the header.
+  const progressB = pageB.getByRole("region", { name: "Season progress" });
+  const headerB1 = await progressB.innerText();
   await page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window)$/ }).first().click();
   await page.waitForTimeout(600);
   await pageB.waitForTimeout(600);
-  const headerB2 = await pageB.locator("header", { hasText: /Super League|Championship/ }).first().innerText();
+  const headerB2 = await progressB.innerText();
   if (headerB1 === headerB2) errors.push("two tabs: tab B did not pick up progress from tab A");
   await pageB.close();
   step("Second tab follows the first");
 
-  // 4) Championship career driven only by big-game sims / Continue, through the no-game weeks.
+  // 4) Championship career driven by "Sim to…" (the next decision) and Quick sim; no-game weeks play through.
   await page.getByRole("tab", { name: "Club" }).click();
   await page.getByRole("button", { name: "Start a new career" }).click();
   await page.getByRole("button", { name: "End career" }).click();
@@ -113,8 +115,11 @@ try {
   let guard = 0;
   while (guard++ < 80) {
     if (await page.getByText(/season review/i).first().isVisible().catch(() => false)) break;
+    const simTo = page.getByRole("button", { name: /^Sim to / }).first();
     const next = page.getByRole("button", { name: /^(Quick sim|Continue|Shut the window|On to the play-offs|On to the Million Pound Game|Watch the play-offs|On to the Grand Final|Watch the Grand Final)$/ }).first();
-    if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
+    if (await simTo.isVisible().catch(() => false)) await simTo.click().catch(() => {});
+    else if (await next.isVisible().catch(() => false)) await next.click().catch(() => {});
+    if (await page.getByText("No game for you this week").isVisible().catch(() => false)) errors.push("a no-game week was shown (should play through)");
     await page.waitForTimeout(120);
   }
   await page.getByText(/season review/i).first().waitFor({ timeout: 30_000 });

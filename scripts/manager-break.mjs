@@ -32,9 +32,9 @@ page.on("console", (m) => {
 });
 
 let shotN = 0;
-const shot = async (name) => {
+const shot = async (name, fullPage = false) => {
   shotN++;
-  await page.screenshot({ path: `${OUT}/mb-${String(shotN).padStart(2, "0")}-${name}.png`, fullPage: false }).catch(() => {});
+  await page.screenshot({ path: `${OUT}/mb-${String(shotN).padStart(2, "0")}-${name}.png`, fullPage }).catch(() => {});
 };
 const save = () => page.evaluate((k) => JSON.parse(localStorage.getItem(k) || "null"), SAVE_KEY);
 async function noSideways(where) {
@@ -137,14 +137,15 @@ try {
   // v1.18: two friendlies come pre-picked; the full list is behind "Change".
   await pre.getByRole("button", { name: "Change" }).click();
   await pre.getByRole("button", { name: /^Play 2/ }).dblclick();
+  // v1.29: the results show on the Round 1 screen; the double tap on Play 2 must not start Round 1.
   await page.getByRole("region", { name: "Pre-season results" }).waitFor({ timeout });
+  await btn("Play match").waitFor({ timeout });
+  await page.waitForTimeout(300);
+  if (await visible(btn("Skip to full time"))) fail("double tap on Play 2 started Round 1 live");
+  if ((await save()).matchdayIndex !== 0) fail("double tap on Play 2 played a round");
   await reloadAndCheck("friendly results", "Pre-season results");
   await shot("preseason-results");
-  // Hammer Start the season: it must only move one stage (to Round 1, not past it).
-  for (let i = 0; i < 4; i++) await btn("Start the season").click({ force: true, noWaitAfter: true }).catch(() => {});
-  await btn("Play match").waitFor({ timeout });
-  if ((await save()).matchdayIndex !== 0) fail("hammering Start the season played a round");
-  step("Pre-season → results → Round 1, each on its own; reloads keep the stage; double taps safe");
+  step("Pre-season → Round 1 with the results above it; reloads keep the stage; double taps safe");
 
   // Back / forward from the hub.
   await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
@@ -165,6 +166,24 @@ try {
   await shot("team-contracts");
   await page.getByRole("tab", { name: "Match" }).click();
   step("Hub tabs fit 320px; contracts on the Team tab");
+  await shot("hub-round1", true);
+  // v1.29: one Quick sim, then the result strip and "Sim to…" (the next decision).
+  for (let i = 0; i < 20 && !(await btn("Quick sim").isEnabled().catch(() => false)); i++) await page.waitForTimeout(100);
+  await btn("Quick sim").click();
+  await page.getByRole("region", { name: "Last result" }).waitFor({ timeout }).catch(() => fail("no Last result strip after a Quick sim"));
+  await page.waitForTimeout(500);
+  await shot("hub-result", true);
+  const simTo = page.getByRole("button", { name: /^Sim to / }).first();
+  if (await visible(simTo)) {
+    const md0 = (await save()).matchdayIndex;
+    await page.waitForTimeout(500);
+    await simTo.click();
+    await page.waitForTimeout(800);
+    const md1 = (await save()).matchdayIndex;
+    if (md1 <= md0 + 1) fail(`Sim to… only moved ${md1 - md0} week(s)`);
+    await shot("hub-after-sim-to", true);
+    step(`Sim to… played ${md1 - md0} weeks and stopped`);
+  } else fail("no Sim to… button on a league week");
 
   // Season: walk every stage, reloading and double-tapping at each one.
   const seen = new Set();
@@ -196,10 +215,13 @@ try {
         if (await visible(btn("Quick sim"))) fail("Quick sim visible on the league-over stage");
       }
       const go = btn(/^(On to the play-offs|On to the Million Pound Game|Watch the play-offs)$/);
+      const watching = await visible(btn("Watch the play-offs"));
       const md = (await save()).matchdayIndex;
       await go.dblclick();
       await page.waitForTimeout(300);
-      if ((await save()).matchdayIndex !== md) fail("passing the league-over stage also played the play-offs");
+      // v1.29: "Watch the play-offs" plays them (you're not in them); "On to…" must stop at your tie.
+      if (!watching && (await save()).matchdayIndex !== md) fail("passing the league-over stage also played the play-offs");
+      if (!watching && (await visible(btn("Skip to full time")))) fail("double tap on the league-over stage started the tie live");
       continue;
     }
     if (await visible(page.getByRole("region", { name: "Promotion and relegation" }))) {
@@ -209,10 +231,11 @@ try {
         await noSideways("Promotion");
         await shot("promotion");
       }
+      const watchingGf = await visible(btn("Watch the Grand Final"));
       const md = (await save()).matchdayIndex;
       await btn(/^(On to the Grand Final|Watch the Grand Final)$/).dblclick();
       await page.waitForTimeout(300);
-      if ((await save()).matchdayIndex !== md) fail("passing the promotion stage also played the Grand Final");
+      if (!watchingGf && (await save()).matchdayIndex !== md) fail("passing the promotion stage also played the Grand Final");
       continue;
     }
     // A double tap that slipped into a live match: finish it and carry on (and flag it).
@@ -237,6 +260,7 @@ try {
   await page.getByText(/season review/i).first().waitFor({ timeout: 30000 });
   await reloadAndCheck("Season review");
   await shot("review");
+  await shot("review-full", true);
   step(`Season played through every stage (${[...seen].join(", ")}) with reloads and double taps`);
 
   // Departures.
@@ -245,11 +269,12 @@ try {
   await noSideways("Departures");
   await reloadAndCheck("Departures");
   await shot("departures");
+  await shot("departures-full", true);
   const s0 = await save();
   const expiring = s0.departures?.expiring ?? [];
   if (expiring.length) {
     const budget0 = s0.budget;
-    const renew = btn(/^Renew /);
+    const renew = btn(/^Renew · /);
     if (await renew.isEnabled().catch(() => false)) {
       await renew.dblclick();
       await page.waitForTimeout(400);

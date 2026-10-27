@@ -106,6 +106,7 @@ async function main(): Promise<void> {
       case "daily-challenge": return season({ daily: true });
       case "era-run": return season({ era: true });
       case "seasons-played": return season({});
+      case "manager-wins": return { kind: "manager", won: true };
       default: throw new Error(`no passing event for template ${m.templateId}`);
     }
   }
@@ -133,6 +134,7 @@ async function main(): Promise<void> {
       case "daily-challenge": return season({ daily: false });
       case "era-run": return season({ era: false });
       case "seasons-played": return { kind: "wordle", won: true };
+      case "manager-wins": return { kind: "manager", won: false };
       default: throw new Error(`no failing event for template ${m.templateId}`);
     }
   }
@@ -179,6 +181,7 @@ async function main(): Promise<void> {
     check(new Set(a.map((m) => m.id)).size === 3, `${key} missions distinct`);
     check(new Set(a.map((m) => m.category)).size === 3, `${key} missions from three categories`);
     a.forEach((m) => seenTemplates.add(m.templateId));
+    if (key < missions.MANAGER_MISSIONS_FROM) check(!a.some((m) => m.templateId === "manager-wins"), `${key} no Manager mission before it joins the pool`);
   }
   const enabledIds = DAILY_MISSION_TEMPLATES.filter((t) => t.enabled !== false).map((t) => t.id);
   check(enabledIds.every((id) => seenTemplates.has(id)), "every enabled template appears within 400 days");

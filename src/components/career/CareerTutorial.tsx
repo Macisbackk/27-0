@@ -4,7 +4,7 @@ import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { BodyPortal } from "@/components/ui/BodyPortal";
 import { useModalA11y } from "@/hooks/useModalA11y";
-import { DIVISION_LABEL, formatMoney, type CareerState } from "@/lib/career";
+import { DIVISION_LABEL, boardGoal, formatMoney, type CareerState } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playUiClick } from "@/lib/sound";
 import { ClubBadge } from "./bits";
@@ -13,32 +13,20 @@ type Step = { title: string; body: string; tab?: "match" | "team" | "table" | "c
 
 function steps(s: CareerState): Step[] {
   const club = s.clubs[s.userClubId]!;
-  const sl = club.division === "super-league";
+  const goal = boardGoal(s);
   return [
     {
       title: `Welcome to ${club.name}, gaffer`,
-      body: sl
-        ? `You're in ${DIVISION_LABEL[club.division]} with ${formatMoney(s.budget)} to spend. Win trophies to unlock legends for every career.`
-        : `You're in the ${DIVISION_LABEL[club.division]} with ${formatMoney(s.budget)} to spend. Finish 1st to go up. 2nd plays the Million Pound Game.`,
+      body: `${DIVISION_LABEL[club.division]}, ${formatMoney(s.budget)} to spend. The board wants you to ${goal.label.charAt(0).toLowerCase()}${goal.label.slice(1)}.`,
     },
     {
       title: "Match day",
-      body: "Play match to make the big calls live. Quick sim plays it in a second. Your game plan changes how it goes.",
+      body: "Play match to make the big calls live, or sim it. Sim to… jumps to your next big moment. Your best XIII is picked for you.",
       tab: "match",
     },
     {
-      title: "Pick your XIII",
-      body: "Tap a shirt to swap a player in. Or tap Auto-pick best.",
-      tab: "team",
-    },
-    {
-      title: "Pre-season and transfers",
-      body: "Play up to 2 friendlies before Round 1 for sharpness and cash. In the season you can only trade on Deadline Day, before Round 16.",
-      tab: "match",
-    },
-    {
-      title: "Table and club",
-      body: "Table shows the league. Club has your challenges, money, records and the Legend Vault. Good luck!",
+      title: "Transfers and the club",
+      body: "Buy and sell on Deadline Day (before Round 16) and in the summer. Club has your challenges, money and the Legend Vault.",
       tab: "club",
     },
   ];

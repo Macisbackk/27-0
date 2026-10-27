@@ -4,7 +4,7 @@ import { useState } from "react";
 import { GameButton } from "@/components/ui/GameButton";
 import { GameModal } from "@/components/ui/GameModal";
 import { useArmed } from "@/hooks/useArmed";
-import { contractLabel, formatMoney, newDealLength, renewalFee } from "@/lib/career";
+import { contractLabel, formatMoney, newDealLength, recommendedRenewals, renewalFee } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playContractSigned, playUiClick, playWarning } from "@/lib/sound";
 import { Card, Eyebrow, RatingPill, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
@@ -26,6 +26,8 @@ export function Departures() {
   const decisionsArmed = useArmed(400, (d?.renewed?.length ?? 0) + (d?.released?.length ?? 0), { armedOnMount: true });
   const expiring = (d?.expiring ?? []).map((id) => s.players[id]).filter((p): p is NonNullable<typeof p> => !!p);
   const renewed = (d?.renewed ?? []).map((id) => s.players[id]).filter((p): p is NonNullable<typeof p> => !!p);
+  const keep = recommendedRenewals(s);
+  const keepFee = keep.reduce((t, id) => t + (s.players[id] ? renewalFee(s.players[id]!) : 0), 0);
   const academy = (d?.academy ?? []).map((id) => s.players[id]).filter((p): p is NonNullable<typeof p> => !!p);
 
   return (
@@ -43,6 +45,27 @@ export function Departures() {
         {expiring.length ? (
           <>
             <p className="mt-1 text-xs text-gray-400">Renew for a one-off fee, or let him go.</p>
+            {keep.length ? (
+              <div className="mt-3">
+                <GameButton
+                  size="sm"
+                  disabled={!decisionsArmed}
+                  onClick={() => {
+                    let failed = false;
+                    for (const id of keep) if (renew(id)) failed = true;
+                    if (failed) {
+                      playWarning();
+                      setError("Not enough budget to renew them all.");
+                    } else {
+                      playContractSigned();
+                      setError(null);
+                    }
+                  }}
+                >
+                  {`${keep.length === 1 ? `Keep ${s.players[keep[0]!]?.name ?? "him"}` : `Keep the best ${keep.length}`} · ${formatMoney(keepFee)}`}
+                </GameButton>
+              </div>
+            ) : null}
             <ul className="mt-3 space-y-2">
               {expiring.map((p) => {
                 const fee = renewalFee(p);
@@ -52,12 +75,15 @@ export function Departures() {
                     <div className="flex items-center gap-3">
                       <span className="w-8 text-[11px] font-bold uppercase text-gray-400">{p.pos}</span>
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate font-semibold text-white">{p.name}</span>
+                        <span className="block truncate font-semibold text-white">
+                          {p.name}
+                        </span>
                         <span className="block truncate text-[11px] text-gray-500">
                           Age {p.age} · {p.apps} apps · {p.tries} tries
                         </span>
                         <span className="block text-[11px] text-gray-500">
                           New deal: {years} yr{years > 1 ? "s" : ""}
+                          {keep.includes(p.id) ? <span className="whitespace-nowrap font-bold text-theme-primary"> · Worth keeping</span> : null}
                         </span>
                       </span>
                       <RatingPill rating={p.rating} />

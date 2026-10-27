@@ -36,7 +36,8 @@ import {
 } from "./midseason";
 import { playFriendlies as playFriendliesPure, type FriendlyOption } from "./preseason";
 import { releaseExpiring, renewContract, type ContractError } from "./contracts";
-import { markStageSeen, type StageKey } from "./stages";
+import { markStageSeen, simToNextStop, skipIdleWeeks, type StageKey } from "./stages";
+import { reportMissionEvent } from "../daily-missions";
 import {
   LEGACY_KEY,
   SAVE_KEY,
@@ -62,6 +63,8 @@ interface CareerContextValue {
   play: () => void;
   simToBigGame: () => void;
   simSeason: () => void;
+  /** Sim every week up to the next decision (Deadline Day, a cup or play-off tie, a season stage). */
+  simToStop: () => void;
   /** Finish the matchday with the result of a match the user played live. */
   playLive: (played: PlayedResult) => void;
   setTactic: (t: Tactic) => void;
@@ -97,6 +100,18 @@ interface CareerContextValue {
 }
 
 const CareerContext = createContext<CareerContextValue | null>(null);
+
+/** Daily Missions: one event per game of yours that `next` has played since `prev`. */
+function reportManagerGames(prev: CareerState, next: CareerState) {
+  if (prev.seed !== next.seed || prev.year !== next.year) return;
+  for (let i = prev.matchdayIndex; i < next.matchdayIndex; i++) {
+    const f = next.calendar[i]?.fixtures.find((x) => x.home === next.userClubId || x.away === next.userClubId);
+    if (!f?.result) continue;
+    const us = f.home === next.userClubId ? f.result.homeScore : f.result.awayScore;
+    const them = f.home === next.userClubId ? f.result.awayScore : f.result.homeScore;
+    reportMissionEvent({ kind: "manager", won: us > them });
+  }
+}
 
 export function CareerProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
@@ -144,6 +159,8 @@ export function CareerProvider({ children }: { children: ReactNode }) {
   /** Bank a just-finished season into the legacy exactly once. */
   const settle = useCallback(
     (next: CareerState) => {
+      const prev = stateRef.current;
+      if (prev && next !== prev) reportManagerGames(prev, next);
       if (next.phase === "review" && next.lastOutcome && !next.lastOutcome.banked) {
         const { legacy: banked, breaks } = bankSeason(legacyRef.current, next, next.lastOutcome);
         const outcome: SeasonOutcome = { ...next.lastOutcome, banked: true };
@@ -247,14 +264,18 @@ export function CareerProvider({ children }: { children: ReactNode }) {
       setRecordBreaks(null);
       commit(null);
     },
+    // Weeks with nothing for you (no game, no stage) play straight through after each action.
     play: () => {
-      if (stateRef.current) settle(playMatchday(stateRef.current));
+      if (stateRef.current) settle(skipIdleWeeks(playMatchday(stateRef.current)));
     },
     playLive: (played) => {
-      if (stateRef.current) settle(playMatchday(stateRef.current, played));
+      if (stateRef.current) settle(skipIdleWeeks(playMatchday(stateRef.current, played)));
+    },
+    simToStop: () => {
+      if (stateRef.current) settle(skipIdleWeeks(simToNextStop(stateRef.current)));
     },
     closeDeadline: () => {
-      if (stateRef.current) commit(closeDeadlineDay(stateRef.current));
+      if (stateRef.current) settle(skipIdleWeeks(closeDeadlineDay(stateRef.current)));
     },
     tickDeadline: (minutes) => {
       const s = stateRef.current;
@@ -279,12 +300,13 @@ export function CareerProvider({ children }: { children: ReactNode }) {
       const s = stateRef.current;
       if (s) commit(rejectOfferPure(s, offerId));
     },
+    // The friendly results show on the Round 1 screen, so they don't need a stage of their own.
     playFriendlies: (picks) => {
-      if (stateRef.current) commit(playFriendliesPure(stateRef.current, picks));
+      if (stateRef.current) commit(markStageSeen(playFriendliesPure(stateRef.current, picks), "preseason"));
     },
     passStage: (key) => {
       const s = stateRef.current;
-      if (s) commit(markStageSeen(s, key));
+      if (s) settle(skipIdleWeeks(markStageSeen(s, key)));
     },
     renew: (playerId) => {
       const s = stateRef.current;
@@ -306,7 +328,7 @@ export function CareerProvider({ children }: { children: ReactNode }) {
       if (s && !s.tutorialDone) commit({ ...s, tutorialDone: true, updatedAt: Date.now() });
     },
     simToBigGame: () => {
-      if (stateRef.current) settle(simToNextBigGame(stateRef.current));
+      if (stateRef.current) settle(skipIdleWeeks(simToNextBigGame(stateRef.current)));
     },
     simSeason: () => {
       if (stateRef.current) settle(simRestOfSeason(stateRef.current));

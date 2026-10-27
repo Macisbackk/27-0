@@ -198,10 +198,10 @@ try {
   if (gained > 90_000) fail(`friendlies paid ${gained} (double-tap paid twice?)`);
   await noSideways(page, "manager preseason @320");
   step("Friendlies: max two, double-tap plays once, paid once");
-  if (await page.getByRole("button", { name: "Play match" }).isVisible().catch(() => false)) fail("Round 1 showing under the friendly results");
-  await page.getByRole("button", { name: "Start the season" }).dblclick();
+  // v1.29: the friendly results sit above Round 1; the double tap on Play must not kick it off.
   await page.getByRole("button", { name: "Play match" }).waitFor({ timeout });
-  step("Friendly results, then Round 1 on its own (double-tap safe)");
+  if ((await page.evaluate((k) => JSON.parse(localStorage.getItem(k) || "{}").matchdayIndex, SAVE_KEY)) !== 0) fail("double tap on Play friendlies played Round 1");
+  step("Friendly results above Round 1 (double-tap safe)");
 
   // Drive to Deadline Day with Quick sim; nothing should get past it until the window is shut.
   let reached = false;

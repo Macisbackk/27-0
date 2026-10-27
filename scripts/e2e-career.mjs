@@ -117,14 +117,14 @@ try {
   await pre.getByRole("button", { name: "Change" }).click();
   if ((await pre.getByRole("button", { pressed: true }).count()) !== 2) throw new Error("Expected two pre-picked friendlies");
   await pre.getByRole("button", { name: /^Play 2/ }).click();
+  // v1.29: the friendly results sit on the Round 1 screen (no extra "Start the season" tap).
   await page.getByRole("region", { name: "Pre-season results" }).waitFor({ timeout });
-  if (await page.getByRole("button", { name: "Play match" }).isVisible().catch(() => false)) {
-    throw new Error("Round 1 showing under the pre-season results");
-  }
-  await shot("preseason-results");
-  await clickButton("Start the season");
   await page.getByRole("button", { name: "Play match" }).waitFor({ timeout });
-  step("Pre-season: played two friendlies, then Round 1 on its own");
+  await shot("preseason-results");
+  if (!(await page.getByRole("region", { name: "Season progress" }).getByText(/Board:/).isVisible().catch(() => false))) {
+    throw new Error("Season progress strip (board target) missing on the hub");
+  }
+  step("Pre-season: played two friendlies, results shown above Round 1; board target on the hub");
   await shot("hub-match");
 
   await clickButton("Play match");
@@ -246,7 +246,7 @@ try {
   await clickButton("Next: retirements and contracts");
   await page.getByRole("heading", { name: "Comings and goings" }).waitFor({ timeout });
   await shot("departures");
-  const renewBtn = page.getByRole("button", { name: /^Renew / }).first();
+  const renewBtn = page.getByRole("button", { name: /^Renew · / }).first();
   if (await renewBtn.isVisible().catch(() => false)) {
     if (await renewBtn.isEnabled()) {
       await renewBtn.click();

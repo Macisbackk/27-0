@@ -5,9 +5,9 @@
  * counts down by one. When it hits zero at your club you decide: renew (pay a one-off
  * signing-on fee for a fresh 1–3 year deal) or let him go for nothing. AI clubs just renew.
  */
-import { formatMoney, playerValue } from "./players";
+import { autoPickLineup, formatMoney, playerValue } from "./players";
 import { rngFor } from "./rng";
-import { repairLineup } from "./season";
+import { repairLineup, squadOf } from "./season";
 import type { CareerPlayer, CareerState } from "./types";
 
 /** Seasons left on a deal, including the current one. Older saves had none: derive a stable 1–3. */
@@ -98,4 +98,30 @@ export function releaseExpiring(state: CareerState, playerId: string): CareerSta
   s.news = [`${p?.name ?? "A player"} leaves at the end of his contract.`, ...s.news].slice(0, 30);
   s.updatedAt = Date.now();
   return s;
+}
+
+/**
+ * Out-of-contract players worth keeping, best first, within the budget: anyone in the best XIII
+ * from the squad as it stands, or a young player with room to grow. A suggestion only — the
+ * manager still taps to renew them.
+ */
+export function recommendedRenewals(state: CareerState): string[] {
+  const d = state.departures;
+  if (state.phase !== "departures" || !d?.expiring.length) return [];
+  const squad = squadOf(state, state.userClubId);
+  const best = new Set(autoPickLineup(squad));
+  const worth = d.expiring
+    .map((id) => state.players[id])
+    .filter((p): p is CareerPlayer => !!p)
+    .filter((p) => best.has(p.id) || (p.age <= 23 && p.potential >= p.rating + 4))
+    .sort((a, b) => b.rating - a.rating);
+  const out: string[] = [];
+  let left = state.budget;
+  for (const p of worth) {
+    const fee = renewalFee(p);
+    if (fee > left) continue;
+    left -= fee;
+    out.push(p.id);
+  }
+  return out;
 }

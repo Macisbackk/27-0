@@ -7,7 +7,7 @@ import { ShareSeasonButton } from "@/components/ShareSeasonButton";
 import { GameButton } from "@/components/ui/GameButton";
 import { useArmed } from "@/hooks/useArmed";
 import { isLoggedIn } from "@/lib/auth-session";
-import { DIVISION_LABEL, TROPHY_LABEL, formatMoney, ordinal } from "@/lib/career";
+import { DIVISION_LABEL, TROPHY_LABEL, boardTargetLabel, formatMoney, legendCatalog, ordinal, seasonIncome, squadOf, wageBill } from "@/lib/career";
 import { useCareer } from "@/lib/career/context";
 import { playPerfectSeason, playPromotion, playSeasonComplete, playSeasonReviewMajor, playWarning } from "@/lib/sound";
 import { Card, ClubBadge, Eyebrow, CAREER_PAGE_CLASS, CareerBackLink } from "./bits";
@@ -53,6 +53,27 @@ export function SeasonReview() {
     else playSeasonComplete();
   }, [o]);
 
+  // The board's verdict and a reason to play next season.
+  const boardMet = o.boardTarget ? o.position <= o.boardTarget : false;
+  const boardSize = s.tables[o.division]?.length || 12;
+  const nextBudget = s.budget + seasonIncome(s) - wageBill(squadOf(s, s.userClubId));
+  const hook = o.trophies.includes("grand-final")
+    ? "Champions. Can you defend the title?"
+    : o.promoted
+      ? "Super League awaits. Can you stay up?"
+      : o.relegated
+        ? "Bounce straight back: win the Championship."
+        : club.division === "super-league"
+          ? o.position <= 4
+            ? "So close. Can you win the Grand Final?"
+            : "Next: crack the top 4 and reach Old Trafford."
+          : o.position <= 2
+            ? "One step away. Go up next year."
+            : "Next: push for promotion.";
+  const affordableLegend = legendCatalog()
+    .filter((l) => !legacy.unlockedLegends.includes(l.id) && l.unlockCost <= legacy.legacyPoints)
+    .sort((a, b) => b.peak - a.peak)[0]?.name;
+
   const headline = o.trophies.includes("grand-final")
     ? "Super League Champions!"
     : o.trophies.includes("perfect-season")
@@ -92,6 +113,27 @@ export function SeasonReview() {
           </ul>
         </Card>
       ) : null}
+
+      <Card className="border-theme-primary/40">
+        <Eyebrow>Next season · {o.year + 1}</Eyebrow>
+        {o.boardTarget ? (
+          <p className="mt-2 flex items-center justify-between gap-3 text-sm">
+            <span className="min-w-0 text-gray-300">
+              <span className="font-semibold text-white">Board:</span> {boardTargetLabel(o.division, o.boardTarget, boardSize)}
+            </span>
+            <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${boardMet ? "bg-success/15 text-success" : "bg-amber-300/15 text-amber-200"}`}>
+              {boardMet ? "Target met" : "Missed"}
+            </span>
+          </p>
+        ) : null}
+        <p className="mt-2 font-display text-xl font-bold leading-tight text-white">{hook}</p>
+        <p className="mt-1 text-sm text-gray-300">
+          {DIVISION_LABEL[club.division]} · budget about {formatMoney(Math.max(0, nextBudget))}
+        </p>
+        {affordableLegend ? (
+          <p className="mt-2 text-sm text-accent-gold">You have the Legacy points to unlock {affordableLegend} in the Legend Vault.</p>
+        ) : null}
+      </Card>
 
       <Card>
         <dl className="grid grid-cols-2 gap-4 text-sm">
