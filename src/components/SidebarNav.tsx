@@ -18,7 +18,7 @@ import {
   playUiClick,
   toggleSoundMuted,
 } from "@/lib/sound";
-import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
+import { SHOW_DAILY_CHALLENGE_UI, SHOW_WEEKLY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { SHOW_TIP_LINKS } from "@/lib/native/platform";
 import {
   CoffeeIcon,
@@ -203,11 +203,13 @@ export function SidebarNav({ open, onClose }: SidebarNavProps) {
                         Daily Challenge
                       </MenuLink>
                     </li>
-                    <li>
-                      <MenuLink href={getWeeklyChallengeHref()} active={isWeekly} icon={<CupIcon />} onClick={handleNavClick} dot="bg-accent-gold">
-                        Weekly Challenge
-                      </MenuLink>
-                    </li>
+                    {SHOW_WEEKLY_CHALLENGE_UI ? (
+                      <li>
+                        <MenuLink href={getWeeklyChallengeHref()} active={isWeekly} icon={<CupIcon />} onClick={handleNavClick} dot="bg-accent-gold">
+                          Weekly Challenge
+                        </MenuLink>
+                      </li>
+                    ) : null}
                   </ul>
                 </section>
               ) : null}

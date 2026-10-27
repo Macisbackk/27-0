@@ -14,6 +14,7 @@ import {
   getWeeklyChallengeScenario,
   isWeeklyChallengeActive,
 } from "@/lib/weekly-challenge";
+import { SHOW_WEEKLY_CHALLENGE_UI } from "@/lib/feature-flags";
 
 interface GameStarterProps {
   mode: GameMode;
@@ -56,6 +57,7 @@ export function GameStarter({
     !joeMellorMode &&
     !superSamHallasMode &&
     !dailyChallengeMode &&
+    SHOW_WEEKLY_CHALLENGE_UI &&
     isWeeklyChallengeActive({ weekly: searchParams.get("weekly") });
 
   // Daily / Weekly lock Current/Era from their scenario (URL era=1 is set by href).

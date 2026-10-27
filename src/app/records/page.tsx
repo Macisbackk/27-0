@@ -175,7 +175,7 @@ export default function RecordsPage() {
               <Stat label="27-0s" value={summary.perfectSeasons} sub={`${summary.titles} Grand Final${summary.titles === 1 ? "" : "s"} won`} />
             </section>
 
-            <Section title="All-time record" intro="Daily and Weekly runs don't count here.">
+            <Section title="All-time record" intro="Daily runs don't count here.">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-left text-xs text-[color:var(--fl-muted)]">

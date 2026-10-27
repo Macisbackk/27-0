@@ -3,7 +3,7 @@ import type { GameMode } from "./types";
 import { ACHIEVEMENT_DEFINITIONS } from "./achievements/achievementDefinitions";
 import { getDailyChallengeMinimumBonuses } from "./daily-challenge";
 import { WEEKLY_TOP10_REWARD } from "./weekly-challenge";
-import { SHOW_DAILY_CHALLENGE_UI } from "./feature-flags";
+import { SHOW_DAILY_CHALLENGE_UI, SHOW_WEEKLY_CHALLENGE_UI } from "./feature-flags";
 import { GRID_REWARD_PER_CELL, WORDLE_WIN_REWARD } from "./mini-games/reward-amounts";
 import { QUIZ_TOP_PRIZE } from "./quiz/prizes";
 import { formatPounds, formatPoundsExact } from "./format-money";
@@ -233,10 +233,14 @@ const CLUB_FUNDS_INFO_LINES_SOURCE: ClubFundsInfoLine[] = [
           amount: DAILY_MIN_BONUSES.playoffTitleBonus,
           valueText: `from ${formatClubFunds(DAILY_MIN_BONUSES.playoffTitleBonus)}`,
         },
-        {
-          label: "Weekly Challenge: Top 10 finish (once a week)",
-          amount: WEEKLY_TOP10_REWARD,
-        },
+        ...(SHOW_WEEKLY_CHALLENGE_UI
+          ? [
+              {
+                label: "Weekly Challenge: Top 10 finish (once a week)",
+                amount: WEEKLY_TOP10_REWARD,
+              },
+            ]
+          : []),
       ]
     : []),
   {

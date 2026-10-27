@@ -39,7 +39,7 @@ import {
 } from "@/lib/storage/weekly-leaderboard";
 import { isCloudHydrated, useAuth } from "@/lib/auth-context";
 import { MissionsList, MissionsRing, missionsLeftToEarn, useDailyMissions } from "@/components/DailyMissionsCard";
-import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
+import { SHOW_DAILY_CHALLENGE_UI, SHOW_WEEKLY_CHALLENGE_UI } from "@/lib/feature-flags";
 import { buildPlayHref } from "@/lib/play-links";
 import { getNormalEraVariant, setNormalEraVariant } from "@/lib/storage/preferences";
 import { playModeClassicStart, playUiClick } from "@/lib/sound";
@@ -124,7 +124,7 @@ function readHub(): HubState {
         }
       : null,
     funds: getClubFundsBalance(),
-    weekly: SHOW_DAILY_CHALLENGE_UI
+    weekly: SHOW_DAILY_CHALLENGE_UI && SHOW_WEEKLY_CHALLENGE_UI
       ? {
           scenario: getWeeklyChallengeScenario(),
           used: getWeeklyChallengeAttemptUsed(),
@@ -262,6 +262,7 @@ export function HomeModeSelector() {
   const { isLoggedIn, loading: authLoading } = useAuth();
   const [lastWeek, setLastWeek] = useState<WeeklyLastWeekResult | null>(null);
   useEffect(() => {
+    // Still runs with the Weekly hidden, so a top-10 prize already earned is paid out.
     if (!SHOW_DAILY_CHALLENGE_UI || authLoading || !isLoggedIn) return;
     let alive = true;
     let ran = false;
@@ -521,9 +522,9 @@ export function HomeModeSelector() {
             </div>
           ) : null}
       {/* Weekly + missions: two compact tiles side by side; missions open into a list. */}
-      {SHOW_DAILY_CHALLENGE_UI || missions ? (
-        <div className="grid grid-cols-1 gap-2 min-[360px]:grid-cols-2">
-          {SHOW_DAILY_CHALLENGE_UI ? (
+      {SHOW_WEEKLY_CHALLENGE_UI || missions ? (
+        <div className={SHOW_WEEKLY_CHALLENGE_UI ? "grid grid-cols-1 gap-2 min-[360px]:grid-cols-2" : "flex flex-col"}>
+          {SHOW_WEEKLY_CHALLENGE_UI && SHOW_DAILY_CHALLENGE_UI ? (
             <div className="relative min-w-0 rounded-tile bg-pitch-900">
               <Link
                 href={weeklyHref}
@@ -572,7 +573,7 @@ export function HomeModeSelector() {
               aria-label={`Today's missions: ${missionsDone} of ${missions.missions.length} done${missionsLeft > 0 ? `, ${formatClubFunds(missionsLeft)} to earn` : ""}`}
               className={`btn-press fl-pressable flex min-h-[72px] min-w-0 items-center gap-3 rounded-tile p-3 text-left transition ${
                 missionsOpen ? "bg-pitch-800" : "bg-pitch-900 hover:bg-pitch-800"
-              } ${SHOW_DAILY_CHALLENGE_UI ? "" : "col-span-2"} ${FOCUS}`}
+              } ${FOCUS}`}
             >
               <MissionsRing view={missions} />
               <span className="flex min-w-0 flex-1 flex-col gap-1">

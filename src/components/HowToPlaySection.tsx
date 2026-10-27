@@ -1,4 +1,4 @@
-import { SHOW_DAILY_CHALLENGE_UI } from "@/lib/feature-flags";
+import { SHOW_DAILY_CHALLENGE_UI, SHOW_WEEKLY_CHALLENGE_UI } from "@/lib/feature-flags";
 
 const GUIDE_ITEMS: { title: string; lines: string[] }[] = [
   {
@@ -32,14 +32,18 @@ const GUIDE_ITEMS: { title: string; lines: string[] }[] = [
             "Every 7-day streak earns a freeze (hold 2).",
           ],
         },
-        {
-          title: "Weekly",
-          lines: [
-            "Same rule and spins for all, Monday to Sunday.",
-            "1 ranked run a week. Same scoring as the Daily.",
-            "Top 10 earn £150k.",
-          ],
-        },
+        ...(SHOW_WEEKLY_CHALLENGE_UI
+          ? [
+              {
+                title: "Weekly",
+                lines: [
+                  "Same rule and spins for all, Monday to Sunday.",
+                  "1 ranked run a week. Same scoring as the Daily.",
+                  "Top 10 earn £150k.",
+                ],
+              },
+            ]
+          : []),
       ]
     : []),
   {

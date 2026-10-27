@@ -285,7 +285,7 @@ export function ChallengeComparison({
           })}
         </tbody>
       </table>
-      <p className="mt-2 text-xs text-[color:var(--fl-muted)]">Unranked. It doesn&apos;t use your Daily or Weekly run.</p>
+      <p className="mt-2 text-xs text-[color:var(--fl-muted)]">Unranked. It doesn&apos;t use your Daily run.</p>
     </section>
   );
 }
