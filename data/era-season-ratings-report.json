@@ -1,11 +1,11 @@
 {
  "generated": "2026-10",
- "cards": 6688,
+ "cards": 6689,
  "up": 598,
  "down": 1481,
  "clubSeasonsVsFinish": {
   "before": -0.688,
-  "after": -0.789,
+  "after": -0.79,
   "clubSeasons": 357
  },
  "clubSeasonShifts": [

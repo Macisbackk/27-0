@@ -23,6 +23,13 @@ const lineups = JSON.parse(fs.readFileSync(D("era-coverage-lineups-2026-10.json"
 const bios = JSON.parse(fs.readFileSync(D("era-coverage-new-players-2026-10.json"), "utf8")) as Record<string, { name?: string; nationality: string; dateOfBirth?: string; source: string }>;
 
 const key = (r: { club: string; year: number }) => `${r.club}|${r.year}`;
+const historic = JSON.parse(fs.readFileSync(D("historic-players.json"), "utf8")) as Array<Record<string, unknown>>;
+const newCards = historic.filter((p) => p.source === "era-coverage-2026-10");
+const freshCards = newCards.filter((p) => p.bioSource);
+const verified = JSON.parse(fs.readFileSync(D("sl-era-verified-squads.json"), "utf8")) as Record<string, Record<string, { verifiedAt?: string }>>;
+const composites = Object.entries(verified).flatMap(([club, ys]) =>
+  Object.entries(ys).filter(([, e]) => (e.verifiedAt ?? "").includes("composite")).map(([y]) => `${club} ${y}`)
+);
 const b = new Map(before.map((r) => [key(r), r]));
 const cell = (r: CoverageRow | undefined) =>
   r ? `${r.spin ? "yes" : "no"} / ${r.own} / ${r.full13 ? "yes" : "no"} / ${r.full17 ? "yes" : "no"}` : "n/a";
@@ -46,8 +53,8 @@ function totals(rows: CoverageRow[]) {
     full13: rows.filter((r) => r.full13).length,
     full17: rows.filter((r) => r.full17).length,
     ownCards: rows.reduce((n, r) => n + r.own, 0),
-    spinOwnSlots: rows.reduce((n, r) => n + (r.spinOwn ?? 0), 0),
-    spinSlots: rows.filter((r) => r.spin).length * 13,
+    spinOwnSlots: hist.reduce((n, r) => n + (r.spinOwn ?? 0), 0),
+    spinSlots: hist.filter((r) => r.spin).length * 13,
     mos: award("Man of Steel"),
     dt: award("Dream Team"),
     lt: award("Lance Todd"),
@@ -88,13 +95,13 @@ L.push(`| Club-seasons with 13+ own-season cards | ${tb.own13} | ${ta.own13} |`)
 L.push(`| Club-seasons whose own-season cards make a full XIII | ${tb.full13} | ${ta.full13} |`);
 L.push(`| ... and a full 17 | ${tb.full17} | ${ta.full17} |`);
 L.push(`| Own-season cards (all club-seasons) | ${tb.ownCards} | ${ta.ownCards} |`);
-L.push(`| Spin-pool slots using that season's card | ${tb.spinOwnSlots}/${tb.spinSlots} | ${ta.spinOwnSlots}/${ta.spinSlots} |`);
+L.push(`| Era Classic spin-pool slots (13 per side) using that season's card | ${tb.spinOwnSlots}/${tb.spinSlots} | ${ta.spinOwnSlots}/${ta.spinSlots} |`);
 L.push(`| Man of Steel seasons with a card | ${tb.mos} | ${ta.mos} |`);
 L.push(`| Dream Team selections with a card for that club-season | ${tb.dt} | ${ta.dt} |`);
 L.push(`| Lance Todd winners with a card for that club-season | ${tb.lt} | ${ta.lt} |`);
 L.push(`| Harry Sunderland winners with a card for that club-season | ${tb.hs} | ${ta.hs} |`);
 L.push("");
-L.push(`Cards added: **${fill.cardsCreated}** season cards (${Object.keys(bios).length} of them players who had no card at all; the`);
+L.push(`Cards added: **${newCards.length}** season cards (${freshCards.length} of them for players who had no card at all; the`);
 L.push(`rest are existing players' cards for a season they were missing). ${fill.superseded.length} era-only cards ("-hist-era-",`);
 L.push("never offered in spins) were superseded by the new card for the same player and season.");
 L.push("");
@@ -129,8 +136,9 @@ L.push("- Club-seasons with no verified 17 got one from a real match line-up (`d
 L.push("  Rugby League Project match page or Wikipedia final page per side). Players with no card anywhere got a fresh card");
 L.push("  only with a cited bio (`data/era-coverage-new-players-2026-10.json`: nationality, date of birth); they start at 82");
 L.push("  (81 off the bench), the squad-player level, and the club-finish layer moves the side as a whole.");
-L.push("- Halifax 2003 has no single line-up with every player verifiable, so its XIII is this season's cards at the");
-L.push("  positions they played in the sourced line-ups.");
+L.push(`- ${composites.join(", ")}: no single line-up resolves to 13 different cards (Halifax 2003: one player`);
+L.push("  unverifiable; Widnes 2003–04: two different Julian O'Neills in the 17), so the XIII is that season's cards at the");
+L.push("  positions they played in the sourced 17s.");
 L.push("- `data/player-name-aliases.ts`: Andrew/Andy Farrell, Matty/Mat Ashurst, Robert/Rob Butler.");
 L.push("- `src/lib/players/era-starting-17s.ts`: a starting 17 may spell positions out (\"FULLBACK\"), as Sheffield 1998 does.");
 L.push("- `st-helens-hist-jason-hooper*`: loose forward (was stand-off), per the 2006 Grand Final line-up.");
@@ -181,7 +189,9 @@ L.push("");
 L.push("Other known gaps:");
 L.push("");
 L.push("- Widnes 2003 and 2004 era sides: their 17s list two different players called Julian O'Neill (the New Zealand");
-L.push("  prop and the Australian stand-off); the database has one Julian O'Neill, so one slot cannot resolve.");
+L.push("  prop and the Australian stand-off); the database has one Julian O'Neill, so one slot cannot resolve (their spin");
+L.push("  XIIIs use the composite above). The database's single Julian O'Neill bio (Australia, born 1973) also sits on the");
+L.push("  prop's St Helens cards, and the new St Helens 1997–99 cards copy it: the two players should be split.");
 L.push("- Grand Final / Challenge Cup final starters, top try and point scorers and club captains were not checked season by");
 L.push("  season (they would need a fetch per final and per season). Every club-season's verified 17 is now carded, which");
 L.push("  covers the regular starters; the award checks above cover Man of Steel, Dream Team, Lance Todd and Harry Sunderland.");

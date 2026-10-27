@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T18:12:35.179Z",
+  "generatedAt": "2026-10-27T18:38:44.141Z",
   "currentYear": 2026,
   "summary": {
     "playerIssues": 0,
@@ -7,7 +7,7 @@
     "eraFutureYears": 1,
     "errors": 0,
     "warnings": 1,
-    "exposedTeamYearCount": 356
+    "exposedTeamYearCount": 377
   },
   "issues": [
     {

@@ -2906,6 +2906,14 @@
     }
   },
   "Sheffield Eagles": {
+    "1996": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/15210"
+    },
     "1997": {
       "source": "verified",
       "isSuperLeagueSeason": true,

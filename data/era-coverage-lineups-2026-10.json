@@ -95,8 +95,8 @@
  {
   "club": "Sheffield Eagles",
   "year": 1996,
-  "source": "https://www.rugbyleagueproject.org/matches/15188",
-  "match": "R1 29 Mar 1996 Paris St Germain 30-24 Sheffield Eagles",
+  "source": "https://www.rugbyleagueproject.org/matches/15210",
+  "match": "R2 5 Apr 1996 Sheffield Eagles 40-24 Bradford Bulls",
   "squad": [
    {
     "number": 1,
@@ -106,7 +106,7 @@
    {
     "number": 2,
     "position": "W",
-    "name": "Josaia Rabele Dakuitoga"
+    "name": "Keith Senior"
    },
    {
     "number": 3,
@@ -121,7 +121,7 @@
    {
     "number": 5,
     "position": "W",
-    "name": "Matt Crowther"
+    "name": "Bright Sodje"
    },
    {
     "number": 6,
@@ -131,7 +131,7 @@
    {
     "number": 7,
     "position": "HB",
-    "name": "Dean Lawford"
+    "name": "Mark Aston"
    },
    {
     "number": 8,
@@ -146,7 +146,7 @@
    {
     "number": 10,
     "position": "FR",
-    "name": "Danny McAllister"
+    "name": "Dale Laughton"
    },
    {
     "number": 11,
@@ -161,27 +161,27 @@
    {
     "number": 13,
     "position": "L",
-    "name": "Mick Cook"
+    "name": "Anthony Farrell"
    },
    {
     "number": 14,
     "position": "B",
-    "name": "Keith Senior"
+    "name": "Dean Lawford"
    },
    {
     "number": 15,
     "position": "B",
-    "name": "Mark Aston"
+    "name": "Danny McAllister"
    },
    {
     "number": 16,
     "position": "B",
-    "name": "Anthony Farrell"
+    "name": "Ian Hughes"
    },
    {
     "number": 17,
     "position": "B",
-    "name": "Dale Laughton"
+    "name": "Mick Cook"
    }
   ]
  },

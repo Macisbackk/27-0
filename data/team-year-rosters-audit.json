@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-27T18:38:09.825Z",
+  "generatedAt": "2026-10-27T18:43:00.812Z",
   "sources": [
     "Verified Wikipedia/manual XIII only (era-wikipedia-squads.json, sl-era-verified-squads.json)",
     "Current squad for 2026 only (current-squads.json)",
     "Super League season gate (super-league-club-years.json)"
   ],
   "minPlayers": 13,
-  "verifiedSquadsMerged": 376,
+  "verifiedSquadsMerged": 377,
   "verifiedPlayersRejected": 207,
   "unresolvedSquads": [
     {
@@ -21,7 +21,7 @@
     }
   ],
   "currentYearSquadsBuilt": 14,
-  "playableCount": 377,
+  "playableCount": 378,
   "hiddenCount": 0,
   "playable": [
     {
@@ -1217,6 +1217,11 @@
     {
       "team": "Salford Red Devils",
       "year": "2025",
+      "count": 13
+    },
+    {
+      "team": "Sheffield Eagles",
+      "year": "1996",
       "count": 13
     },
     {

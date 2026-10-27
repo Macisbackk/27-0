@@ -10495,6 +10495,55 @@
     }
   },
   "Sheffield Eagles": {
+    "1996": {
+      "source": "https://www.rugbyleagueproject.org/matches/15210",
+      "playerIds": [
+        "sheffield-hist-waisale-sovatabua-1996",
+        "sheffield-hist-keith-senior-1996",
+        "sheffield-hist-lynton-stott-1996",
+        "sheffield-hist-jean-marc-garcia",
+        "sheffield-hist-bright-sodje-1996",
+        "sheffield-hist-ryan-sheridan-1996",
+        "sheffield-hist-mark-aston-1996",
+        "sheffield-hist-paul-broadbent-1996",
+        "sheffield-hist-johnny-lawless-1996",
+        "sheffield-hist-dale-laughton-1996",
+        "sheffield-hist-andy-hay-1996",
+        "sheffield-hist-paul-carr-1996",
+        "sheffield-hist-anthony-farrell-1996"
+      ],
+      "positions": [
+        "FULLBACK",
+        "WING",
+        "CENTRE",
+        "CENTRE",
+        "WING",
+        "STAND_OFF",
+        "SCRUM_HALF",
+        "PROP",
+        "HOOKER",
+        "PROP",
+        "SECOND_ROW",
+        "SECOND_ROW",
+        "LOOSE_FORWARD"
+      ],
+      "wikipediaPlayers": [
+        "Waisale Sovatabua",
+        "Keith Senior",
+        "Lynton Stott",
+        "Jean-Marc Garcia",
+        "Bright Sodje",
+        "Ryan Sheridan",
+        "Mark Aston",
+        "Paul Broadbent",
+        "Johnny Lawless",
+        "Dale Laughton",
+        "Andy Hay",
+        "Paul Carr",
+        "Anthony Farrell"
+      ],
+      "verifiedAt": "era-coverage-2026-10 (era-starting-17s jersey 1–13)"
+    },
     "1997": {
       "source": "https://www.rugbyleagueproject.org/matches/15350",
       "playerIds": [

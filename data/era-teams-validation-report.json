@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-27T18:34:00.916Z",
+  "generatedAt": "2026-10-27T18:38:40.288Z",
   "summary": {
-    "validTeams": 346,
-    "historicTeams": 345,
+    "validTeams": 347,
+    "historicTeams": 346,
     "era26Teams": 1,
-    "clubsRepresented": 20,
+    "clubsRepresented": 21,
     "onePerClubReady": true,
-    "skippedBuilds": 3,
-    "errors": 19,
+    "skippedBuilds": 2,
+    "errors": 18,
     "warnings": 0
   },
   "validTeams": [
@@ -2784,6 +2784,17 @@
       "tier": "Trophy Contenders"
     },
     {
+      "id": "toronto-wolfpack-2020",
+      "displayName": "Toronto Wolfpack '20",
+      "clubName": "Toronto Wolfpack",
+      "year": "2020",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 83.9,
+      "teamValue": 2116000,
+      "tier": "Mid-Table Side"
+    },
+    {
       "id": "toulouse-olympique-2022",
       "displayName": "Toulouse Olympique '22",
       "clubName": "Toulouse Olympique",
@@ -3826,10 +3837,6 @@
     {
       "club": "Widnes Vikings",
       "year": "2003"
-    },
-    {
-      "club": "Toronto Wolfpack",
-      "year": "2020"
     }
   ],
   "issues": [
@@ -3857,13 +3864,6 @@
     {
       "club": "Widnes Vikings",
       "year": "2003",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Toronto Wolfpack",
-      "year": "2020",
       "severity": "error",
       "code": "BUILD_FAILED",
       "message": "Verified starting 17 exists but buildEraTeamForYear returned null"

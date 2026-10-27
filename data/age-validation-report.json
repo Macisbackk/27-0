@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-27T18:12:34.791Z",
+  "generatedAt": "2026-10-27T18:38:42.630Z",
   "summary": {
-    "totalPlayers": 6825,
-    "withBirthData": 6816,
-    "withoutBirthData": 9,
+    "totalPlayers": 7223,
+    "withBirthData": 7212,
+    "withoutBirthData": 11,
     "errors": 0,
     "warnings": 0,
-    "informational": 9
+    "informational": 11
   },
   "issues": [
     {
@@ -68,6 +68,20 @@
     {
       "playerId": "widnes-hist-ray-dutton-1975",
       "name": "Ray Dutton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-jordan-atkins-2014",
+      "name": "Jordan Atkins",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-erjon-dollapi-2014",
+      "name": "Erjon Dollapi",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"

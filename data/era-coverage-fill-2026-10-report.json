@@ -1,7 +1,7 @@
 {
  "generated": "era-coverage-2026-10",
- "xiiiAdded": 294,
- "cardsCreated": 4030,
+ "xiiiAdded": 295,
+ "cardsCreated": 4031,
  "superseded": [
   "st-helens-hist-era-scott-gibbs",
   "st-helens-hist-era-adam-fogerty",
@@ -225,6 +225,7 @@
   "Halifax Panthers 1996: Wayne Parker",
   "Halifax Panthers 1996: Paul Moriarty",
   "Halifax Panthers 1996: Asa Amone",
+  "Sheffield Eagles 1996: Ian Hughes",
   "Sheffield Eagles 1996: Mick Cook",
   "Oldham RLFC 1996: Robert Myler",
   "Oldham RLFC 1996: Ian Sherratt",
@@ -409,7 +410,7 @@
    "xiii": "none"
   },
   "Sheffield Eagles|1996": {
-   "source": "https://www.rugbyleagueproject.org/matches/15188",
+   "source": "https://www.rugbyleagueproject.org/matches/15210",
    "created": [
     "sheffield-hist-waisale-sovatabua-1996",
     "sheffield-hist-joe-dakuitoga-1996",
@@ -425,13 +426,15 @@
     "sheffield-hist-keith-senior-1996",
     "sheffield-hist-mark-aston-1996",
     "sheffield-hist-anthony-farrell-1996",
-    "sheffield-hist-dale-laughton-1996"
+    "sheffield-hist-dale-laughton-1996",
+    "sheffield-hist-bright-sodje-1996"
    ],
-   "existing": 16,
+   "existing": 14,
    "unresolved": [
+    "Ian Hughes",
     "Mick Cook"
    ],
-   "xiii": "none"
+   "xiii": "added"
   },
   "Oldham RLFC|1996": {
    "source": "https://mail.rugbyleagueproject.org/matches/15181",

@@ -202956,5 +202956,31 @@
     "source": "era-coverage-2026-10",
     "sourceUrl": "https://mail.rugbyleagueproject.org/matches/113944",
     "copiedFrom": "salford-hist-chris-hankinson-2024"
+  },
+  {
+    "id": "sheffield-hist-bright-sodje-1996",
+    "name": "Bright Sodje",
+    "position": "WING",
+    "primaryPosition": "WING",
+    "club": "Sheffield Eagles",
+    "nationality": "England",
+    "era": "SUPER_LEAGUE_ORIGINS",
+    "yearsActive": "1996–1996",
+    "category": "historic",
+    "peakRating": 88,
+    "value": 246000,
+    "year": 1996,
+    "cardYear": 1996,
+    "teamYearId": "sheffield-eagles-1996",
+    "team": "Sheffield Eagles",
+    "displayClub": "Sheffield Eagles",
+    "basePlayerId": "sheffield-hist-bright-sodje",
+    "status": "Historic",
+    "dateOfBirth": "1966-04-21",
+    "birthYear": 1966,
+    "availableInGame": true,
+    "source": "era-coverage-2026-10",
+    "sourceUrl": "https://www.rugbyleagueproject.org/matches/15210",
+    "copiedFrom": "wakefield-hist-bright-sodje-2000"
   }
 ]
