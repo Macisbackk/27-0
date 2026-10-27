@@ -447,7 +447,7 @@ export function HomeModeSelector() {
         <span className="flex min-w-0 flex-1 flex-col gap-0.5">
           <span className="font-cond text-[21px] font-bold leading-tight">Manager Mode</span>
           <span className="truncate text-[13px] text-[color:var(--fl-muted)]">
-            {hub?.career ? `${hub.career.club} · ${hub.career.detail.split(" · ")[0]}` : "Run a club. Climb the leagues."}
+            {hub?.career ? `${hub.career.club} · ${hub.career.detail.split(" · ")[0]}` : "Run a real club."}
           </span>
         </span>
         <span
