@@ -1,26 +1,26 @@
 {
-  "generatedAt": "2026-09-11T22:01:41.126Z",
+  "generatedAt": "2026-10-27T18:38:40.288Z",
   "summary": {
-    "validTeams": 254,
-    "historicTeams": 253,
+    "validTeams": 347,
+    "historicTeams": 346,
     "era26Teams": 1,
-    "clubsRepresented": 17,
+    "clubsRepresented": 21,
     "onePerClubReady": true,
-    "skippedBuilds": 95,
-    "errors": 204,
+    "skippedBuilds": 2,
+    "errors": 18,
     "warnings": 0
   },
   "validTeams": [
     {
-      "id": "bradford-bulls-2026",
-      "displayName": "Bradford Bulls '26",
+      "id": "bradford-bulls-2014",
+      "displayName": "Bradford Bulls '14",
       "clubName": "Bradford Bulls",
-      "year": "2026",
+      "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 80.8,
-      "teamValue": 1534000,
-      "tier": "Basement Battlers"
+      "teamRating": 84.7,
+      "teamValue": 2388000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "bradford-bulls-2013",
@@ -29,9 +29,9 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.5,
-      "teamValue": 2935000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.1,
+      "teamValue": 2514000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "bradford-bulls-2012",
@@ -40,8 +40,8 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85,
-      "teamValue": 2514000,
+      "teamRating": 85.2,
+      "teamValue": 2475000,
       "tier": "Competitive Outfit"
     },
     {
@@ -51,9 +51,9 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.5,
-      "teamValue": 2761000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.1,
+      "teamValue": 2349000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "bradford-bulls-2010",
@@ -62,9 +62,9 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.7,
-      "teamValue": 3092000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.7,
+      "teamValue": 2250000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "bradford-bulls-2009",
@@ -73,9 +73,9 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85,
-      "teamValue": 2393000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.9,
+      "teamValue": 2395000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "bradford-bulls-2008",
@@ -84,9 +84,9 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89,
-      "teamValue": 4099000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 86.6,
+      "teamValue": 2786000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "bradford-bulls-2007",
@@ -95,9 +95,9 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.3,
-      "teamValue": 4469000,
-      "tier": "Title Favourites"
+      "teamRating": 87.7,
+      "teamValue": 3089000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "bradford-bulls-2006",
@@ -106,8 +106,8 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.9,
-      "teamValue": 3609000,
+      "teamRating": 88.5,
+      "teamValue": 3462000,
       "tier": "Grand Final Contenders"
     },
     {
@@ -117,8 +117,8 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89.8,
-      "teamValue": 4343000,
+      "teamRating": 89.2,
+      "teamValue": 3815000,
       "tier": "Grand Final Contenders"
     },
     {
@@ -128,8 +128,8 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89.2,
-      "teamValue": 4177000,
+      "teamRating": 89.6,
+      "teamValue": 4043000,
       "tier": "Grand Final Contenders"
     },
     {
@@ -139,8 +139,8 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.5,
-      "teamValue": 4507000,
+      "teamRating": 90.2,
+      "teamValue": 4226000,
       "tier": "Title Favourites"
     },
     {
@@ -150,9 +150,9 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89.4,
-      "teamValue": 4105000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 90.2,
+      "teamValue": 4193000,
+      "tier": "Title Favourites"
     },
     {
       "id": "bradford-bulls-2001",
@@ -161,8 +161,8 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89.2,
-      "teamValue": 3958000,
+      "teamRating": 89.5,
+      "teamValue": 4112000,
       "tier": "Grand Final Contenders"
     },
     {
@@ -172,8 +172,8 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.4,
-      "teamValue": 3728000,
+      "teamRating": 89.2,
+      "teamValue": 3856000,
       "tier": "Grand Final Contenders"
     },
     {
@@ -184,7 +184,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 88.2,
-      "teamValue": 3797000,
+      "teamValue": 3456000,
       "tier": "Grand Final Contenders"
     },
     {
@@ -195,7 +195,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 87.5,
-      "teamValue": 3184000,
+      "teamValue": 3063000,
       "tier": "Trophy Contenders"
     },
     {
@@ -205,9 +205,9 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.3,
-      "teamValue": 2664000,
-      "tier": "Top Six Contender"
+      "teamRating": 87.1,
+      "teamValue": 3015000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "bradford-bulls-1996",
@@ -216,9 +216,130 @@
       "year": "1996",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.9,
-      "teamValue": 3208000,
+      "teamRating": 86.5,
+      "teamValue": 2908000,
       "tier": "Top Six Contender"
+    },
+    {
+      "id": "castleford-tigers-2025",
+      "displayName": "Castleford Tigers '25",
+      "clubName": "Castleford Tigers",
+      "year": "2025",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 82.5,
+      "teamValue": 1801000,
+      "tier": "Inconsistent Squad"
+    },
+    {
+      "id": "castleford-tigers-2024",
+      "displayName": "Castleford Tigers '24",
+      "clubName": "Castleford Tigers",
+      "year": "2024",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 82.1,
+      "teamValue": 1715000,
+      "tier": "Inconsistent Squad"
+    },
+    {
+      "id": "castleford-tigers-2023",
+      "displayName": "Castleford Tigers '23",
+      "clubName": "Castleford Tigers",
+      "year": "2023",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 82.4,
+      "teamValue": 1774000,
+      "tier": "Inconsistent Squad"
+    },
+    {
+      "id": "castleford-tigers-2022",
+      "displayName": "Castleford Tigers '22",
+      "clubName": "Castleford Tigers",
+      "year": "2022",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 84,
+      "teamValue": 2136000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "castleford-tigers-2021",
+      "displayName": "Castleford Tigers '21",
+      "clubName": "Castleford Tigers",
+      "year": "2021",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 84.3,
+      "teamValue": 2206000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "castleford-tigers-2020",
+      "displayName": "Castleford Tigers '20",
+      "clubName": "Castleford Tigers",
+      "year": "2020",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.2,
+      "teamValue": 2533000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "castleford-tigers-2019",
+      "displayName": "Castleford Tigers '19",
+      "clubName": "Castleford Tigers",
+      "year": "2019",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.8,
+      "teamValue": 2551000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "castleford-tigers-2018",
+      "displayName": "Castleford Tigers '18",
+      "clubName": "Castleford Tigers",
+      "year": "2018",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.8,
+      "teamValue": 3256000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "castleford-tigers-2017",
+      "displayName": "Castleford Tigers '17",
+      "clubName": "Castleford Tigers",
+      "year": "2017",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 89.1,
+      "teamValue": 3979000,
+      "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "castleford-tigers-2016",
+      "displayName": "Castleford Tigers '16",
+      "clubName": "Castleford Tigers",
+      "year": "2016",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.2,
+      "teamValue": 3188000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "castleford-tigers-2015",
+      "displayName": "Castleford Tigers '15",
+      "clubName": "Castleford Tigers",
+      "year": "2015",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.6,
+      "teamValue": 3347000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "castleford-tigers-2014",
@@ -227,9 +348,9 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.4,
-      "teamValue": 3479000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 86.8,
+      "teamValue": 3022000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "castleford-tigers-2013",
@@ -238,9 +359,9 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.8,
-      "teamValue": 3430000,
-      "tier": "Trophy Contenders"
+      "teamRating": 85,
+      "teamValue": 2370000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "castleford-tigers-2012",
@@ -249,9 +370,20 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 3168000,
-      "tier": "Top Six Contender"
+      "teamRating": 84.5,
+      "teamValue": 2374000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "castleford-tigers-2011",
+      "displayName": "Castleford Tigers '11",
+      "clubName": "Castleford Tigers",
+      "year": "2011",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 84.3,
+      "teamValue": 2403000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "castleford-tigers-2010",
@@ -260,8 +392,8 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.6,
-      "teamValue": 3547000,
+      "teamRating": 87.2,
+      "teamValue": 2993000,
       "tier": "Trophy Contenders"
     },
     {
@@ -271,9 +403,9 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.4,
-      "teamValue": 3243000,
-      "tier": "Trophy Contenders"
+      "teamRating": 86.9,
+      "teamValue": 2963000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "castleford-tigers-2008",
@@ -282,9 +414,9 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85,
-      "teamValue": 2817000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84,
+      "teamValue": 2124000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "castleford-tigers-2006",
@@ -293,9 +425,9 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.4,
-      "teamValue": 3233000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.1,
+      "teamValue": 2383000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "castleford-tigers-2004",
@@ -304,9 +436,9 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.7,
-      "teamValue": 2830000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.2,
+      "teamValue": 2114000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "castleford-tigers-2003",
@@ -315,8 +447,8 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 3056000,
+      "teamRating": 86,
+      "teamValue": 2598000,
       "tier": "Top Six Contender"
     },
     {
@@ -326,9 +458,9 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.6,
-      "teamValue": 3150000,
-      "tier": "Trophy Contenders"
+      "teamRating": 86.8,
+      "teamValue": 2785000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "castleford-tigers-2001",
@@ -337,8 +469,8 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 3127000,
+      "teamRating": 86.2,
+      "teamValue": 2802000,
       "tier": "Top Six Contender"
     },
     {
@@ -348,9 +480,9 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87,
-      "teamValue": 2995000,
-      "tier": "Trophy Contenders"
+      "teamRating": 86.3,
+      "teamValue": 2767000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "castleford-tigers-1999",
@@ -359,8 +491,8 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 2925000,
+      "teamRating": 86.2,
+      "teamValue": 2813000,
       "tier": "Top Six Contender"
     },
     {
@@ -370,9 +502,9 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.5,
-      "teamValue": 2646000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.5,
+      "teamValue": 2350000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "castleford-tigers-1997",
@@ -381,8 +513,8 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.2,
-      "teamValue": 2398000,
+      "teamRating": 84,
+      "teamValue": 2228000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -392,20 +524,86 @@
       "year": "1996",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.5,
-      "teamValue": 2011000,
+      "teamRating": 82.7,
+      "teamValue": 1862000,
+      "tier": "Inconsistent Squad"
+    },
+    {
+      "id": "catalans-dragons-2025",
+      "displayName": "Catalans Dragons '25",
+      "clubName": "Catalans Dragons",
+      "year": "2025",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 83.8,
+      "teamValue": 2042000,
       "tier": "Mid-Table Side"
     },
     {
-      "id": "catalans-dragons-2026",
-      "displayName": "Catalans Dragons '26",
+      "id": "catalans-dragons-2024",
+      "displayName": "Catalans Dragons '24",
       "clubName": "Catalans Dragons",
-      "year": "2026",
+      "year": "2024",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 81.2,
-      "teamValue": 1677000,
-      "tier": "Rebuild Project"
+      "teamRating": 85,
+      "teamValue": 2344000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "catalans-dragons-2023",
+      "displayName": "Catalans Dragons '23",
+      "clubName": "Catalans Dragons",
+      "year": "2023",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.8,
+      "teamValue": 2561000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "catalans-dragons-2022",
+      "displayName": "Catalans Dragons '22",
+      "clubName": "Catalans Dragons",
+      "year": "2022",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.5,
+      "teamValue": 2834000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "catalans-dragons-2021",
+      "displayName": "Catalans Dragons '21",
+      "clubName": "Catalans Dragons",
+      "year": "2021",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.8,
+      "teamValue": 3341000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "catalans-dragons-2020",
+      "displayName": "Catalans Dragons '20",
+      "clubName": "Catalans Dragons",
+      "year": "2020",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.2,
+      "teamValue": 2996000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "catalans-dragons-2019",
+      "displayName": "Catalans Dragons '19",
+      "clubName": "Catalans Dragons",
+      "year": "2019",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.2,
+      "teamValue": 3037000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "catalans-dragons-2018",
@@ -414,9 +612,9 @@
       "year": "2018",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.2,
-      "teamValue": 3069000,
-      "tier": "Trophy Contenders"
+      "teamRating": 86.5,
+      "teamValue": 2645000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "catalans-dragons-2017",
@@ -425,9 +623,9 @@
       "year": "2017",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89.2,
-      "teamValue": 3607000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 86,
+      "teamValue": 2549000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "catalans-dragons-2016",
@@ -436,9 +634,9 @@
       "year": "2016",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.1,
-      "teamValue": 3132000,
-      "tier": "Trophy Contenders"
+      "teamRating": 86.9,
+      "teamValue": 2907000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "catalans-dragons-2015",
@@ -447,9 +645,20 @@
       "year": "2015",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.2,
-      "teamValue": 3175000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 86.5,
+      "teamValue": 2691000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "catalans-dragons-2014",
+      "displayName": "Catalans Dragons '14",
+      "clubName": "Catalans Dragons",
+      "year": "2014",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.5,
+      "teamValue": 3031000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "catalans-dragons-2013",
@@ -459,7 +668,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 87.5,
-      "teamValue": 3181000,
+      "teamValue": 3056000,
       "tier": "Trophy Contenders"
     },
     {
@@ -469,8 +678,8 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.7,
-      "teamValue": 3066000,
+      "teamRating": 87.5,
+      "teamValue": 3080000,
       "tier": "Trophy Contenders"
     },
     {
@@ -480,8 +689,8 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.3,
-      "teamValue": 2848000,
+      "teamRating": 86.6,
+      "teamValue": 2807000,
       "tier": "Top Six Contender"
     },
     {
@@ -491,9 +700,9 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.8,
-      "teamValue": 2559000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.8,
+      "teamValue": 2262000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "catalans-dragons-2009",
@@ -502,8 +711,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.8,
-      "teamValue": 2601000,
+      "teamRating": 85.2,
+      "teamValue": 2481000,
       "tier": "Competitive Outfit"
     },
     {
@@ -513,20 +722,31 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
+      "teamRating": 83.6,
+      "teamValue": 2110000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "crusaders-rl-2010",
+      "displayName": "Crusaders RL '10",
+      "clubName": "Crusaders RL",
+      "year": "2010",
+      "category": "historic",
+      "rosterSize": 17,
       "teamRating": 84.8,
-      "teamValue": 2306000,
+      "teamValue": 2296000,
       "tier": "Dangerous Underdogs"
     },
     {
-      "id": "huddersfield-giants-2026",
-      "displayName": "Huddersfield Giants '26",
-      "clubName": "Huddersfield Giants",
-      "year": "2026",
-      "category": "26",
-      "rosterSize": 16,
-      "teamRating": 81.2,
-      "teamValue": 1620000,
-      "tier": "Rebuild Project"
+      "id": "halifax-panthers-2002",
+      "displayName": "Halifax Panthers '02",
+      "clubName": "Halifax Panthers",
+      "year": "2002",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.1,
+      "teamValue": 2357000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "huddersfield-giants-2025",
@@ -535,8 +755,8 @@
       "year": "2025",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.6,
-      "teamValue": 2104000,
+      "teamRating": 83.4,
+      "teamValue": 2035000,
       "tier": "Mid-Table Side"
     },
     {
@@ -546,9 +766,9 @@
       "year": "2024",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.8,
-      "teamValue": 2090000,
-      "tier": "Mid-Table Side"
+      "teamRating": 84,
+      "teamValue": 2236000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "huddersfield-giants-2023",
@@ -557,8 +777,8 @@
       "year": "2023",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.8,
-      "teamValue": 2089000,
+      "teamRating": 83.5,
+      "teamValue": 2069000,
       "tier": "Mid-Table Side"
     },
     {
@@ -568,8 +788,8 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2381000,
+      "teamRating": 85.8,
+      "teamValue": 2525000,
       "tier": "Competitive Outfit"
     },
     {
@@ -579,8 +799,8 @@
       "year": "2021",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.3,
-      "teamValue": 2178000,
+      "teamRating": 84.2,
+      "teamValue": 2143000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -590,9 +810,42 @@
       "year": "2020",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.5,
-      "teamValue": 2261000,
+      "teamRating": 84.4,
+      "teamValue": 2217000,
       "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "huddersfield-giants-2019",
+      "displayName": "Huddersfield Giants '19",
+      "clubName": "Huddersfield Giants",
+      "year": "2019",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 83.4,
+      "teamValue": 1981000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "huddersfield-giants-2018",
+      "displayName": "Huddersfield Giants '18",
+      "clubName": "Huddersfield Giants",
+      "year": "2018",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.4,
+      "teamValue": 2413000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "huddersfield-giants-2017",
+      "displayName": "Huddersfield Giants '17",
+      "clubName": "Huddersfield Giants",
+      "year": "2017",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.4,
+      "teamValue": 2426000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "huddersfield-giants-2016",
@@ -601,9 +854,20 @@
       "year": "2016",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.1,
-      "teamValue": 3336000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 85.7,
+      "teamValue": 2545000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "huddersfield-giants-2015",
+      "displayName": "Huddersfield Giants '15",
+      "clubName": "Huddersfield Giants",
+      "year": "2015",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.6,
+      "teamValue": 3117000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "huddersfield-giants-2014",
@@ -612,8 +876,8 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89.8,
-      "teamValue": 4079000,
+      "teamRating": 88.9,
+      "teamValue": 3554000,
       "tier": "Grand Final Contenders"
     },
     {
@@ -623,9 +887,9 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.6,
-      "teamValue": 3209000,
-      "tier": "Trophy Contenders"
+      "teamRating": 88.2,
+      "teamValue": 3542000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "huddersfield-giants-2012",
@@ -634,9 +898,9 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88,
-      "teamValue": 4098000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.6,
+      "teamValue": 3203000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "huddersfield-giants-2011",
@@ -645,9 +909,9 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.5,
-      "teamValue": 3972000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.1,
+      "teamValue": 2962000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "huddersfield-giants-2010",
@@ -656,9 +920,9 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.2,
-      "teamValue": 3742000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.4,
+      "teamValue": 3088000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "huddersfield-giants-2009",
@@ -667,9 +931,9 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.5,
-      "teamValue": 3419000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.5,
+      "teamValue": 3124000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "huddersfield-giants-2008",
@@ -678,9 +942,9 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 3249000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.3,
+      "teamValue": 2347000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "huddersfield-giants-2007",
@@ -690,7 +954,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 86.7,
-      "teamValue": 3008000,
+      "teamValue": 2741000,
       "tier": "Top Six Contender"
     },
     {
@@ -700,9 +964,9 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.7,
-      "teamValue": 3011000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.7,
+      "teamValue": 2493000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "huddersfield-giants-2005",
@@ -711,9 +975,9 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.8,
-      "teamValue": 2503000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 85.5,
+      "teamValue": 2444000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "huddersfield-giants-2004",
@@ -722,9 +986,9 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.6,
-      "teamValue": 2704000,
-      "tier": "Competitive Outfit"
+      "teamRating": 86.1,
+      "teamValue": 2607000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "huddersfield-giants-2003",
@@ -733,9 +997,9 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.7,
-      "teamValue": 2553000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 85.5,
+      "teamValue": 2485000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "huddersfield-giants-2001",
@@ -744,9 +1008,9 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.7,
-      "teamValue": 2701000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.5,
+      "teamValue": 2235000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "huddersfield-giants-2000",
@@ -755,9 +1019,9 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.5,
-      "teamValue": 2732000,
-      "tier": "Competitive Outfit"
+      "teamRating": 83.5,
+      "teamValue": 2031000,
+      "tier": "Mid-Table Side"
     },
     {
       "id": "huddersfield-giants-1999",
@@ -766,9 +1030,9 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.4,
-      "teamValue": 2452000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 83.8,
+      "teamValue": 2061000,
+      "tier": "Mid-Table Side"
     },
     {
       "id": "huddersfield-giants-1998",
@@ -777,20 +1041,9 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 82.6,
-      "teamValue": 1945000,
+      "teamRating": 82.4,
+      "teamValue": 1786000,
       "tier": "Inconsistent Squad"
-    },
-    {
-      "id": "hull-fc-2026",
-      "displayName": "Hull FC '26",
-      "clubName": "Hull FC",
-      "year": "2026",
-      "category": "historic",
-      "rosterSize": 17,
-      "teamRating": 81.5,
-      "teamValue": 1660000,
-      "tier": "Rebuild Project"
     },
     {
       "id": "hull-fc-2025",
@@ -799,8 +1052,8 @@
       "year": "2025",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.3,
-      "teamValue": 2236000,
+      "teamRating": 84.1,
+      "teamValue": 2143000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -810,9 +1063,9 @@
       "year": "2024",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.5,
-      "teamValue": 2126000,
-      "tier": "Mid-Table Side"
+      "teamRating": 82.7,
+      "teamValue": 1870000,
+      "tier": "Inconsistent Squad"
     },
     {
       "id": "hull-fc-2023",
@@ -832,8 +1085,8 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.5,
-      "teamValue": 2075000,
+      "teamRating": 83.3,
+      "teamValue": 1958000,
       "tier": "Mid-Table Side"
     },
     {
@@ -843,8 +1096,8 @@
       "year": "2021",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.2,
-      "teamValue": 2155000,
+      "teamRating": 84.1,
+      "teamValue": 2150000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -854,9 +1107,31 @@
       "year": "2020",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.1,
-      "teamValue": 2324000,
+      "teamRating": 84.6,
+      "teamValue": 2232000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "hull-fc-2019",
+      "displayName": "Hull FC '19",
+      "clubName": "Hull FC",
+      "year": "2019",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.8,
+      "teamValue": 2538000,
       "tier": "Competitive Outfit"
+    },
+    {
+      "id": "hull-fc-2018",
+      "displayName": "Hull FC '18",
+      "clubName": "Hull FC",
+      "year": "2018",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.5,
+      "teamValue": 2808000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "hull-fc-2017",
@@ -865,9 +1140,9 @@
       "year": "2017",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.2,
-      "teamValue": 4499000,
-      "tier": "Title Favourites"
+      "teamRating": 89.5,
+      "teamValue": 3801000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "hull-fc-2016",
@@ -876,9 +1151,31 @@
       "year": "2016",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.4,
-      "teamValue": 3662000,
+      "teamRating": 89.8,
+      "teamValue": 4124000,
       "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "hull-fc-2015",
+      "displayName": "Hull FC '15",
+      "clubName": "Hull FC",
+      "year": "2015",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.6,
+      "teamValue": 3171000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "hull-fc-2014",
+      "displayName": "Hull FC '14",
+      "clubName": "Hull FC",
+      "year": "2014",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.6,
+      "teamValue": 2844000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "hull-fc-2013",
@@ -887,9 +1184,9 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2605000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 86,
+      "teamValue": 2745000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "hull-fc-2012",
@@ -898,9 +1195,31 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.2,
-      "teamValue": 3013000,
+      "teamRating": 86,
+      "teamValue": 2735000,
       "tier": "Top Six Contender"
+    },
+    {
+      "id": "hull-fc-2011",
+      "displayName": "Hull FC '11",
+      "clubName": "Hull FC",
+      "year": "2011",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.8,
+      "teamValue": 2886000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "hull-fc-2010",
+      "displayName": "Hull FC '10",
+      "clubName": "Hull FC",
+      "year": "2010",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87,
+      "teamValue": 2934000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "hull-fc-2009",
@@ -909,9 +1228,9 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.6,
-      "teamValue": 2881000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.6,
+      "teamValue": 2495000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "hull-fc-2008",
@@ -920,9 +1239,9 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.5,
-      "teamValue": 2944000,
-      "tier": "Top Six Contender"
+      "teamRating": 84.7,
+      "teamValue": 2279000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "hull-fc-2007",
@@ -931,9 +1250,9 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.4,
-      "teamValue": 3489000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87,
+      "teamValue": 2857000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "hull-fc-2006",
@@ -942,9 +1261,9 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.9,
-      "teamValue": 3561000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.5,
+      "teamValue": 2998000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "hull-fc-2005",
@@ -953,9 +1272,9 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.2,
-      "teamValue": 3291000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 86.6,
+      "teamValue": 2756000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "hull-fc-2004",
@@ -964,9 +1283,9 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.5,
-      "teamValue": 3182000,
-      "tier": "Trophy Contenders"
+      "teamRating": 86.3,
+      "teamValue": 2721000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "hull-fc-2003",
@@ -975,9 +1294,9 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.2,
-      "teamValue": 2941000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.6,
+      "teamValue": 2539000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "hull-fc-2002",
@@ -986,9 +1305,9 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.6,
-      "teamValue": 3238000,
-      "tier": "Trophy Contenders"
+      "teamRating": 86.1,
+      "teamValue": 2658000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "hull-fc-2001",
@@ -997,9 +1316,9 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 2811000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.5,
+      "teamValue": 2472000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "hull-fc-2000",
@@ -1008,9 +1327,9 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87,
-      "teamValue": 3016000,
-      "tier": "Trophy Contenders"
+      "teamRating": 85.7,
+      "teamValue": 2513000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "hull-fc-1999",
@@ -1019,8 +1338,8 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.6,
-      "teamValue": 2340000,
+      "teamRating": 83.4,
+      "teamValue": 1985000,
       "tier": "Mid-Table Side"
     },
     {
@@ -1030,20 +1349,108 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.4,
-      "teamValue": 2312000,
+      "teamRating": 83.8,
+      "teamValue": 2149000,
       "tier": "Mid-Table Side"
     },
     {
-      "id": "hull-kr-2026",
-      "displayName": "Hull KR '26",
+      "id": "hull-kr-2025",
+      "displayName": "Hull KR '25",
       "clubName": "Hull KR",
-      "year": "2026",
+      "year": "2025",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.2,
+      "teamValue": 2753000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "hull-kr-2024",
+      "displayName": "Hull KR '24",
+      "clubName": "Hull KR",
+      "year": "2024",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.8,
+      "teamValue": 2848000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "hull-kr-2023",
+      "displayName": "Hull KR '23",
+      "clubName": "Hull KR",
+      "year": "2023",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.7,
+      "teamValue": 2480000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "hull-kr-2022",
+      "displayName": "Hull KR '22",
+      "clubName": "Hull KR",
+      "year": "2022",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 84.8,
+      "teamValue": 2337000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "hull-kr-2021",
+      "displayName": "Hull KR '21",
+      "clubName": "Hull KR",
+      "year": "2021",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.7,
+      "teamValue": 2483000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "hull-kr-2020",
+      "displayName": "Hull KR '20",
+      "clubName": "Hull KR",
+      "year": "2020",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 83.2,
+      "teamValue": 1957000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "hull-kr-2019",
+      "displayName": "Hull KR '19",
+      "clubName": "Hull KR",
+      "year": "2019",
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 85.2,
-      "teamValue": 2547000,
+      "teamValue": 2401000,
       "tier": "Competitive Outfit"
+    },
+    {
+      "id": "hull-kr-2018",
+      "displayName": "Hull KR '18",
+      "clubName": "Hull KR",
+      "year": "2018",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.8,
+      "teamValue": 2518000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "hull-kr-2015",
+      "displayName": "Hull KR '15",
+      "clubName": "Hull KR",
+      "year": "2015",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.4,
+      "teamValue": 2716000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "hull-kr-2014",
@@ -1052,9 +1459,9 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.6,
-      "teamValue": 2778000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.9,
+      "teamValue": 2305000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "hull-kr-2013",
@@ -1063,9 +1470,9 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.5,
-      "teamValue": 2903000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.5,
+      "teamValue": 2485000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "hull-kr-2012",
@@ -1074,9 +1481,9 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.4,
-      "teamValue": 3108000,
-      "tier": "Trophy Contenders"
+      "teamRating": 86.3,
+      "teamValue": 2612000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "hull-kr-2011",
@@ -1085,9 +1492,9 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89,
-      "teamValue": 3550000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.8,
+      "teamValue": 3044000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "hull-kr-2010",
@@ -1096,9 +1503,9 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.1,
-      "teamValue": 3527000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.5,
+      "teamValue": 3071000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "hull-kr-2009",
@@ -1107,8 +1514,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89.3,
-      "teamValue": 3736000,
+      "teamRating": 88.5,
+      "teamValue": 3362000,
       "tier": "Grand Final Contenders"
     },
     {
@@ -1118,9 +1525,9 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.2,
-      "teamValue": 3430000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.2,
+      "teamValue": 2892000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "hull-kr-2007",
@@ -1129,8 +1536,8 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84,
-      "teamValue": 2297000,
+      "teamRating": 84.2,
+      "teamValue": 2143000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1140,9 +1547,9 @@
       "year": "2025",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.5,
-      "teamValue": 2412000,
-      "tier": "Competitive Outfit"
+      "teamRating": 86.8,
+      "teamValue": 3082000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "leeds-rhinos-2024",
@@ -1151,9 +1558,9 @@
       "year": "2024",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84,
-      "teamValue": 2149000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 85.1,
+      "teamValue": 2408000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "leeds-rhinos-2023",
@@ -1162,8 +1569,8 @@
       "year": "2023",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.4,
-      "teamValue": 2192000,
+      "teamRating": 84.3,
+      "teamValue": 2200000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1173,9 +1580,9 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.4,
-      "teamValue": 2143000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 85.8,
+      "teamValue": 2484000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "leeds-rhinos-2021",
@@ -1184,9 +1591,9 @@
       "year": "2021",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.4,
-      "teamValue": 2140000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 85.4,
+      "teamValue": 2386000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "leeds-rhinos-2020",
@@ -1195,9 +1602,119 @@
       "year": "2020",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2298000,
+      "teamRating": 85.6,
+      "teamValue": 2639000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "leeds-rhinos-2019",
+      "displayName": "Leeds Rhinos '19",
+      "clubName": "Leeds Rhinos",
+      "year": "2019",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85,
+      "teamValue": 2491000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "leeds-rhinos-2018",
+      "displayName": "Leeds Rhinos '18",
+      "clubName": "Leeds Rhinos",
+      "year": "2018",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.2,
+      "teamValue": 2356000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "leeds-rhinos-2017",
+      "displayName": "Leeds Rhinos '17",
+      "clubName": "Leeds Rhinos",
+      "year": "2017",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.7,
+      "teamValue": 2842000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "leeds-rhinos-2016",
+      "displayName": "Leeds Rhinos '16",
+      "clubName": "Leeds Rhinos",
+      "year": "2016",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 84.7,
+      "teamValue": 2416000,
       "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "leeds-rhinos-2015",
+      "displayName": "Leeds Rhinos '15",
+      "clubName": "Leeds Rhinos",
+      "year": "2015",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 89.5,
+      "teamValue": 4415000,
+      "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "leeds-rhinos-2014",
+      "displayName": "Leeds Rhinos '14",
+      "clubName": "Leeds Rhinos",
+      "year": "2014",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 90.8,
+      "teamValue": 4489000,
+      "tier": "Title Favourites"
+    },
+    {
+      "id": "leeds-rhinos-2013",
+      "displayName": "Leeds Rhinos '13",
+      "clubName": "Leeds Rhinos",
+      "year": "2013",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.9,
+      "teamValue": 3624000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "leeds-rhinos-2012",
+      "displayName": "Leeds Rhinos '12",
+      "clubName": "Leeds Rhinos",
+      "year": "2012",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 89.6,
+      "teamValue": 4106000,
+      "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "leeds-rhinos-2011",
+      "displayName": "Leeds Rhinos '11",
+      "clubName": "Leeds Rhinos",
+      "year": "2011",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 89.5,
+      "teamValue": 4083000,
+      "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "leeds-rhinos-2010",
+      "displayName": "Leeds Rhinos '10",
+      "clubName": "Leeds Rhinos",
+      "year": "2010",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 90.7,
+      "teamValue": 4361000,
+      "tier": "Title Favourites"
     },
     {
       "id": "leeds-rhinos-2009",
@@ -1206,8 +1723,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.5,
-      "teamValue": 4583000,
+      "teamRating": 91.8,
+      "teamValue": 4927000,
       "tier": "Title Favourites"
     },
     {
@@ -1217,9 +1734,9 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.6,
-      "teamValue": 4675000,
-      "tier": "Title Favourites"
+      "teamRating": 92.2,
+      "teamValue": 5168000,
+      "tier": "Generational Squad"
     },
     {
       "id": "leeds-rhinos-2007",
@@ -1228,9 +1745,9 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 93.1,
-      "teamValue": 5915000,
-      "tier": "Generational Squad"
+      "teamRating": 91.4,
+      "teamValue": 4999000,
+      "tier": "Title Favourites"
     },
     {
       "id": "leeds-rhinos-2006",
@@ -1239,9 +1756,9 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 93.6,
-      "teamValue": 6227000,
-      "tier": "Generational Squad"
+      "teamRating": 91.5,
+      "teamValue": 5093000,
+      "tier": "Title Favourites"
     },
     {
       "id": "leeds-rhinos-2005",
@@ -1250,9 +1767,9 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90,
-      "teamValue": 4865000,
-      "tier": "Title Favourites"
+      "teamRating": 89.9,
+      "teamValue": 4294000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "leeds-rhinos-2004",
@@ -1261,9 +1778,9 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 91.6,
-      "teamValue": 4963000,
-      "tier": "Title Favourites"
+      "teamRating": 89.7,
+      "teamValue": 4241000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "leeds-rhinos-2003",
@@ -1272,9 +1789,9 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 91.2,
-      "teamValue": 5132000,
-      "tier": "Title Favourites"
+      "teamRating": 89.5,
+      "teamValue": 3910000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "leeds-rhinos-2002",
@@ -1283,9 +1800,9 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89,
-      "teamValue": 4211000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 86.9,
+      "teamValue": 3113000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "leeds-rhinos-2001",
@@ -1294,9 +1811,9 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.8,
-      "teamValue": 5091000,
-      "tier": "Title Favourites"
+      "teamRating": 88,
+      "teamValue": 3483000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "leeds-rhinos-2000",
@@ -1305,9 +1822,9 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.6,
-      "teamValue": 3892000,
-      "tier": "Trophy Contenders"
+      "teamRating": 86.8,
+      "teamValue": 3224000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "leeds-rhinos-1999",
@@ -1316,9 +1833,9 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.1,
-      "teamValue": 3919000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.2,
+      "teamValue": 3253000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "leeds-rhinos-1998",
@@ -1327,9 +1844,9 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.1,
-      "teamValue": 3506000,
-      "tier": "Trophy Contenders"
+      "teamRating": 86.7,
+      "teamValue": 3067000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "leeds-rhinos-1997",
@@ -1338,9 +1855,9 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.4,
-      "teamValue": 3177000,
-      "tier": "Top Six Contender"
+      "teamRating": 84.7,
+      "teamValue": 2338000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "leeds-rhinos-1996",
@@ -1349,19 +1866,8 @@
       "year": "1996",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.6,
-      "teamValue": 2681000,
-      "tier": "Dangerous Underdogs"
-    },
-    {
-      "id": "leigh-leopards-2026",
-      "displayName": "Leigh Leopards '26",
-      "clubName": "Leigh Leopards",
-      "year": "2026",
-      "category": "historic",
-      "rosterSize": 17,
-      "teamRating": 82.5,
-      "teamValue": 1896000,
+      "teamRating": 82.9,
+      "teamValue": 1931000,
       "tier": "Inconsistent Squad"
     },
     {
@@ -1371,9 +1877,42 @@
       "year": "2025",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2271000,
+      "teamRating": 84.8,
+      "teamValue": 2318000,
       "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "leigh-leopards-2024",
+      "displayName": "Leigh Leopards '24",
+      "clubName": "Leigh Leopards",
+      "year": "2024",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.6,
+      "teamValue": 2521000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "leigh-leopards-2023",
+      "displayName": "Leigh Leopards '23",
+      "clubName": "Leigh Leopards",
+      "year": "2023",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.8,
+      "teamValue": 2657000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "leigh-leopards-2021",
+      "displayName": "Leigh Leopards '21",
+      "clubName": "Leigh Leopards",
+      "year": "2021",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 83.2,
+      "teamValue": 1968000,
+      "tier": "Mid-Table Side"
     },
     {
       "id": "leigh-leopards-2017",
@@ -1382,9 +1921,20 @@
       "year": "2017",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.7,
-      "teamValue": 2758000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.5,
+      "teamValue": 2242000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "london-broncos-2019",
+      "displayName": "London Broncos '19",
+      "clubName": "London Broncos",
+      "year": "2019",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 84.7,
+      "teamValue": 2240000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "london-broncos-2013",
@@ -1393,8 +1943,8 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.6,
-      "teamValue": 2550000,
+      "teamRating": 85.1,
+      "teamValue": 2280000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1404,8 +1954,8 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2513000,
+      "teamRating": 84.7,
+      "teamValue": 2239000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1415,9 +1965,9 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.4,
-      "teamValue": 3238000,
-      "tier": "Top Six Contender"
+      "teamRating": 84.5,
+      "teamValue": 2234000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "london-broncos-2010",
@@ -1426,9 +1976,9 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.4,
-      "teamValue": 3073000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.3,
+      "teamValue": 2167000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "london-broncos-2009",
@@ -1437,8 +1987,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.5,
-      "teamValue": 2482000,
+      "teamRating": 85.3,
+      "teamValue": 2428000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1448,9 +1998,9 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.3,
-      "teamValue": 2937000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.2,
+      "teamValue": 2379000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "london-broncos-2007",
@@ -1459,8 +2009,8 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.8,
-      "teamValue": 3031000,
+      "teamRating": 85.7,
+      "teamValue": 2512000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1470,8 +2020,8 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85,
-      "teamValue": 2750000,
+      "teamRating": 85.9,
+      "teamValue": 2584000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1481,9 +2031,9 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.1,
-      "teamValue": 2701000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.3,
+      "teamValue": 2410000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "london-broncos-2004",
@@ -1492,8 +2042,8 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.6,
-      "teamValue": 2447000,
+      "teamRating": 84.2,
+      "teamValue": 2178000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1504,7 +2054,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 85.2,
-      "teamValue": 2566000,
+      "teamValue": 2348000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1515,7 +2065,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 85.2,
-      "teamValue": 2523000,
+      "teamValue": 2406000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1525,9 +2075,9 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.3,
-      "teamValue": 2865000,
-      "tier": "Competitive Outfit"
+      "teamRating": 86.3,
+      "teamValue": 2649000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "london-broncos-2000",
@@ -1536,8 +2086,8 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.4,
-      "teamValue": 2487000,
+      "teamRating": 84.5,
+      "teamValue": 2253000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -1547,8 +2097,8 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.7,
-      "teamValue": 2599000,
+      "teamRating": 85.5,
+      "teamValue": 2434000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1558,9 +2108,9 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2608000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.8,
+      "teamValue": 2315000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "london-broncos-1997",
@@ -1569,8 +2119,8 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.5,
-      "teamValue": 2980000,
+      "teamRating": 86.6,
+      "teamValue": 2852000,
       "tier": "Top Six Contender"
     },
     {
@@ -1580,9 +2130,86 @@
       "year": "1996",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.1,
-      "teamValue": 2380000,
+      "teamRating": 84.2,
+      "teamValue": 2153000,
       "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "salford-red-devils-2025",
+      "displayName": "Salford Red Devils '25",
+      "clubName": "Salford Red Devils",
+      "year": "2025",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 84.2,
+      "teamValue": 2212000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "salford-red-devils-2024",
+      "displayName": "Salford Red Devils '24",
+      "clubName": "Salford Red Devils",
+      "year": "2024",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.7,
+      "teamValue": 2489000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "salford-red-devils-2023",
+      "displayName": "Salford Red Devils '23",
+      "clubName": "Salford Red Devils",
+      "year": "2023",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.6,
+      "teamValue": 2624000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "salford-red-devils-2022",
+      "displayName": "Salford Red Devils '22",
+      "clubName": "Salford Red Devils",
+      "year": "2022",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.1,
+      "teamValue": 2859000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "salford-red-devils-2021",
+      "displayName": "Salford Red Devils '21",
+      "clubName": "Salford Red Devils",
+      "year": "2021",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.3,
+      "teamValue": 2625000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "salford-red-devils-2020",
+      "displayName": "Salford Red Devils '20",
+      "clubName": "Salford Red Devils",
+      "year": "2020",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.3,
+      "teamValue": 2883000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "salford-red-devils-2019",
+      "displayName": "Salford Red Devils '19",
+      "clubName": "Salford Red Devils",
+      "year": "2019",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 88.8,
+      "teamValue": 3541000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "salford-red-devils-2018",
@@ -1591,9 +2218,9 @@
       "year": "2018",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 3032000,
-      "tier": "Top Six Contender"
+      "teamRating": 84.8,
+      "teamValue": 2334000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "salford-red-devils-2017",
@@ -1602,9 +2229,9 @@
       "year": "2017",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.1,
-      "teamValue": 3086000,
-      "tier": "Trophy Contenders"
+      "teamRating": 85.6,
+      "teamValue": 2495000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "salford-red-devils-2016",
@@ -1613,8 +2240,8 @@
       "year": "2016",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.1,
-      "teamValue": 2598000,
+      "teamRating": 86,
+      "teamValue": 2568000,
       "tier": "Top Six Contender"
     },
     {
@@ -1624,9 +2251,42 @@
       "year": "2015",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.5,
-      "teamValue": 3422000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 86.1,
+      "teamValue": 2583000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "salford-red-devils-2014",
+      "displayName": "Salford Red Devils '14",
+      "clubName": "Salford Red Devils",
+      "year": "2014",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.4,
+      "teamValue": 2538000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "salford-red-devils-2013",
+      "displayName": "Salford Red Devils '13",
+      "clubName": "Salford Red Devils",
+      "year": "2013",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 84.8,
+      "teamValue": 2290000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "salford-red-devils-2012",
+      "displayName": "Salford Red Devils '12",
+      "clubName": "Salford Red Devils",
+      "year": "2012",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.5,
+      "teamValue": 2586000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "salford-red-devils-2011",
@@ -1635,9 +2295,9 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.2,
-      "teamValue": 3287000,
-      "tier": "Trophy Contenders"
+      "teamRating": 85.6,
+      "teamValue": 2618000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "salford-red-devils-2010",
@@ -1646,9 +2306,9 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.6,
-      "teamValue": 2856000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.7,
+      "teamValue": 2231000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "salford-red-devils-2009",
@@ -1657,8 +2317,19 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.3,
-      "teamValue": 2507000,
+      "teamRating": 83.5,
+      "teamValue": 1988000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "salford-red-devils-2007",
+      "displayName": "Salford Red Devils '07",
+      "clubName": "Salford Red Devils",
+      "year": "2007",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85,
+      "teamValue": 2339000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1669,7 +2340,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 86.5,
-      "teamValue": 2824000,
+      "teamValue": 2696000,
       "tier": "Top Six Contender"
     },
     {
@@ -1679,9 +2350,9 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.1,
-      "teamValue": 2436000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.7,
+      "teamValue": 2257000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "salford-red-devils-2004",
@@ -1690,9 +2361,9 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.5,
-      "teamValue": 2476000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 85.2,
+      "teamValue": 2386000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "salford-red-devils-2002",
@@ -1701,9 +2372,9 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85,
-      "teamValue": 2437000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.4,
+      "teamValue": 2154000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "salford-red-devils-2001",
@@ -1712,8 +2383,8 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.6,
-      "teamValue": 2709000,
+      "teamRating": 85.2,
+      "teamValue": 2330000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1723,8 +2394,8 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.7,
-      "teamValue": 2660000,
+      "teamRating": 85,
+      "teamValue": 2353000,
       "tier": "Competitive Outfit"
     },
     {
@@ -1735,7 +2406,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 83.2,
-      "teamValue": 2246000,
+      "teamValue": 1972000,
       "tier": "Mid-Table Side"
     },
     {
@@ -1745,8 +2416,8 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.8,
-      "teamValue": 2235000,
+      "teamRating": 83.6,
+      "teamValue": 2113000,
       "tier": "Mid-Table Side"
     },
     {
@@ -1756,20 +2427,75 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.5,
-      "teamValue": 2018000,
+      "teamRating": 82.7,
+      "teamValue": 1860000,
+      "tier": "Inconsistent Squad"
+    },
+    {
+      "id": "sheffield-eagles-1999",
+      "displayName": "Sheffield Eagles '99",
+      "clubName": "Sheffield Eagles",
+      "year": "1999",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 82.3,
+      "teamValue": 1727000,
+      "tier": "Inconsistent Squad"
+    },
+    {
+      "id": "sheffield-eagles-1998",
+      "displayName": "Sheffield Eagles '98",
+      "clubName": "Sheffield Eagles",
+      "year": "1998",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 83,
+      "teamValue": 1933000,
       "tier": "Mid-Table Side"
     },
     {
-      "id": "st-helens-2026",
-      "displayName": "St Helens '26",
+      "id": "st-helens-2025",
+      "displayName": "St Helens '25",
       "clubName": "St Helens",
-      "year": "2026",
+      "year": "2025",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.9,
-      "teamValue": 2296000,
-      "tier": "Mid-Table Side"
+      "teamRating": 85.7,
+      "teamValue": 2642000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "st-helens-2024",
+      "displayName": "St Helens '24",
+      "clubName": "St Helens",
+      "year": "2024",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.1,
+      "teamValue": 2989000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "st-helens-2023",
+      "displayName": "St Helens '23",
+      "clubName": "St Helens",
+      "year": "2023",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 88.3,
+      "teamValue": 3540000,
+      "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "st-helens-2022",
+      "displayName": "St Helens '22",
+      "clubName": "St Helens",
+      "year": "2022",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 88.5,
+      "teamValue": 3715000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "st-helens-2021",
@@ -1779,7 +2505,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 89.5,
-      "teamValue": 3702000,
+      "teamValue": 3886000,
       "tier": "Grand Final Contenders"
     },
     {
@@ -1789,9 +2515,9 @@
       "year": "2020",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.5,
-      "teamValue": 4281000,
-      "tier": "Title Favourites"
+      "teamRating": 89.5,
+      "teamValue": 3971000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "st-helens-2019",
@@ -1800,8 +2526,8 @@
       "year": "2019",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90,
-      "teamValue": 3874000,
+      "teamRating": 90.4,
+      "teamValue": 4158000,
       "tier": "Title Favourites"
     },
     {
@@ -1811,9 +2537,9 @@
       "year": "2018",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.5,
-      "teamValue": 4645000,
-      "tier": "Title Favourites"
+      "teamRating": 89.8,
+      "teamValue": 4168000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "st-helens-2017",
@@ -1822,9 +2548,9 @@
       "year": "2017",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.3,
-      "teamValue": 4555000,
-      "tier": "Title Favourites"
+      "teamRating": 88.2,
+      "teamValue": 3318000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "st-helens-2016",
@@ -1833,9 +2559,20 @@
       "year": "2016",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87,
-      "teamValue": 3048000,
+      "teamRating": 87.1,
+      "teamValue": 3021000,
       "tier": "Trophy Contenders"
+    },
+    {
+      "id": "st-helens-2015",
+      "displayName": "St Helens '15",
+      "clubName": "St Helens",
+      "year": "2015",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.8,
+      "teamValue": 3184000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "st-helens-2014",
@@ -1844,8 +2581,19 @@
       "year": "2014",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.6,
-      "teamValue": 3651000,
+      "teamRating": 88.2,
+      "teamValue": 3455000,
+      "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "st-helens-2013",
+      "displayName": "St Helens '13",
+      "clubName": "St Helens",
+      "year": "2013",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 88.4,
+      "teamValue": 3328000,
       "tier": "Grand Final Contenders"
     },
     {
@@ -1855,9 +2603,9 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.3,
-      "teamValue": 4800000,
-      "tier": "Title Favourites"
+      "teamRating": 88.4,
+      "teamValue": 3531000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "st-helens-2011",
@@ -1866,8 +2614,30 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 91.3,
-      "teamValue": 5187000,
+      "teamRating": 89.8,
+      "teamValue": 4089000,
+      "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "st-helens-2010",
+      "displayName": "St Helens '10",
+      "clubName": "St Helens",
+      "year": "2010",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 89.5,
+      "teamValue": 3879000,
+      "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "st-helens-2009",
+      "displayName": "St Helens '09",
+      "clubName": "St Helens",
+      "year": "2009",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 90.9,
+      "teamValue": 4460000,
       "tier": "Title Favourites"
     },
     {
@@ -1877,9 +2647,9 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 92.7,
-      "teamValue": 5841000,
-      "tier": "Generational Squad"
+      "teamRating": 91.9,
+      "teamValue": 5036000,
+      "tier": "Title Favourites"
     },
     {
       "id": "st-helens-2007",
@@ -1888,8 +2658,19 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
+      "teamRating": 91.6,
+      "teamValue": 4979000,
+      "tier": "Title Favourites"
+    },
+    {
+      "id": "st-helens-2006",
+      "displayName": "St Helens '06",
+      "clubName": "St Helens",
+      "year": "2006",
+      "category": "historic",
+      "rosterSize": 17,
       "teamRating": 92.2,
-      "teamValue": 5686000,
+      "teamValue": 5236000,
       "tier": "Generational Squad"
     },
     {
@@ -1899,8 +2680,8 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 93.1,
-      "teamValue": 6095000,
+      "teamRating": 92.1,
+      "teamValue": 5266000,
       "tier": "Generational Squad"
     },
     {
@@ -1910,9 +2691,9 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 93.7,
-      "teamValue": 6244000,
-      "tier": "Generational Squad"
+      "teamRating": 91.5,
+      "teamValue": 4966000,
+      "tier": "Title Favourites"
     },
     {
       "id": "st-helens-2003",
@@ -1921,9 +2702,9 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 91.2,
-      "teamValue": 5616000,
-      "tier": "Title Favourites"
+      "teamRating": 89.5,
+      "teamValue": 4373000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "st-helens-2002",
@@ -1932,8 +2713,8 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.3,
-      "teamValue": 4812000,
+      "teamRating": 90.8,
+      "teamValue": 4835000,
       "tier": "Title Favourites"
     },
     {
@@ -1943,9 +2724,9 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.8,
-      "teamValue": 5361000,
-      "tier": "Title Favourites"
+      "teamRating": 89.8,
+      "teamValue": 4404000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "st-helens-2000",
@@ -1954,8 +2735,8 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.4,
-      "teamValue": 4887000,
+      "teamRating": 90.5,
+      "teamValue": 4652000,
       "tier": "Title Favourites"
     },
     {
@@ -1965,9 +2746,9 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 92.2,
-      "teamValue": 5692000,
-      "tier": "Generational Squad"
+      "teamRating": 91.1,
+      "teamValue": 4741000,
+      "tier": "Title Favourites"
     },
     {
       "id": "st-helens-1998",
@@ -1976,9 +2757,9 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.8,
-      "teamValue": 5325000,
-      "tier": "Title Favourites"
+      "teamRating": 89.2,
+      "teamValue": 3964000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "st-helens-1997",
@@ -1987,9 +2768,9 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.2,
-      "teamValue": 4866000,
-      "tier": "Title Favourites"
+      "teamRating": 89.4,
+      "teamValue": 3965000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "st-helens-1996",
@@ -1998,31 +2779,31 @@
       "year": "1996",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.4,
-      "teamValue": 3901000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.2,
+      "teamValue": 3355000,
+      "tier": "Trophy Contenders"
     },
     {
-      "id": "toulouse-olympique-2026",
-      "displayName": "Toulouse Olympique '26",
+      "id": "toronto-wolfpack-2020",
+      "displayName": "Toronto Wolfpack '20",
+      "clubName": "Toronto Wolfpack",
+      "year": "2020",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 83.9,
+      "teamValue": 2116000,
+      "tier": "Mid-Table Side"
+    },
+    {
+      "id": "toulouse-olympique-2022",
+      "displayName": "Toulouse Olympique '22",
       "clubName": "Toulouse Olympique",
-      "year": "2026",
+      "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 81.8,
-      "teamValue": 1768000,
-      "tier": "Rebuild Project"
-    },
-    {
-      "id": "wakefield-trinity-2026",
-      "displayName": "Wakefield Trinity '26",
-      "clubName": "Wakefield Trinity",
-      "year": "2026",
-      "category": "historic",
-      "rosterSize": 17,
-      "teamRating": 84.2,
-      "teamValue": 2316000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 82.8,
+      "teamValue": 1873000,
+      "tier": "Inconsistent Squad"
     },
     {
       "id": "wakefield-trinity-2025",
@@ -2032,7 +2813,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 84.8,
-      "teamValue": 2258000,
+      "teamValue": 2278000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2053,9 +2834,64 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 82.7,
-      "teamValue": 1945000,
+      "teamRating": 82.8,
+      "teamValue": 1935000,
       "tier": "Inconsistent Squad"
+    },
+    {
+      "id": "wakefield-trinity-2021",
+      "displayName": "Wakefield Trinity '21",
+      "clubName": "Wakefield Trinity",
+      "year": "2021",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 84.2,
+      "teamValue": 2244000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "wakefield-trinity-2020",
+      "displayName": "Wakefield Trinity '20",
+      "clubName": "Wakefield Trinity",
+      "year": "2020",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.5,
+      "teamValue": 2577000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "wakefield-trinity-2019",
+      "displayName": "Wakefield Trinity '19",
+      "clubName": "Wakefield Trinity",
+      "year": "2019",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.4,
+      "teamValue": 2420000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "wakefield-trinity-2018",
+      "displayName": "Wakefield Trinity '18",
+      "clubName": "Wakefield Trinity",
+      "year": "2018",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.9,
+      "teamValue": 2564000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "wakefield-trinity-2017",
+      "displayName": "Wakefield Trinity '17",
+      "clubName": "Wakefield Trinity",
+      "year": "2017",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.2,
+      "teamValue": 2583000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "wakefield-trinity-2016",
@@ -2064,9 +2900,31 @@
       "year": "2016",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.6,
-      "teamValue": 2751000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.2,
+      "teamValue": 2375000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "wakefield-trinity-2015",
+      "displayName": "Wakefield Trinity '15",
+      "clubName": "Wakefield Trinity",
+      "year": "2015",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.4,
+      "teamValue": 2437000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "wakefield-trinity-2014",
+      "displayName": "Wakefield Trinity '14",
+      "clubName": "Wakefield Trinity",
+      "year": "2014",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.5,
+      "teamValue": 2491000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "wakefield-trinity-2013",
@@ -2075,9 +2933,9 @@
       "year": "2013",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.1,
-      "teamValue": 3475000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 85.1,
+      "teamValue": 2351000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "wakefield-trinity-2012",
@@ -2086,9 +2944,9 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.2,
-      "teamValue": 3472000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 86.5,
+      "teamValue": 2687000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "wakefield-trinity-2011",
@@ -2097,8 +2955,8 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.6,
-      "teamValue": 2653000,
+      "teamRating": 84,
+      "teamValue": 2072000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2108,9 +2966,9 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.6,
-      "teamValue": 2656000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.8,
+      "teamValue": 2484000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "wakefield-trinity-2009",
@@ -2120,7 +2978,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 86.2,
-      "teamValue": 2809000,
+      "teamValue": 2700000,
       "tier": "Top Six Contender"
     },
     {
@@ -2130,8 +2988,8 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.4,
-      "teamValue": 3282000,
+      "teamRating": 86.3,
+      "teamValue": 2731000,
       "tier": "Top Six Contender"
     },
     {
@@ -2141,9 +2999,9 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 3290000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.5,
+      "teamValue": 2525000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "wakefield-trinity-2006",
@@ -2152,9 +3010,9 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 3214000,
-      "tier": "Top Six Contender"
+      "teamRating": 84.6,
+      "teamValue": 2275000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "wakefield-trinity-2005",
@@ -2163,9 +3021,9 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.7,
-      "teamValue": 3252000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.7,
+      "teamValue": 2530000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "wakefield-trinity-2004",
@@ -2175,7 +3033,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 87.2,
-      "teamValue": 3550000,
+      "teamValue": 3261000,
       "tier": "Trophy Contenders"
     },
     {
@@ -2185,9 +3043,9 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.4,
-      "teamValue": 3172000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.2,
+      "teamValue": 2647000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "wakefield-trinity-2002",
@@ -2196,9 +3054,9 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2843000,
-      "tier": "Competitive Outfit"
+      "teamRating": 84.8,
+      "teamValue": 2354000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "wakefield-trinity-2001",
@@ -2207,8 +3065,8 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.5,
-      "teamValue": 2415000,
+      "teamRating": 84.2,
+      "teamValue": 2197000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2219,7 +3077,7 @@
       "category": "historic",
       "rosterSize": 17,
       "teamRating": 84.9,
-      "teamValue": 2495000,
+      "teamValue": 2244000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2229,20 +3087,9 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.9,
-      "teamValue": 2187000,
+      "teamRating": 83,
+      "teamValue": 1893000,
       "tier": "Mid-Table Side"
-    },
-    {
-      "id": "warrington-wolves-2026",
-      "displayName": "Warrington Wolves '26",
-      "clubName": "Warrington Wolves",
-      "year": "2026",
-      "category": "historic",
-      "rosterSize": 17,
-      "teamRating": 84.7,
-      "teamValue": 2390000,
-      "tier": "Dangerous Underdogs"
     },
     {
       "id": "warrington-wolves-2025",
@@ -2251,8 +3098,8 @@
       "year": "2025",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.8,
-      "teamValue": 2240000,
+      "teamRating": 84.6,
+      "teamValue": 2264000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2262,8 +3109,8 @@
       "year": "2024",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2324000,
+      "teamRating": 85.6,
+      "teamValue": 2508000,
       "tier": "Competitive Outfit"
     },
     {
@@ -2273,9 +3120,9 @@
       "year": "2023",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2287000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 85.3,
+      "teamValue": 2404000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "warrington-wolves-2022",
@@ -2284,9 +3131,9 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 83.8,
-      "teamValue": 2112000,
-      "tier": "Mid-Table Side"
+      "teamRating": 84.1,
+      "teamValue": 2137000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "warrington-wolves-2021",
@@ -2295,9 +3142,9 @@
       "year": "2021",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.2,
-      "teamValue": 2315000,
-      "tier": "Competitive Outfit"
+      "teamRating": 86.5,
+      "teamValue": 2708000,
+      "tier": "Top Six Contender"
     },
     {
       "id": "warrington-wolves-2020",
@@ -2306,9 +3153,53 @@
       "year": "2020",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.1,
-      "teamValue": 2631000,
+      "teamRating": 86.8,
+      "teamValue": 2845000,
       "tier": "Top Six Contender"
+    },
+    {
+      "id": "warrington-wolves-2019",
+      "displayName": "Warrington Wolves '19",
+      "clubName": "Warrington Wolves",
+      "year": "2019",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.9,
+      "teamValue": 2984000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "warrington-wolves-2018",
+      "displayName": "Warrington Wolves '18",
+      "clubName": "Warrington Wolves",
+      "year": "2018",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.6,
+      "teamValue": 2786000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "warrington-wolves-2017",
+      "displayName": "Warrington Wolves '17",
+      "clubName": "Warrington Wolves",
+      "year": "2017",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 85.7,
+      "teamValue": 2627000,
+      "tier": "Competitive Outfit"
+    },
+    {
+      "id": "warrington-wolves-2016",
+      "displayName": "Warrington Wolves '16",
+      "clubName": "Warrington Wolves",
+      "year": "2016",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.8,
+      "teamValue": 3319000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "warrington-wolves-2015",
@@ -2317,9 +3208,31 @@
       "year": "2015",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.5,
-      "teamValue": 2786000,
+      "teamRating": 85.8,
+      "teamValue": 2772000,
       "tier": "Competitive Outfit"
+    },
+    {
+      "id": "warrington-wolves-2014",
+      "displayName": "Warrington Wolves '14",
+      "clubName": "Warrington Wolves",
+      "year": "2014",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.2,
+      "teamValue": 2809000,
+      "tier": "Top Six Contender"
+    },
+    {
+      "id": "warrington-wolves-2013",
+      "displayName": "Warrington Wolves '13",
+      "clubName": "Warrington Wolves",
+      "year": "2013",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 89.1,
+      "teamValue": 3502000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "warrington-wolves-2012",
@@ -2328,9 +3241,9 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 92.5,
-      "teamValue": 5279000,
-      "tier": "Generational Squad"
+      "teamRating": 89.9,
+      "teamValue": 4039000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "warrington-wolves-2011",
@@ -2339,9 +3252,9 @@
       "year": "2011",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 92.5,
-      "teamValue": 5474000,
-      "tier": "Generational Squad"
+      "teamRating": 90.5,
+      "teamValue": 4437000,
+      "tier": "Title Favourites"
     },
     {
       "id": "warrington-wolves-2010",
@@ -2350,9 +3263,9 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 91.8,
-      "teamValue": 4873000,
-      "tier": "Title Favourites"
+      "teamRating": 89.2,
+      "teamValue": 3969000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "warrington-wolves-2009",
@@ -2361,9 +3274,9 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89.2,
-      "teamValue": 3845000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.4,
+      "teamValue": 3145000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "warrington-wolves-2008",
@@ -2372,9 +3285,9 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 91.5,
-      "teamValue": 4957000,
-      "tier": "Title Favourites"
+      "teamRating": 88.5,
+      "teamValue": 3532000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "warrington-wolves-2007",
@@ -2383,9 +3296,9 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.2,
-      "teamValue": 3990000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.2,
+      "teamValue": 3006000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "warrington-wolves-2006",
@@ -2394,8 +3307,8 @@
       "year": "2006",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.4,
-      "teamValue": 3858000,
+      "teamRating": 87.8,
+      "teamValue": 3335000,
       "tier": "Trophy Contenders"
     },
     {
@@ -2405,8 +3318,8 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.4,
-      "teamValue": 3681000,
+      "teamRating": 87.2,
+      "teamValue": 3141000,
       "tier": "Trophy Contenders"
     },
     {
@@ -2416,9 +3329,9 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.9,
-      "teamValue": 3297000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.9,
+      "teamValue": 2661000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "warrington-wolves-2003",
@@ -2427,8 +3340,8 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.7,
-      "teamValue": 3417000,
+      "teamRating": 86.4,
+      "teamValue": 2874000,
       "tier": "Top Six Contender"
     },
     {
@@ -2438,9 +3351,9 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 3476000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.3,
+      "teamValue": 2549000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "warrington-wolves-2001",
@@ -2449,9 +3362,9 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 3312000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.5,
+      "teamValue": 2657000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "warrington-wolves-2000",
@@ -2460,9 +3373,9 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 3223000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.8,
+      "teamValue": 2668000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "warrington-wolves-1999",
@@ -2471,9 +3384,9 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87,
-      "teamValue": 3118000,
-      "tier": "Trophy Contenders"
+      "teamRating": 85.8,
+      "teamValue": 2590000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "warrington-wolves-1998",
@@ -2482,9 +3395,9 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86,
-      "teamValue": 2835000,
-      "tier": "Top Six Contender"
+      "teamRating": 85.2,
+      "teamValue": 2371000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "warrington-wolves-1997",
@@ -2493,9 +3406,9 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.1,
-      "teamValue": 3127000,
-      "tier": "Top Six Contender"
+      "teamRating": 84.2,
+      "teamValue": 2214000,
+      "tier": "Dangerous Underdogs"
     },
     {
       "id": "warrington-wolves-1996",
@@ -2504,8 +3417,52 @@
       "year": "1996",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.3,
-      "teamValue": 3288000,
+      "teamRating": 84.2,
+      "teamValue": 2382000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "widnes-vikings-2018",
+      "displayName": "Widnes Vikings '18",
+      "clubName": "Widnes Vikings",
+      "year": "2018",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 84.2,
+      "teamValue": 2219000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "widnes-vikings-2017",
+      "displayName": "Widnes Vikings '17",
+      "clubName": "Widnes Vikings",
+      "year": "2017",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 84.5,
+      "teamValue": 2249000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "widnes-vikings-2016",
+      "displayName": "Widnes Vikings '16",
+      "clubName": "Widnes Vikings",
+      "year": "2016",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 84.6,
+      "teamValue": 2242000,
+      "tier": "Dangerous Underdogs"
+    },
+    {
+      "id": "widnes-vikings-2013",
+      "displayName": "Widnes Vikings '13",
+      "clubName": "Widnes Vikings",
+      "year": "2013",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 86.2,
+      "teamValue": 2603000,
       "tier": "Top Six Contender"
     },
     {
@@ -2515,8 +3472,8 @@
       "year": "2012",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2558000,
+      "teamRating": 84.6,
+      "teamValue": 2163000,
       "tier": "Dangerous Underdogs"
     },
     {
@@ -2526,9 +3483,9 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.6,
-      "teamValue": 2551000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 85,
+      "teamValue": 2357000,
+      "tier": "Competitive Outfit"
     },
     {
       "id": "widnes-vikings-2002",
@@ -2537,20 +3494,9 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.7,
-      "teamValue": 2429000,
+      "teamRating": 84.5,
+      "teamValue": 2298000,
       "tier": "Dangerous Underdogs"
-    },
-    {
-      "id": "wigan-warriors-2026",
-      "displayName": "Wigan Warriors '26",
-      "clubName": "Wigan Warriors",
-      "year": "2026",
-      "category": "historic",
-      "rosterSize": 17,
-      "teamRating": 86.2,
-      "teamValue": 2780000,
-      "tier": "Top Six Contender"
     },
     {
       "id": "wigan-warriors-2025",
@@ -2559,9 +3505,9 @@
       "year": "2025",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.9,
-      "teamValue": 2564000,
-      "tier": "Competitive Outfit"
+      "teamRating": 87.5,
+      "teamValue": 2981000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "wigan-warriors-2024",
@@ -2570,9 +3516,9 @@
       "year": "2024",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.5,
-      "teamValue": 2628000,
-      "tier": "Top Six Contender"
+      "teamRating": 87.7,
+      "teamValue": 3183000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "wigan-warriors-2023",
@@ -2581,9 +3527,9 @@
       "year": "2023",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.6,
-      "teamValue": 2699000,
-      "tier": "Top Six Contender"
+      "teamRating": 87.5,
+      "teamValue": 3170000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "wigan-warriors-2022",
@@ -2592,9 +3538,9 @@
       "year": "2022",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 85.8,
-      "teamValue": 2637000,
-      "tier": "Competitive Outfit"
+      "teamRating": 87.3,
+      "teamValue": 3171000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "wigan-warriors-2021",
@@ -2603,9 +3549,9 @@
       "year": "2021",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 84.9,
-      "teamValue": 2280000,
-      "tier": "Dangerous Underdogs"
+      "teamRating": 87,
+      "teamValue": 2894000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "wigan-warriors-2020",
@@ -2614,9 +3560,42 @@
       "year": "2020",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 86.8,
-      "teamValue": 2909000,
-      "tier": "Top Six Contender"
+      "teamRating": 88.2,
+      "teamValue": 3520000,
+      "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "wigan-warriors-2019",
+      "displayName": "Wigan Warriors '19",
+      "clubName": "Wigan Warriors",
+      "year": "2019",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 88,
+      "teamValue": 3198000,
+      "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "wigan-warriors-2018",
+      "displayName": "Wigan Warriors '18",
+      "clubName": "Wigan Warriors",
+      "year": "2018",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87.1,
+      "teamValue": 3145000,
+      "tier": "Trophy Contenders"
+    },
+    {
+      "id": "wigan-warriors-2017",
+      "displayName": "Wigan Warriors '17",
+      "clubName": "Wigan Warriors",
+      "year": "2017",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 87,
+      "teamValue": 3159000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "wigan-warriors-2016",
@@ -2625,9 +3604,9 @@
       "year": "2016",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 88.3,
-      "teamValue": 3686000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.6,
+      "teamValue": 3323000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "wigan-warriors-2015",
@@ -2636,9 +3615,53 @@
       "year": "2015",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 87.1,
-      "teamValue": 3104000,
-      "tier": "Trophy Contenders"
+      "teamRating": 88.3,
+      "teamValue": 3441000,
+      "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "wigan-warriors-2014",
+      "displayName": "Wigan Warriors '14",
+      "clubName": "Wigan Warriors",
+      "year": "2014",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 89.2,
+      "teamValue": 3849000,
+      "tier": "Grand Final Contenders"
+    },
+    {
+      "id": "wigan-warriors-2013",
+      "displayName": "Wigan Warriors '13",
+      "clubName": "Wigan Warriors",
+      "year": "2013",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 91.8,
+      "teamValue": 4888000,
+      "tier": "Title Favourites"
+    },
+    {
+      "id": "wigan-warriors-2012",
+      "displayName": "Wigan Warriors '12",
+      "clubName": "Wigan Warriors",
+      "year": "2012",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 91,
+      "teamValue": 4543000,
+      "tier": "Title Favourites"
+    },
+    {
+      "id": "wigan-warriors-2011",
+      "displayName": "Wigan Warriors '11",
+      "clubName": "Wigan Warriors",
+      "year": "2011",
+      "category": "historic",
+      "rosterSize": 17,
+      "teamRating": 90.5,
+      "teamValue": 4416000,
+      "tier": "Title Favourites"
     },
     {
       "id": "wigan-warriors-2010",
@@ -2647,8 +3670,8 @@
       "year": "2010",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 91.4,
-      "teamValue": 5352000,
+      "teamRating": 90.4,
+      "teamValue": 4399000,
       "tier": "Title Favourites"
     },
     {
@@ -2658,8 +3681,8 @@
       "year": "2009",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89.9,
-      "teamValue": 4041000,
+      "teamRating": 89.5,
+      "teamValue": 3961000,
       "tier": "Grand Final Contenders"
     },
     {
@@ -2669,8 +3692,8 @@
       "year": "2008",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89.4,
-      "teamValue": 3780000,
+      "teamRating": 88.2,
+      "teamValue": 3332000,
       "tier": "Grand Final Contenders"
     },
     {
@@ -2680,9 +3703,9 @@
       "year": "2007",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.1,
-      "teamValue": 4487000,
-      "tier": "Title Favourites"
+      "teamRating": 88.2,
+      "teamValue": 3448000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "wigan-warriors-2005",
@@ -2691,9 +3714,9 @@
       "year": "2005",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 89.8,
-      "teamValue": 4271000,
-      "tier": "Grand Final Contenders"
+      "teamRating": 87.2,
+      "teamValue": 2925000,
+      "tier": "Trophy Contenders"
     },
     {
       "id": "wigan-warriors-2004",
@@ -2702,9 +3725,9 @@
       "year": "2004",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.8,
-      "teamValue": 4778000,
-      "tier": "Title Favourites"
+      "teamRating": 88.5,
+      "teamValue": 3356000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "wigan-warriors-2003",
@@ -2713,8 +3736,8 @@
       "year": "2003",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 91,
-      "teamValue": 5218000,
+      "teamRating": 90.3,
+      "teamValue": 4383000,
       "tier": "Title Favourites"
     },
     {
@@ -2724,8 +3747,8 @@
       "year": "2002",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 91.6,
-      "teamValue": 5113000,
+      "teamRating": 90.5,
+      "teamValue": 4494000,
       "tier": "Title Favourites"
     },
     {
@@ -2735,8 +3758,8 @@
       "year": "2001",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 91.4,
-      "teamValue": 5042000,
+      "teamRating": 90.6,
+      "teamValue": 4671000,
       "tier": "Title Favourites"
     },
     {
@@ -2746,9 +3769,9 @@
       "year": "2000",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 92.5,
-      "teamValue": 5839000,
-      "tier": "Generational Squad"
+      "teamRating": 91.9,
+      "teamValue": 5298000,
+      "tier": "Title Favourites"
     },
     {
       "id": "wigan-warriors-1999",
@@ -2757,8 +3780,8 @@
       "year": "1999",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.5,
-      "teamValue": 4971000,
+      "teamRating": 90.1,
+      "teamValue": 4603000,
       "tier": "Title Favourites"
     },
     {
@@ -2768,8 +3791,8 @@
       "year": "1998",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.5,
-      "teamValue": 4800000,
+      "teamRating": 90.3,
+      "teamValue": 4584000,
       "tier": "Title Favourites"
     },
     {
@@ -2779,9 +3802,9 @@
       "year": "1997",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 90.1,
-      "teamValue": 4974000,
-      "tier": "Title Favourites"
+      "teamRating": 89.6,
+      "teamValue": 4140000,
+      "tier": "Grand Final Contenders"
     },
     {
       "id": "wigan-warriors-1996",
@@ -2790,8 +3813,8 @@
       "year": "1996",
       "category": "historic",
       "rosterSize": 17,
-      "teamRating": 91.9,
-      "teamValue": 5506000,
+      "teamRating": 90.5,
+      "teamValue": 4733000,
       "tier": "Title Favourites"
     },
     {
@@ -2799,338 +3822,14 @@
       "displayName": "York Knights '26",
       "clubName": "York Knights",
       "year": "2026",
-      "category": "historic",
-      "rosterSize": 17,
-      "teamRating": 81.2,
-      "teamValue": 1624000,
-      "tier": "Rebuild Project"
+      "category": "26",
+      "rosterSize": 35,
+      "teamRating": 83.5,
+      "teamValue": 2065000,
+      "tier": "Mid-Table Side"
     }
   ],
   "skipped": [
-    {
-      "club": "Bradford Bulls",
-      "year": "2014"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2019"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2018"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2017"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2014"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2013"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2012"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2011"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2019"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2018"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2017"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2016"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2014"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2013"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2012"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2011"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2010"
-    },
-    {
-      "club": "St Helens",
-      "year": "2025"
-    },
-    {
-      "club": "St Helens",
-      "year": "2024"
-    },
-    {
-      "club": "St Helens",
-      "year": "2023"
-    },
-    {
-      "club": "St Helens",
-      "year": "2022"
-    },
-    {
-      "club": "St Helens",
-      "year": "2015"
-    },
-    {
-      "club": "St Helens",
-      "year": "2013"
-    },
-    {
-      "club": "St Helens",
-      "year": "2010"
-    },
-    {
-      "club": "St Helens",
-      "year": "2009"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2019"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2018"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2017"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2016"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2014"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2013"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2019"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2018"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2015"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2014"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2011"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2010"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2025"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2024"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2023"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2022"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2021"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2020"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2019"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2018"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2025"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2024"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2023"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2022"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2021"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2020"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2019"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2014"
-    },
-    {
-      "club": "Huddersfield Giants",
-      "year": "2019"
-    },
-    {
-      "club": "Huddersfield Giants",
-      "year": "2018"
-    },
-    {
-      "club": "Huddersfield Giants",
-      "year": "2017"
-    },
-    {
-      "club": "Huddersfield Giants",
-      "year": "2015"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2025"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2024"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2023"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2022"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2021"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2020"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2019"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2018"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2017"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2016"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2015"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2011"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2021"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2020"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2019"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2018"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2017"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2015"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2014"
-    },
-    {
-      "club": "Leigh Leopards",
-      "year": "2024"
-    },
-    {
-      "club": "Leigh Leopards",
-      "year": "2023"
-    },
-    {
-      "club": "Widnes Vikings",
-      "year": "2018"
-    },
-    {
-      "club": "Widnes Vikings",
-      "year": "2017"
-    },
-    {
-      "club": "Widnes Vikings",
-      "year": "2013"
-    },
     {
       "club": "Widnes Vikings",
       "year": "2004"
@@ -3138,660 +3837,10 @@
     {
       "club": "Widnes Vikings",
       "year": "2003"
-    },
-    {
-      "club": "London Broncos",
-      "year": "2019"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2024"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2023"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2022"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2021"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2020"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2019"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2014"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2013"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2012"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2007"
-    },
-    {
-      "club": "Toulouse Olympique",
-      "year": "2022"
     }
   ],
   "issues": [
     {
-      "club": "Bradford Bulls",
-      "year": "2014",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (James Donaldson)"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2025",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 8/17 players resolved (Sam Wood, Zac Cini, Innes Senior, Daejarn Asi, Rowan Milnes, Tom Amone, Liam Horne, Jeremiah Simbiken, George Lawler)"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2024",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 10/17 players resolved (Innes Senior, Sam Wood, Jason Qareqare, Rowan Milnes, Cain Robb, George Lawler, Sam Hall)"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2023",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 14/17 players resolved (Jordan Turner, Paul Mcshane, George Lawler)"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2022",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Paul Mcshane, George Lawler)"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2021",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Jordan Turner, Paul Mcshane)"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2020",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Paul Mcshane, Mike Mcmeeken)"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2019",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Paul Mcshane, Mike Mcmeeken)"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2018",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Paul Mcshane, Mike Mcmeeken)"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2017",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Paul Mcshane, Mike Mcmeeken)"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2016",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Paul Mcshane)"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2015",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Mike Mcmeeken)"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2011",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Joe Arundel)"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2025",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Nick Cotric)"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2024",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 12/17 players resolved (Arthur Mourgue, Tom Davies, Arthur Romano, Jordan Dezaria, César Rougé)"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2023",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 9/17 players resolved (Arthur Mourgue, Arthur Romano, Adam Keighran, Tom Davies, Tyrone May, Mike Mcmeeken, Matt Whitley, Jordan Dezaria)"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2022",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 14/17 players resolved (Tom Davies, Matt Whitley, Tyrone May)"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2021",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 13/17 players resolved (Tom Davies, Mike Mcmeeken, Matt Whitley, Arthur Mourgue)"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2020",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Tom Davies, Matt Whitley)"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2019",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Matt Whitley)"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2014",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Éloi Pélissier)"
-    },
-    {
-      "club": "Huddersfield Giants",
-      "year": "2019",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 14/17 players resolved (Jordan Turner, Matty English, Kruise Leeming)"
-    },
-    {
-      "club": "Huddersfield Giants",
-      "year": "2018",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 14/17 players resolved (Jordan Turner, Sam Wood, Kruise Leeming)"
-    },
-    {
-      "club": "Huddersfield Giants",
-      "year": "2017",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Kruise Leeming)"
-    },
-    {
-      "club": "Huddersfield Giants",
-      "year": "2015",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Jack Hughes)"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2019",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Masi Matongo)"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2018",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Dean Hadley, Masi Matongo)"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2015",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Tom Lineham)"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2014",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Tom Lineham)"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2011",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Jordan Turner)"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2010",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Jordan Turner)"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2025",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 4/17 players resolved (Arthur Mourgue, Tom Davies, Peta Hiku, Joe Burgess, Mikey Lewis, Tyrone May, Sauaso Sue, Jez Litten, James Batchelor, Dean Hadley, Elliot Minchella, Jack Broadbent, Sam Luckley)"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2024",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 6/17 players resolved (Ryan Hall, Peta Hiku, Joe Burgess, Tyrone May, Mikey Lewis, Sauaso Sue, Jez Litten, James Batchelor, Dean Hadley, Elliot Minchella, Sam Luckley)"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2023",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 10/17 players resolved (Ryan Hall, Mikey Lewis, James Batchelor, Elliot Minchella, Jez Litten, Sam Luckley, Dean Hadley)"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2022",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 10/17 players resolved (Ryan Hall, Sam Wood, Ethan Ryan, Mikey Lewis, Elliot Minchella, Jez Litten, Rowan Milnes)"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2021",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 12/17 players resolved (Ryan Hall, Mikey Lewis, George Lawler, Jez Litten, Dean Hadley)"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2020",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (George Lawler, Elliot Minchella)"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2019",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (George Lawler, Chris Atkin)"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2018",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (James Donaldson)"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2019",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Harry Newman, James Donaldson)"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2018",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Ryan Hall)"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2017",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Ryan Hall)"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2016",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Ryan Hall)"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2014",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Ryan Hall)"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2013",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Paul McShane)"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2012",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Ryan Hall)"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2011",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Ryan Hall)"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2010",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Ryan Hall)"
-    },
-    {
-      "club": "Leigh Leopards",
-      "year": "2024",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 9/17 players resolved (Josh Charnley, Ricky Leutele, Lachlan Lam, Edwin Ipape, Tom Amone, Kai O'Donnell, Jack Hughes, Matt Davis)"
-    },
-    {
-      "club": "Leigh Leopards",
-      "year": "2023",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 9/17 players resolved (Ricky Leutele, Josh Charnley, Lachlan Lam, Edwin Ipape, Tom Amone, Kai O'Donnell, Matt Davis, Joe Mellor)"
-    },
-    {
-      "club": "London Broncos",
-      "year": "2019",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Robert Butler)"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2024",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 10/17 players resolved (Deon Cross, Ethan Ryan, Joe Mellor, Sam Stone, Shane Wright, Chris Atkin, Chris Hankinson)"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2023",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 10/17 players resolved (Joe Burgess, Deon Cross, Brodie Croft, Andy Ackers, Tyler Dupree, Sam Stone, Chris Atkin)"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2022",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 10/17 players resolved (Deon Cross, Joe Burgess, Brodie Croft, Andy Ackers, Chris Atkin, Sitaleki Akauola, Sam Luckley)"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2021",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 13/17 players resolved (Andy Ackers, Harvey Livett, Chris Atkin, Greg Burke)"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2020",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Greg Burke)"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2019",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Jackson Hastings, Greg Burke)"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2014",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Mat Ashurst)"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2013",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Mat Ashurst)"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2012",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Mat Ashurst)"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2007",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Jordan Turner)"
-    },
-    {
-      "club": "St Helens",
-      "year": "2025",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 10/17 players resolved (Tristan Sailor, Harry Robertson, Jon Bennison, Curtis Sironen, Matt Whitley, George Delaney, Agnatius Paasi)"
-    },
-    {
-      "club": "St Helens",
-      "year": "2024",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 12/17 players resolved (Waqa Blake, Curtis Sironen, Matt Whitley, James Bell, George Delaney)"
-    },
-    {
-      "club": "St Helens",
-      "year": "2023",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 13/17 players resolved (Jon Bennison, Curtis Sironen, James Bell, George Delaney)"
-    },
-    {
-      "club": "St Helens",
-      "year": "2022",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Curtis Sironen, Jake Wingfield)"
-    },
-    {
-      "club": "St Helens",
-      "year": "2015",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Jordan Turner)"
-    },
-    {
-      "club": "St Helens",
-      "year": "2013",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Jordan Turner)"
-    },
-    {
-      "club": "St Helens",
-      "year": "2010",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Mat Ashurst)"
-    },
-    {
-      "club": "St Helens",
-      "year": "2009",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Mat Ashurst)"
-    },
-    {
-      "club": "Toulouse Olympique",
-      "year": "2022",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 12/17 players resolved (Chris Hankinson, Paul Marcon, Anthony Marion, Justin Sangaré, Éloi Pélissier)"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2021",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 13/17 players resolved (Lee Kershaw, Joe Arundel, Mat Ashurst, James Batchelor)"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2020",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Alex Walker, Mat Ashurst)"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2019",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Mat Ashurst)"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2018",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Mat Ashurst, James Batchelor)"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2017",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Joe Arundel, Mat Ashurst)"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2015",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Joe Arundel, Paul Mcshane)"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2014",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Paul Mcshane)"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2019",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 12/17 players resolved (Josh Charnley, Tom Lineham, Ben Currie, Jack Hughes, Sitaleki Akauola)"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2018",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 12/17 players resolved (Tom Lineham, Josh Charnley, Jack Hughes, Harvey Livett, Sitaleki Akauola)"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2017",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 14/17 players resolved (Tom Lineham, Peta Hiku, Jack Hughes)"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2016",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Jack Hughes)"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2014",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Ben Currie)"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2013",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Ben Currie)"
-    },
-    {
-      "club": "Widnes Vikings",
-      "year": "2018",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 12/17 players resolved (Joe Mellor, Tom Gilmore, Greg Burke, Matt Whitley, Danny Walker)"
-    },
-    {
-      "club": "Widnes Vikings",
-      "year": "2017",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 14/17 players resolved (Joe Mellor, Tom Gilmore, Matt Whitley)"
-    },
-    {
-      "club": "Widnes Vikings",
-      "year": "2013",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Joe Mellor)"
-    },
-    {
       "club": "Widnes Vikings",
       "year": "2004",
       "severity": "error",
@@ -3806,622 +3855,6 @@
       "message": "Only 16/17 players resolved (Julian O'Neill)"
     },
     {
-      "club": "Wigan Warriors",
-      "year": "2019",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Joe Burgess)"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2018",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Tom Davies, Ryan Sutton)"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2017",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Tom Davies, Ryan Sutton)"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2014",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 14/17 players resolved (Joe Burgess, Josh Charnley, Jack Hughes)"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2013",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Josh Charnley, Jack Hughes)"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2012",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 15/17 players resolved (Josh Charnley, Jack Hughes)"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2011",
-      "severity": "error",
-      "code": "UNRESOLVED_PLAYERS",
-      "message": "Only 16/17 players resolved (Josh Charnley)"
-    },
-    {
-      "club": "Bradford Bulls",
-      "year": "2014",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2019",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2018",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2017",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2014",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2013",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2012",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wigan Warriors",
-      "year": "2011",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2019",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2018",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2017",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2016",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2014",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2013",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2012",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2011",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Leeds Rhinos",
-      "year": "2010",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "St Helens",
-      "year": "2025",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "St Helens",
-      "year": "2024",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "St Helens",
-      "year": "2023",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "St Helens",
-      "year": "2022",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "St Helens",
-      "year": "2015",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "St Helens",
-      "year": "2013",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "St Helens",
-      "year": "2010",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "St Helens",
-      "year": "2009",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2019",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2018",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2017",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2016",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2014",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Warrington Wolves",
-      "year": "2013",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2019",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2018",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2015",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2014",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2011",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull FC",
-      "year": "2010",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2025",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2024",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2023",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2022",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2021",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2020",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2019",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Hull KR",
-      "year": "2018",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2025",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2024",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2023",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2022",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2021",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2020",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2019",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Catalans Dragons",
-      "year": "2014",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Huddersfield Giants",
-      "year": "2019",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Huddersfield Giants",
-      "year": "2018",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Huddersfield Giants",
-      "year": "2017",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Huddersfield Giants",
-      "year": "2015",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2025",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2024",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2023",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2022",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2021",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2020",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2019",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2018",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2017",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2016",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2015",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Castleford Tigers",
-      "year": "2011",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2021",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2020",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2019",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2018",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2017",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2015",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Wakefield Trinity",
-      "year": "2014",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Leigh Leopards",
-      "year": "2024",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Leigh Leopards",
-      "year": "2023",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Widnes Vikings",
-      "year": "2018",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Widnes Vikings",
-      "year": "2017",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Widnes Vikings",
-      "year": "2013",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
       "club": "Widnes Vikings",
       "year": "2004",
       "severity": "error",
@@ -4431,90 +3864,6 @@
     {
       "club": "Widnes Vikings",
       "year": "2003",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "London Broncos",
-      "year": "2019",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2024",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2023",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2022",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2021",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2020",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2019",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2014",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2013",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2012",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Salford Red Devils",
-      "year": "2007",
-      "severity": "error",
-      "code": "BUILD_FAILED",
-      "message": "Verified starting 17 exists but buildEraTeamForYear returned null"
-    },
-    {
-      "club": "Toulouse Olympique",
-      "year": "2022",
       "severity": "error",
       "code": "BUILD_FAILED",
       "message": "Verified starting 17 exists but buildEraTeamForYear returned null"

@@ -31093,5 +31093,925 @@
         "name": "Michael Jackson"
       }
     ]
+  },
+  {
+    "club": "Sheffield Eagles",
+    "year": 1999,
+    "source": "https://www.rugbyleagueproject.org/matches/3150 (R9 8 May 1999 Sheffield Eagles 27-8 Halifax Blue Sox)",
+    "squad": [
+      {
+        "number": 1,
+        "position": "FB",
+        "name": "Dave Watson"
+      },
+      {
+        "number": 2,
+        "position": "W",
+        "name": "Dale Cardoza"
+      },
+      {
+        "number": 3,
+        "position": "C",
+        "name": "Daio Powell"
+      },
+      {
+        "number": 4,
+        "position": "C",
+        "name": "Keith Senior"
+      },
+      {
+        "number": 5,
+        "position": "W",
+        "name": "Matt Crowther"
+      },
+      {
+        "number": 6,
+        "position": "FE",
+        "name": "Jeff Hardy"
+      },
+      {
+        "number": 7,
+        "position": "HB",
+        "name": "Martin Pearson"
+      },
+      {
+        "number": 8,
+        "position": "FR",
+        "name": "Steve Molloy"
+      },
+      {
+        "number": 9,
+        "position": "HK",
+        "name": "Johnny Lawless"
+      },
+      {
+        "number": 10,
+        "position": "FR",
+        "name": "Darren Shaw"
+      },
+      {
+        "number": 11,
+        "position": "2R",
+        "name": "Michael Jackson"
+      },
+      {
+        "number": 12,
+        "position": "2R",
+        "name": "Darren Turner"
+      },
+      {
+        "number": 13,
+        "position": "L",
+        "name": "Rod Doyle"
+      },
+      {
+        "number": 14,
+        "position": "B",
+        "name": "Waisale Sovatabua"
+      },
+      {
+        "number": 15,
+        "position": "B",
+        "name": "Chris Thorman"
+      },
+      {
+        "number": 16,
+        "position": "B",
+        "name": "Paul Anderson"
+      },
+      {
+        "number": 17,
+        "position": "B",
+        "name": "Simon Baldwin"
+      }
+    ]
+  },
+  {
+    "club": "Halifax Panthers",
+    "year": 2002,
+    "source": "https://mail.rugbyleagueproject.org/matches/3829 (R10 12 May 2002 Halifax Blue Sox 19-18 Castleford Tigers)",
+    "squad": [
+      {
+        "number": 1,
+        "position": "FB",
+        "name": "Jason Flowers"
+      },
+      {
+        "number": 2,
+        "position": "W",
+        "name": "Robbie Beckett"
+      },
+      {
+        "number": 3,
+        "position": "C",
+        "name": "David Woods"
+      },
+      {
+        "number": 4,
+        "position": "C",
+        "name": "Stuart Donlan"
+      },
+      {
+        "number": 5,
+        "position": "W",
+        "name": "Colum Halpenny"
+      },
+      {
+        "number": 6,
+        "position": "FE",
+        "name": "Andrew Dunemann"
+      },
+      {
+        "number": 7,
+        "position": "HB",
+        "name": "Gavin Clinch"
+      },
+      {
+        "number": 8,
+        "position": "FR",
+        "name": "Brett Goldspink"
+      },
+      {
+        "number": 9,
+        "position": "HK",
+        "name": "Johnny Lawless"
+      },
+      {
+        "number": 10,
+        "position": "FR",
+        "name": "Jim Gannon"
+      },
+      {
+        "number": 11,
+        "position": "2R",
+        "name": "Shayne Mcmenemy"
+      },
+      {
+        "number": 12,
+        "position": "2R",
+        "name": "Danny Tickle"
+      },
+      {
+        "number": 13,
+        "position": "L",
+        "name": "Karle Hammond"
+      },
+      {
+        "number": 14,
+        "position": "B",
+        "name": "Darryl Cardiss"
+      },
+      {
+        "number": 15,
+        "position": "B",
+        "name": "Chris Birchall"
+      },
+      {
+        "number": 16,
+        "position": "B",
+        "name": "Jamie Thackray"
+      },
+      {
+        "number": 17,
+        "position": "B",
+        "name": "Andy Hobson"
+      }
+    ]
+  },
+  {
+    "club": "St Helens",
+    "year": 2006,
+    "source": "https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final (2006 Super League Grand Final 14 Oct 2006 St Helens 26-4 Hull FC)",
+    "squad": [
+      {
+        "number": 1,
+        "position": "FB",
+        "name": "Paul Wellens"
+      },
+      {
+        "number": 2,
+        "position": "W",
+        "name": "Ade Gardner"
+      },
+      {
+        "number": 3,
+        "position": "C",
+        "name": "Jamie Lyon"
+      },
+      {
+        "number": 4,
+        "position": "C",
+        "name": "Willie Talau"
+      },
+      {
+        "number": 5,
+        "position": "W",
+        "name": "Francis Meli"
+      },
+      {
+        "number": 6,
+        "position": "FE",
+        "name": "Leon Pryce"
+      },
+      {
+        "number": 7,
+        "position": "HB",
+        "name": "Sean Long"
+      },
+      {
+        "number": 8,
+        "position": "FR",
+        "name": "Paul Anderson"
+      },
+      {
+        "number": 9,
+        "position": "HK",
+        "name": "Keiron Cunningham"
+      },
+      {
+        "number": 10,
+        "position": "FR",
+        "name": "Jason Cayless"
+      },
+      {
+        "number": 11,
+        "position": "2R",
+        "name": "Lee Gilmour"
+      },
+      {
+        "number": 12,
+        "position": "2R",
+        "name": "Jon Wilkin"
+      },
+      {
+        "number": 13,
+        "position": "L",
+        "name": "Jason Hooper"
+      },
+      {
+        "number": 14,
+        "position": "B",
+        "name": "James Roby"
+      },
+      {
+        "number": 15,
+        "position": "B",
+        "name": "James Graham"
+      },
+      {
+        "number": 16,
+        "position": "B",
+        "name": "Mike Bennett"
+      },
+      {
+        "number": 17,
+        "position": "B",
+        "name": "Maurie Fa'asavalu"
+      }
+    ]
+  },
+  {
+    "club": "Crusaders RL",
+    "year": 2010,
+    "source": "https://www.rugbyleagueproject.org/matches/17707 (R7 19 Mar 2010 Crusaders RL 14-6 Catalans Dragons)",
+    "squad": [
+      {
+        "number": 1,
+        "position": "FB",
+        "name": "Elliot Kear"
+      },
+      {
+        "number": 2,
+        "position": "W",
+        "name": "Gareth Thomas"
+      },
+      {
+        "number": 3,
+        "position": "C",
+        "name": "Tony Martin"
+      },
+      {
+        "number": 4,
+        "position": "C",
+        "name": "Vince Mellars"
+      },
+      {
+        "number": 5,
+        "position": "W",
+        "name": "Luke Dyer"
+      },
+      {
+        "number": 6,
+        "position": "FE",
+        "name": "Peter Lupton"
+      },
+      {
+        "number": 7,
+        "position": "HB",
+        "name": "Michael Witt"
+      },
+      {
+        "number": 8,
+        "position": "FR",
+        "name": "Ryan O'hara"
+      },
+      {
+        "number": 9,
+        "position": "HK",
+        "name": "Lincoln Withers"
+      },
+      {
+        "number": 10,
+        "position": "FR",
+        "name": "Mark Bryant"
+      },
+      {
+        "number": 11,
+        "position": "2R",
+        "name": "Jason Chan"
+      },
+      {
+        "number": 12,
+        "position": "2R",
+        "name": "Weller Hauraki"
+      },
+      {
+        "number": 13,
+        "position": "L",
+        "name": "Rocky Trimarchi"
+      },
+      {
+        "number": 14,
+        "position": "B",
+        "name": "Jamie Thackray"
+      },
+      {
+        "number": 15,
+        "position": "B",
+        "name": "Ben Flower"
+      },
+      {
+        "number": 16,
+        "position": "B",
+        "name": "Nick Youngquest"
+      },
+      {
+        "number": 17,
+        "position": "B",
+        "name": "Frank Winterstein"
+      }
+    ]
+  },
+  {
+    "club": "Leeds Rhinos",
+    "year": 2015,
+    "source": "https://en.wikipedia.org/wiki/2015_Super_League_Grand_Final (2015 Super League Grand Final 10 Oct 2015 Leeds Rhinos 22-20 Wigan Warriors)",
+    "squad": [
+      {
+        "number": 1,
+        "position": "FB",
+        "name": "Zak Hardaker"
+      },
+      {
+        "number": 2,
+        "position": "W",
+        "name": "Tom Briscoe"
+      },
+      {
+        "number": 3,
+        "position": "C",
+        "name": "Kallum Watkins"
+      },
+      {
+        "number": 4,
+        "position": "C",
+        "name": "Joel Moon"
+      },
+      {
+        "number": 5,
+        "position": "W",
+        "name": "Ryan Hall"
+      },
+      {
+        "number": 6,
+        "position": "FE",
+        "name": "Kevin Sinfield"
+      },
+      {
+        "number": 7,
+        "position": "HB",
+        "name": "Danny McGuire"
+      },
+      {
+        "number": 8,
+        "position": "FR",
+        "name": "Mitch Garbutt"
+      },
+      {
+        "number": 9,
+        "position": "HK",
+        "name": "Rob Burrow"
+      },
+      {
+        "number": 10,
+        "position": "FR",
+        "name": "Jamie Peacock"
+      },
+      {
+        "number": 11,
+        "position": "2R",
+        "name": "Brett Delaney"
+      },
+      {
+        "number": 12,
+        "position": "2R",
+        "name": "Carl Ablett"
+      },
+      {
+        "number": 13,
+        "position": "L",
+        "name": "Brad Singleton"
+      },
+      {
+        "number": 14,
+        "position": "B",
+        "name": "Kylie Leuluai"
+      },
+      {
+        "number": 15,
+        "position": "B",
+        "name": "Adam Cuthbertson"
+      },
+      {
+        "number": 16,
+        "position": "B",
+        "name": "Jimmy Keinhorst"
+      },
+      {
+        "number": 17,
+        "position": "B",
+        "name": "Josh Walters"
+      }
+    ]
+  },
+  {
+    "club": "Hull KR",
+    "year": 2015,
+    "source": "https://www.rugbyleagueproject.org/matches/30861 (2015 Challenge Cup Final 29 Aug 2015 Hull KR 0-50 Leeds Rhinos)",
+    "squad": [
+      {
+        "number": 1,
+        "position": "FB",
+        "name": "Kieran Dixon"
+      },
+      {
+        "number": 2,
+        "position": "W",
+        "name": "Josh Mantellato"
+      },
+      {
+        "number": 3,
+        "position": "C",
+        "name": "Kris Welham"
+      },
+      {
+        "number": 4,
+        "position": "C",
+        "name": "Liam Salter"
+      },
+      {
+        "number": 5,
+        "position": "W",
+        "name": "Ken Sio"
+      },
+      {
+        "number": 6,
+        "position": "FE",
+        "name": "Maurice Blair"
+      },
+      {
+        "number": 7,
+        "position": "HB",
+        "name": "Albert Kelly"
+      },
+      {
+        "number": 8,
+        "position": "FR",
+        "name": "Adam Walker"
+      },
+      {
+        "number": 9,
+        "position": "HK",
+        "name": "Shaun Lunt"
+      },
+      {
+        "number": 10,
+        "position": "FR",
+        "name": "Tony Puletua"
+      },
+      {
+        "number": 11,
+        "position": "2R",
+        "name": "Kevin Larroyer"
+      },
+      {
+        "number": 12,
+        "position": "2R",
+        "name": "Graeme Horne"
+      },
+      {
+        "number": 13,
+        "position": "L",
+        "name": "Tyrone Mccarthy"
+      },
+      {
+        "number": 14,
+        "position": "B",
+        "name": "John Boudebza"
+      },
+      {
+        "number": 15,
+        "position": "B",
+        "name": "James Donaldson"
+      },
+      {
+        "number": 16,
+        "position": "B",
+        "name": "Dane Tilse"
+      },
+      {
+        "number": 17,
+        "position": "B",
+        "name": "Mitchell Allgood"
+      }
+    ]
+  },
+  {
+    "club": "Widnes Vikings",
+    "year": 2016,
+    "source": "https://www.rugbyleagueproject.org/matches/31058 (R14 16 May 2016 Hull KR 24-10 Widnes Vikings)",
+    "squad": [
+      {
+        "number": 1,
+        "position": "FB",
+        "name": "Rhys Hanbury"
+      },
+      {
+        "number": 2,
+        "position": "W",
+        "name": "Corey Thompson"
+      },
+      {
+        "number": 3,
+        "position": "C",
+        "name": "Charly Runciman"
+      },
+      {
+        "number": 4,
+        "position": "C",
+        "name": "Chris Dean"
+      },
+      {
+        "number": 5,
+        "position": "W",
+        "name": "Ed Chamberlain"
+      },
+      {
+        "number": 6,
+        "position": "FE",
+        "name": "Joe Mellor"
+      },
+      {
+        "number": 7,
+        "position": "HB",
+        "name": "Aaron Heremaia"
+      },
+      {
+        "number": 8,
+        "position": "FR",
+        "name": "Eamon O'Carroll"
+      },
+      {
+        "number": 9,
+        "position": "HK",
+        "name": "Lloyd White"
+      },
+      {
+        "number": 10,
+        "position": "FR",
+        "name": "Gil Dudson"
+      },
+      {
+        "number": 11,
+        "position": "2R",
+        "name": "Chris Houston"
+      },
+      {
+        "number": 12,
+        "position": "2R",
+        "name": "Matt Whitley"
+      },
+      {
+        "number": 13,
+        "position": "L",
+        "name": "Hep Cahill"
+      },
+      {
+        "number": 14,
+        "position": "B",
+        "name": "Jordan Johnstone"
+      },
+      {
+        "number": 15,
+        "position": "B",
+        "name": "Manase Manuokafoa"
+      },
+      {
+        "number": 16,
+        "position": "B",
+        "name": "Setaimata Sa"
+      },
+      {
+        "number": 17,
+        "position": "B",
+        "name": "Macgraff Leuluai"
+      }
+    ]
+  },
+  {
+    "club": "Toronto Wolfpack",
+    "year": 2020,
+    "source": "https://www.rugbyleagueproject.org/matches/40382 (R2 8 Feb 2020 Salford Red Devils 24-16 Toronto Wolfpack)",
+    "squad": [
+      {
+        "number": 1,
+        "position": "FB",
+        "name": "Blake Wallace"
+      },
+      {
+        "number": 2,
+        "position": "W",
+        "name": "Liam Kay"
+      },
+      {
+        "number": 3,
+        "position": "C",
+        "name": "Hakim Miloudi"
+      },
+      {
+        "number": 4,
+        "position": "C",
+        "name": "Ricky Leutele"
+      },
+      {
+        "number": 5,
+        "position": "W",
+        "name": "Matthew Russell"
+      },
+      {
+        "number": 6,
+        "position": "FE",
+        "name": "Joe Mellor"
+      },
+      {
+        "number": 7,
+        "position": "HB",
+        "name": "Josh McCrone"
+      },
+      {
+        "number": 8,
+        "position": "FR",
+        "name": "Gadwin Springer"
+      },
+      {
+        "number": 9,
+        "position": "HK",
+        "name": "James Cunningham"
+      },
+      {
+        "number": 10,
+        "position": "FR",
+        "name": "Brad Singleton"
+      },
+      {
+        "number": 11,
+        "position": "2R",
+        "name": "Sonny Bill Williams"
+      },
+      {
+        "number": 12,
+        "position": "2R",
+        "name": "Tom Olbison"
+      },
+      {
+        "number": 13,
+        "position": "L",
+        "name": "Jon Wilkin"
+      },
+      {
+        "number": 14,
+        "position": "B",
+        "name": "Adam Sidlow"
+      },
+      {
+        "number": 15,
+        "position": "B",
+        "name": "Anthony Mullally"
+      },
+      {
+        "number": 16,
+        "position": "B",
+        "name": "Bodene Thompson"
+      },
+      {
+        "number": 17,
+        "position": "B",
+        "name": "Gary Wheeler"
+      }
+    ]
+  },
+  {
+    "club": "Leigh Leopards",
+    "year": 2021,
+    "source": "https://www.rugbyleagueproject.org/matches/45457 (R24 12 Sep 2021 Leigh Centurions 26-18 Wakefield Trinity)",
+    "squad": [
+      {
+        "number": 1,
+        "position": "FB",
+        "name": "Ryan Brierley"
+      },
+      {
+        "number": 2,
+        "position": "W",
+        "name": "Jack Logan"
+      },
+      {
+        "number": 3,
+        "position": "C",
+        "name": "Ben Hellewell"
+      },
+      {
+        "number": 4,
+        "position": "C",
+        "name": "Iain Thornley"
+      },
+      {
+        "number": 5,
+        "position": "W",
+        "name": "Brendan Elliot"
+      },
+      {
+        "number": 6,
+        "position": "FE",
+        "name": "Joe Mellor"
+      },
+      {
+        "number": 7,
+        "position": "HB",
+        "name": "James Bell"
+      },
+      {
+        "number": 8,
+        "position": "FR",
+        "name": "Rob Butler"
+      },
+      {
+        "number": 9,
+        "position": "HK",
+        "name": "Liam Hood"
+      },
+      {
+        "number": 10,
+        "position": "FR",
+        "name": "Adam Sidlow"
+      },
+      {
+        "number": 11,
+        "position": "2R",
+        "name": "Jordan Thompson"
+      },
+      {
+        "number": 12,
+        "position": "2R",
+        "name": "Sam Stone"
+      },
+      {
+        "number": 13,
+        "position": "L",
+        "name": "Jai Whitbread"
+      },
+      {
+        "number": 14,
+        "position": "B",
+        "name": "Alex Gerrard"
+      },
+      {
+        "number": 15,
+        "position": "B",
+        "name": "Jamie Ellis"
+      },
+      {
+        "number": 16,
+        "position": "B",
+        "name": "Nathan Mason"
+      },
+      {
+        "number": 17,
+        "position": "B",
+        "name": "Jack Ashworth"
+      }
+    ]
+  },
+  {
+    "club": "Salford Red Devils",
+    "year": 2025,
+    "source": "https://mail.rugbyleagueproject.org/matches/113944 (R2 22 Feb 2025 Salford Red Devils 6-32 Leeds Rhinos)",
+    "squad": [
+      {
+        "number": 1,
+        "position": "FB",
+        "name": "Ryan Brierley"
+      },
+      {
+        "number": 2,
+        "position": "W",
+        "name": "Nene Macdonald"
+      },
+      {
+        "number": 3,
+        "position": "C",
+        "name": "Esan Marsters"
+      },
+      {
+        "number": 4,
+        "position": "C",
+        "name": "Tim Lafai"
+      },
+      {
+        "number": 5,
+        "position": "W",
+        "name": "Deon Cross"
+      },
+      {
+        "number": 6,
+        "position": "FE",
+        "name": "Jayden Nikorima"
+      },
+      {
+        "number": 7,
+        "position": "HB",
+        "name": "Marc Sneyd"
+      },
+      {
+        "number": 8,
+        "position": "FR",
+        "name": "Brad Singleton"
+      },
+      {
+        "number": 9,
+        "position": "HK",
+        "name": "Chris Atkin"
+      },
+      {
+        "number": 10,
+        "position": "FR",
+        "name": "Chris Hill"
+      },
+      {
+        "number": 11,
+        "position": "2R",
+        "name": "Shane Wright"
+      },
+      {
+        "number": 12,
+        "position": "2R",
+        "name": "Kallum Watkins"
+      },
+      {
+        "number": 13,
+        "position": "L",
+        "name": "Joe Shorrocks"
+      },
+      {
+        "number": 14,
+        "position": "B",
+        "name": "Jack Ormondroyd"
+      },
+      {
+        "number": 15,
+        "position": "B",
+        "name": "Justin Sangaré"
+      },
+      {
+        "number": 16,
+        "position": "B",
+        "name": "Matty Foster"
+      },
+      {
+        "number": 17,
+        "position": "B",
+        "name": "Chris Hankinson"
+      }
+    ]
   }
 ]

@@ -1,5 +1,13 @@
 {
   "Bradford Bulls": {
+    "1996": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1996/bradford-bulls/detail.html?order=pos"
+    },
     "1997": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -80,6 +88,22 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2006_Bradford_Bulls_season"
     },
+    "2007": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2007/bradford-bulls/detail.html?order=pos"
+    },
+    "2008": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2008/bradford-bulls/detail.html?order=pos"
+    },
     "2009": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -87,6 +111,14 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2009_Bradford_Bulls_season"
+    },
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2010/bradford-bulls/detail.html?order=pos"
     },
     "2011": {
       "source": "verified",
@@ -131,6 +163,86 @@
     }
   },
   "Wigan Warriors": {
+    "1996": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "1997": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/wigan-warriors/detail.html?order=pos"
+    },
+    "1998": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2000": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2001": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2002": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2003": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2004": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2005": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2006": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -138,6 +250,14 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2006_Wigan_Warriors_season"
+    },
+    "2007": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
     },
     "2008": {
       "source": "verified",
@@ -155,6 +275,46 @@
       "playerCount": 13,
       "verifiedSource": "era-starting-17s.json (Wigan Warriors 2009 jersey 1–13)"
     },
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2012": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2013": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2015": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -171,6 +331,78 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2016_Wigan_Warriors_season"
     },
+    "2017": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2019": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2020": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2021": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2022": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2023": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2024": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2025": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -182,6 +414,110 @@
     }
   },
   "Warrington Wolves": {
+    "1996": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "1997": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/warrington-wolves/detail.html?order=pos"
+    },
+    "1998": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2000": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2001": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2002": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2003": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2004": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2005": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2006": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2007": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2008": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2009": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -189,6 +525,46 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "era-starting-17s.json (Warrington Wolves 2009 jersey 1–13)"
+    },
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2012": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2013": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
     },
     "2015": {
       "source": "verified",
@@ -205,6 +581,78 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2016_Warrington_Wolves_season"
+    },
+    "2017": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2019": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2020": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2021": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2022": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2023": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2024": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2025": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
     },
     "2026": {
       "source": "current-squad",
@@ -281,6 +729,14 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2013_Catalans_Dragons_season"
     },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2014/catalans-dragons/detail.html?order=pos"
+    },
     "2015": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -297,6 +753,78 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2016_Catalans_Dragons_season"
     },
+    "2017": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2017/catalans-dragons/detail.html?order=pos"
+    },
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2018/catalans-dragons/detail.html?order=pos"
+    },
+    "2019": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2019/catalans-dragons/detail.html?order=pos"
+    },
+    "2020": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2020/catalans-dragons/detail.html?order=pos"
+    },
+    "2021": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2021/catalans-dragons/detail.html?order=pos"
+    },
+    "2022": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2022/catalans-dragons/detail.html?order=pos"
+    },
+    "2023": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2023/catalans-dragons/detail.html?order=pos"
+    },
+    "2024": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2024/catalans-dragons/detail.html?order=pos"
+    },
+    "2025": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2025/catalans-dragons/detail.html?order=pos"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -308,6 +836,86 @@
     }
   },
   "Huddersfield Giants": {
+    "1998": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1998/huddersfield-giants/detail.html?order=pos"
+    },
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1999/huddersfield-giants/detail.html?order=pos"
+    },
+    "2000": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2000/huddersfield-sheffield/detail.html?order=pos"
+    },
+    "2001": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2001/huddersfield-giants/detail.html?order=pos"
+    },
+    "2003": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2003/huddersfield-giants/detail.html?order=pos"
+    },
+    "2004": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2004/huddersfield-giants/detail.html?order=pos"
+    },
+    "2005": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2005/huddersfield-giants/detail.html?order=pos"
+    },
+    "2006": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2006/huddersfield-giants/detail.html?order=pos"
+    },
+    "2007": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2007/huddersfield-giants/detail.html?order=pos"
+    },
+    "2008": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2008/huddersfield-giants/detail.html?order=pos"
+    },
     "2009": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -315,6 +923,30 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "era-starting-17s.json (Huddersfield Giants 2009 jersey 1–13)"
+    },
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2010/huddersfield-giants/detail.html?order=pos"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2011/huddersfield-giants/detail.html?order=pos"
+    },
+    "2012": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2012/huddersfield-giants/detail.html?order=pos"
     },
     "2013": {
       "source": "verified",
@@ -324,6 +956,22 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2013_Huddersfield_Giants_season"
     },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2014/huddersfield-giants/detail.html?order=pos"
+    },
+    "2015": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2015/huddersfield-giants/detail.html?order=pos"
+    },
     "2016": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -331,6 +979,78 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "era-starting-17s.json (Huddersfield Giants 2016 jersey 1–13)"
+    },
+    "2017": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2017/huddersfield-giants/detail.html?order=pos"
+    },
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2018/huddersfield-giants/detail.html?order=pos"
+    },
+    "2019": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2019/huddersfield-giants/detail.html?order=pos"
+    },
+    "2020": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2021": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2022": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2023": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2024": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2025": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
     },
     "2026": {
       "source": "current-squad",
@@ -343,6 +1063,94 @@
     }
   },
   "Castleford Tigers": {
+    "1996": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1996/castleford/detail.html?order=pos"
+    },
+    "1997": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/castleford-tigers/detail.html?order=pos"
+    },
+    "1998": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1998/castleford-tigers/detail.html?order=pos"
+    },
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1999/castleford-tigers/detail.html?order=pos"
+    },
+    "2000": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2000/castleford-tigers/detail.html?order=pos"
+    },
+    "2001": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2001/castleford-tigers/detail.html?order=pos"
+    },
+    "2002": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2002/castleford-tigers/detail.html?order=pos"
+    },
+    "2003": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2003/castleford-tigers/detail.html?order=pos"
+    },
+    "2004": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2004/castleford-tigers/detail.html?order=pos"
+    },
+    "2006": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2006/castleford-tigers/detail.html?order=pos"
+    },
+    "2008": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2008/castleford-tigers/detail.html?order=pos"
+    },
     "2009": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -350,6 +1158,22 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2009_Castleford_Tigers_season"
+    },
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2010/castleford-tigers/detail.html?order=pos"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2011/castleford-tigers/detail.html?order=pos"
     },
     "2012": {
       "source": "verified",
@@ -359,6 +1183,30 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2012_Castleford_Tigers_season"
     },
+    "2013": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2013/castleford-tigers/detail.html?order=pos"
+    },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2014/castleford-tigers/detail.html?order=pos"
+    },
+    "2015": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2015/castleford-tigers/detail.html?order=pos"
+    },
     "2016": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -366,6 +1214,78 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2016_Castleford_Tigers_season"
+    },
+    "2017": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2017/castleford-tigers/detail.html?order=pos"
+    },
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2018/castleford-tigers/detail.html?order=pos"
+    },
+    "2019": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2019/castleford-tigers/detail.html?order=pos"
+    },
+    "2020": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2020/castleford-tigers/detail.html?order=pos"
+    },
+    "2021": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2021/castleford-tigers/detail.html?order=pos"
+    },
+    "2022": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2022/castleford-tigers/detail.html?order=pos"
+    },
+    "2023": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2023/castleford-tigers/detail.html?order=pos"
+    },
+    "2024": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2024/castleford-tigers/detail.html?order=pos"
+    },
+    "2025": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2025/castleford-tigers/detail.html?order=pos"
     },
     "2026": {
       "source": "current-squad",
@@ -378,6 +1298,86 @@
     }
   },
   "Wakefield Trinity": {
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1999/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2000": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2000/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2001": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2001/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2002": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2002/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2003": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2003/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2004": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2004/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2005": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2005/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2006": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2006/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2007": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2007/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2008": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2008/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
     "2009": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -394,6 +1394,46 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2010_Wakefield_Trinity_Wildcats_season"
     },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2011/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2012": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2012/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2013": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2013/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2014/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
+    "2015": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2015/wakefield-trinity-wildcats/detail.html?order=pos"
+    },
     "2016": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -401,6 +1441,70 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "era-starting-17s.json (Wakefield Trinity 2016 jersey 1–13)"
+    },
+    "2017": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2017/wakefield-trinity/detail.html?order=pos"
+    },
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2018/wakefield-trinity/detail.html?order=pos"
+    },
+    "2019": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2019/wakefield-trinity/detail.html?order=pos"
+    },
+    "2020": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2020/wakefield-trinity/detail.html?order=pos"
+    },
+    "2021": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2021/wakefield-trinity/detail.html?order=pos"
+    },
+    "2022": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2023": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2025": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
     },
     "2026": {
       "source": "current-squad",
@@ -412,8 +1516,193 @@
       "playerCount": 36
     }
   },
-  "Widnes Vikings": {},
+  "Widnes Vikings": {
+    "2002": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2003": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2004": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2005": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2012": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2013": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/29681"
+    },
+    "2015": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2015_Widnes_Vikings_season"
+    },
+    "2016": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://en.wikipedia.org/wiki/2016_Widnes_Vikings_season"
+    },
+    "2017": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    }
+  },
   "Leeds Rhinos": {
+    "1996": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "1997": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/leeds-rhinos/detail.html?order=pos"
+    },
+    "1998": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1998/leeds-rhinos/detail.html?order=pos"
+    },
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2000": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2001": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2002": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2003": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2004": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2005": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2006": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2007": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2008": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -430,6 +1719,30 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2009_Leeds_Rhinos_season"
     },
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2012": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2013": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -437,6 +1750,14 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2013_Leeds_Rhinos_season"
+    },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
     },
     "2015": {
       "source": "verified",
@@ -454,6 +1775,78 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2016_Leeds_Rhinos_season"
     },
+    "2017": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2019": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2020": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2021": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2022": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2023": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2024": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2025": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -465,6 +1858,94 @@
     }
   },
   "Hull FC": {
+    "1998": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2000": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2001": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2002": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2003": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2004": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2005": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2006": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2007": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2008": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2009": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -472,6 +1953,22 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2009_Hull_FC_season"
+    },
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
     },
     "2012": {
       "source": "verified",
@@ -489,6 +1986,22 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2013_Hull_FC_season"
     },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2015": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2016": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -496,6 +2009,78 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "era-starting-17s.json (Hull FC 2016 jersey 1–13)"
+    },
+    "2017": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2019": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2020": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2021": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2022": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2023": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2024": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2025": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
     },
     "2026": {
       "source": "current-squad",
@@ -508,6 +2093,86 @@
     }
   },
   "Salford Red Devils": {
+    "1997": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/salford-reds/detail.html?order=pos"
+    },
+    "1998": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1998/salford-reds/detail.html?order=pos"
+    },
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1999/salford-city-reds/detail.html?order=pos"
+    },
+    "2000": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2000/salford-city-reds/detail.html?order=pos"
+    },
+    "2001": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2001/salford-city-reds/detail.html?order=pos"
+    },
+    "2002": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2002/salford-city-reds/detail.html?order=pos"
+    },
+    "2004": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2004/salford-city-reds/detail.html?order=pos"
+    },
+    "2005": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2005/salford-city-reds/detail.html?order=pos"
+    },
+    "2006": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2006/salford-city-reds/detail.html?order=pos"
+    },
+    "2007": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2007/salford-city-reds/detail.html?order=pos"
+    },
     "2009": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -515,6 +2180,38 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2009_Salford_City_Reds_season"
+    },
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2010/salford-city-reds/detail.html?order=pos"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2011/salford-city-reds/detail.html?order=pos"
+    },
+    "2012": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2012/salford-city-reds/detail.html?order=pos"
+    },
+    "2013": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2013/salford-city-reds/detail.html?order=pos"
     },
     "2014": {
       "source": "verified",
@@ -539,9 +2236,185 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "era-starting-17s.json (Salford Red Devils 2016 jersey 1–13)"
+    },
+    "2017": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2017/salford-red-devils/detail.html?order=pos"
+    },
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2018/salford-red-devils/detail.html?order=pos"
+    },
+    "2019": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2019/salford-red-devils/detail.html?order=pos"
+    },
+    "2020": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2020/salford-red-devils/detail.html?order=pos"
+    },
+    "2021": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2021/salford-red-devils/detail.html?order=pos"
+    },
+    "2022": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2022/salford-red-devils/detail.html?order=pos"
+    },
+    "2023": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2023/salford-red-devils/detail.html?order=pos"
+    },
+    "2024": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2024/salford-red-devils/detail.html?order=pos"
+    },
+    "2025": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://mail.rugbyleagueproject.org/matches/113944"
     }
   },
   "London Broncos": {
+    "1996": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "1997": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/london-broncos/detail.html?order=pos"
+    },
+    "1998": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2000": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2001": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2002": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2003": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2004": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2005": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2006": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2007": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2008": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2009": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -550,13 +2423,45 @@
       "playerCount": 13,
       "verifiedSource": "era-starting-17s.json (London Broncos 2009 jersey 1–13)"
     },
-    "2018": {
+    "2010": {
       "source": "verified",
       "isSuperLeagueSeason": true,
       "playableInNormalSpin": false,
       "playableInEra": true,
       "playerCount": 13,
-      "verifiedSource": "https://en.wikipedia.org/wiki/2018_London_Broncos_season"
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2012": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2013": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/29698"
     },
     "2019": {
       "source": "verified",
@@ -565,9 +2470,49 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2019_London_Broncos_season"
+    },
+    "2024": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://mail.rugbyleagueproject.org/matches/62301"
     }
   },
   "St Helens": {
+    "1996": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1996/st-helens/detail.html?order=pos"
+    },
+    "1997": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-ii-1997/st-helens/detail.html?order=pos"
+    },
+    "1998": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1998/st-helens/detail.html?order=pos"
+    },
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-1999/st-helens/detail.html?order=pos"
+    },
     "2000": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -575,6 +2520,14 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2000_Super_League_Grand_Final"
+    },
+    "2001": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2001/st-helens/detail.html?order=pos"
     },
     "2002": {
       "source": "verified",
@@ -584,13 +2537,53 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2002_Super_League_Grand_Final"
     },
+    "2003": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2003/st-helens/detail.html?order=pos"
+    },
+    "2004": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2004/st-helens/detail.html?order=pos"
+    },
+    "2005": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2005/st-helens/detail.html?order=pos"
+    },
     "2006": {
       "source": "verified",
       "isSuperLeagueSeason": true,
       "playableInNormalSpin": false,
-      "playableInEra": false,
+      "playableInEra": true,
       "playerCount": 13,
-      "verifiedSource": "https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final"
+      "verifiedSource": "https://en.wikipedia.org/wiki/2006_Super_League_Grand_Final (2006 Super League Grand Final 14 Oct 2006 St Helens 26-4 Hull FC)"
+    },
+    "2007": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2007/st-helens/detail.html?order=pos"
+    },
+    "2008": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2008/st-helens/detail.html?order=pos"
     },
     "2009": {
       "source": "verified",
@@ -600,13 +2593,45 @@
       "playerCount": 13,
       "verifiedSource": "era-starting-17s.json (St Helens 2009 jersey 1–13)"
     },
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2010/st-helens/detail.html?order=pos"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2011/st-helens/detail.html?order=pos"
+    },
+    "2012": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2012/st-helens/detail.html?order=pos"
+    },
+    "2013": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2013/st-helens/detail.html?order=pos"
+    },
     "2014": {
       "source": "verified",
       "isSuperLeagueSeason": true,
       "playableInNormalSpin": false,
-      "playableInEra": false,
+      "playableInEra": true,
       "playerCount": 13,
-      "verifiedSource": "https://en.wikipedia.org/wiki/2014_St_Helens_R.F.C._season"
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2014/st-helens/detail.html?order=pos"
     },
     "2015": {
       "source": "verified",
@@ -623,6 +2648,22 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "era-starting-17s.json (St Helens 2016 jersey 1–13)"
+    },
+    "2017": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2017/st-helens/detail.html?order=pos"
+    },
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2018/st-helens/detail.html?order=pos"
     },
     "2019": {
       "source": "verified",
@@ -648,6 +2689,38 @@
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2021_Super_League_Grand_Final"
     },
+    "2022": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2022/st-helens/detail.html?order=pos"
+    },
+    "2023": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2023/st-helens/detail.html?order=pos"
+    },
+    "2024": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2024/st-helens/detail.html?order=pos"
+    },
+    "2025": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2025/st-helens/detail.html?order=pos"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -659,6 +2732,22 @@
     }
   },
   "Hull KR": {
+    "2007": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2008": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2009": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -667,6 +2756,78 @@
       "playerCount": 13,
       "verifiedSource": "era-starting-17s.json (Hull KR 2009 jersey 1–13)"
     },
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2012": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2013": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2014": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2015": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/30861"
+    },
+    "2016": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/31058"
+    },
+    "2018": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2019": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2020": {
       "source": "verified",
       "isSuperLeagueSeason": true,
@@ -674,6 +2835,46 @@
       "playableInEra": true,
       "playerCount": 13,
       "verifiedSource": "https://en.wikipedia.org/wiki/2020_Hull_Kingston_Rovers_season"
+    },
+    "2021": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2021/hull-kingston-rovers/detail.html?order=pos"
+    },
+    "2022": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2022/hull-kingston-rovers/detail.html?order=pos"
+    },
+    "2023": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2023/hull-kingston-rovers/detail.html?order=pos"
+    },
+    "2024": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2024/hull-kingston-rovers/detail.html?order=pos"
+    },
+    "2025": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2025/hull-kingston-rovers/detail.html?order=pos"
     },
     "2026": {
       "source": "current-squad",
@@ -686,6 +2887,14 @@
     }
   },
   "Toulouse Olympique": {
+    "2022": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2022/toulouse-olympique/detail.html?order=pos"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -696,7 +2905,89 @@
       "playerCount": 31
     }
   },
+  "Sheffield Eagles": {
+    "1996": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/15210"
+    },
+    "1997": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/15350"
+    },
+    "1998": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (verified starting 17)"
+    },
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/3150"
+    }
+  },
   "Leigh Leopards": {
+    "2005": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://mail.rugbyleagueproject.org/matches/2657"
+    },
+    "2017": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
+    "2021": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/45457"
+    },
+    "2023": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2023/leigh-leopards/detail.html?order=pos"
+    },
+    "2024": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/seasons/super-league-2024/leigh-leopards/detail.html?order=pos"
+    },
+    "2025": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "era-starting-17s.json (historic_starting_17_clean_verified.txt)"
+    },
     "2026": {
       "source": "current-squad",
       "isSuperLeagueSeason": true,
@@ -705,6 +2996,78 @@
       "playableInEra": true,
       "playableInEraChallengeCup": true,
       "playerCount": 30
+    }
+  },
+  "Halifax Panthers": {
+    "1998": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/2585"
+    },
+    "2002": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://mail.rugbyleagueproject.org/matches/3829"
+    },
+    "2003": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://mail.rugbyleagueproject.org/matches/3717"
+    }
+  },
+  "Gateshead Thunder": {
+    "1999": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/3125"
+    }
+  },
+  "Crusaders RL": {
+    "2009": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/15876"
+    },
+    "2010": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/17707"
+    },
+    "2011": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/23491"
+    }
+  },
+  "Toronto Wolfpack": {
+    "2020": {
+      "source": "verified",
+      "isSuperLeagueSeason": true,
+      "playableInNormalSpin": false,
+      "playableInEra": true,
+      "playerCount": 13,
+      "verifiedSource": "https://www.rugbyleagueproject.org/matches/40382"
     }
   },
   "York Knights": {

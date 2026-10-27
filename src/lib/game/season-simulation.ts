@@ -8,10 +8,10 @@
  * The maths (constants and helpers live in ./sim-formula.ts):
  *
  *   1. Draft quality   q = (avg squad rating − TYPICAL[mode]) / (ELITE[mode] − TYPICAL[mode])
- *        Classic: TYPICAL 83.1, ELITE 85.5   Era: TYPICAL 86.6, ELITE 88.5
+ *        Classic: TYPICAL 83.1, ELITE 85.5   Era: TYPICAL 85.6, ELITE 87.5
  *        (mean ratings of a typical draft and of a best-card-every-spin draft, by simulation).
  *        Era cards are rated higher, so raw ratings are never compared across modes.
- *   2. Team strength   S = 80 + 8·q + (chemistry − typical chemistry for the mode: 0 / 0.6)
+ *   2. Team strength   S = 80 + 8·q + (chemistry − typical chemistry for the mode: 0 / 0.3)
  *                         + halfway-call delta for that round (0 in rounds 1–14)
  *   3. Strength gap    g = S − opponent club rating (Wigan 84 … Wakefield 66) ± 1 home/away
  *   4. Win chance      p = 1 / (1 + e^(−g/3)), clamped to [1%, 99.5%]

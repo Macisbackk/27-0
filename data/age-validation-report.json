@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-22T18:54:44.607Z",
+  "generatedAt": "2026-10-27T18:44:02.810Z",
   "summary": {
-    "totalPlayers": 3348,
-    "withBirthData": 3340,
-    "withoutBirthData": 8,
+    "totalPlayers": 7224,
+    "withBirthData": 7213,
+    "withoutBirthData": 11,
     "errors": 0,
     "warnings": 0,
-    "informational": 8
+    "informational": 11
   },
   "issues": [
     {
@@ -26,6 +26,13 @@
     {
       "playerId": "castleford-hist-james-grehan",
       "name": "James Grehan",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "psg-hist-david-frayssinous",
+      "name": "David Frayssinous",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
@@ -61,6 +68,20 @@
     {
       "playerId": "widnes-hist-ray-dutton-1975",
       "name": "Ray Dutton",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-jordan-atkins-2014",
+      "name": "Jordan Atkins",
+      "category": "historic",
+      "severity": "info",
+      "message": "Missing birth year for historic/legend player"
+    },
+    {
+      "playerId": "london-hist-erjon-dollapi-2014",
+      "name": "Erjon Dollapi",
       "category": "historic",
       "severity": "info",
       "message": "Missing birth year for historic/legend player"
