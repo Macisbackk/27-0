@@ -1,0 +1,9 @@
+0 problem(s)
+
+
+Checks:
+Classic Current: full run to review (3 taps)
+Classic Era: full run to review (3 taps)
+Daily Challenge: full run to review (3 taps)
+Classic: rapid Auto Fill / Simulate taps
+Classic: reload mid-run
