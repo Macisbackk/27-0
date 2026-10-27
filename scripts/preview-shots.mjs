@@ -175,6 +175,25 @@ await shot(phone, "35-classic-draft", "/play?e2e=1", async (page) => {
     await page.screenshot({ path: `${OUT}/36-classic-review.png` });
     await page.screenshot({ path: `${OUT}/37-classic-review-full.png`, fullPage: true });
     console.log("shot 36-classic-review", reviewed ? "" : "(review not reached)");
+    // On to the play-offs and the end-of-run review (share → challenge → rewards → Play again).
+    await page.waitForTimeout(1500);
+    await tapFirst(page, [/^Continue$/i]);
+    await page.waitForTimeout(500);
+    if (await tapFirst(page, [/^Play-offs$/i, /Continue to play-offs/i])) {
+      for (let i = 0; i < 30; i++) {
+        const text = await page.locator("main").innerText().catch(() => "");
+        if (/Play-off Review/i.test(text)) break;
+        const tapped = await tapFirst(page, [/Play (the )?(next )?match/i, /Simulate/i, /Sim /i, /Skip/i, /^Continue$/i, /Next/i, /View (play-?off )?review/i, /Finish/i]);
+        await page.waitForTimeout(tapped ? 900 : 1500);
+      }
+      await page.waitForTimeout(2500);
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.screenshot({ path: `${OUT}/38-classic-playoff-review.png` });
+      await tapFirst(page, [/^Continue$/i]);
+      await page.waitForTimeout(600);
+      await page.screenshot({ path: `${OUT}/39-classic-playoff-review-full.png`, fullPage: true });
+      console.log("shot 38-classic-playoff-review");
+    }
   } catch (e) {
     console.log("skip 36-classic-review", String(e).slice(0, 160));
   } finally {
