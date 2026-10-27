@@ -14,7 +14,6 @@ import { getClubColoursForCard, getPlayerCardColours } from "@/lib/clubs";
 import { getPlayerColorClub } from "@/lib/players/run-club";
 import { isGoatPlayer } from "@/lib/players/goat";
 import { isSuperSamHallasPlayer } from "@/lib/players/super-sam-hallas";
-import { isActivePlayer } from "@/lib/players/active";
 
 export const PLAYER_CARD_COLOUR_SYSTEM_VERSION = 2;
 
@@ -78,7 +77,7 @@ export const PLAYER_TIER_MAX_VISIBLE = 2;
  * - Club Legend: club Hall of Fame inductee or recognised club great, only on cards for
  *   that club (data/club-legends.json).
  * - Past Season: a past-season card (category "historic"), even if the player still plays.
- * - Current: a 2026 squad card (category "current").
+ * - Current: not shown on cards (v1.40); 2026 squad cards carry no tier tag.
  */
 export const PLAYER_TIER_LABEL: Record<PlayerTierId, string> = {
   goat: "GOAT",
@@ -122,13 +121,7 @@ export function resolvePlayerTiers(player: Player): PlayerTierId[] {
   if (player.great === true) ids.push("great");
   if (player.clubLegend === true) ids.push("club-legend");
   if (player.category === "historic" && player.great !== true) ids.push("historic");
-  if (
-    isActivePlayer(player) &&
-    player.category !== "legend" &&
-    player.category !== "historic"
-  ) {
-    ids.push("current");
-  }
+  // No "Current" tag (owner, v1.40): a 2026 card in a 2026 squad game is obvious.
   return PLAYER_TIER_PRIORITY.filter((id) => ids.includes(id));
 }
 

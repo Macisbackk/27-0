@@ -163,7 +163,6 @@ function collectCandidateTags(
   const status = resolveChoicePlayerType(player);
   if (status === "legend") ids.push("legend");
   else if (status === "historic") ids.push(player.great ? "great" : "historic");
-  else if (status === "current") ids.push("current");
 
   if (player.clubLegend) ids.push("club-legend");
   if (options?.boosted) ids.push("boosted");
