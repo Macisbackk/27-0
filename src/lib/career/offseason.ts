@@ -5,6 +5,7 @@ import {
   SQUAD_MIN,
   SQUAD_TEMPLATE,
   autoPickLineup,
+  effectiveRating,
   formatMoney,
   generatePlayer,
   playerWage,
@@ -330,15 +331,42 @@ export function buyPlayer(
   // New signings come on a fresh deal (legends for two seasons).
   np.contract = listing.legend ? 2 : Math.max(2, newDealLength(np.age));
   if (s.phase === "season") s.lastWages = wageBill(squadOf(s, s.userClubId));
+  // A signing who's better than the weakest starter in his position goes straight into the XIII
+  // (a 94-rated legend used to sit in the squad until you picked him yourself).
+  const startsNow = putInLineupIfBetter(s, np);
   const wageNote = cost.wagesNow > 0 ? ` (${formatMoney(cost.wagesNow)} wages for the rest of the season)` : "";
   s.news = [
     cost.fee > 0
       ? `Signed ${np.name} for ${formatMoney(cost.fee)}${wageNote}.`
       : `Signed ${np.name} on a free: ${formatMoney(playerWage(np))}/yr wages${wageNote}.`,
+    ...(startsNow ? [`${np.name} goes straight into your starting XIII.`] : []),
     ...s.news,
   ].slice(0, 30);
   s.updatedAt = Date.now();
   return { state: s };
+}
+
+/** Swap a new signing into the XIII when he outrates the weakest starter in his position's slots. */
+function putInLineupIfBetter(s: CareerState, np: CareerPlayer): boolean {
+  const lineup = repairLineup(s, s.lineup ?? []);
+  let worst = -1;
+  let worstScore = Infinity;
+  LINEUP_SLOTS.forEach((slot, i) => {
+    if (slot !== np.pos) return;
+    const cur = s.players[lineup[i] ?? ""];
+    const score = cur ? effectiveRating(cur, slot) : -Infinity;
+    if (score < worstScore) {
+      worstScore = score;
+      worst = i;
+    }
+  });
+  if (worst < 0 || effectiveRating(np, np.pos) <= worstScore) {
+    s.lineup = lineup;
+    return false;
+  }
+  lineup[worst] = np.id;
+  s.lineup = lineup;
+  return true;
 }
 
 export function sellPrice(state: CareerState, playerId: string): number {

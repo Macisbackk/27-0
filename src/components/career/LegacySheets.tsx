@@ -7,9 +7,10 @@ import { DIVISION_LABEL, POS_LABEL, TROPHY_LABEL, formatMoney, legendAsPlayer, l
 import { useCareer } from "@/lib/career/context";
 import { playAchievementUnlock, playWarning } from "@/lib/sound";
 import { Eyebrow, RatingPill } from "./bits";
+import { windowStatus } from "@/lib/career/midseason";
 
 export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { legacy, unlockLegend } = useCareer();
+  const { legacy, unlockLegend, state } = useCareer();
   const [message, setMessage] = useState<string | null>(null);
   const legends = legendCatalog();
 
@@ -57,7 +58,11 @@ export function LegendVaultSheet({ open, onClose }: { open: boolean; onClose: ()
                       setMessage(err === "points" ? "Not enough Legacy points yet." : "Couldn't unlock that legend.");
                     } else {
                       playAchievementUnlock();
-                      setMessage(`${l.name} unlocked! He's in your next transfer window.`);
+                      setMessage(
+                        state && windowStatus(state).open
+                          ? `${l.name} unlocked! Sign him in the market now. He'll go straight into your XIII.`
+                          : `${l.name} unlocked! He'll be in the market when the window opens (pre-season or Deadline Day).`
+                      );
                     }
                   }}
                 >
