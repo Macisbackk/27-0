@@ -302,7 +302,7 @@ export function MatchTab({ onOpenMarket }: { onOpenMarket: () => void }) {
       {s.matchdayIndex === 0 ? <PreseasonResults /> : null}
       <IncomingBidCard />
       <TransferWindowCard onOpenMarket={onOpenMarket} />
-      {fixture && bestGain >= 0.1 ? (
+      {fixture && bestGain >= 0.3 ? (
         <section aria-label="Stronger XIII available" className="flex items-center gap-3 rounded-card bg-pitch-900 p-3 ring-1 ring-theme-primary/40">
           <p className="min-w-0 flex-1 text-[13px] text-gray-300">
             Your best XIII is <span className="font-bold text-theme-primary">+{bestGain.toFixed(1)}</span> stronger.
