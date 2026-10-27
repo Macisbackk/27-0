@@ -432,7 +432,7 @@ export function SeasonReview({
               animate={{ opacity: 1, y: 0 }}
               className="w-full min-w-0 text-center"
             >
-              <section className="pitch-surface pitch-hero pitch-hero--feature" aria-label="Season result">
+              <section className="pitch-surface pitch-hero pitch-hero--feature pitch-hero--centred" aria-label="Season result">
                 <PitchMark>{isPerfect ? <CupGlyph /> : <BallGlyph />}</PitchMark>
                 <div className="relative min-w-0">
                   <p className="pitch-eyebrow">

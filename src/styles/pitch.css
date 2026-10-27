@@ -93,6 +93,19 @@
   text-align: left;
 }
 
+/* Result heroes (season / play-off review): the grade sits centred at every width. */
+.pitch-hero.pitch-hero--centred,
+.pitch-hero.pitch-hero--centred .pitch-title,
+.pitch-hero.pitch-hero--centred .pitch-sub,
+.pitch-hero.pitch-hero--centred .pitch-eyebrow {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.pitch-hero.pitch-hero--centred .pitch-eyebrow {
+  justify-content: center;
+}
+
 /* Page heroes (PitchHero): a compact header band, left-aligned like the home card. */
 .pitch-hero {
   padding: 1rem;
@@ -227,9 +240,13 @@
   color: rgba(255, 255, 255, 0.7);
   transition: background-color var(--motion-fast, 120ms) ease, color var(--motion-fast, 120ms) ease;
 }
-.pitch-seg > button:hover,
-.pitch-seg > a:hover {
-  color: #ffffff;
+/* Hover only lifts the idle options, and only on devices that really hover: on phones :hover
+   sticks after a tap, and it used to turn the active (white) option's text white too. */
+@media (hover: hover) {
+  .pitch-seg > button:not([aria-pressed="true"]):not([aria-selected="true"]):not([aria-current="page"]):hover,
+  .pitch-seg > a:not([aria-pressed="true"]):not([aria-selected="true"]):not([aria-current="page"]):hover {
+    color: #ffffff;
+  }
 }
 .pitch-seg > [aria-pressed="true"],
 .pitch-seg > [aria-selected="true"],
