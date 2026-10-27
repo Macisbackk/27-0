@@ -330,7 +330,7 @@ export function GridGame() {
       <MiniGameRewardPopup
         open={rewardOpen}
         amount={run.payoutAmount ?? 0}
-        detail={`${score}/${GRID_CELL_COUNT} squares. One reward per day. Resets at midnight UK time.`}
+        detail={`${score}/${GRID_CELL_COUNT} squares. 1 reward a day.`}
         onClose={() => setRewardOpen(false)}
       />
 
@@ -423,7 +423,7 @@ export function GridGame() {
               </p>
             ) : null}
             <p className={`mt-2 text-xs leading-snug ${MUTED}`}>
-              {GRID_MAX_GUESSES} guesses. A wrong guess uses one up. Each player once.
+              {GRID_MAX_GUESSES} guesses. Use each player once.
             </p>
             {run.guessesUsed > 0 ? (
               <div className="mt-2 flex justify-center">
@@ -516,8 +516,8 @@ export function GridGame() {
         ) : null}
 
         <p className={`mt-4 text-xs leading-snug ${MUTED}`}>
-          Answers come from the 27-0 player database. Daily grid pays £
-          {GRID_REWARD_PER_CELL.toLocaleString("en-GB")} per square, once a day.
+          Daily grid pays £{GRID_REWARD_PER_CELL.toLocaleString("en-GB")} a square.
+===
         </p>
       </div>
     </MiniGameShell>

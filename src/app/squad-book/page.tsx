@@ -146,7 +146,7 @@ export default function SquadBookPage() {
         <header className="space-y-3">
           <PitchHero eyebrow="Collection" title="Squad Book" icon={<AlbumGlyph />} />
           <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
-            Every card you field in a finished Classic, Era Classic, Daily or Weekly season goes in the book. A player's 2026 card and his era cards count separately.
+            Every player you field in a finished season goes in the book.
           </p>
         </header>
 
@@ -176,7 +176,8 @@ export default function SquadBookPage() {
           <p className={`text-center ${TYPO.bodySm}`}>Loading the book…</p>
         ) : tab === "collections" ? (
           <div className="flex flex-col gap-3">
-            <Section title="Clubs" intro="Field 10, 25 and 50 different cards from a club, and every player in its 2026 squad. Tap a club to see its cards.">
+            <Section title="Clubs" intro="Collect 10, 25 and 50 cards per club. Tap a club to see them.">
+===
               <ul className="grid gap-2 sm:grid-cols-2">
                 {catalog.clubs.map((c) => {
                   const p = progress.byClub.get(c)!;

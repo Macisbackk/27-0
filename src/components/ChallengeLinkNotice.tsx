@@ -27,8 +27,9 @@ export function ChallengeLinkNotice({
         <>
           <h1 className={TYPO.pageTitle}>{challengeBannerText(challenge)}</h1>
           <p className={TYPO.muted}>
-            {challenge.name} took on {weekly ? "this week's Weekly" : "today's Daily"}. Play your own ranked{" "}
-            {weekly ? "Weekly" : "Daily"} first — then open this link again to replay their spins and compare squads.
+            {challenge.name} played {weekly ? "this week's Weekly" : "today's Daily"}.
+            <br />
+            Play yours first, then open this link again.
           </p>
           <ActionButton variant="theme" href={weekly ? getWeeklyChallengeHref() : getDailyChallengeHref()}>
             Play {weekly ? "this week's Weekly" : "today's Daily"}
@@ -37,7 +38,7 @@ export function ChallengeLinkNotice({
       ) : (
         <>
           <h1 className={TYPO.pageTitle}>This challenge link doesn&apos;t work</h1>
-          <p className={TYPO.muted}>It may have been cut short or edited. Ask your mate to send it again, or start your own run.</p>
+          <p className={TYPO.muted}>It may be cut short. Ask your mate to resend it.</p>
           <ActionButton variant="theme" href="/play">
             Play Classic
           </ActionButton>

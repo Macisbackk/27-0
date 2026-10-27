@@ -143,7 +143,7 @@ export default function RecordsPage() {
         <header className="space-y-3">
           <PitchHero eyebrow="Your history" title="Records" icon={<CupGlyph />} />
           <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
-            Classic, Era Classic and Ball Knower seasons. Squads are kept on this device from v1.19 on.
+            Your Classic, Era Classic and Ball Knower seasons.
           </p>
         </header>
 
@@ -175,7 +175,7 @@ export default function RecordsPage() {
               <Stat label="27-0s" value={summary.perfectSeasons} sub={`${summary.titles} Grand Final${summary.titles === 1 ? "" : "s"} won`} />
             </section>
 
-            <Section title="All-time record" intro="Regular season, then play-offs. Daily and Weekly runs aren't counted here.">
+            <Section title="All-time record" intro="Daily and Weekly runs don't count here.">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-left text-xs text-[color:var(--fl-muted)]">
@@ -216,11 +216,12 @@ export default function RecordsPage() {
               {run ? (
                 <RunSquad run={run} />
               ) : (
-                <p className={TYPO.bodySm}>Finish a season and your best XIII shows up here.</p>
+                <p className={TYPO.bodySm}>Finish a season to see your best 13.</p>
               )}
             </Section>
 
-            <Section title="Most drafted" intro="From your Squad Book: the cards you've fielded in the most finished seasons.">
+            <Section title="Most drafted" intro="The cards you've fielded most.">
+===
               {summary.mostDrafted.length === 0 ? (
                 <p className={TYPO.bodySm}>
                   Nothing yet. <Link href="/play" className={LINK.accent}>Play a season</Link>

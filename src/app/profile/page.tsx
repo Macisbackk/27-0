@@ -92,7 +92,7 @@ export default function ProfilePage() {
     setResetMsg(null);
     setResetError(null);
     const result = await sendPasswordResetEmail(email);
-    if (result.ok) setResetMsg("Password reset email sent. Check your inbox.");
+    if (result.ok) setResetMsg("Reset link sent. Check your inbox.");
     else setResetError(result.error ?? "Could not send reset email.");
     setResetBusy(false);
   };
@@ -145,7 +145,7 @@ export default function ProfilePage() {
               <Link href="/login?redirect=/profile" className={LINK.accent}>
                 Log in
               </Link>{" "}
-              to save it online and join the leaderboards.
+              to save online and join the leaderboards.
             </p>
           ) : null}
         </div>
@@ -201,7 +201,7 @@ export default function ProfilePage() {
             ) : !isLoggedIn ? (
               <SectionCard title="Account">
                 <p className={`${MANAGER.panelCenter} ${TYPO.body}`}>
-                  You&apos;re playing as a guest. Create a free account to keep your progress safe and appear on the leaderboards.
+                  You&apos;re a guest. Sign up free to save your progress and join the leaderboards.
                 </p>
                 <div className="mt-4 flex justify-center">
                   <GameButton variant="theme" size="sm" fullWidth={false} href="/login?redirect=/profile">
@@ -232,7 +232,7 @@ export default function ProfilePage() {
 
                 <SectionCard title="Password">
                   <p className={`${MANAGER.panelCenter} ${TYPO.bodySm}`}>
-                    We&apos;ll email you a link to choose a new password.
+                    We&apos;ll email you a reset link.
                   </p>
                   <div className="mt-4 flex justify-center">
                     <GameButton
@@ -252,7 +252,8 @@ export default function ProfilePage() {
                 <SectionCard title="Career stats">
                   {statsResetConfirm ? (
                     <div className="mx-auto max-w-md rounded-lg border border-red-500/35 bg-red-950/20 p-3 text-center">
-                      <p className={`${TYPO.bodySm} text-red-200`}>Clear all career stats? This can&apos;t be undone.</p>
+                      <p className={`${TYPO.bodySm} text-red-200`}>Clear all Classic stats? You can&apos;t undo this.</p>
+===
                       <div className={MANAGER.actionRow}>
                         <GameButton variant="danger" size="sm" fullWidth={false} disabled={statsResetBusy} onClick={() => void handleResetCareerStats()}>
                           Yes, reset

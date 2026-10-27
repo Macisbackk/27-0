@@ -203,7 +203,7 @@ export function SettingsPanel() {
             />
           ) : null}
         </Row>
-        <Row label="Quick spins" hint="Shorter reel (about 1s). Reduced motion skips it.">
+        <Row label="Quick spins" hint="A shorter reel, about 1s.">
           {ready ? (
             <Switch
               on={quickSpins}
@@ -216,7 +216,7 @@ export function SettingsPanel() {
             />
           ) : null}
         </Row>
-        <Row label="Show first" hint="Which mode your stats and leaderboards open on.">
+        <Row label="Show first" hint="The mode stats and boards open on.">
           {ready ? (
             <Segmented
               label="Show first"
@@ -233,7 +233,7 @@ export function SettingsPanel() {
             />
           ) : null}
         </Row>
-        <LinkRow href="/store" label="Theme" hint={`${themeName} · change it in the Store`} />
+        <LinkRow href="/store" label="Theme" hint={`${themeName} · change in the Store`} />
       </Group>
 
       <Group title="Account">
@@ -247,10 +247,10 @@ export function SettingsPanel() {
               label="Password"
               hint={
                 mailState === "sent"
-                  ? "Reset link sent — check your inbox."
+                  ? "Link sent. Check your inbox."
                   : mailState === "error"
-                    ? "Couldn't send the email. Try again shortly."
-                    : "We'll email you a link to set a new one."
+                    ? "Couldn't send it. Try again soon."
+                    : "We'll email you a reset link."
               }
             >
               <GameButton
@@ -263,17 +263,17 @@ export function SettingsPanel() {
                 {mailState === "sent" ? "Sent" : "Email link"}
               </GameButton>
             </Row>
-            <Row label="Log out" hint="Your progress stays saved to your account.">
+            <Row label="Log out" hint="Your progress stays saved.">
               <GameButton variant="danger" size="sm" fullWidth={false} onClick={() => void signOut()}>
                 Log out
               </GameButton>
             </Row>
-            <LinkRow href="/delete-account" label="Delete account" hint="Permanently remove your account and online data." />
+            <LinkRow href="/delete-account" label="Delete account" hint="Remove your account and online data for good." />
           </>
         ) : (
           <>
-            <Row label="Playing as a guest" hint="Progress is saved on this device only." />
-            <LinkRow href="/login" label="Log in or create an account" hint="Save progress online, join the leaderboards and bank a £100k welcome bonus." />
+            <Row label="Playing as a guest" hint="Saved on this device only." />
+            <LinkRow href="/login" label="Log in or sign up" hint="Save online and get a £100k welcome bonus." />
           </>
         )}
       </Group>
@@ -284,7 +284,7 @@ export function SettingsPanel() {
             {hiddenCoaches.length === 0 ? (
               <Row
                 label="No hidden coaches"
-                hint="Tap the three-dot (⋯) button next to a coach on any leaderboard to hide them from your boards or report them."
+                hint="Tap ⋯ next to a coach on a leaderboard to hide or report them."
               />
             ) : (
               hiddenCoaches.map((c) => (
@@ -312,14 +312,14 @@ export function SettingsPanel() {
           label="Reset career stats"
           hint={
             resetState === "confirm"
-              ? "This clears your Classic stats and can't be undone. Leaderboard entries stay."
+              ? "Clears your Classic stats for good. Leaderboard entries stay."
               : resetState === "done"
                 ? isLoggedIn
                   ? "Classic stats reset everywhere."
                   : "Classic stats reset on this device."
                 : resetState === "error"
                   ? "Couldn't reset. Try again."
-                  : "Wins, records and squad stats. Manager Mode and Club Funds aren't affected."
+                  : "Classic wins and records. Manager Mode and Club Funds stay."
           }
         >
           <div className="flex gap-1.5">
@@ -339,16 +339,16 @@ export function SettingsPanel() {
             </GameButton>
           </div>
         </Row>
-        <LinkRow href="/profile" label="Career stats" hint="Your Classic record, in Coach Profile." />
+        <LinkRow href="/profile" label="Career stats" hint="Your Classic record." />
       </Group>
 
       <Group title="Help & feedback">
         <LinkRow href="/#how-to-play" label="How to play" />
-        <LinkRow href={SUGGESTIONS_MAIL} label="Send a suggestion" hint="Ideas and bug reports welcome." external />
+        <LinkRow href={SUGGESTIONS_MAIL} label="Send a suggestion" hint="Ideas and bugs welcome." external />
         <LinkRow
           href={REPORT_MAIL}
           label="Report a player or content"
-          hint={`Offensive names, cheating or anything else: ${CONTACT_EMAIL}. Or tap the three-dot (⋯) button next to a coach on a leaderboard.`}
+          hint={`Email ${CONTACT_EMAIL}, or tap ⋯ next to a coach.`}
           external
         />
         {SHOW_TIP_LINKS ? <LinkRow href={COFFEE_URL} label="Buy Me a Coffee" hint="Support 27-0." external /> : null}

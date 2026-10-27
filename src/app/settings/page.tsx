@@ -4,7 +4,8 @@ import { StandardPageShell } from "@/components/ui/StandardPageShell";
 
 export const metadata: Metadata = {
   title: "Settings — 27-0",
-  description: "Sound, default Classic mode, theme, account and your saved progress.",
+  description: "Sound, theme, account and saved progress.
+===",
 };
 
 export default function SettingsPage() {

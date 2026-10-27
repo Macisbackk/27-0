@@ -89,14 +89,14 @@ export default function ModesPage() {
             }
           />
           <p className="text-left text-sm text-[color:var(--fl-muted)] px-1">
-            Side modes for when today&apos;s Daily is done. Unranked: no leaderboards or Club Funds.
+            Extra ways to play. No leaderboards or Club Funds.
           </p>
         </header>
 
         <Section
           id="one-club-title"
           title="One-Club XI"
-          kicker="Pick a club. Every spin is one of its seasons, any era, this year included. Build their all-time 13 and play the season."
+          kicker="Pick a club. Every spin is one of its seasons. Build its all-time 13."
         >
           {clubs === null ? (
             <p className={TYPO.meta}>Loading clubs…</p>
@@ -132,7 +132,7 @@ export default function ModesPage() {
         <Section
           id="gauntlet-title"
           title="Gauntlet"
-          kicker={`Draft your 13, then face ${GAUNTLET_LENGTH} of the greatest Grand Final winners in a row, each one tougher. One defeat ends the run.`}
+          kicker={`Draft your 13. Beat ${GAUNTLET_LENGTH} great Grand Final winners in a row. Lose once and you're out.`}
         >
           {gauntlet && gauntlet.length > 0 ? (
             <p className="text-xs leading-relaxed text-[color:var(--fl-muted)]">
@@ -173,7 +173,8 @@ export default function ModesPage() {
           <Section
             id="past-dailies-title"
             title="Past Dailies"
-            kicker={`Replay any of the last ${DAILY_ARCHIVE_DAYS} Dailies with the same rule and spins. Practice only: no streak, board or Club Funds.`}
+            kicker={`Replay the last ${DAILY_ARCHIVE_DAYS} Dailies. Practice only.`}
+===
           >
             <Link
               href={DAILY_ARCHIVE_PAGE}

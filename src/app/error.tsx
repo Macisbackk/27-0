@@ -21,8 +21,8 @@ export default function Error({
       <div className="mx-auto flex max-w-md flex-col items-center gap-4 py-16 text-center">
         <h1 className="text-3xl font-black text-white">Something went wrong</h1>
         <p className="text-pitch-300">
-          Your saves are stored on this device and haven&apos;t been affected. Try again, or head
-          back to the home screen.
+          Your saves are safe. Try again or go home.
+===
         </p>
         <div className="flex w-full flex-col gap-2 sm:flex-row sm:justify-center">
           <GameButton onClick={reset} fullWidth={false}>
